@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DF1C012EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1F8C0114F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuKJ-0005FX-Je; Thu, 23 Oct 2025 08:21:59 -0400
+	id 1vBuHY-00029M-Py; Thu, 23 Oct 2025 08:19:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuG8-0001Hj-Sg
+ id 1vBuG8-0001Hm-TT
  for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:42 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuG0-0006Qb-M0
+ id 1vBuG1-0006Qo-1G
  for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:34 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N6kC3F009507;
- Thu, 23 Oct 2025 12:17:23 GMT
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MLvesF009163;
+ Thu, 23 Oct 2025 12:17:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=QSlvDG
- nDDl4b+7RChUQZhL4Jt0GxsEYvIJPaC1ZJN0U=; b=gsLlJMphZQ2AZD3jB7p40i
- 2xI0QWRKioCbxPb9ezufzE5KGyDqFASmkYdJm2e0vhz34H/0pJcDYnG5jzklEWxp
- 9ClbrQrrnVTwM+QVmaYGkYIjNuK7CWl7AvFWTjT4/lZ+jyx0yNw/dkizNnAr0T7F
- wkbQVsMKStDmcwpDABng9MDHV6JX6AhivFE/L5DP//vO0YW+ZTkyi70woE2G1iFF
- 7hAA3WNZCTGPzNcbdmL2R1dyaNKxNXI0MlseUzaudaPqkDJam4yJ04CAlMwC8dG0
- mHJhxPeBFZwNf4q/+FM4+sWw+m618SPT68AaX/+XUt6uKHrZJvVTALG3eYiqHc2A
+ :message-id:mime-version:references:subject:to; s=pp1; bh=MLbS2Z
+ xde9nv+p/z5o8rHSvwi5Bt6B6KkQCG6FaD6w0=; b=JM16xtXCq2LhE2jKE3Dx6Z
+ RxrgjFGve8VunP9Aa341ez/9Zt7xOpB+W6t9s48oSU1CdukBfkAf1Vm0m3oLibaM
+ rCumqyXESSM8kaHHtQ7yBcH+ax5CKEohKGcIYUD6GMV3zJwnBc66vUvZAzxlaqJa
+ frXruxOyNADaHU5KNZ4L1L9wLBdUSEVRQPrvXIdAwE875gF57hIHjtdkAdqVX4hd
+ Fv6DoCuPkm/F6Mm2K8NYrKXnie4Dw/yVOGw8/jSepnNKStTsV8RJxoYCKdEhcfpd
+ fWYA5l0RA+SUa9XgUiEWBVs8D+gjgq/QcaCmiFDsG6Y1UcbFe7bsVuuSDBwSAqLQ
  ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32721b4-1
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33fj26a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 12:17:23 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBHBjX011030;
- Thu, 23 Oct 2025 12:17:22 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx1danh-1
+ Thu, 23 Oct 2025 12:17:24 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBEtBU002306;
+ Thu, 23 Oct 2025 12:17:23 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejne44-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 12:17:22 +0000
+ Thu, 23 Oct 2025 12:17:23 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NCHKsx44892442
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NCHMK058392970
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 12:17:21 GMT
+ Thu, 23 Oct 2025 12:17:22 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4FD32004B;
- Thu, 23 Oct 2025 12:17:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 16EA12004B;
+ Thu, 23 Oct 2025 12:17:22 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6C7220043;
- Thu, 23 Oct 2025 12:17:19 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3318020043;
+ Thu, 23 Oct 2025 12:17:21 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.124.221.73]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 12:17:19 +0000 (GMT)
+ Thu, 23 Oct 2025 12:17:20 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/32] hw/ppc/pegasos2: Change device tree generation
-Date: Thu, 23 Oct 2025 17:46:34 +0530
-Message-ID: <20251023121653.3686015-16-harshpb@linux.ibm.com>
+Subject: [PULL 16/32] hw/ppc/pegasos2: Remove fdt pointer from machine state
+Date: Thu, 23 Oct 2025 17:46:35 +0530
+Message-ID: <20251023121653.3686015-17-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251023121653.3686015-1-harshpb@linux.ibm.com>
 References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
@@ -72,28 +72,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68fa1cd3 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68fa1cd4 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
  a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
- a=VdymBoROAfzTdu8dDj8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=MSIEXOgWn6CInn48Bo0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
  a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
  a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXwQ25YMu7EzDB
- qo7M+YydYNoL0JogJMXnIUKYbp7eI7rWUppYzqHZTEmAls6UbFKSXBdlBK8SQ1+2ly174E8wfX7
- YCjmvq9s4bepTn/CxFRPsx9UtmkGVY2F4igMEgSZ9OC6V9mRJAyCi3vCIhEwtzpY1xOw6P69dz+
- PhCwvUSFcxRt9jUUK5eQ1rbXhPYXWRIGlPUdADciuMzP+4e2eF/QqjQ/pE63A8gaBJdA97hEbPL
- QMCtcJi6ECiAzvzm4DkTvDuU+CuULamdspz8ywMNQUqkPWNsyg4J4qi0ATQsDSYwmdWpHc7QRgs
- 3Ft8iPF9PJ4LDzU8ycbhg7WxwbprAnfKjNFOlhPSyoWSpzlESJ2mSZmkviUzhr/VHSei+j1xKzo
- g4l90k3raPzJ4eRhq4/JQkV93y/Vlw==
-X-Proofpoint-GUID: ELto_4I43VxsahakwijsKqO-rrDGl0N4
-X-Proofpoint-ORIG-GUID: ELto_4I43VxsahakwijsKqO-rrDGl0N4
+X-Proofpoint-GUID: ijVfrET-lPY2N3OEq6VIFapNlQQVNieh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX0OI6e3fTSKzD
+ kis1TxKCvQN2wyCJkHM5yjKvg06OMnLjLSP7d0LRA6ax+l8SQv0d/atbXC88/oJhK101gesiss4
+ lcl7wpx60C22t2BaJ/x0+oMmUq2bp1EgFS+XcfMyzwzOyycjXAntYn3oRAakRBdHJKAm5y7sIXS
+ 8uC/Cenq4VSegLYo1eie6MqEpVn9UFfmQh6rA9iiT0Ut0DnTur0at+htVKeB96B2Ae+NDCL091H
+ uwnlesFG+DL3CfSEWuBNOx5Z/66Ayzx+RtqewZvDaVIta4gZ0+lGE3v/lx/k82iHY6Zd/lniWTH
+ oHoOM8fY9wAKcsLQwtDkjO2lJnaS976QoEoMbwIj9PvC55djEcayFpdWMKFugAa5bNil0CQuKGn
+ +qNMxZLh3iklOA5Og7Uzb7dFieu5dw==
+X-Proofpoint-ORIG-GUID: ijVfrET-lPY2N3OEq6VIFapNlQQVNieh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
@@ -123,593 +123,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-We generate a flattened device tree programmatically for VOF. Change
-this to load the static parts from a device tree blob and only
-generate the parts that depend on run time conditions such as CPU
-type, memory size and PCI devices. Moving the static parts in a dts
-makes the board code simpler and more generic.
+The machine class has a field for storing the fdt so we don't need our
+own and can use that instead.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/383891fc2696609b27d2de9773efe1b4f493e333.1761176219.git.balaton@eik.bme.hu
+Link: https://lore.kernel.org/qemu-devel/f4355b8d2889aba19d28001e61ac3f9937fc5250.1761176219.git.balaton@eik.bme.hu
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- hw/ppc/pegasos2.c        | 291 +++++++--------------------------------
- pc-bios/dtb/meson.build  |   1 +
- pc-bios/dtb/pegasos2.dtb | Bin 0 -> 1701 bytes
- pc-bios/dtb/pegasos2.dts | 167 ++++++++++++++++++++++
- 4 files changed, 219 insertions(+), 240 deletions(-)
- create mode 100644 pc-bios/dtb/pegasos2.dtb
- create mode 100644 pc-bios/dtb/pegasos2.dts
+ hw/ppc/pegasos2.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 73995624e5..f4787397dc 100644
+index f4787397dc..2ba579dddf 100644
 --- a/hw/ppc/pegasos2.c
 +++ b/hw/ppc/pegasos2.c
-@@ -58,16 +58,8 @@
- #define BUS_FREQ_HZ 133333333
- 
- #define PCI0_CFG_ADDR 0xcf8
--#define PCI0_MEM_BASE 0xc0000000
--#define PCI0_MEM_SIZE 0x20000000
--#define PCI0_IO_BASE  0xf8000000
--#define PCI0_IO_SIZE  0x10000
--
- #define PCI1_CFG_ADDR 0xc78
--#define PCI1_MEM_BASE 0x80000000
--#define PCI1_MEM_SIZE 0x40000000
- #define PCI1_IO_BASE  0xfe000000
--#define PCI1_IO_SIZE  0x10000
- 
- #define TYPE_PEGASOS2_MACHINE  MACHINE_TYPE_NAME("pegasos2")
- OBJECT_DECLARE_TYPE(Pegasos2MachineState, MachineClass, PEGASOS2_MACHINE)
-@@ -411,7 +403,11 @@ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
-         error_report("Memory for initrd is in use");
-         exit(1);
-     }
-+
-     fdt = build_fdt(machine, &sz);
-+    if (!fdt) {
-+        exit(1);
-+    }
-     /* FIXME: VOF assumes entry is same as load address */
-     d[0] = cpu_to_be64(pm->kernel_entry);
+@@ -74,7 +74,6 @@ struct Pegasos2MachineState {
+     qemu_irq mv_pirq[PCI_NUM_PINS];
+     qemu_irq via_pirq[PCI_NUM_PINS];
+     Vof *vof;
+-    void *fdt_blob;
+     uint64_t kernel_addr;
+     uint64_t kernel_entry;
+     uint64_t kernel_size;
+@@ -413,13 +412,11 @@ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
      d[1] = cpu_to_be64(pm->kernel_size - (pm->kernel_entry - pm->kernel_addr));
-@@ -654,113 +650,12 @@ static void dt_usb(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
-     qemu_fdt_setprop_string(fi->fdt, fi->path, "device_type", "usb");
- }
+     qemu_fdt_setprop(fdt, "/chosen", "qemu,boot-kernel", d, sizeof(d));
  
--static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
--{
--    GString *name = g_string_sized_new(64);
--    uint32_t cells[3];
+-    g_free(pm->fdt_blob);
+-    pm->fdt_blob = fdt;
 -
--    qemu_fdt_setprop_cell(fi->fdt, fi->path, "#size-cells", 1);
--    qemu_fdt_setprop_cell(fi->fdt, fi->path, "#address-cells", 2);
--    qemu_fdt_setprop_string(fi->fdt, fi->path, "device_type", "isa");
--
--    /* additional devices */
--    g_string_printf(name, "%s/lpt@i3bc", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(7);
--    cells[1] = 0;
--    qemu_fdt_setprop(fi->fdt, name->str, "interrupts",
--                     cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x3bc);
--    cells[2] = cpu_to_be32(8);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "lpt");
--
--    g_string_printf(name, "%s/fdc@i3f0", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(6);
--    cells[1] = 0;
--    qemu_fdt_setprop(fi->fdt, name->str, "interrupts",
--                     cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x3f0);
--    cells[2] = cpu_to_be32(8);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "fdc");
--
--    g_string_printf(name, "%s/timer@i40", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x40);
--    cells[2] = cpu_to_be32(8);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "timer");
--
--    g_string_printf(name, "%s/rtc@i70", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_string(fi->fdt, name->str, "compatible", "ds1385-rtc");
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(8);
--    cells[1] = 0;
--    qemu_fdt_setprop(fi->fdt, name->str, "interrupts",
--                     cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x70);
--    cells[2] = cpu_to_be32(2);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "rtc");
--
--    g_string_printf(name, "%s/keyboard@i60", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    cells[0] = cpu_to_be32(1);
--    cells[1] = 0;
--    qemu_fdt_setprop(fi->fdt, name->str, "interrupts",
--                     cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x60);
--    cells[2] = cpu_to_be32(5);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "keyboard");
--
--    g_string_printf(name, "%s/8042@i60", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "#interrupt-cells", 2);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "#size-cells", 0);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "#address-cells", 1);
--    qemu_fdt_setprop_string(fi->fdt, name->str, "interrupt-controller", "");
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x60);
--    cells[2] = cpu_to_be32(5);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "");
--
--    g_string_printf(name, "%s/serial@i2f8", fi->path);
--    qemu_fdt_add_subnode(fi->fdt, name->str);
--    qemu_fdt_setprop_cell(fi->fdt, name->str, "clock-frequency", 0);
--    cells[0] = cpu_to_be32(3);
--    cells[1] = 0;
--    qemu_fdt_setprop(fi->fdt, name->str, "interrupts",
--                     cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(1);
--    cells[1] = cpu_to_be32(0x2f8);
--    cells[2] = cpu_to_be32(8);
--    qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "serial");
--
--    g_string_free(name, TRUE);
--}
--
- static struct {
-     const char *id;
-     const char *name;
-     void (*dtf)(PCIBus *bus, PCIDevice *d, FDTInfo *fi);
- } device_map[] = {
-     { "pci11ab,6460", "host", NULL },
--    { "pci1106,8231", "isa", dt_isa },
-     { "pci1106,571", "ide", dt_ide },
-     { "pci1106,3044", "firewire", NULL },
-     { "pci1106,3038", "usb", dt_usb },
-@@ -780,7 +675,10 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d, void *opaque)
-                                      pci_get_word(&d->config[PCI_VENDOR_ID]),
-                                      pci_get_word(&d->config[PCI_DEVICE_ID]));
+     vof_build_dt(fdt, pm->vof);
+     vof_client_open_store(fdt, pm->vof, "/chosen", "stdout", "/failsafe");
  
--    if (pci_get_word(&d->config[PCI_CLASS_DEVICE])  ==
-+    if (!strcmp(pn, "pci1106,8231")) {
-+        return; /* ISA bridge and devices are included in dtb */
-+    }
-+    if (pci_get_word(&d->config[PCI_CLASS_DEVICE]) ==
-         PCI_CLASS_NETWORK_ETHERNET) {
-         name = "ethernet";
-     } else if (pci_get_word(&d->config[PCI_CLASS_DEVICE]) >> 8 ==
-@@ -858,131 +756,9 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d, void *opaque)
-     g_string_free(node, TRUE);
- }
+     /* Set machine->fdt for 'dumpdtb' QMP/HMP command */
++    g_free(machine->fdt);
+     machine->fdt = fdt;
  
--static void *build_fdt(MachineState *machine, int *fdt_size)
-+static void add_cpu_info(void *fdt, PowerPCCPU *cpu)
- {
--    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
--    PowerPCCPU *cpu = pm->cpu;
--    PCIBus *pci_bus;
--    FDTInfo fi;
--    uint32_t cells[16];
--    void *fdt = create_device_tree(fdt_size);
--
--    fi.fdt = fdt;
--
--    /* root node */
--    qemu_fdt_setprop_string(fdt, "/", "CODEGEN,description",
--                            "Pegasos CHRP PowerPC System");
--    qemu_fdt_setprop_string(fdt, "/", "CODEGEN,board", "Pegasos2");
--    qemu_fdt_setprop_string(fdt, "/", "CODEGEN,vendor", "bplan GmbH");
--    qemu_fdt_setprop_string(fdt, "/", "revision", "2B");
--    qemu_fdt_setprop_string(fdt, "/", "model", "Pegasos2");
--    qemu_fdt_setprop_string(fdt, "/", "device_type", "chrp");
--    qemu_fdt_setprop_cell(fdt, "/", "#address-cells", 1);
--    qemu_fdt_setprop_string(fdt, "/", "name", "bplan,Pegasos2");
--
--    /* pci@c0000000 */
--    qemu_fdt_add_subnode(fdt, "/pci@c0000000");
--    cells[0] = 0;
--    cells[1] = 0;
--    qemu_fdt_setprop(fdt, "/pci@c0000000", "bus-range",
--                     cells, 2 * sizeof(cells[0]));
--    qemu_fdt_setprop_cell(fdt, "/pci@c0000000", "pci-bridge-number", 1);
--    cells[0] = cpu_to_be32(PCI0_MEM_BASE);
--    cells[1] = cpu_to_be32(PCI0_MEM_SIZE);
--    qemu_fdt_setprop(fdt, "/pci@c0000000", "reg", cells, 2 * sizeof(cells[0]));
--    cells[0] = cpu_to_be32(0x01000000);
--    cells[1] = 0;
--    cells[2] = 0;
--    cells[3] = cpu_to_be32(PCI0_IO_BASE);
--    cells[4] = 0;
--    cells[5] = cpu_to_be32(PCI0_IO_SIZE);
--    cells[6] = cpu_to_be32(0x02000000);
--    cells[7] = 0;
--    cells[8] = cpu_to_be32(PCI0_MEM_BASE);
--    cells[9] = cpu_to_be32(PCI0_MEM_BASE);
--    cells[10] = 0;
--    cells[11] = cpu_to_be32(PCI0_MEM_SIZE);
--    qemu_fdt_setprop(fdt, "/pci@c0000000", "ranges",
--                     cells, 12 * sizeof(cells[0]));
--    qemu_fdt_setprop_cell(fdt, "/pci@c0000000", "#size-cells", 2);
--    qemu_fdt_setprop_cell(fdt, "/pci@c0000000", "#address-cells", 3);
--    qemu_fdt_setprop_string(fdt, "/pci@c0000000", "device_type", "pci");
--
--    fi.path = "/pci@c0000000";
--    pci_bus = mv64361_get_pci_bus(pm->mv, 0);
--    pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
--
--    /* pci@80000000 */
--    qemu_fdt_add_subnode(fdt, "/pci@80000000");
--    cells[0] = 0;
--    cells[1] = 0;
--    qemu_fdt_setprop(fdt, "/pci@80000000", "bus-range",
--                     cells, 2 * sizeof(cells[0]));
--    qemu_fdt_setprop_cell(fdt, "/pci@80000000", "pci-bridge-number", 0);
--    cells[0] = cpu_to_be32(PCI1_MEM_BASE);
--    cells[1] = cpu_to_be32(PCI1_MEM_SIZE);
--    qemu_fdt_setprop(fdt, "/pci@80000000", "reg", cells, 2 * sizeof(cells[0]));
--    qemu_fdt_setprop_cell(fdt, "/pci@80000000", "8259-interrupt-acknowledge",
--                          0xf1000cb4);
--    cells[0] = cpu_to_be32(0x01000000);
--    cells[1] = 0;
--    cells[2] = 0;
--    cells[3] = cpu_to_be32(PCI1_IO_BASE);
--    cells[4] = 0;
--    cells[5] = cpu_to_be32(PCI1_IO_SIZE);
--    cells[6] = cpu_to_be32(0x02000000);
--    cells[7] = 0;
--    cells[8] = cpu_to_be32(PCI1_MEM_BASE);
--    cells[9] = cpu_to_be32(PCI1_MEM_BASE);
--    cells[10] = 0;
--    cells[11] = cpu_to_be32(PCI1_MEM_SIZE);
--    qemu_fdt_setprop(fdt, "/pci@80000000", "ranges",
--                     cells, 12 * sizeof(cells[0]));
--    qemu_fdt_setprop_cell(fdt, "/pci@80000000", "#size-cells", 2);
--    qemu_fdt_setprop_cell(fdt, "/pci@80000000", "#address-cells", 3);
--    qemu_fdt_setprop_string(fdt, "/pci@80000000", "device_type", "pci");
--
--    fi.path = "/pci@80000000";
--    pci_bus = mv64361_get_pci_bus(pm->mv, 1);
--    pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
--
--    qemu_fdt_add_subnode(fdt, "/failsafe");
--    qemu_fdt_setprop_string(fdt, "/failsafe", "device_type", "serial");
--
--    qemu_fdt_add_subnode(fdt, "/rtas");
--    qemu_fdt_setprop_cell(fdt, "/rtas", "system-reboot", RTAS_SYSTEM_REBOOT);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "hibernate", RTAS_HIBERNATE);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "suspend", RTAS_SUSPEND);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "power-off", RTAS_POWER_OFF);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "set-indicator", RTAS_SET_INDICATOR);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "display-character",
--                          RTAS_DISPLAY_CHARACTER);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "write-pci-config",
--                          RTAS_WRITE_PCI_CONFIG);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "read-pci-config",
--                          RTAS_READ_PCI_CONFIG);
--    /* Pegasos2 firmware misspells check-exception and guests use that */
--    qemu_fdt_setprop_cell(fdt, "/rtas", "check-execption",
--                          RTAS_CHECK_EXCEPTION);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "event-scan", RTAS_EVENT_SCAN);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "set-time-of-day",
--                          RTAS_SET_TIME_OF_DAY);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "get-time-of-day",
--                          RTAS_GET_TIME_OF_DAY);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "nvram-store", RTAS_NVRAM_STORE);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "nvram-fetch", RTAS_NVRAM_FETCH);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "restart-rtas", RTAS_RESTART_RTAS);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-error-log-max", 0);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-event-scan-rate", 0);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-display-device", 0);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-size", 20);
--    qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-version", 1);
--
--    /* cpus */
--    qemu_fdt_add_subnode(fdt, "/cpus");
--    qemu_fdt_setprop_cell(fdt, "/cpus", "#cpus", 1);
--    qemu_fdt_setprop_cell(fdt, "/cpus", "#address-cells", 1);
--    qemu_fdt_setprop_cell(fdt, "/cpus", "#size-cells", 0);
-+    uint32_t cells[2];
- 
-     /* FIXME Get CPU name from CPU object */
-     const char *cp = "/cpus/PowerPC,G4";
-@@ -1034,15 +810,43 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
-     cells[1] = 0;
-     qemu_fdt_setprop(fdt, cp, "reg", cells, 2 * sizeof(cells[0]));
-     qemu_fdt_setprop_string(fdt, cp, "device_type", "cpu");
-+}
-+
-+static void *load_dtb(const char *filename, int *fdt_size)
-+{
-+    void *fdt;
-+    g_autofree char *name = qemu_find_file(QEMU_FILE_TYPE_DTB, filename);
-+
-+    if (!name) {
-+        error_report("Could not find dtb file '%s'", filename);
-+        return NULL;
-+    }
-+    fdt = load_device_tree(name, fdt_size);
-+    if (!fdt) {
-+        error_report("Could not load dtb file '%s'", name);
-+    }
-+    return fdt;
-+}
- 
--    /* memory */
--    qemu_fdt_add_subnode(fdt, "/memory@0");
-+static void *build_fdt(MachineState *machine, int *fdt_size)
-+{
-+    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
-+    FDTInfo fi;
-+    PCIBus *pci_bus;
-+    uint32_t cells[2];
-+    void *fdt = load_dtb("pegasos2.dtb", fdt_size);
-+
-+    if (!fdt) {
-+        return NULL;
-+    }
-+    qemu_fdt_setprop_string(fdt, "/", "name", "bplan,Pegasos2");
-+
-+    /* Set memory size */
-     cells[0] = 0;
-     cells[1] = cpu_to_be32(machine->ram_size);
-     qemu_fdt_setprop(fdt, "/memory@0", "reg", cells, 2 * sizeof(cells[0]));
--    qemu_fdt_setprop_string(fdt, "/memory@0", "device_type", "memory");
- 
--    qemu_fdt_add_subnode(fdt, "/chosen");
-+    /* Boot parameters */
-     if (pm->initrd_addr && pm->initrd_size) {
-         qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
-                               pm->initrd_addr + pm->initrd_size);
-@@ -1052,8 +856,15 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
-     qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
-                             machine->kernel_cmdline ?: "");
- 
--    qemu_fdt_add_subnode(fdt, "/openprom");
--    qemu_fdt_setprop_string(fdt, "/openprom", "model", "Pegasos2,1.1");
-+    add_cpu_info(fdt, pm->cpu);
-+
-+    fi.fdt = fdt;
-+    fi.path = "/pci@c0000000";
-+    pci_bus = mv64361_get_pci_bus(pm->mv, 0);
-+    pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
-+    fi.path = "/pci@80000000";
-+    pci_bus = mv64361_get_pci_bus(pm->mv, 1);
-+    pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
- 
-     return fdt;
- }
-diff --git a/pc-bios/dtb/meson.build b/pc-bios/dtb/meson.build
-index 993032949f..f14648f3a4 100644
---- a/pc-bios/dtb/meson.build
-+++ b/pc-bios/dtb/meson.build
-@@ -1,6 +1,7 @@
- dtbs = [
-   'bamboo.dtb',
-   'canyonlands.dtb',
-+  'pegasos2.dtb',
-   'petalogix-ml605.dtb',
-   'petalogix-s3adsp1800.dtb',
- ]
-diff --git a/pc-bios/dtb/pegasos2.dtb b/pc-bios/dtb/pegasos2.dtb
-new file mode 100644
-index 0000000000000000000000000000000000000000..29c35216ec2d77e4083a3ef618ca185925fb5d61
-GIT binary patch
-literal 1701
-zcmb_cyKWRQ6!nns2oQw;9TbZ~fl!Q+2&AN25u&7m6$nwJh`gS=yH;k#6WhC+r9h#h
-zgAYK01`0YPJ|IXGlptz8fP#XKNGRf7&v-N0P;#X^bI!5v!;hISllwmzJMo4ww#eA{
-zXMA5npGH52juw4K{Y8NfJ)@G1;d{Kqq!B-kJ|#OQFLlx;&@VNhEv&W+6`jVeEZp`A
-z;WOyhn|UI#+G^Td8|oCl^pE(<sIQiKZF%i}qt?)UFpcHfgMoFBQi4e5kmW{uf}HA1
-zq7VC-oxd@Uoa`8SBs<zdcED3ewHegsyi&xUL_AgKUZtF;(APaH9!0LaYfFvh&|Ynf
-zaH3)FXneEeKHfMn8oxC%{|WMo=pp|z#AJcLEa;HGAK{-y_*dlBe((<XeF^z~ASWF7
-z9%Aad<Pn|Ki3+FQXurbvRm8Mcf!{<-F@dijK3(CD5YxQ~<A8X&!ZqUa72ZdDp~9ac
-zrXKu$wuDNoXi*L_%IVM2f>9#znxB_TRbQMd%&WutYzoInD*N%HgafDZr5q)Xo=1OP
-zKP)-kq39KDZm|6TP^2KToze-{>2Z+j?JsurL&^Pp+d)!CM+@~n7SwZ`6MZW=y{JS)
-zYm@(JZDV`&cbJoEA6eUP6uni}wu=HeS<OE~pKN{iu!eUkqP1Xjm~&(;w4R9>5yu9s
-z<r0#_vKV?w!iF2<z)~GU!VD@_>5MJkyR)*oa(A`|S**>FHnlMEki}r7QMsc418p{A
-z)nh1g&q(^7>7(R5Fg~XzG^LPZW%2hl;6)dO23XH=D@DeQaOFfWMjM{!Hc!Pi7P3wl
-z$Nl%7^^8b)3!Ln*0$ZmIur@gER0>?Tcq|6Yj_`vzOm;wSa@YnL79wJf2hXL>TB^<Z
-zMmeYop>Np{Mo0(7XIELQq`=}Vr~fJzZZX@n_(P3ZM>WA@v>xmKwcJ2cYsX}wv2@G8
-zRu?ikU`AwZuxxSR))H44W;Wg2aUnM|-A^EH1Eap0Mj_-`H^r>1*|oS;7{~qsTcHaV
-
-literal 0
-HcmV?d00001
-
-diff --git a/pc-bios/dtb/pegasos2.dts b/pc-bios/dtb/pegasos2.dts
-new file mode 100644
-index 0000000000..0ddb9e3bec
---- /dev/null
-+++ b/pc-bios/dtb/pegasos2.dts
-@@ -0,0 +1,167 @@
-+/*
-+ * QEMU Pegasos2 Device Tree Source
-+ *
-+ * Copyright 2025 BALATON Zoltan
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This is partial source, more info will be filled in by board code.
-+ */
-+
-+/dts-v1/;
-+
-+/ {
-+	#address-cells = <1>;
-+	device_type = "chrp";
-+	model = "Pegasos2";
-+	revision = "2B";
-+	CODEGEN,vendor = "bplan GmbH";
-+	CODEGEN,board = "Pegasos2";
-+	CODEGEN,description = "Pegasos CHRP PowerPC System";
-+
-+	openprom {
-+		model = "Pegasos2,1.1";
-+	};
-+
-+	chosen {
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0 0>;
-+	};
-+
-+	cpus {
-+		#size-cells	= <0>;
-+		#address-cells	= <1>;
-+		#cpus		= <1>;
-+	};
-+
-+	rtas {
-+		rtas-version		= <1>;
-+		rtas-size		= <20>;
-+		rtas-display-device	= <0>;
-+		rtas-event-scan-rate	= <0>;
-+		rtas-error-log-max	= <0>;
-+		restart-rtas		= <0>;
-+		nvram-fetch		= <1>;
-+		nvram-store		= <2>;
-+		get-time-of-day		= <3>;
-+		set-time-of-day		= <4>;
-+		event-scan		= <6>;
-+		/* Pegasos2 firmware misspells check-exception */
-+		check-execption		= <7>;
-+		read-pci-config		= <8>;
-+		write-pci-config	= <9>;
-+		display-character	= <10>;
-+		set-indicator		= <11>;
-+		power-off		= <17>;
-+		suspend			= <18>;
-+		hibernate		= <19>;
-+		system-reboot		= <20>;
-+	};
-+
-+	failsafe {
-+		device_type = "serial";
-+	};
-+
-+	pci@80000000 {
-+		device_type		= "pci";
-+		#address-cells		= <3>;
-+		#size-cells		= <2>;
-+		clock-frequency		= <33333333>;
-+		ranges = <0x01000000 0 0x00000000 0xfe000000 0 0x00010000
-+			  0x02000000 0 0x80000000 0x80000000 0 0x40000000>;
-+		8259-interrupt-acknowledge = <0xf1000cb4>;
-+		reg = <0x80000000 0x40000000>;
-+		pci-bridge-number	= <0>;
-+		bus-range		= <0 0>;
-+
-+		isa@c {
-+			vendor-id	= <0x1106>;
-+			device-id	= <0x8231>;
-+			revision-id	= <0x10>;
-+			class-code	= <0x60100>;
-+			/* Pegasos firmware has subsystem-id and
-+			   subsystem-vendor-id swapped */
-+			subsystem-id	= <0x1af4>;
-+			subsystem-vendor-id = <0x1100>;
-+			reg = <0x6000 0 0 0 0>;
-+			device_type	= "isa";
-+			#address-cells	= <2>;
-+			#size-cells	= <1>;
-+			eisa-slots	= <0>;
-+			clock-frequency	= <8333333>;
-+			slot-names	= <0>;
-+
-+			serial@i2f8 {
-+				device_type	= "serial";
-+				reg		= <1 0x2f8 8>;
-+				interrupts	= <3 0>;
-+				clock-frequency	= <1843200>;
-+				compatible	= "pnpPNP,501";
-+			};
-+
-+			8042@i60 {
-+				device_type	= "";
-+				reg		= <1 0x60 5>;
-+				clock-frequency	= <0>;
-+				compatible	= "chrp,8042";
-+				interrupt-controller = "";
-+				#address-cells	= <1>;
-+				#size-cells	= <0>;
-+				#interrupt-cells = <2>;
-+
-+			};
-+
-+			keyboard@i60 {
-+				device_type	= "keyboard";
-+				reg		= <1 0x60 5>;
-+				interrupts	= <1 0>;
-+				compatible	= "pnpPNP,303";
-+			};
-+
-+			rtc@i70 {
-+				device_type	= "rtc";
-+				reg		= <1 0x70 2>;
-+				interrupts	= <8 0>;
-+				clock-frequency	= <0>;
-+				compatible	= "ds1385-rtc";
-+			};
-+
-+			timer@i40 {
-+				device_type	= "timer";
-+				reg		= <1 0x40 8>;
-+				clock-frequency	= <0>;
-+				compatible	= "pnpPNP,100";
-+			};
-+
-+			fdc@i3f0 {
-+				device_type	= "fdc";
-+				reg		= <1 0x3f0 8>;
-+				interrupts	= <6 0>;
-+				clock-frequency	= <0>;
-+				compatible	= "pnpPNP,700";
-+			};
-+
-+			lpt@i3bc {
-+				device_type	= "lpt";
-+				reg		= <1 0x3bc 8>;
-+				interrupts	= <7 0>;
-+				clock-frequency	= <0>;
-+				compatible	= "pnpPNP,400";
-+			};
-+		};
-+	};
-+
-+	pci@c0000000 {
-+		device_type		= "pci";
-+		#address-cells		= <3>;
-+		#size-cells		= <2>;
-+		clock-frequency		= <66666666>;
-+		ranges = <0x01000000 0 0x00000000 0xf8000000 0 0x00010000
-+			  0x02000000 0 0xc0000000 0xc0000000 0 0x20000000>;
-+		reg = <0xc0000000 0x20000000>;
-+		pci-bridge-number	= <1>;
-+		bus-range		= <0 0>;
-+	};
-+};
+     pm->cpu->vhyp = PPC_VIRTUAL_HYPERVISOR(machine);
+@@ -559,7 +556,7 @@ static void pegasos2_hypercall(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
+     } else if (env->gpr[3] == KVMPPC_H_RTAS) {
+         env->gpr[3] = pegasos2_rtas(cpu, pm, env->gpr[4]);
+     } else if (env->gpr[3] == KVMPPC_H_VOF_CLIENT) {
+-        int ret = vof_client_call(MACHINE(pm), pm->vof, pm->fdt_blob,
++        int ret = vof_client_call(MACHINE(pm), pm->vof, MACHINE(pm)->fdt,
+                                   env->gpr[4]);
+         env->gpr[3] = (ret ? H_PARAMETER : H_SUCCESS);
+     } else {
 -- 
 2.43.5
 
