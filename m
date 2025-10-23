@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E33C0111D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B4BC01269
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuHI-0001VM-QM; Thu, 23 Oct 2025 08:18:50 -0400
+	id 1vBuLI-00068k-A8; Thu, 23 Oct 2025 08:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuG4-0001Fj-Im
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:36 -0400
+ id 1vBuG4-0001Fm-V9
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:40 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuFy-0006Q4-Dk
+ id 1vBuFy-0006Q2-DJ
  for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:32 -0400
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N990ms002342;
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N3p0Of032408;
  Thu, 23 Oct 2025 12:17:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=F2zvCZZKnwkSIy2nK
- 4nOujNUpszAHJy7OIMaxanqzYs=; b=EY+dupYs5NnQ/n2HBloVIHksUoiBUU+aO
- VdEXONs+5sLQweDwUvJJNAFLXXLmzB9SpZo8iHOjX5pnGHJhNVCWyXmwDogerKFg
- 7eE16uKJGlkl5ETO5LMK7kYXSe+/6LS6eM9sRiRTSVy95e2iZlUJwAtI6CEe+cBQ
- uhOUlMB2CIzGNFz1/NSTP0lKJZieRnBBopEJyxOBuy/0nWlepaVJsoxApo4ACLNM
- ZwWm68OWkhv/cQdElffahjOJHDXC4T4K4wzLzd9YbNgJnLpIk+vtOiU5lwdI2KKk
- Hr6L3yV52+Nc4Rgsu/fUybtrn2t9FEkfUR1KKnrve3N8Sm5itNWpA==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31cgnyc-1
+ :mime-version:references:subject:to; s=pp1; bh=5qJcKAaxEhbQQl8EH
+ ZhB8vzb0tre6FGBmz2jv71gkIY=; b=ivxrfMdDmCRqVZDWJiI+aHehzDsDeWJf/
+ fsMH2o9eTxNJKawWMGJTEMmSIVvkymL/ZHHql5Pk+3EnbIGXoyzymsV0ztjpRQ1+
+ aNpKVfCoZJaZ5jdCz96l8ehVYM0AkA+YhSTYrVnsLNdCrRo+rriggn6VwJfHBKtt
+ RATuNCSLn4bFe4p5lg3+Z1nSvSmTcrJzSL3PKbtWH+IXWA8jGR2ozUCxrnhnh8f4
+ sX+QAwAZHYKYpd13HGc9PNew+CbNA/hhqm9rFlm12QDqbMYc8WQrwGl4oNqtADBB
+ H5Cc28Sk9lojErzvx+3dhpkX8airD0YLG34vS02KT/w+mOzS4BxOw==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31cgnye-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 23 Oct 2025 12:17:23 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBAWLd002367;
- Thu, 23 Oct 2025 12:17:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejne3w-1
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59N9C5MO014685;
+ Thu, 23 Oct 2025 12:17:21 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7sdttk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 12:17:20 +0000
+ Thu, 23 Oct 2025 12:17:21 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NCHIXB18678118
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NCHJgI35455250
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 12:17:18 GMT
+ Thu, 23 Oct 2025 12:17:19 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 679522004B;
+ by IMSVA (Postfix) with ESMTP id 742FD2004B;
+ Thu, 23 Oct 2025 12:17:19 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9DCC20043;
  Thu, 23 Oct 2025 12:17:18 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8132C20043;
- Thu, 23 Oct 2025 12:17:17 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.124.221.73]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 12:17:17 +0000 (GMT)
+ Thu, 23 Oct 2025 12:17:18 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PULL 13/32] ppc/vof: Make nextprop behave more like Open Firmware
-Date: Thu, 23 Oct 2025 17:46:32 +0530
-Message-ID: <20251023121653.3686015-14-harshpb@linux.ibm.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 14/32] hw/ppc/pegasos2: Remove explicit name properties from
+ device tree
+Date: Thu, 23 Oct 2025 17:46:33 +0530
+Message-ID: <20251023121653.3686015-15-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251023121653.3686015-1-harshpb@linux.ibm.com>
 References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: n0I9hqIKtovKQoEvHTC01No0w8RcA-AB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX5xCxIdv9LhjI
- 8bKeJvSTYGSjalBFEDDKJ+Jzn8h+ye4fEYoR8wHv8z3wT9wEjlWoVmxxe2uLvngMD6GADc9cwTG
- 9zctROAqV4PtQrA/wavZC/TNbJzur6fg4vNH88o7/3ZjR3DqkZDw86bwBeW3QrJNYXMlhr44frj
- 0SmN6a2soKl4kulMWp2QUnYkDPB6u17UggWX3hGvn/WrGN4XOywrA1L968wz8AZV3YXTgdoUwIM
- WnH9huZc8M9DQgcrMS0f4jyrdIxVaXWmElmv4JtD30HXm8IwOCMWltyiZJeENQuB6jvFVnJtSj9
- md/XPvzjkTpH5oOnCNrOJraL4ymsCtA63ELXx1X1gquwgeJSro1DqtpPbRjdheunVoOrhkpPQzT
- fq+QkBnhHzkFlYSW7riZj5xfgAzgSw==
-X-Proofpoint-GUID: n0I9hqIKtovKQoEvHTC01No0w8RcA-AB
+X-Proofpoint-ORIG-GUID: HA7pwPzkjwsHocRhAKq3Lm8-B9bXpzUL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX7BJK7j4AfN7w
+ lZaOdp8OlzZlA7RjYTtPQCRNaJqYI8mk8wEiz6hrMBRvueQjBofPf9QeUpytnjeroXkvqvcRT7S
+ pW5xG36vWPiO6Dvs7gnHsoBTf8dG1GdcJXWJHHRWYMeVQqPRo5bfnxuGx1xXsCcvIr3whKH6207
+ 3iVicILI4yZs5ViGcfqiHY1Q67GL7w87nf8pQYXtVTS5ts7OhDkCDkUXwhzJvTNs8QOwMPROo3R
+ x+hsdYerMS3Qd0TD9MoNB/x0y1Z/ekBUpQgGYyUUeUQKUumHJOeIabCXqIVtVkhQTkSpNRmsqAT
+ V5FufKsp2+EmwTSc4kjV+hehZfQpn+ToAHNymmBg3kflODxUYgkULM+Iv/Y6m2k+Az6/4ZeNNf0
+ nTV/rN1T7jmzxEj2U+ZBW1zEVpbxWg==
+X-Proofpoint-GUID: HA7pwPzkjwsHocRhAKq3Lm8-B9bXpzUL
 X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68fa1cd3 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EGYj-OwPAAAA:8 a=VnNF1IyMAAAA:8 a=7LDE652QjO-iVNhJKY0A:9
- a=xQyHFheebwQZ3wMG2Lhb:22 a=poXaRoVlC6wW9_mwW8W4:22 a=oH34dK2VZjykjzsv8OSz:22
- a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=UDnyf2zBuKT2w-IlGP_r:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=VppXks6di9rBbx2e8wcA:9
+ a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
@@ -119,98 +119,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The FDT does not normally store name properties but reconstructs it
-from path but Open Firmware specification says each node should at
-least have this property. This is correctly handled in getprop but
-nextprop should also return it even if not present as a property.
-
-Explicit name properties are still allowed because they are needed
-e.g. on the root node that guests expect to have specific names as
-seen on real machines instead of being empty so sometimes the node
-name may need to be overriden. For example on pegasos MorphOS checks
-the name of "/" and expects to find bplan,Pegasos2 which is how it
-identifies the machine.
+These are not needed any more now that VOF can handle it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Link: https://lore.kernel.org/qemu-devel/366f14ce852415cc079727c54ac21a2aa6ff3917.1761176219.git.balaton@eik.bme.hu
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Link: https://lore.kernel.org/qemu-devel/fa36ab5a04e10c6acb89583f646aad83df2b0b13.1761176219.git.balaton@eik.bme.hu
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- hw/ppc/vof.c | 50 +++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 17 deletions(-)
+ hw/ppc/pegasos2.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index f14efa3a7c..5ecfc68910 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -353,34 +353,50 @@ static uint32_t vof_nextprop(const void *fdt, uint32_t phandle,
- {
-     int offset, nodeoff = fdt_node_offset_by_phandle(fdt, phandle);
-     char prev[OF_PROPNAME_LEN_MAX + 1];
--    const char *tmp;
-+    const char *tmp = NULL;
-+    bool match = false;
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index e15cf96427..73995624e5 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -662,7 +662,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     qemu_fdt_setprop_cell(fi->fdt, fi->path, "#size-cells", 1);
+     qemu_fdt_setprop_cell(fi->fdt, fi->path, "#address-cells", 2);
+     qemu_fdt_setprop_string(fi->fdt, fi->path, "device_type", "isa");
+-    qemu_fdt_setprop_string(fi->fdt, fi->path, "name", "isa");
  
-     if (readstr(prevaddr, prev, sizeof(prev))) {
-         return PROM_ERROR;
-     }
--
--    fdt_for_each_property_offset(offset, fdt, nodeoff) {
--        if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
--            return 0;
-+    /*
-+     * "name" may or may not be present in fdt but we should still return it.
-+     * Do that first and then skip it if seen later.
-+     */
-+    if (prev[0] == '\0') {
-+        tmp = "name";
-+    } else {
-+        if (strcmp(prev, "name") == 0) {
-+            prev[0] = '\0';
-         }
--        if (prev[0] == '\0' || strcmp(prev, tmp) == 0) {
--            if (prev[0] != '\0') {
--                offset = fdt_next_property_offset(fdt, offset);
--                if (offset < 0) {
--                    return 0;
--                }
--            }
-+        fdt_for_each_property_offset(offset, fdt, nodeoff) {
-             if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
-                 return 0;
-             }
--
--            if (VOF_MEM_WRITE(nameaddr, tmp, strlen(tmp) + 1) != MEMTX_OK) {
--                return PROM_ERROR;
-+            if (strcmp(tmp, "name") == 0) {
-+                continue;
-+            }
-+            if (match) {
-+                break;
-             }
--            return 1;
-+            if (strcmp(prev, tmp) == 0) {
-+                match = true;
-+                continue;
-+            }
-+            if (prev[0] == '\0') {
-+                break;
-+            }
-+        }
-+        if (offset < 0) {
-+            return 0;
-         }
-     }
--
-+    if (tmp) {
-+        if (VOF_MEM_WRITE(nameaddr, tmp, strlen(tmp) + 1) != MEMTX_OK) {
-+            return PROM_ERROR;
-+        }
-+        return 1;
-+    }
-     return 0;
+     /* additional devices */
+     g_string_printf(name, "%s/lpt@i3bc", fi->path);
+@@ -677,7 +676,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(8);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "lpt");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "lpt");
+ 
+     g_string_printf(name, "%s/fdc@i3f0", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -691,7 +689,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(8);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "fdc");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "fdc");
+ 
+     g_string_printf(name, "%s/timer@i40", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -701,7 +698,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(8);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "timer");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "timer");
+ 
+     g_string_printf(name, "%s/rtc@i70", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -716,7 +712,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(2);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "rtc");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "rtc");
+ 
+     g_string_printf(name, "%s/keyboard@i60", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -729,7 +724,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(5);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "keyboard");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "keyboard");
+ 
+     g_string_printf(name, "%s/8042@i60", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -743,7 +737,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(5);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "8042");
+ 
+     g_string_printf(name, "%s/serial@i2f8", fi->path);
+     qemu_fdt_add_subnode(fi->fdt, name->str);
+@@ -757,7 +750,6 @@ static void dt_isa(PCIBus *bus, PCIDevice *d, FDTInfo *fi)
+     cells[2] = cpu_to_be32(8);
+     qemu_fdt_setprop(fi->fdt, name->str, "reg", cells, 3 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fi->fdt, name->str, "device_type", "serial");
+-    qemu_fdt_setprop_string(fi->fdt, name->str, "name", "serial");
+ 
+     g_string_free(name, TRUE);
  }
+@@ -846,7 +838,6 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d, void *opaque)
+         j += 5;
+     }
+     qemu_fdt_setprop(fi->fdt, node->str, "reg", cells, j * sizeof(cells[0]));
+-    qemu_fdt_setprop_string(fi->fdt, node->str, "name", name ?: pn);
+     if (pci_get_byte(&d->config[PCI_INTERRUPT_PIN])) {
+         qemu_fdt_setprop_cell(fi->fdt, node->str, "interrupts",
+                               pci_get_byte(&d->config[PCI_INTERRUPT_PIN]));
+@@ -916,7 +907,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     qemu_fdt_setprop_cell(fdt, "/pci@c0000000", "#size-cells", 2);
+     qemu_fdt_setprop_cell(fdt, "/pci@c0000000", "#address-cells", 3);
+     qemu_fdt_setprop_string(fdt, "/pci@c0000000", "device_type", "pci");
+-    qemu_fdt_setprop_string(fdt, "/pci@c0000000", "name", "pci");
  
+     fi.path = "/pci@c0000000";
+     pci_bus = mv64361_get_pci_bus(pm->mv, 0);
+@@ -951,7 +941,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     qemu_fdt_setprop_cell(fdt, "/pci@80000000", "#size-cells", 2);
+     qemu_fdt_setprop_cell(fdt, "/pci@80000000", "#address-cells", 3);
+     qemu_fdt_setprop_string(fdt, "/pci@80000000", "device_type", "pci");
+-    qemu_fdt_setprop_string(fdt, "/pci@80000000", "name", "pci");
+ 
+     fi.path = "/pci@80000000";
+     pci_bus = mv64361_get_pci_bus(pm->mv, 1);
+@@ -959,7 +948,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+ 
+     qemu_fdt_add_subnode(fdt, "/failsafe");
+     qemu_fdt_setprop_string(fdt, "/failsafe", "device_type", "serial");
+-    qemu_fdt_setprop_string(fdt, "/failsafe", "name", "failsafe");
+ 
+     qemu_fdt_add_subnode(fdt, "/rtas");
+     qemu_fdt_setprop_cell(fdt, "/rtas", "system-reboot", RTAS_SYSTEM_REBOOT);
+@@ -989,14 +977,12 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-display-device", 0);
+     qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-size", 20);
+     qemu_fdt_setprop_cell(fdt, "/rtas", "rtas-version", 1);
+-    qemu_fdt_setprop_string(fdt, "/rtas", "name", "rtas");
+ 
+     /* cpus */
+     qemu_fdt_add_subnode(fdt, "/cpus");
+     qemu_fdt_setprop_cell(fdt, "/cpus", "#cpus", 1);
+     qemu_fdt_setprop_cell(fdt, "/cpus", "#address-cells", 1);
+     qemu_fdt_setprop_cell(fdt, "/cpus", "#size-cells", 0);
+-    qemu_fdt_setprop_string(fdt, "/cpus", "name", "cpus");
+ 
+     /* FIXME Get CPU name from CPU object */
+     const char *cp = "/cpus/PowerPC,G4";
+@@ -1048,7 +1034,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     cells[1] = 0;
+     qemu_fdt_setprop(fdt, cp, "reg", cells, 2 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fdt, cp, "device_type", "cpu");
+-    qemu_fdt_setprop_string(fdt, cp, "name", strrchr(cp, '/') + 1);
+ 
+     /* memory */
+     qemu_fdt_add_subnode(fdt, "/memory@0");
+@@ -1056,7 +1041,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     cells[1] = cpu_to_be32(machine->ram_size);
+     qemu_fdt_setprop(fdt, "/memory@0", "reg", cells, 2 * sizeof(cells[0]));
+     qemu_fdt_setprop_string(fdt, "/memory@0", "device_type", "memory");
+-    qemu_fdt_setprop_string(fdt, "/memory@0", "name", "memory");
+ 
+     qemu_fdt_add_subnode(fdt, "/chosen");
+     if (pm->initrd_addr && pm->initrd_size) {
+@@ -1067,7 +1051,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+     }
+     qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
+                             machine->kernel_cmdline ?: "");
+-    qemu_fdt_setprop_string(fdt, "/chosen", "name", "chosen");
+ 
+     qemu_fdt_add_subnode(fdt, "/openprom");
+     qemu_fdt_setprop_string(fdt, "/openprom", "model", "Pegasos2,1.1");
 -- 
 2.43.5
 
