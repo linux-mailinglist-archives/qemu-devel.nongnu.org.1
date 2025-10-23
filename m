@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD93BC0191E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 15:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A61C0191B
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 15:54:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBvl1-00011j-TR; Thu, 23 Oct 2025 09:53:36 -0400
+	id 1vBvl1-00010i-4i; Thu, 23 Oct 2025 09:53:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vBvkp-0000v7-Mf; Thu, 23 Oct 2025 09:53:24 -0400
+ id 1vBvkt-0000x1-TV; Thu, 23 Oct 2025 09:53:28 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vBvkl-0004qI-UA; Thu, 23 Oct 2025 09:53:23 -0400
+ id 1vBvkr-0004r5-7J; Thu, 23 Oct 2025 09:53:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B697E1614ED;
+ by isrv.corpit.ru (Postfix) with ESMTP id D122B1614EE;
  Thu, 23 Oct 2025 16:53:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C7AC32F4612;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D63D22F4613;
  Thu, 23 Oct 2025 16:53:16 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v2 1/2] virtio-net: make VirtIONet.vlans an array instead of a
- pointer
-Date: Thu, 23 Oct 2025 16:53:09 +0300
-Message-ID: <20251023135316.31128-2-mjt@tls.msk.ru>
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v2 2/2] migration/vmstate: remove
+ VMSTATE_BUFFER_POINTER_UNSAFE macro
+Date: Thu, 23 Oct 2025 16:53:10 +0300
+Message-ID: <20251023135316.31128-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251023135316.31128-1-mjt@tls.msk.ru>
 References: <20251023135316.31128-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,75 +58,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This field is a fixed-size buffer (number of elements is MAX_VLAN,
-known at build time).  There's no need to allocate it dynamically,
-it can be made an integral part of VirtIONet structure.
+The only user of this macro was VirtIONet.vlans, which has been
+converted to regular VMSTATE_BUFFER.
 
-This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
-
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/net/virtio-net.c            | 9 ++++-----
- include/hw/virtio/virtio-net.h | 2 +-
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ include/migration/vmstate.h | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 33116712eb..17ed0ef919 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -986,7 +986,7 @@ static void virtio_net_set_features(VirtIODevice *vdev,
-         virtio_has_feature_ex(vdev->guest_features_ex,
-                               VIRTIO_NET_F_CTRL_VLAN)) {
-         bool vlan = virtio_has_feature_ex(features, VIRTIO_NET_F_CTRL_VLAN);
--        memset(n->vlans, vlan ? 0 : 0xff, MAX_VLAN >> 3);
-+        memset(n->vlans, vlan ? 0 : 0xff, sizeof(n->vlans));
-     }
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 63ccaee07a..09f1eefcfb 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -727,15 +727,6 @@ extern const VMStateInfo vmstate_info_qlist;
+     .offset     = offsetof(_state, _field),                          \
+ }
  
-     if (virtio_has_feature_ex(features, VIRTIO_NET_F_STANDBY)) {
-@@ -3600,7 +3600,8 @@ static const VMStateDescription vmstate_virtio_net_device = {
-          * buffer; hold onto your endiannesses; it's actually used as a bitmap
-          * but based on the uint.
-          */
--        VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN >> 3),
-+        VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
-+                              sizeof(typeof_field(VirtIONet, vlans))),
-         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
-                          vmstate_virtio_net_has_vnet),
-         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
-@@ -4018,8 +4019,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
- 
-     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
- 
--    n->vlans = g_malloc0(MAX_VLAN >> 3);
--    memset(n->vlans, 0xff, MAX_VLAN >> 3);
-+    memset(n->vlans, 0xff, sizeof(n->vlans));
- 
-     nc = qemu_get_queue(n->nic);
-     nc->rxfilter_notify_enabled = 1;
-@@ -4068,7 +4068,6 @@ static void virtio_net_device_unrealize(DeviceState *dev)
-     n->netclient_type = NULL;
- 
-     g_free(n->mac_table.macs);
--    g_free(n->vlans);
- 
-     if (n->failover) {
-         qobject_unref(n->primary_opts);
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index 5b8ab7bda7..f708355306 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -202,7 +202,7 @@ struct VirtIONet {
-         uint8_t uni_overflow;
-         uint8_t *macs;
-     } mac_table;
--    uint32_t *vlans;
-+    uint32_t vlans[MAX_VLAN];
-     virtio_net_conf net_conf;
-     NICConf nic_conf;
-     DeviceState *qdev;
+-#define VMSTATE_BUFFER_POINTER_UNSAFE(_field, _state, _version, _size) { \
+-    .name       = (stringify(_field)),                               \
+-    .version_id = (_version),                                        \
+-    .size       = (_size),                                           \
+-    .info       = &vmstate_info_buffer,                              \
+-    .flags      = VMS_BUFFER|VMS_POINTER,                            \
+-    .offset     = offsetof(_state, _field),                          \
+-}
+-
+ /* Allocate a temporary of type 'tmp_type', set tmp->parent to _state
+  * and execute the vmsd on the temporary.  Note that we're working with
+  * the whole of _state here, not a field within it.
 -- 
 2.47.3
 
