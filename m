@@ -2,78 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC1DC037CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 23:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13EAC0365C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 22:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC2WP-0008UL-4R; Thu, 23 Oct 2025 17:06:57 -0400
+	id 1vC1yX-0007qr-Vv; Thu, 23 Oct 2025 16:31:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vC2WN-0008TR-OS
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:06:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vC2WL-0004R9-QE
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:06:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761253613;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VM0pMWK3QHMa/92FWGbvn9I0A3ZBwOPL4y3rdQT7A5I=;
- b=i0+Kb+WtBmbivgljWiUMtCLtQ3rvGSEOCF9PHnLWUdZThtsHa7eunIv1wraKxrgc14fjEu
- QHmUPWB3cb79TqkoTix0R04HJUaEk9uLJD3iEtZxTcZYrwyrT8LYhRyKK6/CteHCVjhZoh
- /0dLNOlBnXJOKqPPaVH+pFUn+koD99s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-CW9cKb8MOfi5IdOI9shh7Q-1; Thu,
- 23 Oct 2025 17:06:51 -0400
-X-MC-Unique: CW9cKb8MOfi5IdOI9shh7Q-1
-X-Mimecast-MFC-AGG-ID: CW9cKb8MOfi5IdOI9shh7Q_1761253610
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2576318002E4; Thu, 23 Oct 2025 21:06:50 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.62])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2E18830002DB; Thu, 23 Oct 2025 21:06:48 +0000 (UTC)
-Date: Thu, 23 Oct 2025 16:18:46 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, Aarushi Mehta <mehta.aaru20@gmail.com>,
- Fam Zheng <fam@euphon.net>, Stefano Garzarella <sgarzare@redhat.com>,
- Hanna Czenczek <hreitz@redhat.com>, eblake@redhat.com,
- qemu-block@nongnu.org, hibriansong@gmail.com,
- Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 09/12] aio-posix: add aio_add_sqe() API for
- user-defined io_uring requests
-Message-ID: <20251023201846.GC62080@fedora>
-References: <20250910175703.374499-1-stefanha@redhat.com>
- <20250910175703.374499-10-stefanha@redhat.com>
- <aOkk0NL7IMq3gFVl@redhat.com> <aOkyUdEJFhFMlIfD@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vC1yL-0007qQ-9P
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 16:31:45 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vC1yJ-0002UA-KB
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 16:31:45 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-b6d2f5c0e8eso270564066b.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 13:31:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761251501; x=1761856301; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t+IKGgL+cXaIH6YcZSPFCQd5D0/2SIkY/v91pCZE2q4=;
+ b=U1pu+Qn4wnw/WlOzsyGMiD+26PVy6k3qPOt9/rliGAh/sIX1h49P7igVO53fLDtQAR
+ YsICTYRuubO8f7CNLjGuOf1acGY51c9GrpAWZCXX5w5Q6jsQ8BozLRmRrLv+anFiJ4Ll
+ YAhHzRMldUanSCKhsJpkI8Ta8T2tmGXPzyAfhTj9NeeavPxW/jcPpD/5K1+OWmcoWO/q
+ ZPO/dHlVgq07FB28ub3M+GEIzTHDi2asmimP0y8QLR5TMVeZqYRpWPm7RsTSAurPgAbi
+ vFayw8eHAXpLPNL0CCupU+ICHOAJOzmfOzb1xMuYXDHMvWvLVx18NW6bDaEPAKK36Mm+
+ k9wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761251501; x=1761856301;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=t+IKGgL+cXaIH6YcZSPFCQd5D0/2SIkY/v91pCZE2q4=;
+ b=QKCof1lCj3WDgjmfGllEN2uNznu9ZzC4a9N5BSRcjohjMz+WYcKVXVLuaVuDeg/fcu
+ 5wAiruUEepjuJ1MCTuDajsvqmTOrJwm6EOnK24eLx0Qp7D4QepeefuHm+IYOzeukuwF3
+ wF2B9izdlfV4anZjmd8IlL8sP0CppmtVKZCyAh4cfkFUbVdCeaAAbVlz9M9w26P50064
+ tYPLF/gx7fW5vvqDLATHIIlrc0d+VA6EWPy2Sc+BZ3CtkjBCZtFoLp/NN+CXB2V6lH39
+ T/FwZZjiXtPyMdKNUs/ijSYJsm70L014ZpS5IYW3Jj1M0MgTUbUrUtaQkMi0odrKAao7
+ Qgvw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3WZVvrAg22wxPz71Q8lueRiNglPpwXgK2PJjw8Rw1YjXbN8NVpUWw5OKT6clQIGwCBGV9o+XRuHuD@nongnu.org
+X-Gm-Message-State: AOJu0YxuA/q94aimInjBIQtfZIxcyMjVC3Gukgpk2t8D6Mi+WC6/Ctfl
+ hiwofCZx85r7RhLuIzRuWZttcue3jHICcoTtQkCa09hkm+xPu93tcXR0qXiE1TkS3Ns8khxDG8g
+ Xh30PAtw=
+X-Gm-Gg: ASbGncsXUJGr6ixXldg0axe+jfoJLJ7SGI7o7k9yHOelYQcGbTOw5lTx4uTSKPhJnMU
+ /RoVWLixY6nzKyVhJE8KnUq8g8qtp2nPNyU+PT3klKFeNl8pG6fwEJkD+TW7qlWUkBIlsWNdODD
+ /RJ+70xRtODTfo4WZT5Se/03XzSCyxKWcQjXmUZH/A+8FFbhA9E8/rPsL+B9mqYIgz+ma+A6M+x
+ YrQqIN0zXB5/hzaD/lKHNXONSUbFC7rZupXsSrgSMwcV4AypTOjsocfMCQP4hfapL03AJpj1TS0
+ nM9vJZMoMZPjaodvZ/CdKKGKmqbV9aoZ15BpKtR4k6/hl6LU4eWpODlCbD8ex6YPshd8x/wXfPz
+ fVBsjlwO8rH2pxruxE7vFeE9B5wlu2bNJ2bo9EvDaloMOS3J48lZwO+hJbgo/5zQKgKEiT57qdJ
+ f7ihAS7CNlCEA=
+X-Google-Smtp-Source: AGHT+IFFMRmS9+5P3kqM504/u2J+A1NKivD2aDYRQIMgbLJtB95+tjNjzNS6Z1HtbCJByfPX+JTrJQ==
+X-Received: by 2002:a17:907:3f98:b0:b40:6d68:349a with SMTP id
+ a640c23a62f3a-b6d51bfb148mr407889666b.39.1761251500725; 
+ Thu, 23 Oct 2025 13:31:40 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d51417143sm318878466b.42.2025.10.23.13.31.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Oct 2025 13:31:40 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5327F5F825;
+ Thu, 23 Oct 2025 21:31:39 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: AWS CI Oddities
+In-Reply-To: <d98deec4-c95a-434c-9ef4-d7a0fd41a42b@linaro.org> (Richard
+ Henderson's message of "Thu, 23 Oct 2025 14:03:07 -0500")
+References: <d98deec4-c95a-434c-9ef4-d7a0fd41a42b@linaro.org>
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Thu, 23 Oct 2025 21:31:39 +0100
+Message-ID: <87tszpl5qs.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="5+3agyFkmhcg4xVQ"
-Content-Disposition: inline
-In-Reply-To: <aOkyUdEJFhFMlIfD@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,93 +106,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Richard Henderson <richard.henderson@linaro.org> writes:
 
---5+3agyFkmhcg4xVQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> https://gitlab.com/qemu-project/qemu/-/jobs/11827686852#L1010
+>
+> ERROR: Job failed (system failure): pod
+> "gitlab-runner/runner-o82plkzob-project-11167699-concurrent-9-ther90lx"
+> is disrupted: reason "EvictionByEvictionAPI", message "Eviction API:
+> evicting"
+>
+>
+> So.. if I'm guessing correctly, the job is doing fine, 28 minutes in
+> to a 1 hour timeout, when it gets kicked off the machine?
+>
+> This has happened a few times the the last week or two.  Is there any
+> way to fix this?
 
-On Fri, Oct 10, 2025 at 06:20:33PM +0200, Kevin Wolf wrote:
-> Am 10.10.2025 um 17:23 hat Kevin Wolf geschrieben:
-> > Am 10.09.2025 um 19:57 hat Stefan Hajnoczi geschrieben:
-> > > Introduce the aio_add_sqe() API for submitting io_uring requests in t=
-he
-> > > current AioContext. This allows other components in QEMU, like the bl=
-ock
-> > > layer, to take advantage of io_uring features without creating their =
-own
-> > > io_uring context.
-> > >=20
-> > > This API supports nested event loops just like file descriptor
-> > > monitoring and BHs do. This comes at a complexity cost: a BH is requi=
-red
-> > > to dispatch CQE callbacks and they are placed on a list so that a nes=
-ted
-> > > event loop can invoke its parent's pending CQE callbacks. If you're
-> > > wondering why CqeHandler exists instead of just a callback function
-> > > pointer, this is why.
-> >=20
-> > This is a mechanism that we know from other places in the code like the
-> > Linux AIO or indeed the old io_uring block driver code, because a BH is
-> > the only thing that makes sure that the main loop will call into the
-> > code again later.
-> >=20
-> > Do we really need it here, though? This _is_ literally the main loop
-> > implementation, we don't have to make the main loop call us.
-> > .need_wait() checks io_uring_cq_ready(), so as long as there are
-> > unprocessed completions, we know that .wait() will be called in nested
-> > event loops. We just can't take more than one completion out of the
-> > queue to process them later for this to work, but have to process them
-> > one by one as we get them from the ring. But that's what we already do.
-> >=20
-> > Am I missing something?
->=20
-> I think what I missed is that we probably don't want to call arbitrary
-> callbacks from .wait(), but only in the dispatching phase. At the same
+Is this because we are using spot priced AWS resources? Is our CI
+workload a low priority as is job?
 
-Yes, exactly. The polling/wait phase of aio_poll() is sensitive since it
-measures time, holds ctx->list_lock, and has ctx->notify_me enabled. In
-that state we cannot call arbitrary code.
+>
+>
+> r~
 
-> time, we need to fill the ready_list during .wait() and can't do that
-> later, so we do have to go through all CQEs here. The only way I can see
-> to get rid of the extra list - which I would really like to see - would
-> be processing the CQEs twice (once during .wait() for the internal ones
-> and once during the dispatch phase for the add_sqe() ones). That's a bit
-> annoying.
->=20
-> Either way, even if we keep the list, scheduling and cancelling BHs from
-> the fdmon still doesn't feel quite right to me. I wonder if we shouldn't
-> introduce a .dispatch() callback in FDMonOps that could run the
-> cqe_handler_ready_list for fdmon-io_uring. That would also make the
-> interface more consistent with the set of callbacks we have for GSource,
-> and maybe eventually simplify deduplicating them.
->=20
-> Then you also don't need the ugly optimisation in the next patch that
-> fixes the slowness of scheduling BHs in .wait() by moving io_uring code
-> to the AioContext core.
-
-You're right, cqe_handler_bh is ugly. Either every dispatched callback
-in the event loop should be its own BH (and BHs are the one and only
-list of callbacks) or I can add the .dispatch() callback you suggested.
-I need to play with the code a bit to compare the approaches. I'll
-choose an approach for the next revision of this series.
-
---5+3agyFkmhcg4xVQ
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmj6jaYACgkQnKSrs4Gr
-c8g5/gf+PSzgi1bL7wnfIDcXjZHyLe7gDVP9kv/EHMClCnPAWzNt5CdP5vSZIpP1
-Ad74YhLri1q6WDQM5ehIfZzfjQhE+mDGIhpIervibwZIup5PD9xNbc3gI8c3rGDt
-pcbCRzjbGR0R2G5+sXb3GyLFZS+gWfzF40M2pwn+BYOKUInxqq0e86WbnnbI28qB
-rbnuD1CTaUclV1ONA5QFWAjLZyupPqE/CeaDyW/N1MoT2PZE/V6C2ONKnhbfkVNe
-y3XKWHwAqJXy3iiTTf5jru7PZoC24d2YGy3AIKMSKlg1Y4xBwN7wspalwqfIF7Nz
-Y+rnsnVUPOOoI6KWap2SvYYKRBCuiA==
-=7WDw
------END PGP SIGNATURE-----
-
---5+3agyFkmhcg4xVQ--
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
