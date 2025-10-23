@@ -2,52 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5373BC0062F
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88046C00659
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBs9m-0001cC-U3; Thu, 23 Oct 2025 06:02:54 -0400
+	id 1vBsDA-0008O5-6S; Thu, 23 Oct 2025 06:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs9k-0001YP-GA; Thu, 23 Oct 2025 06:02:52 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs9i-0003D7-HK; Thu, 23 Oct 2025 06:02:52 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 23 Oct
- 2025 18:01:55 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 23 Oct 2025 18:01:55 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 13/13] hw/arm/aspeed: Split AST2500 EVB machine into a
- separate source file for maintainability
-Date: Thu, 23 Oct 2025 18:01:46 +0800
-Message-ID: <20251023100150.295370-14-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
-References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vBsD8-0008NY-G1
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:06:22 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vBsD6-0003cK-5I
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:06:22 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-b5a8184144dso106973566b.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 03:06:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761213977; x=1761818777; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NVomLDbVmARYunsc9Z3lmN1gnQQOyQfCvPbQDLofxi0=;
+ b=FwjPghqo54HkVe3mrNY8ehEmLuTQZ0xWUkPIypoyjfC3Z/dupna+JPGlTRotmCMOsF
+ c7QbASsNOlZhrbuZTEdvU/Bw0lVy5dxTWR0/6ue4Wt77m1L5fsm3dC+AQXsHo8k5SkzS
+ I6aTAoDHPrR39ucReG7iPh9miR/DiKENzso32OMPRlZRqv0HlTF5m76HnCIHTtBze58m
+ nl8k20gnKuh3KQ77QD24EWg+B7jQ6H1O15m8EeJxtp2M44F8dS8Pitf73EMrSY87/EQJ
+ GFY2nUQq/yilAf0kA96wizqnGY093XNOXQiM+i9TOIV+VpSCu1MISxPCUoh/Rpm/IieP
+ Jvrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761213977; x=1761818777;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=NVomLDbVmARYunsc9Z3lmN1gnQQOyQfCvPbQDLofxi0=;
+ b=wtujAuPnFSUyceliCq44MR1xHsz79rOsz2cxwTIz1oAECPRNiQioVvX51wKDEOI+uX
+ iqGJsyJShTlPXouHmIwN0/GFNUa/ivyWA9H0ZWdGNjh7gZa9df4bB3YNlCLfdFZUxEyE
+ LB+ByP91sa/mrtwPX2N+TT3t1TticSBiHYETYcpdJNDD4UWh+khl1Kb38LmzEVqnD01s
+ T3OcIsZm1dupq5hsQ9vruBwwul+Btz7urFhCPdUIdN1YramIDt4EEyHFbUm5fhUd4jKs
+ hPQsDbuBX+gsZa0MipHYz5KIA+IJ2hFzn2zeZtSRaonjUvzPEoeIIKAXmuTRj4VgMSW8
+ fu5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUqUb+/IY5RNZMH+LWIbrzT/UQe+kpKUYd4ePZxBXTekTuwylg1Bsc5fciRjip6cL01IlWlKSEd8Egg@nongnu.org
+X-Gm-Message-State: AOJu0YzHsQOS/yEiYw+BV7qUPrs19JODjxElNtBAfJLyBXrbXe/slT9I
+ vEff9KdHELuHz2Yn//PoKb37QWVeO1YeU7TslfsplhGuyhvpNrkbMrebEOximL2o4SE=
+X-Gm-Gg: ASbGnct06b33x79aEGDyuGi1GGtHxfQMaVnQuf/qvXFmKjagW7u11+nZEWcHPdCYvAE
+ GLkdAq28d5I+pMs18pTkEjIe6aNmHshC/Gy+O+u17YMsJDPleZYm0aLdJ4yHWXnte+MVZeoSB53
+ bohTK1MC9hEO9GUoeffRIfnHQgowqYZBvOulYLg9aqXKLUNYTQ1EJhSF+ngZXd7fuh7Gmv17QZv
+ p8OQMHjPAahziyTQBLyvHQb0yJ7bBKQiJYgJ+7ECz+EN7kNLmDvAUqgtFby/6m/10YfBdR3LOlv
+ SBRf2t7OcnJm0rkkUf3+XzSlIbjF4JxBybkd82CWcTEY0dR5W23S7AedRjFTMdFQINPX2vXrqqo
+ hcEfUQn1VxaYWOc1VK+qqEXrYAnYAXnMWL09zF5NKqqevjvTM6zXx0rIvnnlEDsiysFc+EJ+b9d
+ J2
+X-Google-Smtp-Source: AGHT+IGyEkN//H10RUH7q8DN8m8vdD3nU2spnXFCL4TZDwJYOJNEVOmFokAJJhkUd14qPHtryexPQQ==
+X-Received: by 2002:a17:906:c155:b0:b42:9840:eac1 with SMTP id
+ a640c23a62f3a-b64764e33cbmr2623795066b.49.1761213977013; 
+ Thu, 23 Oct 2025 03:06:17 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d513197d5sm168883366b.34.2025.10.23.03.06.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Oct 2025 03:06:16 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 55D6F5F8DF;
+ Thu, 23 Oct 2025 11:06:15 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: tangtao1634 <tangtao1634@phytium.com.cn>
+Cc: pbonzini@redhat.com,  farosas@suse.de,  lvivier@redhat.com,  Eric Auger
+ <eric.auger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  Chen Baozi
+ <chenbaozi@phytium.com.cn>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+Subject: Re: [RFC v2 0/2] hw/misc: Introduce a new SMMUv3 test framework
+In-Reply-To: <20250930165340.42788-1-tangtao1634@phytium.com.cn> (tangtao's
+ message of "Wed, 1 Oct 2025 00:53:38 +0800")
+References: <20250930165340.42788-1-tangtao1634@phytium.com.cn>
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Thu, 23 Oct 2025 11:06:15 +0100
+Message-ID: <87v7k6lyp4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,199 +107,167 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit moves the AST2500 EVB machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2500_evb.c.
+tangtao1634 <tangtao1634@phytium.com.cn> writes:
 
-This refactor continues the modularization effort for Aspeed platform
-support, placing each board’s logic in its own dedicated source file.
-It improves maintainability, readability, and simplifies future
-development for new platforms without cluttering aspeed.c.
+> From: Tao Tang <tangtao1634@phytium.com.cn>
+>
+> This patch series (V2) introduces several cleanups and improvements to th=
+e smmu-testdev device. The main goals are to refactor shared code, enhance =
+robustness, and significantly clarify the complex page table construction u=
+sed for testing.
+>
+> Motivation
+> ----------
+>
+> Currently, thoroughly testing the SMMUv3 emulation requires a significant
+> software stack. We need to boot a full guest operating system (like Linux)
+> with the appropriate drivers (e.g., IOMMUFD) and rely on firmware (e.g.,
+> ACPI with IORT tables or Hafnium) to correctly configure the SMMU and
+> orchestrate DMA from a peripheral device.
+>
+> This dependency on a complex software stack presents several challenges:
+>
+> * High Barrier to Entry: Writing targeted tests for specific SMMU
+>     features (like fault handling, specific translation regimes, etc.)
+>     becomes cumbersome.
+>
+> * Difficult to Debug: It's hard to distinguish whether a bug originates
+>     from the SMMU emulation itself, the guest driver, the firmware
+>     tables, or the guest kernel's configuration.
+>
+> * Slow Iteration: The need to boot a full guest OS slows down the
+>     development and testing cycle.
+>
+> The primary goal of this work is to create a lightweight, self-contained
+> testing environment that allows us to exercise the SMMU's core logic
+> directly at the qtest level, removing the need for any guest-side
+> software.
 
-Key updates include:
+I agree, an excellent motivation.
 
-- Moved AST2500_EVB_HW_STRAP1 macro definition into the new file.
-- Moved ast2500_evb_i2c_init() I²C initialization logic.
-- Moved aspeed_machine_ast2500_evb_class_init() and type registration.
-- Added aspeed_ast2500_evb.c to the build system (meson.build).
-- Removed all AST2500 EVB–specific code and macros from aspeed.c.
+>
+> Our Approach: A Dedicated Test Device
+> -------------------------------------
+>
+> To achieve this, we introduce two main components:
+>
+> * A new, minimal hardware device: smmu-testdev.
+> * A corresponding qtest that drives this device to generate SMMU-bound
+>     traffic.
+>
+> A key question is, "Why introduce a new smmu-testdev instead of using an
+> existing PCIe or platform device?"
 
-No functional changes.
+I curious what the split between PCIe and platform devices that need an
+SMMU are. I suspect there is a strong split between the virtualisation
+case and the emulation case.
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/arm/aspeed.c             | 45 -------------------------
- hw/arm/aspeed_ast2500_evb.c | 66 +++++++++++++++++++++++++++++++++++++
- hw/arm/meson.build          |  1 +
- 3 files changed, 67 insertions(+), 45 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2500_evb.c
+> The answer lies in our goal to minimize complexity. Standard devices,
+> whether PCIe or platform, come with their own intricate initialization
+> protocols and often require a complex driver state machine to function.
+> Using them would re-introduce the very driver-level complexity we aim to
+> avoid.
+>
+> The smmu-testdev is intentionally not a conformant, general-purpose PCIe
+> or platform device. It is a purpose-built, highly simplified "DMA engine."
+> I've designed it to be analogous to a minimal PCIe Root Complex that
+> bypasses the full, realistic topology (Host Bridges, Switches, Endpoints)
+> to provide a direct, programmable path for a DMA request to reach the SMM=
+U.
+> Its sole purpose is to trigger a DMA transaction when its registers are
+> written to, making it perfectly suited for direct control from a test
+> environment like qtest.
+>
+> The Qtest Framework
+> -------------------
+>
+> The new qtest (smmu-testdev-qtest.c) serves as the "bare-metal driver"
+> for both the SMMU and the smmu-testdev. It manually performs all the
+> setup that would typically be handled by the guest kernel and firmware,
+> but in a completely controlled and predictable manner:
+>
+> 1.  SMMU Configuration: It directly initializes the SMMU's registers to a
+>     known state.
+>
+> 2.  Translation Structure Setup: It manually constructs the necessary
+>     translation structures in memory, including Stream Table Entries
+>     (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
+>
+> 3.  DMA Trigger: It programs the smmu-testdev to initiate a DMA operation
+>     targeting a specific IOVA.
+>
+> 4.  Verification: It waits for the transaction to complete and verifies
+>     that the memory was accessed correctly after address translation by
+>     the SMMU.
+>
+> This framework provides a solid and extensible foundation for validating
+> the SMMU's core translation paths. The initial test included in this
+> series covers a basic DMA completion path in the Non-Secure bank,
+> serving as a smoke test and a proof of concept.
+>
+> It is worth noting that this series currently only includes tests for the
+> Non-Secure SMMU. I am aware of the ongoing discussions and RFC patches
+> for Secure SMMU support. To avoid a dependency on unmerged work, this
+> submission does not include tests for the Secure world. However, I have
+> already implemented these tests locally, and I am prepared to submit
+> them for review as soon as the core Secure SMMU support is merged
+> upstream.
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 3618f01ea2..11c74c3e1b 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -70,17 +70,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-         SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
-         SCU_AST2400_HW_STRAP_BOOT_MODE(AST2400_SPI_BOOT))
- 
--/* AST2500 evb hardware value: 0xF100C2E6 */
--#define AST2500_EVB_HW_STRAP1 ((                                        \
--        AST2500_HW_STRAP1_DEFAULTS |                                    \
--        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
--        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
--        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
--        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
--        SCU_HW_STRAP_MAC1_RGMII |                                       \
--        SCU_HW_STRAP_MAC0_RGMII) &                                      \
--        ~SCU_HW_STRAP_2ND_BOOT_WDT)
--
- /* Quanta-Q71l hardware value */
- #define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
-         SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
-@@ -405,19 +394,6 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
-     /* TODO: i2c-8: Add BMC FRU eeprom@50 */
- }
- 
--static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
--{
--    AspeedSoCState *soc = bmc->soc;
--    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
--
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 0x50,
--                          eeprom_buf);
--
--    /* The AST2500 EVB expects a LM75 but a TMP105 is compatible */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
--                     TYPE_TMP105, 0x4d);
--}
--
- static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
- {
-     AspeedSoCState *soc = bmc->soc;
-@@ -1176,23 +1152,6 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
--static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
--                                                  const void *data)
--{
--    MachineClass *mc = MACHINE_CLASS(oc);
--    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
--
--    mc->desc       = "Aspeed AST2500 EVB (ARM1176)";
--    amc->soc_name  = "ast2500-a1";
--    amc->hw_strap1 = AST2500_EVB_HW_STRAP1;
--    amc->fmc_model = "mx25l25635e";
--    amc->spi_model = "mx25l25635f";
--    amc->num_cs    = 1;
--    amc->i2c_init  = ast2500_evb_i2c_init;
--    mc->default_ram_size       = 512 * MiB;
--    aspeed_machine_class_init_cpus_defaults(mc);
--};
--
- static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
-                                                   const void *data)
- {
-@@ -1546,10 +1505,6 @@ static const TypeInfo aspeed_machine_types[] = {
-         .name          = MACHINE_TYPE_NAME("supermicrox11-bmc"),
-         .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_supermicrox11_bmc_class_init,
--    }, {
--        .name          = MACHINE_TYPE_NAME("ast2500-evb"),
--        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_ast2500_evb_class_init,
-     }, {
-         .name          = MACHINE_TYPE_NAME("ast2600-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2500_evb.c b/hw/arm/aspeed_ast2500_evb.c
-new file mode 100644
-index 0000000000..4646c73e8e
---- /dev/null
-+++ b/hw/arm/aspeed_ast2500_evb.c
-@@ -0,0 +1,66 @@
-+/*
-+ * ASPEED AST2500 EVB
-+ *
-+ * Copyright (C) 2025 ASPEED Technology Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/arm/aspeed.h"
-+#include "hw/arm/aspeed_soc.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+#include "hw/sensor/tmp105.h"
-+
-+/* AST2500 evb hardware value: 0xF100C2E6 */
-+#define AST2500_EVB_HW_STRAP1 ((                                        \
-+        AST2500_HW_STRAP1_DEFAULTS |                                    \
-+        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
-+        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
-+        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
-+        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
-+        SCU_HW_STRAP_MAC1_RGMII |                                       \
-+        SCU_HW_STRAP_MAC0_RGMII) &                                      \
-+        ~SCU_HW_STRAP_2ND_BOOT_WDT)
-+
-+static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
-+{
-+    AspeedSoCState *soc = bmc->soc;
-+    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
-+
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 0x50,
-+                          eeprom_buf);
-+
-+    /* The AST2500 EVB expects a LM75 but a TMP105 is compatible */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
-+                     TYPE_TMP105, 0x4d);
-+}
-+
-+static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
-+                                                  const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc       = "Aspeed AST2500 EVB (ARM1176)";
-+    amc->soc_name  = "ast2500-a1";
-+    amc->hw_strap1 = AST2500_EVB_HW_STRAP1;
-+    amc->fmc_model = "mx25l25635e";
-+    amc->spi_model = "mx25l25635f";
-+    amc->num_cs    = 1;
-+    amc->i2c_init  = ast2500_evb_i2c_init;
-+    mc->default_ram_size       = 512 * MiB;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+};
-+
-+static const TypeInfo aspeed_ast2500_evb_types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("ast2500-evb"),
-+        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2500_evb_class_init,
-+    }
-+};
-+
-+DEFINE_TYPES(aspeed_ast2500_evb_types)
-+
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index f788baabeb..cbee7ebf60 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -44,6 +44,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed.c',
-   'aspeed_soc_common.c',
-   'aspeed_ast2400.c',
-+  'aspeed_ast2500_evb.c',
-   'aspeed_ast2500_fp5280g2.c',
-   'aspeed_ast2500_g220a.c',
-   'aspeed_ast2500_romulus.c',
--- 
-2.43.0
+What about other IOMMU's? Are there any other bus mediating devices
+modelled in QEMU that could also benefit from the ability to trigger DMA
+transactions?
 
+>
+>
+> Changes from v1 RFC:
+> - Clarify Page Table Construction:
+> Detailed comments have been added to the page table construction logic. T=
+his is a key improvement, as the test setup extensively re-uses the same se=
+t of page tables for multiple translation stages and purposes (e.g., nested=
+ S1/S2 walks, CD fetch). The new comments explain this sharing mechanism, w=
+hich can otherwise be confusing to follow.
+>
+> - Refactor Shared Helpers:
+> The helper functions std_space_offset and std_space_to_str are now moved =
+to a common header file. This allows them to be used by both the main devic=
+e implementation (hw/misc/smmu-testdev.c) and its qtest (tests/qtest/smmu-t=
+estdev-qtest.c), improving code re-use and maintainability.
+>
+> - Enhance Robustness:
+> Assertions have been added to ensure the device operates only in the expe=
+cted Non-secure context. Additional conditional checks are also included to=
+ prevent potential runtime errors and make the test device more stable.
+>
+> - Code Simplification and Cleanup:
+> Several functions that were redundant with existing macros for constructi=
+ng Context Descriptors (CD) and Stream Table Entries (STE) have been remove=
+d. This simplifies the test data setup and reduces code duplication.
+>
+> Other unused code fragments have also been removed to improve overall cod=
+e clarity and hygiene.
+>
+> Tao Tang (2):
+>   hw/misc/smmu-testdev: introduce minimal SMMUv3 test device
+>   tests/qtest: add SMMUv3 smoke test using smmu-testdev DMA source
+>
+>  docs/specs/index.rst             |   1 +
+>  docs/specs/smmu-testdev.rst      |  45 ++
+>  hw/misc/Kconfig                  |   5 +
+>  hw/misc/meson.build              |   1 +
+>  hw/misc/smmu-testdev.c           | 943 +++++++++++++++++++++++++++++++
+>  include/hw/misc/smmu-testdev.h   | 402 +++++++++++++
+>  tests/qtest/meson.build          |   1 +
+>  tests/qtest/smmu-testdev-qtest.c | 238 ++++++++
+>  8 files changed, 1636 insertions(+)
+>  create mode 100644 docs/specs/smmu-testdev.rst
+>  create mode 100644 hw/misc/smmu-testdev.c
+>  create mode 100644 include/hw/misc/smmu-testdev.h
+>  create mode 100644 tests/qtest/smmu-testdev-qtest.c
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
