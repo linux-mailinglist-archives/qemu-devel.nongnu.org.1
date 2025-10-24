@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC343C0495A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 219F2C04969
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:56:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBgS-0006Z9-8p; Fri, 24 Oct 2025 02:53:56 -0400
+	id 1vCBiX-00079m-15; Fri, 24 Oct 2025 02:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBgP-0006Yc-VU
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:53:53 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ id 1vCBiV-00079Y-Qy
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:56:03 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBgN-0006It-8g
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:53:53 -0400
+ id 1vCBiT-0006eI-KA
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:56:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761288831; x=1792824831;
+ t=1761288962; x=1792824962;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=k8K81La8jvl+T9BeBc14GS65QJ2szzBca1z2xWdxc5A=;
- b=m86k9N6eytQGLFDKkfVtLJzayeH8QQl5zwr6t19ciYSdDF9isPBAZvyI
- wLG3/ni8i843no7tFOfv9OuMbpqUu0MQ3FD4RWMoESVYP6YwZz5nmzpfu
- 2b7+YSWw0Zhysh7Myd+3MjJYXSNVc8FsmhghrgYWH/QLLnHLmwUF3PuIU
- YzcxBYeb9m0TfY5MZZ1bnVurA0Y/ommlmFaYhRi+GId6SuTXLqGld9Hjg
- WC9JQu1Z/Ax63vNmyMYpTAjexKo0gcgSrJsAJu7XWOSh0dYqn9Dsk2PqQ
- OfjEMEYNuhGNhVHlQ+hODTnyHFz886a2DqSGhm10f4z6tKhWwmCwlrM1r Q==;
-X-CSE-ConnectionGUID: l2Kk2aTbS8afCEf+YMLcCw==
-X-CSE-MsgGUID: 8NaPx20vRTql3dHFkdz/eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62497480"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="62497480"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:53:48 -0700
-X-CSE-ConnectionGUID: 0FzHjXbQQSqr5E9xDZrE3w==
-X-CSE-MsgGUID: SstUoEyNSzKHVSN5CWnlZQ==
+ bh=W7ZaPgXUZ/IWG5Zgflot8zEURcD4R2zU18fM23RjKuc=;
+ b=Nnwr58RZ1GhEkTWLFn4Nb22xIzZzvXP4R44Q8xd3eZfj6BEPrdDs/zO6
+ jdwO+/+EJkW/z2ifq1t+rfVfXHxyq5sMPXly96Z1DZQyFSg0X/mpmhJyO
+ knqqlLpzaCKpmi4uTMpwHsDX88vEO88mlh9FGYXOC2SKWwlDaOY9ZC6En
+ wt7VXbpmaBvZeRmWVu3vxT7OGA8ePujzWRg75+vlQ8qH7iupMWW0w+Xqf
+ wm5QJd6I1hv85apZcDcW/edgsnxDPazHa21QY+a5EWWZdGqRX/IrDkQsD
+ VLM1yqU+lVCp8f/GLhyO6Yc9z98+xdla3F7PvcKRWUIPHmViI2B058295 Q==;
+X-CSE-ConnectionGUID: 6sL63VHfQ0uAM46fcT457w==
+X-CSE-MsgGUID: NngfjNCjT0iqFNepWDBULg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63369848"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63369848"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 23:55:59 -0700
+X-CSE-ConnectionGUID: cBVe/XFERcORWfdSNGMJfw==
+X-CSE-MsgGUID: 9+flY793TgqhbOopPdL9tA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="183586197"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="188747323"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 23 Oct 2025 23:53:47 -0700
-Date: Fri, 24 Oct 2025 15:15:55 +0800
+ by fmviesa005.fm.intel.com with ESMTP; 23 Oct 2025 23:55:58 -0700
+Date: Fri, 24 Oct 2025 15:18:07 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Ewan Hai <ewanhai-oc@zhaoxin.com>
 Cc: pbonzini@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 3/3] target/i386: Introduce Zhaoxin Shijidadao-Server CPU
- model
-Message-ID: <aPsnqxDZR4KxgcdN@intel.com>
+Subject: [PATCH] i386/cpu: Add an option in X86CPUDefinition to control CPUID
+ 0x1f
+Message-ID: <aPsoLx2+2bpW6mWf@intel.com>
 References: <20250923021133.190725-1-ewanhai-oc@zhaoxin.com>
  <20250923021133.190725-4-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250923021133.190725-4-ewanhai-oc@zhaoxin.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,31 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 22, 2025 at 10:11:33PM -0400, Ewan Hai wrote:
-> Date: Mon, 22 Sep 2025 22:11:33 -0400
-> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-> Subject: [PATCH 3/3] target/i386: Introduce Zhaoxin Shijidadao-Server CPU
->  model
-> X-Mailer: git-send-email 2.34.1
-> 
-> Shijidadao-Server hardware enables IA32_CORE_CAPABILITIES and relies on
-> the SPLIT_LOCK_DETECT feature. When the kernel has not yet virtualized
-> this MSR, KVM filters the capability and QEMU emits a warning.
-> 
-> This patch retains the core-capability bit in the CPU model so it will
-> take effect once KVM support becomes available.
-> 
-> In QEMU, vCPU models default to '.version = 1'. Since there is currently
-> no '.features[index]' mapping for the "x-force-cpuid-0x1f" property, this
-> patch adds that property to the v1 version of the model.
+Many Intel and Zhaoxin CPUs enable CPUID 0x1f by default to encode CPU
+topology information.
 
-I'm preparing the CPU model for Diamond Rapids, and also meet this
-issue.
+Add the "cpuid_0x1f" option to X86CPUDefinition to allow named CPU
+models to configure CPUID 0x1f from the start, thereby forcing 0x1f
+to be present for guest.
 
-Well, I happen to have a patch for this and I think you could give it
-a try. :)
+With this option, there's no need to explicitly add v1 model to an
+unversioned CPU model for explicitly enabling the x-force-cpuid-0x1f
+property.
 
-Thanks,
-Zhao
+Tested-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ target/i386/cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 175054fdb322..56c1030a8627 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2307,6 +2307,12 @@ typedef struct X86CPUDefinition {
+     int model;
+     int stepping;
+     uint8_t avx10_version;
++    /*
++     * Whether to present CPUID 0x1f by default.
++     * If true, encode CPU topology in 0x1f leaf even if there's no
++     * extended topology levels.
++     */
++    bool cpuid_0x1f;
+     FeatureWordArray features;
+     const char *model_id;
+     const CPUCaches *const cache_info;
+@@ -8092,6 +8098,10 @@ static void x86_cpu_load_model(X86CPU *cpu, const X86CPUModel *model)
+                                  &error_abort);
+     }
+
++    if (def->cpuid_0x1f) {
++        object_property_set_bool(OBJECT(cpu), "x-force-cpuid-0x1f", def->cpuid_0x1f,
++                                 &error_abort);
++    }
+     x86_cpu_apply_version_props(cpu, model);
+
+     /*
+--
+2.34.1
+
 
 
