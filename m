@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36CDC07E14
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984A4C07E26
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:20:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNIr-0000Y0-Fz; Fri, 24 Oct 2025 15:18:21 -0400
+	id 1vCNKL-0001fK-Cu; Fri, 24 Oct 2025 15:19:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNIp-0000X4-Ch
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:18:19 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNKJ-0001eC-Tm
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:19:51 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNIl-0007di-Af
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:18:18 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-47117f92e32so22728795e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:18:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNKH-0007lr-Ef
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:19:51 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-475c1f433d8so20001745e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:19:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761333493; x=1761938293; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761333587; x=1761938387; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eonV+WiOoy0c5cnLGQ4V0dLnLYS1ykl3W8IL9D5DMDM=;
- b=Eg9Z6RCR381lYH3RFRzh0nsM4uEFQOHLd7QahSXGrQgtWLNPICygbry9BBjLEVyXrg
- 9lXYdLS71xfMIF2FHB8jguu/LXmb+wj6ddebpKMLf/1VQBqY0cn9+IExc0JbIkTu6Ez5
- XrVdBp+XWip0TsjBc8fVS4H50BHDXdmvqlAXgtvvqknlRXNSxl5jb4kF5qd/m6ua0Jck
- orAtIigkC/TKRCtwORJrYlX3SyqWC4q7emofxghFboAI7+TWa8ji/6sRE3Nc6rkKLfm5
- qdmBT+wDYGJ86NM/U/rQD72OlNKOBBuvQfELjhWgtQ3TxZzntuG7sNmFTdDJi+8sEfKE
- RVSQ==
+ bh=zleqKSDiqV6ouXCL2Ql1+wJ3D/HsznftIZvTGyjA1o8=;
+ b=bCkDVJ8NBUT3ftNmyNT8gF+Koc9BRr3ZjuAY33QfEDq8jMkBJVvmnW7KbJaPUgTNME
+ rzQajE5y49O7rOekZ6V93a0E/YcJMbzYyp69oFvcyylp3yNK9KmzU4Cwx9aXF9xjD/pZ
+ zqaIp40OteLle1Wk/PkKMtplI4/DbviNfZj25Y2iiJI7mpgGKtt60DOLgHAuacjHM9Nz
+ IRMfGSgZMiAd+fv/nonJIuIBie5RlVqRpL4MDXowNxW2F0RLDGUTdhXmPSf600EdDRLv
+ nsTszaJkVPKvJgh9l7i8pC32SEIyBOUt8Sc9kS6nxZZCPLB4TMYuy98Gyauhj8CIkxeG
+ wCNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761333493; x=1761938293;
+ d=1e100.net; s=20230601; t=1761333587; x=1761938387;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eonV+WiOoy0c5cnLGQ4V0dLnLYS1ykl3W8IL9D5DMDM=;
- b=teVaP/RgEfO+DT1H24EJbOi6UCmvPyUVYdqKZN+m/t/x6m/PI+HVHfl++hdzRHsPCh
- E/YJIumMZRnCpgbSptfqf/edy2hN2XGlQ0ORxfD8cAr+scGSjx8OHyALWXkjpwf+PyJY
- GXr9VUCqzrusJfcyK4Mq8DHxA12NflPkfAUlfc+tdkkmTAMOYK3zdtmfVMhf6v9hu2d8
- CpAlpiyN7B3ObPiPBYsulS3X1REm5rSVYz5Y/3WM8e2jyWuL0CMq8oL39sRM6dm66cA9
- VMCuYb3whLBLW7jxvmke0S3ql5DuioXnSs1PcvxPJgTuYWh8AvA5PghWa9onJ202g02b
- HZUg==
-X-Gm-Message-State: AOJu0YxvB/H4oWUZF29I59O8gzfY1i8IS3Xi6/O4d4DU9R2AQdWdhEI9
- md5m/QjpiPqGc9P3APtW5Ybc8XfgZXa8xZhUbx0Ej2CTWwYdLFfpY/mLj6yYNrSqE8LbfW4Vl+A
- vDJWWhV4=
-X-Gm-Gg: ASbGnctH8mTV5uo0Bsm9kQrtIken8ZUc5CJaCSyLtsNlldcCLDnwSiFWsy9m5JEcUAn
- 5TDMfYxJksYUEgrdsPFRkB/PwMOABrp4Aa2F8LdX/8DuXS/43U68fw9xIcnUjC+JmcAgSYSetBV
- dI01+FaLZWjTwE3e44ZnjXb4+HcE+tDuI19NGlgtfqjB2LHgEc8xWobf0H+hlAdUY6mIhAwKLFx
- hcfqD70sKVqqHsWwEzBfp7/cVM++3/PLKztM57OVmJM28ou+ALIC5qsb5yhhQ0VAcboImg7u4/a
- JuLeYOKpWKsF6Y7roFpsyOehMVoRRz5z46VhK0lY1L4C3QHBT/eb1UZE2w5vvvdRid64XohYNk3
- lA31MLuBx0XftTClbEuWLXNr2HPf3lTZ9R8oOjhclAvmie1O3nj7SBfMaaJuE04pXIhjwj8m7Dr
- EZOTfASoWxRsu/GiCpGzxn5WQj15rjpqvr4hCe/I1tsnUI4cPIpO6FQMCXHJ7X
-X-Google-Smtp-Source: AGHT+IEcud/+cjk21SwGuCTletB6kgJFqvWqEu87ta5TJtJi9ymW2LHDBPjBLFEosDp0V0KQ8BtM8A==
-X-Received: by 2002:a05:600c:8581:b0:46e:19f8:88d3 with SMTP id
- 5b1f17b1804b1-471179123c6mr170701865e9.22.1761333493552; 
- Fri, 24 Oct 2025 12:18:13 -0700 (PDT)
+ bh=zleqKSDiqV6ouXCL2Ql1+wJ3D/HsznftIZvTGyjA1o8=;
+ b=SYwVa0u18XHuxVCyVcjfkg+kwJju6mXjAgM//HdnwzxMhfc4rVF2jivgDL6nOP7AF4
+ PSLhXyBnbSOXf7PrUlxCG7Jb6CV7c250ncr1sVniwPW1a7vSpzeK4PcFxOMTFWumQgJB
+ jiYrSFwNuC5x/EhOJucQC4xH5PS2mZ6pI76qasE6PGt6KkOxdKJo8dVKpgaEyhveU1vQ
+ OCaC5INrOfhtYRxPCTAnah2XOXG0qDTXJjnr1Tpz0HJU/oV6Cj0eCpKf5jP70Kt8zWTY
+ oUcagtxbGKlir+m2+Eoiafe/DhWfBGMZqQpbhhqfk14zjAwwN/bbHfmY0tLXJoM4lEdx
+ +bSQ==
+X-Gm-Message-State: AOJu0YyJ6KxwnY8/PjZWdq6OCk6WyGdFOps3KHQtsmYNzOnNVgN1lz+I
+ /rmwVpwp5mfe48kH2GwMfuVqmHw86/08Yx6Oa0mpMVhqJsORADr8mLd4W+0I7Voif08OI+oIdL1
+ LodXM0DU=
+X-Gm-Gg: ASbGnctB0nJ4+KVfE35uZ1E0EyCPwuCxJTTWdVZ/j1hIiZg47nZ9P3y3rVhfjGDPiBt
+ r/Jf5abtK2fBZJKfurxkboyHBGcd+a1dWAXZmZDIcXgMt6UqJOM3RUe7sotFIAEXuBq+kze18Id
+ dIzmJnuPN4TQxfQKIpcBCGTvh60dzgkv3oZOYNZ39vmZvfZZwaeNqg785rYFLIaYLmQ8H9ZP0jr
+ gs/pRIfoTfzBFdqbhTnG9Y3CIhCuT/RHol+MunCFzIIeWg37eAd7GUO1OhfcewzTZdGogme0yus
+ f7aKSmi/yDQ+lEjdzVeYIfxxgQhpuDFkZRDbmHmX3nPlFKa75o1oIJX39G0U+Q2HJEUepvGhJex
+ 3Gn0/rMYKO20WWvxifB0rzd5bnvhdUMjFJADptZKxJMKiJrBh7Ak3z3h4p6aQ01MEY0GWujTpqI
+ IRlm4zetJfc/6Snb6tvwto1tX1cQdY5N9IMazLo2D5hZEA6QBa2rj3AXVj6uIa
+X-Google-Smtp-Source: AGHT+IHGwA1LU6+hLBZrPJrwX3FYLkn8oGJ8pXrlyqWkQmDZDbUjpAleQmiisYsyqpwE89HlnUBLcQ==
+X-Received: by 2002:a05:600c:8214:b0:471:1306:aa14 with SMTP id
+ 5b1f17b1804b1-47117931e47mr214993075e9.40.1761333587126; 
+ Fri, 24 Oct 2025 12:19:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429897e763csm10698654f8f.6.2025.10.24.12.18.10
+ 5b1f17b1804b1-475caf2ef9fsm105205925e9.13.2025.10.24.12.19.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Oct 2025 12:18:11 -0700 (PDT)
+ Fri, 24 Oct 2025 12:19:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 09/27] hw/platform-bus: Include missing 'system/memory.h'
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH 10/27] hw/block/pflash: Include missing 'system/memory.h'
  header
-Date: Fri, 24 Oct 2025 21:03:56 +0200
-Message-ID: <20251024190416.8803-10-philmd@linaro.org>
+Date: Fri, 24 Oct 2025 21:03:57 +0200
+Message-ID: <20251024190416.8803-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251024190416.8803-1-philmd@linaro.org>
 References: <20251024190416.8803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,9 +104,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 "system/memory.h" header is indirectly pulled by "hw/sysbus.h".
 Include it explicitly to avoid when refactoring the latter:
 
-  In file included from ../../hw/core/platform-bus.c:23:
-  include/hw/platform-bus.h:38:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     38 |     MemoryRegion mmio;
+  hw/block/pflash_cfi01.c:83:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
+     83 |     MemoryRegion mem;
+        |                  ^
+  hw/block/pflash_cfi02.c:100:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
+    100 |     MemoryRegion mem;
         |                  ^
   include/qemu/typedefs.h:68:16: note: forward declaration of 'struct MemoryRegion'
      68 | typedef struct MemoryRegion MemoryRegion;
@@ -113,21 +116,34 @@ Include it explicitly to avoid when refactoring the latter:
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/platform-bus.h | 1 +
- 1 file changed, 1 insertion(+)
+ hw/block/pflash_cfi01.c | 1 +
+ hw/block/pflash_cfi02.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/hw/platform-bus.h b/include/hw/platform-bus.h
-index 44f30c5353f..8672ccc45ec 100644
---- a/include/hw/platform-bus.h
-+++ b/include/hw/platform-bus.h
-@@ -24,6 +24,7 @@
- 
+diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+index 168101d8dfe..04c30d17a99 100644
+--- a/hw/block/pflash_cfi01.c
++++ b/hw/block/pflash_cfi01.c
+@@ -51,6 +51,7 @@
  #include "hw/sysbus.h"
- #include "qom/object.h"
+ #include "migration/vmstate.h"
+ #include "system/blockdev.h"
 +#include "system/memory.h"
+ #include "system/runstate.h"
+ #include "trace.h"
  
- 
- #define TYPE_PLATFORM_BUS_DEVICE "platform-bus-device"
+diff --git a/hw/block/pflash_cfi02.c b/hw/block/pflash_cfi02.c
+index 3244b699b98..a2106a7ed9b 100644
+--- a/hw/block/pflash_cfi02.c
++++ b/hw/block/pflash_cfi02.c
+@@ -42,6 +42,7 @@
+ #include "qemu/bitmap.h"
+ #include "qemu/timer.h"
+ #include "system/block-backend.h"
++#include "system/memory.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/module.h"
+ #include "hw/sysbus.h"
 -- 
 2.51.0
 
