@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C912CC04893
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BB8C04888
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBP8-0004oe-8V; Fri, 24 Oct 2025 02:36:02 -0400
+	id 1vCBPA-0004wd-RR; Fri, 24 Oct 2025 02:36:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBP6-0004i9-1A
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:36:00 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1vCBP9-0004r5-2S
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:36:03 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBOz-00040O-GL
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:59 -0400
+ id 1vCBP7-00042k-9b
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:36:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761287754; x=1792823754;
+ t=1761287761; x=1792823761;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iT6pGek/T2hADwOEBibyNy2m4pKMn1dzTaK0Ge2+9QU=;
- b=NxR0Pqn8w1h6tLx92cjEdy4vchpkNL9QKTLu/dcTojomDUM4QKU+jxnL
- Ri1TzMhypL51T2W/lB6X41YWqJNiLUZDlQ7cHntv6yejd+jTjW2BU9Nrz
- JtIaQK21EUVgZaUFRvA43cVgGAQM95Upw+YgpIEgvicfJmr/zc/CHNfOT
- KQhKPcEfPx0pZ/twBndq/i+2EvmAiBcTx6a0eqTaP/swB4oZ42p2lo4uH
- oD0Tiz5/3dWHRjqBw6B0L0gjUXqLCGO2NUhZR0m09T1R5hWOZhbwMDJK5
- z91ymof1HcDovebsB5BPMuOUum8CVG7ojAIW6HeNIRk4Yq3lbXm/6qjMq A==;
-X-CSE-ConnectionGUID: 3IwqbuR8Qi2fGjle8ytxKQ==
-X-CSE-MsgGUID: cT5meV6mTzit+JGnIBO6fw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63170937"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63170937"
+ bh=lvXbWhX2/gbG5ptIM2y2HLMUjmWF0PjSAkFcXZ7TvjU=;
+ b=CbTUzJSlhN21J+G3DtwflOnpsl6ZZ3+j1Y28mPvuS6Z2j4g9ze1AIt/P
+ uPhvx2Rnqj2+g+qFPD6wt/LFs2Iw083iXz0Q2P2CFB3E0taAKC/n6tRIQ
+ 6/X44mLJA1koa+u58N4/9ft4y1rLCWF72nI2zoSNbdy5dj5ebZxirTI2b
+ EBKay3+0wnmJW6daQeaayuuNtQT+ggjJJUYRCtzGMKUIzomwTMngM6oLP
+ Menu1c5owc127+keHjugZ0MHqQ8S9qoMSwjbOaM654azwyFamfLn67dPc
+ +Ih8iBGTu7umuJQDYvE/ZGF2FYI5ob01hs7oosRtz3vwfVSyAUfWqFSzY A==;
+X-CSE-ConnectionGUID: xO6f5wZjQduzskT+7pM5Pg==
+X-CSE-MsgGUID: JQrCtSMXQtOCl6BnZScTCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="51044395"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="51044395"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:35:52 -0700
-X-CSE-ConnectionGUID: 6/Du4PsrQKecWwQXOAn6HQ==
-X-CSE-MsgGUID: 76V0wjcmSm6iWeeDdSD99g==
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 23:35:58 -0700
+X-CSE-ConnectionGUID: gOpFmPulTYawoqbWtdGs6Q==
+X-CSE-MsgGUID: CoV1hSAoSN+SYf2/kQ6vuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276158"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276197"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:48 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:52 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,24 +51,25 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 19/20] i386/tdx: Fix missing spaces in tdx_xfam_deps[]
-Date: Fri, 24 Oct 2025 14:56:31 +0800
-Message-Id: <20251024065632.1448606-20-zhao1.liu@intel.com>
+Subject: [PATCH v3 20/20] i386/tdx: Add CET SHSTK/IBT into the supported CPUID
+ by XFAM
+Date: Fri, 24 Oct 2025 14:56:32 +0800
+Message-Id: <20251024065632.1448606-21-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251024065632.1448606-1-zhao1.liu@intel.com>
 References: <20251024065632.1448606-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,46 +85,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The checkpatch.pl always complains: "ERROR: space required after that
-close brace '}'".
+From: Chenyi Qiang <chenyi.qiang@intel.com>
 
-Fix this issue.
+So that it can be configured in TD guest.
+
+And considerring cet-u and cet-s have the same dependencies, it's enough
+to only list cet-u in tdx_xfam_deps[].
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
+Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/kvm/tdx.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/i386/kvm/tdx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index dbf0fa2c9180..a3444623657f 100644
+index a3444623657f..01619857685b 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -520,15 +520,15 @@ typedef struct TdxXFAMDep {
-  * supported.
-  */
- TdxXFAMDep tdx_xfam_deps[] = {
--    { XSTATE_YMM_BIT,       { FEAT_1_ECX, CPUID_EXT_FMA }},
--    { XSTATE_YMM_BIT,       { FEAT_7_0_EBX, CPUID_7_0_EBX_AVX2 }},
--    { XSTATE_OPMASK_BIT,    { FEAT_7_0_ECX, CPUID_7_0_ECX_AVX512_VBMI}},
--    { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16}},
--    { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT}},
--    { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU}},
--    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 }},
--    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE }},
--    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 }},
-+    { XSTATE_YMM_BIT,       { FEAT_1_ECX, CPUID_EXT_FMA } },
-+    { XSTATE_YMM_BIT,       { FEAT_7_0_EBX, CPUID_7_0_EBX_AVX2 } },
-+    { XSTATE_OPMASK_BIT,    { FEAT_7_0_ECX, CPUID_7_0_ECX_AVX512_VBMI } },
-+    { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
-+    { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
-+    { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
-+    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
-+    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
-+    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
- };
- 
- static struct kvm_cpuid_entry2 *find_in_supported_entry(uint32_t function,
+@@ -526,6 +526,8 @@ TdxXFAMDep tdx_xfam_deps[] = {
+     { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
+     { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
+     { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
++    { XSTATE_CET_U_BIT,     { FEAT_7_0_ECX, CPUID_7_0_ECX_CET_SHSTK } },
++    { XSTATE_CET_U_BIT,     { FEAT_7_0_EDX, CPUID_7_0_EDX_CET_IBT } },
+     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
+     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
+     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
 -- 
 2.34.1
 
