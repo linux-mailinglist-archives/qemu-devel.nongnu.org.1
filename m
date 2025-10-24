@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76516C06454
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 14:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F60BC06442
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 14:32:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCGwo-00062Y-DM; Fri, 24 Oct 2025 08:31:10 -0400
+	id 1vCGwq-00063c-Q6; Fri, 24 Oct 2025 08:31:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vCGwm-00061S-9t
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 08:31:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vCGwn-00061o-B0
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 08:31:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vCGwk-00068e-6R
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vCGwk-00068i-Pr
  for qemu-devel@nongnu.org; Fri, 24 Oct 2025 08:31:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1761309065;
@@ -23,39 +23,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=9B7wu+SfNVhC5TFZoBPOUdxmzu1rq3LIlO+WXANdseE=;
- b=erjNoRij4bXQcVxDuVqgMnW24urd/JaeKylLTXZY2IHq0heyEFED84oKh1kJ1BUnZwYyzy
- 2OYVIKQPeHTCVZ2qTCZYheg4DMVmTMakasDspmpMdXs8dy3F5C1lrB082DnbaJMaibD+Sx
- hmw1kpqBftJvLzpv4VOOQtdgLg+uVF0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ b=dU2E9hE4RLLHKRf9C7mPH+DU8N0ctLVSsaGrnfqPYmi02RqDL+huN4TpKd9hFIRIOxl07M
+ vtRk1M3CvsLbzY1S6Owznp3VtdaX1ni/kkw4s9MHOzgfLiv7WcZbmXZ86VvBTMTJa++Sde
+ 5aFthvvQ9i1+Qe5FpsGiiKfuNF+bdIY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-68-19D1gkLjN_WfSr9uExVnPg-1; Fri,
- 24 Oct 2025 08:31:01 -0400
-X-MC-Unique: 19D1gkLjN_WfSr9uExVnPg-1
-X-Mimecast-MFC-AGG-ID: 19D1gkLjN_WfSr9uExVnPg_1761309061
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-_BHOcyI6Nli5qCUX2RnpdA-1; Fri,
+ 24 Oct 2025 08:31:04 -0400
+X-MC-Unique: _BHOcyI6Nli5qCUX2RnpdA-1
+X-Mimecast-MFC-AGG-ID: _BHOcyI6Nli5qCUX2RnpdA_1761309063
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 097D31800D8C; Fri, 24 Oct 2025 12:31:01 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8C0E81955F2E; Fri, 24 Oct 2025 12:31:03 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.45.225.249])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F1F2919540EB; Fri, 24 Oct 2025 12:30:58 +0000 (UTC)
+ id 80DDD19540EB; Fri, 24 Oct 2025 12:31:01 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, eblake@redhat.com, armbru@redhat.com,
  qemu-devel@nongnu.org, hreitz@redhat.com
 Subject: [PATCH v2 4/4] qemu-img info: Add cache mode option
-Date: Fri, 24 Oct 2025 14:30:40 +0200
-Message-ID: <20251024123041.51254-5-kwolf@redhat.com>
+Date: Fri, 24 Oct 2025 14:30:41 +0200
+Message-ID: <20251024123041.51254-6-kwolf@redhat.com>
 In-Reply-To: <20251024123041.51254-1-kwolf@redhat.com>
 References: <20251024123041.51254-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -64,7 +64,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
