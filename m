@@ -2,116 +2,200 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24556C06669
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEEDC06703
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:17:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCHWF-0000Sv-CH; Fri, 24 Oct 2025 09:07:47 -0400
+	id 1vCHeQ-0003fD-1x; Fri, 24 Oct 2025 09:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1vCHWC-0000L6-KU; Fri, 24 Oct 2025 09:07:44 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
+ id 1vCHeM-0003f5-9p
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:16:10 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1vCHW8-0002ze-Mb; Fri, 24 Oct 2025 09:07:44 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59OCXClS020537;
- Fri, 24 Oct 2025 13:07:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=XJlGOU
- kZlfxVEWSh/wQCtLrO28qDQv+ZbG+7KHjfNFU=; b=PUPa/JNYxOKluOaqXOaVNA
- T/OKDgAN55lfWOJx1GmTx3JqkbV2lhzzIY9qDx6Zs8MLX2NM6RnmwSuZNtgJjN/G
- VZN7DnPdnf2X8OWTtfhAHsnsfQzuuu+UWHiJW7fhjCQyd+gCZQTL9KlGwO20tJrG
- ABuv+5Icx/PiL13+GUyQs/mfNB6oUDSgLQnxOokfishjKHIXpnukX/GQ20QoXkO+
- LIxJYaw0ym8jr6Fd06lV0ClRh0XJoUaHMV+TO46jpO4WL3jc4dEW6Ad+r7RCXEus
- bUwi3qGPKzuYj6WQn7vCav5BlaSXPvfoO5oqgIv/3ZC+c5vZLuqVPPpHQgmyAWSw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31sfcv4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Oct 2025 13:07:34 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59OD7YOb012102;
- Fri, 24 Oct 2025 13:07:34 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31sfcv1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Oct 2025 13:07:33 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59O9u6mf002926;
- Fri, 24 Oct 2025 13:07:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejtywe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Oct 2025 13:07:32 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59OD7TfO61341952
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Oct 2025 13:07:29 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2E9732004D;
- Fri, 24 Oct 2025 13:07:29 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B3B320040;
- Fri, 24 Oct 2025 13:07:26 +0000 (GMT)
-Received: from vishalc-ibm.ibm.com (unknown [9.39.24.189])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 24 Oct 2025 13:07:25 +0000 (GMT)
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: adityag@linux.ibm.com, harshpb@linux.ibm.com, milesg@linux.ibm.com,
- npiggin@gmail.com, peter.maydell@linaro.org, alistair23@gmail.com,
- balaton@eik.bme.hu, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- berrange@redhat.com, hpoussin@reactos.org
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [Patch v10 6/6] ppc: Pass error_fatal to load_image_targphys()
-Date: Fri, 24 Oct 2025 18:36:03 +0530
-Message-ID: <20251024130556.1942835-14-vishalc@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251024130556.1942835-2-vishalc@linux.ibm.com>
-References: <20251024130556.1942835-2-vishalc@linux.ibm.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
+ id 1vCHeH-0004Lo-2N
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:16:10 -0400
+Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 59O1dhsK096885
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 06:16:01 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=EQClWcbx01iho
+ V56SM3LFGMvfRYGvlytOm/13JfFVX8=; b=F4ePgoZEAq9qak7OD26bVDRDoTzA+
+ cTb+TZtTGhtsVDImzwNSTkwRG7E0rudh92wRK2OWiuGOmu/bPZbOZ/7cUbr5pTnB
+ OnTV27nldPf4m5IHGzoM3vudw8hKIq4SlHM9O3mRdPr/t97/Sj35VVzzXT6BNT83
+ vnAu/F/D8lMzf0dexMyKuXZzJ5JlPx+S4BkQzUFU025z1uOU3QL28QNB2N9lxiu6
+ 3CsBd7F1NBd9Zd7X/cIKdFpGopu2DM2XJ4g+R2LSpEiLn39IwfFhgtnbhlp2L8pY
+ NuYLG8+1W2xyRPhuFFz4uGGaQEdiEz2LWesYADrC/MHxaNO3q5rQnwGZA==
+Received: from sn4pr0501cu005.outbound.protection.outlook.com
+ (mail-southcentralusazon11021122.outbound.protection.outlook.com
+ [40.93.194.122])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 49yncgthg7-1
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 06:16:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q8gZh+7INHPDLk5glAwOgcV/HCw4kWVASjkFRXA84kvHoETGPTfCvth9nLZgslY13sIIg3v0ZCCAlDsCyLn6aH1fvbfwrCwKr79O2mRmOyc4BsPeZup4+qLqw2Wb0rwOkWtRRz85O5yNLUF5nR7kzlH8JRbYLfNpYOTg83crqvN2ge6sPItYuggCXJRHkebI/6A8eTrzb/mpjKnnI88UUZt7RKyUWyOu/ycchRPyGJ4H2J0iB/s/c8U9lzIHOamvRUh1NDNpCYFEfHcD1oAsUogx1IqnwmJwvuCvmcZK1nG5qpKXhSCSaz4LCI32CXgD65CIFpHdzlj/kkh8yECy/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EQClWcbx01ihoV56SM3LFGMvfRYGvlytOm/13JfFVX8=;
+ b=R+jEHr9pfftFHND3IsWkS41KZ2/+rWBL4K1n/aKf8yfiuXZbMNyTudBmnbKEpCErDxcn1EMWet42vjM0hYhm10q/PXXogxA3zBxrQjXNgRl6yd+gY4dV+A6FP6xAmhYIqf+yJlm2ZXc7AnqcHWy/Tv3uiABRWo3t/V5b3KXk9EevvEZkYq0FJNqohU/vpatKBu/XPRmOlFGpCAecRYv8A0eak9Q8dfh8AG4vfkXEpOdz8kPsHSSpwdjOqPqyGwbqR1BU8R8ItWsRCo00/J26uPq4cNcs8FGQxvQccLRYdsa1ltHqd9LbypNd6hPoRB643TmjgPbNQ102ftd2y8kZzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EQClWcbx01ihoV56SM3LFGMvfRYGvlytOm/13JfFVX8=;
+ b=vvApE2ulS7pEiPdROa8mPVElbWfzd8tlUqtTSXMXNb/uan3OuL4YIl+4d+N1df1f3cRZqtCuLCSfmf6DnyER8JecXSSLXsU7Rfq/uj6bpc643icxsyk7edk9+DcnhMyPlAedql/HToKbMaKFKBM39LNYpcy56gZjBLe8krYVowP17IdERLZSIw/p/YyDWOyt5IcVdneBve08W50Qir7AwcZrt3dzElpYP/EpyrZda3z0nP4opSzDEhbHvqN97YJoXGJ0wCUknNM+/734q9O+ogX6Qgry43Fbaf0CNF9b3mDPiLi7VM5LHbChT4GfjtdSHOq3FkEy9OjVo9fF+os3jA==
+Received: from MW6PR02MB9817.namprd02.prod.outlook.com (2603:10b6:303:23b::15)
+ by LV3PR02MB10643.namprd02.prod.outlook.com (2603:10b6:408:281::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Fri, 24 Oct
+ 2025 13:15:58 +0000
+Received: from MW6PR02MB9817.namprd02.prod.outlook.com
+ ([fe80::135b:f187:c695:7c90]) by MW6PR02MB9817.namprd02.prod.outlook.com
+ ([fe80::135b:f187:c695:7c90%7]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
+ 13:15:58 +0000
+From: Tejus GK <tejus.gk@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: Tejus GK <tejus.gk@nutanix.com>
+Subject: [PATCH v7 0/2] Add zerocopy partial flush support for live migrations
+Date: Fri, 24 Oct 2025 13:15:41 +0000
+Message-ID: <20251024131546.929499-1-tejus.gk@nutanix.com>
+X-Mailer: git-send-email 2.43.7
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3ArjAcOEa3UCbk2YRByrFBl_RcoKn59A
-X-Proofpoint-GUID: Xn1EI7W_8Q16HtopEVmTX3r2BPnV5dZu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX8PolSy0Z1ONc
- ZYCzc8Z2ZPlOry9mse7ptNL1AnY2grD2TCFPgrTnGOfLOba7VLf1Xb+AFWXmavX4dATZe2rtHqd
- uqOM/sBuVoi4NCQOZgXv9oESX5HV97fBco60mRfvXZZeqWNGNNeyrHAdiWVPf/xXootLbkH/is/
- iqhPWBbrSEROiAovo8/ARZKjochffcu3RwktXrDYYlJrkzDIGmuM7qDJ6Wgmfj4DtjHS43jcvic
- azPgOIFjxR3PC6eKFi1r/QX3Bss/vLd/Uf55167sJNhBrjCMFaIN98hCfOfHsqWn/1CAO71yF60
- HKShAt9UqsZT3vAGluqfhbHaBGMNPMx9yHseGeKPGegOIRTsvA8u6gjICRhoJVGSiXYg53pWndh
- qlxIcMLjWf5TPijg0ZtoGt7mVwrPRw==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68fb7a16 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8 a=-Rt1QlvtLuBJMzJCn24A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-ClientProxiedBy: PH7P220CA0121.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::10) To MW6PR02MB9817.namprd02.prod.outlook.com
+ (2603:10b6:303:23b::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR02MB9817:EE_|LV3PR02MB10643:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e552808-907c-436a-6ebe-08de12ff785c
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|52116014|366016|1800799024|38350700014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TDI1czNXNXl1NkdOSWRqdkF3N1ZCUjVWdzZQM2YwRE1YS2xrd3ZzMEtHYmd6?=
+ =?utf-8?B?YjgxenlxNE1sbkRCbDcwUE13bWMxbkE2Z0d3MC90dE9TSHMrckVQYkIvRFJV?=
+ =?utf-8?B?d2R2WldoRnBiSGdJbk1lRittejhuU2lZVFNGYXhjclBSM2NMajRiMlBJclUx?=
+ =?utf-8?B?QzEwbUlRQ1NvZDRBQ0wxT1FTTkMzaHVLSW5BY2lZdzVZdm5GWGRGUWFVVG1y?=
+ =?utf-8?B?bTVZV2RZZUx0RVk5b3hWR2ZXc1ZISWloYmtZMHpkeCtsSmFhNzh1L3dwd2xy?=
+ =?utf-8?B?V00zVndpaUFwR3RCTHg1VUZWVmx1Um9Da2l6bnNoc1ZDaEtJQTVxQW9WTFV2?=
+ =?utf-8?B?VmVmV1R4dkdZVGFOdzNiZEFFSmRkRktjV1Zza3B3TlhhWU4wUWVVdk40QkFi?=
+ =?utf-8?B?QmNEWTlySTJtYUFHQWdjbUtYRGRXQUM4R1d3NWZlTERDVndPZkdYV2lqRDNG?=
+ =?utf-8?B?MEx6MEROZWxnQ3R1Nnd0T0EvcGxNbFVHMFBFbGxaNGdIVkJubFU3RFZlN3o0?=
+ =?utf-8?B?U1NKeDZxcVlwSnU1ZGNQKzVmditUa1ArRFdhY1QyK2FPSFp4ZUVweTh4YTAw?=
+ =?utf-8?B?UWF4ZzZ1UG5nSnkxb3FZdHFTcFhnZXlHemorekR4SGIxTURHK1ZDQy9uTUJW?=
+ =?utf-8?B?c0hDM2tXenRrWVE1eDdHdWNhaEdqWnBUclVVVmNrTkVVMStSc0E3a0x1eGFO?=
+ =?utf-8?B?T20zTGxjRytPWDBHZ09CcWdQRU5ST1p6UVoyQ2QzWk5mcWIxSDZpdFRzWUxk?=
+ =?utf-8?B?YWg4L0JyZ0V0ZXVCRTdWdkc2ZmhyZUNNckZVaUlPaG9PODlEUHJwWTdxTXV3?=
+ =?utf-8?B?OG9FOWZvSCtEMXhoTndIM29kcUc0Z3JWQTAyUGwrbmQrMlJxS2E0aGIvMkFS?=
+ =?utf-8?B?NHZHbnJJaFRFTGVpcEdBdFdXeHVUSWpKWk5MK2NvYWxVcmUvTldJL2N3VE42?=
+ =?utf-8?B?cGxWVVM1WnZnRWoyR0dpZ3Y1UUQ5aUpVSXBURDlreWI1NHZzMGFtbE1zOEor?=
+ =?utf-8?B?ZWZ4eU5wYmdudnIvNFpsaUxuWFR1VmlMMW8vNzAvdU5RNDV6UFlSQWpzOVNz?=
+ =?utf-8?B?YmhVaGFFdDVSY3ovRSs3Z04vaE8rbXIyaHQ2bVY3blVKaEpLWGxlYWpTWHpa?=
+ =?utf-8?B?STY1a0RUQ2pubGkzRDV4RTFtVDhmbFAwbWsrRytRSTJ5T2JMVVVLdzBoN1J4?=
+ =?utf-8?B?N3RSWVd5SHNoT2wyQ0tMeSs2Vjc5WGtHZGpkWC9PSSsxbGdUc3hPcjNvVXJN?=
+ =?utf-8?B?UGluVFNETGZ4K0tyV2N0KzNwTTBtUXpteU9Ib21yR3lNWTNkd2R3ekV3eGk0?=
+ =?utf-8?B?WlFGaFNQcXpDaWt2Zlg3VUV0RWdEenY4VkZWK0E1YjZaSjdKU1pvaExDcHZh?=
+ =?utf-8?B?ZWFLa0NMd3lGcmZYZndTOFlmckN3clN5aHdJczl4ZVYvbTg1azYzbG5HcFhU?=
+ =?utf-8?B?d3N5a25lTGhXek5zOTk2L0lSVTB6dWJHSk9rd0Q4WHNvOExFS0FKKzdKYlBE?=
+ =?utf-8?B?NU5ZYjFJN24wK0p6N3lTYVBVeDB4SjZUL1hWVnFoN216dWd6UmJldGpqbEdZ?=
+ =?utf-8?B?Z2RmK1JlS05KK2g0RGQzWFpqTXpqUS9mWW9MVnJyWkhFTjROdVdNVE51ejN1?=
+ =?utf-8?B?bEJGZWJnM1YvMzZRS0ZWc1B6a3hmRTZaMjhhWTg3ckR1aUVUV1ZMaEhsRm1P?=
+ =?utf-8?B?dEV2VUk4eVRNMWVyVE9BNDlmbG9pWHMrTXV3YjhQMFJQUFNTbVZNZmpmamFH?=
+ =?utf-8?B?SkZBTDRKWmxOYzlBLzIzNytSV1luQU5KQmZsSW5KTHRNNWUyNWhTR2Z2d2Np?=
+ =?utf-8?B?MEJ1dE01dnVaQVIyOGF0VmcwdG9jOVU0QnlKVTZrZmlYNEZLU0dEQ0JGalRN?=
+ =?utf-8?B?UFBlQWpza0R2UTBSN3RaMlJmUWJ4NnoyRFF5L3dxVHNjSHIwUUd0b0FJVzVM?=
+ =?utf-8?B?dHljeXdxUUZ2S3prVEVoTngrRU91SDQrMHhkTUtNbFdZd1VYNndNRTA0OG1H?=
+ =?utf-8?B?UEx0RU5MeUY4Wjc0d0FPeG1DVkNjaG4vYktOS3pPeS9qcHZOWk9QOUdsZ01S?=
+ =?utf-8?Q?wNG1TC?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW6PR02MB9817.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFpVL0xSKzRCZGlZYzdyby95cEpqZUhuVjF1Q2pYWCsybXQ3dytJRHZqaWRX?=
+ =?utf-8?B?amNqVk9Jc0V1bE9RVmd1VUlxZEtWOGNBSjk2cHNSa2JnRWZMU1hTR25JcGJo?=
+ =?utf-8?B?OFVZeEhpcGNwQmgwTlRBa1RDcWJMOUxua0RkaUNPVk5pWnlteG5IQkNtWWtO?=
+ =?utf-8?B?VmllNXVVbE1HZUFKY0VBUWh2OXVwRkF5c1kxNnBBVncyQUhHbStGRUFqWFpU?=
+ =?utf-8?B?OTAvT2lqRkRXVFdraXp2VHdVUm1YRGZaSXFzNk5NVGdrZk5Gcy9wNHdFMFpp?=
+ =?utf-8?B?TUZ3RFRvZ0hhRnU1VEJwdjVIOUkwVlQyMENFN1VGc1M3SEVRUkFtYVlpOVZu?=
+ =?utf-8?B?QmFLL2V5Y2o2cytOSHpwcXlQWDVnMjFFU01GYmtqbEVxZ3I2a05mM05pQk1a?=
+ =?utf-8?B?dU9RcmdTY2dyNDluUitMNjFsZzhEN2l1YXpzSmpBeEFKWEdnWmprSExyK1M0?=
+ =?utf-8?B?WjJ3TXBJM0pLdmNYK0FRQzZ4MTNMbHY3aitVd1NmWTM3b25sMHk1SHpxbnh3?=
+ =?utf-8?B?WVh4L2NoSXdvOVdvaEVuUmNPUG5XNlFMY2RITHZMcjg4M3N4QXNpQ0NrMGNO?=
+ =?utf-8?B?L0drQTgxM3JrZjJnbmQ3S1pPTko3TDF5L3Q1QzhaTTA2Zk9oQ3IzOVAwblRM?=
+ =?utf-8?B?eTEzZ2poUDV5UnV1M0hOdVpRUkdVcSs2YUJTUEhXSDBmc2RVZkpwclBRYnQv?=
+ =?utf-8?B?OVZxSUZ5L3VDYyt6UnVsUTkzUVkrZmU2REpVb1cwNEpPdytjOE1za1UxaW5y?=
+ =?utf-8?B?aHpXdXRqcnZSRXd5dlJmR2VxU3JoOTRKWlIzZlJRVzR4VHQ2MWdybnN1Y1lu?=
+ =?utf-8?B?SkR1MXdaQms3RzhUeWpIZmVZNXJ0VEQrOVJOUis4Uno4OFBNY1grQWJvTDBK?=
+ =?utf-8?B?MVN1MDlQSHl4MUF5bG9UVzFvZWJGUk5EQW1yMXpYMVlpMGhPTTFwN2IrTEZW?=
+ =?utf-8?B?K0JrN2xiOTdwbi9oaFFLMU5jTTZBYkxnVytOVlVOaEM5MnNJRUNDMXlacmUr?=
+ =?utf-8?B?WlVHUS9oUTFwSy9acFA0MGt3OG5saHo4V0ZMYkZuREFDVk95ZzdDUmhKN25Z?=
+ =?utf-8?B?NUx2YzVHK213V1kzTFFRNkVaZTJtR2FTSk1sM0JFZjNFcTk3aWczdW1JRlNm?=
+ =?utf-8?B?SDRmdTkzcmh6WE1reVNidmhPYVBIRHBQbkVtdDBwOFJBWG5oc0FIRVhYY2ZP?=
+ =?utf-8?B?MXlsZk03LzhrWklqMnZWZzVnOXZYRTEzYVB5TEdCQURhTGJ2a3A4YzJ6dzV0?=
+ =?utf-8?B?OEFNR05rSXZaMVdBemxIL2tTRkdlaHhPd3VJc3pVamVrVktWR1ZjbG9DYmp5?=
+ =?utf-8?B?a0hIWlptdis3cVA0Ti9ldzRRS0cyUk5XQmlPaWdMSzlRVEo5WUhPQlBDZkFR?=
+ =?utf-8?B?ZHlTK1hncXZJQUtTaWF1UG01UUFvek9FVE1XemF4NytJdkdYY2txS2NhMWhB?=
+ =?utf-8?B?ZFBzcEpFdVlhdmNLUVFPMTN2ekxtOFo4Q2VlUFNsbDJRQ1VxUHgzc3RNRkpD?=
+ =?utf-8?B?VXRsL2Z5QjNzWUlSc3FXV1ZEdW5LaXQrb0U0eFRHdWlKL2lPTWR4RGUweHkr?=
+ =?utf-8?B?bU1DdjhsM0NMSjhNYnB4SXpsbEszRmZTbVVPS0xrWFJwQTFiZUZOTmloZmNz?=
+ =?utf-8?B?NU5MUmVwRi9XeXN3QkloZ3FJWlVvRFN1UElBbkhmVEdNNnJBdVNVM2IzOFFP?=
+ =?utf-8?B?b3dCbko0eEJtZjFad054VGVxck9QaUY2dHdNMC9pNTZMemQycTMvYzdoeDY5?=
+ =?utf-8?B?MENldGRHejVFTmR0RS9PZGxWSGxVUFJEWkZoTnpPZHl3ajREMTFqRGZHK2lh?=
+ =?utf-8?B?VEVqQ2huM2d0SEtHVnhJTytDcGE0WG5rQUZSM3JkY1o4dTFjNzJvVkIyYUlU?=
+ =?utf-8?B?WXpLc2dFM3ZtdGYzWVcrc0Q1TWRoanM1U093WFAycE1NVytOczRncU9TdkEv?=
+ =?utf-8?B?SjJzcy9Zck9Kdm5iek5GU1ZsbVoxaElNN01UN1N6TllvZzNTQmNIeEprcTNm?=
+ =?utf-8?B?aCt4ZjVwYUxRaEloWWxZZmgzUXpvM1pua1h0M1ZSSHZ4SWJ6SzZhVExMNnc0?=
+ =?utf-8?B?dDhWZ290cE1HNEU1dzJlZjMzaHlZRlVQMFQ3SCtJWVR2OGhSRVVpWUF0QWF3?=
+ =?utf-8?Q?DeCGY4Oku2fGLzAQRU+IpUppr?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e552808-907c-436a-6ebe-08de12ff785c
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR02MB9817.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 13:15:58.0280 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mAR7l1U+M/7FUukHrPNgz11HaK6Gwv6wmc/d09R0GZk0urPHMxBzBlUqLf7ZcT5TW/rspPBTv6c1z8EgRU+thA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10643
+X-Proofpoint-ORIG-GUID: E0GyZBC_IBQ-3Ailkt0tpVnVpct18Qoa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDExOSBTYWx0ZWRfX9OFwg+nTSDh8
+ XjaEnTFZjR9sQRHYP/uNUvm3IsXFgJSW2vzV44bJNw03fiPLLyFVTSnlqy8x2VWXxXowjUktHgs
+ OOHTTF/V/hIKWaxkqrLPNbz/2fKrqterjzaE/c6KfWsAk4m0c7Fwyzz6d4XH+d6XDZBW1ozC3ZE
+ 136gKnRCFg5Jf02HsaZVsib2neNjYv8yG1SFHXN2sE9JnuDRlvJbXb7sjRZ0P2H4bdnshm4mOH2
+ 2wdRr7lbCklQWi18Z6AGeHzt8jskWNH7RP1Y1rO3hRhhIt8dicjMFfMVK57ZyNOVu7ubdfyZ096
+ 06nY6BFSB2cYIMFNzTDGxNZWwyKjD7hj59CX+LtDYl6+qyRvfS5OIrhG5oAZXDbOCeHnkyWyWB7
+ /c6v6eaqxlWsDcd6rrljLPteD63y4A==
+X-Authority-Analysis: v=2.4 cv=MPFtWcZl c=1 sm=1 tr=0 ts=68fb7c11 cx=c_pps
+ a=CN5Nmbld9GKaZyt1KupX+Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=0kUYKlekyDsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=pB3Rj0LEYSIxIFKjaFAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: E0GyZBC_IBQ-3Ailkt0tpVnVpct18Qoa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-24_02,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=vishalc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68; envelope-from=tejus.gk@nutanix.com;
+ helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,409 +211,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass error_fatal to load_image_targphys() calls in ppc machine initialization
-to capture detailed error information when loading firmware, kernel,
-and initrd images.
+Hi all,
 
-Passing error_fatal automatically reports detailed error messages and
-exits immediately on failure. Eliminating redundant exit(1) calls, as
-error_fatal handles termination
+This series introduces support for partial flushing of the socket error
+queue during a zerocopy enabled live migration. This will help reduce
+live migration errors due to ENOBUFS in scenarios where a lot of
+out-of-order processing may happen.
 
-The behavior remains functionally identical, but error messages now
-come directly from the loader function with more context about the
-failure cause.
+V7:
+   1. Added a comment explaining the usage of G_IO_ERR on the socket error
+      queue.
 
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
----
- hw/ppc/amigaone.c      | 13 ++-----------
- hw/ppc/e500.c          | 19 +++----------------
- hw/ppc/mac_newworld.c  | 16 +++-------------
- hw/ppc/mac_oldworld.c  | 16 +++-------------
- hw/ppc/pegasos2.c      |  9 ++-------
- hw/ppc/pnv.c           | 28 +++++-----------------------
- hw/ppc/ppc440_bamboo.c |  8 +-------
- hw/ppc/prep.c          | 17 ++++-------------
- hw/ppc/sam460ex.c      |  7 +------
- hw/ppc/spapr.c         | 13 ++-----------
- hw/ppc/virtex_ml507.c  | 10 ++--------
- 11 files changed, 28 insertions(+), 128 deletions(-)
+V6:
+   1. Dropped QIO_CHANNEL_WRITE_FLAG_ZERO_COPY_FLUSH_ONCE, since it's
+      redundant.
 
-diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-index 192474e0ae..74a1fa3b63 100644
---- a/hw/ppc/amigaone.c
-+++ b/hw/ppc/amigaone.c
-@@ -324,11 +324,7 @@ static void amigaone_init(MachineState *machine)
-             error_report("Could not find firmware '%s'", machine->firmware);
-             exit(1);
-         }
--        sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE, NULL);
--        if (sz <= 0 || sz > PROM_SIZE) {
--            error_report("Could not load firmware '%s'", filename);
--            exit(1);
--        }
-+        sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE, &error_fatal);
-     }
- 
-     /* Articia S */
-@@ -413,12 +409,7 @@ static void amigaone_init(MachineState *machine)
-         loadaddr = ROUND_UP(loadaddr + 4 * MiB, 4 * KiB);
-         loadaddr = MAX(loadaddr, INITRD_MIN_ADDR);
-         sz = load_image_targphys(machine->initrd_filename, loadaddr,
--                                 bi->bd_info - loadaddr, NULL);
--        if (sz <= 0) {
--            error_report("Could not load initrd '%s'",
--                         machine->initrd_filename);
--            exit(1);
--        }
-+                                 bi->bd_info - loadaddr, &error_fatal);
-         bi->initrd_start = loadaddr;
-         bi->initrd_end = loadaddr + sz;
-     }
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 418e1bb2fb..8842f7f6b8 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -1226,14 +1226,8 @@ void ppce500_init(MachineState *machine)
-     if (machine->kernel_filename && !kernel_as_payload) {
-         kernel_base = cur_base;
-         kernel_size = load_image_targphys(machine->kernel_filename,
--                                          cur_base,
--                                          machine->ram_size - cur_base, NULL);
--        if (kernel_size < 0) {
--            error_report("could not load kernel '%s'",
--                         machine->kernel_filename);
--            exit(1);
--        }
--
-+                                      cur_base, machine->ram_size - cur_base,
-+                                      &error_fatal);
-         cur_base += kernel_size;
-     }
- 
-@@ -1242,14 +1236,7 @@ void ppce500_init(MachineState *machine)
-         initrd_base = (cur_base + INITRD_LOAD_PAD) & ~INITRD_PAD_MASK;
-         initrd_size = load_image_targphys(machine->initrd_filename, initrd_base,
-                                           machine->ram_size - initrd_base,
--                                          NULL);
--
--        if (initrd_size < 0) {
--            error_report("could not load initial ram disk '%s'",
--                         machine->initrd_filename);
--            exit(1);
--        }
--
-+                                          &error_fatal);
-         cur_base = initrd_base + initrd_size;
-     }
- 
-diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
-index 004efc6b97..951de4bae4 100644
---- a/hw/ppc/mac_newworld.c
-+++ b/hw/ppc/mac_newworld.c
-@@ -189,7 +189,7 @@ static void ppc_core99_init(MachineState *machine)
-         if (bios_size <= 0) {
-             /* or load binary ROM image */
-             bios_size = load_image_targphys(filename, PROM_BASE, PROM_SIZE,
--                                            NULL);
-+                                            &error_fatal);
-         }
-         g_free(filename);
-     }
-@@ -212,12 +212,7 @@ static void ppc_core99_init(MachineState *machine)
-             kernel_size = load_image_targphys(machine->kernel_filename,
-                                               kernel_base,
-                                               machine->ram_size - kernel_base,
--                                              NULL);
--        }
--        if (kernel_size < 0) {
--            error_report("could not load kernel '%s'",
--                         machine->kernel_filename);
--            exit(1);
-+                                              &error_fatal);
-         }
-         /* load initrd */
-         if (machine->initrd_filename) {
-@@ -225,12 +220,7 @@ static void ppc_core99_init(MachineState *machine)
-             initrd_size = load_image_targphys(machine->initrd_filename,
-                                               initrd_base,
-                                               machine->ram_size - initrd_base,
--                                              NULL);
--            if (initrd_size < 0) {
--                error_report("could not load initial ram disk '%s'",
--                             machine->initrd_filename);
--                exit(1);
--            }
-+                                              &error_fatal);
-             cmdline_base = TARGET_PAGE_ALIGN(initrd_base + initrd_size);
-         } else {
-             cmdline_base = TARGET_PAGE_ALIGN(kernel_base + kernel_size + KERNEL_GAP);
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index c7e44d49b0..cd2bb46442 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -144,7 +144,7 @@ static void ppc_heathrow_init(MachineState *machine)
-         if (bios_size <= 0) {
-             /* or if could not load ELF try loading a binary ROM image */
-             bios_size = load_image_targphys(filename, PROM_BASE, PROM_SIZE,
--                                            NULL);
-+                                            &error_fatal);
-             bios_addr = PROM_BASE;
-         }
-         g_free(filename);
-@@ -168,12 +168,7 @@ static void ppc_heathrow_init(MachineState *machine)
-             kernel_size = load_image_targphys(machine->kernel_filename,
-                                               kernel_base,
-                                               machine->ram_size - kernel_base,
--                                              NULL);
--        }
--        if (kernel_size < 0) {
--            error_report("could not load kernel '%s'",
--                         machine->kernel_filename);
--            exit(1);
-+                                              &error_fatal);
-         }
-         /* load initrd */
-         if (machine->initrd_filename) {
-@@ -182,12 +177,7 @@ static void ppc_heathrow_init(MachineState *machine)
-             initrd_size = load_image_targphys(machine->initrd_filename,
-                                               initrd_base,
-                                               machine->ram_size - initrd_base,
--                                              NULL);
--            if (initrd_size < 0) {
--                error_report("could not load initial ram disk '%s'",
--                             machine->initrd_filename);
--                exit(1);
--            }
-+                                              &error_fatal);
-             cmdline_base = TARGET_PAGE_ALIGN(initrd_base + initrd_size);
-         } else {
-             cmdline_base = TARGET_PAGE_ALIGN(kernel_base + kernel_size + KERNEL_GAP);
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index a9e706644c..3c02c53c3a 100644
---- a/hw/ppc/pegasos2.c
-+++ b/hw/ppc/pegasos2.c
-@@ -198,7 +198,7 @@ static void pegasos_init(MachineState *machine)
-                   ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
-     if (sz <= 0) {
-         sz = load_image_targphys(filename, pm->vof ? 0 : prom_addr, PROM_SIZE,
--                                 NULL);
-+                                 &error_fatal);
-     }
-     if (sz <= 0 || sz > PROM_SIZE) {
-         error_report("Could not load firmware '%s'", filename);
-@@ -302,12 +302,7 @@ static void pegasos_init(MachineState *machine)
-         pm->initrd_addr = ROUND_UP(pm->initrd_addr, 4);
-         pm->initrd_addr = MAX(pm->initrd_addr, INITRD_MIN_ADDR);
-         sz = load_image_targphys(machine->initrd_filename, pm->initrd_addr,
--                                 machine->ram_size - pm->initrd_addr, NULL);
--        if (sz <= 0) {
--            error_report("Could not load initrd '%s'",
--                         machine->initrd_filename);
--            exit(1);
--        }
-+                            machine->ram_size - pm->initrd_addr, &error_fatal);
-         pm->initrd_size = sz;
-     }
- 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 1c0dadda87..895132da91 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1009,7 +1009,6 @@ static void pnv_init(MachineState *machine)
-     PnvMachineClass *pmc = PNV_MACHINE_GET_CLASS(machine);
-     int max_smt_threads = pmc->max_smt_threads;
-     char *fw_filename;
--    long fw_size;
-     uint64_t chip_ram_start = 0;
-     int i;
-     char *chip_typename;
-@@ -1068,26 +1067,14 @@ static void pnv_init(MachineState *machine)
-         exit(1);
-     }
- 
--    fw_size = load_image_targphys(fw_filename, pnv->fw_load_addr, FW_MAX_SIZE,
--                                  NULL);
--    if (fw_size < 0) {
--        error_report("Could not load OPAL firmware '%s'", fw_filename);
--        exit(1);
--    }
-+    load_image_targphys(fw_filename, pnv->fw_load_addr, FW_MAX_SIZE,
-+                        &error_fatal);
-     g_free(fw_filename);
- 
-     /* load kernel */
-     if (machine->kernel_filename) {
--        long kernel_size;
--
--        kernel_size = load_image_targphys(machine->kernel_filename,
--                                          KERNEL_LOAD_ADDR, KERNEL_MAX_SIZE,
--                                          NULL);
--        if (kernel_size < 0) {
--            error_report("Could not load kernel '%s'",
--                         machine->kernel_filename);
--            exit(1);
--        }
-+        load_image_targphys(machine->kernel_filename,
-+                            KERNEL_LOAD_ADDR, KERNEL_MAX_SIZE, &error_fatal);
-     }
- 
-     /* load initrd */
-@@ -1095,12 +1082,7 @@ static void pnv_init(MachineState *machine)
-         pnv->initrd_base = INITRD_LOAD_ADDR;
-         pnv->initrd_size = load_image_targphys(machine->initrd_filename,
-                                                pnv->initrd_base,
--                                               INITRD_MAX_SIZE, NULL);
--        if (pnv->initrd_size < 0) {
--            error_report("Could not load initial ram disk '%s'",
--                         machine->initrd_filename);
--            exit(1);
--        }
-+                                               INITRD_MAX_SIZE, &error_fatal);
-     }
- 
-     /* load dtb if passed */
-diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-index 7c66912c10..7e739a2114 100644
---- a/hw/ppc/ppc440_bamboo.c
-+++ b/hw/ppc/ppc440_bamboo.c
-@@ -243,13 +243,7 @@ static void bamboo_init(MachineState *machine)
-     if (initrd_filename) {
-         initrd_size = load_image_targphys(initrd_filename, RAMDISK_ADDR,
-                                           machine->ram_size - RAMDISK_ADDR,
--                                          NULL);
--
--        if (initrd_size < 0) {
--            error_report("could not load ram disk '%s' at %x",
--                         initrd_filename, RAMDISK_ADDR);
--            exit(1);
--        }
-+                                          &error_fatal);
-     }
- 
-     /* If we're loading a kernel directly, we must load the device tree too. */
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 0759e95cb6..c2fe16e985 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -280,7 +280,8 @@ static void ibm_40p_init(MachineState *machine)
-     bios_size = load_elf(filename, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-                          ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
-     if (bios_size < 0) {
--        bios_size = load_image_targphys(filename, BIOS_ADDR, BIOS_SIZE, NULL);
-+        bios_size = load_image_targphys(filename, BIOS_ADDR, BIOS_SIZE,
-+                                        &error_fatal);
-     }
-     if (bios_size < 0 || bios_size > BIOS_SIZE) {
-         error_report("Could not load bios image '%s'", filename);
-@@ -380,12 +381,7 @@ static void ibm_40p_init(MachineState *machine)
-         kernel_size = load_image_targphys(machine->kernel_filename,
-                                           kernel_base,
-                                           machine->ram_size - kernel_base,
--                                          NULL);
--        if (kernel_size < 0) {
--            error_report("could not load kernel '%s'",
--                         machine->kernel_filename);
--            exit(1);
--        }
-+                                          &error_fatal);
-         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_ADDR, kernel_base);
-         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_SIZE, kernel_size);
-         /* load initrd */
-@@ -394,12 +390,7 @@ static void ibm_40p_init(MachineState *machine)
-             initrd_size = load_image_targphys(machine->initrd_filename,
-                                               initrd_base,
-                                               machine->ram_size - initrd_base,
--                                              NULL);
--            if (initrd_size < 0) {
--                error_report("could not load initial ram disk '%s'",
--                             machine->initrd_filename);
--                exit(1);
--            }
-+                                              &error_fatal);
-             fw_cfg_add_i32(fw_cfg, FW_CFG_INITRD_ADDR, initrd_base);
-             fw_cfg_add_i32(fw_cfg, FW_CFG_INITRD_SIZE, initrd_size);
-         }
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 68d3eacbff..258d43f8d2 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -495,12 +495,7 @@ static void sam460ex_init(MachineState *machine)
-         initrd_size = load_image_targphys(machine->initrd_filename,
-                                           RAMDISK_ADDR,
-                                           machine->ram_size - RAMDISK_ADDR,
--                                          NULL);
--        if (initrd_size < 0) {
--            error_report("could not load ram disk '%s' at %x",
--                    machine->initrd_filename, RAMDISK_ADDR);
--            exit(1);
--        }
-+                                          &error_fatal);
-     }
- 
-     /* If we're loading a kernel directly, we must load the device tree too. */
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index cdf2fdeadc..99b843ba2f 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2854,11 +2854,7 @@ static void spapr_machine_init(MachineState *machine)
-         error_report("Could not find LPAR firmware '%s'", bios_name);
-         exit(1);
-     }
--    fw_size = load_image_targphys(filename, 0, FW_MAX_SIZE, NULL);
--    if (fw_size <= 0) {
--        error_report("Could not load LPAR firmware '%s'", filename);
--        exit(1);
--    }
-+    fw_size = load_image_targphys(filename, 0, FW_MAX_SIZE, &error_fatal);
- 
-     /*
-      * if Secure VM (PEF) support is configured, then initialize it
-@@ -3117,12 +3113,7 @@ static void spapr_machine_init(MachineState *machine)
-             spapr->initrd_size = load_image_targphys(initrd_filename,
-                                                 spapr->initrd_base,
-                                                 load_limit - spapr->initrd_base,
--                                                NULL);
--            if (spapr->initrd_size < 0) {
--                error_report("could not load initial ram disk '%s'",
--                             initrd_filename);
--                exit(1);
--            }
-+                                                &error_fatal);
-         }
-     }
- 
-diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-index 00d9ab7509..43a6d505a8 100644
---- a/hw/ppc/virtex_ml507.c
-+++ b/hw/ppc/virtex_ml507.c
-@@ -253,7 +253,7 @@ static void virtex_init(MachineState *machine)
-             /* If we failed loading ELF's try a raw image.  */
-             kernel_size = load_image_targphys(kernel_filename,
-                                               boot_offset,
--                                              machine->ram_size, NULL);
-+                                              machine->ram_size, &error_fatal);
-             boot_info.bootstrap_pc = boot_offset;
-             high = boot_info.bootstrap_pc + kernel_size + 8192;
-         }
-@@ -265,13 +265,7 @@ static void virtex_init(MachineState *machine)
-             initrd_base = high = ROUND_UP(high, 4);
-             initrd_size = load_image_targphys(machine->initrd_filename,
-                                               high, machine->ram_size - high,
--                                              NULL);
--
--            if (initrd_size < 0) {
--                error_report("couldn't load ram disk '%s'",
--                             machine->initrd_filename);
--                exit(1);
--            }
-+                                              &error_fatal);
-             high = ROUND_UP(high + initrd_size, 4);
-         }
- 
+V5:
+    1. Introduced a new write flag
+       QIO_CHANNEL_WRITE_FLAG_ZERO_COPY_FLUSH_ONCE, which will let callers
+       decide if they want to do a partial flush on an ENOBUFS.
+    2. Added a "blocking" field to QIOChannelSocket, which indicates if
+       the socket is in blocking mode or not.
+
+V4:
+    1. Minor nit to rename s/zero_copy_flush_pending/zerocopy_flushed_once.
+
+V3:
+    1. Add the dirty_sync_missed_zero_copy migration stat again.
+
+V2:
+    1. Removed the dirty_sync_missed_zero_copy migration stat.
+    2. Made the call to qio_channel_socket_flush_internal() from
+       qio_channel_socket_writev() non-blocking
+
+regards,
+tejus
+
+
+Manish Mishra (1):
+  QIOChannelSocket: flush zerocopy socket error queue on sendmsg failure
+    due to ENOBUF
+
+Tejus GK (1):
+  QIOChannelSocket: add a "blocking" field to QIOChannelSocket
+
+ include/io/channel-socket.h |  6 +++
+ io/channel-socket.c         | 82 ++++++++++++++++++++++++++++++-------
+ 2 files changed, 74 insertions(+), 14 deletions(-)
+
 -- 
-2.51.0
+2.43.7
 
 
