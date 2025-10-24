@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01B3C0850E
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EEEC08509
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 01:32:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCRFp-0006QS-Ns; Fri, 24 Oct 2025 19:31:29 -0400
+	id 1vCRFp-0006PG-3O; Fri, 24 Oct 2025 19:31:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vCRFl-0006O3-U8; Fri, 24 Oct 2025 19:31:26 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1vCRFk-0006NU-2S; Fri, 24 Oct 2025 19:31:25 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vCRFf-0000GQ-FG; Fri, 24 Oct 2025 19:31:25 -0400
+ id 1vCRFg-0000Gr-Nm; Fri, 24 Oct 2025 19:31:23 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D925B597457;
- Sat, 25 Oct 2025 01:31:17 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 43533597455;
+ Sat, 25 Oct 2025 01:31:19 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id qNtvuqeMTg1Q; Sat, 25 Oct 2025 01:31:15 +0200 (CEST)
+ id 19RG6XjyrvrO; Sat, 25 Oct 2025 01:31:17 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DCF6C59744F; Sat, 25 Oct 2025 01:31:15 +0200 (CEST)
-Message-ID: <275cd2d5074b76b4a504a01f658e85ed7994ea3e.1761346145.git.balaton@eik.bme.hu>
+ id F07CB597458; Sat, 25 Oct 2025 01:31:16 +0200 (CEST)
+Message-ID: <f86b90f6839a0cf9426c0d89e95e6ca33704728c.1761346145.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1761346145.git.balaton@eik.bme.hu>
 References: <cover.1761346145.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 3/4] hw/ppc/pegasos2: Rename to pegasos
+Subject: [PATCH 4/4] hw/ppc/pegasos: Update documentation for pegasos1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,16 +37,16 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 25 Oct 2025 01:31:15 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Date: Sat, 25 Oct 2025 01:31:16 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,92 +62,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we also emulate pegasos1 it is not only about pegasos2 so
-rename to a more generic name encompassing both.
-
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- MAINTAINERS                             | 4 ++--
- configs/devices/ppc-softmmu/default.mak | 7 +++----
- hw/ppc/Kconfig                          | 2 +-
- hw/ppc/meson.build                      | 4 ++--
- hw/ppc/{pegasos2.c => pegasos.c}        | 0
- 5 files changed, 8 insertions(+), 9 deletions(-)
- rename hw/ppc/{pegasos2.c => pegasos.c} (100%)
+ docs/system/ppc/amigang.rst | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f33f95ceea..c85b79ad2d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1646,11 +1646,11 @@ F: roms/u-boot-sam460ex
- F: docs/system/ppc/amigang.rst
- F: tests/functional/ppc/test_sam460ex.py
+diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
+index 21bb14ed09..e290412369 100644
+--- a/docs/system/ppc/amigang.rst
++++ b/docs/system/ppc/amigang.rst
+@@ -1,6 +1,6 @@
+-=========================================================
+-AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
+-=========================================================
++=======================================================================
++AmigaNG boards (``amigaone``, ``pegasos1``, ``pegasos2``, ``sam460ex``)
++=======================================================================
  
--pegasos2
-+pegasos
- M: BALATON Zoltan <balaton@eik.bme.hu>
- L: qemu-ppc@nongnu.org
- S: Maintained
--F: hw/ppc/pegasos2.c
-+F: hw/ppc/pegasos.c
- F: hw/pci-host/mv64361.c
- F: hw/pci-host/mv643xx.h
- F: include/hw/pci-host/mv64361.h
-diff --git a/configs/devices/ppc-softmmu/default.mak b/configs/devices/ppc-softmmu/default.mak
-index 460d15e676..180ae31e2d 100644
---- a/configs/devices/ppc-softmmu/default.mak
-+++ b/configs/devices/ppc-softmmu/default.mak
-@@ -13,15 +13,14 @@
- # CONFIG_PPC440=n
- # CONFIG_VIRTEX=n
+ These PowerPC machines emulate boards that are primarily used for
+ running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
+@@ -64,18 +64,23 @@ eventually it boots and the installer becomes visible. The ``ati-vga`` RV100
+ emulation is not complete yet so only frame buffer works, DRM and 3D is not
+ available.
  
--# For Sam460ex
-+# AmigaNG
-+# CONFIG_AMIGAONE=n
-+# CONFIG_PEGASOS=n
- # CONFIG_SAM460EX=n
+-Genesi/bPlan Pegasos II (``pegasos2``)
+-======================================
++Genesi/bPlan Pegasos (``pegasos1``, ``pegasos2``)
++=================================================
  
- # For Macs
- # CONFIG_MAC_OLDWORLD=n
- # CONFIG_MAC_NEWWORLD=n
+-The ``pegasos2`` machine emulates the Pegasos II sold by Genesi and
+-designed by bPlan. Its schematics are available at
+-https://www.powerdeveloper.org/platforms/pegasos/schematics.
++The ``pegasos1`` machine emulates the original Pegasos (later marked I) sold by
++Genesi and designed by bPlan. It uses the same Articia S north bridge as the
++``amigaone`` machine, otherwise it is mostly the same as the later Pegasos II.
++
++The ``pegasos2`` machine emulates the Pegasos II which is a redesigned version
++of Pegasos I to fix problems with its north bridge. Its schematics are available
++at https://www.powerdeveloper.org/platforms/pegasos/schematics.
  
--# CONFIG_AMIGAONE=n
--# CONFIG_PEGASOS2=n
--
- # For PReP
- # CONFIG_PREP=n
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 7091d72fd8..347dcce690 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -92,7 +92,7 @@ config AMIGAONE
-     select VT82C686
-     select SMBUS_EEPROM
+ Emulated devices
+ ----------------
  
--config PEGASOS2
-+config PEGASOS
-     bool
-     default y
-     depends on PPC
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 6b7c1f4f49..f7dac87a2a 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -87,8 +87,8 @@ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
- ppc_ss.add(when: 'CONFIG_VIRTEX', if_true: files('virtex_ml507.c'))
- # AmigaOne
- ppc_ss.add(when: 'CONFIG_AMIGAONE', if_true: files('amigaone.c'))
--# Pegasos2
--ppc_ss.add(when: 'CONFIG_PEGASOS2', if_true: files('pegasos2.c'))
-+# Pegasos
-+ppc_ss.add(when: 'CONFIG_PEGASOS', if_true: files('pegasos.c'))
+  * PowerPC 7457 CPU (can also use ``-cpu g3`` or ``750cxe``)
+- * Marvell MV64361 Discovery II north bridge
++ * Articia S north bridge (for ``pegasos1``)
++ * Marvell MV64361 Discovery II north bridge (for ``pegasos2``)
+  * VIA VT8231 south bridge
+  * PCI VGA compatible card (guests may need other card instead)
+  * PS/2 keyboard and mouse
+@@ -83,9 +88,9 @@ Emulated devices
+ Firmware
+ --------
  
- ppc_ss.add(when: 'CONFIG_VOF', if_true: files('vof.c'))
- ppc_ss.add(when: ['CONFIG_VOF', 'CONFIG_PSERIES'], if_true: files('spapr_vof.c'))
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos.c
-similarity index 100%
-rename from hw/ppc/pegasos2.c
-rename to hw/ppc/pegasos.c
+-The Pegasos II board has an Open Firmware compliant ROM based on
++The Pegasos boards have an Open Firmware compliant ROM based on
+ SmartFirmware with some changes that are not open-sourced therefore
+-the ROM binary cannot be included in QEMU. An updater was available
++the ROM binary cannot be included in QEMU. A Pegasos II updater was available
+ from bPlan, it can be found in the `Internet Archive
+ <http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/up050404/up050404>`_.
+ The ROM image can be extracted from it with the following command:
+@@ -111,7 +116,7 @@ At the firmware ``ok`` prompt enter ``boot cd install/pegasos``.
+ 
+ Alternatively, it is possible to boot the kernel directly without
+ firmware ROM using the QEMU built-in minimal Virtual Open Firmware
+-(VOF) emulation which is also supported on ``pegasos2``. For this,
++(VOF) emulation which is also supported on ``pegasos1`` and ``pegasos2``. For this,
+ extract the kernel ``install/powerpc/vmlinuz-chrp.initrd`` from the CD
+ image, then run:
+ 
 -- 
 2.41.3
 
