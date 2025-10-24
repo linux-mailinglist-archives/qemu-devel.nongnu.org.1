@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A07C07ECB
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE3BC07F0D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:41:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNad-0004Il-KR; Fri, 24 Oct 2025 15:36:43 -0400
+	id 1vCNew-0007Ia-NQ; Fri, 24 Oct 2025 15:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNaV-00045H-E0; Fri, 24 Oct 2025 15:36:38 -0400
+ id 1vCNeb-0007DC-9D; Fri, 24 Oct 2025 15:40:52 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNaS-0002NA-GV; Fri, 24 Oct 2025 15:36:34 -0400
+ id 1vCNeZ-0002z9-2k; Fri, 24 Oct 2025 15:40:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=eo1dk2tx3086i0W8IyPvybA0Gbb9DmdcnA+KZqXoMNw=; b=PttdZ42PxMN1LzDxe0ciXQ2UYB
- j58IwH6SV7ZHoHMC1ApaMK9ZIucYBurr+niEjBKTCO6xmv7SWRaSfqG4Dyl4BStUt6+cFxWck791K
- uNV10vRnST70WWqLvIXxnm9MTdNyA9G2Nv29PxC92jFhzlDk5eG2CjJnDy+xuO8jZYuppAm/6wjdG
- oVU4pMbWU61eVgHrmCQKjPVHKcx2JPEunpnasNCm7imYHZ8Lz3aku7KYCGf5qB/3zksBqGw2d6XAX
- fjUwGIv9QhQ4qI1Z83jgwW2f7tBb6chOx4ZFndzXO1nx+D7yErZofG7alKGqQQ9WCnhRl7ttPgM4M
- SBCMWmkYgQfJvianmhE3A6XzCFxZYDV1/R74zlZxPm+hVAD/T1Q2WyUkZ8H7J3GXmN4hjah8JsTS8
- LSmaFIX1smTgAh4J8wk6VtKbDIbPN/WT8Hauu25OgKy2NQMoBaH8a045RGe9TPmvDJ3A/jaQRmPnJ
- Zh1wXEDAyK109xAypBadcTN0Wemlt4PxIx+RXHgOIx+MAZML22UYfkB63k0vC4telUeSAeFjOHre/
- y+0G5frmeMgrXIm3PBWa+SS7L3gQ2Tt/RSsEZCpGU0dezGn5nCQtNZC2EU3xPHRxQ0anZnmkGeiF4
- /WU/aRnuBq7WLRgbNp2/m5hRrMV7yohEEzOXSUBxQ=;
+ bh=3jabX5j3zKWCVEHgBcqKHqACw6r0ZQMjg6DzvhR2sKc=; b=LtzzqAnOeqmpDQnQM43pQ3uY6O
+ rncjy9U0dAKYDnLWcgP/qaLuJba6WyZu8unt4vo8RCOXdzShk9lRHa3EgzB5tsh3U/+82hWK5xV0s
+ FoIRQavQhJk3vgzK0JdkC3b+yNH/0GRx+jeZFzzxjnN9phEmc3EJ3yZSMG4MM3eMym77j0iRXdk2a
+ jH6ycQEykxvaTsdzmDX4W0jxmACohil9BIcKd5zZCGLOwAVpC5WDhRNKtuq9Sa+Lj7+nIieielckl
+ dx7NcAkUBhLOHkFvxOEP7d6oaAFeCWU2bUidHuMZ5mz5jx6/6cx1yb5utbg4XOJ3LJrxiGI6VzN6A
+ gw9vM9pp76mcMvkPtGaWoxuSt8XFWycFkMfjJNjWl7YECweq5EwyjRk4U0dJVtWNC8rleF20jBhuQ
+ a8IV3ku8rqSqMlqeWXfCp8GZbqJTtw+pxIXcJCQXtHnCmdIwaSNnSXgvd1Z4jVFLBspVMTktTCOnP
+ JXEWpSoGakEX5OJhHYekcOnobHvo11/zt/hiX6O9qIz6BhuLFJqB1nsff4WJe7afT8Ekj17iaEpgo
+ DtLjXiYhxSVcDdsyGPZqh4Fa506KWWN8XJrDh1HdEOpQE654q7dJIXhAgNHZVKozEPlpiDmLEFqGw
+ R4gqzGxLpLfUk2X1RMQSMTTo8AGaiFhFo5pn7l2Mk=;
 Received: from [2a02:8012:2f01:0:521c:3ef:78b8:2419]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNYB-000BNQ-V1; Fri, 24 Oct 2025 20:34:15 +0100
-Message-ID: <acaf33e9-380c-4d0b-9156-30b670d4fa37@ilande.co.uk>
-Date: Fri, 24 Oct 2025 20:36:25 +0100
+ id 1vCNcI-000BOr-Ev; Fri, 24 Oct 2025 20:38:26 +0100
+Message-ID: <1201fe45-f822-4e1e-8cd7-84b23eaa2bd0@ilande.co.uk>
+Date: Fri, 24 Oct 2025 20:40:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -45,7 +45,7 @@ Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
  <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
 References: <20251024190416.8803-1-philmd@linaro.org>
- <20251024190416.8803-3-philmd@linaro.org>
+ <20251024190416.8803-4-philmd@linaro.org>
 Content-Language: en-US
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
@@ -72,13 +72,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20251024190416.8803-3-philmd@linaro.org>
+In-Reply-To: <20251024190416.8803-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:521c:3ef:78b8:2419
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 02/27] hw/sysbus: Have various helpers take a const
- SysBusDevice argument
+Subject: Re: [PATCH 03/27] hw/sysbus: Use memory_region_name()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -106,90 +105,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 24/10/2025 20:03, Philippe Mathieu-Daudé wrote:
 
-> These getters don't update any SysBusDevice internal fields,
-> make the argument const.
+> MemoryRegion::name is kind of internal. Use the proper
+> memory_region_name() accessor, which might return a different
+> name.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/hw/sysbus.h | 10 +++++-----
->   hw/core/sysbus.c    | 10 +++++-----
->   2 files changed, 10 insertions(+), 10 deletions(-)
+>   hw/core/sysbus.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
-> index 18fde8a7b48..69eb62e29c8 100644
-> --- a/include/hw/sysbus.h
-> +++ b/include/hw/sysbus.h
-> @@ -70,17 +70,17 @@ struct SysBusDevice {
->   typedef void FindSysbusDeviceFunc(SysBusDevice *sbdev, void *opaque);
->   
->   void sysbus_init_mmio(SysBusDevice *dev, MemoryRegion *memory);
-> -MemoryRegion *sysbus_mmio_get_region(SysBusDevice *dev, int n);
-> +MemoryRegion *sysbus_mmio_get_region(const SysBusDevice *dev, int n);
->   void sysbus_init_irq(SysBusDevice *dev, qemu_irq *p);
->   void sysbus_pass_irq(SysBusDevice *dev, SysBusDevice *target);
->   void sysbus_init_ioports(SysBusDevice *dev, uint32_t ioport, uint32_t size);
->   
->   
-> -bool sysbus_has_irq(SysBusDevice *dev, int n);
-> -bool sysbus_has_mmio(SysBusDevice *dev, unsigned int n);
-> +bool sysbus_has_irq(const SysBusDevice *dev, int n);
-> +bool sysbus_has_mmio(const SysBusDevice *dev, unsigned int n);
->   void sysbus_connect_irq(SysBusDevice *dev, int n, qemu_irq irq);
-> -bool sysbus_is_irq_connected(SysBusDevice *dev, int n);
-> -qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n);
-> +bool sysbus_is_irq_connected(const SysBusDevice *dev, int n);
-> +qemu_irq sysbus_get_connected_irq(const SysBusDevice *dev, int n);
->   void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
->   int sysbus_mmio_map_name(SysBusDevice *dev, const char*name, hwaddr addr);
->   void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
 > diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-> index ec69e877a2c..ae447c1196a 100644
+> index ae447c1196a..d33be6b2b52 100644
 > --- a/hw/core/sysbus.c
 > +++ b/hw/core/sysbus.c
-> @@ -80,7 +80,7 @@ static void system_bus_class_init(ObjectClass *klass, const void *data)
->   }
->   
->   /* Check whether an IRQ source exists */
-> -bool sysbus_has_irq(SysBusDevice *dev, int n)
-> +bool sysbus_has_irq(const SysBusDevice *dev, int n)
+> @@ -154,7 +154,7 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
+>   int sysbus_mmio_map_name(SysBusDevice *dev, const char *name, hwaddr addr)
 >   {
->       char *prop = g_strdup_printf("%s[%d]", SYSBUS_DEVICE_GPIO_IRQ, n);
->       ObjectProperty *r;
-> @@ -91,12 +91,12 @@ bool sysbus_has_irq(SysBusDevice *dev, int n)
->       return (r != NULL);
->   }
->   
-> -bool sysbus_is_irq_connected(SysBusDevice *dev, int n)
-> +bool sysbus_is_irq_connected(const SysBusDevice *dev, int n)
->   {
->       return !!sysbus_get_connected_irq(dev, n);
->   }
->   
-> -qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n)
-> +qemu_irq sysbus_get_connected_irq(const SysBusDevice *dev, int n)
->   {
->       DeviceState *d = DEVICE(dev);
->       return qdev_get_gpio_out_connector(d, SYSBUS_DEVICE_GPIO_IRQ, n);
-> @@ -114,7 +114,7 @@ void sysbus_connect_irq(SysBusDevice *dev, int n, qemu_irq irq)
->   }
->   
->   /* Check whether an MMIO region exists */
-> -bool sysbus_has_mmio(SysBusDevice *dev, unsigned int n)
-> +bool sysbus_has_mmio(const SysBusDevice *dev, unsigned int n)
->   {
->       return (n < dev->num_mmio);
->   }
-> @@ -190,7 +190,7 @@ void sysbus_init_mmio(SysBusDevice *dev, MemoryRegion *memory)
->       dev->mmio[n].memory = memory;
->   }
->   
-> -MemoryRegion *sysbus_mmio_get_region(SysBusDevice *dev, int n)
-> +MemoryRegion *sysbus_mmio_get_region(const SysBusDevice *dev, int n)
->   {
->       assert(n >= 0 && n < QDEV_MAX_MMIO);
->       return dev->mmio[n].memory;
+>       for (int i = 0; i < dev->num_mmio; i++) {
+> -        if (!strcmp(dev->mmio[i].memory->name, name)) {
+> +        if (!strcmp(memory_region_name(dev->mmio[i].memory), name)) {
+>               sysbus_mmio_map(dev, i, addr);
+>               return i;
+>           }
 
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Interesting. I'm mildly curious as to if you discovered anything that broke with this 
+change (even though I agree it is correct)?
 
 
 ATB,
