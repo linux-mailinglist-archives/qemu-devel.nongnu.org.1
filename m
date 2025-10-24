@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55368C07EB0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCFDC07EC8
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:36:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNW2-0000d9-Hn; Fri, 24 Oct 2025 15:31:58 -0400
+	id 1vCNZi-00033N-1c; Fri, 24 Oct 2025 15:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNW0-0000co-JX; Fri, 24 Oct 2025 15:31:56 -0400
+ id 1vCNZg-000338-MF; Fri, 24 Oct 2025 15:35:44 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNVy-0001J6-ND; Fri, 24 Oct 2025 15:31:56 -0400
+ id 1vCNZe-0002K1-VQ; Fri, 24 Oct 2025 15:35:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=xiohV7dhJm4/wsmSntC99c5FpJBJd8SzqRzK9QkSBB8=; b=SVXuu8Kt0UM3g0YOxhD8HGdf9I
- IXcZfZs8OX9a6pMMh1qAdOLXv6ZrCknS99S8oLfldD6dBPkPtsM4uQawjgBRlFV5GiFKgbcEKiNQa
- e1hHnDQlanONDfBhqh2bUtMLLCKtGNldbEiNDpq2w0ZEn4dil/rx4eU33mvCUXhPMlhOASm/uadA9
- MVLUHGZmoslz2KQQgDm1r8mAJokFmCXjUCwtuWm5vz6C8TBIZ1IWNBnwOzzZlCixGVVBdHeW9AcgS
- cqCAT4vbBBP5tj9pOQw0CCsGV5GUpg675o6Go/ZXxljM6n+/FJ820OwWxUHUPKMAdapPXWsQXQTI0
- x1IK0X+zt2tqmUrts05ilJkPgknCRlrxD1758mwdQSAOHXvrkja3h0E9QmgPBIGfHW6z5mwc+TBW/
- Zy1MuVt4VJGhbgiQi0toIHK/TXqFID5bq0ksljllYfYotXMK8LURUrAnfg9Kj8GRXryONuUjHKZjX
- 7ucxr0OnOET2F0sPHAiW4UwMxrByeuR1TmuRWr66HhPWUl6OjMquUxXfQMVHnS8xal74FQgJAciPm
- F6qUMZd28DwzTi/N/nRD5+rzWgmZaqxNzg9flr93Axc+TYlrQh1S9Q6qQydA/DqWcHsbatnRTx1Zx
- KcOnj3bIYIEuaxOfXltjuObjyFhIttmziUwaw3fWI=;
+ bh=T4i8sDpuHvrwzUGeslbHeKNqol7x9EIPsynwvGbYDuE=; b=1qoRm7rn9UE5hV1ICpPRTjsHoU
+ ist1h0fufzsR7NYmH6g7uj1GyZ8His+4RxxuVBpNPglvl1snQNZ2DC7+ATynsZLem89c95KaorZbB
+ bHso/H8zngqfaI/rjoCxm9C0WR3huPWL/qceFDSs8aMvLPI48pyOq12R4VSfsdCBFhaeXI1q/tviD
+ mwKz2igVf20W8nU3eZ8KA03iQguTK84xCozNYVjjaueKh+ye/PgKARknBPSA5OkP5qHcAToWnnnHs
+ kUcakrBLKtZA1gnRV/RVQiOfRdDh4UT5zG2ad2mtNyDsgI/OfT0KiXHfJvGnqw75y1ODbT/zlufzJ
+ OycZr2G1D3k0t8bO2PtKD10AXA3CV6O0REVsy/6l511BgrfnQNaEgAEDaPdZnBswjrjUrZNpfx2zq
+ mZDDTcEOB8ZcjN9kYCcshCfk6ImtOT+8CKKMTJA4Ymk9ZqVM1zLPbEwODC4uQw6Pzqgf6t0BcQ5ch
+ AfCNfpCib7Qg4pQK5gqYwT9s+dWeo62ICcHixwIYU/Keq/lX8tq9GOl8vesp0Y3v1CRpcfAe9jrUe
+ +nSjTDtE9OQPsaT4zMqT0LwnehHf7X3j1QUhiu6//p0oGeXlLojoAGGXJpa6edf/wHAdzkBZ/DR+P
+ 3wBNHHnoFrCYW5T6TCc04IOsEh3eXH0WL12ViP3Fs=;
 Received: from [2a02:8012:2f01:0:521c:3ef:78b8:2419]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNTl-000BLP-OL; Fri, 24 Oct 2025 20:29:38 +0100
-Message-ID: <809dd471-4acd-4f14-80eb-3454a365b69a@ilande.co.uk>
-Date: Fri, 24 Oct 2025 20:31:51 +0100
+ id 1vCNXO-000BMu-GV; Fri, 24 Oct 2025 20:33:26 +0100
+Message-ID: <1dec89c3-1ea2-43db-b9f7-5683ff18f88d@ilande.co.uk>
+Date: Fri, 24 Oct 2025 20:35:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1761232472.git.balaton@eik.bme.hu>
- <586026b62dd514cc2c4bc0a67346d9e79d13dee6.1761232473.git.balaton@eik.bme.hu>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20251024190416.8803-1-philmd@linaro.org>
+ <20251024190416.8803-2-philmd@linaro.org>
 Content-Language: en-US
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
@@ -73,13 +72,13 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <586026b62dd514cc2c4bc0a67346d9e79d13dee6.1761232473.git.balaton@eik.bme.hu>
+In-Reply-To: <20251024190416.8803-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:521c:3ef:78b8:2419
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v5 11/13] hw/pci-host/raven: Do not map regions in init
- method
+Subject: Re: [PATCH 01/27] hw/qdev: Have qdev_get_gpio_out_connector() take
+ const DeviceState arg
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -105,134 +104,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2025 16:26, BALATON Zoltan wrote:
+On 24/10/2025 20:03, Philippe Mathieu-Daudé wrote:
 
-> Export memory regions as sysbus mmio regions and let the board code
-> map them similar to how it is done in grackle. While at it rename
-> raven_pcihost_realizefn to raven_pcihost_realize.
+> This getter doesn't update any DeviceState internal fields,
+> make it const.
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/pci-host/raven.c | 38 +++++++++++++-------------------------
->   hw/ppc/prep.c       | 10 ++++++++--
->   2 files changed, 21 insertions(+), 27 deletions(-)
+>   include/hw/qdev-core.h | 3 ++-
+>   hw/core/gpio.c         | 3 ++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-> index ebf0c511dc..1e36a637a6 100644
-> --- a/hw/pci-host/raven.c
-> +++ b/hw/pci-host/raven.c
-> @@ -49,8 +49,6 @@ struct PREPPCIState {
->       AddressSpace bm_as;
->   };
+> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+> index a7bfb10dc70..2caa0cbd26f 100644
+> --- a/include/hw/qdev-core.h
+> +++ b/include/hw/qdev-core.h
+> @@ -725,7 +725,8 @@ void qdev_connect_gpio_out_named(DeviceState *dev, const char *name, int n,
+>    *
+>    * Return: qemu_irq associated with GPIO or NULL if un-wired.
+>    */
+> -qemu_irq qdev_get_gpio_out_connector(DeviceState *dev, const char *name, int n);
+> +qemu_irq qdev_get_gpio_out_connector(const DeviceState *dev,
+> +                                     const char *name, int n);
 >   
-> -#define PCI_IO_BASE_ADDR    0x80000000  /* Physical address on main bus */
-> -
->   static inline uint32_t raven_idsel_to_addr(hwaddr addr)
->   {
->       return (ctz16(addr >> 11) << 11) | (addr & 0x7ff);
-> @@ -170,7 +168,7 @@ static void raven_change_gpio(void *opaque, int n, int level)
->       memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
+>   /**
+>    * qdev_intercept_gpio_out: Intercept an existing GPIO connection
+> diff --git a/hw/core/gpio.c b/hw/core/gpio.c
+> index 6e32a8eec61..c7c2936fc55 100644
+> --- a/hw/core/gpio.c
+> +++ b/hw/core/gpio.c
+> @@ -129,7 +129,8 @@ void qdev_connect_gpio_out_named(DeviceState *dev, const char *name, int n,
+>       g_free(propname);
 >   }
 >   
-> -static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
-> +static void raven_pcihost_realize(DeviceState *d, Error **errp)
+> -qemu_irq qdev_get_gpio_out_connector(DeviceState *dev, const char *name, int n)
+> +qemu_irq qdev_get_gpio_out_connector(const DeviceState *dev,
+> +                                     const char *name, int n)
 >   {
->       SysBusDevice *dev = SYS_BUS_DEVICE(d);
->       PCIHostState *h = PCI_HOST_BRIDGE(dev);
-> @@ -180,7 +178,18 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
->   
->       qdev_init_gpio_in(d, raven_change_gpio, 1);
->   
-> +    memory_region_init(&s->pci_io, o, "pci-io", 0x3f800000);
-> +    memory_region_init_io(&s->pci_discontiguous_io, o,
-> +                          &raven_io_ops, &s->pci_io,
-> +                          "pci-discontiguous-io", 8 * MiB);
-> +    memory_region_set_enabled(&s->pci_discontiguous_io, false);
-> +    memory_region_init(&s->pci_memory, o, "pci-memory", 0x3f000000);
-> +
-> +    sysbus_init_mmio(dev, &s->pci_io);
-> +    sysbus_init_mmio(dev, &s->pci_discontiguous_io);
-> +    sysbus_init_mmio(dev, &s->pci_memory);
->       sysbus_init_irq(dev, &s->irq);
-> +
->       h->bus = pci_register_root_bus(d, NULL, raven_set_irq, raven_map_irq,
->                                      &s->irq, &s->pci_memory, &s->pci_io, 0, 1,
->                                      TYPE_PCI_BUS);
-> @@ -219,32 +228,12 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
->       pci_setup_iommu(h->bus, &raven_iommu_ops, s);
->   }
->   
-> -static void raven_pcihost_initfn(Object *obj)
-> -{
-> -    PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(obj);
-> -    MemoryRegion *address_space_mem = get_system_memory();
-> -
-> -    memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
-> -    memory_region_init_io(&s->pci_discontiguous_io, obj,
-> -                          &raven_io_ops, &s->pci_io,
-> -                          "pci-discontiguous-io", 8 * MiB);
-> -    memory_region_init(&s->pci_memory, obj, "pci-memory", 0x3f000000);
-> -
-> -    /* CPU address space */
-> -    memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
-> -                                &s->pci_io);
-> -    memory_region_add_subregion_overlap(address_space_mem, PCI_IO_BASE_ADDR,
-> -                                        &s->pci_discontiguous_io, 1);
-> -    memory_region_set_enabled(&s->pci_discontiguous_io, false);
-> -    memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
-> -}
-> -
->   static void raven_pcihost_class_init(ObjectClass *klass, const void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->   
->       set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-> -    dc->realize = raven_pcihost_realizefn;
-> +    dc->realize = raven_pcihost_realize;
->       dc->fw_name = "pci";
->   }
->   
-> @@ -278,7 +267,6 @@ static const TypeInfo raven_types[] = {
->           .name = TYPE_RAVEN_PCI_HOST_BRIDGE,
->           .parent = TYPE_PCI_HOST_BRIDGE,
->           .instance_size = sizeof(PREPPCIState),
-> -        .instance_init = raven_pcihost_initfn,
->           .class_init = raven_pcihost_class_init,
->       },
->       {
-> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-> index 816455d289..973d2fb7eb 100644
-> --- a/hw/ppc/prep.c
-> +++ b/hw/ppc/prep.c
-> @@ -53,8 +53,11 @@
->   
->   #define CFG_ADDR 0xf0000510
->   
-> -#define KERNEL_LOAD_ADDR 0x01000000
-> -#define INITRD_LOAD_ADDR 0x01800000
-> +#define KERNEL_LOAD_ADDR  0x01000000
-> +#define INITRD_LOAD_ADDR  0x01800000
-> +
-> +#define PCI_IO_BASE_ADDR  0x80000000
-> +#define PCI_MEM_BASE_ADDR 0xc0000000
->   
->   #define BIOS_ADDR         0xfff00000
->   #define BIOS_SIZE         (1 * MiB)
-> @@ -293,6 +296,9 @@ static void ibm_40p_init(MachineState *machine)
->       pcihost = SYS_BUS_DEVICE(dev);
->       object_property_add_child(qdev_get_machine(), "raven", OBJECT(dev));
->       sysbus_realize_and_unref(pcihost, &error_fatal);
-> +    sysbus_mmio_map(pcihost, 0, PCI_IO_BASE_ADDR);
-> +    sysbus_mmio_map_overlap(pcihost, 1, PCI_IO_BASE_ADDR, 1);
-> +    sysbus_mmio_map(pcihost, 2, PCI_MEM_BASE_ADDR);
->       pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
->       if (!pci_bus) {
->           error_report("could not create PCI host controller");
+>       g_autofree char *propname = g_strdup_printf("%s[%d]",
+>                                        name ? name : "unnamed-gpio-out", n);
 
-In general the expectation is that memory regions should be initialised in the 
-_init() function, unless they depend upon a property in which case they should be 
-initialised in the _realize() function. Why do you feel this needs to be different?
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
 
 ATB,
