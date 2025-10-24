@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B3EC06766
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A59DC0674E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCHiX-0005ZP-VE; Fri, 24 Oct 2025 09:20:30 -0400
+	id 1vCHia-0005h9-1Q; Fri, 24 Oct 2025 09:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHi7-0005U5-5Q
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:20:03 -0400
+ id 1vCHi8-0005Uc-Dh
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:20:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHi5-0004m4-1L
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:20:02 -0400
+ id 1vCHi6-0004mX-Bz
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:20:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761311999;
+ s=mimecast20190719; t=1761312001;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0gF93nT4QCSeQp0OqhTjXZ1wteCnmObHKQPrcwA+0mE=;
- b=BUt4qoSz4tIiy19rYEHoFnirPbEfFFVgS7Mm16O0n3DbnGgC8Xs10NkucCTlc2mlzwnZ1g
- eZuMzrgWuLw9YUQUHHyC12dY0PG5ljKeOA3tJwDPJyvWj2+cs6cXKHqgu3LM0nFT/YcKYj
- QS+bUN6jrFekGpR1IjKrY/jZ44fDcqY=
+ bh=CCObt3x+cEciUOh6vncOKwvla1QzbKPqBuEb/0PEtVo=;
+ b=MdhfKTuq9K0bkakpZw/mzconBJ916NPKm41mQ94ZkS3OzMpdXxCXOK4oLj63X/KBQLNs5q
+ 9uIyAUmV6QOrG353punHXGleN/eeOpbrkiZ5iZlSSAaDTST7CyQn0WUcUZoTYr6dsHBaxz
+ IbLkw4USva/FwjNH97iJAqfl9NDu51Y=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-lGXoDgU4MHyRc7W13IPLAg-1; Fri,
- 24 Oct 2025 09:19:55 -0400
-X-MC-Unique: lGXoDgU4MHyRc7W13IPLAg-1
-X-Mimecast-MFC-AGG-ID: lGXoDgU4MHyRc7W13IPLAg_1761311994
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-Iprb4okpOE6sRGCiK3cGPw-1; Fri,
+ 24 Oct 2025 09:19:57 -0400
+X-MC-Unique: Iprb4okpOE6sRGCiK3cGPw-1
+X-Mimecast-MFC-AGG-ID: Iprb4okpOE6sRGCiK3cGPw_1761311996
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F219D18009C2; Fri, 24 Oct 2025 13:19:53 +0000 (UTC)
+ id 6A2A4180A221; Fri, 24 Oct 2025 13:19:56 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.2])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 45C8819540EB; Fri, 24 Oct 2025 13:19:52 +0000 (UTC)
+ id 5C4B419540EB; Fri, 24 Oct 2025 13:19:54 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Grant Millar | Cylo <rid@cylo.io>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 06/13] io: fix use after free in websocket handshake code
-Date: Fri, 24 Oct 2025 14:19:30 +0100
-Message-ID: <20251024131937.56673-7-berrange@redhat.com>
+ Eric Blake <eblake@redhat.com>, Henry Kleynhans <hkleynhans@fb.com>
+Subject: [PULL 07/13] crypto: only verify CA certs in chain of trust
+Date: Fri, 24 Oct 2025 14:19:31 +0100
+Message-ID: <20251024131937.56673-8-berrange@redhat.com>
 In-Reply-To: <20251024131937.56673-1-berrange@redhat.com>
 References: <20251024131937.56673-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -84,166 +84,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the QIOChannelWebsock object is freed while it is waiting to
-complete a handshake, a GSource is leaked. This can lead to the
-callback firing later on and triggering a use-after-free in the
-use of the channel. This was observed in the VNC server with the
-following trace from valgrind:
+From: Henry Kleynhans <hkleynhans@fb.com>
 
-==2523108== Invalid read of size 4
-==2523108==    at 0x4054A24: vnc_disconnect_start (vnc.c:1296)
-==2523108==    by 0x4054A24: vnc_client_error (vnc.c:1392)
-==2523108==    by 0x4068A09: vncws_handshake_done (vnc-ws.c:105)
-==2523108==    by 0x44863B4: qio_task_complete (task.c:197)
-==2523108==    by 0x448343D: qio_channel_websock_handshake_io (channel-websock.c:588)
-==2523108==    by 0x6EDB862: UnknownInlinedFun (gmain.c:3398)
-==2523108==    by 0x6EDB862: g_main_context_dispatch_unlocked.lto_priv.0 (gmain.c:4249)
-==2523108==    by 0x6EDBAE4: g_main_context_dispatch (gmain.c:4237)
-==2523108==    by 0x45EC79F: glib_pollfds_poll (main-loop.c:287)
-==2523108==    by 0x45EC79F: os_host_main_loop_wait (main-loop.c:310)
-==2523108==    by 0x45EC79F: main_loop_wait (main-loop.c:589)
-==2523108==    by 0x423A56D: qemu_main_loop (runstate.c:835)
-==2523108==    by 0x454F300: qemu_default_main (main.c:37)
-==2523108==    by 0x73D6574: (below main) (libc_start_call_main.h:58)
-==2523108==  Address 0x57a6e0dc is 28 bytes inside a block of size 103,608 free'd
-==2523108==    at 0x5F2FE43: free (vg_replace_malloc.c:989)
-==2523108==    by 0x6EDC444: g_free (gmem.c:208)
-==2523108==    by 0x4053F23: vnc_update_client (vnc.c:1153)
-==2523108==    by 0x4053F23: vnc_refresh (vnc.c:3225)
-==2523108==    by 0x4042881: dpy_refresh (console.c:880)
-==2523108==    by 0x4042881: gui_update (console.c:90)
-==2523108==    by 0x45EFA1B: timerlist_run_timers.part.0 (qemu-timer.c:562)
-==2523108==    by 0x45EFC8F: timerlist_run_timers (qemu-timer.c:495)
-==2523108==    by 0x45EFC8F: qemu_clock_run_timers (qemu-timer.c:576)
-==2523108==    by 0x45EFC8F: qemu_clock_run_all_timers (qemu-timer.c:663)
-==2523108==    by 0x45EC765: main_loop_wait (main-loop.c:600)
-==2523108==    by 0x423A56D: qemu_main_loop (runstate.c:835)
-==2523108==    by 0x454F300: qemu_default_main (main.c:37)
-==2523108==    by 0x73D6574: (below main) (libc_start_call_main.h:58)
-==2523108==  Block was alloc'd at
-==2523108==    at 0x5F343F3: calloc (vg_replace_malloc.c:1675)
-==2523108==    by 0x6EE2F81: g_malloc0 (gmem.c:133)
-==2523108==    by 0x4057DA3: vnc_connect (vnc.c:3245)
-==2523108==    by 0x448591B: qio_net_listener_channel_func (net-listener.c:54)
-==2523108==    by 0x6EDB862: UnknownInlinedFun (gmain.c:3398)
-==2523108==    by 0x6EDB862: g_main_context_dispatch_unlocked.lto_priv.0 (gmain.c:4249)
-==2523108==    by 0x6EDBAE4: g_main_context_dispatch (gmain.c:4237)
-==2523108==    by 0x45EC79F: glib_pollfds_poll (main-loop.c:287)
-==2523108==    by 0x45EC79F: os_host_main_loop_wait (main-loop.c:310)
-==2523108==    by 0x45EC79F: main_loop_wait (main-loop.c:589)
-==2523108==    by 0x423A56D: qemu_main_loop (runstate.c:835)
-==2523108==    by 0x454F300: qemu_default_main (main.c:37)
-==2523108==    by 0x73D6574: (below main) (libc_start_call_main.h:58)
-==2523108==
+The CA file provided to qemu may contain CA certificates which do not
+form part of the chain of trust for the specific certificate we are
+sanity checking.
 
-The above can be reproduced by launching QEMU with
+This patch changes the sanity checking from validating every CA
+certificate to only checking the CA certificates which are part of the
+chain of trust (issuer chain).  Other certificates are ignored.
 
-  $ qemu-system-x86_64 -vnc localhost:0,websocket=5700
-
-and then repeatedly running:
-
-  for i in {1..100}; do
-     (echo -n "GET / HTTP/1.1" && sleep 0.05) | nc -w 1 localhost 5700 &
-  done
-
-CVE-2025-11234
-Reported-by: Grant Millar | Cylo <rid@cylo.io>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Henry Kleynhans <hkleynhans@fb.com>
+[DB: changed 'int' to 'bool' in 'checking_issuer' variable]
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/io/channel-websock.h |  3 ++-
- io/channel-websock.c         | 22 ++++++++++++++++------
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ crypto/tlscredsx509.c                 | 57 ++++++++++++++++++++++++---
+ tests/unit/test-crypto-tlscredsx509.c | 25 +++++++++++-
+ 2 files changed, 75 insertions(+), 7 deletions(-)
 
-diff --git a/include/io/channel-websock.h b/include/io/channel-websock.h
-index e180827c57..6700cf8946 100644
---- a/include/io/channel-websock.h
-+++ b/include/io/channel-websock.h
-@@ -61,7 +61,8 @@ struct QIOChannelWebsock {
-     size_t payload_remain;
-     size_t pong_remain;
-     QIOChannelWebsockMask mask;
--    guint io_tag;
-+    guint hs_io_tag; /* tracking handshake task */
-+    guint io_tag; /* tracking watch task */
-     Error *io_err;
-     gboolean io_eof;
-     uint8_t opcode;
-diff --git a/io/channel-websock.c b/io/channel-websock.c
-index a50a160e18..cb4dafdebb 100644
---- a/io/channel-websock.c
-+++ b/io/channel-websock.c
-@@ -545,6 +545,7 @@ static gboolean qio_channel_websock_handshake_send(QIOChannel *ioc,
-         trace_qio_channel_websock_handshake_fail(ioc, error_get_pretty(err));
-         qio_task_set_error(task, err);
-         qio_task_complete(task);
-+        wioc->hs_io_tag = 0;
-         return FALSE;
-     }
- 
-@@ -560,6 +561,7 @@ static gboolean qio_channel_websock_handshake_send(QIOChannel *ioc,
-             trace_qio_channel_websock_handshake_complete(ioc);
-             qio_task_complete(task);
-         }
-+        wioc->hs_io_tag = 0;
-         return FALSE;
-     }
-     trace_qio_channel_websock_handshake_pending(ioc, G_IO_OUT);
-@@ -586,6 +588,7 @@ static gboolean qio_channel_websock_handshake_io(QIOChannel *ioc,
-         trace_qio_channel_websock_handshake_fail(ioc, error_get_pretty(err));
-         qio_task_set_error(task, err);
-         qio_task_complete(task);
-+        wioc->hs_io_tag = 0;
-         return FALSE;
-     }
-     if (ret == 0) {
-@@ -597,7 +600,7 @@ static gboolean qio_channel_websock_handshake_io(QIOChannel *ioc,
-     error_propagate(&wioc->io_err, err);
- 
-     trace_qio_channel_websock_handshake_reply(ioc);
--    qio_channel_add_watch(
-+    wioc->hs_io_tag = qio_channel_add_watch(
-         wioc->master,
-         G_IO_OUT,
-         qio_channel_websock_handshake_send,
-@@ -907,11 +910,12 @@ void qio_channel_websock_handshake(QIOChannelWebsock *ioc,
- 
-     trace_qio_channel_websock_handshake_start(ioc);
-     trace_qio_channel_websock_handshake_pending(ioc, G_IO_IN);
--    qio_channel_add_watch(ioc->master,
--                          G_IO_IN,
--                          qio_channel_websock_handshake_io,
--                          task,
--                          NULL);
-+    ioc->hs_io_tag = qio_channel_add_watch(
-+        ioc->master,
-+        G_IO_IN,
-+        qio_channel_websock_handshake_io,
-+        task,
-+        NULL);
+diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
+index cd1f504471..3df2a33b0b 100644
+--- a/crypto/tlscredsx509.c
++++ b/crypto/tlscredsx509.c
+@@ -315,6 +315,51 @@ qcrypto_tls_creds_check_cert(QCryptoTLSCredsX509 *creds,
+     return 0;
  }
  
++static int
++qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
++                                        gnutls_x509_crt_t cert,
++                                        gnutls_x509_crt_t *cacerts,
++                                        unsigned int ncacerts,
++                                        const char *cacertFile,
++                                        bool isServer,
++                                        bool isCA,
++                                        Error **errp)
++{
++    gnutls_x509_crt_t *cert_to_check = &cert;
++    bool checking_issuer = true;
++    int retval = 0;
++
++    while (checking_issuer) {
++        checking_issuer = false;
++
++        if (gnutls_x509_crt_check_issuer(*cert_to_check,
++                                         *cert_to_check)) {
++            /*
++             * The cert is self-signed indicating we have
++             * reached the root of trust.
++             */
++            return qcrypto_tls_creds_check_cert(
++                creds, *cert_to_check, cacertFile,
++                isServer, isCA, errp);
++        }
++        for (int i = 0; i < ncacerts; i++) {
++            if (gnutls_x509_crt_check_issuer(*cert_to_check,
++                                             cacerts[i])) {
++                retval = qcrypto_tls_creds_check_cert(
++                    creds, cacerts[i], cacertFile,
++                    isServer, isCA, errp);
++                if (retval < 0) {
++                    return retval;
++                }
++                cert_to_check = &cacerts[i];
++                checking_issuer = true;
++                break;
++            }
++        }
++    }
++
++    return -1;
++}
  
-@@ -922,6 +926,9 @@ static void qio_channel_websock_finalize(Object *obj)
-     buffer_free(&ioc->encinput);
-     buffer_free(&ioc->encoutput);
-     buffer_free(&ioc->rawinput);
-+    if (ioc->hs_io_tag) {
-+        g_source_remove(ioc->hs_io_tag);
-+    }
-     if (ioc->io_tag) {
-         g_source_remove(ioc->io_tag);
+ static int
+ qcrypto_tls_creds_check_cert_pair(gnutls_x509_crt_t cert,
+@@ -499,12 +544,12 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+         goto cleanup;
      }
-@@ -1221,6 +1228,9 @@ static int qio_channel_websock_close(QIOChannel *ioc,
-     buffer_free(&wioc->encinput);
-     buffer_free(&wioc->encoutput);
-     buffer_free(&wioc->rawinput);
-+    if (wioc->hs_io_tag) {
-+        g_clear_handle_id(&wioc->hs_io_tag, g_source_remove);
-+    }
-     if (wioc->io_tag) {
-         g_clear_handle_id(&wioc->io_tag, g_source_remove);
+ 
+-    for (i = 0; i < ncacerts; i++) {
+-        if (qcrypto_tls_creds_check_cert(creds,
+-                                         cacerts[i], cacertFile,
+-                                         isServer, true, errp) < 0) {
+-            goto cleanup;
+-        }
++    if (cert &&
++        qcrypto_tls_creds_check_authority_chain(creds, cert,
++                                                cacerts, ncacerts,
++                                                cacertFile, isServer,
++                                                true, errp) < 0) {
++        goto cleanup;
      }
+ 
+     if (cert && ncacerts &&
+diff --git a/tests/unit/test-crypto-tlscredsx509.c b/tests/unit/test-crypto-tlscredsx509.c
+index 3c25d75ca1..a7ea5f422d 100644
+--- a/tests/unit/test-crypto-tlscredsx509.c
++++ b/tests/unit/test-crypto-tlscredsx509.c
+@@ -589,6 +589,12 @@ int main(int argc, char **argv)
+                  true, true, GNUTLS_KEY_KEY_CERT_SIGN,
+                  false, false, NULL, NULL,
+                  0, 0);
++    TLS_CERT_REQ(cacertlevel1creq_invalid, cacertrootreq,
++                 "UK", "qemu level 1c invalid", NULL, NULL, NULL, NULL,
++                 true, true, true,
++                 true, true, GNUTLS_KEY_KEY_CERT_SIGN,
++                 false, false, NULL, NULL,
++                 360, 400);
+     TLS_CERT_REQ(cacertlevel2areq, cacertlevel1areq,
+                  "UK", "qemu level 2a", NULL, NULL, NULL, NULL,
+                  true, true, true,
+@@ -617,16 +623,32 @@ int main(int argc, char **argv)
+         cacertlevel2areq.crt,
+     };
+ 
++
+     test_tls_write_cert_chain(WORKDIR "cacertchain-ctx.pem",
+                               certchain,
+                               G_N_ELEMENTS(certchain));
+ 
++    gnutls_x509_crt_t certchain_with_invalid[] = {
++        cacertrootreq.crt,
++        cacertlevel1areq.crt,
++        cacertlevel1breq.crt,
++        cacertlevel1creq_invalid.crt,
++        cacertlevel2areq.crt,
++    };
++
++    test_tls_write_cert_chain(WORKDIR "cacertchain-with-invalid-ctx.pem",
++                              certchain_with_invalid,
++                              G_N_ELEMENTS(certchain_with_invalid));
++
+     TLS_TEST_REG(chain1, true,
+                  WORKDIR "cacertchain-ctx.pem",
+                  servercertlevel3areq.filename, false);
+     TLS_TEST_REG(chain2, false,
+                  WORKDIR "cacertchain-ctx.pem",
+                  clientcertlevel2breq.filename, false);
++    TLS_TEST_REG(certchainwithexpiredcert, false,
++                 WORKDIR "cacertchain-with-invalid-ctx.pem",
++                 clientcertlevel2breq.filename, false);
+ 
+     /* Some missing certs - first two are fatal, the last
+      * is ok
+@@ -640,7 +662,6 @@ int main(int argc, char **argv)
+     TLS_TEST_REG(missingclient, false,
+                  cacert1req.filename,
+                  "clientcertdoesnotexist.pem", false);
+-
+     ret = g_test_run();
+ 
+     test_tls_discard_cert(&cacertreq);
+@@ -694,10 +715,12 @@ int main(int argc, char **argv)
+     test_tls_discard_cert(&cacertrootreq);
+     test_tls_discard_cert(&cacertlevel1areq);
+     test_tls_discard_cert(&cacertlevel1breq);
++    test_tls_discard_cert(&cacertlevel1creq_invalid);
+     test_tls_discard_cert(&cacertlevel2areq);
+     test_tls_discard_cert(&servercertlevel3areq);
+     test_tls_discard_cert(&clientcertlevel2breq);
+     unlink(WORKDIR "cacertchain-ctx.pem");
++    unlink(WORKDIR "cacertchain-with-invalid-ctx.pem");
+ 
+     test_tls_cleanup(KEYFILE);
+     rmdir(WORKDIR);
 -- 
 2.50.1
 
