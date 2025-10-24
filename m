@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E963C052B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 10:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91539C0528D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 10:48:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCDRr-0007E4-Da; Fri, 24 Oct 2025 04:46:59 -0400
+	id 1vCDRq-00076i-2J; Fri, 24 Oct 2025 04:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vCDR6-0006PF-1T
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:12 -0400
+ id 1vCDRB-0006Xk-EO
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:20 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vCDR1-0006Vx-3n
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:08 -0400
+ id 1vCDR9-0006be-0q
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761295567; x=1792831567;
+ t=1761295575; x=1792831575;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sQ4rQABjPT4FizzJIvKbATx14Hbt5+8x/jbVvdDB6Rk=;
- b=Fpesn2QSJEzPxZZX6VXA2hgu9IjFxn5wkYtLyK4bZJmhUf0lCa5jsldb
- S9MLKdzpcR77Q0hmZT2Qzna1toswmZlfRqTC+PhAIOG25qVI3N4mUKo/f
- 3ibfLAFy1M9SyH0eqzI4DomZEyNN1ekTY5+WMbuYu8G4o1A2sE2qQHBDJ
- SNz9pxZf3Ny8z1qMek/tAtOqUoTqoDjt4nrXlPxtQtLWzUzUoxiqLMxkM
- HIp1JCnk5Z6WlK9gt8DLRc0hOPggia9YxcEsrBjmdyR3Utj1+IUCLecm5
- xWVr/2xBJYzNEG8uQFHw5whaDi18AiPjxTEcJXyUNRo5ndh0SkV7iXFTa w==;
-X-CSE-ConnectionGUID: 9NN3qBWpQe6H7VpiosvFeQ==
-X-CSE-MsgGUID: YqvzpCOKQeiTiOB3TFDs3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62504903"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="62504903"
+ bh=CgXD+k2TJvJmEmmdHJC9XfHb7C5ZiRcVGTdnpTUR8Js=;
+ b=UDpwtotGjyaLu4gXugYug/nzzCxIzVdZcRmK87RbcSCNLkuP6t4NAzWJ
+ HrzVfoJMRJFWnOSmO+uDAFfUcTtr5WkeaIRCPJYfQF/L5HAinqjDvfmL4
+ 2N23/ypADulQ9sGokr/1WLTpfxuuHQNX80IDbjPMIWags0EkpNpNXvN5N
+ LZqCJ/bm50oCd2TMRFTF9hRIWFCbHlDMPKwlodRIXx6VceUZtlXH1ATqw
+ FVDAYCY339oA7mBjJOE8EKnlgI/foOuegkn9gTaesp97K98nxs+GvCErC
+ xKS7wvLQK43UK4OCWxYEKHdMB2ngFw87gdcQOKYZ4ox+aiCOWDSRF3UmL w==;
+X-CSE-ConnectionGUID: lC1d7xC1RGaR6arnoenABQ==
+X-CSE-MsgGUID: en6XTdq/SUa/pcAK5bbJTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62504911"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="62504911"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:45:55 -0700
-X-CSE-ConnectionGUID: 4QGJJ0xORQS3ewrLu3G/xQ==
-X-CSE-MsgGUID: 3MlgoxSSRaO4FUIAzD8Nrw==
+ 24 Oct 2025 01:45:59 -0700
+X-CSE-ConnectionGUID: WGpqu+cuQdiylDt1ptsmdg==
+X-CSE-MsgGUID: kA1YJ+naTYC+jZI/wRcumg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="183986069"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="183986088"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:45:51 -0700
+ 24 Oct 2025 01:45:55 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v7 20/23] vfio: Bypass readonly region for dirty tracking
-Date: Fri, 24 Oct 2025 04:43:44 -0400
-Message-ID: <20251024084349.102322-21-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 21/23] intel_iommu: Add migration support with x-flts=on
+Date: Fri, 24 Oct 2025 04:43:45 -0400
+Message-ID: <20251024084349.102322-22-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251024084349.102322-1-zhenzhong.duan@intel.com>
 References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
@@ -85,52 +85,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When doing ditry tracking or calculating dirty tracking range, readonly
-regions can be bypassed, because corresponding DMA mappings are readonly
-and never become dirty.
-
-This can optimize dirty tracking a bit for passthrough device.
+When x-flts=on, we set up bindings to nested HWPT in host, after
+migration, VFIO device binds to nesting parent HWPT by default.
+We need to re-establish the bindings to nested HWPT, or else device
+DMA will break.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/listener.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/i386/intel_iommu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 0862b2b834..cbd86c79af 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -828,7 +828,8 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
-         container_of(listener, VFIODirtyRangesListener, listener);
-     hwaddr iova, end;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index edd1416382..8fec61be3e 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4360,6 +4360,13 @@ static int vtd_post_load(void *opaque, int version_id)
+      */
+     vtd_switch_address_space_all(iommu);
  
--    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
-+    /* Bypass readonly section as it never become dirty */
-+    if (!vfio_listener_valid_section(section, true, "tracking_update") ||
-         !vfio_get_section_iova_range(dirty->bcontainer, section,
-                                      &iova, &end, NULL)) {
-         return;
-@@ -1087,6 +1088,12 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     if (!mr) {
-         goto out_unlock;
-     }
++    /*
++     * Bindings to nested HWPT in host is set up dynamically depending
++     * on pasid entry configuration from guest. After migration, we
++     * need to re-establish the bindings before restore device's DMA.
++     */
++    vtd_replay_pasid_bindings_all(iommu);
 +
-+    if (!(iotlb->perm & IOMMU_WO) || mr->readonly) {
-+        rcu_read_unlock();
-+        return;
-+    }
-+
-     translated_addr = memory_region_get_ram_addr(mr) + xlat;
- 
-     ret = vfio_container_query_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
-@@ -1222,7 +1229,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
-     int ret;
-     Error *local_err = NULL;
- 
--    if (vfio_listener_skipped_section(section, false)) {
-+    if (vfio_listener_skipped_section(section, true)) {
-         return;
-     }
+     return 0;
+ }
  
 -- 
 2.47.1
