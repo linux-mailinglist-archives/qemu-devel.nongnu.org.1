@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9744CC04863
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CE7C04860
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:36:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBOx-000400-Lg; Fri, 24 Oct 2025 02:35:51 -0400
+	id 1vCBP0-0004D6-N5; Fri, 24 Oct 2025 02:35:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBOv-0003uV-JB
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:49 -0400
+ id 1vCBOx-00046j-VH
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:51 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBOs-000401-49
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:49 -0400
+ id 1vCBOw-000401-0I
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761287746; x=1792823746;
+ t=1761287750; x=1792823750;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dX+gd9O08GrSWQFuRfkedGovFrLY7cipw5woA3tBV0k=;
- b=KZfcxsP0B87bE1MqO/oKyZNfWOR7de+ybkuvBK623THOvhfV/28M2HgN
- 5iQkMPY9MiaycSFsn0oq3Jdacpf4Z8ce7jznQKFhYWQYQ5M3MkAd4Ge1t
- fgr0JRB1RlcVOir5vqWYX3IPP4wdNb5GQ+Y8GkGqXlEpGT5lgB3+KR4EC
- XHdCmg9gm7teUnOq9ad0+okTUNmslu0oBxcGIHfQmhGXgkfr+VhqCaxpV
- YF4e+E/5f//wpov2EindjxxlkfvRJfWkVxmHhLuS0FEHcxq2YEhvmNiqn
- 1Fx/4Xn9HcvwMXAWIcwS7eV7Qe16hXUwSztgoRPpVkpAxKGa3sZ8zPCLo g==;
-X-CSE-ConnectionGUID: 2ikjq0PkQ2KKj5F9++PKsQ==
-X-CSE-MsgGUID: b0I4OTz1Rdy8f7nP6zzpGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63170932"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63170932"
+ bh=Y8zhy26akKwdW2BhI+hvLWp8vFtvjafeaMR+Q2ZDdtQ=;
+ b=fucPljV8TYbPWqUfyNurIf9VuZ/0K9KjNiZIpRJOrS0l9xT3LxSVhHr7
+ 6I+cuf/xFNkXVWCg9APo7E9D58XzR/Kd0W3XHvY5aGkGgQ5cW7KWJiSn2
+ ikFZB8Xmh5EIpq+veeRmFEw3f1vR3cg1wGsUxubG9emGm2cpk2dHVfKic
+ /0168oo0OhzZK6UWQ4NIKyIMh9ornbNtHebeHr6BttcNUvEff/NL2SzYP
+ H5OcoHORdNLrf4begtGrKWAY9N9pU4W6WfQhFn6VKjrX+gN1O//12qV2G
+ qNfGKuqRxwxCX/q6sYI2aANaD08CZk8dzgOB0BmWMq8o0CjL08z+8epDP Q==;
+X-CSE-ConnectionGUID: zwF0MxRqR/K0XBhNVkJI5g==
+X-CSE-MsgGUID: 8Dn4zBw6RX+8S/0a65kNLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63170933"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63170933"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:35:45 -0700
-X-CSE-ConnectionGUID: soKreWmXSHu5cEs1jDRoZw==
-X-CSE-MsgGUID: b8TbAyLfTi+QVU2iiyBt8g==
+ 23 Oct 2025 23:35:48 -0700
+X-CSE-ConnectionGUID: h5zgwAcYRXCJymnotI8q0w==
+X-CSE-MsgGUID: xvT4b0YwQmyerxvlECQr1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276135"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276147"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:41 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:45 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -50,11 +50,11 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Mathias Krause <minipli@grsecurity.net>, Dapeng Mi <dapeng1.mi@intel.com>,
  Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yang Weijiang <weijiang.yang@intel.com>
-Subject: [PATCH v3 17/20] i386/cpu: Advertise CET related flags in feature
- words
-Date: Fri, 24 Oct 2025 14:56:29 +0800
-Message-Id: <20251024065632.1448606-18-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 18/20] i386/cpu: Enable cet-ss & cet-ibt for supported CPU
+ models
+Date: Fri, 24 Oct 2025 14:56:30 +0800
+Message-Id: <20251024065632.1448606-19-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251024065632.1448606-1-zhao1.liu@intel.com>
 References: <20251024065632.1448606-1-zhao1.liu@intel.com>
@@ -85,94 +85,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Weijiang <weijiang.yang@intel.com>
-
-Add SHSTK and IBT flags in feature words with entry/exit
-control flags.
-
-CET SHSTK and IBT feature are enumerated via CPUID(EAX=7,ECX=0)
-ECX[bit 7] and EDX[bit 20]. CET states load/restore at vmentry/
-vmexit are controlled by VMX_ENTRY_CTLS[bit 20] and VMX_EXIT_CTLS[bit 28].
-Enable these flags so that KVM can enumerate the features properly.
+Add new versioned CPU models for Sapphire Rapids, Sierra Forest, Granite
+Rapids and Clearwater Forest, to enable shadow stack and indirect branch
+tracking.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Co-developed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes Since v2:
- - Rename "shstk"/"ibt" to "cet-ss"/"cet-ibt" to match feature names
-   in SDM & APM.
- - Rename "vmx-exit-save-cet-ctl"/"vmx-entry-load-cet-ctl" to
-   "vmx-exit-save-cet"/"vmx-entry-load-cet".
- - Define the feature mask macro for easier double check.
----
- target/i386/cpu.c | 8 ++++----
- target/i386/cpu.h | 2 ++
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ target/i386/cpu.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c08066a338a3..9a1001c47891 100644
+index 9a1001c47891..73026d5bce91 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1221,7 +1221,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-             NULL, "avx512vbmi", "umip", "pku",
--            NULL /* ospke */, "waitpkg", "avx512vbmi2", NULL,
-+            NULL /* ospke */, "waitpkg", "avx512vbmi2", "cet-ss",
-             "gfni", "vaes", "vpclmulqdq", "avx512vnni",
-             "avx512bitalg", NULL, "avx512-vpopcntdq", NULL,
-             "la57", NULL, NULL, NULL,
-@@ -1244,7 +1244,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "avx512-vp2intersect", NULL, "md-clear", NULL,
-             NULL, NULL, "serialize", NULL,
-             "tsx-ldtrk", NULL, NULL /* pconfig */, "arch-lbr",
--            NULL, NULL, "amx-bf16", "avx512-fp16",
-+            "cet-ibt", NULL, "amx-bf16", "avx512-fp16",
-             "amx-tile", "amx-int8", "spec-ctrl", "stibp",
-             "flush-l1d", "arch-capabilities", "core-capability", "ssbd",
+@@ -5161,6 +5161,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { /* end of list */ },
+                 }
+             },
++            {
++                .version = 5,
++                .note = "with cet-ss and cet-ibt",
++                .props = (PropValue[]) {
++                    { "cet-ss", "on" },
++                    { "cet-ibt", "on" },
++                    { "vmx-exit-save-cet", "on" },
++                    { "vmx-entry-load-cet", "on" },
++                    { /* end of list */ },
++                }
++            },
+             { /* end of list */ }
+         }
+     },
+@@ -5323,6 +5334,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { /* end of list */ },
+                 }
+             },
++            {
++                .version = 4,
++                .note = "with cet-ss and cet-ibt",
++                .props = (PropValue[]) {
++                    { "cet-ss", "on" },
++                    { "cet-ibt", "on" },
++                    { "vmx-exit-save-cet", "on" },
++                    { "vmx-entry-load-cet", "on" },
++                    { /* end of list */ },
++                }
++            },
+             { /* end of list */ },
          },
-@@ -1666,7 +1666,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "vmx-exit-save-efer", "vmx-exit-load-efer",
-                 "vmx-exit-save-preemption-timer", "vmx-exit-clear-bndcfgs",
-             NULL, "vmx-exit-clear-rtit-ctl", NULL, NULL,
--            NULL, "vmx-exit-load-pkrs", NULL, "vmx-exit-secondary-ctls",
-+            "vmx-exit-save-cet", "vmx-exit-load-pkrs", NULL, "vmx-exit-secondary-ctls",
+     },
+@@ -5477,6 +5499,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { /* end of list */ },
+                 }
+             },
++            {
++                .version = 4,
++                .note = "with cet-ss and cet-ibt",
++                .props = (PropValue[]) {
++                    { "cet-ss", "on" },
++                    { "cet-ibt", "on" },
++                    { "vmx-exit-save-cet", "on" },
++                    { "vmx-entry-load-cet", "on" },
++                    { /* end of list */ },
++                }
++            },
+             { /* end of list */ },
          },
-         .msr = {
-             .index = MSR_IA32_VMX_TRUE_EXIT_CTLS,
-@@ -1681,7 +1681,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, "vmx-entry-ia32e-mode", NULL, NULL,
-             NULL, "vmx-entry-load-perf-global-ctrl", "vmx-entry-load-pat", "vmx-entry-load-efer",
-             "vmx-entry-load-bndcfgs", NULL, "vmx-entry-load-rtit-ctl", NULL,
--            NULL, NULL, "vmx-entry-load-pkrs", "vmx-entry-load-fred",
-+            "vmx-entry-load-cet", NULL, "vmx-entry-load-pkrs", "vmx-entry-load-fred",
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
+     },
+@@ -5612,6 +5645,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .model_id = "Intel Xeon Processor (ClearwaterForest)",
+         .versions = (X86CPUVersionDefinition[]) {
+             { .version = 1 },
++            {
++                .version = 2,
++                .note = "with cet-ss and cet-ibt",
++                .props = (PropValue[]) {
++                    { "cet-ss", "on" },
++                    { "cet-ibt", "on" },
++                    { "vmx-exit-save-cet", "on" },
++                    { "vmx-entry-load-cet", "on" },
++                    { /* end of list */ },
++                }
++            },
+             { /* end of list */ },
          },
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ad4287822831..fa3e5d87fe50 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1369,6 +1369,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define VMX_VM_EXIT_CLEAR_BNDCFGS                   0x00800000
- #define VMX_VM_EXIT_PT_CONCEAL_PIP                  0x01000000
- #define VMX_VM_EXIT_CLEAR_IA32_RTIT_CTL             0x02000000
-+#define VMX_VM_EXIT_SAVE_CET                        0x10000000
- #define VMX_VM_EXIT_LOAD_IA32_PKRS                  0x20000000
- #define VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS     0x80000000
- 
-@@ -1382,6 +1383,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define VMX_VM_ENTRY_LOAD_BNDCFGS                   0x00010000
- #define VMX_VM_ENTRY_PT_CONCEAL_PIP                 0x00020000
- #define VMX_VM_ENTRY_LOAD_IA32_RTIT_CTL             0x00040000
-+#define VMX_VM_ENTRY_LOAD_CET                       0x00100000
- #define VMX_VM_ENTRY_LOAD_IA32_PKRS                 0x00400000
- 
- /* Supported Hyper-V Enlightenments */
+     },
 -- 
 2.34.1
 
