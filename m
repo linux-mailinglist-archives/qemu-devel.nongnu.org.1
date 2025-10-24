@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1361DC049D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 09:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29A9C04996
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 09:00:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBso-0003zA-0J; Fri, 24 Oct 2025 03:06:42 -0400
+	id 1vCBmd-0001fq-Lx; Fri, 24 Oct 2025 03:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vCBsl-0003yl-Pm
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 03:06:39 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCBmZ-0001eD-8l
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 03:00:15 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vCBsi-0007oB-JK
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 03:06:39 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-63bf76fc9faso3186715a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 00:06:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCBmX-0007Ci-CE
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 03:00:14 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4710ff3ae81so5227115e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 00:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761289594; x=1761894394; darn=nongnu.org;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=JUJEaRPsh6/qimqJR3dkhAKVZxll1SWc/WpT3QfbVlk=;
- b=ZXBkuvRt+EHQMEEN+IRVuv+Tpk5eltqBKBP++dcG7jBteLN+8t0MF1kTho08FVrRB5
- 5T38JrZxSv4p6I0UsmBW3cjorQR9df0y/uuh01xB2nOsXf7qeraxiW8x1J7MpdI7DRDC
- BNMej/viLFdKCdjJY+kJXz1VMUKl6rKa/7OwOT/6Yi1lIt3PMmrP128dMHRAZYIuxOb6
- plG+BBXuU8LNOFlya9P1XDFR02ukT4S7vjiCVoW8cYDhomPy32sHto9qSCFcnPg/I3g7
- QICBIcalAab9WMSlKfdxolybhFwGlp/ZWNWWxLap0AKPPowa2ENF/jzyYGX/0WBCs+cF
- TI8Q==
+ d=linaro.org; s=google; t=1761289209; x=1761894009; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J3oewQerbVdJbYGfiinD7DviXv6BGEOzK0GQV2zvJpY=;
+ b=ySYtNgMriPtHDllRE6+/hyDUCEjYg/s34EGh5GbscX44hgoc2cAeyGYMNPfBtHQoCx
+ QRO9zzA2B6PZZdNQOl0p5HANfMEVI5DuUrcJRyBsl8XBqZZils+bZdhxy6/uzBzPtIjd
+ aUlXF4mVtKAqLTRQpP6lxLCtt9ysAMnoXZik1vFF5KtPExLYoY8cyFL2H2F2QqavBhoU
+ Fkhj+hswcNBbc7MeghekO34/1Gbr6MOysNwp7wmQpI2UM4xgKrCwijbhyITAaYkomSl1
+ 42Bvwh0zxex/ufTCJtQmypyUEasiMzq+fdCG1wkKKGm1AhPLO1xbpDTSy0jsSM5fBP6Z
+ zocA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761289594; x=1761894394;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JUJEaRPsh6/qimqJR3dkhAKVZxll1SWc/WpT3QfbVlk=;
- b=w7sp0gpwZ34CLRO6vbMxj9+/3PDCw/7urVQRCqH6RLe+mABROhAFVR157TVrny71Hv
- zoh6MCjdZf1qF50VJlOj8CXIk3W76gfW3OuacblWWGFHQ30sQz3kwmtFnkZfkUgzkbUl
- Cn0Mfpye5q/kSYMSrDVDZMUqOHsqPvCi+l4Iy1j7crnxkOhOdVjC3d4CP0SiMUjcklKF
- dHhw9Zd786QWFiz+VkmnT1KKTtWblWDHg5v6jFYwj0z0GTZu4qEZJseuyir2tB8RKcuK
- Y+exYpKlYo3ybMA2vQhEveXcfhsvELU+XwGrkLdrJx9c2d+/X4d54PJIaJS1pR2TtBCl
- flAQ==
-X-Gm-Message-State: AOJu0Yyh4xt2KJMVPt2nL2hGn/yCLrp8r8bfNf/sjD5Lut7+VezUcgaZ
- SdwYNs28eJjQAVNg2Vyh0m68zUFZ4kpZ2kFd+Y1BnmEWji2G3rIcveJAYnZqppEHA08=
-X-Gm-Gg: ASbGncs8w/IIMpNnN6gj2GuGQkpC8mOVRDGhb8wDP7bHEMT55Y0vLw+7byLSUXcKGY8
- nlrjnzWQix0OOiwFkCJiw/ScSI7CWvxw9lxhlZJ2RQ5uGaNOLCiZE1BCu76/QEUQMJPkvkyRITU
- 6mJjzZWJalbJolJRtaR3iO9RAdssNagyydAPm4Rs1THRT7uFK8JgqoATcJhbOJpFLPvMgm4cLsd
- MEhZQTJId6vVSTBuPrQXeFEDeewdAl7iVgkAsrbrKg9RZZBHsim5bxafYwb1AiIqhyOCXzX2gdF
- YkqX+cvfIVk08bQMCqhnB6liI2hac1ulILlYExJELXwpHa5cHKrhm3tHgJZnFbUKR9JtQGCIySN
- iHh5bK8/cBLmfv+b2s2BgPSYm9KVe3wYyRlSdr+mHl3ZzXGF/FCTm3L9O+GlULwO7KAUnhg4wS1
- UwwXs82TBiLrm3PkcUV3FVe8w6ez3e5gbJv3IY0csZeiujp0H3wS4h64IOVkqQ
-X-Google-Smtp-Source: AGHT+IExyXPOMj6BIgZSb8wr9qFGU6WhtqmFly/uHleC8TxgrdaTVTTVNs+8QD1wKZHAkpkjkUfd5w==
-X-Received: by 2002:a05:6402:5189:b0:63c:3efe:d970 with SMTP id
- 4fb4d7f45d1cf-63c3efeee6emr22089507a12.31.1761289594164; 
- Fri, 24 Oct 2025 00:06:34 -0700 (PDT)
-Received: from meli-email.org (athedsl-4440453.home.otenet.gr.
- [79.129.177.117]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63e3ebb328esm3446636a12.5.2025.10.24.00.06.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Oct 2025 00:06:33 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:59:37 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2] rust/qemu-macros: Convert bit value to u8 within
- #[property]
-User-Agent: meli/0.8.12
-References: <20251024041344.1389488-1-zhao1.liu@intel.com>
-In-Reply-To: <20251024041344.1389488-1-zhao1.liu@intel.com>
-Message-ID: <t4mjqw.dx8x6zfu0m3i@linaro.org>
+ d=1e100.net; s=20230601; t=1761289209; x=1761894009;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J3oewQerbVdJbYGfiinD7DviXv6BGEOzK0GQV2zvJpY=;
+ b=eSprtuAGrty0+vISlxlTpGvebCcGM/YRX3zLV42OzcS8o8sCIxfghUFqCOBda+tDpj
+ y4722zpX+Af87fRf/6MQ8QZd39AlbOKBE5VSBATxPA88lCF067M3pKkVnrXIW8M+LeYn
+ pUym4GyhpP7CDEnxFVHmmxkCUmOqGq5mdQjmfFxrfWkqsPx5ERtWPovongbm7qUxhyG6
+ QRCd1oiT6De+AIimSWOsWx2UAe0Zqgi3GfXH9tWD45o7cYHcsa55j4evstCB/BrZDviy
+ MoDIonBRBxQXgSzzico5/oEaQpE3Sa9D348hb4KNLIa9saHHJkWhsDJOuw0RGby8grkL
+ jhJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW14EufI8DKeeTHvukgbOUAbU3b+fUHpAQgPmXqM+4ZFXZu/w+zYgzZOnjcui3zOrRRHnGn7FpLu1sq@nongnu.org
+X-Gm-Message-State: AOJu0YwzMdA8cMejhOg0p4IgY+SI/zsXAPyWUTu4Z/6be6T3OXB+Q9ao
+ nfPnoP22R3aN1wWlaLUfmcg9EzV1YaFDsTy5tAZsXnAdHl+mwT3l/tMgX+a44cyA440=
+X-Gm-Gg: ASbGnctgzpHJI16NOb+0hfCdu4MWpxufWL8j1HsjqEm13VJHzUbtQGuvJZe3fosG/pB
+ mikXXvCCu8PEz5TuQNKSBbFXokuUgQJWtfaoVO5yDWQT5Ini/1H1dY1t6s5z6tGwkSQOL9OvFQS
+ KwiWVCOSQiI9I96rxlhOifJ6nQwUk0ZVsw6TyrDuak0wcXSu3tEc1wOsixPj6acgzbFfyMM6g6Q
+ Xh7QreOz/JTv4BEleUCf9flCLj8EyLiXuTRr6oS/nk/HeJtoWnqz8I+KIUhRWjUXG7V4zkFK2h6
+ Ut3oz9dIAD1lfWrPipqO8Scdj3XV0uouCy93fo1lQDqNyRPXUsJzuCODmHftv5fDPbcUnVTz6PA
+ 1ym1XR6FZW8NG/av8QUtZb1iglCMghR/8bPkrlnJPOPBUM0q3T0OYYv/itZS6B+8Nnthy5Q8yrD
+ QRKwwtKjF7YbqzlccNVf0mlU2xNFDTzk7/VgnF+8Wp/4zSPHWQrYJ3fw==
+X-Google-Smtp-Source: AGHT+IFIvIwc14w8iiS6qsz7+rVKEccSu+/tWVbFkJMU2E2cLsTUpfRNzznLtUAmwjmFlCGUJ8mT1A==
+X-Received: by 2002:a05:600c:548c:b0:471:16e6:8e60 with SMTP id
+ 5b1f17b1804b1-471177c0948mr186341065e9.0.1761289209129; 
+ Fri, 24 Oct 2025 00:00:09 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475caf15b10sm86798575e9.11.2025.10.24.00.00.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Oct 2025 00:00:08 -0700 (PDT)
+Message-ID: <3d69a942-61da-4edb-9407-69a62aff9435@linaro.org>
+Date: Fri, 24 Oct 2025 09:00:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x535.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] configs: drop SBSA_REF from minimal specification
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>
+References: <20251023163915.3199361-1-alex.bennee@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251023163915.3199361-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,132 +101,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Oct 2025 07:13, Zhao Liu <zhao1.liu@intel.com> wrote:
->For bit property, make the type conversion within the #[property] macro
->so that users do not need to handle the conversion.
->
->Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
->Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
->---
->Changes Since v2:
-> - Check #field_ty::BITS instead of u8::MAX.
-> - Update test cases.
->---
-
-
-LGTM, some questions...
-
-> rust/hw/timer/hpet/src/device.rs |  2 +-
-> rust/qemu-macros/src/lib.rs      | 23 ++++++++++++++++++-----
-> rust/qemu-macros/src/tests.rs    | 15 ++++++++++++---
-> 3 files changed, 31 insertions(+), 9 deletions(-)
->
->diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
->index 86638c076666..23f2eefd1cd9 100644
->--- a/rust/hw/timer/hpet/src/device.rs
->+++ b/rust/hw/timer/hpet/src/device.rs
->@@ -539,7 +539,7 @@ pub struct HPETState {
->     // Internal state
->     /// Capabilities that QEMU HPET supports.
->     /// bit 0: MSI (or FSB) support.
->-    #[property(rename = "msi", bit = HPET_FLAG_MSI_SUPPORT_SHIFT as u8, default = false)]
->+    #[property(rename = "msi", bit = HPET_FLAG_MSI_SUPPORT_SHIFT, default = false)]
->     flags: u32,
+On 23/10/25 18:39, Alex Bennée wrote:
+> The whole point of SBSA_REF is for testing firmware which by
+> definition requires TCG. This means the configuration of:
 > 
->     /// Offset of main counter relative to qemu clock.
->diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
->index 50239f228be2..ee417bb4b4ef 100644
->--- a/rust/qemu-macros/src/lib.rs
->+++ b/rust/qemu-macros/src/lib.rs
->@@ -262,12 +262,25 @@ macro_rules! str_to_c_str {
->             },
->         )?;
->         let field_ty = field.ty.clone();
->-        let qdev_prop = if bitnr.is_none() {
->-            quote! { <#field_ty as ::hwcore::QDevProp>::BASE_INFO }
->+        let (qdev_prop, bitval) = if let Some(bitval) = bitnr {
->+            (
->+                quote! { <#field_ty as ::hwcore::QDevProp>::BIT_INFO },
->+                quote! {
->+                    {
->+                        const {
->+                            assert!(#bitval >= 0 && #bitval < #field_ty::BITS as _,
->+                                    "bit number exceeds type bits 
->range");
+>    --disable-tcg --with-devices-aarch64=minimal
+> 
+> makes no sense (and indeed is broken for the
+> ubuntu-24.04-aarch64-notcg) test. Drop it from minimal and remove the
+> allow_failure from the test case.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   configs/devices/aarch64-softmmu/minimal.mak          | 1 -
+>   .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml | 2 --
+>   2 files changed, 3 deletions(-)
 
-Const panic messages cannot use formatting parameters yet, but.
-Can we interpolate the type (e.g u32) in the compile-time panic message? 
-Not important but would make the error message friendlier.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-
->+                        }
->+                        #bitval as u8
->+                    }
->+                },
->+            )
->         } else {
->-            quote! { <#field_ty as ::hwcore::QDevProp>::BIT_INFO }
->+            (
->+                quote! { <#field_ty as ::hwcore::QDevProp>::BASE_INFO },
->+                quote! { 0 },
->+            )
->         };
->-        let bitnr = bitnr.unwrap_or(syn::Expr::Verbatim(quote! { 0 }));
->         let set_default = defval.is_some();
->         let defval = defval.unwrap_or(syn::Expr::Verbatim(quote! { 0 }));
->         properties_expanded.push(quote! {
->@@ -275,7 +288,7 @@ macro_rules! str_to_c_str {
->                 name: ::std::ffi::CStr::as_ptr(#prop_name),
->                 info: #qdev_prop,
->                 offset: ::core::mem::offset_of!(#name, #field_name) as isize,
->-                bitnr: #bitnr,
->+                bitnr: #bitval,
->                 set_default: #set_default,
->                 defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: #defval as u64 },
->                 ..::common::Zeroable::ZERO
->diff --git a/rust/qemu-macros/src/tests.rs b/rust/qemu-macros/src/tests.rs
->index 65691412ff57..b65cf656fa36 100644
->--- a/rust/qemu-macros/src/tests.rs
->+++ b/rust/qemu-macros/src/tests.rs
->@@ -179,7 +179,10 @@ unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
->                         name: ::std::ffi::CStr::as_ptr(c"flags"),
->                         info: <u32 as ::hwcore::QDevProp>::BIT_INFO,
->                         offset: ::core::mem::offset_of!(DummyState, flags) as isize,
->-                        bitnr: 3,
->+                        bitnr : {
->+                            const { assert!(3 >= 0 && 3 < u32::BITS as _ , "bit number exceeds type bits range"); }
->+                            3 as u8
->+                        },
->                         set_default: false,
->                         defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: 0 as u64 },
->                         ..::common::Zeroable::ZERO
->@@ -207,7 +210,10 @@ unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
->                         name: ::std::ffi::CStr::as_ptr(c"flags"),
->                         info: <u32 as ::hwcore::QDevProp>::BIT_INFO,
->                         offset: ::core::mem::offset_of!(DummyState, flags) as isize,
->-                        bitnr: 3,
->+                        bitnr : {
->+                            const { assert!(3 >= 0 && 3 < u32::BITS as _ , "bit number exceeds type bits range"); }
->+                            3 as u8
->+                        },
->                         set_default: true,
->                         defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: true as u64 },
->                         ..::common::Zeroable::ZERO
->@@ -235,7 +241,10 @@ unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
->                         name: ::std::ffi::CStr::as_ptr(c"msi"),
->                         info: <u64 as ::hwcore::QDevProp>::BIT_INFO,
->                         offset: ::core::mem::offset_of!(DummyState, flags) as isize,
->-                        bitnr: 3,
->+                        bitnr : {
->+                            const { assert!(3 >= 0 && 3 < u64::BITS as _ , "bit number exceeds type bits range"); }
->+                            3 as u8
->+                        },
->                         set_default: true,
->                         defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: false as u64 },
->                         ..::common::Zeroable::ZERO
->-- 
->2.34.1
->
 
