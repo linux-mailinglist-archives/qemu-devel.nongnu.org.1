@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B08C07EA7
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D35FC07EB3
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:32:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNUx-0008Ji-WA; Fri, 24 Oct 2025 15:30:52 -0400
+	id 1vCNWP-0000qD-Fv; Fri, 24 Oct 2025 15:32:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNUp-0008Hp-EO
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:30:44 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNWJ-0000jU-0F
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:32:15 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNUn-0001C2-51
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:30:43 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so17292435e9.3
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:30:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNWH-0001KR-6t
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:32:14 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-471191ac79dso24976385e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761334239; x=1761939039; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761334331; x=1761939131; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aGzJrcygtK07BMsaHC12W4FKVVudp6KCMI+Hev9pyzM=;
- b=wNIGNsdagXbgu3xdWqM1kuUbn7q6hGeZ+H3vxXzlIgQoEeoczNwGQpAHIypo0TD4nm
- PsSdo2azHunDYWacHLsDMHwFPm1ZwcLa6nuPQGBy86terGjqxKjNpbjvOpfw0ZvD/gyb
- 7TWng+1RoEcwwuYUVKvXnYyRaeIACqt48CMV5Zpj+w9DXLWknVgjGihJQGvtWL6gx7ki
- wpcg2u1R3extdcnVvJzpUQMN1C/JXEFQ7tkuuYucERiGvmjv1X8CyX9OTT2WAzpwaEXN
- T60yZ/YzxO/DtknqXsXY0gJ0NaDfSgoXYVqiuRLUzggkublN2Kwzu8FRfDKC8m3phuSl
- E6kg==
+ bh=5PQvFv3KYt9affpbRt+SdFadtQ6SLXOOKaJGxhZMFw4=;
+ b=ltc9ljk0XhRbxFnG6VvaG4Vh6EmkAH1iqLpMWLqiSqEx0GOPAcwFs6rE3ZPaWRl/lD
+ iQFISzv2a413k2ZjHpzEI9hK33Nf1Z4l7oXSK8iIuU6QQ7ViQe+g1KKPBDflKI2FWrLW
+ ReKl61948B4D4nzynlcOkB66qKDeIxl6bLsGs36fg0mGJlUbM18WSIga/f6BZCUdJkIx
+ tOfJJFsFojTUzC2lEv4/LGc8EA737llDfU6x1TuQQkQT4Ne6m0UlaEU7bIIBDGjfxTHh
+ ST/98SfZSdlVhAnMJUyXkrFilRiqR12Huj7lYR+aTXFQCRWQEqT8ov+/tMxqpWUjsjjy
+ IP0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761334239; x=1761939039;
+ d=1e100.net; s=20230601; t=1761334331; x=1761939131;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aGzJrcygtK07BMsaHC12W4FKVVudp6KCMI+Hev9pyzM=;
- b=mTfTCHJNoD/b9SKLcqiqEZ1oxSdVbNqeCSYTxHqi2QtXhvHEtxl8ytNKhwLTzO0W/B
- MBvS+sW05x0dNF/R9k7A7WDfiN8W9fE7xfWvv3AAukieg6F0gHu/Zg5Cp2FOsZv3kZTc
- YhTRxovNxB3s+jTUYhE/lbALXboHpzMlq+cI2r429o2OKpCQzjg8jDNuHtgVrmMzeSU5
- EsvfJDMVLogBoXR9F5JHKpFy4iBksHuRuSA57WmCxrTI/pHcg2pDjsNWc8j6wByWTf9a
- dVmMzOsfZB1/XA+OpXxoOnAq/RlpvRcH75bTqa6vbGHQmAdA7LGflkV01/XhG+P6fiSc
- xmeA==
-X-Gm-Message-State: AOJu0YysDOYJyHfZQm/kkLZubUZEIdAtbqm8WyUle6530PbBmabkEnV0
- 3JHIwAxOJRnsTgJ+5fw7XA2mU292Qjo8Fvrw0Qu4LS9EBmliLMPD7QKN+qbxJCh/yo4FmEWPEkq
- EjPoZzks=
-X-Gm-Gg: ASbGncuhYqRELw8mLN6L4HTD7utWBqTjRvITD/6sl1BCCDqh2e56OYunpAvxxdZ5hwd
- evRQL0LEO9t34h9kqGgR3JAd3VJz/xa8ma/jvKfyWUxDKpo+EjSvZon5zJVHixH6RE+wxWeoKKK
- k5avfURywRtlB2g8TVnLam7WuAme1EZAl1EwChqQQbCCBKTyeCvh02oTQXOjTyAmWkxzQ1iuaU2
- Swyd/tQmj09PKcv03UrdqBFQuestTw/Cp6pP3GB16ubpdtThvu8P7QPNRcNqXLjREesBBCOYu7U
- X4oDibD/+4Espw1MTiGxW5qHy5Wyp8Rqnnw+/dZK2mOSO0X5XuLcEQo0nh/Mx+h4UIvxPeAWjGj
- t635jYcDHcxeSLUE9wGCEMH9mfupvbadtIa0eD9/Xlmu6P5+qugn+9UlSSf+4nqOXL44YG+klBM
- Wv2sptCn0PKGA9190cozqijutxkDFndG2t66vaYDCCq7dM//cQB6YfhT+jPzuA
-X-Google-Smtp-Source: AGHT+IHeUYsa+S4os0Sq093WpujmYJvXDYDlO0YQqlbbf1owcSqiCMQcX5+5X6h29uWYt8XZBWsQBA==
-X-Received: by 2002:a05:600c:458b:b0:46e:4246:c90d with SMTP id
- 5b1f17b1804b1-471178774bfmr208206745e9.11.1761334238713; 
- Fri, 24 Oct 2025 12:30:38 -0700 (PDT)
+ bh=5PQvFv3KYt9affpbRt+SdFadtQ6SLXOOKaJGxhZMFw4=;
+ b=ACv/b29BsHsDBRjAEBoRNsm+ntIaPM1T93K8uOIQui45t5OEwAneGdzXm/GAsGWyR1
+ JQfWDDu1yI5LdyH+GhmOS2x4uDz3qO+I15WS3/x5A0JnaiovdiF2YaJJCyjMa7tN6khy
+ 3NnddnV9tUa9xx2vMuF1iUYoYy+CnojEu/KrDFDPGhzwlcKi1Bp0mc6powu25ezxUSNQ
+ lSBsOu8/xyKSDVgQVEm4Dfv4S4j6F/g24rs/Y+0WKzCIB/b7Geddh2UCfDI0vrnuyTIB
+ vHy19Rd4BBX1FG8LHKm5K/xeTHIx/1wb/38PM1LXYylH59ulsGRPsLQr3q02/7Q6lJ4f
+ IZqw==
+X-Gm-Message-State: AOJu0YwmSEq/6qCpjUB5wVEc+8JC+ghtkwCAa9EPIpekLIRKDdmduwmz
+ g6PV02QUn22XIOfFF05S4bKvH7SSp2dywf6PKG8Gf76MTKmgrDlGFw0xNeVcoDezzkxAvrHcg8n
+ 7jA0KXzo=
+X-Gm-Gg: ASbGncs/gCVkQJWE9cXJ6syh/odl4yxpQuOruvar9hEhjPZS2zMgok1ocJf5iUklRDx
+ SKdBhDT+LNxYn4HjTALB3DI8CxIduBvuGeTBZFy+ZLr8YlBpxHth4Mnmz25pS0s/OtvCS2tVZhZ
+ AgfSeqvS+djL1bWhvvojGYIQzHcbqZq4rfMWV0ecwmig5XVYosPyw1V895nERa7qgbpF9Re3fzm
+ UJFCsFdQkP8BPNMiEOiSlo4NNV0BZgviF/HTpJ5jyAY7Fp3dbuDw0UN12/hLd1e+YqLvKvNIWJs
+ oOhif8Hk5usaPiw/WFIKHRy14xygWrqYwiv+gk+DtEk1HbBBYm/0HtPSOwLsmpiI0GYkaYdc12O
+ qdpgGU2pEJD1E59sCQaTPElFR6sC7VKTHtMJY6bxUMUZ49AoyCdQmjBMA3m8qC0Qs5scMw7YvBB
+ FiREWHgQjNx+O+hfviKw7AhCXo2Tgbv7WXmmDZ+nCRHei8vpk/HQ==
+X-Google-Smtp-Source: AGHT+IHzBFBxTwcnx5jxUEP6XJQmCf6wUV3hwfL9BoJ/otuH7ZCqfcBQTrLP8ONMEFAiO3sZ94W1hQ==
+X-Received: by 2002:a05:600c:4510:b0:46e:1fb7:a1b3 with SMTP id
+ 5b1f17b1804b1-475d2ec5729mr30808125e9.23.1761334331350; 
+ Fri, 24 Oct 2025 12:32:11 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dc0d1fb4sm1082595e9.2.2025.10.24.12.30.37
+ ffacd0b85a97d-429952b79cbsm18173f8f.4.2025.10.24.12.32.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Oct 2025 12:30:37 -0700 (PDT)
+ Fri, 24 Oct 2025 12:32:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 17/27] hw/avr: Include missing 'system/memory.h' header
-Date: Fri, 24 Oct 2025 21:04:04 +0200
-Message-ID: <20251024190416.8803-18-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH 18/27] hw/input/lassi: Include missing 'system/memory.h' header
+Date: Fri, 24 Oct 2025 21:04:05 +0200
+Message-ID: <20251024190416.8803-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251024190416.8803-1-philmd@linaro.org>
 References: <20251024190416.8803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,65 +104,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 "system/memory.h" header is indirectly pulled by "hw/sysbus.h".
 Include it explicitly to avoid when refactoring the latter:
 
-  In file included from ../../hw/misc/avr_power.c:26:
-  include/hw/misc/avr_power.h:40:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     40 |     MemoryRegion iomem;
+  In file included from ../../hw/input/lasips2.c:29:
+  include/hw/input/lasips2.h:41:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
+     41 |     MemoryRegion reg;
         |                  ^
-  In file included from ../../hw/timer/avr_timer16.c:39:
-  include/hw/timer/avr_timer16.h:51:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     51 |     MemoryRegion iomem;
-        |                  ^
-  In file included from ../../hw/char/avr_usart.c:23:
-  include/hw/char/avr_usart.h:67:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     67 |     MemoryRegion mmio;
-        |                  ^
-  include/qemu/typedefs.h:68:16: note: forward declaration of 'struct MemoryRegion'
-     68 | typedef struct MemoryRegion MemoryRegion;
-        |                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/char/avr_usart.h    | 1 +
- include/hw/misc/avr_power.h    | 1 +
- include/hw/timer/avr_timer16.h | 1 +
- 3 files changed, 3 insertions(+)
+ include/hw/input/lasips2.h | 1 +
+ include/hw/misc/lasi.h     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/hw/char/avr_usart.h b/include/hw/char/avr_usart.h
-index 0cc599e9b15..2d2fc0669f2 100644
---- a/include/hw/char/avr_usart.h
-+++ b/include/hw/char/avr_usart.h
-@@ -25,6 +25,7 @@
+diff --git a/include/hw/input/lasips2.h b/include/hw/input/lasips2.h
+index 01911c50f9b..3510216effd 100644
+--- a/include/hw/input/lasips2.h
++++ b/include/hw/input/lasips2.h
+@@ -22,6 +22,7 @@
+ #include "exec/hwaddr.h"
  #include "hw/sysbus.h"
- #include "chardev/char-fe.h"
- #include "qom/object.h"
+ #include "hw/input/ps2.h"
 +#include "system/memory.h"
  
- /* Offsets of registers. */
- #define USART_DR   0x06
-diff --git a/include/hw/misc/avr_power.h b/include/hw/misc/avr_power.h
-index 388e421aa7b..a3d3d1de878 100644
---- a/include/hw/misc/avr_power.h
-+++ b/include/hw/misc/avr_power.h
-@@ -27,6 +27,7 @@
- 
- #include "hw/sysbus.h"
- #include "qom/object.h"
+ #define TYPE_LASIPS2_PORT "lasips2-port"
+ OBJECT_DECLARE_TYPE(LASIPS2Port, LASIPS2PortDeviceClass, LASIPS2_PORT)
+diff --git a/include/hw/misc/lasi.h b/include/hw/misc/lasi.h
+index 0bdfb11b501..70c99fc017e 100644
+--- a/include/hw/misc/lasi.h
++++ b/include/hw/misc/lasi.h
+@@ -15,6 +15,7 @@
+ #include "system/address-spaces.h"
+ #include "hw/pci/pci_host.h"
+ #include "hw/boards.h"
 +#include "system/memory.h"
  
- 
- #define TYPE_AVR_MASK "avr-power"
-diff --git a/include/hw/timer/avr_timer16.h b/include/hw/timer/avr_timer16.h
-index a1a032a24dc..c08288d6227 100644
---- a/include/hw/timer/avr_timer16.h
-+++ b/include/hw/timer/avr_timer16.h
-@@ -31,6 +31,7 @@
- #include "hw/sysbus.h"
- #include "qemu/timer.h"
- #include "qom/object.h"
-+#include "system/memory.h"
- 
- enum NextInterrupt {
-     OVERFLOW,
+ #define TYPE_LASI_CHIP "lasi-chip"
+ OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
 -- 
 2.51.0
 
