@@ -2,92 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD421C07F3D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E153AC07D68
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:04:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNk0-0002TD-Eb; Fri, 24 Oct 2025 15:46:24 -0400
+	id 1vCN5Q-0000vH-8L; Fri, 24 Oct 2025 15:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNjt-0002Q8-Al
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:46:17 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNjm-0003Yb-1Q
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:46:17 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4710665e7deso11977215e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761335165; x=1761939965; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Cla2YszDVwablt8Ymyx/d1GI0PEfMm4fj8BCEX8Hctc=;
- b=Uth6r2qDrCrCX7FXAxu/9jjz6CGpMAIXC2rpeuAw4LUjbIrS+8HnKvYQqvKuVPPgsS
- 1OCM067sASOcRjnR1rOpD+nUpGaraUysc5gwHxEhE4iOP2ikb0lTTOBq+84l9+Bdf67M
- KvQLvvgFRQpEr8adN3vukjlaMoAKZ916eVfN9qipJ9JMROaeqewiz2VJ6ONun0t5IX9r
- NSNhc1e2ja2Z6AoV/tg+tgKCqcMZFsTJqyJzvfKGd3dJEwZVlz/f5Bn6pAlk7j3zyNej
- ht0q6xMLK2n2AyIXlINjVNZtI30rn0yMzUFNUy/pGiPu1UpJIEk068gBvDqeu287zwm5
- 4t1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761335165; x=1761939965;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Cla2YszDVwablt8Ymyx/d1GI0PEfMm4fj8BCEX8Hctc=;
- b=aOoyP6fDz5hiGrhMxtnpsyRCWEo/gcdaKwTL/Sz0Cw0zl0uLm+8pF9aTmu5NZQiHe+
- GAoWGWTAYZVy4bbOvIV3PMDRyzOyyU31qMqeb5MpxiJwm6B7VvzE/BfwsTrjjHARRgPq
- Ql2f5zbMLracUP+8Cvs4qpkyKDdssXWgciSp6/kvBbEAyqs/ZnFB1vcJ+hyzW44dl2YJ
- SEYnPQGp4iG/vlpYWgAElgkBy2P4hvuarWkoj3IJnhkqUj5LO6o186M7PJ4oIcre0i6/
- olpE51HbirE1LAV0Yvuv5SXDpjVpGtNK1fzqrDogonBlAkQwu10Nd/9aN9yDhMSrW6CK
- U+Nw==
-X-Gm-Message-State: AOJu0YxLJRF4yO0xpF3re0iRXZqY6mvo55GFKb4hW44D3gKTOh8m+20t
- pCyP3VRBLOfqGfKO7xmavwgrHa4yS3uEFd1qPFKWnsSZpaK7YcPxBRgXLIO5/paOwYXqZl8+xV2
- ldc+bhRU=
-X-Gm-Gg: ASbGnctNFCkbd2EzB3Y/oqUIwl0g3GyK5CtWiUEQ968ywRulcX4jUK+adapHw3fienJ
- FmoEcxq3gINZdApRpfy9D/tQRWa924zOQmwDM2wQZ5E9qLsq2cPAYdGWZiILVnR7Y+YjI8iqQgn
- Dldo4dL8Gf1JEdmblb7klgRL2c+Uqxx9ZZPf26rsEjs0gGyKkRjCesS5Og0BugvMxAiLreaeBHp
- KMkAaBR9jsm51tPX44qpQmdSW9t1qh5XI190ZiAH/UPwMbvxL5d+HR/7PtYsytFeyUo4s/n5bbf
- 4mOjsdddnVgMyFNLO0apCEElykHVQGnBETGdlTfkSVMSbj0RmGla8lgy926aRqgnPFwudgYZbIn
- sBLudY31ic25c8JleuQg7KKjxP7dBUsfYBfTXjV+A5Ki71iFPLtkp3vdkKxTc6jUKp5E7ThemwP
- lMrCbJ6LmlZFTXa29QEzhVZAIEH/jo8aDChrRSc42YRiNDGKC0YyMHLrv3yH9NyUhq/hCp+GA=
-X-Google-Smtp-Source: AGHT+IGSptXEI9c9Ynsr/iv3pZ589oWEr2VkZOpX37HpNrWv1MrV6VdutHVVPIXNK+OpALK/3rpETA==
-X-Received: by 2002:a05:600c:1d15:b0:46d:d949:daba with SMTP id
- 5b1f17b1804b1-475caf93244mr56926095e9.4.1761335165309; 
- Fri, 24 Oct 2025 12:46:05 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c428e9b2sm167837405e9.5.2025.10.24.12.46.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Oct 2025 12:46:04 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <yoshinori.sato@nifty.com>,
- Magnus Damm <magnus.damm@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 27/27] hw/rx: Include missing 'system/memory.h' header
-Date: Fri, 24 Oct 2025 21:04:14 +0200
-Message-ID: <20251024190416.8803-28-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251024190416.8803-1-philmd@linaro.org>
-References: <20251024190416.8803-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vCN5O-0000v3-AD
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:04:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vCN5M-00051M-L8
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:04:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761332663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XA/4q4Ov24n9vAgzW1LfcQ1pMbwFjxB/xETz3OMfPM4=;
+ b=THI35GQXEQkEGYV0SEGU7bZlAH1SfcZ9kdJ1AQjGNxPs0J6k9klHUvfwANJi3SGvxyyZeA
+ p1qCUU4KV7bMfkms7UJnjf4Gnf2feYS4Za4WXSvk9cndsR8kQZ8PmKEK8SNq6ph8fdhUwp
+ JHclUqaTmmSMbH1R+7PqCK32xycDoRo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-jeXZNimPMrWXdRnMXfu0jw-1; Fri,
+ 24 Oct 2025 15:04:20 -0400
+X-MC-Unique: jeXZNimPMrWXdRnMXfu0jw-1
+X-Mimecast-MFC-AGG-ID: jeXZNimPMrWXdRnMXfu0jw_1761332659
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26A22196F76E; Fri, 24 Oct 2025 19:04:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.155])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3537530002DE; Fri, 24 Oct 2025 19:04:17 +0000 (UTC)
+Date: Fri, 24 Oct 2025 14:04:14 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, armbru@redhat.com, qemu-devel@nongnu.org, 
+ hreitz@redhat.com
+Subject: Re: [PATCH v2 4/4] qemu-img info: Add cache mode option
+Message-ID: <zg2f7rmtapyvgztyyuj2twsntezx3ayhmloawqesf25g56pkxf@qperuc67znnm>
+References: <20251024123041.51254-1-kwolf@redhat.com>
+ <20251024123041.51254-5-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024123041.51254-5-kwolf@redhat.com>
+User-Agent: NeoMutt/20250905
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,76 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"system/memory.h" header is indirectly pulled by "hw/sysbus.h".
-Include it explicitly to avoid when refactoring the latter:
+On Fri, Oct 24, 2025 at 02:30:40PM +0200, Kevin Wolf wrote:
+> When querying block limits, different cache modes (in particular
+> O_DIRECT or not) can result in different limits. Add an option to
+> 'qemu-img info' that allows the user to specify a cache mode, so that
+> they can get the block limits for the cache mode they intend to use with
+> their VM.
+> 
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  docs/tools/qemu-img.rst |  2 +-
+>  qemu-img.c              | 25 +++++++++++++++++++++----
+>  qemu-img-cmds.hx        |  4 ++--
+>  3 files changed, 24 insertions(+), 7 deletions(-)
+>
 
-  In file included from ../../hw/rx/rx62n.c:27:
-  In file included from /Users/philmd/source/qemu/include/hw/rx/rx62n.h:28:
-  include/hw/intc/rx_icu.h:50:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     50 |     MemoryRegion memory;
-        |                  ^
-  In file included from ../../hw/char/renesas_sci.c:30:
-  include/hw/char/renesas_sci.h:34:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     34 |     MemoryRegion memory;
-        |                  ^
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/char/renesas_sci.h  | 1 +
- include/hw/intc/rx_icu.h       | 1 +
- include/hw/timer/renesas_cmt.h | 1 +
- include/hw/timer/renesas_tmr.h | 1 +
- 4 files changed, 4 insertions(+)
-
-diff --git a/include/hw/char/renesas_sci.h b/include/hw/char/renesas_sci.h
-index a4764e3eee3..26142a20baf 100644
---- a/include/hw/char/renesas_sci.h
-+++ b/include/hw/char/renesas_sci.h
-@@ -12,6 +12,7 @@
- #include "chardev/char-fe.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "system/memory.h"
- 
- #define TYPE_RENESAS_SCI "renesas-sci"
- typedef struct RSCIState RSCIState;
-diff --git a/include/hw/intc/rx_icu.h b/include/hw/intc/rx_icu.h
-index b23504f3dd1..a8ca94938d4 100644
---- a/include/hw/intc/rx_icu.h
-+++ b/include/hw/intc/rx_icu.h
-@@ -23,6 +23,7 @@
- 
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "system/memory.h"
- 
- enum TRG_MODE {
-     TRG_LEVEL = 0,
-diff --git a/include/hw/timer/renesas_cmt.h b/include/hw/timer/renesas_cmt.h
-index 1c0b65c1d5a..64bd14dc7a8 100644
---- a/include/hw/timer/renesas_cmt.h
-+++ b/include/hw/timer/renesas_cmt.h
-@@ -12,6 +12,7 @@
- #include "qemu/timer.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "system/memory.h"
- 
- #define TYPE_RENESAS_CMT "renesas-cmt"
- typedef struct RCMTState RCMTState;
-diff --git a/include/hw/timer/renesas_tmr.h b/include/hw/timer/renesas_tmr.h
-index caf7eec0dca..f6c5937f40a 100644
---- a/include/hw/timer/renesas_tmr.h
-+++ b/include/hw/timer/renesas_tmr.h
-@@ -12,6 +12,7 @@
- #include "qemu/timer.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
-+#include "system/memory.h"
- 
- #define TYPE_RENESAS_TMR "renesas-tmr"
- typedef struct RTMRState RTMRState;
 -- 
-2.51.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
