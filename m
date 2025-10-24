@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F08CC06763
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A10CC06748
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:20:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCHi3-0005SK-IJ; Fri, 24 Oct 2025 09:19:59 -0400
+	id 1vCHi2-0005R3-Bu; Fri, 24 Oct 2025 09:19:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHhz-0005Qn-Lo
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vCHhx-0005Qe-Uk
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHht-0004jy-H6
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:55 -0400
+ id 1vCHhv-0004kH-BB
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761311986;
+ s=mimecast20190719; t=1761311989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6K6yXOxzdduDep/cEeTdz/PabHfAAO8ZDJVfFXVKLhM=;
- b=GfrwAutsSGkWvQFJmHWK7e5U5NuWvECZ/iTRZsZiJ7h/8sCREloQVnEGgAlyQQmxAGOPX3
- pifbQtjWw0nPYHlxgbcsRUFzHJ6gPSrjRhhSPo7Q2PLlcWVioCiACjPeKv7BXKLLZdOz2I
- FoBaHBKsHJkpyGUrWbSUWyKLFK7B+Fs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=3G2BT9iAz6T+va4TbFNMAz7RB+55LcofTHMiALdTMPQ=;
+ b=c5DD78cwMa3mdtkYrnb+5pVOWsOlpUTAbuGPffRBsd6PTRkKESTTv5F//DXQ5/+vGmal0L
+ dMRa2b3qK4+HGYQZtc6PhKo/SQCEeWk8u2DeliV/aVGDCM9HVKbP09gnbtbg2svxsIToNY
+ XSPKI8eY90uKvBklAWPGpk+tHvGSfyY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-O6YSTuXwMJ66L6PLCeiwpg-1; Fri,
- 24 Oct 2025 09:19:43 -0400
-X-MC-Unique: O6YSTuXwMJ66L6PLCeiwpg-1
-X-Mimecast-MFC-AGG-ID: O6YSTuXwMJ66L6PLCeiwpg_1761311982
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-0a2Wm7NtOeulIve7k4uylg-1; Fri,
+ 24 Oct 2025 09:19:45 -0400
+X-MC-Unique: 0a2Wm7NtOeulIve7k4uylg-1
+X-Mimecast-MFC-AGG-ID: 0a2Wm7NtOeulIve7k4uylg_1761311984
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 957A919541BF; Fri, 24 Oct 2025 13:19:42 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C119B180035A; Fri, 24 Oct 2025 13:19:44 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.2])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E77B819540EB; Fri, 24 Oct 2025 13:19:40 +0000 (UTC)
+ id 48AAF19540EB; Fri, 24 Oct 2025 13:19:42 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>
-Subject: [PULL 01/13] crypto: propagate Error object on premature termination
-Date: Fri, 24 Oct 2025 14:19:25 +0100
-Message-ID: <20251024131937.56673-2-berrange@redhat.com>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 02/13] qom: use ERRP_GUARD in user_creatable_complete
+Date: Fri, 24 Oct 2025 14:19:26 +0100
+Message-ID: <20251024131937.56673-3-berrange@redhat.com>
 In-Reply-To: <20251024131937.56673-1-berrange@redhat.com>
 References: <20251024131937.56673-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,89 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The way that premature termination was handled in TLS connections was
-changed to handle an ordering problem during graceful shutdown in the
-migration code.
+With error_propagate, the stack trace from any error_abort/fatal
+usage will start from the error_propagate() call, which is largely
+useless. Using ERRP_GUARD ensures the stack trace starts from
+the origin that reported the error.
 
-Unfortunately one of the codepaths returned -1 to indicate an error
-condition, but failed to set the 'errp' parameter.
-
-This broke error handling in the qio_channel_tls_handshake function,
-as the QTask callback would no longer see that an error was raised.
-As a result, the client will go on to try to use the already closed
-TLS connection, resulting in misleading errors.
-
-This was evidenced in the I/O test 233 which showed changes such as
-
--qemu-nbd: Certificate does not match the hostname localhost
-+qemu-nbd: Failed to read initial magic: Unable to read from socket: Connection reset by peer
-
-Fixes: 7e0c22d585581b8083ffdeb332ea497218665daf
-Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/tlssession.c |  8 +++++---
- io/channel-tls.c    | 13 +++++++------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ qom/object_interfaces.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/tlssession.c b/crypto/tlssession.c
-index ac38c2121d..8c0bf457ad 100644
---- a/crypto/tlssession.c
-+++ b/crypto/tlssession.c
-@@ -569,8 +569,6 @@ qcrypto_tls_session_read(QCryptoTLSSession *session,
-     if (ret < 0) {
-         if (ret == GNUTLS_E_AGAIN) {
-             return QCRYPTO_TLS_SESSION_ERR_BLOCK;
--        } else if (ret == GNUTLS_E_PREMATURE_TERMINATION) {
--            return QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION;
-         } else {
-             if (session->rerr) {
-                 error_propagate(errp, session->rerr);
-@@ -580,7 +578,11 @@ qcrypto_tls_session_read(QCryptoTLSSession *session,
-                            "Cannot read from TLS channel: %s",
-                            gnutls_strerror(ret));
-             }
--            return -1;
-+            if (ret == GNUTLS_E_PREMATURE_TERMINATION) {
-+                return QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION;
-+            } else {
-+                return -1;
-+            }
-         }
-     }
- 
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index 1fbed4be0c..70fad38d18 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -368,6 +368,7 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
-                                      int flags,
-                                      Error **errp)
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index 1ffea1a728..415cbee8c5 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -24,13 +24,12 @@
+ bool user_creatable_complete(UserCreatable *uc, Error **errp)
  {
+     UserCreatableClass *ucc = USER_CREATABLE_GET_CLASS(uc);
+-    Error *err = NULL;
 +    ERRP_GUARD();
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
-     size_t i;
-     ssize_t got = 0;
-@@ -384,13 +385,13 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
-             } else {
-                 return QIO_CHANNEL_ERR_BLOCK;
-             }
--        } else if (ret == QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION) {
--            if (qio_channel_tls_allow_premature_termination(tioc, flags)) {
--                ret = 0;
--            } else {
--                return -1;
--            }
-         } else if (ret < 0) {
-+            if (ret == QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION &&
-+                qio_channel_tls_allow_premature_termination(tioc, flags)) {
-+                error_free(*errp);
-+                *errp = NULL;
-+                return got;
-+            }
-             return -1;
-         }
-         got += ret;
+ 
+     if (ucc->complete) {
+-        ucc->complete(uc, &err);
+-        error_propagate(errp, err);
++        ucc->complete(uc, errp);
+     }
+-    return !err;
++    return !*errp;
+ }
+ 
+ bool user_creatable_can_be_deleted(UserCreatable *uc)
 -- 
 2.50.1
 
