@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E940C07E0B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B01EC07E7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:28:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNIu-0000ZF-8L; Fri, 24 Oct 2025 15:18:24 -0400
+	id 1vCNSE-0006AH-7q; Fri, 24 Oct 2025 15:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNIp-0000XQ-Tj; Fri, 24 Oct 2025 15:18:20 -0400
+ id 1vCNS9-00067g-44; Fri, 24 Oct 2025 15:27:57 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNIn-0007db-8q; Fri, 24 Oct 2025 15:18:19 -0400
+ id 1vCNS7-0000mQ-2k; Fri, 24 Oct 2025 15:27:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=X4gUFldMfZJvSa958mlPNePHOPK1Rb4zuO0AbGzVFxk=; b=E5fWoBU5aLWGTiP8WuqSDJP5er
- S19E1+wQPaGqbeBv6cdZwLtr/1X5EXMDWUDwJxfYo1B/upeX+R3t9O4wRankaFb26sCT8dLYq2lP/
- XeOJ7CZZxwzJhKQOZ/jvZz/8iuVr5EuBlJmTthZbOdu85kwCMtGVVK6A/f9tQwpsxhsYTjAFPxreZ
- BMAy7ruLmbFuTeFCsUpchEvPnuIn/V3w5oYtN1cCUgI4/YVnPKSjM5L81vmWp1IC51bIABiwR3ZFW
- IQ9rovi+BlZZhehEI+XheoWX+1hSi+k+zXKLOZZZ2Eho7e1/TBZWvdD3dz4Pmqd/liRE0J07vabnL
- Ph/gv7Z09ABG8qVIqbCIur6ZngIbwlQgtj/0R8MlTlNjSeenCDYjzAOrtkik3XnLcDHFOGjhRl0Cn
- 45KX/PpVDvlmxxP297P6Oao3m7mnwpJgayvyXoSGVuEiPw4w+TiiWbfH1rDwNR50Hk8Z3FSzNoJzX
- 0EroDHh7mSSo5MFhBzt4hvgrMnyrsgVbB87GdB6BtShep7CJ2AQY5cXZZ7IywKoRrfNCeX8397OZk
- ImvbB5icIXdDZgX9Xm7Jl2YiohiIOL5WkLmwBwvaS+UMrP59vrG0qATkDlnuQ2ui9XIr/hnjASGPd
- yhYM0E3ZgMP/1GY3qK+Ss42UsSwTy2aFu5Bt98cY4=;
+ bh=/QVZ4jnaV1pk3E3uUg4vJsVYOOj1SxgBJAMAuUGy94s=; b=vuttA+ZWKDke0E8cAGAnlTunVL
+ MkzJedxECeEiCsQlYJrCuhggXwdyTUVp/3kk7yiZp6PJg2ldHlHp5yPz22kQw3fl6UC9f4Bfip5uw
+ aL1uwzepaZhrP5I4KnOQ+D4g/yfVcghYiry3TEx2sHmyxXnqMxGvQTL7919qRxvb3+SIgy29rgZxb
+ ox2vb+G6vinY/3Qkbl88sXtCQAOYyE4K/wkntdEkbVWEq/VHDIDX0YW2M1wJ9/Vun2NJ+RNtWRcTF
+ vFP9WEutFNzjHCrRTd+pkra7vx4Dl4Tl8ijP1deMxBYyddjorwEeBdv3GBEXMTgA1VyAkHT4MGDrZ
+ wNz9+cjNBB+6QbrWhnDQn728v76I5E6e7/EwoTbb9nj2LAm+/b7XhDFNYl24vOzwPs7n+DFOKeezR
+ 3F7mrcZId77vIuukgqVlifo7hbQtYVR49zled9ztbOzqqYJmGxNeJGa28u1J8h1H6iY1PXIYcm3ja
+ vVCLX+6zMKgQtwqhLQUIItMoDwaEUhzoXLwcA6u+nazZyv0TJ4IQnjXalxd78ccVxB96v1OldfhhA
+ n8dW5j9NHY7lkCy9rDFDks7FRkzheOswx2bud2XPK7oTOxABRSPWtGTlIP7KVu2eQUImSjAUfDD9w
+ kakzD4LzrzDMxc6QLtwlBhRLtotYtjBPJxfaa+jE8=;
 Received: from [2a02:8012:2f01:0:521c:3ef:78b8:2419]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vCNGT-000BF1-Rb; Fri, 24 Oct 2025 20:15:57 +0100
-Message-ID: <3ba2fb2d-1808-45de-896c-dc0cf98c549a@ilande.co.uk>
-Date: Fri, 24 Oct 2025 20:18:07 +0100
+ id 1vCNPp-000BIs-KX; Fri, 24 Oct 2025 20:25:37 +0100
+Message-ID: <d5b2e390-c176-4615-83ef-b457fb53bac2@ilande.co.uk>
+Date: Fri, 24 Oct 2025 20:27:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
@@ -46,7 +46,7 @@ Cc: =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
  Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
 References: <cover.1761232472.git.balaton@eik.bme.hu>
- <797587b52159d2db79ed924b4962be7e7ba84207.1761232472.git.balaton@eik.bme.hu>
+ <1e94db358c97b16a32a56b8ae485a8056580df99.1761232473.git.balaton@eik.bme.hu>
 Content-Language: en-US
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
@@ -73,13 +73,13 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <797587b52159d2db79ed924b4962be7e7ba84207.1761232472.git.balaton@eik.bme.hu>
+In-Reply-To: <1e94db358c97b16a32a56b8ae485a8056580df99.1761232473.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:521c:3ef:78b8:2419
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v5 07/13] hw/pci-host/raven: Do not use parent object for
- mmcfg region
+Subject: Re: [PATCH v5 09/13] hw/pci-host/raven: Simpify discontiguous IO
+ access
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -107,59 +107,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23/10/2025 16:26, BALATON Zoltan wrote:
 
-> The mmcfg field in PCIHostState is only used by raven for the PCI
-> config direct access but is not actually needed as the memory region
-> lifetime can be managed by the object given during init so use that
-> and remove the unused field from PCIHostState.
+> PREP allows remapping of the 64k ISA IO addresses from the normal
+> contiguous IO space into a discontiguous 8MB region and can switch
+> between the two modes. We can implement this in a simpler way than is
+> done currently using an io region that forwards access to the
+> contiguous pci_io region and enabling/disabling the discontiguous
+> region as needed.
 > 
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->   hw/pci-host/raven.c       | 7 ++++---
->   include/hw/pci/pci_host.h | 1 -
->   2 files changed, 4 insertions(+), 4 deletions(-)
+>   hw/pci-host/raven.c | 88 ++++++++++++---------------------------------
+>   1 file changed, 22 insertions(+), 66 deletions(-)
 > 
 > diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-> index 2057a1869f..23020fd09f 100644
+> index bb0be40eb4..bf4f4b7f71 100644
 > --- a/hw/pci-host/raven.c
 > +++ b/hw/pci-host/raven.c
-> @@ -216,7 +216,7 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
->       SysBusDevice *dev = SYS_BUS_DEVICE(d);
->       PCIHostState *h = PCI_HOST_BRIDGE(dev);
->       PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(dev);
-> -    MemoryRegion *address_space_mem = get_system_memory();
-> +    MemoryRegion *mr, *address_space_mem = get_system_memory();
+> @@ -42,17 +42,14 @@ struct PREPPCIState {
+>       PCIHostState parent_obj;
 >   
->       qdev_init_gpio_in(d, raven_change_gpio, 1);
+>       qemu_irq irq;
+> -    AddressSpace pci_io_as;
+>       MemoryRegion pci_io;
+> -    MemoryRegion pci_io_non_contiguous;
+> +    MemoryRegion pci_discontiguous_io;
+>       MemoryRegion pci_memory;
+>       MemoryRegion pci_intack;
+>       MemoryRegion bm;
+>       MemoryRegion bm_ram_alias;
+>       MemoryRegion bm_pci_memory_alias;
+>       AddressSpace bm_as;
+> -
+> -    int contiguous_map;
+>   };
 >   
-> @@ -233,9 +233,10 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
->                             "pci-conf-data", 4);
->       memory_region_add_subregion(&s->pci_io, 0xcfc, &h->data_mem);
+>   #define PCI_IO_BASE_ADDR    0x80000000  /* Physical address on main bus */
+> @@ -103,63 +100,28 @@ static const MemoryRegionOps raven_intack_ops = {
+>       },
+>   };
 >   
-> -    memory_region_init_io(&h->mmcfg, OBJECT(h), &raven_mmcfg_ops, h->bus,
-> +    mr = g_new0(MemoryRegion, 1);
-> +    memory_region_init_io(mr, OBJECT(h), &raven_mmcfg_ops, h->bus,
->                             "pci-mmcfg", 0x00400000);
-> -    memory_region_add_subregion(address_space_mem, 0x80800000, &h->mmcfg);
-> +    memory_region_add_subregion(address_space_mem, 0x80800000, mr);
+> -static inline hwaddr raven_io_address(PREPPCIState *s,
+> -                                      hwaddr addr)
+> +/* Convert 8 MB non-contiguous address to 64k ISA IO address */
+> +static inline hwaddr raven_io_addr(hwaddr addr)
+>   {
+> -    if (s->contiguous_map == 0) {
+> -        /* 64 KB contiguous space for IOs */
+> -        addr &= 0xFFFF;
+> -    } else {
+> -        /* 8 MB non-contiguous space for IOs */
+> -        addr = (addr & 0x1F) | ((addr & 0x007FFF000) >> 7);
+> -    }
+> -
+> -    /* FIXME: handle endianness switch */
+> -
+> -    return addr;
+> +    return ((addr & 0x007FFF000) >> 7) | (addr & 0x1F);
+>   }
 >   
->       memory_region_init_io(&s->pci_intack, OBJECT(s), &raven_intack_ops, s,
->                             "pci-intack", 1);
-> diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
-> index 954dd446fa..a13f879872 100644
-> --- a/include/hw/pci/pci_host.h
-> +++ b/include/hw/pci/pci_host.h
-> @@ -41,7 +41,6 @@ struct PCIHostState {
+> -static uint64_t raven_io_read(void *opaque, hwaddr addr,
+> -                              unsigned int size)
+> +static uint64_t raven_io_read(void *opaque, hwaddr addr, unsigned int size)
+>   {
+> -    PREPPCIState *s = opaque;
+> -    uint8_t buf[4];
+> -
+> -    addr = raven_io_address(s, addr);
+> -    address_space_read(&s->pci_io_as, addr + PCI_IO_BASE_ADDR,
+> -                       MEMTXATTRS_UNSPECIFIED, buf, size);
+> -
+> -    if (size == 1) {
+> -        return buf[0];
+> -    } else if (size == 2) {
+> -        return lduw_le_p(buf);
+> -    } else if (size == 4) {
+> -        return ldl_le_p(buf);
+> -    } else {
+> -        g_assert_not_reached();
+> -    }
+> +    uint64_t val = 0xffffffffULL;
+> +
+> +    memory_region_dispatch_read(opaque, raven_io_addr(addr), &val,
+> +                                size_memop(size) | MO_LE,
+> +                                MEMTXATTRS_UNSPECIFIED);
+> +    return val;
+>   }
 >   
->       MemoryRegion conf_mem;
->       MemoryRegion data_mem;
-> -    MemoryRegion mmcfg;
->       uint32_t config_reg;
->       bool mig_enabled;
->       PCIBus *bus;
+> -static void raven_io_write(void *opaque, hwaddr addr,
+> -                           uint64_t val, unsigned int size)
+> +static void raven_io_write(void *opaque, hwaddr addr, uint64_t val,
+> +                           unsigned int size)
+>   {
+> -    PREPPCIState *s = opaque;
+> -    uint8_t buf[4];
+> -
+> -    addr = raven_io_address(s, addr);
+> -
+> -    if (size == 1) {
+> -        buf[0] = val;
+> -    } else if (size == 2) {
+> -        stw_le_p(buf, val);
+> -    } else if (size == 4) {
+> -        stl_le_p(buf, val);
+> -    } else {
+> -        g_assert_not_reached();
+> -    }
+> -
+> -    address_space_write(&s->pci_io_as, addr + PCI_IO_BASE_ADDR,
+> -                        MEMTXATTRS_UNSPECIFIED, buf, size);
+> +    memory_region_dispatch_write(opaque, raven_io_addr(addr), val,
+> +                                 size_memop(size) | MO_LE,
+> +                                 MEMTXATTRS_UNSPECIFIED);
+>   }
+>   
+>   static const MemoryRegionOps raven_io_ops = {
+> @@ -208,7 +170,7 @@ static void raven_change_gpio(void *opaque, int n, int level)
+>   {
+>       PREPPCIState *s = opaque;
+>   
+> -    s->contiguous_map = level;
+> +    memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
+>   }
+>   
+>   static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+> @@ -254,23 +216,17 @@ static void raven_pcihost_initfn(Object *obj)
+>       MemoryRegion *address_space_mem = get_system_memory();
+>   
+>       memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
+> -    memory_region_init_io(&s->pci_io_non_contiguous, obj, &raven_io_ops, s,
+> -                          "pci-io-non-contiguous", 0x00800000);
+> +    memory_region_init_io(&s->pci_discontiguous_io, obj,
+> +                          &raven_io_ops, &s->pci_io,
+> +                          "pci-discontiguous-io", 8 * MiB);
+>       memory_region_init(&s->pci_memory, obj, "pci-memory", 0x3f000000);
+> -    address_space_init(&s->pci_io_as, &s->pci_io, "raven-io");
+> -
+> -    /*
+> -     * Raven's raven_io_ops use the address-space API to access pci-conf-idx
+> -     * (which is also owned by the raven device). As such, mark the
+> -     * pci_io_non_contiguous as re-entrancy safe.
+> -     */
+> -    s->pci_io_non_contiguous.disable_reentrancy_guard = true;
+>   
+>       /* CPU address space */
+>       memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
+>                                   &s->pci_io);
+>       memory_region_add_subregion_overlap(address_space_mem, PCI_IO_BASE_ADDR,
+> -                                        &s->pci_io_non_contiguous, 1);
+> +                                        &s->pci_discontiguous_io, 1);
+> +    memory_region_set_enabled(&s->pci_discontiguous_io, false);
+>       memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
+>   
+>       /* Bus master address space */
 
-Looking back at this patch in respect of patch 2, should RavenPCIState actually be 
-kept and mmcfg moved there instead? It feels like the wrong approach simply because 
-it isn't possible to access the MR directly from the device state when debugging.
+I'm still not convinced by this one switching to use 
+memory_region_{read,write}_dispatch() functions which do not handle all accesses 
+correctly over the preferred address_space_{read,write} APIs. There might be some 
+merit in using the address_space_ld*() and address_space_st*() versions though.
 
 
 ATB,
