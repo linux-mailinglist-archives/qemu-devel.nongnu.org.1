@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A10CC06748
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B51C0674B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 15:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCHi2-0005R3-Bu; Fri, 24 Oct 2025 09:19:58 -0400
+	id 1vCHi4-0005Sr-K9; Fri, 24 Oct 2025 09:20:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHhx-0005Qe-Uk
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:53 -0400
+ id 1vCHi1-0005RJ-4S
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vCHhv-0004kH-BB
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:53 -0400
+ id 1vCHhw-0004kb-Ed
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 09:19:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761311989;
+ s=mimecast20190719; t=1761311991;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3G2BT9iAz6T+va4TbFNMAz7RB+55LcofTHMiALdTMPQ=;
- b=c5DD78cwMa3mdtkYrnb+5pVOWsOlpUTAbuGPffRBsd6PTRkKESTTv5F//DXQ5/+vGmal0L
- dMRa2b3qK4+HGYQZtc6PhKo/SQCEeWk8u2DeliV/aVGDCM9HVKbP09gnbtbg2svxsIToNY
- XSPKI8eY90uKvBklAWPGpk+tHvGSfyY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=+4+pgRmhA7AwhaFbarb6ijKQeWXtkQsaRprqh0MkzyA=;
+ b=WxjGdZX1z9Zrxx2WolBVqiFPtivTmBtvRaFfx6EJfU+h5yh0wE6GBbF/zOH74Cr4KGFSZ1
+ e7NViVb1QP8y6KiZxa2p7tEAdEEL/E5xNYXHa4dtmi4I7LyDGSO/ckyQZEHY27hq74CdjS
+ TSLbbi9IbpjI1Qt4T3bVEU6HvKOniGU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-0a2Wm7NtOeulIve7k4uylg-1; Fri,
- 24 Oct 2025 09:19:45 -0400
-X-MC-Unique: 0a2Wm7NtOeulIve7k4uylg-1
-X-Mimecast-MFC-AGG-ID: 0a2Wm7NtOeulIve7k4uylg_1761311984
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-HYG5GSj2NLSzzXAYDAzPMA-1; Fri,
+ 24 Oct 2025 09:19:48 -0400
+X-MC-Unique: HYG5GSj2NLSzzXAYDAzPMA-1
+X-Mimecast-MFC-AGG-ID: HYG5GSj2NLSzzXAYDAzPMA_1761311987
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C119B180035A; Fri, 24 Oct 2025 13:19:44 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3397F196F766; Fri, 24 Oct 2025 13:19:47 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.2])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 48AAF19540EB; Fri, 24 Oct 2025 13:19:42 +0000 (UTC)
+ id 5753519540EB; Fri, 24 Oct 2025 13:19:44 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 02/13] qom: use ERRP_GUARD in user_creatable_complete
-Date: Fri, 24 Oct 2025 14:19:26 +0100
-Message-ID: <20251024131937.56673-3-berrange@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 03/13] tests: use macros for registering char tests for sockets
+Date: Fri, 24 Oct 2025 14:19:27 +0100
+Message-ID: <20251024131937.56673-4-berrange@redhat.com>
 In-Reply-To: <20251024131937.56673-1-berrange@redhat.com>
 References: <20251024131937.56673-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -84,39 +84,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With error_propagate, the stack trace from any error_abort/fatal
-usage will start from the error_propagate() call, which is largely
-useless. Using ERRP_GUARD ensures the stack trace starts from
-the origin that reported the error.
+The test-char.c has a couple of helper macros for registering tests that
+need to be repeated for both IP and UNIX sockets. One test case was not
+using the macro though.
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qom/object_interfaces.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ tests/unit/test-char.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index 1ffea1a728..415cbee8c5 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -24,13 +24,12 @@
- bool user_creatable_complete(UserCreatable *uc, Error **errp)
- {
-     UserCreatableClass *ucc = USER_CREATABLE_GET_CLASS(uc);
--    Error *err = NULL;
-+    ERRP_GUARD();
+diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
+index f30a39f61f..e156b17329 100644
+--- a/tests/unit/test-char.c
++++ b/tests/unit/test-char.c
+@@ -1934,7 +1934,9 @@ int main(int argc, char **argv)
+     g_test_add_data_func("/char/socket/server/mainloop-fdpass/" # name, \
+                          &server3 ##name, char_socket_server_test);     \
+     g_test_add_data_func("/char/socket/server/wait-conn-fdpass/" # name, \
+-                         &server4 ##name, char_socket_server_test)
++                         &server4 ##name, char_socket_server_test);     \
++    g_test_add_data_func("/char/socket/server/two-clients/" # name,     \
++                         addr, char_socket_server_two_clients_test)
  
-     if (ucc->complete) {
--        ucc->complete(uc, &err);
--        error_propagate(errp, err);
-+        ucc->complete(uc, errp);
+ #define SOCKET_CLIENT_TEST(name, addr)                                  \
+     static CharSocketClientTestConfig client1 ## name =                 \
+@@ -1974,14 +1976,10 @@ int main(int argc, char **argv)
+     if (has_ipv4) {
+         SOCKET_SERVER_TEST(tcp, &tcpaddr);
+         SOCKET_CLIENT_TEST(tcp, &tcpaddr);
+-        g_test_add_data_func("/char/socket/server/two-clients/tcp", &tcpaddr,
+-                             char_socket_server_two_clients_test);
      }
--    return !err;
-+    return !*errp;
- }
+ #ifndef WIN32
+     SOCKET_SERVER_TEST(unix, &unixaddr);
+     SOCKET_CLIENT_TEST(unix, &unixaddr);
+-    g_test_add_data_func("/char/socket/server/two-clients/unix", &unixaddr,
+-                         char_socket_server_two_clients_test);
+ #endif
  
- bool user_creatable_can_be_deleted(UserCreatable *uc)
+     g_test_add_func("/char/udp", char_udp_test);
 -- 
 2.50.1
 
