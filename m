@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701A2C071ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCDDC07404
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 18:18:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCKCr-0000Hm-Lu; Fri, 24 Oct 2025 11:59:57 -0400
+	id 1vCKTy-0005mp-Uv; Fri, 24 Oct 2025 12:17:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vCKCo-0000HS-Vs
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 11:59:55 -0400
-Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vCKTl-0005kc-Er
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 12:17:26 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vCKCm-0005yD-W9
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 11:59:54 -0400
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-63e17c0fefbso2384328d50.1
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 08:59:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vCKTg-0000N4-N6
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 12:17:23 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-78af3fe5b17so1770308b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 09:17:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761321591; x=1761926391; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=W4SgcHATEJ0qNHnDj29cwRV7eUB29RYYRSBudT+9Tn8=;
- b=CPwxMqvkR7bLqQKWQwhE348JhVHZIK5enkaymm6cw9SdD2EOCpRb7LU2a6qfD+1LRR
- jj1sAPGrSfLt3xNUy1D8oIAAWB/h6plaobcdEByox+WUPaV6vAZ+6R41DEfaR1Lo6EFm
- P8djqS5EHe4fDb3Qg5+tZoKAiFZqyifuejFJy/qGrL00kABXPeMpcpGCh1JeBuc+cflo
- 0PbAFsDgttwybyXiA0vpz9ezvwILLPbmO7zpVWvWKL8qMb1lkclR/D0WxnurFwadJ12B
- s5ZPruhgCdKW4JPUH9IQw8exHPJkl2fW0yY0I6wb1rS8EM1bNBhCmgZthy/M2B+y1Tq5
- SQZA==
+ d=ventanamicro.com; s=google; t=1761322637; x=1761927437; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=E6uzhxh1psBbiU34D81ruT0y+lwt649vh2+AUDnAmHA=;
+ b=FSThgytYp6Q2VDJcpyQmmLMcO3fHq4MhMTDO54c9GIc8G47dZL7ZqrwLT3Uv7zGEov
+ eJegt3k6b8HwIUiRUgZoIkdqnP9mq0ZJHQqzZg24MVjv9WOys/trKWQ058/nqEYVfMJk
+ 8/O1j11OctXVmm1rDJdjQjLSPP4YuZn7+iPtf4DQ6OYMBRYngnCvo5e4DoMCgRexZynN
+ +VUy1HeG0dhSWlZstOPInB60FGTQo5lxrGcPU6zq7ZkVgbVl0W3uA+or3ynl+2zqAShe
+ 6f17FoSc8Go+aiyF/uj2CiytGSBAmenjKSFb/wT8/tVYW5/G9eINfsn9gBn56/QARyY1
+ zNSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761321591; x=1761926391;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=W4SgcHATEJ0qNHnDj29cwRV7eUB29RYYRSBudT+9Tn8=;
- b=Z2F+e/KWtXwOJii4/XKuPisxQ+Z4qxCffNM4QplO+UH9D6T5bKAi8qR/UML8TZgZvv
- zeATdsslIjO8qixlB/5IDicKtvnG/eTIlsHQAnGTvUmYc9lCNWLqn2jpsbWKMWBQQKA0
- 9+P1af02SQvhKKkPvrOtFsRANe8/8SD7lMYHe6QiFWGWzn9hYHlRfWj9eYmyeoa+0SyH
- kfFPxpGCMXYwTybTqyoyRUNK6bmSfDfeIOkvxwxI/7ptrE7vy6gtD2T2mrSetXv0OY1c
- DR4TLOJa/xRPdc+gw8zuP/dO6MajJ/ichq9pEg+inOYpgAUqUw1+d8Ry13LY8H9UMV4K
- yoJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXu7ICHbrJKOH6gwzTy4dXh4yDQGYMFU/TM26V8rZDCtRHyr0DLfPjnnezhRMxdKYBXYCEZvIJdEhV3@nongnu.org
-X-Gm-Message-State: AOJu0Yy3Q5363c4sdDoyapqats2cfKEBJkTClTwdjUZEK9pccjmWz5my
- U8W4HmjreFUL5kIgj/kkMaSl/DXUwXKRzCZizpC35aiUvM03yWAgYtCXrcBySzaFjVFs5KmPV9r
- j/pq0ZEKV7KiFcXWhvQVliAAw54rRXE0Z3MmurQKtZQ==
-X-Gm-Gg: ASbGncua0KxKf2Y2J1zEBcQKhUqoPJLKZeOqWHvO9ifdGi4bixZ9JNTbJtlGM37WYAX
- QgnIUi3XVvvNZr7+QLgM5bkZyP9btfaCGTESEZ3DJ+D/+qbI0e3Cb0OUyc5HQL5Wrlp0ZeS+/AG
- XBbM7S358S/T9jN3+CIQkOXKa6QK952FFzsXbrD5lmQ7BlVK3E4MoBI8wgooX7i6rdi1YiuMfCI
- b5FMzvlG8v7KfF9+VbSf0e8nVWuq24MFjCqP6o+cimIaXoB77YszjhB8DOrFQ==
-X-Google-Smtp-Source: AGHT+IHM5GIdVAqJ2xXmHYlLJiCZrGifJ3h7sp/SBk/IHbaVXhEzRwv2/utllJZhu+T5heONeODTNidBBvb0cA3fbEg=
-X-Received: by 2002:a05:690e:14cd:b0:63c:f0a0:d2b3 with SMTP id
- 956f58d0204a3-63f435602a1mr2094126d50.32.1761321591194; Fri, 24 Oct 2025
- 08:59:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761322637; x=1761927437;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E6uzhxh1psBbiU34D81ruT0y+lwt649vh2+AUDnAmHA=;
+ b=i5OphFfsXW1txIiAzZlEVdKQ8q0cuEK0Ys7cWVKhTdQ6jswtPGcY1n2ipKLWauqmQJ
+ Bi2RhcQk9Wx33MK8W1xl/pYEXb/84hR0av9dxGvkXbs47XJyS4AUY7gAtPkEYvmBrdAU
+ b8wJY5gRw+/vJw03TZRkkDa3z1zU7Qx1sdoUQsl+DVe/Rv3BJVJH+GFUmSBkynS2XQ/y
+ y5GnMnfp5oRJ7gbTIr1YpOq1HFK3FZdu7Q2w9pa8itbxyzgSe5ruso7pjVm8/+ZycJv9
+ iNGJnvwRRzIGE3qrfxz//BE0EjUGBDEd1CWGLIwp44krhJ1jg7PTIoxCuLidtaMiep2P
+ SUYA==
+X-Gm-Message-State: AOJu0YzsVU+FTZMz5pUMyU3OgaReGnHNbEEfDAbJHKX+mjCpIXvYkZ7R
+ B+QFdWekn1zxn3G9quWf1gIg2mlCD6nIgobI0Tqq+wWmbH3E/u/ZvaG4akIzUolUYoA=
+X-Gm-Gg: ASbGncvpr2OL5pR39cM+3dF7daJa4Tv+afYxGhcGEQDXfST/po4Xu2Cs/nVwaMtOVRX
+ GyrSCm+xkvcqUrQkTCpGBCrJs8kahoCxZEoOKfaed2w6xY8Z53BaZE7pGWZMLqE/d64ii2iVosj
+ 6E6upBumTFpj0WFSILa3CCjnS9SQU3nPlWNOSXzU+QwzRdswZly5HFF3ON0NrGeT61kWYsJVLyF
+ zbyrSC117KYu4WIQ6Bnm0Xf+RwLfu4gCHsPFf2lyJQgO9WzMvaYyO5dJHAitrhNWzif/Wj2Y6JB
+ 0zZgR/3elcJX7r0+RNhK3M0f4JFXW8vfJBQErhW4pK1j2Yw+4nNyQc01z5tKBprgwKy9Qv+vnbV
+ /Jx+5yHz6zumX67pbrp2hNhABqjK2K4BXvbcwF8ezJi7AiALLbTS7h1uvh2QLoL5Mtfns1+vGTw
+ zHP04XdB1YRJeK
+X-Google-Smtp-Source: AGHT+IGm3awQGimqtr1e2KZX2R0AQ2XTdjFRROYV4XvZG9HF0Ic3c3tF+yGhyTD08y46l3QpNH0STw==
+X-Received: by 2002:a17:903:1247:b0:23f:fa79:15d0 with SMTP id
+ d9443c01a7336-290cb07adc0mr358146015ad.46.1761322636902; 
+ Fri, 24 Oct 2025 09:17:16 -0700 (PDT)
+Received: from [192.168.68.110] ([189.38.141.22])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2946ddddc34sm60100185ad.20.2025.10.24.09.17.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Oct 2025 09:17:16 -0700 (PDT)
+Message-ID: <f9c1c814-c083-4c9b-831c-4cd5ce162002@ventanamicro.com>
+Date: Fri, 24 Oct 2025 13:17:10 -0300
 MIME-Version: 1.0
-References: <20251010130527.3921602-1-peter.maydell@linaro.org>
- <35087274-df34-4528-88a2-d855768fb5af@linaro.org>
- <e3314d25-dd8a-46a9-bbfc-44fba387099a@linaro.org>
- <CAFEAcA_OLA=Ct7wFHwnfixrYofjyMDuw_5ViNb7Yxu43B12szQ@mail.gmail.com>
- <ca74ac20-f510-4c78-8f3b-85a551841041@linaro.org>
- <CAFEAcA9MjN3q06COn=_==v+zFt06Qtp9WEy7+yx2JO_L17StCQ@mail.gmail.com>
- <e280b52d-7fab-4e9f-84f4-a5862ce7284e@linaro.org>
-In-Reply-To: <e280b52d-7fab-4e9f-84f4-a5862ce7284e@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 24 Oct 2025 16:59:39 +0100
-X-Gm-Features: AS18NWAE21pLVXI5NZVM9eCxWz0P_IvT5BqSgFIsyGpW1dG-7JlWkCi4_aHt9fw
-Message-ID: <CAFEAcA8Hx=QgL5irt2TaS-jw=Hw1FXGtRf8Xvq1GKvTPDih7Ww@mail.gmail.com>
-Subject: Re: [PULL 00/76] target-arm queue
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 47/56] target/riscv/kvm: add scounteren CSR
+To: Peter Maydell <peter.maydell@linaro.org>, alistair23@gmail.com
+Cc: qemu-devel@nongnu.org, Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+References: <20250519040555.3797167-1-alistair.francis@wdc.com>
+ <20250519040555.3797167-48-alistair.francis@wdc.com>
+ <CAFEAcA_6zma2=nsBWB7ebb35Jt1cNAChiMG0xnkT3WPEY8csiw@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <CAFEAcA_6zma2=nsBWB7ebb35Jt1cNAChiMG0xnkT3WPEY8csiw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +103,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Oct 2025 at 17:15, Gustavo Romero <gustavo.romero@linaro.org> wrote:
->
-> Hi Peter,
->
-> On 10/14/25 12:28, Peter Maydell wrote:
-> > On Tue, 14 Oct 2025 at 16:24, Gustavo Romero <gustavo.romero@linaro.org> wrote:
-> >>
-> >> Hi Peter,
-> >>
-> >> On 10/12/25 16:58, Peter Maydell wrote:
-> >> It's missing FEAT_MEC in the list.
-> >
-> > ...and also FEAT_GCS : looks like I didn't update the changelog
-> > at all for this pullreq. Either I was confusing it with
-> > some other pullreq, or else I failed to actually save my
-> > changes or something.
-> >
-> >> But let me add it so I can test my access to the Wiki pages.
-> >
-> > Sure -- please add both FEAT_MEC and FEAT_GCS.
->
-> Ok! ;)
 
-I was just updating the changelog again for the pullreq
-that just landed, and I noticed it was still missing FEAT_MEC
-and FEAT_GCS, so I went ahead and added them since I was editing
-that page anyway.
 
-thanks
--- PMM
+On 10/24/25 10:43 AM, Peter Maydell wrote:
+> On Mon, 19 May 2025 at 05:25, <alistair23@gmail.com> wrote:
+>>
+>> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>
+>> Add support for the scounteren KVM CSR. Note that env->scounteren is a
+>> 32 bit and all KVM CSRs are target_ulong, so scounteren will be capped
+>> to 32 bits read/writes.
+>>
+>> Reported-by: Andrew Jones <ajones@ventanamicro.com>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+>> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+>> Message-ID: <20250429124421.223883-10-dbarboza@ventanamicro.com>
+>> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+>> ---
+>>   target/riscv/kvm/kvm-cpu.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+>> index ca171d5457..82f9728636 100644
+>> --- a/target/riscv/kvm/kvm-cpu.c
+>> +++ b/target/riscv/kvm/kvm-cpu.c
+>> @@ -251,6 +251,7 @@ static KVMCPUConfig kvm_csr_cfgs[] = {
+>>       KVM_CSR_CFG("stval",      stval,      RISCV_CSR_REG(stval)),
+>>       KVM_CSR_CFG("sip",        mip,        RISCV_CSR_REG(sip)),
+>>       KVM_CSR_CFG("satp",       satp,       RISCV_CSR_REG(satp)),
+>> +    KVM_CSR_CFG("scounteren", scounteren, RISCV_CSR_REG(scounteren)),
+>>       KVM_CSR_CFG("senvcfg",    senvcfg,    RISCV_CSR_REG(senvcfg)),
+>>   };
+>>
+>> @@ -701,6 +702,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
+>>       env->stval = 0;
+>>       env->mip = 0;
+>>       env->satp = 0;
+>> +    env->scounteren = 0;
+>>       env->senvcfg = 0;
+>>   }
+> 
+> Hi -- this came up in a conversation on IRC. Does this new
+> CPU state field need migration support adding in machine.c ?
+
+
+Hmm, I believe it already has, doesn't it?
+
+target/riscv/machine.c:
+
+
+const VMStateDescription vmstate_riscv_cpu = {
+     .name = "cpu",
+     .version_id = 10,
+     .minimum_version_id = 10,
+     .post_load = riscv_cpu_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
+(...)
+        VMSTATE_UINT32(env.scounteren, RISCVCPU),  <-------
+
+
+Or are you referring to something else like post_load callbacks and so on? Thanks,
+
+Daniel
+
+
+> 
+> thanks
+> -- PMM
+
 
