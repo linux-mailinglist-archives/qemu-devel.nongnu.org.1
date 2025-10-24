@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922B2C03F1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 02:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E23C03FAC
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 02:53:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC5UK-0000US-T2; Thu, 23 Oct 2025 20:17:00 -0400
+	id 1vC621-00064M-NQ; Thu, 23 Oct 2025 20:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vC5UJ-0000UK-Ef
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:16:59 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ id 1vC61x-000643-Qe
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:51:45 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vC5UH-0005co-DA
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:16:59 -0400
+ id 1vC61u-0005N3-Rp
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:51:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761265018; x=1792801018;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=m+oB9nRr6GoH2ASh4gVO6tSysklw4I41lqQqcbbNQ84=;
- b=nzPwmo0Bt94U88TQzcVF1BkDrr+2yt3+7yg6eKpusDjme2pRWpf95DAX
- phdK4rg6c9z8QcMG/mBlGgBTluDnSyjcj3gvAHeGJRLe8ylIsQjfHGEhE
- RzYuiXUiOVAxnHdbEIRcqNng4A+wnVE2ksdjgVZ4WqLczZmfSYUndDXD/
- /6uHX33DemwoZVwJGGWLJ9clJwW5pjPWh+3+wBREdU+V7D7fvOqFjkls5
- 08cKdKlizWLfAfIQ+aU5XTe7gFPlDQcPYZFYZXzWfuC8iF3stxJhhsLWv
- G3qWCCp7P0fVy3qz9X5f0IR5s1CZEhjKl+5Yba7GrrgN9aJqp3moGUJpo A==;
-X-CSE-ConnectionGUID: Jg3Okx/mTYiszKt9uu+1vQ==
-X-CSE-MsgGUID: 9n1xHiz8TPOH/V491kGSiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74886512"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74886512"
+ t=1761267103; x=1792803103;
+ h=message-id:date:mime-version:subject:from:to:cc:
+ references:in-reply-to:content-transfer-encoding;
+ bh=Nq2T+mtt4/jXbD9ztfl08Y+N1NJLtlENRQWzbWSeTYc=;
+ b=X7zdaFOk+fCFH43hy1VRv/1N1mX9PKqZ9qsxizbaubZFgg3zvfoptQBl
+ eAWBzz/Fj13PhNhitzEk8suxfjy50ZxYvbHGjVIMmzjk9qKFAozGhKts3
+ TFJDa5Mq/c9m+bY44rLFzBpLco2iRGVfpqlkpAaXppT+pqlleX3r3aOT8
+ dF7BhEk6Gp0fQUe6+IV25BrovMS6jMz7GkWOcYN0bxNS695bSjuzp2S6F
+ jC9vH53Q8zkMk9NnEgMqyhrQWaF0ucPDsJhab5MVkpY2gDJMXT9UzBlbM
+ fCsYjK26oVaQLPbmmTXc7RnnEUMNtRnOn7UkK8aoYXjoJ+p87EKeesvnf g==;
+X-CSE-ConnectionGUID: mgzCOZDbTdWVTMJTdb5RBQ==
+X-CSE-MsgGUID: M0TuIUvjRLKEIPLEz8oW4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63485399"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63485399"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 17:16:56 -0700
-X-CSE-ConnectionGUID: tD2J5tuGQd6SDVUNPOPeow==
-X-CSE-MsgGUID: OC2x5hXJTGef457/jI96xg==
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 17:51:40 -0700
+X-CSE-ConnectionGUID: 0+hRl0ZUSY2qIP2Go93dzA==
+X-CSE-MsgGUID: dNQBlBj6TUudzPCLJyNSZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184365337"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184371060"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
  ([10.124.238.14])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 17:16:53 -0700
-Message-ID: <d4b331bf-b5e6-4634-8f93-9b71eeb587c1@intel.com>
-Date: Fri, 24 Oct 2025 08:16:48 +0800
+ 23 Oct 2025 17:51:38 -0700
+Message-ID: <f59ba5d2-e205-46c7-90c0-8e02ab91f5ae@intel.com>
+Date: Fri, 24 Oct 2025 08:51:35 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] ram-block-attributes: Unify the retrieval of the
- block size
-To: Chenyi Qiang <chenyi.qiang@intel.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Gao Chao <chao.gao@intel.com>,
- Farrah Chen <farrah.chen@intel.com>
-References: <20251023095526.48365-1-chenyi.qiang@intel.com>
- <20251023095526.48365-3-chenyi.qiang@intel.com>
-Content-Language: en-US
+Subject: Re: [PATCH] hostmem/shm: Allow shm memory backend serve as shared
+ memory for coco-VMs
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20251023095526.48365-3-chenyi.qiang@intel.com>
+To: David Hildenbrand <david@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>
+References: <20250721065220.895606-1-xiaoyao.li@intel.com>
+ <f38c961d-9c5a-4e45-a42e-fbafb7e5e88b@intel.com>
+ <b1263375-8fac-4452-9c4f-983ef8870a44@intel.com>
+Content-Language: en-US
+In-Reply-To: <b1263375-8fac-4452-9c4f-983ef8870a44@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=xiaoyao.li@intel.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -72,8 +71,9 @@ X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,35 +89,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/2025 5:55 PM, Chenyi Qiang wrote:
-> There's an existing helper function designed to obtain the block size.
-> Modify ram_block_attribute_create() to use this function for
-> consistency.
+On 9/12/2025 1:45 PM, Xiaoyao Li wrote:
+> On 8/14/2025 5:45 PM, Xiaoyao Li wrote:
+>> On 7/21/2025 2:52 PM, Xiaoyao Li wrote:
+>>> shm can surely serve as the shared memory for coco-VMs. But currently it
+>>> doesn't check the backend->guest_memfd to pass down the RAM_GUEST_MEMFD
+>>> flag. It leads to failure when creating coco-VMs (e.g., TDX guest) which
+>>> require private mmeory.
+>>>
+>>> Set and pass down RAM_GUEST_MEMFD when backend->guest_memfd is true, to
+>>> allow shm memory backend serve as shared memory for coco-VMs.
+>>
+>> ping...
+>>
+>> Paolo, will you merge it for QEMU 10.1? I think it's worth it.
 > 
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
-> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+> ping again.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+ping++,
 
-> ---
-> Changes in v2:
->    - Newly added.
-> ---
->   system/ram-block-attributes.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
++ Peter,
+
+Maybe you can queue it in case it gets missed from Paolo again?
+
+>>> cc: Stefano Garzarella <sgarzare@redhat.com>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>> ---
+>>>   backends/hostmem-shm.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
+>>> index f66211a2ec92..806e2670e039 100644
+>>> --- a/backends/hostmem-shm.c
+>>> +++ b/backends/hostmem-shm.c
+>>> @@ -54,6 +54,7 @@ have_fd:
+>>>       /* Let's do the same as memory-backend-ram,share=on would do. */
+>>>       ram_flags = RAM_SHARED;
+>>>       ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+>>> +    ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
+>>>       return memory_region_init_ram_from_fd(&backend->mr, 
+>>> OBJECT(backend),
+>>>                                                 backend_name, 
+>>> backend- >size,
+>>
+>>
 > 
-> diff --git a/system/ram-block-attributes.c b/system/ram-block-attributes.c
-> index a7579de5b46..cf8f5f41966 100644
-> --- a/system/ram-block-attributes.c
-> +++ b/system/ram-block-attributes.c
-> @@ -390,7 +390,7 @@ int ram_block_attributes_state_change(RamBlockAttributes *attr,
->   
->   RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block)
->   {
-> -    const int block_size  = qemu_real_host_page_size();
-> +    const int block_size  = ram_block_attributes_get_block_size();
->       RamBlockAttributes *attr;
->       MemoryRegion *mr = ram_block->mr;
->   
+> 
 
 
