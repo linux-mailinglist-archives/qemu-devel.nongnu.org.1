@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5611C08514
+	by mail.lfdr.de (Postfix) with ESMTPS id 1771EC08511
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 01:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCRFm-0006N7-TY; Fri, 24 Oct 2025 19:31:26 -0400
+	id 1vCRFm-0006NV-UU; Fri, 24 Oct 2025 19:31:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vCRFh-0006Mm-4f; Fri, 24 Oct 2025 19:31:21 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1vCRFi-0006Mx-EF; Fri, 24 Oct 2025 19:31:22 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vCRFe-0000G8-NU; Fri, 24 Oct 2025 19:31:20 -0400
+ id 1vCRFe-0000GC-Nn; Fri, 24 Oct 2025 19:31:22 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B0D7F59736A;
- Sat, 25 Oct 2025 01:31:14 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id BAC18597456;
+ Sat, 25 Oct 2025 01:31:15 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "MIME-Version"
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id 4KjlnHGMBfyF; Sat, 25 Oct 2025 01:31:12 +0200 (CEST)
+ id 0PAWj1sStFtN; Sat, 25 Oct 2025 01:31:13 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id AA9315972F3; Sat, 25 Oct 2025 01:31:12 +0200 (CEST)
-Message-ID: <cover.1761346145.git.balaton@eik.bme.hu>
+ id C2DC159744F; Sat, 25 Oct 2025 01:31:13 +0200 (CEST)
+Message-ID: <642ef77674d08ba466e7a2beb4858ab1e67776ae.1761346145.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1761346145.git.balaton@eik.bme.hu>
+References: <cover.1761346145.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 0/4] Some more pegasos patches
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 1/4] hw/ppc/pegasos2: Add /chosen/stdin node with VOF
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -40,14 +38,15 @@ To: qemu-devel@nongnu.org,
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Date: Sat, 25 Oct 2025 01:31:12 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Sat, 25 Oct 2025 01:31:13 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,26 +62,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some more short patches to finish the already merged pegasos clean up
-series.
+Some very old Linux kernels fail to start if /chosen/stdin is not
+found so add it to the device tree when using VOF.
 
-BALATON Zoltan (4):
-  hw/ppc/pegasos2: Add /chosen/stdin node with VOF
-  hw/pci-host/articia: Map PCI memory windows in realize
-  hw/ppc/pegasos2: Rename to pegasos
-  hw/ppc/pegasos: Update documentation for pegasos1
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/ppc/pegasos2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- MAINTAINERS                             |  4 ++--
- configs/devices/ppc-softmmu/default.mak |  7 +++---
- docs/system/ppc/amigang.rst             | 29 +++++++++++++++----------
- hw/pci-host/articia.c                   | 15 ++++++++++++-
- hw/ppc/Kconfig                          |  2 +-
- hw/ppc/amigaone.c                       | 28 +++++-------------------
- hw/ppc/meson.build                      |  4 ++--
- hw/ppc/{pegasos2.c => pegasos.c}        | 14 +-----------
- 8 files changed, 45 insertions(+), 58 deletions(-)
- rename hw/ppc/{pegasos2.c => pegasos.c} (98%)
-
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index 93696ed381..21299dde3c 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -565,6 +565,7 @@ static void pegasos_machine_reset(MachineState *machine, ResetType type)
+     qemu_fdt_setprop(fdt, "/chosen", "qemu,boot-kernel", d, sizeof(d));
+ 
+     vof_build_dt(fdt, pm->vof);
++    vof_client_open_store(fdt, pm->vof, "/chosen", "stdin", "/failsafe");
+     vof_client_open_store(fdt, pm->vof, "/chosen", "stdout", "/failsafe");
+ 
+     /* Set machine->fdt for 'dumpdtb' QMP/HMP command */
 -- 
 2.41.3
 
