@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B34C0483F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DFEC04854
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBNy-0003M3-Fx; Fri, 24 Oct 2025 02:34:50 -0400
+	id 1vCBO7-0003Mp-Gl; Fri, 24 Oct 2025 02:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBNv-0003Lc-QK
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:47 -0400
+ id 1vCBO2-0003Mf-F8
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:54 -0400
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBNt-0003jZ-Vj
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:47 -0400
+ id 1vCBO0-0003kG-Jk
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761287686; x=1792823686;
+ t=1761287693; x=1792823693;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b6plKWihII+6RJhuLKcgMFrd7Qpmmp9/C3krzhBvVSw=;
- b=DY0Ab5Qr0opb1IVgr7t8ahN0DmFge5HLSukrGRaT4dmO0BY/q3UwJckx
- HveuLqG6wVriunoAFW8XAZM3trcoxMC7iqegYMAhk1FjAVh0d4XlSGVf2
- JYjtJbSJI4MCAWp6FjrU1iQe7gcx22jJ/NhIoZw6g6LudDxaomUR6X2Qa
- hzVgr+/1n+TM8b9AGOJtpgc4mu+04zzBdX8gcea1pb+SKhuUrS5KDhuXK
- /1KvXfLS/SAbYi7OrUQErGvHyVRa7mheKnqHof7+Z1YKazOMWjfQT3yAX
- FunNlbnBLyj1ZNKp22QxPnxKoQwd/kdgJ2a7TUNp5FFjPA3/lyy6FR0Jy w==;
-X-CSE-ConnectionGUID: CVBZTsIsQb+TgqiScc9zcg==
-X-CSE-MsgGUID: 92mFF0DJT1iuBWy1ufJidw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74137853"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74137853"
+ bh=7tOeAaUzQYqTAHH7/NYu9sDsu+/WQtAS5FGKwnZ2ICw=;
+ b=k03xps8+O6b5dWKpQ/TYyJkMkdSdZkcX2LpOoHoT+VbDGa22VBEM5IDK
+ 3c40pNCE2a0qdFWR6gbdybAsp3wo1Fd3iO96goDjlB8lzWYF/JpwLw+hM
+ G0R1CuiGTL3vsxuT4R+9xv24uMMYWolezBvodkVNclmrS340pN6LfIt/E
+ MrDBo6keeb9Zoq24V5EtBkQZ+n/PgBU3IFThG2UM3d/U+b39xCtXDiXLf
+ jM3KZgKkWWcp6nqNNJFr1wHkPMrggXvFMUuJ6tpRpjniyVspA2v3F63G9
+ n2ed2Q2JEknqPA/JmmZWadeEKnf4fZ2DltVjAFhiNhT3UkYrvvN6ZIG3B A==;
+X-CSE-ConnectionGUID: kzU/KriMRx221R8/sKRz0A==
+X-CSE-MsgGUID: 45rMmzArSkqrL2YXgJMZ0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74137856"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74137856"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:34:45 -0700
-X-CSE-ConnectionGUID: 0QUAmH1gS9qrgLL/Dkmxkw==
-X-CSE-MsgGUID: wy5mimrYRdKnHSHnHgvAzA==
+ 23 Oct 2025 23:34:50 -0700
+X-CSE-ConnectionGUID: iSPyFyu9TS+/duopMWN8EA==
+X-CSE-MsgGUID: UFkaiXBHQoesSMsDwixM+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184275882"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184275896"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:34:41 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:34:46 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,10 +51,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 02/20] i386/cpu: Clean up indent style of
- x86_ext_save_areas[]
-Date: Fri, 24 Oct 2025 14:56:14 +0800
-Message-Id: <20251024065632.1448606-3-zhao1.liu@intel.com>
+Subject: [PATCH v3 03/20] i386/cpu: Clean up arch lbr xsave struct and comment
+Date: Fri, 24 Oct 2025 14:56:15 +0800
+Message-Id: <20251024065632.1448606-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251024065632.1448606-1-zhao1.liu@intel.com>
 References: <20251024065632.1448606-1-zhao1.liu@intel.com>
@@ -85,88 +84,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Arch LBR state is area 15, not 19. Fix this comment. And considerring
+other areas don't mention user or supervisor state, for consistent
+style, remove "Supervisor mode" from its comment.
+
+Moreover, rename XSavesArchLBR to XSaveArchLBR since there's no need to
+emphasize XSAVES in naming; the XSAVE related structure is mainly
+used to represent memory layout.
+
+In addition, arch lbr specifies its offset of xsave component as 0. But
+this cannot help on anything. The offset of ExtSaveArea is initialized
+by accelerators (e.g., hvf_cpu_xsave_init(), kvm_cpu_xsave_init() and
+x86_tcg_cpu_xsave_init()), so explicitly setting the offset doesn't
+work and CPUID 0xD encoding has already ensure supervisor states won't
+have non-zero offsets. Drop the offset initialization and its comment
+from the xsave area of arch lbr.
+
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 58 +++++++++++++++++++++++++++--------------------
- 1 file changed, 33 insertions(+), 25 deletions(-)
+ target/i386/cpu.c | 3 +--
+ target/i386/cpu.h | 8 ++++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0a66e1fec939..f0e179c2d235 100644
+index f0e179c2d235..b9a5a0400dea 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -2028,38 +2028,46 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
-         .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
-         .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
+@@ -2058,8 +2058,7 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
      },
--    [XSTATE_YMM_BIT] =
--          { .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
--            .size = sizeof(XSaveAVX) },
--    [XSTATE_BNDREGS_BIT] =
--          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
--            .size = sizeof(XSaveBNDREG)  },
--    [XSTATE_BNDCSR_BIT] =
--          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
--            .size = sizeof(XSaveBNDCSR)  },
--    [XSTATE_OPMASK_BIT] =
--          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
--            .size = sizeof(XSaveOpmask) },
--    [XSTATE_ZMM_Hi256_BIT] =
--          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
--            .size = sizeof(XSaveZMM_Hi256) },
--    [XSTATE_Hi16_ZMM_BIT] =
--          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
--            .size = sizeof(XSaveHi16_ZMM) },
--    [XSTATE_PKRU_BIT] =
--          { .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
--            .size = sizeof(XSavePKRU) },
-+    [XSTATE_YMM_BIT] = {
-+        .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
-+        .size = sizeof(XSaveAVX),
-+    },
-+    [XSTATE_BNDREGS_BIT] = {
-+        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-+        .size = sizeof(XSaveBNDREG),
-+    },
-+    [XSTATE_BNDCSR_BIT] = {
-+        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-+        .size = sizeof(XSaveBNDCSR),
-+    },
-+    [XSTATE_OPMASK_BIT] = {
-+        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-+        .size = sizeof(XSaveOpmask),
-+    },
-+    [XSTATE_ZMM_Hi256_BIT] = {
-+        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-+        .size = sizeof(XSaveZMM_Hi256),
-+    },
-+    [XSTATE_Hi16_ZMM_BIT] = {
-+        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-+        .size = sizeof(XSaveHi16_ZMM),
-+    },
-+    [XSTATE_PKRU_BIT] = {
-+        .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
-+        .size = sizeof(XSavePKRU),
-+    },
      [XSTATE_ARCH_LBR_BIT] = {
--            .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
--            .offset = 0 /*supervisor mode component, offset = 0 */,
--            .size = sizeof(XSavesArchLBR) },
-+        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
-+        .offset = 0 /*supervisor mode component, offset = 0 */,
-+        .size = sizeof(XSavesArchLBR),
-+    },
+         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
+-        .offset = 0 /*supervisor mode component, offset = 0 */,
+-        .size = sizeof(XSavesArchLBR),
++        .size = sizeof(XSaveArchLBR),
+     },
      [XSTATE_XTILE_CFG_BIT] = {
          .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
-         .size = sizeof(XSaveXTILECFG),
-     },
-     [XSTATE_XTILE_DATA_BIT] = {
-         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
--        .size = sizeof(XSaveXTILEDATA)
-+        .size = sizeof(XSaveXTILEDATA),
-     },
- };
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index d0da9bfe58ce..886a941e481c 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1747,15 +1747,15 @@ typedef struct {
  
+ #define ARCH_LBR_NR_ENTRIES            32
+ 
+-/* Ext. save area 19: Supervisor mode Arch LBR state */
+-typedef struct XSavesArchLBR {
++/* Ext. save area 15: Arch LBR state */
++typedef struct XSaveArchLBR {
+     uint64_t lbr_ctl;
+     uint64_t lbr_depth;
+     uint64_t ler_from;
+     uint64_t ler_to;
+     uint64_t ler_info;
+     LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
+-} XSavesArchLBR;
++} XSaveArchLBR;
+ 
+ QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
+@@ -1766,7 +1766,7 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
+ QEMU_BUILD_BUG_ON(sizeof(XSavePKRU) != 0x8);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
+-QEMU_BUILD_BUG_ON(sizeof(XSavesArchLBR) != 0x328);
++QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+ 
+ typedef struct ExtSaveArea {
+     uint32_t feature, bits;
 -- 
 2.34.1
 
