@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F441C0784E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 19:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CD3C078B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 19:30:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCLRS-0003WW-0w; Fri, 24 Oct 2025 13:19:06 -0400
+	id 1vCLcD-0005mn-I4; Fri, 24 Oct 2025 13:30:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vCLRQ-0003W6-B8
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 13:19:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vCLcB-0005mC-OQ
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 13:30:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vCLRO-0008EI-3h
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 13:19:04 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vCLc8-0001iM-8z
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 13:30:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761326340;
+ s=mimecast20190719; t=1761327006;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=F0kMmeKl4YZ06uBU9gD3D9MgpcSdq9tB67fzkejJ8js=;
- b=RUjkbLaIPBMUS1x4W/Y4cgMkn9q3w1L3kgJ4Km9BCJKjb6enp3aa2ePWVLfOhDEcIkg5Bx
- nKCmi4wZt+362v0wnV/2Nps7F5mSiJZsfTNqYVBFYMeDktunnCf+UuHTB3pgxd10FvW/ij
- XXg41zyW7xM7C6BpgE257BkyK1d7qO8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Po0ZsHIuTfh9BHcobWkcqoztS2FY/PTjO9p9Kh1tBzk=;
+ b=LcTsGUxmd5RipoxRiQL1owuy2YDbrIZQtxnnjqlHBApPKObGL3FLy7xosY10/CAWFPixI9
+ cNcdRGG0jxUQ0Zqqu1GwzswqRHuX0qXx0WnXSkfcvQk/Hf1I4ZIQ5esI3unORLxKo9bFMi
+ V5Evpz75Jiv4I6UvfUR541YNuqHlmB0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-fKgyziGwPOG66igLwxi4CQ-1; Fri, 24 Oct 2025 13:18:58 -0400
-X-MC-Unique: fKgyziGwPOG66igLwxi4CQ-1
-X-Mimecast-MFC-AGG-ID: fKgyziGwPOG66igLwxi4CQ_1761326337
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3f7b5c27d41so1672203f8f.0
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 10:18:58 -0700 (PDT)
+ us-mta-38-_a0nYsixNE6gUfD89hxzGA-1; Fri, 24 Oct 2025 13:30:04 -0400
+X-MC-Unique: _a0nYsixNE6gUfD89hxzGA-1
+X-Mimecast-MFC-AGG-ID: _a0nYsixNE6gUfD89hxzGA_1761327003
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-42851b6a659so2149603f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 10:30:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761326337; x=1761931137;
+ d=1e100.net; s=20230601; t=1761327003; x=1761931803;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=F0kMmeKl4YZ06uBU9gD3D9MgpcSdq9tB67fzkejJ8js=;
- b=bvVhlwdOLHAQd7ZaSn3dMf1mHRn3vrJywP7hMgPYbhhmNLHOWNWvzWlSVNVivGlv/K
- tdkFgjYn/1HPgVKInyzry7Bb9Ft9aUG1e/1SOWCY6RSrGbIDE16LMig8jq3JdoMSBPBN
- +oi9d6xRe/VK+r/Szyj3SO0WqbHj8cBuBJERqdZ5CZm3seHucFtAG1KdFkug/gbScsGA
- sJKaSi85iK5AzcFoiPzuT2s5pC7wwwLRPUucUGYrzn7Nylf70qqJl8dgngXiS1aOUWM0
- u8UT/kGmJyBwg5axmZ5DSthpbIDQkcTsDw474t/alreFlmSlLY+XFWR+Phbx1Wdh2RrT
- lamg==
+ bh=Po0ZsHIuTfh9BHcobWkcqoztS2FY/PTjO9p9Kh1tBzk=;
+ b=EaqlrL+/sM1GARQQaQFB+dkBOIbOA+GeFAOKSuztncAihM8uN3XdIItl0BLksb6Vom
+ qpG3Xd6A31QygSyY3N7Xi4+vyu/PPrOG6+vxi2cM3ij45JDlcG6HCuL5YtO0D44x+NWK
+ IJN+Rl/TeSvxe1vCVmJ2RAK4C5uhQrUpXniF6HpWx/cuiepy/+38rdEFZU6/vCL6ZR+8
+ twwmynScXBqP/R9phmX8yceqpnE2bJftBcHCAccBUkbqrb68nacPvc9d05WrmEXz1kWZ
+ XNGEpzU7ve24u0Z77x43N4Vn7oHsgKooavZ8DkYaJamAzhoHSOIV7LTfIT6iaUnijPw3
+ Gagg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX6liALwXCncKubV0Hr4GEP4qyUIbsFRYp+ppBdl7Z+r2wKcbJzliDo0mzOrDMD4FPRHA5msM4ez3d5@nongnu.org
-X-Gm-Message-State: AOJu0Yx4pddbQ4bWjlYMXILko2V/BE7Qh+rxYeCV+73gbLbwCFheihxa
- 1oL2j4zVJLcFP1KvrrW36dYaYV0GL1qVXrHPFp9cZYYDSOioJe7LhYvpFdKECTUgNl5JrmZAd82
- +ZG2O5e0LMmlNvg1tfXYcvYk79JuXfNXHoVKHpiaUB+4iCfO0t6NvxpqU
-X-Gm-Gg: ASbGncsNY8ZlSgL3QS+ormrhZOF9O8gKkWS6km6qA0UlQFhN4z7+NZ5SflcMU1rUmhD
- q73vOBq/8FvpG6BS9XvAhReH0SQT/RrpkGKH3+NVtzTqITR2p90XaMfLp6Glf9tY7mTuwbJdOg5
- ad4N31cpZE5GJVlGBeHN8ZuN/hNjP2cbA1e1+l/is8D+YeG+kEeWSiv0+PREybb83ghTq638Hap
- tN4t/N9BqY8fpXZ+KIEVB4tIQE4vZi9snCaNej8iYi64CvKoJALzZxZpnWNnDC2uF1/+jjMVaB6
- V8yuFsymaJW6SvYoONsp99YqpdQSnu34ZvN7cOFk5RtS0bHl/ZHYDAjxGKo5iriPEBIAbcjV
-X-Received: by 2002:a05:6000:2689:b0:425:7e33:b4a9 with SMTP id
- ffacd0b85a97d-4298f489f65mr3656628f8f.0.1761326337306; 
- Fri, 24 Oct 2025 10:18:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9spf4DBAd7sK53BIkqMVf6nOc8FCsfHar6n07eCDHG3GvGXyYBLeBmuQK5Y7j+/SQ54M3KA==
-X-Received: by 2002:a05:6000:2689:b0:425:7e33:b4a9 with SMTP id
- ffacd0b85a97d-4298f489f65mr3656599f8f.0.1761326336901; 
- Fri, 24 Oct 2025 10:18:56 -0700 (PDT)
+ AJvYcCU2EM/1ESL71rzhdf6ILcb89wLWKpD4cE9kz+esm0wBiSycSPgO8bfHVQzGvchHglPocgxtZYI0jdV3@nongnu.org
+X-Gm-Message-State: AOJu0YzodZLn0FBnsIOr7j7XtIrPhKMsgFR+YnOxyJ4DKk2RUBANVAx+
+ xrEEnp2PtWzupdUEVdziqt2e/BDyj1h7O0ClxyEcwE5Z+8qEsSph9p/ZX3pdIvvXbB+rA2Ebcbd
+ s9ZLTV3YoEwc4eY0tjEzr4A1OSPuQPshczyKKNIM37HgwVixD7lGy0lZC
+X-Gm-Gg: ASbGncuW80wJ7bjjuTabVOiKPWCDL8DEFjSCWs/UAptPEsaQUQIYJpDNCCHEmDtMNSo
+ XuOgbUpdCcasFho4TK6tHzBDGvI5xY+GYYsPFul6zodX1OzLz67ghorEuvuCsIuRtUYzfWzvR/I
+ Co96g4Z5ZNq4cgU2OGT31bbqGnNhwKaXcBPeWUe4RVSpEUyxqhEzNcZHR+0vkzTdEuRklFwS6bV
+ pY9fLsfBszmjofeZcKQzS3oRgnFa/ZyidwPXiavvmhFocuThAeXuEX5my2ig9yBkGOCrAV86R45
+ x4SdE8ZDooK8f1Qc4buHJejKe4z5gDs2hZvlKGSrapGM5DEnC+CdIUTzhOQ5T6KuTDLuzgZc
+X-Received: by 2002:a5d:5d81:0:b0:429:58f:400 with SMTP id
+ ffacd0b85a97d-429058f0432mr5699614f8f.50.1761327002623; 
+ Fri, 24 Oct 2025 10:30:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7cqC6khD8aPDZyTjWFqh1BX/hfWngITkMfCEo/VdfYEoz5XZ5znMwLmzusPWvkAzAS+cifA==
+X-Received: by 2002:a5d:5d81:0:b0:429:58f:400 with SMTP id
+ ffacd0b85a97d-429058f0432mr5699586f8f.50.1761327002164; 
+ Fri, 24 Oct 2025 10:30:02 -0700 (PDT)
 Received: from [10.54.0.145] ([147.135.244.229])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898ccc60sm10354188f8f.34.2025.10.24.10.18.50
+ ffacd0b85a97d-4298da9af42sm6177350f8f.40.2025.10.24.10.29.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Oct 2025 10:18:56 -0700 (PDT)
-Message-ID: <8dccb89a-f41b-4ae0-9f9d-f39f609766ee@redhat.com>
-Date: Fri, 24 Oct 2025 19:18:49 +0200
+ Fri, 24 Oct 2025 10:30:01 -0700 (PDT)
+Message-ID: <75c219b7-a778-4697-bc8f-fd5ebc5b04a8@redhat.com>
+Date: Fri, 24 Oct 2025 19:29:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/23] hw/pci: Introduce pci_device_get_viommu_flags()
+Subject: Re: [PATCH v7 10/23] intel_iommu: Check for compatibility with
+ IOMMUFD backed device when x-flts=on
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
@@ -82,7 +83,7 @@ Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com
 References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
- <20251024084349.102322-6-zhenzhong.duan@intel.com>
+ <20251024084349.102322-11-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -128,10 +129,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251024084349.102322-6-zhenzhong.duan@intel.com>
+In-Reply-To: <20251024084349.102322-11-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -157,52 +158,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/24/25 10:43, Zhenzhong Duan wrote:
-> Introduce a new PCIIOMMUOps optional callback, get_viommu_flags() which
-> allows to retrieve flags exposed by a vIOMMU. The first planned vIOMMU
-> device flag is VIOMMU_FLAG_WANT_NESTING_PARENT that advertises the
-> support of HW nested stage translation scheme and wants other sub-system
-> like VFIO's cooperation to create nesting parent HWPT.
+> When vIOMMU is configured x-flts=on in scalable mode, first stage page table
+> is passed to host to construct nested page table for passthrough devices.
 > 
-> pci_device_get_viommu_flags() is a wrapper that can be called on a PCI
-> device potentially protected by a vIOMMU.
+> We need to check compatibility of some critical IOMMU capabilities between
+> vIOMMU and host IOMMU to ensure guest first stage page table could be used by
+> host.
 > 
-> get_viommu_flags() is designed to return 64bit bitmap of purely vIOMMU
-> flags which are only determined by user's configuration, no host
-> capabilities involved. Reasons are:
+> For instance, vIOMMU supports first stage 1GB large page mapping, but host does
+> not, then this IOMMUFD backed device should fail.
 > 
-> 1. host may has heterogeneous IOMMUs, each with different capabilities
-> 2. this is migration friendly, return value is consistent between source
->     and target.
+> Even of the checks pass, for now we willingly reject the association because
+> all the bits are not there yet, it will be relaxed in the end of this series.
 > 
-> Note that this op will be invoked at the attach_device() stage, at which
-> point host IOMMU capabilities are not yet forwarded to the vIOMMU through
-> the set_iommu_device() callback that will be after the attach_device().
+> Note vIOMMU has exposed IOMMU_HWPT_ALLOC_NEST_PARENT flag to force VFIO core to
+> create nesting parent HWPT, if host doesn't support nested translation, the
+> creation will fail. So no need to check nested capability here.
 > 
-> See below sequence:
-> 
->    vfio_device_attach():
->        iommufd_cdev_attach():
->            pci_device_get_viommu_flags() for HW nesting cap
->            create a nesting parent HWPT
->            attach device to the HWPT
->            vfio_device_hiod_create_and_realize() creating hiod
->    ...
->    pci_device_set_iommu_device(hiod)
-> 
-> Suggested-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
 > Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
 > ---
->   MAINTAINERS          |  1 +
->   include/hw/iommu.h   | 25 +++++++++++++++++++++++++
+>   hw/i386/intel_iommu.c | 25 ++++++++++++++++++++++++-
+>   1 file changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index ce4c54165e..7d908cdb58 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -4636,8 +4636,31 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
+>           return true;
+>       }
+>   
+> +#ifdef CONFIG_IOMMUFD
 
 
-Hmm, why not under include/hw/pci/ ? Was this discussed ?
+Before using CONFIG_IOMMUFD, '#include CONFIG_DEVICES' should be done
+first. But as said earlier, this is something we wanted to avoid in the
+intel-iommu model which can have different host IOMMU backends.
 
+At first glance, it seems to me that these changes take the fast path
+and avoid an abstract layer. Is it too complex to keep on using
+HostIOMMUDeviceClass ?
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
@@ -210,115 +208,35 @@ C.
 
 
 
->   include/hw/pci/pci.h | 22 ++++++++++++++++++++++
->   hw/pci/pci.c         | 11 +++++++++++
->   4 files changed, 59 insertions(+)
->   create mode 100644 include/hw/iommu.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 36eef27b41..d94fbcbdfb 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2338,6 +2338,7 @@ F: include/system/iommufd.h
->   F: backends/host_iommu_device.c
->   F: include/system/host_iommu_device.h
->   F: include/qemu/chardev_open.h
-> +F: include/hw/iommu.h
->   F: util/chardev_open.c
->   F: docs/devel/vfio-iommufd.rst
->   
-> diff --git a/include/hw/iommu.h b/include/hw/iommu.h
-> new file mode 100644
-> index 0000000000..9b8bb94fc2
-> --- /dev/null
-> +++ b/include/hw/iommu.h
-> @@ -0,0 +1,25 @@
-> +/*
-> + * General vIOMMU flags
-> + *
-> + * Copyright (C) 2025 Intel Corporation.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+
+
+> +    struct HostIOMMUDeviceCaps *caps = &hiod->caps;
+> +    struct iommu_hw_info_vtd *vtd = &caps->vendor_caps.vtd;
 > +
-> +#ifndef HW_IOMMU_H
-> +#define HW_IOMMU_H
+> +    /* Remaining checks are all first stage translation specific */
+> +    if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
+> +        error_setg(errp, "Need IOMMUFD backend when x-flts=on");
+> +        return false;
+> +    }
 > +
-> +#include "qemu/bitops.h"
+> +    if (caps->type != IOMMU_HW_INFO_TYPE_INTEL_VTD) {
+> +        error_setg(errp, "Incompatible host platform IOMMU type %d",
+> +                   caps->type);
+> +        return false;
+> +    }
 > +
-> +/*
-> + * Theoretical vIOMMU flags. Only determined by the vIOMMU device properties and
-> + * independent on the actual host IOMMU capabilities they may depend on. Each
-> + * flag can be an expectation or request to other sub-system or just a pure
-> + * vIOMMU capability. vIOMMU can choose which flags to expose.
-> + */
-> +enum viommu_flags {
-> +    /* vIOMMU needs nesting parent HWPT to create nested HWPT */
-> +    VIOMMU_FLAG_WANT_NESTING_PARENT = BIT_ULL(0),
-> +};
+> +    if (s->fs1gp && !(vtd->cap_reg & VTD_CAP_FS1GP)) {
+> +        error_setg(errp,
+> +                   "First stage 1GB large page is unsupported by host IOMMU");
+> +        return false;
+> +    }
+> +#endif
 > +
-> +#endif /* HW_IOMMU_H */
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index bde9dca8e2..cf99b5bb68 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -462,6 +462,18 @@ typedef struct PCIIOMMUOps {
->        * @devfn: device and function number of the PCI device.
->        */
->       void (*unset_iommu_device)(PCIBus *bus, void *opaque, int devfn);
-> +    /**
-> +     * @get_viommu_flags: get vIOMMU flags
-> +     *
-> +     * Optional callback, if not implemented, then vIOMMU doesn't support
-> +     * exposing flags to other sub-system, e.g., VFIO.
-> +     *
-> +     * @opaque: the data passed to pci_setup_iommu().
-> +     *
-> +     * Returns: bitmap with each representing a vIOMMU flag defined in
-> +     * enum viommu_flags.
-> +     */
-> +    uint64_t (*get_viommu_flags)(void *opaque);
->       /**
->        * @get_iotlb_info: get properties required to initialize a device IOTLB.
->        *
-> @@ -644,6 +656,16 @@ bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
->                                    Error **errp);
->   void pci_device_unset_iommu_device(PCIDevice *dev);
->   
-> +/**
-> + * pci_device_get_viommu_flags: get vIOMMU flags.
-> + *
-> + * Returns: bitmap with each representing a vIOMMU flag defined in
-> + * enum viommu_flags. Or 0 if vIOMMU doesn't report any.
-> + *
-> + * @dev: PCI device pointer.
-> + */
-> +uint64_t pci_device_get_viommu_flags(PCIDevice *dev);
-> +
->   /**
->    * pci_iommu_get_iotlb_info: get properties required to initialize a
->    * device IOTLB.
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index d0e81651aa..c9932c87e3 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -3010,6 +3010,17 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
->       }
+>       error_setg(errp,
+> -               "host device is uncompatible with first stage translation");
+> +               "host IOMMU is incompatible with guest first stage translation");
+>       return false;
 >   }
 >   
-> +uint64_t pci_device_get_viommu_flags(PCIDevice *dev)
-> +{
-> +    PCIBus *iommu_bus;
-> +
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
-> +    if (iommu_bus && iommu_bus->iommu_ops->get_viommu_flags) {
-> +        return iommu_bus->iommu_ops->get_viommu_flags(iommu_bus->iommu_opaque);
-> +    }
-> +    return 0;
-> +}
-> +
->   int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
->                            bool exec_req, hwaddr addr, bool lpig,
->                            uint16_t prgi, bool is_read, bool is_write)
 
 
