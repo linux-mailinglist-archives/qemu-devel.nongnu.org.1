@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7927AC07EC5
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E84C07ECE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 21:37:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCNZN-0002sz-H1; Fri, 24 Oct 2025 15:35:25 -0400
+	id 1vCNb7-0004Ub-HW; Fri, 24 Oct 2025 15:37:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNZK-0002rr-MC
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:35:22 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNaq-0004PV-1L
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:36:59 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNZI-0002Ev-7p
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:35:22 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-427015003eeso2256338f8f.0
- for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:35:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCNam-0002Ok-TW
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 15:36:55 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-475dc6029b6so257095e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Oct 2025 12:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761334518; x=1761939318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761334611; x=1761939411; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gBgrmxISukx2phyh25lifUJ0WsSDdFWGHFqh9r4mLPo=;
- b=OZ8AVjsMAeVhniWSat1X4qZ+wf3tp0xh54xiKUfvU0iN7s8QIE+8yi73xBRBJ623NT
- oIDcgeKJ/fjHKT1ms8f8OFgTiNPd1Z/sQZ3U3x4nk7ij2GqlKpjnGCHkKcjNkt5aHGar
- X6kqWBpCE6SWUmrDivis1qqI/F35F5ozY/B5OosZ4BQ3bZMS0awIecyzQ0PrHS/QQioU
- uedWqRQIC8YvwrMboRRSG6R9/SoRHMFSmqk4BViX/PzZncNZn93/PBeb0LNWfZ+oJ0bf
- YYY5i05n/S4tzlSAWQ1SqCsnpYIHdOjlmdz4VD64cSRf0Ha2kH0CrZGDYt+YkG050IPo
- o21A==
+ bh=iuKy0g+dMDyAMbvGqcOb5ITf53v59XT0OsM1YVfVPZ4=;
+ b=oTB9ZWbnToMek/5JTYuyZOT3utcvQtljJi74RjFO+RaG+Na9TgygppO7BvydGvhk5W
+ 8blVYsJksBDkeCW8742MayzOAlHYStofRm1ELZMBjo+0KnyoL5iObTHrRiWjadMHerDD
+ LmmSZuBKucZLx7/fct60MdPkI3S0Sp7nre7G5idwqQgOSplRLDX2AafM7JcuIuMyP9Cx
+ 4p+WVrgXFW64oUn0mV66IpSwcqc+N5TG5s6yfDL0nY7YOZqRcOHoyjzyJQ+ZRoBDxOCG
+ qtSXqDjr/1nhK+dFuheGSbGM/9UTZBG4PQ8tUp2479G75X2JIdb2I2mgxuY5U8y/mEGi
+ Q5TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761334518; x=1761939318;
+ d=1e100.net; s=20230601; t=1761334611; x=1761939411;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gBgrmxISukx2phyh25lifUJ0WsSDdFWGHFqh9r4mLPo=;
- b=MKQKSxoQtXOkydaKbLXKDyy5AMzJypV40RuoeLHvRFj9JT/ZlO/EN7SRIe9At4WTXm
- oNsqSSDoEbCVDsuX46uKbrEtiMmj4VtWXqXqcXQmRBgUNhv5ns5TblObWnjZPneuWooc
- jCvBIM8sNhFRX3fGuUep1GEbQ2K6mt5mMvm6JyTjU8v9kWuNtHauOwEyKrvMQ65IINGN
- sNpNGYtpBx3OuDWbXn2nfVpZtSiz3j6xYYkkrqABKQxCSyXjvn24rDLgg+KT0fSCFn3i
- k6u0VYvTbNflXRoAr2oY9rdnGodWUVlKCh07w1vwXoJEMEk8pjIJtPNtJCgwDhXLMcPf
- oSlw==
-X-Gm-Message-State: AOJu0Yw27ye8ghDLhoQ6CTqnsv4zpmjAVJGJjoNVkfTPh/R+af2X0++6
- 9ErGHHcA4cTiVXGUfi+s8KtjRqZox5hGcmfWyX/kWqqnLAHSY5dOn8NcMnOHDwVt8Yce6LZXUcb
- 8r2Qr8Q8=
-X-Gm-Gg: ASbGncuE7mOIWs/qTPjz8Dls7eJaPC5l/uvgHKAsjq99WMtKdVNN+L3WJLULgD/S+Ys
- VGWON/2DrBnyqNjRUv6Q7D/Z755fj76O1BEXSqT1Irs4FDh+/Z8uIBg7MVpo9iVfY9JfS6X1bUh
- KJ5j2xFmmStcC0T89x4rvs5k9VhZXnUs12x6WDRZjNp1YN8nrUARgF+l0+HuGRDuWR24PDK1use
- DXFi1JPqbigfbpa6XywTNrxiqClxQx80C8hp4miaUuzOd+obWtWIFlo0r+lqA7fZAQAH29Uy/aF
- 1wbAZN1JrAZ2UTCp38wKwNyBbTzrhQiEJ/cDgy00oQFNXkoQ8acaHtxJM4pSFyDQix1LUfeE/fh
- d4HKJaGLiQXzZlxw4bhYODKSIAqYBkD2pECImhtUqrlvSXepUCnFwJscFwgxF4pWG9eGsEs8ctu
- /VSGSPBmNJvnwdfSjFD4A2LGbim0ZZLvU3ytEcltrWTCppYv+QeQ==
-X-Google-Smtp-Source: AGHT+IEV4OMSIcqrrZUp/PLoSTv+oEYKatypcoz+g00LHCca0FFl5wOaR3GUGM5GkDydxJfu3DuZCg==
-X-Received: by 2002:a5d:64e7:0:b0:429:8bd7:774a with SMTP id
- ffacd0b85a97d-4298bd77939mr6244458f8f.40.1761334518282; 
- Fri, 24 Oct 2025 12:35:18 -0700 (PDT)
+ bh=iuKy0g+dMDyAMbvGqcOb5ITf53v59XT0OsM1YVfVPZ4=;
+ b=JAfX2twTJjcAD4PvPQJ7C/YHNUlbcXNPMPw+D9phU+/OmKjSc5om7yc3jFCydYZ7xj
+ OM5Md8sgsWE8htBl5BzAizI97Y2ng7k9n6r8OdRPHLzA1u7Sys+wYir6z0Sslonim9tj
+ +eZK9BQdFRXmpOGFv8Cf8j9glYH/drOn1/Sw1HMNBgjXI6GuuatNOGzgMz8nmjv0tnRX
+ ncNVXwzLVgfZICTdE2x7kf/1v53U0ybUYzKLMYn7Q5XTHa5ywrSwpyXOQpkXliooRdno
+ YrRe9I+LUaFRf7wwiJYj2QqzJmmaVgkeGjtEnFG7lG6qqcao+xdbNLlBULFzVoKyNx1I
+ J1QQ==
+X-Gm-Message-State: AOJu0YxGhZtyM6GyGNyGI7kP7yYVPUnFsUvWAV5IDo2HLbu+EeRcIHKK
+ S30zvuWMrbL+IqFMd5MHF7TTpHMbLzY/1M7WraQ/aHYScRLlw3eD22ExCe9Bbuh6Ol0z68mS8pE
+ 2YEMeI+8=
+X-Gm-Gg: ASbGncsl1GD+yjULIEWDibhJTeSHKiunNrjgXJAzfcY/3sXZDedvh9oDiFaA6+3goEW
+ qHEQ3DJvItjpX4DYwVGTWDGbfyiVlsCEqm+4u68nkQm25BWQyZow+aL5xsVzckXJ71JmVg12o35
+ xN2iva6iFsgTF97Q4Wf5aU2J+aibWhN/SV92XQxIAnWB/JRN6LMeu0WFiAw4ARRJRC4UQwbi83s
+ pHLJ4vzw9jv/OLyfwO0Cmb/TPH/fQzTcUSaMwLclwk73mDF3KlXhWKa7XHs0rXhDWnnem3X0Czq
+ CCFp+AUiCqpwtuM2sEH49TQllNrLkvEO63hst+iNr+RVB+ImmkxzJdeNSM4A4vYhwyPpyyCL8L+
+ L/NbtKlwk7agShcIVNdm1YkNHObzITJsHRmVrjAG0WShTo0a6kMqw362Q82/UExQVzqS3Jbezwo
+ NOwoQ2XC11HGGyAxg4HSQ/vI5fZ42dscqHpHBibHtiaB5VttgcS2sfdSS0Uqx9
+X-Google-Smtp-Source: AGHT+IHYynbuB5rRGbqbFy5ojmEbJmXDvxXJmiYAbYABkcHYoo++O7Xy/oS3GB0YuzDkIoX7m/FWNg==
+X-Received: by 2002:a05:600c:64c4:b0:471:60c:1501 with SMTP id
+ 5b1f17b1804b1-475d2ecaedemr37411605e9.28.1761334610566; 
+ Fri, 24 Oct 2025 12:36:50 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952b79cbsm27584f8f.4.2025.10.24.12.35.15
+ 5b1f17b1804b1-475c4369b33sm162574345e9.14.2025.10.24.12.36.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Oct 2025 12:35:17 -0700 (PDT)
+ Fri, 24 Oct 2025 12:36:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH 20/27] hw/int/loongarch: Include missing 'system/memory.h'
- header
-Date: Fri, 24 Oct 2025 21:04:07 +0200
-Message-ID: <20251024190416.8803-21-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 21/27] hw/rtc/m48t59: Include missing 'system/memory.h' header
+Date: Fri, 24 Oct 2025 21:04:08 +0200
+Message-ID: <20251024190416.8803-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251024190416.8803-1-philmd@linaro.org>
 References: <20251024190416.8803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,83 +102,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 "system/memory.h" header is indirectly pulled by "hw/sysbus.h".
 Include it explicitly to avoid when refactoring the latter:
 
-  In file included from ../../hw/intc/loongson_ipi.c:9:
-  In file included from /Users/philmd/source/qemu/include/hw/intc/loongson_ipi.h:12:
-  include/hw/intc/loongson_ipi_common.h:37:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     37 |     MemoryRegion ipi_iocsr_mem;
+  In file included from ../../hw/rtc/m48t59.c:41:
+  ../../hw/rtc/m48t59-internal.h:44:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
+     44 |     MemoryRegion iomem;
         |                  ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/intc/loongarch_dintc.h         | 2 +-
- include/hw/intc/loongarch_extioi_common.h | 1 +
- include/hw/intc/loongarch_pch_msi.h       | 1 +
- include/hw/intc/loongarch_pic_common.h    | 1 +
- include/hw/intc/loongson_ipi_common.h     | 2 ++
- 5 files changed, 6 insertions(+), 1 deletion(-)
+ hw/rtc/m48t59-internal.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/intc/loongarch_dintc.h b/include/hw/intc/loongarch_dintc.h
-index 0b0b5347b2c..01bb1e465cb 100644
---- a/include/hw/intc/loongarch_dintc.h
-+++ b/include/hw/intc/loongarch_dintc.h
-@@ -8,7 +8,7 @@
- #include "qom/object.h"
- #include "hw/sysbus.h"
- #include "hw/loongarch/virt.h"
--
+diff --git a/hw/rtc/m48t59-internal.h b/hw/rtc/m48t59-internal.h
+index cd648241e98..791c15b7184 100644
+--- a/hw/rtc/m48t59-internal.h
++++ b/hw/rtc/m48t59-internal.h
+@@ -26,6 +26,8 @@
+ #ifndef HW_M48T59_INTERNAL_H
+ #define HW_M48T59_INTERNAL_H
+ 
 +#include "system/memory.h"
- 
- #define NR_VECTORS     256
- 
-diff --git a/include/hw/intc/loongarch_extioi_common.h b/include/hw/intc/loongarch_extioi_common.h
-index c021ccee0fa..1bd2bfa07fc 100644
---- a/include/hw/intc/loongarch_extioi_common.h
-+++ b/include/hw/intc/loongarch_extioi_common.h
-@@ -10,6 +10,7 @@
- #include "qom/object.h"
- #include "hw/sysbus.h"
- #include "hw/loongarch/virt.h"
-+#include "system/memory.h"
- 
- #define LS3A_INTC_IP                 8
- #define EXTIOI_IRQS                  (256)
-diff --git a/include/hw/intc/loongarch_pch_msi.h b/include/hw/intc/loongarch_pch_msi.h
-index b8586fb3b6f..ef4ec4fdeb8 100644
---- a/include/hw/intc/loongarch_pch_msi.h
-+++ b/include/hw/intc/loongarch_pch_msi.h
-@@ -6,6 +6,7 @@
-  */
- 
- #include "hw/sysbus.h"
-+#include "system/memory.h"
- 
- #define TYPE_LOONGARCH_PCH_MSI "loongarch_pch_msi"
- OBJECT_DECLARE_SIMPLE_TYPE(LoongArchPCHMSI, LOONGARCH_PCH_MSI)
-diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index 675ba96e64e..179361eb567 100644
---- a/include/hw/intc/loongarch_pic_common.h
-+++ b/include/hw/intc/loongarch_pic_common.h
-@@ -9,6 +9,7 @@
- 
- #include "hw/loongarch/virt.h"
- #include "hw/sysbus.h"
-+#include "system/memory.h"
- 
- #define PCH_PIC_INT_ID                  0x00
- #define  PCH_PIC_INT_ID_VAL             0x7
-diff --git a/include/hw/intc/loongson_ipi_common.h b/include/hw/intc/loongson_ipi_common.h
-index e58ce2aa1c4..8b51af83e8b 100644
---- a/include/hw/intc/loongson_ipi_common.h
-+++ b/include/hw/intc/loongson_ipi_common.h
-@@ -11,6 +11,8 @@
- #include "qom/object.h"
- #include "hw/sysbus.h"
- #include "exec/memattrs.h"
-+#include "system/memory.h"
-+#include "system/memory.h"
- 
- #define IPI_MBX_NUM           4
- 
++
+ /*
+  * The M48T02, M48T08 and M48T59 chips are very similar. The newer '59 has
+  * alarm and a watchdog timer and related control registers. In the
 -- 
 2.51.0
 
