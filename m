@@ -2,124 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24BDC07AE0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 20:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDD2C07B65
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 20:21:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCMK5-0006dK-6f; Fri, 24 Oct 2025 14:15:33 -0400
+	id 1vCMPU-0008Fu-2n; Fri, 24 Oct 2025 14:21:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vCMJo-0006Yu-6D
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 14:15:18 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vCMJl-0007X1-UT
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 14:15:15 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AE84821194;
- Fri, 24 Oct 2025 18:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1761329708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aUWl+ahxUk2/TUUb5JMw46znij/g3/nkZULBxB0Xa1U=;
- b=iTfxXY7CSeEbTBxCNhY51MCOxT60UtZY8hTRpy2xH75Bru3E+qm+WXtx4kEPHPoYREPDt/
- jhgKTsQ8Gtb6SYyDhsf5BNXwWgP9Se++idug0h0EY+GtgJT9vfSq1t+q8s7Iw2e6SuNID5
- HrjsS0HdA/db6nLUx0Nda1FTOZNtuCI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1761329708;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aUWl+ahxUk2/TUUb5JMw46znij/g3/nkZULBxB0Xa1U=;
- b=hjXHlzNQZRtsyU7CLxvKW9ebEqU7UicN6/0GQZrh1Tq0Wfeb9yn3hFxanG4uoo29SP13Ri
- S7jK09/iuCpl1CDw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iTfxXY7C;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hjXHlzNQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1761329708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aUWl+ahxUk2/TUUb5JMw46znij/g3/nkZULBxB0Xa1U=;
- b=iTfxXY7CSeEbTBxCNhY51MCOxT60UtZY8hTRpy2xH75Bru3E+qm+WXtx4kEPHPoYREPDt/
- jhgKTsQ8Gtb6SYyDhsf5BNXwWgP9Se++idug0h0EY+GtgJT9vfSq1t+q8s7Iw2e6SuNID5
- HrjsS0HdA/db6nLUx0Nda1FTOZNtuCI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1761329708;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aUWl+ahxUk2/TUUb5JMw46znij/g3/nkZULBxB0Xa1U=;
- b=hjXHlzNQZRtsyU7CLxvKW9ebEqU7UicN6/0GQZrh1Tq0Wfeb9yn3hFxanG4uoo29SP13Ri
- S7jK09/iuCpl1CDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B70013693;
- Fri, 24 Oct 2025 18:15:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 8tAONivC+2jyGwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 24 Oct 2025 18:15:07 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Peter Xu
- <peterx@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Bin Guo
- <guobin@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] migration: Don't free the reason after calling
- migrate_add_blocker
-In-Reply-To: <aPup9BzTf-uk8cUf@redhat.com>
-References: <20251024092821.82220-1-guobin@linux.alibaba.com>
- <87o6pw1rfn.fsf@pond.sub.org> <aPtim8ZACUWyje2o@redhat.com>
- <874irozabw.fsf@pond.sub.org> <87v7k4xuhk.fsf@pond.sub.org>
- <aPumkKBx4PoGSwNv@x1.local> <aPup9BzTf-uk8cUf@redhat.com>
-Date: Fri, 24 Oct 2025 15:15:05 -0300
-Message-ID: <87a51gdv4m.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1vCMPS-0008Fi-Au
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 14:21:06 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1vCMPN-0008EP-Ai
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 14:21:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761330061; x=1792866061;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=dsTKYI2tavi9iR5GYwHm3XNJQdogM73BnjgCufX5w34=;
+ b=AQOq+R4s8HfmjLIM/rA0Ci/SyKgjZ+V9ZvyVUWvBuL2okFES9rpOAnGV
+ 4qFXVH+BzB5Z6f5dtmbQi4J2jP6Aulta9ipHK5dPCKXJGLoEgHjz5rNAz
+ sAkHiw3+EiMYd9eSepYxi9pY82hRsHQqgrKZPKCvs4ePz3OTUZ8HAVDx1
+ dF3xtmk5XAkbUkR+awcHMy/ryKzlEhKM/qILmuz7H2sYSCmXt+SU8jq4Q
+ bPmcgYKCeUl7/juDxDaazD/J4hbHwHwg8pqo0QN+jvsMp/P5TZqvlIaiL
+ PTOLsYszYQlXlqT8/Yo25QBTAqG7ZARmENf4vi01U8GL/E3WiOAg8+3V3 g==;
+X-CSE-ConnectionGUID: jzvTDofJSV6xt4PEA+nGFA==
+X-CSE-MsgGUID: 786HbB2SSQyt8PbkRdJDjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74119586"
+X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; d="scan'208";a="74119586"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 11:20:56 -0700
+X-CSE-ConnectionGUID: Sfbz+b2xRfOOmIF5BmsdkQ==
+X-CSE-MsgGUID: /Hv5XVoGRCOJkJC5vJnBAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; d="scan'208";a="188882449"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.241.241.181])
+ ([10.241.241.181])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 11:20:55 -0700
+Message-ID: <1bcebd76-877e-41eb-a21e-5a49c648fd37@intel.com>
+Date: Fri, 24 Oct 2025 11:20:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AE84821194
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FUZZY_RATELIMITED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid,
- imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/20] i386/cpu: Reorganize arch lbr structure
+ definitions
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao
+ <chao.gao@intel.com>, John Allen <john.allen@amd.com>,
+ Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>
+References: <20251024065632.1448606-1-zhao1.liu@intel.com>
+ <20251024065632.1448606-5-zhao1.liu@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20251024065632.1448606-5-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zide.chen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -136,107 +90,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
-
-> On Fri, Oct 24, 2025 at 12:17:20PM -0400, Peter Xu wrote:
->> On Fri, Oct 24, 2025 at 04:08:39PM +0200, Markus Armbruster wrote:
->> > Markus Armbruster <armbru@redhat.com> writes:
->> >=20
->> > > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->> >=20
->> > [...]
->> >=20
->> > >> But wow, the migrate_add_blocker API design is unpleasant with its
->> > >> pair of "Error **" parameters - it is practically designed to
->> > >> maximise confusion & surprise.
->> > >
->> > > It's quite a sight, isn't it?
->> > >
->> > > I'll give it a quick Friday afternoon try.
->> >=20
->> > Alright, my confusion has been maximised.  Giving up on this.
->>=20
->> Besides the use of two Error** that might be confusing, what is more
->> confusing (if not wrong..): migrate_add_blocker() will take ownership of
->> the 1st Error**, no matter whether the helper succeeded or not. However,=
- it
->> only resets the first Error** if failed.
->>=20
->> I think it means if migrate_add_blocker() succeeded, the caller will hav=
-e a
->> non-NULL pointer, even if it has lost the ownership of that pointer.
->>=20
->> I'm guessing it never caused issue only because we don't usually
->> error_free() the migration blocker anywhere.. but I think maybe we should
->> at least do an error_copy() in add_blockers()..
->
-> IMHO we should not even be using an Error object for the the blocker.
-> AFAICT, internally all we care about is the formatted string. The main
-> reason for using an Error object appears to be to have a convenient
-> pointer to use as an identifier to later pass to del_blocker.
->
-> I'd be inclined to just have passed in a fixed string, and return an
-> integer identifier for the blocker. eg
->
->     int64 migrate_add_blocker(const char *reason, Error **errp);
->
->     void migrate_del_blocker(int64 blockerid);
->
-> The migrate_add_blocker method would strdup(reason) to keep its own
-> copy.
->
-> The usage would thus be clear & simple:
->
->     int64 blockerid =3D migrate_add_blocker("cannot migrate vfio", errp);
->     if (!blockerid) {
->          return;
->     }
->
->     ... some time later...
->
->     migrate_del_blocker(blockerid);
->
->
-> In some cases we needed dynamically formatted strings, which could have
-> been achieved thus:
->
->     g_autofree char *msg =3D g_strdup_printf("cannot migrate vfio %d", bl=
-ah);
->     int64 blockerid =3D migrate_add_blocker(msg, errp);
->     ...the rest as above...
->
-> yes, this costs an extra strdup(), but that is an acceptable & negligible
-> overhead in the context in which we're doing this.
->
-
-Hmm, I must disagree. This is more complex than what we have
-today. Calling error_setg(err, "msg") is pretty standard, already gives
-us formatting and keeps all (potentially) user-facing messages uniform.
-
-Asking for people to deal with strings and storing an int64 in their
-code is not improving the situation. Besides, the Error is already used
-by the block layer when blocking operations, for instance. If anything
-we should be integrating the two usages instead of inventing yet another
-for the migration code. See:
-
-replication.c:
-  error_setg(&s->blocker,
-             "Block device is in use by internal backup job");
-  ...
-  bdrv_op_block_all(top_bs, s->blocker);
-
-block.c:
-  void bdrv_op_block(BlockDriverState *bs, BlockOpType op, Error *reason)
-  {
-      BdrvOpBlocker *blocker;
-      assert((int) op >=3D 0 && op < BLOCK_OP_TYPE_MAX);
-
-      blocker =3D g_new0(BdrvOpBlocker, 1);
-      blocker->reason =3D reason;
-      QLIST_INSERT_HEAD(&bs->op_blockers[op], blocker, list);
-}
 
 
-> With regards,
-> Daniel
+On 10/23/2025 11:56 PM, Zhao Liu wrote:
+> - Move ARCH_LBR_NR_ENTRIES macro and LBREntry definition before XSAVE
+>   areas definitions.
+> - Reorder XSavesArchLBR (area 15) between XSavePKRU (area 9) and
+>   XSaveXTILECFG (area 17), and reorder the related QEMU_BUILD_BUG_ON
+>   check to keep the same ordering.
+> 
+> This makes xsave structures to be organized together and makes them
+> clearer.
+> 
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+
+Reviewed-by: Zide Chen <zide.chen@intel.com>
+
+> ---
+>  target/i386/cpu.h | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 886a941e481c..ac527971d8cd 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1652,6 +1652,14 @@ typedef struct {
+>  
+>  #define NB_OPMASK_REGS 8
+>  
+> +typedef struct {
+> +    uint64_t from;
+> +    uint64_t to;
+> +    uint64_t info;
+> +} LBREntry;
+> +
+> +#define ARCH_LBR_NR_ENTRIES 32
+> +
+>  /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
+>   * that APIC ID hasn't been set yet
+>   */
+> @@ -1729,24 +1737,6 @@ typedef struct XSavePKRU {
+>      uint32_t padding;
+>  } XSavePKRU;
+>  
+> -/* Ext. save area 17: AMX XTILECFG state */
+> -typedef struct XSaveXTILECFG {
+> -    uint8_t xtilecfg[64];
+> -} XSaveXTILECFG;
+> -
+> -/* Ext. save area 18: AMX XTILEDATA state */
+> -typedef struct XSaveXTILEDATA {
+> -    uint8_t xtiledata[8][1024];
+> -} XSaveXTILEDATA;
+> -
+> -typedef struct {
+> -       uint64_t from;
+> -       uint64_t to;
+> -       uint64_t info;
+> -} LBREntry;
+> -
+> -#define ARCH_LBR_NR_ENTRIES            32
+> -
+>  /* Ext. save area 15: Arch LBR state */
+>  typedef struct XSaveArchLBR {
+>      uint64_t lbr_ctl;
+> @@ -1757,6 +1747,16 @@ typedef struct XSaveArchLBR {
+>      LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
+>  } XSaveArchLBR;
+>  
+> +/* Ext. save area 17: AMX XTILECFG state */
+> +typedef struct XSaveXTILECFG {
+> +    uint8_t xtilecfg[64];
+> +} XSaveXTILECFG;
+> +
+> +/* Ext. save area 18: AMX XTILEDATA state */
+> +typedef struct XSaveXTILEDATA {
+> +    uint8_t xtiledata[8][1024];
+> +} XSaveXTILEDATA;
+> +
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveBNDCSR) != 0x40);
+> @@ -1764,9 +1764,9 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveOpmask) != 0x40);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveZMM_Hi256) != 0x200);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
+>  QEMU_BUILD_BUG_ON(sizeof(XSavePKRU) != 0x8);
+> +QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+>  QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
+> -QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+>  
+>  typedef struct ExtSaveArea {
+>      uint32_t feature, bits;
+
 
