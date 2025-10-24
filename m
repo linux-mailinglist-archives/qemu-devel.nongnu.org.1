@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91539C0528D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 10:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37655C052A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 10:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCDRq-00076i-2J; Fri, 24 Oct 2025 04:46:58 -0400
+	id 1vCDRu-0007f9-2x; Fri, 24 Oct 2025 04:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vCDRB-0006Xk-EO
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:20 -0400
+ id 1vCDRE-0006eX-Nf
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:24 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vCDR9-0006be-0q
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:16 -0400
+ id 1vCDRB-0006cN-AV
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 04:46:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761295575; x=1792831575;
+ t=1761295577; x=1792831577;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CgXD+k2TJvJmEmmdHJC9XfHb7C5ZiRcVGTdnpTUR8Js=;
- b=UDpwtotGjyaLu4gXugYug/nzzCxIzVdZcRmK87RbcSCNLkuP6t4NAzWJ
- HrzVfoJMRJFWnOSmO+uDAFfUcTtr5WkeaIRCPJYfQF/L5HAinqjDvfmL4
- 2N23/ypADulQ9sGokr/1WLTpfxuuHQNX80IDbjPMIWags0EkpNpNXvN5N
- LZqCJ/bm50oCd2TMRFTF9hRIWFCbHlDMPKwlodRIXx6VceUZtlXH1ATqw
- FVDAYCY339oA7mBjJOE8EKnlgI/foOuegkn9gTaesp97K98nxs+GvCErC
- xKS7wvLQK43UK4OCWxYEKHdMB2ngFw87gdcQOKYZ4ox+aiCOWDSRF3UmL w==;
-X-CSE-ConnectionGUID: lC1d7xC1RGaR6arnoenABQ==
-X-CSE-MsgGUID: en6XTdq/SUa/pcAK5bbJTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62504911"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="62504911"
+ bh=B3t0n/F1XyPbU8NZ7Ue3aHP0go2rVRgf0rtGPny+Ppo=;
+ b=V6XzCoUCzmR3Tam4176M6KmqfhhvkdxZBVgiT7lK+vKM0jtUIWpEvP5Q
+ +K4Om1zXTsaFutaHwvs8lKuMdX7mzI4CNyC27Oo0lCJvxOWZHyjKi8a5j
+ Tf+UrAGCWAKXZopWpc7wjU4gXh9BLbp0d72hulHnVQ5/0zdC6gNY7Tgbz
+ AvcTwEW0DqZqE/utDIqYOqxXj6OH/X6wpy5uUY+8jw7PlXsNZA9VEBG1p
+ TgKqIV1fNZNIGG9TzQZUPAUPYZltYKaYolMbBYnnMyhvSmZZjiGcmwc1m
+ NKNK7/tKkEGFh3s0ouQk/gZypV61QwEsNC9kJxk0H2A5A2QQ1Gg9ySLH7 g==;
+X-CSE-ConnectionGUID: bPteRfc0RrydzCrfJAxz5w==
+X-CSE-MsgGUID: 1M1+NxBZRMqqC9yVB7oRyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62504923"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="62504923"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:45:59 -0700
-X-CSE-ConnectionGUID: WGpqu+cuQdiylDt1ptsmdg==
-X-CSE-MsgGUID: kA1YJ+naTYC+jZI/wRcumg==
+ 24 Oct 2025 01:46:03 -0700
+X-CSE-ConnectionGUID: BC82TCL5TRCiEV2aOYdK/w==
+X-CSE-MsgGUID: XumlVXf7RoKpa2MWYFmrXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="183986088"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="183986102"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:45:55 -0700
+ 24 Oct 2025 01:46:00 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v7 21/23] intel_iommu: Add migration support with x-flts=on
-Date: Fri, 24 Oct 2025 04:43:45 -0400
-Message-ID: <20251024084349.102322-22-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 22/23] intel_iommu: Enable host device when x-flts=on in
+ scalable mode
+Date: Fri, 24 Oct 2025 04:43:46 -0400
+Message-ID: <20251024084349.102322-23-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251024084349.102322-1-zhenzhong.duan@intel.com>
 References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
@@ -85,34 +86,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When x-flts=on, we set up bindings to nested HWPT in host, after
-migration, VFIO device binds to nesting parent HWPT by default.
-We need to re-establish the bindings to nested HWPT, or else device
-DMA will break.
+Now that all infrastructures of supporting passthrough device running
+with first stage translation are there, enable it now.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 ---
- hw/i386/intel_iommu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/i386/intel_iommu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index edd1416382..8fec61be3e 100644
+index 8fec61be3e..356623ef13 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -4360,6 +4360,13 @@ static int vtd_post_load(void *opaque, int version_id)
-      */
-     vtd_switch_address_space_all(iommu);
- 
-+    /*
-+     * Bindings to nested HWPT in host is set up dynamically depending
-+     * on pasid entry configuration from guest. After migration, we
-+     * need to re-establish the bindings before restore device's DMA.
-+     */
-+    vtd_replay_pasid_bindings_all(iommu);
+@@ -4979,6 +4979,8 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+                    "when x-flts=on");
+         return false;
+     }
 +
-     return 0;
- }
++    return true;
+ #endif
  
+     error_setg(errp,
 -- 
 2.47.1
 
