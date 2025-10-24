@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6125AC0418C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 04:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDF3C041EA
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 04:31:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC7G0-0004kG-PZ; Thu, 23 Oct 2025 22:10:20 -0400
+	id 1vC7Zb-0001rw-6Y; Thu, 23 Oct 2025 22:30:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vC7Fy-0004k0-Ek
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:10:18 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vC7ZY-0001ro-LT
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:30:33 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vC7Fw-0006Ox-L2
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:10:18 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vC7ZV-0000a7-9l
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:30:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761271816; x=1792807816;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yvlZDmPpw8Fy2Qzy9pBS5ZRAZH5Ep7kV1+63b2utO0A=;
- b=X0KhYmfX9oW694IGboZhFIlwkIsdJjFz2vzN+g9buCW92PLkIkheP2g8
- E4BWSWda1UyYiJcOqGV8xbEEGnA6ApRsFBNmNMkCrStj3cN3P14cyz3/v
- gAw97Pray/Pam1l7DUnuhX0un1bJKbWo4ts/9vfcseAKvbefQaJUI8/90
- /5wyYjgvr6QA4Ray6AH0SpaliX7uomjU3BnSg00UiEQPbxw7qULLPu6X0
- /jft/iyY/QrlMnNHobHzIyBnehZqVw5YOjMG/LqaLdcpYEI6Zt60hZqqV
- BHxthqauQ2RN+mLW75RpDV/ye6OD6wsQco2EBF+iIlb2u752wP6GUUjpT g==;
-X-CSE-ConnectionGUID: 12oHaik5S2SyJncc+cPigw==
-X-CSE-MsgGUID: 6XdjVYatT0mXS7/DwvDsQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62662165"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="62662165"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 19:10:16 -0700
-X-CSE-ConnectionGUID: 0sD7H3JBQzi9nNWXzkEv7A==
-X-CSE-MsgGUID: F/JNoluiRUKR/Vka1bf0eQ==
+ t=1761273029; x=1792809029;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=PX+eVf5i4pYVjX5/OhEJPZeGHVaKXl1t7iu4j85VAaw=;
+ b=MGyU1PHem5O59WIeZAgitW5aiamcwf7hhjmM3graLaKRQ8j3Q22KnaH1
+ /iDMg4QNYAsL1YIRF8oi1LVXocCl/6jR8Py8qSUyTB7CDxh2txehhh4JE
+ PpvL0JnTih7pIQ9+dvqeYR9HPj8YPu295cwL29ABSLfi0zjICCvbfC2a5
+ ID1DD/bPraCa2JvnvhAGv1HlII2SENdcDg8l5uIeoHSRoNR/iATsG7k4Z
+ xWSz2xTqqYea0BLLQeIwiniWDuVUqjBZ2PVUd7QM4QQsDJPa9mmouLy5a
+ YvVOSsJuWFwRyz61GqnVlLpWUwd8W/+xqALpU3OcOKmvunyWA7GhIFLl1 g==;
+X-CSE-ConnectionGUID: FVtloujFQ5aqnf2pCuFn5w==
+X-CSE-MsgGUID: 9yswrV+8QRaHVE8aIKdDSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74892986"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74892986"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 19:30:25 -0700
+X-CSE-ConnectionGUID: MDsBStKpQK6NIicOOyHanA==
+X-CSE-MsgGUID: 5DeMk5hbQOC+NPgPg490Tg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="189440824"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 19:10:12 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
- eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
- xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
- mark.gross@intel.com, arjan.van.de.ven@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jason Zeng <jason.zeng@intel.com>
-Subject: [PATCH v3 8/8] vfio/migration: Allow live migration with vIOMMU
- without VFs using device dirty tracking
-Date: Thu, 23 Oct 2025 22:09:22 -0400
-Message-ID: <20251024020922.13053-9-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20251024020922.13053-1-zhenzhong.duan@intel.com>
-References: <20251024020922.13053-1-zhenzhong.duan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184386427"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
+ ([10.124.238.14])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 19:30:22 -0700
+Message-ID: <9614d727-97bf-4a50-be13-6754952bec96@intel.com>
+Date: Fri, 24 Oct 2025 10:30:19 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.18;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] kvm: Allow kvm_guest_memfd_supported for non-private
+ use case
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, David Hildenbrand <david@redhat.com>,
+ Alexey Kardashevskiy <aik@amd.com>, Juraj Marcin <jmarcin@redhat.com>
+References: <20251023185913.2923322-1-peterx@redhat.com>
+ <20251023185913.2923322-3-peterx@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20251023185913.2923322-3-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,111 +87,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-introduces a migration blocker when vIOMMU is enabled, because we need
-to calculate the IOVA ranges for device dirty tracking. But this is
-unnecessary for iommu dirty tracking.
+On 10/24/2025 2:59 AM, Peter Xu wrote:
+> Guest-memfd is not 100% attached to private, it's a VM-specific memory
+> provider.  Allow it to be created even without private attributes, for
+> example, when the VM can use the guest-memfd memory completely shared.
+> 
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index f9254ae654..1425dfd8b3 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2779,10 +2779,8 @@ static int kvm_init(AccelState *as, MachineState *ms)
+>       }
+>   
+>       kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+> -    kvm_guest_memfd_supported =
+> -        kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> -        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+> -        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +    kvm_guest_memfd_supported = kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> +        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2);
+>       kvm_pre_fault_memory_supported = kvm_vm_check_extension(s, KVM_CAP_PRE_FAULT_MEMORY);
+>   
+>       if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
 
-Limit the vfio_viommu_preset() check to those devices which use device
-dirty tracking. This allows live migration with VFIO devices which use
-iommu dirty tracking.
 
-Introduce a helper vfio_device_dirty_pages_disabled() to facilitate it.
+The check on KVM_MEMORY_ATTRIBUTE_PRIVATE is dropped silently. But using 
+guest memfd to serve as private memory does requires the support of 
+KVM_MEMORY_ATTRIBUTE_PRIVATE.
 
-Suggested-by: Jason Zeng <jason.zeng@intel.com>
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-Tested-by: Rohith S R <rohith.s.r@intel.com>
----
- include/hw/vfio/vfio-device.h | 10 ++++++++++
- hw/vfio/container.c           |  5 +----
- hw/vfio/device.c              |  6 ++++++
- hw/vfio/migration.c           |  6 +++---
- 4 files changed, 20 insertions(+), 7 deletions(-)
+My version of the patch was
 
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 0fe6c60ba2..a0b8fc2eb6 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -148,6 +148,16 @@ bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex
- 
- void vfio_device_reset_handler(void *opaque);
- bool vfio_device_is_mdev(VFIODevice *vbasedev);
-+/**
-+ * vfio_device_dirty_pages_disabled: Check if device dirty tracking will be
-+ * used for a VFIO device
-+ *
-+ * @vbasedev: The VFIODevice to transform
-+ *
-+ * Return: true if either @vbasedev doesn't support device dirty tracking or
-+ * is forcedly disabled from command line, otherwise false.
-+ */
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev);
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp);
- bool vfio_device_attach(char *name, VFIODevice *vbasedev,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 7706603c1c..8879da78c8 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -178,10 +178,7 @@ bool vfio_container_devices_dirty_tracking_is_supported(
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
--        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
--            return false;
--        }
--        if (!vbasedev->dirty_pages_supported) {
-+        if (vfio_device_dirty_pages_disabled(vbasedev)) {
-             return false;
-         }
-     }
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 8b63e765ac..5ed3103e72 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -411,6 +411,12 @@ bool vfio_device_is_mdev(VFIODevice *vbasedev)
-     return subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
- }
- 
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev)
+
+Author: Xiaoyao Li <xiaoyao.li@intel.com>
+Date:   Sat Jul 19 00:56:57 2025 +0800
+
+     kvm: Decouple memory attribute check from kvm_guest_memfd_supported
+
+     With the mmap support of guest memfd, KVM allows usersapce to create
+     guest memfd serving as normal non-private memory for X86 DEFEAULT VM.
+     However, KVM doesn't support private memory attriute for X86 DEFAULT
+     VM.
+
+     Make kvm_guest_memfd_supported not rely on KVM_MEMORY_ATTRIBUTE_PRIVATE
+     and check KVM_MEMORY_ATTRIBUTE_PRIVATE separately when the machine
+     requires guest_memfd to serve as private memory.
+
+     This allows QMEU to create guest memfd with mmap to serve as the memory
+     backend for X86 DEFAULT VM.
+
+     Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f9254ae65466..96c194ce54cd 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -1501,6 +1501,11 @@ int kvm_set_memory_attributes_shared(hwaddr 
+start, uint64_t size)
+      return kvm_set_memory_attributes(start, size, 0);
+  }
+
++bool kvm_private_memory_attribute_supported(void)
 +{
-+    return (!vbasedev->dirty_pages_supported ||
-+            vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF);
++    return !!(kvm_supported_memory_attributes & 
+KVM_MEMORY_ATTRIBUTE_PRIVATE);
 +}
 +
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp)
- {
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 44bab024b7..fdfb44fa4f 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1209,8 +1209,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if ((!vbasedev->dirty_pages_supported ||
--         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-+    if (vfio_device_dirty_pages_disabled(vbasedev) &&
-         !vbasedev->iommu_dirty_tracking) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-             error_setg(&err,
-@@ -1228,7 +1227,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         goto out_deinit;
-     }
- 
--    if (vfio_viommu_preset(vbasedev)) {
-+    if (!vfio_device_dirty_pages_disabled(vbasedev) &&
-+        vfio_viommu_preset(vbasedev)) {
-         error_setg(&err, "%s: Migration is currently not supported "
-                    "with vIOMMU enabled", vbasedev->name);
-         goto add_blocker;
--- 
-2.47.1
+  /* Called with KVMMemoryListener.slots_lock held */
+  static void kvm_set_phys_mem(KVMMemoryListener *kml,
+                               MemoryRegionSection *section, bool add)
+@@ -2781,8 +2786,7 @@ static int kvm_init(AccelState *as, MachineState *ms)
+      kvm_supported_memory_attributes = kvm_vm_check_extension(s, 
+KVM_CAP_MEMORY_ATTRIBUTES);
+      kvm_guest_memfd_supported =
+          kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+-        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+-        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
++        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2);
+      kvm_pre_fault_memory_supported = kvm_vm_check_extension(s, 
+KVM_CAP_PRE_FAULT_MEMORY);
 
+      if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 68cd33ba9735..73f04eb589ef 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -125,3 +125,8 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t 
+flags, Error **errp)
+  {
+      return -ENOSYS;
+  }
++
++bool kvm_private_memory_attribute_supported(void)
++{
++    return false;
++}
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 8f9eecf044c2..b5811c90f1cc 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -561,6 +561,7 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t 
+flags, Error **errp);
+
+  int kvm_set_memory_attributes_private(hwaddr start, uint64_t size);
+  int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size);
++bool kvm_private_memory_attribute_supported(void);
+
+  int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private);
+
+diff --git a/system/physmem.c b/system/physmem.c
+index a340ca3e6166..7704572a5745 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2211,6 +2211,14 @@ static void ram_block_add(RAMBlock *new_block, 
+Error **errp)
+                         object_get_typename(OBJECT(current_machine->cgs)));
+              goto out_free;
+          }
++
++        if (!kvm_private_memory_attribute_supported()) {
++            error_setg(errp, "cannot set up private guest memory for %s: "
++                       " KVM does not support private memory attribute",
++                       object_get_typename(OBJECT(current_machine->cgs)));
++            goto out_free;
++        }
++
+          assert(new_block->guest_memfd < 0);
+
+          ret = ram_block_coordinated_discard_require(true);
 
