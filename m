@@ -2,114 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEB8C04963
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9771DC04887
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBiF-00077v-44; Fri, 24 Oct 2025 02:55:47 -0400
+	id 1vCBNu-0003L4-V8; Fri, 24 Oct 2025 02:34:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vCBi8-00077T-Th
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:55:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vCBNs-0003Kp-4T
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:44 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vCBi5-0006cQ-GH
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:55:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761288934;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qk/1K0avWi1fwiLFQ6xtzNkb1QuApfY9mW8p4gvIfN4=;
- b=CT4IXtGS8dFIUKMFcbIp1HwGJQcVkSj2o4vA7p+tRdYAJsfB87LxjmsjMU3Fia6wzHFo4B
- E8VINmbvGoXr8oybRyMuoFJ0J3uPQQNFj1dSi0ZE3n2BfCLElr9HN1kkUy7b8LYU8Cbgpp
- 22hq+lrltF3d49RaLMmEQW4VtpASo8k=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-XkSScXFUPf2vt2EfjxCfVA-1; Fri, 24 Oct 2025 02:55:32 -0400
-X-MC-Unique: XkSScXFUPf2vt2EfjxCfVA-1
-X-Mimecast-MFC-AGG-ID: XkSScXFUPf2vt2EfjxCfVA_1761288931
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-33bb3b235ebso3861891a91.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 23:55:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761288931; x=1761893731;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qk/1K0avWi1fwiLFQ6xtzNkb1QuApfY9mW8p4gvIfN4=;
- b=Q/x/UcOt6lkWLORdNOOeBo8DyF99a0Joz06wm/9BY3Uza4uwsGVq+11n7GmTdSz/nE
- LwIFaVpEdgl722Cwt7sRkPChffer3NQs6aqSIHttyOJXixNNihnThrw3r0oVovLlCYYQ
- uva/m4RzGiZNCyRaGGO2m+TLMiNasVCBT026X0mWh3UZl9PcLqOhKE9nhDEBuY7p2asE
- 6owg88vLfeTYrvHH5IE+3VxrEgtLOCSuLw2RuSHDW8RJ06e7n4IZe5dMD3CbomMuuas3
- N1EejpU65DXOtmNPcExqHj9LNwD+tRKxdqnuE5iG0nrBqY+IwKVu2gutnkzDHcNhpcxr
- eOSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5Kf755bfRgUTdZx/1Q+XcA+Qke2UqAe/y6Jm2r7P1Au/970+iIV+O1+bjqYwpxMiyzBRbEczWyDcZ@nongnu.org
-X-Gm-Message-State: AOJu0Ywvg8E4FsDE6DlrcV1zLVQx+dS1paPADlxiNtth/IKrdqv4hbPG
- d7MSSAMNmbL2BcfYqqiynoIXsnTT/eUFs+ywVV5v2iQ8PcmQ7bVMpuhwaaBfB0GTj/+PO1lfeYI
- dVpbOK50lAeh0sxpXQTRgcUBpfbzMIxrURYrtUif5yOtSqsaEUs8Q33Jf
-X-Gm-Gg: ASbGncsWo8W2LBDbQ6DPGEZsW6hhcs9SO9+vwoPrQ64Z0hnFqvTjE5bXBdG1e2FlQHB
- zCV3kUwZry3U1iqCoLSizNrac8tNTnw4iPBZRagbrAQYibZXxEVrC5iKm/ZiWp2hRj1BvVl8eCg
- Ax85ADI0ZX38C7oYXhL0tHYJh26x4sP5o2M3qVR2hobaENv6XZ4bJj+YxBl3pmsI4u9P195dmam
- 19XvLJ4d3ZrgS1RyX/HkzO1FD93Ep2fNzexOQW+AZpZPYzRB/eEPFGvboZ0o07hS+u/1cv2C/uQ
- wUblU0/MPTxYPwIF5nh36MCbqlnPsoRy6n8ZGeEZbIUb7QHHjFNO2rB/dFy995NZVeO7+RuzcCH
- ELqmX00u+gG6EP7J/SAvKDZOHkCo6fVRaSEUI4Ew=
-X-Received: by 2002:a17:902:cec6:b0:27e:f201:ec94 with SMTP id
- d9443c01a7336-2948b98294amr18185395ad.18.1761288931189; 
- Thu, 23 Oct 2025 23:55:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgef95mK+Ki2hx1NleNTDyL0rmdqa3EraCCc9f9J5a/5oLh2Z4mfb5VfE8OmNXFAdv4TGihQ==
-X-Received: by 2002:a17:902:cec6:b0:27e:f201:ec94 with SMTP id
- d9443c01a7336-2948b98294amr18184875ad.18.1761288930747; 
- Thu, 23 Oct 2025 23:55:30 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au.
- [175.34.62.5]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946ddee569sm44681375ad.31.2025.10.23.23.55.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Oct 2025 23:55:30 -0700 (PDT)
-Message-ID: <f6c6abf0-e57c-4f67-9289-371196d062a5@redhat.com>
-Date: Fri, 24 Oct 2025 16:55:14 +1000
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vCBNo-0003jZ-Uw
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:34:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761287681; x=1792823681;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0vwFoNdFcHLi/HQ/rXcTxHECC2JAXDzG6T5GA7aPM9k=;
+ b=UUU1H7diQAQTGSNo0YJKEulaPZRS/9S6c2v5skpcYr3yduR58oNI0d/D
+ aDyRXfQ+MDDRBQyWln1rgGwOQYkgs1ZnpFcx810/KbSh6aUI0GwXNM5sD
+ qGX+VC4Qa22B+2BmDSxXoUfKvtFxLHoCvxMt6wUmxmbUB2kKtcdd2ZiQs
+ cN9NZkiWpLxH+NEJNeupU835Y/wVOzapvIFZgws5La3kHtyPXeTGyiJpA
+ W93CPNeVfwoXg3Tj3J+FnRbObtY7H5nyt7yTt72RglcA9AjZ6AoAXx1Kr
+ mdPKrvWI5HxYSXAPPUuUqg16BBd3xcKmLx5GQXHmKpCleTrBQs2B/dCdy w==;
+X-CSE-ConnectionGUID: 3OSohRPaS662LFAdfcp/bg==
+X-CSE-MsgGUID: Ppd1Snd3Q/+A963nkVJ8QQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74137849"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74137849"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 23:34:37 -0700
+X-CSE-ConnectionGUID: flYQLtPjRgi3m8pUAfNovA==
+X-CSE-MsgGUID: sWKOiGYiRn6N2DE67vWT1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184275849"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:34:34 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
+ John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
+ Mathias Krause <minipli@grsecurity.net>, Dapeng Mi <dapeng1.mi@intel.com>,
+ Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 00/20] i386: Support CET for KVM
+Date: Fri, 24 Oct 2025 14:56:12 +0800
+Message-Id: <20251024065632.1448606-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V6 00/24] Support of Virtual CPU Hotplug-like Feature
- for ARMv8+ Arch
-From: Gavin Shan <gshan@redhat.com>
-To: salil.mehta@opnsrc.net, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com
-Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
- jonathan.cameron@huawei.com, lpieralisi@kernel.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org, imammedo@redhat.com,
- armbru@redhat.com, andrew.jones@linux.dev, david@redhat.com,
- philmd@linaro.org, eric.auger@redhat.com, will@kernel.org, ardb@kernel.org,
- oliver.upton@linux.dev, pbonzini@redhat.com, rafael@kernel.org,
- borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- gustavo.romero@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- gankulkarni@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, wangzhou1@hisilicon.com, linuxarm@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- shahuang@redhat.com, zhao1.liu@intel.com
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
- <b1c0a0a8-3b94-47ee-ab8b-e42099f3f1a8@redhat.com>
-Content-Language: en-US
-In-Reply-To: <b1c0a0a8-3b94-47ee-ab8b-e42099f3f1a8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,99 +82,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
+Hi,
 
-On 10/22/25 8:07 PM, Gavin Shan wrote:
-> On 10/1/25 11:01 AM, salil.mehta@opnsrc.net wrote:
->>
->> ===================
->> (VII) Commands Used
->> ===================
->>
->> A. Qemu launch commands to init the machine (with 6 possible vCPUs):
->>
->> $ qemu-system-aarch64 --enable-kvm -machine virt,gic-version=3 \
->> -cpu host -smp cpus=4,disabled=2 \
->> -m 300M \
->> -kernel Image \
->> -initrd rootfs.cpio.gz \
->> -append "console=ttyAMA0 root=/dev/ram rdinit=/init maxcpus=2 acpi=force" \
->> -nographic \
->> -bios QEMU_EFI.fd \
->>
-> 
-> The parameter 'disabled=2' isn't correct here and it needs to be 'disabledcpus=2'.
-> Otherwise, the VM won't be started due to the unrecognized parameter.
-> 
-> $ /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64       \
->    --enable-kvm -machine virt,gic-version=3 -cpu host,sve=off    \
->    -smp cpus=4,disabled=2 -m 1024M                               \
->    -kernel /home/gavin/sandbox/linux.guest/arch/arm64/boot/Image \
->    -initrd /home/gavin/sandbox/images/rootfs.cpio.xz -nographic
-> qemu-system-aarch64: Parameter 'smp.disabled' is unexpected
-> 
+This the v3 series to support CET (CET-SHSTK & CET-IBT) in QEMU, which
+is based on the commit c0e80879c876 ("Merge tag 'pull-vfio-20251022' of
+https://github.com/legoater/qemu into staging"). And you can also find
+the code here:
 
-Apart from the issues that were reported previously, there are more issues.
-some of them may be invalid. I'm sharing the extra issues below.
+https://gitlab.com/zhao.liu/qemu/-/commits/i386-cet-v1-10-22-2025
 
-The VM is always started using the following command lines.
+Compared to v2 [1] (posted two years ago), the basic CET support (
+xstate/MSR/vmstate/CPUID) remains roughly unchanged. And I also noted
+the change logs in the patches inherited from v2.
 
-host$ /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64               \
--accel kvm -machine virt,gic-version=host,nvdimm=on                         \
--cpu host,sve=off                                                           \
--smp maxcpus=4,cpus=2,disabledcpus=2,sockets=2,clusters=2,cores=1,threads=1 \
--m 4096M,slots=16,maxmem=128G -object memory-backend-ram,id=mem0,size=2048M \
--object memory-backend-ram,id=mem1,size=2048M                               \
--numa node,nodeid=0,memdev=mem0,cpus=0-1                                    \
--numa node,nodeid=1,memdev=mem1,cpus=2-3                                    \
--L /home/gavin/sandbox/qemu.main/build/pc-bios                              \
--monitor none -serial mon:stdio                                             \
--nographic -gdb tcp::6666 -qmp tcp:localhost:5555,server,wait=off           \
--bios /home/gavin/sandbox/qemu.main/build/pc-bios/edk2-aarch64-code.fd      \
--kernel /home/gavin/sandbox/linux.guest/arch/arm64/boot/Image               \
--initrd /home/gavin/sandbox/images/rootfs.cpio.xz                           \
--append memhp_default_state=online_movable
+Thanks for your feedback!
 
-[Issue-1]: Inconsistent output from 'qom-list /machine/unattached'. The disabled
-CPU device doesn't show up at the beginning, but it appears after it's hot added.
-However, the CPU device is still seen after it's hot removed.
+Overview
+========
 
-(qemu) qom-list /machine/unattached
-device[0] (child<host-arm-cpu>)
-device[1] (child<host-arm-cpu>)
-   :
-(qemu) device_set host-arm-cpu,socket-id=1,admin-state=enable
-(qemu) qom-list /machine/unattached
-device[0] (child<host-arm-cpu>)
-device[1] (child<host-arm-cpu>)
-device[42] (child<host-arm-cpu>)
-   :
-(qemu) device_set host-arm-cpu,socket-id=1,admin-state=disable
-(qemu) qom-list /machine/unattached
-device[0] (child<host-arm-cpu>)
-device[1] (child<host-arm-cpu>)
-device[42] (child<host-arm-cpu>)
+Control-flow enforcement technology includes 2 x86-architectural
+features:
+ - CET shadow stack (CET-SHSTK or CET-SS).
+ - CET indirect branch tracking (CET-IBT).
 
-[Issue-2]: The hot added CPU disappears after a system reset
+Intel has implemented both 2 features since Sapphire Rapids (P-core) &
+Sierra Forest (E-core).
 
-guest$ cat /sys/devices/system/cpu/online
-0-1
-(qemu) device_set host-arm-cpu,socket-id=1,admin-state=enable
-guest$ echo 1 > /sys/devices/system/cpu/cpu2/online
-guest$ cat /sys/devices/system/cpu/online
-0-2
+AMD also implemented shadow stack since Zen3 [2] - this series has
+considerred only-shstk case and is supposed to work on AMD platform, but
+I hasn't tested this on AMD.
 
-(qemu) system_reset
-guest$ cat /sys/devices/system/cpu/online
-0-1
+The basic CET support (patch 11-17) includes:
+ * CET-S & CET-U supervisor xstates support.
+ * CET CPUIDs enumeration.
+ * CET MSRs save & load.
+ * CET guest SSP register (KVM treats this as a special internal
+   register - KVM_REG_GUEST_SSP) save & load.
+ * Vmstates for MSRs & guest SSP.
 
-[Issue-3] PCDIMM is unable to be hot added.
+But before CET support, there's a lot of cleanup work needed for
+supervisor xstate.
 
-(qemu) object_add memory-backend-ram,id=hp-mem0,size=512M
-(qemu) device_add pc-dimm,id=hp-dimm0,memdev=hp-mem0,node=0
-Error: Parameter 'driver' expects a pluggable device type or which supports changing power-state administratively
+Before CET-S/CET-U, QEMU has already supports arch lbr as the 1st
+supervisor xstate. Although arch LBR has not yet been merged into KVM
+(still planned), this series cleans up supervisor state-related support
+and avoids breaking the current arch LBR in QEMU - that's what patch
+2-10 are doing.
 
-Thanks,
-Gavin
+Additionally, besides KVM, this series also supports CET for TDX.
+
+[1]: https://lore.kernel.org/qemu-devel/20230720111445.99509-1-weijiang.yang@intel.com/
+[2]: https://lore.kernel.org/all/20250908201750.98824-1-john.allen@amd.com/
+
+Thanks and Best Regards,
+Zhao
+---
+Chao Gao (1):
+  i386/cpu: Fix supervisor xstate initialization
+
+Chenyi Qiang (1):
+  i386/tdx: Add CET SHSTK/IBT into the supported CPUID by XFAM
+
+Yang Weijiang (5):
+  i386/cpu: Enable xsave support for CET states
+  i386/kvm: Add save/load support for CET MSRs
+  i386/kvm: Add save/load support for KVM_REG_GUEST_SSP
+  i386/machine: Add vmstate for cet-ss and cet-ibt
+  i386/cpu: Advertise CET related flags in feature words
+
+Zhao Liu (13):
+  linux-headers: Update to v6.18-rc2
+  i386/cpu: Clean up indent style of x86_ext_save_areas[]
+  i386/cpu: Clean up arch lbr xsave struct and comment
+  i386/cpu: Reorganize arch lbr structure definitions
+  i386/cpu: Make ExtSaveArea store an array of dependencies
+  i386/cpu: Add avx10 dependency for Opmask/ZMM_Hi256/Hi16_ZMM
+  i386/cpu: Reorganize dependency check for arch lbr state
+  i386/cpu: Drop pmu check in CPUID 0x1C encoding
+  i386/cpu: Add missing migratable xsave features
+  i386/cpu: Add CET support in CR4
+  i386/cpu: Mark cet-u & cet-s xstates as migratable
+  i386/cpu: Enable cet-ss & cet-ibt for supported CPU models
+  i386/tdx: Fix missing spaces in tdx_xfam_deps[]
+
+ include/standard-headers/linux/ethtool.h      |   1 +
+ include/standard-headers/linux/fuse.h         |  22 +-
+ .../linux/input-event-codes.h                 |   1 +
+ include/standard-headers/linux/input.h        |  22 +-
+ include/standard-headers/linux/pci_regs.h     |  10 +
+ include/standard-headers/linux/virtio_ids.h   |   1 +
+ include/standard-headers/linux/virtio_rtc.h   | 237 ++++++++++++++++++
+ include/standard-headers/linux/virtio_spi.h   | 181 +++++++++++++
+ linux-headers/asm-loongarch/kvm.h             |   1 +
+ linux-headers/asm-riscv/kvm.h                 |  23 +-
+ linux-headers/asm-riscv/ptrace.h              |   4 +-
+ linux-headers/asm-x86/kvm.h                   |  34 +++
+ linux-headers/asm-x86/unistd_64.h             |   1 +
+ linux-headers/asm-x86/unistd_x32.h            |   1 +
+ linux-headers/linux/kvm.h                     |   3 +
+ linux-headers/linux/psp-sev.h                 |  10 +-
+ linux-headers/linux/stddef.h                  |   1 -
+ linux-headers/linux/vduse.h                   |   2 +-
+ linux-headers/linux/vhost.h                   |   4 +-
+ target/i386/cpu.c                             | 227 ++++++++++++-----
+ target/i386/cpu.h                             |  99 ++++++--
+ target/i386/helper.c                          |  12 +
+ target/i386/kvm/kvm.c                         | 103 ++++++++
+ target/i386/kvm/tdx.c                         |  20 +-
+ target/i386/machine.c                         |  53 ++++
+ 25 files changed, 968 insertions(+), 105 deletions(-)
+ create mode 100644 include/standard-headers/linux/virtio_rtc.h
+ create mode 100644 include/standard-headers/linux/virtio_spi.h
+
+-- 
+2.34.1
 
 
