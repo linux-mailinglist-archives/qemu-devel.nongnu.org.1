@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1B8C04890
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D67A3C04896
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBOp-0003dT-4V; Fri, 24 Oct 2025 02:35:43 -0400
+	id 1vCBOr-0003eP-LY; Fri, 24 Oct 2025 02:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBOn-0003dE-CZ
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:41 -0400
+ id 1vCBOp-0003do-QY
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:43 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBOl-0003zH-Hu
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:41 -0400
+ id 1vCBOn-0003zH-VH
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:35:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761287740; x=1792823740;
+ t=1761287742; x=1792823742;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8+D0ZyMJP774a0QzTHB9HaDDjW9x92tncQIYwGtlWcM=;
- b=bmBbaN6fTO8hIadT68ut3x16pcbjwfK+YmxPA/dR3B3SvJCegyfal/Z+
- 0bpLMSsDAyMm2oP+NMAHwn3d3gMjcp3ncm1qytxkTVErvv4ZR9MixYioa
- fApQAs38N1WaLAM94blmGpy44F0D7W/x4lCx5KcVw34ghJf0WuzjiZ0jX
- VHDsoux7mEWd9Y2iIcmdAFWYK6LIwvDXVbApFmNRVJdcjGJ1tHfQoOkVe
- w8XB0JdJ3I2ydOr2qNhoKcnHeQXt//fPkgawwKfV0q+E2/ibm1Vnuxo5Z
- M+Bnip4WmjszPCJbokndT7sIVV74a6t9twosLI8El8GJinGEBfo08nELj Q==;
-X-CSE-ConnectionGUID: JcpOqBufSN+z1nFw1VwAPw==
-X-CSE-MsgGUID: L9rtiwlPSAWck3p/TbtfGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63170923"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63170923"
+ bh=Xpun4Nrj9JAR8igc3/qGxsHnvDNDos1+csWD9q4bpnc=;
+ b=FU5hbIqn5gHcLWMo5xtkBYo3jbW47wHFzOFis1t7KXs/cu3Dw2zh/LGT
+ s21DNZNe8XND5pXGPVWBTwLP1B9AB+DNw9oyl8/1egj1mH7OK0XKUw0Yu
+ fToFOymmvgl0oooOdzpf0Lpq626zCg3F08+jsCYPurTTXHO/VZCz8MzlU
+ k+XsnAwkl/5TZH2bj69zqqFUezv7I6++9bpYv1hpKoaUXeUZnhcBOxq/h
+ exAlp5u7QxKdfZwH4GJP2jaoulL/tj7FctvRCAx52NCSxkwhh/QjC6iDO
+ SPYd6zhvebBSWeerS7vLB+pWZ0cs8WhddnzdbAUkFZH7vXl2KVkvW1Pxl Q==;
+X-CSE-ConnectionGUID: WdATN3D6T/ufnomq5VtD/g==
+X-CSE-MsgGUID: xoePEppfSlCkXUBlZJdGfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63170925"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63170925"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:35:37 -0700
-X-CSE-ConnectionGUID: WloA9umMSkm/n6Cz1qupVg==
-X-CSE-MsgGUID: LIouHQykSIytxUQS4lRFKw==
+ 23 Oct 2025 23:35:41 -0700
+X-CSE-ConnectionGUID: jRolYxpvRZSQV73Acdf+Eg==
+X-CSE-MsgGUID: CE6ftexvT6uoAXJnvCnNIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276114"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276120"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:33 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:37 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -50,10 +50,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Mathias Krause <minipli@grsecurity.net>, Dapeng Mi <dapeng1.mi@intel.com>,
  Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yang Weijiang <weijiang.yang@intel.com>
-Subject: [PATCH v3 15/20] i386/machine: Add vmstate for cet-ss and cet-ibt
-Date: Fri, 24 Oct 2025 14:56:27 +0800
-Message-Id: <20251024065632.1448606-16-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 16/20] i386/cpu: Mark cet-u & cet-s xstates as migratable
+Date: Fri, 24 Oct 2025 14:56:28 +0800
+Message-Id: <20251024065632.1448606-17-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251024065632.1448606-1-zhao1.liu@intel.com>
 References: <20251024065632.1448606-1-zhao1.liu@intel.com>
@@ -84,94 +84,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Weijiang <weijiang.yang@intel.com>
+Cet-u and cet-s are supervisor xstates. Their states are saved/loaded by
+saving/loading related CET MSRs. And there's a vmsd "vmstate_cet" to
+migrate these MSRs.
 
-Add vmstates for cet-ss and cet-ibt
+Thus, it's safe to mark them as migratable.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Co-developed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes Since v2:
- - Split a subsection "vmstate_ss" since shstk is user-configurable.
----
- target/i386/machine.c | 53 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ target/i386/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index 45b7cea80aa7..3ad07ec82428 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -1668,6 +1668,58 @@ static const VMStateDescription vmstate_triple_fault = {
-     }
- };
- 
-+static bool shstk_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
-+}
-+
-+static const VMStateDescription vmstate_ss = {
-+    .name = "cpu/cet_ss",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = shstk_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(env.pl0_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
-+#ifdef TARGET_X86_64
-+        /* This MSR is only present on Intel 64 architecture. */
-+        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
-+#endif
-+        VMSTATE_UINT64(env.guest_ssp, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static bool cet_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
-+              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
-+}
-+
-+static const VMStateDescription vmstate_cet = {
-+    .name = "cpu/cet",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = cet_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(env.u_cet, X86CPU),
-+        VMSTATE_UINT64(env.s_cet, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_ss,
-+        NULL,
-+    },
-+};
-+
- const VMStateDescription vmstate_x86_cpu = {
-     .name = "cpu",
-     .version_id = 12,
-@@ -1817,6 +1869,7 @@ const VMStateDescription vmstate_x86_cpu = {
- #endif
-         &vmstate_arch_lbr,
-         &vmstate_triple_fault,
-+        &vmstate_cet,
-         NULL
-     }
- };
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0bb65e8c5321..c08066a338a3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1522,7 +1522,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
+             XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
+             XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
+-            XSTATE_PKRU_MASK | XSTATE_ARCH_LBR_MASK | XSTATE_XTILE_CFG_MASK |
++            XSTATE_PKRU_MASK | XSTATE_CET_U_MASK | XSTATE_CET_S_MASK |
++            XSTATE_ARCH_LBR_MASK | XSTATE_XTILE_CFG_MASK |
+             XSTATE_XTILE_DATA_MASK,
+     },
+     [FEAT_XSAVE_XCR0_HI] = {
 -- 
 2.34.1
 
