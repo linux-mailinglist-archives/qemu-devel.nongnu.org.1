@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E23C03FAC
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 02:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9A9C0418D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 04:11:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC621-00064M-NQ; Thu, 23 Oct 2025 20:51:49 -0400
+	id 1vC7Fi-0004bn-QO; Thu, 23 Oct 2025 22:10:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vC61x-000643-Qe
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:51:45 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vC7FY-0004bP-AI
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:09:52 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vC61u-0005N3-Rp
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 20:51:45 -0400
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vC7FV-0006OZ-AU
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 22:09:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761267103; x=1792803103;
- h=message-id:date:mime-version:subject:from:to:cc:
- references:in-reply-to:content-transfer-encoding;
- bh=Nq2T+mtt4/jXbD9ztfl08Y+N1NJLtlENRQWzbWSeTYc=;
- b=X7zdaFOk+fCFH43hy1VRv/1N1mX9PKqZ9qsxizbaubZFgg3zvfoptQBl
- eAWBzz/Fj13PhNhitzEk8suxfjy50ZxYvbHGjVIMmzjk9qKFAozGhKts3
- TFJDa5Mq/c9m+bY44rLFzBpLco2iRGVfpqlkpAaXppT+pqlleX3r3aOT8
- dF7BhEk6Gp0fQUe6+IV25BrovMS6jMz7GkWOcYN0bxNS695bSjuzp2S6F
- jC9vH53Q8zkMk9NnEgMqyhrQWaF0ucPDsJhab5MVkpY2gDJMXT9UzBlbM
- fCsYjK26oVaQLPbmmTXc7RnnEUMNtRnOn7UkK8aoYXjoJ+p87EKeesvnf g==;
-X-CSE-ConnectionGUID: mgzCOZDbTdWVTMJTdb5RBQ==
-X-CSE-MsgGUID: M0TuIUvjRLKEIPLEz8oW4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63485399"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="63485399"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 17:51:40 -0700
-X-CSE-ConnectionGUID: 0+hRl0ZUSY2qIP2Go93dzA==
-X-CSE-MsgGUID: dNQBlBj6TUudzPCLJyNSZQ==
+ t=1761271789; x=1792807789;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=AmGyh9eBozWtXSgxUASwzmYIiOU+jLZCxF/Jtvf+moo=;
+ b=Krhzy+sdR5nsHlyMPqxZSKHVDFqFX8L0H4WV1ZGaknsaiUgXGMVXDmZm
+ /xEbfauJ+v6vVZVM/LZb+dBgmY5GCBebK0PEshspZXv1Qm9qEHmjqgP1W
+ NaOM+zvxIbJibAZe6pi+E/umSidewn2aSEp3DTByb7RZ9pJgWqj5v+ZcS
+ /GEEjeiPJVCcOy+81USNU18YNV++2Ho4VeT545rtu3VofZ6PpVuLIetys
+ HjuraJ7R4v2FgglNPAFsZ2yLF5Dg784YKv9Zwyii1WX2DCwX7HteuK9X4
+ w52V8CsIXSd7EqRgAwNiqJW3usnXdfcOvzcZe20iEOTo/iLDNe2yErcy4 w==;
+X-CSE-ConnectionGUID: dlzYNSTlRRW3GtJGFDmHUg==
+X-CSE-MsgGUID: rzsxcxFRStCaggbmp4zuVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62662135"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="62662135"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 19:09:44 -0700
+X-CSE-ConnectionGUID: 4ZJYt3DWTLGExCwaTQN40g==
+X-CSE-MsgGUID: h4aOI+tiSj+rQX/vGlIvoA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184371060"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
- ([10.124.238.14])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 17:51:38 -0700
-Message-ID: <f59ba5d2-e205-46c7-90c0-8e02ab91f5ae@intel.com>
-Date: Fri, 24 Oct 2025 08:51:35 +0800
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="189440744"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 19:09:41 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
+ eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
+ xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
+ mark.gross@intel.com, arjan.van.de.ven@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v3 0/8] vfio: relax the vIOMMU check
+Date: Thu, 23 Oct 2025 22:09:14 -0400
+Message-ID: <20251024020922.13053-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hostmem/shm: Allow shm memory backend serve as shared
- memory for coco-VMs
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: David Hildenbrand <david@redhat.com>, Igor Mammedov
- <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>
-References: <20250721065220.895606-1-xiaoyao.li@intel.com>
- <f38c961d-9c5a-4e45-a42e-fbafb7e5e88b@intel.com>
- <b1263375-8fac-4452-9c4f-983ef8870a44@intel.com>
-Content-Language: en-US
-In-Reply-To: <b1263375-8fac-4452-9c4f-983ef8870a44@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=192.198.163.18;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,51 +83,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/2025 1:45 PM, Xiaoyao Li wrote:
-> On 8/14/2025 5:45 PM, Xiaoyao Li wrote:
->> On 7/21/2025 2:52 PM, Xiaoyao Li wrote:
->>> shm can surely serve as the shared memory for coco-VMs. But currently it
->>> doesn't check the backend->guest_memfd to pass down the RAM_GUEST_MEMFD
->>> flag. It leads to failure when creating coco-VMs (e.g., TDX guest) which
->>> require private mmeory.
->>>
->>> Set and pass down RAM_GUEST_MEMFD when backend->guest_memfd is true, to
->>> allow shm memory backend serve as shared memory for coco-VMs.
->>
->> ping...
->>
->> Paolo, will you merge it for QEMU 10.1? I think it's worth it.
-> 
-> ping again.
+Hi,
 
-ping++,
+This series relax the vIOMMU check and allows live migration with vIOMMU
+without VFs using device dirty tracking. It's rewritten based on first 4
+patches of [1] from Joao.
 
-+ Peter,
+Currently what block us is the lack of dirty bitmap query with iommufd
+before unmap. By adding that query and handle some corner case we can
+relax the check.
 
-Maybe you can queue it in case it gets missed from Paolo again?
+Based on vfio-next branch:
 
->>> cc: Stefano Garzarella <sgarzare@redhat.com>
->>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>> ---
->>>   backends/hostmem-shm.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
->>> index f66211a2ec92..806e2670e039 100644
->>> --- a/backends/hostmem-shm.c
->>> +++ b/backends/hostmem-shm.c
->>> @@ -54,6 +54,7 @@ have_fd:
->>>       /* Let's do the same as memory-backend-ram,share=on would do. */
->>>       ram_flags = RAM_SHARED;
->>>       ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
->>> +    ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
->>>       return memory_region_init_ram_from_fd(&backend->mr, 
->>> OBJECT(backend),
->>>                                                 backend_name, 
->>> backend- >size,
->>
->>
-> 
-> 
+patch1-2: add dirty bitmap query with iommufd
+patch3:   a renaming cleanup
+patch4-5: unmap_bitmap optimization
+patch6:   fix large iommu notification triggered unmap_bitmap failure
+patch7:   add a blocker if VM memory is really quite large for unmap_bitmap
+patch8:   relax vIOMMU check
+
+
+We tested VM live migration (running QAT workload in VM) with QAT
+device passthrough, below matrix configs:
+1.Scalable mode vIOMMU + IOMMUFD cdev mode
+2.Scalable mode vIOMMU + legacy VFIO mode
+3.legacy mode vIOMMU + IOMMUFD cdev mode
+4.legacy mode vIOMMU + legacy VFIO mode
+
+[1] https://github.com/jpemartins/qemu/commits/vfio-migration-viommu/
+
+Thanks
+Zhenzhong
+
+Changelog:
+v3:
+- return bitmap query failure to fail migration (Avihai)
+- refine patch7, set IOMMUFD backend 'dirty_pgsizes' and 'max_dirty_bitmap_size' (Cedric)
+- refine patch7, calculate memory limit instead of hardcode 8TB (Liuyi)
+- refine commit log (Cedric, Liuyi)
+
+v2:
+- add backend_flag parameter to pass DIRTY_BITMAP_NO_CLEAR (Joao, Cedric)
+- add a cleanup patch to rename vfio_dma_unmap_bitmap (Cedric)
+- add blocker if unmap_bitmap limit check fail (Liuyi)
+
+
+Joao Martins (1):
+  vfio: Add a backend_flag parameter to
+    vfio_contianer_query_dirty_bitmap()
+
+Zhenzhong Duan (7):
+  vfio/iommufd: Add framework code to support getting dirty bitmap
+    before unmap
+  vfio/iommufd: Query dirty bitmap before DMA unmap
+  vfio/container-legacy: rename vfio_dma_unmap_bitmap() to
+    vfio_legacy_dma_unmap_get_dirty_bitmap()
+  vfio/iommufd: Add IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR flag support
+  intel_iommu: Fix unmap_bitmap failure with legacy VFIO backend
+  vfio/migration: Add migration blocker if VM memory is too large to
+    cause unmap_bitmap failure
+  vfio/migration: Allow live migration with vIOMMU without VFs using
+    device dirty tracking
+
+ include/hw/vfio/vfio-container.h |  8 +++--
+ include/hw/vfio/vfio-device.h    | 10 ++++++
+ include/system/iommufd.h         |  2 +-
+ backends/iommufd.c               |  5 +--
+ hw/i386/intel_iommu.c            | 42 +++++++++++++++++++++++
+ hw/vfio-user/container.c         |  5 +--
+ hw/vfio/container-legacy.c       | 15 +++++----
+ hw/vfio/container.c              | 20 +++++------
+ hw/vfio/device.c                 |  6 ++++
+ hw/vfio/iommufd.c                | 58 +++++++++++++++++++++++++++++---
+ hw/vfio/listener.c               |  6 ++--
+ hw/vfio/migration.c              | 39 +++++++++++++++++++--
+ backends/trace-events            |  2 +-
+ hw/vfio/trace-events             |  2 +-
+ 14 files changed, 184 insertions(+), 36 deletions(-)
+
+-- 
+2.47.1
 
 
