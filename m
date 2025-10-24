@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BB8C04888
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72765C0497B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:58:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBPA-0004wd-RR; Fri, 24 Oct 2025 02:36:04 -0400
+	id 1vCBk6-0008Bz-T1; Fri, 24 Oct 2025 02:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBP9-0004r5-2S
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:36:03 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBk4-0008Bf-Ay
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:57:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vCBP7-00042k-9b
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:36:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761287761; x=1792823761;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=lvXbWhX2/gbG5ptIM2y2HLMUjmWF0PjSAkFcXZ7TvjU=;
- b=CbTUzJSlhN21J+G3DtwflOnpsl6ZZ3+j1Y28mPvuS6Z2j4g9ze1AIt/P
- uPhvx2Rnqj2+g+qFPD6wt/LFs2Iw083iXz0Q2P2CFB3E0taAKC/n6tRIQ
- 6/X44mLJA1koa+u58N4/9ft4y1rLCWF72nI2zoSNbdy5dj5ebZxirTI2b
- EBKay3+0wnmJW6daQeaayuuNtQT+ggjJJUYRCtzGMKUIzomwTMngM6oLP
- Menu1c5owc127+keHjugZ0MHqQ8S9qoMSwjbOaM654azwyFamfLn67dPc
- +Ih8iBGTu7umuJQDYvE/ZGF2FYI5ob01hs7oosRtz3vwfVSyAUfWqFSzY A==;
-X-CSE-ConnectionGUID: xO6f5wZjQduzskT+7pM5Pg==
-X-CSE-MsgGUID: JQrCtSMXQtOCl6BnZScTCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="51044395"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="51044395"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 23:35:58 -0700
-X-CSE-ConnectionGUID: gOpFmPulTYawoqbWtdGs6Q==
-X-CSE-MsgGUID: CoV1hSAoSN+SYf2/kQ6vuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184276197"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 23 Oct 2025 23:35:52 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
- Mathias Krause <minipli@grsecurity.net>, Dapeng Mi <dapeng1.mi@intel.com>,
- Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 20/20] i386/tdx: Add CET SHSTK/IBT into the supported CPUID
- by XFAM
-Date: Fri, 24 Oct 2025 14:56:32 +0800
-Message-Id: <20251024065632.1448606-21-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251024065632.1448606-1-zhao1.liu@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBk2-0006kN-Dz
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:57:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761289056;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ofNP01reVMiSxdSHDD3DjtQa5x/YyucwfFVfAePNIYM=;
+ b=IhsQahSHU0p9v27oZdLa7t1OP1IX9ViNUC2aHTMYCnQvQLWMQQj7by1SvwbQWnqKSPhl4A
+ EGPg0YhQfPrzySSOUO0QvbUgGrQwrjLTBDNorweueZaCPd4czDX0yVH8NUH6OPjj0XguQc
+ CH4dKm4Acdd0VOS9MuAwi4DgtK3W9sA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-wFbbsU96NFaKuMwIls0rkw-1; Fri,
+ 24 Oct 2025 02:57:32 -0400
+X-MC-Unique: wFbbsU96NFaKuMwIls0rkw-1
+X-Mimecast-MFC-AGG-ID: wFbbsU96NFaKuMwIls0rkw_1761289051
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8EFC9195422B; Fri, 24 Oct 2025 06:57:30 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.33.49])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B96A5180045B; Fri, 24 Oct 2025 06:57:27 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH v2 0/2] target/ppc: Removal of the unusable e200 CPUs
+Date: Fri, 24 Oct 2025 08:57:24 +0200
+Message-ID: <20251024065726.738005-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,34 +79,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chenyi Qiang <chenyi.qiang@intel.com>
+The second patch removes the unused e200 CPUs, see its patch description
+for the rationale.
 
-So that it can be configured in TD guest.
+Since the removal of the code causes GCC to inline another function,
+this suddenly triggered a false compiler warning, so we have to
+rework the related code first (see the first patch).
 
-And considerring cet-u and cet-s have the same dependencies, it's enough
-to only list cet-u in tdx_xfam_deps[].
+Thomas Huth (2):
+  target/ppc/cpu_init: Simplify the setup of the TLBxCFG SPR registers
+  target/ppc: Remove the unusable e200 CPUs
 
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/kvm/tdx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/ppc/cpu-models.h |   4 -
+ target/ppc/cpu-models.c |   5 --
+ target/ppc/cpu_init.c   | 185 +++-------------------------------------
+ 3 files changed, 14 insertions(+), 180 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index a3444623657f..01619857685b 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -526,6 +526,8 @@ TdxXFAMDep tdx_xfam_deps[] = {
-     { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
-     { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
-     { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_ECX, CPUID_7_0_ECX_CET_SHSTK } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_EDX, CPUID_7_0_EDX_CET_IBT } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
 -- 
-2.34.1
+2.51.0
 
 
