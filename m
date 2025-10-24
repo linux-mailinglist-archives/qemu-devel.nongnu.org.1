@@ -2,63 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAD3C04972
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 143F5C04978
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 08:58:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCBkG-0008KK-PC; Fri, 24 Oct 2025 02:57:52 -0400
+	id 1vCBkX-00007k-1P; Fri, 24 Oct 2025 02:58:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBkE-0008Hi-Ii
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:57:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBkU-00005O-8l
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:58:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBk4-0006lI-3P
- for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:57:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vCBkM-0006pj-LH
+ for qemu-devel@nongnu.org; Fri, 24 Oct 2025 02:58:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761289059;
+ s=mimecast20190719; t=1761289077;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Knj5o0XKslR8KZibGSIwkm7pF6XSwQomEo4fnIU5PI8=;
- b=fVunw9/HArt65UPaUjO8H7lejxxffeAhmOX7qFpIhVEFX3NzcCa0B2Je1MbI6GZdWVkeSi
- gPKZVWwi7wtz+te5fzAdXsRVYzxuGkF5dk+BJw/qPtltgdA8XKQP0tlQuKtp3q8qt0HhS6
- +r1K2ifdG+XOYEDAnSsSO5jSlNDgous=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ODv99cL0iNnIxFvnGruknaJOB2DYNklkGCyxNPqY2jE=;
+ b=gaMiucdVxiolX0rROlrodd/rJ9B0e2SXKo+nqCeL5D/lF3vOqwxEc5GHfihbREwaQYLEf6
+ y8f7YGU5Hs2wMyDO4pg2QsDt7qzpVAeqlLpZIqHXbJuDOA6Z+/iw6XRXMP0q/0GZt2P05O
+ jQiU3ZD7wVNVLvhrqqxNP5++ik8A3jw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-m25K25NfP6GZe2m-AqMZ6Q-1; Fri,
- 24 Oct 2025 02:57:35 -0400
-X-MC-Unique: m25K25NfP6GZe2m-AqMZ6Q-1
-X-Mimecast-MFC-AGG-ID: m25K25NfP6GZe2m-AqMZ6Q_1761289054
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-UcM_MFSuPmKxtAb0kmVsZA-1; Fri,
+ 24 Oct 2025 02:57:38 -0400
+X-MC-Unique: UcM_MFSuPmKxtAb0kmVsZA-1
+X-Mimecast-MFC-AGG-ID: UcM_MFSuPmKxtAb0kmVsZA_1761289057
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 96D1A195609F; Fri, 24 Oct 2025 06:57:33 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 005A91975AEE; Fri, 24 Oct 2025 06:57:37 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.49])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 193F21800452; Fri, 24 Oct 2025 06:57:30 +0000 (UTC)
+ id 1B6D51800577; Fri, 24 Oct 2025 06:57:33 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
  qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 1/2] target/ppc/cpu_init: Simplify the setup of the TLBxCFG
- SPR registers
-Date: Fri, 24 Oct 2025 08:57:25 +0200
-Message-ID: <20251024065726.738005-2-thuth@redhat.com>
+Subject: [PATCH v2 2/2] target/ppc: Remove the unusable e200 CPUs
+Date: Fri, 24 Oct 2025 08:57:26 +0200
+Message-ID: <20251024065726.738005-3-thuth@redhat.com>
 In-Reply-To: <20251024065726.738005-1-thuth@redhat.com>
 References: <20251024065726.738005-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,106 +83,230 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The next commit is going to remove init_proc_e200(), which is one of
-the two calling sites of register_BookE206_sprs(). This causes recent
-versions of GCC to inline the register_BookE206_sprs() function into
-the other only remaining calling site, init_proc_e500(), which in
-turn causes some false-positives compiler warnings:
+There is currently no machine in QEMU (except the "none" machine)
+that can be run with with one of the e200 ppc CPUs - all machines
+either complain about an invalid CPU type or crash QEMU immediately.
 
- In file included from ../../devel/qemu/target/ppc/cpu_init.c:46:
- In function ‘register_BookE206_sprs’,
-     inlined from ‘init_proc_e500’ at ../../devel/qemu/target/ppc/cpu_init.c:2910:5:
- ../../devel/qemu/target/ppc/cpu_init.c:897:29: error:
-  array subscript 3 is outside array bounds of ‘uint32_t[2]’ {aka ‘unsigned int[2]’}
-  [-Werror=array-bounds=]
-   897 |                      tlbncfg[3]);
-       |                      ~~~~~~~^~~
- ../../devel/qemu/target/ppc/spr_common.h:61:39: note: in definition of macro ‘spr_register_kvm_hv’
-    61 |                   KVM_ARG(one_reg_id) initial_value)
-       |                                       ^~~~~~~~~~~~~
- ../../devel/qemu/target/ppc/spr_common.h:77:5: note: in expansion of macro ‘spr_register_kvm’
-    77 |     spr_register_kvm(env, num, name, uea_read, uea_write,                    \
-       |     ^~~~~~~~~~~~~~~~
- ../../devel/qemu/target/ppc/cpu_init.c:894:9: note: in expansion of macro ‘spr_register’
-   894 |         spr_register(env, SPR_BOOKE_TLB3CFG, "TLB3CFG",
-       |         ^~~~~~~~~~~~
- ../../devel/qemu/target/ppc/cpu_init.c: In function ‘init_proc_e500’:
- ../../devel/qemu/target/ppc/cpu_init.c:2809:14: note: at offset 12 into object ‘tlbncfg’ of size 8
-  2809 |     uint32_t tlbncfg[2];
-       |              ^~~~~~~
- cc1: all warnings being treated as errors
+Looking at the history of this CPU type, it seems like it has never
+been used in QEMU and only implemented as a placeholder (see e.g. the
+comment about unimplemented instructions in the POWERPC_FAMILY(e200)
+section of cpu_init.c). Being completely unused and unusable since
+such a long time, let's just remove it now (without deprecation phase,
+since there were no users of this dead code anyway).
 
-init_proc_e500() only defines "uint32_t tlbncfg[2];", but it is OK since
-it also sets "env->nb_ways = 2", so the code that GCC warns about in
-register_BookE206_sprs() is never reached. Unfortunately, GCC is not smart
-enough to see this, so it emits these warnings.
+Note: The init_excp_e200() is used by the e500 CPUs, too, so we
+rename this function to init_excp_e500() instead of removing it.
 
-To fix it, let's simplify the code in register_BookE206_sprs() a little
-bit to set up the SPRs in a loop, so we don't reference the tlbncfg[3]
-entry directly anymore.
-
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/ppc/cpu_init.c | 38 ++++++++++++--------------------------
- 1 file changed, 12 insertions(+), 26 deletions(-)
+ target/ppc/cpu-models.h |   4 --
+ target/ppc/cpu-models.c |   5 --
+ target/ppc/cpu_init.c   | 147 +---------------------------------------
+ 3 files changed, 2 insertions(+), 154 deletions(-)
 
+diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+index c6cd27f390e..a439eb37ee4 100644
+--- a/target/ppc/cpu-models.h
++++ b/target/ppc/cpu-models.h
+@@ -120,10 +120,6 @@ enum {
+ #define CPU_POWERPC_MPC5200_v12      CPU_POWERPC_G2LEgp1
+ #define CPU_POWERPC_MPC5200B_v20     CPU_POWERPC_G2LEgp1
+ #define CPU_POWERPC_MPC5200B_v21     CPU_POWERPC_G2LEgp1
+-    /* e200 family */
+-    /* e200 cores */
+-    CPU_POWERPC_e200z5             = 0x81000000,
+-    CPU_POWERPC_e200z6             = 0x81120000,
+     /* e300 family */
+     /* e300 cores */
+     CPU_POWERPC_e300c1             = 0x00830010,
+diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+index 89ae763c7f6..26b6debcfc9 100644
+--- a/target/ppc/cpu-models.c
++++ b/target/ppc/cpu-models.c
+@@ -244,11 +244,6 @@
+                     CPU_POWERPC_MPC5200B_v20, POWERPC_SVR_5200B_v20, G2LE)
+     POWERPC_DEF_SVR("mpc5200b_v21", "MPC5200B v2.1",
+                     CPU_POWERPC_MPC5200B_v21, POWERPC_SVR_5200B_v21, G2LE)
+-    /* e200 family                                                           */
+-    POWERPC_DEF("e200z5",        CPU_POWERPC_e200z5,                 e200,
+-                "PowerPC e200z5 core")
+-    POWERPC_DEF("e200z6",        CPU_POWERPC_e200z6,                 e200,
+-                "PowerPC e200z6 core")
+     /* e300 family                                                           */
+     POWERPC_DEF("e300c1",        CPU_POWERPC_e300c1,                 e300,
+                 "PowerPC e300c1 core")
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 3aa3aefc136..12c645699e8 100644
+index 12c645699e8..86ead740eec 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -850,6 +850,13 @@ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
-         SPR_BOOKE_MAS0, SPR_BOOKE_MAS1, SPR_BOOKE_MAS2, SPR_BOOKE_MAS3,
-         SPR_BOOKE_MAS4, SPR_BOOKE_MAS5, SPR_BOOKE_MAS6, SPR_BOOKE_MAS7,
-     };
-+    const char *tlbcfg_names[4] = {
-+        "TLB0CFG", "TLB1CFG", "TLB2CFG", "TLB3CFG",
-+    };
-+    const int tlbcfg_sprn[4] = {
-+        SPR_BOOKE_TLB0CFG, SPR_BOOKE_TLB1CFG,
-+        SPR_BOOKE_TLB2CFG, SPR_BOOKE_TLB3CFG,
-+    };
-     int i;
+@@ -1811,7 +1811,7 @@ static void init_excp_G2(CPUPPCState *env)
+ #endif
+ }
  
-     /* TLB assist registers */
-@@ -889,34 +896,13 @@ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, SPR_NOACCESS,
-                  mmucfg);
--    switch (env->nb_ways) {
--    case 4:
--        spr_register(env, SPR_BOOKE_TLB3CFG, "TLB3CFG",
--                     SPR_NOACCESS, SPR_NOACCESS,
--                     &spr_read_generic, SPR_NOACCESS,
--                     tlbncfg[3]);
--        /* Fallthru */
--    case 3:
--        spr_register(env, SPR_BOOKE_TLB2CFG, "TLB2CFG",
--                     SPR_NOACCESS, SPR_NOACCESS,
--                     &spr_read_generic, SPR_NOACCESS,
--                     tlbncfg[2]);
--        /* Fallthru */
--    case 2:
--        spr_register(env, SPR_BOOKE_TLB1CFG, "TLB1CFG",
--                     SPR_NOACCESS, SPR_NOACCESS,
--                     &spr_read_generic, SPR_NOACCESS,
--                     tlbncfg[1]);
--        /* Fallthru */
--    case 1:
--        spr_register(env, SPR_BOOKE_TLB0CFG, "TLB0CFG",
-+
-+    assert(env->nb_ways <= ARRAY_SIZE(tlbcfg_names));
-+    for (i = 0; i < env->nb_ways; i++) {
-+        spr_register(env, tlbcfg_sprn[i], tlbcfg_names[i],
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, SPR_NOACCESS,
--                     tlbncfg[0]);
--        /* Fallthru */
--    case 0:
--    default:
--        break;
-+                     tlbncfg[i]);
+-static void init_excp_e200(CPUPPCState *env, target_ulong ivpr_mask)
++static void init_excp_e500(CPUPPCState *env, target_ulong ivpr_mask)
+ {
+ #if !defined(CONFIG_USER_ONLY)
+     env->excp_vectors[POWERPC_EXCP_RESET]    = 0x00000FFC;
+@@ -2782,149 +2782,6 @@ POWERPC_FAMILY(G2LE)(ObjectClass *oc, const void *data)
+                  POWERPC_FLAG_BE | POWERPC_FLAG_BUS_CLK;
+ }
+ 
+-static void init_proc_e200(CPUPPCState *env)
+-{
+-    register_BookE_sprs(env, 0x000000070000FFFFULL);
+-
+-    spr_register(env, SPR_BOOKE_SPEFSCR, "SPEFSCR",
+-                 &spr_read_spefscr, &spr_write_spefscr,
+-                 &spr_read_spefscr, &spr_write_spefscr,
+-                 0x00000000);
+-    /* Memory management */
+-    register_BookE206_sprs(env, 0x0000005D, NULL, 0);
+-    register_usprgh_sprs(env);
+-
+-    spr_register(env, SPR_HID0, "HID0",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_HID1, "HID1",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_ALTCTXCR, "ALTCTXCR",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_BUCSR, "BUCSR",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_CTXCR, "CTXCR",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_DBCNT, "DBCNT",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_DBCR3, "DBCR3",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_L1CFG0, "L1CFG0",
+-                 &spr_read_generic, SPR_NOACCESS,
+-                 &spr_read_generic, SPR_NOACCESS,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_L1CSR0, "L1CSR0",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_Exxx_L1FINV0, "L1FINV0",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_BOOKE_TLB0CFG, "TLB0CFG",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_BOOKE_TLB1CFG, "TLB1CFG",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_BOOKE_IAC3, "IAC3",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_BOOKE_IAC4, "IAC4",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000);
+-
+-    spr_register(env, SPR_MMUCSR0, "MMUCSR0",
+-                 SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
+-                 0x00000000); /* TOFIX */
+-
+-    init_tlbs_emb(env);
+-    init_excp_e200(env, 0xFFFF0000UL);
+-    env->dcache_line_size = 32;
+-    env->icache_line_size = 32;
+-    /* XXX: TODO: allocate internal IRQ controller */
+-}
+-
+-POWERPC_FAMILY(e200)(ObjectClass *oc, const void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-    PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
+-
+-    dc->desc = "e200 core";
+-    pcc->init_proc = init_proc_e200;
+-    pcc->check_pow = check_pow_hid0;
+-    pcc->check_attn = check_attn_none;
+-    /*
+-     * XXX: unimplemented instructions:
+-     * dcblc
+-     * dcbtlst
+-     * dcbtstls
+-     * icblc
+-     * icbtls
+-     * tlbivax
+-     * all SPE multiply-accumulate instructions
+-     */
+-    pcc->insns_flags = PPC_INSNS_BASE | PPC_ISEL |
+-                       PPC_SPE | PPC_SPE_SINGLE |
+-                       PPC_WRTEE | PPC_RFDI |
+-                       PPC_CACHE | PPC_CACHE_LOCK | PPC_CACHE_ICBI |
+-                       PPC_CACHE_DCBZ | PPC_CACHE_DCBA |
+-                       PPC_MEM_TLBSYNC | PPC_TLBIVAX |
+-                       PPC_BOOKE;
+-    pcc->msr_mask = (1ull << MSR_UCLE) |
+-                    (1ull << MSR_SPE) |
+-                    (1ull << MSR_POW) |
+-                    (1ull << MSR_CE) |
+-                    (1ull << MSR_EE) |
+-                    (1ull << MSR_PR) |
+-                    (1ull << MSR_FP) |
+-                    (1ull << MSR_ME) |
+-                    (1ull << MSR_FE0) |
+-                    (1ull << MSR_DWE) |
+-                    (1ull << MSR_DE) |
+-                    (1ull << MSR_FE1) |
+-                    (1ull << MSR_IR) |
+-                    (1ull << MSR_DR);
+-    pcc->mmu_model = POWERPC_MMU_BOOKE206;
+-    pcc->excp_model = POWERPC_EXCP_BOOKE;
+-    pcc->bus_model = PPC_FLAGS_INPUT_BookE;
+-    pcc->bfd_mach = bfd_mach_ppc_860;
+-    pcc->flags = POWERPC_FLAG_SPE | POWERPC_FLAG_CE |
+-                 POWERPC_FLAG_UBLE | POWERPC_FLAG_DE |
+-                 POWERPC_FLAG_BUS_CLK;
+-}
+-
+ enum fsl_e500_version {
+     fsl_e500v1,
+     fsl_e500v2,
+@@ -3159,7 +3016,7 @@ static void init_proc_e500(CPUPPCState *env, int version)
      }
  #endif
+ 
+-    init_excp_e200(env, ivpr_mask);
++    init_excp_e500(env, ivpr_mask);
+     /* Allocate hardware IRQ controller */
+     ppce500_irq_init(env_archcpu(env));
  }
 -- 
 2.51.0
