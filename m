@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C51FC09CC5
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 18:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D6FC09CB9
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 18:58:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vChax-0003Ie-1z; Sat, 25 Oct 2025 12:58:23 -0400
+	id 1vChay-0003M0-EI; Sat, 25 Oct 2025 12:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vChau-0003EG-Bz
+ id 1vChau-0003EH-Bp
  for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:58:20 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vChas-0000oY-73
+ id 1vChas-0000oZ-38
  for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:58:20 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 07700C00DB;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id BE56AC00DC;
  Sat, 25 Oct 2025 19:58:13 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:538::1:38])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id BwdGg31Lu4Y0-7nxyaBDe; Sat, 25 Oct 2025 19:58:12 +0300
+ ESMTPSA id BwdGg31Lu4Y0-4eWh2IVz; Sat, 25 Oct 2025 19:58:13 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761411492;
- bh=5bTCC6vtEvxLIjnq7jHrC7qmOZa8m8pA9pdsuJISINg=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=RFVRR5CoQC6bkN2oiyk+cCZ24309lZUwyvcqp7E53kS9smftuqoPJVVT3qtUgCS/k
- 6zGm1qOyXmYYVM3uO1UOwg6kCC3doD/YLLKOg6dbhy5uslLxpjZHCby+M64nkIRV/X
- DEp7YVt+sagp9gtwIAImIIvxKTo57KjhnmhxJih8=
+ s=default; t=1761411493;
+ bh=9pw7XN5TTTagie8RWW2BM3lql/1J+DLvQ46WEhT3sTU=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=g6qA5Tm7w7o0tedrxHuZ9SwiLlPJno/58zmfDh2UgqJhzFw4eytz3V/artyInoJg3
+ horgW2SkFH0kOOo9i8xOlwMC4Dnpe+oxKlPgDyBq0gQYPgpdeqjVL+TF4JuMG6107z
+ RSL6joGkB6eQI97QPsXwwYEke0Yt5AJ/TORrXSR8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: thuth@redhat.com
 Cc: philmd@linaro.org, berrange@redhat.com, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru
-Subject: [PATCH 0/2] functional tests: fix socketdir cleanup
-Date: Sat, 25 Oct 2025 19:58:02 +0300
-Message-ID: <20251025165809.930670-1-vsementsov@yandex-team.ru>
+Subject: [PATCH 1/2] tests/functional/.../testcase.py: better socketdir cleanup
+Date: Sat, 25 Oct 2025 19:58:03 +0300
+Message-ID: <20251025165809.930670-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251025165809.930670-1-vsementsov@yandex-team.ru>
+References: <20251025165809.930670-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,16 +72,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all. Two small fixes here.
+TemporaryDirectory prefer explicit call to .cleanup() (or
+use context manager). Otherwise it may produce a warning like:
 
-Vladimir Sementsov-Ogievskiy (2):
-  tests/functional/.../testcase.py: better socketdir cleanup
-  MAINTAINERS: fix functional tests section
+   /usr/lib/python3.10/tempfile.py:1008: \
+     ResourceWarning: Implicitly cleaning up \
+     <TemporaryDirectory '/tmp/qemu_func_test_sock_4esmf5ba'>
 
- MAINTAINERS                            | 1 +
+Currently, the only test using socket_dir() is
+tests/functional/x86_64/test_vfio_user_client.py, and it does
+print this warning, at least with python 3.10.12. With this commit,
+the warning disappears.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
  tests/functional/qemu_test/testcase.py | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 2c0abde395..a122acb560 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -233,7 +233,7 @@ def tearDown(self):
+         if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
+             shutil.rmtree(self.workdir)
+         if self.socketdir is not None:
+-            shutil.rmtree(self.socketdir.name)
++            self.socketdir.cleanup()
+             self.socketdir = None
+         self.machinelog.removeHandler(self._log_fh)
+         self.log.removeHandler(self._log_fh)
 -- 
 2.48.1
 
