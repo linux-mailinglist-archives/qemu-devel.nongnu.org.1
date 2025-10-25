@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900FBC091B4
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 16:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4AEEC091AF
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 16:28:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCfEq-00041p-Ag; Sat, 25 Oct 2025 10:27:24 -0400
+	id 1vCfEn-0003yh-8Z; Sat, 25 Oct 2025 10:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
- id 1vCdZG-0001br-TA
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 08:40:22 -0400
-Received: from sg-1-35.ptr.blmpb.com ([118.26.132.35])
+ id 1vCdZF-0001bH-2d
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 08:40:21 -0400
+Received: from sg-1-40.ptr.blmpb.com ([118.26.132.40])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
- id 1vCdZ8-0003jD-Iq
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 08:40:22 -0400
+ id 1vCdZ8-0003jG-Iq
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 08:40:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761395936;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761395937;
  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=00eb6wcpigcap9zvWNW3IU66esW+FAYMAuecjq3ixY4=;
- b=V8SctDpeAkjyuxhK2Q/clZGglO3SthzBOZmBCervqzrGwbJRCf/XhVWnhiVFu/H+80gw0F
- B7vyXNrm6O/hwXVaaERmr0czd9G+Let9xFaapaM/UJDhxwm5BbR4IOMuD0vlftl5WzH0al
- HZO5vEGHSjPDb7eAT92gui/+rsM8BQUCsjXuYzQsKvWpUX+3Zt1tH5T7yrgB73AcsuomhP
- qBYn5UtOK0vU5HCyIpoRFiG16ckt399AoKdG1SPHDe+8ThuT2xDbBMOyWVFunWHHZegHtW
- 8M5VlXDWh5bABRMdH2BLzdKrFhAYEC4haHJWow3fpgLNESByXKpfrdMgSv1SWg==
-To: <pbonzini@redhat.com>, <manos.pitsidianakis@linaro.org>, 
- <richard.henderson@linaro.org>, <philmd@linaro.org>
-From: "chenmiao" <chenmiao@openatom.club>
-Message-Id: <20251025123853.63139-1-chenmiao@openatom.club>
-X-Original-From: chenmiao <chenmiao@openatom.club>
-X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset=UTF-8
+ bh=pVMloPN1g9fl6a5oBE0FeDpy/NkXLu/pcvpPddum0PM=;
+ b=Qdbu+FLyjhZLBr5vQn9XU4bLiEIU8ocsaHsB3n8IYWISfKe+/s1RlbtnoRJruNepTdtUeL
+ A8Ria8da8iEmPlumPdROw8/cilmeANYPqLm161Yng11QfvayOG32qMZxojHMBbLCoD69xe
+ opWlr/4Zr+Eq8FaQ/nmVLRK5kaDxwdCu+rotKr4C7K6D/lw/uSOGMnq5OJRBbNqiKGaCU5
+ /1U/Cws3X1EgqQLSXtj0fl/3Ukx2inI4/HmquFWaZJz3UosLsFJmKH2tPkaXRSlMqzyc4t
+ U2zZVL64ytzcaCDSpe15PujS3YCudAjiiCJOzbtsZpTFYUl6ZhhSgamu30t1FQ==
 Cc: <qemu-rust@nongnu.org>, <qemu-devel@nongnu.org>, 
- <hust-os-kernel-patches@googlegroups.com>, 
- "Chao Liu" <chao.liu@openatom.club>, "Chen Miao" <chenmiao@openatom.club>
-Received: from nyaos.localdomain ([114.249.194.57]) by smtp.feishu.cn with
- ESMTPS; Sat, 25 Oct 2025 20:38:53 +0800
-Date: Sat, 25 Oct 2025 12:38:48 +0000
+ <hust-os-kernel-patches@googlegroups.com>
+Message-Id: <20251025123853.63139-2-chenmiao@openatom.club>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: [RFC 0/5] rust: hw: Add the I2C and the first GPIO device
-X-Lms-Return-Path: <lba+268fcc4de+f73d47+nongnu.org+chenmiao@openatom.club>
-Received-SPF: pass client-ip=118.26.132.35;
- envelope-from=chenmiao@openatom.club; helo=sg-1-35.ptr.blmpb.com
+X-Original-From: chenmiao <chenmiao@openatom.club>
+Received: from nyaos.localdomain ([114.249.194.57]) by smtp.feishu.cn with
+ ESMTPS; Sat, 25 Oct 2025 20:38:54 +0800
+To: <pbonzini@redhat.com>, <manos.pitsidianakis@linaro.org>, 
+ <richard.henderson@linaro.org>, <philmd@linaro.org>
+X-Mailer: git-send-email 2.43.0
+From: "chenmiao" <chenmiao@openatom.club>
+Subject: [RFC 1/5] rust: hw: core: Add the BusState of rust version
+Date: Sat, 25 Oct 2025 12:38:49 +0000
+X-Lms-Return-Path: <lba+268fcc4df+2ac5f0+nongnu.org+chenmiao@openatom.club>
+Content-Type: text/plain; charset=UTF-8
+Received-SPF: pass client-ip=118.26.132.40;
+ envelope-from=chenmiao@openatom.club; helo=sg-1-40.ptr.blmpb.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Sat, 25 Oct 2025 10:27:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,75 +69,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have implemented I2C and the first GPIO device in Rust for QEMU.
-Additionally, in the respective patches, we have shared our insights and
-experiences regarding the use of Rust for device modeling within QEMU.
+A Rust version implementation has been designed for BusState,
+which will be used for the subsequent I2CBus implementation.
 
-1. The first patch implements the BusState for the I2CBus infrastructure.
-2. The second patch implements the I2CBus and I2CSlave infrastructure, along
-   with a discussion of the challenges encountered during the implementation.
-3. The third patch moves the struct definition of the PCF8574 to the
-   corresponding header file.
-4. The fourth patch provides a set of necessary helper functions for the PCF8574
-   GPIO device.
-5. The fifth patch implements the PCF8574 GPIO device, along with a discussion
-   of the issues and considerations addressed during the implementation.
-
-Regarding this series of patches, we have found that Rust for QEMU is indeed
-still not mature enough and requires continuous iteration. Additionally, the
-lack of basic documentation also needs to be addressed. In this regard, I hope
-our team(HUST OpenAtom Open Source Club) can contribute to the documentation
-efforts for Rust for QEMU.
-
-Link: https://groups.google.com/g/hust-os-kernel-patches/c/z7vHWg3xvDc
-
-Signed-off-by: Chao Liu <chao.liu@openatom.club>
-Signed-off-by: Chen Miao <chenmiao@openatom.club>
-
-chenmiao (5):
-  rust: hw: core: Add the BusState of rust version
-  rust: hw: core: Add rust bindings/funcs for i2c bus
-  hw: gpio: Move the pcf8574 struct to header
-  rust: hw: core: Provide some interfaces for the GPIO device
-  rust: hw: gpio: Add the the first gpio device pcf8574
-
- hw/gpio/Kconfig                      |   5 +
- hw/gpio/meson.build                  |   2 +-
- hw/gpio/pcf8574.c                    |  32 ---
- include/hw/gpio/pcf8574.h            |  36 +++
- rust/Cargo.lock                      |  21 +-
- rust/Cargo.toml                      |   1 +
- rust/hw/Kconfig                      |   1 +
- rust/hw/core/meson.build             |   2 +
- rust/hw/core/src/bus.rs              |  51 +++++
- rust/hw/core/src/i2cbus.rs           | 313 +++++++++++++++++++++++++++
- rust/hw/core/src/irq.rs              |   6 +-
- rust/hw/core/src/lib.rs              |   6 +
- rust/hw/core/src/qdev.rs             |  12 +-
- rust/hw/core/wrapper.h               |   1 +
- rust/hw/gpio/Kconfig                 |   2 +
- rust/hw/gpio/meson.build             |   1 +
- rust/hw/gpio/pcf8574/Cargo.toml      |  31 +++
- rust/hw/gpio/pcf8574/build.rs        |   1 +
- rust/hw/gpio/pcf8574/meson.build     |  50 +++++
- rust/hw/gpio/pcf8574/src/bindings.rs |  29 +++
- rust/hw/gpio/pcf8574/src/device.rs   | 174 +++++++++++++++
- rust/hw/gpio/pcf8574/src/lib.rs      |   4 +
- rust/hw/gpio/pcf8574/wrapper.h       |  51 +++++
- rust/hw/meson.build                  |   1 +
- 24 files changed, 795 insertions(+), 38 deletions(-)
+Signed-off-by: chenmiao <chenmiao@openatom.club>
+---
+ rust/hw/core/meson.build |  1 +
+ rust/hw/core/src/bus.rs  | 51 ++++++++++++++++++++++++++++++++++++++++
+ rust/hw/core/src/lib.rs  |  3 +++
+ 3 files changed, 55 insertions(+)
  create mode 100644 rust/hw/core/src/bus.rs
- create mode 100644 rust/hw/core/src/i2cbus.rs
- create mode 100644 rust/hw/gpio/Kconfig
- create mode 100644 rust/hw/gpio/meson.build
- create mode 100644 rust/hw/gpio/pcf8574/Cargo.toml
- create mode 120000 rust/hw/gpio/pcf8574/build.rs
- create mode 100644 rust/hw/gpio/pcf8574/meson.build
- create mode 100644 rust/hw/gpio/pcf8574/src/bindings.rs
- create mode 100644 rust/hw/gpio/pcf8574/src/device.rs
- create mode 100644 rust/hw/gpio/pcf8574/src/lib.rs
- create mode 100644 rust/hw/gpio/pcf8574/wrapper.h
 
+diff --git a/rust/hw/core/meson.build b/rust/hw/core/meson.build
+index 1560dd2..efcda50 100644
+--- a/rust/hw/core/meson.build
++++ b/rust/hw/core/meson.build
+@@ -50,6 +50,7 @@ _hwcore_rs = static_library(
+     [
+       'src/lib.rs',
+       'src/bindings.rs',
++      'src/bus.rs',
+       'src/irq.rs',
+       'src/qdev.rs',
+       'src/sysbus.rs',
+diff --git a/rust/hw/core/src/bus.rs b/rust/hw/core/src/bus.rs
+new file mode 100644
+index 0000000..c87d18d
+--- /dev/null
++++ b/rust/hw/core/src/bus.rs
+@@ -0,0 +1,51 @@
++// Copyright 2025 HUST OpenAtom Open Source Club.
++// Author(s): Chen Miao <chenmiao@openatom.club>
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++use std::{ffi::CStr, ptr::addr_of_mut};
++
++pub use bindings::BusClass;
++use common::Opaque;
++use qom::{qom_isa, IsA, Object, ObjectCast, ObjectDeref, ObjectType};
++
++use crate::{bindings, DeviceImpl};
++
++#[repr(transparent)]
++#[derive(Debug, common::Wrapper)]
++pub struct BusState(Opaque<bindings::BusState>);
++
++unsafe impl Send for BusState {}
++unsafe impl Sync for BusState {}
++
++unsafe impl ObjectType for BusState {
++    type Class = BusClass;
++    const TYPE_NAME: &'static std::ffi::CStr =
++        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_BUS) };
++}
++
++qom_isa!(BusState: Object);
++
++pub trait BusStateImpl: DeviceImpl + IsA<BusState> {}
++
++impl BusClass {
++    pub fn class_init<T: BusStateImpl>(self: &mut BusClass) {
++        self.parent_class.class_init::<T>();
++    }
++}
++
++pub trait BusStateMethods: ObjectDeref
++where
++    Self::Target: IsA<BusState>,
++{
++    fn bus_realize(&self) {
++        assert!(bql::is_locked());
++        unsafe {
++            bindings::qbus_realize(
++                self.upcast().as_mut_ptr(),
++                addr_of_mut!(util::bindings::error_fatal),
++            );
++        }
++    }
++}
++
++impl<R: ObjectDeref> BusStateMethods for R where R::Target: IsA<BusState> {}
+diff --git a/rust/hw/core/src/lib.rs b/rust/hw/core/src/lib.rs
+index b40801e..10cc516 100644
+--- a/rust/hw/core/src/lib.rs
++++ b/rust/hw/core/src/lib.rs
+@@ -13,3 +13,6 @@
+ 
+ mod sysbus;
+ pub use sysbus::*;
++
++mod bus;
++pub use bus::*;
 -- 
 2.43.0
 
