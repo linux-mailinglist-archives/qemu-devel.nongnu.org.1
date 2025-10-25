@@ -2,48 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAE7C09F9A
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 22:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94787C09F96
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 22:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCkqx-0004ul-3C; Sat, 25 Oct 2025 16:27:07 -0400
+	id 1vCkqu-0004tE-56; Sat, 25 Oct 2025 16:27:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vCkqt-0004tA-Fy
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:03 -0400
+ id 1vCkqs-0004qm-2J
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:02 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vCkqp-0004X0-Pz
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:03 -0400
+ id 1vCkqp-0004X6-Py
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:01 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 773A4808B2;
- Sat, 25 Oct 2025 23:26:53 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 89743808B4;
+ Sat, 25 Oct 2025 23:26:54 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:538::1:38])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id pQh1fa1bDqM0-Wtbsfd1Q; Sat, 25 Oct 2025 23:26:53 +0300
+ ESMTPSA id pQh1fa1bDqM0-ke5TkjwW; Sat, 25 Oct 2025 23:26:54 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761424013;
- bh=6wJt3KMCKBYKj7HDxt37j4WzGsojcsoRAPERfKaXF4o=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=AJCFJVgU3g3t7Q6zCFf1hWeX1u4NQCqtod/kekZwJaO2N1MtjLBmyyQieU6+i7V47
- iYcS0EXUVBAcRkP18Foj61DbJaqHGVscxGTn9kw+pZd+rYC7m0YaEox39HUcjvyN/W
- ntUlhv3CXOYi0BmfLK0OPavUj8GaBu8eodnqEZUE=
+ s=default; t=1761424014;
+ bh=nMKXPLexIvTyO4V0WpgqcHfj9w4OzLl3Yl1HJlZOTa4=;
+ h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+ b=wD+dDZF7hNzoCatseksgMBOz+QMDqUDadggfsv4dDyTS6nIjgA0qOAzYaMQKcS+v1
+ aPNTe74QXfoO5gsxWlzYMihxYUS5RSXrBYdNsB4Rb71/Gr7G77T5vJMPd6yAeq2nSp
+ TGR0b2AK+bvTSknSy9/0x7j7hZW3GtKbCSpU7Cpc=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: peterx@redhat.com
 Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
- armbru@redhat.com, berrange@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH v3 0/4] migration: vmsd errp handlers: return bool
-Date: Sat, 25 Oct 2025 23:26:45 +0300
-Message-ID: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
+ armbru@redhat.com, berrange@redhat.com, vsementsov@yandex-team.ru,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 1/4] migration: vmstate_save_state_v(): fix error path
+Date: Sat, 25 Oct 2025 23:26:46 +0300
+Message-ID: <20251025202649.1122420-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
+References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -71,24 +74,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-01: add r-b by Philippe
-02: new fix
-03: new, update error messages
-04: rebased, simplify commit message
+In case of pre_save_errp, on error, we continue processing fields,
+unlike case of pre_save, where we return immediately. Behavior
+for pre_save_errp case is wrong, we must return here, like for
+pre_save.
 
-Vladimir Sementsov-Ogievskiy (4):
-  migration: vmstate_save_state_v(): fix error path
-  tmp_emulator: fix unset errp on error path
-  migration/vmstate: stop reporting error number for new _errp APIs
-  migration: vmsd errp handlers: return bool
+Fixes: 40de712a89
+ "migration: Add error-parameterized function variants in VMSD struct"
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ migration/vmstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- backends/tpm/tpm_emulator.c   | 11 +++++------
- docs/devel/migration/main.rst |  6 +++---
- include/migration/vmstate.h   |  6 +++---
- migration/vmstate.c           | 26 ++++++++++++--------------
- 4 files changed, 23 insertions(+), 26 deletions(-)
-
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index 81eadde553..fd066f910e 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -443,6 +443,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+         if (ret < 0) {
+             error_prepend(errp, "pre-save for %s failed, ret: %d: ",
+                           vmsd->name, ret);
++            return ret;
+         }
+     } else if (vmsd->pre_save) {
+         ret = vmsd->pre_save(opaque);
 -- 
 2.48.1
 
