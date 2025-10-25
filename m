@@ -2,58 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39F8C09539
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 18:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24471C0960E
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 18:23:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCgzQ-0004rK-11; Sat, 25 Oct 2025 12:19:36 -0400
+	id 1vCh28-0000QW-Ho; Sat, 25 Oct 2025 12:22:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vCgzM-0004qt-Hf
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:19:32 -0400
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vCgzK-0004E8-Mf
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:19:32 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id A810F60616;
- Sat, 25 Oct 2025 16:19:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0431C4CEF5;
- Sat, 25 Oct 2025 16:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1761409169;
- bh=CWVWCmUoyZdt+mGjwPVoW2JygJVlpKNRbDOHO8Cfz0U=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=adXX3yRINlEDArGF1Jhrbakr1RGE0arSFI7DqyEuWnAoFDJQ9hZ3iIz7PjForrBSy
- S+8Wi5qJX0wkRZMqoZiV8mHrNX1vt5lMPTU0twNAlYgphyicwGJNEkAHeI4z0Zvq7O
- o0M+mG/rUxFoaAkZY2FpSBGZ3+XnTHoJ8adxJyzOq2NXC9uSCzv8ka8a42c1tNRH7t
- mbAz7saaMRaBKopE/tSYZcnenoCF2i+sMsFxnzLI0AAwj38jSat0I9XY9NZ9AStQqQ
- zveUNNZEYszr0aBRWfZnPlMTQjeKBRQFyE2DTqeF8mi48llUWUJAKHsYF/oBa9cknZ
- 95tjqdJSqq6FQ==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCh1w-0000P6-M3
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:22:12 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vCh1l-0004e0-2c
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 12:22:11 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4711f3c386eso23446405e9.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Oct 2025 09:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761409308; x=1762014108; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mw4cMjA17A1nQyKx51THzlcOf6ZZUkMSmCSkwoespsc=;
+ b=o4eDexZzn60n7+YXeO12hP/BstMd4nFA2o16Y6GrmDyQfZh3GBTMsLLBzJLfy/10Io
+ VcCfoZFaByVSqs1A8ed6EzEUpNnpgobRJNrEJsD5oDw/G6L/xgKJqs+Y0yEGd7aFp8GA
+ pSdnF5YEIJYvo/nNFQcUYCKm7VlbpAFw2nNBfkiKamGe57IKCrIljmgQKZVwRhc8Wveb
+ ktCk2MiHAKC2q9ItkNzXNtbiqzwDFYI/t620pf7UyEnM72PbgSw/HwQQDjUPlE561scc
+ bhhl+ldRJUq6B806l/kL4q/1qyQH94GQr9c01hA/yD2/E1Vjt3M43DmG5fQ0j4+P8+1P
+ tp3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761409308; x=1762014108;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mw4cMjA17A1nQyKx51THzlcOf6ZZUkMSmCSkwoespsc=;
+ b=RhzYGXPBixff3hFZpKgyfxMBgqEMghUGu9HOdVyrCc1AETPTLGJks322tRzXkknCCy
+ N7HjzwS66CE4S/mD3Hd5JkR9aqcS2E66+l6y01KNllGY+ntWXRJ7BpQPp3owOfDhmGjM
+ aMtKateOfxSI9ojaqTY3YPUDEir/O6PlMM8v6yUlL+qz8zptM/VEWT772/WG+e6YZXNN
+ 3/gnzcJwAc7UJ16zG/JJuNmDD7sAy2SrWuJlye7tHa+5nrWHxi2kh9SBzAaZxC/tzN3u
+ IgXocC/mj7/dD2if3d4L4ldwPeapv2qXg85OI6nbJQ16h9Ee37uxudXPaHc5YyO4+rWE
+ 703w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUb2+JHmOgUj/yujzWkpocAg6QRGd/IkwDRHzi8s3PdMrYpva5nntydJufXpASvZdS2Lvge9DxqaATr@nongnu.org
+X-Gm-Message-State: AOJu0Yzdd8vi/Aq6ynfukGI/pocm+vvhbOsQNiABg4NOUq8ewCET1+ci
+ vPyKqb8+BTlRgkFwax2GS6HbCbW5cYB4xebUim2y0br5GuLUx8WNBjIk1ODCLVo1dBc=
+X-Gm-Gg: ASbGncv2x1Ql2a0ZY7l2DfYZgvaxptgILBtZAAJHnMNBAdBXtijuzzqMG/2+oF20oX/
+ M1GmIIT3aJDcOVqj54H9xeQdmy2whuwXPLuTGVp19JBg+UoNKMPfgeZyQ10gki3IlPYdAeeGXF2
+ UONrRHxUD6CdpSsPCLHUyNWZoveXVV3m2A6m8/gphQ29YzcG8975lEr83wY4EEhXZU/y6zCkPDt
+ DgtjuYUtp51318k3bOXTn+tdUeSGkhL9hJ8IFBHkoEEO0UgCqfXCVY5Mik6akP4S2eSACt6fMFT
+ 6zOcBCYKJ2R3TaprM2nliIEYiBMfbCITlOoDfeyw28t4zK70EGOU78itebjhz1bQ2TrNQoKa3iK
+ voLJt9/6l2ajEyMgS6xtEEv6ws5UHkFX4TFcd4qCj7kU1gc+GW++SCknSFkcrHlIWFo0whxIUzP
+ K12krg0pTfZ9iPoP7rUlIhdMg9xdYgy7N1iM5gKOpKKJY=
+X-Google-Smtp-Source: AGHT+IFWhUv0DrvfkKb8vJVxuxhxWd2u5I6ompJ9I0MXtfBEoklRkHX474nb+2tWgnnIU1E2J+jT1g==
+X-Received: by 2002:a05:600c:3513:b0:46f:b42e:e38c with SMTP id
+ 5b1f17b1804b1-47117925e9fmr240963945e9.39.1761409308435; 
+ Sat, 25 Oct 2025 09:21:48 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952d5985sm4344243f8f.25.2025.10.25.09.21.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 25 Oct 2025 09:21:47 -0700 (PDT)
+Message-ID: <17c7b7d6-282b-4e21-b922-e26aa3fa03ee@linaro.org>
+Date: Sat, 25 Oct 2025 18:21:46 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/11] hw/hppa: Fix interrupt of LASI parallel port
+To: deller@kernel.org, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
 Cc: Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 11/11] hw/hppa: Add 715 machine type including NCR710 SCSI
-Date: Sat, 25 Oct 2025 18:19:01 +0200
-Message-ID: <20251025161901.32710-12-deller@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251025161901.32710-1-deller@kernel.org>
 References: <20251025161901.32710-1-deller@kernel.org>
-MIME-Version: 1.0
+ <20251025161901.32710-8-deller@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251025161901.32710-8-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=deller@kernel.org; helo=tor.source.kernel.org
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,155 +103,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On 25/10/25 18:18, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Fix wrong assignment where the LASI parallel port was using the IRQ line of the
+> LASI LAN card.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   hw/hppa/machine.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Add a new emulation for a 715/64 machine.
-This machines has no PCI bus, and has the majority of the devices (SCSI,
-network, serial ports, ...) provided by a LASI multi-function I/O chip.
-
-v2: based on feedback from Richard
-- Fix indenting and use assert() to check ncr710 device availability
-
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/hppa/machine.c | 95 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 93 insertions(+), 2 deletions(-)
-
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 81ed050b5e..7b130a0db0 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -30,6 +30,8 @@
- #include "hw/pci-host/astro.h"
- #include "hw/pci-host/dino.h"
- #include "hw/misc/lasi.h"
-+#include "hw/scsi/ncr53c710.h"
-+#include "hw/scsi/lasi_ncr710.h"
- #include "hppa_hardware.h"
- #include "qemu/units.h"
- #include "qapi/error.h"
-@@ -363,8 +365,17 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
- 
-     /* SCSI disk setup. */
-     if (drive_get_max_bus(IF_SCSI) >= 0) {
--        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
--        lsi53c8xx_handle_legacy_cmdline(dev);
-+        if (pci_bus) {
-+            dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
-+            lsi53c8xx_handle_legacy_cmdline(dev);
-+        } else {
-+            dev = lasi_ncr710_init(addr_space,
-+                                   translate(NULL, LASI_HPA_715 + 0x6000),
-+                                   qdev_get_gpio_in(lasi_dev,
-+                                                    LASI_IRQ_SCSI_HPA));
-+            assert(dev);
-+            lasi_ncr710_handle_legacy_cmdline(dev);
-+        }
-     }
- 
-     /* Graphics setup. */
-@@ -537,6 +548,63 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     cpu[0]->env.kernel_entry = kernel_entry;
- }
- 
-+/*
-+ * Create HP 715/64 workstation
-+ */
-+static void machine_HP_715_init(MachineState *machine)
-+{
-+    DeviceState *dev;
-+    MemoryRegion *addr_space = get_system_memory();
-+    TranslateFn *translate;
-+    ISABus *isa_bus;
-+
-+    /* Create CPUs and RAM.  */
-+    translate = machine_HP_common_init_cpus(machine);
-+
-+    if (hppa_is_pa20(&cpu[0]->env)) {
-+        error_report("The HP 715/64 workstation requires a 32-bit "
-+                     "CPU. Use '-machine 715' instead.");
-+        exit(1);
-+    }
-+
-+    /* Create ISA bus, needed for PS/2 kbd/mouse port emulation */
-+    isa_bus = hppa_isa_bus(translate(NULL, IDE_HPA));
-+    assert(isa_bus);
-+
-+    /* Init Lasi chip */
-+    lasi_dev = DEVICE(lasi_init());
-+    memory_region_add_subregion(addr_space, translate(NULL, LASI_HPA_715),
-+                                sysbus_mmio_get_region(
-+                                    SYS_BUS_DEVICE(lasi_dev), 0));
-+
-+    /* Serial ports: Lasi use a 7.272727 MHz clock. */
-+    serial_mm_init(addr_space, translate(NULL, LASI_HPA_715 + LASI_UART + 0x800), 0,
-+        qdev_get_gpio_in(lasi_dev, LASI_IRQ_UART_HPA), 7272727 / 16,
-+        serial_hd(0), DEVICE_BIG_ENDIAN);
-+
-+    /* Parallel port */
-+    parallel_mm_init(addr_space, translate(NULL, LASI_HPA_715 + LASI_LPT + 0x800), 0,
-+                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LPT_HPA),
-+                     parallel_hds[0]);
-+
-+    /* PS/2 Keyboard/Mouse */
-+    dev = qdev_new(TYPE_LASIPS2);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-+                       qdev_get_gpio_in(lasi_dev, LASI_IRQ_PS2KBD_HPA));
-+    memory_region_add_subregion(addr_space,
-+                                translate(NULL, LASI_HPA_715 + LASI_PS2),
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(dev),
-+                                                       0));
-+    memory_region_add_subregion(addr_space,
-+                                translate(NULL, LASI_HPA_715 + LASI_PS2 + 0x100),
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(dev),
-+                                                       1));
-+
-+    /* Add SCSI discs, NICs, graphics & load firmware */
-+    machine_HP_common_init_tail(machine, NULL, translate);
-+}
-+
- /*
-  * Create HP B160L workstation
-  */
-@@ -743,6 +811,25 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
-     mc->default_ram_size = 1024 * MiB;
- }
- 
-+static void HP_715_machine_init_class_init(ObjectClass *oc, const void *data)
-+{
-+    static const char * const valid_cpu_types[] = {
-+        TYPE_HPPA_CPU,
-+        NULL
-+    };
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    mc->desc = "HP 715/64 workstation";
-+    mc->default_cpu_type = TYPE_HPPA_CPU;
-+    mc->valid_cpu_types = valid_cpu_types;
-+    mc->init = machine_HP_715_init;
-+    /* can only support up to max. 8 CPUs due inventory major numbers */
-+    mc->max_cpus = MIN_CONST(HPPA_MAX_CPUS, 8);
-+    mc->default_ram_size = 256 * MiB;
-+    mc->default_nic = NULL;
-+}
-+
-+
- static const TypeInfo hppa_machine_types[] = {
-     {
-         .name           = TYPE_HPPA_COMMON_MACHINE,
-@@ -762,6 +849,10 @@ static const TypeInfo hppa_machine_types[] = {
-         .name = MACHINE_TYPE_NAME("C3700"),
-         .parent = TYPE_HPPA_COMMON_MACHINE,
-         .class_init = HP_C3700_machine_init_class_init,
-+    }, {
-+        .name = MACHINE_TYPE_NAME("715"),
-+        .parent = TYPE_HPPA_COMMON_MACHINE,
-+        .class_init = HP_715_machine_init_class_init,
-     },
- };
- 
--- 
-2.51.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
