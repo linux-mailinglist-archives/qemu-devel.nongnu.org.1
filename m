@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88217C09FA2
+	by mail.lfdr.de (Postfix) with ESMTPS id 553E6C09F9C
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Oct 2025 22:28:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCkqv-0004uL-Km; Sat, 25 Oct 2025 16:27:05 -0400
+	id 1vCkqu-0004tl-Hx; Sat, 25 Oct 2025 16:27:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vCkqt-0004t9-Cu
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:03 -0400
+ id 1vCkqs-0004qv-7M
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:02 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vCkqp-0004XG-Py
- for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:03 -0400
+ id 1vCkqp-0004XH-9V
+ for qemu-devel@nongnu.org; Sat, 25 Oct 2025 16:27:01 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 47E3B808B7;
- Sat, 25 Oct 2025 23:26:55 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 2681C808BD;
+ Sat, 25 Oct 2025 23:26:56 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:538::1:38])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id pQh1fa1bDqM0-1nBaao80; Sat, 25 Oct 2025 23:26:54 +0300
+ ESMTPSA id pQh1fa1bDqM0-BRBh3c6X; Sat, 25 Oct 2025 23:26:55 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761424014;
- bh=BNvSwyaRHN7VmEP0n/ZLbmkke10ix+maxXmnT9gEJCs=;
+ s=default; t=1761424015;
+ bh=Io+fqMa5HQiuYJALzzF8n6n+ARXY+Y+vMVtMhxwdCww=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=CffV2sN78XN/2W2cgw5m1zVPGGmCiSr3VBcHgDqBGosWTVgd0CJPki2PLYU7lCCES
- Fyo3CDJZEusDU9X6AETcnGOMvqbOoAI05uuGpmFrvIjnDs0Dl6Tm1lbzBdXPUHpYPa
- M+FHNTcFOR+Y/wTxlKHytBF9y0TOOwBHc0Od/B2U=
+ b=uyRaA8PtMS9Vil7EeVx0omqr4rMxpEuoHPT3Q2JeYVqSoK3sVHyUGQNJ79eJSZ6Z/
+ z/OXQ2NYmrhETUGGBjgMx2C1zf/rMOyJ9WiZustJO1scIsQkk5Tm9ovJltqT2+cbVP
+ OmBfHUnjYK7aI0R3IaDA4cE93j6UYShpty9Rj4ng=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: peterx@redhat.com
 Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
  armbru@redhat.com, berrange@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH v3 2/4] tmp_emulator: fix unset errp on error path
-Date: Sat, 25 Oct 2025 23:26:47 +0300
-Message-ID: <20251025202649.1122420-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v3 3/4] migration/vmstate: stop reporting error number for new
+ _errp APIs
+Date: Sat, 25 Oct 2025 23:26:48 +0300
+Message-ID: <20251025202649.1122420-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
 References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
@@ -72,32 +73,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Note, that called tpm_emulator_startup_tpm_resume() does error_report()
-failure paths, which could be turned into error_setg() to passthough an
-error. But, not on all error paths. Not saying about
-tpm_emulator_startup_tpm_resume() return -1 on failure and we mix it
-with -errno from tpm_emulator_set_state_blobs(). So, it all needs deeper
-refactoring, which is out of scope of this small fix.
+First, the handlers should put all needed information into errp,
+we should not append error number here.
 
-Fixes: 42e556fa3f7ac
-    "backends/tpm: Propagate vTPM error on migration failure"
+Second, the only realization of new _errp API is
+tpm_emulator_post_load(), which on some failure paths returns
+-errno, but on the others simply -1. So printing this additional
+number may be misleading. tpm_emulator.c needs a lot more work
+to report good error message on all error paths.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- backends/tpm/tpm_emulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/vmstate.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index dacfca5ab7..aa69eb606f 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -961,6 +961,7 @@ static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
-     }
- 
-     if (tpm_emulator_startup_tpm_resume(tb, 0, true) < 0) {
-+        error_setg(errp, "Failed to resume tpm");
-         return -EIO;
-     }
- 
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index fd066f910e..677e56c84a 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -157,9 +157,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         ret = vmsd->pre_load_errp(opaque, errp);
+         if (ret < 0) {
+             error_prepend(errp, "pre load hook failed for: '%s', "
+-                          "version_id: %d, minimum version_id: %d, "
+-                          "ret: %d: ", vmsd->name, vmsd->version_id,
+-                          vmsd->minimum_version_id, ret);
++                          "version_id: %d, minimum version_id: %d: ",
++                          vmsd->name, vmsd->version_id,
++                          vmsd->minimum_version_id);
+             return ret;
+         }
+     } else if (vmsd->pre_load) {
+@@ -259,8 +259,8 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         ret = vmsd->post_load_errp(opaque, version_id, errp);
+         if (ret < 0) {
+             error_prepend(errp, "post load hook failed for: %s, version_id: "
+-                          "%d, minimum_version: %d, ret: %d: ", vmsd->name,
+-                          vmsd->version_id, vmsd->minimum_version_id, ret);
++                          "%d, minimum_version: %d: ", vmsd->name,
++                          vmsd->version_id, vmsd->minimum_version_id);
+         }
+     } else if (vmsd->post_load) {
+         ret = vmsd->post_load(opaque, version_id);
+@@ -441,8 +441,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+         ret = vmsd->pre_save_errp(opaque, errp);
+         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+         if (ret < 0) {
+-            error_prepend(errp, "pre-save for %s failed, ret: %d: ",
+-                          vmsd->name, ret);
++            error_prepend(errp, "pre-save for %s failed: ", vmsd->name);
+             return ret;
+         }
+     } else if (vmsd->pre_save) {
 -- 
 2.48.1
 
