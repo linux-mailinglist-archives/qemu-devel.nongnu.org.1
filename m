@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D735DC0AE24
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Oct 2025 17:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F3AC0AE27
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Oct 2025 17:46:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vD3r3-0002yY-Hb; Sun, 26 Oct 2025 12:44:29 -0400
+	id 1vD3sf-0003sU-3H; Sun, 26 Oct 2025 12:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vD3qu-0002xu-T7; Sun, 26 Oct 2025 12:44:20 -0400
+ id 1vD3sb-0003rY-8s; Sun, 26 Oct 2025 12:46:05 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vD3qs-00033C-Hk; Sun, 26 Oct 2025 12:44:20 -0400
+ id 1vD3sZ-0003M2-5Y; Sun, 26 Oct 2025 12:46:05 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 642BF5972FE;
- Sun, 26 Oct 2025 17:44:12 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 555DF597307;
+ Sun, 26 Oct 2025 17:46:01 +0100 (CET)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id fREaJCkwhv7r; Sun, 26 Oct 2025 17:44:10 +0100 (CET)
+ id VGkHtiZEN7fY; Sun, 26 Oct 2025 17:45:59 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 59DB75972FB; Sun, 26 Oct 2025 17:44:10 +0100 (CET)
+ id 50A465972F3; Sun, 26 Oct 2025 17:45:59 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 570FE5972F3;
- Sun, 26 Oct 2025 17:44:10 +0100 (CET)
-Date: Sun, 26 Oct 2025 17:44:10 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4EE2A5972FE;
+ Sun, 26 Oct 2025 17:45:59 +0100 (CET)
+Date: Sun, 26 Oct 2025 17:45:59 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Yogesh Vyas <yvyas1991@gmail.com>
 cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
@@ -36,7 +36,7 @@ cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
 Subject: Re: [PATCH v3 00/13] Pegasos2 clean up and pegasos1 emulation
 In-Reply-To: <26f74e6c-a89f-4be0-aa6c-78ad88e2cba3@gmail.com>
-Message-ID: <fa9ff78d-8ced-2644-cfab-5c51ecb7fa22@eik.bme.hu>
+Message-ID: <993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu>
 References: <cover.1760798392.git.balaton@eik.bme.hu>
  <CAJOT6qN-n7LpVnLO-5CpOUF8z-j1Ogi=6cJBvvKZc-Eh5tHVzA@mail.gmail.com>
  <a410ac54-d1dc-aa67-d1d7-690b2495e9df@eik.bme.hu>
@@ -44,7 +44,7 @@ References: <cover.1760798392.git.balaton@eik.bme.hu>
  <c7daf4e7-50d3-263c-4fa2-35947e2d3267@eik.bme.hu>
  <26f74e6c-a89f-4be0-aa6c-78ad88e2cba3@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="3866299591-573109970-1761497050=:4531"
+Content-Type: multipart/mixed; boundary="3866299591-879174351-1761497159=:4531"
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -71,11 +71,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-573109970-1761497050=:4531
+--3866299591-879174351-1761497159=:4531
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
 On Sun, 26 Oct 2025, Yogesh Vyas wrote:
+
+>
 > On 10/26/25 4:39 PM, BALATON Zoltan wrote:
 >> On Sun, 26 Oct 2025, Yogesh Vyas wrote:
 >>> On Sun, Oct 19, 2025 at 5:37 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
@@ -147,23 +149,10 @@ On Sun, 26 Oct 2025, Yogesh Vyas wrote:
 >
 > Yes, I had mentioned it in my first mail that ROM option works as expected. 
 > It is only an issue when using VOF with upstream Qemu.
->
-> Could you please share your Qemu command line if it's different from the one 
-> mentioned in the documentation.
 
-I've tested with the same command as in the docs:
-
-qemu-system-ppc64 -M pegasos2 -serial stdio -kernel vmlinuz-chrp.initrd -append "---" -cdrom debian-8.11.0-powerpc-netinst.iso
-
-and it boots for me like before. I don't know what could you check to find 
-out why it does not work for you. Maybe you can try adding -d guest_errors 
-and see if that prints any errors or try on different machine or distro to 
-make sure it's not something local to your machine. Or check if you have 
-local patches compared to master and that the vmlinuz-chrp.initrd is the 
-same as on CD and not somehow corrupted. I really have no idea what could 
-it be.
+Or if you suspect it's a VOF issue you can try -trace enable="vof*"
 
 Regards,
 BALATON Zoltan
---3866299591-573109970-1761497050=:4531--
+--3866299591-879174351-1761497159=:4531--
 
