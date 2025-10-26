@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7221AC0A659
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Oct 2025 12:01:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFF4C0A65F
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Oct 2025 12:01:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vCyUU-0000A3-TI; Sun, 26 Oct 2025 07:00:50 -0400
+	id 1vCyUj-0000DM-6G; Sun, 26 Oct 2025 07:01:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
- id 1vCyUO-00008T-Sm
- for qemu-devel@nongnu.org; Sun, 26 Oct 2025 07:00:45 -0400
-Received: from mail-m1089.netease.com ([154.81.10.89])
+ id 1vCyUX-0000C2-8Q
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 07:00:57 -0400
+Received: from mail-m83244.xmail.ntesmail.com ([156.224.83.244])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
- id 1vCyUK-0001DO-4F
- for qemu-devel@nongnu.org; Sun, 26 Oct 2025 07:00:43 -0400
+ id 1vCyUT-0001De-Ip
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 07:00:52 -0400
 Received: from DESKTOP-FHFCVTH.localdomain (unknown [117.67.70.197])
- by smtp.qiye.163.com (Hmail) with ESMTP id 2734efe90;
- Sun, 26 Oct 2025 18:53:30 +0800 (GMT+08:00)
+ by smtp.qiye.163.com (Hmail) with ESMTP id 2734efe93;
+ Sun, 26 Oct 2025 18:53:33 +0800 (GMT+08:00)
 From: fanyihao@rt-thread.org
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Yihao Fan <fanyihao@rt-thread.org>
-Subject: [PATCH v3 2/3] hw/arm: Add support for the STM32F407-RT-SPARk board
-Date: Sun, 26 Oct 2025 18:53:19 +0800
-Message-ID: <20251026105320.5591-3-fanyihao@rt-thread.org>
+Subject: [PATCH v3 3/3] hw/arm/stm32f407: Add PWR device to stm32f407 SoC
+Date: Sun, 26 Oct 2025 18:53:20 +0800
+Message-ID: <20251026105320.5591-4-fanyihao@rt-thread.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251026105320.5591-1-fanyihao@rt-thread.org>
 References: <20251026105320.5591-1-fanyihao@rt-thread.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9a2026e31e03a4kunmcecdce756fb9eb
+X-HM-Tid: 0a9a2026ec0603a4kunmcecdce756fba16
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
- tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaQ0NJVk8fTx0ZSU1ISx1KGVYVFAkWGhdVEwETFh
+ tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZT00ZVhgeGE1LHUxMQxpOHlYVFAkWGhdVEwETFh
  oSFyQUDg9ZV1kYEgtZQVlKSkxVTUxVTEtVSkJMWVdZFhoPEhUdFFlBWUtVS1VLVUtZBg++
 DKIM-Signature: a=rsa-sha256;
- b=W3/44YD8BaxwQqK/j2/hVBSMnA+Nqt4Iwq8bg/noDUMa0QmhmiH1eYnj5gFc0fVrt4n/8VpKz9uX8F9G4ZZqhN9YPs5cRd+kUGR8o2ijBlwoCkBrZMeAif9gHlIFOWfCPTdOS1SxvYIF/HIar8PSmkKcX+ZxNKLLeypc1lmLW1XLtbe/Y+UH0F+kYlpTxesNQUb9NFBURNqloD8ePnkHmiLC/q9DH9kH2tpdWWA41wvw3TzyM1KcKVXjj0kFdbm61oEThiiYOlWmD6u+Oqnv8AHKQ2HdBPhWUd45pD/Zupsb1g2xorzB1dVWWZJH10qgUjL62VbT/Le804no6pY57w==;
+ b=LeSv9dIE7r+kD8x2p89LehFf14dQXQWBwvEmfakyPeh38c6ZH+XKgvWp7uMYK28i9LbmZt2S3cn0JiXbmdvA3ZXgA6d4mm7NnPvmX9InGdkA2BmqwaiKDHSY/03wle9AfeIguSbZ/vVmRfsH5m0/5cg2J5oTFSd5PSuidZplT6D67RwUyySzL5KVLvB2j9U7gcY/MGZAzC7Gfg7qIeLhjERs0l6C0vBy/FYaf0jo1pjYH+zbq+MOX9ML6QqdqfYpQmwemsUiMvZmw9KCsKmRl4kFmOSZolT5QRt2sQDumqmxWo7nJBbkz5QovcYp748CUjkNWDmAUr6eYUl3k3PGYQ==;
  s=default; c=relaxed/relaxed; d=rt-thread.org; v=1; 
- bh=6VniVlTO18O9n31v8+LgNkmq4kkTWG4R1RzBlnyUSa4=;
+ bh=OPeNH0YZQT3ge2lXtgrOwVZ7h5TGBUtzJOp/6Nywh3M=;
  h=date:mime-version:subject:message-id:from;
-Received-SPF: pass client-ip=154.81.10.89; envelope-from=fanyihao@rt-thread.org;
- helo=mail-m1089.netease.com
+Received-SPF: pass client-ip=156.224.83.244;
+ envelope-from=fanyihao@rt-thread.org; helo=mail-m83244.xmail.ntesmail.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,202 +70,290 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yihao Fan <fanyihao@rt-thread.org>
 
-This commit adds a new STM32F4spark machine broad using the STM32F407 SoC.
-The implementation is derived from the Netduino Plus 2 machine.
+Add the Power supply configuration device to the stm32f407 SoC.
 
 Signed-off-by: Yihao Fan <fanyihao@rt-thread.org>
 ---
- MAINTAINERS                            |  7 ++++
- docs/system/arm/STM32F407-RT-SPARK.rst | 41 +++++++++++++++++++
- docs/system/arm/stm32.rst              |  1 +
- docs/system/target-arm.rst             |  1 +
- hw/arm/Kconfig                         |  6 +++
- hw/arm/meson.build                     |  1 +
- hw/arm/stm32f4spark.c                  | 56 ++++++++++++++++++++++++++
- 7 files changed, 113 insertions(+)
- create mode 100644 docs/system/arm/STM32F407-RT-SPARK.rst
- create mode 100644 hw/arm/stm32f4spark.c
+ docs/system/arm/stm32.rst       |   1 +
+ hw/arm/Kconfig                  |   1 +
+ hw/arm/stm32f407_soc.c          |   9 +++
+ hw/misc/Kconfig                 |   3 +
+ hw/misc/meson.build             |   1 +
+ hw/misc/stm32f4xx_pwr.c         | 111 ++++++++++++++++++++++++++++++++
+ include/hw/arm/stm32f407_soc.h  |   3 +
+ include/hw/misc/stm32f4xx_pwr.h |  40 ++++++++++++
+ 8 files changed, 169 insertions(+)
+ create mode 100644 hw/misc/stm32f4xx_pwr.c
+ create mode 100644 include/hw/misc/stm32f4xx_pwr.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ceef177740b..4934e3733d2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1056,6 +1056,13 @@ S: Maintained
- F: hw/arm/stm32vldiscovery.c
- F: docs/system/arm/stm32.rst
- 
-+STM32F4SPARK
-+M: yanl1229 <yanl1229@rt-thread.org>
-+M: Yihao Fan <fanyihao@rt-thread.org>
-+L: qemu-arm@nongnu.org
-+S: Maintained
-+F: hw/arm/stm32f4spark.c
-+
- Versatile Express
- M: Peter Maydell <peter.maydell@linaro.org>
- L: qemu-arm@nongnu.org
-diff --git a/docs/system/arm/STM32F407-RT-SPARK.rst b/docs/system/arm/STM32F407-RT-SPARK.rst
-new file mode 100644
-index 00000000000..27bc8574387
---- /dev/null
-+++ b/docs/system/arm/STM32F407-RT-SPARK.rst
-@@ -0,0 +1,41 @@
-+STM32F407-RT-SPARK (``stm32_f4spark``)
-+============================================
-+
-+The STM32F407-RT-SPARK uses the STM32F407ZG SoC which is based on
-+ARM Cortex-M4 core. TThe STM32F407 series runs at up to 168 MHz,
-+integrating 196 KiB of SRAM (including 64 KiB CCM) and 1 MiB of
-+on-chip Flash. The STM32F407-RT-SPARK board further features
-+8 MiB NorFlash, an SD card holder, USB, RS-485, CAN bus.It also
-+integrates the RW007 SPI high-speed Wi-Fi module, providing
-+convenient network connectivity for IoT and RTOS development.
-+
-+Supported devices
-+"""""""""""""""""
-+
-+Currently STM32F407-RT-SPARK machines support the following devices:
-+
-+- Cortex-M4 based STM32F407 SoC
-+- stm32f4xx EXTI (Extended interrupts and events controller)
-+- stm32f2xx SYSCFG (System configuration controller)
-+- stm32 RCC (Reset and clock control)
-+- stm32f2xx USARTs, UARTs and LPUART (Serial ports)
-+
-+Missing devices
-+"""""""""""""""
-+
-+The STM32F407-RT-SPARK does *not* support the following devices:
-+
-+- Analog to Digital Converter (ADC)
-+- SPI controller
-+- Timer controller (TIMER)
-+- GPIOs (General-purpose I/Os)
-+
-+Boot options
-+""""""""""""
-+
-+The STM32F407-RT-SPARK machine can be started using the ``-kernel``
-+option to load a firmware. Example:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-arm -M rt-spark -kernel firmware.bin
 diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
-index 511e3eb9ac1..3f085eb35ee 100644
+index 3f085eb35ee..c83276f6c12 100644
 --- a/docs/system/arm/stm32.rst
 +++ b/docs/system/arm/stm32.rst
-@@ -23,6 +23,7 @@ The following machines are based on this ARM Cortex-M4F chip :
- - ``netduinoplus2``     Netduino Plus 2 board with STM32F405RGT6 microcontroller
- - ``olimex-stm32-h405`` Olimex STM32 H405 board with STM32F405RGT6 microcontroller
- - ``b-l475e-iot01a``     :doc:`B-L475E-IOT01A IoT Node </system/arm/b-l475e-iot01a>` board with STM32L475VG microcontroller
-+- ``STM32F407-RT-SPARK`` STM32F407-RT-SPARK board with STM32F407ZG microcontroller
+@@ -38,6 +38,7 @@ Supported devices
+  * System configuration (SYSCFG)
+  * Timer controller (TIMER)
+  * Reset and Clock Controller (RCC) (STM32F4 only, reset and enable only)
++ * Power supply configuration (PWR) (STM32F4 only)
  
- There are many other STM32 series that are currently not supported by QEMU.
- 
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index a96d1867df1..475135d2eaa 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -82,6 +82,7 @@ Board-specific documentation
-    arm/aspeed
-    arm/bananapi_m2u.rst
-    arm/b-l475e-iot01a.rst
-+   arm/STM32F407-RT-SPARK.rst
-    arm/sabrelite
-    arm/highbank
-    arm/digic
+ Missing devices
+ ---------------
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index bbf675c158c..ddb2da45ae9 100644
+index ddb2da45ae9..2c07220eb0b 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -239,6 +239,12 @@ config STM32VLDISCOVERY
-     depends on TCG && ARM
-     select STM32F100_SOC
+@@ -417,6 +417,7 @@ config STM32F407_SOC
+     select ARM_V7M
+     select STM32F4XX_SYSCFG
+     select STM32F4XX_EXTI
++    select STM32F4XX_PWR
  
-+config STM32F4SPARK
-+    bool
-+    default y
-+    depends on TCG && ARM
-+    select STM32F407_SOC
-+
- config STRONGARM
+ config B_L475E_IOT01A
      bool
-     select PXA2XX_TIMER
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 1de2642620a..16f1938c29a 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -17,6 +17,7 @@ arm_common_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview.c'))
- arm_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa-ref.c'))
- arm_common_ss.add(when: 'CONFIG_STELLARIS', if_true: files('stellaris.c'))
- arm_common_ss.add(when: 'CONFIG_STM32VLDISCOVERY', if_true: files('stm32vldiscovery.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32F4SPARK', if_true: files('stm32f4spark.c'))
- arm_common_ss.add(when: 'CONFIG_ZYNQ', if_true: files('xilinx_zynq.c'))
- arm_common_ss.add(when: 'CONFIG_SABRELITE', if_true: files('sabrelite.c'))
+diff --git a/hw/arm/stm32f407_soc.c b/hw/arm/stm32f407_soc.c
+index 8e20ddcd5b1..1512d922e5e 100644
+--- a/hw/arm/stm32f407_soc.c
++++ b/hw/arm/stm32f407_soc.c
+@@ -51,6 +51,7 @@ static void stm32f407_soc_initfn(Object *obj)
+     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32F4XX_SYSCFG);
+     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32F4XX_EXTI);
+     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32_RCC);
++    object_initialize_child(obj, "pwr", &s->pwr, TYPE_STM32F4XX_PWR);
  
-diff --git a/hw/arm/stm32f4spark.c b/hw/arm/stm32f4spark.c
+     for (i = 0; i < STM_NUM_USARTS; i++) {
+         object_initialize_child(obj, "usart[*]", &s->usart[i],
+@@ -183,6 +184,14 @@ static void stm32f407_soc_realize(DeviceState *dev_soc, Error **errp)
+         sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, timer_irq[i]));
+     }
+ 
++    /* PWR controller */
++    dev = DEVICE(&s->pwr);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->pwr), errp)) {
++        return;
++    }
++    busdev = SYS_BUS_DEVICE(dev);
++    sysbus_mmio_map(busdev, 0, PWR_BASE_ADDR);
++
+ }
+ 
+ static void stm32f407_soc_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 4e35657468b..ff4dc58b4d3 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -108,6 +108,9 @@ config STM32F4XX_SYSCFG
+ config STM32F4XX_EXTI
+     bool
+ 
++config STM32F4XX_PWR
++    bool
++
+ config STM32L4X5_EXTI
+     bool
+ 
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index b1d8d8e5d2a..0e0f5c3a275 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -112,6 +112,7 @@ system_ss.add(when: 'CONFIG_STM32_RCC', if_true: files('stm32_rcc.c'))
+ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_syscfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_syscfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.c'))
++system_ss.add(when: 'CONFIG_STM32F4XX_PWR', if_true: files('stm32f4xx_pwr.c'))
+ system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.c'))
+ system_ss.add(when: 'CONFIG_STM32L4X5_SYSCFG', if_true: files('stm32l4x5_syscfg.c'))
+ system_ss.add(when: 'CONFIG_STM32L4X5_RCC', if_true: files('stm32l4x5_rcc.c'))
+diff --git a/hw/misc/stm32f4xx_pwr.c b/hw/misc/stm32f4xx_pwr.c
 new file mode 100644
-index 00000000000..1e241f6bf1b
+index 00000000000..83ce0e6a0a9
 --- /dev/null
-+++ b/hw/arm/stm32f4spark.c
-@@ -0,0 +1,56 @@
++++ b/hw/misc/stm32f4xx_pwr.c
+@@ -0,0 +1,111 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +/*
 + * Copyright (c) liang yan <yanl1229@rt-thread.org>
 + * Copyright (c) Yihao Fan <fanyihao@rt-thread.org>
 + * The reference used is the STMicroElectronics RM0090 Reference manual
-+ * stm32f4spark implementation is derived from netduinoplus2
-+ * https://github.com/RT-Thread-Studio/sdk-bsp-stm32f407-spark
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32f407-417/documentation.html
 + */
 +
 +#include "qemu/osdep.h"
 +#include "qapi/error.h"
-+#include "hw/boards.h"
++#include "qemu/log.h"
++#include "hw/misc/stm32f4xx_pwr.h"
++#include "hw/irq.h"
 +#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "qemu/error-report.h"
-+#include "hw/arm/stm32f407_soc.h"
-+#include "hw/arm/boot.h"
++#include "qemu/module.h"
++#include "migration/vmstate.h"
++#include "qemu/module.h"
 +
++#ifndef STM32F4XX_PWR_DEBUG
++#define STM32F4XX_PWR_DEBUG 0
++#endif
 +
-+/* Main SYSCLK frequency in Hz (72MHz) */
-+#define SYSCLK_FRQ 72000000ULL
++#define DB_PRINT_L(lvl, fmt, args...) do { \
++    if (STM32F4XX_PWR_DEBUG >= lvl) { \
++        qemu_log("%s: " fmt, __func__, ## args); \
++    } \
++} while (0);
 +
++#define DB_PRINT(fmt, args...) DB_PRINT_L(1, fmt, ## args)
 +
-+static void stm32f4spark_init(MachineState *machine)
++static uint64_t stm32f4xx_pwr_read(void *opaque, hwaddr offset, unsigned size)
 +{
-+    DeviceState *dev;
-+    Clock *sysclk;
++    STM32F4XXPwrState *s = opaque;
 +
-+    /* This clock doesn't need migration because it is fixed-frequency */
-+    sysclk = clock_new(OBJECT(machine), "SYSCLK");
-+    clock_set_hz(sysclk, SYSCLK_FRQ);
-+
-+    dev = qdev_new(TYPE_STM32F407_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-+    qdev_connect_clock_in(dev, "sysclk", sysclk);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+                       machine->kernel_filename,
-+                       0, FLASH_SIZE);
++    switch (offset) {
++    case PWR_CR:
++        return s->pwr_cr;
++    case PWR_CSR:
++        return s->pwr_csr;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "STM32F4XX PWR: Bad read offset 0x%lx\n", offset);
++        return 0;
++    }
 +}
 +
-+static void stm32f4spark_machine_init(MachineClass *mc)
++static void stm32f4xx_pwr_write(void *opaque, hwaddr offset, uint64_t value, unsigned size)
 +{
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-m4"),
-+        NULL
-+    };
++    STM32F4XXPwrState *s = opaque;
 +
-+    mc->desc = "ST RT-spark (Cortex-M4)";
-+    mc->init = stm32f4spark_init;
-+    mc->valid_cpu_types = valid_cpu_types;
++    switch (offset) {
++    case PWR_CR:
++        s->pwr_cr = value;
++        if (value & PWR_CR_ODEN)
++            s->pwr_csr |= PWR_CSR_ODRDY;
++        if (value & PWR_CR_ODSWEN)
++            s->pwr_csr |= PWR_CSR_ODSWRDY;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "STM32F4XX PWR: Bad write offset 0x%lx\n", offset);
++        break;
++    }
 +}
 +
-+DEFINE_MACHINE("rt-spark", stm32f4spark_machine_init)
++static const MemoryRegionOps stm32f4xx_pwr_ops = {
++    .read = stm32f4xx_pwr_read,
++    .write = stm32f4xx_pwr_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
++static void stm32f4xx_pwr_init(Object *obj)
++{
++    STM32F4XXPwrState *s = STM32F4XX_PWR(obj);
++
++    memory_region_init_io(&s->mmio, obj, &stm32f4xx_pwr_ops, s, TYPE_STM32F4XX_PWR, 0x400);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++}
++
++static void stm32f4xx_pwr_reset(DeviceState *dev)
++{
++    STM32F4XXPwrState *s = STM32F4XX_PWR(dev);
++
++    s->pwr_cr  = 0x0000;
++    s->pwr_csr = 0x0000;
++}
++
++static void stm32f4xx_pwr_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    device_class_set_legacy_reset(dc, stm32f4xx_pwr_reset);
++}
++
++static const TypeInfo stm32f4xx_pwr_info = {
++    .name          = TYPE_STM32F4XX_PWR,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(STM32F4XXPwrState),
++    .instance_init = stm32f4xx_pwr_init,
++    .class_init    = stm32f4xx_pwr_class_init,
++};
++
++static void stm32f4xx_pwr_register_types(void)
++{
++    type_register_static(&stm32f4xx_pwr_info);
++}
++
++type_init(stm32f4xx_pwr_register_types)
+diff --git a/include/hw/arm/stm32f407_soc.h b/include/hw/arm/stm32f407_soc.h
+index 3497e91aa1c..f7e39ffaceb 100644
+--- a/include/hw/arm/stm32f407_soc.h
++++ b/include/hw/arm/stm32f407_soc.h
+@@ -17,6 +17,7 @@
+ #include "hw/char/stm32f2xx_usart.h"
+ #include "hw/timer/stm32f2xx_timer.h"
+ #include "hw/misc/stm32_rcc.h"
++#include "hw/misc/stm32f4xx_pwr.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_STM32F407_SOC "stm32f407-soc"
+@@ -39,6 +40,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F407State, STM32F407_SOC)
+ #define SYSCFG_BASE_ADDRESS 0x40013800
+ #define SYSCFG_IRQ  71
+ #define EXIT_BASE_ADDRESS 0x40013C00
++#define PWR_BASE_ADDR       0x40007000
+ 
+ #define FLASH_BASE_ADDRESS  0x8000000
+ #define FLASH_SIZE          0x100000
+@@ -57,6 +59,7 @@ typedef struct STM32F407State {
+     STM32RccState rcc;
+     STM32F4xxSyscfgState syscfg;
+     STM32F4xxExtiState exti;
++    STM32F4XXPwrState pwr;
+     STM32F2XXUsartState usart[STM_NUM_USARTS];
+     STM32F2XXTimerState timer[STM_NUM_TIMERS];
+ 
+diff --git a/include/hw/misc/stm32f4xx_pwr.h b/include/hw/misc/stm32f4xx_pwr.h
+new file mode 100644
+index 00000000000..889fbc26ab0
+--- /dev/null
++++ b/include/hw/misc/stm32f4xx_pwr.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++/*
++ * Copyright (c) liang yan <yanl1229@rt-thread.org>
++ * Copyright (c) Yihao Fan <fanyihao@rt-thread.org>
++ * The reference used is the STMicroElectronics RM0090 Reference manual
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32f407-417/documentation.html
++ */
++
++#ifndef STM32F4XX_PWR_H
++#define STM32F4XX_PWR_H
++
++#include "hw/sysbus.h"
++#include "qom/object.h"
++
++#define PWR_CR      0x00
++#define PWR_CSR     0x04
++
++#define PWR_CR_DBP      (1 << 8)
++#define PWR_CR_ODEN     (1 << 16)
++#define PWR_CR_ODSWEN   (1 << 17)
++
++#define PWR_CSR_ODRDY   (1 << 16)
++#define PWR_CSR_ODSWRDY (1 << 17)
++
++#define TYPE_STM32F4XX_PWR "stm32f4xx-pwr"
++OBJECT_DECLARE_SIMPLE_TYPE(STM32F4XXPwrState, STM32F4XX_PWR)
++
++struct STM32F4XXPwrState {
++    /* <private> */
++    SysBusDevice parent_obj;
++
++    /* <public> */
++    MemoryRegion mmio;
++
++    uint32_t pwr_cr;
++    uint32_t pwr_csr;
++};
++
++#endif
 -- 
 2.43.0
 
