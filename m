@@ -2,65 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8177AC0C38D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 09:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA653C0C4BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 09:27:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDID7-0002RZ-89; Mon, 27 Oct 2025 04:04:13 -0400
+	id 1vDIY1-0007L6-1Y; Mon, 27 Oct 2025 04:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
- id 1vDID4-0002Qn-5P
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 04:04:10 -0400
-Received: from pc232-62.mailgun.net ([143.55.232.62])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
- id 1vDID1-000425-Ak
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 04:04:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mail.yodel.dev;
- q=dns/txt; s=pdk1; t=1761552238; x=1761559438; 
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: From: Cc:
- References: To: To: Subject: Subject: MIME-Version: Date: Message-ID: Sender:
- Sender; bh=0WLE3DxUFVOeATVUeC4TxVYWPX4W/CmXXssaldPT9R8=;
- b=zoB9Mq+oPqDkGPOUQr8v2HNoIABPWQiRImYmVgTlvkkxba4+IgLj56ZDl80M5S6HHMcuvebCGdLtf20ZUlU52voDkDhFP19UPBobeLd3CUYYaX56CtH5y2OM98aasUaighbfQgJEDjqhDNCf421nZ+kuofnaaerT5xR8Y8A7beFvqp7uQ9aDPkneRZc+UAEtyFl3levaYL5Dh5DAkTQMUn6UrM6Dxx/bret5A1jQFg6KlMzFREwUl3RL+RFDNZOD+1CD1BkeDKk1UeuBe/MqEPfI255FIKvcRyYcEzMZ384Pbjy3l7AZV10VGzYqdMYO4rOEORWCkJqjfSQsD5/4cA==
-X-Mailgun-Sid: WyJjZmM4NiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjMzZTkyMCJd
-Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
- 1c0e72b8493fb1117b349569fc7cd9a130bd4662bd6d6614c81fa7c8b69bbed9 with SMTP id
- 68ff276ef9412124744d7feb; Mon, 27 Oct 2025 08:03:58 GMT
-X-Mailgun-Sending-Ip: 143.55.232.62
-Message-ID: <5972776a-69e7-4e80-b3f6-adbab62b3e4f@yodel.dev>
-Date: Mon, 27 Oct 2025 03:03:56 -0500
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vDIXw-0007KY-Uk; Mon, 27 Oct 2025 04:25:44 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vDIXt-0006ue-UD; Mon, 27 Oct 2025 04:25:44 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59QMFVAB021966;
+ Mon, 27 Oct 2025 08:25:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=fw9GeX
+ qRj2lreeBIq32ovaMfoW/uUlIoDrHT22Ejeag=; b=kHQabNKAFZ19pYWXFNkzR6
+ 5t/IuF4FfUCz9s0u6+A6cSWn33DEMhbrmjwQinrmQDKBvZ1pdZZeI4L7L7SvNDMR
+ qgz+iJIrKUOIb9IF/4BEflzK3Y5uqVNf0fDAq2De7SuLlNp8fxQLk4QonmzagRDL
+ OnuBAharBsq9T8OAA3pijEva+sTfkflk4cOF9bGMIwA2XlVNmR3ldgU7lULTfUs2
+ xQg+z6yHzNbLUQuxrQl26XCbvL/jtFHXOzCrT0wLNvauwExySPFXVm+eM1Og2yDc
+ tQEi5aEuhB1imLhmNu7D6P3q5GJ8AC/98/M2Mh9XUrqmMqf7k+/zQFBHdDPx1/LQ
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81nryb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 08:25:37 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59R8AlDh009942;
+ Mon, 27 Oct 2025 08:25:36 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81nrya-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 08:25:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59R7nNoI029965;
+ Mon, 27 Oct 2025 08:25:35 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a1acjmh23-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 08:25:35 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59R8PZIk24248984
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Oct 2025 08:25:35 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2F2A58045;
+ Mon, 27 Oct 2025 08:25:34 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D45D58050;
+ Mon, 27 Oct 2025 08:25:33 +0000 (GMT)
+Received: from [9.109.242.24] (unknown [9.109.242.24])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Oct 2025 08:25:32 +0000 (GMT)
+Message-ID: <21a94013-c3ef-49e4-abfa-a277277a03b0@linux.ibm.com>
+Date: Mon, 27 Oct 2025 13:55:31 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 0/3] gdbstub: Export helper to use GDB errno values
-To: qemu-devel@nongnu.org
-References: <20251017211149.163762-1-yodel.eldar@yodel.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL SUBSYSTEM qemu-pseries 0/1] pseries: Update SLOF firmware
+ image to 20251026
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20251027074404.25758-1-thuth@redhat.com>
 Content-Language: en-US
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- laurent@vivier.eu
-Autocrypt: addr=yodel.eldar@yodel.dev; keydata=
- xjMEZxqXdhYJKwYBBAHaRw8BAQdAkletQdG3CLyANZyuf2t7Z9PK4b6HiT+DdSPUB2mHzmPN
- I1lvZGVsIEVsZGFyIDx5b2RlbC5lbGRhckB5b2RlbC5kZXY+wpkEExYKAEECGwMFCQOcG00F
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTTzRjNQG27imap+N+V7k+3NmVNrAUCaNWASwIZ
- AQAKCRCV7k+3NmVNrNnSAPoDjQXa6v7ZzdQSaLdRfAQy/5SsUucv+zp3WAP4pXdgJQEAzMMC
- Ctx4l6b13Fs2hZdRXEnF/4BZ9t1K68nwzZOV3QnOOARnGpd2EgorBgEEAZdVAQUBAQdAKPIy
- 3W/DKFsm1e+31zoqmOY0pqz8vjIM846wM6lEY2QDAQgHwn4EGBYIACYCGwwWIQTTzRjNQG27
- imap+N+V7k+3NmVNrAUCaNWG7QUJA5wi9wAKCRCV7k+3NmVNrPusAQCQDQwETy7VT6UhHPho
- TkrQnsNqQfFU3tXqCTiViToktQD7B/U2/to97hQIJCWbK6yd3T+KPZJPMcHMg2XRyedUvgA=
-In-Reply-To: <20251017211149.163762-1-yodel.eldar@yodel.dev>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20251027074404.25758-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=143.55.232.62;
- envelope-from=bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev;
- helo=pc232-62.mailgun.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fIQ0HJae c=1 sm=1 tr=0 ts=68ff2c81 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=p0WdMEafAAAA:8 a=M6vYHJULnwh_f0BOw9wA:9
+ a=QEXdDO2ut3YA:10 a=poXaRoVlC6wW9_mwW8W4:22 a=oH34dK2VZjykjzsv8OSz:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
+X-Proofpoint-ORIG-GUID: kMoPzNo-FfVqfj0joEFh4W4WLReSC5Lm
+X-Proofpoint-GUID: 72wvDLRe-Rxc9ooKxePAA1GquKUIZacW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfXxgC3n1+DZCVB
+ RLP2RebNkE/iuLZaISoFQW7UAUNsScCkoYHPgbPy9TCshT3QCoUHFIuwdQTOdzjEFaAj2DfCPIW
+ lxWKSD7M4e/dSS7cyUC5bfZmtZzehaFz46/gtIUd/Zy40vupGUyJcQSu3NRokTwd6BzPFUZLMek
+ S33ezdxRfbc2FM9ChMlWS17B4qwIWwn4X54Sg9YUgmYh2jjHCD0aRkCA9oaENYvhYYOmX9hp4B3
+ iMFNynH3HoGrzy1/r2axdzeRNdZHjpKusvUzDYXQVHHWiAryNLychUfAfA/c4pjeg1rwVh27rK6
+ IEwmWCeM2Ql8xjd85g4Nc79nUoUInMHwP/pg5P5dqB9t9rgQ1r+gtIG8ZqWQUqKhW9R2GpAJx8S
+ Zp9AFeP8nUKt18Im8pp0uXu1K+b9NQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,61 +124,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Yodel Eldar <yodel.eldar@yodel.dev>
-From:  Yodel Eldar via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 17/10/2025 16:11, Yodel Eldar via wrote:
-> Currently, F reply packets in gdbstub/user-target.c emit the host's
-> errno values [1], but to facilitate host<->target independence the GDB
-> File-I/O protocol defines its own set of supported errno values that
-> should be used in replies instead.
+On 10/27/25 13:14, Thomas Huth wrote:
+>   Hi Harsh, hi Nicholas,
 > 
-> This series sees to that by:
-> Patch 2: Exporting a mapping helper function statically defined in
-> m68k-dependent code by declaring it in include/gdbstub/syscalls.h
-> with the GDB File-I/O errno values, and moving the definition to
-> gdbstub/syscalls.c.
-> Patch 3: Passing the host errnos to the newly global mapping function
-> before emitting the result in F reply packets. Please note that this
-> patch resolves the final task remaining in GitLab issue #2751.
-> 
-> Patch 1 adds two GDB File-I/O errno values that were previously
-> undocumented despite having support.
-> 
-> To Alex Bennée: Thanks for reviewing v1! I deliberately left out the
-> Reviewed-by git trailer, because the patch underwent nontrivial
-> changes, and I did not think I could include it in good faith. Your
-> comment about the existing File-I/O errno values led me to the helper
-> function in the target-dependent code.
-> 
-> Thanks!
-> 
-> Changes in v2:
-> - Split into multiple commits
-> - Use existing mapping function (host_to_gdb_errno) via exportation
-> 
-> Link to v1: https://lore.kernel.org/qemu-devel/20251015162520.15736-1-yodel.eldar@yodel.dev/
-> 
-> [1] https://gitlab.com/qemu-project/qemu/-/issues/2751
-> 
-> Yodel Eldar (3):
->    include/gdbstub/syscalls: Add GDB_{EIO,ENOSYS} errno values
->    gdbstub: Export host_to_gdb_errno File-I/O helper function
->    gdbstub/user-target: Convert host errno to GDB File-I/O errno
-> 
->   gdbstub/syscalls.c         | 36 ++++++++++++++++++++++++++++++++++++
->   gdbstub/user-target.c      | 13 +++++++++----
->   include/gdbstub/syscalls.h | 11 +++++++++++
->   target/m68k/m68k-semi.c    | 29 -----------------------------
->   4 files changed, 56 insertions(+), 33 deletions(-)
-> 
+> Alexey currently seems to be away from keyboard, so I took care of tagging a
+> SLOF release this time. Please merge this into your next ppc pull request,
+> thanks!
 
-Ping, please?
+Thanks for this update, Thomas.
+I shall take care of it.
 
-Thanks,
-Yodel
+regards,
+Harsh
+
+> 
+> (Richard, please note: this is not for master, this is for pseries)
+> 
+> The following changes since commit 88b1716a407459c8189473e4667653cb8e4c3df7:
+> 
+>    Merge tag 'pull-target-arm-20251023' of https://gitlab.com/pm215/qemu into staging (2025-10-23 13:17:27 -0500)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/thuth/qemu.git tags/qemu-slof-2025-10-27
+> 
+> for you to fetch changes up to 371c87b3ef298b0a2b6333943134779337d3a7cd:
+> 
+>    pseries: Update SLOF firmware image to release 20251027 (2025-10-27 08:09:51 +0100)
+> 
+> ----------------------------------------------------------------
+> - Fix some measurements in the TPM code
+> - Fix for compiling with GCC in C23 mode
+> - Silence some initializer-string warnings with recent GCC
+> 
+> ----------------------------------------------------------------
+> Thomas Huth (1):
+>        pseries: Update SLOF firmware image to release 20251027
+> 
+>   pc-bios/README   |   2 +-
+>   pc-bios/slof.bin | Bin 996184 -> 994176 bytes
+>   roms/SLOF        |   2 +-
+>   3 files changed, 2 insertions(+), 2 deletions(-)
+> 
 
