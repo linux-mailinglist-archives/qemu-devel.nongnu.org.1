@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4922EC0D14F
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:12:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CB0C0D10D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL2T-0001kH-Qz; Mon, 27 Oct 2025 07:05:25 -0400
+	id 1vDL2F-0001NS-1p; Mon, 27 Oct 2025 07:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL2H-0001Us-BK
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:13 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1vDL22-00015w-5X
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:58 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1a-0005e2-H7
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:13 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-6399328ff1fso7789675a12.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:55 -0700 (PDT)
+ id 1vDL1S-0005fL-AK
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:57 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-b3b3a6f4dd4so850559266b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563033; x=1762167833; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563035; x=1762167835; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RbvPrANYvJj3gNO97dH7gcz+uNRb8G5R8cbjz6SvgpA=;
- b=wRK/WRiWjNekM6KHFoSK3HItdhVpi7y5gpnTlQtaCvnOrB1wvKXxM/tgQSm98aWeM/
- VIsUCpZP3fe72O7AD+ZCWnXj73EwvDXWUN7tcdKAPBNSFY+ohEL06Zujqa2grjK+PkCv
- giS4BqgbzUMxgcNa8fef0nS1rwzf2GrHk4WXw+Ry3A1Nz67AkAVWTsYclrX8yQPy9FxA
- lN22VQM27woLbeNyYSqdzyMC31Bsh9Bh+4JtbvTsEB9syufUvQsk9WavYP3Vwb/AK/Gu
- HeukaiVfmO3Y3LGSsx4t1Y5bHMxj/u8X6Ct70KprzvG/jonbgpWc9cUPSpGrj0q3uywa
- Kr6Q==
+ bh=D1dBqMEfBlqSUG7PelnGPIkGv75RoYZ1ZvCkqq8IgNo=;
+ b=glzuNhfefPlRvwbG2yFjU6hUpmd014VOSa0ArrXDbYRCCLRxUw6kavgfMR1+etQk3k
+ ex7Ke3cOLDPDkuNEUXxh+8MR0RZnDvuM2CdlalJESHMZHNSh6o8o6gJwLlfXlgZxLKqD
+ tW1yoViMfnmDLmR37V4XkRQw+da0SrT3gIGBgmZ2EIOPILq3cTJgepGuW7m9hDDsq4B7
+ ls42jitiFxm2Op/7BfpwxskX1NuxQ0wrQlwa79iDKy79oiLscwT6EyvLekojvdh6TDl1
+ DYoPD7Y5B5yOcUlO/d0ukJ752dj39JnJYCjCDdyyrgooJ3ZqdMlZmlyWa9RjEpjbVMvv
+ Bc3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563033; x=1762167833;
+ d=1e100.net; s=20230601; t=1761563035; x=1762167835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RbvPrANYvJj3gNO97dH7gcz+uNRb8G5R8cbjz6SvgpA=;
- b=HVXtZeoIQKzOgkokgyRUW7wSLiKIZXVWvRoZ3kDaA1XDkDsetTzJeK1En504ly78wX
- 38vwt+X40It9WWjcOGQEg8l6kwDUJ48M3dtxEJMqF14+GYPoMkr6TUa1Czn+JOiVu+fR
- fQqmKUeQ3QOxcAaCitTCUbInQpj/0cvitC1dFm/5F6PjVF4/EMnv6oDvAACC+dk2Nk6K
- wodxMHI75Qkl3VC/PR61O6GEoB72kdf69e6pNHZdjsBlwSeV2Q/bKmMXQrDj8GlyMV7X
- TyrZuCHG18WVyzi1rvrbnPu6wihhc+tIIfd7hw+YeTJQYlE2L/QH0+VMtXNOyNp+UZi9
- tCbA==
-X-Gm-Message-State: AOJu0Yxlv+rFXUjTjnHa0ZRTuMmW1DZJJmrcrxZEqDLk/8QAWRVFe5oE
- 9tZG/Ct4yCANFAlQ05WWbo+jNJdLlKw8eT4gqG4URIrDxqkNXhCvuvKdnCiqs40V6fo=
-X-Gm-Gg: ASbGncvfYPdaEYQzEbZi1YdmBE1bcpk4usTCuQQpAaEKAnTlsZSTNGcswDSz15OO1V1
- fLJymYkp7j2nxkwG5B+7oabIVJXk0gnFhxCFE8N2aeDzPlYD4i+d8nfgM+947n7gGjVr0tIvUZM
- eOjt83iAMDwYCcI8mdytYaOnqyU4gO1fx9j6S0HticpZHc3GTtJHJKrhkSM6Z8RAPGEzDro5TXh
- hk45jmgnqz3OLGp+CFORWkiAFipbBL6vzxZRu5hPG4/HqiiY0lsvFln4qAAWv7ZR48AllaXbZ0g
- MJnNWgPFDwQChTglfBdONvYAnb4loYIEbJo7uk8CY0gl2Qx4x0i7FbTS9Mh72AiEI8ig9DhLJvz
- tSmXWVXzYtZP8EftEcdRl2MnNN3WzgKJ5h5V3dZjRxwQQdW8HF0QEWF7bzG92omPf3AsSK5mQA7
- iW
-X-Google-Smtp-Source: AGHT+IEgl+c4dRH+StKwomTRbDfEq8j/zmTZSSPAaJlwzgoFWODFr2XsptD7H1CqAq3BBX3xhzNDKw==
-X-Received: by 2002:a05:6402:27d1:b0:639:f54d:9274 with SMTP id
- 4fb4d7f45d1cf-63e60003a6dmr9269873a12.2.1761563032820; 
- Mon, 27 Oct 2025 04:03:52 -0700 (PDT)
+ bh=D1dBqMEfBlqSUG7PelnGPIkGv75RoYZ1ZvCkqq8IgNo=;
+ b=wlW8gT+Gus2q6HZ36BNm9D82dO/4zaLOk4WqjkBBVc3KEk2ln79K4xnotwizw+qjCz
+ VXetNIulHUHKMTU8DNPWE1owavR4b0LM60DoDdZorHGP6VoS7Ytm0SdVFkfpLlHjY9KW
+ 8nQzLZNLto/KTjTxoZEERJz0f3bPTHZb/ALx8nrRrDImuVD5ZxMWMj5sRJjZrGJJTN85
+ y/Y3WF1W/UN39Cgvzdr6MCLKaP9AbSt4TSDGad14ny1n28Vz2NQ/41mNVAV30/yd8rgf
+ 2e+jlT+0p93TUj5dTyqDey92P8Ij1+AtgpuhoSchNxO23altLfBihAOA0klawxamA9C1
+ 4eKA==
+X-Gm-Message-State: AOJu0Yw0mWP5XOC3ZbkF49kbGMJxjvczbi9zIFtNT+Xb6rncxgot7oOL
+ 14a33xBVrEM4TO0uAvYF5kVm5CzOdxDB6toq3/JcPuVABDa0B3z8nlAxU9VLa3qcpcw=
+X-Gm-Gg: ASbGncsjdqcxgRNoPWu8NTQRSnWcPUw0UYIzIbhQWR+LKx+xvbjhKko46zCHRo++/lv
+ z9tBst7i+COOiZYe8Z1LO4B0W5y0SOAw3meaFET/0Y0js8LJajs31lUywXNxTlL/VCeTb+xHuNr
+ arBquq/yM2687zUEtUbDUbMCObHBx7oEOd/VBL6Vo1a+UWhN3uHSqgN3qWevA7luff4lCbToxXq
+ 77/+reHgX4AlZtUA+hHZtdZe2L22Y767zVQ7jVWIzFkhUum5OLYOR7Bxpkd1B5+9RVgZTXq/08v
+ qmvzxxlRDFLqHsd3j9MufsO74LPY/47EiOm8cU5xSlN4zQmHLKdRy19Q0i61v5jb3jP8MPqgJoo
+ 5y98glcS90S104A5JskTZchod21JWh5AAqD4bj/PlRJOKEsrhZSmYnzYq27oj+Bv9Xso40v+4io
+ cVkFQlap6iphk=
+X-Google-Smtp-Source: AGHT+IF5kYTpImflkBbD2clRHQr+gdOVKdNdq8AWjSa+ytlNl34JftCGYvwU6boz7oiv8UPvMHvJ7g==
+X-Received: by 2002:a17:907:3e0d:b0:b6d:5ef8:4bf1 with SMTP id
+ a640c23a62f3a-b6d6fe42fe9mr1097430066b.19.1761563034748; 
+ Mon, 27 Oct 2025 04:03:54 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63e7efd0bc5sm6013871a12.32.2025.10.27.04.03.48
+ 4fb4d7f45d1cf-63e7efd116asm6178995a12.33.2025.10.27.04.03.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
+ Mon, 27 Oct 2025 04:03:53 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 277AE609B7;
+ by draig.lan (Postfix) with ESMTP id 3F828609D9;
  Mon, 27 Oct 2025 11:03:45 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,17 +93,17 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>, Julian Ganz <neither@nut.email>
-Subject: [PATCH 11/35] target/alpha: call plugin trap callbacks
-Date: Mon, 27 Oct 2025 11:03:18 +0000
-Message-ID: <20251027110344.2289945-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/35] target/arm: call plugin trap callbacks
+Date: Mon, 27 Oct 2025 11:03:19 +0000
+Message-ID: <20251027110344.2289945-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -133,53 +133,138 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for Alpha targets.
+This change places hooks for ARM (and Aarch64) targets. We decided to
+treat the (V)IRQ, (VI/VF)NMI, (V)FIQ and VSERR exceptions as interrupts
+since they are, presumably, async in nature.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/alpha/helper.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ target/arm/internals.h    |  1 +
+ target/arm/helper.c       | 24 ++++++++++++++++++++++++
+ target/arm/tcg/m_helper.c |  5 +++++
+ 3 files changed, 30 insertions(+)
 
-diff --git a/target/alpha/helper.c b/target/alpha/helper.c
-index 096eac34458..a9af52a928f 100644
---- a/target/alpha/helper.c
-+++ b/target/alpha/helper.c
-@@ -27,6 +27,7 @@
- #include "exec/helper-proto.h"
- #include "qemu/qemu-print.h"
- #include "system/memory.h"
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f86f421a3db..6fbf7e1ca49 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -375,6 +375,7 @@ static inline int r14_bank_number(int mode)
+ 
+ void arm_cpu_register(const ARMCPUInfo *info);
+ 
++void arm_do_plugin_vcpu_discon_cb(CPUState *cs, uint64_t from);
+ void register_cp_regs_for_features(ARMCPU *cpu);
+ void init_cpreg_list(ARMCPU *cpu);
+ 
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 2ef9c178147..ef6435c3efb 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -34,6 +34,7 @@
+ #endif
+ #include "cpregs.h"
+ #include "target/arm/gtimer.h"
 +#include "qemu/plugin.h"
  
- 
- #define CONVERT_BIT(X, SRC, DST) \
-@@ -328,6 +329,7 @@ void alpha_cpu_do_interrupt(CPUState *cs)
- {
-     CPUAlphaState *env = cpu_env(cs);
-     int i = cs->exception_index;
-+    uint64_t last_pc = env->pc;
- 
-     if (qemu_loglevel_mask(CPU_LOG_INT)) {
-         static int count;
-@@ -431,6 +433,17 @@ void alpha_cpu_do_interrupt(CPUState *cs)
- 
-     /* Switch to PALmode.  */
-     env->flags |= ENV_FLAG_PAL_MODE;
-+
-+    switch (i) {
-+    case EXCP_SMP_INTERRUPT:
-+    case EXCP_CLK_INTERRUPT:
-+    case EXCP_DEV_INTERRUPT:
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-+        break;
-+    }
+ #define HELPER_H "tcg/helper.h"
+ #include "exec/helper-proto.h.inc"
+@@ -8783,6 +8784,24 @@ static void take_aarch32_exception(CPUARMState *env, int new_mode,
+     }
  }
  
- bool alpha_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
++void arm_do_plugin_vcpu_discon_cb(CPUState *cs, uint64_t from)
++{
++    switch (cs->exception_index) {
++    case EXCP_IRQ:
++    case EXCP_VIRQ:
++    case EXCP_NMI:
++    case EXCP_VINMI:
++    case EXCP_FIQ:
++    case EXCP_VFIQ:
++    case EXCP_VFNMI:
++    case EXCP_VSERR:
++        qemu_plugin_vcpu_interrupt_cb(cs, from);
++        break;
++    default:
++        qemu_plugin_vcpu_exception_cb(cs, from);
++    }
++}
++
+ static void arm_cpu_do_interrupt_aarch32_hyp(CPUState *cs)
+ {
+     /*
+@@ -9473,6 +9492,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+     unsigned int new_el = env->exception.target_el;
++    uint64_t last_pc = cs->cc->get_pc(cs);
+ 
+     assert(!arm_feature(env, ARM_FEATURE_M));
+ 
+@@ -9489,6 +9509,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+     if (tcg_enabled() && arm_is_psci_call(cpu, cs->exception_index)) {
+         arm_handle_psci_call(cpu);
+         qemu_log_mask(CPU_LOG_INT, "...handled as PSCI call\n");
++        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+         return;
+     }
+ 
+@@ -9500,6 +9521,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+ #ifdef CONFIG_TCG
+     if (cs->exception_index == EXCP_SEMIHOST) {
+         tcg_handle_semihosting(cs);
++        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+         return;
+     }
+ #endif
+@@ -9525,6 +9547,8 @@ void arm_cpu_do_interrupt(CPUState *cs)
+     if (!kvm_enabled()) {
+         cpu_set_interrupt(cs, CPU_INTERRUPT_EXITTB);
+     }
++
++    arm_do_plugin_vcpu_discon_cb(cs, last_pc);
+ }
+ #endif /* !CONFIG_USER_ONLY */
+ 
+diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+index d856e3bc8e2..3fb24c77900 100644
+--- a/target/arm/tcg/m_helper.c
++++ b/target/arm/tcg/m_helper.c
+@@ -23,6 +23,7 @@
+ #if !defined(CONFIG_USER_ONLY)
+ #include "hw/intc/armv7m_nvic.h"
+ #endif
++#include "qemu/plugin.h"
+ 
+ static void v7m_msr_xpsr(CPUARMState *env, uint32_t mask,
+                          uint32_t reg, uint32_t val)
+@@ -2194,6 +2195,7 @@ void arm_v7m_cpu_do_interrupt(CPUState *cs)
+     CPUARMState *env = &cpu->env;
+     uint32_t lr;
+     bool ignore_stackfaults;
++    uint64_t last_pc = env->regs[15];
+ 
+     arm_log_exception(cs);
+ 
+@@ -2361,6 +2363,7 @@ void arm_v7m_cpu_do_interrupt(CPUState *cs)
+         g_assert_not_reached();
+ #endif
+         env->regs[15] += env->thumb ? 2 : 4;
++        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+         return;
+     case EXCP_BKPT:
+         armv7m_nvic_set_pending(env->nvic, ARMV7M_EXCP_DEBUG, false);
+@@ -2427,6 +2430,8 @@ void arm_v7m_cpu_do_interrupt(CPUState *cs)
+ 
+     ignore_stackfaults = v7m_push_stack(cpu);
+     v7m_exception_taken(cpu, lr, false, ignore_stackfaults);
++
++    arm_do_plugin_vcpu_discon_cb(cs, last_pc);
+ }
+ 
+ uint32_t HELPER(v7m_mrs)(CPUARMState *env, uint32_t reg)
 -- 
 2.47.3
 
