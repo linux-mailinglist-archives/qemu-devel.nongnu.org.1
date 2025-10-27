@@ -2,110 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948BEC0E642
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8252C0E64E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:25:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDO7K-0005qK-Jw; Mon, 27 Oct 2025 10:22:38 -0400
+	id 1vDO9N-0006Wf-FY; Mon, 27 Oct 2025 10:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vDO7I-0005pW-CC
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:22:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1vDO9G-0006Vn-PO
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:24:38 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vDO77-0005Ah-Q8
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:22:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761574940;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kCn5fTk8j5o5UyvD80qrdTGvWogk90Z1sWaEUZxvpfM=;
- b=ENLoWYLRtv1vPmX3BOD5yOp5wYx9lxZVsp1nPpBUp8RtI1O9OXgYNKASrPv/fAccyFjSNG
- F9Rhd1qWbik2wx+S4YnD1y2hzMTOIbiSul/K2AqOctjDidbiyf7ufDbDbXAt0ye0VYLdMk
- uaXhLBYb1vKieFQlp8/ucKKneGlj8z8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-V1LqSsXjOf272MFliVDG2Q-1; Mon, 27 Oct 2025 10:22:18 -0400
-X-MC-Unique: V1LqSsXjOf272MFliVDG2Q-1
-X-Mimecast-MFC-AGG-ID: V1LqSsXjOf272MFliVDG2Q_1761574937
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4770e0910e4so10573925e9.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 07:22:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761574937; x=1762179737;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kCn5fTk8j5o5UyvD80qrdTGvWogk90Z1sWaEUZxvpfM=;
- b=plsVEThPkc9VrRg9+68Hbdw/ZB115yjutorXb5dZBcih3QbE7H1E6yBFinywu/L7qI
- I1jVwZIH2H5X9dbD1DLgpWpfPvIztr5pTi9lmCW6Wr8oQbAmzVF7JYXodyp70oX3a8uI
- F+fhKriwUtb2ZarqlKsstyjmWNQqhQFh5WWgSDmD8UF2rMI9J/EZ3OvgTUZe5uPqQFwJ
- TkdKSLVvIBp2s1bnx3riS/cedMAT4yuV6plt5hjV0KIsjbMG6Ns/llxSt0VDFWBWJR19
- b1t2GFx64lFi8w55g0cgDy2baH7crcRiSP3P0Wy4wSXpBjTWxIJr86U8GLW7C/aOPnnn
- kSGg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVP3wqVvdeb4NgvbJZ0Qdi33oKDkxmXSqODPts2t6jMfaJC+Om2TcAmQ10BmD7wqwrlapcwgQ/cZy3i@nongnu.org
-X-Gm-Message-State: AOJu0Ywz7HF2+EbKjI8UIFUUX9dsVdCcTCZPJmInADi2G1biPbzOZdjj
- zHxWSuHPOd6QY1M0WIucSSrtBkK1Bjxw2KjjiHTDB+KggM3Rb+DkxcQaXO+WEDXGwpPmdyVCWs1
- hmXGONN9udhSp1BIt+QnoMG2L0LKmazcklm1SnE1nBchpHq6RUjMu18ZY
-X-Gm-Gg: ASbGncuB9elpS/tx4cD0FHwfi2dioxdPFDolziwEscslVZcuivMOOnW4A3dSnJWzRMo
- fE77ob1qnKkZ3l2VqbGCZrTEbkZLXEZbHQxCsODdQaj1hUjnuj7AcHLhgTNn55liiX0hU1eoTZt
- zrYvhqfcyADiNuj4FHsBQMs8T4xtQruXL/Jo3X1S6FQ1Wd9wLDw946qcKapUWH3wf8iyuj600ef
- eXyNnJ7tVlv+YbGdynK2jA79bA0LCoCZhPgfMbqhjrqqGRXoA/8NuWxbnbO8AumWix4Ko5B3aZg
- /CTWiWMDPt7o8mfr47WiDiLQa7ZKjgjG9SGbNzDpixs2dPbYBG2voW/0U0UGGpLRZghkiA1RM9L
- 9xw6F5ijQ3WGGNE9wMqMt1cuAFq2J1p+91x2JcfesU4YKRQ==
-X-Received: by 2002:a05:600c:1554:b0:46e:206a:78cc with SMTP id
- 5b1f17b1804b1-475cb044e25mr135969505e9.28.1761574937427; 
- Mon, 27 Oct 2025 07:22:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9NR8N/kkzVkTzHwK9+gpJ85QYrb0POD8JDOYoVpBTaXTdRShQRJoF5z94p4FfHYH2GlrqKA==
-X-Received: by 2002:a05:600c:1554:b0:46e:206a:78cc with SMTP id
- 5b1f17b1804b1-475cb044e25mr135969155e9.28.1761574936986; 
- Mon, 27 Oct 2025 07:22:16 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd477d0esm135158165e9.0.2025.10.27.07.22.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 07:22:16 -0700 (PDT)
-Message-ID: <34131356-6c93-4f52-8f2e-21339ea3c5a8@redhat.com>
-Date: Mon, 27 Oct 2025 15:22:15 +0100
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1vDO96-0005Qw-HA
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:24:35 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RBQr6D024605;
+ Mon, 27 Oct 2025 14:24:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=6mV/T0
+ MC4zYdgc6mgouc7Cu6HhwepLM7957bliLIUm8=; b=fKMb0iSQS4n8c0Q+NfViH/
+ wtFx18QNntYebaybQoNi1dvbObvy0rRQAz+KTfUh/JAjyZQHsMzJsj6q2PgGKdXT
+ BjVZc2RYAUkBHv5PcV3XN8WKM3MIeklUf9t8whlWa4rs58HRcsr+iMTiOKYxt4oD
+ Jh5hoQqecC/rPkMmA4AwbQjHFCtYtFRQJxFQ32s7OB3f7cy1suw4OcOls4PQCmcY
+ 0ObTvATjtMXA1yud1OY/mMrP12C+QqpaukwfeQTLLt4niE41ysE6K1ff4icljRLB
+ h1t4sO3MHcBIYu+d/iyL9puyrHWclAS2jqrlp/UwTtv6sGZdc7b9FDrQK5OcsnMg
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p71y3v7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 14:24:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59RCfaHA006764;
+ Mon, 27 Oct 2025 14:24:20 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1bk0wp03-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 14:24:20 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59REOJ8v51839406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Oct 2025 14:24:19 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8165F58057;
+ Mon, 27 Oct 2025 14:24:19 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1139E58059;
+ Mon, 27 Oct 2025 14:24:19 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Oct 2025 14:24:18 +0000 (GMT)
+Message-ID: <2637d814-fef0-44af-8359-5df02c3bc8c6@linux.ibm.com>
+Date: Mon, 27 Oct 2025 10:24:18 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/27] hw/arm/smmuv3-accel: Install S1 bypass hwpt on
- reset
+Subject: Re: [PATCH v3 1/4] migration: vmstate_save_state_v(): fix error path
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, peterx@redhat.com
+Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
+ armbru@redhat.com, berrange@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
+ <20251025202649.1122420-2-vsementsov@yandex-team.ru>
 Content-Language: en-US
-To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
- mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
- jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
- zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
- shameerkolothum@gmail.com
-References: <20250929133643.38961-1-skolothumtho@nvidia.com>
- <20250929133643.38961-20-skolothumtho@nvidia.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250929133643.38961-20-skolothumtho@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20251025202649.1122420-2-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: w78nSFWz927WIWYoI_yO1fjR6UWqhCj-
+X-Proofpoint-ORIG-GUID: w78nSFWz927WIWYoI_yO1fjR6UWqhCj-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfXzMhjbLPpexbz
+ 0efcPhhQcs9m8jSALqm7HKODaUeY72Rc8c2Bx06229fibYN54boJ1cfe8rKkFdqcZlW0PzTOzHS
+ rJZ6lNxgd52G1qrx5LEBPETPZDEAJky7yjke0zx05y+Y28kX3IyCbbxFjZUQ3luaMJVdNFtXJzb
+ FRJ3oS5yTto2B9TX6NNabDK7O2YYXdr4k926flb68qQPBAHIZixYfiD4AdKm7dfjBpKn/o9VD5o
+ H6aOC3vZADZDbD2yWNIcgQd8PxGeW6E4lCsqsJE2O6M/+t39ZlXzckOsZO/FVq/kA57L9xU/87n
+ q0nU1hvYYIE0rIX1VRIJyBlfgYvehoXWwsUhA0NDQZwivFE0Bd8MaCxnpjtmt5oqKnN/5ohsIdO
+ Eq+qT6jMXq351Gyhjn2/C0uNTSBxSA==
+X-Authority-Analysis: v=2.4 cv=G/gR0tk5 c=1 sm=1 tr=0 ts=68ff8095 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=6R7veym_AAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8 a=pL1Hf9dkiE2374NjMCAA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=ILCOIF4F_8SzUMnO7jNM:22
+ a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=poXaRoVlC6wW9_mwW8W4:22
+ a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_06,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ spamscore=0 priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,105 +121,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 9/29/25 3:36 PM, Shameer Kolothum wrote:
-> When the guest reboots with devices in nested mode (S1 + S2), any QEMU/UEFI
-> access to those devices can fail because S1 translation is not valid during
-> the reboot. For example, a passthrough NVMe device may hold GRUB boot info
-> that UEFI tries to read during the reboot.
->
-> Set S1 to bypass mode during reset to avoid such failures.
->
-> Reported-by: Matthew R. Ochs <mochs@nvidia.com>
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> ---
->  hw/arm/smmuv3-accel.c | 29 +++++++++++++++++++++++++++++
->  hw/arm/smmuv3-accel.h |  4 ++++
->  hw/arm/smmuv3.c       |  1 +
->  3 files changed, 34 insertions(+)
->
-> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-> index defeddbd8c..8396053a6c 100644
-> --- a/hw/arm/smmuv3-accel.c
-> +++ b/hw/arm/smmuv3-accel.c
-> @@ -634,6 +634,35 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
->      .get_msi_address_space = smmuv3_accel_find_msi_as,
->  };
->  
-> +/*
-> + * If the guest reboots and devices are configured for S1+S2, Stage1 must
-> + * be switched to bypass. Otherwise, QEMU/UEFI may fail when accessing a
-> + * device, e.g. when UEFI retrieves boot partition information from an
-> + * assigned vfio-pci NVMe device.
-> + */
-> +void smmuv3_accel_attach_bypass_hwpt(SMMUv3State *s)
-> +{
-> +    SMMUv3AccelDevice *accel_dev;
-> +    SMMUViommu *viommu;
-> +
-> +    if (!s->accel || !s->s_accel->viommu) {
-> +        return;
-> +    }
-> +
-> +    viommu = s->s_accel->viommu;
-> +    QLIST_FOREACH(accel_dev, &viommu->device_list, next) {
-> +        if (!accel_dev->vdev) {
-> +            continue;
-> +        }
-> +        if (!host_iommu_device_iommufd_attach_hwpt(accel_dev->idev,
-> +                                                   viommu->bypass_hwpt_id,
-> +                                                   NULL)) {
-I would prefer we pass a proper local_err, add the hint below and then
-report the concatenated error.
+On 10/25/25 4:26 PM, Vladimir Sementsov-Ogievskiy wrote:
+> In case of pre_save_errp, on error, we continue processing fields,
+> unlike case of pre_save, where we return immediately. Behavior
+> for pre_save_errp case is wrong, we must return here, like for
+> pre_save.
+> 
+> Fixes: 40de712a89
+>   "migration: Add error-parameterized function variants in VMSD struct"
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Eric
-> +            error_report("Failed to install bypass hwpt id %u for dev id %u",
-> +                          viommu->bypass_hwpt_id, accel_dev->idev->devid);
-> +        }
-> +    }
-> +}
-> +
->  void smmuv3_accel_init(SMMUv3State *s)
->  {
->      SMMUState *bs = ARM_SMMU(s);
-> diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
-> index 3bdba47616..75f858e34a 100644
-> --- a/hw/arm/smmuv3-accel.h
-> +++ b/hw/arm/smmuv3-accel.h
-> @@ -48,6 +48,7 @@ bool smmuv3_accel_install_nested_ste_range(SMMUv3State *s, SMMUSIDRange *range,
->                                             Error **errp);
->  bool smmuv3_accel_issue_inv_cmd(SMMUv3State *s, void *cmd, SMMUDevice *sdev,
->                                  Error **errp);
-> +void smmuv3_accel_attach_bypass_hwpt(SMMUv3State *s);
->  #else
->  static inline void smmuv3_accel_init(SMMUv3State *s)
->  {
-> @@ -70,6 +71,9 @@ smmuv3_accel_issue_inv_cmd(SMMUv3State *s, void *cmd, SMMUDevice *sdev,
->  {
->      return true;
->  }
-> +static inline void smmuv3_accel_attach_bypass_hwpt(SMMUv3State *s)
-> +{
-> +}
->  #endif
->  
->  #endif /* HW_ARM_SMMUV3_ACCEL_H */
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index 5830cf5a03..94b2bbc374 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -1913,6 +1913,7 @@ static void smmu_reset_exit(Object *obj, ResetType type)
->      if (c->parent_phases.exit) {
->          c->parent_phases.exit(obj, type);
->      }
-> +    smmuv3_accel_attach_bypass_hwpt(s);
->  }
->  
->  static void smmu_realize(DeviceState *d, Error **errp)
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+> ---
+>   migration/vmstate.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/migration/vmstate.c b/migration/vmstate.c
+> index 81eadde553..fd066f910e 100644
+> --- a/migration/vmstate.c
+> +++ b/migration/vmstate.c
+> @@ -443,6 +443,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>           if (ret < 0) {
+>               error_prepend(errp, "pre-save for %s failed, ret: %d: ",
+>                             vmsd->name, ret);
+> +            return ret;
+>           }
+>       } else if (vmsd->pre_save) {
+>           ret = vmsd->pre_save(opaque);
 
 
