@@ -2,64 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF093C11739
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 21:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B33F7C1187A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:20:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDUFj-00060l-R2; Mon, 27 Oct 2025 16:55:43 -0400
+	id 1vDUaa-0002Z2-6Q; Mon, 27 Oct 2025 17:17:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDUFf-000605-4i; Mon, 27 Oct 2025 16:55:39 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZl-0002UQ-Vz
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:32 -0400
+Received: from sea.source.kernel.org ([172.234.252.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDUFV-0001yw-GE; Mon, 27 Oct 2025 16:55:38 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 41E1AC05B8;
- Mon, 27 Oct 2025 23:55:19 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:c5c::1:11] (unknown
- [2a02:6bf:8080:c5c::1:11])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ItjTFc1L2mI0-Rv3YXlot; Mon, 27 Oct 2025 23:55:18 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761598518;
- bh=uB3Tx0IskXOo1yZQih2MPrhBcfUYjNlRl6VKYPEQWfc=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=y4HmTaOVzzl5NS/Kn8WwkSkiRjPz8+hLd4qEJg+WWj5zfGmy1FeAjj3pN94wk2oTL
- XeTxJmBwOnjpHw0mtcqXwXpA4bg4GBw2baKeYJ8ybNRNxgzoEaQ4639cfzloA8TqnW
- IYcWLA55GjGMRDK/E3nQT2hroyXFx4WQqEjrMwFU=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <64465d5a-7588-4a7e-a751-28259f1d6748@yandex-team.ru>
-Date: Mon, 27 Oct 2025 23:55:18 +0300
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZh-0004yV-87
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:24 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id 59DF840736;
+ Mon, 27 Oct 2025 21:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D4EC4CEF1;
+ Mon, 27 Oct 2025 21:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1761599767;
+ bh=qJav4LEByyAmB7GnA4fejUpxL8R67WGBXXFjtGCpBrg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=G4XjvkWFE7L16lV1kXgNKsrVPS4ZCkqi9zNw1UBDydEmKH+EdPAkEgmALQSlslPX5
+ I+3NFFIUBXAlMkb62fEnHCjqgdag0vcWoeTteArByAL438pxDBQLKSEJ7EbRznNr8a
+ 5ViW8e4LN9Tvwyi4hIHkWwJZXtXAyxVHaGbJZ9Jz8frKaxf/NrE6adIg0CmmAMeQpL
+ xBnBU4L881WhsskBDtzmPLL8lcoJbMpgExRbgOw1XXzfXI4zGHktzapNRiD8xzeV43
+ rPueM74ruz9C4XgCbSgKuiJphWmeqXxNJG3yhaXvnp0ifHZhVn5q984pxwTEB1TDm+
+ z05Q8yw5/qnBQ==
+From: deller@kernel.org
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fam Zheng <fam@euphon.net>,
+ Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, deller@gmx.de
+Subject: [PULL 00/11] Devel scsi ncr710 patches
+Date: Mon, 27 Oct 2025 22:15:52 +0100
+Message-ID: <20251027211603.7141-1-deller@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Add missing null checks during
- query-named-block-nodes
-To: Wesley Hershberger <wesley.hershberger@canonical.com>,
- Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-References: <20251024-second-fix-3149-v1-1-d997fa3d5ce2@canonical.com>
- <aP9BhBEUSuM0ougc@redhat.com>
- <CADzzt1B4ZwRwv+ZCWyGwyZwqScHAfKkbL2UEaujd3BJNSkMbXg@mail.gmail.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <CADzzt1B4ZwRwv+ZCWyGwyZwqScHAfKkbL2UEaujd3BJNSkMbXg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=172.234.252.31; envelope-from=deller@kernel.org;
+ helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,26 +69,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.10.25 19:04, Wesley Hershberger wrote:
-> (I've run make check-block with it and saw no failures).
+From: Helge Deller <deller@gmx.de>
 
-When changing internals of block-layer, it's better to run all iotests, at least for qcow2, raw and nbd. check-block runs only subset.
+The following changes since commit 3bf5c57a11827d9fa706524d57ee3e5af68a429e:
 
-Like
+  Merge tag 'pull-tcg-20251014' of https://gitlab.com/rth7680/qemu into staging (2025-10-14 10:25:05 -0700)
 
-cd build
-./tests/qemu-iotests/check -qcow2
-./tests/qemu-iotests/check -raw
-./tests/qemu-iotests/check -nbd
+are available in the Git repository at:
 
+  https://github.com/hdeller/qemu-hppa.git tags/devel-scsi-ncr710-pull-request
 
-At least,
+for you to fetch changes up to 95a3f921811ba3f817538580ee7b85336dd16e39:
 
-    ./tests/qemu-iotests/check -qcow2 257
+  hw/hppa: Add 715 machine type including NCR710 SCSI (2025-10-27 22:13:22 +0100)
 
-fails with your diff.
+----------------------------------------------------------------
+HP-PARISC 715 machine with NCR710 SCSI chip
+
+This series adds a new emulation for a HP PA-RISC 715/64 model,
+as descrived here: https://www.openpa.net/systems/hp-9000_715.html.
+
+That machine has no PCI bus and instead uses a "LASI" chip which has built-in
+NCR 53c710 SCSI and i82596 network chips. Compared to the other already
+emulated machines B160L and C3700, this machine should be able to support older
+operating systems like HP-UX 9 as well.
+
+The QEMU project participated in the Google Summer of Code 2025 program by
+"Implementing LASI Network Card and NCR 710 SCSI Controller Device Models", and
+Soumyajyotii Ssarkar stepped up to develop those drivers.
+
+This patch series includes the code for the NCR710 SCSI controller,
+the network code will follow in later patch series.
+
+----------------------------------------------------------------
+
+Helge Deller (7):
+  target/hppa: Update SeaBIOS-hppa to version 19
+  hw/hppa: Fix firmware end address for LASI chip
+  hw/hppa: Fix interrupt of LASI parallel port
+  hw/hppa: Add NCR 710 SCSI driver to LASI chip Kconfig entry
+  hw/hppa: PCI devices depend on availability of PCI bus
+  hw/hppa: Require SeaBIOS version 19 for 715 machine
+  hw/hppa: Add 715 machine type including NCR710 SCSI
+
+Soumyajyotii Ssarkar (4):
+  lasi_ncr710: Add LASI wrapper for NCR 53c710 SCSI chip
+  ncr710: Add driver for the NCR 53c710 SCSI chip
+  lasi: Forward LASI SCSI ports to NCR 53c710 driver
+  hw/scsi: Add config option for new ncr710 driver
+
+ MAINTAINERS                 |    2 +
+ hw/hppa/Kconfig             |    2 -
+ hw/hppa/hppa_hardware.h     |    3 +-
+ hw/hppa/machine.c           |  146 ++-
+ hw/misc/Kconfig             |    5 +
+ hw/misc/lasi.c              |    6 +-
+ hw/scsi/Kconfig             |    5 +
+ hw/scsi/lasi_ncr710.c       |  282 ++++
+ hw/scsi/lasi_ncr710.h       |   57 +
+ hw/scsi/meson.build         |    1 +
+ hw/scsi/ncr53c710.c         | 2432 +++++++++++++++++++++++++++++++++++
+ hw/scsi/ncr53c710.h         |  246 ++++
+ hw/scsi/trace-events        |   29 +
+ include/hw/misc/lasi.h      |    2 +
+ pc-bios/hppa-firmware.img   |  Bin 167644 -> 630056 bytes
+ pc-bios/hppa-firmware64.img |  Bin 206104 -> 699872 bytes
+ roms/seabios-hppa           |    2 +-
+ 17 files changed, 3191 insertions(+), 29 deletions(-)
+ create mode 100644 hw/scsi/lasi_ncr710.c
+ create mode 100644 hw/scsi/lasi_ncr710.h
+ create mode 100644 hw/scsi/ncr53c710.c
+ create mode 100644 hw/scsi/ncr53c710.h
 
 -- 
-Best regards,
-Vladimir
+2.51.0
+
 
