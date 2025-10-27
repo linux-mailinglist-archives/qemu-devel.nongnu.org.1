@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664D4C0D972
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4DFC0D999
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:39:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMU5-0005sD-Ac; Mon, 27 Oct 2025 08:38:01 -0400
+	id 1vDMU8-0005zw-9n; Mon, 27 Oct 2025 08:38:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTt-0005kH-93
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:51 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTz-0005n2-Am
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:55 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTh-0006N0-U2
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:46 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42557c5cedcso3108674f8f.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:37:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTu-0006Oc-CG
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:54 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47103b6058fso33829755e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:37:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761568655; x=1762173455; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761568666; x=1762173466; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GoeOKyftJ5MLGQxZGLLBGt1lpVhTU2P8wL0zlmwVEXI=;
- b=X2l/OGQJdJIXtzzwx3tyu5WVWYaVhiF00Nrj1P/MZAwCjCbF6yHzUWR7sdPG048g7O
- fodL3L4Lp0MT885CUCQIg9OYn0OdzVQh9q7bsg/b4MRQPoLarLZwfFwmd0FR7FOrXla4
- KAINNnMDomJ7PMKy/FfOIgeMu9Yz85y8yqXwgehPvv2/kfvJMngBVtFiYK2/UPNCccyo
- EtmIUP2q9DPZQEUTGJpitelJzZs1EI/ltCu3H9GHYnarG1XT9gWDRBXSPug/XVpJM7um
- Q+IqfpYI+Xr1bSprhzu3HS6hivjGFirJXG3nxnGp/2U/JbKUZvATsk3VqwZruxNSWXcL
- bYiQ==
+ bh=QLGA4BsveaP6QGp7KSxxzZDoWLl4mtX/E9pHps71OHg=;
+ b=oHzeYdLaXXzFGswXXYIhMH4p6KGLuGHQc51b6py1XKgHxw62yVlkmcMaZDM72hZRyi
+ x+ccgFSDmReMlGk5Kd0kyA+9w9KF4lulL4x/yuK2D/SaNw5j+oucfof4ddrw5IgAkfbK
+ jOze+XS2A99PmR6GQXJQm1tbgyvhkY5GjtvhxxVigi0HONKUboJxcR2Krqy/kM3EFpue
+ q3sHNyQjdMMwqbUc0rByY2UzRBH56ac3ElE9ZF2hcI56Xv9UVrMrJBBFE2UYASS2eUok
+ LGe7aOWukLW583IuFpBm4M91+bZwKTRHMzCcNknciSFwBlKjSVA866ga7UsWyr6KBf+y
+ vO7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761568655; x=1762173455;
+ d=1e100.net; s=20230601; t=1761568666; x=1762173466;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GoeOKyftJ5MLGQxZGLLBGt1lpVhTU2P8wL0zlmwVEXI=;
- b=d8E0YDDVDUbHHqrJ8DE+heLLZg4G0Ko/+PNvnIhU5cRyNzlHw+hvcQUz8DOCXnGVtU
- 8g6W6MC9GImjx6WjOl+LDC1eaxoyL/bHYUsbPr/VqsBKONCeK5tgPDFBcnjRXQvIUJIO
- 7KkHyeBPTWEYaWX7276QZs8em3reHNeqjtSwxg1XItbz/+Zs6Z/i57+09xhORpAyoTyX
- n3Xk01n2rCRPidlVOE0oA+uYp8zlkYPv2DCDbhPFxIY0m9HVXOfoPCIIpUiRh7NKOUNT
- 5Z2zIRzfBRyM2CvPMGWL/7YEbXtsklRoHXnuR8QaB74R72UOkpOKXGkGtp8mIJHwmAUq
- Zgmw==
-X-Gm-Message-State: AOJu0YztXv1NmFQlKyo+lSBEYeXBa4j/wg8E64DI/X8u8ca4KyYFPT4E
- cbHiMHbXqiy7V3wV1mOsed26pUoQWqnhFrnFWPRiX79hyURwwANzhstcpVrcKy3a/C7d0eXMrxF
- jqOrCZHk=
-X-Gm-Gg: ASbGncsNxerqd8OBH05aVQHh3IoExXvgwAoq1PHO4lATwdiPPvfJw6o7Z7P/dWI/tcT
- Ds8YCli+7W4GIO3kt1uGeJ0Ak8DMrPNYirQlvb5VFLMyKTSLMlb5/gDPowFKc3n4mePGLn65uMB
- z8BmF7ODFCzGNHzDXOCvmXLoOhIMi+LhoRgdFxEdgPFuQA8N7z59x/ClEODNWOPv6GUY2XpXJyn
- hpY6FywBwmWa+Md6g3cNUB3izwxlQiYQVt8NsMpMUd/bPakBUKOpznfLQ6LatR9ulejx/xo6Jkx
- FRk6obOT0iqQXkwG6iD88xwtZ3exn5SgBISGTM0029d6WTHGzWE7YsThRvxotsmSOrSJlO1SZ5q
- ewOwY2VafFY4FEtSlCawkGILXNke+Zu6wpNLXrEJtA1Cqw33y/wZTiMpgbmAdHqHjP9rLku9st2
- I0jlSyHQ5HxofTJc1P/Q9i0XILwZscK+pKhiKYQq8EcFE30NpH9Q==
-X-Google-Smtp-Source: AGHT+IEPzrIF85HI9BKZoZtnDex6BR5cCOZk8RX2NkrGGjPjR54GiLIVjSu74xAOEiV5Phys85ewCw==
-X-Received: by 2002:a05:6000:186a:b0:3ec:db13:89e with SMTP id
- ffacd0b85a97d-42704d1441cmr23640393f8f.7.1761568654607; 
- Mon, 27 Oct 2025 05:37:34 -0700 (PDT)
+ bh=QLGA4BsveaP6QGp7KSxxzZDoWLl4mtX/E9pHps71OHg=;
+ b=UB4916HeZmrZzrrpsEmjoSX3uZgyiUx6WOAgmaE3imAfq05AJyz567uoC3XgkkfE/y
+ Ob4VBI4CWZekLQJte5235YKv/GLwFcEO0LpWunFZYcLhjYwwpCFkbIswYX6/eLQz0Bt8
+ Le1W8qcyQSPNk3UOeMFVMDRsGtPmjKF9fZIn1iLGskflx57mV9TvvV5f9PeMQZgON+Pt
+ wh/Hyhq00+jH4EmxthBcSdS1lVobE3FIvW1tPT7c1ef+KIBp9oDetU5Z/xViKPgYhgUJ
+ 5rEKIgbhSsy9TbCKMx/y7WObV1RHEEbp3DuL7MzUSstKcmOr0shplt8H/kEDzzDCpnDe
+ SqAQ==
+X-Gm-Message-State: AOJu0YwSe5PpM3T183cGMcJlgpSlPRnGTH1WNn2sD7cmCttimQizna0X
+ 63qu2FJ84B6pUjv61gxs4PMKdv99SUX3jusTOkrquXe/JXt/4Cr8Ruooju6VPNmYmdr9dt2kPhN
+ jPiSMvwM=
+X-Gm-Gg: ASbGncvlWyQgdubijTmFy/USY8eJyryZDsnHXuP4kvakHeB2ubw2xzXoXczqXDxvKSr
+ xKHXPXpb4+ZCWZ/mqrImhjaPl+9GfuCBAjqIhF6Dov97S470ua/b4SClk/rdiQOMsJDxw46GL4j
+ hQjN+a047HnCJtaWgsaBMB2q5kf63tIC+SLWRg4uowvUUbDWIyjxmMBH6kJkqMqNDiJDZ/7xf/+
+ 3AsXxmEZDWAoQU26JKrUms+ENlrpVSknf0YtbVIAJPlT/ibI9ERo+uEu3msAkuT7ps+1yCuBNmw
+ jfHgF07/jFpvr0XYHjTveHIgBN42cOJ264DVIS2XVtJmAhrHsxjwUvlkKY1YzhzMsCu+V5Qcy3P
+ rjPwiuUko12iTApgYxObN8wckqHwacESprGta+4fwZY59jJnJKxFqxlHd3IDsDKkSqcCNvG4iaD
+ UPn81vHtWea7l6nLSrtSOmw4eKX5H+X5sEmxLXP2iTwc+CsFpVOA==
+X-Google-Smtp-Source: AGHT+IHEsjQBidUqbm9SoVcLKCL74wb4/k68vdtmPYN/0xVUIfQZ2HSuA5jHkEqMEWb8ETCTTqVW+g==
+X-Received: by 2002:a05:600d:4301:b0:475:de75:84c6 with SMTP id
+ 5b1f17b1804b1-475de75857amr35815515e9.12.1761568666613; 
+ Mon, 27 Oct 2025 05:37:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952b7ce1sm13908142f8f.0.2025.10.27.05.37.33
+ 5b1f17b1804b1-475dd4e30f5sm135384175e9.17.2025.10.27.05.37.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Oct 2025 05:37:34 -0700 (PDT)
+ Mon, 27 Oct 2025 05:37:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
@@ -76,25 +76,25 @@ Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH 4/6] hw/pci-host/aspeed: Log unassigned MMIO accesses with
+Subject: [PATCH 5/6] hw/pci-host/astro: Log unassigned MMIO accesses with
  unassigned_mem_ops
-Date: Mon, 27 Oct 2025 13:36:41 +0100
-Message-ID: <20251027123644.63487-5-philmd@linaro.org>
+Date: Mon, 27 Oct 2025 13:36:42 +0100
+Message-ID: <20251027123644.63487-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027123644.63487-1-philmd@linaro.org>
 References: <20251027123644.63487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,22 +115,22 @@ accesses as MMIO ones.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/aspeed_pcie.c | 2 +-
+ hw/pci-host/astro.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci-host/aspeed_pcie.c b/hw/pci-host/aspeed_pcie.c
-index 2499d3fe680..0b32f217e91 100644
---- a/hw/pci-host/aspeed_pcie.c
-+++ b/hw/pci-host/aspeed_pcie.c
-@@ -197,7 +197,7 @@ static void aspeed_pcie_rc_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&rc->io, OBJECT(rc), "io", 0x10000);
+diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
+index 1024ede7b68..0bd66ab3de3 100644
+--- a/hw/pci-host/astro.c
++++ b/hw/pci-host/astro.c
+@@ -449,7 +449,7 @@ static void elroy_pcihost_realize(DeviceState *dev, Error **errp)
  
-     mmio_window_name = g_strdup_printf("pcie.%d.mmio_window", cfg->id);
--    memory_region_init_io(&rc->mmio_window, OBJECT(rc), &unassigned_io_ops,
-+    memory_region_init_io(&rc->mmio_window, OBJECT(rc), &unassigned_mem_ops,
-                           OBJECT(rc), mmio_window_name, UINT64_MAX);
-     ioport_window_name = g_strdup_printf("pcie.%d.ioport_window", cfg->id);
-     memory_region_init_io(&rc->io_window, OBJECT(rc), &unassigned_io_ops,
+     /* Elroy PCI bus memory.  */
+     memory_region_init(&s->pci_mmio, obj, "pci-mmio", UINT64_MAX);
+-    memory_region_init_io(&s->pci_io, obj, &unassigned_io_ops, obj,
++    memory_region_init_io(&s->pci_io, obj, &unassigned_mem_ops, obj,
+                             "pci-isa-mmio",
+                             ((uint32_t) IOS_DIST_BASE_SIZE) / ROPES_PER_IOC);
+ 
 -- 
 2.51.0
 
