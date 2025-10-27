@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13173C0BDE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 06:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CC1C0BF0A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 07:23:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDG9P-0006lX-7B; Mon, 27 Oct 2025 01:52:15 -0400
+	id 1vDGcl-0006xK-OT; Mon, 27 Oct 2025 02:22:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDG9M-0006lA-Jq
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:52:12 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vDGcj-0006vA-8H
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:22:33 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDG9K-0002DL-PF
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:52:12 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vDGch-000654-38
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:22:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761544331; x=1793080331;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dgAPBuZx390lqBcklwscubjP06yyRgvQZJEJVOUVjyE=;
- b=Hv7iQD12R1xppx3pBhGwDSDGyjigPwK6y0U5D51JNLQHycyRqEh01Bo7
- 4VUiJ+yIiJw7Rv1z5YGOM1PJLgP7ukwM/NwvMhkkx5dfALPtWF+6LUwpe
- 5S3rj7z+THLSkChkS1obJDwx5DJza8PIqvSGsqbqBw3exxQ0Apu0PW890
- yCTNB2KskOsxXels/K59jazHMHzX6R+B+bzejQ90g4biyzyDgPIYAQK+a
- 7EKVvo1V6g/KrFbXvwjFKgYgQuLzuIzuTt0D4+LF1GkKdHzs37G8hdsT9
- 1CmRtrPYE9BjITI0rNxJCfodkuUk5mKuN4A9MMArAojpenhLeIenGWVed w==;
-X-CSE-ConnectionGUID: gJPTmy9YQyO8cVf41o3clQ==
-X-CSE-MsgGUID: 7CM8YGCHS6KLlMEhgzxcEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74962254"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="74962254"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2025 22:52:08 -0700
-X-CSE-ConnectionGUID: VrN7U0npQICatud3JgfV7w==
-X-CSE-MsgGUID: KmH8iI2CTwiQc8cJFi1Zzw==
+ t=1761546151; x=1793082151;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=3VPzMuspd46+dnLbU6SilaPw+leRh3PT5Rh5N1rdaCw=;
+ b=NGWMs3z55hj964GMnbBir0LWTom4RkKJkcEbNqzsK4xFyt3ZoUfreOuA
+ bXDBzBp1shZWrp4kBE29uXEMx7sab0XazyldOzbk+aHSy9mVK/FreRjU3
+ FY1rgI2fudP6AE6Hl2AgFCvsrtj98h9MXWxVARNU56vM70rPcBRJZq/h5
+ +AdmyKC10S9UL4mNWobt4dc2XnQDo9gNxyK7rK8zdVoqim3Q0OaB4w+v6
+ rSNyYEtrvnY1utS3t9rqv8ylhgxNdo7g7UL9qZkDEKyd+h16mb0OnCUnl
+ UwOj4Vp9aXdqrwas6v9/6KJzDdLU+3IywiiEWJ3BdlrNQte2pDgQuPMu/ w==;
+X-CSE-ConnectionGUID: pjNTuv8QSNil4npQbFdjIQ==
+X-CSE-MsgGUID: pq9p7/JTQmSieQw5wpJ/kw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63322473"
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="63322473"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2025 23:22:27 -0700
+X-CSE-ConnectionGUID: HTMaOrlySYKo/mgmPvXoVA==
+X-CSE-MsgGUID: eS2q2BmTRXm5qdnGEverYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184178451"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 26 Oct 2025 22:52:07 -0700
-Date: Mon, 27 Oct 2025 14:14:16 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, ewanhai@zhaoxin.com,
- cobechen@zhaoxin.com
-Subject: Re: [PATCH 3/3] target/i386: Introduce Zhaoxin Shijidadao-Server CPU
- model
-Message-ID: <aP8NuLzItpNzt6DJ@intel.com>
-References: <20250923021133.190725-1-ewanhai-oc@zhaoxin.com>
- <20250923021133.190725-4-ewanhai-oc@zhaoxin.com>
- <aPsnqxDZR4KxgcdN@intel.com>
- <53c9af0b-49e2-4ec3-8846-01d44b2a9745@zhaoxin.com>
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184576018"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
+ ([10.124.238.14])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2025 23:22:23 -0700
+Message-ID: <dcb87f98-bacd-4c57-9250-5122329ec400@intel.com>
+Date: Mon, 27 Oct 2025 14:22:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53c9af0b-49e2-4ec3-8846-01d44b2a9745@zhaoxin.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/20] i386/cpu: Reorganize arch lbr structure
+ definitions
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao
+ <chao.gao@intel.com>, John Allen <john.allen@amd.com>,
+ Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
+References: <20251024065632.1448606-1-zhao1.liu@intel.com>
+ <20251024065632.1448606-5-zhao1.liu@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20251024065632.1448606-5-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.57, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,24 +90,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >> In QEMU, vCPU models default to '.version = 1'. Since there is currently
-> >> no '.features[index]' mapping for the "x-force-cpuid-0x1f" property, this
-> >> patch adds that property to the v1 version of the model.
-> > 
-> > I'm preparing the CPU model for Diamond Rapids, and also meet this
-> > issue.
-> > 
-> > Well, I happen to have a patch for this and I think you could give it
-> > a try. :)
+On 10/24/2025 2:56 PM, Zhao Liu wrote:
+> - Move ARCH_LBR_NR_ENTRIES macro and LBREntry definition before XSAVE
+>    areas definitions.
+
+personally, I prefer not moving them. Putting them together is friendly 
+and convenient when reading the code rather than bouncing through 
+different parts.
+
+But considering the existing cases of BNDReg and BNDCSReg, I'm fine with 
+the movement.
+
+> - Reorder XSavesArchLBR (area 15) between XSavePKRU (area 9) and
+>    XSaveXTILECFG (area 17), and reorder the related QEMU_BUILD_BUG_ON
+>    check to keep the same ordering.
+
+This reorder is good.
+
+> This makes xsave structures to be organized together and makes them
+> clearer.
 > 
-> That's good news. I'll test your patch and update mine accordingly.
-> When I send out v2, should I note in the cover letter that my patches are based
-> on your "0x1f option" patch?
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 
-Please feel free to pick that patch into your series.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Regards,
-Zhao
-
+> ---
+>   target/i386/cpu.h | 38 +++++++++++++++++++-------------------
+>   1 file changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 886a941e481c..ac527971d8cd 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1652,6 +1652,14 @@ typedef struct {
+>   
+>   #define NB_OPMASK_REGS 8
+>   
+> +typedef struct {
+> +    uint64_t from;
+> +    uint64_t to;
+> +    uint64_t info;
+> +} LBREntry;
+> +
+> +#define ARCH_LBR_NR_ENTRIES 32
+> +
+>   /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
+>    * that APIC ID hasn't been set yet
+>    */
+> @@ -1729,24 +1737,6 @@ typedef struct XSavePKRU {
+>       uint32_t padding;
+>   } XSavePKRU;
+>   
+> -/* Ext. save area 17: AMX XTILECFG state */
+> -typedef struct XSaveXTILECFG {
+> -    uint8_t xtilecfg[64];
+> -} XSaveXTILECFG;
+> -
+> -/* Ext. save area 18: AMX XTILEDATA state */
+> -typedef struct XSaveXTILEDATA {
+> -    uint8_t xtiledata[8][1024];
+> -} XSaveXTILEDATA;
+> -
+> -typedef struct {
+> -       uint64_t from;
+> -       uint64_t to;
+> -       uint64_t info;
+> -} LBREntry;
+> -
+> -#define ARCH_LBR_NR_ENTRIES            32
+> -
+>   /* Ext. save area 15: Arch LBR state */
+>   typedef struct XSaveArchLBR {
+>       uint64_t lbr_ctl;
+> @@ -1757,6 +1747,16 @@ typedef struct XSaveArchLBR {
+>       LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
+>   } XSaveArchLBR;
+>   
+> +/* Ext. save area 17: AMX XTILECFG state */
+> +typedef struct XSaveXTILECFG {
+> +    uint8_t xtilecfg[64];
+> +} XSaveXTILECFG;
+> +
+> +/* Ext. save area 18: AMX XTILEDATA state */
+> +typedef struct XSaveXTILEDATA {
+> +    uint8_t xtiledata[8][1024];
+> +} XSaveXTILEDATA;
+> +
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveBNDCSR) != 0x40);
+> @@ -1764,9 +1764,9 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveOpmask) != 0x40);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveZMM_Hi256) != 0x200);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
+>   QEMU_BUILD_BUG_ON(sizeof(XSavePKRU) != 0x8);
+> +QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
+> -QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+>   
+>   typedef struct ExtSaveArea {
+>       uint32_t feature, bits;
 
 
