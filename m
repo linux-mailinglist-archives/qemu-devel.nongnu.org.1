@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E9DC0FE6C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CF5C0FE81
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:23:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDRmO-0004nL-3j; Mon, 27 Oct 2025 14:17:17 -0400
+	id 1vDRmY-0004sL-Fi; Mon, 27 Oct 2025 14:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRm8-0004i7-Nj
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:01 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmI-0004kp-TB
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:13 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRly-0003zg-1W
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:00 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRm8-0003zj-92
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=JTclVRBMtgGwr1WRYJzVLDg5Lk0+x88TQC1Cio9tuf4=; b=LS6/Mdzc7x7R5gq
- Q/mDocp/vUCR8ja/rK3iUL6RRceHg0ChTMHXTFesUNH7JRxQLHJ3xFfMHk0B/2mWTSayPRVO3ie12
- RoNTvrzSBpSx52t3yOhQZ4QQd9EelZBo8doy1EDzMV8UAvgnERUFOuNWRVGI/sO8DA1gYxJ7x6wB7
- F0=;
+ List-Help; bh=5J5Jw5g3NjL1ulfGNyC1OJCz5ICRwP0OTllUem2SidE=; b=sI/7v5Gbw69hPOB
+ Bm3ogZeKJKnksxzbgUXvyDAM2+w3yUU77EX1no7Nw7+NLvBig2SS0AztxczahDuDHb1bY9FuGh/Nr
+ YDZYHfKfZH3xwQRstWTHj6wqOHGQE2pcAPmrMXyk1oyPI097U1545YsP0E9A7MOWp5Qp/MG5yjJyZ
+ FI=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v4 17/33] target/riscv: Fix size of ssp
-Date: Mon, 27 Oct 2025 19:18:14 +0100
-Message-ID: <20251027181831.27016-18-anjo@rev.ng>
+Subject: [PATCH v4 18/33] target/riscv: Fix size of excp_uw2
+Date: Mon, 27 Oct 2025 19:18:15 +0100
+Message-ID: <20251027181831.27016-19-anjo@rev.ng>
 In-Reply-To: <20251027181831.27016-1-anjo@rev.ng>
 References: <20251027181831.27016-1-anjo@rev.ng>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
@@ -62,107 +63,28 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As ssp holds a pointer, fix to 64 bits in size and make sure stores from
-TCG use the correct size to avoid problems on big endian hosts.
-
-Note, the cpu/ssp VMSTATE version is bumped, breaking migration from
-older versions.
+Fix to 64 bits to match size of instruction start words.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.h                            |  2 +-
- target/riscv/machine.c                        |  6 +++---
- target/riscv/insn_trans/trans_rvzicfiss.c.inc | 18 +++++++++++++-----
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ target/riscv/cpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7c54a08eb4..1e4128128b 100644
+index 1e4128128b..f901608d0e 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -256,7 +256,7 @@ struct CPUArchState {
-     /* elp state for zicfilp extension */
-     bool      elp;
+@@ -258,7 +258,7 @@ struct CPUArchState {
      /* shadow stack register for zicfiss extension */
--    target_ulong ssp;
-+    uint64_t ssp;
+     uint64_t ssp;
      /* env place holder for extra word 2 during unwind */
-     target_ulong excp_uw2;
+-    target_ulong excp_uw2;
++    uint64_t excp_uw2;
      /* sw check code for sw check exception */
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 1cf744c5f0..c55794c554 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -390,11 +390,11 @@ static bool ssp_needed(void *opaque)
- 
- static const VMStateDescription vmstate_ssp = {
-     .name = "cpu/ssp",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .needed = ssp_needed,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINTTL(env.ssp, RISCVCPU),
-+        VMSTATE_UINT64(env.ssp, RISCVCPU),
-         VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-index 0b6ad57965..40e5a1b7df 100644
---- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-@@ -32,7 +32,9 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
-     TCGLabel *skip = gen_new_label();
-     uint32_t tmp = (get_xl(ctx) == MXL_RV64) ? 8 : 4;
-     TCGv data = tcg_temp_new();
--    tcg_gen_ld_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    TCGv_i64 wide_addr = tcg_temp_new_i64();
-+    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_trunc_i64_tl(addr, wide_addr);
-     decode_save_opc(ctx, RISCV_UW2_ALWAYS_STORE_AMO);
-     tcg_gen_qemu_ld_tl(data, addr, SS_MMU_INDEX(ctx),
-                        mxl_memop(ctx) | MO_ALIGN);
-@@ -45,7 +47,8 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
-                   tcg_constant_i32(RISCV_EXCP_SW_CHECK));
-     gen_set_label(skip);
-     tcg_gen_addi_tl(addr, addr, tmp);
--    tcg_gen_st_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_ext_tl_i64(wide_addr, addr);
-+    tcg_gen_st_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
- 
-     return true;
- }
-@@ -59,12 +62,15 @@ static bool trans_sspush(DisasContext *ctx, arg_sspush *a)
-     TCGv addr = tcg_temp_new();
-     int tmp = (get_xl(ctx) == MXL_RV64) ? -8 : -4;
-     TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
-+    TCGv_i64 wide_addr = tcg_temp_new_i64();
-     decode_save_opc(ctx, RISCV_UW2_ALWAYS_STORE_AMO);
--    tcg_gen_ld_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_trunc_i64_tl(addr, wide_addr);
-     tcg_gen_addi_tl(addr, addr, tmp);
-     tcg_gen_qemu_st_tl(data, addr, SS_MMU_INDEX(ctx),
-                        mxl_memop(ctx) | MO_ALIGN);
--    tcg_gen_st_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_ext_tl_i64(wide_addr, addr);
-+    tcg_gen_st_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
- 
-     return true;
- }
-@@ -76,7 +82,9 @@ static bool trans_ssrdp(DisasContext *ctx, arg_ssrdp *a)
-     }
- 
-     TCGv dest = dest_gpr(ctx, a->rd);
--    tcg_gen_ld_tl(dest, tcg_env, offsetof(CPURISCVState, ssp));
-+    TCGv_i64 wide_addr = tcg_temp_new_i64();
-+    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-+    tcg_gen_trunc_i64_tl(dest, wide_addr);
-     gen_set_gpr(ctx, a->rd, dest);
- 
-     return true;
+     target_ulong sw_check_code;
+ #ifdef CONFIG_USER_ONLY
 -- 
 2.51.0
 
