@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A1AC0F03E
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EBBC0F045
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:43:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDPM2-0001tX-A1; Mon, 27 Oct 2025 11:41:54 -0400
+	id 1vDPMF-0001xz-5h; Mon, 27 Oct 2025 11:42:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vDPM0-0001q2-ID
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:41:52 -0400
+ id 1vDPM4-0001wV-06
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:41:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vDPLr-0008Kq-SM
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:41:51 -0400
+ id 1vDPLs-0008M0-Pa
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:41:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761579690;
+ s=mimecast20190719; t=1761579696;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=DvH2Q4k8NP1+EIt04/NPFmkCazRoq6SJpxl4pWo4S5A=;
- b=JpD1g81scFQbW2pUHgf40h/Dug00HVtHMvd9G3R7czXZybvSR+36O6+d10i2zcrvZGzh67
- EbHiY6NfaQtI37T/K+UXmmrsSgRSyQm2T58JpkIuEtD2ir5GIYhXaNxs0hNA0t5c1JLVBC
- srkv6FY/doVwr9+NFgc6ozEshqKUnaE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oJ/kAIunWoTHn08ow+43H8rlzqa6envgWmeSG+w9GoQ=;
+ b=A8rWrThVdee7QILVlapX6r/Cuw4YG74J8uRheEAVViOI7qsVg/I3mGwlZ1mraK24cjL6LX
+ VeAGzU7CMYhYSuUAARqawI/5hBGA1A+y8lNA5/tP/jhbfgqkpJZ0VpLI68z1Aot2HGu96M
+ 5YOA3YIUuHN8QQNbuY57sPyOvq+pKf8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-Q6OSTuMiNDuV2fTmCj1OHQ-1; Mon,
- 27 Oct 2025 11:41:27 -0400
-X-MC-Unique: Q6OSTuMiNDuV2fTmCj1OHQ-1
-X-Mimecast-MFC-AGG-ID: Q6OSTuMiNDuV2fTmCj1OHQ_1761579686
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-PWQAyOsFPBGbp3K-zKjilQ-1; Mon,
+ 27 Oct 2025 11:41:34 -0400
+X-MC-Unique: PWQAyOsFPBGbp3K-zKjilQ-1
+X-Mimecast-MFC-AGG-ID: PWQAyOsFPBGbp3K-zKjilQ_1761579693
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3561419560B1; Mon, 27 Oct 2025 15:41:26 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0BEC51800378; Mon, 27 Oct 2025 15:41:33 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.224.183])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E591D30001A2; Mon, 27 Oct 2025 15:41:23 +0000 (UTC)
+ id 0971A30001A2; Mon, 27 Oct 2025 15:41:30 +0000 (UTC)
 From: Juraj Marcin <jmarcin@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>, Peter Xu <peterx@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Jiri Denemark <jdenemar@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 0/4] migration: Introduce POSTCOPY_DEVICE state
-Date: Mon, 27 Oct 2025 16:41:07 +0100
-Message-ID: <20251027154115.4138677-1-jmarcin@redhat.com>
+Subject: [PATCH v2 1/4] migration: Do not try to start VM if disk activation
+ fails
+Date: Mon, 27 Oct 2025 16:41:08 +0100
+Message-ID: <20251027154115.4138677-2-jmarcin@redhat.com>
+In-Reply-To: <20251027154115.4138677-1-jmarcin@redhat.com>
+References: <20251027154115.4138677-1-jmarcin@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
@@ -64,7 +68,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,61 +84,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series introduces a new POSTCOPY_DEVICE state that is active (both,
-on source and destination side), while the destination loads the device
-state. Before this series, if the destination machine failed during the
-device load, the source side would stay stuck POSTCOPY_ACTIVE with no
-way of recovery. With this series, if the migration fails while in
-POSTCOPY_DEVICE state, the source side can safely resume, as destination
-has not started yet.
+From: Peter Xu <peterx@redhat.com>
 
-RFC: https://lore.kernel.org/all/20250807114922.1013286-1-jmarcin@redhat.com/
+If a rare split brain happens (e.g. dest QEMU started running somehow,
+taking shared drive locks), src QEMU may not be able to activate the
+drives anymore.  In this case, src QEMU shouldn't start the VM or it might
+crash the block layer later with something like:
 
-V1: https://lore.kernel.org/all/20250915115918.3520735-1-jmarcin@redhat.com/
+Meanwhile, src QEMU cannot try to continue either even if dest QEMU can
+release the drive locks (e.g. by QMP "stop").  Because as long as dest QEMU
+started running, it means dest QEMU's RAM is the only version that is
+consistent with current status of the shared storage.
 
-V2 changes:
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-- removed old patch 2, that changed migration_has_failed()
-
-Patch 2:
-- moved postcopy_ram_listen_thread() to postcopy_ram.c as per TODO,
-  suggested by Fabiano
-
-Patch 3:
-- introduced separate postcopy-exit-on-error setting instead of reusing
-  existing exit-on-error setting, suggested by Fabiano and Jirka
-- merged migration_incoming_finish() and
-  migration_incoming_state_destroy() into migration_incoming_cleanup()
-  and added migration_incoming_cleanup_bh(), suggested by Fabiano
-
-Patch 4:
-- introduced POSTCOPY_DEVICE state also to destination, suggested by
-  Jirka
-- moved POSTCOPY_DEVICE->POSTCOPY_ACTIVE transition from return path
-  thread to main migration thread, suggested by Peter
-
-Juraj Marcin (3):
-  migration: Move postcopy_ram_listen_thread() to postcopy-ram.c
-  migration: Refactor all incoming cleanup into
-    migration_incoming_cleanup()
-  migration: Introduce POSTCOPY_DEVICE state
-
-Peter Xu (1):
-  migration: Do not try to start VM if disk activation fails
-
- migration/migration-hmp-cmds.c        |   2 +-
- migration/migration.c                 | 148 +++++++++++++++++---------
- migration/migration.h                 |   7 +-
- migration/postcopy-ram.c              | 137 ++++++++++++++++++++++++
- migration/postcopy-ram.h              |   3 +
- migration/savevm.c                    | 137 ++----------------------
- migration/savevm.h                    |   2 +
- migration/trace-events                |   1 +
- qapi/migration.json                   |  17 ++-
- system/vl.c                           |   3 +-
- tests/qtest/migration/precopy-tests.c |   3 +-
- 11 files changed, 274 insertions(+), 186 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index a63b46bbef..e9acd0f63b 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3551,6 +3551,8 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ 
+ static void migration_iteration_finish(MigrationState *s)
+ {
++    Error *local_err = NULL;
++
+     bql_lock();
+ 
+     /*
+@@ -3574,11 +3576,28 @@ static void migration_iteration_finish(MigrationState *s)
+     case MIGRATION_STATUS_FAILED:
+     case MIGRATION_STATUS_CANCELLED:
+     case MIGRATION_STATUS_CANCELLING:
+-        /*
+-         * Re-activate the block drives if they're inactivated.  Note, COLO
+-         * shouldn't use block_active at all, so it should be no-op there.
+-         */
+-        migration_block_activate(NULL);
++        if (!migration_block_activate(&local_err)) {
++            /*
++            * Re-activate the block drives if they're inactivated.
++            *
++            * If it fails (e.g. in case of a split brain, where dest QEMU
++            * might have taken some of the drive locks and running!), do
++            * not start VM, instead wait for mgmt to decide the next step.
++            *
++            * If dest already started, it means dest QEMU should contain
++            * all the data it needs and it properly owns all the drive
++            * locks.  Then even if src QEMU got a FAILED in migration, it
++            * normally should mean we should treat the migration as
++            * COMPLETED.
++            *
++            * NOTE: it's not safe anymore to start VM on src now even if
++            * dest would release the drive locks.  It's because as long as
++            * dest started running then only dest QEMU's RAM is consistent
++            * with the shared storage.
++            */
++            error_free(local_err);
++            break;
++        }
+         if (runstate_is_live(s->vm_old_state)) {
+             if (!runstate_check(RUN_STATE_SHUTDOWN)) {
+                 vm_start();
 -- 
 2.51.0
 
