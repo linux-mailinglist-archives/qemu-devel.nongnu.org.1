@@ -2,100 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1A7C0E10A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327C3C0E284
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:50:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDNMY-00081P-NR; Mon, 27 Oct 2025 09:34:19 -0400
+	id 1vDNZr-0004b2-6H; Mon, 27 Oct 2025 09:48:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNM8-0007pn-Dy
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:33:53 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vDNZl-0004aZ-Du
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:47:57 -0400
+Received: from mail-yx1-xb130.google.com ([2607:f8b0:4864:20::b130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNLq-0006gr-PC
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:33:51 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so34856685e9.3
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:33:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vDNZe-0008Ot-By
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:47:57 -0400
+Received: by mail-yx1-xb130.google.com with SMTP id
+ 956f58d0204a3-63e393c49f1so5247646d50.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761572008; x=1762176808; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IGudUMXJypZmFhJTWH7zemPwnU0iRF1rcgzMtDBMZpg=;
- b=vDyJ+SsjgUB6y8QjamyrFocj1Dj6g71EUWtGPSrRFls5D31+9BWxHfEsYTydVWSWyA
- NNmHjTncJIv+wGghpMTD16KaZkP6BgAakcU74T5EM7S+LYa8z9lABDuZReboPjJEftIK
- ntR0t2mfSoKmc8DGHqRSmhOHx9i48K9zSBbCFfDysanL1b5LuwP80B36YXRYfGv9v/St
- t+nhdpZITCvyjBRKtLhjRWL9TPKbpjBeyjOpRhST5sTYt7wilVpI5JvQGZUEQaxR3B4c
- rnNq3Tkby69xmCxOf9Bt2Rn1REqHr/bpAD586oKULRuvXF4GIi2AIgRd9eQQqDKGa4sS
- B7og==
+ d=linaro.org; s=google; t=1761572865; x=1762177665; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JnVoZT7sodXirfrArD3Xk4OH/feoGFzhhfQYD2cLoO8=;
+ b=PnZw0FTFaQvRgu1+NXS0Yq1+ZLol8brtW2BTFVbi8O4dvTVBORc5F4A0OU5o69ATTu
+ r4bLFUS8x7xXTz3f6hmJatbxhurJLHWROkDrEMVfDgVXPgSVn5OqhupCeBIJX/nQczAb
+ F0x0kGjrC6FynRcSWeWmyUA3T7Yc+jgAE5WgXlijfzabeb7gdV0tBiFh5SW7vSYe+bWx
+ jHDcE9eAMZPrGeM+RpgyC3v5jLSotwJkkhRHcqvAf7FFFRo2+I7Pv94RMrmwJidq1o1S
+ 41ByY+XAs7sF6g0GERZshHjIkle3MNlyaQHtj2cVjfrOyRvZAXfotx1U7K44GP7SMw8b
+ fZ4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761572008; x=1762176808;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IGudUMXJypZmFhJTWH7zemPwnU0iRF1rcgzMtDBMZpg=;
- b=uBNgjpDjHnC5b1r4ibEcLX7ATmRlNIGp5l+uwIin72/9duz9DlDMBM/sWR7Ye2v5er
- Td3h85rRsu/s8qdsP46iZmtvvZ/u4jRNtWu9q+CM2pogo9YPWodAvD0Fjlk2Wlf5YNbs
- AGzUWCRWmjDWA+48dUPs6O9RAW4umTcryCUZcH+lxNMTN895DfBNeYDWZOVGdP8eypdE
- 7d+/BXHyWzlK4GZhl0SbLRfLk9JUxxN9DwGITQ3N3iIDpaytBa4ZjtCD6ayL1YRNtHrB
- mbHmt8aDbUL7PHybZUTGDIdL6pW5n+q6+KfzTnA6wlqp/IWqErSZlBdTYN8dN7ZHtEK2
- /6CQ==
-X-Gm-Message-State: AOJu0Yz60p56UVRGFNMcOm8zz43eYBk8X509/W0hXxV7gu8qKnjphBkr
- tWCxeeD9alTquwhEBSdWmYRlTxpBH5rK4GjmFkHPZE/Rg7Uv7Dci4amfMznMnR4nVAQ=
-X-Gm-Gg: ASbGncuWtXVT9j3u/DJEZckVcpEE4DO2k7ryooQDUFyp10a0KncNQ13gC04nWVdn2EI
- j1K0teM4AFgpKuBoDIwrktY7r5iTgoH6fa/StM3FvWCBKm49+ivICy5aP053RPYcVJzshqSaWJi
- S+Rx5+0EErkCBI6VBzG2+ZmlKnwK7tvHsQwqJwK3Dw5YFldrIbj/Qv/6RDzXdEzFrumx61Igap7
- xYhIVyTcm30xyqF7a+xWOwcYZGvCMBKS1teFOJZpwJmrV07wVWc962m7GZRLUbHM80an0S4RuC9
- 25ohlsXlgMFTOcBSSK6/vIdrklJsUkeRAz4o+G4unyw/PlgDX7tqPiFx49TdQPr4wGcbEZcWj9C
- Hyf3ZZywgCJSi3TXlI3bZSMnut9HLYvtG8ognIQwxUUmW7VskVlRIzN+sSF0L/qEgt2BwNFeoTQ
- /rSdkishaiVhIkhS4cwSdPpz6Jj5iKkziye62cy8WOLAQ=
-X-Google-Smtp-Source: AGHT+IHJakbpTxKXRiG+Xswm2d75kPagyjFoC83ZHRXF2T/F03OwFv5/Klg989EQhbEL7U9LPvwjqQ==
-X-Received: by 2002:a05:600c:1c86:b0:477:fcb:226b with SMTP id
- 5b1f17b1804b1-4770fcb2604mr42348315e9.2.1761572008144; 
- Mon, 27 Oct 2025 06:33:28 -0700 (PDT)
-Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dcbe5587sm164670195e9.0.2025.10.27.06.33.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 06:33:27 -0700 (PDT)
-Message-ID: <0199c5ce-9bb2-42f5-b545-8aaaf47364b0@linaro.org>
-Date: Mon, 27 Oct 2025 14:33:25 +0100
+ d=1e100.net; s=20230601; t=1761572865; x=1762177665;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JnVoZT7sodXirfrArD3Xk4OH/feoGFzhhfQYD2cLoO8=;
+ b=C5yRO7QtiDvn8DwnZsEtEr8shOa7oTVW6G1DK1a77DsmdPScSTomEO85UBcmPdAeXZ
+ ztQbZOj+1qKt11lr7HeDs/ZEAnZKuxWqB5CySCLXTja2obHL/XlrlKL/Ns0yruATHeqn
+ 5Qa+glBXYFWNWOAG3MhDXI04TrcCdApswmZUym1m2aLA4VC/ICD8Z4sVZPwc7xYFjXsr
+ jqTvDqNJc1x1u+hlgxnmjDPkMpTfLhj/6APr6o3AClEte5pSL2XNLZFEijFommXnCakR
+ uZxc+nDQId/I23qMOd5dSslIsO9Y2eTDF42B523SC+jXGQX4fprmkaeVlEP8WnPpiJQv
+ p4gg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1XP4f2kTN4QvPd/nQAffl4he8RxrnX09fA+zPeEwzOa5HB80XnfygYD4JprFH1KWdzPDGU/pI4/iG@nongnu.org
+X-Gm-Message-State: AOJu0YwGSdGOm6J1c28qu6fa1YwjQg/XUPEEfzC+1OxWBNSnOtEqv7KA
+ cR0fDi6+/0v8uU/5jbGFd270M4gT5k2f5a2Oa0IyklZ91mX2L1H1D3g7iLUNwzLF4jDb9ffS2kF
+ kQMwpPpXA1YyQLPjoN/MJlshJsPplC+JmQzOihnUXQg==
+X-Gm-Gg: ASbGncs9U6rbYXC+c0ULJzx8n1DN1yRgxLAJ6URR5EnV8SQNiIr8zedeUUPlJRlUQbP
+ ulkNhGgJmt/tkyRZuJqdrlHWWmwNjZDR5oTQV9E2S5Vc935oM1cxdnW6hlZ4PDSDqx/R1xU8vch
+ NwYaNiljj6dGAkeAbws65p80MPZeYJmKrtFLoCZPUken+uroPZ4cchxzCjuDJLSTcCLPE92r8nO
+ Yl/LeSEg7NoQrplkjPiQElH4AurlpeM3ngizO5n+xMtwiwjGD/1sOw9SZQ6Jw==
+X-Google-Smtp-Source: AGHT+IEM61JjLbKFAoubdh0ZAA9tyM2Daf+J6xnuDO9+ExFDsD7BA7ZUSfretDEdD9lZiXLGvz5B0/7TU63AU1GJZMY=
+X-Received: by 2002:a05:690e:edb:b0:63e:26b1:2148 with SMTP id
+ 956f58d0204a3-63f6ba78badmr52856d50.35.1761572864913; Mon, 27 Oct 2025
+ 06:47:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] hw: Log unassigned MMIO accesses with
- unassigned_mem_ops
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>,
- qemu-arm@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Troy Lee <leetroy@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>
 References: <20251027123644.63487-1-philmd@linaro.org>
  <87pla8xzd2.fsf@draig.linaro.org>
  <CAFEAcA-hWZei6ytAik5sjFcsYqbKaM6K5mzHepmGQpggAdbQmw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-hWZei6ytAik5sjFcsYqbKaM6K5mzHepmGQpggAdbQmw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+ <0199c5ce-9bb2-42f5-b545-8aaaf47364b0@linaro.org>
+In-Reply-To: <0199c5ce-9bb2-42f5-b545-8aaaf47364b0@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 27 Oct 2025 13:47:32 +0000
+X-Gm-Features: AWmQ_bnuZU8jn6syclu5JvYJvu1EeYKAYpyWaWtWlF0Pc1NYS-zk6PzJ2Tltw5o
+Message-ID: <CAFEAcA-MFBs_Xs3R-FCwk6=8vV2VhkEhZqBrf5e4NsrFwUqjtA@mail.gmail.com>
+Subject: Re: [PATCH 0/6] hw: Log unassigned MMIO accesses with
+ unassigned_mem_ops
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Troy Lee <leetroy@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,56 +108,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/25 14:26, Peter Maydell wrote:
-> On Mon, 27 Oct 2025 at 13:12, Alex Bennée <alex.bennee@linaro.org> wrote:
->>
->> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
->>
->>> Do not log unassigned MMIO accesses as I/O ones:
->>> expose unassigned_mem_ops then use it instead of
->>> unassigned_io_ops.
->>
->> But why? Is it because ioport.c is a x86 io thing?
-> 
-> 
-> There is a behaviour difference: unassigned_mem_ops
-> will fault (because of unassigned_mem_accepts()),
-> but unassigned_io_ops will be "reads as -1, writes
-> are ignored". This patch series doesn't mention any
-> intention of introducing a behaviour difference, so
-> I suspect this is not intended...
+On Mon, 27 Oct 2025 at 13:33, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 27/10/25 14:26, Peter Maydell wrote:
+> > (2) PCI "I/O" BARs. PCI devices can have both MMIO
+> > and IO BARs. A PCI controller on x86 maps IO BARs
+> > into the IO space, I think. On non-x86 the IO BARs
+> > typically appear in a different window for MMIO
+> > accesses. Behaviour of PCI I/O accesses to unimplemented
+> > regions is probably defined by the PCI spec somewhere.
+> > Behaviour of PCI accesses to unimplemented MMIO
+> > window areas is I think technically left unspecified
+> > by the PCI standard, but "write ignore/read -1" is
+> > what x86 does and what most software expects, so
+> > hardware that implements something else is making
+> > its life unnecessarily difficult.
+>
+> Right, this is what I'd like to unify, ...
+>
+> > I suspect we entangle the PCI IO BAR concept and
+> > implementation a bit more with the x86 I/O ops
+> > implementation than we ideally ought to.
+>
+> ... to disentangle that.
 
-Oops... Good catch.
+I think my suggestion (based on about five minutes'
+thought, so possibly wrong-headed ;-)) would be:
 
-> There are a couple of different but related concepts
-> here that we need to keep straight:
-> 
-> (1) x86 I/O ops, which are different CPU instructions
-> that talk to a different memory-space than MMIO
-> accesses. In QEMU we model these as accesses to the
-> address_space_io AddressSpace. I believe no other
-> target CPU has an equivalent to this.
+ * the individual PCI devices like bochs-display and
+   vga-pci that currently use unassigned_io_ops should
+   instead define their own local MemoryRegionOps that
+   does what that specific device requires. (I actually
+   suspect that having no I/O ops at all so that the
+   accesses to holes in that MR fall through to the
+   PCI controller's default behaviour for unassigned
+   accesses would also produce correct behaviour, but that's
+   trickier to verify and would require looking at a lot
+   of individual pci-controller models, so the easy thing is
+   a local MRO.)
+ * patches 3, 4 and 5 are all defining the default behaviour
+   for "access to some MMIO window provided by a PCI
+   controller". If we want to disentangle this from the
+   x86 IO port handling, then I guess that we could either
+   have the generic PCI code provide a "reads as all-ones,
+   writes ignored" MemoryRegionOps as a convenience for
+   controller implementations; or we could have each
+   controller do it separately. I guess I prefer the former.
+ * I'm not sure about patch 6, but it looks like some kind
+   of PCI-to-other-bus bridge. It should probably define its
+   own MemoryRegionOps with the behaviour it wants. (Though
+   again it's possible that letting unassigned addresses
+   fall through the the PCI controller's implementation
+   would be neater.)
 
-This is also my understanding.
+Roughly, what's happened here is that various nominally
+independent bits of code have borrowed unassigned_io_ops
+as a convenient pre-existing "reads as all ones, writes
+ignored" MemoryRegionOps; we can disentangle by having
+them implement what they're after locally rather than
+borrowing something that doesn't logically belong to them.
 
-> (2) PCI "I/O" BARs. PCI devices can have both MMIO
-> and IO BARs. A PCI controller on x86 maps IO BARs
-> into the IO space, I think. On non-x86 the IO BARs
-> typically appear in a different window for MMIO
-> accesses. Behaviour of PCI I/O accesses to unimplemented
-> regions is probably defined by the PCI spec somewhere.
-> Behaviour of PCI accesses to unimplemented MMIO
-> window areas is I think technically left unspecified
-> by the PCI standard, but "write ignore/read -1" is
-> what x86 does and what most software expects, so
-> hardware that implements something else is making
-> its life unnecessarily difficult.
-
-Right, this is what I'd like to unify, ...
-
-> I suspect we entangle the PCI IO BAR concept and
-> implementation a bit more with the x86 I/O ops
-> implementation than we ideally ought to.
-
-... to disentangle that.
+thanks
+-- PMM
 
