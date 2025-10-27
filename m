@@ -2,50 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB3FC0D909
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:36:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D12EC0D915
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:36:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMPM-0000DL-6e; Mon, 27 Oct 2025 08:33:08 -0400
+	id 1vDMSI-00043h-Ma; Mon, 27 Oct 2025 08:36:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDMOn-0008K2-Vp
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:32:38 -0400
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vDMS2-0003pH-TU
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:35:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDMOh-0005Qt-O2
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:32:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=wFCezcQ7fh5qeB/Zli5cwGtrrz+6fzqC0Kwv+DN1bYU=; b=vCe0LAtTgZhyv01
- unEaIJVM57xZxZBaj5DIK96qR94w2TcqIImi/lsB9kDdo3MpxnUzPAVz/0YlQcpMQzWiOTSzahdw2
- xS+Fps2dQ3/n69Hqs2WmWixKyO5hdzkMK9tDOH2TtAFVUxHvptbAJ+bml0kmUZ/Vj5dkcdW7w6/Mu
- RI=;
-Date: Mon, 27 Oct 2025 13:35:12 +0100
-Subject: [PATCH v2 3/3] hw/riscv: Widen OpenSBI dynamic info struct
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vDMRr-00064K-Iw
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:35:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761568534;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PCkPzW30WVEzQkAXGjant10stjDzNI0OMdr7gXxNFRY=;
+ b=AjrPsI7d3LBb8nrGGywIyzM7JPL2YZ1//lEl3tgjPHHwqu4CbJeaTb/i3xqvyJN/7QNj3v
+ TAm6gB0NCZe4LOZnYOuDsJIM6R9wBJlWWCB/1Y6F9NLO1k8AOzpOl32Mu2e4tU2JSFFduC
+ qVoKTJCdOubC8KkosTh6eXs0R7ieO4I=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-nYjI3XfHOJm-lD4D5Ng19A-1; Mon,
+ 27 Oct 2025 08:35:30 -0400
+X-MC-Unique: nYjI3XfHOJm-lD4D5Ng19A-1
+X-Mimecast-MFC-AGG-ID: nYjI3XfHOJm-lD4D5Ng19A_1761568529
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B4D321800451; Mon, 27 Oct 2025 12:35:28 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.35])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7227819560AD; Mon, 27 Oct 2025 12:35:25 +0000 (UTC)
+Date: Mon, 27 Oct 2025 12:35:21 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Jan =?utf-8?B?TMO8YmJl?= <jlu@pengutronix.de>,
+ Jerome Forissier <jerome.forissier@linaro.org>
+Subject: Re: [PATCH v5 2/6] hw/sd/sdcard: Allow user-instantiated eMMC
+Message-ID: <aP9nCeWC-qr248iZ@redhat.com>
+References: <cover.1760702638.git.jan.kiszka@siemens.com>
+ <90fc6201696fcf0e5fd0493365bc32b217aa9d6e.1760702638.git.jan.kiszka@siemens.com>
+ <aP9dvF1unTtLrSdQ@redhat.com>
+ <9d287284-1cb2-4126-b7d7-9c57b32ce408@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-feature-single-binary-hw-v1-v2-3-44478d589ae9@rev.ng>
-References: <20251027-feature-single-binary-hw-v1-v2-0-44478d589ae9@rev.ng>
-In-Reply-To: <20251027-feature-single-binary-hw-v1-v2-0-44478d589ae9@rev.ng>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, palmer@dabbelt.com
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9d287284-1cb2-4126-b7d7-9c57b32ce408@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,109 +90,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since fw_dynamic_info is only used for non 32 bit targets, target_long
-is int64_t anyway.  Rename struct to fw_dynamic_info64 and use int64_t.
+On Mon, Oct 27, 2025 at 01:23:56PM +0100, Philippe Mathieu-Daudé wrote:
+> On 27/10/25 12:55, Daniel P. Berrangé wrote:
+> > On Fri, Oct 17, 2025 at 02:03:54PM +0200, Jan Kiszka wrote:
+> > > From: Jan Kiszka <jan.kiszka@siemens.com>
+> > > 
+> > > Enable user-instantiation so that PCI-attached eMMCs can be created for
+> > > virt machines, for QA purposes for the eMMC model itself and for complex
+> > > firmware/OS integrations using the upcoming RPMB partition support.
+> > 
+> > IIUC, the 'emmc' device wants an 'sd-bus' but this commit talks about
+> > it being PCI-attached ?
+> 
+> Sigh, it should not, but it got introduced this way and we didn't
+> have time / energy / good reason to rework the code, which currently
+> just works.
+> 
+> SD / MMC cards -> plugged over external SD bus
+> 
+> embedded MMC cards -> no SD bus, directly mmio-mapped.
+> 
+> > 
+> > Can you elaborate on / illustrate the usage example for an end user ?
+> 
+> Saving time by testing virtual hardware, without having to implement a
+> real model.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
----
- include/hw/riscv/boot_opensbi.h | 14 +++++++-------
- hw/riscv/boot.c                 | 22 ++++++++++++----------
- 2 files changed, 19 insertions(+), 17 deletions(-)
+Ok, more specifically, what are the suggested QEMU command line
+args to make use of this with PCI ?
 
-diff --git a/include/hw/riscv/boot_opensbi.h b/include/hw/riscv/boot_opensbi.h
-index 18664a174b..ab9999be3f 100644
---- a/include/hw/riscv/boot_opensbi.h
-+++ b/include/hw/riscv/boot_opensbi.h
-@@ -29,17 +29,17 @@ enum sbi_scratch_options {
- };
- 
- /** Representation dynamic info passed by previous booting stage */
--struct fw_dynamic_info {
-+struct fw_dynamic_info64 {
-     /** Info magic */
--    target_long magic;
-+    int64_t magic;
-     /** Info version */
--    target_long version;
-+    int64_t version;
-     /** Next booting stage address */
--    target_long next_addr;
-+    int64_t next_addr;
-     /** Next booting stage mode */
--    target_long next_mode;
-+    int64_t next_mode;
-     /** Options for OpenSBI library */
--    target_long options;
-+    int64_t options;
-     /**
-      * Preferred boot HART id
-      *
-@@ -55,7 +55,7 @@ struct fw_dynamic_info {
-      * stage can set it to -1UL which will force the FW_DYNAMIC firmware
-      * to use the relocation lottery mechanism.
-      */
--    target_long boot_hart;
-+    int64_t boot_hart;
- };
- 
- /** Representation dynamic info passed by previous booting stage */
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index 4eadcff26c..64608e58c7 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -387,7 +387,8 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-                                   uint64_t kernel_entry)
- {
-     struct fw_dynamic_info32 dinfo32;
--    struct fw_dynamic_info dinfo;
-+    struct fw_dynamic_info64 dinfo64;
-+    void *dinfo_ptr = NULL;
-     size_t dinfo_len;
- 
-     if (riscv_is_32bit(harts)) {
-@@ -397,15 +398,17 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-         dinfo32.next_addr = cpu_to_le32(kernel_entry);
-         dinfo32.options = 0;
-         dinfo32.boot_hart = 0;
-+        dinfo_ptr = &dinfo32;
-         dinfo_len = sizeof(dinfo32);
-     } else {
--        dinfo.magic = cpu_to_le64(FW_DYNAMIC_INFO_MAGIC_VALUE);
--        dinfo.version = cpu_to_le64(FW_DYNAMIC_INFO_VERSION);
--        dinfo.next_mode = cpu_to_le64(FW_DYNAMIC_INFO_NEXT_MODE_S);
--        dinfo.next_addr = cpu_to_le64(kernel_entry);
--        dinfo.options = 0;
--        dinfo.boot_hart = 0;
--        dinfo_len = sizeof(dinfo);
-+        dinfo64.magic = cpu_to_le64(FW_DYNAMIC_INFO_MAGIC_VALUE);
-+        dinfo64.version = cpu_to_le64(FW_DYNAMIC_INFO_VERSION);
-+        dinfo64.next_mode = cpu_to_le64(FW_DYNAMIC_INFO_NEXT_MODE_S);
-+        dinfo64.next_addr = cpu_to_le64(kernel_entry);
-+        dinfo64.options = 0;
-+        dinfo64.boot_hart = 0;
-+        dinfo_ptr = &dinfo64;
-+        dinfo_len = sizeof(dinfo64);
-     }
- 
-     /**
-@@ -419,8 +422,7 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-     }
- 
-     rom_add_blob_fixed_as("mrom.finfo",
--                           riscv_is_32bit(harts) ?
--                           (void *)&dinfo32 : (void *)&dinfo,
-+                           dinfo_ptr,
-                            dinfo_len,
-                            rom_base + reset_vec_size,
-                            &address_space_memory);
 
+With regards,
+Daniel
 -- 
-2.51.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
