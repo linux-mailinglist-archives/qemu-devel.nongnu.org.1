@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1BBC0EDF9
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1B4C0EEDB
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:23:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDOva-0004Hi-4q; Mon, 27 Oct 2025 11:14:34 -0400
+	id 1vDOve-0004fh-Oa; Mon, 27 Oct 2025 11:14:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOv4-0003dm-PT
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vDOvQ-0004HU-OJ
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOuo-0003yG-JE
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:00 -0400
+ id 1vDOv5-0003z5-Lz
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761578016;
+ s=mimecast20190719; t=1761578027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gOiGaNU1LEt6neU8d+Ay12Sjg5sFJrZ5dv6v4rlkU7s=;
- b=OvgDgTjoRqYaK9aZMKfAVJawWNVGu1tp+s8E7UCsgIyg4nCmUUTh5tbQ0Tni52guRCVnHz
- 5YzeaWL30wgghrKmYBRz5LQfP0XDKY4pqwv/AoT4dE4UV7FWLYfILxrY+myVvnF59uYH3P
- FtCvjAJMW8KqxCBFV1WbAY7ghRF2ZqA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=SjdZwH9zgieCYcFtuqyVlNQ4c4s0sJqI/ew69G8MOdY=;
+ b=FMxCS4hGA6wKzU1N8CWr9gbq36APKz3SJVL8sbnWtA+KUcysFCiWruoq+0QLTUZY/uzpNn
+ xIcUP9I6ed0kmFna6GHzXEPRZnEZzs3iezbzjW8/HDnyFsqY2fzgJvARYtlC/hkOHoNnyY
+ MwxGp5UPuBVWQTi2Qv85hVOJu+y9U1g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-IRhvZ2tHPaKL3HhJTyZBdA-1; Mon,
- 27 Oct 2025 11:13:33 -0400
-X-MC-Unique: IRhvZ2tHPaKL3HhJTyZBdA-1
-X-Mimecast-MFC-AGG-ID: IRhvZ2tHPaKL3HhJTyZBdA_1761578010
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-UujwCvy4MYeqdp3j8szHmA-1; Mon,
+ 27 Oct 2025 11:13:44 -0400
+X-MC-Unique: UujwCvy4MYeqdp3j8szHmA-1
+X-Mimecast-MFC-AGG-ID: UujwCvy4MYeqdp3j8szHmA_1761578020
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E96919560B5; Mon, 27 Oct 2025 15:13:30 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EFCC1834512; Mon, 27 Oct 2025 15:13:36 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A2BAF19540EB; Mon, 27 Oct 2025 15:13:26 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D0DEA180057E; Mon, 27 Oct 2025 15:13:34 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>,
@@ -69,16 +69,16 @@ Cc: Alexandre Ratchov <alex@caoua.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 24/35] audio/replay: fix type punning
-Date: Mon, 27 Oct 2025 19:10:31 +0400
-Message-ID: <20251027151045.2863176-25-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 25/35] audio: move internal APIs to audio_int.h
+Date: Mon, 27 Oct 2025 19:10:32 +0400
+Message-ID: <20251027151045.2863176-26-marcandre.lureau@redhat.com>
 In-Reply-To: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -88,7 +88,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,130 +106,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Fix some check-patch issues while at it.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- audio/audio.h           | 6 ++++--
- audio/mixeng.h          | 1 -
- include/system/replay.h | 3 ++-
- audio/mixeng.c          | 6 ++----
- replay/replay-audio.c   | 2 +-
- replay/stubs-system.c   | 2 +-
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ audio/audio.h          | 21 ---------------------
+ audio/audio_int.h      | 24 ++++++++++++++++++++++++
+ audio/audio-hmp-cmds.c |  2 +-
+ audio/wavcapture.c     |  2 +-
+ 4 files changed, 26 insertions(+), 23 deletions(-)
 
 diff --git a/audio/audio.h b/audio/audio.h
-index c8515afcd2..61ff900b7e 100644
+index 61ff900b7e..c0cad7d976 100644
 --- a/audio/audio.h
 +++ b/audio/audio.h
-@@ -171,9 +171,11 @@ int wav_start_capture(AudioState *state, CaptureState *s, const char *path,
+@@ -38,15 +38,6 @@ typedef struct audsettings {
+     int endianness;
+ } audsettings;
  
+-audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo);
+-int audioformat_bytes_per_sample(AudioFormat fmt);
+-int audio_buffer_frames(AudiodevPerDirectionOptions *pdo,
+-                        audsettings *as, int def_usecs);
+-int audio_buffer_samples(AudiodevPerDirectionOptions *pdo,
+-                         audsettings *as, int def_usecs);
+-int audio_buffer_bytes(AudiodevPerDirectionOptions *pdo,
+-                       audsettings *as, int def_usecs);
+-
+ typedef enum {
+     AUD_CNOTIFY_ENABLE,
+     AUD_CNOTIFY_DISABLE
+@@ -88,9 +79,6 @@ typedef struct QEMUAudioTimeStamp {
+     uint64_t old_ts;
+ } QEMUAudioTimeStamp;
+ 
+-void AUD_vlog (const char *cap, const char *fmt, va_list ap) G_GNUC_PRINTF(2, 0);
+-void AUD_log (const char *cap, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
+-
+ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp);
+ void AUD_remove_card (QEMUSoundCard *card);
+ CaptureVoiceOut *AUD_add_capture(
+@@ -160,15 +148,6 @@ int  AUD_is_active_in (SWVoiceIn *sw);
+ void     AUD_init_time_stamp_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
+ uint64_t AUD_get_elapsed_usec_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
+ 
+-static inline void *advance (void *p, int incr)
+-{
+-    uint8_t *d = p;
+-    return (d + incr);
+-}
+-
+-int wav_start_capture(AudioState *state, CaptureState *s, const char *path,
+-                      int freq, int bits, int nchannels);
+-
  void audio_cleanup(void);
  
--void audio_sample_to_uint64(const void *samples, int pos,
-+typedef struct st_sample st_sample;
-+
-+void audio_sample_to_uint64(const st_sample *sample, int pos,
-                             uint64_t *left, uint64_t *right);
--void audio_sample_from_uint64(void *samples, int pos,
-+void audio_sample_from_uint64(st_sample *sample, int pos,
-                             uint64_t left, uint64_t right);
- 
- void audio_add_audiodev(Audiodev *audio);
-diff --git a/audio/mixeng.h b/audio/mixeng.h
-index ead93ac2f7..f63283f408 100644
---- a/audio/mixeng.h
-+++ b/audio/mixeng.h
-@@ -33,7 +33,6 @@ struct st_sample { mixeng_real l; mixeng_real r; };
- struct mixeng_volume { int mute; int64_t r; int64_t l; };
- struct st_sample { int64_t l; int64_t r; };
+ typedef struct st_sample st_sample;
+diff --git a/audio/audio_int.h b/audio/audio_int.h
+index 4a4d69f2bf..d1badbf235 100644
+--- a/audio/audio_int.h
++++ b/audio/audio_int.h
+@@ -29,12 +29,19 @@
+ #define FLOAT_MIXENG
+ /* #define RECIPROCAL */
  #endif
--typedef struct st_sample st_sample;
++#include "audio.h"
+ #include "mixeng.h"
  
- typedef void (t_sample) (struct st_sample *dst, const void *src, int samples);
- typedef void (f_sample) (void *dst, const struct st_sample *src, int samples);
-diff --git a/include/system/replay.h b/include/system/replay.h
-index 1c87c97fdd..1e63c0784c 100644
---- a/include/system/replay.h
-+++ b/include/system/replay.h
-@@ -16,6 +16,7 @@
- #include "qapi/qapi-types-run-state.h"
- #include "qapi/qapi-types-ui.h"
- #include "block/aio.h"
-+#include "audio/audio.h"
+ #ifdef CONFIG_GIO
+ #include <gio/gio.h>
+ #endif
  
- /* replay clock kinds */
- enum ReplayClockKind {
-@@ -165,7 +166,7 @@ void replay_net_packet_event(ReplayNetState *rns, unsigned flags,
- /*! Saves/restores number of played samples of audio out operation. */
- void replay_audio_out(size_t *played);
- /*! Saves/restores recorded samples of audio in operation. */
--void replay_audio_in(size_t *recorded, void *samples, size_t *wpos, size_t size);
-+void replay_audio_in(size_t *recorded, st_sample *samples, size_t *wpos, size_t size);
++void G_GNUC_PRINTF(2, 0)
++AUD_vlog(const char *cap, const char *fmt, va_list ap);
++
++void G_GNUC_PRINTF(2, 3)
++AUD_log(const char *cap, const char *fmt, ...);
++
+ struct audio_pcm_ops;
  
- /* VM state operations */
- 
-diff --git a/audio/mixeng.c b/audio/mixeng.c
-index be38617e9b..af9ec3d4d2 100644
---- a/audio/mixeng.c
-+++ b/audio/mixeng.c
-@@ -404,7 +404,7 @@ f_sample *mixeng_clip_float[2][2] = {
-     }
+ struct audio_callback {
+@@ -187,6 +194,23 @@ struct audio_pcm_ops {
+     void   (*volume_in)(HWVoiceIn *hw, Volume *vol);
  };
  
--void audio_sample_to_uint64(const void *samples, int pos,
-+void audio_sample_to_uint64(const st_sample *sample, int pos,
-                             uint64_t *left, uint64_t *right)
- {
- #ifdef FLOAT_MIXENG
-@@ -412,14 +412,13 @@ void audio_sample_to_uint64(const void *samples, int pos,
-         "Coreaudio and floating point samples are not supported by replay yet");
-     abort();
- #else
--    const struct st_sample *sample = samples;
-     sample += pos;
-     *left = sample->l;
-     *right = sample->r;
- #endif
- }
++audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo);
++int audioformat_bytes_per_sample(AudioFormat fmt);
++int audio_buffer_frames(AudiodevPerDirectionOptions *pdo,
++                        audsettings *as, int def_usecs);
++int audio_buffer_samples(AudiodevPerDirectionOptions *pdo,
++                         audsettings *as, int def_usecs);
++int audio_buffer_bytes(AudiodevPerDirectionOptions *pdo,
++                       audsettings *as, int def_usecs);
++
++static inline void *advance(void *p, size_t incr)
++{
++    return (uint8_t *)p + incr;
++}
++
++int wav_start_capture(AudioState *state, CaptureState *s, const char *path,
++                      int freq, int bits, int nchannels);
++
+ void audio_generic_run_buffer_in(HWVoiceIn *hw);
+ void *audio_generic_get_buffer_in(HWVoiceIn *hw, size_t *size);
+ void audio_generic_put_buffer_in(HWVoiceIn *hw, void *buf, size_t size);
+diff --git a/audio/audio-hmp-cmds.c b/audio/audio-hmp-cmds.c
+index 8774c09f18..819f8fa9d8 100644
+--- a/audio/audio-hmp-cmds.c
++++ b/audio/audio-hmp-cmds.c
+@@ -23,7 +23,7 @@
+  */
  
--void audio_sample_from_uint64(void *samples, int pos,
-+void audio_sample_from_uint64(st_sample *sample, int pos,
-                             uint64_t left, uint64_t right)
- {
- #ifdef FLOAT_MIXENG
-@@ -427,7 +426,6 @@ void audio_sample_from_uint64(void *samples, int pos,
-         "Coreaudio and floating point samples are not supported by replay yet");
-     abort();
- #else
--    struct st_sample *sample = samples;
-     sample += pos;
-     sample->l = left;
-     sample->r = right;
-diff --git a/replay/replay-audio.c b/replay/replay-audio.c
-index ed2ba2164b..3413801062 100644
---- a/replay/replay-audio.c
-+++ b/replay/replay-audio.c
-@@ -35,7 +35,7 @@ void replay_audio_out(size_t *played)
-     }
- }
+ #include "qemu/osdep.h"
+-#include "audio/audio.h"
++#include "audio_int.h"
+ #include "monitor/hmp.h"
+ #include "monitor/monitor.h"
+ #include "qapi/error.h"
+diff --git a/audio/wavcapture.c b/audio/wavcapture.c
+index b990844d48..0fbc695d23 100644
+--- a/audio/wavcapture.c
++++ b/audio/wavcapture.c
+@@ -1,7 +1,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/qemu-print.h"
+ #include "qemu/error-report.h"
+-#include "audio.h"
++#include "audio_int.h"
  
--void replay_audio_in(size_t *recorded, void *samples, size_t *wpos, size_t size)
-+void replay_audio_in(size_t *recorded, st_sample *samples, size_t *wpos, size_t size)
- {
-     int pos;
-     uint64_t left, right;
-diff --git a/replay/stubs-system.c b/replay/stubs-system.c
-index 8f2b2d326e..7f85764936 100644
---- a/replay/stubs-system.c
-+++ b/replay/stubs-system.c
-@@ -15,7 +15,7 @@ void replay_input_sync_event(void)
- void replay_add_blocker(const char *feature)
- {
- }
--void replay_audio_in(size_t *recorded, void *samples, size_t *wpos, size_t size)
-+void replay_audio_in(size_t *recorded, st_sample *samples, size_t *wpos, size_t size)
- {
- }
- void replay_audio_out(size_t *played)
+ typedef struct {
+     FILE *f;
 -- 
 2.51.0
 
