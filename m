@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523BEC0CC81
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 10:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E14AC0CE51
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:12:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDJx3-0007sa-Io; Mon, 27 Oct 2025 05:55:45 -0400
+	id 1vDKAq-0001vm-5Y; Mon, 27 Oct 2025 06:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vDJww-0007sI-Gm
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:55:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vDJwr-0001nT-GZ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:55:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761558926;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P495v+0u6sLo6VL6Qy4IC4Su+yRERhuhzncrwPtNLa0=;
- b=X+4Uz4wnGGFkmXjs4clJqUR8cZYHK9pPINsR4k4HBlYGMmiPb8bW/UuVzFMFkz6TRQDO0g
- UKtV1t2CdkGNWOXehBCW+3MkKWWCzUlrIuwpLbcFQcQyfkyooOxbpoa4gxUeiD8mrbPaLh
- BhXUdIqz2mj9u3dERGoVrm18gFjGczA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-H8KwWSCsMueAU18AWDh91w-1; Mon,
- 27 Oct 2025 05:55:22 -0400
-X-MC-Unique: H8KwWSCsMueAU18AWDh91w-1
-X-Mimecast-MFC-AGG-ID: H8KwWSCsMueAU18AWDh91w_1761558921
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 53E461954210; Mon, 27 Oct 2025 09:55:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.224.37])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F297B1800576; Mon, 27 Oct 2025 09:55:18 +0000 (UTC)
-Date: Mon, 27 Oct 2025 10:55:16 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Wesley Hershberger <wesley.hershberger@canonical.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH] block: Add missing null checks during
- query-named-block-nodes
-Message-ID: <aP9BhBEUSuM0ougc@redhat.com>
-References: <20251024-second-fix-3149-v1-1-d997fa3d5ce2@canonical.com>
+ (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
+ id 1vDKAm-0001uv-JJ
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:09:56 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
+ id 1vDKAg-0003zz-2j
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:09:56 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-475dd54d7cdso5669645e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 03:09:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1761559781; x=1762164581;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dSIrBetGG+wfDz8yd4lntslaRbGzk4PwkgYTU3dLOJU=;
+ b=Y+qDLrOk1Jxx8YOHzSRzrChaysB/WrrI84ZXCD7CgoMQfABEZtifY0wuH0gqXGwjhU
+ RNpOMe9Yur8QEWkbN0tAzrkuFUADJD8AntU+LURSbsGkMESAM9ME2LnjkxFQbf3F4Jjs
+ UP0mbCpjObKTnIU0djflufsCP5nxoTFdyeEFSDEsYMhWOtiXsv9nR7qcRyo/AjZ5hmRl
+ HDvFclw055IoPLeQQ1S+/9uZmwWaYoj+gjc8lVlLQ2ao/Bmc+ne7Ud1zCm60qjj6VpfU
+ s8uPIz8tFf0Ke7ilo4UALWMbEQi3cRuRuFiUGlJZ+i246rnZ9Bp5fcbwl+kjOTQfBibx
+ QA4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761559781; x=1762164581;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dSIrBetGG+wfDz8yd4lntslaRbGzk4PwkgYTU3dLOJU=;
+ b=sGqdoIKWqvhu9IkuNUwPDZL4mWNK+2dtGhuM7y+FJuK+SKqt8qJRBEWacZeRjva/hm
+ uV7WhkVooVRcME/pGMWTaOJBPA5f6xWcWYX88xMdFin5V30JDq4+l2o8rJtJAE0VBSXZ
+ AwyKmEsYYkWaegi+RiMBxlweGtc1BGD+vJJfxLqZ/dYmEeLO9H6FbirO4MNgvAkgFVh6
+ 6kwBN0aR/PMAXr1kyrCCW+XJVbyOTf3/VvbUG+nrexgqKgGwI8+MY6ve/9T/mJhd1YOA
+ 0maMruG60SXtF7obXUu+VSY+Uha1O63Nc5wmr1eK1YOqWIFTwc9QUnFr+nv0BNMMWf9m
+ xoEg==
+X-Gm-Message-State: AOJu0YzmcFqapPoF3Qh6l9iwO/q692zaVoQuhxfdu/ULxC0FFo2TXwzz
+ 6cucXWpM+3/utZd8kJS19iB9VRYsanAGU9EstHQKKNG9Pd7irQ6Le/r+/AxzA5zkHVqnP/ir2Pa
+ akFmV9fQ=
+X-Gm-Gg: ASbGncug2oU/F7OOlx7Ck8FC99Dadf81RfwfPolWm5A4/4s6oKf7k0T88SrB03jP1eK
+ e15fAgxazHz6EEKa/0bX70GA111knKmcTRfTsLB2qytnzIX/OGkVGU0J0DXRWtk/w07yknd2iWR
+ biUTaIOM4d87JqbTlTwRqPgLTqPlAb5zZ/PkKDnWgYxwb/8KdzYl3nQT4Z90g1j1qfyykRwjBLm
+ 9y+76jPs3VotIMys9EboPLIUU7Rl3Y4he9EdnsXM08y7gFLkv5EAdflWfo+2y4TBJQX8qITRaTg
+ 75uwqvp46jpbifuiJOlPWhpo2tajiu3IfosdN81p/pfrXjNkWFMZsllxyyOaHDavt7LQaVM39a9
+ w2kCrOq2Daf4fgVoJxh3BoLESPo+439ylE9h6cEKyZ79OPvKTUtZtKgIMC9GUnN0t0K80UmEOUj
+ A0hETd97SGIVmOJeA=
+X-Google-Smtp-Source: AGHT+IFoTLc4HvdxaBdw971nYTQW98A71R4PKctc2laELDqjB5RvIm7nSkWsYkKSn+I8Si+qmzuTHQ==
+X-Received: by 2002:a05:600c:528e:b0:475:dcbb:7903 with SMTP id
+ 5b1f17b1804b1-475dcbb7927mr53656205e9.9.1761559780655; 
+ Mon, 27 Oct 2025 03:09:40 -0700 (PDT)
+Received: from DDesktop.local ([2a10:8012:d:eea4:f4de:376b:66b1:d7b5])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475dd494d5csm128625465e9.9.2025.10.27.03.09.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Oct 2025 03:09:40 -0700 (PDT)
+From: Michael Levit <michael@videogpu.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, philmd@linaro.org, pbonzini@redhat.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ liwei1518@gmail.com, smishash@gmail.com
+Subject: [PATCH v2 0/5] RISC-V: NEORV32 CPU, devices, and machine
+Date: Mon, 27 Oct 2025 12:09:33 +0200
+Message-ID: <20251027100938.11822-1-michael@videogpu.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251024-second-fix-3149-v1-1-d997fa3d5ce2@canonical.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2a00:1450:4864:20::332;
+ envelope-from=michael@videogpu.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,163 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.10.2025 um 20:07 hat Wesley Hershberger geschrieben:
-> Some operations insert an implicit node above the top node in the block
-> graph (e.g. block-stream or blockdev-backup). The implicit node is
-> removed when the operation finishes. If QMP query-named-block-nodes is
-> called while the operation is removing the implicit node, it may observe
-> a node with no children, causing a segfault.
+Hi all,
 
-How can a QMP command run in the middle of removing a node? Is this the
-real bug?
+This v2 reworks my initial NEORV32 submission into a small, reviewable
+series, following feedback to split the changes by subsystem.
 
-You say block-stream is affected, so let's look at stream.c. The
-interesting part here is bdrv_cor_filter_drop(s->cor_filter_bs).
+The series introduces:
+  * a minimal NEORV32 RV32 CPU type and vendor CSR hook,
+  * the SYSINFO MMIO block,
+  * a small UART device,
+  * an SPI controller with command-mode chip-select,
+  * and the 'neorv32' RISC-V board wiring the above, plus docs.
 
-bdrv_drop_filter() calls bdrv_drained_begin() and bdrv_graph_wrlock(),
-which can run arbitrary callbacks, but not QMP commands. It's too eary
-anyway, the filter is still in the graph at this point.
+Tested by booting the NEORV32 bootloader as -bios and chaining into a
+Hello World from an MTD-backed SPI flash image, with UART on stdio.
 
-Between bdrv_replace_node_common(), which removes the node from its
-parent, and bdrv_unref(cor_filter_bs), I don't see any place that could
-run a QMP command.
+Changes since v1:
+  * Split the monolithic patch into five functional patches, as suggested.
+  * Dropped the accidental '.gitignore' hunk.
+  * No intentional functional changes; only file organization and clarity.
+  * Kept default.mak entry off by default (n).
 
-Does cor_filter_bs have a refcount > 1 before running stream_prepare()
-or stream_clean()?
+Patch layout
+============
+  1/5  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
+  2/5  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
+  3/5  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
+  4/5  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
+  5/5  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
 
-Aha, your previous commit message [1] is actually clearer on this:
+Quick usage
+===========
+  $ ./configure --target-list=riscv32-softmmu --enable-debug --enable-fdt
+  $ make -j$(nproc)
 
-    The cor_filter_bs was added to the blockjob as the main BDS (by
-    passing it to block_job_create), so bdrv_cor_filter_drop doesn't
-    actually remove it from global_bdrv_states.
+Prepare a flash image (64MiB) and place your app at 4MiB offset:
+  $ dd if=/dev/zero of=$HOME/flash_contents.bin bs=1 count=$((0x04000000))
+  $ dd if=/path/to/neorv32_exe.bin of=$HOME/flash_contents.bin \\
+       bs=1 seek=$((0x00400000)) conv=notrunc
 
-[1] https://patchew.org/QEMU/20251021-fix-3149-v2-1-5ffbe701e964@canonical.com/
+Run bootloader and chain-load your app:
+  $ ./build/qemu-system-riscv32 -nographic -machine neorv32 \\
+      -bios /path/to/neorv32/bootloader/neorv32_raw_exe.bin \\
+      -drive file=$HOME/flash_contents.bin,if=mtd,format=raw
 
-So we _are_ creating a state in which cor_filter_bs still exists, but
-doesn't have a child any more. Which is rather untypical for a filter
-(in fact, it's against the definition of a filter). And your two
-different patches address this from two different angles:
+Debugging:
+  $ ... -s -S   # gdbstub on :1234, start paused
 
-1. Don't even let this situation arise. We need to make sure that
-   cor_filter_bs never exists without a child - or at least, that it's
-   happening only for a short time while we know that no other code is
-   running. This is what your previous patch attempted.
 
-2. Make sure that everything else in QEMU can deal with a filter node
-   that doesn't have a child. This is what this one does.
+Michael Levit (5):
+  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
+  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
+  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
+  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
+  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
 
-Hanna, do you have an opinion on these two options?
+Thanks for reviewing!
+Michael
 
-I'm not sure myself, but I see that both aren't mutually exclusive. I
-would say that having 1. is certainly a good thing that makes everything
-else simpler and less likely to fail, so that's the one I would take in
-any case. I'm not completely sure if that means v2 of "stream: Remove
-bdrv from job in .clean()", or if another version that just removes this
-one node from the job would be better. We do have bdrv_drain_all_begin()
-later in stream_prepare(), which must be assumed to run any sorts of
-callbacks, so removing the node in stream_clean() might be too late in
-some cases.
-
-And then we could think of having this patch for 2., probably split
-into two patches - though what tells us that this is complete? I would
-be surprised if there aren't more places in QEMU that assume that a
-filter node has exactly one child. So I think in this case we would have
-to audit the rest of the block layer to make sure we caught all of them.
-
-Hm, I think I am relatively sure now actually that 2. is a bad idea...
-
-So what if we don't actually do 2., but then add an assertion to
-bdrv_cor_filter_drop() that verifies that the refcount is 1 before
-dropping the filter node? This should help us make sure that the patch
-for 1. actually does what it's supposed to do.
-
-> This is hypothesized to only affect the block-stream operation as other
-> operations use the workaround bdc4c4c5e372756a5ba3fb3a61e585b02f0dd7f4
-> or do not detach their children during cleanup (see
-> 3108a15cf09865456d499b08fe14e3dbec4ccbb3).
-> 
-> This backtrace was observed in #3149 on a relatively recent build. The
-> bs passed to bdrv_refresh_filename is the cor_filter_bs from the
-> block-stream operation; bs->implicit was "true".
-> 
-> 0  bdrv_refresh_filename (bs=0x5efed72f8350)
->     at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:8082
-> 1  0x00005efea73cf9dc in bdrv_block_device_info
->     (blk=0x0, bs=0x5efed72f8350, flat=true, errp=0x7ffeb829ebd8)
->     at block/qapi.c:62
-> 2  0x00005efea7391ed3 in bdrv_named_nodes_list
->     (flat=<optimized out>, errp=0x7ffeb829ebd8)
->     at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:6275
-> 3  0x00005efea7471993 in qmp_query_named_block_nodes
->     (has_flat=<optimized out>, flat=<optimized out>, errp=0x7ffeb829ebd8)
->     at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/blockdev.c:2834
-> 4  qmp_marshal_query_named_block_nodes
->     (args=<optimized out>, ret=0x7f2b753beec0, errp=0x7f2b753beec8)
->     at qapi/qapi-commands-block-core.c:553
-> 5  0x00005efea74f03a5 in do_qmp_dispatch_bh (opaque=0x7f2b753beed0)
->     at qapi/qmp-dispatch.c:128
-> 6  0x00005efea75108e6 in aio_bh_poll (ctx=0x5efed6f3f430)
->     at util/async.c:219
-> ...
-
-This is one change...
-
-> The get_allocated_file_size change resolves a second segfault after the
-> first was resolved. Here, bdrv_filter_bs returns NULL as the
-> bs (cor_filter_bs) has no children:
-> 
-> 0  bdrv_co_get_allocated_file_size (bs=<optimized out>)
->     at /usr/src/qemu-1:10.1.0+ds-5ubuntu2+test8/b/qemu/block.c:6018
-> 1  0x0000631d078522be in bdrv_co_get_allocated_file_size_entry
->     (opaque=0x7ffd375c5dd0) at block/block-gen.c:288
-> 2  0x0000631d07929ec2 in coroutine_trampoline
->     (i0=<optimized out>, i1=<optimized out>)
->     at util/coroutine-ucontext.c:175
-> ...
-
-...and this is logically a separate one.
-
-So if we were to go down this route, I think we would have a full patch
-serie to make filter nodes without a child safe. These two parts would
-be separate patches, and I'm almost sure that we would get more patches
-for the series to make it fully safe everywhere.
-
-As I said above, I think this is too hard to get correct to be a good
-idea, though.
-
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3149
-> Buglink: https://bugs.launchpad.net/bugs/2126951
-> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Signed-off-by: Wesley Hershberger <wesley.hershberger@canonical.com>
-> ---
-> As discussed in the previous thread:
-> https://lists.gnu.org/archive/html/qemu-devel/2025-10/msg05458.html
-> 
-> This resolves the issue with my reproducer.
-> 
-> make check-block passes locally.
-> 
-> Please let me know if any adjustments to the patch are needed.
-> 
-> Thanks for the quick & helpful reviews!
-
-Sorry, Wesley, that this turns out to be a bit more complicated! We'll
-probably need some further discussion before we can know if or which
-adjustments to the patch are needed.
-
-Before I send this, I just had another thought: Why does copy-on-read
-even drop the child in bdrv_cor_filter_drop()? Wouldn't the normal
-mode of operation be that for a short time you have both the cor node
-and its parent point to the same child node, and that would just work?
-I see commit messages about conflicting node permissions (3108a15cf09 by
-Vladimir), but I don't understand this. A filter without parents
-shouldn't try to take any permissions.
-
-So another option for never letting the situation arise would be that
-cor_filter_bs just keeps its child until it's really deleted.
-
-Vladimir, do you remember what the specific problem was?
-
-Kevin
-
+-- 
+2.20.1
 
