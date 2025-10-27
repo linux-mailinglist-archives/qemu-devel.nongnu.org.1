@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91E9C0FEAB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54432C0FE66
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:21:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDRmW-0004rp-Ie; Mon, 27 Oct 2025 14:17:24 -0400
+	id 1vDRmM-0004jN-2w; Mon, 27 Oct 2025 14:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmD-0004ju-PU
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:07 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRm8-0004i6-Nj
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:01 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRly-0003xz-6e
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:03 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRlv-0003y6-Mp
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:16:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=3touB2AsZ+NL4kphMTOF47lHgSbcQCB+/KFDfK/oHRo=; b=E+NM2WZkc8RR88Z
- SMO/O9dbi8Si4rYL9WuY11s35qJpwJPGHTKDetQu+NShjT9vQDt27fCtIP/mX/DziuFR4C2MzVDdJ
- dpVlp2Ze7Asg9t9aUA6I7cOZugUKKztIUDVQAM5G8ZP1pfyjV7ER8ZcLWrvQYaSeIriSwH5A03K31
- Xg=;
+ List-Help; bh=05s0gkdYin11QLwvdRXTFKb6xMLzk4PgEJo16gQ/rPs=; b=PP3yksy6+iNi944
+ Cwf3fBJSkpqqSO/OQB1/vW0HnuIRFiF2hE4XxLcbFKz7cT8N3bJP5SCxxgN5aelFRp63NPXF2qLvo
+ d+mSjV/OhNh4v0+zmCq50WXQ/cT9cnlX//gj+4GzDOYVW+eus/t4YRNYcMG9BfHNN0HXNrZfXUsuD
+ lo=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v4 03/33] target/riscv: Bugfix
- riscv_pmu_ctr_get_fixed_counters_val()
-Date: Mon, 27 Oct 2025 19:18:00 +0100
-Message-ID: <20251027181831.27016-4-anjo@rev.ng>
+Subject: [PATCH v4 04/33] target/riscv: Bugfix make bit 62 read-only 0 for
+ sireg* cfg CSR read
+Date: Mon, 27 Oct 2025 19:18:01 +0100
+Message-ID: <20251027181831.27016-5-anjo@rev.ng>
 In-Reply-To: <20251027181831.27016-1-anjo@rev.ng>
 References: <20251027181831.27016-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -45,7 +45,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,83 +63,39 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From my understanding the upper_half argument only indicates whether the
-upper or lower 32 bits should be returned, and upper_half will only ever
-be set when MXLEN == 32.  However, the function also uses upper_half to
-determine whether the inhibit flags are located in mcyclecfgh or
-mcyclecfg, but this misses the case where MXLEN == 32, upper_half == false
-for TARGET_RISCV32 where we would also need to read the upper half field.
-
-Minor simplifications are also made along with some formatting fixes.
+According to version 20250508 of the privileged specification, a read of
+cyclecfg or instretcfg through sireg* should make the MINH bit
+read-only 0, currently bit 30 is zeroed.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/riscv/csr.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ target/riscv/csr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 5c91658c3d..657179a983 100644
+index 657179a983..8be33d8f2c 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -17,6 +17,7 @@
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
-+#include "cpu_bits.h"
- #include "qemu/osdep.h"
- #include "qemu/log.h"
- #include "qemu/timer.h"
-@@ -1243,18 +1244,21 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
-     int inst = riscv_pmu_ctr_monitor_instructions(env, counter_idx);
-     uint64_t *counter_arr_virt = env->pmu_fixed_ctrs[inst].counter_virt;
-     uint64_t *counter_arr = env->pmu_fixed_ctrs[inst].counter;
--    target_ulong result = 0;
-     uint64_t curr_val = 0;
-     uint64_t cfg_val = 0;
-+    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
-+
-+    /* Ensure upper_half is only set for MXL_RV32 */
-+    g_assert(rv32 || !upper_half);
- 
-     if (counter_idx == 0) {
--        cfg_val = upper_half ? ((uint64_t)env->mcyclecfgh << 32) :
-+        cfg_val = rv32 ? ((uint64_t)env->mcyclecfgh << 32) :
-                   env->mcyclecfg;
-     } else if (counter_idx == 2) {
--        cfg_val = upper_half ? ((uint64_t)env->minstretcfgh << 32) :
-+        cfg_val = rv32 ? ((uint64_t)env->minstretcfgh << 32) :
-                   env->minstretcfg;
-     } else {
--        cfg_val = upper_half ?
-+        cfg_val = rv32 ?
-                   ((uint64_t)env->mhpmeventh_val[counter_idx] << 32) :
-                   env->mhpmevent_val[counter_idx];
-         cfg_val &= MHPMEVENT_FILTER_MASK;
-@@ -1262,7 +1266,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
- 
-     if (!cfg_val) {
-         if (icount_enabled()) {
--                curr_val = inst ? icount_get_raw() : icount_get();
-+            curr_val = inst ? icount_get_raw() : icount_get();
+@@ -1542,7 +1542,7 @@ static int rmw_cd_ctr_cfg(CPURISCVState *env, int cfg_index, target_ulong *val,
+             wr_mask &= ~MCYCLECFG_BIT_MINH;
+             env->mcyclecfg = (new_val & wr_mask) | (env->mcyclecfg & ~wr_mask);
          } else {
-             curr_val = cpu_get_host_ticks();
+-            *val = env->mcyclecfg &= ~MHPMEVENTH_BIT_MINH;
++            *val = env->mcyclecfg &= ~MHPMEVENT_BIT_MINH;
          }
-@@ -1294,13 +1298,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
-     }
- 
- done:
--    if (riscv_cpu_mxl(env) == MXL_RV32) {
--        result = upper_half ? curr_val >> 32 : curr_val;
--    } else {
--        result = curr_val;
--    }
--
--    return result;
-+    return upper_half ? curr_val >> 32 : curr_val;
- }
- 
- static RISCVException riscv_pmu_write_ctr(CPURISCVState *env, target_ulong val,
+         break;
+     case 2:             /* INSTRETCFG */
+@@ -1551,7 +1551,7 @@ static int rmw_cd_ctr_cfg(CPURISCVState *env, int cfg_index, target_ulong *val,
+             env->minstretcfg = (new_val & wr_mask) |
+                                (env->minstretcfg & ~wr_mask);
+         } else {
+-            *val = env->minstretcfg &= ~MHPMEVENTH_BIT_MINH;
++            *val = env->minstretcfg &= ~MHPMEVENT_BIT_MINH;
+         }
+         break;
+     default:
 -- 
 2.51.0
 
