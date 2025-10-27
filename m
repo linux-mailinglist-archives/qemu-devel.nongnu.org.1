@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6C3C0D14C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A889C0D110
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:09:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL25-000190-03; Mon, 27 Oct 2025 07:05:01 -0400
+	id 1vDL1x-0000xr-89; Mon, 27 Oct 2025 07:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1d-0000iT-2d
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:34 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1vDL1I-0000bR-FX
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:13 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1O-0005aQ-FW
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:30 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-b6d5b756284so954260066b.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:48 -0700 (PDT)
+ id 1vDL10-0005aj-JS
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:07 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-b4f323cf89bso1078003966b.2
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563026; x=1762167826; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563027; x=1762167827; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e7kEo0ehhrs7dmuoByZ33JGWoarerE4gA39Srxdfv20=;
- b=ct7T+UxO8ugUSpNJB6/FR7ND4o6E39239Gw8B2LXS2G+SbM+k5XDQxpMb3CXkE1Hr+
- LyohpjD9uF95+/iPx+5fMJYsPbd5uJT8TJVNiEaRVdV9LPoHAspeb1bWubDOladtTiCX
- jheWo/PbNJsXVIDvVA020QbOGH1CN/2ZEsD5RnIVNJH4WRhYQvxLE6EepoCXYIGUqfgV
- ExyPaUbjyGsqrgNCyLu2wiLfXIlDd493j4WTqPlXa6BCvH8r+4vU03DLqSUxOM9yOcxQ
- h+yaiVBYxsnPngaH5djUD8FqgRq3ThZDW0fpAMMvCEIbYDFpcwSDLCboa5RHOol9FPb3
- JC2w==
+ bh=i4UpD3Wo2Ur7M84EaEhFIxTHg7WVr9t7D/2QA+hHtQc=;
+ b=Jsb6+Lm9YVYCAX/wiG0OBQKCDBNVj+MWKGjlwOZd12iDvjEL1Fg94vg+5/SU17nkrm
+ i6C4P7m/r1ApS1Qgox880Mpzw2fxFrWickAVP5uF0XWS1eoE63xumRlGk9qLDmLyJkk6
+ KMrixgNDHO04LS4Plk8pZn3qXvze43xRh3T1annVmExBcrH9rBCbZgsiH7YnRgLW8MnT
+ vUtBfwUKf3JtHlSTaS8kRzj32AXHEfFPHS7CQAUyDADwH0GReZf3McJ/rbAuqJuLskH1
+ 6hm2BpJuowWTxwwHPuuYva1wcYkdyTopPZjBJT8xHTvaXxA4826kjTvvlJD/i5CkIMfq
+ 4nJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563026; x=1762167826;
+ d=1e100.net; s=20230601; t=1761563027; x=1762167827;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e7kEo0ehhrs7dmuoByZ33JGWoarerE4gA39Srxdfv20=;
- b=KGwfE5/P0SYuFgMf2l9JWXTbninDqS3suweX1MJTJ6GuGj3KJGrdMhctxTqQ+xylf6
- Z4J0pf2Y99NSup2yw17UEeSykzWQExIZm2o+SKnvjo+i4TLRjIP5d+LI81k/O5vwE1Li
- +QUCtaerJYzRR+jmp98kbJPpKCK2EGA6ehepdsnLY1OUjtuNj0X91i+tukj+e9ePM0RF
- WD/m6LeJWbNqT46/hJgyAQQyWB+5ovWeFHF8m+lmh+kP4vQmKYihQFnRMPdyZnpIhldE
- Toull13Hvoyq/rEeStdKGxGIV1k9JYkwHvMpbx4e5FU7i01NT1MCKBWWoScUweLG62Cz
- z98g==
-X-Gm-Message-State: AOJu0Yx6z/Khk6EkDxcbxxJHB+hjusqpsAlwUSiuD17ebVkNmT4kTmkj
- 75r9TXdnNIITbMvXrEodXYK0MzQ9g3WsjgcP/oAFQnvVJgCKE6Z5hVH0eE5+HgHtTu8=
-X-Gm-Gg: ASbGncs5j8xG8qKkZkzvxQ6MIjj1IFkO70OUrKzdAYobt/3JFZhH91n+3gal8MYq1ix
- kba+JnhzaUUIT10jd04QtZ42URKLHHhUbnf7d/rwx1Wzbnepmam9rzdK3bJKAD0/awTQTJAosJ8
- 722XUPAkpMwbrsAIANOn1AtPSuvjH2IKwQ61fgVLzDCw9lUtIuoXuhuWk2lhKtXTo2aHx7fs9VT
- duMMXTxjm28lxmODit95sHSXpGDi7YoJyKDPE15w/H5W5TMvu/4eKDPNxO0bhRzVxOZ/ni4Y1Gn
- PW6/1AiZu3T3TLIu65UvH78fX0J9PiMVZ8yTiueqOce/PKoeD5i3anEcRXapljVSZUbFl6HbQ4I
- oHHNfLJsvq3ezpKta/lXqNvEsgsdO3lycqLiwyQ4Wy7iW1crKFCSbTRoSSZff0mAPMD8J9uryAC
- 5/FlIpIsQfHHD9MT9U5AtAWw==
-X-Google-Smtp-Source: AGHT+IFVnoi+lgvob0wxO832IsVs9tVyax8HId9K0fXhGU6IYMHR6wafX1uSpDqVUcJdkDm74wm4Ow==
-X-Received: by 2002:a17:907:7f0b:b0:b6d:5f02:51e1 with SMTP id
- a640c23a62f3a-b6d5f0252edmr1532617466b.20.1761563026469; 
- Mon, 27 Oct 2025 04:03:46 -0700 (PDT)
+ bh=i4UpD3Wo2Ur7M84EaEhFIxTHg7WVr9t7D/2QA+hHtQc=;
+ b=JvwIVX8nG+HXrrNSOhKYnOz7RaAK2JQgX6aXJ4EbGmX5y5XmdmGNjmGBujsfUqBu+4
+ ATPue6lA5U8p/cVZ/rrqcHMWkfzD/zY73rOV8vf1v+/Ju43r7iFhG+OHH4WLMsc5L806
+ OH0dZm6tXaJrvybktGQkDy9MSjACRY3HnRTEOpJlRI4IOjrKhZaJ+Zr+0of8PUPu0+rh
+ wyCvEfxGhjZY3by9u7uuM2KluLrlLluTyRWnHOy8wYF4cXicLvn4V3W2VCE2MK496QIT
+ O/vFddWiyvinGjCdYuFJw+T3ggnN9bTZtLfOemHwN9SLL/kYXOswcbHfI+q9yo0GKTVy
+ XnCQ==
+X-Gm-Message-State: AOJu0YxiCcz+qtg7WHngjCHRLDiSV77nkvAwnSDn7AxlHGBYp5zryjsJ
+ d5y1lUveVahOcUi9YHPI6BQxsylWesCVGiITZjSUEpbBi5FqjCRGdIaILe9GccKkxjo=
+X-Gm-Gg: ASbGncse0X3mQxUvG0djKIPtLEEiwvuBnPX8a6onSFviNwLb/W6zLY1Ku7E/7gaZLIL
+ fokqDMCg2SZ2EmdNvIIonop2iXZdah7L4mtZmEv+Qp9cKw0TeW8FXPe/JVwUfEtXrE1K6VbnFnm
+ ltMW0lfpLFKpbmowOUWCg6Jfb0AXnUxdWt0uaDu7iNtRYMui4eiElZ/IEn9rvILdrcMg+GrluXS
+ 83VtIEvZJxbvAl+TBi2jDzDB+Dy642rBix4AETmu+ArN9CHsJcRK3u6YwA3g3fo3QPDUR2KOZTW
+ biEtV4TwvFo1ZBGjw+eHgVpmNS1AgjKWWFGB/QzYLAWNL/hNww31m+VWr8pKWMYFsRKM2lJf6wB
+ 0+j84POfohLrVyhy7fMF0yJXioypVoQVkLyJPe//S8Z1jh+vHLs/9U4dcNP2WENOSfOsSMbQnPD
+ T+
+X-Google-Smtp-Source: AGHT+IFHXajRGliwqiHEwYdL2aJj2b+PeBhziVLBXnoreP9Hmb+AiOshglShS2ou+B7Jx8sOWn94hQ==
+X-Received: by 2002:a17:907:7f1b:b0:b0b:20e5:89f6 with SMTP id
+ a640c23a62f3a-b6475609da0mr3904032966b.60.1761563027151; 
+ Mon, 27 Oct 2025 04:03:47 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d853077d2sm733626866b.3.2025.10.27.04.03.44
+ a640c23a62f3a-b6d8ceeaffasm657968666b.45.2025.10.27.04.03.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 27 Oct 2025 04:03:45 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 372585F909;
+ by draig.lan (Postfix) with ESMTP id 4E7D25F929;
  Mon, 27 Oct 2025 11:03:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,17 +93,17 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH 01/35] ci: clean-up remaining bits of armhf builds.
-Date: Mon, 27 Oct 2025 11:03:08 +0000
-Message-ID: <20251027110344.2289945-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/35] scripts/ci/setup: regenerate yaml
+Date: Mon, 27 Oct 2025 11:03:09 +0000
+Message-ID: <20251027110344.2289945-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,50 +126,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We no longer need to support 32 bit builds and we missed this while
-cleaning up.
+We inadvertently updated the base libvirt-ci project which has
+resulted in changes. Make sure the output matches what we generate.
 
+Fixes: 0d4fb8f746d (configure: set the bindgen cross target)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/devel/testing/ci-jobs.rst.inc            | 7 -------
- scripts/ci/setup/ubuntu/build-environment.yml | 6 ------
- 2 files changed, 13 deletions(-)
+ scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml | 4 ++--
+ scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml   | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/docs/devel/testing/ci-jobs.rst.inc b/docs/devel/testing/ci-jobs.rst.inc
-index f1c541cc25b..b92d372a0a9 100644
---- a/docs/devel/testing/ci-jobs.rst.inc
-+++ b/docs/devel/testing/ci-jobs.rst.inc
-@@ -168,13 +168,6 @@ If you've got access to an aarch64 host that can be used as a gitlab-CI
- runner, you can set this variable to enable the tests that require this
- kind of host. The runner should be tagged with "aarch64".
- 
--AARCH32_RUNNER_AVAILABLE
--~~~~~~~~~~~~~~~~~~~~~~~~
--If you've got access to an armhf host or an arch64 host that can run
--aarch32 EL0 code to be used as a gitlab-CI runner, you can set this
--variable to enable the tests that require this kind of host. The
--runner should be tagged with "aarch32".
--
- S390X_RUNNER_AVAILABLE
- ~~~~~~~~~~~~~~~~~~~~~~
- If you've got access to an IBM Z host that can be used as a gitlab-CI
-diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
-index 0f8ec5fab04..1c517c74f74 100644
---- a/scripts/ci/setup/ubuntu/build-environment.yml
-+++ b/scripts/ci/setup/ubuntu/build-environment.yml
-@@ -19,12 +19,6 @@
-           - '((ansible_version.major == 2) and (ansible_version.minor >= 8)) or (ansible_version.major >= 3)'
-         msg: "Unsuitable ansible version, please use version 2.8.0 or later"
- 
--    - name: Add armhf foreign architecture to aarch64 hosts
--      command: dpkg --add-architecture armhf
--      when:
--        - ansible_facts['distribution'] == 'Ubuntu'
--        - ansible_facts['architecture'] == 'aarch64'
--
-     - name: Update apt cache / upgrade packages via apt
-       apt:
-         update_cache: yes
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+index ce632d97108..70063db198e 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+@@ -26,7 +26,7 @@ packages:
+   - git
+   - hostname
+   - libaio-dev
+-  - libasan6
++  - libasan8
+   - libasound2-dev
+   - libattr1-dev
+   - libbpf-dev
+@@ -37,7 +37,7 @@ packages:
+   - libcap-ng-dev
+   - libcapstone-dev
+   - libcbor-dev
+-  - libclang-dev
++  - libclang-rt-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+index f45f75c9602..4f1a49be34a 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+@@ -26,7 +26,7 @@ packages:
+   - git
+   - hostname
+   - libaio-dev
+-  - libasan6
++  - libasan8
+   - libasound2-dev
+   - libattr1-dev
+   - libbpf-dev
+@@ -37,7 +37,7 @@ packages:
+   - libcap-ng-dev
+   - libcapstone-dev
+   - libcbor-dev
+-  - libclang-dev
++  - libclang-rt-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
 -- 
 2.47.3
 
