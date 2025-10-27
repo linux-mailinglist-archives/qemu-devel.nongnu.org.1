@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BECAC1184B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE84BC11859
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDUaJ-0002Wo-KK; Mon, 27 Oct 2025 17:16:59 -0400
+	id 1vDUaR-0002Y1-M2; Mon, 27 Oct 2025 17:17:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZo-0002UT-TG
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZn-0002UR-Sc
  for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:32 -0400
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZh-0004zV-87
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:28 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZh-0004ze-9Q
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:27 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 4ED8448C40;
+ by sea.source.kernel.org (Postfix) with ESMTP id 77C8148C41;
+ Mon, 27 Oct 2025 21:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B89AC4CEFD;
  Mon, 27 Oct 2025 21:16:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ECDC4CEF1;
- Mon, 27 Oct 2025 21:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1761599777;
- bh=+n3EC2b+2pzw2xJr++fp9IMDP9fAGUWHMzqA1sJSZYk=;
+ s=k20201202; t=1761599779;
+ bh=FND8rsNuJWvVjbyj2hs3c750kvVjLgqtceD6fSGSOco=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Op2o7ir1/PauauM570ITNATGF4dzn1GUSdim/TnhDLQ7dazPVqeBTix4ECbP1oaoD
- OsgUznUVXm3Vc/4eRDmdnHp/lX/Vi5fJPqH8Ya9M3Ds3akoFJplKIcGn+LXAdkPeLb
- pL1PBtIo4mOErv4NeUk1S1nHmIYv3sHXD7sXXykkIMvFp4Ti7d72ZxCjGgUuDs6fBb
- /mAXEKRlYtWX2x5qY4b1PS2NQqElCVz2AE55TkFOAIkyOHuaselmhsSmDGskEafgE0
- VoYXREEzfplAjXkPyqkmk4x6YRuNa5sbgOvfTAvcUVZm0eI1X925F0tpy8UXOFyuDQ
- kNk/84IKu0qqg==
+ b=Nq83XsozdX0WrJOpYqposnf6vbZbvTVcilEuApVG5yfuUmosXsEW21heeK/Y75sQE
+ gGYxoef66CwxdKAwpjI5nrfza+mdiheQgML9zNqCVVSDI+4dZe0T38zGCzHg9PNcYQ
+ B11TfzIcsKvyRCttvnE32VFkBL4l5FJKDK7SHHHgGSeRQ8Fp2P5/uHaTTm0Txi//2q
+ wqZ/Ox80p6Escfbw56xiWvGEOKdDb6QAwQLWlt0X0URidxOifxlcUqXRcXB4viQFhF
+ jeXvQ8t7fcZTQcM+CYpIQQ/N0gFrvtXncAItZkZUhaUv6lltMTpSRO0u7gT+igOlds
+ SzBwBpEKP3O0w==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>
@@ -38,9 +38,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fam Zheng <fam@euphon.net>,
  Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, deller@gmx.de
-Subject: [PULL 04/11] lasi: Forward LASI SCSI ports to NCR 53c710 driver
-Date: Mon, 27 Oct 2025 22:15:56 +0100
-Message-ID: <20251027211603.7141-5-deller@kernel.org>
+Subject: [PULL 05/11] hw/scsi: Add config option for new ncr710 driver
+Date: Mon, 27 Oct 2025 22:15:57 +0100
+Message-ID: <20251027211603.7141-6-deller@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027211603.7141-1-deller@kernel.org>
 References: <20251027211603.7141-1-deller@kernel.org>
@@ -71,59 +71,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/misc/lasi.c         | 6 +++++-
- include/hw/misc/lasi.h | 2 ++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+Add config option and wire up in meson makefile.
 
-diff --git a/hw/misc/lasi.c b/hw/misc/lasi.c
-index 9f758c6a86..6684f16fd7 100644
---- a/hw/misc/lasi.c
-+++ b/hw/misc/lasi.c
-@@ -43,7 +43,7 @@ static bool lasi_chip_mem_valid(void *opaque, hwaddr addr,
-     case LASI_LAN + 12: /* LASI LAN MAC */
-     case LASI_RTC:
-     case LASI_FDC:
--
-+    case LASI_SCSI ... LASI_SCSI + 0xFF:
-     case LASI_PCR ... LASI_AMR:
-         ret = true;
-     }
-@@ -84,6 +84,7 @@ static MemTxResult lasi_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case LASI_LAN:
-     case LASI_LAN + 12:
-     case LASI_FDC:
-+    case LASI_SCSI ... LASI_SCSI + 0xFF:
-         val = 0;
-         break;
-     case LASI_RTC:
-@@ -156,6 +157,9 @@ static MemTxResult lasi_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case LASI_UART:
-         /* XXX: reset serial port */
-         break;
-+    case LASI_SCSI ... LASI_SCSI + 0xFF:
-+        /* XXX: reset SCSI Controller */
-+        break;
-     case LASI_LAN:
-         /* XXX: reset LAN card */
-         break;
-diff --git a/include/hw/misc/lasi.h b/include/hw/misc/lasi.h
-index 0bdfb11b50..04312d0b58 100644
---- a/include/hw/misc/lasi.h
-+++ b/include/hw/misc/lasi.h
-@@ -28,7 +28,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
- #define LASI_LPT        0x02000
- #define LASI_AUDIO      0x04000
- #define LASI_UART       0x05000
-+#define LASI_SCSI       0x06000
- #define LASI_LAN        0x07000
-+#define LASI_PS2        0x08000
- #define LASI_RTC        0x09000
- #define LASI_FDC        0x0A000
+Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ hw/scsi/Kconfig     | 5 +++++
+ hw/scsi/meson.build | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/hw/scsi/Kconfig b/hw/scsi/Kconfig
+index 1feab84c4c..5743ee9b4d 100644
+--- a/hw/scsi/Kconfig
++++ b/hw/scsi/Kconfig
+@@ -7,6 +7,11 @@ config LSI_SCSI_PCI
+     depends on PCI
+     select SCSI
  
++config NCR710_SCSI
++    bool
++    default y if LASI
++    select SCSI
++
+ config MPTSAS_SCSI_PCI
+     bool
+     default y if PCI_DEVICES
+diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
+index bb7d289aa0..b874fe1ecd 100644
+--- a/hw/scsi/meson.build
++++ b/hw/scsi/meson.build
+@@ -12,6 +12,7 @@ scsi_ss.add(files(
+ scsi_ss.add(when: 'CONFIG_ESP', if_true: files('esp.c'))
+ scsi_ss.add(when: 'CONFIG_ESP_PCI', if_true: files('esp-pci.c'))
+ scsi_ss.add(when: 'CONFIG_LSI_SCSI_PCI', if_true: files('lsi53c895a.c'))
++scsi_ss.add(when: 'CONFIG_NCR710_SCSI', if_true: files('ncr53c710.c', 'lasi_ncr710.c'))
+ scsi_ss.add(when: 'CONFIG_MEGASAS_SCSI_PCI', if_true: files('megasas.c'))
+ scsi_ss.add(when: 'CONFIG_MPTSAS_SCSI_PCI', if_true: files('mptsas.c', 'mptconfig.c', 'mptendian.c'))
+ scsi_ss.add(when: 'CONFIG_VMW_PVSCSI_SCSI_PCI', if_true: files('vmw_pvscsi.c'))
 -- 
 2.51.0
 
