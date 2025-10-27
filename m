@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61482C0D64A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 010EDC0D6A4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:10:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDLy6-0006CR-G7; Mon, 27 Oct 2025 08:04:58 -0400
+	id 1vDM3D-0000BN-Jy; Mon, 27 Oct 2025 08:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vDLwT-0005CM-KR
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:03:17 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDM2h-0008T0-4r
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:09:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vDLwN-0000WE-Pn
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:03:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761566592; x=1793102592;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=6LCxF2jA+tRNbEsvz636k3v92U5z6MVr9ifOurEWXoI=;
- b=hs00f2LrQUmn8VO8Lxx+R23JoPm9p/iFUO2C8iceHnZ2OtrJT28Km3+a
- dDgnzHQMsDoayEbns06e1CJjm5igDlCnhR+WssE9GiP3lGWtXUCkVccWh
- U14koo2FFgzk925haYALM96vJ2W4okpaDF+7wRG8zAYCBaUgpQBP/ty+O
- fQDu8va3aecteazm94xj7LP3DzkQwmuthQgPEtfyluCRewqDCFlRU5yVH
- lrij07GAdPN6P3IALuszMmgLIlu/YDt4WAfoeTuHerIL2miAe2T7hGRmx
- mG4AyoAWktgCd6igU1WJkzeLJM8LjSUxRLNW33qUkC/ae7mMduGU6fgaX Q==;
-X-CSE-ConnectionGUID: Bqn8nqleRES/BqpUBvvwnQ==
-X-CSE-MsgGUID: zjEJ1MGOSq2yZphE61vGIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63735562"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="63735562"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 05:03:05 -0700
-X-CSE-ConnectionGUID: N+Q9za3bSYybuKHJA7IsZQ==
-X-CSE-MsgGUID: 0kPqkZuySniQb1bI7Vwfaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184648115"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
- ([10.124.238.14])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 05:03:01 -0700
-Message-ID: <308bcfcd-6c43-4530-8ba7-8a2d8a7b0c8f@intel.com>
-Date: Mon, 27 Oct 2025 20:02:58 +0800
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDM2c-0001i3-V7
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:09:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761566973;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VV2qfzYNGieh7fNYiQZAxOaOYJxsEqdQvrGy72p30uw=;
+ b=RRTXJJUDdXZWUOSn11/BFFArnoreJn/R3j2WtMM9Xp2AN6fkvyQtly2xmOj1tpVqmRGaqf
+ Q57E9tgHoUAC3hMVT8Kyd1PUXAE9ScpqK6JaQFhlWaMsEZfszM84qmMvQoJP7aVa94qOfC
+ 5Aota2Hak+RGIO7zGmJhglr3CqmtvHs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-4mEBJgWEMTaUmD7-iAJJeg-1; Mon,
+ 27 Oct 2025 08:09:30 -0400
+X-MC-Unique: 4mEBJgWEMTaUmD7-iAJJeg-1
+X-Mimecast-MFC-AGG-ID: 4mEBJgWEMTaUmD7-iAJJeg_1761566969
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DE7D18007EB; Mon, 27 Oct 2025 12:09:29 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9578B1955F1B; Mon, 27 Oct 2025 12:09:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1092A21E6A27; Mon, 27 Oct 2025 13:09:26 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Cl=C3=A9ment?= Chigot <chigot@adacore.com>
+Cc: Kevin Wolf <kwolf@redhat.com>,  qemu-devel@nongnu.org,
+ hreitz@redhat.com,  qemu-block@nongnu.org
+Subject: Re: [PATCH 5/5] vvfat: add support for "size" options
+In-Reply-To: <CAJ307EjFXNyEwDTeXEwdc02PxBLHGENbPJCM+-v_6FRQ2VYEcw@mail.gmail.com>
+ (=?utf-8?Q?=22Cl=C3=A9ment?= Chigot"'s message of "Fri, 24 Oct 2025
+ 11:23:00 +0200")
+References: <20250903075721.77623-1-chigot@adacore.com>
+ <20250903075721.77623-6-chigot@adacore.com>
+ <aPqCJRNCjxcZ6jq5@redhat.com> <87ms5g3dnq.fsf@pond.sub.org>
+ <CAJ307EjFXNyEwDTeXEwdc02PxBLHGENbPJCM+-v_6FRQ2VYEcw@mail.gmail.com>
+Date: Mon, 27 Oct 2025 13:09:26 +0100
+Message-ID: <87ms5cmtqh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/20] i386/cpu: Add missing migratable xsave features
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
- Mathias Krause <minipli@grsecurity.net>, Dapeng Mi <dapeng1.mi@intel.com>,
- Zide Chen <zide.chen@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-11-zhao1.liu@intel.com>
- <0dc79cc8-f932-4025-aff3-b1d5b56cb654@intel.com> <aP9HPKwHPcOlBTwm@intel.com>
- <aP9VF7FkfGeY6B+Q@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aP9VF7FkfGeY6B+Q@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.574, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,62 +89,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/27/2025 7:18 PM, Zhao Liu wrote:
-> On Mon, Oct 27, 2025 at 06:19:40PM +0800, Zhao Liu wrote:
->> Date: Mon, 27 Oct 2025 18:19:40 +0800
->> From: Zhao Liu <zhao1.liu@intel.com>
->> Subject: Re: [PATCH v3 10/20] i386/cpu: Add missing migratable xsave
->>   features
+Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
+
+> On Fri, Oct 24, 2025 at 10:35=E2=80=AFAM Markus Armbruster <armbru@redhat=
+.com> wrote:
 >>
->>> Though the feature expansion in x86_cpu_expand_features() under
->>>
->>> 	if (xcc->max_features) {
->>> 		...
->>> 	}
->>>
->>> only enables migratable features when cpu->migratable is true,
->>> x86_cpu_enable_xsave_components() overwrite the value later.
+>> Kevin Wolf <kwolf@redhat.com> writes:
 >>
->> I have not changed the related logic, and this was intentional...too,
->> which is planed to be cleaned up after CET.
-> 
-> There's only 1 use case of migratable_flags, so I would try to drop
-> it directly.
-> 
-> The xsave-managed/enabled feature is not suitable as the configurable
-> feature. Therefore, it is best to keep it non-configurable as it is
-> currently.
-> 
-> At least with this fix, the support for the new xsave feature —
-> including APX next — will not be broken, 
+>> > Am 03.09.2025 um 09:57 hat Cl=C3=A9ment Chigot geschrieben:
+>> >> This allows more flexibility to vvfat backend. The value for "Number =
+of
+>> >> Heads" and "Sectors per track" are based on SD specifications Part 2.
+>>
+>> This is too terse to remind me of how vvfat picks cylinders, heads, and
+>> sectors before this patch, so I need to go dig through the source code.
+>> I figure it depends on configuration parameters @floppy and @fat-type
+>> like this:
+>>
+>>     floppy  fat-type    cyls heads secs   cyls*heads*secs*512
+>>     false      12         64    16   63         31.5 MiB
+>>     false      16       1024    16   63        504   MiB
+>>     false      32       1024    16   63        504   MiB
+>>     true       12         80     2   18       1440   KiB
+>>     true       16         80     2   36       2880   KiB
+>>     true       32         80     2   36       2880   KiB
+>>
+>> How exactly does the new parameter @size change this?
+>
+> My prime goal was to create a 256 Mib VVFAT disk. As you can see,
+> today for hard-disks there are only two possibilities: 31.5 Mib or 504
+> Mib. Hence, I've introduced the option `size=3Dxxx` to allow more
+> granular choices.
+> This option changes how cyls, heads and secs parameters are computed
+> to be as closed as possible of its value.
+>
+> I did try to keep it simple. I could have introduced options to select
+> cylinders, heads, etc. But I think "size=3Dxxx" would be more intuitive.
+> There are also approximations made, as not all sizes can be reached. I
+> didn't add errors or warnings for them. I'm fine adding them.
 
-can you elaborate what will be broken without the patch?
+I don't have an opinion on whether we should support more sizes and/or
+provide full control over CHS geometry.
 
-As I see, we can drop the .migratable_flags directly.
+>> >> Some limitations remains, the size parameter is recognized only when
+>> >> "format=3Dvvfat" is passed. In particular, "format=3Draw,size=3Dxxx" =
+is
+>> >> keeping the previously hardcoded value: 504MB for FAT16 and 32 MB for
+>> >> FAT12. FAT32 has not been adjusted and thus still default to 504MB.
+>>
+>> 31.5MiB unless I'm mistaken.
+>
+> True, I will fix it.
+>
+>> I'm not sure what you're trying to convey in this paragraph.  As far as
+>> I can tell, you're adding a @size parameter to vvfat, so of course it
+>> doesn't affect raw.
+>
+> Yes, but AFAICT, `if=3Dsd,format=3Draw` will result in vvfat backend being
+> called. I didn't manage to make the new option work with
+> `if=3Dsd,format=3Draw,size=3D256Mb`. Thus, when the "size" option is not
+> provided, I keep the previous value (those for your above comment).
+> Hence this paragraph to mostly warn people about the current
+> limitation.
 
-migrable_flags is only used in x86_cpu_get_migratable_flags(), which is 
-only called by x86_cpu_get_supported_feature_word() when passed @cpu is 
-not null and cpu->migratable is true. So it only affects the case of
+Are you talking about -drive?
 
-   x86_cpu_expand_features()
-     -> x86_cpu_get_supported_feature_word()
+Complete examples, please.
 
-And only FEAT_XSAVE_XCR0_LO defines .migratable_flags
+I'm confused about the connection between SD (from if=3Dsd here, and "SD
+specification" above) and vvfat.  SD is a frontend.  vvfat is a backend.
 
-As I commented earlier, though the .migrable_flags determines the return 
-value of x86_cpu_get_supported_feature_word() for 
-features[FEAT_XSAVE_XCR0_LO] in x86_cpu_expand_features(), eventually 
-the x86_cpu_enable_xsave_components() overwrites 
-features[FEAT_XSAVE_XCR0_LO]. So even we set the migratable_flags to 0 
-for FEAT_XSAVE_XCR0_LO, it doesn't have any issue.
-
-So I think we can remove migratable_flags totally.
-
-> and the migratable flag
-> refactoring will become a separate RFC.
-> 
-> Regards,
-> Zhao
-> 
+[...]
 
 
