@@ -2,67 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B44C0EADB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC4FC0EAD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDOdq-0003Ve-Or; Mon, 27 Oct 2025 10:56:14 -0400
+	id 1vDOds-0003X3-JN; Mon, 27 Oct 2025 10:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDOdX-0003TR-KZ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:56:01 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vDOdp-0003WZ-4N
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:56:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDOdP-0001h2-Jj
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:55:54 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0E562804CC;
- Mon, 27 Oct 2025 17:55:37 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:c5c::1:11] (unknown
- [2a02:6bf:8080:c5c::1:11])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ZtdR2F2b54Y0-9xpkfmx9; Mon, 27 Oct 2025 17:55:36 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761576936;
- bh=ns+orQ3EiKcFwmGBHZpuJPsIgpth6vYkC/weZsUMItQ=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=B9He38kuEIKKf34hUa0iOqbs+PwfizEtt0hjNZCTyZhQZhRDBnlUYhFbIlacJkQF4
- GC3obVo53M++/5gpCuFAapFW/rHpkowOn0U+mvK6hIXyxAwRuguS3GJZoOtxe5Zq6a
- WDKsoeNnx2NEgoxNpao9ypr1pc3F5oHOgmu6FJKY=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <fc19579b-0324-4641-95ed-ad3fa1dbbc11@yandex-team.ru>
-Date: Mon, 27 Oct 2025 17:55:35 +0300
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vDOdd-0001jZ-9Y
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:56:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761576950;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tVerbbE405LAzakn5L8OBSutixPaXaTVwINnDEUYcJg=;
+ b=JNddsd86fIaddI2WXOfEr5PuXTKMoFXt83vSkZZK9PwN4GaPlp7j1d84au86XMl2moSwB3
+ 9Z0gFk7yTpKjAVkZgJzzFoE9F1HZJmehSoUSlHfaumvExgKGbhsn6QdktM3C4+Jz/qlcLI
+ KAl7iODX2e9T0Z5ECc1ySjAt9d8qw0Y=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-193-l6lN_b2XN-KhdIVEhBLl3A-1; Mon, 27 Oct 2025 10:55:48 -0400
+X-MC-Unique: l6lN_b2XN-KhdIVEhBLl3A-1
+X-Mimecast-MFC-AGG-ID: l6lN_b2XN-KhdIVEhBLl3A_1761576948
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4710d174c31so47483625e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 07:55:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761576948; x=1762181748;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tVerbbE405LAzakn5L8OBSutixPaXaTVwINnDEUYcJg=;
+ b=BV8RaLJyTki2OHddolSFzvqlhIbIUiLpV2WYRiLopxiXAn7DgGzFPAYQdDBUDiuSXn
+ xIbiafVFNSjpjJxoaY7haINGmWlKPRLht6Qbwht/gbr9YXbAiNaNYN7AYuaTByGUqdPB
+ il3Cl3e8t3+ASLdtjRaU/wj/EEuFlv3Xa/JULFOJJv1kLSAyf6BjOpUf5ddXxIytUEaB
+ +ACN1/4Qt/ZtffssDfKa4iZdNJUqyQCszta9/gl40YW54vMj4i0hzxdhBL4T/ySyLCrk
+ a+P3lawWW2Cr2qCsK1f8wE6631grjlDxKsmcatHQkZ2oAxm6c1VgRO4ZJ7s9rGznMhCr
+ o0KA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUZW97UZOGiMke1BRcvjstBiz6u3aUG0w7/I+Zb86WqzYHcRPpBHjPR6M6eJUtBg86xj1kDK2ExDzho@nongnu.org
+X-Gm-Message-State: AOJu0Ywkurug3A94h8Ln9DImlQ9qVK27/4/n8IM2pZMTd7HTt82M4Qym
+ AAS2xVcGxdQBiY0xCnLXdjDkUzWrtpgo4tROY+QM/OnMNGlnNLG2yqewoGTjsUa5+bJMK3GBZVe
+ bhPQwPQpdKANVgMJfqx6xAq5yIomNAHqZDrTwBRgln/UEhV+PV1Xc8qW4
+X-Gm-Gg: ASbGncvXq88PQyU3LEBAfVXb9Q7yQdEBfAJvPaSzQes9jk+PhiJas1a9OTT0zEA9afY
+ UiaQt+SYM4Qb28mNX1TMhdCbk9dstqXyaRFX4uSyjs9Wg6NNYyOy7sAociMnfqAge0YZUOmKk55
+ eifMRrOv57JWDmJNrao+33sHg8shZM5ITPN805eEb3CHIuKNrj0U/HhzzNw9piXh/mTsEfEmc24
+ fc0v3QNHUIdhr6p8ptCLU4iYxBFe9ceF+Ov10CFg/KYWho8DbSIs7bvQvXes5TnLYyCxWfa5yKr
+ aiVTDkwqE34EdL5y+CDAxQL6ek91APpscXB+NW2CmzQK1ZgM/Iuxjgsk6XTOHL50Zvo5KUjQhpR
+ RIB0g4jNvZR+zfkUbldg+LrYf5UxUxYS0QEkgeEb5Mxw8Iw==
+X-Received: by 2002:a05:600c:34d0:b0:46d:cfc9:1d0f with SMTP id
+ 5b1f17b1804b1-471179067e6mr294702665e9.19.1761576947630; 
+ Mon, 27 Oct 2025 07:55:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHU4iMIlsaSciaaD6WumXf+u5DtARF5+VSJ/d4+EZnKRY1Z+2xpbIi7iDXkryKQYbN0qTTLCQ==
+X-Received: by 2002:a05:600c:34d0:b0:46d:cfc9:1d0f with SMTP id
+ 5b1f17b1804b1-471179067e6mr294702305e9.19.1761576947171; 
+ Mon, 27 Oct 2025 07:55:47 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952cb7e8sm15061460f8f.19.2025.10.27.07.55.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Oct 2025 07:55:46 -0700 (PDT)
+Message-ID: <dd41dfd5-6fc7-4fff-b995-db0114a6f4f2@redhat.com>
+Date: Mon, 27 Oct 2025 15:55:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] migration/vmstate: stop reporting error number for
- new _errp APIs
-To: Stefan Berger <stefanb@linux.ibm.com>, peterx@redhat.com
-Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
- armbru@redhat.com, berrange@redhat.com
-References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
- <20251025202649.1122420-4-vsementsov@yandex-team.ru>
- <d2e887cb-5752-4ccb-a0ab-d66a655e6585@linux.ibm.com>
+Subject: Re: [PATCH v4 23/27] hw/arm/smmuv3-accel: Add property to specify OAS
+ bits
 Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <d2e887cb-5752-4ccb-a0ab-d66a655e6585@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
+ mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
+ zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
+ shameerkolothum@gmail.com
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ <20250929133643.38961-24-skolothumtho@nvidia.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250929133643.38961-24-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,79 +118,153 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.10.25 17:38, Stefan Berger wrote:
-> 
-> 
-> On 10/25/25 4:26 PM, Vladimir Sementsov-Ogievskiy wrote:
->> First, the handlers should put all needed information into errp,
->> we should not append error number here.
->>
->> Second, the only realization of new _errp API is
->> tpm_emulator_post_load(), which on some failure paths returns
->> -errno, but on the others simply -1. So printing this additional
->> number may be misleading. tpm_emulator.c needs a lot more work
->> to report good error message on all error paths.
-> 
-> You mean in all paths or just the .post_load_errp path? In the .post_load_errp cases -EIO is currently always returned if called functions failed and return a -1. So their -1 does not propagate.
 
 
-Oops, excuse me, I was wrong.
+On 9/29/25 3:36 PM, Shameer Kolothum wrote:
+> QEMU SMMUv3 currently sets the output address size (OAS) to 44 bits. With
+> accelerator mode enabled, a guest device may use SVA where CPU page tables
+> are shared with SMMUv3, requiring OAS at least equal to the CPU OAS. Add
+physical CPU OAS.
+> a user option to set this.
+>
+> Note: Linux kernel docs currently state the OAS field in the IDR register
+> is not meaningful for users. But looks like we need this information.
+My concern is how will the above layers (libvirt) know how to set those
+low level props?
+At least in 14/27, during the compatibility check, you shall print the
+host values to help the user determine the relevant option values
+>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>  hw/arm/smmuv3-accel.c    | 15 +++++++++++++++
+>  hw/arm/smmuv3-internal.h |  3 ++-
+>  hw/arm/smmuv3.c          | 15 ++++++++++++++-
+>  include/hw/arm/smmuv3.h  |  1 +
+>  4 files changed, 32 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
+> index eee54316bf..ba37d690ad 100644
+> --- a/hw/arm/smmuv3-accel.c
+> +++ b/hw/arm/smmuv3-accel.c
+> @@ -86,6 +86,17 @@ smmuv3_accel_check_hw_compatible(SMMUv3State *s,
+>          return false;
+>      }
+>  
+> +    /*
+> +     * ToDo: OAS is not something Linux kernel doc says meaningful for user.
+> +     * But looks like OAS needs to be compatibe for accelerator support. Please
+compatible
+> +     * check.
+> +     */
+> +    val = FIELD_EX32(info->idr[5], IDR5, OAS);
+> +    if (val < FIELD_EX32(s->idr[5], IDR5, OAS)) {
+> +        error_setg(errp, "Host SUMMUv3 OAS not compatible");
+print the host value too
+> +        return false;
+> +    }
+> +
+>      val = FIELD_EX32(info->idr[5], IDR5, GRAN4K);
+>      if (val != FIELD_EX32(s->idr[5], IDR5, GRAN4K)) {
+>          error_setg(errp, "Host SMMUv3 doesn't support 64K translation granule");
+> @@ -648,6 +659,10 @@ void smmuv3_accel_idr_override(SMMUv3State *s)
+>      if (s->ats) {
+>          s->idr[0] = FIELD_DP32(s->idr[0], IDR0, ATS, 1); /* ATS */
+>      }
+> +    /* QEMU SMMUv3 has oas set 44. Update IDR5 if user has it set to 48 bits*/
+> +    if (s->oas == 48) {
+> +        s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS_48);
+> +    }
+>  }
+>  
+>  /*
+> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> index b0dfa9465c..910a34e05b 100644
+> --- a/hw/arm/smmuv3-internal.h
+> +++ b/hw/arm/smmuv3-internal.h
+> @@ -111,7 +111,8 @@ REG32(IDR5,                0x14)
+>       FIELD(IDR5, VAX,        10, 2);
+>       FIELD(IDR5, STALL_MAX,  16, 16);
+>  
+> -#define SMMU_IDR5_OAS 4
+> +#define SMMU_IDR5_OAS_44 4
+> +#define SMMU_IDR5_OAS_48 5
+>  
+>  REG32(IIDR,                0x18)
+>  REG32(AIDR,                0x1c)
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 77d46a9cd6..7c391ab711 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -294,7 +294,8 @@ static void smmuv3_init_regs(SMMUv3State *s)
+>      s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, 1);
+>      s->idr[3] = FIELD_DP32(s->idr[3], IDR3, BBML, 2);
+>  
+> -    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS); /* 44 bits */
+> +    /* OAS: 44 bits */
+> +    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS_44);
+>      /* 4K, 16K and 64K granule support */
+>      s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN4K, 1);
+>      s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN16K, 1);
+> @@ -1943,6 +1944,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
+>      }
+>  #endif
+>      if (s->accel) {
+> +        if (s->oas != 44 && s->oas != 48) {
+> +            error_setg(errp, "oas can only be set to 44 or 48 bits");
+s/oas/OAS
+> +            return false;
+> +        }
+>          return true;
+>      }
+>      if (!s->ril) {
+> @@ -1953,6 +1958,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
+>          error_setg(errp, "ats can only be enabled if accel=on");
+>          return false;
+>      }
+> +    if (s->oas != 44) {
+> +        error_setg(errp, "oas can only be set to 44 bits if accel=off");
+ditto
+> +        return false;
+> +    }
+>      return true;
+>  }
+>  
+> @@ -2078,6 +2087,7 @@ static const Property smmuv3_properties[] = {
+>      /* RIL can be turned off for accel cases */
+>      DEFINE_PROP_BOOL("ril", SMMUv3State, ril, true),
+>      DEFINE_PROP_BOOL("ats", SMMUv3State, ats, false),
+> +    DEFINE_PROP_UINT8("oas", SMMUv3State, oas, 44),
+>  };
+>  
+>  static void smmuv3_instance_init(Object *obj)
+> @@ -2110,6 +2120,9 @@ static void smmuv3_class_init(ObjectClass *klass, const void *data)
+>      object_class_property_set_description(klass, "ats",
+>          "Enable/disable ATS support. Please ensure host platform has ATS "
+>          "support before enabling this");
+> +    object_class_property_set_description(klass, "oas",
+> +        "Specify Output Address Size. Supported values are 44 or 48 bits "
+> +        "Defaults to 44 bits");
+>  }
+>  
+>  static int smmuv3_notify_flag_changed(IOMMUMemoryRegion *iommu,
+> diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
+> index 6f07baa144..d3788b2d85 100644
+> --- a/include/hw/arm/smmuv3.h
+> +++ b/include/hw/arm/smmuv3.h
+> @@ -70,6 +70,7 @@ struct SMMUv3State {
+>      Error  *migration_blocker;
+>      bool ril;
+>      bool ats;
+> +    uint8_t oas;
+>  };
+>  
+>  typedef enum {
+Thanks
 
-Now I see that tpm_emulator_post_load return either 0 or -EIO on all paths.
+Eric
 
-
-> 
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   migration/vmstate.c | 13 ++++++-------
->>   1 file changed, 6 insertions(+), 7 deletions(-)
->>
->> diff --git a/migration/vmstate.c b/migration/vmstate.c
->> index fd066f910e..677e56c84a 100644
->> --- a/migration/vmstate.c
->> +++ b/migration/vmstate.c
->> @@ -157,9 +157,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
->>           ret = vmsd->pre_load_errp(opaque, errp);
->>           if (ret < 0) {
->>               error_prepend(errp, "pre load hook failed for: '%s', "
->> -                          "version_id: %d, minimum version_id: %d, "
->> -                          "ret: %d: ", vmsd->name, vmsd->version_id,
->> -                          vmsd->minimum_version_id, ret);
->> +                          "version_id: %d, minimum version_id: %d: ",
->> +                          vmsd->name, vmsd->version_id,
->> +                          vmsd->minimum_version_id);
->>               return ret;
->>           }
->>       } else if (vmsd->pre_load) {
->> @@ -259,8 +259,8 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
->>           ret = vmsd->post_load_errp(opaque, version_id, errp);
->>           if (ret < 0) {
->>               error_prepend(errp, "post load hook failed for: %s, version_id: "
->> -                          "%d, minimum_version: %d, ret: %d: ", vmsd->name,
->> -                          vmsd->version_id, vmsd->minimum_version_id, ret);
->> +                          "%d, minimum_version: %d: ", vmsd->name,
->> +                          vmsd->version_id, vmsd->minimum_version_id);
->>           }
->>       } else if (vmsd->post_load) {
->>           ret = vmsd->post_load(opaque, version_id);
->> @@ -441,8 +441,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
->>           ret = vmsd->pre_save_errp(opaque, errp);
->>           trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
->>           if (ret < 0) {
->> -            error_prepend(errp, "pre-save for %s failed, ret: %d: ",
->> -                          vmsd->name, ret);
->> +            error_prepend(errp, "pre-save for %s failed: ", vmsd->name);
->>               return ret;
->>           }
->>       } else if (vmsd->pre_save) {
-> 
-
-
--- 
-Best regards,
-Vladimir
 
