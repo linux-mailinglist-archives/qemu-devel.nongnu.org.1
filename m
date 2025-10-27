@@ -2,97 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C998BC0E65A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1688C0E65D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 15:26:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDO9j-0006on-LU; Mon, 27 Oct 2025 10:25:10 -0400
+	id 1vDOAF-000740-ME; Mon, 27 Oct 2025 10:25:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvyas1991@gmail.com>)
- id 1vDO9V-0006ng-FV
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:24:53 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vDO9t-0006zy-Gt
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:25:17 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yvyas1991@gmail.com>)
- id 1vDO9K-0005Ww-Rq
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:24:53 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-b6a42604093so169624a12.3
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 07:24:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vDO9n-0005pI-7F
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 10:25:17 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-b4736e043f9so863996166b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 07:25:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761575077; x=1762179877; darn=nongnu.org;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1761575105; x=1762179905; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nPBYYxTVaVn45iIHxdTVVP0QX7bl3gEBjFn9EmLDRyY=;
- b=kDCUqnBoE9n+lX5c//PD23JjFoYepUxhMx65/Qnccf+c3poAZ2DW5qAgz3iesS5ZPg
- 5DCr45NfANjINStu8aXcARl8iccQWhO7prkijsywsZO+SAqK3EcJceZhQJl50Frx8565
- W7YUFL1b+q1iHAQ6CpY1U7th4fvy16mKWCwRFA1slLWotbXkjxvkVhs2G8lcHH6UGkpA
- cKgYuPUJQI+/FqYM0dCYGA7O4UK24kABD6SVlENatxPs035NAUiOBc7TzbaE8RFDKqxv
- QFzBmRinODlnxlShc79fWwQM31fUlW/e5dn5sxLkCfiYdxEF9p4+WWMLweTEAmYsBTJF
- 1Vzg==
+ bh=nojDqCwiKtTLuZ6X7hw4qtskXxzMlRc2e8FUZ4KQJIY=;
+ b=cguU4F93R+ujkUKg+uj3EvZ/Id1kNdwh1gRxuoxVaKnVr/H2jVMPpdZu6wGVfNXb/0
+ YOH4PQR4W/Psz9NHG7x7QdWstiKeGc9lwpglehHzIkmZXL24D7ikrNFh76gIUteJ8kyi
+ oaXT9q6WuqT7R0eVkb2N4zmI12ZBBimT40HYxLjYhPLA2WWpjLSL0QOJOckxYmAj1S9Z
+ xJxKz0MMEt3zu424/qnFZotxA+g6XLMCQX2HeoCSeet9ICYlIK5DG8A/AfrzXE+vo/A/
+ eTGG3vzdPm29vSPvTqSD2mOh3j9RqTbrh/rm/1xhUEWVNPQD1R5ACvZbJC00eiHy3LXS
+ HL6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761575077; x=1762179877;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=nPBYYxTVaVn45iIHxdTVVP0QX7bl3gEBjFn9EmLDRyY=;
- b=sTfmEtywKwwyj0iI4wKSR0YiyRoAY68rT4MA5ARctZ/KgoQo4ixutnPZmraraOMbCJ
- MFYttEUmijXYeB/Wdbp1mx8WhMG4JarmPrl+046qIHEqr1ecqfBlGtOqmq5OUz8d8ri2
- c6eDk/KMXsw+ZD0KI5o7Rsd9YM2ctYRNRAMkGZhpiUNRVxXtIoJXCYtYT1sbPl4fTLFC
- pe54NIRYuOjG16ltFTsv2su4jVzFQWaej0DjxwsuMol/jmzJ7Y/MvY9OX9XJMDlwdixO
- Jlmiyf1VrKddXF6gQLQx9YE0WTN8/aEublVuTS4fB7J1/05O2SJ0a+ohNi97EhmtT5Zx
- uOwA==
-X-Gm-Message-State: AOJu0YzAJYzHgcTGdoKiQGapR7wBpL0KW7F2H5k1JND7FOveY7ZTjlhx
- my6HdNbaBLEqL3uScqZFvryDe5GUsHQXrLKOYl4zBWMLmK0ChZJpGLEc
-X-Gm-Gg: ASbGncsFX/jr65Kk1RbCjSgGCtS53OSk3PIJXzwHc2YSzBeeZSBKx2M14M6pZ26Rjta
- zc9HF+TdsAWsg2d+9Fwj/y7IwJF6NapQPTQ5lPXpGJczfBVlGQ6+NQoVQkpJ5ECyMfdCU64Tc9p
- Ia358oZAOwhfuPazG5KCRjDUid2s1P10Z4/kyHKMSs5cSGnVsjHMOjZf3/fHAvueQFQ/UlIZbUN
- G6bnXGotlCpKB/6NyaBifoDyNhILR5RcYCCA5XqR1EDvBOlsNLOxUuCBFY4B79TXU1FFcW6zQpv
- mnfY3Xoqv24VGOsIqTYRQbuWe7cIuOID7LhYy3xZk6U5uv/RQiI6sWtygS9xn3f3f+lZdBdyAyj
- sBp2Afkx1/x+P3oQ2cN6vSElVjfM0p27ffXIKDgTK0XEpyDi8/kJLVzTng9lhgeVHypsLbrSihd
- ixxFhzzK6jmGnQOXIGc12dpusU2zRrzbbziiEzfsdtrx0ZkZudoLJ+PkRS
-X-Google-Smtp-Source: AGHT+IG1NCkw51/TEoqt6D6VxGdQViLBBbzZnJyAFE3YadWPD7VgVLhKge9ItzkSPKNW6sjHVEEsoA==
-X-Received: by 2002:a17:903:1acf:b0:27e:e96a:4bf with SMTP id
- d9443c01a7336-294cb35d603mr813845ad.2.1761575077205; 
- Mon, 27 Oct 2025 07:24:37 -0700 (PDT)
-Received: from ?IPV6:2402:e280:2177:35:a77f:15f7:4845:1af9?
- ([2402:e280:2177:35:a77f:15f7:4845:1af9])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29498d09958sm83664495ad.24.2025.10.27.07.24.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 07:24:36 -0700 (PDT)
-Content-Type: multipart/alternative;
- boundary="------------0nSzWO5r5GyxmFJwZZI5wKVu"
-Message-ID: <38673ed9-4690-472b-9e0f-c8a736247097@gmail.com>
-Date: Mon, 27 Oct 2025 19:54:32 +0530
+ d=1e100.net; s=20230601; t=1761575105; x=1762179905;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=nojDqCwiKtTLuZ6X7hw4qtskXxzMlRc2e8FUZ4KQJIY=;
+ b=pQMVP9J+AprAWKTO9vEHKf43GpI882M+oni5gmmTeodnK8P9WwaJHQXW6NeaB4/fG+
+ /DYQ7xDN+o9KCSHwFxRG5mdJHsl3OrOcfP6vw6ceRzgAPIaSHRL3CBWfb+gC9LD+JoEn
+ KvDwj99Ms2mvk1+Iv/1UC/A0Xr8jXYVdPJ+SE6ceT1hMZc4CBnX2yok5ISipBjnFKmZN
+ 7KaNtLNyL5lceleIvCBYNzeyBWtvPSX7spfw2K7OQWz6jBZElCZUlDwPrUGXsS0ARRrw
+ WGVXpZB8kQ9aoBMqJ4SrYiMEmzwOjyYaNuJ3Ed3pn3bMsiSWmHKbt2rQl0j1o5xuEuYQ
+ 8LgQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUc+WS1Gh2XbZb8uzuFuIapkwGnonhR17gLoLr5KkIk/sWsrgZS73NbyaIw6xO8ZwvDKVvdLwpWMTsy@nongnu.org
+X-Gm-Message-State: AOJu0Yy6vqnW108GDGq0CjI1G3m580JZB7nWFSTN0yEv58OHYdDgh2f2
+ BtN6Uy+wzKNpLnI2A7Q1grnGu2GEjEvv+emH4QitIUYv8LOF2Dyqg39c5PRmmTAFiww=
+X-Gm-Gg: ASbGncvr7TduAyuE+kO9eCcygPsin4wYFFNHhej9PMuGqcpZoziPO0Na8agiELgTC+2
+ XH/NmPu3b+Kuq99moGxFXSJKhS3oj+MQSxUCWf84Ln9FK2hRZIGqk5zqbzW4DFx0HtowB8JLHhQ
+ Q5xB7OWJgAMRG8hoxsku+Bvr6EBIysgS+5oiSJpcZaDeSSkC6oAUosuHI15P1cSHMu7Oumlrgrt
+ fRFnSbAve0r/MazjZZ/B2evUvWyrFmQ8MCOwdcyYP7p8ds62y0CO1bpu8Thworb9Y9rx3ekwvlu
+ v26a9wnGRjjOxhpG73YvH+L2SB5YChMDEJH2HbeQVS9254+QVmclEwCOTlqpo8jaFV5LYi1RZTs
+ Hw5WVp8VdcHDUZN5kRmTq/NRwDLB5oyXEUThXBEjWl8htkakzKknymh1NnTzdQnaqWRpOKEetGy
+ lepB5RxOJ2tpM=
+X-Google-Smtp-Source: AGHT+IF7oM6pm8nrnIaCIIwZFHg5iU8dFFMIXcYwYXaMmMvDJstWunokzuEY8jy1DL37KLcWYOqAVw==
+X-Received: by 2002:a17:907:60d4:b0:b6d:5bc1:4859 with SMTP id
+ a640c23a62f3a-b6dba4b2085mr11871266b.29.1761575104754; 
+ Mon, 27 Oct 2025 07:25:04 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d8540807bsm769323366b.54.2025.10.27.07.25.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Oct 2025 07:25:03 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 973205F829;
+ Mon, 27 Oct 2025 14:25:02 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Tao Tang <tangtao1634@phytium.com.cn>
+Cc: Eric Auger <eric.auger@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  qemu-devel@nongnu.org,  qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Laurent Vivier
+ <lvivier@redhat.com>
+Subject: Re: [RFC v2 0/2] hw/misc: Introduce a new SMMUv3 test framework
+In-Reply-To: <efe21350-fe9d-4bc9-acc1-8f761a875506@phytium.com.cn> (Tao Tang's
+ message of "Mon, 27 Oct 2025 21:32:06 +0800")
+References: <20250930165340.42788-1-tangtao1634@phytium.com.cn>
+ <87v7k6lyp4.fsf@draig.linaro.org>
+ <efe21350-fe9d-4bc9-acc1-8f761a875506@phytium.com.cn>
+User-Agent: mu4e 1.12.14-dev2; emacs 30.1
+Date: Mon, 27 Oct 2025 14:25:02 +0000
+Message-ID: <87jz0gxw01.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/13] Pegasos2 clean up and pegasos1 emulation
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1760798392.git.balaton@eik.bme.hu>
- <CAJOT6qN-n7LpVnLO-5CpOUF8z-j1Ogi=6cJBvvKZc-Eh5tHVzA@mail.gmail.com>
- <a410ac54-d1dc-aa67-d1d7-690b2495e9df@eik.bme.hu>
- <CAJOT6qN4QYRdNR-oQV8JSv_074umiHB==_dyemX01+FsNiqPOQ@mail.gmail.com>
- <c7daf4e7-50d3-263c-4fa2-35947e2d3267@eik.bme.hu>
- <26f74e6c-a89f-4be0-aa6c-78ad88e2cba3@gmail.com>
- <993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu>
-Content-Language: en-US
-From: Yogesh Vyas <yvyas1991@gmail.com>
-In-Reply-To: <993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=yvyas1991@gmail.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -110,369 +113,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------0nSzWO5r5GyxmFJwZZI5wKVu
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Tao Tang <tangtao1634@phytium.com.cn> writes:
 
-
-On 10/26/25 10:15 PM, BALATON Zoltan wrote:
-> On Sun, 26 Oct 2025, Yogesh Vyas wrote:
+> Hi Alex,
 >
+> On 2025/10/23 18:06, Alex Benn=C3=A9e wrote:
+>> tangtao1634 <tangtao1634@phytium.com.cn> writes:
 >>
->> On 10/26/25 4:39 PM, BALATON Zoltan wrote:
->>> On Sun, 26 Oct 2025, Yogesh Vyas wrote:
->>>> On Sun, Oct 19, 2025 at 5:37 PM BALATON Zoltan <balaton@eik.bme.hu> 
->>>> wrote:
->>>>> On Sun, 19 Oct 2025, Yogesh Vyas wrote:
->>>>>> When I run QEMU with the ROM option, the machine boots 
->>>>>> successfully with
->>>>>> the below command:
->>>>>>
->>>>>> qemu-system-ppc64 -machine pegasos2 -bios pegasos2.rom \
->>>>>>                  -cdrom debian-8.11.0-powerpc-netinst.iso \
->>>>>>                  -device VGA,romfile="" -serial stdio
->>>>>>
->>>>>> However, when I try to boot the machine without the ROM using 
->>>>>> VOF, the
->>>>>> machine does not come up and no logs appear on stdout:
->>>>>>
->>>>>> qemu-system-ppc64 -machine pegasos2 -serial stdio \
->>>>>>                  -kernel vmlinuz-chrp.initrd -append "---" \
->>>>>>                  -cdrom debian-8.11.0-powerpc-netinst.iso
->>>>>>
->>>>>> Please let me know if I am missing any parameters or setup 
->>>>>> required for
->>>>>> booting via VOF on Pegasos2.
->>>>>>
->>>>>> Documentation referred: qemu/docs/system/ppc/amigang.rst
->>>>>
->>>>> Maybe you did not use the right vmlinuz-chrp.initrd. Pegasos2 is a 
->>>>> 32 bit
->>>>> machine so you need /install/powerpc/vmlinuz-chrp.initrd for it 
->>>>> (see in
->>>>> the /install/pegasos script that is used with firmware). Even if 
->>>>> you call
->>>>> it from qemu-system-ppc64 which includes both 32 bit and 64 bit 
->>>>> machines
->>>>> but does not make 32 bit machines 64 bit so you still need the 32 
->>>>> bit OS.
->>>>>
->>>>>
->>>> Hi Balaton,
->>>> I am using 32bit images only and looks like VOF boot works with the 
->>>> distro
->>>> provided Qemu (both ppc and pp64), however doesn't work with 
->>>> upstream Qemu
->>>> for VOF.
+>>> From: Tao Tang <tangtao1634@phytium.com.cn>
 >>>
->>> That's odd, it works for me with QEMU master so I can't reproduce this.
+>>> This patch series (V2) introduces several cleanups and improvements
+>>> to the smmu-testdev device. The main goals are to refactor shared
+>>> code, enhance robustness, and significantly clarify the complex
+>>> page table construction used for testing.
 >>>
->>>> yogi@fedora:~/work/images$ file vmlinuz-chrp.initrd
->>>> vmlinuz-chrp.initrd: ELF 32-bit MSB executable, PowerPC or cisco 4500,
->>>> version 1 (SYSV), statically linked, not stripped
+>>> Motivation
+>>> ----------
 >>>
->>> The file command says 32-bit for both 
->>> /install/powerpc/vmlinuz-chrp.initrd and 
->>> /install/powerpc64/vmlinuz-chrp.initrd but only the first one should 
->>> work. Can you double check you have the right vmlinuz-chrp.initrd 
->>> file? But if you say the same file works with 9.2.4 I have no idea 
->>> why. I see these files on the CD
+>>> Currently, thoroughly testing the SMMUv3 emulation requires a significa=
+nt
+>>> software stack. We need to boot a full guest operating system (like Lin=
+ux)
+>>> with the appropriate drivers (e.g., IOMMUFD) and rely on firmware (e.g.,
+>>> ACPI with IORT tables or Hafnium) to correctly configure the SMMU and
+>>> orchestrate DMA from a peripheral device.
 >>>
->>>   9301172 Jun 19  2018 /install/powerpc/vmlinuz-chrp.initrd
->>>  10534888 Jun 19  2018 /install/powerpc64/vmlinuz-chrp.initrd
+>>> This dependency on a complex software stack presents several challenges:
+>>>
+>>> * High Barrier to Entry: Writing targeted tests for specific SMMU
+>>>      features (like fault handling, specific translation regimes, etc.)
+>>>      becomes cumbersome.
+>>>
+>>> * Difficult to Debug: It's hard to distinguish whether a bug originates
+>>>      from the SMMU emulation itself, the guest driver, the firmware
+>>>      tables, or the guest kernel's configuration.
+>>>
+>>> * Slow Iteration: The need to boot a full guest OS slows down the
+>>>      development and testing cycle.
+>>>
+>>> The primary goal of this work is to create a lightweight, self-contained
+>>> testing environment that allows us to exercise the SMMU's core logic
+>>> directly at the qtest level, removing the need for any guest-side
+>>> software.
+>> I agree, an excellent motivation.
 >>
->>
->> I am also using the same file:
->>
->> yogi@fedora:~/work/images$ ls -lrt vmlinuz-chrp.initrd
->> -r--r--r--. 1 yogi yogi 9301172 Oct 18 23:50 vmlinuz-chrp.initrd
->>
+>>> Our Approach: A Dedicated Test Device
+>>> -------------------------------------
 >>>
->>> File command says:
+>>> To achieve this, we introduce two main components:
 >>>
->>> vmlinuz-chrp.initrd:   ELF 32-bit MSB executable, PowerPC or cisco 
->>> 4500, version 1 (SYSV), statically linked, not stripped
->>> vmlinuz-chrp.initrd64: ELF 32-bit MSB executable, PowerPC or cisco 
->>> 4500, version 1 (SYSV), statically linked, not stripped
+>>> * A new, minimal hardware device: smmu-testdev.
+>>> * A corresponding qtest that drives this device to generate SMMU-bound
+>>>      traffic.
 >>>
->>> but only the first from the powerpc directory is supposed to work 
->>> and it does boot for me with QEMU master. You can also check 
->>> following the other way described in 
->>> qemu/docs/system/ppc/amigang.rst using -bios pegasos2.rom which 
->>> loads the correct image from the CD. Does that work?
->>
->> Yes, I had mentioned it in my first mail that ROM option works as 
->> expected. It is only an issue when using VOF with upstream Qemu.
+>>> A key question is, "Why introduce a new smmu-testdev instead of using an
+>>> existing PCIe or platform device?"
+>> I curious what the split between PCIe and platform devices that need an
+>> SMMU are. I suspect there is a strong split between the virtualisation
+>> case and the emulation case.
 >
-> Or if you suspect it's a VOF issue you can try -trace enable="vof*"
 >
-Hi Balaton,
+> Thanks again for the insightful questions and for sparking this
+> valuable discussion.
+>
+>
+> From my observation of real-world, commercially available SoCs, the
+> SMMU is almost exclusively designed for and used with PCIe. Of course,
+> you're right that architecturally, the SMMU specification certainly
+> allows for non-PCIe clients. Peter's point about using the SMMU for
+> the GIC ITS in a Realm context is an excellent example. I've also
+> personally seen similar setups in the TF-A-Tests+FVP software stack,
+> where platform device, named SMMUv3TestEngine, was used to test the
+> SMMU.
+>
+> However, from the perspective of QEMU's current implementation, there
+> are some significant limitations that guided the design of
+> smmu-testdev. At the moment, the SMMU model does not really support
+> non-PCIe devices. Two key issues are:
+>
+> - The IOMMU MemoryRegion, used with PCIe device, cannot be used with a
+>   platform device, which is the primary mechanism for routing DMA
+>   traffic through the IOMMU.
+>
+> - Internally, the SMMU code makes assumptions about its clients. For
+>   instance, the smmu_get_sid() function explicitly expects a PCIe
+>   device and has no path to acquire a StreamID for a platform device.
+>
+> Given this, the decision to model smmu-testdev as a minimal, PCI-like
+> device is a pragmatic one. It aligns with the most common real-world
+> use case while also working within the constraints of QEMU's current
+> SMMU implementation.
 
-As suggested, I tried both options in upstream:
-yogi@fedora:~/work/git/fork/qemu/build$ ./qemu-system-ppc -machine 
-pegasos2 -serial stdio -kernel ~/work/images/vmlinuz-chrp.initrd -append 
-"---" -cdrom ~/work/images/debian-8.11.0-powerpc-netinst.iso -d 
-guest_errors -trace enable="vof*"
+OK that makes sense. One of the main use cases for a modelled SMMU in
+QEMU is for developing and testing FEAT_RME (Arm's Confidential
+Computing Realm implementation). In that case everything I've seen so
+far expects PCI. I guess we can put off any generalisation until we
+actually have some use cases that might need it.
 
-I could see the below trace and the error message:
-  vof_getproplen ph=0x13 "subsystem-vendor-id" => len=4
-vof_getprop ph=0x13 "subsystem-vendor-id" => len=4 [00001100]
-vof_getproplen ph=0x13 "reg" => len=20
-vof_getprop ph=0x13 "reg" => len=20 [00000000 00000000 00000000 00000000 
-00000000]
-vof_write ih=0x2 [22] "Device tree strings 0x"
-vof_write ih=0x2 [8] "01b0d000"
-vof_write ih=0x2 [6] " -> 0x"
-vof_write ih=0x2 [8] "01b0d405"
-vof_write ih=0x2 [2] "
-"
-vof_write ih=0x2 [22] "Device tree struct  0x"
-vof_write ih=0x2 [8] "01b0e000"
-vof_write ih=0x2 [6] " -> 0x"
-vof_write ih=0x2 [8] "01b0f000"
-vof_write ih=0x2 [2] "
-"
-vof_getprop ph=0x3 "stdin" => len=4 [00000001]
-vof_write ih=0x2 [18] "Calling quiesce..."
-vof_write ih=0x2 [2] "
-"
-vof_claimed 0x0..0xd80 size=0xd80
-vof_claimed 0x8000..0x10000 size=0x8000
-vof_claimed 0x400000..0xcd8dfc size=0x8d8dfc
-vof_claimed 0xd00000..0x15a1ec0 size=0x8a1ec0
-vof_claimed 0x15a2000..0x1b0b90d size=0x56990d
-vof_claimed 0x1b0c000..0x1c0c000 size=0x100000
-vof_claimed 0x1ffff000..0x1ffff014 size=0x14
-vof_write ih=0x2 [24] "returning from prom_init"
-vof_write ih=0x2 [2] "
-"
-Trying to read invalid spr 1012 (0x3f4) at c0013f48
+>>> The answer lies in our goal to minimize complexity. Standard devices,
+>>> whether PCIe or platform, come with their own intricate initialization
+>>> protocols and often require a complex driver state machine to function.
+>>> Using them would re-introduce the very driver-level complexity we aim to
+>>> avoid.
+>>>
+>>> The smmu-testdev is intentionally not a conformant, general-purpose PCIe
+>>> or platform device. It is a purpose-built, highly simplified "DMA engin=
+e."
+>>> I've designed it to be analogous to a minimal PCIe Root Complex that
+>>> bypasses the full, realistic topology (Host Bridges, Switches, Endpoint=
+s)
+>>> to provide a direct, programmable path for a DMA request to reach the S=
+MMU.
+>>> Its sole purpose is to trigger a DMA transaction when its registers are
+>>> written to, making it perfectly suited for direct control from a test
+>>> environment like qtest.
+>>>
+>>> The Qtest Framework
+>>> -------------------
+>>>
+>>> The new qtest (smmu-testdev-qtest.c) serves as the "bare-metal driver"
+>>> for both the SMMU and the smmu-testdev. It manually performs all the
+>>> setup that would typically be handled by the guest kernel and firmware,
+>>> but in a completely controlled and predictable manner:
+>>>
+>>> 1.  SMMU Configuration: It directly initializes the SMMU's registers to=
+ a
+>>>      known state.
+>>>
+>>> 2.  Translation Structure Setup: It manually constructs the necessary
+>>>      translation structures in memory, including Stream Table Entries
+>>>      (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
+>>>
+>>> 3.  DMA Trigger: It programs the smmu-testdev to initiate a DMA operati=
+on
+>>>      targeting a specific IOVA.
+>>>
+>>> 4.  Verification: It waits for the transaction to complete and verifies
+>>>      that the memory was accessed correctly after address translation by
+>>>      the SMMU.
+>>>
+>>> This framework provides a solid and extensible foundation for validating
+>>> the SMMU's core translation paths. The initial test included in this
+>>> series covers a basic DMA completion path in the Non-Secure bank,
+>>> serving as a smoke test and a proof of concept.
+>>>
+>>> It is worth noting that this series currently only includes tests for t=
+he
+>>> Non-Secure SMMU. I am aware of the ongoing discussions and RFC patches
+>>> for Secure SMMU support. To avoid a dependency on unmerged work, this
+>>> submission does not include tests for the Secure world. However, I have
+>>> already implemented these tests locally, and I am prepared to submit
+>>> them for review as soon as the core Secure SMMU support is merged
+>>> upstream.
+>> What about other IOMMU's? Are there any other bus mediating devices
+>> modelled in QEMU that could also benefit from the ability to trigger DMA
+>> transactions?
+>
+>
+> This is a great point that I haven't fully considered. To make sure I
+> understand correctly, are you referring to IOMMU implementations for
+> other architectures, such as VT-d on x86 or the ongoing IOMMU work for
+> RISC-V?
 
-Regards,
+Yes - generally I think having a single test device that can be used to
+test multiple models will be useful. I guess each qtest will be very
+tied to the SMMU it is modelling as it needs to program both sides but
+if we take care to encapsulate the programming of the test device and
+verification of the results we should be able to ensure good code
+re-use.
 
-Yogesh Vyas
+> I'll admit this is an area I haven't looked into. I'm very
+> open to ideas=E2=80=94do you or others have suggestions on how this
+> test-device pattern could be generalized or what would be needed to
+> make it useful across different architectures?
 
-> Regards,
-> BALATON Zoltan
---------------0nSzWO5r5GyxmFJwZZI5wKVu
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+My only initial thought is the device might be better called
+iommu-testdev (as in a device to test IOMMUs, of which the SMMU is one).
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 10/26/25 10:15 PM, BALATON Zoltan
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu">On Sun,
-      26 Oct 2025, Yogesh Vyas wrote:
-      <br>
-      <br>
-      <blockquote type="cite">
-        <br>
-        On 10/26/25 4:39 PM, BALATON Zoltan wrote:
-        <br>
-        <blockquote type="cite">On Sun, 26 Oct 2025, Yogesh Vyas wrote:
-          <br>
-          <blockquote type="cite">On Sun, Oct 19, 2025 at 5:37 PM
-            BALATON Zoltan <a class="moz-txt-link-rfc2396E" href="mailto:balaton@eik.bme.hu">&lt;balaton@eik.bme.hu&gt;</a> wrote:
-            <br>
-            <blockquote type="cite">On Sun, 19 Oct 2025, Yogesh Vyas
-              wrote:
-              <br>
-              <blockquote type="cite">When I run QEMU with the ROM
-                option, the machine boots successfully with
-                <br>
-                the below command:
-                <br>
-                <br>
-                qemu-system-ppc64 -machine pegasos2 -bios pegasos2.rom \
-                <br>
-                                 -cdrom
-                debian-8.11.0-powerpc-netinst.iso \
-                <br>
-                                 -device VGA,romfile="" -serial stdio
-                <br>
-                <br>
-                However, when I try to boot the machine without the ROM
-                using VOF, the
-                <br>
-                machine does not come up and no logs appear on stdout:
-                <br>
-                <br>
-                qemu-system-ppc64 -machine pegasos2 -serial stdio \
-                <br>
-                                 -kernel vmlinuz-chrp.initrd -append
-                "---" \
-                <br>
-                                 -cdrom
-                debian-8.11.0-powerpc-netinst.iso
-                <br>
-                <br>
-                Please let me know if I am missing any parameters or
-                setup required for
-                <br>
-                booting via VOF on Pegasos2.
-                <br>
-                <br>
-                Documentation referred: qemu/docs/system/ppc/amigang.rst
-                <br>
-              </blockquote>
-              <br>
-              Maybe you did not use the right vmlinuz-chrp.initrd.
-              Pegasos2 is a 32 bit
-              <br>
-              machine so you need /install/powerpc/vmlinuz-chrp.initrd
-              for it (see in
-              <br>
-              the /install/pegasos script that is used with firmware).
-              Even if you call
-              <br>
-              it from qemu-system-ppc64 which includes both 32 bit and
-              64 bit machines
-              <br>
-              but does not make 32 bit machines 64 bit so you still need
-              the 32 bit OS.
-              <br>
-              <br>
-              <br>
-            </blockquote>
-            Hi Balaton,
-            <br>
-            I am using 32bit images only and looks like VOF boot works
-            with the distro
-            <br>
-            provided Qemu (both ppc and pp64), however doesn't work with
-            upstream Qemu
-            <br>
-            for VOF.
-            <br>
-          </blockquote>
-          <br>
-          That's odd, it works for me with QEMU master so I can't
-          reproduce this.
-          <br>
-          <br>
-          <blockquote type="cite">yogi@fedora:~/work/images$ file
-            vmlinuz-chrp.initrd
-            <br>
-            vmlinuz-chrp.initrd: ELF 32-bit MSB executable, PowerPC or
-            cisco 4500,
-            <br>
-            version 1 (SYSV), statically linked, not stripped
-            <br>
-          </blockquote>
-          <br>
-          The file command says 32-bit for both
-          /install/powerpc/vmlinuz-chrp.initrd and
-          /install/powerpc64/vmlinuz-chrp.initrd but only the first one
-          should work. Can you double check you have the right
-          vmlinuz-chrp.initrd file? But if you say the same file works
-          with 9.2.4 I have no idea why. I see these files on the CD
-          <br>
-          <br>
-            9301172 Jun 19  2018 /install/powerpc/vmlinuz-chrp.initrd
-          <br>
-           10534888 Jun 19  2018 /install/powerpc64/vmlinuz-chrp.initrd
-          <br>
-        </blockquote>
-        <br>
-        <br>
-        I am also using the same file:
-        <br>
-        <br>
-        yogi@fedora:~/work/images$ ls -lrt vmlinuz-chrp.initrd
-        <br>
-        -r--r--r--. 1 yogi yogi 9301172 Oct 18 23:50 vmlinuz-chrp.initrd
-        <br>
-        <br>
-        <blockquote type="cite">
-          <br>
-          File command says:
-          <br>
-          <br>
-          vmlinuz-chrp.initrd:   ELF 32-bit MSB executable, PowerPC or
-          cisco 4500, version 1 (SYSV), statically linked, not stripped
-          <br>
-          vmlinuz-chrp.initrd64: ELF 32-bit MSB executable, PowerPC or
-          cisco 4500, version 1 (SYSV), statically linked, not stripped
-          <br>
-          <br>
-          but only the first from the powerpc directory is supposed to
-          work and it does boot for me with QEMU master. You can also
-          check following the other way described in
-          qemu/docs/system/ppc/amigang.rst using -bios pegasos2.rom
-          which loads the correct image from the CD. Does that work?
-          <br>
-        </blockquote>
-        <br>
-        Yes, I had mentioned it in my first mail that ROM option works
-        as expected. It is only an issue when using VOF with upstream
-        Qemu.
-        <br>
-      </blockquote>
-      <br>
-      Or if you suspect it's a VOF issue you can try -trace
-      enable="vof*" <br>
-      <br>
-    </blockquote>
-    <p>Hi Balaton,</p>
-    <p>As suggested, I tried both options in upstream:<br>
-      yogi@fedora:~/work/git/fork/qemu/build$ ./qemu-system-ppc -machine
-      pegasos2 -serial stdio -kernel ~/work/images/vmlinuz-chrp.initrd
-      -append "---" -cdrom
-      ~/work/images/debian-8.11.0-powerpc-netinst.iso -d guest_errors
-      -trace enable="vof*"</p>
-    <p>I could see the below trace and the error message:<br>
-       vof_getproplen ph=0x13 "subsystem-vendor-id" =&gt; len=4<br>
-      vof_getprop ph=0x13 "subsystem-vendor-id" =&gt; len=4 [00001100]<br>
-      vof_getproplen ph=0x13 "reg" =&gt; len=20<br>
-      vof_getprop ph=0x13 "reg" =&gt; len=20 [00000000 00000000 00000000
-      00000000 00000000]<br>
-      vof_write ih=0x2 [22] "Device tree strings 0x"<br>
-      vof_write ih=0x2 [8] "01b0d000"<br>
-      vof_write ih=0x2 [6] " -&gt; 0x"<br>
-      vof_write ih=0x2 [8] "01b0d405"<br>
-      vof_write ih=0x2 [2] "<br>
-      "<br>
-      vof_write ih=0x2 [22] "Device tree struct  0x"<br>
-      vof_write ih=0x2 [8] "01b0e000"<br>
-      vof_write ih=0x2 [6] " -&gt; 0x"<br>
-      vof_write ih=0x2 [8] "01b0f000"<br>
-      vof_write ih=0x2 [2] "<br>
-      "<br>
-      vof_getprop ph=0x3 "stdin" =&gt; len=4 [00000001]<br>
-      vof_write ih=0x2 [18] "Calling quiesce..."<br>
-      vof_write ih=0x2 [2] "<br>
-      "<br>
-      vof_claimed 0x0..0xd80 size=0xd80<br>
-      vof_claimed 0x8000..0x10000 size=0x8000<br>
-      vof_claimed 0x400000..0xcd8dfc size=0x8d8dfc<br>
-      vof_claimed 0xd00000..0x15a1ec0 size=0x8a1ec0<br>
-      vof_claimed 0x15a2000..0x1b0b90d size=0x56990d<br>
-      vof_claimed 0x1b0c000..0x1c0c000 size=0x100000<br>
-      vof_claimed 0x1ffff000..0x1ffff014 size=0x14<br>
-      vof_write ih=0x2 [24] "returning from prom_init"<br>
-      vof_write ih=0x2 [2] "<br>
-      "<br>
-      <font color="#f66151">Trying to read invalid spr 1012 (0x3f4) at
-        c0013f48</font></p>
-    <p>Regards,</p>
-    <p>Yogesh Vyas</p>
-    <blockquote type="cite"
-      cite="mid:993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu">Regards,
-      <br>
-      BALATON Zoltan<br>
-    </blockquote>
-  </body>
-</html>
+>
+> Thanks again for the great feedback.
+>
+> Best regards,
+>
+> Tao
 
---------------0nSzWO5r5GyxmFJwZZI5wKVu--
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
