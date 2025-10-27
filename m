@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8E1C0F683
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 17:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03064C0F78B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 17:55:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDQJG-0005y2-0v; Mon, 27 Oct 2025 12:43:06 -0400
+	id 1vDQTD-0000gl-RQ; Mon, 27 Oct 2025 12:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDQJA-0005w8-VX
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 12:43:01 -0400
-Received: from mail-yx1-xb133.google.com ([2607:f8b0:4864:20::b133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDQT9-0000eA-Le
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 12:53:19 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDQJ7-0007pj-9S
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 12:43:00 -0400
-Received: by mail-yx1-xb133.google.com with SMTP id
- 956f58d0204a3-63e1a326253so5215789d50.2
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 09:42:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDQT3-0000wz-AC
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 12:53:19 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4710665e7deso25712725e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 09:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761583370; x=1762188170; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iIqSimi39klofHZtZnL5Vj2K3y0rXxrFl3z6jktwTZo=;
- b=ZBqGr22IMs91mfamvtGC9ODmUlayhO2pnq7/qn8v2QOGf2jfQ5MwSYa5fgSgdyy613
- aD6LrxXkQWrlm7dc65Ww64if/n+jRa5hKaFOv+KHSRHRq9dv32tnWdHmUXo0zI+Dnpnb
- IZ5Xcn2czhzFRIbdCHOONvDMmSlrQCEFLUkfsKFI4wYGZ/3djE3Rgj6xZbLS54Nhm1n9
- OryC2OJktoxrGD1eXEScWhpHKijypenldkP2VJrcKmXvxkFam1FF3jCHs59ucWc5kbDP
- +HSWBFnLMk5o+VKeczdQUi2HLodBKYxn3rZZynV5WxjSgyEFORF6B3ZZmXl5wsVBvC6f
- Zs0g==
+ d=linaro.org; s=google; t=1761583987; x=1762188787; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mUKEOpc8DZlHgycGgGPp6xBX6hImmBkNEo9NEyKOQj8=;
+ b=dsEeBhDj6VnxQS1Q58bxjuyYQL4PHYN7nfiyxggRPtZvzGj5Bqqv3x5Q4bzoGMMKY4
+ e4QHDSiHf5GGmz8Zc7CMf9SAKSa9jBIcC3AhtcCSig+cUEKZeakEgGvxH2JsS4kZQeIZ
+ RF4YtAFghFUtwhfWrMqAD+pGfXy/RtAyrgYLD6P5bNX6ACf5HY9YT8WkfXIbLk5uFuXq
+ 3+bj8jf9S1ZhLyk1bl3VfA7VOk8CnfLctbJ8mxDNRlGpw1riaj+Y8UaSh/EhwHHpTCAC
+ Vrv4uMCs9YyYPh3ZqHGyK/Lv7Haw09leEQFT0YXEujRaMRxcm15oAQerJoQwxazTe5Zb
+ dGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761583370; x=1762188170;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1761583987; x=1762188787;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=iIqSimi39klofHZtZnL5Vj2K3y0rXxrFl3z6jktwTZo=;
- b=IRJrZISIs5pnCw80rfhxcuwN2uSLv38zofB66rskKMyB5dXUsKmD89y0CaaAUlEA+1
- xWZtd+OgHQi7YAjX6cEkqzBrUQGktpFgcA22WJfatI/7HWhdIMVLdmLtQw4iicTWTyPU
- NUc7I8GwyeF4fPrqo/W9YI+6Tt0MNfIX8a1C8p1ybSnj1GrNSivXlTICsCtkNnr8jF9m
- hnqA46e1+v25Xftv05HgAdFDth4DtFJpw6aHU3jUVZvP6Z2xfFN/yh048Kamc1SjyuvO
- zGIJwVI5p+xdyE0OAzs8oyMT6s0qZw/kj2+bUpm8f4nI8EAIHsUeUt9lvUJgH9xK4fng
- ghyw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUyHpYd/IhT/AUHlCNsXzl6UyTnpTRDNWrxHEVqXltwJlOI7Ckz//TwbrP2WReahB68hhG5duVaRJK2@nongnu.org
-X-Gm-Message-State: AOJu0YzlFEwktntou67eAE+Oya3751srQd2zO2+PemNAEwE0Wjc3Dk1I
- yRCarUxfc+hC6xPTk84B98kFOH4CKTynDfMKZCQzVSKY7n+cuPNt5+BKj6uZ21WMbspfHqyG9GK
- AEaCpBB4a0Lxjm70ruF9lpiFWlLms4cfM6lCt2Qi6Dg==
-X-Gm-Gg: ASbGncuoVKEWHDYKERSgrXAM2iTHPdFchVTFSXE14FNXVZqxD0qO69jVuZsqdYtzLiB
- 355aQSFkefWsrwweda9ddDbzHXECuCcCihAW5jFXKd6JueywfBPCgYIpWzcOEH2YzqOuVt5F25q
- gD88ClxIOdWQRm0o07l1yBO3qHiGWsOf3y75kJq/UFVJHtE2HuOr8Ca//9nqhXofjp97gehL1qE
- WR9pwINLhD9tloKJPbHs87bbBEg0UXRa1ojk/56Z85CvRpjYIBmF+yroeDdlQ==
-X-Google-Smtp-Source: AGHT+IFnTy4GuL39gQqo5cO5/AtjK3ueLANt8SL8mKD6Wd3Al0HmUJPCwVFv88tqthud15vc4T2fVPU5v7ZGG0ZTM0s=
-X-Received: by 2002:a05:690c:a90:b0:784:a6d4:dc21 with SMTP id
- 00721157ae682-7861838ccc5mr3677497b3.52.1761583370329; Mon, 27 Oct 2025
- 09:42:50 -0700 (PDT)
+ bh=mUKEOpc8DZlHgycGgGPp6xBX6hImmBkNEo9NEyKOQj8=;
+ b=fs3jfdEsVmO0E2shVISFes/n0Q5WLDKsB+i0hQbIhJnLXlLXvcKKNHU9W5bZIzkccs
+ Bj3fQ6wZTIlUlsmi0tBUGp7AKEruHkW80SOIypH9q9EBfWuUNoCJ/xvdX7eMSWqfgVYv
+ PAV0E+Ii2nCcvoc+eA8fPfGoTEHNkUcaI8RGFSa3ZHCFnzlW/gyOYv2h5v3M+aJsgnoj
+ g6PwM7OgoVTVLAx1vU5RBw8pRtg9sOaePuR8gPiYQTeKSsHdr3EhRFVav6ssG1LUSUFQ
+ gyJ4H8NcjhsndgGTuiRGtGO75iW9W9DtbVcNOAEkKNirm9bEccy3hmTyUXz9cMkLyXat
+ Ad8Q==
+X-Gm-Message-State: AOJu0Yxa50C61i1BN8Oaez69CCJl6XGVt1Qw0JCgJwoWoVIXa0WEvtFg
+ SEdHAfbR1S46wRjAUzvjd5yQKczmH1sT6+yTTzuvm5slo1XZwLHXN49RkYLaB9mgBAlVitoUhUk
+ 9SZtbsGg=
+X-Gm-Gg: ASbGncvqoPoE7v33JAsYCev964RdF6YEo/t1t3chbfRqL/a1slBekNMUCsLZ4T8DNWi
+ oNdnqlCahy8nlTiu6nNR1NdEtBAnG5C85nO6r8SFW/4evdMQEFsUSd5wXXVRa3sDUHiGhhqRgxe
+ xyKzCJVXET07IXPSR2xNNZXL0d8FWyHCsHWqf+OnFJoO/heK9Oc10SiPTkZDnJ8iJrzOvAA8KeW
+ jApQZpfliKd3eR55zMEULAGAaSJcP8EPVCCN6o3IokZBilcyBxDRVg6LZwcS9VqfsulnrRJE1H6
+ NyL4J7MP4DCBpjHC2OG+arcLydjjtv9hUrpEPVlNskX0+IhI/K0CY3JvudUID62pjZ4mWThycJP
+ m/+tBR34AXHrLvhRcjNX4TenqjUb/6fhfwoglE37Cl5eX+hJoIdNGzmqlHT5/oNjlWlpFT3Nf2x
+ E/Mb5KeP4XUl24a7KxrJY0DiWEGXzf4fF/VOLN/I0ULcwbh2ffvw==
+X-Google-Smtp-Source: AGHT+IGRpBk+c+zX1B+k+jE4hZrTq9FPwvtH27WuNxTS/2JjK9xCG5HhCZ7V5eSiX5u+kdvBWLFrPw==
+X-Received: by 2002:a05:600c:190a:b0:471:9da:524c with SMTP id
+ 5b1f17b1804b1-47717dfd4bbmr3333105e9.12.1761583986870; 
+ Mon, 27 Oct 2025 09:53:06 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475dd4a36easm146448155e9.10.2025.10.27.09.53.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 27 Oct 2025 09:53:05 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/7] hw/pci-host: Re-use generic pci_host_data_le_ops
+ MemoryRegionOps
+Date: Mon, 27 Oct 2025 17:52:56 +0100
+Message-ID: <20251027165304.98296-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250911144923.24259-1-sebott@redhat.com>
- <20250911144923.24259-3-sebott@redhat.com>
-In-Reply-To: <20250911144923.24259-3-sebott@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Oct 2025 16:42:39 +0000
-X-Gm-Features: AWmQ_bnGFe7efhNQOt02HzPY7w4uzHv-6KQOwTPx1B30MSJa7HImhr0NK5nCCdw
-Message-ID: <CAFEAcA-urFX=V7kuRA3cRik7PifFQER5eoXC_CZ2jKg7OZz9iA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] target/arm/kvm: add kvm-psci-version vcpu property
-To: Sebastian Ott <sebott@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b133;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb133.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,120 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 11 Sept 2025 at 15:49, Sebastian Ott <sebott@redhat.com> wrote:
->
-> Provide a kvm specific vcpu property to override the default
-> (as of kernel v6.13 that would be PSCI v1.3) PSCI version emulated
-> by kvm. Current valid values are: 0.1, 0.2, 1.0, 1.1, 1.2, and 1.3
->
-> Signed-off-by: Sebastian Ott <sebott@redhat.com>
-> ---
->  docs/system/arm/cpu-features.rst |  5 +++
->  target/arm/cpu.h                 |  6 +++
->  target/arm/kvm.c                 | 70 +++++++++++++++++++++++++++++++-
->  3 files changed, 80 insertions(+), 1 deletion(-)
->
-> diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
-> index 37d5dfd15b..1d32ce0fee 100644
-> --- a/docs/system/arm/cpu-features.rst
-> +++ b/docs/system/arm/cpu-features.rst
-> @@ -204,6 +204,11 @@ the list of KVM VCPU features and their descriptions.
->    the guest scheduler behavior and/or be exposed to the guest
->    userspace.
->
-> +``kvm-psci-version``
-> +  Override the default (as of kernel v6.13 that would be PSCI v1.3)
-> +  PSCI version emulated by the kernel. Current valid values are:
-> +  0.1, 0.2, 1.0, 1.1, 1.2, and 1.3
-> +
->  TCG VCPU Features
->  =================
->
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index c15d79a106..44292aab32 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -974,6 +974,12 @@ struct ArchCPU {
->       */
->      uint32_t psci_version;
->
-> +    /*
-> +     * Intermediate value used during property parsing.
-> +     * Once finalized, the value should be read from psci_version.
-> +     */
-> +    uint32_t prop_psci_version;
-> +
->      /* Current power state, access guarded by BQL */
->      ARMPSCIState power_state;
->
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 6672344855..bc6073f395 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -483,6 +483,59 @@ static void kvm_steal_time_set(Object *obj, bool value, Error **errp)
->      ARM_CPU(obj)->kvm_steal_time = value ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
->  }
->
-> +static char *kvm_get_psci_version(Object *obj, Error **errp)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(obj);
-> +    const char *val;
-> +
-> +    switch (cpu->prop_psci_version) {
-> +    case QEMU_PSCI_VERSION_0_1:
-> +        val = "0.1";
-> +        break;
-> +    case QEMU_PSCI_VERSION_0_2:
-> +        val = "0.2";
-> +        break;
-> +    case QEMU_PSCI_VERSION_1_0:
-> +        val = "1.0";
-> +        break;
-> +    case QEMU_PSCI_VERSION_1_1:
-> +        val = "1.1";
-> +        break;
-> +    case QEMU_PSCI_VERSION_1_2:
-> +        val = "1.2";
-> +        break;
-> +    case QEMU_PSCI_VERSION_1_3:
-> +        val = "1.3";
-> +        break;
-> +    default:
-> +        val = "0.2";
-> +        break;
-> +    }
-> +    return g_strdup(val);
-> +}
-> +
-> +static void kvm_set_psci_version(Object *obj, const char *value, Error **errp)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(obj);
-> +
-> +    if (!strcmp(value, "0.1")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_0_1;
-> +    } else if (!strcmp(value, "0.2")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_0_2;
-> +    } else if (!strcmp(value, "1.0")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_1_0;
-> +    } else if (!strcmp(value, "1.1")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_1_1;
-> +    } else if (!strcmp(value, "1.2")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_1_2;
-> +    } else if (!strcmp(value, "1.3")) {
-> +        cpu->prop_psci_version = QEMU_PSCI_VERSION_1_3;
+Add the 'config-reg-check-high-bit' property in order to re-use
+the generic pci_host_data_le_ops MemoryRegionOps.
 
-We already have six values here and it's not implausible
-we might end up with more in future; maybe we should make the
-mapping between string and constant data-driven rather
-than having code written out longhand in the get and set
-functions?
+Philippe Mathieu-Daudé (7):
+  hw/pci/pci_host: Add 'config-reg-check-high-bit' property
+  hw/pci-host/astro: Re-use generic pci_host_data_le_ops MemoryRegionOps
+  hw/pci-host/dino: Re-use generic pci_host_data_le_ops MemoryRegionOps
+  hw/pci-host/sabre: Remove pointless OBJECT() cast
+  hw/pci-host/sabre: Include 'host' in host bridge method names
+  hw/pci-host/sabre: Re-use generic pci_host_data_le_ops MemoryRegionOps
+  hw/pci-host/typhoon: Re-use generic pci_host_data_le_ops
+    MemoryRegionOps
 
-> +    } else {
-> +        error_setg(errp, "Invalid PSCI-version value");
-> +        error_append_hint(errp, "Valid values are 0.1, 0.2, 1.0, 1.1, 1.2, 1.3\n");
-> +    }
-> +}
+ hw/alpha/alpha_sys.h      |  1 -
+ include/hw/pci/pci_host.h |  1 +
+ hw/alpha/pci.c            | 26 -------------
+ hw/alpha/typhoon.c        |  4 +-
+ hw/pci-host/astro.c       | 35 ++++-------------
+ hw/pci-host/dino.c        | 30 ++++-----------
+ hw/pci-host/sabre.c       | 80 +++++++++++++--------------------------
+ hw/pci/pci_host.c         | 10 +++--
+ hw/pci-host/trace-events  |  4 --
+ 9 files changed, 52 insertions(+), 139 deletions(-)
 
-thanks
--- PMM
+-- 
+2.51.0
+
 
