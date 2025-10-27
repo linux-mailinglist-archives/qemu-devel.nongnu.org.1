@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4DFC0D999
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E3AC0D988
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:39:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMU8-0005zw-9n; Mon, 27 Oct 2025 08:38:04 -0400
+	id 1vDMUV-00065Y-Pn; Mon, 27 Oct 2025 08:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTz-0005n2-Am
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:55 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMUI-00063E-PT
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:38:16 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTu-0006Oc-CG
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:54 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47103b6058fso33829755e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:37:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMU9-0006QT-Tr
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:38:13 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b90so3460623f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:38:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761568666; x=1762173466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761568679; x=1762173479; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QLGA4BsveaP6QGp7KSxxzZDoWLl4mtX/E9pHps71OHg=;
- b=oHzeYdLaXXzFGswXXYIhMH4p6KGLuGHQc51b6py1XKgHxw62yVlkmcMaZDM72hZRyi
- x+ccgFSDmReMlGk5Kd0kyA+9w9KF4lulL4x/yuK2D/SaNw5j+oucfof4ddrw5IgAkfbK
- jOze+XS2A99PmR6GQXJQm1tbgyvhkY5GjtvhxxVigi0HONKUboJxcR2Krqy/kM3EFpue
- q3sHNyQjdMMwqbUc0rByY2UzRBH56ac3ElE9ZF2hcI56Xv9UVrMrJBBFE2UYASS2eUok
- LGe7aOWukLW583IuFpBm4M91+bZwKTRHMzCcNknciSFwBlKjSVA866ga7UsWyr6KBf+y
- vO7w==
+ bh=Oa5aQxRYPo9Nd1dGHw3Wox9JI4dBESZln5Zp2k//GTA=;
+ b=ZfdCAXw4FDdWumiv9y/kcNYvWW6mrC/eMI/L9pLls+jqRSyFbskOhgqqjeKpqA+2Sy
+ GaS7LzIwFKcMr9uhPfMP+IhKzR2ZuCDIm7/obkVxa8LKuD2ztjKENU1Up+krlRaqHcYV
+ 2eV/bF0VskALF+I4SXfk/NQjjH0Mtrznu87f6cui2nWtxGa9SthhoppQkUsoOcbCN9Le
+ BwLNrqts6tqPusTJB14IIRjry0BBAttXcBc3JFY0PiKf91Tf+Yy2tcytrMSYwdppJToy
+ sS7j8FI4LKQoWDDySZi31WzA1x5VzVm1TNsmMMsDL2Q2hx6tAXjcMrpPHjrFBDm0N/bw
+ XZOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761568666; x=1762173466;
+ d=1e100.net; s=20230601; t=1761568679; x=1762173479;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QLGA4BsveaP6QGp7KSxxzZDoWLl4mtX/E9pHps71OHg=;
- b=UB4916HeZmrZzrrpsEmjoSX3uZgyiUx6WOAgmaE3imAfq05AJyz567uoC3XgkkfE/y
- Ob4VBI4CWZekLQJte5235YKv/GLwFcEO0LpWunFZYcLhjYwwpCFkbIswYX6/eLQz0Bt8
- Le1W8qcyQSPNk3UOeMFVMDRsGtPmjKF9fZIn1iLGskflx57mV9TvvV5f9PeMQZgON+Pt
- wh/Hyhq00+jH4EmxthBcSdS1lVobE3FIvW1tPT7c1ef+KIBp9oDetU5Z/xViKPgYhgUJ
- 5rEKIgbhSsy9TbCKMx/y7WObV1RHEEbp3DuL7MzUSstKcmOr0shplt8H/kEDzzDCpnDe
- SqAQ==
-X-Gm-Message-State: AOJu0YwSe5PpM3T183cGMcJlgpSlPRnGTH1WNn2sD7cmCttimQizna0X
- 63qu2FJ84B6pUjv61gxs4PMKdv99SUX3jusTOkrquXe/JXt/4Cr8Ruooju6VPNmYmdr9dt2kPhN
- jPiSMvwM=
-X-Gm-Gg: ASbGncvlWyQgdubijTmFy/USY8eJyryZDsnHXuP4kvakHeB2ubw2xzXoXczqXDxvKSr
- xKHXPXpb4+ZCWZ/mqrImhjaPl+9GfuCBAjqIhF6Dov97S470ua/b4SClk/rdiQOMsJDxw46GL4j
- hQjN+a047HnCJtaWgsaBMB2q5kf63tIC+SLWRg4uowvUUbDWIyjxmMBH6kJkqMqNDiJDZ/7xf/+
- 3AsXxmEZDWAoQU26JKrUms+ENlrpVSknf0YtbVIAJPlT/ibI9ERo+uEu3msAkuT7ps+1yCuBNmw
- jfHgF07/jFpvr0XYHjTveHIgBN42cOJ264DVIS2XVtJmAhrHsxjwUvlkKY1YzhzMsCu+V5Qcy3P
- rjPwiuUko12iTApgYxObN8wckqHwacESprGta+4fwZY59jJnJKxFqxlHd3IDsDKkSqcCNvG4iaD
- UPn81vHtWea7l6nLSrtSOmw4eKX5H+X5sEmxLXP2iTwc+CsFpVOA==
-X-Google-Smtp-Source: AGHT+IHEsjQBidUqbm9SoVcLKCL74wb4/k68vdtmPYN/0xVUIfQZ2HSuA5jHkEqMEWb8ETCTTqVW+g==
-X-Received: by 2002:a05:600d:4301:b0:475:de75:84c6 with SMTP id
- 5b1f17b1804b1-475de75857amr35815515e9.12.1761568666613; 
- Mon, 27 Oct 2025 05:37:46 -0700 (PDT)
+ bh=Oa5aQxRYPo9Nd1dGHw3Wox9JI4dBESZln5Zp2k//GTA=;
+ b=c8F0BtbBshBJAuN3wGBD1T2mMuwdxLOD1z9Hwf3GfAHo5wL03EGDrArFJqh48QwEBY
+ 6w9KC8LnZosBGSLx/JmaP04SAAqGyFXNyrusVNC3YBJNSdHM8mboERrSNPCbh01FGKgB
+ 77WiN6oe0qeS2t02/+X8K+PrDpBuOWH0jK3L9RoBgA+IPdTyElKdaPEPFUyWeZM8ruDO
+ xyZ6tylIRlbRZa8J7Vyf8YewlkEgeUHVwhT5FaONGIA63SdOZ6hRgNZSuAZrhrlc8wW8
+ nVjUBnuQxQN64IN8x98fKJNFlAlWkwPwdREq7/XQEw2H9oFXT/BFoWlSRAuoK2aY0xFE
+ Cv/Q==
+X-Gm-Message-State: AOJu0YzF7lBeoqZEjXCce1JsdTVhUNeW0lOxHcGfH8cDQK2plxbVFM+o
+ 6VckMVJXyiDjQ3/WDVyQsVJCT6r1ev2ykqV8x92CY9C26TneDNgnEUkvwkULi+e8JTQbg9vM0ny
+ CiZkvAZ8=
+X-Gm-Gg: ASbGncur7eGjpn7ckKF3/sR0tHICyT4VkHYYvkm3hoXsbrrTtZRqPNcmuu+pjoRfgvj
+ pAIOzMLuPfRXreKVoDvd3SJ6URyH/vr8AtK9g3I2SIj8Elf3vnfBJsZDiQcs4uVbUJT1s1QT0+P
+ IcIqaUdBzKdOurVVkKjMFSKM99mmdTxJb2jubUxqCFV4quO7K2+2+5n4FHk+Fi9r2gi2X7P1yyA
+ +VMElVHIVpnPd2qOrvyo3o1G/3ebbT48kie1r5rryhN07HbvpabLtuRNBBD1frqVvUUk9E+IXjO
+ +5WIMAe5EJQ8dB+kwh9r8ZUPGeWogctc88lDu6NHqKsGxR7sf0tHDtCDqP+yiwjRwpk1tU8hQ9g
+ CbCHGc4uJ9bhfL1rw0s4JWdr/Eq5oxguJnZW5BJ9V20HICbWYHaTQ0Qs1GzgB8P35Mqa/TfRnJi
+ BF+XMrVR1YhkSm5INnc7kl82lojYrr2ruQCdjeKoh2Y6zYfchRTQ==
+X-Google-Smtp-Source: AGHT+IFnQVrSiGZZvXhqxIqDrh5o+Z52J2z6xQ+sXC6tpiz74mh6oATYobctlPMOFZJouBZIyIdbyA==
+X-Received: by 2002:a05:6000:40ca:b0:427:45f:ee21 with SMTP id
+ ffacd0b85a97d-4299071f96bmr9266716f8f.27.1761568678787; 
+ Mon, 27 Oct 2025 05:37:58 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd4e30f5sm135384175e9.17.2025.10.27.05.37.45
+ ffacd0b85a97d-429952d5678sm14031058f8f.22.2025.10.27.05.37.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Oct 2025 05:37:46 -0700 (PDT)
+ Mon, 27 Oct 2025 05:37:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
@@ -76,18 +76,18 @@ Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH 5/6] hw/pci-host/astro: Log unassigned MMIO accesses with
+Subject: [PATCH 6/6] hw/sparc64/ebus: Log unassigned MMIO accesses with
  unassigned_mem_ops
-Date: Mon, 27 Oct 2025 13:36:42 +0100
-Message-ID: <20251027123644.63487-6-philmd@linaro.org>
+Date: Mon, 27 Oct 2025 13:36:43 +0100
+Message-ID: <20251027123644.63487-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027123644.63487-1-philmd@linaro.org>
 References: <20251027123644.63487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,22 +115,22 @@ accesses as MMIO ones.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/astro.c | 2 +-
+ hw/sparc64/sun4u.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 1024ede7b68..0bd66ab3de3 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -449,7 +449,7 @@ static void elroy_pcihost_realize(DeviceState *dev, Error **errp)
- 
-     /* Elroy PCI bus memory.  */
-     memory_region_init(&s->pci_mmio, obj, "pci-mmio", UINT64_MAX);
--    memory_region_init_io(&s->pci_io, obj, &unassigned_io_ops, obj,
-+    memory_region_init_io(&s->pci_io, obj, &unassigned_mem_ops, obj,
-                             "pci-isa-mmio",
-                             ((uint32_t) IOS_DIST_BASE_SIZE) / ROPES_PER_IOC);
- 
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index e9f9b0a4cb9..87cf1c6c0bd 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -360,7 +360,7 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
+      * memory access to this region to succeed which allows the OpenBSD kernel
+      * to boot.
+      */
+-    memory_region_init_io(&s->bar0, OBJECT(s), &unassigned_io_ops, s,
++    memory_region_init_io(&s->bar0, OBJECT(s), &unassigned_mem_ops, s,
+                           "bar0", 0x1000000);
+     pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
+     memory_region_init_alias(&s->bar1, OBJECT(s), "bar1",
 -- 
 2.51.0
 
