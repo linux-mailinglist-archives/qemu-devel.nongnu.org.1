@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F4DC0EDB7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B410DC0EE1E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:17:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDOt5-0001fL-8D; Mon, 27 Oct 2025 11:11:59 -0400
+	id 1vDOta-0001uM-5c; Mon, 27 Oct 2025 11:12:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOt0-0001aF-LL
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:11:55 -0400
+ id 1vDOt6-0001hy-TR
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOsv-0003ZC-Am
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:11:54 -0400
+ id 1vDOt2-0003al-Rq
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761577906;
+ s=mimecast20190719; t=1761577913;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+3Rg85jlM5UX+02vSFShnD0E8jXFrXnf+cl2ueU9+g0=;
- b=EqSVNf1m/4vIkOSavlyXmMdZS3E6csq6zjo6jc8bvatCCF2pVIXshuqJL0aBmIrGzAj4bk
- MzKOGooci4hK7WzMstkIGc9yPaU799ubC6Bm5LCeyuKcJLe6r06MRlS7Rb6wuSrqDy02qG
- Eq9VimlodxjXlPcT5Z4NmC2u//iGmek=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1TxxLbBB/nlbhAyoE+VGB060htJ/JfCS5v+EnXEJWcY=;
+ b=QJbkcHnUDiX2ywh1rLk2LY4tyZvO/kZ8c2U537XLYeSuH0qv89fSDLLYGFhsXRrHh+qFBg
+ tP2gXCrQkh1lL6K3ceesYX7m9WTio4I70x5M1+YtKoXwVeCMtvD67Jxfw14iAdG/gimdp8
+ AAKhfxW+v1CuDJWcs/5X2LzvF/sMjTA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-7ExtPECcMM-1Cn9m5_gYoQ-1; Mon,
- 27 Oct 2025 11:11:41 -0400
-X-MC-Unique: 7ExtPECcMM-1Cn9m5_gYoQ-1
-X-Mimecast-MFC-AGG-ID: 7ExtPECcMM-1Cn9m5_gYoQ_1761577897
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-uFlJT-OnPkuqMLLTGsG-kg-1; Mon,
+ 27 Oct 2025 11:11:49 -0400
+X-MC-Unique: uFlJT-OnPkuqMLLTGsG-kg-1
+X-Mimecast-MFC-AGG-ID: uFlJT-OnPkuqMLLTGsG-kg_1761577903
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCE1019541B2; Mon, 27 Oct 2025 15:11:36 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 40CAF1954225; Mon, 27 Oct 2025 15:11:43 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2519B30001A2; Mon, 27 Oct 2025 15:11:34 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 60D491800577; Mon, 27 Oct 2025 15:11:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>,
@@ -69,15 +69,15 @@ Cc: Alexandre Ratchov <alex@caoua.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 06/35] hw/audio: simplify 'hda' audio init code
-Date: Mon, 27 Oct 2025 19:10:13 +0400
-Message-ID: <20251027151045.2863176-7-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 07/35] hw/audio: generalize audio_model.init()
+Date: Mon, 27 Oct 2025 19:10:14 +0400
+Message-ID: <20251027151045.2863176-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,64 +106,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-For consistency, use only qdev_device_add() to instantiate the devices.
-We can't rely on automatic bus lookup for the "hda-duplex" device though
-as it may end up on a different "intel-hda" bus...
-
-This allows to make init() callback bus-agnostic next.
+It is no longer PCI bus only.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/audio/intel-hda.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ include/hw/audio/model.h |  2 +-
+ hw/audio/intel-hda.c     |  4 +---
+ hw/audio/model.c         | 12 ++++--------
+ 3 files changed, 6 insertions(+), 12 deletions(-)
 
+diff --git a/include/hw/audio/model.h b/include/hw/audio/model.h
+index aa237e9eb6..4d0be93042 100644
+--- a/include/hw/audio/model.h
++++ b/include/hw/audio/model.h
+@@ -3,7 +3,7 @@
+ #define HW_AUDIO_MODEL_H
+ 
+ void audio_register_model_with_cb(const char *name, const char *descr,
+-                                  int (*init_pci)(PCIBus *bus, const char *audiodev));
++                                  void (*init_audio_model)(const char *audiodev));
+ void audio_register_model(const char *name, const char *descr,
+                           int isa, const char *typename);
+ 
 diff --git a/hw/audio/intel-hda.c b/hw/audio/intel-hda.c
-index 6a0db0dd9e..c46b195b62 100644
+index c46b195b62..758e130c93 100644
 --- a/hw/audio/intel-hda.c
 +++ b/hw/audio/intel-hda.c
-@@ -21,16 +21,16 @@
- #include "hw/pci/pci.h"
- #include "hw/qdev-properties.h"
- #include "hw/pci/msi.h"
-+#include "monitor/qdev.h"
- #include "qemu/timer.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
--#include "qemu/error-report.h"
- #include "hw/audio/model.h"
- #include "intel-hda.h"
- #include "migration/vmstate.h"
- #include "intel-hda-defs.h"
--#include "system/dma.h"
-+#include "qobject/qdict.h"
- #include "qapi/error.h"
- #include "qom/object.h"
- 
-@@ -1305,15 +1305,19 @@ static const TypeInfo hda_codec_device_type_info = {
+@@ -1303,7 +1303,7 @@ static const TypeInfo hda_codec_device_type_info = {
+  * create intel hda controller with codec attached to it,
+  * so '-soundhw hda' works.
   */
- static int intel_hda_and_codec_init(PCIBus *bus, const char *audiodev)
+-static int intel_hda_and_codec_init(PCIBus *bus, const char *audiodev)
++static void intel_hda_and_codec_init(const char *audiodev)
  {
--    DeviceState *controller;
-+    g_autoptr(QDict) props = qdict_new();
-+    DeviceState *intel_hda, *codec;
-     BusState *hdabus;
--    DeviceState *codec;
- 
--    controller = DEVICE(pci_create_simple(bus, -1, "intel-hda"));
--    hdabus = QLIST_FIRST(&controller->child_bus);
-+    qdict_put_str(props, "driver", "intel-hda");
-+    intel_hda = qdev_device_add_from_qdict(props, false, &error_fatal);
-+    hdabus = QLIST_FIRST(&intel_hda->child_bus);
-+
-     codec = qdev_new("hda-duplex");
+     g_autoptr(QDict) props = qdict_new();
+     DeviceState *intel_hda, *codec;
+@@ -1317,8 +1317,6 @@ static int intel_hda_and_codec_init(PCIBus *bus, const char *audiodev)
      qdev_prop_set_string(codec, "audiodev", audiodev);
      qdev_realize_and_unref(codec, hdabus, &error_fatal);
-+    object_unref(intel_hda);
-+
-     return 0;
+     object_unref(intel_hda);
+-
+-    return 0;
  }
  
+ static void intel_hda_register_types(void)
+diff --git a/hw/audio/model.c b/hw/audio/model.c
+index ddfefea706..7af0d960f5 100644
+--- a/hw/audio/model.c
++++ b/hw/audio/model.c
+@@ -24,14 +24,11 @@
+ #include "qemu/osdep.h"
+ #include "hw/qdev-core.h"
+ #include "monitor/qdev.h"
+-#include "qemu/option.h"
+-#include "qemu/help_option.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "qom/object.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/isa/isa.h"
+-#include "hw/pci/pci.h"
+ #include "hw/audio/model.h"
+ 
+ struct audio_model {
+@@ -39,20 +36,20 @@ struct audio_model {
+     const char *descr;
+     const char *typename;
+     int isa;
+-    int (*init_pci) (PCIBus *bus, const char *audiodev);
++    void (*init)(const char *audiodev);
+ };
+ 
+ static struct audio_model audio_models[9];
+ static int audio_models_count;
+ 
+ void audio_register_model_with_cb(const char *name, const char *descr,
+-                                  int (*init_pci)(PCIBus *bus, const char *audiodev))
++                                  void (*init_audio_model)(const char *audiodev))
+ {
+     assert(audio_models_count < ARRAY_SIZE(audio_models) - 1);
+     audio_models[audio_models_count].name = name;
+     audio_models[audio_models_count].descr = descr;
+     audio_models[audio_models_count].isa = 0;
+-    audio_models[audio_models_count].init_pci = init_pci;
++    audio_models[audio_models_count].init = init_audio_model;
+     audio_models_count++;
+ }
+ 
+@@ -124,7 +121,6 @@ void audio_model_init(void)
+         qdev_realize_and_unref(dev, bus, &error_fatal);
+     } else {
+         assert(!c->isa);
+-        PCIBus *pci_bus = (PCIBus *) object_resolve_path_type("", TYPE_PCI_BUS, NULL);
+-        c->init_pci(pci_bus, audiodev_id);
++        c->init(audiodev_id);
+     }
+ }
 -- 
 2.51.0
 
