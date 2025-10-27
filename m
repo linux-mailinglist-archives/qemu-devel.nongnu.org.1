@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62B8C0DF33
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33BCC0DFD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:23:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDN3r-0007oN-72; Mon, 27 Oct 2025 09:14:59 -0400
+	id 1vDN9x-0000vG-Ma; Mon, 27 Oct 2025 09:21:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDN3V-0007la-Ac
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:14:39 -0400
-Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vDN9t-0000ui-Ba
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:21:13 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDN3O-0003Sa-Ds
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:14:36 -0400
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-63e1b52b452so4902249d50.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:14:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vDN9i-00054Y-Ci
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:21:12 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-78af743c232so4139573b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761570862; x=1762175662; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UzLCfnD0X6+PLKZ84lv7cfbztSnyOCgfU/eKNL0xcsI=;
- b=jjsXQewQk99fa7wVrdXHxAwVA80uuf/49kZhZ1N+OH5i3ibUwApUyV5ilIEMyYTi4o
- u46WqfGObnyxgA0jD7CcFGJFvdSr7AS44BIL2hUfb7y9eBHW2brCyC3WDWgP/GKRIIjj
- 2IS2hHLZpQYcJRW2o1IaiIQJDrLtfMGj8rNFx5p0mPJV6Zo6L2n7QY4BCMwnafvwr64s
- IqBhmJpWfzb4clOuGp0WZODSFCuIU1hQkcz4m0RnBhmOHkP8G5GQeLlc3Ts3ogGe050x
- pHYxhODBs2DvBSBKNxqiiAna+wpEnc3zAYFMxSeaHdBIKrNnX37OQ+beJlF7P2S9qA/u
- R3jQ==
+ d=ventanamicro.com; s=google; t=1761571256; x=1762176056; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=g8Q/30bUWm2O2CU+TjmYKHZVjlU36Cumj5zQfUBgl38=;
+ b=fQS0Jr4vzFEo0OO9/bKhpOJBQW4jEz4XDaueUG3prMrSSirlnQJ0zbPmgzAP0OQ3lu
+ Uyoe2RPfJriVO2ntnbZ5Gyt71MsayFSY7hIE4t76KN5pgki+0ntho9LIKlTMlwKS5V56
+ JvQq7GAlXHaQyVo/hqL9QFBA+U88pqpcfLJenTcmbWGaxKpmaASwZ0oGLYoFdTFQApeY
+ NodDZ8TZw7qZjJINrsktXU/lCkJkK3ud+UHw0/DqQUdYVKfbTQLRe+jG464/RvKLFPHs
+ airUOTw2lIcKliuxB/5gPchrWPucAJYgJdNncLfuR7o4BtmMX2UQlEYPgwFaB5sTkt9C
+ lFVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761570862; x=1762175662;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UzLCfnD0X6+PLKZ84lv7cfbztSnyOCgfU/eKNL0xcsI=;
- b=Ms7gCJbnmajNn7xqEmMPSxKUUWt+Xy8X1bhz2RwbSxkuNQH6P5Yi+uIBYj01Uk5wQh
- upV2gFJEuC4q6OUmBzFEj4JSQjgjLQlrntOg99AAVd3G5MAa6Tow5nalK1Lul5cQ05GY
- QGT7xxPTpWdYfrwdiIHKd+nQ4TlNFw4+dufLGEW1mz1ztu2SmjDYRz0Sa5rKLxaitJYl
- HCyEyUuXX9VvyzJhc3UFSLdYjoeCDspvzsKDgOkXdtQ4cjeLOrjISuGWRkWjz66pMIPs
- JpDuve5G8XIpfIuypKWtM2WP3ma6hkFjiac3B+GsUthWI6hbP2P0spWtvZobPoGThrgJ
- eGNA==
-X-Gm-Message-State: AOJu0Yyvv3uk/Hmkr/cwLaQ0TiMzS0o3uOKTWhOJQjdnGS0Kn49fswn5
- qNji7SE3tWqfrPbp/PYaBT3zy79retZi15d+Q45+XXawr/T/SyeDgwPZvUuVrsDStxOLZWQIgrV
- 1FhwrI5BOp8/A1e/2tw2KMOfKS+uUDqlulbWO83/Umg==
-X-Gm-Gg: ASbGncsESSpeEplh8M49eCujRSA9VMT1K6HcHF9aJBTZP8Qzgar8ewC3FYKQsE92zj3
- CrfOJQIaC2THir8dYroK3ehz9mHZCdkJ+Diku5gE4QUYFl/KZe6N/jDg0+vGrHOM41TrDEYrhzd
- Nbm6GAbqX5AKe5exHUIeaSxACfzwb37GLmb5t0LIXx0ssNGbNL2aDOLKuKkSZlIp6fECdZfG5h0
- p6GM0o/GpE6XM+CUfQFlMkkcomCo59dfZoq79P7ueXSgQpUDRj52XbiZoMoznfkYwKLooo8
-X-Google-Smtp-Source: AGHT+IHFTCOBgHZlejUYGfKL7gyyltAulWYxbj80OI7496c/O3xYaNPWpObCXMNz4W322Up9m83BcbX+KcQRmxz18GE=
-X-Received: by 2002:a05:690e:258b:b0:63e:3099:df54 with SMTP id
- 956f58d0204a3-63f6b9d0dfemr27403d50.20.1761570862394; Mon, 27 Oct 2025
- 06:14:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761571256; x=1762176056;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g8Q/30bUWm2O2CU+TjmYKHZVjlU36Cumj5zQfUBgl38=;
+ b=FXUKqlb3yi+6NQf8N7BIs9MEghdC0C88iVhBwLdmhzbWrGNyDp9H7sVwGa3jDLbwAO
+ RRqY9i2Z6PXCLZqmpfjMvUJVXXDsy0VhsJnuKTVhcRROzkE6TxPwgicA7tepladDBT76
+ JCBniq6gpxS9uHeiuU/OCq0Vzvs/zrz/qsVELqdATEVwtg+xQuoROGFnm7ggPZsP7fxF
+ I0dSUggx5oguyJtdkKK5Pre0anZpLQqRT+fYd4ufTApGFtdLNT1hzIC+0ZOcJoUXEM7l
+ o4ANiGyMIYoevk/hv8Xr1i5d1gkoZ/kqTt5QYpyVnlVhUp12Jifh4XvJpcTNjc5LVxte
+ HTJA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0hCWLLWBPbBJgQqH0aYmuOYGXLAUlohDHxG8eRCDcnbH/X24yeS7gru7vq2TSTvEl9f2KRyE9jV9a@nongnu.org
+X-Gm-Message-State: AOJu0Yx+fM2CZaa2DyCB9x5DGVllSqPCI/4xSIBUi65brTV54aZEou50
+ eJAeB+ES61WbKaNtKY4v9gYRdRexGKiF9OHXeMLpi4w4czI6jkrg3I8sGfDAvesrXkY=
+X-Gm-Gg: ASbGncsupmIqH9IKwZP7rz3zfvb4ohxMSGCTUr3vTh/jHaiXaRgdeyX8Q30XZ5andp4
+ dfwfK5TF+dmdqBhzK/gMndvFNNfJe6YexPNCYH9Q3QbUSm2K9tekYvUj2xzpLGuV1XoPwEAEnE4
+ 341njRBAyHythmWIUn2F980/L1AsFSRTRm/b3UKIFxfoWXX5QYDZwTwuZl8uZ3ZoJyXQ/JNpqLI
+ G85Iaf1wTWCQAwlIYu6SGqjlFzxLYpcUtjs7Hcj6zO7Xh6O8Oehu5al9EBmPDfojWIupGVgAbTA
+ RI/0TQ4GFjXk7XuhV0mhSR4zFmVBrB1pB4JaqXqllR6/teMb64McSyN7zJdWW8HFTxuJtrXvTom
+ 7IWq5rsvvzzpDCeuuofZoIyyVWaXAJDxQSauWP1BWT47SkDPanK85FPu2VUUGhru/YnG7USHxv3
+ yyJ3lZUuDwl3//eK2x76CZ3ds=
+X-Google-Smtp-Source: AGHT+IEFaUsLRDHzdFEW1FTVJTg6Zu8WHr5LIy4QXPlo5vm2eWFv+tazkRop8FO5HtkxIBUgO4B9aw==
+X-Received: by 2002:a05:6a00:228a:b0:7a2:7610:364f with SMTP id
+ d2e1a72fcca58-7a28688190cmr13165060b3a.29.1761571255978; 
+ Mon, 27 Oct 2025 06:20:55 -0700 (PDT)
+Received: from [192.168.68.110] ([189.38.141.22])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7a414012c40sm8347826b3a.6.2025.10.27.06.20.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Oct 2025 06:20:55 -0700 (PDT)
+Message-ID: <934bc46a-6a86-4cab-8cbf-c98a4cc92ed1@ventanamicro.com>
+Date: Mon, 27 Oct 2025 10:20:49 -0300
 MIME-Version: 1.0
-References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
- <20251023121653.3686015-16-harshpb@linux.ibm.com>
-In-Reply-To: <20251023121653.3686015-16-harshpb@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Oct 2025 13:14:10 +0000
-X-Gm-Features: AWmQ_bldvJdlNLKveZGocWKnG0gT6nrmNGJSJWIDva_YcKnifl5pMT5EVCWPy0M
-Message-ID: <CAFEAcA8qbC-1LhHXxiYXZjiCvstch1UFtMNxGdR1fquLB9i2PA@mail.gmail.com>
-Subject: Re: [PULL 15/32] hw/ppc/pegasos2: Change device tree generation
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional/riscv64/test_sifive_u: Remove unused
+ import statement
+To: Thomas Huth <thuth@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+References: <20251027112803.54564-1-thuth@redhat.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20251027112803.54564-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,50 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Oct 2025 at 13:22, Harsh Prateek Bora <harshpb@linux.ibm.com> wr=
-ote:
->
-> From: BALATON Zoltan <balaton@eik.bme.hu>
->
-> We generate a flattened device tree programmatically for VOF. Change
-> this to load the static parts from a device tree blob and only
-> generate the parts that depend on run time conditions such as CPU
-> type, memory size and PCI devices. Moving the static parts in a dts
-> makes the board code simpler and more generic.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Link: https://lore.kernel.org/qemu-devel/383891fc2696609b27d2de9773efe1b4=
-f493e333.1761176219.git.balaton@eik.bme.hu
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Hi; Coverity points out (CID 1642027) that this change
-accidentally introduces a memory leak:
 
-> @@ -780,7 +675,10 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d=
-, void *opaque)
->                                       pci_get_word(&d->config[PCI_VENDOR_=
-ID]),
->                                       pci_get_word(&d->config[PCI_DEVICE_=
-ID]));
->
-> -    if (pci_get_word(&d->config[PCI_CLASS_DEVICE])  =3D=3D
-> +    if (!strcmp(pn, "pci1106,8231")) {
-> +        return; /* ISA bridge and devices are included in dtb */
-> +    }
+On 10/27/25 8:28 AM, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> skipIfMissingCommands is not used here, remove the import to silence
+> a pylint warning for this file.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
 
-In this function we define at the top:
-    GString *node =3D g_string_new(NULL);
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This change introduces an early-return which does not free
-the GString.
+>   tests/functional/riscv64/test_sifive_u.py | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/tests/functional/riscv64/test_sifive_u.py b/tests/functional/riscv64/test_sifive_u.py
+> index 358ff0d1f60..847f709da12 100755
+> --- a/tests/functional/riscv64/test_sifive_u.py
+> +++ b/tests/functional/riscv64/test_sifive_u.py
+> @@ -13,7 +13,6 @@
+>   import os
+>   
+>   from qemu_test import Asset, LinuxKernelTest
+> -from qemu_test import skipIfMissingCommands
+>   
+>   
+>   class SifiveU(LinuxKernelTest):
 
-The simplest fix is probably to declare node as
-   g_autoptr(GString) node =3D g_string_new(NULL);
-
-and delete the now-superfluous g_string_free() from the
-bottom of the function.
-
-thanks
--- PMM
 
