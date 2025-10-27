@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA956C0C3B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 09:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9650BC0C236
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 08:31:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDIEQ-0002qR-KP; Mon, 27 Oct 2025 04:05:34 -0400
+	id 1vDHgK-0001LU-MS; Mon, 27 Oct 2025 03:30:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vDIEF-0002lt-Rn
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 04:05:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_haixcui@quicinc.com>)
+ id 1vDHgH-0001KF-3V
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 03:30:17 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vDIEB-0004G0-H9
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 04:05:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761552310;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=muhKJ1nw6N20332X0K8EnOVxjjsFvH0crE3zF6LKeTc=;
- b=BjsmXqty1oHOn8HGTmuog0/Hp8Q53Fs1fYe/V5jgexs7T3UPzfXLPuKYNyovMMPudrl7A3
- l04coAVRN/1ZQ9wr3px9NgIodT/ZcaghOOwCZ9J9mzF8S4nNjGhGQNesgGnptBPDEv+r82
- 9AQa/yPrJ7QlniXhnI5N5xFrMkeXJyw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-_wfn5OCDMU6XifTClE-ttw-1; Mon,
- 27 Oct 2025 04:05:06 -0400
-X-MC-Unique: _wfn5OCDMU6XifTClE-ttw-1
-X-Mimecast-MFC-AGG-ID: _wfn5OCDMU6XifTClE-ttw_1761552305
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4EE0C1800637; Mon, 27 Oct 2025 08:05:05 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.33.5])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0ABCE180035A; Mon, 27 Oct 2025 08:05:05 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 4A13B1800386; Mon, 27 Oct 2025 08:26:14 +0100 (CET)
-Date: Mon, 27 Oct 2025 08:26:14 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org, 
- qemu-block@nongnu.org
-Subject: Re: [PATCH 13/27] hw/uefi: Include missing 'system/memory.h' header
-Message-ID: <ekkrqsrxwoi7fadpqlwvaotei4kuemmdw2r2sq2rn2kmtwai3y@jfrprf5n5fya>
-References: <20251024190416.8803-1-philmd@linaro.org>
- <20251024190416.8803-14-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <quic_haixcui@quicinc.com>)
+ id 1vDHgE-0008NB-Tn
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 03:30:16 -0400
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 59R0VkPM1272226; Mon, 27 Oct 2025 07:30:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=qcppdkim1; bh=Ktn5mmWF2lXCLL+niUEBl/
+ Iw0VUMAk71wku/QdBLXXs=; b=VHNFiPDZIwqcw0mM6+sJ7McntjoJJ59sc0nTbs
+ +6M9AbsRSIcZO7QKwTT/q4MR4po0QUEa5JZgvNAJGgUT0vQt9GiLMZKg+tLj3m3Y
+ 0bbeSFwwGFcE+60Qmn4hQHAf+aCnoe39QuEe9UDuUSU6cRUXI/oXKcsH69p6jRy2
+ 3bVyZ9RhGdjA9WqlOtLSzfn6Ba7tPFm4Z+95zcEadFRAfBOCqSabKSW/F5BGKso+
+ KxjhVSsrSRvFL9caIf5UqEXJztvr0gCLCSnD9Ynf2BIc7NInMmJyAleTxewE8IwO
+ XeNbVPf0Dy9xE6bHZu2G9f4jc3gnR2giocDdtyNA2PXYQOWg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a0nnb3ry8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 07:30:08 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
+ [10.47.209.197])
+ by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59R7U7G7003985
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Oct 2025 07:30:07 GMT
+Received: from haixcui1-gv.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Mon, 27 Oct 2025 00:30:05 -0700
+From: Haixu Cui <quic_haixcui@quicinc.com>
+To: <alex.bennee@linaro.org>, <viresh.kumar@linaro.org>,
+ <quic_tsoni@quicinc.com>, <qemu-devel@nongnu.org>, <mst@redhat.com>,
+ <zhiqiang.tu@oss.qualcomm.com>
+CC: Haixu Cui <quic_haixcui@quicinc.com>
+Subject: [PATCH v1 0/3] virtio-spi: Sync Linux headers and add vhost-user-spi
+ device support
+Date: Mon, 27 Oct 2025 15:29:46 +0800
+Message-ID: <20251027072949.2187054-1-quic_haixcui@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251024190416.8803-14-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: _6yHVLg7rhEz6w9AGB8480Dtm-0c8CRj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA2OCBTYWx0ZWRfX4BVEY22F5B4g
+ 4izJw6M1vEFbPVRubMMGZj7aHZ94EbWb8yB32RXaLEIUlDPQDPd+cyLt8SSTIJdsK+x4AfKWJz6
+ 9M8b0YwXtkSLSgWK84JqTZhqAZQa0QSDDPk6Qw9zFziSIYp0Fa7L0y4Gfs2SHOn8Q4w5Rb0mnp1
+ 2ox/maG5C1AQthSe0puHuqDZaI/QmSOqMdE7xBe+KxY7z/CcbbPOGdDQzG2JQQydgETBpdrNZ91
+ VfOPrUzZL1f4lqqoLBVfSe+0rJ3fpdp/6KKluXjV25pbjHn1cBMswZp0JrzOMM8VOuc5I9PvIh+
+ /4UYuEMLJcNOWNAMzefphIwGhtu0vhb7Asovl83Sdiscp0NjbHZvNJZVW6ENiJWrG3FtB9HtVha
+ dnLPcLhPp8xV+NB9yQCYkdFlRacEXw==
+X-Authority-Analysis: v=2.4 cv=AJoZt3K7 c=1 sm=1 tr=0 ts=68ff1f80 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=COk6AnOGAAAA:8 a=ONEyY3_IPAylEGahahoA:9 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: _6yHVLg7rhEz6w9AGB8480Dtm-0c8CRj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ phishscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510270068
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_haixcui@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,16 +109,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 24, 2025 at 09:04:00PM +0200, Philippe Mathieu-Daudé wrote:
-> "system/memory.h" header is indirectly pulled by "hw/sysbus.h".
-> Include it explicitly to avoid when refactoring the latter:
-> 
->   include/hw/uefi/var-service.h:50:39: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
->      50 |     MemoryRegion                      mr;
->         |                                       ^
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This patch series introduces vhost-user-spi device support to QEMU
+and synchronizes relevant standard headers from upstream Linux.
 
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+The series consists of the following changes:
+1. Synchronize virtio_ids.h from Linux kernel (v6.18-rc3) using
+   scripts/update-linux-headers.sh.
+2. Synchronize virtio_spi.h from Linux kernel (v6.18-rc3) using
+   scripts/update-linux-headers.sh.
+3. Implement vhost-user-spi and vhost-user-spi-pci devices in QEMU,
+   enabling virtio-based SPI communication via the vhost-user protocol.
+
+The new device implementation follows the virtio-spi specification and
+leverages the upstream Linux virtio-spi driver. This enables QEMU to emulate
+SPI devices using the vhost-user protocol, facilitating integration with external
+SPI daemons and improving virtualization support for SPI peripherals.
+
+Signed-off-by: Haixu Cui <quic_haixcui@quicinc.com>
+
 
 
