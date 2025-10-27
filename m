@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8C0C0D10A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F29C0D16A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:13:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL23-00016E-MD; Mon, 27 Oct 2025 07:04:59 -0400
+	id 1vDL9z-0006iT-4X; Mon, 27 Oct 2025 07:13:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1d-0000iU-4B
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:34 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1vDL9d-0006YL-Rm
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:49 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1O-0005jA-T4
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:32 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-b6d855ca585so469905066b.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:04:05 -0700 (PDT)
+ id 1vDL9D-0007dr-Au
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:49 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b6d78062424so843554466b.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563044; x=1762167844; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563538; x=1762168338; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GmAk21K9OGPdvmtO9tCUzb+x/HUizeGKzsfhOfuchWo=;
- b=mOhP9aUFsO4eYgckLXEVb7cZgx11BuPyaHmswlXCVJg4uTeVOCqog17x9LuCsCUZbz
- cbg6bqVGmn7uW0lP0PlRgQM/oarCUsuNXt5rFUuZp//ayqIEDUwY4Q8uzH+LSvKOxH/l
- I/K9r4H01gp4FCjFtkR/Ap98KZgVMzC9+KBH0LismLkf8lBKm3M6eJ76tl2dYQ4GOGl+
- 2GYqf6t77DCX2wVkxxW4VrtmIyPoH9UT3tDNB+9D1GZF+ByUnCI38gzm3iMbggwOApua
- km/n3LuvOkNc1ZMBUrrTfs2yYjeSGgYyqXXyVZ3M+lnG3BafKuCYTPghjDVJJ8eLiMjk
- x2gg==
+ bh=GGapUoTaewrM/kono1/xvH1foLM0vdOPsMqSeCNHNKo=;
+ b=TPCnbBCw+kIl9OKanfgeySBuGrIOk05JF4J9dLOG/QEUv8A+CAsGD0YyXOR324ou7j
+ ArSgi0Qfq6kAQxmzjZshsuZdkjTPg1PvKabFsqvA5Ie4k2UST/wu4tcz6BQF5hppWDfE
+ iTx3r+h0rGIrFY0Bwip8YymWXy4JRKLfzlYJl6KOB7tLQq58FkNzM6mluwQpjjiedBKA
+ 77TtnMJArEO6degYPA7P3MrYpEUsLurHWtwaHMGYfFqvEPOvq8+i8oUDsx+/dBkn9mdJ
+ UeO3PjYjW/l6mXbG/YSnnzQn9gvIas//U+iNrhX0R75kUBWhYKoTxXEXtjxbTehV10Bj
+ r1cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563044; x=1762167844;
+ d=1e100.net; s=20230601; t=1761563538; x=1762168338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GmAk21K9OGPdvmtO9tCUzb+x/HUizeGKzsfhOfuchWo=;
- b=NjNcEVyngpw2cycf8CclDyXoD6vKZaWCLP1XvpWFc0cNLULCPrsIb4Yfwvob+G0aKI
- ajK2EEdPJ1lyUWz1PgogZH7/tXe8Hz1SQUoPtVMPTBZL1W01nMIpP2VsJSqAadZpfbbc
- 3lLRz0IoUr81HgG/4eORLHWS1505g44I2Ik+6JeIMqz5FQvsvQODyXFGH46CxuiEZjuV
- j52hoABs1czD+AE6wDq1Fr5OIQr8kpGelYLa8hgLofr1wVRogXpzo0xHrRs5l6nUf39S
- 1VNNCx5FvXN6GsTkl9LvF151O7mPJ44tGb8JA595Qhl3qHGwshx1KNsJAfd93iqI19AE
- 2Y6A==
-X-Gm-Message-State: AOJu0YydbLJIEoBOAWdj5EG27qa9iaDOFft3CY0lchRP7Ck7uSW9MzYW
- 9obnBbW9fruNtCokWYOTKLLw7FuHgKinzcI/q2IZqdvhcjhsE8ncVlmCirUmasDbRGw=
-X-Gm-Gg: ASbGncu9UXZGNQKh3nJlR76sZBoCi6h2yFfd91Q9+u8Z73+wy9yCMyYZeaBdhaG5yrS
- qVtizrvLia9yZ67dbx1znPxqJw26zxRdsuCoKKe0gMIrD1STH05am5/vh6SFA9MHiA0vuEEbwx9
- UgZk+IkTX2KITjTa1UUFPq27X/IXBpPlZKPDaqnupcTwMErBdOoQIwXsT1ZAM7/SP1dQip3e0Bv
- 1V6a8qgi2alo6fi5t/Cctp4KeJXCcDw/qiCyjuBm526Tqhiofj9zS0fNE8kytAIZ8+6H5T8zw04
- ftw8M0+rjcxl3zVvcSB4GczYIRNHTuyJwfOUnJdIKqNcFbgzHwQ6euWLTvmuNleixobjeGEhl8F
- 1sBZcbxBJy5Vmw++JupKiVK+YdqL4aqa/kc6w4LaXwYst3XbKoXPlExQfbxLxp7/m/PfmlpLv34
- qe
-X-Google-Smtp-Source: AGHT+IHjNGOYSB3Uoie3aPGzFHTm6SS3tVoFQt6o3B0HAd5FWBxEzFE3cDSEV9z7klyWAfsDpBXRwQ==
-X-Received: by 2002:a17:907:9691:b0:b64:6776:1ee2 with SMTP id
- a640c23a62f3a-b6473f42d78mr4014852866b.52.1761563043587; 
- Mon, 27 Oct 2025 04:04:03 -0700 (PDT)
+ bh=GGapUoTaewrM/kono1/xvH1foLM0vdOPsMqSeCNHNKo=;
+ b=ZAm33+wbYqcvRLylCCoOP27Oqp7WqQ9UIeTs3GJWtzLJ1jehOC/y+HFHTSpNtMQk48
+ baRLTWon2Hg24ANcI++2jFq9Hr+1dtVlcOy/oCnMljxghECh+AIMqAdMct+Xe+Ur1e5g
+ IYQ5/1A07fevg3zjiOuk9LzJjjRRXTR7yjrQtXjwHFWr05fa5B4/VlTDTxlx10H/fQxC
+ wo1Q61JNlJ59zwIppST9iRmmFAyC28mlLafDBQOk5TcoO/UFFyL1k5cAlRHynPbz0oTF
+ vlM5yzvqJCk5aPyLLHMboFpEvt9RLPSdF3FopOOdsF5TNDAuc1juC1Dm+wDpKS40eBlh
+ dK8w==
+X-Gm-Message-State: AOJu0Yx32K/jhI75v7F2HHUSBamPbgkwtxaBcZCcQpfA/ENtWWgCuwXT
+ H/hFHWkoDyrK2pZBWBZVOdPb8WI+y2HSoSIFx0DGKaAKWVbxCO2kEertsQZZJq7EpeY=
+X-Gm-Gg: ASbGncvLqagBcO6q6IXdLb2Il/YsCYgbehoypQBj/GRP4DDSJPU2Ba/1vjTWvcFl7Ay
+ +bM9pQSy1AqpTyB6MHetQ/zk/BuVsbIb5Gp84Sk9Y5AdpR5LeWdWdypC66HcEpNAaF5WLEZIkuV
+ 5fxozG5cGiHdVWKKnzZQ0apHOT+fWF6G/UdT6pkGads/RZ94gDeMOno9Fuzq5OYW28emstHYDev
+ 0ZyTf4PPIRKZQOhn3a6AYxxMCIX1SX1mN8Mf6rNmyCffCR93I3Jv+P92LrbFGWg6qEkxUTuZjXg
+ 3XJDeGdV6/kafrZxcO+vFIsjkwmTTBu60rOg2YdcR5p+4oHm2yYrT96HsHWU5evMCZet1FM6rgX
+ 51dRNL0rGRJLNymbquHv1Ta3acfLKOQS1NEwDBw7nmU/MwfRiQIztrVmMwR/1xlH8AMEO20VuTP
+ sWIQpK109/oOA=
+X-Google-Smtp-Source: AGHT+IGtBMpHIebheyONrWsxP0glj3ZoIlLecwrjIGlCGS2qBmkZj9gRmSWXNpNrJHhHYenJu4IrlA==
+X-Received: by 2002:a17:907:1b0c:b0:b6d:2f32:844a with SMTP id
+ a640c23a62f3a-b6d2f328766mr2021446366b.22.1761563537679; 
+ Mon, 27 Oct 2025 04:12:17 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d854395absm730117966b.62.2025.10.27.04.03.52
+ a640c23a62f3a-b6db2b010d9sm87578966b.43.2025.10.27.04.12.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 04:03:54 -0700 (PDT)
+ Mon, 27 Oct 2025 04:12:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 891FE60F68;
+ by draig.lan (Postfix) with ESMTP id A2BCA5F909;
  Mon, 27 Oct 2025 11:03:46 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,24 +93,24 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>, Julian Ganz <neither@nut.email>
-Subject: [PATCH 26/35] target/sparc: call plugin trap callbacks
-Date: Mon, 27 Oct 2025 11:03:33 +0000
-Message-ID: <20251027110344.2289945-27-alex.bennee@linaro.org>
+Subject: [PATCH 27/35] target/tricore: call plugin trap callbacks
+Date: Mon, 27 Oct 2025 11:03:34 +0000
+Message-ID: <20251027110344.2289945-28-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,70 +133,49 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for SPARC (32bit and 64bit) targets. We treat
-any interrupt other than EXTINT and IVEC as exceptions as they appear to
-be synchroneous events.
+This change places an exception hook for TriCore targets. Interrupts are
+not implemented for this target and it has no host calls.
 
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/sparc/int32_helper.c |  7 +++++++
- target/sparc/int64_helper.c | 10 ++++++++++
- 2 files changed, 17 insertions(+)
+ target/tricore/op_helper.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index fdcaa0a578b..b29f693a6bf 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -24,6 +24,7 @@
- #include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "system/runstate.h"
-+#include "qemu/plugin.h"
- 
- static const char * const excp_names[0x80] = {
-     [TT_TFAULT] = "Instruction Access Fault",
-@@ -174,4 +175,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-         env->qemu_irq_ack(env, intno);
-     }
- #endif
-+
-+    if (intno == TT_EXTINT) {
-+        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9]);
-+    } else {
-+        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9]);
-+    }
- }
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index 96ef81c26cd..60ab0478fc6 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -24,6 +24,7 @@
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 610f148a237..2c8281a67e0 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -19,6 +19,7 @@
+ #include "qemu/host-utils.h"
  #include "exec/helper-proto.h"
- #include "exec/log.h"
- #include "trace.h"
+ #include "accel/tcg/cpu-ldst.h"
 +#include "qemu/plugin.h"
+ #include <zlib.h> /* for crc32 */
  
- #define DEBUG_PCALL
  
-@@ -256,6 +257,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-     }
-     env->npc = env->pc + 4;
-     cs->exception_index = -1;
+@@ -29,8 +30,11 @@ void raise_exception_sync_internal(CPUTriCoreState *env, uint32_t class, int tin
+                                    uintptr_t pc, uint32_t fcd_pc)
+ {
+     CPUState *cs = env_cpu(env);
++    uint64_t last_pc;
 +
-+    switch (intno) {
-+    case TT_EXTINT:
-+    case TT_IVEC:
-+        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc);
-+    }
+     /* in case we come from a helper-call we need to restore the PC */
+     cpu_restore_state(cs, pc);
++    last_pc = env->PC;
+ 
+     /* Tin is loaded into d[15] */
+     env->gpr_d[15] = tin;
+@@ -90,6 +94,7 @@ void raise_exception_sync_internal(CPUTriCoreState *env, uint32_t class, int tin
+     /* Update PC using the trap vector table */
+     env->PC = env->BTV | (class << 5);
+ 
++    qemu_plugin_vcpu_exception_cb(cs, last_pc);
+     cpu_loop_exit(cs);
  }
  
- trap_state *cpu_tsptr(CPUSPARCState* env)
 -- 
 2.47.3
 
