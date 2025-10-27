@@ -2,77 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A73C0CFF8
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B98C0D0C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:06:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDKhb-0001vJ-Po; Mon, 27 Oct 2025 06:43:51 -0400
+	id 1vDL29-0001Fg-DS; Mon, 27 Oct 2025 07:05:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDKhV-0001pG-0R
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:43:45 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDKhR-0001nu-6U
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:43:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761561821; x=1793097821;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jsUXYGsPkXHYB7gSMqSqkQ15VcUFWDSt+Ems3L6pifQ=;
- b=k46Sg3++ZSnyrUQTHvPWlFxFydE5UOPxihb/5wBN1dsT3SvKJ+LxixHx
- fGDnbyfTQ+bYQ19DPwYqDtOAoogO1zw6Tey6YJLDAAFWsJGwAIm9fIavp
- as7NUXBTzCckFGWo9ubR3NfMtbvlY87vPx90SNI67siWmRE2VAZSroq4+
- vxSuzQ9WOjdON+KO9T+huafrochOtwiIidKmVcDAyj1A6UtbzQHceEfLF
- 3E0F7KLMMXq466djZytR2p58fTaPQriyOtiMLln54k99T05lpgDUlNTzQ
- adtuBOlxfsY8CxBkzL/tiDNtmIDQOgmTEJ6jOjIg1BHCPgVoz9sw7+bJx w==;
-X-CSE-ConnectionGUID: NkSC4Rp5SwSqZ5rDgshE9w==
-X-CSE-MsgGUID: cwjTFyR6T2mYJVCs1pR0xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67472116"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="67472116"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 03:38:54 -0700
-X-CSE-ConnectionGUID: kZJe5iBRR4CQJLPLtgorsg==
-X-CSE-MsgGUID: tYhT4FeVSn2qST4hENL1Mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184629188"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 27 Oct 2025 03:38:51 -0700
-Date: Mon, 27 Oct 2025 19:01:01 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Zide Chen <zide.chen@intel.com>,
- Dapeng Mi <dapeng1.mi@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
- Mathias Krause <minipli@grsecurity.net>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
-Subject: Re: [PATCH v3 08/20] i386/cpu: Drop pmu check in CPUID 0x1C encoding
-Message-ID: <aP9Q7RArsit6GoxM@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-9-zhao1.liu@intel.com>
- <ab59bf10-3d16-4c34-b87d-31002fe83142@intel.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vDL1Z-0000h8-9s
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:30 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vDL1M-0005bd-Pk
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:28 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b6d53684cfdso1009210766b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761563029; x=1762167829; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=j70gJxXdGck8MJa36gCkeQcF/t7I7PGzdE6PkZ71zsE=;
+ b=D4vcdQYl789pFjgIDXaLfjweHugOVaM40Pd89aFoaDIB5cNgPf6/+hPY6NL1J7A/5x
+ YxBQn31WOXZ3km06ytrmlF/SIDqq7geLUpAefHGVVOLLInh0yc0zytBPTnqcw4RKOKbb
+ zcoIUJ5Otj5MAp4ZhnUffwo0zlInzOMIX+SaGsbbPGEsGfF8c0citK60/TijGkXzQEd1
+ M1xeqx/ioN3EJr+SAcA4P/P7U3H31i75i/QKXco8XsQ2Lh8QbJ1vyeywO/kyWsY7Vdtt
+ 3JWGITBbsaY+xm9L6+/YJxT0gr09v8yWhy8sECUQm5d2ceObZa6LKSLOamQGJ4wdqJ/4
+ gwPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761563029; x=1762167829;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=j70gJxXdGck8MJa36gCkeQcF/t7I7PGzdE6PkZ71zsE=;
+ b=TVIWAKFWQUrgeE+06D81WmXg83Z2lhddMdXttt9FpHx7qA1LHQJtuhWJlrf+WLcylp
+ FjTrZQt7tS6PHhHZRC/YqqnTN/ItMzdvSwk8x6GkkDhJ20vCRzC3PX62bWJUM5Erm8oR
+ /q6EbcARUBZHXhXFZVG/Zry8iBD49bhi+wFUhloJPs6gH0Nc6+Ty1xHoSAPq7EkqyznF
+ 6CG0AbGisYGB/ro8Q1oxUQrwzJrdMZD3EYe8oQJfl4msit1c5oXC/TSujwniC8/J2HyN
+ i2HtgDU9xLIkmUzq3noYOednHBRuwcvLQNacXzngM4b4hbtAOneZZisC/EOvmN63BKJA
+ F5Tw==
+X-Gm-Message-State: AOJu0YzYtnd9EdLsjVRcZqBxoM0ynN/25xbQ0iWTVhmkyXeu79ZgkISO
+ 4RwSbVOi8ytHg0fMDXzaECu1JNRGbhL8aVDfGpTy/IDAxiOxYm9IpMBecxg196QasnA=
+X-Gm-Gg: ASbGnctkk2BKb7NOWgpaIvU20gadEjAQJdVESlC16D/16RT7WlsSzd2leAkIvCfaOs3
+ pHBXhuZxFui+1Ku/mqV1qap1sfKp3u19inZpEvf31riEHexV3+RBVgungeIHmNHM84U1BYTM3LN
+ rdX7kV4WkrcODjsZ3sCYK4s69SztgHxGrEw3G7ugcs1+qwV2C9vRgbc+HK2BP39pRj5GotD6eUl
+ AH/DCE+5E1a/YRBSVO//GA/yBe5s+VEr1Mggv8M5G7HJkPIoDchTbwT5RQAaOSxAxCd0k+0pBtC
+ teziOpe8/Nbiqfp+G4JM8NmR9hR9gpMyba9dCD7zCZy9f/MvYzyeBKna25h6ozJtDGtLInm2tAs
+ qwrr1rlK2wV4aAsDSyWWjqG3s6VnEo+EUD6706ubA4mtTVlW/lA4jXifVIKYjL3mGNDtUIRcQr6
+ vevoF2Wk68joyyWEq6jFgRxQ==
+X-Google-Smtp-Source: AGHT+IHMVv5tt5JLpSnfEJyZKqOa3wbzf1/A2Kwv6tqT7NQOmJaYgs5Vgi9m2Q2oWdSmj1jix/T2Ug==
+X-Received: by 2002:a17:907:c11:b0:b32:8943:7884 with SMTP id
+ a640c23a62f3a-b647500ee9amr3839114366b.45.1761563029024; 
+ Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d853edc87sm734402566b.46.2025.10.27.04.03.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Oct 2025 04:03:45 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7C0705F9E0;
+ Mon, 27 Oct 2025 11:03:44 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Chinmay Rath <rathc@linux.ibm.com>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stafford Horne <shorne@gmail.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Laurent Vivier <laurent@vivier.eu>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Subject: [PATCH 04/35] scripts/ci: allow both Ubuntu or Debian to run upgrade
+Date: Mon, 27 Oct 2025 11:03:11 +0000
+Message-ID: <20251027110344.2289945-5-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
+References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab59bf10-3d16-4c34-b87d-31002fe83142@intel.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,60 +126,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 5b7a81fcdb1b..5cd335bb5574 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -8275,11 +8275,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >           }
-> >           break;
-> >       }
-> > -    case 0x1C:
-> > -        if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
-> > -            x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
-> > -            *edx = 0;
-> > +    case 0x1C: /* Last Branch Records Information Leaf */
-> > +        *eax = 0;
-> > +        *ebx = 0;
-> > +        *ecx = 0;
-> > +        *edx = 0;
-> 
-> Could you help write a patch to move the initialization-to-0 operation out
-> to the switch() handling as the common first handling. So that each case
-> doesn't need to set them to 0 individually.
+There is no practical difference between the systems when it comes to
+updating the installed system.
 
-Yes, this way could eliminate some redundant code, but explicitly
-initializing each leaf currently helps prevent missing something.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ scripts/ci/setup/build-environment.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Moreover, such cleanup would affect almost all CPUID leaves.
-I'm afraid this would make it inconvenient for cherry-picking and
-backporting. So the benefits are relatively limited. :-(
-
-> > +        if (!(env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
-> > +            break;
-> >           }
-> > +        x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
-> > +        *edx = 0; /* EDX is reserved. */
-> 
-> Not the fault of this series. I think just presenting what KVM returns to
-> guest (i.e., directly passthrough) isn't correct. Once leaf 0x1c gets more
-> bits defined and KVM starts to support and report them, then the bits
-> presented to guest get changed automatically between different KVM.
-> 
-> the leaf 0x1c needs to be configurable and QEMU needs to ensure the same
-> configuration outputs the constant result of leaf 0x1c, to ensure safe
-> migration.
-> 
-> It's not urgent though. KVM doesn't even support ArchLBR yet.
-
-I agree, the feature bits enumeration is necessary. Before KVM (or other
-accelerators) supports the arch LBR, there's no need to make too many
-logic changes - so in this series I try to not change functionality of
-arch lbr as much as possible; Let's wait and see the new arch LBR series
-from Zide in future.
-
-Regards,
-Zhao
-
+diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
+index 66bde188755..253d0b759bc 100644
+--- a/scripts/ci/setup/build-environment.yml
++++ b/scripts/ci/setup/build-environment.yml
+@@ -24,7 +24,7 @@
+         update_cache: yes
+         upgrade: yes
+       when:
+-        - ansible_facts['distribution'] == 'Ubuntu'
++        - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
+ 
+     # the package lists are updated by "make lcitool-refresh"
+     - name: Define package list file path
+-- 
+2.47.3
 
 
