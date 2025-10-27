@@ -2,63 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0083C0B98C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 02:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18994C0BB50
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 03:45:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDByT-0006hP-NN; Sun, 26 Oct 2025 21:24:41 -0400
+	id 1vDDDK-0007Ss-Ub; Sun, 26 Oct 2025 22:44:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDByQ-0006gz-5P
- for qemu-devel@nongnu.org; Sun, 26 Oct 2025 21:24:38 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDByN-0001Tl-1h
- for qemu-devel@nongnu.org; Sun, 26 Oct 2025 21:24:37 -0400
-Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
- [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59R1OKnC028259
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 27 Oct 2025 10:24:26 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=r7eOArZbEgx/gJEZsCqJRcA0Cs2zDBsoRM0W70CaX2g=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1761528266; v=1;
- b=GR610rhtOtIKz9FXnl65E1Iw6rGUxohbKEKSfMsh8lW6rY5KInbIvkU9zllsgxVe
- ytkZzg3JBDrQCb9mgxmXm9ds4Dz9KDod2VT295oEWV+ni51I3x9UCGfyt1zaW50W
- RZWuQNaP8YEmTxrcwkPdtK2mCLsw7mwx3uEBtu6Awky//dErYGNBk3TUjRwhuPdN
- 2zKCvKPuzsdYH2FlQM22HFPrVFSyJ/RN7h/NdBYlhVFYdQUvq6sNhGLU3TJX9CjZ
- dZlRWV3AmxI3TzVgBN9XT90rtynQiBlw68fNgkr1z3HNfANtILMOcbTZwN/08HHc
- vAnStwJ7XYaPzFUdeo+5RA==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 27 Oct 2025 10:24:18 +0900
-Subject: [PATCH] pci/shpc: Do not unparent in instance_finalize()
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1vDDDH-0007S0-HV
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 22:44:03 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1vDDDD-000396-Nu
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 22:44:03 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8DxO9Jl3P5oHugaAA--.58341S3;
+ Mon, 27 Oct 2025 10:43:49 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJCx2sBk3P5oDqUPAQ--.47601S2;
+ Mon, 27 Oct 2025 10:43:48 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: [PATCH v2 0/2] target/loongarch: Add PTW feature support in KVM mode
+Date: Mon, 27 Oct 2025 10:43:45 +0800
+Message-Id: <20251027024347.3315592-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-shpc-v1-1-00e9b20a355d@rsg.ci.i.u-tokyo.ac.jp>
-X-B4-Tracking: v=1; b=H4sIAMHJ/mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDAyNz3eKMgmTdFHPDpCRzoxQz88Q0JaDSgqLUtMwKsDHRsbW1AI6K60h
- WAAAA
-X-Change-ID: 20251027-shpc-d71bb72d67af
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.15-dev-179e8
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJCx2sBk3P5oDqUPAQ--.47601S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,41 +62,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Children are automatically unparented so manually unparenting is
-unnecessary.
+Implement Hardware page table walker(PTW for short) feature in KVM mode.
+Use OnOffAuto type variable ptw to check the PTW feature. If the PTW
+feature is not supported on KVM host, it reports error if there is ptw=on
+option. By default PTW feature is disabled on la464 CPU type, and auto
+detected on max CPU type.
 
-Worse, automatic unparenting happens before the instance_finalize()
-callback of the parent gets called, so object_unparent() calls in
-the callback will refer to objects that are already unparented, which
-is semantically incorrect.
+With PTW enabled, there is no obvious performance improvement with
+generic macro benchmark, and somewhat improvement with micro benchmark
+such as test-tlb located at https://github.com/torvalds/test-tlb,
+overwall there is no negative effective with PTW enabled.
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
-See also:
-https://lore.kernel.org/qemu-devel/20250924-use-v4-0-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp
----
- hw/pci/shpc.c | 1 -
- 1 file changed, 1 deletion(-)
+Here is result about test-tlb with command ./test-tlb 0x40000000 0x8000
+             host    VM without HW PTW    VM with HW PTW   improvement
+cycles       180         320                 261              20%
 
-diff --git a/hw/pci/shpc.c b/hw/pci/shpc.c
-index aac6f2d03459..938602866d77 100644
---- a/hw/pci/shpc.c
-+++ b/hw/pci/shpc.c
-@@ -735,7 +735,6 @@ void shpc_free(PCIDevice *d)
-     if (!shpc) {
-         return;
-     }
--    object_unparent(OBJECT(&shpc->mmio));
-     g_free(shpc->config);
-     g_free(shpc->cmask);
-     g_free(shpc->wmask);
+And TLB miss rate is about 52% n this scenerary. Performance counter stats
+for command './test-tlb 0x40000000 0x8000':
+   67,724,819      dTLB-load-misses     #52.24% of all dTLB cache accesses
+  129,639,899      dTLB-loads
 
----
-base-commit: c85ba2d7a4056595166689890285105579db446a
-change-id: 20251027-shpc-d71bb72d67af
+Bibo Mao (2):
+  linux-headers: Update to Linux v6.18-rc3
+  target/loongarch: Add PTW feature support in KVM mode
 
-Best regards,
---  
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+ include/standard-headers/linux/ethtool.h      |  1 +
+ include/standard-headers/linux/fuse.h         | 22 ++++++++++--
+ .../linux/input-event-codes.h                 |  1 +
+ include/standard-headers/linux/input.h        | 22 +++++++++++-
+ include/standard-headers/linux/pci_regs.h     | 10 ++++++
+ include/standard-headers/linux/virtio_ids.h   |  1 +
+ linux-headers/asm-loongarch/kvm.h             |  1 +
+ linux-headers/asm-riscv/kvm.h                 | 23 +++++++++++-
+ linux-headers/asm-riscv/ptrace.h              |  4 +--
+ linux-headers/asm-x86/kvm.h                   | 34 ++++++++++++++++++
+ linux-headers/asm-x86/unistd_64.h             |  1 +
+ linux-headers/asm-x86/unistd_x32.h            |  1 +
+ linux-headers/linux/kvm.h                     |  3 ++
+ linux-headers/linux/psp-sev.h                 | 10 +++++-
+ linux-headers/linux/stddef.h                  |  1 -
+ linux-headers/linux/vduse.h                   |  2 +-
+ linux-headers/linux/vhost.h                   |  4 +--
+ target/loongarch/cpu.c                        |  6 ++--
+ target/loongarch/cpu.h                        |  1 +
+ target/loongarch/kvm/kvm.c                    | 35 +++++++++++++++++++
+ 20 files changed, 169 insertions(+), 14 deletions(-)
+
+
+base-commit: 36076d24f04ea9dc3357c0fbe7bb14917375819c
+-- 
+2.39.3
 
 
