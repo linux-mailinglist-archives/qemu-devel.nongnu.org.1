@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC45C0D140
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32ED3C0D0F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:08:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL2T-0001jO-1e; Mon, 27 Oct 2025 07:05:25 -0400
+	id 1vDL2G-0001PX-0x; Mon, 27 Oct 2025 07:05:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL2P-0001em-Dj
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:21 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1vDL2D-0001L6-I7
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:09 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1a-0005br-IV
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:20 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-b5b823b4f3dso563514566b.3
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:51 -0700 (PDT)
+ id 1vDL1Z-0005ci-0z
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:08 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-b6d345d7ff7so848511066b.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1761563030; x=1762167830; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XeRSVxV/a/+cXLwVgc+XC0DpKFA3aVxT1tt4Uj60OQ8=;
- b=wWD9G/qJHJV+g3P9eISyRZZS2+K1MzOHe6L9jminNsfavdvHYfvPEM+AHjebDnuU7L
- +mvu/ONdLQGDyaYEqNDzYHMWgQC2/PaJCQ7TmLIAP89OSgotaA+2iuTOKWFrvEgjx9Rl
- ETOkTqZb7vZ3Bc+MetDp14GEqsOSr5nlZrbliQKTbM7Tlm78pjpa4vIkYEcwgkk4Cpjv
- X57VVGVVNtTfDneg+bEvQapDd+O+o54FYbHsnuR1Y4ZoISc/82bAyM13C9cz8XHiHFbW
- s5TJPXMSUFBcYGXR1JesyhNXJXYfFZDEmsJVRkoVIsPB/l7pvH43C1ZCz36i7f25MpIq
- 9Odw==
+ bh=dPRpRXWNkgzTelJ9LaP0XDvrgpGKDnKCNCyXswtjrG8=;
+ b=w5dLCARn5qgqtBNCDCY41zmbiYRysQivS7/97/aDe/4US434ThlSgwfMG2x2Ex+gg4
+ pd4Fmj5rvKt0bxhzfl2AR41IMMbc41OGjR0Bqab7pk1CG2zRcBMS8X9STFNRk9XFzM/z
+ jutJwpxpipYbqmLvFhgAXHgUXXuJA7PKSXlTVRzFxEH4XEtx4/SnppriHCMU014Vxhc4
+ BcaF4u+o3XQDfu9VdPR12TOnYoDEhdHZkMlUtg/HAOY1G2jkG5Xs9kvlsg0utfgvEai7
+ zjCOTJSKNOeAVz0N+2vEPkpeQxqlnSGYp0VVYEu0G2K/F6zocIpDZ0RGa+bPHsKdNTa8
+ pqMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1761563030; x=1762167830;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XeRSVxV/a/+cXLwVgc+XC0DpKFA3aVxT1tt4Uj60OQ8=;
- b=hJqIWQy+cQDqhwFM7vAvBeHSUhzSokwST5ERN3iL2yQ5YJQ0DoqM7yP6zRIbtrOT36
- MCruYJr/Xs2TYHWfPdTzYCOoN8M/YEMVRe8xhTQpJtzvPTDOId31koSI1QmAJJKEbcoY
- ZJnTAIR2cpC5YMA3E2x2TYNUtSRFGzEIY1KwjCdsZiC5B5OERvRaJPjF1relzWJ7kWvj
- 6FcPle/YZbXqZOfcwxBvSyY5c/gpmVb9y2ZdHuXulvpOLhoCDMGIiGMM9+pnVzV6rRnO
- zy3p6fHbLiH/9goHPT4IJl2QG/nai2Erm49I5B2buyYmPuMyJFX1l3fUeXPZqvFv6xdM
- fFWg==
-X-Gm-Message-State: AOJu0YxPyuUD9dId4VigA6hV63qPDkZS8OUNjim/v71LaT/G/SgNwzBe
- X2vzG3yR5wyT1Z/S8BJTCnrD1OgOouvYjpYb+6ZpTsWPt+sRQ9moXVEXlLKwZ/17lVg=
-X-Gm-Gg: ASbGncvstDZER54wSObN+w+V5Rq9Xe/Do6EtNlUTMMpkMN9sO7UK/qaXFwma7PhvW+o
- v5WmVr11zQQ6oV0t8AmPkoNQC7dVjKCzg474080u5d7MAeQz3W+PWs82MLBCHKNKVC06v4hwKLZ
- WjMX95tFf3O+TSeX149qMQfeu92IAPEkfiO44Rys2Zf/woCoMyv8sHW2iSVYbVOByfAh59/2KeI
- RpGNDzDLz2i+x7XwvpTi2OwWBt+d+r59bI/lBvg9tbufHfR3jITbzVnO0mUXSasMOc81pzFcykw
- DAGNsXrQD6jk1xKv3aV3E7DObmjj/cjHxRW/BgMn2S5fvqchH+aETLU7vEYDU8ONX3e+CTFRMZ9
- 1GA9C23wjlR0xtX+BFWdNyqA+9dIYhBwX1VNx3vbjjkWPKuXte5vYzgc0+mtWoi6hYEliiNY1OS
- tvMcK2DU8BEJ8=
-X-Google-Smtp-Source: AGHT+IGVeVAd9SOhpQydD1C6iIU4n4tkewdKGA2QFdCIbJrrSlQ45g2gAXLS0i8sKETvZQ5il8jl6g==
-X-Received: by 2002:a17:906:794f:b0:b6d:80e6:cf with SMTP id
- a640c23a62f3a-b6d80e6068cmr742975766b.44.1761563029639; 
- Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
+ bh=dPRpRXWNkgzTelJ9LaP0XDvrgpGKDnKCNCyXswtjrG8=;
+ b=BH93+OirhxbcTLnPjPbVJ9HTWNtBKJ0l6Uv7JFxK28S/N7CdKlcdEn9Ey+5iuHsW/+
+ eFTFpUVA56KDSI37Xbqe7t0zTQy8mM+ZYp7m2FQ4RwyZTGpe4tRZqG03/bahSMaJJp02
+ /KrPQc5al/WN64FRaWbfpSan8FE8X0hxV9pKoOj/dIMxjVJJ2ak9wOyPFf5UNVLwVXj3
+ ly3NJ6I2BRExJf9PXDguoUAUFW+9HzLP10VK567lmcR5nls6OdvNqKwffbbT2Ldpivc/
+ Uv5T3XvTFiWB97TI/D2c/Jt5YdJotdoVPe4TjS3/8x/W4letAAxaZ2zCNhDw/KeERpug
+ F3qg==
+X-Gm-Message-State: AOJu0Yw2bNvKglSg+rDOqHFGYQRzT03JUJocvAc+1Znt457BcSIFPBik
+ Eb4q1AunFRecQiTMNFaJwFz6KQ6ZnwnFN7PKVtpnD8MyQXjJMvk4NDTzAPCMWK+FT/s=
+X-Gm-Gg: ASbGnctm6eCQ6i+8SadWd5bC78Cc9GqQBf/G+Ms+hcGbTxfd6qNauAM9CQO1eeOWpqB
+ eSYDP5T31odAMDqAP4Yca8SpXpia6sbFYPXknR2NHxhlAMr6jxFpg7vGiiIEvmzROo1TBW+0snn
+ 172TkGk3vg56iuAzZMXft2mD+to9pS0WeQlw+hKiz43Z4zX1ZkaywFsQqCYje9vCxKxS40p6QhH
+ KoB9AOGFBvsULXaENQDFsEiNid/KTUja03ymKcCqohNKOdaDRXb/tV/W208PowC2HuzFhXT5Z/y
+ M9Xp73uOUCErAEy9mxs2nwU44ANXFLbiG66WxgAX9J5Q0yAD2zr6z4iE3KV88laTFGLFnd/pjIJ
+ ATBQMrLT+gzLknANwFGFRUgKpzUbvkVmhGbxNr3qE14hLj3UQgc0NmgN9RBDNdMY8STI3GbRY3s
+ gJG+fwsAI5uAM=
+X-Google-Smtp-Source: AGHT+IEKOw2sZTHAivgqlTb6K/HYXBQhpYwxsm2va8DyFrA5s6EN+1suG8QBDsLHPxzTUtSD784+vA==
+X-Received: by 2002:a17:906:7955:b0:b6d:5fbf:8c63 with SMTP id
+ a640c23a62f3a-b6d6bb4a57emr1240007166b.15.1761563030330; 
+ Mon, 27 Oct 2025 04:03:50 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d853077c7sm733658066b.7.2025.10.27.04.03.46
+ a640c23a62f3a-b6d85309069sm716387666b.10.2025.10.27.04.03.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 94EBF5FA07;
+ by draig.lan (Postfix) with ESMTP id A833D5FAA7;
  Mon, 27 Oct 2025 11:03:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,18 +93,17 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH 05/35] tests/lcitool: generate a yaml file for the ppc64le
- runner
-Date: Mon, 27 Oct 2025 11:03:12 +0000
-Message-ID: <20251027110344.2289945-6-alex.bennee@linaro.org>
+Subject: [PATCH 06/35] scripts/ci: modify gitlab runner deb setup
+Date: Mon, 27 Oct 2025 11:03:13 +0000
+Message-ID: <20251027110344.2289945-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,203 +126,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike the Aarch64 runners this comes with pure Debian out of the box.
-We need a minor tweak to build-environment to deal with the
-differences in naming convention.
+Both Debian and Ubuntu are setup the same way.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/ci/setup/build-environment.yml        |  10 +-
- .../ci/setup/debian/debian-13-ppc64le.yaml    | 134 ++++++++++++++++++
- tests/lcitool/refresh                         |   1 +
- 3 files changed, 143 insertions(+), 2 deletions(-)
- create mode 100644 scripts/ci/setup/debian/debian-13-ppc64le.yaml
+ scripts/ci/setup/gitlab-runner.yml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
-index 253d0b759bc..528150dce78 100644
---- a/scripts/ci/setup/build-environment.yml
-+++ b/scripts/ci/setup/build-environment.yml
-@@ -27,20 +27,26 @@
-         - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
- 
-     # the package lists are updated by "make lcitool-refresh"
--    - name: Define package list file path
-+    - name: Define package list file path for Ubuntu
-       set_fact:
-         package_file: "ubuntu/ubuntu-2404-{{ ansible_facts['architecture'] }}.yaml"
+diff --git a/scripts/ci/setup/gitlab-runner.yml b/scripts/ci/setup/gitlab-runner.yml
+index 7025935487a..76aeaf4ee95 100644
+--- a/scripts/ci/setup/gitlab-runner.yml
++++ b/scripts/ci/setup/gitlab-runner.yml
+@@ -56,12 +56,12 @@
+         url: "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"
+         mode: 0755
        when:
-         - ansible_facts['distribution'] == 'Ubuntu'
-         - ansible_facts['distribution_version'] == '24.04'
+-        - ansible_facts['distribution'] == 'Ubuntu'
++        - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
  
-+    - name: Define package list file path for Debian
-+      set_fact:
-+        package_file: "debian/debian-{{ ansible_facts['distribution_major_version'] }}-{{ ansible_facts['architecture'] }}.yaml"
-+      when:
-+        - ansible_facts['distribution'] == 'Debian'
-+
-     - name: Include package lists based on OS and architecture
-       include_vars:
-         file: "{{ package_file }}"
+     - name: Run gitlab-runner repo setup script (DEB)
+       shell: "/root/script.deb.sh"
        when:
-         - package_file is exists
+-        - ansible_facts['distribution'] == 'Ubuntu'
++        - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
  
--    - name: Install packages for QEMU on Ubuntu 24.04
-+    - name: Install packages for QEMU on Ubuntu/Debian
-       package:
-         name: "{{ packages }}"
+     - name: Install gitlab-runner (DEB)
+       ansible.builtin.apt:
+@@ -69,7 +69,7 @@
+           update_cache: yes
+           state: present
        when:
-diff --git a/scripts/ci/setup/debian/debian-13-ppc64le.yaml b/scripts/ci/setup/debian/debian-13-ppc64le.yaml
-new file mode 100644
-index 00000000000..e29c9c18403
---- /dev/null
-+++ b/scripts/ci/setup/debian/debian-13-ppc64le.yaml
-@@ -0,0 +1,134 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables --host-arch ppc64le debian-13 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+packages:
-+  - bash
-+  - bc
-+  - bindgen
-+  - bison
-+  - bsdextrautils
-+  - bzip2
-+  - ca-certificates
-+  - ccache
-+  - clang
-+  - dbus
-+  - debianutils
-+  - diffutils
-+  - exuberant-ctags
-+  - findutils
-+  - flex
-+  - gcc
-+  - gcovr
-+  - gettext
-+  - git
-+  - hostname
-+  - libaio-dev
-+  - libasan8
-+  - libasound2-dev
-+  - libattr1-dev
-+  - libbpf-dev
-+  - libbrlapi-dev
-+  - libbz2-dev
-+  - libc6-dev
-+  - libcacard-dev
-+  - libcap-ng-dev
-+  - libcapstone-dev
-+  - libcbor-dev
-+  - libclang-rt-dev
-+  - libcmocka-dev
-+  - libcurl4-gnutls-dev
-+  - libdaxctl-dev
-+  - libdrm-dev
-+  - libepoxy-dev
-+  - libfdt-dev
-+  - libffi-dev
-+  - libfuse3-dev
-+  - libgbm-dev
-+  - libgcrypt20-dev
-+  - libglib2.0-dev
-+  - libglusterfs-dev
-+  - libgnutls28-dev
-+  - libgtk-3-dev
-+  - libgtk-vnc-2.0-dev
-+  - libibverbs-dev
-+  - libiscsi-dev
-+  - libjemalloc-dev
-+  - libjpeg62-turbo-dev
-+  - libjson-c-dev
-+  - liblttng-ust-dev
-+  - liblzo2-dev
-+  - libncursesw5-dev
-+  - libnfs-dev
-+  - libnuma-dev
-+  - libpam0g-dev
-+  - libpcre2-dev
-+  - libpipewire-0.3-dev
-+  - libpixman-1-dev
-+  - libpng-dev
-+  - libpulse-dev
-+  - librbd-dev
-+  - librdmacm-dev
-+  - libsasl2-dev
-+  - libsdl2-dev
-+  - libsdl2-image-dev
-+  - libseccomp-dev
-+  - libselinux1-dev
-+  - libslirp-dev
-+  - libsnappy-dev
-+  - libsndio-dev
-+  - libspice-protocol-dev
-+  - libspice-server-dev
-+  - libssh-dev
-+  - libstd-rust-dev
-+  - libsystemd-dev
-+  - libtasn1-6-dev
-+  - libubsan1
-+  - libudev-dev
-+  - liburing-dev
-+  - libusb-1.0-0-dev
-+  - libusbredirhost-dev
-+  - libvdeplug-dev
-+  - libvirglrenderer-dev
-+  - libvte-2.91-dev
-+  - libxdp-dev
-+  - libzstd-dev
-+  - llvm
-+  - locales
-+  - make
-+  - mtools
-+  - multipath-tools
-+  - ncat
-+  - nettle-dev
-+  - ninja-build
-+  - openssh-client
-+  - pkgconf
-+  - python3
-+  - python3-numpy
-+  - python3-opencv
-+  - python3-pillow
-+  - python3-pip
-+  - python3-setuptools
-+  - python3-sphinx
-+  - python3-sphinx-rtd-theme
-+  - python3-tomli
-+  - python3-venv
-+  - python3-wheel
-+  - python3-yaml
-+  - rpm2cpio
-+  - rustc
-+  - sed
-+  - socat
-+  - sparse
-+  - swtpm
-+  - systemtap-sdt-dev
-+  - tar
-+  - tesseract-ocr
-+  - tesseract-ocr-eng
-+  - vulkan-tools
-+  - xorriso
-+  - zlib1g-dev
-+  - zstd
-+
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 056cfb6e9d7..7fbdf6f340b 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -272,6 +272,7 @@ try:
-     #
-     generate_yaml("ubuntu", "ubuntu-2404", "aarch64")
-     generate_yaml("ubuntu", "ubuntu-2404", "s390x")
-+    generate_yaml("debian", "debian-13", "ppc64le")
+-        - ansible_facts['distribution'] == 'Ubuntu'
++        - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
  
- 
-     sys.exit(0)
+     # RPM setup
+     - name: Get gitlab-runner repo setup script (RPM)
 -- 
 2.47.3
 
