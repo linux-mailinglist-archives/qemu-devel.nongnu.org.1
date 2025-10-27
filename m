@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4CCC0DFD6
+	by mail.lfdr.de (Postfix) with ESMTPS id EC568C0DFD9
 	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDNA7-00012k-Mi; Mon, 27 Oct 2025 09:21:27 -0400
+	id 1vDNAr-0001Eh-Aj; Mon, 27 Oct 2025 09:22:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vDNA4-00012I-7U
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:21:24 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNAn-0001Da-4l
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:22:09 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vDNA1-000561-6X
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:21:23 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7a26ea3bf76so6176864b3a.2
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:21:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNAf-0005BW-OT
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:22:08 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-471b80b994bso65964825e9.3
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:21:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1761571275; x=1762176075; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1761571312; x=1762176112; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DPKndzwZr/+MHPxY/xI0zdM+3Z2yGmvypNFzYdd86+Q=;
- b=Yt7ZnKbxWyGykUaYLj5JI3b8ZC6wsTcj9UjsN242rYH+T/6G8U1TuKqxhfVC5o7GzY
- UFL4x2/ExbeEO68UVPJVphPluD6+T/xDlDYFGDlaFzSct/90a4WARqe1FqMWRj2fSm1c
- 4idyHLwoB3KqzdwfU8tNsizb2BPHNoahSWN48CDrPGkglQfwKEkVNAtygE6exV3IR5EP
- oFXYvzcuSLG9O3fn58kPClgVUDJIb17SR+WnJRNu4+szjHE2FlaYHo2MAnanj1Bn5wLR
- 4GSCZwLWw7Y66nB2DP4XjDf44Y5O5SdJMAsWo46NnpgOsJkx5LjvuvISQ5Ks7SZH7PWB
- KOHg==
+ bh=jZ1fI1xIEiwwuSm9s+d5nNAQs8HLDrT4pVzROFps4nI=;
+ b=zrS/lKjM/iU+Bp8KbnTsCZfVpH7hHKjl7iUqbweMyR4dkuJ7Q2YNhrdPcfHxWfRBgf
+ mUsWzoB9JnpgxUrGD+bdVStc/7Ni9gHQ0QYqGv7W0P/yBjQmvEGMv1Sne+9uO14/P5b0
+ mRQQfDoFW44SIIu7rsi3RAVOGsof/ZBNudlxA81ZNr24Zv7em2yR943Y1rb2jxSfpf8J
+ 1elH9VSIBHk0S86uYsTyfDs257zY9blO0TltvQWRqgJ1iy2oH6s/vO6WmAn7haa7tpZE
+ KvhvgN0lHGTZx2R7J7NiZ1ftOBQYOCwTBZLFx+3mwTRioLD0IG0V67ZoabBQzRVvi2y4
+ 1gZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761571275; x=1762176075;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1761571312; x=1762176112;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DPKndzwZr/+MHPxY/xI0zdM+3Z2yGmvypNFzYdd86+Q=;
- b=V4rD1y8prfOODJ05LCIhvs1OCsxv7cNqEJq29RclFubTTwebIHvbF38Rcw4Nh7Q1og
- efO9FCU6b4pxyTT8EgENgaBzuxvCfinsGKS4mZ8NrR+7zeEV9gjTzjbE+3P0A8CXfBi9
- ldMnsQGqUTeGNekyzArgCiGZ5an2/Kos6i4jLBMku8XhbRKBsghSxkGxWCkT77QWCo1M
- fXR/l7Z7anjv3+5J0YQlvy9PC9O02dT23wyeddfxGf7RKHac5zuoC5G2+N6lyWGPuFbE
- qrVHbc3IYYEWEDTwKYnMs07nqeASbj5LlnnQpOQoxUOJwE0VWJ+4c8bADw4Q5AvZfnkf
- boVQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWjSMHu3nZuBNvkqSEFS1ib7epHmCF6KQG0vFApKdhgxESCuN/skKFfY5+r1hv35Bd+b01xJPVNqGgg@nongnu.org
-X-Gm-Message-State: AOJu0YxVIbIfYWy8qfnSz8fuFAwknXoJRP04QVT9uN887UVcBPvvBF/m
- gWQQ9NCvsjZdRjQraTvAV24TSD6wV+CfF+vHIXE6CdaAPZ72znnl6fWqFTm7hLFErx4=
-X-Gm-Gg: ASbGncsBZxFU3dweq/kPpGJF+SG+KI8/GhOwpObLQFxgxSUd4ooMkKc2btNyQ48+m2T
- 0hBL2LntvMPGTMtQ35QEdr3L/iejEtI+3IqH1TwhTyj4p1fRvPHKfuhw4jJKtKgZJ0Lhe+b8xIP
- 5X6sIB//OBua8NPNrNs6YpPIDnJIKJYLD3qXAv/sbG1AFNrlHLhqlL4DXLpvwrQ2+W7XCqR7Hfw
- by5pbFkQYY9tnGwpMndBhBDtZA3f0LQco8iVifLwAbalq+q1nIkGCnw57Mf1v/LtLoMALJcMKZN
- c3P0f34dO9W8oKRgJpWQzsmzlk47CVWuZVxLpNO2QiWg2mnHx0vFeSg+KQOU26uAih0EJw3UxnC
- 8fJmw88uN+pFYV5vc9act0AYvedNoR+VieFQG45v4lZf0vbS3n0Q2xhwap2CMazUY+sc1q5Hacl
- Zu0VW8vRFElNEb
-X-Google-Smtp-Source: AGHT+IHqfq7KKHCI7Y+BVW4DO1YIF/bELgu2+Chc+88WMWOTY5nyf2X8375maSbuFe1ryoXk0w2BHQ==
-X-Received: by 2002:a05:6a21:3286:b0:342:5901:fd9f with SMTP id
- adf61e73a8af0-3425902013bmr7423893637.28.1761571274512; 
- Mon, 27 Oct 2025 06:21:14 -0700 (PDT)
-Received: from [192.168.68.110] ([189.38.141.22])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-33fed3eca8dsm3600851a91.0.2025.10.27.06.21.11
+ bh=jZ1fI1xIEiwwuSm9s+d5nNAQs8HLDrT4pVzROFps4nI=;
+ b=avODN/0CAu2cZ7M8rNBr8KesmAN54Ehlz55p3rMVOcUVqI8SrphIFjrrBwMqliaa/a
+ 045Ce75Q/kaz5Kgx1oPIpzFxchTDFQnOOmqkNE471SzeUVnVd1AgH8czLOdk8i98ZFwn
+ G17j+enUHUxalXUTpNhjMdyV4JBHGPn4k7nlbbujvy/NIX9sY9YIoA2TMhWgGy7BM24S
+ kVL6KX3TMDJuHggdCsoNKfvd6YYoV8NVCs+Mz3YOwLd9t3zn0YhZkiIWHRdukqcfmrN7
+ DWTsaWdvZyWM+OFpJi+x4hzNu5HVVKS6Rs/tvLYcVACZAtWexrUoXFQlLx8LZMIbw84q
+ jjRg==
+X-Gm-Message-State: AOJu0Yzf9SSvpyth134kONf9UWBPyFbrR/SyJmV7eUDseVgTu3Vf/M1c
+ 2tw07nOtFxPjPcMn3XupJ/lNiKcdMOInmwiZKkxaObmHUeHrESkm/TWy/t2q3FG35T4=
+X-Gm-Gg: ASbGncs6qBFBUnyu/IfIBhKrTldGNvFLDBbgm00x4FO2DaZvG7WBuWjmZz+p81fDfCV
+ yx1twYzgxQSEibGv2oVNHVcYgQhHUSTRQW1RBPP3rWbc/ELG4kWMEFREb4m40yyTvaiwxF/anLo
+ DwZaceovcRfMapBlfFdZWLfbC564GmqwB9rbhPofBY0ATMdu8bF35uFtF4r22wO5Gj9y50upPy8
+ IUmw1TB/hcrM/pcmXEPyzyeByKrGEtD+woQ86PVn1dL5GYvxz3U0jfMP9XyRXYLPp78Af4hzCD5
+ +q9WtWPmlACadoIKQKMzwf/3cXvwUmugxBa+hLQGW+3tGCxix9aAfkTqJSthyfiHm3/FEt7mNXg
+ 419czkL0ZoTwlhHB2Q2v6IRClOZlgKBCINeLaitM5iABojPS2T02uVZvaFkZ+nwIwIYxdxwvzPl
+ bee4d4YybIiB2+Pf7JrUHbMKRhmN8QKCYZZZt0kaVihLblRWFmP3y2rA==
+X-Google-Smtp-Source: AGHT+IEmaI+V7NSke+Xbg+NDwhfHtZLEpsooM6s7sWT8zcSsfh7niW0hEzqg2giTNXbYQeZ6DKbtRw==
+X-Received: by 2002:a05:600c:4715:b0:45b:9a46:69e9 with SMTP id
+ 5b1f17b1804b1-4711791c8c3mr293925985e9.31.1761571312503; 
+ Mon, 27 Oct 2025 06:21:52 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952cb7d1sm14390661f8f.16.2025.10.27.06.21.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 06:21:14 -0700 (PDT)
-Message-ID: <1a34b7b5-57c7-47b4-8796-8856d572494c@ventanamicro.com>
-Date: Mon, 27 Oct 2025 10:21:09 -0300
+ Mon, 27 Oct 2025 06:21:52 -0700 (PDT)
+Message-ID: <7184eaba-0d11-40d2-bfaa-ff697baea6ad@linaro.org>
+Date: Mon, 27 Oct 2025 14:21:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/riscv/riscv-iommu: Fix MemoryRegion owner
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org
-References: <20251027-iommu-v1-1-0fc52a02a273@rsg.ci.i.u-tokyo.ac.jp>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: Re: [PATCH 0/6] hw: Log unassigned MMIO accesses with
+ unassigned_mem_ops
 Content-Language: en-US
-In-Reply-To: <20251027-iommu-v1-1-0fc52a02a273@rsg.ci.i.u-tokyo.ac.jp>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+References: <20251027123644.63487-1-philmd@linaro.org>
+ <87pla8xzd2.fsf@draig.linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87pla8xzd2.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,41 +109,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/27/25 2:37 AM, Akihiko Odaki wrote:
-> as points to the MemoryRegion itself. s is the device that owns the
-> MemoryRegion.
+On 27/10/25 14:12, Alex Bennée wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
 > 
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> ---
+>> Do not log unassigned MMIO accesses as I/O ones:
+>> expose unassigned_mem_ops then use it instead of
+>> unassigned_io_ops.
+> 
+> But why? Is it because ioport.c is a x86 io thing?
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Mainly. But also because log is confusing.
+This is part of a bigger PCI host-bridge address-spaces
+rework.
 
->   hw/riscv/riscv-iommu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-> index b33c7fe3259e..51c28d4f8c57 100644
-> --- a/hw/riscv/riscv-iommu.c
-> +++ b/hw/riscv/riscv-iommu.c
-> @@ -1362,7 +1362,7 @@ static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
->           /* IOVA address space, untranslated addresses */
->           memory_region_init_iommu(&as->iova_mr, sizeof(as->iova_mr),
->               TYPE_RISCV_IOMMU_MEMORY_REGION,
-> -            OBJECT(as), "riscv_iommu", UINT64_MAX);
-> +            OBJECT(s), "riscv_iommu", UINT64_MAX);
->           address_space_init(&as->iova_as, MEMORY_REGION(&as->iova_mr), name);
->   
->           QLIST_INSERT_HEAD(&s->spaces, as, list);
+>>
+>> Philippe Mathieu-Daudé (6):
+>>    system/memory: Expose unassigned_mem_ops symbol
+>>    hw/display/vga: Log unassigned MMIO accesses with unassigned_mem_ops
+>>    hw/pci-host/gpex: Log unassigned MMIO accesses with unassigned_mem_ops
+>>    hw/pci-host/aspeed: Log unassigned MMIO accesses with
+>>      unassigned_mem_ops
+>>    hw/pci-host/astro: Log unassigned MMIO accesses with
+>>      unassigned_mem_ops
+>>    hw/sparc64/ebus: Log unassigned MMIO accesses with unassigned_mem_ops
+>>
+>>   include/system/memory.h    | 2 ++
+>>   system/memory-internal.h   | 2 --
+>>   hw/display/bochs-display.c | 2 +-
+>>   hw/display/vga-pci.c       | 4 ++--
+>>   hw/pci-host/aspeed_pcie.c  | 2 +-
+>>   hw/pci-host/astro.c        | 2 +-
+>>   hw/pci-host/gpex.c         | 2 +-
+>>   hw/sparc64/sun4u.c         | 2 +-
+>>   8 files changed, 9 insertions(+), 9 deletions(-)
 > 
-> ---
-> base-commit: 36076d24f04ea9dc3357c0fbe7bb14917375819c
-> change-id: 20251027-iommu-94d68e7a85d2
-> 
-> Best regards,
-> --
-> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> 
-
 
