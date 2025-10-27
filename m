@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827F4C0EE4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A967C0EE3F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:18:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDOwl-0005gv-GP; Mon, 27 Oct 2025 11:15:49 -0400
+	id 1vDOwV-0005We-Tb; Mon, 27 Oct 2025 11:15:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOvo-0004wu-RO
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:49 -0400
+ id 1vDOvq-00052B-3j
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOva-00043O-HS
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:48 -0400
+ id 1vDOvf-00044H-Vi
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:14:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761578071;
+ s=mimecast20190719; t=1761578075;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rEEwWgvOu65dENT6bp88csqVY6xRkGlfxpSMElzIXjk=;
- b=OSXs/8fYbVvbsj6Y0yEmF1+NrEZ+dRSByt7DuGm6sv8w6CFoivplzdB3Lh0LrB4EsNKtlz
- IQ4Yv5fjO9XuAqGdw+Yj+iUaLbBZlQjiuc2ggLvNXqjaKwgLSmEHl1a0TFurHcq7/yUQLD
- cBEkDN1Yp5P/2E2r4qtD4V7XmzPJeoA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=itTW4OZJBs2Jn2daZRP3HrWXr1gvhXp3TAvDF6gmSP0=;
+ b=GMveqAldpTsPGpxiY1HcvT6l4U4Rq8SOjezDhgfW1jUsGO4KbYRsGMUNjNO0yZcDcjxRqv
+ 8v8NFQ1GM3BMD3fl29am2Xm+FZksTrMdE/8x5M5QkGJxsrSrar2eCllZhU1UAA44odjvX1
+ eHue6X03wgfbodcdAbzgQcBzs1lgMyo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-pz2ra32mNMiFOzKSyPKEzA-1; Mon,
- 27 Oct 2025 11:14:27 -0400
-X-MC-Unique: pz2ra32mNMiFOzKSyPKEzA-1
-X-Mimecast-MFC-AGG-ID: pz2ra32mNMiFOzKSyPKEzA_1761578062
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-280-pZdztnwVOmK87Wou5nO_xw-1; Mon,
+ 27 Oct 2025 11:14:32 -0400
+X-MC-Unique: pZdztnwVOmK87Wou5nO_xw-1
+X-Mimecast-MFC-AGG-ID: pZdztnwVOmK87Wou5nO_xw_1761578068
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 84B4719540E4; Mon, 27 Oct 2025 15:14:22 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8DD94180121B; Mon, 27 Oct 2025 15:14:28 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 99FA4195398C; Mon, 27 Oct 2025 15:14:20 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 13CD81800353; Mon, 27 Oct 2025 15:14:26 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>,
@@ -69,15 +69,15 @@ Cc: Alexandre Ratchov <alex@caoua.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 32/35] audio: move capture API to own header
-Date: Mon, 27 Oct 2025 19:10:39 +0400
-Message-ID: <20251027151045.2863176-33-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 33/35] audio: drop needless audio_driver "descr" field
+Date: Mon, 27 Oct 2025 19:10:40 +0400
+Message-ID: <20251027151045.2863176-34-marcandre.lureau@redhat.com>
 In-Reply-To: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -88,7 +88,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,157 +106,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-For modularity/clarity reasons, move the capture API in a specific
-header.
-
-The current audio/ header license is MIT.
+Was it ever used?
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- MAINTAINERS                  |  2 +-
- audio/audio_int.h            |  1 +
- include/qemu/audio-capture.h | 43 ++++++++++++++++++++++++++++++++++++
- include/qemu/audio.h         | 30 -------------------------
- ui/vnc.h                     |  2 +-
- 5 files changed, 46 insertions(+), 32 deletions(-)
- create mode 100644 include/qemu/audio-capture.h
+ audio/audio_int.h   | 1 -
+ audio/alsaaudio.c   | 1 -
+ audio/dbusaudio.c   | 1 -
+ audio/dsoundaudio.c | 1 -
+ audio/jackaudio.c   | 1 -
+ audio/noaudio.c     | 1 -
+ audio/ossaudio.c    | 1 -
+ audio/paaudio.c     | 1 -
+ audio/pwaudio.c     | 1 -
+ audio/sdlaudio.c    | 1 -
+ audio/sndioaudio.c  | 1 -
+ audio/spiceaudio.c  | 1 -
+ audio/wavaudio.c    | 1 -
+ audio/coreaudio.m   | 1 -
+ 14 files changed, 14 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a4f650a88f..355302cac4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2975,7 +2975,7 @@ X: audio/paaudio.c
- X: audio/sdlaudio.c
- X: audio/sndioaudio.c
- X: audio/spiceaudio.c
--F: include/qemu/audio.h
-+F: include/qemu/audio*.h
- F: qapi/audio.json
- 
- ALSA Audio backend
 diff --git a/audio/audio_int.h b/audio/audio_int.h
-index df13a466e4..5834ebea5e 100644
+index 5834ebea5e..b2b8002477 100644
 --- a/audio/audio_int.h
 +++ b/audio/audio_int.h
-@@ -30,6 +30,7 @@
- /* #define RECIPROCAL */
- #endif
- #include "qemu/audio.h"
-+#include "qemu/audio-capture.h"
- #include "mixeng.h"
- 
+@@ -145,7 +145,6 @@ struct SWVoiceIn {
+ typedef struct audio_driver audio_driver;
+ struct audio_driver {
+     const char *name;
+-    const char *descr;
+     void *(*init) (Audiodev *, Error **);
+     void (*fini) (void *);
  #ifdef CONFIG_GIO
-diff --git a/include/qemu/audio-capture.h b/include/qemu/audio-capture.h
-new file mode 100644
-index 0000000000..a07412db85
---- /dev/null
-+++ b/include/qemu/audio-capture.h
-@@ -0,0 +1,43 @@
-+/*
-+ * QEMU Audio subsystem
-+ *
-+ * SPDX-License-Identifier: MIT
-+ */
-+#ifndef QEMU_AUDIO_CAPTURE_H
-+#define QEMU_AUDIO_CAPTURE_H
-+
-+#include "audio.h"
-+
-+typedef struct CaptureVoiceOut CaptureVoiceOut;
-+
-+typedef enum {
-+    AUD_CNOTIFY_ENABLE,
-+    AUD_CNOTIFY_DISABLE
-+} audcnotification_e;
-+
-+struct audio_capture_ops {
-+    void (*notify) (void *opaque, audcnotification_e cmd);
-+    void (*capture) (void *opaque, const void *buf, int size);
-+    void (*destroy) (void *opaque);
-+};
-+
-+struct capture_ops {
-+    void (*info) (void *opaque);
-+    void (*destroy) (void *opaque);
-+};
-+
-+typedef struct CaptureState {
-+    void *opaque;
-+    struct capture_ops ops;
-+    QLIST_ENTRY(CaptureState) entries;
-+} CaptureState;
-+
-+CaptureVoiceOut *AUD_add_capture(
-+    AudioBackend *be,
-+    struct audsettings *as,
-+    struct audio_capture_ops *ops,
-+    void *opaque
-+    );
-+void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
-+
-+#endif /* QEMU_AUDIO_CAPTURE_H */
-diff --git a/include/qemu/audio.h b/include/qemu/audio.h
-index a857955f51..0ed606c9fb 100644
---- a/include/qemu/audio.h
-+++ b/include/qemu/audio.h
-@@ -41,30 +41,7 @@ typedef struct audsettings {
-     int endianness;
- } audsettings;
+diff --git a/audio/alsaaudio.c b/audio/alsaaudio.c
+index d1e4817081..89f6dad1a9 100644
+--- a/audio/alsaaudio.c
++++ b/audio/alsaaudio.c
+@@ -956,7 +956,6 @@ static struct audio_pcm_ops alsa_pcm_ops = {
  
--typedef enum {
--    AUD_CNOTIFY_ENABLE,
--    AUD_CNOTIFY_DISABLE
--} audcnotification_e;
--
--struct audio_capture_ops {
--    void (*notify) (void *opaque, audcnotification_e cmd);
--    void (*capture) (void *opaque, const void *buf, int size);
--    void (*destroy) (void *opaque);
--};
--
--struct capture_ops {
--    void (*info) (void *opaque);
--    void (*destroy) (void *opaque);
--};
--
--typedef struct CaptureState {
--    void *opaque;
--    struct capture_ops ops;
--    QLIST_ENTRY (CaptureState) entries;
--} CaptureState;
--
- typedef struct SWVoiceOut SWVoiceOut;
--typedef struct CaptureVoiceOut CaptureVoiceOut;
- typedef struct SWVoiceIn SWVoiceIn;
+ static struct audio_driver alsa_audio_driver = {
+     .name           = "alsa",
+-    .descr          = "ALSA http://www.alsa-project.org",
+     .init           = alsa_audio_init,
+     .fini           = alsa_audio_fini,
+     .pcm_ops        = &alsa_pcm_ops,
+diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+index 157d36428e..d729a810aa 100644
+--- a/audio/dbusaudio.c
++++ b/audio/dbusaudio.c
+@@ -695,7 +695,6 @@ static struct audio_pcm_ops dbus_pcm_ops = {
  
- struct AudioBackendClass {
-@@ -78,13 +55,6 @@ typedef struct QEMUAudioTimeStamp {
- } QEMUAudioTimeStamp;
+ static struct audio_driver dbus_audio_driver = {
+     .name            = "dbus",
+-    .descr           = "Timer based audio exposed with DBus interface",
+     .init            = dbus_audio_init,
+     .fini            = dbus_audio_fini,
+     .set_dbus_server = dbus_audio_set_server,
+diff --git a/audio/dsoundaudio.c b/audio/dsoundaudio.c
+index 8b773ded21..7a03d1dad8 100644
+--- a/audio/dsoundaudio.c
++++ b/audio/dsoundaudio.c
+@@ -685,7 +685,6 @@ static struct audio_pcm_ops dsound_pcm_ops = {
  
- bool AUD_backend_check (AudioBackend **be, Error **errp);
--CaptureVoiceOut *AUD_add_capture(
--    AudioBackend *s,
--    struct audsettings *as,
--    struct audio_capture_ops *ops,
--    void *opaque
--    );
--void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
+ static struct audio_driver dsound_audio_driver = {
+     .name           = "dsound",
+-    .descr          = "DirectSound http://wikipedia.org/wiki/DirectSound",
+     .init           = dsound_audio_init,
+     .fini           = dsound_audio_fini,
+     .pcm_ops        = &dsound_pcm_ops,
+diff --git a/audio/jackaudio.c b/audio/jackaudio.c
+index 28face9989..7a3fcaedba 100644
+--- a/audio/jackaudio.c
++++ b/audio/jackaudio.c
+@@ -672,7 +672,6 @@ static struct audio_pcm_ops jack_pcm_ops = {
  
- SWVoiceOut *AUD_open_out (
-     AudioBackend *be,
-diff --git a/ui/vnc.h b/ui/vnc.h
-index 4d8363ebf3..ec8d0c91b5 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -31,7 +31,7 @@
- #include "qemu/thread.h"
- #include "ui/clipboard.h"
- #include "ui/console.h"
--#include "qemu/audio.h"
-+#include "qemu/audio-capture.h"
- #include "qemu/bitmap.h"
- #include "crypto/tlssession.h"
- #include "qemu/buffer.h"
+ static struct audio_driver jack_driver = {
+     .name           = "jack",
+-    .descr          = "JACK Audio Connection Kit Client",
+     .init           = qjack_init,
+     .fini           = qjack_fini,
+     .pcm_ops        = &jack_pcm_ops,
+diff --git a/audio/noaudio.c b/audio/noaudio.c
+index b136b74e26..4ed9d2156c 100644
+--- a/audio/noaudio.c
++++ b/audio/noaudio.c
+@@ -129,7 +129,6 @@ static struct audio_pcm_ops no_pcm_ops = {
+ 
+ static struct audio_driver no_audio_driver = {
+     .name           = "none",
+-    .descr          = "Timer based audio emulation",
+     .init           = no_audio_init,
+     .fini           = no_audio_fini,
+     .pcm_ops        = &no_pcm_ops,
+diff --git a/audio/ossaudio.c b/audio/ossaudio.c
+index 5ba91f6793..ab8791bece 100644
+--- a/audio/ossaudio.c
++++ b/audio/ossaudio.c
+@@ -779,7 +779,6 @@ static struct audio_pcm_ops oss_pcm_ops = {
+ 
+ static struct audio_driver oss_audio_driver = {
+     .name           = "oss",
+-    .descr          = "OSS http://www.opensound.com",
+     .init           = oss_audio_init,
+     .fini           = oss_audio_fini,
+     .pcm_ops        = &oss_pcm_ops,
+diff --git a/audio/paaudio.c b/audio/paaudio.c
+index 8eb80ede45..6b9b6d219a 100644
+--- a/audio/paaudio.c
++++ b/audio/paaudio.c
+@@ -922,7 +922,6 @@ static struct audio_pcm_ops qpa_pcm_ops = {
+ 
+ static struct audio_driver pa_audio_driver = {
+     .name           = "pa",
+-    .descr          = "http://www.pulseaudio.org/",
+     .init           = qpa_audio_init,
+     .fini           = qpa_audio_fini,
+     .pcm_ops        = &qpa_pcm_ops,
+diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+index 8f6c0900c8..0fd59d9fe6 100644
+--- a/audio/pwaudio.c
++++ b/audio/pwaudio.c
+@@ -838,7 +838,6 @@ static struct audio_pcm_ops qpw_pcm_ops = {
+ 
+ static struct audio_driver pw_audio_driver = {
+     .name = "pipewire",
+-    .descr = "http://www.pipewire.org/",
+     .init = qpw_audio_init,
+     .fini = qpw_audio_fini,
+     .pcm_ops = &qpw_pcm_ops,
+diff --git a/audio/sdlaudio.c b/audio/sdlaudio.c
+index 4ef73c8dfb..a7a9652d29 100644
+--- a/audio/sdlaudio.c
++++ b/audio/sdlaudio.c
+@@ -490,7 +490,6 @@ static struct audio_pcm_ops sdl_pcm_ops = {
+ 
+ static struct audio_driver sdl_audio_driver = {
+     .name           = "sdl",
+-    .descr          = "SDL http://www.libsdl.org",
+     .init           = sdl_audio_init,
+     .fini           = sdl_audio_fini,
+     .pcm_ops        = &sdl_pcm_ops,
+diff --git a/audio/sndioaudio.c b/audio/sndioaudio.c
+index f4f53b1c6f..8197b8b0b4 100644
+--- a/audio/sndioaudio.c
++++ b/audio/sndioaudio.c
+@@ -546,7 +546,6 @@ static struct audio_pcm_ops sndio_pcm_ops = {
+ 
+ static struct audio_driver sndio_audio_driver = {
+     .name           = "sndio",
+-    .descr          = "sndio https://sndio.org",
+     .init           = sndio_audio_init,
+     .fini           = sndio_audio_fini,
+     .pcm_ops        = &sndio_pcm_ops,
+diff --git a/audio/spiceaudio.c b/audio/spiceaudio.c
+index 77ba89ffaa..7db2d1f0df 100644
+--- a/audio/spiceaudio.c
++++ b/audio/spiceaudio.c
+@@ -316,7 +316,6 @@ static struct audio_pcm_ops audio_callbacks = {
+ 
+ static struct audio_driver spice_audio_driver = {
+     .name           = "spice",
+-    .descr          = "spice audio driver",
+     .init           = spice_audio_init,
+     .fini           = spice_audio_fini,
+     .pcm_ops        = &audio_callbacks,
+diff --git a/audio/wavaudio.c b/audio/wavaudio.c
+index 4d9c921305..46460a5d57 100644
+--- a/audio/wavaudio.c
++++ b/audio/wavaudio.c
+@@ -205,7 +205,6 @@ static struct audio_pcm_ops wav_pcm_ops = {
+ 
+ static struct audio_driver wav_audio_driver = {
+     .name           = "wav",
+-    .descr          = "WAV renderer http://wikipedia.org/wiki/WAV",
+     .init           = wav_audio_init,
+     .fini           = wav_audio_fini,
+     .pcm_ops        = &wav_pcm_ops,
+diff --git a/audio/coreaudio.m b/audio/coreaudio.m
+index 8b3cd6db16..997017a1e9 100644
+--- a/audio/coreaudio.m
++++ b/audio/coreaudio.m
+@@ -664,7 +664,6 @@ static void coreaudio_audio_fini (void *opaque)
+ 
+ static struct audio_driver coreaudio_audio_driver = {
+     .name           = "coreaudio",
+-    .descr          = "CoreAudio http://developer.apple.com/audio/coreaudio.html",
+     .init           = coreaudio_audio_init,
+     .fini           = coreaudio_audio_fini,
+     .pcm_ops        = &coreaudio_pcm_ops,
 -- 
 2.51.0
 
