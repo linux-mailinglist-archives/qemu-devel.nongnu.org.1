@@ -2,79 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BF7C0BDBC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 06:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BC7C0BE1C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 06:57:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDG5R-0005RI-HO; Mon, 27 Oct 2025 01:48:09 -0400
+	id 1vDGEM-0007yb-In; Mon, 27 Oct 2025 01:57:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vDG5O-0005R7-OJ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:48:06 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vDGEI-0007yP-JT
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:57:18 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1vDG5M-0001VD-Eq
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:48:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761544085; x=1793080085;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=24zEWJ2BhHyTK1Z3gf/A4Z3jWdwL2s4O/5Gno5jTRLU=;
- b=Uq+dakpVFUihp9eQvmeij3dmTbzHdlDQsg1oIGn/h0TivdIMU3aX5kjL
- VuFF9edY1GTgKQ0D6jMO/0m8/GPg1SyfKRvybJnndx5YO8R8KmmW7c6Q4
- eqsiGFud9j/w2e6fJyqsx3q9fuunxYs5C6yTsqDv5Uz9VEN9IX+mPqcIf
- 63k4Vz096k8oSygw5wQj3o0gkygq6g8B9b5e/kKXu+JU3qoWnWAAha91J
- Iuld6BtMcb5TpH9053nYxrazW6230ZWhJ7uUM4L4ZQ2orRajVjvTonwMR
- dIwrwzUT/+SbgK62U0FQlyRfpUg7evKCYd82sTZqjOnv0pOIAeVrAQjVu A==;
-X-CSE-ConnectionGUID: luLJ0jSGQlyfSEfmqs1VVA==
-X-CSE-MsgGUID: YJZYagGUR9u8jFwcKwC2Ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63541804"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63541804"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2025 22:48:01 -0700
-X-CSE-ConnectionGUID: /SnmDoMzTvOFq7mwUpzN/Q==
-X-CSE-MsgGUID: b6cy4JhCSIe4bWzQbH9gHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184566973"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
- ([10.124.238.14])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2025 22:47:57 -0700
-Message-ID: <94d254b3-3d0f-4fe8-b6aa-da5df2b9c0e6@intel.com>
-Date: Mon, 27 Oct 2025 13:47:53 +0800
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vDGEF-0002kx-7l
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:57:18 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59R5v1hS041967
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 27 Oct 2025 14:57:05 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=F7CpjYT/HngMjwg7+wZEmco+AYWuE4/x+3O2up+YASI=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Date:Subject:Message-Id:To;
+ s=rs20250326; t=1761544625; v=1;
+ b=DyBCkPFoEEOc/R3Vt0Rw4AHM8V0MpJ7MMWs71saEvfz7a3ymLbqzUBMgLCenxp2s
+ gaPRqS0xNSZgIF+VfVoq1URhw4zELQyDEwh6iW6urE3CH6eIjlGVHxpR3xCmHAYz
+ Hd3jNxxkri0k0pUlcYSNrlXyasKj+AtchX5RZfbIIn5vaKI4Isv4tEd5Cc/w2JFR
+ kMIEj1+G7HJOTsZLu7c6zIe8R5gqFDWVF/6KV1RYLG4aCJ7CPFgnNSqPR7VqN7Le
+ 7VirUKx3tUsMx9S05ZuApgb8Ldn7c12wDeLPfSZhEM1Uip4s5peXRwCZ3HRjDtma
+ IjEBhNlnicnuWvbKWpuNUw==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 27 Oct 2025 14:56:53 +0900
+Subject: [PATCH] memory: Make FlatView root references weak
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/20] i386/cpu: Clean up indent style of
- x86_ext_save_areas[]
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao
- <chao.gao@intel.com>, John Allen <john.allen@amd.com>,
- Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-3-zhao1.liu@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20251024065632.1448606-3-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.57, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-Id: <20251027-root-v1-1-ddf92b9058be@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAKQJ/2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyMT3aL8/BLdFBNjQxNTg7TkpKQ0JaDSgqLUtMwKsDHRsbW1AL/RBsl
+ WAAAA
+X-Change-ID: 20251024-root-d431450fcbbf
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,94 +75,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/24/2025 2:56 PM, Zhao Liu wrote:
+docs/devel/memory.rst says "memory_region_ref and memory_region_unref
+are never called on aliases", but these functions are called for
+FlatView roots, which can be aliases.
 
-<empty commit message> isn't good.
+This causes object overwrite hazard in pci-bridge. Specifically,
+pci_bridge_region_init() expects that there are no references to
+w->alias_io after object_unparent() is called, allowing it to reuse the
+associated storage. However, if a parent bus still holds a reference to
+the existing object as a FlatView's root, the storage is still in use,
+leading to an overwrite. This hazard can be confirmed by adding the
+following code to pci_bridge_region_init():
 
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+PCIDevice *parent_dev = parent->parent_dev;
+assert(!object_dynamic_cast(OBJECT(parent_dev), TYPE_PCI_BRIDGE) ||
+       PCI_BRIDGE(parent_dev)->as_io.current_map->root != &w->alias_io);
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+This assertion fails when running:
+meson test -C build qtest-x86_64/bios-tables-test \
+    '--test-args=-p /x86_64/acpi/piix4/pci-hotplug/no_root_hotplug'
 
-> ---
->   target/i386/cpu.c | 58 +++++++++++++++++++++++++++--------------------
->   1 file changed, 33 insertions(+), 25 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 0a66e1fec939..f0e179c2d235 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -2028,38 +2028,46 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
->           .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
->           .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
->       },
-> -    [XSTATE_YMM_BIT] =
-> -          { .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
-> -            .size = sizeof(XSaveAVX) },
-> -    [XSTATE_BNDREGS_BIT] =
-> -          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-> -            .size = sizeof(XSaveBNDREG)  },
-> -    [XSTATE_BNDCSR_BIT] =
-> -          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-> -            .size = sizeof(XSaveBNDCSR)  },
-> -    [XSTATE_OPMASK_BIT] =
-> -          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> -            .size = sizeof(XSaveOpmask) },
-> -    [XSTATE_ZMM_Hi256_BIT] =
-> -          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> -            .size = sizeof(XSaveZMM_Hi256) },
-> -    [XSTATE_Hi16_ZMM_BIT] =
-> -          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> -            .size = sizeof(XSaveHi16_ZMM) },
-> -    [XSTATE_PKRU_BIT] =
-> -          { .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
-> -            .size = sizeof(XSavePKRU) },
-> +    [XSTATE_YMM_BIT] = {
-> +        .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
-> +        .size = sizeof(XSaveAVX),
-> +    },
-> +    [XSTATE_BNDREGS_BIT] = {
-> +        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-> +        .size = sizeof(XSaveBNDREG),
-> +    },
-> +    [XSTATE_BNDCSR_BIT] = {
-> +        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
-> +        .size = sizeof(XSaveBNDCSR),
-> +    },
-> +    [XSTATE_OPMASK_BIT] = {
-> +        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> +        .size = sizeof(XSaveOpmask),
-> +    },
-> +    [XSTATE_ZMM_Hi256_BIT] = {
-> +        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> +        .size = sizeof(XSaveZMM_Hi256),
-> +    },
-> +    [XSTATE_Hi16_ZMM_BIT] = {
-> +        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
-> +        .size = sizeof(XSaveHi16_ZMM),
-> +    },
-> +    [XSTATE_PKRU_BIT] = {
-> +        .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
-> +        .size = sizeof(XSavePKRU),
-> +    },
->       [XSTATE_ARCH_LBR_BIT] = {
-> -            .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
-> -            .offset = 0 /*supervisor mode component, offset = 0 */,
-> -            .size = sizeof(XSavesArchLBR) },
-> +        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
-> +        .offset = 0 /*supervisor mode component, offset = 0 */,
-> +        .size = sizeof(XSavesArchLBR),
-> +    },
->       [XSTATE_XTILE_CFG_BIT] = {
->           .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
->           .size = sizeof(XSaveXTILECFG),
->       },
->       [XSTATE_XTILE_DATA_BIT] = {
->           .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
-> -        .size = sizeof(XSaveXTILEDATA)
-> +        .size = sizeof(XSaveXTILEDATA),
->       },
->   };
->   
+Make the references of FlatView roots "weak" (i.e., remove the
+reference to a root automatically removed when it is finalized) to
+avoid calling memory_region_ref and memory_region_unref and fix the
+hazard with pci-bridge.
+
+Alternative solutions (like removing the "never called on aliases"
+statement or detailing the exception) were rejected because the alias
+invariant is still relied upon in several parts of the codebase, and
+updating existing code to align with a new condition is non-trivial.
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+ system/memory.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/system/memory.c b/system/memory.c
+index 8b84661ae36c..08fe5e791224 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -266,7 +266,6 @@ static FlatView *flatview_new(MemoryRegion *mr_root)
+     view = g_new0(FlatView, 1);
+     view->ref = 1;
+     view->root = mr_root;
+-    memory_region_ref(mr_root);
+     trace_flatview_new(view, mr_root);
+ 
+     return view;
+@@ -301,7 +300,6 @@ static void flatview_destroy(FlatView *view)
+         memory_region_unref(view->ranges[i].mr);
+     }
+     g_free(view->ranges);
+-    memory_region_unref(view->root);
+     g_free(view);
+ }
+ 
+@@ -1796,6 +1794,12 @@ void memory_region_init_iommu(void *_iommu_mr,
+ static void memory_region_finalize(Object *obj)
+ {
+     MemoryRegion *mr = MEMORY_REGION(obj);
++    gpointer key;
++    gpointer value;
++
++    if (g_hash_table_steal_extended(flat_views, mr, &key, &value)) {
++        ((FlatView *)value)->root = NULL;
++    }
+ 
+     /*
+      * Each memory region (that can be freed) must have an owner, and it
+
+---
+base-commit: 36076d24f04ea9dc3357c0fbe7bb14917375819c
+change-id: 20251024-root-d431450fcbbf
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
