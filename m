@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E670EC0CFE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20235C0CFD4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:40:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDKdA-0005fo-4p; Mon, 27 Oct 2025 06:39:16 -0400
+	id 1vDKdG-0005hd-2k; Mon, 27 Oct 2025 06:39:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1vDKcv-0005dK-5P
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:39:02 -0400
-Received: from mx1.zhaoxin.com ([210.0.225.12])
+ id 1vDKd2-0005fA-CD
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:39:09 -0400
+Received: from mx2.zhaoxin.com ([61.152.208.219])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1vDKcq-0000ma-D1
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:39:00 -0400
-X-ASG-Debug-ID: 1761561524-086e230b3325a90001-jgbH7p
+ id 1vDKcs-0000nA-Tn
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:39:07 -0400
+X-ASG-Debug-ID: 1761561530-1eb14e3d8a60d80001-jgbH7p
 Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
- mx1.zhaoxin.com with ESMTP id 4IBKMajfPk8GXPEp (version=TLSv1.2
+ mx2.zhaoxin.com with ESMTP id UJIAZjO3kI0O3A1M (version=TLSv1.2
  cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Mon, 27 Oct 2025 18:38:44 +0800 (CST)
+ Mon, 27 Oct 2025 18:38:50 +0800 (CST)
 X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
 X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
  (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 27 Oct
- 2025 18:38:44 +0800
+ 2025 18:38:50 +0800
 Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
  ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Mon, 27 Oct 2025 18:38:44 +0800
+ 15.01.2507.059; Mon, 27 Oct 2025 18:38:50 +0800
 X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 Received: from ewan-server.lan (10.28.24.130) by zxbjmbx1.zhaoxin.com
  (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
@@ -39,39 +39,43 @@ Received: from ewan-server.lan (10.28.24.130) by zxbjmbx1.zhaoxin.com
  2025 18:21:39 +0800
 From: Ewan Hai <ewanhai-oc@zhaoxin.com>
 To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>
-CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>
-Subject: [PATCH v2 0/4] target/i386: Add support for Zhaoxin Shijidadao vCPU
- models
-Date: Mon, 27 Oct 2025 06:21:35 -0400
-X-ASG-Orig-Subj: [PATCH v2 0/4] target/i386: Add support for Zhaoxin
- Shijidadao vCPU models
-Message-ID: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
+CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
+ Xudong Hao <xudong.hao@intel.com>
+Subject: [PATCH v2 1/4] target/i386: Add an option in X86CPUDefinition to
+ control CPUID 0x1f
+Date: Mon, 27 Oct 2025 06:21:36 -0400
+X-ASG-Orig-Subj: [PATCH v2 1/4] target/i386: Add an option in X86CPUDefinition
+ to control CPUID 0x1f
+Message-ID: <20251027102139.270662-2-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
+References: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-Originating-IP: [10.28.24.130]
 X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
  zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 10/27/2025 6:38:43 PM
+X-Moderation-Data: 10/27/2025 6:38:49 PM
 X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1761561524
+X-Barracuda-Start-Time: 1761561530
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1718
+X-Barracuda-Scan-Msg-Size: 1659
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Score: -1.82
 X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.149254
+ SCORE=-1.82 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=PR0N_SUBJECT
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.149253
  Rule breakdown below
  pts rule name              description
  ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
+ 0.20 PR0N_SUBJECT Subject has letters around special characters (pr0n)
+Received-SPF: pass client-ip=61.152.208.219;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,56 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset introduces cache enumeration and two vCPU models (Client     =
-    =20
-and Server) for the Zhaoxin "Shijidadao" architecture. With these          =
-    =20
-additions, QEMU can expose the core identity and features of this          =
-    =20
-architecture without relying on host-passthrough.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Key points for maintainers to review:
+Many Intel and Zhaoxin CPUs enable CPUID 0x1f by default to encode CPU
+topology information.
 
-1. The Shijidadao-Client model leverages QEMU's inherent versioning mechani=
-sm.
-.version =3D 1 represents the first hardware revision, while a new version =
-=3D 2
-captures the second revision with distinct feature sets. This approach allo=
-ws
-both revisions to be covered by a single CPU model, aligned with QEMU's
-existing versioning logic.
+Add the "cpuid_0x1f" option to X86CPUDefinition to allow named CPU
+models to configure CPUID 0x1f from the start, thereby forcing 0x1f
+to be present for guest.
 
-2. The Shijidadao-Server model enables the 'core-capability' bit by default=
-.
-Since KVM does not yet virtualize the corresponding MSR, guidance on whethe=
-r
-this setting should remain enabled is requested.
+With this option, there's no need to explicitly add v1 model to an
+unversioned CPU model for explicitly enabling the x-force-cpuid-0x1f
+property.
 
+Tested-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
+ target/i386/cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Changes Since v1:
-- Incorporated Zhao Liu's suggested patch that introduces the cpuid_0x1f op=
-tion.
-- Dropped explicit x-force-cpuid-0x1f property declarations from both
-Shijidadao-Server and Shijidadao-Client models, since the new option provid=
-es
-a cleaner solution.
-- Updated commit messages for the Client and Server patches to remove
-references to the earlier x-force-cpuid-0x1f approach.
-
----
-
-Ewan Hai (3):
-  target/i386: Add cache model for Zhaoxin Shijidadao vCPUs
-  target/i386: Introduce Zhaoxin Shijidadao-Client CPU model
-  target/i386: Introduce Zhaoxin Shijidadao-Server CPU model
-
-Zhao Liu (1):
-  target/i386: Add an option in X86CPUDefinition to control CPUID 0x1f
-
- target/i386/cpu.c | 380 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 380 insertions(+)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0a66e1fec9..c5853216dc 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2212,6 +2212,12 @@ typedef struct X86CPUDefinition {
+     int model;
+     int stepping;
+     uint8_t avx10_version;
++    /*
++     * Whether to present CPUID 0x1f by default.
++     * If true, encode CPU topology in 0x1f leaf even if there's no
++     * extended topology levels.
++     */
++    bool cpuid_0x1f;
+     FeatureWordArray features;
+     const char *model_id;
+     const CPUCaches *const cache_info;
+@@ -7759,6 +7765,10 @@ static void x86_cpu_load_model(X86CPU *cpu, const X8=
+6CPUModel *model)
+     object_property_set_uint(OBJECT(cpu), "avx10-version", def->avx10_vers=
+ion,
+                              &error_abort);
+=20
++    if (def->cpuid_0x1f) {
++        object_property_set_bool(OBJECT(cpu), "x-force-cpuid-0x1f",
++                                 def->cpuid_0x1f, &error_abort);
++    }
+     x86_cpu_apply_version_props(cpu, model);
+=20
+     /*
 --=20
 2.34.1
+
 
