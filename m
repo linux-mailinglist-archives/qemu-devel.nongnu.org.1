@@ -2,61 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092BBC0BEF7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 07:15:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13173C0BDE0
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 06:52:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDGV9-00041e-7Y; Mon, 27 Oct 2025 02:14:43 -0400
+	id 1vDG9P-0006lX-7B; Mon, 27 Oct 2025 01:52:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
- id 1vDGV6-00040v-65
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:14:40 -0400
-Received: from sg-1-22.ptr.blmpb.com ([118.26.132.22])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
- id 1vDGV0-0004Ye-5F
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:14:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761545593;
- h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=nAAzy7K8617RXzO4KIFYWu7N4lA9UBflj5l0bnqU4Ks=;
- b=1gKh+MM/ZamX1I+lLtp8MI5ovsaxh/Q8CKWWWn/qamYSfG7YzD9nBiwaqf1xPY+QtQZ3+M
- eMfrOVQOuAqB2a7mBkxZfLGkPQ5lptJuFVLdhDCHIVIDKKTMqNwoXLsDrSOqoK2r0tQ2G3
- m9DSeIOF35qfE5ZXfQwjBZGN5LTJcda5WIUqGejQKR0r1QyiP2E0m/0iFH2w2bLHXq5u3r
- 6et/T3FZXo8aORlMuRavrQjNE7CKNgHyeMBBPDwj+x0w3B3vsH/wWA6LoffCnxti8nK1fg
- T0mWzM+H+mYCN1FwRUIkIijwIR5NCOdkd0UYO8379rysOKT19m4EaOqDnRIrJQ==
-References: <20251025123853.63139-2-chenmiao@openatom.club>
- <aP8P2H0qk0yJMPe3@intel.com>
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <aP8P2H0qk0yJMPe3@intel.com>
-Cc: <pbonzini@redhat.com>, <manos.pitsidianakis@linaro.org>, 
- <richard.henderson@linaro.org>, <philmd@linaro.org>, 
- <qemu-rust@nongnu.org>, <qemu-devel@nongnu.org>, 
- <hust-os-kernel-patches@googlegroups.com>
-Message-Id: <fb4729e0-5d74-4a7d-88f1-55f94cb87059@openatom.club>
-Content-Transfer-Encoding: 7bit
-Received: from [198.18.0.1] ([114.249.194.57]) by smtp.feishu.cn with ESMTPS;
- Mon, 27 Oct 2025 14:13:10 +0800
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+268ff0d77+45ad17+nongnu.org+chenmiao@openatom.club>
-From: "Chen Miao" <chenmiao@openatom.club>
-Date: Mon, 27 Oct 2025 14:13:08 +0800
-X-Original-From: Chen Miao <chenmiao@openatom.club>
-To: "Zhao Liu" <zhao1.liu@intel.com>
-Subject: Re: [RFC 1/5] rust: hw: core: Add the BusState of rust version
-Received-SPF: pass client-ip=118.26.132.22;
- envelope-from=chenmiao@openatom.club; helo=sg-1-22.ptr.blmpb.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vDG9M-0006lA-Jq
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:52:12 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vDG9K-0002DL-PF
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 01:52:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761544331; x=1793080331;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=dgAPBuZx390lqBcklwscubjP06yyRgvQZJEJVOUVjyE=;
+ b=Hv7iQD12R1xppx3pBhGwDSDGyjigPwK6y0U5D51JNLQHycyRqEh01Bo7
+ 4VUiJ+yIiJw7Rv1z5YGOM1PJLgP7ukwM/NwvMhkkx5dfALPtWF+6LUwpe
+ 5S3rj7z+THLSkChkS1obJDwx5DJza8PIqvSGsqbqBw3exxQ0Apu0PW890
+ yCTNB2KskOsxXels/K59jazHMHzX6R+B+bzejQ90g4biyzyDgPIYAQK+a
+ 7EKVvo1V6g/KrFbXvwjFKgYgQuLzuIzuTt0D4+LF1GkKdHzs37G8hdsT9
+ 1CmRtrPYE9BjITI0rNxJCfodkuUk5mKuN4A9MMArAojpenhLeIenGWVed w==;
+X-CSE-ConnectionGUID: gJPTmy9YQyO8cVf41o3clQ==
+X-CSE-MsgGUID: 7CM8YGCHS6KLlMEhgzxcEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74962254"
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="74962254"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2025 22:52:08 -0700
+X-CSE-ConnectionGUID: VrN7U0npQICatud3JgfV7w==
+X-CSE-MsgGUID: KmH8iI2CTwiQc8cJFi1Zzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184178451"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa010.jf.intel.com with ESMTP; 26 Oct 2025 22:52:07 -0700
+Date: Mon, 27 Oct 2025 14:14:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, ewanhai@zhaoxin.com,
+ cobechen@zhaoxin.com
+Subject: Re: [PATCH 3/3] target/i386: Introduce Zhaoxin Shijidadao-Server CPU
+ model
+Message-ID: <aP8NuLzItpNzt6DJ@intel.com>
+References: <20250923021133.190725-1-ewanhai-oc@zhaoxin.com>
+ <20250923021133.190725-4-ewanhai-oc@zhaoxin.com>
+ <aPsnqxDZR4KxgcdN@intel.com>
+ <53c9af0b-49e2-4ec3-8846-01d44b2a9745@zhaoxin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53c9af0b-49e2-4ec3-8846-01d44b2a9745@zhaoxin.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,68 +85,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/27/2025 2:23 PM, Zhao Liu wrote:
-> On Sat, Oct 25, 2025 at 12:38:49PM +0000, chenmiao wrote:
->> Date: Sat, 25 Oct 2025 12:38:49 +0000
->> From: chenmiao <chenmiao@openatom.club>
->> Subject: [RFC 1/5] rust: hw: core: Add the BusState of rust version
->> X-Mailer: git-send-email 2.43.0
->>
->> A Rust version implementation has been designed for BusState,
->> which will be used for the subsequent I2CBus implementation.
->>
->> Signed-off-by: chenmiao <chenmiao@openatom.club>
->> ---
->>   rust/hw/core/meson.build |  1 +
->>   rust/hw/core/src/bus.rs  | 51 ++++++++++++++++++++++++++++++++++++++++
->>   rust/hw/core/src/lib.rs  |  3 +++
->>   3 files changed, 55 insertions(+)
->>   create mode 100644 rust/hw/core/src/bus.rs
-> After a quick glance, I think this BusState is implemented quite well.
->
-> Only a few minor nits inline:
->
-> ...
->
->> +pub trait BusStateImpl: DeviceImpl + IsA<BusState> {}
->> +
->> +impl BusClass {
->> +    pub fn class_init<T: BusStateImpl>(self: &mut BusClass) {
->> +        self.parent_class.class_init::<T>();
->> +    }
->> +}
->> +
->> +pub trait BusStateMethods: ObjectDeref
-> This can be named BusMethods - just like DeviceMethods did.
->
->> +where
->> +    Self::Target: IsA<BusState>,
->> +{
->> +    fn bus_realize(&self) {
-> "bus_" prefix is not needed:
->
-> dummy_bus.realize() is clear and enough.
->
->> +        assert!(bql::is_locked());
-> It's better to add safety comment from beginning (// SAFETY: xxx).
->
->> +        unsafe {
->> +            bindings::qbus_realize(
->> +                self.upcast().as_mut_ptr(),
->> +                addr_of_mut!(util::bindings::error_fatal),
->> +            );
->> +        }
->> +    }
->> +}
-> Regards,
-> Zhao
+> >> In QEMU, vCPU models default to '.version = 1'. Since there is currently
+> >> no '.features[index]' mapping for the "x-force-cpuid-0x1f" property, this
+> >> patch adds that property to the v1 version of the model.
+> > 
+> > I'm preparing the CPU model for Diamond Rapids, and also meet this
+> > issue.
+> > 
+> > Well, I happen to have a patch for this and I think you could give it
+> > a try. :)
+> 
+> That's good news. I'll test your patch and update mine accordingly.
+> When I send out v2, should I note in the cover letter that my patches are based
+> on your "0x1f option" patch?
 
-Hi Zhao,
-
-Thanks for your review, I'll revisions based on your suggestions after all the 
-patches reviewed.
+Please feel free to pick that patch into your series.
 
 Regards,
+Zhao
 
-Chen Miao
+
 
