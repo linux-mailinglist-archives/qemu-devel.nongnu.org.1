@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE84BC11859
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29057C11856
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDUaR-0002Y1-M2; Mon, 27 Oct 2025 17:17:07 -0400
+	id 1vDUac-0002Zf-F4; Mon, 27 Oct 2025 17:17:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZn-0002UR-Sc
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:32 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZx-0002Up-Ul
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:48 -0400
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZh-0004ze-9Q
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:27 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZr-00050Y-FQ
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:37 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 77C8148C41;
+ by sea.source.kernel.org (Postfix) with ESMTP id A264D48C42;
+ Mon, 27 Oct 2025 21:16:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BF2C4CEF1;
  Mon, 27 Oct 2025 21:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B89AC4CEFD;
- Mon, 27 Oct 2025 21:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1761599779;
- bh=FND8rsNuJWvVjbyj2hs3c750kvVjLgqtceD6fSGSOco=;
+ s=k20201202; t=1761599781;
+ bh=xFlzV8vrus0MSYUZSP7M+xz2pgWJO+cv9CnznTXzwKI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Nq83XsozdX0WrJOpYqposnf6vbZbvTVcilEuApVG5yfuUmosXsEW21heeK/Y75sQE
- gGYxoef66CwxdKAwpjI5nrfza+mdiheQgML9zNqCVVSDI+4dZe0T38zGCzHg9PNcYQ
- B11TfzIcsKvyRCttvnE32VFkBL4l5FJKDK7SHHHgGSeRQ8Fp2P5/uHaTTm0Txi//2q
- wqZ/Ox80p6Escfbw56xiWvGEOKdDb6QAwQLWlt0X0URidxOifxlcUqXRcXB4viQFhF
- jeXvQ8t7fcZTQcM+CYpIQQ/N0gFrvtXncAItZkZUhaUv6lltMTpSRO0u7gT+igOlds
- SzBwBpEKP3O0w==
+ b=hc3lyDXU0IIrCXgErqQv79ze7SRRmmwlX+71EX23gc913Mp39OsamYatZNhzi80cG
+ OZ/wUc//XDsITtsW+tAiHl9ijTujnO3wLX8Q2E7wxg/TslL5UfgfzViTWJtDBEQYdw
+ ua9LOwR2SH4pFy2cTlF84/LcyvUBwk4WtgQp6P/ukWlYP5sRps4WOHF+xtCIAhJ7mW
+ ezd8Vil2w8aJesxAbPjWEmuPEl/x1kuGhNivDme8wvfnYOpqP/FBLB/S96t24+fRbc
+ 5qv5Iz0j7HtrX+WpWBNITnJNXs40avYiAbpb6GOGSeo03xb/JTacq7DMRDtpwE/H1Y
+ 54gPK2cChWfBw==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>
@@ -38,9 +38,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fam Zheng <fam@euphon.net>,
  Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, deller@gmx.de
-Subject: [PULL 05/11] hw/scsi: Add config option for new ncr710 driver
-Date: Mon, 27 Oct 2025 22:15:57 +0100
-Message-ID: <20251027211603.7141-6-deller@kernel.org>
+Subject: [PULL 06/11] hw/hppa: Fix firmware end address for LASI chip
+Date: Mon, 27 Oct 2025 22:15:58 +0100
+Message-ID: <20251027211603.7141-7-deller@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027211603.7141-1-deller@kernel.org>
 References: <20251027211603.7141-1-deller@kernel.org>
@@ -69,46 +69,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-Add config option and wire up in meson makefile.
+The base address of a LASI chip on a 715 machine starts at HPA
+0xf0100000.  Make sure that the firmware does not extend beyond that
+address, otherwise it's not possible to access the LASI ports.
 
-Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/scsi/Kconfig     | 5 +++++
- hw/scsi/meson.build | 1 +
- 2 files changed, 6 insertions(+)
+ hw/hppa/hppa_hardware.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/scsi/Kconfig b/hw/scsi/Kconfig
-index 1feab84c4c..5743ee9b4d 100644
---- a/hw/scsi/Kconfig
-+++ b/hw/scsi/Kconfig
-@@ -7,6 +7,11 @@ config LSI_SCSI_PCI
-     depends on PCI
-     select SCSI
+diff --git a/hw/hppa/hppa_hardware.h b/hw/hppa/hppa_hardware.h
+index 21c777cba6..d422af0429 100644
+--- a/hw/hppa/hppa_hardware.h
++++ b/hw/hppa/hppa_hardware.h
+@@ -5,7 +5,7 @@
+ #define HW_HPPA_HPPA_HARDWARE_H
  
-+config NCR710_SCSI
-+    bool
-+    default y if LASI
-+    select SCSI
-+
- config MPTSAS_SCSI_PCI
-     bool
-     default y if PCI_DEVICES
-diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
-index bb7d289aa0..b874fe1ecd 100644
---- a/hw/scsi/meson.build
-+++ b/hw/scsi/meson.build
-@@ -12,6 +12,7 @@ scsi_ss.add(files(
- scsi_ss.add(when: 'CONFIG_ESP', if_true: files('esp.c'))
- scsi_ss.add(when: 'CONFIG_ESP_PCI', if_true: files('esp-pci.c'))
- scsi_ss.add(when: 'CONFIG_LSI_SCSI_PCI', if_true: files('lsi53c895a.c'))
-+scsi_ss.add(when: 'CONFIG_NCR710_SCSI', if_true: files('ncr53c710.c', 'lasi_ncr710.c'))
- scsi_ss.add(when: 'CONFIG_MEGASAS_SCSI_PCI', if_true: files('megasas.c'))
- scsi_ss.add(when: 'CONFIG_MPTSAS_SCSI_PCI', if_true: files('mptsas.c', 'mptconfig.c', 'mptendian.c'))
- scsi_ss.add(when: 'CONFIG_VMW_PVSCSI_SCSI_PCI', if_true: files('vmw_pvscsi.c'))
+ #define FIRMWARE_START  0xf0000000
+-#define FIRMWARE_END    0xf0800000
++#define FIRMWARE_END    0xf0100000
+ #define FIRMWARE_HIGH   0xfffffff0  /* upper 32-bits of 64-bit firmware address */
+ 
+ #define RAM_MAP_HIGH  0x0100000000  /* memory above 3.75 GB is mapped here */
+@@ -19,6 +19,7 @@
+ #define DINO_UART_HPA   0xfff83000
+ #define  DINO_UART_BASE 0xfff83800
+ #define DINO_SCSI_HPA   0xfff8c000
++#define LASI_HPA_715    0xf0100000
+ #define LASI_HPA        0xffd00000
+ #define LASI_UART_HPA   0xffd05000
+ #define LASI_SCSI_HPA   0xffd06000
 -- 
 2.51.0
 
