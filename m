@@ -2,60 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0AEC0C003
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 07:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8420AC0C052
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 08:00:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDH6M-0002B5-Rc; Mon, 27 Oct 2025 02:53:10 -0400
+	id 1vDHCX-00046r-Hz; Mon, 27 Oct 2025 02:59:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@openatom.club>)
- id 1vDH6J-0002Ad-KF
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:53:07 -0400
-Received: from sg-1-18.ptr.blmpb.com ([118.26.132.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chao.liu@openatom.club>)
- id 1vDH6B-00026j-CQ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:53:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761547899;
- h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=w4DPMJx2QcgLAyD0bk+VnwoxePUaq51L2eXtq8mZqKI=;
- b=X76uAM04xa2o/8bVYzjY+dEbt275CQ47gpwl0O2qVXeXVg40V/cFY16CaJ2N6j5C1fAfq4
- 0EmKjF1iB/eAHdYeuF1z0+Zu7Q9Hwh43128FwP5eLuijj0zMQHvjxEDSPUuVoxw04g7pMb
- oSrdu/oK7q6mc7Ede2Lv+BYA/01X+X8B+AOT+VSyGOQjA3NrgTL/bEEdjbN6g8KnMPMuNS
- G7JhPBBmDY0FUZJV4rvXF6/zpSYVUsa+aHLyEo8QgxsV4nc/ird+aJiKce3PZ8214vgBT9
- 31L2pGdj53jQhD6s3PqDgw25WEXLEl/qvwLbjP8HsNFFnuQv+PL9V0mvgaxfTQ==
-From: "Chao Liu" <chao.liu@openatom.club>
-Subject: Re: [RFC 1/5] rust: hw: core: Add the BusState of rust version
-Message-Id: <e8ee8afa-26c5-4936-be91-4e2790dca915@openatom.club>
-Content-Transfer-Encoding: quoted-printable
-References: <aP8P2H0qk0yJMPe3@intel.com>
-User-Agent: Mozilla Thunderbird
-To: <zhao1.liu@intel.com>
-Received: from [10.13.14.160] ([218.81.29.112]) by smtp.feishu.cn with ESMTPS;
- Mon, 27 Oct 2025 14:51:36 +0800
-X-Lms-Return-Path: <lba+268ff1679+c46e54+nongnu.org+chao.liu@openatom.club>
-Content-Type: text/plain; charset=UTF-8
-Cc: <chenmiao@openatom.club>, <hust-os-kernel-patches@googlegroups.com>, 
- <manos.pitsidianakis@linaro.org>, <pbonzini@redhat.com>, 
- <philmd@linaro.org>, <qemu-devel@nongnu.org>, <qemu-rust@nongnu.org>, 
- <richard.henderson@linaro.org>
-In-Reply-To: <aP8P2H0qk0yJMPe3@intel.com>
-Mime-Version: 1.0
-X-Original-From: Chao Liu <chao.liu@openatom.club>
-Date: Mon, 27 Oct 2025 14:51:35 +0800
-Received-SPF: pass client-ip=118.26.132.18;
- envelope-from=chao.liu@openatom.club; helo=sg-1-18.ptr.blmpb.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vDHCI-00045y-90
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:59:21 -0400
+Received: from mail-a.sr.ht ([46.23.81.152])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vDHCF-0003vP-M3
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 02:59:18 -0400
+DKIM-Signature: a=rsa-sha256; bh=zWtr3dwTh0bjD7FJx+Xveef9tSArKaq1CUtxY8qUv4g=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:To:Cc; 
+ q=dns/txt; s=20240113; t=1761548349; v=1;
+ b=cb9pzajc/Cz81nsO1hbO+YOIonys+st/ZTHwRnD2f9x7jskFZT9s58u268Da+0YvIwrvIFdb
+ yu8I+xgOWMbqTZu7M4KAQsFyNi/S2yzbUq8jkTylWax9X5UK2PaQMuwv5y0MzX5giV+ENogisLc
+ KrAsldXPZH6JeL8/VYlFQdZSnsD5Q7DGRSuDNeKsu3GNOVqk8tm0KN4ZlMtV6vhNN4MaOpdlaNS
+ D5/kMkJfFzs62K/aY8OozDgS+EvjjGjH5p8zM6DK14SKlYyekbYrPw+lGoMGXIB7rrmAjh+PQtv
+ UAH3Fo0I74160Rt2vgiTIzT4AFttOQ/uGl7CGxYXipfGw==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id B83B023B56;
+ Mon, 27 Oct 2025 06:59:09 +0000 (UTC)
+From: ~liuxu <liuxu@git.sr.ht>
+Date: Mon, 27 Oct 2025 06:59:09 +0000
+Subject: [PATCH qemu v11 0/1] target/riscv: Add Zilsd and Zclsd extension
+ support
+MIME-Version: 1.0
+Message-ID: <176154834968.21563.217396575391240410-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair23@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,85 +61,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~liuxu <liuxu@nucleisys.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/27/2025 2:23 PM, Zhao Liu wrote:
-> On Sat, Oct 25, 2025 at 12:38:49PM +0000, chenmiao wrote:
->> Date: Sat, 25 Oct 2025 12:38:49 +0000
->> From: chenmiao <chenmiao@openatom.club>
->> Subject: [RFC 1/5] rust: hw: core: Add the BusState of rust version
->> X-Mailer: git-send-email 2.43.0
->>
->> A Rust version implementation has been designed for BusState,
->> which will be used for the subsequent I2CBus implementation.
->>
->> Signed-off-by: chenmiao <chenmiao@openatom.club>
->> ---
->>   rust/hw/core/meson.build |  1 +
->>   rust/hw/core/src/bus.rs  | 51 ++++++++++++++++++++++++++++++++++++++++
->>   rust/hw/core/src/lib.rs  |  3 +++
->>   3 files changed, 55 insertions(+)
->>   create mode 100644 rust/hw/core/src/bus.rs
-> After a quick glance, I think this BusState is implemented quite well.
->
-Thanks, hh. Paolo also provided many good suggestions regarding the
-implementation of BusState.
+This version has added a SPDX-License-Identifier.
 
->Only a few minor nits inline:
->
->...
->
->> +pub trait BusStateImpl: DeviceImpl + IsA<BusState> {}
->> +
->> +impl BusClass {
->> +    pub fn class_init<T: BusStateImpl>(self: &mut BusClass) {
->> +        self.parent_class.class_init::<T>();
->> +    }
->> +}
->> +
->> +pub trait BusStateMethods: ObjectDeref
->
->This can be named BusMethods - just like DeviceMethods did.
->
+lxx (1):
+  target/riscv: Add Zilsd and Zclsd extension support
 
-Thank you for pointing this out. I=E2=80=99ve noted the Rust In QEMU docs a=
-lso include
-relevant coding styles, and we=E2=80=99ll update the related naming convent=
-ions in the
-next version.
+ target/riscv/cpu.c                        |   4 +
+ target/riscv/cpu_cfg_fields.h.inc         |   2 +
+ target/riscv/insn16.decode                |   8 ++
+ target/riscv/insn32.decode                |  12 ++-
+ target/riscv/insn_trans/trans_zilsd.c.inc | 105 ++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c                |  33 +++++++
+ target/riscv/translate.c                  |   1 +
+ 7 files changed, 163 insertions(+), 2 deletions(-)
+ create mode 100644 target/riscv/insn_trans/trans_zilsd.c.inc
 
->> +where
->> +    Self::Target: IsA<BusState>,
->> +{
->> +    fn bus_realize(&self) {
->
->"bus_" prefix is not needed:
->
->dummy_bus.realize() is clear and enough.
->
-Ok, qbus_realize() is internally called by the C part during object
-instantiation, so there is indeed no need for additional exporting.
-
->> +        assert!(bql::is_locked());
->
->It's better to add safety comment from beginning (// SAFETY: xxx).
->
-Get~
-
->> +        unsafe {
->> +            bindings::qbus_realize(
->> +                self.upcast().as_mut_ptr(),
->> +                addr_of_mut!(util::bindings::error_fatal),
->> +            );
->> +        }
->> +    }
->> +}
->
->Regards,
->Zhao
->
-
-Thanks,
-Chao
+-- 
+2.49.1
 
