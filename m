@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AB5C0EEB4
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB2EC0EE6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 16:19:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDOtb-0001xS-K6; Mon, 27 Oct 2025 11:12:31 -0400
+	id 1vDOtm-0002BH-Gi; Mon, 27 Oct 2025 11:12:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOtJ-0001n0-TP
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:15 -0400
+ id 1vDOtQ-0001tq-VQ
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vDOtB-0003co-MB
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:12 -0400
+ id 1vDOtJ-0003e9-Ab
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 11:12:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761577920;
+ s=mimecast20190719; t=1761577927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+tOcIbEPQXMgrqnK8ejKYWH7W96K/uLeah8gDonspHM=;
- b=Sab/jmj2+qFBUDKLb/qk/Qs/wGKI6QvJP583qdRdtlqsdoNshdrq/6eS1g6wQEyVRTl24q
- iaGDa9s1/40HhQkE7rCAMJRDa92wQMfuQ0CqOW9UilFG9Qk4DsrQUxxzE6j50X4LeWbY4p
- 6mlNMl8iYxh9GLDfSAuEIM9LlqKMpLo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2xHw3hpnCoMP1RswkClFEptTsPa5ewLthiBoawt/yhI=;
+ b=VmEHH9rLAM+d4hfhd9afxY8PpxJnx2XMtnhTLAcTzpknxPXWaybNR0KxsAMsKtf3DQecSU
+ mcbasB5Dwjh+JigYEWWro3sE0korZQH2nS1yIW3VCew5bvIVfp7BucMaq/SGwt/LVISTIM
+ /oOyFxfrIUt96HM9GdXh2Ku4oGJ3uoA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-7PrvkgxJMwGkTNc9gw4UaQ-1; Mon,
- 27 Oct 2025 11:11:59 -0400
-X-MC-Unique: 7PrvkgxJMwGkTNc9gw4UaQ-1
-X-Mimecast-MFC-AGG-ID: 7PrvkgxJMwGkTNc9gw4UaQ_1761577916
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-gfCuw95fMzKFztQCjLgcgA-1; Mon,
+ 27 Oct 2025 11:12:05 -0400
+X-MC-Unique: gfCuw95fMzKFztQCjLgcgA-1
+X-Mimecast-MFC-AGG-ID: gfCuw95fMzKFztQCjLgcgA_1761577922
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC0AB19560B4; Mon, 27 Oct 2025 15:11:55 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A76E19541BE; Mon, 27 Oct 2025 15:12:02 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F270C180057A; Mon, 27 Oct 2025 15:11:53 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 45F0A180057F; Mon, 27 Oct 2025 15:11:59 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>,
@@ -69,15 +69,15 @@ Cc: Alexandre Ratchov <alex@caoua.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 09/35] audio: start making AudioState a QOM Object
-Date: Mon, 27 Oct 2025 19:10:16 +0400
-Message-ID: <20251027151045.2863176-10-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 10/35] audio: register backends in /audiodevs container
+Date: Mon, 27 Oct 2025 19:10:17 +0400
+Message-ID: <20251027151045.2863176-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,147 +106,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-QOM brings some conveniences for introspection, type checking, reference
-counting, interfaces etc. This is only the first step to introduce QOM
-in audio/ (I have more in the pipeline)
+QOM tree now has /audiodevs objects.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- audio/audio.h     |  7 +++++++
- audio/audio_int.h |  2 ++
- audio/audio.c     | 43 ++++++++++++++++++++++++++++++++-----------
- 3 files changed, 41 insertions(+), 11 deletions(-)
+ audio/audio.c | 8 ++++++++
+ qom/object.c  | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/audio/audio.h b/audio/audio.h
-index eb5b5d662d..e41c5bc55a 100644
---- a/audio/audio.h
-+++ b/audio/audio.h
-@@ -80,6 +80,10 @@ typedef struct SWVoiceOut SWVoiceOut;
- typedef struct CaptureVoiceOut CaptureVoiceOut;
- typedef struct SWVoiceIn SWVoiceIn;
- 
-+struct AudioStateClass {
-+    ObjectClass parent_class;
-+};
-+
- typedef struct AudioState AudioState;
- typedef struct QEMUSoundCard {
-     char *name;
-@@ -182,4 +186,7 @@ const char *audio_get_id(QEMUSoundCard *card);
- #define DEFINE_AUDIO_PROPERTIES(_s, _f)         \
-     DEFINE_PROP_AUDIODEV("audiodev", _s, _f)
- 
-+#define TYPE_AUDIO_STATE "audio-state"
-+OBJECT_DECLARE_TYPE(AudioState, AudioStateClass, AUDIO_STATE)
-+
- #endif /* QEMU_AUDIO_H */
-diff --git a/audio/audio_int.h b/audio/audio_int.h
-index f78ca05f92..b2b4d2d10e 100644
---- a/audio/audio_int.h
-+++ b/audio/audio_int.h
-@@ -217,6 +217,8 @@ struct SWVoiceCap {
- };
- 
- typedef struct AudioState {
-+    Object parent;
-+
-     struct audio_driver *drv;
-     Audiodev *dev;
-     void *drv_opaque;
 diff --git a/audio/audio.c b/audio/audio.c
-index 6197fa1788..e1696403ae 100644
+index e1696403ae..c291fd3e65 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1617,8 +1617,19 @@ static void audio_vm_change_state_handler (void *opaque, bool running,
-     audio_reset_timer (s);
+@@ -1676,6 +1676,11 @@ static void audio_state_finalize(Object *obj)
+     }
  }
  
--static void free_audio_state(AudioState *s)
-+static void audio_state_init(Object *obj)
- {
-+    AudioState *s = AUDIO_STATE(obj);
-+
-+    QLIST_INIT(&s->hw_head_out);
-+    QLIST_INIT(&s->hw_head_in);
-+    QLIST_INIT(&s->cap_head);
-+    s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
++static Object *get_audiodevs_root(void)
++{
++    return object_get_container("audiodevs");
 +}
 +
-+static void audio_state_finalize(Object *obj)
-+{
-+    AudioState *s = AUDIO_STATE(obj);
-     HWVoiceOut *hwo, *hwon;
-     HWVoiceIn *hwi, *hwin;
- 
-@@ -1663,8 +1674,6 @@ static void free_audio_state(AudioState *s)
-         timer_free(s->ts);
-         s->ts = NULL;
-     }
--
--    g_free(s);
- }
- 
  void audio_cleanup(void)
-@@ -1673,7 +1682,7 @@ void audio_cleanup(void)
-     while (!QTAILQ_EMPTY(&audio_states)) {
-         AudioState *s = QTAILQ_FIRST(&audio_states);
-         QTAILQ_REMOVE(&audio_states, s, list);
--        free_audio_state(s);
-+        object_unref(s);
-     }
- }
- 
-@@ -1732,18 +1741,13 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
-     AudioState *s;
+ {
+     default_audio_state = NULL;
+@@ -1742,6 +1747,9 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
      struct audio_driver *driver;
  
--    s = g_new0(AudioState, 1);
-+    s = AUDIO_STATE(object_new(TYPE_AUDIO_STATE));
+     s = AUDIO_STATE(object_new(TYPE_AUDIO_STATE));
++    if (!object_property_try_add_child(get_audiodevs_root(), dev->id, OBJECT(s), errp)) {
++        goto out;
++    }
  
--    QLIST_INIT (&s->hw_head_out);
--    QLIST_INIT (&s->hw_head_in);
--    QLIST_INIT (&s->cap_head);
      if (!atexit_registered) {
          atexit(audio_cleanup);
-         atexit_registered = true;
-     }
- 
--    s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
--
-     if (dev) {
-         /* -audiodev option */
-         s->dev = dev;
-@@ -1796,7 +1800,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
-     return s;
- 
- out:
--    free_audio_state(s);
-+    object_unref(s);
-     return NULL;
+diff --git a/qom/object.c b/qom/object.c
+index 1856bb36c7..4f32c1aba7 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1730,6 +1730,7 @@ const char *object_property_get_type(Object *obj, const char *name, Error **errp
  }
  
-@@ -2320,3 +2324,20 @@ AudiodevList *qmp_query_audiodevs(Error **errp)
-     }
-     return ret;
- }
-+
-+static const TypeInfo audio_state_info = {
-+    .name = TYPE_AUDIO_STATE,
-+    .parent = TYPE_OBJECT,
-+    .instance_size = sizeof(AudioState),
-+    .instance_init = audio_state_init,
-+    .instance_finalize = audio_state_finalize,
-+    .abstract = false, /* TODO: subclass drivers and make it abstract */
-+    .class_size = sizeof(AudioStateClass),
-+};
-+
-+static void register_types(void)
-+{
-+    type_register_static(&audio_state_info);
-+}
-+
-+type_init(register_types);
+ static const char *const root_containers[] = {
++    "audiodevs",
+     "chardevs",
+     "objects",
+     "backend"
 -- 
 2.51.0
 
