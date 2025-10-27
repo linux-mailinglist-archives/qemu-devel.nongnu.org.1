@@ -2,76 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D60C0D1C1
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C428C0DBC1
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDLBz-00013l-38; Mon, 27 Oct 2025 07:15:15 -0400
+	id 1vDMmT-0002Kk-03; Mon, 27 Oct 2025 08:57:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDLBc-0000as-GU
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:14:55 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <nicolas.parlant@parhuet.fr>)
+ id 1vDLe5-0005kk-Ui
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:44:21 -0400
+Received: from lnsph.fr ([45.13.104.99])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDLBT-0008BF-Pd
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:14:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761563683; x=1793099683;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=IhPw5JiuGawWjhUC7p2pfnm8f4c84/O2WHAP6X8TfbA=;
- b=Ch02HQnwELEf7HwaKvYPx69vsWNe1yLrneJ5rJX0puk7/qAc52YCVgHk
- CX9InTD4mARhYhSRbijXpER+uLJfN5gPXqy4KGUO8/yb5/T1W7Q1+UdDt
- q1anveTfygIX3KxpfShOLg2EE4lMoryILXrqzU7roHN/lAnCyiJciBPL7
- t8PlE4IGTsfYpPAtXAP8uUqrV3u4M20wMoIVHzKezcDnOPu7etIZ/6Ois
- sAikPc1T3HbSmNGu1Ev1t+wicowF9XASxAUyAE65f4I+l9pwyZ9OO/ntG
- Ei/mLkhU0wrWa2f1hYJivc+vFRBp11rYtVLOyOhdOLeJKmx59wDeDjTAy A==;
-X-CSE-ConnectionGUID: ZTEaYzxmTmq6nMhEgLzSpg==
-X-CSE-MsgGUID: u540djMfRj+vD3o/4GUptQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63563856"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63563856"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 04:14:32 -0700
-X-CSE-ConnectionGUID: yA7wC3JdTzesg5bgq/k1LA==
-X-CSE-MsgGUID: FePlTOIpTuagbAk//+Gadg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="189330236"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 27 Oct 2025 04:14:29 -0700
-Date: Mon, 27 Oct 2025 19:36:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Chao Gao <chao.gao@intel.com>, John Allen <john.allen@amd.com>,
- Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Farrah Chen <farrah.chen@intel.com>
-Subject: Re: [PATCH v3 10/20] i386/cpu: Add missing migratable xsave features
-Message-ID: <aP9ZR4fI99o54Nfw@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-11-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <nicolas.parlant@parhuet.fr>)
+ id 1vDLe1-0005yT-7B
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:44:17 -0400
+From: Nicolas PARLANT <nicolas.parlant@parhuet.fr>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parhuet.fr; s=dkim;
+ t=1761565441;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/ZkYEPhMYnXLtQUB2AyxC107i5sz1bUsO07DPCuqMeE=;
+ b=AGKLUnIGTx9PgJkWnUHbL1Wu5BWp2B++1L2eF+AUsenLzxI63BFOtzFSjftdu2Bw2tlSQU
+ 6/yNL8DRP1yxkyWpQZ+knJmsNTpwPB3x5cJsl5EenB3ccHa8C+8dA4I879MT2On7e2vmpU
+ WvtT4zx4/TpKh7/jSJhKS3oC/OLOL8pFRh6iLfQqUHxe3d7qagN1uPthctR5zo6xFllvXV
+ 6McDkAb9BKPlJT/Myqb5H8DeTa0eaZE0uoUSQQ58UI0ckT78/Q6RkX+NQFBNlK/U+zFHHh
+ CVi/rKXYn8++1pnhRLlzdc9yEQAlYn3j54uiDYatd6Rzv1ojYNcP+l+yD10w0A==
+Authentication-Results: lnsph.fr;
+ auth=pass smtp.auth=ppn smtp.mailfrom=nicolas.parlant@parhuet.fr
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	Nicolas PARLANT <nicolas.parlant@parhuet.fr>
+Subject: [PATCH] make gdbus-codegen optional, not required by passt
+Date: Mon, 27 Oct 2025 12:39:11 +0100
+Message-ID: <20251027113910.25379-2-nicolas.parlant@parhuet.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251024065632.1448606-11-zhao1.liu@intel.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C7CE46000642
+X-Spamd-Result: default: False [-1.44 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.10)[]; R_MISSING_CHARSET(0.55)[];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MISSING_XM_UA(0.00)[]; TO_DN_SOME(0.00)[];
+ MIME_TRACE(0.00)[0:+]; FROM_EQ_ENVFROM(0.00)[]; ARC_NA(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_ZERO(0.00)[0];
+ DKIM_SIGNED(0.00)[parhuet.fr:s=dkim]; FROM_HAS_DN(0.00)[]
+X-Rspamd-Server: lnsph.fr
+Received-SPF: pass client-ip=45.13.104.99;
+ envelope-from=nicolas.parlant@parhuet.fr; helo=lnsph.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 27 Oct 2025 08:56:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,24 +74,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 1917376dbea9..b01729ad36d2 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -1522,7 +1522,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->          .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
->              XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
->              XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
-> -            XSTATE_PKRU_MASK,
-> +            XSTATE_PKRU_MASK | XSTATE_ARCH_LBR_MASK | XSTATE_XTILE_CFG_MASK |
+passt needs gio but not gdbus-codegen. Make gdbus-codegen optional,
+dbus_display which requires it will still fail as expected.
 
-ARCH LBR belongs to FEAT_XSAVE_XSS_LO.
+Signed-off-by: Nicolas PARLANT <nicolas.parlant@parhuet.fr>
+---
+ meson.build | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> +            XSTATE_XTILE_DATA_MASK,
->      },
->      [FEAT_XSAVE_XCR0_HI] = {
->          .type = CPUID_FEATURE_WORD,
-> -- 
-> 2.34.1
-> 
+diff --git a/meson.build b/meson.build
+index c5710a6a47..3f7c973127 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1126,8 +1126,7 @@ if not get_option('gio').auto() or have_system
+     gio = not_found
+   endif
+   if gio.found()
+-    gdbus_codegen = find_program('gdbus-codegen',
+-                                 required: get_option('gio'))
++    gdbus_codegen = find_program('gdbus-codegen', required: false)
+     gio_unix = dependency('gio-unix-2.0', required: get_option('gio'),
+                           method: 'pkg-config')
+     gio = declare_dependency(dependencies: [gio, gio_unix],
+-- 
+2.51.0
+
 
