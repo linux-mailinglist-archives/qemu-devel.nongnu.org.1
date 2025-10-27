@@ -2,92 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E3AC0D988
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC0BC0D9B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:40:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMUV-00065Y-Pn; Mon, 27 Oct 2025 08:38:27 -0400
+	id 1vDMVS-0000QH-Cs; Mon, 27 Oct 2025 08:39:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMUI-00063E-PT
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:38:16 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMVO-0000ID-Pf
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:39:23 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMU9-0006QT-Tr
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:38:13 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3ee64bc6b90so3460623f8f.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:38:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMVK-0006ck-BG
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:39:22 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47106fc51faso58902515e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:39:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761568679; x=1762173479; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Oa5aQxRYPo9Nd1dGHw3Wox9JI4dBESZln5Zp2k//GTA=;
- b=ZfdCAXw4FDdWumiv9y/kcNYvWW6mrC/eMI/L9pLls+jqRSyFbskOhgqqjeKpqA+2Sy
- GaS7LzIwFKcMr9uhPfMP+IhKzR2ZuCDIm7/obkVxa8LKuD2ztjKENU1Up+krlRaqHcYV
- 2eV/bF0VskALF+I4SXfk/NQjjH0Mtrznu87f6cui2nWtxGa9SthhoppQkUsoOcbCN9Le
- BwLNrqts6tqPusTJB14IIRjry0BBAttXcBc3JFY0PiKf91Tf+Yy2tcytrMSYwdppJToy
- sS7j8FI4LKQoWDDySZi31WzA1x5VzVm1TNsmMMsDL2Q2hx6tAXjcMrpPHjrFBDm0N/bw
- XZOg==
+ d=linaro.org; s=google; t=1761568751; x=1762173551; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7Ql+hTPlUsTJ8wpJN0eJ1PP4FlTu6yxQu8J9nvXsbnI=;
+ b=OfJoO3NHZU7zVdNKngmwpRXgmZlyFl+N4ueBIZc6x5wv1ATGzUBFd7svgKqZlQxU58
+ liP0BLDR6wUKq+RjCCkDEGXsf9xLdNPeUF0cK+rEA/Zt58Kk9Rit7IQkwngpfURgxMe7
+ g9Fv0G9WcGRaXrs2b+HeW4TPrT/8bHe1pFIJhH7TKbWiaoRKap5yOLr5JWJKbzjhRhpz
+ uxHNaaLYqThcHbkfJEPJkx5K1IR2kV/03VeCAi6jk1WqWjGF3pSmePIIQ5ubN06S6/XP
+ B9oB8t5ekDAJ9yL5nhNAiQbeOhs9krp9d1uQ4+9O+ptm/NliED/gCNfu4ShcGvriVNTv
+ 697g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761568679; x=1762173479;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Oa5aQxRYPo9Nd1dGHw3Wox9JI4dBESZln5Zp2k//GTA=;
- b=c8F0BtbBshBJAuN3wGBD1T2mMuwdxLOD1z9Hwf3GfAHo5wL03EGDrArFJqh48QwEBY
- 6w9KC8LnZosBGSLx/JmaP04SAAqGyFXNyrusVNC3YBJNSdHM8mboERrSNPCbh01FGKgB
- 77WiN6oe0qeS2t02/+X8K+PrDpBuOWH0jK3L9RoBgA+IPdTyElKdaPEPFUyWeZM8ruDO
- xyZ6tylIRlbRZa8J7Vyf8YewlkEgeUHVwhT5FaONGIA63SdOZ6hRgNZSuAZrhrlc8wW8
- nVjUBnuQxQN64IN8x98fKJNFlAlWkwPwdREq7/XQEw2H9oFXT/BFoWlSRAuoK2aY0xFE
- Cv/Q==
-X-Gm-Message-State: AOJu0YzF7lBeoqZEjXCce1JsdTVhUNeW0lOxHcGfH8cDQK2plxbVFM+o
- 6VckMVJXyiDjQ3/WDVyQsVJCT6r1ev2ykqV8x92CY9C26TneDNgnEUkvwkULi+e8JTQbg9vM0ny
- CiZkvAZ8=
-X-Gm-Gg: ASbGncur7eGjpn7ckKF3/sR0tHICyT4VkHYYvkm3hoXsbrrTtZRqPNcmuu+pjoRfgvj
- pAIOzMLuPfRXreKVoDvd3SJ6URyH/vr8AtK9g3I2SIj8Elf3vnfBJsZDiQcs4uVbUJT1s1QT0+P
- IcIqaUdBzKdOurVVkKjMFSKM99mmdTxJb2jubUxqCFV4quO7K2+2+5n4FHk+Fi9r2gi2X7P1yyA
- +VMElVHIVpnPd2qOrvyo3o1G/3ebbT48kie1r5rryhN07HbvpabLtuRNBBD1frqVvUUk9E+IXjO
- +5WIMAe5EJQ8dB+kwh9r8ZUPGeWogctc88lDu6NHqKsGxR7sf0tHDtCDqP+yiwjRwpk1tU8hQ9g
- CbCHGc4uJ9bhfL1rw0s4JWdr/Eq5oxguJnZW5BJ9V20HICbWYHaTQ0Qs1GzgB8P35Mqa/TfRnJi
- BF+XMrVR1YhkSm5INnc7kl82lojYrr2ruQCdjeKoh2Y6zYfchRTQ==
-X-Google-Smtp-Source: AGHT+IFnQVrSiGZZvXhqxIqDrh5o+Z52J2z6xQ+sXC6tpiz74mh6oATYobctlPMOFZJouBZIyIdbyA==
-X-Received: by 2002:a05:6000:40ca:b0:427:45f:ee21 with SMTP id
- ffacd0b85a97d-4299071f96bmr9266716f8f.27.1761568678787; 
- Mon, 27 Oct 2025 05:37:58 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1761568751; x=1762173551;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Ql+hTPlUsTJ8wpJN0eJ1PP4FlTu6yxQu8J9nvXsbnI=;
+ b=FK8Qghmdn/RnclrqQnP4cDTi3qtkehT6/RgA8hIcMIpNNoB4fcNrau90IAC5BGbcME
+ n+pFCqoUh5Ierx6UjR2EwyUjq3rNu9cWEgUbuS3GeQqIf/tbZOliS1o3BtATwmOLJj/o
+ CrVQ0ZvSSSXYlXhifaboFDpr9Bmm77ZD9XYNq21zNCrjBLjZPZ/JjWOojeWe6RyXCR+x
+ 9nHdHXDX7flu0ZHQTUqvJhKgryjA0dv57Ox2R6fPmTU0AxxruCozPDD7DDIctbfZdaRP
+ KV33m1APVsUySHF9REGkLwQ5ODERF5Y6eFAkZu6p0sh5dj28ja+5Joa8g07IviUYLMhi
+ FExw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGx0dRC0JU28N12MZwh0vkLP1hAiMW0tXa7+LMS6f9yM48RM9Waq2WrTexbTDpQkgMFoFp0h9323u5@nongnu.org
+X-Gm-Message-State: AOJu0Yy/sVsH9y2giRGPKbKOt85V0mzCHR7Oik6oX9j8JG+l3yKzl9Jk
+ xvuvuJyvp0KodvUAkr3+AtbspF5vE68lQRrLMFShCedryggyhb7RTO1AxjcdcysSJ0/FZ1q1Uet
+ 8EY6gXzg=
+X-Gm-Gg: ASbGncscVNGsYqCyEze0+CdymK1ll3OBOBAcLVFQJdJVatrjLZ+KaKLWqA/dq21Gs5s
+ k1Wmtr1scJe3VjdKpkgnTUJrRyE9gE7gWZbtnaHvysLRM18TC+48Rc9yjXvbNgsrw/gwlrSW2p4
+ GS25vbrJ282opImtuyfJv5qz6mWUPbf/HuV1lCilKFmjne3RVlEFUmSAM77kT0eKTo53OsKNSjX
+ 7ci+Tergac2XuT1JaOPsRAp9bnI8q+Itexf1iO9d3eWN1+AgwrO1JrirCf3JUbDGe6xC8G3cVt6
+ /oEFfZwewQu8a+3Yw7EqburTZG8vzrAPFCwGrCdPCb31AVdJsVkkC1jhLcxmdsTQ5Tw4tq8UQEt
+ udcSUhU0fsP4bUWR1LzWg570oehmv6nPmRXtkAbJU1faNCsN2+N0zMWzTIyeNKom8IQT67iYC85
+ ePzVYv5OVtDWVcoc0IBIRm7Debp7bO4O6edgHMv01gyr6+/DuTHSrpyQ==
+X-Google-Smtp-Source: AGHT+IGfFu6QX3ft/2rvrwT+kLulJLqO3IbLvzkBTBOfxQgVFY1wbfCY932mekqDBXLdL/bvR7RKDQ==
+X-Received: by 2002:a05:600c:4688:b0:46f:b42e:ed87 with SMTP id
+ 5b1f17b1804b1-47117925eb5mr259473075e9.40.1761568751364; 
+ Mon, 27 Oct 2025 05:39:11 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d5678sm14031058f8f.22.2025.10.27.05.37.57
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Oct 2025 05:37:58 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH 6/6] hw/sparc64/ebus: Log unassigned MMIO accesses with
- unassigned_mem_ops
-Date: Mon, 27 Oct 2025 13:36:43 +0100
-Message-ID: <20251027123644.63487-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027123644.63487-1-philmd@linaro.org>
-References: <20251027123644.63487-1-philmd@linaro.org>
+ 5b1f17b1804b1-475dd4924a4sm136957735e9.7.2025.10.27.05.39.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Oct 2025 05:39:10 -0700 (PDT)
+Message-ID: <2d408ff2-5f5c-4de9-a33b-904a25496b8b@linaro.org>
+Date: Mon, 27 Oct 2025 13:39:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] hw/riscv: Use generic hwaddr for firmware
+ addressses
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org, alistair.francis@wdc.com,
+ richard.henderson@linaro.org, palmer@dabbelt.com
+References: <20251027-feature-single-binary-hw-v1-v2-0-44478d589ae9@rev.ng>
+ <20251027-feature-single-binary-hw-v1-v2-1-44478d589ae9@rev.ng>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251027-feature-single-binary-hw-v1-v2-1-44478d589ae9@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,28 +104,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace unassigned_io_ops -> unassigned_mem_ops to log
-accesses as MMIO ones.
+Typo addres[s]ses ;)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sparc64/sun4u.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 27/10/25 13:35, Anton Johansson wrote:
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   include/hw/riscv/boot.h    | 20 ++++++++++----------
+>   hw/riscv/boot.c            | 22 +++++++++++-----------
+>   hw/riscv/microchip_pfsoc.c |  2 +-
+>   hw/riscv/sifive_u.c        |  2 +-
+>   hw/riscv/spike.c           |  4 ++--
+>   hw/riscv/virt.c            |  2 +-
+>   6 files changed, 26 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
+> index 7d59b2e6c6..d835594baa 100644
+> --- a/include/hw/riscv/boot.h
+> +++ b/include/hw/riscv/boot.h
+> @@ -43,21 +43,21 @@ bool riscv_is_32bit(RISCVHartArrayState *harts);
+>   char *riscv_plic_hart_config_string(int hart_count);
+>   
+>   void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts);
+> -target_ulong riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+> -                                          target_ulong firmware_end_addr);
+> -target_ulong riscv_find_and_load_firmware(MachineState *machine,
+> -                                          const char *default_machine_firmware,
+> -                                          hwaddr *firmware_load_addr,
+> -                                          symbol_fn_t sym_cb);
+> +hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+> +                                    hwaddr firmware_end_addr);
+> +hwaddr riscv_find_and_load_firmware(MachineState *machine,
+> +                                    const char *default_machine_firmware,
+> +                                    hwaddr *firmware_load_addr,
+> +                                    symbol_fn_t sym_cb);
+>   const char *riscv_default_firmware_name(RISCVHartArrayState *harts);
+>   char *riscv_find_firmware(const char *firmware_filename,
+>                             const char *default_machine_firmware);
+> -target_ulong riscv_load_firmware(const char *firmware_filename,
+> -                                 hwaddr *firmware_load_addr,
+> -                                 symbol_fn_t sym_cb);
+> +hwaddr riscv_load_firmware(const char *firmware_filename,
+> +                           hwaddr *firmware_load_addr,
+> +                           symbol_fn_t sym_cb);
 
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index e9f9b0a4cb9..87cf1c6c0bd 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -360,7 +360,7 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
-      * memory access to this region to succeed which allows the OpenBSD kernel
-      * to boot.
-      */
--    memory_region_init_io(&s->bar0, OBJECT(s), &unassigned_io_ops, s,
-+    memory_region_init_io(&s->bar0, OBJECT(s), &unassigned_mem_ops, s,
-                           "bar0", 0x1000000);
-     pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
-     memory_region_init_alias(&s->bar1, OBJECT(s), "bar1",
--- 
-2.51.0
+OK up to here,
 
+>   void riscv_load_kernel(MachineState *machine,
+>                          RISCVBootInfo *info,
+> -                       target_ulong kernel_start_addr,
+> +                       hwaddr kernel_start_addr,
+
+but can we have this single change in a distinct patch please,
+so we can better describe it than "firmware address" and it
+doesn't block the rest?
+
+>                          bool load_initrd,
+>                          symbol_fn_t sym_cb);
 
