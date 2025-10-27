@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C9FC0FE7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72217C0FE39
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDRmM-0004kK-Ht; Mon, 27 Oct 2025 14:17:14 -0400
+	id 1vDRmr-0004xK-2p; Mon, 27 Oct 2025 14:17:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRm6-0004hm-ML
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:01 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmX-0004tJ-CA
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:25 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRlu-0003xr-99
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:16:57 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmA-0003xs-00
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date
- :Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=vZ91EHYp/glpFLmZCVXk1L/z4ydrLark3C60pBiL2NM=; b=N1nTaP+2hzJKdC4
- DBM3Eu8plDoYu+0ueruj9Nv8jfk+jnzeg5d2SlJqwCkjgYfbnSJdgtoawADikzXmpvwNq2Nd5OoAn
- LJJPo0SVIM0i5kuN2i9tW6dX4UvK0a82I03lxdIUKMYXSLMIPDdALu12FXkv8W8CDpCFFyifo5vns
- CU=;
+ List-Help; bh=uD7zp++GFjV5NIFD6eAmwg15QuzE49KjMgQ6U39c9kg=; b=Zs1gfuuVihNj71l
+ aFtueolpJVDkuM+tO8JTCwDVgnVkM/p0XI2EQiIrPmoFEePUD2//C6MtoPGXcgdUE58s53ksodxaZ
+ UHJNyq8hbWai+mD5I6JAYjSI3+bVmqhjKrhPC//Mn85sry352fx777GXd2xAynUil5QBwvf32TXUF
+ hU=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v4 00/33] single-binary: Make riscv cpu.h target independent
-Date: Mon, 27 Oct 2025 19:17:57 +0100
-Message-ID: <20251027181831.27016-1-anjo@rev.ng>
+Subject: [PATCH v4 01/33] target/riscv: Fix size of trivial CPUArchState fields
+Date: Mon, 27 Oct 2025 19:17:58 +0100
+Message-ID: <20251027181831.27016-2-anjo@rev.ng>
+In-Reply-To: <20251027181831.27016-1-anjo@rev.ng>
+References: <20251027181831.27016-1-anjo@rev.ng>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
@@ -61,130 +62,331 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+This commits groups together all CPUArchState fields whose behaviour can
+be retained by simply changing the size of the field.
 
-this is a first patchset moving towards single-binary support for riscv.
-Additional patchsets for hw/ and target/ are based on this one so it's
-best to make sure the approach taken is ok.  Most patches in this set
-concern fields in CPUArchState which are either widened (usually to
-uint64_t) or fixed to a smaller size which handles all use cases.
+Note, senvcfg is defined to be SXLEN bits wide, but is widened to 64
+bits to match henvcfg and menvcfg.  Next, [m|h]edeleg are changed to
+64 bits as defined privileged specification, and hvictl is fixed to 32
+bits which holds all relevant values, see HVICTL_VALID_MASK.  The
+remaining fields touched in the commit are widened from [H|S|M]XLEN
+to 64-bit.
 
-General purpose registers and fields mapped to TCG are dealt with by
-widening the type and applying an offset to tcg_global_mem_new() to
-correctly handle 32-bit targets on big endian hosts.
+Note, the cpu/hyper, cpu/envcfg, cpu/jvt, and cpu VMSTATE versions are
+bumped, breaking migration from older versions.
 
-Quick question to correct my understanding. AFAICT riscv64-softmmu is a
-superset of riscv32-softmmu which handles 32-, 64, and 128-bit ISAs, so
-concerning single-binary do we for the time being only need to support
-riscv64-softmmu?
+References to the privileged/unprivileged RISCV specification refer to
+version 20250508.
 
-Let me know what you think of the direction taken here and if you would
-prefer something else.
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu.h     | 78 +++++++++++++++++++--------------------
+ target/riscv/machine.c | 84 +++++++++++++++++++++---------------------
+ 2 files changed, 81 insertions(+), 81 deletions(-)
 
-Patches 4, 5, and 10 still in need of review.
-
-Changes in v2:
-  - Use BIT() to define misa extension bits in "Use 32 bits for misa
-    extensions";
-
-  - Squash "Fix size of mcause" into "Fix size of trivial CPUArchState
-    fields";
-
-  - Bump VMSTATE version_id and minimum_version_id for "cpu/pmp/entry",
-    "cpu/pmp", "cpu/hyper", "cpu/vector", "cpu/rv128", "cpu/debug",
-    "cpu/envcfg", "cpu/pmu", "cpu/jvt", "cpu/ssp", and "cpu".  Migration
-    from older versions is broken.
-
-Changes in v3:
-  - Fix formatting issues during printing;
-
-  - Move assert before extract64() in pmu_read_ctr();
-
-  - Added patch 5/34 fixing a bug in rmw_cd_ctr_cfg() where bit 30 is
-    zeroed instead of bit 62 (MHPMEVENTH_* vs MHPMEVENT_*);
-
-  - Added privilege_mode_t typedef for storing PRV_* fields;
-  
-  - Added reviewed-bys.
-
-Changes in v4:
-  - Used target-specific includes (target/riscv/*) for csr.h and
-    debug.h (Philippe);
-
-  - Migrated mcontext (Philippe), migration entry is added to existing
-    patch modifiying mcontext (patch 28 "Fix size of trigger data");
-
-  - Dropped first patch ("Use 32 bits for misa extensions") which is
-    already merged (Philippe);
-
-  - Added reviewed-bys and acked-bys.
-
-Anton Johansson (33):
-  target/riscv: Fix size of trivial CPUArchState fields
-  target/riscv: Fix size of mhartid
-  target/riscv: Bugfix riscv_pmu_ctr_get_fixed_counters_val()
-  target/riscv: Bugfix make bit 62 read-only 0 for sireg* cfg CSR read
-  target/riscv: Combine mhpmevent and mhpmeventh
-  target/riscv: Combine mcyclecfg and mcyclecfgh
-  target/riscv: Combine minstretcfg and minstretcfgh
-  target/riscv: Combine mhpmcounter and mhpmcounterh
-  target/riscv: Fix size of gpr and gprh
-  target/riscv: Fix size of vector CSRs
-  target/riscv: Fix size of pc, load_[val|res]
-  target/riscv: Fix size of frm and fflags
-  target/riscv: Fix size of badaddr and bins
-  target/riscv: Fix size of guest_phys_fault_addr
-  target/riscv: Fix size of priv_ver and vext_ver
-  target/riscv: Fix size of retxh
-  target/riscv: Fix size of ssp
-  target/riscv: Fix size of excp_uw2
-  target/riscv: Fix size of sw_check_code
-  target/riscv: Fix size of priv
-  target/riscv: Fix size of gei fields
-  target/riscv: Fix size of [m|s|vs]iselect fields
-  target/riscv: Fix arguments to board IMSIC emulation callbacks
-  target/riscv: Fix size of irq_overflow_left
-  target/riscv: Indent PMUFixedCtrState correctly
-  target/riscv: Replace target_ulong in riscv_cpu_get_trap_name()
-  target/riscv: Replace target_ulong in riscv_ctr_add_entry()
-  target/riscv: Fix size of trigger data
-  target/riscv: Fix size of mseccfg
-  target/riscv: Move debug.h include away from cpu.h
-  target/riscv: Move CSR declarations to separate csr.h header
-  target/riscv: Introduce externally facing CSR access functions
-  target/riscv: Make pmp.h target_ulong agnostic
-
- target/riscv/cpu.h                            | 345 +++++++-----------
- target/riscv/csr.h                            |  93 +++++
- target/riscv/debug.h                          |   2 -
- target/riscv/pmp.h                            |  20 +-
- hw/intc/riscv_imsic.c                         |  34 +-
- hw/riscv/riscv_hart.c                         |   7 +-
- linux-user/riscv/signal.c                     |   5 +-
- target/riscv/cpu.c                            |  10 +-
- target/riscv/cpu_helper.c                     |  45 ++-
- target/riscv/csr.c                            | 290 ++++++++-------
- target/riscv/debug.c                          |   1 +
- target/riscv/fpu_helper.c                     |   6 +-
- target/riscv/gdbstub.c                        |   1 +
- target/riscv/kvm/kvm-cpu.c                    |   1 +
- target/riscv/machine.c                        | 180 +++++----
- target/riscv/op_helper.c                      |   1 +
- target/riscv/pmp.c                            |  14 +-
- target/riscv/pmu.c                            | 150 ++------
- target/riscv/riscv-qmp-cmds.c                 |   3 +-
- target/riscv/tcg/tcg-cpu.c                    |   3 +-
- target/riscv/th_csr.c                         |   1 +
- target/riscv/translate.c                      |  53 ++-
- target/riscv/vector_helper.c                  |  22 +-
- .../riscv/insn_trans/trans_privileged.c.inc   |   2 +-
- target/riscv/insn_trans/trans_rvi.c.inc       |  16 +-
- target/riscv/insn_trans/trans_rvm.c.inc       |  16 +-
- target/riscv/insn_trans/trans_rvv.c.inc       |  24 +-
- target/riscv/insn_trans/trans_rvzicfiss.c.inc |  22 +-
- 28 files changed, 687 insertions(+), 680 deletions(-)
- create mode 100644 target/riscv/csr.h
-
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 36e7f10037..7ffc4dac26 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -255,7 +255,7 @@ struct CPUArchState {
+     /* 128-bit helpers upper part return value */
+     target_ulong retxh;
+ 
+-    target_ulong jvt;
++    uint64_t jvt;
+ 
+     /* elp state for zicfilp extension */
+     bool      elp;
+@@ -272,7 +272,7 @@ struct CPUArchState {
+     target_ulong priv;
+     /* CSRs for execution environment configuration */
+     uint64_t menvcfg;
+-    target_ulong senvcfg;
++    uint64_t senvcfg;
+ 
+ #ifndef CONFIG_USER_ONLY
+     /* This contains QEMU specific information about the virt state. */
+@@ -314,18 +314,18 @@ struct CPUArchState {
+      */
+     uint64_t vsie;
+ 
+-    target_ulong satp;   /* since: priv-1.10.0 */
+-    target_ulong stval;
+-    target_ulong medeleg;
++    uint64_t satp;   /* since: priv-1.10.0 */
++    uint64_t stval;
++    uint64_t medeleg;
+ 
+-    target_ulong stvec;
+-    target_ulong sepc;
+-    target_ulong scause;
++    uint64_t stvec;
++    uint64_t sepc;
++    uint64_t scause;
+ 
+-    target_ulong mtvec;
+-    target_ulong mepc;
+-    target_ulong mcause;
+-    target_ulong mtval;  /* since: priv-1.10.0 */
++    uint64_t mtvec;
++    uint64_t mepc;
++    uint64_t mcause;
++    uint64_t mtval;  /* since: priv-1.10.0 */
+ 
+     uint64_t mctrctl;
+     uint32_t sctrdepth;
+@@ -347,13 +347,13 @@ struct CPUArchState {
+     uint64_t mvip;
+ 
+     /* Hypervisor CSRs */
+-    target_ulong hstatus;
+-    target_ulong hedeleg;
++    uint64_t hstatus;
++    uint64_t hedeleg;
+     uint64_t hideleg;
+     uint32_t hcounteren;
+-    target_ulong htval;
+-    target_ulong htinst;
+-    target_ulong hgatp;
++    uint64_t htval;
++    uint64_t htinst;
++    uint64_t hgatp;
+     target_ulong hgeie;
+     target_ulong hgeip;
+     uint64_t htimedelta;
+@@ -367,7 +367,7 @@ struct CPUArchState {
+     uint64_t hvip;
+ 
+     /* Hypervisor controlled virtual interrupt priorities */
+-    target_ulong hvictl;
++    uint32_t hvictl;
+     uint8_t hviprio[64];
+ 
+     /* Upper 64-bits of 128-bit CSRs */
+@@ -380,26 +380,26 @@ struct CPUArchState {
+      * For RV64 this is a 64-bit vsstatus.
+      */
+     uint64_t vsstatus;
+-    target_ulong vstvec;
+-    target_ulong vsscratch;
+-    target_ulong vsepc;
+-    target_ulong vscause;
+-    target_ulong vstval;
+-    target_ulong vsatp;
++    uint64_t vstvec;
++    uint64_t vsscratch;
++    uint64_t vsepc;
++    uint64_t vscause;
++    uint64_t vstval;
++    uint64_t vsatp;
+ 
+     /* AIA VS-mode CSRs */
+     target_ulong vsiselect;
+ 
+-    target_ulong mtval2;
+-    target_ulong mtinst;
++    uint64_t mtval2;
++    uint64_t mtinst;
+ 
+     /* HS Backup CSRs */
+-    target_ulong stvec_hs;
+-    target_ulong sscratch_hs;
+-    target_ulong sepc_hs;
+-    target_ulong scause_hs;
+-    target_ulong stval_hs;
+-    target_ulong satp_hs;
++    uint64_t stvec_hs;
++    uint64_t sscratch_hs;
++    uint64_t sepc_hs;
++    uint64_t scause_hs;
++    uint64_t stval_hs;
++    uint64_t satp_hs;
+     uint64_t mstatus_hs;
+ 
+     /*
+@@ -436,8 +436,8 @@ struct CPUArchState {
+ 
+     PMUFixedCtrState pmu_fixed_ctrs[2];
+ 
+-    target_ulong sscratch;
+-    target_ulong mscratch;
++    uint64_t sscratch;
++    uint64_t mscratch;
+ 
+     /* Sstc CSRs */
+     uint64_t stimecmp;
+@@ -507,11 +507,11 @@ struct CPUArchState {
+ #endif /* CONFIG_KVM */
+ 
+     /* RNMI */
+-    target_ulong mnscratch;
+-    target_ulong mnepc;
+-    target_ulong mncause; /* mncause without bit XLEN-1 set to 1 */
+-    target_ulong mnstatus;
+-    target_ulong rnmip;
++    uint64_t mnscratch;
++    uint64_t mnepc;
++    uint64_t mncause; /* mncause without bit XLEN-1 set to 1 */
++    uint64_t mnstatus;
++    uint64_t rnmip;
+     uint64_t rnmi_irqvec;
+     uint64_t rnmi_excpvec;
+ };
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 18d790af0d..f6ca017211 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -80,17 +80,17 @@ static bool hyper_needed(void *opaque)
+ 
+ static const VMStateDescription vmstate_hyper = {
+     .name = "cpu/hyper",
+-    .version_id = 4,
+-    .minimum_version_id = 4,
++    .version_id = 5,
++    .minimum_version_id = 5,
+     .needed = hyper_needed,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL(env.hstatus, RISCVCPU),
+-        VMSTATE_UINTTL(env.hedeleg, RISCVCPU),
++        VMSTATE_UINT64(env.hstatus, RISCVCPU),
++        VMSTATE_UINT64(env.hedeleg, RISCVCPU),
+         VMSTATE_UINT64(env.hideleg, RISCVCPU),
+         VMSTATE_UINT32(env.hcounteren, RISCVCPU),
+-        VMSTATE_UINTTL(env.htval, RISCVCPU),
+-        VMSTATE_UINTTL(env.htinst, RISCVCPU),
+-        VMSTATE_UINTTL(env.hgatp, RISCVCPU),
++        VMSTATE_UINT64(env.htval, RISCVCPU),
++        VMSTATE_UINT64(env.htinst, RISCVCPU),
++        VMSTATE_UINT64(env.hgatp, RISCVCPU),
+         VMSTATE_UINTTL(env.hgeie, RISCVCPU),
+         VMSTATE_UINTTL(env.hgeip, RISCVCPU),
+         VMSTATE_UINT64(env.hvien, RISCVCPU),
+@@ -98,28 +98,28 @@ static const VMStateDescription vmstate_hyper = {
+         VMSTATE_UINT64(env.htimedelta, RISCVCPU),
+         VMSTATE_UINT64(env.vstimecmp, RISCVCPU),
+ 
+-        VMSTATE_UINTTL(env.hvictl, RISCVCPU),
++        VMSTATE_UINT32(env.hvictl, RISCVCPU),
+         VMSTATE_UINT8_ARRAY(env.hviprio, RISCVCPU, 64),
+ 
+         VMSTATE_UINT64(env.vsstatus, RISCVCPU),
+-        VMSTATE_UINTTL(env.vstvec, RISCVCPU),
+-        VMSTATE_UINTTL(env.vsscratch, RISCVCPU),
+-        VMSTATE_UINTTL(env.vsepc, RISCVCPU),
+-        VMSTATE_UINTTL(env.vscause, RISCVCPU),
+-        VMSTATE_UINTTL(env.vstval, RISCVCPU),
+-        VMSTATE_UINTTL(env.vsatp, RISCVCPU),
++        VMSTATE_UINT64(env.vstvec, RISCVCPU),
++        VMSTATE_UINT64(env.vsscratch, RISCVCPU),
++        VMSTATE_UINT64(env.vsepc, RISCVCPU),
++        VMSTATE_UINT64(env.vscause, RISCVCPU),
++        VMSTATE_UINT64(env.vstval, RISCVCPU),
++        VMSTATE_UINT64(env.vsatp, RISCVCPU),
+         VMSTATE_UINTTL(env.vsiselect, RISCVCPU),
+         VMSTATE_UINT64(env.vsie, RISCVCPU),
+ 
+-        VMSTATE_UINTTL(env.mtval2, RISCVCPU),
+-        VMSTATE_UINTTL(env.mtinst, RISCVCPU),
++        VMSTATE_UINT64(env.mtval2, RISCVCPU),
++        VMSTATE_UINT64(env.mtinst, RISCVCPU),
+ 
+-        VMSTATE_UINTTL(env.stvec_hs, RISCVCPU),
+-        VMSTATE_UINTTL(env.sscratch_hs, RISCVCPU),
+-        VMSTATE_UINTTL(env.sepc_hs, RISCVCPU),
+-        VMSTATE_UINTTL(env.scause_hs, RISCVCPU),
+-        VMSTATE_UINTTL(env.stval_hs, RISCVCPU),
+-        VMSTATE_UINTTL(env.satp_hs, RISCVCPU),
++        VMSTATE_UINT64(env.stvec_hs, RISCVCPU),
++        VMSTATE_UINT64(env.sscratch_hs, RISCVCPU),
++        VMSTATE_UINT64(env.sepc_hs, RISCVCPU),
++        VMSTATE_UINT64(env.scause_hs, RISCVCPU),
++        VMSTATE_UINT64(env.stval_hs, RISCVCPU),
++        VMSTATE_UINT64(env.satp_hs, RISCVCPU),
+         VMSTATE_UINT64(env.mstatus_hs, RISCVCPU),
+ 
+         VMSTATE_END_OF_LIST()
+@@ -291,12 +291,12 @@ static bool envcfg_needed(void *opaque)
+ 
+ static const VMStateDescription vmstate_envcfg = {
+     .name = "cpu/envcfg",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .needed = envcfg_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(env.menvcfg, RISCVCPU),
+-        VMSTATE_UINTTL(env.senvcfg, RISCVCPU),
++        VMSTATE_UINT64(env.senvcfg, RISCVCPU),
+         VMSTATE_UINT64(env.henvcfg, RISCVCPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -356,11 +356,11 @@ static bool jvt_needed(void *opaque)
+ 
+ static const VMStateDescription vmstate_jvt = {
+     .name = "cpu/jvt",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .needed = jvt_needed,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL(env.jvt, RISCVCPU),
++        VMSTATE_UINT64(env.jvt, RISCVCPU),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -427,8 +427,8 @@ static const VMStateDescription vmstate_sstc = {
+ 
+ const VMStateDescription vmstate_riscv_cpu = {
+     .name = "cpu",
+-    .version_id = 10,
+-    .minimum_version_id = 10,
++    .version_id = 11,
++    .minimum_version_id = 11,
+     .post_load = riscv_cpu_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
+@@ -459,16 +459,16 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINT64(env.mvip, RISCVCPU),
+         VMSTATE_UINT64(env.sie, RISCVCPU),
+         VMSTATE_UINT64(env.mideleg, RISCVCPU),
+-        VMSTATE_UINTTL(env.satp, RISCVCPU),
+-        VMSTATE_UINTTL(env.stval, RISCVCPU),
+-        VMSTATE_UINTTL(env.medeleg, RISCVCPU),
+-        VMSTATE_UINTTL(env.stvec, RISCVCPU),
+-        VMSTATE_UINTTL(env.sepc, RISCVCPU),
+-        VMSTATE_UINTTL(env.scause, RISCVCPU),
+-        VMSTATE_UINTTL(env.mtvec, RISCVCPU),
+-        VMSTATE_UINTTL(env.mepc, RISCVCPU),
+-        VMSTATE_UINTTL(env.mcause, RISCVCPU),
+-        VMSTATE_UINTTL(env.mtval, RISCVCPU),
++        VMSTATE_UINT64(env.satp, RISCVCPU),
++        VMSTATE_UINT64(env.stval, RISCVCPU),
++        VMSTATE_UINT64(env.medeleg, RISCVCPU),
++        VMSTATE_UINT64(env.stvec, RISCVCPU),
++        VMSTATE_UINT64(env.sepc, RISCVCPU),
++        VMSTATE_UINT64(env.scause, RISCVCPU),
++        VMSTATE_UINT64(env.mtvec, RISCVCPU),
++        VMSTATE_UINT64(env.mepc, RISCVCPU),
++        VMSTATE_UINT64(env.mcause, RISCVCPU),
++        VMSTATE_UINT64(env.mtval, RISCVCPU),
+         VMSTATE_UINTTL(env.miselect, RISCVCPU),
+         VMSTATE_UINTTL(env.siselect, RISCVCPU),
+         VMSTATE_UINT32(env.scounteren, RISCVCPU),
+@@ -479,8 +479,8 @@ const VMStateDescription vmstate_riscv_cpu = {
+                              vmstate_pmu_ctr_state, PMUCTRState),
+         VMSTATE_UINTTL_ARRAY(env.mhpmevent_val, RISCVCPU, RV_MAX_MHPMEVENTS),
+         VMSTATE_UINTTL_ARRAY(env.mhpmeventh_val, RISCVCPU, RV_MAX_MHPMEVENTS),
+-        VMSTATE_UINTTL(env.sscratch, RISCVCPU),
+-        VMSTATE_UINTTL(env.mscratch, RISCVCPU),
++        VMSTATE_UINT64(env.sscratch, RISCVCPU),
++        VMSTATE_UINT64(env.mscratch, RISCVCPU),
+         VMSTATE_UINT64(env.stimecmp, RISCVCPU),
+ 
+         VMSTATE_END_OF_LIST()
 -- 
 2.51.0
 
