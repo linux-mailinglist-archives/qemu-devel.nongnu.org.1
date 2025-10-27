@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D12EC0D915
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA4BC0D96F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:38:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMSI-00043h-Ma; Mon, 27 Oct 2025 08:36:12 -0400
+	id 1vDMTK-0005Z2-IE; Mon, 27 Oct 2025 08:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vDMS2-0003pH-TU
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:35:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vDMRr-00064K-Iw
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:35:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761568534;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PCkPzW30WVEzQkAXGjant10stjDzNI0OMdr7gXxNFRY=;
- b=AjrPsI7d3LBb8nrGGywIyzM7JPL2YZ1//lEl3tgjPHHwqu4CbJeaTb/i3xqvyJN/7QNj3v
- TAm6gB0NCZe4LOZnYOuDsJIM6R9wBJlWWCB/1Y6F9NLO1k8AOzpOl32Mu2e4tU2JSFFduC
- qVoKTJCdOubC8KkosTh6eXs0R7ieO4I=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-nYjI3XfHOJm-lD4D5Ng19A-1; Mon,
- 27 Oct 2025 08:35:30 -0400
-X-MC-Unique: nYjI3XfHOJm-lD4D5Ng19A-1
-X-Mimecast-MFC-AGG-ID: nYjI3XfHOJm-lD4D5Ng19A_1761568529
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B4D321800451; Mon, 27 Oct 2025 12:35:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.35])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7227819560AD; Mon, 27 Oct 2025 12:35:25 +0000 (UTC)
-Date: Mon, 27 Oct 2025 12:35:21 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jan =?utf-8?B?TMO8YmJl?= <jlu@pengutronix.de>,
- Jerome Forissier <jerome.forissier@linaro.org>
-Subject: Re: [PATCH v5 2/6] hw/sd/sdcard: Allow user-instantiated eMMC
-Message-ID: <aP9nCeWC-qr248iZ@redhat.com>
-References: <cover.1760702638.git.jan.kiszka@siemens.com>
- <90fc6201696fcf0e5fd0493365bc32b217aa9d6e.1760702638.git.jan.kiszka@siemens.com>
- <aP9dvF1unTtLrSdQ@redhat.com>
- <9d287284-1cb2-4126-b7d7-9c57b32ce408@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTH-0005Ug-1D
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:11 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMT3-0006Fh-2g
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:10 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-4270a3464caso2181624f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:36:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761568606; x=1762173406; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZmMNH1Y87swIVdIWCYHcdCqVlv4sKMHJmPkKp3l+JAE=;
+ b=MYWA72XzuC0eWBR05c7l7EbdvQMahrknaL3aQmMTGi2NH9U43GO6v3YH1bUNogU8c6
+ gVmpPftc54ZX8KQiagVJBqlpZoLIuW7y67pc+feUKlOC1lQ+UW51YM5Yk6J6fH1u0EFC
+ qVVlQtOmMhL7cRY5CJlS7Vbfo1FaaXySqCfcUrkxmKSdP65pNbIL+DNq+bfqyamq3KC7
+ lYu/CsK8GqaQoS/yfQc2rMOR/MLkCemVF31D7k/jHg1lO4DLtJ/P64Ms1yBaB8GJwEAU
+ Y4pOpgOpXQ95jS2QNPJmUvhQTS4FetzFLh4IfEvVIHuKzthikEUU/S5O8DGdFXXiDglP
+ 7VqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761568606; x=1762173406;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZmMNH1Y87swIVdIWCYHcdCqVlv4sKMHJmPkKp3l+JAE=;
+ b=VQLw6V2FsS60sv80VOsEkTkSS5D02nRFw9ST23dUOGsewbnc4miCLpEt2gMVa1bGvD
+ 74cK53LuNbJUuhVEoDDao3K7TKqYKts8ZRTE+8I/noFm6lrf75+ubHmwn/BZdASEfHAU
+ o63BNre005UkJZlOAkklzSwysQV5kozz2rju/cxjO1wOufh2J8qxBSTHftjgmDvQgEF5
+ /v3LeG8CKAw9+DPep23mfgUUyoZees/dOQ2S0x0e35guXNV1KvlLqgGo/tQsmVMSBi4D
+ h5LUXx4tZyEqysTBhXk8bzljFo3iJl7BJOj2VJsPghuHr1s2Onrvh2KbZvB6HK9ODzTG
+ z5lQ==
+X-Gm-Message-State: AOJu0Yx5KQRFLexmEAE2tG3AeighohDQNwDlyTXtANTAz27ZZhqSGGSn
+ WBcqqIRy/Sm3ICnCBZyCQ7NCFSGfOz4HXWvoD+P4GnXjOhLSAneMeBBev2YtFDF+6bFAHavH8kB
+ AOyZCn8M=
+X-Gm-Gg: ASbGnctPtcUY7Jc3kAvcq2d+jIE0zNkde4hYKEcibSZJawroUx0Sv7wgwj54LmBz2Uw
+ jrSCB2w8VesxPEbbbVZMp9AMPY+nJmIE2sJamY3gR1mUX9uA4Qun49JpepA8xNnLixKSxjtMVRG
+ 3p5wcxkYPGe81s1iFztKuO3ry3gTQNJDLOmgDDEKCFxhJeI3NZ/tVX+Zag2kRJZOdfoD9rfXpRr
+ TNUO+1sBmbDOigLkJNhmYOAugd9KLCslXPnLxwEjAi5xbgyS/cyexgKT7GxysdleocTew+4d5Mi
+ el8B2/5caa8jLaV/x8J6hueiAYciGLt8Uh8ITAsyd1yYb2i+FqenNnEOj+pZHXXRLQ/Owgdug5J
+ L7xnMxPsWxNhhVlr8x2J8TYMDpjVGkmDa5tULJcK+YwPkHxjw4jOpMvxNQNIROKlBkp+cFeTaS8
+ f5NJ723Wkz6AaNwKww14PCnNsEpi/w0tCm2QMN7SdO+v8DL+ffDQ==
+X-Google-Smtp-Source: AGHT+IGdP4VevcIfO5jRH3vkn6QGYzrBMioVhxD4uFLisrsCOPgle1Zke5+VZ7/asnWDfOAoAFPImA==
+X-Received: by 2002:a05:6000:2c09:b0:427:9a9:462b with SMTP id
+ ffacd0b85a97d-4298a04e65emr10290870f8f.18.1761568606087; 
+ Mon, 27 Oct 2025 05:36:46 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952de971sm14053377f8f.39.2025.10.27.05.36.44
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 27 Oct 2025 05:36:45 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>
+Subject: [PATCH 0/6] hw: Log unassigned MMIO accesses with unassigned_mem_ops
+Date: Mon, 27 Oct 2025 13:36:37 +0100
+Message-ID: <20251027123644.63487-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d287284-1cb2-4126-b7d7-9c57b32ce408@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,45 +102,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 27, 2025 at 01:23:56PM +0100, Philippe Mathieu-Daudé wrote:
-> On 27/10/25 12:55, Daniel P. Berrangé wrote:
-> > On Fri, Oct 17, 2025 at 02:03:54PM +0200, Jan Kiszka wrote:
-> > > From: Jan Kiszka <jan.kiszka@siemens.com>
-> > > 
-> > > Enable user-instantiation so that PCI-attached eMMCs can be created for
-> > > virt machines, for QA purposes for the eMMC model itself and for complex
-> > > firmware/OS integrations using the upcoming RPMB partition support.
-> > 
-> > IIUC, the 'emmc' device wants an 'sd-bus' but this commit talks about
-> > it being PCI-attached ?
-> 
-> Sigh, it should not, but it got introduced this way and we didn't
-> have time / energy / good reason to rework the code, which currently
-> just works.
-> 
-> SD / MMC cards -> plugged over external SD bus
-> 
-> embedded MMC cards -> no SD bus, directly mmio-mapped.
-> 
-> > 
-> > Can you elaborate on / illustrate the usage example for an end user ?
-> 
-> Saving time by testing virtual hardware, without having to implement a
-> real model.
+Do not log unassigned MMIO accesses as I/O ones:
+expose unassigned_mem_ops then use it instead of
+unassigned_io_ops.
 
-Ok, more specifically, what are the suggested QEMU command line
-args to make use of this with PCI ?
+Philippe Mathieu-Daudé (6):
+  system/memory: Expose unassigned_mem_ops symbol
+  hw/display/vga: Log unassigned MMIO accesses with unassigned_mem_ops
+  hw/pci-host/gpex: Log unassigned MMIO accesses with unassigned_mem_ops
+  hw/pci-host/aspeed: Log unassigned MMIO accesses with
+    unassigned_mem_ops
+  hw/pci-host/astro: Log unassigned MMIO accesses with
+    unassigned_mem_ops
+  hw/sparc64/ebus: Log unassigned MMIO accesses with unassigned_mem_ops
 
+ include/system/memory.h    | 2 ++
+ system/memory-internal.h   | 2 --
+ hw/display/bochs-display.c | 2 +-
+ hw/display/vga-pci.c       | 4 ++--
+ hw/pci-host/aspeed_pcie.c  | 2 +-
+ hw/pci-host/astro.c        | 2 +-
+ hw/pci-host/gpex.c         | 2 +-
+ hw/sparc64/sun4u.c         | 2 +-
+ 8 files changed, 9 insertions(+), 9 deletions(-)
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.51.0
 
 
