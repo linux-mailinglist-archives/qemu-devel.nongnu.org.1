@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B9DC0D1BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8C0C0D10A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:09:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL9v-0006hm-7i; Mon, 27 Oct 2025 07:13:09 -0400
+	id 1vDL23-00016E-MD; Mon, 27 Oct 2025 07:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL9c-0006VH-VL
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:49 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1vDL1d-0000iU-4B
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:34 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL9D-0007cA-AZ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:48 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-63c09ff13aeso7714026a12.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:16 -0700 (PDT)
+ id 1vDL1O-0005jA-T4
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:04:32 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-b6d855ca585so469905066b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:04:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563534; x=1762168334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563044; x=1762167844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=99wY+4qgow5/XXKtFXSxRzQjqRZizwoEw9ERNRXbkf0=;
- b=y1s9NCkigk50JZDbj1DlK2PjS3XKZabSJqRNhbKz7LQrbY1oFI/VPBr2Y3MpI9E4mL
- wu9GvMvtZvpVONga522a3tqFAaLckYygoe10mN8ZYUnjhovDKVs1sR7J/VUagYAUm+FX
- L0fugHo51Q7uabBN4aYDzMGjIm48GhyzeSfXuI49v2KficbK8M4h3luhmmMBbySTUdqJ
- FKxlPkcqV467fAd+lXSFdpy3DNOmzSXFGAWYl8dj5T6OpkNg9QPgePPOBocdbRRcF0j1
- Ge4PsFCwPFp2N+5Z+L7r/ozuej3q4RUJXMezvG9p3r6mWr0sw1KD0h1f07EjNYyh4vvg
- 1Svw==
+ bh=GmAk21K9OGPdvmtO9tCUzb+x/HUizeGKzsfhOfuchWo=;
+ b=mOhP9aUFsO4eYgckLXEVb7cZgx11BuPyaHmswlXCVJg4uTeVOCqog17x9LuCsCUZbz
+ cbg6bqVGmn7uW0lP0PlRgQM/oarCUsuNXt5rFUuZp//ayqIEDUwY4Q8uzH+LSvKOxH/l
+ I/K9r4H01gp4FCjFtkR/Ap98KZgVMzC9+KBH0LismLkf8lBKm3M6eJ76tl2dYQ4GOGl+
+ 2GYqf6t77DCX2wVkxxW4VrtmIyPoH9UT3tDNB+9D1GZF+ByUnCI38gzm3iMbggwOApua
+ km/n3LuvOkNc1ZMBUrrTfs2yYjeSGgYyqXXyVZ3M+lnG3BafKuCYTPghjDVJJ8eLiMjk
+ x2gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563534; x=1762168334;
+ d=1e100.net; s=20230601; t=1761563044; x=1762167844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=99wY+4qgow5/XXKtFXSxRzQjqRZizwoEw9ERNRXbkf0=;
- b=mHiLlo8UZIkCVBlTAuiSUzdnrDIZeOfsNK/SQyCNnGHRfXe4qfsZqhb7OSGIektits
- 9nhZTsXYr6gw75j/apdGAzV5uOO2tK6cbch9JIC1xY1kBmVDFh00mCl7UrjhE1tn0Der
- 7oH/U7+qNsuJxY26z433/o2u3wbkO9tkjEEh46AB3ujeGmxlEF7TH/Mm9HOMoO5NL5uo
- xLleDKm7j9bEaTis/gwTOopOcIbNMl6pvlpkWdl8FywDVFvZT8iDsBeRmmOoxKPIu6fg
- DwWI43Pf+rFHuLqoBpyv/A8928tpq/C7i29lME+1Teb+CdMqqaWR4/CLj4VkD2WFuqrn
- MTcQ==
-X-Gm-Message-State: AOJu0YxzKNbzCYwpQF86A7YYMxan4gDk2gmNHZ7vBVssNcfYvJA4NWLc
- 1FMY1KHeeqhxL0uVS6hvlzt4/JOXpuCgkbQWIwJ6S153H00i+DdslFYzJzkSRpKYGL8=
-X-Gm-Gg: ASbGnct3PHSwdYvuxDaA1xA1UuvXwywNhj3vseXpwS2ADjN7ijGVDdlqzWLd/MoIxuX
- H86ZZ/FH2LNybr0yCFK1v/gO/0sejc+fv4OsHV39dbHfOGOiXKI57ronCy4rzdCzp4OVZQ4ljch
- XT6OgL2scvlMEg0qJdpkPer7jQh1tlAaMCTZQj9kzHQlWMuDDizpSw+5l8bLfVTCy3oTgTgrEWT
- cJPtNrBZE/Dkox+eKlf0UBCNHoc6APBhGD5Eo3n8XZ0JX9Nec16/pP7J/fDI/0+XAsLMSt5x8/p
- atll3kZ3ipqLhuNYlb1/OqSOVGLg9Dww0npPH4UvwAmgWDGVRLW6xRTdUdXiJYUnE4HsaDnsRAD
- sQ6U5ftyx1TTPIA/dE/38oVaHaWmim1zcvohN8BJMHo6MG9DG1drh3GynEkxZXhugVo59djDnwu
- nj
-X-Google-Smtp-Source: AGHT+IFAsNEZ+YI0fTj3+OVyMqueS8NODeiYMhkciUB7twUSrCCRe95Tk7Kfy7cqzVEbD+wz6+XjSg==
-X-Received: by 2002:a17:906:fe4b:b0:b0b:f228:25a with SMTP id
- a640c23a62f3a-b6475a0347bmr3777669866b.64.1761563534193; 
- Mon, 27 Oct 2025 04:12:14 -0700 (PDT)
+ bh=GmAk21K9OGPdvmtO9tCUzb+x/HUizeGKzsfhOfuchWo=;
+ b=NjNcEVyngpw2cycf8CclDyXoD6vKZaWCLP1XvpWFc0cNLULCPrsIb4Yfwvob+G0aKI
+ ajK2EEdPJ1lyUWz1PgogZH7/tXe8Hz1SQUoPtVMPTBZL1W01nMIpP2VsJSqAadZpfbbc
+ 3lLRz0IoUr81HgG/4eORLHWS1505g44I2Ik+6JeIMqz5FQvsvQODyXFGH46CxuiEZjuV
+ j52hoABs1czD+AE6wDq1Fr5OIQr8kpGelYLa8hgLofr1wVRogXpzo0xHrRs5l6nUf39S
+ 1VNNCx5FvXN6GsTkl9LvF151O7mPJ44tGb8JA595Qhl3qHGwshx1KNsJAfd93iqI19AE
+ 2Y6A==
+X-Gm-Message-State: AOJu0YydbLJIEoBOAWdj5EG27qa9iaDOFft3CY0lchRP7Ck7uSW9MzYW
+ 9obnBbW9fruNtCokWYOTKLLw7FuHgKinzcI/q2IZqdvhcjhsE8ncVlmCirUmasDbRGw=
+X-Gm-Gg: ASbGncu9UXZGNQKh3nJlR76sZBoCi6h2yFfd91Q9+u8Z73+wy9yCMyYZeaBdhaG5yrS
+ qVtizrvLia9yZ67dbx1znPxqJw26zxRdsuCoKKe0gMIrD1STH05am5/vh6SFA9MHiA0vuEEbwx9
+ UgZk+IkTX2KITjTa1UUFPq27X/IXBpPlZKPDaqnupcTwMErBdOoQIwXsT1ZAM7/SP1dQip3e0Bv
+ 1V6a8qgi2alo6fi5t/Cctp4KeJXCcDw/qiCyjuBm526Tqhiofj9zS0fNE8kytAIZ8+6H5T8zw04
+ ftw8M0+rjcxl3zVvcSB4GczYIRNHTuyJwfOUnJdIKqNcFbgzHwQ6euWLTvmuNleixobjeGEhl8F
+ 1sBZcbxBJy5Vmw++JupKiVK+YdqL4aqa/kc6w4LaXwYst3XbKoXPlExQfbxLxp7/m/PfmlpLv34
+ qe
+X-Google-Smtp-Source: AGHT+IHjNGOYSB3Uoie3aPGzFHTm6SS3tVoFQt6o3B0HAd5FWBxEzFE3cDSEV9z7klyWAfsDpBXRwQ==
+X-Received: by 2002:a17:907:9691:b0:b64:6776:1ee2 with SMTP id
+ a640c23a62f3a-b6473f42d78mr4014852866b.52.1761563043587; 
+ Mon, 27 Oct 2025 04:04:03 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d853386casm723218466b.15.2025.10.27.04.12.10
+ a640c23a62f3a-b6d854395absm730117966b.62.2025.10.27.04.03.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 04:12:12 -0700 (PDT)
+ Mon, 27 Oct 2025 04:03:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6FF7F60F51;
+ by draig.lan (Postfix) with ESMTP id 891FE60F68;
  Mon, 27 Oct 2025 11:03:46 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,24 +93,24 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>, Julian Ganz <neither@nut.email>
-Subject: [PATCH 25/35] target/sh4: call plugin trap callbacks
-Date: Mon, 27 Oct 2025 11:03:32 +0000
-Message-ID: <20251027110344.2289945-26-alex.bennee@linaro.org>
+Subject: [PATCH 26/35] target/sparc: call plugin trap callbacks
+Date: Mon, 27 Oct 2025 11:03:33 +0000
+Message-ID: <20251027110344.2289945-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,51 +133,70 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for SuperH targets.
+This change places hooks for SPARC (32bit and 64bit) targets. We treat
+any interrupt other than EXTINT and IVEC as exceptions as they appear to
+be synchroneous events.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Yoshinori Sato <yoshinori.sato@nifty.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/sh4/helper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/sparc/int32_helper.c |  7 +++++++
+ target/sparc/int64_helper.c | 10 ++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/target/sh4/helper.c b/target/sh4/helper.c
-index 3b18a320b86..5d6295618f5 100644
---- a/target/sh4/helper.c
-+++ b/target/sh4/helper.c
+diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
+index fdcaa0a578b..b29f693a6bf 100644
+--- a/target/sparc/int32_helper.c
++++ b/target/sparc/int32_helper.c
 @@ -24,6 +24,7 @@
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
+ #include "accel/tcg/cpu-ldst.h"
  #include "exec/log.h"
+ #include "system/runstate.h"
 +#include "qemu/plugin.h"
  
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/sh4/sh_intc.h"
-@@ -60,6 +61,7 @@ void superh_cpu_do_interrupt(CPUState *cs)
-     CPUSH4State *env = cpu_env(cs);
-     int do_irq = cpu_test_interrupt(cs, CPU_INTERRUPT_HARD);
-     int do_exp, irq_vector = cs->exception_index;
-+    uint64_t last_pc = env->pc;
- 
-     /* prioritize exceptions over interrupts */
- 
-@@ -176,12 +178,14 @@ void superh_cpu_do_interrupt(CPUState *cs)
-             env->pc = env->vbr + 0x100;
-             break;
-         }
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-         return;
+ static const char * const excp_names[0x80] = {
+     [TT_TFAULT] = "Instruction Access Fault",
+@@ -174,4 +175,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
+         env->qemu_irq_ack(env, intno);
      }
- 
-     if (do_irq) {
-         env->intevt = irq_vector;
-         env->pc = env->vbr + 0x600;
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         return;
-     }
+ #endif
++
++    if (intno == TT_EXTINT) {
++        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9]);
++    } else {
++        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9]);
++    }
  }
+diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
+index 96ef81c26cd..60ab0478fc6 100644
+--- a/target/sparc/int64_helper.c
++++ b/target/sparc/int64_helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/log.h"
+ #include "trace.h"
++#include "qemu/plugin.h"
+ 
+ #define DEBUG_PCALL
+ 
+@@ -256,6 +257,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
+     }
+     env->npc = env->pc + 4;
+     cs->exception_index = -1;
++
++    switch (intno) {
++    case TT_EXTINT:
++    case TT_IVEC:
++        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc);
++        break;
++    default:
++        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc);
++    }
+ }
+ 
+ trap_state *cpu_tsptr(CPUSPARCState* env)
 -- 
 2.47.3
 
