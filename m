@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71368C0CC3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 10:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D54C0CEB0
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:17:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDJtZ-00075j-2u; Mon, 27 Oct 2025 05:52:09 -0400
+	id 1vDKHU-0006GK-U5; Mon, 27 Oct 2025 06:16:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDJtR-00075O-SQ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:52:01 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDKHS-0006G7-Aq
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:16:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDJtO-0001LW-2u
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:52:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761558718; x=1793094718;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=pOktcS9kwkPjEXa37/dQ2r0t6/Ys/P8rTUy3GS729DY=;
- b=h0TE609Nv/de7XTYNDdqdDaD9HYI1GfIltrfl3AXF8y4xKH33viDs7Nc
- //nGpTuL5IfvgTj9tf10RsZcfnZvh1gwVmMFD+3XkuNLBaXib+F4ttL0D
- gNoPS0RLt/JQAaM+KQvpJeM8vyk19Zud6L/Muw9eN2NbndHmyTl6jjx16
- 1LrTSeb//0pDpXt7JQ5I579CX+ZUjGGTW/zpa08RHU0peSi1MYqaM8Qsz
- IX6Sftz1/DZJMu7Ub9N/4r532joDcw5xje2gYRZNxc20LTlJJ5FfvsMou
- dYfqnbE3X3ZOUVxPiTBQu33irwcjFZpthKTkhW/HKnnPMM7Q/ggV6XGGS Q==;
-X-CSE-ConnectionGUID: lghZXlHYS7SEatyLdL515w==
-X-CSE-MsgGUID: vifE+hOdTpGMsQyefytWmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66248327"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="66248327"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 02:51:52 -0700
-X-CSE-ConnectionGUID: hhfk4mV1TS25CUZXzNCQ3Q==
-X-CSE-MsgGUID: DmQaWATJSeqDO7CLnF366Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="222213035"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 27 Oct 2025 02:51:49 -0700
-Date: Mon, 27 Oct 2025 18:13:59 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
- Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
-Subject: Re: [PATCH v3 09/20] i386/cpu: Fix supervisor xstate initialization
-Message-ID: <aP9F5wpOh3zOF1rr@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-10-zhao1.liu@intel.com>
- <5d501d23-74d3-45aa-a51e-52ef59002e1a@intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDKHQ-0004sW-6c
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:16:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761560204;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/4QCH25JEz2SPuST2J4Z+5Os08+y6fUy8gj9P85NJ64=;
+ b=GZ2PGKKiCuYfNbK5xgeGpfNgePMGstZjUHmin4w576mZ6atnKyiADBCnmOE+wKTEmKCR+N
+ V+5oWh52qgkC3mmY+r+79VulmD4IfIkY6xIXQk538/5n+fB99kddzAAMIu1AND0+V2qZnm
+ 64NgeTwozlvJhTBGEo8LXnj6KVucwiU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-onl6V3mkMzGlJYlRZVV_kQ-1; Mon,
+ 27 Oct 2025 06:16:26 -0400
+X-MC-Unique: onl6V3mkMzGlJYlRZVV_kQ-1
+X-Mimecast-MFC-AGG-ID: onl6V3mkMzGlJYlRZVV_kQ_1761560185
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7AE241954225; Mon, 27 Oct 2025 10:16:25 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AFFC93000223; Mon, 27 Oct 2025 10:16:24 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0953C21E6A27; Mon, 27 Oct 2025 11:16:22 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: peterx@redhat.com,  stefanb@linux.vnet.ibm.com,  farosas@suse.de,
+ qemu-devel@nongnu.org,  berrange@redhat.com
+Subject: Re: [PATCH v3 2/4] tmp_emulator: fix unset errp on error path
+In-Reply-To: <20251025202649.1122420-3-vsementsov@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Sat, 25 Oct 2025 23:26:47 +0300")
+References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
+ <20251025202649.1122420-3-vsementsov@yandex-team.ru>
+Date: Mon, 27 Oct 2025 11:16:22 +0100
+Message-ID: <87y0owodjd.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d501d23-74d3-45aa-a51e-52ef59002e1a@intel.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,50 +84,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 27, 2025 at 03:55:30PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 27 Oct 2025 15:55:30 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v3 09/20] i386/cpu: Fix supervisor xstate initialization
-> 
-> On 10/24/2025 2:56 PM, Zhao Liu wrote:
-> > From: Chao Gao <chao.gao@intel.com>
-> > 
-> > Arch lbr is a supervisor xstate, but its area is not covered in
-> > x86_cpu_init_xsave().
-> > 
-> > Fix it by checking supported xss bitmap.
-> > 
-> > In addition, drop the (uint64_t) type casts for supported_xcr0 since
-> > x86_cpu_get_supported_feature_word() returns uint64_t so that the cast
-> > is not needed. Then ensure line length is within 90 characters.
-> > 
-> > Tested-by: Farrah Chen <farrah.chen@intel.com>
-> > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> > Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   target/i386/cpu.c | 9 ++++++---
-> >   1 file changed, 6 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 5cd335bb5574..1917376dbea9 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -9707,20 +9707,23 @@ static void x86_cpu_post_initfn(Object *obj)
-> >   static void x86_cpu_init_xsave(void)
-> >   {
-> >       static bool first = true;
-> > -    uint64_t supported_xcr0;
-> > +    uint64_t supported_xcr0, supported_xss;
-> >       int i;
-> >       if (first) {
-> >           first = false;
-> >           supported_xcr0 =
-> > -            ((uint64_t) x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32) |
-> > +            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) |
-> 
-> missing the "<< 32" here,
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-Yes, good catch.
+> Note, that called tpm_emulator_startup_tpm_resume() does error_report()
+> failure paths, which could be turned into error_setg() to passthough an
+> error. But, not on all error paths. Not saying about
+> tpm_emulator_startup_tpm_resume() return -1 on failure and we mix it
+> with -errno from tpm_emulator_set_state_blobs(). So, it all needs deeper
+> refactoring, which is out of scope of this small fix.
+>
+> Fixes: 42e556fa3f7ac
+>     "backends/tpm: Propagate vTPM error on migration failure"
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  backends/tpm/tpm_emulator.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+> index dacfca5ab7..aa69eb606f 100644
+> --- a/backends/tpm/tpm_emulator.c
+> +++ b/backends/tpm/tpm_emulator.c
+> @@ -961,6 +961,7 @@ static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
+>      }
+>  
+>      if (tpm_emulator_startup_tpm_resume(tb, 0, true) < 0) {
+> +        error_setg(errp, "Failed to resume tpm");
+>          return -EIO;
+>      }
+
+Anti-pattern: we call error_report() (via
+tpm_emulator_startup_tpm_resume(), tpm_emulator_set_buffer_size, ...)
+from within an Error-setting function.  You need to convert the entire
+nest of functions to Error.
 
 
