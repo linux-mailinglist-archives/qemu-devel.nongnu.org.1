@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7D4C0D948
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20CEC0D96C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:38:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMTM-0005cY-1r; Mon, 27 Oct 2025 08:37:16 -0400
+	id 1vDMTh-0005gL-O7; Mon, 27 Oct 2025 08:37:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTH-0005X4-Vi
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:12 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTU-0005e7-DT
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:24 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTC-0006HN-IU
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:11 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-4283be7df63so2190179f8f.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:37:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDMTL-0006J3-Ck
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:37:21 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4710683a644so38377925e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 05:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761568618; x=1762173418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761568630; x=1762173430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jRIl7x0MizgYPc3G/UF39YlinV+2/KH7EhfIDyLaI94=;
- b=TPt3jIuPWhrmjsGQaqQND6pFRKzBwNkyIZr1OQ2TF78hbm2dsJfARCyhPXgbWkPUKg
- CWJhF8jhQkMxZjV8uJBMq8EKfYH68U0rtyW8OiLCgRQjvOba1tcnRCl47Y9rkZzod2K8
- 4KqH2nDe2ofttf8PJvzOJenw4e0PXS43Jb57aF125hPZfN/T50TTK7JD7unLDIuPMppd
- sudwi3tUpCTqu/N1qnXxcg850AFDrAVvOCYYXRghFCZb8KarKe91bIp0nMpylT2RZaTl
- KazRdD6hABfGxqpSHFQAMUYa/lNlxOAOYugHKFwkq3LYBtndeb3uphR6TIghYfmnQ9Xy
- MCKw==
+ bh=byf3wvrJPaiUb+20B8P2dJNrSEIy4cHbROmq/ZIrtd0=;
+ b=f7gYOTKZGl20sj8R5yWHoYXo19HgdHL5aJrsticajMmyQZ9Hf0seRMBxXVvxXdUBKr
+ VWdHxC53hn0HOfkP29PYETB+1ckT3o0MAuhXW2jWNEEqGqSqjA8Urvp3GbLkXJqjEEhM
+ MYAZxov5dNs0qwOCiG9/OqmdekOvssoZrqTMB1/8PRAtnTPkQcsBAg+oQvab8EL8naTy
+ 5T4myDbXrneoQf7TfQ4mOsa69adE18EZRZzzfOO7KoVN5Kg0N2SBac75NZomvoiub7lM
+ rURJa+jgD9Lp7Cnkl427QqpdsRu5v1Kq0BcvvB3VpRzaknPf1xc6rnddXi4cWL1YWATU
+ CPzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761568618; x=1762173418;
+ d=1e100.net; s=20230601; t=1761568630; x=1762173430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jRIl7x0MizgYPc3G/UF39YlinV+2/KH7EhfIDyLaI94=;
- b=YbYz9zecHE0ge+Tk75/I4NNIY8G2ZPQGEjA13a/tAgYYp4qFnSNRJLHkLylDMfXQ5W
- Miw4AkodSUpgca/4O8rzkdfbXxhxRIOxHZmqO54mmrKN8RLBgSxZy/0DHLT0hBFFqMn7
- Yt5fVocabhGO3UQOmtxwc811X9TEuCuDR/CXyEDxhjclADBXg5LzKeTe5iOISzQpndAg
- PijqDUwgf7nA8Bzpn7aZrVeZWRITLrKxDlcpmow8me9aH7JTHJ2CSm+bCLqbTtZxEFIT
- NjgwmeCFYQJA0D0EnlO/W3OMnqGCsI+/JELzoGbgxhx8Se6XckqG5xzw0jWHzpZ+/b6c
- RPIg==
-X-Gm-Message-State: AOJu0YwHMWahP9plyYQsSX0brYlcwONgqLTv2Q9IDd41MX/HXN77e9Mf
- CzZuLNVbennSF+KAB/YR0WpeaLugyMQd8cpMxUPoDCCNj8wu438/xpv9yjFY783sHa+s6cBnXxl
- QYZkbJ5w=
-X-Gm-Gg: ASbGncucj1/7kV/sBDvowFMHDhwiAcXCrU5XpYVi8DKHbQMmcrVnXXGFHiZN+j1Pop9
- P78+9qNffNmAW7kdQi0dr5efvKMGLN8LMtCwuKpE0ONkV4YG0UT4p7ABOqjpObALRLmjFdni4Lz
- SWoybmLvFuWmLjT1Mto+BYcitU7nMLdptLRNCttcjVzjCd0MwqrFKlYqiNABpnYNVTahbCZJC32
- fCeACfLfO8Xy+D9rKXLWYa7v8R9elcnnprCOmqNOCaD06eLIYL21E3wI219kjxfV7byP5LVhU/6
- GXELleyXDE2SAASYn/M01MbdPo4Befm36c+CQEeWv/jQYAdmWmjwUr/NShy2AaEiXV06rHaoJlP
- aAmGRQlfcFuydS2hDFfb0ey/qx2T9JPCgIKcq2vKVICjpuiPmZjQGzyto+yAt6ClyvgSHJiwkd9
- KDFX3gqD964aOyAJs2WAh1jQW07mX1LDWDLTd9sChpJt68VAtRIw==
-X-Google-Smtp-Source: AGHT+IH2Prbndh0uvJjKiUoU3UPX0rGxgzHyo/VdREMmAAmrTo4WaM2iyFDJwTPOS30C5zYMyDFNbw==
-X-Received: by 2002:a05:6000:4610:b0:429:66bf:1475 with SMTP id
- ffacd0b85a97d-42966bf1732mr10802747f8f.3.1761568618346; 
- Mon, 27 Oct 2025 05:36:58 -0700 (PDT)
+ bh=byf3wvrJPaiUb+20B8P2dJNrSEIy4cHbROmq/ZIrtd0=;
+ b=Psy2ggl4gVWcZcncliRQs7hzdcsUUERHYP3ZV9wD5oKypAk7lII1Spu9CB2nenrGFe
+ +F4aTWAmnNkckYQ8YvlWaStoamAATK6ZbNi+BWC4RjBZrlck4YrdZD+o5/wQSO6UZfrX
+ JXRt9fSPmcW3Drdt8ORYYpuqB/35CsxFmYXpfk55sA+7bcaaAvz8qCy9h3MbiuYWic/V
+ GwcsoGNGxOZgsH85LQKKET0AaWn6/V9RTZVHjlN+ptQtw06yC2PyY+IZJHQ5qFAfL2kd
+ 0nnnItiA6IDHj0ucY4nT4THKDuQVJnTOAEE6xbVBDdaFggiBEevqF+lPyjZqc0WKt8LG
+ liEg==
+X-Gm-Message-State: AOJu0YxQMx5acc0nAk4v1wJ/qfwpzk4VHSKi99ODuI4kqJMRZWozeSmi
+ iKQJ6A8YFyKdZ31hi0mq1SOiApCVPAiNZVlj5ig5ysth40bni3vCiUO+sKwgxlCTI4dl7bMDXYr
+ HP6Szwa8=
+X-Gm-Gg: ASbGncsB93Bq34eBFAUAzgAQbUZ7RwEr+64lQMbm1dB24U4iCmber4uefX4GaUR1UaD
+ yYuCXYLWdIK8fWKzcqfUO1Eqnb07Ei0iJL5sWqh4RmySBovIQW9OStVP36B7oaylWwtHueL0Ayn
+ S9ZaOYPXtTt8tb/oCo1R+Wz2ercB/fUIW50aSVSQ3vx15mTORf9X2UOoJxCDJKHQtEakIlmijcP
+ ve9gTktud1P9lGpAPTzunGRK6Lje/gmcri1+zRg1A3J83G82e+N6JWZmEwgMGYErjHDe3ErsTRZ
+ yOsMIke4sTG/1W1Q4JW545GR9Jtc38LPAJY2QauTRvp+fIOWys6AeeD2jYIhqCTIJ8Za5x5DNHd
+ jveueU8iqd2utq/lUmJoRyBYcvrh6QVapuaYk/jjd2ao2cy9i07riE15UFLD280LpA+elu2HFva
+ rYjTSqM2p1gD1qt3BvhNFqjmZ/OdhDQfc22EV5ormVegQVegebug==
+X-Google-Smtp-Source: AGHT+IF0HM1WPelwexRRvaRYywTdAciouBmeE9MMLLDlaRyIPNrEjKd09Zq7ElpyHHwfs+kdey0Omw==
+X-Received: by 2002:a05:600d:8317:b0:46f:a8fd:c0dc with SMTP id
+ 5b1f17b1804b1-475d2412e43mr75835965e9.3.1761568630468; 
+ Mon, 27 Oct 2025 05:37:10 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952df62dsm15181023f8f.45.2025.10.27.05.36.56
+ 5b1f17b1804b1-475dd489fa4sm130398515e9.16.2025.10.27.05.37.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Oct 2025 05:36:57 -0700 (PDT)
+ Mon, 27 Oct 2025 05:37:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
@@ -76,17 +76,18 @@ Cc: Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH 1/6] system/memory: Expose unassigned_mem_ops symbol
-Date: Mon, 27 Oct 2025 13:36:38 +0100
-Message-ID: <20251027123644.63487-2-philmd@linaro.org>
+Subject: [PATCH 2/6] hw/display/vga: Log unassigned MMIO accesses with
+ unassigned_mem_ops
+Date: Mon, 27 Oct 2025 13:36:39 +0100
+Message-ID: <20251027123644.63487-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027123644.63487-1-philmd@linaro.org>
 References: <20251027123644.63487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,42 +110,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To log unassigned I/O region accesses, we provide unassigned_io_ops,
-exposed in "system/ioport.h". Similarly, expose unassigned_mem_ops
-in "system/memory.h" to be able to log accesses to unassigned MMIO.
+Replace unassigned_io_ops -> unassigned_mem_ops to log
+accesses as MMIO ones.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/memory.h  | 2 ++
- system/memory-internal.h | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/display/bochs-display.c | 2 +-
+ hw/display/vga-pci.c       | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/memory.h b/include/system/memory.h
-index 3bd5ffa5e0d..f42c6ba31c8 100644
---- a/include/system/memory.h
-+++ b/include/system/memory.h
-@@ -2714,6 +2714,8 @@ MemTxResult memory_region_dispatch_write(MemoryRegion *mr,
-                                          MemOp op,
-                                          MemTxAttrs attrs);
+diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
+index ad2821c9745..9fa52234219 100644
+--- a/hw/display/bochs-display.c
++++ b/hw/display/bochs-display.c
+@@ -286,7 +286,7 @@ static void bochs_display_realize(PCIDevice *dev, Error **errp)
+     memory_region_init_io(&s->qext, obj, &bochs_display_qext_ops, s,
+                           "qemu extended regs", PCI_VGA_QEXT_SIZE);
  
-+extern const MemoryRegionOps unassigned_mem_ops;
-+
- /**
-  * address_space_init: initializes an address space
-  *
-diff --git a/system/memory-internal.h b/system/memory-internal.h
-index 46f758fa7e4..5588ae35081 100644
---- a/system/memory-internal.h
-+++ b/system/memory-internal.h
-@@ -28,8 +28,6 @@ static inline AddressSpaceDispatch *address_space_to_dispatch(AddressSpace *as)
- FlatView *address_space_get_flatview(AddressSpace *as);
- void flatview_unref(FlatView *view);
+-    memory_region_init_io(&s->mmio, obj, &unassigned_io_ops, NULL,
++    memory_region_init_io(&s->mmio, obj, &unassigned_mem_ops, NULL,
+                           "bochs-display-mmio", PCI_VGA_MMIO_SIZE);
+     memory_region_add_subregion(&s->mmio, PCI_VGA_BOCHS_OFFSET, &s->vbe);
+     memory_region_add_subregion(&s->mmio, PCI_VGA_QEXT_OFFSET, &s->qext);
+diff --git a/hw/display/vga-pci.c b/hw/display/vga-pci.c
+index b81f7fd2d0f..583f5d5dee6 100644
+--- a/hw/display/vga-pci.c
++++ b/hw/display/vga-pci.c
+@@ -254,7 +254,7 @@ static void pci_std_vga_realize(PCIDevice *dev, Error **errp)
  
--extern const MemoryRegionOps unassigned_mem_ops;
--
- void flatview_add_to_dispatch(FlatView *fv, MemoryRegionSection *section);
- AddressSpaceDispatch *address_space_dispatch_new(FlatView *fv);
- void address_space_dispatch_compact(AddressSpaceDispatch *d);
+     /* mmio bar for vga register access */
+     if (d->flags & (1 << PCI_VGA_FLAG_ENABLE_MMIO)) {
+-        memory_region_init_io(&d->mmio, OBJECT(dev), &unassigned_io_ops, NULL,
++        memory_region_init_io(&d->mmio, OBJECT(dev), &unassigned_mem_ops, NULL,
+                               "vga.mmio", PCI_VGA_MMIO_SIZE);
+ 
+         if (d->flags & (1 << PCI_VGA_FLAG_ENABLE_QEXT)) {
+@@ -285,7 +285,7 @@ static void pci_secondary_vga_realize(PCIDevice *dev, Error **errp)
+     s->con = graphic_console_init(DEVICE(dev), 0, s->hw_ops, s);
+ 
+     /* mmio bar */
+-    memory_region_init_io(&d->mmio, OBJECT(dev), &unassigned_io_ops, NULL,
++    memory_region_init_io(&d->mmio, OBJECT(dev), &unassigned_mem_ops, NULL,
+                           "vga.mmio", PCI_VGA_MMIO_SIZE);
+ 
+     if (d->flags & (1 << PCI_VGA_FLAG_ENABLE_QEXT)) {
 -- 
 2.51.0
 
