@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E14AC0CE51
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DCEC0CE59
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:12:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDKAq-0001vm-5Y; Mon, 27 Oct 2025 06:10:00 -0400
+	id 1vDKAx-0001yD-FX; Mon, 27 Oct 2025 06:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vDKAm-0001uv-JJ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:09:56 -0400
+ id 1vDKAq-0001wV-LH
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:10:02 -0400
 Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vDKAg-0003zz-2j
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:09:56 -0400
+ id 1vDKAf-00040B-Qb
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:10:00 -0400
 Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-475dd54d7cdso5669645e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 03:09:43 -0700 (PDT)
+ 5b1f17b1804b1-470ffbf2150so32280245e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 03:09:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1761559781; x=1762164581;
+ d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1761559782; x=1762164582;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dSIrBetGG+wfDz8yd4lntslaRbGzk4PwkgYTU3dLOJU=;
- b=Y+qDLrOk1Jxx8YOHzSRzrChaysB/WrrI84ZXCD7CgoMQfABEZtifY0wuH0gqXGwjhU
- RNpOMe9Yur8QEWkbN0tAzrkuFUADJD8AntU+LURSbsGkMESAM9ME2LnjkxFQbf3F4Jjs
- UP0mbCpjObKTnIU0djflufsCP5nxoTFdyeEFSDEsYMhWOtiXsv9nR7qcRyo/AjZ5hmRl
- HDvFclw055IoPLeQQ1S+/9uZmwWaYoj+gjc8lVlLQ2ao/Bmc+ne7Ud1zCm60qjj6VpfU
- s8uPIz8tFf0Ke7ilo4UALWMbEQi3cRuRuFiUGlJZ+i246rnZ9Bp5fcbwl+kjOTQfBibx
- QA4Q==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mtRQJoFiB7pcTJCh+ZvnNXtLRl+nmZQ4jx3qoxA5tBk=;
+ b=YbySV2tIQmmgIjqYxRKslY/wiFV07pMO6efwzarUtTWR+V8sYujhKPgeNZe8kkWoRn
+ /oQ1SZ7VGE5uWqKunVvP5HNdpi5HcAkWYzjKYt+zimIyIIxYtD1PtLDeXK/yJm0cgeAY
+ xLWzq/qapYgdUpW6wv6A7U5cgfPv4bJ+pqG4/ZdJNIv8sq3Xd2mbfrA3qbuFcL1etTd4
+ 6/bmRhcLtRHH/7rQWGjQh7zyN4PSpDbVsitI4WYcJil9aAt1Q4skRdREXnzVhA7z3HlI
+ 9hBwrP3ypn4UGJTag5ON5I32STf5dnx21jAZ+eQSfuzfsiwphAJjPAwtPfQVijBltOW0
+ XhzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761559781; x=1762164581;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dSIrBetGG+wfDz8yd4lntslaRbGzk4PwkgYTU3dLOJU=;
- b=sGqdoIKWqvhu9IkuNUwPDZL4mWNK+2dtGhuM7y+FJuK+SKqt8qJRBEWacZeRjva/hm
- uV7WhkVooVRcME/pGMWTaOJBPA5f6xWcWYX88xMdFin5V30JDq4+l2o8rJtJAE0VBSXZ
- AwyKmEsYYkWaegi+RiMBxlweGtc1BGD+vJJfxLqZ/dYmEeLO9H6FbirO4MNgvAkgFVh6
- 6kwBN0aR/PMAXr1kyrCCW+XJVbyOTf3/VvbUG+nrexgqKgGwI8+MY6ve/9T/mJhd1YOA
- 0maMruG60SXtF7obXUu+VSY+Uha1O63Nc5wmr1eK1YOqWIFTwc9QUnFr+nv0BNMMWf9m
- xoEg==
-X-Gm-Message-State: AOJu0YzmcFqapPoF3Qh6l9iwO/q692zaVoQuhxfdu/ULxC0FFo2TXwzz
- 6cucXWpM+3/utZd8kJS19iB9VRYsanAGU9EstHQKKNG9Pd7irQ6Le/r+/AxzA5zkHVqnP/ir2Pa
- akFmV9fQ=
-X-Gm-Gg: ASbGncug2oU/F7OOlx7Ck8FC99Dadf81RfwfPolWm5A4/4s6oKf7k0T88SrB03jP1eK
- e15fAgxazHz6EEKa/0bX70GA111knKmcTRfTsLB2qytnzIX/OGkVGU0J0DXRWtk/w07yknd2iWR
- biUTaIOM4d87JqbTlTwRqPgLTqPlAb5zZ/PkKDnWgYxwb/8KdzYl3nQT4Z90g1j1qfyykRwjBLm
- 9y+76jPs3VotIMys9EboPLIUU7Rl3Y4he9EdnsXM08y7gFLkv5EAdflWfo+2y4TBJQX8qITRaTg
- 75uwqvp46jpbifuiJOlPWhpo2tajiu3IfosdN81p/pfrXjNkWFMZsllxyyOaHDavt7LQaVM39a9
- w2kCrOq2Daf4fgVoJxh3BoLESPo+439ylE9h6cEKyZ79OPvKTUtZtKgIMC9GUnN0t0K80UmEOUj
- A0hETd97SGIVmOJeA=
-X-Google-Smtp-Source: AGHT+IFoTLc4HvdxaBdw971nYTQW98A71R4PKctc2laELDqjB5RvIm7nSkWsYkKSn+I8Si+qmzuTHQ==
-X-Received: by 2002:a05:600c:528e:b0:475:dcbb:7903 with SMTP id
- 5b1f17b1804b1-475dcbb7927mr53656205e9.9.1761559780655; 
- Mon, 27 Oct 2025 03:09:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761559782; x=1762164582;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mtRQJoFiB7pcTJCh+ZvnNXtLRl+nmZQ4jx3qoxA5tBk=;
+ b=HRF1/O0JvPylpHzY7yN3l4/iHIFtn1+hic7dZVXOsmE8h4QFNL3vfEufIsUzLekoFG
+ N8gvNUDteMlNEneTkQVP5NunDTTjE/JBbRlt4BXPaqz2QCdV6JAjUlXB7pMPlk7p32/K
+ TdTfTXmDBMcZW2dy0M2oQ19s/27o7wF3PM27PqRmpa6t2s5HDQN1eOK8blPPkOBCkerk
+ m0s0h94WAmuIxRrBp0MB5+4XYtBa9v0SEzMyGzffDT+C9N6Q11AfVFqQfax5WiIxjJyY
+ upJQW30C+Vj7m0ZmZgNQQGIobXfQr4JS8zHSll9NnHDyLozHAC+vMP2usoNp5OqlXrYq
+ /lBQ==
+X-Gm-Message-State: AOJu0YySs/Eja5jbXv5huDHuctKe8s4nn8by7NdR0GMXQ/8FwAmMiOOM
+ imeH0UVYaqmGtBwobbr9l7Qj2Aw0NbFYINzGAI5RBg1lTSp5PqfxEDaV44IGPuFOWcqYE40NemG
+ 7XyPNwvY=
+X-Gm-Gg: ASbGncvOVp0bgSVwj3JUlSpymnsq/dTBO+B7tZ+9qJtZWHiy1CR1GowDWw+6Pah5GMW
+ SMOaQ8lc5j21mfs8XAHikSi4d8if7B6lr6fdflZ6WAaFS3mP9XUe5GUJgkUWrBIQ6yeckM5a2sm
+ 1yjRjDxNXOVSqz8YCze0wJ5zyVBbr31T/vDi00GR37Xjg41GtrSGbwjqaT12G+9fZh3yj9V0DZd
+ Dj8PmU40mGojVbJ6BxnadpVHcmFR9JpRGMAywhMx0jtDdRM0Qb7Y/muo3JhTsrS/Vy3awWak/LN
+ YFGejqeWqL0WzbSIgHCl/U1na/TJZRV8koN9PF7jA9zujuMdL8XE1uS11a4hdDL6ArTPB9z2E4z
+ /csWGM6KPPsiNduWmD5MCaHb6La3E99IUoDVz/7BkG7o2N6Ol44J8H8KgTNXssAszgFEEcdjF8A
+ eLcUfDiuHMb0JRO7E=
+X-Google-Smtp-Source: AGHT+IFMy/yGpwSLnbhwF8Ns79k3ADjKozexDFT+nkocGz91RvifcgzOmOpWlobffcHHka6vsUksrw==
+X-Received: by 2002:a05:600c:4ed0:b0:46e:59bd:f7e2 with SMTP id
+ 5b1f17b1804b1-475d2426e58mr93920965e9.11.1761559782105; 
+ Mon, 27 Oct 2025 03:09:42 -0700 (PDT)
 Received: from DDesktop.local ([2a10:8012:d:eea4:f4de:376b:66b1:d7b5])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd494d5csm128625465e9.9.2025.10.27.03.09.39
+ 5b1f17b1804b1-475dd494d5csm128625465e9.9.2025.10.27.03.09.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 03:09:40 -0700 (PDT)
+ Mon, 27 Oct 2025 03:09:41 -0700 (PDT)
 From: Michael Levit <michael@videogpu.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, philmd@linaro.org, pbonzini@redhat.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  liwei1518@gmail.com, smishash@gmail.com
-Subject: [PATCH v2 0/5] RISC-V: NEORV32 CPU, devices, and machine
-Date: Mon, 27 Oct 2025 12:09:33 +0200
-Message-ID: <20251027100938.11822-1-michael@videogpu.com>
+Subject: [PATCH v2 1/5] target/riscv: add NEORV32 RV32 CPU type and vendor CSR
+ hooks
+Date: Mon, 27 Oct 2025 12:09:34 +0200
+Message-ID: <20251027100938.11822-2-michael@videogpu.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251027100938.11822-1-michael@videogpu.com>
+References: <20251027100938.11822-1-michael@videogpu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=2a00:1450:4864:20::332;
@@ -98,64 +102,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+From: Michael <michael@videogpu.com>
 
-This v2 reworks my initial NEORV32 submission into a small, reviewable
-series, following feedback to split the changes by subsystem.
+Introduce NEORV32 RV32 CPU type under target/riscv, wire NEORV32 vendor ID,
+and add a vendor CSR (CSR_MXISA) guarded by mvendorid match, plus meson glue.
 
-The series introduces:
-  * a minimal NEORV32 RV32 CPU type and vendor CSR hook,
-  * the SYSINFO MMIO block,
-  * a small UART device,
-  * an SPI controller with command-mode chip-select,
-  * and the 'neorv32' RISC-V board wiring the above, plus docs.
+Signed-off-by: Michael Levit <michael@videogpu.com>
 
-Tested by booting the NEORV32 bootloader as -bios and chaining into a
-Hello World from an MTD-backed SPI flash image, with UART on stdio.
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 75f4e43408..a39bf853cc 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -57,6 +57,8 @@
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
+ #define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
++#define TYPE_RISCV_CPU_NEORV32          RISCV_CPU_TYPE_NAME("neorv32")
++
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
 
-Changes since v1:
-  * Split the monolithic patch into five functional patches, as suggested.
-  * Dropped the accidental '.gitignore' hunk.
-  * No intentional functional changes; only file organization and clarity.
-  * Kept default.mak entry off by default (n).
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 73d4280d7c..7bcf93c66c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -245,6 +245,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(xtheadmempair, PRIV_VERSION_1_11_0, ext_xtheadmempair),
+     ISA_EXT_DATA_ENTRY(xtheadsync, PRIV_VERSION_1_11_0, ext_xtheadsync),
+     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
++    ISA_EXT_DATA_ENTRY(xneorv32xisa,PRIV_VERSION_1_10_0,ext_xneorv32xisa), 
+ 
+     { },
+ };
+@@ -1366,6 +1367,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+     MULTI_EXT_CFG_BOOL("xtheadmempair", ext_xtheadmempair, false),
+     MULTI_EXT_CFG_BOOL("xtheadsync", ext_xtheadsync, false),
+     MULTI_EXT_CFG_BOOL("xventanacondops", ext_XVentanaCondOps, false),
++	MULTI_EXT_CFG_BOOL("xneorv32xisa", ext_xneorv32xisa, false),
+ 
+     { },
+ };
+@@ -3032,6 +3034,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.pmp_regions = 8
+     ),
+ 
++
+ #if defined(TARGET_RISCV32) || \
+     (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE32, TYPE_RISCV_DYNAMIC_CPU,
+@@ -3075,6 +3078,21 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .misa_mxl_max = MXL_RV32,
+         .misa_ext = RVE
+     ),
++	DEFINE_RISCV_CPU(TYPE_RISCV_CPU_NEORV32, TYPE_RISCV_VENDOR_CPU,
++		.misa_mxl_max = MXL_RV32,
++        .misa_ext = RVI | RVM | RVA | RVC | RVU,
++        .priv_spec = PRIV_VERSION_1_10_0,
++
++        .cfg.max_satp_mode = VM_1_10_MBARE,
++        .cfg.ext_zifencei = true,
++        .cfg.ext_zicsr = true,
++        .cfg.pmp = true,
++        .cfg.pmp_regions = 16,
++		.cfg.mvendorid = NEORV32_VENDOR_ID,
++#ifndef CONFIG_USER_ONLY
++        .custom_csrs = neorv32_csr_list
++#endif
++    ),
+ #endif
+ 
+ #if (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
 
-Patch layout
-============
-  1/5  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
-  2/5  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
-  3/5  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
-  4/5  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
-  5/5  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 36e7f10037..6a9918a25a 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -985,5 +985,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+ /* In th_csr.c */
+ extern const RISCVCSR th_csr_list[];
+ 
++/* Implemented in neorv32_csr.c */
++extern const RISCVCSR neorv32_csr_list[];
++
+ const char *priv_spec_to_str(int priv_version);
+ #endif /* RISCV_CPU_H */
 
-Quick usage
-===========
-  $ ./configure --target-list=riscv32-softmmu --enable-debug --enable-fdt
-  $ make -j$(nproc)
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index aa28dc8d7e..9ad38506e4 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -64,5 +64,6 @@ MATERIALISE_EXT_PREDICATE(xtheadmemidx)
+ MATERIALISE_EXT_PREDICATE(xtheadmempair)
+ MATERIALISE_EXT_PREDICATE(xtheadsync)
+ MATERIALISE_EXT_PREDICATE(XVentanaCondOps)
++MATERIALISE_EXT_PREDICATE(xneorv32xisa)
+ 
+ #endif
 
-Prepare a flash image (64MiB) and place your app at 4MiB offset:
-  $ dd if=/dev/zero of=$HOME/flash_contents.bin bs=1 count=$((0x04000000))
-  $ dd if=/path/to/neorv32_exe.bin of=$HOME/flash_contents.bin \\
-       bs=1 seek=$((0x00400000)) conv=notrunc
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index a154ecdc79..b84e1bd287 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -147,6 +147,7 @@ BOOL_FIELD(ext_xtheadmemidx)
+ BOOL_FIELD(ext_xtheadmempair)
+ BOOL_FIELD(ext_xtheadsync)
+ BOOL_FIELD(ext_XVentanaCondOps)
++BOOL_FIELD(ext_xneorv32xisa)
+ 
+ BOOL_FIELD(mmu)
+ BOOL_FIELD(pmp)
 
-Run bootloader and chain-load your app:
-  $ ./build/qemu-system-riscv32 -nographic -machine neorv32 \\
-      -bios /path/to/neorv32/bootloader/neorv32_raw_exe.bin \\
-      -drive file=$HOME/flash_contents.bin,if=mtd,format=raw
+diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
+index 96b6b9c2cb..66a8f30b81 100644
+--- a/target/riscv/cpu_vendorid.h
++++ b/target/riscv/cpu_vendorid.h
+@@ -7,4 +7,6 @@
+ #define VEYRON_V1_MIMPID        0x111
+ #define VEYRON_V1_MVENDORID     0x61f
+ 
++#define NEORV32_VENDOR_ID       0xF0000001
++
+ #endif /*  TARGET_RISCV_CPU_VENDORID_H */
 
-Debugging:
-  $ ... -s -S   # gdbstub on :1234, start paused
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index fdefe88ccd..44e706ad3f 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -40,6 +40,7 @@ riscv_system_ss.add(files(
+   'th_csr.c',
+   'time_helper.c',
+   'riscv-qmp-cmds.c',
++  'neorv32_csr.c',
+ ))
+ 
+ subdir('tcg')
 
-
-Michael Levit (5):
-  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
-  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
-  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
-  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
-  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
-
-Thanks for reviewing!
-Michael
-
+diff --git a/target/riscv/neorv32_csr.c b/target/riscv/neorv32_csr.c
+new file mode 100644
+index 0000000000..0cb8663436
+--- /dev/null
++++ b/target/riscv/neorv32_csr.c
+@@ -0,0 +1,54 @@
++/*
++ * Neorv32-specific CSR.
++ *
++ * Copyright (c) 2025 Michael Levit
++ *
++ * Author:
++ *   Michael Levit <michael@videogpu.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "cpu_vendorid.h"
++
++#define    CSR_MXISA    (0xfc0)
++
++static RISCVException smode(CPURISCVState *env, int csrno)
++{
++	return RISCV_EXCP_NONE;
++}
++
++static RISCVException read_neorv32_xisa(CPURISCVState *env, int csrno,
++                                       target_ulong *val)
++{
++	/* We don't support any extension for now on QEMU */
++    *val = 0x00;
++    return RISCV_EXCP_NONE;
++}
++
++static bool test_neorv32_mvendorid(RISCVCPU *cpu)
++{
++    return cpu->cfg.mvendorid == NEORV32_VENDOR_ID;
++}
++
++const RISCVCSR neorv32_csr_list[] = {
++    {
++        .csrno = CSR_MXISA,
++        .insertion_test = test_neorv32_mvendorid,
++        .csr_ops = { "neorv32.xisa", smode, read_neorv32_xisa }
++    },
++    { }
++};
++
 -- 
-2.20.1
+2.51.1
 
