@@ -2,64 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36ACC0D8BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B80C0D8C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:33:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDMNm-0007zR-PJ; Mon, 27 Oct 2025 08:31:31 -0400
+	id 1vDMPP-0000OQ-LX; Mon, 27 Oct 2025 08:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1vDMNW-0007s7-4r; Mon, 27 Oct 2025 08:31:14 -0400
-Received: from forward102d.mail.yandex.net ([2a02:6b8:c41:1300:1:45:d181:d102])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDMPI-0000Gq-VA
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:33:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1vDMNQ-0005GY-C2; Mon, 27 Oct 2025 08:31:12 -0400
-Received: from mail-nwsmtp-smtp-production-main-59.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-production-main-59.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:2dcb:0:640:715b:0])
- by forward102d.mail.yandex.net (Yandex) with ESMTPS id 0224AC01BD;
- Mon, 27 Oct 2025 15:30:55 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.klg.yp-c.yandex.net
- (smtp/Yandex) with ESMTPSA id nUbd1g4LwiE0-U3VZqJ7u; 
- Mon, 27 Oct 2025 15:30:54 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
- t=1761568254; bh=bPMnPeeBFpFY4Xe9n7lPZLYeTj8HS2ZblZJQfScrpLo=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Wg7Fy25BxHqeQvVV3WhbVTrNtQzcYFKRY0jSe9jMlRG+ULrx82rhuz56np/8wc+zT
- nlkygqS9Zn5MFzZqRWSJGAJUzgwL79F71UZHCwuRmjTIrwJBGfE2wY58iXr2fTe3gQ
- J5saJwedh0H/tUHx7Mdde6p6pDidjtOlC8PtRuwU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex.ru
-From: Danila Zhebryakov <d.zhebryakov@yandex.ru>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Nicholas Piggin <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, qemu-ppc@nongnu.org,
- Riku Voipio <riku.voipio@iki.fi>, Chinmay Rath <rathc@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org,
- Danila Zhebryakov <d.zhebryakov@yandex.ru>
-Subject: [PATCH v4 4/4] target/ppc: fix GDB stub to work correctly with LE
- pages
-Date: Mon, 27 Oct 2025 15:30:48 +0300
-Message-ID: <20251027123049.32038-5-d.zhebryakov@yandex.ru>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251027123049.32038-1-d.zhebryakov@yandex.ru>
-References: <20251027123049.32038-1-d.zhebryakov@yandex.ru>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDMP8-0005TR-LH
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 08:33:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761568366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=W4ncRf/0CarRVql8Q2m7Oho3QJpPObE7t+oR9qSe5M4=;
+ b=cgB2XnZaJeCBIPnMmzz4x/H06A8f52jYR4hT8Aa0WhG2TeDfDSiASg5//uwNiKvB+6Dr4y
+ Fackk9c7Fo+1cL9ANFNpwVFVr8qL2Ab1lb8jQf6S/nag1CH/of91i0X0GYCzQltWemxB1R
+ twZHEn8naxCK9H0BIkrFfcJtAPtOJ1w=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-3dy1ZJuQMtmXUJBUmMKWnw-1; Mon,
+ 27 Oct 2025 08:32:43 -0400
+X-MC-Unique: 3dy1ZJuQMtmXUJBUmMKWnw-1
+X-Mimecast-MFC-AGG-ID: 3dy1ZJuQMtmXUJBUmMKWnw_1761568362
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2D49B180034C; Mon, 27 Oct 2025 12:32:42 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 810C01955F1B; Mon, 27 Oct 2025 12:32:41 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CD12921E6A27; Mon, 27 Oct 2025 13:32:38 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,  Peter Xu <peterx@redhat.com>,  Bin Guo
+ <guobin@linux.alibaba.com>,  qemu-devel@nongnu.org
+Subject: Re: [PATCH] migration: Don't free the reason after calling
+ migrate_add_blocker
+In-Reply-To: <aP9IqYzAea1DUjqp@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Mon, 27 Oct 2025 10:25:45 +0000")
+References: <20251024092821.82220-1-guobin@linux.alibaba.com>
+ <87o6pw1rfn.fsf@pond.sub.org> <aPtim8ZACUWyje2o@redhat.com>
+ <874irozabw.fsf@pond.sub.org> <87v7k4xuhk.fsf@pond.sub.org>
+ <aPumkKBx4PoGSwNv@x1.local> <aPup9BzTf-uk8cUf@redhat.com>
+ <87a51gdv4m.fsf@suse.de> <aP9IqYzAea1DUjqp@redhat.com>
+Date: Mon, 27 Oct 2025 13:32:38 +0100
+Message-ID: <87ecqomsnt.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:d102;
- envelope-from=d.zhebryakov@yandex.ru; helo=forward102d.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,49 +91,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GDB is expected to be set to the endianness of the currently running code, which may be in LE page. Bswap the registers accordingly.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Signed-off-by: Danila Zhebryakov <d.zhebryakov@yandex.ru>
----
- target/ppc/gdbstub.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+> On Fri, Oct 24, 2025 at 03:15:05PM -0300, Fabiano Rosas wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>> > IMHO we should not even be using an Error object for the the blocker.
+>> > AFAICT, internally all we care about is the formatted string. The main
+>> > reason for using an Error object appears to be to have a convenient
+>> > pointer to use as an identifier to later pass to del_blocker.
+>> >
+>> > I'd be inclined to just have passed in a fixed string, and return an
+>> > integer identifier for the blocker. eg
+>> >
+>> >     int64 migrate_add_blocker(const char *reason, Error **errp);
+>> >
+>> >     void migrate_del_blocker(int64 blockerid);
+>> >
+>> > The migrate_add_blocker method would strdup(reason) to keep its own
+>> > copy.
+>> >
+>> > The usage would thus be clear & simple:
+>> >
+>> >     int64 blockerid =3D migrate_add_blocker("cannot migrate vfio", err=
+p);
+>> >     if (!blockerid) {
+>> >          return;
+>> >     }
+>> >
+>> >     ... some time later...
+>> >
+>> >     migrate_del_blocker(blockerid);
+>> >
+>> >
+>> > In some cases we needed dynamically formatted strings, which could have
+>> > been achieved thus:
+>> >
+>> >     g_autofree char *msg =3D g_strdup_printf("cannot migrate vfio %d",=
+ blah);
+>> >     int64 blockerid =3D migrate_add_blocker(msg, errp);
+>> >     ...the rest as above...
+>> >
+>> > yes, this costs an extra strdup(), but that is an acceptable & negligi=
+ble
+>> > overhead in the context in which we're doing this.
+>> >
+>>=20
+>> Hmm, I must disagree. This is more complex than what we have
+>> today. Calling error_setg(err, "msg") is pretty standard, already gives
+>> us formatting and keeps all (potentially) user-facing messages uniform.
+>
+> IMHO this usage in migration is not really about error reporting
+> though, and the lifecycle ownership of the Error objects in this
+> migration usage is very diferent from the typical lifecycle
+> ownership of Error objects used in reporting errors, which I think
+> leads to a surprising / unusual API.
 
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index 3b28d4e21c..89c783894c 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -19,6 +19,8 @@
-  */
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "accel/tcg/probe.h"
-+#include "exec/tlb-flags.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/helpers.h"
- #include "internal.h"
-@@ -84,7 +86,20 @@ static int ppc_gdb_register_len(int n)
- void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
- {
- #ifndef CONFIG_USER_ONLY
--    if (!FIELD_EX64(env->msr, MSR, LE)) {
-+    bool le_page = false;
-+
-+    if (env->mmu_model == POWERPC_MMU_BOOKE206) {
-+        CPUTLBEntryFull *full;
-+        void *host;
-+        int mmu_idx = ppc_env_mmu_index(env, true);
-+
-+        probe_access_full_mmu(env, env->nip, 0, MMU_INST_FETCH, mmu_idx,
-+                              &host, &full);
-+
-+        le_page = full->tlb_fill_flags & TLB_BSWAP;
-+    }
-+
-+    if (!le_page && !FIELD_EX64(env->msr, MSR, LE)) {
-         /* do nothing */
-     } else if (len == 4) {
-         bswap32s((uint32_t *)mem_buf);
--- 
-2.47.3
+I think a blocker interface where you pass the error to use when the
+blocker blocks something is defensible.
+
+Passing an error message or even a text snippet to be interpolated into
+the error message would also be defensible.
+
+We're using the former, and it has turned out to be confusing.  Less so
+in the block layer, where we sensibly pass Error *.  More so in
+migration, where we pass Error **.  Error ** is almost always used to
+receive an error, so when we use it for something else, we risk
+confusion.
+
+>> Asking for people to deal with strings and storing an int64 in their
+>> code is not improving the situation. Besides, the Error is already used
+>> by the block layer when blocking operations, for instance. If anything
+>> we should be integrating the two usages instead of inventing yet another
+>> for the migration code. See:
+>
+> Yes, having a common API for these two similar use cases would be
+> a useful thing. I'm just not convinced we should be (mis|re)using
+> the Error object for either of these two situations.
+
+I guess we could have a generic Blocker object instead of using Error
+for the purpose.
+
+In addition to an error message, an Error object has an error class
+(rarely used remnant of the past), where in the source code the Error
+object was created (reported to the user when handling &error_abort),
+and an optional hint.  Is any of this useful for blockers?
+
+>> replication.c:
+>>   error_setg(&s->blocker,
+>>              "Block device is in use by internal backup job");
+>>   ...
+>>   bdrv_op_block_all(top_bs, s->blocker);
+>>=20
+>> block.c:
+>>   void bdrv_op_block(BlockDriverState *bs, BlockOpType op, Error *reason)
+>>   {
+>>       BdrvOpBlocker *blocker;
+>>       assert((int) op >=3D 0 && op < BLOCK_OP_TYPE_MAX);
+>>=20
+>>       blocker =3D g_new0(BdrvOpBlocker, 1);
+>>       blocker->reason =3D reason;
+>>       QLIST_INSERT_HEAD(&bs->op_blockers[op], blocker, list);
+>> }
+>
+>
+> With regards,
+> Daniel
 
 
