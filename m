@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50342C0FE99
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A989BC0FE69
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDRmd-0004w8-1Q; Mon, 27 Oct 2025 14:17:31 -0400
+	id 1vDRmf-0004x2-2y; Mon, 27 Oct 2025 14:17:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmQ-0004qW-8T
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:20 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmW-0004sM-T8
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:24 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmA-0003yr-02
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:18 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmA-0003yz-Cf
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=xzmt7cLSz4yJS8IzF79BoJ0z6M/UFl7qXf5BHQA55gk=; b=u9m3FixuZRfVUxP
- TcIJgh2kyVUX9BRjiI4ud0MS3qKBknUCbOuYrstooAfMrwCqHtm6RCJsqQu2M042frIzmwL401wPz
- dAyRDhWJi68+oNRxJ8Acexi5WAtVEqnor0naEi94XEpfaAAPexCpsg4pSE/liLsgdRJ/5JiePfxP2
- 0w=;
+ List-Help; bh=NyQ0/zEa9ImnId0R7CumHW1rlKaHM17SHUcK1eXQFAI=; b=vDNnrCHu7PVmitJ
+ Fz8fHxrbOfthb/7X6bSxGEhr7jjn032ciY61dMhdQ01zJg7G9mHgo9TaB5s/opq5LXPbFkFI4ESpQ
+ kSgMoCzJyef+ZkkcOZXcMDvek5WZk7XMCcwdEsdGpGZ3zpgXFP3WC+x72y+l492c31v9q6weeNUR7
+ Ic=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v4 11/33] target/riscv: Fix size of pc, load_[val|res]
-Date: Mon, 27 Oct 2025 19:18:08 +0100
-Message-ID: <20251027181831.27016-12-anjo@rev.ng>
+Subject: [PATCH v4 12/33] target/riscv: Fix size of frm and fflags
+Date: Mon, 27 Oct 2025 19:18:09 +0100
+Message-ID: <20251027181831.27016-13-anjo@rev.ng>
 In-Reply-To: <20251027181831.27016-1-anjo@rev.ng>
 References: <20251027181831.27016-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,116 +62,98 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix to 64 bits in size and as these are mapped to TCG globals, be
-careful with host endianness when allocating globals.  Casts are
-added to logging expressions to retain the correct size for
-TARGET_RISCV32.
+According to version 20250508 of the unprivileged specification the frm
+field of fcsr is 3-bits in size, fix it to 8-bits.  Similarly fflags is
+5 bits, fix to 8.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h        |  6 +++---
- target/riscv/cpu.c        |  2 +-
- target/riscv/cpu_helper.c |  6 +++---
- target/riscv/machine.c    |  6 +++---
- target/riscv/translate.c  | 12 +++++++-----
- 5 files changed, 17 insertions(+), 15 deletions(-)
+ target/riscv/cpu.h        | 6 +++---
+ target/riscv/csr.c        | 4 ++++
+ target/riscv/fpu_helper.c | 6 +++---
+ target/riscv/machine.c    | 2 +-
+ 4 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index bd200ccad4..f00ae69e8a 100644
+index f00ae69e8a..a55d4ac690 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -225,9 +225,9 @@ struct CPUArchState {
-     uint8_t vxsat;
-     bool vill;
- 
--    target_ulong pc;
--    target_ulong load_res;
--    target_ulong load_val;
-+    uint64_t pc;
-+    uint64_t load_res;
-+    uint64_t load_val;
+@@ -231,7 +231,7 @@ struct CPUArchState {
  
      /* Floating-Point state */
      uint64_t fpr[32]; /* assume both F and D extensions */
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index dc97d35458..353b927dd5 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -528,7 +528,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         qemu_fprintf(f, " %s %d\n", "V      =  ", env->virt_enabled);
-     }
- #endif
--    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "pc      ", env->pc);
-+    qemu_fprintf(f, " %s %" PRIx64 "\n", "pc      ", env->pc);
- #ifndef CONFIG_USER_ONLY
-     {
-         static const int dump_csrs[] = {
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 1f791e4de3..e105dec426 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -2278,9 +2278,9 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+-    target_ulong frm;
++    uint8_t frm;
+     float_status fp_status;
  
-     qemu_log_mask(CPU_LOG_INT,
-                   "%s: hart:%"PRIu64", async:%d, cause:"TARGET_FMT_lx", "
--                  "epc:0x"TARGET_FMT_lx", tval:0x"TARGET_FMT_lx", desc=%s\n",
--                  __func__, env->mhartid, async, cause, env->pc, tval,
--                  riscv_cpu_get_trap_name(cause, async));
-+                  "epc:0x%"PRIx64", tval:0x"TARGET_FMT_lx", desc=%s\n",
-+                  __func__, env->mhartid, async, cause, env->pc,
-+                  tval, riscv_cpu_get_trap_name(cause, async));
+     target_ulong badaddr;
+@@ -665,8 +665,8 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+                                       RISCVException exception,
+                                       uintptr_t pc);
  
-     mode = env->priv <= PRV_S && cause < 64 &&
-         (((deleg >> cause) & 1) || s_injected || vs_injected) ? PRV_S : PRV_M;
+-target_ulong riscv_cpu_get_fflags(CPURISCVState *env);
+-void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong);
++uint8_t riscv_cpu_get_fflags(CPURISCVState *env);
++void riscv_cpu_set_fflags(CPURISCVState *env, uint8_t);
+ 
+ FIELD(TB_FLAGS, MEM_IDX, 0, 3)
+ FIELD(TB_FLAGS, FS, 3, 2)
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 65b6469395..5ba1fe4168 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -896,6 +896,10 @@ static RISCVException write_frm(CPURISCVState *env, int csrno,
+ static RISCVException read_fcsr(CPURISCVState *env, int csrno,
+                                 target_ulong *val)
+ {
++    /*
++     * This is an 8-bit operation, fflags make up the lower 5 bits and
++     * frm the upper 3 bits of fcsr.
++     */
+     *val = (riscv_cpu_get_fflags(env) << FSR_AEXC_SHIFT)
+         | (env->frm << FSR_RD_SHIFT);
+     return RISCV_EXCP_NONE;
+diff --git a/target/riscv/fpu_helper.c b/target/riscv/fpu_helper.c
+index af40561b31..db64fca622 100644
+--- a/target/riscv/fpu_helper.c
++++ b/target/riscv/fpu_helper.c
+@@ -23,10 +23,10 @@
+ #include "fpu/softfloat.h"
+ #include "internals.h"
+ 
+-target_ulong riscv_cpu_get_fflags(CPURISCVState *env)
++uint8_t riscv_cpu_get_fflags(CPURISCVState *env)
+ {
+     int soft = get_float_exception_flags(&env->fp_status);
+-    target_ulong hard = 0;
++    uint8_t hard = 0;
+ 
+     hard |= (soft & float_flag_inexact) ? FPEXC_NX : 0;
+     hard |= (soft & float_flag_underflow) ? FPEXC_UF : 0;
+@@ -37,7 +37,7 @@ target_ulong riscv_cpu_get_fflags(CPURISCVState *env)
+     return hard;
+ }
+ 
+-void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong hard)
++void riscv_cpu_set_fflags(CPURISCVState *env, uint8_t hard)
+ {
+     int soft = 0;
+ 
 diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 440b09fc32..66ed3f6504 100644
+index 66ed3f6504..07995fb303 100644
 --- a/target/riscv/machine.c
 +++ b/target/riscv/machine.c
-@@ -433,9 +433,9 @@ const VMStateDescription vmstate_riscv_cpu = {
-         VMSTATE_UINT64_ARRAY(env.fpr, RISCVCPU, 32),
-         VMSTATE_UINT8_ARRAY(env.miprio, RISCVCPU, 64),
-         VMSTATE_UINT8_ARRAY(env.siprio, RISCVCPU, 64),
--        VMSTATE_UINTTL(env.pc, RISCVCPU),
--        VMSTATE_UINTTL(env.load_res, RISCVCPU),
--        VMSTATE_UINTTL(env.load_val, RISCVCPU),
-+        VMSTATE_UINT64(env.pc, RISCVCPU),
-+        VMSTATE_UINT64(env.load_res, RISCVCPU),
-+        VMSTATE_UINT64(env.load_val, RISCVCPU),
-         VMSTATE_UINTTL(env.frm, RISCVCPU),
+@@ -436,7 +436,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINT64(env.pc, RISCVCPU),
+         VMSTATE_UINT64(env.load_res, RISCVCPU),
+         VMSTATE_UINT64(env.load_val, RISCVCPU),
+-        VMSTATE_UINTTL(env.frm, RISCVCPU),
++        VMSTATE_UINT8(env.frm, RISCVCPU),
          VMSTATE_UINTTL(env.badaddr, RISCVCPU),
          VMSTATE_UINTTL(env.guest_phys_fault_addr, RISCVCPU),
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 15eee7f6ee..e82805e178 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1459,6 +1459,10 @@ void riscv_translate_init(void)
-     /* 32 bits in size, no offset needed */
-     size_t vl_offset = offsetof(CPURISCVState, vl);
-     size_t vstart_offset = offsetof(CPURISCVState, vstart);
-+    /* 64 bits in size mapped to TCGv, needs offset */
-+    size_t pc_offset     = offsetof(CPURISCVState, pc) + field_offset;
-+    size_t res_offset    = offsetof(CPURISCVState, load_res) + field_offset;
-+    size_t val_offset    = offsetof(CPURISCVState, load_val) + field_offset;
- 
-     for (i = 1; i < 32; i++) {
-         cpu_gpr[i] = tcg_global_mem_new(tcg_env,
-@@ -1474,11 +1478,9 @@ void riscv_translate_init(void)
-             offsetof(CPURISCVState, fpr[i]), riscv_fpr_regnames[i]);
-     }
- 
--    cpu_pc = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, pc), "pc");
-+    cpu_pc = tcg_global_mem_new(tcg_env, pc_offset, "pc");
-     cpu_vl = tcg_global_mem_new_i32(tcg_env, vl_offset, "vl");
-     cpu_vstart = tcg_global_mem_new_i32(tcg_env, vstart_offset, "vstart");
--    load_res = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, load_res),
--                             "load_res");
--    load_val = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, load_val),
--                             "load_val");
-+    load_res = tcg_global_mem_new(tcg_env, res_offset, "load_res");
-+    load_val = tcg_global_mem_new(tcg_env, val_offset, "load_val");
- }
+         VMSTATE_UINTTL(env.priv_ver, RISCVCPU),
 -- 
 2.51.0
 
