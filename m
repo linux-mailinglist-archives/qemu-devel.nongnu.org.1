@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED7AC0FE60
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91E9C0FEAB
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 19:25:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDRmM-0004jZ-6m; Mon, 27 Oct 2025 14:17:14 -0400
+	id 1vDRmW-0004rp-Ie; Mon, 27 Oct 2025 14:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRm5-0004hJ-6o
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:16:57 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRmD-0004ju-PU
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:07 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRls-0003xu-PQ
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:16:54 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vDRly-0003xz-6e
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 14:17:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=w/zXuLwNh6+jsEhzwE0eH1VBfE73ZpA+I8Jx+bAcWgY=; b=WXxmx3V/dEWGSm5
- 8vHj1UB03k5OkhUxzHxKrmGoUKTqmsLglZFaydIeaqx7sTiZm8w4sewntNleVgG2J7hSKlOj3PvTN
- AoLTTATRwsal4pYpR3lw3ZwrtC9+qKC/Xz0CrW2QBRbLacn3rRV4UDtpD5oKVh59dirGJVPfUoRCu
- hs=;
+ List-Help; bh=3touB2AsZ+NL4kphMTOF47lHgSbcQCB+/KFDfK/oHRo=; b=E+NM2WZkc8RR88Z
+ SMO/O9dbi8Si4rYL9WuY11s35qJpwJPGHTKDetQu+NShjT9vQDt27fCtIP/mX/DziuFR4C2MzVDdJ
+ dpVlp2Ze7Asg9t9aUA6I7cOZugUKKztIUDVQAM5G8ZP1pfyjV7ER8ZcLWrvQYaSeIriSwH5A03K31
+ Xg=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v4 02/33] target/riscv: Fix size of mhartid
-Date: Mon, 27 Oct 2025 19:17:59 +0100
-Message-ID: <20251027181831.27016-3-anjo@rev.ng>
+Subject: [PATCH v4 03/33] target/riscv: Bugfix
+ riscv_pmu_ctr_get_fixed_counters_val()
+Date: Mon, 27 Oct 2025 19:18:00 +0100
+Message-ID: <20251027181831.27016-4-anjo@rev.ng>
 In-Reply-To: <20251027181831.27016-1-anjo@rev.ng>
 References: <20251027181831.27016-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,70 +63,83 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-and update formatting in log.
+From my understanding the upper_half argument only indicates whether the
+upper or lower 32 bits should be returned, and upper_half will only ever
+be set when MXLEN == 32.  However, the function also uses upper_half to
+determine whether the inhibit flags are located in mcyclecfgh or
+mcyclecfg, but this misses the case where MXLEN == 32, upper_half == false
+for TARGET_RISCV32 where we would also need to read the upper half field.
+
+Minor simplifications are also made along with some formatting fixes.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h         | 2 +-
- target/riscv/cpu_helper.c  | 2 +-
- target/riscv/machine.c     | 2 +-
- target/riscv/tcg/tcg-cpu.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ target/riscv/csr.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7ffc4dac26..adeb36abc2 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -280,7 +280,7 @@ struct CPUArchState {
-     target_ulong geilen;
-     uint64_t resetvec;
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 5c91658c3d..657179a983 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -17,6 +17,7 @@
+  * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
  
--    target_ulong mhartid;
-+    uint64_t mhartid;
-     /*
-      * For RV32 this is 32-bit mstatus and 32-bit mstatush.
-      * For RV64 this is a 64-bit mstatus.
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 360db133e2..1f791e4de3 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -2277,7 +2277,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                      riscv_cpu_get_trap_name(cause, async));
++#include "cpu_bits.h"
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
+ #include "qemu/timer.h"
+@@ -1243,18 +1244,21 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
+     int inst = riscv_pmu_ctr_monitor_instructions(env, counter_idx);
+     uint64_t *counter_arr_virt = env->pmu_fixed_ctrs[inst].counter_virt;
+     uint64_t *counter_arr = env->pmu_fixed_ctrs[inst].counter;
+-    target_ulong result = 0;
+     uint64_t curr_val = 0;
+     uint64_t cfg_val = 0;
++    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
++
++    /* Ensure upper_half is only set for MXL_RV32 */
++    g_assert(rv32 || !upper_half);
  
-     qemu_log_mask(CPU_LOG_INT,
--                  "%s: hart:"TARGET_FMT_ld", async:%d, cause:"TARGET_FMT_lx", "
-+                  "%s: hart:%"PRIu64", async:%d, cause:"TARGET_FMT_lx", "
-                   "epc:0x"TARGET_FMT_lx", tval:0x"TARGET_FMT_lx", desc=%s\n",
-                   __func__, env->mhartid, async, cause, env->pc, tval,
-                   riscv_cpu_get_trap_name(cause, async));
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index f6ca017211..ab0bc32e1f 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -450,7 +450,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         VMSTATE_UINTTL(env.priv, RISCVCPU),
-         VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
-         VMSTATE_UINT64(env.resetvec, RISCVCPU),
--        VMSTATE_UINTTL(env.mhartid, RISCVCPU),
-+        VMSTATE_UINT64(env.mhartid, RISCVCPU),
-         VMSTATE_UINT64(env.mstatus, RISCVCPU),
-         VMSTATE_UINT64(env.mip, RISCVCPU),
-         VMSTATE_UINT64(env.miclaim, RISCVCPU),
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index d3968251fa..850a383702 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -489,7 +489,7 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-                 continue;
-             }
- #ifndef CONFIG_USER_ONLY
--            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
-+            warn_report("disabling %s extension for hart 0x%" PRIx64
-                         " because privilege spec version does not match",
-                         edata->name, env->mhartid);
- #else
+     if (counter_idx == 0) {
+-        cfg_val = upper_half ? ((uint64_t)env->mcyclecfgh << 32) :
++        cfg_val = rv32 ? ((uint64_t)env->mcyclecfgh << 32) :
+                   env->mcyclecfg;
+     } else if (counter_idx == 2) {
+-        cfg_val = upper_half ? ((uint64_t)env->minstretcfgh << 32) :
++        cfg_val = rv32 ? ((uint64_t)env->minstretcfgh << 32) :
+                   env->minstretcfg;
+     } else {
+-        cfg_val = upper_half ?
++        cfg_val = rv32 ?
+                   ((uint64_t)env->mhpmeventh_val[counter_idx] << 32) :
+                   env->mhpmevent_val[counter_idx];
+         cfg_val &= MHPMEVENT_FILTER_MASK;
+@@ -1262,7 +1266,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
+ 
+     if (!cfg_val) {
+         if (icount_enabled()) {
+-                curr_val = inst ? icount_get_raw() : icount_get();
++            curr_val = inst ? icount_get_raw() : icount_get();
+         } else {
+             curr_val = cpu_get_host_ticks();
+         }
+@@ -1294,13 +1298,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
+     }
+ 
+ done:
+-    if (riscv_cpu_mxl(env) == MXL_RV32) {
+-        result = upper_half ? curr_val >> 32 : curr_val;
+-    } else {
+-        result = curr_val;
+-    }
+-
+-    return result;
++    return upper_half ? curr_val >> 32 : curr_val;
+ }
+ 
+ static RISCVException riscv_pmu_write_ctr(CPURISCVState *env, target_ulong val,
 -- 
 2.51.0
 
