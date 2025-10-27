@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7226C0D1FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:19:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D51B9C0D1B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:15:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL9Y-00068T-6R; Mon, 27 Oct 2025 07:12:44 -0400
+	id 1vDL9b-0006Mh-NI; Mon, 27 Oct 2025 07:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL9I-0005fu-UU
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:29 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1vDL9Q-0005s1-Fk
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:36 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL98-0007aV-H2
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:28 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-63c12ff0c5eso8919387a12.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:13 -0700 (PDT)
+ id 1vDL9A-0007cZ-0X
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:36 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-b6d855ca585so471685266b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563530; x=1762168330; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563535; x=1762168335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3K5oRo7LWMzZl+QpfA7sUsVfS53Gw1PvvtIAKjntjao=;
- b=gXgWuVMU/FI2ra3vVJZPW5fa5VnBGpIDFbMV/o191w87/CZ4MObZHSSpHmPBRCAKDo
- uA2MINhFLbIa+g6hUs3qFC8g85f9QBhDZqQEU0PO9G3IBMqDY/xL6kwcOLXsIAlFDGCj
- qHe5frxXa7Q+HHqdyfGTtloMBNOKOeELhRxbJmylO/lNirFtk3C7q+uXXn6SOPwRyoB5
- jWKdpoMQ5DWiACPKcLd1AAINNzPzYlnnOMZEHniCEmK3Rak6qGILODiOfbZ3whYik40t
- hAAZr2mjNO9D9InGATr1ENUeLiyAfmj1CvKuK4ph8o5YwPgpj+MbyGS4DGcGSBOtAgSy
- CVOw==
+ bh=4PhvPHHz2nKzNx0dR+rkbmZq1ESoRDt6FUBPfkcoyms=;
+ b=wFIIH1LW/SN5gWuu1FNeYKW0lOBFUVQhuL+8AFprkZHWzsPCicgd4XOJWmBWwq9VcT
+ F4l8oaXV3gwoD/4nHhy+3GYL8XUbsgNjLY/kdYWDFUDboUjRiMiOo6stAhQgVuUCCfB4
+ 3nh2GGN/m7UxtG8bp5zt5np9UM3N6eCTs1CnDbS8x4nAgYfw3RNepcfSI7gvnAoOaNeS
+ 9ASBa0yfNQguM6adc52tbMAsok+T8qmx+zm0O5lsBddDqaXY9Le0YRg8fK1rH5hgxV3s
+ Oq5qgDmmeXyL1xZG7eKD9mAFKXORHyErHK4k0GHw34b/lMhVa2jRck+Xn/TmOielkQTp
+ 4MgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563530; x=1762168330;
+ d=1e100.net; s=20230601; t=1761563535; x=1762168335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3K5oRo7LWMzZl+QpfA7sUsVfS53Gw1PvvtIAKjntjao=;
- b=DWYWhoR+gjyKDC78JZBweEEkbBuReVNBKA1zE1eMDewRnJK84wvEEQ1MswhL47cm0Y
- UpvU1RwIh+hUo/yKp2CPp+wsLnQOP5JRINOlX67PZ4RvU7/GaqpdTFY/wI/aIZtyGToe
- GX1DrHNza7I8FvylwEJn9BQv3GmYRdrr93ntcSOZ7f143lk0lioQ14nYGx+tmvcXfQKD
- FRS/ZXqfpajQaFwV0Udv7SXopEu/E6MiVz++fEGCaxeFD0+fCBiYyBszwEvcGRqu1Mpm
- z+QKt7QMfl5CfR2Acn4hQy0Zs+zGRWDuZl8LCBvhphV5gLIL+yTierk7O8gkzywfpTjI
- oXMQ==
-X-Gm-Message-State: AOJu0YwCzOjATEi5IYOCt7NyS/QraGKGH/2wFDWj7wmaJzTcSDY9QufC
- 2oiu7GaA//Vp5zTS2C3Jk0W1aK+QU86hPUHJfqp4BS4JDj+jXDhnMFqGael+bxPDoW4=
-X-Gm-Gg: ASbGncuYwjxSAaLY142l3yQzznSNIny59AKRQY+B6hKPiVCm5/borQZ3buugZeGfIre
- M/Xj5ewyHMyeaCYL4gAszqb5GR/g1/iTxPQR0ASUoYiIKB8aAWDVY5ZfYbBa59D4Gwixbvb67ag
- Qgyj52aVq6UnF9xNE48lwPXVnkKE0bIBQP+VWHwmH621lOkVkQd8ljAkYWkqZem/0PMW7j8Fd9R
- V2UAIt8dCyJcanPVXaV49YUMAEuuurJ4lCMqtWdoOc9Ksuok0iAcG/nlSWi1b50JRxLXbW8BG1S
- o7kJAo07z6Ro07uTt2NBtdGPDzM3H1VlfQ0liZwRBN738YdfTPqCFz5NKrEm1Vi7+OqHPxWFSjk
- nGOUiK14T4eI2+XnqbKgu8668u39NKtV1CuMf9Mj55qFm0zj+zR/IixyZs61f7bGeqtDOXSuUlp
- FmREoH/IBt7Po=
-X-Google-Smtp-Source: AGHT+IGRNtHaeBs6dkf1tkgtMQn/OMS4FTT0K2dUS+olDng6buVSaegQ/gjnJk3ecwVpMDLXGGR0GQ==
-X-Received: by 2002:a05:6402:51cb:b0:62d:6601:a6cf with SMTP id
- 4fb4d7f45d1cf-63e5eb18e5cmr10018586a12.9.1761563530082; 
- Mon, 27 Oct 2025 04:12:10 -0700 (PDT)
+ bh=4PhvPHHz2nKzNx0dR+rkbmZq1ESoRDt6FUBPfkcoyms=;
+ b=Cb04qQpTFY0c9ufPzTIC0iXdEeLzzP/+ABWYA/fOBbgvMTZD/7Knb2g0XsRCcJsQRG
+ 6w1wz1dZldomUNOBpGIqn1GsoO4p45ED/8E2qYs2DZESUDaS/zn83QNYiPJOje62S0xn
+ 67qzgcQnb4W30xNaSmBpHu4a9WDYPmJXDuvMeJlMDQtb7Eyp2FlZgcCOuFkRGdBOq52X
+ j5lzqYxVUPziXcBgX0l0EIBYdVB/13SKe8q5jlRav3vFVCgBhUjZdbYgLxKhhGUvIq5E
+ 8b1D/P2O/kEupL+OBykbm6RlA04GxGIFQM4eHqGJXqbr6+hSQA6fglH8xth5ifPF6WNQ
+ 8oaw==
+X-Gm-Message-State: AOJu0YwaOUgCUkhXxwGRY96/gwl3PVeWhKyn1t6JvsFatNVYzlVm4yjk
+ rSd942vqxeL7DIlX7uV711tA4r/peFmLO4IRBWHSqppv0lj9rhUoqnjFwdLrsOJO3QU=
+X-Gm-Gg: ASbGncsSaq9uOnFUCNcJfD3Iu7Hh7VSXSVq7c8/nTX83H9nZjN05upYShAfqkJ/rc5v
+ 0+yizNIy8XY7PWHYVhXCYOX/cP+lzYZodHtSfXJyqbRL8GD/xJ/Hq2NUfa/HBQCroh5ZoaRRzWv
+ chbRuSVJMtVOkXlpNFAs9AeGYGAOroekXDYjOUL8Juu9YuhqPxbDAfzzAWmB61tlSR1kCSbkXPW
+ WhZNIzRv+BifVPayP1iSIfZd2TyxDDYRpeL8dWDJzmoZgNS9w1pD17j+DgzJR5X+vysac0YpcKL
+ wY30aAXir/uRkRzwP0VnjCrUxjzudJICu0OFcWKWN6hHjtIyeOUVOBQGL9fBLwScqF+zl1NCCOT
+ Fqyb5m+FF8EIpI0wkZyqzzLr+yKRF0rPUBBT1uKaQxr2LjUIuDyp0SQj7mBIxJiuiZFWtYfeeqd
+ 9x
+X-Google-Smtp-Source: AGHT+IFvvCvIty1DfR5lRQdjx9oxrgbu4HcCbWQum7FpsPzWGCkS4/ZxOKXh/Bm3P5OVv9Aw1Mskyg==
+X-Received: by 2002:a17:907:3e0c:b0:b6d:7e04:7a24 with SMTP id
+ a640c23a62f3a-b6d7e047d4cmr934588966b.36.1761563535106; 
+ Mon, 27 Oct 2025 04:12:15 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63e7ef95cb9sm6162656a12.17.2025.10.27.04.12.08
+ a640c23a62f3a-b6d8548ed8fsm737084866b.73.2025.10.27.04.12.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 04:12:08 -0700 (PDT)
+ Mon, 27 Oct 2025 04:12:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2C36161528;
+ by draig.lan (Postfix) with ESMTP id 460455F929;
  Mon, 27 Oct 2025 11:03:47 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,24 +93,24 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH 32/35] plugins/core: add missing QEMU_DISABLE_CFI annotations
-Date: Mon, 27 Oct 2025 11:03:39 +0000
-Message-ID: <20251027110344.2289945-33-alex.bennee@linaro.org>
+Subject: [PATCH 33/35] configs: drop SBSA_REF from minimal specification
+Date: Mon, 27 Oct 2025 11:03:40 +0000
+Message-ID: <20251027110344.2289945-34-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,48 +126,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the memory callbacks come directly from the generated code
-however we have do have a a direct from C callback for the slow-path
-and memory helpers.
+The whole point of SBSA_REF is for testing firmware which by
+definition requires TCG. This means the configuration of:
 
-There is also a reset callback that calls out to plugins.
+  --disable-tcg --with-devices-aarch64=minimal
 
-Like the other plugin points we need to disable CFI as we are making
-function calls to dynamically linked libraries.
+makes no sense (and indeed is broken for the
+ubuntu-24.04-aarch64-notcg) test. Drop it from minimal and remove the
+allow_failure from the test case.
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3175
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- plugins/core.c   | 1 +
- plugins/loader.c | 1 +
- 2 files changed, 2 insertions(+)
+ configs/devices/aarch64-softmmu/minimal.mak          | 1 -
+ .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 35a252d2729..8f8bc7219c2 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -668,6 +668,7 @@ void exec_inline_op(enum plugin_dyn_cb_type type,
-     }
- }
+diff --git a/configs/devices/aarch64-softmmu/minimal.mak b/configs/devices/aarch64-softmmu/minimal.mak
+index 0ebc1dca561..3c8582e12cc 100644
+--- a/configs/devices/aarch64-softmmu/minimal.mak
++++ b/configs/devices/aarch64-softmmu/minimal.mak
+@@ -6,4 +6,3 @@
+ #
  
-+QEMU_DISABLE_CFI
- void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
-                              uint64_t value_low,
-                              uint64_t value_high,
-diff --git a/plugins/loader.c b/plugins/loader.c
-index ba10ebac993..0dbe7bea263 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -318,6 +318,7 @@ struct qemu_plugin_reset_data {
-     bool reset;
- };
- 
-+QEMU_DISABLE_CFI
- static void plugin_reset_destroy__locked(struct qemu_plugin_reset_data *data)
- {
-     struct qemu_plugin_ctx *ctx = data->ctx;
+ CONFIG_ARM_VIRT=y
+-CONFIG_SBSA_REF=y
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
+index 46db9ae0138..ee13587d99e 100644
+--- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
++++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
+@@ -107,7 +107,5 @@ ubuntu-24.04-aarch64-notcg:
+   rules:
+     - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+       when: manual
+-      allow_failure: true
+     - if: "$AARCH64_RUNNER_AVAILABLE"
+       when: manual
+-      allow_failure: true
 -- 
 2.47.3
 
