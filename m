@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C8AC0D194
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DE7C0D1F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:17:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL9z-0006jy-2d; Mon, 27 Oct 2025 07:13:11 -0400
+	id 1vDLA1-0007AE-Mo; Mon, 27 Oct 2025 07:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL9i-0006gV-EX
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:54 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1vDL9g-0006d3-Mg
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:53 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL9D-0007c4-6E
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:54 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-63bea08a326so6450069a12.3
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:16 -0700 (PDT)
+ id 1vDL9D-0007dk-EQ
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:12:52 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-63d6ee383bdso9783529a12.2
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563534; x=1762168334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563537; x=1762168337; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MOIWat0zdvoLqu/dm2Cji7uUG0JRvbRh67vkFVnoxR0=;
- b=iW9VegSAwyykgu1vq5W01FUJ+YhkX1BGgNjBs5vO+zMsZ8rdB22gmk5TSYHQKl6T/f
- eQCsfRpQ3j7FDGy5IE9SCKTCDEHagDVfOZ5VqrGIn3YbMaruOIqv9zSZ4BzXsXZnNljt
- WBOwU1O7agn7NLuOZkOcrknciSyHMIP9thIv8mrO9uKrgI8BWRbD47L83bJ/e/gdMlJE
- 8U6CfdNp4PRMAKcsbpkV3HMLFkJRMJ+X3FD33Tn/QeIP1QpCWM7DQID1Ronhj6FqV/2S
- SsVu4PR1BPNJBF//UxJic9HKvzb7XsrLw4KAm4RNX2Tn9xF81x487ICYlV8KH12IrIZh
- 5ggQ==
+ bh=W/iOxgVLV7ayfoY5ug7v4UBSScUkrPrd3MmiVSvSTZ8=;
+ b=wXcgQe5yVb/onyd75PQDNyyLH4zEYZlSDUVqTI7oNKbCeNdOuy47I/F4eh667zeYu2
+ 5PYUe0VEkSexE5toCZKjflzuWUl3JUUb4ivvBsNqLK9geNF1vwlQRhy3atN7NvcNSPtT
+ WBdT3fDtoX6tG3unummcAepqtgroSclW4T8tCYn0rygKBVVASpzSCoYj9irbrDvWylBN
+ aJgl4yg73VPIUKmquvv/t8CeFjUa/j3D+ZJsq4RwzvXPGRXvVTcfF/VB/hczZ7aZAh8W
+ T+q/e7KhcYEC4N/q/9V/Qk04r61ABtCU4Qn+mG839MxzI7leS9LAuW0+EA5Ssycei0zg
+ cjJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563534; x=1762168334;
+ d=1e100.net; s=20230601; t=1761563537; x=1762168337;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MOIWat0zdvoLqu/dm2Cji7uUG0JRvbRh67vkFVnoxR0=;
- b=HJUM88/TUH8USh8zmJ7CqF547dHrTOj5AWXsTGHIzGT66uYjSo2BRSyDYzRBZZa7/k
- YXmzjfI9UBND4VGQDcsbDFySdDFF7glqfIVdzyFda8ielPxj2teuf6wWWcOuoUVllh3U
- IKCsdpKs0b+9bDpf59yId2mMeNCZ3IyaLmMGWlnRzM2VneKGXzZ2D9WBDLscv78kg2LM
- RNMd2A90omzjq5mrBjAhqTaYdZzo16FMK5vfoToq7O/E0ZtyTdZ4J6pyfnaSX4lqHPO4
- lUPCiK+7c7dRFAEwrrL6vqqs3MtCmnGqAxpKSj7QaD77/BJSAKkBGrVgoSQCpH1I9RSX
- sXFQ==
-X-Gm-Message-State: AOJu0Yw51ImSf5Q4AFV7O9bF1wEleaC1CZWzg9z4Yah99qhxzUXTNa5v
- RkguCeJYqmAfVU9PNDgOFvQOUFVJs9E3QrdDH33PIj/XyL9X/+EghlQ7v6QmHuTP5rg=
-X-Gm-Gg: ASbGncvB7WeF8bfq3dpnDMyl8zVdgXDxF9Vd+zcvqkhaJlajZ/b+2Jgnq5nmO76KMuR
- A6hAFIFYn2sl0gxG+sf8kHBKc8N1QsckvmvvmCyZhgrDoSu8W0isHq3hh0wJRTpIjnstyxrh4ph
- FRCL4oR8S0O2kTTlOFgGhzQ99Bfj+ykzSdoqVYLiTnnsDUEwNzk+RQuEOKtF+BGCnKKWLjJlPEm
- 2GxveYD+YBVr6TbJUC0+5gXXiVqWTvg9DX5QcOcIFepyiTZ/ogQQtZAcIf6ia0785Q6yfQXfYTm
- ojA13Ok5bsLaoKcHPDFPe9bINibpaGZMuFVpAYvA3t94oP4QNMcuOeozJG4E69ky/sf0OosoTHw
- VU3k7eZgM6cwAP1q42O6l/YnLKgkDDeeuz97ZgzCCcagXT9uo7FqecOrjxQIAGxrhEQ6ZmhHjZQ
- scDp9hQe1/zr4=
-X-Google-Smtp-Source: AGHT+IG7xohgDbdCZpEaQql0WKu05/9DRCJ7c6eaYimOVb8vqucvzuXNIHI9wIYvrcQfxrfUbcLyJw==
-X-Received: by 2002:a05:6402:4504:b0:634:ab34:ed40 with SMTP id
- 4fb4d7f45d1cf-63c1f580cf2mr34888236a12.0.1761563533781; 
- Mon, 27 Oct 2025 04:12:13 -0700 (PDT)
+ bh=W/iOxgVLV7ayfoY5ug7v4UBSScUkrPrd3MmiVSvSTZ8=;
+ b=lMksADHTJZRFJM3EPnMnzWlOUUMZkcTgYH3xrYvyJ/5V+7LCNdkY4njS6MoNLLvMxF
+ gHborwauUXu9bl8dj1DujCRenRqBa5WAuj5FPBAFWTYVTPBpJ2s9DhpFrc1wTLytpvSh
+ CzNOR02HhHU2ElKnXTPJewvLyK+N6Ar6J/UhLhw3DTERU/Qr6tzyxjiEHqQ/+Ymas/Nj
+ rrXa3Kyg1G12b+/5Kmt9LTJCz51icladJjVcpPcHHEAFJopL5krs5eUQDZfnkN09+TNU
+ Sa51Oscge9KUYZRRZNa4w35d3qPlRL+2FGhWEabhk7MePetdlKWIEfOZZeDLozA6iZ/w
+ irAw==
+X-Gm-Message-State: AOJu0YxBOj2epC912+CL+Oyz80BNFCyAUKHt4Qa6vvVGxfOthNttS33F
+ FreGpzgQdLc7C2o+H5snCmck9apHgKk5Qbi6ECDLjgNkKLvAlUlQiW1C5vDZoEb6dSI=
+X-Gm-Gg: ASbGnctYeBETx7F/pB8dyBKMCdYGAfjZtORudKvoxJhw2CKsylmie86oLrJvKOAm9Sk
+ Q6wL5NbPrSQgl6LDWJFCqZhlkAgVm9OKTocz/B9Szo/oqY2uoisI6uOeeqk5ahmwqYKLw8RWodS
+ hceesLAy5eHmWHLtgeziFsxVE91Wy0sKYF2PDNozD1PZ29wiViIS+gO4OO6UWurvsyJ2RlJHAIa
+ ZZscVITALwcTdTv/WlFA+LphLW0a5PCsVXOzKpBgYDGAEH6ZRnO+weiRIc313bJswpUA7L2sFnv
+ PYzHv2obp1uMGjfIMY8tIaP4hTHI3tt8z33Ad2mVnVcpc6jiz0QYArif6RnkLx9T1ow4lAtA+yq
+ Y2s4Z/S9CJkwBbswCa9IsyiKEgXy8MNN2yCM8C0YhGwWgOfs7GQ3JdrJkxyxmaqIWimrjxVlQpJ
+ 3RtDj/yYKv86k=
+X-Google-Smtp-Source: AGHT+IGhsq9zSRESJBDIy2OiiKM1bVTFG6U4x3jHc5iycQNI9bx7qUJrdez6Sl0r++blgXVMg0SA3A==
+X-Received: by 2002:a05:6402:268a:b0:62a:a4f0:7e4f with SMTP id
+ 4fb4d7f45d1cf-63c1f6c21e0mr33780942a12.29.1761563537074; 
+ Mon, 27 Oct 2025 04:12:17 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63e7ef95cb9sm6162733a12.17.2025.10.27.04.12.10
+ 4fb4d7f45d1cf-63e7ef82b6esm6076455a12.11.2025.10.27.04.12.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 27 Oct 2025 04:12:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BC74960CB8;
+ by draig.lan (Postfix) with ESMTP id D4DBB60D8F;
  Mon, 27 Oct 2025 11:03:45 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -93,17 +93,17 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>, Julian Ganz <neither@nut.email>
-Subject: [PATCH 18/35] target/microblaze: call plugin trap callbacks
-Date: Mon, 27 Oct 2025 11:03:25 +0000
-Message-ID: <20251027110344.2289945-19-alex.bennee@linaro.org>
+Subject: [PATCH 19/35] target/mips: call plugin trap callbacks
+Date: Mon, 27 Oct 2025 11:03:26 +0000
+Message-ID: <20251027110344.2289945-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -133,65 +133,62 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places the hook for MicroBlaze targets. This architecture
-has one special "exception" for interrupts and no host calls.
+This change places hooks for MIPS targets. We consider the exceptions
+NMI and EXT_INTERRUPT to be asynchronous interrupts rather than
+exceptions.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/microblaze/helper.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/mips/tcg/system/tlb_helper.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
-index cf577a72268..a1857b72172 100644
---- a/target/microblaze/helper.c
-+++ b/target/microblaze/helper.c
-@@ -27,6 +27,7 @@
- #include "qemu/host-utils.h"
- #include "exec/log.h"
- #include "exec/helper-proto.h"
+diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
+index 1e8901556d6..566924b079e 100644
+--- a/target/mips/tcg/system/tlb_helper.c
++++ b/target/mips/tcg/system/tlb_helper.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/bitops.h"
 +#include "qemu/plugin.h"
  
+ #include "cpu.h"
+ #include "internal.h"
+@@ -1034,6 +1035,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
+     bool update_badinstr = 0;
+     target_ulong offset;
+     int cause = -1;
++    uint64_t last_pc = env->active_tc.PC;
  
- G_NORETURN
-@@ -35,6 +36,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
- {
-     CPUMBState *env = cpu_env(cs);
-     uint32_t esr, iflags;
-+    uint64_t last_pc = env->pc;
- 
-     /* Recover the pc and iflags from the corresponding insn_start.  */
-     cpu_restore_state(cs, retaddr);
-@@ -54,6 +56,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
-     env->ear = addr;
-     env->esr = esr;
-     cs->exception_index = EXCP_HW_EXCP;
-+    qemu_plugin_vcpu_exception_cb(cs, last_pc);
-     cpu_loop_exit(cs);
- }
- 
-@@ -152,6 +155,7 @@ void mb_cpu_do_interrupt(CPUState *cs)
-     CPUMBState *env = &cpu->env;
-     uint32_t t, msr = mb_cpu_read_msr(env);
-     bool set_esr;
-+    uint64_t last_pc = env->pc;
- 
-     /* IMM flag cannot propagate across a branch and into the dslot.  */
-     assert((env->iflags & (D_FLAG | IMM_FLAG)) != (D_FLAG | IMM_FLAG));
-@@ -256,6 +260,12 @@ void mb_cpu_do_interrupt(CPUState *cs)
-     env->res_addr = RES_ADDR_NONE;
-     env->iflags = 0;
- 
-+    if (cs->exception_index == EXCP_IRQ) {
+     if (qemu_loglevel_mask(CPU_LOG_INT)
+         && cs->exception_index != EXCP_EXT_INTERRUPT) {
+@@ -1052,6 +1054,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
+         cs->exception_index = EXCP_NONE;
+         mips_semihosting(env);
+         env->active_tc.PC += env->error_code;
++        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+         return;
+     case EXCP_DSS:
+         env->CP0_Debug |= 1 << CP0DB_DSS;
+@@ -1336,6 +1339,14 @@ void mips_cpu_do_interrupt(CPUState *cs)
+                  env->CP0_Status, env->CP0_Cause, env->CP0_BadVAddr,
+                  env->CP0_DEPC);
+     }
++    switch (cs->exception_index) {
++    case EXCP_NMI:
++    case EXCP_EXT_INTERRUPT:
 +        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+    } else {
++        break;
++    default:
 +        qemu_plugin_vcpu_exception_cb(cs, last_pc);
 +    }
-+
-     if (!set_esr) {
-         qemu_log_mask(CPU_LOG_INT,
-                       "         to pc=%08x msr=%08x\n", env->pc, msr);
+     cs->exception_index = EXCP_NONE;
+ }
+ 
 -- 
 2.47.3
 
