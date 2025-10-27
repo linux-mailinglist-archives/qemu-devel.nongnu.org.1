@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3310DC11841
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D36C11845
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 22:19:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDUaR-0002Y0-IN; Mon, 27 Oct 2025 17:17:07 -0400
+	id 1vDUaw-0002aq-Ej; Mon, 27 Oct 2025 17:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUa3-0002V0-1N
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZx-0002Uo-8q
  for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:48 -0400
 Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZr-00050i-Vw
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:42 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vDUZr-00050z-Vx
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 17:16:36 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 367CE620C3;
+ by tor.source.kernel.org (Postfix) with ESMTP id 5FF41620C4;
+ Mon, 27 Oct 2025 21:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510F7C4CEF1;
  Mon, 27 Oct 2025 21:16:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26491C113D0;
- Mon, 27 Oct 2025 21:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1761599785;
- bh=VeL3ZXV3FK5/cHF42CD+YyZEYgcAswTH8PNBcOcNxOg=;
+ s=k20201202; t=1761599788;
+ bh=+GhzTgilJrazmWbh75bvGEDpXtSwiYUhbOKItG96eAM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PXRlRFU+N+ewBFJVWma7J1YRm/+FKeobqtxS6ANUqsQPSmUhHeyKdqeJYdtsD1RNw
- +cszmlyFCRHrvsAs0LIUz0oWMu/CJNNoJ9p8x9ASrNAVF9sWb/PdAgvgqsWiw0Jsx0
- 0EAWJr011PYEsShdXCS8xeyZeE6B+X/xpuOmSqQQV0dD/W0vi05Id1mUOYqekNS70v
- b7vkWy1cm5zjROlwRKir0YIkb04DaJhC2pkgyAUgAoWOqUoM0asU0Rq7n+7pVlEdkv
- zGJwC79NS2/2qKv00iI/wnbAPv8l/1e1CrWbwqjzW1g8fuLHRRdfAvzkTxQ+v1vwe8
- b6kb9MM8LosfQ==
+ b=k/GHOdWVigYE7Ppo913wh0oh8dvi4C8emqEZpOw2qeMphzOmoHvhuq3FrHXIK/syp
+ lro2fZ6pY5I20xLzgNuqmfPU8H/koMKXyxj6didOd/kujAMlxoI6UJCHj5/HQV5/Gv
+ VvRmdekPvlmFgXj0wz8FZh+uD6Wlm+HeRDejnok/RXM3828Wkm5p+1TDBr4Li8h2gG
+ hJUfjqq7JYpgbw/gQcumRjk+WtBsFvHzcM80G2/IuCghez6hm3/lHVKCN5/7NyAIs2
+ VjqsHn31LtoFng9XCjd4OPrEvDESXcfiPuKrsbv1qJCljm75rtBUwN/FyVbdjcSHgl
+ 3tRgbtX1IQibg==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>
@@ -38,14 +38,14 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fam Zheng <fam@euphon.net>,
  Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, deller@gmx.de
-Subject: [PULL 08/11] hw/hppa: Add NCR 710 SCSI driver to LASI chip Kconfig
- entry
-Date: Mon, 27 Oct 2025 22:16:00 +0100
-Message-ID: <20251027211603.7141-9-deller@kernel.org>
+Subject: [PULL 09/11] hw/hppa: PCI devices depend on availability of PCI bus
+Date: Mon, 27 Oct 2025 22:16:01 +0100
+Message-ID: <20251027211603.7141-10-deller@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251027211603.7141-1-deller@kernel.org>
 References: <20251027211603.7141-1-deller@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
  envelope-from=deller@kernel.org; helo=tor.source.kernel.org
@@ -72,49 +72,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The LASI chip is a multi I/O chip used in many older PA-RISC machines.
-It includes functionality for NCR710 SCSI, serial, parallel, audio,
-i82596 networking and PS/2 ports.
+Only create the PCI serial ports (DIVA) and PCI network cards when there is
+actually a PCI bus. The shortly added 715 machine will not have a PCI bus, so
+avoid creating further PCI devices.
 
-Add the functionality for NCR710_SCSI to the LASI Kconfig option
-and move over the relevant parts from the generic HPPA_B160L Kconfig
-option to get the dependency right.
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/hppa/Kconfig | 2 --
- hw/misc/Kconfig | 5 +++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ hw/hppa/machine.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
-index cab21045de..9ede4d1140 100644
---- a/hw/hppa/Kconfig
-+++ b/hw/hppa/Kconfig
-@@ -17,7 +17,5 @@ config HPPA_B160L
-     select IDE_CMD646
-     select MC146818RTC
-     select LSI_SCSI_PCI
--    select LASI_82596
--    select LASIPS2
-     select PARALLEL
-     select ARTIST
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 4e35657468..fccd735c24 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -212,6 +212,11 @@ config VIRT_CTRL
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index bec5a86f24..31eeba72b4 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -387,20 +387,22 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+                         enable_lasi_lan());
+     }
  
- config LASI
-     bool
-+    select LASI_82596
-+    select LASIPS2
-+    select NCR710_SCSI
-+    select PARALLEL
-+    select SERIAL_MM
+-    pci_init_nic_devices(pci_bus, mc->default_nic);
+-
+-    /* BMC board: HP Diva GSP */
+-    dev = qdev_new("diva-gsp");
+-    if (!object_property_get_bool(OBJECT(dev), "disable", NULL)) {
+-        pci_dev = pci_new_multifunction(PCI_DEVFN(2, 0), "diva-gsp");
+-        if (!lasi_dev) {
+-            /* bind default keyboard/serial to Diva card */
+-            qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(0));
+-            qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(1));
+-            qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(2));
+-            qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(3));
++    if (pci_bus) {
++        pci_init_nic_devices(pci_bus, mc->default_nic);
++
++        /* BMC board: HP Diva GSP PCI card */
++        dev = qdev_new("diva-gsp");
++        if (dev && !object_property_get_bool(OBJECT(dev), "disable", NULL)) {
++            pci_dev = pci_new_multifunction(PCI_DEVFN(2, 0), "diva-gsp");
++            if (!lasi_dev) {
++                /* bind default keyboard/serial to Diva card */
++                qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(0));
++                qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(1));
++                qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(2));
++                qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(3));
++            }
++            pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+         }
+-        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+     }
  
- config ALLWINNER_SRAMC
-     bool
+     /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
 -- 
 2.51.0
 
