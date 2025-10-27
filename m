@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F47C0D0C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:06:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC76C0D0B3
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 12:05:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDL2R-0001gI-Vt; Mon, 27 Oct 2025 07:05:24 -0400
+	id 1vDL2A-0001GR-VO; Mon, 27 Oct 2025 07:05:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL2P-0001eq-Ei
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:22 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1vDL26-0001CJ-19
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:02 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vDL1a-0005dn-JI
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:20 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-63c31c20b64so7306306a12.1
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:03:54 -0700 (PDT)
+ id 1vDL1V-0005iG-BO
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 07:05:01 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-b50645ecfbbso944162866b.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 04:04:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761563032; x=1762167832; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761563042; x=1762167842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FdYYc9UfPJiJOmUk4OWh6nheP5mSB2HOK4r3KtorV48=;
- b=iizFSWCne8dtm4AE8rAmqRWuFEYhpe7lTw/Fubft+FpBsD35TdVMUjHAkPmqX5LaGV
- xp/QOmMyPa2lFgTqnxaL7ck6WHWFzw3vbG8KiRcB74UobMCPLe31xWSv2Oj8O+CiS19T
- lBHluuZc4ZMw0JXGQSNr34koFzqJwtAmSIzKr8HxMu2vZXRSxLkSqWyOkEsFAC+a0nT2
- 7TgU2OLerF4y6wJ5IcI1ffD/3HsV4yvwJaHXLOQosxyPYH7mMJzWvQ23NnqV3I6RMWYJ
- x/dulghvbgw2dJgteam8D9pYTaDBdnU9+vIIEv84uM15VjVzrGIte6a5JjNlAtiWKkrF
- WPtg==
+ bh=67CkZCuN3cp9w2dJxnK8m/N1W6WVM4gtmx6Huv90J+s=;
+ b=gmvpzK1uGmljiKgapt1i9oSAA7nescFn9+c9lKqBpYUBAzUOok8MGdGRa1CjKbCOqw
+ ahwUUqU5Qr8l+6gN6xo2wp1z72q0q2px3E3iG53LBuqXg+fZZkfwXN4J0IXOW8nBzaWS
+ sYp+jIiTuA4OpxtWqZnFxrYU8ee3rH1BeTZI+Rfyw8Twy1AypFAE+zB5y5WcSQxEIP3/
+ eQnaoIg0rAX/3IoozilZiEE6DgyT6WIfk8mafwP2t5DeJLARcW9Z9Jfs9VatjP2ztZCw
+ ihE081alPpzSGQIi0ewvYUHULhHvBc7yuZ46jkmjWdrW61vYLf8E7wAGnJ+RDruDpebk
+ KJWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761563032; x=1762167832;
+ d=1e100.net; s=20230601; t=1761563042; x=1762167842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FdYYc9UfPJiJOmUk4OWh6nheP5mSB2HOK4r3KtorV48=;
- b=YCb+WbWsMkzmaMkLkE636/qf+AUlZV12J64cpsEx5uKLP9K6penEIi+fy25Xt2yhMF
- BA8e+OdX1hux/U3raDiIsNfy120yLOdo1GIMVTguBBFuKgDtRg4E2pmKuAitivTWScMb
- uxjMjbvnWpZb/HBelGO6NhMMk0BQVwlpN0z2cNmuNixttY1W0qwGt/kvV2tpEjqh4HMH
- iidgfjDW90co0fKY1++iDADcc9wjKoIsZa+lp0Xy8TAsFWe8BLhQU0iZ9R7d0sbVpSuA
- HdaqrNbeBxl3CNsVjKRnQBvY1mw2SBMro5u8qM8CNZ1ev8Ib8IGPI2d25OyGQRfZ9VAB
- qXJA==
-X-Gm-Message-State: AOJu0YxS3O6bWFwFFQqH5APL3iATEy0YUspw6g9gNsa+CNbpaD+IoS7D
- sKY1bRomJaW42aGg47X2TXxSMXl2KztT+rvZb7lh65IEtwALA6qY19D5oblDEkKRxu8=
-X-Gm-Gg: ASbGncuKB91JRvX7MFASM+UzHxc2NygC0D2ZEnWqSX1CeczeJ1kt70/duaZofwhkaGY
- 9Kwe332BtDdrT1FxfvdXJ8yBgInUj904Tns7ng7WD/MqBkd7XtrDq106nR6iCkhha53MAPIRkoD
- sAT128DdcoWKfYA4m1G5OZZ1xpOkw7SXxz0ceG2l1ESnFlf/CEyQpXU8ThRYsLYTAp+ldE9ampl
- 3zKymYzGynfjd1ThKjMrg7uHpUMYe4iBiJQ8eyu9PYHoVPbf0W5J8H/ziaXNK5MYUslwmPYxUY2
- YG0joMD4dOUY+NBUMkNs7Ca7cQkvEo9SL+Pt2AjXufZGX3+hFAFLhh80FsyP57SgjLvwaO6Qozo
- vhS9driXti3gG/zMZJdGdMc2lQdvU9dramT+RHb4JSegu7KQAtq5lgSJ8iy8daxg7x4kVZADUKc
- fQTrtDVrJjIVE=
-X-Google-Smtp-Source: AGHT+IE146XaimMpIxyppkc5SJJoPLUyMmLDLovFokulHH30KUzEQB5Xf7fiUrkKHn734LTDcCF5qA==
-X-Received: by 2002:a05:6402:51d1:b0:63c:3efe:d996 with SMTP id
- 4fb4d7f45d1cf-63c3efeee79mr31902705a12.20.1761563032280; 
- Mon, 27 Oct 2025 04:03:52 -0700 (PDT)
+ bh=67CkZCuN3cp9w2dJxnK8m/N1W6WVM4gtmx6Huv90J+s=;
+ b=JMKsgb0M+zBhQ2QY91Y2+tmE5DP+MGGvAd24MwTwHXBP5ko8OSOYPfJzEHt5C6vT5C
+ k3K0/5lM2enlQYvQKgIRocls6NKkVYCj5y9XCpweZGqmqWEumwEiwm93+69/dvEKOMYe
+ pJTOrWM6L77BrGyb/DQWVrvtDIOfsWtDcnnIbdaxc6A+RzCoXXJ00iiUcgC6S45O2vdt
+ 6Y0bfdSkhJ5DXSAGgt+urM6s588adaSXXvP/ZVWX0edVHU0PND37puHZeOtmtGwJY0w3
+ jMWetQhVwV5uxjqYvfTjFjWJIFdR+Sh4BZ8MD0EhaBrHoHxJr5jHyQLIK/p87OpJtVkV
+ goKA==
+X-Gm-Message-State: AOJu0Ywg8WVIYcLRKABO0Rw5GIFD/A8HoroXMRsMhM2rel7lwc8qw6Rw
+ sRnG06fimmoqiRRW9txU4Ve9vw0tCAFinsd6PXvMJE5oKbtnLxEt0VOH1bYetfW5mCc=
+X-Gm-Gg: ASbGncslo8wfOF641BdyEosWuyOUmT50OXr5y59dY1bFjMnShDpUEdeTupnXrCK9P1c
+ Qvcz9oZuMd43kXzuGZJCZgx/38W/ro21Sh/q2e8cYArQuw4KUV1sCh9EJ345HLS7f7OI7S9/Gax
+ rPGFWckyb1Gzlalnucoa680l3V1mCssw2JyX4gMFufnW0YAle9XyEBsaJXowF7iWl+TC9/0Lsd7
+ WYiC1HN9x8kDw/kNVMm5mAayvgsNmFIOWFp+IyLQHcnvbHUebABgk373dZh0Ty1a5nhv6j3rDMh
+ WqCZWTTiFt9cmYst3sfd4WoY6Hu3u4mFB+HHKMK22AdDbmfqC93qiLT9F0s3bluC6SXI/whsZ+O
+ Y2j0Zb6z8DEw7Mu9ItAMN7GC0YsgGXVzUYWiRX+OkY8A/kbenG8ZRN6L5rKeCjb3WNfs4gPky8U
+ 3GQajA8UVDUpXlBEmAXPtHDA==
+X-Google-Smtp-Source: AGHT+IFAymNmJTdejyHUdyfAt8q8b+EN6fltsBo84Abf5ft1cxc9OuxCZfv2BkJqjWbVt1OZ6HI0Ww==
+X-Received: by 2002:a17:906:fe4c:b0:b55:c30d:c9fc with SMTP id
+ a640c23a62f3a-b6472b628a4mr4160361366b.11.1761563042192; 
+ Mon, 27 Oct 2025 04:04:02 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63ecf3686c5sm356035a12.36.2025.10.27.04.03.47
+ a640c23a62f3a-b6d85369697sm757975966b.26.2025.10.27.04.03.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 04:03:49 -0700 (PDT)
+ Mon, 27 Oct 2025 04:03:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 13AD460915;
- Mon, 27 Oct 2025 11:03:45 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id BD79360F82;
+ Mon, 27 Oct 2025 11:03:46 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
@@ -93,25 +93,24 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Rolnik <mrolnik@gmail.com>,
  Song Gao <gaosong@loongson.cn>, qemu-riscv@nongnu.org,
  Aleksandar Rikalo <arikalo@gmail.com>, Julian Ganz <neither@nut.email>
-Subject: [PATCH 10/35] contrib/plugins: add plugin showcasing new dicontinuity
- related API
-Date: Mon, 27 Oct 2025 11:03:17 +0000
-Message-ID: <20251027110344.2289945-11-alex.bennee@linaro.org>
+Subject: [PATCH 28/35] target/xtensa: call plugin trap callbacks
+Date: Mon, 27 Oct 2025 11:03:35 +0000
+Message-ID: <20251027110344.2289945-29-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251027110344.2289945-1-alex.bennee@linaro.org>
 References: <20251027110344.2289945-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NEW_PRODUCTS=1.249,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,142 +128,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Julian Ganz <neither@nut.email>
 
-We recently introduced new plugin API for registration of discontinuity
-related callbacks. This change introduces a minimal plugin showcasing
-the new API. It simply counts the occurances of interrupts, exceptions
-and host calls per CPU and reports the counts when exitting.
+We recently introduced API for registering callbacks for trap related
+events as well as the corresponding hook functions. Due to differences
+between architectures, the latter need to be called from target specific
+code.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+This change places hooks for xtensa targets.
+
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/about/emulation.rst    |  8 ++++
- contrib/plugins/traps.c     | 83 +++++++++++++++++++++++++++++++++++++
- contrib/plugins/meson.build |  2 +-
- 3 files changed, 92 insertions(+), 1 deletion(-)
- create mode 100644 contrib/plugins/traps.c
+ target/xtensa/exc_helper.c  | 6 ++++++
+ target/xtensa/xtensa-semi.c | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 8a5e128f677..92c219119e8 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -1015,6 +1015,14 @@ interesting to generate them around a particular point of execution::
-     # generate trace around init execution (2 seconds):
-     $ uftrace dump --chrome --time-range=1753122320~1753122322 > init.json
+diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
+index b611c9bf97c..fdc522698dc 100644
+--- a/target/xtensa/exc_helper.c
++++ b/target/xtensa/exc_helper.c
+@@ -32,6 +32,7 @@
+ #include "exec/helper-proto.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/atomic.h"
++#include "qemu/plugin.h"
  
-+Count traps
-+...........
-+
-+``contrib/plugins/traps.c``
-+
-+This plugin counts the number of interrupts (asyncronous events), exceptions
-+(synchronous events) and host calls (e.g. semihosting) per cpu.
-+
- Other emulation features
- ------------------------
+ void HELPER(exception)(CPUXtensaState *env, uint32_t excp)
+ {
+@@ -207,6 +208,8 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+     CPUXtensaState *env = cpu_env(cs);
  
-diff --git a/contrib/plugins/traps.c b/contrib/plugins/traps.c
-new file mode 100644
-index 00000000000..d5ddc0f3dd6
---- /dev/null
-+++ b/contrib/plugins/traps.c
-@@ -0,0 +1,83 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2025, Julian Ganz <neither@nut.email>
-+ *
-+ * Traps - count traps
-+ *
-+ * Count the number of interrupts (asyncronous events), exceptions (synchronous
-+ * events) and host calls (e.g. semihosting) per cpu and report those counts on
-+ * exit.
-+ */
+     if (cs->exception_index == EXC_IRQ) {
++        uint64_t last_pc = env->pc;
 +
-+#include <stdio.h>
-+
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+typedef struct {
-+    uint64_t interrupts;
-+    uint64_t exceptions;
-+    uint64_t hostcalls;
-+} TrapCounters;
-+
-+static struct qemu_plugin_scoreboard *traps;
-+
-+static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                        enum qemu_plugin_discon_type type, uint64_t from_pc,
-+                        uint64_t to_pc)
-+{
-+    TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu_index);
-+    switch (type) {
-+    case QEMU_PLUGIN_DISCON_INTERRUPT:
-+        rec->interrupts++;
-+        break;
-+    case QEMU_PLUGIN_DISCON_EXCEPTION:
-+        rec->exceptions++;
-+        break;
-+    case QEMU_PLUGIN_DISCON_HOSTCALL:
-+        rec->hostcalls++;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+        break;
-+    }
-+}
-+
-+static void plugin_exit(qemu_plugin_id_t id, void *p)
-+{
-+    g_autoptr(GString) report;
-+    report = g_string_new("VCPU, interrupts, exceptions, hostcalls\n");
-+    int max_vcpus = qemu_plugin_num_vcpus();
-+    int vcpu;
-+
-+    for (vcpu = 0; vcpu < max_vcpus; vcpu++) {
-+        TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu);
-+        g_string_append_printf(report,
-+                               "% 4d, % 10"PRId64", % 10"PRId64", % 10"PRId64
-+                               "\n", vcpu, rec->interrupts, rec->exceptions,
-+                               rec->hostcalls);
-+    }
-+
-+    qemu_plugin_outs(report->str);
-+    qemu_plugin_scoreboard_free(traps);
-+}
-+
-+QEMU_PLUGIN_EXPORT
-+int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-+                        int argc, char **argv)
-+{
-+    if (!info->system_emulation) {
-+        qemu_plugin_outs("Note: interrupts are only reported in system"
-+                         " emulation mode.");
-+    }
-+
-+    traps = qemu_plugin_scoreboard_new(sizeof(TrapCounters));
-+
-+    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_ALL,
-+                                        vcpu_discon);
-+
-+    qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-+
-+    return 0;
-+}
-diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-index 7eb3629c95d..eb944b5159a 100644
---- a/contrib/plugins/meson.build
-+++ b/contrib/plugins/meson.build
-@@ -1,6 +1,6 @@
- contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
-                    'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
--                   'uftrace']
-+                   'traps', 'uftrace']
- if host_os != 'windows'
-   # lockstep uses socket.h
-   contrib_plugins += 'lockstep'
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s(EXC_IRQ) level = %d, cintlevel = %d, "
+                       "pc = %08x, a0 = %08x, ps = %08x, "
+@@ -218,6 +221,7 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[INTSET], env->sregs[INTENABLE],
+                       env->sregs[CCOUNT]);
+         handle_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+     }
+ 
+     switch (cs->exception_index) {
+@@ -238,9 +242,11 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[CCOUNT]);
+         if (env->config->exception_vector[cs->exception_index]) {
+             uint32_t vector;
++            uint64_t last_pc = env->pc;
+ 
+             vector = env->config->exception_vector[cs->exception_index];
+             env->pc = relocated_vector(env, vector);
++            qemu_plugin_vcpu_exception_cb(cs, last_pc);
+         } else {
+             qemu_log_mask(CPU_LOG_INT,
+                           "%s(pc = %08x) bad exception_index: %d\n",
+diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
+index 431c263dc57..9d9c6254a30 100644
+--- a/target/xtensa/xtensa-semi.c
++++ b/target/xtensa/xtensa-semi.c
+@@ -35,6 +35,7 @@
+ #include "system/memory.h"
+ #include "qapi/error.h"
+ #include "qemu/log.h"
++#include "qemu/plugin.h"
+ 
+ enum {
+     TARGET_SYS_exit = 1,
+@@ -197,6 +198,7 @@ void HELPER(simcall)(CPUXtensaState *env)
+     CPUState *cs = env_cpu(env);
+     AddressSpace *as = cs->as;
+     uint32_t *regs = env->regs;
++    uint64_t last_pc = env->pc;
+ 
+     switch (regs[2]) {
+     case TARGET_SYS_exit:
+@@ -433,4 +435,5 @@ void HELPER(simcall)(CPUXtensaState *env)
+         regs[3] = TARGET_ENOSYS;
+         break;
+     }
++    qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+ }
 -- 
 2.47.3
 
