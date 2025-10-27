@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2E2C0D07F
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 11:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FEEC0DBC2
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 13:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDKuF-0006q4-MX; Mon, 27 Oct 2025 06:56:55 -0400
+	id 1vDMmP-0002HL-Dj; Mon, 27 Oct 2025 08:56:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDKuB-0006nF-U2
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:56:52 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <zhaoguohan_salmon@163.com>)
+ id 1vDCIw-0001AV-HN
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 21:45:50 -0400
+Received: from m16.mail.163.com ([117.135.210.3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDKu6-0004YG-TX
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 06:56:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761562607; x=1793098607;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=tBi0DDOGa1sTaTA9yS+f/khOO57uDsMBL7lkmcWwF84=;
- b=d4sEnyJb0rSFJmOav70PWUNbUdBseOclAtY5RZvl5BLzax3W0sJ5uPfU
- C4TF53WALjkrVHhqOmnZ+TXTa9xqYV554Ahm2tN/I3tGwI/KeyDXPXT+9
- m61zeOf8AvwLOmcaBY71CITON6WdtP6JN6g39lMfnYiBYQW0D9eXgykqZ
- yJXQg5ONa/is5APfCyTyQpFi24MAxT37v9ZbB1NsgPbri6aJlbHaE2pBl
- juIrBESttq8rElReHqivfIcKlcYP6ydooLVTBoBApzFeDmYwRKH9PS/Ps
- DUav9Qej1p2Y3FuYSfqGvJTh0Ekev6s4InGiozfPEP1WeNWx9B6wweqYx A==;
-X-CSE-ConnectionGUID: ec/gtVWgRe60JHg48vzntw==
-X-CSE-MsgGUID: +pxuqcRfRuOEW/Fznzo3SQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67281303"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="67281303"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 03:56:41 -0700
-X-CSE-ConnectionGUID: C0KV7ngJTDyAD1zQ6vTykQ==
-X-CSE-MsgGUID: 73+ArOTiRlu8W1oS+/dCIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="222224397"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 27 Oct 2025 03:56:37 -0700
-Date: Mon, 27 Oct 2025 19:18:47 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
- Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
-Subject: Re: [PATCH v3 10/20] i386/cpu: Add missing migratable xsave features
-Message-ID: <aP9VF7FkfGeY6B+Q@intel.com>
-References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-11-zhao1.liu@intel.com>
- <0dc79cc8-f932-4025-aff3-b1d5b56cb654@intel.com>
- <aP9HPKwHPcOlBTwm@intel.com>
+ (Exim 4.90_1) (envelope-from <zhaoguohan_salmon@163.com>)
+ id 1vDCIt-0004bF-EA
+ for qemu-devel@nongnu.org; Sun, 26 Oct 2025 21:45:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:To:Subject:Date:Message-ID:Content-Type:
+ MIME-Version; bh=74vbux3O9aOpjh2GDNxVJNluH5LBz4mgBHYS71a33wc=;
+ b=hNHtpcnvxjKBCfGpeUFRGV0gZHd0t3nfDUZ650PWk6YbaRFLCctCVtXCux8W51
+ 7lL20OjYQFp3R69X+JamQ96LcesmXcm5uKAy/QkRqSxgyqQ7Q5T4sudcLLIp5wgF
+ B+m3Cx3p3JgsNyDObCp4ikYE2pBMdPGOl5L+5JPD/eM3w=
+Received: from SEZPR03MB6714.apcprd03.prod.outlook.com (unknown [])
+ by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wB3v7G2zv5oi1OfBA--.165S2;
+ Mon, 27 Oct 2025 09:45:28 +0800 (CST)
+From: "zhaoguohan_salmon@163.com" <zhaoguohan_salmon@163.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Subject: Request for QEMU Wiki account
+Thread-Topic: Subject: Request for QEMU Wiki account
+Thread-Index: AQHcRuNbNAo9tAO4ikasUjTtyuTMrA==
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date: Mon, 27 Oct 2025 01:45:22 +0000
+Message-ID: <SEZPR03MB671446308755C442896589ABFDFCA@SEZPR03MB6714.apcprd03.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: 
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+msip_labels: 
+Content-Type: multipart/alternative;
+ boundary="_000_SEZPR03MB671446308755C442896589ABFDFCASEZPR03MB6714apcp_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aP9HPKwHPcOlBTwm@intel.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: _____wB3v7G2zv5oi1OfBA--.165S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRQVy4UUUUU
+X-Originating-IP: [2603:1046:101:4e::5]
+X-CM-SenderInfo: 52kd0wpxrkt0xbvdzzlrq6il2tof0z/1tbiFA-vEGj5wuS8iQACsk
+Received-SPF: pass client-ip=117.135.210.3;
+ envelope-from=zhaoguohan_salmon@163.com; helo=m16.mail.163.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 27 Oct 2025 08:56:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,36 +77,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 27, 2025 at 06:19:40PM +0800, Zhao Liu wrote:
-> Date: Mon, 27 Oct 2025 18:19:40 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH v3 10/20] i386/cpu: Add missing migratable xsave
->  features
-> 
-> > Though the feature expansion in x86_cpu_expand_features() under
-> > 
-> > 	if (xcc->max_features) {
-> > 		...
-> > 	}
-> > 
-> > only enables migratable features when cpu->migratable is true,
-> > x86_cpu_enable_xsave_components() overwrite the value later.
-> 
-> I have not changed the related logic, and this was intentional...too,
-> which is planed to be cleaned up after CET.
+--_000_SEZPR03MB671446308755C442896589ABFDFCASEZPR03MB6714apcp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-There's only 1 use case of migratable_flags, so I would try to drop
-it directly.
+Hello,
 
-The xsave-managed/enabled feature is not suitable as the configurable
-feature. Therefore, it is best to keep it non-configurable as it is
-currently.
+My patch has been merged and I was asked to update the ChangeLog page
+on the QEMU wiki (https://wiki.qemu.org/ChangeLog/10.2).
 
-At least with this fix, the support for the new xsave feature —
-including APX next — will not be broken, and the migratable flag
-refactoring will become a separate RFC.
+Could you please help create a wiki account for me?
+Preferred username: zhaoguohan
 
-Regards,
-Zhao
+Thank you!
+Best regards,
+Guohan Zhao
+
+--_000_SEZPR03MB671446308755C442896589ABFDFCASEZPR03MB6714apcp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Hello,</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+My patch has been merged and I was asked to update the ChangeLog page</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+on the QEMU wiki (https://wiki.qemu.org/ChangeLog/10.2).</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Could you please help create a wiki account for me?</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Preferred username: zhaoguohan</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Thank you!</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Best regards,</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Guohan Zhao</div>
+</body>
+</html>
+
+--_000_SEZPR03MB671446308755C442896589ABFDFCASEZPR03MB6714apcp_--
 
 
