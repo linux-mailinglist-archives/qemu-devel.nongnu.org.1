@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3E9C0C806
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 10:01:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9965C0C08B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 08:05:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDJ5H-0004C2-E3; Mon, 27 Oct 2025 05:00:11 -0400
+	id 1vDHHb-0005bO-7m; Mon, 27 Oct 2025 03:04:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDJ59-0004Au-UK
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:00:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vDHHZ-0005bA-8b
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 03:04:45 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDJ56-0002YM-OV
- for qemu-devel@nongnu.org; Mon, 27 Oct 2025 05:00:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761555596;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=XZUl7HRBPcEusP4+ie7ACy7kl0AnVZqiBGsnVbFuRhE=;
- b=CYOc5g+VX58y9D+WJfWoziggMt9zlPy7x+U4FaJzbtu1eyZSmCaDPuZusFYTux09ShWT3J
- 2TZGMqYDQmGLvJs8HDVd+/FgBD7LAY0Td0AKGeRnSetP4OVBH8PrqwDanRhk188lhh11Z7
- PH2lG2dWr+bH6LGDAZE20fWwLfUEX88=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-NjKFreRqP36lrxkeJ9WkJQ-1; Mon,
- 27 Oct 2025 04:59:54 -0400
-X-MC-Unique: NjKFreRqP36lrxkeJ9WkJQ-1
-X-Mimecast-MFC-AGG-ID: NjKFreRqP36lrxkeJ9WkJQ_1761555593
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7813180A225; Mon, 27 Oct 2025 08:59:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 403A91800578; Mon, 27 Oct 2025 08:59:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E7B4821E6773; Mon, 27 Oct 2025 09:59:48 +0100 (CET)
-Resent-To: guobin@linux.alibaba.com, qemu-devel@nongnu.org, farosas@suse.de
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 27 Oct 2025 09:59:48 +0100
-Resent-Message-ID: <87a51cpvnf.fsf@pond.sub.org>
-X-From-Line: armbru@redhat.com  Mon Oct 27 07:45:03 2025
-X-Original-To: armbru
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8983F21E6935; Mon, 27 Oct 2025 07:45:03 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
- guobin@linux.alibaba.com
-Subject: [PATCH 3/3] migration: Put Error **errp parameter last
-Date: Mon, 27 Oct 2025 07:45:03 +0100
-Message-ID: <20251027064503.1074255-4-armbru@redhat.com>
-In-Reply-To: <20251027064503.1074255-1-armbru@redhat.com>
-References: <20251027064503.1074255-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vDHHW-0004mN-LN
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 03:04:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761548683; x=1793084683;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=olAYm4gwdFtK3VGM0wCNtaciXqun0aHCPvoDQqsoDLM=;
+ b=gevn+QOATwJwxysZYXsD3u048chDuuVFht48TcHfvsB1uVzvu784Hrbn
+ tdwRaBwDaxBb2NdJzxAbNDuGIAoHNjIpUvS7u1nZJWq4yE3Yr7S2VEMoU
+ +jg+dz0PEY0CSaeOf94Zvhfubu/j0aqCv1x3MVNuLpFcaKBWM7r6aqcCr
+ MEFMPpfEEmyej/RUO411hu4c8nDis6THXDuiDmybzSoUPHjAVh4DT27pK
+ 3vEMzNGIWPej29eoubZ2iYd3JUrhAr8M5b718lG86+cmhmfZzpRGkUGkY
+ Ey+cy+RE83yRojgJFqOsK4GB06qY//AP36a5pHNB8kEmL0TSE8d/swnPV w==;
+X-CSE-ConnectionGUID: 11FkFejRSOqCLW1AtY9wSA==
+X-CSE-MsgGUID: O5pIMP1iSeu/bMs+i6GrAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62652237"
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="62652237"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 00:04:39 -0700
+X-CSE-ConnectionGUID: pcqZwjFkQKSVJmCzokiDAw==
+X-CSE-MsgGUID: +O+eNcOeS6S+1Im4f28zTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="184583506"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
+ ([10.124.238.14])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 00:04:35 -0700
+Message-ID: <2d9f489e-dfa5-4bd1-bc7f-62223f81c167@intel.com>
+Date: Mon, 27 Oct 2025 15:04:29 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Lines: 64
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/20] i386/cpu: Make ExtSaveArea store an array of
+ dependencies
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao
+ <chao.gao@intel.com>, John Allen <john.allen@amd.com>,
+ Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
+References: <20251024065632.1448606-1-zhao1.liu@intel.com>
+ <20251024065632.1448606-6-zhao1.liu@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20251024065632.1448606-6-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ HK_RANDOM_ENVFROM=0.57, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,68 +90,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qapi/error.h's big comment:
+On 10/24/2025 2:56 PM, Zhao Liu wrote:
+> Some XSAVE components depend on multiple features. For example, Opmask/
+> ZMM_Hi256/Hi16_ZMM depend on avx512f OR avx10, and for CET (which will
+> be supported later), cet_u/cet_s will depend on shstk OR ibt.
+> 
+> Although previously there's the special check for the dependencies of
+> AVX512F OR AVX10 on their respective XSAVE components (in
+> cpuid_has_xsave_feature()), to make the code more general and avoid
+> adding more special cases, make ExtSaveArea store a features array
+> instead of a single feature, so that it can describe multiple
+> dependencies.
+> 
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+ > --->   target/i386/cpu.c | 71 
+++++++++++++++++++++++++++++++++++-------------
+>   target/i386/cpu.h |  9 +++++-
+>   2 files changed, 59 insertions(+), 21 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index b9a5a0400dea..cd269d15ce0b 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -2020,53 +2020,77 @@ static const X86RegisterInfo32 x86_reg_info_32[CPU_NB_REGS32] = {
+>   ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
+>       [XSTATE_FP_BIT] = {
+>           /* x87 FP state component is always enabled if XSAVE is supported */
+> -        .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
+>           .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
+> +        .features = {
+> +            { FEAT_1_ECX,           CPUID_EXT_XSAVE },
+> +        },
+>       },
+>       [XSTATE_SSE_BIT] = {
+>           /* SSE state component is always enabled if XSAVE is supported */
+> -        .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
+>           .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
+> +        .features = {
+> +            { FEAT_1_ECX,           CPUID_EXT_XSAVE },
+> +        },
+>       },
+>       [XSTATE_YMM_BIT] = {
+> -        .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
+>           .size = sizeof(XSaveAVX),
+> +        .features = {
+> +            { FEAT_1_ECX,           CPUID_EXT_AVX },
+> +        },
+>       },
+>       [XSTATE_BNDREGS_BIT] = {
+> -        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+>           .size = sizeof(XSaveBNDREG),
+> +        .features = {
+> +            { FEAT_7_0_EBX,         CPUID_7_0_EBX_MPX },
+> +        },
+>       },
+>       [XSTATE_BNDCSR_BIT] = {
+> -        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+>           .size = sizeof(XSaveBNDCSR),
+> +        .features = {
+> +            { FEAT_7_0_EBX,         CPUID_7_0_EBX_MPX },
+> +        },
+>       },
+>       [XSTATE_OPMASK_BIT] = {
+> -        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+>           .size = sizeof(XSaveOpmask),
+> +        .features = {
+> +            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
+> +        },
+>       },
+>       [XSTATE_ZMM_Hi256_BIT] = {
+> -        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+>           .size = sizeof(XSaveZMM_Hi256),
+> +        .features = {
+> +            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
+> +        },
+>       },
+>       [XSTATE_Hi16_ZMM_BIT] = {
+> -        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+>           .size = sizeof(XSaveHi16_ZMM),
+> +        .features = {
+> +            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
+> +        },
+>       },
+>       [XSTATE_PKRU_BIT] = {
+> -        .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
+>           .size = sizeof(XSavePKRU),
+> +        .features = {
+> +            { FEAT_7_0_ECX,         CPUID_7_0_ECX_PKU },
+> +        },
+>       },
+>       [XSTATE_ARCH_LBR_BIT] = {
+> -        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
+>           .size = sizeof(XSaveArchLBR),
+> +        .features = {
+> +            { FEAT_7_0_EDX,         CPUID_7_0_EDX_ARCH_LBR },
+> +        },
+>       },
+>       [XSTATE_XTILE_CFG_BIT] = {
+> -        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+>           .size = sizeof(XSaveXTILECFG),
+> +        .features = {
+> +            { FEAT_7_0_EDX,         CPUID_7_0_EDX_AMX_TILE },
+> +        },
+>       },
+>       [XSTATE_XTILE_DATA_BIT] = {
+> -        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+>           .size = sizeof(XSaveXTILEDATA),
+> +        .features = {
+> +            { FEAT_7_0_EDX,         CPUID_7_0_EDX_AMX_TILE },
+> +        },
+>       },
+>   };
+>   
+> @@ -7137,10 +7161,13 @@ static const char *x86_cpu_feature_name(FeatureWord w, int bitnr)
+>       if (w == FEAT_XSAVE_XCR0_LO || w == FEAT_XSAVE_XCR0_HI) {
+>           int comp = (w == FEAT_XSAVE_XCR0_HI) ? bitnr + 32 : bitnr;
+>   
+> -        if (comp < ARRAY_SIZE(x86_ext_save_areas) &&
+> -            x86_ext_save_areas[comp].bits) {
+> -            w = x86_ext_save_areas[comp].feature;
+> -            bitnr = ctz32(x86_ext_save_areas[comp].bits);
+> +        if (comp < ARRAY_SIZE(x86_ext_save_areas)) {
+> +            /* Present the first feature as the default. */
+> +            const FeatureMask *fm = &x86_ext_save_areas[comp].features[0];
 
- * - Functions that use Error to report errors have an Error **errp
- *   parameter.  It should be the last parameter, except for functions
- *   taking variable arguments.
+It doesn't look right to me.
 
-is_only_migratable() and add_blockers() have it in the middle.  Clean
-them up.
+E.g., when users are requesting IBT, thus CET_U and CET_S, they might 
+get "shstk" not avaiable.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- migration/migration.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> +            if (fm->mask != 0) {
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 5f1c83aafd..8a06b54167 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1867,7 +1867,7 @@ static bool is_busy(Error **reasonp, Error **errp)
-     return false;
- }
- 
--static bool is_only_migratable(Error **reasonp, Error **errp, unsigned modes)
-+static bool is_only_migratable(Error **reasonp, unsigned modes, Error **errp)
- {
-     ERRP_GUARD();
- 
-@@ -1881,7 +1881,7 @@ static bool is_only_migratable(Error **reasonp, Error **errp, unsigned modes)
-     return false;
- }
- 
--static int add_blockers(Error **reasonp, Error **errp, unsigned modes)
-+static int add_blockers(Error **reasonp, unsigned modes, Error **errp)
- {
-     for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-         if (modes & BIT(mode)) {
-@@ -1904,12 +1904,12 @@ int migrate_add_blocker_normal(Error **reasonp, Error **errp)
- 
- int migrate_add_blocker_modes(Error **reasonp, unsigned modes, Error **errp)
- {
--    if (is_only_migratable(reasonp, errp, modes)) {
-+    if (is_only_migratable(reasonp, modes, errp)) {
-         return -EACCES;
-     } else if (is_busy(reasonp, errp)) {
-         return -EBUSY;
-     }
--    return add_blockers(reasonp, errp, modes);
-+    return add_blockers(reasonp, modes, errp);
- }
- 
- int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-@@ -1919,7 +1919,7 @@ int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-     if (is_busy(reasonp, errp)) {
-         return -EBUSY;
-     }
--    return add_blockers(reasonp, errp, modes);
-+    return add_blockers(reasonp, modes, errp);
- }
- 
- void migrate_del_blocker(Error **reasonp)
--- 
-2.49.0
+Nit: if (fm->mask) is enough
 
+> +                w = fm->index;
+> +                bitnr = ctz32(fm->mask);
+> +            }
+>           }
+>       }
+>   
+> @@ -8610,11 +8637,15 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
+>           return false;
+>       }
+>   
+> -    if (env->features[esa->feature] & esa->bits) {
+> -        return true;
+> +    for (int i = 0; i < ARRAY_SIZE(esa->features); i++) {
+> +        if (env->features[esa->features[i].index] & esa->features[i].mask) {
+> +            return true;
+> +        }
+>       }
+> -    if (esa->feature == FEAT_7_0_EBX && esa->bits == CPUID_7_0_EBX_AVX512F
+> -        && (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
+> +
+> +    if (esa->features[0].index == FEAT_7_0_EBX &&
+> +        esa->features[0].mask == CPUID_7_0_EBX_AVX512F &&
+> +        (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
+>           return true;
+>       }
+>   
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index ac527971d8cd..6537affcf067 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1769,9 +1769,16 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+>   QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
+>   
+>   typedef struct ExtSaveArea {
+> -    uint32_t feature, bits;
+>       uint32_t offset, size;
+>       uint32_t ecx;
+> +    /*
+> +     * The dependencies in the array work as OR relationships, which
+> +     * means having just one of those features is enough.
+> +     *
+> +     * At most two features are sharing the same xsave area.
+> +     * Number of features can be adjusted if necessary.
+> +     */
+> +    const FeatureMask features[2];
+>   } ExtSaveArea;
+>   
+>   #define XSAVE_STATE_AREA_COUNT (XSTATE_XTILE_DATA_BIT + 1)
 
 
