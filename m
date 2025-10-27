@@ -2,64 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C412FC0E104
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1A7C0E10A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Oct 2025 14:34:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDNM9-0007lW-3N; Mon, 27 Oct 2025 09:33:53 -0400
+	id 1vDNMY-00081P-NR; Mon, 27 Oct 2025 09:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vDNL7-0007bc-NB; Mon, 27 Oct 2025 09:32:51 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vDNKm-0006e5-FA; Mon, 27 Oct 2025 09:32:35 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwCHdVxYdP9ooix2AA--.40632S2;
- Mon, 27 Oct 2025 21:32:08 +0800 (CST)
-Received: from [192.168.31.222] (unknown [113.246.234.35])
- by mail (Coremail) with SMTP id AQAAfwCX+udWdP9ogApxAA--.52278S2;
- Mon, 27 Oct 2025 21:32:07 +0800 (CST)
-Message-ID: <efe21350-fe9d-4bc9-acc1-8f761a875506@phytium.com.cn>
-Date: Mon, 27 Oct 2025 21:32:06 +0800
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNM8-0007pn-Dy
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:33:53 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDNLq-0006gr-PC
+ for qemu-devel@nongnu.org; Mon, 27 Oct 2025 09:33:51 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47118259fd8so34856685e9.3
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 06:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761572008; x=1762176808; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IGudUMXJypZmFhJTWH7zemPwnU0iRF1rcgzMtDBMZpg=;
+ b=vDyJ+SsjgUB6y8QjamyrFocj1Dj6g71EUWtGPSrRFls5D31+9BWxHfEsYTydVWSWyA
+ NNmHjTncJIv+wGghpMTD16KaZkP6BgAakcU74T5EM7S+LYa8z9lABDuZReboPjJEftIK
+ ntR0t2mfSoKmc8DGHqRSmhOHx9i48K9zSBbCFfDysanL1b5LuwP80B36YXRYfGv9v/St
+ t+nhdpZITCvyjBRKtLhjRWL9TPKbpjBeyjOpRhST5sTYt7wilVpI5JvQGZUEQaxR3B4c
+ rnNq3Tkby69xmCxOf9Bt2Rn1REqHr/bpAD586oKULRuvXF4GIi2AIgRd9eQQqDKGa4sS
+ B7og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761572008; x=1762176808;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IGudUMXJypZmFhJTWH7zemPwnU0iRF1rcgzMtDBMZpg=;
+ b=uBNgjpDjHnC5b1r4ibEcLX7ATmRlNIGp5l+uwIin72/9duz9DlDMBM/sWR7Ye2v5er
+ Td3h85rRsu/s8qdsP46iZmtvvZ/u4jRNtWu9q+CM2pogo9YPWodAvD0Fjlk2Wlf5YNbs
+ AGzUWCRWmjDWA+48dUPs6O9RAW4umTcryCUZcH+lxNMTN895DfBNeYDWZOVGdP8eypdE
+ 7d+/BXHyWzlK4GZhl0SbLRfLk9JUxxN9DwGITQ3N3iIDpaytBa4ZjtCD6ayL1YRNtHrB
+ mbHmt8aDbUL7PHybZUTGDIdL6pW5n+q6+KfzTnA6wlqp/IWqErSZlBdTYN8dN7ZHtEK2
+ /6CQ==
+X-Gm-Message-State: AOJu0Yz60p56UVRGFNMcOm8zz43eYBk8X509/W0hXxV7gu8qKnjphBkr
+ tWCxeeD9alTquwhEBSdWmYRlTxpBH5rK4GjmFkHPZE/Rg7Uv7Dci4amfMznMnR4nVAQ=
+X-Gm-Gg: ASbGncuWtXVT9j3u/DJEZckVcpEE4DO2k7ryooQDUFyp10a0KncNQ13gC04nWVdn2EI
+ j1K0teM4AFgpKuBoDIwrktY7r5iTgoH6fa/StM3FvWCBKm49+ivICy5aP053RPYcVJzshqSaWJi
+ S+Rx5+0EErkCBI6VBzG2+ZmlKnwK7tvHsQwqJwK3Dw5YFldrIbj/Qv/6RDzXdEzFrumx61Igap7
+ xYhIVyTcm30xyqF7a+xWOwcYZGvCMBKS1teFOJZpwJmrV07wVWc962m7GZRLUbHM80an0S4RuC9
+ 25ohlsXlgMFTOcBSSK6/vIdrklJsUkeRAz4o+G4unyw/PlgDX7tqPiFx49TdQPr4wGcbEZcWj9C
+ Hyf3ZZywgCJSi3TXlI3bZSMnut9HLYvtG8ognIQwxUUmW7VskVlRIzN+sSF0L/qEgt2BwNFeoTQ
+ /rSdkishaiVhIkhS4cwSdPpz6Jj5iKkziye62cy8WOLAQ=
+X-Google-Smtp-Source: AGHT+IHJakbpTxKXRiG+Xswm2d75kPagyjFoC83ZHRXF2T/F03OwFv5/Klg989EQhbEL7U9LPvwjqQ==
+X-Received: by 2002:a05:600c:1c86:b0:477:fcb:226b with SMTP id
+ 5b1f17b1804b1-4770fcb2604mr42348315e9.2.1761572008144; 
+ Mon, 27 Oct 2025 06:33:28 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475dcbe5587sm164670195e9.0.2025.10.27.06.33.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Oct 2025 06:33:27 -0700 (PDT)
+Message-ID: <0199c5ce-9bb2-42f5-b545-8aaaf47364b0@linaro.org>
+Date: Mon, 27 Oct 2025 14:33:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 0/2] hw/misc: Introduce a new SMMUv3 test framework
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>
-References: <20250930165340.42788-1-tangtao1634@phytium.com.cn>
- <87v7k6lyp4.fsf@draig.linaro.org>
-From: Tao Tang <tangtao1634@phytium.com.cn>
-In-Reply-To: <87v7k6lyp4.fsf@draig.linaro.org>
+Subject: Re: [PATCH 0/6] hw: Log unassigned MMIO accesses with
+ unassigned_mem_ops
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Troy Lee <leetroy@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Helge Deller <deller@gmx.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Peter Xu <peterx@redhat.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+References: <20251027123644.63487-1-philmd@linaro.org>
+ <87pla8xzd2.fsf@draig.linaro.org>
+ <CAFEAcA-hWZei6ytAik5sjFcsYqbKaM6K5mzHepmGQpggAdbQmw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA-hWZei6ytAik5sjFcsYqbKaM6K5mzHepmGQpggAdbQmw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX+udWdP9ogApxAA--.52278S2
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAQBWj+ghAHuwAAss
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxKryfXF4kAryDCFWrCF4fuFg_yoWxZrWxpF
- Z3Ka43tF4kJF17Zr1xAw48ZFyYv393Aw45Gr1rKrn29ws0kr1vqFW3KFyrAasrWrW0qF1S
- v3yjvryDuan8AFJanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=tangtao1634@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,155 +111,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+On 27/10/25 14:26, Peter Maydell wrote:
+> On Mon, 27 Oct 2025 at 13:12, Alex Bennée <alex.bennee@linaro.org> wrote:
+>>
+>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+>>
+>>> Do not log unassigned MMIO accesses as I/O ones:
+>>> expose unassigned_mem_ops then use it instead of
+>>> unassigned_io_ops.
+>>
+>> But why? Is it because ioport.c is a x86 io thing?
+> 
+> 
+> There is a behaviour difference: unassigned_mem_ops
+> will fault (because of unassigned_mem_accepts()),
+> but unassigned_io_ops will be "reads as -1, writes
+> are ignored". This patch series doesn't mention any
+> intention of introducing a behaviour difference, so
+> I suspect this is not intended...
 
-On 2025/10/23 18:06, Alex Bennée wrote:
-> tangtao1634 <tangtao1634@phytium.com.cn> writes:
->
->> From: Tao Tang <tangtao1634@phytium.com.cn>
->>
->> This patch series (V2) introduces several cleanups and improvements to the smmu-testdev device. The main goals are to refactor shared code, enhance robustness, and significantly clarify the complex page table construction used for testing.
->>
->> Motivation
->> ----------
->>
->> Currently, thoroughly testing the SMMUv3 emulation requires a significant
->> software stack. We need to boot a full guest operating system (like Linux)
->> with the appropriate drivers (e.g., IOMMUFD) and rely on firmware (e.g.,
->> ACPI with IORT tables or Hafnium) to correctly configure the SMMU and
->> orchestrate DMA from a peripheral device.
->>
->> This dependency on a complex software stack presents several challenges:
->>
->> * High Barrier to Entry: Writing targeted tests for specific SMMU
->>      features (like fault handling, specific translation regimes, etc.)
->>      becomes cumbersome.
->>
->> * Difficult to Debug: It's hard to distinguish whether a bug originates
->>      from the SMMU emulation itself, the guest driver, the firmware
->>      tables, or the guest kernel's configuration.
->>
->> * Slow Iteration: The need to boot a full guest OS slows down the
->>      development and testing cycle.
->>
->> The primary goal of this work is to create a lightweight, self-contained
->> testing environment that allows us to exercise the SMMU's core logic
->> directly at the qtest level, removing the need for any guest-side
->> software.
-> I agree, an excellent motivation.
->
->> Our Approach: A Dedicated Test Device
->> -------------------------------------
->>
->> To achieve this, we introduce two main components:
->>
->> * A new, minimal hardware device: smmu-testdev.
->> * A corresponding qtest that drives this device to generate SMMU-bound
->>      traffic.
->>
->> A key question is, "Why introduce a new smmu-testdev instead of using an
->> existing PCIe or platform device?"
-> I curious what the split between PCIe and platform devices that need an
-> SMMU are. I suspect there is a strong split between the virtualisation
-> case and the emulation case.
+Oops... Good catch.
 
+> There are a couple of different but related concepts
+> here that we need to keep straight:
+> 
+> (1) x86 I/O ops, which are different CPU instructions
+> that talk to a different memory-space than MMIO
+> accesses. In QEMU we model these as accesses to the
+> address_space_io AddressSpace. I believe no other
+> target CPU has an equivalent to this.
 
-Thanks again for the insightful questions and for sparking this valuable 
-discussion.
+This is also my understanding.
 
+> (2) PCI "I/O" BARs. PCI devices can have both MMIO
+> and IO BARs. A PCI controller on x86 maps IO BARs
+> into the IO space, I think. On non-x86 the IO BARs
+> typically appear in a different window for MMIO
+> accesses. Behaviour of PCI I/O accesses to unimplemented
+> regions is probably defined by the PCI spec somewhere.
+> Behaviour of PCI accesses to unimplemented MMIO
+> window areas is I think technically left unspecified
+> by the PCI standard, but "write ignore/read -1" is
+> what x86 does and what most software expects, so
+> hardware that implements something else is making
+> its life unnecessarily difficult.
 
- From my observation of real-world, commercially available SoCs, the 
-SMMU is almost exclusively designed for and used with PCIe. Of course, 
-you're right that architecturally, the SMMU specification certainly 
-allows for non-PCIe clients. Peter's point about using the SMMU for the 
-GIC ITS in a Realm context is an excellent example. I've also personally 
-seen similar setups in the TF-A-Tests+FVP software stack, where platform 
-device, named SMMUv3TestEngine, was used to test the SMMU.
+Right, this is what I'd like to unify, ...
 
-However, from the perspective of QEMU's current implementation, there 
-are some significant limitations that guided the design of smmu-testdev. 
-At the moment, the SMMU model does not really support non-PCIe devices. 
-Two key issues are:
+> I suspect we entangle the PCI IO BAR concept and
+> implementation a bit more with the x86 I/O ops
+> implementation than we ideally ought to.
 
-- The IOMMU MemoryRegion, used with PCIe device, cannot be used with a 
-platform device, which is the primary mechanism for routing DMA traffic 
-through the IOMMU.
-
-- Internally, the SMMU code makes assumptions about its clients. For 
-instance, the smmu_get_sid() function explicitly expects a PCIe device 
-and has no path to acquire a StreamID for a platform device.
-
-Given this, the decision to model smmu-testdev as a minimal, PCI-like 
-device is a pragmatic one. It aligns with the most common real-world use 
-case while also working within the constraints of QEMU's current SMMU 
-implementation.
-
->> The answer lies in our goal to minimize complexity. Standard devices,
->> whether PCIe or platform, come with their own intricate initialization
->> protocols and often require a complex driver state machine to function.
->> Using them would re-introduce the very driver-level complexity we aim to
->> avoid.
->>
->> The smmu-testdev is intentionally not a conformant, general-purpose PCIe
->> or platform device. It is a purpose-built, highly simplified "DMA engine."
->> I've designed it to be analogous to a minimal PCIe Root Complex that
->> bypasses the full, realistic topology (Host Bridges, Switches, Endpoints)
->> to provide a direct, programmable path for a DMA request to reach the SMMU.
->> Its sole purpose is to trigger a DMA transaction when its registers are
->> written to, making it perfectly suited for direct control from a test
->> environment like qtest.
->>
->> The Qtest Framework
->> -------------------
->>
->> The new qtest (smmu-testdev-qtest.c) serves as the "bare-metal driver"
->> for both the SMMU and the smmu-testdev. It manually performs all the
->> setup that would typically be handled by the guest kernel and firmware,
->> but in a completely controlled and predictable manner:
->>
->> 1.  SMMU Configuration: It directly initializes the SMMU's registers to a
->>      known state.
->>
->> 2.  Translation Structure Setup: It manually constructs the necessary
->>      translation structures in memory, including Stream Table Entries
->>      (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
->>
->> 3.  DMA Trigger: It programs the smmu-testdev to initiate a DMA operation
->>      targeting a specific IOVA.
->>
->> 4.  Verification: It waits for the transaction to complete and verifies
->>      that the memory was accessed correctly after address translation by
->>      the SMMU.
->>
->> This framework provides a solid and extensible foundation for validating
->> the SMMU's core translation paths. The initial test included in this
->> series covers a basic DMA completion path in the Non-Secure bank,
->> serving as a smoke test and a proof of concept.
->>
->> It is worth noting that this series currently only includes tests for the
->> Non-Secure SMMU. I am aware of the ongoing discussions and RFC patches
->> for Secure SMMU support. To avoid a dependency on unmerged work, this
->> submission does not include tests for the Secure world. However, I have
->> already implemented these tests locally, and I am prepared to submit
->> them for review as soon as the core Secure SMMU support is merged
->> upstream.
-> What about other IOMMU's? Are there any other bus mediating devices
-> modelled in QEMU that could also benefit from the ability to trigger DMA
-> transactions?
-
-
-This is a great point that I haven't fully considered. To make sure I 
-understand correctly, are you referring to IOMMU implementations for 
-other architectures, such as VT-d on x86 or the ongoing IOMMU work for 
-RISC-V? I'll admit this is an area I haven't looked into. I'm very open 
-to ideas—do you or others have suggestions on how this test-device 
-pattern could be generalized or what would be needed to make it useful 
-across different architectures?
-
-Thanks again for the great feedback.
-
-Best regards,
-
-Tao
-
+... to disentangle that.
 
