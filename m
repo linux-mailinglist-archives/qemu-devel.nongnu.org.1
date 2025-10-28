@@ -2,94 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D6CC1370E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 09:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D777C13717
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 09:08:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDej5-0000is-Vi; Tue, 28 Oct 2025 04:06:44 -0400
+	id 1vDekN-00024n-F0; Tue, 28 Oct 2025 04:08:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeiK-0008M3-5R
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:05:57 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeiD-000193-M4
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:05:55 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-42421b1514fso3959115f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 01:05:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761638733; x=1762243533; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iLNTJJ29Ee3X1iQPo0J9sRKYXDME7PYcE1MlaahJ0F8=;
- b=NmbsCkdFO1bIXmdJPZU5bZmPxgf5ssytzFLmJLBu+iAO8MQO8Euwm1fpl0FSv2MkhR
- jVUuPj97s9f+Lq7Waz2GWX5rrBTYr0Pord70qhHz6verIv0VuR9M5XIzNC9P5V2MXWhg
- 9WS50bMnqQQ7OCZ//b5YytlMQ2bo8CQnnTdnTKWIymkU4zovi1f9aRBY7YVjjbHQLJfZ
- GpEZHNOzEpuKzhyuAznsOIh7InZtsUkccwWDeiQrczi/7oVbxvHiH48csvARNMOUhDvU
- vAK3c/Qj+bHA5ff6d2nI5X6857bQEvPHlFsJnJFgN3yAs5cyFzOINwErkw1cZnsJ9OpA
- b9IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761638733; x=1762243533;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iLNTJJ29Ee3X1iQPo0J9sRKYXDME7PYcE1MlaahJ0F8=;
- b=qfqHBG0UBvrJexfwZBR8TaIbqWbFL6d72dbJtJzTA6DPwcCedPartFXzCzjt8wtMjG
- 8vlEqj6l0jA3nigJdKoR46c8E2bWWrKcuV+Qy+EzZHUi3/yA3GbICCFtUmWWre9cD1lx
- 0aehzvvV5DxUKJF/02VJ1j3a12AM1/g+McMujoUpCqiSBnH0gPGGxQ9CAWGbah3sfCLr
- Ai+GabvOWYuy916VZ8Nu/B/NhExdvw1m6CLnQ6A9U4LO5QdJUSh6jjLeYVtmMOk09XTr
- znkuJ9SyjBGRfPIKkI67sQguNnNhNqPRMjKId3GIZtGOIUJJJhPa7bn48G35wADYBr26
- QKNg==
-X-Gm-Message-State: AOJu0YwqoT3bq7tFeQxQypdnD1ac6sOb7yFK8h/f/UoOU8wPXJha4pU/
- ZpT0b3xRzcihS0wH61G4y0aYPTaweuJSZiryRKUiYFDMq/n8ASKFM7RG2LF8Hpoo/bwZ6N5cTwO
- mRJYh9YI=
-X-Gm-Gg: ASbGncteaZ8NsEjEi1GbAh0kRISTOsQmz7z8u/mUeMv7JkJPmhgpcp5zOxZPJa8PRaR
- 2Fyvrjj/KyDtWhs/1Gzp8Li4PJxCkfXX6etJo5MGLH395uxHgFTP09djiYZj3KnlocFF5OdrF/2
- NDUXMNSeZ+G/+IMIRO8nwlNy+mo+8pJmJ+j+1gyfWwZ/H2UrLepbJCDRPiKgd4FKjigf0wJe8Xo
- r7AweMDJlL4ipP0lTOcEYU4CJIZYoJvSFAPrbLx3KECNVCVTZEvhSkGXvUlqhGnwVklRCrGX6Vs
- zWsdSxfsxb9U3uGRBUmn7SOfc5YTM7maazme0cHognYZx//bEj3HNJKWZyhLWDg6KBZMvVA2s8n
- NqbATDpNwSQ4HlIQuDKteENcJmsrYTkmrQJM0YsEkb2h1Yf/YXVnGXmyOXjCmRgPjKlyO/nGdx6
- BBv+hEglYH09ztCNwJNl1ZkqRzzuxthowpYgYrlgTP7ALg2ub8ddKrztCoUt6CnrFwUg==
-X-Google-Smtp-Source: AGHT+IHTV9tfboutLKGYM3eTyb+CR5VW0SOflc97As9XGisSmavfqFO11jtskHLKrFhaWBMZ+mW0Jw==
-X-Received: by 2002:a05:6000:40d9:b0:427:665:e37f with SMTP id
- ffacd0b85a97d-429a7e36fe9mr1801485f8f.4.1761638733488; 
- Tue, 28 Oct 2025 01:05:33 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952da12dsm19103620f8f.29.2025.10.28.01.05.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 01:05:33 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-ppc@nongnu.org,
- qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v2 7/7] hw/pci-bridge/pci_expander_bridge: Use proper SysBus
- accessors
-Date: Tue, 28 Oct 2025 09:02:57 +0100
-Message-ID: <20251028080258.23309-8-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vDeia-00008r-Py
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:06:13 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vDeiT-0001Cz-E0
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:06:11 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RHUbTD011771;
+ Tue, 28 Oct 2025 08:06:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=FgHfu5vHtVD9hL+RtkDX4JU+u0S3A87S6EbZImgsy
+ 2s=; b=sP30pYZ6/EUTJTu7CHlsIjUAnPGtR2m4BUb2/tkj549TC+xiMNocDN9Mg
+ DjrD+/y45Xr+OuJth35Ah7a1cl949k0UIJ3j3YDBOYAcwslTsAeWoA6qI8ykyQJQ
+ cE/BonoP6Ylv3BfoZpOKVM331mWP+ECbM7rHJOOPs+ZhPe9Qz1Lj4Tpxr8z4bVTr
+ sqmiqAd5mJIQXh2UtRIEC2RHIYqshnPYsn/xbp7MQREyg/AcX1XSgTgyuwE2KfxX
+ 8WZ0UXJ0lFeIT9jH6zAQmZ0RclyHBve2bGZos4YMxLk89+MEyeDpsN1xiqe/dCjy
+ 1iC+Gn8Q8MvCubSxKNCQ/ZzebrFIQ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0kytaqxj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Oct 2025 08:06:01 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S52oUU006764;
+ Tue, 28 Oct 2025 08:06:00 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1bk11dhm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Oct 2025 08:06:00 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59S85v9o30409108
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Oct 2025 08:05:57 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C1CB2004E;
+ Tue, 28 Oct 2025 08:05:57 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B96B20040;
+ Tue, 28 Oct 2025 08:05:55 +0000 (GMT)
+Received: from shivang.com (unknown [9.39.28.67])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Oct 2025 08:05:55 +0000 (GMT)
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: peter.maydell@linaro.org
+Cc: adityag@linux.ibm.com, harshpb@linux.ibm.com, qemu-devel@nongnu.org,
+ shivangu@linux.ibm.com, sourabhjain@linux.ibm.com, philmd@linaro.org
+Subject: [PATCH v2 0/2] ppc: Fixes for fadump feature
+Date: Tue, 28 Oct 2025 13:35:49 +0530
+Message-ID: <20251028080551.92722-1-shivangu@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251028080258.23309-1-philmd@linaro.org>
-References: <20251028080258.23309-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tO5q6IzcA-zC_mPyuIqAcuIKrQKbiQ2r
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAwMSBTYWx0ZWRfX4aGQZSS5ZrTW
+ uxaKRDbgU7Gz8o8X7x5xP6P+TCF6aA1UB/yUXapkOR763uSfTkB4ZBtMcaKoZ8Sno2QahJQ/WU6
+ w9IkbXQEvtFcLSobZvqVDTdkHHSiYXK12p76SY7IZ3VsHL+s2x9577QX+mSCra57Sa4233ZCBMr
+ NiGYQlFzzBeIYlF+PQxzTuW6iVLIqN4gA4ZJ0zWUH46sJjCUGsUK8VwhHjEWudikGPfTmmK7x4H
+ 7fzqa1/PZ4Kx9UpPjPJjCHygUjE8ZD4g44kSrrIXTEGmBrAW7rSoPAe+5QiAg2O9F51di2Vvxp8
+ 0+6LtClUeGQoofb49wB9h1ilI3rmd6icHsOEmrBPmQoZ94L02iTKb4P9qDqaIy4Igf9lV/1nKFA
+ qCNvxeOvK66OrnG5yAGBahE2jiQl7Q==
+X-Proofpoint-GUID: tO5q6IzcA-zC_mPyuIqAcuIKrQKbiQ2r
+X-Authority-Analysis: v=2.4 cv=FaE6BZ+6 c=1 sm=1 tr=0 ts=69007969 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=R1-Dph2nwWWnCDRWubUA:9 a=HhbK4dLum7pmb74im6QT:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250001
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=shivangu@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,31 +113,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SysBusDevice::mmio[] is kind of internal. Use the proper
-sysbus_mmio_get_region() accessor.
+Hi,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/pci-bridge/pci_expander_bridge.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This patch series fixes the coverity issues on the Fadump
+feature patch series by Aditya [1].
 
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index 1bcceddbc4d..b4e2c95ae4c 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -157,9 +157,9 @@ static char *pxb_host_ofw_unit_address(const SysBusDevice *dev)
-     main_host = PCI_HOST_BRIDGE(pxb_dev_base->parent_bus->parent);
-     main_host_sbd = SYS_BUS_DEVICE(main_host);
- 
--    if (main_host_sbd->num_mmio > 0) {
--        return g_strdup_printf(HWADDR_FMT_plx ",%x",
--                               main_host_sbd->mmio[0].addr, position + 1);
-+    if (sysbus_has_mmio(main_host_sbd, 0)) {
-+        MemoryRegion *mr = sysbus_mmio_get_region(main_host_sbd, 0);
-+        return g_strdup_printf(HWADDR_FMT_plx ",%x", mr->addr, position + 1);
-     }
-     if (main_host_sbd->num_pio > 0) {
-         return g_strdup_printf("i%04x,%x",
+[1] https://lore.kernel.org/qemu-devel/20251021134823.1861675-1-adityag@linux.ibm.com/
+
+Changelog
+=========
+
+v2:
+  + addressed review comments from Philippe
+
+Shivang Upadhyay (2):
+  hw/ppc: Fix missing return on allocation failure
+  hw/ppc: Fix memory leak in get_cpu_state_data()
+
+ hw/ppc/spapr_fadump.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
 -- 
 2.51.0
 
