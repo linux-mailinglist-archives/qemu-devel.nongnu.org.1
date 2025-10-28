@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A60C1365E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 08:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B21C13664
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 08:56:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDeYO-00080X-0h; Tue, 28 Oct 2025 03:55:40 -0400
+	id 1vDeYn-0008I4-N4; Tue, 28 Oct 2025 03:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeXo-0007y7-8F
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:55:04 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeYI-0008Ap-LS
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:55:36 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeXi-0007rc-Bw
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:55:03 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3ee12807d97so4997590f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:54:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeY6-000849-Nw
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:55:29 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-475dd559b0bso40457175e9.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761638095; x=1762242895; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761638117; x=1762242917; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oO7sLokKX2QCnssZFO5WFHuq3Y1NfJEe4m2IyupwL7s=;
- b=AKtN13lIduOpOWUP7/q05hSNzlD1XTQ6iMZbl2/L2bYLK/ljpjJJAxX24GfbTVeK7u
- 5+524V7RgHt1Ev8sUMAGgRwyl4mi+eQ6A6/3GzxomXGxsq7vq1J6mdpvAi7lO5omKLC2
- GWhXZhFKKyoURT9lhF+yU+QX6qTmSUW+a0OKMUFvbHE8mUO/DObV/0M4ktW7kS/WcuhA
- 5wH7It6Mj4lW6yGPUjLqNipvU8Lwqnpvi30Z7qkvEM2yLceuRJeIfdwaiZ87HfF0I5Va
- 8LgzYYaPDzy9USgWmH8GQAL0JM3nJ8YMERd0PfpGy7tWNUKuRHwb+99XL+WKpoih1YhA
- abAA==
+ bh=o2Vwqg5FFZQQtmEVDjtXvUPqRVr9tAzsMqdepzlnyg0=;
+ b=bBj3LSlVejCE6LBJAievxb6EtoBiECXW508sounJrzDsDWbhAPgScZqes1Vinp7TS8
+ uGBUTtAPNy1gkr9q39ZXKEWK5HpHE4UXhfFA8NN5Hz4RrpIvEOoM6iS8qkzm2sj5LHtA
+ H/2sfS4J2TO1NGuP2lNl2rWitfW5v+QJZBXqnKqLcdWIrwX+oyOoKsEcgvfq+4U/XPM5
+ C7oHPQ406BC3yYI35+fegwNr38CCZNdXF71raXDLpUKSI+arwa4JBAbQiZXAMCMFf2zM
+ NYjxpAjYMJLeTlACh3nf4Qenh77HRqBwnqsJyuIDe3g5JILOD0pxv4q2v+OBHKIb+uXQ
+ R+gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761638095; x=1762242895;
+ d=1e100.net; s=20230601; t=1761638117; x=1762242917;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oO7sLokKX2QCnssZFO5WFHuq3Y1NfJEe4m2IyupwL7s=;
- b=DovZgaf1LHqd5mPMLWBkfHJJdMPpHTHVhqPowlgN4quPxeH0jOihhBsyP00Hs1tmn1
- Ee2/QDuz0T6t4uHUHxIaHUs3BfLFYt288oHEFmyaE/vniVWbAt+TSkJ4c7Ud4GaZORb3
- Gg0XNqgV0HBZg8c8DtlkGk3wUfDXjSxUSQSZLJJ1Nd76okLfFqH0znpDx3/wUP7x/Xjh
- cDeJOAjtXQn7WkHMKO5BN6zeCPsDvCV3j4/xvsfexM3jU51hIUebotE/++cl4svRlrup
- NQ7ilDj2eunna2TTDazg07BSQ9h4la5kEiLdQ+Ie/hWbsEkrDaPukXURpqbBHrc4R9Ds
- 1H7A==
-X-Gm-Message-State: AOJu0YwFOSR1UyzsyWf4tpUuxWI5hBTYDP0sZ3Y5VfXfIwKK3kph/eHE
- uLCk5h4JAzunih7y4IHUwfld9vLdPhODquHeUPBeJkoQ2+uASaRDz7GB8tSlcYGNlEB4xIx8Mhi
- gU+cFdvc=
-X-Gm-Gg: ASbGncun7HSSURVxLhowZhKYDUCebW0OdurmI595e20oryBNSo566UBAn9q/xuL/lSa
- dwZPhsvEbuaNS0DPjgHKceLDn+tJdDEZTiRodRU5KiOPzkJM5Mo8yW7tsBwkguEM8FGmS9/nKht
- P0boaWNqd48C+rAIYulvnCe/SagqDqrMcl4AL+5haDlHA46JCdEawdTu9Rc3kbiM+I/AEJ7u0Rz
- prBpNG7PTmCshElRrcS4rgOgjpdG7xDbELPVtkZqKY2BGpw6FTsLK2VC2HK1gDuMCtljJSBJCOr
- CsRAt5dV91M/juW0TDyrosJY51VwtKgQDdLvHd69EEhhUg6RGhe6j665bP409GZyljQ2QEaYH6L
- ShFiJ9Fr6JCfcwXPdp7BTuzCs3mZjYjG0u/pnSrilMsPsavcm2cVY6zCRG9EtVkr8DfYlkf+Zle
- aNxpxTv4Y2CRtoukRNQAXp1kg03cXcEloywfE47DlIDQoDkUBvKLhLdK8=
-X-Google-Smtp-Source: AGHT+IEAC5rkPk/V/A7gAkhFq3w97Ons4XCs+XrkDcHwrhePrTQQpdcnfmFDHVI2pHC4C+SQVWnT5w==
-X-Received: by 2002:a05:6000:2f86:b0:426:d51c:4d71 with SMTP id
- ffacd0b85a97d-429a7e4d2ddmr1776777f8f.8.1761638095013; 
- Tue, 28 Oct 2025 00:54:55 -0700 (PDT)
+ bh=o2Vwqg5FFZQQtmEVDjtXvUPqRVr9tAzsMqdepzlnyg0=;
+ b=xEGDxk/J1exMUbqabIwndpnixSfXvhJ3jtm6egSp2EGH3tYxiDZWIvDVFRMgR6Ow6v
+ X8TiI80dgJG1QVeufz3nO7gXT2DwtLpuBaxi9RdfN/Wa9yeeQZi3y0rO380XB2iY6FZL
+ UaqTWnW2jHbiMUkFP5fKxXznj1+BQaDMyWZb3s54Ss+Uc6wgwtBvIOXWxxpav2fVFjFk
+ AxlacBEHSJzcoGy2FOgIWKCvrPQiggnfxZXcKpvMMYmC2t6EgnqyGXPmZ/oAncziA549
+ Wrmo5aWMgDFOO3cdiyIaxEkvckFzWjElGkmIWx1z0UN0zaHDszxaWxhPJlT6Q5U9/9o2
+ iJ1g==
+X-Gm-Message-State: AOJu0Ywm2SFqKX02dC3VZ7XPVDcOXFgcDj8BYndwVC4lVUS7h+CjFJiC
+ BrL5FGAjcfU0ByBGY8LpjupBA6A5N91AwsZSAHD5THGJb7VUtgZyhHWZ2yaV+hAVUbq79+lZMsD
+ PMionnUk=
+X-Gm-Gg: ASbGncukoBd98qenDY4vuB0mejbhw2wMx4CuhFy1Xvo811g43lO9cuMQLtOxMjUL4ps
+ 9irDzTVoBQ6A6SwIc6J0mWLR8Id8IxW/Q72ERZRmPRX88xDws0s4alBbTXAo62W3ZRzGgkt0fB0
+ GZipBYDCmSP1MaI99CVY+R6cQNyVwAuTEbHCBK2NX45OCsutHweE21jfIkQ1f/Q2bIBTA2rIEty
+ 2vbrh70fipm5wFJ+MoU0NysD1DPV2o71cRYBqt05dF7UMWpeVmDtxHDpbEhPgUZWjniZ6LibxAG
+ SUxdZrX3OppRg/rTQ45IcDVhDu2R4dpMOnEc5EFhNvTRvlGsloXQdyP9J/hzrGFJZtJoaBrjftv
+ Di1jepLadHpblNzgEGMYGy46WV/YQPZoN8LSaDXbFrcJ8oQzjQQTRZebaBLwibB9mlquPYXMsk9
+ yCncDupZYS6zJvd7xCd3KdwM6d4pGBm9dKR8Pxk5378Vd54lWqN/+mV5A=
+X-Google-Smtp-Source: AGHT+IF5t32D4u++whWLR9vPw4g3NLtOqlFRgnRyzphMV1aj0lOVX4t0iCknsmqzXPC836l+NGUW0g==
+X-Received: by 2002:a05:600c:a009:b0:477:e66:4082 with SMTP id
+ 5b1f17b1804b1-47717e6f566mr21791075e9.29.1761638116728; 
+ Tue, 28 Oct 2025 00:55:16 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd477c92sm179297925e9.2.2025.10.28.00.54.54
+ 5b1f17b1804b1-4771906af34sm12511305e9.14.2025.10.28.00.55.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 00:54:54 -0700 (PDT)
+ Tue, 28 Oct 2025 00:55:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Vishal Chourasia <vishalc@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aditya Gupta <adityag@linux.ibm.com>
-Subject: [PULL 16/23] hw/core/loader: improve error handling in image loading
- functions
-Date: Tue, 28 Oct 2025 08:48:52 +0100
-Message-ID: <20251028074901.22062-17-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 17/23] hw/core/loader: add check for zero size in
+ load_image_targphys_as
+Date: Tue, 28 Oct 2025 08:48:53 +0100
+Message-ID: <20251028074901.22062-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028074901.22062-1-philmd@linaro.org>
 References: <20251028074901.22062-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,55 +102,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vishal Chourasia <vishalc@linux.ibm.com>
 
-Add error checking for lseek() failure and provide better error
-messages when image loading fails, including filenames and addresses.
+Currently load_image_targphys_as() returns -1 on file open failure or
+when max size is exceeded. Add an explicit check for zero-sized files
+to catch this error early, since some callers check for size <= 0.
+
+Also, remove the redundant size > 0 check later in the function.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
 Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Message-ID: <20251024130556.1942835-8-vishalc@linux.ibm.com>
+Message-ID: <20251024130556.1942835-10-vishalc@linux.ibm.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/loader.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ hw/core/loader.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 7aca4989ef0..d7c11c18f11 100644
+index d7c11c18f11..590c5b02aa1 100644
 --- a/hw/core/loader.c
 +++ b/hw/core/loader.c
-@@ -79,6 +79,10 @@ int64_t get_image_size(const char *filename, Error **errp)
-     if (fd < 0)
+@@ -140,18 +140,21 @@ ssize_t load_image_targphys_as(const char *filename,
          return -1;
-     size = lseek(fd, 0, SEEK_END);
-+    if (size < 0) {
-+        error_setg_errno(errp, errno, "lseek failure: %s", filename);
+     }
+ 
++    if (size == 0) {
++        error_setg(errp, "empty file: %s", filename);
 +        return -1;
 +    }
-     close(fd);
++
+     if (size > max_sz) {
+         error_setg(errp, "%s exceeds maximum image size (%s)",
+                    filename, size_to_str(max_sz));
+         return -1;
+     }
+ 
+-    if (size > 0) {
+-        if (rom_add_file_fixed_as(filename, addr, -1, as) < 0) {
+-            error_setg(errp, "could not load '%s' at %" HWADDR_PRIx,
+-                       filename, addr);
+-            return -1;
+-        }
++    if (rom_add_file_fixed_as(filename, addr, -1, as) < 0) {
++        error_setg(errp, "could not load '%s' at %" HWADDR_PRIx,
++                   filename, addr);
++        return -1;
+     }
      return size;
  }
-@@ -132,11 +136,20 @@ ssize_t load_image_targphys_as(const char *filename,
-     ssize_t size;
- 
-     size = get_image_size(filename, errp);
--    if (size < 0 || size > max_sz) {
-+    if (size < 0) {
-         return -1;
-     }
-+
-+    if (size > max_sz) {
-+        error_setg(errp, "%s exceeds maximum image size (%s)",
-+                   filename, size_to_str(max_sz));
-+        return -1;
-+    }
-+
-     if (size > 0) {
-         if (rom_add_file_fixed_as(filename, addr, -1, as) < 0) {
-+            error_setg(errp, "could not load '%s' at %" HWADDR_PRIx,
-+                       filename, addr);
-             return -1;
-         }
-     }
 -- 
 2.51.0
 
