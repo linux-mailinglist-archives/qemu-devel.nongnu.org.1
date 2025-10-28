@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E361C16322
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5392FC1634A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:37:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnbp-0006Pd-Lm; Tue, 28 Oct 2025 13:35:51 -0400
+	id 1vDnbv-0006Ws-HI; Tue, 28 Oct 2025 13:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnbU-0006LX-PU
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:28 -0400
+ id 1vDnbW-0006Oo-Og
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnbK-0004gy-FV
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:28 -0400
+ id 1vDnbP-0004hx-Tj
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761672917;
+ s=mimecast20190719; t=1761672922;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1CJCXRRGP7uLhGWFgtNrE3fPS/hb7R8Y1xh7f9G0YyU=;
- b=fjzxcmmHIKmR19U321SfHW+5cD1qBFdgQWCrum3Sxz1G3/HsJ10dHIorHTtv9icwzkmrQw
- DhSNzqkRSGpi9wXkYEMgf0/Qsu/Zv3nsNqsKrfAH5qcvZ11Q/qdUONttWyBshWOubVPEQ/
- E0vQ1J9oAuqOyE/nBT2NzXJWpLZ0hSw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eLhLVJ2XarzKVk+Slx8EqzVV2n5CC0vk3GBdbky8+bk=;
+ b=YbF7G3QQzntxJwTEiMLAuFM8CuZTdHvLPX9Mr3LVqxmWRuKwLFhWIP9HvbiZ6rpnFjYxQG
+ HkcG3NizHBVceX87W8bK7iv8S/Cfj1/fP/BHw4xftAxk0OFtN/nt2LOyknd+H1Qzomam3v
+ nKsIzQcuSxPH/SltghMjbiLaiVZ1eOY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-KoC2KdW9MNS_KwOW8rjGFg-1; Tue, 28 Oct 2025 13:35:15 -0400
-X-MC-Unique: KoC2KdW9MNS_KwOW8rjGFg-1
-X-Mimecast-MFC-AGG-ID: KoC2KdW9MNS_KwOW8rjGFg_1761672915
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-475de1afec6so375785e9.1
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:35:15 -0700 (PDT)
+ us-mta-546-bC7CMogrOjei_uKmrT1kSQ-1; Tue, 28 Oct 2025 13:35:20 -0400
+X-MC-Unique: bC7CMogrOjei_uKmrT1kSQ-1
+X-Mimecast-MFC-AGG-ID: bC7CMogrOjei_uKmrT1kSQ_1761672919
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-475c422fd70so50648885e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:35:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761672914; x=1762277714;
+ d=1e100.net; s=20230601; t=1761672919; x=1762277719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1CJCXRRGP7uLhGWFgtNrE3fPS/hb7R8Y1xh7f9G0YyU=;
- b=Axb1nTV3HYznVgwslqtiz8ZMLWW6rUG91IV356r00DWn2Eq0/JA2PCutBB8Kv3xQjM
- RsweZkLiCtkkros+Ss+VrvMK02JW9N2jFe8q+LNp5dDXM2CnpW4wYzxV9kM1dt/TjEWl
- 9wK+WQsqfcCEAuzHABoEJjWtkXWkCUS/Sq05+QuEbf2eMWC5sTuuIlPvpi3fqf5HxS9a
- xTtked6cpqwX5qsew57Uo6ehhAJ9vxb7A80AmdRESTyErusJ5ythLtoO5BVB+e6QiKKW
- WFU6rMUHOk4PmE+MO7divym63h9DldIcOIAFY+Qyl3Js/FdqLbKEmufpRVU53Cn25C/r
- oGdg==
-X-Gm-Message-State: AOJu0YzCCGDq1r8TbzITQ+bsI7bti37I0USCuZ6SzH25HQcib/ZDZLQ5
- 1f3cKI7UA8xRfTQDgveJUQmpn0+HuDydRjup8FiFTWqdGMOAC8NZ2RLkvVMMedvPGFZtCSwayTU
- 4lU/+/UJhKgbt6qi7WJ5G5YzYBP25eNzKwq9eYgzNFmHKsklphB2Sdrte08F55gRSnCU3ssexT5
- lVTrurHElf6WpLzlyoSZBz4cylgg4R4agpq1g2u+KU
-X-Gm-Gg: ASbGncvVt5vKeY3CFZr3hbZlsZnsTkBx89Ne/wPUbyct8Q0F1gUSf/KJ4//T6nOArGv
- IItAsM86H7WkGKn7brivwr0k/qA68Z2YD558mhgzHhI/zGvpbeCWqHcEh9Z4IEu/LSlotdSrC9x
- fNmVa2956HT7eMXrVtRQ2i5qK4HH+GKaPzrP+MtA22HypZ2nAtQOldKEUpDp7ykLLMNqJTgEgxB
- +/9rRXa6Em1HfzhkkpZg/BZ0HvKovsFKc1cg8m1TL/ene+H1KIhdi2rPv9P92A2Ud4VfImIkBYK
- 3zNXDHwYsvpB1mAdvtgVSXlL/2+Tjey//0J53WqWsOAn3Rj6TJ+BB/gP3PW7hDmHUHnSUQjE+5g
- 4fsn6SIqi0dysvuda8E6WlILe5wuafcLXLg2/8Q9w2fcdlRp5oukdPGE9dFRuzzGD+DlhUkQyFS
- NxPRs=
-X-Received: by 2002:a05:600c:a219:b0:477:115b:878d with SMTP id
- 5b1f17b1804b1-477181969damr21247395e9.15.1761672913648; 
- Tue, 28 Oct 2025 10:35:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGe0BE3U50MxF4FLfVJUMMLlt3GnwC3c3MfG7x6VEJk3X2q5qIjKpngq3HtLGx09mqr+GrBNg==
-X-Received: by 2002:a05:600c:a219:b0:477:115b:878d with SMTP id
- 5b1f17b1804b1-477181969damr21247135e9.15.1761672913106; 
- Tue, 28 Oct 2025 10:35:13 -0700 (PDT)
+ bh=eLhLVJ2XarzKVk+Slx8EqzVV2n5CC0vk3GBdbky8+bk=;
+ b=he+/+zpwFlKe+YIbKTltQCSJlzQyxRW/CuZUYgLNnHEM90Ty2SWPtueuqtPiRbSJRx
+ Xb0IRepVp/oyImGllFdRf9VGB+vyQbiL2640XrQhCwMzHfWrcovQquWneA6s0ygMR9Pa
+ GJDzp26cmWRvLjyE7FmrTtvh6QYfQDVrpNWz1wYFdDGd0pEFySlny+NZsnH3b4T4WOCD
+ S/z+o/9+rYULFfUmu1H8H5ACdMs5SulS9tbzJ+MYHBLM2pntokwXBInoPTIeqsOdQZ5C
+ 0w8BQyWie7t5/K3dpZfQzlMiwK9VjhXMrchJhNxZ/1VUMqM5ldPwLRUexP3DVrBX2ru/
+ o0IQ==
+X-Gm-Message-State: AOJu0YyjmKphXWCEy8ExJyD2FHAhJIlN+WQhLr4sDLzCzzphB2U1xXOQ
+ Gb30OZXHNq3ryikJ0pya7IM9RclsbP14idBECxoImxI13kDFRWgFlrlcohuHtHMz7I/XxgxEQUL
+ Uc9rsO272QFG559qDD7SfapwWITb9vwhAgEllvTZJ50pwC4F9DWqtKEQxbdOs+SagCRDiWpeqXx
+ WjP46hrJ0TtK6PgzkV+h82kkol312eABrI44xV/LA0
+X-Gm-Gg: ASbGnctAwKY7uujId+CVV8IZ7lYul6cBGv86gvyioQ2RZWqY7ZS4Ej1YVVSA2cKrXQM
+ k/+XwcJ0VqEXYk4c/i4pmKuZa4cAQks77hiPYWaRnE21nJkCn770TFPtSAoPORuX830m0Bfan1q
+ H02h7sRqg0n4XSKOCGx1FI/qITm16Y6wOF8IIEby0yOPJ+NRvWWvAwn7m0PP2lY0OY2uI+L9f5s
+ /3ojF+BYTYOunfsexBGN4rjDFOEWAexIs71blMgNBSe6sLpDmnJ+W7E1msgVljgOsIOxxCV69iC
+ dhIBE5Nij4GgXFZmBPK+BLyEgs/iESwq/Z0RZ4csJ0rOtkF5jxF1jjjd2mut6YwBUiejhiATEut
+ lLREIhP5NGloD9bWCswty7DScDsiNhINf1wOUYOncw6kLceEp2CnAh5RW8bRfgDmBjxb7lqLugf
+ vwN94=
+X-Received: by 2002:a05:6000:1786:b0:426:fb28:7962 with SMTP id
+ ffacd0b85a97d-429a7e86fdfmr4110812f8f.61.1761672918516; 
+ Tue, 28 Oct 2025 10:35:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYISxoFXRWT4CSQFkij0/JYLnvkQ9ZHEUxIVRSWMIjdtVxfJZ2pB4Kvct1JEbXqJvyYeHsRg==
+X-Received: by 2002:a05:6000:1786:b0:426:fb28:7962 with SMTP id
+ ffacd0b85a97d-429a7e86fdfmr4110553f8f.61.1761672916739; 
+ Tue, 28 Oct 2025 10:35:16 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771e196a4bsm4168825e9.6.2025.10.28.10.35.11
+ ffacd0b85a97d-429952df473sm21505827f8f.42.2025.10.28.10.35.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 10:35:11 -0700 (PDT)
+ Tue, 28 Oct 2025 10:35:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 14/18] qdev: Change PropertyInfo method print() to return
- malloc'ed string
-Date: Tue, 28 Oct 2025 18:34:26 +0100
-Message-ID: <20251028173430.2180057-15-pbonzini@redhat.com>
+Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 15/18] hw/i386/isapc.c: warn rather than reject modern x86 CPU
+ models
+Date: Tue, 28 Oct 2025 18:34:27 +0100
+Message-ID: <20251028173430.2180057-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251028173430.2180057-1-pbonzini@redhat.com>
 References: <20251028173430.2180057-1-pbonzini@redhat.com>
@@ -111,79 +111,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Markus Armbruster <armbru@redhat.com>
+From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-Simpler (more so after the next commit), and no risk of truncation
-because the caller's buffer is too small.  Performance doesn't matter;
-the method is only used for "info qdev".
+Commit e1e2909f8e ("hw/i386/pc_piix.c: restrict isapc machine to 32-bit CPUs")
+restricted the isapc machine to 32-bit CPUs, but subsequent concern has been
+expressed as to the effect this could have on users.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20251022101420.36059-2-armbru@redhat.com
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+The outcome of the latest discussion is that we should exercise more caution
+and follow the official deprecation route, so instead of rejecting modern x86
+CPUs issue a deprecation warning but allow the user to continue.
+
+Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20251023142926.964718-2-mark.caveayland@nutanix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/qdev-properties.h     | 2 +-
- hw/core/qdev-properties-system.c | 7 +++----
- hw/core/qdev-properties.c        | 9 ++++-----
- 3 files changed, 8 insertions(+), 10 deletions(-)
+ hw/i386/isapc.c | 55 ++++++++++++++++++++-----------------------------
+ 1 file changed, 22 insertions(+), 33 deletions(-)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 0197aa4995e..60b81330097 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -34,7 +34,7 @@ struct PropertyInfo {
-     const char *description;
-     const QEnumLookup *enum_table;
-     bool realized_set_allowed; /* allow setting property on realized device */
--    int (*print)(Object *obj, const Property *prop, char *dest, size_t len);
-+    char *(*print)(Object *obj, const Property *prop);
-     void (*set_default_value)(ObjectProperty *op, const Property *prop);
-     ObjectProperty *(*create)(ObjectClass *oc, const char *name,
-                               const Property *prop);
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index c15371f8cd1..13cc91680b1 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -865,15 +865,14 @@ out:
-     visit_end_alternate(v, (void **) &alt);
- }
+diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
+index 44f4a446724..1ba9ae22cc3 100644
+--- a/hw/i386/isapc.c
++++ b/hw/i386/isapc.c
+@@ -41,29 +41,31 @@ static void pc_init_isa(MachineState *machine)
+     DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
+     int i;
  
--static int print_pci_devfn(Object *obj, const Property *prop, char *dest,
--                           size_t len)
-+static char *print_pci_devfn(Object *obj, const Property *prop)
- {
-     int32_t *ptr = object_field_prop_ptr(obj, prop);
+-    /*
+-     * There is a small chance that someone unintentionally passes "-cpu max"
+-     * for the isapc machine, which will provide a much more modern 32-bit
+-     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
+-     * been specified, choose the "best" 32-bit cpu possible which we consider
+-     * be the pentium3 (deliberately choosing an Intel CPU given that the
+-     * default 486 CPU for the isapc machine is also an Intel CPU).
+-     */
+-    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
+-        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
+-        warn_report("-cpu max is invalid for isapc machine, using pentium3");
+-    }
++    bool valid_cpu_type = false;
++    static const char * const valid_cpu_types[] = {
++        X86_CPU_TYPE_NAME("486"),
++        X86_CPU_TYPE_NAME("athlon"),
++        X86_CPU_TYPE_NAME("kvm32"),
++        X86_CPU_TYPE_NAME("pentium"),
++        X86_CPU_TYPE_NAME("pentium2"),
++        X86_CPU_TYPE_NAME("pentium3"),
++        X86_CPU_TYPE_NAME("qemu32"),
++    };
  
-     if (*ptr == -1) {
--        return snprintf(dest, len, "<unset>");
-+        return g_strdup("<unset>");
-     } else {
--        return snprintf(dest, len, "%02x.%x", *ptr >> 3, *ptr & 7);
-+        return g_strdup_printf("%02x.%x", *ptr >> 3, *ptr & 7);
+     /*
+-     * Similarly if someone unintentionally passes "-cpu host" for the isapc
+-     * machine then display a warning and also switch to the "best" 32-bit
+-     * cpu possible which we consider to be the pentium3. This is because any
+-     * host CPU will already be modern than this, but it also ensures any
+-     * newer CPU flags/features are filtered out for older guests.
++     * The isapc machine is supposed to represent a legacy ISA-only PC with a
++     * 32-bit processor. For historical reasons the machine can still accept
++     * almost any valid processor, but this is now deprecated in 10.2. Emit
++     * a warning if anyone tries to use a deprecated CPU.
+      */
+-    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("host"))) {
+-        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
+-        warn_report("-cpu host is invalid for isapc machine, using pentium3");
++    for (i = 0; i < ARRAY_SIZE(valid_cpu_types); i++) {
++        if (!strcmp(machine->cpu_type, valid_cpu_types[i])) {
++            valid_cpu_type = true;
++        }
++    }
++
++    if (!valid_cpu_type) {
++        warn_report("cpu type %s is deprecated for isapc machine", machine->cpu_type);
      }
- }
  
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index b7e8a89ba5c..422a486969c 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -1117,12 +1117,11 @@ static void qdev_get_legacy_property(Object *obj, Visitor *v,
-                                      Error **errp)
+     if (machine->ram_size > 3.5 * GiB) {
+@@ -154,18 +156,6 @@ static void pc_init_isa(MachineState *machine)
+ 
+ static void isapc_machine_options(MachineClass *m)
  {
-     const Property *prop = opaque;
-+    char *s;
+-    static const char * const valid_cpu_types[] = {
+-        X86_CPU_TYPE_NAME("486"),
+-        X86_CPU_TYPE_NAME("athlon"),
+-        X86_CPU_TYPE_NAME("kvm32"),
+-        X86_CPU_TYPE_NAME("pentium"),
+-        X86_CPU_TYPE_NAME("pentium2"),
+-        X86_CPU_TYPE_NAME("pentium3"),
+-        X86_CPU_TYPE_NAME("qemu32"),
+-        X86_CPU_TYPE_NAME("max"),
+-        X86_CPU_TYPE_NAME("host"),
+-        NULL
+-    };
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
  
--    char buffer[1024];
--    char *ptr = buffer;
--
--    prop->info->print(obj, prop, buffer, sizeof(buffer));
--    visit_type_str(v, name, &ptr, errp);
-+    s = prop->info->print(obj, prop);
-+    visit_type_str(v, name, &s, errp);
-+    g_free(s);
+     m->desc = "ISA-only PC";
+@@ -180,7 +170,6 @@ static void isapc_machine_options(MachineClass *m)
+     pcmc->has_reserved_memory = false;
+     m->default_nic = "ne2k_isa";
+     m->default_cpu_type = X86_CPU_TYPE_NAME("486");
+-    m->valid_cpu_types = valid_cpu_types;
+     m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
+     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
  }
- 
- /**
 -- 
 2.51.1
 
