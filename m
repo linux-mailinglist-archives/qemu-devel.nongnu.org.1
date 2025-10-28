@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044E4C16349
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467ABC1630D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:36:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnb6-000628-S5; Tue, 28 Oct 2025 13:35:04 -0400
+	id 1vDnb1-0005y0-TX; Tue, 28 Oct 2025 13:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnb1-00060F-Hs
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vDnaz-0005wq-0I
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnau-0004QF-29
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:58 -0400
+ id 1vDnaw-0004Qk-8q
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761672888;
+ s=mimecast20190719; t=1761672891;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KWhg4MaiEkP19owK+TL8EIAXAKrNBH/O36emy6V+FXk=;
- b=JwuX43pliSs9td+mOD7oFpFfMNe/A0AdPnuhmarawnenEszfyPuOCZGYr1+0ZR6OJqiotz
- gN7pS2+4s+EolkaoStmq11F1iwxi8PefMWua/QNzpo35b3+d16Rwdosopi3XsxFw99v026
- xT0ys2+uenQZOtvBwdll5h6Fcdh2JN4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sw91OJuYj1JrwFfKm7ne2KgP4Ysk3Lo0/gaXKLESQRo=;
+ b=h5pVtTk9kPqENEWZ1oXTLp6VYEj0P+0m4inrWChGEsAlbJuYsOMs0+Fpm0BE1pyOMWBpIs
+ N9oF1L25VFgRPpI2XX4O0LD3o8ZPNd/1Ty01YZv/JZt/8WmvqusOkW3dylWKK4SCjjOgep
+ WcnS2W4NmaEo2spE6zj5fwDisxK7jx8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-bXLm-HM4OL2LddTCeTizGA-1; Tue, 28 Oct 2025 13:34:46 -0400
-X-MC-Unique: bXLm-HM4OL2LddTCeTizGA-1
-X-Mimecast-MFC-AGG-ID: bXLm-HM4OL2LddTCeTizGA_1761672886
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-427013eb71dso5750646f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:34:46 -0700 (PDT)
+ us-mta-660-eG4zLAfTPoyWdmn_evKn-Q-1; Tue, 28 Oct 2025 13:34:49 -0400
+X-MC-Unique: eG4zLAfTPoyWdmn_evKn-Q-1
+X-Mimecast-MFC-AGG-ID: eG4zLAfTPoyWdmn_evKn-Q_1761672888
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-4298da9effcso4126048f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:34:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761672884; x=1762277684;
+ d=1e100.net; s=20230601; t=1761672887; x=1762277687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KWhg4MaiEkP19owK+TL8EIAXAKrNBH/O36emy6V+FXk=;
- b=jBILrFQTxynFP0Abn8id2qu5QZppudelIHOTUyyR+gIgUlWtrp3tmjlyqXC6PSxDcp
- 7Fhy1sFfHqIEyU8cbc6nlSqB00WsoS4yWxooDtoTbOXyOd+m+feYRSExgboodqnja6RB
- NFEC4Xxe7OTMyF0Qb8MgdbQxoZa4BtZNYyj5/JIbeHtIHCc28ID8AOTqgOUvbDFLU3fQ
- J8lyKF8DWy+9/MXr8tGSPn4PLf+Hj4GxLEuvN+FlVFD2WGT/XGO5yhEBO3R0ahOjG98J
- 5sinxH9gjjRjTt4vJNWvVJzf85cebqcFsZrvCA7LW5+hCMIfRrrptAeF9dlL6XhBIKDQ
- 1Qmg==
-X-Gm-Message-State: AOJu0Yx7/VWXuUC9EeWlPVZTbGoyZyusm3h+m7qVyCggKvIWJmgowP2m
- OLh2zL7uL5HIY7tM2650v5AQ0TazcPV3exP+XAfjTS1i5iVfY0kU/vaXZ7N6QqYrpxGkKVVjqp2
- 45T8PopdVGjkPUtHpo762HVvF1CnKKcczcxXEM35ZUCNG88tZwybp319lknvnFMhSUuSN5n/6CF
- GtSvuk1ZlJ0lWEpl2t8YD7s+jtWucm/Us9jkO73Zj6
-X-Gm-Gg: ASbGncsDzOfqblBt9DPUlxJ2EX0KeXVGVMlcbAffmVukPV12ysL343Pb0npy41WrIHS
- jgBROctIF4xd1kXMw2DleAqGv6Fl1u14ecPXNdSdBXH6KIHBQFcvmDitkysco4H1XgdEYd+lBK6
- 0eeKGN/nASqLyZk7TnSCh3Fej0HIN+quPoGYudfgk2OQM1jTOsaVnK8qix48RqxHg4/zyF6rX7h
- Fo4rheGVEyj1UAmfpNBM2lQRm7B8nw4q1fAEVptw+G6TkEZ2XL4wLbw67YAF2OrlnT3KcrJeo+n
- k1sNp1FcPu0pM1dKVkQHVlmXr4BUQDWzFyUFXWnfUgRzDME83B75x9MdF6hMKbqkdOn0Id5Qwoi
- qAmpTM8oOuytaQOgqsKMKXGSSvD0C5nnimRlbCEaHmk1uK/IiG2gEgZGix3TlHIUzEXmjI+LcHw
- oClKQ=
-X-Received: by 2002:a05:6000:2406:b0:428:55c3:cea7 with SMTP id
- ffacd0b85a97d-429a7e79ffbmr4019170f8f.36.1761672884560; 
- Tue, 28 Oct 2025 10:34:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtbOdFGCYuJvgqEV0Ta/yLKwHU4SUwRUPD3XBDT5MZ6nyB2sYUL//tatzc4zfdY97r09lP3A==
-X-Received: by 2002:a05:6000:2406:b0:428:55c3:cea7 with SMTP id
- ffacd0b85a97d-429a7e79ffbmr4019144f8f.36.1761672884082; 
- Tue, 28 Oct 2025 10:34:44 -0700 (PDT)
+ bh=sw91OJuYj1JrwFfKm7ne2KgP4Ysk3Lo0/gaXKLESQRo=;
+ b=mkr+wzZMUgwxVEpz8YBTlrJ3yH6qvUG3zCRWYoe3UKVbGnYEWc0z5edK8ufeP0ISqW
+ 1AIamvC7zlkiGLJjGI/+4EYbrZzm+KP1DlVC+93/CvZrzpWlfvsZcmT7s3A5oS7GRzrM
+ isRJUmHPudRZAuWaalpFQIAsrBjr3laku0raCeB6cLIL9HTv2POgnNdNjp5Lhca8kK8L
+ gM7q25V5gINdxbkqCLE/GbRHqZe3mk5MKTJE1xaa3mrqB1GsZ99P8sR8pSQfHIyQgSn1
+ fwnHxree17ItfHMP0rqj79Y4JHN006gD4y9UDk48mY8jvNPIzBeI5rGB2hW+HjgFgQFr
+ PJeQ==
+X-Gm-Message-State: AOJu0YzUfVrYAGo5IWSogjVL+tU4eb4FM8Dx+l0cfB7eZvpGhlac78+i
+ ++y2vNjQmafd3BJW9Dav7pB8CumjEPB7+np0l1D06VwYdogIsowSVHB+oagefiDKDGQfCCC2nAR
+ Z3o0hmMDa85kPGykpGm4m7ENsAYD7q+5xMg773ug5TGddXj5WKXLhWZqhwsv3rrc3XNAX+L2Ii4
+ b6XzKvXLOEh59ugYlDtcfyxSSrCPRC9I6Tdnp+lCaq
+X-Gm-Gg: ASbGncsKDve1F40CE0hVYS7Otdb8K5idZfps/76Qz6yI0nfWNXZNwP70N0OUdSo+gpu
+ us3TWnKSMHlTz5QvtPD6pQysIVFcWPtHzPVUPRmIsIV9Z0aXfH6zkopuK+oEjtybWOTEoxCulTR
+ ADyZT/+q2L5Kmzvxcnh62wg3TP1uS4+QefECSKox9edFLNyyc+l05Gdhqu0Eo8ZlS4grjvCQRjg
+ 5RE/bO8d7aZtUh6Iv4kV0utMs9YWIOeaM9sPH5ar0AmBfjFVW56aBQlUIHpzT3WsoImNvDRg6vD
+ F74hLmDLga6SQzQ/0W+bdI0P6N9y3M08Q6KOioubd2UnPAZivYGpIu7WuzRYtEnLktVrhCKdMxq
+ pa6eecpItTuQ5NLB+r9fMLb44VVrhwPToZT+AqcDXHuI2mnIx9XxV9oF3pVtYwdYedanLopCsrV
+ r5f0I=
+X-Received: by 2002:a05:600c:64c7:b0:471:672:3486 with SMTP id
+ 5b1f17b1804b1-4771e18157dmr2954195e9.15.1761672887381; 
+ Tue, 28 Oct 2025 10:34:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDcdKtLkNrl+YX/vvzTstmhdnZaPxZ2RDYdZwg98VYaaHXSh6uvh4cYUw1EM4hqFDEc3aiag==
+X-Received: by 2002:a05:600c:64c7:b0:471:672:3486 with SMTP id
+ 5b1f17b1804b1-4771e18157dmr2953955e9.15.1761672886918; 
+ Tue, 28 Oct 2025 10:34:46 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d9e80sm21379479f8f.28.2025.10.28.10.34.42
+ ffacd0b85a97d-429952d5985sm21497448f8f.25.2025.10.28.10.34.44
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 10:34:42 -0700 (PDT)
+ Tue, 28 Oct 2025 10:34:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Martin Kletzander <mkletzan@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/18] rust: remove useless glib_sys bindings
-Date: Tue, 28 Oct 2025 18:34:16 +0100
-Message-ID: <20251028173430.2180057-5-pbonzini@redhat.com>
+Subject: [PULL 05/18] rust: only leave leaf crates as workspace members
+Date: Tue, 28 Oct 2025 18:34:17 +0100
+Message-ID: <20251028173430.2180057-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251028173430.2180057-1-pbonzini@redhat.com>
 References: <20251028173430.2180057-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,154 +108,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Martin Kletzander <mkletzan@redhat.com>
+Everything else can be obtained as a dependency.
 
-The definition of types needed for g_autolist(), g_autoslist(),
-g_autoqueue() need the imports for GList, GSList and GQueue
-to appear everything.  Rust code is never going to see those,
-since they are not used in structs.  Block the types from
-appearing in the bindings.
-
-Co-authored-by: Martin Kletzander <mkletzan@redhat.com>
-Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                        | 1 +
- rust/bql/src/bindings.rs           | 4 +---
- rust/chardev/src/bindings.rs       | 4 ++--
- rust/hw/char/pl011/src/bindings.rs | 2 +-
- rust/hw/core/src/bindings.rs       | 4 +---
- rust/migration/src/bindings.rs     | 2 +-
- rust/qom/src/bindings.rs           | 2 +-
- rust/system/src/bindings.rs        | 4 ++--
- rust/util/src/bindings.rs          | 2 +-
- 9 files changed, 11 insertions(+), 14 deletions(-)
+ rust/Cargo.toml | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index c5710a6a47c..8ad37c992b1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4251,6 +4251,7 @@ if have_rust
-     '--allowlist-file', meson.project_source_root() + '/include/.*',
-     '--allowlist-file', meson.project_build_root() + '/.*',
-     '--blocklist-file', glib_pc.get_variable('includedir') + '/glib-2.0/.*',
-+    '--blocklist-type', '.*_([a-z]*autoptr)$',
-     ]
-   if not rustfmt.found()
-     if bindgen.version().version_compare('<0.65.0')
-diff --git a/rust/bql/src/bindings.rs b/rust/bql/src/bindings.rs
-index 8c70f3a87ce..c656cf18845 100644
---- a/rust/bql/src/bindings.rs
-+++ b/rust/bql/src/bindings.rs
-@@ -18,9 +18,7 @@
-     clippy::too_many_arguments
- )]
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 783e626802c..ace0baf9bd7 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -1,18 +1,8 @@
+ [workspace]
+ resolver = "2"
+ members = [
+-    "bits",
+-    "bql",
+-    "common",
+-    "migration",
+-    "qemu-macros",
+-    "qom",
+-    "system",
+-    "hw/core",
+     "hw/char/pl011",
+     "hw/timer/hpet",
+-    "trace",
+-    "util",
+     "tests",
+ ]
  
--use glib_sys::{
--    guint, GArray, GHashTable, GHashTableIter, GList, GPollFD, GPtrArray, GQueue, GSList, GSource,
--};
-+use glib_sys::{guint, GArray, GHashTable, GHashTableIter, GPollFD, GPtrArray, GSList, GSource};
- 
- #[cfg(MESON)]
- include!("bindings.inc.rs");
-diff --git a/rust/chardev/src/bindings.rs b/rust/chardev/src/bindings.rs
-index c95dc89c56d..63bfbb8ce66 100644
---- a/rust/chardev/src/bindings.rs
-+++ b/rust/chardev/src/bindings.rs
-@@ -20,8 +20,8 @@
- 
- use common::Zeroable;
- use glib_sys::{
--    gboolean, guint, GArray, GHashTable, GHashTableIter, GIOCondition, GList, GMainContext,
--    GPollFD, GPtrArray, GQueue, GSList, GSource, GSourceFunc,
-+    gboolean, guint, GArray, GHashTable, GHashTableIter, GIOCondition, GMainContext, GPollFD,
-+    GPtrArray, GSList, GSource, GSourceFunc,
- };
- 
- #[cfg(MESON)]
-diff --git a/rust/hw/char/pl011/src/bindings.rs b/rust/hw/char/pl011/src/bindings.rs
-index 52a76d0de5c..654be9185b1 100644
---- a/rust/hw/char/pl011/src/bindings.rs
-+++ b/rust/hw/char/pl011/src/bindings.rs
-@@ -22,7 +22,7 @@
- 
- use glib_sys::{
-     gboolean, guint, GArray, GByteArray, GHashTable, GHashTableIter, GIOCondition, GList,
--    GMainContext, GPollFD, GPtrArray, GQueue, GSList, GSource, GSourceFunc, GString,
-+    GMainContext, GPollFD, GPtrArray, GSList, GSource, GSourceFunc, GString,
- };
- 
- #[cfg(MESON)]
-diff --git a/rust/hw/core/src/bindings.rs b/rust/hw/core/src/bindings.rs
-index 65b9aae7536..730d5b28a3c 100644
---- a/rust/hw/core/src/bindings.rs
-+++ b/rust/hw/core/src/bindings.rs
-@@ -20,9 +20,7 @@
- 
- use chardev::bindings::Chardev;
- use common::Zeroable;
--use glib_sys::{
--    GArray, GByteArray, GHashTable, GHashTableIter, GList, GPtrArray, GQueue, GSList, GString,
--};
-+use glib_sys::{GArray, GByteArray, GHashTable, GHashTableIter, GList, GPtrArray, GSList, GString};
- use migration::bindings::VMStateDescription;
- use qom::bindings::ObjectClass;
- use system::bindings::MemoryRegion;
-diff --git a/rust/migration/src/bindings.rs b/rust/migration/src/bindings.rs
-index 24503eb69bd..e9c058386c2 100644
---- a/rust/migration/src/bindings.rs
-+++ b/rust/migration/src/bindings.rs
-@@ -19,7 +19,7 @@
- )]
- 
- use common::Zeroable;
--use glib_sys::{GHashTable, GHashTableIter, GList, GPtrArray, GQueue, GSList};
-+use glib_sys::{GHashTable, GHashTableIter, GPtrArray, GSList};
- 
- #[cfg(MESON)]
- include!("bindings.inc.rs");
-diff --git a/rust/qom/src/bindings.rs b/rust/qom/src/bindings.rs
-index 91de42f2426..e61259ec2ef 100644
---- a/rust/qom/src/bindings.rs
-+++ b/rust/qom/src/bindings.rs
-@@ -18,7 +18,7 @@
-     clippy::too_many_arguments
- )]
- 
--use glib_sys::{GHashTable, GHashTableIter, GList, GPtrArray, GQueue, GSList};
-+use glib_sys::{GHashTable, GHashTableIter, GPtrArray, GSList};
- 
- #[cfg(MESON)]
- include!("bindings.inc.rs");
-diff --git a/rust/system/src/bindings.rs b/rust/system/src/bindings.rs
-index 6cbb588de3d..ddccfe0436f 100644
---- a/rust/system/src/bindings.rs
-+++ b/rust/system/src/bindings.rs
-@@ -20,8 +20,8 @@
- 
- use common::Zeroable;
- use glib_sys::{
--    guint, GArray, GByteArray, GHashTable, GHashTableIter, GList, GPollFD, GPtrArray, GQueue,
--    GSList, GString,
-+    guint, GArray, GByteArray, GHashTable, GHashTableIter, GList, GPollFD, GPtrArray, GSList,
-+    GString,
- };
- 
- #[cfg(MESON)]
-diff --git a/rust/util/src/bindings.rs b/rust/util/src/bindings.rs
-index c277a295add..3514a66f5fa 100644
---- a/rust/util/src/bindings.rs
-+++ b/rust/util/src/bindings.rs
-@@ -18,7 +18,7 @@
-     clippy::too_many_arguments
- )]
- 
--use glib_sys::{guint, GList, GPollFD, GQueue, GSList, GString};
-+use glib_sys::{guint, GPollFD, GString};
- 
- #[cfg(MESON)]
- include!("bindings.inc.rs");
 -- 
 2.51.1
 
