@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFEEC15DC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5637C15DAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:37:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmei-0008HA-DU; Tue, 28 Oct 2025 12:34:44 -0400
+	id 1vDmfO-0000Gp-44; Tue, 28 Oct 2025 12:35:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmee-0008Fw-NM
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmem-0008LQ-NL
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeY-0003lN-A6
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:40 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmec-0003m2-Sp
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761669271;
+ s=mimecast20190719; t=1761669274;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GKOwvkHLUYnigJBYnl941OtlXmHokaK+jt9YcTIOSMc=;
- b=Tkp631uHSFoGMU8BW7dLVd44ZPtsCrnzBWlHBnazfGQCL5oARgBQL7lA8jRfYp0I9N2Mos
- jC98IaSwU/yueHIjUO8G1Rhhg9ovv1I2pQ/ploZzpvzapREu332EtDzDAltGLy3d6kmKhq
- 85eypMUBN+r/XvqZurN7+T4LxbUAjvQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y7vN7dYOLZeNiNRrf7J0asvJiliVksASXq2s0Nvc4go=;
+ b=cim9FdY211QsVrTCLjxaqv5EbmfyZOVNxYz+jvxxDG6pxxZsvJXQs8+y2bzw+y6/doxQEr
+ p+1fnATNtUpsHN7E9HyWGketqQidn8TgkybcR0xLeXzsP72xewyEN+tAVW9NYim9/y+znG
+ i+ofaTqEsqZCHpkgBtrgw5Ki9lath/s=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-XsAn8cpDNkSjJtsD5VeHsw-1; Tue, 28 Oct 2025 12:34:29 -0400
-X-MC-Unique: XsAn8cpDNkSjJtsD5VeHsw-1
-X-Mimecast-MFC-AGG-ID: XsAn8cpDNkSjJtsD5VeHsw_1761669269
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-42705afbf19so36172f8f.1
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:29 -0700 (PDT)
+ us-mta-657-P60vn5q8MU2jxtbqBljKoA-1; Tue, 28 Oct 2025 12:34:32 -0400
+X-MC-Unique: P60vn5q8MU2jxtbqBljKoA-1
+X-Mimecast-MFC-AGG-ID: P60vn5q8MU2jxtbqBljKoA_1761669271
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-475dabb63f2so15603535e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761669268; x=1762274068;
+ d=1e100.net; s=20230601; t=1761669271; x=1762274071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GKOwvkHLUYnigJBYnl941OtlXmHokaK+jt9YcTIOSMc=;
- b=pAvAM5Sf29+MirsWpKrPCyZPbXjmaQdP68r6wQ7ClkFmeOduUddiRh/veY/xe2PjmS
- velAYZ93sN/cMiUsYn+1m40hWiktQvR4kod7l9ZG4MfFYP0XWnf3Ke0gIxWx5xz/75xe
- V9NbhvBfgR4Gl0uP/CRDY2AfmjNNmoXPpG4WvKwNj4QcXI8E2I8NLgTtmggX1tHSWAyP
- 0AhcEtHKMwuQFmhR2/z5OvmlOZZ0v0mWH9BdG39SNU63UqsCRq5vVoV6hSxOV4Wcb/2a
- 2ne62nerc6j4KEAVRA/B2Cvo4Xl25NyE3abbOKISNk2PcLomVlHcJKV2ZGYUvfzy/Uyn
- Rk0w==
-X-Gm-Message-State: AOJu0Yxs/EHYGjVYUJIUgYnsyJaoKJnFFjusrd6549hDLcJ0x6gAkxnp
- ldo198JoyR8GToIkF3WbPtyWspvRPng9Mri0OAb6Ipy6Ry65Z6qGnTga0ute96YzjsILPDidkkE
- ANCv1zDxB2fe6aM6RaZ9CrhObA6Doj8ggAeHpTv4vM0gP+Yz3YyVF9HTU
-X-Gm-Gg: ASbGncs2dQwpEGUha7AwPk/E6v9RmKhj8GEd0/ein7PJTc5AD2+YKMxebYpYKTWvzSe
- Fw71D35A+m08R9W4Z3BOzqTOuB1eigvird/MmE4AQ5Z3ebUs0OOBhWFO4BDTyFqbBvafhPnPJ5S
- RbvMC+wHig6/UE6AxvsHZt/3lPXZRGRn8WKd8rBWfwNO1ER/dPn4iexP5xcLpQZzZERbGHdjy1T
- 4HfHgwpDtyVpl8EgKiBCzU7hSHP5vSkLPw35+b7aXQvMVMbkhEke3XhqCwmaCcwBZuBy/0xe1BQ
- 6RKH6o5Oc9oKrDk1yi+vUovnnnVbAA2Ih95fpDngSK64bn1eHefBwTtjwM7nWl3sastmuzhxREh
- ZOxIo58fl7tFzES3sQDSIif/yGKb7SXf+DT6y5RUFDs4qZ0ij45BjM9P5rw==
-X-Received: by 2002:a05:6000:2c09:b0:428:3bf5:b3a3 with SMTP id
- ffacd0b85a97d-429a81a8479mr2893533f8f.1.1761669268443; 
- Tue, 28 Oct 2025 09:34:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBFbDG+5hwsnNdhEaoQ2eKmk3Nahb0xzwUB5LQN6en183Vbl+UhHk/vqF+CUXOe+rByFgYfg==
-X-Received: by 2002:a05:6000:2c09:b0:428:3bf5:b3a3 with SMTP id
- ffacd0b85a97d-429a81a8479mr2893509f8f.1.1761669267989; 
- Tue, 28 Oct 2025 09:34:27 -0700 (PDT)
+ bh=Y7vN7dYOLZeNiNRrf7J0asvJiliVksASXq2s0Nvc4go=;
+ b=vteG4aMgcfRZRF6Nj54ErcLU4/j8LhInUh2MrfZKAkPRXO7aNqplRpKrr6OM8uWOAV
+ BFTiEtOPfdbaBMcZ8w/Ud2I3ADABFaaTTnO52OCnmSdt8OrMrcLJYBStUzxT6oygZT1i
+ toiPIqWXoKbyccWGtQTGWPHeekqouOJrcMClohSs1ktSySibeXaPOAqlQSRA3yPKIfIN
+ yMsckO12uuVv5tWDZoq2OLo7VXQfgH3c9LSOnKjLp1M4SC2aADchNo+16nWejaaoGDWt
+ I8KJdIehMURR4rfowcbIUcM1QJEegxLbiPR3o6X0BUH8vFbEmvzO5mKLUXLKPaZI48Ci
+ JX4w==
+X-Gm-Message-State: AOJu0YxYrw+Ye+Xjkg0m+6sckDhXDClPhJAL2NP6ovItQ9pRRvSBobdP
+ mWA74yDwYrCtXDP2K03OrEnMVdxwykR9ftXYVvI8C4WhYMVKTbgC+ICde2X/3UEt+OQJRD9zKAr
+ HECIjpizzsrzJvv6XdQWUD0q2S9340reGzcFNVVidp+UttOWSJdXcK5iX
+X-Gm-Gg: ASbGncsB8jkEC5tNY9yArsdzbbjNX0OG+EJD9UTjmOUZlWHiAmEEvOJ2R2eGjmGi6ZG
+ cdeUuk99W84lGkQCF+HtOzPSqUcpp8fXGsJMkX503tW8SaGH12VRp+PmH8IAIREAWbBVwxNmini
+ mSmDFFzwtACK8YLUSCSc5aRj+4YSjaqZuRzACwdPLjhCO2GIep0k4HrdBKI0NuxtiHCEYgKjYkS
+ Toj/F045FAto9pZDF+eSysGkMmkPD1R1LERJAEkymjcE9hGBcVn4PLM3k58iVjwaVQ5vEaASaZs
+ EvBz4j7xX/EtBov8y9Av/bFzasD+36y607fKV53P3L4s15E1ygTW1KIrA1sy4l+VBb4bY3kTP9h
+ eOPGorKaJCUN/WfFxTQx/xJlUM08439xn639luQu/Op1TJgeIQoPemfkCcA==
+X-Received: by 2002:a05:600c:310f:b0:475:daba:d03c with SMTP id
+ 5b1f17b1804b1-4771e3339c3mr260715e9.13.1761669271126; 
+ Tue, 28 Oct 2025 09:34:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYdxb5RuBi2BxLrhzHud9f3ArSrcaCNYdXmynVY1hNDnIS8dWweyLNA++8eM6eDEVpLgtluA==
+X-Received: by 2002:a05:600c:310f:b0:475:daba:d03c with SMTP id
+ 5b1f17b1804b1-4771e3339c3mr260425e9.13.1761669270690; 
+ Tue, 28 Oct 2025 09:34:30 -0700 (PDT)
 Received: from localhost
  (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
  [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d5773sm23040414f8f.27.2025.10.28.09.34.26
+ 5b1f17b1804b1-4771e39380dsm95705e9.7.2025.10.28.09.34.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 09:34:26 -0700 (PDT)
+ Tue, 28 Oct 2025 09:34:29 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
@@ -80,9 +80,9 @@ Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH 13/16] block: Note in which AioContext AIO CBs are called
-Date: Tue, 28 Oct 2025 17:33:39 +0100
-Message-ID: <20251028163343.116249-14-hreitz@redhat.com>
+Subject: [PATCH 14/16] iscsi: Create AIO BH in original AioContext
+Date: Tue, 28 Oct 2025 17:33:40 +0100
+Message-ID: <20251028163343.116249-15-hreitz@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
 References: <20251028163343.116249-1-hreitz@redhat.com>
@@ -90,7 +90,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -115,46 +115,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This doesn’t seem to be specified anywhere, but is something we probably
-want to be clear.  I believe it is reasonable to implicitly assume that
-callbacks are run in the current thread (unless explicitly noted
-otherwise), so codify that assumption.
-
-Some implementations don’t actually fulfill this contract yet.  The next
-patches should rectify that.
-
-Note: I don’t know of any user-visible bugs produced by not running AIO
-callbacks in the original context.  AIO functionality is generally
-mapped to coroutines through the use of bdrv_co_io_em_complete(), which
-can run in any AioContext, and will always wake the yielding coroutine
-in its original context.  The only benefit here is that running
-bdrv_co_io_em_complete() in the original context will make that
-aio_co_wake() most likely a simpler qemu_coroutine_enter() instead of
-scheduling the wakeup through AioContext.co_schedule_bh.
+AIO callbacks must be called in the original request’s AioContext,
+regardless of the BDS’s “main” AioContext.
 
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- include/block/block_int-common.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ block/iscsi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 034c0634c8..a584f20aea 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -508,7 +508,12 @@ struct BlockDriver {
-         BlockDriverState *bs, BlockdevAmendOptions *opts, bool force,
-         Error **errp);
+diff --git a/block/iscsi.c b/block/iscsi.c
+index 76c15e20ea..fd51aae692 100644
+--- a/block/iscsi.c
++++ b/block/iscsi.c
+@@ -119,6 +119,7 @@ typedef struct IscsiTask {
  
--    /* aio */
-+    /*
-+     * AIO
-+     * The given completion callback will be run in the same AioContext as the
-+     * one in which the AIO function was called.
-+     */
-+
-     BlockAIOCB * GRAPH_RDLOCK_PTR (*bdrv_aio_preadv)(BlockDriverState *bs,
-         int64_t offset, int64_t bytes, QEMUIOVector *qiov,
-         BdrvRequestFlags flags, BlockCompletionFunc *cb, void *opaque);
+ typedef struct IscsiAIOCB {
+     BlockAIOCB common;
++    AioContext *ctx;
+     QEMUBH *bh;
+     IscsiLun *iscsilun;
+     struct scsi_task *task;
+@@ -173,7 +174,7 @@ iscsi_schedule_bh(IscsiAIOCB *acb)
+     if (acb->bh) {
+         return;
+     }
+-    acb->bh = aio_bh_new(acb->iscsilun->aio_context, iscsi_bh_cb, acb);
++    acb->bh = aio_bh_new(acb->ctx, iscsi_bh_cb, acb);
+     qemu_bh_schedule(acb->bh);
+ }
+ 
+@@ -1007,8 +1008,7 @@ static void iscsi_ioctl_handle_emulated(IscsiAIOCB *acb, int req, void *buf)
+         ret = -EINVAL;
+     }
+     assert(!acb->bh);
+-    acb->bh = aio_bh_new(bdrv_get_aio_context(bs),
+-                         iscsi_ioctl_bh_completion, acb);
++    acb->bh = aio_bh_new(acb->ctx, iscsi_ioctl_bh_completion, acb);
+     acb->ret = ret;
+     qemu_bh_schedule(acb->bh);
+ }
+@@ -1025,6 +1025,7 @@ static BlockAIOCB *iscsi_aio_ioctl(BlockDriverState *bs,
+     acb = qemu_aio_get(&iscsi_aiocb_info, bs, cb, opaque);
+ 
+     acb->iscsilun = iscsilun;
++    acb->ctx         = qemu_get_current_aio_context();
+     acb->bh          = NULL;
+     acb->status      = -EINPROGRESS;
+     acb->ioh         = buf;
 -- 
 2.51.0
 
