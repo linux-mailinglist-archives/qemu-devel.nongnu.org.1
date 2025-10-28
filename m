@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E040FC14665
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37138C14668
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:38:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDi19-0007Nb-EH; Tue, 28 Oct 2025 07:37:35 -0400
+	id 1vDi23-0007kb-C8; Tue, 28 Oct 2025 07:38:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDi16-0007Ms-L9
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:37:32 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDi0z-0004q9-IR
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:37:32 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-4270a0127e1so4646934f8f.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:37:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761651439; x=1762256239; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eIoJWjFxXvCJq6wPc9vwjKc8KbNm3ZfcumT2PgAGI5c=;
- b=hBlwH9nT23BdzOQ862D3tIowEeFREFrEE+3oi/y3gYt8t3XqK56HxsaTi6/zHv0wtz
- GG0vtCYU+5QZCdnmy/dIPrL/vbw3dZsEy1w207RFZRxCTLKbI8BF8RvwEvMLkbb37cPz
- UaSftXl0lpeJxmpTB/JiGWfNMK5ybAUabbCsl6QoSya1aoxL2h7Jnm3ax7RWiz5syRgw
- 1Ri/9JX7EOc3+x7gZho9i5Tz2ah3r/OB30dhUhaufOmVFTQbc5BwxHBFnCAoVx65crWf
- RZlxoQyau50k/VSDD8VQTzVTgXH8Cdkk6OzxMPa0Wa0uIPx4CqM2pI1rJrU00g1MRt9A
- XHAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761651439; x=1762256239;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eIoJWjFxXvCJq6wPc9vwjKc8KbNm3ZfcumT2PgAGI5c=;
- b=dqVwmOlW95zkngGT/vWDVJUOq9rhOURRwcOvQyjVu6bnW67m83U4jsi70nAVNPKhU+
- zJWt1GEeaP1EHyb6wFfRNWdA2Kl36uVqIDao2puD4aj2g1TILBnDhAHevD8+UdL3diw0
- hvnbB592rVRpFOxQqRAA0Jxwt2VH1SrrkMdJ4tAVfLrrVugHjrfz0o1mTHaqaZ/ZNdHZ
- rxFFnmtkTt3drjug4UUYUi/9TUtf5h+JyxsNtngkwBtLq1TPv6T8HeV7p0Xv2ioQk0rU
- mJKbBaW2GuaqR46CfRzxxIy+WTTGK4d1zjGullgAxbDOP27xQuWfB4Yyb2KzRmNM5/0a
- 2DpA==
-X-Gm-Message-State: AOJu0Yxl3UqR3KvYJCUN9eLG8xw0qCZBDE7C3x9xFg2z/M8SJk2qChqp
- or9LqES26o5jUDAl45UNzCtER8129SDbL42gqbtH0nb8oWA1MrFH/pM99YPO+XIUXIk=
-X-Gm-Gg: ASbGncuVb1AkAx0g9h3c41h0BB6zF5wlLBLMJuc0CJS5h8VCe0qIcpyk7b8FWqLWdK+
- yKpKg9rMyih+LNbIV1A/rXmEm/gHBhYB1L+/iHnaMfGqkmQKaerw0tCcFjK1THu8mdr3RpzXY5H
- HPWea4mW3HgjOMdqBcRAHqdfMlE1VTpjmd4EjXwwQ71KTHjaP1l5J7qVpEyBCUma7o42Ru9ZRCY
- Ih2xIpNf4uP3TnMh+JThG637/e5pMzO+EmujgKx/kmeoPIYQWOkqPVESXOrv9b+BCNaYO0SCXgZ
- AABsal2lKwHUxcc9n6KUhy6nhcgSczzMlxwkM81VdaZuf5P/bdqlVd0Ii0LV/9OCQswDaD3bLjY
- BQjdGilNrgLuqzavCIRthqr3zrM5BSJID15KGljcC+lit1eagcAZOTqqlnQmhf9dPapqFl0qdEO
- qrZpI1+LAxWwk807T6ySuTW3eRKtsZJLaYzfoDc/Btr/62cgKv
-X-Google-Smtp-Source: AGHT+IE3Snl8zlSnPiGYj9/4JIFL4a6H2K7YElnBFPReLUtxrB84UnXHHwxdUdTCeofttPdmksiT9Q==
-X-Received: by 2002:a05:6000:24c1:b0:3eb:c276:a347 with SMTP id
- ffacd0b85a97d-429a7df89ccmr2374125f8f.0.1761651439165; 
- Tue, 28 Oct 2025 04:37:19 -0700 (PDT)
-Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952cb7d1sm20139099f8f.16.2025.10.28.04.37.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Oct 2025 04:37:18 -0700 (PDT)
-Message-ID: <1e0ba551-67b0-4538-9291-2b94059c9dc4@linaro.org>
-Date: Tue, 28 Oct 2025 12:37:17 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vDi1y-0007kG-8G; Tue, 28 Oct 2025 07:38:26 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vDi1s-0004tW-J2; Tue, 28 Oct 2025 07:38:25 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BAD4A1636C3;
+ Tue, 28 Oct 2025 14:38:00 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 479D7307E53;
+ Tue, 28 Oct 2025 14:38:05 +0300 (MSK)
+Message-ID: <765304d3-d6c0-440e-ab92-a905f44d003f@tls.msk.ru>
+Date: Tue, 28 Oct 2025 14:38:05 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] hw/sysbus: Spring cleanups (part 1)
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-ppc@nongnu.org,
- qemu-block@nongnu.org
-References: <20251028080258.23309-1-philmd@linaro.org>
- <CAJ+F1CJYxKD23TFCy1-rbZf0Y_mSMdyVH=nFDM6eomDhVpmHYA@mail.gmail.com>
- <CAFEAcA-O_Ocyrc11Y5TNmtja0RdgGJqA=gUAX_ya6oSUVRnzEA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-O_Ocyrc11Y5TNmtja0RdgGJqA=gUAX_ya6oSUVRnzEA@mail.gmail.com>
+Subject: Re: [PATCH] Use correct type for ioctl(FIGETBSZ) emulation
+To: Bastian Blank <waldi@debian.org>, qemu-devel@nongnu.org
+References: <s7ingr72rgtvch2poxlwyc25lkxp7hh5c273ubvmz4tdskjttz@7dzfvylkgwsh>
+Content-Language: en-US, ru-RU
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-stable <qemu-stable@nongnu.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <s7ingr72rgtvch2poxlwyc25lkxp7hh5c273ubvmz4tdskjttz@7dzfvylkgwsh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,43 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/25 10:16, Peter Maydell wrote:
-> On Tue, 28 Oct 2025 at 08:50, Marc-André Lureau
-> <marcandre.lureau@gmail.com> wrote:
->>
->> Hi
->>
->> On Tue, Oct 28, 2025 at 12:04 PM Philippe Mathieu-Daudé
->> <philmd@linaro.org> wrote:
->>>
->>> - Use proper SysBus accessors
->>>
->>> Since v1:
->>> - Reduce series
->>>
->>> Philippe Mathieu-Daudé (7):
->>>    hw/sysbus: Use memory_region_name()
->>>    hw/i386/microvm: Use proper SysBus accessors
->>>    hw/i386/ioapic: Use proper SysBus accessors
->>>    hw/timer/hpet: Use proper SysBus accessors
->>>    hw/acpi/cxl: Use proper SysBus accessors
->>>    hw/ppc/e500: Use proper SysBus accessors
->>>    hw/pci-bridge/pci_expander_bridge: Use proper SysBus accessors
->>>
->>
->> There are a bunch of compilation issues that I will let you address for v3.
->>
->> It looks like it should be possible to remove the "addr" field from
->> SysBusDevice.mmio. On the surface it looks redundante with
->> MemoryRegion.addr. I might be missing something.
+On 10/28/25 14:29, Bastian Blank wrote:
+> The FIGETBSZ ioctl get's "int *" (pointer to 32bit integer) as argument,
+> not "long *" as specified in qemu.  Using the correct type makes the
+> emulation work.
 > 
-> Yes, I think they'll always be the same value. But
-> MemoryRegion::addr is private data of MemoryRegion
-> and there's no 'get' function provided; SysBus shouldn't
-> be reaching inside an MR struct to look at its internals.
-> 
-> (There is a memory_region_set_address(), so we could
-> I guess provide a memory_region_get_address() ?)
+> Signed-off-by: Bastian Blank <waldi@debian.org>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3185
 
-OK, thanks!
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+(Adding Laurent to Cc:)
+
+While applying, it'd be nice to include "linux-user: " prefix to
+the subject.  And the thing should definitely be picked up for the
+stable series (Cc'd).
+
+This bug has been with us since the day linux-user was implemented,
+in 2003.
+
+I can pick this one up to qemu-trivial tree, if no one objects.
+
+Thanks,
+
+/mjt
+
+>   linux-user/ioctls.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
+> index 3b41128..c87ce61 100644
+> --- a/linux-user/ioctls.h
+> +++ b/linux-user/ioctls.h
+> @@ -145,7 +145,7 @@
+>        IOCTL(FITRIM, IOC_W | IOC_R, MK_PTR(MK_STRUCT(STRUCT_fstrim_range)))
+>   #endif
+>   
+> -     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
+> +     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_INT))
+>   #ifdef CONFIG_FIEMAP
+>        IOCTL_SPECIAL(FS_IOC_FIEMAP, IOC_W | IOC_R, do_ioctl_fs_ioc_fiemap,
+>                      MK_PTR(MK_STRUCT(STRUCT_fiemap)))
+
+
 
