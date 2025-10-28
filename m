@@ -2,89 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FECC1452B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AD0C1454E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:22:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDhjb-0006Ex-Qe; Tue, 28 Oct 2025 07:19:27 -0400
+	id 1vDhmS-0008D6-As; Tue, 28 Oct 2025 07:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDhjW-0006DE-Ph
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:19:24 -0400
-Received: from mail-yx1-xb130.google.com ([2607:f8b0:4864:20::b130])
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vDhmB-0008Ck-3o
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:22:07 -0400
+Received: from sg-1-38.ptr.blmpb.com ([118.26.132.38])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDhjM-0002Tk-MA
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:19:18 -0400
-Received: by mail-yx1-xb130.google.com with SMTP id
- 956f58d0204a3-63e3a7a67a4so6270914d50.1
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:19:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761650349; x=1762255149; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NpHM8U3lLFKgz4Lw76Bxs+M3n57MYbLJAUJ43ylwpug=;
- b=szoG7CcfTEFkH2NPrT4XP2eP6aJXRM3vkQzTxZMjFgjrcXFPPwbSHqJ18fZwy2U2j4
- GP6lrDgcdJUTH2e37dZTLWUC69CQiFoi7ZXUU0vJ7qaDc3NCW2P4D6YQ6hx38VE5SybA
- JZw4kX6KKN6I2wt0cb0rSnmORv0kXfpbvieAet2jrIQSDHBMFQQKsbxa2hoBieDWQfP2
- HUW1ISp0aZmi2PL0rshzVXteK0XCOSr+ppnI9J771VwY/BSsnH6Basz51Vo3uT1VY1mO
- QUdCnv2vKvt/3gEkJ3RQ+3gMW6BEnyNyDlC0cAGvsI4KEAb7OFPJKITFnNpWji/cuPKu
- 2+vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761650349; x=1762255149;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NpHM8U3lLFKgz4Lw76Bxs+M3n57MYbLJAUJ43ylwpug=;
- b=SerhoVJDpBfjcFVYUUo03rYoty6I2wSefisXQxB6YcNaTYhlaxltXbrNGA6lsM0IS2
- eD0tGqgSShX2Hn5itDexA1hYGrrGdZlS8XgMRMu/8ZlohLTaKxl2ZIN9O2b4fsMzFK7s
- MwyZ7uebpgIwlvDxFQKY2HIv80K+47Ms93t9jXRt2ybGbDGrTPPfuJpNeUYA9wG2ZQhd
- bHkCm/lroD8vcKvdnC6pIFwrv5ZZ4j5ZIiBAYmE30I9p7AcA5sHyNbmxRH5EAfvwI8+E
- diVxGVfwMVFrRZcHrfJDnq/7c1mvMEcKRy+r0Zb86ik7BCK0qXvY1pEfpG64WooQMIoQ
- sHWQ==
-X-Gm-Message-State: AOJu0Yw0a9euidDri4SAlRleTMWoVkEKNNa/V0GKLjAFfp8nvMwLnqZe
- AFKzAkZV0rW8n4VZ3cI2lyW7vDh7oQvtjOuCEpupZMurg+MxXcbMQE664AdvOUVXdWoFCx9nF8I
- 7hrabA5KxU2jWYZgYCuJjlckVBM8ImzmMc1BNC/55BQ==
-X-Gm-Gg: ASbGnct6vrIUwMsYzgPGDPtg6IiC2QJ5QkRmflbnpieacHf4agBHF6atK0ABphn8+6b
- 3syLMPRESzP8wpBExq3nrLSnrpxGhaUfkAAPWIUQ7GjKb2T4z1r60QElHN94fwEvp5Hhj8dMFMS
- kb0tDa3Q6r99fNqkqo92y9fyZ3ZI+IM6QsiVBrfOFTNZt838PeLOpZdtsEvDu68P7GzWjF3vGz4
- VsBEWGtZmyc/3Vk5KahPPsLaEaQ5IixWkh01vhDmf+PCBV7PBQBTYlbviD8Gg==
-X-Google-Smtp-Source: AGHT+IG2cQaWEZTSs0Y5epSzvWv+WKv2OKrWOcpuoYCSKtmeSv8VIghkBK1xbgr5cwszsR58avyIAqzOir9cSlQugMk=
-X-Received: by 2002:a05:690e:4184:b0:62f:c634:4b3f with SMTP id
- 956f58d0204a3-63f6b9d3132mr2616840d50.7.1761650349242; Tue, 28 Oct 2025
- 04:19:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20251028054238.14949-1-philmd@linaro.org>
- <20251028054238.14949-19-philmd@linaro.org>
-In-Reply-To: <20251028054238.14949-19-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Oct 2025 11:18:57 +0000
-X-Gm-Features: AWmQ_bn82SuPYVoiy2QwkORg7Xyc1nUDhibjfSmAdY2bG0OnlWp3ry_DXztbzmM
-Message-ID: <CAFEAcA9FH86ja0GX_GM1p=2NSMV01WSefpNCgEZ1ap=xHju+DA@mail.gmail.com>
-Subject: Re: [PATCH v3 18/59] target/i386/hvf: Factor hvf_handle_vmexit() out
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Mads Ynddal <mads@ynddal.dk>, 
- Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
- Roman Bolshakov <rbolshakov@ddn.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Phil Dennis-Jordan <phil@philjordan.eu>, 
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Collingbourne <pcc@google.com>, Alexander Graf <agraf@csgraf.de>,
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vDhm5-00031e-KL
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:22:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761650509;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=70yvgD0+mhFTNvdtIMjGBGW7uamPRpGwMMhDNO36wnI=;
+ b=vKlLdEbHqMHBSvkXXsb0nTd3uDhOV5zonLfbWpbPgW/cP5qQyOsc3S0RL6CjCwrLuXf6cP
+ p7e/15WHQ53UEVXDwezIpgg3YAnm1OS8HCJmLbrEgFRUHBq+efHxFI2p4KH2ePza8fSp5z
+ M3RNYeFBkGGWVGa6mM+SCQVslo4HVCtvG3xdvtlxT8oFRDXe3aVe8f+Pip7ydbgpSShoVE
+ MCFwWMpy8iowbk6aMopUHV9MH42YyuDfNNVQjk6A+UawH+0pxVN36qCY5wNyOMReNQM58V
+ jqXDtpV4rKuakk2XeN9DLbwf2MCgpFqv8B+aqD4sZvLZv8q1UaZiaPo49pCyoA==
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: <zhao1.liu@intel.com>, <manos.pitsidianakis@linaro.org>, 
+ <richard.henderson@linaro.org>, <philmd@linaro.org>, 
+ <chao.liu@openatom.club>, <qemu-rust@nongnu.org>, 
+ <qemu-devel@nongnu.org>, <hust-os-kernel-patches@googlegroups.com>
+Mime-Version: 1.0
+User-Agent: Mozilla Thunderbird
+In-Reply-To: <CABgObfZEm7nu1gRPHQnYc-WJ2PHrBa40VX6Qv2bRTWBYt2BsOA@mail.gmail.com>
+From: "Chen Miao" <chenmiao@openatom.club>
+Subject: Re: [RFC PATCH v2 3/5] hw/gpio: Move the pcf8574 struct to header
+Received: from [198.18.0.1] ([114.249.194.57]) by smtp.feishu.cn with ESMTPS;
+ Tue, 28 Oct 2025 19:21:46 +0800
+Message-Id: <73983c4b-2e84-4344-9aba-edf12b1c2219@openatom.club>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b130;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Lms-Return-Path: <lba+26900a74b+5b73e7+nongnu.org+chenmiao@openatom.club>
+Date: Tue, 28 Oct 2025 19:21:45 +0800
+References: <90746cd6a57c0df971158f604c422a23d750e0b4.1761644606.git.chenmiao@openatom.club>
+ <CABgObfZEm7nu1gRPHQnYc-WJ2PHrBa40VX6Qv2bRTWBYt2BsOA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Chen Miao <chenmiao@openatom.club>
+Received-SPF: pass client-ip=118.26.132.38;
+ envelope-from=chenmiao@openatom.club; helo=sg-1-38.ptr.blmpb.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,18 +72,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Oct 2025 at 05:55, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+On 10/28/2025 6:46 PM, Paolo Bonzini wrote:
+> On Tue, Oct 28, 2025 at 11:18=E2=80=AFAM chenmiao <chenmiao@openatom.club=
+> wrote:
+>> To better implement the Rust PCF8574 bindings, move its struct definitio=
+n to
+>> the header file.
+> This should not be needed, the struct is entirely hidden within the C
+> implementation and the same should be true for the Rust one.
 >
-> Factor hvf_handle_vmexit() out of hvf_arch_vcpu_exec().
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/i386/hvf/hvf.c | 478 +++++++++++++++++++++---------------------
->  1 file changed, 244 insertions(+), 234 deletions(-)
+> Paolo
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Ok, delete it in subsequent versions=E2=80=8B.
 
-thanks
--- PMM
+Chen Miao
+
+>> Signed-off-by: chenmiao <chenmiao@openatom.club>
+>> ---
+>>   hw/gpio/pcf8574.c         | 32 --------------------------------
+>>   include/hw/gpio/pcf8574.h | 36 ++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 36 insertions(+), 32 deletions(-)
+>>
+>> diff --git a/hw/gpio/pcf8574.c b/hw/gpio/pcf8574.c
+>> index 274b44bb61..670fc006bb 100644
+>> --- a/hw/gpio/pcf8574.c
+>> +++ b/hw/gpio/pcf8574.c
+>> @@ -15,38 +15,6 @@
+>>   #include "qemu/module.h"
+>>   #include "qom/object.h"
+>>
+>> -/*
+>> - * PCF8574 and compatible chips incorporate quasi-bidirectional
+>> - * IO. Electrically it means that device sustain pull-up to line
+>> - * unless IO port is configured as output _and_ driven low.
+>> - *
+>> - * IO access is implemented as simple I2C single-byte read
+>> - * or write operation. So, to configure line to input user write 1
+>> - * to corresponding bit. To configure line to output and drive it low
+>> - * user write 0 to corresponding bit.
+>> - *
+>> - * In essence, user can think of quasi-bidirectional IO as
+>> - * open-drain line, except presence of builtin rising edge acceleration
+>> - * embedded in PCF8574 IC
+>> - *
+>> - * PCF8574 has interrupt request line, which is being pulled down when
+>> - * port line state differs from last read. Port read operation clears
+>> - * state and INT line returns to high state via pullup.
+>> - */
+>> -
+>> -OBJECT_DECLARE_SIMPLE_TYPE(PCF8574State, PCF8574)
+>> -
+>> -#define PORTS_COUNT (8)
+>> -
+>> -struct PCF8574State {
+>> -    I2CSlave parent_obj;
+>> -    uint8_t  lastrq;     /* Last requested state. If changed - assert i=
+rq */
+>> -    uint8_t  input;      /* external electrical line state */
+>> -    uint8_t  output;     /* Pull-up (1) or drive low (0) on bit */
+>> -    qemu_irq handler[PORTS_COUNT];
+>> -    qemu_irq intrq;      /* External irq request */
+>> -};
+>> -
+>>   static void pcf8574_reset(DeviceState *dev)
+>>   {
+>>       PCF8574State *s =3D PCF8574(dev);
+>> diff --git a/include/hw/gpio/pcf8574.h b/include/hw/gpio/pcf8574.h
+>> index 3291d7dbbc..fe1ce891b7 100644
+>> --- a/include/hw/gpio/pcf8574.h
+>> +++ b/include/hw/gpio/pcf8574.h
+>> @@ -10,6 +10,42 @@
+>>   #ifndef _HW_GPIO_PCF8574
+>>   #define _HW_GPIO_PCF8574
+>>
+>> +#include "qemu/osdep.h"
+>> +#include "hw/i2c/i2c.h"
+>> +#include "qom/object.h"
+>> +
+>>   #define TYPE_PCF8574 "pcf8574"
+>>
+>> +/*
+>> + * PCF8574 and compatible chips incorporate quasi-bidirectional
+>> + * IO. Electrically it means that device sustain pull-up to line
+>> + * unless IO port is configured as output _and_ driven low.
+>> + *
+>> + * IO access is implemented as simple I2C single-byte read
+>> + * or write operation. So, to configure line to input user write 1
+>> + * to corresponding bit. To configure line to output and drive it low
+>> + * user write 0 to corresponding bit.
+>> + *
+>> + * In essence, user can think of quasi-bidirectional IO as
+>> + * open-drain line, except presence of builtin rising edge acceleration
+>> + * embedded in PCF8574 IC
+>> + *
+>> + * PCF8574 has interrupt request line, which is being pulled down when
+>> + * port line state differs from last read. Port read operation clears
+>> + * state and INT line returns to high state via pullup.
+>> + */
+>> +
+>> +OBJECT_DECLARE_SIMPLE_TYPE(PCF8574State, PCF8574)
+>> +
+>> +#define PORTS_COUNT (8)
+>> +
+>> +struct PCF8574State {
+>> +    I2CSlave parent_obj;
+>> +    uint8_t  lastrq;     /* Last requested state. If changed - assert i=
+rq */
+>> +    uint8_t  input;      /* external electrical line state */
+>> +    uint8_t  output;     /* Pull-up (1) or drive low (0) on bit */
+>> +    qemu_irq handler[PORTS_COUNT];
+>> +    qemu_irq intrq;      /* External irq request */
+>> +};
+>> +
+>>   #endif /* _HW_GPIO_PCF8574 */
+>> --
+>> 2.43.0
+>>
 
