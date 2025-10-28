@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260FFC1322B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 07:25:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2C8C13271
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 07:28:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDd7s-0007r0-6a; Tue, 28 Oct 2025 02:24:12 -0400
+	id 1vDd98-0001mt-EA; Tue, 28 Oct 2025 02:25:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDd7p-0007is-C5
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:24:09 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDd8R-0000sT-0a
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:24:48 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDd7i-0000bQ-2d
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:24:09 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46fcf9f63b6so32781985e9.2
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 23:24:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDd8O-0000fV-Ub
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:24:46 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-475dab5a5acso18630375e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 23:24:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761632639; x=1762237439; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761632682; x=1762237482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9r9PbSxEc5vkW3NMHjI0QVQXtgDxRcrfGpveD6M8q14=;
- b=xViHHJuJmL4FiQDEtOC+NFAOzgtulS49F21wQq5CNP9tUbOmnH64QOsjWe5IJUoTR/
- cPww4maCperenJcN7CB6+ksKavq1E747re28lXDF3b4/PJK6m/XqjyGdtmJ/PKT0LlVM
- LsR83tdkVYX3ARu3Ua/Y1aj7iUX+gDY1eQLcO3BXFGoQU1s4szgSvD36Jvqs5corFN1+
- /yBF6t7v84HmgrR4OGKxBjl6oE3Hfoh0V2bie+oZ4uqvYrxNQ+oLhTw/6A00b/Mwg/bh
- bG8/UbOW+1ptkr+cUI4oMOk7hDEQX9RBnALmpUdyWZIa3sduUKaUB2z0IeXgYvcwEfbt
- RvLQ==
+ bh=zTEh/LVQjVZus7c2C/VSTX9bICXV4YJB1vAsJnGdIZw=;
+ b=eq/2yeCXs8kUQNfFnWs6T2979aS7QNcn36WKOjABmd6mTHvLMzUg7KvQuY+WeFff9G
+ e/+H6e8KgitX4maCZf3ktp9ORP8x5d04PWnHLFW4+h16n7aRmWGYIQsH67dtrbnaaJRi
+ y+elBqZs7d/GXU3D5+KK6qn/DqfHnngs0oqSOmuoG9lmzvO7oLLO3/B2StBDccmK+afh
+ UsfDxaeMO5Oo8lx7qnKv17YCErbbiTi/tnep7QUJ1SWpCqRI96YaU/VIhBMxgOb1S9NO
+ 5G3gF4lPu7BGQZ8dlbow/HjWaIMRCk6FJW93U4eZVp5HD6zfG408i+uyTR6yPPGoarEr
+ vMPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761632639; x=1762237439;
+ d=1e100.net; s=20230601; t=1761632682; x=1762237482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9r9PbSxEc5vkW3NMHjI0QVQXtgDxRcrfGpveD6M8q14=;
- b=izHdCFSoBXCq7jMWafDehLzYe56Tm4zLiRDSjQZbjj7xKgViC+/xKWfhZU4D/KumOv
- DtDejAzLO3QzvBpvYTg+VN2/k5q23oT44lyceUWgIQ4hhCpw4dxHRxkIgbq8dpmHM88y
- hMHBI+uU4TREwkin86Ryhz8UO1HtSomaWKDaTvxoErjsYHSvuZxysenhtabI4GtTv0mW
- IFaokCT0uFZUVapljg9A4ke203emCX8elWR0lpxVxJEKBG/rZo9PnVmLA/g/+PwjI1KL
- cY7B4cSyUjLwrpvZ6V/mSnwlW/j7q33HlCynfIsYc5KVvxFwS4DJzQwtEy1/903U0/98
- 65SA==
-X-Gm-Message-State: AOJu0Yx1VwKRdFKjbS50oasQO4TkufbjIE6YNzlE4u2kqUEfi0yCzx+k
- Bk6yWTD60IMRgO46yjS/dVuBSuG8ZKuiaCzUh9fetbMYRhrgYuOQW6Parc/L4pmooOnyLAEYOWD
- Q0S5Ib+0=
-X-Gm-Gg: ASbGnct4cpa0Wmpz2jAo22iiuqdcIiEERLohjw/i4tNZ0aq/cm6VkpPkxUhAFwgyUrj
- 3iYBFbeNBUCr0zK276nFDkQ+EI5oT5GNKaxLVlb9PIiNpDRPDr9Bbka+s4+MIwu67MgZ7hpZdgG
- R+vqA2py8JNdPrS88KuOgF99K89ciyrOZDzbk9VfLaS9zO8hYoyVsf+bpFYI5F2+d/4OVocryXV
- UEKNa4Y92Xd+nWcsdzGDdqAVlgbH7UpGQqBtf2898iYpLQR2L4OMwFerMjFU8YwD8mlFDyG/FkV
- NQAQkABE5pRzxb8O1EPKUzI7CTwrzIVpGInqb7aaFL5OhrZ7VvzCpzPpDr9/1tvUipucqYAWMLn
- Rlc6xI8oIDL97jwGhXwUQpHeRZdMnACmPL1bUQmZc6wNcF6iRCTuf1c3fcyykOgKtGxt0PoQzX2
- GAqkdLh2l0Gta6ajQlIY3/hA8yJ2MlfbKa+WjQk8a1GFrfdr7i3gEKv2M=
-X-Google-Smtp-Source: AGHT+IHVpoikpIYvHguAxwl+ojwpfr84RrZQqfwvBbRZQ/v9FUNcKjrLABeFbnw+hXNPR4eozlW99A==
-X-Received: by 2002:a05:600c:540d:b0:46f:b42e:e366 with SMTP id
- 5b1f17b1804b1-47717e6ae77mr18617665e9.40.1761632639025; 
- Mon, 27 Oct 2025 23:23:59 -0700 (PDT)
+ bh=zTEh/LVQjVZus7c2C/VSTX9bICXV4YJB1vAsJnGdIZw=;
+ b=g9ghQ4UMJArPc6hiSqu3+P+TS0yqTXpqD4iIB2sxQuUomjIsaEAylTNN3kyBztOEy3
+ dDQh1vXfu8bhpj+AUdq+k3xlAJmZU6ulGzSx+6KNwaZIfHsE3y8vMFTvcFuv6s4GlqUI
+ Gl4WNuPygvIkFwgv2w/AyKelsAM+VNQ5iUdXap1DSrJb6eE+HDUoqLKUrpcJGEKlQilt
+ 0aVj4BpKu0jfjF4LOXhQ+3G38htP9UzznLT5m5T/uRwRIttzOEdL/Hq2VqLeuv2PdqUZ
+ NeSgusrDxeNQRbPX8GdU/YnjCkNfpK0yTV/4M79wHcZWVhCuxqiXl4sGvjxJUjNDh531
+ aVcA==
+X-Gm-Message-State: AOJu0YzzfFNgsm8MZ/cXAkZmsuhR26RfXzfRNjqozXGpk6hksz91YJ1z
+ iWYgl9MjQcHihIq6bDE4Lt4aSdE7Z25YH/vTg5jnqPIsTRoAEEsVOsAxJ2VcFR7o5duoIyckiPT
+ JiTLhuCc=
+X-Gm-Gg: ASbGncsn0tKNxdv+/CSWrMmHZ5U8emSFLhYIdqPzmtGCkykYWnQBmwTAm2l6QS4BPUd
+ zWcX5XrRCUA9byyeotfKCTe9CrhoeEhOps286XrYyeQBk8oIaPBfj2MhjjD11TuH0XayuHnchY8
+ Q9H1G60IAWb75nirZ7otCxDA9YxstdbnDk+PQXEEhtqegLjaQ6V86bIrchSaHy8be0TvNG2Ur55
+ lksaXbfTFXk6SzpXjK5dVh5VBkk4vGnkpt3V3Pss3qT8fv5Wj1YJUs689Jo2shxSZfNbqrf+91p
+ EWDLYcIWqZdLArCqm0KPW3XkrT627tL3jUyD9qsDYvR5/vgfRtSrItDiZIM9z3uy8WOHj0wmKeP
+ M9EbsKmwdVZ+/OVUOycNfsNpZjO6XljSv6qaiUcut5s/HfIFVBczFhuB+dRCZ4mFmdlsN5kVYRd
+ 25VPlUnvcDA3Ip8g/2BWV9bu4UCYCH+t7miB3psNv9qjSpl/3YnSwfdpGKOIwG9+JAbg==
+X-Google-Smtp-Source: AGHT+IEPV0mXk/DfIevFNGNmoexAS0FMcZZf/eG0BfO1U+bxdl+52y3h4avRzelcUezdGGty/i4rwA==
+X-Received: by 2002:a05:600c:19c6:b0:45d:d353:a491 with SMTP id
+ 5b1f17b1804b1-47717def79fmr17324445e9.1.1761632682158; 
+ Mon, 27 Oct 2025 23:24:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd478202sm175898915e9.14.2025.10.27.23.23.57
+ 5b1f17b1804b1-475dd4cba64sm175001005e9.14.2025.10.27.23.24.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Oct 2025 23:23:58 -0700 (PDT)
+ Mon, 27 Oct 2025 23:24:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
@@ -73,17 +73,17 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
  Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 58/59] target/arm/hvf: Emulate Monitor Debug registers
-Date: Tue, 28 Oct 2025 06:42:34 +0100
-Message-ID: <20251028054238.14949-59-philmd@linaro.org>
+Subject: [PATCH v3 59/59] target/arm/hvf: Emulate PhysTimer registers
+Date: Tue, 28 Oct 2025 06:42:35 +0100
+Message-ID: <20251028054238.14949-60-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028054238.14949-1-philmd@linaro.org>
 References: <20251028054238.14949-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,27 +106,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Emulate PhysTimer dispatching to TCG, like we do with GIC registers.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
 TODO: audit it is safe
 ---
- target/arm/hvf/hvf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/hvf/hvf.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 639eef3b800..113f1415011 100644
+index 113f1415011..a7b5e4711b0 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1616,6 +1616,9 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-         }
-         break;
-     case SYSREG_MDSCR_EL1:
-+        if (hvf_sysreg_write_cp(cpu, "Monitor Debug", reg, val)) {
+@@ -189,6 +189,7 @@ void hvf_arm_init_debug(void)
+ #define SYSREG_LORC_EL1       SYSREG(3, 0, 10, 4, 3)
+ #define SYSREG_CNTPCT_EL0     SYSREG(3, 3, 14, 0, 1)
+ #define SYSREG_CNTP_CTL_EL0   SYSREG(3, 3, 14, 2, 1)
++#define SYSREG_CNTP_CVAL_EL0  SYSREG(3, 3, 14, 2, 2)
+ #define SYSREG_PMCR_EL0       SYSREG(3, 3, 9, 12, 0)
+ #define SYSREG_PMUSERENR_EL0  SYSREG(3, 3, 9, 14, 0)
+ #define SYSREG_PMCNTENSET_EL0 SYSREG(3, 3, 9, 12, 1)
+@@ -201,6 +202,8 @@ void hvf_arm_init_debug(void)
+ #define SYSREG_PMCEID1_EL0    SYSREG(3, 3, 9, 12, 7)
+ #define SYSREG_PMCCNTR_EL0    SYSREG(3, 3, 9, 13, 0)
+ 
++#define SYSREG_CNTP_TVAL_EL0  SYSREG(3, 3, 14, 2, 0)
++#define SYSREG_CNTP_CVAL_EL0  SYSREG(3, 3, 14, 2, 2)
+ #define SYSREG_CNTV_CTL_EL0   SYSREG(3, 3, 14, 3, 1)
+ #define SYSREG_CNTV_CVAL_EL0  SYSREG(3, 3, 14, 3, 2)
+ #define SYSREG_PMCCFILTR_EL0  SYSREG(3, 3, 14, 15, 7)
+@@ -1249,16 +1252,20 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
+     }
+ 
+     switch (reg) {
+-    case SYSREG_CNTPCT_EL0:
+-        *val = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
+-              gt_cntfrq_period_ns(arm_cpu);
+-        return 0;
+     case SYSREG_OSLSR_EL1:
+         *val = env->cp15.oslsr_el1;
+         return 0;
+     case SYSREG_OSDLR_EL1:
+         /* Dummy register */
+         return 0;
++    case SYSREG_CNTP_CTL_EL0:
++    case SYSREG_CNTP_TVAL_EL0:
++    case SYSREG_CNTPCT_EL0:
++        /* Call the TCG sysreg handler. This is only safe for VTimer regs. */
++        if (hvf_sysreg_read_cp(cpu, "VTimer", reg, val)) {
 +            return 0;
 +        }
-         env->cp15.mdscr_el1 = val;
++        break;
+     case SYSREG_ICC_AP0R0_EL1:
+     case SYSREG_ICC_AP0R1_EL1:
+     case SYSREG_ICC_AP0R2_EL1:
+@@ -1571,19 +1578,20 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+     case SYSREG_OSLAR_EL1:
+         env->cp15.oslsr_el1 = val & 1;
          return 0;
-     case SYSREG_DBGBVR0_EL1:
+-    case SYSREG_CNTP_CTL_EL0:
+-        /*
+-         * Guests should not rely on the physical counter, but macOS emits
+-         * disable writes to it. Let it do so, but ignore the requests.
+-         */
+-        qemu_log_mask(LOG_UNIMP, "Unsupported write to CNTP_CTL_EL0\n");
+-        return 0;
+     case SYSREG_OSDLR_EL1:
+         /* Dummy register */
+         return 0;
+     case SYSREG_LORC_EL1:
+         /* Dummy register */
+         return 0;
++    case SYSREG_CNTP_CTL_EL0:
++    case SYSREG_CNTP_CVAL_EL0:
++    case SYSREG_CNTP_TVAL_EL0:
++        /* Call the TCG sysreg handler. This is only safe for VTimer regs. */
++        if (hvf_sysreg_write_cp(cpu, "VTimer", reg, val)) {
++            return 0;
++        }
++        break;
+     case SYSREG_ICC_AP0R0_EL1:
+     case SYSREG_ICC_AP0R1_EL1:
+     case SYSREG_ICC_AP0R2_EL1:
 -- 
 2.51.0
 
