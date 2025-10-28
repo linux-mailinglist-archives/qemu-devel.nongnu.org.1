@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1E3C17507
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D853CC17557
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:20:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstK-0002sN-0d; Tue, 28 Oct 2025 19:14:14 -0400
+	id 1vDstN-0002uB-9w; Tue, 28 Oct 2025 19:14:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstG-0002s5-Sp
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:10 -0400
+ id 1vDstK-0002tY-TQ
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:15 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDst7-00014V-7x
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:10 -0400
+ id 1vDst9-00014g-1N
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:14 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 095A08174E;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id ACB9F81756;
  Wed, 29 Oct 2025 02:13:55 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-SDlcWWZH; Wed, 29 Oct 2025 02:13:54 +0300
+ ESMTPSA id oDnXpg2bCW20-kSdLoIY9; Wed, 29 Oct 2025 02:13:55 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693234;
- bh=EZgFRHRD0OzlmlPv1yQVuHzPOzY9kMBfHCFRUSxoT20=;
+ s=default; t=1761693235;
+ bh=1/MGi/tsP2KZAQxhpYMWKHlovow3Rr/el/C7tdrzP30=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=y+lJEsuJYbbI9AxRUrFp94119eKIgC4UaADH/VWc1rijssSLwwI4savdwXSve89aJ
- GLRu+V6tI2oEfehr77FsClOfz48wRdbRjpEDUOaJ9+XsBXFHSvMPK2hKKLnNbY9aaZ
- caHc1fl8JunphcT0XwTGDmNvcdM4xT6qa1g49ucc=
+ b=fJNleDlJvqjIlqmTUqR4UYjOUfRCj11H+nGYeudRI9z7zHQx3E524LxWoNy/tmfxi
+ f9OyJRHpDYYtVlZPlNsFY/QJVdgY4USpqT3T1C0NyZle/3qvFUmNKAwAdZ3bsMRqys
+ LAnR7IKPrpOKobR0yMjyd7PfmXmL5nRPCWU7qfbQ=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 04/22] ui/vdagent: move to new migration APIs
-Date: Wed, 29 Oct 2025 02:13:28 +0300
-Message-ID: <20251028231347.194844-5-vsementsov@yandex-team.ru>
+Subject: [RFC 05/22] hw/s390x/virtio-ccw.c: move to new migration APIs
+Date: Wed, 29 Oct 2025 02:13:29 +0300
+Message-ID: <20251028231347.194844-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
@@ -75,113 +75,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- ui/vdagent.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ hw/s390x/virtio-ccw.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/ui/vdagent.c b/ui/vdagent.c
-index ddb91e75c6..4388e90c0b 100644
---- a/ui/vdagent.c
-+++ b/ui/vdagent.c
-@@ -923,7 +923,7 @@ static void vdagent_chr_class_init(ObjectClass *oc, const void *data)
-     cc->chr_accept_input = vdagent_chr_accept_input;
+diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+index 4cb1ced001..f456856d42 100644
+--- a/hw/s390x/virtio-ccw.c
++++ b/hw/s390x/virtio-ccw.c
+@@ -38,7 +38,7 @@
+ 
+ bool have_virtio_ccw = true;
+ 
+-static int virtio_ccw_dev_post_load(void *opaque, int version_id)
++static bool virtio_ccw_dev_post_load(void *opaque, int version_id, Error **errp)
+ {
+     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(opaque);
+     CcwDevice *ccw_dev = CCW_DEVICE(dev);
+@@ -54,7 +54,7 @@ static int virtio_ccw_dev_post_load(void *opaque, int version_id)
+     if (ck->refill_ids) {
+         ck->refill_ids(ccw_dev);
+     }
+-    return 0;
++    return true;
  }
  
--static int post_load(void *opaque, int version_id)
-+static bool post_load(void *opaque, int version_id, Error **errp)
- {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(opaque);
+ typedef struct VirtioCcwDeviceTmp {
+@@ -62,7 +62,7 @@ typedef struct VirtioCcwDeviceTmp {
+     uint16_t config_vector;
+ } VirtioCcwDeviceTmp;
  
-@@ -935,7 +935,7 @@ static int post_load(void *opaque, int version_id)
-         vdagent_clipboard_peer_register(vd);
-     }
+-static int virtio_ccw_dev_tmp_pre_save(void *opaque)
++static bool virtio_ccw_dev_tmp_pre_save(void *opaque, Error **errp)
+ {
+     VirtioCcwDeviceTmp *tmp = opaque;
+     VirtioCcwDevice *dev = tmp->parent;
+@@ -70,23 +70,24 @@ static int virtio_ccw_dev_tmp_pre_save(void *opaque)
+ 
+     tmp->config_vector = vdev->config_vector;
  
 -    return 0;
 +    return true;
  }
  
- static const VMStateDescription vmstate_chunk = {
-@@ -975,15 +975,16 @@ static const VMStateDescription vmstate_cbinfo_array = {
-     }
- };
- 
--static int put_cbinfo(QEMUFile *f, void *pv, size_t size,
--                      const VMStateField *field, JSONWriter *vmdesc)
-+static bool save_cbinfo(QEMUFile *f, void *pv, size_t size,
-+                        const VMStateField *field, JSONWriter *vmdesc,
-+                        Error **errp)
+-static int virtio_ccw_dev_tmp_post_load(void *opaque, int version_id)
++static bool virtio_ccw_dev_tmp_post_load(void *opaque, int version_id,
++                                         Error **errp)
  {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
-     struct CBInfoArray cbinfo = {};
-     int i;
+     VirtioCcwDeviceTmp *tmp = opaque;
+     VirtioCcwDevice *dev = tmp->parent;
+     VirtIODevice *vdev = virtio_bus_get_device(&dev->bus);
  
-     if (!have_clipboard(vd)) {
--        return 0;
-+        return true;
-     }
- 
-     for (i = 0; i < QEMU_CLIPBOARD_SELECTION__COUNT; i++) {
-@@ -992,29 +993,24 @@ static int put_cbinfo(QEMUFile *f, void *pv, size_t size,
-         }
-     }
- 
--    return vmstate_save_state(f, &vmstate_cbinfo_array, &cbinfo, vmdesc,
--                              &error_fatal);
-+    return vmstate_save_vmsd(f, &vmstate_cbinfo_array, &cbinfo, vmdesc, errp);
- }
- 
--static int get_cbinfo(QEMUFile *f, void *pv, size_t size,
--                      const VMStateField *field)
-+static bool load_cbinfo(QEMUFile *f, void *pv, size_t size,
-+                        const VMStateField *field, Error **errp)
- {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
-     struct CBInfoArray cbinfo = {};
--    int i, ret;
--    Error *local_err = NULL;
-+    int i;
- 
-     if (!have_clipboard(vd)) {
--        return 0;
-+        return true;
-     }
- 
-     vdagent_clipboard_peer_register(vd);
- 
--    ret = vmstate_load_state(f, &vmstate_cbinfo_array, &cbinfo, 0,
--                             &local_err);
--    if (ret) {
--        error_report_err(local_err);
--        return ret;
-+    if (!vmstate_load_vmsd(f, &vmstate_cbinfo_array, &cbinfo, 0, errp)) {
-+        return false;
-     }
- 
-     for (i = 0; i < cbinfo.n; i++) {
-@@ -1025,20 +1021,20 @@ static int get_cbinfo(QEMUFile *f, void *pv, size_t size,
-         qemu_clipboard_update(info);
-     }
- 
+     vdev->config_vector = tmp->config_vector;
 -    return 0;
 +    return true;
  }
  
- static const VMStateInfo vmstate_cbinfos = {
-     .name = "vdagent/cbinfos",
--    .get  = get_cbinfo,
--    .put  = put_cbinfo,
-+    .load  = load_cbinfo,
-+    .save  = save_cbinfo,
- };
- 
- static const VMStateDescription vmstate_vdagent = {
-     .name = "vdagent",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .post_load = post_load,
-+    .post_load_errp = post_load,
+ const VMStateDescription vmstate_virtio_ccw_dev_tmp = {
+     .name = "s390_virtio_ccw_dev_tmp",
+-    .pre_save = virtio_ccw_dev_tmp_pre_save,
+-    .post_load = virtio_ccw_dev_tmp_post_load,
++    .pre_save_errp = virtio_ccw_dev_tmp_pre_save,
++    .post_load_errp = virtio_ccw_dev_tmp_post_load,
      .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(connected, VDAgentChardev),
-         VMSTATE_UINT32(caps, VDAgentChardev),
+         VMSTATE_UINT16(config_vector, VirtioCcwDeviceTmp),
+         VMSTATE_END_OF_LIST()
+@@ -97,7 +98,7 @@ const VMStateDescription vmstate_virtio_ccw_dev = {
+     .name = "s390_virtio_ccw_dev",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .post_load = virtio_ccw_dev_post_load,
++    .post_load_errp = virtio_ccw_dev_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_CCW_DEVICE(parent_obj, VirtioCcwDevice),
+         VMSTATE_PTR_TO_IND_ADDR(indicators, VirtioCcwDevice),
+@@ -105,7 +106,7 @@ const VMStateDescription vmstate_virtio_ccw_dev = {
+         VMSTATE_PTR_TO_IND_ADDR(summary_indicator, VirtioCcwDevice),
+         /*
+          * Ugly hack because VirtIODevice does not migrate itself.
+-         * This also makes legacy via vmstate_save_state possible.
++         * This also makes legacy via vmstate_save_vmsd possible.
+          */
+         VMSTATE_WITH_TMP(VirtioCcwDevice, VirtioCcwDeviceTmp,
+                          vmstate_virtio_ccw_dev_tmp),
+@@ -1130,13 +1131,13 @@ static int virtio_ccw_load_queue(DeviceState *d, int n, QEMUFile *f)
+ static void virtio_ccw_save_config(DeviceState *d, QEMUFile *f)
+ {
+     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
+-    vmstate_save_state(f, &vmstate_virtio_ccw_dev, dev, NULL, &error_fatal);
++    vmstate_save_vmsd(f, &vmstate_virtio_ccw_dev, dev, NULL, &error_fatal);
+ }
+ 
+ static int virtio_ccw_load_config(DeviceState *d, QEMUFile *f)
+ {
+     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
+-    return vmstate_load_state(f, &vmstate_virtio_ccw_dev, dev, 1, &error_fatal);
++    return vmstate_load_vmsd(f, &vmstate_virtio_ccw_dev, dev, 1, &error_fatal);
+ }
+ 
+ static void virtio_ccw_pre_plugged(DeviceState *d, Error **errp)
 -- 
 2.48.1
 
