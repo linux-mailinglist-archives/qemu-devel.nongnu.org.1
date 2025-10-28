@@ -2,114 +2,213 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADC4C1304A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 06:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAADC130B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 07:01:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDcaP-0008Jy-0M; Tue, 28 Oct 2025 01:49:37 -0400
+	id 1vDcl8-0000vZ-JS; Tue, 28 Oct 2025 02:00:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vDca4-0008H7-PX
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:49:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vDcks-0000uG-2S
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:00:29 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vDca0-0003jX-Os
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:49:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761630550;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V/2DiDnn5h61WikogYnnTD+nav6KqwXzmFdekQ30C9M=;
- b=Z0OQYtd1fcwp6f1hqO5+UeGKBphnwJpcRzu6/BtsR5jsSf9v2EmZ2+V9coJSZjsWDUELg/
- 1OFPKNmHKMJOCS8QXkLKZRxCyjcIsXd30I9j8DiDI3JAmmLHYQLC7G0DQ909TpKPKJEbnq
- 8m/mf0+mF/Wylo8ytKboRdmbOBJ+mTM=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-83_oboZvPCelhSnvs7RkXQ-1; Tue, 28 Oct 2025 01:49:09 -0400
-X-MC-Unique: 83_oboZvPCelhSnvs7RkXQ-1
-X-Mimecast-MFC-AGG-ID: 83_oboZvPCelhSnvs7RkXQ_1761630548
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-3307af9b55eso4206486a91.2
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 22:49:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761630548; x=1762235348;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V/2DiDnn5h61WikogYnnTD+nav6KqwXzmFdekQ30C9M=;
- b=Cz7wy5OkIOvO/wwpyijaerFxFoPLdqnm3HLHwsnFkLRzz6lFzZWw4UVEP5Si5pucE5
- 534QLJHFw7vlN2W+O1yq7d9viJBFOAd1uvYag7uJXPg3LyDsCBtdO52P2zmaXKGSZd1e
- D6jHAsfqzzMMp1FNVaVPiX2Bng05Yfs8wHDiNYV/FwUeGkVyBBlNYEFeFI+dMqWArv1B
- 3F6TVcN1IK49OkER7KlyHqDLt10iLnibBDOMi/n2FjzZ45kN+BVdOdNFa0KHwap9Bhpz
- gmcNDYOQ24j6KNLOIUPmKTZCCju3HYxFT7qcmxUwh/D/v1P1Op8FugVI57oZeiEJvsWD
- Ms0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIPe3AsSb/HoDFoMFI+Q1Ylj8piSoKziJ5AKvCHzx64+1GhVKWdyuj9MVPWaKzfgQgjUPKYZEH9Rdq@nongnu.org
-X-Gm-Message-State: AOJu0YxD8Cu+kIZT6RqXsyNFCgvajZGJSb54wzOK2WbIkFszjkpEiwnp
- qkzu4APwNPSXYxBTTHIuW6F9G2bAs4OEmj10/eP+llT/E0aTNFeyfc8sLrkYCJ5v8myZSMupSLM
- tGnSF49eICO+dO3b7yYDHIIrjLJ1UG/HxF1PXhJvRmwRn3/z2GJnlRFYz
-X-Gm-Gg: ASbGncsj/9riYCFTlfcxOY9L25QkSdXtw6yWXBFD1lJxC03s00Rk3WQYWP+xI5KtzIJ
- ppTFQ1gXpLMkdkk6R265ZGJDYM6AUNujiJZ7S0V9KC9+2ogGOREz3isvE2fqOkM7j4CRZhV9Mi+
- BJ5BT9wbk8SFktlBx6hswz1s301O7WcNaqBlG02yOeC3NIC6k/zMWVatv6hlbGxTWAPoiSSKdPH
- 65WkuI3wG35pfAVggheY6ljByCEgsgKKk17RarCIYJBh2xSBrGiQZHmf4nz5Ob5o+nOpkhRPAZL
- x4iuI6zKdQlCqGFxRsW+I/TAeSJwRBR5Hzp5Jt/I/olc+/e/CF9aAxXYr+YP90Yo1FD/plrIZi2
- Qru9f5DPKMlEuaTUtMPRYMp8GqrdhrTlP4C98I2w=
-X-Received: by 2002:a17:90b:2dc5:b0:32e:f1c:e778 with SMTP id
- 98e67ed59e1d1-340279e5b49mr2328522a91.3.1761630547701; 
- Mon, 27 Oct 2025 22:49:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEU5UMU2CSl16vMXPwcEvjIhSaCnvER1iqVBXwyJkmWPhrQXjwhhw50WJsDng/KdXUh5ovGng==
-X-Received: by 2002:a17:90b:2dc5:b0:32e:f1c:e778 with SMTP id
- 98e67ed59e1d1-340279e5b49mr2328488a91.3.1761630546935; 
- Mon, 27 Oct 2025 22:49:06 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au.
- [175.34.62.5]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-33fed80df16sm10567413a91.15.2025.10.27.22.48.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 22:49:06 -0700 (PDT)
-Message-ID: <45c63b0a-dc38-4ec0-9228-111a367eeacc@redhat.com>
-Date: Tue, 28 Oct 2025 15:48:48 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V6 02/24] hw/core, qemu-options.hx: Introduce
- 'disabledcpus' SMP parameter
-To: salil.mehta@opnsrc.net, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com
-Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
- jonathan.cameron@huawei.com, lpieralisi@kernel.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org, imammedo@redhat.com,
- armbru@redhat.com, andrew.jones@linux.dev, david@redhat.com,
- philmd@linaro.org, eric.auger@redhat.com, will@kernel.org, ardb@kernel.org,
- oliver.upton@linux.dev, pbonzini@redhat.com, rafael@kernel.org,
- borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- gustavo.romero@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- gankulkarni@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, wangzhou1@hisilicon.com, linuxarm@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- shahuang@redhat.com, zhao1.liu@intel.com
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
- <20251001010127.3092631-3-salil.mehta@opnsrc.net>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vDckm-0005Vk-Kv
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 02:00:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761631221; x=1793167221;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=vrKfUb8USWC7nF+73baL7vdQWcz+veDKtGqdcM5qM6I=;
+ b=jilYsx4zy74wLty/EldhKmUbFsU2B0RhHiKNbV2yMjJC9fZYTc6ZT20o
+ 1Impw9CuISVeUx87HK2U1XfQmtYovltALI5pvDfVKw1wT/GEbOoTaUHL0
+ 4izc0I7jPIAq6n9DFmxjf/dZWp7YTy5EGpFCVFSgOlRIwsYMu/msUQAcc
+ hxGDRprOI99x1WYd1WSKRo/e6/y6wKq6EOG1NA6xaNn7Zx0p96eqVvfWf
+ cHOgbqv+VPLCXe1BmQcPZ4ZtOEbv/zHEzuXxXrC5QavnCQx1mh2mEAP4C
+ yzdb49nwlgsN3rjM6ZF0CCfdJnNI7QMF1RlmiszfoE5YgCeHi0Q2KhO12 w==;
+X-CSE-ConnectionGUID: tTxRT2VYQDe2q36nO38RLA==
+X-CSE-MsgGUID: lNtGymkGR0SwwGYJeW2mFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63817475"
+X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; d="scan'208";a="63817475"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 23:00:14 -0700
+X-CSE-ConnectionGUID: Nc3RVB3iSayNSq+OK03GzA==
+X-CSE-MsgGUID: cTAcf/WTTF6pxNrZnIP76Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; d="scan'208";a="185713615"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 23:00:14 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 27 Oct 2025 23:00:13 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 27 Oct 2025 23:00:13 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.25) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 27 Oct 2025 23:00:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BInC/W3vOWCOyb+vG/0ISKyAz6FeJ/CuGaV04DSy7BD+vdDRJ1c/BfxSCSSk9u0DdvEe9KzWAPrj5cEfdw+IlYTbSWxplD+Ay3W9T/oluOvi0hG24pB8Jsablshc6Zm/fgzSlfMlOnpYr6d35Fnlo9v5khL6R0k/0ZqfsvmXte58co6QWjGmGDhXQOq7wn7EjUSjEv4jv4CEW4dGLqCCEZ7Y5KBZFiDv6IU1Kp90H6Ur8G2Bi1TxlueoZ+/13mh73+pFoqH33SKJ+OSvKB0suD6Nqma06S5ix9eQfqxdMNRVmOc7x3DbB2UlXu+78R1YjBsU++oVGEu9arxof5xnOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vrKfUb8USWC7nF+73baL7vdQWcz+veDKtGqdcM5qM6I=;
+ b=ASqnPFfBVkCIwI1Ou9M3773P489xRobDwYRvDGUSyGJKOrcGgVB2re1Jb0JyZPyS8rdPKPE7wXC890ukTA9jlsaSxpP0EZyKIoYoIzVbK/Sz0X4G2IvRiNfC4Vnatop21AZlwDfenOhnTCBXCx6JKwEB055YRiM8NnRrXglTrbj8DI5BcCBc3+SkiHgGIl9XzCuLCGBqQFitBWPUTr+88KSvsxLtZ3uT97K4CAERNpRmHrZe47JjvESkcNSi5tkE0Uawe8mE//keb4xEqcy8edYpUogq5OLRt9gDNgh8kSSlHLIvg9cA5TA5IdyWuQNay0iQDH+9iZB4Ki3jDfjFXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
+ by CO1PR11MB5044.namprd11.prod.outlook.com (2603:10b6:303:92::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
+ 2025 06:00:06 +0000
+Received: from IA3PR11MB9136.namprd11.prod.outlook.com
+ ([fe80::604b:77a4:b1be:3f13]) by IA3PR11MB9136.namprd11.prod.outlook.com
+ ([fe80::604b:77a4:b1be:3f13%7]) with mapi id 15.20.9253.017; Tue, 28 Oct 2025
+ 06:00:06 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "ddutile@redhat.com"
+ <ddutile@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "skolothumtho@nvidia.com"
+ <skolothumtho@nvidia.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+Subject: RE: [PATCH v7 08/23] vfio/iommufd: Force creating nesting parent HWPT
+Thread-Topic: [PATCH v7 08/23] vfio/iommufd: Force creating nesting parent HWPT
+Thread-Index: AQHcRMKJXQNxCbH2eEGa0/pvizNqGrTRe50AgAWa0IA=
+Date: Tue, 28 Oct 2025 06:00:05 +0000
+Message-ID: <IA3PR11MB9136419B3CDFB08CEDC532D292FDA@IA3PR11MB9136.namprd11.prod.outlook.com>
+References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
+ <20251024084349.102322-9-zhenzhong.duan@intel.com>
+ <00cf41c9-3683-42de-84ce-fce2ca5babfb@redhat.com>
+In-Reply-To: <00cf41c9-3683-42de-84ce-fce2ca5babfb@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20251001010127.3092631-3-salil.mehta@opnsrc.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|CO1PR11MB5044:EE_
+x-ms-office365-filtering-correlation-id: d860bb70-d63a-49d0-f494-08de15e73e48
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|7416014|376014|366016|1800799024|38070700021; 
+x-microsoft-antispam-message-info: =?utf-8?B?MTNzdFdFcm8yVFhoYkhkSW5oSDZFT29pZGNXK2RDclFlTWVqVHJyNEtxTzNl?=
+ =?utf-8?B?c0l1WWRNWWh5VlFwWHFDb0lwdkxtdUhJZkxYMnF1bGs4T3B1TThGOTJadUdi?=
+ =?utf-8?B?S2UvaWxSWVZUb1BWazVySUZ5NE44UTVtYlEzd2xHN1E2d1JFWDgvZFhJMHdv?=
+ =?utf-8?B?a1J0aklKWHFRdjNrd1dXSWs4VG8vOTFYN3U0ZG5mczdtVWR5U29hb2hJL3ln?=
+ =?utf-8?B?Wk9Nd2ZqU0pZVVBVWm9iNGlVRTlBaStmcmhLa3FHTUdUUXArc2NESjd6SFlx?=
+ =?utf-8?B?WldWeHpjbUJiTTBMdlJ0NlhTN1IyZkIzeXM5T2Q2UHAxeTl5ZFQ4Uml5aTRX?=
+ =?utf-8?B?Z29XZ3ZDVVRpeGdmK0Vyd3JGMkd0WDZWRkFMRHNXRE9yTTkwSWJwMXRRRmQ1?=
+ =?utf-8?B?THM1TDNmSUFaaWkzdWE0Q1RnNktVUFV0d1BUV0I3M2x3bVFsdTc2dTBKZ2kw?=
+ =?utf-8?B?eHBNMGx0RVRSZnBjcFJPeU1qbnR3WjJhRUVodUxOSVNDeGxEeEZyalgwTHpt?=
+ =?utf-8?B?Y3l5eHFnbWZLa3U5V2dncnVydjE3cy9rZGdJTWhtVWJtM1g0aWpxOGRraEJl?=
+ =?utf-8?B?dnJ6UGkwbjVHL05qWURhWHVseTRjaGRzdUtLUGNrOHdWY0NvczdBOWwvTW16?=
+ =?utf-8?B?UXZGekFuUE5vckd0RWxjMVIrYlFWdjlIbkY4anZsY1YvV1NtWWdTYkc3YXFL?=
+ =?utf-8?B?ejZpSGxwcjZVb1ozRHVYcUNQcUo4UGJodVVJb0NUWUpuV0dydWFlS3o1LzZ2?=
+ =?utf-8?B?QkNZdWFjdC9KY3JGbVYyMGp3NlBjcHBPQUEyUTJrSUdxN1dvRXJhVWVZSloz?=
+ =?utf-8?B?cytyU0N2TDQ5cERRc2dkT0toUFQ2M0pTQk9nNWpqYXk1SUV2dXhadEMxWitj?=
+ =?utf-8?B?MVdiZnZ4UzlOTmwzQzExcEk1c0dOMlljUWxSdkhEZURlWUhyMGtuZ3NTVzVR?=
+ =?utf-8?B?YUhhVzZaN3JHWVFacWIzTi9lSEdQUzRISm9WWEtVYnZ3bGlFcXMyc3lOM1di?=
+ =?utf-8?B?OWUxZjIwVXp2OTl2UGFYVm1YVThtTmFmZWdCMEJWeFNsR0F3UTh6TEFWYVhI?=
+ =?utf-8?B?MU55MW1EZlFzbERnbHVHdVBaaHcxaGZOc0txQTJmcjUwVmRvRnJSbDFYcWUr?=
+ =?utf-8?B?b1h5aWZHZksyN09YUGZzYUxhaHBJRk1pMng1bzdDdHFUL2RuLzJYakYrYThk?=
+ =?utf-8?B?NG50V09NRWgzVkhaQ2F5RmcrUUxyWWpjUUxXMVVmZHBGd1BhWjBnNHlwZGhw?=
+ =?utf-8?B?Z3FjZVhYZkQvQkx4OXE0OXpNQi9wSUNka2xZczRxc2o2NEFPMko0R1Y1UVBO?=
+ =?utf-8?B?MEluZjVDSGFEdWRkK0RRa29obUNUU3dwMGVDWHdycndGR1hLMm1Db1pkS1A3?=
+ =?utf-8?B?YS9TZnJHSzJ1S01IRjdnU0ZBNktLYzdDSWg5Zk10ZDk5Ry83TkxZam11dzF4?=
+ =?utf-8?B?M29nQitTQldYcXJEbHdick1QM0lOSnd5UmVZQ0Y5c1B2NEY5ZlZiVkM3K1Jw?=
+ =?utf-8?B?MGJCa05xVXp6MlE1WFZHdjhPVmNCaGJVdTVSYjJtbURxNWpFUWExSFRONVpi?=
+ =?utf-8?B?cGxZUzgxYWIzQUIvNS9UdkI3Z3o3TGNLS3JVRjFWVzhiTTNCSC9YblJyVDIv?=
+ =?utf-8?B?K3pQdWdMR3ZDWG5HZHhsU2IxMVVNTlpHR012R1RVejNhdUJzd3dwTktHZGw0?=
+ =?utf-8?B?emwvZ2lRRlJoZXV4Y1NWdW5VWUNHVExnWFdsbGhZWm9mVXFUVThBbnpvTTVG?=
+ =?utf-8?B?SDJ2NmJwTUpFbFczVk94NC9XbVZKSGZ2NjdqZXIxTGcxUXUvT0RZZTR4TUc4?=
+ =?utf-8?B?VnpkdlgwSGU4akFySWt5T3lTM3MrRmpvUUZ4Y0NxMnhaM3B1SDlmajAwV2Zq?=
+ =?utf-8?B?c29LeUxCMWVwV3FBUU96ckpZMUpkVWVKK21kSlVwSHJjUUdwR2pVOEozQy9G?=
+ =?utf-8?B?SWQwVnUvOTZLWmM2QVB2UVdJSWxZVHZHTXcxYWFraWM3S082T0xkTFhJZllB?=
+ =?utf-8?B?OXEvUldjZlVmcHZQa0Q3ZURlWkYwaUVZY1hYTHo2U2pTdlRUWlhkZFozU21J?=
+ =?utf-8?Q?bp+SyN?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA3PR11MB9136.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NmRRWUZxN3hMSmZCY0wybVZrVW95OHBmbGxNZCt3YXpGdFgvN1dOL2ZmeE9Z?=
+ =?utf-8?B?NHR1cnVSbjdsZGVUMW9hSFR5ajU5aUF4NEpyU0NRKzNSSlhCMnlFdmJlcllO?=
+ =?utf-8?B?MmpQNnVFYldRZmlHbFc1a3c3bVlsS0ljSllKMHVCaDJSbE05M2R1K2c1M3Vw?=
+ =?utf-8?B?NGJ4eUs4V1ZacTZzc0ZKakw1QUhReGNwcE9SUVNQK1RxOHM1Tzh6QWRUV3Fn?=
+ =?utf-8?B?RHRtRFI0RHNUQkJhaUJabk1hTGkzcTVlcCtXNm5oWjF6dzhEUWpYbHhKY1Fz?=
+ =?utf-8?B?Ni9XQUx0TzdJNkg1aWZpYjVYeXA0MkJTYy9KcEppZjJCTmFXMmdicHU5eVNM?=
+ =?utf-8?B?WUk2bmltMXloZy83QVhHRE4vd0w4OEpYSDFxL2g1NkF0K2ZkY05rS0xFcEZJ?=
+ =?utf-8?B?dEh0ZFQwN1F3TzFRMWdkZUVRanpLWGJQTCtkT1pDQUdYUEJuR0RQcVVmbjh4?=
+ =?utf-8?B?bEZPbmZpR2dyNGVWV3RrV1ZiZTVLZHQ3N0FRUjF4UVVOZDF2ZDl6RnJOL0dS?=
+ =?utf-8?B?VGVjMG5hbWRST0R4TDhwcXFHWXFhU3ZVU0lva2pGL3ZReVdUNHRkYkZPbnk3?=
+ =?utf-8?B?Z2VFcTdLakpiemk4djREeXZjYkRWSlM1Q0FuWG5ORnFJdUFYZ3RNbGNwenpv?=
+ =?utf-8?B?ZXBBeitPLzN5R2hXR3RsemtWRW5DMzI4cnJtV1dHaXZISUsvaXliUjVDaDJG?=
+ =?utf-8?B?ZktEZjFnd21qcVpDY1BVbGg0T1VkOHlaNzY4ZjB0Wm9vU1JMaFRwRWVTbWFK?=
+ =?utf-8?B?RmFVMFNkZlFDdDJab0xHeE9ITyttbE9lRjF1U1o2U21ZRm9MMHNsQVZXM2R6?=
+ =?utf-8?B?MjlPZ21Hd0pSK0pCM3JEb3YwbUJtQTRtZWo3ZFF1NGFZM1ZYWlVQdWJNcWU5?=
+ =?utf-8?B?enFtQ0ZjcXBsQ1M4WTdUQWppZkJIS2UralNXVE45Q05kWmdsOGJJcWhXRVhR?=
+ =?utf-8?B?K0FzOU85TlhWVDN3SG5wK1drcmM1d1V0TitOYm5MNVcvVXZCTHE0R1lmQ1ho?=
+ =?utf-8?B?WnhZRFlqd3hNUzRLOGlNeUNMVC8wTXJ5aWpKYVFmUWFpOVI1UVJ5VU1BeGEw?=
+ =?utf-8?B?Qkd1Vysybi8yMi84STRyT3llN0JBS0xsQWoxN0Zxckd3aUV4U0pDOFIxbE5o?=
+ =?utf-8?B?eUUvbUhENGVUU1lGT2ttV1ozNDFLREd2OWMwWWdDVGpQeGI0ZlBQQXlGb0lZ?=
+ =?utf-8?B?Ulh6cVZma052NFRvNEFvcGZHdzVESnJXS2hqckFwM2JYd1RyY1Z6bGdaUnUw?=
+ =?utf-8?B?aUhSODhmUXJBVFVsZDNPdXdxenZQeDFHL2tubW1CN2dwWmhaOXRJaE5XQ09m?=
+ =?utf-8?B?U0Y4aHZPK3VSMjkveHpycFZlMUgwYVBJaFNKcXh3MWNDZDM5UVpXNmJ0cEYr?=
+ =?utf-8?B?WFhtZnJKZ0ljbmtZVVdWZkRzU0FUK2s0VlhqUHVqNFUrakhyTkkxSHYySXZZ?=
+ =?utf-8?B?RlhUZ1ErVXZCY0dHeHZjWkRlYksxWFM0dlpGaUV4dWdNWDEwVVdYSDgzdVht?=
+ =?utf-8?B?MjVnMG01cGJYeFNEVmMrM2J5TEQ4cmFJNVBTVlJ0MWhKd2piVzAyYmdUU29W?=
+ =?utf-8?B?YVgxc1ZjaEd6anBvdkljMVRIUGFhNEZhOWFZY0h5Z1lubDRVMDlUWWZ2Z0cr?=
+ =?utf-8?B?ZkkrYndRa0xEOXVHVGtkOHYyNW1hMktnblpxODZNcWZkaHQ5NGRIaFJ3OUFy?=
+ =?utf-8?B?S1RNYjJHS3ZGUVI4a0x0dlRUZGZOV0FKNWRVS2EraDkzTlB5a1FtUUN0NDhS?=
+ =?utf-8?B?TlBnRlhPRXdhVGMrMU5XWmt4bXF0c0daaFpzQ0laUnlZK0lJenJvUDBYckcx?=
+ =?utf-8?B?b0w0czFTdHJLRDN6TmJJVzdkakwrQW9haHcvcGR3L21QMFRqS2Jzc2YwSDFT?=
+ =?utf-8?B?MVAxbCtVUHAxQ0dhaHRha0M2eVI5V3RqL1hxOVRDVktDQXBzZEtHQjNxdWNk?=
+ =?utf-8?B?RFBCSGorVEdSdnhWZ3M3dit5TUpaaTJVamY1THNDL1FUOXJreVNHMVBFWlJi?=
+ =?utf-8?B?SW1CTCsyL2NlNEtIMVlyZzlxa2xOTFJSb0JEVW50aFYvdlFVMzdOMUZ2Q3I1?=
+ =?utf-8?B?K2RRdUllV0ZCelIzRkhwTjBPWUZYdnlQcTloNXJISUFydldFY2JkVGVxSlZQ?=
+ =?utf-8?Q?jAidYdgjibFj/B4VR6a4wTnWw?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d860bb70-d63a-49d0-f494-08de15e73e48
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2025 06:00:05.9641 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HDcyWPW7ZVxAWcDfYY6qjdyXA7+GzqQDwzjo6OumFX+IfKxBTk0fgL/Pyn7qtqRmhCwtv4YEMU1nCZU2WdIB7mtyp+KcfnXlcWCGV4bjS2w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5044
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.15;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,285 +224,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
-
-On 10/1/25 11:01 AM, salil.mehta@opnsrc.net wrote:
-> From: Salil Mehta <salil.mehta@huawei.com>
-> 
-> Add support for a new SMP configuration parameter, 'disabledcpus', which
-> specifies the number of additional CPUs that are present in the virtual
-> machine but administratively disabled at boot. These CPUs are visible in
-> firmware (e.g. ACPI tables) yet unavailable to the guest until explicitly
-> enabled via QMP/HMP, or via the 'device_set' API (introduced in later
-> patches).
-> 
-> This feature is intended for architectures that lack native CPU hotplug
-> support but can change the administrative power state of present CPUs.
-> It allows simulating CPU hot-add–like scenarios while all CPUs remain
-> physically present in the topology at boot time.
-> 
-> Note: ARM is the first architecture to support this concept.
-> 
-> Changes include:
->   - Extend CpuTopology with a 'disabledcpus' field.
->   - Update machine_parse_smp_config() to account for disabled CPUs when
->     computing 'cpus' and 'maxcpus'.
->   - Update SMPConfiguration in QAPI to accept 'disabledcpus'.
->   - Extend -smp option documentation to describe 'disabledcpus' usage and
->     behavior.
-> 
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> ---
->   hw/core/machine-smp.c | 24 +++++++-----
->   include/hw/boards.h   |  2 +
->   qapi/machine.json     |  3 ++
->   qemu-options.hx       | 86 +++++++++++++++++++++++++++++++++----------
->   system/vl.c           |  3 ++
->   5 files changed, 89 insertions(+), 29 deletions(-)
-> 
-> diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-> index 0be0ac044c..c1a09fdc3f 100644
-> --- a/hw/core/machine-smp.c
-> +++ b/hw/core/machine-smp.c
-> @@ -87,6 +87,7 @@ void machine_parse_smp_config(MachineState *ms,
->   {
->       MachineClass *mc = MACHINE_GET_CLASS(ms);
->       unsigned cpus    = config->has_cpus ? config->cpus : 0;
-> +    unsigned disabledcpus = config->has_disabledcpus ? config->disabledcpus : 0;
->       unsigned drawers = config->has_drawers ? config->drawers : 0;
->       unsigned books   = config->has_books ? config->books : 0;
->       unsigned sockets = config->has_sockets ? config->sockets : 0;
-> @@ -166,8 +167,13 @@ void machine_parse_smp_config(MachineState *ms,
->           sockets = sockets > 0 ? sockets : 1;
->           cores = cores > 0 ? cores : 1;
->           threads = threads > 0 ? threads : 1;
-> +
-> +        maxcpus = drawers * books * sockets * dies * clusters *
-> +                    modules * cores * threads;
-> +        cpus = maxcpus - disabledcpus;
->       } else {
-> -        maxcpus = maxcpus > 0 ? maxcpus : cpus;
-> +        maxcpus = maxcpus > 0 ? maxcpus : cpus + disabledcpus;
-> +        cpus = cpus > 0 ? cpus : maxcpus - disabledcpus;
->   
->           if (mc->smp_props.prefer_sockets) {
->               /* prefer sockets over cores before 6.2 */
-> @@ -207,12 +213,8 @@ void machine_parse_smp_config(MachineState *ms,
->           }
->       }
->   
-> -    total_cpus = drawers * books * sockets * dies *
-> -                 clusters * modules * cores * threads;
-> -    maxcpus = maxcpus > 0 ? maxcpus : total_cpus;
-> -    cpus = cpus > 0 ? cpus : maxcpus;
-> -
->       ms->smp.cpus = cpus;
-> +    ms->smp.disabledcpus = disabledcpus;
->       ms->smp.drawers = drawers;
->       ms->smp.books = books;
->       ms->smp.sockets = sockets;
-> @@ -226,6 +228,8 @@ void machine_parse_smp_config(MachineState *ms,
->       mc->smp_props.has_clusters = config->has_clusters;
->   
->       /* sanity-check of the computed topology */
-> +    total_cpus = maxcpus = drawers * books * sockets * dies * clusters *
-> +                modules * cores * threads;
->       if (total_cpus != maxcpus) {
->           g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
->           error_setg(errp, "Invalid CPU topology: "
-
-It's enforced that total_cpus is equal to maxcpus. The followup check
-"if (total_cpus != maxcpus)" becomes unnecessary. Also, does this makes
-"-smp maxcpus=x" unnecessary?
-
-Thanks,
-Gavin
-
-> @@ -235,12 +239,12 @@ void machine_parse_smp_config(MachineState *ms,
->           return;
->       }
->   
-> -    if (maxcpus < cpus) {
-> +    if (maxcpus < (cpus + disabledcpus)) {
->           g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
->           error_setg(errp, "Invalid CPU topology: "
-> -                   "maxcpus must be equal to or greater than smp: "
-> -                   "%s == maxcpus (%u) < smp_cpus (%u)",
-> -                   topo_msg, maxcpus, cpus);
-> +                   "maxcpus must be equal to or greater than smp[+disabledcpus]:"
-> +                   "%s == maxcpus (%u) < smp_cpus (%u) [+ offline cpus (%u)]",
-> +                   topo_msg, maxcpus, cpus, disabledcpus);
->           return;
->       }
->   
-> diff --git a/include/hw/boards.h b/include/hw/boards.h
-> index f94713e6e2..2b182d7817 100644
-> --- a/include/hw/boards.h
-> +++ b/include/hw/boards.h
-> @@ -361,6 +361,7 @@ typedef struct DeviceMemoryState {
->   /**
->    * CpuTopology:
->    * @cpus: the number of present logical processors on the machine
-> + * @disabledcpus: the number additional present but admin disabled cpus
->    * @drawers: the number of drawers on the machine
->    * @books: the number of books in one drawer
->    * @sockets: the number of sockets in one book
-> @@ -373,6 +374,7 @@ typedef struct DeviceMemoryState {
->    */
->   typedef struct CpuTopology {
->       unsigned int cpus;
-> +    unsigned int disabledcpus;
->       unsigned int drawers;
->       unsigned int books;
->       unsigned int sockets;
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 038eab281c..e45740da33 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1634,6 +1634,8 @@
->   #
->   # @cpus: number of virtual CPUs in the virtual machine
->   #
-> +# @disabledcpus: number of additional present but disabled(or offline) CPUs
-> +#
->   # @maxcpus: maximum number of hotpluggable virtual CPUs in the virtual
->   #     machine
->   #
-> @@ -1657,6 +1659,7 @@
->   ##
->   { 'struct': 'SMPConfiguration', 'data': {
->        '*cpus': 'int',
-> +     '*disabledcpus': 'int',
->        '*drawers': 'int',
->        '*books': 'int',
->        '*sockets': 'int',
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index ab23f14d21..83ccde341b 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -326,12 +326,15 @@ SRST
->   ERST
->   
->   DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-> -    "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
-> -    "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
-> -    "               [,threads=threads]\n"
-> -    "                set the number of initial CPUs to 'n' [default=1]\n"
-> -    "                maxcpus= maximum number of total CPUs, including\n"
-> -    "                offline CPUs for hotplug, etc\n"
-> +    "-smp [[cpus=]n][,disabledcpus=disabledcpus][,maxcpus=maxcpus][,drawers=drawers][,books=books]\n"
-> +    "               [,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules]\n"
-> +    "               [,cores=cores][,threads=threads]\n"
-> +    "                set the initial number of CPUs present and\n"
-> +    "                  administratively enabled at boot time to 'n' [default=1]\n"
-> +    "                disabledcpus= number of present but administratively\n"
-> +    "                  disabled CPUs (unavailable to the guest at boot)\n"
-> +    "                maxcpus= maximum total CPUs (present + hotpluggable)\n"
-> +    "                  on machines without CPU hotplug, defaults to n + disabledcpus\n"
->       "                drawers= number of drawers on the machine board\n"
->       "                books= number of books in one drawer\n"
->       "                sockets= number of sockets in one book\n"
-> @@ -351,22 +354,49 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
->       "      For a particular machine type board, an expected CPU topology hierarchy\n"
->       "      can be defined through the supported sub-option. Unsupported parameters\n"
->       "      can also be provided in addition to the sub-option, but their values\n"
-> -    "      must be set as 1 in the purpose of correct parsing.\n",
-> +    "      must be set as 1 in the purpose of correct parsing.\n"
-> +    "                                                          \n"
-> +    "      Administratively disabled CPUs: Some machine types do not support vCPU\n"
-> +    "      hotplug but their CPUs can be marked disabled (powered off) and kept\n"
-> +    "      unavailable to the guest. Later, such CPUs can be enabled via QMP/HMP\n"
-> +    "      (e.g., 'device_set ... admin-state=enable'). This is similar to hotplug,\n"
-> +    "      except all disabled CPUs are already present at boot. Useful on\n"
-> +    "      architectures that lack architectural CPU hotplug.\n",
->       QEMU_ARCH_ALL)
->   SRST
-> -``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
-> -    Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
-> -    the machine type board. On boards supporting CPU hotplug, the optional
-> -    '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
-> -    added at runtime. When both parameters are omitted, the maximum number
-> +``-smp [[cpus=]n][,disabledcpus=disabledcpus][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
-> +    Simulate a SMP system with '\ ``n``\ ' CPUs initially present & enabled on
-> +    the machine type board. Furthermore, on architectures that support changing
-> +    the administrative power state of CPUs, optional '\ ``disabledcpus``\ '
-> +    parameter specifies *additional* CPUs that are present in firmware (e.g.,
-> +    ACPI) but are administratively disabled (i.e., not usable by the guest at
-> +    boot time).
-> +
-> +    This is different from CPU hotplug where additional CPUs are not even
-> +    present in the system description. Administratively disabled CPUs appear in
-> +    ACPI tables i.e. are provisioned, but cannot be used until explicitly
-> +    enabled via QMP/HMP or the deviceset API.
-> +
-> +    On boards supporting CPU hotplug, the optional '\ ``maxcpus``\ ' parameter
-> +    can be set to enable further CPUs to be added at runtime. When both
-> +    '\ ``n``\ ' & '\ ``maxcpus``\ ' parameters are omitted, the maximum number
->       of CPUs will be calculated from the provided topology members and the
-> -    initial CPU count will match the maximum number. When only one of them
-> -    is given then the omitted one will be set to its counterpart's value.
-> -    Both parameters may be specified, but the maximum number of CPUs must
-> -    be equal to or greater than the initial CPU count. Product of the
-> -    CPU topology hierarchy must be equal to the maximum number of CPUs.
-> -    Both parameters are subject to an upper limit that is determined by
-> -    the specific machine type chosen.
-> +    initial CPU count will match the maximum number. When only one of them is
-> +    given then the omitted one will be set to its counterpart's value. Both
-> +    parameters may be specified, but the maximum number of CPUs must be equal
-> +    to or greater than the initial CPU count. Product of the CPU topology
-> +    hierarchy must be equal to the maximum number of CPUs. Both parameters are
-> +    subject to an upper limit that is determined by the specific machine type
-> +    chosen. Boards that support administratively disabled CPUs but do *not*
-> +    support CPU hotplug derive the maximum number of CPUs implicitly:
-> +    '\ ``maxcpus``\ ' is treated as '\ ``n + disabledcpus``\ ' (the total CPUs
-> +    present in firmware). If '\ ``maxcpus``\ ' is provided, it must equal
-> +    '\ ``n + disabledcpus``\ '. The topology product must equal this derived
-> +    maximum as well.
-> +
-> +    Note: Administratively disabled CPUs will appear to the guest as
-> +    unavailable, and any attempt to bring them online must go through QMP/HMP
-> +    commands like 'device_set'.
->   
->       To control reporting of CPU topology information, values of the topology
->       parameters can be specified. Machines may only support a subset of the
-> @@ -425,6 +455,24 @@ SRST
->   
->           -smp 2
->   
-> +    Examples using 'disabledcpus':
-> +
-> +    For a board without CPU hotplug, enable 4 CPUs at boot and provision
-> +    2 additional administratively disabled CPUs (maximum is derived
-> +    implicitly as 6 = 4 + 2):
-> +
-> +    ::
-> +
-> +        -smp cpus=4,disabledcpus=2
-> +
-> +    For a board that supports CPU hotplug and 'disabledcpus', enable 4 CPUs
-> +    at boot, provision 2 administratively disabled CPUs, and allow hotplug of
-> +    2 more CPUs (for a maximum of 8):
-> +
-> +    ::
-> +
-> +        -smp cpus=4,disabledcpus=2,maxcpus=8
-> +
->       Note: The cluster topology will only be generated in ACPI and exposed
->       to guest if it's explicitly specified in -smp.
->   ERST
-> diff --git a/system/vl.c b/system/vl.c
-> index 3b7057e6c6..2f0fd21a1f 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -736,6 +736,9 @@ static QemuOptsList qemu_smp_opts = {
->           {
->               .name = "cpus",
->               .type = QEMU_OPT_NUMBER,
-> +        }, {
-> +            .name = "disabledcpus",
-> +            .type = QEMU_OPT_NUMBER,
->           }, {
->               .name = "drawers",
->               .type = QEMU_OPT_NUMBER,
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
+IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHY3IDA4LzIzXSB2ZmlvL2lv
+bW11ZmQ6IEZvcmNlIGNyZWF0aW5nIG5lc3RpbmcgcGFyZW50DQo+SFdQVA0KPg0KPk9uIDEwLzI0
+LzI1IDEwOjQzLCBaaGVuemhvbmcgRHVhbiB3cm90ZToNCj4+IENhbGwgcGNpX2RldmljZV9nZXRf
+dmlvbW11X2ZsYWdzKCkgdG8gZ2V0IGlmIHZJT01NVSBzdXBwb3J0cw0KPj4gVklPTU1VX0ZMQUdf
+V0FOVF9ORVNUSU5HX1BBUkVOVC4NCj4+DQo+PiBJZiB5ZXMsIGNyZWF0ZSBhIG5lc3RpbmcgcGFy
+ZW50IEhXUFQgYW5kIGFkZCBpdCB0byB0aGUgY29udGFpbmVyJ3MgaHdwdF9saXN0LA0KPj4gbGV0
+dGluZyB0aGlzIHBhcmVudCBIV1BUIGNvdmVyIHRoZSBlbnRpcmUgc2Vjb25kIHN0YWdlIG1hcHBp
+bmdzDQo+KEdQQT0+SFBBKS4NCj4+DQo+PiBUaGlzIGFsbG93cyBhIFZGSU8gcGFzc3Rocm91Z2gg
+ZGV2aWNlIHRvIGRpcmVjdGx5IGF0dGFjaCB0byB0aGlzIGRlZmF1bHQNCj5IV1BUDQo+PiBhbmQg
+dGhlbiB0byB1c2UgdGhlIHN5c3RlbSBhZGRyZXNzIHNwYWNlIGFuZCBpdHMgbGlzdGVuZXIuDQo+
+Pg0KPj4gSW50cm9kdWNlIGEgdmZpb19kZXZpY2VfZ2V0X3Zpb21tdV9mbGFnc193YW50X25lc3Rp
+bmcoKSBoZWxwZXIgdG8NCj5mYWNpbGl0YXRlDQo+PiB0aGlzIGltcGxlbWVudGF0aW9uLg0KPj4N
+Cj4+IEl0IGlzIHNhZmUgdG8gZG8gc28gYmVjYXVzZSBhIHZJT01NVSB3aWxsIGJlIGFibGUgdG8g
+ZmFpbCBpbg0KPnNldF9pb21tdV9kZXZpY2UoKQ0KPj4gY2FsbCwgaWYgc29tZXRoaW5nIGVsc2Ug
+cmVsYXRlZCB0byB0aGUgVkZJTyBkZXZpY2Ugb3IgdklPTU1VIGlzbid0DQo+Y29tcGF0aWJsZS4N
+Cj4+DQo+PiBTdWdnZXN0ZWQtYnk6IE5pY29saW4gQ2hlbiA8bmljb2xpbmNAbnZpZGlhLmNvbT4N
+Cj4+IFN1Z2dlc3RlZC1ieTogWWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+PiBTaWduZWQt
+b2ZmLWJ5OiBaaGVuemhvbmcgRHVhbiA8emhlbnpob25nLmR1YW5AaW50ZWwuY29tPg0KPj4gUmV2
+aWV3ZWQtYnk6IE5pY29saW4gQ2hlbiA8bmljb2xpbmNAbnZpZGlhLmNvbT4NCj4+IFJldmlld2Vk
+LWJ5OiBFcmljIEF1Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+PiBSZXZpZXdlZC1ieTog
+WWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+PiAtLS0NCj4+ICAgaW5jbHVkZS9ody92Zmlv
+L3ZmaW8tZGV2aWNlLmggfCAgMiArKw0KPj4gICBody92ZmlvL2RldmljZS5jICAgICAgICAgICAg
+ICB8IDEyICsrKysrKysrKysrKw0KPj4gICBody92ZmlvL2lvbW11ZmQuYyAgICAgICAgICAgICB8
+ICA5ICsrKysrKysrKw0KPj4gICAzIGZpbGVzIGNoYW5nZWQsIDIzIGluc2VydGlvbnMoKykNCj4+
+DQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody92ZmlvL3ZmaW8tZGV2aWNlLmggYi9pbmNsdWRl
+L2h3L3ZmaW8vdmZpby1kZXZpY2UuaA0KPj4gaW5kZXggYTBiOGZjMmViNi4uNDhkMDBjN2JjNCAx
+MDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvaHcvdmZpby92ZmlvLWRldmljZS5oDQo+PiArKysgYi9p
+bmNsdWRlL2h3L3ZmaW8vdmZpby1kZXZpY2UuaA0KPj4gQEAgLTI2Nyw2ICsyNjcsOCBAQCB2b2lk
+IHZmaW9fZGV2aWNlX3ByZXBhcmUoVkZJT0RldmljZSAqdmJhc2VkZXYsDQo+VkZJT0NvbnRhaW5l
+ciAqYmNvbnRhaW5lciwNCj4+DQo+PiAgIHZvaWQgdmZpb19kZXZpY2VfdW5wcmVwYXJlKFZGSU9E
+ZXZpY2UgKnZiYXNlZGV2KTsNCj4+DQo+PiArYm9vbCB2ZmlvX2RldmljZV9nZXRfdmlvbW11X2Zs
+YWdzX3dhbnRfbmVzdGluZyhWRklPRGV2aWNlDQo+KnZiYXNlZGV2KTsNCj4+ICsNCj4+ICAgaW50
+IHZmaW9fZGV2aWNlX2dldF9yZWdpb25faW5mbyhWRklPRGV2aWNlICp2YmFzZWRldiwgaW50IGlu
+ZGV4LA0KPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCB2ZmlvX3Jl
+Z2lvbl9pbmZvICoqaW5mbyk7DQo+PiAgIGludCB2ZmlvX2RldmljZV9nZXRfcmVnaW9uX2luZm9f
+dHlwZShWRklPRGV2aWNlICp2YmFzZWRldiwgdWludDMyX3QNCj50eXBlLA0KPj4gZGlmZiAtLWdp
+dCBhL2h3L3ZmaW8vZGV2aWNlLmMgYi9ody92ZmlvL2RldmljZS5jDQo+PiBpbmRleCA1ZWQzMTAz
+ZTcyLi5iZTk0OTQ3NjIzIDEwMDY0NA0KPj4gLS0tIGEvaHcvdmZpby9kZXZpY2UuYw0KPj4gKysr
+IGIvaHcvdmZpby9kZXZpY2UuYw0KPj4gQEAgLTIzLDYgKzIzLDcgQEANCj4+DQo+PiAgICNpbmNs
+dWRlICJody92ZmlvL3ZmaW8tZGV2aWNlLmgiDQo+PiAgICNpbmNsdWRlICJody92ZmlvL3BjaS5o
+Ig0KPj4gKyNpbmNsdWRlICJody9pb21tdS5oIg0KPj4gICAjaW5jbHVkZSAiaHcvaHcuaCINCj4+
+ICAgI2luY2x1ZGUgInRyYWNlLmgiDQo+PiAgICNpbmNsdWRlICJxYXBpL2Vycm9yLmgiDQo+PiBA
+QCAtNTIxLDYgKzUyMiwxNyBAQCB2b2lkIHZmaW9fZGV2aWNlX3VucHJlcGFyZShWRklPRGV2aWNl
+DQo+KnZiYXNlZGV2KQ0KPj4gICAgICAgdmJhc2VkZXYtPmJjb250YWluZXIgPSBOVUxMOw0KPj4g
+ICB9DQo+Pg0KPj4gK2Jvb2wgdmZpb19kZXZpY2VfZ2V0X3Zpb21tdV9mbGFnc193YW50X25lc3Rp
+bmcoVkZJT0RldmljZQ0KPip2YmFzZWRldikNCj4+ICt7DQo+PiArICAgIFZGSU9QQ0lEZXZpY2Ug
+KnZkZXYgPSB2ZmlvX3BjaV9mcm9tX3ZmaW9fZGV2aWNlKHZiYXNlZGV2KTsNCj4+ICsNCj4+ICsg
+ICAgaWYgKHZkZXYpIHsNCj4+ICsgICAgICAgIHJldHVybiAhIShwY2lfZGV2aWNlX2dldF92aW9t
+bXVfZmxhZ3MoJnZkZXYtPnBhcmVudF9vYmopICYNCj4NCj5Vc2luZyBQQ0lfREVWSUNFKHZkZXYp
+IHdvdWxkIGJlIG1vcmUgYXBwcm9wcmlhdGUuIEl0IGNhbiBjb21lIGxhdGVyLg0KDQpZZXMsIHdp
+bGwgZG8uDQoNClRoYW5rcw0KWmhlbnpob25nDQo=
 
