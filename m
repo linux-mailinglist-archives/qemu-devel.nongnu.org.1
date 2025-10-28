@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE35CC174D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E551C17527
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:18:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstL-0002tA-37; Tue, 28 Oct 2025 19:14:15 -0400
+	id 1vDstN-0002uG-DI; Tue, 28 Oct 2025 19:14:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstG-0002s3-Uz
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:10 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1vDstJ-0002sS-Ne
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:13 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDst7-000150-1G
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:08 -0400
+ id 1vDst7-00015L-Sk
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:11 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 433F181758;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id CA6C98175A;
  Wed, 29 Oct 2025 02:13:56 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-HAGtewB3; Wed, 29 Oct 2025 02:13:55 +0300
+ ESMTPSA id oDnXpg2bCW20-jWYe7vL6; Wed, 29 Oct 2025 02:13:56 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693235;
- bh=np7XWMeyfsJTuCib+x7NKEfDLVhTrKKEDFyAgwT/O9A=;
+ s=default; t=1761693236;
+ bh=eUNtf8Fv6YhCPh7tMB37uPwoLbYqG4nreTVa98r1+AY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=0YjLBJnET45O3W5IHfuXo8l2drf2ALJNmUTy61ABRBkPHb6JpyD3JQ2xpDgMTE1NP
- 7nnn4rax+zlTPOMHo4TIymwHVVnodo6bKPYTnqbMh05yBjiLtp9uzeM5ugfGbVIYic
- jYZUojwEhKdWUzTtGU+ifXZZCKTRquRIXO/cfecE=
+ b=1CpmAHDqwQXnBVXWoWDipZfxTgwvrT5+6YW4XkcyXQc95ATqB7EDorf4bY7f4r1i7
+ OKs1lssa5AYHZYGr5NS++SMHkGkoRjHk4lI42065IQmbPw0Iay1lFPaXunjKk7WIH6
+ oot4NRUsChZ4S+heL2M8QgLXR1RSs+ISpMUDSvA8=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,23 +42,22 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 06/22] hw/scsi/spapr_vscsi: move to new migration APIs
-Date: Wed, 29 Oct 2025 02:13:30 +0300
-Message-ID: <20251028231347.194844-7-vsementsov@yandex-team.ru>
+Subject: [RFC 07/22] hw/scsi/scsi-bus.c: use new migration APIs
+Date: Wed, 29 Oct 2025 02:13:31 +0300
+Message-ID: <20251028231347.194844-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,40 +75,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/scsi/spapr_vscsi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/scsi/scsi-bus.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
-index f0a7dd2b88..55388454af 100644
---- a/hw/scsi/spapr_vscsi.c
-+++ b/hw/scsi/spapr_vscsi.c
-@@ -630,7 +630,7 @@ static void vscsi_save_request(QEMUFile *f, SCSIRequest *sreq)
-     vscsi_req *req = sreq->hba_private;
-     assert(req->active);
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 9b12ee7f1c..d8d4b8ceae 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -1888,18 +1888,19 @@ static void put_scsi_req(SCSIRequest *req, void *opaque)
+     }
+ }
  
--    vmstate_save_state(f, &vmstate_spapr_vscsi_req, req, NULL, &error_fatal);
-+    vmstate_save_vmsd(f, &vmstate_spapr_vscsi_req, req, NULL, &error_fatal);
+-static int put_scsi_requests(QEMUFile *f, void *pv, size_t size,
+-                             const VMStateField *field, JSONWriter *vmdesc)
++static bool put_scsi_requests(QEMUFile *f, void *pv, size_t size,
++                              const VMStateField *field, JSONWriter *vmdesc,
++                              Error **errp)
+ {
+     SCSIDevice *s = pv;
  
-     trace_spapr_vscsi_save_request(req->qtag, req->cur_desc_num,
-                                    req->cur_desc_offset);
-@@ -641,7 +641,6 @@ static void *vscsi_load_request(QEMUFile *f, SCSIRequest *sreq)
-     SCSIBus *bus = sreq->bus;
-     VSCSIState *s = VIO_SPAPR_VSCSI_DEVICE(bus->qbus.parent);
-     vscsi_req *req;
--    int rc;
-     Error *local_err = NULL;
+     scsi_device_for_each_req_sync(s, put_scsi_req, f);
+     qemu_put_sbyte(f, 0);
+-    return 0;
++    return true;
+ }
  
-     assert(sreq->tag < VSCSI_REQ_LIMIT);
-@@ -649,8 +648,7 @@ static void *vscsi_load_request(QEMUFile *f, SCSIRequest *sreq)
-     assert(!req->active);
+-static int get_scsi_requests(QEMUFile *f, void *pv, size_t size,
+-                             const VMStateField *field)
++static bool get_scsi_requests(QEMUFile *f, void *pv, size_t size,
++                              const VMStateField *field, Error **errp)
+ {
+     SCSIDevice *s = pv;
+     SCSIBus *bus = DO_UPCAST(SCSIBus, qbus, s->qdev.parent_bus);
+@@ -1938,13 +1939,13 @@ static int get_scsi_requests(QEMUFile *f, void *pv, size_t size,
+         scsi_req_unref(req);
+     }
  
-     memset(req, 0, sizeof(*req));
--    rc = vmstate_load_state(f, &vmstate_spapr_vscsi_req, req, 1, &local_err);
--    if (rc) {
-+    if (!vmstate_load_vmsd(f, &vmstate_spapr_vscsi_req, req, 1, &local_err)) {
-         fprintf(stderr, "VSCSI: failed loading request tag#%u\n", sreq->tag);
-         error_report_err(local_err);
-         return NULL;
+-    return 0;
++    return true;
+ }
+ 
+ static const VMStateInfo vmstate_info_scsi_requests = {
+     .name = "scsi-requests",
+-    .get  = get_scsi_requests,
+-    .put  = put_scsi_requests,
++    .load = get_scsi_requests,
++    .save = put_scsi_requests,
+ };
+ 
+ static bool scsi_sense_state_needed(void *opaque)
 -- 
 2.48.1
 
