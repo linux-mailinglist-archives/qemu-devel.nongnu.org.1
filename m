@@ -2,105 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131CEC13FF6
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188CAC14147
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:22:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDgan-0001CA-R5; Tue, 28 Oct 2025 06:06:18 -0400
+	id 1vDgou-0005wJ-Ak; Tue, 28 Oct 2025 06:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vDgab-0001At-VX
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:06:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vDgaV-0008Ep-RL
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:06:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761645957;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xsAJpch/WrERbVg5Jp3u+BpZuSIpOMCrX2yp0ECL3XQ=;
- b=iIDCD97QwyUzV+8AdiPHPTWtDmaphOH3Ve80OgLj9AitsBVaNRFdPn6N8GjQUoimntRqoK
- lCMtlrOquzdg4qx1q6ew1qNnsa+wDsAVAFIzZVtH/mOb3LcMliGfGxUCw4H7cg6BSctccB
- +IJt1OYfiQnJd7uvy0iLNPaX5w4FUJE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-489AaQW5PWaTUqDpka8vcA-1; Tue, 28 Oct 2025 06:05:56 -0400
-X-MC-Unique: 489AaQW5PWaTUqDpka8vcA-1
-X-Mimecast-MFC-AGG-ID: 489AaQW5PWaTUqDpka8vcA_1761645955
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47111dc7c5dso33800665e9.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 03:05:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761645955; x=1762250755;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xsAJpch/WrERbVg5Jp3u+BpZuSIpOMCrX2yp0ECL3XQ=;
- b=UG0zx+hd/KPvRQh45qsbX0VH2hHhb/60v0NTh8KCM7gW4ASMlDWdsPp+QIwebexr51
- 5Y6iWaVdmn4owx/TX1O0pzmzb0XubYLLILJ8ifN3X5VzgY9o9PtWRXAPp/XH9Bk3Zm+7
- N8X1WfKAIX9IIibseM3wJtGXsH+JZfWVWLgnHwVNOmzXSS4tnjk3hNpp75fA+hX3odyR
- ULbLVaIclWv3203RSKgkLmPvGr3YVLaYVcW+xWy3VCyJhcI77Du/KngpoN/n0y9Mzx5k
- rEVV31qAT8DPrAh4pa+fiwqZzMyM/SVstUCZR6lApD5vf2xvSHg4HL+yDA01S/lBmmYG
- fVcw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVLbLcaUKR+o+EPOV5R3A04Xf9uflf4xeU9JUGkNlk/Vf8smwDiPVJhliR/5eA0OUEj8YptJfJXwfjX@nongnu.org
-X-Gm-Message-State: AOJu0YydbH0utTrRyu1p4DvMk0XLad3/hErxqtXpeiUrgav8pqAPpxAV
- LD5K5MVcZd84SsUOE33At/LaE24TxVq+qbjrvFGlMZbZJ48nPf1OjMBJ/qvvDHnydrmuXcxViCs
- FF7G4YmC7Ee1VXF9gghx+UJUsxGwStDZuZWNZ0xD2qIrFz+YsRdKA9Wn5
-X-Gm-Gg: ASbGncsriDUfVKNZkAa5C9lwLx2dv3EI2oNOcsHNxxQEUUCzMsgjUNUK7P36MFjW56a
- 4/GdQ/sFvfOpBzZGDKyzA9ImdIxMOodeqDa93k6KBOVm9bUwdBGxHwRP+OiEWFOMeNY8tZNjp0q
- 1u3KB56zlNeNLo5xjYC3h6kWDugt7Fa1V1If+tAe7SS7bt3D4RQsnLOlb7o1brldE4yq8n7MRN5
- eZiCC6DVxzwRZ19nfxzduJDar1PWQvuhJ4GvAbtJiaKqp1XYjBA1K4aDytzGLFybyDv+e4Rkf1O
- nHcjucT0XFNqNwgX6sLozE3rIcstSRoKyyLIep/3vKrb3JNe8BbLyUF5Q+mQO6WVL9gPbeuhPZr
- oN19X871JF2zaYzHHoLlzYarZU/D0UrJqqOG66aSPx8ym0w==
-X-Received: by 2002:a05:600c:2052:b0:475:dc32:5600 with SMTP id
- 5b1f17b1804b1-477181a9835mr17765555e9.19.1761645955032; 
- Tue, 28 Oct 2025 03:05:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9oX9XjYv4M/5CIZntxDzIOfwzUyn4DqVQPHb3UpiGqEcJ97czb+kPT+m9pQDLW63leSxUkA==
-X-Received: by 2002:a05:600c:2052:b0:475:dc32:5600 with SMTP id
- 5b1f17b1804b1-477181a9835mr17765145e9.19.1761645954542; 
- Tue, 28 Oct 2025 03:05:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952cb55asm19518873f8f.17.2025.10.28.03.05.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Oct 2025 03:05:53 -0700 (PDT)
-Message-ID: <3c963761-8587-4905-8c8b-60dda381262f@redhat.com>
-Date: Tue, 28 Oct 2025 11:05:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH 0/7] Mitigation of "failed to load
- cpu:cpreg_vmstate_array_len" migration failures
-Content-Language: en-US
-To: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- peter.maydell@linaro.org, cohuck@redhat.com, maz@kernel.org,
- oliver.upton@linux.dev, sebott@redhat.com, gshan@redhat.com,
- ddutile@redhat.com, peterx@redhat.com, philmd@linaro.org, pbonzini@redhat.com
-References: <20251016140039.250111-1-eric.auger@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20251016140039.250111-1-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vDgoN-0005i0-E4
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:20:23 -0400
+Received: from sg-1-18.ptr.blmpb.com ([118.26.132.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vDgo3-0001sC-6E
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:20:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761646713;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=5jaYdlz9cq3d+ZqdMwPs227DOqydqYv4NqJ56w4RRj8=;
+ b=Sd+m1qX0E9KA79QmaJaDexlJwzVRc6OTVPin5POB9vaLIjyAte7utE3CJ01PErbCud5c3k
+ fNRQG1MJKHKo0gnxVQtHdbBJ1AdOnKTS0RHu5zOmxtAbQLW6WApi8qC8Rd9ttPUtAdOh84
+ 7lBW3jf76lUgOlIahbKyyHtJTbJtXNVJvQwWUtLiOq7Aydzi7iEI3AwlM41UaHHBd2mka1
+ yg6+uXpXJRX3wpAs6R4gALKe56ahKXvWQzDRZCRafISOF+dUUoUKx717n2z2ZkueahOUpf
+ 7vVYuVIvMVCG3fbYsPaWCF/y2KRUBiCzKMMFxQ+pjkRA5uldKz57n3aueVSZAA==
+X-Original-From: chenmiao <chenmiao@openatom.club>
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Cc: <chao.liu@openatom.club>, <qemu-rust@nongnu.org>, 
+ <qemu-devel@nongnu.org>, <hust-os-kernel-patches@googlegroups.com>, 
+ "Chen Miao" <chenmiao@openatom.club>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+269009877+9b2c85+nongnu.org+chenmiao@openatom.club>
+To: <zhao1.liu@intel.com>, <pbonzini@redhat.com>, 
+ <manos.pitsidianakis@linaro.org>, <richard.henderson@linaro.org>, 
+ <philmd@linaro.org>
+Subject: [RFC PATCH v2 0/5] rust/hw: Add the I2C and the first GPIO device
+Message-Id: <cover.1761644606.git.chenmiao@openatom.club>
+Received: from nyaos.localdomain ([114.249.194.57]) by smtp.feishu.cn with
+ ESMTPS; Tue, 28 Oct 2025 18:18:30 +0800
+From: "chenmiao" <chenmiao@openatom.club>
+Date: Tue, 28 Oct 2025 10:18:24 +0000
+Mime-Version: 1.0
+Received-SPF: pass client-ip=118.26.132.18;
+ envelope-from=chenmiao@openatom.club; helo=sg-1-18.ptr.blmpb.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,74 +68,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We have implemented I2C and the first GPIO device in Rust for QEMU.
+Additionally, in the respective patches, we have shared our insights and
+experiences regarding the use of Rust for device modeling within QEMU.
 
+1. The first patch implements the BusState for the I2CBus infrastructure.
+2. The second patch implements the I2CBus and I2CSlave infrastructure, along
+   with a discussion of the challenges encountered during the implementation.
+3. The third patch moves the struct definition of the PCF8574 to the
+   corresponding header file.
+4. The fourth patch provides a set of necessary helper functions for the PCF8574
+   GPIO device.
+5. The fifth patch implements the PCF8574 GPIO device, along with a discussion
+   of the issues and considerations addressed during the implementation.
 
-On 10/16/25 3:59 PM, Eric Auger wrote:
-> When migrating ARM guests accross same machines with different host
-> kernels we are likely to encounter failures such as:
->
-> "failed to load cpu:cpreg_vmstate_array_len"
->
-> This is due to the fact KVM exposes a different number of registers
-> to qemu on source and destination. When trying to migrate a bigger
-> register set to a smaller one, qemu cannot save the CPU state.
->
-> For example, recently we faced such kind of situations with:
-> - unconditionnal exposure of KVM_REG_ARM_VENDOR_HYP_BMAP_2 FW pseudo
->   register from v6.16 onwards. Causes backward migration failure.
-> - removal of unconditionnal exposure of TCR2_EL1, PIRE0_EL1, PIR_EL1
->   from v6.13 onwards. Causes forward migration failure.
->
-> This situation is really problematic for distributions which want to
-> guarantee forward and backward migration of a given machine type
-> between different releases.
->
-> This small series tries to address that issue by introducing CPU
-> array properties that list the registers to ignore or to fake according
-> to the situation. An example is given to illustrate how those props
-> could be used to apply compats for machine types supposed to "see" the
-> same register set accross various host kernels.
->
-> The first patch improves the tracing so that we can quickly detect
-> which registers are unexpected and cause the migration failure. Missing
-> registers are also traced. Those do not fail migration but their default
-> value is kept on the destination.
->
-> Then we introduce the infrastructure to handle 'hidden' registers and
-> 'fake' registers.
->
-> Eric Auger (7):
->   target/arm/machine: Improve traces on register mismatch during
->     migration
->   target/arm/kvm: Introduce the concept of hidden KVM regs
->   target/arm/kvm: Introduce the concept of enforced/fake registers
->   kvm-all: Add the capability to blacklist some KVM regs
->   target/arm/cpu: Implement hide_reg callback()
->   target/arm/kvm: Expose kvm-hidden-regs and kvm-fake-regs properties
->   hw/arm/virt: [DO NOT UPSTREAM] Enforce compatibility with older
->     kernels
+Regarding this series of patches, we have found that Rust for QEMU is indeed
+still not mature enough and requires continuous iteration. Additionally, the
+lack of basic documentation also needs to be addressed. In this regard, I hope
+our team(HUST OpenAtom Open Source Club) can contribute to the documentation
+efforts for Rust for QEMU.
 
-Gentle ping.
+Link: https://groups.google.com/g/hust-os-kernel-patches/c/z7vHWg3xvDc
 
-Any comments on the approach?
+Signed-off-by: Chao Liu <chao.liu@openatom.club>
+Signed-off-by: Chen Miao <chenmiao@openatom.club>
 
-Thanks
+---
+Changes in V2:
+  - According to Zhao's suggestions, some modifications were made to the first
+    and second patches respectively, such as changing some bus names, adding
+    some Safety comments, and adding callbacks for I2CSlave.
+  - While we were making changes to the first PATCH, Chao Liu pointed out that
+    the realize function was unnecessary in the bus. After discussion, we
+    removed the bus::realize function. Since no other components are currently
+    using the bus, we added a TODO comment for clarification.
 
-Eric
->
->  include/hw/core/cpu.h   |  2 ++
->  target/arm/cpu.h        | 42 ++++++++++++++++++++++++
->  accel/kvm/kvm-all.c     | 12 +++++++
->  hw/arm/virt.c           | 19 +++++++++++
->  target/arm/cpu.c        | 12 +++++++
->  target/arm/kvm.c        | 73 ++++++++++++++++++++++++++++++++++++++++-
->  target/arm/machine.c    | 71 +++++++++++++++++++++++++++++++++++----
->  target/arm/trace-events | 11 +++++++
->  8 files changed, 235 insertions(+), 7 deletions(-)
->
+chenmiao (5):
+  rust/hw/core: Add the BusState of rust version
+  rust/hw/core: Add rust bindings/funcs for i2c bus
+  hw/gpio: Move the pcf8574 struct to header
+  rust/hw/core: Provide some interfaces for the GPIO device
+  rust/hw/gpio: Add the the first gpio device pcf8574
 
+ hw/gpio/Kconfig                      |   5 +
+ hw/gpio/meson.build                  |   2 +-
+ hw/gpio/pcf8574.c                    |  32 --
+ include/hw/gpio/pcf8574.h            |  36 +++
+ rust/Cargo.lock                      |  21 +-
+ rust/Cargo.toml                      |   1 +
+ rust/hw/Kconfig                      |   1 +
+ rust/hw/core/meson.build             |   2 +
+ rust/hw/core/src/bus.rs              |  44 +++
+ rust/hw/core/src/i2c.rs              | 421 +++++++++++++++++++++++++++
+ rust/hw/core/src/irq.rs              |   6 +-
+ rust/hw/core/src/lib.rs              |   6 +
+ rust/hw/core/src/qdev.rs             |  12 +-
+ rust/hw/core/wrapper.h               |   1 +
+ rust/hw/gpio/Kconfig                 |   2 +
+ rust/hw/gpio/meson.build             |   1 +
+ rust/hw/gpio/pcf8574/Cargo.toml      |  31 ++
+ rust/hw/gpio/pcf8574/build.rs        |   1 +
+ rust/hw/gpio/pcf8574/meson.build     |  50 ++++
+ rust/hw/gpio/pcf8574/src/bindings.rs |  29 ++
+ rust/hw/gpio/pcf8574/src/device.rs   | 180 ++++++++++++
+ rust/hw/gpio/pcf8574/src/lib.rs      |   4 +
+ rust/hw/gpio/pcf8574/wrapper.h       |  51 ++++
+ rust/hw/meson.build                  |   1 +
+ 24 files changed, 902 insertions(+), 38 deletions(-)
+ create mode 100644 rust/hw/core/src/bus.rs
+ create mode 100644 rust/hw/core/src/i2c.rs
+ create mode 100644 rust/hw/gpio/Kconfig
+ create mode 100644 rust/hw/gpio/meson.build
+ create mode 100644 rust/hw/gpio/pcf8574/Cargo.toml
+ create mode 120000 rust/hw/gpio/pcf8574/build.rs
+ create mode 100644 rust/hw/gpio/pcf8574/meson.build
+ create mode 100644 rust/hw/gpio/pcf8574/src/bindings.rs
+ create mode 100644 rust/hw/gpio/pcf8574/src/device.rs
+ create mode 100644 rust/hw/gpio/pcf8574/src/lib.rs
+ create mode 100644 rust/hw/gpio/pcf8574/wrapper.h
+
+-- 
+2.43.0
 
