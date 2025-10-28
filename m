@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30239C19EA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 12:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B2FC1A4EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:42:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE3w6-0007eU-KS; Wed, 29 Oct 2025 07:01:51 -0400
+	id 1vE5T8-0001cQ-E1; Wed, 29 Oct 2025 08:40:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vE3vs-0007dh-FW
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:01:36 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vE5Ss-0001bz-LR
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:39:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vE3vj-0003YA-8h
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:01:35 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cxPMn0p8Sz6M4Yx;
- Wed, 29 Oct 2025 18:57:25 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
- by mail.maildlp.com (Postfix) with ESMTPS id B3587140278;
- Wed, 29 Oct 2025 19:01:15 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
- 2025 11:01:14 +0000
-Date: Wed, 29 Oct 2025 11:01:13 +0000
-To: Michael Tokarev <mjt@tls.msk.ru>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>, "Peter
- Maydell" <peter.maydell@linaro.org>, peng guo <engguopeng@buaa.edu.cn>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-stable <qemu-stable@nongnu.org>
-Subject: Re: [PULL 33/75] hw/i386/pc: Avoid overlap between CXL window and
- PCI 64bit BARs in QEMU
-Message-ID: <20251029110113.000028ca@huawei.com>
-In-Reply-To: <949000e9-ac59-4bc9-ad00-861c3a9a08c9@tls.msk.ru>
-References: <cover.1759691708.git.mst@redhat.com>
- <d1193481dee63442fc41e47ca6ebc4cd34f1f69c.1759691708.git.mst@redhat.com>
- <26067051-421d-44ed-9c7e-13ed0bdac18b@tls.msk.ru>
- <949000e9-ac59-4bc9-ad00-861c3a9a08c9@tls.msk.ru>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vE5Si-0001j7-JN
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:39:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761741567;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/qACFUBNIMYvW6fI70JKrJG+xNX09l6zny8LGviMMAE=;
+ b=cdw59R+DoU+ieUIFms6CzRY3+AdcfxT5w7GWjmdBZFz8efeMJX1VJAZFdr4Xehtx9/bSmQ
+ D09AAg4lzOjtbMfXxx7MJ5J6zyYHbnP0p9MjHWGdzoP4iLPFtO88oTDenXsosveGT223Un
+ BNRPJtJSe77lHKoKZ7cIsyUjMALpKyc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-D2ic94gzPImNIPd7JVWSQg-1; Wed,
+ 29 Oct 2025 08:39:23 -0400
+X-MC-Unique: D2ic94gzPImNIPd7JVWSQg-1
+X-Mimecast-MFC-AGG-ID: D2ic94gzPImNIPd7JVWSQg_1761741562
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 863A4195608D; Wed, 29 Oct 2025 12:39:22 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.72])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 091FF19560AD; Wed, 29 Oct 2025 12:39:21 +0000 (UTC)
+Date: Tue, 28 Oct 2025 14:25:20 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Camilla Conte <cconte@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: AWS CI Oddities
+Message-ID: <20251028182520.GA66764@fedora>
+References: <d98deec4-c95a-434c-9ef4-d7a0fd41a42b@linaro.org>
+ <CAJSP0QU9M1QEXjKBjHtq2NgHu0FUTC4rXMxB657BsdxGvcs1ew@mail.gmail.com>
+ <CACPOWh2o0q0usrKv9C3cR39p5OpwLzXnwzwJbqYRFs3n-w9bnA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="zJv11xBMfk97FBOm"
+Content-Disposition: inline
+In-Reply-To: <CACPOWh2o0q0usrKv9C3cR39p5OpwLzXnwzwJbqYRFs3n-w9bnA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,118 +84,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Oct 2025 22:26:12 +0300
-Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-> On 10/6/25 20:08, Michael Tokarev wrote:
-> > On 10/5/25 22:17, Michael S. Tsirkin wrote: =20
-> >> From: peng guo <engguopeng@buaa.edu.cn>
-> >>
-> >> When using a CXL Type 3 device together with a virtio 9p device in=20
-> >> QEMU on a
-> >> physical server, the 9p device fails to initialize properly. The=20
-> >> kernel reports
-> >> the following error:
-> >>
-> >> =A0=A0=A0=A0 virtio: device uses modern interface but does not have=20
-> >> VIRTIO_F_VERSION_1
-> >> =A0=A0=A0=A0 9pnet_virtio virtio0: probe with driver 9pnet_virtio fail=
-ed with=20
-> >> error -22
-> >>
-> >> Further investigation revealed that the 64-bit BAR space assigned to=20
-> >> the 9pnet
-> >> device was overlapped by the memory window allocated for the CXL=20
-> >> devices. As a
-> >> result, the kernel could not correctly access the BAR region, causing =
-the
-> >> virtio device to malfunction.
-> >>
-> >> An excerpt from /proc/iomem shows:
-> >>
-> >> =A0=A0=A0=A0 480010000-cffffffff : CXL Window 0
-> >> =A0=A0=A0=A0=A0=A0 480010000-4bfffffff : PCI Bus 0000:00
-> >> =A0=A0=A0=A0=A0=A0 4c0000000-4c01fffff : PCI Bus 0000:0c
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 4c0000000-4c01fffff : PCI Bus 0000:0d
-> >> =A0=A0=A0=A0=A0=A0 4c0200000-cffffffff : PCI Bus 0000:00
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 4c0200000-4c0203fff : 0000:00:03.0
-> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 4c0200000-4c0203fff : virtio-pci-modern
-> >>
-> >> To address this issue, this patch adds the reserved memory end=20
-> >> calculation
-> >> for cxl devices to reserve sufficient address space and ensure that=20
-> >> CXL memory
-> >> windows are allocated beyond all PCI 64-bit BARs. This prevents=20
-> >> overlap with
-> >> 64-bit BARs regions such as those used by virtio or other pcie devices,
-> >> resolving the conflict.
-> >>
-> >> QEMU Build Configuration:
-> >>
-> >> =A0=A0=A0=A0 ./configure --prefix=3D/home/work/qemu_master/build/ \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 --target-list=3Dx86_6=
-4-softmmu \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 --enable-kvm \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 --enable-virtfs
-> >>
-> >> QEMU Boot Command:
-> >>
-> >> =A0=A0=A0=A0 sudo /home/work/qemu_master/qemu/build/qemu-system-x86_64=
- \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -nographic -machine q35,cxl=3Don -enable-kvm =
--m 16G -smp 8 \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -hda /home/work/gp_qemu/rootfs.img \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -virtfs local,path=3D/home/work/gp_qemu/=20
-> >> share,mount_tag=3Dhost0,security_model=3Dpassthrough,id=3Dhost0 \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -kernel /home/work/linux_output/arch/x86/boot=
-/bzImage \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 --append "console=3DttyS0 crashkernel=3D256M =
-root=3D/dev/sda=20
-> >> rootfstype=3Dext4 rw loglevel=3D8" \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -object memory-backend-ram,id=3Dvmem0,share=
-=3Don,size=3D4096M \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=
-=3Dcxl.1 \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -device cxl-=20
-> >> rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,slot=3D2 \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -device cxl-type3,bus=3Droot_port13,volatile-=
-=20
-> >> memdev=3Dvmem0,id=3Dcxl-vmem0,sn=3D0x123456789 \
-> >> =A0=A0=A0=A0=A0=A0=A0=A0 -M cxl-fmw.0.targets.0=3Dcxl.1,cxl-fmw.0.size=
-=3D4G
-> >>
-> >> Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a=
-=20
-> >> machine parameter")
-> >> Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
-> >> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> >> Message-ID: <20250805142300.15226-1-engguopeng@buaa.edu.cn>
-> >> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >> ---
-> >> =A0 hw/i386/pc.c | 20 +++++++++++---------
-> >> =A0 1 file changed, 11 insertions(+), 9 deletions(-) =20
-> >=20
-> > Hi!
-> >=20
-> > Is it qemu-stable material (10.0.x & 10.1.x)? =20
+--zJv11xBMfk97FBOm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Oct 28, 2025 at 10:41:32AM +0100, Camilla Conte wrote:
+> Hi Stefan,
 >=20
-> A friendly ping for the stable series?
+> This can happen because the worker node is out of resources (likely
+> memory) for the running pods.
+> We can set a memory minimum for all pods, or we can set it per-job.
+>=20
+> If there are some specific jobs that are memory-hungry, please set
+> KUBERNETES_MEMORY_REQUEST in the job variables.
+> https://docs.gitlab.com/runner/executors/kubernetes/#overwrite-container-=
+resources
+>=20
+> Else, I can set a global default.
 
-I think it does make sense for stable.
+Hi Camilla,
+Sizing each CI job requires memory metrics that I don't have. Does AWS give
+you any insight into how much free RAM is available on k8s worker nodes
+over time?
+
+Gemini suggests that Kubernetes Metric Server can be enabled and then
+`kubectl top` can be used to monitor Pod resource usage. Alternatively,
+CloudWatch Container Insights can be enabled in AWS to get Pod memory
+usage.
+
+Once we have data we can either raise the limit (assuming there are no
+huge outliers) or label the outlier jobs (to avoid overprovisioning the
+normal jobs).
+
+By the way, I haven't figured out how to access the AWS resources from
+my own AWS account. I only see the total cost from our accounts, but
+don't have visibility or control over what is running. So I'm unable to
+investigate the EKS cluster myself at the moment.
 
 Thanks,
+Stefan
 
-Jonathan
+--zJv11xBMfk97FBOm
+Content-Type: application/pgp-signature; name=signature.asc
 
->=20
-> Thanks,
->=20
-> /mjt
->=20
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmkBCpAACgkQnKSrs4Gr
+c8gG/QgAukhkqkMpuOshuCwYG89lZaeA0LD6dpoPZOco2tz/MUXkbRFl8zK8taUD
+sHqpdE5FC4NDoxL0LZ9X0/KzsuJST6hM9T7nzuNQ4bH8jL1PQLaCbKTH2VVPo0SP
+oy1Xp2ALw0DsW7MO4SQarG1VebSdx/SeTqW4y3QvkqJssma/CxdAHSlzQmBMF/UC
+0YHx+MnTHCVO7yW5mCpNoz8GczoraluXPXrj/x0jnuHGwTkDswEqwd70jWYMClVU
+30UFFjjDhYJXbb/ik5aRLOJfLoZMMRUJjELtSGKhf0cdBh7b4FZZKudLtwWOuKvc
+vRsPwt3bpFuUnrG5/EPme0PRnh52sw==
+=pHPf
+-----END PGP SIGNATURE-----
+
+--zJv11xBMfk97FBOm--
 
 
