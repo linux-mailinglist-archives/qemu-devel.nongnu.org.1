@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88171C13625
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 08:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84B2C1362B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 08:54:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDeWe-00055H-F7; Tue, 28 Oct 2025 03:53:52 -0400
+	id 1vDeWm-0005VN-WB; Tue, 28 Oct 2025 03:54:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeWO-00049a-6s
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:53:37 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeWk-0005Mo-8P
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:53:58 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeWG-0007jf-Lt
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:53:35 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4711810948aso41142825e9.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:53:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeWh-0007mk-1J
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:53:57 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-4298b865f84so3036273f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:53:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761638006; x=1762242806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761638028; x=1762242828; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A4d66WWc5Hpw4yRePBR2zkZh6NCjsXXJl36Dw0QUZv0=;
- b=W1JGPHAD9A4f2UXepcV1q+LvNGoGg1gNVAaweokqCfdv8L966916IO2IhMjnZ8Fmna
- ZvUW/+CUqNfnYOk3GAlTQFvDiGzhe2bfl0GAccIx68n0apteqhp9+YsPtpBH3msuZjLc
- vu4lALWk+Hcsov254rLuDyQbTCl9dYtc9G/Yr1wl1CD+0vV0QWi22XGzaUutayS+AINe
- kIJDf1eizNH3hJYtuPQmFHQXMk7SoqVSCBm0u6shajSTZPc0HE5dPJWc1NFaFOiYuyCw
- 8wmMowjxgEyAEjd2DFBA/A2enEoCPmXN/0ITcORKP7w/qW2vig+RXuNw8Oszgw8C9iIH
- C/bA==
+ bh=tN9+o1MHirw7CB9gDKCqT7ChD79lp84JZH+uUf/YZy4=;
+ b=aaKnZGcHFMD7Xvfh3ODusj6JwHej1fvr+dV8KkVuUP8UVBUyrqa8KakBNwHXN9gsOM
+ C1Q3mksG3AU+oOsIX24ALVjqwuax/pKVCwzjwuJMJ7naw26q6rDc8aKvZB04o7dM1mmX
+ Gk909NgcSgGzwTt6KqbmGey1GiImf4P2vyDbY0/NLy4HainnGgAFMeKfTwiEzgIzgLWT
+ 2kfJzxhmoqWVypOJlNmFn8knJvzROC2ykxtn2zm4KOx+fAJbccGjLn/k18h4odb8mI38
+ X1DFYI2n+siHd7SscZCkH0Bmbo4PH8Mma450qQAF+5bwqSEFyPhrcY8JKbmpN9qN8dh4
+ DdzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761638006; x=1762242806;
+ d=1e100.net; s=20230601; t=1761638028; x=1762242828;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A4d66WWc5Hpw4yRePBR2zkZh6NCjsXXJl36Dw0QUZv0=;
- b=Zb0WcNB7Wh0fj6Wv995wy43wHypZAsioo/9rP4ZgAhizC8366bAs0Dx2WZApNjnO0O
- oFDWC8ROQ5nJReIaim/FQpaUPY+4QXYGYH3QQxcplQXp/ayv4wn4DPb1s3WbCM+2ukoi
- 3Aqg5V75Nxp7XcJf5FC50xAnkXWvJV83Wyk0qQH5HfL4GZVSadbkX4oAPFIGKuymZ5P0
- 10FPLhBCJ/iAwhy6Kt/8U+AC5MEfrf4UIA6zgXiulg4vRYPdjuzXpUVifwbHfyi4Lqzx
- Gglj/LhnMQfnO0VOknZwzHqE+UUFT2M/WNnJ1b+HJq3p2s4oRYjMgb83b9xE6UMGGU7H
- X8hw==
-X-Gm-Message-State: AOJu0YyruHSF1ab0a9H3H5VbP+Scqn1wu2FSb+VmRXSq+i6DRnRQO7+H
- AjmDkkU4VTxgvJ3vicO7qUt8z8EtDgBripKxDwqw1D7WjG7K0ZmIk18//8pObIMgYzLTuH5eQMr
- ml+QLEtk=
-X-Gm-Gg: ASbGncvbcRjNKZnVhH47TbGV9lx0R0bZ+Vq/LKWU/K1QHa+gBcVC9yeJuOJ4W6SPjEc
- TapkyA95dGdcIjWmFZLWizaDcKVlEv6yfp8HYVYPZplm3vvw2noiPLHN0doDJGoVX/5PQmtIoIK
- koM6QUjTK3PjXlSCHVvQdDEZoDG+LQfh1SW1UamJC2WgGQzDOelWikkcYOZcNeam+Qyzhf38uvB
- fGgIbwWjIcIGcpWs4ishfFChQpDEzx30ZETEul7gnT0HjNBywht5mSvexXgwLOR1YSli33jjJwX
- BXHEPFndk5TOGTMChALlDOjDxE7jApPW0a5XIYmztSkV4pqYUCsDPT61pxbTX0JfCNeP4jtmq0p
- 3pHGUyyHBOos1fdLwRskKoX6bAlIipEHs6MQWCQX8CsB09QvQ72HvUo1u0Lb243fFeDHZz1m6Iv
- VjGim+7uMQzzIT6SFVsl2XeSewnPmmeajLM6foWQIM9k3y6KVxQ6w7HeY=
-X-Google-Smtp-Source: AGHT+IEgT0B3VI/CsozY+rCH2pFY7krDWXhRhOD+8a3+eHkLuQ4iBewIVhAip0Tx/ZXzlS3gQ2o5qA==
-X-Received: by 2002:a05:600c:45cc:b0:46e:37fc:def0 with SMTP id
- 5b1f17b1804b1-47717df9db5mr20101135e9.9.1761638005951; 
- Tue, 28 Oct 2025 00:53:25 -0700 (PDT)
+ bh=tN9+o1MHirw7CB9gDKCqT7ChD79lp84JZH+uUf/YZy4=;
+ b=mFHSpZ8lHn7qIHLIcf6rtr5VUcWyBBu6gI/ldSF+Rg5upq6lKC3LdEGK8T9roZ4yKQ
+ CpzZNyrvGuEXSRb4JTE5qscYQ20yYryG1CMdfIUqe0zAijGMMM9gOjzBk/kLFJcGq4yi
+ VRTDHGZpuISpB99dePbCbOPAkSKVjnM6EpBLgfAUez44KcC4eWUejDtgJ4QDZzHf3nNV
+ 1iPWlFCKBy+EPuLzOgUOf2Gpz66UEJvteUsWjldba/T9UP4Kd83zeLHPxiVzsZ6ga9dv
+ hBkQLJdVQDzsQDdnxG/hV1fvexBKmh2bYJ75kTK26JJX1uabfDw4i3wZhooZ8JtRTkp/
+ D8ug==
+X-Gm-Message-State: AOJu0YwbyxNQCFeIpjsi8Ukhk64aRq2nPKvUWL1p5XdIuxgyTozACsXd
+ nGo3HBXzXY5WMTAYFOqIx06cemC489bDOs89DxHlkM6sf0jD6lxN/pX1TBxU8IhTLjgG72RVugk
+ zzYSLwjU=
+X-Gm-Gg: ASbGncsmACERFcj3H/lejpsl0j5zuRtKSfVjOz1P2TUe2jrlcfnTM54MpNiz1ah4Gfd
+ zbCM8km4fL6FEaSnCQ2bfphz3QVLTwFiIAy4IgHQozkRbQhqByEa80WNNNt8uHkMFJ8jTDP4Qki
+ y6H2LfyLYpJ8uB3yOYAK6IGb5Hoi9VhzS6qaAzp7mglOshLGm331rbbFYFttG5IMBAVkfGYezVs
+ 4J4sEbUiXFM7r/muoK3+Qc677I+13N2+gdmt6HfJqCnLUI0oEYFT5cu/gdgaj5yfvPa5z1iDd2H
+ zyJ38c3coyoF6uvN9sSCuHSOXb2OUrT6LV0VWaHzrfhhmywySCx7QXh5o+oDjSs9Ee8I/glrxEO
+ rKrmFpn8zOf47vC7/kfoJ4RQ1tbRgOhncVW4Ytt2F/O5d5Qhmxm9iJH2gaLRxORqqMjIE34i2bM
+ M8v3Tvl1qhbOv13JkwnokIpgMOcK4x5wqZNJIzf7sWo1ejMRYESN+00Ig=
+X-Google-Smtp-Source: AGHT+IHcABFnH8jE6bCqVHBwVQZ1rbYW7Px8FRvCeLCO0Zc/zDrPxji2Ec2Ao+VKZr0F6rkIZRrcGg==
+X-Received: by 2002:a05:6000:1aca:b0:426:ee44:6d9 with SMTP id
+ ffacd0b85a97d-429a7e52be4mr1745993f8f.21.1761638027701; 
+ Tue, 28 Oct 2025 00:53:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd47853csm182083155e9.13.2025.10.28.00.53.25
+ ffacd0b85a97d-429952cb7d1sm19038498f8f.16.2025.10.28.00.53.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 00:53:25 -0700 (PDT)
+ Tue, 28 Oct 2025 00:53:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 12/23] hw/uefi: Include missing 'system/memory.h' header
-Date: Tue, 28 Oct 2025 08:48:48 +0100
-Message-ID: <20251028074901.22062-13-philmd@linaro.org>
+ Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>
+Subject: [PULL 13/23] hw/int/loongarch: Include missing 'system/memory.h'
+ header
+Date: Tue, 28 Oct 2025 08:48:49 +0100
+Message-ID: <20251028074901.22062-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028074901.22062-1-philmd@linaro.org>
 References: <20251028074901.22062-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,29 +104,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 "system/memory.h" header is indirectly pulled by "hw/sysbus.h".
 Include it explicitly to avoid when refactoring the latter:
 
-  include/hw/uefi/var-service.h:50:39: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
-     50 |     MemoryRegion                      mr;
-        |                                       ^
+  In file included from ../../hw/intc/loongson_ipi.c:9:
+  In file included from /Users/philmd/source/qemu/include/hw/intc/loongson_ipi.h:12:
+  include/hw/intc/loongson_ipi_common.h:37:18: error: field has incomplete type 'MemoryRegion' (aka 'struct MemoryRegion')
+     37 |     MemoryRegion ipi_iocsr_mem;
+        |                  ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-Id: <20251024190416.8803-14-philmd@linaro.org>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Message-Id: <20251024190416.8803-21-philmd@linaro.org>
 ---
- include/hw/uefi/var-service.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/hw/intc/loongarch_dintc.h         | 2 +-
+ include/hw/intc/loongarch_extioi_common.h | 1 +
+ include/hw/intc/loongarch_pch_msi.h       | 1 +
+ include/hw/intc/loongarch_pic_common.h    | 1 +
+ include/hw/intc/loongson_ipi_common.h     | 1 +
+ 5 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/uefi/var-service.h b/include/hw/uefi/var-service.h
-index f7ceac4ce24..91fb4a20918 100644
---- a/include/hw/uefi/var-service.h
-+++ b/include/hw/uefi/var-service.h
-@@ -9,6 +9,7 @@
- #include "qemu/uuid.h"
- #include "qemu/queue.h"
- 
+diff --git a/include/hw/intc/loongarch_dintc.h b/include/hw/intc/loongarch_dintc.h
+index 0b0b5347b2c..01bb1e465cb 100644
+--- a/include/hw/intc/loongarch_dintc.h
++++ b/include/hw/intc/loongarch_dintc.h
+@@ -8,7 +8,7 @@
+ #include "qom/object.h"
+ #include "hw/sysbus.h"
+ #include "hw/loongarch/virt.h"
+-
 +#include "system/memory.h"
- #include "hw/uefi/var-service-edk2.h"
  
- #define MAX_BUFFER_SIZE (64 * 1024)
+ #define NR_VECTORS     256
+ 
+diff --git a/include/hw/intc/loongarch_extioi_common.h b/include/hw/intc/loongarch_extioi_common.h
+index c021ccee0fa..1bd2bfa07fc 100644
+--- a/include/hw/intc/loongarch_extioi_common.h
++++ b/include/hw/intc/loongarch_extioi_common.h
+@@ -10,6 +10,7 @@
+ #include "qom/object.h"
+ #include "hw/sysbus.h"
+ #include "hw/loongarch/virt.h"
++#include "system/memory.h"
+ 
+ #define LS3A_INTC_IP                 8
+ #define EXTIOI_IRQS                  (256)
+diff --git a/include/hw/intc/loongarch_pch_msi.h b/include/hw/intc/loongarch_pch_msi.h
+index b8586fb3b6f..ef4ec4fdeb8 100644
+--- a/include/hw/intc/loongarch_pch_msi.h
++++ b/include/hw/intc/loongarch_pch_msi.h
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include "hw/sysbus.h"
++#include "system/memory.h"
+ 
+ #define TYPE_LOONGARCH_PCH_MSI "loongarch_pch_msi"
+ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchPCHMSI, LOONGARCH_PCH_MSI)
+diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
+index 675ba96e64e..179361eb567 100644
+--- a/include/hw/intc/loongarch_pic_common.h
++++ b/include/hw/intc/loongarch_pic_common.h
+@@ -9,6 +9,7 @@
+ 
+ #include "hw/loongarch/virt.h"
+ #include "hw/sysbus.h"
++#include "system/memory.h"
+ 
+ #define PCH_PIC_INT_ID                  0x00
+ #define  PCH_PIC_INT_ID_VAL             0x7
+diff --git a/include/hw/intc/loongson_ipi_common.h b/include/hw/intc/loongson_ipi_common.h
+index e58ce2aa1c4..4fa03bc351f 100644
+--- a/include/hw/intc/loongson_ipi_common.h
++++ b/include/hw/intc/loongson_ipi_common.h
+@@ -11,6 +11,7 @@
+ #include "qom/object.h"
+ #include "hw/sysbus.h"
+ #include "exec/memattrs.h"
++#include "system/memory.h"
+ 
+ #define IPI_MBX_NUM           4
+ 
 -- 
 2.51.0
 
