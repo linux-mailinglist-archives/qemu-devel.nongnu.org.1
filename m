@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D22C16367
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E361C16322
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:36:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnbQ-0006Ie-SX; Tue, 28 Oct 2025 13:35:24 -0400
+	id 1vDnbp-0006Pd-Lm; Tue, 28 Oct 2025 13:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnbO-0006H5-NJ
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vDnbU-0006LX-PU
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnbI-0004gY-FH
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:21 -0400
+ id 1vDnbK-0004gy-FV
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761672914;
+ s=mimecast20190719; t=1761672917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E/r4/WhWamLiV42a70Dke9pt2v46dYWhx3stMUl9WaU=;
- b=baaU9XwpdHR4tkxscLldiJYATZyFaV6NW8ol2nJs9xWPhDD6QqLqlIsYw2STGUCZXLYbG8
- 0NnWhj1nkna0MUpFcQOoZR2WnFPj6/lMv15ZsxyBB4RCovHbVtqytdL6AJcur+qDtpSWmW
- nHbvbDYiyWnwwLoVFh4bl8MFxrbOBs8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1CJCXRRGP7uLhGWFgtNrE3fPS/hb7R8Y1xh7f9G0YyU=;
+ b=fjzxcmmHIKmR19U321SfHW+5cD1qBFdgQWCrum3Sxz1G3/HsJ10dHIorHTtv9icwzkmrQw
+ DhSNzqkRSGpi9wXkYEMgf0/Qsu/Zv3nsNqsKrfAH5qcvZ11Q/qdUONttWyBshWOubVPEQ/
+ E0vQ1J9oAuqOyE/nBT2NzXJWpLZ0hSw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-fZZk52f2PW2H4uVuUb4haA-1; Tue, 28 Oct 2025 13:35:13 -0400
-X-MC-Unique: fZZk52f2PW2H4uVuUb4haA-1
-X-Mimecast-MFC-AGG-ID: fZZk52f2PW2H4uVuUb4haA_1761672912
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-475e89435e0so10638155e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:35:12 -0700 (PDT)
+ us-mta-250-KoC2KdW9MNS_KwOW8rjGFg-1; Tue, 28 Oct 2025 13:35:15 -0400
+X-MC-Unique: KoC2KdW9MNS_KwOW8rjGFg-1
+X-Mimecast-MFC-AGG-ID: KoC2KdW9MNS_KwOW8rjGFg_1761672915
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-475de1afec6so375785e9.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:35:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761672911; x=1762277711;
+ d=1e100.net; s=20230601; t=1761672914; x=1762277714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E/r4/WhWamLiV42a70Dke9pt2v46dYWhx3stMUl9WaU=;
- b=h7zG8V0lF1xoqQGi1/VegU8tT2kgTdtuaHJN82bpAbfcho2+RNJI7ccBXj4wa93uxI
- GJ4y18WTdVoNhf1BeIerWvlajC4hVW2631FCyFqc4g8A2SE2stuqEdHUL/dX2e404PPu
- XpwD8mSYeR2ZlPgpetCzueAcy1JayJL33HfOllAmo5kBY+39tX5oyTMv2tMegMKC6bsg
- +nrv8rEU028fL99huDqiJ2SRg8/GzcNchHPHgSgavNddW7/nFidRkqvrv3cjDwzY5x4q
- 3o1T73mlfSUIIwqfyqqH/1doqYhkgUAxa/LjMKrobaJVsVr2tqC4C4bjj5a9sxsRBcul
- E3rw==
-X-Gm-Message-State: AOJu0YwB+1fI43nwoBGupkQCqRVSbAiLHx0vMhawPcm5kbVb9LJaVe1V
- 16MRqmrPT/HceeiSRHZ2576fUQls/DuA3w8GYkmY9H0XDy4jUwWkWx2P5/NPgO0rBOPQj03guyq
- pMZnpf0djVPvzJ2IxfNGAvpCLRcMIvDdkAbhCJ3h5XvI/UdleqdLSX96sna94XG+mO/yd5zUJTm
- HnEiphfPaZ23bUGVbzkzj+IdruecicbKlISIqRvi5V
-X-Gm-Gg: ASbGncsNhOXifo+1hqPbpiGFtoFsHm9nXkufQVE9cJLUuHWOhEvYzPwLbwCmw14ursH
- Xy0o1onZYgtmTXSqq5fleAbi1Hm+mNeeYq8qDO+ecKV3KBeSrfKlqw9kdTxtuEdc05FeoUfW2OO
- RYDxZrX9LoCPt6KGWg5XsPXcIF81L0TJ33vy7xSU38u9Pr2VogWWikPkIrfwbKIXLwX31RtKDCi
- 00NjvXMoAG5K9RXGxHC7W1OECNZBGsLO2mLKP74/N5qMX0NaRO1HMfySmUhXwl/sL5uGXj9F3qV
- rGrWM4XgExF4q/5SNFeGlYXIVJs7sssc/6g9yYDB+PSKvzarXZivuy2c8XiAFdjp4j5a2svmRkO
- GQrTWQsRuB6ZiU03YsJ6sHDkeYaEPK4nBjhDj2uL7GwbuZMjd3Y0ClVt1Bg6Jsj7Wwz78xJyaYN
- 6Z/vI=
-X-Received: by 2002:a05:600c:620a:b0:477:bf0:b9da with SMTP id
- 5b1f17b1804b1-4771e1cac54mr2725825e9.19.1761672911401; 
- Tue, 28 Oct 2025 10:35:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6laHfClOe2ffYNhva6Rk0eYXKnjczhODWpLWceuibr8QV4pMr7xhszGPluSwrYzJHGOExcQ==
-X-Received: by 2002:a05:600c:620a:b0:477:bf0:b9da with SMTP id
- 5b1f17b1804b1-4771e1cac54mr2725565e9.19.1761672910951; 
- Tue, 28 Oct 2025 10:35:10 -0700 (PDT)
+ bh=1CJCXRRGP7uLhGWFgtNrE3fPS/hb7R8Y1xh7f9G0YyU=;
+ b=Axb1nTV3HYznVgwslqtiz8ZMLWW6rUG91IV356r00DWn2Eq0/JA2PCutBB8Kv3xQjM
+ RsweZkLiCtkkros+Ss+VrvMK02JW9N2jFe8q+LNp5dDXM2CnpW4wYzxV9kM1dt/TjEWl
+ 9wK+WQsqfcCEAuzHABoEJjWtkXWkCUS/Sq05+QuEbf2eMWC5sTuuIlPvpi3fqf5HxS9a
+ xTtked6cpqwX5qsew57Uo6ehhAJ9vxb7A80AmdRESTyErusJ5ythLtoO5BVB+e6QiKKW
+ WFU6rMUHOk4PmE+MO7divym63h9DldIcOIAFY+Qyl3Js/FdqLbKEmufpRVU53Cn25C/r
+ oGdg==
+X-Gm-Message-State: AOJu0YzCCGDq1r8TbzITQ+bsI7bti37I0USCuZ6SzH25HQcib/ZDZLQ5
+ 1f3cKI7UA8xRfTQDgveJUQmpn0+HuDydRjup8FiFTWqdGMOAC8NZ2RLkvVMMedvPGFZtCSwayTU
+ 4lU/+/UJhKgbt6qi7WJ5G5YzYBP25eNzKwq9eYgzNFmHKsklphB2Sdrte08F55gRSnCU3ssexT5
+ lVTrurHElf6WpLzlyoSZBz4cylgg4R4agpq1g2u+KU
+X-Gm-Gg: ASbGncvVt5vKeY3CFZr3hbZlsZnsTkBx89Ne/wPUbyct8Q0F1gUSf/KJ4//T6nOArGv
+ IItAsM86H7WkGKn7brivwr0k/qA68Z2YD558mhgzHhI/zGvpbeCWqHcEh9Z4IEu/LSlotdSrC9x
+ fNmVa2956HT7eMXrVtRQ2i5qK4HH+GKaPzrP+MtA22HypZ2nAtQOldKEUpDp7ykLLMNqJTgEgxB
+ +/9rRXa6Em1HfzhkkpZg/BZ0HvKovsFKc1cg8m1TL/ene+H1KIhdi2rPv9P92A2Ud4VfImIkBYK
+ 3zNXDHwYsvpB1mAdvtgVSXlL/2+Tjey//0J53WqWsOAn3Rj6TJ+BB/gP3PW7hDmHUHnSUQjE+5g
+ 4fsn6SIqi0dysvuda8E6WlILe5wuafcLXLg2/8Q9w2fcdlRp5oukdPGE9dFRuzzGD+DlhUkQyFS
+ NxPRs=
+X-Received: by 2002:a05:600c:a219:b0:477:115b:878d with SMTP id
+ 5b1f17b1804b1-477181969damr21247395e9.15.1761672913648; 
+ Tue, 28 Oct 2025 10:35:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGe0BE3U50MxF4FLfVJUMMLlt3GnwC3c3MfG7x6VEJk3X2q5qIjKpngq3HtLGx09mqr+GrBNg==
+X-Received: by 2002:a05:600c:a219:b0:477:115b:878d with SMTP id
+ 5b1f17b1804b1-477181969damr21247135e9.15.1761672913106; 
+ Tue, 28 Oct 2025 10:35:13 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771e3b9994sm1979945e9.16.2025.10.28.10.35.07
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-4771e196a4bsm4168825e9.6.2025.10.28.10.35.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 10:35:07 -0700 (PDT)
+ Tue, 28 Oct 2025 10:35:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/18] scsi: make SCSIRequest refcount atomic
-Date: Tue, 28 Oct 2025 18:34:25 +0100
-Message-ID: <20251028173430.2180057-14-pbonzini@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 14/18] qdev: Change PropertyInfo method print() to return
+ malloc'ed string
+Date: Tue, 28 Oct 2025 18:34:26 +0100
+Message-ID: <20251028173430.2180057-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251028173430.2180057-1-pbonzini@redhat.com>
 References: <20251028173430.2180057-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,61 +111,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Markus Armbruster <armbru@redhat.com>
+
+Simpler (more so after the next commit), and no risk of truncation
+because the caller's buffer is too small.  Performance doesn't matter;
+the method is only used for "info qdev".
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Link: https://lore.kernel.org/r/20251022101420.36059-2-armbru@redhat.com
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/scsi/scsi-bus.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ include/hw/qdev-properties.h     | 2 +-
+ hw/core/qdev-properties-system.c | 7 +++----
+ hw/core/qdev-properties.c        | 9 ++++-----
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 9b12ee7f1c6..b9b115deedd 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -823,7 +823,6 @@ SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
- {
-     SCSIRequest *req;
-     SCSIBus *bus = scsi_bus_from_device(d);
--    BusState *qbus = BUS(bus);
-     const int memset_off = offsetof(SCSIRequest, sense)
-                            + sizeof(req->sense);
- 
-@@ -838,8 +837,6 @@ SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
-     req->status = -1;
-     req->host_status = -1;
-     req->ops = reqops;
--    object_ref(OBJECT(d));
--    object_ref(OBJECT(qbus->parent));
-     notifier_list_init(&req->cancel_notifiers);
- 
-     if (reqops->init_req) {
-@@ -1496,15 +1493,15 @@ void scsi_device_report_change(SCSIDevice *dev, SCSISense sense)
- 
- SCSIRequest *scsi_req_ref(SCSIRequest *req)
- {
--    assert(req->refcount > 0);
--    req->refcount++;
-+    assert(qatomic_read(&req->refcount) > 0);
-+    qatomic_inc(&req->refcount);
-     return req;
+diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
+index 0197aa4995e..60b81330097 100644
+--- a/include/hw/qdev-properties.h
++++ b/include/hw/qdev-properties.h
+@@ -34,7 +34,7 @@ struct PropertyInfo {
+     const char *description;
+     const QEnumLookup *enum_table;
+     bool realized_set_allowed; /* allow setting property on realized device */
+-    int (*print)(Object *obj, const Property *prop, char *dest, size_t len);
++    char *(*print)(Object *obj, const Property *prop);
+     void (*set_default_value)(ObjectProperty *op, const Property *prop);
+     ObjectProperty *(*create)(ObjectClass *oc, const char *name,
+                               const Property *prop);
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index c15371f8cd1..13cc91680b1 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -865,15 +865,14 @@ out:
+     visit_end_alternate(v, (void **) &alt);
  }
  
- void scsi_req_unref(SCSIRequest *req)
+-static int print_pci_devfn(Object *obj, const Property *prop, char *dest,
+-                           size_t len)
++static char *print_pci_devfn(Object *obj, const Property *prop)
  {
--    assert(req->refcount > 0);
--    if (--req->refcount == 0) {
-+    assert(qatomic_read(&req->refcount) > 0);
-+    if (qatomic_fetch_dec(&req->refcount) == 1) {
-         BusState *qbus = req->dev->qdev.parent_bus;
-         SCSIBus *bus = DO_UPCAST(SCSIBus, qbus, qbus);
+     int32_t *ptr = object_field_prop_ptr(obj, prop);
  
-@@ -1514,8 +1511,6 @@ void scsi_req_unref(SCSIRequest *req)
-         if (req->ops->free_req) {
-             req->ops->free_req(req);
-         }
--        object_unref(OBJECT(req->dev));
--        object_unref(OBJECT(qbus->parent));
-         g_free(req);
+     if (*ptr == -1) {
+-        return snprintf(dest, len, "<unset>");
++        return g_strdup("<unset>");
+     } else {
+-        return snprintf(dest, len, "%02x.%x", *ptr >> 3, *ptr & 7);
++        return g_strdup_printf("%02x.%x", *ptr >> 3, *ptr & 7);
      }
  }
+ 
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index b7e8a89ba5c..422a486969c 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -1117,12 +1117,11 @@ static void qdev_get_legacy_property(Object *obj, Visitor *v,
+                                      Error **errp)
+ {
+     const Property *prop = opaque;
++    char *s;
+ 
+-    char buffer[1024];
+-    char *ptr = buffer;
+-
+-    prop->info->print(obj, prop, buffer, sizeof(buffer));
+-    visit_type_str(v, name, &ptr, errp);
++    s = prop->info->print(obj, prop);
++    visit_type_str(v, name, &s, errp);
++    g_free(s);
+ }
+ 
+ /**
 -- 
 2.51.1
 
