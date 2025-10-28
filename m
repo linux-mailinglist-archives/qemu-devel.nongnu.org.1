@@ -2,90 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DA7C145A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:29:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582F7C145A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:29:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDhsa-0002nR-Ej; Tue, 28 Oct 2025 07:28:44 -0400
+	id 1vDhsu-0002qZ-GH; Tue, 28 Oct 2025 07:29:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDhsY-0002n1-9g
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:28:42 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDhsV-0003jE-R1
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:28:42 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-785f96ae837so25789007b3.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761650917; x=1762255717; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d4Y6BPUUWXY1yr4C38AXN+bPiuFEZis9xOpoiz73cic=;
- b=Yawd3pTF/P0KWkpSJpDbrSDtOqn3K4to3gaQckULvz9dbkUNk34arXieiu3vlgvLul
- i20KjbO0ThBdVbhk+lKdfwddq69h9a9TMzhNMU0j8d+/Rsr83SXtZkEUfXutMaWKC5CL
- s2Jp9pfihe/wmOk1uKGD6UjBiLFiWe4Lp8iJJ6mXfH2RB7d8vRiGFMo3noW1+YAG7/UJ
- 47HgN+mCDE7KtSR6P9W+OLS7clS6vTtJM/UBdpKthkVHqs6eTaPoQ/ba+P+WoRK4vmqQ
- pgktXwQB7A1brDZ2uwklAqIYFlfJmkTzUPRbqts0WgmeYe+pMFDcemQ2td94V095PkAe
- VbDg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vDhss-0002q7-96
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:29:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vDhsl-0003jt-Rf
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:29:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761650933;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uHIkPmibtwStN22OEjXI0V2cNbpyBUXkzByUfMmxahc=;
+ b=DVqivU1t1Vh49IjKfJhB28uhupGcNcJIxHHWBC/r6GXZshS95bynXwRF9ikZhQyKk5JvfS
+ hgBDO5LHEFlYvBkvk+3FqafTB8dEYoU9pEK8G7f7EsbIjLhjqoVVYc1uWplxddypqQ3cSj
+ nPnheeHEQ/ZzPcLgiz7LFvnYHP/eDrc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-o9K-eTMrO0q2xjLofsMFzA-1; Tue, 28 Oct 2025 07:28:52 -0400
+X-MC-Unique: o9K-eTMrO0q2xjLofsMFzA-1
+X-Mimecast-MFC-AGG-ID: o9K-eTMrO0q2xjLofsMFzA_1761650931
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-429893e2905so6201349f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:28:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761650917; x=1762255717;
+ d=1e100.net; s=20230601; t=1761650930; x=1762255730;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d4Y6BPUUWXY1yr4C38AXN+bPiuFEZis9xOpoiz73cic=;
- b=cP5HUtXDLlSPOkExEFAeEEpdKwVdANB9xLJpPt6uNkSHR16kHdRuVruhNWea202RNX
- w0RSPclKyyW2Z6IQv4MpeHz0gHAQVmmw1uWd1/CYCPMQHlfzlaKVVqKLTexTnJjDSkGz
- TFeathXz0M+62fw34MwxIHdP/sFSpo9Qzs+x7jiPHq8OeDJgSZiMjkz9RyB8frWMvtUD
- NXzBCJ5cNukH7Bra4wy9QbiA73sDU7dpgHMTSVhxCk5geUdTVD3d8Mi4uofzBQpq8yXU
- VT3lRmWaXxDX2vr8xwFN7eYzk0bvqyg7cCwdnPORF2KXlUi8xQHvABrE1U8Bx40YEvci
- CEHA==
-X-Gm-Message-State: AOJu0Yw1hRBYUaHzT5ZGNEYkGJWIJJSO8akgzKNLYA1DqdExQm2QceTD
- VLYjUo5fZvMUlxpVpTmbg+LJjVHH9uZpzvSrrBtxL/wBIst6IFKJVHIXND3BDZjGdZOZAD9RfHJ
- npbxoYLDFCcnY1sATkPDLxWR9ERVjy7gstBToJek5xQ==
-X-Gm-Gg: ASbGncuFsPRzls1vGFbmqo2NyWkcfZO+KKqCB8xnTf3Wd1vD8WiGpLmiaGRzXDbmjfR
- 1HT0RD3JP2F406cB/LrxuynLjAB7MoGsKEoU9l+ggeCf2woBzDxdgGzM69gGrBdElX1EGJpHCqU
- BWGkEJRigUWBKcksoWiQjZOyF8aEmIfFLwRzj+I4ejcofYCOG3PbABDkJg7SsT/J97yun7kn/wS
- ot61tTdUN889F2GNIhMu5FZy1NamgiBhgoUK8JAb5jqAs7xcgQ3J6iVivfqB6n5uzJizppc
-X-Google-Smtp-Source: AGHT+IF4avcIOT/G3mdZdJMqzMSaXF8+6Kvhwat2rzJvsX7sPcTvifECG8JPo4lM0RTFvWRwfpzuam4xR62VCD3+f2E=
-X-Received: by 2002:a05:690c:2c11:b0:76b:dd1:15f with SMTP id
- 00721157ae682-78617e54542mr29444627b3.23.1761650916736; Tue, 28 Oct 2025
- 04:28:36 -0700 (PDT)
+ bh=uHIkPmibtwStN22OEjXI0V2cNbpyBUXkzByUfMmxahc=;
+ b=CkCFHcWGsfpZP9yRpam35TsubtG5Cx+gszulpPV691qTJsMhcVkDnXqiMc3a1SjnuX
+ +nLMJgENCEm2/dsF2pDFyxmUSJ7XQWdqIVg+USU17zYtIlEVBrmpXt3+UdoRXHmjs9tn
+ thhWt5O6VmzbCEB3qzSVugmH9Daz+ZytUFGa4bTwqcKVaUxUCty812VNRsj4X4Ydjt2K
+ Jw0IABpdi7W8JapraCqIV7yUnjBxMj1lIcnaP4G1SpN6lxYdv6R/eq4H5cL207l8LJ6o
+ xx24TBO9PM6NxwXkzwINIY813Ol6EN5RhFE2HEc0W5O2kdUbCDIK3c5KrvT+qLgq1b0f
+ xyIw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVy13CgNbieGM4kjjBBUHdXbsDREBv87tVZ9spDP9VyQgstdPdW4ZX7qnTnDFFUy48Zrv53tbC6ObUR@nongnu.org
+X-Gm-Message-State: AOJu0Yz4tOanh3Kty+LW7JtENnUdwSDaIWTzEFOOVqvuTdXSKGY8b+Ly
+ a527edG8UZ8bWg1Cf7tzrlx8O0zazPk6TziFPY7tdD9HxBMcA1Rb0IssLW6B+ZzTqcpwdzaT43j
+ lj/akCmMxv+2NRkxpDTAj20T3dbvIwnCGUmtgMEQX001H+wOlAxrB5zB1o1s6cKxTLYVrlD46oP
+ s8/2bDTvAkh6Kk1CC7tZ1CQhaTy42ny24SgDmEKrk=
+X-Gm-Gg: ASbGncu8h51N7C8f7FheDyo1DGnG3EdfDueC6Rkd5dV/wCGuk4RxiRuTIyojRAXlm77
+ H3KJ4Lx79GLqlnE0aT4Qyva3CnzqtiTZ+JlVmzhfQurhXLA44JkL1iun5Fb7lWQKqhw1C6EO1Bc
+ HNG+MqoeURvhDrXMwMiUySXvHnWT8k7mn7ZuPmYjvfV0QXMCQLVsBTCvlel70nWhSfGqCuywF3N
+ 9aWCItoisOHAi8RfdKPSBvnNYzgt49Rs42dausby9bJNUe337zT4Sgc4xo2
+X-Received: by 2002:a5d:5f94:0:b0:425:7406:d298 with SMTP id
+ ffacd0b85a97d-429a7e35cf6mr3344367f8f.5.1761650929904; 
+ Tue, 28 Oct 2025 04:28:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuLhOoG7p7dNcptWEv8psw5Y9KKpqGHu0MMUmgiLFzkj/7E/dVHul0xgQAU9S8SOvuI20rHlavxHoouTbzFM0=
+X-Received: by 2002:a5d:5f94:0:b0:425:7406:d298 with SMTP id
+ ffacd0b85a97d-429a7e35cf6mr3344337f8f.5.1761650929519; Tue, 28 Oct 2025
+ 04:28:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251028054238.14949-1-philmd@linaro.org>
- <20251028054238.14949-34-philmd@linaro.org>
-In-Reply-To: <20251028054238.14949-34-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Oct 2025 11:28:24 +0000
-X-Gm-Features: AWmQ_blaqYebQzcX4i_PlHCcSOSlDF3xL7lkNlhwp9KD5JG0uFwgQC_SFmsNDxo
-Message-ID: <CAFEAcA9bTmusgWLvzgPW1Fh1Pzvo2rD6+2Qbw1TahrRybyT7Hw@mail.gmail.com>
-Subject: Re: [PATCH v3 33/59] target/i386/hvf: Use host page alignment in
- ept_emulation_fault()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Mads Ynddal <mads@ynddal.dk>, 
- Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
- Roman Bolshakov <rbolshakov@ddn.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Phil Dennis-Jordan <phil@philjordan.eu>, 
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Collingbourne <pcc@google.com>, Alexander Graf <agraf@csgraf.de>,
- Richard Henderson <richard.henderson@linaro.org>
+References: <db9abfc03f0dbc953ef314ff7f13ff19298efa7d.1761644606.git.chenmiao@openatom.club>
+ <CABgObfaBbf9Hq7RRLkhsa5n0-J+boe1T4guEakOEXDHFrc=4AQ@mail.gmail.com>
+ <c1d55488-71e2-498f-a845-d8a336c46f07@openatom.club>
+In-Reply-To: <c1d55488-71e2-498f-a845-d8a336c46f07@openatom.club>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 28 Oct 2025 12:28:35 +0100
+X-Gm-Features: AWmQ_bmKe4jB2VpFgrvi05USuxtVXHc_MRiuBnzhwWqFITPGp6L5PeM1JFNI-W4
+Message-ID: <CABgObfYbJ0jmnRkM=R9JN_SYZx1ybYxt3Y7dxDx0oJFG5BNf6Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 2/5] rust/hw/core: Add rust bindings/funcs for i2c
+ bus
+To: Chen Miao <chenmiao@openatom.club>
+Cc: zhao1.liu@intel.com, manos.pitsidianakis@linaro.org, 
+ richard.henderson@linaro.org, philmd@linaro.org, chao.liu@openatom.club, 
+ qemu-rust@nongnu.org, qemu-devel@nongnu.org, 
+ hust-os-kernel-patches@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,51 +109,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Oct 2025 at 06:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+On Tue, Oct 28, 2025 at 12:18=E2=80=AFPM Chen Miao <chenmiao@openatom.club>=
+ wrote:
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/i386/hvf/hvf.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> On 10/28/2025 6:45 PM, Paolo Bonzini wrote:
+> > On Tue, Oct 28, 2025 at 11:18=E2=80=AFAM chenmiao <chenmiao@openatom.cl=
+ub> wrote:
+> >> During the implementation process, we found that the current two parad=
+igms in
+> >> Rust =E2=80=94 bindings and impl =E2=80=94 are extremely complex and l=
+ack comprehensive
+> >> documentation. There is no clear explanation as to why Bus and Device =
+models
+> >> need to be implemented using different approaches.
+> > I don't think they need to be implemented using different approaches.
+> > The difference between the two is that:
+> >
+> > - the currently implemented devices do not expose any bus, they stay
+> > on a bus. This means the bus is never a child of the device
+> >
+> > - the currently implemented buses are all in C code, whereas there are
+> > devices implemented in Rust.
+> >
+> > I agree that the Rust-to-C bridge code is complex, but it does have
+> > documentation, much more so than the C versions in fact.  If there are
+> > specific aspects of the documentation that you would like to see
+> > improved, you can help by explaining what problems and sources of
+> > confusion you encountered.
 >
-> diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-> index 16febbac48f..c0b2352b988 100644
-> --- a/target/i386/hvf/hvf.c
-> +++ b/target/i386/hvf/hvf.c
-> @@ -76,7 +76,7 @@
->  #include "qemu/main-loop.h"
->  #include "qemu/accel.h"
->  #include "target/i386/cpu.h"
-> -#include "exec/target_page.h"
-> +#include "exec/cpu-common.h"
+> That makes sense to me. Since buses are mainly implemented in C, the curr=
+ent
+> focus of Rust is on porting the device layer. Rust-implemented devices ar=
+e
+> consumers and do not create any child objects.
 >
->  static Error *invtsc_mig_blocker;
+> I think our previous confusion stemmed from the assumption that Rust was
+> porting the entire hierarchy, when in fact Rust is currently only impleme=
+nting
+> the device layer.
 >
-> @@ -137,9 +137,9 @@ static bool ept_emulation_fault(hvf_slot *slot, uint6=
-4_t gpa, uint64_t ept_qual)
+> >> +/// A safe wrapper around [`bindings::I2CBus`].
+> >> +#[repr(transparent)]
+> >> +#[derive(Debug, common::Wrapper)]
+> >> +pub struct I2CBus(Opaque<bindings::I2CBus>);
+> >> +
+> >> +unsafe impl Send for I2CBus {}
+> >> +unsafe impl Sync for I2CBus {}
+> >> +
+> >> +unsafe impl ObjectType for I2CBus {
+> >> +    type Class =3D BusClass;
+> >> +    const TYPE_NAME: &'static CStr =3D
+> >> +        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_I=
+2C_BUS) };
+> >> +}
+> >> +
+> >> +qom_isa!(I2CBus: BusState, Object);
+> >> +
+> >> +// TODO: add virtual methods
+> >> +pub trait I2CBusImpl: DeviceImpl + IsA<I2CBus> {}
+> >> +/// Trait for methods of [`I2CBus`] and its subclasses.
+> >> +pub trait I2CBusMethods: ObjectDeref
+> >> +where
+> >> +    Self::Target: IsA<I2CBus>
+> >
+> > There are no virtual methods, and therefore I2CBus does not have
+> > subclasses.  Therefore you don't need these traits and you can
+> > implement the functions directly on I2CBus.
 >
->      if (write && slot) {
->          if (slot->flags & HVF_SLOT_LOG) {
-> -            uint64_t dirty_page_start =3D gpa & ~(TARGET_PAGE_SIZE - 1u)=
-;
-> +            uint64_t dirty_page_start =3D gpa & qemu_real_host_page_mask=
-();
->              memory_region_set_dirty(slot->region, gpa - slot->start, 1);
-> -            hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
-> +            hv_vm_protect(dirty_page_start, qemu_real_host_page_size(),
->                            HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_E=
-XEC);
->          }
->      }
+> For this part, we directly referred to the implementation of SysBus.
 
-I guess we're guaranteed that the host page and TARGET_PAGE_SIZE
-are the same thing here (so it doesn't matter that we put
-the assert in first and then fix this) ?
+I see. The difference is that:
 
-On that assumption
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+- in sysbus there are virtual methods, but Rust does not let you override t=
+hem
 
-thanks
--- PMM
+- in I2C there are no virtual methods added (and in fact you have
+"type Class =3D BusClass").
+
+> I'll revise all the points you have raised later.
+
+Thank you!
+
+Paolo
+
 
