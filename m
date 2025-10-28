@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44971C17552
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7D8C17506
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:18:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstY-0002yT-2H; Tue, 28 Oct 2025 19:14:28 -0400
+	id 1vDstk-00033D-6D; Tue, 28 Oct 2025 19:14:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstT-0002we-Uu
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:24 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1vDstd-00031C-BM
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:33 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstL-00017L-2v
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:23 -0400
+ id 1vDstM-00017M-LY
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:31 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 4887F81765;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id F03098175F;
  Wed, 29 Oct 2025 02:14:00 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-CMWkYUWR; Wed, 29 Oct 2025 02:13:59 +0300
+ ESMTPSA id oDnXpg2bCW20-wtiMufGJ; Wed, 29 Oct 2025 02:14:00 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693239;
- bh=p+nRtrNPovY55BdLG50N9jkuwP8uMv1quoi1fFi1LL4=;
+ s=default; t=1761693240;
+ bh=Ic5f2KC+92lrPpzC+dJc2PdflQkRqcAGO/TiRTlcmX0=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=RKL/BrIqwq6WUN4kJdnyWEOkzi2suqmvqAo22/xkimWjBgbq8GTp7yHY6r4Tj2b6g
- j/emSDPUlsFf2J3tY8HXnZOpqDrp2geqT3WgUE5iQurLCFh4okIbiEPL3PoB1QEp2x
- OxlpC3EBHm+OQ0S1s8xjR+kIh/aJbjRbw4waZ/9o=
+ b=F7rwYa3YBvKa6P25Kr2JZS4imzjPEsL/q3XnXxGm3OorKtxkNXemRTVS2oari73qX
+ pO+W8h0OCfMMsHYhuYjUmZk6xbMeU//MJ7pnrHM810Ds813TEJGgP/9io8YS/L6BXr
+ b1QhyJAbxlNDLDumJBkmIm4xH7i13U397o+ObC9k=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,22 +41,23 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 12/22] hw/virtio: move to new migration APIs
-Date: Wed, 29 Oct 2025 02:13:36 +0300
-Message-ID: <20251028231347.194844-13-vsementsov@yandex-team.ru>
+Subject: [RFC 13/22] hw/display/virtio-gpu: move to new migration APIs
+Date: Wed, 29 Oct 2025 02:13:37 +0300
+Message-ID: <20251028231347.194844-14-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.136;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,388 +75,201 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost-user-fs.c      | 65 ++++++++++++++--------------
- hw/virtio/virtio-mmio.c        | 10 +++--
- hw/virtio/virtio-pci.c         | 10 +++--
- hw/virtio/virtio.c             | 78 ++++++++++++++++++++--------------
- include/hw/virtio/virtio-bus.h |  4 +-
- include/hw/virtio/virtio.h     |  2 -
- 6 files changed, 94 insertions(+), 75 deletions(-)
+ hw/display/virtio-gpu.c | 66 ++++++++++++++++++++++-------------------
+ 1 file changed, 35 insertions(+), 31 deletions(-)
 
-diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
-index e77c69eb12..84a7663ea8 100644
---- a/hw/virtio/vhost-user-fs.c
-+++ b/hw/virtio/vhost-user-fs.c
-@@ -306,9 +306,11 @@ static struct vhost_dev *vuf_get_vhost(VirtIODevice *vdev)
- /**
-  * Fetch the internal state from virtiofsd and save it to `f`.
-  */
--static int vuf_save_state(QEMUFile *f, void *pv, size_t size,
--                          const VMStateField *field, JSONWriter *vmdesc)
-+static bool vuf_save_state(QEMUFile *f, void *pv, size_t size,
-+                           const VMStateField *field, JSONWriter *vmdesc,
-+                           Error **errp)
- {
-+    ERRP_GUARD();
-     VirtIODevice *vdev = pv;
-     VHostUserFS *fs = VHOST_USER_FS(vdev);
-     Error *local_error = NULL;
-@@ -316,39 +318,39 @@ static int vuf_save_state(QEMUFile *f, void *pv, size_t size,
- 
-     ret = vhost_save_backend_state(&fs->vhost_dev, f, &local_error);
-     if (ret < 0) {
--        error_reportf_err(local_error,
--                          "Error saving back-end state of %s device %s "
--                          "(tag: \"%s\"): ",
--                          vdev->name, vdev->parent_obj.canonical_path,
--                          fs->conf.tag ?: "<none>");
--        return ret;
-+        error_prepend(errp,
-+                      "Error saving back-end state of %s device %s "
-+                      "(tag: \"%s\"): ",
-+                      vdev->name, vdev->parent_obj.canonical_path,
-+                      fs->conf.tag ?: "<none>");
-+        return false;
-     }
- 
--    return 0;
-+    return true;
- }
- 
- /**
-  * Load virtiofsd's internal state from `f` and send it over to virtiofsd.
-  */
--static int vuf_load_state(QEMUFile *f, void *pv, size_t size,
--                          const VMStateField *field)
-+static bool vuf_load_state(QEMUFile *f, void *pv, size_t size,
-+                           const VMStateField *field, Error **errp)
- {
-+    ERRP_GUARD();
-     VirtIODevice *vdev = pv;
-     VHostUserFS *fs = VHOST_USER_FS(vdev);
--    Error *local_error = NULL;
-     int ret;
- 
--    ret = vhost_load_backend_state(&fs->vhost_dev, f, &local_error);
-+    ret = vhost_load_backend_state(&fs->vhost_dev, f, errp);
-     if (ret < 0) {
--        error_reportf_err(local_error,
--                          "Error loading back-end state of %s device %s "
--                          "(tag: \"%s\"): ",
--                          vdev->name, vdev->parent_obj.canonical_path,
--                          fs->conf.tag ?: "<none>");
--        return ret;
-+        error_prepend(errp,
-+                      "Error loading back-end state of %s device %s "
-+                      "(tag: \"%s\"): ",
-+                      vdev->name, vdev->parent_obj.canonical_path,
-+                      fs->conf.tag ?: "<none>");
-+        return false;
-     }
- 
--    return 0;
-+    return true;
- }
- 
- static bool vuf_is_internal_migration(void *opaque)
-@@ -357,20 +359,21 @@ static bool vuf_is_internal_migration(void *opaque)
-     return true;
- }
- 
--static int vuf_check_migration_support(void *opaque)
-+static bool vuf_check_migration_support(void *opaque, Error **errp)
- {
-     VirtIODevice *vdev = opaque;
-     VHostUserFS *fs = VHOST_USER_FS(vdev);
- 
-     if (!vhost_supports_device_state(&fs->vhost_dev)) {
--        error_report("Back-end of %s device %s (tag: \"%s\") does not support "
--                     "migration through qemu",
--                     vdev->name, vdev->parent_obj.canonical_path,
--                     fs->conf.tag ?: "<none>");
--        return -ENOTSUP;
-+        error_setg(errp,
-+                   "Back-end of %s device %s (tag: \"%s\") does not support "
-+                   "migration through qemu",
-+                   vdev->name, vdev->parent_obj.canonical_path,
-+                   fs->conf.tag ?: "<none>");
-+        return false;
-     }
- 
--    return 0;
-+    return true;
- }
- 
- static const VMStateDescription vuf_backend_vmstate;
-@@ -392,15 +395,15 @@ static const VMStateDescription vuf_backend_vmstate = {
-     .name = "vhost-user-fs-backend",
-     .version_id = 0,
-     .needed = vuf_is_internal_migration,
--    .pre_load = vuf_check_migration_support,
--    .pre_save = vuf_check_migration_support,
-+    .pre_load_errp = vuf_check_migration_support,
-+    .pre_save_errp = vuf_check_migration_support,
-     .fields = (const VMStateField[]) {
-         {
-             .name = "back-end",
-             .info = &(const VMStateInfo) {
-                 .name = "virtio-fs back-end state",
--                .get = vuf_load_state,
--                .put = vuf_save_state,
-+                .load = vuf_load_state,
-+                .save = vuf_save_state,
-             },
-         },
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
-index fb58c36452..9d37ee029b 100644
---- a/hw/virtio/virtio-mmio.c
-+++ b/hw/virtio/virtio-mmio.c
-@@ -609,18 +609,20 @@ static const VMStateDescription vmstate_virtio_mmio = {
-     }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 3a555125be..9356ef391a 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1220,8 +1220,9 @@ static const VMStateDescription vmstate_virtio_gpu_scanouts = {
+     },
  };
  
--static void virtio_mmio_save_extra_state(DeviceState *opaque, QEMUFile *f)
-+static bool virtio_mmio_save_extra_state(DeviceState *opaque, QEMUFile *f,
-+                                         Error **errp)
- {
-     VirtIOMMIOProxy *proxy = VIRTIO_MMIO(opaque);
- 
--    vmstate_save_state(f, &vmstate_virtio_mmio, proxy, NULL, &error_fatal);
-+    return vmstate_save_vmsd(f, &vmstate_virtio_mmio, proxy, NULL, errp);
- }
- 
--static int virtio_mmio_load_extra_state(DeviceState *opaque, QEMUFile *f)
-+static bool virtio_mmio_load_extra_state(DeviceState *opaque, QEMUFile *f,
-+                                         Error **errp)
- {
-     VirtIOMMIOProxy *proxy = VIRTIO_MMIO(opaque);
- 
--    return vmstate_load_state(f, &vmstate_virtio_mmio, proxy, 1, &error_fatal);
-+    return vmstate_load_vmsd(f, &vmstate_virtio_mmio, proxy, 1, errp);
- }
- 
- static bool virtio_mmio_has_extra_state(DeviceState *opaque)
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 937e22f08a..95faa84a58 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -184,18 +184,20 @@ static bool virtio_pci_has_extra_state(DeviceState *d)
-     return true;
- }
- 
--static void virtio_pci_save_extra_state(DeviceState *d, QEMUFile *f)
-+static bool virtio_pci_save_extra_state(DeviceState *d, QEMUFile *f,
-+                                        Error **errp)
- {
-     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
- 
--    vmstate_save_state(f, &vmstate_virtio_pci, proxy, NULL, &error_fatal);
-+    return vmstate_save_vmsd(f, &vmstate_virtio_pci, proxy, NULL, errp);
- }
- 
--static int virtio_pci_load_extra_state(DeviceState *d, QEMUFile *f)
-+static bool virtio_pci_load_extra_state(DeviceState *d, QEMUFile *f,
-+                                        Error **errp)
- {
-     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
- 
--    return vmstate_load_state(f, &vmstate_virtio_pci, proxy, 1, &error_fatal);
-+    return vmstate_load_vmsd(f, &vmstate_virtio_pci, proxy, 1, errp);
- }
- 
- static void virtio_pci_save_queue(DeviceState *d, int n, QEMUFile *f)
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 153ee0a0cf..36e0493344 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2873,35 +2873,37 @@ static const VMStateDescription vmstate_virtio_ringsize = {
-     }
- };
- 
--static int get_extra_state(QEMUFile *f, void *pv, size_t size,
--                           const VMStateField *field)
-+static bool load_extra_state(QEMUFile *f, void *pv, size_t size,
-+                             const VMStateField *field,
-+                             Error **errp)
- {
-     VirtIODevice *vdev = pv;
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
- 
-     if (!k->load_extra_state) {
--        return -1;
-+        error_setg(errp, "extra state is unsupported");
-+        return false;
-     } else {
--        return k->load_extra_state(qbus->parent, f);
-+        return k->load_extra_state(qbus->parent, f, errp);
-     }
- }
- 
--static int put_extra_state(QEMUFile *f, void *pv, size_t size,
+-static int virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
 -                           const VMStateField *field, JSONWriter *vmdesc)
-+static bool save_extra_state(QEMUFile *f, void *pv, size_t size,
-+                             const VMStateField *field, JSONWriter *vmdesc,
-+                             Error **errp)
++static bool virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
++                            const VMStateField *field, JSONWriter *vmdesc,
++                            Error **errp)
  {
-     VirtIODevice *vdev = pv;
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+     VirtIOGPU *g = opaque;
+     struct virtio_gpu_simple_resource *res;
+@@ -1248,8 +1249,7 @@ static int virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
+     }
+     qemu_put_be32(f, 0); /* end of list */
  
--    k->save_extra_state(qbus->parent, f);
--    return 0;
-+    return k->save_extra_state(qbus->parent, f, errp);
+-    return vmstate_save_state(f, &vmstate_virtio_gpu_scanouts, g, NULL,
+-                              &error_fatal);
++    return vmstate_save_vmsd(f, &vmstate_virtio_gpu_scanouts, g, NULL, errp);
  }
  
- static const VMStateInfo vmstate_info_extra_state = {
-     .name = "virtqueue_extra_state",
--    .get = get_extra_state,
--    .put = put_extra_state,
-+    .load = load_extra_state,
-+    .save = save_extra_state,
- };
+ static bool virtio_gpu_load_restore_mapping(VirtIOGPU *g,
+@@ -1281,11 +1281,10 @@ static bool virtio_gpu_load_restore_mapping(VirtIOGPU *g,
+     return true;
+ }
  
- static const VMStateDescription vmstate_virtio_extra_state = {
-@@ -3024,14 +3026,13 @@ static const VMStateDescription vmstate_virtio = {
-     }
- };
- 
--int virtio_save(VirtIODevice *vdev, QEMUFile *f)
-+static bool virtio_save(VirtIODevice *vdev, QEMUFile *f, Error **errp)
+-static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+-                           const VMStateField *field)
++static bool virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
++                            const VMStateField *field, Error **errp)
  {
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-     VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
-     uint32_t guest_features_lo = (vdev->guest_features & 0xffffffff);
+     VirtIOGPU *g = opaque;
+-    Error *err = NULL;
+     struct virtio_gpu_simple_resource *res;
+     uint32_t resource_id, pformat;
      int i;
--    Error *local_err = NULL;
- 
-     if (k->save_config) {
-         k->save_config(qbus->parent, f);
-@@ -3075,39 +3076,54 @@ int virtio_save(VirtIODevice *vdev, QEMUFile *f)
-     }
- 
-     if (vdc->vmsd) {
--        int ret = vmstate_save_state(f, vdc->vmsd, vdev, NULL, &local_err);
--        if (ret) {
--            error_report_err(local_err);
--            return ret;
-+        if (!vmstate_save_vmsd(f, vdc->vmsd, vdev, NULL, errp)) {
+@@ -1296,7 +1295,8 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+     while (resource_id != 0) {
+         res = virtio_gpu_find_resource(g, resource_id);
+         if (res) {
+-            return -EINVAL;
++            error_setg(errp, "Failed to find resource %" PRIu32, resource_id);
 +            return false;
          }
+ 
+         res = g_new0(struct virtio_gpu_simple_resource, 1);
+@@ -1310,7 +1310,8 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+         pformat = virtio_gpu_get_pixman_format(res->format);
+         if (!pformat) {
+             g_free(res);
+-            return -EINVAL;
++            error_setg(errp, "Unknown pixman format %" PRIu32, res->format);
++            return false;
+         }
+ 
+         res->hostmem = calc_image_hostmem(pformat, res->width, res->height);
+@@ -1321,10 +1322,9 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+                                              res->width,
+                                              res->height,
+                                              res->height ? res->hostmem / res->height : 0,
+-                                             &err)) {
+-            warn_report_err(err);
++                                             errp)) {
+             g_free(res);
+-            return -EINVAL;
++            return false;
+         }
+ 
+         res->addrs = g_new(uint64_t, res->iov_cnt);
+@@ -1341,20 +1341,20 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+         if (!virtio_gpu_load_restore_mapping(g, res)) {
+             pixman_image_unref(res->image);
+             g_free(res);
+-            return -EINVAL;
++            error_setg(errp, "Failed to load restore mapping");
++            return false;
+         }
+ 
+         resource_id = qemu_get_be32(f);
      }
  
-     /* Subsections */
--    return vmstate_save_state(f, &vmstate_virtio, vdev, NULL, &error_fatal);
-+    return vmstate_save_vmsd(f, &vmstate_virtio, vdev, NULL, &error_fatal);
+     /* load & apply scanout state */
+-    vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1, &error_fatal);
+-
+-    return 0;
++    return vmstate_load_vmsd(f, &vmstate_virtio_gpu_scanouts, g, 1, errp);
  }
  
- /* A wrapper for use as a VMState .put function */
--static int virtio_device_put(QEMUFile *f, void *opaque, size_t size,
--                              const VMStateField *field, JSONWriter *vmdesc)
-+static bool virtio_device_save(QEMUFile *f, void *opaque, size_t size,
-+                               const VMStateField *field, JSONWriter *vmdesc,
-+                               Error **errp)
+-static int virtio_gpu_blob_save(QEMUFile *f, void *opaque, size_t size,
+-                                const VMStateField *field, JSONWriter *vmdesc)
++static bool virtio_gpu_blob_save(QEMUFile *f, void *opaque, size_t size,
++                                 const VMStateField *field, JSONWriter *vmdesc,
++                                 Error **errp)
  {
--    return virtio_save(VIRTIO_DEVICE(opaque), f);
-+    return virtio_save(VIRTIO_DEVICE(opaque), f, errp);
- }
+     VirtIOGPU *g = opaque;
+     struct virtio_gpu_simple_resource *res;
+@@ -1378,11 +1378,11 @@ static int virtio_gpu_blob_save(QEMUFile *f, void *opaque, size_t size,
+     }
+     qemu_put_be32(f, 0); /* end of list */
  
- /* A wrapper for use as a VMState .get function */
--static int coroutine_mixed_fn
--virtio_device_get(QEMUFile *f, void *opaque, size_t size,
--                  const VMStateField *field)
-+static bool coroutine_mixed_fn
-+virtio_device_load(QEMUFile *f, void *opaque, size_t size,
-+                   const VMStateField *field, Error **errp)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(opaque);
-     DeviceClass *dc = DEVICE_CLASS(VIRTIO_DEVICE_GET_CLASS(vdev));
- 
--    return virtio_load(vdev, f, dc->vmsd->version_id);
-+    /* TODO: update virtio_load() to set errp and return bool */
-+    int ret = virtio_load(vdev, f, dc->vmsd->version_id);
-+
-+    if (ret < 0) {
-+        /*
-+         * Using error_setg_errn or strerror would be incorrect,
-+         * because virtio_load may mix simple -1 with -errno
-+         * values on different paths.
-+         *
-+         * TODO: update virtio_load and all related callbacks
-+         * to "errp + boolean return value" API.
-+         */
-+        error_setg(errp, "virtio_load failed: %d", ret);
-+        return false;
-+    }
-+
+-    return 0;
 +    return true;
  }
  
- const VMStateInfo  virtio_vmstate_info = {
-     .name = "virtio",
--    .get = virtio_device_get,
--    .put = virtio_device_put,
-+    .load = virtio_device_load,
-+    .save = virtio_device_save,
+-static int virtio_gpu_blob_load(QEMUFile *f, void *opaque, size_t size,
+-                                const VMStateField *field)
++static bool virtio_gpu_blob_load(QEMUFile *f, void *opaque, size_t size,
++                                 const VMStateField *field, Error **errp)
+ {
+     VirtIOGPU *g = opaque;
+     struct virtio_gpu_simple_resource *res;
+@@ -1422,7 +1422,7 @@ static int virtio_gpu_blob_load(QEMUFile *f, void *opaque, size_t size,
+     return 0;
+ }
+ 
+-static int virtio_gpu_post_load(void *opaque, int version_id)
++static bool virtio_gpu_post_load(void *opaque, int version_id, Error **errp)
+ {
+     VirtIOGPU *g = opaque;
+     struct virtio_gpu_scanout *scanout;
+@@ -1437,7 +1437,9 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
+ 
+         res = virtio_gpu_find_resource(g, scanout->resource_id);
+         if (!res) {
+-            return -EINVAL;
++            error_setg(errp, "Failed to find resource %" PRIu32,
++                       scanout->resource_id);
++            return false;
+         }
+ 
+         if (scanout->fb.format != 0) {
+@@ -1450,12 +1452,14 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
+             };
+ 
+             if (!virtio_gpu_do_set_scanout(g, i, &scanout->fb, res, &r, &error)) {
+-                return -EINVAL;
++                error_setg(errp, "Failed to set scanout");
++                return false;
+             }
+         } else {
+             /* legacy v1 migration support */
+             if (!res->image) {
+-                return -EINVAL;
++                error_setg(errp, "No image");
++                return false;
+             }
+             scanout->ds = qemu_create_displaysurface_pixman(res->image);
+             qemu_displaysurface_set_share_handle(scanout->ds, res->share_handle, 0);
+@@ -1469,7 +1473,7 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
+         res->scanout_bitmask |= (1 << i);
+     }
+ 
+-    return 0;
++    return true;
+ }
+ 
+ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+@@ -1638,8 +1642,8 @@ const VMStateDescription vmstate_virtio_gpu_blob_state = {
+             .name = "virtio-gpu/blob",
+             .info = &(const VMStateInfo) {
+                 .name = "blob",
+-                .get = virtio_gpu_blob_load,
+-                .put = virtio_gpu_blob_save,
++                .load = virtio_gpu_blob_load,
++                .save = virtio_gpu_blob_save,
+             },
+             .flags = VMS_SINGLE,
+         } /* device */,
+@@ -1665,8 +1669,8 @@ static const VMStateDescription vmstate_virtio_gpu = {
+             .name = "virtio-gpu",
+             .info = &(const VMStateInfo) {
+                         .name = "virtio-gpu",
+-                        .get = virtio_gpu_load,
+-                        .put = virtio_gpu_save,
++                        .load = virtio_gpu_load,
++                        .save = virtio_gpu_save,
+             },
+             .flags = VMS_SINGLE,
+         } /* device */,
+@@ -1676,7 +1680,7 @@ static const VMStateDescription vmstate_virtio_gpu = {
+         &vmstate_virtio_gpu_blob_state,
+         NULL
+     },
+-    .post_load = virtio_gpu_post_load,
++    .post_load_errp = virtio_gpu_post_load,
  };
  
- static int virtio_set_features_nocheck(VirtIODevice *vdev, const uint64_t *val)
-@@ -3387,18 +3403,16 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-     }
- 
-     if (vdc->vmsd) {
--        ret = vmstate_load_state(f, vdc->vmsd, vdev, version_id, &local_err);
--        if (ret) {
-+        if (!vmstate_load_vmsd(f, vdc->vmsd, vdev, version_id, &local_err)) {
-             error_report_err(local_err);
--            return ret;
-+            return -EINVAL;
-         }
-     }
- 
-     /* Subsections */
--    ret = vmstate_load_state(f, &vmstate_virtio, vdev, 1, &local_err);
--    if (ret) {
-+    if (!vmstate_load_vmsd(f, &vmstate_virtio, vdev, 1, &local_err)) {
-         error_report_err(local_err);
--        return ret;
-+        return -EINVAL;
-     }
- 
-     if (vdev->device_endian == VIRTIO_DEVICE_ENDIAN_UNKNOWN) {
-diff --git a/include/hw/virtio/virtio-bus.h b/include/hw/virtio/virtio-bus.h
-index 7ab8c9dab0..31bf2cd607 100644
---- a/include/hw/virtio/virtio-bus.h
-+++ b/include/hw/virtio/virtio-bus.h
-@@ -42,11 +42,11 @@ struct VirtioBusClass {
-     void (*notify)(DeviceState *d, uint16_t vector);
-     void (*save_config)(DeviceState *d, QEMUFile *f);
-     void (*save_queue)(DeviceState *d, int n, QEMUFile *f);
--    void (*save_extra_state)(DeviceState *d, QEMUFile *f);
-+    bool (*save_extra_state)(DeviceState *d, QEMUFile *f, Error **errp);
-     int (*load_config)(DeviceState *d, QEMUFile *f);
-     int (*load_queue)(DeviceState *d, int n, QEMUFile *f);
-     int (*load_done)(DeviceState *d, QEMUFile *f);
--    int (*load_extra_state)(DeviceState *d, QEMUFile *f);
-+    bool (*load_extra_state)(DeviceState *d, QEMUFile *f, Error **errp);
-     bool (*has_extra_state)(DeviceState *d);
-     bool (*query_guest_notifiers)(DeviceState *d);
-     int (*set_guest_notifiers)(DeviceState *d, int nvqs, bool assign);
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index d97529c3f1..d729502eca 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -296,8 +296,6 @@ int virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
- 
- void virtio_notify(VirtIODevice *vdev, VirtQueue *vq);
- 
--int virtio_save(VirtIODevice *vdev, QEMUFile *f);
--
- extern const VMStateInfo virtio_vmstate_info;
- 
- #define VMSTATE_VIRTIO_DEVICE \
+ static const Property virtio_gpu_properties[] = {
 -- 
 2.48.1
 
