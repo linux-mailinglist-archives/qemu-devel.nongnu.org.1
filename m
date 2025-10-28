@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34155C174E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B9C17505
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:18:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstk-00033I-8W; Tue, 28 Oct 2025 19:14:40 -0400
+	id 1vDstd-00031A-Lc; Tue, 28 Oct 2025 19:14:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstf-00031v-7V
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:35 -0400
+ id 1vDstZ-0002zy-Jc
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:29 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstO-000181-CC
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:33 -0400
+ id 1vDstL-000182-RN
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:29 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 9283781770;
- Wed, 29 Oct 2025 02:14:02 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 4DCB781753;
+ Wed, 29 Oct 2025 02:14:03 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-W0bfPDEB; Wed, 29 Oct 2025 02:14:02 +0300
+ ESMTPSA id oDnXpg2bCW20-2KUF3LFw; Wed, 29 Oct 2025 02:14:02 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693242;
- bh=Fqa9PzaB2NaxsEUcFr/1/+bAl7RDY45zxrOOs/iPfxI=;
+ s=default; t=1761693243;
+ bh=FJe9bBDqhj2CZOs8zGPWoZRXXGpH1eDzzeZX4vIEKoE=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=f8+CtqryyizCzQFk1xdEJKVZwE0XbAz7Sb9Q+iyKFeNztPKQUuaRmszvfo3L7r1Y5
- g45sP7h0Ic6ZG+bEK5tCO1aVsc2MG/N3aSXlKJXzG/gzWDIXvWhDp4HXl9EhALD2F9
- E/r3IBi7TWbyMQ4H+2bMdUesxoB1K88bU8eUygzs=
+ b=WvdEhIttMn2vNqBnoLrt3/vZmwkbiWezFgw26R+rw07XPNiIpgDeTEBoMUh/ExTos
+ Kt+Mc32ACm+a2TotEx5pNTn9N/QOH4eD28kNKy9GT9JCENMRbzQkEWtCMih7ZObLuQ
+ lecquitGHeyvx3wZ9Em3Z09iOYvKxMMj3exPmqlM=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,9 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 15/22] hw/nvram/eeprom93xx.c: use new migration APIs
-Date: Wed, 29 Oct 2025 02:13:39 +0300
-Message-ID: <20251028231347.194844-16-vsementsov@yandex-team.ru>
+Subject: [RFC 16/22] hw/nvram/fw_cfg.c: use new migration APIs
+Date: Wed, 29 Oct 2025 02:13:40 +0300
+Message-ID: <20251028231347.194844-17-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
@@ -75,32 +75,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/nvram/eeprom93xx.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ hw/nvram/fw_cfg.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/hw/nvram/eeprom93xx.c b/hw/nvram/eeprom93xx.c
-index a8fd60a8fb..32dab854fa 100644
---- a/hw/nvram/eeprom93xx.c
-+++ b/hw/nvram/eeprom93xx.c
-@@ -39,6 +39,7 @@
- #include "hw/nvram/eeprom93xx.h"
- #include "migration/qemu-file-types.h"
- #include "migration/vmstate.h"
-+#include "qapi/error.h"
- 
- /* Debug EEPROM emulation. */
- //~ #define DEBUG_EEPROM
-@@ -95,28 +96,28 @@ struct _eeprom_t {
-    This is a Big hack, but it is how the old state did it.
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index aa24050493..d02e5802cd 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -565,27 +565,28 @@ static void fw_cfg_reset(DeviceState *d)
+    Or we broke compatibility in the state, or we can't use struct tm
   */
  
--static int get_uint16_from_uint8(QEMUFile *f, void *pv, size_t size,
--                                 const VMStateField *field)
-+static bool get_uint16_from_uint8(QEMUFile *f, void *pv, size_t size,
-+                                  const VMStateField *field, Error **errp)
+-static int get_uint32_as_uint16(QEMUFile *f, void *pv, size_t size,
+-                                const VMStateField *field)
++static bool get_uint32_as_uint16(QEMUFile *f, void *pv, size_t size,
++                                 const VMStateField *field, Error **errp)
  {
-     uint16_t *v = pv;
-     *v = qemu_get_ubyte(f);
+     uint32_t *v = pv;
+     *v = qemu_get_be16(f);
 -    return 0;
 +    return true;
  }
@@ -111,26 +103,53 @@ index a8fd60a8fb..32dab854fa 100644
 +                       const VMStateField *field, JSONWriter *vmdesc,
 +                       Error **errp)
  {
--    fprintf(stderr, "uint16_from_uint8 is used only for backwards compatibility.\n");
--    fprintf(stderr, "Never should be used to write a new state.\n");
--    exit(0);
+-    fprintf(stderr, "uint32_as_uint16 is only used for backward compatibility.\n");
+-    fprintf(stderr, "This functions shouldn't be called.\n");
 -
 -    return 0;
 +    error_setg(errp,
-+               "uint16_from_uint8 is used only for backwards compatibility. "
-+               "Never should be used to write a new state.");
++               "uint32_as_uint16 is only used for backward compatibility. "
++               "This function shouldn't be called.");
 +    return false;
  }
  
- static const VMStateInfo vmstate_hack_uint16_from_uint8 = {
-     .name = "uint16_from_uint8",
--    .get  = get_uint16_from_uint8,
+ static const VMStateInfo vmstate_hack_uint32_as_uint16 = {
+     .name = "int32_as_uint16",
+-    .get  = get_uint32_as_uint16,
 -    .put  = put_unused,
-+    .load = get_uint16_from_uint8,
++    .load = get_uint32_as_uint16,
 +    .save = put_unused,
  };
  
- #define VMSTATE_UINT16_HACK_TEST(_f, _s, _t)                           \
+ #define VMSTATE_UINT16_HACK(_f, _s, _t)                                    \
+@@ -631,7 +632,8 @@ static void fw_cfg_update_mr(FWCfgState *s, uint16_t key, size_t size)
+     memory_region_ram_resize(mr, size, &error_abort);
+ }
+ 
+-static int fw_cfg_acpi_mr_restore_post_load(void *opaque, int version_id)
++static bool fw_cfg_acpi_mr_restore_post_load(void *opaque, int version_id,
++                                             Error **errp)
+ {
+     FWCfgState *s = opaque;
+     int i, index;
+@@ -650,7 +652,7 @@ static int fw_cfg_acpi_mr_restore_post_load(void *opaque, int version_id)
+         }
+     }
+ 
+-    return 0;
++    return true;
+ }
+ 
+ static const VMStateDescription vmstate_fw_cfg_dma = {
+@@ -667,7 +669,7 @@ static const VMStateDescription vmstate_fw_cfg_acpi_mr = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = fw_cfg_acpi_mr_restore,
+-    .post_load = fw_cfg_acpi_mr_restore_post_load,
++    .post_load_errp = fw_cfg_acpi_mr_restore_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(table_mr_size, FWCfgState),
+         VMSTATE_UINT64(linker_mr_size, FWCfgState),
 -- 
 2.48.1
 
