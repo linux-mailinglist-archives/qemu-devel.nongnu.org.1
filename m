@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467ABC1630D
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:36:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3A5C1637C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:38:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnb1-0005y0-TX; Tue, 28 Oct 2025 13:35:00 -0400
+	id 1vDnbA-00068V-VQ; Tue, 28 Oct 2025 13:35:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnaz-0005wq-0I
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vDnb7-00064L-9n
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnaw-0004Qk-8q
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:34:56 -0400
+ id 1vDnaz-0004Qs-E9
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761672891;
+ s=mimecast20190719; t=1761672893;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sw91OJuYj1JrwFfKm7ne2KgP4Ysk3Lo0/gaXKLESQRo=;
- b=h5pVtTk9kPqENEWZ1oXTLp6VYEj0P+0m4inrWChGEsAlbJuYsOMs0+Fpm0BE1pyOMWBpIs
- N9oF1L25VFgRPpI2XX4O0LD3o8ZPNd/1Ty01YZv/JZt/8WmvqusOkW3dylWKK4SCjjOgep
- WcnS2W4NmaEo2spE6zj5fwDisxK7jx8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NElcIQeJ5eQxKaGBT+BiWqWbXgYojExHiTsQPrKnKAQ=;
+ b=Cyy1xc4ULGopxmnnP/AyS+MLAjWfUz1ND+ZNF7PkeFyclZMHlOQq/a+LB48vLeYfqh88rS
+ +hpUgv9/Wc4Ji0tMoD7fx0JpXwjPUSVWWS4UIbGD1ab74wO3lAPqOG2T8iECY+eAyeY+em
+ NRBJNsIQuk1E2kdg0nkHYfLYRjAS1js=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-eG4zLAfTPoyWdmn_evKn-Q-1; Tue, 28 Oct 2025 13:34:49 -0400
-X-MC-Unique: eG4zLAfTPoyWdmn_evKn-Q-1
-X-Mimecast-MFC-AGG-ID: eG4zLAfTPoyWdmn_evKn-Q_1761672888
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-4298da9effcso4126048f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:34:49 -0700 (PDT)
+ us-mta-477-hRHUGZNsPE2L96eX0v9elg-1; Tue, 28 Oct 2025 13:34:52 -0400
+X-MC-Unique: hRHUGZNsPE2L96eX0v9elg-1
+X-Mimecast-MFC-AGG-ID: hRHUGZNsPE2L96eX0v9elg_1761672891
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-40cfb98eddbso65478f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:34:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761672887; x=1762277687;
+ d=1e100.net; s=20230601; t=1761672890; x=1762277690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sw91OJuYj1JrwFfKm7ne2KgP4Ysk3Lo0/gaXKLESQRo=;
- b=mkr+wzZMUgwxVEpz8YBTlrJ3yH6qvUG3zCRWYoe3UKVbGnYEWc0z5edK8ufeP0ISqW
- 1AIamvC7zlkiGLJjGI/+4EYbrZzm+KP1DlVC+93/CvZrzpWlfvsZcmT7s3A5oS7GRzrM
- isRJUmHPudRZAuWaalpFQIAsrBjr3laku0raCeB6cLIL9HTv2POgnNdNjp5Lhca8kK8L
- gM7q25V5gINdxbkqCLE/GbRHqZe3mk5MKTJE1xaa3mrqB1GsZ99P8sR8pSQfHIyQgSn1
- fwnHxree17ItfHMP0rqj79Y4JHN006gD4y9UDk48mY8jvNPIzBeI5rGB2hW+HjgFgQFr
- PJeQ==
-X-Gm-Message-State: AOJu0YzUfVrYAGo5IWSogjVL+tU4eb4FM8Dx+l0cfB7eZvpGhlac78+i
- ++y2vNjQmafd3BJW9Dav7pB8CumjEPB7+np0l1D06VwYdogIsowSVHB+oagefiDKDGQfCCC2nAR
- Z3o0hmMDa85kPGykpGm4m7ENsAYD7q+5xMg773ug5TGddXj5WKXLhWZqhwsv3rrc3XNAX+L2Ii4
- b6XzKvXLOEh59ugYlDtcfyxSSrCPRC9I6Tdnp+lCaq
-X-Gm-Gg: ASbGncsKDve1F40CE0hVYS7Otdb8K5idZfps/76Qz6yI0nfWNXZNwP70N0OUdSo+gpu
- us3TWnKSMHlTz5QvtPD6pQysIVFcWPtHzPVUPRmIsIV9Z0aXfH6zkopuK+oEjtybWOTEoxCulTR
- ADyZT/+q2L5Kmzvxcnh62wg3TP1uS4+QefECSKox9edFLNyyc+l05Gdhqu0Eo8ZlS4grjvCQRjg
- 5RE/bO8d7aZtUh6Iv4kV0utMs9YWIOeaM9sPH5ar0AmBfjFVW56aBQlUIHpzT3WsoImNvDRg6vD
- F74hLmDLga6SQzQ/0W+bdI0P6N9y3M08Q6KOioubd2UnPAZivYGpIu7WuzRYtEnLktVrhCKdMxq
- pa6eecpItTuQ5NLB+r9fMLb44VVrhwPToZT+AqcDXHuI2mnIx9XxV9oF3pVtYwdYedanLopCsrV
- r5f0I=
-X-Received: by 2002:a05:600c:64c7:b0:471:672:3486 with SMTP id
- 5b1f17b1804b1-4771e18157dmr2954195e9.15.1761672887381; 
- Tue, 28 Oct 2025 10:34:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGDcdKtLkNrl+YX/vvzTstmhdnZaPxZ2RDYdZwg98VYaaHXSh6uvh4cYUw1EM4hqFDEc3aiag==
-X-Received: by 2002:a05:600c:64c7:b0:471:672:3486 with SMTP id
- 5b1f17b1804b1-4771e18157dmr2953955e9.15.1761672886918; 
- Tue, 28 Oct 2025 10:34:46 -0700 (PDT)
+ bh=NElcIQeJ5eQxKaGBT+BiWqWbXgYojExHiTsQPrKnKAQ=;
+ b=rBp/PjXL9QzuYI5ptM4ccWBH0XRMb6XFf9FwkLq4J/NSiEDrw7cZDDZNPn0vXaqFqb
+ qHA3DUrVbOmLrllgM0H1SFmupvvHZjxPy2R5a8ebpJicHi7nSAjktUw5KQH8ameABSmp
+ p49+0qdaGDprguPpssP1+41z5NTsW6ZfM0/QuzyMC2Md3xB0xHrK0eVu2BLEGMJ5UgkH
+ yRgDU4ZKdRaCmn2Y4KapoF15Qksph/ZhK65yh4XFTuuMKkTCXPcPSQwn7nHS6GQJzU15
+ PMop+GE03znM22dBbyRnGJJPfwJx7OLHt1vYXAZQYS3YRljgoF6polDTkJU2of0iEZAa
+ 5VtQ==
+X-Gm-Message-State: AOJu0YwyFTQ7Skgrfc++WravrcUiyP3mNIVDHSR9zmwGsCYaXDPYBED2
+ bHYf+20Rf6afR4WrvnAJZAwSsi26TfwD1tAOM2LcTI0KDqri87pRFSf+GTUCDR2i1s0xsZKI8Cv
+ iiKI8ZVmn867EMwELRtqF8/5pW4/n1UMU7ojp2S0hTwypnOcK0NlA+1CNOxTgkMSIgXnSG4fH5s
+ zIQn8nnhzjt8QhXsxNw5wgOUZZ5kG8MXOVuYM2LDjt
+X-Gm-Gg: ASbGncu71JtP4VRwQxveY+1Ujtaidp4tpPJXRc/2sCSGTjXDkpFo1+qQ01LGc5AthLg
+ QGwPwMVJ6tMbUwRa6Pox0YrsfFiTB1rP/cNy2O6IE0hokullL9apjQttOExq+FXNZ+kMTiWHrOe
+ zJ1dhOJ12bB9V0ojIZNAOWVyZ3F1knQRPumGk4nZ8vDk+lZOmepXNlDhThN8UH6DRlBrtP4Pb8p
+ YgvJjuLGvsnk1Ul06BSHQq4wsRp9CnAzpfK/XHnjVIsnYAFJ1+3t1elCqmAVs5wNezKdcD9Q8eJ
+ FEyFBhaMUvSLSzdWdKJfq4Zh6CfFgYlxtsYR4N1TJR3f2ZnZ31zL3lTZuWcQp3+Bu8B49JdmBIj
+ UJ/7K5JCdI8IdHAo6pZwSq8fgNuzLYZTMKA7ckYcVp7Dj/9nVfOGFqWr6H4vXr583xb7D900G8u
+ tKEvE=
+X-Received: by 2002:a05:6000:2406:b0:426:fff3:5d04 with SMTP id
+ ffacd0b85a97d-429aeb096c7mr57137f8f.25.1761672889706; 
+ Tue, 28 Oct 2025 10:34:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDvxyN2FmjtaH4wxf7vQe8VuIresEoGbVTD1Jii10kP9uLdyOf5v4gsKzvC2aZnyfHCY6m/A==
+X-Received: by 2002:a05:6000:2406:b0:426:fff3:5d04 with SMTP id
+ ffacd0b85a97d-429aeb096c7mr57104f8f.25.1761672889244; 
+ Tue, 28 Oct 2025 10:34:49 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d5985sm21497448f8f.25.2025.10.28.10.34.44
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-429952df473sm21503944f8f.42.2025.10.28.10.34.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 10:34:45 -0700 (PDT)
+ Tue, 28 Oct 2025 10:34:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/18] rust: only leave leaf crates as workspace members
-Date: Tue, 28 Oct 2025 18:34:17 +0100
-Message-ID: <20251028173430.2180057-6-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 06/18] qobject: make refcount atomic
+Date: Tue, 28 Oct 2025 18:34:18 +0100
+Message-ID: <20251028173430.2180057-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251028173430.2180057-1-pbonzini@redhat.com>
 References: <20251028173430.2180057-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,36 +108,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Everything else can be obtained as a dependency.
+The Rust bindings for QObject will only operate on complete objects,
+treating them as immutable as long as the Rust QObject is live.
 
+With that constraint, it is trivial for Rust code to treat QObjects as
+thread-safe; all that's needed is to make reference count operations
+atomic.  Do the same when the C code adds or removes references, since
+we don't really know what the Rust code is up to; of course C code will
+have to agree with not making changes to the QObjects after they've
+been passed to Rust code.
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/Cargo.toml | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/qobject/qobject.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 783e626802c..ace0baf9bd7 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -1,18 +1,8 @@
- [workspace]
- resolver = "2"
- members = [
--    "bits",
--    "bql",
--    "common",
--    "migration",
--    "qemu-macros",
--    "qom",
--    "system",
--    "hw/core",
-     "hw/char/pl011",
-     "hw/timer/hpet",
--    "trace",
--    "util",
-     "tests",
- ]
+diff --git a/include/qobject/qobject.h b/include/qobject/qobject.h
+index a6244d0ce00..02f4c6a6eb2 100644
+--- a/include/qobject/qobject.h
++++ b/include/qobject/qobject.h
+@@ -32,6 +32,7 @@
+ #ifndef QOBJECT_H
+ #define QOBJECT_H
  
++#include "qemu/atomic.h"
+ #include "qapi/qapi-builtin-types.h"
+ 
+ /* Not for use outside include/qobject/ */
+@@ -73,7 +74,7 @@ QEMU_BUILD_BUG_MSG(QTYPE__MAX != 7,
+ static inline void qobject_ref_impl(QObject *obj)
+ {
+     if (obj) {
+-        obj->base.refcnt++;
++        qatomic_inc(&obj->base.refcnt);
+     }
+ }
+ 
+@@ -95,7 +96,7 @@ void qobject_destroy(QObject *obj);
+ static inline void qobject_unref_impl(QObject *obj)
+ {
+     assert(!obj || obj->base.refcnt);
+-    if (obj && --obj->base.refcnt == 0) {
++    if (obj && qatomic_fetch_dec(&obj->base.refcnt) == 1) {
+         qobject_destroy(obj);
+     }
+ }
 -- 
 2.51.1
 
