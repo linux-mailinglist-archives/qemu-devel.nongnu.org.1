@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E88EC15E5E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4AAC15D92
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:36:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmeT-00085D-BL; Tue, 28 Oct 2025 12:34:29 -0400
+	id 1vDmeb-0008Ds-Qn; Tue, 28 Oct 2025 12:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeB-00082T-G0
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:11 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeI-00084b-G2
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDme6-0003Xf-8Z
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:09 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeB-0003Yv-9I
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761669243;
+ s=mimecast20190719; t=1761669247;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xWepIFUxkv0l/eNVnDUu6hPjEIOeUyCJAp9pfFkwuz4=;
- b=C+3j76I0UVoakuNqfSu6cRFOSEttgRtTNFzMP+jwouuN5wmqOnkyjfKxfuzj/1/W8qJnyq
- MXAmHszr8JzGt+uTPHCFFVXRewXJfFcr0epfJbMQqmymGJi6s6FPV6CpbkCQfwemRKUznO
- yoIKwwRQRmMF28tuUB6ljHFp+5Vw7zA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eLJdOJSUssWGwBsyDBm1U43bSPC0FcgCsDPLVbyx2Ps=;
+ b=VOJjSVJA691hqW2p2jtpiXJSVHJYUmFIFE32k6w2EHYzx3P5J6rJ/3mk/co9GGLu8QT6nY
+ DE0AS2kh/6kLqX2d7MRTRRvvpP0u2j2Pxxb0m7nWqzYgz51X+mhCbARy3NNYCF7WeqXuF1
+ Tcb80BgB9YXWaW6tralmTtg7MKxrPZ8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-dUQLGb1hM0OrlGsWxuL0ug-1; Tue, 28 Oct 2025 12:34:02 -0400
-X-MC-Unique: dUQLGb1hM0OrlGsWxuL0ug-1
-X-Mimecast-MFC-AGG-ID: dUQLGb1hM0OrlGsWxuL0ug_1761669241
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-426ce339084so5873964f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:02 -0700 (PDT)
+ us-mta-118-miq4GeeLN6KAAvW4-MPLcg-1; Tue, 28 Oct 2025 12:34:06 -0400
+X-MC-Unique: miq4GeeLN6KAAvW4-MPLcg-1
+X-Mimecast-MFC-AGG-ID: miq4GeeLN6KAAvW4-MPLcg_1761669245
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477171bbf51so6378845e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761669241; x=1762274041;
+ d=1e100.net; s=20230601; t=1761669245; x=1762274045;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xWepIFUxkv0l/eNVnDUu6hPjEIOeUyCJAp9pfFkwuz4=;
- b=k/UjRNPEXrvriYddjsSiwVBq245BsdmNZwhSMQjltYdSldQ7zJN5rF03c1KilCZ+q1
- C1JEwbQJvjDeZyN1zgT2NhdzhYwPTWqr/wQSVQc1QfH56oHhaYsp/Kkexgibd2ZVoOVR
- vthuDBIWwul1uj6sxT0jyZo2id/qvZYm2Y3e9iLdAS/O4z/hMpL1gvyrisyfhMCzxmPl
- +v+Y8LN0X1jpHxPabFl+nVGjjhnqg5knweh6Tc3Svd+tY+TlttWG30Anzu3nvmN3vGsa
- ucJoQ+lR0eXQtA3TeK9xulpFZbf5TqNVlNpim+w9m+xnuwv4NNVvw3QbJM7YvIPt2zHl
- ztmw==
-X-Gm-Message-State: AOJu0Yx7tduX1M61X17qzT/yKQAFhQlmCgojH4MouLDxKrejxwBxsx8b
- jfDLmX4LcnCodVcbmGTAajyjIgm8jboxTnrG5ss3VQbqPEPpBnUKV9GJGC6I7bYjNI5m5EuCa9o
- DHC2afztkIdcGOeCD8Mz42f0YMu1lrB70xWWAUsfq9FqAVFA1HpxdKO4Q
-X-Gm-Gg: ASbGncvkS3LODO4rD9gRq9hdzq12mNTWv3p2IeaBPQq2xn/b6I72ZspoeN4ddQNgdt0
- kbpXgj5JdulYDTg/NAoH83Z2GwvzwvupBvakeUTh1JIva3O0AiVDdhb7Op6nAIQAEw+XdYuKYgT
- ghvjXtnwyr5YqFmEFLMSK+lhPTXONRuCqVPF7oQF+3B2CvxQ3Ono18hXuP3hzGduBxzi32332qA
- Hc+e+KEhQj9ByCyVTRuDuFYJj2oxB5zVecZIBroX8TN5T4vmtLDapxkF+CVZHC+zE3ir7TIm1sH
- utYjNfHZ9aT5nrHTKQY5GGcUY1eBwWsoYkQrREaJ5KEjA0vncViQnrPFoi4SxJBiToSHFHiY3Qf
- GK3QWLi3u3VtYJDlgDVskycV6OhuMVK3AiDQanntzdGQqO2W4PD40Yc6XhA==
-X-Received: by 2002:a05:6000:2303:b0:427:8fe:435f with SMTP id
- ffacd0b85a97d-429a7e96d76mr3624229f8f.57.1761669241074; 
- Tue, 28 Oct 2025 09:34:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2P6ULcQLL83cnpmkwsziXSisvEEEBUyPGQtbIVoYiNiFnfWmA4b2yaG334qLpXdEDURwrsA==
-X-Received: by 2002:a05:6000:2303:b0:427:8fe:435f with SMTP id
- ffacd0b85a97d-429a7e96d76mr3624192f8f.57.1761669240665; 
- Tue, 28 Oct 2025 09:34:00 -0700 (PDT)
+ bh=eLJdOJSUssWGwBsyDBm1U43bSPC0FcgCsDPLVbyx2Ps=;
+ b=ZASpx+7ouLcRA3fsbUjmDCNt+mVwVxIHuYBAwTMX21okKmr8FrSWl5/EXY4qmnPbAx
+ jodWGpj35MEEsnBH45PsDoZkcAq4cSXgw0TMHe+snyTa6SFZyTO6qZlJrZNIExhrhdEI
+ GNTYrv9IyLaWjPKqPfomaKWRdsQu9NJYlXqTtIM4m4+bTQ9IQw/4QcsJ5pP2FSsprEw6
+ EYph1d7XhGLCWLIgpU4vn5fpC4oqm/HzxO0KOSKdJfhGcPQE9K6No6CVYxjTnpOTOIbA
+ 7z50L5h7p1UEIem+wo1DN6PMu00TYeZ7W0LPflc7Zrx7VvODndT64Sgbz7M4bVSPK317
+ Mvew==
+X-Gm-Message-State: AOJu0YwDeVUy4B6TgSxg83Yrvygh6aJSfO4yM/1sZbljazEUDU+2MxUR
+ +lU6qR8TvzIc6oiBrv5gGxkeduvlq6xLJALtLRg4C4rs+Tn2KzagKuWPRiftFQDjR3MTOVM5qJW
+ 21foX9rigin2PLh3pxWblP0cFfJC8GLdS1S46lGwsVBcQdKuWkgzNO6G2
+X-Gm-Gg: ASbGncs/66Adz269OM/8Vc4aTHvHA1Ns+fuii1rQJuDZUd0EpuWvhENwDroAF0vjRnF
+ MfYBgEhyajaT1qJodUYOgiLYFrFN56P4SuW4kFSJsLZ00LSMixhLnkw6Cdy+DEph0e2xNB7+Xay
+ plTLUUcZGgP+g+gGa9D2+c4RVhbSbZY2dMqzUYkSrLknvLEYFeSLoAwnxXrM4VAo/NEIVmcc5Zu
+ vTPJdlSMQ2ofYVyyfCvLvDnaGeny1OxspC1XbC2svnvE+YQIY3eBfUe9/2swee+r5W9sjiyuYnV
+ X/cYvb3HVoc3QICFbD8XfVPJ9lKUG4kembhqWfQuZCOcQMswiZvAOYKqXX5y0oqCfPiaWJhWRoc
+ pXuPy+3aY1gJW9cIgazFugO2E3IoeVnArhj2uVrAX25x73BT0Z7eS8M8/EQ==
+X-Received: by 2002:a05:600c:5197:b0:477:1be1:9afe with SMTP id
+ 5b1f17b1804b1-4771e180d92mr1010945e9.9.1761669244548; 
+ Tue, 28 Oct 2025 09:34:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOcMewunCj8cVxj/IW7iuNFMakC0UnB92LOjFdg0o3aFT95YE1qnQx00MZztGgwfwdelYyNQ==
+X-Received: by 2002:a05:600c:5197:b0:477:1be1:9afe with SMTP id
+ 5b1f17b1804b1-4771e180d92mr1010515e9.9.1761669243976; 
+ Tue, 28 Oct 2025 09:34:03 -0700 (PDT)
 Received: from localhost
  (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
  [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47718489d96sm25054745e9.0.2025.10.28.09.33.58
+ 5b1f17b1804b1-4771843eabfsm23986055e9.2.2025.10.28.09.34.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 09:33:59 -0700 (PDT)
+ Tue, 28 Oct 2025 09:34:02 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
@@ -80,10 +80,9 @@ Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH 04/16] =?UTF-8?q?nfs:=20Run=20co=20BH=20CB=20in=20the=20co?=
- =?UTF-8?q?routine=E2=80=99s=20AioContext?=
-Date: Tue, 28 Oct 2025 17:33:30 +0100
-Message-ID: <20251028163343.116249-5-hreitz@redhat.com>
+Subject: [PATCH 05/16] curl: Fix coroutine waking
+Date: Tue, 28 Oct 2025 17:33:31 +0100
+Message-ID: <20251028163343.116249-6-hreitz@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
 References: <20251028163343.116249-1-hreitz@redhat.com>
@@ -100,7 +99,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,109 +115,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like in “rbd: Run co BH CB in the coroutine’s AioContext”, drop the
-completion flag, yield exactly once, and run the BH in the coroutine’s
-AioContext.
+If we wake a coroutine from a different context, we must ensure that it
+will yield exactly once (now or later), awaiting that wake.
+
+curl’s current .ret == -EINPROGRESS loop may lead to the coroutine not
+yielding if the request finishes before the loop gets run.  To fix it,
+drop the loop and just yield exactly once, unless the request is served
+from the cache or failed before it was submitted – that last part makes
+it a bit complicated, as the result of curl_find_buf() now needs to be a
+tristate.
 
 (Can be reproduced with multiqueue by adding a usleep(100000) before the
-`while (!task.complete)` loops.)
+`while (acb.ret == -EINPROGRESS)` loop.)
 
-Like in “iscsi: Run co BH CB in the coroutine’s AioContext”, this makes
-nfs_co_generic_bh_cb() trivial, and we could just run aio_co_wake()
-directly from nfs_co_generic_cb().  Like in iscsi, we don’t do that, so
-as to keep the replay_bh_schedule_oneshot_event(), but we should at
-least run the BH in the coroutine’s context to remove further BH
-indirection.
+Also, add a comment why aio_co_wake() is safe regardless of whether the
+coroutine and curl_multi_check_completion() run in the same context.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/nfs.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ block/curl.c | 55 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 37 insertions(+), 18 deletions(-)
 
-diff --git a/block/nfs.c b/block/nfs.c
-index 0a7d38db09..4667d49416 100644
---- a/block/nfs.c
-+++ b/block/nfs.c
-@@ -69,7 +69,6 @@ typedef struct NFSClient {
- typedef struct NFSRPC {
-     BlockDriverState *bs;
-     int ret;
--    int complete;
-     QEMUIOVector *iov;
-     struct stat *st;
-     Coroutine *co;
-@@ -233,8 +232,6 @@ static void coroutine_fn nfs_co_init_task(BlockDriverState *bs, NFSRPC *task)
- static void nfs_co_generic_bh_cb(void *opaque)
+diff --git a/block/curl.c b/block/curl.c
+index 68cf83ce55..65996a8866 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -124,6 +124,16 @@ typedef struct BDRVCURLState {
+     char *proxypassword;
+ } BDRVCURLState;
+ 
++/** Possible result states of curl_find_buf() */
++typedef enum {
++    /* No buffer found, need to create new request */
++    CURL_NO_BUF_FOUND,
++    /* Buffer found, request filled and done */
++    CURL_REQUEST_FILLED,
++    /* Ongoing request found, need to yield */
++    CURL_REQUEST_ONGOING,
++} CURLFindBufResult;
++
+ static void curl_clean_state(CURLState *s);
+ static void curl_multi_do(void *arg);
+ 
+@@ -258,8 +268,8 @@ read_end:
+ }
+ 
+ /* Called with s->mutex held.  */
+-static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
+-                          CURLAIOCB *acb)
++static CURLFindBufResult curl_find_buf(BDRVCURLState *s, uint64_t start,
++                                       uint64_t len, CURLAIOCB *acb)
  {
-     NFSRPC *task = opaque;
+     int i;
+     uint64_t end = start + len;
+@@ -289,7 +299,7 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
+                 qemu_iovec_memset(acb->qiov, clamped_len, 0, len - clamped_len);
+             }
+             acb->ret = 0;
+-            return true;
++            return CURL_REQUEST_FILLED;
+         }
+ 
+         // Wait for unfinished chunks
+@@ -307,13 +317,13 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
+             for (j=0; j<CURL_NUM_ACB; j++) {
+                 if (!state->acb[j]) {
+                     state->acb[j] = acb;
+-                    return true;
++                    return CURL_REQUEST_ONGOING;
+                 }
+             }
+         }
+     }
+ 
+-    return false;
++    return CURL_NO_BUF_FOUND;
+ }
+ 
+ /* Called with s->mutex held.  */
+@@ -378,6 +388,16 @@ static void curl_multi_check_completion(BDRVCURLState *s)
+                 acb->ret = error ? -EIO : 0;
+                 state->acb[i] = NULL;
+                 qemu_mutex_unlock(&s->mutex);
++                /*
++                 * Current AioContext is the BDS context, which may or may not
++                 * be the request (coroutine) context.
++                 * - If it is, the coroutine must have yielded or the FD handler
++                 *   (curl_multi_do()/curl_multi_timeout_do()) could not have
++                 *   been called and we would not be here
++                 * - If it is not, it doesn't matter whether it has already
++                 *   yielded or not; it will be scheduled once it does yield
++                 * So aio_co_wake() is safe to call.
++                 */
+                 aio_co_wake(acb->co);
+                 qemu_mutex_lock(&s->mutex);
+             }
+@@ -868,7 +888,8 @@ out_noclean:
+     return -EINVAL;
+ }
+ 
+-static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
++/* Return whether a request was submitted that requires yielding */
++static bool coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+ {
+     CURLState *state;
+     int running;
+@@ -877,13 +898,15 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+ 
+     uint64_t start = acb->offset;
+     uint64_t end;
++    CURLFindBufResult find_buf_res;
+ 
+-    qemu_mutex_lock(&s->mutex);
++    QEMU_LOCK_GUARD(&s->mutex);
+ 
+     // In case we have the requested data already (e.g. read-ahead),
+     // we can just call the callback and be done.
+-    if (curl_find_buf(s, start, acb->bytes, acb)) {
+-        goto out;
++    find_buf_res = curl_find_buf(s, start, acb->bytes, acb);
++    if (find_buf_res != CURL_NO_BUF_FOUND) {
++        return find_buf_res == CURL_REQUEST_ONGOING;
+     }
+ 
+     // No cache found, so let's start a new request
+@@ -898,7 +921,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+     if (curl_init_state(s, state) < 0) {
+         curl_clean_state(state);
+         acb->ret = -EIO;
+-        goto out;
++        return false;
+     }
+ 
+     acb->start = 0;
+@@ -913,7 +936,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+     if (state->buf_len && state->orig_buf == NULL) {
+         curl_clean_state(state);
+         acb->ret = -ENOMEM;
+-        goto out;
++        return false;
+     }
+     state->acb[0] = acb;
+ 
+@@ -925,14 +948,12 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+         acb->ret = -EIO;
+ 
+         curl_clean_state(state);
+-        goto out;
++        return false;
+     }
+ 
+     /* Tell curl it needs to kick things off */
+     curl_multi_socket_action(s->multi, CURL_SOCKET_TIMEOUT, 0, &running);
 -
--    task->complete = 1;
-     aio_co_wake(task->co);
+-out:
+-    qemu_mutex_unlock(&s->mutex);
++    return true;
  }
  
-@@ -256,7 +253,7 @@ nfs_co_generic_cb(int ret, struct nfs_context *nfs, void *data,
-     if (task->ret < 0) {
-         error_report("NFS Error: %s", nfs_get_error(nfs));
+ static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
+@@ -941,14 +962,12 @@ static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
+ {
+     CURLAIOCB acb = {
+         .co = qemu_coroutine_self(),
+-        .ret = -EINPROGRESS,
+         .qiov = qiov,
+         .offset = offset,
+         .bytes = bytes
+     };
+ 
+-    curl_setup_preadv(bs, &acb);
+-    while (acb.ret == -EINPROGRESS) {
++    if (curl_setup_preadv(bs, &acb)) {
+         qemu_coroutine_yield();
      }
--    replay_bh_schedule_oneshot_event(task->client->aio_context,
-+    replay_bh_schedule_oneshot_event(qemu_coroutine_get_aio_context(task->co),
-                                      nfs_co_generic_bh_cb, task);
- }
- 
-@@ -278,9 +275,7 @@ static int coroutine_fn nfs_co_preadv(BlockDriverState *bs, int64_t offset,
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     if (task.ret < 0) {
-         return task.ret;
-@@ -328,9 +323,7 @@ static int coroutine_fn nfs_co_pwritev(BlockDriverState *bs, int64_t offset,
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     if (my_buffer) {
-         g_free(buf);
-@@ -358,9 +351,7 @@ static int coroutine_fn nfs_co_flush(BlockDriverState *bs)
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     return task.ret;
- }
-@@ -723,7 +714,7 @@ nfs_get_allocated_file_size_cb(int ret, struct nfs_context *nfs, void *data,
-     if (task->ret < 0) {
-         error_report("NFS Error: %s", nfs_get_error(nfs));
-     }
--    replay_bh_schedule_oneshot_event(task->client->aio_context,
-+    replay_bh_schedule_oneshot_event(qemu_coroutine_get_aio_context(task->co),
-                                      nfs_co_generic_bh_cb, task);
- }
- 
-@@ -748,9 +739,7 @@ static int64_t coroutine_fn nfs_co_get_allocated_file_size(BlockDriverState *bs)
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     return (task.ret < 0 ? task.ret : st.st_blocks * 512);
- }
+     return acb.ret;
 -- 
 2.51.0
 
