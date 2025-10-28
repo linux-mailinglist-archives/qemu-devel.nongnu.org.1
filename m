@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4AAC15D92
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB084C15DF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:40:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmeb-0008Ds-Qn; Tue, 28 Oct 2025 12:34:37 -0400
+	id 1vDmed-0008EJ-AG; Tue, 28 Oct 2025 12:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeI-00084b-G2
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:19 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeK-00085x-FF
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeB-0003Yv-9I
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:18 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmeD-0003ap-9h
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761669247;
+ s=mimecast20190719; t=1761669251;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eLJdOJSUssWGwBsyDBm1U43bSPC0FcgCsDPLVbyx2Ps=;
- b=VOJjSVJA691hqW2p2jtpiXJSVHJYUmFIFE32k6w2EHYzx3P5J6rJ/3mk/co9GGLu8QT6nY
- DE0AS2kh/6kLqX2d7MRTRRvvpP0u2j2Pxxb0m7nWqzYgz51X+mhCbARy3NNYCF7WeqXuF1
- Tcb80BgB9YXWaW6tralmTtg7MKxrPZ8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bHq9mmLlrYs9rcZFc5mEPJ7OIilm7sukDYP8D9Whs5g=;
+ b=UZfJYUQpEorIsiyakVZO0v4x0vWcXSPhyY7aqiztxUpnTz5i0TyXboG2knV+mzFqrCYRxi
+ 08ZgacYUZ75HuQ5178vl2em6XRJP/wwXjfgr4BHnSwbP8ghjw2dRSTpxWSoN2Ua04MRghH
+ ZyjTsBWQDcuaOA5nNPDKgnEs3t5DIwo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-118-miq4GeeLN6KAAvW4-MPLcg-1; Tue, 28 Oct 2025 12:34:06 -0400
-X-MC-Unique: miq4GeeLN6KAAvW4-MPLcg-1
-X-Mimecast-MFC-AGG-ID: miq4GeeLN6KAAvW4-MPLcg_1761669245
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-477171bbf51so6378845e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:05 -0700 (PDT)
+ us-mta-112-lA01VmRHPA2PdcMlJczPGQ-1; Tue, 28 Oct 2025 12:34:09 -0400
+X-MC-Unique: lA01VmRHPA2PdcMlJczPGQ-1
+X-Mimecast-MFC-AGG-ID: lA01VmRHPA2PdcMlJczPGQ_1761669248
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4770dea2551so64727835e9.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761669245; x=1762274045;
+ d=1e100.net; s=20230601; t=1761669248; x=1762274048;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eLJdOJSUssWGwBsyDBm1U43bSPC0FcgCsDPLVbyx2Ps=;
- b=ZASpx+7ouLcRA3fsbUjmDCNt+mVwVxIHuYBAwTMX21okKmr8FrSWl5/EXY4qmnPbAx
- jodWGpj35MEEsnBH45PsDoZkcAq4cSXgw0TMHe+snyTa6SFZyTO6qZlJrZNIExhrhdEI
- GNTYrv9IyLaWjPKqPfomaKWRdsQu9NJYlXqTtIM4m4+bTQ9IQw/4QcsJ5pP2FSsprEw6
- EYph1d7XhGLCWLIgpU4vn5fpC4oqm/HzxO0KOSKdJfhGcPQE9K6No6CVYxjTnpOTOIbA
- 7z50L5h7p1UEIem+wo1DN6PMu00TYeZ7W0LPflc7Zrx7VvODndT64Sgbz7M4bVSPK317
- Mvew==
-X-Gm-Message-State: AOJu0YwDeVUy4B6TgSxg83Yrvygh6aJSfO4yM/1sZbljazEUDU+2MxUR
- +lU6qR8TvzIc6oiBrv5gGxkeduvlq6xLJALtLRg4C4rs+Tn2KzagKuWPRiftFQDjR3MTOVM5qJW
- 21foX9rigin2PLh3pxWblP0cFfJC8GLdS1S46lGwsVBcQdKuWkgzNO6G2
-X-Gm-Gg: ASbGncs/66Adz269OM/8Vc4aTHvHA1Ns+fuii1rQJuDZUd0EpuWvhENwDroAF0vjRnF
- MfYBgEhyajaT1qJodUYOgiLYFrFN56P4SuW4kFSJsLZ00LSMixhLnkw6Cdy+DEph0e2xNB7+Xay
- plTLUUcZGgP+g+gGa9D2+c4RVhbSbZY2dMqzUYkSrLknvLEYFeSLoAwnxXrM4VAo/NEIVmcc5Zu
- vTPJdlSMQ2ofYVyyfCvLvDnaGeny1OxspC1XbC2svnvE+YQIY3eBfUe9/2swee+r5W9sjiyuYnV
- X/cYvb3HVoc3QICFbD8XfVPJ9lKUG4kembhqWfQuZCOcQMswiZvAOYKqXX5y0oqCfPiaWJhWRoc
- pXuPy+3aY1gJW9cIgazFugO2E3IoeVnArhj2uVrAX25x73BT0Z7eS8M8/EQ==
-X-Received: by 2002:a05:600c:5197:b0:477:1be1:9afe with SMTP id
- 5b1f17b1804b1-4771e180d92mr1010945e9.9.1761669244548; 
- Tue, 28 Oct 2025 09:34:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOcMewunCj8cVxj/IW7iuNFMakC0UnB92LOjFdg0o3aFT95YE1qnQx00MZztGgwfwdelYyNQ==
-X-Received: by 2002:a05:600c:5197:b0:477:1be1:9afe with SMTP id
- 5b1f17b1804b1-4771e180d92mr1010515e9.9.1761669243976; 
- Tue, 28 Oct 2025 09:34:03 -0700 (PDT)
+ bh=bHq9mmLlrYs9rcZFc5mEPJ7OIilm7sukDYP8D9Whs5g=;
+ b=t1c9HwLD6OGwpxOfEw+1JwDBRAAOAsH47NeiCZSgU33v54PbUek2gTXNP3iEqoOoQU
+ 3THr7kgrdtqTOITFLjJOozqoShwg9HdDugmm4yY1Onwq8CwLoHc85gYBSmoEY/uNMEDd
+ 4TXQ3YaDDqZ0Mfk/Fc2i50yuAS9qcQB/hlPId2B0fQXeYoIDM8So/0Vu6dGwv/0Vng+p
+ /d6Eu+2FQUBqFjrh0dhaSw0LSjpp8IV4MOgFcmltyFa8yF50g3z4QW75cVc3qjYQamRl
+ il0571EM8okqko8FxUeylgkIyBvAeeMVSI0ZgSVjE5T+Bp68riazDhWhWg0o+CYifOs2
+ ciBw==
+X-Gm-Message-State: AOJu0Yw2bz3Cdq9uyHP9LSh180EQqZMJAdEqt1jpDTrQ237Gj7tHI4co
+ 03HVkn+F45/Kxix3kpCPHAFJHWgUfdmJEUM8VNND8jQ5d28YMKPtgySsDsChrKgZZeBXg66EpEd
+ 192GeU5sl8hQzK8JdmIywONbCNDTPjhTsBbtALjRThPFsrw/bjDJhaDTT
+X-Gm-Gg: ASbGncvCoEYlUzgD5jZzcwv8oJiSdoJZrUnzbb/ndiEOYV2922Rl7qd8/hSFpIcxpuy
+ WKMJAnjtOnEAwyLpX13IOIcVV4lxgjVMwdUXfY7VdeB4l49JCGo4NFAgv0g96LPCT0KwOdr5S4K
+ uF01TNyINwG++eDkY/sLNYSyyzYaIOVGrFlbM2YTA14guiwu2fEppryiS3i7CqeSENmUnOmXgnC
+ 2vcydOtfopGoM0k9zdOClALI254oZj4wYIwmW/ZK3Vv383glQo5N89mMJRVKOyrNRua7Q4qNdPG
+ rPpRavigWh2rf/EbANRxDAKrkz7iq0YtjVV0xzF581PE6L9NhlfBAKzfI3+pn7hCzDyCM6hfyJO
+ tKs1ebSBJHMuIMKuoN2kUjEI2v3e/zlJThEhnNZOvu52SeRUaaAMtgIaISg==
+X-Received: by 2002:a05:600c:4ec8:b0:477:1af2:f40a with SMTP id
+ 5b1f17b1804b1-4771e18d791mr1188445e9.17.1761669247971; 
+ Tue, 28 Oct 2025 09:34:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFScE3eHeyARGVLAKjMGFdU+ElWS1sPV1QuWOU4oXxhPd5Src8DwUHVXB9YzJdUAGOEiG4ByA==
+X-Received: by 2002:a05:600c:4ec8:b0:477:1af2:f40a with SMTP id
+ 5b1f17b1804b1-4771e18d791mr1188105e9.17.1761669247478; 
+ Tue, 28 Oct 2025 09:34:07 -0700 (PDT)
 Received: from localhost
  (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
  [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771843eabfsm23986055e9.2.2025.10.28.09.34.01
+ 5b1f17b1804b1-4771904fc1bsm22117125e9.11.2025.10.28.09.34.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 09:34:02 -0700 (PDT)
+ Tue, 28 Oct 2025 09:34:05 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
@@ -80,9 +80,9 @@ Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH 05/16] curl: Fix coroutine waking
-Date: Tue, 28 Oct 2025 17:33:31 +0100
-Message-ID: <20251028163343.116249-6-hreitz@redhat.com>
+Subject: [PATCH 06/16] gluster: Do not move coroutine into BDS context
+Date: Tue, 28 Oct 2025 17:33:32 +0100
+Message-ID: <20251028163343.116249-7-hreitz@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
 References: <20251028163343.116249-1-hreitz@redhat.com>
@@ -99,7 +99,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,182 +115,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we wake a coroutine from a different context, we must ensure that it
-will yield exactly once (now or later), awaiting that wake.
+The request coroutine may not run in the BDS AioContext.  We should wake
+it in its own context, not move it.
 
-curl’s current .ret == -EINPROGRESS loop may lead to the coroutine not
-yielding if the request finishes before the loop gets run.  To fix it,
-drop the loop and just yield exactly once, unless the request is served
-from the cache or failed before it was submitted – that last part makes
-it a bit complicated, as the result of curl_find_buf() now needs to be a
-tristate.
+With that, we can remove GlusterAIOCB.aio_context.
 
-(Can be reproduced with multiqueue by adding a usleep(100000) before the
-`while (acb.ret == -EINPROGRESS)` loop.)
+Also add a comment why aio_co_schedule() is safe to use in this way.
 
-Also, add a comment why aio_co_wake() is safe regardless of whether the
-coroutine and curl_multi_check_completion() run in the same context.
+**Note:** Due to a lack of a gluster set-up, I have not tested this
+commit.  It seemed safe enough to send anyway, just maybe not to
+qemu-stable.  To be clear, I don’t know of any user-visible bugs that
+would arise from the state without this patch; the request coroutine is
+moved into the main BDS AioContext, which feels wrong, but I’m not sure
+whether it can actually produce hard bugs.
 
-Cc: qemu-stable@nongnu.org
+I’ll leave it to others’ opinions whether to keep or drop this patch
+under these circumstances.
+
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/curl.c | 55 +++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 18 deletions(-)
+ block/gluster.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/block/curl.c b/block/curl.c
-index 68cf83ce55..65996a8866 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -124,6 +124,16 @@ typedef struct BDRVCURLState {
-     char *proxypassword;
- } BDRVCURLState;
+diff --git a/block/gluster.c b/block/gluster.c
+index 89abd40f31..4fb25b2c6d 100644
+--- a/block/gluster.c
++++ b/block/gluster.c
+@@ -56,7 +56,6 @@ typedef struct GlusterAIOCB {
+     int64_t size;
+     int ret;
+     Coroutine *coroutine;
+-    AioContext *aio_context;
+ } GlusterAIOCB;
  
-+/** Possible result states of curl_find_buf() */
-+typedef enum {
-+    /* No buffer found, need to create new request */
-+    CURL_NO_BUF_FOUND,
-+    /* Buffer found, request filled and done */
-+    CURL_REQUEST_FILLED,
-+    /* Ongoing request found, need to yield */
-+    CURL_REQUEST_ONGOING,
-+} CURLFindBufResult;
-+
- static void curl_clean_state(CURLState *s);
- static void curl_multi_do(void *arg);
+ typedef struct BDRVGlusterState {
+@@ -743,7 +742,17 @@ static void gluster_finish_aiocb(struct glfs_fd *fd, ssize_t ret,
+         acb->ret = -EIO; /* Partial read/write - fail it */
+     }
  
-@@ -258,8 +268,8 @@ read_end:
+-    aio_co_schedule(acb->aio_context, acb->coroutine);
++    /*
++     * Safe to call: The coroutine will yield exactly once awaiting this
++     * scheduling, and the context is its own context, so it will be scheduled
++     * once it does yield.
++     *
++     * (aio_co_wake() would call qemu_get_current_aio_context() to check whether
++     * we are in the same context, but we are not in a qemu thread, so we cannot
++     * do that.  Use aio_co_schedule() directly.)
++     */
++    aio_co_schedule(qemu_coroutine_get_aio_context(acb->coroutine),
++                    acb->coroutine);
  }
  
- /* Called with s->mutex held.  */
--static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
--                          CURLAIOCB *acb)
-+static CURLFindBufResult curl_find_buf(BDRVCURLState *s, uint64_t start,
-+                                       uint64_t len, CURLAIOCB *acb)
- {
-     int i;
-     uint64_t end = start + len;
-@@ -289,7 +299,7 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
-                 qemu_iovec_memset(acb->qiov, clamped_len, 0, len - clamped_len);
-             }
-             acb->ret = 0;
--            return true;
-+            return CURL_REQUEST_FILLED;
-         }
+ static void qemu_gluster_parse_flags(int bdrv_flags, int *open_flags)
+@@ -1006,7 +1015,6 @@ static coroutine_fn int qemu_gluster_co_pwrite_zeroes(BlockDriverState *bs,
+     acb.size = bytes;
+     acb.ret = 0;
+     acb.coroutine = qemu_coroutine_self();
+-    acb.aio_context = bdrv_get_aio_context(bs);
  
-         // Wait for unfinished chunks
-@@ -307,13 +317,13 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
-             for (j=0; j<CURL_NUM_ACB; j++) {
-                 if (!state->acb[j]) {
-                     state->acb[j] = acb;
--                    return true;
-+                    return CURL_REQUEST_ONGOING;
-                 }
-             }
-         }
-     }
+     ret = glfs_zerofill_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
+     if (ret < 0) {
+@@ -1184,7 +1192,6 @@ static coroutine_fn int qemu_gluster_co_rw(BlockDriverState *bs,
+     acb.size = size;
+     acb.ret = 0;
+     acb.coroutine = qemu_coroutine_self();
+-    acb.aio_context = bdrv_get_aio_context(bs);
  
--    return false;
-+    return CURL_NO_BUF_FOUND;
- }
+     if (write) {
+         ret = glfs_pwritev_async(s->fd, qiov->iov, qiov->niov, offset, 0,
+@@ -1251,7 +1258,6 @@ static coroutine_fn int qemu_gluster_co_flush_to_disk(BlockDriverState *bs)
+     acb.size = 0;
+     acb.ret = 0;
+     acb.coroutine = qemu_coroutine_self();
+-    acb.aio_context = bdrv_get_aio_context(bs);
  
- /* Called with s->mutex held.  */
-@@ -378,6 +388,16 @@ static void curl_multi_check_completion(BDRVCURLState *s)
-                 acb->ret = error ? -EIO : 0;
-                 state->acb[i] = NULL;
-                 qemu_mutex_unlock(&s->mutex);
-+                /*
-+                 * Current AioContext is the BDS context, which may or may not
-+                 * be the request (coroutine) context.
-+                 * - If it is, the coroutine must have yielded or the FD handler
-+                 *   (curl_multi_do()/curl_multi_timeout_do()) could not have
-+                 *   been called and we would not be here
-+                 * - If it is not, it doesn't matter whether it has already
-+                 *   yielded or not; it will be scheduled once it does yield
-+                 * So aio_co_wake() is safe to call.
-+                 */
-                 aio_co_wake(acb->co);
-                 qemu_mutex_lock(&s->mutex);
-             }
-@@ -868,7 +888,8 @@ out_noclean:
-     return -EINVAL;
- }
+     ret = glfs_fsync_async(s->fd, gluster_finish_aiocb, &acb);
+     if (ret < 0) {
+@@ -1299,7 +1305,6 @@ static coroutine_fn int qemu_gluster_co_pdiscard(BlockDriverState *bs,
+     acb.size = 0;
+     acb.ret = 0;
+     acb.coroutine = qemu_coroutine_self();
+-    acb.aio_context = bdrv_get_aio_context(bs);
  
--static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-+/* Return whether a request was submitted that requires yielding */
-+static bool coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
- {
-     CURLState *state;
-     int running;
-@@ -877,13 +898,15 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
- 
-     uint64_t start = acb->offset;
-     uint64_t end;
-+    CURLFindBufResult find_buf_res;
- 
--    qemu_mutex_lock(&s->mutex);
-+    QEMU_LOCK_GUARD(&s->mutex);
- 
-     // In case we have the requested data already (e.g. read-ahead),
-     // we can just call the callback and be done.
--    if (curl_find_buf(s, start, acb->bytes, acb)) {
--        goto out;
-+    find_buf_res = curl_find_buf(s, start, acb->bytes, acb);
-+    if (find_buf_res != CURL_NO_BUF_FOUND) {
-+        return find_buf_res == CURL_REQUEST_ONGOING;
-     }
- 
-     // No cache found, so let's start a new request
-@@ -898,7 +921,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-     if (curl_init_state(s, state) < 0) {
-         curl_clean_state(state);
-         acb->ret = -EIO;
--        goto out;
-+        return false;
-     }
- 
-     acb->start = 0;
-@@ -913,7 +936,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-     if (state->buf_len && state->orig_buf == NULL) {
-         curl_clean_state(state);
-         acb->ret = -ENOMEM;
--        goto out;
-+        return false;
-     }
-     state->acb[0] = acb;
- 
-@@ -925,14 +948,12 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-         acb->ret = -EIO;
- 
-         curl_clean_state(state);
--        goto out;
-+        return false;
-     }
- 
-     /* Tell curl it needs to kick things off */
-     curl_multi_socket_action(s->multi, CURL_SOCKET_TIMEOUT, 0, &running);
--
--out:
--    qemu_mutex_unlock(&s->mutex);
-+    return true;
- }
- 
- static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
-@@ -941,14 +962,12 @@ static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
- {
-     CURLAIOCB acb = {
-         .co = qemu_coroutine_self(),
--        .ret = -EINPROGRESS,
-         .qiov = qiov,
-         .offset = offset,
-         .bytes = bytes
-     };
- 
--    curl_setup_preadv(bs, &acb);
--    while (acb.ret == -EINPROGRESS) {
-+    if (curl_setup_preadv(bs, &acb)) {
-         qemu_coroutine_yield();
-     }
-     return acb.ret;
+     ret = glfs_discard_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
+     if (ret < 0) {
 -- 
 2.51.0
 
