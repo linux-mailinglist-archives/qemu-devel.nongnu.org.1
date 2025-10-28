@@ -2,73 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA388C1771F
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 01:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51625C1771C
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 01:00:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDtTd-0005pX-NX; Tue, 28 Oct 2025 19:51:45 -0400
+	id 1vDta0-0005Sa-Mi; Tue, 28 Oct 2025 19:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vDtTb-0005ma-7J
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:51:43 -0400
-Received: from p-east1-cluster5-host1-snip4-10.eps.apple.com ([57.103.89.141]
- helo=outbound.ci.icloud.com)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vDtZx-0005Pn-EK; Tue, 28 Oct 2025 19:58:17 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vDtTV-0005Nw-VU
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:51:42 -0400
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPS id
- 707561802338; Tue, 28 Oct 2025 23:51:32 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=jzT04wkLoCg55N5pzsCS91/ign/79y0ila6uC8IJ+cM=;
- h=From:Content-Type:Mime-Version:Subject:Date:To:Message-Id:x-icloud-hme;
- b=G2w+Xxx6vEY8uVEkSOZuwek3vbvIoWHR6iln8zZvR+I08hGfe5FWII6oL6Ql+uedFQPLUyQok1JkQk+qV26uDaFIaokUxYMLGfB/XF3qvbfyWEuNbvJy9Inkp+wv2f5MgnVrEdh2I4OShx37F1YP0FPzZt+s0R+kPbc8Trtmb1WReQ8jncCR9sWjuJPm6Klh8Sj9e6X1grP/yXWoL1GPoI3Ei/U/t3f0ZCyAS4117qJC21Nr/XZDi5byqMopySi+JJFxiRHI8Go5L1Ns7qysfjP7Xl5kqIExami7vgekIRqfVG1/KsdqVRv+AjMm85/bPLWMYhdZKmDJD2Jwt08/Fg==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.57.156.36])
- by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPSA id
- C834118027D3; Tue, 28 Oct 2025 23:51:31 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
-Subject: Re: [PATCH v9 00/27] WHPX support for Arm
-Date: Wed, 29 Oct 2025 00:51:19 +0100
-References: <20251028234757.39609-1-mohamed@unpredictable.fr>
-To: mohamed@unpredictable.fr,
- qemu-devel@nongnu.org
-In-Reply-To: <20251028234757.39609-1-mohamed@unpredictable.fr>
-Message-Id: <54FB4642-767D-406B-BB40-51D9E886645C@unpredictable.fr>
-X-Mailer: Apple Mail (2.3864.100.1.1.5)
-X-Proofpoint-ORIG-GUID: R6kaZU4v9ezIFmpUP37YdiBJcJ9oUnjq
-X-Proofpoint-GUID: R6kaZU4v9ezIFmpUP37YdiBJcJ9oUnjq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDIwMiBTYWx0ZWRfX3LSf9yczvGcq
- +iaXHuUMbXIqDm+cOve6TElnYj/9eQ9yxV1qk2yOs0EwXpQYWKL4lPEtkgokju74wQRHORXbL9e
- omjq5Xk6nerFK018Srf37zmKMinEmA9gWaV8xTdr7W2cKhjgK4wCDwWgS3/Wqomb4EP7aLxEtsv
- x+2RWlxb7dWW3vh1qotG7zjOtoozZ9IgJk6TuGN1g2hg9IDJZP+Yj7Xdr4v716WNoq4Tj/E1BUu
- XeAKh2skK8mcJR8BaNVwQ/nT+VKEV0VGwj4wPo4nZ7uYs4p5X1EPmeMXmxG4GLAlAFakRM1is=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_09,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 phishscore=0 spamscore=0 mlxscore=0
- clxscore=1030 malwarescore=0
- bulkscore=0 mlxlogscore=841 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2506270000 definitions=main-2510280202
-X-JNJ: AAAAAAABpq2r7Z36Eiy+7d/kSO6HFhQF1WTBxZXOn0VMYua8VTxYmjhIimq9j/AVr8t9zRnVSyQ1+pBpiCzwbokYw7G5650EkOOfsq5QPrjxuuJ31lRyi05wPSJZFXbw/JsGqkFcBmjOJfVGSioy5Cqm9C2ezWgKLt5XxmbyC/eWxipzsVr3IMerasd1QsjKCfT4Vq7vhGhlTErG/Hiehfjg9PD43Ipk4jcF86/6GGgAQ6vUuAknCl/V6LqFtavIDBRmcBEJGfx0K2XYn0Bnfu/QFerxG1RPb7ux/IlFPee5hyxtuXrGX/kPXzvyd8XtwsLWcTVIAqih+5eAxWTSQuY7WfuvVQeo9uj9vn+AnG0FSmYUCpeIiokLSKE42wLStYaBCP7ZSp5Y97K3AbcRgY6oZKGfV3j73m2U+Z7OsEtHWK0Xc4oEcNG9uVxDrJLQElZ8In95ZNw2ZEU9/vp1tc7JYTeogoKqo8OTI6AUpOsuuwwYcaGVYkKxnSnPM6q720W15h+4shfK6CpBgsUWFJDZBMxXiC8/Bu00fJ9Om2eKrMLIl1SyJhfbYQK7/pEsC4vFLYK2JVHg6YOG0Kpv/j4Xj4CnlU69mHC+lAxFWqiUDbXt9qepFtUWfd0gvOIrxdqNGZVoxS9cWg==
-Received-SPF: pass client-ip=57.103.89.141;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.ci.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vDtZm-0006CL-VF; Tue, 28 Oct 2025 19:58:17 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3BE15597301;
+ Wed, 29 Oct 2025 00:57:55 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id u5GpciNBL4q0; Wed, 29 Oct 2025 00:57:53 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 345785972FD; Wed, 29 Oct 2025 00:57:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 32B5F5972E9;
+ Wed, 29 Oct 2025 00:57:53 +0100 (CET)
+Date: Wed, 29 Oct 2025 00:57:53 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH 2/4] hw/pci-host/articia: Map PCI memory windows in realize
+In-Reply-To: <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
+Message-ID: <733a7466-bc68-5c85-1fb2-7301de0ed7bf@eik.bme.hu>
+References: <cover.1761346145.git.balaton@eik.bme.hu>
+ <ceda4c28887c40e1c8eae3f561ee381ca98b0484.1761346145.git.balaton@eik.bme.hu>
+ <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="3866299591-1434917945-1761695873=:17035"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,14 +65,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-1434917945-1761695873=:17035
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> On 29. Oct 2025, at 00:47, Mohamed Mediouni <mohamed@unpredictable.fr> =
-wrote:
->=20
-> Link to branch: https://github.com/mediouni-m/qemu whpx (tag for this =
-submission: whpx-v10)
->=20
-Erratum: the tag (and the patchset) is whpx-v9, not v10
+On Mon, 27 Oct 2025, Philippe Mathieu-Daudé wrote:
+> On 25/10/25 01:31, BALATON Zoltan wrote:
+>> These memory windows are a result of the address decoding in the
+>> Articia S north bridge so better model it there and not in board code.
+>> 
+>> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>   hw/pci-host/articia.c | 15 ++++++++++++++-
+>>   hw/ppc/amigaone.c     | 28 +++++-----------------------
+>>   hw/ppc/pegasos2.c     | 13 -------------
+>>   3 files changed, 19 insertions(+), 37 deletions(-)
+>
+>
+>> @@ -169,6 +174,7 @@ static void articia_realize(DeviceState *dev, Error 
+>> **errp)
+>>   {
+>>       ArticiaState *s = ARTICIA(dev);
+>>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
+>> +    MemoryRegion *mr;
+>>       PCIDevice *pdev;
+>>         bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
+>> @@ -180,6 +186,14 @@ static void articia_realize(DeviceState *dev, Error 
+>> **errp)
+>>       memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
+>>                             TYPE_ARTICIA, 0x1000000);
+>>       memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
+>> +    mr = g_new(MemoryRegion, 1);
+>
+> Won't Coverity or other analysis tools complain about the leak?
+> (this is why we usually keep a reference in the device state, here
+> ArticiaState). Otherwise:
+>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+In any case, this same code is already present in amigaone.c and 
+pegasos2.c and this patch just moves it to articia.c so it should not make 
+it worse than it already is. Therefore can we take it for this release 
+with or without your R-b just to not block the whole series and come back 
+to clean this up later? Otherwise I'll have to send a v2 dropping this 
+patch and redo the next one without it but since this is preexisting I'd 
+avoid that and go with it for now that then leaves us time to find a 
+solution for it and other simliar code which then can be fixed together. 
+Is that OK with you or should I go for a v2?
+
+Regards,
+BALATON Zoltan
+
+>> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", &s->mem,
+>> +                             0, PCI_LOW_SIZE);
+>> +    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
+>> +    mr = g_new(MemoryRegion, 1);
+>> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", &s->mem,
+>> +                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
+>> +    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, mr);
+>
+>
+--3866299591-1434917945-1761695873=:17035--
 
