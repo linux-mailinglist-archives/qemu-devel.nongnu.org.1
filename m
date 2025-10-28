@@ -2,104 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E89C15DEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F2FC15E55
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:44:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmfN-0000Ga-0C; Tue, 28 Oct 2025 12:35:26 -0400
+	id 1vDmjh-0006rI-Ou; Tue, 28 Oct 2025 12:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmev-0008Ta-GN
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vDmjc-0006kK-A7; Tue, 28 Oct 2025 12:39:49 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmek-0003nv-Bp
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761669280;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=auuHryN5cCB+q/vS4sVe6ErpZM58tUub9h+/jBkDl4o=;
- b=SAbTQf+z5FJwwyw0YoN+s7p9xj1J4BYsfa3JC2ed8rv08ioeJaHNjIB8eBbxkvz6hdn7b1
- a7Hvd2wJanxC99uB9xXIMAq3HG18ihxyb8GEwbUsapEkLQ5LQvf+WAOnNlm1MyC1doiWAK
- CEPJR1V4pcKidmFGTZCcfDIJCSXxpUg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-zP-FGVKRMQKnM95r8EfX9g-1; Tue, 28 Oct 2025 12:34:38 -0400
-X-MC-Unique: zP-FGVKRMQKnM95r8EfX9g-1
-X-Mimecast-MFC-AGG-ID: zP-FGVKRMQKnM95r8EfX9g_1761669277
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-427a125c925so3108248f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761669277; x=1762274077;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=auuHryN5cCB+q/vS4sVe6ErpZM58tUub9h+/jBkDl4o=;
- b=edOFOxxAPDiSZwREmlI29TljxjzPpJGQKc1XcwZ+K1nYBXc32W3cj74R7xmvEAzXoy
- WEbp/4VumdI3uv0eKvFAhD98cvjXvdFmD9TuAPfA03ZEnVDOrR1fJIcFsRwKnSSRqFtq
- HLhsAr1FjkKKkq7I2c9fc1DZw3KnR20PGJht0eL/ttNZdHx6gtOe0UQPJ0IELNPcclwl
- VWzPecrHxyS/aqV4dUT6PrZJzbxHmsd2IUVQLGaXHSJNKbBsIof+wr/HOskpXeV3o63e
- vJL7VHA88UhOPTkmwWDjv2dUQBhYV/VxACtuJdBgBpvqOjyEmjO0Tdft4I0iiE01O3e1
- i8rA==
-X-Gm-Message-State: AOJu0YyP14nLqugRNLPZQ9821I15smjC2hArl/g00525ypslZal/rVoF
- 27FgQQOTBoD+Ztq2TuoBbQE3AQILwRcIciMLOHVaFHK4m7l1qxooTIwQIeIWKKDlxA9k8eX9blA
- y/EHgmbD6A5EbREXOeWxuP+ciZQR/7ac7TMymQZx1a8jdziR3tPdFFg7u
-X-Gm-Gg: ASbGnct1qvH6k1PYCCIweM6f2tHx1HJ4lDTMYtKDNvW2817lgZkbL0yeQSQbcoa5/gY
- 5woY9WayLfdxCaG5xEwPTdaXgcthYoYcYsA+ClNY4mnlw3bMS554Jaz027nNUerbH9tAsLilqTW
- sJONbyTb/Yb0nnKLgr0wgH/olXf5trWtvK6p7MP+gE4KOJqCYTy3TqTa9OVcbHUSMpFwuhJghYb
- a1NKYtA7I9IzpfPjJd503XWlRz8XbWfAsQMVNuvw+amMBZXWPeNCG7HSNxhWeZ3WmMXjLyVjB4e
- Pjpx5+anW1qzxgiD3Wx5Z8DRkckIWc3fWFWl/QnO1tiP0LL50UVzVhIH3MNUrhTaUM+m62/rJTR
- tihYjsaI8oZjRob7gtZLc6MeIIixsfzMozvQq2HS4y3PL3uhsCOJq6vId3w==
-X-Received: by 2002:a05:6000:611:b0:428:4354:aa27 with SMTP id
- ffacd0b85a97d-429a7e8b8f0mr3494780f8f.46.1761669277238; 
- Tue, 28 Oct 2025 09:34:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxBVko4PJ83bqeJR0GtHD8wbRPRF1jRxhZEWLxfDqqFxpLVFzUNu6zxK0N8Ne7jjFSBDuisQ==
-X-Received: by 2002:a05:6000:611:b0:428:4354:aa27 with SMTP id
- ffacd0b85a97d-429a7e8b8f0mr3494747f8f.46.1761669276828; 
- Tue, 28 Oct 2025 09:34:36 -0700 (PDT)
-Received: from localhost
- (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
- [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d5768sm21839628f8f.24.2025.10.28.09.34.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 09:34:35 -0700 (PDT)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- Ilya Dryomov <idryomov@gmail.com>, Peter Lieven <pl@dlhnet.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH 16/16] win32-aio: Run CB in original context
-Date: Tue, 28 Oct 2025 17:33:42 +0100
-Message-ID: <20251028163343.116249-17-hreitz@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
-References: <20251028163343.116249-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vDmjT-0004bZ-42; Tue, 28 Oct 2025 12:39:47 -0400
+Received: from [192.168.10.110] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59SGdOLI080237
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 29 Oct 2025 01:39:24 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=wLbBfSnrvT6i4Jj0yq+OoqapAMrzdiKbsvRg3kKRVyk=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1761669564; v=1;
+ b=B8YXbRR0eBF+clIKTyYhugmR+p1e71Q4yGg0K4n0IGOPRVGlnQ5Ey2fWqUkxFK3N
+ mFFRfrhdGsMef/YpZiT4+bLwxSxvBNdwAiAMsqOHZF+BP8WbtRKJR3H1uE/eZI+w
+ Rcm/GE845oSMwORFymTkbhgUNFnKO4NgDm1N8VgEtyM3zgRMQOMxSDGpGe6BPp6H
+ J4rwdLBjLVU4gCVNQomQtykZ8VwqyE1PPxVGXySCVu48koiqZEY05NrNUAVojb1o
+ Qi6rXCHpXJ/AsO5VFbVYUUHLtOGVXPA7D6BL2XBXOqmzHqmX7PVQ5eXO/gyR5C8K
+ OdtbrFgSIGlZ2bo+tAJbkg==
+Message-ID: <02ba10ef-63fc-4843-b906-1bb127adecbf@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 29 Oct 2025 01:39:24 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ds1225y: Fix nvram MemoryRegion owner
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20251027-ds1225y-v1-1-406888eb495f@rsg.ci.i.u-tokyo.ac.jp>
+ <a4999d10-b8fd-4ba4-84dd-85c5e2b314b6@tls.msk.ru>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <a4999d10-b8fd-4ba4-84dd-85c5e2b314b6@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,110 +72,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AIO callbacks must be called in the originally calling AioContext,
-regardless of the BDS’s “main” AioContext.
+On 2025/10/28 21:28, Michael Tokarev wrote:
+> On 10/27/25 04:05, Akihiko Odaki wrote:
+>> s points to the MemoryRegion itself. dev points to DS1225Y, the real
+>> owner.
+>>
+>> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>> ---
+>>   hw/nvram/ds1225y.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/nvram/ds1225y.c b/hw/nvram/ds1225y.c
+>> index dbfd0d2e5369..0945e36652e9 100644
+>> --- a/hw/nvram/ds1225y.c
+>> +++ b/hw/nvram/ds1225y.c
+>> @@ -126,7 +126,7 @@ static void nvram_sysbus_realize(DeviceState *dev, 
+>> Error **errp)
+>>       s->contents = g_malloc0(s->chip_size);
+>> -    memory_region_init_io(&s->iomem, OBJECT(s), &nvram_ops, s,
+>> +    memory_region_init_io(&s->iomem, OBJECT(dev), &nvram_ops, s,
+>>                             "nvram", s->chip_size);
+>>       sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
+> 
+> What's the impact of this issue?
+> Should it go to the stable series perhaps?
 
-Note: I tried to test this (under wine), but failed.  Whenever I tried
-to use multiqueue or even just an I/O thread for a virtio-blk (or
-virtio-scsi) device, I/O stalled, both with and without this patch.
+There should be no perceivable impact. It causes memory leak if the 
+device is hotpluggable, but it is apparently not the case.
 
-For what it’s worth, when not using an I/O thread, I/O continued to work
-with this patch.
+The same goes for "[PATCH] hw/riscv/riscv-iommu: Fix MemoryRegion owner":
+https://lore.kernel.org/qemu-devel/20251027-iommu-v1-1-0fc52a02a273@rsg.ci.i.u-tokyo.ac.jp/
 
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- block/win32-aio.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
-
-diff --git a/block/win32-aio.c b/block/win32-aio.c
-index 6327861e1d..f0689f3ee9 100644
---- a/block/win32-aio.c
-+++ b/block/win32-aio.c
-@@ -48,48 +48,62 @@ struct QEMUWin32AIOState {
- typedef struct QEMUWin32AIOCB {
-     BlockAIOCB common;
-     struct QEMUWin32AIOState *ctx;
-+    AioContext *req_ctx;
-     int nbytes;
-     OVERLAPPED ov;
-     QEMUIOVector *qiov;
-     void *buf;
-     bool is_read;
-     bool is_linear;
-+    int ret;
- } QEMUWin32AIOCB;
- 
-+static void win32_aio_completion_cb_bh(void *opaque)
-+{
-+    QEMUWin32AIOCB *waiocb = opaque;
-+
-+    waiocb->common.cb(waiocb->common.opaque, waiocb->ret);
-+    aio_context_unref(waiocb->req_ctx);
-+    qemu_aio_unref(waiocb);
-+}
-+
- /*
-  * Completes an AIO request (calls the callback and frees the ACB).
-  */
- static void win32_aio_process_completion(QEMUWin32AIOState *s,
-     QEMUWin32AIOCB *waiocb, DWORD count)
- {
--    int ret;
-     s->count--;
- 
-     if (waiocb->ov.Internal != 0) {
--        ret = -EIO;
-+        waiocb->ret = -EIO;
-     } else {
--        ret = 0;
-+        waiocb->ret = 0;
-         if (count < waiocb->nbytes) {
-             /* Short reads mean EOF, pad with zeros. */
-             if (waiocb->is_read) {
-                 qemu_iovec_memset(waiocb->qiov, count, 0,
-                     waiocb->qiov->size - count);
-             } else {
--                ret = -EINVAL;
-+                waiocb->ret = -EINVAL;
-             }
-        }
-     }
- 
-     if (!waiocb->is_linear) {
--        if (ret == 0 && waiocb->is_read) {
-+        if (waiocb->ret == 0 && waiocb->is_read) {
-             QEMUIOVector *qiov = waiocb->qiov;
-             iov_from_buf(qiov->iov, qiov->niov, 0, waiocb->buf, qiov->size);
-         }
-         qemu_vfree(waiocb->buf);
-     }
- 
--    waiocb->common.cb(waiocb->common.opaque, ret);
--    qemu_aio_unref(waiocb);
-+    if (waiocb->req_ctx == s->aio_ctx) {
-+        win32_aio_completion_cb_bh(waiocb);
-+    } else {
-+        aio_bh_schedule_oneshot(waiocb->req_ctx, win32_aio_completion_cb_bh,
-+                                waiocb);
-+    }
- }
- 
- static void win32_aio_completion_cb(EventNotifier *e)
-@@ -120,10 +134,13 @@ BlockAIOCB *win32_aio_submit(BlockDriverState *bs,
-     DWORD rc;
- 
-     waiocb = qemu_aio_get(&win32_aiocb_info, bs, cb, opaque);
-+    waiocb->req_ctx = qemu_get_current_aio_context();
-     waiocb->nbytes = bytes;
-     waiocb->qiov = qiov;
-     waiocb->is_read = (type == QEMU_AIO_READ);
- 
-+    aio_context_ref(waiocb->req_ctx);
-+
-     if (qiov->niov > 1) {
-         waiocb->buf = qemu_try_blockalign(bs, qiov->size);
-         if (waiocb->buf == NULL) {
--- 
-2.51.0
-
+Regards,
+Akihiko Odaki
 
