@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A04FC136D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 09:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AA1C136DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 09:04:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDegC-00064K-39; Tue, 28 Oct 2025 04:03:44 -0400
+	id 1vDegO-0006BH-9l; Tue, 28 Oct 2025 04:03:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeg0-000616-L5
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:03:32 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDegL-0006A1-S3
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:03:53 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDefv-0000oE-6s
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:03:32 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4770c2cd96fso19420125e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 01:03:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDegF-0000q8-Cm
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 04:03:53 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-475de184058so12574705e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 01:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761638602; x=1762243402; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761638624; x=1762243424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0bJEm1B8ks9h5HyZDKkIUNIPRZdg3XjuMbaxmF/lz1I=;
- b=UMfETVQOdyLejXM+bn0lXHRmLNYaPXRrl0gur2oUg0/hF+y80ManCvk1IsOGtf5PkJ
- fZCoBPMIYF+cz9HgADD6p8hqL17vHeD39aQXT0fANz2gAHXQpt9NNm2/czGSp73TB5YV
- UDLq2vis7IknDPMHwZsQtGqVl8smFHtgo5lXQ4cJuFi6fwzw0ehn/J76J3Nz4vSMQ77b
- HDAEwa4qZnERoYQ5EOClX/ZtQ7YZyYrjD7y856lf232PvUXO75r17ZtEV8ZzQY8AO725
- du08puqQ4h9FLEFIaYJGT/YR4C3WM2r92i+UlWjWScIRaaj+eyfLNTqSUl2zPPVo1r3Z
- sa3g==
+ bh=NfFJAb/KcoEMKci+o785xcZsNgBjcX1J9BbfpmwSLMI=;
+ b=OGoLgKdVoCaE2T3xH9wupfPbDGMJ/xnctBPlyqMa/y5KE3ZRjO17R2yQwWGaZrccvk
+ kkedxlerr73yonHvcghIJQSmeqdHIUVdOkL4sZyNYASTCyChcjw5gn8lm3gQA7nvObRM
+ TkkJzWmdDIRFJjEfrltjgewCliLbOI4tvplp8X11T6J8iCVerAmDxO7/IwU9ZuENAGxi
+ 4cxSwkPcFOzTJW7Xnm+1DStH7QFHJ9CunF5zsk1F/8fCuHMqKtmNLmK4yfIzuRSKUqgS
+ g2WDwd4ctzPrhxiGS7DKICUT08J94XmNfoIkEZ1foULuUXvekmUQ9v2n2xQlMkAgNfp0
+ TnRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761638602; x=1762243402;
+ d=1e100.net; s=20230601; t=1761638624; x=1762243424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0bJEm1B8ks9h5HyZDKkIUNIPRZdg3XjuMbaxmF/lz1I=;
- b=okIhAvJwOnZSM4j69nKqbfasBEODvRaFsW+cEh531jX+i3F/DB4UAViGnZpgXBW/Q9
- emPOvR9oC8TdgTiA4JFB9nXyi0CddJmZzw+gsS5BY8KCvkRRFpoDlkuln7ZuC+d0p88i
- 9+ht1Ks1snE/yQDKVBz3antOfRLbsC73GSW8VrR2Mw4vdT+Yz6fG303vP7qz4gxHDfoa
- BLLIWheLYmSu/JdnQ+IXSZma3rxCvWa9vxkRkeWSaE1S7Bcau3RuC3fwBLMkCwL6pZaJ
- UNk8QEfqwsaS98huNhsIsVaCrquFyGnTCCi93C86Iw8Z5W5IryBiepkCBjhfYggkg32t
- Cd7w==
-X-Gm-Message-State: AOJu0Yw8l9J8ld2LqcrT0aqvcBGTOxLOEVlakO7tFT8cywcV67f9jVJl
- 5nbs4POtpDywyxqOKM+5zVR7mwMi0Ux6hPjuIpck2AfLwTAgrgDY7W3zhp4/x0cCQNZlbmOnkx4
- btd8PB5M=
-X-Gm-Gg: ASbGncsp6LRIbJVD23rnhCDauZmrnShmMSa3YuRHGCFCXIVg+aGnROv87pRiUgfcxeq
- onaiQDgAIh6W14s/OWo99hRjWVqgFM8x5o/xleCfez1GKpHFn3bAIAkG6MRfvHoLWZL1hlU0Va7
- CIMgeTucUYhHmaZ9gJzCr64Z+lUvT97VIzdruJjINP9yhfCukrOsd6syi9jDUJXlx2FPfZgS2nk
- HR6gxWIRD/JFFA48lBxgfVoj4FjRV0LzqXJDvT2NYHoPP+l+J5G4xG640gK00mfbfZ17qWN0VlR
- p+OcL9ZWG2xuY3mSQBBA4B9MxgkB4o/bZg1pn2+dJAOgxVlW4bKZOFBN5HhQnTbgy+SolbBr5PR
- fiAhg+EVVGfb0Nkttlt7Wyte+C3bSNOEt6Qrm4BAzkgtW9ZI8rTFv8vV14QvbFXaosylLW5KInD
- Sk++Vqt5FKDaIBzOJUQmXpSElgO0bRN0mJWe1Xk1hJ/k6fcliseEcaWwI=
-X-Google-Smtp-Source: AGHT+IGu8tAz7QNSfENwh5DhebxcpB0Uf+T7MY5mWmoV8QBJEMMaI05N0PzFr/4r9vD0c/yed5mTVw==
-X-Received: by 2002:a05:600c:1554:b0:470:ffd1:782d with SMTP id
- 5b1f17b1804b1-47717df6c74mr21252585e9.6.1761638602070; 
- Tue, 28 Oct 2025 01:03:22 -0700 (PDT)
+ bh=NfFJAb/KcoEMKci+o785xcZsNgBjcX1J9BbfpmwSLMI=;
+ b=aaKaFOX1Wtu5obEPqOYlC+DBP8+tp4Rvnr/7josv4pG4KwtUzVX3HxyygVuSVp0cpv
+ C8wQtkbWqHdggL86xIYQzqDzhAFQXmz7Ph/Bl8dTKt76/7WOkeaJ5wUjqlNt+96h8oto
+ K05DFvEdGnwgxJDrVnJsOPtUHxmeNaExH8yd7Y7z27JGMAxq9JisjwMSSDxzPVrSytih
+ HxejfskKFVQ5WjCMg4vIUaJ9SY7WR3BivaOm+Qs/hiyxqJ7vDmchRNYaYj6ccHqCNgpB
+ +rj60KsGoQCWjp4h8ZAwSGXwC9bjuVX4F3HMcJpp366gp9C44gL3Yt60OsaU4iep4q/7
+ AzbA==
+X-Gm-Message-State: AOJu0Yx5d4pBIAMULpEfsUNF/m8ZxxogWzpXfWFz5Y/MvlqAdCucrLOJ
+ E/LfgUvR8eMo4W/IKctxYCDryCcpxlTQ/yb+JqBhBmQpzkfleOF+JDqr7WNK0421D7D3r8YzeCr
+ s5a1pd0E=
+X-Gm-Gg: ASbGncsFInMikonxf+n56iS79RhdR0P41gyNLDFGTlJ+eVsl/RW7fsCqGs9Ynlt6igI
+ 60ny1BiABrm3YNxR7KDgD9Yzxk+A5EltKYX+qh6Gnf4sAwgc8RBOhbf+JGwQFH5rbArax6vbdRw
+ aaCoR6JFVCo1TT8q7Q4wz+0XtfDk7QasY8YWtCOZQ2FJcsNsQ/R/qZQaC3F91pMzG37aXu64WWr
+ /DBoXDKUrCgBCdHCkdYZY0SgbS0QsrSky/oSC00NuuKmTQvjipxlQbaDCgp8NMdxo38BWb/61hK
+ nDzaQDOpBBOXPsklRbRH1jKfwEa96TnHWgpo7gUOJkMFrfcAFz6mnbW/jw9eDGrHQPH9c+zZgpz
+ vzP6kd8n3n5xuKGv4m0Xa1cvjCyrMNV9ok8j3bZtZKwEiIGfmh1Cm6r65Xkmajozc5D8tyBbtzU
+ wXwNa7I0gMV8LjmR0wQSCBKgEvVGojQqDC89WlTnJS4fDcH0J9t81Iyr4=
+X-Google-Smtp-Source: AGHT+IHslOLt0A2dbjqzbLtEsNJtl3R3pIFza8TJNrv03AKv+l+uzukq9Z2XKJvp6fa0I0jvn6HcRA==
+X-Received: by 2002:a05:600c:8b83:b0:475:daa7:ec60 with SMTP id
+ 5b1f17b1804b1-47717e522ecmr18646975e9.21.1761638623972; 
+ Tue, 28 Oct 2025 01:03:43 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd035dc2sm184181795e9.5.2025.10.28.01.03.21
+ 5b1f17b1804b1-475dd4924e2sm181628655e9.8.2025.10.28.01.03.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 01:03:21 -0700 (PDT)
+ Tue, 28 Oct 2025 01:03:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
@@ -69,20 +69,22 @@ Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v2 1/7] hw/sysbus: Use memory_region_name()
-Date: Tue, 28 Oct 2025 09:02:51 +0100
-Message-ID: <20251028080258.23309-2-philmd@linaro.org>
+Subject: [PATCH v2 2/7] hw/i386/microvm: Use proper SysBus accessors
+Date: Tue, 28 Oct 2025 09:02:52 +0100
+Message-ID: <20251028080258.23309-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028080258.23309-1-philmd@linaro.org>
 References: <20251028080258.23309-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,28 +107,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MemoryRegion::name is kind of internal. Use the proper
-memory_region_name() accessor, which might return a different
-name.
+SysBusDevice::mmio[] is kind of internal. Use the proper
+sysbus_mmio_get_region() accessor.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/sysbus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/microvm-dt.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-index ae447c1196a..d33be6b2b52 100644
---- a/hw/core/sysbus.c
-+++ b/hw/core/sysbus.c
-@@ -154,7 +154,7 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
- int sysbus_mmio_map_name(SysBusDevice *dev, const char *name, hwaddr addr)
+diff --git a/hw/i386/microvm-dt.c b/hw/i386/microvm-dt.c
+index cb27dfd732e..d7f49bc1b5f 100644
+--- a/hw/i386/microvm-dt.c
++++ b/hw/i386/microvm-dt.c
+@@ -71,7 +71,8 @@ static void dt_add_virtio(MicrovmMachineState *mms, VirtIOMMIOProxy *mmio)
+         return;
+     }
+ 
+-    hwaddr base = dev->mmio[0].addr;
++    MemoryRegion *mr = sysbus_mmio_get_region(dev, 0);
++    hwaddr base = mr->addr;
+     hwaddr size = 512;
+     unsigned index = (base - VIRTIO_MMIO_BASE) / size;
+     uint32_t irq = mms->virtio_irq_base + index;
+@@ -150,7 +151,8 @@ static void dt_add_pcie(MicrovmMachineState *mms)
+ 
+ static void dt_add_ioapic(MicrovmMachineState *mms, SysBusDevice *dev)
  {
-     for (int i = 0; i < dev->num_mmio; i++) {
--        if (!strcmp(dev->mmio[i].memory->name, name)) {
-+        if (!strcmp(memory_region_name(dev->mmio[i].memory), name)) {
-             sysbus_mmio_map(dev, i, addr);
-             return i;
-         }
+-    hwaddr base = dev->mmio[0].addr;
++    MemoryRegion *mr = sysbus_mmio_get_region(dev, 0);
++    hwaddr base = mr->addr;
+     char *nodename;
+     uint32_t ph;
+     int index;
 -- 
 2.51.0
 
