@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1FAC16120
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD47C16150
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:14:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnCv-0001Ev-BM; Tue, 28 Oct 2025 13:10:05 -0400
+	id 1vDnFt-00023Z-4N; Tue, 28 Oct 2025 13:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDnCp-0001Dp-SO
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:09:59 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1vDnFk-00020x-Rv
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:13:01 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDnCV-0000JT-Tm
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:09:46 -0400
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id C91C0811D6;
- Tue, 28 Oct 2025 20:09:33 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
- by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id U9hrmt1IrqM0-7pGDBc2Z; Tue, 28 Oct 2025 20:09:32 +0300
+ id 1vDnFc-00012U-HL
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:12:57 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 58C9EC017D;
+ Tue, 28 Oct 2025 20:12:46 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:582::1:19] (unknown
+ [2a02:6bf:8080:582::1:19])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id jChSGa1LpGk0-Qq66rqio; Tue, 28 Oct 2025 20:12:45 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761671372;
- bh=36XrE2FiyYGWPsWsaZEcXpEbfljyDHhrmcPoWm5Itbo=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=HQvRKoOoZlDhMytm+VLQBAWghH3FXrZLWMVyPBtvwd4YlvPXTqGQcE54PgFK2dJYq
- ANJNr7lCOhhb4u6ocqJ4gg+HmI6Rm/98Ody1acTvg0lHY+UVckSYcsYFnjDf+W2Hon
- UF6Q+c/KicZ04t/l1WUpL+/Ji6DQaDpx6IVyy6/8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
+ s=default; t=1761671565;
+ bh=q358qZ9y++91aGv6ZwjwQYkh6xbp4HpdGPBzZb6p2Dk=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=RH/CrMiKZ+/F/dUYTRsamA8Gmmy/3htoyjK2F50bWGgI0zmRpJPXLyLxKKXzHyxHQ
+ +wTCD+j6m5zZzsq6Cz6b1lF+ECbWfIQ3E+Ke3ycGuHcNwflxzOx6xvd33uudMk77Lw
+ ZK5wP+QB6zAKoHvZOhR0DjKARpRv5z06Q8GqALa4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <9bafb5eb-9808-428c-804d-b7122c9f598e@yandex-team.ru>
+Date: Tue, 28 Oct 2025 20:12:45 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] migration: vmsd errp handlers: return bool
 To: peterx@redhat.com
 Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
- armbru@redhat.com, berrange@redhat.com, vsementsov@yandex-team.ru,
- armenon@redhat.com
-Subject: [PATCH v4 4/4] migration: vmsd errp handlers: return bool
-Date: Tue, 28 Oct 2025 20:09:26 +0300
-Message-ID: <20251028170926.77219-2-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251028170926.77219-1-vsementsov@yandex-team.ru>
+ armbru@redhat.com, berrange@redhat.com, armenon@redhat.com
 References: <20251028130738.29037-1-vsementsov@yandex-team.ru>
- <20251028170926.77219-1-vsementsov@yandex-team.ru>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20251028130738.29037-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -74,148 +75,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No code actually depend on specific errno values returned by
-vmstate_load_state. The only use of it is to check for success,
-and sometimes inject numeric error values into error messages
-in migration code. The latter is not a stopper for gradual
-conversion to "errp + bool return value" APIs.
+On 28.10.25 16:07, Vladimir Sementsov-Ogievskiy wrote:
+> Hi.
+> 
+> Finally, I understood, that there is no real benefit in converting
+> these new APIs to bool, as it will break plans of converting all
+> other handlers to new API.
+> 
+> So, only unrelated fixes are kept in the series, maintainers may
+> pick them in separate if convenient.
+> 
+> v4:
+> 01: add r-b by Stefan
+> 02: rework to better patch (and fix one more similar issue)
 
-Big analysis of vmstate_load_state() callers, showing that
-specific errno values are not actually used, is done by Peter
-here:
+After analysis by Peter ( https://lore.kernel.org/qemu-devel/aQDdRn8t0B8oE3gf@x1.local/ ), I've added 03 and 04 back.
 
-https://lore.kernel.org/qemu-devel/aQDdRn8t0B8oE3gf@x1.local/
+Unfortunately I missed that I should use --no-thread together with --in-reply-to.. That's why 04 is reply to 03.
 
-Converting of vmstate_load_state() itself will follow in
-another series.
+> 
+> Vladimir Sementsov-Ogievskiy (2):
+>    migration: vmstate_save_state_v(): fix error path
+>    tmp_emulator: improve and fix use of errp
+> 
+>   backends/tpm/tpm_emulator.c | 63 +++++++++++++++++++++++--------------
+>   migration/vmstate.c         |  1 +
+>   2 files changed, 40 insertions(+), 24 deletions(-)
+> 
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- backends/tpm/tpm_emulator.c   | 10 ++++------
- docs/devel/migration/main.rst |  6 +++---
- include/migration/vmstate.h   |  6 +++---
- migration/vmstate.c           | 11 +++++------
- 4 files changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 6abe9872e6..846ac015b3 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -962,24 +962,22 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
- 
- /*
-  * Load the TPM state blobs into the TPM.
-- *
-- * Returns negative errno codes in case of error.
-  */
--static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
-+static bool tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
- {
-     TPMBackend *tb = opaque;
-     int ret;
- 
-     ret = tpm_emulator_set_state_blobs(tb, errp);
-     if (ret < 0) {
--        return ret;
-+        return false;
-     }
- 
-     if (tpm_emulator_startup_tpm_resume(tb, 0, true, errp) < 0) {
--        return -EIO;
-+        return false;
-     }
- 
--    return 0;
-+    return true;
- }
- 
- static const VMStateDescription vmstate_tpm_emulator = {
-diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-index 1afe7b9689..234d280249 100644
---- a/docs/devel/migration/main.rst
-+++ b/docs/devel/migration/main.rst
-@@ -446,15 +446,15 @@ The functions to do that are inside a vmstate definition, and are called:
- 
- Following are the errp variants of these functions.
- 
--- ``int (*pre_load_errp)(void *opaque, Error **errp);``
-+- ``bool (*pre_load_errp)(void *opaque, Error **errp);``
- 
-   This function is called before we load the state of one device.
- 
--- ``int (*post_load_errp)(void *opaque, int version_id, Error **errp);``
-+- ``bool (*post_load_errp)(void *opaque, int version_id, Error **errp);``
- 
-   This function is called after we load the state of one device.
- 
--- ``int (*pre_save_errp)(void *opaque, Error **errp);``
-+- ``bool (*pre_save_errp)(void *opaque, Error **errp);``
- 
-   This function is called before we save the state of one device.
- 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 63ccaee07a..dbe330dd5f 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -218,11 +218,11 @@ struct VMStateDescription {
-     int minimum_version_id;
-     MigrationPriority priority;
-     int (*pre_load)(void *opaque);
--    int (*pre_load_errp)(void *opaque, Error **errp);
-+    bool (*pre_load_errp)(void *opaque, Error **errp);
-     int (*post_load)(void *opaque, int version_id);
--    int (*post_load_errp)(void *opaque, int version_id, Error **errp);
-+    bool (*post_load_errp)(void *opaque, int version_id, Error **errp);
-     int (*pre_save)(void *opaque);
--    int (*pre_save_errp)(void *opaque, Error **errp);
-+    bool (*pre_save_errp)(void *opaque, Error **errp);
-     int (*post_save)(void *opaque);
-     bool (*needed)(void *opaque);
-     bool (*dev_unplug_pending)(void *opaque);
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 677e56c84a..4d28364f7b 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -154,13 +154,12 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-         return -EINVAL;
-     }
-     if (vmsd->pre_load_errp) {
--        ret = vmsd->pre_load_errp(opaque, errp);
--        if (ret < 0) {
-+        if (!vmsd->pre_load_errp(opaque, errp)) {
-             error_prepend(errp, "pre load hook failed for: '%s', "
-                           "version_id: %d, minimum version_id: %d: ",
-                           vmsd->name, vmsd->version_id,
-                           vmsd->minimum_version_id);
--            return ret;
-+            return -EINVAL;
-         }
-     } else if (vmsd->pre_load) {
-         ret = vmsd->pre_load(opaque);
-@@ -256,11 +255,11 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-         return ret;
-     }
-     if (vmsd->post_load_errp) {
--        ret = vmsd->post_load_errp(opaque, version_id, errp);
--        if (ret < 0) {
-+        if (!vmsd->post_load_errp(opaque, version_id, errp)) {
-             error_prepend(errp, "post load hook failed for: %s, version_id: "
-                           "%d, minimum_version: %d: ", vmsd->name,
-                           vmsd->version_id, vmsd->minimum_version_id);
-+            ret = -EINVAL;
-         }
-     } else if (vmsd->post_load) {
-         ret = vmsd->post_load(opaque, version_id);
-@@ -438,7 +437,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-     trace_vmstate_save_state_top(vmsd->name);
- 
-     if (vmsd->pre_save_errp) {
--        ret = vmsd->pre_save_errp(opaque, errp);
-+        ret = vmsd->pre_save_errp(opaque, errp) ? 0 : -EINVAL;
-         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
-         if (ret < 0) {
-             error_prepend(errp, "pre-save for %s failed: ", vmsd->name);
 -- 
-2.48.1
-
+Best regards,
+Vladimir
 
