@@ -2,84 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EEBC1412F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 491F0C1417D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:25:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDgnO-0005LK-3R; Tue, 28 Oct 2025 06:19:18 -0400
+	id 1vDgst-0000jF-Fl; Tue, 28 Oct 2025 06:24:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDgnA-0005Kj-TJ
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:19:05 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDgn7-0001tS-Um
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:19:04 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-783fa3aa35cso71125417b3.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 03:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761646736; x=1762251536; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pPXBGY/nsuMNTA/zdfPQs7Znj2i1KdprWmwqufvWZ0U=;
- b=mFd0UXKn8G4dzbRVS+RDIiifzR/hkzDnO/VsbxHaq7kFJPgQHUvqbnJ7gunKKEGa2r
- OkO4HAxAyH1PlL9/2tCmqq02ZMdiKFbgIOyrQHcVBS/6R92B8nRg7MHBw5uUTvClD/n/
- tlWgsXbAK9asV6k+3Ejl6tAf/C1M/3E7ypSfYw121hpOsswxFuqSmJuA3TK6oZN0SIeM
- ZVUPOFueHdzDIJU6DU2hc7O5k2I8LNq20+LAjx7Ycy40/CIfHBJ+Sj3PN1n+e9o34siQ
- QB++KBfo4VLFmgQ5/iqZg4duTxYOIPhW32VbfUjz1E7wGHBwYB7YxpY6/T9S3LsNIlhq
- RJbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761646736; x=1762251536;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pPXBGY/nsuMNTA/zdfPQs7Znj2i1KdprWmwqufvWZ0U=;
- b=JwRrq9VUlr1ZPhK/+i/bgEjPB9Af6S385ByRF34wavJyzuGocPXYFxTfCInES8S4vl
- RlIJAOOFnXBjnZmAMvoGB6dnFpXgWwOg1XFWoa7yZwwj+wdALVCFL42WQsTNq8Frtr1x
- KVGFo9AMNwUn1LS7D9/XaH9Cp036+TgBwgNIw3KLHqL1mnEw48piXQewwaTFU4Twn86C
- s1qJ/ty1Njx2orh6b4Ag/5cBGgWKHBNAPIFKoQI9z/Zg588jpVGHvSRO+/bfuw2hP2kt
- eLxMIPOdgAUZ8AYqC/lPVFFUb3Gubpbxukjc3ruS0hr1hs8CYGVyfsLd27qO8UBHJtSg
- EDbQ==
-X-Gm-Message-State: AOJu0YxDZBgb/xjlPDs6w5L64UyAzKH1EWn0gEtocVH4DIHo4LYaD0i/
- Aph6zrGwcs0LPxS1YNhWKwqhCy6nUr0+UN3uBo94I8h6JnXesjZpx62AohXISPqIgLgm/CF2BzH
- pVy3Ww4C4HfWm7Hol5a40ezR3ie1tFhBtbxDDywjRHQ==
-X-Gm-Gg: ASbGnct00id1sO913h2MMzSDMzQX7RU2lizU1HGZ4dMJ/+WOO9kn92G7NlAqp8+B/D0
- oddYUU8AMjIbLetwKif+gadkjVorQoyf4VZvJ6O9i7mUwn36m5deZCjiRyGi8LceIpm9l1M7SP2
- uFLU5t4JHhptNMoe9XlQ/Im/NMpx96eYnV22wc3NcrMrta5E1Os6fQWnFYHNfv+aVzm2917RePm
- ahPMrZ6GwmHX5Hrqx6szeLoEfFcUyiSFkC30vbHPNUW2TJ0dyz5bFeCMQslHg==
-X-Google-Smtp-Source: AGHT+IGo/aQ02TccOTY7s0s+Kc0g9mNurT8J1bD513Z9K4sUsAxjjkcstRCIyM0K4Tv7EKX/1714cEiH7BrRpKz3S+Q=
-X-Received: by 2002:a05:690c:61c3:b0:785:5e62:f6d1 with SMTP id
- 00721157ae682-7861816fc47mr26694217b3.61.1761646736080; Tue, 28 Oct 2025
- 03:18:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vDgse-0000in-TE
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:24:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vDgsZ-0002OJ-PG
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:24:44 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59S1jww7012355;
+ Tue, 28 Oct 2025 10:24:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=6oZvff
+ zAMiM/4rjBrHmWvX4GL05h3L9uWngW00B7nNE=; b=LoDz5yuonCFwJpijTILS40
+ y7qvA1wpfHAplBXVkhTXgqw8qFqpxocJt1ObF585t5iRMt/20tJi0aoZUROV3YCi
+ lix7A5d3Gm9qmecaRNXY8MBrxbh/+Urpnhu8WSRx2dLKH6RYeCHUk4pZRLhBHMwL
+ k4B9jD2eL9cAcwmpf3TKrVEga6xmiilJEwym8XuHUemDUhRJCJ9tuMpm5E3DvxMJ
+ kkXLHETIQVbKnptNPxZo012/ss4af4zWd6s7YaxZkDNxX2vxrwCyonfva6F+8IAV
+ 1WOFXPniFjZn1yO0gF9vQa0oJV0ESWs4LWBJ1T3/Io5DsgjI4P4kHAiasSb3V7bw
+ ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81u9f2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Oct 2025 10:24:32 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S9GvgE009477;
+ Tue, 28 Oct 2025 10:24:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3j1yu8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Oct 2025 10:24:31 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59SAORaB31785416
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Oct 2025 10:24:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CC5EF2004E;
+ Tue, 28 Oct 2025 10:24:27 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 174572004B;
+ Tue, 28 Oct 2025 10:24:26 +0000 (GMT)
+Received: from shivang.upadyay (unknown [9.39.28.67])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 28 Oct 2025 10:24:25 +0000 (GMT)
+Date: Tue, 28 Oct 2025 15:54:23 +0530
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: peter.maydell@linaro.org, adityag@linux.ibm.com, harshpb@linux.ibm.com,
+ qemu-devel@nongnu.org, sourabhjain@linux.ibm.com
+Subject: Re: [PATCH v2 1/2] hw/ppc: Fix missing return on allocation failure
+Message-ID: <dio77m3m5jj6ccgqpswkifiqztf5fz45qsjpspu2yszgwrfgha@mcwjruxszkn5>
+References: <20251028080551.92722-1-shivangu@linux.ibm.com>
+ <20251028080551.92722-2-shivangu@linux.ibm.com>
+ <8d5a8cce-d769-4cd8-9753-7e9ad37d8a47@linaro.org>
 MIME-Version: 1.0
-References: <20251020094022.68768-1-philmd@linaro.org>
-In-Reply-To: <20251020094022.68768-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Oct 2025 10:18:44 +0000
-X-Gm-Features: AWmQ_bm_TZHD6yVKf24hHJJ6Th8wAQymbucWgGTS_VkwsTu4tdOBH5ndPc2vlz8
-Message-ID: <CAFEAcA8koM_7QdJHjoJG2x+7LamY8rTV0tYkUVBRyphKNALUzw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] hw/arm/virt: Remove virt-4.1 and virt-4.2 machines
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrew Jones <ajones@ventanamicro.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- qemu-arm@nongnu.org, 
- Shannon Zhao <shannon.zhaosl@gmail.com>, Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8d5a8cce-d769-4cd8-9753-7e9ad37d8a47@linaro.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fIQ0HJae c=1 sm=1 tr=0 ts=690099e0 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=8nJEP1OIZ-IA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8
+ a=f6qUK-sOgbnvm6HaT88A:9 a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: HUyaupbnD2B5A44nGL0QRH9fEP_x3Q0N
+X-Proofpoint-GUID: HUyaupbnD2B5A44nGL0QRH9fEP_x3Q0N
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfX2f7UYjRyHMZP
+ c0Mo3o7CQh0NaSVO8q55fT8C4Wf1jQxnHBI7jV264djAXzpyaxQCPHTJel/SZfKlbrQcrXyc2Cp
+ nsVqJdPbP3j5AGbn4MYFR7BWbA1dJfs9xcnCqqlC86rJWD92RaABCfSC4UzK8m5Samyu1bJFEGs
+ ItnmWX0LB9hhEYcIOGoQbiZPLIDDQscFGZWfzXJAFvdgZD2wBdM6TC3DSS06ydWy4KJtsmyXc+J
+ yzPaYypROxdE0YyShNa3vPwIiRuzu8YAn3h3SxVgb1agLq8atKrh2q5emDjZJ5GEKXP0wOdY25r
+ dOyBdWUxoqOhgzRX0k9NidcpRg+z7tEQi05BQTz2rkyc9IYMZV9/MU+ULvvyvNpnK28ybJn9OOY
+ H9Ao02RPsXO4r3PvR2k/szmQI+RvBw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_04,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=shivangu@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,25 +122,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 20 Oct 2025 at 10:40, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Since v1:
-> - Do not remove virt-6.0 -> virt-7.2 (danpb)
->
-> Remove the deprecated virt-4.1 and virt-4.2 machines,
-> which are older than 6 years. Remove resulting dead code.
->
-> Philippe Mathieu-Daud=C3=A9 (4):
->   hw/arm/virt: Remove deprecated virt-4.1 machine
->   hw/arm/virt: Remove VirtMachineClass::no_ged field
->   hw/arm/virt: Remove deprecated virt-4.2 machine
->   hw/arm/virt: Remove VirtMachineClass::kvm_no_adjvtime field
->
+On Tue, Oct 28, 2025 at 09:35:40AM +0100, Philippe Mathieu-Daudé wrote:
+> On 28/10/25 09:05, Shivang Upadhyay wrote:
+> > Fixes coverity (CID 1642026)
+> > 
+> > Cc: Aditya Gupta <adityag@linux.ibm.com>
+> > Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> > Link: https://lore.kernel.org/qemu-devel/CAFEAcA-SPmsnU1wzsWxBcFC=ZM_DDhPEg1N4iX9Q4bL1xOnwBg@mail.gmail.com/
+> > Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> > Signed-off-by: Shivang Upadhyay <shivangu@linux.ibm.com>
+> > ---
+> >   hw/ppc/spapr_fadump.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/hw/ppc/spapr_fadump.c b/hw/ppc/spapr_fadump.c
+> > index fa3aeac94c..883a60cdcf 100644
+> > --- a/hw/ppc/spapr_fadump.c
+> > +++ b/hw/ppc/spapr_fadump.c
+> > @@ -234,6 +234,7 @@ static bool do_preserve_region(FadumpSection *region)
+> >           qemu_log_mask(LOG_GUEST_ERROR,
+> 
+> FWIW host heap exhaustion is not really a *guest* error, because the
+> guest can not control it.
+Hi, Philippe
 
 
+Thanks for the review. There are following log level defined in log.h
 
-Applied to target-arm.next, thanks.
+	....
 
--- PMM
+	#define CPU_LOG_TB_OUT_ASM (1u << 0)
+	#define CPU_LOG_TB_IN_ASM  (1u << 1)
+	#define CPU_LOG_TB_OP      (1u << 2)
+	#define CPU_LOG_TB_OP_OPT  (1u << 3)
+	#define CPU_LOG_INT        (1u << 4)
+	#define CPU_LOG_EXEC       (1u << 5)
+	#define CPU_LOG_PCALL      (1u << 6)
+	#define CPU_LOG_TB_CPU     (1u << 8)
+	#define CPU_LOG_RESET      (1u << 9)
+	#define LOG_UNIMP          (1u << 10)
+	#define LOG_GUEST_ERROR    (1u << 11)
+	#define CPU_LOG_MMU        (1u << 12)
+	#define CPU_LOG_TB_NOCHAIN (1u << 13)
+	#define CPU_LOG_PAGE       (1u << 14)
+	/* LOG_TRACE (1 << 15) is defined in log-for-trace.h */
+	#define CPU_LOG_TB_OP_IND  (1u << 16)
+	#define CPU_LOG_TB_FPU     (1u << 17)
+	#define CPU_LOG_PLUGIN     (1u << 18)
+	/* LOG_STRACE is used for user-mode strace logging. */
+	#define LOG_STRACE         (1u << 19)
+	#define LOG_PER_THREAD     (1u << 20)
+	#define CPU_LOG_TB_VPU     (1u << 21)
+	#define LOG_TB_OP_PLUGIN   (1u << 22)
+	#define LOG_INVALID_MEM    (1u << 23)
+
+	....
+
+Which one do you recommend we use? or May we introduce a `LOG_HOST_ERROR`,
+if that's more appropriate.
+
+Thanks
+~Shivang.
+> 
+> >               "FADump: Failed allocating memory (size: %zu) for copying"
+> >               " reserved memory regions\n", FADUMP_CHUNK_SIZE);
+> > +        return false;
+> >       }
+> >       num_chunks = ceil((src_len * 1.0f) / FADUMP_CHUNK_SIZE);
+> 
 
