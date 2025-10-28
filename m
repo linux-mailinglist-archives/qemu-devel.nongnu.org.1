@@ -2,94 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDB1C12E93
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 06:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CC4C12FB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 06:37:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDbwp-0006Oz-TB; Tue, 28 Oct 2025 01:08:43 -0400
+	id 1vDcMg-0001nR-Es; Tue, 28 Oct 2025 01:35:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1vDbwn-0006OW-30
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:08:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDcMd-0001ma-SG
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:35:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1vDbwi-0005gG-Aa
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:08:40 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vDcMX-0000zN-B9
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:35:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761628113;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=VGW1/Zk/bvozkpRgLkqGOHGHcGKL5In8js7WQYsRL5Y=;
- b=BgXcwToHfYzye3swsX9cdu2LZ/j0JKoNiXrIh8kdfvB4oyXCnyuwMVOn1wBOJxPll2L7N4
- HTecNRioBGjyWjTWQxASOL5GuZSuyPUstI11hTqBuk7NvtKX1Ql3QH3llPxBaQJtAjC5ze
- AC0VyPcCtfL8ebGzF2zGNXBWwaxzUCk=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-vEyAYCUCPB-rIMnzUzPUjg-1; Tue, 28 Oct 2025 01:08:32 -0400
-X-MC-Unique: vEyAYCUCPB-rIMnzUzPUjg-1
-X-Mimecast-MFC-AGG-ID: vEyAYCUCPB-rIMnzUzPUjg_1761628111
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-b6ceba8968dso4009570a12.2
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 22:08:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761628111; x=1762232911;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VGW1/Zk/bvozkpRgLkqGOHGHcGKL5In8js7WQYsRL5Y=;
- b=CdwX4Kp7cMsWyHjRg4by6sMpC2UKGC2J/0mbFmeBWjlssG2W/Ol+gWY67UDWsnPLLK
- kEH5+at0lxdEaMLCmAnzHLsugaonnT2J/OGrmNs8FOS2HKoMFyji+b2IpGIcba8XWIKE
- /KeP+ScrDRKHOoHoG+5LMbFy7v/6JfRMSjVJ8FJvw6YQwkEDSaPTOqRwOiVf5iGnUnQu
- Z6ykVHBygdKJhvQWGR+w3gdlcdmOjVXMfAW42z58nzjneTQuNcH6kjR3oQObprFdd5nd
- DVw2Vo7Aw/tmJ4VqMAju0OVItZknnX8+8oh31VLLhDS0WawDIDB2mzOcfx6q4cUoX3gD
- x3TA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIs2GBoKLYzOP9afbw9K/L35onYefAGzabqLCjmXGGeDcvHtDQSaaGrCPTOgDObjjOBi4vuJDQyb8u@nongnu.org
-X-Gm-Message-State: AOJu0YzI2YWA5onyCwrxszk9TNbMaqjMVWoXJRDai0b3UFrwZpRr7l9p
- tKtwsQXnVYy5KVMn5wAxAOmW8Y3vmjaBvGJA3bmI39OOOc175wLLFUIrdCYzbE93mla8NkRTsAL
- kaTkD5K6HE2cHDAjs7OuZZXaJBgYh6FajbDK6TdNUJl2pH/Aath81tGWS
-X-Gm-Gg: ASbGnctWWX3SQMPuYpTGQBkZpsToTpi9YZM9dDYKisHELmh/KYfCsB+7RZRFkZDZi3J
- N9iZrpTUKy2K66p4P1lh/kmA47Bguq1sLoG7lcFSswYatfpCldZWP/O6AfyzJbFx48ngbL8Zwrt
- 2PBKjLVF5p+gxNPQAGs74FzEjYITYcZ4i+gwTUhv36e3NgcRVPaytDmVB6krhhp2d1TXwUZ5PGT
- pVXG1C96qWtTrexMh/wkftvSiDuT9ISGz/Hd+2OGqhuwlnneeNZNO2GLW/3aVSw1STUJMquDcKS
- OFbQ+zQM/azvrOVhBla4Ge31+8sIzZMPD4hhWy8n1hUbxaocrhKC4139M+XkvWsbseSmfBjpMvB
- zRkhDmnC8nhUS
-X-Received: by 2002:a05:6a21:3291:b0:342:d58b:560b with SMTP id
- adf61e73a8af0-344d4036346mr2996460637.52.1761628111042; 
- Mon, 27 Oct 2025 22:08:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJbcg4wwvI9URqDDFgNFYsVlVvPgjhyQfz2iBps+iZbhILSlZBIBd8G8tVyNhmOnwzYE02mw==
-X-Received: by 2002:a05:6a21:3291:b0:342:d58b:560b with SMTP id
- adf61e73a8af0-344d4036346mr2996440637.52.1761628110659; 
- Mon, 27 Oct 2025 22:08:30 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.36.108.180])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b8087fac6d5sm3683589a12.15.2025.10.27.22.08.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Oct 2025 22:08:30 -0700 (PDT)
-Date: Tue, 28 Oct 2025 10:38:23 +0530
-From: Arun Menon <armenon@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Markus Armbruster <armbru@redhat.com>, peterx@redhat.com,
- stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
- berrange@redhat.com
-Subject: Re: [PATCH v3 4/4] migration: vmsd errp handlers: return bool
-Message-ID: <aQBPx3B4ynruu5Qn@armenon-kvm.bengluru.csb>
-References: <20251025202649.1122420-1-vsementsov@yandex-team.ru>
- <20251025202649.1122420-5-vsementsov@yandex-team.ru>
- <87o6psocib.fsf@pond.sub.org>
- <9f5ba3d7-3103-4d2a-b50f-f8883a18c812@yandex-team.ru>
- <aP-eHzbAtvNp3N3d@armenon-kvm.bengluru.csb>
- <2699d795-25b0-41ce-b884-ce1a357a1417@yandex-team.ru>
+ s=mimecast20190719; t=1761629715;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zJ7T3RKNfHufyXopZ2Sxa0jpKLqQ1SrDFQNYVVEtFY4=;
+ b=Pkq7NrKmVUbL05w1wHGR276zHShW+Oc6b4hsxNb+BGfl7LbzKNmWG531IJCnuywRAc886b
+ +TWLQCGKIqGjd0jOEyT6U0YuZwxobSylUsaYeq11KopK8OlaWp3/wP49oVAQZm3Jn4BvgG
+ Lz7WCIDbkD4n5nk1WD2Nh1YGgm2K4Ic=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-XPD8MZItM7Sl49YjKnQrag-1; Tue,
+ 28 Oct 2025 01:35:09 -0400
+X-MC-Unique: XPD8MZItM7Sl49YjKnQrag-1
+X-Mimecast-MFC-AGG-ID: XPD8MZItM7Sl49YjKnQrag_1761629708
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 81524180A222; Tue, 28 Oct 2025 05:35:07 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D639D18004D4; Tue, 28 Oct 2025 05:35:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2538C21E6A27; Tue, 28 Oct 2025 06:35:04 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Donald Dutile <ddutile@redhat.com>
+Cc: eric.auger@redhat.com,  Peter Maydell <peter.maydell@linaro.org>,
+ Shameer Kolothum <skolothumtho@nvidia.com>,  qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org,  nicolinc@nvidia.com,  nathanc@nvidia.com,
+ mochs@nvidia.com,  jonathan.cameron@huawei.com
+Subject: Re: [PATCH v2] docs/system/arm/virt: Document user-creatable SMMUv3
+In-Reply-To: <5e897607-2c33-46f2-b2ab-579a2f4b6385@redhat.com> (Donald
+ Dutile's message of "Mon, 27 Oct 2025 22:13:11 -0400")
+References: <20251024084350.252702-1-skolothumtho@nvidia.com>
+ <CAFEAcA8SAQO0frmN-rK6zp_-fEGXLefAXAxHmT=LASqEL-UU5g@mail.gmail.com>
+ <c21641fd-1a35-4b47-a361-bfc2daf7dbd7@redhat.com>
+ <5e897607-2c33-46f2-b2ab-579a2f4b6385@redhat.com>
+Date: Tue, 28 Oct 2025 06:35:04 +0100
+Message-ID: <87v7jzk2rb.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2699d795-25b0-41ce-b884-ce1a357a1417@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armenon@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,34 +85,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: armenon@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Vladimir,
+Donald Dutile <ddutile@redhat.com> writes:
 
-On Mon, Oct 27, 2025 at 11:33:22PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 27.10.25 19:30, Arun Menon wrote:
-> > We wanted the new errp variants to be structurally as close to the old
-> > ones as possible so that we can perform a bulk change later.
-> 
-> Still, could you clarify, are you plan to do this bulk change? Or it was
-> a theoretical possibility?
+> On 10/27/25 10:13 AM, Eric Auger wrote:
 
-Yes I want to, when time permits. Most of the post_load() calls,
-just like post_save, do not fail. That is the reason why post_save does not have
-an errp variant. They always return 0.
-But there are a few of them that can fail and return an error code. I need to figure out
-what would be the appropriate messages to set in errp in those cases so we
-can propagate it back to the caller.
+[...]
 
-> 
-> -- 
-> Best regards,
-> Vladimir
-> 
+>> Looks good to me as well
+>> Fell free to add my R-b
+>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>> Thanks!
+>> Eric
+>> 
+> +1; looks good; can add my r-b if another is desired/needed.
+> - Don
 
-Regards,
-Arun Menon
+When you put in the review work, claim the review credit!  Suggest you
+spell out your R-by.
 
 
