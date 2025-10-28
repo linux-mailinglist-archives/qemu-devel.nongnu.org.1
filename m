@@ -2,59 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE69C17003
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 22:31:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8F2C171D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 23:05:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDrEx-00068p-AF; Tue, 28 Oct 2025 17:28:27 -0400
+	id 1vDrnO-0005IR-2s; Tue, 28 Oct 2025 18:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vDrEs-00068J-DY; Tue, 28 Oct 2025 17:28:22 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vDrnM-0005IG-BS
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 18:04:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vDrEm-0005D6-VF; Tue, 28 Oct 2025 17:28:22 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A80D75972FD;
- Tue, 28 Oct 2025 22:28:03 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id o50hu3AVEoAW; Tue, 28 Oct 2025 22:28:01 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2EB9F5972E3; Tue, 28 Oct 2025 22:28:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2C01F5972E9;
- Tue, 28 Oct 2025 22:28:01 +0100 (CET)
-Date: Tue, 28 Oct 2025 22:28:01 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH 2/4] hw/pci-host/articia: Map PCI memory windows in realize
-In-Reply-To: <802b77f2-2c23-4b5a-a739-d56b09c335de@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <28c6f065-ba8d-e5e2-922e-d5fd1fb58b60@eik.bme.hu>
-References: <cover.1761346145.git.balaton@eik.bme.hu>
- <ceda4c28887c40e1c8eae3f561ee381ca98b0484.1761346145.git.balaton@eik.bme.hu>
- <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
- <87b009e6-0d51-7409-61ad-dd65582eb13e@eik.bme.hu>
- <d23d5106-645c-466f-86e1-30ce20cc61d3@linaro.org>
- <dbdbc78f-3d4b-c0b2-87ac-85e24568a115@eik.bme.hu>
- <802b77f2-2c23-4b5a-a739-d56b09c335de@rsg.ci.i.u-tokyo.ac.jp>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vDrnG-0000oR-OL
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 18:04:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761689028;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/BHXZtoKgcFdnXdzf3o9ojk9zpEFOUtFCsNLPaM6lIc=;
+ b=XLF1Ko+J244sEnKQsyN8QmvQLoylnx2PKIi6ed3E2jEizACuFrO1h4kg/NPxfBE3vxJrdL
+ uKHTOeyga8OV/3tJncq1gG+GlWezLwDAY+Dlj/kAopJJCZHniveG9n3rJvaJcsICs/zGcw
+ QRLsTMGOHoiAFVSbxs4r9iRWXZWUvlw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-oYpZ1L_YMNSEULOHsD3I1A-1; Tue,
+ 28 Oct 2025 18:03:47 -0400
+X-MC-Unique: oYpZ1L_YMNSEULOHsD3I1A-1
+X-Mimecast-MFC-AGG-ID: oYpZ1L_YMNSEULOHsD3I1A_1761689026
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C90C9195420D; Tue, 28 Oct 2025 22:03:45 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.120])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 95BCD30001A2; Tue, 28 Oct 2025 22:03:43 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH RFC 00/10] RFC: Drop qemu.qmp from qemu.git
+Date: Tue, 28 Oct 2025 18:03:30 -0400
+Message-ID: <20251028220342.1407883-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-2050017950-1761686881=:49727"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,164 +83,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+This is an RFC, there's definitely a ton of nits here to smooth over,=0D
+but I need help.=0D
+=0D
+1) The custom target I added to invoke the mkvenv ensure_group command=0D
+to install test deps uses a junk output target that isn't actually=0D
+pointed at the blank group file that mkvenv creates, because it's in=0D
+another directory and meson doesn't like allowing you to specify targets=0D
+in other directories. I'm not sure what the best way to fix this is...=0D
+=0D
+2) I only made iotests depend on this new custom target, because it was=0D
+easy to do. I was not immediately sure what the correct way to make the=0D
+functests depend on this new target was, so that needs adjusted.=0D
+=0D
+3) I did not remove the legacy "check-venv" target yet as with this=0D
+patchset I have split apart the testing dependencies into the core=0D
+dependencies and the functional dependencies. Ideally, "check-venv" is=0D
+removed and we add a second custom target to meson that replaces this=0D
+legacy target.=0D
+=0D
+4) I have so far not made any provisions to allow running iotest's check=0D
+script from outside of the build system, but I am hoping it won't be too=0D
+difficult to achieve ...=0D
+=0D
+5) There's likely a bunch of python tests that are now yapping and=0D
+yelping after I so cruelly removed one of our libraries from out of the=0D
+tree, I will smooth those over before the final push, but I can work on=0D
+this in parallel while I wait for feedback and advice on the above=0D
+items.=0D
+=0D
+John Snow (10):=0D
+  python/mkvenv: ensure HAVE_LIB variables are actually constants=0D
+  python/qapi: Add an ignore for Pylint 4.x=0D
+  python/mkvenv: create timestamp file for each group "ensured"=0D
+  python/mkvenv: bump 'qemu.qmp' dependency for testdeps=0D
+  python/mkvenv: rename 'testdeps' to 'functests'=0D
+  python/mkvenv: add "tests" dependency group=0D
+  meson: create meson custom target for python test dependencies=0D
+  meson: make iotests depend on pyvent_test_deps=0D
+  python: quote dotted dependency keys=0D
+  python: delete qemu.qmp=0D
+=0D
+ .gitlab-ci.d/buildtest.yml                    |    1 +=0D
+ python/qemu/qmp/__init__.py                   |   60 -=0D
+ python/qemu/qmp/error.py                      |   53 -=0D
+ python/qemu/qmp/events.py                     |  751 -----------=0D
+ python/qemu/qmp/legacy.py                     |  339 -----=0D
+ python/qemu/qmp/message.py                    |  217 ----=0D
+ python/qemu/qmp/models.py                     |  146 ---=0D
+ python/qemu/qmp/protocol.py                   | 1101 -----------------=0D
+ python/qemu/qmp/py.typed                      |    0=0D
+ python/qemu/qmp/qmp_client.py                 |  732 -----------=0D
+ python/qemu/qmp/qmp_shell.py                  |  689 -----------=0D
+ python/qemu/qmp/qmp_tui.py                    |  665 ----------=0D
+ python/qemu/qmp/util.py                       |  150 ---=0D
+ python/qemu/utils/qom_fuse.py                 |    1 -=0D
+ python/scripts/mkvenv.py                      |   30 +-=0D
+ python/scripts/vendor.py                      |    2 +=0D
+ python/setup.cfg                              |   32 +-=0D
+ python/tests/minreqs.txt                      |    8 +-=0D
+ python/tests/protocol.py                      |  596 ---------=0D
+ python/wheels/qemu_qmp-0.0.5-py3-none-any.whl |  Bin 0 -> 72263 bytes=0D
+ pythondeps.toml                               |    7 +-=0D
+ scripts/qapi/introspect.py                    |    2 +-=0D
+ tests/Makefile.include                        |    2 +-=0D
+ tests/meson.build                             |   15 +=0D
+ tests/qemu-iotests/meson.build                |    2 +-=0D
+ 25 files changed, 55 insertions(+), 5546 deletions(-)=0D
+ delete mode 100644 python/qemu/qmp/__init__.py=0D
+ delete mode 100644 python/qemu/qmp/error.py=0D
+ delete mode 100644 python/qemu/qmp/events.py=0D
+ delete mode 100644 python/qemu/qmp/legacy.py=0D
+ delete mode 100644 python/qemu/qmp/message.py=0D
+ delete mode 100644 python/qemu/qmp/models.py=0D
+ delete mode 100644 python/qemu/qmp/protocol.py=0D
+ delete mode 100644 python/qemu/qmp/py.typed=0D
+ delete mode 100644 python/qemu/qmp/qmp_client.py=0D
+ delete mode 100644 python/qemu/qmp/qmp_shell.py=0D
+ delete mode 100644 python/qemu/qmp/qmp_tui.py=0D
+ delete mode 100644 python/qemu/qmp/util.py=0D
+ delete mode 100644 python/tests/protocol.py=0D
+ create mode 100644 python/wheels/qemu_qmp-0.0.5-py3-none-any.whl=0D
+=0D
+-- =0D
+2.51.0=0D
+=0D
 
---3866299591-2050017950-1761686881=:49727
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 29 Oct 2025, Akihiko Odaki wrote:
-> On 2025/10/28 21:59, BALATON Zoltan wrote:
->> On Tue, 28 Oct 2025, Philippe Mathieu-Daudé wrote:
->>> On 27/10/25 20:47, BALATON Zoltan wrote:
->>>> On Mon, 27 Oct 2025, Philippe Mathieu-Daudé wrote:
->>>>> On 25/10/25 01:31, BALATON Zoltan wrote:
->>>>>> These memory windows are a result of the address decoding in the
->>>>>> Articia S north bridge so better model it there and not in board code.
->>>>>> 
->>>>>> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>>>> ---
->>>>>>   hw/pci-host/articia.c | 15 ++++++++++++++-
->>>>>>   hw/ppc/amigaone.c     | 28 +++++-----------------------
->>>>>>   hw/ppc/pegasos2.c     | 13 -------------
->>>>>>   3 files changed, 19 insertions(+), 37 deletions(-)
->>>>> 
->>>>> 
->>>>>> @@ -169,6 +174,7 @@ static void articia_realize(DeviceState *dev, Error 
->>>>>> **errp)
->>>>>>   {
->>>>>>       ArticiaState *s = ARTICIA(dev);
->>>>>>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
->>>>>> +    MemoryRegion *mr;
->>>>>>       PCIDevice *pdev;
->>>>>>         bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
->>>>>> @@ -180,6 +186,14 @@ static void articia_realize(DeviceState *dev, 
->>>>>> Error **errp)
->>>>>>       memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
->>>>>>                             TYPE_ARTICIA, 0x1000000);
->>>>>>       memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
->>>>>> +    mr = g_new(MemoryRegion, 1);
->>>>> 
->>>>> Won't Coverity or other analysis tools complain about the leak?
->>>>> (this is why we usually keep a reference in the device state, here
->>>>> ArticiaState). Otherwise:
->>>> 
->>>> According to https://www.qemu.org/docs/master/devel/ memory.html#region- 
->>>> lifecycle
->>>> there should be no leak and keeping a reference should not be necessary 
->>>> as the lifetime is managed by attaching it to the owner object so no need 
->>>> to keep a reference when it's not needed otherwise. Not littering the 
->>>> state struct with unneded references makes it easier to comprehend so I'd 
->>>> only keep things there that are necessary.
->>> 
->>> IIUC this doc is about what happens within the allocated MemoryRegion,
->>> regardless of where it is allocated.
->> 
->> That doc explicitely says:
->> 
->> "Destruction of a memory region happens automatically when the owner object 
->> dies. When there are multiple memory regions under the same owner object, 
->> the memory API will guarantee all memory regions will be properly detached 
->> and finalized one by one. The order in which memory regions will be 
->> finalized is not guaranteed."
->
-> Destruction in this context does not imply freeing the storage.
->
-> The documentation describes destruction in QOM. QOM performs the following 
-> steps during destruction:
-> 1. Delete properties
-> 2. Call finalization callbacks
-> 3. Free the storage
->
-> However, 3 will not happen in this case since you allocate the storage by 
-> yourself and it is not managed by QOM.
->
-> Please also note that the documentation also says:
->> If however the memory region is part of a dynamically allocated data
->> structure, you should free the memory region in the instance_finalize
->> callback.  For an example see VFIOMSIXInfo and VFIOQuirk in
->> hw/vfio/pci.c.
-
-So the problem is probably using g_new() to allocate it. Maybe this should 
-be object_new() instead? I was trying to figure out how this should work 
-but not sure I understand everything. It looks like as long as the mr has 
-a name, memory_region_init() will add the mr as a child property to the 
-owner and unref it so the reference will be passed to the owner which will 
-own this mr after that. On destructing the owner it will delete all its 
-properties which should dereference the memory region so it would be freed 
-then if it had a free function set but it seems allocating with g_new and 
-init-ing the region with memory_region_init() won't set the free function. 
-Only way to set that seems to be object_new() but that also inits the 
-object so maybe using it would double init the mr or add an extra 
-reference so that may also not work. The extra ref could be solved by 
-unref'ing after memory_region_init() but double init seems to be 
-unnecessary. Maybe we need a memory_region_new_* set of functions or 
-simpler than that an object_alloc() that allocates the object without
-init it that could be used in this case when init is done by other 
-function like memory_region_init in this case?
-
->> (and these pci-host objects are created once at machine init and never die 
->> so the question seems quite theoretical). I'd like to keep object state 
->> simple and not keep around references in it that nothing uses and should be 
->> managed automatically. I'd only add fields to the state struct that other 
->> methods need.
->
-> It is indeed theoretical. That said, I prefer the memory region to be 
-> embedded into the device state struct as it will clarify that the lifetime of 
-> the memory region is bound to the device.
-
-But that way a lot of otherwise not needed fields would make the state 
-struct more crowded and harder to see what's actually used there. Maybe 
-this could be remedied by grouping these at the end below a comment but if 
-ref counting worked as the docs state it this should not be necessary.
-
-Before my cleanup the state strcut in raven.c looked like this:
-
-struct PRePPCIState {
-     PCIHostState parent_obj;
-
-     OrIRQState *or_irq;
-     qemu_irq pci_irqs[PCI_NUM_PINS];
-     PCIBus pci_bus;
-     AddressSpace pci_io_as;
-     MemoryRegion pci_io;
-     MemoryRegion pci_io_non_contiguous;
-     MemoryRegion pci_memory;
-     MemoryRegion pci_intack;
-     MemoryRegion bm;
-     MemoryRegion bm_ram_alias;
-     MemoryRegion bm_pci_memory_alias;
-     AddressSpace bm_as;
-     RavenPCIState pci_dev;
-
-     int contiguous_map;
-};
-
-which would become this after this series:
-
-struct PREPPCIState {
-     PCIHostState parent_obj;
-
-     qemu_irq irq;
-     MemoryRegion pci_io;
-     MemoryRegion pci_discontiguous_io;
-     MemoryRegion pci_memory;
-     MemoryRegion pci_intack;
-     AddressSpace bm_as;
-};
-
-if we don't have to keep regions we don't use after realize so those can 
-be managed by QOM which is much more readable and comprehensible to me.
-
-(Unrelated question but I'm still not sure what the bm_as is for. This 
-seems to be present in some pci-hosts and may be needed for bus master 
-cards but I just carried it over to my devices as a cargo cult without 
-really getting why is it needed and why is it needed here and not in 
-PCIHostState. Is there any explanation on that somewhere?)
-
-Regards,
-BALATON Zoltan
---3866299591-2050017950-1761686881=:49727--
 
