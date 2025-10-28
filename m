@@ -2,63 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7859C14C58
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 14:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7049C14C82
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 14:11:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDjQx-0000N9-LN; Tue, 28 Oct 2025 09:08:21 -0400
+	id 1vDjTc-0002IY-QJ; Tue, 28 Oct 2025 09:11:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDjQb-0000JT-Q3
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 09:07:58 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vDjTV-0002Ht-Ge
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 09:10:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDjQT-0000v7-DL
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 09:07:57 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 177F3C02A2;
- Tue, 28 Oct 2025 16:07:43 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id d7duxl1L2qM0-znihA1Fe; Tue, 28 Oct 2025 16:07:42 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761656862;
- bh=87rM9PFrFHIqtwWn9a7lbC9w3iiM+mfRmmZFaEhia+s=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Ma+o84lMocB0H2QH8+L45fh8N/RqXLrCVlj+AfRrSrKhXt4rZxmI2xlTwxCPZiXbK
- /4UtuwEpVm7CFsZPiue4R84159sxoIJ5LnLkW6RHC10XA1J4gYcPVUheJzg7TiPWyY
- qP5H0ZfXycnYZvsziObMU3SKPETjlKhW3BPE5ONc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: peterx@redhat.com
-Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
- armbru@redhat.com, berrange@redhat.com, vsementsov@yandex-team.ru,
- armenon@redhat.com
-Subject: [PATCH v4 2/2] tmp_emulator: improve and fix use of errp
-Date: Tue, 28 Oct 2025 16:07:38 +0300
-Message-ID: <20251028130738.29037-3-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251028130738.29037-1-vsementsov@yandex-team.ru>
-References: <20251028130738.29037-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vDjTM-0001QO-MS
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 09:10:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761657042;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=B2uBjHvjp+rxM+YNv1+CIZ7OuVYSXpYXKg37sphaSyo=;
+ b=WTOT9fMiEO9Bg4l5KAKNBMJ4BtJO0tz+cYqa8XQQKD0B2RiQhNmhes3HR5+U/DqHvBIhZo
+ aMuTZP+wBrv7YCUcVCjFevhluKqVchBUlXo9xDEQD9lwT7HvTaKRIspET7eW52gYXBxHaN
+ Xvtu06qq+aFtEIWN/k/Roozve6mZw58=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-18-8E00jibVMuuuh-NvQPb1Sg-1; Tue, 28 Oct 2025 09:10:40 -0400
+X-MC-Unique: 8E00jibVMuuuh-NvQPb1Sg-1
+X-Mimecast-MFC-AGG-ID: 8E00jibVMuuuh-NvQPb1Sg_1761657039
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-42992cb2ee8so2060070f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 06:10:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761657039; x=1762261839;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B2uBjHvjp+rxM+YNv1+CIZ7OuVYSXpYXKg37sphaSyo=;
+ b=k6ux4v0u97QPfKGk638OhDf0LWuG7+5hIRmz9ZmvYGHsT1LIit1lGaQlfV8vCaqWnk
+ 5kUSun+jpE8dmq6zOOwFvyfUjA6oijjFUwNEIwHCVF0EunZk1uDmDRMtkr+G1wKf1Tzi
+ 7JHiS/Uke91P3WcOCjibrdBwiQ7jjbNBMrq9ec4oJVwVObpICY2ykQJA917TzjlYlJVU
+ bedW52j8mUnuMn5kKBCEcbYE6EgTKJnFXCMIdgz0j3bC21bOLqBSqSdzEnUU6BNE7JNK
+ JLBwRiLpgFHO2hjvgvNDyTQXQhtxKyCgaCCRqUtHoR7cVBG1I1W9+1lIcHwREuwqYcAu
+ /ePw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUMMZ5t8LSTfOmUatKKEQ9FDuhredAbMBdx/B4JyUNDRs/UZtJb3/7e7Lr4FDmTcd9jRNpK5rm6aV/q@nongnu.org
+X-Gm-Message-State: AOJu0Yzwu79S18od0svUnVvwreiUv9t8dUR04KCBFydRgU2de2mpgpm4
+ 5UOYL/vZ3td51WvQJq+ehKdd1TFvqXWpdnVCue1VjAwwzbObXMIP91BZki2wHaFvDhnGrMyaVLK
+ Hk4vCEQxiQ2uYkoSI/EO0CrSkJeGxo26NoNXtuvKvs6RzsONqfZc6wJ1m+j9SBRJJRlCEuMBb2A
+ sAWRT7WXJrQ48V7HSp97IsmI1QTTjHEdw=
+X-Gm-Gg: ASbGncv00NulZ4l2g1SnGVCf/LxpWPlh0wPfjjXgf+rQsomLD2SZ8hBv3T3i25d737X
+ Kv9YlKr31o9/fZ6iMgm0DXxQICc6cVwZJe8N+rW8WZT00nL7m0Dw+cu4cv7tccAPun05kqiEWzz
+ RA8jQT/ONgoneIXsZ+MxIz7QuDowzl4FMqUTdF08cnnrybWCVOaYJRiB2/Vu61W7bHh9EURG2/Z
+ To5oeEV22wCgQn8QfoYoXO0x2tRX6lpeI2Kxn193X36IWpQEr/YjyW1gd/P
+X-Received: by 2002:a05:6000:2508:b0:405:3028:1bf0 with SMTP id
+ ffacd0b85a97d-429a7e4eb62mr2920472f8f.10.1761657039322; 
+ Tue, 28 Oct 2025 06:10:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxUNVc6iqLHWou2f5q4canDtbA5jUMypNlSTbs1Kj5pwUD7jEJAHf7fV8eq0gCFSkSDt2fx9Nht8NJz0CKBqQ=
+X-Received: by 2002:a05:6000:2508:b0:405:3028:1bf0 with SMTP id
+ ffacd0b85a97d-429a7e4eb62mr2920445f8f.10.1761657038909; Tue, 28 Oct 2025
+ 06:10:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20251022101420.36059-1-armbru@redhat.com>
+ <20251022101420.36059-3-armbru@redhat.com>
+ <58177628-7349-4450-a4c0-58bd44b39586@redhat.com>
+ <87qzuniadg.fsf@pond.sub.org> <aQCiCi5wsBA4Jq5V@redhat.com>
+In-Reply-To: <aQCiCi5wsBA4Jq5V@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 28 Oct 2025 14:10:26 +0100
+X-Gm-Features: AWmQ_bnFoQG0qtujnAgkNlbEHLmRPgPpBQiIaz3U6A9g31ihF3LRSclttjYt-j0
+Message-ID: <CABgObfbHcMBmpJNaSBUMTAWm=_+9M3aeBXHgZOiNyNDfzpCm1g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] qdev: Fix "info qtree" to show links
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ marcandre.lureau@redhat.com, eduardo@habkost.net, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,190 +107,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tpm_emulator_post_load() and tpm_emulator_set_state_blobs() has
-error paths, where they return negative value, but do not set
-errp.
+On Tue, Oct 28, 2025 at 11:59=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+> On Tue, Oct 28, 2025 at 11:33:31AM +0100, Markus Armbruster wrote:
+> > Aside: "format for humans" may well be more widely applicable, if we
+> > care.
+>
+> The scope of the DEV.FN hack is worse than that - with PCI addresses,
+> while most of the time we just pass DEV, the QAPI also accepts it in
+> DEV.FN format for the 'addr' property and libvirt relies on that.
 
-To fix that, we also have to convert several other functions to
-set errp instead of error_reporting.
+That's fine, it's "just" a QAPI alternate type. A bit weird, but it
+works and is used by other QAPI side.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- backends/tpm/tpm_emulator.c | 63 +++++++++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 24 deletions(-)
+The getter (printing) side is where the mess is.
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index dacfca5ab7..6abe9872e6 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -308,22 +308,22 @@ static int tpm_emulator_check_caps(TPMEmulator *tpm_emu)
-     return 0;
- }
- 
--static int tpm_emulator_stop_tpm(TPMBackend *tb)
-+static int tpm_emulator_stop_tpm(TPMBackend *tb, Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     ptm_res res;
- 
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_STOP, &res, 0,
-                              sizeof(ptm_res), sizeof(res)) < 0) {
--        error_report("tpm-emulator: Could not stop TPM: %s",
--                     strerror(errno));
-+        error_setg(errp, "tpm-emulator: Could not stop TPM: %s",
-+                   strerror(errno));
-         return -1;
-     }
- 
-     res = be32_to_cpu(res);
-     if (res) {
--        error_report("tpm-emulator: TPM result for CMD_STOP: 0x%x %s", res,
--                     tpm_emulator_strerror(res));
-+        error_setg(errp, "tpm-emulator: TPM result for CMD_STOP: 0x%x %s", res,
-+                   tpm_emulator_strerror(res));
-         return -1;
-     }
- 
-@@ -362,12 +362,13 @@ static int tpm_emulator_lock_storage(TPMEmulator *tpm_emu)
- 
- static int tpm_emulator_set_buffer_size(TPMBackend *tb,
-                                         size_t wanted_size,
--                                        size_t *actual_size)
-+                                        size_t *actual_size,
-+                                        Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     ptm_setbuffersize psbs;
- 
--    if (tpm_emulator_stop_tpm(tb) < 0) {
-+    if (tpm_emulator_stop_tpm(tb, errp) < 0) {
-         return -1;
-     }
- 
-@@ -376,16 +377,17 @@ static int tpm_emulator_set_buffer_size(TPMBackend *tb,
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_SET_BUFFERSIZE, &psbs,
-                              sizeof(psbs.u.req), sizeof(psbs.u.resp.tpm_result),
-                              sizeof(psbs.u.resp)) < 0) {
--        error_report("tpm-emulator: Could not set buffer size: %s",
--                     strerror(errno));
-+        error_setg(errp, "tpm-emulator: Could not set buffer size: %s",
-+                   strerror(errno));
-         return -1;
-     }
- 
-     psbs.u.resp.tpm_result = be32_to_cpu(psbs.u.resp.tpm_result);
-     if (psbs.u.resp.tpm_result != 0) {
--        error_report("tpm-emulator: TPM result for set buffer size : 0x%x %s",
--                     psbs.u.resp.tpm_result,
--                     tpm_emulator_strerror(psbs.u.resp.tpm_result));
-+        error_setg(errp,
-+                   "tpm-emulator: TPM result for set buffer size : 0x%x %s",
-+                   psbs.u.resp.tpm_result,
-+                   tpm_emulator_strerror(psbs.u.resp.tpm_result));
-         return -1;
-     }
- 
-@@ -402,7 +404,7 @@ static int tpm_emulator_set_buffer_size(TPMBackend *tb,
- }
- 
- static int tpm_emulator_startup_tpm_resume(TPMBackend *tb, size_t buffersize,
--                                     bool is_resume)
-+                                           bool is_resume, Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     ptm_init init = {
-@@ -413,7 +415,7 @@ static int tpm_emulator_startup_tpm_resume(TPMBackend *tb, size_t buffersize,
-     trace_tpm_emulator_startup_tpm_resume(is_resume, buffersize);
- 
-     if (buffersize != 0 &&
--        tpm_emulator_set_buffer_size(tb, buffersize, NULL) < 0) {
-+        tpm_emulator_set_buffer_size(tb, buffersize, NULL, errp) < 0) {
-         goto err_exit;
-     }
- 
-@@ -424,15 +426,15 @@ static int tpm_emulator_startup_tpm_resume(TPMBackend *tb, size_t buffersize,
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_INIT, &init, sizeof(init),
-                              sizeof(init.u.resp.tpm_result),
-                              sizeof(init)) < 0) {
--        error_report("tpm-emulator: could not send INIT: %s",
--                     strerror(errno));
-+        error_setg(errp, "tpm-emulator: could not send INIT: %s",
-+                   strerror(errno));
-         goto err_exit;
-     }
- 
-     res = be32_to_cpu(init.u.resp.tpm_result);
-     if (res) {
--        error_report("tpm-emulator: TPM result for CMD_INIT: 0x%x %s", res,
--                     tpm_emulator_strerror(res));
-+        error_setg(errp, "tpm-emulator: TPM result for CMD_INIT: 0x%x %s", res,
-+                   tpm_emulator_strerror(res));
-         goto err_exit;
-     }
-     return 0;
-@@ -441,18 +443,31 @@ err_exit:
-     return -1;
- }
- 
--static int tpm_emulator_startup_tpm(TPMBackend *tb, size_t buffersize)
-+static int do_tpm_emulator_startup_tpm(TPMBackend *tb, size_t buffersize,
-+                                       Error **errp)
- {
-     /* TPM startup will be done from post_load hook */
-     if (runstate_check(RUN_STATE_INMIGRATE)) {
-         if (buffersize != 0) {
--            return tpm_emulator_set_buffer_size(tb, buffersize, NULL);
-+            return tpm_emulator_set_buffer_size(tb, buffersize, NULL, errp);
-         }
- 
-         return 0;
-     }
- 
--    return tpm_emulator_startup_tpm_resume(tb, buffersize, false);
-+    return tpm_emulator_startup_tpm_resume(tb, buffersize, false, errp);
-+}
-+
-+static int tpm_emulator_startup_tpm(TPMBackend *tb, size_t buffersize)
-+{
-+    Error *local_err = NULL;
-+    int ret = do_tpm_emulator_startup_tpm(tb, buffersize, &local_err);
-+
-+    if (ret < 0) {
-+        error_report_err(local_err);
-+    }
-+
-+    return ret;
- }
- 
- static bool tpm_emulator_get_tpm_established_flag(TPMBackend *tb)
-@@ -546,7 +561,7 @@ static size_t tpm_emulator_get_buffer_size(TPMBackend *tb)
- {
-     size_t actual_size;
- 
--    if (tpm_emulator_set_buffer_size(tb, 0, &actual_size) < 0) {
-+    if (tpm_emulator_set_buffer_size(tb, 0, &actual_size, NULL) < 0) {
-         return 4096;
-     }
- 
-@@ -889,7 +904,7 @@ static int tpm_emulator_set_state_blobs(TPMBackend *tb, Error **errp)
- 
-     trace_tpm_emulator_set_state_blobs();
- 
--    if (tpm_emulator_stop_tpm(tb) < 0) {
-+    if (tpm_emulator_stop_tpm(tb, errp) < 0) {
-         trace_tpm_emulator_set_state_blobs_error("Could not stop TPM");
-         return -EIO;
-     }
-@@ -960,7 +975,7 @@ static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
-         return ret;
-     }
- 
--    if (tpm_emulator_startup_tpm_resume(tb, 0, true) < 0) {
-+    if (tpm_emulator_startup_tpm_resume(tb, 0, true, errp) < 0) {
-         return -EIO;
-     }
- 
--- 
-2.48.1
+Paolo
 
 
