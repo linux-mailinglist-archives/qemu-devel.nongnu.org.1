@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E551C17527
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E99C174D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:17:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstN-0002uG-DI; Tue, 28 Oct 2025 19:14:17 -0400
+	id 1vDstL-0002tX-Kg; Tue, 28 Oct 2025 19:14:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstJ-0002sS-Ne
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:13 -0400
+ id 1vDstH-0002sJ-H7
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:11 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDst7-00015L-Sk
+ id 1vDst8-00015Q-Kx
  for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:11 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id CA6C98175A;
- Wed, 29 Oct 2025 02:13:56 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 67C248175B;
+ Wed, 29 Oct 2025 02:13:57 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-jWYe7vL6; Wed, 29 Oct 2025 02:13:56 +0300
+ ESMTPSA id oDnXpg2bCW20-hDAe9Lg5; Wed, 29 Oct 2025 02:13:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693236;
- bh=eUNtf8Fv6YhCPh7tMB37uPwoLbYqG4nreTVa98r1+AY=;
+ s=default; t=1761693237;
+ bh=2RdqmSqfNG0TgINlHqYz9mlYzWrFLPE9G7i68j2dG0c=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=1CpmAHDqwQXnBVXWoWDipZfxTgwvrT5+6YW4XkcyXQc95ATqB7EDorf4bY7f4r1i7
- OKs1lssa5AYHZYGr5NS++SMHkGkoRjHk4lI42065IQmbPw0Iay1lFPaXunjKk7WIH6
- oot4NRUsChZ4S+heL2M8QgLXR1RSs+ISpMUDSvA8=
+ b=WNc3Dh8W5EzfDlgLVcpXALx87a6xHFAvkO/Deny11QE5jE+Wzkpy+9sMz3Cp+Cagt
+ jCb1jOj97Wkw5ssHY5ccZP9ibS8Jgk4jK3oUBYvxGsffYrj5YFdtNBkOP8fvsgxpaV
+ XEb1lZTMQ3RY8AtlKIIyUGMdHJMv/deZFcispRkQ=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,9 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 07/22] hw/scsi/scsi-bus.c: use new migration APIs
-Date: Wed, 29 Oct 2025 02:13:31 +0300
-Message-ID: <20251028231347.194844-8-vsementsov@yandex-team.ru>
+Subject: [RFC 08/22] hw/vfio/pci: move to new migration APIs
+Date: Wed, 29 Oct 2025 02:13:32 +0300
+Message-ID: <20251028231347.194844-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
@@ -75,55 +75,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/scsi/scsi-bus.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ hw/vfio/pci.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 9b12ee7f1c..d8d4b8ceae 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -1888,18 +1888,19 @@ static void put_scsi_req(SCSIRequest *req, void *opaque)
-     }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 8b8bc5a421..152015d2f7 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2821,8 +2821,8 @@ static int vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f, Error **errp)
+ {
+     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+ 
+-    return vmstate_save_state(f, &vmstate_vfio_pci_config, vdev, NULL,
+-                              errp);
++    return vmstate_save_vmsd(
++        f, &vmstate_vfio_pci_config, vdev, NULL, errp) ? 0 : -EINVAL;
  }
  
--static int put_scsi_requests(QEMUFile *f, void *pv, size_t size,
--                             const VMStateField *field, JSONWriter *vmdesc)
-+static bool put_scsi_requests(QEMUFile *f, void *pv, size_t size,
-+                              const VMStateField *field, JSONWriter *vmdesc,
-+                              Error **errp)
- {
-     SCSIDevice *s = pv;
+ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+@@ -2830,18 +2830,16 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+     PCIDevice *pdev = PCI_DEVICE(vdev);
+     pcibus_t old_addr[PCI_NUM_REGIONS - 1];
+-    int bar, ret;
++    int bar;
+     Error *local_err = NULL;
  
-     scsi_device_for_each_req_sync(s, put_scsi_req, f);
-     qemu_put_sbyte(f, 0);
--    return 0;
-+    return true;
- }
- 
--static int get_scsi_requests(QEMUFile *f, void *pv, size_t size,
--                             const VMStateField *field)
-+static bool get_scsi_requests(QEMUFile *f, void *pv, size_t size,
-+                              const VMStateField *field, Error **errp)
- {
-     SCSIDevice *s = pv;
-     SCSIBus *bus = DO_UPCAST(SCSIBus, qbus, s->qdev.parent_bus);
-@@ -1938,13 +1939,13 @@ static int get_scsi_requests(QEMUFile *f, void *pv, size_t size,
-         scsi_req_unref(req);
+     for (bar = 0; bar < PCI_ROM_SLOT; bar++) {
+         old_addr[bar] = pdev->io_regions[bar].addr;
      }
  
--    return 0;
-+    return true;
+-    ret = vmstate_load_state(f, &vmstate_vfio_pci_config, vdev, 1,
+-                             &local_err);
+-    if (ret) {
++    if (!vmstate_load_vmsd(f, &vmstate_vfio_pci_config, vdev, 1, &local_err)) {
+         error_report_err(local_err);
+-        return ret;
++        return -EINVAL;
+     }
+ 
+     vfio_pci_write_config(pdev, PCI_COMMAND,
+@@ -2865,7 +2863,7 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+         vfio_msix_enable(vdev);
+     }
+ 
+-    return ret;
++    return 0;
  }
  
- static const VMStateInfo vmstate_info_scsi_requests = {
-     .name = "scsi-requests",
--    .get  = get_scsi_requests,
--    .put  = put_scsi_requests,
-+    .load = get_scsi_requests,
-+    .save = put_scsi_requests,
- };
- 
- static bool scsi_sense_state_needed(void *opaque)
+ /* Transform from VFIODevice to VFIOPCIDevice. Return NULL if fails. */
 -- 
 2.48.1
 
