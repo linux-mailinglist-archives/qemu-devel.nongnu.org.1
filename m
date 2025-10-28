@@ -2,63 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8122EC1755A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F57C17680
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:51:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDsu2-00037f-CO; Tue, 28 Oct 2025 19:14:58 -0400
+	id 1vDtQd-0001fD-7d; Tue, 28 Oct 2025 19:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstt-00037L-21
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:49 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vDtQa-0001ds-IY
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:48:36 -0400
+Received: from p-east1-cluster6-host3-snip4-10.eps.apple.com ([57.103.90.161]
+ helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstb-000194-7P
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:48 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A869E81783;
- Wed, 29 Oct 2025 02:14:07 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-QBXgxjNx; Wed, 29 Oct 2025 02:14:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761693247;
- bh=1PkYR+WTNmRU23OU/YYsEUvRuQ70o5MoU24qYzgUXGc=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=UxMKqDcrW5k8EoG3y2Kay3bYthzL4u2yEEoTOSD1t8rdf9Pym5VGv1TgmILkJ1ngJ
- 5Uxjds/mEF/PmSXYRMZ2EACmvvH9DVCv62qi/SQ1YqkIbDmYG21iHkE6z5wo5n3mxm
- 0IvpGgDMeCcFaH4oQNEXFRIkZgxgKacPa7B0yXq0=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: peterx@redhat.com
-Cc: armbru@redhat.com,
-	vsementsov@yandex-team.ru,
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vDtQQ-0004j2-Bg
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:48:36 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-0 (Postfix) with ESMTPS id
+ 8D8EE1801388; Tue, 28 Oct 2025 23:48:12 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=BXosR+QmiYPxKcgmH8B1gUotbAyslFwkosNixTIrXb4=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme;
+ b=EuEXYFDGlTRzKAX2LO2gwhClHmUPzkcl6LBhcy3n+TkdvK7NBlJItcUsFGFZ7/PW2+piIZmI21IC2X3CKf60MO+D9CjEIdbAaLjGn6vtw4rikSHCPARV+tw8w0apauCTVrgytOmttT48iRcGed4x1h+tBdyfPUh8t6N5b/QryXGx2y8G6dfj984ZmDxASuFgBshVxY1u68zcAlW9jQJ7cgvgneucn/keHLgtozGO9rh1R/tiP4drX3c618LPVk+tdaYmPXQyR8kb4axM+Q9fhPKEDKxeneIXNF0BGK85kLsW0IVrSNFf7oyL6mVawuNUIOs1eijyPwWC5GcovwKsuw==
+mail-alias-created-date: 1752046281608
+Received: from localhost.localdomain (unknown [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-0 (Postfix) with ESMTPSA id
+ 02A0F18034EA; Tue, 28 Oct 2025 23:48:09 +0000 (UTC)
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+To: mohamed@unpredictable.fr,
 	qemu-devel@nongnu.org
-Subject: [RFC 22/22] migration: finally convert vmstate_save/load_state()
- functions
-Date: Wed, 29 Oct 2025 02:13:46 +0300
-Message-ID: <20251028231347.194844-23-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
-References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pedro Barbuda <pbarbuda@microsoft.com>
+Subject: [PATCH v9 00/27] WHPX support for Arm
+Date: Wed, 29 Oct 2025 00:47:30 +0100
+Message-ID: <20251028234757.39609-1-mohamed@unpredictable.fr>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Proofpoint-ORIG-GUID: KHXbkstpAnkfOWt9WCknBwmk1h5L8SYq
+X-Authority-Info: v=2.4 cv=CL0nnBrD c=1 sm=1 tr=0 ts=6901563d cx=c_apl:c_pps
+ a=2G65uMN5HjSv0sBfM2Yj2w==:117 a=2G65uMN5HjSv0sBfM2Yj2w==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=NEAV23lmAAAA:8 a=O9Axi1gB8CqH0_GV9tkA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: KHXbkstpAnkfOWt9WCknBwmk1h5L8SYq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDIwMiBTYWx0ZWRfX4sTtx0b+fzSF
+ GwOoRKfKCUdTMDvoJ/AJwLYH99hsjtT347Sx5gkfZAdjSUSrZURcNSNenVOeS4O0egcOLnwGcQm
+ C21nBAal63t0UT4w6/QIECImW4forAAwl9i8leuGL4dKFbxdYdOG0Nn4bMGkaytr17Zt5dRkkqd
+ /Bi46OXuV9sMk8IhEBB8AwmVus8OzkfpGtouspZVE0TVGDrfvc/UPyUaUZolLwXW9oIotV1NAeg
+ zgTCQOj1PmNNk7vcG9Ykvv0ziAUSt4bPd+TXj/s/SZS//eP7aqOarnRKnIO/sN1IUWLCaqrYGsi
+ OzdczRnKAOXSkZqI795
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_09,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ bulkscore=0 clxscore=1030 suspectscore=0 phishscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=999 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2509250000 definitions=main-2510280202
+X-JNJ: AAAAAAABwKWiRzlH6Zse8PyJqRA85P76bYEdLVfYVTUtbemGgYrMYs8bCSJAnVqMAXZrZYrQKgm5yw83qPyFjIicEyYHF2H81dBvs+GSf31J7IBK3fZ7JrsENEFIIQS3/uxKb3nU+ynH8i7Ax7a2tS/MhiY9mNHcFwfoXiwW0VXS4ZdR6M7ncq/D9jj3UVDRdhZ3+TrnSWqFZvI/y16uH0qpqp58Ma5U7qDxAVnOlCClgIXtd8yPJ9c3sy6UN/PJmutNPLt17VWUL5ZMJfmd3hZAGegBIydJQFC7PbYk2luPPmuGeqyi10CEjtcTBp3qJMjjiJ6HMk7vsSmUJFizWJYJ5TZihAmDrKc72GPT9ZP34obj28YTeTeacwJskmsW2dzPRyR0casKp8tGrqdHKZlOxkIIxb7kZ8h3EpCdI/FDokxx/zjYg5pYMlD12J87P4HPtoc7E2/LO5mJbfIYi+KJDLJngVgqzED6p8YM0UZbwBWtwuXYk3X+1aWbN2vl9UKzfgu4hi6npqv2H8xTfML+fOWKoUjY2tSPNlCA2BzEKqjdR4Gj6Lt7F1OGTXeWGvnB6UzgAP1ZLlpARklNpve6rgp1Atemp5de7KUBfS/1kwgOkU4xGhHtVQ6mKz+w2uVIdbZsBdAqR0ENfyp/9tShcaAc7LHaYgRpwSdLkiKeKNcAhPu08Zo0s5brf890wyDHLOXD3JO8gbU+N1TdOu3KY2SCPzPun55k/4R2asit/bRc86Tjmcvv5rf7G/A=
+Received-SPF: pass client-ip=57.103.90.161;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,344 +91,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now they are used only to relize their wrappers
-vmstate_save/load_vmsd(). So, let's do final convertion.
+Link to branch: https://github.com/mediouni-m/qemu whpx (tag for this submission: whpx-v10)
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- include/migration/vmstate.h |  21 +-----
- migration/vmstate.c         | 141 ++++++++++++++++++------------------
- 2 files changed, 74 insertions(+), 88 deletions(-)
+Missing features:
+- PSCI state sync with Hyper-V
+- Interrupt controller save-restore: As such, save/restore of VM state is currently blocked.
+- SVE register sync: I didn't have the time to test this on pre-release hardware with SVE2 support yet.
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index aaeb33045e..b2fda750e3 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -1222,27 +1222,10 @@ extern const VMStateInfo vmstate_info_qlist;
-         .flags = VMS_END, \
-     }
- 
--int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-+bool vmstate_load_vmsd(QEMUFile *f, const VMStateDescription *vmsd,
-                        void *opaque, int version_id, Error **errp);
--int vmstate_save_state(QEMUFile *f, const VMStateDescription *vmsd,
-+bool vmstate_save_vmsd(QEMUFile *f, const VMStateDescription *vmsd,
-                        void *opaque, JSONWriter *vmdesc, Error **errp);
--int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
--                         void *opaque, JSONWriter *vmdesc,
--                         int version_id, Error **errp);
--
--static inline bool vmstate_load_vmsd(
--    QEMUFile *f, const VMStateDescription *vmsd,
--    void *opaque, int version_id, Error **errp)
--{
--    return vmstate_load_state(f, vmsd, opaque, version_id, errp) >= 0;
--}
--
--static inline bool vmstate_save_vmsd(
--    QEMUFile *f, const VMStateDescription *vmsd,
--    void *opaque, JSONWriter *vmdesc, Error **errp)
--{
--    return vmstate_save_state(f, vmsd, opaque, vmdesc, errp) >= 0;
--}
- 
- bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque);
- 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 2298f190de..b8fb1d0a40 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -131,12 +131,11 @@ static void vmstate_handle_alloc(void *ptr, const VMStateField *field,
-     }
- }
- 
--int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-+bool vmstate_load_vmsd(QEMUFile *f, const VMStateDescription *vmsd,
-                        void *opaque, int version_id, Error **errp)
- {
-     ERRP_GUARD();
-     const VMStateField *field = vmsd->fields;
--    int ret = 0;
- 
-     trace_vmstate_load_state(vmsd->name, version_id);
-     if (version_id > vmsd->version_id) {
-@@ -144,14 +143,14 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-                    "for local version_id %d",
-                    vmsd->name, version_id, vmsd->version_id);
-         trace_vmstate_load_state_end(vmsd->name, "too new", -EINVAL);
--        return -EINVAL;
-+        return false;
-     }
-     if  (version_id < vmsd->minimum_version_id) {
-         error_setg(errp, "%s: incoming version_id %d is too old "
-                    "for local minimum version_id %d",
-                    vmsd->name, version_id, vmsd->minimum_version_id);
-         trace_vmstate_load_state_end(vmsd->name, "too old", -EINVAL);
--        return -EINVAL;
-+        return false;
-     }
-     if (vmsd->pre_load_errp) {
-         if (!vmsd->pre_load_errp(opaque, errp)) {
-@@ -159,16 +158,16 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-                           "version_id: %d, minimum version_id: %d: ",
-                           vmsd->name, vmsd->version_id,
-                           vmsd->minimum_version_id);
--            return -EINVAL;
-+            return false;
-         }
-     } else if (vmsd->pre_load) {
--        ret = vmsd->pre_load(opaque);
-+        int ret = vmsd->pre_load(opaque);
-         if (ret) {
-             error_setg(errp, "pre load hook failed for: '%s', "
-                        "version_id: %d, minimum version_id: %d, ret: %d",
-                        vmsd->name, vmsd->version_id, vmsd->minimum_version_id,
-                        ret);
--            return ret;
-+            return false;
-         }
-     }
-     while (field->name) {
-@@ -187,6 +186,7 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-             for (i = 0; i < n_elems; i++) {
-                 void *curr_elem = first_elem + size * i;
-                 const VMStateField *inner_field;
-+                bool ok;
- 
-                 if (field->flags & VMS_ARRAY_OF_POINTER) {
-                     curr_elem = *(void **)curr_elem;
-@@ -204,21 +204,20 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-                 }
- 
-                 if (inner_field->flags & VMS_STRUCT) {
--                    ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
--                                             inner_field->vmsd->version_id,
--                                             errp);
-+                    ok = vmstate_load_vmsd(f, inner_field->vmsd, curr_elem,
-+                                           inner_field->vmsd->version_id,
-+                                           errp);
-                 } else if (inner_field->flags & VMS_VSTRUCT) {
--                    ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
--                                             inner_field->struct_version_id,
--                                             errp);
-+                    ok = vmstate_load_vmsd(f, inner_field->vmsd, curr_elem,
-+                                           inner_field->struct_version_id,
-+                                           errp);
-                 } else {
--                    if (!inner_field->info->load(
--                        f, curr_elem, size, inner_field, errp)) {
--                            error_prepend(
--                                errp,
--                                "Failed to load element of type %s for %s: ",
--                                inner_field->info->name, inner_field->name);
--                            ret = -EINVAL;
-+                    ok = inner_field->info->load(f, curr_elem, size,
-+                                                 inner_field, errp);
-+                    if (!ok) {
-+                        error_prepend(errp,
-+                            "Failed to load element of type %s for %s: ",
-+                            inner_field->info->name, inner_field->name);
-                     }
-                 }
- 
-@@ -227,24 +226,25 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-                     g_clear_pointer((gpointer *)&inner_field, g_free);
-                 }
- 
--                if (ret >= 0) {
--                    ret = qemu_file_get_error(f);
-+                if (ok) {
-+                    int ret = qemu_file_get_error(f);
-                     if (ret < 0) {
-+                        ok = false;
-                         error_setg(errp,
-                                    "Failed to load %s state: stream error: %d",
-                                    vmsd->name, ret);
-                     }
-                 }
--                if (ret < 0) {
--                    qemu_file_set_error(f, ret);
--                    trace_vmstate_load_field_error(field->name, ret);
--                    return ret;
-+                if (!ok) {
-+                    qemu_file_set_error(f, -EINVAL);
-+                    trace_vmstate_load_field_error(field->name, -EINVAL);
-+                    return false;
-                 }
-             }
-         } else if (field->flags & VMS_MUST_EXIST) {
-             error_setg(errp, "Input validation failed: %s/%s version_id: %d",
-                        vmsd->name, field->name, vmsd->version_id);
--            return -1;
-+            return false;
-         }
-         field++;
-     }
-@@ -258,20 +258,24 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-             error_prepend(errp, "post load hook failed for: %s, version_id: "
-                           "%d, minimum_version: %d: ", vmsd->name,
-                           vmsd->version_id, vmsd->minimum_version_id);
--            ret = -EINVAL;
-+            trace_vmstate_load_state_end(vmsd->name, "end", -EINVAL);
-+            return false;
-         }
-     } else if (vmsd->post_load) {
--        ret = vmsd->post_load(opaque, version_id);
-+        int ret = vmsd->post_load(opaque, version_id);
-         if (ret < 0) {
-             error_setg(errp,
-                        "post load hook failed for: %s, version_id: %d, "
-                        "minimum_version: %d, ret: %d",
-                        vmsd->name, vmsd->version_id, vmsd->minimum_version_id,
-                        ret);
-+            trace_vmstate_load_state_end(vmsd->name, "end", -EINVAL);
-+            return false;
-         }
-     }
--    trace_vmstate_load_state_end(vmsd->name, "end", ret);
--    return ret;
-+
-+    trace_vmstate_load_state_end(vmsd->name, "end", 0);
-+    return true;
- }
- 
- static int vmfield_name_num(const VMStateField *start,
-@@ -420,34 +424,29 @@ bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque)
- }
- 
- 
--int vmstate_save_state(QEMUFile *f, const VMStateDescription *vmsd,
--                       void *opaque, JSONWriter *vmdesc_id, Error **errp)
--{
--    return vmstate_save_state_v(f, vmsd, opaque, vmdesc_id, vmsd->version_id, errp);
--}
--
--int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
--                         void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
-+static bool vmstate_save_vmsd_v(QEMUFile *f, const VMStateDescription *vmsd,
-+                                 void *opaque, JSONWriter *vmdesc,
-+                                 int version_id, Error **errp)
- {
-     ERRP_GUARD();
--    int ret = 0;
-+    bool ok;
-     const VMStateField *field = vmsd->fields;
- 
-     trace_vmstate_save_state_top(vmsd->name);
- 
-     if (vmsd->pre_save_errp) {
--        ret = vmsd->pre_save_errp(opaque, errp) ? 0 : -EINVAL;
--        trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
--        if (ret < 0) {
-+        ok = vmsd->pre_save_errp(opaque, errp);
-+        trace_vmstate_save_state_pre_save_res(vmsd->name, ok);
-+        if (!ok) {
-             error_prepend(errp, "pre-save for %s failed: ", vmsd->name);
--            return ret;
-+            return false;
-         }
-     } else if (vmsd->pre_save) {
--        ret = vmsd->pre_save(opaque);
-+        int ret = vmsd->pre_save(opaque);
-         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
-         if (ret) {
-             error_setg(errp, "pre-save failed: %s", vmsd->name);
--            return ret;
-+            return false;
-         }
-     }
- 
-@@ -528,16 +527,16 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                                       i, max_elems);
- 
-                 if (inner_field->flags & VMS_STRUCT) {
--                    ret = vmstate_save_state(f, inner_field->vmsd,
--                                             curr_elem, vmdesc_loop, errp);
-+                    ok = vmstate_save_vmsd(f, inner_field->vmsd,
-+                                           curr_elem, vmdesc_loop, errp);
-                 } else if (inner_field->flags & VMS_VSTRUCT) {
--                    ret = vmstate_save_state_v(f, inner_field->vmsd,
--                                               curr_elem, vmdesc_loop,
--                                               inner_field->struct_version_id,
--                                               errp);
--                } else if (!inner_field->info->save(
--                    f, curr_elem, size, inner_field, vmdesc_loop, errp)) {
--                    ret = -EINVAL;
-+                    ok = vmstate_save_vmsd_v(f, inner_field->vmsd,
-+                                             curr_elem, vmdesc_loop,
-+                                             inner_field->struct_version_id,
-+                                             errp);
-+                } else {
-+                    ok = inner_field->info->save(
-+                        f, curr_elem, size, inner_field, vmdesc_loop, errp);
-                 }
- 
-                 written_bytes = qemu_file_transferred(f) - old_offset;
-@@ -549,18 +548,13 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                     g_clear_pointer((gpointer *)&inner_field, g_free);
-                 }
- 
--                if (ret) {
--                    if (*errp) {
--                        error_prepend(errp, "Save of field %s/%s failed: ",
--                                      vmsd->name, field->name);
--                    } else {
--                        error_setg(errp, "Save of field %s/%s failed",
--                                   vmsd->name, field->name);
--                    }
-+                if (!ok) {
-+                    error_prepend(errp, "Save of field %s/%s failed: ",
-+                                  vmsd->name, field->name);
-                     if (vmsd->post_save) {
-                         vmsd->post_save(opaque);
-                     }
--                    return ret;
-+                    return false;
-                 }
- 
-                 /* Compressed arrays only care about the first element */
-@@ -583,18 +577,27 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-         json_writer_end_array(vmdesc);
-     }
- 
--    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp) ? 0 : -EINVAL;
-+    ok = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
- 
-     if (vmsd->post_save) {
-         int ps_ret = vmsd->post_save(opaque);
--        if (!ret && ps_ret) {
--            ret = ps_ret;
-+        if (ok && ps_ret) {
-+            ok = false;
-             error_setg(errp, "post-save failed: %s", vmsd->name);
-         }
-     }
--    return ret;
-+
-+    return ok;
- }
- 
-+bool vmstate_save_vmsd(QEMUFile *f, const VMStateDescription *vmsd,
-+                        void *opaque, JSONWriter *vmdesc_id, Error **errp)
-+{
-+    return vmstate_save_vmsd_v(f, vmsd, opaque, vmdesc_id, vmsd->version_id,
-+                               errp);
-+}
-+
-+
- static const VMStateDescription *
- vmstate_get_subsection(const VMStateDescription * const *sub,
-                        const char *idstr)
-@@ -637,7 +640,7 @@ static bool vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-         if (strncmp(vmsd->name, idstr, strlen(vmsd->name)) != 0) {
-             trace_vmstate_subsection_load_bad(vmsd->name, idstr, "(prefix)");
-             /* it doesn't have a valid subsection name */
--            return 0;
-+            return true;
-         }
-         sub_vmsd = vmstate_get_subsection(vmsd->subsections, idstr);
-         if (sub_vmsd == NULL) {
+Known bugs:
+- reboots are currently broken
+- U-Boot still doesn't work (hangs when trying to parse firmware) but EDK2 does.
+
+Note:
+
+"target/arm/kvm: add constants for new PSCI versions" taken from the mailing list.
+
+"accel/system: Introduce hwaccel_enabled() helper" taken from the mailing list, added here
+as part of this series to make it compilable as a whole.
+
+"hw/arm: virt: add GICv2m for the case when ITS is not available" present in both the HVF
+vGIC and this series.
+
+And another note:
+Seems that unlike HVF there isn't direct correspondence between WHv registers and the actual register layout,
+so didn't do changes there to a sysreg.inc.
+
+And yet another note:
+
+Would it be acceptable to have reboots handled as shutdowns for the initial merge? Looks to me that due to Qemu changes,
+reboots regressed further and don't work even for single-core VMs now...
+
+Updates since v9:
+- v9 and v8 were not submitted properly because of my MTA not behaving, sorry for that.
+- v10 introduces a new argument, -M msi=, to handle MSI-X configuration more granularly.
+- That surfaced what I think is a bug (?), with vms->its=1 on GICv2 configurations... or I did understand everything wrong.
+
+Updates since v8:
+- Oopsie due to email provider ratelimiting.
+
+Updates since v7:
+- Oops, fixing bug in "hw/arm: virt: cleanly fail on attempt to use the platform vGIC together with ITS".
+Other commits are unchanged.
+
+Updates since v6:
+- Rebasing
+- Fixing a bug in the GICv3+GICv2m case for ACPI table generation
+- getting rid of the slots infrastructure for memory management
+- Place the docs commit right after the "cleanly fail on attempt to run GICv3+GICv2m on an unsupported config" one
+as that's what switches ITS to a tristate.
+- Fixing a build issue when getting rid of the arch-specific arm64 hvf-stub.
+
+Updates since v5:
+- Rebasing
+- Address review comments
+- Rework ITS enablement to a tristate
+- On x86: move away from deprecated APIs to get/set APIC state
+
+Updates since v4:
+- Taking into account review comments
+- Add migration blocker in the vGICv3 code due to missing interrupt controller save/restore
+- Debug register sync
+
+Updates since v3:
+- Disabling SVE on WHPX
+- Taking into account review comments incl:
+
+- fixing x86 support
+- reduce the amount of __x86_64__ checks in common code to the minimum (winhvemulation)
+which can be reduced even further down the road.
+- generalize get_physical_address_range into something common between hvf and whpx
+
+Updates since v2:
+- Fixed up a rebase screwup for whpx-internal.h
+- Fixed ID_AA64ISAR1_EL1 and ID_AA64ISAR2_EL1 feature probe for -cpu host
+- Switched to ID_AA64PFR1_EL1/ID_AA64DFR0_EL1 instead of their non-AA64 variant
+
+Updates since v1:
+- Shutdowns and reboots
+- MPIDR_EL1 register sync
+- Fixing GICD_TYPER_LPIS value
+- IPA size clamping
+- -cpu host now implemented
+
+Mohamed Mediouni (25):
+  qtest: hw/arm: virt: skip ACPI test for ITS off
+  hw/arm: virt: add GICv2m for the case when ITS is not available
+  tests: data: update AArch64 ACPI tables
+  whpx: Move around files before introducing AArch64 support
+  whpx: reshuffle common code
+  whpx: ifdef out winhvemulation on non-x86_64
+  whpx: common: add WHPX_INTERCEPT_DEBUG_TRAPS define
+  hw, target, accel: whpx: change apic_in_platform to kernel_irqchip
+  whpx: interrupt controller support
+  whpx: add arm64 support
+  whpx: change memory management logic
+  target/arm: cpu: mark WHPX as supporting PSCI 1.3
+  hw/arm: virt: cleanly fail on attempt to use the platform vGIC
+    together with ITS
+  hw: arm: virt: rework MSI-X configuration
+  hw: arm: virt-acpi-build: add hack
+  docs: arm: update virt machine model description
+  whpx: arm64: clamp down IPA size
+  hw/arm, accel/hvf, whpx: unify get_physical_address_range between WHPX
+    and HVF
+  whpx: arm64: implement -cpu host
+  target/arm: whpx: instantiate GIC early
+  whpx: arm64: gicv3: add migration blocker
+  whpx: enable arm64 builds
+  MAINTAINERS: update maintainers for WHPX
+  whpx: apic: use non-deprecated APIs to control interrupt controller
+    state
+  whpx: arm64: check for physical address width after WHPX availability
+
+Philippe Mathieu-Daudé (1):
+  accel/system: Introduce hwaccel_enabled() helper
+
+Sebastian Ott (1):
+  target/arm/kvm: add constants for new PSCI versions
+
+ MAINTAINERS                                   |   11 +-
+ accel/hvf/hvf-all.c                           |    7 +-
+ accel/meson.build                             |    1 +
+ accel/whpx/meson.build                        |    7 +
+ {target/i386 => accel}/whpx/whpx-accel-ops.c  |    6 +-
+ accel/whpx/whpx-common.c                      |  548 +++++++++
+ docs/system/arm/virt.rst                      |   10 +-
+ hw/arm/virt-acpi-build.c                      |   16 +-
+ hw/arm/virt.c                                 |  132 ++-
+ hw/i386/x86-cpu.c                             |    4 +-
+ hw/intc/arm_gicv3_common.c                    |    3 +
+ hw/intc/arm_gicv3_whpx.c                      |  249 ++++
+ hw/intc/meson.build                           |    1 +
+ include/hw/arm/virt.h                         |    8 +-
+ include/hw/boards.h                           |    3 +-
+ include/hw/intc/arm_gicv3_common.h            |    3 +
+ include/system/hvf_int.h                      |    2 +
+ include/system/hw_accel.h                     |   13 +
+ .../whpx => include/system}/whpx-accel-ops.h  |    4 +-
+ include/system/whpx-all.h                     |   20 +
+ include/system/whpx-common.h                  |   26 +
+ .../whpx => include/system}/whpx-internal.h   |   23 +-
+ include/system/whpx.h                         |    4 +-
+ meson.build                                   |   20 +-
+ target/arm/cpu.c                              |    3 +
+ target/arm/cpu64.c                            |   19 +-
+ target/arm/hvf-stub.c                         |   20 -
+ target/arm/hvf/hvf.c                          |    6 +-
+ target/arm/hvf_arm.h                          |    3 -
+ target/arm/kvm-consts.h                       |    2 +
+ target/arm/meson.build                        |    2 +-
+ target/arm/whpx/meson.build                   |    5 +
+ target/arm/whpx/whpx-all.c                    | 1018 +++++++++++++++++
+ target/arm/whpx/whpx-stub.c                   |   15 +
+ target/arm/whpx_arm.h                         |   17 +
+ target/i386/cpu-apic.c                        |    2 +-
+ target/i386/hvf/hvf.c                         |   11 +
+ target/i386/whpx/meson.build                  |    1 -
+ target/i386/whpx/whpx-all.c                   |  569 +--------
+ target/i386/whpx/whpx-apic.c                  |   48 +-
+ tests/data/acpi/aarch64/virt/APIC.its_off     |  Bin 164 -> 188 bytes
+ 41 files changed, 2212 insertions(+), 650 deletions(-)
+ create mode 100644 accel/whpx/meson.build
+ rename {target/i386 => accel}/whpx/whpx-accel-ops.c (96%)
+ create mode 100644 accel/whpx/whpx-common.c
+ create mode 100644 hw/intc/arm_gicv3_whpx.c
+ rename {target/i386/whpx => include/system}/whpx-accel-ops.h (92%)
+ create mode 100644 include/system/whpx-all.h
+ create mode 100644 include/system/whpx-common.h
+ rename {target/i386/whpx => include/system}/whpx-internal.h (89%)
+ delete mode 100644 target/arm/hvf-stub.c
+ create mode 100644 target/arm/whpx/meson.build
+ create mode 100644 target/arm/whpx/whpx-all.c
+ create mode 100644 target/arm/whpx/whpx-stub.c
+ create mode 100644 target/arm/whpx_arm.h
+
 -- 
-2.48.1
+2.50.1 (Apple Git-155)
 
 
