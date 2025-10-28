@@ -2,79 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0F3C14686
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA68CC146FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 12:46:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDi3F-0008TM-GQ; Tue, 28 Oct 2025 07:39:45 -0400
+	id 1vDi8M-0003Un-3O; Tue, 28 Oct 2025 07:45:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDi2v-0008LY-TB
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:39:26 -0400
-Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vDi8I-0003UR-BH
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:44:58 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vDi2n-0004za-HH
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:39:23 -0400
-Received: by mail-yw1-x1135.google.com with SMTP id
- 00721157ae682-784826b775aso66668847b3.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:39:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vDi8D-00067Y-LP
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 07:44:58 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-b626a4cd9d6so1209723066b.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 04:44:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761651548; x=1762256348; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ d=linaro.org; s=google; t=1761651884; x=1762256684; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vWz1wjAUcUO8dzSnLsMAab5s/DVpHJWu2/n8Ei85kFk=;
- b=zXad2gRUYnypGQk+tXyY3LC7rr9wkb0SQB1ywqi04Rk0H0NUFRE4LRsa1ig2nBobz9
- UgS3c77QmtrUhTlib+dxphUoWXmLPvzSO/T4VVaNusemAr9dSw2YrpIYbCQXBdUr5TNA
- gIl570ECJR274a0a0Vlc4DVJhm6dpOsKq1IhNwrpnJWruZt3+30yPC8JdiqCzVPKShpV
- lnzUkNHaT+iwlGjBQ7a4r8ehnhqXWJNsw0pqRvjuPs6jAFJBqLsHEvjtKEBbyluIEPHj
- 21sizbsOrtz2gSMQHjMMICVuQWUtP/mGdxJWqbOyxA2VxwrjKvWbPo7sUTx/graSjUS2
- JRaQ==
+ bh=Mk5i2be7EZssQLJ/1l17wpc5az1qu4wnupbq88AWFYE=;
+ b=LhDiVIrO+tAfAbZMmgJpcCapxhXN0/fDjFXwbadXwIvln0PtrnqGQ1IY4mVIaoFA5s
+ FTmyG05wawMPmKIxCe5dyLayW0Gn9oh3l8c/1Mn88CCL3sZ70TGmTpH1fI4YoiWDiVCI
+ mtnAQXiDsBqh2nZ1LWRDiJKB6/ka7e0t9Uy6+Vy/w+K79n3D6BJdfUqZHYZXzf7JcA1a
+ C8/gwPDCYRTlTsT7OCjDZCQLbDAsdWyP/wbWzzPb/2mIv83fDQuU7Qsyv3bOcYrlDbcR
+ 6HOoLpulw7pA5pmUtGqtgWCpFEsL+Pw/idLcXhDJc1iGfmSrexsSbDJP6ihnPRto3igi
+ zsIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761651548; x=1762256348;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ d=1e100.net; s=20230601; t=1761651884; x=1762256684;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vWz1wjAUcUO8dzSnLsMAab5s/DVpHJWu2/n8Ei85kFk=;
- b=EFsQ0kDwLY7ajkDWRta6Fbox4NxJgcGZf+vbYS7D7hQrmhLvycqCEOTcJAbgCpH1H2
- Tyddh4ZIubv229gXfAXYJmof6Gm58cfFulNFa9NNbxgOIMdrNtF7oAm0Tc7D24R0xrn8
- BB7IzQq1zZQtn0lgWUSgR8UlIkX/MQcQlAchlxJ8WLsZle8F7umJT1gUyPa7mqVhd9jb
- nnPpr5dfxJy3wJcChNxJW7M/zX+IAXd6jit/08UVVfwjOgZGg3AfF8plg8/O4goenKGO
- vZkqKasBEgPGtxXYMs6fgf30TXJdOlGoBQujwLe/7b4j6pIgDlhQqalS4hJyN5YQc82f
- p7uQ==
+ bh=Mk5i2be7EZssQLJ/1l17wpc5az1qu4wnupbq88AWFYE=;
+ b=oNcS/HaqPknPySSprXuMjtBakLaEjkyJYU5+IMf2owk/aaEDdnvtVLYbOy3BHcLeh5
+ esppuE1pgmkbZzB3hZyVO6/NsrrOvRjjS1maaN5mmzSsIETzfWb5//X5s3BBFog0w76E
+ HzKwcuNxJ640LjWnR/lHeSdMMPVVLlq20cQPNpeuUz49SVaTm8hPEYdh+bzEeIpjsp30
+ eeugwue5OsbIEp+XOdSxD8hcw55TvFrMsm0ArsCVwo+DhMmMZ2BIyo9NlZg18GKQbrN9
+ qWhKYNglI6nuUuoC5qAvR65EL+hX4yRwaIOYaG0g1JMcCN2qSdT6jO5THcQklYhqYr3h
+ 9RjA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUPUge6S2YLu4OYAjR7JQXtKcDjsol1+7d41vFJCA+osKVFlnWOT+kWXK1Tuqhkd783j47S93QRjCaF@nongnu.org
-X-Gm-Message-State: AOJu0YxDYI1dbMCB+LSIqqXpG/Ymg5QFDdgnVHb+Brjmru7MrXA3aF/Q
- CkylJyQYZk83y9/pXXPgrDtr3pZZvRe5DjD9cNOfhGGpLy8f4VgHtHRvnLEd+4Jb19bPNHTDOQx
- JmYNote46UCuvaL2AR6MjEVpxyOSs7ZS9uU25BxR0bA==
-X-Gm-Gg: ASbGncuyDnG+oDmGduEr3pY9Nf19aGYgn99T1iwunqq40OqHVgcHPt+H1dBMtnd+E0y
- 816bJF+6GlHDKZbkOGbPvYEY54oxiLuIMgkK5h6EhgLplEi1FzPQKmw4L9rlb1VVjWVl70pBorG
- GIQgS74lPu6oHIITENlU10NXWuazF9J63noMaBdeETx7ELZV9ToMH0quDkMPN2fjygQbRsjTefQ
- 84IzeHd2u1RDdrQEfGYq5K4aeRDJvT5IWYbMcimuzYyhxoPak5U+rL4o9x67g==
-X-Google-Smtp-Source: AGHT+IErFuQxfHGymiVpLnG1uZQC8DTMR/QZ5aqz3Bwrw3I6ssyq1RiDmHEPLGeo060AzzHIM8ZtLZqZCGoe87ISkeA=
-X-Received: by 2002:a05:690c:2c8d:b0:785:cc3e:13e0 with SMTP id
- 00721157ae682-786183862a3mr34145877b3.49.1761651548177; Tue, 28 Oct 2025
- 04:39:08 -0700 (PDT)
+ AJvYcCX5G4mRtUL6DpBurhGPEI/mUdEn0j0AqUNd2SbUz+AwGk4Hwd9266NPGGKBa4JWZJmKVgXWzzfBNJO2@nongnu.org
+X-Gm-Message-State: AOJu0YzxiXz0PXYLH3DCJArt8wYv19E6YYEpsha9lIlIJXpv0Jho6HU+
+ E7ycOFBsad+JTcgRQQ7hrY3ND70XDNLBMhUDqaQrM5XT29V3jnQDbm4n24VTwvobm8o=
+X-Gm-Gg: ASbGncth5Sz4dpxRnNfgn95bed3RlQbD4MsHGcLjeZv+Sy/d//3bASjdSMmRwGUGrjZ
+ uCh0q6eYTCqumSrM+TLhrkw3kQSTOeyMa0/7K2N/i9+sUxjJav5PyRiLwgpaXmjsz7txPzkui52
+ xvs8RmcN8fuJgLH2A7gSgRaZEOatULtcgCl35pGQMTXVUaynMMW0cXiBLBN+ehZoWfJ+G2n0GrO
+ lN6isQvqJS8ae5qxLW91JzagGCBxJjIH49+x6TJOCFpJIQbslbVbTci0SjGttlIX49i282efo1r
+ VVOsrb3Af5iJTs2DWoRsFq0rfubCksXXQcVYU5x0qU88RT4J2MIB34o28hyx96u4QzqNrCnZ+CQ
+ 5LKJpKDIktuoPzokTetb9vpDUbH5UkZoF5HiLFq2eLVKc0X2em1hqH8vByeDBFzK9vBg63RKOLM
+ 7uJNhmcSrUw8RB8q6P
+X-Google-Smtp-Source: AGHT+IH0TUavLg0vZIia+x2IXs73pUR162RJh+Ciodcn7fHTqzh33pG2sJtHgdOiuC+jIgNRgS4ZBg==
+X-Received: by 2002:a17:906:f58e:b0:b3e:1400:6cab with SMTP id
+ a640c23a62f3a-b6dba487a3bmr350894366b.17.1761651883755; 
+ Tue, 28 Oct 2025 04:44:43 -0700 (PDT)
+Received: from [10.240.88.227] ([212.144.248.67])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d8538478fsm1075342066b.33.2025.10.28.04.44.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Oct 2025 04:44:43 -0700 (PDT)
+Message-ID: <635a923b-cfd2-49ad-99ff-dedb26ebbe58@linaro.org>
+Date: Tue, 28 Oct 2025 12:44:41 +0100
 MIME-Version: 1.0
-References: <s7ingr72rgtvch2poxlwyc25lkxp7hh5c273ubvmz4tdskjttz@7dzfvylkgwsh>
-In-Reply-To: <s7ingr72rgtvch2poxlwyc25lkxp7hh5c273ubvmz4tdskjttz@7dzfvylkgwsh>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Oct 2025 11:38:56 +0000
-X-Gm-Features: AWmQ_bk7D_dREHEf4B7QMAU1dpcW-TBbaZBJZyM1GjtFfymKXCRm0Y_T9G3Cv_E
-Message-ID: <CAFEAcA-gmKkfysSThFDFzCUU0dYjh10qDA4zM8E0y2qcipzNXg@mail.gmail.com>
-Subject: Re: [PATCH] Use correct type for ioctl(FIGETBSZ) emulation
-To: Bastian Blank <waldi@debian.org>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 32/59] accel/hvf: Enforce host alignment in
+ hv_vm_protect()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
+ qemu-arm@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Collingbourne <pcc@google.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>
+References: <20251028054238.14949-1-philmd@linaro.org>
+ <20251028054238.14949-33-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251028054238.14949-33-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,17 +111,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Oct 2025 at 11:29, Bastian Blank <waldi@debian.org> wrote:
->
-> The FIGETBSZ ioctl get's "int *" (pointer to 32bit integer) as argument,
-> not "long *" as specified in qemu.  Using the correct type makes the
-> emulation work.
+On 10/28/25 06:42, Philippe Mathieu-Daudé wrote:
+> hv_vm_protect() arguments must be aligned to host page.
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   accel/hvf/hvf-all.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+> index e13abddbd9c..2efecdc9f40 100644
+> --- a/accel/hvf/hvf-all.c
+> +++ b/accel/hvf/hvf-all.c
+> @@ -11,6 +11,7 @@
+>   #include "qemu/osdep.h"
+>   #include "qemu/error-report.h"
+>   #include "accel/accel-ops.h"
+> +#include "exec/cpu-common.h"
+>   #include "system/address-spaces.h"
+>   #include "system/memory.h"
+>   #include "system/hvf.h"
+> @@ -67,6 +68,8 @@ static void do_hv_vm_protect(hwaddr start, size_t size,
+>                            flags & HV_MEMORY_READ  ? 'R' : '-',
+>                            flags & HV_MEMORY_WRITE ? 'W' : '-',
+>                            flags & HV_MEMORY_EXEC  ? 'X' : '-');
+> +    g_assert(!((uintptr_t)start & ~qemu_real_host_page_mask()));
+> +    g_assert(!(size & ~qemu_real_host_page_mask()));
+>   
+>       ret = hv_vm_protect(start, size, flags);
+>       assert_hvf_ok(ret);
 
-We could also note:
+You should call qemu_real_host_page_mask only once.
+Otherwise,
 
-This ioctl does not seem to be documented. However the kernel
-implementation has always used "int *".
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+r~
 
