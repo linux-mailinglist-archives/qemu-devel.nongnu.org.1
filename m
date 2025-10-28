@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13589C135EF
+	by mail.lfdr.de (Postfix) with ESMTPS id 28878C135F0
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 08:51:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDeTc-0000rW-Ne; Tue, 28 Oct 2025 03:50:45 -0400
+	id 1vDeTh-0000te-Bc; Tue, 28 Oct 2025 03:50:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeTB-0000bn-V8
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:50:18 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeTZ-0000r8-RX
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:50:42 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeT8-0007P5-RP
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:50:17 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-475dbb524e4so20146175e9.2
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:50:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDeTW-0007Qm-AO
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 03:50:41 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4710a1f9e4cso45933025e9.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 00:50:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761637811; x=1762242611; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761637832; x=1762242632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zTLB3cFEY6Tsij+P5yppIDVPLmX58penzFNO8leReIM=;
- b=ZJd00j49Iam41xtHLzPdaJ3Brz/YXciESOmm72NbwPm0k7gjjZpHxBcuxkTN9BDhlR
- 1zvZA2NYAz9jV+FpfxalFWWqElR2Q6u6Hu6EAzvMhM833Emu0oaXhyEBKaaYWdtkTLID
- jOT9YXE9RsKRS5PeXw5TTCJJA9B7EGWdlu61WMdw4k3N5nhZeAyEicGqJ1Y9cVzMC0Lh
- NvxQ5YAiO0vT6vJqG1WEFxw4A+QROCipziAA43xSs3w5kUOlZpKcp2zFDYHag2XehzBr
- qx1nrot7SqPk+RuTZHvUmCe8nbe0PjEsERrv1bVBs2wDAs1JHpHS2UPtxpiHxtEQn8ZE
- dG0A==
+ bh=2IGrLf5bVKU6CARCMqqRyAEgTxbtQQxxofvYEiMrdKA=;
+ b=XPKO/3p2NJk6FcCLN7R6GvSUoRkZwAnOdISpxcatC3TYGSmvtolnPlz325pgzza++f
+ UypVmLtvlyvX3KUsbGocMrC7wljhRst2sSxCSxW0S3Ey3h5E0+qhNAiMYyV9oBpCTXWZ
+ 8tLluOp+q0RHZaJWjZlmDR5ufjZSe8mNa68053d/9L5WDYx0tVUEnA9EMX0X59ceQ+c8
+ gKyVYjXQ82DMDBvvaYSFYPyIFccT5JR7TDSuiaKu6v7ADJ0xyNix8rvSVYNVX7iBNCtX
+ ORmnoimz1S5gQa+8wPkEIq5olh+HIE7ZgQYpe326cSRzqLgcGSrwH9TRXRPl4wVp3cbg
+ p7EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761637811; x=1762242611;
+ d=1e100.net; s=20230601; t=1761637832; x=1762242632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zTLB3cFEY6Tsij+P5yppIDVPLmX58penzFNO8leReIM=;
- b=YMUJOFll+nLz3ATWuRNFVzrqeXrRmvORJWeSFoRIATh8epWHCqFFqonR2d3rgYj0zg
- ikXDC0W0KPfJCopFjhB4srk3WrpVesR7+SaBqRJkM2UsyIYRkdPKtP1Xf9SBgDS4p5aV
- g9Ghicgh9s1nvI7+Ap90W2K55Z9j5xX1OkI9Gz7NG2gdPRSNDWRtDAHOaOPMPLmtQ7i+
- ar9R3t9hhg/pyzkX21eZYZkWY6/4l9uEtLE5IDiWOCrqZ98AIH8rfEnlqywVIqSaUX5G
- KF7rUyi3oUlj4i9oh1GfPwmzY12+mAlLItnR3S2CR8TBN+49ZzQkaNbpHvVE+XI0xEmK
- IyZQ==
-X-Gm-Message-State: AOJu0YwiQalQglYZ2bW0ee3vMzY+C2mB9/NPQfiF4A1fYL2fFs9PEM5T
- 6r2hHd+AC6Ikv4Ui1004IYSAB3I+jvODR8KMQwvykvZnwexk3hhHZ3ETDpzZGvzOfPoiRO/QnHj
- BDc5EYvQ=
-X-Gm-Gg: ASbGncsvlMrzaOe7eDfpQiZSR3z+m1MOZD2n+2OgbdlwTqK2uuMoO1EMBwdDq/9R3T1
- uZFihcPohdHpQeDoDhhJ5JTJAz6BDcY5ai7BwIht5APRyVsMPz8zzZWgWMVn20A1AlnwtX6jCCH
- PjIlB0IZYD8QYTLc+u8llYu/m2UN5SID9aTyZmAVMzNKAJvbAzDQab+2Dguu9Ya7+9ZKm8zuqyw
- +wYxBQXotVpUkHq/XxmmUqkoyXRv4NJA8AsYa5OScDwoPDzp/C7U2RnLU/yQmBjWha4Q3+ikpuW
- EGUvMUdDjlVl7njBunhZJoDnirDO5i5R0GmQi7DQuzOzNFyC5utzccLCem2cWPlPuFY1RSOjo6M
- SLsDz/RgB6/EFxHuyYhd4KALdAJcSRGXwEeqBY98vf93rYOhz8WPV3pZt0YZiiOj9l4/EvctCmd
- Czi7QSBMRoVITnq0heFV977G/eHQ6OlkDv8Wune6YnAG4vFIaU1gJxVAs=
-X-Google-Smtp-Source: AGHT+IEw5keHIFH1+3mzddsjpLeBiEFEAjEtmyjxajE9J84wqtnL9TyoPfgqU/NWW1vCosA3jYCeNQ==
-X-Received: by 2002:a05:600c:8710:b0:477:bf0:b9da with SMTP id
- 5b1f17b1804b1-47717e41402mr20379905e9.19.1761637810877; 
- Tue, 28 Oct 2025 00:50:10 -0700 (PDT)
+ bh=2IGrLf5bVKU6CARCMqqRyAEgTxbtQQxxofvYEiMrdKA=;
+ b=uK6vi8kdVkruFzPE4a0zArmfj3iiLEJMu+LdInBYEiKrM6xUTYLzn5vUmKoXSe1Y1m
+ rgIqROflrrqPIKacqGDLmqAa3OWjuNCdGE1eNXhBJ5l06xIwfbZYFhbccBUxPY+tLm/0
+ 998atR+p/V2ZZmU5fCMjl4717kfTE3ypHfGMLLc73vxjjOGPtZLh60dzk0/2OvwkPkxv
+ 2TgHOmE+F3yNKngIKw+VR3wgQk6VJbGOg3GnyeuuaruvvZ2vfRmASLz9YV5cufaolA9d
+ j0PcDZz6VidRb55IDhatzSXoGDbodK9P0Fe4bKMC5yISjMaBglaKsHwsdLhWl4jI8jbn
+ E7Mg==
+X-Gm-Message-State: AOJu0YwpXPyERXZapwgNqaqPL/1P9JYAodNVgnX5ZfLb20rrBHmDbc5j
+ KEZz/sk0A+Nm9mFDcTH/mHKgTiyaNPPjEBJfpHryCJhEXlol9DAWo68j/y1dzAqqySf/gB5iOzP
+ W5qUn3PA=
+X-Gm-Gg: ASbGncuCB8Scd4cPA05c9NclVVh7VXzTHrIxVqedV6cfSzPDpDj68VTe9TIDas8LBK5
+ 7TwRXgB8yPAs1dKg06nROH4YYqOAOTNQRfYmJsxoErAHT8HmnWXT36uthRXu99pDd2mDj9OfZbK
+ B17Uojms4aHBMlPsFFXRqKbsB4zLXgy3ZywAUd+b4HP8dRRvS6/7gDPlo3ftpAmle8AOS/GxVUc
+ 2Arv7JeY96UOgZVd/msNgPR06i+YVHGDBEQ3zuSmJho3tNfzple3bj5ndY62DZldT9ZRzyb9gXx
+ CAcTu+35PBhZfWfQaLEcqwiCvlDvhuMio8B4bdan6cZo184K7hkh2LcXrxvjNdNLeg5i7wtwwCb
+ 8kHIjoedx0npXQ8Em1tZmOkYqOv9a9MWcUIGt1ELslblpObpo95RFf6fJRgoEEAV0fSUFo5Kaqp
+ jCMl9//+dlkLf328zepO4iBPx9X1cdiXPDhYjcANS7JMBtftfn3DJi0kM=
+X-Google-Smtp-Source: AGHT+IExz3L/LvK9Wz7HXSNvuLZztaFgYtya0Ma5Ny3KTlFw50GuuF/kptSXn5uMJBBk4D6WE3FJ5g==
+X-Received: by 2002:a05:600c:45d5:b0:45b:80ff:58f7 with SMTP id
+ 5b1f17b1804b1-47717e7d10amr21335975e9.36.1761637832517; 
+ Tue, 28 Oct 2025 00:50:32 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475dd494d5csm183211645e9.9.2025.10.28.00.50.10
+ 5b1f17b1804b1-475dd48a07dsm180117025e9.17.2025.10.28.00.50.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 00:50:10 -0700 (PDT)
+ Tue, 28 Oct 2025 00:50:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Lei Yang <leiyang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 03/23] hw/net/virtio-net: make VirtIONet.vlans an array instead
- of a pointer
-Date: Tue, 28 Oct 2025 08:48:39 +0100
-Message-ID: <20251028074901.22062-4-philmd@linaro.org>
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 04/23] migration/vmstate: remove VMSTATE_BUFFER_POINTER_UNSAFE
+ macro
+Date: Tue, 28 Oct 2025 08:48:40 +0100
+Message-ID: <20251028074901.22062-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028074901.22062-1-philmd@linaro.org>
 References: <20251028074901.22062-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,77 +103,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-This field is a fixed-size buffer (number of elements is MAX_VLAN,
-known at build time).  There's no need to allocate it dynamically,
-it can be made an integral part of VirtIONet structure.
+The only user of this macro was VirtIONet.vlans, which has been
+converted to regular VMSTATE_BUFFER.
 
-This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
-
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20251023135316.31128-2-mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20251023135316.31128-3-mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-net.h | 2 +-
- hw/net/virtio-net.c            | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ include/migration/vmstate.h | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index 5b8ab7bda79..f7083553068 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -202,7 +202,7 @@ struct VirtIONet {
-         uint8_t uni_overflow;
-         uint8_t *macs;
-     } mac_table;
--    uint32_t *vlans;
-+    uint32_t vlans[MAX_VLAN];
-     virtio_net_conf net_conf;
-     NICConf nic_conf;
-     DeviceState *qdev;
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 33116712eb4..17ed0ef9190 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -986,7 +986,7 @@ static void virtio_net_set_features(VirtIODevice *vdev,
-         virtio_has_feature_ex(vdev->guest_features_ex,
-                               VIRTIO_NET_F_CTRL_VLAN)) {
-         bool vlan = virtio_has_feature_ex(features, VIRTIO_NET_F_CTRL_VLAN);
--        memset(n->vlans, vlan ? 0 : 0xff, MAX_VLAN >> 3);
-+        memset(n->vlans, vlan ? 0 : 0xff, sizeof(n->vlans));
-     }
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 63ccaee07ad..09f1eefcfb6 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -727,15 +727,6 @@ extern const VMStateInfo vmstate_info_qlist;
+     .offset     = offsetof(_state, _field),                          \
+ }
  
-     if (virtio_has_feature_ex(features, VIRTIO_NET_F_STANDBY)) {
-@@ -3600,7 +3600,8 @@ static const VMStateDescription vmstate_virtio_net_device = {
-          * buffer; hold onto your endiannesses; it's actually used as a bitmap
-          * but based on the uint.
-          */
--        VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN >> 3),
-+        VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
-+                              sizeof(typeof_field(VirtIONet, vlans))),
-         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
-                          vmstate_virtio_net_has_vnet),
-         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
-@@ -4018,8 +4019,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
- 
-     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
- 
--    n->vlans = g_malloc0(MAX_VLAN >> 3);
--    memset(n->vlans, 0xff, MAX_VLAN >> 3);
-+    memset(n->vlans, 0xff, sizeof(n->vlans));
- 
-     nc = qemu_get_queue(n->nic);
-     nc->rxfilter_notify_enabled = 1;
-@@ -4068,7 +4068,6 @@ static void virtio_net_device_unrealize(DeviceState *dev)
-     n->netclient_type = NULL;
- 
-     g_free(n->mac_table.macs);
--    g_free(n->vlans);
- 
-     if (n->failover) {
-         qobject_unref(n->primary_opts);
+-#define VMSTATE_BUFFER_POINTER_UNSAFE(_field, _state, _version, _size) { \
+-    .name       = (stringify(_field)),                               \
+-    .version_id = (_version),                                        \
+-    .size       = (_size),                                           \
+-    .info       = &vmstate_info_buffer,                              \
+-    .flags      = VMS_BUFFER|VMS_POINTER,                            \
+-    .offset     = offsetof(_state, _field),                          \
+-}
+-
+ /* Allocate a temporary of type 'tmp_type', set tmp->parent to _state
+  * and execute the vmsd on the temporary.  Note that we're working with
+  * the whole of _state here, not a field within it.
 -- 
 2.51.0
 
