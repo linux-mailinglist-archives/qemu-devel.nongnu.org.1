@@ -2,94 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AD9C12E63
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 06:02:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D6FC12EA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 06:11:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDbpc-0005Fk-7R; Tue, 28 Oct 2025 01:01:16 -0400
+	id 1vDbye-0006y9-Kd; Tue, 28 Oct 2025 01:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDbpa-0005FF-48
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:01:14 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDbpX-0005D3-LR
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 01:01:13 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4771b03267bso547715e9.0
- for <qemu-devel@nongnu.org>; Mon, 27 Oct 2025 22:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761627669; x=1762232469; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AoLEj6A/DGBWwzlmTYiiD3gq3iqwt5rV7Bg4bmyO1Nc=;
- b=uLKRlkyZaL+JKg9w65ovvhhhB5uNZeD6WNctookCyUWng3IieF+2kDeEVY+rIKSKhD
- 19OLHM1kicjQ/KBZCgunaDLY953x6O4FfWRLaPy20HZQxqnaeBlo0n08jzJjtO5CN9Ob
- xZGBoMR1/RbweK58TEQGgNNDy+yhAD5AeiHH+j+8osmbeACiVHKB/hmTEgRgoOo5RjEe
- CxzFdlUMPqRSsuyYoqrfizDYzvp66d3JBm0/t0smfv9ce5LhQR8S23vsklDVTQsp/jqm
- dEvrtFpM3yEX/k6PMxKwMMdXrB3e0fQL2DIsnpC0HyATPRVaQPUlTj00I2DQBw2Lhkyt
- sEWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761627669; x=1762232469;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AoLEj6A/DGBWwzlmTYiiD3gq3iqwt5rV7Bg4bmyO1Nc=;
- b=Fvxfgvf+WryErEYC4b23OltO1Ox+mScX1qdLI2gMRL4TcRV5IpzN5Gr+58g0xScS2n
- FDfF/omoHAdp5bF6RBvuSY1SrozjOFnCHjPrr/I797aBqR+UtqyPb14PlDYtIlXkJkR5
- f2z/MpY6dO4Kh3Z8tgD+Ja0GgZQBSybf+MjxJfYDm+YkX31er3ZHWFKwWBCYwDVeEzQw
- DtKdm5wJFCJmRzep4d17kbrW5gXStwAq/saMLrno+R2hkukB0fzGxifppb/2cj2d25zr
- bX8KfNsHreXP3gmbNDi20mjNuO40ldE+FD8R43RfyVRddT0O+DLU7uhVQxnyR3LLb+57
- QxwQ==
-X-Gm-Message-State: AOJu0YxtJskaRECbMgK3LQ7c3CS5d1KYO/4BmpEOLFmDJeQjaQymvH9a
- SnKnO2nWvVo8GaGOTmgU8VilZ5Mqfb/9JCws0yvDh0Tk/ObYBXDairun33aR60zqhgo=
-X-Gm-Gg: ASbGncviUKrJFMKy9qhCFfwH7KEBNtq96FuObhQAxrTCnJPXxMYZTQ+PvoHH+5vdptr
- nOJ2Tw0bW2I8ldQMdtenMrTY3poPFL8QOwlJdmBP+OM05FACrL5nbJcKVsTUZXfprDwE4EjfI8C
- SvSjWUX+/ZCUQfrI9d+mz1gzOBwXkGSIDnI9wcllR/xjavcdWgzHeWXBN2H5BY7cROhmM2SsGbB
- InbKpKwMUuWvC1Qy9XtT9egftZprK8xYOO21h9DX2Pp3dhCkfIASe3tuQDplPM0aMhyJ3e5LFMu
- 7uBXwCvt5aqzrqY4+UvxooAFdq+4EhV0FGhaI2LWwWKtEiFX44KrSttZhVs6qKbaOQ9z5bs6YWr
- ZrfApVPQz1k5X2oMEQFC6hJDjyME+p1EK+bRakzCwcpcphEFlzwQxs7J5BtjEbapPziX+U//Fwr
- plH0yYe26db86fccECMzRFzEGQBtjUYoXSOkIGWOCXXF0KBFCn
-X-Google-Smtp-Source: AGHT+IHPrUU7J5FFBzqtBoHbXk2y0YVui5cx8E/QGc6KjgIqN6YPglyd3Xbhnssy5QShqAYD4na7GQ==
-X-Received: by 2002:a05:600c:3b24:b0:477:58:7cf4 with SMTP id
- 5b1f17b1804b1-47717df7c8emr17406335e9.4.1761627668728; 
- Mon, 27 Oct 2025 22:01:08 -0700 (PDT)
-Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771832f372sm11830375e9.0.2025.10.27.22.01.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Oct 2025 22:01:07 -0700 (PDT)
-Message-ID: <d23d5106-645c-466f-86e1-30ce20cc61d3@linaro.org>
-Date: Tue, 28 Oct 2025 06:01:05 +0100
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <nutty.liu@hotmail.com>)
+ id 1vDax1-0007uj-D1; Tue, 28 Oct 2025 00:04:51 -0400
+Received: from mail-japaneastazolkn190120002.outbound.protection.outlook.com
+ ([2a01:111:f403:d405::2] helo=TYPPR03CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nutty.liu@hotmail.com>)
+ id 1vDawy-0006sf-E1; Tue, 28 Oct 2025 00:04:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ev9e8btcGEf/1CTGgIK/7ZW+cWSdJ/SCdRg0LT6gVV11ZEYDtC+HmEkWhhN7ZgpUH4Nitl+0X0zVJJTMzY1N9biEkuhwQ77FjYhqhBJo4r39ufSywla3EEttAKChRD2nc4tvD3K0QxJ3HIN+Lv9l3JNoFHbN7YQr41Yb5iGCLWsQDdOdpz9YsY8eHaM49QTjKRmrzpKBYQqyXkeRgtkEkqxEljKAKex3Dz/vDI7acTKC8vUcWQCdL7t5LxNdaS/xg36uLy/82mF2jfNlbgax59x1n552qlP5VrRZ7pfIxlca0ZgFpNKC56P+PUnhYJumaDCfUpxJMdwAOEt/vK9wUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dP3947JZZR4FPDATP+Lbzw4iL7BvhlGBkdVHHgph8Rw=;
+ b=hvDurVDAKP+/jdrFAgai7n7CBraS1NVjK4VfPow0PqG4MVd2EB8dzUl4on26UWuSDYLNqLxpDEXmcKkJrFhIkBCgsco9Cgsg3XOcXAHE2OaNBMMfzN8bVQXzVSI0EJ5vE9Sme/AXuC8q1tvGUx6w9qcH7xOqXDy4RIH1HsnIlpC2hcdYrLzSmyQA1Ef4JYhI+GSxY6lMU/MdjnKsXFKG7hCl38Qq6ZUiMTYJM2Mr/77TsQtpbplKJQJ0jytub4s6FDOCzHmof+VzLl3gDPxqLqg8Hb8Gi7EgtXFzZ6UKFFPQG+We2OFBEAp5fzBLMJSwyLTUgZhpfTv3GGTGJTBwhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dP3947JZZR4FPDATP+Lbzw4iL7BvhlGBkdVHHgph8Rw=;
+ b=aKyPsKx6NmSzqpiqfmPaxbGSMiisrlGvurW3edY1k4GjaGn5HwjFb2YivDubXiTI313XzafNpppOf4VZzxU0id3xP5i0pifJ+8y4XyBsDJSz1rd/7e4J3wWnUP04MrQyGLD4lk3xvSyoDYdg3IxN2Jnrq3ULaO/tAJ7ZNCdI+JxfiwgGQY4Ju+gLXdqC8SihDCF6svOeSgECTda55hm/AVVjUa/vAJx2m4DQduOK8dvXwWU7bNxZzAUxGoeX6Zlfvyc/xfI5exGuFt8x1F6orDkSGvBYZ7YzcFxzIOdKjIi/PfUaBZ4Hpc5mFFz1+ML8vJyMIcGxa92PeBNVWyV0qg==
+Received: from KUZPR04MB9265.apcprd04.prod.outlook.com (2603:1096:d10:5a::6)
+ by TYSPR04MB7504.apcprd04.prod.outlook.com (2603:1096:400:466::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
+ 2025 04:04:39 +0000
+Received: from KUZPR04MB9265.apcprd04.prod.outlook.com
+ ([fe80::3c38:c065:daf4:cbfa]) by KUZPR04MB9265.apcprd04.prod.outlook.com
+ ([fe80::3c38:c065:daf4:cbfa%6]) with mapi id 15.20.9253.017; Tue, 28 Oct 2025
+ 04:04:39 +0000
+Message-ID: <KUZPR04MB926504948DCFEE1620225882F3FDA@KUZPR04MB9265.apcprd04.prod.outlook.com>
+Date: Tue, 28 Oct 2025 12:04:35 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hw/pci-host/articia: Map PCI memory windows in realize
-To: BALATON Zoltan <balaton@eik.bme.hu>, Peter Xu <peterx@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1761346145.git.balaton@eik.bme.hu>
- <ceda4c28887c40e1c8eae3f561ee381ca98b0484.1761346145.git.balaton@eik.bme.hu>
- <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
- <87b009e6-0d51-7409-61ad-dd65582eb13e@eik.bme.hu>
+Subject: Re: [PATCH] hw/riscv/riscv-iommu: Fix MemoryRegion owner
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+References: <20251027-iommu-v1-1-0fc52a02a273@rsg.ci.i.u-tokyo.ac.jp>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87b009e6-0d51-7409-61ad-dd65582eb13e@eik.bme.hu>
+From: "Nutty.Liu" <nutty.liu@hotmail.com>
+In-Reply-To: <20251027-iommu-v1-1-0fc52a02a273@rsg.ci.i.u-tokyo.ac.jp>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2P153CA0002.APCP153.PROD.OUTLOOK.COM (2603:1096::12) To
+ KUZPR04MB9265.apcprd04.prod.outlook.com (2603:1096:d10:5a::6)
+X-Microsoft-Original-Message-ID: <37ea3f76-87b5-47a7-9807-a20935befe76@hotmail.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KUZPR04MB9265:EE_|TYSPR04MB7504:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81980430-8cd1-4260-5ba6-08de15d71d3f
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|19110799012|37102599003|15080799012|23021999003|461199028|5072599009|8060799015|6090799003|40105399003|52005399003|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MnVaZXdNUHpJRGUyWUdOZGhQVHVvNkVwWTBGeGxleEoxV3FSQ3NNY0kzUnYw?=
+ =?utf-8?B?YjVnby9DUnlWOWNRTUZWOGJWcVp0Mm9UZFpDL0xrVjl1YUpDOXhQWi9oV3Bm?=
+ =?utf-8?B?YlNGV05ocUF0cVJLSk40WWVQZGMydXIwQnB2OGlDdGpNUjgvQlVpL0wyc1Rn?=
+ =?utf-8?B?c25abVBYZjdkT0t0ODNzK2c2c3l2UlZXY1JMZXNVWEk4a0JmTmNmNzJXaEVo?=
+ =?utf-8?B?OUI1dXZIaWRJU3JYQURpcGljZ1g2QmQycS9FeExHL0s4Y205R3ZuN0ZSdXRO?=
+ =?utf-8?B?bm9UdHJ2SVdVanBvdUZ0Nkdtc0NvcTRwekt5SlgzVTkvbkFhcXdCUUMvbEtR?=
+ =?utf-8?B?UEFqM1FDYlpCNnFVcEt4V1ZCbU8wMm5SdDNlMWliU0dnVG5oUFVWSnpTQk9H?=
+ =?utf-8?B?bjhJK1k3OWsrTTJyYXJXRUgvNmIvb3dVbnBqcTNYNVRXS284R2Z4QytlZ2R1?=
+ =?utf-8?B?Z1hJMVBpZ2J2eW56ME5CbXpxc0VFTGJqTS9nNlpMTjdpZzN3dXo2cHJYVStQ?=
+ =?utf-8?B?QWt2WkRDTllPZ0FHZ1RsNnA4UFBHQ0lYTC9LbHRaYWlWM3VjeWJKRFBCeDNY?=
+ =?utf-8?B?dkVBdllvektKL0RxcWVlSi9WbzYwcWYvdXg2OXZJaVZ0UUlYd1hOcmJVYXZY?=
+ =?utf-8?B?STdtYWFScUY3UnI4K00rTWtvOURzKzlqY2M4c250MStOMHlpYkxYQmlrTHJv?=
+ =?utf-8?B?NzA4VmZ3ZlFiMzFNSmpyNUNOTDJhVW5tNGRXVWtXV1k0b2JlcUJZbFY3Mytj?=
+ =?utf-8?B?L0hxTmJHTVpiU1Y1aWt0MjNyZUZ0UDhSdkZmNUU2QzVMbm16R3B1WGJaRW44?=
+ =?utf-8?B?ZFd5SkRmcUpha2Fzd2ZZcHhvRUxTL1hjajlZYlBtUWMwRFV2MHFkOTIwSWVt?=
+ =?utf-8?B?UVlhblBvUTlaSkZWcmE5S2QzbkRxSy9JenNlOGVRQzROeTdwSE0rM1VFaEdM?=
+ =?utf-8?B?djlidWRvaUZiZ0VVR2ViazIzNk15SVhQMURPMmJJU0RIcXIweHZQYkVkT3di?=
+ =?utf-8?B?RlU5aEpxS0ZLdkNscnZ5YkJIZVBPYitWUVZJUFhTMk14NTh1UDkvMDlqczE4?=
+ =?utf-8?B?WjE1d2VuNDExenlmc2dtUCttdGpCZmlqeDZxaW9IMUFDRCt3YzE0ZDh1cmsw?=
+ =?utf-8?B?Q2Y3ZHFWVlVJNjBQdytCSms0Tk9kT2hTbGFVc3VPVGF5UTJhOTBYcDJYQ2Rv?=
+ =?utf-8?B?djRlU1pqekp1OHBkdGpKZ0FtbUJzdHNZdEoxcVFKYzhNZGd0em9jY0JZWFNx?=
+ =?utf-8?B?MWE0bUZEOGhzRUpBejluVEQ0MmtiVmZ5ZlU3UzdBcG84ZW9oSEczd3NNc3or?=
+ =?utf-8?B?MFc3VXJCMHlDZnZndGsrQ0JYd21kMDA4UlB5Vml0WFNOWWNjN0lyQk5ONUp6?=
+ =?utf-8?B?dnhsY1EzNTJ4WVRwenN1UXYzL2tmYjYvM3h6US9BcGNtVnN6aVNob3JXWVJj?=
+ =?utf-8?B?UUtGZHVDdVkxOENGL1ErNkk5bCtGbWFEUDhVS0ZsSFNjbnpNeWYvOFh5cWpq?=
+ =?utf-8?B?L05kd0lJY3hCdHZsU1lTMTdjenBrUXJlSm53Q2dSeG1kNWhwOFBacGEvemNv?=
+ =?utf-8?B?Ymdrang1SGx5VlFlNCtyRllNbFlpMW9OSEtKZmFkWlNDVzl3L1RJQnpEeUhN?=
+ =?utf-8?Q?2LmnyL1rUjj8d1bq3ptejqemFHDwbhMbb4qpO1sYczAY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dkhDN2c5amwvTTViT2pzYnJ1MTkweDByZjhldFNaWDFmUlR1U3puZmFJVEs1?=
+ =?utf-8?B?b2Zhb0ZZbVFNaXFyTERDdmFCUWNvZ3h5aWlxREFSR1pHQzFvZGFyRjB0T0xB?=
+ =?utf-8?B?MEE5R1N4QVF6OUFZUjNrOFg2ZWY4V3A1dTI2TzZnbkVyVjVqdDV0KzdNZGpx?=
+ =?utf-8?B?RWZLSjNwdjVEYUtJZStob1JDUk9YQ2NabjJlM1lBclVLQVNLTm5ibWVZV21M?=
+ =?utf-8?B?QUJBWTQ3aW1RejZQa2RJRnRROWNGVEt2OTUvaCtyYWx6bStFZmRyaTRiY0oy?=
+ =?utf-8?B?S0ZTRkV4YWRDY240cjc5VTM4eHpWSWp3eHUvQVlJSTQrSjlJbk9JODc2UmJI?=
+ =?utf-8?B?OEp6WG5wZFk3aHBGVTJLUVd0U29BcUZSTkRQQzZFK1BiWnRvbmdVaHdPZUpp?=
+ =?utf-8?B?RW83c1R0by8zMTZlOENLbDIxRnl5UE1LZEFwcFowRXFXOHpLUmFKbWZrQld2?=
+ =?utf-8?B?S2o3eWNQQnJmT2FRcit3S2hEZzVRU3FVc0FYUitZMk1ZdFl0aTVlL3dRQmlX?=
+ =?utf-8?B?R3EvSHZobGtaL1pGWURlYnJ3OUE0bjdpN1NRU2NSRUZFaFE1R1A0RVc4WVF6?=
+ =?utf-8?B?SE5EUFlLOGdxa0dDWk5pRjM2c2hZUm16UDROZ2hsNFZUUDN5MER6RjRvT3Nq?=
+ =?utf-8?B?MUptMzZaSDNucnV6QjIrNVNXT3Nqb3Y5RUp0amNHbzlQTDB3emoxaWxrQk1Z?=
+ =?utf-8?B?RkgzQ0JBbnZNVVpCRTA5alpwKzhyYzZiajdoVGloWjhQY3VTQ1dTaTdweStB?=
+ =?utf-8?B?Q2Vuc1MydEVUa3psNUQ2WlpxdlNuMDdLaUdYb0U4RVhoY2dlUG9oaDYya0xR?=
+ =?utf-8?B?VFNiVTkxbGxoMkk1eDB5L2o4c1FDaFZvTXZ3RDFDV3JVUlpoY2hNOTZOaFBs?=
+ =?utf-8?B?M1hZYkVyUEpWUmllcENvVVFLbHBPRitCVWhlV2FLd29sRldLR0krVDM2Y0NW?=
+ =?utf-8?B?QW40UHBTb0hHUmp5ZlZsQXFFYXBENGdjTHdtaXFDVVhxK3ZPdEFlVk9zUVlq?=
+ =?utf-8?B?Q0RQblJLTnZsSXMxeTJBZS9LK1RyUUVZS1ZwOSt1VWNtSTJiOG5HYjVXbS83?=
+ =?utf-8?B?VmpvY21nTjZMRTR5ZXlMeGJ0aVcvd20yL2xDVllpZnhrcFQ2VjFoVXU4MVI1?=
+ =?utf-8?B?R21nTmorRkFrQjFtNFVNZjJ2SGliVmNmVHZ1T3U3VnJtbTZMMDdpVGRxbjl2?=
+ =?utf-8?B?TnJNOHNaOVRWS0NabExDR1dmUXJweDRzUjIvbWJxTGpZdXl6aHBXTU5MZDVC?=
+ =?utf-8?B?aURCalFPU3hacHBDdG00S0tyaEdSK2o4VThLUm13ZU4zb1R2d2JiYWh2UHVB?=
+ =?utf-8?B?ZGdwREJpSzhZWnBHVUZxLzU3NEt1RTRKUGJPOWx2SFQxM2tTdlRBOGcwcFVw?=
+ =?utf-8?B?emdnK2tSMlVMWm9TMkxObFhhZkpPS0k4a0p4cW5UUEdIaGdmWkdRTlBPRW8x?=
+ =?utf-8?B?L3UzR1hhMzE4ck02Wi9QeWpNdkFYSDh5OWRxWXdOZGhqTGJWUWRaaWZiWiti?=
+ =?utf-8?B?RzJUWXB5aVBlNVhvdDBkcVFJQXFXRm1kUldEbWx5OEZCTldpNW93OW51K0lY?=
+ =?utf-8?B?Qm1yeU5rMU8wZitXTTdCYW5Ud2RUUUdDMzV4RElSQ1QwcGUrb0J4anNraWpU?=
+ =?utf-8?Q?6z5FdWKfCxpM72iPWjHOcqQvBSRCmeBYHL8RiFU5oHJY=3D?=
+X-OriginatorOrg: sct-15-20-9052-0-msonline-outlook-38779.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81980430-8cd1-4260-5ba6-08de15d71d3f
+X-MS-Exchange-CrossTenant-AuthSource: KUZPR04MB9265.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 04:04:38.9619 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR04MB7504
+Received-SPF: pass client-ip=2a01:111:f403:d405::2;
+ envelope-from=nutty.liu@hotmail.com;
+ helo=TYPPR03CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 28 Oct 2025 01:10:32 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,68 +156,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/25 20:47, BALATON Zoltan wrote:
-> On Mon, 27 Oct 2025, Philippe Mathieu-Daudé wrote:
->> On 25/10/25 01:31, BALATON Zoltan wrote:
->>> These memory windows are a result of the address decoding in the
->>> Articia S north bridge so better model it there and not in board code.
->>>
->>> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>>   hw/pci-host/articia.c | 15 ++++++++++++++-
->>>   hw/ppc/amigaone.c     | 28 +++++-----------------------
->>>   hw/ppc/pegasos2.c     | 13 -------------
->>>   3 files changed, 19 insertions(+), 37 deletions(-)
->>
->>
->>> @@ -169,6 +174,7 @@ static void articia_realize(DeviceState *dev, 
->>> Error **errp)
->>>   {
->>>       ArticiaState *s = ARTICIA(dev);
->>>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
->>> +    MemoryRegion *mr;
->>>       PCIDevice *pdev;
->>>         bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
->>> @@ -180,6 +186,14 @@ static void articia_realize(DeviceState *dev, 
->>> Error **errp)
->>>       memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
->>>                             TYPE_ARTICIA, 0x1000000);
->>>       memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
->>> +    mr = g_new(MemoryRegion, 1);
->>
->> Won't Coverity or other analysis tools complain about the leak?
->> (this is why we usually keep a reference in the device state, here
->> ArticiaState). Otherwise:
-> 
-> According to https://www.qemu.org/docs/master/devel/memory.html#region- 
-> lifecycle
-> there should be no leak and keeping a reference should not be necessary 
-> as the lifetime is managed by attaching it to the owner object so no 
-> need to keep a reference when it's not needed otherwise. Not littering 
-> the state struct with unneded references makes it easier to comprehend 
-> so I'd only keep things there that are necessary.
+On 10/27/2025 1:37 PM, Akihiko Odaki wrote:
+> as points to the MemoryRegion itself. s is the device that owns the
+> MemoryRegion.
+>
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> ---
+>   hw/riscv/riscv-iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 
-IIUC this doc is about what happens within the allocated MemoryRegion,
-regardless of where it is allocated.
-
-> 
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Can I keep this R-b considering the above?
-> 
-> Regards,
-> BALATON Zoltan
-> 
->>> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", &s->mem,
->>> +                             0, PCI_LOW_SIZE);
->>> +    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
->>> +    mr = g_new(MemoryRegion, 1);
->>> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", &s->mem,
->>> +                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
->>> +    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, 
->>> mr);
->>
->>
-
+Thanks,
+Nutty
 
