@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D853CC17557
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE35CC174D8
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 00:17:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDstN-0002uB-9w; Tue, 28 Oct 2025 19:14:18 -0400
+	id 1vDstL-0002tA-37; Tue, 28 Oct 2025 19:14:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDstK-0002tY-TQ
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:15 -0400
+ id 1vDstG-0002s3-Uz
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:10 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vDst9-00014g-1N
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:14 -0400
+ id 1vDst7-000150-1G
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 19:14:08 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id ACB9F81756;
- Wed, 29 Oct 2025 02:13:55 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 433F181758;
+ Wed, 29 Oct 2025 02:13:56 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:582::1:19])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oDnXpg2bCW20-kSdLoIY9; Wed, 29 Oct 2025 02:13:55 +0300
+ ESMTPSA id oDnXpg2bCW20-HAGtewB3; Wed, 29 Oct 2025 02:13:55 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1761693235;
- bh=1/MGi/tsP2KZAQxhpYMWKHlovow3Rr/el/C7tdrzP30=;
+ bh=np7XWMeyfsJTuCib+x7NKEfDLVhTrKKEDFyAgwT/O9A=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=fJNleDlJvqjIlqmTUqR4UYjOUfRCj11H+nGYeudRI9z7zHQx3E524LxWoNy/tmfxi
- f9OyJRHpDYYtVlZPlNsFY/QJVdgY4USpqT3T1C0NyZle/3qvFUmNKAwAdZ3bsMRqys
- LAnR7IKPrpOKobR0yMjyd7PfmXmL5nRPCWU7qfbQ=
+ b=0YjLBJnET45O3W5IHfuXo8l2drf2ALJNmUTy61ABRBkPHb6JpyD3JQ2xpDgMTE1NP
+ 7nnn4rax+zlTPOMHo4TIymwHVVnodo6bKPYTnqbMh05yBjiLtp9uzeM5ugfGbVIYic
+ jYZUojwEhKdWUzTtGU+ifXZZCKTRquRIXO/cfecE=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ To: peterx@redhat.com
 Cc: armbru@redhat.com,
 	vsementsov@yandex-team.ru,
 	qemu-devel@nongnu.org
-Subject: [RFC 05/22] hw/s390x/virtio-ccw.c: move to new migration APIs
-Date: Wed, 29 Oct 2025 02:13:29 +0300
-Message-ID: <20251028231347.194844-6-vsementsov@yandex-team.ru>
+Subject: [RFC 06/22] hw/scsi/spapr_vscsi: move to new migration APIs
+Date: Wed, 29 Oct 2025 02:13:30 +0300
+Message-ID: <20251028231347.194844-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
 References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
@@ -57,7 +57,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,104 +75,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/s390x/virtio-ccw.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ hw/scsi/spapr_vscsi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
-index 4cb1ced001..f456856d42 100644
---- a/hw/s390x/virtio-ccw.c
-+++ b/hw/s390x/virtio-ccw.c
-@@ -38,7 +38,7 @@
+diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
+index f0a7dd2b88..55388454af 100644
+--- a/hw/scsi/spapr_vscsi.c
++++ b/hw/scsi/spapr_vscsi.c
+@@ -630,7 +630,7 @@ static void vscsi_save_request(QEMUFile *f, SCSIRequest *sreq)
+     vscsi_req *req = sreq->hba_private;
+     assert(req->active);
  
- bool have_virtio_ccw = true;
+-    vmstate_save_state(f, &vmstate_spapr_vscsi_req, req, NULL, &error_fatal);
++    vmstate_save_vmsd(f, &vmstate_spapr_vscsi_req, req, NULL, &error_fatal);
  
--static int virtio_ccw_dev_post_load(void *opaque, int version_id)
-+static bool virtio_ccw_dev_post_load(void *opaque, int version_id, Error **errp)
- {
-     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(opaque);
-     CcwDevice *ccw_dev = CCW_DEVICE(dev);
-@@ -54,7 +54,7 @@ static int virtio_ccw_dev_post_load(void *opaque, int version_id)
-     if (ck->refill_ids) {
-         ck->refill_ids(ccw_dev);
-     }
--    return 0;
-+    return true;
- }
+     trace_spapr_vscsi_save_request(req->qtag, req->cur_desc_num,
+                                    req->cur_desc_offset);
+@@ -641,7 +641,6 @@ static void *vscsi_load_request(QEMUFile *f, SCSIRequest *sreq)
+     SCSIBus *bus = sreq->bus;
+     VSCSIState *s = VIO_SPAPR_VSCSI_DEVICE(bus->qbus.parent);
+     vscsi_req *req;
+-    int rc;
+     Error *local_err = NULL;
  
- typedef struct VirtioCcwDeviceTmp {
-@@ -62,7 +62,7 @@ typedef struct VirtioCcwDeviceTmp {
-     uint16_t config_vector;
- } VirtioCcwDeviceTmp;
+     assert(sreq->tag < VSCSI_REQ_LIMIT);
+@@ -649,8 +648,7 @@ static void *vscsi_load_request(QEMUFile *f, SCSIRequest *sreq)
+     assert(!req->active);
  
--static int virtio_ccw_dev_tmp_pre_save(void *opaque)
-+static bool virtio_ccw_dev_tmp_pre_save(void *opaque, Error **errp)
- {
-     VirtioCcwDeviceTmp *tmp = opaque;
-     VirtioCcwDevice *dev = tmp->parent;
-@@ -70,23 +70,24 @@ static int virtio_ccw_dev_tmp_pre_save(void *opaque)
- 
-     tmp->config_vector = vdev->config_vector;
- 
--    return 0;
-+    return true;
- }
- 
--static int virtio_ccw_dev_tmp_post_load(void *opaque, int version_id)
-+static bool virtio_ccw_dev_tmp_post_load(void *opaque, int version_id,
-+                                         Error **errp)
- {
-     VirtioCcwDeviceTmp *tmp = opaque;
-     VirtioCcwDevice *dev = tmp->parent;
-     VirtIODevice *vdev = virtio_bus_get_device(&dev->bus);
- 
-     vdev->config_vector = tmp->config_vector;
--    return 0;
-+    return true;
- }
- 
- const VMStateDescription vmstate_virtio_ccw_dev_tmp = {
-     .name = "s390_virtio_ccw_dev_tmp",
--    .pre_save = virtio_ccw_dev_tmp_pre_save,
--    .post_load = virtio_ccw_dev_tmp_post_load,
-+    .pre_save_errp = virtio_ccw_dev_tmp_pre_save,
-+    .post_load_errp = virtio_ccw_dev_tmp_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(config_vector, VirtioCcwDeviceTmp),
-         VMSTATE_END_OF_LIST()
-@@ -97,7 +98,7 @@ const VMStateDescription vmstate_virtio_ccw_dev = {
-     .name = "s390_virtio_ccw_dev",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .post_load = virtio_ccw_dev_post_load,
-+    .post_load_errp = virtio_ccw_dev_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_CCW_DEVICE(parent_obj, VirtioCcwDevice),
-         VMSTATE_PTR_TO_IND_ADDR(indicators, VirtioCcwDevice),
-@@ -105,7 +106,7 @@ const VMStateDescription vmstate_virtio_ccw_dev = {
-         VMSTATE_PTR_TO_IND_ADDR(summary_indicator, VirtioCcwDevice),
-         /*
-          * Ugly hack because VirtIODevice does not migrate itself.
--         * This also makes legacy via vmstate_save_state possible.
-+         * This also makes legacy via vmstate_save_vmsd possible.
-          */
-         VMSTATE_WITH_TMP(VirtioCcwDevice, VirtioCcwDeviceTmp,
-                          vmstate_virtio_ccw_dev_tmp),
-@@ -1130,13 +1131,13 @@ static int virtio_ccw_load_queue(DeviceState *d, int n, QEMUFile *f)
- static void virtio_ccw_save_config(DeviceState *d, QEMUFile *f)
- {
-     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
--    vmstate_save_state(f, &vmstate_virtio_ccw_dev, dev, NULL, &error_fatal);
-+    vmstate_save_vmsd(f, &vmstate_virtio_ccw_dev, dev, NULL, &error_fatal);
- }
- 
- static int virtio_ccw_load_config(DeviceState *d, QEMUFile *f)
- {
-     VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
--    return vmstate_load_state(f, &vmstate_virtio_ccw_dev, dev, 1, &error_fatal);
-+    return vmstate_load_vmsd(f, &vmstate_virtio_ccw_dev, dev, 1, &error_fatal);
- }
- 
- static void virtio_ccw_pre_plugged(DeviceState *d, Error **errp)
+     memset(req, 0, sizeof(*req));
+-    rc = vmstate_load_state(f, &vmstate_spapr_vscsi_req, req, 1, &local_err);
+-    if (rc) {
++    if (!vmstate_load_vmsd(f, &vmstate_spapr_vscsi_req, req, 1, &local_err)) {
+         fprintf(stderr, "VSCSI: failed loading request tag#%u\n", sreq->tag);
+         error_report_err(local_err);
+         return NULL;
 -- 
 2.48.1
 
