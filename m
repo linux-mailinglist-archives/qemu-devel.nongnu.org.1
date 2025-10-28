@@ -2,66 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB77C15D8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384AAC15DC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:38:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmeb-0008CN-Ly; Tue, 28 Oct 2025 12:34:37 -0400
+	id 1vDmfe-0000da-4m; Tue, 28 Oct 2025 12:35:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDmeM-00086m-LG; Tue, 28 Oct 2025 12:34:24 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmev-0008Tc-Hn
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDmeC-0003Wt-0S; Tue, 28 Oct 2025 12:34:22 -0400
-Received: from [192.168.10.110] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59SGXfdJ078437
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 29 Oct 2025 01:33:41 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=GycpbXY4fYRdDDh3FM9iiNwRlSs+QbvSmpcEVTygCN8=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1761669221; v=1;
- b=aOtaeHh4wDXfgLrf/GvWYMWpkHzFRXsrFCyDhScSv2S3r6T0uTJriYQA3VeNJSb/
- En0lB8qeFvSeqFx+25vPIjE0ykWrfzCP50z5GTwmqAZMhQpztLJXeh3uF4MSzOrI
- oXEYiz4vpK/uFuRZdgPpGstQpWbK4Lb76leJXUI7UT9D5Y2L9mOtDZbEzVG5WHjz
- T8l7XPbMG4FO8EraOLObRn92dWYo/+iXoaI3uNrycZBKrCjYtyynN1vy9OsoPShz
- KQPRcL79EwnbysUSuYxw53QTPKQyJInD1LLQpG/zk/YYH7QOl02x3orSSPtlm4ek
- bMxmVGtwNA2QuKExwWS+FQ==
-Message-ID: <802b77f2-2c23-4b5a-a739-d56b09c335de@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 29 Oct 2025 01:33:41 +0900
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDmed-0003mi-1Y
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761669277;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IkfdsjarwHSxOpg3pQ0lv1QR6fFd3UpdDIRhxBkgC2g=;
+ b=WkIniiy24mwyp2Oo9euf/XV6B6yR5/3qGTAR9a8XBaGdawD3vc+59bIQHqEx+jSO5hyEYu
+ hsNbWMrM9liHpv4d+LdWkW72f03g0aXT2oNVtGtEOAzNmITD7lhdMGs2J8OIjuqwrvVR5Z
+ xPeDbgw1bxmqe/7HoKWPmPZS1qTEXJg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-zUoj0JiIN12SaqQnJzM1eg-1; Tue, 28 Oct 2025 12:34:35 -0400
+X-MC-Unique: zUoj0JiIN12SaqQnJzM1eg-1
+X-Mimecast-MFC-AGG-ID: zUoj0JiIN12SaqQnJzM1eg_1761669274
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-47496b3c1dcso47215635e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:34:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761669274; x=1762274074;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IkfdsjarwHSxOpg3pQ0lv1QR6fFd3UpdDIRhxBkgC2g=;
+ b=YoG43DVqjmPLxbgmMRPQFDB4DHah+ZOaeJd8XbeKq2+dKtjnuppVYIle19bzZum1sK
+ PU18XYvXtlAQwLyP8EmZqB8cjIq2rMpZiTYmuaOcdF/eyjWD9NhDLZvcrzhswehoLrxW
+ T2Jt13FJGdcu9dbkc2x2tJ+vpiS90hrKrQ5TH+dhk3uGXd03xEq9Mn80OSYPRgsnUW1H
+ zozS/9rqMhm2OdNyGrvNg60vuX80v/EuietfSStcuWu5pRZMj2VQl40osrHd0pFAmfX4
+ kVkG1l7a9qTrJ66yyxu58pQ/6WajP/0cysfX640BlOsCoYN9L7VuCuAzK3IlhOO7jXg7
+ lIyg==
+X-Gm-Message-State: AOJu0Yx5OQcHE+aPN/8jc4qRHNXn3vcK/mm8MxhBBVJ0Bh8sBk4odZIM
+ zAozIKDq102moaIXYXz20FTu7PQM+bbMcAMmynOLOvFdb1Upi+nDi5OmXMDGciJ+q7bppXgI8rL
+ ObDG62h1IuojUoCvJuAr4ZHdrZhboqPRBCi9ZNxTpsfl/rIpM+AHqUw6s
+X-Gm-Gg: ASbGnct0yJuSUW5/HDb7FtG0rhw1zv0iXYBb2KiAUPkn9mGsb0ZoeI4xVEQO1f2/5wd
+ 4g6u6uQ8wBHT1W8BUJWtYojWmNw+u1mFXYq/aZiuACVusNBeRFNHQJcZ3Z4xdOdHWuqQsiN5kEb
+ HFZOsx8ix+tUJNQ6hz7rrlVuW6vdXuuttvBZxwZDA+Wb1hkSUMWL6HaPZtw0kvpSNpUyQlt5q8T
+ 40IZLa96XlvOHD+pKVTgHax1pdQcVBXcLiKgH20Xyvw3FhkKOTVtz0lT2nvlb0j/7PQr5jO5J0B
+ 0mYlQURpFqSJxgb/YSYw4vIXsf8kOzARBuxNBYLSrkcj4kvB6P7PYVEk9w8diyKeaYjBFOAR2J1
+ BmyG11NPvCV+b2WiWGwcfR8MdQAKDbMOReY/jDnYci1TEY0cdkStiFGvH8A==
+X-Received: by 2002:a05:600c:4ec6:b0:475:df91:ddf0 with SMTP id
+ 5b1f17b1804b1-4771e1f0f49mr760445e9.33.1761669274273; 
+ Tue, 28 Oct 2025 09:34:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzuN+T4OqxC5NpkyDonmtKiOglbvQDKTB5SQJ+NZyiBtDg6FfrRmEe9vMwhtNh7NpzfWhpSA==
+X-Received: by 2002:a05:600c:4ec6:b0:475:df91:ddf0 with SMTP id
+ 5b1f17b1804b1-4771e1f0f49mr760165e9.33.1761669273803; 
+ Tue, 28 Oct 2025 09:34:33 -0700 (PDT)
+Received: from localhost
+ (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
+ [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4771e3b9994sm11855e9.16.2025.10.28.09.34.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Oct 2025 09:34:32 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Richard W . M . Jones" <rjones@redhat.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Peter Lieven <pl@dlhnet.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Subject: [PATCH 15/16] null-aio: Run CB in original AioContext
+Date: Tue, 28 Oct 2025 17:33:41 +0100
+Message-ID: <20251028163343.116249-16-hreitz@redhat.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
+References: <20251028163343.116249-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hw/pci-host/articia: Map PCI memory windows in realize
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1761346145.git.balaton@eik.bme.hu>
- <ceda4c28887c40e1c8eae3f561ee381ca98b0484.1761346145.git.balaton@eik.bme.hu>
- <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
- <87b009e6-0d51-7409-61ad-dd65582eb13e@eik.bme.hu>
- <d23d5106-645c-466f-86e1-30ce20cc61d3@linaro.org>
- <dbdbc78f-3d4b-c0b2-87ac-85e24568a115@eik.bme.hu>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <dbdbc78f-3d4b-c0b2-87ac-85e24568a115@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,89 +115,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/28 21:59, BALATON Zoltan wrote:
-> On Tue, 28 Oct 2025, Philippe Mathieu-Daudé wrote:
->> On 27/10/25 20:47, BALATON Zoltan wrote:
->>> On Mon, 27 Oct 2025, Philippe Mathieu-Daudé wrote:
->>>> On 25/10/25 01:31, BALATON Zoltan wrote:
->>>>> These memory windows are a result of the address decoding in the
->>>>> Articia S north bridge so better model it there and not in board code.
->>>>>
->>>>> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>>> ---
->>>>>   hw/pci-host/articia.c | 15 ++++++++++++++-
->>>>>   hw/ppc/amigaone.c     | 28 +++++-----------------------
->>>>>   hw/ppc/pegasos2.c     | 13 -------------
->>>>>   3 files changed, 19 insertions(+), 37 deletions(-)
->>>>
->>>>
->>>>> @@ -169,6 +174,7 @@ static void articia_realize(DeviceState *dev, 
->>>>> Error **errp)
->>>>>   {
->>>>>       ArticiaState *s = ARTICIA(dev);
->>>>>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
->>>>> +    MemoryRegion *mr;
->>>>>       PCIDevice *pdev;
->>>>>         bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
->>>>> @@ -180,6 +186,14 @@ static void articia_realize(DeviceState *dev, 
->>>>> Error **errp)
->>>>>       memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
->>>>>                             TYPE_ARTICIA, 0x1000000);
->>>>>       memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
->>>>> +    mr = g_new(MemoryRegion, 1);
->>>>
->>>> Won't Coverity or other analysis tools complain about the leak?
->>>> (this is why we usually keep a reference in the device state, here
->>>> ArticiaState). Otherwise:
->>>
->>> According to https://www.qemu.org/docs/master/devel/ 
->>> memory.html#region- lifecycle
->>> there should be no leak and keeping a reference should not be 
->>> necessary as the lifetime is managed by attaching it to the owner 
->>> object so no need to keep a reference when it's not needed otherwise. 
->>> Not littering the state struct with unneded references makes it 
->>> easier to comprehend so I'd only keep things there that are necessary.
->>
->> IIUC this doc is about what happens within the allocated MemoryRegion,
->> regardless of where it is allocated.
-> 
-> That doc explicitely says:
-> 
-> "Destruction of a memory region happens automatically when the owner 
-> object dies. When there are multiple memory regions under the same owner 
-> object, the memory API will guarantee all memory regions will be 
-> properly detached and finalized one by one. The order in which memory 
-> regions will be finalized is not guaranteed."
+AIO callbacks must be called in the originally calling AioContext,
+regardless of the BDS’s “main” AioContext.
 
-Destruction in this context does not imply freeing the storage.
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+---
+ block/null.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-The documentation describes destruction in QOM. QOM performs the 
-following steps during destruction:
-1. Delete properties
-2. Call finalization callbacks
-3. Free the storage
+diff --git a/block/null.c b/block/null.c
+index 4e448d593d..253d20ccbb 100644
+--- a/block/null.c
++++ b/block/null.c
+@@ -173,18 +173,17 @@ static inline BlockAIOCB *null_aio_common(BlockDriverState *bs,
+ {
+     NullAIOCB *acb;
+     BDRVNullState *s = bs->opaque;
++    AioContext *ctx = qemu_get_current_aio_context();
+ 
+     acb = qemu_aio_get(&null_aiocb_info, bs, cb, opaque);
+     /* Only emulate latency after vcpu is running. */
+     if (s->latency_ns) {
+-        aio_timer_init(bdrv_get_aio_context(bs), &acb->timer,
+-                       QEMU_CLOCK_REALTIME, SCALE_NS,
++        aio_timer_init(ctx, &acb->timer, QEMU_CLOCK_REALTIME, SCALE_NS,
+                        null_timer_cb, acb);
+         timer_mod_ns(&acb->timer,
+                      qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + s->latency_ns);
+     } else {
+-        replay_bh_schedule_oneshot_event(bdrv_get_aio_context(bs),
+-                                         null_bh_cb, acb);
++        replay_bh_schedule_oneshot_event(ctx, null_bh_cb, acb);
+     }
+     return &acb->common;
+ }
+-- 
+2.51.0
 
-However, 3 will not happen in this case since you allocate the storage 
-by yourself and it is not managed by QOM.
-
-Please also note that the documentation also says:
- > If however the memory region is part of a dynamically allocated data
- > structure, you should free the memory region in the instance_finalize
- > callback.  For an example see VFIOMSIXInfo and VFIOQuirk in
- > hw/vfio/pci.c.
-
-> 
-> (and these pci-host objects are created once at machine init and never 
-> die so the question seems quite theoretical). I'd like to keep object 
-> state simple and not keep around references in it that nothing uses and 
-> should be managed automatically. I'd only add fields to the state struct 
-> that other methods need.
-
-It is indeed theoretical. That said, I prefer the memory region to be 
-embedded into the device state struct as it will clarify that the 
-lifetime of the memory region is bound to the device.
-
-Regards,
-Akihiko Odaki
 
