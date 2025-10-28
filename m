@@ -2,94 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C14CC16882
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 19:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDF4C166E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 19:18:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDoeF-0005WW-0V; Tue, 28 Oct 2025 14:42:23 -0400
+	id 1vDoGQ-0000xn-Kq; Tue, 28 Oct 2025 14:17:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDodj-0005F8-HI
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 14:41:52 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vDodP-0005oT-Ez
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 14:41:51 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-42557c5cedcso4097163f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 11:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761676885; x=1762281685; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lIoBZbv7mBqCNJwjBiHWOo22r8zKTe2GN0MeWBRTiMU=;
- b=RGWToCDLWr1Q/lPxNTpG7oizwf2ZUPmyRjaVW9rSCLhTOiA2HxHUa9KhdVEm2Gx3W8
- x7qO/4+Ip4/jBGSvWlvqWQJUVinZT+vf5390X1jAD2LG90mnx1KWCe44tN0k2TBYFlAO
- ZLBJgQ2q0i3Y+E0JMVq+6Y2PNQIN0tpOJbnYVhKVn3Kzwts/CV8DthPo7FY10crbGS7a
- tUMuSn4E21PTXt/AlqV/8SzcbBRBtZeRL5PABr07LvVn1AG1mCsSqx2qdfqFX+Mbv+zZ
- /c3kwxI9bAEYpksHDjNkI/0F7LIyYP6VUL8s5J/vUw8uNPRoAxQZga/MhidhbGiO2dM2
- pb8g==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vDoFi-0000GN-D8
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 14:17:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vDoFZ-00026y-MK
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 14:17:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761675408;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hnENuPDQaLlrJ0UVxQkXQUiAAOZqFEg8qhARQdruJDg=;
+ b=i1qqs+lD/EbuG9qe/KkTpm3jZIW2aoY4MlhUjAviB1EDECYaZVGN6Fa5vz/H90/daoUEsl
+ bxsdIasiC+nILlsrEqEOqtf7M6X36/KIsGZQdrBrlGNP4qQ+iv1QJG8ZLyoRUK2W5VfW7b
+ zAMW1BYytSYRJxq5i1N9uYUHwAEiY/s=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-3pua95BFPseO6-jBm0Y_4w-1; Tue, 28 Oct 2025 14:16:47 -0400
+X-MC-Unique: 3pua95BFPseO6-jBm0Y_4w-1
+X-Mimecast-MFC-AGG-ID: 3pua95BFPseO6-jBm0Y_4w_1761675407
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4e8984d8833so288085321cf.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 11:16:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761676885; x=1762281685;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lIoBZbv7mBqCNJwjBiHWOo22r8zKTe2GN0MeWBRTiMU=;
- b=BYZqHcslY1tYd9HIarzLDshjjwRkoBX6Ls+NgBdMH6eq3ASgOo+G1AAz36peseGxas
- tHJ3/M7xAyhgHrFTKX1DimaGhndscyEY91S+fTZGwHUfm3KMgsZ6kSs+kHq0rZKmUOL+
- HCSUD7nY13oJEyfxKcT/qVa16xciq1hd/JEvpJuOLV2mNd7+RTyvAUR9OesO1fH3b01E
- voge5M892cfZaScGvgJj0m/2XyIuBZG9as8bcFKlGUgo0gauCvOJMscO6ODbh0alI/qm
- /meGOZkz6YnGDB2Pw9jGs4ePPqE/6FmsfFcdr6pwCmF1ISGjaoYznTPKQpyYBY8Z2+f2
- VxIw==
-X-Gm-Message-State: AOJu0YzRwseaw7Z9TUjSyIesQrKHoC5FX664pjwB6Kr7anyU6/eh2cNS
- vDr+lOxR9MTvgnQG6dzPWvH38iXiHatF2+0KcO2uMCBHyLOU8Q3UL2z7kclY8X25mJ3sMPWk9re
- p9LILt9M=
-X-Gm-Gg: ASbGncsSCtgrMeTBnR77/iIo8bBmkrcEG0NJyOUFrIBeeHTdeXRnf/y3PsIAFtDN60U
- 6BKKlr4/2qETZoBurm5oovFuImx5vq+T+0gveSHTtGtoDwaPaj4zktIUL863qod1IGwIlAVUG1d
- gXfvAk422R8cPhs7OIoFjZlSBW5D2NeIMv6jSnMqReBfved4nu2uxrrGJFGq1X2kZTg2qi/hO4j
- FMM0DOQzAfJ86UpzWL3a5+ALQURWkfB1WCb/qv6+PieEI4wMzgf8wGSW1cfwUdRtQnRSGGfgAiD
- HCXDSOJKvT9Jw0CXXQD+ZCTJd3bOFoAwwi5HSFM+rZTxwSCoAX3Pzc1ZDRNgi/axkRzzhg3nWXE
- aQ89TLCdjfk7ngICcKiyjzVa3Vhxjd4s7ov3X/BT6IQsiovvoakLc8H9NBQg+c08lwPC7ahLPaP
- EAJPVzAhzmYNu15ceYsU8w86yEXw/SjXfjmRGg4Yby3V/G6DGELw==
-X-Google-Smtp-Source: AGHT+IE9Bg27htI7e9/HI71s8ONLKbXXTD8QFcUk7hl9xI6nX05rgKMPsTlhPJM2WGdvc6SN+XjgAw==
-X-Received: by 2002:a05:6000:40e1:b0:429:8b01:c08c with SMTP id
- ffacd0b85a97d-429aef82eb8mr76573f8f.19.1761676884736; 
- Tue, 28 Oct 2025 11:41:24 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952b7b22sm21462186f8f.9.2025.10.28.11.41.23
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Oct 2025 11:41:24 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v3 25/25] hw/sysbus: Simplify SysBusDevice::mmio
-Date: Tue, 28 Oct 2025 19:12:59 +0100
-Message-ID: <20251028181300.41475-26-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251028181300.41475-1-philmd@linaro.org>
-References: <20251028181300.41475-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1761675407; x=1762280207;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hnENuPDQaLlrJ0UVxQkXQUiAAOZqFEg8qhARQdruJDg=;
+ b=wOgeUpfSTJRvsTJO+gpzRVJwmN+JevvdMaOF1AfN7jZYeaRl2+BMvwKOxWZRD9pRSD
+ s+MZuI1U7E508Ac3dP98idCOr/orCWoxRY/EdelBO682jQdxT+6HH2dLTlauVo15PdRJ
+ xf8gjdW5KwxaXZtOWr8+Snl6PM8/SQt3TjTFDSOJ67LEhYeBVD2zHsVnu+eKEut05jOJ
+ n/4DNdf5zRwtF0eaRNzNldd0FzHk0kmKsm9t9i85HTGU+9ZlKV+eW7RDiz48OHin7NQs
+ m0n4sMrR4+vY8JJEkBtXwbsnldq2cd9KjmasgG05+C8G7e8hzwYCmEX6mO7SDjT2YndC
+ 5o4Q==
+X-Gm-Message-State: AOJu0Yz64AUAsPuL/E8Q/j3ltQ9WDfxdoA+CgGOou0SV3kPAjrgz98Sq
+ dibT9rzunQkXRrvvs71aoRV0EkJriM+zlYsIbASvcQ0WJOULfZ+V0vjTlgvYJlj8agnD3AiAXeW
+ gS88de4/DiyPKNJyImcnjgvKvFoEqcVDe3Hrh9w6B0pO+SEplC+1kd9jv
+X-Gm-Gg: ASbGncvomjXBgboPQk0e/50syKudQZf1eVxbo7Ob15YGhHjlsM9lh9Cz0ZMItBZCFA/
+ jEP+zyjQqPO5eIUfo9UpJRQ4hjb3oxgqb4qSG5deY2eiQVZxzuusmNG+FLPPnl04X9Q62hMN3z/
+ nDYaVwpbwqRrbBMXDmom2d0cIkPs9CuVwiG5McXeyx0anWsEoHZC5MvmD+a6wUfQ58TpDF6Lz80
+ 7Vzj+X1MOAIXtLPlbLdgcgOvbko9m6bvpBLvQGLSypHxCLUG/g7ORyEm3mqsSYcP9Ru5DKLT1Fr
+ 9epzmuDiC11bY6WMJZE441SEfqy5vHZf5OF7l1kBnDnzLMq4zSwTc5z1p6YdIpsIxBI=
+X-Received: by 2002:a05:622a:a6d8:b0:4e8:85e8:801a with SMTP id
+ d75a77b69052e-4ed15e5cd0bmr721581cf.40.1761675406808; 
+ Tue, 28 Oct 2025 11:16:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGanjQyxNK9RqpGQ5UgSRLYN3fZuDQYGVxk6TiLkbibmOOZAt55VEdCWH4kB84CJa/tYWMIhQ==
+X-Received: by 2002:a05:622a:a6d8:b0:4e8:85e8:801a with SMTP id
+ d75a77b69052e-4ed15e5cd0bmr721191cf.40.1761675406372; 
+ Tue, 28 Oct 2025 11:16:46 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-87fc49e3370sm83479796d6.59.2025.10.28.11.16.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Oct 2025 11:16:45 -0700 (PDT)
+Date: Tue, 28 Oct 2025 14:16:43 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, Kevin Wolf <kwolf@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Fabiano Rosas <farosas@suse.de>, Zhang Chen <zhangckid@gmail.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Prasad Pandit <ppandit@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Yury Kotov <yury-kotov@yandex-team.ru>, Juraj Marcin <jmarcin@redhat.com>
+Subject: Re: [PATCH 02/13] migration: Properly wait on G_IO_IN when peeking
+ messages
+Message-ID: <aQEIi6HZCiTeHinJ@x1.local>
+References: <20251022192612.2737648-1-peterx@redhat.com>
+ <20251022192612.2737648-3-peterx@redhat.com>
+ <aPtqvjF7Jw17040Z@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+In-Reply-To: <aPtqvjF7Jw17040Z@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,69 +113,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Directly access the MemoryRegion array, removing
-the need for the embedded structure.
+On Fri, Oct 24, 2025 at 01:02:06PM +0100, Daniel P. Berrangé wrote:
+> On Wed, Oct 22, 2025 at 03:26:01PM -0400, Peter Xu wrote:
+> > migration_channel_read_peek() used to do explicit waits of a short period
+> > when peeking message needs retry.  Replace it with explicit polls on the io
+> > channel, exactly like what qemu_fill_buffer() does.
+> > 
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >  migration/channel.c | 7 +------
+> >  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/sysbus.h | 4 +---
- hw/core/sysbus.c    | 8 ++++----
- 2 files changed, 5 insertions(+), 7 deletions(-)
+Thanks both for the fast reviews. I queued patches 1-2 in advance for 10.2.
 
-diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
-index b2a2ea507ea..2cee5bcd44f 100644
---- a/include/hw/sysbus.h
-+++ b/include/hw/sysbus.h
-@@ -59,9 +59,7 @@ struct SysBusDevice {
-     /*< public >*/
- 
-     int num_mmio;
--    struct {
--        MemoryRegion *memory;
--    } mmio[QDEV_MAX_MMIO];
-+    MemoryRegion *mmio[QDEV_MAX_MMIO];
-     int num_pio;
-     uint32_t pio[QDEV_MAX_PIO];
- };
-diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-index b3060e02484..188a6ab055e 100644
---- a/hw/core/sysbus.c
-+++ b/hw/core/sysbus.c
-@@ -125,7 +125,7 @@ static void sysbus_mmio_map_common(SysBusDevice *dev, int n, hwaddr addr,
-     MemoryRegion *mr;
- 
-     assert(n >= 0 && n < dev->num_mmio);
--    mr = dev->mmio[n].memory;
-+    mr = dev->mmio[n];
- 
-     if (memory_region_is_mapped(mr)) {
-         /* Unregister previous mapping.  */
-@@ -143,7 +143,7 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
- int sysbus_mmio_map_name(SysBusDevice *dev, const char *name, hwaddr addr)
- {
-     for (int i = 0; i < dev->num_mmio; i++) {
--        if (!strcmp(memory_region_name(dev->mmio[i].memory), name)) {
-+        if (!strcmp(memory_region_name(dev->mmio[i]), name)) {
-             sysbus_mmio_map(dev, i, addr);
-             return i;
-         }
-@@ -175,13 +175,13 @@ void sysbus_init_mmio(SysBusDevice *dev, MemoryRegion *memory)
- 
-     assert(dev->num_mmio < QDEV_MAX_MMIO);
-     n = dev->num_mmio++;
--    dev->mmio[n].memory = memory;
-+    dev->mmio[n] = memory;
- }
- 
- MemoryRegion *sysbus_mmio_get_region(const SysBusDevice *dev, int n)
- {
-     assert(n >= 0 && n < QDEV_MAX_MMIO);
--    return dev->mmio[n].memory;
-+    return dev->mmio[n];
- }
- 
- void sysbus_init_ioports(SysBusDevice *dev, uint32_t ioport, uint32_t size)
 -- 
-2.51.0
+Peter Xu
 
 
