@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335B6C14297
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2E5C1429A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 11:46:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDhCf-0007Fz-VY; Tue, 28 Oct 2025 06:45:25 -0400
+	id 1vDhCt-0007Ht-DU; Tue, 28 Oct 2025 06:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vDhCd-0007Fb-Lm
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:45:24 -0400
+ (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vDhCo-0007H7-EE
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:45:34 -0400
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vDhCa-0005V4-Gt
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:45:23 -0400
+ (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vDhCl-0005XE-1y
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 06:45:34 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 67F6248D5E;
- Tue, 28 Oct 2025 10:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DABBC4CEE7;
- Tue, 28 Oct 2025 10:45:17 +0000 (UTC)
+ by sea.source.kernel.org (Postfix) with ESMTP id 01EA040195;
+ Tue, 28 Oct 2025 10:45:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B889AC4CEE7;
+ Tue, 28 Oct 2025 10:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1761648318;
- bh=xVnqX8crbKqd8uWLNFV2xVdJ2zPB23rGCWpVzawCkbk=;
+ s=k20201202; t=1761648327;
+ bh=RSWeHer5ogiaCBX7doP42pYj41uDEP8FTTxi62xTfuM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=myMMvoSXfcqZ+0CGHxOkDKAKjEOysapkQVz0Ulpqm+I32MhAuY5Vp41IDXyC6hd7b
- rmxTCDavsP7AjvABLENeHPe6iHWqwnDu3Sjd8azjYNzbaSPf6xE6YTAxOAonkj1Laf
- Ka6uV0nlbJVl3UUA5Por882ky7OolzURTYGlhAoWUMSSwrz2O0Wx+d8kf3fHrt6PDc
- sHuItETnQDwVqNR/4ehP5zJOwJz2ZAS/5dA9sIVQsTF7MSGg366Nrp4EbjIdXPKJuS
- ovIF8pq7dtyG9/+Bl6gLcKszHNc5XqGHeEPiG1WX8HCBbw4Co1s61pQZLdZoe1w5cw
- pcY4XHTx09IbA==
+ b=DkcVPH12APd1M/K7syTb2yNbeTJTw25gc35SlBskQgAAUe5OL31jg8euPhf6yBMpi
+ 19MRW5Cf9tSIx8aHI4pV8v9+SXOTiXfxYE8NSEAEW6OY6oRSoihY2vSSvnSUTxzDmK
+ naLcO8cGjNXKzRmplwr0eA8sVGognWNBeZ5PYMYy7UgN9nWZixytzNY3V+JTeCd4w5
+ uunresLv3at5y/d1JsYiL309A2GIWHHYoU5o7RCITL5lnXp23uAU9iDVXH/4ce4YWs
+ vxS51HL3yEVkSdkWojI1HXeXekfyJLGxqSKAL0ToS/agjWMQtTqGQIzTqF9f40W8nO
+ zh4uossSOAf0w==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -42,10 +42,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Michael Roth <michael.roth@amd.com>,
  Roy Hopkins <roy.hopkins@randomman.co.uk>,
  Srikanth Aithal <srikanth.aithal@amd.com>
-Subject: [PATCH v3 4/9] target/i386: SEV: Validate that SEV-ES is enabled when
- VMSA features are used
-Date: Tue, 28 Oct 2025 16:13:29 +0530
-Message-ID: <57e9313692d7aad7f663a267f360e9ff708a1c77.1761648149.git.naveen@kernel.org>
+Subject: [PATCH v3 5/9] target/i386: SEV: Enable use of KVM_SEV_INIT2 for
+ SEV-ES guests
+Date: Tue, 28 Oct 2025 16:13:30 +0530
+Message-ID: <99f1b890070a36862766bbd496ad18dd5b24aa18.1761648149.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1761648149.git.naveen@kernel.org>
 References: <cover.1761648149.git.naveen@kernel.org>
@@ -74,37 +74,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SEV features in the VMSA are only meaningful for SEV-ES and SEV-SNP
-guests, as they control aspects of the encrypted guest state that are
-not relevant for basic SEV guests.
-
-Add a check in check_sev_features() to ensure that SEV-ES or SEV-SNP is
-enabled when any SEV features are specified.
+In preparation for allowing SEV-ES guests to enable VMSA SEV features,
+update sev_init2_required() to return true if any SEV features are
+requested. This enables qemu to use KVM_SEV_INIT2 for SEV-ES guests when
+necessary.
 
 Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 ---
- target/i386/sev.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/i386/sev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 89cde2c6464a..35df7be4f67c 100644
+index 35df7be4f67c..0508b8998997 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -518,6 +518,12 @@ static int check_sev_features(SevCommonState *sev_common, uint64_t sev_features,
-             __func__);
-         return -1;
-     }
-+    if (sev_features && !sev_es_enabled()) {
-+        error_setg(errp,
-+                   "%s: SEV features require either SEV-ES or SEV-SNP to be enabled",
-+                   __func__);
-+        return -1;
-+    }
-     if (sev_features & ~sev_common->supported_sev_features) {
-         error_setg(errp,
-                    "%s: VMSA contains unsupported sev_features: %lX, "
+@@ -1699,8 +1699,7 @@ sev_vm_state_change(void *opaque, bool running, RunState state)
+  */
+ static bool sev_init2_required(SevGuestState *sev_guest)
+ {
+-    /* Currently no KVM_SEV_INIT2-specific options are exposed via QEMU */
+-    return false;
++    return !!SEV_COMMON(sev_guest)->sev_features;
+ }
+ 
+ static int sev_kvm_type(X86ConfidentialGuest *cg)
 -- 
 2.51.0
 
