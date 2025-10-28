@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976BAC15D86
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDB5C15D8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 17:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDmeJ-00084Q-IT; Tue, 28 Oct 2025 12:34:19 -0400
+	id 1vDmeH-000831-Ag; Tue, 28 Oct 2025 12:34:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDme6-00081a-MX
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDme6-00081Z-HR
  for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDme2-0003UT-EY
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vDme2-0003VR-CP
  for qemu-devel@nongnu.org; Tue, 28 Oct 2025 12:34:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761669235;
+ s=mimecast20190719; t=1761669238;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9SKZtrOmHUmq+rD18X1HIMI/6NZVlZ/S6570rCbBKQA=;
- b=Crk841O+CUUZU1ED8GZh77SkK1OGzob/jj4mwIJ2Fa0OUZQhLFgk1aYDf6fNJukF1jklrQ
- X3tPHhVCz4UbORXoa7Jp56tNsAlraUwO/my/mrgk15E1JHYUypTIe5QZ5eXXK6PIHHbS1O
- +b5gmkks45H8pFbpjF6Pm/LNpd7z0VI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gR8MtG0BVWnvKf6Erh8dGKDS/UGOnXD1GBQG6hP9q5w=;
+ b=cQZDziNCxPtXaUWZM6Syxd6bgPob7st1G7avoDjot5BaEQHXldg6Pu0jn6mvdcVEJyNe50
+ m7nF/mCNpDWcNFU2FKE/O9nfEDJkH7IOwH0Vuq+vZYAuUFBbQHT7plZEQt0T5baZoY5u1n
+ xWpk8bZgOgO643tMihJEhhDetXy6uwk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-4ofXVH8bNFOxrrKJTt_r7g-1; Tue, 28 Oct 2025 12:33:54 -0400
-X-MC-Unique: 4ofXVH8bNFOxrrKJTt_r7g-1
-X-Mimecast-MFC-AGG-ID: 4ofXVH8bNFOxrrKJTt_r7g_1761669233
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-475dca91610so17512285e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:33:54 -0700 (PDT)
+ us-mta-195-ow11Hb1lNDuv-T3T3hluew-1; Tue, 28 Oct 2025 12:33:56 -0400
+X-MC-Unique: ow11Hb1lNDuv-T3T3hluew-1
+X-Mimecast-MFC-AGG-ID: ow11Hb1lNDuv-T3T3hluew_1761669236
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-4278c82dce6so3733954f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 09:33:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761669233; x=1762274033;
+ d=1e100.net; s=20230601; t=1761669235; x=1762274035;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9SKZtrOmHUmq+rD18X1HIMI/6NZVlZ/S6570rCbBKQA=;
- b=NYr2k0ppAiZoDB9VjJBR8+ERkcv/KnzSdMO1TFwHNQHg48d4qKGSLnTPEmmB59XnBr
- roah75D6APpU0fLy4605OFkkfRqj+DeqQW/HDDEBBVhz6ofxergASGhpAvu16obg+TIV
- i8C8MhGBz2Zotr5FlDynHaEQMQxWeUPbbA3FUwsjeDkV9f8o1CdKu6cglVyIjJYq2HGw
- 8OscAIillFXJBxzgkK+ONpokfXOrqLFlwcqaEQT6HVkFpJ+svbo7m92frygtb8j03SCq
- PDC3UDXZDYTL0md06F+er1stukV0xFgIJwrxHPpH7K7rHSVZCCXJMuiJ8HZP9wpSbJL6
- 561A==
-X-Gm-Message-State: AOJu0Yy+7J/o4ZIFPljFkyZZUf6WJF8dGvyITkvemThBgIE/905QN2Rm
- KkPhvTblSw2oXEyXXu6gq8bTM0XbUuUoRUVStIbNTckWXqPTuOVTVMDZia3VNvD4CPQxDj+Fq+N
- H3NDkb5CYnYJB3T+0JRGeavc5bmkvZKN7VJav8L0aIdjWianb25fng0pF
-X-Gm-Gg: ASbGncvnEgI2eDU9I8jp0Hzkh/S0A3xkQIrYH5wNyHlSaDzwm5vOaFG1jUbAWg5bPDI
- kR7FQrzGWssERo6XwSreVQcZbdD/RvFaXi5xh2Yrmen/+UBlqC9lDXjJdOMizeJFHv2qMXLLvWu
- HKNRBiSuthzJCNfxUIU9hpFfwCP2Dku5a/P0qpJtHBL5Qcmk4c4/vz6EVqfDzCY+21rHvUiIWGK
- YwD3X8fhQ1SS8SIKK/JZp/SHP8aVL0baErR5kL9F+ElwNh0lFDAX4QEv/GeD6xr4qwPFPm+sgHM
- FuqtJ//a006O2796P1ZDAKiFhm+Jlu0RdTYmRSTDNTi4/B6wu0RwTubskCQxayBm3WVpQMro3Vf
- FBVJCOCUyc0yf7a5LkMexlRoPXM6DMdglYQ9xYNV7PyhijAOPzCTVdFlG/A==
-X-Received: by 2002:a05:600c:3f14:b0:46f:d897:516f with SMTP id
- 5b1f17b1804b1-4771e24b039mr751615e9.34.1761669232937; 
- Tue, 28 Oct 2025 09:33:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkXhoh1BxDXlbv5TlueEMZkpM22xzWPrU6xjTbl5Bc0pa7ufOWQvlFUxOcXxDJ3H2us+jIbw==
-X-Received: by 2002:a05:600c:3f14:b0:46f:d897:516f with SMTP id
- 5b1f17b1804b1-4771e24b039mr751195e9.34.1761669232499; 
- Tue, 28 Oct 2025 09:33:52 -0700 (PDT)
+ bh=gR8MtG0BVWnvKf6Erh8dGKDS/UGOnXD1GBQG6hP9q5w=;
+ b=nErrNqI9x9uUx+bg6+bpZ5wsJVpV1hHYKltO2BiOXZV89aa4ovT+Rgx8EQIykiMmd8
+ zvNtUq8eDKeRH8ctMyZLqarmOmft10+NGGHU91eJm4IsGgtCJL2kF6oxEdiT742X6dum
+ SLwXFM4/iEjdp8okS9LpkUFfXEdLqynWGc0jWOTns6B9JPo4yG60cnru1uDaq02zrMsO
+ 66WoRA3Zoqqf8j/HnGWfrn0tk/srjDU66/T9mEsRpyOABahM1XUdGF1yJkNxWPwEWeHU
+ 3B6BQilaufJ8TE4Yyg3n4xMrUyskdJC/yRdzeN9N2QJ0jr0PawyEmvbPZvUl2GH8J6I3
+ bqvw==
+X-Gm-Message-State: AOJu0Yzq9j/Wszb5giD9xaliJEuQs9hNflxbdtI29juFvgYiwMaTN3C+
+ HMsWvRlhg8cEviG41MxtTehGwai+MD7n/vEKTn/kUM2RjhGrKKh8sIKeYYzyCdHnRPDLkGFzQbD
+ fvR/AQFE4hRhhIE7e87pzqQq+6GXAxNz6yXZkwCl4DPs6g2ZSYJXYtHcO
+X-Gm-Gg: ASbGncuRI33GtYl38QxQNpTeRJ9z6jr8r/uf4Tgw+IvIaMy09Hjkipu7/pwztmNNfn7
+ uVYiSqgpvDmB/nCvRcbW7ko80LVk3MObu2pr3bgEbSNfviZL+xTqaDvSCHzcoG1rI2DwE98kwMr
+ xvsbEZAWVrtm3GSOo6VosxRFxVt0e2hexo+bTuV0dNn5YvUhNYGJ/05FT1PVT862mugCdWQtgQS
+ nBuDxbJnlCEA8x6Znx2jEJhrzVyidiyZIu+fPKwYqRwNzX0+xACSdXcIGMtM1rtyC9JS5Zwo6qe
+ WsMoCv5WIjOkUjXqvqSDi9jtIiTRY9/CO04c1GEMLNEpJgyUx0kt536Dt3Y3bl0zbJkX36hEErz
+ 7jB6tBfUv/NLR/yGS4zVJ34e8LxOap7eRdj9dwh0It17rbrGkOb/Vy7lm+A==
+X-Received: by 2002:a05:6000:402b:b0:429:8b01:c08c with SMTP id
+ ffacd0b85a97d-429a7e52ea1mr3155744f8f.19.1761669235570; 
+ Tue, 28 Oct 2025 09:33:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6M7Yv6zGU7DNnVtewoLK9lznqHNtdYpMEEzLg+qT4xsSVy9OH17HuM5lRCpvl5ud6a7S0vw==
+X-Received: by 2002:a05:6000:402b:b0:429:8b01:c08c with SMTP id
+ ffacd0b85a97d-429a7e52ea1mr3155713f8f.19.1761669235052; 
+ Tue, 28 Oct 2025 09:33:55 -0700 (PDT)
 Received: from localhost
  (p200300cfd7171feeff88afa910cb665f.dip0.t-ipconnect.de.
  [2003:cf:d717:1fee:ff88:afa9:10cb:665f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47719004d79sm22970895e9.5.2025.10.28.09.33.50
+ ffacd0b85a97d-429952b7a94sm25114579f8f.5.2025.10.28.09.33.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 09:33:51 -0700 (PDT)
+ Tue, 28 Oct 2025 09:33:53 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
@@ -80,13 +80,15 @@ Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH 01/16] block: Note on aio_co_wake use if not yet yielding
-Date: Tue, 28 Oct 2025 17:33:27 +0100
-Message-ID: <20251028163343.116249-2-hreitz@redhat.com>
+Subject: [PATCH 02/16] =?UTF-8?q?rbd:=20Run=20co=20BH=20CB=20in=20the=20co?=
+ =?UTF-8?q?routine=E2=80=99s=20AioContext?=
+Date: Tue, 28 Oct 2025 17:33:28 +0100
+Message-ID: <20251028163343.116249-3-hreitz@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251028163343.116249-1-hreitz@redhat.com>
 References: <20251028163343.116249-1-hreitz@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
@@ -114,49 +116,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-aio_co_wake() is generally safe to call regardless of whether the
-coroutine is already yielding or not.  If it is not yet yielding, it
-will be scheduled to run when it does yield.
+qemu_rbd_completion_cb() schedules the request completion code
+(qemu_rbd_finish_bh()) to run in the BDS’s AioContext, assuming that
+this is the same thread in which qemu_rbd_start_co() runs.
 
-Caveats:
-- The caller must be independent of the coroutine (to ensure the
-  coroutine must be yielding if both are in the same AioContext), i.e.
-  must not be the same coroutine
-- The coroutine must yield at some point
+To explain, this is how both latter functions interact:
 
-Make note of this so callers can reason that their use is safe.
+In qemu_rbd_start_co():
 
+    while (!task.complete)
+        qemu_coroutine_yield();
+
+In qemu_rbd_finish_bh():
+
+    task->complete = true;
+    aio_co_wake(task->co); // task->co is qemu_rbd_start_co()
+
+For this interaction to work reliably, both must run in the same thread
+so that qemu_rbd_finish_bh() can only run once the coroutine yields.
+Otherwise, finish_bh() may run before start_co() checks task.complete,
+which will result in the latter seeing .complete as true immediately and
+skipping the yield altogether, even though finish_bh() still wakes it.
+
+With multiqueue, the BDS’s AioContext is not necessarily the thread
+start_co() runs in, and so finish_bh() may be scheduled to run in a
+different thread than start_co().  With the right timing, this will
+cause the problems described above; waking a non-yielding coroutine is
+not good, as can be reproduced by putting e.g. a usleep(100000) above
+the while loop in start_co() (and using multiqueue), giving finish_bh()
+a much better chance at exiting before start_co() can yield.
+
+So instead of scheduling finish_bh() in the BDS’s AioContext, schedule
+finish_bh() in task->co’s AioContext.
+
+In addition, we can get rid of task.complete altogether because we will
+get woken exactly once, when the task is indeed complete, no need to
+check.
+
+(We could go further and drop the BH, running aio_co_wake() directly in
+qemu_rbd_completion_cb() because we are allowed to do that even if the
+coroutine isn’t yet yielding and we’re in a different thread – but the
+doc comment on qemu_rbd_completion_cb() says to be careful, so I decided
+not to go so far here.)
+
+Buglink: https://issues.redhat.com/browse/RHEL-67115
+Reported-by: Junyao Zhao <junzhao@redhat.com>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- include/block/aio.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ block/rbd.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/include/block/aio.h b/include/block/aio.h
-index 99ff48420b..6ed97f0a4c 100644
---- a/include/block/aio.h
-+++ b/include/block/aio.h
-@@ -650,6 +650,21 @@ void coroutine_fn aio_co_reschedule_self(AioContext *new_ctx);
-  * aio_co_wake may be executed either in coroutine or non-coroutine
-  * context.  The coroutine must not be entered by anyone else while
-  * aio_co_wake() is active.
-+ *
-+ * If `co`'s AioContext differs from the current AioContext, this will call
-+ * aio_co_schedule(), which makes this safe to use even when `co` has not
-+ * yielded yet.  In such a case, it will be entered once it yields.
-+ *
-+ * In contrast, if `co`'s AioContext is equal to the current one, it is
-+ * required for `co` to currently be yielding.  This is generally the case
-+ * if the caller is not in `co` (i.e. invoked by `co`), because the only
-+ * other way for the caller to be running then is for `co` to currently be
-+ * yielding.
-+ *
-+ * Therefore, if there is no way for the caller to be invoked/entered by
-+ * `co`, it is generally safe to call this regardless of whether `co` is
-+ * known to already be yielding or not -- it only has to yield at some
-+ * point.
-  */
- void aio_co_wake(Coroutine *co);
+diff --git a/block/rbd.c b/block/rbd.c
+index 3611dc81cf..2a70b5a983 100644
+--- a/block/rbd.c
++++ b/block/rbd.c
+@@ -110,9 +110,7 @@ typedef struct BDRVRBDState {
+ } BDRVRBDState;
  
+ typedef struct RBDTask {
+-    BlockDriverState *bs;
+     Coroutine *co;
+-    bool complete;
+     int64_t ret;
+ } RBDTask;
+ 
+@@ -1309,7 +1307,6 @@ static int qemu_rbd_resize(BlockDriverState *bs, uint64_t size)
+ static void qemu_rbd_finish_bh(void *opaque)
+ {
+     RBDTask *task = opaque;
+-    task->complete = true;
+     aio_co_wake(task->co);
+ }
+ 
+@@ -1326,7 +1323,7 @@ static void qemu_rbd_completion_cb(rbd_completion_t c, RBDTask *task)
+ {
+     task->ret = rbd_aio_get_return_value(c);
+     rbd_aio_release(c);
+-    aio_bh_schedule_oneshot(bdrv_get_aio_context(task->bs),
++    aio_bh_schedule_oneshot(qemu_coroutine_get_aio_context(task->co),
+                             qemu_rbd_finish_bh, task);
+ }
+ 
+@@ -1338,7 +1335,7 @@ static int coroutine_fn qemu_rbd_start_co(BlockDriverState *bs,
+                                           RBDAIOCmd cmd)
+ {
+     BDRVRBDState *s = bs->opaque;
+-    RBDTask task = { .bs = bs, .co = qemu_coroutine_self() };
++    RBDTask task = { .co = qemu_coroutine_self() };
+     rbd_completion_t c;
+     int r;
+ 
+@@ -1401,9 +1398,8 @@ static int coroutine_fn qemu_rbd_start_co(BlockDriverState *bs,
+         return r;
+     }
+ 
+-    while (!task.complete) {
+-        qemu_coroutine_yield();
+-    }
++    /* Expect exactly a single wake from qemu_rbd_finish_bh() */
++    qemu_coroutine_yield();
+ 
+     if (task.ret < 0) {
+         error_report("rbd request failed: cmd %d offset %" PRIu64 " bytes %"
 -- 
 2.51.0
 
