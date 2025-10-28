@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C209C16311
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE94DC1632B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Oct 2025 18:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDnbB-000682-Ph; Tue, 28 Oct 2025 13:35:09 -0400
+	id 1vDnbH-0006DH-KN; Tue, 28 Oct 2025 13:35:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnb7-00064M-9Z
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vDnbF-0006Bp-Df
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vDnb3-0004Rp-La
- for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:04 -0400
+ id 1vDnb8-0004Sc-M4
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 13:35:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761672898;
+ s=mimecast20190719; t=1761672901;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qr/uEpcK466AGGfZ9FV3WnUVpqfKNyqxTrRn7SFpgZQ=;
- b=VUHY+W0Y0pKzWFoNlYrNjOMyitWe5sxJN/WOx2GJK+BG7Kz7BlP35qJtn6BTTu5U5xDkeH
- Un2h4Tv8VAUDQXKwoOOkS3XtkofgEoPmR27x0htLVhTyyzA0a4Tmd0dYF9fcCQv1JYPkV9
- vjFKORsquhqWVPxmGT65BaIU1g6kEp0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uNUgC+CpMFn7MC6N/Zib6jbMtfkLhzBQ6ENJcnYPLcY=;
+ b=UgeQ3lbihjE4uB/Q12iv9e+6L8p8PeWEgqqRshyAHxJQvviSGGDxqOK7b3Z28ZW2zqTI7g
+ zovQoye6d6jM1+kswS7xHzQK4J7btf276ikBOrApzIUKkz1pF0fE/3CLOW/bKY5oQ5Aww7
+ r1NZNExI+VysuTGsJ7FS75o5zWEo0w8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-01yRhUpsMXq1O-aDWbH_dA-1; Tue, 28 Oct 2025 13:34:57 -0400
-X-MC-Unique: 01yRhUpsMXq1O-aDWbH_dA-1
-X-Mimecast-MFC-AGG-ID: 01yRhUpsMXq1O-aDWbH_dA_1761672896
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4770e0910e4so21463585e9.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:34:56 -0700 (PDT)
+ us-mta-682-kmWzT40lPXC-t_oV4CoUUw-1; Tue, 28 Oct 2025 13:35:00 -0400
+X-MC-Unique: kmWzT40lPXC-t_oV4CoUUw-1
+X-Mimecast-MFC-AGG-ID: kmWzT40lPXC-t_oV4CoUUw_1761672899
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4711899ab0aso44619155e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 10:35:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761672895; x=1762277695;
+ d=1e100.net; s=20230601; t=1761672898; x=1762277698;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qr/uEpcK466AGGfZ9FV3WnUVpqfKNyqxTrRn7SFpgZQ=;
- b=qVYrAL/QJ1lM3ZQ9/1Ig8g4MjbuFG85hcUZixZpb8pUZVhZvVMBLajqbSm4Ugnxorz
- agSraVET0VQVnLiqGGUhXQxuSTITb3XvtfOzq/t6Akj93Vup5My6a5NwEdhJcFRwlQs0
- p+J3IQqVmjKapNmKULedkVauL00Oxd6xzQ/dIS2iFag1VVhJzEhAjjKQRiRfsxFeThe1
- TVEk85tFeKEDR6BxB8w6Pe9XS33U9clRRzAQY1MJlAYcd02nO/66f7x+06/DMsah0e9D
- aUUt0nnoqHAacAp6nwrNse0RGXZ6MSvnDzUT42MjvZLALljfwIU7Ok4NlsDza88yo7DM
- L46A==
-X-Gm-Message-State: AOJu0YyZhG2Ee/zrrJyHXVAdoWvWDhlH4kFzHg3qcyTNg0mvS6K7GunO
- sBkpbx9034tYlF+i5l/eneaLyZyJOkIKhC0lp58oiPfT4mYsCwV0gzzhilgPmWgnvOczfsRqH49
- WDnWC5O1YjB7KoZlUTf3Ui2sI97Mv6KF/kAs1G1J9+NnmsKRq+FoGifjcV0Wn4kheL8LzUyl/MS
- B9l6G+JBbf1EfpKstUPDjGFNnelfnpRk/htzi8uafQ
-X-Gm-Gg: ASbGnct80vmNikL/mnwD1q2wHSBw5GIBMOBKdHg7Zi8qK6nOZqVMqZjZ2yZ+dCeVHvk
- G1MnVnK/9DI00V6XitubHJDirNsJV/8eF4LqZan3U8damVAoSaFfQLqNeiWChpD9T8Pg4fioCc/
- e2vL/lV+lni8uV3IIGTEoJGOxOTVMf2ZRl7PMyQRdOA2rcL2yTXub3CWwFJuWmnjU6X899NFepr
- o/m5q32hC06BqoKj8Gc8Hw8/Bnj4Cq8DDJOL12tdB4LiP+LhoEahdPKg6fOYnJbyU1+OFaoVkZS
- 8KA6H1+DuzVRnMwwly87gdJTmk6g6qLTMQSQGo9vk2LqA7oktDtsH/xAOTuNfjSRA9qDAYRJCC3
- 7WG11oZicSbwgIydlOt1dPpV+F5Mw6QNLNwa7QQTG6PwzzmNe4vJ3B0sW7aQjuOuWmCJjbKe1uA
- xqcKc=
-X-Received: by 2002:a05:600c:34c4:b0:46e:396b:f5ae with SMTP id
- 5b1f17b1804b1-4771e17ead6mr2531795e9.16.1761672895121; 
- Tue, 28 Oct 2025 10:34:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfw1dwTj0hmCE9hBgfMlpFmtS+eNd8iAUVZKJQ21M7A7aFSGLajfT+3e2Irc4RADEbmJm4fg==
-X-Received: by 2002:a05:600c:34c4:b0:46e:396b:f5ae with SMTP id
- 5b1f17b1804b1-4771e17ead6mr2531615e9.16.1761672894690; 
- Tue, 28 Oct 2025 10:34:54 -0700 (PDT)
+ bh=uNUgC+CpMFn7MC6N/Zib6jbMtfkLhzBQ6ENJcnYPLcY=;
+ b=iNyDV4h3ijk8zo0Bhx68MdbbQXg50b+j7d9/QK2ih4/WywC84v6pWsQE5fhnA98733
+ YZbNcVoscpw87iQVa9sp0IvqWz7srBuSEAYsmO3WIeAFmufv77hYaB/x7iHn0GHCXwxp
+ cXcMvIxhnpJbYagfwTDpGUfduPqtg/fQA795JXShX5wVbalBUklRvgA4SLQHuzCvhOJw
+ FO3cxXQejZMAu/BlUT2j3oK39oZygi0w2lc8Mz2vdjhKPbjwZ2OIWEXkChBpFq3i9f2u
+ nmBhJy0ocSJa3K8d6Kb3b2sxmrNdl3T4CH2eKqMz64hJyilBoBwlTlPf9cogPTQKpH5v
+ tyMA==
+X-Gm-Message-State: AOJu0YwGPNsoLh/ml0uX6slumT09pGcLn91X7U5pxUnwzk4MeOqnLKHs
+ ae2nJapB80ryGJiP+y4iaevQV2o5bE6MH6SfUXtlvBWIxYLmTT7n7EQoX5z/fkVoM51FVB8V/Vj
+ JH7B6CF4UkgKjyIP9wf9QGyIlMZcC8DfKGOlRrM+HR9yy2B8oendjW2XiYCUPoo+f5euZwTo6HY
+ lBym/RcnYBq2JtyPimrqmM95ylbnOEQxWJHtUoZSDw
+X-Gm-Gg: ASbGncvFX8mz5tED8OSu3lpWKIYmsv8TaSnseHsKC4f2tg4OMp3bQTnvo5g47a+PI3k
+ +vgdqxxEE4MNYsMH+KnqjGkRCV1WW6RBfcs9wDHCbraMGFY/G+ZmpXquR9z81ou+fB5ji1E3XT8
+ bPfD+xE7VdkkOnwz7TOQhj6iNXWQ0tSs4XBmQw8y3fp7wsw5fk/bgUquZwrcnsRGgB0fb9HC+bY
+ h06/33vlcZwAVQ0L1TAcCRQLSMXqcKst6P8BzXYm+r1HOrDXWz4aN/jN8LJzf8/mlvve6x+iRiC
+ h7z/lTQpt5BX/3UJ9bxXEt80dI+aEUgnaEELopAR+WMfl+D66247WeJcBmJfrKPOcw6MSfz8wmZ
+ CrO0v33ajflMLKDNziW0Q8dENTr4HsB3BKpt1bAmm4gNNIe2+o/gSXMlFX4wcpx+/Cqpl22n60H
+ YvF/o=
+X-Received: by 2002:a05:600c:1992:b0:475:d952:342f with SMTP id
+ 5b1f17b1804b1-4771e24e0fdmr2056235e9.39.1761672897803; 
+ Tue, 28 Oct 2025 10:34:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3OeZeHSZv4NQ7tuLzYcaOXr9HroN3Ew7tD56JoIb97RfKqnz54BteuTIHb+bwl2DtvtGdJw==
+X-Received: by 2002:a05:600c:1992:b0:475:d952:342f with SMTP id
+ 5b1f17b1804b1-4771e24e0fdmr2055935e9.39.1761672897248; 
+ Tue, 28 Oct 2025 10:34:57 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771e3a88fdsm2549725e9.10.2025.10.28.10.34.53
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-4771e202093sm3535315e9.11.2025.10.28.10.34.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Oct 2025 10:34:54 -0700 (PDT)
+ Tue, 28 Oct 2025 10:34:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/18] accel/mshv: initialize thread name
-Date: Tue, 28 Oct 2025 18:34:20 +0100
-Message-ID: <20251028173430.2180057-9-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 09/18] accel/mshv: use return value of handle_pio_str_read
+Date: Tue, 28 Oct 2025 18:34:21 +0100
+Message-ID: <20251028173430.2180057-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251028173430.2180057-1-pbonzini@redhat.com>
 References: <20251028173430.2180057-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,28 +108,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The initialization was dropped when the code was copied from existing
-accelerators.  Coverity knows (CID 1641400).  Fix it.
+Coverity complains because we assign to ret here but
+then never read it again before we overwrite it with
+the call to set_x64_registers().
 
+Analyzed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/mshv/mshv-all.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/i386/mshv/mshv-cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 45174f7c4eb..80428d130d5 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -596,6 +596,9 @@ static void mshv_start_vcpu_thread(CPUState *cpu)
- {
-     char thread_name[VCPU_THREAD_NAME_SIZE];
- 
-+    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/MSHV",
-+             cpu->cpu_index);
-+
-     cpu->thread = g_malloc0(sizeof(QemuThread));
-     cpu->halt_cond = g_malloc0(sizeof(QemuCond));
- 
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index 1f7b9cb37ec..1c3db02188c 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -1489,6 +1489,10 @@ static int handle_pio_str(CPUState *cpu, hv_x64_io_port_intercept_message *info)
+         reg_values[0] = info->rsi;
+     } else {
+         ret = handle_pio_str_read(cpu, info, repeat, port, direction_flag);
++        if (ret < 0) {
++            error_report("Failed to handle pio str read");
++            return -1;
++        }
+         reg_names[0] = HV_X64_REGISTER_RDI;
+         reg_values[0] = info->rdi;
+     }
 -- 
 2.51.1
 
