@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21CDC1BE20
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E58C1BD66
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:55:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE8ZP-0005zE-H4; Wed, 29 Oct 2025 11:58:50 -0400
+	id 1vE8SU-0004aP-04; Wed, 29 Oct 2025 11:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8Ys-0005nT-4m
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:58:11 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1vE8SM-0004Wc-NG
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:26 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8YR-0003YG-UK
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:58:03 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-b6d70df0851so6120666b.1
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:57:37 -0700 (PDT)
+ id 1vE8S1-0002uY-7t
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:26 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-63b9da57cecso11446001a12.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:51:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761753454; x=1762358254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761753061; x=1762357861; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ObwLZIKrEvZcuWDrp2icwNOmPKMnNUeUMaIT0Oe14hw=;
- b=lFa5LO6S14+n9X61QWEXoV1RQ36YkRyPXaANP5ywXS0Cr/sPM/fCSRG9jDpDk5BBJy
- 1k5iHjJdHj/hwb6o0IbTHXTwy47v+L/Br6TQ3AejZhmwJN2s5jAt1aqXqXtmO+Z/d3OE
- M0kiWj7n7MI3z8oyKuLabTHloje6HsrBqtKalPjSG4PvW7ejxjyRps+KsK6NgYUwscLT
- aCDVYt7QPI+HnG7qGbAsgdM4tjY/XNAO4OgbV6NV1nV63DJouqj4NnU4cfswJZ8dJVWy
- ydGaqh73lD/km43a00Yk4ERpf7e5PsjRAoY1QNDFY/bjTavpamnLse9x3jm8vrnojrE/
- ELPg==
+ bh=64uzFuglk4bHde6NA01qGjQHIOCA617Oktb15rTiY1Q=;
+ b=qGJuFfr8XGefrgBpVNGSBBlTy1wDvDE3FRcb9WV8An6b4To7KUYlGqcK6Q136CBdju
+ UlDSEmmATWl0aKAMhLm2ZFtb/Kjkw6pfdDHufPjlPo+zqBs/ZEotzk814AkieQhCmhBs
+ AId2HAdC9KLGnhJo8ASk5xYdSt6RDx1PDFfGt2x7xXsZtbE65fC8kbt8t5Jwdp0uZh65
+ 4VvyDHoqe5kUuphYO3zJqKYCGxlYF8TlGJo7nhsUHSQNM28srnUZowbejRxdxVku4TJU
+ I3HzcsViobjqTfaFX0Gl1daTIP0+UEmaXTtKaXTHJlGWjnwXUeOW5RNU0ClKJgUjXWuk
+ ZzTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761753454; x=1762358254;
+ d=1e100.net; s=20230601; t=1761753061; x=1762357861;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ObwLZIKrEvZcuWDrp2icwNOmPKMnNUeUMaIT0Oe14hw=;
- b=jFUVAif+8AcT6xhifptUDpLah1KV8To4AwEabXbful4FUgilKN9yq6y5FeQq3vc0lF
- 4AaehzfPdqS+zjXrCEU97xe7K/1FIKegYAU4KLsZjYlk/Y2MplVtPOsyml/nqUb58JQL
- nIGUA3+mDW75gyMwNeGkk5Z7bM5uZZGKoM3M+lzspIUiUfOtrkWqzpwbueH5tdZRALF2
- MOBDJD7bKPNN4soEh5Mc+Qgp4PgHUhf2hUK0pQKBcphtB7VklNTGRWRQHhD6Yd7tP/Ba
- q3E+vT8W1fQqoNrAB8uE8sG0ZCfjmI4lTCJzSt/bVqXSiIqk7q0LT64pSxF5pCziDvBd
- buPA==
-X-Gm-Message-State: AOJu0Yyg2dB0UhyeKrVyTcc7Zd2ZkRaJadZi2G3zp705sBq+4nX+upRm
- hJ5nuQ2fzP+1rewrSWkyKW1otnCPDa59eHPSuvXpWPWpWoZJmeW8KtpCs9DovDe+z9ZTWfxJ0Gg
- HR7zreFw=
-X-Gm-Gg: ASbGncs1pqbOQVhCcGm1k5LsSvMLFBu/sPrOCfnNaSzXj7n9mLOLZJwtlsC/eZRvbyh
- 7GIMgy1i7CENRIgh89g278whtZGoLG3MU98lSiMB8g5WwW9QHLXEQipMuadV45UbGwe3efgx3IH
- MKKCUeRtFUWqFJpkBnGzo/8uC7RJ4L72J6D2aeNAGXD+/dir6xMIL6lavr8Ww7dXO3dxHq3jEt1
- 0G+XcHRLSscQ97L1VJ+2bFvrbECg0r14tK96XOHsZa+jZxqKq8311YOfdLeZWVEqgJAZJ5uLI9/
- 6pFIyK7U6rm4oZ0U2yrpaRDSEnp/RkBkCNu6B2adF6lw2Kvrv7oq8SlUjttNmKHQYvhdQOyxf+l
- p1xl32kF8N/wO24sZHE8sp66B75HC81IUl5Q12JK4yAhV7C+3WwJI8ruvERU2UdXVsHD53dUpu8
- HB
-X-Google-Smtp-Source: AGHT+IFy2mD1I+kh3rUvLv8rKFFdvHT/VpfbJVaiwtXxxx3DiZkZDvOIgps5s+pl/0LsPaayx1gDJQ==
-X-Received: by 2002:a17:907:94c3:b0:b0e:d477:4972 with SMTP id
- a640c23a62f3a-b703d3840dcmr341769366b.25.1761753454030; 
- Wed, 29 Oct 2025 08:57:34 -0700 (PDT)
+ bh=64uzFuglk4bHde6NA01qGjQHIOCA617Oktb15rTiY1Q=;
+ b=dUd/DMZT35DT212WXboMsG6qW353qnneeLCwV/L2F7fWHc+zUTKERQeuYV/anMqRnv
+ PZ9eJIewz8qkq6HJlt0yvsKXhy1NfGBqYKEiVPP1576QR52HDdUbhqKplc9n334+gbQH
+ hj5U8/OcJ/PpTOW10mN1mIQeZK6ZzeBuFkvburVxJ3Zc45WFGaOfrKaeSkmJSW5EuxYU
+ QsAe6J6fkkoxdffdefOVHTXEglL9ySF46aIku1lDe2JhDqttfSqY2/4GNezkJXf0yhUD
+ ILD/gagC3m4BKFwJAS2/7OSU0E6RmRlverhLCD4hIzsQzIdjKhgIMmGE455i5itipU2/
+ rIsQ==
+X-Gm-Message-State: AOJu0YzKXWljgCwfmQ/1Rb7trl53+2kqJncx81NKTD3LqPutlX4wuitI
+ 1Ur6RloXHKO3HNuBHCJQTY+LpCXB4PnxWsotThJGK+4QCzg9q3xRzquSxE3ATAIY9FM=
+X-Gm-Gg: ASbGncvwM2qJBY6vsE0dqPUhq5IzLFyDG5WSWq/wmxt6jpZaTFJcNTWalScdT2Yh99Q
+ tgtzYFCixGDU07BxxiWZdKdFqO9qfIDLdoHZY4sgV6c4+muiaCjTvB86V0NE4qpxL2o9xXVptRS
+ sZmcqiqSZDNtO3+HopDSTEiMY08QvQcIKk3qc17at0aYELnE+STl+PCkIUTz7zmytW3+KlpchEj
+ VPOLaA3M3uT/bdqyhntpOMS4my2KbPvCCD+CRP8Pyq0gfGVPvpIBN41U2negl6OnU6qBG9MiLu1
+ Ln67scMnpjBQySdBlRSKHK+CgqQv+XGyqaZhIp0G9QjcCTKEVl1lrQK0cZL/XN3uab7elcF53e9
+ bS2LxvF+MBfnZ1EZeZUOU44CrB04lyHyffXoeEeLCzfeGCWPl70BDGXedmoWIkYxkhsi4WqajuE
+ Q9
+X-Google-Smtp-Source: AGHT+IGz4z6aiC4cMd00DKOxniMT1FGr/nDAki9jLYLnKjqPv3EKQsCigv+sIV99S9BDqtfKy7lyRQ==
+X-Received: by 2002:a17:907:3f21:b0:b6d:5363:88a9 with SMTP id
+ a640c23a62f3a-b703d2dc7ebmr309686566b.9.1761753061457; 
+ Wed, 29 Oct 2025 08:51:01 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d85369697sm1510782666b.26.2025.10.29.08.57.29
+ a640c23a62f3a-b6d85ba3798sm1472546166b.39.2025.10.29.08.50.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Oct 2025 08:57:30 -0700 (PDT)
+ Wed, 29 Oct 2025 08:50:58 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CC1D060F82;
+ by draig.lan (Postfix) with ESMTP id E673B61208;
  Wed, 29 Oct 2025 15:50:48 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PULL 30/35] tests: add test for double-traps on rv64
-Date: Wed, 29 Oct 2025 15:50:39 +0000
-Message-ID: <20251029155045.257802-31-alex.bennee@linaro.org>
+Subject: [PULL 31/35] tests: add test with interrupted memory accesses on rv64
+Date: Wed, 29 Oct 2025 15:50:40 +0000
+Message-ID: <20251029155045.257802-32-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251029155045.257802-1-alex.bennee@linaro.org>
 References: <20251029155045.257802-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,95 +109,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Julian Ganz <neither@nut.email>
 
-We do have a number of test-case for various architectures exercising
-their interrupt/exception logic. However, for the recently introduced
-trap API we also want to exercise the logic for double traps on at least
-one architecture.
+This test aims at catching API misbehaviour w.r.t. the interaction
+between interrupts and memory accesses, such as the bug fixed in
+
+    27f347e6a1d269c533633c812321cabb249eada8
+    (accel/tcg: also suppress asynchronous IRQs for cpu_io_recompile)
+
+Because the condition for triggering misbehaviour may not be
+deterministic and the cross-section between memory accesses and
+interrupt handlers may be small, we have to place our trust in large
+numbers. Instead of guessing/trying an arbitrary, fixed loop-bound, we
+decided to loop for a fixed amount of real-time. This avoids the test
+running into a time-out on slower machines while enabling a high number
+of possible interactions on faster machines.
+
+The test program sends a single '.' per 1000000 loads/stores over the
+serial. This output is not captured, but may be used by developers to
+gauge the number of possible interactions.
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
-Message-ID: <20251027110344.2289945-31-alex.bennee@linaro.org>
+Message-ID: <20251027110344.2289945-32-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 3ca595335dd..d9c0036eb4b 100644
+index d9c0036eb4b..eb1ce6504a0 100644
 --- a/tests/tcg/riscv64/Makefile.softmmu-target
 +++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -24,5 +24,11 @@ EXTRA_RUNS += run-test-mepc-masking
- run-test-mepc-masking: test-mepc-masking
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
+@@ -30,5 +30,11 @@ run-plugin-doubletrap: doubletrap
+ 	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $<.pout \
+ 	  $(QEMU_OPTS)$<)
  
-+EXTRA_RUNS += run-plugin-doubletrap
-+run-plugin-doubletrap: doubletrap
++EXTRA_RUNS += run-plugin-interruptedmemory
++run-plugin-interruptedmemory: interruptedmemory
 +	$(call run-test, $<, \
 +	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $<.pout \
 +	  $(QEMU_OPTS)$<)
 +
  # We don't currently support the multiarch system tests
  undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/doubletrap.S b/tests/tcg/riscv64/doubletrap.S
+diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/interruptedmemory.S
 new file mode 100644
-index 00000000000..b61089c9c1c
+index 00000000000..cd9073ee314
 --- /dev/null
-+++ b/tests/tcg/riscv64/doubletrap.S
-@@ -0,0 +1,73 @@
++++ b/tests/tcg/riscv64/interruptedmemory.S
+@@ -0,0 +1,97 @@
 +	.option norvc
 +
 +	.text
 +	.global _start
 +_start:
-+	# Set up vectored interrupts
++	# Set up trap vector
 +	lla	t0, trap
-+	add	t0, t0, 1
 +	csrw	mtvec, t0
 +
-+	# Enable sw interrupts
-+	csrrsi	zero, mie, 0x8
++	# Set up timer
++	lui	t1, 0x02004
++	sd	zero, 0(t1) # MTIMECMP0
++
++	# Enable timer interrupts
++	li	t0, 0x80
++	csrrs	zero, mie, t0
 +	csrrsi	zero, mstatus, 0x8
 +
-+	# Engage the double trap: we trigger an machine-level software
-+	# interrupt, which will trap to an illegal instruction
-+	lui	t1, 0x02000
-+	li	t0, 1
-+	sw	t0, 0(t1)
++	# Set up UART
++	lui	t1, 0x10000
++	li	a0, 0x80	# DLAB=1
++	sb	a0, 3(t1)
++	li	a0, 1		# Full speed
++	sw	a0, 0(t1)
++	li	a0, 0x03	# 8N1, DLAB=0
++	sb	a0, 3(t1)
 +
-+	# If we still not went out via the software interrupt route after a
-+	# short while, we failed the test.
-+	lui	t0, 0x1
++	# Run test for around 60s
++	call	rtc_get
++	li	t0, 30
++	slli	t0, t0, 30 # Approx. 10e9 ns
++	add	t0, t0, a0
 +0:
-+	addi	t0, t0, -1
-+	bnez	t0, 0b
-+	j	fail
++	# Tight loop with memory accesses
++	li	a1, 1000000
++	la	a2, semiargs
++1:
++	ld	a0, 0(a2)
++	sd	a0, 0(a2)
++	addi	a1, a1, -1
++	bnez	a1, 1b
 +
-+trap:
-+	j	illegal_insn # Exceptions
-+	j	fail # Supervisor software interrupt
-+	j	fail
-+	.insn	i CUSTOM_0, 0, x0, x0, 0 # Machine software interrupt
-+	j	fail
-+	j	fail # Supervisor timer interrupt
-+	j	fail
-+	j	fail # Machine timer interrupt
-+	j	fail
-+	j	fail # Supervisor external interrupt
-+	j	fail
-+	j	fail # Machine external interrupt
-+	j	fail
-+	j	fail # Counter overflow interrupt
-+	j	fail
-+	j	fail
++	li	a0, '.'
++	call	send_byte
++	call	rtc_get
++	bltu	a0, t0, 0b
 +
-+illegal_insn:
-+	# Check whether we really got an illegal instruction
-+	csrr	t0, mcause
-+	li	t1, 2
-+	bne	t0, t1, fail
++	li	a0, '\n'
++	call	send_byte
++
++	# Exit
 +	li	a0, 0
-+	j	_exit
-+fail:
-+	li	a0, 1
-+_exit:
 +	lla	a1, semiargs
 +	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
 +	sd	t0, 0(a1)
@@ -210,7 +217,35 @@ index 00000000000..b61089c9c1c
 +	slli	zero, zero, 0x1f
 +	ebreak
 +	srai	zero, zero, 0x7
++
 +	j	.
++
++rtc_get:
++	# Get current time from the goldfish RTC
++	lui	t3, 0x0101
++	lw	a0, 0(t3)
++	lw	t3, 4(t3)
++	slli	t3, t3, 32
++	add	a0, a0, t3
++	ret
++
++send_byte:
++	# Send a single byte over the serial
++	lui	t3, 0x10000
++	lb	a1, 5(t3)
++	andi	a1, a1, 0x20
++	beqz	a1, send_byte
++	sb	a0, 0(t3)
++	ret
++
++	.balign 4
++trap:
++	lui	t5, 0x0200c
++	ld	t6, -0x8(t5) # MTIME
++	addi	t6, t6, 100
++	lui	t5, 0x02004
++	sd	t6, 0(t5) # MTIMECMP
++	mret
 +
 +	.data
 +	.balign	16
