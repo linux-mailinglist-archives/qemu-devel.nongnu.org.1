@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F92C1AE5D
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5BFC1AED2
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:50:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE6Vr-0006n8-UE; Wed, 29 Oct 2025 09:46:56 -0400
+	id 1vE6Y5-0007mE-IG; Wed, 29 Oct 2025 09:49:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6Vl-0006cb-Hw
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:46:52 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6XV-0007eV-OC
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:48:44 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6Vb-0003EX-E7
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:46:49 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4710665e7deso38818155e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:46:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6XJ-0003Zr-5i
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:48:33 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47114a40161so82079665e9.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:48:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761745594; x=1762350394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761745697; x=1762350497; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z28ZgmiJC98xG744tnvm/mLyRQR8+/6a2JjELzwEK+8=;
- b=uDvUx0p6lKpAHEB3skcFw22s5kFji73b2XQ3oiQEFdQF7eWEdotxNnzRUNQTRk+DHy
- jdT9OatZWeSoI6U87Da/Ksn3Ukw3djylkUHk2CR45878tjHWDYFLv4rmXlTIVzKDpO/t
- boQaweBGStZMo/s9RO3TfTfSxPkpoEfVUhCimxP8ESY4nZBFLnk9NHpyu1jTW8+YjYEe
- 3u+AUNpvnTU0aMVe5/yDinZJl+xLUwSTBycbmKqtmyqGEQGx3hyWRDvBHpMgUrp7NTee
- 8yectzepwgIw5JmAuvrQnYNhQ/hjgawZKK5jmV1pb6WB75IbaY17T6gGn477smwLWpaH
- PZbA==
+ bh=c1qQvbqi4yBxcPcwn4iVcr8K3QLP8jEh1kZNbm4KrPQ=;
+ b=Nifd+fhdhxIqnyfYDT3hCwwT1tkekHjaG+74xjVk6L9KVQApQ8p8mnWYlwLeeT1BMM
+ MBixYTCc3SpOnoI4H4Dn5GZkiUPfpSVXhVxfRa/gjzyJJU7ATUoIebu+ZJSi1uNyZSqj
+ L1nsu9o1ryTt8Z28/MJZ+qiAXtfw82fMNrFRoFEy/1NqdQOYfuthX7xZlIDrhJTsoObc
+ 45cF2p3CuD5HBK2efrNTKNDEWxQq6zdaCPGVzuTsg7zXOsJ12FAaFwSOoF2PhnEQXpSk
+ u4UOr7XB7XW0ol3A4prYyE7OoU+dxAKBQaGKrms7X95V/DBWmIwy0WZXNrUdPyYc/Yyz
+ 13Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761745594; x=1762350394;
+ d=1e100.net; s=20230601; t=1761745697; x=1762350497;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z28ZgmiJC98xG744tnvm/mLyRQR8+/6a2JjELzwEK+8=;
- b=S1WiiWtoiBG74iyIxcQkvieBJdHNjGe2OjCd+bl+KlHRtw+/JDrtuQ6mv8hKLRhElg
- hox+mPYB2i7ySmdYzbrhQAS0Sg/qjPqG2HhhUH2gmJNwswvjFti6i4qJGZ915FOo9lOx
- Qnajqie7/5prfwTGAe3VC3+VBceL4r1oeHdtSZifvSH1LPflUgMSTWT7i0isYq1zZfrk
- kKisz1ufVilil/+4VMfH+xP1fl63yM74NZeBXQyV5lamuuksCvtCYcWNOqmEeDOIMNsj
- wFDv1Lfx/QwlC75AM6EyQP1qXxmw5bhNhX7fNSGFVVE2JDpJen4OSwaCD8+4NLzgOWYk
- CKtQ==
+ bh=c1qQvbqi4yBxcPcwn4iVcr8K3QLP8jEh1kZNbm4KrPQ=;
+ b=BvyQteQtrEwFaNtzFOBedeiPuYK36ftUSjpn5DaoNGHJo7s+sbC2fVKfkzeFVzaPxl
+ udql79mTOVZSUBsRTYpz/zJlqF/K67jbrJ85vOYnmX6Hza3f4538eb64TLPp3/8/EqMJ
+ F8MDzSMg86B1HrREMWZ37gGLC4+QJFR1XIEN3opqwPj0F3LNLKMESGQZt5Gdk3dP7Gru
+ qmKwZ+IuZQWmlvV6JIYKQKkb9NoVy4VKpnzCFpoEYSODaInTbhY2X5lWfq665jT+Sg83
+ 6rVjZZVUNe6wktWzTaKTaoqUTG81BnH1uClTpT8joEbcybELTuq5JINm6STb5fg3W5eV
+ 5i4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW3V4GM0aq6bniAyrZjo1xSGLIpBkaDELoCQ/ov/Cxv/l37mdX9y1b//vOR+P5V2WjD5PA5y3a4UuYr@nongnu.org
-X-Gm-Message-State: AOJu0Yz3Zr51FlOxQ6HcvoCtrs8U5+MAK43ijZC/5GuJPcmw5fs11rKn
- gGVCq2gUIMoMzo2HKNy5NuA89HPElypndvE7Dd6DkDojV+lAN5PK/SInw64kbCUtjuU=
-X-Gm-Gg: ASbGnctTJPooppX6FdvzDEuWfUhpAnOgBa2qkXtZeWvJ+0ZfGOYxfFUyt+VRrRibZgi
- 40tUQgay5tz46h7lmisd9xKodGwsXd4nxReLxu5U1j5gNWkuh4wSV0bRJuItKStVnOtOHv1M3hZ
- H1RcRBzUrlvgX20Dnmz6pD8c3ui7eUbC/2xNHcjkDEh8yXzF+QMKs00FIA5J8fXSdEKTJLzcqP7
- TAfWt9N/H3dxL8BHOlkb9vZya8n3HeXDfH+3Jq/Fah5RjW4cK2sD7J2oZ41d78Un1XmiZ7XFqmx
- Td8CDWwv5UmxUCFcZnkHTZ10sw7ksTgBxvE3L4lXW8DsocYFT6wpXBDaBslYnlvfnug/9wsLjNo
- BSEgAeiYzn9WAHQM2aHjeVl6IJ41gDw1H6/7NcghPoI8QLvirVcOWjfgVcxP3eNVZDLivwIKdHv
- KS5WBsk5/CN8Cea8AbE3uG7C+xPc/kBpQ4VH14W5pZYAU=
-X-Google-Smtp-Source: AGHT+IFIu73iiIADnrroCFGtvADc8jRFxaiWtlWiDzbPB81VMgN4QXbSZR1uA8Q2DELznMuRB4CHTQ==
-X-Received: by 2002:a05:600c:530e:b0:475:d8f3:71c1 with SMTP id
- 5b1f17b1804b1-4771e1e01a2mr26474835e9.27.1761745594359; 
- Wed, 29 Oct 2025 06:46:34 -0700 (PDT)
+ AJvYcCUrqpoYF07MtCznoF9CLi5e0WiO96fUUwCVgjgOpaHJAqQCZW5W8rlqwouHveNRX/SUzux+Lxzj4YQo@nongnu.org
+X-Gm-Message-State: AOJu0Yx2jBdzdaJyzCOA/JJgpJV/rD1jSLeJX1n4tLUbz+hsMUluCYdo
+ g5W3c/1mwC8QhYPPMnlLApUp/87Weu3vvWlS+tFuPzYBe/JeDoFWnlep5pdqqRwfqrw=
+X-Gm-Gg: ASbGncv2ii/FJYK4lFUrS3nrU0q7IwujgchZCGkDq9G0clQrfKckncHE9j8pfcnNnRp
+ f4vp/x3rQdB+0XDzsyb5rYjhvnFFJLvvFq7ylbqUXn/60RvOY0zUZaLOdVJiJ50f0Dd01SADDvP
+ 9ZBF6mJGfF6XzjJ5nsmCazTxIAzJjKzrSQ3tmSrEKG2ZQCjL11CbMEVBkOLi31smwLDUlumfks/
+ tlJICoiH+xVUixJlnifJDrt2vaRsfjvh5kpU/a6dDWkvhkd9y8YshP7f/JmNUAxTO12VPR7qWCG
+ r6GQ63xg3hoN3jAyG0eieUBDHROPTVWvJG1ZDE2BiQ0YpW5bt4QYjlnokwOdLxQNSWVJfIHIgVu
+ NQ8iw8eMJE4PWRskzmCZovTLO4/wPWzFpuMvDsHERqqYS0sDzZcMaGlAwfXrpxhJIRmVJ6XtTI0
+ Dfm4M2Yc1WqlnUJUbur6s7s4P6O77FLJYGarv1Sl1R+s3h9KeZnXWjFA==
+X-Google-Smtp-Source: AGHT+IHbgr0INbXg6avQXJ3yz2hy02sD0qNDWaG3WATmfNqpeCTn4IE1Ha92zFGz3/IV2Xd7qcbGEQ==
+X-Received: by 2002:a05:600c:6207:b0:45d:f83b:96aa with SMTP id
+ 5b1f17b1804b1-477208d1be0mr21824675e9.7.1761745697226; 
+ Wed, 29 Oct 2025 06:48:17 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771e20205esm48034695e9.12.2025.10.29.06.46.32
+ ffacd0b85a97d-429952b7b6fsm26617361f8f.1.2025.10.29.06.48.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 06:46:33 -0700 (PDT)
-Message-ID: <75120e9b-9362-4898-96d3-dec9cd7e137d@linaro.org>
-Date: Wed, 29 Oct 2025 14:46:32 +0100
+ Wed, 29 Oct 2025 06:48:16 -0700 (PDT)
+Message-ID: <ffab95ce-9b5d-43ea-93a7-611de6044ad8@linaro.org>
+Date: Wed, 29 Oct 2025 14:48:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 18/35] audio: keep vmstate handle with AudioState
+Subject: Re: [PATCH v3 19/35] audio: register and unregister vmstate with
+ AudioState
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
@@ -89,13 +90,13 @@ Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-19-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-20-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-19-marcandre.lureau@redhat.com>
+In-Reply-To: <20251027151045.2863176-20-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,43 +122,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> QOM-ification continues.
+> Proper lifecycle management with QOM state.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   audio/audio_int.h |  1 +
->   audio/audio.c     | 12 ++++++++----
->   2 files changed, 9 insertions(+), 4 deletions(-)
-
-
+>   audio/audio.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
 > diff --git a/audio/audio.c b/audio/audio.c
-> index 155809dee7..4c3c3fd52f 100644
+> index 4c3c3fd52f..853930bb48 100644
 > --- a/audio/audio.c
 > +++ b/audio/audio.c
-> @@ -1622,6 +1622,9 @@ static void audio_state_init(Object *obj)
->       QLIST_INIT(&s->hw_head_in);
->       QLIST_INIT(&s->cap_head);
->       s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
-> +
-> +    s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
-> +    assert(s->vmse != NULL);
+> @@ -1614,6 +1614,8 @@ static void audio_vm_change_state_handler (void *opaque, bool running,
+>       audio_reset_timer (s);
 >   }
 >   
->   static void audio_state_finalize(Object *obj)
-> @@ -1671,6 +1674,11 @@ static void audio_state_finalize(Object *obj)
->           timer_free(s->ts);
->           s->ts = NULL;
->       }
+> +static const VMStateDescription vmstate_audio;
 > +
-> +    if (s->vmse) {
+>   static void audio_state_init(Object *obj)
+>   {
+>       AudioState *s = AUDIO_STATE(obj);
+> @@ -1625,6 +1627,8 @@ static void audio_state_init(Object *obj)
+>   
+>       s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
+>       assert(s->vmse != NULL);
+> +
+> +    vmstate_register_any(NULL, &vmstate_audio, s);
 
-Already asserted as non-NULL?
+Please avoid legacy APIs:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +        qemu_del_vm_change_state_handler(s->vmse);
-> +        s->vmse = NULL;
-> +    }
->   }
+/**
+  * vmstate_register_any() - legacy function to register state
+  * serialisation description and let the function choose the id
+  *
+  * New code shouldn't be using this function as QOM-ified devices have
+  * dc->vmsd to store the serialisation description.
+  *
+  * Returns: 0 on success, -1 on failure
+  */
 
 
