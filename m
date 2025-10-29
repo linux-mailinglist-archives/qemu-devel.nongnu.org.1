@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2702C1945A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0387C1943A
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE24N-00044V-8I; Wed, 29 Oct 2025 05:02:15 -0400
+	id 1vE24J-0003vm-Ku; Wed, 29 Oct 2025 05:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vE24F-00040I-HL; Wed, 29 Oct 2025 05:02:07 -0400
+ id 1vE247-0003t8-6O; Wed, 29 Oct 2025 05:02:01 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vE241-00031X-N5; Wed, 29 Oct 2025 05:02:03 -0400
+ id 1vE241-00031Y-CE; Wed, 29 Oct 2025 05:01:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 874DD163E5D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9660B163E5E;
  Wed, 29 Oct 2025 12:01:42 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AFC2F3084A4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BF4753084A5;
  Wed, 29 Oct 2025 12:01:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 0/7] Trivial patches for 2025-10-29
-Date: Wed, 29 Oct 2025 12:01:38 +0300
-Message-ID: <20251029090148.648212-1-mjt@tls.msk.ru>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/7] chardev: remove deprecated 'reconnect' option
+Date: Wed, 29 Oct 2025 12:01:39 +0300
+Message-ID: <20251029090148.648212-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251029090148.648212-1-mjt@tls.msk.ru>
+References: <20251029090148.648212-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -40,7 +42,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,50 +58,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit bc831f37398b51dfe65d99a67bcff9352f84a9d2:
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-  Merge tag 'hw-misc-20251028' of https://github.com/philmd/qemu into staging (2025-10-28 11:48:05 +0100)
+It was deprecated in 9.2, time to remove.
 
-are available in the Git repository at:
+Note, that (which become obvious with this commit) we forget to do some
+checks for reconnect-ms options, for example, it was silently ignored
+for listening server, instead of error-out. The commit fixes this, as
+now we use reconnect_ms everywhere.
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Reviewed-by: Ján Tomko <jtomko@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ chardev/char-socket.c           | 24 +++++-------------------
+ chardev/char.c                  |  3 ---
+ docs/about/deprecated.rst       |  6 ------
+ docs/about/removed-features.rst | 12 ++++++++++++
+ qapi/char.json                  | 14 +-------------
+ 5 files changed, 18 insertions(+), 41 deletions(-)
 
-for you to fetch changes up to 7c7089321670fb51022a1c4493cbcc69aa288a0f:
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index cb4ec78ebe..62852e3caf 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -1296,9 +1296,9 @@ static bool qmp_chardev_validate_socket(ChardevSocket *sock,
+     /* Validate any options which have a dependency on address type */
+     switch (addr->type) {
+     case SOCKET_ADDRESS_TYPE_FD:
+-        if (sock->has_reconnect) {
++        if (sock->has_reconnect_ms) {
+             error_setg(errp,
+-                       "'reconnect' option is incompatible with "
++                       "'reconnect-ms' option is incompatible with "
+                        "'fd' address type");
+             return false;
+         }
+@@ -1342,9 +1342,9 @@ static bool qmp_chardev_validate_socket(ChardevSocket *sock,
+ 
+     /* Validate any options which have a dependency on client vs server */
+     if (!sock->has_server || sock->server) {
+-        if (sock->has_reconnect) {
++        if (sock->has_reconnect_ms) {
+             error_setg(errp,
+-                       "'reconnect' option is incompatible with "
++                       "'reconnect-ms' option is incompatible with "
+                        "socket in server listen mode");
+             return false;
+         }
+@@ -1361,12 +1361,6 @@ static bool qmp_chardev_validate_socket(ChardevSocket *sock,
+         }
+     }
+ 
+-    if (sock->has_reconnect_ms && sock->has_reconnect) {
+-        error_setg(errp,
+-            "'reconnect' and 'reconnect-ms' are mutually exclusive");
+-        return false;
+-    }
+-
+     return true;
+ }
+ 
+@@ -1384,7 +1378,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
+     bool is_tn3270      = sock->has_tn3270  ? sock->tn3270  : false;
+     bool is_waitconnect = sock->has_wait    ? sock->wait    : false;
+     bool is_websock     = sock->has_websocket ? sock->websocket : false;
+-    int64_t reconnect_ms = 0;
++    int64_t reconnect_ms = sock->has_reconnect_ms ? sock->reconnect_ms : 0;
+     SocketAddress *addr;
+ 
+     s->is_listen = is_listen;
+@@ -1456,12 +1450,6 @@ static void qmp_chardev_open_socket(Chardev *chr,
+             return;
+         }
+     } else {
+-        if (sock->has_reconnect) {
+-            reconnect_ms = sock->reconnect * 1000ULL;
+-        } else if (sock->has_reconnect_ms) {
+-            reconnect_ms = sock->reconnect_ms;
+-        }
+-
+         if (qmp_chardev_open_socket_client(chr, reconnect_ms, errp) < 0) {
+             return;
+         }
+@@ -1526,8 +1514,6 @@ static void qemu_chr_parse_socket(QemuOpts *opts, ChardevBackend *backend,
+      */
+     sock->has_wait = qemu_opt_find(opts, "wait") || sock->server;
+     sock->wait = qemu_opt_get_bool(opts, "wait", true);
+-    sock->has_reconnect = qemu_opt_find(opts, "reconnect");
+-    sock->reconnect = qemu_opt_get_number(opts, "reconnect", 0);
+     sock->has_reconnect_ms = qemu_opt_find(opts, "reconnect-ms");
+     sock->reconnect_ms = qemu_opt_get_number(opts, "reconnect-ms", 0);
+ 
+diff --git a/chardev/char.c b/chardev/char.c
+index bbebd246c3..a43b7e5481 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -892,9 +892,6 @@ QemuOptsList qemu_chardev_opts = {
+         },{
+             .name = "nodelay",
+             .type = QEMU_OPT_BOOL,
+-        },{
+-            .name = "reconnect",
+-            .type = QEMU_OPT_NUMBER,
+         },{
+             .name = "reconnect-ms",
+             .type = QEMU_OPT_NUMBER,
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index dacf2882e4..aff3f13163 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -468,12 +468,6 @@ Backend ``memory`` (since 9.0)
+ 
+ ``memory`` is a deprecated synonym for ``ringbuf``.
+ 
+-``reconnect`` (since 9.2)
+-^^^^^^^^^^^^^^^^^^^^^^^^^
+-
+-The ``reconnect`` option only allows specifying second granularity timeouts,
+-which is not enough for all types of use cases, use ``reconnect-ms`` instead.
+-
+ 
+ Net device options
+ ''''''''''''''''''
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 53829f59e6..269f6bb654 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -1367,4 +1367,16 @@ The ``blacklist`` config file option has been renamed to ``block-rpcs``
+ (to be in sync with the renaming of the corresponding command line
+ option).
+ 
++Device options
++--------------
++
++Character device options
++''''''''''''''''''''''''
++
++``reconnect`` (removed in 10.2)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++The ``reconnect`` has been replaced by ``reconnect-ms``, which provides
++better precision.
++
+ .. _Intel discontinuance notification: https://www.intel.com/content/www/us/en/content-details/781327/intel-is-discontinuing-ip-ordering-codes-listed-in-pdn2312-for-nios-ii-ip.html
+diff --git a/qapi/char.json b/qapi/char.json
+index f0a53f742c..b07e3bb827 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -269,22 +269,11 @@
+ # @websocket: enable websocket protocol on server sockets
+ #     (default: false) (Since: 3.1)
+ #
+-# @reconnect: For a client socket, if a socket is disconnected, then
+-#     attempt a reconnect after the given number of seconds.  Setting
+-#     this to zero disables this function.  The use of this member is
+-#     deprecated, use @reconnect-ms instead.  (default: 0) (Since: 2.2)
+-#
+ # @reconnect-ms: For a client socket, if a socket is disconnected,
+ #     then attempt a reconnect after the given number of milliseconds.
+-#     Setting this to zero disables this function.  This member is
+-#     mutually exclusive with @reconnect.
++#     Setting this to zero disables this function.
+ #     (default: 0) (Since: 9.2)
+ #
+-# Features:
+-#
+-# @deprecated: Member @reconnect is deprecated.  Use @reconnect-ms
+-#     instead.
+-#
+ # Since: 1.4
+ ##
+ { 'struct': 'ChardevSocket',
+@@ -297,7 +286,6 @@
+             '*telnet': 'bool',
+             '*tn3270': 'bool',
+             '*websocket': 'bool',
+-            '*reconnect': { 'type': 'int', 'features': [ 'deprecated' ] },
+             '*reconnect-ms': 'int' },
+   'base': 'ChardevCommon' }
+ 
+-- 
+2.47.3
 
-  linux-user: Use correct type for FIBMAP and FIGETBSZ emulation (2025-10-29 11:58:55 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2025-10-29
-
-----------------------------------------------------------------
-Bastian Blank (1):
-      linux-user: Use correct type for FIBMAP and FIGETBSZ emulation
-
-Nir Lichtman (1):
-      docs/system/keys: fix incorrect reset scaling key binding
-
-Peter Maydell (1):
-      docs/system/sriov.rst: Fix typo in title
-
-Thomas Huth (2):
-      tests/functional/i386: Remove unused variable from the replay test
-      hw/xen: Avoid non-inclusive language in params.h
-
-Vladimir Sementsov-Ogievskiy (2):
-      chardev: remove deprecated 'reconnect' option
-      net/stream: remove deprecated 'reconnect' option
-
- chardev/char-socket.c                 | 24 +++++-------------------
- chardev/char.c                        |  3 ---
- docs/about/deprecated.rst             | 15 ---------------
- docs/about/removed-features.rst       | 22 ++++++++++++++++++++++
- docs/system/keys.rst.inc              |  2 +-
- docs/system/sriov.rst                 |  4 ++--
- include/hw/xen/interface/hvm/params.h |  9 ++-------
- linux-user/ioctls.h                   |  4 ++--
- net/stream.c                          | 20 +++++---------------
- qapi/char.json                        | 14 +-------------
- qapi/net.json                         | 13 +------------
- tests/functional/i386/test_replay.py  |  1 -
- 12 files changed, 41 insertions(+), 90 deletions(-)
 
