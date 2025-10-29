@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC91CC1D7DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2696FC1D806
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEDyU-0007nY-JT; Wed, 29 Oct 2025 17:44:59 -0400
+	id 1vEE0d-00019I-Ux; Wed, 29 Oct 2025 17:47:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDyQ-0007l8-VD
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:44:54 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE0P-000128-Vc
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:47:00 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDyF-00061v-VE
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:44:54 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-4298a028de6so1020582f8f.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:44:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE0A-0006Tj-8Q
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:46:56 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4770e7062b5so2345745e9.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761774274; x=1762379074; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761774388; x=1762379188; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UDdG9vRzLSWqPzQtLxCE0sbsDd3SWye7KKaKxVt/EIY=;
- b=GI/Ie3MLm+q5Ls5dzP2GpmsWnQgVAZ/NF8uAcs6xDnGwuzFgCWytMq5D29z+GGHkAe
- it8Oe5yG0mnBLvNSeY6rVjDepOzK/hT2iHm7A+U0t7DCaU+0jKyuqEJtMBKeBjhEQUP6
- A5KuSYhKCHDzL33F+8pJk2xjKdjV7LC9ybRAYbH7bkldqvhQFmFCM0L1EaVmm0ey4t4R
- OiyvzflgbwI1sB8ltSsQhXCQ7Yzj5w7mRvUoeAoo7lf+rKfyQESUeeo5zVEjhsRlOoNS
- PTujxUPuUEVrjLcSpejJg01uxkw4fSZlQN2O6u6og1VK9ZGHYlZpII1wUdw9IWrmUoph
- 2Iiw==
+ bh=/+DITEUqnNP7BCcatCMcmAtM/fKrxvvfAMRydrHbu1c=;
+ b=AByWHUe6wOcsSAfdkgny6VrSkRinBerCloDlcuN5j692RFcRT6dcvgkezW7bk5HGTX
+ b7q0j4dcB6Jxa2GlwlVhz/gKLflZu9NB4eZuVkLd3PABe7iIysSDjJz7NqU/6NZwMUON
+ Owm9g/dWHXwatKPuMPe2cU3VwFnZi2RPz5dWRoj1puEI6BS9/HoRZE6o2jSRosK5AEDt
+ k/4AvVJZLhmBSvFGDH9b/UoZS6bouxxhTRrCCer/aNf+eWjNZGe9+bkmmPcPE6tBjvsE
+ bFClvAldWrjkQXydlRNjyKuw+U1o/bk/ki9A6KoMLwuLKGMzTo2gaDtyHHZLgdFzO9QG
+ toFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761774274; x=1762379074;
+ d=1e100.net; s=20230601; t=1761774388; x=1762379188;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UDdG9vRzLSWqPzQtLxCE0sbsDd3SWye7KKaKxVt/EIY=;
- b=v5yv7m2YwZX01sX6szYcGhQIvKt7q4KlFKtvTrHUH2gukUqNvAwTMdY6q/YmeeKXOQ
- SrYonNodkRKR6gjlz/FVuE3Kh8Kp5RLDx3gP7i+ycnJBD9Zz8xA2m3I/SfLHgj1g7eQl
- E4LKhpDwLeirr7yFG8JAVw6kJ8ezoR6T/SSOEyWvhW4DWDY5cDfW+9MBEL6t4x8dxGPd
- rgr415230xeb9Z2MI66wsMxWMGMUPgdTAT8Oe7eFLNnUZt97Ac8pcY5U1x5b/BSGlMP0
- jaG0jR/n05Pb3hQX3/37511jHLVXic09SYKIJy9I3v9qaCKi4cRudwo0geU8A9SVMeWY
- S3Zg==
+ bh=/+DITEUqnNP7BCcatCMcmAtM/fKrxvvfAMRydrHbu1c=;
+ b=DQ9wCAdnM9CHXs9nOaK7gNsobxupYhCO9lKvCNY1+ICz8yI301+UzrBm0q39jSXZuZ
+ M/gw+zSlRYPHWHU+OOKjvbMtS91w7EEhC67X7+i0kXuzZraSy7HS5wRwn/wN2+nejgpt
+ gQKyddLvqe8+cXtmZxCTyC5oPV3jBqCAZRxC1frrH6sy4WKhR0ATclPxpFN5o1JSEOWF
+ mHf+ZAGYoETS/Bgbk6e2Ghpmkf9kFDuSESGHcQzGMhxqFZxfcfvUIxX39vRT1/RQZM+P
+ N48xc2OVVpDNLlChQzHTQfyF9EI2+ptpuPlIjjI9/oSayswE7wGpuTWYPZCmobEMLPBl
+ Mf8A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXF7C75685XFUBTTIMwJunvnWoKXwB+gEmE6iCui8S/RPOy2apvhQCmAzqw+QXQZaR1byFvsR0mfFxz@nongnu.org
-X-Gm-Message-State: AOJu0YzlEo0KurjY9bRqJkVNf1DKWjc9byV7qMPvEx/0v+n2Tmz1qFaR
- aZOd/75re2rt38O5759cZpEqpkP39PknkK3/iv+d+GWX9ts3KiSfLNbdhrIcjONjS30=
-X-Gm-Gg: ASbGncsf63/8SHaszm9clF23WQ/1OAt24M+KCTzbqx3Bge5BPysK+3tFVPmu+EqAjt0
- m7pytcdZ9uaVKmTdpCWWfUZCAlWjzQYJX9ApQoqQZC/trRLiMSI4zgVtFBNyPLxNEBmvMVW4r9T
- 3+fWrSx7qUlVavBtSQZKxhw28WKo8oGok6LgJsi2FW4gPJbubzXPWQM3sJIUNt3hnYvxyrqrdZl
- J0C6vpH5gnOr1kDrMljXcRAu9Ws3IcrqHkHVErUhqj8fz/iJzxgv/3RpmRx/WyI3nHe78pjYRpQ
- ivxAS9iRL/PswlG19siZdKRmUNMLz9sTEm7qd2RVNungDs1xqyre1WEHhg+Bg3yJtevMnCBbipr
- JNZ9lg5lmyUxQIFmyRLEM1U4DUX+kvxi5W8qgLvB8tIx6yYCka6mc/PMk1vaJeQYH/eBizn/r+h
- f250dVg8MThIWycv5G9AUjbTguOap8JUjC4DQkFbzMBpY=
-X-Google-Smtp-Source: AGHT+IHCMOL5lEG7uVAhkjuhUltsY7VIM/l4EQgPJmPm+DxoYytMBjptZof5/wUmnR0MYpjGe6K8rA==
-X-Received: by 2002:a05:6000:430c:b0:425:86da:325f with SMTP id
- ffacd0b85a97d-429b4c5303emr1081859f8f.27.1761774273691; 
- Wed, 29 Oct 2025 14:44:33 -0700 (PDT)
+ AJvYcCUk+y8gjxh5CzlmPMaiK34GtsUmSjojpxwFwy8LhfXRkkVFqmSd0o3Jt7uH49abYcuiMoEDSnmeZXX4@nongnu.org
+X-Gm-Message-State: AOJu0YzXGSrbyhUSoiyRygV1hg42PBKdAYtkP2oIHWMSOa1EJewahUvo
+ En8eytO9fN94Dtpl5a42B+hdgZ+SQcXtHMU9mZ0/oGt+DxXIwHvI9h19Fb56GhLC1po=
+X-Gm-Gg: ASbGnct50czPfPJSIKn/p5yy9rZEV7HgIAhRmL0tJlFoWs09po5PNrxgAXyWqS1I3y+
+ 5t4ZHTP1vil3oBF02zGNA9JF5yf5z0ojPiSVWYva8zMpu3MbGeES7MF6dH5F4UNkwPAHAqwEZy9
+ +1XHmj7CLngy1KmlnIJ+oBizvBjQytJ2MBJnhQjn6Lusmj2EbsmAlPrL4l/t0K6s+wd4yKQbVpM
+ I3DJrLe02kfONHwVkLnuhk0O/b3tnw/764ivPVxI3h7fNjfIHWHzLtBgBURt2XzwtuledgxFd1P
+ EUAl+ROvsAY6FiiV4GZ8/+C8TrX0qSwxPnncBDpuXT+1nT5Cvs9He+A3Z3l0wysCmw9sc1qNl8n
+ FZfSXcmhSi4E56+MbS+1dJQxeGYytTM2ZrNewSE3S16lV5FF2dgP6wsirW7JgS2Fs5/agqqDjEi
+ Svc+5VgpvUrGacm/m4qJyIxTrs6Vmf4rQYRmgFP5eNv2c=
+X-Google-Smtp-Source: AGHT+IHghAnyYt/9CZ9HchAxLLZbVy0Zf7yKLjdqFlxRpok0ysIg8K6FaIQQYnMhsPdr3rD28MC//Q==
+X-Received: by 2002:a05:600c:5197:b0:46e:2e93:589f with SMTP id
+ 5b1f17b1804b1-4771e17ef8cmr44273815e9.14.1761774388499; 
+ Wed, 29 Oct 2025 14:46:28 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952db99asm28493969f8f.32.2025.10.29.14.44.32
+ 5b1f17b1804b1-4772899fdfbsm4351795e9.4.2025.10.29.14.46.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 14:44:33 -0700 (PDT)
-Message-ID: <6ba24ce8-239a-452f-b051-cffb86f1a1b6@linaro.org>
-Date: Wed, 29 Oct 2025 22:44:31 +0100
+ Wed, 29 Oct 2025 14:46:27 -0700 (PDT)
+Message-ID: <9777ac6c-2e36-460d-a4b7-a2d3b53a4482@linaro.org>
+Date: Wed, 29 Oct 2025 22:46:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/35] hw/audio/virtio-snd-pci: remove custom model
- callback
+Subject: Re: [PATCH v3 06/35] hw/audio: simplify 'hda' audio init code
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
@@ -90,19 +89,20 @@ Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-6-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-7-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-6-marcandre.lureau@redhat.com>
+In-Reply-To: <20251027151045.2863176-7-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,13 +121,18 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> virtio-snd can rely on the default code to instantiate the device and
-> set the audiodev.
+> For consistency, use only qdev_device_add() to instantiate the devices.
+> We can't rely on automatic bus lookup for the "hda-duplex" device though
+> as it may end up on a different "intel-hda" bus...
+> 
+> This allows to make init() callback bus-agnostic next.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   hw/audio/virtio-snd-pci.c | 16 +---------------
->   1 file changed, 1 insertion(+), 15 deletions(-)
+>   hw/audio/intel-hda.c | 16 ++++++++++------
+>   1 file changed, 10 insertions(+), 6 deletions(-)
+
+Nice!
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
