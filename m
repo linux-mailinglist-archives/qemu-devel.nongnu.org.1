@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FD9C1865E
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 07:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0060C18653
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 07:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDzRB-0000di-A3; Wed, 29 Oct 2025 02:13:37 -0400
+	id 1vDzRC-0000fE-TF; Wed, 29 Oct 2025 02:13:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDzQw-0000XG-5M
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:13:23 -0400
+ id 1vDzQz-0000Yv-ND
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:13:26 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDzQr-0006qA-0I
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:13:21 -0400
+ id 1vDzQr-0006q6-D3
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:13:24 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59T6CsDR077258
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59T6CsDS077258
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Wed, 29 Oct 2025 15:13:03 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=cD58OELSBPZUPtc2Nwde7FP/zTv4pAILKDqDTCL+hEQ=; 
+DKIM-Signature: a=rsa-sha256; bh=Y0z8Leh5RjHBxYsvXtHQahS9nXSybZI1c+I/pM8VVN4=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1761718383; v=1;
- b=WH8j/Nr1gpcF+g0IFGg9aCPaYw1p+a0979QqA3hVHqvPh3hotouucROt2b87wv6U
- 91K7X5j0Ij2Fi6rTBR4x7W2S/pokkY+iKlEkY2I4MCNDxhuy3yUFIvLJ0VLips8/
- BtFxwYCl7463XdK+Dq+zqpsifI22Aay8evXaipiOqRkMvJa5Kz66tUoKU5VBdT5h
- XmGyqyTmb0e2+En/OudYVKVlTWIh6XZ5bnthbOrdNaFJe5uz3WafwJDHNFfoxW/d
- 2qWZ7tLdo6q7vKxL9CYPUmCdhSM64corzJnGUegJYgRs0HeHHPE3KMDuDpt5FqIh
- QmDmjMzv0lRzOSnBptCsoQ==
+ b=ED43PdhD7lt0TAm3zaamAXjOokX9+OLX8T3SFUeXEuEuavw8V/M/bk9w3jqOLKyN
+ B/YNjYg+c+OV5Iz80kWfLTup2LaNZQTl1UdDUuEaVMwUCoe8zXCo2SNiPGvmFf0j
+ rMJH/EdiozF7+HuI4NhxoUS7slAWhtfQmAozj50aTo8VlvEQy6+A+OzQSiwCLErA
+ iQD45IZS6U2o60sQOWK1KvOnvdzn5IjvPUip2WS8qSufmmF/pDfg6Aq6DKtpYZfb
+ gVa4nNMrq176GMp3F+NE52kUMvxsD7c9ECQcy3gRgon2WhpadhLBdZoO+p7Y3UiA
+ PkXUkCHTHFh8TOKolJ/xAw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 29 Oct 2025 15:12:46 +0900
-Subject: [PATCH 2/5] qemu-thread: Add qemu_event_timedwait()
+Date: Wed, 29 Oct 2025 15:12:47 +0900
+Subject: [PATCH 3/5] rcu: Use call_rcu() in synchronize_rcu()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-force_rcu-v1-2-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20251029-force_rcu-v1-3-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
 References: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>
@@ -72,149 +72,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_event_timedwait() is equivalent to qemu_event_wait(), except it has
-a relative timeout.
+Previously, synchronize_rcu() was a single-threaded implementation that
+is protected with a mutex. It was used only in the RCU thread and tests,
+and real users instead use call_rcu(), which relies on the RCU thread.
+
+The usage of synchronize_rcu() in tests did not accurately represent
+real use cases because it caused locking with the mutex, which never
+happened in real use cases, and it did not exercise the logic in the
+RCU thread.
+
+Add a new implementation of synchronize_rcu() which uses call_rcu() to
+represent real use cases in tests. The old synchronize_rcu() is now
+renamed to enter_qs() and only used in the RCU thread, making the mutex
+unnecessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/qemu/thread-posix.h | 11 +++++++++++
- include/qemu/thread.h       |  8 +++++++-
- util/event.c                | 34 +++++++++++++++++++++++++++++-----
- util/qemu-thread-posix.c    | 11 +----------
- 4 files changed, 48 insertions(+), 16 deletions(-)
+ util/rcu.c | 51 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
-diff --git a/include/qemu/thread-posix.h b/include/qemu/thread-posix.h
-index 758808b705e4..11193b1580f8 100644
---- a/include/qemu/thread-posix.h
-+++ b/include/qemu/thread-posix.h
-@@ -36,4 +36,15 @@ struct QemuThread {
-     pthread_t thread;
- };
+diff --git a/util/rcu.c b/util/rcu.c
+index acac9446ea98..3c4af9d213c8 100644
+--- a/util/rcu.c
++++ b/util/rcu.c
+@@ -38,7 +38,7 @@
  
-+static inline clockid_t qemu_timedwait_clockid(void)
-+{
-+#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
-+    return CLOCK_MONOTONIC;
-+#else
-+    return CLOCK_REALTIME;
-+#endif
-+}
-+
-+void compute_abs_deadline(struct timespec *ts, int ms);
-+
- #endif
-diff --git a/include/qemu/thread.h b/include/qemu/thread.h
-index f0302ed01fdb..3030458bb666 100644
---- a/include/qemu/thread.h
-+++ b/include/qemu/thread.h
-@@ -201,7 +201,13 @@ void qemu_sem_destroy(QemuSemaphore *sem);
- void qemu_event_init(QemuEvent *ev, bool init);
- void qemu_event_set(QemuEvent *ev);
- void qemu_event_reset(QemuEvent *ev);
--void qemu_event_wait(QemuEvent *ev);
-+bool qemu_event_timedwait(QemuEvent *ev, int ms);
-+
-+static inline void qemu_event_wait(QemuEvent *ev)
-+{
-+    qemu_event_timedwait(ev, INT_MAX);
-+}
-+
- void qemu_event_destroy(QemuEvent *ev);
+ /*
+  * Global grace period counter.  Bit 0 is always one in rcu_gp_ctr.
+- * Bits 1 and above are defined in synchronize_rcu.
++ * Bits 1 and above are defined in enter_qs().
+  */
+ #define RCU_GP_LOCKED           (1UL << 0)
+ #define RCU_GP_CTR              (1UL << 1)
+@@ -52,7 +52,6 @@ QemuEvent rcu_gp_event;
+ static int in_drain_call_rcu;
+ static int rcu_call_count;
+ static QemuMutex rcu_registry_lock;
+-static QemuMutex rcu_sync_lock;
  
- void qemu_thread_create(QemuThread *thread, const char *name,
-diff --git a/util/event.c b/util/event.c
-index 5a8141cd0e46..e22cc08a629b 100644
---- a/util/event.c
-+++ b/util/event.c
-@@ -33,7 +33,15 @@ void qemu_event_init(QemuEvent *ev, bool init)
- {
- #ifndef HAVE_FUTEX
-     pthread_mutex_init(&ev->lock, NULL);
-+#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
-+    pthread_condattr_t attr;
-+    pthread_condattr_init(&attr);
-+    pthread_condattr_setclock(&attr, qemu_timedwait_clockid());
-+    pthread_cond_init(&ev->cond, &attr);
-+    pthread_condattr_destroy(&attr);
-+#else
-     pthread_cond_init(&ev->cond, NULL);
-+#endif
- #endif
- 
-     ev->value = (init ? EV_SET : EV_FREE);
-@@ -121,15 +129,17 @@ void qemu_event_reset(QemuEvent *ev)
- #endif
- }
- 
--void qemu_event_wait(QemuEvent *ev)
-+bool qemu_event_timedwait(QemuEvent *ev, int ms)
- {
-     assert(ev->initialized);
- 
- #ifdef HAVE_FUTEX
-+    int64_t deadline = get_clock() + (int64_t)ms * SCALE_MS;
-+
-     while (true) {
-         /*
--         * qemu_event_wait must synchronize with qemu_event_set even if it does
--         * not go down the slow path, so this load-acquire is needed that
-+         * qemu_event_timedwait must synchronize with qemu_event_set even if it
-+         * does not go down the slow path, so this load-acquire is needed that
-          * synchronizes with the first memory barrier in qemu_event_set().
+ /*
+  * Check whether a quiescent state was crossed between the beginning of
+@@ -111,7 +110,7 @@ static void wait_for_readers(void)
+          *
+          * If this is the last iteration, this barrier also prevents
+          * frees from seeping upwards, and orders the two wait phases
+-         * on architectures with 32-bit longs; see synchronize_rcu().
++         * on architectures with 32-bit longs; see enter_qs().
           */
-         unsigned value = qatomic_load_acquire(&ev->value);
-@@ -159,13 +169,27 @@ void qemu_event_wait(QemuEvent *ev)
-          * a smp_mb() pairing with the second barrier of qemu_event_set().
-          * The barrier is inside the FUTEX_WAIT system call.
-          */
--        qemu_futex_wait(ev, EV_BUSY);
-+        if (!qemu_futex_timedwait(ev, EV_BUSY, deadline)) {
-+            return false;
-+        }
-     }
-+
-+    return true;
- #else
-+    bool failed;
-+    struct timespec ts;
-+
-+    compute_abs_deadline(&ts, ms);
-+
-     pthread_mutex_lock(&ev->lock);
-     while (qatomic_read(&ev->value) != EV_SET) {
--        pthread_cond_wait(&ev->cond, &ev->lock);
-+        failed = pthread_cond_timedwait(&ev->cond, &ev->lock, &ts);
-+        if (failed) {
-+            break;
-+        }
-     }
-     pthread_mutex_unlock(&ev->lock);
-+
-+    return !failed;
- #endif
- }
-diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index ba725444ba63..f649bfa00015 100644
---- a/util/qemu-thread-posix.c
-+++ b/util/qemu-thread-posix.c
-@@ -44,16 +44,7 @@ static void error_exit(int err, const char *msg)
-     abort();
+         smp_mb_global();
+ 
+@@ -137,9 +136,9 @@ static void wait_for_readers(void)
+          * wait too much time.
+          *
+          * rcu_register_thread() may add nodes to &registry; it will not
+-         * wake up synchronize_rcu, but that is okay because at least another
++         * wake up enter_qs(), but that is okay because at least another
+          * thread must exit its RCU read-side critical section before
+-         * synchronize_rcu is done.  The next iteration of the loop will
++         * enter_qs() is done.  The next iteration of the loop will
+          * move the new thread's rcu_reader from &registry to &qsreaders,
+          * because rcu_gp_ongoing() will return false.
+          *
+@@ -171,10 +170,8 @@ static void wait_for_readers(void)
+     QLIST_SWAP(&registry, &qsreaders, node);
  }
  
--static inline clockid_t qemu_timedwait_clockid(void)
--{
--#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
--    return CLOCK_MONOTONIC;
--#else
--    return CLOCK_REALTIME;
--#endif
--}
+-void synchronize_rcu(void)
++static void enter_qs(void)
+ {
+-    QEMU_LOCK_GUARD(&rcu_sync_lock);
 -
--static void compute_abs_deadline(struct timespec *ts, int ms)
-+void compute_abs_deadline(struct timespec *ts, int ms)
+     /* Write RCU-protected pointers before reading p_rcu_reader->ctr.
+      * Pairs with smp_mb_placeholder() in rcu_read_lock().
+      *
+@@ -289,7 +286,7 @@ static void *call_rcu_thread(void *opaque)
+ 
+         /*
+          * Fetch rcu_call_count now, we only must process elements that were
+-         * added before synchronize_rcu() starts.
++         * added before enter_qs() starts.
+          */
+         for (;;) {
+             qemu_event_reset(&rcu_call_ready_event);
+@@ -304,7 +301,7 @@ static void *call_rcu_thread(void *opaque)
+             qemu_event_wait(&rcu_call_ready_event);
+         }
+ 
+-        synchronize_rcu();
++        enter_qs();
+         qatomic_sub(&rcu_call_count, n);
+         bql_lock();
+         while (n > 0) {
+@@ -337,15 +334,24 @@ void call_rcu1(struct rcu_head *node, void (*func)(struct rcu_head *node))
+ }
+ 
+ 
+-struct rcu_drain {
++typedef struct Sync {
+     struct rcu_head rcu;
+-    QemuEvent drain_complete_event;
+-};
++    QemuEvent complete_event;
++} Sync;
+ 
+-static void drain_rcu_callback(struct rcu_head *node)
++static void sync_rcu_callback(Sync *sync)
  {
-     clock_gettime(qemu_timedwait_clockid(), ts);
-     ts->tv_nsec += (ms % 1000) * 1000000;
+-    struct rcu_drain *event = (struct rcu_drain *)node;
+-    qemu_event_set(&event->drain_complete_event);
++    qemu_event_set(&sync->complete_event);
++}
++
++void synchronize_rcu(void)
++{
++    Sync sync;
++
++    qemu_event_init(&sync.complete_event, false);
++    call_rcu(&sync, sync_rcu_callback, rcu);
++    qemu_event_wait(&sync.complete_event);
++    qemu_event_destroy(&sync.complete_event);
+ }
+ 
+ /*
+@@ -359,11 +365,11 @@ static void drain_rcu_callback(struct rcu_head *node)
+ 
+ void drain_call_rcu(void)
+ {
+-    struct rcu_drain rcu_drain;
++    Sync sync;
+     bool locked = bql_locked();
+ 
+-    memset(&rcu_drain, 0, sizeof(struct rcu_drain));
+-    qemu_event_init(&rcu_drain.drain_complete_event, false);
++    memset(&sync, 0, sizeof(sync));
++    qemu_event_init(&sync.complete_event, false);
+ 
+     if (locked) {
+         bql_unlock();
+@@ -383,8 +389,8 @@ void drain_call_rcu(void)
+      */
+ 
+     qatomic_inc(&in_drain_call_rcu);
+-    call_rcu1(&rcu_drain.rcu, drain_rcu_callback);
+-    qemu_event_wait(&rcu_drain.drain_complete_event);
++    call_rcu(&sync, sync_rcu_callback, rcu);
++    qemu_event_wait(&sync.complete_event);
+     qatomic_dec(&in_drain_call_rcu);
+ 
+     if (locked) {
+@@ -427,7 +433,6 @@ static void rcu_init_complete(void)
+     QemuThread thread;
+ 
+     qemu_mutex_init(&rcu_registry_lock);
+-    qemu_mutex_init(&rcu_sync_lock);
+     qemu_event_init(&rcu_gp_event, true);
+ 
+     qemu_event_init(&rcu_call_ready_event, false);
+@@ -460,7 +465,6 @@ static void rcu_init_lock(void)
+         return;
+     }
+ 
+-    qemu_mutex_lock(&rcu_sync_lock);
+     qemu_mutex_lock(&rcu_registry_lock);
+ }
+ 
+@@ -471,7 +475,6 @@ static void rcu_init_unlock(void)
+     }
+ 
+     qemu_mutex_unlock(&rcu_registry_lock);
+-    qemu_mutex_unlock(&rcu_sync_lock);
+ }
+ 
+ static void rcu_init_child(void)
 
 -- 
 2.51.0
