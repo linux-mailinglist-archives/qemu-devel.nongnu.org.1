@@ -2,142 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D387BC18873
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 07:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F2BC18804
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 07:40:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE03d-0003S4-2m; Wed, 29 Oct 2025 02:53:21 -0400
+	id 1vDzqA-00018O-KO; Wed, 29 Oct 2025 02:39:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE03Z-0003Qj-5p
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:53:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vDzq8-000176-5M
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:39:24 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE03Q-0002sz-UA
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:53:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761720782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=bB6XHtyLnaCBhd9j2JUE3VkBWD54UKnG5MRs41CJFTU=;
- b=RQ247O4o3pfALt5OiG1iVpjUC6YrR8GQu81JGD3hX8ttZwqhJjp+G9GEg+27Q0NIIuP2Qn
- uaqOKj9pd0B6iBVsOmKBobhoOQSLci1hs51rS9s9KlH1Vt79GwlRcQdoiPgukiMyRgsGlC
- n6DncRmMVHb3Yp8jbFbCW3r+5Av62WU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-_yFohV_SPwa_0a3o5RPjFA-1; Wed, 29 Oct 2025 02:53:00 -0400
-X-MC-Unique: _yFohV_SPwa_0a3o5RPjFA-1
-X-Mimecast-MFC-AGG-ID: _yFohV_SPwa_0a3o5RPjFA_1761720779
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4771e696e76so4748325e9.0
- for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 23:53:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761720779; x=1762325579;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bB6XHtyLnaCBhd9j2JUE3VkBWD54UKnG5MRs41CJFTU=;
- b=D5OVgf7tomGjlXzG/2t+d1TDaIl9iPcp44cOLXBI93trtC4XeEIhwfeQfVSsuUpyMD
- 7lWyrlz7AQ0IXEdGM2/fiqj5h9DmNZwz0+OFu7HV2Hio0RO4T1FDL7XcjsNFUgm2Xa5F
- Zbm3aLTR8/hV0cOlLZBQRVnWgGLzSAd91qq9tTIzgp7jigC6FhbyxC6BYlU3sIWw5TXt
- /As2BXbTYyQJPdCaL8rYTBQliqsgDS77w7ZcUfkdzNL/Epqt8kPuLtmdgQaVYllJRIvw
- 5RMBNYOdq4NmENIvYGG6DcvYZFipPO6fSWNxzKthKamhKJekSxLgcAPwgzlXVHrFpPLj
- aZwQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVxCGm8RjEt7oi3DT4rD5zx/mjrUdSXeV/5/OosHmZJSXDhyrajLLI1q7zGHe1YAIhggGt3p1jSvWVu@nongnu.org
-X-Gm-Message-State: AOJu0Yx+VH2xChEEogsWJBhuXVWj1A849YHdqtXrdhRFchtw67PQOeJF
- +1cjcz0w4hM1M1RwgnPoA9uR32/8G0QYqeDnYopOAliiKzQE9HWDX6HGXBzBp9JDrP8+WNQHumQ
- qAn3MSjTVtdwW6jY8djNto9hAGqMxdHMfR9Xi437uBib8U9ekUPdhCF4j
-X-Gm-Gg: ASbGnct9kRhLJGSdoNl2iYNV+sa87cqjdW9h3JA5Izr2Q1cu5fMPYcloGEeLnK81keP
- Z7GLqPInfVD3x9z6t5BAbvlYlAvkE5JOHwNaliFtrgS0sITqu4ToGl4iDsBeGfGBTA9Lz6OGkep
- sjhTuDj2ghVJJfhuCNN70COLr/lYjJzDwvxCgAGrQlBtueNGSymvbfxrhxdDs9rzldJFm+VOQOH
- 1rnveRSlJ7cMB8w6xOv8UmFjvYvZggIGJj1JM+rduS5FcBpvcPr1eGPkWkQcUI9Y05ki1+N72z4
- 1oHfjDaPApSnO4rR15qMdO+JaKAYjiJFeOC9r2vBRqMtaHPNvq6bTKefuHxU6nvP+u9h3ZQ=
-X-Received: by 2002:a05:6000:1445:b0:428:55c3:ceab with SMTP id
- ffacd0b85a97d-429aefafc11mr1035898f8f.35.1761720779360; 
- Tue, 28 Oct 2025 23:52:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQrzYzGxAjmhrQrc0/jgTpp9VmGpVlrnlTQbXUnb8QaG0JPPJByxulaYHfXSqwPb16G4ckRA==
-X-Received: by 2002:a05:6000:1445:b0:428:55c3:ceab with SMTP id
- ffacd0b85a97d-429aefafc11mr1035885f8f.35.1761720778875; 
- Tue, 28 Oct 2025 23:52:58 -0700 (PDT)
-Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952d3532sm25170459f8f.20.2025.10.28.23.52.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Oct 2025 23:52:57 -0700 (PDT)
-Message-ID: <46ac8536-58e9-407e-9ec5-e0e6c67fd80a@redhat.com>
-Date: Wed, 29 Oct 2025 07:52:55 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vDzq1-0001Nm-Ny
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:39:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761719958; x=1793255958;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=DnS0Yvs1z03uEdqAFXx0ktOv4LAyDh0CIIGIB1D7S/Y=;
+ b=P29xRvw3gJ6bjKSpoXYUPlr3PQglhjvCOj5rDzQkT7M0EFpfPp5Zl7EC
+ YUcxxDmB4DQK0yWo+dloWtFZ7+7pD4GIvGGc0jBBOpEev3QClrwSV9CEm
+ fs0etog3pxjcUKPlQKaziFRkHbYIkdicwFncgt6z03i6eyGYIyeC8oKL5
+ ylIWRh8uU6O0sly51PEenqzjUqVPcZe5o+0ErsqbnKA0ZNFX2pczGbm70
+ Im09U1xj6U5wv2r2iOmyercZqnaWuwqTm5E47GtmiqFgEpRDNwfMBxY23
+ JKeFkdp2n/qBZ/rnbkE5sloTgfRvQ5aLRe5j27treoIKcSG8ETwDUcgnq w==;
+X-CSE-ConnectionGUID: 5+BnHJ9TQPyKyvIY5w/Vag==
+X-CSE-MsgGUID: 3hvH1PS/SkGVCZzdgvCrSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63927854"
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="63927854"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 23:39:11 -0700
+X-CSE-ConnectionGUID: 2w9DHdp4SzGrhqX1jWNNlA==
+X-CSE-MsgGUID: ZkcHdB29Re+v+kNTSNil6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="189926654"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 28 Oct 2025 23:39:10 -0700
+Date: Wed, 29 Oct 2025 15:01:21 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PULL 02/18] i386/kvm/cpu: Init SMM cpu address space for
+ hotplugged CPUs
+Message-ID: <aQG7wdY/lBjgzho3@intel.com>
+References: <20251028173430.2180057-1-pbonzini@redhat.com>
+ <20251028173430.2180057-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ppc/sam460ex: Update u-boot-sam460ex
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Cornelia Huck <cohuck@redhat.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20251028151923.10DBB5972E5@zero.eik.bme.hu>
- <ee77b09f-7a12-4d52-b5f6-2d4b5b711448@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <ee77b09f-7a12-4d52-b5f6-2d4b5b711448@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028173430.2180057-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,39 +83,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/10/2025 07.31, Harsh Prateek Bora wrote:
-> + Thomas
-> 
-> Hi BALATON,
-> 
-> I am unable to fetch it with b4 am, and I do not see it appear on lore also, 
-> not sure if its due to the binary size.
-> 
-> harshpb:patches$ b4 am 20251028151923.10DBB5972E5@zero.eik.bme.hu
-> Looking up https://lore.kernel.org/ 
-> r/20251028151923.10DBB5972E5%40zero.eik.bme.hu
-> Grabbing thread from lore.kernel.org/ 
-> all/20251028151923.10DBB5972E5%40zero.eik.bme.hu/t.mbox.gz
-> Server returned an error: 404
-> harshpb:patches$
-> 
-> I guess you may need to send a PULL SUBSYSTEM req like Thomas did for slof:
-> https://lore.kernel.org/qemu-devel/20251027074404.25758-1-thuth@redhat.com/
-> 
-> Hi Thomas,
-> Is it a known thing to deal with binary updates ?
+> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+> index 7512be64d67..5716191fff1 100644
+> --- a/hw/i386/x86-common.c
+> +++ b/hw/i386/x86-common.c
+> @@ -183,6 +183,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
+>          fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
+>      }
+>  
+> +    /*
+> +     * Non-hotplugged CPUs get their SMM cpu address space initialized in
+> +     * machine init done notifier: register_smram_listener().
+> +     *
+> +     * We need initialize the SMM cpu address space for the hotplugged CPU
+> +     * specifically.
+> +     */
+> +    if (kvm_enabled() && dev->hotplugged && x86_machine_is_smm_enabled(x86ms)) {
+> +        kvm_smm_cpu_address_space_init(cpu);
+> +    }
+> +
 
-  Hi,
+Unfortunately, the original KVM SMM patch caused this bug, but even
+more unfortunately, CPU_FOREACH in the machine_done callback is more
+fragile than I originally anticipated, now requiring more hack checks to
+fix. :-(
 
-honestly, I can't remember clearly why we introduced these subsystem pull 
-requests in the past ... Maybe it was related to some problems with binary 
-patches, but I think it was rather meant as a staged approach for the case 
-where the maintainer of the firmware is not the main maintainer of the 
-architecture subsystem, so that the main maintainer gets another chance of 
-doing tests before the final pull request to the master branch.
+IMO, the root of the chaos is that KVM SMM doesn't do this in the CPU
+context like TCG did for a long time. I'll find time to sort all this
+out.
 
-Conny, Alexey, do you remember?
-
-  Thomas
+Regards,
+Zhao
 
 
