@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8993C1BD24
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D40CC1BD93
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:57:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE8SR-0004aL-W3; Wed, 29 Oct 2025 11:51:32 -0400
+	id 1vE8ST-0004an-6X; Wed, 29 Oct 2025 11:51:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8SG-0004MC-Rs
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:21 -0400
+ id 1vE8SN-0004Y5-JX
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:27 -0400
 Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8S0-0002uD-Gg
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:20 -0400
+ id 1vE8S2-0002ub-JT
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:27 -0400
 Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-6399328ff1fso12650467a12.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:51:02 -0700 (PDT)
+ 4fb4d7f45d1cf-63e0cec110eso12904269a12.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:51:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761753060; x=1762357860; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761753062; x=1762357862; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p0oKZMPUxXOHcd3Nkbe0wu3ZFt70OnkgenyYFKHZZPE=;
- b=D0b30bfyGZ9u9jcGTfetc123EXHvmdcoc8O+OfNus57q6Le80A/HOdj/s/wH2gBlDC
- 5gEhZkNUXjre/wJJgxZplnl9xqedZaTCXlfGUbaHd9N/NUxHMOJVgui8AKSZyfOFQxM8
- NFIpE0PZShhMJ4UIC87rtvsiGadARDHy/GY5NktqEwJhxOSuNJYfWZrzQVj5dRmGo1lp
- MMnGC68F5cDe8edx01Dy5zJwo0o6V6hzXsXaErVIQuZDR3awLdz4mxosgddFDBuCowyu
- 0ZiUsJ9gYbdlYIBfErRIkNJHje9jfsW9f34wKCYQQO9pDgTO+pBQTwnNUz93DEJ5dx7q
- 1W3Q==
+ bh=+sccIOnlRollRBUEGlbrGT/jg0uNfttKz/lur3Ex3hg=;
+ b=MIr/claFZu/AxLwx393RY4PKkC/38qJbTkPfxgpA/vjK+cIPNvrja/V5H7B49Ivfgv
+ 9jw1BNK+//sR4E5pDZ9IP+mTHOmFMxNSN9et2ElqGW062fF5/7Y3SG0bfJo3ZMB1yVLi
+ ca5+NKm/S1rB7YVRm0PF+bhnVbySGeZJn22S94euHDiVam+eSPgVEqrXfa1fViWTllce
+ owDp2xkkeXNCRG9Q16mVkyhl3YJ/wF6eEdbnqbQGXR3Bl3YmqU92/ecXQ6t45PEk2Arz
+ 0fj90LbOF3UtqgCpj7naZHQ38ngR0r3jBzev3G0x1/3BsJp4NMSTsMMRTVoAZuADJzFr
+ yl2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761753060; x=1762357860;
+ d=1e100.net; s=20230601; t=1761753062; x=1762357862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p0oKZMPUxXOHcd3Nkbe0wu3ZFt70OnkgenyYFKHZZPE=;
- b=CYvf6LBXt6Ux0vdjjtUUx/jvX9tnf4c0JSv0xbpj0nkbWosaMVvwbV5lXWDLLm31WX
- ukxvItOv/FcjzCstGU5aP/1eHFGa5Jb+R/4XWsje/Udw3N9YudjNDZRXKS7llt0EjtW3
- YomgUJOhVvUVZ5QPUX/666zsh0nsSdNHs8jxsf7XhiNNB1whLGnN/nsiQ4Flu82e/oGE
- U8hZF5GFAk7DkxuzXRSb9uHtTKNDKc4LIhQnxqXK7bvliGHItrlam/k+3cWoLWBSvn4C
- Z5Hr2fXzb80EkYmgo1dEX+j7c1yL9lDVN2etwkLLPWPnZSETwbC1i7amMDHs/5eeXsbq
- 5cGA==
-X-Gm-Message-State: AOJu0YwVGqkOv7AqnnWGaQzQnuEhrZULciuJKhNL3HOKJMFUJUYzVtnm
- CHfAMapToboaLS7n/KfbecW873VTeVBe3mN8qyN93kygyxKs/4bFjZhPO6pc9b+nJ+Y=
-X-Gm-Gg: ASbGncupB2ELqCDVkhCh3nkwF1VnDrSn9Lq2YB4W3cLphcQCTSQiBorOiU2PnKnxfBA
- cwaQmFlIkfyuM+bqcMN+56ieT0NZKG4dwNqNXv/FM1FJIoo9rQRKf7eR8OQBNAhtl8IAnpaYLy3
- dU96DU6iJ+zNG385NL9fl7t22hCS2y9u3s6Rd8yMSi6dbMVJfbUuaiITDLYKd4lqsLDElgSPpOl
- C56JBWlfW9fvHiDCTfj9sUR79ckbUTq7qJovnKBtGMWJ1IvJ2fyd3vn63PQvU9WOOT7wnzN5C/R
- hVIjdjT4ibww+/xTFo6sIkAcZTRack3xx6VO3YXsEPgah3jQTwpGpF9trn7zdT+pxwaj5+Zwi4q
- 7bbgF3H+DiGTeSH+QZzybexPOXN08mYOJBj+Sjx+N7SV47iwb0Xaop96bKYKt9BuBI6vI3rUjkk
- xF
-X-Google-Smtp-Source: AGHT+IGKuvBhEy79VuHblpKUso6vTyb7NAr8KP1H2BIiVsfZaD/Sv0DWtN6XfpJUP4uskjc0ivVjEg==
-X-Received: by 2002:a17:907:94c9:b0:b3e:babd:f257 with SMTP id
- a640c23a62f3a-b703d2e3f5amr385537866b.10.1761753059621; 
- Wed, 29 Oct 2025 08:50:59 -0700 (PDT)
+ bh=+sccIOnlRollRBUEGlbrGT/jg0uNfttKz/lur3Ex3hg=;
+ b=KLRTtI0oy1uBRjqKvhwUpaLToepxkmcL9kdR8VVF6haHxJTOHlCUyBvEXLxQQi8qHP
+ 1GzsGeKc0zMuXVf8DFwiLjTeRp8dYc0yo30UdjnTzUkIW3ENbqGTnlzCplYKUoZzT8v/
+ +BJFhcXScuGukStS2nVcVsBT+JMfEfbhzSY+ctQAEUbRDCWVZlu/qS+grrT4v+DFZlZo
+ 7md+v7HSF+p1I/12bFQnf1NqZQWbSukeJIOTc+MpE4vkkYG19C9ric+QyDMFDXiO7TJt
+ 5LLLY/6l56N3ECN/snFA3HBpVLc8YQdDqvorNpLI8iHzcmgFiOgmIDhSf9eCvJk8d9+Q
+ jCjA==
+X-Gm-Message-State: AOJu0YzDFOV66owNZTyjIpUOi6P+wK/mleGoSsxaLKMQvuYNVLh7plZf
+ tG0NnbJKLJMbsiuQ8km9+ZXKWiQF/8hwGFkjv+ZeZsZKGl4aM8NY+LjpfPDfcai+chY=
+X-Gm-Gg: ASbGncszFuzMigO+MC7f6epZ0ZFLcSO7jdtdR1BQXwGDoY9oQXze/0pLv1hbn2nDR+q
+ oJmzAZ1ySRWdJG0q794TBRAASOUuLRN3ktVqN71r17XBQmjLZ5g6uS8X4JDzaM/xn/KGi8NKtlw
+ 1IlCkX2E3pQBHiUFcYIqRykxpYICLw6Ow1GshiaP4uMVMAnbu3JmYeP1KyQx0WyFf2sM7yX/x9C
+ iW3O++sdL5Cc7LjAGdMw1OJYjxI1TyURD1glcg7nYyUXC8m1v1xSd8nx3VM+MnA1Kq/PYHn3qKO
+ KPkXlZHMLRB7A62E2ebvmCXjvvOMGSag0cDDnStEPdGgcO7Txcsw5hutSDEjHJLurjkcp0H2IIZ
+ XkhEy29j7tvysyT5ixAlHMIizx2DHK1r5YWb9WVSlHOBed7qMn7lQN5JBd/xCaB8juO9hHrWr+S
+ s0
+X-Google-Smtp-Source: AGHT+IE+shmBgrMHRl7Pd04VR/EgZUFVQFpPy0OcMwEDJ/bqP+izozEZ06Nk2AfE/rhzFXaGbcVyUg==
+X-Received: by 2002:a05:6402:2794:b0:639:d9e7:8051 with SMTP id
+ 4fb4d7f45d1cf-640441a9aa0mr2560321a12.10.1761753061956; 
+ Wed, 29 Oct 2025 08:51:01 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d85445d48sm1452505566b.65.2025.10.29.08.50.54
+ 4fb4d7f45d1cf-63e7efd0bc5sm12269706a12.32.2025.10.29.08.50.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Oct 2025 08:50:58 -0700 (PDT)
+ Wed, 29 Oct 2025 08:50:59 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2319E6150B;
+ by draig.lan (Postfix) with ESMTP id 374B161528;
  Wed, 29 Oct 2025 15:50:49 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 33/35] configs: drop SBSA_REF from minimal specification
-Date: Wed, 29 Oct 2025 15:50:42 +0000
-Message-ID: <20251029155045.257802-34-alex.bennee@linaro.org>
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 34/35] gdbstub: Fix %s formatting
+Date: Wed, 29 Oct 2025 15:50:43 +0000
+Message-ID: <20251029155045.257802-35-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251029155045.257802-1-alex.bennee@linaro.org>
 References: <20251029155045.257802-1-alex.bennee@linaro.org>
@@ -103,40 +104,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The whole point of SBSA_REF is for testing firmware which by
-definition requires TCG. This means the configuration of:
+From: Sean Anderson <sean.anderson@linux.dev>
 
-  --disable-tcg --with-devices-aarch64=minimal
+The format string for %s has two format characters. This causes it to
+emit strings like "466f5bd8/6x" instead of "466f5bd8/6". GDB detects
+this and returns EIO, causing all open File I/O calls to fail.
 
-makes no sense (and indeed is broken for the
-ubuntu-24.04-aarch64-notcg) test. Drop it from minimal and remove the
-allow_failure from the test case.
-
+Fixes: 0820a075af ("gdbstub: Adjust gdb_do_syscall to only use uint32_t and uint64_t")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251027110344.2289945-34-alex.bennee@linaro.org>
+Message-ID: <20251027110344.2289945-35-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/configs/devices/aarch64-softmmu/minimal.mak b/configs/devices/aarch64-softmmu/minimal.mak
-index 0ebc1dca561..3c8582e12cc 100644
---- a/configs/devices/aarch64-softmmu/minimal.mak
-+++ b/configs/devices/aarch64-softmmu/minimal.mak
-@@ -6,4 +6,3 @@
- #
- 
- CONFIG_ARM_VIRT=y
--CONFIG_SBSA_REF=y
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-index 46db9ae0138..ee13587d99e 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-@@ -107,7 +107,5 @@ ubuntu-24.04-aarch64-notcg:
-   rules:
-     - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-       when: manual
--      allow_failure: true
-     - if: "$AARCH64_RUNNER_AVAILABLE"
-       when: manual
--      allow_failure: true
+diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
+index e855df21aba..d8bb90cc1c7 100644
+--- a/gdbstub/syscalls.c
++++ b/gdbstub/syscalls.c
+@@ -127,7 +127,7 @@ void gdb_do_syscall(gdb_syscall_complete_cb cb, const char *fmt, ...)
+             case 's':
+                 i64 = va_arg(va, uint64_t);
+                 i32 = va_arg(va, uint32_t);
+-                p += snprintf(p, p_end - p, "%" PRIx64 "/%x" PRIx32, i64, i32);
++                p += snprintf(p, p_end - p, "%" PRIx64 "/%" PRIx32, i64, i32);
+                 break;
+             default:
+             bad_format:
 -- 
 2.47.3
 
