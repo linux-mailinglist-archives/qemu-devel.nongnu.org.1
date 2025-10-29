@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C88C1B206
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 15:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C14AC1B25B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 15:19:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE6xR-0001tB-CZ; Wed, 29 Oct 2025 10:15:25 -0400
+	id 1vE70W-00031e-4e; Wed, 29 Oct 2025 10:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vE6xL-0001rf-JP
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 10:15:20 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1vE704-0002zb-5u
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 10:18:09 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vE6x6-0007Aj-HO
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 10:15:13 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-78487b0960bso79387467b3.2
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 07:14:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1vE6zw-0007Vv-3A
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 10:18:07 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-378d61ce75aso10677541fa.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 07:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761747294; x=1762352094; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CwGA6TiP3+h65Ac9ZA/bVLC2L4ED5pNAUeXlEISuypQ=;
- b=WKMVs+FG1I3OuR561yMLcUePAeQ1YtOcb6NpZNUP+cudfZcoef8ibIP6g8yhbJLydG
- 8DYk+pdz8SZ8OjeLedMXNRmioCF2r+H4ZwYdvCxd2mmu97qKA6DJQAtj7o1AWnqWs4GT
- 5A0uotEV6jUOMuR+L5qEWzR++cUXd81XgR1YuHfW7mhDr0Q8152m4PHYNFtqdgDEm79w
- 6M+UOTgUW67VQ55aZOArT4skVTLvr7kd6p3/iY/m59SL+VABjSTqyjIEQkF3mya64zsE
- YL0Ax5LsLImJ0z79zXcBVmu+GM63NRBB0rdbZVKyHxI+uT6D+4mLAGAugxVeofIjU1AV
- 4UHg==
+ d=gmail.com; s=20230601; t=1761747474; x=1762352274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jH2ovA5kxRIknVuqXTGVDlJABoWI8fAisSqXcIX8I1g=;
+ b=JzVRG/xoFRRvcwKNWJKTvrceDO9XrwULbXQ25kDquA9tfKrIyYCnbzD0pKHORTsvV3
+ EXx4DP7QbPHTnbjGAHVicDVYi3WHGxJUq/haLJ1lSBE/1abVxin1vtQThwolTWXUU9IT
+ rJ2vpxam1yaW4/mzoFlYzbm43FoLlmyGMO3h6/cDt4DC5RHn8NFbRxRxXVvEi2vzQmxn
+ zFNlyo/3TJwissAHD9Gm0HyVzRtBOgdxQKOdJmEr6ID9S1jLdQc1YJiS0YWBFdh4GWp4
+ /m58vs4hXhXybS7m/nnOz5N1cHEy2QzdALDcC38DBci+G7b6hUgoW+43S8uxVEL6dFwm
+ ugtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761747294; x=1762352094;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CwGA6TiP3+h65Ac9ZA/bVLC2L4ED5pNAUeXlEISuypQ=;
- b=FVekXWBQNjQay93lwBF49p7aXY1f+k8OUMPIsfU3Ua9oquUdNMObD17DvFznlIuM5O
- S9Tt6xmgawlwSbBax47HsrIkRHjgGXwWqs/B8pnOEiUvk1UH/q8AUFXJHb3FuW9d6CTQ
- tdMEdYYCKkebAbTxJUPvkWd8bG68yMuluEHHbs0zSBs6ecQRbCKyrqonP+nHzqA+IYHM
- jc6kiHPsaMNbCeUbGYAboN4q3m/ZVduPOChnjAWWsKLaqzJu1MYFHMGa9HbQ8hYYBDNL
- x/Haw70rKLKrgO+tUNXu09qrJBnLH3VDh9znIXbHEblkpveKXwa/0Ms3OstbR1H8dCiW
- pRww==
-X-Gm-Message-State: AOJu0Yzpx+rkYAl83TqJ5OvScZyrbIHQhTy7L3vX3qlJwvZ0QnGaDsj0
- pFPswgeiW9llpVhQZEPA+2rl6ssntxolH3o2iLNZdS9tW77uNVrZhw6FJVwp8ToIOhswADsRyZp
- g4Y+m9teYdx6UkdnrK/pI433mihxoI6LurqtiDqaCiA==
-X-Gm-Gg: ASbGncuQlbvllPRUqA4OnXVhwFGdVwYSFWOLBoe6LwO1bsESlSEG+xjqpo58J6ju1hg
- vYJmQ9h8uInsQXvZtc/3P+igQVc/CVIVWpe1M4UIpFoWD/wOEKHp0iUan4MHHvt+uh7XYr/cF24
- 7aE6aoF5FS4PWWjFmXh4BxzVhKABANtNJYh6a+IujU0eJEMLxCLuRAvt5YrCA8g628cUOYXpgQ/
- urFOeeK4PFYCVoviJAzi3DXCg0fgQJVuwjX7/lscMIJaWwyOkuNzAwAvAhmaXtCJQ4avxCM
-X-Google-Smtp-Source: AGHT+IEdruYSy7UfB8uXYXyKevLHd49l26K92FKJ00kcH7+bZRQ1VzjjZxSSZE6EBk/3Azkgj92qhQgroEZT5blRnLE=
-X-Received: by 2002:a05:690c:c82:b0:784:7f42:617b with SMTP id
- 00721157ae682-786290392fbmr25199267b3.67.1761747294003; Wed, 29 Oct 2025
- 07:14:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761747474; x=1762352274;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jH2ovA5kxRIknVuqXTGVDlJABoWI8fAisSqXcIX8I1g=;
+ b=CsnJKpAQ4ymYUbIZuOXNODqtkGkh+qLxvhZweKwO1WbiYoYfhUPoUSxsUo9hVTDgrN
+ pjSKeV3Cq/85z7u92uaVyfvKCeR0jnx7XbeVOz0IFPZ6VSNJclN7WmEAOo+C1Q8/ofCC
+ LkXRnDBSItap/WTilyUj2Y9eMmPtRohh8CPt2QNSQjib3epw4M195FiRna1u5OOa5FZf
+ eZ+F/NhYEgEpmDHfzItpPVCAEBc7lpcAzfysC7fXFiQP9Kl6PK8Z2TKIUgrPO9oxJbCJ
+ M2V8Sf9Vl4vPX7JLfb9c/AVV0kNub6Mao5iZv5j9NqonkkqwDLJ4q5ib8OtIvPUlPTZg
+ MFpg==
+X-Gm-Message-State: AOJu0Yy9C79vMI9SctrjmN7xZ+gMRboLeGjkNXstHDMb4iUeBTJdRW0j
+ zO9XnBq8n5k5jmWr3nPJD31E/3jNoD2ktgZynCzsBhIdlkoMSrrkvxhQGY2eeVs1808=
+X-Gm-Gg: ASbGncvghEJUevJhRPAA45av8U6lYUyhQBVxTLoiBb6I2KeKZy/ZLvwNu8NdKEkZt28
+ 5wXFHyj5s8I04WYSa/efH3Irgs35TXaIvt4Vf8J6Z2RP3EKty58d81+RHRkMfIhn34mCcHHVdhG
+ 75Q7ugg3mVT4tKnizDwPrHUERkuqUw496u28r8FxV2wcy6kEp1d61c3l/zRtjToM2wdm9xJ8OFM
+ 9xkwVk8QQ4Amn3eKbr0z3gunMntpePjAE7QV2WBbxs4otfXinJxYt4K68ozEYFVD+fUJacTGOYU
+ bqzuVsx5EUjISlKcsCwGGahZ4PBpidbFYluwB11G6ilFIYBPBGiOGYVHNL1f63ArHqGvkrgP7Hg
+ VgEr536xxTLxg3HPAUpGS+/ZJwOYotqjAhFBukrdm+D8Oby8QNWYK7pjB9zn3Vc7YnZYsKQ2MjI
+ dDeE4vdVPvK5ovCMOftRGXtcreZWshH/U/J5fJ
+X-Google-Smtp-Source: AGHT+IEBrNVU+hn+SRIAuPZya/WmA2ki8vO2huTC3oRc92XivbIlrGXmXHTySsWrMeBvotcpiwXplA==
+X-Received: by 2002:a05:651c:2207:b0:378:e30b:d1ee with SMTP id
+ 38308e7fff4ca-37a05eb559emr12499921fa.23.1761747473992; 
+ Wed, 29 Oct 2025 07:17:53 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-378ee0d7655sm36173551fa.41.2025.10.29.07.17.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Oct 2025 07:17:53 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	edgar.iglesias@amd.com
+Subject: [PULL v1 0/3] Microblaze signed division overflows
+Date: Wed, 29 Oct 2025 15:17:46 +0100
+Message-ID: <20251029141749.1274729-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251029075257.63635-1-philmd@linaro.org>
-In-Reply-To: <20251029075257.63635-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 29 Oct 2025 14:14:42 +0000
-X-Gm-Features: AWmQ_bkNDTqtpLKqRTmK5JBEh5Lrep8qoVdYw0QrKoaxmKpekVqc9V-8rZu3txM
-Message-ID: <CAFEAcA961WKB4fxwAS0WHXXKwYEO7TnmovD4z-BPGehr6sxBQw@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/bcm283x: Initialize CPU objects in SoC common
- DeviceRealize()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-arm@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,101 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 Oct 2025 at 07:53, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> QOM .instance_init() handler can not fail. QDev DeviceRealize
-> can.
->
-> The device-introspect QTest enumerates all QDev types and
-> instantiate each one, without realizing it, then introspects
-> the instance properties.
->
-> When switching to a single QEMU binary, all QDev types are
-> available in the binary, but only a filtered subset might be
-> available, depending on which previous target the binary is
-> trying to mimic.
->
-> In particular with the Raspi machines, the TYPE_RASPI4B_MACHINE
-> and ARM_CPU_TYPE_NAME("cortex-a72") will be built in the
-> qemu-system-arm binary, while not available (because filtered
-> as being 64-bit, for the qemu-system-aarch64 binary).
->
-> However the TYPE_BCM2838 SoC is not filtered out, and will
-> abort when being initialized, because the "cortex-a72" CPU type
-> is filtered out, leading to device-introspect failure:
->
->   1/1 qemu:qtest+qtest-arm / qtest-arm/device-introspect-test        ERRO=
-R            2.46s   killed by signal 6 SIGABRT
->   stderr:
->   unknown type 'cortex-a72-arm-cpu'
->   Broken pipe
->   ../../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU p=
-rocess but encountered exit status 1 (expected 0)
->   (test program exited with status code -6)
->   TAP parsing error: Too few tests run (expected 167, got 5)
->
-> In order to avoid that, move the CPU *initialization* in the
-> SoC DeviceRealize handler, so the SoC initialization won't
-> fail, while realization still will.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/arm/bcm2836.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-> index cd61ba15054..6e4066f137d 100644
-> --- a/hw/arm/bcm2836.c
-> +++ b/hw/arm/bcm2836.c
-> @@ -25,12 +25,7 @@ static void bcm283x_base_init(Object *obj)
->  {
->      BCM283XBaseState *s =3D BCM283X_BASE(obj);
->      BCM283XBaseClass *bc =3D BCM283X_BASE_GET_CLASS(obj);
-> -    int n;
->
-> -    for (n =3D 0; n < bc->core_count; n++) {
-> -        object_initialize_child(obj, "cpu[*]", &s->cpu[n].core,
-> -                                bc->cpu_type);
-> -    }
->      if (bc->core_count > 1) {
->          qdev_property_add_static(DEVICE(obj), &bcm2836_enabled_cores_pro=
-perty);
->          qdev_prop_set_uint32(DEVICE(obj), "enabled-cpus", bc->core_count=
-);
-> @@ -65,6 +60,11 @@ bool bcm283x_common_realize(DeviceState *dev, BCMSocPe=
-ripheralBaseState *ps,
->      BCM283XBaseClass *bc =3D BCM283X_BASE_GET_CLASS(dev);
->      Object *obj;
->
-> +    for (int n =3D 0; n < bc->core_count; n++) {
-> +        object_initialize_child(OBJECT(dev), "cpu[*]", &s->cpu[n].core,
-> +                                bc->cpu_type);
-> +    }
-> +
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-This seems a bit odd to me. Yes, object instance_init isn't
-allowed to fail. But it's OK for one object to init another
-in its own init method, exactly because of this. And even
-if we do move this, the failure won't cause the realize
-method to fail cleanly, because object_initialize_child()
-doesn't return a failure message.
+The following changes since commit bc831f37398b51dfe65d99a67bcff9352f84a9d2:
 
-The problem as described in the commit message seems to be
-fairly general: we have effectively blacklisted some types
-as "not really creatable", but we haven't got a mechanism for
-propagating that to other types that unconditionally use those.
-Working around this problem by moving child init from
-init to realize in parent classes is going to result in
-a lot of weird parent classes that do work in realize that
-ought to be in init.
+  Merge tag 'hw-misc-20251028' of https://github.com/philmd/qemu into staging (2025-10-28 11:48:05 +0100)
 
-I think we should either:
-(1) find a way to propagate the "this type doesn't really
-exist for this binary" downwards
-(2) allow the "shouldn't really exist types" to be created
-programmatically, but just don't advertise them to the user.
+are available in the Git repository at:
 
-thanks
--- PMM
+  https://gitlab.com/edgar.iglesias/qemu.git tags/edgar/xilinx-queue-2025-10-29.for-upstream
+
+for you to fetch changes up to cfc1d54251d3b4c4cf21c4fa278c8aea2fe25a99:
+
+  target/microblaze: Handle signed division overflows (2025-10-29 13:37:44 +0100)
+
+----------------------------------------------------------------
+Xilinx queue
+
+----------------------------------------------------------------
+Edgar E. Iglesias (3):
+  target/microblaze: Remove unused arg from check_divz()
+  target/microblaze: div: Break out raise_divzero()
+  target/microblaze: Handle signed division overflows
+
+ target/microblaze/cpu.h       |  1 +
+ target/microblaze/op_helper.c | 53 ++++++++++++++++++++++-------------
+ target/microblaze/translate.c | 12 ++------
+ 3 files changed, 36 insertions(+), 30 deletions(-)
+
+-- 
+2.43.0
+
 
