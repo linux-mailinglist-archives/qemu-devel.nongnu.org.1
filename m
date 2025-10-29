@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD295C1D8DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 23:04:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93D2C1D911
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 23:08:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEEGB-0006Xz-1u; Wed, 29 Oct 2025 18:03:15 -0400
+	id 1vEEJq-0008Iz-AT; Wed, 29 Oct 2025 18:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEG7-0006Pr-Oe
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:03:12 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEJk-0008HF-Dx
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:06:57 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEFw-0000YP-D4
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:03:07 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-4298a028de6so1026833f8f.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 15:02:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEJW-00010I-92
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:06:55 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3f0ae439bc3so187261f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 15:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761775371; x=1762380171; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761775591; x=1762380391; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M5WTJOJ90ouZPZfgirhdorA0+I+5S3/ChJi6dZ472hg=;
- b=PuyAoEVQ15i+ouXuayMQEpjoRQureHrf85jWjPVFGzYaXv+OtmAIw8+gihmPcfNVuP
- qBoZGd5U8Td9Q1pa0CShYl37Q5/tS6mOcWb/LFKh5na3E+4xeVo1WXBzHS+4wF0v8qzQ
- BPy0WxWwyxpBRZ8XOFE3yl4eXo7fO5IGT9DS51hqNMx/glo0T8V97kzXvf/VHRTg4qYT
- MPxxlnZaI6uxdh8YPbusaELQtAtJ0LZYIA/1Oyo+uIhT8RPWb3DdgS7lWcbZZVW+Ovk3
- sz+EMbZqKhUR/cL2okbiaYhDVvLddbWhC01RTv4vT+Bm8xEYYgngLPj3FGD4auGzP9Bs
- DgDA==
+ bh=veqF+B9YD9xJXRSdAxin3zDSMOZgaGpl8wg92/hv1GE=;
+ b=lv41CniIY5WaGFrj6wwrnlIUKqJvHRLPc6gWfom/Xz4YsnI81S988uaSU7VHhRef2z
+ FLdKFqUpxPUINjtp4BQadwxuYYVrdZ1yR6au7p3jQdZENbDulQPtEhVMyi00KAkThnMZ
+ lpmW4pkdPbKuiN+0QeU2a2m/twvL3OMFv+D8r1y/AYMqI+e1YEcUYCke0UZIC9gq+Scx
+ hWVNgiNIL4wAj+yqsynIHgV8x9aUaLmI7KJ71kqCaCI+0bqR7bW+x6ldDHf+//uXC39T
+ Sir1Zu83q+fPeizVi1ciH0FPlZR6Lw714xYC4OBXoOIdvQtHmMjy2P9M+xogPIi+MMlu
+ JvaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761775371; x=1762380171;
+ d=1e100.net; s=20230601; t=1761775591; x=1762380391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M5WTJOJ90ouZPZfgirhdorA0+I+5S3/ChJi6dZ472hg=;
- b=vXFVJBmO83WZR//y5FQ/ujaawXw+6bginnNLpOxWab2x1odRbuCkrSoS87+1aR2MZD
- /JWAaiIvJl3DwaDR++QrWJ8jviUsZZFlB8XGS4il7Atyk+52+pkjdew7mLh+EdMDahvY
- kcdvu4m+93xmRKDe+I9ZFR0OvGaw1hFgBYyI0cAJElfkuOVuygDH3ilc0GWWm7JdkLzS
- kufR8NKTRFKR+YzzhemghgKUHSKAy/UOs17TY+kfd6fDQq0lhMTDy5UzsqjJLAOCCI3G
- C2fq+HIaBaYKkuZoHcbpckWbuLe+eHC/GUNNPNk410WiUGtENAdepwsDiuuQDSlWjA2P
- HOCg==
-X-Gm-Message-State: AOJu0Yz2CIuYJsPMHJoRmMRZj+gLjGgukgnLaLshq41pfZWQhw7pbC4o
- M0KhMEOGalZ4IweDwtpaiKEugP+XgXSPbJL8JoAxYzcDmgf8HBoeoYzqCuRzQum8btl2YHGi5gG
- HBjrfaVU=
-X-Gm-Gg: ASbGncv2SgIeaytdbtzbcBOs0smA66vDbPohPS+QTz87vbvf8LouFn3tW8Oy3tQDPxF
- AjqbWOZd1SHset+U0102nOvXxgPJ07DZe14s3fiyVgMBT4iGMBSDoCRbkjLb4ntGUMhyFpRIsSw
- G4M8GC7fEAUm8/UOjfupqQZnPUTGAubx5RwUImNN8gYRERXI22nWTjcFKIBGouPE1L5NJZ/hdpu
- /WZpG2+9IVYvvE6Sv7omL4OFywI4oOxn8VKh1HBCBKSGY/byLU5JbWn1p9L55VcE3Tr5O6dZDjR
- zSoOZ1erxrmY/h26E+DGD+ccmtre4GBrBdjU+xjFjBKow6vqRI44M4U93UxAE9nC20mGRVXpk2m
- UXab5GVlRkcV2MCm6JmuizAn3lRfWkRoqzhxgSEPx6XtJxTd6Kg2n6AXQCGaM2fFBrgPnjFiyT1
- 1l4rBJVncenPO046M6vqAs6kvG0gE6/6qg9WekhbjIJDYTK2gb+A==
-X-Google-Smtp-Source: AGHT+IG55gEW4cTyrKappFPyhD2OJeyPRoKdvjjfZ7jhh54rR2ddxZavvlHcLaQuPUhm2TYFyHyuvQ==
-X-Received: by 2002:a05:6000:1843:b0:425:86b1:113a with SMTP id
- ffacd0b85a97d-429b4c68afamr1090786f8f.16.1761775370842; 
- Wed, 29 Oct 2025 15:02:50 -0700 (PDT)
+ bh=veqF+B9YD9xJXRSdAxin3zDSMOZgaGpl8wg92/hv1GE=;
+ b=XhcR56AFJ1OMpieV8Q0RfhDqd42RwlpzHYQXXRqj0ZCF97nhBox+qex8DLdD+vqEuz
+ M6UKhtHv64VplIPO/sipbTaS3lzQ0daDBP3d5iu4qS6GLCymib8MboVbqTboVXw/E9Sj
+ y5LjWqYZvEsRQSl/LbEf3Z1P0bXJVYTgBPSjECfFUrA9VZMLliDg8iMqJB1HvbnngEk4
+ 04OTSTVNgnifGNW5rjCpjEWmjhy7NU+oXHcN4Tej37jrkcuEiv0LAPSpzqW17EabGbek
+ YehEj79SgmSrL1SZsCLhLj7TU0MdPvFnU/ZFwXze+S2ubf51Rf8jhrXcCPIbBkVfwGIX
+ oICQ==
+X-Gm-Message-State: AOJu0YyQunh2H2Rs/vtay9vBTAUemFw6Hmef7tL5RnHLHhySrbE+qESA
+ JtclIKdxVM+2YAyseBkmWvvyVg4gbYcPv/aNvpQi81Iy/xSpaOvgLhzmyySPRQfFEjb8eR/vAto
+ WVHCNOio=
+X-Gm-Gg: ASbGncscZHTTOY+lQPbc7dJJZZ4EImaVBeI3imw4M0gY5le925hPcnPMbCzwXJ62A6W
+ DLjsKACxD2OaEh4UXsDC5hwgB3JYw/YVPB+ni6W5p1VsJ+sPb2RGqMJJayYidg80yf/690V1pm8
+ HIq5DPEtO9yBKMWB+LA6mPqkP+NfrXO21icfl3B+AVYYVFzdkBOKVosKO9NC58dzr25zDNrQH2b
+ dZXqKif4cI1AdxZNJxO89WHF/S50Ec6Ann0vKQUNjm/EjTkQf92sShTdp5D50fffrcbj9ifZweC
+ x6DtjwbTwS1g8SsaCkrrXl2G9jYblfTLkAvc8b8xw4vThRvTbkeMd/CGSdQgSDDSWFpAbXWhndr
+ fG1Dy1eQkvtNCq19KGERYfOvtFGAeehQZpgFYVRxl7Z15GM+HkS6tANBIY7Cz6dgjwoB1FkWpOF
+ 2chRCUcDjcJ+0EtU8mzBQRmPuRGdVvANzj3dveJ5B2sdF1CucFAA==
+X-Google-Smtp-Source: AGHT+IEbKRW6Xhx6tz3v9V2jt9OndZxxOflhU3MXiHFeVDPJ7uhr8kvz/sZkbLcmAJ2UTLN6uW3IIw==
+X-Received: by 2002:a05:6000:2506:b0:427:55e:9aa2 with SMTP id
+ ffacd0b85a97d-429aef78924mr2786336f8f.9.1761775591538; 
+ Wed, 29 Oct 2025 15:06:31 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47728999a4bsm4832635e9.2.2025.10.29.15.02.50
+ ffacd0b85a97d-429952de5f9sm28468361f8f.38.2025.10.29.15.06.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 29 Oct 2025 15:02:50 -0700 (PDT)
+ Wed, 29 Oct 2025 15:06:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PULL 21/23] hw/xen: Replace target_ulong by agnostic
- target_long_bits()
-Date: Wed, 29 Oct 2025 22:39:58 +0100
-Message-ID: <20251029214001.99824-22-philmd@linaro.org>
+Subject: [PULL 22/23] hw/xen: Build only once
+Date: Wed, 29 Oct 2025 22:39:59 +0100
+Message-ID: <20251029214001.99824-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029214001.99824-1-philmd@linaro.org>
 References: <20251029214001.99824-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,45 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both are equivalent:
-
-  target_long_bits()
-
-  sizeof(target_u?long) * BITS_PER_BYTE
-
-Prefer the former which is target-agnostic.
+Now than hw/xen/ files don't use any target-specific code,
+we can build all file units once, removing the need for the
+xen_specific_ss[] source set.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-Id: <20251022140114.72372-3-philmd@linaro.org>
+Message-Id: <20251022140114.72372-4-philmd@linaro.org>
 ---
- hw/xen/xen-hvm-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/xen/meson.build | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 258014370e1..b40ae0b3af0 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -2,8 +2,8 @@
- #include "qemu/units.h"
- #include "qemu/bitops.h"
- #include "qemu/error-report.h"
-+#include "qemu/target-info.h"
- #include "qapi/error.h"
--#include "exec/target_long.h"
- #include "exec/target_page.h"
- #include "trace.h"
+diff --git a/hw/xen/meson.build b/hw/xen/meson.build
+index a1850e76988..dcd2b7e1df3 100644
+--- a/hw/xen/meson.build
++++ b/hw/xen/meson.build
+@@ -7,21 +7,16 @@ system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
+   'xen_pvdev.c',
+ ))
  
-@@ -455,7 +455,7 @@ static void handle_ioreq(XenIOState *state, ioreq_t *req)
-                        req->addr, req->data, req->count, req->size);
+-system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
+-  'xen-operations.c',
+-),
+-if_false: files(
+-  'xen_stubs.c',
+-))
+-
+-xen_specific_ss = ss.source_set()
+-xen_specific_ss.add(files(
+-  'xen-mapcache.c',
++xen_common_ss = ss.source_set()
++xen_common_ss.add(files(
+   'xen-hvm-common.c',
++  'xen-mapcache.c',
++  'xen-operations.c',
+   'xen-pvh-common.c',
+ ))
++
+ if have_xen_pci_passthrough
+-  xen_specific_ss.add(files(
++  xen_common_ss.add(files(
+     'xen-host-pci-device.c',
+     'xen_pt.c',
+     'xen_pt_config_init.c',
+@@ -30,7 +25,8 @@ if have_xen_pci_passthrough
+     'xen_pt_msi.c',
+   ))
+ else
+-  xen_specific_ss.add(files('xen_pt_stub.c'))
++  xen_common_ss.add(files('xen_pt_stub.c'))
+ endif
  
-     if (!req->data_is_ptr && (req->dir == IOREQ_WRITE) &&
--            (req->size < sizeof (target_ulong))) {
-+            (req_size_bits < target_long_bits())) {
-         req->data &= MAKE_64BIT_MASK(0, req_size_bits);
-     }
- 
+-specific_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_specific_ss)
++system_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_common_ss)
++system_ss.add(when: ['CONFIG_XEN', xen], if_false: files('xen_stubs.c'))
 -- 
 2.51.0
 
