@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3342C19434
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 876B3C19453
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:03:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE24S-0004KE-2s; Wed, 29 Oct 2025 05:02:20 -0400
+	id 1vE24W-0004Ni-WE; Wed, 29 Oct 2025 05:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vE24O-0004J6-Dv; Wed, 29 Oct 2025 05:02:16 -0400
+ id 1vE24S-0004LX-M5; Wed, 29 Oct 2025 05:02:20 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vE24L-00033Q-97; Wed, 29 Oct 2025 05:02:16 -0400
+ id 1vE24Q-00035G-C3; Wed, 29 Oct 2025 05:02:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C3A0E163E60;
+ by isrv.corpit.ru (Postfix) with ESMTP id DFF47163E61;
  Wed, 29 Oct 2025 12:01:42 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E20DF3084A7;
- Wed, 29 Oct 2025 12:01:48 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 097913084A8;
+ Wed, 29 Oct 2025 12:01:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Nir Lichtman <nir@lichtman.org>, qemu-trivial@nongnu.org,
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 3/7] docs/system/keys: fix incorrect reset scaling key binding
-Date: Wed, 29 Oct 2025 12:01:41 +0300
-Message-ID: <20251029090148.648212-4-mjt@tls.msk.ru>
+Subject: [PULL 4/7] tests/functional/i386: Remove unused variable from the
+ replay test
+Date: Wed, 29 Oct 2025 12:01:42 +0300
+Message-ID: <20251029090148.648212-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251029090148.648212-1-mjt@tls.msk.ru>
 References: <20251029090148.648212-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,32 +59,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nir Lichtman <nir@lichtman.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Fix incorrect key binding for resetting the graphical frontends scaling
+Remove a left-over from the time when this test was still an
+avocado-based test.
 
-Signed-off-by: Nir Lichtman <nir@lichtman.org>
-Fixes: 15421f7113 "ui/sdl2: fix reset scaling binding to be consistent with gtk"
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- docs/system/keys.rst.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/i386/test_replay.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-index c28ae1a227..3b5307b775 100644
---- a/docs/system/keys.rst.inc
-+++ b/docs/system/keys.rst.inc
-@@ -21,7 +21,7 @@ while ``-display sdl,grab-mod=rctrl`` changes it to the right :kbd:`Ctrl` key.
-   * - :kbd:`Ctrl+Alt+-`
-     - Shrink the screen
+diff --git a/tests/functional/i386/test_replay.py b/tests/functional/i386/test_replay.py
+index 7c4c2602da..3a92ecde17 100755
+--- a/tests/functional/i386/test_replay.py
++++ b/tests/functional/i386/test_replay.py
+@@ -17,7 +17,6 @@ class I386Replay(ReplayKernelBase):
  
--  * - :kbd:`Ctrl+Alt+u`
-+  * - :kbd:`Ctrl+Alt+0`
-     - Restore the screen's un-scaled dimensions
- 
-   * - :kbd:`Ctrl+Alt+n`
+     def test_pc(self):
+         self.set_machine('pc')
+-        kernel_url = ()
+         kernel_path = self.ASSET_KERNEL.fetch()
+         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
+         console_pattern = 'VFS: Cannot open root device'
 -- 
 2.47.3
 
