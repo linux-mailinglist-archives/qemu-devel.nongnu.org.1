@@ -2,72 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F2BC18804
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 07:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDF3C1896C
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 08:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDzqA-00018O-KO; Wed, 29 Oct 2025 02:39:26 -0400
+	id 1vE0Gs-0005Cj-GX; Wed, 29 Oct 2025 03:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDzq8-000176-5M
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:39:24 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE0Go-0005CR-MV
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 03:06:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vDzq1-0001Nm-Ny
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 02:39:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761719958; x=1793255958;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=DnS0Yvs1z03uEdqAFXx0ktOv4LAyDh0CIIGIB1D7S/Y=;
- b=P29xRvw3gJ6bjKSpoXYUPlr3PQglhjvCOj5rDzQkT7M0EFpfPp5Zl7EC
- YUcxxDmB4DQK0yWo+dloWtFZ7+7pD4GIvGGc0jBBOpEev3QClrwSV9CEm
- fs0etog3pxjcUKPlQKaziFRkHbYIkdicwFncgt6z03i6eyGYIyeC8oKL5
- ylIWRh8uU6O0sly51PEenqzjUqVPcZe5o+0ErsqbnKA0ZNFX2pczGbm70
- Im09U1xj6U5wv2r2iOmyercZqnaWuwqTm5E47GtmiqFgEpRDNwfMBxY23
- JKeFkdp2n/qBZ/rnbkE5sloTgfRvQ5aLRe5j27treoIKcSG8ETwDUcgnq w==;
-X-CSE-ConnectionGUID: 5+BnHJ9TQPyKyvIY5w/Vag==
-X-CSE-MsgGUID: 3hvH1PS/SkGVCZzdgvCrSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63927854"
-X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="63927854"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 23:39:11 -0700
-X-CSE-ConnectionGUID: 2w9DHdp4SzGrhqX1jWNNlA==
-X-CSE-MsgGUID: ZkcHdB29Re+v+kNTSNil6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="189926654"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 28 Oct 2025 23:39:10 -0700
-Date: Wed, 29 Oct 2025 15:01:21 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PULL 02/18] i386/kvm/cpu: Init SMM cpu address space for
- hotplugged CPUs
-Message-ID: <aQG7wdY/lBjgzho3@intel.com>
-References: <20251028173430.2180057-1-pbonzini@redhat.com>
- <20251028173430.2180057-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE0Gh-00053U-3b
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 03:06:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761721607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=P+hBtwTnmYEwYpBYKrrVfy4QZP0aNmrBQvOEZ7NvP9M=;
+ b=deC2n5XKHuD3KjgiD2jreYNztytWWOIAqFRMgbVqXlsW3+PEL7jPJ1PmBLHrLD7FmlpAM6
+ dd0hpnUCw2QI8yvIXh2x3Cw9McVw2ordsTTfjj33MYcax3Dkj4vXOOmETvQegSun2T7+uR
+ T03TZrSTSDvO0BKbB3iWsQJrNKTupc0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-wsfyayshOCycc_uX_TwRNQ-1; Wed, 29 Oct 2025 03:06:43 -0400
+X-MC-Unique: wsfyayshOCycc_uX_TwRNQ-1
+X-Mimecast-MFC-AGG-ID: wsfyayshOCycc_uX_TwRNQ_1761721602
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477124f7c00so11889185e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 00:06:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761721602; x=1762326402;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P+hBtwTnmYEwYpBYKrrVfy4QZP0aNmrBQvOEZ7NvP9M=;
+ b=EryYDJUsn9Y+UozvnYd84K/7Vx48an+yEzWdgdChJ4lFFg74/MYNgvhY5iV4ouQK/W
+ 61nNV1duKnIPFsBcwUiEFu8wOO9eK1iOAHtZHtOLjPphzXKMWTjnaMGt67W47LAOz7IK
+ 5f0Pt99X13uwPui+svt2yN9xnPyRGdUFl9kO9vue0s9vAckDRJCTKYlbF6+ANBqI4Gcz
+ X9NHw+7OSjpH3Vg4YDEkCbD2ISJOZWNxszwnLn4762A7cH0H3u3MlS/XkK0CZGZMKJm9
+ 1rutnljmr2CK44JwpiFJ8mqBFcL76j9nw6zSNrvwnCsq3VY+g+Kd4N8zN4PWgkrQbASe
+ yk2A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX21NC1qZfRxOfB0A16tu207jwIc7oWc3UZKNlmWOF+alv6jr/uDBTBZ/PDPnFGgvB877XCNgiGJ86G@nongnu.org
+X-Gm-Message-State: AOJu0YwcSFks5OctqwX8BQUz3SeBSDM24Hl8xgMrjC+99I9EhXCY+lLD
+ KKcJvKrW2BIHNxoV70WN0eNl+Eev92dCThLwaYyaM3TmsAMHSg4N6CIMd1884DabOLks1elJtL2
+ ljPv/0Ac8lHH3whsF8W4kWBDTeahK0FriZ/6o4M5FfrnQjHq60x3UFTZb
+X-Gm-Gg: ASbGncug2bjDEunqvM/IK2CbEVQ8AqepJAHoosE+BBhO8vCHM3z4czLRUVFOBFJt+R9
+ RejtkCVgaz6gCldHKbAinwm46PKeyir24KaVISgQGDB9i9JtcjPpHdqv2tG+qdHnDrmivC0CVi+
+ z5r5dCZUJw6L9wI9H0Tk+GCODnCVfCyeWXLWL9YU7qDGdZv5TeGEsjnpCpO34BYdSkRIHT9w2m+
+ nIRB/5Lar89w+pHcGLUoWnpJ7EGPXvIVxZRFeItxW5BA6ZfWDmiOHmM7Lz322GLdWs0gqRjiYUt
+ oflmOzXFm77umVSuCbZQXEMy8jEi0ZI+9qle5fQ2z6tugtfveHl8eR0XTNoXVColB8bi6rU=
+X-Received: by 2002:a05:600c:a087:b0:46f:b42e:e367 with SMTP id
+ 5b1f17b1804b1-4771e2639eemr13965175e9.41.1761721601853; 
+ Wed, 29 Oct 2025 00:06:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHP0API+j2IBjmz1UpXHcOBpbsLgcu0HPN4r28dAw4qlh2Zc3NhYrRGHHELjmqA5ZOUSgQjg==
+X-Received: by 2002:a05:600c:a087:b0:46f:b42e:e367 with SMTP id
+ 5b1f17b1804b1-4771e2639eemr13964985e9.41.1761721601492; 
+ Wed, 29 Oct 2025 00:06:41 -0700 (PDT)
+Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4771e387caasm31379235e9.1.2025.10.29.00.06.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 Oct 2025 00:06:40 -0700 (PDT)
+Message-ID: <4c03b66c-5e0c-46cb-80d3-e91a67d4e532@redhat.com>
+Date: Wed, 29 Oct 2025 08:06:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028173430.2180057-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] tests/functional: include logger name and function in
+ messages
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20251028182651.873256-1-berrange@redhat.com>
+ <20251028182651.873256-2-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20251028182651.873256-2-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,36 +153,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-> index 7512be64d67..5716191fff1 100644
-> --- a/hw/i386/x86-common.c
-> +++ b/hw/i386/x86-common.c
-> @@ -183,6 +183,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
->          fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
->      }
->  
-> +    /*
-> +     * Non-hotplugged CPUs get their SMM cpu address space initialized in
-> +     * machine init done notifier: register_smram_listener().
-> +     *
-> +     * We need initialize the SMM cpu address space for the hotplugged CPU
-> +     * specifically.
-> +     */
-> +    if (kvm_enabled() && dev->hotplugged && x86_machine_is_smm_enabled(x86ms)) {
-> +        kvm_smm_cpu_address_space_init(cpu);
-> +    }
-> +
+On 28/10/2025 19.26, Daniel P. Berrangé wrote:
+> As we collect debug logs from a wide range of code it becomes
+> increasingly confusing to understand where each log messages comes
+> from. Adding "%(name)s" gives us the logger name, which is usually
+> based on the python __name__ symbol, aka the code module name.
+> Then "%(funcName)s" completes the story by identifying the function.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   tests/functional/qemu_test/testcase.py | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+> index 2c0abde395..6fc6e1ac0a 100644
+> --- a/tests/functional/qemu_test/testcase.py
+> +++ b/tests/functional/qemu_test/testcase.py
+> @@ -217,7 +217,7 @@ def setUp(self):
+>           self._log_fh = logging.FileHandler(self.log_filename, mode='w')
+>           self._log_fh.setLevel(logging.DEBUG)
+>           fileFormatter = logging.Formatter(
+> -            '%(asctime)s - %(levelname)s: %(message)s')
+> +            '%(asctime)s - %(levelname)s: %(name)s.%(funcName)s %(message)s')
+>           self._log_fh.setFormatter(fileFormatter)
+>           self.log.addHandler(self._log_fh)
+>   
 
-Unfortunately, the original KVM SMM patch caused this bug, but even
-more unfortunately, CPU_FOREACH in the machine_done callback is more
-fragile than I originally anticipated, now requiring more hack checks to
-fix. :-(
-
-IMO, the root of the chaos is that KVM SMM doesn't do this in the CPU
-context like TCG did for a long time. I'll find time to sort all this
-out.
-
-Regards,
-Zhao
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
