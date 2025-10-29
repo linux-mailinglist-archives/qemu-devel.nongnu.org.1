@@ -2,142 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16B9C1899C
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 08:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552F2C18A7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 08:20:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE0MX-0006YI-1b; Wed, 29 Oct 2025 03:12:53 -0400
+	id 1vE0RP-0007gI-Sq; Wed, 29 Oct 2025 03:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE0MV-0006Y9-Hl
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 03:12:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <n.novikov@syntacore.com>)
+ id 1vE0RL-0007ei-0F; Wed, 29 Oct 2025 03:17:51 -0400
+Received: from m.syntacore.com ([178.249.69.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE0MM-0005VZ-FO
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 03:12:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761721957;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=V7EuQ/QORi9lHyL+ZtakFK14Q1nPGKOITfCyqqZEZ+E=;
- b=BIMwNRGHVCzdDUivXApkTec+Xiwuw7lnZzTYbjQ1qPZsdmL/eIpAqNY0k3nXpMuIFkk0wo
- jyaeAstVStNn7bBc0AmH9SQBZBnipeWhkWc29G0l8hXPqiM60yme6Wixaf2PMtfx5mSdnL
- BT8qf3PJBj44HqhL4n5adc6xfCv2N6A=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-o17r5RR-NXuc9D2LyqkB5Q-1; Wed, 29 Oct 2025 03:12:34 -0400
-X-MC-Unique: o17r5RR-NXuc9D2LyqkB5Q-1
-X-Mimecast-MFC-AGG-ID: o17r5RR-NXuc9D2LyqkB5Q_1761721953
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-428566218c6so3157422f8f.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 00:12:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761721953; x=1762326753;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=V7EuQ/QORi9lHyL+ZtakFK14Q1nPGKOITfCyqqZEZ+E=;
- b=KinBl33aIFY/G0dPxKrqC8G+lSgNZSyowuaLGpLG7WqF5JDoeKczZGRv6VgmvKrT7H
- wDIO/wlK6IDJhKNIbskDUXLcNilrwHFCfsPe/ImHGrXIdjSqQvVBmr4AQMNQ3J1SPz2y
- sjO91hN5vi34YfHQ09fO0KBv2Il5rUrtUwvKdc3uCs/wDZvJBsbC8ENDb84KpZCOslww
- OLQRNlUZPPvtnbRTCofOqMEJeST4O8AqH6b+hE/HjwFPI63oPgeGfNrPRnFMg71A7Zkj
- PEWF9HjeSQXpEzEr1KZV81YCDGwAzpp7dIw4KICKWa7iNtnWTcuvOyBceapBttp3gfCV
- 7JVw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXB46WJDdvidO4HkdVBXfDncEQSs4kHVHCOw+JtUcBFXhz3iI6hpR0PZPwrv8wzhkIwWobJPZYR5rhM@nongnu.org
-X-Gm-Message-State: AOJu0YyWhslDwTtQM2Y/fWmQxpQws9cbWcuZLYyKXbx1QeXVsESZyO8R
- 7ElTWwWhEX7D1yMIcprM/NGDjWrpd9E03PLhAVCXeaiQA1MkBaFf5KU45Ax/WCP0ZwEeBLmuTrT
- m5u1MFfUz17XiFgLe3axNlvtytByc7DyX+u6Ja86Pg81YB3+TENeS/7c1
-X-Gm-Gg: ASbGncvamLYNi1NAqleG3IUGcBtNw+Iny957e5Xb5ID6e65xd3zHtiWZdE8miiTQjwo
- eikscymxngUXf3LOa5927HrDsGmA9SKhSufxWbh5dxc5qDnPeEqCMB6XJUzqPidq0hcUgiHRvqZ
- LsAfeLh5R1nJ7kBeQ9sThZ639hW0E6xt/1wLnXnZn/UBLOjwLtFDzi2mYMJ88nPWNgvxA9/7KHQ
- gj8qLcUr/jWAgOHCFFZuRy5ikwagtFwb5ySg+lTeUO67+32bV6Pgm60dclcBT+5ggXvih9OCyw9
- TgAQuI30ppNw98ZYS5cfbHYLjZqGFWDdJBFClR6NXk4OMhcO201S0Hyef8kBTTVRnRHMttI=
-X-Received: by 2002:a05:6000:2203:b0:429:957b:ee72 with SMTP id
- ffacd0b85a97d-429aefbefbamr1324914f8f.53.1761721952983; 
- Wed, 29 Oct 2025 00:12:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhZP8tej5Nms8HH1sJGEu+lcFBcRWE8K0eBxvLtshfKmqljqk0PYquKMWd6p6U5XgRK0i3sg==
-X-Received: by 2002:a05:6000:2203:b0:429:957b:ee72 with SMTP id
- ffacd0b85a97d-429aefbefbamr1324890f8f.53.1761721952545; 
- Wed, 29 Oct 2025 00:12:32 -0700 (PDT)
-Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952b7b22sm24268674f8f.9.2025.10.29.00.12.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 00:12:32 -0700 (PDT)
-Message-ID: <c87f0929-a38c-425d-bfb6-d2985b908124@redhat.com>
-Date: Wed, 29 Oct 2025 08:12:31 +0100
+ (Exim 4.90_1) (envelope-from <n.novikov@syntacore.com>)
+ id 1vE0RG-0005vz-I6; Wed, 29 Oct 2025 03:17:49 -0400
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+ by m.syntacore.com (Postfix) with ESMTP id C530F1A0003;
+ Wed, 29 Oct 2025 07:17:39 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com C530F1A0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+ t=1761722259; bh=+5yaTxbtAFKM9CqFwGPsQdLapyaz8S30u4wwoupEkpA=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=CXcepInC6mCTUPKmOk4/OJGDImDb+5P78lvYrV4lIk1y3BAPKAjsDL4Mor+n09f3b
+ hnIwNBGCCKId0AiHYKJXH571YoffFS9Zoyz5UPOOwptctAnc9RmjHq9+LKXFz/fLfa
+ 5LMRjInC9QgGcIJevKa5PU56qYjWnynoYr6a0rRmXq3dv5gLbCVfjQspO/OwlzN62/
+ YUthp4OzQfyNsqQMC8mtQwC98vKx3s9PkT3+FIpsPd/EiFzAvaCutkSOIX4S5Mz95D
+ Ab6FfQUmCXEww1/qP8Rh03wfpZh54lOAzd+BiNiuKAGjMXYh3LAktb9MmS3SrMprFY
+ qaQZtj9t4HYKQ==
+Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com
+ [10.76.202.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by m.syntacore.com (Postfix) with ESMTPS;
+ Wed, 29 Oct 2025 07:17:38 +0000 (UTC)
+Received: from mail.syntacore.com (172.17.58.29) by
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 29 Oct 2025 10:17:33 +0300
+From: Nikita Novikov <n.novikov@syntacore.com>
+To: <qemu-devel@nongnu.org>
+CC: Nikita Novikov <n.novikov@syntacore.com>, <qemu-riscv@nongnu.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 0/2] hw/intc/riscv_aplic: Expand AIA target[i] source handling
+ and refactor related code
+Date: Wed, 29 Oct 2025 10:17:11 +0300
+Message-ID: <20251029-n-novikov-aplic_aia_ro-v1-0-39fec74c918a@syntacore.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests/functional: include the lower level QMP log
- messages
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20251028182651.873256-1-berrange@redhat.com>
- <20251028182651.873256-3-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251028182651.873256-3-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20251028-n-novikov-aplic_aia_ro-1baa353cd672
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761722114; l=1208;
+ i=n.novikov@syntacore.com; s=20251028; h=from:subject:message-id;
+ bh=A1+E2GT+GwvjNBFQcNxf1TR0ARm5m5Yygr8V4/3cLGo=;
+ b=0xhhUGVxX0Zmf8W1Ug9mD9Mkyw4UYCp7xUGGwmyTAEPlSWRBIn6ey3+mGgqY7BGmxuyVJltP+
+ OYJKh3jKCeyBWjGJ9VfFkRG3tqbunzzH+Fi+ckKHjB5izV5opaNM3K4
+X-Developer-Key: i=n.novikov@syntacore.com; a=ed25519;
+ pk=b3kqL1EmXxsQV/ZvSbT5Us5pjaKldmMgJuniTm3uLSM=
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Originating-IP: [172.17.58.29]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310,
+ bases: 2025/10/29 02:43:00 #27799423
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
+Received-SPF: pass client-ip=178.249.69.228;
+ envelope-from=n.novikov@syntacore.com; helo=m.syntacore.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,71 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/2025 19.26, Daniel P. Berrangé wrote:
-> We've seen a GitLab CI timeout failure in the test_pseries.py test,
-> where it appears likely that the test has hung in a self.qmp('quit')
-> call, but we don't have conclusive proof. Adding the QMP log category
-> to what we capture should help us diagnose this, at the cost of the
-> base.log file becoming significantly more verbose. The previous
-> commit to include the logger category name and function should at
-> least help understanding the more verbose logs.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/functional/qemu_test/testcase.py | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-> index 6fc6e1ac0a..5ab84ce674 100644
-> --- a/tests/functional/qemu_test/testcase.py
-> +++ b/tests/functional/qemu_test/testcase.py
-> @@ -225,6 +225,9 @@ def setUp(self):
->           self.machinelog = logging.getLogger('qemu.machine')
->           self.machinelog.setLevel(logging.DEBUG)
->           self.machinelog.addHandler(self._log_fh)
-> +        self.qmplog = logging.getLogger('qemu.qmp')
-> +        self.qmplog.setLevel(logging.DEBUG)
-> +        self.qmplog.addHandler(self._log_fh)
->   
->           if not self.assets_available():
->               self.skipTest('One or more assets is not available')
-> @@ -235,6 +238,7 @@ def tearDown(self):
->           if self.socketdir is not None:
->               shutil.rmtree(self.socketdir.name)
->               self.socketdir = None
-> +        self.qmplog.removeHandler(self._log_fh)
->           self.machinelog.removeHandler(self._log_fh)
->           self.log.removeHandler(self._log_fh)
->           self._log_fh.close()
+During the debug of APLIC I faced with the problem with target[i]
+registers of source i. According to RISC-V AIA spec v1.0 ratificated on
+the 12-th of March, 2025, the section 4.5.2 ("Source configurations")
+says, than register target[i] shall be read-only zero when interrupt source i
+is inactive in this domain. A source is inactive if it is delegated to a child
+domain or its source mode is INACTIVE. Currently we checks the source status
+only using sm == INACTIVE, but we do not check whether the source is
+delegated.
 
-  Hi,
+This series of patches expands current active source checking and reduces
+code the associated code dublication.
 
-I tested this patch, and now I'm seeing Python stack traces in the base.log, 
-like this:
+Signed-off-by: Nikita Novikov <n.novikov@syntacore.com>
+---
+Nikita Novikov (2):
+      hw/intc/riscv_aplic: Expand inactive source handling for AIA target[i]
+      hw/intc/riscv_aplic: Factor out source_active() and remove duplicate checks
 
-2025-10-29 07:22:45,264 - DEBUG: qemu.qmp.protocol.default._bh_loop_forever 
-Task.Reader: failure:
-   | Traceback (most recent call last):
-   |   File "../python/qemu/qmp/protocol.py", line 914, in _bh_loop_forever
-   |     await async_fn()
-   |   File "../python/qemu/qmp/protocol.py", line 952, in _bh_recv_message
-   |     msg = await self._recv()
-   |           ^^^^^^^^^^^^^^^^^^
-   |   File "../python/qemu/qmp/protocol.py", line 1053, in _recv
-   |     message = await self._do_recv()
-   |               ^^^^^^^^^^^^^^^^^^^^^
-   |   File "../python/qemu/qmp/qmp_client.py", line 459, in _do_recv
-   |     msg_bytes = await self._readline()
-   |                 ^^^^^^^^^^^^^^^^^^^^^^
-   |   File "../python/qemu/qmp/protocol.py", line 1021, in _readline
-   |     raise EOFError
-   | EOFError
+ hw/intc/riscv_aplic.c | 66 ++++++++++++++++++++++-----------------------------
+ 1 file changed, 29 insertions(+), 37 deletions(-)
+---
+base-commit: d1bf06e8cc8197a2b18dbde820d957a51899d374
+change-id: 20251028-n-novikov-aplic_aia_ro-1baa353cd672
 
-If if it's harmless, I think that's very confusing for the casual user when 
-trying to debug a problem. Can we avoid these?
-
-Or maybe rather log the qmp stuff into a separate file, e.g. qmp.log ?
-
-  Thomas
+Best regards,
+-- 
+Nikita Novikov <n.novikov@syntacore.com>
 
 
