@@ -2,76 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC81CC19856
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7538C1984D
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:57:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE2td-000658-GT; Wed, 29 Oct 2025 05:55:13 -0400
+	id 1vE2vF-0006wX-Gv; Wed, 29 Oct 2025 05:56:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vE2tY-00063x-Ci
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:55:08 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1vE2ug-0006Qc-6Q; Wed, 29 Oct 2025 05:56:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vE2tV-0002qs-6A
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:55:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761731705; x=1793267705;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=27Kzqt4KNnkxv05PFDVsUqXyUhhKvyijxvUko4OI5iI=;
- b=H83AUPYje8kMNen5sHQfkOL6C8Qc4yIGXuysSO0agA7L33l/A+j/TA+l
- Me76NRHGMD1BYSjsIhaEZ9TwGWScQ4knFR1rorYh3k0KQXmX5nMf/7Biq
- /0wmQIa6lY/YFHh+eMG2yNi/A3SgYq/fi6I8HGEJbZYAq2VWK8/SIqG/s
- C8aRF3HwSGrZ6A1SfnHAW4XEvO3NW/dgd69mWvJGeWqfCWFrRsC6A3YG9
- o6bMyNn/B0rzv9mszYkj+g97b8lXULkwRMib944sr+1B765hu4WzycApU
- eip5rdKEgvPfte0+XnlrvgApKBgGBHw3pjeD74h+IDQ2VxSRVppM/ylul g==;
-X-CSE-ConnectionGUID: cgQqXPfgSWuaQmAAmS3gDg==
-X-CSE-MsgGUID: El09PmXcSza2aa+FYKPBqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67685164"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="67685164"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2025 02:55:01 -0700
-X-CSE-ConnectionGUID: 8g5uNG2dQWSwRbfaOrBeuA==
-X-CSE-MsgGUID: Z10q+nCnR0e7Xj9MLFogDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="185529932"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2025 02:54:57 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
- yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
- eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
- xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
- mark.gross@intel.com, arjan.van.de.ven@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jason Zeng <jason.zeng@intel.com>
-Subject: [PATCH v4 10/10] vfio/migration: Allow live migration with vIOMMU
- without VFs using device dirty tracking
-Date: Wed, 29 Oct 2025 05:53:53 -0400
-Message-ID: <20251029095354.56305-11-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20251029095354.56305-1-zhenzhong.duan@intel.com>
-References: <20251029095354.56305-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1vE2uX-000350-FW; Wed, 29 Oct 2025 05:56:17 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SJlmpj003296;
+ Wed, 29 Oct 2025 09:55:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=vjAEIH
+ Y3zJIBeHzcA92ZpkDHQAS80XPWzPwevgz/ykw=; b=ETbsdrbm04nHKrq5mNKmGh
+ dPq6ckUSFjoan779SomuYIvkehCzzHqYmr7+RJpTj4EZ+xvBzWmT8H9dyUP8PCOx
+ u3gsxLGUTgaU83/Xp4YtoBOwwFXJjlN7F72fjmKg+CJLHO6fQ7S9g2pRDnac7tUR
+ ONV4tsR/bqJVye6ECRAuwSk0h8Ouv+KFopV3siN/VmvmJku95kYt6nvzNkcbFaxP
+ r/+8wv41puhWBy4ttwNL7IoqrT5gHURrlzuc7ByDZCaYu9fcsVgO+2KNVcDrROjL
+ KHDEN7+HYPDY2PVpr2N3/hcar28yb7edZ589t1tYFT+nAqpK7WNPzISRmnLweK2A
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34a8jmn3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Oct 2025 09:55:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59T9kFsf023869;
+ Wed, 29 Oct 2025 09:55:57 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vx2nn7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Oct 2025 09:55:56 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59T9ttvE53019028
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Oct 2025 09:55:55 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0EB6920040;
+ Wed, 29 Oct 2025 09:55:55 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BBE6E2004E;
+ Wed, 29 Oct 2025 09:55:54 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.111.92.117])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Oct 2025 09:55:54 +0000 (GMT)
+Message-ID: <f27dace00e0e89c5b16ac555f92c976575d0c4ab.camel@linux.ibm.com>
+Subject: Re: [PATCH PING v4 0/3] target/s390x: Fix missing clock-comparator
+ interrupts
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Date: Wed, 29 Oct 2025 10:55:54 +0100
+In-Reply-To: <20251016175954.41153-1-iii@linux.ibm.com>
+References: <20251016175954.41153-1-iii@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.14;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=DYkaa/tW c=1 sm=1 tr=0 ts=6901e4ae cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=OyG4toH0xf4vRMlkUQMA:9 a=QEXdDO2ut3YA:10
+ a=HhbK4dLum7pmb74im6QT:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=pHzHmUro8NiASowvMSCR:22
+ a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-GUID: xNu8Q5dFpyAUqlt7J_FXl5eFx7mI6Vmu
+X-Proofpoint-ORIG-GUID: xNu8Q5dFpyAUqlt7J_FXl5eFx7mI6Vmu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX3PG8tn8rhp/X
+ CSXWdEmM2cufRfhJZRxnq8fYQR9Qq8Em/POZPRXY3wG4zLRgUJLaENSr7zrK3JvdE19Jo1/tfmm
+ lwWJ77tTZZgX+hKXv0WPLdIIC4Tlgh2aNq5Cbm7zhwlZZ4WmzdzHSTJfWDgPvuA4qSW5As3Fpsf
+ SbwiSWS+Gi3WhxuO5bK2ImMtnfLFHfnPI4Lz1YMlmHYg0rufbHZnW2qdEbCVe94JMe8Xu1vdhCd
+ Jp0ejYQZ9wQM8aLiJ6IafPV/NwOJlT5UyfAT+32KgPc0szf8rQa9WPwtZromphh4fXdJbGF1+uS
+ +noLLhhMgWe2RaVKC5CSM6eKYyusAcqH1A2FSB4DvaHLl9ZMNxX2EMyuKT4Wogeja+2xuiVWsRP
+ nLdW1YhdGsylqGlPHUimgBf82dsUNw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-29_04,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,42 +120,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-introduces a migration blocker when vIOMMU is enabled, because we need
-to calculate the IOVA ranges for device dirty tracking. But this is
-unnecessary for iommu dirty tracking.
+On Thu, 2025-10-16 at 19:58 +0200, Ilya Leoshkevich wrote:
+> v3:
+> https://lore.kernel.org/qemu-devel/20251016120928.22467-1-iii@linux.ibm.c=
+om/
+> v3 -> v4: Add a patch for the missing address generation affecting
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts. Slight=
+ly adjust the test, keep Thomas' R-b.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Add Thomas' R-b to=
+ the timer rearm fix.
+>=20
+> v2:
+> https://lore.kernel.org/qemu-devel/20251015142141.3238-1-iii@linux.ibm.co=
+m/
+> v2 -> v3: Rearm the timer on control register load (Thomas).
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Add Thomas' R-b to=
+ the test.
+>=20
+> v1:
+> https://lore.kernel.org/qemu-devel/20251014160743.398093-1-iii@linux.ibm.=
+com/
+> v1 -> v2: Add Thomas' R-b.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Cc: stable (Michae=
+l).
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Improve formatting=
+, commit messages, and test (Ilya).
+>=20
+> Hi,
+>=20
+> While trying to reproduce [1], I found two bugs in the clock
+> comparator
+> handling. This series fixes all three issues and adds a test.
+>=20
+> [1]
+> https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.d=
+e/
+>=20
+> Best regards,
+> Ilya
+>=20
+> Ilya Leoshkevich (4):
+> =C2=A0 target/s390x: Fix missing interrupts for small CKC values
+> =C2=A0 target/s390x: Fix missing clock-comparator interrupts after reset
+> =C2=A0 target/s390x: Use address generation for register branch targets
+> =C2=A0 tests/tcg/s390x: Test SET CLOCK COMPARATOR
+>=20
+> =C2=A0target/s390x/tcg/mem_helper.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 11 ++++-
+> =C2=A0target/s390x/tcg/misc_helper.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 12 +++--
+> =C2=A0target/s390x/tcg/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 11 +++--
+> =C2=A0tests/tcg/s390x/Makefile.softmmu-target |=C2=A0 1 +
+> =C2=A0tests/tcg/s390x/sckc.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 63
+> +++++++++++++++++++++++++
+> =C2=A05 files changed, 89 insertions(+), 9 deletions(-)
+> =C2=A0create mode 100644 tests/tcg/s390x/sckc.S
 
-Limit the vfio_viommu_preset() check to those devices which use device
-dirty tracking. This allows live migration with VFIO devices which use
-iommu dirty tracking.
+Hello,
 
-Suggested-by: Jason Zeng <jason.zeng@intel.com>
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-Tested-by: Rohith S R <rohith.s.r@intel.com>
----
- hw/vfio/migration.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I would like to ping this series.
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 0a1d8cac2c..40f337b798 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1230,7 +1230,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         goto out_deinit;
-     }
- 
--    if (vfio_viommu_preset(vbasedev)) {
-+    if (!vfio_device_dirty_pages_disabled(vbasedev) &&
-+        vfio_viommu_preset(vbasedev)) {
-         error_setg(&err, "%s: Migration is currently not supported "
-                    "with vIOMMU enabled", vbasedev->name);
-         goto add_blocker;
--- 
-2.47.1
+Patches 1, 2, and 4 are already reviewed (thanks, Thomas!).
+Patch 3 still needs a review.
 
+Best regards,
+Ilya
 
