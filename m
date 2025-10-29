@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D28C1ADA0
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B1BC1ADE3
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:45:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE6Ry-0004Tq-3Q; Wed, 29 Oct 2025 09:42:54 -0400
+	id 1vE6TK-0004uU-EF; Wed, 29 Oct 2025 09:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6Rv-0004TM-7f
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:42:51 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6TG-0004tV-QF
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:44:15 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6Rp-0002N6-QX
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:42:50 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-475dbb524e4so30451225e9.2
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:42:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6T7-0002cs-G4
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:44:12 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-47719ad0c7dso19722765e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761745362; x=1762350162; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761745439; x=1762350239; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yLXEqp9AMFVQkqy41V1LQbG8mPckdyIcZyzJQ1+3qok=;
- b=n7HXwOVz2ewJMYu+me/nAqZsYVbF4VS4Nk9/ouFcIo0TezgMxY89bEX8/2H0K+dqSW
- p5fKS5cvYgbgJHeT9YrMQpsucCch0E6XDOCKf7/5LTZs6XGD4WOnPKBSdal7ahp3e8lh
- 9j2AxwMh71PnN47D6yi6xgdiA0QHYTuHrGzpAos62Rwx9KZ648KAmkTzsEfTlQQRV2XO
- vxTpILKVVDh+IzLUNAJ+BG+GaG589JgEJ2RsLvjfJVpqVtr7zcmBoMGJg5wmneiDI64O
- cxGxWimcCpP5KmuGKg7O8Zi45MuAr5Ntvb77DPcJy0ChcHiExhaM3XcbVVyR785fyG0Q
- xYJA==
+ bh=NRsBYX/oBXvjLSY1VvIVbRjPQWhxL4pD655V5k10NYk=;
+ b=YgPSn8TMh2v++1niEoeXBeTxQVNh+aM3lfkvOPEfElUN+AWdgLlwCoVICYLc+TJGd5
+ ttHlNvLMZXmqpzJRzlBVbf7EyUJn+MOrGc+dr1FWqC/gxV0M0Xy4jpwt1XCn0aLL4f+g
+ nUOp9xLn+UC4NMk5NXuUK2S4E8LrxW7nE8lIq3nuHjVieRnevSqzCSL4fJx7wdcJXGCi
+ nhyKs6qxofVLXaCkQYzt/BP0uvgghBkialz65A93o3pQFJsS3IVEZa+mH5Exg/5wGfjN
+ 0IZkJTR9Ws32CHIZfc8kX9u2Sbn9LzWGQSJ7lYSHv6RuvVvYncWu2G+Iw9ZBHLapr8k/
+ r4yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761745362; x=1762350162;
+ d=1e100.net; s=20230601; t=1761745439; x=1762350239;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yLXEqp9AMFVQkqy41V1LQbG8mPckdyIcZyzJQ1+3qok=;
- b=owcnTmtzfUbofPmnVGPy9j9JGcrQTrOaUgkOrNulS9UlYVQS6wRZCF5fQnCkU3k+8i
- cH/B93ZprVyTCh6bLrcaUXL5KdqvqrU+9gG8cWjbp03IuIuntzqAlzEdL3wv/PMhFQjV
- roVDvgTCvz3SXF1r/YL2KZ4xw8J36BScRE0k8k5ogF+YpI6kz7p6WocGO86nH5e4K9Gf
- XVAm5DQDgXzxeZ5I6yj7xC6gbDKYs+DC/uq61iLdxLKjgtjY1oXvH2wJqpxIdE7L3JQb
- Q1A1eltuAHNDrr8rHjSxySpBRJ35pf+fw6hfhF1OP00nKbvH1qN6Og+j5T4Hq59oFbyR
- oohw==
+ bh=NRsBYX/oBXvjLSY1VvIVbRjPQWhxL4pD655V5k10NYk=;
+ b=iAdTiXhyNE9uUfeIPZXPnqDHAGKmdjmTnWcGz+VzZ1SKaSr0bmDjGuy+Z1ISHJ7eZg
+ Mjt7lHtGyD3tH/ABXKN5iOcqJGhdS20E53aPU6IGEqvC78jncDJ6vjFkEFTZETDxZZ9d
+ 8LxWX2GIzxW3GG/8kIe+ni45ZE5Q4ZEvIM269Ydd0mak39cjXEm/q2zUSTsV3sXyzEp+
+ +bUBQ6nez7JaiuQTRlbHeXzqHBi5b/o9oJ91RyvCIfqGicsP5gFW4eQddyfLkayyntWV
+ FXh1WDrjrynCuMj7ZOf5FpTBzN5NkIHlcGaZi6/VCfT8oQBaowJu4jea5aWEEFOSLhRf
+ jjzg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWQEZW/D2Cd7jNVEI0gDu0gzF86zMxzVheIPbXg89XnIzQBeNckLy/RRBIttE6g6e1pW0EQnzLe/DvM@nongnu.org
-X-Gm-Message-State: AOJu0YwQYdvGF6Fd6IB2uDDWkb/8HaTHiipYA50q/NtXvDTkiSS5zNx9
- +hzZVJJ9I2ySjAcd6V0DoqNyKtZG5CMVpJ6pbGToz2htzW28RrRek7LIHuDGrFjE374=
-X-Gm-Gg: ASbGncupi8KCPVViv/I/IWu62bwCQ0e79Aj6bTnSwfcEKf84SnMDZaE9LXCxt4ZecaE
- lrGGlJ6WsIaDeuHgQg4o9XAyTJqSLWdjE49O3HeyU1uNoRMn9ADHAsDVv3rTqN7LpJwEYkeFZE4
- E+AIRERGL370jYsCHAYF53zmk18jTB7JCbzmegOAVFEg1/j2MY19AfdoNCSY7SgvCQON3nOFGPH
- DkePE6kIQ4jkmU2FiwnooG+OcLd36c9xud58r1rYCbprtU9c/pBRqHqPjQ8m34FvzvTeSeTe8fi
- lpYAbNB3w/P5OyhqqbHFWvMIGHR1f1gO89ZO4j2RAbfIr8+gRQrQJ82tPxxDuhDdkG2hejwf7lh
- 4IDmLCs7di9kvMo6WeyPREro+UMtbG8AfR5yvGLkuGshII39/5m/OQz07igEL3HneRbjUjSdp5Z
- wCQAxOoPCXZPDCmNztnwbttVf6APnDbMboLgakx9TjOGA=
-X-Google-Smtp-Source: AGHT+IE1hmcoBZoZObbarq/8wPi5BLyKPTgD2lU/IyYdYctNJopLmVgddbjhI6ZCMqV0GJ+8k5oJOw==
-X-Received: by 2002:a05:600c:4e09:b0:46e:206a:78cc with SMTP id
- 5b1f17b1804b1-4771e1e1079mr32781795e9.28.1761745360541; 
- Wed, 29 Oct 2025 06:42:40 -0700 (PDT)
+ AJvYcCWH2JLLEwWlPci5Shnops4ir62P1jAaDtnphl8kLsuTw5Tf/Bd0VMIaATGI4KaPX3lMRK1iE6bDfdcH@nongnu.org
+X-Gm-Message-State: AOJu0YwQVx7ChPCepR47UhG53S1lTWgB/or+iSGO7dUgJ0mALX/RNp+v
+ 6/Y/KF3cv3yDOjGnwzXDbCISS/6P6vYqnm0tby5Ra042S2/pPC/UpHegB5SbdjK9gzc=
+X-Gm-Gg: ASbGncsYiCGAG7+gZJ0JQfhdNRnrXQpsSOrcqgRTc72Rb90WAKMwCKVBxLn785vjgkF
+ ToMWbVrude8HDlIzWsQ8l1l5HO63lNRgLSZftISNVAsQVujlQne6Lpw7GrcXiitwD8EfZQlW2vL
+ AwQnx3no8ZNtKoCrM5y8NRHD7gj0/3k0vi6g1V0+/CIt4W/zvB5k5Fy7li1tWFh2bAsLkFcIpM8
+ VfLBGQbqFX3529QYQp3y1NnAeNhS5M5G/ylv/ytMZmJrRznZ5SWVO+Va0DCRfuSJEOWOt9+tgh5
+ GtDwpRW8+qdwWPmnKkneAuIsOU+i8Z6vFJeYdryOK0ZYgI8IdzbIH3aBlCaxrvyWBHLENT3hbC1
+ IrFVhoGlGLrZps9xWkyt298uAMmi9ADnT2H+Stc27+gBrPypmmrg/zdUVD0NO6pfz/gWsk4l0VM
+ uRhwWlRgPV8iL4QFl8MSX0UQQtZM7BzyhaQKrpt2hrbgg=
+X-Google-Smtp-Source: AGHT+IGOKoA5My+C4OxMpueyTXWYVLkbKoWaifxcGMwvkEqS8t1wbxSmLmY0LIGL7f6bwcXyDQFs7A==
+X-Received: by 2002:a05:600c:1e28:b0:475:db8f:ae0e with SMTP id
+ 5b1f17b1804b1-4771e17412fmr32288965e9.2.1761745438761; 
+ Wed, 29 Oct 2025 06:43:58 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952da645sm25223925f8f.30.2025.10.29.06.42.38
+ 5b1f17b1804b1-4771e222ca5sm52365755e9.15.2025.10.29.06.43.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 06:42:39 -0700 (PDT)
-Message-ID: <2c4470f9-e71f-4c2b-acdb-860648c2e571@linaro.org>
-Date: Wed, 29 Oct 2025 14:42:38 +0100
+ Wed, 29 Oct 2025 06:43:58 -0700 (PDT)
+Message-ID: <d7e77944-06a9-4b7c-8475-0e943a251690@linaro.org>
+Date: Wed, 29 Oct 2025 14:43:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/35] audio/dsound: simplify init()
+Subject: Re: [PATCH v3 14/35] audio/dsound: report init error via **errp
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
@@ -89,13 +89,13 @@ Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-14-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-15-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-14-marcandre.lureau@redhat.com>
+In-Reply-To: <20251027151045.2863176-15-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,13 +121,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Use dsound_audio_fini() on error & fail if the capture failed to
-> initialize too.
+> Whenever NULL is returned, errp should be set.
+> 
+> Inline SetCooperativeLevel call to simplify code.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   audio/dsoundaudio.c | 29 +++++++++++------------------
->   1 file changed, 11 insertions(+), 18 deletions(-)
+>   audio/dsoundaudio.c | 182 +++++++++++++++++++-------------------------
+>   1 file changed, 79 insertions(+), 103 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
