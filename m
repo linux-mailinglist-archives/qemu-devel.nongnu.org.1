@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C862C1D7A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:44:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC91CC1D7DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:46:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEDw5-0005hn-5J; Wed, 29 Oct 2025 17:42:29 -0400
+	id 1vEDyU-0007nY-JT; Wed, 29 Oct 2025 17:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDw3-0005e4-7D
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:42:27 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDyQ-0007l8-VD
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:44:54 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDvp-0005oN-QE
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:42:25 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47114a40161so3345805e9.3
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:42:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDyF-00061v-VE
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:44:54 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-4298a028de6so1020582f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761774123; x=1762378923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761774274; x=1762379074; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QAAOCxQ3njC9sd38gRl2lcX4tyoH13t+XkOmzilp5O8=;
- b=Va5r2qcmCXfmpQsPB57lxY23RulNHd1mKi7HhdRQBp9Cc23Kz83ttVrHF2P+3ZFB/U
- 5MhCWnUWiX+GHe44Wz4jTWSE5Wvw7/NySVmtCTl1nIre22Zb9wv6b0nejQJlA8/86ssE
- +CyP8UNRgJCUNZ0NgiJJiSBmQUFHjv1NntfBRI3WKIdfDlxCNA5sIaFpN4V63rgIGSGf
- BD/79lp5ZLt8xGhGSS6wpwOsPBoRK2DAWvsigMfmQ8Q/o9sRlJytTzG7acPDCt2f80M2
- KiBH8XQKBWLKcQx0gNrKDPkjV/q1jvMXJr6r0l6KtZOG0Hs4Gchqn1xVI03LJFhFrSuF
- cC0w==
+ bh=UDdG9vRzLSWqPzQtLxCE0sbsDd3SWye7KKaKxVt/EIY=;
+ b=GI/Ie3MLm+q5Ls5dzP2GpmsWnQgVAZ/NF8uAcs6xDnGwuzFgCWytMq5D29z+GGHkAe
+ it8Oe5yG0mnBLvNSeY6rVjDepOzK/hT2iHm7A+U0t7DCaU+0jKyuqEJtMBKeBjhEQUP6
+ A5KuSYhKCHDzL33F+8pJk2xjKdjV7LC9ybRAYbH7bkldqvhQFmFCM0L1EaVmm0ey4t4R
+ OiyvzflgbwI1sB8ltSsQhXCQ7Yzj5w7mRvUoeAoo7lf+rKfyQESUeeo5zVEjhsRlOoNS
+ PTujxUPuUEVrjLcSpejJg01uxkw4fSZlQN2O6u6og1VK9ZGHYlZpII1wUdw9IWrmUoph
+ 2Iiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761774123; x=1762378923;
+ d=1e100.net; s=20230601; t=1761774274; x=1762379074;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QAAOCxQ3njC9sd38gRl2lcX4tyoH13t+XkOmzilp5O8=;
- b=G4MtgM4lDls5GE2sRrcpGff30KFTE13exk/HKZNhAN6k6sUMNGf+LgB9Cp/MShENsm
- hUDynWfHDHB5fTTdwL4wGRrn5G4+clk5LK8DX0Xu5S/+5gBjlQCXSbPN3vCObGk7ht2q
- O1epXBQraZHzzJYiHbj5SXwnxmjtS4LYOBVBDP1Goo+DJgKxDxB1erXkqbiwXS7mr911
- /KsM5uHeV0v91SwIJ3ZYFvZ/rjbBJPAHbn4nFR5wLC6sozbLSGFSQaBNfR+yGcSZjFuy
- 2MxF9Ffe2mR1HVrzjPji9WM9pzaWUNDiFkWjFBQuQ2rBREk7DQaaq0WTOe8tk15GMM1s
- b/eg==
-X-Gm-Message-State: AOJu0YyfhibtUPlg3zjxJdE2/d0Nyo2huME0M10GylYUC8EKNNuuOp0K
- XVDRmtkRc0fh8Bkc4mX6jp9nkX0UFxKKI9L0Moz2LfaSaV8xnzLytzH38gFbWOYirxMc6ygNRlH
- B9+wOusI=
-X-Gm-Gg: ASbGncsObJiSPFvGUCxaZJqyioCcBJE82UqvWmikI/QvQXIUocT+hGXQibP/f7qKcGw
- jmdGmFicBbWQkkbnSqIJdx4JGw7gAflwrafnocb39eWuytc40N/BOu0yT6v6uHcR2v3Rm+uw3Ss
- I+XFHvic84pGEiZcWcViffsoVAJcJWkUhr3JZKM1ogTBYQ2PnCvVL19tcpkg6eE35GhKDb2ELgr
- tyu23IRrwV9WMdJUdBimzZ2wAmvEW37lEkRRcB6lEPsE3vidNhOnOsj4PDGKZ8l+gL+exY+SCYz
- ZvomIYefWut6OFXAUtLDYLZ6l1F54M+LdLOqJblvraylf5Xa545adbUzBkqXK94+Vnij2AogfO6
- 7gHZWtDTTXqgST8MgkggYw8YCT2SBt61SNR7L2JqEPlTr273NZKQmJtpL96uVC7WewnDFRF1V5d
- 6Dki2UnPGEAzNwqK4ummyJztdgGoWzX8mSK4yJYLzRRUw=
-X-Google-Smtp-Source: AGHT+IGnB4KRWCBDbIHVNsOMOSYmdoSFBuOFopMo/r5gQ8CYOJ7qC/h5Z0Tfdef5fEmjqZd0Aw4EyQ==
-X-Received: by 2002:a05:600c:46ce:b0:471:15c1:45b9 with SMTP id
- 5b1f17b1804b1-4771e3b84c0mr47555425e9.29.1761774122790; 
- Wed, 29 Oct 2025 14:42:02 -0700 (PDT)
+ bh=UDdG9vRzLSWqPzQtLxCE0sbsDd3SWye7KKaKxVt/EIY=;
+ b=v5yv7m2YwZX01sX6szYcGhQIvKt7q4KlFKtvTrHUH2gukUqNvAwTMdY6q/YmeeKXOQ
+ SrYonNodkRKR6gjlz/FVuE3Kh8Kp5RLDx3gP7i+ycnJBD9Zz8xA2m3I/SfLHgj1g7eQl
+ E4LKhpDwLeirr7yFG8JAVw6kJ8ezoR6T/SSOEyWvhW4DWDY5cDfW+9MBEL6t4x8dxGPd
+ rgr415230xeb9Z2MI66wsMxWMGMUPgdTAT8Oe7eFLNnUZt97Ac8pcY5U1x5b/BSGlMP0
+ jaG0jR/n05Pb3hQX3/37511jHLVXic09SYKIJy9I3v9qaCKi4cRudwo0geU8A9SVMeWY
+ S3Zg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXF7C75685XFUBTTIMwJunvnWoKXwB+gEmE6iCui8S/RPOy2apvhQCmAzqw+QXQZaR1byFvsR0mfFxz@nongnu.org
+X-Gm-Message-State: AOJu0YzlEo0KurjY9bRqJkVNf1DKWjc9byV7qMPvEx/0v+n2Tmz1qFaR
+ aZOd/75re2rt38O5759cZpEqpkP39PknkK3/iv+d+GWX9ts3KiSfLNbdhrIcjONjS30=
+X-Gm-Gg: ASbGncsf63/8SHaszm9clF23WQ/1OAt24M+KCTzbqx3Bge5BPysK+3tFVPmu+EqAjt0
+ m7pytcdZ9uaVKmTdpCWWfUZCAlWjzQYJX9ApQoqQZC/trRLiMSI4zgVtFBNyPLxNEBmvMVW4r9T
+ 3+fWrSx7qUlVavBtSQZKxhw28WKo8oGok6LgJsi2FW4gPJbubzXPWQM3sJIUNt3hnYvxyrqrdZl
+ J0C6vpH5gnOr1kDrMljXcRAu9Ws3IcrqHkHVErUhqj8fz/iJzxgv/3RpmRx/WyI3nHe78pjYRpQ
+ ivxAS9iRL/PswlG19siZdKRmUNMLz9sTEm7qd2RVNungDs1xqyre1WEHhg+Bg3yJtevMnCBbipr
+ JNZ9lg5lmyUxQIFmyRLEM1U4DUX+kvxi5W8qgLvB8tIx6yYCka6mc/PMk1vaJeQYH/eBizn/r+h
+ f250dVg8MThIWycv5G9AUjbTguOap8JUjC4DQkFbzMBpY=
+X-Google-Smtp-Source: AGHT+IHCMOL5lEG7uVAhkjuhUltsY7VIM/l4EQgPJmPm+DxoYytMBjptZof5/wUmnR0MYpjGe6K8rA==
+X-Received: by 2002:a05:6000:430c:b0:425:86da:325f with SMTP id
+ ffacd0b85a97d-429b4c5303emr1081859f8f.27.1761774273691; 
+ Wed, 29 Oct 2025 14:44:33 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4771832e857sm55417945e9.0.2025.10.29.14.42.01
+ ffacd0b85a97d-429952db99asm28493969f8f.32.2025.10.29.14.44.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 14:42:02 -0700 (PDT)
-Message-ID: <adbf6cd9-72b0-4ce9-93a6-4f83338ca8a3@linaro.org>
-Date: Wed, 29 Oct 2025 22:42:00 +0100
+ Wed, 29 Oct 2025 14:44:33 -0700 (PDT)
+Message-ID: <6ba24ce8-239a-452f-b051-cffb86f1a1b6@linaro.org>
+Date: Wed, 29 Oct 2025 22:44:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/35] audio: register and unregister vmstate with
- AudioState
+Subject: Re: [PATCH v3 05/35] hw/audio/virtio-snd-pci: remove custom model
+ callback
 Content-Language: en-US
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Alexandre Ratchov <alex@caoua.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jan Kiszka <jan.kiszka@web.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Jan Kiszka <jan.kiszka@web.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <huth@tuxfamily.org>,
  Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
@@ -90,21 +90,18 @@ Cc: qemu-devel@nongnu.org, Alexandre Ratchov <alex@caoua.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-20-marcandre.lureau@redhat.com>
- <ffab95ce-9b5d-43ea-93a7-611de6044ad8@linaro.org>
- <CAJ+F1C+qnkm=F1q0YSHZ9WbAMcz+-NJo5mzj1b-DcU24dNpRLQ@mail.gmail.com>
+ <20251027151045.2863176-6-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAJ+F1C+qnkm=F1q0YSHZ9WbAMcz+-NJo5mzj1b-DcU24dNpRLQ@mail.gmail.com>
+In-Reply-To: <20251027151045.2863176-6-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,56 +118,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/10/25 20:00, Marc-André Lureau wrote:
-> Hi
+On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> On Wed, Oct 29, 2025 at 5:51 PM Philippe Mathieu-Daudé
-> <philmd@linaro.org> wrote:
->>
->> On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
->>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>>
->>> Proper lifecycle management with QOM state.
->>>
->>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
->>> ---
->>>    audio/audio.c | 7 ++++++-
->>>    1 file changed, 6 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/audio/audio.c b/audio/audio.c
->>> index 4c3c3fd52f..853930bb48 100644
->>> --- a/audio/audio.c
->>> +++ b/audio/audio.c
->>> @@ -1614,6 +1614,8 @@ static void audio_vm_change_state_handler (void *opaque, bool running,
->>>        audio_reset_timer (s);
->>>    }
->>>
->>> +static const VMStateDescription vmstate_audio;
->>> +
->>>    static void audio_state_init(Object *obj)
->>>    {
->>>        AudioState *s = AUDIO_STATE(obj);
->>> @@ -1625,6 +1627,8 @@ static void audio_state_init(Object *obj)
->>>
->>>        s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
->>>        assert(s->vmse != NULL);
->>> +
->>> +    vmstate_register_any(NULL, &vmstate_audio, s);
->>
->> Please avoid legacy APIs:
->>
->> /**
->>    * vmstate_register_any() - legacy function to register state
->>    * serialisation description and let the function choose the id
->>    *
->>    * New code shouldn't be using this function as QOM-ified devices have
->>    * dc->vmsd to store the serialisation description.
->>    *
->>    * Returns: 0 on success, -1 on failure
->>    */
->>
+> virtio-snd can rely on the default code to instantiate the device and
+> set the audiodev.
 > 
-> qdev/Device have vmsd, but not plain Object (or legacy code without object).
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   hw/audio/virtio-snd-pci.c | 16 +---------------
+>   1 file changed, 1 insertion(+), 15 deletions(-)
 
-Hmm right. Cc'ing Peter & Fabiano.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
