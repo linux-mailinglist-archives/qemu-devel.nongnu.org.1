@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2000C1BD57
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C79C1BCD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:52:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE8S7-000446-El; Wed, 29 Oct 2025 11:51:11 -0400
+	id 1vE8S6-00042v-Cq; Wed, 29 Oct 2025 11:51:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8S3-00041A-Nb
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:09 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1vE8S0-00040i-SO
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:04 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vE8Rs-0002sA-EN
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:05 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-b3d196b7eeeso6367366b.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:50:53 -0700 (PDT)
+ id 1vE8Rr-0002sN-Io
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:51:04 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b4f323cf89bso2896966b.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1761753050; x=1762357850; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tp9uc4NfmWDvr0PUctvJtnAF7CDE8AZuaPcb/KS1+g4=;
- b=UOy6phT9ZwlA5ct1uBN/iG+mhH38CL1tjw65+7ny1b8E6PXon1PI8hCOA0wqqsRntC
- zjYmulp5kEAbybdzVNCR3HE1oryrWkLVaRdwYLnFJ+/ZVxrXuT3rU5bUUkqoOoT/nD65
- togRi287sFR6HfAObY72UftiWNgopcbU+CswuZk4+roLF7lL89F9l2wuLYPgu8jXqRrk
- jJc0icQqkkY01jyxJmwKBajHTacCReTOpFRhWxxItVJTqmYhKkqQwwI7n07TQLNA70lD
- 7bIusClVcT8SOqOZD6bZFU3UEvDWEct9fipM5DmAkzXx2K4kQXvrMAsKIATeouaQu+Zy
- pXBQ==
+ bh=hu+xToBwuzqdEh5e7QygWn/gh6d7IcoBc8Yowdh0cMI=;
+ b=TUs6olxYW87ft+yZ0qCg4D1N6NVzwmaPZJ6j62qF3rHzb1iCBuFBHWafkjAPOEzgvH
+ CxEM8tQlm1nsj+6IvE/oFm/jwoaZpOxxEe5W62mcMZ4tbbS/qnYy3B+hCEt5CAI69gYS
+ IYlG9lzN17JPhf7r8/G10oxsPhYfylOwdEaLnJr2FIX68ZDLbm/nPuoaY5AW9uVqR0KT
+ ZkC9HvIdxFzy1Mpzh9NoPBAUYQewBy6m+G/rWk1EyCfLwcvwSRwjllIkkpVm53j5uWRL
+ vLMJx/ebOrU/FbS6m+EVn37ooyqaSkIVorPAn1N7ictzJJkYt5ERYAMb0edFYyN8QAa+
+ G6hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1761753050; x=1762357850;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tp9uc4NfmWDvr0PUctvJtnAF7CDE8AZuaPcb/KS1+g4=;
- b=Yi5g+vEAMimZCYdssWbY0fL6P4Czs3/qni2K/wjYun6PfSUNM/06LvZ/myAauFkhY3
- KrodUv+N3Nv0ul/WrpepE8/dqaF4WsbEjmM90Uke85kHQecid1dJ7x7XkbHzLiuaTwAj
- wx8wDFevYYM4Z10v7gXo0Vc7Gou+ZtNNsyAyCArKmBdJc+2WOX9oHuToH/+DZOAjsG08
- nRg7wLipRcdpzvJz5aae5FnDiujTLqBHcZJRrdnemnCusDw1dHgA6rIvYwHNV2QKsScv
- W5wrDqAigvGeT3AAfRPQzFny+K0CjitKUUTAgFFo7UPbYGjv3ZsT3DZRYvGqtaG7+GDw
- 74Cg==
-X-Gm-Message-State: AOJu0YxnHJJLaqFBNE+3PiO53rXfZ9PEZJIEPd9vNJtCmEcilVqPlnjI
- 8UUkLItb4o99//IC/dWvPZnPx+yZY9IQmVexwdz85IPvla59cVIOagJgtPjL1WkqAAs=
-X-Gm-Gg: ASbGncuoKFX1tlUTeynyVTurMqdT6AHQvSBDEkCB2QUUZ/F0qun9wAoPv+wR2OtpSnF
- DxjkETQt156UPRqLcfTId8UcxTEAXIO+h4X46Jw8xT/7UiDUXNJeGypK5eoLzJrQMwUtnZRIo2n
- MaJyjyhLERS+cw7kZ4H0u9b5ZslAADuH4XlFs3UN6f6X7DH8qBZhD0haFT1ZHu5jNw3ln9vrUm4
- tgBVg/MFERQN9C/35A6EP5ljzTaatU7S6MxotFzS7/gmDOfnK1/4zPJnyDOdG6W520iem2doS7j
- 5bqQVvXQsnCR3E5Koo/U6TZgDlyftBlfuEQ2agq8df9/7mTmuVqN+WfS9ceOTNoT2yK0fjN/N31
- qbXmjZe9jwyFd9ZnURH6nH26hOKD+k6Q42yjUcY7rFBWlv34CB7ahCt+NhCWfdD+aMWPfYspIJk
- Ud
-X-Google-Smtp-Source: AGHT+IEcoPm+8umaacXTGKLFAevzgxBC3rhPG/WhLN5vbSpUff4wkt4u0rmE29YP8Wn4gWRSTg+pJg==
-X-Received: by 2002:a17:907:728d:b0:b6d:5aac:5062 with SMTP id
- a640c23a62f3a-b703d31503dmr348378866b.14.1761753049865; 
- Wed, 29 Oct 2025 08:50:49 -0700 (PDT)
+ bh=hu+xToBwuzqdEh5e7QygWn/gh6d7IcoBc8Yowdh0cMI=;
+ b=Jz1f3jrVwq1L1r4BB+9jgpFOVcL0YmgjgaZ5jxrB12sQizz/cGkawAcdxfy0enLLhY
+ Yjbwgo49RvtMae21RF25QOSrPgyIIZNaI+/c842lANq3pFafzTmqlUH5g6MnXPoMFrUy
+ VLdh7q4yOTa5SDuVJlYYayFVe0DBvuV0mVrrVgVgL9H77hrpCX9TEew9ECwidNe5utLE
+ 7JCiqEWbb2HnYuNkV/nH2BaHjOtEDBPkFPwsb8NKSE6fE1GU8cLJCU6EqFvXTgsGqc/h
+ m/NtsJlIIwexlO2226V42QScpQ4ssyOg348atWzg5/jlXHJtrM3p0S4rKIS/F8w6U464
+ kYDg==
+X-Gm-Message-State: AOJu0Yw3vHjexzxYGfBEjtG+XPTnI3ioDPgJCRuEKU83FKE0Dw9Vlb0w
+ nlpMEzSqqaYKRmGTU1nZRXEcm615V3/E+FSWeJwZ4rHXqSjwp1gOZRohPxWPVGVkh4o=
+X-Gm-Gg: ASbGncviT/A3kGKMoMAn6toPxiheFfDp6Qyn9i6Ot4n/QR53C6a6PWPqI1HA2YDjywW
+ R8vLwJ5igB60TQ2e7dDiql5sv1ckjiDTERv/t/xOCZhnaOi7JBa4Jwo009uSxC4j6lHn+TC/XJN
+ Fwh/2IIterjIv+96EnKA8WyRpyHCoCnuub9UIVEkS0BPt3EI4+gfMR819SXSqmaNTrlElANfrvw
+ IC3xYdDZnVTX8n7UJboOF6mgdK9A23ksbRVgp2wunkbj8FIkyI/4eExhfef4eEOWc/sYhruLmA6
+ p1ErAH+Ama1DWtB3U0cqmi/yRFJxRHR5yqbb5VfOt52gpypXmIDEb5Bin0StNJOPfMBT261N53B
+ CTKlJ7wTvj7paNwmmZtty3D21tgCF5xEiyOMl31++HN27GYOPaEJiByoijgvKZhvsZ9mHYYhza1
+ iX
+X-Google-Smtp-Source: AGHT+IEoYqd6LgOTMjS+K4kXHYqappYM/LD/Cev18VsgsBQTKFQlotL9UEmjY6uQPSEG1WNjOgfprQ==
+X-Received: by 2002:a17:907:a03:b0:b2d:e514:5348 with SMTP id
+ a640c23a62f3a-b703d4ae452mr340573266b.33.1761753050347; 
+ Wed, 29 Oct 2025 08:50:50 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d853f98adsm1436225766b.49.2025.10.29.08.50.46
+ a640c23a62f3a-b6d8530905dsm1461341566b.6.2025.10.29.08.50.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 29 Oct 2025 08:50:46 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 285045F92F;
+ by draig.lan (Postfix) with ESMTP id 3EB1B5F9E0;
  Wed, 29 Oct 2025 15:50:46 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,23 +71,22 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 03/35] scripts/ci: move build-environment.yaml up a level
-Date: Wed, 29 Oct 2025 15:50:12 +0000
-Message-ID: <20251029155045.257802-4-alex.bennee@linaro.org>
+Subject: [PULL 04/35] scripts/ci: allow both Ubuntu or Debian to run upgrade
+Date: Wed, 29 Oct 2025 15:50:13 +0000
+Message-ID: <20251029155045.257802-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251029155045.257802-1-alex.bennee@linaro.org>
 References: <20251029155045.257802-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,51 +103,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can share the setup of the build environment with multiple
-operating systems as we just need to check the YAML for each env is
-present in the directory structure.
+There is no practical difference between the systems when it comes to
+updating the installed system.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20251027110344.2289945-4-alex.bennee@linaro.org>
+Message-ID: <20251027110344.2289945-5-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/build-environment.yml
-similarity index 81%
-rename from scripts/ci/setup/ubuntu/build-environment.yml
-rename to scripts/ci/setup/build-environment.yml
-index 1c517c74f74..66bde188755 100644
---- a/scripts/ci/setup/ubuntu/build-environment.yml
+diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
+index 66bde188755..253d0b759bc 100644
+--- a/scripts/ci/setup/build-environment.yml
 +++ b/scripts/ci/setup/build-environment.yml
-@@ -27,18 +27,24 @@
-         - ansible_facts['distribution'] == 'Ubuntu'
- 
-     # the package lists are updated by "make lcitool-refresh"
--    - name: Include package lists based on OS and architecture
--      include_vars:
--        file: "ubuntu-2404-{{ ansible_facts['architecture'] }}.yaml"
-+    - name: Define package list file path
-+      set_fact:
-+        package_file: "ubuntu/ubuntu-2404-{{ ansible_facts['architecture'] }}.yaml"
-       when:
-         - ansible_facts['distribution'] == 'Ubuntu'
-         - ansible_facts['distribution_version'] == '24.04'
- 
-+    - name: Include package lists based on OS and architecture
-+      include_vars:
-+        file: "{{ package_file }}"
-+      when:
-+        - package_file is exists
-+
-     - name: Install packages for QEMU on Ubuntu 24.04
-       package:
-         name: "{{ packages }}"
+@@ -24,7 +24,7 @@
+         update_cache: yes
+         upgrade: yes
        when:
 -        - ansible_facts['distribution'] == 'Ubuntu'
--        - ansible_facts['distribution_version'] == '24.04'
-+        - package_file is exists
-+        - packages is defined
++        - ansible_facts['distribution'] in ['Ubuntu', 'Debian']
  
- 
+     # the package lists are updated by "make lcitool-refresh"
+     - name: Define package list file path
 -- 
 2.47.3
 
