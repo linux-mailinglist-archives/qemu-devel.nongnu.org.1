@@ -2,77 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB639C1C8A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AA8C1CA21
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:59:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEADM-0006vl-0N; Wed, 29 Oct 2025 13:44:04 -0400
+	id 1vEAQ5-0006LQ-F9; Wed, 29 Oct 2025 13:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vEADK-0006pY-7Z
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:44:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vEADA-0004ct-R3
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:44:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761759826;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FC0pqOWjajrJZ/xYjC7DW4Vke/D0sHHKJifMVdVu3QI=;
- b=XQlQLKHY9I7tYliaHM1vTywllXZQ0j2pHX+817n5Ax/ffLYaGBAAjHaMA+basu3P1BEi4/
- zm6z6MTlli48XZDMF9VJucVlQdcGYGgt14TOCzfygq3ICyemM0z12DrZZId6SelD7/Je3s
- zNofkPZem76ojCaEkRg5EFp2iW0B2jY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-dZDj-0VTMum0oLulf3BSbA-1; Wed,
- 29 Oct 2025 13:43:42 -0400
-X-MC-Unique: dZDj-0VTMum0oLulf3BSbA-1
-X-Mimecast-MFC-AGG-ID: dZDj-0VTMum0oLulf3BSbA_1761759821
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59AC5195399A; Wed, 29 Oct 2025 17:43:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.204])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03B4730001A2; Wed, 29 Oct 2025 17:43:36 +0000 (UTC)
-Date: Wed, 29 Oct 2025 18:43:34 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- Ilya Dryomov <idryomov@gmail.com>, Peter Lieven <pl@dlhnet.de>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: Re: [PATCH 08/16] nvme: Fix coroutine waking
-Message-ID: <aQJSRicrD7NET-az@redhat.com>
-References: <20251028163343.116249-1-hreitz@redhat.com>
- <20251028163343.116249-9-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEAQ0-0006J6-Lz
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:57:10 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEAPq-0006jl-1P
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:57:07 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-4270a3464bcso100744f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 10:56:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761760610; x=1762365410; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=L2V822TFvbY+NBxCS/yBTmMmzRXa9R2+PR+4CeoavUI=;
+ b=BrcnoCKGhOqV9rrEh6HMFLKI+6ArtAsazMxyywAiStX8P7uceLtxRc9E+wjBODeant
+ /Veyg5VZdju8Vy+pcW88J9nZsFpo6GXRUcEgPk7gYQKj5852oMkhydDTHuC2GKAg0d04
+ Lb+iHRBOIoqRLQucOMQ/q4usRil42RyUX7qSqqQEYTDhxLKpsi5KkQH0e7+rtXU7o4aR
+ LY1BR1rjemRUN/4B1XWM750Qy2kitDgJxukSDxCV4nMigjKbNsFxURzgfWaeN0Vrxs1H
+ dEBb2I8t1Tv84+43lDS2hJXosRsEG53moVITGuiL0DjqxRxvQStFzBEcNfVgjhqPCD2G
+ dcWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761760610; x=1762365410;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L2V822TFvbY+NBxCS/yBTmMmzRXa9R2+PR+4CeoavUI=;
+ b=JGubjufjXO3iKXFkRJEUxse7VoGNAAwGMEje+fUkVaDU8mHBzvLznLKYyVaRtC6e2J
+ n8lBlXdoclyp/wkE9MtPFHjWAR7Oe7pBksUl20bSoCmJEz4StjllY7Kc9g6skNZNCYF4
+ xXNucHwvqR12Og8gWdphu41dFvLdZH+puQPzWzS9o3ZZWGI8MTvVEyvKvk9YbKs4o0XV
+ VIE1QFeJr3veQeSdKSeV51Ga2Y3HYZp6BJ/+bfhYcYaE+OAfdrPgKryXuTqUH6N1ihU9
+ 4OfBHCZ6g33YezF0ubk3mbx6tsd8TziZ0Uu2FS+e6tYob2KQwDejQsngiQTTZ6rVHxZz
+ IhdQ==
+X-Gm-Message-State: AOJu0Yy24OONaJCUgU9LH6w2TFzc1T4c+15NPTgK1aBPyloq/QAqr/UA
+ ferePRMFsUXQ1eZhRXxd+gO/FjG7UifpRQWMzotPG1l6PeO03vxOKqxJXuqjbqncx3St6bMpRUh
+ cs/b+kM8=
+X-Gm-Gg: ASbGncvegB7btWwgGsCyJoce5H045rFe5GAV0eBXcmriBNNYqV1Ey5JIlO9tfDvxqpc
+ NphjVktyBLiCAt9DwJxRzKwY+9x4bTZgmm0n1rJHC0BPIdBO4UmbfBXeIxhv/tBCGGlzXkcxrlv
+ VuGxPEn+Pv8IHlbhcyQekCqUh8FHDSGpRJeGBSaqGt2Ps5uv/Y3tPDKYxuPrf4uoqflHHOZ9FSx
+ Ca2jqBHAEf5lp4WK4J2+nfXQJehywF+iogcoMF2ckdcjWnjhjLZCpfmvvFumIlqlNryoc3NHl85
+ q6cuTmoO1NWF0gnZxK4D8QrVa5Zutp1w2rqJUTmdXawCi/pH90AXGiNP+yNQ/ymvuxclmK/4Xce
+ +bbhLbvc4ZNrwBK2gEK67Qfnt0YwKATrWWOJQQQIfzqua6KaDQScOXpfKWIhlq+zlkFROaQA5Bl
+ A56BX19k/47lat5d0ZaQYfB4qfJmhxiDgEMxmzSV7ZP4ozipin+ABjoQ==
+X-Google-Smtp-Source: AGHT+IFfjbOHKm6CBjOyzfTpsRFfbOWoyvaYtvmUbcagBG9QE3JgYEbGn9N/9ccSLrcaSW8z77bQQg==
+X-Received: by 2002:a05:6000:2f8a:b0:427:6c7:6703 with SMTP id
+ ffacd0b85a97d-429b4ca57bamr388302f8f.63.1761760610146; 
+ Wed, 29 Oct 2025 10:56:50 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952db9c6sm28019582f8f.36.2025.10.29.10.56.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 Oct 2025 10:56:48 -0700 (PDT)
+Message-ID: <5e4627f8-ae34-4b02-8540-a8fc008e0816@linaro.org>
+Date: Wed, 29 Oct 2025 18:56:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] accel/tcg: Trace tb_flush() and tb_gen_code() buffer
+ overflow
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250925035610.80605-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250925035610.80605-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251028163343.116249-9-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,48 +102,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 28.10.2025 um 17:33 hat Hanna Czenczek geschrieben:
-> nvme wakes the request coroutine via qemu_coroutine_enter() from a BH
-> scheduled in the BDS AioContext.  This may not be the same context as
-> the one in which the request originally ran, which would be wrong:
-> - It could mean we enter the coroutine before it yields,
-> - We would move the coroutine in to a different context.
+On 25/9/25 05:56, Philippe Mathieu-Daudé wrote:
+> Add trace events to better understand the changes introduced
+> by the "accel/tcg: Improve tb_flush usage" series recently
+> merged.
 > 
-> (Can be reproduced with multiqueue by adding a usleep(100000) before the
-> `while (data.ret == -EINPROGRESS)` loop.)
+> Philippe Mathieu-Daudé (2):
+>    accel/tcg: Trace tb_flush() calls
+>    accel/tcg: Trace tb_gen_code() buffer overflow
 > 
-> To fix that, schedule nvme_rw_cb_bh() in the coroutine AioContext.
-> (Just like in the preceding iscsi and nfs patches, we could drop the
-> trivial nvme_rw_cb_bh() and just use aio_co_wake() directly, but don’t
-> do that to keep replay_bh_schedule_oneshot_event().)
+>   accel/tcg/tb-maint.c      | 3 ++-
+>   accel/tcg/translate-all.c | 3 +++
+>   accel/tcg/trace-events    | 4 ++++
+>   3 files changed, 9 insertions(+), 1 deletion(-)
 > 
-> With this, we can remove NVMeCoData.ctx.
-> 
-> Note the check of data->co == NULL to bypass the BH/yield combination in
-> case nvme_rw_cb() is called from nvme_submit_command(): We probably want
-> to keep this fast path for performance reasons, but we have to be quite
-> careful about it:
-> - We cannot overload .ret for this, but have to use a dedicated
->   .skip_yield field.  Otherwise, if nvme_rw_cb() runs in a different
->   thread than the coroutine, it may see .ret set and skip the yield,
->   while nvme_rw_cb() will still schedule a BH for waking.   Therefore,
->   the signal to skip the yield can only be set in nvme_rw_cb() if waking
->   too is skipped, which is independent from communicating the return
->   value.
-> - We can only skip the yield if nvme_rw_cb() actually runs in the
->   request coroutine.  Otherwise (specifically if they run in different
->   AioContexts), the order between this function’s execution and the
->   coroutine yielding (or not yielding) is not reliable.
-> - There is no point to yielding in a loop; there are no spurious wakes,
->   so once we yield, we will only be re-entered once the command is done.
->   Replace `while` by `if`.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 
-As suggested in an earlier patch, I prefer to keep setting -EINPROGRESS,
-even if we don't check for it elsewhere, for better debugability.
-
-Kevin
-
+ping?
 
