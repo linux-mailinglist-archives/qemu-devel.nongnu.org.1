@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CBDC1A281
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1519C1A254
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:10:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE4y8-0003Vx-OX; Wed, 29 Oct 2025 08:08:00 -0400
+	id 1vE4xV-0003DL-6y; Wed, 29 Oct 2025 08:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xG-00036T-Gr
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:09 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xK-00039G-PJ
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4x4-0004zX-FE
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:03 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4x9-00050f-7o
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761739612;
+ s=mimecast20190719; t=1761739616;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gRvYHHCROCtAqIn6dCl6PSPyw62CJBs+/oirAHeLJCw=;
- b=f30SPW0lbipUc0Q2Njf0Xh622fIuP7ofB4IcF2yeOhgZ1uWUC6Aa6KYzQwcH4IqqV6iZ8w
- wzewISf8XQQbBCfQiYFYnh6EujHuBzDYkl4R2NUntkWmAXNi7uzoOui9DadUB961wRCEj1
- oTmk8hfWsoILKRzppI2ykJLrzwdcDTM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=nUxKI9ns8Nrn0orRcTM3BhllWySnqVTo3lPyM2Y42S8=;
+ b=RsZf1NnaBacOEsSu08CY4WZLcDwiVpyAfXrUDLcbw52xNfKhLywLUEJSLnnDBqneMTGUJW
+ bhg9Jb7eu3dqlMr3MhCl3VI9MzBOue4Th+q355Jk6Pjh+uUyRMnLWFwM6XD9tjSs+ZLSSW
+ Gkw/YppF+56PJg2OaVQX4PZv6Y6waaI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-14-yzHmBEa_PhOcIj7bUJK6bQ-1; Wed,
- 29 Oct 2025 08:06:50 -0400
-X-MC-Unique: yzHmBEa_PhOcIj7bUJK6bQ-1
-X-Mimecast-MFC-AGG-ID: yzHmBEa_PhOcIj7bUJK6bQ_1761739610
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-7K41TIr5P6OEsU2S0XbAYg-1; Wed,
+ 29 Oct 2025 08:06:52 -0400
+X-MC-Unique: 7K41TIr5P6OEsU2S0XbAYg-1
+X-Mimecast-MFC-AGG-ID: 7K41TIr5P6OEsU2S0XbAYg_1761739611
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 035021956086; Wed, 29 Oct 2025 12:06:50 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B5FA81801231; Wed, 29 Oct 2025 12:06:51 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.33.204])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ABB1A180057C; Wed, 29 Oct 2025 12:06:48 +0000 (UTC)
+ id 77FBB180057C; Wed, 29 Oct 2025 12:06:50 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 06/18] iotests: Adjust nbd expected outputs to match current
- behavior
-Date: Wed, 29 Oct 2025 13:06:22 +0100
-Message-ID: <20251029120634.288467-7-kwolf@redhat.com>
+Subject: [PULL 07/18] iotests: Adjust fuse-allow-other expected output
+Date: Wed, 29 Oct 2025 13:06:23 +0100
+Message-ID: <20251029120634.288467-8-kwolf@redhat.com>
 In-Reply-To: <20251029120634.288467-1-kwolf@redhat.com>
 References: <20251029120634.288467-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -84,49 +83,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Blake <eblake@redhat.com>
 
-'git bisect' confirms that the NBD iotests 94 and 119 have been broken
-since commit effd60c8 in v9.0.0; but as Dan Berrange's efforts to
-improve CI have proven, we haven't been reliably running them to
-notice.  The change was good (moving coroutine commands to run in the
-right context), but it meant that "execute":"quit" now waits to
-complete until the coroutines tearing down NBD have first reported the
-SHUTDOWN event, in the opposite order of what happened pre-patch.
+The iotest fuse-allow-other has been broken since commit effd60c8 in
+v9.0.0; but as Dan Berrange's efforts to improve CI have proven, we
+haven't been reliably running it to notice.  The change in that commit
+was good (moving coroutine commands to run in the right context), but
+it meant that "execute":"quit" now waits to complete until the
+coroutines tearing down fuse have first reported the SHUTDOWN event,
+in the opposite order of what happened pre-patch.
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Fixes: effd60c8 ("monitor: only run coroutine commands in qemu_aio_context", v9.0.0)
+Fixes: effd60c8 ("monitor: only run coroutine commands in qemu_aio_context",
 Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251013213638.494193-2-eblake@redhat.com>
+Message-ID: <20251021205843.2585624-2-eblake@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/094.out | 2 +-
- tests/qemu-iotests/119.out | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/qemu-iotests/tests/fuse-allow-other.out | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qemu-iotests/094.out b/tests/qemu-iotests/094.out
-index 97f894cf8f..9178474e79 100644
---- a/tests/qemu-iotests/094.out
-+++ b/tests/qemu-iotests/094.out
-@@ -23,6 +23,6 @@ Formatting 'TEST_DIR/source.IMGFMT', fmt=IMGFMT size=67108864
+diff --git a/tests/qemu-iotests/tests/fuse-allow-other.out b/tests/qemu-iotests/tests/fuse-allow-other.out
+index 543fa52a06..3219fc35e0 100644
+--- a/tests/qemu-iotests/tests/fuse-allow-other.out
++++ b/tests/qemu-iotests/tests/fuse-allow-other.out
+@@ -28,9 +28,9 @@ stat: cannot statx 'fuse-export': Permission denied
+ cat: fuse-export: Permission denied
+ stat: cannot statx 'fuse-export': Permission denied
  {'execute': 'quit'}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "src"}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "src"}}
 -{"return": {}}
  {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
-+{"return": {}}
- *** done
-diff --git a/tests/qemu-iotests/119.out b/tests/qemu-iotests/119.out
-index 7b7f0f4bcc..45f82a4faa 100644
---- a/tests/qemu-iotests/119.out
-+++ b/tests/qemu-iotests/119.out
-@@ -5,7 +5,7 @@ QMP_VERSION
- read 65536/65536 bytes at offset 0
- 64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- {"return": ""}
--{"return": {}}
- {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_EXPORT_DELETED", "data": {"id": "export"}}
 +{"return": {}}
  
+ --- allow-other=on ---
+ {'execute': 'qmp_capabilities'}
+@@ -55,9 +55,9 @@ Permissions seen by nobody: 444
+ cat: fuse-export: Permission denied
+ Permissions seen by nobody: 440
+ {'execute': 'quit'}
+-{"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_EXPORT_DELETED", "data": {"id": "export"}}
++{"return": {}}
+ 
+ --- allow-other=auto ---
+ {'execute': 'qmp_capabilities'}
+@@ -82,7 +82,7 @@ Permissions seen by nobody: 444
+ cat: fuse-export: Permission denied
+ Permissions seen by nobody: 440
+ {'execute': 'quit'}
+-{"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_EXPORT_DELETED", "data": {"id": "export"}}
++{"return": {}}
  *** done
 -- 
 2.51.0
