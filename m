@@ -2,66 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D47C1A25D
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F035AC1A2CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:22:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE50r-0005t7-Tr; Wed, 29 Oct 2025 08:10:50 -0400
+	id 1vE59x-00064N-GO; Wed, 29 Oct 2025 08:20:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xw-0003R8-Cr
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE59o-0005yz-De
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:20:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xS-00057o-Iy
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vE59i-0007BS-4n
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:20:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761739635;
+ s=mimecast20190719; t=1761740390;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GfZPoYyKmyu4FhVIzLk59cIo5VdUH5ApabHHSYQUrTc=;
- b=aIR/di+VcacrrgzFK72h5pwZxQyN3ltPtpNe6dXXwCue3c+UOV6us+fgc5iXtNFnUOn9mC
- L6kEFQzLDyxQFBTpWcsRb7/8+vnga/l9yqy3iXBSMFW9dlyz+mli/RQ9s71Aem5efzeXA+
- D3Ftyz0FQt5d/RVjcUsFPk2jlMtuKa0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-hFIZtdgiOJmoLYnlqYRFHQ-1; Wed,
- 29 Oct 2025 08:07:12 -0400
-X-MC-Unique: hFIZtdgiOJmoLYnlqYRFHQ-1
-X-Mimecast-MFC-AGG-ID: hFIZtdgiOJmoLYnlqYRFHQ_1761739631
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5116B18002E4; Wed, 29 Oct 2025 12:07:11 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.44.33.204])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E82C3180057F; Wed, 29 Oct 2025 12:07:09 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 18/18] qemu-img info: Add cache mode option
-Date: Wed, 29 Oct 2025 13:06:34 +0100
-Message-ID: <20251029120634.288467-19-kwolf@redhat.com>
-In-Reply-To: <20251029120634.288467-1-kwolf@redhat.com>
-References: <20251029120634.288467-1-kwolf@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=RCimj6Hw41iF24qx9ko5qQ2OLM5x0wg84Rprba27BVQ=;
+ b=NoOMyVCkEiinypTMZmzRZfZZpmQEI8Gs9+L/z0FNNSmTOd9u1FdZEs2HjNOpn9tk83kMLh
+ nI2caVvznkvUTeQEj567MT7pBUh7S6NV2CRz0zpl90MzqHeN7d/0+exseTJicWzQ1yREBE
+ G2GFvIm7HSoxkCk/XaoDA73ouFPPcjk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-A52Clx-qNSCjighsl9nFbQ-1; Wed, 29 Oct 2025 08:19:49 -0400
+X-MC-Unique: A52Clx-qNSCjighsl9nFbQ-1
+X-Mimecast-MFC-AGG-ID: A52Clx-qNSCjighsl9nFbQ_1761740388
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-427013eb71dso6363202f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 05:19:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761740388; x=1762345188;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RCimj6Hw41iF24qx9ko5qQ2OLM5x0wg84Rprba27BVQ=;
+ b=sTYYuTI7yfq/OkVWPFW0/S9Ux4evtB2IlYS0H23SPmO6cjxLEjDcnhjf+B2mjLKtC/
+ Bx/HauW1M8RgyszXQPGz2JiMsEJ3BqJKJFnfzUTNGJoGz7y6DcVyKqZratcL7hIqaw1W
+ UFGMZ7a7rcvZtZlBZ3RetWM6bez74ULiETUvGd09xzvsJUB1HEI3INdJEB1wqNUHYDpN
+ DRw+3KaJFV12I4ZNkSM1nOvnW8OWgJ4HaHX2+Cycd7gwXDezTd/DgjiFfFT8AzV2KpIv
+ 0KQ4WzHMOB5DpTrisC40KFDwK5ahsM6Cq4J4Oh1qg3BGVTcbF1t9//wCRWRWvZBqdkpB
+ Fx6Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV0C/IL+6/u4cQbP/VeG/9M04yeycRUAJvR9HkuycA7zEMCYFTdhGeuB+Y0+t6qZSpDjrr1cDRoaM8c@nongnu.org
+X-Gm-Message-State: AOJu0YykgI/fWgPYSogghUvLL0DfboMk4eG+jkxvqkPFElOhptgjcXUS
+ 41d1KgWx0nnv3wQJbIRML8J+A2lpZ/M1xFMVED+VDHQ/hYyKfGGzoCVF9PloI96t+Nu4ckLMBuv
+ alqhrqhwAkfYZIUX0WEqWhBoGd5ILNrd0GRbtKSvXRRsnxqJlWpGx38O2
+X-Gm-Gg: ASbGncsJjrup1ydRA/JWYxTzlwbT1+6+x3NpnhpJmujkn0ujHwKO1SkREpO8VWmK9fR
+ mxyeHaNN3FckPokeBC327GDMWiaTqh9hW3gJhunIgitsFpMYIqD5S2FwvYjKfs0fot7TCVwpic4
+ gh+c6WbUiZ55Gl0rlV7nw5WzZbAhZ5ZjGOM/CzBHQaRJVsFql76bOCiw5NcxCPtbiSegVHP6Xx0
+ btuNXbmxBz+dRv5jmKKfgaLyV5az8pehsVXvFLMSTwM9gOTZfYq5Fs6gX6+/7HkH3e1smfZ+7/g
+ mB9sY12UYyrW/Vw7KT87uk2nzW9UYWYG6aJ+vsNKjUwBi6CxW08EhjIcoNJzHOMQUPb58Eo=
+X-Received: by 2002:a05:6000:4210:b0:425:825d:2c64 with SMTP id
+ ffacd0b85a97d-429aef86311mr2486182f8f.17.1761740387884; 
+ Wed, 29 Oct 2025 05:19:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnGZSmkWGTkHfBrbDqAR6MGoPmfZEbncQLiLcFnKP6LLUr7cDTz4Hvmh/GjmLAXsuBkkGMWg==
+X-Received: by 2002:a05:6000:4210:b0:425:825d:2c64 with SMTP id
+ ffacd0b85a97d-429aef86311mr2486155f8f.17.1761740387462; 
+ Wed, 29 Oct 2025 05:19:47 -0700 (PDT)
+Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952db9c6sm26563957f8f.36.2025.10.29.05.19.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 Oct 2025 05:19:47 -0700 (PDT)
+Message-ID: <c3d0c83a-f1e9-4e93-8a35-41f58da56e61@redhat.com>
+Date: Wed, 29 Oct 2025 13:19:46 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH PING v4 0/3] target/s390x: Fix missing clock-comparator
+ interrupts
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+References: <20251016175954.41153-1-iii@linux.ibm.com>
+ <f27dace00e0e89c5b16ac555f92c976575d0c4ab.camel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <f27dace00e0e89c5b16ac555f92c976575d0c4ab.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -80,143 +153,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When querying block limits, different cache modes (in particular
-O_DIRECT or not) can result in different limits. Add an option to
-'qemu-img info' that allows the user to specify a cache mode, so that
-they can get the block limits for the cache mode they intend to use with
-their VM.
+On 29/10/2025 10.55, Ilya Leoshkevich wrote:
+> On Thu, 2025-10-16 at 19:58 +0200, Ilya Leoshkevich wrote:
+>> v3:
+>> https://lore.kernel.org/qemu-devel/20251016120928.22467-1-iii@linux.ibm.com/
+>> v3 -> v4: Add a patch for the missing address generation affecting
+>>            interrupts. Slightly adjust the test, keep Thomas' R-b.
+>>            Add Thomas' R-b to the timer rearm fix.
+>>
+>> v2:
+>> https://lore.kernel.org/qemu-devel/20251015142141.3238-1-iii@linux.ibm.com/
+>> v2 -> v3: Rearm the timer on control register load (Thomas).
+>>            Add Thomas' R-b to the test.
+>>
+>> v1:
+>> https://lore.kernel.org/qemu-devel/20251014160743.398093-1-iii@linux.ibm.com/
+>> v1 -> v2: Add Thomas' R-b.
+>>            Cc: stable (Michael).
+>>            Improve formatting, commit messages, and test (Ilya).
+>>
+>> Hi,
+>>
+>> While trying to reproduce [1], I found two bugs in the clock
+>> comparator
+>> handling. This series fixes all three issues and adds a test.
+>>
+>> [1]
+>> https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.de/
+>>
+>> Best regards,
+>> Ilya
+>>
+>> Ilya Leoshkevich (4):
+>>    target/s390x: Fix missing interrupts for small CKC values
+>>    target/s390x: Fix missing clock-comparator interrupts after reset
+>>    target/s390x: Use address generation for register branch targets
+>>    tests/tcg/s390x: Test SET CLOCK COMPARATOR
+>>
+>>   target/s390x/tcg/mem_helper.c           | 11 ++++-
+>>   target/s390x/tcg/misc_helper.c          | 12 +++--
+>>   target/s390x/tcg/translate.c            | 11 +++--
+>>   tests/tcg/s390x/Makefile.softmmu-target |  1 +
+>>   tests/tcg/s390x/sckc.S                  | 63
+>> +++++++++++++++++++++++++
+>>   5 files changed, 89 insertions(+), 9 deletions(-)
+>>   create mode 100644 tests/tcg/s390x/sckc.S
+> 
+> Hello,
+> 
+> I would like to ping this series.
+> 
+> Patches 1, 2, and 4 are already reviewed (thanks, Thomas!).
+> Patch 3 still needs a review.
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20251024123041.51254-5-kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- docs/tools/qemu-img.rst |  2 +-
- qemu-img.c              | 25 +++++++++++++++++++++----
- qemu-img-cmds.hx        |  4 ++--
- 3 files changed, 24 insertions(+), 7 deletions(-)
+  Hi Ilya,
 
-diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
-index fdc9ea9cf2..558b0eb84d 100644
---- a/docs/tools/qemu-img.rst
-+++ b/docs/tools/qemu-img.rst
-@@ -503,7 +503,7 @@ Command description:
- 
-   The size syntax is similar to :manpage:`dd(1)`'s size syntax.
- 
--.. option:: info [--object OBJECTDEF] [--image-opts] [-f FMT] [--output=OFMT] [--backing-chain] [--limits] [-U] FILENAME
-+.. option:: info [--object OBJECTDEF] [--image-opts] [-f FMT] [--output=OFMT] [--backing-chain] [--limits] [-t CACHE] [-U] FILENAME
- 
-   Give information about the disk image *FILENAME*. Use it in
-   particular to know the size reserved on disk which can be different
-diff --git a/qemu-img.c b/qemu-img.c
-index 5cdbeda969..a7791896c1 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -3003,6 +3003,7 @@ static gboolean str_equal_func(gconstpointer a, gconstpointer b)
- static BlockGraphInfoList *collect_image_info_list(bool image_opts,
-                                                    const char *filename,
-                                                    const char *fmt,
-+                                                   const char *cache,
-                                                    bool chain, bool limits,
-                                                    bool force_share)
- {
-@@ -3010,6 +3011,15 @@ static BlockGraphInfoList *collect_image_info_list(bool image_opts,
-     BlockGraphInfoList **tail = &head;
-     GHashTable *filenames;
-     Error *err = NULL;
-+    int cache_flags = 0;
-+    bool writethrough = false;
-+    int ret;
-+
-+    ret = bdrv_parse_cache_mode(cache, &cache_flags, &writethrough);
-+    if (ret < 0) {
-+        error_report("Invalid cache option: %s", cache);
-+        return NULL;
-+    }
- 
-     filenames = g_hash_table_new_full(g_str_hash, str_equal_func, NULL, NULL);
- 
-@@ -3026,8 +3036,8 @@ static BlockGraphInfoList *collect_image_info_list(bool image_opts,
-         g_hash_table_insert(filenames, (gpointer)filename, NULL);
- 
-         blk = img_open(image_opts, filename, fmt,
--                       BDRV_O_NO_BACKING | BDRV_O_NO_IO, false, false,
--                       force_share);
-+                       BDRV_O_NO_BACKING | BDRV_O_NO_IO | cache_flags,
-+                       writethrough, false, force_share);
-         if (!blk) {
-             goto err;
-         }
-@@ -3087,6 +3097,7 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-     OutputFormat output_format = OFORMAT_HUMAN;
-     bool chain = false;
-     const char *filename, *fmt;
-+    const char *cache = BDRV_DEFAULT_CACHE;
-     BlockGraphInfoList *list;
-     bool image_opts = false;
-     bool force_share = false;
-@@ -3099,13 +3110,14 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-             {"format", required_argument, 0, 'f'},
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-             {"backing-chain", no_argument, 0, OPTION_BACKING_CHAIN},
-+            {"cache", required_argument, 0, 't'},
-             {"force-share", no_argument, 0, 'U'},
-             {"limits", no_argument, 0, OPTION_LIMITS},
-             {"output", required_argument, 0, OPTION_OUTPUT},
-             {"object", required_argument, 0, OPTION_OBJECT},
-             {0, 0, 0, 0}
-         };
--        c = getopt_long(argc, argv, "hf:U", long_options, NULL);
-+        c = getopt_long(argc, argv, "hf:t:U", long_options, NULL);
-         if (c == -1) {
-             break;
-         }
-@@ -3121,6 +3133,8 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
- "     (incompatible with -f|--format)\n"
- "  --backing-chain\n"
- "     display information about the backing chain for copy-on-write overlays\n"
-+"  -t, --cache CACHE\n"
-+"     cache mode for FILE (default: " BDRV_DEFAULT_CACHE ")\n"
- "  -U, --force-share\n"
- "     open image in shared mode for concurrent access\n"
- "  --limits\n"
-@@ -3143,6 +3157,9 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_BACKING_CHAIN:
-             chain = true;
-             break;
-+        case 't':
-+            cache = optarg;
-+            break;
-         case 'U':
-             force_share = true;
-             break;
-@@ -3164,7 +3181,7 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-     }
-     filename = argv[optind++];
- 
--    list = collect_image_info_list(image_opts, filename, fmt, chain,
-+    list = collect_image_info_list(image_opts, filename, fmt, cache, chain,
-                                    limits, force_share);
-     if (!list) {
-         return 1;
-diff --git a/qemu-img-cmds.hx b/qemu-img-cmds.hx
-index 74b66f9d42..6bc8265cfb 100644
---- a/qemu-img-cmds.hx
-+++ b/qemu-img-cmds.hx
-@@ -66,9 +66,9 @@ SRST
- ERST
- 
- DEF("info", img_info,
--    "info [--object objectdef] [--image-opts] [-f fmt] [--output=ofmt] [--backing-chain] [--limits] [-U] filename")
-+    "info [--object objectdef] [--image-opts] [-f fmt] [--output=ofmt] [--backing-chain] [--limits] [-t CACHE] [-U] filename")
- SRST
--.. option:: info [--object OBJECTDEF] [--image-opts] [-f FMT] [--output=OFMT] [--backing-chain] [--limits] [-U] FILENAME
-+.. option:: info [--object OBJECTDEF] [--image-opts] [-f FMT] [--output=OFMT] [--backing-chain] [--limits] [-t CACHE] [-U] FILENAME
- ERST
- 
- DEF("map", img_map,
--- 
-2.51.0
+I still got it on my radar, and indeed, it would be great to get an Ack from 
+Richard or David for patch 3.
+
+However, the main problem is that we need the fix for the C23 problem in the 
+fourth patch first before this could get merged 
+(https://gitlab.com/qemu-project/SLOF/-/merge_requests/2). It should 
+hopefully get fixed with Harsh's next ppc pull request, see:
+
+  https://lore.kernel.org/qemu-devel/21a94013-c3ef-49e4-abfa-a277277a03b0@linux.ibm.com
+
+  Thomas
 
 
