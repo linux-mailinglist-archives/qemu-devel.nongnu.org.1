@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CD8C1D307
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 21:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAC1C1D402
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 21:42:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vECiR-0008Pk-9N; Wed, 29 Oct 2025 16:24:21 -0400
+	id 1vECsm-0003Hp-II; Wed, 29 Oct 2025 16:35:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vECiO-0008P9-Cg
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 16:24:16 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vECsT-0003G5-SR
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 16:34:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vECiH-0003uM-De
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 16:24:16 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vECsF-00051z-44
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 16:34:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761769441;
+ s=mimecast20190719; t=1761770058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CurZeIG0kJD341p+XImiAFeeFuyeBzMxVCLuaDXl8q8=;
- b=N9UEADxhU3imKfMWc1bPi0/9JQQ2sxA7jcGn6Gfq8SR1g6sibagqV6w/FUquTJp1nGclmY
- LVconLFFauEKxxSygs41FPj5pfv8ZM3J0n+MSA5kwziHbUubZdt/NoaafgQvYyt899Xp78
- JGm/rbJfRQchi/3O5Eccfe4RH/GLJs0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YueqrqZWN9Vb9wmaqq0Ta0PKpJNEWmhbKBSmtpHtOoQ=;
+ b=i35qV9MhYGA9j5J2gGeOuwW3s68S9Rv6trmRxYSi+DV3mzvJuxOeUZSxFBL4I9vImTkBcz
+ S9crEylI1TEnsMgQIy9hK+/hF3pilTcsv6cI0hDg2aiIcrtDSBnq4JhG8xxgsbB3Sc01BJ
+ FgQqwbVDcdaDYTXwrWUhvM9V9mNOfYM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-3GK2TcvlOBmB0dTYB2qgng-1; Wed,
- 29 Oct 2025 16:23:56 -0400
-X-MC-Unique: 3GK2TcvlOBmB0dTYB2qgng-1
-X-Mimecast-MFC-AGG-ID: 3GK2TcvlOBmB0dTYB2qgng_1761769435
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-rhXWub_YM1-h4xcFUV_5CA-1; Wed,
+ 29 Oct 2025 16:34:15 -0400
+X-MC-Unique: rhXWub_YM1-h4xcFUV_5CA-1
+X-Mimecast-MFC-AGG-ID: rhXWub_YM1-h4xcFUV_5CA_1761770054
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1229F180136E; Wed, 29 Oct 2025 20:23:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.204])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 54B9C1800579; Wed, 29 Oct 2025 20:23:49 +0000 (UTC)
-Date: Wed, 29 Oct 2025 21:23:47 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- Ilya Dryomov <idryomov@gmail.com>, Peter Lieven <pl@dlhnet.de>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: Re: [PATCH 10/16] qcow2: Fix cache_clean_timer
-Message-ID: <aQJ30-Ifcji8lrme@redhat.com>
-References: <20251028163343.116249-1-hreitz@redhat.com>
- <20251028163343.116249-11-hreitz@redhat.com>
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 71E5818009C0; Wed, 29 Oct 2025 20:34:14 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.43])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 66D17180057C; Wed, 29 Oct 2025 20:34:13 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, hibriansong@gmail.com,
+ qemu-block@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ eblake@redhat.com
+Subject: [PATCH v5 00/12] aio: add the aio_add_sqe() io_uring API
+Date: Wed, 29 Oct 2025 16:33:59 -0400
+Message-ID: <20251029203411.445852-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251028163343.116249-11-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,192 +81,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 28.10.2025 um 17:33 hat Hanna Czenczek geschrieben:
-> The cache-cleaner runs as a timer CB in the BDS AioContext.  With
-> multiqueue, it can run concurrently to I/O requests, and because it does
-> not take any lock, this can break concurrent cache accesses, corrupting
-> the image.  While the chances of this happening are low, it can be
-> reproduced e.g. by modifying the code to schedule the timer CB every
-> 5 ms (instead of at most once per second) and modifying the last (inner)
-> while loop of qcow2_cache_clean_unused() like so:
-> 
->     while (i < c->size && can_clean_entry(c, i)) {
->         for (int j = 0; j < 1000 && can_clean_entry(c, i); j++) {
->             usleep(100);
->         }
->         c->entries[i].offset = 0;
->         c->entries[i].lru_counter = 0;
->         i++;
->         to_clean++;
->     }
-> 
-> i.e. making it wait on purpose for the point in time where the cache is
-> in use by something else.
-> 
-> The solution chosen for this in this patch is not the best solution, I
-> hope, but I admittedly can’t come up with anything strictly better.
-> 
-> We can protect from concurrent cache accesses either by taking the
-> existing s->lock, or we introduce a new (non-coroutine) mutex
-> specifically for cache accesses.  I would prefer to avoid the latter so
-> as not to introduce additional (very slight) overhead.
+v5:
+- Explain how fdmon-io_uring.c differs from other fdmon implementations
+  in commit message [Kevin]
+- Move test-nested-aio-poll aio_get_g_source() removal into commit that touches test case [Kevin]
+- Avoid g_source_add_poll() use-after-free in fdmon_poll_update() [Kevin]
+- Avoid duplication in fdmon_epoll_gsource_dispatch(), use fdmon_epoll_wait() [Kevin]
+- Drop unnecessary revents checks in fdmon_poll_gsource_dispatch() [Kevin]
+- Mention in commit message that fdmon-io_uring.c is the new default [Kevin]
+- Add comments explaining how to clean up resources in error paths [Kevin]
+- Indicate error in return value from function with Error *errp arg [Kevin]
+- Add patch to unindent fdmon_io_uring_destroy() [Kevin]
+- Add patch to introduce FDMonOps->dispatch() callback [Kevin]
+- Drop patch with hacky BH optimization for fdmon-io_uring.c [Kevin]
+- Replace cqe_handler_bh with FDMonOps->dispatch() [Kevin]
+- Rename AioHandler->cqe_handler field to ->internal_cqe_handler [Kevin]
+- Consolidate fdmon-io_uring.c trace-events changes into this commit
+- Reduce #ifdef HAVE_IO_URING_PREP_WRITEV2 code duplication [Kevin]
 
-In theory, the old plan was that eventually qcow2 would use fine grained
-locks instead of the single s->lock, and having a separate cache lock
-would be a step towards it. But if we never actually make use of it to
-hold s->lock for a shorter time, that's not really a good argument. I'm
-not sure if that's ever going to happen unless for a rewrite in Rust or
-something.
+v4:
+- Rebased and tested after the QEMU 10.1.0 release
 
-I never tried to measure specifically if lock contention is a problem
-with high queue depth and random I/O on a huge disk. Intuitively,
-holding s->lock while doing I/O for loading entries into the cache can't
-be really good.
+v3:
+- Add assertions documenting that ADD and REMOVE flags cannot be present
+  together with DELETE_AIO_HANDLER [Kevin]
 
-Anyway, I went a bit on a tangent there...
+v2:
+- Performance improvements
+- Fix pre_sqe -> prep_sqe typo [Eric]
+- Add #endif terminator comment [Eric]
+- Fix spacing in aio_ctx_finalize() argument list [Eric]
+- Add new "block/io_uring: use non-vectored read/write when possible" patch [Eric]
+- Drop Patch 1 because multi-shot POLL_ADD has edge-triggered semantics instead
+  of level-triggered semantics required by QEMU's AioContext APIs. The
+  qemu-iotests 308 test case was hanging because block/export/fuse.c relies on
+  level-triggered semantics. Luckily the performance reason for switching from
+  one-shot to multi-shot has been solved by Patch 2 ("aio-posix: keep polling
+  enabled with fdmon-io_uring.c"), so it's okay to use single-shot.
+- Add a new Patch 1. It's a bug fix for a user-after-free in fdmon-io_uring.c
+  triggered by qemu-iotests iothreads-nbd-export.
 
-> Using s->lock, which is a coroutine mutex, however means that we need to
-> take it in a coroutine, so the timer CB must enter such a coroutine.  As
-> a result, descheduling the timer is no longer a guarantee that the
-> cache-cleaner will not run, because it may now be yielding in
-> qemu_co_mutex_lock().
+This patch series contains io_uring improvements:
 
-I think creating a coroutine in cache_clean_timer_cb() is the wrong
-approach. Instead, cache_clean_timer_init() could create a coroutine
-and its implementation could be something like this:
+1. Support the glib event loop in fdmon-io_uring.
+   - aio-posix: fix race between io_uring CQE and AioHandler deletion
+   - aio-posix: keep polling enabled with fdmon-io_uring.c
+   - tests/unit: skip test-nested-aio-poll with io_uring
+   - aio-posix: integrate fdmon into glib event loop
 
-    while (!s->cache_clean_timer_stopping) {
-        qemu_co_sleep_ns_wakeable(&s->cache_clean_timer_wake,
-                                  QEMU_CLOCK_VIRTUAL,
-                                  s->cache_clean_interval * NANOSECONDS_PER_SECOND);
+2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
+   Otherwise continue using ppoll(2) or epoll(7).
+   - aio: remove aio_context_use_g_source()
 
-        qemu_co_mutex_lock(&s->lock);
-        qcow2_cache_clean_unused(s->l2_table_cache);
-        qcow2_cache_clean_unused(s->refcount_block_cache);
-        qemu_co_mutex_unlock(&s->lock);
-    }
-    s->cache_clean_timer_stopping = false;
+3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
+   event loop.
+   - aio: free AioContext when aio_context_new() fails
+   - aio: add errp argument to aio_context_setup()
+   - aio-posix: gracefully handle io_uring_queue_init() failure
+   - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+   - aio-posix: avoid EventNotifier for cqe_handler_bh
 
-> (Note even now this was only guaranteed for cache_clean_timer_del()
-> callers that run in the BDS (the timer’s) AioContext.  For callers
-> running in the main context, the problem may have already existed,
-> though maybe the BQL prevents timers from running in other contexts, I’m
-> not sure.)
-> 
-> Polling to await the timer to actually settle seems very complicated for
-> something that’s rather a minor problem, but I can’t come up with any
-> better solution that doesn’t again just overlook potential problems.
-> 
-> (One cleaner idea may be to have a generic way to have timers run
-> coroutines, and to await those when descheduling the timer.  But while
-> cleaner, it would also be more complicated, and I don’t think worth it
-> at this point.)
-> 
-> (Not Cc-ing qemu-stable, as the issue is quite unlikely to be hit, and
-> I’m not too fond of this solution.)
-> 
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  block/qcow2.h |  1 +
->  block/qcow2.c | 90 ++++++++++++++++++++++++++++++++++++++++++++-------
->  2 files changed, 79 insertions(+), 12 deletions(-)
+4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
+   io_uring context for --blockdev aio=io_uring. This simplifies the code,
+   reduces the number of file descriptors, and demonstrates the aio_add_sqe()
+   API.
+   - block/io_uring: use aio_add_sqe()
+   - block/io_uring: use non-vectored read/write when possible
 
-> @@ -867,6 +893,39 @@ static void cache_clean_timer_del(BlockDriverState *bs)
->      }
->  }
->  
-> +/*
-> + * Delete the cache clean timer and await any yet running instance.
-> + * Must be called from the main or BDS AioContext, holding s->lock.
-> + */
-> +static void coroutine_fn
-> +cache_clean_timer_locked_co_del_and_wait(BlockDriverState *bs)
-> +{
-> +    BDRVQcow2State *s = bs->opaque;
-> +    IO_OR_GS_CODE();
-> +    cache_clean_timer_del(bs);
-> +    if (qatomic_read(&s->cache_clean_running)) {
-> +        qemu_co_mutex_unlock(&s->lock);
-> +        qatomic_set(&s->cache_clean_polling, true);
-> +        BDRV_POLL_WHILE(bs, qatomic_read(&s->cache_clean_running));
+The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
+Google Summer of Code project and other future QEMU features that natively use
+Linux io_uring functionality.
 
-Polling in a coroutine_fn is verboten.
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  78353  84860 +8.3%
+randread  4k      64 native        0 262370 269823 +2.8%
+randwrite 4k       1 native        0 142703 144348 +1.2%
+randwrite 4k      64 native        0 259947 263895 +1.5%
+randread  4k       1 io_uring      0  76883  78270 +1.8%
+randread  4k      64 io_uring      0 269712 250513 -7.1%
+randwrite 4k       1 io_uring      0 143657 131481 -8.5%
+randwrite 4k      64 io_uring      0 274461 264785 -3.5%
+randread  4k       1 native        1  84080  84097 0.0%
+randread  4k      64 native        1 314650 311193 -1.1%
+randwrite 4k       1 native        1 172463 159993 -7.2%
+randwrite 4k      64 native        1 303091 299726 -1.1%
+randread  4k       1 io_uring      1  83415  84081 +0.8%
+randread  4k      64 io_uring      1 324797 318429 -2.0%
+randwrite 4k       1 io_uring      1 174421 172809 -0.9%
+randwrite 4k      64 io_uring      1 323394 312286 -3.4%
 
-If we do need this function, I think it would be a yield here and a wake
-on the other side. I think we might be able to get around it if we move
-the call from qcow2_do_open() into qcow2_open() (i.e. outside the
-coroutine). A bit ugly, so your choice.
+Performance is in the same ballpark as without fdmon-io_uring. Results vary
+from run to run due to the timing/batching of requests (even with iodepth=1 due
+to 8 vCPUs using a single IOThread).
 
-> +        qemu_co_mutex_lock(&s->lock);
-> +    }
-> +}
-> +
-> +/*
-> + * Delete the cache clean timer and await any yet running instance.
-> + * Must be called from the main or BDS AioContext without s->lock held.
-> + */
-> +static void cache_clean_timer_del_and_wait(BlockDriverState *bs)
-> +{
-> +    BDRVQcow2State *s = bs->opaque;
-> +    IO_OR_GS_CODE();
-> +    cache_clean_timer_del(bs);
-> +    if (qatomic_read(&s->cache_clean_running)) {
-> +        qatomic_set(&s->cache_clean_polling, true);
-> +        BDRV_POLL_WHILE(bs, qatomic_read(&s->cache_clean_running));
-> +    }
-> +}
-> +
->  static void qcow2_detach_aio_context(BlockDriverState *bs)
->  {
->      cache_clean_timer_del(bs);
-> @@ -1214,12 +1273,20 @@ fail:
->      return ret;
->  }
->  
-> +/* s_locked specifies whether s->lock is held or not */
->  static void qcow2_update_options_commit(BlockDriverState *bs,
-> -                                        Qcow2ReopenState *r)
-> +                                        Qcow2ReopenState *r,
-> +                                        bool s_locked)
->  {
->      BDRVQcow2State *s = bs->opaque;
->      int i;
->  
-> +    if (s_locked) {
-> +        cache_clean_timer_locked_co_del_and_wait(bs);
-> +    } else {
-> +        cache_clean_timer_del_and_wait(bs);
-> +    }
-> +
->      if (s->l2_table_cache) {
->          qcow2_cache_destroy(s->l2_table_cache);
->      }
-> @@ -1228,6 +1295,10 @@ static void qcow2_update_options_commit(BlockDriverState *bs,
->      }
->      s->l2_table_cache = r->l2_table_cache;
->      s->refcount_block_cache = r->refcount_block_cache;
-> +
-> +    s->cache_clean_interval = r->cache_clean_interval;
-> +    cache_clean_timer_init(bs, bdrv_get_aio_context(bs));
-> +
->      s->l2_slice_size = r->l2_slice_size;
->  
->      s->overlap_check = r->overlap_check;
-> @@ -1239,12 +1310,6 @@ static void qcow2_update_options_commit(BlockDriverState *bs,
->  
->      s->discard_no_unref = r->discard_no_unref;
->  
-> -    if (s->cache_clean_interval != r->cache_clean_interval) {
-> -        cache_clean_timer_del(bs);
-> -        s->cache_clean_interval = r->cache_clean_interval;
-> -        cache_clean_timer_init(bs, bdrv_get_aio_context(bs));
-> -    }
-> -
+Here is the performance from v1 for reference:
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  76281 79707  +4.5%
+randread  4k      64 native        0 255078 247293 -3.1%
+randwrite 4k       1 native        0 132706 123337 -7.1%
+randwrite 4k      64 native        0 275589 245192 -11%
+randread  4k       1 io_uring      0  75284 78023  +3.5%
+randread  4k      64 io_uring      0 254637 248222 -2.5%
+randwrite 4k       1 io_uring      0 126519 128641 +1.7%
+randwrite 4k      64 io_uring      0 258967 249266 -3.7%
+randread  4k       1 native        1  90557 88436  -2.3%
+randread  4k      64 native        1 290673 280456 -3.5%
+randwrite 4k       1 native        1 183015 169106 -7.6%
+randwrite 4k      64 native        1 281316 280078 -0.4%
+randread  4k       1 io_uring      1  92479 86983  -5.9%
+randread  4k      64 io_uring      1 304229 257730 -15.3%
+randwrite 4k       1 io_uring      1 183983 157425 -14.4%
+randwrite 4k      64 io_uring      1 299979 264156 -11.9%
 
-I think the del/init pair here won't be necessary any more after
-switching to the background coroutine. It will just start using the new
-value of s->cache_clean_interval the next time it sleeps.
+This series replaces the following older series that were held off from merging
+until the QEMU 10.1 development window opened and the performance results were
+collected:
+- "[PATCH 0/3] [RESEND] block: unify block and fdmon io_uring"
+- "[PATCH 0/4] aio-posix: integrate fdmon into glib event loop"
 
-Kevin
+Stefan Hajnoczi (12):
+  aio-posix: fix race between io_uring CQE and AioHandler deletion
+  aio-posix: keep polling enabled with fdmon-io_uring.c
+  tests/unit: skip test-nested-aio-poll with io_uring
+  aio-posix: integrate fdmon into glib event loop
+  aio: remove aio_context_use_g_source()
+  aio: free AioContext when aio_context_new() fails
+  aio: add errp argument to aio_context_setup()
+  aio-posix: gracefully handle io_uring_queue_init() failure
+  aio-posix: unindent fdmon_io_uring_destroy()
+  aio-posix: add fdmon_ops->dispatch()
+  aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+  block/io_uring: use aio_add_sqe()
+
+ include/block/aio.h               | 156 +++++++++-
+ include/block/raw-aio.h           |   5 -
+ util/aio-posix.h                  |  18 +-
+ block/file-posix.c                |  40 +--
+ block/io_uring.c                  | 489 +++++++-----------------------
+ stubs/io_uring.c                  |  32 --
+ tests/unit/test-aio.c             |   7 +-
+ tests/unit/test-nested-aio-poll.c |  13 +-
+ util/aio-posix.c                  | 141 +++++----
+ util/aio-win32.c                  |   7 +-
+ util/async.c                      |  71 ++---
+ util/fdmon-epoll.c                |  34 ++-
+ util/fdmon-io_uring.c             | 211 ++++++++++---
+ util/fdmon-poll.c                 |  85 +++++-
+ block/trace-events                |  12 +-
+ stubs/meson.build                 |   3 -
+ util/trace-events                 |   4 +
+ 17 files changed, 692 insertions(+), 636 deletions(-)
+ delete mode 100644 stubs/io_uring.c
+
+-- 
+2.51.0
 
 
