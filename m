@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD72CC19FC2
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 12:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1129AC1A1CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 12:51:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE4Fh-0005ad-Ui; Wed, 29 Oct 2025 07:22:06 -0400
+	id 1vE4gZ-00058O-Nw; Wed, 29 Oct 2025 07:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vE4Fe-0005a6-2K
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:22:02 -0400
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ id 1vE4gH-000580-NU
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:49:36 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vE4FW-00078F-IS
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:22:01 -0400
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-430b45ba0e4so35247015ab.1
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 04:21:50 -0700 (PDT)
+ id 1vE4g4-0002Vy-NY
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 07:49:29 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-430a5fe0c5cso64517325ab.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 04:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761736908; x=1762341708; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761738556; x=1762343356; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=iZ6bWxM6COZrVavPABH85e4M314ppYX/3vwalEvZLvA=;
- b=YyQXc4ReBe4W6u9nUeTn53oA9hzCpF8IwRpXT41GVpUkakMcmrYe6oRfVoJQu3Ef0U
- iJbzFV6sZ9TEC8IGBkc3qAKt2TykB7hbvZN3sf2gPzGiUvgr0b9C5SXeU747cX+JKSoA
- MhH+iFf4mTDRRF7XcjfmguLgqfAF510iDNQxbpVc0LcOOsmSY2QJrPPR2qIqDaG9Z7Qw
- GyTCNOHVTurmXMHh0kT3N64cquZofA1rl46QJvXWn/nH6AuHaptl9/9jvbyMlGLzpHK1
- O/JqPLXyx73bJpuQAIx/rS9a9bTkUSnVIb0p84UeAsHOly8ixobcxsxyo/OQr1mUJ4je
- SwKw==
+ bh=00t4+L6aRJs0vb2QCh0oKLCvh6LWzAQZxDTg52LqwSs=;
+ b=yZESJYIiwgZW48dQFYsL1oLAgRDj3l6BoWqUJgmqm9sZB3qte5YWSZiEODokvK28lI
+ +m0gU2dWqGH8YCA2ZGy1s1h+sNHb7pvavMvzvxc2cdXRXkBozn78kn2P96+RcqB5vbLW
+ AftEjDgKRro7uKlIG2uA0PX4O2B5Q2niZY50A1AwKxlnhzInqOJS4TCNmGsF5ZoxYet4
+ itQF0pGe4QSZyYhXgtPP4m8zucyMyymZhTwmZh1lTbL875nMuyOXa+QB1/0dojteQIsv
+ lzH26FmW92f0HBZ3NodfM93qiMCF4v8i6qMInDwUa/Cy+GrWCYW5gg47YIxdoqHzujfx
+ GfLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761736908; x=1762341708;
+ d=1e100.net; s=20230601; t=1761738556; x=1762343356;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iZ6bWxM6COZrVavPABH85e4M314ppYX/3vwalEvZLvA=;
- b=h99qIMIb61R+IOw0aWtRDdtspmGHA2+b6N8Lxw2X1ChXG3QcWVhZlAVB3i9nHwp303
- 0NiuVxlYSJNIemnPbXE1q5npk2uF28GBy3KjCFmf3k16pTfRDyvOzDOLqwQJ2vuQ7gzb
- CYJecrT+6k4XwLhekGpJBMO5O5osv8/Zi2QfXkKYjBmIV7SxDyvKnp3NfTRemVurq/IL
- ykW/jHdTGqDHcwxHcz48Uck6NaYcTheY48zM0gDrijHQ5sup5fVXzTPXBECawwYKFwAD
- U6S9yoHFeYAVUJbxQ0hZqJvch5j/azWQfFk1TfRGPTbyXTluul2BO1wpQRXKduWpEhKS
- mIIw==
-X-Gm-Message-State: AOJu0YzuK8MSS4LZjpuJzRnxDnOrahP5MFkBxo/HqVCUcb50vDfWLXmm
- rYAdSQheuwpu+LCyj2Lgfapq7LbfKyssSatOJm47U0S9JSR1QkUeVQHKR1CVeofr5jVLP+RzXaD
- X+/1AXLw=
-X-Gm-Gg: ASbGncuHJPUSpx0Kp27hk42xkCmbmLxfsxtCvkRRGhS8O8BG+PKIEdHjxk5kCWF3D7M
- j+y76lSFxJiBdsvZLeHVhTz5eM+mZATffE66EAzYWO1/lAqSPvLQ1ABs8J1NeMSsWUo32noNtRp
- RVX2XQbeNLiMCZf03x4Us1TEBOixetouwKGwJmFNfv4OINk5yrZv6EQ6g+iMMUMrZIt2KpshFXh
- ySk3+H7SIJnQEgHVxCnQIfaQDOFbk4O7fOo5VkEIZYq9tD+K1MCUNR5YYtqEsfc0iklKqUFvM30
- gC/aNuBG+XC4PxQFLi4E6rL1vbjZt30u+nsHSLqtyBZZM5EVlLh9THQGvXNWmB/wMPHFSBE1goM
- jxnZiK6j2IhyGjBbr83lN0hwMdP9huN+NXaiaz5eCohC4kHBT+MecNA3D7U6V/ywtoYZEya/P4T
- f6FlaxLNbnhl4bR40ZQdlh8xfbeSTu4Mps7Ey7Ifdcud2++iOIJXLeHXqapTGhHZN0Pg==
-X-Google-Smtp-Source: AGHT+IEw7Z0Ps426XBRGW2mYJqBnzodRwi24NBduuHGGF14WeTBp3uYazKZeTmurAx7b8+vP0VL4DA==
-X-Received: by 2002:a05:6e02:470b:b0:430:c49d:750c with SMTP id
- e9e14a558f8ab-432f9055864mr27291645ab.27.1761736907685; 
- Wed, 29 Oct 2025 04:21:47 -0700 (PDT)
+ bh=00t4+L6aRJs0vb2QCh0oKLCvh6LWzAQZxDTg52LqwSs=;
+ b=SfM62hMnAUxDRZalTeZy+QG2q4KCBWF+3xf5ofmylbO+SdruDYwbF08QHmH0GuS7ki
+ BdDALI8FlRIJrh9aS0O8Ai/49yos8dht8XM4w5Hgzbxlm4yvccdP0FkAgumjFutn0iLt
+ O2+jXEXwE2Edgtd1jJipMvTlPVvYxiem4Pi4AHUccKZzknRhzisp2EphywZLLFJPgi4G
+ GUwpsgjJ1apzOEeY7cdI5ujCREhG4XK4XhLWOFKuLKeAPnkxWD+yJejMtmeMFvRpfxMJ
+ av/7AT4dq9nPOpaZNrNCVjfpm9v9lrNM6gNcXImK+yCMZ5AxhxkX7hW+6X67cL8ylqvF
+ dtTw==
+X-Gm-Message-State: AOJu0YysRYc01d5rSyZRz9mQUh6fy2S3Gq2ptDQel3pRC9tv0vF8Yj2v
+ +RL3j4kTQctTKTFfXmzNeuW/Xun0OsJl55NQNjBtMUDTaZcQJ5uJKoLhKmfLMRrHtk1mGRV/JwB
+ fUwDQvNQ=
+X-Gm-Gg: ASbGncvfF18jdo8GYu99J5koEsO3bcUkIK5+cHhAUiOWSQnCsPlA9+sNKWHZhgmtoWR
+ 5H7bbTWzK1oJ2GRZ+WTSHYaW8GY79CTN8hriiFek/Azr2jc+ZcS/jnZWp7ECUev2TvnT0v0jGLc
+ 9rfaaPNNL9BlZyu4EaI+yCy9C+mgOTmVIQ2ZGQMSZ2fpfdbKBWleKrR2pgs/dv2lqPFIbuzxv4v
+ Z4n3p2rNw3oK4u5aXyb/FPH5PjT9WbrUAbDHo9fOpRW+s/TLNKgN6vhApilJSxDcGGlvRNlxQ2S
+ WiPJTI8c/0rEpNzkKpiSiPT+yKLTFIrcOVjQe3ilmPa7qp8q0i9SXFK6jTxK53Mo6FBR/Km0e1v
+ rW/IWwcMlC+G4Yz65W3y1G4MclhhphAi9sf972oW4Q+8qnmjMdSA2NkUK/Vgq/u+KZq8YXHpzEV
+ qQDQHo9J8+q+scwmFEbUZ1HBo68ms9i4xS7F9LDOy2d2SJdVkpf6h14ujuV2oWxq/B+Q==
+X-Google-Smtp-Source: AGHT+IFzxuC/6hQ0+brvVx/RZyrr0Ztni2a42B/J7XP9HExalk0EE2GoNHil4D3SFpDFXLQQcmIAlg==
+X-Received: by 2002:a05:6e02:370a:b0:430:b290:b6c5 with SMTP id
+ e9e14a558f8ab-432f9066e16mr30716995ab.30.1761738556526; 
+ Wed, 29 Oct 2025 04:49:16 -0700 (PDT)
 Received: from [10.240.88.227] ([172.56.16.75])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-5aea78e1a56sm5414738173.18.2025.10.29.04.21.46
+ 8926c6da1cb9f-5aea73dc121sm5477697173.10.2025.10.29.04.49.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 04:21:47 -0700 (PDT)
-Message-ID: <0e6949c7-9282-43a9-95da-746d0148ba0d@linaro.org>
-Date: Wed, 29 Oct 2025 12:21:43 +0100
+ Wed, 29 Oct 2025 04:49:16 -0700 (PDT)
+Message-ID: <ca671928-564c-4633-9d63-c3103fc1a8b9@linaro.org>
+Date: Wed, 29 Oct 2025 12:21:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/7] Trivial patches for 2025-10-29
+Subject: Re: [PULL v2 00/18] Miscellaneous changes for 2025-10-28
 To: qemu-devel@nongnu.org
-References: <20251029090148.648212-1-mjt@tls.msk.ru>
+References: <20251029092724.2325904-1-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251029090148.648212-1-mjt@tls.msk.ru>
+In-Reply-To: <20251029092724.2325904-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,26 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/29/25 10:01, Michael Tokarev wrote:
-> The following changes since commit bc831f37398b51dfe65d99a67bcff9352f84a9d2:
+On 10/29/25 10:27, Paolo Bonzini wrote:
+> The following changes since commit 36076d24f04ea9dc3357c0fbe7bb14917375819c:
 > 
->    Merge tag 'hw-misc-20251028' ofhttps://github.com/philmd/qemu into staging (2025-10-28 11:48:05 +0100)
+>    Merge tag 'next-pr-pull-request' ofhttps://gitlab.com/berrange/qemu into staging (2025-10-25 10:42:55 +0200)
 > 
 > are available in the Git repository at:
 > 
->    https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+>    https://gitlab.com/bonzini/qemu.git tags/for-upstream
 > 
-> for you to fetch changes up to 7c7089321670fb51022a1c4493cbcc69aa288a0f:
+> for you to fetch changes up to d4fbf6ff8d12cd11d53f7baa408f50fbb0441d87:
 > 
->    linux-user: Use correct type for FIBMAP and FIGETBSZ emulation (2025-10-29 11:58:55 +0300)
+>    rust: migration: allow passing ParentField<> to vmstate_of! (2025-10-28 14:50:44 +0100)
 > 
 > ----------------------------------------------------------------
-> trivial patches for 2025-10-29
+> * char: rename CharBackend->CharFrontend
+> * esp: fix esp_cdb_ready() FIFO wraparound limit calculation
+> * isapc: warn rather than reject modern x86 CPU models
+> * mshv: fix Coverity issues
+> * qdev: Change PropertyInfo method print() to return malloc'ed string
+> * qobject: make refcount atomic
+> * rcu: make synchronize_rcu() more efficient
+> * rust: cleanup glib_sys bindings
+> * rust: Convert bit value to u8 within #[property]
+> * rust: only leave leaf crates as workspace members
+> * scripts: clean up meson-buildoptions.py
+> * scsi: make refcount atomic
+> * target/i386: Init SMM cpu address space for hotplugged CPUs
+> 
+> ----------------------------------------------------------------
+> v1->v2: no change other than removing spurious subproject update
 
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
 r~
-
-
 
