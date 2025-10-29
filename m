@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6FC1D91A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 23:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D2DC1D794
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:43:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEEKr-0000Jk-W8; Wed, 29 Oct 2025 18:08:07 -0400
+	id 1vEDuj-00059s-WA; Wed, 29 Oct 2025 17:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEKo-0000J5-3y
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:08:02 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDub-00058j-2g
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:40:57 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEEKa-00012a-Bt
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 18:08:01 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-474975af41dso2270445e9.2
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 15:07:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDuM-0005kN-E6
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:40:56 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-475dd559b0bso4178915e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:40:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761775653; x=1762380453; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YnFZ8HbLjzhB7Z42tZa4PrSIDLq0WeA8PmYU1umg+/U=;
- b=DzlTKO5EyIewydKLE30BNstvhLLhSkov7EKvPsSLN9b5pBtoVXNIYeYhO+RLyJe7yQ
- fVVONgMdFq6FBFAXYUlNxw3b3vc5fui/xUH1nILdjOTuhUjQEi7857QZEPn/N1Hr4nRl
- 11H7n/fvX/0JOeCOUNbDYI7oDXV3maa6AHs+gufgX1P+qI7uqb2HjjBQrIz5E37/Qick
- bb4/PYsR/iJdoDz6DXAR3QEGUFQ3zihLqC34cj4IqzwMUh1iJbvOKIex+lkT1e8lopjY
- pjIPzCLGoM+8DkQEiSe5uUXZKip3oufo6jLZXpcVCG3WGAFqf5gUbNw5UPcsIVA8kkQ9
- I+ng==
+ d=linaro.org; s=google; t=1761774032; x=1762378832; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ncKmPlVytzymp+1TPUudiFEf8xHLOE7bUhfZrx7l5p4=;
+ b=c6HBNVgAqyTvOr0AYKIbbySaRFIJg24QCLNqVzy92EedZh+Ge8LgLxKVC1M6Pt8x7H
+ MJJlN0PYs4r8gACkaZSlRX4nRiR29ois5yBzz616Bhn/uGTRXzXv8210RJ0X0xxYkYkL
+ YbEcNPJBYV8zFBZhC7okXg8Gw84qLUqs+rmBFabRBM9i+Y3XjynnueR41hypJYOnKqN8
+ 9OFKQEgfNJqtXaTAX+p6aArEkCS5+i2cNoL0RUuNiuAxXdxiAH4Ay9pDrazVnQ09gHYQ
+ qhV2BZZu3ohWoDOJXxJP90ZCSK0AgJDdcMcSRzzqUiYOD62V3X4lBR4e+yTFdAco1ayb
+ e9XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761775653; x=1762380453;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YnFZ8HbLjzhB7Z42tZa4PrSIDLq0WeA8PmYU1umg+/U=;
- b=EN4kR2eEePMpcPJRt5R0PxF4dxKibFYVKzQzi5xGskxoDUnKKD24hOjUBfxoxGQYIt
- ulZBoYTsNL9XwS5uCDq/+DbXWOArm+U3r+tqWzIC2KBuuujUc4x4HCx4yqAUL0rJtEcK
- +uVeDtzi0ub72u4u1v/ZE7tDf/nmXlPVxMWmugMOfJgjwOfKIX/ZtDhfCBZWFiBAiMnC
- jzyJYrNW7248nwx1+B967U2KHYuaLg+wOLuBAHtDF3IlAPlb/nO8rGsAGZK1kKjowL8+
- XKdro0iKv9jdFXW/vPkWnIJ/TapDpEBanYa3MG98E7uFBBc/re2KleT+ehRb26b1dE1R
- +stg==
-X-Gm-Message-State: AOJu0YxKKT3/u/jG3RnOD+LGP85SbfAvXErQg9hOD2faq0spfsS7Ae0f
- DnW21UoLFGgQzJeZ2kvwbmx04rEgSLoiQw8UYgcGNyZrOiPP53VOQ73EVuxOHhjyfaaH66ghITk
- MQwZdOOc=
-X-Gm-Gg: ASbGncvAjcLCuu0mWBYFFBFPT7tlM/zSYZOfqJnpWuTg4Zwvd8k6AUbQSIyEteLGqDm
- AkMhMweNk02wwOHY1wPJeXjKB9bWdd0Tha1eIqzhsaCXfykObbGwnQTT/5MOaXPzJCosfHX7CF4
- B1Lu4Zc2lQH2YV/rp7yL7Zzj/LOQ/oTIbD175OpCSgGLQGX2GSEdykr6sQEIyHGOeL3l2K/sJYJ
- yneM9HB9GGZfM5CJCKDfCZOh49xyJx0LFqkCmeZ06uSEwB/48KZ3IzH9RQs1vH7y20QVLTTGdtD
- H255VOAwgcZPMPje3yTcabmvGhmp4q9hWsTCl1BnmIzVR9hS/x9xqMH5upIJrUAd2gDWIQvs3NF
- hSCWW3UU52WZ/8+PRZcvjtFMUFLpOPLDKumDQJaEagaV3qNuiI5smjdQqLu3bAe0/Szh9qwvrML
- KgfXKPpLLe06q1NLbxJZRUtrvG1GmBliMRf1q9mS2UjWURDJWl9g==
-X-Google-Smtp-Source: AGHT+IGTUCvJg4EhDeIPRvsWLBe3ei0nncRNddGB/z3peEHm9UduFf3ev/3OBQpoDFo6/UIh/mDJOw==
-X-Received: by 2002:a05:600c:c171:b0:45b:9a46:69e9 with SMTP id
- 5b1f17b1804b1-477268487dbmr7732815e9.31.1761775653356; 
- Wed, 29 Oct 2025 15:07:33 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1761774032; x=1762378832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ncKmPlVytzymp+1TPUudiFEf8xHLOE7bUhfZrx7l5p4=;
+ b=po31GEknaRibeU4lctwO5VoQt+GFIhEtCiFx28pHqiyF4EOCYpZEuwZZ/h6kE9hNDX
+ Nq1vXPxplKMC8IhY5kG5/KxUCs3pu3zfbIz6Z9bhJ24x8dCEj2oJFfx/zUnDWpNxxtg2
+ IX7Mt6684csqUFyG6lXm+Lg9jYWRofNRPh+ZwFjQrz/q9+dUxInVVEeXuWCWSWTbCsUS
+ YJNyEg7R6Ap3+2MaN2mPWl77FFEB7m8fHn/8gvCrxjHVXrSTs3Wy7A2v7/jg2/OVUywD
+ K0Q9mmkfyaXWFID9aRCh4NR7wo2KfSYunglA+KNplduHrBvQekHWBpZZKl07pYh/h05F
+ E39Q==
+X-Gm-Message-State: AOJu0YyS0v4LNaHZtew2ewnKAYL7nvZ+GRewyS9ttv2t99pauq6bWzM3
+ BL6jbYSW+xjVgwhVo83d9BzkfG2PXHg/9w67+2nshOQhVs5AKtEmGeOr5yEygQKLThg=
+X-Gm-Gg: ASbGncv+Y35oxJfw6tghixGOndzLVyXv68M9DMsLJuOzaulJt+0BwpDPVGSjUxlzcXn
+ q3E+b7Rha225lGHs1OkARhlxcOYe9cWMkAi6CwJ5xGsYqpxyEau4c1elU3tXX0076FdgJ87OJc3
+ eAUUM119FD9uhzokIVvvIvDg09UL8jGOUkprUaRdzxaWmaX8MpI8jEz+iy4q7N5vnrAE0KccO0L
+ skaWAbGUPYklzuYasa2GE3RMO1Lf2zrqFAbv3IistF2IotycHCZYR4URLlZFm7eKc54QfXTOQf9
+ v7f4TCkn9ugkd1vxYWA1vCIZ2JoHY0Ko6DrAmdisugkp8gtO9zjZRbduW+WD7FaWQHP7fmAcJm4
+ ROTrqdg3qKuHphFtOg/MmB/ye3/TJ5rpgig87kxwH6rupZlhcT0tftp8bPBp3g1axTqxy27PH5o
+ bJoOfrI8Ymm3ZtPImB7uBacZtekyBuyVsXUl2iFGErr3Y=
+X-Google-Smtp-Source: AGHT+IFXUJifVRQ7Vbl9dG5zJpYgqfo0P08xQwkOPkawg2q8imAVIcD2QygFY2RYHcgIQpUn834ULQ==
+X-Received: by 2002:a05:600c:64cf:b0:471:1717:411 with SMTP id
+ 5b1f17b1804b1-4771e1db42fmr39515955e9.24.1761774032250; 
+ Wed, 29 Oct 2025 14:40:32 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47718fe63e0sm53515075e9.3.2025.10.29.15.07.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 29 Oct 2025 15:07:32 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PULL 23/23] hw/riscv: Replace target_ulong uses
-Date: Wed, 29 Oct 2025 22:40:00 +0100
-Message-ID: <20251029214001.99824-24-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251029214001.99824-1-philmd@linaro.org>
-References: <20251029214001.99824-1-philmd@linaro.org>
+ ffacd0b85a97d-429952b7b2dsm28106136f8f.2.2025.10.29.14.40.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 Oct 2025 14:40:31 -0700 (PDT)
+Message-ID: <9931a47f-6d04-4763-9d48-7377b1a29531@linaro.org>
+Date: Wed, 29 Oct 2025 22:40:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/19] single-binary: Make hw/arm/ common
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Anton Johansson
+ <anjo@rev.ng>, Luc Michel <luc.michel@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20251021205741.57109-1-philmd@linaro.org>
+ <CAFEAcA8A5xa0nJUczM_BDCvVu+sP-tdbt_CxDGos6hKW27qEZA@mail.gmail.com>
+ <a244a654-7bd8-46cf-bc55-87ab5287bda5@linaro.org>
+ <CAFEAcA9y29qsC4UQLjO+sJ5TLiA7FqtBTKwUAaQhq8Bz+WX+2g@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA9y29qsC4UQLjO+sJ5TLiA7FqtBTKwUAaQhq8Bz+WX+2g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,56 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+On 23/10/25 14:16, Peter Maydell wrote:
+> On Wed, 22 Oct 2025 at 15:03, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> On 22/10/25 13:50, Peter Maydell wrote:
+>>> On Tue, 21 Oct 2025 at 21:57, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>>>
+>>>> Series fully reviewed.
+>>>>
+>>>> Since v6:
+>>>> - Addressed Jan comment
+>>>> - Removed aspeed/raspi meson patches
+>>>
+>>> I'm assuming you'll take this via your own tree like the
+>>> other single-binary stuff -- let me know if you want me
+>>> to take it into target-arm instead.
+>>
+>> Since most files are hw/arm/ related, I tried to get it fully reviewed
+>> before the last Tuesday before soft freeze so you could queue it;
+>> however it is based on my hw-misc-20251021 pull request, which isn't
+>> yet merged. I'm happy to merge myself, but would you mind to provide
+>> your Acked-by tag?
+> 
+> Sure:
+> 
+> Acked-by: Peter Maydell <peter.maydell@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-ID: <20251027-feature-single-binary-hw-v1-v2-2-44478d589ae9@rev.ng>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/riscv/riscv-iommu.c | 6 ++++--
- hw/riscv/riscv_hart.c  | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index b33c7fe3259..f8656ec04b1 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -26,6 +26,8 @@
- #include "migration/vmstate.h"
- #include "qapi/error.h"
- #include "qemu/timer.h"
-+#include "qemu/target-info.h"
-+#include "qemu/bitops.h"
- 
- #include "cpu_bits.h"
- #include "riscv-iommu.h"
-@@ -391,9 +393,9 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
-             const uint64_t va_mask = (1ULL << va_len) - 1;
- 
-             if (pass == S_STAGE && va_len > 32) {
--                target_ulong mask, masked_msbs;
-+                uint64_t mask, masked_msbs;
- 
--                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
-+                mask = MAKE_64BIT_MASK(0, target_long_bits() - va_len + 1);
-                 masked_msbs = (addr >> (va_len - 1)) & mask;
- 
-                 if (masked_msbs != 0 && masked_msbs != mask) {
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index 4d51a93dd52..33cbc9873e6 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -94,7 +94,7 @@ static bool csr_qtest_callback(CharFrontend *chr, gchar **words)
-         g_assert(rc == 0);
-         csr_call(words[1], cpu, csr, &val);
- 
--        qtest_sendf(chr, "OK 0 "TARGET_FMT_lx"\n", (target_ulong)val);
-+        qtest_sendf(chr, "OK 0 %"PRIx64"\n", val);
- 
-         return true;
-     }
--- 
-2.51.0
+Thanks! Series queued.
 
 
