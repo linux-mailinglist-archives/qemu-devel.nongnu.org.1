@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9559BC1C605
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22017C1C629
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:13:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE9gb-0005rg-Nj; Wed, 29 Oct 2025 13:10:13 -0400
+	id 1vE9gV-0005j8-Cl; Wed, 29 Oct 2025 13:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gT-0005jb-Ji
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:06 -0400
-Received: from 2.mo552.mail-out.ovh.net ([178.33.105.233])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gR-0005hD-2r
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:03 -0400
+Received: from 8.mo548.mail-out.ovh.net ([46.105.45.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9g6-0006xG-Nk
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:05 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.109.231.210])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4cxYdD6W9Qz6PVg;
- Wed, 29 Oct 2025 17:09:36 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gE-0006yy-QS
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:00 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.37.14])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cxYdL6tk8z5yFC;
+ Wed, 29 Oct 2025 17:09:42 +0000 (UTC)
 Received: from kaod.org (37.59.142.106) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Wed, 29 Oct
- 2025 18:09:33 +0100
+ 2025 18:09:39 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-106R006b7ca082c-84ba-4988-940d-0eb88fb7f21a,
+ (GARM-106R0061be39716-26fd-4231-8f62-553c70b8665e,
  1C4C5A15D30C5F2C89D761F8A9BCD43732F6FBF1) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 92.184.104.153
-Message-ID: <977de27d-b4a6-4efb-9827-164c433aa01e@kaod.org>
-Date: Wed, 29 Oct 2025 18:09:33 +0100
+Message-ID: <10087d38-6c73-454b-9425-51d74077c35a@kaod.org>
+Date: Wed, 29 Oct 2025 18:09:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [SPAM] [PATCH v1 07/13] hw/arm/aspeed: Split Tiogapass machine
- into a separate source file for cleanup
+Subject: Re: [SPAM] [PATCH v1 08/13] hw/arm/aspeed: Split YosemiteV2 machine
+ into a separate source file for maintainability
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
@@ -41,7 +41,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
 References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
- <20251023100150.295370-8-jamin_lin@aspeedtech.com>
+ <20251023100150.295370-9-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
  xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
@@ -85,35 +85,35 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251023100150.295370-8-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251023100150.295370-9-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [37.59.142.106]
 X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: 96eabf58-5d1b-412e-8cd9-2559ed1a3245
-X-Ovh-Tracer-Id: 5354779960687102898
+X-Ovh-Tracer-GUID: e283bf11-6fb3-4a29-afdb-c7c6f8c4bfa5
+X-Ovh-Tracer-Id: 5356468809033747378
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTGJtndeWzAcVmR3XQqv252AeEKBLpnCW+HIMR3QhdhXHEsRNZmTBWFtDuU6G+K6XLtB/XeQtVkaVEIms8z9pRt1yRQt5qfUQRWa1vgO4ljZG7KmZQIpeYzfsufFgQguJNkamwBp8BU5mKpdVzsE4CJJYW+iPhQhTOSpXMqHQ5Uas9wmwwo0I2RlKcjPHbwdNzRInedZEzld+taO0Ma/RRGS9Ram7OQgXGdQlRhrogme9kqwmVbSsmaQ2zYV/ByLPjk7mGrz07y/gMJmTxHLVoOA97IjGia3ClVPINkGCFkzHQhoyDv8PBvWtxprOEDa09El/jlk1VPGy6oBC4ZR2S8yEhWW8MhGQa3uedKSm07uGc+katGoxBeQFeLvmglK6dPgw42oKBcI8WUNyTgevhZOgD2JTF+YpsaA5dZCjHwjaHS/ZiugGHq1AHuAIKTH42MH69qPNEOhTMCRRDoYH0JJD+s1z7IIStSvNPSRz6T2PduHS2DJHSrdgrJZnmngQ7SzcLdDDAIn82SgpHM2o6m+njYcWSt6ntODaLcHF8vriVpJVcX86eyEYu7VtgTSPd4b3gqn1+HneXgc0rF5OX3IZ78dDTHeh9xQTMZdj/Jr+/w2ND1pou1e/Y7a/W7dUwi8AxnXSHNRyHl/h5Ot9T9/YVRY5xNVAz+NTTJsIhfvig
-DKIM-Signature: a=rsa-sha256; bh=Pz0fUNAPTLA2HjHCxaPhJluQfyFEtEJMMrxdtKBkk48=; 
+X-VR-SPAMCAUSE: dmFkZTGvqICiuChEvCHRDpMcNOLDxJaHqbe5F0x1ZmQ+idEGrrtQUHJoxGU579WKuvCmhuR6+SFAA0znV6rhdPGfYAdnkfOYRkFWg5GHtZYcpVambL1MBPj1HGIXYRxRglk0Cxobc6+nJG6p08UeNFDcqT1NysoUKpd4Pw++G72d2URPlmPk9H9VkQqiSUnlDVYA54nP22LpGou160umQ9FHl5l3/RH626ZNIy4rTNtftvqcHlmqvygY9jcWmY2aIXsmtxvh/QPcCeJmhBRxgITnoK/ffEQ2oxrT4VAMPm/j9SwvzPIUjnp+AC++01LPLdxTvEzyhH6y3nm6VQM3/x3eA4+3Gx8AJcm9Ht/ZFm77pR04VT6cwkmFQclJg08ia4ruaDpHMTuP9eSo5M9DPoTLXAsoB/uJPqV7GeGXRE8jh6JKtZ0dyj7VoSFAU89DKyjadkMovShFiSVegd0S/LpJ0+dfOF1E6or/QPq/SKMa9+MSMhLhPLryEXNPK0ENQe2xGpVJskNbVgodWPpTI3jehBiO/9030qFgm0JhHiYf/IExUhOjV5b4prrYHr+19oG71JCBedHZf9NNn0eMJmn7A2rbG/OKbmeh7cf5rfi9FPlGPgk/tSU7BkmA2HRtqa8ZUvvEXPurD/qxSOneA/SCDU/PZGtAqDVL5P0zWfaXeoFVBQ
+DKIM-Signature: a=rsa-sha256; bh=YyFZM9BZMhbrt1fxTXi3eVYQ5psdGR9P8AbORIKGTNY=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1761757777; v=1;
- b=IUl84RvWOM87+RlYpAItOeXjzezVkNdrVQ4TQsicu4FD4RjoDt9tkit+ixtPNH3dJ5hKX1cH
- CxmgugO8DjJqrY4+EUaIy0JWi69W4pLzQWqMR7UZDU/Vf1XcsHWr4IvHBcFaxeHR5sumASxHZR3
- MevUEMkcDDCOp6Zh4/x4SyLplBH1tmq8KFO6z5lFuG8+NSuAMNF9vSQVJHpKXy5FGcgChEEDJ22
- aZuMQ1aqR6rPsHhdCnQkzrT27YMuevSmZZ65s4ii2N1uqpvTAsx2/7Z58mivtzCS92lthU1Ebk7
- ZAsdDl1IT7AzAvpOK7om01l6P2BsVpn906e4daXfEbecg==
-Received-SPF: pass client-ip=178.33.105.233; envelope-from=clg@kaod.org;
- helo=2.mo552.mail-out.ovh.net
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ t=1761757783; v=1;
+ b=WnAlKFGtw8w6QH+z5Uo3gL9aykUYTDX6JaNRsaBR+M3uy+O/pkbGt7m753rjhoD5oN64KMLY
+ eNvtObHaY7s1VpWReftlz8wNyTc28Wvxi9RGSY8+hkCNNyf6XYby11AP+taoVZuukKtcpYNS+/q
+ pMh9MidPVpQV+mPWArRY/bK6YkYUOtxmB0jWk4JCJ4CvFXJTuiAzXe7bd0jK9leMDFQ/6pVJA9V
+ tQeXt7RCecAMD6BICElgBZncFcz/tnhcWhbWELi3RsqCTucJG2IyyDTGhZObxtC/yC6M8lp8KFe
+ RpdH1DKiJojdggpK2qFgjgGvHwvstyg91NePQN9Wyc0vg==
+Received-SPF: pass client-ip=46.105.45.231; envelope-from=clg@kaod.org;
+ helo=8.mo548.mail-out.ovh.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_SOFTFAIL=0.665,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,37 +130,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/23/25 12:01, Jamin Lin wrote:
-> This commit moves the Tiogapass BMC machine implementation out of
-> aspeed.c into a new dedicated file aspeed_ast2500_tiogapass.c.
+> This commit moves the YosemiteV2 BMC machine implementation from
+> aspeed.c into a new standalone file aspeed_ast2500_yosemitev2.c.
 > 
-> To support splitting Tiogapass into a dedicated source file,
-> a new TIOGAPASS_BMC_HW_STRAP1 macro is added as a copy of
+> To support splitting YosemiteV2 into a dedicated source file,
+> a new YOSEMITEV2_BMC_HW_STRAP1 macro is added as a copy of
 > AST2500_EVB_HW_STRAP1.
 > 
-> The change follows the ongoing effort to modularize Aspeed platform
-> support by splitting each machine definition into its own source file.
-> This makes aspeed.c cleaner, easier to maintain, and simplifies
-> future feature additions or refactoring for individual machines.
+> The refactor is part of an ongoing effort to modularize Aspeed
+> machine definitions by separating each board into its own source
+> file. This improves code readability, maintainability, and simplifies
+> future platform-specific changes.
 > 
 > Key updates include:
-> - Removed tiogapass_bmc_i2c_init() and its FRU data from aspeed.c
-> and aspeed_eeprom.c.
-> - Removed Tiogapass type registration from aspeed_machine_types[].
-> - Added new source file aspeed_ast2500_tiogapass.c to meson.build.
-> - Removed unused Tiogapass FRUID declarations from aspeed_eeprom.h.
+> 
+> - Moved yosemitev2_bmc_i2c_init() and its FRU data into a new file.
+> - Removed aspeed_machine_yosemitev2_class_init() and type registration
+> from aspeed.c.
+> - Removed YosemiteV2 FRUID data and declarations from
+> aspeed_eeprom.c and aspeed_eeprom.h.
+> - Added aspeed_ast2500_yosemitev2.c to the build system
+> (meson.build).
 > 
 > No functional changes.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   hw/arm/aspeed_eeprom.h            |  4 --
->   hw/arm/aspeed.c                   | 35 ------------
->   hw/arm/aspeed_ast2500_tiogapass.c | 89 +++++++++++++++++++++++++++++++
->   hw/arm/aspeed_eeprom.c            | 22 --------
->   hw/arm/meson.build                |  1 +
->   5 files changed, 90 insertions(+), 61 deletions(-)
->   create mode 100644 hw/arm/aspeed_ast2500_tiogapass.c
+>   hw/arm/aspeed_eeprom.h             |  3 -
+>   hw/arm/aspeed.c                    | 36 ------------
+>   hw/arm/aspeed_ast2500_yosemitev2.c | 90 ++++++++++++++++++++++++++++++
+>   hw/arm/aspeed_eeprom.c             | 22 --------
+>   hw/arm/meson.build                 |  1 +
+>   5 files changed, 91 insertions(+), 61 deletions(-)
+>   create mode 100644 hw/arm/aspeed_ast2500_yosemitev2.c
 > 
+
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
