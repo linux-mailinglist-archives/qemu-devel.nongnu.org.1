@@ -2,91 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710DCC196E8
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DCAC19835
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 10:56:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE2hQ-0002t0-8B; Wed, 29 Oct 2025 05:42:36 -0400
+	id 1vE2t6-0005sW-OZ; Wed, 29 Oct 2025 05:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vE2hO-0002sp-0d
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:42:34 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vE2hG-0000AQ-VD
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:42:33 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-475dc6029b6so43193915e9.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 02:42:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761730941; x=1762335741; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1sPBkvJccfENOLAKV+kWrUkd54IxjcmLgzR0y35IVoo=;
- b=CY7ttHtddjyOVqoiMzgW5kkLTdvkjZXphw/x7wEZGVoCgdCnELVfT2SmxO3OWbaOwh
- 6jiqq9qcS1uqi9hPUXzdf5TFu0DLI0rYh8iWXfa9q8yAguUQEgVBgWy3kDVM7tu+MSFv
- GKsi0tmD5Z/dq5VMEHmR59ADsYcKBMxN1WfhimatnJhA7MIs6sGGdJjc+HnlEDsWxdoq
- Q2mUtxCQUmlwjOEAbdzrDbAJw2pYvTV49HMJVvJa5sf46omeFwlbD6lnMSOa+ZgsuSU9
- OKoyWRm2tCnnRM3DUy7KgmMg/PhLGvAMxm5dPW9k/gZ1pEVc4foBin5FE5mDKxKL1XMD
- nCRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761730941; x=1762335741;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1sPBkvJccfENOLAKV+kWrUkd54IxjcmLgzR0y35IVoo=;
- b=R7iO/aE1kX2+3EHx+CQs9N2OrLaKYQ+n2MERRs+mzHBcYifWoLRrEE+5euQWXOhw00
- FbTRHzKm8pWY+9B6Iqm6LOe2Bw2728gJ0V8jYOaVXTogiKECXqXDLQr6KF3SOqIyR67u
- 59ARuoKS/gqbNJPaIC87aKWwYt3JCwrHoy8I3Y2gUAE79TKQpeDbHqOGxalT5qXeLd2W
- o8xVP/nqwD/KFXJWDXERJ1VP2fk8aFLkAsjNDifO8MQk9TY/iNTgGH6e1zYJLXie7vob
- EkDm5zzvOjULVDI4f7Y9TzRc3rVjYDiSr+jX6vVIoMFIYzY7eOEXmaA9ONXO7hxM8RSG
- egCQ==
-X-Gm-Message-State: AOJu0YzZwDKb1ltYIp1VBPJSQqc6QaKdMXfAf4YTxS4qbktx6foWzJN4
- 4ujJhqiXgKPImxDz78xtYRlARBrwQFFi0ahf/tEI8dZEkbDtN/bEzH1zb74qnJPXhk0=
-X-Gm-Gg: ASbGncsPwPhrt/kfC3aX3t+jrGdBKMD8CXDXB86jOm7ziWwaBxTJ5J00hhejznp5gIo
- F2gRoq1BsSRc0a/lJzm5bXR99NAyulZpaDgk6VF/8mH3Jsq6NqoGkux3KD2kKeQi1+vmga4JuKP
- jr0ZTf1jLdY1xf0VzUVJGDVELiDgCZQwIZLPGnHv+xU0J7AUwlENA3MT6SLMTUz6INo8gMSUfzv
- m3ckP09pL2d+HG8BSOSKwqW+/MD8LrDDkkUJgbi+s8zPSk0wCfjwe0BJ1moJ/xt8YS1FzVOVqt2
- lLMJbPbtCAXLFH/yg9yhlBAgLmqjEms+bArvTs49o5QYoMrEwuPIcbPki13Xa1PixtuQnWCvibY
- 3NxxjkN6WYiwjVLMQBKz5Rk6noaDFZ31BkDznOm0/u7cea5MaDfgLgrkc0XcElJCIAxc+x5W1ho
- e5kwClRwk/9s6zU++h
-X-Google-Smtp-Source: AGHT+IEuI5qKqmex8pJST2O+wNiOrJlqwMkpAh6sdN3r6KrEGf+JKr/xcEEk48B9/1zp18i41h9a/w==
-X-Received: by 2002:a05:600c:3b23:b0:475:de12:d3b5 with SMTP id
- 5b1f17b1804b1-4771e1e3abemr24828125e9.34.1761730941265; 
- Wed, 29 Oct 2025 02:42:21 -0700 (PDT)
-Received: from [10.240.88.227] ([212.144.248.67])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952df682sm25213877f8f.43.2025.10.29.02.42.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 02:42:20 -0700 (PDT)
-Message-ID: <e914988a-e5f4-49f0-98a6-cdf83b5f2913@linaro.org>
-Date: Wed, 29 Oct 2025 10:42:19 +0100
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vE2sz-0005sE-Ck
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:54:33 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vE2su-0002mX-5s
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 05:54:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761731668; x=1793267668;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=s1ifJv8p25HdxRd8jyYP3Zm+E+xWOQrXq6lp5ilkyTI=;
+ b=fj/zyclfcypcOaJX159MEUQBAmuc0+iYhpEHjIeJE51HVoyL7cVrDJAg
+ mcxXmIXwcKIFbs6hMGJq+Apzmlwx9rC60xPT2365c5vDElR0esa69IAND
+ 0PnhklnOkNf1gD2BdwJ7DnQyvRICqr9OmPTVyqiaphDBPhuRFDag39omi
+ T+DxsgD6xTdrwP7cFoSK+JJGVVDE3+x5G8500pl2GYXtVZIQFjnaDp+7e
+ nAK7D2iTbHyhb3Zprvtcb04BPC+0nXsm3wHiyZlZj6+ewEkbmoy+LG2mV
+ IlZXGDWc+LHGOTk4zpLt871VX54HzESBU7WMXr+8oNkPOXZiPtSIvfAUI w==;
+X-CSE-ConnectionGUID: mINXIDS1QLqGLKCQlj/GAw==
+X-CSE-MsgGUID: C/G+/C36T9mMQaFmet81wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67685104"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="67685104"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2025 02:54:22 -0700
+X-CSE-ConnectionGUID: Z02+iXYFTL2gDaRp0ceeJw==
+X-CSE-MsgGUID: H/9s6CcLSuKdgLJvoSwD9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; d="scan'208";a="185529818"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2025 02:54:18 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
+ yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
+ eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
+ xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
+ mark.gross@intel.com, arjan.van.de.ven@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v4 00/10] vfio: relax the vIOMMU check
+Date: Wed, 29 Oct 2025 05:53:43 -0400
+Message-ID: <20251029095354.56305-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] tcg: Expand missing rotri with extract2
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250928163155.1472914-1-richard.henderson@linaro.org>
- <20250928163155.1472914-5-richard.henderson@linaro.org>
- <CAAjaMXab1HbSQgB8txAat657efNDpXpQ-XmOH8FwX6Sow-79uw@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <CAAjaMXab1HbSQgB8txAat657efNDpXpQ-XmOH8FwX6Sow-79uw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=198.175.65.14;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,90 +83,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/29/25 10:30, Manos Pitsidianakis wrote:
-> On Sun, Sep 28, 2025 at 7:33 PM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> Use extract2 to implement rotri.  To make this easier,
->> redefine rotli in terms of rotri, rather than the reverse.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tcg/tcg-op.c | 70 ++++++++++++++++++++++++++++++----------------------
->>   1 file changed, 41 insertions(+), 29 deletions(-)
->>
->> diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
->> index 4caf77da1e..3e10a3ad16 100644
->> --- a/tcg/tcg-op.c
->> +++ b/tcg/tcg-op.c
->> @@ -834,23 +834,12 @@ void tcg_gen_rotl_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
->>   void tcg_gen_rotli_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
->>   {
->>       tcg_debug_assert(arg2 >= 0 && arg2 < 32);
->> -    /* some cases can be optimized here */
->>       if (arg2 == 0) {
->>           tcg_gen_mov_i32(ret, arg1);
->>       } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I32, 0)) {
->> -        TCGv_i32 t0 = tcg_constant_i32(arg2);
->> -        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, t0);
->> -    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I32, 0)) {
->> -        TCGv_i32 t0 = tcg_constant_i32(32 - arg2);
->> -        tcg_gen_op3_i32(INDEX_op_rotr, ret, arg1, t0);
->> +        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, tcg_constant_i32(arg2));
->>       } else {
->> -        TCGv_i32 t0 = tcg_temp_ebb_new_i32();
->> -        TCGv_i32 t1 = tcg_temp_ebb_new_i32();
->> -        tcg_gen_shli_i32(t0, arg1, arg2);
->> -        tcg_gen_shri_i32(t1, arg1, 32 - arg2);
->> -        tcg_gen_or_i32(ret, t0, t1);
->> -        tcg_temp_free_i32(t0);
->> -        tcg_temp_free_i32(t1);
->> +        tcg_gen_rotri_i32(ret, arg1, -arg2 & 31);
->>       }
->>   }
->>
->> @@ -878,7 +867,16 @@ void tcg_gen_rotr_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
->>   void tcg_gen_rotri_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
->>   {
->>       tcg_debug_assert(arg2 >= 0 && arg2 < 32);
->> -    tcg_gen_rotli_i32(ret, arg1, -arg2 & 31);
->> +    if (arg2 == 0) {
->> +        tcg_gen_mov_i32(ret, arg1);
->> +    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I64, 0)) {
->> +        tcg_gen_op3_i32(INDEX_op_rotr, ret, arg1, tcg_constant_i32(arg2));
->> +    } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I64, 0)) {
->> +        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, tcg_constant_i32(32 - arg2));
->> +    } else {
->> +        /* Do not recurse with the rotri simplification. */
->> +        tcg_gen_op4i_i32(INDEX_op_extract2, ret, arg1, arg1, arg2);
->> +    }
->>   }
->>
->>   void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
->> @@ -2417,23 +2415,12 @@ void tcg_gen_rotl_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
->>   void tcg_gen_rotli_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
->>   {
->>       tcg_debug_assert(arg2 >= 0 && arg2 < 64);
->> -    /* some cases can be optimized here */
->>       if (arg2 == 0) {
->>           tcg_gen_mov_i64(ret, arg1);
->> -    } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I64, 0)) {
->> -        TCGv_i64 t0 = tcg_constant_i64(arg2);
->> -        tcg_gen_op3_i64(INDEX_op_rotl, ret, arg1, t0);
->> -    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I64, 0)) {
->> -        TCGv_i64 t0 = tcg_constant_i64(64 - arg2);
->> -        tcg_gen_op3_i64(INDEX_op_rotr, ret, arg1, t0);
->> +    } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I32, 0)) {
-> 
-> Shouldn't this be:
-> 
-> s/TCG_TYPE_I32/TCG_TYPE_I64
-> 
-> ?
+Hi,
+
+This series relax the vIOMMU check and allows live migration with vIOMMU
+without VFs using device dirty tracking. It's rewritten based on first 4
+patches of [1] from Joao.
+
+Currently what block us is the lack of dirty bitmap query with iommufd
+before unmap. By adding that query and handle some corner case we can
+relax the check.
+
+Based on vfio-next branch:
+
+patch1-2: add dirty bitmap query with iommufd
+patch3-4: cleanup and preparing work
+patch5-6: unmap_bitmap optimization
+patch7-8: fix issues with legacy backend
+patch9:   add a blocker if VM memory is really quite large for unmap_bitmap
+patch10:  relax vIOMMU check
 
 
-Oops, yes.
+We tested VM live migration (running QAT workload in VM) with QAT
+device passthrough, below matrix configs:
+1.Scalable mode vIOMMU + IOMMUFD cdev mode
+2.Scalable mode vIOMMU + legacy VFIO mode
+3.legacy mode vIOMMU + IOMMUFD cdev mode
+4.legacy mode vIOMMU + legacy VFIO mode
+
+[1] https://github.com/jpemartins/qemu/commits/vfio-migration-viommu/
+
+Thanks
+Zhenzhong
+
+Changelog:
+v4:
+- bypass memory size check for device dirty tracking as it's unrelated (Avihai)
+- split vfio_device_dirty_pages_disabled() helper out as a separate patch
+- add a patch to fix minor error on checking vbasedev->iommu_dirty_tracking
+
+v3:
+- return bitmap query failure to fail migration (Avihai)
+- refine patch7, set IOMMUFD backend 'dirty_pgsizes' and 'max_dirty_bitmap_size' (Cedric)
+- refine patch7, calculate memory limit instead of hardcode 8TB (Liuyi)
+- refine commit log (Cedric, Liuyi)
+
+v2:
+- add backend_flag parameter to pass DIRTY_BITMAP_NO_CLEAR (Joao, Cedric)
+- add a cleanup patch to rename vfio_dma_unmap_bitmap (Cedric)
+- add blocker if unmap_bitmap limit check fail (Liuyi)
 
 
-r~
+Joao Martins (1):
+  vfio: Add a backend_flag parameter to
+    vfio_contianer_query_dirty_bitmap()
+
+Zhenzhong Duan (9):
+  vfio/iommufd: Add framework code to support getting dirty bitmap
+    before unmap
+  vfio/iommufd: Query dirty bitmap before DMA unmap
+  vfio/container-legacy: rename vfio_dma_unmap_bitmap() to
+    vfio_legacy_dma_unmap_get_dirty_bitmap()
+  vfio: Introduce a helper vfio_device_dirty_pages_disabled()
+  vfio/iommufd: Add IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR flag support
+  intel_iommu: Fix unmap_bitmap failure with legacy VFIO backend
+  vfio/migration: Fix a check on vbasedev->iommu_dirty_tracking
+  vfio/migration: Add migration blocker if VM memory is too large to
+    cause unmap_bitmap failure
+  vfio/migration: Allow live migration with vIOMMU without VFs using
+    device dirty tracking
+
+ include/hw/vfio/vfio-container.h |  8 +++--
+ include/hw/vfio/vfio-device.h    | 10 ++++++
+ include/system/iommufd.h         |  2 +-
+ backends/iommufd.c               |  5 +--
+ hw/i386/intel_iommu.c            | 42 +++++++++++++++++++++++
+ hw/vfio-user/container.c         |  5 +--
+ hw/vfio/container-legacy.c       | 19 +++++++----
+ hw/vfio/container.c              | 20 +++++------
+ hw/vfio/device.c                 |  6 ++++
+ hw/vfio/iommufd.c                | 58 +++++++++++++++++++++++++++++---
+ hw/vfio/listener.c               |  6 ++--
+ hw/vfio/migration.c              | 35 +++++++++++++++++--
+ backends/trace-events            |  2 +-
+ hw/vfio/trace-events             |  2 +-
+ 14 files changed, 183 insertions(+), 37 deletions(-)
+
+-- 
+2.47.1
+
 
