@@ -2,54 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51625C1771C
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 01:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCC3C17F9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 03:01:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDta0-0005Sa-Mi; Tue, 28 Oct 2025 19:58:20 -0400
+	id 1vDvSq-0005bd-Ia; Tue, 28 Oct 2025 21:59:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vDtZx-0005Pn-EK; Tue, 28 Oct 2025 19:58:17 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1vDvSo-0005bN-4R
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 21:59:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vDtZm-0006CL-VF; Tue, 28 Oct 2025 19:58:17 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3BE15597301;
- Wed, 29 Oct 2025 00:57:55 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id u5GpciNBL4q0; Wed, 29 Oct 2025 00:57:53 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 345785972FD; Wed, 29 Oct 2025 00:57:53 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 32B5F5972E9;
- Wed, 29 Oct 2025 00:57:53 +0100 (CET)
-Date: Wed, 29 Oct 2025 00:57:53 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH 2/4] hw/pci-host/articia: Map PCI memory windows in realize
-In-Reply-To: <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
-Message-ID: <733a7466-bc68-5c85-1fb2-7301de0ed7bf@eik.bme.hu>
-References: <cover.1761346145.git.balaton@eik.bme.hu>
- <ceda4c28887c40e1c8eae3f561ee381ca98b0484.1761346145.git.balaton@eik.bme.hu>
- <7747275c-8e0a-4983-8613-fc39fc03bb39@linaro.org>
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1vDvSg-0003Eb-Lm
+ for qemu-devel@nongnu.org; Tue, 28 Oct 2025 21:59:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761703130;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FPrpYPEQYt3XPeiLW8heNMMADC+MpM2brBVJFmfPfrE=;
+ b=Gsj33O1AwAwI5XtHepTZqXWjnvIv9Cjzo//N5aES+gj3QZG9AyTh/s3lJB5OkJjgBD/am4
+ +F512+Qs98u+8qt/dOgrKfy2IX0AnUqXaur1EB0MT9TxuRfZt1+dxbgixOYArwf3PNDCxl
+ 0rAFuu7S9vVG7BFCzguF7NWZoxVyrfo=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-elqR7gokNZGU0uEk6ip_Dw-1; Tue, 28 Oct 2025 21:58:48 -0400
+X-MC-Unique: elqR7gokNZGU0uEk6ip_Dw-1
+X-Mimecast-MFC-AGG-ID: elqR7gokNZGU0uEk6ip_Dw_1761703128
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-8904a9e94ebso1386883285a.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Oct 2025 18:58:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761703127; x=1762307927;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FPrpYPEQYt3XPeiLW8heNMMADC+MpM2brBVJFmfPfrE=;
+ b=VEnOrfXc2F8h3aOy+pAHIJfOKN2p2PBt7+jZShK/kPH5nkM0S4hmTBwcQfIlF2hIU0
+ 8OQu76t2ZcKZJmmA7ZPEVmLd1RAC59m8fe0GXeQ+CVbxZe+9kWsU0Gtaq/kThch9PlYc
+ s3fdbAR+LJXtz4vVBSO2dHCb8gCI+rREXlb9tgP7aWB8/r0W/J2xUTVJUEGhF7too8md
+ I8G+jmUViQi6+3loHgB1JBd2WzHw1BmuhzZw/5fTyQ+Yoajd4C68NZ8PfPVV5ybHz1fb
+ hIu8jL1YULn68cgAOuh8KM8CxGAGJVdePwesBy46fPYJ0VgvUKnqGXTVGQI4r3MRD4MB
+ isXw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWaNlKyPUIOcXEFE52jeMQlA/bCOVYxvcDQcy/nN6Y59F6ZibTP7s5ATkZEVBknu5Y1OjH3pgtQSQzz@nongnu.org
+X-Gm-Message-State: AOJu0Yyr8Ppr0uIDy5koC1HXBNg8hCGNcQJnAlQeuyMI513q1bdBqDbm
+ WQG/31IpIK3wtqOI2RZB39esxYcSECbxog02FyazaV1rtkFx0heT1XpitqECyBeMAp9CiQB8pxp
+ sbEsQuFMT7HBtLLh23APfXNTpTHc3ZizWsp7UzvsYdFBpZnlOnhPvBl9l
+X-Gm-Gg: ASbGncs8S5S4YOksJ0lOT5YxVurwcdGX5AQMiwosgSnMQDPaZ563Yy/fRP45uCwO71c
+ 9Xvpf4KIHmrQ+F6HxdXYZdV4LK/v2Tcnq++KkAmXQ94gSm0GGJ8A+uC4FdXCxUn1OUudrtmHgc3
+ hc/Gaz8Ox3i1HjFJnLCCOCudtscmKZOB9Abogim43+tmyFYAAjDyUFoyyYjFNjKFAmpxa4R/IPl
+ diCYoqvJpuAdxriHizlSSt4pxaNJ9JFR+yVHDxxYUSN8DbJV/TC7xootZOsAx93fIffy0u2ooGt
+ pedzAH2LU2/4BUUH/DtjMM3M46qWIIZDyygIi3EbJogQs0uL4YA+dVFWiS7aIHMHbXopVenYwCA
+ =
+X-Received: by 2002:a05:620a:46a4:b0:891:d993:1bdb with SMTP id
+ af79cd13be357-8a8e6087428mr182184285a.86.1761703127199; 
+ Tue, 28 Oct 2025 18:58:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3L9U4c7qyuEkqjAdyObHCsaXovP3dT3P8SqQ00IPzMISKCb+3P9DrcwD/eSLN6y+BZfX+sg==
+X-Received: by 2002:a05:620a:46a4:b0:891:d993:1bdb with SMTP id
+ af79cd13be357-8a8e6087428mr182182885a.86.1761703126829; 
+ Tue, 28 Oct 2025 18:58:46 -0700 (PDT)
+Received: from [192.168.40.164] ([70.105.235.240])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-89f25b89f04sm952154685a.43.2025.10.28.18.58.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Oct 2025 18:58:46 -0700 (PDT)
+Message-ID: <deb77f19-3a23-4ebf-8b64-020241b230b9@redhat.com>
+Date: Tue, 28 Oct 2025 21:58:45 -0400
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1434917945-1761695873=:17035"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] docs/system/arm/virt: Document user-creatable SMMUv3
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: eric.auger@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
+ Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, nicolinc@nvidia.com, nathanc@nvidia.com,
+ mochs@nvidia.com, jonathan.cameron@huawei.com
+References: <20251024084350.252702-1-skolothumtho@nvidia.com>
+ <CAFEAcA8SAQO0frmN-rK6zp_-fEGXLefAXAxHmT=LASqEL-UU5g@mail.gmail.com>
+ <c21641fd-1a35-4b47-a361-bfc2daf7dbd7@redhat.com>
+ <5e897607-2c33-46f2-b2ab-579a2f4b6385@redhat.com>
+ <87v7jzk2rb.fsf@pond.sub.org>
+From: Donald Dutile <ddutile@redhat.com>
+In-Reply-To: <87v7jzk2rb.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ddutile@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,69 +117,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 10/28/25 1:35 AM, Markus Armbruster wrote:
+> Donald Dutile <ddutile@redhat.com> writes:
+> 
+>> On 10/27/25 10:13 AM, Eric Auger wrote:
+> 
+> [...]
+> 
+>>> Looks good to me as well
+>>> Fell free to add my R-b
+>>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>>> Thanks!
+>>> Eric
+>>>
+>> +1; looks good; can add my r-b if another is desired/needed.
+>> - Don
+> 
+> When you put in the review work, claim the review credit!  Suggest you
+> spell out your R-by.
+> 
+Trivial doc; I reviewed it previously; Shameer modified it per Peter's suggestion/request.
 
---3866299591-1434917945-1761695873=:17035
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+I added my USD $0.01 ... :-/
 
-On Mon, 27 Oct 2025, Philippe Mathieu-Daudé wrote:
-> On 25/10/25 01:31, BALATON Zoltan wrote:
->> These memory windows are a result of the address decoding in the
->> Articia S north bridge so better model it there and not in board code.
->> 
->> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/pci-host/articia.c | 15 ++++++++++++++-
->>   hw/ppc/amigaone.c     | 28 +++++-----------------------
->>   hw/ppc/pegasos2.c     | 13 -------------
->>   3 files changed, 19 insertions(+), 37 deletions(-)
->
->
->> @@ -169,6 +174,7 @@ static void articia_realize(DeviceState *dev, Error 
->> **errp)
->>   {
->>       ArticiaState *s = ARTICIA(dev);
->>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
->> +    MemoryRegion *mr;
->>       PCIDevice *pdev;
->>         bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
->> @@ -180,6 +186,14 @@ static void articia_realize(DeviceState *dev, Error 
->> **errp)
->>       memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
->>                             TYPE_ARTICIA, 0x1000000);
->>       memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
->> +    mr = g_new(MemoryRegion, 1);
->
-> Won't Coverity or other analysis tools complain about the leak?
-> (this is why we usually keep a reference in the device state, here
-> ArticiaState). Otherwise:
->
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-In any case, this same code is already present in amigaone.c and 
-pegasos2.c and this patch just moves it to articia.c so it should not make 
-it worse than it already is. Therefore can we take it for this release 
-with or without your R-b just to not block the whole series and come back 
-to clean this up later? Otherwise I'll have to send a v2 dropping this 
-patch and redo the next one without it but since this is preexisting I'd 
-avoid that and go with it for now that then leaves us time to find a 
-solution for it and other simliar code which then can be fixed together. 
-Is that OK with you or should I go for a v2?
-
-Regards,
-BALATON Zoltan
-
->> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", &s->mem,
->> +                             0, PCI_LOW_SIZE);
->> +    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
->> +    mr = g_new(MemoryRegion, 1);
->> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", &s->mem,
->> +                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
->> +    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, mr);
->
->
---3866299591-1434917945-1761695873=:17035--
 
