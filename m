@@ -2,53 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15929C1B8E3
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA590C1B9E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 16:22:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE7k8-0000fW-Mw; Wed, 29 Oct 2025 11:05:44 -0400
+	id 1vE7zv-0003gT-VN; Wed, 29 Oct 2025 11:22:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vE7k2-0000f7-GL
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:05:38 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vE7zq-0003ch-Op
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:22:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vE7jv-00057i-8S
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:05:38 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1FD2C597301;
- Wed, 29 Oct 2025 16:05:23 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id r6O-jtdoqWtS; Wed, 29 Oct 2025 16:05:20 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9879E597304; Wed, 29 Oct 2025 16:05:20 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 96526597300;
- Wed, 29 Oct 2025 16:05:20 +0100 (CET)
-Date: Wed, 29 Oct 2025 16:05:20 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Chad Jablonski <chad@jablonski.xyz>
-cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] ati-vga: Implement HOST_DATA transfers to enable X.org
- text rendering
-In-Reply-To: <20251029140112.275456-1-chad@jablonski.xyz>
-Message-ID: <e3e36622-94fc-b892-6283-280b3ec5292d@eik.bme.hu>
-References: <20251029140112.275456-1-chad@jablonski.xyz>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vE7zn-0006pZ-8U
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 11:21:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761751305;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8XzV9Jevbwvd738RsAmjsAiyMNh2hW6c4rYXgDfh7eU=;
+ b=f8Ok9wcT9Mi3QsfFZLRUZlD210Urfse76seJ6aaMyd4e5rWpvQShboLJBL/5NkdRZMCJNm
+ j59j2T2hK0NsGeIf+3InQ3YqOjqILBqIKbtP70kzL+IaOunS8NVL7TiHDRF2wfvFtTNb0t
+ Gip2iFOkEk4aq1R3q2SYaGelVJyFDpQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-KzyhVZaUOJqVX1fA9iqsFg-1; Wed, 29 Oct 2025 11:21:44 -0400
+X-MC-Unique: KzyhVZaUOJqVX1fA9iqsFg-1
+X-Mimecast-MFC-AGG-ID: KzyhVZaUOJqVX1fA9iqsFg_1761751303
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-891504015e5so2144303685a.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 08:21:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761751303; x=1762356103;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8XzV9Jevbwvd738RsAmjsAiyMNh2hW6c4rYXgDfh7eU=;
+ b=GyamQQh/v3v/2y4Ke7W+zKfwl4NA8/nO5HI6EPjyCS9300tfHpPvOA7MKIf/DzYCDu
+ XR+ZRD/yBBy7BHZERhrUEhgzzrfWPd0VZq7CqkxyqCMWQPNsVJ54ajgnGs+n/EwUl4WJ
+ fumxXgnPtUQByhq6Rq90ESB61DN7JVEt0So8QVDh6yp/s4OknSHIP1YEZUEplmPQA66o
+ Em0xIf6dYVWXQIgx/ZrAmtk3PL/lmlOg2IuB1Nkx6UvQlf+sD04IL09z2ceGITcqm0iS
+ ZaY8sj0RNRwrbXWsm7RbibQ/ZPsq/O+pqFKmweZhcXpUX+B0gFX4pIRA3AieRyddrG77
+ KZDA==
+X-Gm-Message-State: AOJu0YxEgt3IaVe0hNTLv3Jk2wAlXoCh/9r8cRJEDzXcizcJE8jygFBW
+ UIKSYJUH+r/yLoZVEAVStWgutVZopv5uC4qgHFi9qNjyJKxQtoJelLBpES/b0q9rDqgiPkP1teu
+ m3H0Ve9pG01zJMcaryhVlqXPbvrHbaIqcGmY1cG1+t509K8Q6jUxs/K9A
+X-Gm-Gg: ASbGnct2qR84JzQECubyEsrnZIxqMqkNmdk4GnyykByVaMKDnx1rnlR+rxd0ax90hVe
+ vGY7H/2wg7uhezUjn4NdGRQ2rJZsvperUazdv2Lk9yci0sVuijd8QHRjlZP+zvnnFRFqWTnqrxj
+ Hf8UhJgCPzSjSJv4Zv5BpP7D7YeGYxtqPCKzS+g0LT4JJDDlS1awi/smaoxeJGTY29v++Mkj1RQ
+ HhB3F+UAZpT1xhBkMz+8IUZFxuXJnUlY1QQ5VlKFYdgqJ7vpTr7iANcUnRUx+06PxW+9ROhgKuw
+ 2zIYbzAoSPf7tQLjrdXPTwJt4/EtUav0tGhgY5grZACS9V56DyNjg9yIFeJAdlXdbNQ=
+X-Received: by 2002:a05:6214:d4a:b0:798:95da:611f with SMTP id
+ 6a1803df08f44-880099a7c5amr37707536d6.0.1761751303209; 
+ Wed, 29 Oct 2025 08:21:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH89Nj8aSTbCRfBzAZKcYdjU+Tss/9oGtJUNbk55zhCT32x9WCMGmRk7Ag3j+SU6rXElk/vKw==
+X-Received: by 2002:a05:6214:d4a:b0:798:95da:611f with SMTP id
+ 6a1803df08f44-880099a7c5amr37706886d6.0.1761751302570; 
+ Wed, 29 Oct 2025 08:21:42 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-87fc48a8a10sm103987956d6.10.2025.10.29.08.21.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Oct 2025 08:21:41 -0700 (PDT)
+Date: Wed, 29 Oct 2025 11:21:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH] memory: Make FlatView root references weak
+Message-ID: <aQIxA8MzkSO7qm4Z@x1.local>
+References: <20251027-root-v1-1-ddf92b9058be@rsg.ci.i.u-tokyo.ac.jp>
+ <aQE_M1qsr78RrQaw@x1.local>
+ <376f8d41-6ffb-4e1b-b50b-93a0f307d017@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <376f8d41-6ffb-4e1b-b50b-93a0f307d017@rsg.ci.i.u-tokyo.ac.jp>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,493 +105,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Wed, Oct 29, 2025 at 01:06:47PM +0900, Akihiko Odaki wrote:
+> On 2025/10/29 7:09, Peter Xu wrote:
+> > On Mon, Oct 27, 2025 at 02:56:53PM +0900, Akihiko Odaki wrote:
+> > > docs/devel/memory.rst says "memory_region_ref and memory_region_unref
+> > > are never called on aliases", but these functions are called for
+> > > FlatView roots, which can be aliases.
+> > 
+> > IMHO the quoted doc was in a special context, where it was talking about
+> > the example of address_space_map() holding adhoc refcounts of a MR, in
+> > which case "memory_region_ref and memory_region_unref are never called on
+> > aliases" was correct..
+> > 
+> > The full context:
+> > 
+> >    ...
+> >    If you break this rule, the following situation can happen:
+> >    - the memory region's owner had a reference taken via memory_region_ref
+> >      (for example by address_space_map)
+> >    - the region is unparented, and has no owner anymore
+> >    - when address_space_unmap is called, the reference to the memory region's
+> >      owner is leaked.
+> >    There is an exception to the above rule: it is okay to call
+> >    object_unparent at any time for an alias or a container region.  It is
+> >    therefore also okay to create or destroy alias and container regions
+> >    dynamically during a device's lifetime.
+> >    This exceptional usage is valid because aliases and containers only help
+> >    QEMU building the guest's memory map; they are never accessed directly.
+> >    memory_region_ref and memory_region_unref are never called on aliases
+> >    or containers, and the above situation then cannot happen.  Exploiting
+> >    this exception is rarely necessary, and therefore it is discouraged,
+> >    but nevertheless it is used in a few places.
+> >    ...
+> > 
+> > So I can't say the doc is wrong, but maybe it can be at least be clearer on
+> > the scope of that sentence.. indeed.
+> 
+> I think statement "it is okay to call object_unparent at any time for an
+> alias or a container region" can be corrected. Practically, developers will
+> want call object_unparent() only when:
+> - the memory region is not added to a container and
+> - there is no manual references created with memory_region_ref().
+> 
+> These two conditions can be satisfied by auditing the device code that owns
+> the memory region instead of multiple devices.
 
-On Wed, 29 Oct 2025, Chad Jablonski wrote:
-> HOST_DATA as a source for 2D blits (ROP3_SRCCOPY) was unimplemented,
-> preventing X.org text rendering with 2D acceleration enabled. This
-> implements monochrome HOST_DATA blits with color expansion, enabling
-> xterm to render text correctly.
+Yes.  I think there're other ways to implicitly taking mr refcounts though
+(e.g. directly used as root address space when address_space_init()).  From
+that POV maybe the 1st requirement isn't as special.
 
-Great stuff, I meant to work on this but never got to it yet. Keep these 
-coming! It's not likely we can polish it enough to be in next release but 
-there's still a few days left, otherwise I take it as an RFC and here's a 
-quick review.
+> 
+> > 
+> > > 
+> > > This causes object overwrite hazard in pci-bridge. Specifically,
+> > > pci_bridge_region_init() expects that there are no references to
+> > > w->alias_io after object_unparent() is called, allowing it to reuse the
+> > > associated storage. However, if a parent bus still holds a reference to
+> > > the existing object as a FlatView's root, the storage is still in use,
+> > > leading to an overwrite. This hazard can be confirmed by adding the
+> > > following code to pci_bridge_region_init():
+> > > 
+> > > PCIDevice *parent_dev = parent->parent_dev;
+> > > assert(!object_dynamic_cast(OBJECT(parent_dev), TYPE_PCI_BRIDGE) ||
+> > >         PCI_BRIDGE(parent_dev)->as_io.current_map->root != &w->alias_io);
+> > 
+> > What's interesting is I found PCIBridge.as_io / PCIBridge.as_mem are not
+> > used anywhere..  because it looks like the bridge code uses MRs to operate
+> > rather than address spaces.
+> > 
+> > Does it mean we can drop the two ASes?  Then if they're the only holder of
+> > the refcounts of these problematic MRs, does it solve the problem too in an
+> > easier way?  Maybe there're other issues you want to fix too with this patch?
+> 
+> Apparently we cannot drop the ASes. See commit 55fa4be6f76a ("virtio-pci:
+> fix memory_region_find for VirtIOPCIRegion's MR"), which introduced them.
 
-> The blit itself has been implemented as a separate function to keep
-> things focused. Future work could refactor this, and the existing
-> blits, to use shared helpers for common patterns.
->
-> Changes:
-> - Add clipping register handlers (SC_TOP_LEFT, SC_BOTTOM_RIGHT,
->  SRC_SC_BOTTOM_RIGHT) and defaulting
-> - Add DP_SRC_FRGD_CLR and DP_SRC_BKGD_CLR register write handlers to
->  enable color expansion
-> - Implement expand_colors() to convert 1bpp monochrome data to 32bpp
->  color
-> - Add ati_blt_mono_host_to_screen() for monochrome HOST_DATA blits
+Ah, this is definitely obscure.. at least it should have some comments
+explaining why the ASes are there.
 
-That's a lot of changes for a single patch. Could this be split into a 
-series along the above lines to put each logical change into its own patch 
-for easier review?
+Now reading a bit into the problem, I'm not even sure if this is the right
+thing to do, starting from ffa8a3e3b2 where it starts to introduce
+memory_region_find() for virtio_address_space_lookup().
 
-> The host data buffer has a fixed 4MiB size. This _should_ cover typical
-> use cases and overflow is logged. Future work could implement dynamic
-> allocation based on blit dimensions.
->
-> Tested on Rage 128. From what I understand the R100 also shares these
-> registers but that device has not been tested against Xorg. There
-> seem to be other issues preventing Xorg from starting with the radeon
-> driver.
+I don't know the piece of code well enough to say, but IMHO logically it
+shouldn't need to depend on global address space information for the
+lookup.
 
-I think the problem with R100 is that it needs CCE and that's the main 
-issue with the driver, at least with Linux DRM and the Amiga like drivers 
-I've checked, I don't know about older Linux framebuffer and Xorg drivers.
+> 
+> I don't know any other existing devices affected by this FlatView behavior,
+> but it is also difficult to show that they are *not* affected because it
+> requires traversing MemoryRegion graphs that span across several devices.
+> 
+> We will also need to update the documentation for future devices, but it is
+> not trivial either as the condition where aliases are referenced from
+> FlatView is complex.
+> 
+> Considering that, I think this patch is a pragmatic solution that ensures
+> correctness of object_unparent() on aliases.
 
-> Note: The xorg/xf86-video-r128 drivers support both CCE (DMA)
-> and MMIO acceleration. This implements MMIO, which the driver
-> uses when built with --disable-dri. CCE of course is another can of
-> worms.
+I think this patch should still be the last resort, let's still try to
+discuss if there's other options.
 
-I know about two other uses of host data that this could be tested with:
+For example, afaiu RCU readers at least do not rely on view->root to be
+present, can we already release the refcount for the view->root within the
+BQL section?  I mean something like this:
 
-Solaris also uses it and could reproduce it with sol-10-u11-ga-x86-dvd.iso 
-I think it needs qemu-system-x86_64 -m 1G -cpu coreduo -device 
-ati-vga,model=rv100 but it was a long time ago I've last tried.
+===8<===
+diff --git a/system/memory.c b/system/memory.c
+index 8b84661ae3..ceb774530f 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -301,7 +301,6 @@ static void flatview_destroy(FlatView *view)
+         memory_region_unref(view->ranges[i].mr);
+     }
+     g_free(view->ranges);
+-    memory_region_unref(view->root);
+     g_free(view);
+ }
+ 
+@@ -314,7 +313,16 @@ void flatview_unref(FlatView *view)
+ {
+     if (qatomic_fetch_dec(&view->ref) == 1) {
+         trace_flatview_destroy_rcu(view, view->root);
++        /* Root pointer must exist until now */
+         assert(view->root);
++        /*
++         * Release the root pointer first without waiting for a grace
++         * period, as the root is not used by RCU readers.  Early releasing
++         * of root MR helps stablizing alias MR refcounts in use cases like
++         * pci_bridge_region_init(), where the caller might want to reuse
++         * the same MR right away.
++         */
++        g_clear_pointer(&view->root, memory_region_unref);
+         call_rcu(view, flatview_destroy, rcu);
+     }
+ }
+===8<===
 
-MorphOS when rendering bitmap fonts as reported here: 
-https://morph.zone/modules/newbb_plus/viewtopic.php?forum=3&topic_id=13912&post_id=160655&viewmode=flat&sortorder=0&showonepost=1
-I could reproduce it with TVPaint under MorphOS.
+That at least do not introduce weak-refcount concepts.
 
-If you don't have these or can't test it I can eventually try with these 
-but just in case you need more test cases these are that I know of.
+> 
+> > 
+> > > 
+> > > This assertion fails when running:
+> > > meson test -C build qtest-x86_64/bios-tables-test \
+> > >      '--test-args=-p /x86_64/acpi/piix4/pci-hotplug/no_root_hotplug'
+> > > 
+> > > Make the references of FlatView roots "weak" (i.e., remove the
+> > > reference to a root automatically removed when it is finalized) to
+> > > avoid calling memory_region_ref and memory_region_unref and fix the
+> > > hazard with pci-bridge.
+> > > 
+> > > Alternative solutions (like removing the "never called on aliases"
+> > > statement or detailing the exception) were rejected because the alias
+> > > invariant is still relied upon in several parts of the codebase, and
+> > > updating existing code to align with a new condition is non-trivial.
+> > > 
+> > > Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> > > ---
+> > >   system/memory.c | 8 ++++++--
+> > >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/system/memory.c b/system/memory.c
+> > > index 8b84661ae36c..08fe5e791224 100644
+> > > --- a/system/memory.c
+> > > +++ b/system/memory.c
+> > > @@ -266,7 +266,6 @@ static FlatView *flatview_new(MemoryRegion *mr_root)
+> > >       view = g_new0(FlatView, 1);
+> > >       view->ref = 1;
+> > >       view->root = mr_root;
+> > > -    memory_region_ref(mr_root);
+> > >       trace_flatview_new(view, mr_root);
+> > >       return view;
+> > > @@ -301,7 +300,6 @@ static void flatview_destroy(FlatView *view)
+> > >           memory_region_unref(view->ranges[i].mr);
+> > >       }
+> > >       g_free(view->ranges);
+> > > -    memory_region_unref(view->root);
+> > >       g_free(view);
+> > >   }
+> > > @@ -1796,6 +1794,12 @@ void memory_region_init_iommu(void *_iommu_mr,
+> > >   static void memory_region_finalize(Object *obj)
+> > >   {
+> > >       MemoryRegion *mr = MEMORY_REGION(obj);
+> > > +    gpointer key;
+> > > +    gpointer value;
+> > > +
+> > > +    if (g_hash_table_steal_extended(flat_views, mr, &key, &value)) {
+> > > +        ((FlatView *)value)->root = NULL;
+> > > +    }
+> > 
+> > This is definitely very tricky.. The translation path (from
+> > AddressSpaceDispatch) indeed looks ok as of now, which doesn't looks at
+> > view->root.. however at least I saw this:
+> > 
+> > void flatview_unref(FlatView *view)
+> > {
+> >      if (qatomic_fetch_dec(&view->ref) == 1) {
+> >          trace_flatview_destroy_rcu(view, view->root);
+> >          assert(view->root);                            <-------------------
+> >          call_rcu(view, flatview_destroy, rcu);
+> >      }
+> > }
+> > 
+> > I wonder how it didn't already crash.
+> 
+> In case of pci-bridge, I guess flatview_unref() is synchronously called, but
+> memory_region_unref(view->root) is not because of flatview_destroy() is
+> delayed with RCU.
 
-Some more comments below.
+True.
 
-> Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
-> ---
-> hw/display/ati.c      |  78 ++++++++++++++++++++++++++++--
-> hw/display/ati_2d.c   | 110 +++++++++++++++++++++++++++++++++++++++++-
-> hw/display/ati_dbg.c  |   9 ++++
-> hw/display/ati_int.h  |   6 +++
-> hw/display/ati_regs.h |  28 ++++++++++-
-> 5 files changed, 223 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/display/ati.c b/hw/display/ati.c
-> index f7c0006a87..1dfaa79202 100644
-> --- a/hw/display/ati.c
-> +++ b/hw/display/ati.c
-> @@ -510,6 +510,15 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
->     case DEFAULT_SC_BOTTOM_RIGHT:
->         val = s->regs.default_sc_bottom_right;
->         break;
-> +    case SC_TOP_LEFT:
-> +        val = s->regs.sc_top_left;
-> +        break;
-> +    case SC_BOTTOM_RIGHT:
-> +        val = s->regs.sc_bottom_right;
-> +        break;
-> +    case SRC_SC_BOTTOM_RIGHT:
-> +        val = s->regs.src_sc_bottom_right;
-> +        break;
->     default:
->         break;
->     }
-> @@ -804,9 +813,14 @@ static void ati_mm_write(void *opaque, hwaddr addr,
->         }
->         break;
->     case DST_WIDTH:
-> +    {
-> +        uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
->         s->regs.dst_width = data & 0x3fff;
-> -        ati_2d_blt(s);
-> +        if (src != GMC_SRC_SOURCE_HOST_DATA) {
-> +            ati_2d_blt(s);
-> +        }
->         break;
-> +    }
->     case DST_HEIGHT:
->         s->regs.dst_height = data & 0x3fff;
->         break;
-> @@ -853,21 +867,39 @@ static void ati_mm_write(void *opaque, hwaddr addr,
->         s->regs.dst_y = (data >> 16) & 0x3fff;
->         break;
->     case DST_HEIGHT_WIDTH:
-> +    {
-> +        uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
->         s->regs.dst_width = data & 0x3fff;
->         s->regs.dst_height = (data >> 16) & 0x3fff;
-> -        ati_2d_blt(s);
-> +        if (src != GMC_SRC_SOURCE_HOST_DATA) {
-> +            ati_2d_blt(s);
-> +        }
->         break;
-> +    }
->     case DP_GUI_MASTER_CNTL:
-> -        s->regs.dp_gui_master_cntl = data & 0xf800000f;
-> +        s->regs.dp_gui_master_cntl = data & 0xff80000f;
->         s->regs.dp_datatype = (data & 0x0f00) >> 8 | (data & 0x30f0) << 4 |
->                               (data & 0x4000) << 16;
->         s->regs.dp_mix = (data & GMC_ROP3_MASK) | (data & 0x7000000) >> 16;
-> +
-> +        if ((data & GMC_SRC_CLIPPING_MASK) == GMC_SRC_CLIP_DEFAULT) {
-> +            s->regs.src_sc_bottom_right = s->regs.default_sc_bottom_right;
-> +        }
-> +        if ((data & GMC_DST_CLIPPING_MASK) == GMC_DST_CLIP_DEFAULT) {
-> +            s->regs.sc_top_left = 0;
-> +            s->regs.sc_bottom_right = s->regs.default_sc_bottom_right;
-> +        }
->         break;
->     case DST_WIDTH_X:
-> +    {
-> +        uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
->         s->regs.dst_x = data & 0x3fff;
->         s->regs.dst_width = (data >> 16) & 0x3fff;
-> -        ati_2d_blt(s);
-> +        if (src != GMC_SRC_SOURCE_HOST_DATA) {
-> +            ati_2d_blt(s);
-> +        }
->         break;
-> +    }
->     case SRC_X_Y:
->         s->regs.src_y = data & 0x3fff;
->         s->regs.src_x = (data >> 16) & 0x3fff;
-> @@ -877,10 +909,15 @@ static void ati_mm_write(void *opaque, hwaddr addr,
->         s->regs.dst_x = (data >> 16) & 0x3fff;
->         break;
->     case DST_WIDTH_HEIGHT:
-> +    {
-> +        uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
->         s->regs.dst_height = data & 0x3fff;
->         s->regs.dst_width = (data >> 16) & 0x3fff;
-> -        ati_2d_blt(s);
-> +        if (src != GMC_SRC_SOURCE_HOST_DATA) {
-> +            ati_2d_blt(s);
-> +        }
->         break;
-> +    }
->     case DST_HEIGHT_Y:
->         s->regs.dst_y = data & 0x3fff;
->         s->regs.dst_height = (data >> 16) & 0x3fff;
-> @@ -909,6 +946,12 @@ static void ati_mm_write(void *opaque, hwaddr addr,
->     case DP_CNTL:
->         s->regs.dp_cntl = data;
->         break;
-> +    case DP_SRC_FRGD_CLR:
-> +        s->regs.dp_src_frgd_clr = data;
-> +        break;
-> +    case DP_SRC_BKGD_CLR:
-> +        s->regs.dp_src_bkgd_clr = data;
-> +        break;
->     case DP_DATATYPE:
->         s->regs.dp_datatype = data & 0xe0070f0f;
->         break;
-> @@ -937,6 +980,29 @@ static void ati_mm_write(void *opaque, hwaddr addr,
->     case DEFAULT_SC_BOTTOM_RIGHT:
->         s->regs.default_sc_bottom_right = data & 0x3fff3fff;
->         break;
-> +    case SC_TOP_LEFT:
-> +        s->regs.sc_top_left = data;
-> +        break;
-> +    case SC_BOTTOM_RIGHT:
-> +        s->regs.sc_bottom_right = data;
-> +        break;
-> +    case SRC_SC_BOTTOM_RIGHT:
-> +        s->regs.src_sc_bottom_right = data;
-> +        break;
-> +    case HOST_DATA0 ... HOST_DATA7:
-> +    case HOST_DATA_LAST:
-> +        if (s->host_data_pos + 4 > sizeof(s->host_data_buffer)) {
-> +            qemu_log_mask(LOG_UNIMP, "HOST_DATA buffer overflow "
-> +                         "(buffer size: %zu bytes)\n",
-> +                          sizeof(s->host_data_buffer));
-> +            return;
-> +        }
-> +        stn_he_p(&s->host_data_buffer[s->host_data_pos], 4, data);
-> +        s->host_data_pos += 4;
-> +        if (addr == HOST_DATA_LAST) {
-> +            ati_2d_blt(s);
-> +        }
-> +        break;
->     default:
->         break;
->     }
-> @@ -1018,6 +1084,7 @@ static void ati_vga_realize(PCIDevice *dev, Error **errp)
->     /* most interrupts are not yet emulated but MacOS needs at least VBlank */
->     dev->config[PCI_INTERRUPT_PIN] = 1;
->     timer_init_ns(&s->vblank_timer, QEMU_CLOCK_VIRTUAL, ati_vga_vblank_irq, s);
-> +    s->host_data_pos = 0;
+> 
+> > 
+> > The other stupid but working solution is we can always make the 6 aliases
+> > to not be reused, IOW we can always use dynamic MRs considering
+> > pci_bridge_update_mappings() should be rare?
+> 
+> Perhaps we may introduce memory_region_new_alias() (that calls object_new())
+> and allow calling object_unparent() only for aliases created with the
+> function.
 
-You probably don't need this line because device state is 0 init and reset 
-will run after realize and overwrite it so it's enough to reset it in the 
-reset method below.
+IMHO we can see feasibility of above "early unref view->root" idea, then
+this one, before the original solution.
 
-> }
->
-> static void ati_vga_reset(DeviceState *dev)
-> @@ -1030,6 +1097,7 @@ static void ati_vga_reset(DeviceState *dev)
->     /* reset vga */
->     vga_common_reset(&s->vga);
->     s->mode = VGA_MODE;
-> +    s->host_data_pos = 0;
-> }
->
-> static void ati_vga_exit(PCIDevice *dev)
-> diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-> index 309bb5ccb6..6b0b4775ff 100644
-> --- a/hw/display/ati_2d.c
-> +++ b/hw/display/ati_2d.c
-> @@ -24,6 +24,9 @@
->  * possible.
->  */
->
-> +#define DEFAULT_CNTL (s->regs.dp_gui_master_cntl & GMC_DST_PITCH_OFFSET_CNTL)
+Thanks,
 
-May need a better name? There are different defaults so not clear which 
-one is this or is it used for all parameters?
+-- 
+Peter Xu
 
-> +#define EXPANDED_SRC_BPP 32
-> +
-> static int ati_bpp_from_datatype(ATIVGAState *s)
-> {
->     switch (s->regs.dp_datatype & 0xf) {
-> @@ -43,7 +46,106 @@ static int ati_bpp_from_datatype(ATIVGAState *s)
->     }
-> }
->
-> -#define DEFAULT_CNTL (s->regs.dp_gui_master_cntl & GMC_DST_PITCH_OFFSET_CNTL)
-> +/* Convert 1bpp monochrome data to 32bpp ARGB using color expansion */
-> +static void expand_colors(uint8_t *color_dst, const uint8_t *mono_src,
-> +                          uint32_t width, uint32_t height,
-> +                          uint32_t fg_color, uint32_t bg_color,
-> +                          bool lsb_to_msb)
-> +{
-> +    uint32_t byte, color;
-> +    uint8_t *pixel;
-> +    int i, j, bit;
-> +    /* Rows are 32-bit aligned */
-> +    int bytes_per_row = ((width + 31) / 32) * 4;
-> +
-> +    for (i = 0; i < height; i++) {
-> +        for (j = 0; j < width; j++) {
-> +            byte = mono_src[i * bytes_per_row + (j / 8)];
-> +            bit = lsb_to_msb ? 7 - (j % 8) : j % 8;
-> +            color = (byte >> bit) & 0x1 ? fg_color : bg_color;
-> +            pixel = &color_dst[(i * width + j) * 4];
-> +            memcpy(pixel, &color, sizeof(color));
-> +        }
-> +    }
-> +}
-> +
-> +/* Blit color expanded HOST_DATA to the screen */
-> +static void ati_blt_mono_host_to_screen(ATIVGAState *s)
-
-Why do we need a separate function when we have a buffer with source data? 
-Can't we use the same blit setting the source to the buffer? If only 
-because of color expansion can that be done beforehand? It seems to have a 
-separate pass over the image anyway and not doing it line by line but I 
-think it could be done for one line in the main blit function too.
-
-Regards,
-BALATON Zoltan
-
-> +{
-> +    DisplaySurface *ds = qemu_console_surface(s->vga.con);
-> +
-> +    uint8_t *mono_data, *color_data, *dst_data;
-> +    uint32_t dst_stride, dst_x, dst_y, bpp;
-> +    uint32_t width = s->regs.dst_width;
-> +    uint32_t height = s->regs.dst_height;
-> +    uint32_t pixels = width * height;
-> +    bool lsb_to_msb = s->regs.dp_gui_master_cntl & GMC_BYTE_ORDER_LSB_TO_MSB;
-> +    uint32_t fg_clr = s->regs.dp_src_frgd_clr;
-> +    uint32_t bg_clr = s->regs.dp_src_bkgd_clr;
-> +
-> +    /* Monochrome source is 1 bpp aligned to 32-bit rows */
-> +    uint32_t mono_size = ((width + 31) / 32) * 4 * height;
-> +    /* Color destination is 32 bpp */
-> +    uint32_t clr_size = pixels * sizeof(uint32_t);
-> +
-> +    if (s->host_data_pos < mono_size) {
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "HOST_DATA blit requires %u bytes, buffer holds %u "
-> +                      "(increase buffer size)\n",
-> +                      mono_size, s->host_data_pos);
-> +        return;
-> +    }
-> +
-> +    mono_data = s->host_data_buffer;
-> +    color_data = g_malloc(clr_size);
-> +
-> +    expand_colors(color_data, mono_data, width, height,
-> +                  fg_clr, bg_clr, lsb_to_msb);
-> +
-> +    /* Rage 128 stores pitch as pixels * 8. We need pixels. */
-> +    dst_stride = (DEFAULT_CNTL ?
-> +                 s->regs.dst_pitch : s->regs.default_pitch) * 8;
-> +    dst_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
-> +            s->regs.dst_x : s->regs.dst_x + 1 - s->regs.dst_width);
-> +    dst_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
-> +            s->regs.dst_y : s->regs.dst_y + 1 - s->regs.dst_height);
-> +    bpp = ati_bpp_from_datatype(s);
-> +    dst_data = s->vga.vram_ptr + (DEFAULT_CNTL ?
-> +               s->regs.dst_offset : s->regs.default_offset);
-> +    if (s->dev_id == PCI_DEVICE_ID_ATI_RAGE128_PF) {
-> +        dst_data += s->regs.crtc_offset & 0x07ffffff;
-> +    }
-> +    /* And now we need stride in words to pass to pixman */
-> +    dst_stride = (dst_stride * (bpp / 8)) / sizeof(uint32_t);
-> +
-> +    pixman_blt((uint32_t *)color_data, (uint32_t *)dst_data,
-> +               width, dst_stride, EXPANDED_SRC_BPP, bpp,
-> +               0, 0, dst_x, dst_y,
-> +               width, height);
-> +    DPRINTF("pixman_blt(%p, %p, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
-> +            color_data, dst_data, width, dst_stride, EXPANDED_SRC_BPP, bpp,
-> +            0, 0, dst_x, dst_y,
-> +            width, height);
-> +
-> +    g_free(color_data);
-> +    s->host_data_pos = 0;
-> +
-> +    s->regs.dst_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
-> +                     dst_x + s->regs.dst_width : dst_x);
-> +    s->regs.dst_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
-> +                     dst_y + s->regs.dst_height : dst_y);
-> +
-> +    if (dst_data >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
-> +        dst_data < s->vga.vram_ptr + s->vga.vbe_start_addr +
-> +        s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
-> +            memory_region_set_dirty(
-> +                &s->vga.vram, s->vga.vbe_start_addr +
-> +                (DEFAULT_CNTL ? s->regs.dst_offset : s->regs.default_offset) +
-> +                dst_y * surface_stride(ds),
-> +                height * surface_stride(ds)
-> +            );
-> +    }
-> +}
->
-> void ati_2d_blt(ATIVGAState *s)
-> {
-> @@ -92,6 +194,12 @@ void ati_2d_blt(ATIVGAState *s)
->     switch (s->regs.dp_mix & GMC_ROP3_MASK) {
->     case ROP3_SRCCOPY:
->     {
-> +        uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
-> +        if (src == GMC_SRC_SOURCE_HOST_DATA) {
-> +            ati_blt_mono_host_to_screen(s);
-> +            return;
-> +        }
-> +
->         bool fallback = false;
->         unsigned src_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
->                        s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_width);
-> diff --git a/hw/display/ati_dbg.c b/hw/display/ati_dbg.c
-> index 3ffa7f35df..5c799d540a 100644
-> --- a/hw/display/ati_dbg.c
-> +++ b/hw/display/ati_dbg.c
-> @@ -252,6 +252,15 @@ static struct ati_regdesc ati_reg_names[] = {
->     {"MC_SRC1_CNTL", 0x19D8},
->     {"TEX_CNTL", 0x1800},
->     {"RAGE128_MPP_TB_CONFIG", 0x01c0},
-> +    {"HOST_DATA0", 0x17c0},
-> +    {"HOST_DATA1", 0x17c4},
-> +    {"HOST_DATA2", 0x17c8},
-> +    {"HOST_DATA3", 0x17cc},
-> +    {"HOST_DATA4", 0x17d0},
-> +    {"HOST_DATA5", 0x17d4},
-> +    {"HOST_DATA6", 0x17d8},
-> +    {"HOST_DATA7", 0x17dc},
-> +    {"HOST_DATA_LAST", 0x17e0},
->     {NULL, -1}
-> };
->
-> diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-> index f5a47b82b0..7973ce99bf 100644
-> --- a/hw/display/ati_int.h
-> +++ b/hw/display/ati_int.h
-> @@ -14,6 +14,7 @@
-> #include "hw/i2c/bitbang_i2c.h"
-> #include "vga_int.h"
-> #include "qom/object.h"
-> +#include "qemu/units.h"
->
-> /*#define DEBUG_ATI*/
->
-> @@ -82,6 +83,9 @@ typedef struct ATIVGARegs {
->     uint32_t default_pitch;
->     uint32_t default_tile;
->     uint32_t default_sc_bottom_right;
-> +    uint32_t sc_top_left;
-> +    uint32_t sc_bottom_right;
-> +    uint32_t src_sc_bottom_right;
-> } ATIVGARegs;
->
-> struct ATIVGAState {
-> @@ -100,6 +104,8 @@ struct ATIVGAState {
->     MemoryRegion io;
->     MemoryRegion mm;
->     ATIVGARegs regs;
-> +    uint32_t host_data_pos;
-> +    uint8_t host_data_buffer[4 * MiB];
-> };
->
-> const char *ati_reg_name(int num);
-> diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
-> index d7127748ff..4e9b4cc896 100644
-> --- a/hw/display/ati_regs.h
-> +++ b/hw/display/ati_regs.h
-> @@ -252,6 +252,15 @@
-> #define DP_T12_CNTL                             0x178c
-> #define DST_BRES_T1_LNTH                        0x1790
-> #define DST_BRES_T2_LNTH                        0x1794
-> +#define HOST_DATA0                              0x17c0
-> +#define HOST_DATA1                              0x17c4
-> +#define HOST_DATA2                              0x17c8
-> +#define HOST_DATA3                              0x17cc
-> +#define HOST_DATA4                              0x17d0
-> +#define HOST_DATA5                              0x17d4
-> +#define HOST_DATA6                              0x17d8
-> +#define HOST_DATA7                              0x17dc
-> +#define HOST_DATA_LAST                          0x17e0
-> #define SCALE_SRC_HEIGHT_WIDTH                  0x1994
-> #define SCALE_OFFSET_0                          0x1998
-> #define SCALE_PITCH                             0x199c
-> @@ -392,11 +401,10 @@
-> /* DP_GUI_MASTER_CNTL bit constants */
-> #define GMC_SRC_PITCH_OFFSET_CNTL               0x00000001
-> #define GMC_DST_PITCH_OFFSET_CNTL               0x00000002
-> -#define GMC_SRC_CLIP_DEFAULT                    0x00000000
-> -#define GMC_DST_CLIP_DEFAULT                    0x00000000
-> #define GMC_BRUSH_SOLIDCOLOR                    0x000000d0
-> #define GMC_SRC_DSTCOLOR                        0x00003000
-> #define GMC_BYTE_ORDER_MSB_TO_LSB               0x00000000
-> +#define GMC_BYTE_ORDER_LSB_TO_MSB               0x00004000
-> #define GMC_DP_SRC_RECT                         0x02000000
-> #define GMC_3D_FCN_EN_CLR                       0x00000000
-> #define GMC_AUX_CLIP_CLEAR                      0x20000000
-> @@ -404,6 +412,22 @@
-> #define GMC_WRITE_MASK_SET                      0x40000000
-> #define GMC_DP_CONVERSION_TEMP_6500             0x00000000
->
-> +/* DP_GUI_MASTER_CNTL DP_SRC_CLIPPING named constants */
-> +#define GMC_SRC_CLIPPING_MASK                   0x00000004
-> +#define GMC_SRC_CLIP_DEFAULT                    0x00000000
-> +#define GMC_SRC_CLIP_LEAVE_ALONE                0x00000004
-> +
-> +/* DP_GUI_MASTER_CNTL DP_DST_CLIPPING named constants */
-> +#define GMC_DST_CLIPPING_MASK                   0x00000008
-> +#define GMC_DST_CLIP_DEFAULT                    0x00000000
-> +#define GMC_DST_CLIP_LEAVE_ALONE                0x00000008
-> +
-> +/* DP_GUI_MASTER_CNTL DP_SRC_SOURCE named constants */
-> +#define GMC_SRC_SOURCE_MASK                     0x07000000
-> +#define GMC_SRC_SOURCE_MEMORY                   0x02000000
-> +#define GMC_SRC_SOURCE_HOST_DATA                0x03000000
-> +#define GMC_SRC_SOURCE_HOST_DATA_ALIGNED        0x04000000
-> +
-> /* DP_GUI_MASTER_CNTL ROP3 named constants */
-> #define GMC_ROP3_MASK                           0x00ff0000
-> #define ROP3_BLACKNESS                          0x00000000
->
 
