@@ -2,91 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D2DC1D794
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C862C1D7A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:44:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEDuj-00059s-WA; Wed, 29 Oct 2025 17:41:06 -0400
+	id 1vEDw5-0005hn-5J; Wed, 29 Oct 2025 17:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDub-00058j-2g
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:40:57 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDw3-0005e4-7D
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:42:27 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDuM-0005kN-E6
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:40:56 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-475dd559b0bso4178915e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:40:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEDvp-0005oN-QE
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:42:25 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-47114a40161so3345805e9.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:42:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761774032; x=1762378832; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761774123; x=1762378923; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ncKmPlVytzymp+1TPUudiFEf8xHLOE7bUhfZrx7l5p4=;
- b=c6HBNVgAqyTvOr0AYKIbbySaRFIJg24QCLNqVzy92EedZh+Ge8LgLxKVC1M6Pt8x7H
- MJJlN0PYs4r8gACkaZSlRX4nRiR29ois5yBzz616Bhn/uGTRXzXv8210RJ0X0xxYkYkL
- YbEcNPJBYV8zFBZhC7okXg8Gw84qLUqs+rmBFabRBM9i+Y3XjynnueR41hypJYOnKqN8
- 9OFKQEgfNJqtXaTAX+p6aArEkCS5+i2cNoL0RUuNiuAxXdxiAH4Ay9pDrazVnQ09gHYQ
- qhV2BZZu3ohWoDOJXxJP90ZCSK0AgJDdcMcSRzzqUiYOD62V3X4lBR4e+yTFdAco1ayb
- e9XQ==
+ bh=QAAOCxQ3njC9sd38gRl2lcX4tyoH13t+XkOmzilp5O8=;
+ b=Va5r2qcmCXfmpQsPB57lxY23RulNHd1mKi7HhdRQBp9Cc23Kz83ttVrHF2P+3ZFB/U
+ 5MhCWnUWiX+GHe44Wz4jTWSE5Wvw7/NySVmtCTl1nIre22Zb9wv6b0nejQJlA8/86ssE
+ +CyP8UNRgJCUNZ0NgiJJiSBmQUFHjv1NntfBRI3WKIdfDlxCNA5sIaFpN4V63rgIGSGf
+ BD/79lp5ZLt8xGhGSS6wpwOsPBoRK2DAWvsigMfmQ8Q/o9sRlJytTzG7acPDCt2f80M2
+ KiBH8XQKBWLKcQx0gNrKDPkjV/q1jvMXJr6r0l6KtZOG0Hs4Gchqn1xVI03LJFhFrSuF
+ cC0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761774032; x=1762378832;
+ d=1e100.net; s=20230601; t=1761774123; x=1762378923;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ncKmPlVytzymp+1TPUudiFEf8xHLOE7bUhfZrx7l5p4=;
- b=po31GEknaRibeU4lctwO5VoQt+GFIhEtCiFx28pHqiyF4EOCYpZEuwZZ/h6kE9hNDX
- Nq1vXPxplKMC8IhY5kG5/KxUCs3pu3zfbIz6Z9bhJ24x8dCEj2oJFfx/zUnDWpNxxtg2
- IX7Mt6684csqUFyG6lXm+Lg9jYWRofNRPh+ZwFjQrz/q9+dUxInVVEeXuWCWSWTbCsUS
- YJNyEg7R6Ap3+2MaN2mPWl77FFEB7m8fHn/8gvCrxjHVXrSTs3Wy7A2v7/jg2/OVUywD
- K0Q9mmkfyaXWFID9aRCh4NR7wo2KfSYunglA+KNplduHrBvQekHWBpZZKl07pYh/h05F
- E39Q==
-X-Gm-Message-State: AOJu0YyS0v4LNaHZtew2ewnKAYL7nvZ+GRewyS9ttv2t99pauq6bWzM3
- BL6jbYSW+xjVgwhVo83d9BzkfG2PXHg/9w67+2nshOQhVs5AKtEmGeOr5yEygQKLThg=
-X-Gm-Gg: ASbGncv+Y35oxJfw6tghixGOndzLVyXv68M9DMsLJuOzaulJt+0BwpDPVGSjUxlzcXn
- q3E+b7Rha225lGHs1OkARhlxcOYe9cWMkAi6CwJ5xGsYqpxyEau4c1elU3tXX0076FdgJ87OJc3
- eAUUM119FD9uhzokIVvvIvDg09UL8jGOUkprUaRdzxaWmaX8MpI8jEz+iy4q7N5vnrAE0KccO0L
- skaWAbGUPYklzuYasa2GE3RMO1Lf2zrqFAbv3IistF2IotycHCZYR4URLlZFm7eKc54QfXTOQf9
- v7f4TCkn9ugkd1vxYWA1vCIZ2JoHY0Ko6DrAmdisugkp8gtO9zjZRbduW+WD7FaWQHP7fmAcJm4
- ROTrqdg3qKuHphFtOg/MmB/ye3/TJ5rpgig87kxwH6rupZlhcT0tftp8bPBp3g1axTqxy27PH5o
- bJoOfrI8Ymm3ZtPImB7uBacZtekyBuyVsXUl2iFGErr3Y=
-X-Google-Smtp-Source: AGHT+IFXUJifVRQ7Vbl9dG5zJpYgqfo0P08xQwkOPkawg2q8imAVIcD2QygFY2RYHcgIQpUn834ULQ==
-X-Received: by 2002:a05:600c:64cf:b0:471:1717:411 with SMTP id
- 5b1f17b1804b1-4771e1db42fmr39515955e9.24.1761774032250; 
- Wed, 29 Oct 2025 14:40:32 -0700 (PDT)
+ bh=QAAOCxQ3njC9sd38gRl2lcX4tyoH13t+XkOmzilp5O8=;
+ b=G4MtgM4lDls5GE2sRrcpGff30KFTE13exk/HKZNhAN6k6sUMNGf+LgB9Cp/MShENsm
+ hUDynWfHDHB5fTTdwL4wGRrn5G4+clk5LK8DX0Xu5S/+5gBjlQCXSbPN3vCObGk7ht2q
+ O1epXBQraZHzzJYiHbj5SXwnxmjtS4LYOBVBDP1Goo+DJgKxDxB1erXkqbiwXS7mr911
+ /KsM5uHeV0v91SwIJ3ZYFvZ/rjbBJPAHbn4nFR5wLC6sozbLSGFSQaBNfR+yGcSZjFuy
+ 2MxF9Ffe2mR1HVrzjPji9WM9pzaWUNDiFkWjFBQuQ2rBREk7DQaaq0WTOe8tk15GMM1s
+ b/eg==
+X-Gm-Message-State: AOJu0YyfhibtUPlg3zjxJdE2/d0Nyo2huME0M10GylYUC8EKNNuuOp0K
+ XVDRmtkRc0fh8Bkc4mX6jp9nkX0UFxKKI9L0Moz2LfaSaV8xnzLytzH38gFbWOYirxMc6ygNRlH
+ B9+wOusI=
+X-Gm-Gg: ASbGncsObJiSPFvGUCxaZJqyioCcBJE82UqvWmikI/QvQXIUocT+hGXQibP/f7qKcGw
+ jmdGmFicBbWQkkbnSqIJdx4JGw7gAflwrafnocb39eWuytc40N/BOu0yT6v6uHcR2v3Rm+uw3Ss
+ I+XFHvic84pGEiZcWcViffsoVAJcJWkUhr3JZKM1ogTBYQ2PnCvVL19tcpkg6eE35GhKDb2ELgr
+ tyu23IRrwV9WMdJUdBimzZ2wAmvEW37lEkRRcB6lEPsE3vidNhOnOsj4PDGKZ8l+gL+exY+SCYz
+ ZvomIYefWut6OFXAUtLDYLZ6l1F54M+LdLOqJblvraylf5Xa545adbUzBkqXK94+Vnij2AogfO6
+ 7gHZWtDTTXqgST8MgkggYw8YCT2SBt61SNR7L2JqEPlTr273NZKQmJtpL96uVC7WewnDFRF1V5d
+ 6Dki2UnPGEAzNwqK4ummyJztdgGoWzX8mSK4yJYLzRRUw=
+X-Google-Smtp-Source: AGHT+IGnB4KRWCBDbIHVNsOMOSYmdoSFBuOFopMo/r5gQ8CYOJ7qC/h5Z0Tfdef5fEmjqZd0Aw4EyQ==
+X-Received: by 2002:a05:600c:46ce:b0:471:15c1:45b9 with SMTP id
+ 5b1f17b1804b1-4771e3b84c0mr47555425e9.29.1761774122790; 
+ Wed, 29 Oct 2025 14:42:02 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952b7b2dsm28106136f8f.2.2025.10.29.14.40.31
+ 5b1f17b1804b1-4771832e857sm55417945e9.0.2025.10.29.14.42.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 14:40:31 -0700 (PDT)
-Message-ID: <9931a47f-6d04-4763-9d48-7377b1a29531@linaro.org>
-Date: Wed, 29 Oct 2025 22:40:30 +0100
+ Wed, 29 Oct 2025 14:42:02 -0700 (PDT)
+Message-ID: <adbf6cd9-72b0-4ce9-93a6-4f83338ca8a3@linaro.org>
+Date: Wed, 29 Oct 2025 22:42:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/19] single-binary: Make hw/arm/ common
+Subject: Re: [PATCH v3 19/35] audio: register and unregister vmstate with
+ AudioState
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Anton Johansson
- <anjo@rev.ng>, Luc Michel <luc.michel@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>
-References: <20251021205741.57109-1-philmd@linaro.org>
- <CAFEAcA8A5xa0nJUczM_BDCvVu+sP-tdbt_CxDGos6hKW27qEZA@mail.gmail.com>
- <a244a654-7bd8-46cf-bc55-87ab5287bda5@linaro.org>
- <CAFEAcA9y29qsC4UQLjO+sJ5TLiA7FqtBTKwUAaQhq8Bz+WX+2g@mail.gmail.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Alexandre Ratchov <alex@caoua.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Jan Kiszka <jan.kiszka@web.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <huth@tuxfamily.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-ppc@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
+ Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Volker_R=C3=BCmelin?=
+ <vr_qemu@t-online.de>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
+References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-20-marcandre.lureau@redhat.com>
+ <ffab95ce-9b5d-43ea-93a7-611de6044ad8@linaro.org>
+ <CAJ+F1C+qnkm=F1q0YSHZ9WbAMcz+-NJo5mzj1b-DcU24dNpRLQ@mail.gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9y29qsC4UQLjO+sJ5TLiA7FqtBTKwUAaQhq8Bz+WX+2g@mail.gmail.com>
+In-Reply-To: <CAJ+F1C+qnkm=F1q0YSHZ9WbAMcz+-NJo5mzj1b-DcU24dNpRLQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,32 +121,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/25 14:16, Peter Maydell wrote:
-> On Wed, 22 Oct 2025 at 15:03, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+On 29/10/25 20:00, Marc-André Lureau wrote:
+> Hi
+> 
+> On Wed, Oct 29, 2025 at 5:51 PM Philippe Mathieu-Daudé
+> <philmd@linaro.org> wrote:
 >>
->> On 22/10/25 13:50, Peter Maydell wrote:
->>> On Tue, 21 Oct 2025 at 21:57, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>>>
->>>> Series fully reviewed.
->>>>
->>>> Since v6:
->>>> - Addressed Jan comment
->>>> - Removed aspeed/raspi meson patches
+>> On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
+>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 >>>
->>> I'm assuming you'll take this via your own tree like the
->>> other single-binary stuff -- let me know if you want me
->>> to take it into target-arm instead.
+>>> Proper lifecycle management with QOM state.
+>>>
+>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>> ---
+>>>    audio/audio.c | 7 ++++++-
+>>>    1 file changed, 6 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/audio/audio.c b/audio/audio.c
+>>> index 4c3c3fd52f..853930bb48 100644
+>>> --- a/audio/audio.c
+>>> +++ b/audio/audio.c
+>>> @@ -1614,6 +1614,8 @@ static void audio_vm_change_state_handler (void *opaque, bool running,
+>>>        audio_reset_timer (s);
+>>>    }
+>>>
+>>> +static const VMStateDescription vmstate_audio;
+>>> +
+>>>    static void audio_state_init(Object *obj)
+>>>    {
+>>>        AudioState *s = AUDIO_STATE(obj);
+>>> @@ -1625,6 +1627,8 @@ static void audio_state_init(Object *obj)
+>>>
+>>>        s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
+>>>        assert(s->vmse != NULL);
+>>> +
+>>> +    vmstate_register_any(NULL, &vmstate_audio, s);
 >>
->> Since most files are hw/arm/ related, I tried to get it fully reviewed
->> before the last Tuesday before soft freeze so you could queue it;
->> however it is based on my hw-misc-20251021 pull request, which isn't
->> yet merged. I'm happy to merge myself, but would you mind to provide
->> your Acked-by tag?
+>> Please avoid legacy APIs:
+>>
+>> /**
+>>    * vmstate_register_any() - legacy function to register state
+>>    * serialisation description and let the function choose the id
+>>    *
+>>    * New code shouldn't be using this function as QOM-ified devices have
+>>    * dc->vmsd to store the serialisation description.
+>>    *
+>>    * Returns: 0 on success, -1 on failure
+>>    */
+>>
 > 
-> Sure:
-> 
-> Acked-by: Peter Maydell <peter.maydell@linaro.org>
+> qdev/Device have vmsd, but not plain Object (or legacy code without object).
 
-Thanks! Series queued.
-
+Hmm right. Cc'ing Peter & Fabiano.
 
