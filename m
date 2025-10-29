@@ -2,107 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5A9C1D86C
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B266DC1D8A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEE75-0007qg-F9; Wed, 29 Oct 2025 17:53:51 -0400
+	id 1vEE9p-0001mc-K6; Wed, 29 Oct 2025 17:56:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE73-0007oQ-4e
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:53:49 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE9k-0001m6-NG
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:56:36 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE6r-0007uN-MJ
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:53:48 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-475dc6029b6so3634115e9.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:53:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE9b-0008It-HD
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:56:34 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47721293fd3so2431415e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761774809; x=1762379609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761774979; x=1762379779; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WES+Ny/Ud3VzQoIwxHp4O8mqJxD7akPdqbRdRNtliZ8=;
- b=O+FguzARQO3i2gKqFnqudW68wyar1c/LsEJxBkF4OTxu5pGlqum0jv2ZPpFS85Ikjl
- lacIw4WNLfi5/Ax6KKXScF/Vy8yzoLG17b+kZpnaaymXkDmLOuXZmgu6D/YPsX4dtz0s
- SHqF0gjxRZT8gge3QbfRVx1gmyesKRjE7JIDU33gsySkpXg/NjQI6GeATEXvS1ifxGrx
- 1/0HI9Ds6B8jm39r2DkIIqQh5PjcMUuiVLrk6fQgiEcQxz9PODo0XBv068Z53VbHNZCc
- bXQQl58NMa2Us0WgBdP81T1unMDzpjRLwjDPhnNmv5EnokOL/+RqWUlnAMEmr6SPlY7y
- W1gA==
+ bh=+Po6AyAoeNogstTHc5AgDY1aqQVkWkqC1kTR6HSRLJ0=;
+ b=pAdmJirJ0Kf2Xc537GumVtrIwXtrvaNRgZ5+/+zK+3STqAW1YbsPoGYy4VhpRiPRub
+ NkcTAPI3wdlFByN+5X+pVnZLajX1idyAI7FAMbCveeAoZWfVGTyjXNMZsgZbmpHxxz6o
+ Ri6bgPvzxoTumnoAPd4GugtjF1ZSCCdEZfbu1kK7uoW0996blbmlwfqtSAalMlA0eY9F
+ p6hJFr3oILJl/ZJO7ka9WNfbTO3MN25C3SRX3peDVvIdsRFKMGgDBdogL5sJTAhV4Ij1
+ wbU9yQ1P+o7a9qa/S5Qq9qcxoK//p0o8qHIIVIwKW9X/+P4q6/TwlLPE88TkxfdZqh4J
+ pJBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761774809; x=1762379609;
+ d=1e100.net; s=20230601; t=1761774979; x=1762379779;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WES+Ny/Ud3VzQoIwxHp4O8mqJxD7akPdqbRdRNtliZ8=;
- b=ZpoUySV303S6Teo/MMmTRV+VQ1ej5ruNrtJ5AiLIma8PqWGVu0YS7NbFKzj4nimy+Z
- n75gQNNsUHMpbvJsy8PUZL7Ybym+k1fx8q/cNykZ+j+ahn7ObSSnUaZsQiyFxJJxuRSn
- N2ZrpRqNnnhUULgf3BoXAak6UHM9XAiOl95KX7aWwldqk7ZdisybYXUzLO0puDCmV0Bt
- X8/lcUlqwRUcZvjmz0f1dEQqJAB0aLQdcjdsr75Ob3qBXjQkJwP6Kk4TDGsZk31+O9OE
- kSW0QwvfeB6Me8q1MVbOKFS5+ykdTs6tbhR52mNE4eR339zRyvLgUpmsNK7dUbw68xkn
- SSXw==
+ bh=+Po6AyAoeNogstTHc5AgDY1aqQVkWkqC1kTR6HSRLJ0=;
+ b=sWC9IxvWyNq9r79U2Ni3HbZBUiOZ5d0AuoXssuKPMEOMns0obgOXM6Md3PHvdOWB3U
+ EIAXra7HZ6hbPNElNU87mJm4QyYPULVK000TdZlVOxM43WtXrQ5hmB1CxzfXw+OOqeej
+ zKVZOqOP31Xs/U7LhpKLZ684x9HR2MpquYTudxeSAANUUFxT/VqAsBtPH6gxCuTzjWze
+ Tbap9b/RTV5o76vdwtGCmw9BHo2v1k1/T3TMCo0fEaw3+h+pzgEgDeYfjd0sHqgYmIBk
+ YsjQHPUEEA0TJjcz7gomr0jYMhlGwoYlFPiGWHm8MeTB7Oqk+c3gX7zoe2DbmReD7/2S
+ UsPw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUyoVl/R7LOSdSN+PDTRK/kAxiZG0lzeLs1W4JfvIOV/mnI/jiF/V30f1BvrkoYN24XEvX1qan/8S1p@nongnu.org
-X-Gm-Message-State: AOJu0YzajJZEhybHlEEuZUpTlzVtPIee3DPZTo51MxbXhgIMYxmu3wgd
- 5R8DOWMXuk+IAzqn7D/v9OdoB2BqAUwOANBCyREODebl43a69XhNgvgmczrs04TIJXGekxMQo0q
- aiRJj7X4=
-X-Gm-Gg: ASbGncsNlksIjQKy4Sg5VTXRyq+yzxvlioI2jenRtCFJsgligJRwtl3qZtwK/uLKMgn
- r94UkT1R4z+OhyKYeWW6Hf1x4MbLkNJbAMuLM09rBKMyek1V9HylYkQ27rezSlLnSJat/t8m4hk
- KWlSuTb8nejJhx47EqI588ardBg/KOQ3i/C4WmLJcMPHFy1/P7nscoxprxziTeqpm+GLQ3zIWgz
- IdlbK2eag/x7sMlrONhzRzb19OgElgvR6pFswqLpltgE154C0EfO1TQhJX11jHSpS2Xc+Ouj8L9
- opHzeT3wdNP8/1shxVWXYeAuKeNuNj0xLIiY1Y2Y1S6D9JhIFy38hD4GmhS0Epxxvvfi7tTuBPX
- UfNKL1D6HN3Sy8snuW+3Hn1yScN7FezyptBJJqTxVXKFXQw63PFXDMaPuou8KMpzxdZkz08HHCW
- SWAAsyPlwbR8l2GUzP5420IY+nvT2wKbUay0TcGmwhtkk=
-X-Google-Smtp-Source: AGHT+IGcR4bC/xf/lphkVM8QuDJxmg24Ru8600hRUtjOHSapqItFKzUwH9vxElpQuYEGo8n3sW+1hw==
-X-Received: by 2002:a05:600c:5488:b0:477:10c4:b4e with SMTP id
- 5b1f17b1804b1-4771e1f59demr38937505e9.41.1761774809144; 
- Wed, 29 Oct 2025 14:53:29 -0700 (PDT)
+ AJvYcCUoaZFNWLTA8rD/nj5GzjvsrPVB+/bruqbOYgmqPfBjO+a+RwTbQyg/SoCgn/V68e818s5O+YdoN5Op@nongnu.org
+X-Gm-Message-State: AOJu0Yz8WOLMJ44xd9HFZFgWXAmmBhzNiJTootQtFjNVwm1jfS1CltFf
+ O0QIFgdBJ9+36f7enssPjTWeoUR8misSyBTu3qRzOkI8+uWem5Chx0SrDW0RPgWxkGM=
+X-Gm-Gg: ASbGncsNCf3bUAfY5BdcFqalmWOmsWD7tzGwJbTraOzNe76KlmthElqGh9KmoA3G9an
+ qmNbUks+JeJyX6AljDRt6/7h3GfujKfiM5CGitnsLGRX+fpPwN+uGbpWs9WjGkJ3Tk938WiFmeY
+ LTx1ABYxLM09j6vzYv/Vp9BZuOe+HzgaKBoVZ+ejM/zF+Y8berwhfmg6yW3G8uLRD6GWF391JQc
+ 5n/SqKoUBihkwsSJrpQ/xJCgV6TTFosrQzkeRyk0BX2wPn/FS6FFjJ4KsKB91cNl1RLYrNrEhzr
+ 6sPmKdFwfGhHywOoo9xwBBKxvpEwVyK8oOyehOCKU3ipII1ucsPTFFe1Lv2RebnZbqmumzVShyR
+ tLzxbRXKx5fj16Z7GIfq9uAoKvATxnjYbA5lmqjhHFMvFme3D1yBJXCEnFSjR0khy/spbYzii1O
+ zg39WzMYv/uV/U4wsIiTW1tIY9qTpP5VVW5m1sUiNoBzM=
+X-Google-Smtp-Source: AGHT+IH2d4Oo41bUMM4e8ov/5r5JLj8XpGGeh/BLTWPpeEBLCKkyQOnGF1fhqzCvKJS6uLDB2nJsCQ==
+X-Received: by 2002:a05:600c:a011:b0:45f:29eb:2148 with SMTP id
+ 5b1f17b1804b1-47726276e88mr8878165e9.7.1761774979232; 
+ Wed, 29 Oct 2025 14:56:19 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47726396832sm5873175e9.1.2025.10.29.14.53.27
+ 5b1f17b1804b1-477289b0bb3sm4709405e9.8.2025.10.29.14.56.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 14:53:28 -0700 (PDT)
-Message-ID: <6a095121-ed37-4d51-8115-f436d2d95028@linaro.org>
-Date: Wed, 29 Oct 2025 22:53:26 +0100
+ Wed, 29 Oct 2025 14:56:18 -0700 (PDT)
+Message-ID: <5fdf4757-ba5f-4069-ab6a-8761f33f8ea7@linaro.org>
+Date: Wed, 29 Oct 2025 22:56:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/35] audio: introduce AUD_set_volume_{in,out}_lr()
+Subject: Re: [PATCH] system/physmem: mark io_mem_unassigned lockless
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Jan Kiszka <jan.kiszka@web.de>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <huth@tuxfamily.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-ppc@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
- Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Volker_R=C3=BCmelin?=
- <vr_qemu@t-online.de>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-24-marcandre.lureau@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peixiu Hou <phou@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20251029185224.420261-1-stefanha@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-24-marcandre.lureau@redhat.com>
+In-Reply-To: <20251029185224.420261-1-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,30 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 29/10/25 19:52, Stefan Hajnoczi wrote:
+> When the Bus Master bit is disabled in a PCI device's Command Register,
+> the device's DMA address space becomes unassigned memory (i.e. the
+> io_mem_unassigned MemoryRegion).
 > 
-> There are 2 sets of functions since the introduction of multi-channel
-> Volume structure: AUD_set_volume_{in,out} and audio_set_volume_{in,out}.
+> This can lead to deadlocks with IOThreads since io_mem_unassigned
+> accesses attempt to acquire the Big QEMU Lock (BQL). For example,
+> virtio-pci devices deadlock in virtio_write_config() ->
+> virtio_pci_stop_ioeventfd() when waiting for the IOThread while holding
+> the BQL. The IOThread is unable to acquire the BQL but the vcpu thread
+> won't release the BQL while waiting for the IOThread.
 > 
-> Use the AUD_ prefix for consistency with other audio.c functions. Rename
-> the stereo function with "_lr" suffix.
+> io_mem_unassigned is trivially thread-safe since it has no state, it
+> simply rejects all load/store accesses. Therefore it is safe to enable
+> lockless I/O on io_mem_unassigned to eliminate this deadlock.
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+[...]
+> Buglink: https://issues.redhat.com/browse/RHEL-71933
+> Reported-by: Peixiu Hou <phou@redhat.com>
+> Cc: Kevin Wolf <kwolf@redhat.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->   audio/audio.h         | 21 ++++++++++++++++-----
->   audio/audio.c         | 16 ++--------------
->   hw/audio/ac97.c       |  4 ++--
->   hw/audio/asc.c        |  2 +-
->   hw/audio/hda-codec.c  |  4 ++--
->   hw/audio/lm4549.c     |  2 +-
->   hw/audio/via-ac97.c   |  2 +-
->   hw/audio/virtio-snd.c |  4 ++--
->   hw/audio/wm8750.c     | 12 ++++++------
->   hw/display/xlnx_dp.c  |  2 +-
->   hw/usb/dev-audio.c    |  4 ++--
->   11 files changed, 36 insertions(+), 37 deletions(-)
+>   system/physmem.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/system/physmem.c b/system/physmem.c
+> index a340ca3e61..1dc2b46e12 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -3011,6 +3011,9 @@ static void io_mem_init(void)
+>   {
+>       memory_region_init_io(&io_mem_unassigned, NULL, &unassigned_mem_ops, NULL,
+>                             NULL, UINT64_MAX);
+> +
+> +    /* Trivially thread-safe since memory accesses are rejected */
+
+Maybe duplicate the comment in unassigned_mem_ops[]. Regardless,
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +    memory_region_enable_lockless_io(&io_mem_unassigned);
+>   }
 
 
