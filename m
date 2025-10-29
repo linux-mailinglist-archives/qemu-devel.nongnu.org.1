@@ -2,64 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074ACC183C4
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 05:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE42C183CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 05:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vDxuz-0006pg-Ik; Wed, 29 Oct 2025 00:36:17 -0400
+	id 1vDxwB-00070j-8a; Wed, 29 Oct 2025 00:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDxur-0006ox-Tv
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 00:36:10 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vDxw7-00070R-Jx; Wed, 29 Oct 2025 00:37:27 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vDxui-00045m-HA
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 00:36:09 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59T4ZnZu038343
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 29 Oct 2025 13:35:49 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=4ZCJqyQWMhw2pEUPsChUbdA5eVVoYaw9ntuaPvVa3qI=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:From:To;
- s=rs20250326; t=1761712550; v=1;
- b=k2DjAX4r/0927GnmKP64BCA9M8Zbncr7tyIFJHfRV8zyHgqb+EQDCy+E/LHauxWl
- WY6yQ2SoMqmXAvd3oha64B2roXoumkGVBdblDP9RV2vG3puiGQlzryvIQG+uWn0S
- zbeREBw0nP7V2LFkuRqHoGmzprThLt6fRqBA9VBAmjDu22UcHaheqrNIp6g/NoME
- wIAR1/EVEZ2Aj/1xM6YFsSI/ahcpVOtOnt7KXz2bt1rxFRw0GoGsS0lXCMAG8l4w
- PI2XZzR2iLZWqGF6fJLUCYvg/lHP1FiwzpvL9YN4+KHNeAqTa7U2mLY5FsIFdgBS
- uVdH9+oLUIWQm9Rr3XfknA==
-Message-ID: <7e46c5de-3227-4b24-ab95-8fb9575fe7ed@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 29 Oct 2025 13:35:49 +0900
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vDxw0-0004M3-KA; Wed, 29 Oct 2025 00:37:27 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 29 Oct
+ 2025 12:37:10 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Wed, 29 Oct 2025 12:37:10 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <kane_chen@aspeedtech.com>
+Subject: [PATCH v2 00/17] Split AST2400, AST2600,
+ AST2700 and AST1030 SoC machines into separate source files for
+ maintainability
+Date: Wed, 29 Oct 2025 12:36:46 +0800
+Message-ID: <20251029043710.1486573-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory: Make FlatView root references weak
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20251027-root-v1-1-ddf92b9058be@rsg.ci.i.u-tokyo.ac.jp>
- <aQE_M1qsr78RrQaw@x1.local>
- <376f8d41-6ffb-4e1b-b50b-93a0f307d017@rsg.ci.i.u-tokyo.ac.jp>
-Content-Language: en-US
-In-Reply-To: <376f8d41-6ffb-4e1b-b50b-93a0f307d017@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,191 +59,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/29 13:06, Akihiko Odaki wrote:
-> On 2025/10/29 7:09, Peter Xu wrote:
->> On Mon, Oct 27, 2025 at 02:56:53PM +0900, Akihiko Odaki wrote:
->>> docs/devel/memory.rst says "memory_region_ref and memory_region_unref
->>> are never called on aliases", but these functions are called for
->>> FlatView roots, which can be aliases.
->>
->> IMHO the quoted doc was in a special context, where it was talking about
->> the example of address_space_map() holding adhoc refcounts of a MR, in
->> which case "memory_region_ref and memory_region_unref are never called on
->> aliases" was correct..
->>
->> The full context:
->>
->>    ...
->>    If you break this rule, the following situation can happen:
->>    - the memory region's owner had a reference taken via 
->> memory_region_ref
->>      (for example by address_space_map)
->>    - the region is unparented, and has no owner anymore
->>    - when address_space_unmap is called, the reference to the memory 
->> region's
->>      owner is leaked.
->>    There is an exception to the above rule: it is okay to call
->>    object_unparent at any time for an alias or a container region.  It is
->>    therefore also okay to create or destroy alias and container regions
->>    dynamically during a device's lifetime.
->>    This exceptional usage is valid because aliases and containers only 
->> help
->>    QEMU building the guest's memory map; they are never accessed 
->> directly.
->>    memory_region_ref and memory_region_unref are never called on aliases
->>    or containers, and the above situation then cannot happen.  Exploiting
->>    this exception is rarely necessary, and therefore it is discouraged,
->>    but nevertheless it is used in a few places.
->>    ...
->>
->> So I can't say the doc is wrong, but maybe it can be at least be 
->> clearer on
->> the scope of that sentence.. indeed.
-> 
-> I think statement "it is okay to call object_unparent at any time for an 
-> alias or a container region" can be corrected. Practically, developers 
-> will want call object_unparent() only when:
-> - the memory region is not added to a container and
-> - there is no manual references created with memory_region_ref().
-> 
-> These two conditions can be satisfied by auditing the device code that 
-> owns the memory region instead of multiple devices.
-> 
->>
->>>
->>> This causes object overwrite hazard in pci-bridge. Specifically,
->>> pci_bridge_region_init() expects that there are no references to
->>> w->alias_io after object_unparent() is called, allowing it to reuse the
->>> associated storage. However, if a parent bus still holds a reference to
->>> the existing object as a FlatView's root, the storage is still in use,
->>> leading to an overwrite. This hazard can be confirmed by adding the
->>> following code to pci_bridge_region_init():
->>>
->>> PCIDevice *parent_dev = parent->parent_dev;
->>> assert(!object_dynamic_cast(OBJECT(parent_dev), TYPE_PCI_BRIDGE) ||
->>>         PCI_BRIDGE(parent_dev)->as_io.current_map->root != &w- 
->>> >alias_io);
->>
->> What's interesting is I found PCIBridge.as_io / PCIBridge.as_mem are not
->> used anywhere..  because it looks like the bridge code uses MRs to 
->> operate
->> rather than address spaces.
->>
->> Does it mean we can drop the two ASes?  Then if they're the only 
->> holder of
->> the refcounts of these problematic MRs, does it solve the problem too 
->> in an
->> easier way?  Maybe there're other issues you want to fix too with this 
->> patch?
-> 
-> Apparently we cannot drop the ASes. See commit 55fa4be6f76a ("virtio- 
-> pci: fix memory_region_find for VirtIOPCIRegion's MR"), which introduced 
-> them.
-> 
-> I don't know any other existing devices affected by this FlatView 
-> behavior, but it is also difficult to show that they are *not* affected 
-> because it requires traversing MemoryRegion graphs that span across 
-> several devices.
-> 
-> We will also need to update the documentation for future devices, but it 
-> is not trivial either as the condition where aliases are referenced from 
-> FlatView is complex.
-> 
-> Considering that, I think this patch is a pragmatic solution that 
-> ensures correctness of object_unparent() on aliases.
-> 
->>
->>>
->>> This assertion fails when running:
->>> meson test -C build qtest-x86_64/bios-tables-test \
->>>      '--test-args=-p /x86_64/acpi/piix4/pci-hotplug/no_root_hotplug'
->>>
->>> Make the references of FlatView roots "weak" (i.e., remove the
->>> reference to a root automatically removed when it is finalized) to
->>> avoid calling memory_region_ref and memory_region_unref and fix the
->>> hazard with pci-bridge.
->>>
->>> Alternative solutions (like removing the "never called on aliases"
->>> statement or detailing the exception) were rejected because the alias
->>> invariant is still relied upon in several parts of the codebase, and
->>> updating existing code to align with a new condition is non-trivial.
->>>
->>> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->>> ---
->>>   system/memory.c | 8 ++++++--
->>>   1 file changed, 6 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/system/memory.c b/system/memory.c
->>> index 8b84661ae36c..08fe5e791224 100644
->>> --- a/system/memory.c
->>> +++ b/system/memory.c
->>> @@ -266,7 +266,6 @@ static FlatView *flatview_new(MemoryRegion *mr_root)
->>>       view = g_new0(FlatView, 1);
->>>       view->ref = 1;
->>>       view->root = mr_root;
->>> -    memory_region_ref(mr_root);
->>>       trace_flatview_new(view, mr_root);
->>>       return view;
->>> @@ -301,7 +300,6 @@ static void flatview_destroy(FlatView *view)
->>>           memory_region_unref(view->ranges[i].mr);
->>>       }
->>>       g_free(view->ranges);
->>> -    memory_region_unref(view->root);
->>>       g_free(view);
->>>   }
->>> @@ -1796,6 +1794,12 @@ void memory_region_init_iommu(void *_iommu_mr,
->>>   static void memory_region_finalize(Object *obj)
->>>   {
->>>       MemoryRegion *mr = MEMORY_REGION(obj);
->>> +    gpointer key;
->>> +    gpointer value;
->>> +
->>> +    if (g_hash_table_steal_extended(flat_views, mr, &key, &value)) {
->>> +        ((FlatView *)value)->root = NULL;
->>> +    }
->>
->> This is definitely very tricky.. The translation path (from
->> AddressSpaceDispatch) indeed looks ok as of now, which doesn't looks at
->> view->root.. however at least I saw this:
->>
->> void flatview_unref(FlatView *view)
->> {
->>      if (qatomic_fetch_dec(&view->ref) == 1) {
->>          trace_flatview_destroy_rcu(view, view->root);
->>          assert(view->root);                            
->> <-------------------
->>          call_rcu(view, flatview_destroy, rcu);
->>      }
->> }
->>
->> I wonder how it didn't already crash.
-> 
-> In case of pci-bridge, I guess flatview_unref() is synchronously called, 
-> but memory_region_unref(view->root) is not because of flatview_destroy() 
-> is delayed with RCU.
-> 
->>
->> The other stupid but working solution is we can always make the 6 aliases
->> to not be reused, IOW we can always use dynamic MRs considering
->> pci_bridge_update_mappings() should be rare?
-> 
-> Perhaps we may introduce memory_region_new_alias() (that calls 
-> object_new()) and allow calling object_unparent() only for aliases 
-> created with the function.
-Speaking of alternative solutions, I think the best solution in long 
-term is to use functions that dynamically update aliases such as 
-memory_region_set_alias_offset() instead of dynamically calling 
-object_unparent().
+This series depends on the following patch series:
+Split AST2500 SoC machines into separate source files for maintainability
+https://patchwork.kernel.org/project/qemu-devel/cover/20251023100150.295370-1-jamin_lin@aspeedtech.com/
 
-But that also requires considerable amount of effort, so I think this 
-patch still makes sense as an immediate solution. Perhaps we may also 
-expand the documentation to tell developers to use the dynamic update 
-functions so that the number of object_unparent() calls on aliases will 
-decrease over time and we can eventually remove the weak reference trick.
+v1:
+ 1. Split each Aspeed machine into its own source file for better
+    readability and maintainability:
+    - Quanta-Q71L
+    - Supermicro X11
+    - Palmetto
+    - Bletchley
+    - fby35 BMC
+    - Facebook Fuji
+    - QCOM Firework
+    - QCOM DC-SCM V1
+    - GB200NVL
+    - Rainier
+    - Catalina
+    - AST2600 EVB
+    - AST2700 EVB
+    - AST1030 EVB
+ 2. Make aspeed_machine_ast2600_class_emmc_init() a shared API
+    for eMMC boot setup.
+ 3. Promote connect_serial_hds_to_uarts() to a public machine API
+    for reuse across platforms.
 
-Regards,
-Akihiko Odaki
+v2:
+ 1. Restore ASPEED_RAM_SIZE() macro
+
+Jamin Lin (17):
+  hw/arm/aspeed: Split Quanta-Q71L machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split Supermicro X11 machine into a separate source
+    file for maintainability
+  hw/arm/aspeed: Split Palmetto machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Move ASPEED_RAM_SIZE() macro to common header for reuse
+  hw/arm/aspeed: Split Bletchley machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split FBY35 BMC machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split Fuji machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split QCOM Firework machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split QCOM DC-SCM V1 machine into a separate source
+    file for maintainability
+  hw/arm/aspeed: Make aspeed_machine_ast2600_class_emmc_init() a common
+    API for eMMC boot setup
+  hw/arm/aspeed: Split GB200NVL machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split Rainier machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split Catalina machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split AST2600 EVB machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split AST2700 EVB machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Promote connect_serial_hds_to_uarts() to public machine
+    API
+  hw/arm/aspeed: Split AST1030 EVB machine into a separate source file
+    for maintainability
+
+ hw/arm/aspeed_eeprom.h                        |   25 -
+ include/hw/arm/aspeed.h                       |    9 +
+ hw/arm/aspeed.c                               | 1144 +----------------
+ hw/arm/aspeed_ast10x0_evb.c                   |  107 ++
+ hw/arm/aspeed_ast2400_palmetto.c              |   79 ++
+ hw/arm/aspeed_ast2400_quanta-q71l.c           |   85 ++
+ hw/arm/aspeed_ast2400_supermicrox11.c         |   80 ++
+ hw/arm/aspeed_ast2600_bletchley.c             |   96 ++
+ hw/arm/aspeed_ast2600_catalina.c              |  224 ++++
+ hw/arm/aspeed_ast2600_evb.c                   |   64 +
+ ...aspeed_eeprom.c => aspeed_ast2600_fby35.c} |  165 ++-
+ hw/arm/aspeed_ast2600_fuji.c                  |  139 ++
+ hw/arm/aspeed_ast2600_gb200nvl.c              |  110 ++
+ hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c        |   54 +
+ hw/arm/aspeed_ast2600_qcom-firework.c         |   90 ++
+ hw/arm/aspeed_ast2600_rainier.c               |  197 +++
+ hw/arm/aspeed_ast27x0_evb.c                   |   86 ++
+ hw/arm/meson.build                            |   15 +-
+ 18 files changed, 1533 insertions(+), 1236 deletions(-)
+ delete mode 100644 hw/arm/aspeed_eeprom.h
+ create mode 100644 hw/arm/aspeed_ast10x0_evb.c
+ create mode 100644 hw/arm/aspeed_ast2400_palmetto.c
+ create mode 100644 hw/arm/aspeed_ast2400_quanta-q71l.c
+ create mode 100644 hw/arm/aspeed_ast2400_supermicrox11.c
+ create mode 100644 hw/arm/aspeed_ast2600_bletchley.c
+ create mode 100644 hw/arm/aspeed_ast2600_catalina.c
+ create mode 100644 hw/arm/aspeed_ast2600_evb.c
+ rename hw/arm/{aspeed_eeprom.c => aspeed_ast2600_fby35.c} (51%)
+ create mode 100644 hw/arm/aspeed_ast2600_fuji.c
+ create mode 100644 hw/arm/aspeed_ast2600_gb200nvl.c
+ create mode 100644 hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
+ create mode 100644 hw/arm/aspeed_ast2600_qcom-firework.c
+ create mode 100644 hw/arm/aspeed_ast2600_rainier.c
+ create mode 100644 hw/arm/aspeed_ast27x0_evb.c
+
+-- 
+2.43.0
+
 
