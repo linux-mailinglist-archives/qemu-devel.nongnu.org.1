@@ -2,86 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391F6C1ADDF
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:45:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3360FC1AE10
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 14:46:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE6TY-0004yQ-Pv; Wed, 29 Oct 2025 09:44:34 -0400
+	id 1vE6Ul-0005gl-EC; Wed, 29 Oct 2025 09:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vE6TV-0004wO-Q0
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:44:29 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6UH-0005Vl-Is
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:45:19 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vE6TP-0002jl-8K
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:44:29 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-63c2d72582cso11573825a12.1
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:44:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vE6U7-0002qm-DA
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 09:45:16 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4710022571cso75580645e9.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 06:45:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1761745458; x=1762350258; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bndmBYkqvlVjgTRbYRQiJEYS+aYsxp3enG0L5CPA9jY=;
- b=Zc+fdG66BTeMdW0ALwKgXSf4G94XmGznAtM3m5gwpxAHYjry+CbEn8mbhxGS7AOmB3
- UO6w89BM7Zi21gDD7P6hvMllj66ndcQuSzCmdhrRJSQvjgVo2cG9pLW+rJtGs0pLhjMX
- YhTUyH2JoVTwUhyToO87P5HKX/LvnGdwpRYbSj5l/iEPr63hh4I+dMA5ON94058RaHGA
- 7QwAQziK9y9ZOO1w/73d7DEt0BjI9rAbX1F5snXMROTmduDW9jPy6GpE0MY+4wlcCWKg
- Bqjg0ZNJvK/erhixPQ069uub9s3mJGwlrRGpEnbMgRjEBLFftC8wvlFKczZr5QbUda83
- /i9w==
+ d=linaro.org; s=google; t=1761745501; x=1762350301; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=j0UZJUesIkyNDkiDrZBjXLzYyoQGF+99QP8wq3RHeAU=;
+ b=alI4bpXn+R6nRG4OKWtKLZDNxBz/3vAhzqkmS8jZp2MILCGM1bnCwlo2yGUTGMvllz
+ 3RyRdMmkwc3H+WgnjV47QC/x3A2w8UEdU4eRtXpDApx2F5V34y66R+jWJhZqvayz3+ZT
+ 8WXlYO5TDic0TFptdPHsdVTwhraCYZak+mT+x8n6fBOFR0qFkvARd/9FX4gIS2oI2O9D
+ 5+h4RXxfWPFiw3FR1YCbBN3TwUElQd1/gnSq5cjl+ByAWJqcsCHPsbTMxB9evINt13Tm
+ aC6mn6Tn93qyETVF+yFyttyTEs3z2g0Vd/1JTrWUqcQbb4vp+3ns5FYhvKXgdkrJZUhY
+ Ra/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761745458; x=1762350258;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bndmBYkqvlVjgTRbYRQiJEYS+aYsxp3enG0L5CPA9jY=;
- b=g+6X/tDzui9o6I5F7lj5uDa8dlTn89N1BvQpHZKlfuOTF5Aj5/Ueswtebl/qD/ege4
- qAX8RxSEFzb2zx/bh3cp7Gw1dMtz5vnR+21hFUnZtypx8nOZSVemyq8Pzyts/CXexOjm
- uP8f0u8D/bncnjB3uzdmkI00svKoz7qwJOv3MDsCWJuAfkbvJrvAnfhz8QApphpKTf1t
- NOiZ0yIUXsoCBjIQ2rnLQkccUoMSBWyNxp9tExDzs6w38IRvInaov5SHMeGnF0l78xQb
- 3it03ShncuBJ4EmSm8A/XiTTgtmgwUlTAGKPrWTIVRjRGs7DGAtXNAAGjvhfzx/4QCct
- WVEg==
-X-Gm-Message-State: AOJu0YypUM1lTUPr1jj0TuMUKiUZq0zIbV4rxRevuenJ8uq4l10fLZXF
- FTM+MyfLoDiN7BOnAkuzJirC4+2wLObgKdbiF9/gY2hQLV47bM6t6khMzZCcrGPi+J9ivb0Dp3t
- Y1LSwHX8YvTJ3LodHB14FB7Jj/3LlwumpJV0mGFr0
-X-Gm-Gg: ASbGncv7uglijQPUiI24MzgyM9rLY8i/G6R1FM3jmouhxMk/sl77ovOpSX46MFArIip
- QSrLhBGiIJRdx/ZRiwsJEy8boTHEXbudfh+aGwyBM+S+odl0a1BxuzfMy9YFIf8a3nmzBd2wlMD
- DRrPVPUmFOdvo/YLUp62VL51aRECq5qW/okQiimZr13KW8ZxjbG9PUELdOEGVbGiFFoYiqz2RL9
- gnsDc/UKuU3fyz0QeuhS01Y4PSG738LObxZdTC56sd9WPIo9fHq4t4QF4A5XvVod0PiMfhyLPIB
- IMuv2Zj+BWNLMCkvOQY=
-X-Google-Smtp-Source: AGHT+IEMusiH1lzAB4BWJlrkkeBDoTTNX8Z93x+j6+APT5i3JUVZwAEXdKy+M1hrXTWVXRCKPKcUQrhnJtGtDr1mecw=
-X-Received: by 2002:a05:6402:1d4d:b0:634:ab34:ed40 with SMTP id
- 4fb4d7f45d1cf-64043f3e702mr2088711a12.0.1761745458108; Wed, 29 Oct 2025
- 06:44:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761745501; x=1762350301;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j0UZJUesIkyNDkiDrZBjXLzYyoQGF+99QP8wq3RHeAU=;
+ b=qmTYbO3kTcoXWY98WIFF4Jwt0JaQvAGuRWRKshs1MSqBEd+Kg7qclUFZAK+RuSeTX8
+ e8u68agMji6DgJRXZagR6royQY7puqGl2ecTjdd6KXWG/7Ylcvzxv9ZjqVHzOsetN++K
+ VgGXYs9QoU4xC/J+E9gV4Znx82E8VUw682uUEH1SRj6ZCEholWdtKh6kjFcw6hB/7HNt
+ 7viSt3aggqnhFfEnALx/a+XcQpsFnqB+MiYcNBEXsoe6hlEN3cUbYWO1cjkP3L6iSi8X
+ rmeHnVA0LBjLHQSCqbxs4Wt8oIBoN3r2tnwNwau4gU1zSg3SPLivL+XZAJ/kkgQKNtcb
+ Mqrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU63Adba1dbgfS3oue2v2BQRh4po3c82uerOJ5aj/OI0cIwmFh1Xx+aLxghvKRqyW0wr25H6OVzSjqW@nongnu.org
+X-Gm-Message-State: AOJu0Yw8fXeufV9BdCvaUvWchtYYYf4v1UXvAaNxWbDBaUMDCoiQFKmW
+ a3NxDq1mN0taA1GC7dKuiy9xtecrT6Ym5XqhTJt5J4rsJpprHCr5oDxgFFDAo2Q+redJSUDksOg
+ ZQTCnl1Q=
+X-Gm-Gg: ASbGncuYeX+DzJFynTI/12BYrIzn0gSh8Xap6EGxPu+2Ufp3+l9Li0unW+3guvaDwtp
+ JY1y2NMhg1g5/Rys28bVho4SBzc/rIWwISivTK0pPhOlW4y4r0BXJlfzMApslB9JZxpTETjv8ot
+ w0rDInRfruZR933I1ZTfmWHw6fPUy1NH1N3//r7fcriWxTuLpAAPiiXYN2dHzSTBQwkbkiQxkyl
+ HsqBojbfvE2iruMtrIvcUJbm+RcAWOJRs4gB5zuGIMJu8p9SlDNvPmKRN5fM5GYme3SIX1SxR2y
+ /FSsxsdIkQ5N3lV1SGqEBdWiNPJtN2jp7H1wBgAZI6+4JFZD5f48e7u+Q/LMzvfDZTENqw2wWzV
+ 4RADu5y+NQQyrRHEh70jDzKkzveY4cD1oblQ8MSpbv5cHnY/12lzyQ6hbI/sE9S6OsRlGy9Qw3t
+ 2sRrJql0aA+UQ1SeFiF18fAcBB15qjIvLtPCP72c5qNO0=
+X-Google-Smtp-Source: AGHT+IGMrVUnRB444z2jvh++Bb1WPiBixGvNlnbra0gJqmVOpMbfvl6x51/BZwzJiKRdm9dHhFppHg==
+X-Received: by 2002:a05:600c:8487:b0:471:152a:e566 with SMTP id
+ 5b1f17b1804b1-4771e183fecmr28390215e9.13.1761745501385; 
+ Wed, 29 Oct 2025 06:45:01 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4771e3aae1fsm48245995e9.12.2025.10.29.06.44.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 Oct 2025 06:45:00 -0700 (PDT)
+Message-ID: <8f74cec4-d7fb-4ce7-a673-571d6d562e63@linaro.org>
+Date: Wed, 29 Oct 2025 14:44:59 +0100
 MIME-Version: 1.0
-References: <20250903075721.77623-1-chigot@adacore.com>
- <20250903075721.77623-2-chigot@adacore.com>
- <aPpyAzn7abZZ5WNv@redhat.com>
- <CAJ307Egx3tcg6BLpZFV+7PcbiqMp6pADTz0nPTPLppFodifYyw@mail.gmail.com>
- <aQHy7ERcW289V9E1@redhat.com>
-In-Reply-To: <aQHy7ERcW289V9E1@redhat.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Wed, 29 Oct 2025 14:44:07 +0100
-X-Gm-Features: AWmQ_bk2FNypncC4zjHLfxEqgihej8z7Z6OdbSXIuTbtKuID4AGAKOrImSwbeao
-Message-ID: <CAJ307Ehx0qSTVWz+fF5X52bjZLebc+Ssv69moBGyzV9s9PnKFQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] vvfat: introduce no-mbr option
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=chigot@adacore.com; helo=mail-ed1-x52f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 16/35] audio: move period tick initialization
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Jan Kiszka <jan.kiszka@web.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <huth@tuxfamily.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-ppc@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
+ Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Volker_R=C3=BCmelin?=
+ <vr_qemu@t-online.de>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
+References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-17-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251027151045.2863176-17-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,64 +119,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 29, 2025 at 11:56=E2=80=AFAM Kevin Wolf <kwolf@redhat.com> wrot=
-e:
->
-> Am 29.10.2025 um 09:37 hat Cl=C3=A9ment Chigot geschrieben:
-> > On Thu, Oct 23, 2025 at 8:21=E2=80=AFPM Kevin Wolf <kwolf@redhat.com> w=
-rote:
-> > >
-> > > Am 03.09.2025 um 09:57 hat Cl=C3=A9ment Chigot geschrieben:
-> > > > This option when set prevents a master boot record (MBR) to be
-> > > > initialized. This is mandatory as some operating system don't recog=
-nized
-> > > > mounted disks if a MBR is present.
-> > > >
-> > > > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> > >
-> > > Can we actually give an example of such an OS in the commit message?
-> > >
-> > > > ---
-> > > >  block/vvfat.c | 16 +++++++++++++++-
-> > > >  1 file changed, 15 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/block/vvfat.c b/block/vvfat.c
-> > > > index 814796d918..0220dd828b 100644
-> > > > --- a/block/vvfat.c
-> > > > +++ b/block/vvfat.c
-> > > > @@ -1082,6 +1082,11 @@ static QemuOptsList runtime_opts =3D {
-> > > >              .type =3D QEMU_OPT_BOOL,
-> > > >              .help =3D "Make the image writable",
-> > > >          },
-> > > > +        {
-> > > > +            .name =3D "no-mbr",
-> > > > +            .type =3D QEMU_OPT_BOOL,
-> > > > +            .help =3D "Do not add a Master Boot Record on this dis=
-k",
-> > > > +        },
-> > >
-> > > Let's keep option names positive to avoid double negations like
-> > > 'no-mbr=3Dfalse'. We can have an 'mbr' option that defaults to true. =
-Or in
-> > > fact, maybe calling it 'partitioned' would be easier to understand.
-> > >
-> > > You need to update BlockdevOptionsVVFAT in qapi/block-core.json, too,=
- to
-> > > make the new option work with -blockdev. You should update the
-> > > description for @floppy there, too, because it says that hard disks a=
-re
-> > > always partitioned.
-> > >
-> > > It should also be added to vvfat_strong_runtime_opts because the valu=
-e
-> > > of this option changes the data that the guest sees.
-> >
-> > Just to keep you updated, I've seen your comments. I'm just waiting to
-> > see where the discussion of patch 5 leads before pushing v2.
->
-> Yes, that makes sense. So this means that for all the other patches, you
-> agree with my comments and it's clear to you what to change in v2?
+On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Part of QOM-ification.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   audio/audio.c | 13 +++++++------
+>   1 file changed, 7 insertions(+), 6 deletions(-)
 
-Globally yes. I'm still unsure about patch 2 (I'll answer directly on
-this patch). But for patch 1 and, yes clearly.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
