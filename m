@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22017C1C629
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20DAC1C620
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 18:13:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE9gV-0005j8-Cl; Wed, 29 Oct 2025 13:10:07 -0400
+	id 1vE9gQ-0005gp-KP; Wed, 29 Oct 2025 13:10:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gR-0005hD-2r
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:03 -0400
-Received: from 8.mo548.mail-out.ovh.net ([46.105.45.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gE-0006yy-QS
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gN-0005e6-35
  for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:10:00 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.37.14])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cxYdL6tk8z5yFC;
- Wed, 29 Oct 2025 17:09:42 +0000 (UTC)
+Received: from 9.mo552.mail-out.ovh.net ([87.98.180.222])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vE9gF-00070T-Pg
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 13:09:58 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.58.110])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4cxYdS45Rnz5yh7;
+ Wed, 29 Oct 2025 17:09:48 +0000 (UTC)
 Received: from kaod.org (37.59.142.106) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Wed, 29 Oct
- 2025 18:09:39 +0100
+ 2025 18:09:45 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-106R0061be39716-26fd-4231-8f62-553c70b8665e,
+ (GARM-106R0069d3c29ee-ea1c-4833-b376-e5e8eab47fce,
  1C4C5A15D30C5F2C89D761F8A9BCD43732F6FBF1) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 92.184.104.153
-Message-ID: <10087d38-6c73-454b-9425-51d74077c35a@kaod.org>
-Date: Wed, 29 Oct 2025 18:09:39 +0100
+Message-ID: <53f3d7e0-16f4-43fc-ac3d-c6dfa8ac7d43@kaod.org>
+Date: Wed, 29 Oct 2025 18:09:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [SPAM] [PATCH v1 08/13] hw/arm/aspeed: Split YosemiteV2 machine
+Subject: Re: [SPAM] [PATCH v1 09/13] hw/arm/aspeed: Split Witherspoon machine
  into a separate source file for maintainability
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
@@ -41,7 +41,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
 References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
- <20251023100150.295370-9-jamin_lin@aspeedtech.com>
+ <20251023100150.295370-10-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
  xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
@@ -85,35 +85,35 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251023100150.295370-9-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251023100150.295370-10-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [37.59.142.106]
 X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: e283bf11-6fb3-4a29-afdb-c7c6f8c4bfa5
-X-Ovh-Tracer-Id: 5356468809033747378
+X-Ovh-Tracer-GUID: 9f14e0c2-743c-4cf6-9068-e5cfcd318a3a
+X-Ovh-Tracer-Id: 5358157657433017266
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTGvqICiuChEvCHRDpMcNOLDxJaHqbe5F0x1ZmQ+idEGrrtQUHJoxGU579WKuvCmhuR6+SFAA0znV6rhdPGfYAdnkfOYRkFWg5GHtZYcpVambL1MBPj1HGIXYRxRglk0Cxobc6+nJG6p08UeNFDcqT1NysoUKpd4Pw++G72d2URPlmPk9H9VkQqiSUnlDVYA54nP22LpGou160umQ9FHl5l3/RH626ZNIy4rTNtftvqcHlmqvygY9jcWmY2aIXsmtxvh/QPcCeJmhBRxgITnoK/ffEQ2oxrT4VAMPm/j9SwvzPIUjnp+AC++01LPLdxTvEzyhH6y3nm6VQM3/x3eA4+3Gx8AJcm9Ht/ZFm77pR04VT6cwkmFQclJg08ia4ruaDpHMTuP9eSo5M9DPoTLXAsoB/uJPqV7GeGXRE8jh6JKtZ0dyj7VoSFAU89DKyjadkMovShFiSVegd0S/LpJ0+dfOF1E6or/QPq/SKMa9+MSMhLhPLryEXNPK0ENQe2xGpVJskNbVgodWPpTI3jehBiO/9030qFgm0JhHiYf/IExUhOjV5b4prrYHr+19oG71JCBedHZf9NNn0eMJmn7A2rbG/OKbmeh7cf5rfi9FPlGPgk/tSU7BkmA2HRtqa8ZUvvEXPurD/qxSOneA/SCDU/PZGtAqDVL5P0zWfaXeoFVBQ
-DKIM-Signature: a=rsa-sha256; bh=YyFZM9BZMhbrt1fxTXi3eVYQ5psdGR9P8AbORIKGTNY=; 
+X-VR-SPAMCAUSE: dmFkZTGJtndeWzAcVmR3XQqv252AeEKBLpnCW+HIMR3QhdhXHEsRNZmTBWFtDuU6G+K6XLtB/XeQtVkaVEIms8z9pRt1yRQt5qfUQRWa1vgO4ljZG7KmZQIpeYzfsufFgQguJNkamwBp8BU5mKpdVzsE4CJJYW+iPhQhTOSpXMqHQ5Uas9wmwwo0I2RlKcjPHbwdNzRInedZEzld+taO0Ma/RRGS9Ram7OQgXGdQlRhrogme9kqwmVbSsmaQ2zYV/ByLPjk7mGrz07y/gMJmTxHLVoOA97IjGia3ClVPINkGCFkzHQhoyDv8PBvWtxprOEDa09El/jlk1VPGy6oBC4ZR2S8yBs0BneN0E6zmtBdByWb4DtoSqSvXTeKCU+U9sWCum5/JDswF49MBkZRl5tFCD/3ZGbM7F8hH0d+Yg36oaR2D7NCGD9tjFH+p1MuQB27ngQHpcXOVmCjYuZJfA42J7wW85IOR0ICcEMDtdTWk0eSXPpD5zNlihX1n87JPl8e9DnkWJ5TBYBkmZNFrXVwoU6zbAkphCp/btrh1jvJeQ84zk1nolBHtFdtPGxnnjNYnPMF34zLbo1jMTpSEjdd8CL/EpSssx7MeWN8H5LInHLvYyXJi2fPWHx30wVFdq1GsyLy4MPyAkbwfZ05YDrI3tZ8p6Kb6xhpgykoqbBt67XR/4w
+DKIM-Signature: a=rsa-sha256; bh=49Quk4wfVjVvkIi10eICyYRNpyEevpD5m5lPOfjP9SA=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1761757783; v=1;
- b=WnAlKFGtw8w6QH+z5Uo3gL9aykUYTDX6JaNRsaBR+M3uy+O/pkbGt7m753rjhoD5oN64KMLY
- eNvtObHaY7s1VpWReftlz8wNyTc28Wvxi9RGSY8+hkCNNyf6XYby11AP+taoVZuukKtcpYNS+/q
- pMh9MidPVpQV+mPWArRY/bK6YkYUOtxmB0jWk4JCJ4CvFXJTuiAzXe7bd0jK9leMDFQ/6pVJA9V
- tQeXt7RCecAMD6BICElgBZncFcz/tnhcWhbWELi3RsqCTucJG2IyyDTGhZObxtC/yC6M8lp8KFe
- RpdH1DKiJojdggpK2qFgjgGvHwvstyg91NePQN9Wyc0vg==
-Received-SPF: pass client-ip=46.105.45.231; envelope-from=clg@kaod.org;
- helo=8.mo548.mail-out.ovh.net
+ t=1761757788; v=1;
+ b=ZwQ0JsXt1ZTZjy3WZba4yMs3Zr3i6qbRRnyXL1kILCw3moqQEAzWy/aiKN2Y6Wmnt6rzksVj
+ wlM/kzdu7LGJzKKT8E6235b2/UkZ5aHU//W+EPiWPEvbbfegu6qq0TTn91pej8Z9+FmiXN1Dfs4
+ 6bODwxZ25meQ46AeHcnh+fESHQHm85JfXyAMbEUr8UfsVCIPZQXLBym8M77iGgrJU3uvD8njycr
+ MKIgV4ECAxXAaUTDvwpNwgGWTGtnG8A6bH6Z2DJ6QMIwJOKHKlHKZpggGyX0rrXumENFdPg9ft8
+ sAzhWUw4KYGfUw6bSpoEwdAvHFifu0B/1DVSiot+CjwNg==
+Received-SPF: pass client-ip=87.98.180.222; envelope-from=clg@kaod.org;
+ helo=9.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,42 +130,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/23/25 12:01, Jamin Lin wrote:
-> This commit moves the YosemiteV2 BMC machine implementation from
-> aspeed.c into a new standalone file aspeed_ast2500_yosemitev2.c.
+> This commit moves the Witherspoon BMC machine implementation out of
+> aspeed.c and into a new dedicated file aspeed_ast2500_witherspoon.c.
 > 
-> To support splitting YosemiteV2 into a dedicated source file,
-> a new YOSEMITEV2_BMC_HW_STRAP1 macro is added as a copy of
-> AST2500_EVB_HW_STRAP1.
+> To support splitting Witherspoon into a dedicated source file,
+> a new WITHERSPOON_BMC_HW_STRAP1 macro is added as a copy of
+> ROMULUS_BMC_HW_STRAP1.
 > 
-> The refactor is part of an ongoing effort to modularize Aspeed
-> machine definitions by separating each board into its own source
-> file. This improves code readability, maintainability, and simplifies
-> future platform-specific changes.
+> The change is part of a broader effort to modularize Aspeed board
+> definitions, allowing each machine type to be maintained and updated
+> independently. By isolating Witherspoon logic, the aspeed.c file
+> becomes cleaner and easier to manage as more platforms are added.
 > 
 > Key updates include:
 > 
-> - Moved yosemitev2_bmc_i2c_init() and its FRU data into a new file.
-> - Removed aspeed_machine_yosemitev2_class_init() and type registration
-> from aspeed.c.
-> - Removed YosemiteV2 FRUID data and declarations from
-> aspeed_eeprom.c and aspeed_eeprom.h.
-> - Added aspeed_ast2500_yosemitev2.c to the build system
-> (meson.build).
+> - Moved witherspoon_bmc_i2c_init() and related LED setup code into
+> aspeed_ast2500_witherspoon.c.
+> - Added WITHERSPOON_BMC_HW_STRAP1 replacement macro for local use.
+> - Removed aspeed_machine_witherspoon_class_init() and type
+> registration from aspeed.c.
+> - Added the new file to meson.build for compilation.
 > 
 > No functional changes.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   hw/arm/aspeed_eeprom.h             |  3 -
->   hw/arm/aspeed.c                    | 36 ------------
->   hw/arm/aspeed_ast2500_yosemitev2.c | 90 ++++++++++++++++++++++++++++++
->   hw/arm/aspeed_eeprom.c             | 22 --------
->   hw/arm/meson.build                 |  1 +
->   5 files changed, 91 insertions(+), 61 deletions(-)
->   create mode 100644 hw/arm/aspeed_ast2500_yosemitev2.c
+>   hw/arm/aspeed.c                     |  81 --------------------
+>   hw/arm/aspeed_ast2500_witherspoon.c | 111 ++++++++++++++++++++++++++++
+>   hw/arm/meson.build                  |   1 +
+>   3 files changed, 112 insertions(+), 81 deletions(-)
+>   create mode 100644 hw/arm/aspeed_ast2500_witherspoon.c
 > 
-
-
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
