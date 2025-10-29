@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1370C1A25A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A473C1A244
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 13:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vE4zL-0004AX-6s; Wed, 29 Oct 2025 08:09:16 -0400
+	id 1vE4y3-0003QP-CR; Wed, 29 Oct 2025 08:07:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xW-0003H3-K0
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:22 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xi-0003P9-Eo
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xH-00052K-Bs
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:22 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vE4xK-00054J-Ke
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 08:07:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761739623;
+ s=mimecast20190719; t=1761739626;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BbIyghYhaD6ACyGNGxhonS1mDxvdithkaleNNsGIw/U=;
- b=ZHILfBfmm8tRgYsN4rezLrEagKZwdTXCnvcmUcQmlQ0sVn6Spok17jRjKAEGUhnWEBV7rV
- bUGunQ6uKf3Tc55Ja0bK9RByDfAgvggL+iGLQx1HTSuqor9WbFnewwaB+7Uj8cD1YyU2/c
- 3Bw8OVMKb0dkXh2h0O5LTLhfW9QxCVk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cCZx8pQMWF2V6jc7yz6lG5be+du26mLG0xjV3VyCdtA=;
+ b=VVGhgkWldFZDnxa1bNPqbnI6JOtlsnzJ/8QZUzSG8zneye+B3nF+XDa1fQE4C4HhAqUkwt
+ jLcrMoTtvwv7zMg0TKqnvELMTsQyyMAxGMKSt739xthxRAiLJirWqaqIeKNukLB5XUfjfS
+ dDvlxt+fwpHEpitp9D4nUGPQ8H0eby0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-KdSJxG0aObW3zM-Esd6UGg-1; Wed,
- 29 Oct 2025 08:07:01 -0400
-X-MC-Unique: KdSJxG0aObW3zM-Esd6UGg-1
-X-Mimecast-MFC-AGG-ID: KdSJxG0aObW3zM-Esd6UGg_1761739620
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-ez5XbZFBOeKn4Q-uNv_UEg-1; Wed,
+ 29 Oct 2025 08:07:03 -0400
+X-MC-Unique: ez5XbZFBOeKn4Q-uNv_UEg-1
+X-Mimecast-MFC-AGG-ID: ez5XbZFBOeKn4Q-uNv_UEg_1761739622
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B787118002E4; Wed, 29 Oct 2025 12:07:00 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 77E10180121B; Wed, 29 Oct 2025 12:07:02 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.33.204])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 78DE0180044F; Wed, 29 Oct 2025 12:06:59 +0000 (UTC)
+ id 39FDB180044F; Wed, 29 Oct 2025 12:07:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 12/18] block: implement 'resize' callback for child_of_bds class
-Date: Wed, 29 Oct 2025 13:06:28 +0100
-Message-ID: <20251029120634.288467-13-kwolf@redhat.com>
+Subject: [PULL 13/18] iotests: add test for resizing a node below filters
+Date: Wed, 29 Oct 2025 13:06:29 +0100
+Message-ID: <20251029120634.288467-14-kwolf@redhat.com>
 In-Reply-To: <20251029120634.288467-1-kwolf@redhat.com>
 References: <20251029120634.288467-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -64,7 +64,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,85 +82,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-If a filtered child is resized, the size of the parent node is now
-also refreshed (recursively for chains of filtered children).
-
-For filter block drivers that do not implement .bdrv_co_getlength(),
-this commit does not change the current behavior, because
-bdrv_co_refresh_total_sectors() will used the current size via the
-passed-in hint. This is the case for block drivers for (some) block
-jobs, as well as copy-before-write.
-
-Block jobs already set up a blocker preventing a QMP block_resize
-operation while the job is running. That does not directly cover an
-associated 'file' node of a 'raw' node, but resizing such a 'file'
-node is already prevented too (backup, commit, mirror and stream were
-checked).
-
-The other case is copy-before-write. This commit does not change the
-fact that the copy-before-write node still has the same size after its
-filtered child is resized.
-
-Block drivers that do implement .bdrv_co_getlength() and where
-.is_filter is true, already returned the length of the file child, so
-there is no change before and after this commit, with two exceptions:
-1. preallocate can return an early data_end and otherwise queries the
-   file child, but that special casing is not changed.
-2. blkverify returns the length of the test file. This commit does not
-   affect that behavior.
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250917115509.401015-4-f.ebner@proxmox.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Message-ID: <20250917115509.401015-5-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block_int-common.h |  2 +-
- block.c                          | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ tests/qemu-iotests/tests/resize-below-filter  | 73 +++++++++++++++++++
+ .../tests/resize-below-filter.out             |  5 ++
+ 2 files changed, 78 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/resize-below-filter
+ create mode 100644 tests/qemu-iotests/tests/resize-below-filter.out
 
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 8a3d427356..c55b35da8e 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -1023,7 +1023,7 @@ struct BdrvChildClass {
-     /*
-      * Notifies the parent that the child was resized.
-      */
--    void (*resize)(BdrvChild *child);
-+    void GRAPH_RDLOCK_PTR (*resize)(BdrvChild *child);
- 
-     /*
-      * Returns a name that is supposedly more useful for human users than the
-diff --git a/block.c b/block.c
-index 8848e9a7ed..cf08e64add 100644
---- a/block.c
-+++ b/block.c
-@@ -1497,6 +1497,17 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
-     }
- }
- 
-+static void coroutine_fn GRAPH_RDLOCK bdrv_child_cb_resize(BdrvChild *child)
-+{
-+    BlockDriverState *bs = child->opaque;
+diff --git a/tests/qemu-iotests/tests/resize-below-filter b/tests/qemu-iotests/tests/resize-below-filter
+new file mode 100755
+index 0000000000..f55619cf34
+--- /dev/null
++++ b/tests/qemu-iotests/tests/resize-below-filter
+@@ -0,0 +1,73 @@
++#!/usr/bin/env python3
++# group: rw quick
++#
++# Test what happens when a node below filter nodes is resized.
++#
++# Copyright (C) Proxmox Server Solutions GmbH
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+    if (child->role & BDRV_CHILD_FILTERED) {
-+        /* Best effort, ignore errors. */
-+        bdrv_co_refresh_total_sectors(bs, bs->total_sectors);
-+        bdrv_co_parent_cb_resize(bs);
-+    }
-+}
++import os
++import iotests
++from iotests import imgfmt, qemu_img_create, QMPTestCase
 +
- static int bdrv_child_cb_update_filename(BdrvChild *c, BlockDriverState *base,
-                                          const char *filename,
-                                          bool backing_mask_protocol,
-@@ -1529,6 +1540,7 @@ const BdrvChildClass child_of_bds = {
-     .detach          = bdrv_child_cb_detach,
-     .inactivate      = bdrv_child_cb_inactivate,
-     .change_aio_ctx  = bdrv_child_cb_change_aio_ctx,
-+    .resize          = bdrv_child_cb_resize,
-     .update_filename = bdrv_child_cb_update_filename,
-     .get_parent_aio_context = child_of_bds_get_parent_aio_context,
- };
++image_size = 1 * 1024 * 1024
++image = os.path.join(iotests.test_dir, 'test.img')
++
++class TestResizeBelowFilter(QMPTestCase):
++    def setUp(self) -> None:
++        qemu_img_create('-f', imgfmt, image, str(image_size))
++
++        self.vm = iotests.VM()
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': imgfmt,
++            'node-name': 'node0',
++            'file': {
++                'driver': 'file',
++                'filename': image,
++            }
++        }))
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'compress',
++            'node-name': 'comp0',
++            'file': 'node0',
++        }))
++        self.vm.add_object('throttle-group,id=thrgr0')
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'throttle',
++            'node-name': 'thr0',
++            'throttle-group': 'thrgr0',
++            'file': 'comp0',
++        }))
++        self.vm.add_object('throttle-group,id=thrgr1')
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'throttle',
++            'node-name': 'thr1',
++            'throttle-group': 'thrgr1',
++            'file': 'node0',
++        }))
++        self.vm.launch()
++
++    def tearDown(self) -> None:
++        self.vm.shutdown()
++        os.remove(image)
++
++    def assert_size(self, size: int) -> None:
++        nodes = self.vm.qmp('query-named-block-nodes', flat=True)['return']
++        self.assertEqual(len(nodes), 5)
++        for node in nodes:
++            if node['drv'] == 'file':
++                continue
++            self.assertEqual(node['image']['virtual-size'], size)
++
++    def test_resize_below_filter(self) -> None:
++        self.assert_size(image_size)
++        self.vm.qmp('block_resize', node_name='thr0', size=2*image_size)
++        self.assert_size(2*image_size)
++        self.vm.qmp('block_resize', node_name='comp0', size=3*image_size)
++        self.assert_size(3*image_size)
++        self.vm.qmp('block_resize', node_name='node0', size=4*image_size)
++        self.assert_size(4*image_size)
++
++if __name__ == '__main__':
++    iotests.main(supported_fmts=['qcow2'], supported_protocols=['file'])
+diff --git a/tests/qemu-iotests/tests/resize-below-filter.out b/tests/qemu-iotests/tests/resize-below-filter.out
+new file mode 100644
+index 0000000000..ae1213e6f8
+--- /dev/null
++++ b/tests/qemu-iotests/tests/resize-below-filter.out
+@@ -0,0 +1,5 @@
++.
++----------------------------------------------------------------------
++Ran 1 tests
++
++OK
 -- 
 2.51.0
 
