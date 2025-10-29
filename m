@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07E9C1D852
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5A9C1D86C
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Oct 2025 22:54:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEE5M-0006HH-M1; Wed, 29 Oct 2025 17:52:04 -0400
+	id 1vEE75-0007qg-F9; Wed, 29 Oct 2025 17:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE5I-0006DW-P8
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:52:00 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE73-0007oQ-4e
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:53:49 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE58-0007pY-Op
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:52:00 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-4298a028de6so1023124f8f.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:51:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEE6r-0007uN-MJ
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 17:53:48 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-475dc6029b6so3634115e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 14:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761774705; x=1762379505; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761774809; x=1762379609; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nIc13SZQBDmIQ8+zujnMI9gijPzWOXDFfbaZsmNomsg=;
- b=eCs5yxFQzOHJPDaQ5UdUKu74mbRBtLSG4nQ0TbPewkvC+eHG1+eCt2BizZej1S0EgC
- Odi8700CHpRR3SO2SauoXr79I4O3HJyB/sm8GJRJaa7szmtc7GR9tHqy59LIFaAUt2sE
- A+mhwwGDVxbCUbAu9stt3JC5Hp/CH/5t+41jEFP5JnC8MhlOr+AdskIP+uamV36A4YCk
- aK24WO4KAsZvvCwJvZzacxb+A2sJwfTS+XaXUhdKIa8f1vbBX/wwnGarZdTaC05D9qXm
- yzBF8K2Scl3jGr4nqwhH1fGUzUQ81WPGgQuT3yr6OZI3+KV9ca4zLb3mpj777SzKOX9m
- SwJQ==
+ bh=WES+Ny/Ud3VzQoIwxHp4O8mqJxD7akPdqbRdRNtliZ8=;
+ b=O+FguzARQO3i2gKqFnqudW68wyar1c/LsEJxBkF4OTxu5pGlqum0jv2ZPpFS85Ikjl
+ lacIw4WNLfi5/Ax6KKXScF/Vy8yzoLG17b+kZpnaaymXkDmLOuXZmgu6D/YPsX4dtz0s
+ SHqF0gjxRZT8gge3QbfRVx1gmyesKRjE7JIDU33gsySkpXg/NjQI6GeATEXvS1ifxGrx
+ 1/0HI9Ds6B8jm39r2DkIIqQh5PjcMUuiVLrk6fQgiEcQxz9PODo0XBv068Z53VbHNZCc
+ bXQQl58NMa2Us0WgBdP81T1unMDzpjRLwjDPhnNmv5EnokOL/+RqWUlnAMEmr6SPlY7y
+ W1gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761774705; x=1762379505;
+ d=1e100.net; s=20230601; t=1761774809; x=1762379609;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nIc13SZQBDmIQ8+zujnMI9gijPzWOXDFfbaZsmNomsg=;
- b=lcfbHlkziZasH4QTloAATogwU77PAVETiksZnV9sFlbPP/R+hzIFmdkjETJUyvom/Z
- sDu8JGyjBuqYXaitvKAtKL/1tQHCN2p5yECDABAf1SLcgVoRvoxAL93PelnmzvPcWNSa
- yPMZmD9IwNoT2pmkNKVOxocOt6k6BZEU+Euj6ZiuLe+yPdrW4kDn7Tmkx00NSW3M7b+9
- T7Nnd9ZeCxt3w1s/zd5Ptbm+iKLBS5oQAPiSAOJh4CefGFVDtB97mh3q9HOovxLpabLE
- KN/PnuJOQPez3OISezYsXy2H25t6UA9ktwKu9CW2h/yvKjN0s6fvzShP8Ro66+nZrzBJ
- 7cGw==
+ bh=WES+Ny/Ud3VzQoIwxHp4O8mqJxD7akPdqbRdRNtliZ8=;
+ b=ZpoUySV303S6Teo/MMmTRV+VQ1ej5ruNrtJ5AiLIma8PqWGVu0YS7NbFKzj4nimy+Z
+ n75gQNNsUHMpbvJsy8PUZL7Ybym+k1fx8q/cNykZ+j+ahn7ObSSnUaZsQiyFxJJxuRSn
+ N2ZrpRqNnnhUULgf3BoXAak6UHM9XAiOl95KX7aWwldqk7ZdisybYXUzLO0puDCmV0Bt
+ X8/lcUlqwRUcZvjmz0f1dEQqJAB0aLQdcjdsr75Ob3qBXjQkJwP6Kk4TDGsZk31+O9OE
+ kSW0QwvfeB6Me8q1MVbOKFS5+ykdTs6tbhR52mNE4eR339zRyvLgUpmsNK7dUbw68xkn
+ SSXw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXNoOmM17PzIgmcuIohPwZn8+Ph+pnlCuFmym/Tl5thUtiINlHAap/czs+U9msp86ChG1A1F8w3KC4x@nongnu.org
-X-Gm-Message-State: AOJu0YzS8pljy/UIa3xvambhEhY/ouTfINFd9Apx8w/35P10/XaLAprs
- 2BBHmSJE55zPdY0ai2XsJlyuqxhnE/ItCFrXHdIm+gn5mFfrFjHXTaHxyHcy4BvaJG0=
-X-Gm-Gg: ASbGncuCeHrC4jqbDstOe3/UbCmYkJG9srsuYmrqneoSxQbo8bmMahmxm99mu5g4poN
- oyzmr8LjO3sYnZqaDx2jnO+L/eWajwPF/gvCXtyXAuB2hDvo+4enmA88SIGxqbhnbi7w4e/yGbn
- gs7je3yHE4/rWSZyCzd3zxnxulwl0RJYreAXya9U/1Uxc5ZS+FbETjNH/pUS+Wq5wQqCjAD1rOS
- Vq3k3n2XcHWXi3KPS7Hk1aIeCTDnpFK/Qk9ZxyLNYga/Kv+xFlQKjH/NR6BlO2d1i9N3tGLI88Z
- IYwLhwWSdCcXddGDqbqJtLOofYmNV6aQUvZ+LwoU7Tyxi86nBAymvpAemzXUoIMpdUx6DBig+nJ
- wNcDf6vSUCrZvsAQe4PPW8S8QkIDFGhheVySUktis94sLei6AUo5skNEweNDgzEDAYP9Ys/cjpT
- A5p0HsDw/S2VMzwta1pprDF1OrwRJhRo+pTSccuasK01c=
-X-Google-Smtp-Source: AGHT+IFKBwXOGSNuwF+MfTP6NWYsZQYq5U8SbSN7wDe5uZELAIktJv3AlfH72FX3m8MQrfDTTA+K7A==
-X-Received: by 2002:a5d:5d13:0:b0:410:f600:c35e with SMTP id
- ffacd0b85a97d-429b4c38275mr899593f8f.8.1761774705245; 
- Wed, 29 Oct 2025 14:51:45 -0700 (PDT)
+ AJvYcCUyoVl/R7LOSdSN+PDTRK/kAxiZG0lzeLs1W4JfvIOV/mnI/jiF/V30f1BvrkoYN24XEvX1qan/8S1p@nongnu.org
+X-Gm-Message-State: AOJu0YzajJZEhybHlEEuZUpTlzVtPIee3DPZTo51MxbXhgIMYxmu3wgd
+ 5R8DOWMXuk+IAzqn7D/v9OdoB2BqAUwOANBCyREODebl43a69XhNgvgmczrs04TIJXGekxMQo0q
+ aiRJj7X4=
+X-Gm-Gg: ASbGncsNlksIjQKy4Sg5VTXRyq+yzxvlioI2jenRtCFJsgligJRwtl3qZtwK/uLKMgn
+ r94UkT1R4z+OhyKYeWW6Hf1x4MbLkNJbAMuLM09rBKMyek1V9HylYkQ27rezSlLnSJat/t8m4hk
+ KWlSuTb8nejJhx47EqI588ardBg/KOQ3i/C4WmLJcMPHFy1/P7nscoxprxziTeqpm+GLQ3zIWgz
+ IdlbK2eag/x7sMlrONhzRzb19OgElgvR6pFswqLpltgE154C0EfO1TQhJX11jHSpS2Xc+Ouj8L9
+ opHzeT3wdNP8/1shxVWXYeAuKeNuNj0xLIiY1Y2Y1S6D9JhIFy38hD4GmhS0Epxxvvfi7tTuBPX
+ UfNKL1D6HN3Sy8snuW+3Hn1yScN7FezyptBJJqTxVXKFXQw63PFXDMaPuou8KMpzxdZkz08HHCW
+ SWAAsyPlwbR8l2GUzP5420IY+nvT2wKbUay0TcGmwhtkk=
+X-Google-Smtp-Source: AGHT+IGcR4bC/xf/lphkVM8QuDJxmg24Ru8600hRUtjOHSapqItFKzUwH9vxElpQuYEGo8n3sW+1hw==
+X-Received: by 2002:a05:600c:5488:b0:477:10c4:b4e with SMTP id
+ 5b1f17b1804b1-4771e1f59demr38937505e9.41.1761774809144; 
+ Wed, 29 Oct 2025 14:53:29 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952db839sm29580402f8f.34.2025.10.29.14.51.43
+ 5b1f17b1804b1-47726396832sm5873175e9.1.2025.10.29.14.53.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Oct 2025 14:51:44 -0700 (PDT)
-Message-ID: <2f7a3fa1-bd36-4717-9949-2dbcd5842d18@linaro.org>
-Date: Wed, 29 Oct 2025 22:51:43 +0100
+ Wed, 29 Oct 2025 14:53:28 -0700 (PDT)
+Message-ID: <6a095121-ed37-4d51-8115-f436d2d95028@linaro.org>
+Date: Wed, 29 Oct 2025 22:53:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 24/35] audio/replay: fix type punning
+Subject: Re: [PATCH v3 23/35] audio: introduce AUD_set_volume_{in,out}_lr()
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
@@ -89,20 +90,19 @@ Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
 References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-25-marcandre.lureau@redhat.com>
+ <20251027151045.2863176-24-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-25-marcandre.lureau@redhat.com>
+In-Reply-To: <20251027151045.2863176-24-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,15 +121,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
+> There are 2 sets of functions since the introduction of multi-channel
+> Volume structure: AUD_set_volume_{in,out} and audio_set_volume_{in,out}.
+> 
+> Use the AUD_ prefix for consistency with other audio.c functions. Rename
+> the stereo function with "_lr" suffix.
+> 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   audio/audio.h           | 6 ++++--
->   audio/mixeng.h          | 1 -
->   include/system/replay.h | 3 ++-
->   audio/mixeng.c          | 6 ++----
->   replay/replay-audio.c   | 2 +-
->   replay/stubs-system.c   | 2 +-
->   6 files changed, 10 insertions(+), 10 deletions(-)
+>   audio/audio.h         | 21 ++++++++++++++++-----
+>   audio/audio.c         | 16 ++--------------
+>   hw/audio/ac97.c       |  4 ++--
+>   hw/audio/asc.c        |  2 +-
+>   hw/audio/hda-codec.c  |  4 ++--
+>   hw/audio/lm4549.c     |  2 +-
+>   hw/audio/via-ac97.c   |  2 +-
+>   hw/audio/virtio-snd.c |  4 ++--
+>   hw/audio/wm8750.c     | 12 ++++++------
+>   hw/display/xlnx_dp.c  |  2 +-
+>   hw/usb/dev-audio.c    |  4 ++--
+>   11 files changed, 36 insertions(+), 37 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
