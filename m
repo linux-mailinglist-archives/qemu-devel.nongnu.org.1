@@ -2,100 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D14C1F194
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D02FC1F311
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 10:09:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEOMW-0007pQ-1O; Thu, 30 Oct 2025 04:50:28 -0400
+	id 1vEOcc-0006Xk-4n; Thu, 30 Oct 2025 05:07:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vEOMP-0007oY-3J
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:50:21 -0400
+ id 1vEOcX-0006X6-G3
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 05:07:02 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vEOMJ-0007YZ-Cp
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:50:20 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59TLn0Tk025885;
- Thu, 30 Oct 2025 08:50:02 GMT
+ id 1vEOcN-00016X-CK
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 05:06:59 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59TMr9ob008678;
+ Thu, 30 Oct 2025 09:06:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Sqlblq
- 1MeXt0L45/MWtpbq9GmnPCdlDdo7dJ0KWWwek=; b=V0QgfVjBW5hHIqOsnR/5pw
- XzugRXLoUjkHUe8AcyGMhT0KXR5FmbDIRF+y8hBndOZRa/M2q0U/oxIO+VzExsBE
- RHAdh6jHY/MR/CKaoGTwuVkvb2WWEAv7P+BwvLLU0UssbnKvfFXPsXBf5mpP7Ieo
- i70Q4pbTRxw+2CCAn4Y6jcZWLpVZzROxuxxfzrHY7bUTFL8svgCQZfve9K4fI4dW
- QX5LCVxBc2rW+Y3HFiOjiq+L5uHOfBGeu9MV5YucYSwEqAUbtLOaw6mUsLs/V7r/
- Q/cySt/7WzNI2EXMx1Lgs8D4eETQ0rfjbMZMEqGDEKKmDAGxJYdpIojFlVlQgVyw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=S0E+DW
+ cqhK0AXb/cmRDHJrt+f7j8Or7wzmqHhJe4VRo=; b=nYLtVduFPyGyKR71z6bxLd
+ eyuwFxYFG2kSyBBChxn5NGtOmXMnRVEcn8hGwHvYLcf4juFTeDGZGPCryqSgRkD6
+ k/mgwHj/6I+vDOUQwNzXyqoHHG4zeX2xiLaI5qkD9kYKBK0n+M6/NXiEYwFZvvpV
+ eKVZbaBE2aBgTmRqHb0e3lUn3PONu/WzAz/1rqRq0671hGItDfiUFD7mWU6mBqNV
+ YB3fLSPYMQ450dqt2CKQQIpc2qMC9WKyWa75YHSuVRTbOkZDiGNK97LslpW++7lT
+ P8y4n4/5qHdkibbQ1awNMOP1pFwcUTQPtgGs1v7207yk3+ON33RYeyeGkrXB+JlA
  ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34acqdd1-1
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34affgcr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Oct 2025 08:50:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59U60JbN019541;
- Thu, 30 Oct 2025 08:50:01 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33xy7q8p-1
+ Thu, 30 Oct 2025 09:06:42 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59U5rRbZ030753;
+ Thu, 30 Oct 2025 09:06:41 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33wwquk3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Oct 2025 08:50:01 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59U8nx6l22151654
+ Thu, 30 Oct 2025 09:06:41 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59U96fqd33882466
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Oct 2025 08:49:59 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A7A612004D;
- Thu, 30 Oct 2025 08:49:59 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DEB3220040;
- Thu, 30 Oct 2025 08:49:58 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.242.24]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 30 Oct 2025 08:49:58 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/10] hw/ppc/pegasos: Update documentation for pegasos1
-Date: Thu, 30 Oct 2025 14:19:36 +0530
-Message-ID: <20251030084936.1132417-11-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251030084936.1132417-1-harshpb@linux.ibm.com>
-References: <20251030084936.1132417-1-harshpb@linux.ibm.com>
+ Thu, 30 Oct 2025 09:06:41 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00E875805A;
+ Thu, 30 Oct 2025 09:06:41 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 955D658064;
+ Thu, 30 Oct 2025 09:06:39 +0000 (GMT)
+Received: from [9.109.242.24] (unknown [9.109.242.24])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Oct 2025 09:06:39 +0000 (GMT)
+Message-ID: <e41be786-df4c-41e5-ae29-c9e8875ee0d2@linux.ibm.com>
+Date: Thu, 30 Oct 2025 14:36:37 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 15/32] hw/ppc/pegasos2: Change device tree generation
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>
+References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
+ <20251023121653.3686015-16-harshpb@linux.ibm.com>
+ <CAFEAcA8qbC-1LhHXxiYXZjiCvstch1UFtMNxGdR1fquLB9i2PA@mail.gmail.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CAFEAcA8qbC-1LhHXxiYXZjiCvstch1UFtMNxGdR1fquLB9i2PA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XbuEDY55 c=1 sm=1 tr=0 ts=690326ba cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-GUID: CPKTk9BI6FP2dpzTrsNAKK1L9B8AdRpn
+X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=69032aa2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=R4SA8OYZAAAA:8 a=a4NEJbfMAAAA:8
- a=h7_BzZE7AAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8 a=P_rJWWM8_-YO9Bp8fwoA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=7stNvC5sXRea_myt1Wfc:22
- a=TnV4WSYrcWMO94jUQ48d:22 a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22
- a=poXaRoVlC6wW9_mwW8W4:22 a=p-dnK0njbqwfn1k4-x12:22 a=rLkV7i5x5X597yo9dRWc:22
-X-Proofpoint-ORIG-GUID: dy3utwIkDwvX7rb823k-HtYFm-d6ZKwz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX9yYosZBD0eyl
- 0EgaauGrJGkScr3nCMxJGg8/r0BUxfAwz+USsUxLMc+NScr3rXqJQ90h3XAqa9/cMr3+w8nclX3
- ULORgugVUtru+9GRuxwrE0/1yw71Jtv0iRwz1QdpCmH+u4kmn2rT9oy5yK3XCHfY1HXn/cXT6cK
- ZWIDcVqDGImO/2bNVGyePQ/xEXysLzT76UA+ManbgNohRQ8ywXVjX486HH8CraxBWMxNFbwejQh
- /LznKjsrOkgt8nFLtUOqd7tVfsNQ6ajxR0+XruaYIH/IzSjOedneLbLtVm4JXx9mOj6lOQltdGG
- qRKsbMEH/vFngyAYFayTrlU0yCamqKCSD52PpeHqsA/iro27yU5XUrKWA/fvBSH9nDDaEpuKfa0
- IlrlfDt5SEYue2YA39CnQFpDCc2dvw==
-X-Proofpoint-GUID: dy3utwIkDwvX7rb823k-HtYFm-d6ZKwz
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8
+ a=MHk2ux3hTTbxPN1EU_oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
+ a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfXzEJY1Vju73mn
+ wXK5yj2WbjzV+IObgUzQP04ufn52dXmJGtWzOLK61/ME3Xkg3h1loiFo6RDPTnFoa+IQCQPP3W3
+ 7zc25PJ2Pw3FxjwIfQodjWxBO1xw7xf1YftSPLhbvOTSc8EDS7Oph/IdecfZ6dXrQ5zwQSqjhcK
+ LlNPcABSyUpRsSc6kW+UcJsbqbPjpdSPHI3pZz3V5R+7jWY4Iu6darX6/jn4/wimeyiqPtRHC2O
+ 41VAPgQHzWcYvBVZNN7P4lsZuNtRPVUFtbndgGaDCr9vWfENkIDdvUjkfdr+Bay3TN4FXfNrwiu
+ yfyZrpV0xUXOe2Lrz27ywU1PkbwHMWMVsEjwJLZ72zSslolXIhqviVHfaEvwaNKyMreSanuo364
+ NYwhCndSegF47lT0OMtSmbK2NnbD/w==
+X-Proofpoint-ORIG-GUID: CPKTk9BI6FP2dpzTrsNAKK1L9B8AdRpn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-10-30_02,2025-10-29_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
  definitions=main-2510280166
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
@@ -123,83 +125,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+Hi BALATON,
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Link: https://lore.kernel.org/r/f86b90f6839a0cf9426c0d89e95e6ca33704728c.1761346145.git.balaton@eik.bme.hu
-Message-ID: <f86b90f6839a0cf9426c0d89e95e6ca33704728c.1761346145.git.balaton@eik.bme.hu>
----
- docs/system/ppc/amigang.rst | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+Would you be taking care of this coverity issue?
 
-diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
-index 21bb14ed09..e290412369 100644
---- a/docs/system/ppc/amigang.rst
-+++ b/docs/system/ppc/amigang.rst
-@@ -1,6 +1,6 @@
--=========================================================
--AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
--=========================================================
-+=======================================================================
-+AmigaNG boards (``amigaone``, ``pegasos1``, ``pegasos2``, ``sam460ex``)
-+=======================================================================
- 
- These PowerPC machines emulate boards that are primarily used for
- running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
-@@ -64,18 +64,23 @@ eventually it boots and the installer becomes visible. The ``ati-vga`` RV100
- emulation is not complete yet so only frame buffer works, DRM and 3D is not
- available.
- 
--Genesi/bPlan Pegasos II (``pegasos2``)
--======================================
-+Genesi/bPlan Pegasos (``pegasos1``, ``pegasos2``)
-+=================================================
- 
--The ``pegasos2`` machine emulates the Pegasos II sold by Genesi and
--designed by bPlan. Its schematics are available at
--https://www.powerdeveloper.org/platforms/pegasos/schematics.
-+The ``pegasos1`` machine emulates the original Pegasos (later marked I) sold by
-+Genesi and designed by bPlan. It uses the same Articia S north bridge as the
-+``amigaone`` machine, otherwise it is mostly the same as the later Pegasos II.
-+
-+The ``pegasos2`` machine emulates the Pegasos II which is a redesigned version
-+of Pegasos I to fix problems with its north bridge. Its schematics are available
-+at https://www.powerdeveloper.org/platforms/pegasos/schematics.
- 
- Emulated devices
- ----------------
- 
-  * PowerPC 7457 CPU (can also use ``-cpu g3`` or ``750cxe``)
-- * Marvell MV64361 Discovery II north bridge
-+ * Articia S north bridge (for ``pegasos1``)
-+ * Marvell MV64361 Discovery II north bridge (for ``pegasos2``)
-  * VIA VT8231 south bridge
-  * PCI VGA compatible card (guests may need other card instead)
-  * PS/2 keyboard and mouse
-@@ -83,9 +88,9 @@ Emulated devices
- Firmware
- --------
- 
--The Pegasos II board has an Open Firmware compliant ROM based on
-+The Pegasos boards have an Open Firmware compliant ROM based on
- SmartFirmware with some changes that are not open-sourced therefore
--the ROM binary cannot be included in QEMU. An updater was available
-+the ROM binary cannot be included in QEMU. A Pegasos II updater was available
- from bPlan, it can be found in the `Internet Archive
- <http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/up050404/up050404>`_.
- The ROM image can be extracted from it with the following command:
-@@ -111,7 +116,7 @@ At the firmware ``ok`` prompt enter ``boot cd install/pegasos``.
- 
- Alternatively, it is possible to boot the kernel directly without
- firmware ROM using the QEMU built-in minimal Virtual Open Firmware
--(VOF) emulation which is also supported on ``pegasos2``. For this,
-+(VOF) emulation which is also supported on ``pegasos1`` and ``pegasos2``. For this,
- extract the kernel ``install/powerpc/vmlinuz-chrp.initrd`` from the CD
- image, then run:
- 
--- 
-2.43.5
+regards,
+Harsh
 
+On 10/27/25 18:44, Peter Maydell wrote:
+> On Thu, 23 Oct 2025 at 13:22, Harsh Prateek Bora <harshpb@linux.ibm.com> wrote:
+>>
+>> From: BALATON Zoltan <balaton@eik.bme.hu>
+>>
+>> We generate a flattened device tree programmatically for VOF. Change
+>> this to load the static parts from a device tree blob and only
+>> generate the parts that depend on run time conditions such as CPU
+>> type, memory size and PCI devices. Moving the static parts in a dts
+>> makes the board code simpler and more generic.
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Link: https://lore.kernel.org/qemu-devel/383891fc2696609b27d2de9773efe1b4f493e333.1761176219.git.balaton@eik.bme.hu
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> 
+> Hi; Coverity points out (CID 1642027) that this change
+> accidentally introduces a memory leak:
+> 
+>> @@ -780,7 +675,10 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d, void *opaque)
+>>                                        pci_get_word(&d->config[PCI_VENDOR_ID]),
+>>                                        pci_get_word(&d->config[PCI_DEVICE_ID]));
+>>
+>> -    if (pci_get_word(&d->config[PCI_CLASS_DEVICE])  ==
+>> +    if (!strcmp(pn, "pci1106,8231")) {
+>> +        return; /* ISA bridge and devices are included in dtb */
+>> +    }
+> 
+> In this function we define at the top:
+>      GString *node = g_string_new(NULL);
+> 
+> This change introduces an early-return which does not free
+> the GString.
+> 
+> The simplest fix is probably to declare node as
+>     g_autoptr(GString) node = g_string_new(NULL);
+> 
+> and delete the now-superfluous g_string_free() from the
+> bottom of the function.
+> 
+> thanks
+> -- PMM
 
