@@ -2,107 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39B9C21436
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 17:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC08C21412
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 17:42:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEVhv-0008PX-5O; Thu, 30 Oct 2025 12:41:03 -0400
+	id 1vEVhx-0000GI-Ed; Thu, 30 Oct 2025 12:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEVhl-000894-Gv
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:54 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEVhW-0003HS-9P
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:53 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-b6d6c11f39aso229428666b.2
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 09:40:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761842433; x=1762447233; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n3YWjyTbC+xe6Y47LFs2TmrbnnZ6YGIRWY7Vp+OyHiQ=;
- b=ILmj72dSEuLSRiYUNax+Nb0qbE9zBzIwQFYk8Mi6RAJBNpx/JYKKmwrmFPl2THPYj9
- 4Khe6lQ+VIYZBUDdsdWlvkbzfAyjQ7ZAeakaXF90oG2MkjfT5+YiH0GY1DLkdhPseeuo
- n8wtnICywpuT1yVmGeCl/jN+7mH2s5YcR5TUgKFc7pHMNrI8jqu9BDSfSKVid5P1GIXs
- cfy8hijJsU0VxgG0YSIkjoCjjitex8NXzpetgdnRquv4nu/Y9gll3mz0lWjEZae7KDAJ
- aIZpYD/3peGDTMVOnD2EqRBi+eb5C5r5P+i2uZjB0DHKd4Sh5tF2cXjzqBqEvuUyt9fS
- i8CA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEVhu-00007p-Ag
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:41:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEVhj-0003IW-HS
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:41:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761842447;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JRr+nTXOcZCjq3JwKmcyClNn4rxgzW+z5BuR7LCjkp4=;
+ b=CRYNTNC0e8IrfblkxetQ3ZafgtJTO1oJtLS6vSRrejJbAf6FfuiUax2wTGorq+08U+bwIK
+ p+cX2kFW+mAOudjUBRf/NjYsQWzlvyDC4ZJjDl/YkGBONfNH9IvufJKJPdbJ6mK760vj2h
+ cOnhlgI4ugld9G6CZm/v0/Fw/WUaZK8=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-hKkeo0LFMSuNIoYzX9rFRA-1; Thu, 30 Oct 2025 12:40:45 -0400
+X-MC-Unique: hKkeo0LFMSuNIoYzX9rFRA-1
+X-Mimecast-MFC-AGG-ID: hKkeo0LFMSuNIoYzX9rFRA_1761842445
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4eb7853480dso32738631cf.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 09:40:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761842433; x=1762447233;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n3YWjyTbC+xe6Y47LFs2TmrbnnZ6YGIRWY7Vp+OyHiQ=;
- b=GfdBNbG/GH6mH2QjKK1I2wryqaEX5UkDLlaBPYShdeO+JYjkz3O3A5autHSfA0q06G
- cmO+GwKfSRnEQ+6Q56GZwMPpulxuPIpyBvmxfFjxHWnG7juMqwy2eOPWdBI2QSX7ykQL
- CUunl7jd3VD6XLwsVSdN+7hLKDrTw5FCfeg9Cs7a/X6HiuZuAUZN2WtIHlBZLsc7kIE5
- Jw+5HEMK8q8APCkT5tXmT+7qaR+3l3A6ZVHWDY5oSR+oz5ev6+YuYjr9ThU2G9qbkOkE
- xLvkZoPx6yXa/6Pv+udsLvW7n2mlOAIcZnLIvV/M19sXHwDAvIXQun2GxoG2jQRqpvRD
- cjzw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWgUpF175AwsFy91o5pCJqfiTMusPBGsI30K0PMS5dAF30WzKTYDwDHNdJVTbyOtsFcTCbdskAdkD7W@nongnu.org
-X-Gm-Message-State: AOJu0Yw6xmgvdNrpRjbytaDNTaYfGQMEzdglFo1lo2dMFs6LzhZmiBQe
- wVBHM+ux+iUyE21LsIDPRP2g1HLNlQIHZuKWsXKmAIYUO+sI2LN9o8u5xHfSkMr0HFA=
-X-Gm-Gg: ASbGncvzM0UIt8TK3p8jOTmEYcovSYDVw0pcVbY1MBW0MspytudvwoMgVwKeNkBUOZC
- tx2wlp1ZFikuzEP03AjY315MGn6v/sEwWi01OWNVHYzFLww1cxOuEvDSZWs8CAG3rJFWrlBNg8v
- NEyHk4rR/bUoevtG+HjuXPftin1m4s7HoRnHqoOvO5r0FpBzdLeyUP78Xl6B3ofdP/G/NkGGjF2
- XD8ZhoJnIsUv6hbCiqyQolexn0/+cukGvKzozuq9+5YbLCUsw3GWwDKz9ZbJm9gPfr1rsSG3wE5
- Bd8PoWAHED3/t3DI9ozeZfOJV/hqpRxQvzbB+9dKoI7ShdiyYzCAVbDapNBZfOQ8KTV/9ubl043
- 929Gsm/EHZcR80JP0BCj+6hWEwFo2HbWnc6po1XQ9MFpXsFHeFfPW9i4Kdz0fpVEruZxbfLI+4J
- +P9g4UP9U6ac5p0dmu2ydDviWVmtOzXn0PNdthg5VLVg==
-X-Google-Smtp-Source: AGHT+IF83aVJAcc9Fc0RHqkJhZzsj1sH8crT0fm4JwaXtr9OmFhO8Y7Wjqz9YJg1ydfwP0oyt8QXuQ==
-X-Received: by 2002:a17:907:7b8d:b0:b5c:753a:e022 with SMTP id
- a640c23a62f3a-b70701dc398mr12715666b.29.1761842432115; 
- Thu, 30 Oct 2025 09:40:32 -0700 (PDT)
-Received: from [10.180.230.213] (183.105.204.77.rev.sfr.net. [77.204.105.183])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d85308c8dsm1800518766b.0.2025.10.30.09.40.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Oct 2025 09:40:31 -0700 (PDT)
-Message-ID: <108b6d8e-e34b-4574-ab91-e141dcf77af2@linaro.org>
-Date: Thu, 30 Oct 2025 17:40:29 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 32/35] audio: move capture API to own header
-Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Jan Kiszka <jan.kiszka@web.de>,
+ d=1e100.net; s=20230601; t=1761842445; x=1762447245;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JRr+nTXOcZCjq3JwKmcyClNn4rxgzW+z5BuR7LCjkp4=;
+ b=pSKEBTFVDnW9vcWiG//piNN0qecOUhrbWEESFxN6Gv3XHypQCC9aD9W7x//kKuPflN
+ 68QRAZGYUyCX7aaBouCsVcGENd0dcD2bFZQ7GGr282/Wt8cjxGQ/zb+whhT1nxDTqdfL
+ ++B8Lc7WvG3IXiWrangc0yPCnTL5s4+jJgzlw30Dh7S1vwxpuD70pBmqxAbRHTitHaiT
+ UgP6ol4OfXhAGndaxU0V4N8g4k2EU8OAwetuyj4u9TtGunqLcRzbsXyLvdNdcGTyqubf
+ dO55xyhQOPWCFv8ryGLYZmatjwaLZK1Xy4uZKVZtPYVViRbel3hBOUsOoeX255z21m1T
+ pgxg==
+X-Gm-Message-State: AOJu0Yyopx03ZSpKGdQvT3AWP5VHwDHc6Ukcb0eX9Mn2gQ1n+t6XGeV5
+ gkxT7JU0V9e0GiMlEpE5eXt5utdIwe805AZV0wgy4GiXD2gDbfFNgVk0jP0rQ164qJsMzAUmJTr
+ Nqaw2tt2xsiFyiuXz33BwVyojzrzXQBkaSmantyf+WI9jM08CyxHH6O8H
+X-Gm-Gg: ASbGncuuxmK2IYTAs2znBzhHbjJLAjhWdcjYl66eCJn+TTQtyN4zMC2uvSkAJFn5fnT
+ o/hZR2xxxdJFm5N7maCEgzje6LnfKdMyoRQouJccvBAyD4Qns4pFuqy+53mw21M9KVQjk2Ms+A+
+ EwEV7m2hh53aRe26WDUSWEXEb74ZaGoomTaUO0ZDUKRe0fldhH0d/cjxLGcvpH+lj8LVDrDvJXn
+ XX7WRQ2NXadEwWJnYZzhkBUGj9zr87o8TMrq1xGr4GCi7GK5n9MEn+fWIXmjwsCjeLMfPXh/Xug
+ aFQRHmK0jL4pYk0fB0aFqwdnuvePpdjjQSkNnaW4AWW8xzwB57x1LTyJ73NaltlzlFk=
+X-Received: by 2002:a05:622a:ce:b0:4e8:9e4e:5e4c with SMTP id
+ d75a77b69052e-4ed310b3af9mr3009631cf.79.1761842445211; 
+ Thu, 30 Oct 2025 09:40:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyinTf8S8BGlJZiD9SAybH3+SOV7iWRZxSHgru9Or7qSO4likuEt1ICrKxuS/N+xP6LPqTlA==
+X-Received: by 2002:a05:622a:ce:b0:4e8:9e4e:5e4c with SMTP id
+ d75a77b69052e-4ed310b3af9mr3009111cf.79.1761842444654; 
+ Thu, 30 Oct 2025 09:40:44 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4eba37db640sm114590461cf.13.2025.10.30.09.40.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 Oct 2025 09:40:43 -0700 (PDT)
+Date: Thu, 30 Oct 2025 12:40:42 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael@enfabrica.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <huth@tuxfamily.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-ppc@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
- Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Volker_R=C3=BCmelin?=
- <vr_qemu@t-online.de>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Laurent Vivier <laurent@vivier.eu>
-References: <20251027151045.2863176-1-marcandre.lureau@redhat.com>
- <20251027151045.2863176-33-marcandre.lureau@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251027151045.2863176-33-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 1/3] vmstate: introduce VMSTATE_VBUFFER_UINT64
+Message-ID: <aQOVCnQLhxDfnH1t@x1.local>
+References: <20251029093939.3251188-1-dtalexundeer@yandex-team.ru>
+ <20251029093939.3251188-2-dtalexundeer@yandex-team.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251029093939.3251188-2-dtalexundeer@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,26 +107,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/25 16:10, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Wed, Oct 29, 2025 at 02:39:39PM +0500, Alexandr Moshkov wrote:
+> This is an analog of VMSTATE_VBUFFER_UINT32 macro, but for uint64 type.
 > 
-> For modularity/clarity reasons, move the capture API in a specific
-> header.
-> 
-> The current audio/ header license is MIT.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   MAINTAINERS                  |  2 +-
->   audio/audio_int.h            |  1 +
->   include/qemu/audio-capture.h | 43 ++++++++++++++++++++++++++++++++++++
->   include/qemu/audio.h         | 30 -------------------------
->   ui/vnc.h                     |  2 +-
->   5 files changed, 46 insertions(+), 32 deletions(-)
->   create mode 100644 include/qemu/audio-capture.h
+> Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
 
-Good idea.
+Acked-by: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+-- 
+Peter Xu
 
 
