@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2B4C20B09
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69145C20B39
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:49:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vETuG-0006YG-9P; Thu, 30 Oct 2025 10:45:40 -0400
+	id 1vETx3-0008QI-Fs; Thu, 30 Oct 2025 10:48:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vETuD-0006Y8-Ux
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:45:37 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vETu5-0000vy-1h
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:45:37 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-7814273415cso11103547b3.1
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 07:45:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761835520; x=1762440320; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9J9wHQbA/kKVr0yq6epzgo3+TVSD+4ue8c/WpSXMd9g=;
- b=rM+PMXtFei54I9Y88tqWVEVyuH54CO3EdjH++0xt/6ohRJcJfRtWs6n2myt4j39tg6
- 3jokAn+OXJVcuHN4PQWPsHlS63pYCc8UGRJczKv9yjVhmVWfc61YrEIJwD5fJr8GxavA
- ej/PPz6RFtVIp+vipQCCeEDq245vSz0pFzYXz1XRpJ/KA5z4zNJGPNqgP/nMl6LE4jIr
- 0aTevLgsKKzpAwM6duWBzv/rmEeT55gmt8R2LzEYYiHXGEESf/ZCDU/8mBj6w1+ZN4CX
- d41C32iJzd2pYcuGBWWNJNTlFYjzoVnMcXnaCVN42cG3FqDA3eyZiWn15iJH5IYaPBPY
- YF6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761835520; x=1762440320;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9J9wHQbA/kKVr0yq6epzgo3+TVSD+4ue8c/WpSXMd9g=;
- b=Py3/M9k6tvx816aq49XT+AqVwYGIxmhUQkTScj5lk2jkAIDK3Xs/+wyf1sk2MnRVN3
- +2bUUqtE3sLvTMsiYRme2K+Z6bdVH5j9X26iQJVMfvq5YUc7kkTXlsOz7C3OWjS2Tnr2
- 34K7dwytXugqvf2LpayGTuNc6861MCkkN2+8sSYdxuitfwoZH1V1StcfGL2sbKm93XNX
- 3TYQPUkVb1hinB9Dw0ZAY0SKR1+V8r7WS1uhoKtpxo8JsFgLksBx4Etc7p4wVl3Ll685
- WwnWkNub/HZXmy6lempdBzszyt+RG9ePw/UAo4sBxz1JM+dT1OXAQOjg1f8Y0NHTo77g
- 2ubg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVN5dYYcMZAinJwvC5AecLYAjPDeUrMtIutxiiWjd5rYvzYS0jRFCMXVh/UZkHuM4oWjo4dHkKaEPwL@nongnu.org
-X-Gm-Message-State: AOJu0YyFEi0UJ+MCxJljWB8XXoNq12B9X8r3d+sRbsDgwZGW0tv2ey0U
- V536AmZM9gw3+y8KvRhnJ6miGRHv9QU+AxBIRLg3hYX4xb5fpLrQclb+xoC9cDEpRR2HUpwOvgG
- RSDNwc84fFTq9SUWkwYWH/1i79xiBLa7b2Eo+XO0LRA==
-X-Gm-Gg: ASbGncvj1p8Mx0FTc2S/jbWO3Fs9bNosU/eOnYBHniFM3hUHhubo+inIsWekjOFlYkq
- WYbYAGczSSyR7C3M4ocn8ceQaPNXclLD/tkMvB0dGEPdQM9yj32B9bfwG7pTMTmQMM4UjbnFnhT
- diZeVD7sfgKML1M3fG+7dQyhIn2ks4E176/Mp+NZkgh7iQvbKNhrEhYHcAJCVmLD7jrgmf9sEhA
- AZKckiCVqVuASlsNJVLcfVL0OIwamXmOHn1VkbDdrDDE3HeESfmv1MBer00HRO7ecxm0kbT
-X-Google-Smtp-Source: AGHT+IEsnvZS6xGb6EPf/gXUlbr0EUx2ubg4X7NCniIB2axE39qiegQ7bVBmRbZxtM3L8GP+kyb2iZ2dQflkKCJFmAI=
-X-Received: by 2002:a05:690c:368a:b0:780:fbb7:2bd5 with SMTP id
- 00721157ae682-78628cfa811mr59585897b3.0.1761835519581; Thu, 30 Oct 2025
- 07:45:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vETwv-0008Kv-Ux
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vETwr-0001Jj-1d
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761835694;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6AqJAODDPrJh7t7f9F/ZHJNzsJI1oH+iGlXNH5R7C3k=;
+ b=QFWcrvjD19R8Dbscdf9l3BsZ7cBA3Ezv/znvkNsYQ6YAoA51MA9p56wNrnpusdGQuYWAcQ
+ 0uO9pE3n9CkB1YPhV1Q8ZuCxWHGHelCWugJb96H9cK01G6ybEG/K1lkB2zf48zMM03qdc0
+ 3a0aHvrIb8mKhsQdAnK1h7CPqxLIwBU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-vnSfQgefNgCr-8WZbqvp5Q-1; Thu,
+ 30 Oct 2025 10:48:09 -0400
+X-MC-Unique: vnSfQgefNgCr-8WZbqvp5Q-1
+X-Mimecast-MFC-AGG-ID: vnSfQgefNgCr-8WZbqvp5Q_1761835688
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 921C11955F20; Thu, 30 Oct 2025 14:48:08 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.122])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 26EA71800581; Thu, 30 Oct 2025 14:48:06 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ devel@lists.libvirt.org
+Subject: [PATCH 00/21] crypto: support multiple parallel certificate identities
+Date: Thu, 30 Oct 2025 14:47:44 +0000
+Message-ID: <20251030144805.2239954-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20251028080551.92722-1-shivangu@linux.ibm.com>
- <20251028080551.92722-2-shivangu@linux.ibm.com>
- <8d5a8cce-d769-4cd8-9753-7e9ad37d8a47@linaro.org>
- <dio77m3m5jj6ccgqpswkifiqztf5fz45qsjpspu2yszgwrfgha@mcwjruxszkn5>
- <47ac6382-3270-4179-8455-43cee36a9ca9@linux.ibm.com>
- <c089e14f-69a3-fe9c-cc80-b0c7bba4105a@eik.bme.hu>
- <fz5bixswyqecp2tgbobkz2vlncuhdm4cxagdndn77qpprltssl@opqtjw4ixgpk>
-In-Reply-To: <fz5bixswyqecp2tgbobkz2vlncuhdm4cxagdndn77qpprltssl@opqtjw4ixgpk>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 30 Oct 2025 14:45:07 +0000
-X-Gm-Features: AWmQ_bkUJ784ocrrzm4RkllAxfGQaGYV-BBcNlR2atYFtbqI3EqtgsWBZMpu9fI
-Message-ID: <CAFEAcA8gZ5MEJvabd__asKLEA_+jf4=SPKaAy952pr6S0oJnqA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] hw/ppc: Fix missing return on allocation failure
-To: Shivang Upadhyay <shivangu@linux.ibm.com>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Aditya Gupta <adityag@linux.ibm.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, sourabhjain@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,33 +81,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 30 Oct 2025 at 14:23, Shivang Upadhyay <shivangu@linux.ibm.com> wrote:
-> Also I noticed a pattern to use `g_malloc` for critical things instead
-> of `g_try_malloc`. But it will kill the full application if failure happens.
-> So maybe just `error_report` is fine here(?).
+This series aims to improve the support for post-quantum cryptography
+in TLS connections by allowing  multiple sets of certificates to be
+loaded. The idea is that during a transition period servers will have
+a traditional RSA based certificate in parallel with an MLDSA based
+certificate for PQC, and the right one will be dynamically determined
+during the TLS handshake.
 
-docs/devel/style.rst has some notes on malloc choices, including this:
+The first 12 patches are trivial cleanups.
 
-# Care should be taken to avoid introducing places where the guest could
-# trigger an exit by causing a large allocation. For small allocations,
-# of the order of 4k, a failure to allocate is likely indicative of an
-# overloaded host and allowing ``g_malloc`` to ``exit`` is a reasonable
-# approach. However for larger allocations where we could realistically
-# fall-back to a smaller one if need be we should use functions like
-# ``g_try_new`` and check the result. For example this is valid approach
-# for a time/space trade-off like ``tlb_mmu_resize_locked`` in the
-# SoftMMU TLB code.
+The next 3 patches fix a potential use-after-free problem
 
-Since we're trying to allocate 32MB at once and this is during
-the guest run rather than at startup, this is probably a reasonable
-place to use g_try_malloc().
+The last patches introduce support for multiple certificates.
 
-There are other places in this code that use LOG_GUEST_ERROR
-for things that aren't exactly guest errors, so my suggestion
-is that we take this patch as-is to fix the logic error.
-We can consider whether we want to try to improve the error
-reporting of this group of functions as a separate patch.
+NB, in terms of testing this will require either CentOS Stream 10,
+or Fedora 43. Most other distros will not support PQC out of the
+box at this time even if they have new enough gnutls, since they
+don't make use of the crypto-policies package which is needed to
+enable PQC by default.
 
-thanks
--- PMM
+Daniel P. Berrangé (21):
+  crypto: remove redundant parameter checking CA certs
+  crypto: add missing free of certs array
+  crypto: replace stat() with access() for credential checks
+  crypto: remove redundant access() checks before loading certs
+  crypto: move check for TLS creds 'dir' property
+  crypto: use g_autofree when loading x509 credentials
+  crypto: remove needless indirection via parent_obj field
+  crypto: move release of DH parameters into TLS creds parent
+  crypto: shorten the endpoint == server check in TLS creds
+  crypto: remove duplication loading x509 CA cert
+  crypto: reduce duplication in handling TLS priority strings
+  crypto: introduce method for reloading TLS creds
+  crypto: introduce a wrapper around gnutls credentials
+  crypto: fix lifecycle handling of gnutls credentials objects
+  crypto: make TLS credentials structs private
+  crypto: deprecate use of external dh-params.pem file
+  crypto: avoid loading the CA certs twice
+  crypto: avoid loading the identity certs twice
+  crypto: expand logic to cope with multiple certificate identities
+  crypto: support upto 5 parallel certificate identities
+  docs: creation of x509 certs compliant with post-quantum crypto
+
+ crypto/meson.build                    |   5 +-
+ crypto/tlscreds.c                     |  77 ++--
+ crypto/tlscredsanon.c                 |  62 +--
+ crypto/tlscredsbox.c                  | 101 +++++
+ crypto/tlscredsbox.h                  |  46 ++
+ crypto/tlscredspriv.h                 |  36 +-
+ crypto/tlscredspsk.c                  |  64 ++-
+ crypto/tlscredsx509.c                 | 592 +++++++++++++++++---------
+ crypto/tlssession.c                   | 139 ++----
+ crypto/trace-events                   |   1 +
+ docs/about/deprecated.rst             |   9 +
+ docs/system/tls.rst                   | 134 +++++-
+ include/crypto/tlscreds.h             |  26 ++
+ include/crypto/tlscredsx509.h         |   6 +
+ tests/unit/test-crypto-tlscredsx509.c |   8 +-
+ ui/vnc.c                              |   9 +-
+ 16 files changed, 849 insertions(+), 466 deletions(-)
+ create mode 100644 crypto/tlscredsbox.c
+ create mode 100644 crypto/tlscredsbox.h
+
+-- 
+2.51.1
+
 
