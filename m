@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8A7C22427
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 21:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B8BC22441
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 21:33:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEZJS-0000ix-Ai; Thu, 30 Oct 2025 16:32:02 -0400
+	id 1vEZJh-0000lo-8v; Thu, 30 Oct 2025 16:32:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEZJD-0000fQ-Dh
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:48 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1vEZJL-0000gv-01
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:56 -0400
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEZIu-0005vk-PP
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:43 -0400
+ id 1vEZJ5-0005wI-DF
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:51 -0400
 Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 6541780A94;
- Thu, 30 Oct 2025 23:31:25 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 0FB5380AAC;
+ Thu, 30 Oct 2025 23:31:26 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
  by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id HVmKdN0F6Cg0-aWeEbpK8; Thu, 30 Oct 2025 23:31:24 +0300
+ ESMTPSA id HVmKdN0F6Cg0-MKEVMu0Z; Thu, 30 Oct 2025 23:31:25 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1761856285;
- bh=mQwvhGHiZqI2TjGcnxQJGUhpsykI0z4S9z0cd6haisY=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=wI+q22YMMHYojSfkMqitHVDMBsNRAHfzoPzouefoaTzOcUh+8OJ37G2vgWw4eoTht
- o3rW0mAMW3GqrgAKxnQcmHp2C776WPDVhdDo3rxGOt2ggyS5TrHPmTl1aojvH8mx/Q
- i6YdOSNxDTkZ6E44dabgD6d5WUvM+DVc3QRXUeZI=
+ bh=vOw5oa65DZ0Z+eI0DURWrqAVxZOetTHC4LKJBWHMDPQ=;
+ h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+ b=rvSpYNIzeXup8Llds7Rml/zQMdza20s7zu4qcKpFH4KwRUv+kxoqFZtg0lB6CoKxY
+ eV9mbBq4+iNrLWx35SrDVZFvegeymbKDudRF4JeR4piagOreE5Tg5bU5aJSNkPxoA0
+ DYbBX2PhGdZsdwFhdoY39t71NZ/Qcchgw9Nl02Kk=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,23 +47,23 @@ Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  qemu-devel@nongnu.org, leiyang@redhat.com, davydov-max@yandex-team.ru,
  yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
  raphael.s.norwitz@gmail.com
-Subject: [PATCH v9 6/8] net/tap: support backend-transfer migration
-Date: Thu, 30 Oct 2025 23:31:13 +0300
-Message-ID: <20251030203116.870742-7-vsementsov@yandex-team.ru>
+Subject: [PATCH v9 7/8] tests/functional: add skipWithoutSudo() decorator
+Date: Thu, 30 Oct 2025 23:31:14 +0300
+Message-ID: <20251030203116.870742-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251030203116.870742-1-vsementsov@yandex-team.ru>
 References: <20251030203116.870742-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,85 +78,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support transferring of TAP state (including open fd) through
-migration stream.
+To be used in the next commit: that would be a test for TAP
+networking, and it will need to setup TAP device.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 ---
- net/tap.c | 46 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ tests/functional/qemu_test/decorators.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/tap.c b/net/tap.c
-index ad1d458521..4a752006de 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -413,6 +413,49 @@ static VHostNetState *tap_get_vhost_net(NetClientState *nc)
-     return s->vhost_net;
- }
+diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+index b239295804..125d31dda6 100644
+--- a/tests/functional/qemu_test/decorators.py
++++ b/tests/functional/qemu_test/decorators.py
+@@ -6,6 +6,7 @@
+ import os
+ import platform
+ import resource
++import subprocess
+ from unittest import skipIf, skipUnless
  
-+static int tap_pre_load(void *opaque)
-+{
-+    TAPState *s = opaque;
+ from .cmd import which
+@@ -167,3 +168,18 @@ def skipLockedMemoryTest(locked_memory):
+         ulimit_memory == resource.RLIM_INFINITY or ulimit_memory >= locked_memory * 1024,
+         f'Test required {locked_memory} kB of available locked memory',
+     )
 +
-+    if (s->fd != -1) {
-+        error_report(
-+            "TAP is already initialized and cannot receive incoming fd");
-+        return -EINVAL;
-+    }
++'''
++Decorator to skip execution of a test if passwordless
++sudo command is not available.
++'''
++def skipWithoutSudo():
++    proc = subprocess.run(["sudo", "-n", "/bin/true"],
++                          stdin=subprocess.PIPE,
++                          stdout=subprocess.PIPE,
++                          stderr=subprocess.STDOUT,
++                          universal_newlines=True,
++                          check=False)
 +
-+    return 0;
-+}
-+
-+static int tap_post_load(void *opaque, int version_id)
-+{
-+    TAPState *s = opaque;
-+    Error *local_err = NULL;
-+
-+    if (!net_tap_setup(s, -1, -1, &local_err)) {
-+        error_report_err(local_err);
-+        qemu_del_net_client(&s->nc);
-+        return -EINVAL;
-+    }
-+
-+    return 0;
-+}
-+
-+static const VMStateDescription vmstate_tap = {
-+    .name = "net-tap",
-+    .pre_load = tap_pre_load,
-+    .post_load = tap_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_FD(fd, TAPState),
-+        VMSTATE_BOOL(using_vnet_hdr, TAPState),
-+        VMSTATE_BOOL(has_ufo, TAPState),
-+        VMSTATE_BOOL(has_uso, TAPState),
-+        VMSTATE_BOOL(has_tunnel, TAPState),
-+        VMSTATE_BOOL(enabled, TAPState),
-+        VMSTATE_UINT32(host_vnet_hdr_len, TAPState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- /* fd support */
- 
- static NetClientInfo net_tap_info = {
-@@ -434,6 +477,7 @@ static NetClientInfo net_tap_info = {
-     .set_steering_ebpf = tap_set_steering_ebpf,
-     .get_vhost_net = tap_get_vhost_net,
-     .backend_connect = tap_backend_connect,
-+    .backend_vmsd = &vmstate_tap,
- };
- 
- static TAPState *net_tap_new(NetClientState *peer, const char *model,
-@@ -800,7 +844,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
- 
- static bool net_tap_setup(TAPState *s, int fd, int vnet_hdr, Error **errp)
- {
--    if (!net_tap_set_fd(s, fd, vnet_hdr, errp)) {
-+    if (fd != -1 && !net_tap_set_fd(s, fd, vnet_hdr, errp)) {
-         return false;
-     }
- 
++    return skipUnless(proc.returncode == 0,
++                      f'requires password-less sudo access: {proc.stdout}')
 -- 
 2.48.1
 
