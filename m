@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E26FC1FC7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 12:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657E6C1FDE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 12:46:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEQfs-0000rd-1U; Thu, 30 Oct 2025 07:18:36 -0400
+	id 1vER3h-00056u-QF; Thu, 30 Oct 2025 07:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vEQfp-0000rO-Hh
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:18:33 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vEQfm-0004cO-Ff
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:18:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1761823097; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=NkQtdiuUdP94aMni7TQTc6UMEBIAHjCcMPVH+WCxsKsxItS6e7u6FxX5Et0Elz/SF9IW9QebhSZuu1FRbxS5gJIOmFZiQ+FOaAzgPmWu/P+pR6+Mmil1jin08F11/Wsnm+KYNM6AhDT7Pn1TwQuRK0DIoh51CG7uPLXzFCHYQpo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1761823097;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=5Y+7y4JJ1qH0NupV41k6g0kA7u65ycwoHaqu+NDCksQ=; 
- b=PIt+cbKj2rWFylrvL8kROuuVbo1vXZUyuBLocM8QBeoD5flabupKoklzWd4N1NfWRF3I1wCCh6y/Xzv4tEp8OWN/HXWzZ8O95L44ys5ImJ8nWdt6rovB1MfSrof/5EcfkvQymHX6YdZD08y7jK8RHxAJpam3Q80i3CPOFkBcv/E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761823097; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=5Y+7y4JJ1qH0NupV41k6g0kA7u65ycwoHaqu+NDCksQ=;
- b=YH87RN6kc6k8HGKwGNeacECVsu7RdW7r007/WF9g4I6vle1w3/ZCoklPo02DI++l
- B+yy/tOEniXuynLU7iaNLCx2jrWySXUf3JIhvZdmVG0sg1hZ4ThTIM3rnD/DPNiloh8
- gP/St9GM0Pg3dxcDj215fQOcP7YYFqI1XSMXtSsA=
-Received: by mx.zohomail.com with SMTPS id 1761823096187869.1485756080995;
- Thu, 30 Oct 2025 04:18:16 -0700 (PDT)
-Message-ID: <d3dab1b6-4637-42cd-af54-1613ceffce9c@collabora.com>
-Date: Thu, 30 Oct 2025 14:18:12 +0300
+ (Exim 4.90_1)
+ (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
+ id 1vER3d-00056P-JE
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:43:09 -0400
+Received: from pc232-62.mailgun.net ([143.55.232.62])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1)
+ (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
+ id 1vER3T-00086v-5p
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:43:09 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mail.yodel.dev;
+ q=dns/txt; s=dkim; t=1761824563; x=1761831763; 
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: From:
+ References: Cc: To: To: Subject: Subject: MIME-Version: Date: Message-ID:
+ Sender: Sender; 
+ bh=BX8WMM54/X2z4JKKterrQ+u3+tKia/gkKKQAUuSGQIw=;
+ b=BR9/mlZcGJOgzJb9C5XSJSqttREsKlgcbgvKqjAs3SPCxp5hoFCR5MAVUXL4FFT6MLi5Q318/y3y4cWHIoTIzt8mRR/z6qqWSOd13xPSYf5mkUPXzODliEMGOMsAB93HYj+QD+3GmICuQyvQaKXd2y2JERaVYXVmsG/zg/0bGCU=
+X-Mailgun-Sid: WyJjZmM4NiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjMzZTkyMCJd
+Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
+ 82b7b0aa6a9490e1d37f90288d42dfc2781b07d0e3a3464ca437034ccc894751 with SMTP id
+ 69034f33e4319a89b6306c08; Thu, 30 Oct 2025 11:42:43 GMT
+X-Mailgun-Sending-Ip: 143.55.232.62
+Message-ID: <f1a0f03f-54b8-4fa8-8e03-b00a617bd462@yodel.dev>
+Date: Thu, 30 Oct 2025 06:42:41 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] virtio-gpu: Force RCU when unmapping blob
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
- <20251029-force_rcu-v1-5-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [PATCH 0/7] cpus: Constify some CPUState arguments
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
+ kvm@vger.kernel.org, Laurent Vivier <laurent@vivier.eu>
+References: <20250120061310.81368-1-philmd@linaro.org>
+ <395c7c86-08b1-4af4-a5ca-012a9aa89339@linaro.org>
+ <CAAjaMXZSkxCgzdC6w-onUxVxU_ZW5fiBtW5-ioeKaXwD_7tJeQ@mail.gmail.com>
 Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20251029-force_rcu-v1-5-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+From: Yodel Eldar <yodel.eldar@yodel.dev>
+Autocrypt: addr=yodel.eldar@yodel.dev; keydata=
+ xjMEZxqXdhYJKwYBBAHaRw8BAQdAkletQdG3CLyANZyuf2t7Z9PK4b6HiT+DdSPUB2mHzmPN
+ I1lvZGVsIEVsZGFyIDx5b2RlbC5lbGRhckB5b2RlbC5kZXY+wpkEExYKAEECGwMFCQOcG00F
+ CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTTzRjNQG27imap+N+V7k+3NmVNrAUCaNWASwIZ
+ AQAKCRCV7k+3NmVNrNnSAPoDjQXa6v7ZzdQSaLdRfAQy/5SsUucv+zp3WAP4pXdgJQEAzMMC
+ Ctx4l6b13Fs2hZdRXEnF/4BZ9t1K68nwzZOV3QnOOARnGpd2EgorBgEEAZdVAQUBAQdAKPIy
+ 3W/DKFsm1e+31zoqmOY0pqz8vjIM846wM6lEY2QDAQgHwn4EGBYIACYCGwwWIQTTzRjNQG27
+ imap+N+V7k+3NmVNrAUCaNWG7QUJA5wi9wAKCRCV7k+3NmVNrPusAQCQDQwETy7VT6UhHPho
+ TkrQnsNqQfFU3tXqCTiViToktQD7B/U2/to97hQIJCWbK6yd3T+KPZJPMcHMg2XRyedUvgA=
+In-Reply-To: <CAAjaMXZSkxCgzdC6w-onUxVxU_ZW5fiBtW5-ioeKaXwD_7tJeQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=143.55.232.62;
+ envelope-from=bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev;
+ helo=pc232-62.mailgun.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,38 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/29/25 09:12, Akihiko Odaki wrote:
-> Unmapping a blob changes the memory map, which is protected with RCU.
-> RCU is designed to minimize the read-side overhead at the cost of
-> reclamation delay. While this design usually makes sense, it is
-> problematic when unmapping a blob because the operation blocks all
-> virtio-gpu commands and causes perceivable disruption.
+
+On 30/10/2025 01:59, Manos Pitsidianakis wrote:
+> On Wed, Oct 29, 2025 at 7:59 PM Philippe Mathieu-Daudé
+> <philmd@linaro.org> wrote:
+>>
+>> On 20/1/25 07:13, Philippe Mathieu-Daudé wrote:
+>>> This is in preparation of making various CPUClass handlers
+>>> take a const CPUState argument.
+>>>
+>>> Philippe Mathieu-Daudé (7):
+>>>     qemu/thread: Constify qemu_thread_get_affinity() 'thread' argument
+>>>     qemu/thread: Constify qemu_thread_is_self() argument
+>>>     cpus: Constify qemu_cpu_is_self() argument
+>>>     cpus: Constify cpu_get_address_space() 'cpu' argument
+>>>     cpus: Constify cpu_is_stopped() argument
+>>>     cpus: Constify cpu_work_list_empty() argument
+>>>     accels: Constify AccelOpsClass::cpu_thread_is_idle() argument
+>>
+>> ping?
+>>
 > 
-> Minimize such the disruption with force_rcu(), which minimizes the
-> reclamation delay at the cost of a read-side overhead.
-> 
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> ---
->  hw/display/virtio-gpu-virgl.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 07f6355ad62e..71cde671c193 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -187,6 +187,7 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
->          memory_region_set_enabled(mr, false);
->          memory_region_del_subregion(&b->hostmem, mr);
->          object_unparent(OBJECT(mr));
-> +        force_rcu();
->      }
->  
->      return 0;
+> Hi Philippe, I can't find this series in my mailbox and it's not on
+> lore.kernel.org/patchew/lists.gnu.org either. Resend?
 > 
 
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Hi,
 
--- 
-Best regards,
-Dmitry
+Looks like it landed on the kvm mailing list via Cc but was left out of
+qemu-devel, despite the seemingly correct To header:
+
+https://lore.kernel.org/kvm/20250120061310.81368-1-philmd@linaro.org/
+
+Regards,
+Yodel
 
