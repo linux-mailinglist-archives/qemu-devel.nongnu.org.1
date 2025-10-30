@@ -2,67 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868BFC21747
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D43C21762
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:22:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEWJe-0001Ce-Eg; Thu, 30 Oct 2025 13:20:05 -0400
+	id 1vEWJo-0001Dt-I0; Thu, 30 Oct 2025 13:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEWJS-000180-UU
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:51 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEWJc-0001DD-7d
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:20:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEWJ9-0008Mx-9N
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:48 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 2FEED8094A;
- Thu, 30 Oct 2025 20:19:25 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id GJjc0O0FA0U0-fLAA5S6I; Thu, 30 Oct 2025 20:19:24 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761844764;
- bh=4mc/qBRLhfYXRJW391uyW9nJdD23QGaduedXq3nj154=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=gifW8X1uO3BMUUllENMu6cpL+PuoQ2iLARh5T0L6cild5mcv0BLxlFH5wg/YF6B+c
- 8/r3HTM4EkWHsPn8I4qyTi6Y73JNTITLXlBI9sSrzTJtAZkQaIMEdfoEdjxvKOBZ4o
- Rar+rFBSHK938UtIBWCIQDbmlPIgeVdAuK+DYKxw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
- davydov-max@yandex-team.ru, yc-core@yandex-team.ru, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, peterx@redhat.com
-Subject: [PATCH v9 9/9] net/tap: postpone tap setup to net_backend_connect()
- call
-Date: Thu, 30 Oct 2025 20:19:14 +0300
-Message-ID: <20251030171915.726441-10-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251030171915.726441-1-vsementsov@yandex-team.ru>
-References: <20251030171915.726441-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEWJT-0008O5-BK
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761844773;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=juqH4bSfnLECsaET/vZDKGKqwUn+Zl7zxV7xLUO8hoI=;
+ b=fy9gI7iD9et1T0bl7ZMyhQNGLa+qEbnI7UtF+VzOfHJXvK4lC4+Wcob/RKjUlJPxVPb1zX
+ py0gq/hKPOC5yc1vPyNCSRlFs8P5tmif7JFB7Ls/LMm7I9A20xtUX2s+AV0LgqWe4n7LtK
+ F/RvPZAZoprzG/ixiR7b++V7KkgVzus=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-t2XOVk4LNjmXkNbLrKOh-A-1; Thu, 30 Oct 2025 13:19:32 -0400
+X-MC-Unique: t2XOVk4LNjmXkNbLrKOh-A-1
+X-Mimecast-MFC-AGG-ID: t2XOVk4LNjmXkNbLrKOh-A_1761844771
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-89eb8ee2a79so629565185a.2
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 10:19:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761844771; x=1762449571;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=juqH4bSfnLECsaET/vZDKGKqwUn+Zl7zxV7xLUO8hoI=;
+ b=uPkxzqUCaj09OC4O42IpcwQgOjdwhmEr9VgvDh3mSrGO5bgQ8T+fSiidi2Z2ZYfljp
+ J6a9gHgmcUOXxLfgIkp78QjPyDTbfNgG/j+vh8ssfijPrDnkEu2jDYOFhU9zbKASmPSU
+ y+Ui5/ISfm/Rpt4qytYTaUDK7ANvqLLUf33WYX0hVHRcW1deWKewKGQQ3/kOMurSAljP
+ o9rhxRHkg6ZptYnyKwIgF91E/q7sLKBwQOAKtYWMn5mHC7Da9JxaE5Wd7F7/JpmHX7Uh
+ SpgT6IHa1mMilqof4+kVI3v9j3w+HdThSsnq1J9ugGPB70GeC8RieE2N0zZ32S5QAPPi
+ YPSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqrrv3Fmf+IQ/X9bOWq3yDLDLtTp7ZH444zbDmvDAL1YawxB7QpdkMvjhYupTh/7DiMVX9gpMAW/7O@nongnu.org
+X-Gm-Message-State: AOJu0Yyaay/5YBaSOzkt8+V4RGYYEbnX1a++bLnp5UBfOvG7kib38Ry1
+ R95zsW0X/crsSTxTMIXzaXM3grTm2dMb3EfIEa3XTQTfUQ8rLIMfd0nriUyR5oCJHF4J745vMg7
+ Q5lz1IbriV83DHZx81Z+OXOfjrT2j741EuQwsx4sjLn6d9xMITOKGfuQb
+X-Gm-Gg: ASbGncsnv2tgXFMBzTYLAoi8cZqmYumCBIvovGqIb95QDt2oXejlDafAjGNrDhK0nwu
+ meMMCWssBjwkCUw8E+uyJijxeaGkrMvfUT/Mf8Yw4vFUh1jurrM4Gvx+uTSlSJK+OIgkjyNt61n
+ /fs9F9tTtosbuWSHODijUU/IgLJXxi+lWinnZMPIghj0V777FtTQfxKquxc6E0rSLyndeL3+tpV
+ twFNQkxvJEObP2Ncwh+v81bAX8oRbkdfAm5qoJgYnYLPhKyyBzEeWf0Ca8BOTGL9PahBinRCJe8
+ T1hNeXyR+rALLeMplpPWd06Vc5ysX+gFfg5cfmvmULB4rTJjH643ofJozcsGXWUAZ9g=
+X-Received: by 2002:a05:620a:2951:b0:8a2:fab3:bf8b with SMTP id
+ af79cd13be357-8ab9acedcb2mr29574785a.48.1761844771381; 
+ Thu, 30 Oct 2025 10:19:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF27pBmSkr3omiABsuhwgTruxHt8rTn58NLvshSiP5baWjtqDQpF6GU3KxwZ9rVr+xOQsUH4g==
+X-Received: by 2002:a05:620a:2951:b0:8a2:fab3:bf8b with SMTP id
+ af79cd13be357-8ab9acedcb2mr29561385a.48.1761844769408; 
+ Thu, 30 Oct 2025 10:19:29 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-89f254a41cdsm1290629685a.29.2025.10.30.10.19.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 Oct 2025 10:19:28 -0700 (PDT)
+Date: Thu, 30 Oct 2025 13:19:26 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: armbru@redhat.com, qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Subject: Re: [RFC 00/22] migration: convert vmstate_load/save_state
+Message-ID: <aQOeHqILFfBdlhJb@x1.local>
+References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
+ <aQOc7ogTLqs8iML0@x1.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQOc7ogTLqs8iML0@x1.local>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,201 +105,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As described in previous commit, to support backend-transfer migration
-for virtio-net/tap, we need to postpone the decision to open the device
-or to wait for incoming fds up to pre-incoming point (when we actually
-can decide).
+On Thu, Oct 30, 2025 at 01:14:22PM -0400, Peter Xu wrote:
+> On Wed, Oct 29, 2025 at 02:13:24AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > Hi all!
+> > 
+> > That's a proof-of-concept for converting vmstate_load/save_state
+> > to have boolean error value, to fixup this analysis
+> >   https://lore.kernel.org/qemu-devel/aQDdRn8t0B8oE3gf@x1.local/
+> > in code.
+> > 
+> > As many of .get / .set handlers call vmstate_load/save_state,
+> > let's convert them too, it not too much.
+> > 
+> > And finally, while touching each file, let's also use
+> > new pre/post _errp() APIs.
+> > 
+> > So, this series propagate a lot of errors through errp, which
+> > were simply printed out before.
+> > 
+> > Why it is an RFC:
+> > 1. I didn't yet double check the accuracy of all patches
+> > 2. Maybe, commit messages need to be more detailed, maybe they
+> > need more arguments about correctness of the change
+> > 3. Maybe, it's better first merge new generic interfaces, and
+> > than send per-maintainer small series, to avoid this huge
+> > series, depending on many maintainers.
+> > 
+> > So, I don't include in CC many maintainers now, to get a first
+> > look from Markus and Peter.
+> 
+> It's still good to collect more opinions on especially rfc series, even if
+> the list doesn't need to include maintainers for each device. I added
+> Fabiano and Dan too.
+> 
+> > 
+> > What do you think?
+> 
+> In general.. I liked it. :) Thanks for trying it.
 
-This commit only postpones TAP-open case of initialization.
-We don't try to postpone the all cases of initialization, as it will
-require a lot more work of refactoring the code.
+Oh wait, so this is still not the full list of what needs to be done?
+After I applied your patchset, I still see:
 
-So we postpone only the simple case, for which we are going to support
-fd-incoming migration:
+$ git grep -E "\.get | \.set " | wc -l
+214
 
-1. No fds / fd parameters: obviously, if user give fd/fds the should
-be used, no incoming backend-transfer migration is possible.
+Some of them are outliers but most of them look not.. :(
 
-2. No helper: just for simplicity. It probably possible to allow it (and
-just ignore in case of backend-transfer migration), to allow user use
-same cmdline on target QEMU.. But that questionable, and postponable.
-
-3. No sciprt/downscript. It's not simple to support downscript:
-we should pass the responsiblity to call it on target QEMU with
-migration.. And back to source QEMU on migration failure. It
-feasible, but may be implemented later on demand.
-
-3. Concrete ifname: to not try to share it between queues, when we only
-can setup queues as separate entities. Supporting undecided ifname will
-require to create some extra netdev state, connecting all the taps, to
-be able to iterate through them.
-
-No part of backend-transfer migration is here, we only prepare the code
-for future implementation of it.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- net/tap.c | 111 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
-
-diff --git a/net/tap.c b/net/tap.c
-index c50430ba49..ad1d458521 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -90,6 +90,12 @@ typedef struct TAPState {
-     int sndbuf;
-     int vhostfd;
-     uint32_t vhost_busyloop_timeout;
-+
-+    /* for postponed setup */
-+    bool vnet_hdr_required;
-+    int vnet_hdr;
-+    bool mq_required;
-+    char *ifname;
- } TAPState;
- 
- static bool net_tap_setup(TAPState *s, int fd, int vnet_hdr, Error **errp);
-@@ -99,6 +105,7 @@ static void launch_script(const char *setup_script, const char *ifname,
- 
- static void tap_send(void *opaque);
- static void tap_writable(void *opaque);
-+static bool tap_backend_connect(NetClientState *nc, Error **errp);
- 
- static char *tap_parse_script(const char *script_arg, const char *default_path)
- {
-@@ -368,6 +375,8 @@ static void tap_cleanup(NetClientState *nc)
-         close(s->vhostfd);
-         s->vhostfd = -1;
-     }
-+
-+    g_free(s->ifname);
- }
- 
- static void tap_poll(NetClientState *nc, bool enable)
-@@ -424,6 +433,7 @@ static NetClientInfo net_tap_info = {
-     .set_vnet_be = tap_set_vnet_be,
-     .set_steering_ebpf = tap_set_steering_ebpf,
-     .get_vhost_net = tap_get_vhost_net,
-+    .backend_connect = tap_backend_connect,
- };
- 
- static TAPState *net_tap_new(NetClientState *peer, const char *model,
-@@ -847,6 +857,102 @@ static int get_fds(char *str, char *fds[], int max)
-     return i;
- }
- 
-+static bool tap_wait_incoming(NetClientState *nc)
-+{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-+
-+    return s->fd == -1;
-+}
-+
-+static bool tap_backend_connect(NetClientState *nc, Error **errp)
-+{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-+    char ifname[TAP_IFNAME_SZ];
-+    int vnet_hdr = s->vnet_hdr;
-+    int fd;
-+
-+    if (!tap_wait_incoming(nc)) {
-+        /* Already connected */
-+        return true;
-+    }
-+
-+    pstrcpy(ifname, sizeof(ifname), s->ifname);
-+    fd = net_tap_open(&vnet_hdr, s->vnet_hdr_required, NULL,
-+                      ifname, sizeof(ifname),
-+                      s->mq_required, errp);
-+    if (fd < 0) {
-+        goto fail;
-+    }
-+
-+    if (!net_tap_setup(s, fd, vnet_hdr, errp)) {
-+        goto fail;
-+    }
-+
-+    return true;
-+
-+fail:
-+    qemu_del_net_client(&s->nc);
-+    return false;
-+}
-+
-+static bool check_no_script(const char *script_arg)
-+{
-+    return script_arg &&
-+        (script_arg[0] == '\0' || strcmp(script_arg, "no") == 0);
-+}
-+
-+/*
-+ * Returns:
-+ * -1 - failed, errp set. The whole tap creation process is faild.
-+ *  0 - success, tap initialized, connect is postponed
-+ *  1 - no critical error, but postponed connect is not supported,
-+ *      caller should continue usual initialization
-+ */
-+static int tap_postpone_init(const NetdevTapOptions *tap,
-+                             const char *name, NetClientState *peer,
-+                             Error **errp)
-+{
-+    int queues = tap->has_queues ? tap->queues : 1;
-+
-+    if (tap->fd || tap->fds || tap->helper || tap->vhostfds) {
-+        return 1;
-+    }
-+
-+    if (!tap->ifname || tap->ifname[0] == '\0' ||
-+        strstr(tap->ifname, "%d") != NULL) {
-+        /*
-+         * It's hard to postpone logic of parsing template or
-+         * absent ifname
-+         */
-+        return 1;
-+    }
-+
-+    /*
-+     * It's not simple to support downscript for backend transfer migration,
-+     * so for simplicity, let's not support postponed connect in case of
-+     * any scripts given.
-+     */
-+    if (!check_no_script(tap->script) || !check_no_script(tap->downscript)) {
-+        return 1;
-+    }
-+
-+    for (int i = 0; i < queues; i++) {
-+        TAPState *s = net_tap_new(peer, "tap", name, tap, NULL, errp);
-+        if (!s) {
-+            return -1;
-+        }
-+
-+        s->vnet_hdr_required = tap->has_vnet_hdr && tap->vnet_hdr;
-+        s->vnet_hdr = tap->has_vnet_hdr ? tap->vnet_hdr : 1;
-+        s->mq_required = queues > 1;
-+        s->ifname = g_strdup(tap->ifname);
-+        qemu_set_info_str(&s->nc, "ifname=%s,script=no,downscript=no",
-+                          tap->ifname);
-+    }
-+
-+    return 0;
-+}
-+
- int net_init_tap(const Netdev *netdev, const char *name,
-                  NetClientState *peer, Error **errp)
- {
-@@ -875,6 +981,11 @@ int net_init_tap(const Netdev *netdev, const char *name,
-         return -1;
-     }
- 
-+    ret = tap_postpone_init(tap, name, peer, errp);
-+    if (ret <= 0) {
-+        return ret;
-+    }
-+
-     if (tap->fd) {
-         if (tap->ifname || tap->script || tap->downscript ||
-             tap->has_vnet_hdr || tap->helper || tap->has_queues ||
 -- 
-2.48.1
+Peter Xu
 
 
