@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572A7C213FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 17:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD0CC21403
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 17:41:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEVhg-00081P-1i; Thu, 30 Oct 2025 12:40:48 -0400
+	id 1vEVhk-00085H-Od; Thu, 30 Oct 2025 12:40:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEVhd-00080e-RE
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:45 -0400
+ id 1vEVhf-00081X-OF
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:47 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEVhR-0003Ga-Ly
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:45 -0400
+ id 1vEVhT-0003Gr-Rs
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 12:40:47 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 21B1A80984;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 9F6FA80B2E;
  Thu, 30 Oct 2025 19:40:29 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id OeiSuH0Fn4Y0-rV8b6ttJ; Thu, 30 Oct 2025 19:40:28 +0300
+ ESMTPSA id OeiSuH0Fn4Y0-kmSYWKH6; Thu, 30 Oct 2025 19:40:29 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761842428;
- bh=soshIt7UzNY14fx14ZgoSWzIKXQzxzGA/flYljDxDvo=;
+ s=default; t=1761842429;
+ bh=dN2uRsSbltKwsRIDdUo3yFjYTt9AQiQ4/eCmWAl+qWY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=CffCQzy510GHAgPOawiUs6nwkL23IAf/IRoWpYSAwlFxoIMEFgV83CT3WeUTkx8AH
- cRR+AmEQ5xgSLxJ2+txwcQKsAkhMpc6ujopCjRMdS8rZiBSsKt42yTAy0BeZbq4h8j
- wRl4esoh58xKCJQ0gJaa/DWUQ7jTeKb3JvwZ2Y58=
+ b=knY7AIiDiHiNv1GH+kay8nt2me3/oh0oKS9ptVlZ9vnamC9J8s4SV2oY8dPiPJO6y
+ fOrzWy1H5EsNCSuC9CjHEwyGZT6xd4KhvCEgDjABd96dJImwseyxQ1xYN1htLBf9dn
+ ItS3qdGIf5WbfXD5Gq7R1LQv+jqdgaBYJ4U2+mXA=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  davydov-max@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v9 5/7] net/tap: setup exit notifier only when needed
-Date: Thu, 30 Oct 2025 19:40:21 +0300
-Message-ID: <20251030164023.710048-6-vsementsov@yandex-team.ru>
+Subject: [PATCH v9 6/7] net/tap: tap_set_sndbuf(): add return value
+Date: Thu, 30 Oct 2025 19:40:22 +0300
+Message-ID: <20251030164023.710048-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251030164023.710048-1-vsementsov@yandex-team.ru>
 References: <20251030164023.710048-1-vsementsov@yandex-team.ru>
@@ -57,7 +57,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,69 +72,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No reason to setup notifier on each queue of multique tap,
-when we actually want to run downscript only once.
-As well, let's not setup notifier, when downscript is
-not enabled (downsciprt="no").
+Follow common recommendations in include/qapi/error.h of having
+a return value together with errp. This allows to avoid error propagation.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 ---
- net/tap.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ net/tap-bsd.c     | 3 ++-
+ net/tap-linux.c   | 5 ++++-
+ net/tap-solaris.c | 3 ++-
+ net/tap-stub.c    | 3 ++-
+ net/tap.c         | 5 +----
+ net/tap_int.h     | 2 +-
+ 6 files changed, 12 insertions(+), 9 deletions(-)
 
+diff --git a/net/tap-bsd.c b/net/tap-bsd.c
+index bbf84d1828..9bd282b69c 100644
+--- a/net/tap-bsd.c
++++ b/net/tap-bsd.c
+@@ -206,8 +206,9 @@ error:
+ }
+ #endif /* __FreeBSD__ */
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
++    return true;
+ }
+ 
+ int tap_probe_vnet_hdr(int fd, Error **errp)
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index 2a90b58467..db68693bbf 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -145,7 +145,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+  */
+ #define TAP_DEFAULT_SNDBUF 0
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
+     int sndbuf;
+ 
+@@ -159,7 +159,10 @@ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ 
+     if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1 && tap->has_sndbuf) {
+         error_setg_errno(errp, errno, "TUNSETSNDBUF ioctl failed");
++        return false;
+     }
++
++    return true;
+ }
+ 
+ int tap_probe_vnet_hdr(int fd, Error **errp)
+diff --git a/net/tap-solaris.c b/net/tap-solaris.c
+index 75397e6c54..e5ba89d926 100644
+--- a/net/tap-solaris.c
++++ b/net/tap-solaris.c
+@@ -208,8 +208,9 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+     return fd;
+ }
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
++    return true;
+ }
+ 
+ int tap_probe_vnet_hdr(int fd, Error **errp)
+diff --git a/net/tap-stub.c b/net/tap-stub.c
+index f7a5e0c163..86d7d38e0f 100644
+--- a/net/tap-stub.c
++++ b/net/tap-stub.c
+@@ -33,8 +33,9 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+     return -1;
+ }
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
++    return true;
+ }
+ 
+ int tap_probe_vnet_hdr(int fd, Error **errp)
 diff --git a/net/tap.c b/net/tap.c
-index 017c184933..5653578ccb 100644
+index 5653578ccb..ed20155b11 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -326,11 +326,9 @@ static void tap_exit_notify(Notifier *notifier, void *data)
-     TAPState *s = container_of(notifier, TAPState, exit);
-     Error *err = NULL;
+@@ -709,13 +709,10 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+                              const char *downscript, const char *vhostfdname,
+                              int vnet_hdr, int fd, Error **errp)
+ {
+-    Error *err = NULL;
+     TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
+     int vhostfd;
  
--    if (s->down_script[0]) {
--        launch_script(s->down_script, s->down_script_arg, s->fd, &err);
--        if (err) {
--            error_report_err(err);
--        }
-+    launch_script(s->down_script, s->down_script_arg, s->fd, &err);
-+    if (err) {
-+        error_report_err(err);
-     }
- }
- 
-@@ -346,8 +344,11 @@ static void tap_cleanup(NetClientState *nc)
- 
-     qemu_purge_queued_packets(nc);
- 
--    tap_exit_notify(&s->exit, NULL);
--    qemu_remove_exit_notifier(&s->exit);
-+    if (s->exit.notify) {
-+        tap_exit_notify(&s->exit, NULL);
-+        qemu_remove_exit_notifier(&s->exit);
-+        s->exit.notify = NULL;
-+    }
- 
-     tap_read_poll(s, false);
-     tap_write_poll(s, false);
-@@ -443,9 +444,6 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
-     tap_read_poll(s, true);
-     s->vhost_net = NULL;
- 
--    s->exit.notify = tap_exit_notify;
--    qemu_add_exit_notifier(&s->exit);
--
-     return s;
- }
- 
-@@ -733,6 +731,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-             snprintf(s->down_script, sizeof(s->down_script), "%s", downscript);
-             snprintf(s->down_script_arg, sizeof(s->down_script_arg),
-                      "%s", ifname);
-+            s->exit.notify = tap_exit_notify;
-+            qemu_add_exit_notifier(&s->exit);
-         }
+-    tap_set_sndbuf(s->fd, tap, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!tap_set_sndbuf(s->fd, tap, errp)) {
+         goto failed;
      }
  
+diff --git a/net/tap_int.h b/net/tap_int.h
+index b76a05044b..7963dd6aae 100644
+--- a/net/tap_int.h
++++ b/net/tap_int.h
+@@ -34,7 +34,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+ 
+ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
++bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+ int tap_probe_vnet_hdr(int fd, Error **errp);
+ int tap_probe_has_ufo(int fd);
+ int tap_probe_has_uso(int fd);
 -- 
 2.48.1
 
