@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21700C21F90
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 20:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB9EC21F75
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 20:33:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEYNI-0002MI-T4; Thu, 30 Oct 2025 15:31:56 -0400
+	id 1vEYNK-0002OD-Rc; Thu, 30 Oct 2025 15:31:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vEYNB-0002LM-WA
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:31:50 -0400
+ id 1vEYNF-0002MV-Ju
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:31:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vEYN9-0005gI-69
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:31:49 -0400
+ id 1vEYNB-0005hL-E7
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:31:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761852697;
+ s=mimecast20190719; t=1761852705;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6IcnYc+1ftIJiQzZtMqdrxRtvF40xlfaRtpF5vrY7Zw=;
- b=eg0H+vCQ8hwX63eD6Kb5Tzt/WaBdB6pNAQAF5NP5FSCG+YHo/4RFoaQRbWBstL7fQB3paF
- Cm6b2zUBjPmPCep8Dg4tj/d78gBG8YTliVNj4CCazcw8Stb2GH3ucSul7hT4a+B1n9Ao0V
- HvFIZVLq3lzc531WUMFZncu7J18PfLY=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5cG48Y0bY2n6sp8hcRMtxt5q6Afhdu2+xzl0JEYxuO8=;
+ b=HDQGGil/sMK88Ovntju4YR9PvK7szlDG2ebrydxAfCd3jj1cMWeymKItJvj1zvUTTCDZIl
+ 2ywIUg0INgseszhNEufdhXj7Y+aO8K+Crpx99Fe7lp4U9FR0M+EdEKsHQcHg36XWPBq+1n
+ 4bLeUnXf+7974QVYjiqfH/v3mOaTYA8=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-fJCDA6UIO3yEF_NVeJxqmw-1; Thu, 30 Oct 2025 15:31:35 -0400
-X-MC-Unique: fJCDA6UIO3yEF_NVeJxqmw-1
-X-Mimecast-MFC-AGG-ID: fJCDA6UIO3yEF_NVeJxqmw_1761852695
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-340299e05easo1331927a91.0
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 12:31:35 -0700 (PDT)
+ us-mta-606-dT8TFWbjN96pbxm3R0SI3A-1; Thu, 30 Oct 2025 15:31:43 -0400
+X-MC-Unique: dT8TFWbjN96pbxm3R0SI3A-1
+X-Mimecast-MFC-AGG-ID: dT8TFWbjN96pbxm3R0SI3A_1761852702
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-290992f9693so19952845ad.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 12:31:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761852694; x=1762457494;
+ d=1e100.net; s=20230601; t=1761852702; x=1762457502;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6IcnYc+1ftIJiQzZtMqdrxRtvF40xlfaRtpF5vrY7Zw=;
- b=NRrTcTboj2B/HuuSG5z2fR7gvc0oPkMu8y+wblfSTxt5kzwGq/JSPRUwZhD4j6mnYX
- dUYhu9ywW5uog0vlVQWgRMQkGyXTNX168jWJBeXq03rQXthRRGlFf7vly8kOwGctI3D2
- yXqshzth+65/MBxA6kV5qJ7gJ2c4A9o2jYtyhF1w06J1MGDpxfq6fxibJ1X8QNF0wpuz
- Ze+Ao9fGUKqxy1bW1PqvPcR+688Ypct9Ly63m0+L3KI/PMw4+eF0MDyRYtWse5EDhSfj
- dmFRpholhZKbwZoS5NmbUNRF+5uzCyeG8xjQlNvOwNB+3KEG+G85ibLEkJq87TkCMBfW
- yaEg==
-X-Gm-Message-State: AOJu0YxCXPy74Rvf4DLPaEaZtm7PLTrkyQYExCEz0BuginHeb+lLJHTP
- XooNHQCk8k2wKIsY3ogjB4eIl4u15eKFGPPLdJLIxfxLireZ1qpHM7G6CLVXIb//8Dd8SiQuj7D
- cJXPmNtYIw6d5orQHO7qSKetSnyOQZfMRe2YYXUnzt8K91e1+oukVexy1Op2agZu5I0rpZs1QDC
- g/tqxKsKSfh3POT6YUn3uRDkukoGn+dhA=
-X-Gm-Gg: ASbGnctdvpTt6pYQt11RjGY6/SnwC0iaLGDszT/DXNuHwjg3MgUv23tmpSU37UcTcpk
- sVLTlQADxZ3dwhSpLx15298gYsdpO164ZR9dugBOOsVW3P0SINMlc4cUQOaBcLgL7+stvVanRR8
- /9OY0xETXTIbORCaUwCNRFiDDUXnSydhhR+Ckd0cAravK2YvJCBQBPF8G6lbA2ePN0mNEx5iKDJ
- Ci57bsjc+gsbuI=
-X-Received: by 2002:a17:90b:2583:b0:33f:ebc2:643 with SMTP id
- 98e67ed59e1d1-34083074f10mr1260675a91.23.1761852694633; 
- Thu, 30 Oct 2025 12:31:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1+4FQQRHpryd/DpbF/TVGOSXuV8gP8f5Cl+XvKS30pv7fB7JcEUGt96hAFJCpG1nC34tVp0KgQm2sEXMRgwQ=
-X-Received: by 2002:a17:90b:2583:b0:33f:ebc2:643 with SMTP id
- 98e67ed59e1d1-34083074f10mr1260636a91.23.1761852694086; Thu, 30 Oct 2025
- 12:31:34 -0700 (PDT)
+ bh=5cG48Y0bY2n6sp8hcRMtxt5q6Afhdu2+xzl0JEYxuO8=;
+ b=luYUcYoSmeVz+b/9/FdbivdpuIGlMtXZqLzWXVBKCsKoTZy9V24M/7rbaXNgQr8FEM
+ cB1nf7KgtGD5WAmGCMM2NQFDxlOlYiOopf4tFjoCoJn7uyKNCemQz7hk3MgCkYNv4n1o
+ jWietOVrV4Wgs2ePAYWJD6+Tdq5ezW/p1wc4TrwhaK7jKd8bvfZZszvPXjXmIHonBvLV
+ wDaI46fLICTPrbRU1MTjx+jgD1DUWIVn4/1w2LuJhx6cDN/CGhScG9LqQPhe2b6haoBO
+ Bnwm2RVbNOGz0w4AGq/1T4AYaWhWlpPCUXL244Yn54FKGf8ReJXr2cC+9KfCI+FGimSQ
+ Q1Ww==
+X-Gm-Message-State: AOJu0YxbMMNKjcf881PXsJXkE2ov/TsJSB9g6iAAsf8XC8HgP5dppF0V
+ HjyG7QufrZb7L5TBI+EV9Kbp897hB+zPHz7oGFAtRrAthqg+F45XA0O8wJW/X2OO80C2S2wd/k0
+ HrbbelJZ0n7dqwOm2I7W99E0u4lypblbdaZPxZFshzGE2WcUq3dRmqdUzhvP2cgLGsXhgL9rAiB
+ F2hcjiMvTJd0jSVnsBRxYdXgUsESOCvI+aE9ABSnw=
+X-Gm-Gg: ASbGncurboG5Js2rFqhSS+Bt0XGcKGxctYnVlbtM1VuODusmw5wezWGMxmTP3nKqoKE
+ sbqKhr1WX3svBCXqmatikbTMgMsrisx9/ZixH0whuc1faBqko3iowMK6RJYjJ4fXqgFhhcobYcP
+ lASTAtWM7oEN6AVH3ugVqI13MfHtGio0H41xASlWPpJ5K3m2ZOoasHpFuZWoMs37v4NH2KxjaFY
+ q1xSVD4tIZvOA0=
+X-Received: by 2002:a17:90b:3b50:b0:33d:a6a6:2e26 with SMTP id
+ 98e67ed59e1d1-3404ac9225fmr5752395a91.13.1761852702126; 
+ Thu, 30 Oct 2025 12:31:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9tIAKxgHe8uLEDcugnFoLZZ062yZDGOsHXy5tjcnDQoiqIN/XT8akKTyV/Y6HinfcsUUwlmbYFivd/tCsysM=
+X-Received: by 2002:a17:90b:3b50:b0:33d:a6a6:2e26 with SMTP id
+ 98e67ed59e1d1-3404ac9225fmr5752371a91.13.1761852701701; Thu, 30 Oct 2025
+ 12:31:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251030144805.2239954-1-berrange@redhat.com>
- <20251030144805.2239954-5-berrange@redhat.com>
-In-Reply-To: <20251030144805.2239954-5-berrange@redhat.com>
+ <20251030144805.2239954-6-berrange@redhat.com>
+In-Reply-To: <20251030144805.2239954-6-berrange@redhat.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Thu, 30 Oct 2025 23:31:22 +0400
-X-Gm-Features: AWmQ_bm4yJ0aD7W2f3ag6yF5jH2nHcZQDc6e8SvgthlTELWNWTvlIrIEj7r8bmc
-Message-ID: <CAMxuvawJGA5P0uJ9a0i=LZMso6LMRjzhRAZ2Tzheg8MuJ5bCfg@mail.gmail.com>
-Subject: Re: [PATCH 04/21] crypto: remove redundant access() checks before
- loading certs
+Date: Thu, 30 Oct 2025 23:31:29 +0400
+X-Gm-Features: AWmQ_bkYf7hVuR2VC9JDUGm3h9q6uX4ofU7wxa0vHSgx4PVbDrT3Srhsx4KY_Po
+Message-ID: <CAMxuvay=4bvkm1Rz2mJqkdGD20bJ8kSO0MFXcXd3gip6usO6RQ@mail.gmail.com>
+Subject: Re: [PATCH 05/21] crypto: move check for TLS creds 'dir' property
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org
-Content-Type: multipart/alternative; boundary="000000000000fa52460642654baa"
+Content-Type: multipart/alternative; boundary="0000000000006e88950642654ca3"
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -102,7 +101,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000fa52460642654baa
+--0000000000006e88950642654ca3
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -112,10 +111,12 @@ On Thu, Oct 30, 2025 at 6:48=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
 edhat.com>
 wrote:
 
-> The qcrypto_tls_creds_get_path method will perform an access()
-> check on the file and return a NULL path if it fails. By the
-> time we get to loading the cert files we know they must exist
-> on disk and thus the second access() check is redundant.
+> The check for the 'dir' property is being repeated for every
+> credential file to be loaded, but this results in incorrect
+> logic for optional credentials. The 'dir' property is mandatory
+> for PSK and x509 creds, even if some individual files are
+> optional. Address this by separating the check for the 'dir'
+> property.
 >
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 >
@@ -124,121 +125,219 @@ Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 
 > ---
->  crypto/tlscredsx509.c | 22 ++++++++++------------
->  1 file changed, 10 insertions(+), 12 deletions(-)
+>  crypto/tlscreds.c     | 9 ---------
+>  crypto/tlscredsanon.c | 3 ++-
+>  crypto/tlscredspsk.c  | 5 +++++
+>  crypto/tlscredsx509.c | 8 ++++++--
+>  4 files changed, 13 insertions(+), 12 deletions(-)
 >
-> diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-> index 75c70af522..0acb17b6ec 100644
-> --- a/crypto/tlscredsx509.c
-> +++ b/crypto/tlscredsx509.c
-> @@ -496,8 +496,7 @@
-> qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
->      size_t i;
+> diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c
+> index 208a7e6d8f..65e97ddd11 100644
+> --- a/crypto/tlscreds.c
+> +++ b/crypto/tlscreds.c
+> @@ -102,15 +102,6 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,
+>  {
 >      int ret =3D -1;
 >
-> -    if (certFile &&
-> -        access(certFile, R_OK) =3D=3D 0) {
-> +    if (certFile) {
->          if (qcrypto_tls_creds_load_cert_list(creds,
->                                               certFile,
->                                               &certs,
-> @@ -508,16 +507,15 @@
-> qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
->              goto cleanup;
->          }
->      }
-> -    if (access(cacertFile, R_OK) =3D=3D 0) {
-> -        if (qcrypto_tls_creds_load_cert_list(creds,
-> -                                             cacertFile,
-> -                                             &cacerts,
-> -                                             &ncacerts,
-> -                                             isServer,
-> -                                             true,
-> -                                             errp) < 0) {
-> -            goto cleanup;
+> -    if (!creds->dir) {
+> -        if (required) {
+> -            error_setg(errp, "Missing 'dir' property value");
+> -            return -1;
+> -        } else {
+> -            return 0;
 > -        }
-> +
-> +    if (qcrypto_tls_creds_load_cert_list(creds,
-> +                                         cacertFile,
-> +                                         &cacerts,
-> +                                         &ncacerts,
-> +                                         isServer,
-> +                                         true,
-> +                                         errp) < 0) {
-> +        goto cleanup;
->      }
+> -    }
+> -
+>      *cred =3D g_strdup_printf("%s/%s", creds->dir, filename);
 >
->      for (i =3D 0; i < ncerts; i++) {
+>      if (access(*cred, R_OK) < 0) {
+> diff --git a/crypto/tlscredsanon.c b/crypto/tlscredsanon.c
+> index 44af9e6c9a..bc3351b5d6 100644
+> --- a/crypto/tlscredsanon.c
+> +++ b/crypto/tlscredsanon.c
+> @@ -43,7 +43,8 @@ qcrypto_tls_creds_anon_load(QCryptoTLSCredsAnon *creds,
+>              creds->parent_obj.dir ? creds->parent_obj.dir : "<nodir>");
+>
+>      if (creds->parent_obj.endpoint =3D=3D QCRYPTO_TLS_CREDS_ENDPOINT_SER=
+VER) {
+> -        if (qcrypto_tls_creds_get_path(&creds->parent_obj,
+> +        if (creds->parent_obj.dir &&
+> +            qcrypto_tls_creds_get_path(&creds->parent_obj,
+>                                         QCRYPTO_TLS_CREDS_DH_PARAMS,
+>                                         false, &dhparams, errp) < 0) {
+>              return -1;
+> diff --git a/crypto/tlscredspsk.c b/crypto/tlscredspsk.c
+> index 5b68a6b7ba..545d3e45db 100644
+> --- a/crypto/tlscredspsk.c
+> +++ b/crypto/tlscredspsk.c
+> @@ -81,6 +81,11 @@ qcrypto_tls_creds_psk_load(QCryptoTLSCredsPSK *creds,
+>      trace_qcrypto_tls_creds_psk_load(creds,
+>              creds->parent_obj.dir ? creds->parent_obj.dir : "<nodir>");
+>
+> +    if (!creds->parent_obj.dir) {
+> +        error_setg(errp, "Missing 'dir' property value");
+> +        goto cleanup;
+> +    }
+> +
+>      if (creds->parent_obj.endpoint =3D=3D QCRYPTO_TLS_CREDS_ENDPOINT_SER=
+VER) {
+>          if (creds->username) {
+>              error_setg(errp, "username should not be set when
+> endpoint=3Dserver");
+> diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
+> index 0acb17b6ec..8fe6cc8e93 100644
+> --- a/crypto/tlscredsx509.c
+> +++ b/crypto/tlscredsx509.c
+> @@ -567,8 +567,12 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509
+> *creds,
+>      int ret;
+>      int rv =3D -1;
+>
+> -    trace_qcrypto_tls_creds_x509_load(creds,
+> -            creds->parent_obj.dir ? creds->parent_obj.dir : "<nodir>");
+> +    if (!creds->parent_obj.dir) {
+> +        error_setg(errp, "Missing 'dir' property value");
+> +        return -1;
+> +    }
+> +
+> +    trace_qcrypto_tls_creds_x509_load(creds, creds->parent_obj.dir);
+>
+>      if (creds->parent_obj.endpoint =3D=3D QCRYPTO_TLS_CREDS_ENDPOINT_SER=
+VER) {
+>          if (qcrypto_tls_creds_get_path(&creds->parent_obj,
 > --
 > 2.51.1
 >
 >
 
---000000000000fa52460642654baa
+--0000000000006e88950642654ca3
 Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 
-PGRpdiBkaXI9Imx0ciI+PGRpdiBkaXI9Imx0ciI+PGRpdj5IaTwvZGl2Pjxicj48ZGl2IGNsYXNz
-PSJnbWFpbF9xdW90ZSI+PGRpdiBkaXI9Imx0ciIgY2xhc3M9ImdtYWlsX2F0dHIiPk9uIFRodSwg
-T2N0IDMwLCAyMDI1IGF0IDY6NDjigK9QTSBEYW5pZWwgUC4gQmVycmFuZ8OpICZsdDs8YSBocmVm
-PSJtYWlsdG86YmVycmFuZ2VAcmVkaGF0LmNvbSIgdGFyZ2V0PSJfYmxhbmsiPmJlcnJhbmdlQHJl
-ZGhhdC5jb208L2E+Jmd0OyB3cm90ZTo8YnI+PC9kaXY+PGJsb2NrcXVvdGUgY2xhc3M9ImdtYWls
-X3F1b3RlIiBzdHlsZT0ibWFyZ2luOjBweCAwcHggMHB4IDAuOGV4O2JvcmRlci1sZWZ0OjFweCBz
-b2xpZCByZ2IoMjA0LDIwNCwyMDQpO3BhZGRpbmctbGVmdDoxZXgiPlRoZSBxY3J5cHRvX3Rsc19j
-cmVkc19nZXRfcGF0aCBtZXRob2Qgd2lsbCBwZXJmb3JtIGFuIGFjY2VzcygpPGJyPg0KY2hlY2sg
-b24gdGhlIGZpbGUgYW5kIHJldHVybiBhIE5VTEwgcGF0aCBpZiBpdCBmYWlscy4gQnkgdGhlPGJy
-Pg0KdGltZSB3ZSBnZXQgdG8gbG9hZGluZyB0aGUgY2VydCBmaWxlcyB3ZSBrbm93IHRoZXkgbXVz
-dCBleGlzdDxicj4NCm9uIGRpc2sgYW5kIHRodXMgdGhlIHNlY29uZCBhY2Nlc3MoKSBjaGVjayBp
-cyByZWR1bmRhbnQuPGJyPg0KPGJyPg0KU2lnbmVkLW9mZi1ieTogRGFuaWVsIFAuIEJlcnJhbmfD
-qSAmbHQ7PGEgaHJlZj0ibWFpbHRvOmJlcnJhbmdlQHJlZGhhdC5jb20iIHRhcmdldD0iX2JsYW5r
-Ij5iZXJyYW5nZUByZWRoYXQuY29tPC9hPiZndDs8YnI+PC9ibG9ja3F1b3RlPjxkaXY+PGJyPjwv
-ZGl2PjxkaXY+UmV2aWV3ZWQtYnk6IE1hcmMtQW5kcsOpIEx1cmVhdSAmbHQ7PGEgaHJlZj0ibWFp
-bHRvOm1hcmNhbmRyZS5sdXJlYXVAcmVkaGF0LmNvbSIgdGFyZ2V0PSJfYmxhbmsiPm1hcmNhbmRy
-ZS5sdXJlYXVAcmVkaGF0LmNvbTwvYT4mZ3Q7PC9kaXY+PGRpdj7CoDwvZGl2PjxibG9ja3F1b3Rl
-IGNsYXNzPSJnbWFpbF9xdW90ZSIgc3R5bGU9Im1hcmdpbjowcHggMHB4IDBweCAwLjhleDtib3Jk
-ZXItbGVmdDoxcHggc29saWQgcmdiKDIwNCwyMDQsMjA0KTtwYWRkaW5nLWxlZnQ6MWV4Ij4NCi0t
-LTxicj4NCsKgY3J5cHRvL3Rsc2NyZWRzeDUwOS5jIHwgMjIgKysrKysrKysrKy0tLS0tLS0tLS0t
-LTxicj4NCsKgMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygt
-KTxicj4NCjxicj4NCmRpZmYgLS1naXQgYS9jcnlwdG8vdGxzY3JlZHN4NTA5LmMgYi9jcnlwdG8v
-dGxzY3JlZHN4NTA5LmM8YnI+DQppbmRleCA3NWM3MGFmNTIyLi4wYWNiMTdiNmVjIDEwMDY0NDxi
-cj4NCi0tLSBhL2NyeXB0by90bHNjcmVkc3g1MDkuYzxicj4NCisrKyBiL2NyeXB0by90bHNjcmVk
-c3g1MDkuYzxicj4NCkBAIC00OTYsOCArNDk2LDcgQEAgcWNyeXB0b190bHNfY3JlZHNfeDUwOV9z
-YW5pdHlfY2hlY2soUUNyeXB0b1RMU0NyZWRzWDUwOSAqY3JlZHMsPGJyPg0KwqAgwqAgwqBzaXpl
-X3QgaTs8YnI+DQrCoCDCoCDCoGludCByZXQgPSAtMTs8YnI+DQo8YnI+DQotwqAgwqAgaWYgKGNl
-cnRGaWxlICZhbXA7JmFtcDs8YnI+DQotwqAgwqAgwqAgwqAgYWNjZXNzKGNlcnRGaWxlLCBSX09L
-KSA9PSAwKSB7PGJyPg0KK8KgIMKgIGlmIChjZXJ0RmlsZSkgezxicj4NCsKgIMKgIMKgIMKgIMKg
-aWYgKHFjcnlwdG9fdGxzX2NyZWRzX2xvYWRfY2VydF9saXN0KGNyZWRzLDxicj4NCsKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIGNlcnRGaWxlLDxicj4NCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICZhbXA7Y2VydHMsPGJyPg0KQEAgLTUwOCwx
-NiArNTA3LDE1IEBAIHFjcnlwdG9fdGxzX2NyZWRzX3g1MDlfc2FuaXR5X2NoZWNrKFFDcnlwdG9U
-TFNDcmVkc1g1MDkgKmNyZWRzLDxicj4NCsKgIMKgIMKgIMKgIMKgIMKgIMKgZ290byBjbGVhbnVw
-Ozxicj4NCsKgIMKgIMKgIMKgIMKgfTxicj4NCsKgIMKgIMKgfTxicj4NCi3CoCDCoCBpZiAoYWNj
-ZXNzKGNhY2VydEZpbGUsIFJfT0spID09IDApIHs8YnI+DQotwqAgwqAgwqAgwqAgaWYgKHFjcnlw
-dG9fdGxzX2NyZWRzX2xvYWRfY2VydF9saXN0KGNyZWRzLDxicj4NCi3CoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNhY2Vy
-dEZpbGUsPGJyPg0KLcKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgJmFtcDtjYWNlcnRzLDxicj4NCi3CoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCZh
-bXA7bmNhY2VydHMsPGJyPg0KLcKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaXNTZXJ2ZXIsPGJyPg0KLcKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-dHJ1ZSw8YnI+DQotwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBlcnJwKSAmbHQ7IDApIHs8YnI+DQotwqAgwqAgwqAgwqAg
-wqAgwqAgZ290byBjbGVhbnVwOzxicj4NCi3CoCDCoCDCoCDCoCB9PGJyPg0KKzxicj4NCivCoCDC
-oCBpZiAocWNyeXB0b190bHNfY3JlZHNfbG9hZF9jZXJ0X2xpc3QoY3JlZHMsPGJyPg0KK8KgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-Y2FjZXJ0RmlsZSw8YnI+DQorwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAmYW1wO2NhY2VydHMsPGJyPg0KK8KgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgJmFtcDtuY2Fj
-ZXJ0cyw8YnI+DQorwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqBpc1NlcnZlciw8YnI+DQorwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0cnVlLDxicj4NCivCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGVy
-cnApICZsdDsgMCkgezxicj4NCivCoCDCoCDCoCDCoCBnb3RvIGNsZWFudXA7PGJyPg0KwqAgwqAg
-wqB9PGJyPg0KPGJyPg0KwqAgwqAgwqBmb3IgKGkgPSAwOyBpICZsdDsgbmNlcnRzOyBpKyspIHs8
-YnI+DQotLSA8YnI+DQoyLjUxLjE8YnI+DQo8YnI+DQo8L2Jsb2NrcXVvdGU+PC9kaXY+PC9kaXY+
-DQo8L2Rpdj4NCg==
---000000000000fa52460642654baa--
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 30, 2025=
+ at 6:48=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@=
+redhat.com" target=3D"_blank">berrange@redhat.com</a>&gt; wrote:<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex">The check for the &#39;dir=
+&#39; property is being repeated for every<br>
+credential file to be loaded, but this results in incorrect<br>
+logic for optional credentials. The &#39;dir&#39; property is mandatory<br>
+for PSK and x509 creds, even if some individual files are<br>
+optional. Address this by separating the check for the &#39;dir&#39;<br>
+property.<br>
+<br>
+Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redha=
+t.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br></blockquote><div><=
+br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:mar=
+candre.lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>=
+&gt;</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">
+---<br>
+=C2=A0crypto/tlscreds.c=C2=A0 =C2=A0 =C2=A0| 9 ---------<br>
+=C2=A0crypto/tlscredsanon.c | 3 ++-<br>
+=C2=A0crypto/tlscredspsk.c=C2=A0 | 5 +++++<br>
+=C2=A0crypto/tlscredsx509.c | 8 ++++++--<br>
+=C2=A04 files changed, 13 insertions(+), 12 deletions(-)<br>
+<br>
+diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c<br>
+index 208a7e6d8f..65e97ddd11 100644<br>
+--- a/crypto/tlscreds.c<br>
++++ b/crypto/tlscreds.c<br>
+@@ -102,15 +102,6 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0int ret =3D -1;<br>
+<br>
+-=C2=A0 =C2=A0 if (!creds-&gt;dir) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (required) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Missing &=
+#39;dir&#39; property value&quot;);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+-=C2=A0 =C2=A0 }<br>
+-<br>
+=C2=A0 =C2=A0 =C2=A0*cred =3D g_strdup_printf(&quot;%s/%s&quot;, creds-&gt;=
+dir, filename);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (access(*cred, R_OK) &lt; 0) {<br>
+diff --git a/crypto/tlscredsanon.c b/crypto/tlscredsanon.c<br>
+index 44af9e6c9a..bc3351b5d6 100644<br>
+--- a/crypto/tlscredsanon.c<br>
++++ b/crypto/tlscredsanon.c<br>
+@@ -43,7 +43,8 @@ qcrypto_tls_creds_anon_load(QCryptoTLSCredsAnon *creds,<b=
+r>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;parent_obj.dir ? =
+creds-&gt;parent_obj.dir : &quot;&lt;nodir&gt;&quot;);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (creds-&gt;parent_obj.endpoint =3D=3D QCRYPTO_TLS_CR=
+EDS_ENDPOINT_SERVER) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (qcrypto_tls_creds_get_path(&amp;creds-&gt;=
+parent_obj,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (creds-&gt;parent_obj.dir &amp;&amp;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qcrypto_tls_creds_get_path(&amp;=
+creds-&gt;parent_obj,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 QCRYPTO_=
+TLS_CREDS_DH_PARAMS,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 false, &=
+amp;dhparams, errp) &lt; 0) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -1;<br>
+diff --git a/crypto/tlscredspsk.c b/crypto/tlscredspsk.c<br>
+index 5b68a6b7ba..545d3e45db 100644<br>
+--- a/crypto/tlscredspsk.c<br>
++++ b/crypto/tlscredspsk.c<br>
+@@ -81,6 +81,11 @@ qcrypto_tls_creds_psk_load(QCryptoTLSCredsPSK *creds,<br=
+>
+=C2=A0 =C2=A0 =C2=A0trace_qcrypto_tls_creds_psk_load(creds,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;parent_obj.dir ? =
+creds-&gt;parent_obj.dir : &quot;&lt;nodir&gt;&quot;);<br>
+<br>
++=C2=A0 =C2=A0 if (!creds-&gt;parent_obj.dir) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Missing &#39;dir&#39; p=
+roperty value&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto cleanup;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0if (creds-&gt;parent_obj.endpoint =3D=3D QCRYPTO_TLS_CR=
+EDS_ENDPOINT_SERVER) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (creds-&gt;username) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_setg(errp, &quot;user=
+name should not be set when endpoint=3Dserver&quot;);<br>
+diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c<br>
+index 0acb17b6ec..8fe6cc8e93 100644<br>
+--- a/crypto/tlscredsx509.c<br>
++++ b/crypto/tlscredsx509.c<br>
+@@ -567,8 +567,12 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds=
+,<br>
+=C2=A0 =C2=A0 =C2=A0int ret;<br>
+=C2=A0 =C2=A0 =C2=A0int rv =3D -1;<br>
+<br>
+-=C2=A0 =C2=A0 trace_qcrypto_tls_creds_x509_load(creds,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 creds-&gt;parent_obj.dir ? creds=
+-&gt;parent_obj.dir : &quot;&lt;nodir&gt;&quot;);<br>
++=C2=A0 =C2=A0 if (!creds-&gt;parent_obj.dir) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Missing &#39;dir&#39; p=
+roperty value&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_qcrypto_tls_creds_x509_load(creds, creds-&gt;parent_ob=
+j.dir);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (creds-&gt;parent_obj.endpoint =3D=3D QCRYPTO_TLS_CR=
+EDS_ENDPOINT_SERVER) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (qcrypto_tls_creds_get_path(&amp;creds=
+-&gt;parent_obj,<br>
+-- <br>
+2.51.1<br>
+<br>
+</blockquote></div></div>
+</div>
+
+--0000000000006e88950642654ca3--
 
 
