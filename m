@@ -2,143 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC30EC1EFE2
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:31:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D93C1F015
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:36:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEO3E-0008Fi-5Q; Thu, 30 Oct 2025 04:30:32 -0400
+	id 1vEO7o-0001E8-3B; Thu, 30 Oct 2025 04:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vEO39-0008Di-TL
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:30:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_haixcui@quicinc.com>)
+ id 1vEO7Z-00018r-4S
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:35:01 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vEO33-0005Gd-9T
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:30:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761813016;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=mQON9S8HA6JKbFMviDz3n6JvHKmQgUkfE7L3JghWZNM=;
- b=YxofZfcIiSxHOXbW0wqZ3jFUQ+A5gOFJWKRznrz/IF09mqWNNVvNw+suQUo5KEPrNAs+HP
- oKyZ3t8S3qMovWt38v+MFHwDTG7ZyNqKpDMoKMFkqUvzL0DN+y/k2OAg1TQ6BJW4E74Lnx
- Sd/CSGZRvyLtTYa/9FCNYWIkbLmHoOQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-ml-Pz5U5Mo-3-Io-wKN_uw-1; Thu, 30 Oct 2025 04:30:12 -0400
-X-MC-Unique: ml-Pz5U5Mo-3-Io-wKN_uw-1
-X-Mimecast-MFC-AGG-ID: ml-Pz5U5Mo-3-Io-wKN_uw_1761813011
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-427015f63faso414525f8f.0
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 01:30:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761813011; x=1762417811;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mQON9S8HA6JKbFMviDz3n6JvHKmQgUkfE7L3JghWZNM=;
- b=xAj2LNmbOqHAZyEj1xJ0GvEr/huTYL36IYzSiZS67ngbyDEzpF2UvyB3VzExh6zIuv
- gGTS3Vq6hWFDlXzHsUnOApToI/O3eUOsTqmSH/McdbJ7vE4rrGuNsMy0ztRxxdaaojAd
- sVoY34KglqBlodTZgN9sSAPh+wZEe6IyVVvPFIeZyEwJYgZWtpHqYyJi3F5I7ISuQEc6
- z744w1lLKGckaixmPq5q/APtX45Yk4RLb4LtJFKr5NjYWdJZCCib58baBRgv5foKxcF4
- hv1EqqmCFrAa/psC7sPFI8D1rGBlauKNH2PWH/TLta8zYBv3pHQY45kh8tF0iUQ8ch8h
- 6K0Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXHH6Z3Wf3FMblDLGMf87tXfV49UalXvIZPf80izxa01AsSOFy5gQjn8Uluqouve9DPlKsa1aM/5lAE@nongnu.org
-X-Gm-Message-State: AOJu0Ywbvxy/+JdYYf2VRruRVbJ0RiUGvwwFlY3bWnit3TAp7oAsVsnl
- lKhho5BLijVUM1k95fZzqDsYAHN0WAafGMGsFtCO6T+ETL2IjtL3FRfu8HCL8PK8Zahp9Pmsdxj
- PGN/dKnRmnA/agdOLZESdGmajDcZPo0U9SGWyi+zuGrR04dp4grkGscE3
-X-Gm-Gg: ASbGncvPnFsqGimwdFZ4d22ti924rpDEIoXGIAVlMpr2CbIuxvdhe3p2e6Cpr3AWxzn
- GSIKWdCNWqPdo1p0JSqak5uaYJo7R02w6DYMKGsUXuiV90xunD0ZD98fESKj4bXPAegM7Z0amet
- Je6xk4hAiweMXW4zD9J3Vqxr+rkbFhvysj6IR9nwTwiw3116P2H92jAzxs2ds8OkeI8ad4/Bz/5
- rvnit1KsbfYfwhktZ/qW7KRDlbcIz8bPTNgzrnDTtVWlHWWB/vZh2OV6Axj1U02zWTWa2NKOUs9
- OOMg1NcwdIzePTCCiCtXsqsEj8Po/g4gyeX6LZD0eenp7/AbTqeJMuLYUaFrwk1j7x2bcHU=
-X-Received: by 2002:a5d:64c5:0:b0:426:d80c:2759 with SMTP id
- ffacd0b85a97d-429aef82f47mr4885510f8f.25.1761813011214; 
- Thu, 30 Oct 2025 01:30:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoUC6bUe3NxZ/vAYQDgNfVowszSKOf5vad0KJBIQBrv2pA4CRHIAwfIhzRCQThMioA1QfFOQ==
-X-Received: by 2002:a5d:64c5:0:b0:426:d80c:2759 with SMTP id
- ffacd0b85a97d-429aef82f47mr4885473f8f.25.1761813010783; 
- Thu, 30 Oct 2025 01:30:10 -0700 (PDT)
-Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429952cb55asm30854722f8f.17.2025.10.30.01.30.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Oct 2025 01:30:10 -0700 (PDT)
-Message-ID: <3727d68c-ca7f-45f0-af74-b695cc88afdb@redhat.com>
-Date: Thu, 30 Oct 2025 09:30:09 +0100
+ (Exim 4.90_1) (envelope-from <quic_haixcui@quicinc.com>)
+ id 1vEO7L-0005aX-J6
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:34:56 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 59U87duW1656357; Thu, 30 Oct 2025 08:34:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=qcppdkim1; bh=zdr18Z4X36faUCmN4+Dadc
+ rbVnWZs1WhloXJMbUMNeQ=; b=dAAg6K1yL0MIF59To0FIxHd8zd/gxr/JcUEold
+ /2EmPwdSF3pLwcnv7+7hiC9ymVMf+imbPkJca7ZJsihDKkWdYLoyYv5rMYcYtLFO
+ LrCIps2loQlKFqD5uGuItZZKE+u47Bo/vq0Q2CvFbi9fDnZkA+WegpEHv3A30+cx
+ tqU4Y9zsMiM6hoe80XeKdOU/izQxu8e3vhU4GpY27rcYP20x71jwWS9oH8L/3FTk
+ DKQ1kdL7deKid0Vi03yvYOEjtH9ECunD4J0CAY6enCm4Y072xksUy6hFwvuuI/o5
+ iAwYHXVkiwZwWIaQ5DitmTKthTDGpMYJ7GDZOXaMt5ob9UTA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a3tptsmbf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Oct 2025 08:34:36 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
+ [10.47.209.197])
+ by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59U8YZLu005988
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Oct 2025 08:34:35 GMT
+Received: from haixcui1-gv.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Thu, 30 Oct 2025 01:34:33 -0700
+From: Haixu Cui <quic_haixcui@quicinc.com>
+To: <manos.pitsidianakis@linaro.org>, <alex.bennee@linaro.org>,
+ <viresh.kumar@linaro.org>, <quic_tsoni@quicinc.com>,
+ <qemu-devel@nongnu.org>, <mst@redhat.com>, <zhiqiang.tu@oss.qualcomm.com>
+Subject: [PATCH v2 0/3] virtio-spi: Sync Linux headers and add vhost-user-spi
+ device support
+Date: Thu, 30 Oct 2025 16:34:10 +0800
+Message-ID: <20251030083413.1532360-1-quic_haixcui@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 05/10] python/mkvenv: rename 'testdeps' to 'functests'
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>
-References: <20251028220342.1407883-1-jsnow@redhat.com>
- <20251028220342.1407883-6-jsnow@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251028220342.1407883-6-jsnow@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDA2OSBTYWx0ZWRfX+iiOu5HjTXbv
+ 1NuUO5ZADRfcEpMvLwob6ilEzOWKV58n3oC3bW0EptbEMsMqXF5fuIsxGAMwvJiWVBCTjYfcMho
+ 6K406z7uH5+9xrdBGKfNRwqQGDyvQQKnpsj6w32gQ+n+XksxWzODw4dgOdITfvzYVkDL6NWCrhf
+ Z43HORjrtlgXAb8EqMoiivK0I1Yo4/yJ4X9jyqV5Anf/wICl0TaYwxT/Ep6nFkzfq5Svw4NSpSE
+ l2GNyQl7oTsvXp1aXfMUzFCyei7PlA2zUnrRcgvq7IATcjFiy5hrZ/TlSkCYpYq8sZ0IPko4mwL
+ tiU5SGzkifnq0DuWjZsmIym/qgxhZxeUEZgfUm4K6adrI8DbUx23Pi7M9kMf38qw3bbUs6/YVL3
+ Wup0OZ5B4t3m3jQY97txj0PuC72rqA==
+X-Proofpoint-GUID: uTjphTlK-vJOq-vynK-8eH7RZlwvFP_d
+X-Authority-Analysis: v=2.4 cv=MuRfKmae c=1 sm=1 tr=0 ts=6903231c cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=ONEyY3_IPAylEGahahoA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: uTjphTlK-vJOq-vynK-8eH7RZlwvFP_d
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_02,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1011 bulkscore=0 phishscore=0 malwarescore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2510300069
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_haixcui@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,43 +109,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/2025 23.03, John Snow wrote:
-> pygdmi is only needed for functional tests and not tests in general; to
-> prepare for more universally required test dependencies, rename this
-> dependency group "functests" instead.
-> 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->   pythondeps.toml        | 2 +-
->   tests/Makefile.include | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/pythondeps.toml b/pythondeps.toml
-> index daf5a18989a..3d6907af799 100644
-> --- a/pythondeps.toml
-> +++ b/pythondeps.toml
-> @@ -31,6 +31,6 @@ meson = { accepted = ">=1.9.0", installed = "1.9.0", canary = "meson" }
->   sphinx = { accepted = ">=3.4.3", installed = "6.2.1", canary = "sphinx-build" }
->   sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
->   
-> -[testdeps]
-> +[functests]
->   qemu_qmp = { accepted = ">=0.0.5", installed = "0.0.5" }
->   pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
-> diff --git a/tests/Makefile.include b/tests/Makefile.include
-> index d4dfbf3716d..6f86eb283d3 100644
-> --- a/tests/Makefile.include
-> +++ b/tests/Makefile.include
-> @@ -98,7 +98,7 @@ quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
->   
->   $(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
->   	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
-> -	$(MKVENV_ENSUREGROUP) $< testdeps
-> +	$(MKVENV_ENSUREGROUP) $< functests
->   	$(call quiet-command, touch $@)
->   
->   check-venv: $(TESTS_VENV_TOKEN)
+This patch series introduces vhost-user-spi device support to QEMU
+and synchronizes relevant standard headers from upstream Linux.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The series consists of the following changes:
+1. Synchronize virtio_ids.h from Linux kernel (v6.18-rc3) using
+   scripts/update-linux-headers.sh.
+2. Synchronize virtio_spi.h from Linux kernel (v6.18-rc3) using
+   scripts/update-linux-headers.sh.
+3. Implement vhost-user-spi and vhost-user-spi-pci devices in QEMU,
+   enabling virtio-based SPI communication via the vhost-user protocol.
+
+The new device implementation follows the virtio-spi specification and
+leverages the upstream Linux virtio-spi driver. This enables QEMU to emulate
+SPI devices using the vhost-user protocol, facilitating integration with external
+SPI daemons and improving virtualization support for SPI peripherals.
+
+Changes between V2 and V1:
+- Added vhost-user-spi entry in docs/system/devices/virtio/vhost-user.rst
+
 
 
