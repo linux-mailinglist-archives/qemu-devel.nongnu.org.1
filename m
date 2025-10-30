@@ -2,116 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766B7C1EF8B
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:25:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CFAC1EF91
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:25:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vENx2-0003f0-Tq; Thu, 30 Oct 2025 04:24:09 -0400
+	id 1vENxv-0003oI-Tn; Thu, 30 Oct 2025 04:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1vENwx-0003el-AA
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:03 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1vENwp-0003u1-0g
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:02 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59TM56ek025803;
- Thu, 30 Oct 2025 08:23:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=tCeAV/
- VZ30SfmckP5RQUE2JvXJM0peU8RcDQjj2YEtQ=; b=MfmHG/Z6BKT0Rtd0Ghxcca
- 1SAvFiCxhRJEJAdchJ8NTUpIH1ZReZG8MLiYFYPHxoYhlhUOX1ZYkPaYrQ1GYt3S
- gj4E6PGNA2lFHGEFRZ6FCOqy2yUtACXb4mZ60g6rcAubRWZ2BdyIPpC+Qkt/F6ai
- GgPql0VjZBHWK8LWSkcz/YeAvV3vnJQG86suzh+Jw47Gbx86IgY9H2k8Hwj3YD6i
- Ix10JAst0sLqJQGKE7ds/8H1ffuclM+cuviJ4lfkQRA7v4aw3ZFikURhCxU3TVem
- nfM/FC8LIjQjlCu0fTi3lQOXwl5uFehFzjDTG0ZA2xISGMfdx0UEtdXuoQD4OW4A
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34acqa3j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Oct 2025 08:23:47 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59U8Nl93023110;
- Thu, 30 Oct 2025 08:23:47 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34acqa3e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Oct 2025 08:23:47 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59U63ino031709;
- Thu, 30 Oct 2025 08:23:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33w07j2h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Oct 2025 08:23:45 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59U8NiSO30736834
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Oct 2025 08:23:44 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01BC020040;
- Thu, 30 Oct 2025 08:23:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EDEF820043;
- Thu, 30 Oct 2025 08:23:42 +0000 (GMT)
-Received: from [9.39.29.245] (unknown [9.39.29.245])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 30 Oct 2025 08:23:42 +0000 (GMT)
-Message-ID: <4c0a7894-3cba-4a07-ab56-1ed8f945fd67@linux.ibm.com>
-Date: Thu, 30 Oct 2025 13:53:41 +0530
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENxj-0003m3-Nk
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:52 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENxc-00040C-Il
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:51 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3f2cf786abeso499324f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 01:24:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761812676; x=1762417476; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Db9JjtqkhbLfVnb0WEnEqUfufYylNJ/0J0wga1APhRE=;
+ b=R22eydweAhWbmxdVliCxpGyMqqjskU3N5/tYR/7l2XOmu/YNtrjwn/6AyB1djFV9Xt
+ 7FHMMfgXg6RJGUdBfHC1Hk6S7GOiqMLHBFcg99d5aHYS0QEy2PNK7tbwO5aqK12dceFa
+ cDd0bfYSk8n5HPwe/BbxyzR4tlEXt9S1pw+xGzZtJzYetMbwYoWF9dP4iwZOe6bzjmGT
+ Y+yFfmdL9Uox0w0qskgGZGj4CU5ozFETi2FPgfWovM92z2jSm4F6pvT4lgV6NDcV7Ib1
+ y9RBE7ty8IlkdFlhWIt2l/W/4OrQlu0ozhRdPxKjAtXn9XR2lSpcYIFssmEcBHXSQGFI
+ Ah/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761812676; x=1762417476;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Db9JjtqkhbLfVnb0WEnEqUfufYylNJ/0J0wga1APhRE=;
+ b=eOR04kJ68o1fUE4MnIRk2X2djcQRE7OxUx3CQhxDQg0lg3pXMDcKipnlK77U4cja51
+ T4Au4229/2leouz+wWN17w48skhiHLk+PZcnBgWk8F54DvDixpSwHmyZdiysSYtQJBoc
+ 4Sp5/Auc8tKSoVVNPD80DatVdl6ZPW1ZflAK7dehRRm5HLFf37p++TJ1jFZsVKXHFea0
+ a4FT5zyCZeecUQD7yi058Pt+4inmoigNgyVO4JNXyq6ud20gAl85+yfrKXYri+rks/AA
+ 8jghh+PXvo6TDHp5BLfVloC9zLeNNNglQoMB5dGuN83w0NX2cawRqyQ7KRUoz48C8X03
+ gGBw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXm1vSOG8BysdG9naSLVpKcySmswXM/mdjfTl0hiBJY/FGR56nPi1HlHXL+ONDVpXTs7PVKWadG375C@nongnu.org
+X-Gm-Message-State: AOJu0YzOqNI3NB3RgB2HTRrm4k8CN8856jrxy9OpG/2ncMy2xtN9d3k2
+ kIu44kbAfqZVcP64/TAv+SgVd+kAr+S19MIgV8w6Pm3ctvJaXFOihJj49QVI5zBFSUcXAw0eJh1
+ 4YCc3cyI=
+X-Gm-Gg: ASbGncs7PQlk5jvl2l2vf2530JtuHpnZaHzeprTtJbpGwEq1kc7MLh8N/N2rbYxEo1S
+ yc4PJr8N2xljkJlbVl7CGbr5xqkk8rPiZjcLt8eeGDMRF+By0tS2EmnaXFh7JptQ/FbXyb3gtQc
+ HGLXcUDcJ2iRZ2dogxhB9h2rVK3WwXaK0tenMMK1aGtmgSXL8Txa7CCJYYVlj6eGa/2fYAojR0D
+ npPT6FFuqYFZsIUDN2RRYcE5Sa5wEOAio4cISIWiVsEgUDvYNKFPKnPqiYt2ukqPvFewozO4HhE
+ KzJs5lcWVsdToGbHohMcRxhXjisEH8qQsWnMlE0KhI34Mt+1UTBVywL1f0/V7UlSU7mcHI2J39A
+ RWS3Z65W6AIsluyslt3Wyj/Z+wzOu0n6Cnu/j/9DCdtY0t3f0juzRhD8ZHGPEv4LuqSNOtArFVa
+ wjAkiBST4TvmMeQe3bAk+jjbG4MTePFQu7030loK9v5vY=
+X-Google-Smtp-Source: AGHT+IG2Qm7vsCOCnAhS0ZD3a4I8p+cqi4F+eDEMIod3kZYjhv/FljNgK7ZlgoKNaNKCUwR88oLAiw==
+X-Received: by 2002:a05:6000:240c:b0:3f1:2671:6d9e with SMTP id
+ ffacd0b85a97d-429b4c73bc7mr1721872f8f.1.1761812675654; 
+ Thu, 30 Oct 2025 01:24:35 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477289a57fdsm26108335e9.7.2025.10.30.01.24.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Oct 2025 01:24:35 -0700 (PDT)
+Message-ID: <5c33b3d8-0603-4a17-8303-12568b712bd2@linaro.org>
+Date: Thu, 30 Oct 2025 09:24:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] hw/core/loader: Fixup whitespace for get_image_size()
-To: alistair23@gmail.com, philmd@linaro.org, alistair.francis@wdc.com,
+Subject: Re: [PATCH 2/3] hw/core/loader: Free the image file descriptor on
+ error
+Content-Language: en-US
+To: alistair23@gmail.com, alistair.francis@wdc.com, vishalc@linux.ibm.com,
  qemu-devel@nongnu.org
 References: <20251030015306.2279148-1-alistair.francis@wdc.com>
-Content-Language: en-US, en-IN
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-In-Reply-To: <20251030015306.2279148-1-alistair.francis@wdc.com>
+ <20251030015306.2279148-2-alistair.francis@wdc.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251030015306.2279148-2-alistair.francis@wdc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XbuEDY55 c=1 sm=1 tr=0 ts=69032093 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=JF9118EUAAAA:8 a=zOOB0wJHYj3sPiX7G-QA:9
- a=QEXdDO2ut3YA:10 a=xVlTc564ipvMDusKsbsT:22
-X-Proofpoint-ORIG-GUID: YCSN8EMTK1Zd3BzxmCkwt1ZicfhEj2L6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfXx2EEe/pol/ON
- Wco3Q+3+aOtVB9L+x7ZhistHBLwJWuBVCSfoN85lUFpMfHrJMgMZbUS+lcE8Op1ceqlwcRoUQtT
- IjBzkT9SaXlalDuSkRRuZaRSE/5lCZESJcVRAPZEybXPEa3c+Mh37B27cKaHefvpWcU+sCgLoWA
- bi627k+0xyzi3ku2KpQ1BpWWawOYJF7FFvtZB92lraX3bjXr8ZExBjbAw+R2uArdmh2uSobFCcr
- 0xedxEcQ2nrr6w6hChHB5OJjISZGCnerYbPcy8/9Th02bYT+8fsZKd+f+k0nBgEu7AuGxX9rEte
- r67fxY4Fmmar0hJGxK45SAMIXf1z4q0bzdopb7ZRi9qSdfK45VnY98j8A4kcZZD5ahzNfmw5G4W
- JOp7rFEUzAkZiikF2h/PTFtHIuyanw==
-X-Proofpoint-GUID: M6Qs6MyIoHSbO2W7c70SIXjLlA-knVS7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 clxscore=1011
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2510280166
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=vishalc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,42 +103,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LGTM
-
-Reviewed-by:Vishal Chourasia <vishalc@linux.ibm.com>
-
-On 30/10/25 07:23, alistair23@gmail.com wrote:
+On 30/10/25 02:53, alistair23@gmail.com wrote:
 > From: Alistair Francis <alistair.francis@wdc.com>
->
+> 
+> Coverity: CID 1642764
+> Fixes: f62226f7dc4 ("hw/core/loader: improve error handling in image loading functions")
 > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 > ---
->   hw/core/loader.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index 590c5b02aa..73564a2a46 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -75,14 +75,20 @@ int64_t get_image_size(const char *filename, Error **errp)
->   {
->       int fd;
->       int64_t size;
-> +
->       fd = qemu_open(filename, O_RDONLY | O_BINARY, errp);
-> -    if (fd < 0)
-> +
-> +    if (fd < 0) {
->           return -1;
-> +    }
-> +
->       size = lseek(fd, 0, SEEK_END);
-> +
->       if (size < 0) {
->           error_setg_errno(errp, errno, "lseek failure: %s", filename);
->           return -1;
->       }
-> +
->       close(fd);
->       return size;
->   }
+>   hw/core/loader.c | 1 +
+>   1 file changed, 1 insertion(+)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
