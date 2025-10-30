@@ -2,97 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4410C216A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2229C21750
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEWES-0007go-Gt; Thu, 30 Oct 2025 13:14:40 -0400
+	id 1vEWJb-0001Ae-G3; Thu, 30 Oct 2025 13:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEWEQ-0007g2-FL
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:14:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vEWJR-00017m-SH
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:51 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vEWEL-0007TB-TC
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:14:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761844468;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jke6a7QE4d2MrAKrsqQ4N4lwxKuUS+3LHqHQ5AcNyB0=;
- b=OKGxG6g6uvwjfkgFk+Um0I4EawGZ98ielCdm7ydDTe4/gDmScuAkLNyHynge5LnQP6V33H
- 4XypPPGD7Bd1QZ73U1D3IJuB7lDKNSUyI7GM4vZR5XLpSbwZwxOvjAqzjtCkRmApsd8mF9
- ZbZQFLIO4WO4pyZWkdmxk5d04PscObU=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-SCTbUrVwP0qB943hR0ucvA-1; Thu, 30 Oct 2025 13:14:26 -0400
-X-MC-Unique: SCTbUrVwP0qB943hR0ucvA-1
-X-Mimecast-MFC-AGG-ID: SCTbUrVwP0qB943hR0ucvA_1761844466
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-8a194ded475so146959385a.2
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 10:14:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761844466; x=1762449266;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jke6a7QE4d2MrAKrsqQ4N4lwxKuUS+3LHqHQ5AcNyB0=;
- b=ALpYVUiMQfKgvFFZ+HFxFgGyCi3GKMhOw4vNLVlG7QlWxbWQ1dhoZXUitOlpgZObS1
- VzuNNC2BjRYKU+2Dgj8ifSswfK9/qfcHc/w4bHMgg4QGBrukTAblSVDt/uLC5eyyNmtb
- 9SIqgv62FzOQXwwvKaB0IdyjUsc+DWfgvA+6HFHJHCd021BGN3mKeb5Kg6wBYxPSa7TJ
- HoSyoZfu1xBiDdJN17sOMWX/1FiEzNMCjruh0tpg3Hn/M0f4ljgF4e09dblt3SmcjvVL
- yEe9AzYXHlCmai1dZ/hFsZLi4Tsv8YVTKX6po/8k2GFp330rYBr25lrXlXWM7MK/322z
- cMdw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVb21DOoaQdSxLwEdPYdQ4ivjroBKcIsKfNVa7gAaZ2rRz5zRnGjuSdo/QQuPwvhYvUqnq7mY959D+o@nongnu.org
-X-Gm-Message-State: AOJu0YxyKgUzYua6XMWPimVvpj1a4F0pdeT1MqP3pruKfRRtxpn7Cbg0
- MTIoa3ST0nYKRyNkLZQ3ff9oUjH8D2iWN/Yg+3nded2MwZqfk9QYYTtSu7Wik/CgDMRsECzud0L
- Pd0yozMu+KDu22OabZqkFX1kmXaZmti6PCkWTLwEZwBy09Qe7lfwRt3O+
-X-Gm-Gg: ASbGncsCZ34pkI2U6Rz2l5ANN0XxwXYwwQkr5Rf15ji7Y6aynxnVtS3zwFY9F78Ss5h
- TjmyuPNakZJhZNKKZqjfouibCIiOdGBY8O7ydYLb8qvegvYgej5Nn8x0bS1v6PfRj4jzEvKjH6C
- yKQQ0dURuW4Rtp2CUgNIFuaNoEi5TYXCPyDMtPdHz1OyBlMw2sxzfgnAZwUVjbvEMtckN3mxu07
- I6yzuRL+Mupw3LsirqrVH3lXdnxN5MaI/JZ5CUirPtvAMpXNjFprhFY7T1rZ6k1RoopGmZ973B9
- 9lZZFzIoikWLd0WSreJnpoORloKpsBnvXUhAR028apdYvofnUgVKkpC2nkqbhdU65xU=
-X-Received: by 2002:a05:620a:1a05:b0:84e:2544:6be7 with SMTP id
- af79cd13be357-8ab9b88027emr17952985a.65.1761844465978; 
- Thu, 30 Oct 2025 10:14:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEc5i/RYzjusKB+MxHx1krBpREh9fAquwLNsWKu1TqHuPguSlwf1YcJh8BGUagEQMs9Ft7RYg==
-X-Received: by 2002:a05:620a:1a05:b0:84e:2544:6be7 with SMTP id
- af79cd13be357-8ab9b88027emr17946685a.65.1761844465164; 
- Thu, 30 Oct 2025 10:14:25 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-89f243142b5sm1307800485a.8.2025.10.30.10.14.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Oct 2025 10:14:24 -0700 (PDT)
-Date: Thu, 30 Oct 2025 13:14:22 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: armbru@redhat.com, qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Subject: Re: [RFC 00/22] migration: convert vmstate_load/save_state
-Message-ID: <aQOc7ogTLqs8iML0@x1.local>
-References: <20251028231347.194844-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vEWJ4-0008Lb-Es
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:41 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id CA4F7C00CA;
+ Thu, 30 Oct 2025 20:19:17 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id GJjc0O0FA0U0-cS7N7Fez; Thu, 30 Oct 2025 20:19:17 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1761844757;
+ bh=kwYoJYdfNlAO/txk85zz/DaSoh27bZDeaf0Itq645DU=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=d8fxs2d6WQruElDfm2aCrkPr9QhJCPiUcV5rcuipvy9gexSrBL1x+pUB4gTXXSOiV
+ DcoqMinflAIjR3VqfKBFwu0i2aUct/M7pV6ebEYxZ6iduUACe3ylk3VXNem1T9KqkY
+ pcgXVFdcuoNvQ97OLD2Lqtty7/nLVR8BYKwBw8d8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
+ davydov-max@yandex-team.ru, yc-core@yandex-team.ru, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, peterx@redhat.com
+Subject: [PATCH v9 0/9] net/tap: postpone connect
+Date: Thu, 30 Oct 2025 20:19:05 +0300
+Message-ID: <20251030171915.726441-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251028231347.194844-1-vsementsov@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -104,44 +72,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 29, 2025 at 02:13:24AM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> Hi all!
-> 
-> That's a proof-of-concept for converting vmstate_load/save_state
-> to have boolean error value, to fixup this analysis
->   https://lore.kernel.org/qemu-devel/aQDdRn8t0B8oE3gf@x1.local/
-> in code.
-> 
-> As many of .get / .set handlers call vmstate_load/save_state,
-> let's convert them too, it not too much.
-> 
-> And finally, while touching each file, let's also use
-> new pre/post _errp() APIs.
-> 
-> So, this series propagate a lot of errors through errp, which
-> were simply printed out before.
-> 
-> Why it is an RFC:
-> 1. I didn't yet double check the accuracy of all patches
-> 2. Maybe, commit messages need to be more detailed, maybe they
-> need more arguments about correctness of the change
-> 3. Maybe, it's better first merge new generic interfaces, and
-> than send per-maintainer small series, to avoid this huge
-> series, depending on many maintainers.
-> 
-> So, I don't include in CC many maintainers now, to get a first
-> look from Markus and Peter.
+Hi all!
 
-It's still good to collect more opinions on especially rfc series, even if
-the list doesn't need to include maintainers for each device. I added
-Fabiano and Dan too.
+That the second part of virtio-net backend transfer feature,
+following previous
+ "[PATCH v9 0/7] net/tap: simple refactoring".
 
-> 
-> What do you think?
+Here we realize postponing TAP opening to some future
+point, when we know, are we going to do backend-transfer
+incoming migration (and get open fd from migration stream),
+or we should do open().
 
-In general.. I liked it. :) Thanks for trying it.
+v9:
+most of patches just picked from
+ "[PATCH v9 0/7] net/tap: simple refactoring".
+but, 01 is new, and 09 is significantly changed:
+instead of hacking with .check_peer_type and detecting
+virtio-net by name, use the approach like in parallel
+series for chardev:
+ "[PATCH v4 0/7] chardev: postpone connect":
+introduce specific PROPERTY macro, and avoid connecting
+in setter of "netdev" property.
+
+Final part of virtio-net backend transfer is coming
+soon and will be based on this series.
+
+Based-on: <20251030164023.710048-1-vsementsov@yandex-team.ru>
+
+Vladimir Sementsov-Ogievskiy (9):
+  net: introduce backend-connect concept
+  net/tap: rework net_tap_init()
+  net/tap: split net_tap_fd_init()
+  net/tap: rework sndbuf handling
+  net/tap: introduce net_tap_setup()
+  net/tap: move vhost fd initialization to net_tap_new()
+  net/tap: finalize net_tap_set_fd() logic
+  net/tap: introduce TAP_IFNAME_SZ
+  net/tap: postpone tap setup to net_backend_connect() call
+
+ hw/core/qdev-properties-system.c    |  29 ++-
+ include/hw/qdev-properties-system.h |   2 +
+ include/net/net.h                   |   6 +
+ net/net.c                           |  15 ++
+ net/tap.c                           | 283 +++++++++++++++++++++-------
+ 5 files changed, 264 insertions(+), 71 deletions(-)
 
 -- 
-Peter Xu
+2.48.1
 
 
