@@ -2,63 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D48C20CFD
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 16:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 994E5C20B69
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:50:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEUAY-00060i-0i; Thu, 30 Oct 2025 11:02:30 -0400
+	id 1vETyE-0000Ul-N4; Thu, 30 Oct 2025 10:49:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu.riscv@isrc.iscas.ac.cn>)
- id 1vEUAS-0005yu-Uw; Thu, 30 Oct 2025 11:02:25 -0400
-Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <chao.liu.riscv@isrc.iscas.ac.cn>)
- id 1vEUAI-00041B-KV; Thu, 30 Oct 2025 11:02:24 -0400
-Received: from [192.168.71.4] (unknown [114.88.97.170])
- by APP-01 (Coremail) with SMTP id qwCowAAnj2nlfQNpJTxqAA--.2776S2;
- Thu, 30 Oct 2025 23:01:57 +0800 (CST)
-Message-ID: <ab8161b3-d4e9-4573-b13f-e13b9c6b322e@isrc.iscas.ac.cn>
-Date: Thu, 30 Oct 2025 23:01:57 +0800
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vETy8-0000SV-5G
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:49:40 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vETxz-0001O1-K3
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:49:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761835771; x=1793371771;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Iddla4z7flI67h7EdMSDk02AU+XEEh2561J+ewfpQww=;
+ b=Kz9A2GquAr4hX9+GvBUx4DEjizjCrmqZp9QrpO0XKR6nq5pEIrGwODCT
+ L6qajqlmq3unt1ARwCGB1DKPDzQQbsFv9aAm914/P1CUFCam/UOWhfMoX
+ vdd0pBEF36FWTrk5CowwK3TabY1iFqM5Fhu5k5IKxDBtxJTb94WeV0iqW
+ DNqi1CRyfjMZoWz7Pjrt+xngTbE64jAg8/XVOs0fOygauZs4fESEJpmz2
+ zO7arGAMQ/L/qedDdPlEiK/4TUSweLAjVGMdfwEQtBOyJkF1I4lo6LFUg
+ so4KtlHhKg1czclChZZowzWxQGgkpJvzGF+zICyHSXqrChk6T+QFMmRZb g==;
+X-CSE-ConnectionGUID: DWcbzxLyRjWrI/a0GlkVPw==
+X-CSE-MsgGUID: Zljp+AdNQSCUuI5bV5zU0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63864602"
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="63864602"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2025 07:49:19 -0700
+X-CSE-ConnectionGUID: 18uW1v3FSGOYNruA8URLZg==
+X-CSE-MsgGUID: Rb9i9bojQzu35J+ddr2Qww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="190311721"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 30 Oct 2025 07:49:16 -0700
+Date: Thu, 30 Oct 2025 23:11:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
+ John Allen <john.allen@amd.com>, Babu Moger <babu.moger@amd.com>,
+ Mathias Krause <minipli@grsecurity.net>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, Farrah Chen <farrah.chen@intel.com>
+Subject: Re: [PATCH v3 02/20] i386/cpu: Clean up indent style of
+ x86_ext_save_areas[]
+Message-ID: <aQOAH0a9P3ZK+5H5@intel.com>
+References: <20251024065632.1448606-1-zhao1.liu@intel.com>
+ <20251024065632.1448606-3-zhao1.liu@intel.com>
+ <94d254b3-3d0f-4fe8-b6aa-da5df2b9c0e6@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: dbarboza@ventanamicro.com
-Cc: ajones@ventanamicro.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- palmer@dabbelt.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- wu.fei9@sanechips.com.cn, zhiwei_liu@linux.alibaba.com
-References: <20250528200129.1548259-3-dbarboza@ventanamicro.com>
-Subject: Re: [PATCH v3 2/4] target/riscv: Add server platform reference cpu
-From: Chao Liu <chao.liu.riscv@isrc.iscas.ac.cn>
-In-Reply-To: <20250528200129.1548259-3-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowAAnj2nlfQNpJTxqAA--.2776S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZF4UtF43trW5urW5JFy5urg_yoW5ZFyfpr
- 48KFWqk34kJ39FkayftF4DXr4kZws3Ww43Gwn3ZwsFyrWYqrWUWryDKFyUC3ZFvF1xG3WS
- yw1UCr95Jrs8ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUk2b7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6r1j6r18M7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
- A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
- jxv20xvEc7CjxVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4
- A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
- 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
- Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_Jw0_GFyl42xK
- 82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
- C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48J
- MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
- IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
- 87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2wIDUUUUU
-X-Originating-IP: [114.88.97.170]
-X-CM-SenderInfo: pfkd0hholxh2hlvf4qplvuuh5lvft2wodfhubq/1tbiCRALAGkDL2ftMwAAsu
-Received-SPF: pass client-ip=159.226.251.21;
- envelope-from=chao.liu.riscv@isrc.iscas.ac.cn; helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <94d254b3-3d0f-4fe8-b6aa-da5df2b9c0e6@intel.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,92 +89,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 28, 2025 at 05:01:29PM -0300, Daniel Henrique Barboza wrote:
->rom: Fei Wu <wu.fei9@sanechips.com.cn>
->
->he harts requirements of RISC-V server platform [1] require RVA23 ISA
->rofile support, plus Sv48, Svadu, H, Sscofmpf etc. This patch provides
-> virt CPU type (rvsp-ref) as compliant as possible.
->
->1] https://github.com/riscv-non-isa/riscv-server-platform/blob/main/server_platform_requirements.adoc
->
->igned-off-by: Fei Wu <fei2.wu@intel.com>
->igned-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->--
->target/riscv/cpu-qom.h |  1 +
->target/riscv/cpu.c     | 11 +++++++++++
->2 files changed, 12 insertions(+)
->
->iff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
->ndex 1ee05eb393..70978fd53c 100644
->-- a/target/riscv/cpu-qom.h
->++ b/target/riscv/cpu-qom.h
->@ -55,6 +55,7 @@
->#define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
->#define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
->#define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
->#define TYPE_RISCV_CPU_RVSP_REF         RISCV_CPU_TYPE_NAME("rvsp-ref")
->#define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
->
->OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
->iff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->ndex 4a30cf8444..ec2fbc0e78 100644
->-- a/target/riscv/cpu.c
->++ b/target/riscv/cpu.c
->@ -3166,6 +3166,17 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->        .cfg.max_satp_mode = VM_1_10_SV39,
->    ),
->
->    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_RVSP_REF, TYPE_RISCV_VENDOR_CPU,
+On Mon, Oct 27, 2025 at 01:47:53PM +0800, Xiaoyao Li wrote:
+> Date: Mon, 27 Oct 2025 13:47:53 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v3 02/20] i386/cpu: Clean up indent style of
+>  x86_ext_save_areas[]
+> 
+> On 10/24/2025 2:56 PM, Zhao Liu wrote:
+> 
+> <empty commit message> isn't good.
 
-I'm not sure the parent type TYPE_RISCV_VENDOR_CPU is right here.
-
-To be on the safe side, I tested this CPU type using an openEuler image that
-can boot on a virtual machine. This image supports rva23s64, and my command is
-as follows:
-
-cmd="$QEMU_SYSTEM_RISCV64 \
-   -nographic -machine virt,pflash0=pflash0,pflash1=pflash1,acpi=off \
-   -cpu rvsp-ref \
-   -smp "$vcpu" -m "$memory"G \
-   -blockdev node-name=pflash0,driver=file,read-only=on,filename="$fw1" \
-   -blockdev node-name=pflash1,driver=file,filename="$fw2" \
-   -drive file="$drive",format=qcow2,id=hd0,if=none \
-   -object rng-random,filename=/dev/urandom,id=rng0 \
-   -device virtio-vga \
-   -device virtio-rng-device,rng=rng0 \
-   -device virtio-blk-device,drive=hd0 \
-   -device virtio-net-device,netdev=usernet \
-   -netdev user,id=usernet,hostfwd=tcp::"$ssh_port"-:22 \
-   -device qemu-xhci -usb -device usb-kbd -device usb-tablet"
-
-This process gets stuck at the initialization stage:
-
-```
-     Loading Linux 6.6.0-102.0.0.5.oe2509.riscv64 ...
-     Loading initial ramdisk ...
-```
-
-If I use the parameter `-cpu rva23s64`, the system can boot normally.
-
-I tried changing TYPE_RISCV_VENDOR_CPU to TYPE_RISCV_BARE_CPU and found that
-the system then boots normally.
-
-However, I haven’t conducted an in-depth analysis yet, so the issue might be
-with my system image.
-
-Thanks,
-Chao
-
->        .misa_mxl_max = MXL_RV64,
->        .profile = &RVA23S64,
->
->        /* ISA extensions */
->        .cfg.ext_zkr = true,
->        .cfg.ext_svadu = true,
->
->        .cfg.max_satp_mode = VM_1_10_SV57,
->    ),
->
+Yeah, will add the description.
 
 
