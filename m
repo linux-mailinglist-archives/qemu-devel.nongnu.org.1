@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CFAC1EF91
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C376C1EFA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:27:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vENxv-0003oI-Tn; Thu, 30 Oct 2025 04:25:04 -0400
+	id 1vENzW-00058N-57; Thu, 30 Oct 2025 04:26:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENxj-0003m3-Nk
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:52 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENzS-00057x-9G
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:26:38 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENxc-00040C-Il
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:24:51 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3f2cf786abeso499324f8f.3
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 01:24:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vENzH-0004UJ-OM
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:26:37 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-471b80b994bso9276765e9.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 01:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761812676; x=1762417476; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761812779; x=1762417579; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Db9JjtqkhbLfVnb0WEnEqUfufYylNJ/0J0wga1APhRE=;
- b=R22eydweAhWbmxdVliCxpGyMqqjskU3N5/tYR/7l2XOmu/YNtrjwn/6AyB1djFV9Xt
- 7FHMMfgXg6RJGUdBfHC1Hk6S7GOiqMLHBFcg99d5aHYS0QEy2PNK7tbwO5aqK12dceFa
- cDd0bfYSk8n5HPwe/BbxyzR4tlEXt9S1pw+xGzZtJzYetMbwYoWF9dP4iwZOe6bzjmGT
- Y+yFfmdL9Uox0w0qskgGZGj4CU5ozFETi2FPgfWovM92z2jSm4F6pvT4lgV6NDcV7Ib1
- y9RBE7ty8IlkdFlhWIt2l/W/4OrQlu0ozhRdPxKjAtXn9XR2lSpcYIFssmEcBHXSQGFI
- Ah/Q==
+ bh=IMpD1IobNynpgHW9PQ36c0YaL7XHeIDV0yVw7+C9h08=;
+ b=dgcQCE0GPonFesZ5zGlmXe1QNxzwkq0VdqVx8TxAzFmVZLARarr0MFrrsvK95MEVMO
+ SmGlN+rW4MhcWltVrzLPWNWty8S9QIiHYY+rA6EFf1nvFo1/ADjPHFA8VRecKMc/a+Op
+ O8pJGiIqxsFVuf6A87ygzDm07NkeTJNCBLSZMh4BaIqtBdcO6jXR8XmJ6Q6v+I4oMLui
+ xzyKiEPSKc8Z+3I6xRJ9OUJX0oLFtMCxPIAdUS0z4wk4N2l/et9nlSbo5G/zblHbro9Q
+ UmPLIyCVsDYHLyyOCkbPbYJWp3AbguojF4rKOflIE96bf6lqZsfQvV2oQ3qek6QitC4b
+ I1SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761812676; x=1762417476;
+ d=1e100.net; s=20230601; t=1761812779; x=1762417579;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Db9JjtqkhbLfVnb0WEnEqUfufYylNJ/0J0wga1APhRE=;
- b=eOR04kJ68o1fUE4MnIRk2X2djcQRE7OxUx3CQhxDQg0lg3pXMDcKipnlK77U4cja51
- T4Au4229/2leouz+wWN17w48skhiHLk+PZcnBgWk8F54DvDixpSwHmyZdiysSYtQJBoc
- 4Sp5/Auc8tKSoVVNPD80DatVdl6ZPW1ZflAK7dehRRm5HLFf37p++TJ1jFZsVKXHFea0
- a4FT5zyCZeecUQD7yi058Pt+4inmoigNgyVO4JNXyq6ud20gAl85+yfrKXYri+rks/AA
- 8jghh+PXvo6TDHp5BLfVloC9zLeNNNglQoMB5dGuN83w0NX2cawRqyQ7KRUoz48C8X03
- gGBw==
+ bh=IMpD1IobNynpgHW9PQ36c0YaL7XHeIDV0yVw7+C9h08=;
+ b=igcHEr2hEKMhAD3xNCAYyrOWn3gl606RWysJua2zCouyo/NhYrvGzCtygzYVxCVsWo
+ lU5JQNjpx63VDwpf1d6Zuk5AMBgy6KvJvzPrQ7jup9CIjfWpzsLUh7oOxTtE6H46l17k
+ 3srKHzI67KX2/XkRzRZEHN/LWe1qfX3R3E0xcI0MZUU/o9EkF8mIwinR+7fs81lECk/M
+ ryItBWRh4xB3MOp5UwEhgYVO/EGKUCW5D66fUCYWItC4YYCOyI5YYIq3SM4Wa9OKAzrb
+ /O+AUxu5Juw7vtLkc3INvepQu5bDElRT6Bxdh4Uag7yAyIIUrE53lhzFZUHIR/cz38iE
+ JQnw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXm1vSOG8BysdG9naSLVpKcySmswXM/mdjfTl0hiBJY/FGR56nPi1HlHXL+ONDVpXTs7PVKWadG375C@nongnu.org
-X-Gm-Message-State: AOJu0YzOqNI3NB3RgB2HTRrm4k8CN8856jrxy9OpG/2ncMy2xtN9d3k2
- kIu44kbAfqZVcP64/TAv+SgVd+kAr+S19MIgV8w6Pm3ctvJaXFOihJj49QVI5zBFSUcXAw0eJh1
- 4YCc3cyI=
-X-Gm-Gg: ASbGncs7PQlk5jvl2l2vf2530JtuHpnZaHzeprTtJbpGwEq1kc7MLh8N/N2rbYxEo1S
- yc4PJr8N2xljkJlbVl7CGbr5xqkk8rPiZjcLt8eeGDMRF+By0tS2EmnaXFh7JptQ/FbXyb3gtQc
- HGLXcUDcJ2iRZ2dogxhB9h2rVK3WwXaK0tenMMK1aGtmgSXL8Txa7CCJYYVlj6eGa/2fYAojR0D
- npPT6FFuqYFZsIUDN2RRYcE5Sa5wEOAio4cISIWiVsEgUDvYNKFPKnPqiYt2ukqPvFewozO4HhE
- KzJs5lcWVsdToGbHohMcRxhXjisEH8qQsWnMlE0KhI34Mt+1UTBVywL1f0/V7UlSU7mcHI2J39A
- RWS3Z65W6AIsluyslt3Wyj/Z+wzOu0n6Cnu/j/9DCdtY0t3f0juzRhD8ZHGPEv4LuqSNOtArFVa
- wjAkiBST4TvmMeQe3bAk+jjbG4MTePFQu7030loK9v5vY=
-X-Google-Smtp-Source: AGHT+IG2Qm7vsCOCnAhS0ZD3a4I8p+cqi4F+eDEMIod3kZYjhv/FljNgK7ZlgoKNaNKCUwR88oLAiw==
-X-Received: by 2002:a05:6000:240c:b0:3f1:2671:6d9e with SMTP id
- ffacd0b85a97d-429b4c73bc7mr1721872f8f.1.1761812675654; 
- Thu, 30 Oct 2025 01:24:35 -0700 (PDT)
+ AJvYcCU30zmzw2v5LbU7YV4jG2JjQIdsUNbUAwMjvwc+RyWHcO6cF6LOZN5Gmz8SgLKD0H/lYST6MFchs3eB@nongnu.org
+X-Gm-Message-State: AOJu0Yynhalernp76CFqVtefay8NMe1YgHmT5anyyT/T6Isdcy/E8NTq
+ H0YvzyI0hAJ7cVIPUcX+ndIlmYAMrb3r3NvB7A7ILLhyO6n5R1S3pmL9UjCvosy8NMM=
+X-Gm-Gg: ASbGncuOSF1xM7GC5DLBbBgYhLhbWg99Ksl0YJU8ZIFA+lUH/rkjypORBgGG4FQVvz4
+ 7DbZENcvtPjeMqTS/b9iIQpgmNDG75nl8vieQHaOuAxTclRKmhgNPodQSMBgS7I0RQyQPXULqNP
+ 9slDbSRfLqxFpyBw85VKwuNDc6dmSBKmPp31ztllPEUoofjlsFMzJug1sEmE2P6cJzhb6Ve8TxR
+ STbkBb3AG08huRAJXtqw7kHA1Lef/YDhIei3MFyEYzNsSKXugz4PN+vtRoIc8R/PwfbpO6diyx7
+ kpNYwVmAMXSiC0gLxN7KGOXFk31yXMSfvF27s+rmN98B2q4/eaeXJOj8yWVAc30XP0ox4QtVGRZ
+ fWPnCVVdHQRwgNsXn/aTWlDvA6N1uwW88170cVkbHcaEHd/rA6bVAMOpy9x+T7Kjzi5jM3bFUf/
+ vilCoBjXu5+9aFSiCkRgleuAutSRO3ehWR1ON6mcOF9Wc=
+X-Google-Smtp-Source: AGHT+IEh4zrV7iVQg6ymaQz3H8FqUu9848oDWMIppJT+NESVwUtvMZWTvrYauYcUXXlVJt4nPtocIQ==
+X-Received: by 2002:a05:600c:1e1d:b0:475:de14:db16 with SMTP id
+ 5b1f17b1804b1-477267f24e2mr18497225e9.25.1761812778653; 
+ Thu, 30 Oct 2025 01:26:18 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477289a57fdsm26108335e9.7.2025.10.30.01.24.34
+ 5b1f17b1804b1-477289998f3sm27051575e9.4.2025.10.30.01.26.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Oct 2025 01:24:35 -0700 (PDT)
-Message-ID: <5c33b3d8-0603-4a17-8303-12568b712bd2@linaro.org>
-Date: Thu, 30 Oct 2025 09:24:34 +0100
+ Thu, 30 Oct 2025 01:26:18 -0700 (PDT)
+Message-ID: <611a9905-f01f-4b28-afc7-b73faadc4546@linaro.org>
+Date: Thu, 30 Oct 2025 09:26:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] hw/core/loader: Free the image file descriptor on
- error
+Subject: Re: [PATCH 3/3] hw/core/loader: Free the allocated string from
+ size_to_str()
 Content-Language: en-US
 To: alistair23@gmail.com, alistair.francis@wdc.com, vishalc@linux.ibm.com,
  qemu-devel@nongnu.org
 References: <20251030015306.2279148-1-alistair.francis@wdc.com>
- <20251030015306.2279148-2-alistair.francis@wdc.com>
+ <20251030015306.2279148-3-alistair.francis@wdc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251030015306.2279148-2-alistair.francis@wdc.com>
+In-Reply-To: <20251030015306.2279148-3-alistair.francis@wdc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,13 +105,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 30/10/25 02:53, alistair23@gmail.com wrote:
 > From: Alistair Francis <alistair.francis@wdc.com>
 > 
-> Coverity: CID 1642764
-> Fixes: f62226f7dc4 ("hw/core/loader: improve error handling in image loading functions")
+> The string needs be be freed with g_free() according to the functions
+> documentation.
+> 
+> Coverity: CID 1642762
+> Fixes: f62226f7dc44 ("hw/core/loader: improve error handling in image loading functions")
 > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 > ---
->   hw/core/loader.c | 1 +
->   1 file changed, 1 insertion(+)
+>   hw/core/loader.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/core/loader.c b/hw/core/loader.c
+> index 1598dca03c..e83d245202 100644
+> --- a/hw/core/loader.c
+> +++ b/hw/core/loader.c
+> @@ -153,8 +153,12 @@ ssize_t load_image_targphys_as(const char *filename,
+>       }
+>   
+>       if (size > max_sz) {
+> +        char *size_str = size_to_str(max_sz);
+> +
+>           error_setg(errp, "%s exceeds maximum image size (%s)",
+> -                   filename, size_to_str(max_sz));
+> +                   filename, size_str);
+> +
+> +        g_free(size_str);
+
+Or g_autofree. Anyhow,
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>           return -1;
+>       }
+>   
 
 
