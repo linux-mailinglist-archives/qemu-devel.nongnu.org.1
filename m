@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBEBC21756
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 586CFC21777
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 18:23:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEWKD-0001UN-0s; Thu, 30 Oct 2025 13:20:37 -0400
+	id 1vEWK6-0001TY-O0; Thu, 30 Oct 2025 13:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEWJZ-0001BU-4y
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:57 -0400
+ id 1vEWJb-0001CY-6x
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:59 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEWJR-0008Mv-WB
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:56 -0400
+ id 1vEWJU-0008Mp-FC
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 13:19:58 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9FCC8C00CB;
- Thu, 30 Oct 2025 20:19:23 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5B0F6C0165;
+ Thu, 30 Oct 2025 20:19:24 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id GJjc0O0FA0U0-iGfWLy01; Thu, 30 Oct 2025 20:19:23 +0300
+ ESMTPSA id GJjc0O0FA0U0-3uPA7wJD; Thu, 30 Oct 2025 20:19:23 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1761844763;
- bh=5TyEDZ5Mjwqq60C4nA/4AdTGhH71Q5NYhSQBBF9mZHM=;
+ bh=Pyx9akFGNoeu+Fy6mc4TIv8Sp1l5A46fhojHiVayjV4=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=ilOkB9+Lv3XvmJH/8USVmjfVMCC03hJK1dijfOW6g0QkLeWpzmKRWDdgS2ypm93cX
- clOtBn6GEs/kV4UD/jmkeh5/zvFMt28tly+2OpBlpHbrjbGHIyqA5voJcfJd/UjjU+
- e/TCxMxlUPej/Rwt7wIjpGmkRYy6eVqK9nRhKdWY=
+ b=NnRdZFSg+W1nhO3vMTIxDW6A8FsDfsmy+FMgC4feOLunyoLOzpiWToGg2eH20ga80
+ Lld4LH9TZpTXQKt1htFkSQHTFZBeLAYH/TiISjOhaRuKAVuzsrv+a6X3XwHz1mzHdz
+ 8ip1L7iDJPeED3w3uMybLsZKXaKP73h2+hwYlWC8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,9 @@ To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  davydov-max@yandex-team.ru, yc-core@yandex-team.ru, pbonzini@redhat.com,
  berrange@redhat.com, eduardo@habkost.net, peterx@redhat.com
-Subject: [PATCH v9 7/9] net/tap: finalize net_tap_set_fd() logic
-Date: Thu, 30 Oct 2025 20:19:12 +0300
-Message-ID: <20251030171915.726441-8-vsementsov@yandex-team.ru>
+Subject: [PATCH v9 8/9] net/tap: introduce TAP_IFNAME_SZ
+Date: Thu, 30 Oct 2025 20:19:13 +0300
+Message-ID: <20251030171915.726441-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251030171915.726441-1-vsementsov@yandex-team.ru>
 References: <20251030171915.726441-1-vsementsov@yandex-team.ru>
@@ -58,7 +58,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,51 +73,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let net_tap_set_fd() do only fd-related setup.
-
-Actually, for further backend-transfer migration for virtio-net/tap
-we'll want to skip net_tap_set_fd() (as incoming fds are already
-prepared by source QEMU). So move tap_read_poll() to net_tap_setup().
-
-Don't care about using_vnet_hdr and vhost_net, the state is
-zero-initialized.
+To be reused in the next commit.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 ---
- net/tap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/tap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index d08ef070e9..7e85444ace 100644
+index 7e85444ace..c50430ba49 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -480,7 +480,6 @@ static bool net_tap_set_fd(TAPState *s, int fd, int vnet_hdr, Error **errp)
+@@ -48,6 +48,8 @@
  
-     s->fd = fd;
-     s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
--    s->using_vnet_hdr = false;
-     s->has_ufo = tap_probe_has_ufo(s->fd);
-     s->has_uso = tap_probe_has_uso(s->fd);
-     s->has_tunnel = tap_probe_has_tunnel(s->fd);
-@@ -493,8 +492,6 @@ static bool net_tap_set_fd(TAPState *s, int fd, int vnet_hdr, Error **errp)
-     if (vnet_hdr) {
-         tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
-     }
--    tap_read_poll(s, true);
--    s->vhost_net = NULL;
+ #include "net/vhost_net.h"
  
-     if (s->sndbuf) {
-         Error **e = s->sndbuf_required ? errp : NULL;
-@@ -795,6 +792,8 @@ static bool net_tap_setup(TAPState *s, int fd, int vnet_hdr, Error **errp)
-         return false;
-     }
- 
-+    tap_read_poll(s, true);
++#define TAP_IFNAME_SZ 128
 +
-     if (s->vhostfd != -1) {
-         VhostNetOptions options;
+ static const int kernel_feature_bits[] = {
+     VIRTIO_F_NOTIFY_ON_EMPTY,
+     VIRTIO_RING_F_INDIRECT_DESC,
+@@ -853,7 +855,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
+     /* for the no-fd, no-helper case */
+     Error *err = NULL;
+     const char *vhostfdname;
+-    char ifname[128];
++    char ifname[TAP_IFNAME_SZ];
+     int ret = 0;
  
+     assert(netdev->type == NET_CLIENT_DRIVER_TAP);
 -- 
 2.48.1
 
