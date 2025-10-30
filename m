@@ -2,96 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79541C1E104
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 02:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6ACC1E1EA
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 03:23:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEHrT-0000tG-EB; Wed, 29 Oct 2025 21:53:59 -0400
+	id 1vEIHA-0006Ra-1T; Wed, 29 Oct 2025 22:20:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vEHrJ-0000qx-0w
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 21:53:49 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vEHr5-0003zF-Cf
- for qemu-devel@nongnu.org; Wed, 29 Oct 2025 21:53:48 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-340564186e0so140651a91.0
- for <qemu-devel@nongnu.org>; Wed, 29 Oct 2025 18:53:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761789210; x=1762394010; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jMBp5mx5hVRrEJ3mweez2X+rN4LXdCNUoPyr+hQYFtc=;
- b=hFWF224N6aO6mmfF45uMACIFLxTZN4YAdWQS1XTg+sPBVUS1GX8nRaBzCfFUAxsWtF
- tmUTEbemh5lNjsaUSZHxd+Dk0g9yhQJFWkdfBFZjV/tvCLCNBETQXEjx3SBj0FVAZ4Yp
- ImD41fxPGdXkQI72RcGpO1sBmSsewmpaBirC3kI9gJBO9ZaPFOyxTC+1CCue6beoMZUu
- YrIeMrTzYs37hnRmtfQsg7niHG4kP/faS3tk6KIfLoMdqmtth7j/hD7R/zfCIN/2S736
- yTX+KQfKv9A+7P6ESH2NuCh1x9ipkoOZqxOl6e/vhpMh3aLRBbORvJZO/oe2eeJwIQyB
- mnRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761789210; x=1762394010;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jMBp5mx5hVRrEJ3mweez2X+rN4LXdCNUoPyr+hQYFtc=;
- b=trbUmMA2aIpVIdRohOiZ3676Oxgq3jby59De44F9ql5lRmuB1m+r2/50vIyUDGViTB
- +ntIZeYx/+xgXeED+/imOu45rOPdqE9NInGtSqBzRaaKsk0QS3bzaYP2bw1K18HGJBqV
- mtBFdpgjZX8jQwEv54XaTH4Bnv7zMo/CNxmwLUuEuJGsuadzRQzRTgr/H1y1WIUROVvL
- n9mJDLar52iXx2GX1DRScwA2FgFm4RDGJh5ZvFb8eSAEJvZHQ7YaszdgasTrRxhVHfmF
- MSLJaDI4adUCgORi5ZTmRrG7rcYoKnJCOuoaz/WdCldhOtgxmcEezyDAyimp90H0/0lt
- uM9A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWe6sY4lNPCl4sV1sTx9/V18Il2lXo6E0gK/a6dIF30aUC63QBNjfR9tjpWTvTj/1h9KGNq227SE3UQ@nongnu.org
-X-Gm-Message-State: AOJu0YxBGAuCaJl1bKAlO+tLOjbgBllzEfIMbxyA1oEefkrdO5acuogg
- IyHZK9FPAP+yBasXWgEB7gWjMhm/2HtnH6OypLmRb9vUyKkTRcYVXYqo
-X-Gm-Gg: ASbGncumFZQ/OOxoOKXKQpVAGYJQ5Xn2qeTi2bNRcJCWFI2Ajb5iOib8iyfct3j0nG9
- EEthcwRSxUygtsqk40JTaxkLW4QCf+d2iUrnu4/IbnmrxWv0C0w0x1257doavPAC/UdfDf4PO4/
- vk4Bfvx9ZavQuK+XjuB1OBmQjwx+5GrStiUHcMfI7EJrj+u0a5YqA8WZTuhxF1iX+3srtM2X5gC
- cv+HZSLrdUgWmv/XmHgKu4hIAMbZRChEic9NkXSqctuJTPcEpbVktvJ4nc0TAlm3O90FbfaQTsq
- oV04e2CxOlUX7BeAaKVfAxiTvkqPpUXn/ZDQ27XuvK3YbBAXAHQONFzEef66PlYJ4F4rBhmrBfu
- ccrzaeNi9XsrvI2Ae1oGM3vrK/GuQ5nfnnJ8Fc0QXp74olUdw9CzEXLfJvejFEzi220v8aYILPY
- 3xwvBa59cVs9VMxDsYRDXnbwGN2rmD49YTzYDjdFAgoPpPUwTXLcBWQ7hnzBvX3nqoOqvA7dgEA
- D011QjIoEsV5M/DdSk=
-X-Google-Smtp-Source: AGHT+IHFDOyXv9Qj/8f3y0+aOpnd4DXd07EjgRAhJeNNlipjWFCoOQ/7nHhUmJeGkOBIH6cwFZh2+g==
-X-Received: by 2002:a17:90b:3a81:b0:33d:ad49:16da with SMTP id
- 98e67ed59e1d1-3403a2f2005mr4951182a91.31.1761789209702; 
- Wed, 29 Oct 2025 18:53:29 -0700 (PDT)
-Received: from toolbx.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3405089b069sm586981a91.0.2025.10.29.18.53.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Oct 2025 18:53:29 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: philmd@linaro.org, alistair.francis@wdc.com, vishalc@linux.ibm.com,
- qemu-devel@nongnu.org
-Cc: alistair23@gmail.com
-Subject: [PATCH 3/3] hw/core/loader: Free the allocated string from
- size_to_str()
-Date: Thu, 30 Oct 2025 11:53:06 +1000
-Message-ID: <20251030015306.2279148-3-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251030015306.2279148-1-alistair.francis@wdc.com>
-References: <20251030015306.2279148-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vEIH0-0006RF-LU
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 22:20:22 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1vEIGo-0007B9-NF
+ for qemu-devel@nongnu.org; Wed, 29 Oct 2025 22:20:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761790811; x=1793326811;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=viO1/E0SUULLfzjrQtI5K+c6ySbAiDEQEcdX2H3Z6/w=;
+ b=T7iqlotqjs1++M5jJDCNSJOYfYfcdtS+Bj6trE1FdUyI+j1/bBjCBL7y
+ eYFV+Hmb7xV9fe5VnpI30FiMNYB4v5n6iHtqRKgF+xgwc34AD6Pb87YDD
+ Xa8VhFvSwjCzOsLVbDsUS+KZE7891QYPVBY6BRbmDPDCTfyP32PEyRl2N
+ 8/u4B7XaHVu+3QJntEtEQGfdrc0DW6sIi6ehhJWJ9TE0hVqBR+gdonL5/
+ hOFfMi32Unf55talhR/XquLbrPldABTzsMYshFus8KzosSz4lTc7Tvbth
+ QbbK/DDezBfB7dECKlTyDICO/zzwhB4fLvEhK4btzFqq2ghB4/YQQy/Sd g==;
+X-CSE-ConnectionGUID: lPs3mdOtTAOa6N1KpzKCDQ==
+X-CSE-MsgGUID: epVjfvulSgGde8YbuXscUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="75045132"
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; d="scan'208";a="75045132"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2025 19:19:57 -0700
+X-CSE-ConnectionGUID: x8Pts7mHTuiNEV7atB/wyA==
+X-CSE-MsgGUID: KaMbK95vRWKQFmlX4R/MKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; d="scan'208";a="190995310"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
+ ([10.124.238.14])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2025 19:19:55 -0700
+Message-ID: <5a50deb8-c499-43b0-8456-ea784bc7f1fb@intel.com>
+Date: Thu, 30 Oct 2025 10:19:53 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 02/18] i386/kvm/cpu: Init SMM cpu address space for
+ hotplugged CPUs
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20251028173430.2180057-1-pbonzini@redhat.com>
+ <20251028173430.2180057-3-pbonzini@redhat.com> <aQG7wdY/lBjgzho3@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aQG7wdY/lBjgzho3@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.576, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,37 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair.francis@wdc.com>
+On 10/29/2025 3:01 PM, Zhao Liu wrote:
+>> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+>> index 7512be64d67..5716191fff1 100644
+>> --- a/hw/i386/x86-common.c
+>> +++ b/hw/i386/x86-common.c
+>> @@ -183,6 +183,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
+>>           fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
+>>       }
+>>   
+>> +    /*
+>> +     * Non-hotplugged CPUs get their SMM cpu address space initialized in
+>> +     * machine init done notifier: register_smram_listener().
+>> +     *
+>> +     * We need initialize the SMM cpu address space for the hotplugged CPU
+>> +     * specifically.
+>> +     */
+>> +    if (kvm_enabled() && dev->hotplugged && x86_machine_is_smm_enabled(x86ms)) {
+>> +        kvm_smm_cpu_address_space_init(cpu);
+>> +    }
+>> +
+> 
+> Unfortunately, the original KVM SMM patch caused this bug, but even
+> more unfortunately, CPU_FOREACH in the machine_done callback is more
+> fragile than I originally anticipated, now requiring more hack checks to
+> fix. :-(
+> 
+> IMO, the root of the chaos is that KVM SMM doesn't do this in the CPU
+> context like TCG did for a long time. I'll find time to sort all this
+> out.
 
-The string needs be be freed with g_free() according to the functions
-documentation.
+I had this idea before. It needs to move the initialization of KVM SMM 
+MemoryRegion a bit earlier at least. And it seems to require more time 
+than I expected, especially the effort to test the SMM functionality 
+after the change. So I went with the most straightforward fix.
 
-Coverity: CID 1642762
-Fixes: f62226f7dc44 ("hw/core/loader: improve error handling in image loading functions")
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- hw/core/loader.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+It will be great if you can find time to clean it up. Looking forward to it.
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 1598dca03c..e83d245202 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -153,8 +153,12 @@ ssize_t load_image_targphys_as(const char *filename,
-     }
- 
-     if (size > max_sz) {
-+        char *size_str = size_to_str(max_sz);
-+
-         error_setg(errp, "%s exceeds maximum image size (%s)",
--                   filename, size_to_str(max_sz));
-+                   filename, size_str);
-+
-+        g_free(size_str);
-         return -1;
-     }
- 
--- 
-2.51.0
+> Regards,
+> Zhao
+> 
 
 
