@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F38C1EC33
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 08:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9EBC1EC34
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 08:32:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEN7k-000377-6T; Thu, 30 Oct 2025 03:31:09 -0400
+	id 1vEN7d-00032Q-PG; Thu, 30 Oct 2025 03:31:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vEN7N-0002ru-3y; Thu, 30 Oct 2025 03:30:49 -0400
+ id 1vEN7N-0002rv-6j; Thu, 30 Oct 2025 03:30:49 -0400
 Received: from fout-a6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vEN7D-00053m-Bp; Thu, 30 Oct 2025 03:30:43 -0400
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
- by mailfout.phl.internal (Postfix) with ESMTP id 568D6EC01C6;
- Thu, 30 Oct 2025 03:30:28 -0400 (EDT)
+ id 1vEN7G-00054r-GU; Thu, 30 Oct 2025 03:30:43 -0400
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id 1C0C0EC01C4;
+ Thu, 30 Oct 2025 03:30:30 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-03.internal (MEProxy); Thu, 30 Oct 2025 03:30:28 -0400
+ by phl-compute-05.internal (MEProxy); Thu, 30 Oct 2025 03:30:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1761809428; x=
- 1761895828; bh=KhorpwEocnvX4t05YmWp1XsrdvahA+RzlOhcQFSb+fs=; b=A
- 3kz80Vwh1h2aqPi/V4cGy8i9f7d9FDLym4Kxqe34F+tdwAd2KdCmDo+6pK09oQcB
- MINupweqRNOjfUln0IATJRCWWfxWQboUvOfAIkaeRaupjFs18dPVw9booXOifR7h
- 5FbOcOHejkrMnWB7SoxcURFfHrrRpJ/VbIFmXN1azx+ybxi+QWMglUpvJlZilfWQ
- t0WUmGPt3Z99S0aOtpL8Yk/Sfcs5ooKnjFZKy2XG1sIneeSyQCnGmTbAbl9VEznr
- SRzvcEJTWKSLbTGvGXC6ox3bio9HG5Emewz7f9ubOq8UWcBHrZEF7KdXZZ8FOoGR
- 2fpsNtL3jA0CcOh6uMeOg==
+ :reply-to:subject:subject:to:to; s=fm2; t=1761809430; x=
+ 1761895830; bh=UbSHMYHQEqILcxNEHTUCvzZwo6tZO6GTUL3a7ABniGE=; b=x
+ diAl9Xb0K7LGZLDArKK0OoeiGy48Bs3Kkg/x3zUCxakQmo9/Pd0TFozNNyL1zqNL
+ 5LwC4QSBCjRn/ZqzMOjHKDan6wg+kcvQQ5d37Zr8oWMQkSCJcl0lGhyr9PkZZw0x
+ oToYX9tnjunng/DolOZKHn0LjHqSqiuPrya4EP9fg2CcTCj6tuKe3Jh8Z/y7V5+v
+ nd1AypvDpI9MSe4m7CHaBA1KUBuJ2ABFYiSv/QPML7HnypUGxX/r+sn1gCoBXHh2
+ fD+S5T+yCMV5d6zIAygkWfUVXj1tC2lghnVFR1tH7FIFxpLxCT9zn+BpnP6rAScr
+ 3frAdQcyWtj/B6wn47Pcg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1761809428; x=1761895828; bh=K
- horpwEocnvX4t05YmWp1XsrdvahA+RzlOhcQFSb+fs=; b=NB4dnymwaZDC1JrMl
- 7fekvYaNP0Tw7Xt3h9dWnXa0kHXlqvxm+DFW38LFgOqCW2+ud6UmmiB22t2YCDOW
- UBt6s4jS1zdSJKos43PEZdKD6OWvCW4pE90u7dwWf3xn1E6V/mczlIvBjpzYPku7
- s3CvqR0daQ8lAkuWnkVdNzCdJI/hIRGsdx4OZq+UwyYebEF+Cw6No8M+4gRGHkI0
- 3H41BgA1slftJlALSM/Sg3O+6/P9rtcZnIktEHynt3ldgRALSDhYCToyHv0iXGJv
- r/wPLKgH7dvk+37x7YzbvJwgYZpiDfBCZ9eIO783YuSDoovFTTx8lNqISfwa01y+
- QQp7g==
-X-ME-Sender: <xms:ExQDaTKLLOKlXpTFjZPA4q8tXZ51TT1rzyhxL8eWg4O5ygQCKDqMUQ>
- <xme:ExQDaTADA_dfU7gCvtNcqEaT9JbIaPFjIE49L1xvQQB4aGIFQmzE8_7KdJF8AqbuJ
- dCQTY1Znd40tuX1nzjaEW1W2ddoAO9sEXHrAr19ijuqfFZ9-MiJew>
-X-ME-Received: <xmr:ExQDaYuWMEFPaS8ZvFAxJbdUVSXdyf5UO2Dbt_PPAelp515KvyXnMGtkPz6zDUNE7jpU95xAYClCwbBRVzzGN-a8esfipUELb2xCvxI9vES2GbpPIzjpcB7v2uBfcgMbBx1jpow>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeitddvucetufdoteggodetrf
+ :x-me-sender:x-sasl-enc; s=fm3; t=1761809430; x=1761895830; bh=U
+ bSHMYHQEqILcxNEHTUCvzZwo6tZO6GTUL3a7ABniGE=; b=hlRCifjRezoQsy3uJ
+ aJdQu24Pp3EJMtRdPBIGzybnvzkpP9xl5636z/RcnPrKsaf1S0BaJDdSiCWImcMe
+ hNODjvBRsAypJWT4Q1BaVghuHDtXF4Crl1Y6WyZMMGja6jGrIHKVu+oatMew2WF5
+ tw33UtxUUWyH4ilT088FrAPC5HRyacaIZZOynxT3DJ4f/rbU0BeOs51eJzZohIhh
+ vfe5k+7wP2w4wB7HsvJBauQFDSWrXsmIYKF1B9IzNmJkMAjiTgDyrqpNiK4u8Xmm
+ 7AKR/8l6f0S/iwXHBxpxFAVW4ikDDO2k0jJAGU0sQcRoIgV9YJ7hTfuEX2XeMndF
+ yzOjA==
+X-ME-Sender: <xms:FRQDaRNsPGBz8itziw1Pro3F-5LGDqGajGx825dPpV2L6-isbyWToA>
+ <xme:FRQDaeB1pLDmJIXXzvxhNEVLnLB2M2vvUoCKHEEry99KuxzrUaxIfOeUylUczxosI
+ 0IOfJ0LWmY6YC18V2OI_BfxFVEfFA8lx6b03RAclP7JuZEB925l0Ps>
+X-ME-Received: <xmr:FRQDaQLMR1aZXQGZJSaaDJk2xpQ7OjQZ8AYRLVWVe6-wpjsgzwB6LOurDXPGwaqgbXClaB7dNG2ZgGOQpuiXqGYsJ3vA6BmbzYFAR9wtzGvjTL52iX0u6nRJghd2Xv4zQlalC7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeitdduucetufdoteggodetrf
  dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
  rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
  gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghushcu
  lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnheptdeuhedvueegtdettdevudefleejudefteeitdffheegveehfeeiueevkedtleeu
- necuffhomhgrihhnpegumhhtfhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
- grrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggp
- rhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepqhgvmhhuqd
- guvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehpvghtvghrrdhmrgihuggv
- lhhlsehlihhnrghrohdrohhrghdprhgtphhtthhopeifihhlfhhrvggurdhmrghllhgrfi
- grseifuggtrdgtohhmpdhrtghpthhtohepjhhonhgrthhhrghnrdgtrghmvghrohhnsehh
- uhgrfigvihdrtghomhdprhgtphhtthhopehkrdhjvghnshgvnhesshgrmhhsuhhnghdrtg
- homhdprhgtphhtthhopegrlhhishhtrghirhdrfhhrrghntghishesfigutgdrtghomhdp
- rhgtphhtthhopehksghushgthheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhtsh
- esihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphhtthhopehfohhsshesuggvfhhmrggtrhho
- rdhith
-X-ME-Proxy: <xmx:ExQDaRRmRnjH8XADM8Vw3tK6Uw9yhYERi09glm0HeouR49Prll-K2A>
- <xmx:ExQDafKncLDuKieRm5Bfv07t-_E4DAZYCOi_j4KIi8aSLiYGUpgMFA>
- <xmx:ExQDaUsroTgFY7D9jQ5kHrHv2UxcBUrD9h2rMzNx2qMQQ2qWICTyWw>
- <xmx:ExQDaW9nMyN72OuH4os9HbExMoz7SSmQihJWfb3pCG8RyomOG2pKtg>
- <xmx:FBQDaeB5NVIf0Sv-UkPCWMFUVRHHzYzvQkcn7BrjkEUN5CujwHqNoc-1>
+ hrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudejudeg
+ necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
+ esihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhht
+ phhouhhtpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprh
+ gtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphht
+ thhopegrlhgrnhdrrggurghmshhonhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepfh
+ hoshhsseguvghfmhgrtghrohdrihhtpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghm
+ shhunhhgrdgtohhmpdhrtghpthhtohepkhgsuhhstghhsehkvghrnhgvlhdrohhrghdprh
+ gtphhtthhopehithhssehirhhrvghlvghvrghnthdrughkpdhrtghpthhtohepqhgvmhhu
+ qdgslhhotghksehnohhnghhnuhdrohhrgh
+X-ME-Proxy: <xmx:FRQDafOjHJqzne6Urvd4evOyq4Ve1mzpp4eZBWiAXNoINEGtfQCVFA>
+ <xmx:FRQDaW7eDsvS1wpC3RsxsC2Ud4f2bI7ghINsW07hbMaTQa72hQwVsQ>
+ <xmx:FRQDaZ6mfLdc50IENsVHcD2s1eG_2biokTRYObO8bAxR8_v0lFX3JA>
+ <xmx:FRQDacFzq-ObU_Hj-AQ6GErJ_afaJ2YfA7krgNUxowpbEYtsR3_pLA>
+ <xmx:FhQDacaEWoN3DvUPhNwqOIcHuPPkSdGy6Gu-zOmXPZPuqFA589rdoFoL>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Oct 2025 03:30:25 -0400 (EDT)
+ 30 Oct 2025 03:30:28 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Wilfred Mallawa <wilfred.mallawa@wdc.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Klaus Jensen <k.jensen@samsung.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org
-Subject: [PULL 5/7] hw/nvme: connect SPDM over NVMe Security Send/Recv
-Date: Thu, 30 Oct 2025 08:29:53 +0100
-Message-ID: <20251030072956.1194-6-its@irrelevant.dk>
+ Alan Adamson <alan.adamson@oracle.com>,
+ Jesper Wendel Devantier <foss@defmacro.it>,
+ Klaus Jensen <k.jensen@samsung.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, qemu-block@nongnu.org
+Subject: [PULL 6/7] hw/nvme: enable ns atomic writes
+Date: Thu, 30 Oct 2025 08:29:54 +0100
+Message-ID: <20251030072956.1194-7-its@irrelevant.dk>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251030072956.1194-1-its@irrelevant.dk>
 References: <20251030072956.1194-1-its@irrelevant.dk>
@@ -117,169 +112,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+From: Alan Adamson <alan.adamson@oracle.com>
 
-This patch extends the existing support we have for NVMe with only DoE
-to also add support to SPDM over the NVMe Security Send/Recv commands.
+Add support for the namespace atomic paramters: NAWUN and NAWUN. Namespace
+Atomic Compare and Write Unit (NACWU) is not currently supported.
 
-With the new definition of the `spdm-trans` argument, users can specify
-`spdm_trans=nvme` or `spdm_trans=doe`. This allows us to select the SPDM
-transport respectively. SPDM over the NVMe Security Send/Recv commands
-are defined in the DMTF DSP0286.
+Writes that adhere to the NACWU and NAWUPF parameters are guaranteed to be
+atomic.
 
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-[k.jensen: fix declaration in case statement; fix quotes in docs]
+New NVMe QEMU Paramters (See NVMe Specification for details):
+        atomic.nawun=UINT16 (default: 0)
+        atomic.nawupf=UINT16 (default: 0)
+        atomic.nsfeat (default off) - Set Namespace Supported Atomic Boundary &
+                Power (NSABP) bit in Namespace Features (NSFEAT) in the Identify
+                Namespace Data Structure
+
+See the NVMe Specification for more information.
+
+Signed-off-by: Alan Adamson <alan.adamson@oracle.com>
+Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- docs/specs/spdm.rst         | 10 ++++++--
- hw/nvme/ctrl.c              | 47 ++++++++++++++++++++++++++++---------
- include/hw/pci/pci_device.h |  2 ++
- 3 files changed, 46 insertions(+), 13 deletions(-)
+ hw/nvme/ctrl.c | 23 +++++++++++++++++++++++
+ hw/nvme/ns.c   | 38 ++++++++++++++++++++++++++++++++++++++
+ hw/nvme/nvme.h |  6 ++++++
+ 3 files changed, 67 insertions(+)
 
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-index 0e3ad25bc698..477ff9ef36c7 100644
---- a/docs/specs/spdm.rst
-+++ b/docs/specs/spdm.rst
-@@ -98,7 +98,7 @@ Then you can add this to your QEMU command line:
- .. code-block:: shell
- 
-     -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
- 
- At which point QEMU will try to connect to the SPDM server.
- 
-@@ -113,7 +113,13 @@ of the default. So the entire QEMU command might look like this
-         -append "root=/dev/vda console=ttyS0" \
-         -net none -nographic \
-         -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
-+
-+The ``spdm_trans`` argument defines the underlying transport type that is
-+emulated by QEMU. For an PCIe NVMe controller, both "doe" and "nvme" are
-+supported. Where, "doe" does SPDM transport over the PCIe extended capability
-+Data Object Exchange (DOE), and "nvme" uses the NVMe Admin Security
-+Send/Receive commands to implement the SPDM transport.
- 
- .. _DMTF:
-    https://www.dmtf.org/standards/SPDM
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index e450e785ea10..fa003031e719 100644
+index fa003031e719..121a95b2e373 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8943,19 +8943,33 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- 
-     pcie_cap_deverr_init(pci_dev);
- 
--    /* DOE Initialisation */
-+    /* SPDM Initialisation */
-     if (pci_dev->spdm_port) {
--        uint16_t doe_offset = n->params.sriov_max_vfs ?
--                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
--                                  : PCI_CONFIG_SPACE_SIZE;
-+        uint16_t doe_offset = PCI_CONFIG_SPACE_SIZE;
- 
--        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
--                      doe_spdm_prot, true, 0);
-+        switch  (pci_dev->spdm_trans) {
-+        case SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE:
-+            if (n->params.sriov_max_vfs) {
-+                doe_offset += PCI_ARI_SIZEOF;
-+            }
- 
--        pci_dev->doe_spdm.spdm_socket = spdm_socket_connect(pci_dev->spdm_port,
--                                                            errp);
-+            pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
-+                          doe_spdm_prot, true, 0);
- 
--        if (pci_dev->doe_spdm.spdm_socket < 0) {
-+            pci_dev->doe_spdm.spdm_socket =
-+                spdm_socket_connect(pci_dev->spdm_port, errp);
-+
-+            if (pci_dev->doe_spdm.spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        case SPDM_SOCKET_TRANSPORT_TYPE_NVME:
-+            n->spdm_socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-+            if (n->spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        default:
-             return false;
+@@ -6705,6 +6705,23 @@ static uint16_t nvme_set_feature(NvmeCtrl *n, NvmeRequest *req)
+         } else {
+             atomic->atomic_writes = 1;
          }
-     }
-@@ -9246,9 +9260,14 @@ static void nvme_exit(PCIDevice *pci_dev)
-         g_free(n->cmb.buf);
-     }
++        for (i = 1; i <= NVME_MAX_NAMESPACES; i++) {
++            ns = nvme_ns(n, i);
++            if (ns && ns->atomic.atomic_writes) {
++                if (n->dn) {
++                    ns->atomic.atomic_max_write_size =
++                        le16_to_cpu(ns->id_ns.nawupf) + 1;
++                } else {
++                    ns->atomic.atomic_max_write_size =
++                        le16_to_cpu(ns->id_ns.nawun) + 1;
++                }
++                if (ns->atomic.atomic_max_write_size == 1) {
++                    ns->atomic.atomic_writes = 0;
++                } else {
++                    ns->atomic.atomic_writes = 1;
++                }
++            }
++        }
+         break;
+     default:
+         return NVME_FEAT_NOT_CHANGEABLE | NVME_DNR;
+@@ -7688,6 +7705,12 @@ static int nvme_atomic_write_check(NvmeCtrl *n, NvmeCmd *cmd,
  
-+    /* Only one of the `spdm_socket`s below should have been setup */
-+    assert(!(pci_dev->doe_spdm.spdm_socket > 0 && n->spdm_socket >= 0));
-     if (pci_dev->doe_spdm.spdm_socket > 0) {
-         spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-                           SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE);
-+    } else if (n->spdm_socket >= 0) {
-+        spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-+                          SPDM_SOCKET_TRANSPORT_TYPE_NVME);
+ static NvmeAtomic *nvme_get_atomic(NvmeCtrl *n, NvmeCmd *cmd)
+ {
++    NvmeNamespace *ns = nvme_ns(n, cmd->nsid);
++
++    if (ns && ns->atomic.atomic_writes) {
++        return &ns->atomic;
++    }
++
+     if (n->atomic.atomic_writes) {
+         return &n->atomic;
      }
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index 6df2e8e7c5ac..28aacb8db59a 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -724,11 +724,46 @@ static void nvme_ns_realize(DeviceState *dev, Error **errp)
+     BusState *s = qdev_get_parent_bus(dev);
+     NvmeCtrl *n = NVME(s->parent);
+     NvmeSubsystem *subsys = n->subsys;
++    NvmeIdCtrl *id = &n->id_ctrl;
++    NvmeIdNs *id_ns = &ns->id_ns;
+     uint32_t nsid = ns->params.nsid;
+     int i;
  
-     if (n->pmr.dev) {
-@@ -9303,6 +9322,8 @@ static const Property nvme_props[] = {
+     assert(subsys);
+ 
++    /* Set atomic write parameters */
++    if (ns->params.atomic_nsfeat) {
++        id_ns->nsfeat |= NVME_ID_NS_NSFEAT_NSABPNS;
++        id_ns->nawun = cpu_to_le16(ns->params.atomic_nawun);
++        if (!id->awupf || (id_ns->nawun && (id_ns->nawun < id->awun))) {
++            error_report("Invalid NAWUN: %x AWUN=%x", id_ns->nawun, id->awun);
++        }
++        id_ns->nawupf = cpu_to_le16(ns->params.atomic_nawupf);
++        if (!id->awupf || (id_ns->nawupf && (id_ns->nawupf < id->awupf))) {
++            error_report("Invalid NAWUPF: %x AWUPF=%x",
++                id_ns->nawupf, id->awupf);
++        }
++        if (id_ns->nawupf > id_ns->nawun) {
++            error_report("Invalid: NAWUN=%x NAWUPF=%x",
++                id_ns->nawun, id_ns->nawupf);
++        }
++    }
++
++    if (id_ns->nawun || id_ns->nawupf) {
++        NvmeAtomic *atomic = &ns->atomic;
++
++        if (n->dn) {
++            atomic->atomic_max_write_size = cpu_to_le16(id_ns->nawupf) + 1;
++        } else {
++            atomic->atomic_max_write_size = cpu_to_le16(id_ns->nawun) + 1;
++        }
++        if (atomic->atomic_max_write_size == 1) {
++            atomic->atomic_writes = 0;
++        } else {
++            atomic->atomic_writes = 1;
++        }
++    }
++
+     /* reparent to subsystem bus */
+     if (!qdev_set_parent_bus(dev, &subsys->bus.parent_bus, errp)) {
+         return;
+@@ -804,6 +839,9 @@ static const Property nvme_ns_props[] = {
+     DEFINE_PROP_BOOL("eui64-default", NvmeNamespace, params.eui64_default,
                       false),
-     DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
-     DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
-+    DEFINE_PROP_SPDM_TRANS("spdm_trans", PCIDevice, spdm_trans,
-+                           SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE),
-     DEFINE_PROP_BOOL("ctratt.mem", NvmeCtrl, params.ctratt.mem, false),
-     DEFINE_PROP_BOOL("atomic.dn", NvmeCtrl, params.atomic_dn, 0),
-     DEFINE_PROP_UINT16("atomic.awun", NvmeCtrl, params.atomic_awun, 0),
-@@ -9378,7 +9399,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- {
-     uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
+     DEFINE_PROP_STRING("fdp.ruhs", NvmeNamespace, params.fdp.ruhs),
++    DEFINE_PROP_UINT16("atomic.nawun", NvmeNamespace, params.atomic_nawun, 0),
++    DEFINE_PROP_UINT16("atomic.nawupf", NvmeNamespace, params.atomic_nawupf, 0),
++    DEFINE_PROP_BOOL("atomic.nsfeat", NvmeNamespace, params.atomic_nsfeat, 0),
+ };
  
--    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+    /* DOE is only initialised if SPDM over DOE is used */
-+    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE) {
-         pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     }
-     pci_default_write_config(dev, address, val, len);
-@@ -9389,7 +9412,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
- {
-     uint32_t val;
--    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+
-+    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        (dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE)) {
-         if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-             return val;
-         }
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index eee03385686c..88ccea501136 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -4,6 +4,7 @@
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_doe.h"
-+#include "system/spdm-socket.h"
+ static void nvme_ns_class_init(ObjectClass *oc, const void *data)
+diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
+index 67ed562e0086..7d01080fc1f9 100644
+--- a/hw/nvme/nvme.h
++++ b/hw/nvme/nvme.h
+@@ -218,6 +218,9 @@ typedef struct NvmeNamespaceParams {
+     struct {
+         char *ruhs;
+     } fdp;
++    uint16_t atomic_nawun;
++    uint16_t atomic_nawupf;
++    bool     atomic_nsfeat;
+ } NvmeNamespaceParams;
  
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -166,6 +167,7 @@ struct PCIDevice {
+ typedef struct NvmeAtomic {
+@@ -280,6 +283,9 @@ typedef struct NvmeNamespace {
+         /* reclaim unit handle identifiers indexed by placement handle */
+         uint16_t *phs;
+     } fdp;
++    uint16_t  atomic_nawun;
++    uint16_t  atomic_nawupf;
++    NvmeAtomic  atomic;
+ } NvmeNamespace;
  
-     /* SPDM */
-     uint16_t spdm_port;
-+    SpdmTransportType spdm_trans;
- 
-     /* DOE */
-     DOECap doe_spdm;
+ static inline uint32_t nvme_nsid(NvmeNamespace *ns)
 -- 
 2.51.0
 
