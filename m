@@ -2,76 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC1EC20F37
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 16:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78032C20F97
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 16:39:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEUd1-0004C1-Es; Thu, 30 Oct 2025 11:31:55 -0400
+	id 1vEUiQ-0005n1-C2; Thu, 30 Oct 2025 11:37:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vEUcv-0004BR-Cf
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:31:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vEUch-00087j-9t
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:31:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761838290;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=biTNZPlrP2yAFyV1mDgczKGO6Nj6ewKnoCU7WGDDPR0=;
- b=YRCVDCfVRHV5nbX5LozDWa60hWfmqSPoGJ+LG308yix6gfQ2KUXirlyZ7KfvpX9jcSWcpc
- /luc12y0lR9IUzpjW42gGrcXmZybRJEg5Kzesp5DAdiAf09NIAsz+Dx8U/gAYldU9TOJ2P
- 7ntNr4DWGUU7H9eH3WNvxbKU2gi8xe0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-9U8juUmKNhWly9RpS1M_zg-1; Thu,
- 30 Oct 2025 11:31:25 -0400
-X-MC-Unique: 9U8juUmKNhWly9RpS1M_zg-1
-X-Mimecast-MFC-AGG-ID: 9U8juUmKNhWly9RpS1M_zg_1761838284
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1838B187DED8; Thu, 30 Oct 2025 15:31:01 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.122])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 909D1180057C; Thu, 30 Oct 2025 15:30:59 +0000 (UTC)
-Date: Thu, 30 Oct 2025 15:30:56 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- devel@lists.libvirt.org
-Subject: Re: [PATCH 00/21] crypto: support multiple parallel certificate
- identities
-Message-ID: <aQOEsB71Sc2WQX0d@redhat.com>
-References: <20251030144805.2239954-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vEUiJ-0005lp-6K
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:37:24 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vEUiA-0000zm-Nn
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:37:21 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-77f67ba775aso1581288b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 08:37:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1761838626; x=1762443426; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2RsW1Ujx8DdE+xNsVV/ZHAzK/pHZA4PcHFp6aRoIces=;
+ b=UqlNlVTZivXwQ3m5q/kWicoBuYVPYHhrFQuQYlk2O/CuMUftLBnNsGc0YHpp0eClLl
+ l0RlendwiiGCL22846AbJu2EhMk7NgAOXPvY+182BHr7Q065i23d7Y99vU7MBDvPeocA
+ RX7KJ3OQk68p6ZaFEw/RIAuKU/v0/jyqVV8OvrBodiXB8cFEttJhR0QmHa/hUdFZWm9u
+ W6gapA0JkWSxY7y5dQUdsnIu2LRb9VvXETflzgLak8Ob7bvlTWTyOvV5ahI8WjPpKejd
+ PAxzanOtilJjL0YpynwQnQ0Nj7k90Pv7pgcFbk0kIADJI9retCVv9StTrUQ/vDJy+SgX
+ 9PWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761838626; x=1762443426;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2RsW1Ujx8DdE+xNsVV/ZHAzK/pHZA4PcHFp6aRoIces=;
+ b=KJtpv/OlA/d+7UZlCIqX+sN71o8Wf5tjoEEvYUhdkhqUSr0gOWjcn5O32iHApl/lpN
+ k2SoMdLwdxsq2M+ridgjMDDgKSfRgS3DSbn4hy5EmV8Rez6z1kMfjsIswmiXPb9T+q2C
+ yNpaijjq5Vzxg1ARZ8SRlAvqXdN0Pvq35mdJ7BD3hZ2Qsjbaw/kmIY1lskE7njJmqACC
+ pggu4WZYPE9IfXmkpLHvBI+3ktJkO8/0mDKfkx1SmbTLChufkdeCdftYEP4Z5mfQ0fdA
+ m8bF9SEKBI0btZ/l7sfcb89MuSq0Y0+s4MkwkiInpl0HhpKU4lqS5lgT+NBFIwdPU/B6
+ uCpw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmEEbDV2vvwd58VEDKmQ+R4wA1eKa7nozXCPOI8d8sRay1vzPxGjraO5XdImPy0NJaUsYpkEM5B/Ze@nongnu.org
+X-Gm-Message-State: AOJu0YxGnRizZWZxlauP4hdrvUL2RWnunHIsnzEdFJHUEERTlQT6C9tN
+ xmk8WBSeviULHUsY2aJ/IMBSAuCVyjqg5uJbmy9DFrpgixXH6oDtQcQnDW26JrUqfKs=
+X-Gm-Gg: ASbGncuz8I0Q1MewCq3WinnV3mMYUorAupMPju5cR9dkDSIQE4WvMjS+oDy6x4KnlpM
+ qmqdc/zStofV91YG/zsGlpiQutfg284fljm+vvpYRQ9usDfduD6rfVMAmEHsYmFfAb8q3cMzBZm
+ lR9DL8P9xoAKRTDYFvoIoaTWcIFurpfPO+H36t2WnJ/sxIWmi0+1DuEjtS4iWmfvy9KhZCAa1t9
+ 8MNNgBTZf1pGdeanl0jzxUZey7la/C84PQA/TdwMTw8EUV0iXQxvVfUYB2AWTfRx59b+5apnJ2h
+ jgoTIwuAjwxEl53DyvzqbLMm0IvS8vEy09udcVDHVuNq2SkgVp1tfq9xHSVpMxM66gPVi9so7tU
+ mDrDtex1u+kixOi2uMW6i5blJpLpBj/ajporQ7eZ4x1EM+CTOK42me08d1Jq+9FDEl2HZwATSGM
+ ih1djBwDEmd5jN
+X-Google-Smtp-Source: AGHT+IHH7gT6C8yfHCP3zCJyTv9kBamOoDl6wfmXFifdXZE66oG9E+Y2pNrcDZmVj1KUcB24u/kN4A==
+X-Received: by 2002:a05:6a20:7344:b0:334:96ed:7a73 with SMTP id
+ adf61e73a8af0-348ca24f6aemr58120637.8.1761838625567; 
+ Thu, 30 Oct 2025 08:37:05 -0700 (PDT)
+Received: from [192.168.68.110] ([187.101.65.79])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b71288857c6sm16811728a12.18.2025.10.30.08.37.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Oct 2025 08:37:05 -0700 (PDT)
+Message-ID: <a72eaf23-20b8-4877-9d50-0ee2a2b18fca@ventanamicro.com>
+Date: Thu, 30 Oct 2025 12:37:00 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] hw/riscv: Add Server Platform Reference Board
+To: Chao Liu <chao.liu.riscv@isrc.iscas.ac.cn>
+Cc: ajones@ventanamicro.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ palmer@dabbelt.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ zhiwei_liu@linux.alibaba.com
+References: <20250528200129.1548259-1-dbarboza@ventanamicro.com>
+ <dbbdc597-9b4d-4dd3-8143-821ac5d82a3a@zevorn.cn>
+ <18dc5a20-85c6-4e85-b76f-66dca6771bc1@ventanamicro.com>
+ <74d8553b-f98b-4d5d-8b47-5fe21b1c7904@isrc.iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <74d8553b-f98b-4d5d-8b47-5fe21b1c7904@isrc.iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251030144805.2239954-1-berrange@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,86 +104,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry, this series aborted during mail sending so is incomplete.
 
-See the immediately following re-post for the full set of 21 patches
 
-On Thu, Oct 30, 2025 at 02:47:44PM +0000, Daniel P. Berrangé wrote:
-> This series aims to improve the support for post-quantum cryptography
-> in TLS connections by allowing  multiple sets of certificates to be
-> loaded. The idea is that during a transition period servers will have
-> a traditional RSA based certificate in parallel with an MLDSA based
-> certificate for PQC, and the right one will be dynamically determined
-> during the TLS handshake.
+On 10/30/25 12:23 PM, Chao Liu wrote:
+> On 10/30/2025 9:33 PM, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 10/30/25 8:48 AM, Chao Liu wrote:
+>>> On Wed, May 28, 2025 at 05:01:29PM -0300, Daniel Henrique Barboza wrote:
+>>>> Hi,
+>>>>
+>>>> This is my attempt to ressurect the Server SoC Platform reference work
+>>>> that has been buried for an year. The last posting was made an year ago
+>>>> [1].
+>>>> Most of the changes were made due to upstream differences from one year
+>>>> ago. Patch 1 is an example of that.
+>>>>
+>>>> In patch 2 (former 1), the main difference is the new CPU is rva23s64
+>>>> compliant. This wasn't possible in May 2024 because we didn't have this
+>>>> support back then.
+>>>>
+>>>> Patch 3 consists mostly of code base changes rather than functional
+>>>> changes. There was a discussion about whether we should supply fdts in
+>>>> this machine back in the v2 review [2]. The answer is yes: machine mode
+>>>> requires fdt to work, and we want to be flexible enough to generate our
+>>>> own fdt instead of relying on EDK2 to supply them. Note that we can also
+>>>> supply an EDK2-generated fdt via command line, bypassing the fdt created
+>>>> by QEMU, if desired.
+>>>>
+>>>> Patch 4 adds a riscv-iommu-sys device to the board. This wasn't possible
+>>>> back then because we didn't have the required upstream support for it.
+>>>>
+>>>
+>>> Hi, Daniel.
+>>>
+>>> Do we have any plans to support virt-io on the rvsp-ref machine in the future?
+>>
+>> Hmmm good question. In theory we're interested only in implementing the rvsp-ref
+>> spec but adding virt-io support doesn't hurt the spec implementation in any
+>> way ... I think. Drew, any comments?
+>>
+>>
+>>>
+>>> Recently, I have been using the RISC-V reference platform built on this set of
+>>> patches to support running the OpenEuler RISC-V operating system.
+>>>
+>>> I will actively feed back any test results to the upstream.
+>>
+>>
+>> This series has been stale because, as you might've read in the thread, it turns
+>> out we're missing a mandatory extension (sdext).
+>>
 > 
-> The first 12 patches are trivial cleanups.
-> 
-> The next 3 patches fix a potential use-after-free problem
-> 
-> The last patches introduce support for multiple certificates.
-> 
-> NB, in terms of testing this will require either CentOS Stream 10,
-> or Fedora 43. Most other distros will not support PQC out of the
-> box at this time even if they have new enough gnutls, since they
-> don't make use of the crypto-policies package which is needed to
-> enable PQC by default.
-> 
-> Daniel P. Berrangé (21):
->   crypto: remove redundant parameter checking CA certs
->   crypto: add missing free of certs array
->   crypto: replace stat() with access() for credential checks
->   crypto: remove redundant access() checks before loading certs
->   crypto: move check for TLS creds 'dir' property
->   crypto: use g_autofree when loading x509 credentials
->   crypto: remove needless indirection via parent_obj field
->   crypto: move release of DH parameters into TLS creds parent
->   crypto: shorten the endpoint == server check in TLS creds
->   crypto: remove duplication loading x509 CA cert
->   crypto: reduce duplication in handling TLS priority strings
->   crypto: introduce method for reloading TLS creds
->   crypto: introduce a wrapper around gnutls credentials
->   crypto: fix lifecycle handling of gnutls credentials objects
->   crypto: make TLS credentials structs private
->   crypto: deprecate use of external dh-params.pem file
->   crypto: avoid loading the CA certs twice
->   crypto: avoid loading the identity certs twice
->   crypto: expand logic to cope with multiple certificate identities
->   crypto: support upto 5 parallel certificate identities
->   docs: creation of x509 certs compliant with post-quantum crypto
-> 
->  crypto/meson.build                    |   5 +-
->  crypto/tlscreds.c                     |  77 ++--
->  crypto/tlscredsanon.c                 |  62 +--
->  crypto/tlscredsbox.c                  | 101 +++++
->  crypto/tlscredsbox.h                  |  46 ++
->  crypto/tlscredspriv.h                 |  36 +-
->  crypto/tlscredspsk.c                  |  64 ++-
->  crypto/tlscredsx509.c                 | 592 +++++++++++++++++---------
->  crypto/tlssession.c                   | 139 ++----
->  crypto/trace-events                   |   1 +
->  docs/about/deprecated.rst             |   9 +
->  docs/system/tls.rst                   | 134 +++++-
->  include/crypto/tlscreds.h             |  26 ++
->  include/crypto/tlscredsx509.h         |   6 +
->  tests/unit/test-crypto-tlscredsx509.c |   8 +-
->  ui/vnc.c                              |   9 +-
->  16 files changed, 849 insertions(+), 466 deletions(-)
->  create mode 100644 crypto/tlscredsbox.c
->  create mode 100644 crypto/tlscredsbox.h
-> 
-> -- 
-> 2.51.1
-> 
+> I have a basic version of the sdext extension ready. I’ll improve it later and
+> share it with the upstream community to discuss.
 
-With regards,
+
+That's awesome! Guess we'll be able to upstream a 100% compliant server platform
+emulation sooner than I've expected.
+
+
+Thanks,
+
 Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
+> 
+> Thank,
+> Chao
+> 
+>> I get emails from time to time from people asking about the status of this work
+>> so I'm considering pushing the patches as is, without sdext, and add documentation
+>> saying that this isn't a 100% rsvp-ref compliant board. The absence of sdext
+>> seems tolerable for the current uses ppl have for the board ATM, so upstreaming
+>> it as is can be beneficial for everyone. We can add sdext support later and
+>> then update the docs claiming 100% compliance.
+>>
+>> At very least I'll have to send a v4 now that you pointed out a wrong memory
+>> address in the memmap, so I'll start with that.
+>>
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>
+>>>
+>>> Thanks,
+>>> Chao
+> 
 
 
