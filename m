@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B293CC22477
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 21:34:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77747C22447
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 21:33:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEZJg-0000lf-HX; Thu, 30 Oct 2025 16:32:16 -0400
+	id 1vEZJb-0000jh-Tn; Thu, 30 Oct 2025 16:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEZJH-0000gM-Mp
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:52 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ id 1vEZJF-0000g0-A0
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:50 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEZIx-0005vT-Tg
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:48 -0400
+ id 1vEZIv-0005vd-1x
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 16:31:46 -0400
 Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id DC32280AAA;
- Thu, 30 Oct 2025 23:31:23 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id AC9BF80A84;
+ Thu, 30 Oct 2025 23:31:24 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:861::1:2b])
  by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id HVmKdN0F6Cg0-ELmHcMW9; Thu, 30 Oct 2025 23:31:23 +0300
+ ESMTPSA id HVmKdN0F6Cg0-020dyFVg; Thu, 30 Oct 2025 23:31:24 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761856283;
- bh=yr86GKt6fRLAn3ICldus7yhJBrk2W1GNN0v7ofSRZkc=;
+ s=default; t=1761856284;
+ bh=NL0jCrX2LP9YnzAQ/IxZiBP2DlF4NfwjD+aDOcx8SOo=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=1ys0C97pAv8i92Z5wOYIPnuD+ab3duSBZLtTAhmFs83DJ/umRKTrwo5MHXFlUXouL
- gCBoxMYY+BEx6/ayQHqLhFsVyaF4F2neCQ52IJCPTa8PgDw9GHZKjAsAzO2wg4YASN
- RR4SlkVL47dynmfar1K5FZJQvPxiJYdjFkUJJ2l8=
+ b=wfYpv0HcOMnP6JwjN5MLOmaEw6+TMu6K7bP2voPJ84SJ6VGiDM/DKUfTgYraLOlbP
+ hm45Uwbf4XtYLWRZ2iQo0peDbs9QVu6sKu55ti9GzcZ8GFHuCJHgOekyNnW29HpSWa
+ FXFrrudK05RsP9cpvabsTj83yysL62fjCeV5d6hU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -47,22 +46,23 @@ Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  qemu-devel@nongnu.org, leiyang@redhat.com, davydov-max@yandex-team.ru,
  yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
  raphael.s.norwitz@gmail.com
-Subject: [PATCH v9 4/8] net: introduce vmstate_net_peer_backend
-Date: Thu, 30 Oct 2025 23:31:11 +0300
-Message-ID: <20251030203116.870742-5-vsementsov@yandex-team.ru>
+Subject: [PATCH v9 5/8] virtio-net: support backend-transfer migration
+Date: Thu, 30 Oct 2025 23:31:12 +0300
+Message-ID: <20251030203116.870742-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251030203116.870742-1-vsementsov@yandex-team.ru>
 References: <20251030203116.870742-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,104 +77,297 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To implement backend-transfer migration in virtio-net in the next
-commit, we need a generic API to migrate net backend. Here is it.
+Implement backend-transfer support for virtio-net device.
+
+How it works:
+
+1. Use DEFINE_NIC_PROPERTIES_NO_CONNECT(), so that backend
+   not being connected during netdev property setting.
+
+2. If we are not in incoming migration, just call
+   net_backend_connect() in _realize()
+
+3. If we are in incoming migration, postpone backend connect up
+   to pre-incoming. At this point we check migration parameters,
+   and if backend-transfer is NOT enabled for this virtio-net
+   device, do net_backend_connect(). Otherwise - do noting,
+   live backend will come in migration stream.
+
+4. During virtio-load, we get backend state as part of virtio-net
+   state
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/net/net.h |  4 ++++
- net/net.c         | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ hw/net/virtio-net.c            | 157 ++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-net.h |   1 +
+ 2 files changed, 156 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/net.h b/include/net/net.h
-index 3aa67db57c..8375ca89a7 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -5,6 +5,7 @@
- #include "qapi/qapi-types-net.h"
- #include "net/queue.h"
- #include "hw/qdev-properties-system.h"
-+#include "migration/vmstate.h"
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 17ed0ef919..94e41c225a 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -38,8 +38,10 @@
+ #include "qapi/qapi-events-migration.h"
+ #include "hw/virtio/virtio-access.h"
+ #include "migration/misc.h"
++#include "migration/options.h"
+ #include "standard-headers/linux/ethtool.h"
+ #include "system/system.h"
++#include "system/runstate.h"
+ #include "system/replay.h"
+ #include "trace.h"
+ #include "monitor/qdev.h"
+@@ -3060,7 +3062,17 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
+     n->multiqueue = multiqueue;
+     virtio_net_change_num_queues(n, max * 2 + 1);
  
- #define MAC_FMT "%02X:%02X:%02X:%02X:%02X:%02X"
- #define MAC_ARG(x) ((uint8_t *)(x))[0], ((uint8_t *)(x))[1], \
-@@ -115,6 +116,7 @@ typedef struct NetClientInfo {
-     NetCheckPeerType *check_peer_type;
-     GetVHostNet *get_vhost_net;
-     NetBackendConnect *backend_connect;
-+    const VMStateDescription *backend_vmsd;
- } NetClientInfo;
- 
- struct NetClientState {
-@@ -360,4 +362,6 @@ static inline bool net_peer_needs_padding(NetClientState *nc)
-   return nc->peer && !nc->peer->do_not_pad;
+-    virtio_net_set_queue_pairs(n);
++    /*
++     * virtio_net_set_multiqueue() called from set_features(0) on early
++     * reset, when peer may wait for incoming (and is not initialized
++     * yet).
++     * Don't worry about it: virtio_net_set_queue_pairs() will be called
++     * later form virtio_net_post_load_device(), and anyway will be
++     * noop for local incoming migration with live backend passing.
++     */
++    if (!n->peers_wait_incoming) {
++        virtio_net_set_queue_pairs(n);
++    }
  }
  
-+extern const VMStateInfo vmstate_net_peer_backend;
+ static int virtio_net_pre_load_queues(VirtIODevice *vdev, uint32_t n)
+@@ -3089,6 +3101,17 @@ static void virtio_net_get_features(VirtIODevice *vdev, uint64_t *features,
+ 
+     virtio_add_feature_ex(features, VIRTIO_NET_F_MAC);
+ 
++    if (n->peers_wait_incoming) {
++        /*
++         * Excessive feature set is OK for early initialization when
++         * we wait for local incoming migration: actual guest-negotiated
++         * features will come with migration stream anyway. And we are sure
++         * that we support same host-features as source, because the backend
++         * is the same (the same TAP device, for example).
++         */
++        return;
++    }
 +
- #endif
-diff --git a/net/net.c b/net/net.c
-index 4fc6b1d0a6..cca4fa0a6b 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -57,6 +57,7 @@
- #include "qapi/string-output-visitor.h"
- #include "qapi/qobject-input-visitor.h"
- #include "standard-headers/linux/virtio_net.h"
-+#include "migration/vmstate.h"
- 
- /* Net bridge is currently not supported for W32. */
- #if !defined(_WIN32)
-@@ -2177,3 +2178,49 @@ bool net_backend_connect(NetClientState *nc, Error **errp)
- 
-     return nc->info->backend_connect(nc, errp);
+     if (!peer_has_vnet_hdr(n)) {
+         virtio_clear_feature_ex(features, VIRTIO_NET_F_CSUM);
+         virtio_clear_feature_ex(features, VIRTIO_NET_F_HOST_TSO4);
+@@ -3180,6 +3203,18 @@ static void virtio_net_get_features(VirtIODevice *vdev, uint64_t *features,
+     }
  }
-+
-+static int get_peer_backend(QEMUFile *f, void *pv, size_t size,
-+                       const VMStateField *field)
+ 
++static bool virtio_net_update_host_features(VirtIONet *n, Error **errp)
 +{
-+    NetClientState *nc = pv;
-+    Error *local_err = NULL;
-+    int ret;
++    ERRP_GUARD();
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
 +
-+    if (!nc->peer) {
-+        return -EINVAL;
-+    }
-+    nc = nc->peer;
++    peer_test_vnet_hdr(n);
 +
-+    ret = vmstate_load_state(f, nc->info->backend_vmsd, nc, 0, &local_err);
-+    if (ret < 0) {
-+        error_report_err(local_err);
-+    }
++    virtio_net_get_features(vdev, &vdev->host_features, errp);
 +
-+    return ret;
++    return !*errp;
 +}
 +
-+static int put_peer_backend(QEMUFile *f, void *pv, size_t size,
-+                       const VMStateField *field, JSONWriter *vmdesc)
+ static int virtio_net_post_load_device(void *opaque, int version_id)
+ {
+     VirtIONet *n = opaque;
+@@ -3301,6 +3336,9 @@ struct VirtIONetMigTmp {
+     uint16_t        curr_queue_pairs_1;
+     uint8_t         has_ufo;
+     uint32_t        has_vnet_hdr;
++
++    NetClientState *ncs;
++    uint32_t max_queue_pairs;
+ };
+ 
+ /* The 2nd and subsequent tx_waiting flags are loaded later than
+@@ -3570,6 +3608,57 @@ static const VMStateDescription vhost_user_net_backend_state = {
+     }
+ };
+ 
++static bool virtio_net_is_backend_transfer(void *opaque, int version_id)
 +{
-+    NetClientState *nc = pv;
-+    Error *local_err = NULL;
-+    int ret;
++    VirtIONet *n = opaque;
 +
-+    if (!nc->peer) {
-+        return -EINVAL;
-+    }
-+    nc = nc->peer;
-+
-+    ret = vmstate_save_state(f, nc->info->backend_vmsd, nc, 0, &local_err);
-+    if (ret < 0) {
-+        error_report_err(local_err);
-+    }
-+
-+    return ret;
++    return migrate_backend_transfer(DEVICE(n));
 +}
 +
-+const VMStateInfo vmstate_net_peer_backend = {
-+    .name = "virtio-net-nic-nc-backend",
-+    .get = get_peer_backend,
-+    .put = put_peer_backend,
++static int virtio_net_nic_pre_save(void *opaque)
++{
++    struct VirtIONetMigTmp *tmp = opaque;
++
++    tmp->ncs = tmp->parent->nic->ncs;
++    tmp->max_queue_pairs = tmp->parent->max_queue_pairs;
++
++    return 0;
++}
++
++static int virtio_net_nic_pre_load(void *opaque)
++{
++    /* Reuse the pointer setup from save */
++    virtio_net_nic_pre_save(opaque);
++
++    return 0;
++}
++
++static int virtio_net_nic_post_load(void *opaque, int version_id)
++{
++    struct VirtIONetMigTmp *tmp = opaque;
++    Error *local_err = NULL;
++
++    if (!virtio_net_update_host_features(tmp->parent, &local_err)) {
++        error_report_err(local_err);
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
++static const VMStateDescription vmstate_virtio_net_nic = {
++    .name      = "virtio-net-nic",
++    .pre_load  = virtio_net_nic_pre_load,
++    .pre_save  = virtio_net_nic_pre_save,
++    .post_load  = virtio_net_nic_post_load,
++    .fields    = (const VMStateField[]) {
++        VMSTATE_VARRAY_UINT32(ncs, struct VirtIONetMigTmp,
++                              max_queue_pairs, 0, vmstate_net_peer_backend,
++                              NetClientState),
++        VMSTATE_END_OF_LIST()
++    },
 +};
++
+ static const VMStateDescription vmstate_virtio_net_device = {
+     .name = "virtio-net-device",
+     .version_id = VIRTIO_NET_VM_VERSION,
+@@ -3602,6 +3691,9 @@ static const VMStateDescription vmstate_virtio_net_device = {
+          */
+         VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
+                               sizeof(typeof_field(VirtIONet, vlans))),
++        VMSTATE_WITH_TMP_TEST(VirtIONet, virtio_net_is_backend_transfer,
++                              struct VirtIONetMigTmp,
++                              vmstate_virtio_net_nic),
+         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
+                          vmstate_virtio_net_has_vnet),
+         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
+@@ -4003,6 +4095,20 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+         n->nic->ncs[i].do_not_pad = true;
+     }
+ 
++    if (runstate_check(RUN_STATE_INMIGRATE)) {
++        n->peers_wait_incoming = true;
++    } else {
++        for (i = 0; i < n->max_queue_pairs; i++) {
++            nc = qemu_get_subqueue(n->nic, i);
++            if (!nc->peer) {
++                continue;
++            }
++            if (!net_backend_connect(nc->peer, errp)) {
++                return;
++            }
++        }
++    }
++
+     peer_test_vnet_hdr(n);
+     if (peer_has_vnet_hdr(n)) {
+         n->host_hdr_len = sizeof(struct virtio_net_hdr);
+@@ -4176,6 +4282,30 @@ static bool dev_unplug_pending(void *opaque)
+     return vdc->primary_unplug_pending(dev);
+ }
+ 
++static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
++{
++    VirtIONet *n = opaque;
++    int i;
++
++    if (!virtio_net_is_backend_transfer(opaque, 0) && n->peers_wait_incoming) {
++        for (i = 0; i < n->max_queue_pairs; i++) {
++            NetClientState *nc = qemu_get_subqueue(n->nic, i);
++            if (!nc->peer) {
++                continue;
++            }
++            if (!net_backend_connect(nc->peer, errp)) {
++                return false;
++            }
++        }
++
++        n->peers_wait_incoming = false;
++
++        return virtio_net_update_host_features(n, errp);
++    }
++
++    return true;
++}
++
+ static const VMStateDescription vmstate_virtio_net = {
+     .name = "virtio-net",
+     .minimum_version_id = VIRTIO_NET_VM_VERSION,
+@@ -4184,6 +4314,7 @@ static const VMStateDescription vmstate_virtio_net = {
+         VMSTATE_VIRTIO_DEVICE,
+         VMSTATE_END_OF_LIST()
+     },
++    .pre_incoming = vhost_user_blk_pre_incoming,
+     .pre_save = virtio_net_pre_save,
+     .dev_unplug_pending = dev_unplug_pending,
+ };
+@@ -4239,7 +4370,7 @@ static const Property virtio_net_properties[] = {
+                     VIRTIO_NET_F_RSC_EXT, false),
+     DEFINE_PROP_UINT32("rsc_interval", VirtIONet, rsc_timeout,
+                        VIRTIO_NET_RSC_DEFAULT_INTERVAL),
+-    DEFINE_NIC_PROPERTIES(VirtIONet, nic_conf),
++    DEFINE_NIC_PROPERTIES_NO_CONNECT(VirtIONet, nic_conf),
+     DEFINE_PROP_UINT32("x-txtimer", VirtIONet, net_conf.txtimer,
+                        TX_TIMER_INTERVAL),
+     DEFINE_PROP_INT32("x-txburst", VirtIONet, net_conf.txburst, TX_BURST),
+@@ -4314,6 +4445,27 @@ static const Property virtio_net_properties[] = {
+                                false),
+ };
+ 
++static bool virtio_net_backend_transfer_support(DeviceState *dev, Error **errp)
++{
++    VirtIONet *n = VIRTIO_NET(dev);
++    NetClientState *nc = qemu_get_queue(n->nic);
++
++    if (!nc->peer) {
++        error_setg(errp, "Device %s has no attached backend",
++                   qdev_get_dev_path(dev));
++        return false;
++    }
++
++    if (!nc->peer->info->backend_vmsd) {
++        error_setg(errp, "Device %s backend is %s, does not support backend"
++                   " transfer", qdev_get_dev_path(dev),
++                   NetClientDriver_str(nc->peer->info->type));
++        return false;
++    }
++
++    return true;
++}
++
+ static void virtio_net_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -4321,6 +4473,7 @@ static void virtio_net_class_init(ObjectClass *klass, const void *data)
+ 
+     device_class_set_props(dc, virtio_net_properties);
+     dc->vmsd = &vmstate_virtio_net;
++    dc->backend_transfer_support = virtio_net_backend_transfer_support;
+     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
+     vdc->realize = virtio_net_device_realize;
+     vdc->unrealize = virtio_net_device_unrealize;
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index f708355306..7e0e156908 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -231,6 +231,7 @@ struct VirtIONet {
+     struct EBPFRSSContext ebpf_rss;
+     uint32_t nr_ebpf_rss_fds;
+     char **ebpf_rss_fds;
++    bool peers_wait_incoming;
+ };
+ 
+ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
 -- 
 2.48.1
 
