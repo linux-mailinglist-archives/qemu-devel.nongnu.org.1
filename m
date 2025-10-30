@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AFAC20BAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:51:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 097F4C20B6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vETx1-0008M5-D9; Thu, 30 Oct 2025 10:48:31 -0400
+	id 1vETx2-0008PH-33; Thu, 30 Oct 2025 10:48:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vETwv-0008Ku-PM
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vETwz-0008Lr-5U
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vETws-0001K0-Dl
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:25 -0400
+ id 1vETwt-0001KA-GD
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:48:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761835696;
+ s=mimecast20190719; t=1761835698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zl1F1h/cTdYd+yfEU5oHb4PBW5Tv4gvZzJamHqxtuXg=;
- b=DTCJwuvmy0kKo0TbA/w2xBFaCrwwuLuzyS1jHtgS02PYAhVbvBsBKSx0V0L65AQrDHPOb2
- LeE+zSm9Mdz47LNeDzoFZi+VcYuizTL0gHiqDdXelql1Q7arTGJ9uXbsQ8sUu9nRh6pAxD
- o6T/HLKEfZRc9DJS7SgdzLcdwCsBQ7Q=
+ bh=V63kLovDtLxShSX97e1gMJ0rHkzBCZtg+z1997cvzJc=;
+ b=f+TfaA2yPBuZko5ggxX04tdUDGwnocVYsHTh53Gr8C0KLsxna6P9EZ9tHqD2sPRr4G1ShF
+ 25eu0MdWArk9yP4FhiFfO5mdkLePaI9GRMdjL2nCaXv5kHA2L1rTahYWjcQwdyIHn45++2
+ QgLd5ULQjqTdBaZd+sBHRtQTowybhcI=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-yH_Op-5lOFqQ3CkeSNxEPA-1; Thu,
- 30 Oct 2025 10:48:13 -0400
-X-MC-Unique: yH_Op-5lOFqQ3CkeSNxEPA-1
-X-Mimecast-MFC-AGG-ID: yH_Op-5lOFqQ3CkeSNxEPA_1761835692
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-Znw35p0AOoGaZKGT85wIFg-1; Thu,
+ 30 Oct 2025 10:48:15 -0400
+X-MC-Unique: Znw35p0AOoGaZKGT85wIFg-1
+X-Mimecast-MFC-AGG-ID: Znw35p0AOoGaZKGT85wIFg_1761835694
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8F0331955EB7; Thu, 30 Oct 2025 14:48:12 +0000 (UTC)
+ id 59FA61955E74; Thu, 30 Oct 2025 14:48:14 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.122])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1F5F71800581; Thu, 30 Oct 2025 14:48:10 +0000 (UTC)
+ id 02E831800581; Thu, 30 Oct 2025 14:48:12 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org
-Subject: [PATCH 02/21] crypto: add missing free of certs array
-Date: Thu, 30 Oct 2025 14:47:46 +0000
-Message-ID: <20251030144805.2239954-3-berrange@redhat.com>
+Subject: [PATCH 03/21] crypto: replace stat() with access() for credential
+ checks
+Date: Thu, 30 Oct 2025 14:47:47 +0000
+Message-ID: <20251030144805.2239954-4-berrange@redhat.com>
 In-Reply-To: <20251030144805.2239954-1-berrange@redhat.com>
 References: <20251030144805.2239954-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,23 +85,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Readability of the credential files is what matters for our usage,
+so access() is more appropriate than stat().
+
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/tlscredsx509.c | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/tlscreds.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-index 847fd4d9fa..75c70af522 100644
---- a/crypto/tlscredsx509.c
-+++ b/crypto/tlscredsx509.c
-@@ -550,6 +550,7 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
-     for (i = 0; i < ncerts; i++) {
-         gnutls_x509_crt_deinit(certs[i]);
-     }
-+    g_free(certs);
-     for (i = 0; i < ncacerts; i++) {
-         gnutls_x509_crt_deinit(cacerts[i]);
-     }
+diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c
+index 9e59594d67..208a7e6d8f 100644
+--- a/crypto/tlscreds.c
++++ b/crypto/tlscreds.c
+@@ -100,7 +100,6 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,
+                            char **cred,
+                            Error **errp)
+ {
+-    struct stat sb;
+     int ret = -1;
+ 
+     if (!creds->dir) {
+@@ -114,7 +113,7 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,
+ 
+     *cred = g_strdup_printf("%s/%s", creds->dir, filename);
+ 
+-    if (stat(*cred, &sb) < 0) {
++    if (access(*cred, R_OK) < 0) {
+         if (errno == ENOENT && !required) {
+             ret = 0;
+         } else {
 -- 
 2.51.1
 
