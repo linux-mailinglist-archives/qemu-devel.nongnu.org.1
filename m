@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E57C21F7C
+	by mail.lfdr.de (Postfix) with ESMTPS id 0424AC21F79
 	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 20:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEYNb-0002UT-IK; Thu, 30 Oct 2025 15:32:15 -0400
+	id 1vEYNj-0002Zn-Ne; Thu, 30 Oct 2025 15:32:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vEYNU-0002Sq-O8
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:32:09 -0400
+ id 1vEYNh-0002ZJ-H4
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:32:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vEYNP-0005jk-UO
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:32:07 -0400
+ id 1vEYNY-0005ka-SX
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 15:32:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761852719;
+ s=mimecast20190719; t=1761852727;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RZuwBqSglXfzHMANbZJfEPkpeSCYDm9KgAUzfY2qNjE=;
- b=Nukk68cE5G63IfxUSCR9R/95+nMzce1s4C9kx9dfwkiKFiexwoM16TzXAYS8wOqBaqcU/8
- +fnQQXdC66dexltHzF0Idql2NDUHVgkoHmOH7so1gPhR3ATIod6yXC7Mi0hnzYb/vusccV
- caZ7zGI827lRi5BTm+hU0uUiPJOC5cI=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1LPFtosjhY9o+m5lCmIf+ytgKdFi7vCAxxVanEmWzW4=;
+ b=G8wpWsg1oDLU6IwCiUdtFUSLQagVtQOs0gjOdotlC2nnmvUiDVN88x+IEqjVhRopeGLEWz
+ nsrc2Hzxog61uGobIhbMNyjRrA4k+Df6e4JkE2/AM6kkuYY/KM1DwF0NFoX+BK6skG6qbq
+ n8fx7KXG/XwLXcj5NXtuWtO1Qdr7TQU=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-fy1fkVUQO5Cz0HSV2BSK4w-1; Thu, 30 Oct 2025 15:31:57 -0400
-X-MC-Unique: fy1fkVUQO5Cz0HSV2BSK4w-1
-X-Mimecast-MFC-AGG-ID: fy1fkVUQO5Cz0HSV2BSK4w_1761852716
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-28bd8b3fa67so12522315ad.2
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 12:31:56 -0700 (PDT)
+ us-mta-649-qEW0ewrENwSjVTdskBwPxw-1; Thu, 30 Oct 2025 15:32:05 -0400
+X-MC-Unique: qEW0ewrENwSjVTdskBwPxw-1
+X-Mimecast-MFC-AGG-ID: qEW0ewrENwSjVTdskBwPxw_1761852724
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-3407734d9a2so488562a91.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 12:32:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761852716; x=1762457516;
+ d=1e100.net; s=20230601; t=1761852724; x=1762457524;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=RZuwBqSglXfzHMANbZJfEPkpeSCYDm9KgAUzfY2qNjE=;
- b=eET2iO0wnF5Ifd7213n9Ma+MT0+BZL1KWsOEeFbPj/Up87yvNEOf+pc44xilmRu820
- DK1+Zi3Lh+y+6u+geIF/6e70oLySijXHyPYD93irfcMDBeY9YmJSzmL9XWYN2N8xHkUE
- U0C9V02vnW0UpZ54C+i2FOz1hNIxf6OrQom/TaqIzhKa0dF+fXcs6NIuMVdLMOSpesFu
- FCoV6cnbCYy1BVgE/i+k9ds1X9jxQcuC3IZ3sKuSmNaqmjoIRSnpblk7tS6VLaxYbNso
- v4pdCS8piSUIPwsvuVXYiAYmKO382+OgfqCGc6BiY81nVuaFASfGSyJtlHY4Xlgxdn4b
- sNYA==
-X-Gm-Message-State: AOJu0YwuFuhc+pc0+VQp6dIWsG+2SyAaCVNPsAgb7vafxNieFexP/nBO
- AW3f/dge8ennHC8FG9ytClY8gJXHDtRWC2GFwYTcCltJOvKRerFagF7v2FbYqaJKg+ktMF8oIas
- gU8GadabUj53CaztKVvnU9UayxtyzSFRBOQOMIvB7L5ULGU+Z44kICwvfjpJSPNXRDXg0lbeqB4
- qHMCrXZR0lMpeJjDWr5x3sQ6UIKB0Y//8c2h4P0TU=
-X-Gm-Gg: ASbGnct9v3CEP3/5aYr9Ln2XIKbrW6HOqohtqMhnHcz2GKzD2DUW+lxaCNWQTF+RK6O
- xXbS3A7zK5mhZmREuFhGikLL8PP9HvPId0DjlUHvOkbBGUS+RMQjX2xgpaShwLIGrXvSV5/3uCZ
- QdU0LrB/gShcFtWGwENi9IVzveeSLgh08V3TN/yumTlqfB5v/l/cuC6nXO16CdkSqUdMcViroVz
- nRgULst6kbUtzE=
-X-Received: by 2002:a17:903:11cd:b0:27d:c542:fe25 with SMTP id
- d9443c01a7336-2951a587e32mr11186455ad.41.1761852715738; 
- Thu, 30 Oct 2025 12:31:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXxoAWGqN9vPpwjhr49sLoOVwyJ8UvKI1dySSX8VTSVsPSODMzQsumM8xYsJ8s+g5VDvEWYl4DxnfS1Q40iiU=
-X-Received: by 2002:a17:903:11cd:b0:27d:c542:fe25 with SMTP id
- d9443c01a7336-2951a587e32mr11186155ad.41.1761852715253; Thu, 30 Oct 2025
- 12:31:55 -0700 (PDT)
+ bh=1LPFtosjhY9o+m5lCmIf+ytgKdFi7vCAxxVanEmWzW4=;
+ b=G1OoIcIr9pTSBDhXs3/Qo8VtohaaDWIzpsX7g1qV//Smo2q8dr6o0ZuDJPWWq5g4Fs
+ IYcXMW1BrLPBJewAD3tjP14pRuCSi56XNI/b7dMt/iuTN6oMowBwhHuhnpoPhEmHFe7F
+ orr5BbqDjDYBr6TNHJmwO6lvYCT8p+YWbKX7q0JkF3HpHecFFxSUQ6S5PmHfmzymlpep
+ d/S62oVM3jA0DBG2DUxEtkOKjDgregIa/p7QM3xJJnRHWrTNSN/rGQjUOZjz9aHdx0x+
+ TEwVwC0IRGqSFWcUNax/7Fi3ZicXv2RfmbolkrhlPQ//Hkhc1j+PmlhR4tMHSkhKnn6O
+ 1ZXg==
+X-Gm-Message-State: AOJu0Yxx9LuSOfaPV9z2DiA8XTRZK7rUweahMhmbw21b+KF704lDnj7J
+ JdNjhNf7Ih5QY/P6euufffA8C7mzyLNNkA8wdPdSHryMdmOLhiK/Vd9XFKzy5C5zGOvrlyUnW5F
+ F5GW/5kDe93ZW5kzJbfABfIMiMORxux4iNIy5mWSIUXEz2hA4Cn73bftRnQWYAIEGp9JcfzB4aS
+ IzjUh34jYJeUOOUswdqftsVcT+nEP5kzDUzQCVOl8=
+X-Gm-Gg: ASbGncsTiic5M4F7lnAKz/rhffXeFWr3erlD5lwpK/O/4wq66NP/lzmo6y/pdmz1fgU
+ GKxpaJrl6aRFxbw5m1w0sbdVBm1blVhOdhMXoVEPhOiUuC2qFphN/xtPa0NW7sFhMKD1me6iOwV
+ 2VcBrXRwA/N9fE7FVW+dNsBNvaAMns5QfnxlBi9/qSW52Pqdws4+zsZW8oRmCYA4ehXvdKzgH4r
+ R3YKLM/bJBU1ak=
+X-Received: by 2002:a17:90b:2791:b0:33b:6ef4:c904 with SMTP id
+ 98e67ed59e1d1-3408307ecc4mr1160427a91.20.1761852723953; 
+ Thu, 30 Oct 2025 12:32:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHBisTL6jOG3JqIbj3+r23JNQ14hztBZ1LU1uVlldDBy7kG/qQcm5BhjcY++JpThvJwOY/tNAjprmnDQWncog=
+X-Received: by 2002:a17:90b:2791:b0:33b:6ef4:c904 with SMTP id
+ 98e67ed59e1d1-3408307ecc4mr1160403a91.20.1761852723574; Thu, 30 Oct 2025
+ 12:32:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251030144927.2241109-1-berrange@redhat.com>
- <20251030144927.2241109-9-berrange@redhat.com>
-In-Reply-To: <20251030144927.2241109-9-berrange@redhat.com>
+ <20251030144927.2241109-11-berrange@redhat.com>
+In-Reply-To: <20251030144927.2241109-11-berrange@redhat.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Thu, 30 Oct 2025 23:31:43 +0400
-X-Gm-Features: AWmQ_bnPEDxsNWPTZAL54O23vjrjWhuyY21_TC_DKHml5aYcS5BQpGX_e4ErXUk
-Message-ID: <CAMxuvayDCp-XxzEkR8B1qsP3dAzcQ_bh0u1OpPBOC5ABMd_e8A@mail.gmail.com>
-Subject: Re: [PATCH 08/21] crypto: move release of DH parameters into TLS
- creds parent
+Date: Thu, 30 Oct 2025 23:31:52 +0400
+X-Gm-Features: AWmQ_bk1OhafHzkxrW-OxonYPsTCgwYqS42qNg7i05Cle-t7won30O4iqWtYQRE
+Message-ID: <CAMxuvazVRsYq9Zzqje7JciH8QqPxYB2tX0x0vAGRvKGZAoRYLA@mail.gmail.com>
+Subject: Re: [PATCH 10/21] crypto: remove duplication loading x509 CA cert
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org
-Content-Type: multipart/alternative; boundary="0000000000003d54470642654de2"
+Content-Type: multipart/alternative; boundary="000000000000bc4b940642654d75"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,7 +85,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,7 +101,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003d54470642654de2
+--000000000000bc4b940642654d75
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -112,223 +111,148 @@ On Thu, Oct 30, 2025 at 6:49=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
 edhat.com>
 wrote:
 
-> The code for releasing DH parameters is common to all credential
-> subclasses, so can be moved into the parent.
+> The CA cert is mandatory in both client and server scenarios.
 >
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 >
 
-and unload() was only called from finalize
-(and qcrypto_tls_creds_x509_reload())
-
 Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-
-> ---
->  crypto/tlscreds.c     | 4 ++++
->  crypto/tlscredsanon.c | 4 ----
->  crypto/tlscredspsk.c  | 4 ----
->  crypto/tlscredsx509.c | 7 +++----
->  4 files changed, 7 insertions(+), 12 deletions(-)
+---
+>  crypto/tlscredsx509.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c
-> index 65e97ddd11..1e39ee1141 100644
-> --- a/crypto/tlscreds.c
-> +++ b/crypto/tlscreds.c
-> @@ -246,6 +246,10 @@ qcrypto_tls_creds_finalize(Object *obj)
->  {
->      QCryptoTLSCreds *creds =3D QCRYPTO_TLS_CREDS(obj);
->
-> +    if (creds->dh_params) {
-> +        gnutls_dh_params_deinit(creds->dh_params);
-> +    }
-> +
->      g_free(creds->dir);
->      g_free(creds->priority);
->  }
-> diff --git a/crypto/tlscredsanon.c b/crypto/tlscredsanon.c
-> index bc3351b5d6..1ddfe4eb31 100644
-> --- a/crypto/tlscredsanon.c
-> +++ b/crypto/tlscredsanon.c
-> @@ -92,10 +92,6 @@ qcrypto_tls_creds_anon_unload(QCryptoTLSCredsAnon
-> *creds)
->              creds->data.server =3D NULL;
->          }
->      }
-> -    if (creds->parent_obj.dh_params) {
-> -        gnutls_dh_params_deinit(creds->parent_obj.dh_params);
-> -        creds->parent_obj.dh_params =3D NULL;
-> -    }
->  }
->
->  #else /* ! CONFIG_GNUTLS */
-> diff --git a/crypto/tlscredspsk.c b/crypto/tlscredspsk.c
-> index 545d3e45db..bf4efe2114 100644
-> --- a/crypto/tlscredspsk.c
-> +++ b/crypto/tlscredspsk.c
-> @@ -175,10 +175,6 @@ qcrypto_tls_creds_psk_unload(QCryptoTLSCredsPSK
-> *creds)
->              creds->data.server =3D NULL;
->          }
->      }
-> -    if (creds->parent_obj.dh_params) {
-> -        gnutls_dh_params_deinit(creds->parent_obj.dh_params);
-> -        creds->parent_obj.dh_params =3D NULL;
-> -    }
->  }
->
->  #else /* ! CONFIG_GNUTLS */
 > diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-> index 39f80b33ad..1555285910 100644
+> index 08223781d7..f2f1aa2815 100644
 > --- a/crypto/tlscredsx509.c
 > +++ b/crypto/tlscredsx509.c
-> @@ -685,10 +685,6 @@ qcrypto_tls_creds_x509_unload(QCryptoTLSCredsX509
-> *creds)
->          gnutls_certificate_free_credentials(creds->data);
->          creds->data =3D NULL;
->      }
-> -    if (creds->parent_obj.dh_params) {
-> -        gnutls_dh_params_deinit(creds->parent_obj.dh_params);
-> -        creds->parent_obj.dh_params =3D NULL;
-> -    }
->  }
+> @@ -578,11 +578,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509
+> *creds,
 >
+>      trace_qcrypto_tls_creds_x509_load(creds, creds->parent_obj.dir);
 >
-> @@ -780,6 +776,9 @@ qcrypto_tls_creds_x509_reload(QCryptoTLSCreds *creds,
-> Error **errp)
->      qcrypto_tls_creds_x509_load(x509_creds, &local_err);
->      if (local_err) {
->          qcrypto_tls_creds_x509_unload(x509_creds);
-> +        if (creds->dh_params) {
-> +            gnutls_dh_params_deinit(creds->dh_params);
-> +        }
->          x509_creds->data =3D creds_data;
->          creds->dh_params =3D creds_dh_params;
->          error_propagate(errp, local_err);
+> +    if (qcrypto_tls_creds_get_path(&creds->parent_obj,
+> +                                   QCRYPTO_TLS_CREDS_X509_CA_CERT,
+> +                                   true, &cacert, errp) < 0) {
+> +        return -1;
+> +    }
+> +
+>      if (isServer) {
+>          if (qcrypto_tls_creds_get_path(&creds->parent_obj,
+> -                                       QCRYPTO_TLS_CREDS_X509_CA_CERT,
+> -                                       true, &cacert, errp) < 0 ||
+> -            qcrypto_tls_creds_get_path(&creds->parent_obj,
+>                                         QCRYPTO_TLS_CREDS_X509_CA_CRL,
+>                                         false, &cacrl, errp) < 0 ||
+>              qcrypto_tls_creds_get_path(&creds->parent_obj,
+> @@ -598,9 +601,6 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *cred=
+s,
+>          }
+>      } else {
+>          if (qcrypto_tls_creds_get_path(&creds->parent_obj,
+> -                                       QCRYPTO_TLS_CREDS_X509_CA_CERT,
+> -                                       true, &cacert, errp) < 0 ||
+> -            qcrypto_tls_creds_get_path(&creds->parent_obj,
+>                                         QCRYPTO_TLS_CREDS_X509_CLIENT_CER=
+T,
+>                                         false, &cert, errp) < 0 ||
+>              qcrypto_tls_creds_get_path(&creds->parent_obj,
 > --
 > 2.51.1
 >
 >
 
---0000000000003d54470642654de2
+--000000000000bc4b940642654d75
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 30, 2025=
- at 6:49=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@=
-redhat.com" target=3D"_blank">berrange@redhat.com</a>&gt; wrote:<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">The code for releasing DH =
-parameters is common to all credential<br>
-subclasses, so can be moved into the parent.<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><div>Hi</div><br><div class=3D"gmail_quot=
+e"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 30, 2025 at 6:49=E2=80=
+=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com" ta=
+rget=3D"_blank">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">The CA cert is mandatory in both client =
+and server scenarios.<br>
 <br>
 Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redha=
 t.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br></blockquote><div><=
-br></div><div>and unload() was only called from finalize (and=C2=A0qcrypto_=
-tls_creds_x509_reload())</div><div><br></div><div>Reviewed-by: Marc-Andr=C3=
-=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com" target=3D"_bl=
-ank">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
+br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:mar=
+candre.lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>=
+&gt;=C2=A0</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">
 ---<br>
-=C2=A0crypto/tlscreds.c=C2=A0 =C2=A0 =C2=A0| 4 ++++<br>
-=C2=A0crypto/tlscredsanon.c | 4 ----<br>
-=C2=A0crypto/tlscredspsk.c=C2=A0 | 4 ----<br>
-=C2=A0crypto/tlscredsx509.c | 7 +++----<br>
-=C2=A04 files changed, 7 insertions(+), 12 deletions(-)<br>
+=C2=A0crypto/tlscredsx509.c | 12 ++++++------<br>
+=C2=A01 file changed, 6 insertions(+), 6 deletions(-)<br>
 <br>
-diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c<br>
-index 65e97ddd11..1e39ee1141 100644<br>
---- a/crypto/tlscreds.c<br>
-+++ b/crypto/tlscreds.c<br>
-@@ -246,6 +246,10 @@ qcrypto_tls_creds_finalize(Object *obj)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0QCryptoTLSCreds *creds =3D QCRYPTO_TLS_CREDS(obj);<br>
-<br>
-+=C2=A0 =C2=A0 if (creds-&gt;dh_params) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 gnutls_dh_params_deinit(creds-&gt;dh_params);<=
-br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0g_free(creds-&gt;dir);<br>
-=C2=A0 =C2=A0 =C2=A0g_free(creds-&gt;priority);<br>
-=C2=A0}<br>
-diff --git a/crypto/tlscredsanon.c b/crypto/tlscredsanon.c<br>
-index bc3351b5d6..1ddfe4eb31 100644<br>
---- a/crypto/tlscredsanon.c<br>
-+++ b/crypto/tlscredsanon.c<br>
-@@ -92,10 +92,6 @@ qcrypto_tls_creds_anon_unload(QCryptoTLSCredsAnon *creds=
-)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;data.server =3D N=
-ULL;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 if (creds-&gt;parent_obj.dh_params) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 gnutls_dh_params_deinit(creds-&gt;parent_obj.d=
-h_params);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 creds-&gt;parent_obj.dh_params =3D NULL;<br>
--=C2=A0 =C2=A0 }<br>
-=C2=A0}<br>
-<br>
-=C2=A0#else /* ! CONFIG_GNUTLS */<br>
-diff --git a/crypto/tlscredspsk.c b/crypto/tlscredspsk.c<br>
-index 545d3e45db..bf4efe2114 100644<br>
---- a/crypto/tlscredspsk.c<br>
-+++ b/crypto/tlscredspsk.c<br>
-@@ -175,10 +175,6 @@ qcrypto_tls_creds_psk_unload(QCryptoTLSCredsPSK *creds=
-)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;data.server =3D N=
-ULL;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 if (creds-&gt;parent_obj.dh_params) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 gnutls_dh_params_deinit(creds-&gt;parent_obj.d=
-h_params);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 creds-&gt;parent_obj.dh_params =3D NULL;<br>
--=C2=A0 =C2=A0 }<br>
-=C2=A0}<br>
-<br>
-=C2=A0#else /* ! CONFIG_GNUTLS */<br>
 diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c<br>
-index 39f80b33ad..1555285910 100644<br>
+index 08223781d7..f2f1aa2815 100644<br>
 --- a/crypto/tlscredsx509.c<br>
 +++ b/crypto/tlscredsx509.c<br>
-@@ -685,10 +685,6 @@ qcrypto_tls_creds_x509_unload(QCryptoTLSCredsX509 *cre=
-ds)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0gnutls_certificate_free_credentials(creds=
--&gt;data);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;data =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 if (creds-&gt;parent_obj.dh_params) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 gnutls_dh_params_deinit(creds-&gt;parent_obj.d=
-h_params);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 creds-&gt;parent_obj.dh_params =3D NULL;<br>
--=C2=A0 =C2=A0 }<br>
-=C2=A0}<br>
+@@ -578,11 +578,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *cred=
+s,<br>
 <br>
+=C2=A0 =C2=A0 =C2=A0trace_qcrypto_tls_creds_x509_load(creds, creds-&gt;pare=
+nt_obj.dir);<br>
 <br>
-@@ -780,6 +776,9 @@ qcrypto_tls_creds_x509_reload(QCryptoTLSCreds *creds, E=
-rror **errp)<br>
-=C2=A0 =C2=A0 =C2=A0qcrypto_tls_creds_x509_load(x509_creds, &amp;local_err)=
-;<br>
-=C2=A0 =C2=A0 =C2=A0if (local_err) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qcrypto_tls_creds_x509_unload(x509_creds)=
-;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (creds-&gt;dh_params) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gnutls_dh_params_deinit(creds-&g=
-t;dh_params);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0x509_creds-&gt;data =3D creds_data;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0creds-&gt;dh_params =3D creds_dh_params;<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_propagate(errp, local_err);<br>
++=C2=A0 =C2=A0 if (qcrypto_tls_creds_get_path(&amp;creds-&gt;parent_obj,<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0QCRYPTO_TLS_CREDS_X509_=
+CA_CERT,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0true, &amp;cacert, errp=
+) &lt; 0) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0if (isServer) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (qcrypto_tls_creds_get_path(&amp;creds=
+-&gt;parent_obj,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0QCRYPTO_T=
+LS_CREDS_X509_CA_CERT,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0true, &am=
+p;cacert, errp) &lt; 0 ||<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qcrypto_tls_creds_get_path(&amp;=
+creds-&gt;parent_obj,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 QCRYPTO_=
+TLS_CREDS_X509_CA_CRL,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 false, &=
+amp;cacrl, errp) &lt; 0 ||<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qcrypto_tls_creds_get_path(=
+&amp;creds-&gt;parent_obj,<br>
+@@ -598,9 +601,6 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,=
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0 =C2=A0 =C2=A0} else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (qcrypto_tls_creds_get_path(&amp;creds=
+-&gt;parent_obj,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0QCRYPTO_T=
+LS_CREDS_X509_CA_CERT,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0true, &am=
+p;cacert, errp) &lt; 0 ||<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qcrypto_tls_creds_get_path(&amp;=
+creds-&gt;parent_obj,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 QCRYPTO_=
+TLS_CREDS_X509_CLIENT_CERT,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 false, &=
+amp;cert, errp) &lt; 0 ||<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qcrypto_tls_creds_get_path(=
+&amp;creds-&gt;parent_obj,<br>
 -- <br>
 2.51.1<br>
 <br>
 </blockquote></div></div>
 </div>
 
---0000000000003d54470642654de2--
+--000000000000bc4b940642654d75--
 
 
