@@ -2,95 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFB2C20C29
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 15:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189D4C20CF4
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 16:02:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vETzv-0003G6-63; Thu, 30 Oct 2025 10:51:31 -0400
+	id 1vEU9l-0005nz-7J; Thu, 30 Oct 2025 11:01:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vETzk-0002gY-4H
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:51:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vEU8s-0005m3-J4
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:00:51 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vETzZ-0001sC-BG
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 10:51:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761835863;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2nFMttYB5fauTANmpLOz33X8KQGAeltN2KPLLD7rD2c=;
- b=h1xGT474CN9epahbh18xJoipnCC8XX3mSp8lv+KycUZxzrvlfqvQFlyJnrDRQXlD5jsid4
- XTyl4ngNSRWFtiW8ijCelh/dSOR2xAXGoumGIsHq58eBXg5CmwryFRj1lYzAL5FVx7VBup
- kUi5pHGpSHvAD0OuT+HHDrDsDl7po8U=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-FPWkVw3-PaaY5JfV6KpUuA-1; Thu, 30 Oct 2025 10:51:01 -0400
-X-MC-Unique: FPWkVw3-PaaY5JfV6KpUuA-1
-X-Mimecast-MFC-AGG-ID: FPWkVw3-PaaY5JfV6KpUuA_1761835861
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-781353ba452so15508007b3.0
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 07:51:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761835861; x=1762440661;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2nFMttYB5fauTANmpLOz33X8KQGAeltN2KPLLD7rD2c=;
- b=cHee+zImHdYpugsUpCMaQgffDLMtW/dcrrP258T1c+KK/ir1bmaMK8FQUEAk2uNRBO
- lJj/EJOlcseQXQK9/BIljwG8MyhNokUNgbFfuE/hQ993pMBHWtHfM/6bpHhPxuC26zzf
- p9xS419HH2oxpjkeZPZ8jBkwA8OVVIv1MVlNk6imAQuBWi6Lwm3bG77e9d3qpR6hx1Df
- wR4iNdgIzc/1EIahIl6T2NfoT6ZaPppVaxObSwmIoxn1l3j5+Xqe4Wfa6aS7biWQuhU3
- IG3dG/Gv9zhTNXqDnH/aAZojV6wIk0tauIcLpOrlcBASzrqn1WfreKl/ztkwNi/fksJJ
- jzeQ==
-X-Gm-Message-State: AOJu0YxRGmQZbZw3vcikOLMfXQOTXn6s2Ox47fR1f40+ln2G9ClVBisQ
- b2xLPY3o3Zu8cBT6v76f5Bx0XNU/9oGosBh575yR3xgUiSjehMToQXe+SZwjGXBumXxmzhocY8x
- uQ4yT9MClrnv+8FOb3j9sawYZhu2Ix5T2ovG6jQjxBRLf4UbQXwpwYgaOQ+P/tA/URiVZcHZsCm
- mwZdNzNg8fE+DSwT32NlmL5DNJkaK3J2I=
-X-Gm-Gg: ASbGncvggP5dC9CIGFgQTXmgD6M9EZxoUE1sRkDx9F45sbtVYJSCgmLeZhR+S75e3/E
- Cy65K0RK+P0pqMNKPYxuxZMRhipkfoVTjTHZMz+txRotSXG3AsxYutFNIn318N0t3NU/pjm4xB3
- TDBlUXHE2w3h2J/dFGAocEM2SXh6ZqAGq+cV8ixTBhLUC3Iyk25APp4CoWdBImjOW8RjUhurphf
- KjAgEXqyFt1MLA=
-X-Received: by 2002:a05:690c:6c84:b0:784:f14d:6946 with SMTP id
- 00721157ae682-78628ffec19mr65704837b3.55.1761835861117; 
- Thu, 30 Oct 2025 07:51:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGU2XBs3mVPK45zy1qH+p5tLgwo80pni5MM2JQeI+9sTSxnp2++sHZ/kMQJZrBl6wFtoqcG6tRkUE+/YwdxmBA=
-X-Received: by 2002:a05:690c:6c84:b0:784:f14d:6946 with SMTP id
- 00721157ae682-78628ffec19mr65704417b3.55.1761835860549; Thu, 30 Oct 2025
- 07:51:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shivangu@linux.ibm.com>)
+ id 1vEU8m-0003vs-Rw
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 11:00:46 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UCDaQD005051;
+ Thu, 30 Oct 2025 15:00:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=pp1; bh=tFWdGCpsSTEw3qXYK5MXAzczXxxXI9
+ zYfHgKAJq5mtg=; b=PL/DHAx/+tHr7R6KxePvEQyQRWH/NlJjtu/RqEXWyPpaiu
+ 3qlCq9dOODixEgE9M5mQTn1ZCx7izrVLOK+MzjUnwtwCqxKcvwHi1/F6fFyfGYNR
+ iPDDtpAjN2wQ7aLSThjk4QRhqmAWwdDQONxBZsH7sxUZWeZM1zACATJ/lCIRN95V
+ QozoGssTBFhepmNOhzT1csjwHh5OTRaZheXNV3Ht4sOvU/pd2cCGh9V9IwUaYM7o
+ P8Gl96cagCzavLnQNgQbcdRnMYg1GF0ZBOXD93V94tsIXAV0QUtAN+dA3K1s0OBe
+ kUduazpTQuvtL+Rji+Uu9D8uiSMGCwJd5XH4hX+Q==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34a8s3ph-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Oct 2025 15:00:23 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59UDcwxr019510;
+ Thu, 30 Oct 2025 15:00:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33xy99s3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Oct 2025 15:00:22 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59UF0IGU26935588
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Oct 2025 15:00:18 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 711CC2004B;
+ Thu, 30 Oct 2025 15:00:18 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CB3720040;
+ Thu, 30 Oct 2025 15:00:16 +0000 (GMT)
+Received: from shivang.upadyay (unknown [9.39.29.84])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu, 30 Oct 2025 15:00:15 +0000 (GMT)
+Date: Thu, 30 Oct 2025 20:30:09 +0530
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Aditya Gupta <adityag@linux.ibm.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, sourabhjain@linux.ibm.com
+Subject: Re: [PATCH v2 1/2] hw/ppc: Fix missing return on allocation failure
+Message-ID: <43z3ggtik6cmtjiyve62bldmhhl5tfgeqtbij6ycc3oq5aw6xl@sfcv4oilaplo>
+References: <20251028080551.92722-1-shivangu@linux.ibm.com>
+ <20251028080551.92722-2-shivangu@linux.ibm.com>
+ <8d5a8cce-d769-4cd8-9753-7e9ad37d8a47@linaro.org>
+ <dio77m3m5jj6ccgqpswkifiqztf5fz45qsjpspu2yszgwrfgha@mcwjruxszkn5>
+ <47ac6382-3270-4179-8455-43cee36a9ca9@linux.ibm.com>
+ <c089e14f-69a3-fe9c-cc80-b0c7bba4105a@eik.bme.hu>
+ <fz5bixswyqecp2tgbobkz2vlncuhdm4cxagdndn77qpprltssl@opqtjw4ixgpk>
+ <CAFEAcA8gZ5MEJvabd__asKLEA_+jf4=SPKaAy952pr6S0oJnqA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20251028220342.1407883-1-jsnow@redhat.com>
- <20251028220342.1407883-3-jsnow@redhat.com>
- <d08731ce-e543-462c-8980-e5153cca5621@redhat.com>
-In-Reply-To: <d08731ce-e543-462c-8980-e5153cca5621@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 30 Oct 2025 10:50:48 -0400
-X-Gm-Features: AWmQ_bkoYvttOzeVlmK40i_lzQ_1lRSmegMi8ALWuYOyVmYD1E0KdW1ZK58UzFU
-Message-ID: <CAFn=p-YkossgdQJUJZE9NXJKcavmAcOA7pcyNTiTEMVWxiAeiA@mail.gmail.com>
-Subject: Re: [PATCH RFC 02/10] python/qapi: Add an ignore for Pylint 4.x
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Qemu-block <qemu-block@nongnu.org>, Hanna Reitz <hreitz@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000009ef7050642616039"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8gZ5MEJvabd__asKLEA_+jf4=SPKaAy952pr6S0oJnqA@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=DYkaa/tW c=1 sm=1 tr=0 ts=69037d87 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Gu6rTDTfY5oMl6SCCRoA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 5S6qOtW0bGWU-BMK7Q-YXr9gqP1NGXFh
+X-Proofpoint-ORIG-GUID: 5S6qOtW0bGWU-BMK7Q-YXr9gqP1NGXFh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX4W8Vb6lby36O
+ eVshJum00KbkWYuh5TS/UOi3BwRWlodSZy4ac4Jm8HmD96YICl4N405ZFhZu1T3ZLQCoFLIVQx9
+ eewCr/CqVRPm/z5TCCY7jlzu/4ZDXX4bRMsf50A6na20N9YcjpAY3tdHnfjU6PIuv8aB16qGQtJ
+ RIvBns8uYuMqTxxxE4biE9Gkn/Oopa+X9qXuIa/JBKM529XU/gowmArtZZCaiRRlt+hXiZvTc6O
+ BT0qN+d+CEjjtPj2GPChG+KBu479AjE8PkA4HBvfLdjSLHDLYHcHQT1JTGND0kNoR5/uX85nepT
+ CZPoSRzBaIz4nzcUiP8QDK1xK1iNIDoIf8rYXJpLU0YDuXH3EFD0kvuLqBm0ICpJgr0YCa4mlr1
+ 1fvcqEIPyUSU2C8xaVOBjHZ177m2MQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_04,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=shivangu@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,100 +126,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009ef7050642616039
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Oct 30, 2025 at 02:45:07PM +0000, Peter Maydell wrote:
+> docs/devel/style.rst has some notes on malloc choices, including this:
+> 
+> # Care should be taken to avoid introducing places where the guest could
+> # trigger an exit by causing a large allocation. For small allocations,
+> # of the order of 4k, a failure to allocate is likely indicative of an
+> # overloaded host and allowing ``g_malloc`` to ``exit`` is a reasonable
+> # approach. However for larger allocations where we could realistically
+> # fall-back to a smaller one if need be we should use functions like
+> # ``g_try_new`` and check the result. For example this is valid approach
+> # for a time/space trade-off like ``tlb_mmu_resize_locked`` in the
+> # SoftMMU TLB code.
+Hi Peter,
 
-On Thu, Oct 30, 2025, 4:23=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrote:
+Thanks for clearing it up.
+> 
+> Since we're trying to allocate 32MB at once and this is during
+> the guest run rather than at startup, this is probably a reasonable
+> place to use g_try_malloc().
+> 
+> There are other places in this code that use LOG_GUEST_ERROR
+> for things that aren't exactly guest errors, so my suggestion
+> is that we take this patch as-is to fix the logic error.
+> We can consider whether we want to try to improve the error
+> reporting of this group of functions as a separate patch.
+Sure.
 
-> On 28/10/2025 23.03, John Snow wrote:
-> > Pylint 4.x wants to use a different regex for _Stub for some reason;
-> > just silence this.
-> >
-> > Signed-off-by: John Snow <jsnow@redhat.com>
-> > ---
-> >   scripts/qapi/introspect.py | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-> > index 89ee5d5f176..7e28de2279a 100644
-> > --- a/scripts/qapi/introspect.py
-> > +++ b/scripts/qapi/introspect.py
-> > @@ -59,7 +59,7 @@
-> >   #
-> >   # Sadly, mypy does not support recursive types; so the _Stub alias is
-> used to
-> >   # mark the imprecision in the type model where we'd otherwise use
-> JSONValue.
-> > -_Stub =3D Any
-> > +_Stub =3D Any  # pylint: disable=3Dinvalid-name
-> >   _Scalar =3D Union[str, bool, None]
-> >   _NonScalar =3D Union[Dict[str, _Stub], List[_Stub]]
-> >   _Value =3D Union[_Scalar, _NonScalar]
->
-> Alternatively, rename it to "_stub" ?
->
-
-Well, it's a "type" and it should match the others, ... I don't actually
-know why it is deciding to whine about this and had bigger fish to fry.
-
-
-> Anyway,
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
->
->
-
---0000000000009ef7050642616039
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 30, 2025, 4:23=E2=80=
-=AFAM Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com">thuth@redhat.com<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
- 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On 28/10/2025 23.03,=
- John Snow wrote:<br>
-&gt; Pylint 4.x wants to use a different regex for _Stub for some reason;<b=
-r>
-&gt; just silence this.<br>
-&gt; <br>
-&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
-t=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0scripts/qapi/introspect.py | 2 +-<br>
-&gt;=C2=A0 =C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-&gt; <br>
-&gt; diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py<b=
-r>
-&gt; index 89ee5d5f176..7e28de2279a 100644<br>
-&gt; --- a/scripts/qapi/introspect.py<br>
-&gt; +++ b/scripts/qapi/introspect.py<br>
-&gt; @@ -59,7 +59,7 @@<br>
-&gt;=C2=A0 =C2=A0#<br>
-&gt;=C2=A0 =C2=A0# Sadly, mypy does not support recursive types; so the _St=
-ub alias is used to<br>
-&gt;=C2=A0 =C2=A0# mark the imprecision in the type model where we&#39;d ot=
-herwise use JSONValue.<br>
-&gt; -_Stub =3D Any<br>
-&gt; +_Stub =3D Any=C2=A0 # pylint: disable=3Dinvalid-name<br>
-&gt;=C2=A0 =C2=A0_Scalar =3D Union[str, bool, None]<br>
-&gt;=C2=A0 =C2=A0_NonScalar =3D Union[Dict[str, _Stub], List[_Stub]]<br>
-&gt;=C2=A0 =C2=A0_Value =3D Union[_Scalar, _NonScalar]<br>
-<br>
-Alternatively, rename it to &quot;_stub&quot; ?<br></blockquote></div></div=
-><div dir=3D"auto"><br></div><div dir=3D"auto">Well, it&#39;s a &quot;type&=
-quot; and it should match the others, ... I don&#39;t actually know why it =
-is deciding to whine about this and had bigger fish to fry.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote=
-_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
-rder-left:1px #ccc solid;padding-left:1ex">
-<br>
-Anyway,<br>
-Reviewed-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=3D"=
-_blank" rel=3D"noreferrer">thuth@redhat.com</a>&gt;<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000009ef7050642616039--
-
+~Shivang.
 
