@@ -2,80 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A9AC1F6DD
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 11:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED207C1F7D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 11:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEPTc-0005Ny-9n; Thu, 30 Oct 2025 06:01:52 -0400
+	id 1vEPja-0001a4-HI; Thu, 30 Oct 2025 06:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vEPTR-0005Lq-Fc
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 06:01:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vEPTM-00022z-6K
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 06:01:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761818492;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Oux0Abs1EKLCyFncfFzFy90C3AuFDb6YgkrQA35bL4Y=;
- b=EkyzYYay1lI5zmpr4AzyhusfadxUxfbep6e4mQiSfAcmK9R54HJk+IUZlhHI/O2gVKNZr2
- ryVXZpMAgxKqmOdpvk0X/vloHGmSbZi4KXPhHA6DCLYCfWYxJo3RHMXC4L7y37c1NhohNG
- Se6xAi0Q7gry2uvKrZNJbswR0MwRDyI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-vZw56zERMpOvle92cxTeqQ-1; Thu,
- 30 Oct 2025 06:01:28 -0400
-X-MC-Unique: vZw56zERMpOvle92cxTeqQ-1
-X-Mimecast-MFC-AGG-ID: vZw56zERMpOvle92cxTeqQ_1761818488
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D85FE1955E7A; Thu, 30 Oct 2025 10:01:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.122])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C15AE180057E; Thu, 30 Oct 2025 10:01:24 +0000 (UTC)
-Date: Thu, 30 Oct 2025 10:01:20 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, John Snow <jsnow@redhat.com>,
- Amit Shah <amit@kernel.org>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH] scripts/vmstate-static-checker: Fix deprecation warnings
- with latest argparse
-Message-ID: <aQM3cNUN1sxyUCJr@redhat.com>
-References: <20251030092638.39505-1-thuth@redhat.com>
- <aQMw-AO720PNFzWW@redhat.com>
- <7e315a0a-5876-4816-8db3-fecbe2b1ebaf@redhat.com>
- <6b52e145-8732-413f-a3db-6e5abf1eb70b@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEPjF-0001WF-Nq
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 06:18:03 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEPj2-0003sO-GL
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 06:17:57 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-b704db3686cso192927066b.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 03:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761819461; x=1762424261; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ntmEVStypM9NDMxv0Zbv2tSchJPgKLUTExE5J8/D70I=;
+ b=GD2HvRoTflILfmr7kkVBT6kfh7XEp+TAaCKAEtx/onQbsT0pzMMxV1kq0Vl6CUUhlA
+ 9NKBy2a89Pt5bDcurptDHly1bBtCJ9n/PIkhE4y4nlyVNswvuXLf1AxZWdK9anz5SDKz
+ D4NyaygL5FGqKLG5t2OJedPbo8+Zk+dP3jlNKIeYf7j3/8+4gROhboNLNawUvenK8iFj
+ XhM294xxhsVpjBTAv4ckWyAYNwTQIfgnHBHI6AAABxnlXGiutEWN8otNKaf8dB15nQjc
+ 7Q9V+jGvTFnQekHa5+cob928T+bJxTbzy7ky6AFGXrwxNff24AW/vpghBzdyfpzfTHy9
+ MIMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761819461; x=1762424261;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ntmEVStypM9NDMxv0Zbv2tSchJPgKLUTExE5J8/D70I=;
+ b=ME6IBOEEB4QSfXkrKP5Xb/zKUzB+8lsXmftW6O0fI4QYdXpbnBWmldGxOxyOWFOXRN
+ fmjwonoqDfUbPf8F5M0QWeazo0/W56Z+IrDSImOe3WQD9wwGuEVpjPbXG/RX1Wiwz+2Q
+ OIvGPaDNMdIMzhA93gu3nbzYVIaVq2Lqan33Y5/OHaC7O3vRPcpW+6UmNhZ1ncMtsUf7
+ U2V9cklwDLaMAOJDrbpqqFrMYY3Rd5BxSGC2el0aQ9yphm1VzUq/k5uOT1smSy9HJv62
+ 53EiLk3c8dcPxGDvVRddtbmxHqJlYmvmeJJExEF2nAZphJesCJ7aM49AaqbCO6xA+9Gp
+ ypuQ==
+X-Gm-Message-State: AOJu0YzGrRpyPC3v5teB0BI5jaBfSloXEoclsGF1sEiE9s6Rauu2Y3Jp
+ Xc22RJFiZ4FdhR7aoN6TEEJqRqUtdAmfIhxiDKz9w91fCji+BTPNGxqbH4u6OqIOIeVFjbEiGeH
+ KfkhnxZc=
+X-Gm-Gg: ASbGncvi/YdYV6/oRL7u4onCsEG5hRhdAx78xR+m8P/fGRkPiGkTlxXl9A7wvUcCSi1
+ OrTatZAmN1KwbF11mM/F3yShZgqpBYlaI6BjHN/0K8+IQQpcGD2s4Ov2ik/9rJ1au5n2czXXKr9
+ ENZsewT7bLatvx4IWHWLyIEDnmePIQarXQucdVLmMddtKVwNd4mj5TizsOcaaOScjZjbfU7r3ph
+ 8upOniR8I6ogdIEnqUzOXD2rJuXsBDEQxvqLdUSqq0bZGQ/D4wMbZMMrEOIOP2GkpOlVRVLtNfa
+ P3Fv5MNEaV5kvZ5RpSFzRTg2dcUzQ0OOgug7gW9UxyNJlgvm4ETXmrUgkQsWqAMje63f+kGhJPi
+ u6AqrKsWVrtUzsjchnQ8gBaINp0TvIGQgb45eCoDgpCog7i+ClWU1WgWngNAJMRXsiQ+DVQEqLa
+ AX70ZnOf4PhUD6jBtHnorBS8PhfqCubKHLYB/udqVW/KA=
+X-Google-Smtp-Source: AGHT+IEGw4Ywpux4O8bfMDSY3XVnc5ypPQCKw0vHJzyiI039l/8CxJl5jWtsdGlAsklJwyPVkDpMHw==
+X-Received: by 2002:a05:6000:601:b0:427:699:a9cf with SMTP id
+ ffacd0b85a97d-429aefb9ca4mr5669215f8f.33.1761818662403; 
+ Thu, 30 Oct 2025 03:04:22 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429952d3532sm31956528f8f.20.2025.10.30.03.04.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Oct 2025 03:04:21 -0700 (PDT)
+Message-ID: <80d9f994-dda4-42dc-8214-a0134798f732@linaro.org>
+Date: Thu, 30 Oct 2025 11:04:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/23] Misc single binary patches for 2025-10-29
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20251029214001.99824-1-philmd@linaro.org>
+In-Reply-To: <20251029214001.99824-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6b52e145-8732-413f-a3db-6e5abf1eb70b@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,70 +96,140 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 30, 2025 at 10:45:32AM +0100, Thomas Huth wrote:
-> On 30/10/2025 10.42, Thomas Huth wrote:
-> > On 30/10/2025 10.33, Daniel P. Berrangé wrote:
-> > > On Thu, Oct 30, 2025 at 10:26:38AM +0100, Thomas Huth wrote:
-> > > > From: Thomas Huth <thuth@redhat.com>
-> > > > 
-> > > > The argparse.FileType() type has been deprecated in the latest argparse
-> > > > version (e.g. the one from Fedora 43), now causing the test_bad_vmstate
-> > > > functional test to fail since there are unexpected strings in the output.
-> > > > Change the script to use pathlib.Path instead to fix the test_bad_vmstate
-> > > > test and to be prepared for the future when the deprecated FileType gets
-> > > > removed completely.
-> ...
-> > > > @@ -393,10 +394,10 @@ def main():
-> > > >                           help='reverse the direction')
-> > > >       args = parser.parse_args()
-> > > > -    src_data = json.load(args.src)
-> > > > -    dest_data = json.load(args.dest)
-> > > > -    args.src.close()
-> > > > -    args.dest.close()
-> > > > +    with open(args.src, 'r', encoding='utf-8') as src_fh:
-> > > > +        src_data = json.load(src_fh)
-> > > > +    with open(args.dest, 'r', encoding='utf-8') as dst_fh:
-> > > > +        dest_data = json.load(dst_fh)
-> > > 
-> > > This could be
-> > > 
-> > >   src_data = json.load(args.src.read_text('utf-8'))
-> > >   dest_data = json.load(args.dest.read_text('utf-8'))
-> > 
-> > Does not work, looks like the load() function cannot deal with a string:
-> > 
-> > $ scripts/vmstate-static-checker.py -s
-> > tests/data/vmstate-static-checker/ dump1.json -d
-> > tests/data/vmstate-static-checker/dump2.json
-> > Traceback (most recent call last):
-> >    File "../scripts/vmstate-static-checker.py", line 439, in <module>
-> >      sys.exit(main())
-> >               ~~~~^^
-> >    File "../scripts/vmstate-static-checker.py", line 397, in main
-> >      src_data = json.load(args.src.read_text('utf-8'))
-> >    File "/usr/lib64/python3.13/json/__init__.py", line 293, in load
-> >      return loads(fp.read(),
-> >                   ^^^^^^^
-> > AttributeError: 'str' object has no attribute 'read'
+On 29/10/25 22:39, Philippe Mathieu-Daudé wrote:
+> The following changes since commit e090e0312dc9030d94e38e3d98a88718d3561e4e:
 > 
-> Ok, there also seems to be a json.loads() function (with "s" at the end)
-> that seems to do the job ... but IMHO it would be better to continue using
-> the load() function here to let the json parser decide how to read the file.
+>    Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2025-10-29 10:44:15 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/philmd/qemu.git tags/single-binary-20251029
+> 
+> for you to fetch changes up to e5c542fa16b0a7d47070692481db301736a0ac7b:
+> 
+>    hw/riscv: Replace target_ulong uses (2025-10-29 19:16:24 +0100)
+> 
+> ----------------------------------------------------------------
+> Various patches related to single binary work:
+> 
+> - Make hw/arm/ common by adding a QOM type to machines to
+>    tag in which binary (32 or 64-bit) they can be used.
+>    Convert the Virt and SBSA-Ref machines.
+> - Build Xen files once
+> 
+> ----------------------------------------------------------------
 
-ok, I don't mind that much
+I'm seeing a failure on mainstream pipeline:
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+https://gitlab.com/qemu-project/qemu/-/jobs/11906335084
+▶  5/68 test_bpim2u.BananaPiMachine.test_arm_bpim2u 
+                FAIL
+▶  5/68 test_bpim2u.BananaPiMachine.test_arm_bpim2u_gmac 
+                FAIL
+▶  5/68 test_bpim2u.BananaPiMachine.test_arm_bpim2u_initrd 
+                FAIL
 
+which I failed to notice locally in part because Darwin LLVM 'ar'
+doesn't not work like the GNU equivalent:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+$ pyvenv/bin/meson test --print-errorlogs --setup thorough func-arm-bpim2u
+ninja: Entering directory `/build'
+[1301/1301] Generating qemu-system-arm with a custom command
+▶ 1/1 test_bpim2u.BananaPiMachine.test_arm_bpim2u 
+   FAIL
+▶ 1/1 test_bpim2u.BananaPiMachine.test_arm_bpim2u_gmac 
+   FAIL
+▶ 1/1 test_bpim2u.BananaPiMachine.test_arm_bpim2u_initrd 
+   FAIL
+1/1 qemu:func-thorough+func-arm-thorough+thorough / func-arm-bpim2u 
+   ERROR            1.24s   exit status 1
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― 
+✀ 
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+stderr:
+Traceback (most recent call last):
+   File "/src/qemu/tests/functional/arm/test_bpim2u.py", line 41, in 
+test_arm_bpim2u
+     kernel_path = self.archive_extract(
+         self.ASSET_DEB, member='boot/vmlinuz-6.6.16-current-sunxi')
+   File "/src/qemu/tests/functional/qemu_test/testcase.py", line 83, in 
+archive_extract
+     archive_extract(archive, self.scratch_file(), format, member)
+     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 92, in 
+archive_extract
+     deb_extract(archive, dest_dir, "./" + member)
+     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 57, in 
+deb_extract
+     check_call(['ar', 'x', archive, file_path],
+     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                stdout=DEVNULL, stderr=DEVNULL)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File 
+"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", 
+line 419, in check_call
+     raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['ar', 'x', 
+'~/.cache/qemu/download/3d968c15b121ede871dce49d13ee7644d6f74b6b121b84c9a40f51b0c80d6d22', 
+'data.tar.xz/']' returned non-zero exit status 1.
+
+Traceback (most recent call last):
+   File "/src/qemu/tests/functional/arm/test_bpim2u.py", line 98, in 
+test_arm_bpim2u_gmac
+     kernel_path = self.archive_extract(
+         self.ASSET_DEB, member='boot/vmlinuz-6.6.16-current-sunxi')
+   File "/src/qemu/tests/functional/qemu_test/testcase.py", line 83, in 
+archive_extract
+     archive_extract(archive, self.scratch_file(), format, member)
+     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 92, in 
+archive_extract
+     deb_extract(archive, dest_dir, "./" + member)
+     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 57, in 
+deb_extract
+     check_call(['ar', 'x', archive, file_path],
+     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                stdout=DEVNULL, stderr=DEVNULL)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File 
+"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", 
+line 419, in check_call
+     raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['ar', 'x', 
+'~/.cache/qemu/download/3d968c15b121ede871dce49d13ee7644d6f74b6b121b84c9a40f51b0c80d6d22', 
+'data.tar.xz/']' returned non-zero exit status 1.
+
+Traceback (most recent call last):
+   File "/src/qemu/tests/functional/arm/test_bpim2u.py", line 62, in 
+test_arm_bpim2u_initrd
+     kernel_path = self.archive_extract(
+         self.ASSET_DEB, member='boot/vmlinuz-6.6.16-current-sunxi')
+   File "/src/qemu/tests/functional/qemu_test/testcase.py", line 83, in 
+archive_extract
+     archive_extract(archive, self.scratch_file(), format, member)
+     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 92, in 
+archive_extract
+     deb_extract(archive, dest_dir, "./" + member)
+     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/src/qemu/tests/functional/qemu_test/archive.py", line 57, in 
+deb_extract
+     check_call(['ar', 'x', archive, file_path],
+     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                stdout=DEVNULL, stderr=DEVNULL)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File 
+"/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", 
+line 419, in check_call
+     raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['ar', 'x', 
+'~/.cache/qemu/download/3d968c15b121ede871dce49d13ee7644d6f74b6b121b84c9a40f51b0c80d6d22', 
+'data.tar.xz/']' returned non-zero exit status 1.
+
 
 
