@@ -2,97 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD55BC1EE8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8669CC1EF13
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 09:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vENhe-0007Xt-6u; Thu, 30 Oct 2025 04:08:14 -0400
+	id 1vENqq-0000hr-UO; Thu, 30 Oct 2025 04:17:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vENhb-0007XC-6E; Thu, 30 Oct 2025 04:08:11 -0400
-Received: from fhigh-a2-smtp.messagingengine.com ([103.168.172.153])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vENhY-0001uD-DM; Thu, 30 Oct 2025 04:08:10 -0400
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 048DC140018F;
- Thu, 30 Oct 2025 04:08:04 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-11.internal (MEProxy); Thu, 30 Oct 2025 04:08:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1761811683; x=
- 1761898083; bh=/3QYjGTp1OFaxWBx8XJ1huB8mMWVb66+F/yey7XPPJo=; b=l
- qBavK0Dpl4aPa3YLkBaSo1dNRMP5VVmmeXjxrNV5JjiK2J2WCd4GrIZrvCWxlGPY
- EMJqUwQ0O2MnsejTLE+yHNF2+auN3tNcmlh8CmXk1ZDzgJSywW89wSrqpMPbqn1U
- +38jme3tCNuGy0ItMK0vaX+7INHa8VbILhU3GVW4QAHhYdaQB72nI+6YYNVuiwUh
- Zk+dAJLqIlaKxig+tcJ4eBMBms9SpK0n0II0BtOHyF0E7dszy/oSvw6ZKZ7EdcV2
- pZIf+QqSOGGvJYL9zJPkc+MwHq9OuQkpdC0Rv//GVtcROU2HH3JO5TpxNCyXHREa
- jFlPQI7wKE0O2316fHOwA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
- 1761811683; x=1761898083; bh=/3QYjGTp1OFaxWBx8XJ1huB8mMWVb66+F/y
- ey7XPPJo=; b=U5G8aeMt1ZIurQofruJauc2WuDAeIzIpACIeaa33zWRoRpL+41A
- Q2ZpwCHaG6pVUYutWDGXLQGwWMlmiQ9rNtqmOnRocJqYVImtFXGqgG2yclb8X0Co
- bvY+s2D/B5GR7aQo4TwqjmoJjJjTKPbjVr63Ta659qrW8Uhq0uusWrPHXn5MIyiZ
- dbLJu34oNgsaf7Rk2EBVCEWiQOrXHzoCbBWp5etXWnMMJ0yJr5I6S+Fda+BxwUzB
- k5QgzU0VhQjutGqCw4xBzVcAA8hy3oxEevgh0DbsP/QBbY28hOgoC/4+QQxB65OP
- VWSxWOlgFDtULz92opYMKdV/78Uuj7RsELQ==
-X-ME-Sender: <xms:4xwDaX3G61vcfocEdOxKcfOpCJnzdCD0fAh5wOPf3O-NGzTVAtU_3w>
- <xme:4xwDaUAZLa8fL-6tbyBboFKU8qQhzJcg1I2IzQvOv426A2AkTRAMm0QWP4wRcoT9j
- 0mTTJ0LbouPfNDRbor5HU0Kq6AQjbjM0gUu3_lZ8RjnRSf0rOha61g>
-X-ME-Received: <xmr:4xwDaaOBVNlI8gH-qEZwQGQR1ximTDiXfDPQsexEFGUmHgPxA1BUANIsD4rWXv7O1pkxFeASYqx_SoWvVuO6EpEIsRcgnDPCE6w_lAEmhKEr>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeitdelucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
- rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
- gurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghushcu
- lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnhepjefgjeefffdvuefhieefhffggfeuleehudekveejvedtuddugeeigeetffffjeev
- necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
- esihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhht
- phhouhhtpdhrtghpthhtoheprghlrghnrdgruggrmhhsohhnsehorhgrtghlvgdrtghomh
- dprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthht
- ohepfhhoshhsseguvghfmhgrtghrohdrihhtpdhrtghpthhtohepkhgsuhhstghhsehkvg
- hrnhgvlhdrohhrghdprhgtphhtthhopehqvghmuhdqsghlohgtkhesnhhonhhgnhhurdho
- rhhgpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:4xwDaRb_eppZSK4waG61PaS15aUXVh1ymSNmN73vC8xVXJ2-DjgPJw>
- <xmx:4xwDaRvQwWfeZVhlbLAuwTla8mBVcSl2oK2ubxyy6smtxfNdEf4e_A>
- <xmx:4xwDabOs1_cF4y_z0Yy-NN4F0RKKkPos0cn_eZQUrbSR7YihZym8VQ>
- <xmx:4xwDaQ55MUpMpk-I2Ble0HCwnGS_EFND-m43fKymAmd_j5QmrWo4Qg>
- <xmx:4xwDaQ66b4kboqpcYYOVeGfQLEjtZAs3aHKibsLjbxIVeYB2uCvXfi8P>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Oct 2025 04:08:02 -0400 (EDT)
-Date: Thu, 30 Oct 2025 09:08:02 +0100
-From: Klaus Jensen <its@irrelevant.dk>
-To: Alan Adamson <alan.adamson@oracle.com>
-Cc: qemu-devel@nongnu.org, foss@defmacro.it, kbusch@kernel.org,
- qemu-block@nongnu.org
-Subject: Re: [PATCH 0/2] Add support for NVMe Namespace and Boundary Atomic
- Parameters
-Message-ID: <aQMc4vSkEgsjAaYY@AALNPWKJENSEN.aal.scsc.local>
-References: <20250602230458.1073148-1-alan.adamson@oracle.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1vENqm-0000gr-CN
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:17:40 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1vENqe-0003BC-Uk
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 04:17:40 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Dxb_AVHwNpiYgcAA--.62487S3;
+ Thu, 30 Oct 2025 16:17:25 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJBxicAVHwNpKnMcAQ--.9832S2;
+ Thu, 30 Oct 2025 16:17:25 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v2 0/3] target/loongarch: PMU enhancement in KVM mode
+Date: Thu, 30 Oct 2025 16:17:21 +0800
+Message-Id: <20251030081724.3921563-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="a9I+gAIDwFAgIVLM"
-Content-Disposition: inline
-In-Reply-To: <20250602230458.1073148-1-alan.adamson@oracle.com>
-Received-SPF: pass client-ip=103.168.172.153; envelope-from=its@irrelevant.dk;
- helo=fhigh-a2-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJBxicAVHwNpKnMcAQ--.9832S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,97 +60,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patchset add PMU migration support and CSR register dump support
+with debug purpose, also it removes TLB migration support in TCG mode.
 
---a9I+gAIDwFAgIVLM
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---
+v1 ... v2:
+  1. Move calling with function loongarch_la464_init_csr() after CPU is
+     realized, since PMU feature is decided during realization stage.
+  2. Split origin patch #2 for better review
+  3. Add PMU event number info in structure CPUArchState rather than
+     fixed number 4, save and restore PMU registers by its event number.
+---
+Bibo Mao (3):
+  target/loongarch: Add PMU migration support in KVM mode
+  target/loongarch: Call function loongarch_la464_init_csr() after
+    realized
+  target/loongarch: Add PMU register dump support in KVM
 
-On Jun  2 16:04, Alan Adamson wrote:
-> This patch set is a follow on to commit ebd1568fc732 ("hw/nvme: add atomic
-> write support").  These patches introduces two updates to the NVMe subsys=
-tem in QEMU,
-> both aimed at enhancing atomic write support for namespaces.
->=20
-> hw/nvme: enable ns atomic writes
-> --------------------------------
-> This patch introduces support for namespace-specific atomic write paramet=
-ers: NAWUN
-> and NAWUPF, as defined by the NVMe specification. The atomic parameters a=
-re
-> utilized to guarantee that writes conforming to these boundaries will be =
-atomic,
-> improving data integrity for namespaces that require atomic operations.
->=20
-> The patch introduces new NVMe QEMU parameters:
-> 	atomic.nawun (default: 0)
-> 	atomic.nawupf (default: 0)
-> 	atomic.nsfeat (default: off)
->=20
-> The addition of atomic.nsfeat sets the Namespace Supported Atomic Boundar=
-y &
-> Power (NSABP) bit in the Identify Namespace Data Structure, enabling name=
-space-specific
-> atomic write features. The patch also ensures that atomic write behavior =
-adheres to the
-> NACWU and NAWUPF parameters.
->=20
-> hw/nvme: add atomic boundary support
-> ------------------------------------
-> The second patch expands on the atomic write capabilities by adding suppo=
-rt for atomic
-> boundary parameters: NABO, NABSN, and NABSPF. These parameters define the=
- atomic
-> boundary size for writes and ensure that any writes crossing these bounda=
-ries are
-> treated atomically, based on the AWUN and AWUPF values.
->=20
-> The following parameters are added:
-> 	atomic.nabo (default: 0)
-> 	atomic.nabsn (default: 0)
-> 	atomic.nabspf (default: 0)
->=20
-> If the atomic boundary is crossed, the writes are guaranteed to be atomic=
- only if their
-> size does not exceed the values defined by AWUN and AWUPF. This ensures t=
-hat larger
-> writes crossing atomic boundaries are not subject to partial updates, the=
-reby improving
-> the robustness of atomic operations across boundaries.
->=20
-> See the NVMe Specification for more information.
->=20
-> Alan Adamson (2):
->   hw/nvme: enable ns atomic writes
->   hw/nvme: add atomic boundary support
->=20
->  hw/nvme/ctrl.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  hw/nvme/ns.c   | 74 ++++++++++++++++++++++++++++++++++++++++++++++++
->  hw/nvme/nvme.h | 14 ++++++++++
->  3 files changed, 164 insertions(+)
->=20
-> --=20
-> 2.43.5
->=20
+ target/loongarch/cpu-csr.h |  4 +++
+ target/loongarch/cpu.c     | 11 +++++---
+ target/loongarch/cpu.h     |  4 +++
+ target/loongarch/csr.c     | 32 ++++++++++++++++++++++
+ target/loongarch/kvm/kvm.c | 54 +++++++++++++++++++++++++++++++++++++-
+ target/loongarch/machine.c | 21 +++++++++++++++
+ 6 files changed, 122 insertions(+), 4 deletions(-)
 
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 
-Thanks Alan; merged!
+base-commit: 36076d24f04ea9dc3357c0fbe7bb14917375819c
+-- 
+2.39.3
 
---a9I+gAIDwFAgIVLM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmkDHOEACgkQTeGvMW1P
-DemkCggAs33D1hdci6BMyvIRvjFMpoheNbyNad12Ho4kVy06n5Oty1poputcUBFJ
-qoUbrnz4oDpxJkQe7xNB9e+qmZG56agwEySzM88fdK76Jl4nPp0htPnPVPO0NTci
-hcROAaU9buiwVmSSp7D9Zmj7G9cESSPhjAE6039Fm0A2Yi6Q2HYIUJp4YX2E4s+b
-miNQ+OIrQDrY7a7eJrs9OUtPzcoUmDEOdlm2xjeOdxUzHJuJWKP/wj7BjlbkgkyH
-uDAr4DNez11xrwOnkts3b4PcEvo/7y0R8GR3Oj9PmzRUJV0rInLSIVuAewqIQmcE
-Jf/ZIsNMzQPXG3dswnPBfzu+XAbIFg==
-=cl3C
------END PGP SIGNATURE-----
-
---a9I+gAIDwFAgIVLM--
 
