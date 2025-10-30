@@ -2,60 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C891C1FBA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 12:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 782A3C1FC79
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Oct 2025 12:19:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEQXb-0007cZ-VO; Thu, 30 Oct 2025 07:10:04 -0400
+	id 1vEQfS-0000o7-Au; Thu, 30 Oct 2025 07:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vEQXY-0007cA-CE
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:10:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vEQfL-0000ne-4s
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:18:03 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vEQXS-00036n-UT
- for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:10:00 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9A4515972EB;
- Thu, 30 Oct 2025 12:09:46 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id s0gyV_w2Ppyp; Thu, 30 Oct 2025 12:09:44 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 42DE25972E4; Thu, 30 Oct 2025 12:09:44 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 40E095972E3;
- Thu, 30 Oct 2025 12:09:44 +0100 (CET)
-Date: Thu, 30 Oct 2025 12:09:44 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-cc: Shivang Upadhyay <shivangu@linux.ibm.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- peter.maydell@linaro.org, adityag@linux.ibm.com, qemu-devel@nongnu.org, 
- sourabhjain@linux.ibm.com
-Subject: Re: [PATCH v2 1/2] hw/ppc: Fix missing return on allocation
- failure
-In-Reply-To: <47ac6382-3270-4179-8455-43cee36a9ca9@linux.ibm.com>
-Message-ID: <c089e14f-69a3-fe9c-cc80-b0c7bba4105a@eik.bme.hu>
-References: <20251028080551.92722-1-shivangu@linux.ibm.com>
- <20251028080551.92722-2-shivangu@linux.ibm.com>
- <8d5a8cce-d769-4cd8-9753-7e9ad37d8a47@linaro.org>
- <dio77m3m5jj6ccgqpswkifiqztf5fz45qsjpspu2yszgwrfgha@mcwjruxszkn5>
- <47ac6382-3270-4179-8455-43cee36a9ca9@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vEQfF-0004UL-34
+ for qemu-devel@nongnu.org; Thu, 30 Oct 2025 07:18:02 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1761823059; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=c8Ku8i94OUI7hoMXTB4RgPOUPRe/Y1lkpISdBRO2sMC8EcYG0CCY3LwI6knWnNB+j96VnY+/kb+qqCD0dGCRWz7Rv2Go4ffoBdKT1wpvg9DpaO6Rr/fxCxgyzfloDTR0KtkM7nJ6cKHt0sbev9PZmH2GNusM+qaT3CiigXt+Txg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1761823059;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=iQmhEDhASNV53AOGQ+WySP40vM1jazn7K182owX6Es4=; 
+ b=MNWWKfza1KBO+YoTzI8PPd1B7QirjsGkwIoig0csq0i/RkZ1pDIO97S+ORrcd3s4InyJOQRCgUD+zErxIuEavvKWHbMwr4BFfy6GlcMSHRvOvHBiQOmKB6gUK8uslc9bILf5hw1ORqxQykgbLp87XrgMCqkihx1i9/E8w48Kx7I=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761823059; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=iQmhEDhASNV53AOGQ+WySP40vM1jazn7K182owX6Es4=;
+ b=WlZYsXQabXb3HDJbnGu4kKlmxT7C9GIUaN+QzmqNHfEFRgnbF5ZwTIdL3CAQA6Vr
+ XdvMyFy/VtknxJRYg5DY767c64qh4kdb5vGtEF4G+JHuUwq49SS8+jP0KqOEufXG/GC
+ +TwTqsjPeyTipdO7Mk1phgfygZyMFS+bYNhQgQi4=
+Received: by mx.zohomail.com with SMTPS id 1761823057268556.5799245974283;
+ Thu, 30 Oct 2025 04:17:37 -0700 (PDT)
+Message-ID: <2f4bfdd5-3cf5-460b-95e2-7c373cff1ff5@collabora.com>
+Date: Thu, 30 Oct 2025 14:17:33 +0300
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1427477736-1761822584=:43010"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] virtio-gpu: Force RCU when unmapping blob
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,100 +79,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello Akihiko,
 
---3866299591-1427477736-1761822584=:43010
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+On 10/29/25 09:12, Akihiko Odaki wrote:
+> Based-on: <20251016-force-v1-1-919a82112498@rsg.ci.i.u-tokyo.ac.jp>
+> ("[PATCH] rcu: Unify force quiescent state")
+> 
+> Unmapping a blob changes the memory map, which is protected with RCU.
+> RCU is designed to minimize the read-side overhead at the cost of
+> reclamation delay. While this design usually makes sense, it is
+> problematic when unmapping a blob because the operation blocks all
+> virtio-gpu commands and causes perceivable disruption.
+> 
+> Minimize such the disruption with force_rcu(), which minimizes the
+> reclamation delay at the cost of a read-side overhead.
+> 
+> Dmitry, can you see if this change makes difference?
 
-On Thu, 30 Oct 2025, Harsh Prateek Bora wrote:
-> On 10/28/25 15:54, Shivang Upadhyay wrote:
->> On Tue, Oct 28, 2025 at 09:35:40AM +0100, Philippe Mathieu-Daudé wrote:
->>> On 28/10/25 09:05, Shivang Upadhyay wrote:
->>>> Fixes coverity (CID 1642026)
->>>> 
->>>> Cc: Aditya Gupta <adityag@linux.ibm.com>
->>>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>>> Link: 
->>>> https://lore.kernel.org/qemu-devel/CAFEAcA-SPmsnU1wzsWxBcFC=ZM_DDhPEg1N4iX9Q4bL1xOnwBg@mail.gmail.com/
->>>> Reported-by: Peter Maydell <peter.maydell@linaro.org>
->>>> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
->>>> Signed-off-by: Shivang Upadhyay <shivangu@linux.ibm.com>
->>>> ---
->>>>    hw/ppc/spapr_fadump.c | 1 +
->>>>    1 file changed, 1 insertion(+)
->>>> 
->>>> diff --git a/hw/ppc/spapr_fadump.c b/hw/ppc/spapr_fadump.c
->>>> index fa3aeac94c..883a60cdcf 100644
->>>> --- a/hw/ppc/spapr_fadump.c
->>>> +++ b/hw/ppc/spapr_fadump.c
->>>> @@ -234,6 +234,7 @@ static bool do_preserve_region(FadumpSection *region)
->>>>            qemu_log_mask(LOG_GUEST_ERROR,
->>> 
->>> FWIW host heap exhaustion is not really a *guest* error, because the
->>> guest can not control it.
->> Hi, Philippe
->> 
->> 
->> Thanks for the review. There are following log level defined in log.h
->>
->> 	....
->>
->> 	#define CPU_LOG_TB_OUT_ASM (1u << 0)
->> 	#define CPU_LOG_TB_IN_ASM  (1u << 1)
->> 	#define CPU_LOG_TB_OP      (1u << 2)
->> 	#define CPU_LOG_TB_OP_OPT  (1u << 3)
->> 	#define CPU_LOG_INT        (1u << 4)
->> 	#define CPU_LOG_EXEC       (1u << 5)
->> 	#define CPU_LOG_PCALL      (1u << 6)
->> 	#define CPU_LOG_TB_CPU     (1u << 8)
->> 	#define CPU_LOG_RESET      (1u << 9)
->> 	#define LOG_UNIMP          (1u << 10)
->> 	#define LOG_GUEST_ERROR    (1u << 11)
->> 	#define CPU_LOG_MMU        (1u << 12)
->> 	#define CPU_LOG_TB_NOCHAIN (1u << 13)
->> 	#define CPU_LOG_PAGE       (1u << 14)
->> 	/* LOG_TRACE (1 << 15) is defined in log-for-trace.h */
->> 	#define CPU_LOG_TB_OP_IND  (1u << 16)
->> 	#define CPU_LOG_TB_FPU     (1u << 17)
->> 	#define CPU_LOG_PLUGIN     (1u << 18)
->> 	/* LOG_STRACE is used for user-mode strace logging. */
->> 	#define LOG_STRACE         (1u << 19)
->> 	#define LOG_PER_THREAD     (1u << 20)
->> 	#define CPU_LOG_TB_VPU     (1u << 21)
->> 	#define LOG_TB_OP_PLUGIN   (1u << 22)
->> 	#define LOG_INVALID_MEM    (1u << 23)
->>
->> 	....
->> 
->> Which one do you recommend we use? or May we introduce a `LOG_HOST_ERROR`,
->> if that's more appropriate.
->
-> I think it would be better to have LOG_INSUFF_MEM for this case, but let's 
-> hear from Philippe and others for suggestions.
+Tested this series with venus and native contexts.
 
-If it's not a guest error but an error in QEMU then maybe error_report (or 
-warn_report if it's recoverable)?
+The improvement is very noticeable. There are almost no stalls with
+venus and much less stalls with native context. The stall now takes
+2-10ms at max in oppose to 50ms that was observed previously. No
+stability issues spotted, everything works.
 
-Regards,
-BALATON Zoltan
+Thank you for working on this improvement.
 
-> Since it's unlreated to the coverity fix and can be taken separately, so:
->
-> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->
->> 
->> Thanks
->> ~Shivang.
->>>
->>>>                "FADump: Failed allocating memory (size: %zu) for copying"
->>>>                " reserved memory regions\n", FADUMP_CHUNK_SIZE);
->>>> +        return false;
->>>>        }
->>>>        num_chunks = ceil((src_len * 1.0f) / FADUMP_CHUNK_SIZE);
->>> 
->
->
---3866299591-1427477736-1761822584=:43010--
+-- 
+Best regards,
+Dmitry
 
