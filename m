@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD29C2378B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE06AC23797
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:56:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEiy6-0003K9-Lg; Fri, 31 Oct 2025 02:50:38 -0400
+	id 1vEixx-0003D2-AI; Fri, 31 Oct 2025 02:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEixo-00037e-Rp
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:50:21 -0400
+ id 1vEixo-00036F-Cm
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:50:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEixc-00049H-KC
+ id 1vEixi-0004K1-5s
  for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:50:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761893403;
+ s=mimecast20190719; t=1761893409;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qJ5Ul0ylGFW/+Q3uwo8dFTnLpKsJ65vff/teVfkbsiA=;
- b=J4A8ZpKZ8DJzxri8uw+lRrgSWJgTyu4KAe4FaDM2lEj90bSSxzL8iFP2lRYF0KpqFcmO6z
- B+fG1z3XAmYqKAeM9DFWJVCfviE+sr7TSdKGmiKr4swrMm97M7D9qSe0X6luqQGEhiwSpN
- 76/JH1FFpWhOQRzUHrei5DEJVzcIV+c=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7F1uWKrfDRlDi2YyV2H6l6ipF83SDAuQw1JsdxjlRnQ=;
+ b=ETesRf5OKMuefC/WU/9cErSV5xFpHqqUJoIs2ouKeSYcAU7Wc9tih2hsHW5zX+jGTKH9Ex
+ 1N0Lt/uAUu/T0jCWf7mrnc+KCPqdrV+fVNrJMeFFBhWBlV5kQPsM1j9F3Bz57VNuB6ctKc
+ OdMk8I6py6n1pnCi9ndtHNp4f1HXLdw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-3-IakWcCPnKy__tbm51f6w-1; Fri,
- 31 Oct 2025 02:50:01 -0400
-X-MC-Unique: 3-IakWcCPnKy__tbm51f6w-1
-X-Mimecast-MFC-AGG-ID: 3-IakWcCPnKy__tbm51f6w_1761893400
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-379-moIbU2FXNnSR6lL60QiWNA-1; Fri,
+ 31 Oct 2025 02:50:07 -0400
+X-MC-Unique: moIbU2FXNnSR6lL60QiWNA-1
+X-Mimecast-MFC-AGG-ID: moIbU2FXNnSR6lL60QiWNA_1761893406
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 542661955D97; Fri, 31 Oct 2025 06:50:00 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 51BED1955DE4; Fri, 31 Oct 2025 06:50:06 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC15930001A1; Fri, 31 Oct 2025 06:49:58 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BC8F118002AD; Fri, 31 Oct 2025 06:50:04 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 31/36] audio: cleanup, use bool for booleans
-Date: Fri, 31 Oct 2025 10:46:24 +0400
-Message-ID: <20251031064631.134651-32-marcandre.lureau@redhat.com>
+Subject: [PULL 32/36] audio: move capture API to own header
+Date: Fri, 31 Oct 2025 10:46:25 +0400
+Message-ID: <20251031064631.134651-33-marcandre.lureau@redhat.com>
 In-Reply-To: <20251031064631.134651-1-marcandre.lureau@redhat.com>
 References: <20251031064631.134651-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -69,7 +69,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,233 +87,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Use slightly better types for the job.
-Fix some checkpatch issues.
+For modularity/clarity reasons, move the capture API in a specific
+header.
+
+The current audio/ header license is MIT.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- audio/audio_int.h      | 12 ++++++------
- audio/audio_template.h |  6 +++---
- include/qemu/audio.h   |  8 ++++----
- audio/audio.c          | 30 +++++++++++++++---------------
- 4 files changed, 28 insertions(+), 28 deletions(-)
+ MAINTAINERS                  |  2 +-
+ audio/audio_int.h            |  1 +
+ include/qemu/audio-capture.h | 43 ++++++++++++++++++++++++++++++++++++
+ include/qemu/audio.h         | 31 --------------------------
+ ui/vnc.h                     |  2 +-
+ 5 files changed, 46 insertions(+), 33 deletions(-)
+ create mode 100644 include/qemu/audio-capture.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 24323e8800..c78aa1f565 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2977,7 +2977,7 @@ X: audio/paaudio.c
+ X: audio/sdlaudio.c
+ X: audio/sndioaudio.c
+ X: audio/spiceaudio.c
+-F: include/qemu/audio.h
++F: include/qemu/audio*.h
+ F: qapi/audio.json
+ 
+ ALSA Audio backend
 diff --git a/audio/audio_int.h b/audio/audio_int.h
-index 8d4f4ca8fc..df13a466e4 100644
+index df13a466e4..5834ebea5e 100644
 --- a/audio/audio_int.h
 +++ b/audio/audio_int.h
-@@ -70,9 +70,9 @@ typedef struct STSampleBuffer {
- 
- typedef struct HWVoiceOut {
-     AudioBackend *s;
--    int enabled;
-+    bool enabled;
-     int poll_mode;
--    int pending_disable;
-+    bool pending_disable;
-     struct audio_pcm_info info;
- 
-     f_sample *clip;
-@@ -91,7 +91,7 @@ typedef struct HWVoiceOut {
- 
- typedef struct HWVoiceIn {
-     AudioBackend *s;
--    int enabled;
-+    bool enabled;
-     int poll_mode;
-     struct audio_pcm_info info;
- 
-@@ -117,8 +117,8 @@ struct SWVoiceOut {
-     STSampleBuffer resample_buf;
-     void *rate;
-     size_t total_hw_samples_mixed;
--    int active;
--    int empty;
-+    bool active;
-+    bool empty;
-     HWVoiceOut *hw;
-     char *name;
-     struct mixeng_volume vol;
-@@ -128,7 +128,7 @@ struct SWVoiceOut {
- 
- struct SWVoiceIn {
-     AudioBackend *s;
--    int active;
-+    bool active;
-     struct audio_pcm_info info;
-     void *rate;
-     size_t total_hw_samples_acquired;
-diff --git a/audio/audio_template.h b/audio/audio_template.h
-index d621008f38..7a8c431f2d 100644
---- a/audio/audio_template.h
-+++ b/audio/audio_template.h
-@@ -166,10 +166,10 @@ static int glue (audio_pcm_sw_init_, TYPE) (
- 
-     audio_pcm_init_info (&sw->info, as);
-     sw->hw = hw;
--    sw->active = 0;
-+    sw->active = false;
- #ifdef DAC
-     sw->total_hw_samples_mixed = 0;
--    sw->empty = 1;
-+    sw->empty = true;
+@@ -30,6 +30,7 @@
+ /* #define RECIPROCAL */
  #endif
+ #include "qemu/audio.h"
++#include "qemu/audio-capture.h"
+ #include "mixeng.h"
  
-     if (sw->info.is_float) {
-@@ -564,7 +564,7 @@ SW *glue (AUD_open_, TYPE) (
-     return NULL;
- }
- 
--int glue (AUD_is_active_, TYPE) (SW *sw)
-+bool glue(AUD_is_active_, TYPE)(SW *sw)
- {
-     return sw ? sw->active : 0;
- }
+ #ifdef CONFIG_GIO
+diff --git a/include/qemu/audio-capture.h b/include/qemu/audio-capture.h
+new file mode 100644
+index 0000000000..a07412db85
+--- /dev/null
++++ b/include/qemu/audio-capture.h
+@@ -0,0 +1,43 @@
++/*
++ * QEMU Audio subsystem
++ *
++ * SPDX-License-Identifier: MIT
++ */
++#ifndef QEMU_AUDIO_CAPTURE_H
++#define QEMU_AUDIO_CAPTURE_H
++
++#include "audio.h"
++
++typedef struct CaptureVoiceOut CaptureVoiceOut;
++
++typedef enum {
++    AUD_CNOTIFY_ENABLE,
++    AUD_CNOTIFY_DISABLE
++} audcnotification_e;
++
++struct audio_capture_ops {
++    void (*notify) (void *opaque, audcnotification_e cmd);
++    void (*capture) (void *opaque, const void *buf, int size);
++    void (*destroy) (void *opaque);
++};
++
++struct capture_ops {
++    void (*info) (void *opaque);
++    void (*destroy) (void *opaque);
++};
++
++typedef struct CaptureState {
++    void *opaque;
++    struct capture_ops ops;
++    QLIST_ENTRY(CaptureState) entries;
++} CaptureState;
++
++CaptureVoiceOut *AUD_add_capture(
++    AudioBackend *be,
++    struct audsettings *as,
++    struct audio_capture_ops *ops,
++    void *opaque
++    );
++void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
++
++#endif /* QEMU_AUDIO_CAPTURE_H */
 diff --git a/include/qemu/audio.h b/include/qemu/audio.h
-index 08753f621a..0f224810c7 100644
+index 0f224810c7..c56af895d6 100644
 --- a/include/qemu/audio.h
 +++ b/include/qemu/audio.h
-@@ -99,8 +99,8 @@ SWVoiceOut *AUD_open_out (
- void AUD_close_out (AudioBackend *be, SWVoiceOut *sw);
- size_t AUD_write (SWVoiceOut *sw, void *pcm_buf, size_t size);
- int  AUD_get_buffer_size_out (SWVoiceOut *sw);
--void AUD_set_active_out (SWVoiceOut *sw, int on);
--int  AUD_is_active_out (SWVoiceOut *sw);
-+void AUD_set_active_out(SWVoiceOut *sw, bool on);
-+bool AUD_is_active_out(SWVoiceOut *sw);
+@@ -41,30 +41,7 @@ typedef struct audsettings {
+     int endianness;
+ } audsettings;
  
- void     AUD_init_time_stamp_out (SWVoiceOut *sw, QEMUAudioTimeStamp *ts);
- uint64_t AUD_get_elapsed_usec_out (SWVoiceOut *sw, QEMUAudioTimeStamp *ts);
-@@ -140,8 +140,8 @@ SWVoiceIn *AUD_open_in(
+-typedef enum {
+-    AUD_CNOTIFY_ENABLE,
+-    AUD_CNOTIFY_DISABLE
+-} audcnotification_e;
+-
+-struct audio_capture_ops {
+-    void (*notify) (void *opaque, audcnotification_e cmd);
+-    void (*capture) (void *opaque, const void *buf, int size);
+-    void (*destroy) (void *opaque);
+-};
+-
+-struct capture_ops {
+-    void (*info) (void *opaque);
+-    void (*destroy) (void *opaque);
+-};
+-
+-typedef struct CaptureState {
+-    void *opaque;
+-    struct capture_ops ops;
+-    QLIST_ENTRY (CaptureState) entries;
+-} CaptureState;
+-
+ typedef struct SWVoiceOut SWVoiceOut;
+-typedef struct CaptureVoiceOut CaptureVoiceOut;
+ typedef struct SWVoiceIn SWVoiceIn;
  
- void AUD_close_in(AudioBackend *be, SWVoiceIn *sw);
- size_t AUD_read (SWVoiceIn *sw, void *pcm_buf, size_t size);
--void AUD_set_active_in (SWVoiceIn *sw, int on);
--int  AUD_is_active_in (SWVoiceIn *sw);
-+void AUD_set_active_in(SWVoiceIn *sw, bool on);
-+bool AUD_is_active_in(SWVoiceIn *sw);
+ struct AudioBackendClass {
+@@ -79,14 +56,6 @@ typedef struct QEMUAudioTimeStamp {
  
- void     AUD_init_time_stamp_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
- uint64_t AUD_get_elapsed_usec_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
-diff --git a/audio/audio.c b/audio/audio.c
-index 19499abe16..86e674410a 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -405,7 +405,7 @@ static void audio_notify_capture (CaptureVoiceOut *cap, audcnotification_e cmd)
-     }
- }
+ bool AUD_backend_check(AudioBackend **be, Error **errp);
  
--static void audio_capture_maybe_changed (CaptureVoiceOut *cap, int enabled)
-+static void audio_capture_maybe_changed(CaptureVoiceOut *cap, bool enabled)
- {
-     if (cap->hw.enabled != enabled) {
-         audcnotification_e cmd;
-@@ -419,11 +419,11 @@ static void audio_recalc_and_notify_capture (CaptureVoiceOut *cap)
- {
-     HWVoiceOut *hw = &cap->hw;
-     SWVoiceOut *sw;
--    int enabled = 0;
-+    bool enabled = false;
- 
-     for (sw = hw->sw_head.lh_first; sw; sw = sw->entries.le_next) {
-         if (sw->active) {
--            enabled = 1;
-+            enabled = true;
-             break;
-         }
-     }
-@@ -475,7 +475,7 @@ static int audio_attach_capture (HWVoiceOut *hw)
-         sw = &sc->sw;
-         sw->hw = hw_cap;
-         sw->info = hw->info;
--        sw->empty = 1;
-+        sw->empty = true;
-         sw->active = hw->enabled;
-         sw->vol = nominal_volume;
-         sw->rate = st_rate_start (sw->info.freq, hw_cap->info.freq);
-@@ -911,7 +911,7 @@ int AUD_get_buffer_size_out(SWVoiceOut *sw)
-     return sw->hw->samples * sw->hw->info.bytes_per_frame;
- }
- 
--void AUD_set_active_out (SWVoiceOut *sw, int on)
-+void AUD_set_active_out(SWVoiceOut *sw, bool on)
- {
-     HWVoiceOut *hw;
- 
-@@ -928,7 +928,7 @@ void AUD_set_active_out (SWVoiceOut *sw, int on)
-         if (on) {
-             hw->pending_disable = 0;
-             if (!hw->enabled) {
--                hw->enabled = 1;
-+                hw->enabled = true;
-                 if (s->vm_running) {
-                     if (hw->pcm_ops->enable_out) {
-                         hw->pcm_ops->enable_out(hw, true);
-@@ -959,7 +959,7 @@ void AUD_set_active_out (SWVoiceOut *sw, int on)
-     }
- }
- 
--void AUD_set_active_in (SWVoiceIn *sw, int on)
-+void AUD_set_active_in(SWVoiceIn *sw, bool on)
- {
-     HWVoiceIn *hw;
- 
-@@ -974,7 +974,7 @@ void AUD_set_active_in (SWVoiceIn *sw, int on)
- 
-         if (on) {
-             if (!hw->enabled) {
--                hw->enabled = 1;
-+                hw->enabled = true;
-                 if (s->vm_running) {
-                     if (hw->pcm_ops->enable_in) {
-                         hw->pcm_ops->enable_in(hw, true);
-@@ -993,7 +993,7 @@ void AUD_set_active_in (SWVoiceIn *sw, int on)
-                 }
- 
-                 if (nb_active == 1) {
--                    hw->enabled = 0;
-+                    hw->enabled = false;
-                     if (hw->pcm_ops->enable_in) {
-                         hw->pcm_ops->enable_in(hw, false);
-                     }
-@@ -1152,8 +1152,8 @@ static void audio_run_out(AudioBackend *s)
-             sw = hw->sw_head.lh_first;
- 
-             if (hw->pending_disable) {
--                hw->enabled = 0;
--                hw->pending_disable = 0;
-+                hw->enabled = false;
-+                hw->pending_disable = false;
-                 if (hw->pcm_ops->enable_out) {
-                     hw->pcm_ops->enable_out(hw, false);
-                 }
-@@ -1206,13 +1206,13 @@ static void audio_run_out(AudioBackend *s)
- #ifdef DEBUG_OUT
-             dolog ("Disabling voice\n");
- #endif
--            hw->enabled = 0;
--            hw->pending_disable = 0;
-+            hw->enabled = false;
-+            hw->pending_disable = false;
-             if (hw->pcm_ops->enable_out) {
-                 hw->pcm_ops->enable_out(hw, false);
-             }
-             for (sc = hw->cap_head.lh_first; sc; sc = sc->entries.le_next) {
--                sc->sw.active = 0;
-+                sc->sw.active = false;
-                 audio_recalc_and_notify_capture (sc->cap);
-             }
-             continue;
-@@ -1257,7 +1257,7 @@ static void audio_run_out(AudioBackend *s)
-             sw->total_hw_samples_mixed -= played;
- 
-             if (!sw->total_hw_samples_mixed) {
--                sw->empty = 1;
-+                sw->empty = true;
-             }
-         }
-     }
+-CaptureVoiceOut *AUD_add_capture(
+-    AudioBackend *s,
+-    struct audsettings *as,
+-    struct audio_capture_ops *ops,
+-    void *opaque
+-    );
+-void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
+-
+ SWVoiceOut *AUD_open_out (
+     AudioBackend *be,
+     SWVoiceOut *sw,
+diff --git a/ui/vnc.h b/ui/vnc.h
+index 4d8363ebf3..ec8d0c91b5 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -31,7 +31,7 @@
+ #include "qemu/thread.h"
+ #include "ui/clipboard.h"
+ #include "ui/console.h"
+-#include "qemu/audio.h"
++#include "qemu/audio-capture.h"
+ #include "qemu/bitmap.h"
+ #include "crypto/tlssession.h"
+ #include "qemu/buffer.h"
 -- 
 2.51.1
 
