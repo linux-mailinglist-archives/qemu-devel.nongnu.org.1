@@ -2,76 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9D9C23782
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF069C237A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:56:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEiyM-000431-Iw; Fri, 31 Oct 2025 02:50:55 -0400
+	id 1vEj3B-0002Yn-Mc; Fri, 31 Oct 2025 02:55:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEiyG-0003gE-Kb
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:50:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEiy8-0004Me-4m
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:50:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761893436;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fbPBC/kbbxjTAHogvMh1uN5OqrpzsFVG1nGmmsuw47c=;
- b=OIWex3vKVgodrIv9BA42Mv8N06itkAwyimwuCQCjiSxcXKE0RYA/NWZ8OcrlLddUZC69lt
- qIMgzfN67klzzRzQjmL/V3G6SQyWjGWb2DdaJycGrvLPzyZsotulchtyX2Vb7LL8W/7jrP
- EB9kC8EeJm7z4QDVsZlVtkPF68AamU0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-444-d25_UxdKMKGnZrGD3eT6xQ-1; Fri,
- 31 Oct 2025 02:50:32 -0400
-X-MC-Unique: d25_UxdKMKGnZrGD3eT6xQ-1
-X-Mimecast-MFC-AGG-ID: d25_UxdKMKGnZrGD3eT6xQ_1761893431
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 27B251833786; Fri, 31 Oct 2025 06:50:31 +0000 (UTC)
-Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 87BBF1955BE3; Fri, 31 Oct 2025 06:50:29 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- devel@lists.libvirt.org (reviewer:Incompatible changes),
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 36/36] audio: deprecate HMP audio commands
-Date: Fri, 31 Oct 2025 10:46:29 +0400
-Message-ID: <20251031064631.134651-37-marcandre.lureau@redhat.com>
-In-Reply-To: <20251031064631.134651-1-marcandre.lureau@redhat.com>
-References: <20251031064631.134651-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vEj35-0002F5-PB
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:55:48 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vEj2u-0004xq-8k
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:55:47 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-4eba313770dso23476811cf.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 23:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1761893729; x=1762498529; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ghAoP8st044RskeUJ6cxZ2oYcSM/lanKEKGQqqfEWzo=;
+ b=N0zZmrsXdTffYhUneIibef37geYMdu+27MO/5vU7bYaYLzRCQGrxWkBGSXb0vHBTac
+ yK9pZt4JGkbzOzrHRnoUVvSsaufqc24xNQyNZOlKs8Bh/BCN5Q9v3q/ns5hHcGItPehl
+ rT5WdmTiMOH0pnmsZ7+Jm+AGwFVwrMt5SAmWzPR6RxIT3JLJzOJTIvAmqoerat3coqUn
+ a2D/o9ZV4CcwijTYBgQ9W6JvbOCh9fwBuP9SfcSHWSlruHm8TPxpgMzlYdafWbm5L0qb
+ xcB/g1yQIFZjhbMUBiIha1jj7OjyexvbWNlP96f/x3jyORYN88a/9H1LRxaT0AyaMiS0
+ U63Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761893729; x=1762498529;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ghAoP8st044RskeUJ6cxZ2oYcSM/lanKEKGQqqfEWzo=;
+ b=nYKg93OEm3Phjkx8OTUAQyftU3A7fxIYGbSbewLBFi8Km+SanoO9wsjz4QdsDEHrid
+ dH/P3fKE0lBnoSH9CtU8v2C3ideUFdNX0+oMLgJL0k+XaKgzL18kManZpfgX1UCNvl16
+ QEI8uaOtV4cpZS9STxuZzElpEEeoJesLhcWXEaQo6uRvzSoeFMCg+REp8c5sFO0u9Ozz
+ ox7tqJAeBzuXODDd9AS8A1jSCu8HBvnmWlioJDvKrgn4JB9etxf5j8+ZnwjDUFmdV1tn
+ M5/5sgMFhD67vnLW1Mb2AXQ38ZHUNOIYGiEIZufnhNTzQWuarorjFvVmNv/lbugxz4Mr
+ XW2A==
+X-Gm-Message-State: AOJu0YxbU3Vatq3TxW67Tiw5qaXZAO54BfJ9Q9x774cnqmRYzMt7x25A
+ +tVgooEqVe2lQf0cYCkz82rm4S0hSy1F//KHz54XwVk2Os3Q7A23c54aG349Y4ZUfylr0SvXTc5
+ jiU8nZifgjmBP5g4u36NHXf3QOcZjJNwbcxVx884=
+X-Gm-Gg: ASbGncuSGhQUSr1xc1FqnWmaJ76Kbs5WN1uafbvs4BQwkiGitnH4GbOL+Ad2xa1nchb
+ DWhB/8p+q9GyiTlXGUI1GQYyXGhO6ToXTG6JF4hQ8s3WzvfvIJ4wfovkqrJ/FVuhtIjOY5JW8L8
+ 4kus9iZqBZ5K+K9UuhVmL4TMep0u6WwmWFRuSc9SV495C76xk6gooKYAhejBjO1JUiqFdq6mnMf
+ oAbumpWcgkKryBR/s7mHwbJ7Lgm6gk9XaMEMxd3sNSUxAhDmK/blD4OFssKdxok/VJpzwh4SvZa
+ 0hx8LG0+l0BpLQFCG1rBHr4Bo9k=
+X-Google-Smtp-Source: AGHT+IFz407ugaQ23ZvnhuRtEdgXFpq5nZXIu3VTIO2o7GwNMQ8zjk0Z3kNFGHTI43FHTU0WtQ9C2a55swrjb9ZM14o=
+X-Received: by 2002:a05:622a:15c6:b0:4eb:a439:5fe8 with SMTP id
+ d75a77b69052e-4ed30c13241mr23310461cf.0.1761893728662; Thu, 30 Oct 2025
+ 23:55:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20251031064631.134651-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20251031064631.134651-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Fri, 31 Oct 2025 10:55:17 +0400
+X-Gm-Features: AWmQ_bmWdZ6n-hZa4Y0OMtKehBFUx6I94mbHb-U9_SdoFgcv4jjxgXQa53y80yA
+Message-ID: <CAJ+F1C+Tib_oDihxr+9AbFt-4d_K1D+GmZP78jc4Pfe7aRv32A@mail.gmail.com>
+Subject: Re: [PULL 00/36] Audio test patches
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,187 +93,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Hi
 
-The command is niche and better served by the host audio system.
-There is no QMP equivalent, fortunately. You can capture the audio
-stream via remote desktop protocols too (dbus, vnc, spice).
+Nevermind the thread title, it should be just "Audio patches"
+(git-publish used my branch name "audio-test"...)
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20251022105753.1474739-1-marcandre.lureau@redhat.com>
----
- docs/about/deprecated.rst | 20 ++++++++++++++++++++
- audio/audio-hmp-cmds.c    |  7 +++++++
- audio/meson.build         |  5 +++--
- hmp-commands-info.hx      |  6 ++++--
- hmp-commands.hx           |  9 +++++++--
- 5 files changed, 41 insertions(+), 6 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ca6b3769b5..4ee98d6646 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -169,6 +169,26 @@ Use ``job-finalize`` instead.
- 
- This argument has always been ignored.
- 
-+Human Machine Protocol (HMP) commands
-+-------------------------------------
-+
-+``wavcapture`` (since 10.2)
-+''''''''''''''''''''''''''''
-+
-+The ``wavcapture`` command is deprecated and will be removed in a future release.
-+
-+Use ``-audiodev wav`` or your host audio system to capture audio.
-+
-+``stopcapture`` (since 10.2)
-+''''''''''''''''''''''''''''
-+
-+The ``stopcapture`` command is deprecated and will be removed in a future release.
-+
-+``info`` argument ``capture`` (since 10.2)
-+''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``info capture`` command is deprecated and will be removed in a future release.
-+
- Host Architectures
- ------------------
- 
-diff --git a/audio/audio-hmp-cmds.c b/audio/audio-hmp-cmds.c
-index 1e56af21ab..1ffb5ebc74 100644
---- a/audio/audio-hmp-cmds.c
-+++ b/audio/audio-hmp-cmds.c
-@@ -28,6 +28,7 @@
- #include "monitor/monitor.h"
- #include "qapi/error.h"
- #include "qobject/qdict.h"
-+#include "qemu/error-report.h"
- 
- static QLIST_HEAD (capture_list_head, CaptureState) capture_head;
- 
-@@ -36,6 +37,8 @@ void hmp_info_capture(Monitor *mon, const QDict *qdict)
-     int i;
-     CaptureState *s;
- 
-+    warn_report_once("'info capture' is deprecated since v10.2, to be removed");
-+
-     for (s = capture_head.lh_first, i = 0; s; s = s->entries.le_next, ++i) {
-         monitor_printf(mon, "[%d]: ", i);
-         s->ops.info (s->opaque);
-@@ -48,6 +51,8 @@ void hmp_stopcapture(Monitor *mon, const QDict *qdict)
-     int n = qdict_get_int(qdict, "n");
-     CaptureState *s;
- 
-+    warn_report_once("'stopcapture' is deprecated since v10.2, to be removed");
-+
-     for (s = capture_head.lh_first, i = 0; s; s = s->entries.le_next, ++i) {
-         if (i == n) {
-             s->ops.destroy (s->opaque);
-@@ -69,6 +74,8 @@ void hmp_wavcapture(Monitor *mon, const QDict *qdict)
-     Error *local_err = NULL;
-     AudioBackend *as = audio_be_by_name(audiodev, &local_err);
- 
-+    warn_report_once("'wavcapture' is deprecated since v10.2, to be removed");
-+
-     if (!as) {
-         error_report_err(local_err);
-         return;
-diff --git a/audio/meson.build b/audio/meson.build
-index 37789437fb..b2dca2c640 100644
---- a/audio/meson.build
-+++ b/audio/meson.build
-@@ -1,12 +1,13 @@
- system_ss.add(files(
-   'audio.c',
--  'audio-hmp-cmds.c',
-   'mixeng.c',
-   'noaudio.c',
-   'wavaudio.c',
--  'wavcapture.c',
- ))
- 
-+# deprecated since v10.2, to be removed
-+system_ss.add(files('audio-hmp-cmds.c', 'wavcapture.c'))
-+
- system_ss.add(when: coreaudio, if_true: files('coreaudio.m'))
- system_ss.add(when: dsound, if_true: files('dsoundaudio.c', 'audio_win_int.c'))
- 
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 2a7f5810d7..41674dcbe1 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -363,18 +363,20 @@ SRST
-     Show host USB devices.
- ERST
- 
-+/* BEGIN deprecated */
-     {
-         .name       = "capture",
-         .args_type  = "",
-         .params     = "",
--        .help       = "show capture information",
-+        .help       = "show capture information (deprecated)",
-         .cmd        = hmp_info_capture,
-     },
- 
- SRST
-   ``info capture``
--    Show capture information.
-+    Show capture information (deprecated).
- ERST
-+/* END deprecated */
- 
-     {
-         .name       = "snapshots",
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 15f6082596..5cc4788f12 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -764,11 +764,12 @@ SRST
- 
- ERST
- 
-+/* BEGIN deprecated */
-     {
-         .name       = "wavcapture",
-         .args_type  = "path:F,audiodev:s,freq:i?,bits:i?,nchannels:i?",
-         .params     = "path audiodev [frequency [bits [channels]]]",
--        .help       = "capture audio to a wave file (default frequency=44100 bits=16 channels=2)",
-+        .help       = "capture audio to a wave file (deprecated, default frequency=44100 bits=16 channels=2)",
-         .cmd        = hmp_wavcapture,
-     },
- SRST
-@@ -782,13 +783,15 @@ SRST
-   - Sample rate = 44100 Hz - CD quality
-   - Bits = 16
-   - Number of channels = 2 - Stereo
-+
-+  Deprecated.
- ERST
- 
-     {
-         .name       = "stopcapture",
-         .args_type  = "n:i",
-         .params     = "capture index",
--        .help       = "stop capture",
-+        .help       = "stop capture (deprecated)",
-         .cmd        = hmp_stopcapture,
-     },
- SRST
-@@ -797,7 +800,9 @@ SRST
- 
-     info capture
- 
-+  Deprecated.
- ERST
-+/* END deprecated */
- 
-     {
-         .name       = "memsave",
--- 
-2.51.1
+On Fri, Oct 31, 2025 at 10:48=E2=80=AFAM <marcandre.lureau@redhat.com> wrot=
+e:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> The following changes since commit e090e0312dc9030d94e38e3d98a88718d3561e=
+4e:
+>
+>   Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into =
+staging (2025-10-29 10:44:15 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/marcandre.lureau/qemu.git tags/audio-test-pull-reque=
+st
+>
+> for you to fetch changes up to 05404916bf89867e613da271ebff1a556c206965:
+>
+>   audio: deprecate HMP audio commands (2025-10-30 22:59:30 +0400)
+>
+> ----------------------------------------------------------------
+> Audio clean-ups
+>
+> ----------------------------------------------------------------
+>
+> Marc-Andr=C3=A9 Lureau (34):
+>   qdev: add qdev_find_default_bus()
+>   hw/audio: look up the default bus from the device class
+>   audio: rename audio_define->audio_add_audiodev()
+>   hw/audio: use better naming for -audio model handling code
+>   hw/audio/virtio-snd-pci: remove custom model callback
+>   hw/audio: simplify 'hda' audio init code
+>   hw/audio: generalize audio_model.init()
+>   hw/audio: drop audio_model.isa
+>   audio: start making AudioState a QOM Object
+>   audio: register backends in /audiodevs container
+>   audio: use /audiodevs QOM container
+>   audio/paaudio: remove needless return value
+>   audio/dsound: simplify init()
+>   audio/dsound: report init error via **errp
+>   audio: simplify audio_driver_init()
+>   audio: move period tick initialization
+>   audio: drop needless error message
+>   audio: keep vmstate handle with AudioState
+>   audio: register and unregister vmstate with AudioState
+>   audio: initialize card_head during object init
+>   audio: remove some needless headers
+>   audio: remove AUDIO_HOST_ENDIANNESS
+>   audio: introduce AUD_set_volume_{in,out}_lr()
+>   audio/replay: fix type punning
+>   audio: move internal APIs to audio_int.h
+>   audio: rename AudioState -> AudioBackend
+>   audio: remove QEMUSoundCard
+>   audio/dbus: use a helper function to set the backend dbus server
+>   audio: move audio.h under include/qemu/
+>   audio: remove dependency on spice header
+>   audio: cleanup, use bool for booleans
+>   audio: move capture API to own header
+>   audio: drop needless audio_driver "descr" field
+>   audio: deprecate HMP audio commands
+>
+> Philippe Mathieu-Daud=C3=A9 (2):
+>   audio: Remove pointless local variables
+>   audio: Rename @endianness argument as @big_endian for clarity
+>
+>  MAINTAINERS                                   |   1 +
+>  docs/about/deprecated.rst                     |  20 ++
+>  audio/audio.h                                 | 185 -----------
+>  audio/audio_int.h                             |  67 ++--
+>  audio/audio_template.h                        |  44 ++-
+>  audio/mixeng.h                                |   1 -
+>  hw/audio/lm4549.h                             |   4 +-
+>  include/hw/audio/asc.h                        |   4 +-
+>  include/hw/audio/model.h                      |  14 +
+>  include/hw/audio/soundhw.h                    |  13 -
+>  include/hw/audio/virtio-snd.h                 |   4 +-
+>  include/hw/display/xlnx_dp.h                  |   4 +-
+>  include/hw/isa/vt82c686.h                     |   4 +-
+>  include/hw/qdev-properties-system.h           |   2 +-
+>  include/monitor/qdev.h                        |   3 +
+>  include/qemu/audio-capture.h                  |  43 +++
+>  include/qemu/audio.h                          | 150 +++++++++
+>  include/system/replay.h                       |   3 +-
+>  ui/vnc.h                                      |   4 +-
+>  audio/alsaaudio.c                             |  37 +--
+>  audio/audio-hmp-cmds.c                        |  11 +-
+>  audio/audio.c                                 | 313 +++++++++---------
+>  audio/audio_win_int.c                         |   2 +-
+>  audio/dbusaudio.c                             |  20 +-
+>  audio/dsoundaudio.c                           | 213 +++++-------
+>  audio/jackaudio.c                             |   3 +-
+>  audio/mixeng.c                                |  12 +-
+>  audio/noaudio.c                               |   5 +-
+>  audio/ossaudio.c                              |  33 +-
+>  audio/paaudio.c                               |  24 +-
+>  audio/pwaudio.c                               |  15 +-
+>  audio/sdlaudio.c                              |  15 +-
+>  audio/sndioaudio.c                            |   3 +-
+>  audio/spiceaudio.c                            |   7 +-
+>  audio/wavaudio.c                              |   6 +-
+>  audio/wavcapture.c                            |   5 +-
+>  hw/arm/integratorcp.c                         |   2 +-
+>  hw/arm/musicpal.c                             |   2 +-
+>  hw/arm/realview.c                             |   2 +-
+>  hw/arm/versatilepb.c                          |   2 +-
+>  hw/arm/vexpress.c                             |   2 +-
+>  hw/arm/xlnx-zcu102.c                          |   2 +-
+>  hw/audio/ac97.c                               |  36 +-
+>  hw/audio/adlib.c                              |  17 +-
+>  hw/audio/asc.c                                |  15 +-
+>  hw/audio/cs4231a.c                            |  16 +-
+>  hw/audio/es1370.c                             |  30 +-
+>  hw/audio/gus.c                                |  17 +-
+>  hw/audio/hda-codec.c                          |  21 +-
+>  hw/audio/intel-hda.c                          |  22 +-
+>  hw/audio/lm4549.c                             |  12 +-
+>  hw/audio/marvell_88w8618.c                    |   2 +-
+>  hw/audio/{soundhw.c =3D> model.c}               |  86 ++---
+>  hw/audio/pcspk.c                              |  13 +-
+>  hw/audio/pl041.c                              |   2 +-
+>  hw/audio/sb16.c                               |  23 +-
+>  hw/audio/via-ac97.c                           |  11 +-
+>  hw/audio/virtio-snd-pci.c                     |  18 +-
+>  hw/audio/virtio-snd.c                         |  17 +-
+>  hw/audio/wm8750.c                             |  37 +--
+>  hw/core/machine.c                             |   4 +-
+>  hw/core/qdev-properties-system.c              |  17 +-
+>  hw/display/xlnx_dp.c                          |   8 +-
+>  hw/ppc/prep.c                                 |   2 +-
+>  hw/usb/dev-audio.c                            |  17 +-
+>  qom/object.c                                  |   1 +
+>  replay/replay-audio.c                         |   4 +-
+>  replay/stubs-system.c                         |   2 +-
+>  system/qdev-monitor.c                         |  25 +-
+>  system/runstate.c                             |   2 +-
+>  system/vl.c                                   |  14 +-
+>  ui/dbus.c                                     |  13 +-
+>  ui/vnc.c                                      |  10 +-
+>  audio/coreaudio.m                             |   3 +-
+>  audio/meson.build                             |   7 +-
+>  hmp-commands-info.hx                          |   6 +-
+>  hmp-commands.hx                               |   9 +-
+>  hw/audio/meson.build                          |   2 +-
+>  .../codeconverter/test_regexps.py             |   4 +-
+>  79 files changed, 898 insertions(+), 953 deletions(-)
+>  delete mode 100644 audio/audio.h
+>  create mode 100644 include/hw/audio/model.h
+>  delete mode 100644 include/hw/audio/soundhw.h
+>  create mode 100644 include/qemu/audio-capture.h
+>  create mode 100644 include/qemu/audio.h
+>  rename hw/audio/{soundhw.c =3D> model.c} (54%)
+>
+> --
+> 2.51.1
+>
+>
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
