@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03825C26A2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE13C26A1A
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:42:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEtwH-0004Ao-3U; Fri, 31 Oct 2025 14:33:29 -0400
+	id 1vEtwL-0004DU-Jj; Fri, 31 Oct 2025 14:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtwE-0004A6-EI
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:26 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1vEtwI-0004CX-Pu
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:30 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtw7-0006B0-F5
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:26 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-421851bcb25so1515572f8f.2
+ id 1vEtw9-0006B2-TN
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:30 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-427007b1fe5so1949576f8f.1
  for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 11:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761935595; x=1762540395; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761935596; x=1762540396; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4a5pZGC2LeA5EmYHWr+77na5jmR1RmVRW3azsXbL3Ag=;
- b=xBVJITi5pXbmADfJvEYwki58zFj8hFx519qwYUrXcKIE/hhWut696AXG16U36NFdVm
- TY7FxeU046QiykzijK5Ja1sC2U9AFl3f9fbGIPoCbFrr1ze6TESD/mw0dpqeUdwwQ144
- ukZXU33bKnNg5r/+gOyl+F23UUaU37EghZbXwMyTryTfjsHeZfSd0YaMuzRilXdVQLbW
- AnZODFa6Om5fOY2+3dcTDkaJ/Gnrn8FSuEOzsrV7k5a30JF7dkuWABbCg34hjQyJcwxh
- NTeD8yda833fAJEmd7QBz/X4U9sUAvxDdma37boosHrSlG0XC7wuBxdsO+a+3oKxciIQ
- CIeQ==
+ :reply-to; bh=DbjOgOkfCwrBdURCcMUb2IkYqGbbFToEjPFT+iXympU=;
+ b=xEatXUGgHUjGFnLBLuGMz1wIyOLdLb99qJOLzEhxuoRG43fUzsouM3Koyy2zuqdevW
+ DbU4o0dzfFVsLOg9g47rqb/A7BtI9GNn2vtY88tKsF/hGzTjG18YRKyu1752wQO115eF
+ O0LpmuGsdb8PJ5crp6Dpw9h7F/A5EJX+Yybo+KWKNh2JFnY7jhQWZZUW7WANdo520xi+
+ hmckkyT65TJmQyrJwFIMWgOu3TkSB4G68oq2jpSv1zxslanXME99QswTk2BX0v/JuDBs
+ DpL8p8eWwUZ4+hl6m2wD3GKs8ejLJojIATYZF0vpBih1VU1aEDX2t7JH5/kHLJ1Fg67j
+ P5Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761935595; x=1762540395;
+ d=1e100.net; s=20230601; t=1761935596; x=1762540396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4a5pZGC2LeA5EmYHWr+77na5jmR1RmVRW3azsXbL3Ag=;
- b=O+NhofCiDx1vzXEAw57WCyrzvqGtfHTDXXUvlQrNLndBwMc3Re88NJX9KSiUSbl5ue
- 7QAd1dz3yc3dl2irCZhi8/ZfRTfFiaPUtUnBHsNCoVmf6+pKpb3mlwYaarsLkhYVj/Y9
- 535Iy0sX4hvVxhDT0/xOtQqZkUz+36rPGKtaiDAx5p95oGFmFBJF4vJzkomszZE/mEEA
- i5pI76xBEUp1t8UWLPinDKHUrwXOCS9IIoZ95ZAnPxFOSIqLnP+/hKBaIxyFZbLpfWfk
- Y/k8uKk6aiZmekKjqQ4hCp2ptpZondpGY5Dc6Dr1V9D8CF2IamMFFJj8Yf4eJ36L58eE
- 0d6A==
-X-Gm-Message-State: AOJu0Yyaci5UODfdbhXbmiyxg3/eddDbxs/b3wbqomS5/LkrsarQaHdv
- n22tGU2cFWA+b1t9MaVyn1JX61zom44RgKIBl8Ul/8X20iuDJlNP+9k8yrIYV4e3/9/c4XWg3bx
- IcnKb
-X-Gm-Gg: ASbGncvaMkk+4psd2ufzUGXfJimBTf+g9aRI9TFvFH7SbDtWDO/YWlnZkpThfURnyjw
- hirmIrJ8OGXV5YztO1am+rbm7i0yw63atcqbsGFGg6OB2bzWPHv/+NasTC/cV121H6j/oSUtfkT
- s2VnSFRMaBGWsu0DBJiDq7hxo/Hc/kUbG5CqLQYJxGxiD2JCz4bUSpJXj1NJLvDbkGEh+mF+uj9
- UGlUALY9pmh4s5hQMflg1GNpcdAeKZdmhQj/K9Hq056maoXp4xAlJUYEQDakJT+SG3yZ9h/KkxZ
- ADcmVgf5I8Q3c+0vCuv3UVg9MzXQMZmleNvaq5yOwi5ZkMUK/m9CgxmY//4APivqDlYc+c4WRzq
- F/6UYKpsCk4+in3Rx0QMsZFFLD6U6sjCLZZo52P5ndyl0UyWq18KL0wQwPdZRCFGWNUeNUKxQuw
- 6uaHbX3+ReT0qMzS3W
-X-Google-Smtp-Source: AGHT+IEmxmmVfnuU31DzwJtrdRjeNcXi/MPq5LWYn8FFJYykp0yN3PGotZh4vuTfT5TKfBg66iZrUg==
-X-Received: by 2002:a05:6000:240c:b0:429:bb21:94dd with SMTP id
- ffacd0b85a97d-429bd6ad96cmr4012366f8f.46.1761935594943; 
- Fri, 31 Oct 2025 11:33:14 -0700 (PDT)
+ bh=DbjOgOkfCwrBdURCcMUb2IkYqGbbFToEjPFT+iXympU=;
+ b=Bm9lBFewZCKCwr0ByIHHlklaYnBFwjpO06AWSG9D1V5+CRMIivFCMIL42K+sUfvqe+
+ 8FWKBkJ5iGl32Rjrsx3XV6QKzetD80Qt4Rd8XYw+UN1QJ757AuTVp7ns8eGEh5myTiam
+ c7OtjdgOsj2gzPc8qM4YnjXXlhXTACZV88q0hVri1tN5MmFUqo57lth+8SuX7mqOeHKG
+ WMMotA0m2++aWRV+5oQtdI7f7Dx2R2BIsVStDmuboddgfv5kFXddxMvzsHX0ZP7cF3BG
+ t2yiEyKoNCKb/EbTKmIakAcWvJu6HT39LIzw6C8B95rOiQmLPeXgRZ4qR2uD62byDMty
+ oVcg==
+X-Gm-Message-State: AOJu0YzFRVeeykbjXnnCrpFFVVsn2hdXWaSW/wCWvK1qeKtlWU0txDmb
+ zjFl1l0gDZTopdmxf7RT4N5d2MTYYlyQ37zNDn/5gP7PVlEWPfwVE1vc5QwN9HN45InLP0yCB+c
+ g1ix7
+X-Gm-Gg: ASbGnctVgoZTuocXM1ZiQ06bTOwLnWB3vfx7DwE0NHvEuo/+l9BEDMZ673FTmct30oe
+ ze7dj9exZSN9cpPu2ZtQZh7R46sbzBnk3GWNN6gwANaSGDvi3fIfAKcAj5noKSjhrl2Ud1kgJn5
+ BzRGeuju1Lwjalg2NBRSAT3x6dfvmsPof8jIoPmjDIHDxEk3UnaUUbmZPpYb2tykjRBCrwQ1+mC
+ VBwLVKJKXdiHwaYZjIp3exlWzKGreFchPdVdTPdBViJVSun8hKJyHwwwcG3awha8054MnljvKJY
+ jc4dbFRq5xET1Gw2NWnDudqCHKoYSXxglSSsJATULvQ8wjCprigXjb+9PN1mKTLN/xLSyPXfmvD
+ wHH/lbczTXmTeAIZXA5MoTRhUMho+IRX59UB+X/HTQ2YOD4rcnHf87fyL3y55l1+tnOYqUaMkiw
+ UtF5ksEnLJ48n6tCsF
+X-Google-Smtp-Source: AGHT+IFPCX5wqeU2TGO0V9X7is8dNJFVDpvQSM+8edbEqwHJi/v5dyS2Safv7gnx/lhkMC1fhaWIhQ==
+X-Received: by 2002:a05:6000:4387:b0:429:b1e4:1f74 with SMTP id
+ ffacd0b85a97d-429bd683753mr4358098f8f.20.1761935595757; 
+ Fri, 31 Oct 2025 11:33:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.14
+ ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Oct 2025 11:33:14 -0700 (PDT)
+ Fri, 31 Oct 2025 11:33:15 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/38] docs/system/security: Restrict "virtualization use case"
- to specific machines
-Date: Fri, 31 Oct 2025 18:32:35 +0000
-Message-ID: <20251031183310.3778349-4-peter.maydell@linaro.org>
+Subject: [PULL 04/38] target/arm: Add assert to arm_to_core_mmu_idx()
+Date: Fri, 31 Oct 2025 18:32:36 +0000
+Message-ID: <20251031183310.3778349-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251031183310.3778349-1-peter.maydell@linaro.org>
 References: <20251031183310.3778349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,85 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently our security policy defines a "virtualization use case"
-where we consider bugs to be security issues, and a
-"non-virtualization use case" where we do not make any security
-guarantees and don't consider bugs to be security issues.
+Before commit f76cee647c ("target/arm: Introduce mmu indexes for
+GCS") it was impossible for arm_to_core_mmu_idx() to return an
+invalid core MMU index, because NB_MMU_MODES was 16 and
+ARM_MMU_IDX_COREIDX_MASK was 0xf.
 
-The rationale for this split is that much code in QEMU is older and
-was not written with malicious guests in mind, and we don't have the
-resources to audit, fix and defend it.  So instead we inform users
-about what the can in practice rely on as a security barrier, and
-what they can't.
+That commit raises ARM_MMU_IDX_COREIDX_MASK to 0x1f and NB_MMU_MODES
+to 22, so it's now possible for a bogus Arm mmu index to result in an
+out of range core mmu index (which can then get used as an array
+index in the CPUTLB struct arrays). Coverity complains that this
+might result in an out-of-bounds access.
 
-We don't currently restrict the "virtualization use case" to any
-particular set of machine types.  This means that we have effectively
-barred ourselves from adding KVM support to any machine type that we
-don't want to put into the "bugs are security issues" category, even
-if it would be useful for users to be able to get better performance
-with a trusted guest by enabling KVM. This seems an unnecessary
-restriction, and in practice the set of machine types it makes
-sense to use for untrusted-guest virtualization is quite small.
+The out-of-bounds access can't happen because we construct all the
+ARMMMUIdx values we will use for TLBs to have valid core MMU indexes
+in the COREIDX field.  But we can add an assert() so that if we ever
+do end up operating on a corrupted or wrong ARMMMUIdx value we get an
+assert rather than silently indexing off the end of an array. This
+should also make Coverity happier.
 
-Specifically, we would like to be able to enable the use of
-KVM with the imx8 development board machine types, but we don't
-want to commit ourselves to having to support those SoC models
-and device models as part of QEMU's security boundary:
-https://lore.kernel.org/qemu-devel/20250629204851.1778-3-shentey@gmail.com/
-
-This patch updates the security policy to explicitly list the
-machine types we consider to be useful for the "virtualization
-use case".
-
+Coverity: CID 1641404
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20251016131159.750480-1-peter.maydell@linaro.org
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20251023101339.1983809-1-peter.maydell@linaro.org
 ---
- docs/system/security.rst | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ target/arm/internals.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/docs/system/security.rst b/docs/system/security.rst
-index f2092c8768b..53992048e65 100644
---- a/docs/system/security.rst
-+++ b/docs/system/security.rst
-@@ -35,6 +35,32 @@ malicious:
- Bugs affecting these entities are evaluated on whether they can cause damage in
- real-world use cases and treated as security bugs if this is the case.
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 6fbf7e1ca49..4c0fa28ef84 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -969,7 +969,9 @@ bool arm_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr addr,
  
-+To be covered by this security support policy you must:
-+
-+- use a virtualization accelerator like KVM or HVF
-+- use one of the machine types listed below
-+
-+It may be possible to use other machine types with a virtualization
-+accelerator to provide improved performance with a trusted guest
-+workload, but any machine type not listed here should not be
-+considered to be providing guest isolation or security guarantees,
-+and falls under the "non-virtualization use case".
-+
-+Supported machine types for the virtualization use case, by target architecture:
-+
-+aarch64
-+  ``virt``
-+i386, x86_64
-+  ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``
-+s390x
-+  ``s390-ccw-virtio``
-+loongarch64:
-+  ``virt``
-+ppc64:
-+  ``pseries``
-+riscv32, riscv64:
-+  ``virt``
-+
- Non-virtualization Use Case
- '''''''''''''''''''''''''''
+ static inline int arm_to_core_mmu_idx(ARMMMUIdx mmu_idx)
+ {
+-    return mmu_idx & ARM_MMU_IDX_COREIDX_MASK;
++    int coreidx = mmu_idx & ARM_MMU_IDX_COREIDX_MASK;
++    assert(coreidx < NB_MMU_MODES);
++    return coreidx;
+ }
  
+ static inline ARMMMUIdx core_to_arm_mmu_idx(CPUARMState *env, int mmu_idx)
 -- 
 2.43.0
 
