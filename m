@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C8DC26966
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03825C26A2F
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:43:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEtwJ-0004Bz-NN; Fri, 31 Oct 2025 14:33:31 -0400
+	id 1vEtwH-0004Ao-3U; Fri, 31 Oct 2025 14:33:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtwG-0004An-CT
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:28 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1vEtwE-0004A6-EI
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:26 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtw8-0006Ar-6n
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:28 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-429bcddad32so1072449f8f.3
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 11:33:17 -0700 (PDT)
+ id 1vEtw7-0006B0-F5
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:26 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-421851bcb25so1515572f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 11:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761935594; x=1762540394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761935595; x=1762540395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wmyQkb2QsvUuGjFN9atNXZMMVdCdxzDZe72zwMmx34w=;
- b=BPbei9lJv3mcd/Bt99mM8VeSatPqle8lZcyARxQhVc72GYqynd2Pn2K7F6SVv+3B9K
- SkVFYnaFO7Qa7HIqoBo88GGtxurgwgwBkFosVCbqu0kfsCJBr4KFMxUAecCBbB/0ieB5
- F3/73700KGSi37zy0eE6fNlDWrXjc2q4IlPtNtNh5EJDzVQK/b4Bs7lxxJKOocaq7K9D
- ciYPa4AavEejKb8YMWSFnYObFqUpXXZiIj7N1O8WtpZMN+2lYgYQpXx6tWQwCi+UyPJ/
- DCpgUz3AHM/liLIxa/0YdxEhl5mrZhPSBgxajQlYLNpB1HbkSZmY6SbseZigjhL9I8iM
- ANHA==
+ :reply-to; bh=4a5pZGC2LeA5EmYHWr+77na5jmR1RmVRW3azsXbL3Ag=;
+ b=xBVJITi5pXbmADfJvEYwki58zFj8hFx519qwYUrXcKIE/hhWut696AXG16U36NFdVm
+ TY7FxeU046QiykzijK5Ja1sC2U9AFl3f9fbGIPoCbFrr1ze6TESD/mw0dpqeUdwwQ144
+ ukZXU33bKnNg5r/+gOyl+F23UUaU37EghZbXwMyTryTfjsHeZfSd0YaMuzRilXdVQLbW
+ AnZODFa6Om5fOY2+3dcTDkaJ/Gnrn8FSuEOzsrV7k5a30JF7dkuWABbCg34hjQyJcwxh
+ NTeD8yda833fAJEmd7QBz/X4U9sUAvxDdma37boosHrSlG0XC7wuBxdsO+a+3oKxciIQ
+ CIeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761935594; x=1762540394;
+ d=1e100.net; s=20230601; t=1761935595; x=1762540395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wmyQkb2QsvUuGjFN9atNXZMMVdCdxzDZe72zwMmx34w=;
- b=RKm163Vn61HmklgWZi9rLClSShb5rrsHq8qMf6L4218Jg3B75DUS7yRs4/AmJ4N1Oy
- a/4Gd7WEG8n3tn7KkjO/v2EMcUi1f9M1meyU48raqxj6Dv4mE1QJmGiGHcc+qckoDBvK
- OlwS9fYV/RfH7CykYCKU/NPs2geDYiSdV6SHaBNpYQNqe2q0LXxAwkjo+RHZXW2vFxa6
- JihQ47o6B7Plba2S075kTGKb97tedcK8ryu33dh6aIMAyHbcD1gLWfCVQ3cbG8IEV4yh
- vA8SvlmApeQ82xrICfIEuu7FzwyxqEbSwS6+OPlWONzS/rkpQIQ09H7XPEoSfTlQHIfW
- HqVQ==
-X-Gm-Message-State: AOJu0YzgWsraTfDl89CSjikZfL+Fht7qrSXJGtC9D1JoPweGTo+TrjCe
- qhJRguFdKO5kP6UXb9BOfUpSbR8vZfsuol/O5r4tIem2GKVHUAEGNuOA+FIHYa6b7vP+dR3LZpR
- SK9r4
-X-Gm-Gg: ASbGncuei+wK0UG4AyPpsDD9eiLzB5ZpbFH52OIapkqN2+hp+adW1upZYFAfmGaWaO0
- lWCN0o1u3bwyH7cIp8L99e7EAJ2qsqJ4QgC+N/GdAwXBy/rM/cWXgNS6zHtMarrFe/6A1OWimZO
- ziPK10uMpo82ZKGSzBhESIqmzKYCjSXj6mxoa79OfY7xEa7OxVIoG8Jj2Mb2Rgq8FMeuLhRPpSF
- ecUmZ7CYSZTuSBkCKeR70xAYscc1l2b6BaAx07SmGNeXp+9LIHq8ygE4aL+0+qY+/ZBnjGRZDQE
- isxi2uhpTMlc8Tnozkc9TtOLvF4YTbxv91+7THHf0TfKEL3rDj2Qmb+biDLhD7bkw7I/NTo6MmI
- wJRWFhf9/Luk1gdpiZvHtYby1ywC28RBLAi/RE7zsR3xLUsgrx0IZR8bQxU6DKQlaStGMqXYIdu
- +Q/9kf2Q==
-X-Google-Smtp-Source: AGHT+IGg0a7p2mMgHx5XucSmnkWzlOmSEyoRvddkEfCDPJ8HEE/LizzR7Un3uour7bKZ9faXifDYnA==
-X-Received: by 2002:a05:6000:2585:b0:428:3f7c:bcfe with SMTP id
- ffacd0b85a97d-429bd6c1ef3mr3599375f8f.57.1761935594114; 
+ bh=4a5pZGC2LeA5EmYHWr+77na5jmR1RmVRW3azsXbL3Ag=;
+ b=O+NhofCiDx1vzXEAw57WCyrzvqGtfHTDXXUvlQrNLndBwMc3Re88NJX9KSiUSbl5ue
+ 7QAd1dz3yc3dl2irCZhi8/ZfRTfFiaPUtUnBHsNCoVmf6+pKpb3mlwYaarsLkhYVj/Y9
+ 535Iy0sX4hvVxhDT0/xOtQqZkUz+36rPGKtaiDAx5p95oGFmFBJF4vJzkomszZE/mEEA
+ i5pI76xBEUp1t8UWLPinDKHUrwXOCS9IIoZ95ZAnPxFOSIqLnP+/hKBaIxyFZbLpfWfk
+ Y/k8uKk6aiZmekKjqQ4hCp2ptpZondpGY5Dc6Dr1V9D8CF2IamMFFJj8Yf4eJ36L58eE
+ 0d6A==
+X-Gm-Message-State: AOJu0Yyaci5UODfdbhXbmiyxg3/eddDbxs/b3wbqomS5/LkrsarQaHdv
+ n22tGU2cFWA+b1t9MaVyn1JX61zom44RgKIBl8Ul/8X20iuDJlNP+9k8yrIYV4e3/9/c4XWg3bx
+ IcnKb
+X-Gm-Gg: ASbGncvaMkk+4psd2ufzUGXfJimBTf+g9aRI9TFvFH7SbDtWDO/YWlnZkpThfURnyjw
+ hirmIrJ8OGXV5YztO1am+rbm7i0yw63atcqbsGFGg6OB2bzWPHv/+NasTC/cV121H6j/oSUtfkT
+ s2VnSFRMaBGWsu0DBJiDq7hxo/Hc/kUbG5CqLQYJxGxiD2JCz4bUSpJXj1NJLvDbkGEh+mF+uj9
+ UGlUALY9pmh4s5hQMflg1GNpcdAeKZdmhQj/K9Hq056maoXp4xAlJUYEQDakJT+SG3yZ9h/KkxZ
+ ADcmVgf5I8Q3c+0vCuv3UVg9MzXQMZmleNvaq5yOwi5ZkMUK/m9CgxmY//4APivqDlYc+c4WRzq
+ F/6UYKpsCk4+in3Rx0QMsZFFLD6U6sjCLZZo52P5ndyl0UyWq18KL0wQwPdZRCFGWNUeNUKxQuw
+ 6uaHbX3+ReT0qMzS3W
+X-Google-Smtp-Source: AGHT+IEmxmmVfnuU31DzwJtrdRjeNcXi/MPq5LWYn8FFJYykp0yN3PGotZh4vuTfT5TKfBg66iZrUg==
+X-Received: by 2002:a05:6000:240c:b0:429:bb21:94dd with SMTP id
+ ffacd0b85a97d-429bd6ad96cmr4012366f8f.46.1761935594943; 
  Fri, 31 Oct 2025 11:33:14 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.13
+ ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Oct 2025 11:33:13 -0700 (PDT)
+ Fri, 31 Oct 2025 11:33:14 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/38] docs/system/arm/virt: Document user-creatable SMMUv3
-Date: Fri, 31 Oct 2025 18:32:34 +0000
-Message-ID: <20251031183310.3778349-3-peter.maydell@linaro.org>
+Subject: [PULL 03/38] docs/system/security: Restrict "virtualization use case"
+ to specific machines
+Date: Fri, 31 Oct 2025 18:32:35 +0000
+Message-ID: <20251031183310.3778349-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251031183310.3778349-1-peter.maydell@linaro.org>
 References: <20251031183310.3778349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,80 +99,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virt machine now supports creating multiple SMMUv3 instances, each
-associated with a separate PCIe root complex.
+Currently our security policy defines a "virtualization use case"
+where we consider bugs to be security issues, and a
+"non-virtualization use case" where we do not make any security
+guarantees and don't consider bugs to be security issues.
 
-Update the documentation with an example.
+The rationale for this split is that much code in QEMU is older and
+was not written with malicious guests in mind, and we don't have the
+resources to audit, fix and defend it.  So instead we inform users
+about what the can in practice rely on as a security barrier, and
+what they can't.
 
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-[PMM: some minor wording tweaks]
+We don't currently restrict the "virtualization use case" to any
+particular set of machine types.  This means that we have effectively
+barred ourselves from adding KVM support to any machine type that we
+don't want to put into the "bugs are security issues" category, even
+if it would be useful for users to be able to get better performance
+with a trusted guest by enabling KVM. This seems an unnecessary
+restriction, and in practice the set of machine types it makes
+sense to use for untrusted-guest virtualization is quite small.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Specifically, we would like to be able to enable the use of
+KVM with the imx8 development board machine types, but we don't
+want to commit ourselves to having to support those SoC models
+and device models as part of QEMU's security boundary:
+https://lore.kernel.org/qemu-devel/20250629204851.1778-3-shentey@gmail.com/
+
+This patch updates the security policy to explicitly list the
+machine types we consider to be useful for the "virtualization
+use case".
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+Message-id: 20251016131159.750480-1-peter.maydell@linaro.org
+Acked-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/system/arm/virt.rst | 35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ docs/system/security.rst | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 10cbffc8a70..e5570773ba1 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -37,7 +37,8 @@ The virt board supports:
- - An RTC
- - The fw_cfg device that allows a guest to obtain data from QEMU
- - A PL061 GPIO controller
--- An optional SMMUv3 IOMMU
-+- An optional machine-wide SMMUv3 IOMMU
-+- User-creatable SMMUv3 devices (see below for example)
- - hotpluggable DIMMs
- - hotpluggable NVDIMMs
- - An MSI controller (GICv2M or ITS). GICv2M is selected by default along
-@@ -176,7 +177,7 @@ iommu
-   ``none``
-     Don't create an IOMMU (the default)
-   ``smmuv3``
--    Create an SMMUv3
-+    Create a machine-wide SMMUv3.
+diff --git a/docs/system/security.rst b/docs/system/security.rst
+index f2092c8768b..53992048e65 100644
+--- a/docs/system/security.rst
++++ b/docs/system/security.rst
+@@ -35,6 +35,32 @@ malicious:
+ Bugs affecting these entities are evaluated on whether they can cause damage in
+ real-world use cases and treated as security bugs if this is the case.
  
- default-bus-bypass-iommu
-   Set ``on``/``off`` to enable/disable `bypass_iommu
-@@ -219,6 +220,36 @@ x-oem-table-id
-   Set string (up to 8 bytes) to override the default value of field OEM Table ID
-   in ACPI table header.
- 
-+SMMU configuration
-+""""""""""""""""""
++To be covered by this security support policy you must:
 +
-+Machine-wide SMMUv3 IOMMU
-+  Setting the machine-specific option ``iommu=smmuv3`` causes QEMU to
-+  create a single, machine-wide SMMUv3 instance that applies to all
-+  devices in the PCIe topology.
++- use a virtualization accelerator like KVM or HVF
++- use one of the machine types listed below
 +
-+  For information about selectively bypassing devices, refer to
-+  ``docs/bypass-iommu.txt``.
++It may be possible to use other machine types with a virtualization
++accelerator to provide improved performance with a trusted guest
++workload, but any machine type not listed here should not be
++considered to be providing guest isolation or security guarantees,
++and falls under the "non-virtualization use case".
 +
-+User-creatable SMMUv3 devices
-+  You can use the ``-device arm-smmuv3`` option to create multiple
-+  user-defined SMMUv3 devices, each associated with a separate PCIe
-+  root complex. This is only permitted if the machine-wide SMMUv3
-+  (``iommu=smmuv3``) option is not used. Each ``arm-smmuv3`` device
-+  uses the ``primary-bus`` sub-option to specify which PCIe root
-+  complex it is associated with.
++Supported machine types for the virtualization use case, by target architecture:
 +
-+  This model is useful when you want to mirror a host configuration where
-+  each NUMA node typically has its own SMMU, allowing the VM topology to
-+  align more closely with the host’s hardware layout.
++aarch64
++  ``virt``
++i386, x86_64
++  ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``
++s390x
++  ``s390-ccw-virtio``
++loongarch64:
++  ``virt``
++ppc64:
++  ``pseries``
++riscv32, riscv64:
++  ``virt``
 +
-+  Example::
-+
-+      -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.0
-+      ...
-+      -device pxb-pcie,id=pcie.1,numa_node=1
-+      -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.1
-+
- Linux guest kernel configuration
- """"""""""""""""""""""""""""""""
+ Non-virtualization Use Case
+ '''''''''''''''''''''''''''
  
 -- 
 2.43.0
