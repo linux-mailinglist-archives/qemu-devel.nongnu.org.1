@@ -2,56 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C4BC26A1B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DCAC26ABD
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 20:05:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEu49-0008VX-83; Fri, 31 Oct 2025 14:41:38 -0400
+	id 1vEuOy-00016v-Q4; Fri, 31 Oct 2025 15:03:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEu3k-0008NO-6r
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:41:14 -0400
+ id 1vEuOw-00016Q-9o
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 15:03:06 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vEu3c-0007xN-IU
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:41:11 -0400
+ id 1vEuOp-0004XZ-9X
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 15:03:06 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9CAE9C0157;
- Fri, 31 Oct 2025 21:40:54 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:546::1:17] (unknown
- [2a02:6bf:8080:546::1:17])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 1315EC0157;
+ Fri, 31 Oct 2025 22:02:51 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:546::1:17])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id relVVi0F1Ko0-MtcLIM6r; Fri, 31 Oct 2025 21:40:54 +0300
+ ESMTPSA id m2mTmi0FnuQ0-TucAVi9w; Fri, 31 Oct 2025 22:02:50 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761936054;
- bh=ZJGAgnjDh4Wl274/GDMF4g40fWRKqyG0VF+blGd8LQE=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=n5dvQ7OyHlDDGky2YsgghUCn7utX1QY9+Q7q16l/a82krPgpQGOOt37zwYijemcOE
- 6wK/NrlbJyx3b7FRtnq1+0Yr/qsvJM0SHARZa0cKMSH0gdMw6QAv9N6E6lKkS19/4H
- UpmrDU1Jza7ZbTl2D59ziVxVfugE5TfnXooJI+04=
+ s=default; t=1761937370;
+ bh=4oBc5ZbucfxWlQTOJFuCzElW/m4jSJhuL6QDb4yhs+M=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=R+THQORqpEsZ3G4tsHzn0WJWDpWS6uAbNGUYsN14t2+uI6BPwrMrwKoj3GejitoPT
+ 8lH4mqKDaezkiVsRyoNsDyRDssy1aubIkh9aOF5MMPkfjmZ6VtU2eQHId5TilvzPCb
+ 2QmiUHM9xpaehTVcRfO0RQErbMpFPBPyqpQogwE8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <b126455a-2a1a-4278-bc8f-a77d47f4cf16@yandex-team.ru>
-Date: Fri, 31 Oct 2025 21:40:53 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] qapi: Add documentation format validation
-To: Markus Armbruster <armbru@redhat.com>
-Cc: michael.roth@amd.com, qemu-devel@nongnu.org
-References: <20251031115517.79032-1-vsementsov@yandex-team.ru>
- <874irf5a3a.fsf@pond.sub.org>
-Content-Language: en-US
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <874irf5a3a.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: berrange@redhat.com
+Cc: qemu-devel@nongnu.org,
+	vsementsov@yandex-team.ru
+Subject: [PATCH v2 0/2] util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic
+Date: Fri, 31 Oct 2025 22:02:44 +0300
+Message-ID: <20251031190246.257153-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -27
@@ -76,214 +71,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.10.25 19:07, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> Add explicit validation for QAPI documentation formatting rules:
->>
->> 1. Lines must not exceed 70 columns in width (including '# ' prefix)
->> 2. Sentences must be separated by two spaces
->>
->> Example sections and literal :: blocks (seldom case) are excluded, we
->> don't require them to be <= 70, that would be too restrictive. Anyway,
->> they share common 80-columns recommendations (not requirements).
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>
->> Hi all!
->>
->> v4: apply suggestions by Markus:
->>   - smart regexps
->>   - simpler error messages
->>   - hack to move cursor at the place of error
->>   - support :: blocks
->>
->> This is based on
->> [PATCH 0/8] A QAPI schema doc markup fix, and style cleanup
->> Based-on: <20251031094751.2817932-1-armbru@redhat.com>
->>
->>   scripts/qapi/parser.py | 44 +++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 43 insertions(+), 1 deletion(-)
->>
->> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
->> index 9fbf80a541..2c244a3608 100644
->> --- a/scripts/qapi/parser.py
->> +++ b/scripts/qapi/parser.py
->> @@ -108,6 +108,10 @@ def __init__(self,
->>           self.exprs: List[QAPIExpression] = []
->>           self.docs: List[QAPIDoc] = []
->>   
->> +        # State for tracking qmp-example blocks and simple
->> +        # :: literal blocks.
->> +        self._literal_mode = False
->> +
->>           # Showtime!
->>           self._parse()
->>   
->> @@ -423,12 +427,50 @@ def get_doc_line(self) -> Optional[str]:
->>               if self.val != '##':
->>                   raise QAPIParseError(
->>                       self, "junk after '##' at end of documentation comment")
->> +            self._literal_mode = False
->>               return None
->>           if self.val == '#':
->>               return ''
->>           if self.val[1] != ' ':
->>               raise QAPIParseError(self, "missing space after #")
->> -        return self.val[2:].rstrip()
->> +
->> +        line = self.val[2:].rstrip()
->> +
->> +        if re.match(r'(\.\. +qmp-example)? *::$', line):
->> +            self._literal_mode = True
-> 
-> This doesn't match the contracted form of literal blocks
-> 
->      lorem ipsum ::
->          dolor sit amet
-> 
-> We don't use this form right now.  We can worry about matching it when
-> we do.
-> 
->> +        elif self._literal_mode and line and not line.startswith(' '):
->> +            # ReST directives stop at first non-blank non-indented line
->> +            self._literal_mode = False
-> 
-> This can miss the end of the literal block when the line with '::' is
-> indented.  To reproduce ...
-> 
->> +
->> +        if not self._literal_mode:
->> +            self._validate_doc_line_format(line)
-> 
-> ... tack a debug print here
-> 
->             else:
->                 print('@@@', line)
-> 
-> and run
-> 
->      $ pyvenv/bin/python3 /work/armbru/qemu/scripts/qapi-gen.py -o docs/qapi-firmware/ ../docs/interop/firmware.json
-> 
-> Relevant part of input:
-> 
->      # @executable: Identifies the firmware executable.  The @mode
->      #     indicates whether there will be an associated NVRAM template
->      #     present.  The preferred corresponding QEMU command line options
->      #     are
->      #
->      #     ::
->      #
->      #         -drive if=none,id=pflash0,readonly=on,file=@executable.@filename,format=@executable.@format
->      #         -machine pflash0=pflash0
->      #
->      #     or equivalent -blockdev instead of -drive.  When @mode is
->      #     @combined the executable must be cloned before use and
->      #     configured with readonly=off.  With QEMU versions older than
->      #     4.0, you have to use
->      #
->      #     ::
->      #
->      #         -drive if=pflash,unit=0,readonly=on,file=@executable.@filename,format=@executable.@format
->      #
-> 
-> Relevant part of output:
-> 
->      @@@     ::
->      @@@         -drive if=none,id=pflash0,readonly=on,file=@executable.@filename,format=@executable.@format
->      @@@         -machine pflash0=pflash0
->      @@@     or equivalent -blockdev instead of -drive.  When @mode is
->      @@@     @combined the executable must be cloned before use and
->      @@@     configured with readonly=off.  With QEMU versions older than
->      @@@     4.0, you have to use
->      @@@     ::
->      @@@         -drive if=pflash,unit=0,readonly=on,file=@executable.@filename,format=@executable.@format
-> 
-> Save the indentation of the line containing the '::'.  A line with less
-> indentation ends the literal block.
-> 
->> +
->> +        return line
->> +
->> +    def _validate_doc_line_format(self, line: str) -> None:
->> +        """
->> +        Validate documentation format rules for a single line:
->> +        1. Lines should not exceed 70 columns
->> +        2. Sentences should be separated by two spaces
->> +        """
->> +        full_line_length = len(line) + 2  # "# " = 2 characters
->> +        if full_line_length > 70:
->> +            # Skip URL lines - they can't be broken
->> +            if re.match(r' *(https?|ftp)://[^ ]*$', line):
->> +                pass
->> +            else:
->> +                raise QAPIParseError(
->> +                    self, "documentation line exceeds 70 columns"
->> +                )
->> +
->> +        single_space_pattern = r'(\be\.g\.|^ *\d\.|([.!?])) [A-Z0-9(]'
->> +        for m in list(re.finditer(single_space_pattern, line)):
->> +            if not m.group(2):
->> +                continue
->> +            # HACK so the error message points to the offending spot
->> +            self.pos = self.line_pos + 2 + m.start(2) + 1
-> 
-> I have an idea for a non-hacky solution.  I'll post it when ready.
-> Until then, don't worry about it.
-> 
->> +            raise QAPIParseError(
->> +                 self, "Use two spaces between sentences")
-> 
-> Note this check is somewhat prone to false positives.
-> @single_space_pattern matches 'e.g.' to avoid the false positive
-> 'e.g. FLAT' in block-core.json.  The same could happen for other
-> abbreviations.
-> 
-> We could add more sophisticated heuristics to reduce the risk of false
-> positives.  Meh.  I'd rather KISS for now.  We can deal with the problem
-> once we have it.
-> 
-> We may want to add a hint, though.  Something like:
-> 
->                 raise QAPIParseError(
->                      self, "Use two spaces between sentences\n"
->                      "If this not the end of a sentence, please report the bug")
-> 
->>   
->>       @staticmethod
->>       def _match_at_name_colon(string: str) -> Optional[Match[str]]:
-> 
-> Negative tests would be nice, one for each new error.  Feel free to ask
-> me to write them.
-> 
+Hi all. qemu_hexdump() wrongly indents ASCII part of the output for
+the list line, it it's not bound to 16-bytes boundary. Let's fix.
 
-No problem, it was interesting to look, how qapi-schema tests are done.
+v2: add test
 
-Hmm, while making the tests I thought: it would be more convenient to have all
-err, json and out things in one file, like
+Vladimir Sementsov-Ogievskiy (2):
+  util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic
+  tests/unit: add unit test for qemu_hexdump()
 
-     @json
-     ##
-     # @foo:
-     #
-     # This line has exactly 71 characters, including spaces and punctuation!
-     ##
-     { 'command': 'foo' }
-     @out
-     @err
-     doc-bad-long-line.json:4:1: documentation line exceeds 70 columns
-
-Or something like this. That will simplify creating a new test process from
-copying (and modifying) three files to copying one.
-
-(just thinking out loud, don't mind me)
-
-
-v5 is sent. Tests are small and simple, I decided not split them out to separate
-patches.
+ tests/unit/test-cutils.c | 43 ++++++++++++++++++++++++++++++++++++++++
+ util/hexdump.c           | 38 ++++++++++++++++++++++-------------
+ 2 files changed, 67 insertions(+), 14 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.48.1
+
 
