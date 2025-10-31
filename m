@@ -2,76 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2512AC250A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 13:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489D4C250FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 13:44:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEoKI-0004WM-Ag; Fri, 31 Oct 2025 08:33:54 -0400
+	id 1vEoSX-0007Nj-QP; Fri, 31 Oct 2025 08:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vEoKG-0004W9-3g
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 08:33:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vEoST-0007MZ-Id; Fri, 31 Oct 2025 08:42:21 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vEoK9-0005Ao-Oh
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 08:33:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761914018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=416ejIxb3ChzopdZc+FqS5bCe3INXY4qAUZKLbwMXbU=;
- b=EQr1TQMVZJW6J9OpizxVKOQdZAsDKx4ODTpOY/0avJbn9mJFm1GTqMmpTZhI+x7H8kQqJB
- iK2K7xxkDn/7VOhRtoKbkMwpdjVRbJIi3JEFdEPfUJNEFHg14bOO/LLtbI8lsLEnm6OvuZ
- LMwD7nyNOr2YQFH1HZwMwZLpeWB2tZw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-UlkNKOK7Md2Dog1xhSNU7Q-1; Fri,
- 31 Oct 2025 08:33:34 -0400
-X-MC-Unique: UlkNKOK7Md2Dog1xhSNU7Q-1
-X-Mimecast-MFC-AGG-ID: UlkNKOK7Md2Dog1xhSNU7Q_1761914014
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E50C718001D1; Fri, 31 Oct 2025 12:33:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.225.146])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7305730001A6; Fri, 31 Oct 2025 12:33:31 +0000 (UTC)
-Date: Fri, 31 Oct 2025 13:33:28 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: Re: [PATCH v3 21/21] fuse: Increase MAX_WRITE_SIZE with a second
- buffer
-Message-ID: <aQSsmAOnj2tAeNxx@redhat.com>
-References: <20250701114437.207419-1-hreitz@redhat.com>
- <20250701114437.207419-22-hreitz@redhat.com>
- <aPpFogd44fuISVKd@redhat.com>
- <c9339232-476d-4074-9150-ea7c154658b7@redhat.com>
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vEoSL-0006h7-3l; Fri, 31 Oct 2025 08:42:20 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59V9Sxgv031961;
+ Fri, 31 Oct 2025 12:41:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=gaKsIU
+ 7dMVzvtNfd4Pw8wOYVoh4M2GP3dsNNusHGWvk=; b=Z7yjcFztAB69ofWKeazCMG
+ DT24Xkx/4r2u/qnE25iU5ofLmTYHgXS0NtVpjNce5JxaoFy7j4Ae91NkX+7/eh3O
+ HMlcAvdWXLHjBa1CzALMUVv0FBNL8M4L03NoYjw9qSiBa4AbTk2NkwxURVLDTbG/
+ R0sIKodyXEPretk1U8Fo5jHzXAFjDluDSqO0RDt6Xr0qIFQqRelBgcG1YblDLEda
+ 8N6mEXONaXzsICASGLXWZAqAEpOsvGQ8EXx4gwr519PZiNl4mCckf4juXtjqp8dU
+ weK7R6XeyS7692Cjic+Jb9EHirSrpPxhuZ16mcl606U/unaAJxAL0a2VSaPB9XkA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34ajwh6f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Oct 2025 12:41:52 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59VCae0Q030910;
+ Fri, 31 Oct 2025 12:41:52 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34ajwh6e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Oct 2025 12:41:52 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59V8IrqU023869;
+ Fri, 31 Oct 2025 12:41:51 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vxe5qe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Oct 2025 12:41:51 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59VCfoJO31457820
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 31 Oct 2025 12:41:50 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5121658045;
+ Fri, 31 Oct 2025 12:41:50 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DDE058056;
+ Fri, 31 Oct 2025 12:41:46 +0000 (GMT)
+Received: from [9.124.212.241] (unknown [9.124.212.241])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 31 Oct 2025 12:41:45 +0000 (GMT)
+Message-ID: <d52da8d1-3d9c-46c4-99db-b22bd597db27@linux.ibm.com>
+Date: Fri, 31 Oct 2025 18:11:42 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c9339232-476d-4074-9150-ea7c154658b7@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] Add support for PowerPC e500 little-endian pages
+To: Danila Zhebryakov <d.zhebryakov@yandex.ru>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Nicholas Piggin <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, qemu-ppc@nongnu.org,
+ Riku Voipio <riku.voipio@iki.fi>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org
+References: <20251027123049.32038-1-d.zhebryakov@yandex.ru>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <20251027123049.32038-1-d.zhebryakov@yandex.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=C/XkCAP+ c=1 sm=1 tr=0 ts=6904ae90 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=p0WdMEafAAAA:8 a=__1j2KhZzCfPKJUQqiIA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22 a=poXaRoVlC6wW9_mwW8W4:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=jd6J4Gguk5HxikPWLKER:22
+X-Proofpoint-GUID: wjRkopTEjQTd7cKM0Q2t7GLuAFSC9lRb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX3DI1lIj1Mbvc
+ ngh4AizrTYOs396qhE68yguFXMc1Au/2KrTXm5SPDhgp9Jkw0hi9e3La7Jnc12RBuqIQiOZrajg
+ dLpA6Elgva9W1qMikrnxTokKcs5JxhWtSzdDveqjRHEs4ijYJfNrzNyLzW5tM5ZDwCZt0iJAElf
+ 4S04GmMJqYR5nY5uEslV1uLJYhZVS/E7UBEXqHloXz5P175I1xY6ITNbRezT9VfMwb8UsLpS8la
+ 9Tt/rITmei3AGKs1uvCRFfAcaC1B5IF7peh3iXeoGJsBTnfLcRYIkAVoZ5RW+oxo8cYj6TIulCR
+ Lf/oZVlEErFu09edCCI1cwk7Z8jOxZTNAR4ZB6WKr5AGOo3BkOf3TcAydzi9kgawEn79wffeijK
+ L5QIi9+yXqOREaH/Y2rJGR7O0bwiag==
+X-Proofpoint-ORIG-GUID: 91hv7RaU17t8fWsNWmESJ7MmDCPm1Op_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-31_03,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ spamscore=0 phishscore=0 malwarescore=0 priorityscore=1501 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2510280166
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rathc@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,86 +129,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 31.10.2025 um 13:13 hat Hanna Czenczek geschrieben:
-> On 23.10.25 17:11, Kevin Wolf wrote:
-> > Am 01.07.2025 um 13:44 hat Hanna Czenczek geschrieben:
-> > > We probably want to support larger write sizes than just 4k; 64k seems
-> > > nice.  However, we cannot read partial requests from the FUSE FD, we
-> > > always have to read requests in full; so our read buffer must be large
-> > > enough to accommodate potential 64k writes if we want to support that.
-> > > 
-> > > Always allocating FuseRequest objects with 64k buffers in them seems
-> > > wasteful, though.  But we can get around the issue by splitting the
-> > > buffer into two and using readv(): One part will hold all normal (up to
-> > > 4k) write requests and all other requests, and a second part (the
-> > > "spill-over buffer") will be used only for larger write requests.  Each
-> > > FuseQueue has its own spill-over buffer, and only if we find it used
-> > > when reading a request will we move its ownership into the FuseRequest
-> > > object and allocate a new spill-over buffer for the queue.
-> > > 
-> > > This way, we get to support "large" write sizes without having to
-> > > allocate big buffers when they aren't used.
-> > > 
-> > > Also, this even reduces the size of the FuseRequest objects because the
-> > > read buffer has to have at least FUSE_MIN_READ_BUFFER (8192) bytes; but
-> > > the requests we support are not quite so large (except for >4k writes),
-> > > so until now, we basically had to have useless padding in there.
-> > > 
-> > > With the spill-over buffer added, the FUSE_MIN_READ_BUFFER requirement
-> > > is easily met and we can decrease the size of the buffer portion that is
-> > > right inside of FuseRequest.
-> > > 
-> > > As for benchmarks, the benefit of this patch can be shown easily by
-> > > writing a 4G image (with qemu-img convert) to a FUSE export:
-> > > - Before this patch: Takes 25.6 s (14.4 s with -t none)
-> > > - After this patch: Takes 4.5 s (5.5 s with -t none)
-> > > 
-> > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> > The commit message seems outdated, there is no such thing as a
-> > FuseRequest object.
-> > 
-> > I agree with the idea of allocating a separate buffer for the data to be
-> > written. I'm not so sure that the approach taken here with combining an
-> > in-place and a spillover buffer does actually do much for us in exchange
-> > for the additional complexity.
-> > 
-> > The allocation + memcpy for in_place buf in fuse_co_write() bothers me a
-> > bit. I'd rather have a buffer for the data to write that can be directly
-> > used. And let's be real, we already allocate a 1 MB stack per request. I
-> > don't think 64k more or less make a big difference, but it would allow
-> > us to save the memcpy() for 4k requests and additionally an allocation
-> > for larger requests.
-> > 
-> > The tradeoff when you use an iov for the buffer in FuseQueue that is
-> > only big enough for the header and fuse_write_in and then directly the
-> > per-request buffer that is owned by the coroutine is that for requests
-> > that are larger than fuse_write_in, you'll have to copy the rest back
-> > from the data buffer first. This seems to be only fuse_setattr_in, which
-> > shouldn't be a hot path at all, and only a few bytes.
-> 
-> So I understand that first, you disagree with “Always allocating FuseRequest
-> objects with 64k buffers in them seems wasteful, though.” I.e. to just use a
-> 64k buffer per request.  OK, fair.
 
-I think in practice most write requests will exceed the 4k anyway, so
-we'd already use the spillover buffer. Maybe the most common exception
-is fio, if we want to optimise for that one. :-)
+On 10/27/25 18:00, Danila Zhebryakov wrote:
+> These changes make powerpc booke206 mmu pass TLB_BSWAP flag for pages marked as LE, and also fixes all the issues this causes.
+>   - added TLB_BSWAP to non-MMIO flags
+>   - inserted additional check for LE page when bswap-ing instructions
+>   - removed assert for cross-page TLB_BSWAP accesses
+>   - added gdbstub fix to account for TLB_BSWAP of the currently running code
+>
+> BE- and LE- atomic operations (used by load-and-reserve and store-conditional instructions) were unified to support TLB_BSWAP
+>
+> Some of the fixes are based on what is done in https://github.com/YetAnotherMod/qemu
+>
+> V2:
+>   - Removed usage of PAGE_USER bit for LE (comment on previous version)
+>   - Refactored MMU code so directly setting TLB_BSWAP is possible
+>   - moved translation LE page detect to occur 1 time per translation (comment on previous version)
+>   - Removed redundant assert in atomic_mmu_lookup (comment on previous version)
+>   - Added assert on cross-endian accesses (ideally, there should be an exception)
+>   - Changed atomic need_bswap handling (comment on previous version)
+>   - Rebased and fixed atomics
+>
+> V3
+>   - unfix assumed typo (if vs iff). Everything else unchanged
+>
+> V4
+>   - fix leftovers from BE/LE atomic op tables
+>   - fix uninitialized CPUTLBEntryFull full in mmu_common
+>
+> According to RM, unaligned accesses between LE and BE pages should cause an exception on e500.
+> However, (as I understand it) supporting this would require adding a new callback to TCGCPUOps, likely just for E500 or maybe a couple other CPUs doing this.
+> Such accesses are clearly not normal and usually don't occur in real applications, so I think just placing assert is OK here.
+>
+> Danila Zhebryakov (4):
+>    accel/tcg: Unify big- and little- endian atomic ops
+>    target/ppc: refactor MMU helpers
+>    target/ppc: Add support for LE pages on PowerPC booke206 mmu
+>    target/ppc: fix GDB stub to work correctly with LE pages
+>
+>   accel/tcg/atomic_common.c.inc       |  36 +--
+>   accel/tcg/atomic_template.h         | 326 ++++++++++------------------
+>   accel/tcg/cputlb.c                  |  29 ++-
+>   accel/tcg/tcg-runtime.h             |  48 +---
+>   accel/tcg/user-exec.c               |   2 +-
+>   include/accel/tcg/cpu-ldst-common.h |  51 ++---
+>   target/m68k/op_helper.c             |   4 +-
+>   target/ppc/gdbstub.c                |  17 +-
+>   target/ppc/internal.h               |   3 +-
+>   target/ppc/mmu-booke.c              |  67 +++---
+>   target/ppc/mmu-booke.h              |   2 +-
+>   target/ppc/mmu-hash32.c             |  30 +--
+>   target/ppc/mmu-hash32.h             |   3 +-
+>   target/ppc/mmu-hash64.c             |  14 +-
+>   target/ppc/mmu-hash64.h             |   2 +-
+>   target/ppc/mmu-radix64.c            |  20 +-
+>   target/ppc/mmu-radix64.h            |   2 +-
+>   target/ppc/mmu_common.c             |  75 ++++---
+>   target/ppc/mmu_helper.c             |  15 +-
+>   target/ppc/translate.c              |  42 +++-
+>   target/s390x/tcg/mem_helper.c       |   6 +-
+>   tcg/tcg-op-ldst.c                   |  51 ++---
+>   22 files changed, 374 insertions(+), 471 deletions(-)
+>
+Hey Danila,
 
-> Second, you suggest to improve performance by having an aligned 64k data
-> buffer separate from the request metadata buffer to save on memcpy().  I did
-> consider this, but discarded it because of I was afraid of the complexity. 
-> Actually probably too afraid.
-> 
-> I’ll take a look, it actually can’t be too hard.  (Just have two buffers;
-> make the metadata buffer long enough to capture all request headers, but
-> only pass the sizeof(fuse_write_in)-long head into readv(), then check the
-> request opcode.  If metadata spilled over to the data buffer, copy it back
-> into the “shadowed” metadata buffer tail.)
+This series is failing on QEMU_CI. You can check it here :
+https://gitlab.com/rathc/qemu/-/pipelines/2131344109
 
-Yes, that's what I had in mind. Not sure if it's premature
-optimisation...
+<https://gitlab.com/rathc/qemu/-/pipelines/2131344109>
 
-Kevin
+Here are some logs for quick reference :
+
+|configuring with: '../configure' '--enable-werror' '--disable-docs' 
+'--cross-prefix=powerpc64le-linux-gnu-' '--disable-tools' '--enable-kvm' 
+'--disable-tcg' '--without-default-devices'
+...
+|||
+
+|[1690/1838] Linking target qemu-system-ppc64|
+|
+||
+FAILED: qemu-system-ppc64
+||
+powerpc64le-linux-gnu-gcc -m64 -mlittle-endian @qemu-system-ppc64.rsp
+||
+/usr/lib/gcc-cross/powerpc64le-linux-gnu/14/../../../../powerpc64le-linux-gnu/bin/ld: 
+libqemu-ppc64-softmmu.a.p/target_ppc_gdbstub.c.o: in function 
+`ppc_maybe_bswap_register':
+||
+/builds/rathc/qemu/build/../target/ppc/gdbstub.c:96:(.text+0xd0): 
+undefined reference to `probe_access_full_mmu'
+||
+collect2: error: ld returned 1 exit status
+||
+[1691/1838] Linking target qemu-system-ppc
+||
+FAILED: qemu-system-ppc
+||
+powerpc64le-linux-gnu-gcc -m64 -mlittle-endian @qemu-system-ppc.rsp
+||
+/usr/lib/gcc-cross/powerpc64le-linux-gnu/14/../../../../powerpc64le-linux-gnu/bin/ld: 
+libqemu-ppc-softmmu.a.p/target_ppc_gdbstub.c.o: in function 
+`ppc_maybe_bswap_register':
+||
+/builds/rathc/qemu/build/../target/ppc/gdbstub.c:96:(.text+0xd0): 
+undefined reference to `probe_access_full_mmu'
+||
+collect2: error: ld returned 1 exit status
+||
+[1692/1838] Generating pc-bios/edk2-arm-code.fd with a custom command 
+(wrapped by meson to capture output)
+||
+ninja: build stopped: subcommand failed.
+||make: *** [Makefile:168: run-ninja] Error 1
+|
+Thanks and regards,
+
+Chinmay
 
 
