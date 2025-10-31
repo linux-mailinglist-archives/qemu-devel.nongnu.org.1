@@ -2,95 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D3AC24B0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 12:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B0C24AFD
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 12:05:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEmp3-0002C9-3Q; Fri, 31 Oct 2025 06:57:33 -0400
+	id 1vEmmR-0005T3-6x; Fri, 31 Oct 2025 06:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vEmp0-0002B9-R1
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 06:57:30 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vEmot-0003OX-Pc
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 06:57:30 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-63e0abe71a1so4337792a12.1
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 03:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761908240; x=1762513040; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YwuLhbR/1oKVpKfOeVGgucU9JyKv8N6k7L66bh916TY=;
- b=Zn0f67BZjgWS3yqo+rztSBPWS6C3vpOCrzJpgtu5o/5hu1xP0n8CaLw0o03iSMTgk9
- 8y0frpPZYJ7wjaSNq4mFnWBA00V02GVmn+kMja8nBVaCaMkBxmjKv0ERlrzrT0QMD59j
- kX/QVWfHTDCvE8VvirEHdy6SJ9RqAtV3+oMLqiWdrMm9UWMKh/1d7w9FxiRIhJ81J5KZ
- Yi5QxW0GrkDJVghjmSH7XnfCO6WifQ7/chUDlCHIs41abbDYOZ5VnbPaINPXulWzeoen
- erQJChdbMnCfEMpYnn69FbfCRAWqXvJ3R6Q9rKuwcTiysHIWWF90zlFq4Om6OxF+TSYQ
- lYLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761908240; x=1762513040;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YwuLhbR/1oKVpKfOeVGgucU9JyKv8N6k7L66bh916TY=;
- b=KLkLkWCKgBsYzndf/bXxoQACOu235V9lO05rHPoT6lKaamPFy7B9bOHbDxn0XQzGFG
- 3kQ+GWkmeeiKIJwkheyzW7uzJRPtU8l9svYfYjPySU4OopXNevQn8abM2TZbEZSBAASW
- znrnmmP0VdzXbjqelI/bNd4MnWoyQRrtjuKr2fQoRNRLu+qbWpln/MQoesyI//OoJ5s7
- 36W2v9fEzhuYw+MJ+R7uk5khewigMJ55pRMfPVrr7qMAl6qGx8XgINzI4YgvknzgzsaS
- 7My4GRTY0eb3h0CtPRWn+AnAvnZv5WSX8OtUn/9adlp1ACjEmd7AQ4m3ccIUt3j5oNBu
- vZkg==
-X-Gm-Message-State: AOJu0YxBoULNEHatvFqConjPQYY7hY3ySh/TJIj/zAz5S9NkakReUgqi
- 5wSUpNyTd/TLdfUaP3RjEw25G6Moeyf9NQ9ogXDYBIRYuVaO+SlfR43mpEznjw==
-X-Gm-Gg: ASbGncuYFP95qo6BaheXhe4duyh5yfDxqLItYcdrsfG1VD+wb2hdWGc1U5LdfZcxrUO
- UaHTVv8ayNp6PHP+0Pfft8UtSy4wpx4iDM0k1JpZXcBiCs54cEfstcqrjRQ69B9/irPcHPnhIC9
- rHz1YyYVGmlGJvB+4+LS8Wjj+ACFEDe3ZdXOdRgyyXMsGcTIQgb/hz/wNarCXGfUhYeWcNAUUkX
- 6A3yfBdzkLLcQ/L+T2FhFr56wRRvONs576dcpl7r6I2YhuoPBX2nl5ve9SeARuJHuzGCcS4VZsp
- E88pOGnpZqhlz+EMYiuTjjOqamvTZVItQpCvQtK3aqtEemvxCSmC+xch9L+Zk7nXy9FqASSs6Al
- M71fVDei4mhdY1Veqw8R3mZ2n6gF+XFCL6lBZD8M8RLWH2AmFMY9riD9Cb19FuNE2+HnamQv9Yo
- U+Aqu/MGrjKJ5NgXN/Am8tgI7NRBnlbdc8ga80X4cuxJ97TjgwtpTjrpMiVsPBE/i3JQTsnI+P
-X-Google-Smtp-Source: AGHT+IFopTUxfD7WvxjdTiy9+HOPaTNw/b1ayaYJLCXkEIz7NHsYTXOj/8hJxQfAw/i6jsl0Nyndlg==
-X-Received: by 2002:a05:6402:274a:b0:637:e3a2:7678 with SMTP id
- 4fb4d7f45d1cf-64076f7cc50mr2181641a12.9.1761908239512; 
- Fri, 31 Oct 2025 03:57:19 -0700 (PDT)
-Received: from ehlo.thunderbird.net
- (p200300faaf271400e42d34416465d6be.dip0.t-ipconnect.de.
- [2003:fa:af27:1400:e42d:3441:6465:d6be])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6407b428119sm1299884a12.24.2025.10.31.03.57.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 31 Oct 2025 03:57:14 -0700 (PDT)
-Date: Thu, 30 Oct 2025 11:28:24 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Mohamed Mediouni <mohamed@unpredictable.fr>,
- mohamed@unpredictable.fr
-CC: Pedro Barbuda <pbarbuda@microsoft.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v10 16/28] hw: arm: virt: rework MSI-X configuration
-In-Reply-To: <20251029165510.45824-17-mohamed@unpredictable.fr>
-References: <20251029165510.45824-1-mohamed@unpredictable.fr>
- <20251029165510.45824-17-mohamed@unpredictable.fr>
-Message-ID: <48B18260-BDFF-4222-8159-2A0FE96BF5F4@gmail.com>
+ (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
+ id 1vEmlk-0004TJ-Sx; Fri, 31 Oct 2025 06:54:11 -0400
+Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
+ id 1vEmlX-0002xD-Ac; Fri, 31 Oct 2025 06:54:08 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=teqD9dtYalTM4Q8ElkP+StapqCCGqCREaohAawfePJbBCdBf77fBPWze1W7KSrYnK3nDj6j4e/oeZV+i5+eRzi52i/bHaqYiM3CuIASF1RpJppUVvEDJ31VJ0tTnYS9zqXn8uSSVricy+LJDMnaTEhNrDeGcljB3fWdg4z6seiJS02ZWzGmiFfdZY0EwZMWlQFlys9t45gSWTsOSWV5pX04Fa7WpAR8ThgYvHKrjcs2nOF9DQgSU2WsHRdM/fZW22gmgMlgpd0xk0DOIy3/I7fTXQUc8zGyw0RW+pt1YPKseIII0eTNoZl/1rEM2XIGgOitoOA0sQXUtKXFBPC+83g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zXVWr9vcNxrjKqLKUQwunzU/I3cl2yYcnk4qyNHlQIc=;
+ b=ESpt3KC38SNkGMeMEuopjxRencgwEcVgucSlr+XOKzwaXZ1CrK9Tl+rhuThCXpJaeyeTmH+BSzAgSyc5gnxfUUvNE64w9464wBwhBs/Aq79iHh8rUg5n3QOvhBWYgZBs70KLnmXLMJbKEZAVY/s9k8n1l1Dm9T8U1X5T7MmSJG3GYgwZghwVbsWhSk9EF6A4G4WQ/UON12UJEfUl5CHf60+s9+u7Als4a8nGgecFiVPaWC5QnVethFN5luWK2u2taSuubXgo91AxJoY9HNZ/NhjvvTbaLjhJsPj6nSPM/ss6wwTpbBNNqZp45BN6HVJCnw9AcrMU3/t17N/pa9mF9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zXVWr9vcNxrjKqLKUQwunzU/I3cl2yYcnk4qyNHlQIc=;
+ b=YH9vV5fL0avZ1WqFKxz7YPTHmAAhnR2WT3wQSxGzDSBYis8mygAtKvZ6LSZ5BdpZt1Dsof87Ml7hG0Mj9TziY31833cJpbFDgwtBpLc8U+OEPlImMAkudU23cTqtjCdQtD8VMDLH/w0MDtppNBgbkHGKOisBVC4rlEDui6+x/Plyfk7SIfJoJGBQlrelck23l/U9kpNXjb//DVthRv3Y6kmSywr+vYE28JNYuHgPSG5VQrXJIz3dpz+BC+7IybKx2EgOiTkrmxtnQn4HLleHOCfqvTzhdOB83GssVa7YoPMtpe3ZthpTqV8ikPtFen1VHNV7lc5huagqdEdVUyirFA==
+Received: from BY3PR10CA0013.namprd10.prod.outlook.com (2603:10b6:a03:255::18)
+ by MN2PR12MB4392.namprd12.prod.outlook.com (2603:10b6:208:264::24)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Fri, 31 Oct
+ 2025 10:53:39 +0000
+Received: from MWH0EPF000971E2.namprd02.prod.outlook.com
+ (2603:10b6:a03:255:cafe::16) by BY3PR10CA0013.outlook.office365.com
+ (2603:10b6:a03:255::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.15 via Frontend Transport; Fri,
+ 31 Oct 2025 10:53:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ MWH0EPF000971E2.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.10 via Frontend Transport; Fri, 31 Oct 2025 10:53:39 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 31 Oct
+ 2025 03:53:26 -0700
+Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 31 Oct
+ 2025 03:53:23 -0700
+From: Shameer Kolothum <skolothumtho@nvidia.com>
+To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
+ <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
+ <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
+ <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
+ <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
+ <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <kjaju@nvidia.com>
+Subject: [PATCH v5 11/32] hw/arm/smmuv3: Implement get_viommu_cap() callback
+Date: Fri, 31 Oct 2025 10:49:44 +0000
+Message-ID: <20251031105005.24618-12-skolothumtho@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251031105005.24618-1-skolothumtho@nvidia.com>
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.126.231.35]
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E2:EE_|MN2PR12MB4392:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0e1994f-a82b-443a-ecab-08de186bc00a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|82310400026|1800799024|7416014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2b4M5LakeZAm7NhbkdlurgF88ghbwZ36Ftvnbrx3peReDNjpZKw5f49RTZKH?=
+ =?us-ascii?Q?7P8bVPD2FH4Yf7E4BNjIIuCBO73154GPPUl7zoF0F+5I03rYXK6v4UJR0ANc?=
+ =?us-ascii?Q?i9KLaC8LH4p55lLkT3x7BeOdrqNyhz1EwTZCFVBuJmnriwfyGAXlcZWmm0HA?=
+ =?us-ascii?Q?5rsant368ZWGw20lMAevKcmqxffGJV2H1R1/B9gTgYwIkvebaGwSPAUgwwf8?=
+ =?us-ascii?Q?HkHsk8TWMy08zqupwwY+6fybsNgS6eSECSzqpdh/WT3xwvQn15D/NylkTcrZ?=
+ =?us-ascii?Q?taczAa6fbiXNk70IayRm/lvFbZVAG2TfVvdqXW1thwMhshkQyW70MAtjUjiy?=
+ =?us-ascii?Q?V1uFFXBWNJWeEzyoEPRy73LquCx5WzPSX/rR2Zs5ucLOVgqzXVVDE4UocmuO?=
+ =?us-ascii?Q?jY4Znh5Frn2xwXQcWn09NxcWjHprFBqiTuJ06HOuXw5YRER+LTnW3QsbLZuP?=
+ =?us-ascii?Q?gPbRG7Elw52nVmqfqiiTHA87MCZ2zqnDwl1krnorvzGVBOY6dFLv0JET9sDZ?=
+ =?us-ascii?Q?V6q48m+dZbOliC2becmU0ctk1EL23M0Leoiww9+h2LJW02Bm2nohsdekTGoa?=
+ =?us-ascii?Q?l8CF+8X/gi20IVWjaMkES8kHVSrI7MGg4E9Wbj0zSiBUBkl6eZbnTle3WJy5?=
+ =?us-ascii?Q?/IV6M7zGk/bUUNV8mayA+KAMsmmOi6Blo8MgGXtXDW8EWC6ZYF+rYsdNAv0t?=
+ =?us-ascii?Q?4w8xsf6Pc0T2V2mXFn9IMbL4shiniBai0uzNceIqwIJYo7OJHn3IPIX2EPDE?=
+ =?us-ascii?Q?MTkpnKra1c+79LXdqwiQlWYJvY8Kh/7Xdgj8zjzjZqn8UDJMyNoFhVoobPZj?=
+ =?us-ascii?Q?JJL0o68u1NsOwxk58v6ET6kfTmYJp7mLuGdupkbhT8v162tFKM/ebjUe/Mg/?=
+ =?us-ascii?Q?mAz6n5F4NRyU7eBmcldXnsHOGF8QX9qak9ZFx0a41alDZTfbOIYo9mM0s18k?=
+ =?us-ascii?Q?Ysxn273+cbz2Yp8c4tVuF1iZzPhTynjx1FQjRnCX5CPR/Zp69aapDlUXv7CK?=
+ =?us-ascii?Q?4dQr/IfURkRVbnCmlC46b0opbY54bNE1mPvKZXA/h9jqf8ySvqIZaA3Nv3n+?=
+ =?us-ascii?Q?nyDmLhyrBOeyBSXDpzWrTOQCrNuCfQ53gOaUg8BaeG5MqZYpsv2B+0soClb5?=
+ =?us-ascii?Q?VRILOMCgk0CvNHUTJw7LBSpdvUNT3pI+kGOoMA+i/sn5MYwsZNQBc3d39ext?=
+ =?us-ascii?Q?VID7OCyfGPDq4Q1i/WDr96icI/W9JmaXJkippnM+Tize6Mwg4tQn7ihLStBx?=
+ =?us-ascii?Q?TYtrGsAwcQoBSWngj/9XTjYx1mRJn9A9CR7P7gQ4oeeESXYEmW8vEOXz/aEU?=
+ =?us-ascii?Q?ldMRyDC2EFNaxP/u47Bxgjq1I1sPdH3ZreTERq63kMVNUKoFng66dQsNEFrP?=
+ =?us-ascii?Q?nA/6LRyczNbeHFXGVujpIxXeKjo6UuI33y41xxE59kQsxJaw+U4o3KicCsPK?=
+ =?us-ascii?Q?VcXqc/QdnJz0v/Zov8q6WDT9oiEiTJyyM5FbB4BI3dPIrxn+qXlUskZvlOa4?=
+ =?us-ascii?Q?pnbes1FF8y+NvEK7UBMFln5U8j1La1t74P9+Am/R82bzangsWDGasOoKl57u?=
+ =?us-ascii?Q?sXS5eOsknc1wS8SxuGU=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(1800799024)(7416014)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 10:53:39.4811 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0e1994f-a82b-443a-ecab-08de186bc00a
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4392
+Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
+ envelope-from=skolothumtho@nvidia.com;
+ helo=CH4PR04CU002.outbound.protection.outlook.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,252 +156,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+For accelerated SMMUv3, we need nested parent domain creation. Add the
+callback support so that VFIO can create a nested parent.
 
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+---
+ hw/arm/smmuv3-accel.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Am 29=2E Oktober 2025 16:54:58 UTC schrieb Mohamed Mediouni <mohamed@unpre=
-dictable=2Efr>:
->Introduce a -M msi=3D argument to be able to control MSI-X support indepe=
-ndently
->from ITS, as part of supporting GICv3 + GICv2m platforms=2E
->
->Remove vms->its as it's no longer needed after that change=2E
->
->Signed-off-by: Mohamed Mediouni <mohamed@unpredictable=2Efr>
->---
-> hw/arm/virt-acpi-build=2Ec |   3 +-
-> hw/arm/virt=2Ec            | 110 +++++++++++++++++++++++++++++++--------
-> include/hw/arm/virt=2Eh    |   4 +-
-> 3 files changed, 93 insertions(+), 24 deletions(-)
->
->diff --git a/hw/arm/virt-acpi-build=2Ec b/hw/arm/virt-acpi-build=2Ec
->index 8e730731ca=2E=2Ea6a56455a9 100644
->--- a/hw/arm/virt-acpi-build=2Ec
->+++ b/hw/arm/virt-acpi-build=2Ec
->@@ -961,8 +961,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, Vi=
-rtMachineState *vms)
->         }
->     }
->=20
->-    if (!(vms->gic_version !=3D VIRT_GIC_VERSION_2 && virt_is_its_enable=
-d(vms))
->-     && !vms->no_gicv3_with_gicv2m) {
->+    if (virt_is_gicv2m_enabled(vms)) {
->         const uint16_t spi_base =3D vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_=
-BASE;
->=20
->         /* 5=2E2=2E12=2E16 GIC MSI Frame Structure */
->diff --git a/hw/arm/virt=2Ec b/hw/arm/virt=2Ec
->index dbf9a28b8d=2E=2E6978d4e867 100644
->--- a/hw/arm/virt=2Ec
->+++ b/hw/arm/virt=2Ec
->@@ -964,12 +964,12 @@ static void create_gic(VirtMachineState *vms, Memor=
-yRegion *mem)
->=20
->     fdt_add_gic_node(vms);
->=20
->-    if (vms->gic_version !=3D VIRT_GIC_VERSION_2 && virt_is_its_enabled(=
-vms)) {
->+    if (virt_is_its_enabled(vms)) {
->         create_its(vms);
->-    } else if (vms->gic_version !=3D VIRT_GIC_VERSION_2 && !vms->no_gicv=
-3_with_gicv2m) {
->-        create_v2m(vms);
->-    } else if (vms->gic_version =3D=3D VIRT_GIC_VERSION_2) {
->+    } else if (virt_is_gicv2m_enabled(vms)) {
->         create_v2m(vms);
->+    } else {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_NONE;
->     }
-> }
->=20
->@@ -2716,32 +2716,93 @@ static void virt_set_highmem_mmio_size(Object *ob=
-j, Visitor *v,
->=20
-> bool virt_is_its_enabled(VirtMachineState *vms)
-> {
->-    if (vms->its =3D=3D ON_OFF_AUTO_OFF) {
->-        return false;
->+    switch (vms->msi_controller) {
->+        case VIRT_MSI_CTRL_NONE:
->+            return false;
->+        case VIRT_MSI_CTRL_ITS:
->+            return true;
->+        case VIRT_MSI_CTRL_GICV2M:
->+            return false;
->+        case VIRT_MSI_CTRL_AUTO:
->+            if (whpx_enabled() && whpx_irqchip_in_kernel()) {
->+                return false;
->+            }
->+            if (vms->gic_version =3D=3D VIRT_GIC_VERSION_2) {
->+                return false;
->+            }
->+            return true;
->+        default:
->+            return false;
->     }
->-    if (vms->its =3D=3D ON_OFF_AUTO_AUTO) {
->-        if (whpx_enabled()) {
->+}
->+
->+bool virt_is_gicv2m_enabled(VirtMachineState *vms)
->+{
->+    switch (vms->msi_controller) {
->+        case VIRT_MSI_CTRL_NONE:
->             return false;
->-        }
->+        default:
->+            return !virt_is_its_enabled(vms);
->     }
->-    return true;
-> }
->=20
->-static void virt_get_its(Object *obj, Visitor *v, const char *name,
->-                          void *opaque, Error **errp)
->+static char *virt_get_msi(Object *obj, Error **errp)
->+{
->+    VirtMachineState *vms =3D VIRT_MACHINE(obj);
->+    const char *val;
->+
->+    switch (vms->msi_controller) {
->+    case VIRT_MSI_CTRL_NONE:
->+        val =3D "off";
->+        break;
->+    case VIRT_MSI_CTRL_ITS:
->+        val =3D "its";
->+        break;
->+    case VIRT_MSI_CTRL_GICV2M:
->+        val =3D "gicv2m";
+diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
+index 550a0496fe..a1d672208f 100644
+--- a/hw/arm/smmuv3-accel.c
++++ b/hw/arm/smmuv3-accel.c
+@@ -10,6 +10,7 @@
+ #include "qemu/error-report.h"
+ 
+ #include "hw/arm/smmuv3.h"
++#include "hw/iommu.h"
+ #include "hw/pci/pci_bridge.h"
+ #include "hw/pci-host/gpex.h"
+ #include "hw/vfio/pci.h"
+@@ -119,9 +120,21 @@ static AddressSpace *smmuv3_accel_find_add_as(PCIBus *bus, void *opaque,
+     }
+ }
+ 
++static uint64_t smmuv3_accel_get_viommu_flags(void *opaque)
++{
++    /*
++     * We return VIOMMU_FLAG_WANT_NESTING_PARENT to inform VFIO core to create a
++     * nesting parent which is required for accelerated SMMUv3 support.
++     * The real HW nested support should be reported from host SMMUv3 and if
++     * it doesn't, the nesting parent allocation will fail anyway in VFIO core.
++     */
++    return VIOMMU_FLAG_WANT_NESTING_PARENT;
++}
++
+ static const PCIIOMMUOps smmuv3_accel_ops = {
+     .supports_address_space = smmuv3_accel_supports_as,
+     .get_address_space = smmuv3_accel_find_add_as,
++    .get_viommu_flags = smmuv3_accel_get_viommu_flags,
+ };
+ 
+ static void smmuv3_accel_as_init(SMMUv3State *s)
+-- 
+2.43.0
 
-Missing break=2E
-
-Best regards,
-Bernhard
-
->+    default:
->+        val =3D "auto";
->+        break;
->+    }
->+    return g_strdup(val);
->+}
->+
->+static void virt_set_msi(Object *obj, const char *value, Error **errp)
-> {
->     VirtMachineState *vms =3D VIRT_MACHINE(obj);
->-    OnOffAuto its =3D vms->its;
->=20
->-    visit_type_OnOffAuto(v, name, &its, errp);
->+    if (!strcmp(value, "auto")) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_AUTO; /* Will be overriden=
- later */
->+    } else if (!strcmp(value, "its")) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_ITS;
->+    } else if (!strcmp(value, "gicv2m")) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_GICV2M;
->+    } else if (!strcmp(value, "none")) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_NONE;
->+    } else {
->+        error_setg(errp, "Invalid msi value");
->+        error_append_hint(errp, "Valid values are auto, gicv2m, its, off=
-\n");
->+    }
-> }
->=20
->-static void virt_set_its(Object *obj, Visitor *v, const char *name,
->-                          void *opaque, Error **errp)
->+static bool virt_get_its(Object *obj, Error **errp)
-> {
->     VirtMachineState *vms =3D VIRT_MACHINE(obj);
->=20
->-    visit_type_OnOffAuto(v, name, &vms->its, errp);
->+    return virt_is_its_enabled(vms);
->+}
->+
->+static void virt_set_its(Object *obj, bool value, Error **errp)
->+{
->+    VirtMachineState *vms =3D VIRT_MACHINE(obj);
->+
->+    if (value) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_ITS;
->+    } else if (vms->no_gicv3_with_gicv2m) {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_NONE;
->+    } else {
->+        vms->msi_controller =3D VIRT_MSI_CTRL_GICV2M;
->+    }
-> }
->=20
-> static bool virt_get_dtb_randomness(Object *obj, Error **errp)
->@@ -3068,6 +3129,8 @@ static void virt_machine_device_pre_plug_cb(Hotplug=
-Handler *hotplug_dev,
->             db_start =3D base_memmap[VIRT_GIC_V2M]=2Ebase;
->             db_end =3D db_start + base_memmap[VIRT_GIC_V2M]=2Esize - 1;
->             break;
->+        case VIRT_MSI_CTRL_AUTO:
->+            g_assert_not_reached();
->         }
->         resv_prop_str =3D g_strdup_printf("0x%"PRIx64":0x%"PRIx64":%u",
->                                         db_start, db_end,
->@@ -3451,13 +3514,18 @@ static void virt_machine_class_init(ObjectClass *=
-oc, const void *data)
->                                           "guest CPU which implements th=
-e ARM "
->                                           "Memory Tagging Extension");
->=20
->-    object_class_property_add(oc, "its", "OnOffAuto",
->-        virt_get_its, virt_set_its,
->-        NULL, NULL);
->+    object_class_property_add_bool(oc, "its", virt_get_its,
->+                                   virt_set_its);
->     object_class_property_set_description(oc, "its",
->                                           "Set on/off to enable/disable =
-"
->                                           "ITS instantiation");
->=20
->+    object_class_property_add_str(oc, "msi", virt_get_msi,
->+                                  virt_set_msi);
->+    object_class_property_set_description(oc, "msi",
->+                                          "Set MSI settings=2E "
->+                                          "Valid values are auto/gicv2m/=
-its/off");
->+
->     object_class_property_add_bool(oc, "dtb-randomness",
->                                    virt_get_dtb_randomness,
->                                    virt_set_dtb_randomness);
->@@ -3514,7 +3582,7 @@ static void virt_instance_init(Object *obj)
->     vms->highmem_redists =3D true;
->=20
->     /* Default allows ITS instantiation if available */
->-    vms->its =3D ON_OFF_AUTO_AUTO;
->+    vms->msi_controller =3D VIRT_MSI_CTRL_AUTO;
->     /* Allow ITS emulation if the machine version supports it */
->     vms->tcg_its =3D !vmc->no_tcg_its;
->     vms->no_gicv3_with_gicv2m =3D false;
->diff --git a/include/hw/arm/virt=2Eh b/include/hw/arm/virt=2Eh
->index 997dd51678=2E=2E99db8607e7 100644
->--- a/include/hw/arm/virt=2Eh
->+++ b/include/hw/arm/virt=2Eh
->@@ -101,6 +101,8 @@ typedef enum VirtIOMMUType {
->=20
-> typedef enum VirtMSIControllerType {
->     VIRT_MSI_CTRL_NONE,
->+    /* This value is overriden at runtime=2E*/
->+    VIRT_MSI_CTRL_AUTO,
->     VIRT_MSI_CTRL_GICV2M,
->     VIRT_MSI_CTRL_ITS,
-> } VirtMSIControllerType;
->@@ -149,7 +151,6 @@ struct VirtMachineState {
->     bool highmem_ecam;
->     bool highmem_mmio;
->     bool highmem_redists;
->-    OnOffAuto its;
->     bool tcg_its;
->     bool virt;
->     bool ras;
->@@ -219,5 +220,6 @@ static inline int virt_gicv3_redist_region_count(Virt=
-MachineState *vms)
-> }
->=20
-> bool virt_is_its_enabled(VirtMachineState *vms);
->+bool virt_is_gicv2m_enabled(VirtMachineState *vms);
->=20
-> #endif /* QEMU_ARM_VIRT_H */
 
