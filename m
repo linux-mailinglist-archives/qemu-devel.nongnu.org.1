@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69990C269DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC09DC269BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 19:36:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEtwv-0004p9-Lw; Fri, 31 Oct 2025 14:34:09 -0400
+	id 1vEtwn-0004jJ-9S; Fri, 31 Oct 2025 14:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtwq-0004lq-AO
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:34:04 -0400
+ id 1vEtwk-0004fm-2g
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:58 -0400
 Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vEtwP-0006EE-8F
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:34:03 -0400
+ id 1vEtwO-0006EK-U2
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 14:33:55 -0400
 Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-4270a3464bcso1797482f8f.2
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 11:33:33 -0700 (PDT)
+ ffacd0b85a97d-429bccca1e8so959615f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 11:33:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761935612; x=1762540412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761935613; x=1762540413; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Bcg7GXTvqWbBwUT5qCuTYDd8DaBbj7mnR+TS0dZGLf4=;
- b=p/i773dFS7Un6WRLBpvG2UrPVot8k0G6ZZlzGe82PcuLN+3bb2pdbEmPNK+WN7Cdyl
- vm/XfaOLAX0wEoTdFgRisbP0GNE1iwyCcjqH7o3ICiPzWCxITeF2gXLdnAdo7nBhVDh1
- WS8pfZLzO2hLlvzki3IM4FI/oBDTLkDIGCzBlMaUCdM8GwmlCsczBsJz+607VMetbq+v
- ejxksXFVtnfr3TPjgCvQlrQzyw0z271girbQGM968LN4FxE1QPr+9Mh0E9+h9hKJki6s
- 6v6236Sg3qciiW9Ktl3Ybd84Z40s2gzblS8vnLHxUzMvHs4Sjui0sn8x3qcxaAsRKAAb
- BlsA==
+ :reply-to; bh=qOE3oOcQ2vXEJvzQtPpnmIuRlktDL0KnYr8jhqNcteY=;
+ b=iPRZnMo0dZHIPJPnGZ6DCupBHHl/pqOt45azdIK26NFwX65JGz+7EJg9jUBMH9Nk7x
+ N/kfj3cGk0ypchk/5ou4FcHN1RAXTbE3Dux1dzG/yB5+9xTRnxGqvbQ8PwQMXA+eGGn7
+ j5WF/fNc7hRoRP2kNencEsqKvut1FfW/nVCX2InV0yC3l7MlSlIgCeC5rUUUvZ3G3kaw
+ 6RQ8uAvtCcWHvxGmw4wcFLdHopbIOm7uLVB6NqH9fHs8edh4UWtR2Vxar7Bze3jxJ8Ar
+ B4P58pHqUs3QrjGl4dljJTNsYOUcanGiD1viN5lF2dkLopMnNwKFB28LXtYodJmXPt2E
+ 7IzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761935612; x=1762540412;
+ d=1e100.net; s=20230601; t=1761935613; x=1762540413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Bcg7GXTvqWbBwUT5qCuTYDd8DaBbj7mnR+TS0dZGLf4=;
- b=Zpc8tLZKck5FQ3UYBD9MfzlOS/HgMN/CqT8iMf6rO9sw9YynoUadEsEPs0rJDF1q9N
- rdZsD14vQmgPKCt9d12SeAJClrL2Q5DuVV2gDoWuVRS1qdnKuHQwglPnoVN8vVLsR454
- De1E50aA3EgNME7HOA61rtpmjJ4CkFhdRU0euprbPSPRTGzoGBkZpWkceXeGs9BYKgdS
- KklhN4Ww26XdPcP5ohzheY6Ug2jfgx4cvWWkQZzeQrzvw+WBfal6G6FQQf7IocFzLjcd
- 8c8+5RJ3bxIyXtjC+JKxn/WcKQHIPB6Cd88qzWVY/yJejLb1dG62wpo/wbqIQNQMgiqG
- iIVQ==
-X-Gm-Message-State: AOJu0Yx471wdhVBoWSz5d6P9Ni8Cmu6masQdtWs6Nw3XGqtQsVQ5FGtM
- dGCdTV0jVwlxR+r9DHe6brAjuUsdcNuXk8Gf9PANIdnaE1c9eam8yNK/0/i0naTyY5SJCaoxrd7
- UPUMs
-X-Gm-Gg: ASbGncttHoTA1U1psL47FOIbb3iBx8jhD0PCKT7Xk2kqpieVc+1eWAfW4eYpHj/Sgl7
- xuqoXN8195pW9oSBnjeYJ1GsNBrpC+A0HgemtB+GTvymO55WopVCWoSuK2hhg/kstt3RQ8PMmLw
- YZZ0Vz6Vo+/BcFcHtI1OD39dfxSfJm9sVcmUYH4lEigauYAOgUNINUar7mtB4iFUUyWaebDWROI
- KxR/2zWp3PrYYOzc251WwWRpZ8qr693Jtvu5UYhk/YLj1PXUvzDjs2pTasx3sMvZI3xNI0nietw
- K+NTFtMV5yLbu/gKxdmk5LsEQrypE3IONZ9rahgyIXeWxSp59eAvH2owamI36ws2sOlnwyH6IPd
- lsR191a0GNXBAdsbbOwZax1BuyN5coBa2XSLDVLwKB2tdPGKJ8jAJ1BuO2v7L3c5/T6AO7679IJ
- w18s5Wn5lnYm2rgxZk
-X-Google-Smtp-Source: AGHT+IHZlHrdPZg48A8koWkls+EhiRx6zMsRm7dh7868mmH4iCNqx0vNFsWCHmKPG1mUhi3NYuA3KA==
-X-Received: by 2002:a5d:64c7:0:b0:429:ba36:5fa2 with SMTP id
- ffacd0b85a97d-429bd6c1837mr3812145f8f.59.1761935611949; 
- Fri, 31 Oct 2025 11:33:31 -0700 (PDT)
+ bh=qOE3oOcQ2vXEJvzQtPpnmIuRlktDL0KnYr8jhqNcteY=;
+ b=QRUr/sghE770StK/FniTuf23HtZ604rw4kHwXCkR80BFY0DymUd3SqT2O4z3xg7/mA
+ cHlrfWpAdvNSbMfivSSKReSD00tMJzr2m5ylLv2BlLNZoJqXAAIK4B5nMWX9uCW1pDhe
+ noouSzJUpVvARLzD74tuhujvDXVi1w/DaZEU4Q+JZdEklC0+nvwUVS6g4LMGy9hk/RAs
+ 5+TdStRBUTE1BnoIOfqVblDrb6DbgLhsr87+BKyCEF6fhmelcVLeEeZdJYYb+U4p+4J6
+ XARpCfLVtMp6X4pgnRPBKHLfwr8x+lgmJhhor+Nu+ZzwBtxT1edokNH0DJ+oHl1WLeKl
+ siAg==
+X-Gm-Message-State: AOJu0YwTvAZoqY6LMvr7bSbdzxTheDoCzGb4DPte8IpvxSxyvAwakref
+ kxjGziGQNS5UFxVTeqeGSiLPvNYF8SXfEUhPV/lZ3HN08ayJG+/suFo5LUs5wxlO0iKBv9MFTrx
+ UPc+0
+X-Gm-Gg: ASbGncsPowMVdVVKjm1ESVTwZ8kfjWv1b7ttmsgNb81MVdQGc89d3YLDlY1kMW5hRfA
+ YdqFEcPARC5qZ1J1SMMzwBXHPirEGAwZ+gHyZtmlPgzn5mcwELwyjEGmD7tgcmia7UCLIlHe+cI
+ OEHv/9vt956483qcJvSWag9zPtyxOI6fIKDLr2BeEFf2GA6/FKMm2OjitOBKT6SIq0LQQPhrZ4d
+ L7EkSmJDy6EZQvJuA1+E1aP0GX0x4+LHgxGe0a7EfOLzsWLlk/guRSpj+XkBDX3B4uSvNTDbV5d
+ vQtlnh3bBof90/aRE7pYB3kXuCApu1FUILXYzs6HK4H3i8QmbNBeNfzxYyKMqZDaMszJp9SElmq
+ Y9OKfOOSMyw32tjn1xZQSDQrrdf1PnhPQUi26/mDvh49xZQWkMSz0Z5oZo2KuGroq00ayLc3v4x
+ Ywmxgu+ts4WYX63H3S
+X-Google-Smtp-Source: AGHT+IGpijhIY4Qcl8CLprfBlIvUUxbmIcnJups3iwFlvsOFBLTjFywzPqv2YPFSEScqdEAczTUZWA==
+X-Received: by 2002:a05:6000:2f88:b0:429:ba8a:a860 with SMTP id
+ ffacd0b85a97d-429bd67243bmr3900479f8f.12.1761935612765; 
+ Fri, 31 Oct 2025 11:33:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.30
+ ffacd0b85a97d-429c114c944sm4859142f8f.20.2025.10.31.11.33.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Oct 2025 11:33:30 -0700 (PDT)
+ Fri, 31 Oct 2025 11:33:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/38] accel/hvf: Mention hvf_arch_update_guest_debug() must
- run on vCPU
-Date: Fri, 31 Oct 2025 18:32:51 +0000
-Message-ID: <20251031183310.3778349-20-peter.maydell@linaro.org>
+Subject: [PULL 20/38] target/arm/hvf: Mention hvf_inject_interrupts() must run
+ on vCPU thread
+Date: Fri, 31 Oct 2025 18:32:52 +0000
+Message-ID: <20251031183310.3778349-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251031183310.3778349-1-peter.maydell@linaro.org>
 References: <20251031183310.3778349-1-peter.maydell@linaro.org>
@@ -78,12 +78,13 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
  envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,38 +102,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since hvf_arch_update_guest_debug() calls hvf_arch_set_traps()
-and hvf_arch_update_guest_debug(), which must run on a vCPU, it
-also must. Mention it.
+Since hvf_inject_interrupts() calls hv_vcpu_set_pending_interrupt(),
+which must run on a vCPU, it also must. Mention it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mads Ynddal <mads@ynddal.dk>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/system/hvf_int.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/arm/hvf/hvf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 0c335facc3b..241c668795e 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -83,6 +83,8 @@ int hvf_arch_vcpu_exec(CPUState *);
- int hvf_arch_put_registers(CPUState *);
- /* Must be called by the owning thread */
- int hvf_arch_get_registers(CPUState *);
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index ee04943b0f8..0d8ff49ae15 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1664,6 +1664,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+     return 1;
+ }
+ 
 +/* Must be called by the owning thread */
-+void hvf_arch_update_guest_debug(CPUState *cpu);
- 
- struct hvf_sw_breakpoint {
-     vaddr pc;
-@@ -109,7 +111,6 @@ void hvf_arch_remove_all_hw_breakpoints(void);
-  * handled by calling down to hvf_arch_update_guest_debug.
-  */
- int hvf_update_guest_debug(CPUState *cpu);
--void hvf_arch_update_guest_debug(CPUState *cpu);
- 
- /*
-  * Return whether the guest supports debugging.
+ static int hvf_inject_interrupts(CPUState *cpu)
+ {
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_FIQ)) {
 -- 
 2.43.0
 
