@@ -2,69 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC6FC25E76
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 16:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4E8C25F21
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 17:00:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vErOw-0003rR-CX; Fri, 31 Oct 2025 11:50:54 -0400
+	id 1vErVt-0006ii-J9; Fri, 31 Oct 2025 11:58:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vErOs-0003qb-8b
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:50:50 -0400
+ (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
+ id 1vErVq-0006iT-KH
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:58:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vErOk-0004vM-Qm
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:50:49 -0400
+ (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
+ id 1vErVd-0005uS-9o
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:58:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761925837;
+ s=mimecast20190719; t=1761926260;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qCgy7MvSjSEY8GTC0i34ltpMQWreCRziX97ui3XJ2us=;
- b=SAUrpeUopypSzlJ8BLfkml/mftBr2ZkNndmGAWuZ6XJUjkYBMajnrgrujU+0012G2y8N+C
- 4nnaPIL6vvqhbMafFydEGOXTGYxue+IR1WGa4EguNaiEXmLcWOKN1tmyN/Y50z2N7Wcvbv
- B/h10xEyjfURKYqZcoqw8DKfxagGHzQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-ubDhbpptOK2Ulke7k9V_IA-1; Fri,
- 31 Oct 2025 11:50:34 -0400
-X-MC-Unique: ubDhbpptOK2Ulke7k9V_IA-1
-X-Mimecast-MFC-AGG-ID: ubDhbpptOK2Ulke7k9V_IA_1761925833
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 282141956094; Fri, 31 Oct 2025 15:50:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.225.146])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E91BB30001A6; Fri, 31 Oct 2025 15:50:30 +0000 (UTC)
-Date: Fri, 31 Oct 2025 16:50:28 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: Re: [PATCH v3 21/21] fuse: Increase MAX_WRITE_SIZE with a second
- buffer
-Message-ID: <aQTaxC5xEAAz2JNE@redhat.com>
-References: <20250701114437.207419-1-hreitz@redhat.com>
- <20250701114437.207419-22-hreitz@redhat.com>
- <aPpFogd44fuISVKd@redhat.com>
- <c9339232-476d-4074-9150-ea7c154658b7@redhat.com>
- <aQSsmAOnj2tAeNxx@redhat.com>
- <67b6e046-3175-4d7b-b4b9-3ac56b733987@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aBPx8hI36oJpAZyZQnbxHNy40N6396sldFZirY6Xg1E=;
+ b=J83aeq7xe4Jt1UOgNV9N4lUCi6lcgVzmUhu9Qm5PCHgYUSbbzyxZ7W40s3els2wfoOTt6V
+ iMQhI7vXHtVZZyBz+0TejKAWnMjHzZeing4GDOWbRDWt8R5Xg8zhrZO4Z+R+IhRyow3mQ5
+ q7eKlXVZUntAi4kJ77eGrU2yEJGP94Q=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-cP-G0cAEP6uylJl8OubLog-1; Fri, 31 Oct 2025 11:56:21 -0400
+X-MC-Unique: cP-G0cAEP6uylJl8OubLog-1
+X-Mimecast-MFC-AGG-ID: cP-G0cAEP6uylJl8OubLog_1761926181
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-88022ad6ea3so44299526d6.1
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 08:56:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761926180; x=1762530980;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aBPx8hI36oJpAZyZQnbxHNy40N6396sldFZirY6Xg1E=;
+ b=rUnucAG1wlMo9nrP8M/xHlq/+SlL6eVeZc5kJogglBLh+wMCbz/eXNTpS4i4QFJ2La
+ qp2Hpy53IKRBqIo2x+DG3fkDrApqblmDaB5vtrWsXiJoeUwTGz+UMR+fAJbpijDfuh6Z
+ wvW4O4GWv1M49J5xcF8wmit74MMyuY/UZEWVQc9+iDRWSs3/EGUZ5tj+jjNAfVScNBsy
+ +uQutC9ZH74s73iFwJiCpGdYJFpBPgJtMdsfvGKU0ifOq5EL1o/6RmKjH3xsPxnyA1yg
+ AL2sJB8JsoXFaMqDUYtENeDenW9RnsNYgdvRZdsdlv45AAAFf7z3ym7WfJkyMvSYGvYb
+ BxNw==
+X-Gm-Message-State: AOJu0YyoxDwoSfLvdFQ6cA3Gu02dIV89VBlqUWRE1wOHihXMtahXxlDZ
+ 988M/cSt2qf9z8wsMa0F1JMC62y2nE1yxDdSNHYd30kpH9J9qZFEnYIsY9+ZfzwU5gML2HE1AFG
+ YRQ8QZZ2FQ2C1knDYiAqkFEityHTaX5i5Qa65qM/s0qQZI6RANsJii9kzEQi18o4enAdLEuX8yA
+ VqAsEbFXBLbOU/B5QqwYaWH4EcbWB9ADc1BXK8QaFW1YY=
+X-Gm-Gg: ASbGncsjHYPPHGT1hB7qOMaIFnub4wTB3lACAqmbjPmT0doMe/r/M7hazzBMIVWYZlH
+ x1uiydR+29d3LTS57kDNePWv+be7QGWmU8T+F93maqDizDc34hFrXJV4mQUVLm4hsp3A6XVAGup
+ YQnCsD25W+HNVXcClTfyb8NF41TcE+Eu1eVVrnmB3QOcymD4aS6qHpxc3clPSIzP4go07tTFTf7
+ KcNQebohNYa5eweaY9CP2dGu+iJifxH64EzdhBCD6AJnMaXc9NZv+Uk/5+nMDo9NE18QKbnanFF
+ 80eR8nukfxBELQqj062dhxMgttMePt1jRUFHXDGwtUi3vwHtYAnTxVleCKC7DxXHZ47qjcjLufJ
+ wdYfbFdfC9ORmDyv+OYIF0YuTk9iRLqvFSh7AI2X4
+X-Received: by 2002:a05:6214:27e7:b0:880:1eb4:110d with SMTP id
+ 6a1803df08f44-8802f4db5efmr54084186d6.51.1761926180642; 
+ Fri, 31 Oct 2025 08:56:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtvKJTBW3Xuf4BCMa8AiONYool/fNRESQ5it0qoabSE5o9JgQgprKEr3s09mN3PwLqvIt0kQ==
+X-Received: by 2002:a05:6214:27e7:b0:880:1eb4:110d with SMTP id
+ 6a1803df08f44-8802f4db5efmr54083806d6.51.1761926180260; 
+ Fri, 31 Oct 2025 08:56:20 -0700 (PDT)
+Received: from localhost (red-hat-inc.vlan560.asr1.mad1.gblx.net.
+ [159.63.51.90]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-880362d3c69sm13601386d6.29.2025.10.31.08.56.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 31 Oct 2025 08:56:19 -0700 (PDT)
+From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Cornelia Huck <cohuck@redhat.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Subject: [RFC 1/2] linux-headers: add virtio_can.h
+Date: Fri, 31 Oct 2025 16:56:16 +0100
+Message-ID: <20251031155617.1223248-1-mvaralar@redhat.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <67b6e046-3175-4d7b-b4b9-3ac56b733987@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mvaralar@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -73,8 +93,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,105 +109,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 31.10.2025 um 16:03 hat Hanna Czenczek geschrieben:
-> On 31.10.25 13:33, Kevin Wolf wrote:
-> > Am 31.10.2025 um 13:13 hat Hanna Czenczek geschrieben:
-> > > On 23.10.25 17:11, Kevin Wolf wrote:
-> > > > Am 01.07.2025 um 13:44 hat Hanna Czenczek geschrieben:
-> > > > > We probably want to support larger write sizes than just 4k; 64k seems
-> > > > > nice.  However, we cannot read partial requests from the FUSE FD, we
-> > > > > always have to read requests in full; so our read buffer must be large
-> > > > > enough to accommodate potential 64k writes if we want to support that.
-> > > > > 
-> > > > > Always allocating FuseRequest objects with 64k buffers in them seems
-> > > > > wasteful, though.  But we can get around the issue by splitting the
-> > > > > buffer into two and using readv(): One part will hold all normal (up to
-> > > > > 4k) write requests and all other requests, and a second part (the
-> > > > > "spill-over buffer") will be used only for larger write requests.  Each
-> > > > > FuseQueue has its own spill-over buffer, and only if we find it used
-> > > > > when reading a request will we move its ownership into the FuseRequest
-> > > > > object and allocate a new spill-over buffer for the queue.
-> > > > > 
-> > > > > This way, we get to support "large" write sizes without having to
-> > > > > allocate big buffers when they aren't used.
-> > > > > 
-> > > > > Also, this even reduces the size of the FuseRequest objects because the
-> > > > > read buffer has to have at least FUSE_MIN_READ_BUFFER (8192) bytes; but
-> > > > > the requests we support are not quite so large (except for >4k writes),
-> > > > > so until now, we basically had to have useless padding in there.
-> > > > > 
-> > > > > With the spill-over buffer added, the FUSE_MIN_READ_BUFFER requirement
-> > > > > is easily met and we can decrease the size of the buffer portion that is
-> > > > > right inside of FuseRequest.
-> > > > > 
-> > > > > As for benchmarks, the benefit of this patch can be shown easily by
-> > > > > writing a 4G image (with qemu-img convert) to a FUSE export:
-> > > > > - Before this patch: Takes 25.6 s (14.4 s with -t none)
-> > > > > - After this patch: Takes 4.5 s (5.5 s with -t none)
-> > > > > 
-> > > > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> > > > The commit message seems outdated, there is no such thing as a
-> > > > FuseRequest object.
-> > > > 
-> > > > I agree with the idea of allocating a separate buffer for the data to be
-> > > > written. I'm not so sure that the approach taken here with combining an
-> > > > in-place and a spillover buffer does actually do much for us in exchange
-> > > > for the additional complexity.
-> > > > 
-> > > > The allocation + memcpy for in_place buf in fuse_co_write() bothers me a
-> > > > bit. I'd rather have a buffer for the data to write that can be directly
-> > > > used. And let's be real, we already allocate a 1 MB stack per request. I
-> > > > don't think 64k more or less make a big difference, but it would allow
-> > > > us to save the memcpy() for 4k requests and additionally an allocation
-> > > > for larger requests.
-> > > > 
-> > > > The tradeoff when you use an iov for the buffer in FuseQueue that is
-> > > > only big enough for the header and fuse_write_in and then directly the
-> > > > per-request buffer that is owned by the coroutine is that for requests
-> > > > that are larger than fuse_write_in, you'll have to copy the rest back
-> > > > from the data buffer first. This seems to be only fuse_setattr_in, which
-> > > > shouldn't be a hot path at all, and only a few bytes.
-> > > So I understand that first, you disagree with “Always allocating FuseRequest
-> > > objects with 64k buffers in them seems wasteful, though.” I.e. to just use a
-> > > 64k buffer per request.  OK, fair.
-> > I think in practice most write requests will exceed the 4k anyway, so
-> > we'd already use the spillover buffer. Maybe the most common exception
-> > is fio, if we want to optimise for that one. :-)
-> > 
-> > > Second, you suggest to improve performance by having an aligned 64k data
-> > > buffer separate from the request metadata buffer to save on memcpy().  I did
-> > > consider this, but discarded it because of I was afraid of the complexity.
-> > > Actually probably too afraid.
-> > > 
-> > > I’ll take a look, it actually can’t be too hard.  (Just have two buffers;
-> > > make the metadata buffer long enough to capture all request headers, but
-> > > only pass the sizeof(fuse_write_in)-long head into readv(), then check the
-> > > request opcode.  If metadata spilled over to the data buffer, copy it back
-> > > into the “shadowed” metadata buffer tail.)
-> > Yes, that's what I had in mind. Not sure if it's premature
-> > optimisation...
-> 
-> Just to confirm – this means we will have to do an allocation for each write
-> request.  I think this should still be cheaper than the current memcpy(),
-> but still wanted to ask back whether you agree.
+Signed-off-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+---
+Note that virtio_can.h is not merged yet and it is part of the series
+https://lore.kernel.org/all/aQJRnX7OpFRY%2F1+H@fedora/
+---
+ include/standard-headers/linux/virtio_can.h | 78 +++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+ create mode 100644 include/standard-headers/linux/virtio_can.h
 
-For write requests, we will save the unconditional 4k bounce buffer
-allocation and make the currently conditional 64k allocation (where in
-practice I argued the condition is usually met) unconditional instead.
-
-All other requests have no allocations before and after.
-
-Is this right? If so, I expect that the change could only ever reduce
-the number of allocations. It can increase the size of allocations (for
-small write requests < 4k), but I'm not very worried about this.
-
-> (We could have a pool of buffers, but that would most definitely be a
-> premature optimization – and I hope our memalloc algorithm can do that
-> internally just fine.)
-
-Yes.
-
-Kevin
+diff --git a/include/standard-headers/linux/virtio_can.h b/include/standard-headers/linux/virtio_can.h
+new file mode 100644
+index 0000000000..6380ef7bce
+--- /dev/null
++++ b/include/standard-headers/linux/virtio_can.h
+@@ -0,0 +1,78 @@
++/* SPDX-License-Identifier: BSD-3-Clause */
++/*
++ * Copyright (C) 2021-2023 OpenSynergy GmbH
++ * Copyright Red Hat, Inc. 2025
++ */
++#ifndef _LINUX_VIRTIO_VIRTIO_CAN_H
++#define _LINUX_VIRTIO_VIRTIO_CAN_H
++
++#include <standard-headers/linux/types.h>
++#include <standard-headers/linux/virtio_types.h>
++#include <standard-headers/linux/virtio_ids.h>
++#include <standard-headers/linux/virtio_config.h>
++
++/* Feature bit numbers */
++#define VIRTIO_CAN_F_CAN_CLASSIC        0
++#define VIRTIO_CAN_F_CAN_FD             1
++#define VIRTIO_CAN_F_RTR_FRAMES         2
++#define VIRTIO_CAN_F_LATE_TX_ACK        3
++
++/* CAN Result Types */
++#define VIRTIO_CAN_RESULT_OK            0
++#define VIRTIO_CAN_RESULT_NOT_OK        1
++
++/* CAN flags to determine type of CAN Id */
++#define VIRTIO_CAN_FLAGS_EXTENDED       0x8000
++#define VIRTIO_CAN_FLAGS_FD             0x4000
++#define VIRTIO_CAN_FLAGS_RTR            0x2000
++
++#define VIRTIO_CAN_MAX_DLEN    64 // this is like CANFD_MAX_DLEN
++
++struct virtio_can_config {
++#define VIRTIO_CAN_S_CTRL_BUSOFF (1u << 0) /* Controller BusOff */
++	/* CAN controller status */
++	__le16 status;
++};
++
++/* TX queue message types */
++struct virtio_can_tx_out {
++#define VIRTIO_CAN_TX                   0x0001
++	__le16 msg_type;
++	__le16 length; /* 0..8 CC, 0..64 CAN-FD, 0..2048 CAN-XL, 12 bits */
++	__u8 reserved_classic_dlc; /* If CAN classic length = 8 then DLC can be 8..15 */
++	__u8 padding;
++	__le16 reserved_xl_priority; /* May be needed for CAN XL priority */
++	__le32 flags;
++	__le32 can_id;
++	__u8 sdu[] __counted_by(length);
++};
++
++struct virtio_can_tx_in {
++	__u8 result;
++};
++
++/* RX queue message types */
++struct virtio_can_rx {
++#define VIRTIO_CAN_RX                   0x0101
++	__le16 msg_type;
++	__le16 length; /* 0..8 CC, 0..64 CAN-FD, 0..2048 CAN-XL, 12 bits */
++	__u8 reserved_classic_dlc; /* If CAN classic length = 8 then DLC can be 8..15 */
++	__u8 padding;
++	__le16 reserved_xl_priority; /* May be needed for CAN XL priority */
++	__le32 flags;
++	__le32 can_id;
++	__u8 sdu[] __counted_by(length);
++};
++
++/* Control queue message types */
++struct virtio_can_control_out {
++#define VIRTIO_CAN_SET_CTRL_MODE_START  0x0201
++#define VIRTIO_CAN_SET_CTRL_MODE_STOP   0x0202
++	__le16 msg_type;
++};
++
++struct virtio_can_control_in {
++	__u8 result;
++};
++
++#endif /* #ifndef _LINUX_VIRTIO_VIRTIO_CAN_H */
+-- 
+2.42.0
 
 
