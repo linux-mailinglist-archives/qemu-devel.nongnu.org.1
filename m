@@ -2,65 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258E6C23707
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8C1C236FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEiuh-0004pu-4g; Fri, 31 Oct 2025 02:47:07 -0400
+	id 1vEiuh-0004rS-2v; Fri, 31 Oct 2025 02:47:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEiuX-0004hd-CV
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:46:57 -0400
+ id 1vEiuc-0004mn-Su
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:47:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vEiuP-0003lT-0I
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:46:51 -0400
+ id 1vEiuW-0003ll-EY
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:47:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761893207;
+ s=mimecast20190719; t=1761893213;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7zuGxxVVCSgxNFDPmoLOBA8z2XywOXaU7n24pz50sDQ=;
- b=Z4Av7RCKUFBTEgY4AgfbCcMYaTutoHR/ovtGamGQuRNtaOLfJk6xgST3EczYaca3jbyXhT
- 5nOfaAEjk7KsLmOsAf39mAr16SA5bKLh42Cvil7HLMs6tSsX66Fh05tqehySiCQtLVaBGd
- +DiWeFKvRUBfWWqkGCRH7aG7fP2gMqw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=7n+9u29Qm9hRbfDLebIID7kbz6WpIBdT8iNI2RgbBsg=;
+ b=it75HpSwq1k7zqgxOB2t7nSK91gksvh+DWmWrScb0BSi+ldPCoaeCOMV8yhT2cj+DVetQp
+ yxEIGnbj8co8BDYfo/i3YR3NXPTmc1EW3HbbSvzBJccPi86IqucUoqB5oI339xHYXK/RSf
+ Ko/pv8SkKKjaYEyzfVvrjSu7wCZ7e+k=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-_OVeLFcpPsqcS-_EWAE_6Q-1; Fri,
- 31 Oct 2025 02:46:44 -0400
-X-MC-Unique: _OVeLFcpPsqcS-_EWAE_6Q-1
-X-Mimecast-MFC-AGG-ID: _OVeLFcpPsqcS-_EWAE_6Q_1761893203
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-JvCDBlf-PTikI8_lMXAtQw-1; Fri,
+ 31 Oct 2025 02:46:50 -0400
+X-MC-Unique: JvCDBlf-PTikI8_lMXAtQw-1
+X-Mimecast-MFC-AGG-ID: JvCDBlf-PTikI8_lMXAtQw_1761893209
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 751CD1829E1B; Fri, 31 Oct 2025 06:46:43 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AE8D11955DD1; Fri, 31 Oct 2025 06:46:49 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 11C821800579; Fri, 31 Oct 2025 06:46:41 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 282201800594; Fri, 31 Oct 2025 06:46:47 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 01/36] qdev: add qdev_find_default_bus()
-Date: Fri, 31 Oct 2025 10:45:54 +0400
-Message-ID: <20251031064631.134651-2-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 02/36] hw/audio: look up the default bus from the device class
+Date: Fri, 31 Oct 2025 10:45:55 +0400
+Message-ID: <20251031064631.134651-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20251031064631.134651-1-marcandre.lureau@redhat.com>
 References: <20251031064631.134651-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -89,79 +87,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This helper is used next by -audio code.
+Generalize and simplify the device model creation.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/monitor/qdev.h |  3 +++
- system/qdev-monitor.c  | 25 +++++++++++++++++++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ hw/audio/soundhw.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
-index 1d57bf6577..de33637869 100644
---- a/include/monitor/qdev.h
-+++ b/include/monitor/qdev.h
-@@ -1,6 +1,8 @@
- #ifndef MONITOR_QDEV_H
- #define MONITOR_QDEV_H
- 
+diff --git a/hw/audio/soundhw.c b/hw/audio/soundhw.c
+index 63a6855635..29158c115c 100644
+--- a/hw/audio/soundhw.c
++++ b/hw/audio/soundhw.c
+@@ -22,6 +22,8 @@
+  * THE SOFTWARE.
+  */
+ #include "qemu/osdep.h"
 +#include "hw/qdev-core.h"
-+
- /*** monitor commands ***/
- 
- void hmp_info_qtree(Monitor *mon, const QDict *qdict);
-@@ -11,6 +13,7 @@ int qdev_device_help(QemuOpts *opts);
- DeviceState *qdev_device_add(QemuOpts *opts, Error **errp);
- DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-                                         bool from_json, Error **errp);
-+BusState *qdev_find_default_bus(DeviceClass *dc, Error **errp);
- 
- /**
-  * qdev_set_id: parent the device and set its id if provided.
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index ec4a2394ce..f2aa400a77 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -621,6 +621,25 @@ const char *qdev_set_id(DeviceState *dev, char *id, Error **errp)
-     return prop->name;
- }
- 
-+BusState *qdev_find_default_bus(DeviceClass *dc, Error **errp)
-+{
-+    BusState *bus = NULL;
-+
-+    assert(dc->bus_type != NULL);
-+    bus = qbus_find_recursive(sysbus_get_default(), NULL, dc->bus_type);
-+    if (!bus) {
-+        error_setg(errp, "No '%s' bus found for device '%s'",
-+                   dc->bus_type, object_class_get_name(OBJECT_CLASS(dc)));
-+        return NULL;
-+    }
-+    if (qbus_is_full(bus)) {
-+        error_setg(errp, "A '%s' bus was found but is full", dc->bus_type);
-+        return NULL;
-+    }
-+
-+    return bus;
-+}
-+
- DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-                                         bool from_json, Error **errp)
++#include "monitor/qdev.h"
+ #include "qemu/option.h"
+ #include "qemu/help_option.h"
+ #include "qemu/error-report.h"
+@@ -110,33 +112,19 @@ void select_soundhw(const char *name, const char *audiodev)
+ void soundhw_init(void)
  {
-@@ -657,10 +676,8 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-             return NULL;
-         }
-     } else if (dc->bus_type != NULL) {
--        bus = qbus_find_recursive(sysbus_get_default(), NULL, dc->bus_type);
--        if (!bus || qbus_is_full(bus)) {
--            error_setg(errp, "No '%s' bus found for device '%s'",
--                       dc->bus_type, driver);
-+        bus = qdev_find_default_bus(dc, errp);
-+        if (!bus) {
-             return NULL;
-         }
+     struct soundhw *c = selected;
+-    ISABus *isa_bus = (ISABus *) object_resolve_path_type("", TYPE_ISA_BUS, NULL);
+-    PCIBus *pci_bus = (PCIBus *) object_resolve_path_type("", TYPE_PCI_BUS, NULL);
+-    BusState *bus;
+ 
+     if (!c) {
+         return;
      }
+-    if (c->isa) {
+-        if (!isa_bus) {
+-            error_report("ISA bus not available for %s", c->name);
+-            exit(1);
+-        }
+-        bus = BUS(isa_bus);
+-    } else {
+-        if (!pci_bus) {
+-            error_report("PCI bus not available for %s", c->name);
+-            exit(1);
+-        }
+-        bus = BUS(pci_bus);
+-    }
+ 
+     if (c->typename) {
+         DeviceState *dev = qdev_new(c->typename);
++        BusState *bus = qdev_find_default_bus(DEVICE_GET_CLASS(dev), &error_fatal);
+         qdev_prop_set_string(dev, "audiodev", audiodev_id);
+         qdev_realize_and_unref(dev, bus, &error_fatal);
+     } else {
+         assert(!c->isa);
++        PCIBus *pci_bus = (PCIBus *) object_resolve_path_type("", TYPE_PCI_BUS, NULL);
+         c->init_pci(pci_bus, audiodev_id);
+     }
+ }
 -- 
 2.51.1
 
