@@ -2,79 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672BBC27004
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 22:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68286C270D3
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 22:34:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEwXn-0004Kp-A8; Fri, 31 Oct 2025 17:20:23 -0400
+	id 1vEwja-0000gf-5n; Fri, 31 Oct 2025 17:32:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEwXj-0004KA-U5
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 17:20:20 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vEwjW-0000gH-Cf
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 17:32:31 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEwXb-0002aW-F6
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 17:20:19 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3ecdf2b1751so1769673f8f.0
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 14:20:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vEwjR-0004Gv-K4
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 17:32:29 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-429c4c65485so825469f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 14:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761945608; x=1762550408; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TRkWFU/aapO0FF6y9Y4J4SN7vpy3bH8aWYMTVG70Hn8=;
- b=IkTlWL1z3PVjSKCJeaqvDUIsu38aEd7FI60q3RN127YVMnqsytGzNQzX7HkiNV5PGf
- 9AS7NrZ5+g794PeZQMJdtAMmghiloMthvZAHzS3nW1XwVS4PbrD9ELrMAp4t68DPDzgw
- aIx3/DQJYAk9wMN8yiBYzQYo3+QxFxQyGl6jj/D814CD42IASlB2G6HKEf/nldnQ5D5s
- lHUWMWlxCj0bziRboCsC32z2jugb7CmrKmF8FApDrUc3uGWtkr3uIOa12mulK4YWKDD0
- KJuRCiMzs9jn9M9WWF8UHZLQN/Mzu9vPT3D+MeauJo4nDX+kHblHbYY0tdxBEH3YutR3
- V5FA==
+ d=linaro.org; s=google; t=1761946337; x=1762551137; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7gFJOesv/QdVpQAxa4r8mRd0VNlEOsmE6SdFu/J/SCg=;
+ b=iaJ6I/PvF6o57Eh6/Kn+RVRXNyG1EtS8yFSkIyA31K3TN+xqQ5Bh4O5kZOJStdbnH3
+ p17VvVRdBD0actKM2buMnNFeZbt5FrVvVCWcXDdWcR8to0GD6bEehX14Sq254bJ+uKSk
+ n6ka/BtXtWlJZ/oyou3NXphXetARPtZx6R7oRyslXfUg6ZvitVq+QDrRBeOL0DvymVEc
+ 0FmloeCKdzGcGey4mCFG+zy3xEDJDkzDbj8gbEqAmKB4VxPDwh8AdX3V1P570bIi3ku8
+ iFl6X6SG6RZh2IIFBRLAbE5ypdp76RDxrpJkCGvKbhnwaNoyvEsO4LbJoiS8C4NkxVRd
+ Fxfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761945608; x=1762550408;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TRkWFU/aapO0FF6y9Y4J4SN7vpy3bH8aWYMTVG70Hn8=;
- b=Vssx/nZXPv8asu+yM2GMS1yUv0O+4hjD3Zd0gcLNlaRZCxBN0fdbtKEgYouZ2h/dKv
- lkM/F48Ef+q8d036TSz9o6jxyV2p94r0KhTfzhDGTwRDPBWa6eaPF/k4eiTSWOG2eQhs
- 9oIslRLytWDKn3EW6uBjmpwvMNsodd7EuGP//SH2KVHd1aSjVxOMMHKFkEhnQFlI4ZP0
- r8tUPB5kvlNnoBFggPQYgmGsQW1yNtbqdzuw8/UTCE2/np3IKa0V0PPVI/TA55VCtGJG
- JX6XsgWRtq2M3sAwHqr/88ExLyhJ/XvvuvpdqMf8kZ96VZ//oVLLsgCXMUhtQ5kPYmBn
- q/+Q==
-X-Gm-Message-State: AOJu0YxDuu/lRgI1U/5Wd3FcwminiUzGwDMYi3meOaaEZZxbKwknem2U
- FLoP3Hff30/xwOUl/DhCu20BxaAOmWyb2nw3xfkl7EiLpP6yNPnDolUxiDeRMCWBJqXJzPe0qj1
- jUj/9mfrKkg==
-X-Gm-Gg: ASbGnctLEJ9gnAUedccr83j/Z1EsVO5Or5Jj4iGeclkephqLwZ+ZXzhmwl7D6Tysj7s
- XIvqwhruJGQCgSYcvkRJb3tB4DuGTuPP9Ym/wv70nE+ct7nXt8tXav+HISQIB6lPcXb+n0VtKWG
- JsQFH4zuD/nLFrlHHbGqAfS9QTEdVU0jwqBGc5wVjPPAzasSJcUIn5ZBMl512JGRploHYMXH3al
- EQwAtQMO9Znnj6D9bQyuv4OKaZn6dnESpIUCVViEyOjwVV2J70o0db0bfEI89AwagtttJQxNrTB
- KDyMwwhASdj/bVzif8tAun6nl2BWKRxVlYXuxU2GcnLmsySkTvGgs76apJR0N4pbGWMbBzREsHW
- VDCiD7U50zlWLKZ9gFncXuAuf516+7wg8nSDdlArxd4QNS2ieICfyy7QFZFc1MTAu1xlEyMvSs9
- f2PyqwaKu8sI21dOhK4Q5zPBgQmqEXSYL3MXr9oTqPW3H6HNoV
-X-Google-Smtp-Source: AGHT+IEcvUahVrXqdQpda5Jmzh00TDRKdk7K7n7yUy3kWYWRimLq4lodPyYuNRcgonQioDY8GNflkA==
-X-Received: by 2002:a05:6000:1acb:b0:425:75c6:7125 with SMTP id
- ffacd0b85a97d-429bd680bb9mr4527610f8f.16.1761945608366; 
- Fri, 31 Oct 2025 14:20:08 -0700 (PDT)
-Received: from pc56.home (adijon-656-1-155-31.w90-33.abo.wanadoo.fr.
- [90.33.190.31]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c13e16f4sm5639277f8f.27.2025.10.31.14.20.07
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Oct 2025 14:20:07 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 9/9] rx: cpu: fix interrupts check in rx_cpu_do_interrupt()
-Date: Fri, 31 Oct 2025 22:15:18 +0100
-Message-ID: <20251031211518.38503-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251031211518.38503-1-philmd@linaro.org>
-References: <20251031211518.38503-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1761946337; x=1762551137;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=7gFJOesv/QdVpQAxa4r8mRd0VNlEOsmE6SdFu/J/SCg=;
+ b=Z7WGc4nHcs0+VOxZkBqwTBASJowYVDnQTG5foHnrmOJBPikkvvpSKRXohjnNMD0a7D
+ 0ZCBfTV37wY5I4YQ6AsPqSLc1vME2J0S/AUiegcE5di/qwKQYtBZ9Jmgtlz7Mt4xdbX1
+ KHX+qKNm0M29aIYziYlbq3jYUP/Jl8iSpbDaroiHROoJCjoQJu7TtK1ncR9ozG1tyjkH
+ 5Z33Q5Tzpiq4+Cuk+ABt9+BqK0vNGAVMn35DGreCUgC0ytcNQxqzpHNz47audCKTZpXa
+ NZlXBhsHRTPzhknzf3WTIBc4aUARJ3UpGvUYyAjk+3wOdKkwXRssLVpxloHdX+b4Ajap
+ qqyA==
+X-Gm-Message-State: AOJu0YzvEUwmjpHhsKEFS/amkjvOOWRbV+QTG54jgtlA7wSzz8dcDiMj
+ +Ql33L7C9700uD9lLQ5T8Q3MzLCkohG5I8LLXmKcu0tVPNcyX/LLXrv6v7BRJYAwV3OCCljvjo/
+ 4x8Nd8i4=
+X-Gm-Gg: ASbGncsXZWI5g0BhYOBDhIY6u9ieQBblijiHnPGXs4kK9Oc62HYSqdD+QsL50Kr3YJ6
+ 4B+Wp6UbkYIDHbDS7+08P0f8C34iw8iAlAByYEpVXKbn45DarTeKuGu/hao6Nfsd/VFjjRWZsmO
+ /eh+JG8Mmv5Eu0lUvBTnj9kQlWsFUck3fxnMzoQ0uPa5S88zyJgIGjltRdUEhXcU1nT9M5pYv/y
+ cRV/kRuzNXFPziQq3K7FRzcQ0hR0BVlsFQDPnmE3ojL3VLGUbWiJqOwYRrdx40MfuCGZoJdm+UD
+ OZ1l2G6Ji/2VoxagW59PyGWWwI7uWBOwE4QKGSe9QDJRVsbd97mbgW1L4zN8ey+WXGTEluYDqFh
+ GqHb/CCvZeCvw5McYQA0ZO2/VZaAMaA47Egck2xCSnBQmdSumLljWoLVTIaDSc7xY51LiooY4cc
+ Tb
+X-Google-Smtp-Source: AGHT+IFDhxmTOwDroynzlrhAYzHyyVObROFvNH3A42ylRfQg+UeTMRz+gVXXTqrnc6jl2wc9crjn0Q==
+X-Received: by 2002:a5d:5d13:0:b0:429:c4bb:fbc5 with SMTP id
+ ffacd0b85a97d-429c4bbfdfdmr1763899f8f.7.1761946337192; 
+ Fri, 31 Oct 2025 14:32:17 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429c1405fffsm5275588f8f.45.2025.10.31.14.32.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 31 Oct 2025 14:32:16 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 874F55F81E;
+ Fri, 31 Oct 2025 21:32:14 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org,  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 0/5] virtio-gpu: Force RCU when unmapping blob
+In-Reply-To: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+ (Akihiko Odaki's message of "Wed, 29 Oct 2025 15:12:44 +0900")
+References: <20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp>
+User-Agent: mu4e 1.12.14-dev2; emacs 30.1
+Date: Fri, 31 Oct 2025 21:32:14 +0000
+Message-ID: <87zf96sqox.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,96 +104,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> writes:
 
-Commit 87511341c30 broke interrupt handling, replacing interrupts
-fetch with a bool and then the remaining code attempting to check
-individual bits on that bool value, which effectively masked those
-interrupts.
+> Based-on: <20251016-force-v1-1-919a82112498@rsg.ci.i.u-tokyo.ac.jp>
+> ("[PATCH] rcu: Unify force quiescent state")
+>
+> Unmapping a blob changes the memory map, which is protected with RCU.
+> RCU is designed to minimize the read-side overhead at the cost of
+> reclamation delay. While this design usually makes sense, it is
+> problematic when unmapping a blob because the operation blocks all
+> virtio-gpu commands and causes perceivable disruption.
+>
+> Minimize such the disruption with force_rcu(), which minimizes the
+> reclamation delay at the cost of a read-side overhead.
+>
+> Dmitry, can you see if this change makes difference?
+>
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-Fix it by checking individual interrupt bits directly instead of
-old 'fetch then check' approach.
+Are you planning a re-spin now the rcu patch is merged? If the rcu
+maintainers are happy I'm fine to take it via virtio-gpu/next with the
+testcase.
 
-Fixes: 87511341c30d ("add cpu_test_interrupt()/cpu_set_interrupt() helpers and use them tree wide")
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251030165932.138512-1-imammedo@redhat.com>
-[PMD: Rebased on commit dde21df2393 "call plugin trap callbacks"]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/rx/helper.c | 45 ++++++++++++++++++++-------------------------
- 1 file changed, 20 insertions(+), 25 deletions(-)
+> ---
+> Akihiko Odaki (5):
+>       futex: Add qemu_futex_timedwait()
+>       qemu-thread: Add qemu_event_timedwait()
+>       rcu: Use call_rcu() in synchronize_rcu()
+>       rcu: Wake the RCU thread when draining
+>       virtio-gpu: Force RCU when unmapping blob
+>
+>  include/qemu/futex.h          |  29 ++++++--
+>  include/qemu/rcu.h            |   1 +
+>  include/qemu/thread-posix.h   |  11 +++
+>  include/qemu/thread.h         |   8 ++-
+>  hw/display/virtio-gpu-virgl.c |   1 +
+>  util/event.c                  |  34 ++++++++--
+>  util/qemu-thread-posix.c      |  11 +--
+>  util/rcu.c                    | 153 ++++++++++++++++++++++++------------=
+------
+>  8 files changed, 163 insertions(+), 85 deletions(-)
+> ---
+> base-commit: ee7fbe81705732785aef2cb568bbc5d8f7d2fce1
+> change-id: 20251027-force_rcu-616c743373f7
+>
+> Best regards,
 
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index ef47e32add8..e9a7aaf610d 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -41,11 +41,9 @@ void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte)
-     env->psw_c = FIELD_EX32(psw, PSW, C);
- }
- 
--#define INT_FLAGS (CPU_INTERRUPT_HARD | CPU_INTERRUPT_FIR)
- void rx_cpu_do_interrupt(CPUState *cs)
- {
-     CPURXState *env = cpu_env(cs);
--    int do_irq = cpu_test_interrupt(cs, INT_FLAGS);
-     uint32_t save_psw;
-     uint64_t last_pc = env->pc;
- 
-@@ -59,29 +57,26 @@ void rx_cpu_do_interrupt(CPUState *cs)
-     save_psw = rx_cpu_pack_psw(env);
-     env->psw_pm = env->psw_i = env->psw_u = 0;
- 
--    if (do_irq) {
--        if (do_irq & CPU_INTERRUPT_FIR) {
--            env->bpc = env->pc;
--            env->bpsw = save_psw;
--            env->pc = env->fintv;
--            env->psw_ipl = 15;
--            cpu_reset_interrupt(cs, CPU_INTERRUPT_FIR);
--            qemu_set_irq(env->ack, env->ack_irq);
--            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
--            qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
--        } else if (do_irq & CPU_INTERRUPT_HARD) {
--            env->isp -= 4;
--            cpu_stl_data(env, env->isp, save_psw);
--            env->isp -= 4;
--            cpu_stl_data(env, env->isp, env->pc);
--            env->pc = cpu_ldl_data(env, env->intb + env->ack_irq * 4);
--            env->psw_ipl = env->ack_ipl;
--            cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
--            qemu_set_irq(env->ack, env->ack_irq);
--            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
--            qemu_log_mask(CPU_LOG_INT,
--                          "interrupt 0x%02x raised\n", env->ack_irq);
--        }
-+    if (cpu_test_interrupt(cs, CPU_INTERRUPT_FIR)) {
-+        env->bpc = env->pc;
-+        env->bpsw = save_psw;
-+        env->pc = env->fintv;
-+        env->psw_ipl = 15;
-+        cpu_reset_interrupt(cs, CPU_INTERRUPT_FIR);
-+        qemu_set_irq(env->ack, env->ack_irq);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+        qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
-+    } else if (cpu_test_interrupt(cs, CPU_INTERRUPT_HARD)) {
-+        env->isp -= 4;
-+        cpu_stl_data(env, env->isp, save_psw);
-+        env->isp -= 4;
-+        cpu_stl_data(env, env->isp, env->pc);
-+        env->pc = cpu_ldl_data(env, env->intb + env->ack_irq * 4);
-+        env->psw_ipl = env->ack_ipl;
-+        cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-+        qemu_set_irq(env->ack, env->ack_irq);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+        qemu_log_mask(CPU_LOG_INT, "interrupt 0x%02x raised\n", env->ack_irq);
-     } else {
-         uint32_t vec = cs->exception_index;
-         const char *expname = "unknown exception";
--- 
-2.51.0
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
