@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83650C25F51
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 17:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1585CC25FCC
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 17:05:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vErXc-0007A5-4C; Fri, 31 Oct 2025 11:59:52 -0400
+	id 1vErXd-0007A8-59; Fri, 31 Oct 2025 11:59:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vErXO-00077h-9Z
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:59:40 -0400
+ id 1vErXV-00078o-Hk
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:59:47 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vErXF-000604-6i
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:59:38 -0400
+ id 1vErXG-00060F-UR
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 11:59:43 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7955B80873;
- Fri, 31 Oct 2025 18:59:25 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0659D80886;
+ Fri, 31 Oct 2025 18:59:27 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:546::1:17])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id Fxip9o0FqiE0-I59YcE8G; Fri, 31 Oct 2025 18:59:24 +0300
+ ESMTPSA id Fxip9o0FqiE0-73lyTnh2; Fri, 31 Oct 2025 18:59:26 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761926364;
- bh=xYy79KhJdbRf73qAJW7T8dFetl8fZysPsUK+12kaI4g=;
- h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=w2kyCkujbYf1gsxGwhoCUj4IeJXfptDSY0TgHZPPDP5UT3oBXu5gBhdk4JJqKvJiS
- +MTTWv2iM7DySHX2IAVH5q7m/a5I6X3DssBnkT6x/bYWKNH1pXzT1xxrX6s+3lfOlc
- Auwnf90pv84oSl3lWBcIhWS9KuWfCDVFNaiZtWE8=
+ s=default; t=1761926366;
+ bh=wzMooQb9vJAU0bDLitNNnQXteL2SWP+Iv5C59eOY8sE=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=U4t5IE3AouIWCCSorTL5SuC0ZKqmbRO/+24EOwSIh4GKklNoPVa4CfAV8Pff31ZzI
+ BOB10uFaOoUO3+r218INiTEV2c5v2jchEH459gw5FGRa2sMxLx7gZ/ulYCn+VzZLcY
+ GZ4uAz/CyYKyTstszlG3YllH9hLYRiXmuQzYW/PU=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,14 +42,13 @@ To: marcandre.lureau@redhat.com
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  qemu-devel@nongnu.org, vsementsov@yandex-team.ru, raphael@enfabrica.net,
  armbru@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v5 6/7] chardev/char-socket: move to .init + .connect api
-Date: Fri, 31 Oct 2025 18:59:13 +0300
-Message-ID: <20251031155914.189112-7-vsementsov@yandex-team.ru>
+Subject: [PATCH v5 7/7] chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
+Date: Fri, 31 Oct 2025 18:59:14 +0300
+Message-ID: <20251031155914.189112-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251031155914.189112-1-vsementsov@yandex-team.ru>
 References: <20251031155914.189112-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.136;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
@@ -59,7 +58,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,298 +73,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move char-socket to new API. This will help to realize backend-transfer
-feature for vhost-user-blk.
+For further vhost-user-blk backend-transfer migration realization we
+want to give it (vhost-user-blk) a possibility (and responsibility) to
+decide when do connect.
 
-With this commit qemu_chr_fe_init() starts to do connecting, so we
-should handle its errors instead of passing &error_abort.
-
-Also, move qemu_chr_fe_init() in test-char.c, to trigger connect
-before trying to get address.
+For incoming migration we'll need to postpone connect at least until
+early stage of migrate-incoming command, when we already know all
+migration parameters and can decide, are we going to do incoming
+backend-transfer (and get chardev fd from incoming stream), or we
+finally need to connect.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- chardev/char-socket.c         | 55 ++++++++++++++++++++---------------
- chardev/char.c                |  7 +++--
- include/chardev/char-socket.h |  1 +
- tests/unit/test-char.c        | 14 ++++-----
- ui/dbus-chardev.c             | 12 ++++++--
- 5 files changed, 54 insertions(+), 35 deletions(-)
+ chardev/char-fe.c                   | 32 ++++++++++++++++++++++++-----
+ hw/core/qdev-properties-system.c    | 26 ++++++++++++++++++++---
+ include/chardev/char-fe.h           |  8 ++++++--
+ include/hw/qdev-properties-system.h |  3 +++
+ 4 files changed, 59 insertions(+), 10 deletions(-)
 
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index f3bc6290d2..0a5738c158 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -1287,6 +1287,25 @@ static int qmp_chardev_open_socket_client(Chardev *chr,
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index c67b4d640f..1132ec0501 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -189,15 +189,26 @@ bool qemu_chr_fe_backend_open(CharFrontend *c)
+     return c->chr && c->chr->be_open;
  }
  
+-bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
++bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,
++                         Error **errp)
+ {
+     unsigned int tag = 0;
  
-+static bool char_socket_connect(Chardev *chr, Error **errp)
-+{
-+    SocketChardev *s = SOCKET_CHARDEV(chr);
-+
-+    if (s->is_listen) {
-+        if (qmp_chardev_open_socket_server(chr, s->is_telnet || s->is_tn3270,
-+                                           s->is_waitconnect, errp) < 0) {
-+            return false;
+-    if (!qemu_chr_connect(s, errp)) {
+-        return false;
+-    }
+-
+     if (s) {
++        if (connect) {
++            if (!qemu_chr_connect(s, errp)) {
++                return false;
++            }
++        } else {
++            /* DEFINE_PROP_CHR_NO_CONNECT */
++            if (!s->connect_postponed) {
++                error_setg(errp,
++                           "Chardev %s does not support postponed connect",
++                           s->label);
++                return false;
++            }
 +        }
++
+         if (CHARDEV_IS_MUX(s)) {
+             MuxChardev *d = MUX_CHARDEV(s);
+ 
+@@ -210,6 +221,12 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
+         } else {
+             s->fe = c;
+         }
 +    } else {
-+        if (qmp_chardev_open_socket_client(chr, errp) < 0) {
-+            return false;
-+        }
-+    }
-+
-+    return true;
++        /*
++         * connect=false comes only from DEFINE_PROP_CHR_NO_CONNECT,
++         * through do_set_chr, which provides chardev ptr.
++         */
++        assert(connect);
+     }
+ 
+     c->fe_is_open = false;
+@@ -218,6 +235,11 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
+     return true;
+ }
+ 
++bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
++{
++    return qemu_chr_fe_init_ex(c, s, true, errp);
 +}
 +
-+
- static bool qmp_chardev_validate_socket(ChardevSocket *sock,
-                                         SocketAddress *addr,
-                                         Error **errp)
-@@ -1363,10 +1382,9 @@ static bool qmp_chardev_validate_socket(ChardevSocket *sock,
- }
- 
- 
--static void qmp_chardev_open_socket(Chardev *chr,
--                                    ChardevBackend *backend,
--                                    bool *be_opened,
--                                    Error **errp)
-+static bool char_socket_init(Chardev *chr,
-+                             ChardevBackend *backend,
-+                             Error **errp)
+ void qemu_chr_fe_deinit(CharFrontend *c, bool del)
  {
-     SocketChardev *s = SOCKET_CHARDEV(chr);
-     ChardevSocket *sock = backend->u.socket.data;
-@@ -1374,7 +1392,6 @@ static void qmp_chardev_open_socket(Chardev *chr,
-     bool is_listen      = sock->has_server  ? sock->server  : true;
-     bool is_telnet      = sock->has_telnet  ? sock->telnet  : false;
-     bool is_tn3270      = sock->has_tn3270  ? sock->tn3270  : false;
--    bool is_waitconnect = sock->has_wait    ? sock->wait    : false;
-     bool is_websock     = sock->has_websocket ? sock->websocket : false;
-     SocketAddress *addr;
- 
-@@ -1383,6 +1400,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
-     s->is_tn3270 = is_tn3270;
-     s->is_websock = is_websock;
-     s->do_nodelay = do_nodelay;
-+    s->is_waitconnect = sock->has_wait ? sock->wait : false;
-     s->reconnect_time_ms = sock->has_reconnect_ms ? sock->reconnect_ms : 0;
- 
-     if (sock->tls_creds) {
-@@ -1392,7 +1410,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
-         if (!creds) {
-             error_setg(errp, "No TLS credentials with id '%s'",
-                        sock->tls_creds);
--            return;
-+            return false;
-         }
-         s->tls_creds = (QCryptoTLSCreds *)
-             object_dynamic_cast(creds,
-@@ -1400,7 +1418,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
-         if (!s->tls_creds) {
-             error_setg(errp, "Object with id '%s' is not TLS credentials",
-                        sock->tls_creds);
--            return;
-+            return false;
-         }
-         object_ref(OBJECT(s->tls_creds));
-         if (!qcrypto_tls_creds_check_endpoint(s->tls_creds,
-@@ -1408,7 +1426,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
-                                           ? QCRYPTO_TLS_CREDS_ENDPOINT_SERVER
-                                           : QCRYPTO_TLS_CREDS_ENDPOINT_CLIENT,
-                                           errp)) {
--            return;
-+            return false;
-         }
-     }
-     s->tls_authz = g_strdup(sock->tls_authz);
-@@ -1416,7 +1434,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
-     s->addr = addr = socket_address_flatten(sock->addr);
- 
-     if (!qmp_chardev_validate_socket(sock, addr, errp)) {
--        return;
-+        return false;
-     }
- 
-     qemu_chr_set_feature(chr, QEMU_CHAR_FEATURE_RECONNECTABLE);
-@@ -1433,26 +1451,14 @@ static void qmp_chardev_open_socket(Chardev *chr,
-      */
-     if (!chr->handover_yank_instance) {
-         if (!yank_register_instance(CHARDEV_YANK_INSTANCE(chr->label), errp)) {
--            return;
-+            return false;
-         }
-     }
-     s->registered_yank = true;
- 
--    /* be isn't opened until we get a connection */
--    *be_opened = false;
--
-     update_disconnected_filename(s);
- 
--    if (s->is_listen) {
--        if (qmp_chardev_open_socket_server(chr, is_telnet || is_tn3270,
--                                           is_waitconnect, errp) < 0) {
--            return;
--        }
--    } else {
--        if (qmp_chardev_open_socket_client(chr, errp) < 0) {
--            return;
--        }
--    }
-+    return true;
+     assert(c);
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 13cc91680b..00f4b19238 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -266,8 +266,8 @@ static void get_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+     g_free(p);
  }
  
- static void qemu_chr_parse_socket(QemuOpts *opts, ChardevBackend *backend,
-@@ -1576,7 +1582,8 @@ static void char_socket_class_init(ObjectClass *oc, const void *data)
-     cc->supports_yank = true;
- 
-     cc->parse = qemu_chr_parse_socket;
--    cc->open = qmp_chardev_open_socket;
-+    cc->init = char_socket_init;
-+    cc->connect = char_socket_connect;
-     cc->chr_wait_connected = tcp_chr_wait_connected;
-     cc->chr_write = tcp_chr_write;
-     cc->chr_sync_read = tcp_chr_sync_read;
-diff --git a/chardev/char.c b/chardev/char.c
-index 33eba0cdc0..a6212d57ed 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -1222,12 +1222,15 @@ ChardevReturn *qmp_chardev_change(const char *id, ChardevBackend *backend,
+-static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+-                    Error **errp)
++static void do_set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
++                       bool connect, Error **errp)
+ {
+     ERRP_GUARD();
+     const Property *prop = opaque;
+@@ -297,13 +297,25 @@ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+     if (s == NULL) {
+         error_setg(errp, "Property '%s.%s' can't find value '%s'",
+                    object_get_typename(obj), name, str);
+-    } else if (!qemu_chr_fe_init(fe, s, errp)) {
++    } else if (!qemu_chr_fe_init_ex(fe, s, connect, errp)) {
+         error_prepend(errp, "Property '%s.%s' can't take value '%s': ",
+                       object_get_typename(obj), name, str);
      }
- 
-     chr->fe = NULL;
--    qemu_chr_fe_init(fe, chr_new, &error_abort);
-+    if (!qemu_chr_fe_init(fe, chr_new, errp)) {
-+        object_unref(OBJECT(chr_new));
-+        return NULL;
-+    }
- 
-     if (fe->chr_be_change(fe->opaque) < 0) {
-         error_setg(errp, "Chardev '%s' change failed", chr_new->label);
-         chr_new->fe = NULL;
--        qemu_chr_fe_init(fe, chr, &error_abort);
-+        qemu_chr_fe_init(fe, chr, NULL);
-         if (closed_sent) {
-             qemu_chr_be_event(chr, CHR_EVENT_OPENED);
-         }
-diff --git a/include/chardev/char-socket.h b/include/chardev/char-socket.h
-index d6d13ad37f..0109727eaa 100644
---- a/include/chardev/char-socket.h
-+++ b/include/chardev/char-socket.h
-@@ -68,6 +68,7 @@ struct SocketChardev {
-     bool is_listen;
-     bool is_telnet;
-     bool is_tn3270;
-+    bool is_waitconnect;
-     GSource *telnet_source;
-     TCPChardevTelnetInit *telnet_init;
- 
-diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
-index 8a98e42cad..9ecd5ccfe6 100644
---- a/tests/unit/test-char.c
-+++ b/tests/unit/test-char.c
-@@ -845,6 +845,7 @@ static void char_websock_test(void)
-                               0xef, 0xaa, 0xc5, 0x97, /* Masking key */
-                               0xec, 0x42              /* Status code */ };
- 
-+    qemu_chr_fe_init(&fe, chr, &error_abort);
-     addr = object_property_get_qobject(OBJECT(chr), "addr", &error_abort);
-     qdict = qobject_to(QDict, addr);
-     port = qdict_get_str(qdict, "port");
-@@ -852,7 +853,6 @@ static void char_websock_test(void)
-     handshake_port = g_strdup_printf(handshake, port, port);
-     qobject_unref(qdict);
- 
--    qemu_chr_fe_init(&fe, chr, &error_abort);
-     qemu_chr_fe_set_handlers(&fe, websock_server_can_read, websock_server_read,
-                              NULL, NULL, chr, NULL, true);
- 
-@@ -1216,6 +1216,8 @@ static void char_socket_server_test(gconstpointer opaque)
-     g_assert_nonnull(chr);
-     g_assert(!object_property_get_bool(OBJECT(chr), "connected", &error_abort));
- 
-+    qemu_chr_fe_init(&c, chr, &error_abort);
-+
-     qaddr = object_property_get_qobject(OBJECT(chr), "addr", &error_abort);
-     g_assert_nonnull(qaddr);
- 
-@@ -1224,8 +1226,6 @@ static void char_socket_server_test(gconstpointer opaque)
-     visit_free(v);
-     qobject_unref(qaddr);
- 
--    qemu_chr_fe_init(&c, chr, &error_abort);
--
-  reconnect:
-     data.event = -1;
-     data.fe = &c;
-@@ -1417,6 +1417,8 @@ static void char_socket_client_test(gconstpointer opaque)
-     qemu_opts_del(opts);
-     g_assert_nonnull(chr);
- 
-+    qemu_chr_fe_init(&c, chr, &error_abort);
-+
-     if (config->reconnect) {
-         /*
-          * If reconnect is set, the connection will be
-@@ -1431,8 +1433,6 @@ static void char_socket_client_test(gconstpointer opaque)
-                                           &error_abort));
-     }
- 
--    qemu_chr_fe_init(&c, chr, &error_abort);
--
-  reconnect:
-     data.event = -1;
-     data.fe = &c;
-@@ -1550,6 +1550,8 @@ static void char_socket_server_two_clients_test(gconstpointer opaque)
-     g_assert_nonnull(chr);
-     g_assert(!object_property_get_bool(OBJECT(chr), "connected", &error_abort));
- 
-+    qemu_chr_fe_init(&c, chr, &error_abort);
-+
-     qaddr = object_property_get_qobject(OBJECT(chr), "addr", &error_abort);
-     g_assert_nonnull(qaddr);
- 
-@@ -1558,8 +1560,6 @@ static void char_socket_server_two_clients_test(gconstpointer opaque)
-     visit_free(v);
-     qobject_unref(qaddr);
- 
--    qemu_chr_fe_init(&c, chr, &error_abort);
--
-     qemu_chr_fe_set_handlers(&c, char_socket_can_read, char_socket_discard_read,
-                              count_closed_event, NULL,
-                              &closed, NULL, true);
-diff --git a/ui/dbus-chardev.c b/ui/dbus-chardev.c
-index d05dddaf81..23cf9d6ee9 100644
---- a/ui/dbus-chardev.c
-+++ b/ui/dbus-chardev.c
-@@ -210,8 +210,14 @@ dbus_chr_open(Chardev *chr, ChardevBackend *backend,
-     if (*errp) {
-         return;
-     }
--    CHARDEV_CLASS(object_class_by_name(TYPE_CHARDEV_SOCKET))->open(
--        chr, be, be_opened, errp);
-+    if (!CHARDEV_CLASS(object_class_by_name(TYPE_CHARDEV_SOCKET))->init(
-+        chr, be, errp)) {
-+        return;
-+    }
-+    if (!CHARDEV_CLASS(object_class_by_name(TYPE_CHARDEV_SOCKET))->connect(
-+        chr, errp)) {
-+        return;
-+    }
+     g_free(str);
  }
  
- static void
-@@ -276,6 +282,8 @@ char_dbus_class_init(ObjectClass *oc, const void *data)
++static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
++                    Error **errp)
++{
++    do_set_chr(obj, v, name, opaque, true, errp);
++}
++
++static void set_chr_no_connect(Object *obj, Visitor *v, const char *name,
++                               void *opaque, Error **errp)
++{
++    do_set_chr(obj, v, name, opaque, false, errp);
++}
++
+ static void release_chr(Object *obj, const char *name, void *opaque)
+ {
+     const Property *prop = opaque;
+@@ -320,6 +332,14 @@ const PropertyInfo qdev_prop_chr = {
+     .release = release_chr,
+ };
  
-     cc->parse = dbus_chr_parse;
-     cc->open = dbus_chr_open;
-+    cc->init = NULL;
-+    cc->connect = NULL;
-     cc->chr_set_fe_open = dbus_chr_set_fe_open;
-     cc->chr_set_echo = dbus_chr_set_echo;
-     klass->parent_chr_be_event = cc->chr_be_event;
++const PropertyInfo qdev_prop_chr_no_connect = {
++    .type  = "str",
++    .description = "ID of a chardev to use as a backend",
++    .get   = get_chr,
++    .set   = set_chr_no_connect,
++    .release = release_chr,
++};
++
+ /* --- mac address --- */
+ 
+ /*
+diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+index 5f8a6df17d..f3df57afa1 100644
+--- a/include/chardev/char-fe.h
++++ b/include/chardev/char-fe.h
+@@ -25,14 +25,18 @@ struct CharFrontend {
+ };
+ 
+ /**
+- * qemu_chr_fe_init:
++ * qemu_chr_fe_init(_ex):
+  *
+  * Initializes the frontend @c for the given Chardev backend @s. Call
+  * qemu_chr_fe_deinit() to remove the association and release the backend.
++ * Call qemu_chr_connect(), except for the case when connect=false
++ * parameter set for _ex() version.
+  *
+  * Returns: false on error.
+  */
+-bool qemu_chr_fe_init(CharFrontend *c, Chardev *be, Error **errp);
++bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp);
++bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,
++                         Error **errp);
+ 
+ /**
+  * qemu_chr_fe_deinit:
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 5c6cc5eae8..a0b14a2f77 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -7,6 +7,7 @@ bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, const char *str,
+                                        Error **errp);
+ 
+ extern const PropertyInfo qdev_prop_chr;
++extern const PropertyInfo qdev_prop_chr_no_connect;
+ extern const PropertyInfo qdev_prop_macaddr;
+ extern const PropertyInfo qdev_prop_reserved_region;
+ extern const PropertyInfo qdev_prop_multifd_compression;
+@@ -39,6 +40,8 @@ extern const PropertyInfo qdev_prop_virtio_gpu_output_list;
+ 
+ #define DEFINE_PROP_CHR(_n, _s, _f)             \
+     DEFINE_PROP(_n, _s, _f, qdev_prop_chr, CharFrontend)
++#define DEFINE_PROP_CHR_NO_CONNECT(_n, _s, _f) \
++    DEFINE_PROP(_n, _s, _f, qdev_prop_chr_no_connect, CharFrontend)
+ #define DEFINE_PROP_NETDEV(_n, _s, _f)             \
+     DEFINE_PROP(_n, _s, _f, qdev_prop_netdev, NICPeers)
+ #define DEFINE_PROP_DRIVE(_n, _s, _f) \
 -- 
 2.48.1
 
