@@ -2,90 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD11C24B90
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 12:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4236EC24C01
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 12:18:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEn4D-0000De-0W; Fri, 31 Oct 2025 07:13:13 -0400
+	id 1vEn7x-0001KD-SF; Fri, 31 Oct 2025 07:17:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vEn43-0000Ad-C6
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:13:03 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vEn3v-00062A-R6
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:13:02 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-afcb7ae6ed0so473229866b.3
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 04:12:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761909172; x=1762513972; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iV+gtM1ohcEXrlaGlvGbFqdRPvrV/oAbDujN3dYxtAk=;
- b=sYwb4hO7gS5jL8VbZ/dxjlC1Nu6BFlNe7805ydbcsyWxkiIB3/FbTLXiDriMqB2i+y
- iDs4B7wXcGlBmdKyicKQhxFB2iQrrDCwGHo/wxSPXLHx6EeBfX5Ortl/7RrJj8Zii42f
- tU40OMJpr7wsS1xK2dIPLgfHc5sbVgyGz4cpyZm3MYAvLwqmWU7tZCJh3/L6lhXJf0+m
- ApzbeFpyhDYtihW68CeCQcZUtjYCLEV6ZznnF0T8XUmBPGoG6Pag0y5EjSFQfIbUdUev
- TXiVQr7Puv1dc31k9EF1L3/pbcHQigbRbOfN5KBgHs+tJCUDKFxPqkLO8rtCDLlj9Fu5
- mSEQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vEn7g-0001IO-MG
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:16:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vEn7V-0006q5-Ck
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:16:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761909379;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=lxdolFDsTujvT9LT6E5LiK49G0YH+Xsi6x2bzoXKkxs=;
+ b=CnXgi/wq9xuwrnUVG3czNMEQHW/5v688vTUTdmSxiCSsQqZSRw+AJoLeAV0ei7U0YdmcST
+ kDndzx5hT3DAywZETOHk6GB9FZDrn5lDFiJJToP0MZt/T3MaxGKiUB0cZ8j1/dJiavA4LA
+ 2MuaQy2KH5ma8M2GoVM8k8QpQtyDL+I=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478-pr2l-3_aOniYBIaUzOWc2w-1; Fri, 31 Oct 2025 07:16:17 -0400
+X-MC-Unique: pr2l-3_aOniYBIaUzOWc2w-1
+X-Mimecast-MFC-AGG-ID: pr2l-3_aOniYBIaUzOWc2w_1761909377
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-4284525aecbso1416942f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 04:16:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761909172; x=1762513972;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iV+gtM1ohcEXrlaGlvGbFqdRPvrV/oAbDujN3dYxtAk=;
- b=mXTB0KLIgjQ8tEsY8e/0hJhF4fgtYzKvdyAD95PWZdd4auBx5dao4jpwq7l8rrDZKR
- t1TUT2VyujLnOcUUWGGBbpyQz6GO3gs2LNWp4dsWzzXvZY8y/cya/evfQG+QDHyZjKZj
- yWj8udm9pdaKOgxBVggjAtP9T3wCyJM7VmtYUCIqLz2gNHLaLcmwjebR9ZiYmrlH02RV
- NWzpR7M1v4wsumQeHM4g566CSfDsqQcr+gOmgpCVPF5O4+0kvjQ49qt+K3T3Lf6Bq+B5
- ByNT3ht1NcEIzlkiyT7Ko/+mpmFfIh3nUtdjFcO0wyumEHqsVKd3QRMBOqUKIzj3kvro
- gFSQ==
-X-Gm-Message-State: AOJu0YxwXWZMN9jT1UZyn17vUEb7gxg1pRi1UV5VxqSMUby8SSH1HsQs
- px4/KGsOJiAsnJ6hsegGNHW12mnPGB4mIXETu1Cpu8vUXIO44CYW1x5yy9YV8Zh7vyT2cMV8p8B
- Io9jvfaA=
-X-Gm-Gg: ASbGncvA9WCN0MN55TLqDJgn4qS8lwAZDdsD2C2iHQQl7XPB//53zeOQ8QN43gCc0Ms
- R5Pe1bHJ2edjT4Mmn35Xxg/Nfl14fktkSHXkQ1a/ntx18fKMZLQLIsDUvi3+O28rFzNIGeqH09X
- U8732DDHSjSk05mKp6vuC2eKBHcKAkyY9rPjOF3SwRpk6T0rW4od2BaRje6P0VWVDwyxfNkO//z
- vI/Uuwsz2WODByX+EQt1UaTJ+ZstuvVT4VoHScO6+3Bs1VMQagH4tR5pEFiYnNZ1PZcmvW3KocO
- JHY2CX3cVK33vje8W+P1DtX6mtZTv8prBU7szE6Mqh9UU0taSkNnyxk6vn3rFmO3jqmKvCdRWV5
- O+nvyIzcRj1X4uQmO/T+jZDVXcA4L16HB61tphkpXgqUXTKElQkrhubQ+hKYgV9BkFLpJ3R5OcI
- RKaaIQZTCHt9hqCmfPBOBfYzHp31nx34otQjebhHv0HdpfkAUz2yQ=
-X-Google-Smtp-Source: AGHT+IGnLoqvzSAjCkOWwpHdSBGyOAtTwkScI+j4zkhhFJKCHYpai164FSMl4uxy7VNihnNOAIrhZg==
-X-Received: by 2002:a17:907:2d1f:b0:b3c:1bfc:c552 with SMTP id
- a640c23a62f3a-b70705f35c0mr316423166b.42.1761909172040; 
- Fri, 31 Oct 2025 04:12:52 -0700 (PDT)
-Received: from [10.240.88.227] (C3239BBB.static.ziggozakelijk.nl.
- [195.35.155.187]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b7077ce927csm146487366b.63.2025.10.31.04.12.51
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1761909376; x=1762514176;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lxdolFDsTujvT9LT6E5LiK49G0YH+Xsi6x2bzoXKkxs=;
+ b=CPIkL5KLXnIYT7fYIww/WBaGSBeSfAxWDle9NvetyCqLE+iedB76JfXNSP3ep5nZsM
+ njiezK/nUkwTAU4JBClkhEHSvNbj7Ozxn8kTgP8hwFtcVMrhafbE4aX6B7nKuBcTN6je
+ giO+trdkUkmziJxJFh2Gu0GPUsZSdU4qDEDuJzAW/TumT9hIfy2IhXRfYnxLLBATV/I1
+ eNAFuobZX9Tutl7pxiM7DAAmCXLfZCHnpj3Md7H4tEyOew7/Z5j2mE9OXl7+C/HK+eG+
+ xKoFvSRVmzlbF3G/+2Sm5VR3HT9B/GGuXgauzEDMvUjW5EmQWxhiB8dbhWQwPvS9Jd0E
+ tPFw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXFN496ERtd2+k8dnfiknzU12GEXwdu2/bhfJp+uFbX9s6C8qJ/ttn//EdUrMlfb15uuOhKyBscNAAX@nongnu.org
+X-Gm-Message-State: AOJu0YxtYDdQHmONez8JRYJig6MvfQn7jpN4OQe4pVSjZGJB0hnHi4Ou
+ We5gPA6UmXXG8+K6dssynVbAmkXlqm9HyXU70gY0ISIH043o6Hk9Nkeb/l0QiKW9OUzglSBhQMc
+ 6CNtK/EFQc+Osx5uIryUe0pyDJ5SMJeHdjv8QnqNQYZmAOu1YO6WvIfGa
+X-Gm-Gg: ASbGncvJzBSOohJapBh2Z0mpb8Se8teEF7MnmUe9H8f5dYUAvaL1n02qGissDdIh+Bf
+ WIWTY4QXkzGZ76kURKNa3YnrH0FHHrDrZKdvjVtBzqisA9niNkry2b1ItHLRpzE2WncyX2MhBQn
+ jj8rzWErsMOCMS7nBdTvHAH/PDh4zCBj+hqihfbNrQZdEq9J6KfffHLsKpIh2j7V8m0IkFOfQL4
+ io1kKpVXCZTDqSSz57n6saU34zqztzbtFepk+ZggUEjIqqxrb55cf779ctwDq+UgcKw9ptDyfP+
+ a1Pp9e1t5zfXgG+CVRxu/XWb5QorqEDBW92RSTVDVHKnNVn3imDh9fLQxqy+fM5BeK8MT8s=
+X-Received: by 2002:a05:6000:240c:b0:427:72d1:e3b1 with SMTP id
+ ffacd0b85a97d-429bd6addcfmr2447016f8f.41.1761909376519; 
+ Fri, 31 Oct 2025 04:16:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkShtkRdd+TvcG80lTxtF+QNii/k5RRKWpMl8UrZkwrRiv7qf43uFnnL5caH10BWLtbvwazg==
+X-Received: by 2002:a05:6000:240c:b0:427:72d1:e3b1 with SMTP id
+ ffacd0b85a97d-429bd6addcfmr2446986f8f.41.1761909376098; 
+ Fri, 31 Oct 2025 04:16:16 -0700 (PDT)
+Received: from [192.168.0.7] ([47.64.112.33]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429c13f3278sm2990127f8f.42.2025.10.31.04.16.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 31 Oct 2025 04:12:51 -0700 (PDT)
-Message-ID: <756f3e9e-8db8-4e52-8b4a-28748701bb59@linaro.org>
-Date: Fri, 31 Oct 2025 12:12:49 +0100
+ Fri, 31 Oct 2025 04:16:15 -0700 (PDT)
+Message-ID: <35c01798-adeb-4f40-9667-cd223810b52b@redhat.com>
+Date: Fri, 31 Oct 2025 12:16:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: permit sendto() with NULL buf and 0 len
-To: qemu-devel@nongnu.org
-References: <20251028142001.3011630-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 1/2] tests/functional: Mark the MIPS replay tests as flaky
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20251031094118.28440-1-philmd@linaro.org>
+ <20251031094118.28440-2-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-In-Reply-To: <20251028142001.3011630-1-peter.maydell@linaro.org>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20251031094118.28440-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,25 +153,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/28/25 15:20, Peter Maydell wrote:
-> If you pass sendto() a NULL buffer, this is usually an error
-> (causing an EFAULT return); however if you pass a 0 length then
-> we should not try to validate the buffer provided. Instead we
-> skip the copying of the user data and possible processing
-> through fd_trans_target_to_host_data, and call the host syscall
-> with NULL, 0.
+On 31/10/2025 10.41, Philippe Mathieu-Daudé wrote:
+> MIPS test_replay.py often times out (likely hang) under GitLab CI:
 > 
-> (unlock_user() permits a NULL buffer pointer for "do nothing"
-> so we don't need to special case the unlock code.)
+>    2/21 qemu:func-thorough+func-mips64el-thorough+thorough / func-mips64el-replay   TIMEOUT   180.12s   killed by signal 15 SIGTERM
 > 
-> Cc:qemu-stable@nongnu.org
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/3102
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> The console.log file is empty, and recording.logs only shows:
+> 
+>    qemu-system-mips64el: terminating on signal 15 from pid 344
+> 
+> Since this is a long term issue affecting our CI, disable the tests.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   linux-user/syscall.c | 25 ++++++++++++++-----------
->   1 file changed, 14 insertions(+), 11 deletions(-)
+>   tests/functional/mips/test_replay.py     | 2 ++
+>   tests/functional/mips64el/test_replay.py | 2 ++
+>   2 files changed, 4 insertions(+)
+> 
+> diff --git a/tests/functional/mips/test_replay.py b/tests/functional/mips/test_replay.py
+> index 4327481e35b..747835bf008 100755
+> --- a/tests/functional/mips/test_replay.py
+> +++ b/tests/functional/mips/test_replay.py
+> @@ -5,6 +5,7 @@
+>   # SPDX-License-Identifier: GPL-2.0-or-later
+>   
+>   from qemu_test import Asset, skipSlowTest
+> +from qemu_test import skipFlakyTest
+>   from replay_kernel import ReplayKernelBase
+>   
+>   
+> @@ -16,6 +17,7 @@ class MipsReplay(ReplayKernelBase):
+>            'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb'),
+>           '16ca524148afb0626f483163e5edf352bc1ab0e4fc7b9f9d473252762f2c7a43')
+>   
+> +    @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/2013")
+>       def test_replay_mips_malta(self):
+>           self.set_machine('malta')
+>           kernel_path = self.archive_extract(self.ASSET_KERNEL_2_63_2,
+> diff --git a/tests/functional/mips64el/test_replay.py b/tests/functional/mips64el/test_replay.py
+> index 26a6ccff3f7..05cc585f854 100755
+> --- a/tests/functional/mips64el/test_replay.py
+> +++ b/tests/functional/mips64el/test_replay.py
+> @@ -5,6 +5,7 @@
+>   # SPDX-License-Identifier: GPL-2.0-or-later
+>   
+>   from qemu_test import Asset, skipUntrustedTest
+> +from qemu_test import skipFlakyTest
+>   from replay_kernel import ReplayKernelBase
+>   
+>   
+> @@ -16,6 +17,7 @@ class Mips64elReplay(ReplayKernelBase):
+>            'linux-image-2.6.32-5-5kc-malta_2.6.32-48_mipsel.deb'),
+>           '35eb476f03be589824b0310358f1c447d85e645b88cbcd2ac02b97ef560f9f8d')
+>   
+> +    @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/2013")
+>       def test_replay_mips64el_malta(self):
+>           self.set_machine('malta')
+>           kernel_path = self.archive_extract(self.ASSET_KERNEL_2_63_2,
 
-Queued, thanks.
+Thanks, this also bugs me since a while already (not enough to send a patch 
+yet, so I'm glad you did it now)!
 
-r~
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
