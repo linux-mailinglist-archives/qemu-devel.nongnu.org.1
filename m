@@ -2,82 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF069C237A3
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 07:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C4AC237C5
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 08:01:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEj3B-0002Yn-Mc; Fri, 31 Oct 2025 02:55:54 -0400
+	id 1vEj7b-0006tf-AP; Fri, 31 Oct 2025 03:00:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vEj35-0002F5-PB
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:55:48 -0400
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vEj2u-0004xq-8k
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 02:55:47 -0400
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-4eba313770dso23476811cf.3
- for <qemu-devel@nongnu.org>; Thu, 30 Oct 2025 23:55:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761893729; x=1762498529; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ghAoP8st044RskeUJ6cxZ2oYcSM/lanKEKGQqqfEWzo=;
- b=N0zZmrsXdTffYhUneIibef37geYMdu+27MO/5vU7bYaYLzRCQGrxWkBGSXb0vHBTac
- yK9pZt4JGkbzOzrHRnoUVvSsaufqc24xNQyNZOlKs8Bh/BCN5Q9v3q/ns5hHcGItPehl
- rT5WdmTiMOH0pnmsZ7+Jm+AGwFVwrMt5SAmWzPR6RxIT3JLJzOJTIvAmqoerat3coqUn
- a2D/o9ZV4CcwijTYBgQ9W6JvbOCh9fwBuP9SfcSHWSlruHm8TPxpgMzlYdafWbm5L0qb
- xcB/g1yQIFZjhbMUBiIha1jj7OjyexvbWNlP96f/x3jyORYN88a/9H1LRxaT0AyaMiS0
- U63Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761893729; x=1762498529;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ghAoP8st044RskeUJ6cxZ2oYcSM/lanKEKGQqqfEWzo=;
- b=nYKg93OEm3Phjkx8OTUAQyftU3A7fxIYGbSbewLBFi8Km+SanoO9wsjz4QdsDEHrid
- dH/P3fKE0lBnoSH9CtU8v2C3ideUFdNX0+oMLgJL0k+XaKgzL18kManZpfgX1UCNvl16
- QEI8uaOtV4cpZS9STxuZzElpEEeoJesLhcWXEaQo6uRvzSoeFMCg+REp8c5sFO0u9Ozz
- ox7tqJAeBzuXODDd9AS8A1jSCu8HBvnmWlioJDvKrgn4JB9etxf5j8+ZnwjDUFmdV1tn
- M5/5sgMFhD67vnLW1Mb2AXQ38ZHUNOIYGiEIZufnhNTzQWuarorjFvVmNv/lbugxz4Mr
- XW2A==
-X-Gm-Message-State: AOJu0YxbU3Vatq3TxW67Tiw5qaXZAO54BfJ9Q9x774cnqmRYzMt7x25A
- +tVgooEqVe2lQf0cYCkz82rm4S0hSy1F//KHz54XwVk2Os3Q7A23c54aG349Y4ZUfylr0SvXTc5
- jiU8nZifgjmBP5g4u36NHXf3QOcZjJNwbcxVx884=
-X-Gm-Gg: ASbGncuSGhQUSr1xc1FqnWmaJ76Kbs5WN1uafbvs4BQwkiGitnH4GbOL+Ad2xa1nchb
- DWhB/8p+q9GyiTlXGUI1GQYyXGhO6ToXTG6JF4hQ8s3WzvfvIJ4wfovkqrJ/FVuhtIjOY5JW8L8
- 4kus9iZqBZ5K+K9UuhVmL4TMep0u6WwmWFRuSc9SV495C76xk6gooKYAhejBjO1JUiqFdq6mnMf
- oAbumpWcgkKryBR/s7mHwbJ7Lgm6gk9XaMEMxd3sNSUxAhDmK/blD4OFssKdxok/VJpzwh4SvZa
- 0hx8LG0+l0BpLQFCG1rBHr4Bo9k=
-X-Google-Smtp-Source: AGHT+IFz407ugaQ23ZvnhuRtEdgXFpq5nZXIu3VTIO2o7GwNMQ8zjk0Z3kNFGHTI43FHTU0WtQ9C2a55swrjb9ZM14o=
-X-Received: by 2002:a05:622a:15c6:b0:4eb:a439:5fe8 with SMTP id
- d75a77b69052e-4ed30c13241mr23310461cf.0.1761893728662; Thu, 30 Oct 2025
- 23:55:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vEj7N-0006sr-OS
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 03:00:18 -0400
+Received: from 9.mo552.mail-out.ovh.net ([87.98.180.222])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vEj7G-0005kX-9y
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 03:00:11 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.54.85])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4cyX0q5PMCz5vs3;
+ Fri, 31 Oct 2025 06:59:55 +0000 (UTC)
+Received: from kaod.org (37.59.142.114) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 31 Oct
+ 2025 07:59:54 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-114S008a203cde9-a825-4c34-b9ef-696a760bfb37,
+ 8CA4AE6B1C8586DCAB05504CAEA9B69446F730E9) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 37.66.177.225
+Message-ID: <528d2f2f-9d59-46c2-8b1b-e33685d84e0f@kaod.org>
+Date: Fri, 31 Oct 2025 07:59:53 +0100
 MIME-Version: 1.0
-References: <20251031064631.134651-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20251031064631.134651-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 31 Oct 2025 10:55:17 +0400
-X-Gm-Features: AWmQ_bmWdZ6n-hZa4Y0OMtKehBFUx6I94mbHb-U9_SdoFgcv4jjxgXQa53y80yA
-Message-ID: <CAJ+F1C+Tib_oDihxr+9AbFt-4d_K1D+GmZP78jc4Pfe7aRv32A@mail.gmail.com>
-Subject: Re: [PULL 00/36] Audio test patches
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [SPAM] [PATCH v1 03/13] hw/arm/aspeed: Make create_pca9552()
+ globally accessible for reuse
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: Troy Lee <troy_lee@aspeedtech.com>, Kane Chen <kane_chen@aspeedtech.com>
+References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
+ <20251023100150.295370-4-jamin_lin@aspeedtech.com>
+ <b622dd42-1e36-453e-954f-c2aa07cb5d1a@kaod.org>
+ <TYPPR06MB82063447974895D3C4C7703CFCF8A@TYPPR06MB8206.apcprd06.prod.outlook.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <TYPPR06MB82063447974895D3C4C7703CFCF8A@TYPPR06MB8206.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.114]
+X-ClientProxiedBy: DAG8EX2.mxp5.local (172.16.2.72) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: 364208fc-2daa-4e9d-ae8c-2ae89a1d60c7
+X-Ovh-Tracer-Id: 6803531662859340722
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTEgLDOdjWqJFXoVfHKvqxUoFi9Gf/2zTeWK6gnq9dZ0AhxHHKrCXytz3SaKuyBEPljTJUAOUsCNw8wVV283p6AS9597ccVQ32EH/fKCLeTeOXDEV+0KnXkTuXWOH9SdP46pP9+ZJs4pi0+s4ueN+4HwMx9YW+0jFmTSeKGTskCk6l8p0SJNmhGunX0XOld01xPeizzPTR4zeJe1wqP2d7/FnVcwUlij49NqmvG6QmaNhydhWegDW0S5J24EMYV88OQup5Mhot2Y6jB/tW/1PW4W5wiSCEUA4zSB3JxeugxD/l3kRG05iKsc9/FJrnehjq+wlYgGt38U9Sgp7SLI07CPIB8Ow6u0C0qlDEucOf2sBo6GwSzJQ6ponD0S9wTJDPGILOyKUdE1oWcXEk3EPkGqlMuiLrtueGpAWj4lY10nnFx3ND+Brid6gb2VuBwj5XZyWOZB1aMb1goyCChhOWaosgrtcQ/vqfdeJFf3WIJ1BEpBFrXfNFl0niWipcdDI1Is1Is6eLmMk3KZW0WB7/nbRZxsC0iYbS6b5KB9sL0m2XYrTF73fhtQ8bQbHjX/zbbEmNkED++D88VuwmyWafrL1V3J9JAw11zNPDzr2QDeWnlCaCzpspXHRqiCC0gm2sdy3tHaey4KVQN54RYSEfTsogMb8IhuAjXV4VtXQKXlmw
+DKIM-Signature: a=rsa-sha256; bh=b98pBsnWTj6rmlC2gdr9sqaykagp+ThOVjyfV6M+XOg=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1761893996; v=1;
+ b=dNz/zMFL8lLpS3mXTDSI6Y5nyPSr57ExgAWBosbqRMlL0KltxZjBY8DNRPnax4d9D5n5Zrvw
+ zl/usrJYGWUPP+LJU7QpQXZCy4BlmdqYS+Ly9hQlLBv0L6U4Q0UdglEOP3qoYJLsLxAbk/pFdC8
+ F4iKKjYAmjUvtp/jJzVmGlyQAEwlFuber6gN4nr28p4EkdYlJp6gztUqzS6DzG7kvzG7zp5epCq
+ kPeEtMtHKhaAAr09rVGu67xZui0yB+o4fkTyLVD9NeQzlctGe5aqBw9Lb2XE6RXVYMkLQVINWQJ
+ y5H7zHav8z6YnS8eRWD0cM/Y7SA1SnX7vnG8mjmLg7w5g==
+Received-SPF: pass client-ip=87.98.180.222; envelope-from=clg@kaod.org;
+ helo=9.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,170 +131,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On 10/31/25 07:45, Jamin Lin wrote:
+> Hi Cédric
+> 
+>> Subject: Re: [SPAM] [PATCH v1 03/13] hw/arm/aspeed: Make create_pca9552()
+>> globally accessible for reuse
+>>
+>> On 10/23/25 12:01, Jamin Lin wrote:
+>>> The helper function create_pca9552() is now made globally visible so
+>>> it can be reused by different Aspeed machine source files.
+>>>
+>>> Previously, the function was declared static, limiting its scope to
+>>> aspeed.c. Since multiple Aspeed machine implementations will require
+>>> I²C device initialization using PCA9552 GPIO expanders, this function
+>>> has been promoted to global visibility.
+>>>
+>>> This change improves code sharing and reduces duplication across
+>>> machine-specific initialization files.
+>>>
+>>> No functional changes.
+>>>
+>>> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+>>> ---
+>>>    include/hw/arm/aspeed.h | 1 +
+>>>    hw/arm/aspeed.c         | 2 +-
+>>>    2 files changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h index
+>>> 7743ad2fb0..d4d63996a6 100644
+>>> --- a/include/hw/arm/aspeed.h
+>>> +++ b/include/hw/arm/aspeed.h
+>>> @@ -60,5 +60,6 @@ struct AspeedMachineClass {
+>>>    };
+>>>
+>>>    void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
+>>> +void create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
+>>
+>>
+>> Please add an 'aspeed_' prefix. We should start documenting the aspeed
+>> routines too.
+>>
+> I will add the aspeed_ prefix to the common APIs.
+> Regarding the documentation of the Aspeed routines - do you mean adding usage descriptions
+> at the beginning of each function, or could you please advise where you’d like these to be added?
 
-Nevermind the thread title, it should be just "Audio patches"
-(git-publish used my branch name "audio-test"...)
-
-
-On Fri, Oct 31, 2025 at 10:48=E2=80=AFAM <marcandre.lureau@redhat.com> wrot=
-e:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> The following changes since commit e090e0312dc9030d94e38e3d98a88718d3561e=
-4e:
->
->   Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into =
-staging (2025-10-29 10:44:15 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/marcandre.lureau/qemu.git tags/audio-test-pull-reque=
-st
->
-> for you to fetch changes up to 05404916bf89867e613da271ebff1a556c206965:
->
->   audio: deprecate HMP audio commands (2025-10-30 22:59:30 +0400)
->
-> ----------------------------------------------------------------
-> Audio clean-ups
->
-> ----------------------------------------------------------------
->
-> Marc-Andr=C3=A9 Lureau (34):
->   qdev: add qdev_find_default_bus()
->   hw/audio: look up the default bus from the device class
->   audio: rename audio_define->audio_add_audiodev()
->   hw/audio: use better naming for -audio model handling code
->   hw/audio/virtio-snd-pci: remove custom model callback
->   hw/audio: simplify 'hda' audio init code
->   hw/audio: generalize audio_model.init()
->   hw/audio: drop audio_model.isa
->   audio: start making AudioState a QOM Object
->   audio: register backends in /audiodevs container
->   audio: use /audiodevs QOM container
->   audio/paaudio: remove needless return value
->   audio/dsound: simplify init()
->   audio/dsound: report init error via **errp
->   audio: simplify audio_driver_init()
->   audio: move period tick initialization
->   audio: drop needless error message
->   audio: keep vmstate handle with AudioState
->   audio: register and unregister vmstate with AudioState
->   audio: initialize card_head during object init
->   audio: remove some needless headers
->   audio: remove AUDIO_HOST_ENDIANNESS
->   audio: introduce AUD_set_volume_{in,out}_lr()
->   audio/replay: fix type punning
->   audio: move internal APIs to audio_int.h
->   audio: rename AudioState -> AudioBackend
->   audio: remove QEMUSoundCard
->   audio/dbus: use a helper function to set the backend dbus server
->   audio: move audio.h under include/qemu/
->   audio: remove dependency on spice header
->   audio: cleanup, use bool for booleans
->   audio: move capture API to own header
->   audio: drop needless audio_driver "descr" field
->   audio: deprecate HMP audio commands
->
-> Philippe Mathieu-Daud=C3=A9 (2):
->   audio: Remove pointless local variables
->   audio: Rename @endianness argument as @big_endian for clarity
->
->  MAINTAINERS                                   |   1 +
->  docs/about/deprecated.rst                     |  20 ++
->  audio/audio.h                                 | 185 -----------
->  audio/audio_int.h                             |  67 ++--
->  audio/audio_template.h                        |  44 ++-
->  audio/mixeng.h                                |   1 -
->  hw/audio/lm4549.h                             |   4 +-
->  include/hw/audio/asc.h                        |   4 +-
->  include/hw/audio/model.h                      |  14 +
->  include/hw/audio/soundhw.h                    |  13 -
->  include/hw/audio/virtio-snd.h                 |   4 +-
->  include/hw/display/xlnx_dp.h                  |   4 +-
->  include/hw/isa/vt82c686.h                     |   4 +-
->  include/hw/qdev-properties-system.h           |   2 +-
->  include/monitor/qdev.h                        |   3 +
->  include/qemu/audio-capture.h                  |  43 +++
->  include/qemu/audio.h                          | 150 +++++++++
->  include/system/replay.h                       |   3 +-
->  ui/vnc.h                                      |   4 +-
->  audio/alsaaudio.c                             |  37 +--
->  audio/audio-hmp-cmds.c                        |  11 +-
->  audio/audio.c                                 | 313 +++++++++---------
->  audio/audio_win_int.c                         |   2 +-
->  audio/dbusaudio.c                             |  20 +-
->  audio/dsoundaudio.c                           | 213 +++++-------
->  audio/jackaudio.c                             |   3 +-
->  audio/mixeng.c                                |  12 +-
->  audio/noaudio.c                               |   5 +-
->  audio/ossaudio.c                              |  33 +-
->  audio/paaudio.c                               |  24 +-
->  audio/pwaudio.c                               |  15 +-
->  audio/sdlaudio.c                              |  15 +-
->  audio/sndioaudio.c                            |   3 +-
->  audio/spiceaudio.c                            |   7 +-
->  audio/wavaudio.c                              |   6 +-
->  audio/wavcapture.c                            |   5 +-
->  hw/arm/integratorcp.c                         |   2 +-
->  hw/arm/musicpal.c                             |   2 +-
->  hw/arm/realview.c                             |   2 +-
->  hw/arm/versatilepb.c                          |   2 +-
->  hw/arm/vexpress.c                             |   2 +-
->  hw/arm/xlnx-zcu102.c                          |   2 +-
->  hw/audio/ac97.c                               |  36 +-
->  hw/audio/adlib.c                              |  17 +-
->  hw/audio/asc.c                                |  15 +-
->  hw/audio/cs4231a.c                            |  16 +-
->  hw/audio/es1370.c                             |  30 +-
->  hw/audio/gus.c                                |  17 +-
->  hw/audio/hda-codec.c                          |  21 +-
->  hw/audio/intel-hda.c                          |  22 +-
->  hw/audio/lm4549.c                             |  12 +-
->  hw/audio/marvell_88w8618.c                    |   2 +-
->  hw/audio/{soundhw.c =3D> model.c}               |  86 ++---
->  hw/audio/pcspk.c                              |  13 +-
->  hw/audio/pl041.c                              |   2 +-
->  hw/audio/sb16.c                               |  23 +-
->  hw/audio/via-ac97.c                           |  11 +-
->  hw/audio/virtio-snd-pci.c                     |  18 +-
->  hw/audio/virtio-snd.c                         |  17 +-
->  hw/audio/wm8750.c                             |  37 +--
->  hw/core/machine.c                             |   4 +-
->  hw/core/qdev-properties-system.c              |  17 +-
->  hw/display/xlnx_dp.c                          |   8 +-
->  hw/ppc/prep.c                                 |   2 +-
->  hw/usb/dev-audio.c                            |  17 +-
->  qom/object.c                                  |   1 +
->  replay/replay-audio.c                         |   4 +-
->  replay/stubs-system.c                         |   2 +-
->  system/qdev-monitor.c                         |  25 +-
->  system/runstate.c                             |   2 +-
->  system/vl.c                                   |  14 +-
->  ui/dbus.c                                     |  13 +-
->  ui/vnc.c                                      |  10 +-
->  audio/coreaudio.m                             |   3 +-
->  audio/meson.build                             |   7 +-
->  hmp-commands-info.hx                          |   6 +-
->  hmp-commands.hx                               |   9 +-
->  hw/audio/meson.build                          |   2 +-
->  .../codeconverter/test_regexps.py             |   4 +-
->  79 files changed, 898 insertions(+), 953 deletions(-)
->  delete mode 100644 audio/audio.h
->  create mode 100644 include/hw/audio/model.h
->  delete mode 100644 include/hw/audio/soundhw.h
->  create mode 100644 include/qemu/audio-capture.h
->  create mode 100644 include/qemu/audio.h
->  rename hw/audio/{soundhw.c =3D> model.c} (54%)
->
-> --
-> 2.51.1
->
->
+yes. include/system/memory.h has good examples.
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+Thanks,
+
+C.
+
+
+
 
