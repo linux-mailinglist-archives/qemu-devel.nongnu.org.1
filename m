@@ -2,107 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE2CC249F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 11:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 419AFC24AB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Oct 2025 12:01:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vEmjX-0002Ol-4x; Fri, 31 Oct 2025 06:51:51 -0400
+	id 1vEmsY-0006Ym-SJ; Fri, 31 Oct 2025 07:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEmjT-0002N7-S9
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 06:51:48 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEms8-0006J2-FK
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:00:52 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEmjH-0002hX-I3
- for qemu-devel@nongnu.org; Fri, 31 Oct 2025 06:51:47 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-4270a3464bcso1517586f8f.2
- for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 03:51:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vEms3-000459-0l
+ for qemu-devel@nongnu.org; Fri, 31 Oct 2025 07:00:43 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4770c2cd96fso14906445e9.3
+ for <qemu-devel@nongnu.org>; Fri, 31 Oct 2025 04:00:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761907890; x=1762512690; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761908432; x=1762513232; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=h+FnkYZFDp4Lw292UW1n71WG3c/3Nki6YoZZ9R9Pp2M=;
- b=Z2MtubhCfcpFqxlGpD/w/KeEo6Kv/GRj/ZqcXKNBh/BNEPf7sEh1qToqintxDJmIDr
- fRSDFLsDl+O92kisn+jhKjxG7xSm4WlL5GWiD2ogrLBauIvHGe8k/GzLHkc6M812cZLI
- d4XGkRbqFi1btn5/0aB6BLl6M85tseuRPsJdyy4epw7cUsTxuySUOs0g8fg7Txb1Sgri
- K+z9LgYtfn+wY/h+dkO2G41rqJeIpsu59JOsI66XJWfVKW67SvDXFRDMOoZU9eDXCqd7
- YkpxhVn93FVkA8zp4bw+28HgYNJ6oy72kfbutxLJynTDSTElFmi4mch9G74qMZBvmz2L
- 6kOw==
+ bh=3+veC/ncpRU33lGg8BixbcoiDgMeNEhslD6Q4Wq4gM4=;
+ b=MJ49IlBdJvGrXw0Jd3J4kAtKNFvzcLi/aEj/mirdl2ecXB4TDGz6lyiqhtfr44WzNe
+ cEzQujq4YAbvy2h6ZP3FpBpXsW69O0/BrVjQ8AEM2HcUW+HxpthU5mFNk+9EoUSwB+t1
+ q+/8nCcWZ0jPTWnkRTqwbmEOE/SjpbFkwLKMSlRykLjY6AxJyQzXh4lP/8vVa6/M26tL
+ 5pLbsEA/DrkUCyfEPJiHv+xiIyCwjKSDk+faGxpQBL09zbEx9KzGT9rZMtvSNwAk068L
+ mU0VkFyzF8/K4PTOFqZTBG8YvOrZw2L/FOnYi9CJsXbEVOjU1hMOCHOG63gekrFgQD/6
+ q3FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761907890; x=1762512690;
+ d=1e100.net; s=20230601; t=1761908432; x=1762513232;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h+FnkYZFDp4Lw292UW1n71WG3c/3Nki6YoZZ9R9Pp2M=;
- b=vu4CFHfDi++AQxVz9KaRADBn6ibaQiH/qDknjRHj+bTBjJFsEIKck/LbkLs7BLEvC8
- r+UO1TJvmN1jphg7pn9XWx+r8l4K9WFLVYu/b4ykcjno8EQBlVnHxhEarU0I79O+FpyQ
- f/jYYkEXx67iEVjMZAl/m4+Tm98wfMo9/vTqJWe+Y5jUWLdSX4lKQsnKQyo4TX3/sgzK
- T73blDs4uv6ks6ZwlfurIBGOxM/L68PgmzblDocUhUcg5RC7jl75OPQY6JFd5kLeT/X3
- n3KE7SddqdtKthqTSAvq4RoNQ++z8UEYX1RfNSqYA7Ukync2yu4/vIBuuNs/LVBoSSzm
- uOQg==
-X-Gm-Message-State: AOJu0YzPWgnTrh2xa5al8iWIjAffXtTEyzMvYKahmQRZoYfpUKp6x+Z2
- vlu+dWjiO81Zjpvr95X1AbFM4FTaKiHbIAbppZeEgy0uwtDBnfgEbwPxtp+V1B1f6Wg=
-X-Gm-Gg: ASbGnctgeRJ/PZu/xFhI4y5wAnPet5YRctpVhbjI8gFoxAOm+WcVW/7l2KapRC2lTlc
- KCyrrd6Miy2zq2Lad3FsOm72oGkKlLvU4LnIR7+my8CVCthVBpxatwAOOKgcKOT9cDfgRF1ZY6C
- /NNHUda6hlqbzYf+EV5USrqR0+VNbf2kzYHo63llgeHp9KrnoSr66LzUg03aeHXYGK5YZ5iAr3J
- Aejl7dAIlmI2N3xIZvCy41qrtDy9rZFexzDm1AO4Av835/RpFJGX6zJR+4z6WtxFVzkMpadr0aE
- 9vlNke2xnOz6QnjBW/flNeEKHk6XMxOGjYFpIY54UVmtbyZiq8QMKhee+uv1d3qFu4DCgG66Prj
- 4wOwjoI7kWgN5DVU3D01D+AUUybJ0wkkmnnMdQHlIE9mRvDONa8qKbA/yj+5oZSVcLHX+v5XioP
- ETA0KUmKZRsVWd7dg+efOSqnasRB/G9S/cKevJ1hG/gAaYmW3T9247vUE=
-X-Google-Smtp-Source: AGHT+IEOeJDIw15a3psdx2TelkDf96UtBc8hzl4XXKhv7GHOCpFC2/8U5kacyy0pDc0PbDY5OdloBg==
-X-Received: by 2002:a05:6000:1a89:b0:428:5673:11d8 with SMTP id
- ffacd0b85a97d-429bd682cbdmr2545137f8f.23.1761907890219; 
- Fri, 31 Oct 2025 03:51:30 -0700 (PDT)
+ bh=3+veC/ncpRU33lGg8BixbcoiDgMeNEhslD6Q4Wq4gM4=;
+ b=adWvHwsEF1gTCrDdErkgj2s2skYTKZPELZN7ExwtRchi/Mmr2NxO/ZUXKKPugKDDps
+ nMKRVEofrTy2qAnET8lqwtlCs+WC/k+M1EoMs+Qir4HBV6/0MOrTeveaWhKBEyNxUetd
+ smbpSnMB2BOWQU3AJqeYpl+Z/q43i9fM6rcyAxmZGWOgt5UTcc7HcBp88YyP/P1Bp4hF
+ vlH1aB/7hAPrqS4FR7uu1Xg41ak3OPENd8lfw5CeGjObwAkPJj32suqlbWPoPJ7mWism
+ 1NnYdrQV0j0eYk+TZ0DeNmd19heutS1n31PPzP7QCj9J46mA+wU6pV510BqX1w79Q599
+ KUMg==
+X-Gm-Message-State: AOJu0Ywsn3nn0FZdIPMer7kKbq0zldlM3j9NkY0TLWqYZu1l7tyUm5+p
+ GTfC5Q+SIF6ZWX3Vjea0U2Nfv3WtVV8WOFnJHt17I1zWfGnUda2/cZ0R1GGixUrFJlqMDOMyJw7
+ xobG6TVRDbu3L
+X-Gm-Gg: ASbGncv15T9S7lH9i2Xzg14C4BarqYig+2iZLK1uMej/WaVBB6+fYK9qOlUEP1pyyhQ
+ UlKRYaivN5GEtNWUEw+O7Lot66g02uZqSVcLkYBDWLOybUPfDvpKLh1iiRn1Ebauz5gw8mOKVmY
+ i0JIaExYrxe8tkQq0dBDeym9CV9kcrGyrVMJJTDVH5it4bA425VUmztwKJu1qDj2pyfhxhp6NTB
+ yVii0UeNNKPP5UN6iLGM1QImeo9EvZMhsIZ+re+Mk84NvRG6L+Px9UOoaQlO/mNbVoDmHjz5Jia
+ RJTIAU14b3VyodbOhWr9MNly+7SJkjI95hTSvM+9+NVsRvOtGnLcpjbncUUMMJKmCAUK8O4qark
+ hMn+qrIHpzivirBEp9ExxgHxymuihmqy6cxcNX7sa2dOy6Ivq/s/M3KFswg4GMZvb1weRIpEbHd
+ AuLm0jrYNtDQYI0FT0YmAvDhPZsLy9kq0QLE9WFYE+h4YFcswbJzAG2vIAOI46sJMnaaLlMf4=
+X-Google-Smtp-Source: AGHT+IESnRz9yVlQjfcxPBTyZl563WQkZux3mAHBrKSFmldE7sJlSN+ENwquFfK70MebrXZ7u0hUKA==
+X-Received: by 2002:a05:600d:830b:b0:46e:4cd3:7d54 with SMTP id
+ 5b1f17b1804b1-47731638218mr12909415e9.18.1761908432058; 
+ Fri, 31 Oct 2025 04:00:32 -0700 (PDT)
 Received: from [192.168.1.17] (adijon-656-1-155-31.w90-33.abo.wanadoo.fr.
  [90.33.190.31]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c13eae16sm2872142f8f.32.2025.10.31.03.51.27
+ 5b1f17b1804b1-477389b3acasm14602335e9.6.2025.10.31.04.00.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 31 Oct 2025 03:51:29 -0700 (PDT)
-Message-ID: <0942717b-214f-4e08-9e2a-6b87ded991c9@linaro.org>
-Date: Fri, 31 Oct 2025 11:51:27 +0100
+ Fri, 31 Oct 2025 04:00:31 -0700 (PDT)
+Message-ID: <1c1103ad-0d41-4bb8-8d70-7dcbb3e71774@linaro.org>
+Date: Fri, 31 Oct 2025 12:00:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/27] hw/i386/pc: Remove deprecated 2.6 and 2.7 PC
- machines
+Subject: Re: [PATCH 0/2] tests/functional: Disable flaky MIPS tests on our
+ GitLab CI
 Content-Language: en-US
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
- Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
- Jason Wang <jasowang@redhat.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20251031113344.7cb11540@imammedo-mac>
+To: qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+References: <20251031094118.28440-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251031113344.7cb11540@imammedo-mac>
+In-Reply-To: <20251031094118.28440-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,20 +103,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+Cc'ing Thomas
 
-On 31/10/25 11:33, Igor Mammedov wrote:
-> On Thu,  8 May 2025 15:35:23 +0200
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+On 31/10/25 10:41, Philippe Mathieu-Daudé wrote:
+> Disable both replay / wheezy tests which have been reported
+> as flaky since too long.
 > 
-> Are you planning to resping it?
-> (if yes, I can provide you with a fixed 2/27 patch that removes all legacy cpu hp leftovers)
+> Philippe Mathieu-Daudé (2):
+>    tests/functional: Mark the MIPS replay tests as flaky
+>    tests/functional: Mark the MIPS Debian Wheezy tests as flaky
 
-Sorry, no, I already burned all the x86 credits I had for 2025 :S
-
-Zhao kindly offered to help with respin :)
-
-Regards,
-
-Phil.
 
