@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03F2C27D68
-	for <lists+qemu-devel@lfdr.de>; Sat, 01 Nov 2025 13:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B127DC27D9E
+	for <lists+qemu-devel@lfdr.de>; Sat, 01 Nov 2025 13:12:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFAJU-0000v4-09; Sat, 01 Nov 2025 08:02:32 -0400
+	id 1vFAQY-0003T0-V2; Sat, 01 Nov 2025 08:09:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFAJI-0000t0-Jr
- for qemu-devel@nongnu.org; Sat, 01 Nov 2025 08:02:21 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFAQV-0003Sl-5G
+ for qemu-devel@nongnu.org; Sat, 01 Nov 2025 08:09:47 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFAJF-00051J-7q
- for qemu-devel@nongnu.org; Sat, 01 Nov 2025 08:02:20 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-475e01db75aso19283385e9.1
- for <qemu-devel@nongnu.org>; Sat, 01 Nov 2025 05:02:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFAQQ-0005nv-SX
+ for qemu-devel@nongnu.org; Sat, 01 Nov 2025 08:09:46 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3ee15b5435bso2210895f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 01 Nov 2025 05:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761998535; x=1762603335; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1761998978; x=1762603778; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=khfVYY1UJRANfTe3uSdDUlTmZ2chbclm/a9R8cDFm5Y=;
- b=J4nGF3yumZ+t7PBZuZ9UsmvJO/meguY0FnYyS//FC6S7mtkaNgIas9TwMl9gCEYaex
- 8D7GnkNl26XRL+c/RNQYqKLEW8RdGH5iWrbvqh1bQvFnfrO2VRip6mM3NaemlrvPIrdl
- oH1ZkPYsTZk07yx8GaOz3pdrocQIvTIA1Sr6VZTimNLRMrIW2W+40BDo0fLb3EUPnWRY
- /WMhcdXi+TrSyTLyTkFTLtyDekK6NsahjlvaI6XKE8EKeuK/h0Vb4hwEabORtJ9Xl+Iy
- ev8Pm1HD5zQnTNBb9u21JkQcQYBMEgQ+Jndv7t4mCJFnLdTUJTaEWsekZph0Dtc2DyjY
- e/DA==
+ bh=yYQiIR+iMZGwb5yaMQ9UyCDvv04+Ssu3UBQrBpGT1cA=;
+ b=lTBUKgIStUUIHW+66Aw9ToQvEpCXAJXm8Q7HdoH2g7RliOpUzEp3RYwuhMJawY+W8y
+ gTvtrMNQFr1UtL2bDul0QvwoKaohNRnMZ/Z1ugy2HCTj9Hs/O9mUmIttD76m6tya4iFI
+ jn4BCTgkSkoCaKfqHhPp08yhyXpyBe64s3YkHzhqYEy97SyXiFwm4nYQTZ3wypQdIQzc
+ MvKlQ1Zt7ZwxVb19wg5eijrxZ8zG6JbznNhirqhrPwNWv1oNkKbbYf326kqji5AxvV2y
+ OhE7n6Z9ncqWQC/0z9zY/UwjM0R1s+GntnqVvlSvveZEWO8zEMZT8mjc3e5vE27MbIDo
+ N9Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761998535; x=1762603335;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1761998978; x=1762603778;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=khfVYY1UJRANfTe3uSdDUlTmZ2chbclm/a9R8cDFm5Y=;
- b=JYgfkMYe93R7ve668BF/wKFtRUbenwx2mkVt5N4Jwlc8LCG+BVzt3ZU7mc9WPqv4RQ
- xQriJV+vvrW+7UP9ukHu44jWHAdsWweySNBc74f8aQcL94qPhng8qWdLlgyylaWLSiiL
- mz1T4TzmurPrcbUpf1GE5aeuOa9co/y3M/B+6blxj2m3tsBi1xtT0BxProqgsRbIE+KP
- btHAHTTKxBO3lfZNSbNUd0WB5Qo5uek/S23BuBWf3GW01pL7coahGaJNNgwXbDDGoaPR
- 1I4tKo3+vrHetRvv1ztZFfYV5ofHWQ2UUEj36Wjk8n4pTNnh2/qUhTQOvlz8dKopOjQr
- 0Mvw==
-X-Gm-Message-State: AOJu0YwjmKQXls6fv+50TZk6Uuu30cICufjQGhio+xznnXmfMxT24MGD
- tLW7mdWfcytTr6U72ZXwlMr6WYkUUwlZASsVeXakvYmi4GeP159m98Xj0hvoVQ==
-X-Gm-Gg: ASbGncvhkP1m2mX9fGPJTYUgo91jKoXi75I+DK2lh2+qREs+2H/NTLi2N2F7bFuE3/e
- gIRTHJiJ2YEyYY7cNeQbGSffEmfk+Wdi+9/E7sBQp6rfis025RYm4aNduv8FotGj++EKgGxMF4e
- kbmZ/5Hl/vchXKXL62Dt8tn8t4MBPYlkR2Fpx8Fp+WSG8oYfAXhWAvtGUW3CvSIMp/yqziU3FK5
- NEqtDJjP5/86uNUS8duhqsaqjJZ/7ZcolkHQMeBaUniOMBxDrFomIzFGyNK/XXiq5hg8RAA7JiH
- LMSETfNCNT5RHVZ4QfgH2j/oL8cIe/It3/iCQormqo2fxHdDKSj39wDy4sxjJEzmbb2kbEo/2jv
- /3T4q6LVOAk6GyDLkzX6TjTuu+lGJ3YYf+q4Uc1tqjgfApcE/7/+U5tQpNNwX0w10fCA+P6h97Y
- duYL9tR5A1ZuX8sUgQ+q3lOfkH9YEWoVav5cm4gYu1nbmPWgz+z64Zzw==
-X-Google-Smtp-Source: AGHT+IGbfE+9R23E1GbgdTQciHz1+9Wfy8YL4qUH4+qCo4L8kmVaAp4pyxBfdhqvkVhUkvZOL7c5/A==
-X-Received: by 2002:a05:600c:8b6b:b0:477:fcb:2267 with SMTP id
- 5b1f17b1804b1-477307c1fc6mr76940705e9.8.1761998534564; 
- Sat, 01 Nov 2025 05:02:14 -0700 (PDT)
-Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
+ bh=yYQiIR+iMZGwb5yaMQ9UyCDvv04+Ssu3UBQrBpGT1cA=;
+ b=MNMvKcQjGgRJo+YvX9jh1NN551siz3/SnojC8UmscDl3BUmt7xQSaIUtBC62ldz0nJ
+ r1ICyiKc9RmefPHzTsTq7IifXMsqzfJJ0FYQS1aL+bKLDhgpn2pw53pinF06QGm7ireE
+ YHDTWraR8hdUTvWpQWHwFkfChyLLAfX8ToLngv5BwggoKxd0ugtEKmgBFwTbhHn0P32M
+ +RqpJM9GjsTeEvN3vdv0XmdBqJDSxppkSMRPFhWWJkDWlTDdD2QZzRgy37T8/upUS6sC
+ dlmE3MS+sNJMTvkejwIWMcMemBuErO5d7Y0ohcZ0iAAzhEjOXCJf7fzNvm2v52jigvol
+ Ihjg==
+X-Gm-Message-State: AOJu0YwR2MvLNFZSQF2OefsSEN4XfH6pDtwk+1nPcsBS5R/+p4ZkNFh/
+ zQJuH7bK6E2FeYsiLQ3rxaNCnqBwnVVx0d1asuqGQRDSvGV0eG3e0eha
+X-Gm-Gg: ASbGncue7xyYGFoLsEYVLgABLp+t/3yVQZC6otsWBKnnUZwLld2kRQykMbow4cRwWut
+ nB9sIdklU9kSw19KopMy0s+PrQoqai7pjEjbVuDWWzK8h8p7x97d84R8/7xlppUtZowQBSKl2oB
+ 0QEY4FSFaBlLwcGG8rwYEj//KxS42HbSfUH5C3yGLauOebMspLVSI0wMmAVWRX9RsP7oNtdto1q
+ j4hw1klkvEg22iQIImNbhWYSa6l3v5cpXz+wiD7gOGB0lCQv0xGivRqy9gTZNDkOOGQ+WlyF1JC
+ HAsuei/bd7ne6uE+Bdeh4IDp3mGOmvjKfjAxD2dJuzDorMB2NMKMbk48P10meA5kChU5pOL/7tC
+ sATrgivdMKHji9dDsWX0DnWOPHzm3QibRB+qZTgeyfcGFdXE8761FDV3lMuyA3lbL+rzg0X3LTL
+ gzKwt38Dkb9o33xJArDZ23Ll5Q8lpvXdrrHzvZk5AVs1YlLG4M8/bLrLi/LxIRRdepxlirccYu
+X-Google-Smtp-Source: AGHT+IGtH0Ezq3EY09VopRbd5NVBTR8qUQpIAJsCwJVSvRiqUd5rl2Qi7GkMc1sccK9zhy4Lo+9HGQ==
+X-Received: by 2002:a05:6000:4381:b0:429:bc68:6c95 with SMTP id
+ ffacd0b85a97d-429bd6a6097mr6426272f8f.47.1761998977700; 
+ Sat, 01 Nov 2025 05:09:37 -0700 (PDT)
+Received: from ehlo.thunderbird.net
+ (p200300faaf271400bdbc21c775fcdd84.dip0.t-ipconnect.de.
+ [2003:fa:af27:1400:bdbc:21c7:75fc:dd84])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4772ff83182sm40734215e9.4.2025.11.01.05.02.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Nov 2025 05:02:13 -0700 (PDT)
+ ffacd0b85a97d-429cab8575bsm1388167f8f.31.2025.11.01.05.09.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 01 Nov 2025 05:09:37 -0700 (PDT)
+Date: Sat, 01 Nov 2025 12:09:34 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/2] hw/arm/imx8mp-evk: Fix guest time in KVM mode
-Date: Sat,  1 Nov 2025 13:01:30 +0100
-Message-ID: <20251101120130.236721-3-shentey@gmail.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251101120130.236721-1-shentey@gmail.com>
-References: <20251101120130.236721-1-shentey@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v2 0/2] KVM Support for imx8mp-evk Machine
+In-Reply-To: <CAFEAcA8+=_8peJR37xoM4zarUu9cy+56rOkyF7iONFb866Ebtg@mail.gmail.com>
+References: <20251029142311.2986-1-shentey@gmail.com>
+ <CAFEAcA-CGQ2JwDoBVZNhQyBMNKXbZsy2Ds+=m0MAPq0hrsWHhA@mail.gmail.com>
+ <CAFEAcA_sbvMEJ-oTxTYOutgUrH0iapNcJrsZd3=Ov6wNn-NE3w@mail.gmail.com>
+ <a7f5d348-1243-4c52-8dc1-66e2c3da40ae@linaro.org>
+ <CAFEAcA8+=_8peJR37xoM4zarUu9cy+56rOkyF7iONFb866Ebtg@mail.gmail.com>
+Message-ID: <75BD66C1-267A-4906-B01B-DECA16B5E69E@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,39 +107,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The imx8mp DTB hardcodes the clock frequency of the system counter to 8MHz.
-In KVM mode, the host CPU is used whose system counter runs at a different
-frequency, resulting in the guest clock running slower or faster. Fix this
-by not hardcoding the clock frequency which makes the Linux driver read
-the real clock frequency from the register.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/arm/imx8mp-evk.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
-index 3ddcf1af5a..44e0601967 100644
---- a/hw/arm/imx8mp-evk.c
-+++ b/hw/arm/imx8mp-evk.c
-@@ -44,6 +44,15 @@ static void imx8mp_evk_modify_dtb(const struct arm_boot_info *info, void *fdt)
-         fdt_nop_property(fdt, offset, "cpu-idle-states");
-         offset = fdt_node_offset_by_compatible(fdt, offset, "arm,cortex-a53");
-     }
-+
-+    if (kvm_enabled()) {
-+        /* Use system counter frequency from host CPU to fix time in guest */
-+        offset = fdt_node_offset_by_compatible(fdt, -1, "arm,armv8-timer");
-+        while (offset >= 0) {
-+            fdt_nop_property(fdt, offset, "clock-frequency");
-+            offset = fdt_node_offset_by_compatible(fdt, offset, "arm,armv8-timer");
-+        }
-+    }
- }
- 
- static void imx8mp_evk_init(MachineState *machine)
--- 
-2.51.2
+Am 31=2E Oktober 2025 18:30:02 UTC schrieb Peter Maydell <peter=2Emaydell@=
+linaro=2Eorg>:
+>On Fri, 31 Oct 2025 at 18:18, Philippe Mathieu-Daud=C3=A9 <philmd@linaro=
+=2Eorg> wrote:
+>>
+>> On 31/10/25 18:12, Peter Maydell wrote:
+>> > On Fri, 31 Oct 2025 at 16:57, Peter Maydell <peter=2Emaydell@linaro=
+=2Eorg> wrote:
+>> >>
+>> >> On Wed, 29 Oct 2025 at 14:23, Bernhard Beschow <shentey@gmail=2Ecom>=
+ wrote:
+>> >>>
+>> >>> This series adds KVM support to the imx8mp-evk machine, allowing it=
+ to run
+>> >>> guests with KVM acceleration=2E Inspiration was taken from the virt=
+ machine=2E This
+>> >>> required a device tree quirk for the guest clock to be kept in sync=
+ with the
+>> >>> host=2E Without this quirk the guest's clock would advance with fac=
+tor <host
+>> >>> system counter> / 8Mhz=2E
+>> >>>
+>> >>> Testing done:
+>> >>> * Run `qemu-system-aarch64 -M imx8mp-evk -accel kvm -smp 4` under
+>> >>>    `qemu-system-aarch64 -M virt,secure=3Don,virtualization=3Don,gic=
+-version=3D4 \
+>> >>>    -cpu cortex-a72 -smp 4 -accel tcg` and `qemu-system-aarch64 -M i=
+mx8mp-evk \
+>> >>>    -accel tcg -smp 4"=2E Observe that the `date` command reflects t=
+he host's date=2E
+>> >>>
+>> >>> v2:
+>> >>> * Mention various tradeoffs in the board documentation (Peter)
+>> >>> * Accommodate for single-binary (Peter, Pierrick) by having CPU def=
+aults
+>> >>>
+>> >>> Bernhard Beschow (2):
+>> >>>    hw/arm/imx8mp-evk: Add KVM support
+>> >>>    hw/arm/imx8mp-evk: Fix guest time in KVM mode
+>> >>
+>> >> Thanks, I've applied this to target-arm=2Enext=2E
+>> >
+>> > =2E=2E=2EI've had to un-queue it, as it breaks "make check":
+>> >
+>> > test:         qemu:qtest+qtest-aarch64 / qtest-aarch64/device-introsp=
+ect-test
+>> > start time:   17:06:52
+>> > duration:     3=2E70s
+>> > result:       killed by signal 6 SIGABRT
+>> > command:      MALLOC_PERTURB_=3D155
+>> > UBSAN_OPTIONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D=
+1:print_stacktrace=3D1
+>> > PYTHON=3D/data_nvme1n1/linaro/qemu-from-laptop/qemu/build/arm-clang/p=
+yvenv/bin/python3
+>> > G_TEST_DBUS_DAEMON=3D/data_nvme1n1/linaro/qemu-from-laptop/qemu/tests=
+/dbus-vmstate-daemon=2Esh
+>> > RUST_BACKTRACE=3D1
+>> > MSAN_OPTIONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1=
+:print_stacktrace=3D1
+>> > QTEST_QEMU_BINARY=3D=2E/qemu-system-aarch64
+>> > QTEST_QEMU_STORAGE_DAEMON_BINARY=3D=2E/storage-daemon/qemu-storage-da=
+emon
+>> > ASAN_OPTIONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1
+>> > QTEST_QEMU_IMG=3D=2E/qemu-img MESON_TEST_ITERATION=3D1
+>> > /data_nvme1n1/linaro/qemu-from-laptop/qemu/build/arm-clang/tests/qtes=
+t/device-introspect-test
+>> > --tap -k
+>> > ----------------------------------- stdout --------------------------=
+---------
+>> > [=2E=2E=2E]
+>> > # Testing device 'fsl-imx8mp'
+>> > ----------------------------------- stderr --------------------------=
+---------
+>> > unknown type '(null)'
+>> > Broken pipe
+>> > =2E=2E/=2E=2E/tests/qtest/libqtest=2Ec:199: kill_qemu() tried to term=
+inate QEMU
+>> > process but encountered exit status 1 (expected 0)
+>> >
+>> >
+>> > I think the problem is that you're trying to use ms->cpu_type
+>> > in the fsl_imx8mp_init() function=2E This doesn't work in the
+>> > device-introspect-test setup, because it is just instantiating
+>> > each device for test, not running a full machine=2E
+>> >
+>> > I think the way we usually avoid this is that if an SoC
+>> > device object needs to know what CPU type to instantiate
+>> > it has a QOM property, and the board model tells it=2E
+>> > (Annoyingly this then means the CPU instantiation has to
+>> > move into the realize method where the property value is known=2E)
+>>
+>> Correct, this is the same issue I tried to address with the Raspi
+>> machines and I noted your comments:
+>> https://lore=2Ekernel=2Eorg/qemu-devel/CAFEAcA961WKB4fxwAS0WHXXKwYEO7Tn=
+movD4z-BPGehr6sxBQw@mail=2Egmail=2Ecom/
+>
+>I think it's different, because for the raspi case the SoC
+>object is trying to create a CPU type that it can't:
+>  unknown type 'cortex-a72-arm-cpu'
+>(because it's the arm device-introspect-test and that CPU
+>is an aarch64 one)
+>whereas for this one we are in the aarch64 test, but trying to
+>use a NULL pointer as our type string:
+>  unknown type '(null)'
+>
+>Single binary vs compile-everything is probably a red herring here=2E
 
+I've sent v3 [1] with a pragmatic fix for qtest in the hope that it could =
+make it into 10=2E2=2E If we find better ways to avoid the qtest crash I'm =
+all for it=2E
+
+Best regards,
+Bernhard
+
+[1] https://patchew=2Eorg/QEMU/20251101120130=2E236721-1-shentey@gmail=2Ec=
+om/
+
+>
+>thanks
+>-- PMM
 
