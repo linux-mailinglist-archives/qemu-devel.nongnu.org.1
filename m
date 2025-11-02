@@ -2,94 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6A3C28E42
-	for <lists+qemu-devel@lfdr.de>; Sun, 02 Nov 2025 12:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE92BC28E5A
+	for <lists+qemu-devel@lfdr.de>; Sun, 02 Nov 2025 12:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFWR4-0005zo-SR; Sun, 02 Nov 2025 06:39:50 -0500
+	id 1vFWTJ-000700-Vk; Sun, 02 Nov 2025 06:42:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vFWR3-0005z2-74
- for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:39:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vFWTF-0006zm-Or
+ for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:42:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vFWQz-0002pM-Uk
- for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:39:48 -0500
+ id 1vFWTC-00037G-Qv
+ for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:42:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762083582;
+ s=mimecast20190719; t=1762083720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=oS2NCU11RFKB6GAk9tldlqoSpfyThgNzg4eP7f2KElE=;
- b=SuG2ZqHnepb8XFoaP8gnhNDZYaIoq8xoQja5kiHh0e/EOJ9bGJNeXUb2KcRYv0Anq16GvG
- siA2vxs4uy2DYWmLxlgCJpxS4IGiFWOm09nr6Y2p3iBxSj0e4LFTlbEBEdwE686rWWiZ66
- rjx1X1VM/wGBVWMSsD8egXdF4rqjq24=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zTq8sVfYftr7drjs7CwcghLt5QB5dH/fHXapdX89UmA=;
+ b=UC4SP/NCScDk+hFbWEL2aFKS287fvdcDAVt865GGz5e5tUQTnAg5MM86NNRhGH33FA5psr
+ qAT/cRUQHTZ/uXR9wzijCWLFtB8XF+mfqNH/yNJm5jZZOIS15lLxhJ2sxRWGWNtW8xHFkZ
+ 1aR9q20Wv1LKRp4sQ+RxD+l0T1CSyIE=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-321-y-EnOBgTPf2nJ_kUd_-WmQ-1; Sun, 02 Nov 2025 06:39:21 -0500
-X-MC-Unique: y-EnOBgTPf2nJ_kUd_-WmQ-1
-X-Mimecast-MFC-AGG-ID: y-EnOBgTPf2nJ_kUd_-WmQ_1762083560
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-7a9fb6fcc78so399238b3a.3
- for <qemu-devel@nongnu.org>; Sun, 02 Nov 2025 03:39:21 -0800 (PST)
+ us-mta-270-4Ij6AimWM_-RhUbS2NVL5A-1; Sun, 02 Nov 2025 06:41:08 -0500
+X-MC-Unique: 4Ij6AimWM_-RhUbS2NVL5A-1
+X-Mimecast-MFC-AGG-ID: 4Ij6AimWM_-RhUbS2NVL5A_1762083663
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-336b646768eso3976058a91.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Nov 2025 03:41:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762083560; x=1762688360; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762083662; x=1762688462; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oS2NCU11RFKB6GAk9tldlqoSpfyThgNzg4eP7f2KElE=;
- b=Omk8aKgUdC44gin9Q15ZmyWUOsKIJTHtlnbX0LkLMvemUMtTiP2y8NcsDawk7YLfVZ
- GLaIMxhyWM5/0bIYyHLVoG7xZ3PEAI7pdQ4MGuU2jLsUSbeD6jBHnc3lNPYEs2gNO6zz
- vdxUbWNstFxMg/U7qsOaoDH4pPu3lTmzmVN68JcbnpuwlYH52/uCRoHWk1OUhFIoYDc8
- 4USQWB5yRNVRGHG6nyjQEyndIfZgd/OVAE14G0FjgqZMNm4KjV/pSlQ9lnLgtMKsFmVT
- wkRMpkKd+Fe3ume507DwI7KY4pgCFcX+5BQfF9Wy3EPG3X+mqLSZjUHQfNZXbYd0kJyW
- 5K9g==
+ bh=zTq8sVfYftr7drjs7CwcghLt5QB5dH/fHXapdX89UmA=;
+ b=lmiDRztr57X7cF+2brGYJzl5zpj49fbxAkq+vMUJ+TNotv/eVDTudIri5Hbssf/mIM
+ VK/yJ67d4uipmFWoYN4AunAF/c0RMUZt2aSDofPuDIunfK6LnBh99lS1z3TJHSPNF3BV
+ cdzCdGV+KBy9XZBfAwd/wqJmf8Mp6IfSnnyXRCFqhbnaD4EP0CXYnsg/YOdUnRp9Eofj
+ zMbpotX+XLPD3wrKrG4qiqt+mK9+U3I5IjtKvB7Ncr+xqn2KC40MtYlKb446fP9Dwv3d
+ o8m+JSow6TK4DLmiaDj+8yonxLaAXGy0jJLDdnOQLKg+hvSGxBko5mNxET9MSeExWM0j
+ Vyzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762083560; x=1762688360;
+ d=1e100.net; s=20230601; t=1762083662; x=1762688462;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oS2NCU11RFKB6GAk9tldlqoSpfyThgNzg4eP7f2KElE=;
- b=dMqYqz4EVuhz87lAAn0Wj4Tx+QLmPR/gZJJIyToEkUKDp1di6tGcWd6Pt22fiOa+Jn
- 6SuszhLYyb1sxoQiRzAlwJ5BHCZycUYr8DPDyWtFYTCk0bSBBzwyXqxq9io8R05ac9OL
- OcwuFemzElYYpq6x1enmtImbTawj2ObDx95V4KLfpE+ogoCtoVOMADze45weFwzdINUV
- Dx7Nnxo/pJvAzZO6oQl/OprJHFmN/cC+Y0B6b6thiwB6SQG4sBz1Fa8yKdUxh+5L4xFU
- MAy920eFM25Af2ijeij2EmY0JDByNxQ9Nr4mISC0CoYU93SoaxGvRXwp3/UI9oiHtOWx
- JFZg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZ8c/A+RQ/XvJF82GyBSz+xr+VJpJp9p09Bd/6NmZbvraJFhPE/U5CfYdjz5PDEKQ9YQIo2xZ0zllz@nongnu.org
-X-Gm-Message-State: AOJu0YwXxOTisDY0/Z/hL09Q/OeLwA4gAJyRXr3StYWL9KtZoD/hBSSS
- ujWvNVKE6dsThhsfgdeffYGfGoiKJR620S1vdu7ZBZVOAfQXL9CGSMe2ZIHu1F6IsnCRJ3UAFZf
- kDbDVGU/zVIVJBdeSpouGtjicWuK6BqthB8pYqrZQZGupUc86JKIXYKPCsvM7oBZ2p7Mt/Z88d2
- 1dtqKEpXK+/jcByXlCFMQ6l/EyU06xcyU=
-X-Gm-Gg: ASbGncvcOaz3CPxYe38PyE1AA3ukdTtd6ttp1IGp/RYshGeAQcuFIybuqdbq0T24vHH
- /TXRJpFd4UZkedblKSpF9epklgn81uUX+qh1rKmQzX9SN6DbAPKRv1c6pwowYiealPbGvcugQN+
- xV3r0lA/iNxh6TwLGC10Z1Nu50HQHsF/kdbu9Y+DAyViGGx0pjCZjgrhVn3PFTvw==
-X-Received: by 2002:a05:6a21:3282:b0:306:2a14:d0d4 with SMTP id
- adf61e73a8af0-348cc2d99c3mr13804252637.43.1762083560009; 
- Sun, 02 Nov 2025 03:39:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiYgf8ZdTlrUqyypD7I3Yu/j5hZ/Ept88nTYS3+ZYYnp7QJh5yZyiBgpNWQox8Hy4fdpQX7JeGsizPbPEsk5Y=
-X-Received: by 2002:a05:6a21:3282:b0:306:2a14:d0d4 with SMTP id
- adf61e73a8af0-348cc2d99c3mr13804227637.43.1762083559620; Sun, 02 Nov 2025
- 03:39:19 -0800 (PST)
+ bh=zTq8sVfYftr7drjs7CwcghLt5QB5dH/fHXapdX89UmA=;
+ b=SIl+l0ZwPNKhR2QjhFg7g4gqxmSRdx0bqHCcLBeH6+vP4KgEYkEyXI4duNr3o+IwLJ
+ tys12GmQTgkr3z1HMtt6Ee3/Q/ySqgpEj1QZoEwOZftxzEbQy3ZXdjhZsspCMdxYlggA
+ gJqRmF26qFIeBKt9XSCiEaOJ/8H9rMW/gHePHulNTErSZ7g9ULsZZKJDtkR1I6wTJRWn
+ efj86Bq6ipGMuLZ98tWlYbFDL+aDiV96EnMzj1z53XlkHFArw4TJUSWEPPQWccLOY13c
+ zkgR9JHn20s10nWwki3KVUx9S3Rmxgk6l2Mo4hMAPANYNYUHfWy4d2vUmMRuNzHunfLX
+ 1Klg==
+X-Gm-Message-State: AOJu0YyPkOCk3k/x+pMtWHW5EeHOS/Cvv/OMPl0Hs6zo232H3YCv7hYV
+ nz9Qb/cize1cwjlQ8toWjF01HPjsmnWmedFY4LLoXnyRdxBk3+53UtHywWwIzDJXEKaBfEeSGvm
+ hvX2Y3JepHOTskkRPTfl36enKgxexIV4FwzUxxFk4Qmq2C1rYQ3MHckHEcK0agACs0IqcUhwLQ7
+ UPOkPGRvnhvW2eFzuisXZUNMP5H601DKcZfJY1CeZZNQ==
+X-Gm-Gg: ASbGncvsPg4+t1PEOBnheBiYpRICWm/6r8q6hh6y9FBLqjMjSFcGstkX9G3PCTfYZu6
+ Ir/EvQNE94wL+8oIJt2VXCkitAQS6YeTRJI7WgjKZXvYy66dzEogtbffnFLJzD38gDAoeVZcFbB
+ 2hqfE3j2Q+sC+mU1EFaewRIiSd7Cn1898hsZSLv19ospuSTX6SZ4qDgzRL1Rm54Q==
+X-Received: by 2002:a17:90b:55cc:b0:32e:5d87:8abc with SMTP id
+ 98e67ed59e1d1-3408308a934mr10458281a91.36.1762083662174; 
+ Sun, 02 Nov 2025 03:41:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGPbyneSZJ+J3+eFZyXN5cHTyGgVfonefvoboyBRohdiV70gF4wNl/SEdWuNhbqx0aRvA5vKz5AO7DZLRMRo4E=
+X-Received: by 2002:a17:90b:55cc:b0:32e:5d87:8abc with SMTP id
+ 98e67ed59e1d1-3408308a934mr10458263a91.36.1762083661798; Sun, 02 Nov 2025
+ 03:41:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20251031155914.189112-1-vsementsov@yandex-team.ru>
- <20251031155914.189112-8-vsementsov@yandex-team.ru>
-In-Reply-To: <20251031155914.189112-8-vsementsov@yandex-team.ru>
+References: <20251030144927.2241109-1-berrange@redhat.com>
+ <20251030144927.2241109-22-berrange@redhat.com>
+In-Reply-To: <20251030144927.2241109-22-berrange@redhat.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Sun, 2 Nov 2025 15:39:08 +0400
-X-Gm-Features: AWmQ_bmCkj1ILU6lwehpOkebczTp56XUlRfRNr1lU9cB04ctO-KyDc3FMVB_S0U
-Message-ID: <CAMxuvawdBHuHEkZSQw0LtLmNGwuBAYsh-k8CwX=jfH5T+BFWfA@mail.gmail.com>
-Subject: Re: [PATCH v5 7/7] chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net, 
- qemu-devel@nongnu.org, raphael@enfabrica.net, armbru@redhat.com, 
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Content-Type: multipart/alternative; boundary="000000000000a2d86806429b0c44"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+Date: Sun, 2 Nov 2025 15:40:50 +0400
+X-Gm-Features: AWmQ_bkvlYZxZLVPMQY-sOXlN8r6eOfuysaiwsCaPZNa9SKZGdTgQlfKjXL6wb0
+Message-ID: <CAMxuvax0ha3wUY_A+gxVuCfjD9=rmgoW+7OY9hC-puw8j9uyig@mail.gmail.com>
+Subject: Re: [PATCH 21/21] docs: creation of x509 certs compliant with
+ post-quantum crypto
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org
+Content-Type: multipart/alternative; boundary="000000000000b9f66006429b1275"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -115,471 +112,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a2d86806429b0c44
+--000000000000b9f66006429b1275
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Thu, Oct 30, 2025 at 6:50=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com>
+wrote:
 
-On Fri, Oct 31, 2025 at 7:59=E2=80=AFPM Vladimir Sementsov-Ogievskiy <
-vsementsov@yandex-team.ru> wrote:
+> Explain how to alter the certtool commands for creating certficates,
+> so that they can use algorithms that are compliant with post-quantum
+> crytography standards.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
 
-> For further vhost-user-blk backend-transfer migration realization we
-> want to give it (vhost-user-blk) a possibility (and responsibility) to
-> decide when do connect.
->
-> For incoming migration we'll need to postpone connect at least until
-> early stage of migrate-incoming command, when we already know all
-> migration parameters and can decide, are we going to do incoming
-> backend-transfer (and get chardev fd from incoming stream), or we
-> finally need to connect.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+
 > ---
->  chardev/char-fe.c                   | 32 ++++++++++++++++++++++++-----
->  hw/core/qdev-properties-system.c    | 26 ++++++++++++++++++++---
->  include/chardev/char-fe.h           |  8 ++++++--
->  include/hw/qdev-properties-system.h |  3 +++
->  4 files changed, 59 insertions(+), 10 deletions(-)
+>  docs/system/tls.rst | 68 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
 >
-> diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-> index c67b4d640f..1132ec0501 100644
-> --- a/chardev/char-fe.c
-> +++ b/chardev/char-fe.c
-> @@ -189,15 +189,26 @@ bool qemu_chr_fe_backend_open(CharFrontend *c)
->      return c->chr && c->chr->be_open;
->  }
+> diff --git a/docs/system/tls.rst b/docs/system/tls.rst
+> index 7cec4ac3df..03fa1d8166 100644
+> --- a/docs/system/tls.rst
+> +++ b/docs/system/tls.rst
+> @@ -345,6 +345,74 @@ example with VNC:
 >
-> -bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
-> +bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,
-> +                         Error **errp)
->  {
->      unsigned int tag =3D 0;
+>  .. _tls_005fpsk:
 >
-> -    if (!qemu_chr_connect(s, errp)) {
-> -        return false;
-> -    }
-> -
->      if (s) {
-> +        if (connect) {
-> +            if (!qemu_chr_connect(s, errp)) {
-> +                return false;
-> +            }
-> +        } else {
-> +            /* DEFINE_PROP_CHR_NO_CONNECT */
-> +            if (!s->connect_postponed) {
-> +                error_setg(errp,
-> +                           "Chardev %s does not support postponed
-> connect",
-> +                           s->label);
-> +                return false;
-> +            }
-> +        }
+> +TLS certificates for Post-Quantum Cryptography
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > +
->          if (CHARDEV_IS_MUX(s)) {
->              MuxChardev *d =3D MUX_CHARDEV(s);
->
-> @@ -210,6 +221,12 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s,
-> Error **errp)
->          } else {
->              s->fe =3D c;
->          }
-> +    } else {
-> +        /*
-> +         * connect=3Dfalse comes only from DEFINE_PROP_CHR_NO_CONNECT,
-> +         * through do_set_chr, which provides chardev ptr.
-> +         */
-> +        assert(connect);
->
-
-Is this useful to assert?
-
-
->      }
->
->      c->fe_is_open =3D false;
-> @@ -218,6 +235,11 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s,
-> Error **errp)
->      return true;
->  }
->
-> +bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)
-> +{
-> +    return qemu_chr_fe_init_ex(c, s, true, errp);
-> +}
+> +Given a new enough gnutls release, suitably integrated & configured with
+> the
+> +operating system crypto policies, QEMU is able to support post-quantum
+> +crytography on TLS enabled services, either exclusively or in a hybrid
+> mode.
 > +
->  void qemu_chr_fe_deinit(CharFrontend *c, bool del)
->  {
->      assert(c);
-> diff --git a/hw/core/qdev-properties-system.c
-> b/hw/core/qdev-properties-system.c
-> index 13cc91680b..00f4b19238 100644
-> --- a/hw/core/qdev-properties-system.c
-> +++ b/hw/core/qdev-properties-system.c
-> @@ -266,8 +266,8 @@ static void get_chr(Object *obj, Visitor *v, const
-> char *name, void *opaque,
->      g_free(p);
->  }
->
-> -static void set_chr(Object *obj, Visitor *v, const char *name, void
-> *opaque,
-> -                    Error **errp)
-> +static void do_set_chr(Object *obj, Visitor *v, const char *name, void
-> *opaque,
-> +                       bool connect, Error **errp)
->  {
->      ERRP_GUARD();
->      const Property *prop =3D opaque;
-> @@ -297,13 +297,25 @@ static void set_chr(Object *obj, Visitor *v, const
-> char *name, void *opaque,
->      if (s =3D=3D NULL) {
->          error_setg(errp, "Property '%s.%s' can't find value '%s'",
->                     object_get_typename(obj), name, str);
-> -    } else if (!qemu_chr_fe_init(fe, s, errp)) {
-> +    } else if (!qemu_chr_fe_init_ex(fe, s, connect, errp)) {
->          error_prepend(errp, "Property '%s.%s' can't take value '%s': ",
->                        object_get_typename(obj), name, str);
->      }
->      g_free(str);
->  }
->
-> +static void set_chr(Object *obj, Visitor *v, const char *name, void
-> *opaque,
-> +                    Error **errp)
-> +{
-> +    do_set_chr(obj, v, name, opaque, true, errp);
-> +}
+> +In exclusive mode, only a single set of certificates need to be configur=
+ed
+> +for QEMU, with PQC compliant algorithms. Such a QEMU configuration will
+> only
+> +be able to interoperate with other services (including other QEMU's) tha=
+t
+> +also have PQC enabled. This can result in compatibility concerns during
+> the
+> +period of transition over to PQC compliant algorithms.
 > +
-> +static void set_chr_no_connect(Object *obj, Visitor *v, const char *name=
-,
-> +                               void *opaque, Error **errp)
-> +{
-> +    do_set_chr(obj, v, name, opaque, false, errp);
-> +}
+> +In hybrid mode, multiple sets of certificates need to be configured for
+> QEMU,
+> +at least one set with traditional (non-PQC compliant) algorithms, and at
+> least
+> +one other set with modern (PQC compliant) algorithms. At time of the TLS
+> +handshake, the GNUTLS algorithm priorities should ensure that PQC
+> compliant
+> +algorithms are negotiated if both sides of the connection support PQC. I=
+f
+> one
+> +side lacks PQC, the TLS handshake should fallback to the non-PQC
+> algorithms.
+> +This can assist with interoperability during the transition to PQC, but
+> has a
+> +potential weakness wrt downgrade attacks forcing use of non-PQC
+> algorithms.
+> +Exclusive PQC mode should be preferred where both peers in the TLS
+> connections
+> +are known to support PQC.
 > +
->  static void release_chr(Object *obj, const char *name, void *opaque)
->  {
->      const Property *prop =3D opaque;
-> @@ -320,6 +332,14 @@ const PropertyInfo qdev_prop_chr =3D {
->      .release =3D release_chr,
->  };
->
-> +const PropertyInfo qdev_prop_chr_no_connect =3D {
-> +    .type  =3D "str",
-> +    .description =3D "ID of a chardev to use as a backend",
-> +    .get   =3D get_chr,
-> +    .set   =3D set_chr_no_connect,
-> +    .release =3D release_chr,
-> +};
+> +Key generation parameters
+> +^^^^^^^^^^^^^^^^^^^^^^^^^
 > +
->  /* --- mac address --- */
+> +To create certificates with PQC compliant algorithms, the ``--key-type``
+> +argument must be passed to ``certtool`` when creating private keys. No
+> +extra arguments are required for the other ``certtool`` commands, as
+> +their behaviour will be determined by the private key type.
+> +
+> +The typical PQC compliant algorithms to use are ``ML-DSA-44``,
+> ``ML-DSA-65``
+> +and ``ML-DSA-87``, with ``ML-DSA-65`` being a suitable default choice in
+> +the absence of explicit requirements.
+> +
+> +Taking the example earlier, for creating a key for a client certificate,
+> +to use ``ML-DSA-65`` the command line would be modified to look like::
+> +
+> +   # certtool --generate-privkey --key-type=3Dmldsa65 >
+> client-hostNNN-key.pem
+> +
+> +The equivalent modification applies to the creation of the private keys
+> +used for server certs, or root/intermediate CA certs.
+> +
+> +For hybrid mode, the additional indexed certificate naming must be used.
+> +If multiple configured certificates are compatible with the mutually
+> +supported crypto algorithms between the client and server, then the
+> +first matching certificate will be used.
+> +
+> +IOW, to ensure that PQC certificates are preferred, they must use a
+> +non-index based filename, or use an index that is smaller than any
+> +non-PQC certificates. ie, ``server-cert.pem`` for PQC and
+> ``server-cert-0.pem``
+> +for non-PQC, or ``server-cert-0.pem`` for PQC and ``server-cert-1.pem``
+> for
+> +non-PQC.
+> +
+> +Force disabling PQC via crypto priority
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +In the OS configuration for system crypto algorithm priorities has
+> +enabled PQC, this can (optionally) be overriden in QEMU configuration
+> +disable use of PQC using the ``priority`` parameter to the
+> ``tls-creds-x509``
+> +object::
+> +
+> +  NO_MLDSA=3D"-SIGN-ML-DSA-65:-SIGN-ML-DSA-44:-SIGN-ML-DSA-87"
+> +
+> NO_MLKEM=3D"-GROUP-X25519-MLKEM768:-GROUP-SECP256R1-MLKEM768:-GROUP-SECP3=
+84R1-MLKEM1024"
+> +  # qemu-nbd --object
+> tls-creds-x509,id=3Dtls0,endpoint=3Dserver,dir=3D....,priority=3D@SYSTEM:=
+$NO_MLDSA:$NO_MLKEM
+> +
+> +
+>  TLS Pre-Shared Keys (PSK)
+>  ~~~~~~~~~~~~~~~~~~~~~~~~~
 >
->  /*
-> diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-> index 5f8a6df17d..f3df57afa1 100644
-> --- a/include/chardev/char-fe.h
-> +++ b/include/chardev/char-fe.h
-> @@ -25,14 +25,18 @@ struct CharFrontend {
->  };
->
->  /**
-> - * qemu_chr_fe_init:
-> + * qemu_chr_fe_init(_ex):
->   *
->   * Initializes the frontend @c for the given Chardev backend @s. Call
->   * qemu_chr_fe_deinit() to remove the association and release the backen=
-d.
-> + * Call qemu_chr_connect(), except for the case when connect=3Dfalse
-> + * parameter set for _ex() version.
->   *
->   * Returns: false on error.
->   */
-> -bool qemu_chr_fe_init(CharFrontend *c, Chardev *be, Error **errp);
-> +bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp);
-> +bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,
-> +                         Error **errp);
->
->  /**
->   * qemu_chr_fe_deinit:
-> diff --git a/include/hw/qdev-properties-system.h
-> b/include/hw/qdev-properties-system.h
-> index 5c6cc5eae8..a0b14a2f77 100644
-> --- a/include/hw/qdev-properties-system.h
-> +++ b/include/hw/qdev-properties-system.h
-> @@ -7,6 +7,7 @@ bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm,
-> const char *str,
->                                         Error **errp);
->
->  extern const PropertyInfo qdev_prop_chr;
-> +extern const PropertyInfo qdev_prop_chr_no_connect;
->  extern const PropertyInfo qdev_prop_macaddr;
->  extern const PropertyInfo qdev_prop_reserved_region;
->  extern const PropertyInfo qdev_prop_multifd_compression;
-> @@ -39,6 +40,8 @@ extern const PropertyInfo
-> qdev_prop_virtio_gpu_output_list;
->
->  #define DEFINE_PROP_CHR(_n, _s, _f)             \
->      DEFINE_PROP(_n, _s, _f, qdev_prop_chr, CharFrontend)
-> +#define DEFINE_PROP_CHR_NO_CONNECT(_n, _s, _f) \
-> +    DEFINE_PROP(_n, _s, _f, qdev_prop_chr_no_connect, CharFrontend)
->  #define DEFINE_PROP_NETDEV(_n, _s, _f)             \
->      DEFINE_PROP(_n, _s, _f, qdev_prop_netdev, NICPeers)
->  #define DEFINE_PROP_DRIVE(_n, _s, _f) \
 > --
-> 2.48.1
+> 2.51.1
 >
 >
-ok otherwise,
- Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
---000000000000a2d86806429b0c44
+--000000000000b9f66006429b1275
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=3D"gmail_quote gma=
-il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 31, 2=
-025 at 7:59=E2=80=AFPM Vladimir Sementsov-Ogievskiy &lt;<a href=3D"mailto:v=
-sementsov@yandex-team.ru">vsementsov@yandex-team.ru</a>&gt; wrote:<br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">For further vhost-user-b=
-lk backend-transfer migration realization we<br>
-want to give it (vhost-user-blk) a possibility (and responsibility) to<br>
-decide when do connect.<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 30,=
+ 2025 at 6:50=E2=80=AFPM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berr=
+ange@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">Explain how to alter the certtool comma=
+nds for creating certficates,<br>
+so that they can use algorithms that are compliant with post-quantum<br>
+crytography standards.<br>
 <br>
-For incoming migration we&#39;ll need to postpone connect at least until<br=
->
-early stage of migrate-incoming command, when we already know all<br>
-migration parameters and can decide, are we going to do incoming<br>
-backend-transfer (and get chardev fd from incoming stream), or we<br>
-finally need to connect.<br>
-<br>
-Signed-off-by: Vladimir Sementsov-Ogievskiy &lt;<a href=3D"mailto:vsementso=
-v@yandex-team.ru" target=3D"_blank">vsementsov@yandex-team.ru</a>&gt;<br>
+Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redha=
+t.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br></blockquote><div><=
+br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:mar=
+candre.lureau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=
+=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 ---<br>
-=C2=A0chardev/char-fe.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0| 32 ++++++++++++++++++++++++-----<br>
-=C2=A0hw/core/qdev-properties-system.c=C2=A0 =C2=A0 | 26 ++++++++++++++++++=
-++---<br>
-=C2=A0include/chardev/char-fe.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
-=C2=A0 8 ++++++--<br>
-=C2=A0include/hw/qdev-properties-system.h |=C2=A0 3 +++<br>
-=C2=A04 files changed, 59 insertions(+), 10 deletions(-)<br>
+=C2=A0docs/system/tls.rst | 68 ++++++++++++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A01 file changed, 68 insertions(+)<br>
 <br>
-diff --git a/chardev/char-fe.c b/chardev/char-fe.c<br>
-index c67b4d640f..1132ec0501 100644<br>
---- a/chardev/char-fe.c<br>
-+++ b/chardev/char-fe.c<br>
-@@ -189,15 +189,26 @@ bool qemu_chr_fe_backend_open(CharFrontend *c)<br>
-=C2=A0 =C2=A0 =C2=A0return c-&gt;chr &amp;&amp; c-&gt;chr-&gt;be_open;<br>
-=C2=A0}<br>
+diff --git a/docs/system/tls.rst b/docs/system/tls.rst<br>
+index 7cec4ac3df..03fa1d8166 100644<br>
+--- a/docs/system/tls.rst<br>
++++ b/docs/system/tls.rst<br>
+@@ -345,6 +345,74 @@ example with VNC:<br>
 <br>
--bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)<br>
-+bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0Error **errp)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0unsigned int tag =3D 0;<br>
+=C2=A0.. _tls_005fpsk:<br>
 <br>
--=C2=A0 =C2=A0 if (!qemu_chr_connect(s, errp)) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
--=C2=A0 =C2=A0 }<br>
--<br>
-=C2=A0 =C2=A0 =C2=A0if (s) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (connect) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!qemu_chr_connect(s, errp)) =
-{<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* DEFINE_PROP_CHR_NO_CONNECT */=
++TLS certificates for Post-Quantum Cryptography<br>
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
++<br>
++Given a new enough gnutls release, suitably integrated &amp; configured wi=
+th the<br>
++operating system crypto policies, QEMU is able to support post-quantum<br>
++crytography on TLS enabled services, either exclusively or in a hybrid mod=
+e.<br>
++<br>
++In exclusive mode, only a single set of certificates need to be configured=
 <br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!s-&gt;connect_postponed) {<=
-br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp,<b=
++for QEMU, with PQC compliant algorithms. Such a QEMU configuration will on=
+ly<br>
++be able to interoperate with other services (including other QEMU&#39;s) t=
+hat<br>
++also have PQC enabled. This can result in compatibility concerns during th=
+e<br>
++period of transition over to PQC compliant algorithms.<br>
++<br>
++In hybrid mode, multiple sets of certificates need to be configured for QE=
+MU,<br>
++at least one set with traditional (non-PQC compliant) algorithms, and at l=
+east<br>
++one other set with modern (PQC compliant) algorithms. At time of the TLS<b=
 r>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0&quot;Chardev %s does not support postponed connect=
-&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;label);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++handshake, the GNUTLS algorithm priorities should ensure that PQC complian=
+t<br>
++algorithms are negotiated if both sides of the connection support PQC. If =
+one<br>
++side lacks PQC, the TLS handshake should fallback to the non-PQC algorithm=
+s.<br>
++This can assist with interoperability during the transition to PQC, but ha=
+s a<br>
++potential weakness wrt downgrade attacks forcing use of non-PQC algorithms=
+.<br>
++Exclusive PQC mode should be preferred where both peers in the TLS connect=
+ions<br>
++are known to support PQC.<br>
 +<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (CHARDEV_IS_MUX(s)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MuxChardev *d =3D MUX_CHARD=
-EV(s);<br>
-<br>
-@@ -210,6 +221,12 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Err=
-or **errp)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;fe =3D c;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* connect=3Dfalse comes only from DEFINE=
-_PROP_CHR_NO_CONNECT,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* through do_set_chr, which provides cha=
-rdev ptr.<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(connect);<br></blockquote><div><br></di=
-v><div>Is this useful to assert?</div><div>=C2=A0</div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0c-&gt;fe_is_open =3D false;<br>
-@@ -218,6 +235,11 @@ bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Err=
-or **errp)<br>
-=C2=A0 =C2=A0 =C2=A0return true;<br>
-=C2=A0}<br>
-<br>
-+bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp)<br>
-+{<br>
-+=C2=A0 =C2=A0 return qemu_chr_fe_init_ex(c, s, true, errp);<br>
-+}<br>
++Key generation parameters<br>
++^^^^^^^^^^^^^^^^^^^^^^^^^<br>
 +<br>
-=C2=A0void qemu_chr_fe_deinit(CharFrontend *c, bool del)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0assert(c);<br>
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-sys=
-tem.c<br>
-index 13cc91680b..00f4b19238 100644<br>
---- a/hw/core/qdev-properties-system.c<br>
-+++ b/hw/core/qdev-properties-system.c<br>
-@@ -266,8 +266,8 @@ static void get_chr(Object *obj, Visitor *v, const char=
- *name, void *opaque,<br>
-=C2=A0 =C2=A0 =C2=A0g_free(p);<br>
-=C2=A0}<br>
-<br>
--static void set_chr(Object *obj, Visitor *v, const char *name, void *opaqu=
-e,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Erro=
-r **errp)<br>
-+static void do_set_chr(Object *obj, Visitor *v, const char *name, void *op=
-aque,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0bool connect, Error **errp)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0ERRP_GUARD();<br>
-=C2=A0 =C2=A0 =C2=A0const Property *prop =3D opaque;<br>
-@@ -297,13 +297,25 @@ static void set_chr(Object *obj, Visitor *v, const ch=
-ar *name, void *opaque,<br>
-=C2=A0 =C2=A0 =C2=A0if (s =3D=3D NULL) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_setg(errp, &quot;Property &#39;%s.%=
-s&#39; can&#39;t find value &#39;%s&#39;&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 objec=
-t_get_typename(obj), name, str);<br>
--=C2=A0 =C2=A0 } else if (!qemu_chr_fe_init(fe, s, errp)) {<br>
-+=C2=A0 =C2=A0 } else if (!qemu_chr_fe_init_ex(fe, s, connect, errp)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_prepend(errp, &quot;Property &#39;%=
-s.%s&#39; can&#39;t take value &#39;%s&#39;: &quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0object_get_typename(obj), name, str);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0g_free(str);<br>
-=C2=A0}<br>
-<br>
-+static void set_chr(Object *obj, Visitor *v, const char *name, void *opaqu=
-e,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Erro=
-r **errp)<br>
-+{<br>
-+=C2=A0 =C2=A0 do_set_chr(obj, v, name, opaque, true, errp);<br>
-+}<br>
++To create certificates with PQC compliant algorithms, the ``--key-type``<b=
+r>
++argument must be passed to ``certtool`` when creating private keys. No<br>
++extra arguments are required for the other ``certtool`` commands, as<br>
++their behaviour will be determined by the private key type.<br>
 +<br>
-+static void set_chr_no_connect(Object *obj, Visitor *v, const char *name,<=
-br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0void *opaque, Error **errp)<br>
-+{<br>
-+=C2=A0 =C2=A0 do_set_chr(obj, v, name, opaque, false, errp);<br>
-+}<br>
++The typical PQC compliant algorithms to use are ``ML-DSA-44``, ``ML-DSA-65=
+``<br>
++and ``ML-DSA-87``, with ``ML-DSA-65`` being a suitable default choice in<b=
+r>
++the absence of explicit requirements.<br>
 +<br>
-=C2=A0static void release_chr(Object *obj, const char *name, void *opaque)<=
-br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0const Property *prop =3D opaque;<br>
-@@ -320,6 +332,14 @@ const PropertyInfo qdev_prop_chr =3D {<br>
-=C2=A0 =C2=A0 =C2=A0.release =3D release_chr,<br>
-=C2=A0};<br>
-<br>
-+const PropertyInfo qdev_prop_chr_no_connect =3D {<br>
-+=C2=A0 =C2=A0 .type=C2=A0 =3D &quot;str&quot;,<br>
-+=C2=A0 =C2=A0 .description =3D &quot;ID of a chardev to use as a backend&q=
-uot;,<br>
-+=C2=A0 =C2=A0 .get=C2=A0 =C2=A0=3D get_chr,<br>
-+=C2=A0 =C2=A0 .set=C2=A0 =C2=A0=3D set_chr_no_connect,<br>
-+=C2=A0 =C2=A0 .release =3D release_chr,<br>
-+};<br>
++Taking the example earlier, for creating a key for a client certificate,<b=
+r>
++to use ``ML-DSA-65`` the command line would be modified to look like::<br>
 +<br>
-=C2=A0/* --- mac address --- */<br>
-<br>
-=C2=A0/*<br>
-diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h<br>
-index 5f8a6df17d..f3df57afa1 100644<br>
---- a/include/chardev/char-fe.h<br>
-+++ b/include/chardev/char-fe.h<br>
-@@ -25,14 +25,18 @@ struct CharFrontend {<br>
-=C2=A0};<br>
-<br>
-=C2=A0/**<br>
-- * qemu_chr_fe_init:<br>
-+ * qemu_chr_fe_init(_ex):<br>
-=C2=A0 *<br>
-=C2=A0 * Initializes the frontend @c for the given Chardev backend @s. Call=
-<br>
-=C2=A0 * qemu_chr_fe_deinit() to remove the association and release the bac=
-kend.<br>
-+ * Call qemu_chr_connect(), except for the case when connect=3Dfalse<br>
-+ * parameter set for _ex() version.<br>
-=C2=A0 *<br>
-=C2=A0 * Returns: false on error.<br>
-=C2=A0 */<br>
--bool qemu_chr_fe_init(CharFrontend *c, Chardev *be, Error **errp);<br>
-+bool qemu_chr_fe_init(CharFrontend *c, Chardev *s, Error **errp);<br>
-+bool qemu_chr_fe_init_ex(CharFrontend *c, Chardev *s, bool connect,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0Error **errp);<br>
-<br>
-=C2=A0/**<br>
-=C2=A0 * qemu_chr_fe_deinit:<br>
-diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properti=
-es-system.h<br>
-index 5c6cc5eae8..a0b14a2f77 100644<br>
---- a/include/hw/qdev-properties-system.h<br>
-+++ b/include/hw/qdev-properties-system.h<br>
-@@ -7,6 +7,7 @@ bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, c=
-onst char *str,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Error **=
-errp);<br>
-<br>
-=C2=A0extern const PropertyInfo qdev_prop_chr;<br>
-+extern const PropertyInfo qdev_prop_chr_no_connect;<br>
-=C2=A0extern const PropertyInfo qdev_prop_macaddr;<br>
-=C2=A0extern const PropertyInfo qdev_prop_reserved_region;<br>
-=C2=A0extern const PropertyInfo qdev_prop_multifd_compression;<br>
-@@ -39,6 +40,8 @@ extern const PropertyInfo qdev_prop_virtio_gpu_output_lis=
-t;<br>
-<br>
-=C2=A0#define DEFINE_PROP_CHR(_n, _s, _f)=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP(_n, _s, _f, qdev_prop_chr, CharFrontend)<br=
++=C2=A0 =C2=A0# certtool --generate-privkey --key-type=3Dmldsa65 &gt; clien=
+t-hostNNN-key.pem<br>
++<br>
++The equivalent modification applies to the creation of the private keys<br=
 >
-+#define DEFINE_PROP_CHR_NO_CONNECT(_n, _s, _f) \<br>
-+=C2=A0 =C2=A0 DEFINE_PROP(_n, _s, _f, qdev_prop_chr_no_connect, CharFronte=
-nd)<br>
-=C2=A0#define DEFINE_PROP_NETDEV(_n, _s, _f)=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP(_n, _s, _f, qdev_prop_netdev, NICPeers)<br>
-=C2=A0#define DEFINE_PROP_DRIVE(_n, _s, _f) \<br>
++used for server certs, or root/intermediate CA certs.<br>
++<br>
++For hybrid mode, the additional indexed certificate naming must be used.<b=
+r>
++If multiple configured certificates are compatible with the mutually<br>
++supported crypto algorithms between the client and server, then the<br>
++first matching certificate will be used.<br>
++<br>
++IOW, to ensure that PQC certificates are preferred, they must use a<br>
++non-index based filename, or use an index that is smaller than any<br>
++non-PQC certificates. ie, ``server-cert.pem`` for PQC and ``server-cert-0.=
+pem``<br>
++for non-PQC, or ``server-cert-0.pem`` for PQC and ``server-cert-1.pem`` fo=
+r<br>
++non-PQC.<br>
++<br>
++Force disabling PQC via crypto priority<br>
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
++<br>
++In the OS configuration for system crypto algorithm priorities has<br>
++enabled PQC, this can (optionally) be overriden in QEMU configuration<br>
++disable use of PQC using the ``priority`` parameter to the ``tls-creds-x50=
+9``<br>
++object::<br>
++<br>
++=C2=A0 NO_MLDSA=3D&quot;-SIGN-ML-DSA-65:-SIGN-ML-DSA-44:-SIGN-ML-DSA-87&qu=
+ot;<br>
++=C2=A0 NO_MLKEM=3D&quot;-GROUP-X25519-MLKEM768:-GROUP-SECP256R1-MLKEM768:-=
+GROUP-SECP384R1-MLKEM1024&quot;<br>
++=C2=A0 # qemu-nbd --object tls-creds-x509,id=3Dtls0,endpoint=3Dserver,dir=
+=3D....,priority=3D@SYSTEM:$NO_MLDSA:$NO_MLKEM<br>
++<br>
++<br>
+=C2=A0TLS Pre-Shared Keys (PSK)<br>
+=C2=A0~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+<br>
 -- <br>
-2.48.1<br>
-<br></blockquote><div><br></div><div>ok otherwise,</div><div>=C2=A0Reviewed=
--by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.c=
-om">marcandre.lureau@redhat.com</a>&gt;</div></div></div>
+2.51.1<br>
+<br>
+</blockquote></div></div>
 
---000000000000a2d86806429b0c44--
+--000000000000b9f66006429b1275--
 
 
