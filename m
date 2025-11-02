@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC37C28E5D
-	for <lists+qemu-devel@lfdr.de>; Sun, 02 Nov 2025 12:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0380DC28E78
+	for <lists+qemu-devel@lfdr.de>; Sun, 02 Nov 2025 12:52:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFWT5-0006w5-Np; Sun, 02 Nov 2025 06:41:57 -0500
+	id 1vFWba-00016h-D1; Sun, 02 Nov 2025 06:50:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFWSq-0006vZ-M7
- for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:41:41 -0500
-Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
+ id 1vFWbY-00016S-9n
+ for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:50:40 -0500
+Received: from mail-yx1-xb12f.google.com ([2607:f8b0:4864:20::b12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFWSm-00036E-NU
- for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:41:39 -0500
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-633c1b740c5so3193301d50.3
- for <qemu-devel@nongnu.org>; Sun, 02 Nov 2025 03:41:34 -0800 (PST)
+ id 1vFWbU-0004K6-Rt
+ for qemu-devel@nongnu.org; Sun, 02 Nov 2025 06:50:40 -0500
+Received: by mail-yx1-xb12f.google.com with SMTP id
+ 956f58d0204a3-63e16fbdd50so3125332d50.2
+ for <qemu-devel@nongnu.org>; Sun, 02 Nov 2025 03:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762083693; x=1762688493; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762084235; x=1762689035; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eUelu0rYTK/FnwSKyMt+Ato51Lz2Fvd1Q1rdIJQ6kYA=;
- b=gCqtWceDqR1r82BGCLtKZYq/mczOxyM/MhSIIHAOJ1HbBqiwWSSMYH335PtchPB4QE
- ew6pKPB52Vn78NP6+w0AUnLyXvokxBa04MWegpMO5PGWeikgK0GhS53i3XHuQFOj1X+f
- VJNPi6dZe8EQFbjId2AnEeuPL00mPwTkufqn+0yAzM/qXLQuwyOEdvoTycqh54BogihC
- d2L2TV9dGiyn7dFmtwp4mYYS7mGTV9COLGmIeHy3HuPYgvGn/MJsxBS/E8buFzslA6FQ
- Rk+pWtDV0Jy+31WQAr5HPog6cIALEwzehL72XRY/uU7s0Wm6/TFJ6IoIzibwqfZvaVwf
- LBOw==
+ bh=Tf7HPurPQUVO4XIcxODnx4U/EPAhlPYI81Dmo6GzdQM=;
+ b=tNggC2jTE6DqZ2ky0SiWbicwRPwKULewQGXyFh5m8+3z/AZpBxmSUuphNkOkEaZ9Hz
+ Xt3shM+klBfrZoLVfcs0aI3Tvklyr1TYcAOJeLkjmcmux/QdFPJM4f0beA/CLUjVuHTV
+ 2CYrJflu7v+n0yUsCfkEJds740NK+oQWufAxhaigMhBtLM6DUber4mnPOE3ii7xF0Ry+
+ szu7t+rUpRN6T15Pw5tfiaHrKzJKRfhobVx78TyXzEtx5gi+g7fq12nJZll7DP3jvxIy
+ Wn7Nj+UEVWTiNoLNqPsHdPbE+fpM4zfV5CpWkMIe3KhaXfUKAg2qF6AILhZCmMb8jNNV
+ OTQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762083693; x=1762688493;
+ d=1e100.net; s=20230601; t=1762084235; x=1762689035;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=eUelu0rYTK/FnwSKyMt+Ato51Lz2Fvd1Q1rdIJQ6kYA=;
- b=esXUdP90Gig+XcC0JMZtvlDjFDo2nKENPuIG1M1LNck+NL3CSSXx3wNEPnBW1xm6Jy
- R3hfVcL6QLN1b1isEYdd7+WYCgB9m5Qvv93bYzRwI1S8iWV/9uNxN2GAkD4HwGf3yFx/
- kiegdEPBJ2zaCoCimDrERE+JEglWAkA10iWzjDyB/ux/WEZkpV8lVJ+ZkzkFyjMMb57x
- UzVJzcRvKIi7AKtiNMrDuXhm2mnPuQ6YrBFyhpNny1IJ9f3VZy+nW/W3u8Hc8yySBkQ/
- +YOjnWj+l2WdfCh7RxBkbS70UXufXu58axgfMnFZx9yPn3HIDFGSMh7WUPMOtBJwtLeT
- 4iJg==
-X-Gm-Message-State: AOJu0YzTDDEkf7+NqjhhfdoDVsSKB2uBeKKn8poJxrLE+7+esnvn8k7/
- UDl+KuzSo/sgY0jyACkc1unUswdWe1E/asg/RkvWL2Y9m8oZar+PgeReTSrJY6XTjyheZTGEpiN
- PgNFHCij0ag0D42dBhKXEFjr9Xaggn37wHmncaNITzA==
-X-Gm-Gg: ASbGncuabMiVpx4o6GcmiwhgJorZ/8tyHgZ3dvqrsQaej5fK9cXo72O02MgWem6q//Q
- 1L6CkC9ubiJskl9qfbJUDyoaUfXc83RcxGwV+saPwasgxHIgswWZx9rGHL9GrzbaHBqg45Tv6jn
- UafGm+GVtLl06J3Li4GwU7uPL18Unz+x4DOttn3ITSmBSkW/MTAqjEJquvSqAgNa7LWkNtgoX4y
- WUrmjaruqaP9S3HmgBoDu4a+Zd+jR8iqA2OzLGnUKhcS4ZAT8hrDuGpJPZD+8J3ey4pyrBA
-X-Google-Smtp-Source: AGHT+IGu8HTsumHc1z9ohWtF1hhnAtV4G5Lx5mHf/R/menURAfOzgmgJpStgqpKopp7T80olZ4TjnDCnjyiwMfV6KjI=
-X-Received: by 2002:a53:acd0:0:20b0:63f:a416:2673 with SMTP id
- 956f58d0204a3-63fa41626d7mr2872928d50.68.1762083692633; Sun, 02 Nov 2025
- 03:41:32 -0800 (PST)
+ bh=Tf7HPurPQUVO4XIcxODnx4U/EPAhlPYI81Dmo6GzdQM=;
+ b=ZVgTWfZ3o5GbPlFmqD36tpoNgv0CRIN+qFnlRNI1OKQSaQ7yPFnJioFBng5/ecuSZv
+ xJoH53Ab9V1hkZ4RFRd2ymWdyFQCxitT7zX2x7OcTlF3tXmh0TxAYIIcrptVm9S6liYy
+ kug5q7R22IjFzX6VMbu6IgWHaM8+vjj870UQLFf59Bmrosk4J+Gdtn/G9Qe4fQWXLxTX
+ roCbdrUfqN6cHlA/LdJPlErebXOjuNvepoPY7q8mc9BQo9Z2POzRtzmnW30i4JJKG1/s
+ 1cZs5iu+PXc21WieSMMpH8slnst9dmZo5gdm8rBoWr6rMUSU15uT5s43sX9eF0SLdQve
+ yxUA==
+X-Gm-Message-State: AOJu0YyKLCbEJ2BdkgjOEOBrEAsULLqZPbTvRfww1OxngNkTva89IYiH
+ GzRAJ4Gn6ntnBrUXYJGAbHKVg5I7etogKXaUgBIadj9FY1obz3PNP9bLTyz8afP3gqwiiCO0hIu
+ ZIfp+GH5tR76OTA1ZJOJ60Mx8ZkKhKVpw0RmA5aD1hg==
+X-Gm-Gg: ASbGncvcrNro5/ulujMEqytIe1pHSFNUnW3kyRi0PZ/Cynnh9p5u3JvRNyjRMXxuEui
+ D/7qZ0d1e7qyM99TQ8cQOe0l2LFkWjLfRx4dJgM+AYHGJoaAeyqTAVKCrD4if/cz+8JkWrJ7JCH
+ YCV/mqJhC/K8ElmRjcErCI+dM89JZfLrfZ89HJAT/t1WmFNZIlp2hn3vzeweFDWUmF2MdiLpf/C
+ yNNO27mT/z8bGTh7hw4r+zMNpYai/5SeB+frxdVH+tBy0KJIc1K+Hqs6Jllz0qZZ6X9Dj+K
+X-Google-Smtp-Source: AGHT+IGJ8WPs6YZdQP4X9msvUBwlvXwujfulCl9zwV7jzYVYyH8VDVTCT9mUlqPtKm0Zt0YjTUrAa4KqDnEhIGdpiDc=
+X-Received: by 2002:a05:690e:1c20:b0:63f:aa5b:bce1 with SMTP id
+ 956f58d0204a3-63faa5bcd21mr2595362d50.39.1762084234720; Sun, 02 Nov 2025
+ 03:50:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20251101165236.76E8B5972E3@zero.eik.bme.hu>
-In-Reply-To: <20251101165236.76E8B5972E3@zero.eik.bme.hu>
+References: <20251030072956.1194-1-its@irrelevant.dk>
+ <20251030072956.1194-7-its@irrelevant.dk>
+In-Reply-To: <20251030072956.1194-7-its@irrelevant.dk>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sun, 2 Nov 2025 11:41:19 +0000
-X-Gm-Features: AWmQ_bnClJjaoDBkFvO2t7BQy3Hsaql0VrZ6I7Cbkdj5PzGxZ_25TafVcu3_Pak
-Message-ID: <CAFEAcA9HMKVZt_p8uea7yTPmN0Of0cJwWXxpLfFT8bB6TvMZ6g@mail.gmail.com>
-Subject: Re: [PATCH] hw/ppc/pegasos: Fix memory leak
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>
+Date: Sun, 2 Nov 2025 11:50:23 +0000
+X-Gm-Features: AWmQ_bm9_atzqBSvIETOrogXEGOv3kSpJyfnjaACooDNieYPUV33tI9zXd2BZWY
+Message-ID: <CAFEAcA__RHC6oG=3801eS6wi-NDh9b4hC41Z44kpaix+YsphjA@mail.gmail.com>
+Subject: Re: [PULL 6/7] hw/nvme: enable ns atomic writes
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, Alan Adamson <alan.adamson@oracle.com>, 
+ Jesper Wendel Devantier <foss@defmacro.it>, Klaus Jensen <k.jensen@samsung.com>,
+ Keith Busch <kbusch@kernel.org>, qemu-block@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,17 +93,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 1 Nov 2025 at 16:53, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Thu, 30 Oct 2025 at 07:30, Klaus Jensen <its@irrelevant.dk> wrote:
 >
-> Commit 9099b430a4 introduced an early return that caused a leak of a
-> GString. Allocate it later to avoid the leak.
+> From: Alan Adamson <alan.adamson@oracle.com>
 >
-> Fixes: 9099b430a4 (hw/ppc/pegasos2: Change device tree generation)
-> Resolves: Coverity CID 1642027
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
+> Add support for the namespace atomic paramters: NAWUN and NAWUN. Namespace
+> Atomic Compare and Write Unit (NACWU) is not currently supported.
+>
+> Writes that adhere to the NACWU and NAWUPF parameters are guaranteed to be
+> atomic.
+>
+> New NVMe QEMU Paramters (See NVMe Specification for details):
+>         atomic.nawun=UINT16 (default: 0)
+>         atomic.nawupf=UINT16 (default: 0)
+>         atomic.nsfeat (default off) - Set Namespace Supported Atomic Boundary &
+>                 Power (NSABP) bit in Namespace Features (NSFEAT) in the Identify
+>                 Namespace Data Structure
+>
+> See the NVMe Specification for more information.
+>
+> Signed-off-by: Alan Adamson <alan.adamson@oracle.com>
+> Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+
+> +    /* Set atomic write parameters */
+> +    if (ns->params.atomic_nsfeat) {
+> +        id_ns->nsfeat |= NVME_ID_NS_NSFEAT_NSABPNS;
+> +        id_ns->nawun = cpu_to_le16(ns->params.atomic_nawun);
+> +        if (!id->awupf || (id_ns->nawun && (id_ns->nawun < id->awun))) {
+> +            error_report("Invalid NAWUN: %x AWUN=%x", id_ns->nawun, id->awun);
+> +        }
+
+This error check is about NAWUN, but the condition looks at id->awpuf.
+Is that intentional ? (Coverity wonders if this is a copy-paste error:
+CID 1642811.)
+
+We should return early if we've detected an error case in the properties.
+By default we'll fall on through. Similarly below.
+
+This is a realize method, so error handling should be by
+setting the 'error' argument, not by error_report().
+
+> +        id_ns->nawupf = cpu_to_le16(ns->params.atomic_nawupf);
+> +        if (!id->awupf || (id_ns->nawupf && (id_ns->nawupf < id->awupf))) {
+> +            error_report("Invalid NAWUPF: %x AWUPF=%x",
+> +                id_ns->nawupf, id->awupf);
+> +        }
+> +        if (id_ns->nawupf > id_ns->nawun) {
+> +            error_report("Invalid: NAWUN=%x NAWUPF=%x",
+> +                id_ns->nawun, id_ns->nawupf);
+> +        }
+
+Personally I find this stack of checks a bit confusing -- we
+are presumably catching various different invalid combinations
+of the properties, but the error messages we produce are rather
+unspecific. If it's the case that (for instance) the NAWUPF
+cannot be larger than the NAWUN, we could tell the user that
+specifically rather than just saying "Invalid" and making them
+go look up what the requirements are in the spec or the code.
+
+> +    }
 
 thanks
 -- PMM
