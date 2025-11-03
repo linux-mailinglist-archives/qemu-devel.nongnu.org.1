@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C31C2C2B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB70AC2C28A
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFumw-0006oi-Mz; Mon, 03 Nov 2025 08:40:02 -0500
+	id 1vFun2-0006zU-Pe; Mon, 03 Nov 2025 08:40:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFumt-0006jR-8D
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:59 -0500
+ id 1vFumx-0006td-Mm
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:40:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFumi-0004TX-53
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:56 -0500
+ id 1vFuml-0004Tl-Au
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:40:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762177183;
+ s=mimecast20190719; t=1762177189;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g+2AHSD/fhP8MDATc3HkDzZRbF7kdmX3uQ7pOxTFOpI=;
- b=fPbAsS2tlNO2gf6pXmg+A6Nj70M4352wUIYcumbcK9EzvPLJ91w15dlAtpcuqQ5xjxeVnA
- yKGh+Iky5r3RFBldQJ2yWUJuzSnrJu27ghMNJ6et1dJOO8i16XP96S7ekZjeT7YpI6oX9X
- nSMMf31lUwjdiUEDc9uUTY6xmmFVSwc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Rz0597T752t+EXC6+m+BZLgrp1S0OV3VZJw3WlRBiy8=;
+ b=FqoZb7vpjs+h7a84KuKoFhtNF1tXtMzNiwUcCxh4mLWl67zoVehA4SzfycdnD+8lcNATcl
+ BKve8b1Un7MbrQXN8O72sdTi9yReeUz8w15eCQVJgsJCvPMbFSFGxVPC4PkZc3TjHBD/m3
+ SVC81WucbXj7oWJaEcLByzmni3vrL8M=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-NijYfoOQOQqlPlV23YSwqw-1; Mon,
- 03 Nov 2025 08:39:38 -0500
-X-MC-Unique: NijYfoOQOQqlPlV23YSwqw-1
-X-Mimecast-MFC-AGG-ID: NijYfoOQOQqlPlV23YSwqw_1762177177
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-djeEitKkP4eE2YVJeVbK4A-1; Mon,
+ 03 Nov 2025 08:39:46 -0500
+X-MC-Unique: djeEitKkP4eE2YVJeVbK4A-1
+X-Mimecast-MFC-AGG-ID: djeEitKkP4eE2YVJeVbK4A_1762177184
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 571E61800365; Mon,  3 Nov 2025 13:39:37 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CC51A1956096; Mon,  3 Nov 2025 13:39:44 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.202])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 317AC1800578; Mon,  3 Nov 2025 13:39:29 +0000 (UTC)
+ id F327C1800576; Mon,  3 Nov 2025 13:39:38 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,9 +52,9 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 17/32] crypto: use g_autofree when loading x509 credentials
-Date: Mon,  3 Nov 2025 13:37:11 +0000
-Message-ID: <20251103133727.423041-18-berrange@redhat.com>
+Subject: [PULL 18/32] crypto: remove needless indirection via parent_obj field
+Date: Mon,  3 Nov 2025 13:37:12 +0000
+Message-ID: <20251103133727.423041-19-berrange@redhat.com>
 In-Reply-To: <20251103133727.423041-1-berrange@redhat.com>
 References: <20251103133727.423041-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,136 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows removal of goto jumps during loading of the credentials
-and will simplify the diff in following commits.
+The reload method already has a pointer to the parent object in
+the 'creds' parameter that is passed in, so indirect access via
+the subclass 'parent_obj' field is redundant.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/tlscredsx509.c | 38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ crypto/tlscredsx509.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-index 8fe6cc8e93..6640159a5b 100644
+index 6640159a5b..2519f7690b 100644
 --- a/crypto/tlscredsx509.c
 +++ b/crypto/tlscredsx509.c
-@@ -562,10 +562,12 @@ static int
- qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-                             Error **errp)
- {
--    char *cacert = NULL, *cacrl = NULL, *cert = NULL,
--        *key = NULL, *dhparams = NULL;
-+    g_autofree char *cacert = NULL;
-+    g_autofree char *cacrl = NULL;
-+    g_autofree char *cert = NULL;
-+    g_autofree char *key = NULL;
-+    g_autofree char *dhparams = NULL;
-     int ret;
--    int rv = -1;
+@@ -772,15 +772,15 @@ qcrypto_tls_creds_x509_reload(QCryptoTLSCreds *creds, Error **errp)
+     QCryptoTLSCredsX509 *x509_creds = QCRYPTO_TLS_CREDS_X509(creds);
+     Error *local_err = NULL;
+     gnutls_certificate_credentials_t creds_data = x509_creds->data;
+-    gnutls_dh_params_t creds_dh_params = x509_creds->parent_obj.dh_params;
++    gnutls_dh_params_t creds_dh_params = creds->dh_params;
  
-     if (!creds->parent_obj.dir) {
-         error_setg(errp, "Missing 'dir' property value");
-@@ -590,7 +592,7 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-             qcrypto_tls_creds_get_path(&creds->parent_obj,
-                                        QCRYPTO_TLS_CREDS_DH_PARAMS,
-                                        false, &dhparams, errp) < 0) {
--            goto cleanup;
-+            return -1;
-         }
-     } else {
-         if (qcrypto_tls_creds_get_path(&creds->parent_obj,
-@@ -602,7 +604,7 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-             qcrypto_tls_creds_get_path(&creds->parent_obj,
-                                        QCRYPTO_TLS_CREDS_X509_CLIENT_KEY,
-                                        false, &key, errp) < 0) {
--            goto cleanup;
-+            return -1;
-         }
+     x509_creds->data = NULL;
+-    x509_creds->parent_obj.dh_params = NULL;
++    creds->dh_params = NULL;
+     qcrypto_tls_creds_x509_load(x509_creds, &local_err);
+     if (local_err) {
+         qcrypto_tls_creds_x509_unload(x509_creds);
+         x509_creds->data = creds_data;
+-        x509_creds->parent_obj.dh_params = creds_dh_params;
++        creds->dh_params = creds_dh_params;
+         error_propagate(errp, local_err);
+         return false;
      }
- 
-@@ -610,14 +612,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-         qcrypto_tls_creds_x509_sanity_check(creds,
-             creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
-             cacert, cert, errp) < 0) {
--        goto cleanup;
-+        return -1;
-     }
- 
-     ret = gnutls_certificate_allocate_credentials(&creds->data);
-     if (ret < 0) {
-         error_setg(errp, "Cannot allocate credentials: '%s'",
-                    gnutls_strerror(ret));
--        goto cleanup;
-+        return -1;
-     }
- 
-     ret = gnutls_certificate_set_x509_trust_file(creds->data,
-@@ -626,16 +628,16 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-     if (ret < 0) {
-         error_setg(errp, "Cannot load CA certificate '%s': %s",
-                    cacert, gnutls_strerror(ret));
--        goto cleanup;
-+        return -1;
-     }
- 
-     if (cert != NULL && key != NULL) {
--        char *password = NULL;
-+        g_autofree char *password = NULL;
-         if (creds->passwordid) {
-             password = qcrypto_secret_lookup_as_utf8(creds->passwordid,
-                                                      errp);
-             if (!password) {
--                goto cleanup;
-+                return -1;
-             }
-         }
-         ret = gnutls_certificate_set_x509_key_file2(creds->data,
-@@ -643,11 +645,10 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-                                                     GNUTLS_X509_FMT_PEM,
-                                                     password,
-                                                     0);
--        g_free(password);
-         if (ret < 0) {
-             error_setg(errp, "Cannot load certificate '%s' & key '%s': %s",
-                        cert, key, gnutls_strerror(ret));
--            goto cleanup;
-+            return -1;
-         }
-     }
- 
-@@ -658,7 +659,7 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-         if (ret < 0) {
-             error_setg(errp, "Cannot load CRL '%s': %s",
-                        cacrl, gnutls_strerror(ret));
--            goto cleanup;
-+            return -1;
-         }
-     }
- 
-@@ -666,20 +667,13 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-         if (qcrypto_tls_creds_get_dh_params_file(&creds->parent_obj, dhparams,
-                                                  &creds->parent_obj.dh_params,
-                                                  errp) < 0) {
--            goto cleanup;
-+            return -1;
-         }
-         gnutls_certificate_set_dh_params(creds->data,
-                                          creds->parent_obj.dh_params);
-     }
- 
--    rv = 0;
-- cleanup:
--    g_free(cacert);
--    g_free(cacrl);
--    g_free(cert);
--    g_free(key);
--    g_free(dhparams);
--    return rv;
-+    return 0;
- }
- 
- 
 -- 
 2.51.1
 
