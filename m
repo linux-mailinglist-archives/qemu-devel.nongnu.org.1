@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31875C2B38D
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:03:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00262C2B30E
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsGn-0003kD-4Y; Mon, 03 Nov 2025 05:58:41 -0500
+	id 1vFsGl-0003jG-2Z; Mon, 03 Nov 2025 05:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGl-0003jO-1N
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:39 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGj-0003j6-GW
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGg-0003yo-UJ
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:38 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGg-00041W-TW
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167509;
+ s=mimecast20190719; t=1762167511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=sc596xiC0ZujHZJu/ipEMf+cSb+EUWo0siASODLSpAA=;
- b=HRjCQl9LptS9WOTpVfkG+DzrH+Z8OIvI/j1lAYRWPHT9Yi/OUIEQKg3POW9HVbcgrPEifw
- jBmDesPak9uUVXTr+1t4u6R4Stf4cLelL9z45RaVqJWV284NQtWJHzDMkJii2wFDyn1w0v
- +WSHAT/r8DFc9wE1s9rOMno7pIQcmR4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KZt4It060wiUM4xdxwGuZ8z/rMYt9kE4MDsI7rVARRs=;
+ b=FmJy7RiFMrHC5zGR5B9wMMNCppA9ZuNlIfQ7d6lK6VyUJ0zbFOYcdSrRzrnIQciLKvZGKa
+ CPbjmbSss2GuVMX0tBXOlPTpmluORawHkFDSlgUeadlp6v6RwH9Zq1wv5Qf8bWip4q0KDh
+ iDBskRKltj4UrM9qGbN7071pTuMGLDE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-b56lJ1WwMd2UlI0cEsEyEw-1; Mon,
- 03 Nov 2025 05:58:28 -0500
-X-MC-Unique: b56lJ1WwMd2UlI0cEsEyEw-1
-X-Mimecast-MFC-AGG-ID: b56lJ1WwMd2UlI0cEsEyEw_1762167507
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-aPO3pXgkOlSb5i2ITEsUYw-1; Mon,
+ 03 Nov 2025 05:58:30 -0500
+X-MC-Unique: aPO3pXgkOlSb5i2ITEsUYw-1
+X-Mimecast-MFC-AGG-ID: aPO3pXgkOlSb5i2ITEsUYw_1762167509
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CFC619560BE; Mon,  3 Nov 2025 10:58:27 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5C05C180A227; Mon,  3 Nov 2025 10:58:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 08D8230001A1; Mon,  3 Nov 2025 10:58:25 +0000 (UTC)
+ id D53D230001A1; Mon,  3 Nov 2025 10:58:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 00/22] Functional tests and s390x patches for the softfreeze
-Date: Mon,  3 Nov 2025 11:57:57 +0100
-Message-ID: <20251103105824.322039-1-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>
+Subject: [PULL 01/22] scripts/device-crash-test: fix spurious EOFError messages
+Date: Mon,  3 Nov 2025 11:57:58 +0100
+Message-ID: <20251103105824.322039-2-thuth@redhat.com>
+In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
+References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -77,88 +80,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Richard!
+From: John Snow <jsnow@redhat.com>
 
-The following changes since commit 53b41bb78950912ba2d9809eef6b45e4df30c647:
+When the QMP library was updated to match the standalone repository in
+094ded52, I neglected to update the logging filter(s) in
+device-crash-test, which allowed the spurious messages to leak through.
 
-  Merge tag 'pull-target-arm-20251031' of https://gitlab.com/pm215/qemu into staging (2025-11-01 10:52:48 +0100)
+Update the log filter to re-suppress these messages.
 
-are available in the Git repository at:
+Fixes: 094ded52
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20251022213109.395149-1-jsnow@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ scripts/device-crash-test | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-11-03
-
-for you to fetch changes up to 0408c61e27aca56c2d40aeb6ca0e5c5f8b8c3845:
-
-  tests/tcg/s390x: Test SET CLOCK COMPARATOR (2025-11-03 08:27:59 +0100)
-
-----------------------------------------------------------------
-* Fix spurious EOFError messages from the device-crash-test script
-* Fix various issues in the functional tests that pylint complained about
-* Improve logging information in the functional tests
-* Fix issue in the s390x clock-comparator code
-* Use address generation for register branch targets on s390x
-
-----------------------------------------------------------------
-Daniel P. Berrangé (2):
-      tests/functional: include logger name and function in messages
-      tests/functional: include the lower level QMP log messages
-
-Ilya Leoshkevich (4):
-      target/s390x: Fix missing interrupts for small CKC values
-      target/s390x: Fix missing clock-comparator interrupts after reset
-      target/s390x: Use address generation for register branch targets
-      tests/tcg/s390x: Test SET CLOCK COMPARATOR
-
-John Snow (1):
-      scripts/device-crash-test: fix spurious EOFError messages
-
-Philippe Mathieu-Daudé (1):
-      hw/s390x: Use memory_region_size()
-
-Thomas Huth (12):
-      tests/functional: Fix problems in asset.py reported by pylint
-      tests/functional: Fix problems in decorators.py reported by pylint
-      tests/functional: Fix problems in linuxkernel.py reported by pylint
-      tests/functional: Fix problems in uncompress.py reported by pylint
-      tests/functional: Fix problems in utils.py reported by pylint
-      tests/functional/arm/test_aspeed_ast1030: Remove unused import
-      tests/functional/migration: Fix bad indentation
-      tests/functional/ppc64/test_mac99: Fix style issues reported by pylint
-      tests/functional/rx/test_gdbsim: Remove unused variables
-      tests/functional/x86_64/test_acpi_bits: Silence warnings reported by pylint
-      tests/functional/x86_64/test_virtio_balloon: Fix cosmetic issues from pylint
-      tests/functional/ppc64: Fix class names to silence pylint warnings
-
-Vladimir Sementsov-Ogievskiy (2):
-      tests/functional/.../testcase.py: better socketdir cleanup
-      MAINTAINERS: fix functional tests section
-
- MAINTAINERS                                    |   1 +
- hw/s390x/s390-pci-inst.c                       |   2 +-
- target/s390x/tcg/mem_helper.c                  |  11 +-
- target/s390x/tcg/misc_helper.c                 |  12 +-
- target/s390x/tcg/translate.c                   |  11 +-
- scripts/device-crash-test                      |   2 +-
- tests/functional/arm/test_aspeed_ast1030.py    |   3 +-
- tests/functional/migration.py                  |   4 +-
- tests/functional/ppc/test_74xx.py              |   2 +-
- tests/functional/ppc/test_sam460ex.py          |   5 +-
- tests/functional/ppc64/test_mac99.py           |   8 +-
- tests/functional/ppc64/test_powernv.py         |   2 +-
- tests/functional/ppc64/test_pseries.py         |   2 +-
- tests/functional/ppc64/test_reverse_debug.py   |   2 +-
- tests/functional/qemu_test/asset.py            |  24 ++--
- tests/functional/qemu_test/decorators.py       | 176 ++++++++++++-------------
- tests/functional/qemu_test/linuxkernel.py      |   6 +-
- tests/functional/qemu_test/testcase.py         |   8 +-
- tests/functional/qemu_test/uncompress.py       |  40 +++---
- tests/functional/qemu_test/utils.py            |  22 ++--
- tests/functional/rx/test_gdbsim.py             |   6 +-
- tests/functional/x86_64/test_acpi_bits.py      |   8 +-
- tests/functional/x86_64/test_virtio_balloon.py |   8 +-
- tests/tcg/s390x/Makefile.softmmu-target        |   1 +
- tests/tcg/s390x/sckc.S                         |  63 +++++++++
- 25 files changed, 256 insertions(+), 173 deletions(-)
- create mode 100644 tests/tcg/s390x/sckc.S
+diff --git a/scripts/device-crash-test b/scripts/device-crash-test
+index 1ecb9663ae8..c1576e8b966 100755
+--- a/scripts/device-crash-test
++++ b/scripts/device-crash-test
+@@ -527,7 +527,7 @@ def main():
+         # Async QMP, when in use, is chatty about connection failures.
+         # This script knowingly generates a ton of connection errors.
+         # Silence this logger.
+-        logging.getLogger('qemu.qmp.qmp_client').setLevel(logging.CRITICAL)
++        logging.getLogger('qemu.qmp.protocol').setLevel(logging.CRITICAL)
+ 
+     fatal_failures = []
+     wl_stats = {}
+-- 
+2.51.0
 
 
