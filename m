@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5630C2D69B
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48AEC2D5F4
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:11:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFy41-0000a9-Tt; Mon, 03 Nov 2025 12:09:53 -0500
+	id 1vFy4F-0000bV-O3; Mon, 03 Nov 2025 12:10:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy40-0000Zc-Le
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:52 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy45-0000aw-7b
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:57 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3l-0000tO-9R
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:52 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3m-0000tw-Qs
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
  In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=yV+bqWtAZS5pr5GZ5j9aWShDLTAV5Q6XBoKnG1ob4lY=; b=rsR0m+TN1WkEnaY
- tF4jdMWmQOxTSN1PTW+or91KDFBQMSsyG55nXj4ucqd5LKZJlPTfFACoNUSN725mha0/xxahRx5xa
- XnuSVqBeQnSKEEspaeyiaMJ41DE4IbHZa/IV3uT0qZsjUGEF0oO+37C+3Cr0mYmCPnCdSKD/Z3YNj
- tA=;
+ List-Help; bh=25qOpz0IPQn7WWT7YwM8Q4jnwJo27QOlw8+jdalefsw=; b=WjSWUmialRO96dO
+ Q5krrqmTUqX0KXlHzoq+YG5rAG/ojOVYPDm95lCf1bSC1jK5NDrUmcIUp0YLsRtRp4Bx20WQymENc
+ bZwLl2WagLp+qgjaws4jtNzI63vgD/ib4wetW+4E/2W/p3nk0McRC9iTy5ltMKg62CYH84CEfz6EJ
+ Mc=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v5 19/25] target/riscv: Replace target_ulong in
- riscv_ctr_add_entry()
-Date: Mon,  3 Nov 2025 18:12:02 +0100
-Message-ID: <20251103171208.24355-20-anjo@rev.ng>
+Subject: [PATCH v5 20/25] target/riscv: Fix size of trigger data
+Date: Mon,  3 Nov 2025 18:12:03 +0100
+Message-ID: <20251103171208.24355-21-anjo@rev.ng>
 In-Reply-To: <20251103171208.24355-1-anjo@rev.ng>
 References: <20251103171208.24355-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -46,7 +45,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,51 +63,73 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Widen to 64 bits in size to hold all relevant values.  Note: src and dst
-arguments change from signed to unsigned but no functional change is
-incurred.
+mcontext is at most 14 bits in size with the H extension, fix to 16
+bits. trigger_cur indexes into tdata*[RV_MAX_TRIGGERS] which holds 2
+elements, fix to 8 bits.
+
+This patch also adds a migration entry for mcontext which is used in
+tandem with other debug data that is already migrated.
+
+Note, the cpu/debug VMSTATE version is bumped, breaking migration from
+older versions.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h        | 5 +++--
- target/riscv/cpu_helper.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ target/riscv/cpu.h     | 10 +++++-----
+ target/riscv/machine.c | 13 +++++++------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index c2be30795a..ee4444f22d 100644
+index ee4444f22d..153480846a 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -662,8 +662,9 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
- void riscv_cpu_set_mode(CPURISCVState *env, privilege_mode_t newpriv,
-                         bool virt_en);
+@@ -467,11 +467,11 @@ struct CPUArchState {
+     target_ulong mseccfg;
  
--void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
--    enum CTRType type, privilege_mode_t prev_priv, bool prev_virt);
-+void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
-+                         enum CTRType type, privilege_mode_t prev_priv,
-+                         bool prev_virt);
- void riscv_ctr_clear(CPURISCVState *env);
+     /* trigger module */
+-    target_ulong trigger_cur;
+-    target_ulong tdata1[RV_MAX_TRIGGERS];
+-    target_ulong tdata2[RV_MAX_TRIGGERS];
+-    target_ulong tdata3[RV_MAX_TRIGGERS];
+-    target_ulong mcontext;
++    uint16_t mcontext;
++    uint8_t trigger_cur;
++    uint64_t tdata1[RV_MAX_TRIGGERS];
++    uint64_t tdata2[RV_MAX_TRIGGERS];
++    uint64_t tdata3[RV_MAX_TRIGGERS];
+     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 376075b2bd..c6ebb58882 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -239,15 +239,16 @@ static int debug_post_load(void *opaque, int version_id)
  
- void riscv_translate_init(void);
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index b102f15ac6..20ff05a4b2 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -926,8 +926,9 @@ static bool riscv_ctr_check_xte(CPURISCVState *env,
-  *    entry = isel - CTR_ENTRIES_FIRST;
-  *    idx = (sctrstatus.WRPTR - entry - 1) & (depth - 1);
-  */
--void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
--    enum CTRType type, privilege_mode_t src_priv, bool src_virt)
-+void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
-+                         enum CTRType type, privilege_mode_t src_priv,
-+                         bool src_virt)
- {
-     bool tgt_virt = env->virt_enabled;
-     uint64_t src_mask = riscv_ctr_priv_to_mask(src_priv, src_virt);
+ static const VMStateDescription vmstate_debug = {
+     .name = "cpu/debug",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .needed = debug_needed,
+     .post_load = debug_post_load,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL(env.trigger_cur, RISCVCPU),
+-        VMSTATE_UINTTL_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
+-        VMSTATE_UINTTL_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
+-        VMSTATE_UINTTL_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT16(env.mcontext, RISCVCPU),
++        VMSTATE_UINT8(env.trigger_cur, RISCVCPU),
++        VMSTATE_UINT64_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT64_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT64_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
+         VMSTATE_END_OF_LIST()
+     }
+ };
 -- 
 2.51.0
 
