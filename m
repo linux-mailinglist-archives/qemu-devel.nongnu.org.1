@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00262C2B30E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638A0C2B346
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:00:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsGl-0003jG-2Z; Mon, 03 Nov 2025 05:58:39 -0500
+	id 1vFsGt-0003lp-1f; Mon, 03 Nov 2025 05:58:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGj-0003j6-GW
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGq-0003lS-WB
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGg-00041W-TW
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:37 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGk-00047q-J0
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167511;
+ s=mimecast20190719; t=1762167515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KZt4It060wiUM4xdxwGuZ8z/rMYt9kE4MDsI7rVARRs=;
- b=FmJy7RiFMrHC5zGR5B9wMMNCppA9ZuNlIfQ7d6lK6VyUJ0zbFOYcdSrRzrnIQciLKvZGKa
- CPbjmbSss2GuVMX0tBXOlPTpmluORawHkFDSlgUeadlp6v6RwH9Zq1wv5Qf8bWip4q0KDh
- iDBskRKltj4UrM9qGbN7071pTuMGLDE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8TA3kpc+YHMk0qkvoJlY74Sz5ck9Tnfwg9efSklIJdY=;
+ b=FtfRZ9CVTiUfmVhKPYEivOoJ6Jvtjk23ziztkT+KiqhCxOVmTxHU+loFmzZf5wZjRf3NPl
+ VWKnGM5EQzJKib7UTP0SGecTGYq/IQaZs597oQxMzYXTpjP5G4HrTXmTSbBZxN4kob2siY
+ KA47bGoppxZqYq/03E9/ujSewAriQkc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-aPO3pXgkOlSb5i2ITEsUYw-1; Mon,
- 03 Nov 2025 05:58:30 -0500
-X-MC-Unique: aPO3pXgkOlSb5i2ITEsUYw-1
-X-Mimecast-MFC-AGG-ID: aPO3pXgkOlSb5i2ITEsUYw_1762167509
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-HPWkvdp0OjSYB0k_fXocgw-1; Mon,
+ 03 Nov 2025 05:58:32 -0500
+X-MC-Unique: HPWkvdp0OjSYB0k_fXocgw-1
+X-Mimecast-MFC-AGG-ID: HPWkvdp0OjSYB0k_fXocgw_1762167511
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C05C180A227; Mon,  3 Nov 2025 10:58:29 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C7F01800D87; Mon,  3 Nov 2025 10:58:31 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D53D230001A1; Mon,  3 Nov 2025 10:58:27 +0000 (UTC)
+ id E864C30001A1; Mon,  3 Nov 2025 10:58:29 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>
-Subject: [PULL 01/22] scripts/device-crash-test: fix spurious EOFError messages
-Date: Mon,  3 Nov 2025 11:57:58 +0100
-Message-ID: <20251103105824.322039-2-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/22] tests/functional: Fix problems in asset.py reported by
+ pylint
+Date: Mon,  3 Nov 2025 11:57:59 +0100
+Message-ID: <20251103105824.322039-3-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,36 +80,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-When the QMP library was updated to match the standalone repository in
-094ded52, I neglected to update the logging filter(s) in
-device-crash-test, which allowed the spurious messages to leak through.
+The "raise" without an Exception was a real problem, the other
+spots are rather cosmetics.
 
-Update the log filter to re-suppress these messages.
-
-Fixes: 094ded52
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20251022213109.395149-1-jsnow@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251015095454.1575318-2-thuth@redhat.com>
 ---
- scripts/device-crash-test | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/qemu_test/asset.py | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/device-crash-test b/scripts/device-crash-test
-index 1ecb9663ae8..c1576e8b966 100755
---- a/scripts/device-crash-test
-+++ b/scripts/device-crash-test
-@@ -527,7 +527,7 @@ def main():
-         # Async QMP, when in use, is chatty about connection failures.
-         # This script knowingly generates a ton of connection errors.
-         # Silence this logger.
--        logging.getLogger('qemu.qmp.qmp_client').setLevel(logging.CRITICAL)
-+        logging.getLogger('qemu.qmp.protocol').setLevel(logging.CRITICAL)
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index ab3a7bb591d..bae40765ce4 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -112,7 +112,7 @@ def _wait_for_other_download(self, tmp_cache_file):
+                 return False
  
-     fatal_failures = []
-     wl_stats = {}
+         self.log.debug("Time out while waiting for %s!", tmp_cache_file)
+-        raise
++        raise TimeoutError(f"Time out while waiting for {tmp_cache_file}")
+ 
+     def _save_time_stamp(self):
+         '''
+@@ -141,7 +141,7 @@ def fetch(self):
+         self.log.info("Downloading %s to %s...", self.url, self.cache_file)
+         tmp_cache_file = self.cache_file.with_suffix(".download")
+ 
+-        for retries in range(3):
++        for _retries in range(3):
+             try:
+                 with tmp_cache_file.open("xb") as dst:
+                     with urllib.request.urlopen(self.url) as resp:
+@@ -181,7 +181,7 @@ def fetch(self):
+                 # server or networking problem
+                 if e.code == 404:
+                     raise AssetError(self, "Unable to download: "
+-                                     "HTTP error %d" % e.code)
++                                     "HTTP error %d" % e.code) from e
+                 continue
+             except URLError as e:
+                 # This is typically a network/service level error
+@@ -190,7 +190,7 @@ def fetch(self):
+                 self.log.error("Unable to download %s: URL error %s",
+                                self.url, e.reason)
+                 raise AssetError(self, "Unable to download: URL error %s" %
+-                                 e.reason, transient=True)
++                                 e.reason, transient=True) from e
+             except ConnectionError as e:
+                 # A socket connection failure, such as dropped conn
+                 # or refused conn
+@@ -201,7 +201,7 @@ def fetch(self):
+             except Exception as e:
+                 tmp_cache_file.unlink()
+                 raise AssetError(self, "Unable to download: %s" % e,
+-                                 transient=True)
++                                 transient=True) from e
+ 
+         if not os.path.exists(tmp_cache_file):
+             raise AssetError(self, "Download retries exceeded", transient=True)
+@@ -214,7 +214,6 @@ def fetch(self):
+                         self.hash.encode('utf8'))
+         except Exception as e:
+             self.log.debug("Unable to set xattr on %s: %s", tmp_cache_file, e)
+-            pass
+ 
+         if not self._check(tmp_cache_file):
+             tmp_cache_file.unlink()
+@@ -224,9 +223,10 @@ def fetch(self):
+         # Remove write perms to stop tests accidentally modifying them
+         os.chmod(self.cache_file, stat.S_IRUSR | stat.S_IRGRP)
+ 
+-        self.log.info("Cached %s at %s" % (self.url, self.cache_file))
++        self.log.info("Cached %s at %s", self.url, self.cache_file)
+         return str(self.cache_file)
+ 
++    @staticmethod
+     def precache_test(test):
+         log = logging.getLogger('qemu-test')
+         log.setLevel(logging.DEBUG)
+@@ -237,16 +237,17 @@ def precache_test(test):
+         handler.setFormatter(formatter)
+         log.addHandler(handler)
+         for name, asset in vars(test.__class__).items():
+-            if name.startswith("ASSET_") and type(asset) == Asset:
++            if name.startswith("ASSET_") and isinstance(asset, Asset):
+                 try:
+                     asset.fetch()
+                 except AssetError as e:
+                     if not e.transient:
+                         raise
+-                    log.error("%s: skipping asset precache" % e)
++                    log.error("%s: skipping asset precache", e)
+ 
+         log.removeHandler(handler)
+ 
++    @staticmethod
+     def precache_suite(suite):
+         for test in suite:
+             if isinstance(test, unittest.TestSuite):
+@@ -254,9 +255,10 @@ def precache_suite(suite):
+             elif isinstance(test, unittest.TestCase):
+                 Asset.precache_test(test)
+ 
+-    def precache_suites(path, cacheTstamp):
++    @staticmethod
++    def precache_suites(path, cache_tstamp):
+         loader = unittest.loader.defaultTestLoader
+         tests = loader.loadTestsFromNames([path], None)
+ 
+-        with open(cacheTstamp, "w") as fh:
++        with open(cache_tstamp, "w", encoding='utf-8'):
+             Asset.precache_suite(tests)
 -- 
 2.51.0
 
