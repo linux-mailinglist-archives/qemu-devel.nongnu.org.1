@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6D5C2A9C6
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE13C2A9C9
 	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:43:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFq8v-0007s9-KR; Mon, 03 Nov 2025 03:42:25 -0500
+	id 1vFq8v-0007sA-2E; Mon, 03 Nov 2025 03:42:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8p-0007qh-Mk
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:42:19 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8s-0007qw-5f
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:42:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8l-0000GG-4m
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8m-0000GH-Qc
  for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:42:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1762159329;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=TyStEZPLmg6F72iywec6ZjheY0HhP9nV9N6r+9L7x4k=;
- b=PYVD1vglDeMBuYHBMAYsRDBEyLDHn5ZXq1embTM4ZKgov5Q8/hS1jEFbrsw0VFaATh1nx9
- EyzM4dF0PDMYj+3RufUqlSHFKokmwelPqLDfO5yoIuY89bEVKjyoaWP0MEusMMA5epKOU+
- tngKpczwzcsP03rBQYJ5FpKZFBsOLR0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZUUj32D6oHJKOccpTTerhOc8zicP0RzdsJEYLIl05DE=;
+ b=HccOe4JOJHT/yZVzqf9V4lk9/A6KWm7bwmdW4petCyh94t1MvHRHZT/2aE9jI35g62hajq
+ CswbnML+qneT9RR28qld4NqvkJawJUWzxNsZdNBfeZCEz1+EVLa6Keu6GUz7P+ly5AZ7we
+ nNMaPzGTQTceMwh7p3i/mD3Tq10ThhM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-dnX4DN3RP3qxq7a95-Mhag-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-risOyHrWO0y7Wnf513jJcw-1; Mon,
  03 Nov 2025 03:42:05 -0500
-X-MC-Unique: dnX4DN3RP3qxq7a95-Mhag-1
-X-Mimecast-MFC-AGG-ID: dnX4DN3RP3qxq7a95-Mhag_1762159324
+X-MC-Unique: risOyHrWO0y7Wnf513jJcw-1
+X-Mimecast-MFC-AGG-ID: risOyHrWO0y7Wnf513jJcw_1762159324
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 977731800D8F; Mon,  3 Nov 2025 08:42:04 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9696A1955F45; Mon,  3 Nov 2025 08:42:04 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.33.5])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F25FA1955BE3; Mon,  3 Nov 2025 08:42:03 +0000 (UTC)
+ id C93201956056; Mon,  3 Nov 2025 08:42:03 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6B2CF1800080; Mon, 03 Nov 2025 09:42:01 +0100 (CET)
+ id 810B71800606; Mon, 03 Nov 2025 09:42:01 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 0/5] Igvm 20251103  patches
-Date: Mon,  3 Nov 2025 09:41:55 +0100
-Message-ID: <20251103084201.45417-1-kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+ Ani Sinha <anisinha@redhat.com>, Luigi Leonardi <leonardi@redhat.com>
+Subject: [PULL 1/5] igvm: move igvm.h file to include/system
+Date: Mon,  3 Nov 2025 09:41:56 +0100
+Message-ID: <20251103084201.45417-2-kraxel@redhat.com>
+In-Reply-To: <20251103084201.45417-1-kraxel@redhat.com>
+References: <20251103084201.45417-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
@@ -81,45 +83,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 53b41bb78950912ba2d9809eef6b45e4df30c647:
+Prepare for arch-specific igvm code being added to the code base.
 
-  Merge tag 'pull-target-arm-20251031' of https://gitlab.com/pm215/qemu into staging (2025-11-01 10:52:48 +0100)
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Message-ID: <20251029105555.2492276-2-kraxel@redhat.com>
+---
+ {backends => include/system}/igvm.h | 0
+ backends/igvm-cfg.c                 | 2 +-
+ backends/igvm.c                     | 2 +-
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename {backends => include/system}/igvm.h (100%)
 
-are available in the Git repository at:
-
-  https://gitlab.com/kraxel/qemu.git tags/igvm-20251103--pull-request
-
-for you to fetch changes up to 541e7a2d987cf74bc1931bdd99d64b27bc9f335b:
-
-  igvm: add MAINTAINERS entry (2025-11-03 07:38:53 +0100)
-
-----------------------------------------------------------------
-igvm: improve native mode (non-confidential guest) supportY
-
-----------------------------------------------------------------
-
-Gerd Hoffmann (5):
-  igvm: move igvm.h file to include/system
-  igvm: fix off by one bug in memmap entry count checking
-  igvm: add support for igvm memory map parameter in native mode
-  igvm: add support for initial register state load in native mode
-  igvm: add MAINTAINERS entry
-
- {backends => include/system}/igvm.h |   7 ++
- target/i386/cpu.h                   |   3 +
- backends/igvm-cfg.c                 |   2 +-
- backends/igvm.c                     |  50 ++++----
- stubs/igvm.c                        |  26 ++++
- target/i386/cpu.c                   |   6 +
- target/i386/igvm.c                  | 180 ++++++++++++++++++++++++++++
- MAINTAINERS                         |  11 ++
- stubs/meson.build                   |   1 +
- target/i386/meson.build             |   3 +
- 10 files changed, 267 insertions(+), 22 deletions(-)
- rename {backends => include/system}/igvm.h (64%)
- create mode 100644 stubs/igvm.c
- create mode 100644 target/i386/igvm.c
-
+diff --git a/backends/igvm.h b/include/system/igvm.h
+similarity index 100%
+rename from backends/igvm.h
+rename to include/system/igvm.h
+diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+index 45df63e06c1a..d00acf351249 100644
+--- a/backends/igvm-cfg.c
++++ b/backends/igvm-cfg.c
+@@ -12,7 +12,7 @@
+ #include "qemu/osdep.h"
+ 
+ #include "system/igvm-cfg.h"
+-#include "igvm.h"
++#include "system/igvm.h"
+ #include "qom/object_interfaces.h"
+ 
+ static char *get_igvm(Object *obj, Error **errp)
+diff --git a/backends/igvm.c b/backends/igvm.c
+index 9ad41582ee5e..723d45b755a0 100644
+--- a/backends/igvm.c
++++ b/backends/igvm.c
+@@ -11,8 +11,8 @@
+ 
+ #include "qemu/osdep.h"
+ 
+-#include "igvm.h"
+ #include "qapi/error.h"
++#include "system/igvm.h"
+ #include "system/memory.h"
+ #include "system/address-spaces.h"
+ #include "hw/core/cpu.h"
 -- 
 2.51.1
 
