@@ -2,60 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5669C2E065
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C0DC2E0A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:32:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG19r-00036K-U2; Mon, 03 Nov 2025 15:28:07 -0500
+	id 1vG1E5-00089E-MV; Mon, 03 Nov 2025 15:32:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vG19m-00034T-4x; Mon, 03 Nov 2025 15:28:02 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1vG1Du-0007xd-Om
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:32:22 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vG19j-0007Qm-DC; Mon, 03 Nov 2025 15:28:01 -0500
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E0C975972E8;
- Mon, 03 Nov 2025 21:27:54 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id 5PX_asHPOAhf; Mon,  3 Nov 2025 21:27:52 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 886145972E4; Mon, 03 Nov 2025 21:27:52 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 862835972E3;
- Mon, 03 Nov 2025 21:27:52 +0100 (CET)
-Date: Mon, 3 Nov 2025 21:27:52 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Yogesh Vyas <yvyas1991@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v3 00/13] Pegasos2 clean up and pegasos1 emulation
-In-Reply-To: <5250e103-4dd1-44e4-9dcf-7c2df033ae10@gmail.com>
-Message-ID: <ebdb8442-3691-9bfe-dc0c-d3ecb3f5bf12@eik.bme.hu>
-References: <cover.1760798392.git.balaton@eik.bme.hu>
- <CAJOT6qN-n7LpVnLO-5CpOUF8z-j1Ogi=6cJBvvKZc-Eh5tHVzA@mail.gmail.com>
- <a410ac54-d1dc-aa67-d1d7-690b2495e9df@eik.bme.hu>
- <CAJOT6qN4QYRdNR-oQV8JSv_074umiHB==_dyemX01+FsNiqPOQ@mail.gmail.com>
- <c7daf4e7-50d3-263c-4fa2-35947e2d3267@eik.bme.hu>
- <26f74e6c-a89f-4be0-aa6c-78ad88e2cba3@gmail.com>
- <993819c9-cf87-ec91-31ac-f8988c8d3d67@eik.bme.hu>
- <38673ed9-4690-472b-9e0f-c8a736247097@gmail.com>
- <fd804cb4-d987-5e3d-24e8-0a4fb88e092e@eik.bme.hu>
- <5250e103-4dd1-44e4-9dcf-7c2df033ae10@gmail.com>
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1vG1Dr-00007w-3j
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:32:18 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A3KOrmq032642;
+ Mon, 3 Nov 2025 20:32:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=o+FT21PEX9VwS+vb
+ 0ndSz77Jyo0mmVsAGrYuEJKxtEk=; b=iYFYqwbcN2VBLcb+5irvzY4XkhMPoavn
+ u3SB0YFxMB63eeJo52Fc8ZGMexJ0Pyhgs3szLKsHxnTwpvQJo6SaB4e6CF7LLHEz
+ AVXTkwEZBjpAyDybBK2+JkldORfa8xLqO2wx6QQ5Q+GjG9vypy9BW747CwEUCF0c
+ R5pJ7DzvNz/E3pMVuJygUV8oWdMirgCofcjINCNTIT5pO7gQl1nk1AMnG0N4Mn/9
+ deRlj5J1po4VqRtH1WinnqCW7T046FBFz5GO/03axTbVo8rUFmtFn3GXVjnCuiYM
+ F/aqeIp4qlClY0h6uwq3wDdCz/TvX48sAHxfukNS+pGtYMlxyllVSA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a73dag0gh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 03 Nov 2025 20:32:10 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 5A3Io3bM009603; Mon, 3 Nov 2025 20:32:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 4a58nc6ea3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 03 Nov 2025 20:32:10 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A3KSvRx040083;
+ Mon, 3 Nov 2025 20:32:09 GMT
+Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
+ (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
+ [100.100.254.235])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 4a58nc6e9h-1; Mon, 03 Nov 2025 20:32:09 +0000
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+To: mst@redhat.com, qemu-devel@nongnu.org, sarunkod@amd.com
+Cc: alejandro.j.jimenez@oracle.com
+Subject: [PATCH 0/3] amd_iommu fixes for 10.2
+Date: Mon,  3 Nov 2025 20:32:06 +0000
+Message-ID: <20251103203209.645434-1-alejandro.j.jimenez@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-939391785-1762201672=:40652"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-03_04,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ mlxscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=857 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511030183
+X-Authority-Analysis: v=2.4 cv=e7oLiKp/ c=1 sm=1 tr=0 ts=6909114a b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117
+ a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=p0WdMEafAAAA:8 a=NEAV23lmAAAA:8 a=kKSIff3KyANLwr03tfUA:9 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:13657
+X-Proofpoint-ORIG-GUID: 1i5ZoyuY-nNj3xAKEjLkK2WOcRGYiAsO
+X-Proofpoint-GUID: 1i5ZoyuY-nNj3xAKEjLkK2WOcRGYiAsO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDE4MSBTYWx0ZWRfX6i8bjbfC/jgH
+ t+ScakZ6AtCyihXsAPyPKUlwsYacBwURz0dTAeXIv04J+rAj3PEaFrwAq18VEKu05OdkM0XUp6m
+ mpZx90HVyRMp2BNfAM9c7kt6wYWzd4C9QVo0ysZYzZGv7Q89Ou7RuiE0G8dVRE9B7w85dq3ZKiW
+ uHCqp1OKWF/MPYlQ2Zo+5F1DyaInqvzEqBKVfchw0mZO8JojXp0Sh537S3Gzt3WpaBzqfRzOb8K
+ gfq1SZefgOAKyRnoLNS2eDiGPPUo+G9q3CMz7ty3ta7dYmxsTBzq9BL0GkEClORF6yBLPd1Qy+A
+ ACzNYn9Nw1Jgyr6ABXEcnwUb9dYZOZjF85BNEc8NsS9MJlffKRXlE/JBQWs6UuY9E2RO/wfN2Jq
+ 0yO6cjxqozqo2hFex0wwXo3Mye0UUG0qsk0colKNU2MVBgcWB7U=
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -73,53 +111,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---3866299591-939391785-1762201672=:40652
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Please queue these AMD vIOMMU fixes for 10.2, with the following changes:
 
-On Sun, 2 Nov 2025, Yogesh Vyas wrote:
-> On 10/28/25 1:48 AM, BALATON Zoltan wrote:
->> Trying to read invalid spr 1012 (0x3f4) at 00000000c0013f48
->> [    0.000000] Using CHRP machine description
->> [    0.000000] Total memory = 512MB; using 1024kB for hash table (at 
->> cff00000)
->> [    0.000000] Initializing cgroup subsys cpuset
->> [    0.000000] Initializing cgroup subsys cpu
->> [    0.000000] Initializing cgroup subsys cpuacct
->> [    0.000000] Linux version 3.16.0-6-powerpc (debian- 
->> kernel@lists.debian.org) (gcc version 4.8.4 (Debian 4.8.4-1) ) #1 Debian 
->> 3.16.56-1+deb8u1 (2018-05-08)
->> [    0.000000] Found initrd at 0xc15a2000:0xc1b0b90d
->> [    0.000000] chrp type = 6 [Genesi Pegasos]
->> 
->> Are you using this same vmlinuz-chrp.initrd?
->> 
->> $ md5sum vmlinuz-chrp.initrd
->> a440d76c1d2ccfa86bdff6dba017cf39  vmlinuz-chrp.initrd
->
-> Yes, md5sum is same as you mentioned:
-> yogi@fedora:~/work/images$ md5sum vmlinuz-chrp.initrd
-> a440d76c1d2ccfa86bdff6dba017cf39  vmlinuz-chrp.initrd
->
-> Could you please share your Qemu configure command line?
-> I can try one more time if that's different than mine.
-> I used below configure command line:
-> '../configure' '--target-list=ppc64-softmmu,ppc-softmmu' '--enable-virtfs'
+- Devices now work correctly when placed on PCI bus id != 0
+- Fixed IOTLB aliasing when using emulated devices and forcedac=1
+- Updated maintainer entry
 
-I don't see how configure options could have anyhing to do with that but 
-I've tested that this works on my machine:
+I edited the commit messages in Sairaj's series to correct minor issues in
+addition to the ones you pointed out.
 
-configure --disable-download --disable-tools --target-list=ppc64-softmmu
-qemu-system-ppc64 -M pegasos2 -serial stdio -kernel vmlinuz-chrp.initrd -append "---" -cdrom debian-8.11.0-powerpc-netinst.iso
+Thank you,
+Alejandro
 
-The configure options are just to only compile what's needed but it should 
-work anyway with your or any options too as long as qemu-system-ppc or 
-qemu-system-ppc64 is compiled. Can you test on a different machine?
+---
+Also available on github:
 
-Regards,
-BALATON Zoltan
---3866299591-939391785-1762201672=:40652--
+The following changes since commit a8e63c013016f9ff981689189c5b063551d04559:
+
+  Merge tag 'igvm-20251103--pull-request' of https://gitlab.com/kraxel/qemu into staging (2025-11-03 10:21:01 +0100)
+
+are available in the Git repository at:
+
+  https://github.com/aljimenezb/qemu.git tags/amdvi-10.2-110325
+
+for you to fetch changes up to 6a242996080d8312855511600cb93cc84d495e4c:
+
+  amd_iommu: Support 64-bit address for IOTLB lookup (2025-11-03 19:44:00 +0000)
+
+Alejandro Jimenez (1):
+  MAINTAINERS: Update entry for AMD-Vi Emulation
+
+Sairaj Kodilkar (2):
+  amd_iommu: Fix handling of devices on buses != 0
+  amd_iommu: Support 64-bit address for IOTLB lookup
+
+ MAINTAINERS         |   6 +-
+ hw/i386/amd_iommu.c | 179 +++++++++++++++++++++++++++-----------------
+ hw/i386/amd_iommu.h |   6 +-
+ 3 files changed, 117 insertions(+), 74 deletions(-)
+
+
+base-commit: a8e63c013016f9ff981689189c5b063551d04559
+-- 
+2.43.5
+
 
