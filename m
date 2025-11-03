@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5630CC2E1DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF21C2E1CE
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:14:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1mD-0001A8-MR; Mon, 03 Nov 2025 16:07:45 -0500
+	id 1vG1m1-00017H-97; Mon, 03 Nov 2025 16:07:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1mA-000192-CN
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lz-00016o-Mf
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lj-0005R4-3E
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:35 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1li-0005RN-F4
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762204031;
+ s=mimecast20190719; t=1762204032;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oY2id3rFEVPzvrffR4IZg61aFvVc7inxMPEhQ7ItsAI=;
- b=La1oGigJN2PddBZ4zHXofpLGks44Z7+f09jE2uS/yvcYrk2TrtLHFnYbzTHUTOJuqWj7kl
- Y363us1rYBpZ8lYDafVw2MUj3U3yDFgW4bOkvQoPcsRTcdhGKapHde4V4HzsasitRJ/ukw
- sYUEvx5McNB5JoXBRwMf0GSObawszZ4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/7FjPA8GdfJf4kCb2i7TngezmlYaUsti3XGlUtftU7k=;
+ b=M5RJUo5hQ4l6Qv7w9tcDI1WSmfnXEu+eH64xeWVx0R4gc8w13IL1i2x53MDB9Pqh097OHQ
+ HlP5ZFAGunJiUc+6H3hOyyCwRtTKyHnJTWfeJZYmH6vlYWWnjFAAt40TgJC3/VYww/6tcb
+ kUjCIDxwt45LdERRg9769Y26PaDu63E=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-aSUJGqDoPeKFvV-TIQ3UpQ-1; Mon, 03 Nov 2025 16:07:10 -0500
-X-MC-Unique: aSUJGqDoPeKFvV-TIQ3UpQ-1
-X-Mimecast-MFC-AGG-ID: aSUJGqDoPeKFvV-TIQ3UpQ_1762204030
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-8908a248048so1185751085a.0
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:07:10 -0800 (PST)
+ us-mta-592-Anv7iClrO6eiQjgWriHVWg-1; Mon, 03 Nov 2025 16:07:11 -0500
+X-MC-Unique: Anv7iClrO6eiQjgWriHVWg-1
+X-Mimecast-MFC-AGG-ID: Anv7iClrO6eiQjgWriHVWg_1762204031
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4eceefa36d0so135203651cf.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:07:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762204030; x=1762808830; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762204031; x=1762808831; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oY2id3rFEVPzvrffR4IZg61aFvVc7inxMPEhQ7ItsAI=;
- b=kCWPnqNK+y12OZK5IT8xlL1sGHpDxYfbDfHjcYCYTB+MY2rfMh9mD87lcGiTyCDyeM
- 5SI3x/blIwwDBtukIMa1p2FmIl3jrrQ+kzshgx41kCPX2Kj2SNqdvJv47JtfHkJLd15z
- wEIvc8oXhCCqgr2K+1i4GZ1lTokSozaenIigEM7INuNAbm95WX5CpHqscagM5aKI3885
- j/yqctI8oxBweppHNsmDBf05vPor7K+/CjufYKHg+I9PdDdgvZDB/8az8Bb+rhcHSRhj
- 6F7D4/wqYEWCGIfWSBska+oTvfGQ5+9LUB6uqi6DxQSbArK2jB9H3yJUkFQxbXTOzLYm
- 3WlQ==
+ bh=/7FjPA8GdfJf4kCb2i7TngezmlYaUsti3XGlUtftU7k=;
+ b=mtk+JyGZK1968tH8xtnsQhja9Ow3FIwoG6aVgpSk61BgX7PgCsXq6iB99rlUNYFXOH
+ VD/I/JvajyJplCt1eCkbixL951+ZEcnfuyhEEXi9dvY4lW87x2gfaGx2q7wTTQ5CZ7dd
+ fhh3ZsFnU3zbUMAc3GBxt7Tw8TpxPHA02Z1QQ0AJYOf3MmM7NKlrOYAPq7uLtjZYaXU2
+ /8OMz1grif0WLwiy2lAmu/QH8qewK8xO0zlMpqsyf2S4sRZzcfRLloeK/5TogBoUKVoX
+ auFBMo+KyDypAHxFa6H+Xo4ke8cCdkGCYSWsKcIQtx5a273ihUugbXzCHTYqdl8LwpaF
+ 9h7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762204030; x=1762808830;
+ d=1e100.net; s=20230601; t=1762204031; x=1762808831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oY2id3rFEVPzvrffR4IZg61aFvVc7inxMPEhQ7ItsAI=;
- b=pTa34B7/NoDjxqNYnHi5wq3ZduvcZxH0mYUGNN4tXld9FQ1/41Pp1jhd0YSWQyPscV
- gLB7u1sW5kXIvE0J+j/olpZ9cgK2vr4iE3bdEU+FZd7ObTBSVocQ/tdXvKJdqjjp0vgt
- R3CqE7hcsNpaqKBzEq99kYAT+bN/ai6HQT8MGLn7SAFZKt4WkzkNxqB1Q/NGdNhumFE6
- 5cmhILY8kGPTZBBG0uLAJD2vLRrb8OTovXki3zCP7RZPslBnUAmt9Ns71zsDM6zaEXkb
- 2lr3KsR4EWdBMcE8wY6qEil5lJCH89YJyE5faTT0pwrIEqwaa/VZYZc0LYfWUOfvg63B
- OQVA==
-X-Gm-Message-State: AOJu0Yxy4aHZvVwppsvQS7q9m8AzZtrgYrjVexU4l/JZTT1Jo8Zef3Nw
- GzAnvnsDDLXjQWkDmugqnYG/y2xAzP3UMQNFk/pZzKUjWp+XExPU2aedJTt7dyDT7Gn1EoDvB9f
- 6+Oshxqnf17LDFV4V+bxwrm618AP51oOw91xoM8gHhGtVXLmqLS962O/YakUeM1L1pFdpueHIsd
- IlVlGud0Rfy4AgEOz2hLD4JUdfMfBLPp0239TxAA==
-X-Gm-Gg: ASbGncvuNkwWSFloIy08EHUBBN1hDleQsRbAs4jCOTLaVddIUpizv7LPRwGx11We52h
- OLarLZLre3lrYeNS/zME+xWwlQoWkB6hZjqWbEoAq1VUgi7HBoXjHU5Z3Wh4FFR+REOSk9q52Vk
- LuUwDJ2lymBqi2yrGjHl8pBmWnyUQy9ZURx0hv//4vUfVwf+yLeCJjcA3CfZTnou2rg/TFb/3kh
- qqjD7LJEzN0EnYde8A+6bipPe+EKREAWY4DVIe7HAYF4Yi5vJDBShEIyp9lB7IJZ36Bx/Au4IyD
- UnQbfsXC3f4LJw/pjyYyUudysncXASkAtGqwTy4kkICVScsOxcVWbPxWLdB5PFjA
-X-Received: by 2002:a05:620a:1924:b0:883:b565:1acf with SMTP id
- af79cd13be357-8ab9b3ac76dmr1775846885a.60.1762204029359; 
+ bh=/7FjPA8GdfJf4kCb2i7TngezmlYaUsti3XGlUtftU7k=;
+ b=NgClbZvciTX+iquVZgGxVfWpXcZT7kp94C4BKMn9gMyPV6MM/QSHGXydKB9V2Dz8u2
+ btmUda57xmEZG1+nmbnm28GivBaSswUMY8qDWvscIFtvkdJOlcehlkHQEySt7gvmsCHG
+ KBN+QREp26QFURuj340EOaTFK3nsjWdGsr3L7N+jTr8fCIZqwWykdYrI7YWhBaJUQ8uj
+ s3lB8EtGLCz7Nf1mFyoZ9bdIQxmT1DYV6Eb4LEVsppd7WjG3G8lwMjJOoPUABrRwgBAY
+ hzoXUBqdA2Oiu6oESZuq7MSd24v/KlyXYO8gVIu259za6kVwWuf+VsHEHqsSgwT9FqG1
+ 052Q==
+X-Gm-Message-State: AOJu0YwcXtju3Gr709//pGnoiUn2hmDcYKS1O4IPBJpAFsFNhaU6uEVv
+ qTHNSS7ozgYFmKjwtmzR7bluWWRu9M2uGen0SDJZch7k26YA8YAyQvhiYCPUcTivgsvWuTIgVs/
+ njTkhJMUDK8kLDUbpJV6OQd2SR9o+IJVR8PvouAb5gyqvXn3/1RO4SSFMWId9O/L9osaoJj7pg4
+ AIdfpGnogDXB8bh70AGkk9QiYBISRX7KjjnrN7iQ==
+X-Gm-Gg: ASbGnctL1kwoAeakVLEmEpdQX5QJNhBlxYLCEJGfLSs3TkHxRtxKbPtyoevNkKFZYWK
+ QoLgcqgRMCrnS8AftldBD6LFDcJPWv1TiYle1MTTh1RtjJP1kZtqQhabBGbCM338kIr/m0l9H3g
+ 87fH5ftD8EddzptIntFORwD8TDPeudlwd6vJRhiaIUvgqjqfr7EuMDE44pg6/rK00hDDZYlU6VI
+ pi8E/PipG+vNIN7Gwj2E4KDoPSwqq69MqCJkaZKLr/iUtLGXJMcmhyc8yGneKjYoSTzFFXTVTki
+ aJC5iOAq+HmrcDrfG3HgQEwBZYnlNpCOVZ+sMDzs0Bmsudeu1pTlDjFXfWQW2EUi
+X-Received: by 2002:ac8:7d0f:0:b0:4e8:ad2a:b0cf with SMTP id
+ d75a77b69052e-4ed30d512aamr182178991cf.9.1762204030525; 
+ Mon, 03 Nov 2025 13:07:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE2g7WbmHbwwQnJV5qAqgm7TSs/zKMtTn0/RSQC2RgaKHvU8HDoCv/7gw8vWFek+RI80cPURQ==
+X-Received: by 2002:ac8:7d0f:0:b0:4e8:ad2a:b0cf with SMTP id
+ d75a77b69052e-4ed30d512aamr182178531cf.9.1762204029978; 
  Mon, 03 Nov 2025 13:07:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGRZ6OjdfDD+TQ8XTjqLTg1SjK2wE8DkJdCLLkZQhP+lsEQY77zvMcplyzZzomB++2xOf9cog==
-X-Received: by 2002:a05:620a:1924:b0:883:b565:1acf with SMTP id
- af79cd13be357-8ab9b3ac76dmr1775840985a.60.1762204028752; 
- Mon, 03 Nov 2025 13:07:08 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.07.07
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.07.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:07:08 -0800 (PST)
+ Mon, 03 Nov 2025 13:07:09 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 29/36] migration: Flush migration channel after sending data of
- CMD_PACKAGED
-Date: Mon,  3 Nov 2025 16:06:18 -0500
-Message-ID: <20251103210625.3689448-30-peterx@redhat.com>
+ peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 30/36] migration: Do not try to start VM if disk activation
+ fails
+Date: Mon,  3 Nov 2025 16:06:19 -0500
+Message-ID: <20251103210625.3689448-31-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,7 +101,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,33 +117,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juraj Marcin <jmarcin@redhat.com>
+If a rare split brain happens (e.g. dest QEMU started running somehow,
+taking shared drive locks), src QEMU may not be able to activate the
+drives anymore.  In this case, src QEMU shouldn't start the VM or it might
+crash the block layer later with something like:
 
-If the length of the data sent after CMD_PACKAGED is just right, and
-there is not much data to send afterward, it is possible part of the
-CMD_PACKAGED payload will get left behind in the sending buffer. This
-causes the destination side to hang while it tries to load the whole
-package and initiate postcopy.
+Meanwhile, src QEMU cannot try to continue either even if dest QEMU can
+release the drive locks (e.g. by QMP "stop").  Because as long as dest QEMU
+started running, it means dest QEMU's RAM is the only version that is
+consistent with current status of the shared storage.
 
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
-Link: https://lore.kernel.org/r/20251103183301.3840862-2-jmarcin@redhat.com
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20251103183301.3840862-3-jmarcin@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/savevm.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/migration.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 232cae090b..fa017378db 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1142,6 +1142,7 @@ int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len)
-     qemu_savevm_command_send(f, MIG_CMD_PACKAGED, 4, (uint8_t *)&tmp);
+diff --git a/migration/migration.c b/migration/migration.c
+index 5e74993b46..6e647c7c4a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3526,6 +3526,8 @@ static MigIterateState migration_iteration_run(MigrationState *s)
  
-     qemu_put_buffer(f, buf, len);
-+    qemu_fflush(f);
+ static void migration_iteration_finish(MigrationState *s)
+ {
++    Error *local_err = NULL;
++
+     bql_lock();
  
-     return 0;
- }
+     /*
+@@ -3549,11 +3551,28 @@ static void migration_iteration_finish(MigrationState *s)
+     case MIGRATION_STATUS_FAILED:
+     case MIGRATION_STATUS_CANCELLED:
+     case MIGRATION_STATUS_CANCELLING:
+-        /*
+-         * Re-activate the block drives if they're inactivated.  Note, COLO
+-         * shouldn't use block_active at all, so it should be no-op there.
+-         */
+-        migration_block_activate(NULL);
++        if (!migration_block_activate(&local_err)) {
++            /*
++            * Re-activate the block drives if they're inactivated.
++            *
++            * If it fails (e.g. in case of a split brain, where dest QEMU
++            * might have taken some of the drive locks and running!), do
++            * not start VM, instead wait for mgmt to decide the next step.
++            *
++            * If dest already started, it means dest QEMU should contain
++            * all the data it needs and it properly owns all the drive
++            * locks.  Then even if src QEMU got a FAILED in migration, it
++            * normally should mean we should treat the migration as
++            * COMPLETED.
++            *
++            * NOTE: it's not safe anymore to start VM on src now even if
++            * dest would release the drive locks.  It's because as long as
++            * dest started running then only dest QEMU's RAM is consistent
++            * with the shared storage.
++            */
++            error_free(local_err);
++            break;
++        }
+         if (runstate_is_live(s->vm_old_state)) {
+             if (!runstate_check(RUN_STATE_SHUTDOWN)) {
+                 vm_start();
 -- 
 2.50.1
 
