@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D6DC2DB34
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757C7C2DB37
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFzNa-00065Z-T7; Mon, 03 Nov 2025 13:34:10 -0500
+	id 1vFzNc-00066O-PB; Mon, 03 Nov 2025 13:34:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzNX-00065G-R5
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:34:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vFzNa-000666-Gg
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:34:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzNH-00076D-CP
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:34:06 -0500
+ id 1vFzNP-00077l-PX
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:34:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762194828;
+ s=mimecast20190719; t=1762194835;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nwOLooqjrQgvrxWbQhGQsWKmFK2ppIjlU+Vt120JKEI=;
- b=T4wwpCObmIcBTDW4L2H+6yOqVikizh/g6IkQKEXua/vJzlC77ajglBnLiyNvGmvO1CR/oE
- CP9RNuTID6ekxNvVwqDxLx6jq8OcgW+UiKNQkpIn1jZgVq8KrOPfnXK+07U024ILEsF2Zr
- wjjKzI8u0ZBichsEIgqm905fkVljeBI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=CWk9uithZtSX14pfAQlE3GNVT9zUP4frfhot39QuP/w=;
+ b=FibArQ8YDoYwr53VhtfJl1DR8MmrfSI/gkTt9weKjdVgUT9f8+cTs66zG3ty1BFKOOycPu
+ As5hphxrN+jg1D6QR/ea/eBdyKfBBCtJw7AM+7plUcQj0IBsM0drC4DNjvyYl2dKxhv5Mz
+ bjjQVL08Dmp7qMbV6qH1pxu2G0pDPMw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-Jmfcj8j8PzeziUBKxf3kKQ-1; Mon,
- 03 Nov 2025 13:33:46 -0500
-X-MC-Unique: Jmfcj8j8PzeziUBKxf3kKQ-1
-X-Mimecast-MFC-AGG-ID: Jmfcj8j8PzeziUBKxf3kKQ_1762194825
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-nvGazUQhNBuZS3qME8uvgw-1; Mon,
+ 03 Nov 2025 13:33:52 -0500
+X-MC-Unique: nvGazUQhNBuZS3qME8uvgw-1
+X-Mimecast-MFC-AGG-ID: nvGazUQhNBuZS3qME8uvgw_1762194831
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9971D1954B1B; Mon,  3 Nov 2025 18:33:29 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7A830183451C; Mon,  3 Nov 2025 18:33:32 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.44.32.249])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8DE90180058D; Mon,  3 Nov 2025 18:33:27 +0000 (UTC)
+ id 4549E180058A; Mon,  3 Nov 2025 18:33:29 +0000 (UTC)
 From: Juraj Marcin <jmarcin@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>
-Subject: [PATCH v4 6/8] migration: Respect exit-on-error when migration fails
- before resuming
-Date: Mon,  3 Nov 2025 19:32:55 +0100
-Message-ID: <20251103183301.3840862-7-jmarcin@redhat.com>
+Subject: [PATCH v4 7/8] migration: Make postcopy listen thread joinable
+Date: Mon,  3 Nov 2025 19:32:56 +0100
+Message-ID: <20251103183301.3840862-8-jmarcin@redhat.com>
 In-Reply-To: <20251103183301.3840862-1-jmarcin@redhat.com>
 References: <20251103183301.3840862-1-jmarcin@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,39 +86,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Juraj Marcin <jmarcin@redhat.com>
 
-When exit-on-error was added to migration, it wasn't added to postcopy.
-Even though postcopy migration will usually pause and not fail, in cases
-it does unrecoverably fail before destination side has been started,
-exit-on-error will allow management to query the error.
+This patch makes the listen thread joinable instead detached, and joins
+it alongside other postcopy threads.
 
 Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/postcopy-ram.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ migration/postcopy-ram.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 48cbb46c27..91431f02a4 100644
+index 91431f02a4..8405cce7b4 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -2080,11 +2080,16 @@ bool postcopy_is_paused(MigrationStatus status)
+@@ -2181,7 +2181,6 @@ static void *postcopy_listen_thread(void *opaque)
  
- static void postcopy_listen_thread_bh(void *opaque)
+ out:
+     rcu_unregister_thread();
+-    mis->have_listen_thread = false;
+     postcopy_state_set(POSTCOPY_INCOMING_END);
+ 
+     migration_bh_schedule(postcopy_listen_thread_bh, NULL);
+@@ -2215,7 +2214,7 @@ int postcopy_incoming_setup(MigrationIncomingState *mis, Error **errp)
+     mis->have_listen_thread = true;
+     postcopy_thread_create(mis, &mis->listen_thread,
+                            MIGRATION_THREAD_DST_LISTEN,
+-                           postcopy_listen_thread, QEMU_THREAD_DETACHED);
++                           postcopy_listen_thread, QEMU_THREAD_JOINABLE);
+ 
+     return 0;
+ }
+@@ -2224,6 +2223,11 @@ int postcopy_incoming_cleanup(MigrationIncomingState *mis)
  {
-+    MigrationState *s = migrate_get_current();
-     MigrationIncomingState *mis = migration_incoming_get_current();
+     int rc = 0;
  
-     migration_incoming_state_destroy();
- 
--    if (mis->state == MIGRATION_STATUS_FAILED) {
-+    if (mis->state == MIGRATION_STATUS_FAILED && mis->exit_on_error) {
-+        WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
-+            error_report_err(s->error);
-+            s->error = NULL;
-+        }
-         /*
-          * If something went wrong then we have a bad state so exit;
-          * we only could have gotten here if something failed before
++    if (mis->have_listen_thread) {
++        qemu_thread_join(&mis->listen_thread);
++        mis->have_listen_thread = false;
++    }
++
+     if (migrate_postcopy_ram()) {
+         rc = postcopy_ram_incoming_cleanup(mis);
+     }
 -- 
 2.51.0
 
