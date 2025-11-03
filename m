@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2599DC2B31E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEA5C2B333
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsH2-0003oo-6n; Mon, 03 Nov 2025 05:58:56 -0500
+	id 1vFsHG-0003sT-Rt; Mon, 03 Nov 2025 05:59:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH0-0003oN-PP
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:54 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHB-0003re-JK
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGy-0004No-Qo
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:54 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH3-0004RH-U9
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167531;
+ s=mimecast20190719; t=1762167535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/c91D2IhVYFYL/D/3jHAKa8Lh0bpHjFspI9JM4yXLr4=;
- b=fq6nF3N9JJLroMJTiBisnWnrUYJCDlFFbEQF6quf3oOju14IuBMfTgWOnlSDVNgDaRp5aE
- NC+Jg3fFyUVOGyyPD/sXPJU+ymRu/34R5pTc6dquHHTYPuIP2rwvWa2Ciy4UFBNXXm/cFV
- 9sprvNR4ekqPQ0LSAMo64/Yhc75djMs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Hff/k/1RIB4r6If5d41QAniZ0RCrNVZJzbv+PSn88Hw=;
+ b=CAIWQFw5f1ZENgfrKRYkIVPjYVNjtqgVfDE8hZqHs9BzcSjGxMEQ37cDmFwnnw55NdTkkV
+ 3/gf4iSPvIXhrZ3qQgEJSuCk/NtEulrd4oBveKQ2A8/5udAX49QAeVAeXHqmUwCBc+2HC/
+ DM0M4bGngLQCXyD06lYnK8/XKdvkUd4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-K0PWMBQ1OKyRe6PR4BN1tQ-1; Mon,
- 03 Nov 2025 05:58:49 -0500
-X-MC-Unique: K0PWMBQ1OKyRe6PR4BN1tQ-1
-X-Mimecast-MFC-AGG-ID: K0PWMBQ1OKyRe6PR4BN1tQ_1762167529
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-q_s7PCTeNPWukrpqrIIxHg-1; Mon,
+ 03 Nov 2025 05:58:51 -0500
+X-MC-Unique: q_s7PCTeNPWukrpqrIIxHg-1
+X-Mimecast-MFC-AGG-ID: q_s7PCTeNPWukrpqrIIxHg_1762167530
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D0F4E19540E8; Mon,  3 Nov 2025 10:58:48 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CE4471800669; Mon,  3 Nov 2025 10:58:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3462A30001A1; Mon,  3 Nov 2025 10:58:46 +0000 (UTC)
+ id 5625930001BC; Mon,  3 Nov 2025 10:58:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/22] tests/functional/migration: Fix bad indentation
-Date: Mon,  3 Nov 2025 11:58:07 +0100
-Message-ID: <20251103105824.322039-11-thuth@redhat.com>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 11/22] tests/functional/ppc64/test_mac99: Fix style issues
+ reported by pylint
+Date: Mon,  3 Nov 2025 11:58:08 +0100
+Message-ID: <20251103105824.322039-12-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -83,34 +83,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-pylint complains about bad indentation in two lines. Use 12 spaces
-instead of 11 spaces to get it right.
+Pylint complained about lines being too long here, and mac99Test not
+following the usual CamelCase capitalization.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251027112347.54190-1-thuth@redhat.com>
+Message-ID: <20251029080502.52938-1-thuth@redhat.com>
 ---
- tests/functional/migration.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/ppc64/test_mac99.py | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/migration.py b/tests/functional/migration.py
-index 07395544832..2bfb1f77901 100644
---- a/tests/functional/migration.py
-+++ b/tests/functional/migration.py
-@@ -30,11 +30,11 @@ def assert_migration(self, src_vm, dst_vm):
+diff --git a/tests/functional/ppc64/test_mac99.py b/tests/functional/ppc64/test_mac99.py
+index dfd9c01371d..a3261a8330a 100755
+--- a/tests/functional/ppc64/test_mac99.py
++++ b/tests/functional/ppc64/test_mac99.py
+@@ -7,14 +7,16 @@
+ from qemu_test import LinuxKernelTest, Asset
+ from qemu_test import exec_command_and_wait_for_pattern
  
-         end = time.monotonic() + self.timeout
-         while time.monotonic() < end and not self.migration_finished(src_vm):
--           time.sleep(0.1)
-+            time.sleep(0.1)
+-class mac99Test(LinuxKernelTest):
++class Mac99Test(LinuxKernelTest):
  
-         end = time.monotonic() + self.timeout
-         while time.monotonic() < end and not self.migration_finished(dst_vm):
--           time.sleep(0.1)
-+            time.sleep(0.1)
+     ASSET_BR2_MAC99_LINUX = Asset(
+-        'https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/vmlinux',
++        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main'
++         '/buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/vmlinux'),
+         'd59307437e4365f2cced0bbd1b04949f7397b282ef349b7cafd894d74aadfbff')
  
-         self.assertEqual(src_vm.cmd('query-migrate')['status'], 'completed')
-         self.assertEqual(dst_vm.cmd('query-migrate')['status'], 'completed')
+     ASSET_BR2_MAC99_ROOTFS = Asset(
+-        'https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main//buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/rootfs.ext2',
++        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main'
++         '/buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/rootfs.ext2'),
+         'bbd5fd8af62f580bc4e585f326fe584e22856572633a8333178ea6d4ed4955a4')
+ 
+     def test_ppc64_mac99_buildroot(self):
 -- 
 2.51.0
 
