@@ -2,109 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B327C2BEDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2857C2C58B
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 15:13:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFuCS-00051b-G1; Mon, 03 Nov 2025 08:02:22 -0500
+	id 1vFvHi-0004cy-Nr; Mon, 03 Nov 2025 09:11:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vFuBi-0004pd-1g
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:01:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@kernel.org>) id 1vFryn-00072J-O6
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:40:05 -0500
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vFuBS-0005Ko-Un
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:01:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762174870;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=443Oxkcwzfu/N9QI2OyLDoETdIrjbmLMUQKoFX8HPOA=;
- b=TxOW8XuIGRD7F5xV5HDAjLrQuanHTo7cOV//2mjj/u2gd0JrAei1GfbPZ7F7RgwQLqWnBw
- aUEe2swkgvJ9iYVAKhAnV3IA/lfiW9k9c04Vi684F5I8//J0HVA9G9FtIM5OpDWMW+Ck3e
- am1N6EAEpub7vMuE2Ga2lK2SdbsBP0A=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-YO9nR_U4ORSI6Y0RVsvj2g-1; Mon, 03 Nov 2025 08:01:09 -0500
-X-MC-Unique: YO9nR_U4ORSI6Y0RVsvj2g-1
-X-Mimecast-MFC-AGG-ID: YO9nR_U4ORSI6Y0RVsvj2g_1762174868
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-47113dfdd20so19251135e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 05:01:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762174866; x=1762779666;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=443Oxkcwzfu/N9QI2OyLDoETdIrjbmLMUQKoFX8HPOA=;
- b=aDMQe8fdSCmJ/TbaBMOGN9/5PqB0P2KG/HlYl96TtyjyoTpwILfLo5fRuoZuZIcuGL
- cu4nDGbbu6q0zcz/SMiObf06zl8siuKjy/myHHrIl1n5y0P91FRSPpVLIzJ+z9HPdvct
- mMx2LODKsJVtXMHplh9PJA7XJvik9/y1w2iHJW/uFFCla+ieYPxH5IMcyjSWaIwSQ63e
- vv5+xs58iXQA9eQPtdSH15vzAKHHrcK59VSfIIDZSYaqxw53gGlKj5uHooyjjlsSO0qr
- E84YxEOHLUFzKxW2IQ3X04grwV7m8Jve3LSjEKCZp4tdKiYVIKRW7NgZ5nqO8g5wAAGX
- cbZg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW6I1OR+nTffShpSwuRn1wopOpwzafYY4Yna92+VuFv8JNGBCFvbnptIW2nI5l6snEcNtcqxG31nvrs@nongnu.org
-X-Gm-Message-State: AOJu0YzqXuGJ0TiRYvJDN26WtF1dMAK4qJRuv0jp7mv7d6MegA3SJvsU
- +14lOZIFvm3zV/EG8PJ2veAx6+rdhTsVjnrLB2WMdX1n10v6Lf5slTHhaGUbDss/KX1oCXHX9iZ
- NCoixJxf8Q/npX/E6Ms6ZhvktjcF/+n2DJNC0obA7ve+NOjYgI7Rho3G9G2i3b+zZ
-X-Gm-Gg: ASbGncv3yPCGmHBEh8g4kRnHFBKyVxV/o5gd4K/H3rUJFBL63wPbzGVZyFaPBqLtsuO
- 3sXXlgwuk0B0Mw2UaEef4lHg1BvbRxKec7tQpEF4X3whfZUtPV/Lsm1Nn6fZBhF/Qxok8/9IcWB
- bh1/Ec9TB/Wghn8S6R4tiEicB4US32fXLgelaa8QnFw7osJFhOD3tLekC60C5qy/KyMPRzRb8+J
- vkLr6Qn0juGJhZQBsiXb+XFpbaANscOOkkBeuHgGZ3YTbf62KAnTeSbd7C6RvrgBEJKpT+7d0sK
- dNA9Zm3XHqS4Fc9gDAR2XtCG/ifOI59gt5bGpaQBAABDMzjmkTO5gqB+zZswRW64l+ue6H04XBn
- ig7tcZmS4Cqc7pKxRqougVlnxehfHJcMw84iSNiTFGpUlKA==
-X-Received: by 2002:a05:600d:4352:b0:477:429b:3b93 with SMTP id
- 5b1f17b1804b1-477429b3fb5mr36625295e9.18.1762174865963; 
- Mon, 03 Nov 2025 05:01:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFfI9dEuVKL3kT/8yMG/4pgPCf5MJlpuhIklO/hZyxx03bZ8fDPUf4kE2Yr30Q3j1KtNcd1LA==
-X-Received: by 2002:a05:600d:4352:b0:477:429b:3b93 with SMTP id
- 5b1f17b1804b1-477429b3fb5mr36624965e9.18.1762174865338; 
- Mon, 03 Nov 2025 05:01:05 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4773c2ff79bsm153756145e9.6.2025.11.03.05.01.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Nov 2025 05:01:04 -0800 (PST)
-Message-ID: <7e7063ce-3f29-4771-a808-3fdb38ac498e@redhat.com>
-Date: Mon, 3 Nov 2025 14:01:03 +0100
+ (Exim 4.90_1) (envelope-from <david@kernel.org>) id 1vFryk-000815-As
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:40:05 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id EA7A541526
+ for <qemu-devel@nongnu.org>; Mon,  3 Nov 2025 10:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00831C4CEE7;
+ Mon,  3 Nov 2025 10:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1762166390;
+ bh=4jHwiL+1wC9HdU+GgZS3VLhOjPisvj2rwIR5l1J1/JI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=VoEKfZ80OlRNzTSyQ3bjsw6qIbKhBo8IzZ2MJAi1Xmg2lqqT9WzDTTBclIY3SAGZ5
+ uYNZrDhtxixgBn68e+rj08CoLg/J+3Bdn7KrGdKeTx96+h3vmiXFOauur4HKB1GUI4
+ PbG+CnhBcIJ1K01SD49mgI2b8pvipqprC7Xgdaj4+wXJkRwhmxofAU5Zhjoywhl6F2
+ n9GJhiCa+BIxtdxbrWcFxWVm8q7AiTB5BjrM1SPTYRAR/3uyUSdnyOQ5nyeX+8esg2
+ AYqa2dJjkVxkPh9SpOHGiwrkRPWCEMJtJG11t2kaE/4tqanuKnxNdcx/XPWlttvM9e
+ Vw7baaJFCdpbg==
+From: David Hildenbrand <david@kernel.org>
+To: qemu-devel@nongnu.org
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH] MAINTAINERS: Update David Hildenbrand's email address
+Date: Mon,  3 Nov 2025 11:39:46 +0100
+Message-ID: <20251103103947.384401-1-david@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 18/23] vfio: Add a new element bypass_ro in
- VFIOContainer
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com
-References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
- <20251024084349.102322-19-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20251024084349.102322-19-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=david@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 03 Nov 2025 09:11:45 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,110 +62,122 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 
+Switch to kernel.org email address as I will be leaving Red Hat. The
+old address will remain active until end of January 2026, so performing
+the change now should make sure that most mails will reach me.
 
-On 10/24/25 10:43 AM, Zhenzhong Duan wrote:
-> When bypass_ro is true, readonly memory section is bypassed from mapping
-> in the container.
->
-> This is a preparing patch to workaround Intel ERRATA_772415, see changelog
-> in next patch for details about the errata.
->
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> ---
->  include/hw/vfio/vfio-container.h |  1 +
->  hw/vfio/listener.c               | 21 ++++++++++++++-------
->  2 files changed, 15 insertions(+), 7 deletions(-)
->
-> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
-> index 9f6e8cedfc..a7d5c5ed67 100644
-> --- a/include/hw/vfio/vfio-container.h
-> +++ b/include/hw/vfio/vfio-container.h
-> @@ -52,6 +52,7 @@ struct VFIOContainer {
->      QLIST_HEAD(, VFIODevice) device_list;
->      GList *iova_ranges;
->      NotifierWithReturn cpr_reboot_notifier;
-> +    bool bypass_ro;
->  };
->  
->  #define TYPE_VFIO_IOMMU "vfio-iommu"
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index 2109101158..0862b2b834 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainer *bcontainer)
->      return true;
->  }
->  
-> -static bool vfio_listener_skipped_section(MemoryRegionSection *section)
-> +static bool vfio_listener_skipped_section(MemoryRegionSection *section,
-> +                                          bool bypass_ro)
->  {
-> +    if (bypass_ro && section->readonly) {
-> +        return true;
-> +    }
-> +
->      return (!memory_region_is_ram(section->mr) &&
->              !memory_region_is_iommu(section->mr)) ||
->             memory_region_is_protected(section->mr) ||
-> @@ -368,9 +373,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
->  }
->  
->  static bool vfio_listener_valid_section(MemoryRegionSection *section,
-> -                                        const char *name)
-> +                                        bool bypass_ro, const char *name)
->  {
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, bypass_ro)) {
->          trace_vfio_listener_region_skip(name,
->                  section->offset_within_address_space,
->                  section->offset_within_address_space +
-> @@ -497,7 +502,8 @@ void vfio_container_region_add(VFIOContainer *bcontainer,
->      int ret;
->      Error *err = NULL;
->  
-> -    if (!vfio_listener_valid_section(section, "region_add")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_add")) {
->          return;
->      }
->  
-> @@ -663,7 +669,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
->      int ret;
->      bool try_unmap = true;
->  
-> -    if (!vfio_listener_valid_section(section, "region_del")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_del")) {
->          return;
->      }
->  
-> @@ -821,7 +828,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
->          container_of(listener, VFIODirtyRangesListener, listener);
->      hwaddr iova, end;
->  
-> -    if (!vfio_listener_valid_section(section, "tracking_update") ||
-> +    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
-I think you shall document in the commit msg and maybe here why we set
-bypass_ro to false in that case
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+ .mailmap    |  1 +
+ MAINTAINERS | 18 +++++++++---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-Eric
->          !vfio_get_section_iova_range(dirty->bcontainer, section,
->                                       &iova, &end, NULL)) {
->          return;
-> @@ -1215,7 +1222,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
->      int ret;
->      Error *local_err = NULL;
->  
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, false)) {
->          return;
->      }
->  
+diff --git a/.mailmap b/.mailmap
+index 7f817d9f42..0690f7be34 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -82,6 +82,7 @@ Brian Cain <brian.cain@oss.qualcomm.com> <bcain@quicinc.com>
+ Brian Cain <brian.cain@oss.qualcomm.com> <quic_bcain@quicinc.com>
+ Christian Borntraeger <borntraeger@linux.ibm.com> <borntraeger@de.ibm.com>
+ Damien Hedde <damien.hedde@dahe.fr> <damien.hedde@greensocs.com>
++David Hildenbrand <david@kernel.org> <david@redhat.com>
+ Filip Bozuta <filip.bozuta@syrmia.com> <filip.bozuta@rt-rk.com.com>
+ Frederic Konrad <konrad.frederic@yahoo.fr> <fred.konrad@greensocs.com>
+ Frederic Konrad <konrad.frederic@yahoo.fr> <konrad@adacore.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a6a1d36f52..0c35509337 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -364,7 +364,7 @@ F: target/rx/
+ 
+ S390 TCG CPUs
+ M: Richard Henderson <richard.henderson@linaro.org>
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ R: Ilya Leoshkevich <iii@linux.ibm.com>
+ S: Maintained
+ F: target/s390x/
+@@ -1861,7 +1861,7 @@ F: target/s390x/ioinst.c
+ L: qemu-s390x@nongnu.org
+ 
+ S390 CPU models
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ S: Maintained
+ F: target/s390x/cpu_features*.[ch]
+ F: target/s390x/cpu_models.[ch]
+@@ -2383,7 +2383,7 @@ F: tests/functional/x86_64/test_virtio_version.py
+ 
+ virtio-balloon
+ M: Michael S. Tsirkin <mst@redhat.com>
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ S: Maintained
+ F: docs/interop/virtio-balloon-stats.rst
+ F: hw/virtio/virtio-balloon*.c
+@@ -2531,7 +2531,7 @@ F: hw/virtio/virtio-crypto-pci.c
+ F: include/hw/virtio/virtio-crypto.h
+ 
+ virtio based memory device
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ S: Supported
+ F: hw/s390x/virtio-ccw-md.c
+ F: hw/s390x/virtio-ccw-md.h
+@@ -2540,7 +2540,7 @@ F: hw/virtio/virtio-md-*.c
+ F: include/hw/virtio/virtio-md-pci.h
+ 
+ virtio-mem
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ S: Supported
+ W: https://virtio-mem.gitlab.io/
+ F: hw/virtio/virtio-mem.c
+@@ -2918,7 +2918,7 @@ L: qemu-s390x@nongnu.org
+ S390 floating interrupt controller
+ M: Halil Pasic <pasic@linux.ibm.com>
+ M: Christian Borntraeger <borntraeger@linux.ibm.com>
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ R: Jason Herne <jjherne@linux.ibm.com>
+ S: Supported
+ F: hw/intc/s390_flic*.c
+@@ -3246,7 +3246,7 @@ T: git https://gitlab.com/stsquad/qemu gdbstub/next
+ Memory API
+ M: Paolo Bonzini <pbonzini@redhat.com>
+ M: Peter Xu <peterx@redhat.com>
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ S: Supported
+ F: include/system/ioport.h
+@@ -3266,7 +3266,7 @@ F: system/ram-block-attributes.c
+ F: scripts/coccinelle/memory-region-housekeeping.cocci
+ 
+ Memory devices
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ M: Igor Mammedov <imammedo@redhat.com>
+ R: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+ S: Supported
+@@ -3369,7 +3369,7 @@ R: Ilya Maximets <i.maximets@ovn.org>
+ F: net/af-xdp.c
+ 
+ Host Memory Backends
+-M: David Hildenbrand <david@redhat.com>
++M: David Hildenbrand <david@kernel.org>
+ M: Igor Mammedov <imammedo@redhat.com>
+ S: Maintained
+ F: backends/hostmem*.c
+
+base-commit: 53b41bb78950912ba2d9809eef6b45e4df30c647
+-- 
+2.51.0
 
 
