@@ -2,98 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A376C2E15A
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F389C2E1D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:14:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1lT-0000xj-11; Mon, 03 Nov 2025 16:06:59 -0500
+	id 1vG1lh-00012D-IJ; Mon, 03 Nov 2025 16:07:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lR-0000xF-It
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1ld-00010n-O0
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lK-0005IE-J8
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:57 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lO-0005Jc-Rj
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762204009;
+ s=mimecast20190719; t=1762204011;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZwNCvExcsouMK7Enx+vePUsZL3j/5e0nseGrkexQXYE=;
- b=X9odkwUpRVjnXQJJa0qtYeZJdsN0fjjHtOP54YsX89crzdUSCrxC9Na1Lt1/IjdPUt64vx
- qdnZMaWE0iZEu8CAWJgYreBdvqMZopovGVRU/PwoeW4iyl2PUtqpKPZO5K19hOgx2v2rQk
- 59h9eWLgCi0WjTPusRoUeX76f62ddew=
+ bh=wdnH+0u+VOkpdCmJkp69LW5DtXy26by2TmG5kvQNIqo=;
+ b=Qk+lPBW51zl+mcaFWT5IpX27M5eU6R5lxpDIiI40hhBqrhcLWX1l1TAhyQgo0IQwW1uJ6b
+ oPskZF49TCTIBxkPeGFr8kYSNyINcy6QCSSEWBdMLckApl3Mv7PZGJyALK0KQyTRpr6ac5
+ YIJNv1uUw2BRLb55tB48+d6bwBWumrg=
 Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
  [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-LQXyx7fQPv6e1NBqFLHxeA-1; Mon, 03 Nov 2025 16:06:48 -0500
-X-MC-Unique: LQXyx7fQPv6e1NBqFLHxeA-1
-X-Mimecast-MFC-AGG-ID: LQXyx7fQPv6e1NBqFLHxeA_1762204008
+ us-mta-106-CSlIgo-JOXK8ZuXJgj6KJA-1; Mon, 03 Nov 2025 16:06:49 -0500
+X-MC-Unique: CSlIgo-JOXK8ZuXJgj6KJA-1
+X-Mimecast-MFC-AGG-ID: CSlIgo-JOXK8ZuXJgj6KJA_1762204009
 Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-8a4ef35cc93so1433902585a.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:48 -0800 (PST)
+ af79cd13be357-89f7a8b9775so1407352785a.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762204007; x=1762808807; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762204009; x=1762808809; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZwNCvExcsouMK7Enx+vePUsZL3j/5e0nseGrkexQXYE=;
- b=hx5ROIuZNUNjNon9TJysl+nwftVnWtyUUQG3U1iUtJXOQm6xOcBfhpFu3R8lMFPkJK
- iLr5I8nB8ayPQfEpmt0NamhUFXy7ZXh6EyPDUwOuF5ZA4qmfnvyZinNsJQg58W5AEoru
- loMdDGDEUSHqln2MvrVM7Ug+6VU+9mmdccZyuz/oJcw2XbEd9DpaZFa2EXv5uATKWPsv
- Etng6kCQw/1/WQGBvZzNhzwzOqp0oMrFVJPQGBVQOtU6XfKgeTF91E9ILr9XA8OXSYa0
- YKmrxk+MtASbW1sAZTN6jmhDufVPyHh8CmUFjcBBxqQNAR2UkhaiVfBYRCmSz7F0ATgY
- DMuQ==
+ bh=wdnH+0u+VOkpdCmJkp69LW5DtXy26by2TmG5kvQNIqo=;
+ b=O3I+Gy6g7zLJnXGNeGE1uhS1msAyzpvtL8IeaNPURsEczIzPLdN0yxI0cKOalk2W7C
+ VVWaGNH2miZSFH+N/p0+VmFEYAjIZa87e6IQVstG7nFHnsnG6/rXPwMuDg3M8fIf10Y1
+ qcUsaOVbNpQGGlO5F/ebKdcolx/e0MIm1QaXmktebj+8EUdd5yA87QtXfziE2GVKQr9q
+ ZdUZZqOoIplYgprBdAH8vRiZ/vAmPKONV2v4frvJZsA2md4XMBhq3DlIhffNTt6GF3SC
+ X1jp0uQ4Ub9HWXcMFfizGiE/HxKI/cTIhHKU+4bLnKIGiUswVBeK8JKthYBrtSzaF4OB
+ RKhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762204007; x=1762808807;
+ d=1e100.net; s=20230601; t=1762204009; x=1762808809;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZwNCvExcsouMK7Enx+vePUsZL3j/5e0nseGrkexQXYE=;
- b=b0PhUNpA1w4zwWnOWifxSresIgprLgkWiXQrQox8i4MkL9Dmq0s4jJxZ0+3p3uY0OT
- FajWcScGjf6qHOl77k0Iut2jFvskVSBkALWZ6ka5mEP2QqpmVJ07PFBtZi+FFHBQAKxG
- LJTONPgdy6Go+J4bYVhlzs1ELKMSxWv3AYf6FwYgMDQl6uKp63llz4Bp23w7PXImslwT
- vOEJMwkuFO8PpLlwyT5nxsvLoOlX7xikF/i0K1v8uNynQyTcrIzIbjXtETPOkm1l1dPt
- wTPXG6UVKDH+zeWNPo6QwMXrb5+mbhWb1LOR0AOvpO/uEH1aEH4TTo74ZEIYHcHz88zO
- 7Kiw==
-X-Gm-Message-State: AOJu0Yy+Kjb/1jzmrDFZoNNtrX3Gd/bxA3u6QJKnPSyIXuZ5pLUVWHxY
- Sg0lmcgIKafeoKxPcHcTZN9/W3u7RUCeLKgaZizSwr9ag3jomaaUe3IDDwW12FFSCyaxIkOynZo
- RgeZhxE6kXI1mR+pwdn3CgAVOGEf/a48ETEYtph+flEWo1+hMfqHz3qy4lfPd73P46w7WBC+A/M
- l82MDNS6R/I8+HAmO5DWj5FL4wtV6oobcZnlWYQw==
-X-Gm-Gg: ASbGncsYXenLXpsNoB6NKXPOkBoClUcgkuFMD78kgMlfSf7UfkbdynVPxncwVmQZfL2
- eNVVup2LYeBEzJ3QR7ATQA1cITrOjvwVUD6HeRAMB0vMKj8y5RZimKJ6oTvCD5lgzHdrm5rxqH9
- CJMO4s03UD1T1KZp9p4gPI+9xh4gSvez0b1hsHtnZVZnI3YQvA3AoFrTISvrRjbKUuG2PV1sHZt
- zAF1BiEtSh/mmFNngI3IA/C6xckAkYkEsqyIMy+uhbyUr/uCg+Eg7VZ5d/ur7JJrsmFmqh/1xaf
- dSP8MQ9sHsw8sx5GqRLkWcvKZD+4+7uOeSwqX/xdM9yQRNMxh9SZX7RCZmVaJL2z
-X-Received: by 2002:a05:620a:454d:b0:891:9f29:2902 with SMTP id
- af79cd13be357-8ab9a534c84mr1751654085a.48.1762204007176; 
- Mon, 03 Nov 2025 13:06:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGsT3kTmbkomL6GJC6W50nxcfokuqQHdz3hirQg4McVj4hMF4v65QHG+BLvOv7uKvpvvnkSIA==
-X-Received: by 2002:a05:620a:454d:b0:891:9f29:2902 with SMTP id
- af79cd13be357-8ab9a534c84mr1751649185a.48.1762204006599; 
- Mon, 03 Nov 2025 13:06:46 -0800 (PST)
+ bh=wdnH+0u+VOkpdCmJkp69LW5DtXy26by2TmG5kvQNIqo=;
+ b=FCZTjl6DZvrPRR7TqAuwAgKIUfwZN7rCKMco+8J15kUbw1I0SqQu1Ls0HIyCQoqNlp
+ 3zSfi1kFsKU0bwrwBlFu4U65dJQYo43xpIeqNA3h5qisTRRRhDcY8WmI8Zk/97ECZFgC
+ mzKe8xKmGeaZpCvXuNX6Ct3L7FtqXKgnv13aZyIdEuj/I24YtF3wsIL3EcpPRNGWKDCM
+ pt7myx0RmeTOQbupC8PuFUkKW9ZvY/nHopMBHIzW7KfPFWD8vd4OQSQvIE55Mg922SuX
+ +x2l2nlWRBkeJaqeDMi1GcRnr+KXaj3pzPtb2vSzIkBks2+9b92iTQRgBsNjtTSsY5if
+ sNrA==
+X-Gm-Message-State: AOJu0YxiYnA0VaycuAxANcp84+PTK8ymCoyPPUmC7aAWevwkQsPLpHo/
+ gdFET0ofVEgO8y3mk5vOKOzQ5GjpXzbCs6MpeWI9apOwZ9U7507XqZN0tHyd6S+R1E1lZk6+Lu6
+ AGBE05uPa7B19a6ZokkMvfy8PwH62sEgt590WRQ35a67gBVms+Gv4WMCE9y7mBXG08EhMYHEq2T
+ dz9JAt4Ec6FX6TdQsjyxXD5Cnbs8PASY9qL6qxuQ==
+X-Gm-Gg: ASbGnct7xXtpEnXGT1CV2goDDTrARGxws6HsCYEmRa1KZ6k9WL9YuFgwmrISIjS4fKa
+ DVxh9Sj8NyN3HUTGAhQ+UpFaWGigPFl4jw0ZQeDISyZeCt1bJXR1mxOFVeqXOTV2d8af05n4VEE
+ 5ZQ5b/jZ+5tnBQgshbNjC0/n7FTRH0CZaCR0hWJ78zmZlNIb0rtoS5AaYh6eeEbu6MjIarqe7tc
+ fDjGH4fdGskC6RUYFA82G+ytrz8AmlK/lu9R9wnDVQEk7KfCfo2HrbP8B2TD6JtGfpuoyEUeLDd
+ 2mTXbBYIvHiTDQ3cc0urVFbLfs7nYhMd4jB8UQUXGr/iu/N2DZ64DJPMWlsukewz
+X-Received: by 2002:a05:620a:19a1:b0:8a4:4156:16e with SMTP id
+ af79cd13be357-8ab98eb5107mr1706570785a.20.1762204008777; 
+ Mon, 03 Nov 2025 13:06:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFzbrhWMdqMM8AavhOkeM3h2dnzUKJp4HuGM6ceihOq2qFSFt8epdtML9/HoSb+Q2D0583Elg==
+X-Received: by 2002:a05:620a:19a1:b0:8a4:4156:16e with SMTP id
+ af79cd13be357-8ab98eb5107mr1706564485a.20.1762204008197; 
+ Mon, 03 Nov 2025 13:06:48 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.45
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:06:46 -0800 (PST)
+ Mon, 03 Nov 2025 13:06:47 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 13/36] migration/qmp: Update "resume" flag doc in "migrate"
- command
-Date: Mon,  3 Nov 2025 16:06:02 -0500
-Message-ID: <20251103210625.3689448-14-peterx@redhat.com>
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 14/36] migration/cpr: Document obscure usage of g_autofree when
+ parse str
+Date: Mon,  3 Nov 2025 16:06:03 -0500
+Message-ID: <20251103210625.3689448-15-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,8 +102,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,34 +119,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It wasn't obvious how the resume flag should be used when staring at the
-QAPI doc.  Enrich it to be crystal clear.
+HMP parsing of cpr_exec_command contains an obscure usage of g_autofree.
+Provide a document for it to be clear that it's intentional, rather than
+memory leaked.
 
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20251022190425.2730441-1-peterx@redhat.com
-[peterx: amended wordings, per markus]
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Link: https://lore.kernel.org/r/20251023161657.2821652-1-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ migration/migration-hmp-cmds.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index be0f3fcc12..c7a6737cc1 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1732,7 +1732,10 @@
- # @detach: this argument exists only for compatibility reasons and is
- #     ignored by QEMU
- #
--# @resume: resume one paused migration, default "off".  (since 3.0)
-+# @resume: when set, use the new uri/channels specified to resume paused
-+#     postcopy migration.  This flag should only be used if the previous
-+#     postcopy migration was interrupted.  The command will fail unless
-+#     migration is in "postcopy-paused" state.  (default: false, since 3.0)
- #
- # Features:
- #
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 847d18faaa..79426bf5d7 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -734,6 +734,12 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         visit_type_bool(v, param, &p->direct_io, &err);
+         break;
+     case MIGRATION_PARAMETER_CPR_EXEC_COMMAND: {
++        /*
++         * NOTE: g_autofree will only auto g_free() the strv array when
++         * needed, it will not free the strings within the array. It's
++         * intentional: when strv is set, the ownership of the strings will
++         * always be passed to p->cpr_exec_command via QAPI_LIST_APPEND().
++         */
+         g_autofree char **strv = NULL;
+         g_autoptr(GError) gerr = NULL;
+         strList **tail = &p->cpr_exec_command;
 -- 
 2.50.1
 
