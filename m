@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E9FC2B37A
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FADC2B386
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:03:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsH0-0003oB-HI; Mon, 03 Nov 2025 05:58:54 -0500
+	id 1vFsGv-0003mp-Qx; Mon, 03 Nov 2025 05:58:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGy-0003nq-Po
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:52 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGt-0003mL-K3
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGs-0004Hc-Ag
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:52 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGr-0004HK-JF
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1762167524;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4skMTA8q4CKiXos5Nlm3GfRuvfkktXGVS7jbmmBo9qg=;
- b=hSUJ16usVXHA1R3EDBcQONFScN4Iv2kmOwHnEcFXYfnTnsUeli73GGSYnlYxHpP3vieUzw
- JpNRg1QtWE/C0mdMaBTtJljGqxCzNls7wtwPIhEFa2gfTlb+R7qj0EReHvHX6soLu6cc3S
- qao6A1hIJ0sJP3s3G6FSJ2yJP9ZAKKI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=hSBy+vv/JAIqO/yYed8i7OebcPCRF9mzIK2GU6wFWj0=;
+ b=CCcC/KgReb3n8IPTFyXrGTlHHAUt7xUbwjHIXqzXnuBMv8aVHpTC6U+JNZB4nOtzOonUVW
+ HV3PluBkMNGd4Y5jRR4NFkwPI79qBUMhDvJu4+Wf+4Rg49ZS1hzxSlUySBvKVIRzZZzLGu
+ ytI7InPve8PSwghQG6AOHIo1cBfpS6M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-HjJ8z68ZOwKzpv97_5xSGg-1; Mon,
- 03 Nov 2025 05:58:40 -0500
-X-MC-Unique: HjJ8z68ZOwKzpv97_5xSGg-1
-X-Mimecast-MFC-AGG-ID: HjJ8z68ZOwKzpv97_5xSGg_1762167519
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-cjQXnXeBN6iuR526oS5Q5Q-1; Mon,
+ 03 Nov 2025 05:58:42 -0500
+X-MC-Unique: cjQXnXeBN6iuR526oS5Q5Q-1
+X-Mimecast-MFC-AGG-ID: cjQXnXeBN6iuR526oS5Q5Q_1762167522
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0B9C180A236; Mon,  3 Nov 2025 10:58:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 11D751955F06; Mon,  3 Nov 2025 10:58:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 44E1030001A1; Mon,  3 Nov 2025 10:58:37 +0000 (UTC)
+ id 5BA6C30001A1; Mon,  3 Nov 2025 10:58:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/22] tests/functional: Fix problems in utils.py reported by
- pylint
-Date: Mon,  3 Nov 2025 11:58:03 +0100
-Message-ID: <20251103105824.322039-7-thuth@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 07/22] tests/functional/arm/test_aspeed_ast1030: Remove unused
+ import
+Date: Mon,  3 Nov 2025 11:58:04 +0100
+Message-ID: <20251103105824.322039-8-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,55 +84,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-- put the doc strings in the right locations (after the "def" line)
-- use the right indentation (4 spaces)
+This file does not use LinuxKernelTest directly (but AspeedTest),
+so we can remove this unnecessary import here.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251015095454.1575318-7-thuth@redhat.com>
+Message-ID: <20251024124016.799687-1-thuth@redhat.com>
 ---
- tests/functional/qemu_test/utils.py | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ tests/functional/arm/test_aspeed_ast1030.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
-index e7c8de81654..826c267785b 100644
---- a/tests/functional/qemu_test/utils.py
-+++ b/tests/functional/qemu_test/utils.py
-@@ -17,10 +17,10 @@ def get_usernet_hostfwd_port(vm):
-     res = vm.cmd('human-monitor-command', command_line='info usernet')
-     return get_info_usernet_hostfwd_port(res)
+diff --git a/tests/functional/arm/test_aspeed_ast1030.py b/tests/functional/arm/test_aspeed_ast1030.py
+index 60e2b0251c6..d1822edd8f1 100755
+--- a/tests/functional/arm/test_aspeed_ast1030.py
++++ b/tests/functional/arm/test_aspeed_ast1030.py
+@@ -6,9 +6,8 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
  
--"""
--Round up to next power of 2
--"""
- def pow2ceil(x):
-+    """
-+    Round up to next power of 2
-+    """
-     return 1 if x == 0 else 2**(x - 1).bit_length()
+-from qemu_test import LinuxKernelTest, Asset
+ from aspeed import AspeedTest
+-from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test import Asset, exec_command_and_wait_for_pattern
  
- def file_truncate(path, size):
-@@ -28,12 +28,12 @@ def file_truncate(path, size):
-         with open(path, 'ab+') as fd:
-             fd.truncate(size)
  
--"""
--Expand file size to next power of 2
--"""
- def image_pow2ceil_expand(path):
--        size = os.path.getsize(path)
--        size_aligned = pow2ceil(size)
--        if size != size_aligned:
--            with open(path, 'ab+') as fd:
--                fd.truncate(size_aligned)
-+    """
-+    Expand file size to next power of 2
-+    """
-+    size = os.path.getsize(path)
-+    size_aligned = pow2ceil(size)
-+    if size != size_aligned:
-+        with open(path, 'ab+') as fd:
-+            fd.truncate(size_aligned)
+ class AST1030Machine(AspeedTest):
 -- 
 2.51.0
 
