@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195E6C2C272
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B03C2C23F
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:39:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFulq-0005QY-DT; Mon, 03 Nov 2025 08:38:54 -0500
+	id 1vFulr-0005Y8-2v; Mon, 03 Nov 2025 08:38:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFulb-0005No-TE
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vFull-0005Qg-KF
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFulV-0004PS-Cs
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:39 -0500
+ id 1vFuld-0004Pa-MY
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762177111;
+ s=mimecast20190719; t=1762177118;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PHH/8x8Op/Y+Frw2h9ZHPRZ5Ou7GryVz7HpBcSZAcpA=;
- b=Ga0J7/5NtfPpcvAwsnW+6WtvDYaQNUkQ+vJu7JJ1dizj+btLbQDAn5Qkg4kpn43EpIEFIZ
- 2EAtl58nGmpEFiR8iwVumb268g02a87NhxdGQ861dfWYFxOVutKmf3L+nZfrt2vaw/cIbn
- I1y9eS1uUwwQa+gKacaXIhKb0VUi1Ts=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Hny0i0ASJJZMArEYCPvw372YSwoZx86dwGtyhGjo8rY=;
+ b=JypNCZ8b2yLqF7oBdSGVD+5WJwutXplQKboTaFfRC5Lyszsu6YA0XuyFmOI6keTZIEV8sh
+ l5Emx2JS9OVFcFPRyJxkVre7iCCOd0wEv38UAm9B3aGqzAQcjjvvb7NtyG/45XgFjv3WXx
+ NAFC+gJJysn6QanBpsibqMp4rfR4Pfo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-gmACHiRKP4OEWKUJAJQ-hg-1; Mon,
- 03 Nov 2025 08:38:28 -0500
-X-MC-Unique: gmACHiRKP4OEWKUJAJQ-hg-1
-X-Mimecast-MFC-AGG-ID: gmACHiRKP4OEWKUJAJQ-hg_1762177106
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-_4tfMLhNP8OAHN-ixKzPTw-1; Mon,
+ 03 Nov 2025 08:38:35 -0500
+X-MC-Unique: _4tfMLhNP8OAHN-ixKzPTw-1
+X-Mimecast-MFC-AGG-ID: _4tfMLhNP8OAHN-ixKzPTw_1762177114
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB0471954B08; Mon,  3 Nov 2025 13:38:26 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6A778195608F; Mon,  3 Nov 2025 13:38:33 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.202])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AA97B1800578; Mon,  3 Nov 2025 13:38:15 +0000 (UTC)
+ id 12EF61800579; Mon,  3 Nov 2025 13:38:27 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>,
- Manish Mishra <manish.mishra@nutanix.com>, Tejus GK <tejus.gk@nutanix.com>
-Subject: [PULL 06/32] io: flush zerocopy socket error queue on sendmsg failure
- due to ENOBUF
-Date: Mon,  3 Nov 2025 13:37:00 +0000
-Message-ID: <20251103133727.423041-7-berrange@redhat.com>
+ devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>
+Subject: [PULL 07/32] crypto: bump min gnutls to 3.7.5
+Date: Mon,  3 Nov 2025 13:37:01 +0000
+Message-ID: <20251103133727.423041-8-berrange@redhat.com>
 In-Reply-To: <20251103133727.423041-1-berrange@redhat.com>
 References: <20251103133727.423041-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,211 +86,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manish Mishra <manish.mishra@nutanix.com>
+Per repology, current shipping versions are:
 
-The kernel allocates extra metadata SKBs in case of a zerocopy send,
-eventually used for zerocopy's notification mechanism. This metadata
-memory is accounted for in the OPTMEM limit. The kernel queues
-completion notifications on the socket error queue and this error queue
-is freed when userspace reads it.
+                 RHEL-9: 3.8.3
+              Debian 13: 3.8.9
+       openSUSE Leap 15: 3.8.3
+       Ubuntu LTS 22.04: 3.7.5
+                FreeBSD: 3.8.10
+              Fedora 42: 3.8.10
+                OpenBSD: 3.8.10
+         macOS HomeBrew: 3.8.10
 
-Usually, in the case of in-order processing, the kernel will batch the
-notifications and merge the metadata into a single SKB and free the
-rest. As a result, it never exceeds the OPTMEM limit. However, if there
-is any out-of-order processing or intermittent zerocopy failures, this
-error chain can grow significantly, exhausting the OPTMEM limit. As a
-result, all new sendmsg requests fail to allocate any new SKB, leading
-to an ENOBUF error. Depending on the amount of data queued before the
-flush (i.e., large live migration iterations), even large OPTMEM limits
-are prone to failure.
+Ubuntu 22.04 is our oldest constraint at this time.
 
-To work around this, if we encounter an ENOBUF error with a zerocopy
-sendmsg, flush the error queue and retry once more.
-
-Co-authored-by: Manish Mishra <manish.mishra@nutanix.com>
-Signed-off-by: Tejus GK <tejus.gk@nutanix.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[DB: change TRUE/FALSE to true/false for 'bool' type;
-     add more #ifdef QEMU_MSG_ZEROCOPY blocks]
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/io/channel-socket.h |  5 +++
- io/channel-socket.c         | 84 ++++++++++++++++++++++++++++++-------
- 2 files changed, 75 insertions(+), 14 deletions(-)
+ crypto/cipher.c                |  2 +-
+ crypto/meson.build             |  2 +-
+ meson.build                    | 37 ++++------------------------------
+ tests/unit/test-crypto-block.c |  3 +--
+ 4 files changed, 7 insertions(+), 37 deletions(-)
 
-diff --git a/include/io/channel-socket.h b/include/io/channel-socket.h
-index 26319fa98b..fcfd489c6c 100644
---- a/include/io/channel-socket.h
-+++ b/include/io/channel-socket.h
-@@ -50,6 +50,11 @@ struct QIOChannelSocket {
-     ssize_t zero_copy_queued;
-     ssize_t zero_copy_sent;
-     bool blocking;
-+    /**
-+     * This flag indicates whether any new data was successfully sent with
-+     * zerocopy since the last qio_channel_socket_flush() call.
-+     */
-+    bool new_zero_copy_sent_success;
- };
+diff --git a/crypto/cipher.c b/crypto/cipher.c
+index 229710f76b..515165e0dc 100644
+--- a/crypto/cipher.c
++++ b/crypto/cipher.c
+@@ -142,7 +142,7 @@ qcrypto_cipher_validate_key_length(QCryptoCipherAlgo alg,
+ #include "cipher-gcrypt.c.inc"
+ #elif defined CONFIG_NETTLE
+ #include "cipher-nettle.c.inc"
+-#elif defined CONFIG_GNUTLS_CRYPTO
++#elif defined CONFIG_GNUTLS
+ #include "cipher-gnutls.c.inc"
+ #else
+ #include "cipher-stub.c.inc"
+diff --git a/crypto/meson.build b/crypto/meson.build
+index 735635de1f..dd61ed9174 100644
+--- a/crypto/meson.build
++++ b/crypto/meson.build
+@@ -38,7 +38,7 @@ if nettle.found()
+   endif
+ elif gcrypt.found()
+   crypto_ss.add(gcrypt, files('hash-gcrypt.c', 'hmac-gcrypt.c', 'pbkdf-gcrypt.c'))
+-elif gnutls_crypto.found()
++elif gnutls.found()
+   crypto_ss.add(gnutls, files('hash-gnutls.c', 'hmac-gnutls.c', 'pbkdf-gnutls.c'))
+ else
+   crypto_ss.add(files('hash-glib.c', 'hmac-glib.c', 'pbkdf-stub.c'))
+diff --git a/meson.build b/meson.build
+index df876c72f0..b67e14f630 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1823,33 +1823,11 @@ if not get_option('libcbor').auto() or have_system
+ endif
  
+ gnutls = not_found
+-gnutls_crypto = not_found
+ gnutls_bug1717_workaround = false
+ if get_option('gnutls').enabled() or (get_option('gnutls').auto() and have_system)
+-  # For general TLS support our min gnutls matches
+-  # that implied by our platform support matrix
+-  #
+-  # For the crypto backends, we look for a newer
+-  # gnutls:
+-  #
+-  #   Version 3.6.8  is needed to get XTS
+-  #   Version 3.6.13 is needed to get PBKDF
+-  #   Version 3.6.14 is needed to get HW accelerated XTS
+-  #
+-  # If newer enough gnutls isn't available, we can
+-  # still use a different crypto backend to satisfy
+-  # the platform support requirements
+-  gnutls_crypto = dependency('gnutls', version: '>=3.6.14',
+-                             method: 'pkg-config',
+-                             required: false)
+-  if gnutls_crypto.found()
+-    gnutls = gnutls_crypto
+-  else
+-    # Our min version if all we need is TLS
+-    gnutls = dependency('gnutls', version: '>=3.5.18',
+-                        method: 'pkg-config',
+-                        required: get_option('gnutls'))
+-  endif
++  gnutls = dependency('gnutls', version: '>=3.7.5',
++                      method: 'pkg-config',
++                      required: get_option('gnutls'))
  
-diff --git a/io/channel-socket.c b/io/channel-socket.c
-index 8b30d5b7f7..3053b35ad8 100644
---- a/io/channel-socket.c
-+++ b/io/channel-socket.c
-@@ -37,6 +37,12 @@
+   #if gnutls.found() and not get_option('gnutls-bug1717-workaround').disabled()
+     # XXX: when bug 1717 is resolved, add logic to probe for
+@@ -1874,12 +1852,7 @@ if get_option('nettle').enabled() and get_option('gcrypt').enabled()
+   error('Only one of gcrypt & nettle can be enabled')
+ endif
  
- #define SOCKET_MAX_FDS 16
- 
-+#ifdef QEMU_MSG_ZEROCOPY
-+static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-+                                             bool block,
-+                                             Error **errp);
-+#endif
-+
- SocketAddress *
- qio_channel_socket_get_local_address(QIOChannelSocket *ioc,
-                                      Error **errp)
-@@ -66,6 +72,7 @@ qio_channel_socket_new(void)
-     sioc->zero_copy_queued = 0;
-     sioc->zero_copy_sent = 0;
-     sioc->blocking = false;
-+    sioc->new_zero_copy_sent_success = false;
- 
-     ioc = QIO_CHANNEL(sioc);
-     qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
-@@ -618,6 +625,10 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
-     size_t fdsize = sizeof(int) * nfds;
-     struct cmsghdr *cmsg;
-     int sflags = 0;
-+#ifdef QEMU_MSG_ZEROCOPY
-+    bool blocking = sioc->blocking;
-+    bool zerocopy_flushed_once = false;
-+#endif
- 
-     memset(control, 0, CMSG_SPACE(sizeof(int) * SOCKET_MAX_FDS));
- 
-@@ -662,13 +673,30 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
-             return QIO_CHANNEL_ERR_BLOCK;
-         case EINTR:
-             goto retry;
-+#ifdef QEMU_MSG_ZEROCOPY
-         case ENOBUFS:
-             if (flags & QIO_CHANNEL_WRITE_FLAG_ZERO_COPY) {
--                error_setg_errno(errp, errno,
--                                 "Process can't lock enough memory for using MSG_ZEROCOPY");
--                return -1;
-+                /**
-+                 * Socket error queueing may exhaust the OPTMEM limit. Try
-+                 * flushing the error queue once.
-+                 */
-+                if (!zerocopy_flushed_once) {
-+                    ret = qio_channel_socket_flush_internal(ioc, blocking,
-+                                                            errp);
-+                    if (ret < 0) {
-+                        return -1;
-+                    }
-+                    zerocopy_flushed_once = true;
-+                    goto retry;
-+                } else {
-+                    error_setg_errno(errp, errno,
-+                                     "Process can't lock enough memory for "
-+                                     "using MSG_ZEROCOPY");
-+                    return -1;
-+                }
-             }
-             break;
-+#endif
-         }
- 
-         error_setg_errno(errp, errno,
-@@ -777,8 +805,9 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
- 
- 
- #ifdef QEMU_MSG_ZEROCOPY
--static int qio_channel_socket_flush(QIOChannel *ioc,
--                                    Error **errp)
-+static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-+                                             bool block,
-+                                             Error **errp)
- {
-     QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
-     struct msghdr msg = {};
-@@ -786,7 +815,6 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
-     struct cmsghdr *cm;
-     char control[CMSG_SPACE(sizeof(*serr))];
-     int received;
--    int ret;
- 
-     if (sioc->zero_copy_queued == sioc->zero_copy_sent) {
-         return 0;
-@@ -796,16 +824,25 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
-     msg.msg_controllen = sizeof(control);
-     memset(control, 0, sizeof(control));
- 
--    ret = 1;
+-# Explicit nettle/gcrypt request, so ignore gnutls for crypto
+-if get_option('nettle').enabled() or get_option('gcrypt').enabled()
+-  gnutls_crypto = not_found
+-endif
 -
-     while (sioc->zero_copy_sent < sioc->zero_copy_queued) {
-         received = recvmsg(sioc->fd, &msg, MSG_ERRQUEUE);
-         if (received < 0) {
-             switch (errno) {
-             case EAGAIN:
--                /* Nothing on errqueue, wait until something is available */
--                qio_channel_wait(ioc, G_IO_ERR);
--                continue;
-+                if (block) {
-+                    /*
-+                     * Nothing on errqueue, wait until something is
-+                     * available.
-+                     *
-+                     * Use G_IO_ERR instead of G_IO_IN since MSG_ERRQUEUE reads
-+                     * are signaled via POLLERR, not POLLIN, as the kernel
-+                     * sets POLLERR when zero-copy notificatons appear on the
-+                     * socket error queue.
-+                     */
-+                    qio_channel_wait(ioc, G_IO_ERR);
-+                    continue;
-+                }
-+                return 0;
-             case EINTR:
-                 continue;
-             default:
-@@ -843,13 +880,32 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
-         /* No errors, count successfully finished sendmsg()*/
-         sioc->zero_copy_sent += serr->ee_data - serr->ee_info + 1;
+-if not gnutls_crypto.found()
++if not gnutls.found()
+   if (not get_option('gcrypt').auto() or have_system) and not get_option('nettle').enabled()
+     gcrypt = dependency('libgcrypt', version: '>=1.8',
+                         required: get_option('gcrypt'))
+@@ -2606,7 +2579,6 @@ config_host_data.set('CONFIG_XKBCOMMON', xkbcommon.found())
+ config_host_data.set('CONFIG_KEYUTILS', keyutils.found())
+ config_host_data.set('CONFIG_GETTID', has_gettid)
+ config_host_data.set('CONFIG_GNUTLS', gnutls.found())
+-config_host_data.set('CONFIG_GNUTLS_CRYPTO', gnutls_crypto.found())
+ config_host_data.set('CONFIG_GNUTLS_BUG1717_WORKAROUND', gnutls_bug1717_workaround)
+ config_host_data.set('CONFIG_TASN1', tasn1.found())
+ config_host_data.set('CONFIG_GCRYPT', gcrypt.found())
+@@ -4906,7 +4878,6 @@ summary_info = {}
+ summary_info += {'TLS priority':      get_option('tls_priority')}
+ summary_info += {'GNUTLS support':    gnutls}
+ if gnutls.found()
+-  summary_info += {'  GNUTLS crypto':   gnutls_crypto.found()}
+   summary_info += {'  GNUTLS bug 1717 workaround': gnutls_bug1717_workaround }
+ endif
+ summary_info += {'libgcrypt':         gcrypt}
+diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
+index 3ac7f17b2a..218e585f98 100644
+--- a/tests/unit/test-crypto-block.c
++++ b/tests/unit/test-crypto-block.c
+@@ -31,8 +31,7 @@
+ #endif
  
--        /* If any sendmsg() succeeded using zero copy, return 0 at the end */
-+        /* If any sendmsg() succeeded using zero copy, mark zerocopy success */
-         if (serr->ee_code != SO_EE_CODE_ZEROCOPY_COPIED) {
--            ret = 0;
-+            sioc->new_zero_copy_sent_success = true;
-         }
-     }
- 
--    return ret;
-+    return 0;
-+}
-+
-+static int qio_channel_socket_flush(QIOChannel *ioc,
-+                                    Error **errp)
-+{
-+    QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
-+    int ret;
-+
-+    ret = qio_channel_socket_flush_internal(ioc, true, errp);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-+    if (sioc->new_zero_copy_sent_success) {
-+        sioc->new_zero_copy_sent_success = false;
-+        return 0;
-+    }
-+
-+    return 1;
- }
- 
- #endif /* QEMU_MSG_ZEROCOPY */
+ #if (defined(_WIN32) || defined RUSAGE_THREAD) && \
+-    (defined(CONFIG_NETTLE) || defined(CONFIG_GCRYPT) || \
+-     defined(CONFIG_GNUTLS_CRYPTO))
++    (defined(CONFIG_NETTLE) || defined(CONFIG_GCRYPT))
+ #define TEST_LUKS
+ #else
+ #undef TEST_LUKS
 -- 
 2.51.1
 
