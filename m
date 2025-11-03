@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDC8C2D65C
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B5EC2D656
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:14:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFy3s-0000X3-Tv; Mon, 03 Nov 2025 12:09:44 -0500
+	id 1vFy43-0000Ze-Cl; Mon, 03 Nov 2025 12:09:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3p-0000Vo-Ho
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:42 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3x-0000YV-VW
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:51 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3h-0000sW-EE
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:41 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3f-0000sR-ON
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
- In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=/JWX58fLEOumjtEggtpYYPCTc75FSdSeBBwvHfyqbbY=; b=TLtXghv5y0KShFq
- GTYJU3NfyW86FZHVcXYiC2mocIVR2JPUUOMGT9qn1RYnw9/2k0ocU2g5dlRtD24BlZ1A8ohbQ/fu0
- h0qTP8hKSM3VqlQ2rdaxfHqVVPd+U0zZIUXjFa8guMddi7mnumEqEzbG4OedP/zpIzq4aKzXAshwC
- oA=;
+ List-Help; bh=fhHIF14aZaL5bswiWWZk8ZrOvTFnjdR1muzxmPNyYn8=; b=eQefXwk9rOikajR
+ UmqzIOgscbj6pTM9xQgLd1Xio1znvmXCcDFxIkuXF6V2Z9blBZAM+k5XyBEHw2q3Vwy5hkWRTk8I6
+ 4rpz5RNwPdpvyT985Mhpzo+vlzLSszegxlGmhuDcIZHWpCxZmFOQlIaEkRHUr8DJhssdlD/VojH96
+ TE=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v5 11/25] target/riscv: Fix size of sw_check_code
-Date: Mon,  3 Nov 2025 18:11:54 +0100
-Message-ID: <20251103171208.24355-12-anjo@rev.ng>
+Subject: [PATCH v5 12/25] target/riscv: Fix size of priv
+Date: Mon,  3 Nov 2025 18:11:55 +0100
+Message-ID: <20251103171208.24355-13-anjo@rev.ng>
 In-Reply-To: <20251103171208.24355-1-anjo@rev.ng>
 References: <20251103171208.24355-1-anjo@rev.ng>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
@@ -45,7 +44,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,89 +62,133 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The field only holds values of 2 and 3, fix its size to 8 bits and
-update stores from TCG.
+The priv field of CPUArchState only stores values in the range [0,3],
+fix to 8 bits in size and update relevant function arguments.  Introduce
+a new privilege_mode_t typedef for passing around the privilege mode.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h                            | 2 +-
- target/riscv/translate.c                      | 4 ++--
- target/riscv/insn_trans/trans_rvi.c.inc       | 8 ++++----
- target/riscv/insn_trans/trans_rvzicfiss.c.inc | 4 ++--
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/cpu.h        | 15 +++++++++++----
+ target/riscv/cpu_helper.c | 13 ++++++++-----
+ target/riscv/machine.c    |  2 +-
+ 3 files changed, 20 insertions(+), 10 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index f901608d0e..191a3fb3d9 100644
+index 191a3fb3d9..4c42971809 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -260,7 +260,7 @@ struct CPUArchState {
-     /* env place holder for extra word 2 during unwind */
-     uint64_t excp_uw2;
-     /* sw check code for sw check exception */
--    target_ulong sw_check_code;
-+    uint8_t sw_check_code;
- #ifdef CONFIG_USER_ONLY
+@@ -109,6 +109,12 @@ typedef struct riscv_cpu_profile {
+ 
+ extern RISCVCPUProfile *riscv_profiles[];
+ 
++/*
++ * Type large enough to hold all PRV_* fields, update CPUArchState::priv
++ * migration field if changing this type.
++ */
++typedef uint8_t privilege_mode_t;
++
+ /* Privileged specification version */
+ #define PRIV_VER_1_10_0_STR "v1.10.0"
+ #define PRIV_VER_1_11_0_STR "v1.11.0"
+@@ -265,7 +271,7 @@ struct CPUArchState {
      uint32_t elf_flags;
  #endif
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 5a6913057c..f4f0b96d0a 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1377,8 +1377,8 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     if (ctx->fcfi_lp_expected) {
-         /* Emit after insn_start, i.e. before the op following insn_start. */
-         tcg_ctx->emit_before_op = QTAILQ_NEXT(ctx->base.insn_start, link);
--        tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
--                      tcg_env, offsetof(CPURISCVState, sw_check_code));
-+        tcg_gen_st8_i32(tcg_constant_i32(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
-+                        tcg_env, offsetof(CPURISCVState, sw_check_code));
-         gen_helper_raise_exception(tcg_env,
-                       tcg_constant_i32(RISCV_EXCP_SW_CHECK));
-         tcg_ctx->emit_before_op = NULL;
-diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-index 104a8ebe20..37d2f4d957 100644
---- a/target/riscv/insn_trans/trans_rvi.c.inc
-+++ b/target/riscv/insn_trans/trans_rvi.c.inc
-@@ -53,8 +53,8 @@ static bool trans_lpad(DisasContext *ctx, arg_lpad *a)
-         /*
-          * misaligned, according to spec we should raise sw check exception
-          */
--        tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
--                      tcg_env, offsetof(CPURISCVState, sw_check_code));
-+        tcg_gen_st8_i32(tcg_constant_i32(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
-+                        tcg_env, offsetof(CPURISCVState, sw_check_code));
-         gen_helper_raise_exception(tcg_env,
-                       tcg_constant_i32(RISCV_EXCP_SW_CHECK));
-         return true;
-@@ -66,8 +66,8 @@ static bool trans_lpad(DisasContext *ctx, arg_lpad *a)
-         TCGv tmp = tcg_temp_new();
-         tcg_gen_extract_tl(tmp, get_gpr(ctx, xT2, EXT_NONE), 12, 20);
-         tcg_gen_brcondi_tl(TCG_COND_EQ, tmp, a->label, skip);
--        tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
--                      tcg_env, offsetof(CPURISCVState, sw_check_code));
-+        tcg_gen_st8_i32(tcg_constant_i32(RISCV_EXCP_SW_CHECK_FCFI_TVAL),
-+                        tcg_env, offsetof(CPURISCVState, sw_check_code));
-         gen_helper_raise_exception(tcg_env,
-                       tcg_constant_i32(RISCV_EXCP_SW_CHECK));
-         gen_set_label(skip);
-diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-index 40e5a1b7df..cb9c5419fa 100644
---- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-@@ -40,8 +40,8 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
-                        mxl_memop(ctx) | MO_ALIGN);
-     TCGv rs1 = get_gpr(ctx, a->rs1, EXT_NONE);
-     tcg_gen_brcond_tl(TCG_COND_EQ, data, rs1, skip);
--    tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_BCFI_TVAL),
--                  tcg_env, offsetof(CPURISCVState, sw_check_code));
-+    tcg_gen_st8_i32(tcg_constant_i32(RISCV_EXCP_SW_CHECK_BCFI_TVAL),
-+                    tcg_env, offsetof(CPURISCVState, sw_check_code));
-     gen_update_pc(ctx, 0);
-     gen_helper_raise_exception(tcg_env,
-                   tcg_constant_i32(RISCV_EXCP_SW_CHECK));
+ 
+-    target_ulong priv;
++    privilege_mode_t priv;
+     /* CSRs for execution environment configuration */
+     uint64_t menvcfg;
+     uint64_t senvcfg;
+@@ -651,10 +657,11 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
+ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
+ #endif /* !CONFIG_USER_ONLY */
+ 
+-void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv, bool virt_en);
++void riscv_cpu_set_mode(CPURISCVState *env, privilege_mode_t newpriv,
++                        bool virt_en);
+ 
+ void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
+-    enum CTRType type, target_ulong prev_priv, bool prev_virt);
++    enum CTRType type, privilege_mode_t prev_priv, bool prev_virt);
+ void riscv_ctr_clear(CPURISCVState *env);
+ 
+ void riscv_translate_init(void);
+@@ -725,7 +732,7 @@ static inline int cpu_address_mode(CPURISCVState *env)
+     return mode;
+ }
+ 
+-static inline RISCVMXL cpu_get_xl(CPURISCVState *env, target_ulong mode)
++static inline RISCVMXL cpu_get_xl(CPURISCVState *env, privilege_mode_t mode)
+ {
+     RISCVMXL xl = env->misa_mxl;
+     /*
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 210e7bae6d..38b57bc622 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -798,7 +798,7 @@ void riscv_ctr_clear(CPURISCVState *env)
+     memset(env->ctr_data, 0x0, sizeof(env->ctr_data));
+ }
+ 
+-static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
++static uint64_t riscv_ctr_priv_to_mask(privilege_mode_t priv, bool virt)
+ {
+     switch (priv) {
+     case PRV_M:
+@@ -818,7 +818,8 @@ static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
+     g_assert_not_reached();
+ }
+ 
+-static uint64_t riscv_ctr_get_control(CPURISCVState *env, target_long priv,
++static uint64_t riscv_ctr_get_control(CPURISCVState *env,
++                                      privilege_mode_t priv,
+                                       bool virt)
+ {
+     switch (priv) {
+@@ -840,7 +841,8 @@ static uint64_t riscv_ctr_get_control(CPURISCVState *env, target_long priv,
+  * and src privilege is less than target privilege. This includes the virtual
+  * state as well.
+  */
+-static bool riscv_ctr_check_xte(CPURISCVState *env, target_long src_prv,
++static bool riscv_ctr_check_xte(CPURISCVState *env,
++                                privilege_mode_t src_prv,
+                                 bool src_virt)
+ {
+     target_long tgt_prv = env->priv;
+@@ -929,7 +931,7 @@ static bool riscv_ctr_check_xte(CPURISCVState *env, target_long src_prv,
+  *    idx = (sctrstatus.WRPTR - entry - 1) & (depth - 1);
+  */
+ void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
+-    enum CTRType type, target_ulong src_priv, bool src_virt)
++    enum CTRType type, privilege_mode_t src_priv, bool src_virt)
+ {
+     bool tgt_virt = env->virt_enabled;
+     uint64_t src_mask = riscv_ctr_priv_to_mask(src_priv, src_virt);
+@@ -1027,7 +1029,8 @@ void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
+     env->sctrstatus = set_field(env->sctrstatus, SCTRSTATUS_WRPTR_MASK, head);
+ }
+ 
+-void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv, bool virt_en)
++void riscv_cpu_set_mode(CPURISCVState *env, privilege_mode_t newpriv,
++                        bool virt_en)
+ {
+     g_assert(newpriv <= PRV_M && newpriv != PRV_RESERVED);
+ 
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index c55794c554..ce5e44325d 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -445,7 +445,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINT32(env.misa_ext, RISCVCPU),
+         VMSTATE_UNUSED(4),
+         VMSTATE_UINT32(env.misa_ext_mask, RISCVCPU),
+-        VMSTATE_UINTTL(env.priv, RISCVCPU),
++        VMSTATE_UINT8(env.priv, RISCVCPU),
+         VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
+         VMSTATE_UINT64(env.resetvec, RISCVCPU),
+         VMSTATE_UINT64(env.mhartid, RISCVCPU),
 -- 
 2.51.0
 
