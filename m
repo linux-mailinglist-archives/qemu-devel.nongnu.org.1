@@ -2,93 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9844EC2E1A7
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD79C2E1F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:15:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1mO-0001BW-Ic; Mon, 03 Nov 2025 16:07:57 -0500
+	id 1vG1tM-0006dm-50; Mon, 03 Nov 2025 16:15:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1mL-0001BO-CK
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:53 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vG1tJ-0006Xp-7j
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:15:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1mA-0005Xy-Lg
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:07:52 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vG1t6-0007OM-Ah
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:15:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762204060;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hlU1e2q6IHd4qNTNcT2O05B7HEt3dBs27yp1q95x+vY=;
- b=YjPoSJF9sZlF9mP97vviKSOhylTeXXhQT2PBovmV9BSBXkTVRWm5rCulaz8tIJ1YYhRT2F
- vramsKW2I3/fpBPahrZHrWdHzq6Pm12F/uNqs3yr/a3BJuNkL/8NLLYcZ1E+K+WeG0gtg2
- x3uAtzKJB1JKQmmq5Hu4bdDXgaeIu/Q=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-RED-cso6Mq2q-BQckeDtfA-1; Mon, 03 Nov 2025 16:07:39 -0500
-X-MC-Unique: RED-cso6Mq2q-BQckeDtfA-1
-X-Mimecast-MFC-AGG-ID: RED-cso6Mq2q-BQckeDtfA_1762204059
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-8804b991a54so83166156d6.2
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:07:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762204058; x=1762808858; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=hlU1e2q6IHd4qNTNcT2O05B7HEt3dBs27yp1q95x+vY=;
- b=reUlcaAyjhnLUBx3Nd/V5/JoSusHzzl7Wn9EpqLf5LYymslPmtjPP8uMeLDwzwmXFS
- xpPYlHmcHNCgp74zf9ilITIq0yirDtT+Nflg8Rr0rInAIIJrdn32dnRw2vMYt6hwAj76
- /01ACrOvgCg+r2swxVGpx9RBa7JYuc3O0eL4mj4rgmPbD6PtTE/H1De+mzTDYZYyNTn6
- t0V4SC8cGLvZKO1bGJPDUTs3YN0MQoMbLh9zHKIAVpezlggOlbERHy6KROeBe0+pBS4t
- wNfcKScVRXQONi8ulvXUW1fpqihCXpTL14vu9n9/zv3MGKN5eyvlS0rpEXs4/l7ct580
- 3b4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762204058; x=1762808858;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hlU1e2q6IHd4qNTNcT2O05B7HEt3dBs27yp1q95x+vY=;
- b=VCW0Xu000VPLd1bpRKjBdCqsliXZdT2/oHsH07W3vrHUCERDq9N2mY5G4JRPXBFY+f
- MrB+F0rLYDhQqJh3kXP1kWKdJ9/8kFXhweQ9lisG2O5J0tjEZMkoznGKCHTN/rmbQTUX
- KBy/0q+2Z9WR9PyyCTZa2tvxOqG/DVqBDBYEHjDh7fQ/pXXW39HQRFz+SauzXyC80Ba3
- /vwz55IhO/tD+ygWp/7av9mQLjfQz1kWsmKaFO4axmPaDT0gmuzwm5fgEvOE3iSNfgv/
- KtdO/iqrY6asQ2YO6bhMOenkWugZgeYUp32+SBSOHdGqpGubCUbs/j1caugdAmbkdJg7
- itHA==
-X-Gm-Message-State: AOJu0Yw/1YeIdZjv2lMj+C1T5q6tFPNBRBamAZsYbTyNF8UQWSvspQ3y
- QH+bomXerOwnrfFl/ak5HhB6pI32YilOzOeIkZlADn9PIrKq8zZpPcZ4ebBCsVp1B6A9AYm/+zi
- 7v9lD2hAb2Q1bWsq4Eq5FXQsZ+PZDaCnGo8zJ5xlarRBpGYQHatCmIceJ
-X-Gm-Gg: ASbGnctkcOyy+grwxrzyOyU6DU/lu5m3P7AnQgUQlKFP9UMPRW88Tv0pR1y1EyuYyLc
- nXJkYfW169S4UJ7il+02Y3dntEZJOf9C+VpLTv5wZCkFHEDZTyS7qPZAAdVV3AwAcWJf13aIIva
- VA+o1OamN65aj6sc2m5/z9/3gOmly9DFUHe0dzPc+/wC0jEC8j8TJGYK0oYJXXorXOpnhpJmOp/
- D64MvDq6WJOnGmbvix6ZvH1KUuvfLK0efmdVdEskFDD4LsKoorDBQP6vRikGmX8wqQjaK9lMC8W
- BulCrMHxTwOIZdE69vVWLkCFASXhMrIo/bGaA17e/S9o1s9CT0JrVej9yF3OmJ4uDUo=
-X-Received: by 2002:a05:6214:19eb:b0:878:c2cb:7a68 with SMTP id
- 6a1803df08f44-8802f453044mr179715566d6.43.1762204058447; 
- Mon, 03 Nov 2025 13:07:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG43/nL1jHIey8rI88q2L8eU6O3PLQdRXqezshKikxZrsNfPtWxrSR/PnvSRCXyVc3ewvNI7w==
-X-Received: by 2002:a05:6214:19eb:b0:878:c2cb:7a68 with SMTP id
- 6a1803df08f44-8802f453044mr179714986d6.43.1762204057841; 
- Mon, 03 Nov 2025 13:07:37 -0800 (PST)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88060ea9f47sm8990176d6.56.2025.11.03.13.07.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:07:37 -0800 (PST)
-Date: Mon, 3 Nov 2025 16:07:35 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Juraj Marcin <jmarcin@redhat.com>
-Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Fabiano Rosas <farosas@suse.de>, Jiri Denemark <jdenemar@redhat.com>
-Subject: Re: [PATCH v4 0/8] migration: Introduce POSTCOPY_DEVICE state
-Message-ID: <aQkZl90HJA5hpZrq@x1.local>
-References: <20251103183301.3840862-1-jmarcin@redhat.com>
+ s=mimecast20190719; t=1762204485;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=DNFwLPgHgwG4NrYyq8LDcXqG9jQJFJaLWzM3ZqRqtIE=;
+ b=E7tfxPWLkhzQgg9oD15VpboMC+qTZXq1Q0fzpTLFWLXRsnM03ItzYUlHbHRbCAWxGI3+mx
+ /jQvfgFpo2DxMckYuMUzJdyuU8y1GOeF3EE4BxPApfPI2UI9g7Cc7aRlaz6F/tILRRdedV
+ mlNRzysZx4FB29RtxuvGjOGFPcieXPY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-cg-phmOuMr-uKGWhUF1fuw-1; Mon,
+ 03 Nov 2025 16:14:44 -0500
+X-MC-Unique: cg-phmOuMr-uKGWhUF1fuw-1
+X-Mimecast-MFC-AGG-ID: cg-phmOuMr-uKGWhUF1fuw_1762204483
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4AFC31800451; Mon,  3 Nov 2025 21:14:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.43])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D953319540DA; Mon,  3 Nov 2025 21:14:41 +0000 (UTC)
+Date: Mon, 3 Nov 2025 21:14:38 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Jon Kohler <jon@nutanix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] util/oslib-posix: increase memprealloc thread count to 32
+Message-ID: <aQka0DTrVsJrfU5z@redhat.com>
+References: <20251103185750.1394036-1-jon@nutanix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251103183301.3840862-1-jmarcin@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20251103185750.1394036-1-jon@nutanix.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,7 +66,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,35 +79,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 03, 2025 at 07:32:49PM +0100, Juraj Marcin wrote:
-> This series introduces a new POSTCOPY_DEVICE state that is active (both,
-> on source and destination side), while the destination loads the device
-> state. Before this series, if the destination machine failed during the
-> device load, the source side would stay stuck POSTCOPY_ACTIVE with no
-> way of recovery. With this series, if the migration fails while in
-> POSTCOPY_DEVICE state, the source side can safely resume, as destination
-> has not started yet.
+On Mon, Nov 03, 2025 at 11:57:50AM -0700, Jon Kohler wrote:
+> Increase MAX_MEM_PREALLOC_THREAD_COUNT from 16 to 32. This was last
+> touched in 2017 [1] and, since then, physical machine sizes and VMs
+> therein have continue to get even bigger, both on average and on the
+> extremes.
 > 
-> RFC: https://lore.kernel.org/all/20250807114922.1013286-1-jmarcin@redhat.com/
+> For very large VMs, using 16 threads to preallocate memory can be a
+> non-trivial bottleneck during VM start-up and migration. Increasing
+> this limit to 32 threads reduces the time taken for these operations.
 > 
-> V1: https://lore.kernel.org/all/20250915115918.3520735-1-jmarcin@redhat.com/
+> Test results from quad socket Intel 8490H (4x 60 cores) show a fairly
+> linear gain of 50% with the 2x thread count increase.
 > 
-> V2: https://lore.kernel.org/all/20251027154115.4138677-1-jmarcin@redhat.com/
-> 
-> V3: https://lore.kernel.org/all/20251030214915.1411860-1-jmarcin@redhat.com/
-> 
-> V4 changes:
-> 
-> - fixes for failing qemu-iotest 194
->     - flush channel after sending CMD_PACKAGED data (new patch 1)
->     - POSTCOPY_DEVICE state is now used only if return-path is open
+> ---------------------------------------------
+> Idle Guest w/ 2M HugePages   | Start-up time
+> ---------------------------------------------
+> 240 vCPU, 7.5TB (16 threads) | 2m41.955s
+> ---------------------------------------------
+> 240 vCPU, 7.5TB (32 threads) | 1m19.404s
+> ---------------------------------------------
 
-Queued, thanks Juraj.
+If we're configuring a guest with 240 vCPUs, then this implies the admin
+is expecting that the guest will consume upto 240 host CPUs worth of
+compute time.
 
+What is the purpose of limiting the number of prealloc threads to a
+value that is an order of magnitude less than the number of vCPUs the
+guest has been given ? 
+
+Have you measured what startup time would look like with 240 prealloc
+threads ? Do we hit some scaling limit before that point making more
+prealloc threads counter-productive ? 
+
+I guess there could be different impact for hotadd vs cold add. With
+cold startup the vCPU threads are not yet consuming CPU time, so we
+can reasonably consume that resource for prealloc, where as for
+hot-add any prealloc is on top of what vCPUs are already consuming.
+
+> [1] 1e356fc14bea ("mem-prealloc: reduce large guest start-up and migration time.")
+> 
+> Signed-off-by: Jon Kohler <jon@nutanix.com>
+> ---
+>  util/oslib-posix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+> index 3c14b72665..dc001da66d 100644
+> --- a/util/oslib-posix.c
+> +++ b/util/oslib-posix.c
+> @@ -61,7 +61,7 @@
+>  #include "qemu/memalign.h"
+>  #include "qemu/mmap-alloc.h"
+>  
+> -#define MAX_MEM_PREALLOC_THREAD_COUNT 16
+> +#define MAX_MEM_PREALLOC_THREAD_COUNT 32
+>  
+>  struct MemsetThread;
+>  
+> -- 
+> 2.43.0
+> 
+> 
+
+With regards,
+Daniel
 -- 
-Peter Xu
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
