@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D2BC2B32B
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46D3C2B335
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:00:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsHK-0003zT-BM; Mon, 03 Nov 2025 05:59:14 -0500
+	id 1vFsHj-0004B7-Dm; Mon, 03 Nov 2025 05:59:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHI-0003xn-Lt
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:12 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHP-000429-B8
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHE-0004WN-UE
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHK-0004Yq-Av
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167546;
+ s=mimecast20190719; t=1762167551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IOVDcGhMCkuyVVd2jbsDowfYGThYB1elQwWqVfTLoV4=;
- b=dDqM9dF5lWPyrEXKIZr4pQf0EdtjlzXK1lefQbWCeo1IFlYZiMSEYFNrg3iDfsMLghCqtv
- yQLS7spqoYSVWZ1319Nmoa0U6DcXt1X3Wf74/qf3vD69HdMKNktNgfpG3wM2HPIYdfVFy0
- wCyONvFWWBadrJR6T/PN7mbuD1Ngfqc=
+ bh=I4Fb37wScOwgmWnW1IPXgfwX3Teaam8o++ijSqOP9Qs=;
+ b=Xs86beAZB415bHuBs1tQ/BxjWMxm9uO0wPDKa5F4vj9pTgJwXNXLIwl3C6hnnTd2ub0zVL
+ TELe7ef3MCBHbIFBJU7OkxdgJBat6mspM8iYv0i7z5+SbHlkhUaRMkHWLcybsfFxXSuye0
+ 8u42kxzMINlMUd3bYlbBAh3/VTmzjx0=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-GYjWc5YxPDm-uNYWh0oLQQ-1; Mon,
- 03 Nov 2025 05:59:04 -0500
-X-MC-Unique: GYjWc5YxPDm-uNYWh0oLQQ-1
-X-Mimecast-MFC-AGG-ID: GYjWc5YxPDm-uNYWh0oLQQ_1762167544
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-t0SR7iWuMB6Kf6y6PjwEBg-1; Mon,
+ 03 Nov 2025 05:59:08 -0500
+X-MC-Unique: t0SR7iWuMB6Kf6y6PjwEBg-1
+X-Mimecast-MFC-AGG-ID: t0SR7iWuMB6Kf6y6PjwEBg_1762167547
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 166C61954230; Mon,  3 Nov 2025 10:59:04 +0000 (UTC)
+ id F2F68195423A; Mon,  3 Nov 2025 10:59:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8CF3330001A1; Mon,  3 Nov 2025 10:59:02 +0000 (UTC)
+ id A4D6A30001A1; Mon,  3 Nov 2025 10:59:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 17/22] tests/functional: include the lower level QMP log
- messages
-Date: Mon,  3 Nov 2025 11:58:14 +0100
-Message-ID: <20251103105824.322039-18-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 18/22] hw/s390x: Use memory_region_size()
+Date: Mon,  3 Nov 2025 11:58:15 +0100
+Message-ID: <20251103105824.322039-19-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,46 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We've seen a GitLab CI timeout failure in the test_pseries.py test,
-where it appears likely that the test has hung in a self.qmp('quit')
-call, but we don't have conclusive proof. Adding the QMP log category
-to what we capture should help us diagnose this, at the cost of the
-base.log file becoming significantly more verbose. The previous
-commit to include the logger category name and function should at
-least help understanding the more verbose logs.
+MemoryRegion::size is private data of MemoryRegion,
+use the proper memory_region_size() getter to get it.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251028181300.41475-10-philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251028182651.873256-3-berrange@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/s390x/s390-pci-inst.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index d9d114e63e3..1d773dd697d 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -225,6 +225,9 @@ def setUp(self):
-         self.machinelog = logging.getLogger('qemu.machine')
-         self.machinelog.setLevel(logging.DEBUG)
-         self.machinelog.addHandler(self._log_fh)
-+        self.qmplog = logging.getLogger('qemu.qmp')
-+        self.qmplog.setLevel(logging.DEBUG)
-+        self.qmplog.addHandler(self._log_fh)
+diff --git a/hw/s390x/s390-pci-inst.c b/hw/s390x/s390-pci-inst.c
+index a3bb5aa2216..5841dfc4fec 100644
+--- a/hw/s390x/s390-pci-inst.c
++++ b/hw/s390x/s390-pci-inst.c
+@@ -396,7 +396,7 @@ static MemoryRegion *s390_get_subregion(MemoryRegion *mr, uint64_t offset,
+     uint64_t subregion_size;
  
-         if not self.assets_available():
-             self.skipTest('One or more assets is not available')
-@@ -235,6 +238,7 @@ def tearDown(self):
-         if self.socketdir is not None:
-             self.socketdir.cleanup()
-             self.socketdir = None
-+        self.qmplog.removeHandler(self._log_fh)
-         self.machinelog.removeHandler(self._log_fh)
-         self.log.removeHandler(self._log_fh)
-         self._log_fh.close()
+     QTAILQ_FOREACH(subregion, &mr->subregions, subregions_link) {
+-        subregion_size = int128_get64(subregion->size);
++        subregion_size = memory_region_size(subregion);
+         if ((offset >= subregion->addr) &&
+             (offset + len) <= (subregion->addr + subregion_size)) {
+             mr = subregion;
 -- 
 2.51.0
 
