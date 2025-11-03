@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9AC2B314
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2599DC2B31E
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsH5-0003pr-1a; Mon, 03 Nov 2025 05:58:59 -0500
+	id 1vFsH2-0003oo-6n; Mon, 03 Nov 2025 05:58:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH1-0003om-NA
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH0-0003oN-PP
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGz-0004Nm-KT
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGy-0004No-Qo
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1762167531;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3LMhIyRgzgW+wyd5rEWS2BizSkkIZyVD9i9Z7R9alhA=;
- b=EDKpb6jj6c1bJVL6WTyNC7+XDMfqWk3nK7eLmMxmEMY6WC4AnNE2SuV3XTTXYDNhm8CGdW
- 2m4bKLt8AgYCu7s4c45kwnAjY9DrYjXtt4GlqjAq7aDZk7P6Pqu4A7ZJwbp1j0KGzh6Rg4
- f2bYV95qPZgtQPFBbI/kotKFMyYMCsM=
+ bh=/c91D2IhVYFYL/D/3jHAKa8Lh0bpHjFspI9JM4yXLr4=;
+ b=fq6nF3N9JJLroMJTiBisnWnrUYJCDlFFbEQF6quf3oOju14IuBMfTgWOnlSDVNgDaRp5aE
+ NC+Jg3fFyUVOGyyPD/sXPJU+ymRu/34R5pTc6dquHHTYPuIP2rwvWa2Ciy4UFBNXXm/cFV
+ 9sprvNR4ekqPQ0LSAMo64/Yhc75djMs=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-5cBBm6i6Ncy9ynu6oaGDfg-1; Mon,
- 03 Nov 2025 05:58:48 -0500
-X-MC-Unique: 5cBBm6i6Ncy9ynu6oaGDfg-1
-X-Mimecast-MFC-AGG-ID: 5cBBm6i6Ncy9ynu6oaGDfg_1762167527
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-K0PWMBQ1OKyRe6PR4BN1tQ-1; Mon,
+ 03 Nov 2025 05:58:49 -0500
+X-MC-Unique: K0PWMBQ1OKyRe6PR4BN1tQ-1
+X-Mimecast-MFC-AGG-ID: K0PWMBQ1OKyRe6PR4BN1tQ_1762167529
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C89B219541B2; Mon,  3 Nov 2025 10:58:46 +0000 (UTC)
+ id D0F4E19540E8; Mon,  3 Nov 2025 10:58:48 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 19ED430001A8; Mon,  3 Nov 2025 10:58:44 +0000 (UTC)
+ id 3462A30001A1; Mon,  3 Nov 2025 10:58:46 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 09/22] MAINTAINERS: fix functional tests section
-Date: Mon,  3 Nov 2025 11:58:06 +0100
-Message-ID: <20251103105824.322039-10-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/22] tests/functional/migration: Fix bad indentation
+Date: Mon,  3 Nov 2025 11:58:07 +0100
+Message-ID: <20251103105824.322039-11-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,32 +81,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+From: Thomas Huth <thuth@redhat.com>
 
-Without "S: Maintained", ./scripts/get_maintainer.pl shows "unknown"
-role instead of "maintainer" for "M: " entry, it's confusing. I really
-hope that functional tests are maintained:)
+pylint complains about bad indentation in two lines. Use 12 spaces
+instead of 11 spaces to get it right.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251025165809.930670-3-vsementsov@yandex-team.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251027112347.54190-1-thuth@redhat.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ tests/functional/migration.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a6a1d36f52d..71c86ee8ce2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4412,6 +4412,7 @@ Functional testing framework
- M: Thomas Huth <thuth@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
-+S: Maintained
- F: docs/devel/testing/functional.rst
- F: scripts/clean_functional_cache.py
- F: tests/functional/qemu_test/
+diff --git a/tests/functional/migration.py b/tests/functional/migration.py
+index 07395544832..2bfb1f77901 100644
+--- a/tests/functional/migration.py
++++ b/tests/functional/migration.py
+@@ -30,11 +30,11 @@ def assert_migration(self, src_vm, dst_vm):
+ 
+         end = time.monotonic() + self.timeout
+         while time.monotonic() < end and not self.migration_finished(src_vm):
+-           time.sleep(0.1)
++            time.sleep(0.1)
+ 
+         end = time.monotonic() + self.timeout
+         while time.monotonic() < end and not self.migration_finished(dst_vm):
+-           time.sleep(0.1)
++            time.sleep(0.1)
+ 
+         self.assertEqual(src_vm.cmd('query-migrate')['status'], 'completed')
+         self.assertEqual(dst_vm.cmd('query-migrate')['status'], 'completed')
 -- 
 2.51.0
 
