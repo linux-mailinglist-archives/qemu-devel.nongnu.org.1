@@ -2,95 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D194C2E180
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFACC2E187
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1lR-0000wK-Iq; Mon, 03 Nov 2025 16:06:57 -0500
+	id 1vG1lO-0000w6-QW; Mon, 03 Nov 2025 16:06:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lM-0000vc-D2
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:52 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lL-0000uw-15
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lA-0005Cc-RX
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:52 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lB-0005Cm-QC
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1762203998;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
- b=bd4wCj/InZpJZPpRVn6S9haaZioDyCkj0bO5G0xVKu3OdRdivMO73Us/LlhvgBKudbRrUj
- 9CuF5DKvRdewgqwhve7W7vZboYjyCjw5sj+nb7Q8W6NeM4CcRdY3Sz6PnUyfNYvc12WgWd
- 0JqmmaXztu9QIHZmsRnGNuXj/it6VCg=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
+ b=AlsQ2CjA/DxTTUfdVO+ZKFGZ74VaZdwrMmcX57+cw4KeMJjI424I9WMJaZmalMjlYAZiO+
+ gJ7owfk85YJeYrA2YFQQ0m3qOaCzsKqkRjZz1wAqPtajOeKebnu33TTGPPoVve7bpypa6o
+ TZG0sncApnJPkhiYWFij5nPnBf1zodk=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-047AfHUANxCiqMCty8lQtQ-1; Mon, 03 Nov 2025 16:06:36 -0500
-X-MC-Unique: 047AfHUANxCiqMCty8lQtQ-1
-X-Mimecast-MFC-AGG-ID: 047AfHUANxCiqMCty8lQtQ_1762203996
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-8904a9e94ebso1230283885a.1
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:36 -0800 (PST)
+ us-mta-465-dtTxbPuONwOYo7LyotS_GQ-1; Mon, 03 Nov 2025 16:06:37 -0500
+X-MC-Unique: dtTxbPuONwOYo7LyotS_GQ-1
+X-Mimecast-MFC-AGG-ID: dtTxbPuONwOYo7LyotS_GQ_1762203997
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-8801c2b9ea7so130577126d6.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762203996; x=1762808796; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762203997; x=1762808797; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
- b=aYaFGDIHOjJf0CpoPjKGP2bZZNS8ylV96Myip2dYKFr+Z8sxI6RyKIoavtSJlQyVph
- PVDdauj3/wA8FK9npr0Em7m4wDDKH0Et0hIAM8J4fAq1nMf5lyCZYMx2LVKceHQ3ltKo
- /KR1FCTd013wxDUg9L9jI8RqKB3uVASA6Skb2bA2LjToI6C05Q/4SKnM6ImMp6c9TQFy
- nO5QAYIGPiZbMsD5jKG88gL7hJeOOTukzKQrCOxEAtCUQp0jUiKzIDnf0sYsokNdMeEU
- 2SYmN5zXwDdUFofGcpjUUkSNgWIRaMTkbX865+D/ZRxHjEdumHYI6VGnS2wgQkp1jOAS
- 11YQ==
+ bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
+ b=beO340fQHcXuTdIOtdp2rFSAoQBX+MkvQRGDOz8BJzjDPlz6NUC8nZO4/8jQNVOaEu
+ 2jHS9fKMLYD3gKtWSRsJFfvxRpSVzhm35U30JcuDn1eIDQ4t/CHgoBsGrBD0F3NTmnCP
+ OtBDB9GFogo4dyTDz6CisAsr3sli3NsRjhF1MMQoPECB4CGCkdKsrr/L408E3Hv9dXxl
+ mA+T2DS8zFe6/5D/F5mTzSrA0XyCyc08sYrbfvc4tOUiYZrzGLtse8csKPBUIUbw2kaC
+ woUKlMACViGKBvCibaVN2USIUYil2ixyPvDd6zZv37iKS4MHhUOAjPJO3RRoyNsaBEd+
+ /97w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762203996; x=1762808796;
+ d=1e100.net; s=20230601; t=1762203997; x=1762808797;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
- b=BaTS2kfuHb8FvTsZMJdknL/f5UqCvGv/412QM47Wi6mT7BMNZhfdn/1RQMr7nhVDhe
- TdmD/uXea/yEEdYSYGi9cILoroiKkjvy5/uCcgm1Y0BVbgp59X8rI3SsABoALqR0gOFb
- lPZc/mbqKlP9eX6d6UaPu211s/zKvdqx0qy6RMd2Bt//DZ9QsXl1x4Bg72mdN3pRpavB
- OAlOuanXy2OTnmweKJ1+dVK56/qsUsDyWHnmrjmlq6rBjvMlzfNgqjmIM6aTczbFpTNy
- 5lMIbrylWmM3TwZ8faRITBoMYY1bhlnTVFWUL/tlh5kGTVoyvt3FPsBnyBirfK7u/y7c
- KhZQ==
-X-Gm-Message-State: AOJu0Yw+CUGNHh64lD2iQLhpZLQwGMVRwJbpqJrQvHvhTx6J+rHjpj01
- GFfil7oow+sD7yecuxZ09ujn1Shn/MsmGqyXwVZc1X6Fa70SlBX2CV6W+1UKRHVLYzj0ZBUy8jR
- eHdlkRni+8m8rbG+oZzrhV7wCL6Wa5GS2fNZlgVK4sih7o6tXlbbAtLZbaZpGz54SR8psMxVWKm
- CMgKpeE6zPvq/StN+SuzKrDtzSc5YA5tnQ/hCuBQ==
-X-Gm-Gg: ASbGncskVoEOCbyqAgu+G+KXgyRtaUH0gAZcaQuMcZ6JMvbMHTsJIXQZ+kQsoA+XT/W
- 9PoHfUyrPGVy/etbnfvXAmAVNukKfBX9KBXexqHzL8NBkucQ0V9NM4eNeyqZ9OExBB4Ck8WRTwS
- JZkCiaL9EmClWJgQqDdDHrCnG0hqUCKknfNU0zAurRhDT705XCXWocjmMYIQdkPgZhf9KJOzffO
- QzgEVrmQ/uUOUPvWi/C3fhooIpoF5FKX/xIB9UcI4KI4Q+qf5o9rvS47fZv0Pv+i3RBxuSEaczT
- xK81sRkYvjlGGLPC8r7Yxcau7uWMUxIqkIN2RsGGtyUkhVkhzam89+P6Y4X7Q+Pb
-X-Received: by 2002:a05:620a:4410:b0:89a:2d9b:74ea with SMTP id
- af79cd13be357-8ab9afd428cmr1658511685a.42.1762203995563; 
- Mon, 03 Nov 2025 13:06:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEBccPJ2ZtzRCk96hACALrtMDOoWpI6fDmTxDKgAOLO9u8FoW2mA5LVsCIE6WvRVk92ZxL6Q==
-X-Received: by 2002:a05:620a:4410:b0:89a:2d9b:74ea with SMTP id
- af79cd13be357-8ab9afd428cmr1658504685a.42.1762203994894; 
- Mon, 03 Nov 2025 13:06:34 -0800 (PST)
+ bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
+ b=qifMJhEE+2qjlmz7y5BJgnXQust1ihdx4qwF6gkDXvlP3MK5UdfpVOpjcjdvR1QK6Q
+ tjlXmwz8pnRuCTovIivqDjXKSy015GrHRqnIUR2Y6iUkRVW9gBUdgt9IK/0Rs3r7luf0
+ GrONo7d7GzOc0wzJ9YKbaAv6FdQb0kWdbWjr1YeHc8GgXS5dAvt5ld9PjDJ3z/aZd5DG
+ tPwJ0uhUdYF4pd/1MXNtn9Ii8/trkWStmVc+WrokF7kg9h1hHeP0ZC00Zs91sZe0ejNG
+ XyaHAclTdOWF+9yttSCBwCN8uO6Te3T4WVcYEzMIIyBm85Kb7Pqsiw67cVdJjN8seH4/
+ xWUQ==
+X-Gm-Message-State: AOJu0YxQxaWEXUe+CwP2wlfPLSwDXTuHY4u1lyutullFIC0vx8LcY2UK
+ X3YkVZPLW+Z8OZsjiF9I4Y125BoTR/ee3ww61mQri8CzHPvcq8B8Ha1F98nplPFD1CzaRm2ESpD
+ JZa5ngGlBHkgq5apVmiT9pZkirE/P5JEm67YtzoeJUheo/LzQSnqjn9b+UeRnvk0wT+s5GNrRax
+ ifgo8KKbf2/K/vRXeKa4RhQLzdZ5SqEy+vUToa+A==
+X-Gm-Gg: ASbGncuU14jTXZiyvsUJDiawuV0aJmpPYXMGO+xDR6SQw0idiLnz1TXTUIXs5Tw5YC0
+ V+f+ArSVValOyrJuLa3FeNPvYNQAIu/rQDNMVGqCIkT3M0lFqJBXGSsXba8NF1QkmzcQ3m6PCl6
+ 2UyIqmROK/z1IlViGVMmrEoYe0TpdgGquSFYYykw6WDcN+OoaI/o9knXW+SZpqYcNFFdPruIQFi
+ Pu2BDWSYDtqkbNlNjl4cyjDFREYbvXIruEjt4OV9eZFp1/ax2ddIHZJh+uKyFaMUAhh5r0tW+ox
+ hK4OhrQ8gB7ITxCc/2DDEBohwTAcsEZcVcjwm4fYmZKE41APDl7vcXt1gieVLsQd
+X-Received: by 2002:a05:622a:2b4f:b0:4eb:a228:7f4c with SMTP id
+ d75a77b69052e-4ed30f2297bmr174268351cf.35.1762203996638; 
+ Mon, 03 Nov 2025 13:06:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFsKTf4x5Sc3CYtEqvuGKBohvzR5vXyXJBekKl5JmJ2UsQXignVg50kxi5tZa+lDbCMctj8Ag==
+X-Received: by 2002:a05:622a:2b4f:b0:4eb:a228:7f4c with SMTP id
+ d75a77b69052e-4ed30f2297bmr174267831cf.35.1762203996166; 
+ Mon, 03 Nov 2025 13:06:36 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.33
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:06:33 -0800 (PST)
+ Mon, 03 Nov 2025 13:06:35 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Subject: [PULL 05/36] migration: mapped-ram: handle zero pages
-Date: Mon,  3 Nov 2025 16:05:54 -0500
-Message-ID: <20251103210625.3689448-6-peterx@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/36] migration: Remove unused VMSTATE_UINTTL_EQUAL[_V]()
+ macros
+Date: Mon,  3 Nov 2025 16:05:55 -0500
+Message-ID: <20251103210625.3689448-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -99,7 +101,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,121 +119,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marco Cavenati <Marco.Cavenati@eurecom.fr>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Make mapped-ram compatible with loadvm snapshot restoring by explicitly
-zeroing memory pages in this case.
-Skip zeroing for -incoming and -loadvm migrations to preserve performance.
+The last use of VMSTATE_UINTTL_EQUAL() was removed in commit
+16a2497bd44 ("target-ppc: Fix CPU migration from qemu-2.6 <->
+later versions"), 9 years ago; remove it.
 
-Signed-off-by: Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Link: https://lore.kernel.org/r/20251010115954.1995298-3-Marco.Cavenati@eurecom.fr
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20251016160313.25751-1-philmd@linaro.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c |  1 -
- migration/ram.c     | 59 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 58 insertions(+), 2 deletions(-)
+ include/migration/cpu.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index d9227809d7..e78324b80c 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -449,7 +449,6 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
- static const
- INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
-                             MIGRATION_CAPABILITY_MULTIFD,
--                            MIGRATION_CAPABILITY_MAPPED_RAM,
- );
+diff --git a/include/migration/cpu.h b/include/migration/cpu.h
+index 65abe3c8cc..ca7cc0479e 100644
+--- a/include/migration/cpu.h
++++ b/include/migration/cpu.h
+@@ -19,8 +19,6 @@
  
- static bool migrate_incoming_started(void)
-diff --git a/migration/ram.c b/migration/ram.c
-index 1384748193..29f016cb25 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4038,12 +4038,58 @@ static size_t ram_load_multifd_pages(void *host_addr, size_t size,
-     return size;
- }
+ #define VMSTATE_UINTTL_V(_f, _s, _v)                                  \
+     VMSTATE_UINT64_V(_f, _s, _v)
+-#define VMSTATE_UINTTL_EQUAL_V(_f, _s, _v)                            \
+-    VMSTATE_UINT64_EQUAL_V(_f, _s, _v)
+ #define VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, _v)                        \
+     VMSTATE_UINT64_ARRAY_V(_f, _s, _n, _v)
+ #define VMSTATE_UINTTL_2DARRAY_V(_f, _s, _n1, _n2, _v)                \
+@@ -40,8 +38,6 @@
  
-+/**
-+ * handle_zero_mapped_ram: Zero out a range of RAM pages if required during
-+ * mapped-ram load
-+ *
-+ * Zeroing is only performed when restoring from a snapshot (HMP loadvm).
-+ * During incoming migration or -loadvm cli snapshot load, the function is a
-+ * no-op and returns true as in those cases the pages are already guaranteed to
-+ * be zeroed.
-+ *
-+ * Returns: true on success, false on error (with @errp set).
-+ * @from_bit_idx: Starting index relative to the map of the page (inclusive)
-+ * @to_bit_idx:   Ending index relative to the map of the page (exclusive)
-+ */
-+static bool handle_zero_mapped_ram(RAMBlock *block, unsigned long from_bit_idx,
-+                                   unsigned long to_bit_idx, Error **errp)
-+{
-+    ERRP_GUARD();
-+    ram_addr_t offset;
-+    size_t size;
-+    void *host;
-+
-+    /*
-+     * Zeroing is not needed for either -loadvm (RUN_STATE_PRELAUNCH), or
-+     * -incoming (RUN_STATE_INMIGRATE).
-+     */
-+    if (!runstate_check(RUN_STATE_RESTORE_VM)) {
-+        return true;
-+    }
-+
-+    if (from_bit_idx >= to_bit_idx) {
-+        return true;
-+    }
-+
-+    size = TARGET_PAGE_SIZE * (to_bit_idx - from_bit_idx);
-+    offset = from_bit_idx << TARGET_PAGE_BITS;
-+    host = host_from_ram_block_offset(block, offset);
-+    if (!host) {
-+        error_setg(errp, "zero page outside of ramblock %s range",
-+                   block->idstr);
-+        return false;
-+    }
-+    ram_handle_zero(host, size);
-+
-+    return true;
-+}
-+
- static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-                                      long num_pages, unsigned long *bitmap,
-                                      Error **errp)
- {
-     ERRP_GUARD();
--    unsigned long set_bit_idx, clear_bit_idx;
-+    unsigned long set_bit_idx, clear_bit_idx = 0;
-     ram_addr_t offset;
-     void *host;
-     size_t read, unread, size;
-@@ -4052,6 +4098,12 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-          set_bit_idx < num_pages;
-          set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
+ #define VMSTATE_UINTTL_V(_f, _s, _v)                                  \
+     VMSTATE_UINT32_V(_f, _s, _v)
+-#define VMSTATE_UINTTL_EQUAL_V(_f, _s, _v)                            \
+-    VMSTATE_UINT32_EQUAL_V(_f, _s, _v)
+ #define VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, _v)                        \
+     VMSTATE_UINT32_ARRAY_V(_f, _s, _n, _v)
+ #define VMSTATE_UINTTL_2DARRAY_V(_f, _s, _n1, _n2, _v)                \
+@@ -53,8 +49,6 @@
  
-+        /* Zero pages */
-+        if (!handle_zero_mapped_ram(block, clear_bit_idx, set_bit_idx, errp)) {
-+            return false;
-+        }
-+
-+        /* Non-zero pages */
-         clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
- 
-         unread = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
-@@ -4083,6 +4135,11 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-         }
-     }
- 
-+    /* Handle trailing 0 pages */
-+    if (!handle_zero_mapped_ram(block, clear_bit_idx, num_pages, errp)) {
-+        return false;
-+    }
-+
-     return true;
- 
- err:
+ #define VMSTATE_UINTTL(_f, _s)                                        \
+     VMSTATE_UINTTL_V(_f, _s, 0)
+-#define VMSTATE_UINTTL_EQUAL(_f, _s)                                  \
+-    VMSTATE_UINTTL_EQUAL_V(_f, _s, 0)
+ #define VMSTATE_UINTTL_ARRAY(_f, _s, _n)                              \
+     VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, 0)
+ #define VMSTATE_UINTTL_2DARRAY(_f, _s, _n1, _n2)                      \
 -- 
 2.50.1
 
