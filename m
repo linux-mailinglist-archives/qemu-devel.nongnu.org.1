@@ -2,52 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F0AC2AC7E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:36:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B224C2ACB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:38:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFqwm-0007jI-Hn; Mon, 03 Nov 2025 04:33:56 -0500
+	id 1vFr0O-0007GJ-Tp; Mon, 03 Nov 2025 04:37:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqvH-0006AP-C8; Mon, 03 Nov 2025 04:32:28 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vFr0M-0007G2-SQ
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 04:37:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqvC-0002z3-3b; Mon, 03 Nov 2025 04:32:22 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 3 Nov
- 2025 17:28:23 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 3 Nov 2025 17:28:23 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 30/30] hw/arm/aspeed: Split AST1030 EVB machine into a
- separate source file for maintainability
-Date: Mon, 3 Nov 2025 17:27:41 +0800
-Message-ID: <20251103092801.1282602-31-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
-References: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vFr0F-0004IZ-44
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 04:37:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762162646;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=D7jmtvMIyGPorJRsPjTVxb3CMnhu4bS5Ues3W4PXBCg=;
+ b=Dxoos5cDgn4yFwYRC7So8clY4HozaZh0klyAWpsCaCWUNng8ZYdiQKo6pKegVGX12cn96T
+ Nu3z62qVfvZSXBT/25eJ2PlSp2XQf/k/vZKNQXG9oVOcvzJQJXe/8QUiQ+gvQovk3iU8kC
+ Jpa2uG24eH6xMxeM3hOD57ce3frK4Ho=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-218-l7hALRXzOHeUq-3qbixhxQ-1; Mon, 03 Nov 2025 04:37:24 -0500
+X-MC-Unique: l7hALRXzOHeUq-3qbixhxQ-1
+X-Mimecast-MFC-AGG-ID: l7hALRXzOHeUq-3qbixhxQ_1762162643
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-429c5da68e5so1688818f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 01:37:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762162643; x=1762767443;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D7jmtvMIyGPorJRsPjTVxb3CMnhu4bS5Ues3W4PXBCg=;
+ b=qEPcdo4oB7ik1iTrrv8VC7yZiXfu5BPLF8V5drmcnAeLBMO/tfz5+OqG9R6l6B8Pre
+ CONND/aKAMBr0Qb+qX7/qL+9iHu5cKgCM6cecPBIAwwKfqdBIo8k2kHirYsUD2SaGUnp
+ i48+u9kcLjiDqSg3lWsxbtzDFjrFHd3xvSfDh+tOuLHXlfJwPqqS6rgS0Ocoir8trSAj
+ guC5ZAsF2lSOisVv8zfiu50pp1fuFDyVFtmS28V/eCko2E86/hs9XihS4pkefx3cP13a
+ Y1iLOnu+NgyvjFPhgblhcEbyaOnQ+XiQANO+88StmSi8m+ux4/olWVmpT/hLYgIhYJcM
+ SF3A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXgHchR+aq0HnXBC/dA7NzkzqlIuUsXEDO0OxQKLmghbSVOKdDWji9UDd8DtaeXve0fa5nGSJpQRLbr@nongnu.org
+X-Gm-Message-State: AOJu0Yy39wvNg2ul2z1KMXxJllvlJp2kxzkZTI17HyUo+h/wJE5NU8M5
+ z+hJTYaHd30CwSmiQdUtgYKyN9VqA/zXYeZ1YfoWs23MUl1pr+UuyM9NmS8mPZoCAAXl52I6BA1
+ nZDqh3zrQGdqo8+TYw1gQSsgRDr7jLh1KpJu923TtizWPtq/m5g+Gsve3
+X-Gm-Gg: ASbGncs6O2WrFWeKtbdnOCIAcWi7C+UhUZY92cMTvKLtPI0bN8oxSkBnnvEpRkNVHIv
+ neNOc/RHWREC2cwXUK+kLqc1ygdsnqi9/6/3x2kpJFOyDZj0Pt1cBIgsO4LpJNJJG3wvjuYJTsR
+ ILaJ+V388TQSpoXViPgYWbYnxqXC4fOpPxacFlPVPxkhGo9Sk2f45n6iGOMZaYZkd8oKvtdKIzW
+ NpjfmurFRLBHaghgpHrvHDDn/bDJE5LkYw1flBJaqBZHvKspSnmg7pZrLbl2H8Y9iHiLsn8mUru
+ PyQAHaOdAnPfccRuXolzUxOUNT7BXsXBIYo7X5icuuIrdF34gruOrnewvd5KTVS5xqxYoRx81ll
+ nYz4UBE4EqYy9P2BH9D9QLedA+0pCA7PTNopb5GwJYUjWTg==
+X-Received: by 2002:a05:6000:4020:b0:429:d40e:fa3d with SMTP id
+ ffacd0b85a97d-429d40efd89mr1643558f8f.28.1762162643058; 
+ Mon, 03 Nov 2025 01:37:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHilcGVr7xQc4leQRCfIC+SXuMHI+vPG067+k0T+AuG20IHprpyve1WzxhpXv8TAt26wDSLxw==
+X-Received: by 2002:a05:6000:4020:b0:429:d40e:fa3d with SMTP id
+ ffacd0b85a97d-429d40efd89mr1643358f8f.28.1762162639788; 
+ Mon, 03 Nov 2025 01:37:19 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429c110e77esm19053585f8f.10.2025.11.03.01.37.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Nov 2025 01:37:19 -0800 (PST)
+Message-ID: <e1f930b6-ddad-4500-b4a0-ac3dfd8ef7aa@redhat.com>
+Date: Mon, 3 Nov 2025 10:37:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 13/23] intel_iommu: Bind/unbind guest page table to host
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
+References: <20251024084349.102322-1-zhenzhong.duan@intel.com>
+ <20251024084349.102322-14-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251024084349.102322-14-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,278 +115,286 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit moves the Aspeed AST1030 MiniBMC machine
-implementation out of aspeed.c into a new standalone file
-aspeed_ast10x0_evb.c.
+Hi Zhenzhong,
 
-This refactor continues the modularization effort for Aspeed platform
-support, placing each board’s logic and initialization sequence in its
-own dedicated source file. It improves maintainability, readability, and
-makes it easier to extend support for additional AST10x0-based variants.
+On 10/24/25 10:43 AM, Zhenzhong Duan wrote:
+> This captures the guest PASID table entry modifications and propagates
+> the changes to host to attach a hwpt with type determined per guest IOMMU
+> PGTT configuration.
+>
+> When PGTT=PT, attach PASID_0 to a second stage HWPT(GPA->HPA).
+> When PGTT=FST, attach PASID_0 to nested HWPT with nesting parent HWPT
+> coming from VFIO.
+>
+> Co-Authored-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  include/hw/i386/intel_iommu.h |   1 +
+>  hw/i386/intel_iommu.c         | 150 +++++++++++++++++++++++++++++++++-
+>  hw/i386/trace-events          |   3 +
+>  3 files changed, 151 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+> index 3758ac239c..b5f8a9fc29 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -104,6 +104,7 @@ struct VTDAddressSpace {
+>      PCIBus *bus;
+>      uint8_t devfn;
+>      uint32_t pasid;
+> +    uint32_t fs_hwpt;
+>      AddressSpace as;
+>      IOMMUMemoryRegion iommu;
+>      MemoryRegion root;          /* The root container of the device */
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 871e6aad19..3789a36147 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -20,6 +20,7 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+>  #include "qemu/error-report.h"
+>  #include "qemu/main-loop.h"
+>  #include "qapi/error.h"
+> @@ -42,6 +43,9 @@
+>  #include "migration/vmstate.h"
+>  #include "trace.h"
+>  #include "system/iommufd.h"
+> +#ifdef CONFIG_IOMMUFD
+> +#include <linux/iommufd.h>
+> +#endif
+>  
+>  /* context entry operations */
+>  #define PASID_0    0
+> @@ -87,6 +91,7 @@ struct vtd_iotlb_key {
+>  
+>  static void vtd_address_space_refresh_all(IntelIOMMUState *s);
+>  static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n);
+> +static int vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, Error **errp);
+>  
+>  static void vtd_pasid_cache_reset_locked(IntelIOMMUState *s)
+>  {
+> @@ -98,7 +103,11 @@ static void vtd_pasid_cache_reset_locked(IntelIOMMUState *s)
+>      g_hash_table_iter_init(&as_it, s->vtd_address_spaces);
+>      while (g_hash_table_iter_next(&as_it, NULL, (void **)&vtd_as)) {
+>          VTDPASIDCacheEntry *pc_entry = &vtd_as->pasid_cache_entry;
+> -        pc_entry->valid = false;
+> +        if (pc_entry->valid) {
+> +            pc_entry->valid = false;
+> +            /* It's fatal to get failure during reset */
+> +            vtd_bind_guest_pasid(vtd_as, &error_fatal);
+> +        }
+>      }
+>  }
+>  
+> @@ -2380,6 +2389,128 @@ static void vtd_context_global_invalidate(IntelIOMMUState *s)
+>      vtd_iommu_replay_all(s);
+>  }
+>  
+> +#ifdef CONFIG_IOMMUFD
+> +static int vtd_create_fs_hwpt(HostIOMMUDeviceIOMMUFD *idev,
+> +                              VTDPASIDEntry *pe, uint32_t *fs_hwpt,
+> +                              Error **errp)
+> +{
+> +    struct iommu_hwpt_vtd_s1 vtd = {};
+> +
+> +    vtd.flags = (VTD_SM_PASID_ENTRY_SRE_BIT(pe) ? IOMMU_VTD_S1_SRE : 0) |
+> +                (VTD_SM_PASID_ENTRY_WPE_BIT(pe) ? IOMMU_VTD_S1_WPE : 0) |
+> +                (VTD_SM_PASID_ENTRY_EAFE_BIT(pe) ? IOMMU_VTD_S1_EAFE : 0);
+> +    vtd.addr_width = vtd_pe_get_fs_aw(pe);
+> +    vtd.pgtbl_addr = (uint64_t)vtd_pe_get_fspt_base(pe);
+> +
+> +    return !iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid,
+> +                                       idev->hwpt_id, 0, IOMMU_HWPT_DATA_VTD_S1,
+> +                                       sizeof(vtd), &vtd, fs_hwpt, errp);
+see comments below
+> +}
+> +
+> +static void vtd_destroy_old_fs_hwpt(HostIOMMUDeviceIOMMUFD *idev,
+> +                                    VTDAddressSpace *vtd_as)
+> +{
+> +    if (!vtd_as->fs_hwpt) {
+> +        return;
+> +    }
+> +    iommufd_backend_free_id(idev->iommufd, vtd_as->fs_hwpt);
+> +    vtd_as->fs_hwpt = 0;
+> +}
+> +
+> +static int vtd_device_attach_iommufd(VTDHostIOMMUDevice *vtd_hiod,
+> +                                     VTDAddressSpace *vtd_as, Error **errp)
+> +{
+> +    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(vtd_hiod->hiod);
+> +    VTDPASIDEntry *pe = &vtd_as->pasid_cache_entry.pasid_entry;
+> +    uint32_t hwpt_id;
+> +    bool ret;
+> +
+> +    /*
+> +     * We can get here only if flts=on, the supported PGTT is FST and PT.
+is FST or PT
+> +     * Catch invalid PGTT when processing invalidation request to avoid
+> +     * attaching to wrong hwpt.
+> +     */
+> +    if (!vtd_pe_pgtt_is_fst(pe) && !vtd_pe_pgtt_is_pt(pe)) {
+> +        error_setg(errp, "Invalid PGTT type");
+print the wrong PGTT value?
+> +        return -EINVAL;
+> +    }
+> +
+> +    if (vtd_pe_pgtt_is_pt(pe)) {
+> +        hwpt_id = idev->hwpt_id;
+> +    } else if (vtd_create_fs_hwpt(idev, pe, &hwpt_id, errp)) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    ret = host_iommu_device_iommufd_attach_hwpt(idev, hwpt_id, errp);
+> +    trace_vtd_device_attach_hwpt(idev->devid, vtd_as->pasid, hwpt_id, !ret);
+why !ret in the trace? I think e chose to return true on success for
 
-Key updates include:
-- Moved aspeed_minibmc_machine_init() and
-  aspeed_minibmc_machine_ast1030_evb_class_init() from aspeed.c to
-  aspeed_ast10x0_evb.c.
-- Moved ast1030_evb_i2c_init() and associated I2C setup code.
-- Removed AST1030 EVB machine type registration from aspeed.c.
-- Added aspeed_ast10x0_evb.c to the Meson build system (meson.build).
+host_iommu_device_iommufd_attach_hwpt()
 
-No functional changes.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/arm/aspeed.c             |  89 -----------------------------
- hw/arm/aspeed_ast10x0_evb.c | 109 ++++++++++++++++++++++++++++++++++++
- hw/arm/meson.build          |   1 +
- 3 files changed, 110 insertions(+), 89 deletions(-)
- create mode 100644 hw/arm/aspeed_ast10x0_evb.c
-
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 7e9cd532d1..3a5071a384 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -16,14 +16,9 @@
- #include "hw/arm/aspeed_soc.h"
- #include "hw/arm/machines-qom.h"
- #include "hw/block/flash.h"
--#include "hw/i2c/smbus_eeprom.h"
- #include "hw/gpio/pca9552.h"
- #include "hw/gpio/pca9554.h"
--#include "hw/sensor/tmp105.h"
--#include "hw/misc/led.h"
--#include "hw/qdev-properties.h"
- #include "system/block-backend.h"
--#include "system/reset.h"
- #include "qemu/error-report.h"
- #include "qemu/units.h"
- #include "hw/qdev-clock.h"
-@@ -424,92 +419,8 @@ static void aspeed_machine_class_init(ObjectClass *oc, const void *data)
-     aspeed_machine_class_props_init(oc);
- }
- 
--#define AST1030_INTERNAL_FLASH_SIZE (1024 * 1024)
--/* Main SYSCLK frequency in Hz (200MHz) */
--#define SYSCLK_FRQ 200000000ULL
--
--static void aspeed_minibmc_machine_init(MachineState *machine)
--{
--    AspeedMachineState *bmc = ASPEED_MACHINE(machine);
--    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
--    Clock *sysclk;
--
--    sysclk = clock_new(OBJECT(machine), "SYSCLK");
--    clock_set_hz(sysclk, SYSCLK_FRQ);
--
--    bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
--    object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
--    object_unref(OBJECT(bmc->soc));
--    qdev_connect_clock_in(DEVICE(bmc->soc), "sysclk", sysclk);
--
--    object_property_set_link(OBJECT(bmc->soc), "memory",
--                             OBJECT(get_system_memory()), &error_abort);
--    aspeed_connect_serial_hds_to_uarts(bmc);
--    qdev_realize(DEVICE(bmc->soc), NULL, &error_abort);
--
--    if (defaults_enabled()) {
--        aspeed_board_init_flashes(&bmc->soc->fmc,
--                            bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
--                            amc->num_cs,
--                            0);
--
--        aspeed_board_init_flashes(&bmc->soc->spi[0],
--                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                            amc->num_cs, amc->num_cs);
--
--        aspeed_board_init_flashes(&bmc->soc->spi[1],
--                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
--                            amc->num_cs, (amc->num_cs * 2));
--    }
--
--    if (amc->i2c_init) {
--        amc->i2c_init(bmc);
--    }
--
--    armv7m_load_kernel(ARM_CPU(first_cpu),
--                       machine->kernel_filename,
--                       0,
--                       AST1030_INTERNAL_FLASH_SIZE);
--}
--
--static void ast1030_evb_i2c_init(AspeedMachineState *bmc)
--{
--    AspeedSoCState *soc = bmc->soc;
--
--    /* U10 24C08 connects to SDA/SCL Group 1 by default */
--    uint8_t *eeprom_buf = g_malloc0(32 * 1024);
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 0), 0x50, eeprom_buf);
--
--    /* U11 LM75 connects to SDA/SCL Group 2 by default */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4d);
--}
--
--static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
--                                                          const void *data)
--{
--    MachineClass *mc = MACHINE_CLASS(oc);
--    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
--
--    mc->desc = "Aspeed AST1030 MiniBMC (Cortex-M4)";
--    amc->soc_name = "ast1030-a1";
--    amc->hw_strap1 = 0;
--    amc->hw_strap2 = 0;
--    mc->init = aspeed_minibmc_machine_init;
--    amc->i2c_init = ast1030_evb_i2c_init;
--    mc->default_ram_size = 0;
--    amc->fmc_model = "w25q80bl";
--    amc->spi_model = "w25q256";
--    amc->num_cs = 2;
--    amc->macs_mask = 0;
--    aspeed_machine_class_init_cpus_defaults(mc);
--}
--
- static const TypeInfo aspeed_machine_types[] = {
-     {
--        .name           = MACHINE_TYPE_NAME("ast1030-evb"),
--        .parent         = TYPE_ASPEED_MACHINE,
--        .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
--    }, {
-         .name          = TYPE_ASPEED_MACHINE,
-         .parent        = TYPE_MACHINE,
-         .instance_size = sizeof(AspeedMachineState),
-diff --git a/hw/arm/aspeed_ast10x0_evb.c b/hw/arm/aspeed_ast10x0_evb.c
-new file mode 100644
-index 0000000000..f8519d4528
---- /dev/null
-+++ b/hw/arm/aspeed_ast10x0_evb.c
-@@ -0,0 +1,109 @@
-+/*
-+ * ASPEED AST10x0 EVB
-+ *
-+ * Copyright (C) 2025 ASPEED Technology Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/arm/boot.h"
-+#include "hw/arm/machines-qom.h"
-+#include "hw/arm/aspeed.h"
-+#include "hw/arm/aspeed_soc.h"
-+#include "hw/qdev-clock.h"
-+#include "system/system.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+
-+#define AST1030_INTERNAL_FLASH_SIZE (1024 * 1024)
-+/* Main SYSCLK frequency in Hz (200MHz) */
-+#define SYSCLK_FRQ 200000000ULL
-+
-+static void aspeed_minibmc_machine_init(MachineState *machine)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(machine);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
-+    Clock *sysclk;
-+
-+    sysclk = clock_new(OBJECT(machine), "SYSCLK");
-+    clock_set_hz(sysclk, SYSCLK_FRQ);
-+
-+    bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-+    object_unref(OBJECT(bmc->soc));
-+    qdev_connect_clock_in(DEVICE(bmc->soc), "sysclk", sysclk);
-+
-+    object_property_set_link(OBJECT(bmc->soc), "memory",
-+                             OBJECT(get_system_memory()), &error_abort);
-+    aspeed_connect_serial_hds_to_uarts(bmc);
-+    qdev_realize(DEVICE(bmc->soc), NULL, &error_abort);
-+
-+    if (defaults_enabled()) {
-+        aspeed_board_init_flashes(&bmc->soc->fmc,
-+                            bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
-+                            amc->num_cs,
-+                            0);
-+
-+        aspeed_board_init_flashes(&bmc->soc->spi[0],
-+                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
-+                            amc->num_cs, amc->num_cs);
-+
-+        aspeed_board_init_flashes(&bmc->soc->spi[1],
-+                            bmc->spi_model ? bmc->spi_model : amc->spi_model,
-+                            amc->num_cs, (amc->num_cs * 2));
-+    }
-+
-+    if (amc->i2c_init) {
-+        amc->i2c_init(bmc);
-+    }
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+                       machine->kernel_filename,
-+                       0,
-+                       AST1030_INTERNAL_FLASH_SIZE);
-+}
-+
-+static void ast1030_evb_i2c_init(AspeedMachineState *bmc)
-+{
-+    AspeedSoCState *soc = bmc->soc;
-+
-+    /* U10 24C08 connects to SDA/SCL Group 1 by default */
-+    uint8_t *eeprom_buf = g_malloc0(32 * 1024);
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 0), 0x50, eeprom_buf);
-+
-+    /* U11 LM75 connects to SDA/SCL Group 2 by default */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4d);
-+}
-+
-+static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-+                                                          const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc = "Aspeed AST1030 MiniBMC (Cortex-M4)";
-+    amc->soc_name = "ast1030-a1";
-+    amc->hw_strap1 = 0;
-+    amc->hw_strap2 = 0;
-+    mc->init = aspeed_minibmc_machine_init;
-+    amc->i2c_init = ast1030_evb_i2c_init;
-+    mc->default_ram_size = 0;
-+    amc->fmc_model = "w25q80bl";
-+    amc->spi_model = "w25q256";
-+    amc->num_cs = 2;
-+    amc->macs_mask = 0;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+}
-+
-+static const TypeInfo aspeed_ast10x0_evb_types[] = {
-+    {
-+        .name           = MACHINE_TYPE_NAME("ast1030-evb"),
-+        .parent         = TYPE_ASPEED_MACHINE,
-+        .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
-+        .interfaces     = arm_machine_interfaces,
-+    }
-+};
-+
-+DEFINE_TYPES(aspeed_ast10x0_evb_types)
-+
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 1467a2034c..aeaf654790 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -67,6 +67,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_ast2600_qcom-firework.c',
-   'aspeed_ast2600_rainier.c',
-   'aspeed_ast10x0.c',
-+  'aspeed_ast10x0_evb.c',
-   'fby35.c'))
- arm_common_ss.add(when: ['CONFIG_ASPEED_SOC', 'TARGET_AARCH64'], if_true: files(
-   'aspeed_ast27x0.c',
--- 
-2.43.0
+. Let's keep this consistent otherwise we end up not knowning what is
+the success value.
+> +    if (ret) {
+> +        /* Destroy old fs_hwpt if it's a replacement */
+> +        vtd_destroy_old_fs_hwpt(idev, vtd_as);
+> +        if (vtd_pe_pgtt_is_fst(pe)) {
+> +            vtd_as->fs_hwpt = hwpt_id;
+> +        }
+> +    } else if (vtd_pe_pgtt_is_fst(pe)) {
+> +        iommufd_backend_free_id(idev->iommufd, hwpt_id);
+> +    }
+> +
+> +    return !ret;
+argh. Eventually it is difficult to follow ;-)
+> +}
+> +
+> +static int vtd_device_detach_iommufd(VTDHostIOMMUDevice *vtd_hiod,
+> +                                     VTDAddressSpace *vtd_as, Error **errp)
+> +{
+> +    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(vtd_hiod->hiod);
+> +    IntelIOMMUState *s = vtd_as->iommu_state;
+> +    uint32_t pasid = vtd_as->pasid;
+> +    bool ret;
+> +
+> +    if (s->dmar_enabled && s->root_scalable) {
+> +        ret = host_iommu_device_iommufd_detach_hwpt(idev, errp);
+> +        trace_vtd_device_detach_hwpt(idev->devid, pasid, !ret);
+> same
+> +    } else {
+> +        /*
+> +         * If DMAR remapping is disabled or guest switches to legacy mode,
+> +         * we fallback to the default HWPT which contains shadow page table.
+> +         * So guest DMA could still work.
+> +         */
+> +        ret = host_iommu_device_iommufd_attach_hwpt(idev, idev->hwpt_id, errp);
+> +        trace_vtd_device_reattach_def_hwpt(idev->devid, pasid, idev->hwpt_id,
+> +                                           !ret);
+same
+> +    }
+> +
+> +    if (ret) {
+> +        vtd_destroy_old_fs_hwpt(idev, vtd_as);
+> +    }
+> +
+> +    return !ret;
+> +}
+> +
+> +static int vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, Error **errp)
+> +{
+> +    VTDPASIDCacheEntry *pc_entry = &vtd_as->pasid_cache_entry;
+> +    VTDHostIOMMUDevice *vtd_hiod = vtd_find_hiod_iommufd(vtd_as);
+> +    int ret;
+> +
+> +    /* Ignore emulated device or legacy VFIO backed device */
+> +    if (!vtd_hiod) {
+> +        return 0;
+> +    }
+> +
+> +    if (pc_entry->valid) {
+> +        ret = vtd_device_attach_iommufd(vtd_hiod, vtd_as, errp);
+return directly
+> +    } else {
+remove the else and return directly?
+> +        ret = vtd_device_detach_iommufd(vtd_hiod, vtd_as, errp);
+> +    }
+> +
+> +    return ret;
+> +}
+> +#else
+> +static int vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, Error **errp)
+> +{
+> +    return 0;
+> +}
+> +#endif
+> +
+>  /* Do a context-cache device-selective invalidation.
+>   * @func_mask: FM field after shifting
+>   */
+> @@ -3134,6 +3265,8 @@ static void vtd_pasid_cache_sync_locked(gpointer key, gpointer value,
+>      VTDPASIDEntry pe;
+>      IOMMUNotifier *n;
+>      uint16_t did;
+> +    const char *err_prefix;
+> +    Error *local_err = NULL;
+>  
+>      if (vtd_dev_get_pe_from_pasid(vtd_as, &pe)) {
+>          if (!pc_entry->valid) {
+> @@ -3154,7 +3287,9 @@ static void vtd_pasid_cache_sync_locked(gpointer key, gpointer value,
+>              vtd_address_space_unmap(vtd_as, n);
+>          }
+>          vtd_switch_address_space(vtd_as);
+> -        return;
+> +
+> +        err_prefix = "Detaching from HWPT failed: ";
+> +        goto do_bind_unbind;
+>      }
+>  
+>      /*
+> @@ -3182,12 +3317,21 @@ static void vtd_pasid_cache_sync_locked(gpointer key, gpointer value,
+>      if (!pc_entry->valid) {
+>          pc_entry->pasid_entry = pe;
+>          pc_entry->valid = true;
+> -    } else if (!vtd_pasid_entry_compare(&pe, &pc_entry->pasid_entry)) {
+> +        err_prefix = "Attaching to HWPT failed: ";
+> +    } else if (vtd_pasid_entry_compare(&pe, &pc_entry->pasid_entry)) {
+> +        err_prefix = "Replacing HWPT attachment failed: ";
+> +    } else {
+>          return;
+>      }
+>  
+>      vtd_switch_address_space(vtd_as);
+>      vtd_address_space_sync(vtd_as);
+> +
+> +do_bind_unbind:
+> +    /* TODO: Fault event injection into guest, report error to QEMU for now */
+> +    if (vtd_bind_guest_pasid(vtd_as, &local_err)) {
+> +        error_reportf_err(local_err, "%s", err_prefix);
+> +    }
+>  }
+>  
+>  static void vtd_pasid_cache_sync(IntelIOMMUState *s, VTDPASIDCacheInfo *pc_info)
+> diff --git a/hw/i386/trace-events b/hw/i386/trace-events
+> index b704f4f90c..5a3ee1cf64 100644
+> --- a/hw/i386/trace-events
+> +++ b/hw/i386/trace-events
+> @@ -73,6 +73,9 @@ vtd_warn_invalid_qi_tail(uint16_t tail) "tail 0x%"PRIx16
+>  vtd_warn_ir_vector(uint16_t sid, int index, int vec, int target) "sid 0x%"PRIx16" index %d vec %d (should be: %d)"
+>  vtd_warn_ir_trigger(uint16_t sid, int index, int trig, int target) "sid 0x%"PRIx16" index %d trigger %d (should be: %d)"
+>  vtd_reset_exit(void) ""
+> +vtd_device_attach_hwpt(uint32_t dev_id, uint32_t pasid, uint32_t hwpt_id, int ret) "dev_id %d pasid %d hwpt_id %d, ret: %d"
+> +vtd_device_detach_hwpt(uint32_t dev_id, uint32_t pasid, int ret) "dev_id %d pasid %d ret: %d"
+> +vtd_device_reattach_def_hwpt(uint32_t dev_id, uint32_t pasid, uint32_t hwpt_id, int ret) "dev_id %d pasid %d hwpt_id %d, ret: %d"
+>  
+>  # amd_iommu.c
+>  amdvi_evntlog_fail(uint64_t addr, uint32_t head) "error: fail to write at addr 0x%"PRIx64" +  offset 0x%"PRIx32
+Eric
 
 
