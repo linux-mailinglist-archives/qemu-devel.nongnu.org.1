@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6067C2D8CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:01:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB8DC2D8D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:01:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFype-0004DI-92; Mon, 03 Nov 2025 12:59:06 -0500
+	id 1vFypn-0004Ez-T6; Mon, 03 Nov 2025 12:59:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFypc-0004CS-62
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:59:04 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1vFypi-0004Ea-Nj
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:59:10 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFypX-0005pI-EH
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:59:03 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-475ca9237c2so25442795e9.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 09:58:57 -0800 (PST)
+ id 1vFypX-0005q9-LO
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:59:09 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-47754547a38so1856055e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 09:58:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762192735; x=1762797535; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762192736; x=1762797536; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NOziFvei/g07QpuUcHg/XdNOdDOG39Ux4/XNM8GNFZM=;
- b=fQdxX9lBRt2IobjIc60fJ5rhqShmoeb136vhfANWh6vuLHHja590gRrme3VnVz645z
- e2s3n3A8f5yZyDPadmkb7QKwtUeHlrR3HRib3ZafCWEoXUBRGEV8x0WVVXrdwDkO7v5X
- Wdg+PnBq8MZaFX/yFFe71ZFWLwaNz3sTiOl++pBliNglFg7VqKHrFk7kwxIhWxTAVJQ9
- xsMCgFqDfhxzzR+ich8+bmV0lhW3xhotpUJ3c+0mFKc0yhha5hquynj4O3evYf7Y+COx
- w/flYVUtfJqLupI0LyyyJY8nIsiCeKbnIHfmg6TQS7eBbjfypNXsQeYOcPxV/E/HQxxH
- ucxg==
+ bh=c9gyhGaFcOpFheLwvmsYNqB/i/gJ7jSn4QomhlYUHX8=;
+ b=Bv+QgYiz+AGtl3vPQOdbFunf4v6quH5eLmWAbkFo3sha+ZaKZ6h4PWgMmvy2uL59tx
+ 8Xo9W/Yf20OQC8246FPXmvBctq0Z+ZWxKjRQUcQ+HtZkHWW3KYET5sZwFLw6p4t5piOz
+ rku0+p9v+zarNlzqZm9GoM1IdzNFlC8k7vfCMfSv+Uf2QwJ2qp5CNaLN0bfgCLIE/M3T
+ dZd2FVpHeaXk70dugSfQCbpqHpc44FGyJopLbJAA4/WuVGPIXe9z5MnzIRFdhRZhcmLy
+ UVYkv0LEKAgdDoDMKgQe+cImxtcuG/KdX+TE5LvATx4T36NPeNX/bqdkXnNh4vpRqJto
+ zJrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762192735; x=1762797535;
+ d=1e100.net; s=20230601; t=1762192736; x=1762797536;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NOziFvei/g07QpuUcHg/XdNOdDOG39Ux4/XNM8GNFZM=;
- b=EWqQj+Q5WkgaGmHCp1XiKUuNLqsH7E1SmmYF+7VvtP1yRlHvBgRHGxX8jD5lPvBQ+K
- NmUzIreDUpYq55VjJA/sdxhMQEa/rzLu7RCBvRUTe64V6XTetAnBYIlKsoql7/d4Yorf
- tnNLRG1mMeiYyqq3Gxu6dWdbAwj97mdTQaq6QTH/yWLb2Khe03uxQok3p9SVHJ/vY/ar
- HEI5ijeFUcp0LWylo8ETRXmLgk4edm0nT/OupGil1m5kUsKLfmtR3LM0gm2lwU9vysNK
- ORgxrBwRA8R81TEXCahfOsGqrSYD6HrPFHjp3lY3Lu9bP4A7Fd6IPGsusUlAlysHzCqV
- lJRw==
-X-Gm-Message-State: AOJu0Yzk95+5Chiols02t8nkdaOOALmTRxGRuCFqDsphp6AzcztoKzoZ
- IipIjdtfRxAcULBAyNcjgExY/BKLhJ1LxPCBHJJMtBhaxrIcqk6rOxTBH1rjprctILVR9+PfCHr
- 4wLwj
-X-Gm-Gg: ASbGncuNJldwKqjU6RnYSud9ndeoRLy29MOuGCe8kdMXouQfP1LowdTbGESSb2r9EcX
- q8j5ry3qnn7PeVuXUKNNMJ/JVv/Tpd8j37RG6/h2mmlKFvLxn5urjCpxzBt9lEfKtKeK/lu8V6i
- B0NSg5LRpaPAS8a1HiQq20bzlpdBPu9EtY2ZiIaCvB17hCQeKeLeSniQyQfUhFHCqwxxcM98Muj
- f50OqNIShsyoPYokiHJTnDHtFuX7sAPJuxzlfIfhbU6k/jzdvDBlEmYb1bLu3GZBx+jpa4BI26K
- N7pq4V9k2HMV8JuMdYwdyqnD1g82a8KBSr7Tapk49jnP89VVlH6bU7MAXMEzV1XiM+S6HAQZMGo
- CJixA6WTLVgOC4LGQm8Or1i2t6eLvFIsPl5VXO5RRpaUKmLqhjXAtmVebQJcs5Q3p9IZ1ngkxzf
- E9mMfFveV1NjcyOu/1
-X-Google-Smtp-Source: AGHT+IE4AKcZ9iG3HU9UqOepJtiBttWpmKkxGVeUm5SGFSLhkBki63IMeT+BtoQKqkwxdMyoqMT2Rw==
-X-Received: by 2002:a05:600c:3b0f:b0:477:10c4:b4e with SMTP id
- 5b1f17b1804b1-477308b22d2mr117432365e9.41.1762192735161; 
- Mon, 03 Nov 2025 09:58:55 -0800 (PST)
+ bh=c9gyhGaFcOpFheLwvmsYNqB/i/gJ7jSn4QomhlYUHX8=;
+ b=Tzl37RAhH9pV7fNM43bMOF7uWafsMcUMYJYT5eOd4oN9QIilrKI2ZJZM+yxiBFsxce
+ 1fKhmSCylH35iRzkbuP2545Hr1zJx2/ojXVGbGQHD+bciKbVFFhSoJp202los2tc8pC8
+ 0qV8LOC3IV4CIMb5URZy/IktsszT21bBSgXF8ocHbk3giEubtogh7WpdCReZGq/C4LUq
+ 8qQCpBcVF5XkIEdrK3J2n8UzY3iNOn3I54bCNjMgDSGLWLyCnTChW3P8282SQpaukyNI
+ VXReiDtQ90kKlVvnqXQFmxkBruFcNAzXNctSoiU13EGi/XFTZJfZUtHknqTdQxkr+H+U
+ 37wA==
+X-Gm-Message-State: AOJu0Yz1cx1lZikj2xNs9gSiOL3Jd9WdWbWuoOjh5h728Klw46MllWRq
+ 5uMUSmzs1josDKzmxAvnOnsZwvmzhr7wgCVWfi1sSgl1na5cEoFJp9RWF+2kyNxB0bMM+1xhAsN
+ C7VDp
+X-Gm-Gg: ASbGncuFeErJh3Cu/2jdr+lSPOIguAoMVE+tvgAVT/StAmQi8UmYzrgDe8ehREkfW9u
+ QdlyCOE9Rr0MOX7hUeOELb/BiuQaIGvD4NhsxkvtOI0LeTlV3TScJ0xJY479fXRLLRVaHdFkOpM
+ Gwncld87g5kCpO86KxPmbzwf69/01ks40JW91Qo8kQ+vsIRB5UbXJJoNTFQ95um/nXNSBrye0RD
+ 9L2lbVjOivFmRaSTEja3J3m9dwBzBSbEiWUKdjxEK0yKofMWoWN91MyJf9iD2bq6Ojx1f3Yk66v
+ jioUlbTzSjlyCdf+oTXfmv582YbKGcyMrJltVcW+JKeqibQc88Ar+CM8GjGqsLKK+taROYrz9HH
+ /IVZQnC034Iv8tAwufdY8xb9+u9xDhIldxlBUCb/Ae7leFMOkjqbGXNL5ZEFCWESC1mVq2RmeH1
+ cgLIu86FVhlIvMv1Qa
+X-Google-Smtp-Source: AGHT+IFtHGumGI6g43UFHtI30foS2yDahFefYvYoXHKIufBGfcVebwq+KQkLmn+aSZVyBKiDFSEx4Q==
+X-Received: by 2002:a05:600c:524f:b0:471:c72:c7f8 with SMTP id
+ 5b1f17b1804b1-477308b6117mr131275485e9.21.1762192736138; 
+ Mon, 03 Nov 2025 09:58:56 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4773c569390sm165120595e9.16.2025.11.03.09.58.54
+ 5b1f17b1804b1-4773c569390sm165120595e9.16.2025.11.03.09.58.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 09:58:54 -0800 (PST)
+ Mon, 03 Nov 2025 09:58:55 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 2/3] hw/net/e1000e_core: Correct rx oversize packet checks
-Date: Mon,  3 Nov 2025 17:58:50 +0000
-Message-ID: <20251103175851.428816-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/3] hw/net/e1000e_core: Adjust
+ e1000e_write_payload_frag_to_rx_buffers() assert
+Date: Mon,  3 Nov 2025 17:58:51 +0000
+Message-ID: <20251103175851.428816-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251103175851.428816-1-peter.maydell@linaro.org>
 References: <20251103175851.428816-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,165 +102,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In e1000e_write_packet_to_guest() we attempt to ensure that we don't
-write more of a packet to a descriptor than will fit in the guest
-configured receive buffers.  However, this code does not allow for
-the "packet split" feature.  When packet splitting is enabled, the
-first of up to 4 buffers in the descriptor is used for the packet
-header only, with the payload going into buffers 2, 3 and 4.  Our
-length check only checks against the total sizes of all 4 buffers,
-which meant that if an incoming packet was large enough to fit in (1
-+ 2 + 3 + 4) but not into (2 + 3 + 4) and packet splitting was
-enabled, we would run into the assertion in
-e1000e_write_hdr_frag_to_rx_buffers() that we had enough buffers for
-the data:
+An assertion in e1000e_write_payload_frag_to_rx_buffers() attempts to
+guard against the calling code accidentally trying to write too much
+data to a single RX descriptor, such that the E1000EBAState::cur_idx
+indexes off the end of the EB1000BAState::written[] array.
 
-qemu-system-i386: ../../hw/net/e1000e_core.c:1418: void e1000e_write_payload_frag_to_rx_buffers(E1000ECore *, hwaddr *, E1000EBAState *, const char *, dma_addr_t): Assertion `bastate->cur_idx < MAX_PS_BUFFERS' failed.
+Unfortunately it is overzealous: it asserts that cur_idx is in
+range after it has been incremented. This will fire incorrectly
+for the case where the guest configures four buffers and exactly
+enough bytes are written to fill all four of them.
 
-A malicious guest could provoke this assertion by configuring the
-device into loopback mode, and then sending itself a suitably sized
-packet into a suitably arrange rx descriptor.
-
-The code also fails to deal with the possibility that the descriptor
-buffers are sized such that the trailing checksum word does not fit
-into the last descriptor which has actual data, which might also
-trigger this assertion.
-
-Rework the length handling to use two variables:
- * desc_size is the total amount of data DMA'd to the guest
-   for the descriptor being processed in this iteration of the loop
- * rx_desc_buf_size is the total amount of space left in it
-
-As we copy data to the guest (packet header, payload, checksum),
-update these two variables.  (Previously we attempted to calculate
-desc_size once at the top of the loop, but this is too difficult to
-do correctly.) Then we can use the variables to ensure that we clamp
-the amount of copied payload data to the remaining space in the
-descriptor's buffers, even if we've used one of the buffers up in the
-packet-split code, and we can tell whether we have enough space for
-the full checksum word in this descriptor or whether we're going to
-need to split that to the following descriptor.
-
-I have included comments that hopefully help to make the loop
-logic a little clearer.
+The only places where we use cur_idx and index in to the written[]
+array are the functions e1000e_write_hdr_frag_to_rx_buffers() and
+e1000e_write_payload_frag_to_rx_buffers(), so we can rewrite this to
+assert before doing the array dereference, rather than asserting
+after updating cur_idx.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/537
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/net/e1000e_core.c | 61 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 47 insertions(+), 14 deletions(-)
+This is just moving the assert to the top, but the patch is
+a little more than that to satisfy our "declarations at top
+of block" rule.
+
+I haven't seen this assert trip because of this problem (the issue
+537 test case does not rely on it), so this is just a "seen on code
+inspection" change.
+---
+ hw/net/e1000e_core.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index ba77cb6011f..471c3ed20b8 100644
+index 471c3ed20b8..46e156a5ddc 100644
 --- a/hw/net/e1000e_core.c
 +++ b/hw/net/e1000e_core.c
-@@ -1495,6 +1495,13 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-     rxi = rxr->i;
- 
-     do {
-+        /*
-+         * Loop processing descriptors while we have packet data to
-+         * DMA to the guest.  desc_offset tracks how much data we have
-+         * sent to the guest in total over all descriptors, and goes
-+         * from 0 up to total_size (the size of everything to send to
-+         * the guest including possible trailing 4 bytes of CRC data).
-+         */
-         hwaddr ba[MAX_PS_BUFFERS];
-         E1000EBAState bastate = { { 0 } };
-         bool is_last = false;
-@@ -1512,23 +1519,27 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-         e1000e_read_rx_descr(core, &desc, ba);
- 
-         if (ba[0]) {
--            size_t desc_size = total_size - desc_offset;
--
--            if (desc_size > core->rx_desc_buf_size) {
--                desc_size = core->rx_desc_buf_size;
--            }
-+            /* Total amount of data DMA'd to the guest in this iteration */
-+            size_t desc_size = 0;
-+            /*
-+             * Total space available in this descriptor (we will update
-+             * this as we use it up)
-+             */
-+            size_t rx_desc_buf_size = core->rx_desc_buf_size;
- 
-             if (desc_offset < size) {
--                static const uint32_t fcs_pad;
-                 size_t iov_copy;
-+                /* Amount of data to copy from the incoming packet */
-                 size_t copy_size = size - desc_offset;
--                if (copy_size > core->rx_desc_buf_size) {
--                    copy_size = core->rx_desc_buf_size;
--                }
- 
-                 /* For PS mode copy the packet header first */
-                 if (do_ps) {
-                     if (is_first) {
-+                        /*
-+                         * e1000e_do_ps() guarantees that buffer 0 has enough
-+                         * space for the header; otherwise we will not split
-+                         * the packet (i.e. do_ps is false).
-+                         */
-                         size_t ps_hdr_copied = 0;
-                         do {
-                             iov_copy = MIN(ps_hdr_len - ps_hdr_copied,
-@@ -1550,14 +1561,26 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                         } while (ps_hdr_copied < ps_hdr_len);
- 
-                         is_first = false;
-+                        desc_size += ps_hdr_len;
-                     } else {
-                         /* Leave buffer 0 of each descriptor except first */
-                         /* empty as per spec 7.1.5.1                      */
-                         e1000e_write_hdr_frag_to_rx_buffers(core, ba, &bastate,
-                                                             NULL, 0);
-                     }
-+                    rx_desc_buf_size -= core->rxbuf_sizes[0];
-                 }
- 
-+                /*
-+                 * Clamp the amount of packet data we copy into what will fit
-+                 * into the remaining buffers in the descriptor.
-+                 */
-+                if (copy_size > rx_desc_buf_size) {
-+                    copy_size = rx_desc_buf_size;
-+                }
-+                desc_size += copy_size;
-+                rx_desc_buf_size -= copy_size;
+@@ -1392,10 +1392,13 @@ e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
+                                         dma_addr_t data_len)
+ {
+     while (data_len > 0) {
+-        uint32_t cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
+-        uint32_t cur_buf_bytes_left = cur_buf_len -
+-                                      bastate->written[bastate->cur_idx];
+-        uint32_t bytes_to_write = MIN(data_len, cur_buf_bytes_left);
++        uint32_t cur_buf_len, cur_buf_bytes_left, bytes_to_write;
 +
-                 /* Copy packet payload */
-                 while (copy_size) {
-                     iov_copy = MIN(copy_size, iov->iov_len - iov_ofs);
-@@ -1574,12 +1597,22 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                         iov_ofs = 0;
-                     }
-                 }
-+            }
++        assert(bastate->cur_idx < MAX_PS_BUFFERS);
++
++        cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
++        cur_buf_bytes_left = cur_buf_len - bastate->written[bastate->cur_idx];
++        bytes_to_write = MIN(data_len, cur_buf_bytes_left);
  
--                if (desc_offset + desc_size >= total_size) {
--                    /* Simulate FCS checksum presence in the last descriptor */
--                    e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
--                          (const char *) &fcs_pad, e1000x_fcs_len(core->mac));
--                }
-+            if (rx_desc_buf_size &&
-+                desc_offset >= size && desc_offset < total_size) {
-+                /*
-+                 * We are in the last 4 bytes corresponding to the FCS checksum.
-+                 * We only ever write zeroes here (unlike the hardware).
-+                 */
-+                static const uint32_t fcs_pad;
-+                /* Amount of space for the trailing checksum */
-+                size_t fcs_len = MIN(rx_desc_buf_size,
-+                                     total_size - desc_offset);
-+                e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
-+                                                        (const char *)&fcs_pad,
-+                                                        fcs_len);
-+                desc_size += fcs_len;
-             }
-             desc_offset += desc_size;
-             if (desc_offset >= total_size) {
+         trace_e1000e_rx_desc_buff_write(bastate->cur_idx,
+                                         ba[bastate->cur_idx],
+@@ -1414,8 +1417,6 @@ e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
+         if (bastate->written[bastate->cur_idx] == cur_buf_len) {
+             bastate->cur_idx++;
+         }
+-
+-        assert(bastate->cur_idx < MAX_PS_BUFFERS);
+     }
+ }
+ 
 -- 
 2.43.0
 
