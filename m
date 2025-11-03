@@ -2,92 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD83C2B07F
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A017CC2AE88
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:04:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFrjR-0002W8-6z; Mon, 03 Nov 2025 05:24:13 -0500
+	id 1vFrPQ-0008HK-Ep; Mon, 03 Nov 2025 05:03:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrjM-0002VI-O7
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:24:09 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrjC-0004rI-Oy
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:24:08 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-429c19b5de4so2246067f8f.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:23:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762165434; x=1762770234; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9Rs1loIowige+ByKyM7eBpM0czRwX2BCXXvqEDgccqY=;
- b=iL6vV+CNdKDZiVumvffm8UBOLCyGt67exF4VsLI5yBD9oOr6rmdIyVGe9zEMCO+joC
- HVCSMkAcUxh9Qcz1rJhAt2fehMwppTn/TMS8dDNdz4G26A+MdTr8yM4z1w01hKJ8EQMm
- iP8YT3H6+0GG0nsEk2oV6KjOGol3Ki9H7pGgKY2YjUctz10m8059lNfn4qXPBwtM3yab
- IXTxckwZQe+sfBnOP3R7lr59wlIruWtE2duZv78dFL2zcLOn/MaeObldYFF7WlAzdqsL
- vm2z1fh8lDiDmzf25j1yb7ATY2Enk0KJD9x9C0TimjW8ODBWx7oT3jgZUNt+V4752A6O
- P3TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762165434; x=1762770234;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9Rs1loIowige+ByKyM7eBpM0czRwX2BCXXvqEDgccqY=;
- b=VUwpJqEnMujlHbr2ibVjQ2l+rY7QzhNKielTDLumPMKhjjDzp9eG59Z0tu1HhJ5N34
- yJ4j7bjmssEbZjnzz1qF1XK2qnMq9H0ccH0qAahtmP2JkoZ7UOXKUItKb14c8GW12RE2
- wiMEutd1XKiCA4/9W2T7GiTHT14VAY19nSqvzu/ZmuPtI8R0MDUGzdwhgdQgGkf3BcU2
- 6Obd+Tueac4MHzlwdkEVXWvuIUKrEbRWWs/ixJUxckN62rCkzd48R16j7r8IJAU8xaTF
- zk7JZZ6HAlnzfuAwRhvFjTNpGG+GZDtW0ubB2M4Cfx3J7CmoFsKR5xYI+Feak8uDBfg1
- I11g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVS3SPEto1RMWR9nFAFs39I6WbW9m1tSwdzqHhKt5M1jEPIp3SMS7+KrU3YLd2Ygsef0voVFpCyHsrr@nongnu.org
-X-Gm-Message-State: AOJu0YyXyKeMfK8ulyu1jwvHAlN0XCUpyEzKVsNVc9cXj6REYyqoDtKp
- CnpCtGcsuoAzNFS0LSjASax+24yHdTdFJWdRszAaensxlOfyH4A3xAeZm+jqQuHXoW8=
-X-Gm-Gg: ASbGncsIhuvEJ19bWakNhPrvBoKfBwj6X/LLA3ixi4Ptm7gtZaTsdxyTvjeavsuiRFg
- 3nYD/KVvC7GJ1f/hGCd1CVqJbajW/PaRenZXZ30JNYU1WY1l6PypbsBHPqUTVQRwAaDibFB8Ek3
- GfFf5HsAL9eXOyn5wK3Qf3Jk2dFeMzGrz3heQlhwUP8JlsVqfxWvR8tOpdBT+etjdM1gkUFRAZe
- zQSZ/B1NrxcbOqWqt7P6Hn6TKURDrqUrKws04aCfVzNtbUC6xrj792ruJfId+mZL93qkNFvIblg
- 3P2A+LKVAW4gPEO0QnDDdapUKmq3l7ANAALZhMsEQErlzKXPCnOt4RhF9qHI4DvoNc+7bx7uc7C
- qf2L1N3YMQUHZuHj/D6XvUVR/PtIrT6ioKmush1/qAk5iatJ4o9l0SO9lyS5LS89Vt3ZBX3+0HM
- oZRz/CbWuGHkcWJMvkcJb14CoD+m2zGX+ICayhCA0cpB/StA2MN0hDONfoXUHHrg==
-X-Google-Smtp-Source: AGHT+IF/WhahqqjQpW5bPzmu9S/E+qtRGStZYEwgFGzo321XsrlpcUFet0JFG3ETWPyKonrdy1F2YQ==
-X-Received: by 2002:a05:6000:3105:b0:429:d4c2:cae1 with SMTP id
- ffacd0b85a97d-429d4c2ce42mr1540093f8f.63.1762165434360; 
- Mon, 03 Nov 2025 02:23:54 -0800 (PST)
-Received: from [172.18.178.65] (ip-185-104-138-122.ptr.icomera.net.
- [185.104.138.122]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429c5e19103sm16429099f8f.28.2025.11.03.02.23.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Nov 2025 02:23:53 -0800 (PST)
-Message-ID: <4e02d77d-28d5-49a1-a7e6-46888882b339@linaro.org>
-Date: Mon, 3 Nov 2025 11:23:49 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vFrPM-0008GT-Vy; Mon, 03 Nov 2025 05:03:29 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vFrPG-0000hS-Eg; Mon, 03 Nov 2025 05:03:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762164203; x=1793700203;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=4FQmeIYELimW4haBSnFU018/7z6jVn9vbPe5zfgrtJs=;
+ b=OOGLkTg0LlG4ugbSXV++/W8LxHB46wv3f5arJd898Ov5/Wuy+8cuWyRG
+ ebphqXlCwmihxzTiL+PFAYH+v9PCw/P3F2cnJyOVDMuwvs0olBYpg4BNp
+ 8HlqaqApw4HFxjSADHDxabn/+vccSzvJFLltXCD84ZI2Wbd5TyHDp5W80
+ zaVedOderdvg5kJGf/6UDYrSOwqAjqNPGAArmm511VIpfhFaiXykSZmqa
+ oLbqCKbCI4iydgU5JhdMJ4GyKoKsIJYoQc/hOGVYWx2+4cJgPqTpqjl75
+ 3y1lEzk3ifR0hTNJDCt4fNb3ndX29TUb0UWWvJ/cGsYIjNmX4M/BZrqjx g==;
+X-CSE-ConnectionGUID: PBqlt34nTxK9ijEgR2abxw==
+X-CSE-MsgGUID: UzGx/3NpSIGXKiPaADfAGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="75586926"
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="75586926"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2025 02:03:14 -0800
+X-CSE-ConnectionGUID: wKNhXijpRtW3HImVL7IKvw==
+X-CSE-MsgGUID: PvUlc5scSqempIhCgFxHqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="186504255"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 03 Nov 2025 02:03:13 -0800
+Date: Mon, 3 Nov 2025 18:25:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 08/11] rust: qemu-macros: add ToMigrationState derive macro
+Message-ID: <aQiDFo0Yv6sIZsH5@intel.com>
+References: <20251001075005.1041833-1-pbonzini@redhat.com>
+ <20251001075210.1042479-8-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] target/riscv: Remove upper_half from
- riscv_pmu_ctr_get_fixed_counters_val
-Content-Language: en-US
-To: alistair23@gmail.com, qemu-devel@nongnu.org, anjo@rev.ng,
- palmer@dabbelt.com, dbarboza@ventanamicro.com, atishp@rivosinc.com
-Cc: liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>
-References: <20251103033713.904455-1-alistair.francis@wdc.com>
- <20251103033713.904455-9-alistair.francis@wdc.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251103033713.904455-9-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001075210.1042479-8-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,18 +79,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/11/25 04:37, alistair23@gmail.com wrote:
-> From: Alistair Francis <alistair.francis@wdc.com>
-> 
-> Now that mhpmcounter is always a 64-bit value we can remove the
-> upper_half argument from riscv_pmu_ctr_get_fixed_counters_val() and
-> always return a 64-bit value.
-> 
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->   target/riscv/csr.c | 40 +++++++++-------------------------------
->   1 file changed, 9 insertions(+), 31 deletions(-)
+Hi Paolo,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>  /// # use std::sync::Mutex;
+> -/// # use migration::Migratable;
+> +/// # use migration::{Migratable, ToMigrationState, VMState, VMStateField};
+>  ///
+> +/// #[derive(ToMigrationState)]
+>  /// pub struct DeviceRegs {
+>  ///     status: u32,
+>  /// }
+> +/// # unsafe impl VMState for DeviceRegsMigration {
+> +/// #     const BASE: VMStateField = ::common::Zeroable::ZERO;
+> +/// # }
+
+did you miss something like the following?
+
+
+diff --git a/rust/qemu-macros/src/migration_state.rs b/rust/qemu-macros/src/migration_state.rs
+index 5edf0efe687f..2064bb73a6f0 100644
+--- a/rust/qemu-macros/src/migration_state.rs
++++ b/rust/qemu-macros/src/migration_state.rs
+@@ -236,6 +236,16 @@ pub struct #name {
+         }
+     }
+
++    fn generate_vmstate_impl(&self) -> TokenStream {
++        let name = self.migration_state_name();
++
++        quote! {
++            unsafe impl ::migration::VMState for #name {
++                const BASE: ::migration::VMStateField = ::common::Zeroable::ZERO;
++            }
++        }
++    }
++
+     fn generate_snapshot_migration_state(&self) -> TokenStream {
+         let fields = self
+             .fields
+@@ -275,12 +285,15 @@ fn generate(&self) -> TokenStream {
+         let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
+         let name = self.migration_state_name();
+         let migration_state_struct = self.generate_migration_state_struct();
++        let vmstate_impl = self.generate_vmstate_impl();
+         let snapshot_impl = self.generate_snapshot_migration_state();
+         let restore_impl = self.generate_restore_migrated_state();
+
+         quote! {
+             #migration_state_struct
+
++            #vmstate_impl
++
+             impl #impl_generics ToMigrationState for #struct_name #ty_generics #where_clause {
+                 type Migrated = #name;
 
 
