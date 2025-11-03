@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE0CC2A8ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:26:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E29C2A915
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:28:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFprw-0000zF-Rw; Mon, 03 Nov 2025 03:24:52 -0500
+	id 1vFpui-0004Lr-4q; Mon, 03 Nov 2025 03:27:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFprc-0000wM-2K
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:24:33 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFpuS-0004BE-Ka
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:27:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFprF-0006kF-4s
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:24:22 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFpuQ-00074T-Dq
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:27:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762158246;
+ s=mimecast20190719; t=1762158443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UMmubR2JKEroEu+eneu4FesjsA/osmrUP43LccngfzA=;
- b=B5mQLkMIPaptUvbjO/0iEoE3BuAq0wERQX9wJMWTdcdZ0CCGmFRSE1Gy8iRDDNASuj8aZt
- 6EvbqVn/VTas9WIFaT2iKDb2U0rrPk60U2vFMnieJtXi5ffOPcPoPWgQ0rtxiDIWnGpDuQ
- kkE7FSNGLH6MFxy1nCMEYEDzpWj00Dc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=baQKesqAaRpTH4F8qHsqjtV1CpjMKeRCPnC3d6FDzO8=;
+ b=HvjDC+jDIfDD4C1MvG6HQY5JUxILS1MTuQY45kcJQIZ0AlwV8Uenghp+CWho4VdcN+AcMA
+ 6Mjps7qbKe4KeLYBgG6zZ3Aj7tiOsVvkbPZ2n/JbtV2l84GrvuCuP/qbl3XnO61MYDz6v4
+ stuK9aD+N1aRz/REtwMtgRnhKvg4K3c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-b7FbG1vcNVuCeY23nhi6IQ-1; Mon,
- 03 Nov 2025 03:24:02 -0500
-X-MC-Unique: b7FbG1vcNVuCeY23nhi6IQ-1
-X-Mimecast-MFC-AGG-ID: b7FbG1vcNVuCeY23nhi6IQ_1762158241
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-UFOasnawOTS3G4sySvohRA-1; Mon,
+ 03 Nov 2025 03:27:19 -0500
+X-MC-Unique: UFOasnawOTS3G4sySvohRA-1
+X-Mimecast-MFC-AGG-ID: UFOasnawOTS3G4sySvohRA_1762158439
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7E461954230; Mon,  3 Nov 2025 08:24:01 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 25355180A227; Mon,  3 Nov 2025 08:27:19 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D7941955BE3; Mon,  3 Nov 2025 08:24:01 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D748E1800578; Mon,  3 Nov 2025 08:27:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1C38F21E677A; Mon, 03 Nov 2025 09:23:55 +0100 (CET)
+ id 4961C21E6A27; Mon, 03 Nov 2025 09:27:16 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, eblake@redhat.com, vsementsov@yandex-team.ru,
- thuth@redhat.com, berrange@redhat.com, philmd@linaro.org,
- kchamart@redhat.com, mst@redhat.com, sgarzare@redhat.com
-Subject: [PATCH v2 9/9] docs/interop: Add test to keep vhost-user.json sane
-Date: Mon,  3 Nov 2025 09:23:54 +0100
-Message-ID: <20251103082354.3273027-10-armbru@redhat.com>
-In-Reply-To: <20251103082354.3273027-1-armbru@redhat.com>
-References: <20251103082354.3273027-1-armbru@redhat.com>
+Cc: pbonzini@redhat.com,  marcandre.lureau@redhat.com,  berrange@redhat.com,
+ philmd@linaro.org
+Subject: Re: [PATCH] meson: Add missing backends.py to qapi_gen_depends
+In-Reply-To: <20251029120024.1426996-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Wed, 29 Oct 2025 13:00:24 +0100")
+References: <20251029120024.1426996-1-armbru@redhat.com>
+Date: Mon, 03 Nov 2025 09:27:16 +0100
+Message-ID: <87zf931py3.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,35 +83,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We did this for firmware.json in commit d4181658dfb (docs: add test
-for firmware.json QAPI).
+Markus Armbruster <armbru@redhat.com> writes:
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- docs/meson.build | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+> Fixes: dde279925c97 (qapi: pluggable backend code generators)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-diff --git a/docs/meson.build b/docs/meson.build
-index 3676f81c4d..7e54b01e6a 100644
---- a/docs/meson.build
-+++ b/docs/meson.build
-@@ -99,7 +99,12 @@ if build_docs
-   alias_target('man', sphinxmans)
- endif
- 
--test('QAPI firmware.json regression tests', qapi_gen,
--     args: ['-o', meson.current_build_dir() / 'qapi',
-+test('QAPI firmware.json regression test', qapi_gen,
-+     args: ['-o', meson.current_build_dir() / 'qapi-firmware',
-             meson.current_source_dir() / 'interop/firmware.json'],
-      suite: ['qapi-schema', 'qapi-interop'])
-+
-+test('QAPI vhost-user.json regression test', qapi_gen,
-+     args: ['-o', meson.current_build_dir() / 'qapi-vhost-user',
-+            meson.current_source_dir() / 'interop/vhost-user.json'],
-+     suite: ['qapi-schema', 'qapi-interop'])
--- 
-2.49.0
+Queued.
 
 
