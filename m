@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32215C2AC5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCDCC2AC5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:36:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFqs1-0000tc-Gt; Mon, 03 Nov 2025 04:29:01 -0500
+	id 1vFqs1-0000tN-9B; Mon, 03 Nov 2025 04:29:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqs0-0000sx-FD; Mon, 03 Nov 2025 04:29:00 -0500
+ id 1vFqrz-0000sW-2t; Mon, 03 Nov 2025 04:28:59 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqru-0001jn-QR; Mon, 03 Nov 2025 04:29:00 -0500
+ id 1vFqru-0001r9-Qe; Mon, 03 Nov 2025 04:28:58 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 3 Nov
- 2025 17:28:08 +0800
+ 2025 17:28:09 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 3 Nov 2025 17:28:08 +0800
+ Transport; Mon, 3 Nov 2025 17:28:09 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v3 10/30] hw/arm/aspeed: Split Sonorapass machine into a
- separate source file for maintainability
-Date: Mon, 3 Nov 2025 17:27:21 +0800
-Message-ID: <20251103092801.1282602-11-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 11/30] hw/arm/aspeed: Split Romulus machine into a separate
+ source file for maintainability
+Date: Mon, 3 Nov 2025 17:27:22 +0800
+Message-ID: <20251103092801.1282602-12-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
 References: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
@@ -66,129 +66,89 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit moves the Sonorapass BMC machine implementation out of
-aspeed.c and into a new standalone file aspeed_ast2500_sonorapass.c.
+This commit moves the Romulus BMC machine implementation out of
+aspeed.c into a new standalone file aspeed_ast2500_romulus.c.
 
-The refactor continues the effort to modularize Aspeed platform support
-by separating each board’s implementation into its own source file.
-This improves maintainability, readability, and simplifies future
-updates to individual machine configurations.
+The refactor continues the modularization of Aspeed platform
+definitions, separating each board into its own C source file to
+improve maintainability, readability, and reduce code clutter in
+aspeed.c.
 
 Key updates include:
-- Moved SONORAPASS_BMC_HW_STRAP1 definition into the new file.
-- Moved sonorapass_bmc_i2c_init() and all I²C device initialization
-logic from aspeed.c into aspeed_ast2500_sonorapass.c.
-- Moved aspeed_machine_sonorapass_class_init() and type registration
-into the new file.
+- Moved ROMULUS_BMC_HW_STRAP1 definition to the new file.
+- Moved romulus_bmc_i2c_init() and related I²C device setup.
+- Moved aspeed_machine_romulus_class_init() and type registration
+to aspeed_ast2500_romulus.c.
 - Added the new file to the build system (meson.build).
-- Removed all Sonorapass-specific code and definitions from aspeed.c
+- Removed all Romulus-specific code from aspeed.c.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c                    |  82 -----------------------
- hw/arm/aspeed_ast2500_sonorapass.c | 103 +++++++++++++++++++++++++++++
- hw/arm/meson.build                 |   1 +
- 3 files changed, 104 insertions(+), 82 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2500_sonorapass.c
+ hw/arm/aspeed.c                 | 43 ----------------------
+ hw/arm/aspeed_ast2500_romulus.c | 63 +++++++++++++++++++++++++++++++++
+ hw/arm/meson.build              |  1 +
+ 3 files changed, 64 insertions(+), 43 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2500_romulus.c
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 74eb8077da..df1a37ca3d 100644
+index df1a37ca3d..c31b281f55 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -102,21 +102,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-         SCU_AST2500_HW_STRAP_ACPI_ENABLE |                              \
-         SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER))
+@@ -92,16 +92,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+         SCU_HW_STRAP_MAC0_RGMII) &                                      \
+         ~SCU_HW_STRAP_2ND_BOOT_WDT)
  
--/* Sonorapass hardware value: 0xF100D216 */
--#define SONORAPASS_BMC_HW_STRAP1 (                                      \
+-/* Romulus hardware value: 0xF10AD206 */
+-#define ROMULUS_BMC_HW_STRAP1 (                                         \
+-        AST2500_HW_STRAP1_DEFAULTS |                                    \
 -        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
 -        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
 -        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
--        SCU_AST2500_HW_STRAP_RESERVED28 |                               \
 -        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
--        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
--        SCU_HW_STRAP_LPC_RESET_PIN |                                    \
--        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER) |                \
--        SCU_AST2500_HW_STRAP_SET_AXI_AHB_RATIO(AXI_AHB_RATIO_2_1) |     \
--        SCU_HW_STRAP_VGA_BIOS_ROM |                                     \
--        SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
--        SCU_AST2500_HW_STRAP_RESERVED1)
+-        SCU_AST2500_HW_STRAP_ACPI_ENABLE |                              \
+-        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER))
 -
  /* Quanta-Q71l hardware value */
  #define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
          SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
-@@ -490,50 +475,6 @@ I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
-                             TYPE_PCA9554, addr);
+@@ -452,17 +442,6 @@ static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
+                      TYPE_TMP105, 0x4d);
  }
  
--static void sonorapass_bmc_i2c_init(AspeedMachineState *bmc)
+-static void romulus_bmc_i2c_init(AspeedMachineState *bmc)
 -{
 -    AspeedSoCState *soc = bmc->soc;
 -
--    /* bus 2 : */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "tmp105", 0x48);
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "tmp105", 0x49);
--    /* bus 2 : pca9546 @ 0x73 */
--
--    /* bus 3 : pca9548 @ 0x70 */
--
--    /* bus 4 : */
--    uint8_t *eeprom4_54 = g_malloc0(8 * 1024);
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 4), 0x54,
--                          eeprom4_54);
--    /* PCA9539 @ 0x76, but PCA9552 is compatible */
--    aspeed_create_pca9552(soc, 4, 0x76);
--    /* PCA9539 @ 0x77, but PCA9552 is compatible */
--    aspeed_create_pca9552(soc, 4, 0x77);
--
--    /* bus 6 : */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp105", 0x48);
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp105", 0x49);
--    /* bus 6 : pca9546 @ 0x73 */
--
--    /* bus 8 : */
--    uint8_t *eeprom8_56 = g_malloc0(8 * 1024);
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 8), 0x56,
--                          eeprom8_56);
--    aspeed_create_pca9552(soc, 8, 0x60);
--    aspeed_create_pca9552(soc, 8, 0x61);
--    /* bus 8 : adc128d818 @ 0x1d */
--    /* bus 8 : adc128d818 @ 0x1f */
--
 -    /*
--     * bus 13 : pca9548 @ 0x71
--     *      - channel 3:
--     *          - tmm421 @ 0x4c
--     *          - tmp421 @ 0x4e
--     *          - tmp421 @ 0x4f
+-     * The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
+-     * good enough
 -     */
--
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
 -}
 -
- static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
+ void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
  {
-     AspeedSoCState *soc = bmc->soc;
-@@ -1319,24 +1260,6 @@ static void aspeed_machine_romulus_class_init(ObjectClass *oc,
+     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
+@@ -1243,23 +1222,6 @@ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
      aspeed_machine_class_init_cpus_defaults(mc);
  };
  
--static void aspeed_machine_sonorapass_class_init(ObjectClass *oc,
--                                                 const void *data)
+-static void aspeed_machine_romulus_class_init(ObjectClass *oc,
+-                                              const void *data)
 -{
 -    MachineClass *mc = MACHINE_CLASS(oc);
 -    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 -
--    mc->desc       = "OCP SonoraPass BMC (ARM1176)";
--    mc->deprecation_reason = "use 'ast2500-evb' instead";
+-    mc->desc       = "OpenPOWER Romulus BMC (ARM1176)";
 -    amc->soc_name  = "ast2500-a1";
--    amc->hw_strap1 = SONORAPASS_BMC_HW_STRAP1;
--    amc->fmc_model = "mx66l1g45g";
+-    amc->hw_strap1 = ROMULUS_BMC_HW_STRAP1;
+-    amc->fmc_model = "n25q256a";
 -    amc->spi_model = "mx66l1g45g";
 -    amc->num_cs    = 2;
--    amc->i2c_init  = sonorapass_bmc_i2c_init;
+-    amc->i2c_init  = romulus_bmc_i2c_init;
 -    mc->default_ram_size       = 512 * MiB;
 -    aspeed_machine_class_init_cpus_defaults(mc);
 -};
@@ -196,26 +156,26 @@ index 74eb8077da..df1a37ca3d 100644
  static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
                                                    const void *data)
  {
-@@ -1707,11 +1630,6 @@ static const TypeInfo aspeed_machine_types[] = {
+@@ -1625,11 +1587,6 @@ static const TypeInfo aspeed_machine_types[] = {
          .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_romulus_class_init,
+         .class_init    = aspeed_machine_ast2500_evb_class_init,
          .interfaces    = arm_machine_interfaces,
 -    }, {
--        .name          = MACHINE_TYPE_NAME("sonorapass-bmc"),
+-        .name          = MACHINE_TYPE_NAME("romulus-bmc"),
 -        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_sonorapass_class_init,
+-        .class_init    = aspeed_machine_romulus_class_init,
 -        .interfaces    = arm_machine_interfaces,
      }, {
          .name          = MACHINE_TYPE_NAME("ast2600-evb"),
          .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2500_sonorapass.c b/hw/arm/aspeed_ast2500_sonorapass.c
+diff --git a/hw/arm/aspeed_ast2500_romulus.c b/hw/arm/aspeed_ast2500_romulus.c
 new file mode 100644
-index 0000000000..714f3a461a
+index 0000000000..cde06894ce
 --- /dev/null
-+++ b/hw/arm/aspeed_ast2500_sonorapass.c
-@@ -0,0 +1,103 @@
++++ b/hw/arm/aspeed_ast2500_romulus.c
+@@ -0,0 +1,63 @@
 +/*
-+ * OCP SonoraPass
++ * OpenPOWER Romulus
 + *
 + * Copyright (C) 2025 ASPEED Technology Inc.
 + *
@@ -227,108 +187,68 @@ index 0000000000..714f3a461a
 +#include "hw/arm/machines-qom.h"
 +#include "hw/arm/aspeed.h"
 +#include "hw/arm/aspeed_soc.h"
-+#include "hw/i2c/smbus_eeprom.h"
 +
-+/* Sonorapass hardware value: 0xF100D216 */
-+#define SONORAPASS_BMC_HW_STRAP1 (                                      \
++/* Romulus hardware value: 0xF10AD206 */
++#define ROMULUS_BMC_HW_STRAP1 (                                         \
++        AST2500_HW_STRAP1_DEFAULTS |                                    \
 +        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
 +        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
 +        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
-+        SCU_AST2500_HW_STRAP_RESERVED28 |                               \
 +        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
-+        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
-+        SCU_HW_STRAP_LPC_RESET_PIN |                                    \
-+        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER) |                \
-+        SCU_AST2500_HW_STRAP_SET_AXI_AHB_RATIO(AXI_AHB_RATIO_2_1) |     \
-+        SCU_HW_STRAP_VGA_BIOS_ROM |                                     \
-+        SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
-+        SCU_AST2500_HW_STRAP_RESERVED1)
++        SCU_AST2500_HW_STRAP_ACPI_ENABLE |                              \
++        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER))
 +
-+static void sonorapass_bmc_i2c_init(AspeedMachineState *bmc)
++static void romulus_bmc_i2c_init(AspeedMachineState *bmc)
 +{
 +    AspeedSoCState *soc = bmc->soc;
 +
-+    /* bus 2 : */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "tmp105", 0x48);
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "tmp105", 0x49);
-+    /* bus 2 : pca9546 @ 0x73 */
-+
-+    /* bus 3 : pca9548 @ 0x70 */
-+
-+    /* bus 4 : */
-+    uint8_t *eeprom4_54 = g_malloc0(8 * 1024);
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 4), 0x54,
-+                          eeprom4_54);
-+    /* PCA9539 @ 0x76, but PCA9552 is compatible */
-+    aspeed_create_pca9552(soc, 4, 0x76);
-+    /* PCA9539 @ 0x77, but PCA9552 is compatible */
-+    aspeed_create_pca9552(soc, 4, 0x77);
-+
-+    /* bus 6 : */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp105", 0x48);
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp105", 0x49);
-+    /* bus 6 : pca9546 @ 0x73 */
-+
-+    /* bus 8 : */
-+    uint8_t *eeprom8_56 = g_malloc0(8 * 1024);
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 8), 0x56,
-+                          eeprom8_56);
-+    aspeed_create_pca9552(soc, 8, 0x60);
-+    aspeed_create_pca9552(soc, 8, 0x61);
-+    /* bus 8 : adc128d818 @ 0x1d */
-+    /* bus 8 : adc128d818 @ 0x1f */
-+
 +    /*
-+     * bus 13 : pca9548 @ 0x71
-+     *      - channel 3:
-+     *          - tmm421 @ 0x4c
-+     *          - tmp421 @ 0x4e
-+     *          - tmp421 @ 0x4f
++     * The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
++     * good enough
 +     */
-+
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
 +}
 +
-+static void aspeed_machine_sonorapass_class_init(ObjectClass *oc,
-+                                                 const void *data)
++static void aspeed_machine_romulus_class_init(ObjectClass *oc,
++                                              const void *data)
 +{
 +    MachineClass *mc = MACHINE_CLASS(oc);
 +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 +
-+    mc->desc       = "OCP SonoraPass BMC (ARM1176)";
-+    mc->deprecation_reason = "use 'ast2500-evb' instead";
++    mc->desc       = "OpenPOWER Romulus BMC (ARM1176)";
 +    amc->soc_name  = "ast2500-a1";
-+    amc->hw_strap1 = SONORAPASS_BMC_HW_STRAP1;
-+    amc->fmc_model = "mx66l1g45g";
++    amc->hw_strap1 = ROMULUS_BMC_HW_STRAP1;
++    amc->fmc_model = "n25q256a";
 +    amc->spi_model = "mx66l1g45g";
 +    amc->num_cs    = 2;
-+    amc->i2c_init  = sonorapass_bmc_i2c_init;
++    amc->i2c_init  = romulus_bmc_i2c_init;
 +    mc->default_ram_size       = 512 * MiB;
 +    aspeed_machine_class_init_cpus_defaults(mc);
 +};
 +
-+static const TypeInfo aspeed_ast2500_sonorapass_types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("sonorapass-bmc"),
++static const TypeInfo aspeed_ast2500_romulus_types[] = {
++     {
++        .name          = MACHINE_TYPE_NAME("romulus-bmc"),
 +        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_sonorapass_class_init,
++        .class_init    = aspeed_machine_romulus_class_init,
 +        .interfaces    = arm_machine_interfaces,
 +    }
 +};
 +
-+DEFINE_TYPES(aspeed_ast2500_sonorapass_types)
++DEFINE_TYPES(aspeed_ast2500_romulus_types)
 +
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index c235c8aed3..f59bfe5029 100644
+index f59bfe5029..ff6a856523 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
 @@ -46,6 +46,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
    'aspeed_ast2400.c',
    'aspeed_ast2500_fp5280g2.c',
    'aspeed_ast2500_g220a.c',
-+  'aspeed_ast2500_sonorapass.c',
++  'aspeed_ast2500_romulus.c',
+   'aspeed_ast2500_sonorapass.c',
    'aspeed_ast2500_tiogapass.c',
    'aspeed_ast2500_witherspoon.c',
-   'aspeed_ast2500_yosemitev2.c',
 -- 
 2.43.0
 
