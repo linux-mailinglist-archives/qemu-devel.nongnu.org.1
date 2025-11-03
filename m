@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2301CC2DB31
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070B4C2DB2B
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFzN1-0005qh-Jc; Mon, 03 Nov 2025 13:33:35 -0500
+	id 1vFzN6-0005rT-6V; Mon, 03 Nov 2025 13:33:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzMx-0005qI-Va
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vFzN3-0005rB-5F
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzMt-0006xH-0w
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:31 -0500
+ id 1vFzMt-0006xx-Ex
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762194796;
+ s=mimecast20190719; t=1762194801;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=wFJvzQJs4hG58LHZdY+Kl4E435V5JyesPRH0HvUREc0=;
- b=ak1/cQALbJ/3S1H7W8OCy4cVI93DaWnQFl5RakRI035KQH5YEWkMNp389dUORg0om8ipeN
- BEfLkuPMwdlCgvBPyMGrhOuqcawmaTfFIQ4vff03gjouJ632X7ZAUdaXTYHiU4Xbm6NtDC
- z/QP7LBuiWcPH5i36T+MDFr1l453Zk8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FTL58dGcslqhpWl8jCgH73Dkh0Rme7iehdt9ug/4Lds=;
+ b=NG+XAiqrL+vqbn8RXsN/0sSyzbQutCzzvbRDOdK7LT2HQgBs4dWnCiNBKhKXBk37k+0v/4
+ QXPrgJv97zl83+4SnPKqvlkaLGnhWKV2eHFaTOn7MYqIZGUgnd/XzgfwbA4WBuoCUaVGdl
+ qg9Mp3d3qLMqPKQy8yq5Sj5uy5rdMHQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-pNZcHLVqOeSD7I5S3WyK2Q-1; Mon,
- 03 Nov 2025 13:33:12 -0500
-X-MC-Unique: pNZcHLVqOeSD7I5S3WyK2Q-1
-X-Mimecast-MFC-AGG-ID: pNZcHLVqOeSD7I5S3WyK2Q_1762194789
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-CATjP8I_N_2V3Gs9DdNXLQ-1; Mon,
+ 03 Nov 2025 13:33:17 -0500
+X-MC-Unique: CATjP8I_N_2V3Gs9DdNXLQ-1
+X-Mimecast-MFC-AGG-ID: CATjP8I_N_2V3Gs9DdNXLQ_1762194796
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D9371955EB7; Mon,  3 Nov 2025 18:33:07 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3FE78183450E; Mon,  3 Nov 2025 18:33:11 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.44.32.249])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DE30F18004D8; Mon,  3 Nov 2025 18:33:04 +0000 (UTC)
+ id 1D18D1800576; Mon,  3 Nov 2025 18:33:07 +0000 (UTC)
 From: Juraj Marcin <jmarcin@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>
-Subject: [PATCH v4 0/8] migration: Introduce POSTCOPY_DEVICE state
-Date: Mon,  3 Nov 2025 19:32:49 +0100
-Message-ID: <20251103183301.3840862-1-jmarcin@redhat.com>
+Subject: [PATCH v4 1/8] migration: Flush migration channel after sending data
+ of CMD_PACKAGED
+Date: Mon,  3 Nov 2025 19:32:50 +0100
+Message-ID: <20251103183301.3840862-2-jmarcin@redhat.com>
+In-Reply-To: <20251103183301.3840862-1-jmarcin@redhat.com>
+References: <20251103183301.3840862-1-jmarcin@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,53 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series introduces a new POSTCOPY_DEVICE state that is active (both,
-on source and destination side), while the destination loads the device
-state. Before this series, if the destination machine failed during the
-device load, the source side would stay stuck POSTCOPY_ACTIVE with no
-way of recovery. With this series, if the migration fails while in
-POSTCOPY_DEVICE state, the source side can safely resume, as destination
-has not started yet.
+From: Juraj Marcin <jmarcin@redhat.com>
 
-RFC: https://lore.kernel.org/all/20250807114922.1013286-1-jmarcin@redhat.com/
+If the length of the data sent after CMD_PACKAGED is just right, and
+there is not much data to send afterward, it is possible part of the
+CMD_PACKAGED payload will get left behind in the sending buffer. This
+causes the destination side to hang while it tries to load the whole
+package and initiate postcopy.
 
-V1: https://lore.kernel.org/all/20250915115918.3520735-1-jmarcin@redhat.com/
+Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
+---
+ migration/savevm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-V2: https://lore.kernel.org/all/20251027154115.4138677-1-jmarcin@redhat.com/
-
-V3: https://lore.kernel.org/all/20251030214915.1411860-1-jmarcin@redhat.com/
-
-V4 changes:
-
-- fixes for failing qemu-iotest 194
-    - flush channel after sending CMD_PACKAGED data (new patch 1)
-    - POSTCOPY_DEVICE state is now used only if return-path is open
-
-Juraj Marcin (7):
-  migration: Flush migration channel after sending data of CMD_PACKAGED
-  migration: Move postcopy_ram_listen_thread() to postcopy-ram.c
-  migration: Introduce postcopy incoming setup and cleanup functions
-  migration: Refactor all incoming cleanup info
-    migration_incoming_destroy()
-  migration: Respect exit-on-error when migration fails before resuming
-  migration: Make postcopy listen thread joinable
-  migration: Introduce POSTCOPY_DEVICE state
-
-Peter Xu (1):
-  migration: Do not try to start VM if disk activation fails
-
- migration/migration.c                 | 123 +++++++++++++-------
- migration/migration.h                 |   4 +
- migration/postcopy-ram.c              | 161 ++++++++++++++++++++++++++
- migration/postcopy-ram.h              |   3 +
- migration/savevm.c                    | 138 ++--------------------
- migration/savevm.h                    |   2 +
- migration/trace-events                |   3 +-
- qapi/migration.json                   |  10 +-
- tests/qemu-iotests/194                |   2 +-
- tests/qtest/migration/precopy-tests.c |   3 +-
- 10 files changed, 275 insertions(+), 174 deletions(-)
-
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 232cae090b..fa017378db 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1142,6 +1142,7 @@ int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len)
+     qemu_savevm_command_send(f, MIG_CMD_PACKAGED, 4, (uint8_t *)&tmp);
+ 
+     qemu_put_buffer(f, buf, len);
++    qemu_fflush(f);
+ 
+     return 0;
+ }
 -- 
 2.51.0
 
