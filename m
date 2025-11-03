@@ -2,117 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF86C2AE5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 711CCC2AE64
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:01:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFrLq-0005gF-Fk; Mon, 03 Nov 2025 04:59:50 -0500
+	id 1vFrNa-0006Or-2b; Mon, 03 Nov 2025 05:01:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vFrLm-0005fO-Tg
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 04:59:46 -0500
-Received: from 3.mo552.mail-out.ovh.net ([178.33.254.192])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vFrLj-0007yf-Dy
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 04:59:46 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.109.254.134])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d0Rrl5N5dz5y1k;
- Mon,  3 Nov 2025 09:59:35 +0000 (UTC)
-Received: from kaod.org (37.59.142.96) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 3 Nov
- 2025 10:59:34 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-96R001d029e793-6f53-475d-a8c9-fa7bf9a51add,
- 25720A756895FCE40C516A1A344E2045610AA209) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <f964800f-167f-46de-97d5-95195a59515b@kaod.org>
-Date: Mon, 3 Nov 2025 10:59:33 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrNB-0006E3-KJ
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:01:13 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrN7-0000CP-Bb
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:01:13 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4711810948aso29479905e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:01:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762164064; x=1762768864; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Kl5CXLdAL/xqXFH3epvzOr7vezIqO4z+rwiM1uOlVMI=;
+ b=FCgWkMTCG8zpcIJZtPjl5NF9epiNqDtmhNncAhKL7mVvYZHWGDgaJGchSQdMwLdOrq
+ jH+Lmq8jPq/FLSDk3zAx32Cn7gadUCHohR5gt9yUzx7+syxWh5gL//ImmShaU+ODI/3+
+ 6jkexYu6dUQISlk5CEnB6jZkWQfyWktKZ6H6BvOyvVZqXXDYAqcjRVPYuSS3zTLcDk87
+ a6swzH1E9QtlP4FAVtusdW83MQI31FPiiSgUOCt4AvWjhPIcd2XFLy5cj5kfltZwLtPJ
+ oWSnHfNUM8PH3b4lcQIkONcLtIW4j68DUruAGywaj+/epOXN/1mk/16xVrAWl6ixiwmB
+ sx6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762164064; x=1762768864;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kl5CXLdAL/xqXFH3epvzOr7vezIqO4z+rwiM1uOlVMI=;
+ b=QrDcKH3t6QQhGgaVKLi4crBFwQBy0EhfcV/zYbqyNaxweqghzTKrC03XcE8T8Gexpq
+ KEe1cdmCG24BwwP+OF+2tz7If8xcuLLz43SmXRbAy8wqz1KDZGdQLmkRG3ZCDeRlQ6az
+ HVaqwi8aMVqbqAUOXTl0EhhanCCn/RBXIGlMLQwn5ziASSkPyzZWfAJQPwFrom5HiqG0
+ s1djsSmU0cwiSPbD6634FwCndXTYeZNp4i0DbHcwc118rYiflYUbxR9tK7XCZZa7ac7w
+ gAfkaN0P+MtYLHGx5NxGa6AFZBZGWVuu6O06cKa2l3T4Ovjpt3pdhFt/tKOQOz9rad8T
+ sFkA==
+X-Gm-Message-State: AOJu0Yw8YE6T7v5DE4af5ZHUt6Byom1A9kZcjkXbo4R85yWI3T9ROMCk
+ D3MxFWxD6XlSAOxGE27dsl0+o6g5fHaB59NrQr/UGrTkH8y+HBN2FfJAVFi1dzBUmTY=
+X-Gm-Gg: ASbGnctprZpVca+zeo7UI+Yu+L/+YvAEcLIegprxDQaW5ma12Bm3RRtTleOavzI6APY
+ E4tQB4OhKKLsTam1Ewtr6mz2ZWzh1ewjwuLlPRdOug+64q/uWo6ftV2pqGHIpbGCtMkmbqfCR6H
+ IIiG/Muh6EwNGqQDLOPPnYmsczJnrmXDYYM8sMTcFuXaI83+yDIA7v0Ydji6/VO2rlNNrQxHVMR
+ CVFhXfPQFTRS44G4dcfC1mJvj7nDQkPcqpVC+9xuusiiLEpiv9RYSW1ELyeUxpEHwW4HZ0jkD5L
+ 2vZHlIo48uS6ugjAa6m7sAPoMw9Mf40zDKacw+RJDgNqDYmYLZyznwYRCFNo3qlnjYz4l9xwYM1
+ EY3YjJa4DyeqYlNixaNrWBEdoNcI0tq3UtEd/VGBiwGdo2xcEyy3DPtbCabB6wAFRG8+A+p/OBS
+ /8hP9FepJIezljTQoSEYuamicVi7aWdGzST1n6T3D5Q6F6/FK2r6ujbsVfj/BXq63n40E=
+X-Google-Smtp-Source: AGHT+IHf3gaH7cg6Vgv5W7BpemQOktNTCFqG/aPa3ew8SZl1mCIJLTCT6nQHQAF2KWFTXY2NJDvjhA==
+X-Received: by 2002:a05:600c:19d1:b0:471:1b25:fa00 with SMTP id
+ 5b1f17b1804b1-477308a89admr107658495e9.36.1762164064277; 
+ Mon, 03 Nov 2025 02:01:04 -0800 (PST)
+Received: from [172.18.178.65] (ip-185-104-138-122.ptr.icomera.net.
+ [185.104.138.122]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4772fbc32d9sm85791255e9.1.2025.11.03.02.00.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Nov 2025 02:01:03 -0800 (PST)
+Message-ID: <a1c07274-caf1-4aab-ae3b-ae8bc8ac5af1@linaro.org>
+Date: Mon, 3 Nov 2025 11:00:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v3 03/30] hw/arm/aspeed: Export and rename
- create_pca9552() for reuse
-To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
-References: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
- <20251103092801.1282602-4-jamin_lin@aspeedtech.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20251103092801.1282602-4-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v3 33/59] target/i386/hvf: Use host page alignment in
+ ept_emulation_fault()
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Mads Ynddal <mads@ynddal.dk>,
+ Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Collingbourne <pcc@google.com>, Alexander Graf <agraf@csgraf.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20251028054238.14949-1-philmd@linaro.org>
+ <20251028054238.14949-34-philmd@linaro.org>
+ <CAFEAcA9bTmusgWLvzgPW1Fh1Pzvo2rD6+2Qbw1TahrRybyT7Hw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA9bTmusgWLvzgPW1Fh1Pzvo2rD6+2Qbw1TahrRybyT7Hw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: a2aeb9a6-55a6-4e9c-abab-4ecc8cf60a65
-X-Ovh-Tracer-Id: 9009169582575750066
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTE7mF+s+Mv9asiCubsXyPOCVmxdbfyGrbzrsmJtBoYHpCfVdl++dsax6YqzCX8Fy84RcdbieMHCzfAUQr7fCcdOmd/K34YObOJejouKGQnCMsFBbtjRl/JqjOzuVkBbxKjktv+2nk2Y3TN/Wvg5dTZXCISrcyYOfK2yqIVRIwQsO2V56lQAGxIMaz27o6Fix8q1IbseArjkivUJk8ILYdZM3lnfXDvVAb5vnkkfUd8cLi1C1vGzbJyDA2H7k2u0PrIMKdI90AYsK65ltt/WuUAuhcJU6f/AmTCRdYpIAVdrlArD3l4ojVp2h67SsDN0jRTuKfVGphdWt7/rVrdPrJQKn8pKrOEwTRnwBkWrDZOnjzr0pbUrCSYFg8VmdBP4sBku4ox/itWaFQFLx7VDxxASxnMbRs6GNRJYq3XjUKmlPXuNn+WYxNwOX2g6IexyhVi0r1dpyQIVkShLRPE5Te/O7i0S6uXz8BcSQ/qtIvh1Yy5EYiVk/1H/zSndKgIfwMi+5vzQAXroCpNPjv6i9OKHLhR1rr2BxUH6b5WtOcVYSNuQv9TAithaUCFqtiAyuCU6EcaofQEGgRPdGL0TdijbF3JrYNaQ36tGXyodGSJ3cJAzGDQvFmyyznao0BeHGMgaeyOe8vinitkrkAyJoaypFUVgfJMYsItuUbaUIRpX8g
-DKIM-Signature: a=rsa-sha256; bh=CV2DBiF20I0LdKLRdeTFlMucPp9SM9hExasLuy2mpg0=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1762163977; v=1;
- b=LAtJjl1lzGueSowJjPOSbj0uE1RcfuH8VxEYug3UR+Eh5wt+ik5ykxw9YjJEvKZ0q4/zxbY6
- UmDbawyTmuIOP+zy7uInBrEoerZJ+26OEIMTs57jPLplIiknbY1KrczQpwDmPx/0aXhhrTfnhCk
- QTfBpKDThntcRYATYqof7YVi1dchIW+0wUDQqE+I0dBXmslX44Ml6ETSA90s1rbLts7ufAUzvUC
- rq2qfapxO5/qCSFAZ2HCfUsa7NRqYj3jZmSNiq1tXhMjX2z7RIvtAAmK9Gys4gph5ptyGHyuiAo
- BrIMbVtZZa+AWn2COCW7+aOhKcyvir0kS9V9HjsMA0CyQ==
-Received-SPF: pass client-ip=178.33.254.192; envelope-from=clg@kaod.org;
- helo=3.mo552.mail-out.ovh.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,176 +108,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/3/25 10:27, Jamin Lin wrote:
-> The helper function create_pca9552() has been renamed to
-> aspeed_create_pca9552() and made non-static for reuse by other Aspeed
-> machine source files. A corresponding prototype is now declared in
-> aspeed.h.
+On 28/10/25 12:28, Peter Maydell wrote:
+> On Tue, 28 Oct 2025 at 06:06, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/i386/hvf/hvf.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+>> index 16febbac48f..c0b2352b988 100644
+>> --- a/target/i386/hvf/hvf.c
+>> +++ b/target/i386/hvf/hvf.c
+>> @@ -76,7 +76,7 @@
+>>   #include "qemu/main-loop.h"
+>>   #include "qemu/accel.h"
+>>   #include "target/i386/cpu.h"
+>> -#include "exec/target_page.h"
+>> +#include "exec/cpu-common.h"
+>>
+>>   static Error *invtsc_mig_blocker;
+>>
+>> @@ -137,9 +137,9 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
+>>
+>>       if (write && slot) {
+>>           if (slot->flags & HVF_SLOT_LOG) {
+>> -            uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
+>> +            uint64_t dirty_page_start = gpa & qemu_real_host_page_mask();
+>>               memory_region_set_dirty(slot->region, gpa - slot->start, 1);
+>> -            hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
+>> +            hv_vm_protect(dirty_page_start, qemu_real_host_page_size(),
+>>                             HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
+>>           }
+>>       }
 > 
-> This allows multiple Aspeed platforms to share PCA9552 I²C LED controller
-> initialization logic, improving code reuse and reducing duplication.
+> I guess we're guaranteed that the host page and TARGET_PAGE_SIZE
+> are the same thing here (so it doesn't matter that we put
+> the assert in first and then fix this) ?
+
+Yes, but clearer to re-order before previous patch to avoid
+any doubt.
+
 > 
-> No functional changes.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> On that assumption
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-> ---
->   include/hw/arm/aspeed.h | 12 +++++++++++
->   hw/arm/aspeed.c         | 44 ++++++++++++++++++++---------------------
->   2 files changed, 34 insertions(+), 22 deletions(-)
-> 
-> diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-> index 712014497e..3afb964088 100644
-> --- a/include/hw/arm/aspeed.h
-> +++ b/include/hw/arm/aspeed.h
-> @@ -68,4 +68,16 @@ struct AspeedMachineClass {
->    */
->   void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
->   
-> +/*
-> + * aspeed_create_pca9552:
-> + * @soc: pointer to the #AspeedSoCState.
-> + * @bus_id: the I²C bus index to attach the device.
-> + * @addr: the I²C address of the PCA9552 device.
-> + *
-> + * Create and attach a PCA9552 LED controller device to the specified I²C bus
-> + * of the given Aspeed SoC. The device is instantiated using
-> + * i2c_slave_create_simple() with the PCA9552 device type.
-> + */
-> +void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
-> +
->   #endif
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index f23af5bf8c..c6f272d986 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -537,7 +537,7 @@ static void tiogapass_bmc_i2c_init(AspeedMachineState *bmc)
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp421", 0x4e);
->   }
->   
-> -static void create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
-> +void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
->   {
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
->                               TYPE_PCA9552, addr);
-> @@ -565,9 +565,9 @@ static void sonorapass_bmc_i2c_init(AspeedMachineState *bmc)
->       smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 4), 0x54,
->                             eeprom4_54);
->       /* PCA9539 @ 0x76, but PCA9552 is compatible */
-> -    create_pca9552(soc, 4, 0x76);
-> +    aspeed_create_pca9552(soc, 4, 0x76);
->       /* PCA9539 @ 0x77, but PCA9552 is compatible */
-> -    create_pca9552(soc, 4, 0x77);
-> +    aspeed_create_pca9552(soc, 4, 0x77);
->   
->       /* bus 6 : */
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp105", 0x48);
-> @@ -578,8 +578,8 @@ static void sonorapass_bmc_i2c_init(AspeedMachineState *bmc)
->       uint8_t *eeprom8_56 = g_malloc0(8 * 1024);
->       smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 8), 0x56,
->                             eeprom8_56);
-> -    create_pca9552(soc, 8, 0x60);
-> -    create_pca9552(soc, 8, 0x61);
-> +    aspeed_create_pca9552(soc, 8, 0x60);
-> +    aspeed_create_pca9552(soc, 8, 0x61);
->       /* bus 8 : adc128d818 @ 0x1d */
->       /* bus 8 : adc128d818 @ 0x1f */
->   
-> @@ -710,7 +710,7 @@ static void fp5280g2_bmc_i2c_init(AspeedMachineState *bmc)
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), "ds1338", 0x68);
->   
->       /* It expects a pca9555 but a pca9552 is compatible */
-> -    create_pca9552(soc, 8, 0x30);
-> +    aspeed_create_pca9552(soc, 8, 0x30);
->   }
->   
->   static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
-> @@ -720,7 +720,7 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
->   
->       at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 0), 0x51, 32 * KiB);
->   
-> -    create_pca9552(soc, 3, 0x61);
-> +    aspeed_create_pca9552(soc, 3, 0x61);
->   
->       /* The rainier expects a TMP275 but a TMP105 is compatible */
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), TYPE_TMP105,
-> @@ -734,14 +734,14 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 0), 0x50, 64 * KiB);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 1), 0x51, 64 * KiB);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 2), 0x52, 64 * KiB);
-> -    create_pca9552(soc, 4, 0x60);
-> +    aspeed_create_pca9552(soc, 4, 0x60);
->   
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5), TYPE_TMP105,
->                        0x48);
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5), TYPE_TMP105,
->                        0x49);
-> -    create_pca9552(soc, 5, 0x60);
-> -    create_pca9552(soc, 5, 0x61);
-> +    aspeed_create_pca9552(soc, 5, 0x60);
-> +    aspeed_create_pca9552(soc, 5, 0x61);
->       i2c_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5),
->                                         "pca9546", 0x70);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 0), 0x50, 64 * KiB);
-> @@ -760,12 +760,12 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 2), 0x50, 64 * KiB);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 3), 0x51, 64 * KiB);
->   
-> -    create_pca9552(soc, 7, 0x30);
-> -    create_pca9552(soc, 7, 0x31);
-> -    create_pca9552(soc, 7, 0x32);
-> -    create_pca9552(soc, 7, 0x33);
-> -    create_pca9552(soc, 7, 0x60);
-> -    create_pca9552(soc, 7, 0x61);
-> +    aspeed_create_pca9552(soc, 7, 0x30);
-> +    aspeed_create_pca9552(soc, 7, 0x31);
-> +    aspeed_create_pca9552(soc, 7, 0x32);
-> +    aspeed_create_pca9552(soc, 7, 0x33);
-> +    aspeed_create_pca9552(soc, 7, 0x60);
-> +    aspeed_create_pca9552(soc, 7, 0x61);
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), "dps310", 0x76);
->       /* Bus 7: TODO si7021-a20@20 */
->       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), TYPE_TMP105,
-> @@ -782,8 +782,8 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
->                             64 * KiB, rainier_bb_fruid, rainier_bb_fruid_len);
->       at24c_eeprom_init_rom(aspeed_i2c_get_bus(&soc->i2c, 8), 0x51,
->                             64 * KiB, rainier_bmc_fruid, rainier_bmc_fruid_len);
-> -    create_pca9552(soc, 8, 0x60);
-> -    create_pca9552(soc, 8, 0x61);
-> +    aspeed_create_pca9552(soc, 8, 0x60);
-> +    aspeed_create_pca9552(soc, 8, 0x61);
->       /* Bus 8: ucd90320@11 */
->       /* Bus 8: ucd90320@b */
->       /* Bus 8: ucd90320@c */
-> @@ -804,17 +804,17 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
->                                         "pca9546", 0x70);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 0), 0x50, 64 * KiB);
->       at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 1), 0x51, 64 * KiB);
-> -    create_pca9552(soc, 11, 0x60);
-> +    aspeed_create_pca9552(soc, 11, 0x60);
->   
->   
->       at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 13), 0x50, 64 * KiB);
-> -    create_pca9552(soc, 13, 0x60);
-> +    aspeed_create_pca9552(soc, 13, 0x60);
->   
->       at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 14), 0x50, 64 * KiB);
-> -    create_pca9552(soc, 14, 0x60);
-> +    aspeed_create_pca9552(soc, 14, 0x60);
->   
->       at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 15), 0x50, 64 * KiB);
-> -    create_pca9552(soc, 15, 0x60);
-> +    aspeed_create_pca9552(soc, 15, 0x60);
->   }
->   
->   static void get_pca9548_channels(I2CBus *bus, uint8_t mux_addr,
-
+Thanks!
 
