@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCDCC2AC5D
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:36:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49174C2ABD0
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 10:29:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFqs1-0000tN-9B; Mon, 03 Nov 2025 04:29:01 -0500
+	id 1vFqsD-0000vE-0i; Mon, 03 Nov 2025 04:29:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqrz-0000sW-2t; Mon, 03 Nov 2025 04:28:59 -0500
+ id 1vFqs4-0000uT-Ly; Mon, 03 Nov 2025 04:29:04 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vFqru-0001r9-Qe; Mon, 03 Nov 2025 04:28:58 -0500
+ id 1vFqs1-0001r9-Og; Mon, 03 Nov 2025 04:29:04 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 3 Nov
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v3 11/30] hw/arm/aspeed: Split Romulus machine into a separate
- source file for maintainability
-Date: Mon, 3 Nov 2025 17:27:22 +0800
-Message-ID: <20251103092801.1282602-12-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 12/30] hw/arm/aspeed: Split Supermicro X11SPI machine into
+ a separate file for maintainability
+Date: Mon, 3 Nov 2025 17:27:23 +0800
+Message-ID: <20251103092801.1282602-13-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
 References: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
@@ -66,116 +66,107 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit moves the Romulus BMC machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2500_romulus.c.
+This commit moves the Supermicro X11SPI BMC machine definition from
+aspeed.c into a new standalone file aspeed_ast2500_supermicro-x11spi.c,
+and adds a dedicated I²C initialization function for the platform.
 
-The refactor continues the modularization of Aspeed platform
-definitions, separating each board into its own C source file to
-improve maintainability, readability, and reduce code clutter in
-aspeed.c.
+The refactor continues the effort to modularize Aspeed platform support,
+ensuring each machine model is defined in its own source file. This improves
+code organization, readability, and simplifies maintenance when adding or
+modifying platform-specific behavior.
+
+Previously, the Supermicro X11SPI machine reused
+palmetto_bmc_i2c_init() for its I²C setup. To make the machine
+definition fully self-contained, the function was copied and renamed
+to supermicro_x11spi_bmc_i2c_init(). This ensures that the machine
+can evolve independently without depending on Palmetto’s board logi
 
 Key updates include:
-- Moved ROMULUS_BMC_HW_STRAP1 definition to the new file.
-- Moved romulus_bmc_i2c_init() and related I²C device setup.
-- Moved aspeed_machine_romulus_class_init() and type registration
-to aspeed_ast2500_romulus.c.
-- Added the new file to the build system (meson.build).
-- Removed all Romulus-specific code from aspeed.c.
+- Moved SUPERMICRO_X11SPI_BMC_HW_STRAP1 macro and machine class init
+(aspeed_machine_supermicro_x11spi_bmc_class_init) into a new file.
+- Added new function supermicro_x11spi_bmc_i2c_init() copied from
+palmetto_bmc_i2c_init() for independent control.
+- Updated the machine definition to use the new I²C init function.
+- Registered the new source file in meson.build.
+- Removed all Supermicro X11SPI-related definitions from aspeed.c.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c                 | 43 ----------------------
- hw/arm/aspeed_ast2500_romulus.c | 63 +++++++++++++++++++++++++++++++++
- hw/arm/meson.build              |  1 +
- 3 files changed, 64 insertions(+), 43 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2500_romulus.c
+ hw/arm/aspeed.c                           | 33 ----------
+ hw/arm/aspeed_ast2500_supermicro-x11spi.c | 78 +++++++++++++++++++++++
+ hw/arm/meson.build                        |  1 +
+ 3 files changed, 79 insertions(+), 33 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2500_supermicro-x11spi.c
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index df1a37ca3d..c31b281f55 100644
+index c31b281f55..e1fa95b2c3 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -92,16 +92,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-         SCU_HW_STRAP_MAC0_RGMII) &                                      \
-         ~SCU_HW_STRAP_2ND_BOOT_WDT)
+@@ -71,16 +71,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+         SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
+         SCU_AST2400_HW_STRAP_BOOT_MODE(AST2400_SPI_BOOT))
  
--/* Romulus hardware value: 0xF10AD206 */
--#define ROMULUS_BMC_HW_STRAP1 (                                         \
+-/* TODO: Find the actual hardware value */
+-#define SUPERMICRO_X11SPI_BMC_HW_STRAP1 (                               \
 -        AST2500_HW_STRAP1_DEFAULTS |                                    \
 -        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
 -        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
 -        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
 -        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
--        SCU_AST2500_HW_STRAP_ACPI_ENABLE |                              \
--        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER))
+-        SCU_HW_STRAP_SPI_WIDTH |                                        \
+-        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_M_S_EN))
 -
- /* Quanta-Q71l hardware value */
- #define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
-         SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
-@@ -452,17 +442,6 @@ static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
-                      TYPE_TMP105, 0x4d);
+ /* AST2500 evb hardware value: 0xF100C2E6 */
+ #define AST2500_EVB_HW_STRAP1 ((                                        \
+         AST2500_HW_STRAP1_DEFAULTS |                                    \
+@@ -1187,24 +1177,6 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
+     aspeed_machine_class_init_cpus_defaults(mc);
  }
  
--static void romulus_bmc_i2c_init(AspeedMachineState *bmc)
--{
--    AspeedSoCState *soc = bmc->soc;
--
--    /*
--     * The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
--     * good enough
--     */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
--}
--
- void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
- {
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
-@@ -1243,23 +1222,6 @@ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
--static void aspeed_machine_romulus_class_init(ObjectClass *oc,
--                                              const void *data)
+-static void aspeed_machine_supermicro_x11spi_bmc_class_init(ObjectClass *oc,
+-                                                            const void *data)
 -{
 -    MachineClass *mc = MACHINE_CLASS(oc);
 -    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 -
--    mc->desc       = "OpenPOWER Romulus BMC (ARM1176)";
+-    mc->desc       = "Supermicro X11 SPI BMC (ARM1176)";
 -    amc->soc_name  = "ast2500-a1";
--    amc->hw_strap1 = ROMULUS_BMC_HW_STRAP1;
--    amc->fmc_model = "n25q256a";
--    amc->spi_model = "mx66l1g45g";
--    amc->num_cs    = 2;
--    amc->i2c_init  = romulus_bmc_i2c_init;
--    mc->default_ram_size       = 512 * MiB;
+-    amc->hw_strap1 = SUPERMICRO_X11SPI_BMC_HW_STRAP1;
+-    amc->fmc_model = "mx25l25635e";
+-    amc->spi_model = "mx25l25635e";
+-    amc->num_cs    = 1;
+-    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+-    amc->i2c_init  = palmetto_bmc_i2c_init;
+-    mc->default_ram_size = 512 * MiB;
 -    aspeed_machine_class_init_cpus_defaults(mc);
--};
+-}
 -
- static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
+ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
                                                    const void *data)
  {
-@@ -1625,11 +1587,6 @@ static const TypeInfo aspeed_machine_types[] = {
+@@ -1577,11 +1549,6 @@ static const TypeInfo aspeed_machine_types[] = {
          .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_ast2500_evb_class_init,
+         .class_init    = aspeed_machine_supermicrox11_bmc_class_init,
          .interfaces    = arm_machine_interfaces,
 -    }, {
--        .name          = MACHINE_TYPE_NAME("romulus-bmc"),
+-        .name          = MACHINE_TYPE_NAME("supermicro-x11spi-bmc"),
 -        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_romulus_class_init,
+-        .class_init    = aspeed_machine_supermicro_x11spi_bmc_class_init,
 -        .interfaces    = arm_machine_interfaces,
      }, {
-         .name          = MACHINE_TYPE_NAME("ast2600-evb"),
+         .name          = MACHINE_TYPE_NAME("ast2500-evb"),
          .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2500_romulus.c b/hw/arm/aspeed_ast2500_romulus.c
+diff --git a/hw/arm/aspeed_ast2500_supermicro-x11spi.c b/hw/arm/aspeed_ast2500_supermicro-x11spi.c
 new file mode 100644
-index 0000000000..cde06894ce
+index 0000000000..bc3023f534
 --- /dev/null
-+++ b/hw/arm/aspeed_ast2500_romulus.c
-@@ -0,0 +1,63 @@
++++ b/hw/arm/aspeed_ast2500_supermicro-x11spi.c
+@@ -0,0 +1,78 @@
 +/*
-+ * OpenPOWER Romulus
++ * Supermicro X11 SPI
 + *
 + * Copyright (C) 2025 ASPEED Technology Inc.
 + *
@@ -187,68 +178,83 @@ index 0000000000..cde06894ce
 +#include "hw/arm/machines-qom.h"
 +#include "hw/arm/aspeed.h"
 +#include "hw/arm/aspeed_soc.h"
++#include "hw/i2c/smbus_eeprom.h"
 +
-+/* Romulus hardware value: 0xF10AD206 */
-+#define ROMULUS_BMC_HW_STRAP1 (                                         \
++/* TODO: Find the actual hardware value */
++#define SUPERMICRO_X11SPI_BMC_HW_STRAP1 (                               \
 +        AST2500_HW_STRAP1_DEFAULTS |                                    \
 +        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
 +        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
 +        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
 +        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
-+        SCU_AST2500_HW_STRAP_ACPI_ENABLE |                              \
-+        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER))
++        SCU_HW_STRAP_SPI_WIDTH |                                        \
++        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_M_S_EN))
 +
-+static void romulus_bmc_i2c_init(AspeedMachineState *bmc)
++static void supermicro_x11spi_bmc_i2c_init(AspeedMachineState *bmc)
 +{
 +    AspeedSoCState *soc = bmc->soc;
++    DeviceState *dev;
++    uint8_t *eeprom_buf = g_malloc0(32 * 1024);
 +
 +    /*
-+     * The romulus board expects Epson RX8900 I2C RTC but a ds1338 is
-+     * good enough
++     * The palmetto platform expects a ds3231 RTC but a ds1338 is
++     * enough to provide basic RTC features. Alarms will be missing
 +     */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0), "ds1338", 0x68);
++
++    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 0), 0x50,
++                          eeprom_buf);
++
++    /* add a TMP423 temperature sensor */
++    dev = DEVICE(i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2),
++                                         "tmp423", 0x4c));
++    object_property_set_int(OBJECT(dev), "temperature0", 31000, &error_abort);
++    object_property_set_int(OBJECT(dev), "temperature1", 28000, &error_abort);
++    object_property_set_int(OBJECT(dev), "temperature2", 20000, &error_abort);
++    object_property_set_int(OBJECT(dev), "temperature3", 110000, &error_abort);
 +}
 +
-+static void aspeed_machine_romulus_class_init(ObjectClass *oc,
-+                                              const void *data)
++static void aspeed_machine_supermicro_x11spi_bmc_class_init(ObjectClass *oc,
++                                                            const void *data)
 +{
 +    MachineClass *mc = MACHINE_CLASS(oc);
 +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 +
-+    mc->desc       = "OpenPOWER Romulus BMC (ARM1176)";
++    mc->desc       = "Supermicro X11 SPI BMC (ARM1176)";
 +    amc->soc_name  = "ast2500-a1";
-+    amc->hw_strap1 = ROMULUS_BMC_HW_STRAP1;
-+    amc->fmc_model = "n25q256a";
-+    amc->spi_model = "mx66l1g45g";
-+    amc->num_cs    = 2;
-+    amc->i2c_init  = romulus_bmc_i2c_init;
-+    mc->default_ram_size       = 512 * MiB;
++    amc->hw_strap1 = SUPERMICRO_X11SPI_BMC_HW_STRAP1;
++    amc->fmc_model = "mx25l25635e";
++    amc->spi_model = "mx25l25635e";
++    amc->num_cs    = 1;
++    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
++    amc->i2c_init  = supermicro_x11spi_bmc_i2c_init;
++    mc->default_ram_size = 512 * MiB;
 +    aspeed_machine_class_init_cpus_defaults(mc);
-+};
++}
 +
-+static const TypeInfo aspeed_ast2500_romulus_types[] = {
-+     {
-+        .name          = MACHINE_TYPE_NAME("romulus-bmc"),
++static const TypeInfo aspeed_ast2500_supermicro_x11spi_types[] = {
++    {
++        .name          = MACHINE_TYPE_NAME("supermicro-x11spi-bmc"),
 +        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_romulus_class_init,
++        .class_init    = aspeed_machine_supermicro_x11spi_bmc_class_init,
 +        .interfaces    = arm_machine_interfaces,
 +    }
 +};
 +
-+DEFINE_TYPES(aspeed_ast2500_romulus_types)
++DEFINE_TYPES(aspeed_ast2500_supermicro_x11spi_types)
 +
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index f59bfe5029..ff6a856523 100644
+index ff6a856523..76a456c33f 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
-@@ -46,6 +46,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_ast2400.c',
-   'aspeed_ast2500_fp5280g2.c',
+@@ -48,6 +48,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
    'aspeed_ast2500_g220a.c',
-+  'aspeed_ast2500_romulus.c',
+   'aspeed_ast2500_romulus.c',
    'aspeed_ast2500_sonorapass.c',
++  'aspeed_ast2500_supermicro-x11spi.c',
    'aspeed_ast2500_tiogapass.c',
    'aspeed_ast2500_witherspoon.c',
+   'aspeed_ast2500_yosemitev2.c',
 -- 
 2.43.0
 
