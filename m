@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49DDC2D66E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5630C2D69B
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:16:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFy3y-0000Yl-Tz; Mon, 03 Nov 2025 12:09:52 -0500
+	id 1vFy41-0000a9-Tt; Mon, 03 Nov 2025 12:09:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3u-0000XP-DR
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:46 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy40-0000Zc-Le
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:52 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3j-0000tH-Gd
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:45 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3l-0000tO-9R
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
  In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=eU8cSHXOEb1LdYL9OhW7+NAKhCZgSb4TWkZB/nxXFjA=; b=OOeG/VkaAKFJc6F
- tBfwxqgVaXGMytk6oRsHxd1Jz/nwxc4rKd5Jg7+fEy8PyRbYhJDE0EvgeX7t9eIHif0yLfazZSlfO
- W/hQQe/hQ/N9zTYrtzviV5P9UcdoCE4o/iJ5mMFBQRzRjQGRqtEc+8RZz4bFYSVl1nE+NWO+wBV0G
- 5w=;
+ List-Help; bh=yV+bqWtAZS5pr5GZ5j9aWShDLTAV5Q6XBoKnG1ob4lY=; b=rsR0m+TN1WkEnaY
+ tF4jdMWmQOxTSN1PTW+or91KDFBQMSsyG55nXj4ucqd5LKZJlPTfFACoNUSN725mha0/xxahRx5xa
+ XnuSVqBeQnSKEEspaeyiaMJ41DE4IbHZa/IV3uT0qZsjUGEF0oO+37C+3Cr0mYmCPnCdSKD/Z3YNj
+ tA=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v5 18/25] target/riscv: Replace target_ulong in
- riscv_cpu_get_trap_name()
-Date: Mon,  3 Nov 2025 18:12:01 +0100
-Message-ID: <20251103171208.24355-19-anjo@rev.ng>
+Subject: [PATCH v5 19/25] target/riscv: Replace target_ulong in
+ riscv_ctr_add_entry()
+Date: Mon,  3 Nov 2025 18:12:02 +0100
+Message-ID: <20251103171208.24355-20-anjo@rev.ng>
 In-Reply-To: <20251103171208.24355-1-anjo@rev.ng>
 References: <20251103171208.24355-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -46,7 +46,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,43 +64,51 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix cause argument to 64 bit to match env->mcause.
+Widen to 64 bits in size to hold all relevant values.  Note: src and dst
+arguments change from signed to unsigned but no functional change is
+incurred.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h | 2 +-
- target/riscv/cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/cpu.h        | 5 +++--
+ target/riscv/cpu_helper.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 4c6b977ce2..c2be30795a 100644
+index c2be30795a..ee4444f22d 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -601,7 +601,7 @@ extern const char * const riscv_int_regnamesh[];
- extern const char * const riscv_fpr_regnames[];
- extern const char * const riscv_rvv_regnames[];
+@@ -662,8 +662,9 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
+ void riscv_cpu_set_mode(CPURISCVState *env, privilege_mode_t newpriv,
+                         bool virt_en);
  
--const char *riscv_cpu_get_trap_name(target_ulong cause, bool async);
-+const char *riscv_cpu_get_trap_name(uint64_t cause, bool async);
- int riscv_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-                                int cpuid, DumpState *s);
- int riscv_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 353b927dd5..3378c40dbf 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -348,7 +348,7 @@ static const char * const riscv_intr_names[] = {
-     "reserved"
- };
+-void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
+-    enum CTRType type, privilege_mode_t prev_priv, bool prev_virt);
++void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
++                         enum CTRType type, privilege_mode_t prev_priv,
++                         bool prev_virt);
+ void riscv_ctr_clear(CPURISCVState *env);
  
--const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
-+const char *riscv_cpu_get_trap_name(uint64_t cause, bool async)
+ void riscv_translate_init(void);
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index b102f15ac6..20ff05a4b2 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -926,8 +926,9 @@ static bool riscv_ctr_check_xte(CPURISCVState *env,
+  *    entry = isel - CTR_ENTRIES_FIRST;
+  *    idx = (sctrstatus.WRPTR - entry - 1) & (depth - 1);
+  */
+-void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
+-    enum CTRType type, privilege_mode_t src_priv, bool src_virt)
++void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
++                         enum CTRType type, privilege_mode_t src_priv,
++                         bool src_virt)
  {
-     if (async) {
-         return (cause < ARRAY_SIZE(riscv_intr_names)) ?
+     bool tgt_virt = env->virt_enabled;
+     uint64_t src_mask = riscv_ctr_priv_to_mask(src_priv, src_virt);
 -- 
 2.51.0
 
