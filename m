@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB2AC2D66B
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3690FC2D5FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 18:11:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFy3l-0000UR-7e; Mon, 03 Nov 2025 12:09:37 -0500
+	id 1vFy3f-0000S0-UZ; Mon, 03 Nov 2025 12:09:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3j-0000Tm-Tf
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:35 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3a-0000RG-Qc
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:26 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3V-0000qm-3j
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:34 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vFy3T-0000qu-Cg
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 12:09:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
- To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=8IVHt9ygnddV0kdG4SbT1rwPzt1HFht66Nk+Exxpg5g=; b=UoJu9D2I6F/3m/V
- LsJukLX/+mpNou8dSSckI4nvPdR8RTQkL+Q1ND0MZqX0xE5z3ylvco/wi/v9Fs9qx8l/ylSHwvI1d
- UvvBw5YUkrdJCT30T8gNhkZ+FUTH9dc30HqK1tmPp3k7mdnhpFuGQJiOxHE7mftqqVKZ2Z+uSAZtp
- I4=;
+ List-Help; bh=WUuPdEn0qgdXUUZKD+H/GZrOe8IYCwWf2jpSidT2Pmw=; b=Np1ocfErCE5gfmd
+ OtLfcCqhKrypFPEH3BJUjOGQfe/yQuPsvYAX79n6kkm7EjHtOxdDITJIj9d/CwuMWqvCQCRiPx8W1
+ 7A94XEPFpP7zdHQQYmYT3eqo9yIcUF//XrCITxkchu2wr+VH57+B9ZoTHOOOQYNRLPCXH929crA34
+ s8=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com, Anton Johansson <anjo@rev.ng>
-Subject: [PATCH v5 00/25] single-binary: Make riscv cpu.h target independent
-Date: Mon,  3 Nov 2025 18:11:43 +0100
-Message-ID: <20251103171208.24355-1-anjo@rev.ng>
+Subject: [PATCH v5 01/25] target/riscv: Fix size of gpr and gprh
+Date: Mon,  3 Nov 2025 18:11:44 +0100
+Message-ID: <20251103171208.24355-2-anjo@rev.ng>
+In-Reply-To: <20251103171208.24355-1-anjo@rev.ng>
+References: <20251103171208.24355-1-anjo@rev.ng>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
@@ -42,7 +44,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,127 +62,138 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+gprh is only needed for TARGET_RISCV64 when modeling 128-bit registers,
+fixing their size to 64 bits makes sense.
 
-Hi,
+gpr is also fixed to 64 bits since all direct uses of env->gpr
+correctly zero extend/truncate to/from target_ulong, meaning
+!TARGET_RISCV64 will behave as expected.
 
-this is a first patchset moving towards single-binary support for riscv.
-Additional patchsets for hw/ and target/ are based on this one so it's
-best to make sure the approach taken is ok.  Most patches in this set
-concern fields in CPUArchState which are either widened (usually to
-uint64_t) or fixed to a smaller size which handles all use cases.
+We do however need to be a bit careful when mapping 64-bit fields to
+32-bit TCGv globals on big endian hosts.
 
-General purpose registers and fields mapped to TCG are dealt with by
-widening the type and applying an offset to tcg_global_mem_new() to
-correctly handle 32-bit targets on big endian hosts.
+Note, the cpu/rv128 VMSTATE version is bumped, breaking migration from
+older versions.
 
-Quick question to correct my understanding. AFAICT riscv64-softmmu is a
-superset of riscv32-softmmu which handles 32-, 64, and 128-bit ISAs, so
-concerning single-binary do we for the time being only need to support
-riscv64-softmmu?
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ target/riscv/cpu.h            |  4 ++--
+ target/riscv/cpu.c            |  2 +-
+ target/riscv/machine.c        |  8 ++++----
+ target/riscv/riscv-qmp-cmds.c |  2 +-
+ target/riscv/translate.c      | 17 +++++++++++++++--
+ 5 files changed, 23 insertions(+), 10 deletions(-)
 
-Let me know what you think of the direction taken here and if you would
-prefer something else.
-
-Changes in v2:
-  - Use BIT() to define misa extension bits in "Use 32 bits for misa
-    extensions";
-
-  - Squash "Fix size of mcause" into "Fix size of trivial CPUArchState
-    fields";
-
-  - Bump VMSTATE version_id and minimum_version_id for "cpu/pmp/entry",
-    "cpu/pmp", "cpu/hyper", "cpu/vector", "cpu/rv128", "cpu/debug",
-    "cpu/envcfg", "cpu/pmu", "cpu/jvt", "cpu/ssp", and "cpu".  Migration
-    from older versions is broken.
-
-Changes in v3:
-  - Fix formatting issues during printing;
-
-  - Move assert before extract64() in pmu_read_ctr();
-
-  - Added patch 5/34 fixing a bug in rmw_cd_ctr_cfg() where bit 30 is
-    zeroed instead of bit 62 (MHPMEVENTH_* vs MHPMEVENT_*);
-
-  - Added privilege_mode_t typedef for storing PRV_* fields;
-  
-  - Added reviewed-bys.
-
-Changes in v4:
-  - Used target-specific includes (target/riscv/*) for csr.h and
-    debug.h (Philippe);
-
-  - Migrated mcontext (Philippe), migration entry is added to existing
-    patch modifiying mcontext (patch 29 "Fix size of trigger data");
-
-  - Added reviewed-bys and acked-bys.
-
-Changes in v5:
-  - Removed first 8 patches that were pulled out by Alistair;
-
-  - Rebased on 20251103033713.904455-1-alistair.francis@wdc.com;
-
-  - Added reviewed-bys and acked-bys.
-
-Anton Johansson (25):
-  target/riscv: Fix size of gpr and gprh
-  target/riscv: Fix size of vector CSRs
-  target/riscv: Fix size of pc, load_[val|res]
-  target/riscv: Fix size of frm and fflags
-  target/riscv: Fix size of badaddr and bins
-  target/riscv: Fix size of guest_phys_fault_addr
-  target/riscv: Fix size of priv_ver and vext_ver
-  target/riscv: Fix size of retxh
-  target/riscv: Fix size of ssp
-  target/riscv: Fix size of excp_uw2
-  target/riscv: Fix size of sw_check_code
-  target/riscv: Fix size of priv
-  target/riscv: Fix size of gei fields
-  target/riscv: Fix size of [m|s|vs]iselect fields
-  target/riscv: Fix arguments to board IMSIC emulation callbacks
-  target/riscv: Fix size of irq_overflow_left
-  target/riscv: Indent PMUFixedCtrState correctly
-  target/riscv: Replace target_ulong in riscv_cpu_get_trap_name()
-  target/riscv: Replace target_ulong in riscv_ctr_add_entry()
-  target/riscv: Fix size of trigger data
-  target/riscv: Fix size of mseccfg
-  target/riscv: Move debug.h include away from cpu.h
-  target/riscv: Move CSR declarations to separate csr.h header
-  target/riscv: Introduce externally facing CSR access functions
-  target/riscv: Make pmp.h target_ulong agnostic
-
- target/riscv/cpu.h                            | 239 +++++++-----------
- target/riscv/csr.h                            |  93 +++++++
- target/riscv/debug.h                          |   2 -
- target/riscv/pmp.h                            |  20 +-
- hw/intc/riscv_imsic.c                         |  34 +--
- hw/riscv/riscv_hart.c                         |   7 +-
- linux-user/riscv/signal.c                     |   5 +-
- target/riscv/cpu.c                            |  10 +-
- target/riscv/cpu_helper.c                     |  43 ++--
- target/riscv/csr.c                            |  81 ++++--
- target/riscv/debug.c                          |   1 +
- target/riscv/fpu_helper.c                     |   6 +-
- target/riscv/gdbstub.c                        |   1 +
- target/riscv/kvm/kvm-cpu.c                    |   1 +
- target/riscv/machine.c                        |  81 +++---
- target/riscv/op_helper.c                      |   1 +
- target/riscv/pmp.c                            |  14 +-
- target/riscv/riscv-qmp-cmds.c                 |   3 +-
- target/riscv/tcg/tcg-cpu.c                    |   1 +
- target/riscv/th_csr.c                         |   1 +
- target/riscv/translate.c                      |  53 ++--
- target/riscv/vector_helper.c                  |  22 +-
- .../riscv/insn_trans/trans_privileged.c.inc   |   2 +-
- target/riscv/insn_trans/trans_rvi.c.inc       |  16 +-
- target/riscv/insn_trans/trans_rvm.c.inc       |  16 +-
- target/riscv/insn_trans/trans_rvv.c.inc       |  24 +-
- target/riscv/insn_trans/trans_rvzicfiss.c.inc |  22 +-
- 27 files changed, 456 insertions(+), 343 deletions(-)
- create mode 100644 target/riscv/csr.h
-
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 2e0b86e68d..6b4edbfe9e 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -213,8 +213,8 @@ typedef struct PMUFixedCtrState {
+ } PMUFixedCtrState;
+ 
+ struct CPUArchState {
+-    target_ulong gpr[32];
+-    target_ulong gprh[32]; /* 64 top bits of the 128-bit registers */
++    uint64_t gpr[32];
++    uint64_t gprh[32]; /* 64 top bits of the 128-bit registers */
+ 
+     /* vector coprocessor state. */
+     uint64_t vreg[32 * RV_VLEN_MAX / 64] QEMU_ALIGNED(16);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 73d4280d7c..dc97d35458 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -583,7 +583,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ #endif
+ 
+     for (i = 0; i < 32; i++) {
+-        qemu_fprintf(f, " %-8s " TARGET_FMT_lx,
++        qemu_fprintf(f, " %-8s %" PRIx64,
+                      riscv_int_regnames[i], env->gpr[i]);
+         if ((i & 3) == 3) {
+             qemu_fprintf(f, "\n");
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 09c032a879..7349383eab 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -177,11 +177,11 @@ static bool rv128_needed(void *opaque)
+ 
+ static const VMStateDescription vmstate_rv128 = {
+     .name = "cpu/rv128",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .needed = rv128_needed,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL_ARRAY(env.gprh, RISCVCPU, 32),
++        VMSTATE_UINT64_ARRAY(env.gprh, RISCVCPU, 32),
+         VMSTATE_UINT64(env.mscratchh, RISCVCPU),
+         VMSTATE_UINT64(env.sscratchh, RISCVCPU),
+         VMSTATE_END_OF_LIST()
+@@ -429,7 +429,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+     .minimum_version_id = 11,
+     .post_load = riscv_cpu_post_load,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
++        VMSTATE_UINT64_ARRAY(env.gpr, RISCVCPU, 32),
+         VMSTATE_UINT64_ARRAY(env.fpr, RISCVCPU, 32),
+         VMSTATE_UINT8_ARRAY(env.miprio, RISCVCPU, 64),
+         VMSTATE_UINT8_ARRAY(env.siprio, RISCVCPU, 64),
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index d5e9bec0f8..93488450bd 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -262,7 +262,7 @@ static bool reg_is_ulong_integer(CPURISCVState *env, const char *name,
+                                  target_ulong *val, bool is_gprh)
+ {
+     const char * const *reg_names;
+-    target_ulong *vals;
++    uint64_t *vals;
+ 
+     if (is_gprh) {
+         reg_names = riscv_int_regnamesh;
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index e1f4dc5ffd..8df1a2ed3c 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -27,6 +27,7 @@
+ #include "accel/tcg/cpu-ldst.h"
+ #include "exec/translation-block.h"
+ #include "exec/log.h"
++#include "exec/tswap.h"
+ #include "semihosting/semihost.h"
+ 
+ #include "internals.h"
+@@ -1443,12 +1444,24 @@ void riscv_translate_init(void)
+      */
+     cpu_gpr[0] = NULL;
+     cpu_gprh[0] = NULL;
++    /*
++     * Be careful with big endian hosts when mapping 64-bit CPUArchState fields
++     * to 32-bit TCGv globals.  An offset of 4 bytes is applied so the least
++     * significant bytes are correctly written to.
++     */
++#if HOST_BIG_ENDIAN && !defined(TARGET_RISCV64)
++    size_t field_offset = 4;
++#else
++    size_t field_offset = 0;
++#endif
+ 
+     for (i = 1; i < 32; i++) {
+         cpu_gpr[i] = tcg_global_mem_new(tcg_env,
+-            offsetof(CPURISCVState, gpr[i]), riscv_int_regnames[i]);
++            offsetof(CPURISCVState, gpr[i]) + field_offset,
++            riscv_int_regnames[i]);
+         cpu_gprh[i] = tcg_global_mem_new(tcg_env,
+-            offsetof(CPURISCVState, gprh[i]), riscv_int_regnamesh[i]);
++            offsetof(CPURISCVState, gprh[i]) + field_offset,
++            riscv_int_regnamesh[i]);
+     }
+ 
+     for (i = 0; i < 32; i++) {
 -- 
 2.51.0
 
