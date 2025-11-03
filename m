@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3CDC2B327
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D03C2B31A
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsH6-0003qc-MK; Mon, 03 Nov 2025 05:59:00 -0500
+	id 1vFsHJ-0003xi-M7; Mon, 03 Nov 2025 05:59:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH5-0003qM-3y
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsHC-0003ro-1J
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH2-0004RF-Ta
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:58 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH6-0004UA-TX
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:59:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167535;
+ s=mimecast20190719; t=1762167539;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y61sGUQ8j9Y2GxmKZ9y4icSR+ggl2UPV90MqL5hxz7c=;
- b=gmsNTvum1xrSPlNhNwD/e3PlH1rdDcCxK/qjYi6Bq1FeEOfREB5c2d+bv90R08/AQ0SOJl
- CmzE9Xi6o2Ky3k0PK6t7nDhAkpKqV7+3WDrq23x+9SWRezrx1x9To0/muCJsdPkcOE/z2+
- /9bE+19IEQOCgnRVXpzKiPCxlsDDcNA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=F5abZUPq5OvZhrg8KiZ3sPDIKPaAPgPQiaHApqNdmC8=;
+ b=V0UqNQsWwcccxsjTu216v204CqV+6eYpUeAsU829tBMxehDhO7fqiphZ64RQ8ggXqxMrfW
+ 2zPGnIK/+Q4lRMk8JZ5xzjKVuvkrNqIA2n9TP20lCH10/H4yaouqEGdk0MHP1rZbhe4YEp
+ YxfQAC/GHvQAitGrGHZAtkpEyz6Cg2U=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-iyisHhbyNa-sbqvVCDIfYA-1; Mon,
- 03 Nov 2025 05:58:53 -0500
-X-MC-Unique: iyisHhbyNa-sbqvVCDIfYA-1
-X-Mimecast-MFC-AGG-ID: iyisHhbyNa-sbqvVCDIfYA_1762167533
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-qcSEqZuOMEOpnOxYCSQVKA-1; Mon,
+ 03 Nov 2025 05:58:56 -0500
+X-MC-Unique: qcSEqZuOMEOpnOxYCSQVKA-1
+X-Mimecast-MFC-AGG-ID: qcSEqZuOMEOpnOxYCSQVKA_1762167535
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 05B8F180136C; Mon,  3 Nov 2025 10:58:53 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 54B5419541B5; Mon,  3 Nov 2025 10:58:55 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 585D630001A1; Mon,  3 Nov 2025 10:58:51 +0000 (UTC)
+ id 954E630001A8; Mon,  3 Nov 2025 10:58:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 12/22] tests/functional/rx/test_gdbsim: Remove unused variables
-Date: Mon,  3 Nov 2025 11:58:09 +0100
-Message-ID: <20251103105824.322039-13-thuth@redhat.com>
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 13/22] tests/functional/x86_64/test_acpi_bits: Silence warnings
+ reported by pylint
+Date: Mon,  3 Nov 2025 11:58:10 +0100
+Message-ID: <20251103105824.322039-14-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,46 +83,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Remove/comment some unused variables to make pylint happy.
+Pylint complains about too many positional arguments for the __init__
+function of the QEMUBitsMachine class, use a "*" to enforce argument
+passing by names instead (which the calling sites are doing here already).
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Second, use lazy logging when calling self.log.info() with a "%s" format
+string, and drop a superfluous "else:" that is not necessary after a
+"raise" statement.
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251029081805.63147-1-thuth@redhat.com>
+Message-ID: <20251029081514.60802-1-thuth@redhat.com>
 ---
- tests/functional/rx/test_gdbsim.py | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tests/functional/x86_64/test_acpi_bits.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/rx/test_gdbsim.py b/tests/functional/rx/test_gdbsim.py
-index 49245793e17..d31f9a42d67 100755
---- a/tests/functional/rx/test_gdbsim.py
-+++ b/tests/functional/rx/test_gdbsim.py
-@@ -17,9 +17,6 @@
+diff --git a/tests/functional/x86_64/test_acpi_bits.py b/tests/functional/x86_64/test_acpi_bits.py
+index 9a2816533d6..ec716d643bf 100755
+--- a/tests/functional/x86_64/test_acpi_bits.py
++++ b/tests/functional/x86_64/test_acpi_bits.py
+@@ -57,6 +57,7 @@ class QEMUBitsMachine(QEMUMachine): # pylint: disable=too-few-public-methods
+     """
+     def __init__(self,
+                  binary: str,
++                 *,
+                  args: Sequence[str] = (),
+                  wrapper: Sequence[str] = (),
+                  name: Optional[str] = None,
+@@ -225,7 +226,7 @@ def generate_bits_iso(self):
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT,
+                                       check=True)
+-                self.log.info("grub-mkrescue output %s" % proc.stdout)
++                self.log.info("grub-mkrescue output %s", proc.stdout)
+             else:
+                 subprocess.check_call([mkrescue_script, '-o',
+                                       iso_file, bits_dir],
+@@ -287,9 +288,8 @@ def parse_log(self):
+             except AssertionError as e:
+                 self._print_log(log)
+                 raise e
+-            else:
+-                if os.getenv('V') or os.getenv('BITS_DEBUG'):
+-                    self._print_log(log)
++            if os.getenv('V') or os.getenv('BITS_DEBUG'):
++                self._print_log(log)
  
- class RxGdbSimMachine(QemuSystemTest):
- 
--    timeout = 30
--    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
--
-     ASSET_UBOOT = Asset(
-         ('https://github.com/philmd/qemu-testing-blob/raw/rx-gdbsim/rx/gdbsim/'
-          'u-boot.bin'),
-@@ -47,7 +44,7 @@ def test_uboot(self):
-         self.vm.launch()
-         uboot_version = 'U-Boot 2016.05-rc3-23705-ga1ef3c71cb-dirty'
-         wait_for_console_pattern(self, uboot_version)
--        gcc_version = 'rx-unknown-linux-gcc (GCC) 9.0.0 20181105 (experimental)'
-+        #gcc_version = 'rx-unknown-linux-gcc (GCC) 9.0.0 20181105 (experimental)'
-         # FIXME limit baudrate on chardev, else we type too fast
-         #  https://gitlab.com/qemu-project/qemu/-/issues/2691
-         #exec_command_and_wait_for_pattern(self, 'version', gcc_version)
-@@ -63,7 +60,6 @@ def test_linux_sash(self):
-         kernel_path = self.ASSET_KERNEL.fetch()
- 
-         self.vm.set_console()
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'earlycon'
-         self.vm.add_args('-kernel', kernel_path,
-                          '-dtb', dtb_path,
-                          '-no-reboot')
+     def tearDown(self):
+         """
 -- 
 2.51.0
 
