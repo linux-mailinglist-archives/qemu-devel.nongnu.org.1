@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFACC2E187
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3116EC2E1BC
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:12:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1lO-0000w6-QW; Mon, 03 Nov 2025 16:06:54 -0500
+	id 1vG1lS-0000xc-5J; Mon, 03 Nov 2025 16:06:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lL-0000uw-15
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lN-0000vm-4V
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lB-0005Cm-QC
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:50 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lD-0005Dq-VB
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762203998;
+ s=mimecast20190719; t=1762204000;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
- b=AlsQ2CjA/DxTTUfdVO+ZKFGZ74VaZdwrMmcX57+cw4KeMJjI424I9WMJaZmalMjlYAZiO+
- gJ7owfk85YJeYrA2YFQQ0m3qOaCzsKqkRjZz1wAqPtajOeKebnu33TTGPPoVve7bpypa6o
- TZG0sncApnJPkhiYWFij5nPnBf1zodk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TgTvwcoVK4MIab8Yq/SxirUQSgGyWAAVwBn3bLNVjNo=;
+ b=eKf6gktn+750PKH/U+UKxNa80z3WUObj/brN47Eb4nF6GpFobVLJfq4VvDV/2IU7pTlHkc
+ fqKZGEFby6e+BFOzuxW8cRs0Bsqa+UpnXXtCmOOh44yHA99v4q+69mB5GgalS/TrHJfAV8
+ 2m5gMDOeMe3CsjJQi0bhDLINdsDSB84=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-dtTxbPuONwOYo7LyotS_GQ-1; Mon, 03 Nov 2025 16:06:37 -0500
-X-MC-Unique: dtTxbPuONwOYo7LyotS_GQ-1
-X-Mimecast-MFC-AGG-ID: dtTxbPuONwOYo7LyotS_GQ_1762203997
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-8801c2b9ea7so130577126d6.0
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:37 -0800 (PST)
+ us-mta-534-r8z-gm2GOUG1heQeedKlvQ-1; Mon, 03 Nov 2025 16:06:39 -0500
+X-MC-Unique: r8z-gm2GOUG1heQeedKlvQ-1
+X-Mimecast-MFC-AGG-ID: r8z-gm2GOUG1heQeedKlvQ_1762203999
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-891504015e5so1501263385a.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762203997; x=1762808797; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762203998; x=1762808798; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
- b=beO340fQHcXuTdIOtdp2rFSAoQBX+MkvQRGDOz8BJzjDPlz6NUC8nZO4/8jQNVOaEu
- 2jHS9fKMLYD3gKtWSRsJFfvxRpSVzhm35U30JcuDn1eIDQ4t/CHgoBsGrBD0F3NTmnCP
- OtBDB9GFogo4dyTDz6CisAsr3sli3NsRjhF1MMQoPECB4CGCkdKsrr/L408E3Hv9dXxl
- mA+T2DS8zFe6/5D/F5mTzSrA0XyCyc08sYrbfvc4tOUiYZrzGLtse8csKPBUIUbw2kaC
- woUKlMACViGKBvCibaVN2USIUYil2ixyPvDd6zZv37iKS4MHhUOAjPJO3RRoyNsaBEd+
- /97w==
+ bh=TgTvwcoVK4MIab8Yq/SxirUQSgGyWAAVwBn3bLNVjNo=;
+ b=lcKKHDF7x5nWoawVibhYPS7rv5jMJzKNV3S947T5KuHrZenpPgsraPMDKatqOzNroj
+ nKG2TW2G/amXQeTxj+TCu9rpvx1Nejz4wyIleYjwMIua0oRgZUg9xYWkqkbxiy69EviU
+ AV1ueXHyLccnz8l2vgjhGLGEcXxMkivVql46bU9OBKH4l9L6F+SVxdIb9m4vLZGieHRo
+ Uhas2ERHdsKAl27Aqs6dWGfZzb7OLMG/BZFnYomNa3I26PmgdGcc1vNZVRHQk3gd+sXm
+ mtrZEBxguXqjUy8JlLS0DmmQ1/n2QAZ9HkEnYm/N8TCEuY3Epfo0q/0bGAoa9QDNNF1q
+ blJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762203997; x=1762808797;
+ d=1e100.net; s=20230601; t=1762203998; x=1762808798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uF31ZFegjjtG5ASzXGR3Xx9ULt+da5E2N+ZHHsXG0v4=;
- b=qifMJhEE+2qjlmz7y5BJgnXQust1ihdx4qwF6gkDXvlP3MK5UdfpVOpjcjdvR1QK6Q
- tjlXmwz8pnRuCTovIivqDjXKSy015GrHRqnIUR2Y6iUkRVW9gBUdgt9IK/0Rs3r7luf0
- GrONo7d7GzOc0wzJ9YKbaAv6FdQb0kWdbWjr1YeHc8GgXS5dAvt5ld9PjDJ3z/aZd5DG
- tPwJ0uhUdYF4pd/1MXNtn9Ii8/trkWStmVc+WrokF7kg9h1hHeP0ZC00Zs91sZe0ejNG
- XyaHAclTdOWF+9yttSCBwCN8uO6Te3T4WVcYEzMIIyBm85Kb7Pqsiw67cVdJjN8seH4/
- xWUQ==
-X-Gm-Message-State: AOJu0YxQxaWEXUe+CwP2wlfPLSwDXTuHY4u1lyutullFIC0vx8LcY2UK
- X3YkVZPLW+Z8OZsjiF9I4Y125BoTR/ee3ww61mQri8CzHPvcq8B8Ha1F98nplPFD1CzaRm2ESpD
- JZa5ngGlBHkgq5apVmiT9pZkirE/P5JEm67YtzoeJUheo/LzQSnqjn9b+UeRnvk0wT+s5GNrRax
- ifgo8KKbf2/K/vRXeKa4RhQLzdZ5SqEy+vUToa+A==
-X-Gm-Gg: ASbGncuU14jTXZiyvsUJDiawuV0aJmpPYXMGO+xDR6SQw0idiLnz1TXTUIXs5Tw5YC0
- V+f+ArSVValOyrJuLa3FeNPvYNQAIu/rQDNMVGqCIkT3M0lFqJBXGSsXba8NF1QkmzcQ3m6PCl6
- 2UyIqmROK/z1IlViGVMmrEoYe0TpdgGquSFYYykw6WDcN+OoaI/o9knXW+SZpqYcNFFdPruIQFi
- Pu2BDWSYDtqkbNlNjl4cyjDFREYbvXIruEjt4OV9eZFp1/ax2ddIHZJh+uKyFaMUAhh5r0tW+ox
- hK4OhrQ8gB7ITxCc/2DDEBohwTAcsEZcVcjwm4fYmZKE41APDl7vcXt1gieVLsQd
-X-Received: by 2002:a05:622a:2b4f:b0:4eb:a228:7f4c with SMTP id
- d75a77b69052e-4ed30f2297bmr174268351cf.35.1762203996638; 
- Mon, 03 Nov 2025 13:06:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFsKTf4x5Sc3CYtEqvuGKBohvzR5vXyXJBekKl5JmJ2UsQXignVg50kxi5tZa+lDbCMctj8Ag==
-X-Received: by 2002:a05:622a:2b4f:b0:4eb:a228:7f4c with SMTP id
- d75a77b69052e-4ed30f2297bmr174267831cf.35.1762203996166; 
- Mon, 03 Nov 2025 13:06:36 -0800 (PST)
+ bh=TgTvwcoVK4MIab8Yq/SxirUQSgGyWAAVwBn3bLNVjNo=;
+ b=fgbpRKG7UV7YVLbGdj31H3Vw2RpPNmmJcjouPPnJh5uvlCoPX+1f8SE47cs5siix9M
+ 1oS/9dCcaGZq3jHSjlWwLIxwvBbG2UNGvt7RAMArILHgAGX9gw8kVTEUjcpck8TNYRuv
+ VdW0vbJNJZp998N+XovvrlvK4SKwXYoGEFQUfQi3CdAhjQQ+DyxUV31uZhr8h8X8gzBv
+ JqXEpYw8f9f0tSeZACSA5YrWviJx5aHrEBbBzVUBgXBaBmDQJcvR3znmauDZmAfhKBlx
+ kR7w8FzHAaZfCSTCPNhkAtWAv79+V0IpsSZ9dphRliRtgjxIcp1tY5YPbidagx25FqIb
+ tRxg==
+X-Gm-Message-State: AOJu0YzWeT8e1vbbMehjbhxht0zYAvXEtV4Vwby0E1PojnE5PvV/0jYj
+ livog3BOMnZa2bWD6J/3S5pK3kEF0GIKTvsEnbE/+vWYX58fEdnhgWp3BaEfoolEMLBF9fxTpxR
+ eTFu6aZJ/hX7uIblU7aip84mqnAmRFFqaGm+01nmvwrTQnX5QhQPhEYgnTqZEnO31KI+Mlf+JR5
+ a4DJ2qtheRFDT7yPrJAUR+XAbeIMX7drB0eplpxg==
+X-Gm-Gg: ASbGncvPQXMG+pVRwU5pHBW9D9L4y2LJFK2GCQrZJ2kljAvtfjkY4nZQH+0m2B1iLQn
+ zVrwmkpDo4KEYUWLz3YQSNJauU5GsDzYZpkXRBGjFiCJWb77W03uRfgdRBYjqC6W2FHBHqKUlss
+ xG4zMNSXC+UfEftZWrK2GdvXsK5afRY51U8lFO6tu7ChNLN0sEapG65u0CgncjrLs2JmQv3CmJJ
+ 5Vvo5PoPa0nL7EptC/XIA5sUVentpDR1GmbkU+DTJyXLLGNpvOhylLvBLFtIuRi37qYZairZrNa
+ MutikMvGKApXadUbc0gGojfsDEq3VvNyqG8ZBBgbGfCxy7ua1Vm2bd8GeZN042vY
+X-Received: by 2002:a05:620a:4493:b0:892:5b57:ea3c with SMTP id
+ af79cd13be357-8ab98eb5112mr1582829385a.2.1762203998429; 
+ Mon, 03 Nov 2025 13:06:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKk0+JecMyMrdeB4AH7b+wJtIJTmyQ3kLsh8hUyco40zH0J3CHSG+eze+pk1lTcXuOL7GYLg==
+X-Received: by 2002:a05:620a:4493:b0:892:5b57:ea3c with SMTP id
+ af79cd13be357-8ab98eb5112mr1582821785a.2.1762203997719; 
+ Mon, 03 Nov 2025 13:06:37 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.35
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:06:35 -0800 (PST)
+ Mon, 03 Nov 2025 13:06:36 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/36] migration: Remove unused VMSTATE_UINTTL_EQUAL[_V]()
- macros
-Date: Mon,  3 Nov 2025 16:05:55 -0500
-Message-ID: <20251103210625.3689448-7-peterx@redhat.com>
+ Arun Menon <armenon@redhat.com>
+Subject: [PULL 07/36] migration: Fix error leak in postcopy_ram_listen_thread()
+Date: Mon,  3 Nov 2025 16:05:56 -0500
+Message-ID: <20251103210625.3689448-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -119,50 +117,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+As reported and analyzed by Peter:
 
-The last use of VMSTATE_UINTTL_EQUAL() was removed in commit
-16a2497bd44 ("target-ppc: Fix CPU migration from qemu-2.6 <->
-later versions"), 9 years ago; remove it.
+https://lore.kernel.org/r/CAFEAcA9otBWtR7rPQ0Y9aBm+7ZWJzd4VWpXrAmGr8XspPn+zpw@mail.gmail.com
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20251016160313.25751-1-philmd@linaro.org
+Fix it by freeing the error.  When at it, always reset the local_err
+pointer in both paths.
+
+Cc: Arun Menon <armenon@redhat.com>
+Resolves: Coverity CID 1641390
+Fixes: 94272d9b45 ("migration: Capture error in postcopy_ram_listen_thread()")
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20251021220407.2662288-2-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/cpu.h | 6 ------
- 1 file changed, 6 deletions(-)
+ migration/savevm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/migration/cpu.h b/include/migration/cpu.h
-index 65abe3c8cc..ca7cc0479e 100644
---- a/include/migration/cpu.h
-+++ b/include/migration/cpu.h
-@@ -19,8 +19,6 @@
- 
- #define VMSTATE_UINTTL_V(_f, _s, _v)                                  \
-     VMSTATE_UINT64_V(_f, _s, _v)
--#define VMSTATE_UINTTL_EQUAL_V(_f, _s, _v)                            \
--    VMSTATE_UINT64_EQUAL_V(_f, _s, _v)
- #define VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, _v)                        \
-     VMSTATE_UINT64_ARRAY_V(_f, _s, _n, _v)
- #define VMSTATE_UINTTL_2DARRAY_V(_f, _s, _n1, _n2, _v)                \
-@@ -40,8 +38,6 @@
- 
- #define VMSTATE_UINTTL_V(_f, _s, _v)                                  \
-     VMSTATE_UINT32_V(_f, _s, _v)
--#define VMSTATE_UINTTL_EQUAL_V(_f, _s, _v)                            \
--    VMSTATE_UINT32_EQUAL_V(_f, _s, _v)
- #define VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, _v)                        \
-     VMSTATE_UINT32_ARRAY_V(_f, _s, _n, _v)
- #define VMSTATE_UINTTL_2DARRAY_V(_f, _s, _n1, _n2, _v)                \
-@@ -53,8 +49,6 @@
- 
- #define VMSTATE_UINTTL(_f, _s)                                        \
-     VMSTATE_UINTTL_V(_f, _s, 0)
--#define VMSTATE_UINTTL_EQUAL(_f, _s)                                  \
--    VMSTATE_UINTTL_EQUAL_V(_f, _s, 0)
- #define VMSTATE_UINTTL_ARRAY(_f, _s, _n)                              \
-     VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, 0)
- #define VMSTATE_UINTTL_2DARRAY(_f, _s, _n1, _n2)                      \
+diff --git a/migration/savevm.c b/migration/savevm.c
+index aafa40d779..232cae090b 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2136,17 +2136,18 @@ static void *postcopy_ram_listen_thread(void *opaque)
+         if (postcopy_state_get() == POSTCOPY_INCOMING_RUNNING &&
+             !migrate_postcopy_ram() && migrate_dirty_bitmaps())
+         {
+-            error_report("%s: loadvm failed during postcopy: %d. All states "
++            error_report("%s: loadvm failed during postcopy: %d: %s. All states "
+                          "are migrated except dirty bitmaps. Some dirty "
+                          "bitmaps may be lost, and present migrated dirty "
+                          "bitmaps are correctly migrated and valid.",
+-                         __func__, load_res);
++                         __func__, load_res, error_get_pretty(local_err));
++            g_clear_pointer(&local_err, error_free);
+             load_res = 0; /* prevent further exit() */
+         } else {
+             error_prepend(&local_err,
+                           "loadvm failed during postcopy: %d: ", load_res);
+             migrate_set_error(migr, local_err);
+-            error_report_err(local_err);
++            g_clear_pointer(&local_err, error_report_err);
+             migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+                                            MIGRATION_STATUS_FAILED);
+         }
 -- 
 2.50.1
 
