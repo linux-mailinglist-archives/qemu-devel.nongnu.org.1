@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AE2C2A9D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C962DC2AA89
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:58:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFq8t-0007r2-T5; Mon, 03 Nov 2025 03:42:23 -0500
+	id 1vFqLu-0003Mb-J7; Mon, 03 Nov 2025 03:55:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8p-0007qg-G8
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:42:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vFq8m-0000Gg-R4
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:42:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762159333;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bYk6jZsbaKjmox4r1f+JCpv408Di2ZRU+LOjH11Xq+E=;
- b=Hr+6KwN2ZSmC3y9+RUr8cire9lki6ioN9+kGybFbgsku1vvk5wCWT/FYbJ17puS2oW1nFB
- /tIfAJR3UIa6Uegnn0uGgrmsIJoOZ6t+v8Q1ocuAxEgTvlJsvMSZvcesOor0bVaBUcTe0g
- 7mgoUyIqrdk5UDwKMCfJn9o4bNGnb/U=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-WGqmHYXmMYaUe4ud_t_A0A-1; Mon,
- 03 Nov 2025 03:42:11 -0500
-X-MC-Unique: WGqmHYXmMYaUe4ud_t_A0A-1
-X-Mimecast-MFC-AGG-ID: WGqmHYXmMYaUe4ud_t_A0A_1762159331
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1919319560A7; Mon,  3 Nov 2025 08:42:11 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.33.5])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 879721800451; Mon,  3 Nov 2025 08:42:10 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id DA1FD180060B; Mon, 03 Nov 2025 09:42:01 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFqLr-0003ML-OB
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:55:47 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vFqLn-0003jQ-8V
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:55:47 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-640b2a51750so1791488a12.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 00:55:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1762160133; x=1762764933; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mUGYcNfJbTsdbnPIinLqkzdtSXtCUhPLlDDjPVm7xa4=;
+ b=cA0rlOSmLuw+nBEgSFVoKOiRq//NbpIPSWFXfKT2f1ndtwluB7rbNoJzeSo2DQl5J3
+ vGc7STF6Xx1I4NtBsXxdMu7LaPPCTDB2X/eYua2y4Rf15/0HU/yfq+TFcRG5zUZFhbPB
+ msVrxOTS+wajnRYP9Pi0TcMQIhwp1sgL4rrY3RNR1lxfe6Bc8sV3KRfuR1oMmVNi558i
+ KJwAMxWY5Pyzi6ytXRDxNC4jXCQjVlbTomxTxI7GK61+4Y0bQjvncgaUR59zHW9JfL23
+ lZymGabT9mDAsyTt5uaRSKuvFe+v5byb/LmXh62a48l9PWkF8XnxxJp9tYbVPFruGFnF
+ 6i6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762160133; x=1762764933;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mUGYcNfJbTsdbnPIinLqkzdtSXtCUhPLlDDjPVm7xa4=;
+ b=ugPb25D3UduvztQ2CDj4xSk+DDQzfQbWiktbqwzinsAi/bARjr3jbDhOmn62b/YuZu
+ 0oR+0F4ewlvSFng/qA140AyRAsBJ8nGYAcbgL8HqanpzEI/S/t2WO1jLMR5mkxXzXzjI
+ cKng7MJvKCaLfi9TJYu7RUMXem1fYib+c7ahfENNWrORtLDv6BaNwTRhkbSQPtfLqK1J
+ iATJQzC3x/adwU9BqYGnc2VQAppCobBaih4o5StZN9nzDssR2qqr4kxqCcsKxYxYV27/
+ wVOmkjG7HfhYrmtwCSSmAPt6vO7bVSKffAMu9YN1YlD3VSB4OKIViy3LdvJyylB6xaAB
+ wu5A==
+X-Gm-Message-State: AOJu0YznIeRMOxjXtYThVnqthg0pxoCrgZ9NpzqFFGGb0cRLzcI722pM
+ hxO9Xnh5LLEpHnHHEYzcLLHY6tzvJ6tDtyrpcQg2RADln4pBPNQdaO4zY/MKxg==
+X-Gm-Gg: ASbGncvSLCEvCi6X8m1mPg1marVU4ztjCVYVzBunJideTBGxf7TLq3VKDzyYN0WeDwa
+ fy7m8m++c1K39X94kEz8c4BV+4bZs2LWq4cLvitiGn0AV2F66bX4Hqlv8DgGhojtbd0Lh7QhSPS
+ i1WOnGex8ylg2s8wnrnJtEusrYrD9YpTPsaq6Q/Xar/evla8b7zGLZGTk7N1hxvFXKyFc+DZCzy
+ jwZMWtPR6rbler30XRm49ekk1ll+6PUe6d3vyjbswD8jVk76J1b2+eZfKsBtGvzCnElripJCREJ
+ X2UUzf5SByfxUPwY7IKAYeZoAIhWByLmMSHmde8Uc4yKQtEnT4qcoTsD+g3Ra9xvkEC1qs1Wqsq
+ TZPekk10Ghow8RotwMp8y2u/raMgH/r+2F57y6WkeWL/UL4ahikDPsbCyWpsSQ4uyH6TX8Wv2K8
+ 1VRHswM44sIsCf+O3261YQjUhDC4li8JsWfWOUUIMzXr8oo/kKKDOrLSbnv0iLyd0=
+X-Google-Smtp-Source: AGHT+IFJG76yP+7CzRpLRK9tOKTbByXd3Qk/1eKlI6wH2b/vegPqAczSH4PC0MHTRmEqcvAFHTsKiA==
+X-Received: by 2002:a05:6402:90d:b0:640:9b43:dcb1 with SMTP id
+ 4fb4d7f45d1cf-6409b43dcdfmr5444177a12.35.1762160133066; 
+ Mon, 03 Nov 2025 00:55:33 -0800 (PST)
+Received: from ehlo.thunderbird.net
+ (dynamic-077-183-079-203.77.183.pool.telefonica.de. [77.183.79.203])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6407b438b05sm8977171a12.27.2025.11.03.00.55.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Nov 2025 00:55:32 -0800 (PST)
+Date: Mon, 03 Nov 2025 08:55:30 +0000
+From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 5/5] igvm: add MAINTAINERS entry
-Date: Mon,  3 Nov 2025 09:42:00 +0100
-Message-ID: <20251103084201.45417-6-kraxel@redhat.com>
-In-Reply-To: <20251103084201.45417-1-kraxel@redhat.com>
-References: <20251103084201.45417-1-kraxel@redhat.com>
+CC: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 0/2] KVM Support for imx8mp-evk Machine
+In-Reply-To: <20251101120130.236721-1-shentey@gmail.com>
+References: <20251101120130.236721-1-shentey@gmail.com>
+Message-ID: <4D17B8A6-28E9-4E65-B0DD-15BE2AD4AB04@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,40 +99,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Roy Hopkins (the original author) does not respond, so the new plan
-going forward is that I will maintain this together with Stefano.  Also
-add Ani as reviewer.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20251029105555.2492276-6-kraxel@redhat.com>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a6a1d36f52da..ee058e2fef00 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3908,6 +3908,17 @@ F: roms/edk2-*
- F: tests/data/uefi-boot-images/
- F: tests/uefi-test-tools/
- 
-+IGVM Firmware
-+M: Gerd Hoffmann <kraxel@redhat.com>
-+M: Stefano Garzarella <sgarzare@redhat.com>
-+R: Ani Sinha <anisinha@redhat.com>
-+S: Maintained
-+F: backends/igvm*.c
-+F: docs/system/igvm.rst
-+F: include/system/igvm*.h
-+F: stubs/igvm.c
-+F: target/i386/igvm.c
-+
- VT-d Emulation
- M: Michael S. Tsirkin <mst@redhat.com>
- R: Jason Wang <jasowang@redhat.com>
--- 
-2.51.1
+Am 1=2E November 2025 12:01:28 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
+>This series adds KVM support to the imx8mp-evk machine, allowing it to ru=
+n
+>
+>guests with KVM acceleration=2E Inspiration was taken from the virt machi=
+ne=2E This
+>
+>required a device tree quirk for the guest clock to be kept in sync with =
+the
+>
+>host=2E Without this quirk the guest's clock would advance with factor <h=
+ost
+>
+>system counter> / 8Mhz=2E
+>
+>
+>
+>Testing done:
+>
+>* Run `make check`
+>
+>* Run Buildroot image with TCG
+>
+>* Run `qemu-system-aarch64 -M imx8mp-evk -accel kvm -smp 4` under
+>
+>  `qemu-system-aarch64 -M virt,secure=3Don,virtualization=3Don,gic-versio=
+n=3D4 \
+>
+>  -cpu cortex-a72 -smp 4 -accel tcg` and `qemu-system-aarch64 -M imx8mp-e=
+vk \
+>
+>  -accel tcg -smp 4"=2E Observe that the `date` command reflects the host=
+'s date=2E
+>
+>
+>
+>v3:
+>
+>* Fix crash in qtest (Peter) by using cortex-a53 CPU when ms->cpu_type =
+=3D=3D NULL
+>
+>* Apply Peter's style fixes in board documentation
+>
+>* Apply Phil's R-b -- thanks!
+>
+>* Rebase onto master
+>
 
+Is there still a chance to get this series into 10=2E2? Soft feature freez=
+e is tomorrow=2E
+
+Best regards,
+Bernhard
+
+>
+>
+>v2:
+>
+>* Rebase onto master
+>
+>* Mention various tradeoffs in the board documentation (Peter)
+>
+>* Accommodate for single-binary (Peter, Pierrick) by having CPU defaults
+=
+>
+>* Add quirk to fix guest clock
+>
+>
+>
+>Bernhard Beschow (2):
+>
+>  hw/arm/imx8mp-evk: Add KVM support
+>
+>  hw/arm/imx8mp-evk: Fix guest time in KVM mode
+>
+>
+>
+> docs/system/arm/imx8mp-evk=2Erst | 19 +++++++++++++++++++
+>
+> hw/arm/fsl-imx8mp=2Ec            | 34 +++++++++++++++++++++++++++++-----=
+
+>
+> hw/arm/imx8mp-evk=2Ec            | 20 ++++++++++++++++++++
+>
+> hw/arm/Kconfig                 |  3 ++-
+>
+> 4 files changed, 70 insertions(+), 6 deletions(-)
+>
+>
+>
+>-- >
+>2=2E51=2E2
+>
+>
+>
 
