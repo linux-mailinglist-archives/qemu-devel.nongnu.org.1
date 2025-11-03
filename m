@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1261C2AFAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1353FC2AFF4
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:19:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFrcG-00011Q-7b; Mon, 03 Nov 2025 05:16:48 -0500
+	id 1vFrcX-0001eq-6x; Mon, 03 Nov 2025 05:17:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrcD-0000t8-5P
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:16:46 -0500
-Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrcU-0001aA-IT
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:17:02 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrbt-0003UY-4U
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:16:34 -0500
-Received: by mail-wr1-x443.google.com with SMTP id
- ffacd0b85a97d-3f0ae439b56so2164686f8f.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:16:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrcL-0003ZK-Qv
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:17:02 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4710683a644so33137305e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:16:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762164973; x=1762769773; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762165006; x=1762769806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AHrIsc13n3k3WjZqe8R3WBdhQ7AP5c+oeQndZCxEU10=;
- b=dPnaqBO6d1NsZcuAdNMIyHy5raOQPqokiqEV/+7F3d+9bwJ5OPBrNmZMDAQgbDSAxD
- DxLZODMwfwJjlIWNOj9KjFscD0sASLfceBeZKo0Y2N0lfgsRUKD9PHD7m0ArE9FBlXyr
- kzC2Q4uWznUNG4dASgevGCeaIdYBnqpb2DERgfXj3QOj47RvqRwTCSbnDAdjSzlgx4ZY
- kPXAamA2Rb4NIwqoLD+qPID+4hnWHzrsS+u5vHlr0kH+DdsKcIvvthbVYWWBwfbVTxxN
- TjGfZ963ZmpfmjZ79x08vkJvo43OjMWXAx4ZX+WspoYBnG3JYKvIK6dHy3e8NKVWP5PF
- GMAA==
+ bh=REj67eGgPV90SX9WQX5yE1JHREa2u08WkjMgsUYxfus=;
+ b=PEjclthLw9SJRtvXsVS6RRdiDOtuoAODTrUwAjJ4L3g33IFJEhjLowExIg4iGW3Bd1
+ gLzzrj9Yb4HaWuwUQfF49MY9qC6z8zyo8xS+PFzkLQyYWQF3r3kdDlZls0xNkGEP5fOV
+ 4+VzsH1vK9K3PsK+NpOlBt9uKmS+cppBsQVz6bBnxQyGwIeMgVyN4gRtS0T19NxcwEnE
+ wulufDOi1bSCokgfW00XajO+pjOCpAVII7Cu/MA6mJk/Fhfat7MhvL08f++49Hcsfi/d
+ j+c6SalF9cIXn34mHN2uWG5wYZflxCreEhLSqR3/xqqaoKexIjooLokTq6TAevJbHeIi
+ gFUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762164973; x=1762769773;
+ d=1e100.net; s=20230601; t=1762165006; x=1762769806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AHrIsc13n3k3WjZqe8R3WBdhQ7AP5c+oeQndZCxEU10=;
- b=RkhNge2IGaDpr2rD7rbYSP0n7+mQ0jhEXDXAf9G1Pys8g7KiCx5k8EQ8xa5DkE7G8I
- vEUFlgR18VbkK/TK63VuB8tfpEUz6HMG7pHvtQL7Iizvucym2VD12JH+Zgi5iXeLhgQj
- eu7MeCjDb1rvuLxKWrm1cJnuIVP6ZzPnzQCxsJ5kMyPPv9TZxXGZpK+Em960X/Q9Hyqn
- ZTVdPDCwxanOk+ilEhh3BEilZuvyviSnRr9li36efkyZ/7eSTjrcRVBLg/0baRQZwnwg
- abhXDccqMLTPMsoNFip7tidyo82a98QG3IvwxCrTprIyOmNL62DwLt4JtJGyT9CCYuaj
- JbsA==
-X-Gm-Message-State: AOJu0YySQrB+yrWjf1pzJ0Gd/qNm0Z0SOt9LmOOw9tCsIM5fH1tsZVVc
- yIGLK2YmomRcfxeXjHNiIpx0MNcmoEOowMfk7qbEbMqzeIbgrUXDM133CYyRHueNrgZRSHzMtAU
- M3qa6Xow49B3jWeo=
-X-Gm-Gg: ASbGncuvExP2/8a8b8/CfqmMmBHjFVVZc1mhqVxi9AyzSfrGYsxP/96ZdCLrVq2HiZ5
- Optu03JTX9N1t3fOE36ah6OlHvdJiqk3jiwHIP0hXwlE4fMRVnshfmZS5lHcutWW89zj5ZPiSu8
- X1A6dbNfFXW0eFSVVkqXwmyb1P7CjCsKvtl39C8c6lKWcurDeaWAciJm12xI+RDuocEys8G81me
- fdtsC2cv86RpcjU3hHQwndv4JTBbxdagQB58ABhGqm23/56Tk7Y8MQ8h6UdaKM1wYXKqEKZEr4p
- jVrHgWHLJzwVZmLuuOnzv1Mpq9kDY1MvxHvg1PjuK4gd3OsiAmRBC5pwdfvZ8YxMsFMxLU49sOL
- bU5FCTgFUEER23Nr6Iw2b1xmbBMTNIMTl2hDMjmi9IRuVEEkJUQA49Pje8EeFxICVubL2eKpeNP
- NbbcY1RzAiC5euvMlZ92EjCNKjHG2KkFu+Eqn8XExLdzZHVEbruJK1OzQEfCF5QwQBo7stQQ==
-X-Google-Smtp-Source: AGHT+IFtYf7L01WGLYzAQgeCtH+nZVWml9gap2cJyPcyAoNXDlq+U0WB7BTAujEU1IDg/6CpIFULlw==
-X-Received: by 2002:a05:6000:1846:b0:429:8c3b:c4e2 with SMTP id
- ffacd0b85a97d-429bd672378mr8281847f8f.7.1762164973296; 
- Mon, 03 Nov 2025 02:16:13 -0800 (PST)
+ bh=REj67eGgPV90SX9WQX5yE1JHREa2u08WkjMgsUYxfus=;
+ b=ZBL1X73VFmlQH0J5U+7mkhK25mw+2sDxbHNu3m/Xk2ML3gMRP4wEcIpjo2fC+JNRj/
+ zxacPOdGiakSHseNCAc9U+JYFawzc4RyR5gJ4bF1x74qTiT5rghYpV0NT78Mpx1ri0Vz
+ /cqn8F9BVGhLOhNzLO983ooIaj4OIAMiOQeuySY2E7g31mY6w6JO9/G27knG4ANT9XTN
+ /BCaGse68pXodh/NFNte//Sl4RCSdQyq9LsOVI639p/L/BMMV3HZfiJhbrjE7R8a8quF
+ 6Ah7mBKXidxR3/IedV2W8CYZkg2QDzgvSTPDx3lhNdayP952VC9gxzH33mODf3q6tQL2
+ 1Gfw==
+X-Gm-Message-State: AOJu0YyDwJbrHgEBcUEvUfIPtEy6RIbD7TNBAfz8AiiHJahynMUwGVYH
+ hPk8lwa/2lHRGoejvBNJOv2RX3c9ewPHHGDJtg739AcuTqJhdqstCYOy5kaFyXyBmvkuPYCRGKP
+ gGllZpBGew3Is
+X-Gm-Gg: ASbGncuo4q4coDUowS/2oD4m/lcA6YODK9s8N98G3+QbiuY3Aj2Yy/sDRV4JR4SHKgM
+ II4Q/eDLHYzqhdjzDtPJm+dfVPnpeW3O+YBX5NniT5yRvHfovstidJWGyCptapJaOnqp6WPgNfg
+ Rs1ulhX2CtPplU+z5STK4WTnB6BC1hyeRE7BND9zwfuiI/LzhqZJ5rG2iN408noCNB+5jj+mDKp
+ AL8DvQdoo99gEXa+pLux8zJWoTxhgR1YrVaJ9cteEEst9DsvB4ehvaSLcT8Rsw7iDSVtqF//Uok
+ FzluQHPPzXjDQiqkQlesRysfvH9MQ0r6HkWbY/b40UfMVjUCJiFMKfDxhlLL/b+iarlLHgLJxNv
+ oZrzOt5WG2VVc9Mx4qbyEEASRoh1ALHqj3GGG2Gbm1HrryTkvnwZ1SgNb2ZKpaqUgMpp8nq+ltT
+ vj/PbCziZiAeOAqaR+LFhT8MJlu4JT2v1a16s+olqMJT/rmg9WyMi46o79DoIHzTetn0gdow==
+X-Google-Smtp-Source: AGHT+IGRzIrhYQgnZNa1UsjJasERFS3g5yhWVoTj0s36vUq0vHO7BoWVWAI+8mAzPdhsjDz+Utb7Ew==
+X-Received: by 2002:a05:600c:420c:b0:477:115b:878d with SMTP id
+ 5b1f17b1804b1-477262baebfmr87459415e9.15.1762165006253; 
+ Mon, 03 Nov 2025 02:16:46 -0800 (PST)
 Received: from localhost.localdomain (ip-185-104-138-122.ptr.icomera.net.
  [185.104.138.122]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429d28f2d29sm6278844f8f.5.2025.11.03.02.16.11
+ ffacd0b85a97d-429cab8575bsm12193533f8f.31.2025.11.03.02.16.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Nov 2025 02:16:12 -0800 (PST)
+ Mon, 03 Nov 2025 02:16:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>,
@@ -73,24 +73,24 @@ Cc: Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Peter Collingbourne <pcc@google.com>, Cameron Esfahani <dirty@apple.com>,
  Mads Ynddal <mads@ynddal.dk>, Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v4 13/23] accel/hvf: Implement WFI without using pselect()
-Date: Mon,  3 Nov 2025 11:10:22 +0100
-Message-ID: <20251103101034.59039-14-philmd@linaro.org>
+Subject: [PATCH v4 14/23] accel/hvf: Have PSCI CPU_SUSPEND halt the vCPU
+Date: Mon,  3 Nov 2025 11:10:23 +0100
+Message-ID: <20251103101034.59039-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251103101034.59039-1-philmd@linaro.org>
 References: <20251103101034.59039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::443;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x443.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,150 +106,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return to the main loop where we'll be waken again.
-This avoid a tricky race with signals introduced in
-commit 219c101fa7f ("Add HVF WFI handler").
+Return EXCP_HLT to the main loop.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/hvf_int.h  |  1 -
- accel/hvf/hvf-accel-ops.c |  3 --
- target/arm/hvf/hvf.c      | 74 +++------------------------------------
- 3 files changed, 5 insertions(+), 73 deletions(-)
+ target/arm/hvf/hvf.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index d842d4b2b99..c8e407a1463 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -47,7 +47,6 @@ struct AccelCPUState {
- #ifdef __aarch64__
-     hv_vcpu_exit_t *exit;
-     bool vtimer_masked;
--    sigset_t unblock_ipi_mask;
-     bool guest_debug_enabled;
- #endif
- };
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index bbb0b385fe9..5922eb02e70 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -134,9 +134,6 @@ static int hvf_init_vcpu(CPUState *cpu)
-     sigact.sa_handler = dummy_signal;
-     sigaction(SIG_IPI, &sigact, NULL);
- 
--    pthread_sigmask(SIG_BLOCK, NULL, &cpu->accel->unblock_ipi_mask);
--    sigdelset(&cpu->accel->unblock_ipi_mask, SIG_IPI);
--
- #ifdef __aarch64__
-     r = hv_vcpu_create(&cpu->accel->fd,
-                        (hv_vcpu_exit_t **)&cpu->accel->exit, NULL);
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 5e46e8bf4dd..51fd8c7175b 100644
+index 51fd8c7175b..59a2ef53629 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -301,7 +301,7 @@ void hvf_arm_init_debug(void)
+@@ -301,8 +301,6 @@ void hvf_arm_init_debug(void)
  #define TMR_CTL_IMASK   (1 << 1)
  #define TMR_CTL_ISTATUS (1 << 2)
  
--static void hvf_wfi(CPUState *cpu);
-+static int hvf_wfi(CPUState *cpu);
- 
+-static int hvf_wfi(CPUState *cpu);
+-
  static uint32_t chosen_ipa_bit_size;
  
-@@ -1703,81 +1703,17 @@ static uint64_t hvf_vtimer_val_raw(void)
-     return mach_absolute_time() - hvf_state->vtimer_offset;
- }
- 
--static uint64_t hvf_vtimer_val(void)
-+static int hvf_wfi(CPUState *cpu)
+ typedef struct HVFVTimer {
+@@ -1008,7 +1006,7 @@ static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
+  * Returns 0 on success
+  *         -1 when the PSCI call is unknown,
+  */
+-static bool hvf_handle_psci_call(CPUState *cpu)
++static bool hvf_handle_psci_call(CPUState *cpu, int *excp_ret)
  {
--    if (!runstate_is_running()) {
--        /* VM is paused, the vtimer value is in vtimer.vtimer_val */
--        return vtimer.vtimer_val;
--    }
--
--    return hvf_vtimer_val_raw();
--}
--
--static void hvf_wait_for_ipi(CPUState *cpu, struct timespec *ts)
--{
--    /*
--     * Use pselect to sleep so that other threads can IPI us while we're
--     * sleeping.
--     */
--    qatomic_set_mb(&cpu->thread_kicked, false);
--    bql_unlock();
--    pselect(0, 0, 0, 0, ts, &cpu->accel->unblock_ipi_mask);
--    bql_lock();
--}
--
--static void hvf_wfi(CPUState *cpu)
--{
--    ARMCPU *arm_cpu = ARM_CPU(cpu);
--    struct timespec ts;
--    hv_return_t r;
--    uint64_t ctl;
--    uint64_t cval;
--    int64_t ticks_to_sleep;
--    uint64_t seconds;
--    uint64_t nanos;
--    uint32_t cntfrq;
--
-     if (cpu_has_work(cpu)) {
-         /*
-          * Don't bother to go into our "low power state" if
-          * we would just wake up immediately.
-          */
--        return;
-+        return 0;
-     }
- 
--    r = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CTL_EL0, &ctl);
--    assert_hvf_ok(r);
--
--    if (!(ctl & 1) || (ctl & 2)) {
--        /* Timer disabled or masked, just wait for an IPI. */
--        hvf_wait_for_ipi(cpu, NULL);
--        return;
--    }
--
--    r = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CVAL_EL0, &cval);
--    assert_hvf_ok(r);
--
--    ticks_to_sleep = cval - hvf_vtimer_val();
--    if (ticks_to_sleep < 0) {
--        return;
--    }
--
--    cntfrq = gt_cntfrq_period_ns(arm_cpu);
--    seconds = muldiv64(ticks_to_sleep, cntfrq, NANOSECONDS_PER_SECOND);
--    ticks_to_sleep -= muldiv64(seconds, NANOSECONDS_PER_SECOND, cntfrq);
--    nanos = ticks_to_sleep * cntfrq;
--
--    /*
--     * Don't sleep for less than the time a context switch would take,
--     * so that we can satisfy fast timer requests on the same CPU.
--     * Measurements on M1 show the sweet spot to be ~2ms.
--     */
--    if (!seconds && nanos < (2 * SCALE_MS)) {
--        return;
--    }
--
--    ts = (struct timespec) { seconds, nanos };
--    hvf_wait_for_ipi(cpu, &ts);
-+    return EXCP_HLT;
- }
- 
- /* Must be called by the owning thread */
-@@ -1967,7 +1903,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-     case EC_WFX_TRAP:
-         advance_pc = true;
-         if (!(syndrome & WFX_IS_WFE)) {
--            hvf_wfi(cpu);
-+            ret = hvf_wfi(cpu);
+     ARMCPU *arm_cpu = ARM_CPU(cpu);
+     CPUARMState *env = &arm_cpu->env;
+@@ -1091,9 +1089,8 @@ static bool hvf_handle_psci_call(CPUState *cpu)
+             ret = QEMU_PSCI_RET_INVALID_PARAMS;
+             break;
          }
+-        /* Powerdown is not supported, we always go into WFI */
+         env->xregs[0] = 0;
+-        hvf_wfi(cpu);
++        *excp_ret = EXCP_HLT;
          break;
-     case EC_AA64_HVC:
+     case QEMU_PSCI_0_1_FN_MIGRATE:
+     case QEMU_PSCI_0_2_FN_MIGRATE:
+@@ -1910,7 +1907,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
+         cpu_synchronize_state(cpu);
+         if (arm_is_psci_call(arm_cpu, EXCP_HVC)) {
+             /* Do NOT advance $pc for HVC */
+-            if (!hvf_handle_psci_call(cpu)) {
++            if (!hvf_handle_psci_call(cpu, &ret)) {
+                 trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
+                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
+                 env->xregs[0] = -1;
+@@ -1926,7 +1923,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
+             /* Secure Monitor Call exception, we need to advance $pc */
+             advance_pc = true;
+ 
+-            if (!hvf_handle_psci_call(cpu)) {
++            if (!hvf_handle_psci_call(cpu, &ret)) {
+                 trace_hvf_unknown_smc(env->xregs[0]);
+                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
+                 env->xregs[0] = -1;
 -- 
 2.51.0
 
