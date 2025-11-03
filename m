@@ -2,90 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2B1C2B287
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 911FFC2B381
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:02:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsAu-0001fj-Gx; Mon, 03 Nov 2025 05:52:36 -0500
+	id 1vFsKf-00005w-GB; Mon, 03 Nov 2025 06:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFsAs-0001fM-6c
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:52:34 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFsAn-0002Vn-7f
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:52:33 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-429c48e05aeso1355119f8f.1
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:52:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762167143; x=1762771943; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gu1x2Jvo2cxOYeIuXySnlCfrmNhzmsl8WxpirL+tZl8=;
- b=Av+jWS6jcQJtLLI+RB9SwMdA4yAsJQiWRPgYXkAVF4DdC8VoEgOOrGfxYr6Ru3tiAD
- hd5vGKDVDDaFTMPNglu9zY7ADndN1/m8kPqbP2PffzwKiZKuF+KmVUtZmYUsRAdtoFs/
- dKKiuJ+q+CpsLqZ6fhwWajOmFAYN8dzb6NQzsClabQLoiGCkz+TTqT+A+R0ylswhVRDJ
- fzbo+U5uKRprsMjKIn8VFJQMeHMFhKzrPvRL6qqDyl3hQh/5AXeMdtOFJstNvG/DmWtv
- QylzozbwF5Z9GuAjzbSZlr186WGpZc96/XuIV/GUD44k3Tb3zRVtelm79VPyIwv7vNW9
- 0EBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762167143; x=1762771943;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gu1x2Jvo2cxOYeIuXySnlCfrmNhzmsl8WxpirL+tZl8=;
- b=NnoPO+EogFz+CKbTLWGRmaaKLTuiFK1mSgKRokWWQ7ckTYFWERzeHC8gzESL5bL8zj
- PMUZDEjYBU9IK+ZHnwIHeAWjJQdieceIzHP96WbpZA+v8gaUzwz9SSzQcNDfFKzI17CI
- I43EhhHUFe2mDsRqMywLkX0cndLbkv3hREGKiK26c5K176l0qnMJEBQqJv9qN5blEVcO
- vFHkhgJmiHf3LapwTMLByz7cP7qWtiCcwbnnFiORG71RVJqdXr/p+26fQnucpUpELf6L
- sGkv7fAzS/QEy5X9pKBfxRx1kM4oyfqnNte6/scgle+HRoBL3Ln9dnJBJ1hwNdImUSxK
- 6+MQ==
-X-Gm-Message-State: AOJu0YzmMR0hk7pioQioFeg7Uj5pCwtIKc5nnOwPnM2lmx3dkdSOaYES
- PDVrCLLeqRaZ8wh+AkQfNCRqLAls0f5XYkN7QPgZwoYrY/kWB9xpW0V73MibRkCU1vcgjSL9WvH
- gaBOUzyX76nlO
-X-Gm-Gg: ASbGncv4l05onyWzR8sp1v3UhjBU5o3bKiOML0QcuWCpyh6wIt6RUoT1DLaZ8KVylML
- uquW9S574vrfcyQQxyn8/8waqwaoCyS6G5aXLv90fAM9SZ3pnz1EmeAnxTAmWdkm4TIFZLDutBG
- czsBiQ6vy72PvtxfXkD7ekSAw/NNokrFHGYWmWfxyQY9vRcAFO4z66rmLtN6T65W54/dpDKGHSa
- wzevZWZTHaw3olhWuUpU9cUMs6o2WSs3qb1anJXgGVWiqf5KY4Haekik3hEqT5FQwvDnwPUSP4E
- QiV4sf7NF2fZTTvmLREy6qRYOmzH2adTDFiBFomDnM9fdTqDLZmEkLtwE0z02IotuQc+ZKRhr8T
- jirVVTen7Vtuf3ZWqnYC8LwquW4JEWWdxOM2kUuVdqGgWwUKWGebNOWobQuG2n16POb9m0NoxG9
- KZ02aV/XvSCG0jQT05uTmR9iaM1EIiwZmcUmE8r/yEbyvZUeEA3T+ZjwuBH2KOC4DJ8/K3EQ==
-X-Google-Smtp-Source: AGHT+IGnFhlkhUanAo8VERPEGec32NWhEKhShTS7RpNGOJHeZ6Er/vmAAuaOykCNOOtmUnTso766JA==
-X-Received: by 2002:a5d:5d85:0:b0:429:bb77:5deb with SMTP id
- ffacd0b85a97d-429bb775fa9mr12350902f8f.31.1762167142789; 
- Mon, 03 Nov 2025 02:52:22 -0800 (PST)
-Received: from localhost.localdomain (ip-185-104-138-122.ptr.icomera.net.
- [185.104.138.122]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4773c48daa0sm151530555e9.3.2025.11.03.02.52.18
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Nov 2025 02:52:22 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] osdep: Cache getpagesize() call in
- qemu_real_host_page_size()
-Date: Mon,  3 Nov 2025 11:51:10 +0100
-Message-ID: <20251103105111.68294-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251103105111.68294-1-philmd@linaro.org>
-References: <20251103105111.68294-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vFsJH-0007d6-Gp
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:01:24 -0500
+Received: from sea.source.kernel.org ([172.234.252.31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vFsJ9-000566-7Y
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:01:15 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id E1F8F404A5;
+ Mon,  3 Nov 2025 11:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F806C4CEE7;
+ Mon,  3 Nov 2025 11:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1762167646;
+ bh=7KlQ6SyNHBa4lk3dkpiYR4iscB2B68Q7KOAeVXNjiSw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AhLcoQGIUn+XILCnMIYp24uIaR3p69oXI/V6fr2s4n4Ec3dMk6596cJc8JewLsa4h
+ KH5DwHU+y64yKfd8NNeimWaZw1szCfwTuusS6gzNKNATMviBmyE+MoOdp3QnN28hIR
+ 3E0UeStC9All56Gp2pdVeTWwenSKVRqubFlPtJ2+pS1KuzMH3B2FH0RmZ/TnN2nNyk
+ EMt7J7LPi9rFPVn+cmbUk3Bv/t5UvugJbWayoVuYrfsVT6o76K8yFJd0epMFsa1XJX
+ 1sQkHZGC+JKDimTmCwtmVY/gilo49irmmg9oPAnPj9OcsFleJisA43gCgRZCIYaAar
+ 1djVvz8IQq03g==
+Date: Mon, 3 Nov 2025 16:25:02 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, kvm@vger.kernel.org,
+ Nikunj A Dadhania <nikunj@amd.com>, 
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Zhao Liu <zhao1.liu@intel.com>, Michael Roth <michael.roth@amd.com>, 
+ Roy Hopkins <roy.hopkins@randomman.co.uk>
+Subject: Re: [PATCH v2 8/9] target/i386: SEV: Add support for setting TSC
+ frequency for Secure TSC
+Message-ID: <hbfmcwhus6oyggzfrjz3rdkdrzfmeeuab45bnipta2bo5wj6z3@os4yj4ywoahn>
+References: <cover.1758794556.git.naveen@kernel.org>
+ <65400881e426aa0e412eb431099626dceb145ddd.1758794556.git.naveen@kernel.org>
+ <6a9ce7bb-5c69-ad8b-8bfd-638122619c71@amd.com>
+ <uzfmnzzhz7a7lghdpazb2sphtctphmsj2nyfqnu6erjt44h577@bjj57um7n2ze>
+ <a8a324ba-e474-4733-b998-7d36be06b7f7@amd.com>
+ <boyf3kr7uo7jnlratgmgaklm2a4leg37hsgfno5ywsl6qvbcvo@5dwlbncvaogv>
+ <acb88951-b46f-4a08-8cd7-4e2d20e153f4@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acb88951-b46f-4a08-8cd7-4e2d20e153f4@amd.com>
+Received-SPF: pass client-ip=172.234.252.31; envelope-from=naveen@kernel.org;
+ helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,35 +80,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we can not know whether a libc implementation of
-getpagesize() calls syscalls -- potentially slow --, but
-we know the host page size won't change during runtime,
-we can cache its value.
+On Tue, Oct 28, 2025 at 10:11:13AM -0500, Tom Lendacky wrote:
+> On 10/24/25 12:16, Naveen N Rao wrote:
+> > On Fri, Oct 24, 2025 at 10:00:08AM -0500, Tom Lendacky wrote:
+> >> On 10/8/25 04:52, Naveen N Rao wrote:
+> >>> On Tue, Oct 07, 2025 at 08:31:47AM -0500, Tom Lendacky wrote:
+> >>>> On 9/25/25 05:17, Naveen N Rao (AMD) wrote:
+> >>>
+> >>> ...
+> >>>
+> >>>>> +
+> >>>>> +static void
+> >>>>> +sev_snp_guest_set_tsc_frequency(Object *obj, Visitor *v, const char *name,
+> >>>>> +                                void *opaque, Error **errp)
+> >>>>> +{
+> >>>>> +    uint32_t value;
+> >>>>> +
+> >>>>> +    if (!visit_type_uint32(v, name, &value, errp)) {
+> >>>>> +        return;
+> >>>>> +    }
+> >>>>> +
+> >>>>> +    SEV_SNP_GUEST(obj)->tsc_khz = value / 1000;
+> >>>>
+> >>>> This will cause a value that isn't evenly divisible by 1000 to be
+> >>>> rounded down, e.g.: tsc-frequency=2500000999. Should this name instead
+> >>>> just be tsc-khz or secure-tsc-khz (to show it is truly associated with
+> >>>> Secure TSC)?
+> >>>
+> >>> I modeled this after the existing tsc-frequency parameter on the cpu 
+> >>> object to keep it simple (parameter is the same, just where it is 
+> >>> specified differs). This also aligns with TDX which re-uses the 
+> >>> tsc-frequency parameter on the cpu object.
+> >>
+> >> So why aren't we using the one on the cpu object instead of creating a
+> >> duplicate parameter? There should be some way to get that value, no?
+> > 
+> > I had spent some time on this, but I couldn't figure out a simple way to 
+> > make that work.
+> > 
+> > TDX uses a vcpu pre-create hook (similar to KVM) to get access to and 
+> > set the TSC value from the cpu object. For SEV-SNP, we need the TSC 
+> > frequency during SNP_LAUNCH_START which is quite early and we don't have 
+> > access to the cpu object there.
+> > 
+> > Admittedly, my qemu understanding is limited. If there is a way to 
+> > re-use the cpu tsc-frequency field, then that would be ideal.
+> > 
+> > Any ideas/suggestions?
+> 
+> Any Qemu experts know how the SEV support would be able to access the
+> TSC value from the -cpu command line option at LAUNCH time?
 
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- util/osdep.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Bump. Any feedback on this, please?
 
-diff --git a/util/osdep.c b/util/osdep.c
-index 44fad13dcc7..9b50d00dbda 100644
---- a/util/osdep.c
-+++ b/util/osdep.c
-@@ -616,5 +616,11 @@ int qemu_fdatasync(int fd)
- 
- uintptr_t qemu_real_host_page_size(void)
- {
--    return getpagesize();
-+    static uintptr_t real_host_page_size;
-+
-+    if (!real_host_page_size) {
-+        real_host_page_size = getpagesize();
-+    }
-+
-+    return real_host_page_size;
- }
--- 
-2.51.0
+Otherwise, kindly review v3 posted here:
+http://lore.kernel.org/r/cover.1761648149.git.naveen@kernel.org
+
+
+Thanks,
+Naveen
 
 
