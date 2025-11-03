@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B03C2C23F
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 371CEC2C25A
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:40:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFulr-0005Y8-2v; Mon, 03 Nov 2025 08:38:55 -0500
+	id 1vFulu-0005dF-Pi; Mon, 03 Nov 2025 08:38:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFull-0005Qg-KF
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vFuls-0005bQ-Mo
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFuld-0004Pa-MY
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:48 -0500
+ id 1vFull-0004Pv-Gt
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:38:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762177118;
+ s=mimecast20190719; t=1762177126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Hny0i0ASJJZMArEYCPvw372YSwoZx86dwGtyhGjo8rY=;
- b=JypNCZ8b2yLqF7oBdSGVD+5WJwutXplQKboTaFfRC5Lyszsu6YA0XuyFmOI6keTZIEV8sh
- l5Emx2JS9OVFcFPRyJxkVre7iCCOd0wEv38UAm9B3aGqzAQcjjvvb7NtyG/45XgFjv3WXx
- NAFC+gJJysn6QanBpsibqMp4rfR4Pfo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vB+z9X0RWqLhVPo+xQhEqFJ0ho+41w3tgdoPwu6fEfc=;
+ b=brY8oROUe70S91fKXO8HmYg6QceTiDRg6PLgR645jHOVWZEq4H+BtRkLDQ2vCuUGPqF5dt
+ +bMQjsT6jBk9+2iwxd0nRsESDhAiUE8DihWulOtCApd/XvbPxs844pxmXQC/55Maadli7n
+ QU8tqkcwjJs7OKfb+xrNEtDOtphY/cw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-_4tfMLhNP8OAHN-ixKzPTw-1; Mon,
- 03 Nov 2025 08:38:35 -0500
-X-MC-Unique: _4tfMLhNP8OAHN-ixKzPTw-1
-X-Mimecast-MFC-AGG-ID: _4tfMLhNP8OAHN-ixKzPTw_1762177114
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-0u1huQr5OuuuyhG0MXkaYg-1; Mon,
+ 03 Nov 2025 08:38:43 -0500
+X-MC-Unique: 0u1huQr5OuuuyhG0MXkaYg-1
+X-Mimecast-MFC-AGG-ID: 0u1huQr5OuuuyhG0MXkaYg_1762177122
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6A778195608F; Mon,  3 Nov 2025 13:38:33 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 30E2C1956096; Mon,  3 Nov 2025 13:38:42 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.202])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 12EF61800579; Mon,  3 Nov 2025 13:38:27 +0000 (UTC)
+ id 72FBB1800451; Mon,  3 Nov 2025 13:38:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,16 +52,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 07/32] crypto: bump min gnutls to 3.7.5
-Date: Mon,  3 Nov 2025 13:37:01 +0000
-Message-ID: <20251103133727.423041-8-berrange@redhat.com>
+Subject: [PULL 08/32] crypto: unconditionally enable gnutls XTS support
+Date: Mon,  3 Nov 2025 13:37:02 +0000
+Message-ID: <20251103133727.423041-9-berrange@redhat.com>
 In-Reply-To: <20251103133727.423041-1-berrange@redhat.com>
 References: <20251103133727.423041-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,139 +86,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per repology, current shipping versions are:
-
-                 RHEL-9: 3.8.3
-              Debian 13: 3.8.9
-       openSUSE Leap 15: 3.8.3
-       Ubuntu LTS 22.04: 3.7.5
-                FreeBSD: 3.8.10
-              Fedora 42: 3.8.10
-                OpenBSD: 3.8.10
-         macOS HomeBrew: 3.8.10
-
-Ubuntu 22.04 is our oldest constraint at this time.
+The XTS support required 3.6.8 which is older than our min
+required version now.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/cipher.c                |  2 +-
- crypto/meson.build             |  2 +-
- meson.build                    | 37 ++++------------------------------
- tests/unit/test-crypto-block.c |  3 +--
- 4 files changed, 7 insertions(+), 37 deletions(-)
+ crypto/cipher-gnutls.c.inc | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/crypto/cipher.c b/crypto/cipher.c
-index 229710f76b..515165e0dc 100644
---- a/crypto/cipher.c
-+++ b/crypto/cipher.c
-@@ -142,7 +142,7 @@ qcrypto_cipher_validate_key_length(QCryptoCipherAlgo alg,
- #include "cipher-gcrypt.c.inc"
- #elif defined CONFIG_NETTLE
- #include "cipher-nettle.c.inc"
--#elif defined CONFIG_GNUTLS_CRYPTO
-+#elif defined CONFIG_GNUTLS
- #include "cipher-gnutls.c.inc"
- #else
- #include "cipher-stub.c.inc"
-diff --git a/crypto/meson.build b/crypto/meson.build
-index 735635de1f..dd61ed9174 100644
---- a/crypto/meson.build
-+++ b/crypto/meson.build
-@@ -38,7 +38,7 @@ if nettle.found()
-   endif
- elif gcrypt.found()
-   crypto_ss.add(gcrypt, files('hash-gcrypt.c', 'hmac-gcrypt.c', 'pbkdf-gcrypt.c'))
--elif gnutls_crypto.found()
-+elif gnutls.found()
-   crypto_ss.add(gnutls, files('hash-gnutls.c', 'hmac-gnutls.c', 'pbkdf-gnutls.c'))
- else
-   crypto_ss.add(files('hash-glib.c', 'hmac-glib.c', 'pbkdf-stub.c'))
-diff --git a/meson.build b/meson.build
-index df876c72f0..b67e14f630 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1823,33 +1823,11 @@ if not get_option('libcbor').auto() or have_system
- endif
+diff --git a/crypto/cipher-gnutls.c.inc b/crypto/cipher-gnutls.c.inc
+index b9450d48b0..a8263fff6d 100644
+--- a/crypto/cipher-gnutls.c.inc
++++ b/crypto/cipher-gnutls.c.inc
+@@ -23,10 +23,6 @@
  
- gnutls = not_found
--gnutls_crypto = not_found
- gnutls_bug1717_workaround = false
- if get_option('gnutls').enabled() or (get_option('gnutls').auto() and have_system)
--  # For general TLS support our min gnutls matches
--  # that implied by our platform support matrix
--  #
--  # For the crypto backends, we look for a newer
--  # gnutls:
--  #
--  #   Version 3.6.8  is needed to get XTS
--  #   Version 3.6.13 is needed to get PBKDF
--  #   Version 3.6.14 is needed to get HW accelerated XTS
--  #
--  # If newer enough gnutls isn't available, we can
--  # still use a different crypto backend to satisfy
--  # the platform support requirements
--  gnutls_crypto = dependency('gnutls', version: '>=3.6.14',
--                             method: 'pkg-config',
--                             required: false)
--  if gnutls_crypto.found()
--    gnutls = gnutls_crypto
--  else
--    # Our min version if all we need is TLS
--    gnutls = dependency('gnutls', version: '>=3.5.18',
--                        method: 'pkg-config',
--                        required: get_option('gnutls'))
--  endif
-+  gnutls = dependency('gnutls', version: '>=3.7.5',
-+                      method: 'pkg-config',
-+                      required: get_option('gnutls'))
+ #include <gnutls/crypto.h>
  
-   #if gnutls.found() and not get_option('gnutls-bug1717-workaround').disabled()
-     # XXX: when bug 1717 is resolved, add logic to probe for
-@@ -1874,12 +1852,7 @@ if get_option('nettle').enabled() and get_option('gcrypt').enabled()
-   error('Only one of gcrypt & nettle can be enabled')
- endif
- 
--# Explicit nettle/gcrypt request, so ignore gnutls for crypto
--if get_option('nettle').enabled() or get_option('gcrypt').enabled()
--  gnutls_crypto = not_found
--endif
+-#if GNUTLS_VERSION_NUMBER >= 0x030608
+-#define QEMU_GNUTLS_XTS
+-#endif
 -
--if not gnutls_crypto.found()
-+if not gnutls.found()
-   if (not get_option('gcrypt').auto() or have_system) and not get_option('nettle').enabled()
-     gcrypt = dependency('libgcrypt', version: '>=1.8',
-                         required: get_option('gcrypt'))
-@@ -2606,7 +2579,6 @@ config_host_data.set('CONFIG_XKBCOMMON', xkbcommon.found())
- config_host_data.set('CONFIG_KEYUTILS', keyutils.found())
- config_host_data.set('CONFIG_GETTID', has_gettid)
- config_host_data.set('CONFIG_GNUTLS', gnutls.found())
--config_host_data.set('CONFIG_GNUTLS_CRYPTO', gnutls_crypto.found())
- config_host_data.set('CONFIG_GNUTLS_BUG1717_WORKAROUND', gnutls_bug1717_workaround)
- config_host_data.set('CONFIG_TASN1', tasn1.found())
- config_host_data.set('CONFIG_GCRYPT', gcrypt.found())
-@@ -4906,7 +4878,6 @@ summary_info = {}
- summary_info += {'TLS priority':      get_option('tls_priority')}
- summary_info += {'GNUTLS support':    gnutls}
- if gnutls.found()
--  summary_info += {'  GNUTLS crypto':   gnutls_crypto.found()}
-   summary_info += {'  GNUTLS bug 1717 workaround': gnutls_bug1717_workaround }
- endif
- summary_info += {'libgcrypt':         gcrypt}
-diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
-index 3ac7f17b2a..218e585f98 100644
---- a/tests/unit/test-crypto-block.c
-+++ b/tests/unit/test-crypto-block.c
-@@ -31,8 +31,7 @@
- #endif
+ bool qcrypto_cipher_supports(QCryptoCipherAlgo alg,
+                              QCryptoCipherMode mode)
+ {
+@@ -44,7 +40,6 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgo alg,
+         default:
+             return false;
+         }
+-#ifdef QEMU_GNUTLS_XTS
+     case QCRYPTO_CIPHER_MODE_XTS:
+         switch (alg) {
+         case QCRYPTO_CIPHER_ALGO_AES_128:
+@@ -53,7 +48,6 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgo alg,
+         default:
+             return false;
+         }
+-#endif
+     default:
+         return false;
+     }
+@@ -241,7 +235,6 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgo alg,
+     int err;
  
- #if (defined(_WIN32) || defined RUSAGE_THREAD) && \
--    (defined(CONFIG_NETTLE) || defined(CONFIG_GCRYPT) || \
--     defined(CONFIG_GNUTLS_CRYPTO))
-+    (defined(CONFIG_NETTLE) || defined(CONFIG_GCRYPT))
- #define TEST_LUKS
- #else
- #undef TEST_LUKS
+     switch (mode) {
+-#ifdef QEMU_GNUTLS_XTS
+     case QCRYPTO_CIPHER_MODE_XTS:
+         switch (alg) {
+         case QCRYPTO_CIPHER_ALGO_AES_128:
+@@ -254,7 +247,6 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgo alg,
+             break;
+         }
+         break;
+-#endif
+ 
+     case QCRYPTO_CIPHER_MODE_ECB:
+     case QCRYPTO_CIPHER_MODE_CBC:
 -- 
 2.51.1
 
