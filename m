@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C044EC2CE14
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 16:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CBCC2CE0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 16:48:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFwm7-0005AN-TP; Mon, 03 Nov 2025 10:47:19 -0500
+	id 1vFwmA-0005Br-PV; Mon, 03 Nov 2025 10:47:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFwm4-00059g-U4
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 10:47:17 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1vFwm8-0005B5-Ak
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 10:47:20 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vFwlx-0002iK-49
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 10:47:16 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3ee130237a8so2779318f8f.0
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 07:47:06 -0800 (PST)
+ id 1vFwlx-0002ip-46
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 10:47:20 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-421851bca51so3984562f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 07:47:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762184824; x=1762789624; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762184825; x=1762789625; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=n9WMPu5LSRciOJbiNa7PDj4nCkCQX4hBl0JqndlpJPI=;
- b=FxYKw9Zj9RMksQydTQTcLOWlgw6+a0WecliQnvxskWP4e9YKUMWkq45t4na5AAPtfM
- La4ADXOh8biWmw4sejtsycq8j6YJn+AEiNtcOIRYIIGr6isU3CPw2LTJicUzTa4hCUIm
- JQ8yc9CHSHexGRB45/jXi1iCht8Is5BiXtJQjxmBq09gRY9TeDDFq0AVTAvOuI/zrTXM
- MqX1FVclMmm3dFqiUjgCZm5dl4RRZ4BhtvtFe3a12yH3NHkZAShABu5nAnMZ8ZRUBbUb
- WkfQqAhkpeEeyGoi+p4vNFmf6nxPDZ+ESbhr4GsVyGGB5WMenulCRt+n/M84UFa1VABp
- jZ/w==
+ :reply-to; bh=hAwSv5m0SCHS7ZUiqLQkSHrP57WMiWiuegLNWilDi8Y=;
+ b=E4PDAE0endaWC2bqSoySSklGcgCZnBB71abcFqBwCUCETOBdhsxZ8GohwMqXjk5Qy4
+ ZXkBU8uHcsE/tH+IRsNADoY6Z7z18xiymnddWUG8bMmTtGlBNDXac74EEohmjlwxfMgt
+ /aJ6cy/pWAQtPkRKTjQ0mvQYBAe34NY3bjb13sT4xAeedeObSoF5d7+UtxvMiilGRlcQ
+ DinAyNf2I3sM5KJwRRHwOeGGxMSN8VCzRBgBhKxrQyCZMe1m/RiJJKKQOlE4x0qD12Ex
+ /HcRFoiBwwNhZa8hqeXtXE54pQPnDv8sl4jFxsjz2MtILjpAEgnXL1PM8j+K2NRpx018
+ Gu3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762184824; x=1762789624;
+ d=1e100.net; s=20230601; t=1762184825; x=1762789625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n9WMPu5LSRciOJbiNa7PDj4nCkCQX4hBl0JqndlpJPI=;
- b=TbWUONQdD7ZtM/FR5aTMgcmWl7hkAwWa4BrPqTthfkfHOjAkcnM1h/k3zV/bcJGwKK
- fVTEmh4ycUwIx0OgpqpmGlG5sF7FgyjgSlnwro5OGt47uVPrBEAAlk8McPV7qngrWmMs
- e3/v1bdQOUxB0cRdS/R/HcDMjfCqKef8OCUNbHjEqr3/h1CuJyct4UU6yMPuRzb30BwR
- 9CtOZtzocNP+JKl3IKETU3XrFwz/fjWfFDeRoblbLRl2Q+HohMZdPDOrgQIPloowRX4N
- z4GMfC7Q1gj15/XSY/9DZq8xcet0WqRs4Cy3nszDPfE2AJPc4kzb7jQjNKbg8Ebx3Rlt
- doVg==
-X-Gm-Message-State: AOJu0Yxswagcr/9+QX+fb477K4YHlHcGfjpFBez7p9+tP32R1VtnbVRO
- hxolLeM5uJ1MarWJIwTuD1Eeor+UOi7fC8D0KxAZuDdBiBe57cGwa3SbSJOeAjVjlUoltoDCGMs
- pIkxB
-X-Gm-Gg: ASbGncvmGxUPSaeOTsPAshIGP9CzVBS5YJ2dXp8uhnlgFffHux4AH+s5V0jJbDAcYwy
- zOizwrsMzlEQKuFsE0tHuIgYQQYOj7a6YQHOJPJHDqykRS0cF7I+n1GqKMlg0U7MVxCT6UGEJTw
- p3fbKt+0Lq0xALxwESivYkgP+C93WeFmLapyUg96bD6yHQEW4TMN2gt8XLByh3KsHJkUfEzXMgV
- JCEg3X18R8AENwLvpdjk4VnZJ8GCYRQ6XHIEbvCDeg9jzmcnHFHXP/bhLVlo3mQuOYtGgQK+rgT
- xQXPfGET5eFSEQekMfwnoW0CTKjahIVLMX9Us0aOmRGyuoA+MNjoNQqGElcYaSDuq1i8LXUDsS2
- 0a9/2ruMxNF1S/KMAg7ZuomldVR30+Sa47JWelzvg41NiJTtFdqE77QXce4DnfIXluTgYnDONhQ
- 06LQj6A/75c3QUeT1w
-X-Google-Smtp-Source: AGHT+IEP1oDBh0dhJDzbuBNPkLPbUpTPMNaXukSdhTGBsv8U5aoQ1GW1irfF/haVksNQnVWyzhPnsw==
-X-Received: by 2002:a05:6000:2306:b0:3ea:80ec:8552 with SMTP id
- ffacd0b85a97d-429bd6e3d86mr10926614f8f.57.1762184824307; 
- Mon, 03 Nov 2025 07:47:04 -0800 (PST)
+ bh=hAwSv5m0SCHS7ZUiqLQkSHrP57WMiWiuegLNWilDi8Y=;
+ b=kXGieXlCoSTVjaev3YT4ACLzkM1xw7p8cjsDirN0M+vPUKfZMtG5RmuLlIkONDyV4s
+ IKNWboX0ytMY1U/CFBdBa8PLIfWAx6iXjaXgk1Dwq5XRYsDlhFYA6TXNmz4d130xUb9H
+ jDBJ98xYbe+FazNBhdzSfVANUvtxEZ2B1Sb4WNdUYm1NOmuIJh+u/ONW7sHCYLbz2tfv
+ jx3Ofd5/p94WhFIqTHl8PvGyHwWTusK9dK0Xg11QjBEivuhakh0WdeufT3k4IK60pV1V
+ Fs8bZUARIG2An4joS4qsVZh2PY3WmghgpZxbUhc856Ahsmsxoj+w9+PWcSghcqsT7PE/
+ 2RvQ==
+X-Gm-Message-State: AOJu0Yxev6T4ACUghPyfYODBYxSWQUaBAJwYQCM4zrwXG9bMq2CAXmtq
+ 8UuXQpnRK6fxHCljP0lCbHRc9FPIlxCQHvZq2HzBfKxJNkRzTot9Wf3fgM0acsOZfA1oj9oDCkG
+ NtSC/
+X-Gm-Gg: ASbGncuHISyWxOZlF9SAsBjYkmRWQQ29178fR/9ZoxjccoE8qh/AKog3HcVqcVePC5B
+ wLxS8ILpd5C+kxhm8w+FhzSpWYoD46WvExb81K+IkHjzZGSMcsI16FR9ig86Owlc+sl6RMMqmO5
+ T6ss/z1Ll8en1L2ao1gWO6RO7RNuQzs+IIFzLPmJ1PGf7YcgyKlaZIhxXRANUmYlznTUiTXq78r
+ PhdK5B8HGZ7AFXKi6r1wP0lqM/bPR/XMaCSvtPDVxEeZufIlmvGcWpxSvVPQWNYmEy0ZLxxGrGs
+ DA4d9yWe41PIhBQSnM8oIYj4NViHMLwK8UUSSS+YkpsILt7NvT20dFucJQllw9rPRJUT13HxOYS
+ hEfyrwyvghxBtqWrnCbi5/KT9AHTEj0FE75yzpvkjxUWXMa1GBY8kIJSLxT/4b9ZyfgAsf/zkFU
+ jwKySc02wBwmeGW+rm
+X-Google-Smtp-Source: AGHT+IEuJAQhMZuavzQE31Va/eF6pd1l+rlSPxtlK0wBMqMqyRxzIcdjUvF/10N5Sh8N1OuWbbWCDQ==
+X-Received: by 2002:a05:6000:4312:b0:429:ce81:fe0d with SMTP id
+ ffacd0b85a97d-429ce82001emr4650123f8f.60.1762184825220; 
+ Mon, 03 Nov 2025 07:47:05 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429ce6b0c16sm10504156f8f.38.2025.11.03.07.47.03
+ ffacd0b85a97d-429ce6b0c16sm10504156f8f.38.2025.11.03.07.47.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 07:47:03 -0800 (PST)
+ Mon, 03 Nov 2025 07:47:04 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/3] hw/arm/imx8mp-evk: Fix guest time in KVM mode
-Date: Mon,  3 Nov 2025 15:46:59 +0000
-Message-ID: <20251103154700.4126379-3-peter.maydell@linaro.org>
+Subject: [PULL 3/3] docs/devel/testing/fuzzing: Note that you can get qtest to
+ read from a file
+Date: Mon,  3 Nov 2025 15:47:00 +0000
+Message-ID: <20251103154700.4126379-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251103154700.4126379-1-peter.maydell@linaro.org>
 References: <20251103154700.4126379-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,42 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+It is possible to get qtest to read fuzzer reproducers from a file
+rather than directly from stdio; this is useful when you want to run
+QEMU under gdb to debug the failure.  Document how to do this, which
+was previously only written down in the commit message for
+5b18a6bf44b9 ("chardev: Allow setting file chardev input file on the
+command line").
 
-The imx8mp DTB hardcodes the clock frequency of the system counter to 8MHz.
-In KVM mode, the host CPU is used whose system counter runs at a different
-frequency, resulting in the guest clock running slower or faster. Fix this
-by not hardcoding the clock frequency which makes the Linux driver read
-the real clock frequency from the register.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20251101120130.236721-3-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-id: 20251028165236.3327658-1-peter.maydell@linaro.org
 ---
- hw/arm/imx8mp-evk.c | 9 +++++++++
+ docs/devel/testing/fuzzing.rst | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
-index 3ddcf1af5ac..44e06019670 100644
---- a/hw/arm/imx8mp-evk.c
-+++ b/hw/arm/imx8mp-evk.c
-@@ -44,6 +44,15 @@ static void imx8mp_evk_modify_dtb(const struct arm_boot_info *info, void *fdt)
-         fdt_nop_property(fdt, offset, "cpu-idle-states");
-         offset = fdt_node_offset_by_compatible(fdt, offset, "arm,cortex-a53");
-     }
-+
-+    if (kvm_enabled()) {
-+        /* Use system counter frequency from host CPU to fix time in guest */
-+        offset = fdt_node_offset_by_compatible(fdt, -1, "arm,armv8-timer");
-+        while (offset >= 0) {
-+            fdt_nop_property(fdt, offset, "clock-frequency");
-+            offset = fdt_node_offset_by_compatible(fdt, offset, "arm,armv8-timer");
-+        }
-+    }
- }
+diff --git a/docs/devel/testing/fuzzing.rst b/docs/devel/testing/fuzzing.rst
+index c3ac084311b..c43f815f320 100644
+--- a/docs/devel/testing/fuzzing.rst
++++ b/docs/devel/testing/fuzzing.rst
+@@ -263,6 +263,15 @@ generic-fuzz target.
  
- static void imx8mp_evk_init(MachineState *machine)
+ - Report the bug and send a patch with the C reproducer upstream
+ 
++QEMU can also read the reproducer directly from a file rather than
++from standard input::
++
++    $QEMU_PATH $QEMU_ARGS -qtest chardev:repro \
++      -chardev file,id=repro,path=/dev/null,input-path=/tmp/reproducer
++
++This is useful if you want to run QEMU under a debugger to investigate
++the failure.
++
+ Implementation Details / Fuzzer Lifecycle
+ -----------------------------------------
+ 
 -- 
 2.43.0
 
