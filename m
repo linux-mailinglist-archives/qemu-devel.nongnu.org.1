@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7256C2DB28
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AFFC2DB3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 19:35:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFzNB-00060B-NR; Mon, 03 Nov 2025 13:33:46 -0500
+	id 1vFzNE-00061v-5I; Mon, 03 Nov 2025 13:33:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzN8-0005vd-2x
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vFzNB-00061F-LZ
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vFzMw-0006yq-LO
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:41 -0500
+ id 1vFzN0-0006zR-DS
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 13:33:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762194806;
+ s=mimecast20190719; t=1762194809;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/EGZjmbie7WvN5P/atFBVzVk3p2GtY/pSoH3cMkB8LE=;
- b=ZFFNbBJEgRfzkE8yvgpk6md1+FhOm6iMjd5zFHFbs+3shKzxCGh+/UoRMqOBXKsziqOwlh
- 7HeWnWBqpQdr9E5B/n/1xhB2GXj98rQAC5mCIaDBAxSJC9KBaf8OFrlDJbEMs8cj6e8sNz
- 0A47YKynxjJ/hnd3Z2MGBWDi0oec5TY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UuKTmuRorXFZOc6qPxeY/USEzq3NY2u7yZYeyn8ueoc=;
+ b=FNW8M8R6esvOlrsMmdcEhpe+jBbtVRK2Ms/2KqnR4nhgqAdwKz035iZxsm5VpIa8LEcVdh
+ fnAxVJSHrgxF91X+CwmaOoWqZBMibAUlruBBlXgCUpUaxOoWe80HAU6eeKcwTfxRWVOgf3
+ jshkta1ed38eSPhkW0BoPxVr0LMcXQ8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-6jG5dWeaOI2cT_sulp1z6g-1; Mon,
- 03 Nov 2025 13:33:22 -0500
-X-MC-Unique: 6jG5dWeaOI2cT_sulp1z6g-1
-X-Mimecast-MFC-AGG-ID: 6jG5dWeaOI2cT_sulp1z6g_1762194801
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-VMcdCyVMOpmtA-Yr7EDzJw-1; Mon,
+ 03 Nov 2025 13:33:26 -0500
+X-MC-Unique: VMcdCyVMOpmtA-Yr7EDzJw-1
+X-Mimecast-MFC-AGG-ID: VMcdCyVMOpmtA-Yr7EDzJw_1762194805
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56EA619539B8; Mon,  3 Nov 2025 18:33:14 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F73A19541BB; Mon,  3 Nov 2025 18:33:17 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.44.32.249])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 068BB180058C; Mon,  3 Nov 2025 18:33:10 +0000 (UTC)
+ id 07E0C1800619; Mon,  3 Nov 2025 18:33:13 +0000 (UTC)
 From: Juraj Marcin <jmarcin@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>
-Subject: [PATCH v4 2/8] migration: Do not try to start VM if disk activation
- fails
-Date: Mon,  3 Nov 2025 19:32:51 +0100
-Message-ID: <20251103183301.3840862-3-jmarcin@redhat.com>
+Subject: [PATCH v4 3/8] migration: Move postcopy_ram_listen_thread() to
+ postcopy-ram.c
+Date: Mon,  3 Nov 2025 19:32:52 +0100
+Message-ID: <20251103183301.3840862-4-jmarcin@redhat.com>
 In-Reply-To: <20251103183301.3840862-1-jmarcin@redhat.com>
 References: <20251103183301.3840862-1-jmarcin@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,70 +85,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Juraj Marcin <jmarcin@redhat.com>
 
-If a rare split brain happens (e.g. dest QEMU started running somehow,
-taking shared drive locks), src QEMU may not be able to activate the
-drives anymore.  In this case, src QEMU shouldn't start the VM or it might
-crash the block layer later with something like:
+This patch addresses a TODO about moving postcopy_ram_listen_thread() to
+postcopy file.
 
-Meanwhile, src QEMU cannot try to continue either even if dest QEMU can
-release the drive locks (e.g. by QMP "stop").  Because as long as dest QEMU
-started running, it means dest QEMU's RAM is the only version that is
-consistent with current status of the shared storage.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ migration/postcopy-ram.c | 105 ++++++++++++++++++++++++++++++++++++++
+ migration/postcopy-ram.h |   2 +
+ migration/savevm.c       | 107 ---------------------------------------
+ 3 files changed, 107 insertions(+), 107 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 5e74993b46..6e647c7c4a 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3526,6 +3526,8 @@ static MigIterateState migration_iteration_run(MigrationState *s)
- 
- static void migration_iteration_finish(MigrationState *s)
- {
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index 5471efb4f0..880b11f154 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -2077,3 +2077,108 @@ bool postcopy_is_paused(MigrationStatus status)
+     return status == MIGRATION_STATUS_POSTCOPY_PAUSED ||
+         status == MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP;
+ }
++
++/*
++ * Triggered by a postcopy_listen command; this thread takes over reading
++ * the input stream, leaving the main thread free to carry on loading the rest
++ * of the device state (from RAM).
++ */
++void *postcopy_ram_listen_thread(void *opaque)
++{
++    MigrationIncomingState *mis = migration_incoming_get_current();
++    QEMUFile *f = mis->from_src_file;
++    int load_res;
++    MigrationState *migr = migrate_get_current();
 +    Error *local_err = NULL;
 +
-     bql_lock();
- 
-     /*
-@@ -3549,11 +3551,28 @@ static void migration_iteration_finish(MigrationState *s)
-     case MIGRATION_STATUS_FAILED:
-     case MIGRATION_STATUS_CANCELLED:
-     case MIGRATION_STATUS_CANCELLING:
--        /*
--         * Re-activate the block drives if they're inactivated.  Note, COLO
--         * shouldn't use block_active at all, so it should be no-op there.
--         */
--        migration_block_activate(NULL);
-+        if (!migration_block_activate(&local_err)) {
-+            /*
-+            * Re-activate the block drives if they're inactivated.
-+            *
-+            * If it fails (e.g. in case of a split brain, where dest QEMU
-+            * might have taken some of the drive locks and running!), do
-+            * not start VM, instead wait for mgmt to decide the next step.
-+            *
-+            * If dest already started, it means dest QEMU should contain
-+            * all the data it needs and it properly owns all the drive
-+            * locks.  Then even if src QEMU got a FAILED in migration, it
-+            * normally should mean we should treat the migration as
-+            * COMPLETED.
-+            *
-+            * NOTE: it's not safe anymore to start VM on src now even if
-+            * dest would release the drive locks.  It's because as long as
-+            * dest started running then only dest QEMU's RAM is consistent
-+            * with the shared storage.
-+            */
-+            error_free(local_err);
-+            break;
++    object_ref(OBJECT(migr));
++
++    migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
++                                   MIGRATION_STATUS_POSTCOPY_ACTIVE);
++    qemu_event_set(&mis->thread_sync_event);
++    trace_postcopy_ram_listen_thread_start();
++
++    rcu_register_thread();
++    /*
++     * Because we're a thread and not a coroutine we can't yield
++     * in qemu_file, and thus we must be blocking now.
++     */
++    qemu_file_set_blocking(f, true, &error_fatal);
++
++    /* TODO: sanity check that only postcopiable data will be loaded here */
++    load_res = qemu_loadvm_state_main(f, mis, &local_err);
++
++    /*
++     * This is tricky, but, mis->from_src_file can change after it
++     * returns, when postcopy recovery happened. In the future, we may
++     * want a wrapper for the QEMUFile handle.
++     */
++    f = mis->from_src_file;
++
++    /* And non-blocking again so we don't block in any cleanup */
++    qemu_file_set_blocking(f, false, &error_fatal);
++
++    trace_postcopy_ram_listen_thread_exit();
++    if (load_res < 0) {
++        qemu_file_set_error(f, load_res);
++        dirty_bitmap_mig_cancel_incoming();
++        if (postcopy_state_get() == POSTCOPY_INCOMING_RUNNING &&
++            !migrate_postcopy_ram() && migrate_dirty_bitmaps())
++        {
++            error_report("%s: loadvm failed during postcopy: %d: %s. All states "
++                         "are migrated except dirty bitmaps. Some dirty "
++                         "bitmaps may be lost, and present migrated dirty "
++                         "bitmaps are correctly migrated and valid.",
++                         __func__, load_res, error_get_pretty(local_err));
++            g_clear_pointer(&local_err, error_free);
++            load_res = 0; /* prevent further exit() */
++        } else {
++            error_prepend(&local_err,
++                          "loadvm failed during postcopy: %d: ", load_res);
++            migrate_set_error(migr, local_err);
++            g_clear_pointer(&local_err, error_report_err);
++            migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
++                                           MIGRATION_STATUS_FAILED);
 +        }
-         if (runstate_is_live(s->vm_old_state)) {
-             if (!runstate_check(RUN_STATE_SHUTDOWN)) {
-                 vm_start();
++    }
++    if (load_res >= 0) {
++        /*
++         * This looks good, but it's possible that the device loading in the
++         * main thread hasn't finished yet, and so we might not be in 'RUN'
++         * state yet; wait for the end of the main thread.
++         */
++        qemu_event_wait(&mis->main_thread_load_event);
++    }
++    postcopy_ram_incoming_cleanup(mis);
++
++    if (load_res < 0) {
++        /*
++         * If something went wrong then we have a bad state so exit;
++         * depending how far we got it might be possible at this point
++         * to leave the guest running and fire MCEs for pages that never
++         * arrived as a desperate recovery step.
++         */
++        rcu_unregister_thread();
++        exit(EXIT_FAILURE);
++    }
++
++    migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
++                                   MIGRATION_STATUS_COMPLETED);
++    /*
++     * If everything has worked fine, then the main thread has waited
++     * for us to start, and we're the last use of the mis.
++     * (If something broke then qemu will have to exit anyway since it's
++     * got a bad migration state).
++     */
++    bql_lock();
++    migration_incoming_state_destroy();
++    bql_unlock();
++
++    rcu_unregister_thread();
++    mis->have_listen_thread = false;
++    postcopy_state_set(POSTCOPY_INCOMING_END);
++
++    object_unref(OBJECT(migr));
++
++    return NULL;
++}
+diff --git a/migration/postcopy-ram.h b/migration/postcopy-ram.h
+index ca19433b24..3e26db3e6b 100644
+--- a/migration/postcopy-ram.h
++++ b/migration/postcopy-ram.h
+@@ -199,4 +199,6 @@ bool postcopy_is_paused(MigrationStatus status);
+ void mark_postcopy_blocktime_begin(uintptr_t addr, uint32_t ptid,
+                                    RAMBlock *rb);
+ 
++void *postcopy_ram_listen_thread(void *opaque);
++
+ #endif
+diff --git a/migration/savevm.c b/migration/savevm.c
+index fa017378db..2f7ed0db64 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2088,113 +2088,6 @@ static int loadvm_postcopy_ram_handle_discard(MigrationIncomingState *mis,
+     return 0;
+ }
+ 
+-/*
+- * Triggered by a postcopy_listen command; this thread takes over reading
+- * the input stream, leaving the main thread free to carry on loading the rest
+- * of the device state (from RAM).
+- * (TODO:This could do with being in a postcopy file - but there again it's
+- * just another input loop, not that postcopy specific)
+- */
+-static void *postcopy_ram_listen_thread(void *opaque)
+-{
+-    MigrationIncomingState *mis = migration_incoming_get_current();
+-    QEMUFile *f = mis->from_src_file;
+-    int load_res;
+-    MigrationState *migr = migrate_get_current();
+-    Error *local_err = NULL;
+-
+-    object_ref(OBJECT(migr));
+-
+-    migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+-                                   MIGRATION_STATUS_POSTCOPY_ACTIVE);
+-    qemu_event_set(&mis->thread_sync_event);
+-    trace_postcopy_ram_listen_thread_start();
+-
+-    rcu_register_thread();
+-    /*
+-     * Because we're a thread and not a coroutine we can't yield
+-     * in qemu_file, and thus we must be blocking now.
+-     */
+-    qemu_file_set_blocking(f, true, &error_fatal);
+-
+-    /* TODO: sanity check that only postcopiable data will be loaded here */
+-    load_res = qemu_loadvm_state_main(f, mis, &local_err);
+-
+-    /*
+-     * This is tricky, but, mis->from_src_file can change after it
+-     * returns, when postcopy recovery happened. In the future, we may
+-     * want a wrapper for the QEMUFile handle.
+-     */
+-    f = mis->from_src_file;
+-
+-    /* And non-blocking again so we don't block in any cleanup */
+-    qemu_file_set_blocking(f, false, &error_fatal);
+-
+-    trace_postcopy_ram_listen_thread_exit();
+-    if (load_res < 0) {
+-        qemu_file_set_error(f, load_res);
+-        dirty_bitmap_mig_cancel_incoming();
+-        if (postcopy_state_get() == POSTCOPY_INCOMING_RUNNING &&
+-            !migrate_postcopy_ram() && migrate_dirty_bitmaps())
+-        {
+-            error_report("%s: loadvm failed during postcopy: %d: %s. All states "
+-                         "are migrated except dirty bitmaps. Some dirty "
+-                         "bitmaps may be lost, and present migrated dirty "
+-                         "bitmaps are correctly migrated and valid.",
+-                         __func__, load_res, error_get_pretty(local_err));
+-            g_clear_pointer(&local_err, error_free);
+-            load_res = 0; /* prevent further exit() */
+-        } else {
+-            error_prepend(&local_err,
+-                          "loadvm failed during postcopy: %d: ", load_res);
+-            migrate_set_error(migr, local_err);
+-            g_clear_pointer(&local_err, error_report_err);
+-            migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+-                                           MIGRATION_STATUS_FAILED);
+-        }
+-    }
+-    if (load_res >= 0) {
+-        /*
+-         * This looks good, but it's possible that the device loading in the
+-         * main thread hasn't finished yet, and so we might not be in 'RUN'
+-         * state yet; wait for the end of the main thread.
+-         */
+-        qemu_event_wait(&mis->main_thread_load_event);
+-    }
+-    postcopy_ram_incoming_cleanup(mis);
+-
+-    if (load_res < 0) {
+-        /*
+-         * If something went wrong then we have a bad state so exit;
+-         * depending how far we got it might be possible at this point
+-         * to leave the guest running and fire MCEs for pages that never
+-         * arrived as a desperate recovery step.
+-         */
+-        rcu_unregister_thread();
+-        exit(EXIT_FAILURE);
+-    }
+-
+-    migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+-                                   MIGRATION_STATUS_COMPLETED);
+-    /*
+-     * If everything has worked fine, then the main thread has waited
+-     * for us to start, and we're the last use of the mis.
+-     * (If something broke then qemu will have to exit anyway since it's
+-     * got a bad migration state).
+-     */
+-    bql_lock();
+-    migration_incoming_state_destroy();
+-    bql_unlock();
+-
+-    rcu_unregister_thread();
+-    mis->have_listen_thread = false;
+-    postcopy_state_set(POSTCOPY_INCOMING_END);
+-
+-    object_unref(OBJECT(migr));
+-
+-    return NULL;
+-}
+-
+ /* After this message we must be able to immediately receive postcopy data */
+ static int loadvm_postcopy_handle_listen(MigrationIncomingState *mis,
+                                          Error **errp)
 -- 
 2.51.0
 
