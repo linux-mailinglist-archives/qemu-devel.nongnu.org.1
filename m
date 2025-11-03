@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315A5C2C303
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A645C2C312
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:43:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFumS-0006Ge-Rn; Mon, 03 Nov 2025 08:39:32 -0500
+	id 1vFumZ-0006Nk-BL; Mon, 03 Nov 2025 08:39:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFumQ-0006Eq-CJ
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vFumX-0006Kt-Rs
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFumI-0004RW-PF
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:30 -0500
+ id 1vFumQ-0004Rl-Hx
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:39:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762177159;
+ s=mimecast20190719; t=1762177164;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nHyhvhgyNT6cXF0IBfGD44wT8AzFPpiFP5a046hDfSQ=;
- b=LdqX7va077ObE/+vhQxzyZsa8UmubAZyzZyQVO6hqKGoZD9EYHxehm/TBIrqn/z+hzI09g
- XMwHxAKJeEaxSPeZ2/nivXOBTXpe8enwemG2SoL2/cuQIHemGOLqDCrDR3T0xxd9dv5WL6
- Fy1QLazniC0JEhrTFd0XPSyWb5p/QmA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=dEzRblGQm+VVhtDMmbAgUFNTONwOkmOo7gP4OwV9Y8s=;
+ b=bfxj7jwYNySwLxe0GDXD0XfPZaL3QzY7HNzpnQ8ZgyINS9w04MNkoLiRREffe8fpQpnqVO
+ DQHF1ll5ZLeQ6u4cP5ymt9NvjPKfw3AheZH3eWwHTemLMEbUT+vcAcmCaeow0X6IugKgfL
+ XzRgI4WaS+ymHUFdqSlO3Yq66w7L4oc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-_qlNoOqmOo2JPvZtgUejgw-1; Mon,
- 03 Nov 2025 08:39:17 -0500
-X-MC-Unique: _qlNoOqmOo2JPvZtgUejgw-1
-X-Mimecast-MFC-AGG-ID: _qlNoOqmOo2JPvZtgUejgw_1762177156
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-IzoTQQQbPhqxYD7mDs7tKg-1; Mon,
+ 03 Nov 2025 08:39:21 -0500
+X-MC-Unique: IzoTQQQbPhqxYD7mDs7tKg-1
+X-Mimecast-MFC-AGG-ID: IzoTQQQbPhqxYD7mDs7tKg_1762177160
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 79D6419560AF; Mon,  3 Nov 2025 13:39:16 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 358E518002C1; Mon,  3 Nov 2025 13:39:20 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.202])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 993FD1800451; Mon,  3 Nov 2025 13:39:13 +0000 (UTC)
+ id 1A24D1800578; Mon,  3 Nov 2025 13:39:16 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,17 +52,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 14/32] crypto: replace stat() with access() for credential
- checks
-Date: Mon,  3 Nov 2025 13:37:08 +0000
-Message-ID: <20251103133727.423041-15-berrange@redhat.com>
+Subject: [PULL 15/32] crypto: remove redundant access() checks before loading
+ certs
+Date: Mon,  3 Nov 2025 13:37:09 +0000
+Message-ID: <20251103133727.423041-16-berrange@redhat.com>
 In-Reply-To: <20251103133727.423041-1-berrange@redhat.com>
 References: <20251103133727.423041-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
@@ -87,37 +87,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Readability of the credential files is what matters for our usage,
-so access() is more appropriate than stat().
+The qcrypto_tls_creds_get_path method will perform an access()
+check on the file and return a NULL path if it fails. By the
+time we get to loading the cert files we know they must exist
+on disk and thus the second access() check is redundant.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/tlscreds.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ crypto/tlscredsx509.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c
-index 9e59594d67..208a7e6d8f 100644
---- a/crypto/tlscreds.c
-+++ b/crypto/tlscreds.c
-@@ -100,7 +100,6 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,
-                            char **cred,
-                            Error **errp)
- {
--    struct stat sb;
+diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
+index 75c70af522..0acb17b6ec 100644
+--- a/crypto/tlscredsx509.c
++++ b/crypto/tlscredsx509.c
+@@ -496,8 +496,7 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+     size_t i;
      int ret = -1;
  
-     if (!creds->dir) {
-@@ -114,7 +113,7 @@ qcrypto_tls_creds_get_path(QCryptoTLSCreds *creds,
+-    if (certFile &&
+-        access(certFile, R_OK) == 0) {
++    if (certFile) {
+         if (qcrypto_tls_creds_load_cert_list(creds,
+                                              certFile,
+                                              &certs,
+@@ -508,16 +507,15 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+             goto cleanup;
+         }
+     }
+-    if (access(cacertFile, R_OK) == 0) {
+-        if (qcrypto_tls_creds_load_cert_list(creds,
+-                                             cacertFile,
+-                                             &cacerts,
+-                                             &ncacerts,
+-                                             isServer,
+-                                             true,
+-                                             errp) < 0) {
+-            goto cleanup;
+-        }
++
++    if (qcrypto_tls_creds_load_cert_list(creds,
++                                         cacertFile,
++                                         &cacerts,
++                                         &ncacerts,
++                                         isServer,
++                                         true,
++                                         errp) < 0) {
++        goto cleanup;
+     }
  
-     *cred = g_strdup_printf("%s/%s", creds->dir, filename);
- 
--    if (stat(*cred, &sb) < 0) {
-+    if (access(*cred, R_OK) < 0) {
-         if (errno == ENOENT && !required) {
-             ret = 0;
-         } else {
+     for (i = 0; i < ncerts; i++) {
 -- 
 2.51.1
 
