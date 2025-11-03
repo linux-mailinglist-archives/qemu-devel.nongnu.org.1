@@ -2,65 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFCCC2B495
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05696C2B587
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:29:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsa1-00081f-C1; Mon, 03 Nov 2025 06:18:33 -0500
+	id 1vFsir-0001PA-Gx; Mon, 03 Nov 2025 06:27:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vFsZp-00081S-QD
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:18:21 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vFsZj-0007Il-K3
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:18:21 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5A3BI1c8013720
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 3 Nov 2025 20:18:01 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=hT06gZO6SpcivbXEXleix+TdEFPgvCqpRgNtiw8OqXU=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1762168682; v=1;
- b=linycPoE/i9CxGxW0zT/qWKDCVEQ6SPBP2wMW8Ld3YXYTuKb8o2vjW/H99XAPUg6
- TqBOlCdC4iEXW7kkxrqXsXAqjqLzULvR9WA01zjaXboLqK3mtrB3IipFsVnBb7uy
- SNFHWeP8CLqEmLM3jK/AA4cN2m4vD7W9ZEJbFtnCErf3lBK+PYxCHXMaSxt/18RU
- zXAHRO5Uta0ZpUzykEOETjFKUVR20ildOUXLwFOvnkbXFeWa6SV/ljb89/MRfuln
- tnq/V27RSd4aJSDVeMfI1Tqa0Cw8ZaVDw20t8Rq7Au5tg8TTbHct1VUR7jhllIr6
- 96E4692chSg+0krVOY1xtQ==
-Message-ID: <13cb4e7e-1949-4dc6-b5d6-a976f6f280e4@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 3 Nov 2025 20:18:00 +0900
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vFsio-0001Oh-RI
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:27:39 -0500
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vFsim-0001Xy-Id
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 06:27:38 -0500
+Received: by mail-pl1-x642.google.com with SMTP id
+ d9443c01a7336-294fc62d7f4so38356585ad.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 03:27:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1762169249; x=1762774049; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IH5y8cSTsLuu+kxabeu9Y8wnfm8qwsnFMoMTkwLb6zE=;
+ b=ktC6h9rnLn5hy9SwPwm9cOiDjbnKgv4bQP21cGKgTEHQ/FCVeqZ2F32Sl8rLRZL2Tm
+ XDwT0YESrcmiQ9TjPxb99BAtapAe19y7tVVZH7aRAmEEsSPfnS4Oob4zs++TIq/xqG2R
+ RMYRjgg+rjWW7ndC5ZzV4IhAdry4oKvsm87mTunN/y7Bcp7bixn6fU8Wm5brfkgHV3mZ
+ hH9K4Xz/ZvZOE7yPBlwSw0LcFKCXbSeC/eAXGWSpZ93dsJ+2JJSQt68NjVcHLeSFb1PO
+ n/IEENwschwLOpXcBkoPJcCZ8aglz5hnT+GTQUFuO672yAUjuInYCBzg/qvyyzF/Jsm9
+ DyEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762169249; x=1762774049;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IH5y8cSTsLuu+kxabeu9Y8wnfm8qwsnFMoMTkwLb6zE=;
+ b=ctgfYhYUOBzgk48eV4l79BO9EWoncYVl282ITMpXtMv54dnj0GjQEm0m9HObu2LBzK
+ paWVPSIwXUltPDmOiX5fvEf0LH637z7t3mo2tsJ8O5KfKTLFj2KUj5SncYenOIYJJzig
+ VZUToLQvBZSuBOOQJaBMZug9D4jRO3mMa3+dyeLwW006Jl/i2Mu0PxnjvhiKnZFYsG3h
+ HLtd/l3i7t4dd+fKT/NeiNiJJ2v3dcJg5sOrWJuHlhKVIVkAJ5MzyosKgWp3G3ilUD5F
+ xhmnTNc0J6rNP229vyAE+QJw2iILbUyVWKS8MQm6fTzzQBpOS+GC4TzGRNjN36SkgtiB
+ jM+w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjnu97KXwdnaGLkbXWSsLnSdJXOz0kZpnkn1ILX+dwW1wcbxbwommlCTvih1hhsMAGFW9qPFj3/ZUw@nongnu.org
+X-Gm-Message-State: AOJu0Yz6kGb9wUw0lpdWHJq4QT1W6sx/YAQ2KlICclPzaDo2a50yzDvf
+ AXXiaA1xPBnnaZrw/zWHOj+IAkO9axn6J8aPprvDwI6W6abNCp56yyeB
+X-Gm-Gg: ASbGncvU7raE9xGMImabyS57V8c9Hq7/HkQDmSoOR4lsTimB4BoJ2W8BljNsVFr8c0L
+ eCIjqq4TqpOe7VjBYCSHcdmvgkujfWxWggsU+BlaAETmZ/xIh+HIrUw2lh6RVGgrJiTqyJF4Qg5
+ 0qR8juMnzE5Vd0NRX4bVQjJnQm7RacjrkWQk5orgk+I9+3bawUZATmtPjUPrzm1ovtWbryFPF+z
+ Av1XGgUJ8OnRAoDmOex+6FpvMA1kpM1QcWFtGeoTiV2zpIsjJ3s1ztJaz8KK8wWbp4Oe4jj5xHD
+ DUSrtgRR3K1ilmAHB/i198otZoa9QXROla9yFzSuiqBP71gU9kYUtvCDNWZvfskz2f4dJTf+H+P
+ eOIpOJ3POYrZtwT6bEEYCR6ReXib2COtTWrI2gLB3epV8Mg3b9i+jhkf4rSEgSJVQ7TKeBTvgY7
+ l9pFcGqapLhw5fZVgXPZuecrDvMcSJiKamNsRwshMXFtW12PyeDQ==
+X-Google-Smtp-Source: AGHT+IH9BXQZAP/GoIyrBaPEcQFy9m9NUOWd+VUNWPUR6cqxxTVwWT8pkSWvg1z/tAmiUpay2G6QKA==
+X-Received: by 2002:a17:902:ecd2:b0:295:2cb6:f494 with SMTP id
+ d9443c01a7336-2952cb6f57amr137058555ad.6.1762169248896; 
+ Mon, 03 Nov 2025 03:27:28 -0800 (PST)
+Received: from fedora.. ([103.2.232.250]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-341599f14bbsm741661a91.13.2025.11.03.03.27.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Nov 2025 03:27:28 -0800 (PST)
+From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+To: mark.cave-ayland@ilande.co.uk, sarkarsoumyajyoti23@gmail.com,
+ linux@roeck-us.net, richard.henderson@linaro.org, qemu-devel@nongnu.org,
+ deller@gmx.de
+Cc: Jason Wang <jasowang@redhat.com>,
+ Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Subject: [PATCH v3 0/3] HP-PARISC 82596 Network Interface Card
+Date: Mon,  3 Nov 2025 16:57:20 +0530
+Message-ID: <20251103112723.12256-1-soumyajyotisarkar23@gmail.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory: Make FlatView root references weak
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20251027-root-v1-1-ddf92b9058be@rsg.ci.i.u-tokyo.ac.jp>
- <aQE_M1qsr78RrQaw@x1.local>
- <376f8d41-6ffb-4e1b-b50b-93a0f307d017@rsg.ci.i.u-tokyo.ac.jp>
- <aQIxA8MzkSO7qm4Z@x1.local>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <aQIxA8MzkSO7qm4Z@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
+ envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pl1-x642.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,277 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/30 0:21, Peter Xu wrote:
-> On Wed, Oct 29, 2025 at 01:06:47PM +0900, Akihiko Odaki wrote:
->> On 2025/10/29 7:09, Peter Xu wrote:
->>> On Mon, Oct 27, 2025 at 02:56:53PM +0900, Akihiko Odaki wrote:
->>>> docs/devel/memory.rst says "memory_region_ref and memory_region_unref
->>>> are never called on aliases", but these functions are called for
->>>> FlatView roots, which can be aliases.
->>>
->>> IMHO the quoted doc was in a special context, where it was talking about
->>> the example of address_space_map() holding adhoc refcounts of a MR, in
->>> which case "memory_region_ref and memory_region_unref are never called on
->>> aliases" was correct..
->>>
->>> The full context:
->>>
->>>     ...
->>>     If you break this rule, the following situation can happen:
->>>     - the memory region's owner had a reference taken via memory_region_ref
->>>       (for example by address_space_map)
->>>     - the region is unparented, and has no owner anymore
->>>     - when address_space_unmap is called, the reference to the memory region's
->>>       owner is leaked.
->>>     There is an exception to the above rule: it is okay to call
->>>     object_unparent at any time for an alias or a container region.  It is
->>>     therefore also okay to create or destroy alias and container regions
->>>     dynamically during a device's lifetime.
->>>     This exceptional usage is valid because aliases and containers only help
->>>     QEMU building the guest's memory map; they are never accessed directly.
->>>     memory_region_ref and memory_region_unref are never called on aliases
->>>     or containers, and the above situation then cannot happen.  Exploiting
->>>     this exception is rarely necessary, and therefore it is discouraged,
->>>     but nevertheless it is used in a few places.
->>>     ...
->>>
->>> So I can't say the doc is wrong, but maybe it can be at least be clearer on
->>> the scope of that sentence.. indeed.
->>
->> I think statement "it is okay to call object_unparent at any time for an
->> alias or a container region" can be corrected. Practically, developers will
->> want call object_unparent() only when:
->> - the memory region is not added to a container and
->> - there is no manual references created with memory_region_ref().
->>
->> These two conditions can be satisfied by auditing the device code that owns
->> the memory region instead of multiple devices.
-> 
-> Yes.  I think there're other ways to implicitly taking mr refcounts though
-> (e.g. directly used as root address space when address_space_init()).  From
-> that POV maybe the 1st requirement isn't as special.
-> 
->>
->>>
->>>>
->>>> This causes object overwrite hazard in pci-bridge. Specifically,
->>>> pci_bridge_region_init() expects that there are no references to
->>>> w->alias_io after object_unparent() is called, allowing it to reuse the
->>>> associated storage. However, if a parent bus still holds a reference to
->>>> the existing object as a FlatView's root, the storage is still in use,
->>>> leading to an overwrite. This hazard can be confirmed by adding the
->>>> following code to pci_bridge_region_init():
->>>>
->>>> PCIDevice *parent_dev = parent->parent_dev;
->>>> assert(!object_dynamic_cast(OBJECT(parent_dev), TYPE_PCI_BRIDGE) ||
->>>>          PCI_BRIDGE(parent_dev)->as_io.current_map->root != &w->alias_io);
->>>
->>> What's interesting is I found PCIBridge.as_io / PCIBridge.as_mem are not
->>> used anywhere..  because it looks like the bridge code uses MRs to operate
->>> rather than address spaces.
->>>
->>> Does it mean we can drop the two ASes?  Then if they're the only holder of
->>> the refcounts of these problematic MRs, does it solve the problem too in an
->>> easier way?  Maybe there're other issues you want to fix too with this patch?
->>
->> Apparently we cannot drop the ASes. See commit 55fa4be6f76a ("virtio-pci:
->> fix memory_region_find for VirtIOPCIRegion's MR"), which introduced them.
-> 
-> Ah, this is definitely obscure.. at least it should have some comments
-> explaining why the ASes are there.
-> 
-> Now reading a bit into the problem, I'm not even sure if this is the right
-> thing to do, starting from ffa8a3e3b2 where it starts to introduce
-> memory_region_find() for virtio_address_space_lookup().
-> 
-> I don't know the piece of code well enough to say, but IMHO logically it
-> shouldn't need to depend on global address space information for the
-> lookup.
+Second round for review:
+As suggested by Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+- Removed inline from the i82596_translate_address() function
+- Added trace-events for 82596 rather than using the ENABLE_DEBUG flag
+- Added TYPE_LASI_82596.
+- Removed and rewrote the functionality of lasi_82596_init().
 
-I understand the FlatView is useful for memory_region_find(), and I 
-think it also makes sense to assume that any guest-visible MemoryRegion 
-is contained in an AddressSpace.
+As suggested by Guenter Roeck <linux@roeck-us.net>
+- Removed duplicate define in hppa_hardware.h
+-----------------
 
-But, looking at the code again, I now wonder why the MemoryRegion was 
-not contained in any AddressSpace before commit 55fa4be6f76a 
-("virtio-pci: fix memory_region_find for VirtIOPCIRegion's MR"). I 
-dropped the ASes in pci-bridge and ran the reproducer[1] but it still 
-works. Perhaps the ASes may no longer be needed.
+As part of the Google Summer of Code 2025 program "Implementing LASI
+Network Card and NCR 710 SCSI Controller Device Models" I fixed various
+bugs and enhanced the existing Qemu i82596 network card implementation.
 
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2576
+Specifically I added the following functionality:
+- Monitor Mode
+- Promiscuous Mode
+- Support for linear mode, segmented mode, and flexible memory models
+- RX Timer
+- Bus Throttle Timers
+- Support for Little Endian mode
+- Accurate CU and RU transition State
+- HP-UX Specific Behavior Support
+    - Support for Loopback mode
+    - Self test
+- Statistical counters
+- VMstate descriptors
+- Polling mechanism
+- Transmit and Receive functions
 
-> 
->>
->> I don't know any other existing devices affected by this FlatView behavior,
->> but it is also difficult to show that they are *not* affected because it
->> requires traversing MemoryRegion graphs that span across several devices.
->>
->> We will also need to update the documentation for future devices, but it is
->> not trivial either as the condition where aliases are referenced from
->> FlatView is complex.
->>
->> Considering that, I think this patch is a pragmatic solution that ensures
->> correctness of object_unparent() on aliases.
-> 
-> I think this patch should still be the last resort, let's still try to
-> discuss if there's other options.
-> 
-> For example, afaiu RCU readers at least do not rely on view->root to be
-> present, can we already release the refcount for the view->root within the
-> BQL section?  I mean something like this:
-> 
-> ===8<===
-> diff --git a/system/memory.c b/system/memory.c
-> index 8b84661ae3..ceb774530f 100644
-> --- a/system/memory.c
-> +++ b/system/memory.c
-> @@ -301,7 +301,6 @@ static void flatview_destroy(FlatView *view)
->           memory_region_unref(view->ranges[i].mr);
->       }
->       g_free(view->ranges);
-> -    memory_region_unref(view->root);
->       g_free(view);
->   }
->   
-> @@ -314,7 +313,16 @@ void flatview_unref(FlatView *view)
->   {
->       if (qatomic_fetch_dec(&view->ref) == 1) {
->           trace_flatview_destroy_rcu(view, view->root);
-> +        /* Root pointer must exist until now */
->           assert(view->root);
-> +        /*
-> +         * Release the root pointer first without waiting for a grace
-> +         * period, as the root is not used by RCU readers.  Early releasing
-> +         * of root MR helps stablizing alias MR refcounts in use cases like
-> +         * pci_bridge_region_init(), where the caller might want to reuse
-> +         * the same MR right away.
-> +         */
-> +        g_clear_pointer(&view->root, memory_region_unref);
->           call_rcu(view, flatview_destroy, rcu);
->       }
->   }
-> ===8<===
-> 
-> That at least do not introduce weak-refcount concepts.
+Please review this series, as I'd prefer to get them included
+for QEMU v10.2
 
-It unfortunately does not work for pci-bridge. It has the following 
-function:
+Thank you,
+Soumyajyotii & Helge
 
-void pci_bridge_update_mappings(PCIBridge *br)
-{
-     PCIBridgeWindows *w = &br->windows;
+Helge Deller (1):
+  hw/hppa: Enable LASI i82596 network on 715 machine
 
-     /* Make updates atomic to: handle the case of one VCPU updating the 
-bridge
-      * while another accesses an unaffected region. */
-     memory_region_transaction_begin();
-     pci_bridge_region_del(br, w);
-     pci_bridge_region_cleanup(br, w);
-     pci_bridge_region_init(br);
-     memory_region_transaction_commit();
-}
+Soumyajyotii Ssarkar (2):
+  i82596: Added core infrastructure and helper functions
+  i82596: Implement enhanced TX/RX with packet queuing and filtering
 
-object_unparent() happens in pci_bridge_region_cleanup().
-pci_bridge_region_init() reuses the storage.
-memory_region_transaction_commit() triggers flatview_unref(), but it 
-needs to happen before pci_bridge_region_init().
+ hw/hppa/hppa_hardware.h     |   10 +-
+ hw/hppa/machine.c           |   31 +-
+ hw/net/i82596.c             | 2405 ++++++++++++++++++++++++++++-------
+ hw/net/i82596.h             |   74 +-
+ hw/net/lasi_i82596.c        |   36 +-
+ hw/net/trace-events         |   21 +-
+ include/hw/net/lasi_82596.h |    3 -
+ 7 files changed, 2032 insertions(+), 548 deletions(-)
 
-memory_region_transaction_commit() also has an undesirable 
-characteristic that its effect may be delayed due to nesting. To make 
-sure flatview_unref() happens with a particular call of 
-memory_region_transaction_commit(), you need to traverse the possible 
-call graph that lead to the function.
-
-So I'm afraid but I don't think there is a better way to ensure 
-correctness without a codebase-wide audit.
-
-> 
->>
->>>
->>>>
->>>> This assertion fails when running:
->>>> meson test -C build qtest-x86_64/bios-tables-test \
->>>>       '--test-args=-p /x86_64/acpi/piix4/pci-hotplug/no_root_hotplug'
->>>>
->>>> Make the references of FlatView roots "weak" (i.e., remove the
->>>> reference to a root automatically removed when it is finalized) to
->>>> avoid calling memory_region_ref and memory_region_unref and fix the
->>>> hazard with pci-bridge.
->>>>
->>>> Alternative solutions (like removing the "never called on aliases"
->>>> statement or detailing the exception) were rejected because the alias
->>>> invariant is still relied upon in several parts of the codebase, and
->>>> updating existing code to align with a new condition is non-trivial.
->>>>
->>>> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->>>> ---
->>>>    system/memory.c | 8 ++++++--
->>>>    1 file changed, 6 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/system/memory.c b/system/memory.c
->>>> index 8b84661ae36c..08fe5e791224 100644
->>>> --- a/system/memory.c
->>>> +++ b/system/memory.c
->>>> @@ -266,7 +266,6 @@ static FlatView *flatview_new(MemoryRegion *mr_root)
->>>>        view = g_new0(FlatView, 1);
->>>>        view->ref = 1;
->>>>        view->root = mr_root;
->>>> -    memory_region_ref(mr_root);
->>>>        trace_flatview_new(view, mr_root);
->>>>        return view;
->>>> @@ -301,7 +300,6 @@ static void flatview_destroy(FlatView *view)
->>>>            memory_region_unref(view->ranges[i].mr);
->>>>        }
->>>>        g_free(view->ranges);
->>>> -    memory_region_unref(view->root);
->>>>        g_free(view);
->>>>    }
->>>> @@ -1796,6 +1794,12 @@ void memory_region_init_iommu(void *_iommu_mr,
->>>>    static void memory_region_finalize(Object *obj)
->>>>    {
->>>>        MemoryRegion *mr = MEMORY_REGION(obj);
->>>> +    gpointer key;
->>>> +    gpointer value;
->>>> +
->>>> +    if (g_hash_table_steal_extended(flat_views, mr, &key, &value)) {
->>>> +        ((FlatView *)value)->root = NULL;
->>>> +    }
->>>
->>> This is definitely very tricky.. The translation path (from
->>> AddressSpaceDispatch) indeed looks ok as of now, which doesn't looks at
->>> view->root.. however at least I saw this:
->>>
->>> void flatview_unref(FlatView *view)
->>> {
->>>       if (qatomic_fetch_dec(&view->ref) == 1) {
->>>           trace_flatview_destroy_rcu(view, view->root);
->>>           assert(view->root);                            <-------------------
->>>           call_rcu(view, flatview_destroy, rcu);
->>>       }
->>> }
->>>
->>> I wonder how it didn't already crash.
->>
->> In case of pci-bridge, I guess flatview_unref() is synchronously called, but
->> memory_region_unref(view->root) is not because of flatview_destroy() is
->> delayed with RCU.
-> 
-> True.
-> 
->>
->>>
->>> The other stupid but working solution is we can always make the 6 aliases
->>> to not be reused, IOW we can always use dynamic MRs considering
->>> pci_bridge_update_mappings() should be rare?
->>
->> Perhaps we may introduce memory_region_new_alias() (that calls object_new())
->> and allow calling object_unparent() only for aliases created with the
->> function.
-> 
-> IMHO we can see feasibility of above "early unref view->root" idea, then
-> this one, before the original solution.
-> 
-> Thanks,
-> 
+-- 
+2.49.0
 
 
