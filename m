@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB27C2E1B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D194C2E180
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1lJ-0000uS-Us; Mon, 03 Nov 2025 16:06:50 -0500
+	id 1vG1lR-0000wK-Iq; Mon, 03 Nov 2025 16:06:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lI-0000uI-2U
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:48 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lM-0000vc-D2
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1l7-0005BA-WB
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lA-0005Cc-RX
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762203995;
+ s=mimecast20190719; t=1762203998;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rbJvfmaLlaPCev4kAet4tVlQUBZt0s2JoPEA+6NaSU4=;
- b=fntlordftfjr/sGb9IDHd5+P9dhetLclsPv/NYJCBsgIbG1mkglCTtaF6qIHxnDKuUQnFh
- tI36qaBgRbdrMz9AJ+eKxeiMkdg8ypzYh+6HayrAeRW+vH5uwFKnzvQTGyunmpd5GJv5gI
- +cQmr9zqsoEpAOfxb5h6e1aeXV9mJjg=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
+ b=bd4wCj/InZpJZPpRVn6S9haaZioDyCkj0bO5G0xVKu3OdRdivMO73Us/LlhvgBKudbRrUj
+ 9CuF5DKvRdewgqwhve7W7vZboYjyCjw5sj+nb7Q8W6NeM4CcRdY3Sz6PnUyfNYvc12WgWd
+ 0JqmmaXztu9QIHZmsRnGNuXj/it6VCg=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-E8pu72uWPWyBk5RuHuqX2A-1; Mon, 03 Nov 2025 16:06:34 -0500
-X-MC-Unique: E8pu72uWPWyBk5RuHuqX2A-1
-X-Mimecast-MFC-AGG-ID: E8pu72uWPWyBk5RuHuqX2A_1762203994
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-87fb496e4d1so220913496d6.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:34 -0800 (PST)
+ us-mta-509-047AfHUANxCiqMCty8lQtQ-1; Mon, 03 Nov 2025 16:06:36 -0500
+X-MC-Unique: 047AfHUANxCiqMCty8lQtQ-1
+X-Mimecast-MFC-AGG-ID: 047AfHUANxCiqMCty8lQtQ_1762203996
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-8904a9e94ebso1230283885a.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762203994; x=1762808794; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762203996; x=1762808796; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rbJvfmaLlaPCev4kAet4tVlQUBZt0s2JoPEA+6NaSU4=;
- b=KzzrkzPfyptBB9i/xy1lT3SfvKpbBkwRRvH89ZRlcILhNKu24oMZCHN5D4Jo7MISqt
- z0Hs50wO+hkpsjeiZUiCZlEMeSr3/afUyD3mMlse7SmjQmtUD1rap6IPtzz47xM3+odx
- XMTtwRsF2koSqej+KC2uHN7KhVsI3Cpsgc3YB47C2SV+Nju9QvxWssElmzPytEvd442y
- 148GT/vC0qtwLTrE984Maf5uLtTx9raKrpqWoCfq1F4uq9YCjPzj5MdT/JwBs2CYbm1M
- lDWU+5govztblRb769jvA/c5HgmMxeZjIlcROjJGhtQYIyggrTSQelm4mlobXNnBChf8
- Ts+g==
+ bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
+ b=aYaFGDIHOjJf0CpoPjKGP2bZZNS8ylV96Myip2dYKFr+Z8sxI6RyKIoavtSJlQyVph
+ PVDdauj3/wA8FK9npr0Em7m4wDDKH0Et0hIAM8J4fAq1nMf5lyCZYMx2LVKceHQ3ltKo
+ /KR1FCTd013wxDUg9L9jI8RqKB3uVASA6Skb2bA2LjToI6C05Q/4SKnM6ImMp6c9TQFy
+ nO5QAYIGPiZbMsD5jKG88gL7hJeOOTukzKQrCOxEAtCUQp0jUiKzIDnf0sYsokNdMeEU
+ 2SYmN5zXwDdUFofGcpjUUkSNgWIRaMTkbX865+D/ZRxHjEdumHYI6VGnS2wgQkp1jOAS
+ 11YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762203994; x=1762808794;
+ d=1e100.net; s=20230601; t=1762203996; x=1762808796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rbJvfmaLlaPCev4kAet4tVlQUBZt0s2JoPEA+6NaSU4=;
- b=WeLP+3BbvQJf/XCzUN2nF7Uciwj3HB8gjQ1rjy3IGBTMJUoG96YMi/qn9oOGYVAyo3
- S7yfovNOog552swmZ3x1Rw9l/tEK0hznNNoxRAJAqf2jIhBAhpM1zvr6KcK9QwDbqEOS
- rD8SdOXWQG1bw6AZgCDsgvEWzk4C/a+FgvmVZZ7MjRDa1Wpr964/AcNLgj/XjlGXi115
- gwMKR1Iyv4SyTeiEYSXHJsTqRSNLd69wsFS93JNqvKlfVprj1Z5r6cMZAkgimPJGE3dS
- jrbT5kNmWzL7a8SL6+OA+r0O5sYlxVOE4koVZrQjMKGwHfYVlOv69No+mIKVPAsE74S9
- Yblw==
-X-Gm-Message-State: AOJu0YxHiOg/aVqQ+/UYQ5r7ze6kiSHRraUZNfSugX/CeGdc3LX3Dlru
- BjQZqv9LDE0XpwNmbaHg53TRJRe/tusFJrv8HWIeAeNd3hbVH/1Dprj0ivaiw3WxHh419e8XO1K
- mKFoBr/quFRWcu1YoULyRBUfvtrltqQ5xyO5SJbRXsUrBVceJa3hVxli1UuY4nMLEFUCZ1AgfsE
- TCwg/+L+QGsRWAFjxCP6ZZ7stfwKQNM0Ii00qD0g==
-X-Gm-Gg: ASbGncvuPtxYXEQyagSPJPltyI4j6+0gOKbpyKOn5dwwHpO5pkICHyZzMtUOFCFvfFU
- ouKESB5QcADSSGxk9vtsm80hfCUVov/aPkbJVRgc+bmlJMrEFiMjNuppnM5AvfwhgkzUYF/UNwR
- ym8wGU5E7S2ASFly6jUQNIoSznT8zTg1Df8/BcQGGMzIGOyQlUtFp/kHWypfyYMzaze2uxiK0Rk
- /vZZkokONkZOpOXqoK9tHbyXftqk3BFJbEn2B6UVFPoXpS707R6CxjTnO1lb0pkkLr0Q9C4XIVu
- XAoJ8UUzu48zvJdfs01FQcekUv0wtBDsv5Gz9CmMu3h+R0LNTYSkrJ4yR1UhJxsi
-X-Received: by 2002:a05:620a:2943:b0:8ab:7ac3:3271 with SMTP id
- af79cd13be357-8ab99a7670emr1847631685a.36.1762203993809; 
- Mon, 03 Nov 2025 13:06:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEhdzCv54ThExEJmkv1fyxYsjPwkGj7Jkv0djglpZfIsc0M0si2narzo7GUwntgHsJl5RLGSA==
-X-Received: by 2002:a05:620a:2943:b0:8ab:7ac3:3271 with SMTP id
- af79cd13be357-8ab99a7670emr1847626685a.36.1762203993312; 
- Mon, 03 Nov 2025 13:06:33 -0800 (PST)
+ bh=zlB0Kc90UPr6D+7Ti5JxxglMdrXTiBSo67o+zFkEX2E=;
+ b=BaTS2kfuHb8FvTsZMJdknL/f5UqCvGv/412QM47Wi6mT7BMNZhfdn/1RQMr7nhVDhe
+ TdmD/uXea/yEEdYSYGi9cILoroiKkjvy5/uCcgm1Y0BVbgp59X8rI3SsABoALqR0gOFb
+ lPZc/mbqKlP9eX6d6UaPu211s/zKvdqx0qy6RMd2Bt//DZ9QsXl1x4Bg72mdN3pRpavB
+ OAlOuanXy2OTnmweKJ1+dVK56/qsUsDyWHnmrjmlq6rBjvMlzfNgqjmIM6aTczbFpTNy
+ 5lMIbrylWmM3TwZ8faRITBoMYY1bhlnTVFWUL/tlh5kGTVoyvt3FPsBnyBirfK7u/y7c
+ KhZQ==
+X-Gm-Message-State: AOJu0Yw+CUGNHh64lD2iQLhpZLQwGMVRwJbpqJrQvHvhTx6J+rHjpj01
+ GFfil7oow+sD7yecuxZ09ujn1Shn/MsmGqyXwVZc1X6Fa70SlBX2CV6W+1UKRHVLYzj0ZBUy8jR
+ eHdlkRni+8m8rbG+oZzrhV7wCL6Wa5GS2fNZlgVK4sih7o6tXlbbAtLZbaZpGz54SR8psMxVWKm
+ CMgKpeE6zPvq/StN+SuzKrDtzSc5YA5tnQ/hCuBQ==
+X-Gm-Gg: ASbGncskVoEOCbyqAgu+G+KXgyRtaUH0gAZcaQuMcZ6JMvbMHTsJIXQZ+kQsoA+XT/W
+ 9PoHfUyrPGVy/etbnfvXAmAVNukKfBX9KBXexqHzL8NBkucQ0V9NM4eNeyqZ9OExBB4Ck8WRTwS
+ JZkCiaL9EmClWJgQqDdDHrCnG0hqUCKknfNU0zAurRhDT705XCXWocjmMYIQdkPgZhf9KJOzffO
+ QzgEVrmQ/uUOUPvWi/C3fhooIpoF5FKX/xIB9UcI4KI4Q+qf5o9rvS47fZv0Pv+i3RBxuSEaczT
+ xK81sRkYvjlGGLPC8r7Yxcau7uWMUxIqkIN2RsGGtyUkhVkhzam89+P6Y4X7Q+Pb
+X-Received: by 2002:a05:620a:4410:b0:89a:2d9b:74ea with SMTP id
+ af79cd13be357-8ab9afd428cmr1658511685a.42.1762203995563; 
+ Mon, 03 Nov 2025 13:06:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEBccPJ2ZtzRCk96hACALrtMDOoWpI6fDmTxDKgAOLO9u8FoW2mA5LVsCIE6WvRVk92ZxL6Q==
+X-Received: by 2002:a05:620a:4410:b0:89a:2d9b:74ea with SMTP id
+ af79cd13be357-8ab9afd428cmr1658504685a.42.1762203994894; 
+ Mon, 03 Nov 2025 13:06:34 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.32
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:06:32 -0800 (PST)
+ Mon, 03 Nov 2025 13:06:33 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
  Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Subject: [PULL 04/36] migration: add FEATURE_SEEKABLE to QIOChannelBlock
-Date: Mon,  3 Nov 2025 16:05:53 -0500
-Message-ID: <20251103210625.3689448-5-peterx@redhat.com>
+Subject: [PULL 05/36] migration: mapped-ram: handle zero pages
+Date: Mon,  3 Nov 2025 16:05:54 -0500
+Message-ID: <20251103210625.3689448-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
@@ -99,9 +99,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,88 +119,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marco Cavenati <Marco.Cavenati@eurecom.fr>
 
-Enable the use of the mapped-ram migration feature with savevm/loadvm
-snapshots by adding the QIO_CHANNEL_FEATURE_SEEKABLE feature to
-QIOChannelBlock. Implement io_preadv and io_pwritev methods to provide
-positioned I/O capabilities that don't modify the channel's position
-pointer.
+Make mapped-ram compatible with loadvm snapshot restoring by explicitly
+zeroing memory pages in this case.
+Skip zeroing for -incoming and -loadvm migrations to preserve performance.
 
 Signed-off-by: Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Link: https://lore.kernel.org/r/20251010115954.1995298-2-Marco.Cavenati@eurecom.fr
+Link: https://lore.kernel.org/r/20251010115954.1995298-3-Marco.Cavenati@eurecom.fr
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/channel-block.c | 44 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ migration/options.c |  1 -
+ migration/ram.c     | 59 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 58 insertions(+), 2 deletions(-)
 
-diff --git a/migration/channel-block.c b/migration/channel-block.c
-index 97de5a691b..9cf383d4b5 100644
---- a/migration/channel-block.c
-+++ b/migration/channel-block.c
-@@ -30,6 +30,7 @@ qio_channel_block_new(BlockDriverState *bs)
-     QIOChannelBlock *ioc;
+diff --git a/migration/options.c b/migration/options.c
+index d9227809d7..e78324b80c 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -449,7 +449,6 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
+ static const
+ INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
+                             MIGRATION_CAPABILITY_MULTIFD,
+-                            MIGRATION_CAPABILITY_MAPPED_RAM,
+ );
  
-     ioc = QIO_CHANNEL_BLOCK(object_new(TYPE_QIO_CHANNEL_BLOCK));
-+    qio_channel_set_feature(QIO_CHANNEL(ioc), QIO_CHANNEL_FEATURE_SEEKABLE);
- 
-     bdrv_ref(bs);
-     ioc->bs = bs;
-@@ -96,6 +97,47 @@ qio_channel_block_writev(QIOChannel *ioc,
-     return qiov.size;
+ static bool migrate_incoming_started(void)
+diff --git a/migration/ram.c b/migration/ram.c
+index 1384748193..29f016cb25 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4038,12 +4038,58 @@ static size_t ram_load_multifd_pages(void *host_addr, size_t size,
+     return size;
  }
  
-+static ssize_t
-+qio_channel_block_preadv(QIOChannel *ioc,
-+                         const struct iovec *iov,
-+                         size_t niov,
-+                         off_t offset,
-+                         Error **errp)
++/**
++ * handle_zero_mapped_ram: Zero out a range of RAM pages if required during
++ * mapped-ram load
++ *
++ * Zeroing is only performed when restoring from a snapshot (HMP loadvm).
++ * During incoming migration or -loadvm cli snapshot load, the function is a
++ * no-op and returns true as in those cases the pages are already guaranteed to
++ * be zeroed.
++ *
++ * Returns: true on success, false on error (with @errp set).
++ * @from_bit_idx: Starting index relative to the map of the page (inclusive)
++ * @to_bit_idx:   Ending index relative to the map of the page (exclusive)
++ */
++static bool handle_zero_mapped_ram(RAMBlock *block, unsigned long from_bit_idx,
++                                   unsigned long to_bit_idx, Error **errp)
 +{
-+    QIOChannelBlock *bioc = QIO_CHANNEL_BLOCK(ioc);
-+    QEMUIOVector qiov;
-+    int ret;
++    ERRP_GUARD();
++    ram_addr_t offset;
++    size_t size;
++    void *host;
 +
-+    qemu_iovec_init_external(&qiov, (struct iovec *)iov, niov);
-+    ret = bdrv_readv_vmstate(bioc->bs, &qiov, offset);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "bdrv_readv_vmstate failed");
-+        return -1;
++    /*
++     * Zeroing is not needed for either -loadvm (RUN_STATE_PRELAUNCH), or
++     * -incoming (RUN_STATE_INMIGRATE).
++     */
++    if (!runstate_check(RUN_STATE_RESTORE_VM)) {
++        return true;
 +    }
 +
-+    return qiov.size;
-+}
-+
-+static ssize_t
-+qio_channel_block_pwritev(QIOChannel *ioc,
-+                          const struct iovec *iov,
-+                          size_t niov,
-+                          off_t offset,
-+                          Error **errp)
-+{
-+    QIOChannelBlock *bioc = QIO_CHANNEL_BLOCK(ioc);
-+    QEMUIOVector qiov;
-+    int ret;
-+
-+    qemu_iovec_init_external(&qiov, (struct iovec *)iov, niov);
-+    ret = bdrv_writev_vmstate(bioc->bs, &qiov, offset);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "bdrv_writev_vmstate failed");
-+        return -1;
++    if (from_bit_idx >= to_bit_idx) {
++        return true;
 +    }
 +
-+    return qiov.size;
++    size = TARGET_PAGE_SIZE * (to_bit_idx - from_bit_idx);
++    offset = from_bit_idx << TARGET_PAGE_BITS;
++    host = host_from_ram_block_offset(block, offset);
++    if (!host) {
++        error_setg(errp, "zero page outside of ramblock %s range",
++                   block->idstr);
++        return false;
++    }
++    ram_handle_zero(host, size);
++
++    return true;
 +}
++
+ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
+                                      long num_pages, unsigned long *bitmap,
+                                      Error **errp)
+ {
+     ERRP_GUARD();
+-    unsigned long set_bit_idx, clear_bit_idx;
++    unsigned long set_bit_idx, clear_bit_idx = 0;
+     ram_addr_t offset;
+     void *host;
+     size_t read, unread, size;
+@@ -4052,6 +4098,12 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
+          set_bit_idx < num_pages;
+          set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
  
- static int
- qio_channel_block_set_blocking(QIOChannel *ioc,
-@@ -177,6 +219,8 @@ qio_channel_block_class_init(ObjectClass *klass,
-     ioc_klass->io_writev = qio_channel_block_writev;
-     ioc_klass->io_readv = qio_channel_block_readv;
-     ioc_klass->io_set_blocking = qio_channel_block_set_blocking;
-+    ioc_klass->io_preadv = qio_channel_block_preadv;
-+    ioc_klass->io_pwritev = qio_channel_block_pwritev;
-     ioc_klass->io_seek = qio_channel_block_seek;
-     ioc_klass->io_close = qio_channel_block_close;
-     ioc_klass->io_set_aio_fd_handler = qio_channel_block_set_aio_fd_handler;
++        /* Zero pages */
++        if (!handle_zero_mapped_ram(block, clear_bit_idx, set_bit_idx, errp)) {
++            return false;
++        }
++
++        /* Non-zero pages */
+         clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
+ 
+         unread = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
+@@ -4083,6 +4135,11 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
+         }
+     }
+ 
++    /* Handle trailing 0 pages */
++    if (!handle_zero_mapped_ram(block, clear_bit_idx, num_pages, errp)) {
++        return false;
++    }
++
+     return true;
+ 
+ err:
 -- 
 2.50.1
 
