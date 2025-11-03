@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF33C2C338
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2E2C2C299
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 14:41:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFuoV-0002d5-9d; Mon, 03 Nov 2025 08:41:39 -0500
+	id 1vFunM-0007fx-8B; Mon, 03 Nov 2025 08:40:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFuoN-0002Lv-2J
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:41:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vFuoE-0004mK-L1
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:41:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762177277;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kMOnFs37bd9OkUmQnLjQkOBLu2AvkT/NHTBzwDCM7sA=;
- b=hVyBcHiKnD5VXauN62ImPVqLYXYICmZoQ0KlvKuOXT+nDMCucJhBkZPgR9LYzqAA6khdIS
- oaNGPvX+gz69s+4JyR7AZBS5F1ojLN2vMWODynhD572kgPp/gO+eUMlpre3/xbm5LG8p82
- lMidbGiED1BG7qys5E+Pddzy8YtXzfc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-SGQMprmjNru8xsnniRRXHg-1; Mon,
- 03 Nov 2025 08:41:14 -0500
-X-MC-Unique: SGQMprmjNru8xsnniRRXHg-1
-X-Mimecast-MFC-AGG-ID: SGQMprmjNru8xsnniRRXHg_1762177273
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2CDF01955F04; Mon,  3 Nov 2025 13:41:13 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.202])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CD09C1800576; Mon,  3 Nov 2025 13:41:08 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- devel@lists.libvirt.org, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 32/32] docs: creation of x509 certs compliant with post-quantum
- crypto
-Date: Mon,  3 Nov 2025 13:37:26 +0000
-Message-ID: <20251103133727.423041-33-berrange@redhat.com>
-In-Reply-To: <20251103133727.423041-1-berrange@redhat.com>
-References: <20251103133727.423041-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFunA-0007Mu-Pt
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:40:18 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFumz-0004UE-Uo
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 08:40:16 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-475dc0ed8aeso30124165e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 05:40:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762177197; x=1762781997; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0ErTpQkwzrQmZsvx4oeCs0KM2vR7S1giusexASob2U0=;
+ b=OEDPeJo+g+ucn4xkkCQWs+82eNGXHJ7UZYrdLfhCwSXPV5qz+D9HglK3OH6Sd+99zn
+ KiAmL8clpXMpCNtlSoRtBrVOPWvpear9Nu2aqATUhJSu8rmIXQC9EA5F5hNMqs8wSnRw
+ gRV+Yr1AyPOloGrtLJZ8iW4kPb1I7MDxhwJXeYme2KDr0N3iM9MXqJ1K8CRV63qIMUDy
+ olPfQClZXTPUz5zT+0TWuTgnAHk9ZHHksNPOmJJQXBIS60WCBUqSFKrQy6Plgp9SdiiK
+ 5Pyq9YGM/8HvbfAWl0nfEuz4ABrTPzrydDazjrt+DjSUZfiGXEvA3u+UeukFbzT514vr
+ Byxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762177197; x=1762781997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0ErTpQkwzrQmZsvx4oeCs0KM2vR7S1giusexASob2U0=;
+ b=G93yv8cS0Rq/fJD6IevwInl6kNPa0++HYdlkx807RDlMm4gnBQjaP17tNnQgWIj4MG
+ XUEicreZGiEOVoa9+T//kCAh/JN3HFSnQ+SxKyq3Sb9GU08NWFGLShKeFb9g+EYNhR9n
+ pK3Kr4+BPJUlaU7+QZH/7qoY+wcM8nvI6rv90P2TDuRgVaL0Nyt5pfgxOmxdCPW7Fn9l
+ z0a3MMyCAvTsXNwCXu5Lz7mgx6OViPxoNlbRvY1RLfrBaENEzlY0hHJJbDCjKibLxuzN
+ z8UuavCDuw6TodsW7ekreNE8Ulm0vVPZLLlBgloeT3ZZLGwEXroaSpgg97qlpTLvMUGR
+ xbxQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWGFE+9WUKjLJL7NqdkGhzaEfAif7SyvrP1lrXy57jJsGkwbrFurEihGG6oOzUYwKlxkyakM6Sn+oUI@nongnu.org
+X-Gm-Message-State: AOJu0YxFvqYOWNrDu+wMCABccdjJPWH7N4RY24aMkdZ60HHVocb1i29w
+ twMSw/Ee6cAuXyNhgIk7ir3vEE/wj2ZWu4YX7tDs8bC5lDtqL/BdO1o8H7NqVhwZm+M=
+X-Gm-Gg: ASbGnctWRE3HFe7L29vfNTIu0v4NTNNktmOKaqO3D3c29fj12nnzmyPEMT6EjeWph4j
+ SVQ/xKlWta5EOfo+YV1XQX982BRVW7su3gsLO34piZz9KKDnHz6ECMMLuNqyFOVcIKYds6cCMbG
+ Hijhekk4R6vuO1MIUV+/8YYalWajGnKVYSr664rscD6aDQTttvcXdZxFIo2bUTRMptY3TQaIWuB
+ kaQZojtBFuAh3YwbG7PXSx/XUaK4OmcSC+bzQ73R8MALEOvz+JMsGXZ6fCmaSWuUuqj8KHsQ3QQ
+ e6Os22if6AISyXTuukTFsX7mr4rEkivRWtMtq+KMJEEXUOYUVSitOwIYjDyj8KA9eMOnjv1Lwau
+ wA2krAIjD/1P8wiU2Uo63hsAkGYD26KsJj3i0cH9gUCDcSvD+TjT7ThlReeWueEY0agwsBSJlFB
+ eivGmX4D2E/1q0PBZuZ8H1Aih1uVY/Hk9oipA7hb2/uuWN50XJwcGC
+X-Google-Smtp-Source: AGHT+IGCX8gIpsPJyunbJLf3pmjZrnE3A8OXqHARBr9Zs0lA3tjGRIG0U0Bsa068MNDlFDfZzfjssg==
+X-Received: by 2002:a05:600c:19d1:b0:471:747:2116 with SMTP id
+ 5b1f17b1804b1-477308b943dmr116875225e9.41.1762177197083; 
+ Mon, 03 Nov 2025 05:39:57 -0800 (PST)
+Received: from [172.18.140.215] (ip-185-104-138-156.ptr.icomera.net.
+ [185.104.138.156]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4772fabe202sm90517505e9.0.2025.11.03.05.39.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Nov 2025 05:39:56 -0800 (PST)
+Message-ID: <ea91137e-e5af-414b-86e2-2de7373bcb05@linaro.org>
+Date: Mon, 3 Nov 2025 14:39:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/32] hw/arm/smmuv3-accel: Initialize shared system
+ address space
+Content-Language: en-US
+To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: eric.auger@redhat.com, peter.maydell@linaro.org, jgg@nvidia.com,
+ nicolinc@nvidia.com, ddutile@redhat.com, berrange@redhat.com,
+ nathanc@nvidia.com, mochs@nvidia.com, smostafa@google.com,
+ wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
+ jonathan.cameron@huawei.com, zhangfei.gao@linaro.org,
+ zhenzhong.duan@intel.com, yi.l.liu@intel.com, kjaju@nvidia.com,
+ Peter Xu <peterx@redhat.com>, Mark Cave-Ayland <mark.caveayland@nutanix.com>
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
+ <20251031105005.24618-7-skolothumtho@nvidia.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251031105005.24618-7-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,96 +109,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Explain how to alter the certtool commands for creating certficates,
-so that they can use algorithms that are compliant with post-quantum
-crytography standards.
+Hi,
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/system/tls.rst | 68 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+On 31/10/25 11:49, Shameer Kolothum wrote:
+> To support accelerated SMMUv3 instances, introduce a shared system-wide
+> AddressSpace (shared_as_sysmem) that aliases the global system memory.
+> This shared AddressSpace will be used in a subsequent patch for all
+> vfio-pci devices behind all accelerated SMMUv3 instances within a VM.
+> 
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>   hw/arm/smmuv3-accel.c | 27 +++++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
+> 
+> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
+> index 99ef0db8c4..f62b6cf2c9 100644
+> --- a/hw/arm/smmuv3-accel.c
+> +++ b/hw/arm/smmuv3-accel.c
+> @@ -11,6 +11,15 @@
+>   #include "hw/arm/smmuv3.h"
+>   #include "smmuv3-accel.h"
+>   
+> +/*
+> + * The root region aliases the global system memory, and shared_as_sysmem
+> + * provides a shared Address Space referencing it. This Address Space is used
+> + * by all vfio-pci devices behind all accelerated SMMUv3 instances within a VM.
+> + */
+> +MemoryRegion root;
+> +MemoryRegion sysmem;
 
-diff --git a/docs/system/tls.rst b/docs/system/tls.rst
-index 7cec4ac3df..03fa1d8166 100644
---- a/docs/system/tls.rst
-+++ b/docs/system/tls.rst
-@@ -345,6 +345,74 @@ example with VNC:
- 
- .. _tls_005fpsk:
- 
-+TLS certificates for Post-Quantum Cryptography
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Given a new enough gnutls release, suitably integrated & configured with the
-+operating system crypto policies, QEMU is able to support post-quantum
-+crytography on TLS enabled services, either exclusively or in a hybrid mode.
-+
-+In exclusive mode, only a single set of certificates need to be configured
-+for QEMU, with PQC compliant algorithms. Such a QEMU configuration will only
-+be able to interoperate with other services (including other QEMU's) that
-+also have PQC enabled. This can result in compatibility concerns during the
-+period of transition over to PQC compliant algorithms.
-+
-+In hybrid mode, multiple sets of certificates need to be configured for QEMU,
-+at least one set with traditional (non-PQC compliant) algorithms, and at least
-+one other set with modern (PQC compliant) algorithms. At time of the TLS
-+handshake, the GNUTLS algorithm priorities should ensure that PQC compliant
-+algorithms are negotiated if both sides of the connection support PQC. If one
-+side lacks PQC, the TLS handshake should fallback to the non-PQC algorithms.
-+This can assist with interoperability during the transition to PQC, but has a
-+potential weakness wrt downgrade attacks forcing use of non-PQC algorithms.
-+Exclusive PQC mode should be preferred where both peers in the TLS connections
-+are known to support PQC.
-+
-+Key generation parameters
-+^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+To create certificates with PQC compliant algorithms, the ``--key-type``
-+argument must be passed to ``certtool`` when creating private keys. No
-+extra arguments are required for the other ``certtool`` commands, as
-+their behaviour will be determined by the private key type.
-+
-+The typical PQC compliant algorithms to use are ``ML-DSA-44``, ``ML-DSA-65``
-+and ``ML-DSA-87``, with ``ML-DSA-65`` being a suitable default choice in
-+the absence of explicit requirements.
-+
-+Taking the example earlier, for creating a key for a client certificate,
-+to use ``ML-DSA-65`` the command line would be modified to look like::
-+
-+   # certtool --generate-privkey --key-type=mldsa65 > client-hostNNN-key.pem
-+
-+The equivalent modification applies to the creation of the private keys
-+used for server certs, or root/intermediate CA certs.
-+
-+For hybrid mode, the additional indexed certificate naming must be used.
-+If multiple configured certificates are compatible with the mutually
-+supported crypto algorithms between the client and server, then the
-+first matching certificate will be used.
-+
-+IOW, to ensure that PQC certificates are preferred, they must use a
-+non-index based filename, or use an index that is smaller than any
-+non-PQC certificates. ie, ``server-cert.pem`` for PQC and ``server-cert-0.pem``
-+for non-PQC, or ``server-cert-0.pem`` for PQC and ``server-cert-1.pem`` for
-+non-PQC.
-+
-+Force disabling PQC via crypto priority
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+In the OS configuration for system crypto algorithm priorities has
-+enabled PQC, this can (optionally) be overriden in QEMU configuration
-+disable use of PQC using the ``priority`` parameter to the ``tls-creds-x509``
-+object::
-+
-+  NO_MLDSA="-SIGN-ML-DSA-65:-SIGN-ML-DSA-44:-SIGN-ML-DSA-87"
-+  NO_MLKEM="-GROUP-X25519-MLKEM768:-GROUP-SECP256R1-MLKEM768:-GROUP-SECP384R1-MLKEM1024"
-+  # qemu-nbd --object tls-creds-x509,id=tls0,endpoint=server,dir=....,priority=@SYSTEM:$NO_MLDSA:$NO_MLKEM
-+
-+
- TLS Pre-Shared Keys (PSK)
- ~~~~~~~~~~~~~~~~~~~~~~~~~
- 
--- 
-2.51.1
+Why can't we store that in SMMUv3State?
+
+> +static AddressSpace *shared_as_sysmem;
+
+FYI we have object_resolve_type_unambiguous() to check whether an
+instance exists only once (singleton).
+
+> +
+>   static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
+>                                                  PCIBus *bus, int devfn)
+>   {
+> @@ -51,9 +60,27 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
+>       .get_address_space = smmuv3_accel_find_add_as,
+>   };
+>   
+> +static void smmuv3_accel_as_init(SMMUv3State *s)
+> +{
+> +
+> +    if (shared_as_sysmem) {
+> +        return;
+> +    }
+> +
+> +    memory_region_init(&root, OBJECT(s), "root", UINT64_MAX);
+> +    memory_region_init_alias(&sysmem, OBJECT(s), "smmuv3-accel-sysmem",
+> +                             get_system_memory(), 0,
+> +                             memory_region_size(get_system_memory()));
+> +    memory_region_add_subregion(&root, 0, &sysmem);
+> +
+> +    shared_as_sysmem = g_new0(AddressSpace, 1);
+> +    address_space_init(shared_as_sysmem, &root, "smmuv3-accel-as-sysmem");
+> +}
+> +
+>   void smmuv3_accel_init(SMMUv3State *s)
+>   {
+>       SMMUState *bs = ARM_SMMU(s);
+>   
+>       bs->iommu_ops = &smmuv3_accel_ops;
+> +    smmuv3_accel_as_init(s);
+>   }
 
 
