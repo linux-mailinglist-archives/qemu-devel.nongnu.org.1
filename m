@@ -2,97 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840F4C2E1AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1286C2E16E
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1lC-0000t0-Iu; Mon, 03 Nov 2025 16:06:42 -0500
+	id 1vG1lJ-0000uK-IB; Mon, 03 Nov 2025 16:06:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lA-0000sb-KT
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lG-0000tu-Rk
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1l7-00059P-DR
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:40 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1l7-0005A3-Gv
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762203992;
+ s=mimecast20190719; t=1762203993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HlbfcBz1rjrLqAgM/bLe8/TJucjYOTnKZj3amceTg+k=;
- b=I6+BHB0+4s3qQDm8Gz4jL+CrUrfy6tmhxwz6m5L7DQCcoXuM90Q7kPavWIId5bhwwSdpYg
- h2Fpvrc7tylFioFeSvh2kd190rklkgPmG3Ycqf98qz6axgG4rD4+cJGfnFCQItLVJp6ePf
- 88XG3XWdP6ubSiG7BqIGFedx5wZ4aZ8=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bkV4KzvoIdiR+K7onoBHG3vVuiufpb0vv5OwoxQKG/g=;
+ b=efbcoPExnMp+bEFVLTYMOtumV3cXU3eyOqe2M/cti7AiDdafls3bCc1/pcxiQ/onf/acsu
+ 4zS4pVNNdY/dayLsGB8LyahM4LaUF1Ox1sNtMnahRmNt08u0m7y3ZEcgy5hjjaDTcCx+5P
+ 2XySgiqgJlXLyqhKof/JlnkaWj5amYM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-371-QoRJrcAnNTaoCC1_iF5ORw-1; Mon, 03 Nov 2025 16:06:31 -0500
-X-MC-Unique: QoRJrcAnNTaoCC1_iF5ORw-1
-X-Mimecast-MFC-AGG-ID: QoRJrcAnNTaoCC1_iF5ORw_1762203991
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-8a9d56c36caso2242910185a.3
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:31 -0800 (PST)
+ us-mta-638-lenT4ApKMXG5eO3XGuhVsg-1; Mon, 03 Nov 2025 16:06:32 -0500
+X-MC-Unique: lenT4ApKMXG5eO3XGuhVsg-1
+X-Mimecast-MFC-AGG-ID: lenT4ApKMXG5eO3XGuhVsg_1762203992
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-8b12cde7f76so30919685a.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762203990; x=1762808790; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762203991; x=1762808791; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HlbfcBz1rjrLqAgM/bLe8/TJucjYOTnKZj3amceTg+k=;
- b=EA8vK6bsjK9AmCAzP+m4XMqvB2sx00LuqydP+5S4Q+tPrTUzIOIUKpSwUMOgDiiKGi
- uotMn8R1UmcQRoXnZ2foGv8lM1QJGywoMT2IDnkdC+l06I3BDN+IYn7AOhaNtsa/sZOi
- HfFMQJKucGf2P6CfarlgZ4qgu0CQ7RX5kL4yf25NH4GEioN7gmtldy2EV1mE4rLaMYpj
- +XXW1Cazp745Txz3ldEAWx2JL9yaYHGJmaqEB9FqQdlSi0ZRWnAl74DoYeAM6ZOm6t7J
- 6pf59AsIbym0oOvTH/0l+hFBBxHRd5kgEH+O0hAx42towFo0G4q9BLYHViqYskwsKebF
- 7yrQ==
+ bh=bkV4KzvoIdiR+K7onoBHG3vVuiufpb0vv5OwoxQKG/g=;
+ b=PogixB+XOxrx9/PQks6Gt/zNak5ppbDyypRIkmkKjRZKcqGC31mF/AdmCb53I7OvXP
+ QNkD2BxCCy0XZMlS7yY500cd0ZOIDE95Z+9LvlNNKw2QHaq+X6DEK4nTi4XAnEQvD8fw
+ c9iwYbEKIhLvAp8fXHcPemdmm2hRrRBPXcxwmafvmGv7Z3Q33d4m86pV7XNBa8z4vEp8
+ hwbrAoMd6zEzIiJPFePVEm6dN+N+1EVmCvANuS0O9eKue7sL0Rtm+rbW7X6nra2eyyd6
+ vQVQjuYZKR5PHEba8wm9c8I9WlIoNkNhmVoL6ds3pc+PsWgT9Z7wG/am6qHchsN2lRSO
+ 5QXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762203990; x=1762808790;
+ d=1e100.net; s=20230601; t=1762203991; x=1762808791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HlbfcBz1rjrLqAgM/bLe8/TJucjYOTnKZj3amceTg+k=;
- b=r+ptbFMF4fnsZ/JboTAzB5K3QjRF3CVB6TF1XXU6gzfOg5Apte4BXXetBSZLZEzKQO
- 24U0pjLqLVa2+ROqpReG+xC7pQppmBr8t7eYfZieaPVOdutNVMmfwh/pOtlXNHNETStw
- 8qa+0aqQU7A1SbNBfiXjGdzwSwO2poalz2nlGE4T9n9mGXtloSCxO81LKARpdiLijeTU
- sLbD8N8TzypS9HD8bmnqcdLu7jb0rLv7Q2vAQASrnKuHk5yVKIJa6PMc0OR9B7tW+FcQ
- bnpU73NDoEjue2/hoEXTgz+j96zljt5GOF3XdLl7vHjg34jI25LvsiFGDgXT/lrA3XK1
- c2lQ==
-X-Gm-Message-State: AOJu0Yyz2Xpuvjqfo4xn9UtVHhk0CpGo/ZFPaTxB9ha6hoqNi/H6XNIG
- XlHibwvIm5/tscznqLIY8rm286St/lLGvILppdpOPCSO/dH2dw4sxzH8k3g6QVe0QNtobOZ4pLB
- q39mmP62zmKSeRW9xW8jYqkOjvWi99U+gBAZ9JrVDYruu0/58+CX6KyEBPns2EnON6eofntFUvL
- m5PHHN4R0VKNSGjGF4tW4WYKt/il36GytT3IA6MQ==
-X-Gm-Gg: ASbGncu8rgzojc0B5XvESwMImKDAbbXRBd0HJcFq/nHbLjP7t2KbR1z3eOub8jkcQZo
- VVnqR27BWSP0PwgaR/lk5L7uTfDCn98lLdXf9Ephqb0IYLRVlTLJaLsb2kAD3VLemXrHeusuBmD
- VPJoUAnxz0J8R2JGGHk0OHXOD1CLS2JP8MhGQJaJ6XlhjyYb83Dl5v5w1zpKvgu1hbwsKAL7x+w
- oxVKWSLRgaAzebDpBu2nxJ6NXdUDLCXoHRu8ugriPp94YNojAdoVeoX3rSepZX+aqvYzz3EVNkE
- +rwRtcLfv/dpvWqqIlXkgCVShr5rFa/Wc82fwumJtC2S1CcgPKAKfLoYEAQ/nFHM
-X-Received: by 2002:a05:620a:3193:b0:8a2:4d02:eeb3 with SMTP id
- af79cd13be357-8ab98eba6f4mr1528914185a.11.1762203990085; 
+ bh=bkV4KzvoIdiR+K7onoBHG3vVuiufpb0vv5OwoxQKG/g=;
+ b=CJDYFk3j5iCDVrMSmvSC9ajYVKxDqIRkuSwoU36GJKNXmCT7CVMmy1Dj8cJOGVzAi3
+ 4aamM9q8KQeqjwRq6NVsT6GCrAExQs7Lic0lQPsDKT6soEzCArkTQNidl1CpwWvPFG+n
+ GyeWdXd9OPB6Tw04fzHBb+SyftYQwf0locCH4JVGEn+omyCfaMnfVheX6XlaMFiOJpFy
+ Vd7MpQEZiKKoTKfotUMeMucwze59z/yJHTJhRnBhuXtxlI2KeYYMKRTe+aFfgMDhE+Fn
+ Ht5oH1BNBj4AeYchKZotXsIGHUQUqLrcdGbH8WfiYPzA4LvLhJAIdphkMS8AXtlIS4BH
+ 8Y0A==
+X-Gm-Message-State: AOJu0YxZAd9Ma351WTemqs/wLFWa+QJ3b+YgTLhJk/7OtLlEg+FNtxqE
+ E3FB7+MxRftJh7kfcCPF2d6CWqaNrwgrOCiaEFVQCnKYM40IzVhVBEeduX9ZS2QI22OYqiPW8s+
+ khwM06j1Lo5CfzUIuKUDjflUAmFA+S0URe79jidZhjKwiH6aD4etzkBOvfnUMjkBWrGpJRgZgN2
+ KEQlHpQlKtTsVB2zvy342ybj85JVve/od7nyZVtA==
+X-Gm-Gg: ASbGnctmJQbgkZjmP2sSQmKonOV7Wtu4Pw78oZtS/mlz54BEr+j4UkxdR35RsDit8b9
+ qyWLtmLAxgvJv5NAVgIsFgPX2l5UyS2w/kaTUueJ2iZkRHu8trFXwSQyjtICgN3ZQ3uTR2lHeJX
+ RgDD5yVC34nNQxnvsdChkpz9siAgbAFZZnmTgy5VfYzXUN1TDNbq7ubePvM6+2W5Pd5+k01Orf1
+ dPMOzHMDzniEa1OwrAKPED2URPbW+pzVH/6mmLFrcaSxD8sY2An82b/UV6VewAFaCTku+OF5369
+ Ga67IbQDtTTrFmX+tZi3MdSHCghjIM86o8OcPmrjjxVb0TC8w8FUEmXhrdB9BI0x
+X-Received: by 2002:a05:620a:4150:b0:88e:1123:ec9 with SMTP id
+ af79cd13be357-8b10c4da943mr112983385a.36.1762203991132; 
+ Mon, 03 Nov 2025 13:06:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFZkquQMB2TG93+OLIiIpDHl7iwVIn6fYDjWhnANh3yXuSMx6xT4s98ZXy7Dd6zCQnT5QsB1Q==
+X-Received: by 2002:a05:620a:4150:b0:88e:1123:ec9 with SMTP id
+ af79cd13be357-8b10c4da943mr112977485a.36.1762203990567; 
  Mon, 03 Nov 2025 13:06:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAi6PZSb3lH+72mA2t3DewjjKP/jqPOHNARdPJnGTlNfevW6GO/eoZ4nQQP+ac80RbqPx7hQ==
-X-Received: by 2002:a05:620a:3193:b0:8a2:4d02:eeb3 with SMTP id
- af79cd13be357-8ab98eba6f4mr1528907485a.11.1762203989410; 
- Mon, 03 Nov 2025 13:06:29 -0800 (PST)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.28
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Nov 2025 13:06:28 -0800 (PST)
+ Mon, 03 Nov 2025 13:06:29 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 01/36] migration/savevm: Add a compatibility check for
- capabilities
-Date: Mon,  3 Nov 2025 16:05:50 -0500
-Message-ID: <20251103210625.3689448-2-peterx@redhat.com>
+ peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/36] MAINTAINERS: update cpr reviewers
+Date: Mon,  3 Nov 2025 16:05:51 -0500
+Message-ID: <20251103210625.3689448-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251103210625.3689448-1-peterx@redhat.com>
 References: <20251103210625.3689448-1-peterx@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,113 +119,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-It has always been possible to enable arbitrary migration capabilities
-and attempt to take a snapshot of the VM with the savevm/loadvm
-commands as well as their QMP counterparts
-snapshot-save/snapshot-load.
+Update cpr reviewers.  Some of these files overlap with migration
+files, but some do not.
 
-Most migration capabilities are not meant to be used with snapshots
-and there's a risk of crashing QEMU or producing incorrect
-behavior. Ideally, every migration capability would either be
-implemented for savevm or explicitly rejected.
-
-Add a compatibility check routine and reject the snapshot command if
-an incompatible capability is enabled. For now only act on the the two
-that actually cause a crash: multifd and mapped-ram.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2881
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20251007184213.5990-1-farosas@suse.de
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/1760098600-399192-1-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.h |  1 +
- migration/options.c | 27 +++++++++++++++++++++++++++
- migration/savevm.c  |  8 ++++++++
- 3 files changed, 36 insertions(+)
+ MAINTAINERS | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/migration/options.h b/migration/options.h
-index 82d839709e..a7b3262d1e 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -59,6 +59,7 @@ bool migrate_tls(void);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ee058e2fef..12ec2d6860 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3114,7 +3114,8 @@ T: git https://gitlab.com/jsnow/qemu.git jobs
+ T: git https://gitlab.com/vsementsov/qemu.git block
  
- bool migrate_rdma_caps_check(bool *caps, Error **errp);
- bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
-+bool migrate_can_snapshot(Error **errp);
- 
- /* parameters */
- 
-diff --git a/migration/options.c b/migration/options.c
-index 5183112775..d9227809d7 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -445,11 +445,38 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
-     MIGRATION_CAPABILITY_VALIDATE_UUID,
-     MIGRATION_CAPABILITY_ZERO_COPY_SEND);
- 
-+/* Snapshot compatibility check list */
-+static const
-+INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
-+                            MIGRATION_CAPABILITY_MULTIFD,
-+                            MIGRATION_CAPABILITY_MAPPED_RAM,
-+);
-+
- static bool migrate_incoming_started(void)
- {
-     return !!migration_incoming_get_current()->transport_data;
- }
- 
-+bool migrate_can_snapshot(Error **errp)
-+{
-+    MigrationState *s = migrate_get_current();
-+    int i;
-+
-+    for (i = 0; i < check_caps_savevm.size; i++) {
-+        int incomp_cap = check_caps_savevm.caps[i];
-+
-+        if (s->capabilities[incomp_cap]) {
-+            error_setg(errp,
-+                       "Snapshots are not compatible with %s",
-+                       MigrationCapability_str(incomp_cap));
-+            return false;
-+        }
-+    }
-+
-+    return true;
-+}
-+
-+
- bool migrate_rdma_caps_check(bool *caps, Error **errp)
- {
-     if (caps[MIGRATION_CAPABILITY_XBZRLE]) {
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 7b35ec4dd0..aafa40d779 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3322,6 +3322,10 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
- 
-     GLOBAL_STATE_CODE();
- 
-+    if (!migrate_can_snapshot(errp)) {
-+        return false;
-+    }
-+
-     if (migration_is_blocked(errp)) {
-         return false;
-     }
-@@ -3507,6 +3511,10 @@ bool load_snapshot(const char *name, const char *vmstate,
-     int ret;
-     MigrationIncomingState *mis = migration_incoming_get_current();
- 
-+    if (!migrate_can_snapshot(errp)) {
-+        return false;
-+    }
-+
-     if (!bdrv_all_can_snapshot(has_devices, devices, errp)) {
-         return false;
-     }
+ CheckPoint and Restart (CPR)
+-R: Steve Sistare <steven.sistare@oracle.com>
++R: Peter Xu <peterx@redhat.com>
++R: Fabiano Rosas <farosas@suse.de>
+ S: Supported
+ F: hw/vfio/cpr*
+ F: include/hw/vfio/vfio-cpr.h
 -- 
 2.50.1
 
