@@ -2,103 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F55CC2A75B
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A250EC2A8E9
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 09:26:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFpUo-0005k1-LC; Mon, 03 Nov 2025 03:00:58 -0500
+	id 1vFprv-0000yD-CK; Mon, 03 Nov 2025 03:24:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1vFpUf-0005gd-Rc
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:00:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFprR-0000vJ-Hh
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:24:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1vFpUM-0001zr-SS
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:00:47 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vFprF-0006iI-FN
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 03:24:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762156827;
+ s=mimecast20190719; t=1762158240;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WEOnqvrVe5lqRvRwouMSuCkR6COK8rXwo9PiUuo9tEc=;
- b=S+CgpU2yukHIpuj5guzHexgzWzlQWvFz2ZAdjKCigF8eNUQg4jOOxXEnlwF6+RFHYY4oEX
- HcP/C97DPobNKgi1mtS9dBm6sAcoNFWHPuT75MGQENd4Ykwg6BM7QuLyzQ10OBmUfD7X+m
- NZRLutCaj49WH0zbhdLw4rF9EuDtYWA=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-F5e3U51rM_-PnenZFQnTpw-1; Mon, 03 Nov 2025 03:00:25 -0500
-X-MC-Unique: F5e3U51rM_-PnenZFQnTpw-1
-X-Mimecast-MFC-AGG-ID: F5e3U51rM_-PnenZFQnTpw_1762156825
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-78e5b6f1296so98604186d6.2
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 00:00:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762156825; x=1762761625; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=WEOnqvrVe5lqRvRwouMSuCkR6COK8rXwo9PiUuo9tEc=;
- b=kWWgyVF6w8Ew6p3J1RJLVkbyRJx1mdLLmNBRixvO2j71yzrOv6QGSEFQ12NE4cWQgc
- jaKo2KtMVTBbFkq+9vQ8HSQaCrtdWP626orFk0b0YoKBVOfq6Lt6A7ykYcFnHSejtr/x
- ORQct9C/5A3SnsOIH4KoN5KlNYXAvl0Obhv0owsyH6UHoaw5t2uDKN+ts7QdPHlz+qyU
- XcpPa86MfAJJhzBE9T1D/LYDrSj7DrbnOOGzxEmqgHLDES2DDd9RQlU9Loo6fRG5+0ap
- 3Psycqi7+Af3E40zSzzj+LikHrkpgae82uzXQG5lyaH9FlzWcoQZkbc65HBA6MiWACME
- 8DpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762156825; x=1762761625;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WEOnqvrVe5lqRvRwouMSuCkR6COK8rXwo9PiUuo9tEc=;
- b=QcKx8MmTlcYosJQuOqKEzgpjcSniV6fnZj6FOsMP7su7bKjULH+8jeasOeheYrO2ty
- rm7ArO78Iv/Q5COJ+utycYyhNMB1rz/fbp+k8PxDpM+BJfK0FL5p4PUSyhSDIWED3omV
- nMsDE+X5/ujTk4rVfT41Hwpg/qElHFLmedbKw4DYFTWjuF8QZ9Kz6ulqgKADmrtANHYL
- PM6WwK68d0KMvx5FYCQeNRbb43U+t+DHFluApEO8UdtTbhw1lKEzQkr02OZWGWTzeTQl
- I+Ew9QQDtDsFPo0DNbK6X8xLDCR6yoDTdEujlccUnz2ma2WGvP01iU2xt91oD/XWW5x5
- yOFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVxihbHh5cavbztj6mXODTWbtSu2MoAyvp4qCr6iTjQdBXBDZknKwYcgQ66Pf1yCE3RU0UbEs8zVGNE@nongnu.org
-X-Gm-Message-State: AOJu0YxR6v4dAmnsN/KbzvVF8S8wVCGvz0cz+dvZTOdBDCsynuuldG9l
- 260Jn4wMmShKl/8Tiu0bjtFp+wB5umOpUjKWd714//0ig5YCw4zyDDaNqxPJaakfLtatPd5HT0k
- ghmeIwYyxPIl1XtKKCep8rkyBAFEuRIf+axspOJ3K+9EeoDrcI7Irefwx/HLfECkTEbfFTnj5Sa
- RG4QLWzimL1dUClZWqUARhLErEygVMLQE=
-X-Gm-Gg: ASbGnctepw9t9ByMs7lmKP2KzQ0H6yfjZZZ3EKgLtTQlaTNmBfqlRFLWn3XzC/Of3Cl
- LRE5dqgyP+iQMqc4NuwNK04XU9Ux9SvS1eQE3lZ3xw9XM+YHs0HPkL2j7fdek/Y5+G6DmQ/Sp+f
- hNDRyG9rWQWowc1BpvOWUHnXPyQDyEsRAz5TLop6GYjtd4uMenLMcb1zMzrQ==
-X-Received: by 2002:a05:6214:1d01:b0:880:4b27:1888 with SMTP id
- 6a1803df08f44-8804b272595mr68791946d6.3.1762156824926; 
- Mon, 03 Nov 2025 00:00:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1qEUI/ji5phzzEoagggFXrUYC2UIIeJn4HBlyYL2Gi6J9cT2vmZi4cuUvY6/qkTe5fkFYwziw6oblDyzBhqo=
-X-Received: by 2002:a05:6214:1d01:b0:880:4b27:1888 with SMTP id
- 6a1803df08f44-8804b272595mr68791476d6.3.1762156824395; Mon, 03 Nov 2025
- 00:00:24 -0800 (PST)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QfpaDePf0aX+1MWAUIxxzKceL0+jDlmEytvJhXDgncw=;
+ b=UANWumt2x61JVCTdYJ/pjtD4/5kDWRnEDCyqplO45DoFqEwCBcGEUcjpHuAOD1NKU+SqkV
+ reX46DoNPQe36AUuwklgUnai9z+4bIbvt7l23+Ogq0+vzdbI8OPAfk0LwtIBpVtGExzUnM
+ /ttzldh0XshncTNrUx2EnRRXpbjTW00=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-j1CUzwfDOvOjorU6r5IjPA-1; Mon,
+ 03 Nov 2025 03:23:59 -0500
+X-MC-Unique: j1CUzwfDOvOjorU6r5IjPA-1
+X-Mimecast-MFC-AGG-ID: j1CUzwfDOvOjorU6r5IjPA_1762158238
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63EDA1955F4A; Mon,  3 Nov 2025 08:23:58 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9402F1956056; Mon,  3 Nov 2025 08:23:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E9F6B21E6A27; Mon, 03 Nov 2025 09:23:54 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com, eblake@redhat.com, vsementsov@yandex-team.ru,
+ thuth@redhat.com, berrange@redhat.com, philmd@linaro.org,
+ kchamart@redhat.com, mst@redhat.com, sgarzare@redhat.com
+Subject: [PATCH v2 0/9] A QAPI schema doc markup fix, and style cleanup
+Date: Mon,  3 Nov 2025 09:23:45 +0100
+Message-ID: <20251103082354.3273027-1-armbru@redhat.com>
 MIME-Version: 1.0
-References: <20251101131456.792868-1-mjt@tls.msk.ru>
- <DDXQYO68GHXQ.NZTDPMLYKROT@drigo.nl>
- <7dd27991-9fd2-4efe-8fe9-0c8e61c182ee@tls.msk.ru>
-In-Reply-To: <7dd27991-9fd2-4efe-8fe9-0c8e61c182ee@tls.msk.ru>
-From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Date: Mon, 3 Nov 2025 10:00:13 +0200
-X-Gm-Features: AWmQ_blsRTQHvEDPr1zDvnMhC9qxjBXnwyEzwDXuGlDXgU7WQFIceqQATZu_ioU
-Message-ID: <CAPMcbCp042BZuMMzuW-VXPj6UF8Z296Y_p=PEB_Sc1By6s5PMw@mail.gmail.com>
-Subject: Re: [PATCH trivial v3] qga: use access(2) to check for command
- existance instead of questionable stat(2)
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Rodrigo Dias Correa <r@drigo.nl>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000008e9ad40642ac1bd4"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,58 +81,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008e9ad40642ac1bd4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Vladimir Sementsov-Ogievskiy recently posted
 
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+    Subject: [PATCH v2 00/33] qapi: docs: width=70 and two spaces between sentences 
+    Date: Sat, 11 Oct 2025 17:04:06 +0300
+    Message-ID: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 
-Best Regards,
-Kostiantyn Kostiuk.
+His series refills doc comments to conform to the 70 width limit,
+tidies up spaces between sentences, and adds code to enforce both
+going forward.
+
+In review, we agreed to only refill prose, not the examples, at least
+for now.  Vladimir volunteered to adjust his validation code,
+accordingly.  I volunteered to take care of the doc comment cleanup.
+
+I decided redoing the cleanup would be less work than splitting.
+While doing so, I found a markup bug: PATCH 1.  PATCH 2+4 are the
+cleanup.  PATCH 3+5 additionally clean up blank lines.
+
+Testing this with his validation code failed:
+docs/interop/firmware.json also needs the treatment, and
+docs/interop/vhost-user.json would if we bothered to test it.  PATCH
+6+7 take care of both.  PATCH 8 adds proper markup to literal blocks,
+so that the validation code can skip them.  PATCH 9 adds the missing
+test.
+
+Vladimir's revised validation code is here:
+
+    Subject: [PATCH v5] qapi: Add documentation format validation
+    Date: Fri, 31 Oct 2025 21:31:29 +0300
+    Message-ID: <20251031183129.246814-1-vsementsov@yandex-team.ru>
+
+It builds fine when applied it on top of this series.
+
+v2:
+* Rebased
+* [PATCH 1]: Commit message tidied up [Vladimir]
+* [PATCH 6+7]: "Example" section conversion split off [Vladimir]
 
 
-On Sun, Nov 2, 2025 at 12:15=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
+Markus Armbruster (9):
+  qapi/audio: Fix description markup of AudiodevDBusOptions @nsamples
+  qapi: Refill doc comments to conform to conventions
+  qapi: Clean up whitespace between definitions
+  qga/qapi-schema: Refill doc comments to conform to conventions
+  qga/qapi-schema: Clean up whitespace between definitions
+  docs/interop: Refill QAPI doc comments to conform to conventions
+  docs/interop/firmware: Belatedly convert "Example" section
+  docs/interop/firmware: Literal block markup
+  docs/interop: Add test to keep vhost-user.json sane
 
-> On 11/2/25 02:29, Rodrigo Dias Correa wrote:
-> ..> Thanks for fixing it.
->
-> Hi!
->
-> It wasn't really broken per se.  Just confusing.
->
-> Thanks,
->
-> /mjt
->
->
+ docs/interop/firmware.json   | 454 +++++++++++++++++------------------
+ docs/interop/vhost-user.json |  59 +++--
+ docs/meson.build             |   9 +-
+ qapi/accelerator.json        |   3 +-
+ qapi/acpi-hest.json          |   5 +-
+ qapi/audio.json              |   4 +-
+ qapi/block-core.json         | 158 ++++++------
+ qapi/block-export.json       |  26 +-
+ qapi/char.json               |   1 -
+ qapi/crypto.json             |   8 +-
+ qapi/cxl.json                |   1 -
+ qapi/introspect.json         |   8 +-
+ qapi/job.json                |  30 +--
+ qapi/machine-common.json     |   4 +-
+ qapi/machine-s390x.json      |   4 +-
+ qapi/machine.json            |  49 ++--
+ qapi/migration.json          | 126 +++++-----
+ qapi/misc-i386.json          |   2 -
+ qapi/net.json                |  26 +-
+ qapi/qdev.json               |   4 +-
+ qapi/qom.json                |  47 ++--
+ qapi/run-state.json          |  20 +-
+ qapi/sockets.json            |  30 +--
+ qapi/stats.json              |   4 +-
+ qapi/ui.json                 |  17 +-
+ qapi/virtio.json             |   6 +-
+ qga/qapi-schema.json         |  96 ++++----
+ 27 files changed, 623 insertions(+), 578 deletions(-)
 
---0000000000008e9ad40642ac1bd4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Reviewed-by: Kostiantyn Kostiuk &lt;<a href=3D"mailto=
-:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><d=
-iv><br></div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=
-=3D"gmail_signature"><div dir=3D"ltr"><div>Best Regards,</div><div>Kostiant=
-yn Kostiuk.</div></div></div></div><br></div><br><div class=3D"gmail_quote =
-gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Sun, Nov 2,=
- 2025 at 12:15=E2=80=AFPM Michael Tokarev &lt;<a href=3D"mailto:mjt@tls.msk=
-.ru">mjt@tls.msk.ru</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">On 11/2/25 02:29, Rodrigo Dias Correa wrote:<br>
-..&gt; Thanks for fixing it.<br>
-<br>
-Hi!<br>
-<br>
-It wasn&#39;t really broken per se.=C2=A0 Just confusing.<br>
-<br>
-Thanks,<br>
-<br>
-/mjt<br>
-<br>
-</blockquote></div>
-
---0000000000008e9ad40642ac1bd4--
+-- 
+2.49.0
 
 
