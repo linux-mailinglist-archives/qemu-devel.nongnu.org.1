@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C63C2B38B
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 12:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9AC2B314
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:59:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFsGy-0003nc-K7; Mon, 03 Nov 2025 05:58:52 -0500
+	id 1vFsH5-0003pr-1a; Mon, 03 Nov 2025 05:58:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGw-0003n8-HB
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsH1-0003om-NA
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGu-0004Jo-AR
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:50 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vFsGz-0004Nm-KT
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:58:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762167527;
+ s=mimecast20190719; t=1762167531;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RUKN2jl1ZyAKFU991n52ujfJQ7mv2tkxp1xJ6e+OQIM=;
- b=iSmEKucTv0li7UZRlNvMofqCAANu8cH5TlBg2B3VV3uQjcun81e/z2r3szZ7qdwrqGRcxN
- tulrsAY8V7C3o1e6nqnbp6eaEq+CfEh72NIMdYdcAzc7VVaL60vjdzwQ8pZCoUDtgZueRH
- ScQkLROwSVopNr8/Py9VSnDLc6JvGz8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3LMhIyRgzgW+wyd5rEWS2BizSkkIZyVD9i9Z7R9alhA=;
+ b=EDKpb6jj6c1bJVL6WTyNC7+XDMfqWk3nK7eLmMxmEMY6WC4AnNE2SuV3XTTXYDNhm8CGdW
+ 2m4bKLt8AgYCu7s4c45kwnAjY9DrYjXtt4GlqjAq7aDZk7P6Pqu4A7ZJwbp1j0KGzh6Rg4
+ f2bYV95qPZgtQPFBbI/kotKFMyYMCsM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-1alp3uAqMm6_nsDY07sOfA-1; Mon,
- 03 Nov 2025 05:58:45 -0500
-X-MC-Unique: 1alp3uAqMm6_nsDY07sOfA-1
-X-Mimecast-MFC-AGG-ID: 1alp3uAqMm6_nsDY07sOfA_1762167524
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-5cBBm6i6Ncy9ynu6oaGDfg-1; Mon,
+ 03 Nov 2025 05:58:48 -0500
+X-MC-Unique: 5cBBm6i6Ncy9ynu6oaGDfg-1
+X-Mimecast-MFC-AGG-ID: 5cBBm6i6Ncy9ynu6oaGDfg_1762167527
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76ADF1955F79; Mon,  3 Nov 2025 10:58:44 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C89B219541B2; Mon,  3 Nov 2025 10:58:46 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.12])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8F32130001A1; Mon,  3 Nov 2025 10:58:42 +0000 (UTC)
+ id 19ED430001A8; Mon,  3 Nov 2025 10:58:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 08/22] tests/functional/.../testcase.py: better socketdir
- cleanup
-Date: Mon,  3 Nov 2025 11:58:05 +0100
-Message-ID: <20251103105824.322039-9-thuth@redhat.com>
+Subject: [PULL 09/22] MAINTAINERS: fix functional tests section
+Date: Mon,  3 Nov 2025 11:58:06 +0100
+Message-ID: <20251103105824.322039-10-thuth@redhat.com>
 In-Reply-To: <20251103105824.322039-1-thuth@redhat.com>
 References: <20251103105824.322039-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,39 +83,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-TemporaryDirectory prefer explicit call to .cleanup() (or
-use context manager). Otherwise it may produce a warning like:
-
-   /usr/lib/python3.10/tempfile.py:1008: \
-     ResourceWarning: Implicitly cleaning up \
-     <TemporaryDirectory '/tmp/qemu_func_test_sock_4esmf5ba'>
-
-Currently, the only test using socket_dir() is
-tests/functional/x86_64/test_vfio_user_client.py, and it does
-print this warning, at least with python 3.10.12. With this commit,
-the warning disappears.
+Without "S: Maintained", ./scripts/get_maintainer.pl shows "unknown"
+role instead of "maintainer" for "M: " entry, it's confusing. I really
+hope that functional tests are maintained:)
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251025165809.930670-2-vsementsov@yandex-team.ru>
+Message-ID: <20251025165809.930670-3-vsementsov@yandex-team.ru>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 2c0abde3957..a122acb5609 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -233,7 +233,7 @@ def tearDown(self):
-         if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
-             shutil.rmtree(self.workdir)
-         if self.socketdir is not None:
--            shutil.rmtree(self.socketdir.name)
-+            self.socketdir.cleanup()
-             self.socketdir = None
-         self.machinelog.removeHandler(self._log_fh)
-         self.log.removeHandler(self._log_fh)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a6a1d36f52d..71c86ee8ce2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4412,6 +4412,7 @@ Functional testing framework
+ M: Thomas Huth <thuth@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ R: Daniel P. Berrange <berrange@redhat.com>
++S: Maintained
+ F: docs/devel/testing/functional.rst
+ F: scripts/clean_functional_cache.py
+ F: tests/functional/qemu_test/
 -- 
 2.51.0
 
