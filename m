@@ -2,71 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41602C2E06E
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F5C2E044
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1B9-0003yX-5Q; Mon, 03 Nov 2025 15:29:27 -0500
+	id 1vG15x-0001ye-HG; Mon, 03 Nov 2025 15:24:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vG1B5-0003tH-47
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:29:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <startergo@protonmail.com>)
+ id 1vG15u-0001vf-NH
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:24:02 -0500
+Received: from mail-06.mail-europe.com ([85.9.210.45])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vG1B1-0007k9-WD
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:29:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762201758;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0AzqrP4Q2MbNGpljBETQ9h1CiGOVkyDv1lMoTk5T+co=;
- b=LaJ6r7DCgXYc3H9V7qk7zbOSGNL/GdGMa3xpIo0Z/H/oHKqr5KBBZBmB6Q3sW1BMki6a5p
- 8hXbwrqprRksueRNwK4B0nWdVk9EqNXLPWt1JM9N8mYWUZ2gk0S7CSXXvAKuzshB2MUZtT
- WgvHHSEktRFvdaxf25oR9vM15bn1Vfs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-9E_zEs8JM4CsLTDqU-ECZg-1; Mon,
- 03 Nov 2025 15:29:16 -0500
-X-MC-Unique: 9E_zEs8JM4CsLTDqU-ECZg-1
-X-Mimecast-MFC-AGG-ID: 9E_zEs8JM4CsLTDqU-ECZg_1762201755
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4133A1865FDC; Mon,  3 Nov 2025 20:29:10 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.131])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D680830001A8; Mon,  3 Nov 2025 20:29:07 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <startergo@protonmail.com>)
+ id 1vG15q-00060w-7G
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:24:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail3; t=1762201418; x=1762460618;
+ bh=soC2km4V7AIup4NZTzk3H7qIu7Uh9LsazsUAmqlMPc4=;
+ h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+ b=PM3za9KssYrsOUKwiZFY1JEAu2ajJGiB0hlaDnN2xJ1nGt7CINxQqFKD7jPMU6LKv
+ KTsrO9PCcF/mv7s87ivWxVIpjQ86cjGZc818W/g9sCT85D9Jn6gQ8vauINKDXSHO1z
+ edD3Po33sk5qGGdh8BIHLZig6cvus9L7fPwOtxGmVDqY8thLHfoODl1dpUOhqTbf+G
+ U50jWv6GJCvuI1mpUZg2yuOGX/yLJzLeAi6KP5qMWIWZfzfTTbS13kqfyGp7vI3b7U
+ TWUW7tWT5ZRV7ViRx1eUPXVoJjVRXQcRppnhv1xg5Jjmc08MuqjB5rziVSX82V6uoA
+ mLx1Gy73OZoRg==
+Date: Mon, 03 Nov 2025 20:23:32 +0000
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, berrange@redhat.com, kwolf@redhat.com,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 8/8] iotests: Add coverage of recent NBD qio deadlock fix
-Date: Mon,  3 Nov 2025 14:10:59 -0600
-Message-ID: <20251103202849.3687643-18-eblake@redhat.com>
-In-Reply-To: <20251103202849.3687643-10-eblake@redhat.com>
-References: <20251103202849.3687643-10-eblake@redhat.com>
+From: startergo <startergo@protonmail.com>
+Cc: mohd.akram@outlook.com, startergo <startergo@protonmail.com>
+Subject: [PATCH v3] ui/sdl2: Fix using GL display on macOS with improvements
+Message-ID: <20251103202322.24813-1-startergo@protonmail.com>
+Feedback-ID: 25315608:user:proton
+X-Pm-Message-ID: 5b2b091d208b6cf91cdbcf9aa362838ce75ed046
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=85.9.210.45;
+ envelope-from=startergo@protonmail.com; helo=mail-06.mail-europe.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,185 +64,297 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test that all images in a qcow2 chain using an NBD backing file can be
-served by the same process.  Prior to the recent QIONetListener fixes,
-this test would demonstrate deadlock.
+SDL_GL_CONTEXT_PROFILE_MASK needs to be set before creating the window
+so that SDL can load the ANGLE library for GL ES support. The shader
+source version also needs to match the library used. Avoid falling back
+to GL ES on macOS since it will not be available if ANGLE was not the
+library loaded initially.
 
-The test borrows heavily from the original formula by "John Doe" in
-the gitlab bug, but uses a Unix socket rather than TCP to avoid port
-contention, and uses a full-blown QEMU rather than qemu-storage-daemon
-since both programs were impacted.
+Enhancements in v3:
+- Add better error handling and diagnostics
+- Add GL context validation after creation
+- Improve shader version detection for better compatibility
+- Add conditional precision qualifiers for GLES vs GL
+- Add runtime ANGLE detection
+- Improve code comments and documentation
+- Fix potential memory issues with shader compilation
+- Add trace points for debugging
 
-[While preparing this patch by making the new test executable, I
-noticed vvfat.out does not need execute permissions]
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3169
-Signed-off-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Mohamed Akram <mohd.akram@outlook.com>
 ---
- tests/qemu-iotests/tests/nbd-in-qcow2-chain   | 84 +++++++++++++++++++
- .../qemu-iotests/tests/nbd-in-qcow2-chain.out | 56 +++++++++++++
- tests/qemu-iotests/tests/vvfat.out            |  0
- 3 files changed, 140 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
- create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
- mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
+ ui/sdl2-gl.c                     | 54 ++++++++++++++++++++++-----
+ ui/sdl2.c                        | 18 +++++++++
+ ui/shader.c                      | 64 ++++++++++++++++++++++++++++++--
+ ui/shader/texture-blit-flip.vert |  2 -
+ ui/shader/texture-blit.frag      |  2 -
+ ui/shader/texture-blit.vert      |  2 -
+ ui/trace-events                  |  7 ++++
+ 7 files changed, 130 insertions(+), 19 deletions(-)
 
-diff --git a/tests/qemu-iotests/tests/nbd-in-qcow2-chain b/tests/qemu-iotests/tests/nbd-in-qcow2-chain
-new file mode 100755
-index 00000000000..b89f74d4552
---- /dev/null
-+++ b/tests/qemu-iotests/tests/nbd-in-qcow2-chain
-@@ -0,0 +1,84 @@
-+#!/usr/bin/env bash
-+# group: rw quick
-+#
-+# Test of opening both server and client NBD in a qcow2 backing chain
-+#
-+# Copyright (C) Red Hat, Inc.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+index 3be17d1..1db85d2 100644
+--- a/ui/sdl2-gl.c
++++ b/ui/sdl2-gl.c
+@@ -30,6 +30,11 @@
+ #include "ui/input.h"
+ #include "ui/sdl2.h"
+=20
++#ifdef CONFIG_DARWIN
++#include <TargetConditionals.h>
++#endif
++#include "trace.h"
 +
-+# creator
-+owner=eblake@redhat.com
+ static void sdl2_set_scanout_mode(struct sdl2_console *scon, bool scanout)
+ {
+     if (scon->scanout_mode =3D=3D scanout) {
+@@ -147,27 +152,56 @@ QEMUGLContext sdl2_gl_create_context(DisplayGLCtx *dg=
+c,
+     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+=20
+     SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+-    if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON ||
+-        scon->opts->gl =3D=3D DISPLAY_GL_MODE_CORE) {
+-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+-                            SDL_GL_CONTEXT_PROFILE_CORE);
+-    } else if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ES) {
+-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+-                            SDL_GL_CONTEXT_PROFILE_ES);
+-    }
 +
-+seq=`basename $0`
-+echo "QA output created by $seq"
++    /*
++     * Note: SDL_GL_CONTEXT_PROFILE_MASK should be set before window creat=
+ion
++     * (see sdl2_window_create) so SDL can load the correct GL library (AN=
+GLE
++     * for ES support on macOS). Setting it here only affects shared conte=
+xts.
++     */
 +
-+status=1    # failure is the default!
+     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, params->major_ver);
+     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, params->minor_ver);
+=20
+     ctx =3D SDL_GL_CreateContext(scon->real_window);
+=20
+-    /* If SDL fail to create a GL context and we use the "on" flag,
+-     * then try to fallback to GLES.
++    if (ctx) {
++        /* Validate the created context */
++        SDL_GL_MakeCurrent(scon->real_window, ctx);
++        int profile =3D 0;
++        SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile);
 +
-+_cleanup()
-+{
-+    _cleanup_qemu
-+    _cleanup_test_img
-+    rm -f "$SOCK_DIR/nbd"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
++        trace_sdl2_gl_context_created(profile, params->major_ver,
++                                       params->minor_ver);
 +
-+# get standard environment, filters and checks
-+cd ..
-+. ./common.rc
-+. ./common.filter
-+. ./common.qemu
-+. ./common.nbd
++        /* Check if ANGLE is being used */
++        const char *renderer =3D (const char *)glGetString(GL_RENDERER);
++        if (renderer && strstr(renderer, "ANGLE")) {
++            trace_sdl2_gl_using_angle(renderer);
++        }
++    } else {
++        const char *err =3D SDL_GetError();
++        warn_report("Failed to create GL context (v%d.%d): %s",
++                    params->major_ver, params->minor_ver,
++                    err ? err : "unknown error");
++    }
 +
-+_supported_fmt qcow2  # Hardcoded to qcow2 command line and QMP below
-+_supported_proto file
++    /*
++     * If SDL fail to create a GL context and we use the "on" flag,
++     * then try to fallback to GLES. On macOS, this will not work because
++     * SDL must load ANGLE at window creation time for ES support. If the
++     * Core profile was requested initially, ANGLE was not loaded and this
++     * fallback will fail.
+      */
++#if !TARGET_OS_OSX
+     if (!ctx && scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON) {
+         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                             SDL_GL_CONTEXT_PROFILE_ES);
+         ctx =3D SDL_GL_CreateContext(scon->real_window);
++        if (ctx) {
++            trace_sdl2_gl_fallback_to_es();
++        }
+     }
++#endif
+     return (QEMUGLContext)ctx;
+ }
+=20
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 032dc14..5522bcc 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -34,6 +34,7 @@
+ #include "system/system.h"
+ #include "qemu/log.h"
+ #include "qemu-main.h"
++#include "trace.h"
+=20
+ static int sdl2_num_outputs;
+ static struct sdl2_console *sdl2_console;
+@@ -96,6 +97,23 @@ void sdl2_window_create(struct sdl2_console *scon)
+ #ifdef CONFIG_OPENGL
+     if (scon->opengl) {
+         flags |=3D SDL_WINDOW_OPENGL;
 +
-+size=100M
++        /*
++         * Set GL context profile before creating the window.
++         * This is critical on macOS where SDL needs to know which GL libr=
+ary
++         * to load: the native OpenGL framework (for Core profile) or ANGL=
+E
++         * (for ES profile). This cannot be changed after window creation.
++         */
++        if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON ||
++            scon->opts->gl =3D=3D DISPLAY_GL_MODE_CORE) {
++            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
++                                SDL_GL_CONTEXT_PROFILE_CORE);
++            trace_sdl2_gl_request_core_profile();
++        } else if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ES) {
++            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
++                                SDL_GL_CONTEXT_PROFILE_ES);
++            trace_sdl2_gl_request_es_profile();
++        }
+     }
+ #endif
+=20
+diff --git a/ui/shader.c b/ui/shader.c
+index ab448c4..9a19ed4 100644
+--- a/ui/shader.c
++++ b/ui/shader.c
+@@ -26,6 +26,8 @@
+  */
+ #include "qemu/osdep.h"
+ #include "ui/shader.h"
++#include "ui/shader/texture-blit-frag.h"
++#include "qemu/error-report.h"
+=20
+ #include "ui/shader/texture-blit-vert.h"
+ #include "ui/shader/texture-blit-flip-vert.h"
+@@ -153,12 +155,68 @@ QemuGLShader *qemu_gl_init_shader(void)
+ {
+     QemuGLShader *gls =3D g_new0(QemuGLShader, 1);
+=20
++    /*
++     * Detect GL version and set appropriate shader version.
++     * Desktop GL: Use GLSL 1.40 (OpenGL 3.1) for broad compatibility
++     * ES: Use GLSL ES 3.00 (OpenGL ES 3.0)
++     */
++    bool is_desktop =3D epoxy_is_desktop_gl();
++    const char *version =3D is_desktop ? "140" : "300 es";
 +
-+echo
-+echo "=== Preparing base image ==="
++    /*
++     * Add precision qualifiers for GLES (required), but not for desktop G=
+L
++     * where they may cause warnings on some drivers.
++     */
++    const char *precision =3D is_desktop ? "" : "precision mediump float;\=
+n";
 +
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
++    /* Log GL context information for debugging */
++    int gl_version =3D epoxy_gl_version();
++    const char *vendor =3D (const char *)glGetString(GL_VENDOR);
++    const char *renderer =3D (const char *)glGetString(GL_RENDERER);
++    const char *gl_version_str =3D (const char *)glGetString(GL_VERSION);
 +
-+echo
-+echo "=== Starting QEMU and exposing base image ==="
++    info_report("Initializing shaders: %s GL %d.%d (%s / %s / %s)",
++                is_desktop ? "Desktop" : "ES",
++                gl_version / 10, gl_version % 10,
++                vendor ? vendor : "unknown",
++                renderer ? renderer : "unknown",
++                gl_version_str ? gl_version_str : "unknown");
 +
-+_launch_qemu -machine q35
-+h1=$QEMU_HANDLE
-+_send_qemu_cmd $QEMU_HANDLE '{"execute": "qmp_capabilities"}' 'return'
-+_send_qemu_cmd $QEMU_HANDLE '{"execute": "blockdev-add",
-+  "arguments": {"node-name":"base", "driver":"qcow2",
-+     "file":{"driver":"file", "filename":"'"$TEST_IMG.base"'"}}}' 'return'
-+_send_qemu_cmd $QEMU_HANDLE '{"execute":"nbd-server-start",
-+  "arguments": {"addr":{"type":"unix",
-+    "data":{"path":"'"$SOCK_DIR/nbd"'"}}}}' 'return'
-+_send_qemu_cmd $QEMU_HANDLE '{"execute":"nbd-server-add",
-+  "arguments": {"device":"base","name":"base"}}' 'return'
++    /* Check for required GL features */
++    if (is_desktop &&
++        !epoxy_has_gl_extension("GL_ARB_vertex_array_object")) {
++        warn_report("GL_ARB_vertex_array_object not available, "
++                    "rendering may fail");
++    }
 +
-+echo
-+echo "=== Creating wrapper image ==="
++    /* Build shader source with appropriate version and precision */
++    const char *vert_fmt =3D "#version %s\n%s";
++    const char *frag_fmt =3D "#version %s\n%s%s";
 +
-+_make_test_img -F raw -b "nbd+unix:///base?socket=$SOCK_DIR/nbd" $size
++    char *blit_vert_src =3D g_strdup_printf(
++        vert_fmt, version, texture_blit_vert_src);
++    char *blit_flip_vert_src =3D g_strdup_printf(
++        vert_fmt, version, texture_blit_flip_vert_src);
++    char *blit_frag_src =3D g_strdup_printf(
++        frag_fmt, version, precision, texture_blit_frag_src);
 +
-+echo
-+echo "=== Adding wrapper image ==="
++    /* Compile and link shader programs */
+     gls->texture_blit_prog =3D qemu_gl_create_compile_link_program
+-        (texture_blit_vert_src, texture_blit_frag_src);
++        (blit_vert_src, blit_frag_src);
+     gls->texture_blit_flip_prog =3D qemu_gl_create_compile_link_program
+-        (texture_blit_flip_vert_src, texture_blit_frag_src);
++        (blit_flip_vert_src, blit_frag_src);
 +
-+_send_qemu_cmd $QEMU_HANDLE '{"execute": "blockdev-add",
-+  "arguments": {"node-name":"wrap", "driver":"qcow2",
-+     "file":{"driver":"file", "filename":"'"$TEST_IMG"'"}}}' 'return'
-+_send_qemu_cmd $QEMU_HANDLE '{"execute":"nbd-server-add",
-+  "arguments": {"device":"wrap","name":"wrap"}}' 'return'
++    /* Clean up temporary shader source strings */
++    g_free(blit_vert_src);
++    g_free(blit_flip_vert_src);
++    g_free(blit_frag_src);
 +
-+echo
-+echo "=== Checking NBD server ==="
+     if (!gls->texture_blit_prog || !gls->texture_blit_flip_prog) {
+-        exit(1);
++        error_report("Failed to compile GL shaders (GL %s %d.%d)",
++                     is_desktop ? "Desktop" : "ES",
++                     gl_version / 10, gl_version % 10);
++        qemu_gl_fini_shader(gls);
++        return NULL;
+     }
+=20
+     gls->texture_blit_vao =3D
+diff --git a/ui/shader/texture-blit-flip.vert b/ui/shader/texture-blit-flip=
+.vert
+index f7a448d..1e4ac4c 100644
+--- a/ui/shader/texture-blit-flip.vert
++++ b/ui/shader/texture-blit-flip.vert
+@@ -1,5 +1,3 @@
+-#version 300 es
+-
+ in vec2  in_position;
+ out vec2 ex_tex_coord;
+=20
+diff --git a/ui/shader/texture-blit.frag b/ui/shader/texture-blit.frag
+index 8ed95a4..bd296a2 100644
+--- a/ui/shader/texture-blit.frag
++++ b/ui/shader/texture-blit.frag
+@@ -1,5 +1,3 @@
+-#version 300 es
+-
+ uniform sampler2D image;
+ in  mediump vec2 ex_tex_coord;
+ out mediump vec4 out_frag_color;
+diff --git a/ui/shader/texture-blit.vert b/ui/shader/texture-blit.vert
+index fb48d70..ae205f6 100644
+--- a/ui/shader/texture-blit.vert
++++ b/ui/shader/texture-blit.vert
+@@ -1,5 +1,3 @@
+-#version 300 es
+-
+ in vec2  in_position;
+ out vec2 ex_tex_coord;
+=20
+diff --git a/ui/trace-events b/ui/trace-events
+index 3eba9ca..5effcc0 100644
+--- a/ui/trace-events
++++ b/ui/trace-events
+@@ -182,5 +182,12 @@ dbus_gl_gfx_switch(void *p) "surf: %p"
+ dbus_filter(unsigned int serial, unsigned int filter) "serial=3D%u (<=3D %=
+u)"
+ dbus_can_share_map(bool share) "can_share_map: %d"
+=20
++# sdl2-gl.c
++sdl2_gl_context_created(int profile, int major, int minor) "profile=3D%d v=
+ersion=3D%d.%d"
++sdl2_gl_using_angle(const char *renderer) "renderer=3D%s"
++sdl2_gl_fallback_to_es(void) "Falling back to OpenGL ES"
++sdl2_gl_request_core_profile(void) "Requesting Core profile"
++sdl2_gl_request_es_profile(void) "Requesting ES profile"
 +
-+$QEMU_NBD --list -k $SOCK_DIR/nbd
-+
-+echo
-+echo "=== Cleaning up ==="
-+
-+_send_qemu_cmd $QEMU_HANDLE '{"execute":"quit"}' ''
-+
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/nbd-in-qcow2-chain.out b/tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
-new file mode 100644
-index 00000000000..5f1d31ae2e0
---- /dev/null
-+++ b/tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
-@@ -0,0 +1,56 @@
-+QA output created by nbd-in-qcow2-chain
-+
-+=== Preparing base image ===
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=104857600
-+
-+=== Starting QEMU and exposing base image ===
-+{"execute": "qmp_capabilities"}
-+{"return": {}}
-+{"execute": "blockdev-add",
-+  "arguments": {"node-name":"base", "driver":"IMGFMT",
-+     "file":{"driver":"file", "filename":"TEST_DIR/t.IMGFMT.base"}}}
-+{"return": {}}
-+{"execute":"nbd-server-start",
-+  "arguments": {"addr":{"type":"unix",
-+    "data":{"path":"SOCK_DIR/nbd"}}}}
-+{"return": {}}
-+{"execute":"nbd-server-add",
-+  "arguments": {"device":"base","name":"base"}}
-+{"return": {}}
-+
-+=== Creating wrapper image ===
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=104857600 backing_file=nbd+unix:///base?socket=SOCK_DIR/nbd backing_fmt=raw
-+
-+=== Adding wrapper image ===
-+{"execute": "blockdev-add",
-+  "arguments": {"node-name":"wrap", "driver":"IMGFMT",
-+     "file":{"driver":"file", "filename":"TEST_DIR/t.IMGFMT"}}}
-+{"return": {}}
-+{"execute":"nbd-server-add",
-+  "arguments": {"device":"wrap","name":"wrap"}}
-+{"return": {}}
-+
-+=== Checking NBD server ===
-+exports available: 2
-+ export: 'base'
-+  size:  104857600
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-+  min block: 1
-+  opt block: 4096
-+  max block: 33554432
-+  transaction size: 64-bit
-+  available meta contexts: 1
-+   base:allocation
-+ export: 'wrap'
-+  size:  104857600
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-+  min block: 1
-+  opt block: 4096
-+  max block: 33554432
-+  transaction size: 64-bit
-+  available meta contexts: 1
-+   base:allocation
-+
-+=== Cleaning up ===
-+{"execute":"quit"}
-+*** done
-diff --git a/tests/qemu-iotests/tests/vvfat.out b/tests/qemu-iotests/tests/vvfat.out
-old mode 100755
-new mode 100644
--- 
+ # egl-helpers.c
+ egl_init_d3d11_device(void *p) "d3d device: %p"
+--=20
 2.51.1
+
 
 
