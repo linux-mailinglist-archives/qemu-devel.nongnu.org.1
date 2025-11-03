@@ -2,92 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634DCC2AF2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:14:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DB1C2AF4B
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 11:15:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vFrZh-00061k-A9; Mon, 03 Nov 2025 05:14:09 -0500
+	id 1vFraC-0006QJ-EM; Mon, 03 Nov 2025 05:14:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrZe-00061S-TM
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:14:06 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vFrZc-00030V-5f
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:14:06 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-475dc6029b6so37585675e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 02:14:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762164840; x=1762769640; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rlujYw+RiSOLNRW7TpT1O8LSg6bN2iOs+PleaszjFGk=;
- b=TVgD3RiPEuEEA8FPesOsg9NFwVY/ZGVG3JjmwmKXR52tJiEMmqjBnJh3+a/EYv4brZ
- 6RYTJfcgyaOoNf2TqDU71T740l+HA9b/fMoQ+0jKig3zm7YgcrCB08rKaDV5zWlG23rf
- mm5dRR6uchM0iRUFkCZkPtZWg2dMoHmvVWOoiu3PFZ38iEAC74R/K+P5mAz7s+Me8tCv
- pQzbsjHajp4chUpIN+i5cfBqwwXKpEcFR4FuN7M5tEW32k3n9gIq0sfYIRYz6hJWNlKz
- P6zxeCWNHBuP+1Gz/u3emN5NXyeEEpovyR/7NbzspAuZEooTbc4SPgZXRJTRd3CDo+74
- k4lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762164840; x=1762769640;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rlujYw+RiSOLNRW7TpT1O8LSg6bN2iOs+PleaszjFGk=;
- b=Y4yqtH1ge+wgohWzXTR0oI9p9qLF0lnbDRSzLJZAuHIgg++FGJXrdeJ8vCY0kkAZm4
- Qi+PeRxlP2EO12hHRRLuoMFcn7E7JpQ5idXNZ78S2U//iqYruKlUSzmqaIDA5zl0oyPd
- miBodMe7B31ZCBDOmpyRWIZWMS3yj3inuLwoMOMfdMmgN9u+aP4+79anAbOznCKXQnfK
- jhhvDPNOqTtrYOdLl+78+lQt7mhVb7Owm9uw9y20hArMLR3OFgJKyC5fvpNaVe6nZub3
- jXniQ+vQpI5pe6PFRQbgL9sF3MSyiEftwKwCqqR1qJpsF4KUGyEMbuhrsAF4g3Nihn+x
- hQNQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVnQGc6sNZc1/dOEX5nWBljiyD038+HeeFE1qdZ2Z0X18U8HGwV+L2W2HKnO2VEW1T8RZh2Re4feF3b@nongnu.org
-X-Gm-Message-State: AOJu0YwxK/HgnwoMh8VZ5LbVD/AO426zOyL79a3zQmjQEROwb9QQNKnO
- NTveQb8XjZm7xmSPi8Yk7LSmtE4ED2ML1njRSs2nxi/Xh1BJNTuoTonNY7+peqHptW1Q9aer8id
- xYqe+6lM=
-X-Gm-Gg: ASbGnct/hLgZ7hrxZSarkekXub3DgHcVQMCrl1Jb6GDAIT5rVUmdZdjevkihBRpK7Uq
- 4ijXh+JcT2Dx3iWyCfmGcqHKKccmZVQMAMO7ucFFjyhpB4NSKnhauDr82KgGUOjLeWBVEGGXuj8
- 1ukkgXg/3GRrF5ERhqu1DUQXK1o6cq0rrlUOSfql3ad9AZ7BbskkRK7nMCpK7KdDOpcKqu4LrxF
- aaU4uN5AB5J+/GPvrCHQUa0DxT6gKONPNRwt37nBCmZTA6Q1n23YH49zSUGnxwFoIZa29Ze4rrd
- q57P1ZmQqdLpIBV8yCs/MAaNYdffAfUrXyaWTcvez7vaKGFsNqP5vcmVmzjnltDSp+Dkg8zMEjM
- PeylWV7O96hZcfG80XBkZivV8emlWbdt0s2ltVBhIX5LE/juB2CZyzlM8+GMyS3PLAElwRMaEyZ
- 3sVL5cgCQ53d6EbC4h3lQuNqkDCYvagtCWLOP9mx8py+LiXvqaZ7vC0qIBE/Oeew==
-X-Google-Smtp-Source: AGHT+IH/4EpD2Fs7Pe/mB/ocjhUc7f1ngUT1xUeriXenTikeZ+zOg1vVXhX4BZgWFCKrqbcAbehIEg==
-X-Received: by 2002:a05:600c:3489:b0:477:cb6:805e with SMTP id
- 5b1f17b1804b1-477307e0513mr91449915e9.18.1762164838363; 
- Mon, 03 Nov 2025 02:13:58 -0800 (PST)
-Received: from [172.18.178.65] (ip-185-104-138-122.ptr.icomera.net.
- [185.104.138.122]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4773c48e805sm147655675e9.4.2025.11.03.02.13.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Nov 2025 02:13:57 -0800 (PST)
-Message-ID: <4142ad61-f71f-4985-8261-8a0700909209@linaro.org>
-Date: Mon, 3 Nov 2025 11:13:49 +0100
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vFra7-0006P4-Qh
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:14:36 -0500
+Received: from 7.mo552.mail-out.ovh.net ([188.165.59.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vFrZx-00032h-En
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 05:14:35 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.37.198])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d0S9V2RVHz5yNQ;
+ Mon,  3 Nov 2025 10:14:06 +0000 (UTC)
+Received: from kaod.org (37.59.142.108) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 3 Nov
+ 2025 11:14:01 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-108S002d0b5348c-599b-4a22-b30c-9a89a23502c5,
+ 25720A756895FCE40C516A1A344E2045610AA209) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <a4c3ebb7-a189-493c-a60c-6e51d4d02aff@kaod.org>
+Date: Mon, 3 Nov 2025 11:14:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/37] target/arm/hvf: Assert no 128-bit sysregs in
- hvf_arch_init_vcpu
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20251014200718.422022-1-richard.henderson@linaro.org>
- <20251014200718.422022-15-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251014200718.422022-15-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [SPAM] [PATCH v3 04/30] hw/arm/aspeed: Rename and export
+ create_pca9554() as aspeed_create_pca9554()
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20251103092801.1282602-1-jamin_lin@aspeedtech.com>
+ <20251103092801.1282602-5-jamin_lin@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20251103092801.1282602-5-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Originating-IP: [37.59.142.108]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: e6b278a0-6938-408c-bde8-5ca3cf5b865b
+X-Ovh-Tracer-Id: 9253208386508786610
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFPH3mapZWBF5xMOjMVRdrKpHhd4hodaHZE2u2Zk3eWq74ZWB25x/Z7nDAdtTQoLA+mLzRfsdmxRSngZ7B0XiAvgizlA4gX61dReej8Aa18P3kW1GEWZDCickeQHP4ZxUPxz2+kyb+4zcgTcYm2t18TblVObTS8rBi8O6pTgvFWfjDlVDkmLlNgcHM0YXwJ5/9UeX8ByzCIiaFsBULYQAjNrMg3Nc0cU60CpvavtoG7xaNAfNlYV2NbithVOKHbEFz2WFQaErXkB5Db7z6HZR3ScwaGCNL+ag4yPq7lH55sSrZ0MKMzix+8siM0PqGitTFUDsM9v20q6nsKYdt7gYiEXgjNhOwgotUlF2kYvoPgM5+scSmy9T6KGXTEdWtG2iZtOKi2wD6Saor380ESebXMp9tFv91InlquT4phFROiQfodCRTnkna/MWYMVbGqX3gDRwoMax3uRaej1Zi3dkd2z015j2Hovqcg2ufLYszCcYjwnUP+5QPhywt4RVbzvHgZ5va7WtK3NDmxqrBQneX+mueSf64Unc7ZuDLblL4MkNtZKNmBf+3eDMxCE4+XgaZxDH1WKR16QSzu/5dQI9mwIvQZLLLq28rBshAyewKmEVn/5U5VIj1X1bTKryQGRPWo6UXmjNuoxOKP3AepUKELyLb/kGRojlFJpxDEUpUjjA
+DKIM-Signature: a=rsa-sha256; bh=4gvJSErS0fRnC9WWrFz+Qr2xdS5rkoP01KCi9rK7trQ=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1762164856; v=1;
+ b=CXl6SQBdzpCUm7C8w8kKVMmasDVM/yQJaU6yx1+WwrtwnvCLhZhvzvafmMHJjd/8QYTRzRRk
+ MveF+7UX8WQMHTTcSmozQnx7wCE8SWkggz49b0bzoJxg7+v/bP3gcZtHm2PNG5vYYyYJGBg15dq
+ 3b/2u4wjDnPzHCFHvU1p+BSWtaatGWlDMQXGtfDCud4EpUj1JsNfdVQX/HLsthJNHpdJuNSlyBq
+ 9T7dwVlwJlYlnb2m/J0EG+xtK9k+AOO0zYeJhMBAdgOa3v4vptu6LMRCm6ia0hYYcaLQ85Lo5Mf
+ pdDTqhDN0lIZTFNdKR79Kweouyf80d2MZ4PfXRGds97tg==
+Received-SPF: pass client-ip=188.165.59.253; envelope-from=clg@kaod.org;
+ helo=7.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,14 +129,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/10/25 22:06, Richard Henderson wrote:
-> HVF has not yet enabled 128-bit system registers.
+On 11/3/25 10:27, Jamin Lin wrote:
+> The helper function create_pca9554() has been renamed to
+> aspeed_create_pca9554() and made globally available.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Previously, the function was declared static inside aspeed.c, restricting
+> its visibility to that file. As more Aspeed machine implementations
+> require PCA9554 I²C expander setup, it makes sense to rename it with the
+> aspeed_ prefix and export its declaration in aspeed.h for shared use.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   target/arm/hvf/hvf.c | 4 ++++
->   1 file changed, 4 insertions(+)
+>   include/hw/arm/aspeed.h | 14 ++++++++++++++
+>   hw/arm/aspeed.c         |  8 ++++----
+>   2 files changed, 18 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+> index 3afb964088..d2d9e49a39 100644
+> --- a/include/hw/arm/aspeed.h
+> +++ b/include/hw/arm/aspeed.h
+> @@ -80,4 +80,18 @@ void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
+>    */
+>   void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
+>   
+> +/*
+> + * aspeed_create_pca9554:
+> + * @soc: pointer to the #AspeedSoCState.
+> + * @bus_id: the I²C bus index to attach the device.
+> + * @addr: the I²C address of the PCA9554 device.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I will change I²C to I2C.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+
+
+
+> + *
+> + * Create and attach a PCA9554 I/O expander to the specified I²C bus
+> + * of the given Aspeed SoC. The device is created via
+> + * i2c_slave_create_simple() and returned as an #I2CSlave pointer.
+> + *
+> + * Returns: a pointer to the newly created #I2CSlave instance.
+> + */
+> +I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr);
+> +
+>   #endif
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index c6f272d986..59416eb5ae 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -543,7 +543,7 @@ void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
+>                               TYPE_PCA9552, addr);
+>   }
+>   
+> -static I2CSlave *create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
+> +I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
+>   {
+>       return i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
+>                               TYPE_PCA9554, addr);
+> @@ -1142,7 +1142,7 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
+>       }
+>   
+>       /* Bus 5 Expander */
+> -    create_pca9554(soc, 4, 0x21);
+> +    aspeed_create_pca9554(soc, 4, 0x21);
+>   
+>       /* Mux I2c Expanders */
+>       i2c_slave_create_simple(i2c[5], "pca9546", 0x71);
+> @@ -1153,12 +1153,12 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
+>       i2c_slave_create_simple(i2c[5], "pca9546", 0x77);
+>   
+>       /* Bus 10 */
+> -    dev = DEVICE(create_pca9554(soc, 9, 0x20));
+> +    dev = DEVICE(aspeed_create_pca9554(soc, 9, 0x20));
+>   
+>       /* Set FPGA_READY */
+>       object_property_set_str(OBJECT(dev), "pin1", "high", &error_fatal);
+>   
+> -    create_pca9554(soc, 9, 0x21);
+> +    aspeed_create_pca9554(soc, 9, 0x21);
+>       at24c_eeprom_init(i2c[9], 0x50, 64 * KiB);
+>       at24c_eeprom_init(i2c[9], 0x51, 64 * KiB);
+>   
 
 
