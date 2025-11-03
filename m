@@ -2,101 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C5C2E0B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434A5C2E18D
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 22:09:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG1E9-0008Ve-Uq; Mon, 03 Nov 2025 15:32:34 -0500
+	id 1vG1lE-0000tX-7n; Mon, 03 Nov 2025 16:06:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1vG1E5-0008ID-HO
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:32:29 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1lC-0000tP-SL
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1vG1Dv-00008J-E7
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:32:29 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A3KTnwu015014;
- Mon, 3 Nov 2025 20:32:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=d4Q1b
- S/B5AYZ7OmTxVGQCxlQj5fv4tDwrtU15ojiu5U=; b=bBHq+H7trMEfpbZajgVIu
- TtUD5msEmKkrJWPqrYK5zVDLKr0a1cuHh/lzSlWu0X/tLsG2cp2kxJyoys+rYw8C
- /H6aYKJLq7rkVJICpkXQ9JRVTcyKwo5ScUfT5L69TFst+pfylF2Jp+Qw0H5fBTYI
- n2nIOj2at6pVOZRe5CJ4kGscUUCR+bNsGUi77r+H92XzbPUNc6GcQ37+i96YEPSc
- aTNU0xnWHeGu4fXp/oTtTn0juhGG3b77tkMK8M1eh5UH1dbeNuc2Cz1eEGODpGrF
- i96RDJb6SsFs1GxYpqnc3TiFVtCEOzMPJwoSjmWKgKfUbehfQv7Z/sZfkULLrfjd
- g==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a73fqr057-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Nov 2025 20:32:12 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5A3JpNMT010221; Mon, 3 Nov 2025 20:32:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4a58nc6ebk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Nov 2025 20:32:11 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A3KSvS5040083;
- Mon, 3 Nov 2025 20:32:11 GMT
-Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
- (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
- [100.100.254.235])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 4a58nc6e9h-4; Mon, 03 Nov 2025 20:32:10 +0000
-From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-To: mst@redhat.com, qemu-devel@nongnu.org, sarunkod@amd.com
-Cc: alejandro.j.jimenez@oracle.com
-Subject: [PATCH 3/3] amd_iommu: Support 64-bit address for IOTLB lookup
-Date: Mon,  3 Nov 2025 20:32:09 +0000
-Message-ID: <20251103203209.645434-4-alejandro.j.jimenez@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251103203209.645434-1-alejandro.j.jimenez@oracle.com>
-References: <20251103203209.645434-1-alejandro.j.jimenez@oracle.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vG1l7-00058m-Af
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 16:06:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762203991;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sPVGaOzjLfyXGUOLv0Q6i7VmYX8ifCPwCX6pUQAaLtg=;
+ b=Jq8sIWGOoXaUoVeX+6ik6wgm4EZi2SCN+7CQPXKm28KvMk8OMiiANsIU6LL2Hp1D2QMrrQ
+ EAkM8FGjBJIXYb1ntabycup+Rx/xUhn/GQp0i1lzE5EiX2IBnlGRtWEitUEi41CnLuhJR3
+ KVu5gSDYoarp32VGjpBOl9zprzVwArw=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-XdEC4ZQSM2CmZ3aZ-bdlmw-1; Mon, 03 Nov 2025 16:06:30 -0500
+X-MC-Unique: XdEC4ZQSM2CmZ3aZ-bdlmw-1
+X-Mimecast-MFC-AGG-ID: XdEC4ZQSM2CmZ3aZ-bdlmw_1762203989
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4ecf5d3b758so103836641cf.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Nov 2025 13:06:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1762203989; x=1762808789; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sPVGaOzjLfyXGUOLv0Q6i7VmYX8ifCPwCX6pUQAaLtg=;
+ b=Vc5Nz5WHN5THIjFu+Ujaienb2eQY9Tu0oagnlSl3rKPZHiWJ87387Dc4gjvfYFxqtl
+ fLmj9xmZl8w+NQE/91uaIuzNrwf9RwxNm80VCZgbWBYW0M8k5LRJ+gpHEkpbIWA4iagh
+ WhcSkHN2DheDIli0quU9oLRNrTKp3XFOQ4lT12+36Ao7w3cdFDcjWRcYy7hie/pGx0iZ
+ JGQJ8VIC9If/hIQZLGpqFCx3DVEcV04ut6c5wqLtgCWFV1rN+1ecP628NdFo9sSIjq+H
+ u8Bn5r+XGdLJtczvbR5RzH6tquy4k1PgGR5qnxKLB6Euc+ULInkjbDD6iV+hdA+14k1O
+ aomQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762203989; x=1762808789;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sPVGaOzjLfyXGUOLv0Q6i7VmYX8ifCPwCX6pUQAaLtg=;
+ b=uJunJdWKfM3ls3qButuQ42gRgBwXwFIVJvMCKhlgm6nenOfD/Hm1dnpd7/byqS1wUw
+ kCBqy22GTzPC1xeKLeQeOpU/UyByCQXynyVHjFJ1MGntlgmOw7Xd58vPszBzrUnUoH9L
+ 8uudspMmH0JL567m9aGJMI1M1QuKZ+lQ4+WG+qtVxyF97Q+IlR551WJGX8KmNBfvNZS1
+ +s2zYN20Gz/9/TMXYweAgAjaLtjXW1RrN/cSf6YzYnzFmjpd2Ga3HGv/Np16b0lYbaJr
+ 3/sa+8Gn7b3JC/3enfbN4WvhRq7LSpeniFAOlN0oOPuybYC+tjva1mtt+E/mhKJwDCuU
+ n+rQ==
+X-Gm-Message-State: AOJu0YxQoToVHExaRwOj/q8dYwdv8fK8AYlBRXjAmz0Y1DQ6Z0gcKhIA
+ bYHetsB1dSgERiwsYGUYiKfD5GpqH1tHZq/IdwO/ZpWCsezjN0qdryAATD+6fuZy4uMBsfSdiWq
+ +UkMAe+GxdoNBMkxk/bWABTn4tT/+dlMv6m4kjGmuwdXd01h6PF3eSRHUFuBX1yiERXm7hsQd1i
+ 77B1VOO6C4Wq3AaNGAP0tYywuCmDObNsYu93cv6g==
+X-Gm-Gg: ASbGncvRP0KVpykDLeUFtS3wg+Sw7Iyjp6z0Kd8ksFCvPFLFjSPx1EtqYQ+pen/XDHJ
+ QHmULbc3e77wNbHoK1kKQ1B/4wQYk+XmBWJnHYzcM13wxVw04B0xkwZtxL+FoWwuSjRZbFncrdg
+ rrA/jdq5bu5ip8qnMHtT+l6nI7hQiQBWqzrr8VO6Jn5xBBojpCUqiMlXPfgAR621QFuQWWCuDxa
+ NGbNDukGajP5NkqG2wo3FhHfJhVvhObISUr/HRhSyQ15YN5MfB9fifT4K52kOzTe+Tful8t1cSP
+ K2gWJElbmrgKoO24CtPrGFuk1XRHuBjJAY7JLDUsXRJ+FsChe5Qx+SY2mufxLEit
+X-Received: by 2002:a05:622a:44e:b0:4e8:9140:f3d3 with SMTP id
+ d75a77b69052e-4ed30f8fa24mr171821931cf.50.1762203988873; 
+ Mon, 03 Nov 2025 13:06:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqaPLpTHIu4FiNylKdtU4c9ZpZsvyPS8tZuUMtRAo6gaAonFc+9+UWo7hQFIebUsl/uLWk8Q==
+X-Received: by 2002:a05:622a:44e:b0:4e8:9140:f3d3 with SMTP id
+ d75a77b69052e-4ed30f8fa24mr171821321cf.50.1762203988216; 
+ Mon, 03 Nov 2025 13:06:28 -0800 (PST)
+Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8b0f5468968sm57428185a.19.2025.11.03.13.06.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Nov 2025 13:06:27 -0800 (PST)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
+ peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 00/36] Staging patches
+Date: Mon,  3 Nov 2025 16:05:49 -0500
+Message-ID: <20251103210625.3689448-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_04,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511030183
-X-Proofpoint-ORIG-GUID: UVmPV_A66X1ZrtiBIRVLtsZCQCuW6e6L
-X-Authority-Analysis: v=2.4 cv=G6AR0tk5 c=1 sm=1 tr=0 ts=6909114c b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117
- a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=zd2uoN0lAAAA:8 a=yPCof4ZbAAAA:8
- a=y9DNqzNOOROiqJ2FHEcA:9 cc=ntf awl=host:13657
-X-Proofpoint-GUID: UVmPV_A66X1ZrtiBIRVLtsZCQCuW6e6L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDE4MyBTYWx0ZWRfX3mHN2Kj76Tl6
- KKQ0YYMXXJrfhoZXqFiZ2CReBTky25Lh+mVOO1g/x/FLlSHJqoxzvaTbXl2Z/kHpXYyIK7kp8Q8
- 0KBdcoh4ZC9wjCBM4jvk3tTnhWNVpZypXfIWDnXp0Xe/KJ/4hw/qG9VNXAteCfV1KTbqdRkeBTU
- fQZwoWYg7I6cLGuavSNdLtMfqGgOB/Al2Y3wYGimp/2bMxD1wxLmzBwrSNazXPRwwhc9lOF7sQb
- 55pb6r8zsniqUWn2zRia9mdHEb8lecsU8O0WvOky8iyLpTS/9Ik4breCyUO/02/KHe4Pm0D4xwg
- HGbydcQ6C+eENDfnIHvBoicVlUPgThgjZ8/EP3yydcp/BKXMuGGE3EAhz2nC/lMPzDfv2WlEMVb
- 2KJ3cq2lDdfINH75AzRkLSImuOTUZd1WnFq/15skaoCAuHl43lI=
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,164 +113,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+The following changes since commit a8e63c013016f9ff981689189c5b063551d04559:
 
-The physical AMD IOMMU supports up to 64 bits of IOVA. When a device tries
-to read or write from a given DMA address, the IOMMU translates the address
-using the I/O page tables assigned to that device. Since the emulated IOMMU
-uses per-device page tables, an ideal cache tag would need to be 68 bits
-(64-bit address - 12-bit page alignment + 16-bit device ID).
+  Merge tag 'igvm-20251103--pull-request' of https://gitlab.com/kraxel/qemu into staging (2025-11-03 10:21:01 +0100)
 
-The current software IOTLB implementation uses a GLib hash table with a
-64-bit key to hash both the IOVA and device ID, which limits the IOVA to 60
-bits. This causes a failure while setting up the device when a guest is
-booted with "iommu.forcedac=1", which forces the use of DMA addresses at the
-top of the 64-bit address space.
+are available in the Git repository at:
 
-To address this issue, construct the 64-bit hash key using the upper 52 bits
-of IOVA (GFN) and lower 12 bits of the device ID to avoid truncation as much
-as possible (reducing hash collisions).
+  https://gitlab.com/peterx/qemu.git tags/staging-pull-request
 
-Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
----
- hw/i386/amd_iommu.c | 57 ++++++++++++++++++++++++++++++---------------
- hw/i386/amd_iommu.h |  4 ++--
- 2 files changed, 40 insertions(+), 21 deletions(-)
+for you to fetch changes up to 7b842fe354c63feaffc63c850b28c3610a0c90d2:
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 78407ead80..5ccb30aa7f 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -106,6 +106,11 @@ typedef struct AMDVIAsKey {
-     uint8_t devfn;
- } AMDVIAsKey;
- 
-+typedef struct AMDVIIOTLBKey {
-+    uint64_t gfn;
-+    uint16_t devid;
-+} AMDVIIOTLBKey;
-+
- uint64_t amdvi_extended_feature_register(AMDVIState *s)
- {
-     uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
-@@ -377,16 +382,6 @@ static void amdvi_log_pagetab_error(AMDVIState *s, uint16_t devid,
-              PCI_STATUS_SIG_TARGET_ABORT);
- }
- 
--static gboolean amdvi_uint64_equal(gconstpointer v1, gconstpointer v2)
--{
--    return *((const uint64_t *)v1) == *((const uint64_t *)v2);
--}
--
--static guint amdvi_uint64_hash(gconstpointer v)
--{
--    return (guint)*(const uint64_t *)v;
--}
--
- static gboolean amdvi_as_equal(gconstpointer v1, gconstpointer v2)
- {
-     const AMDVIAsKey *key1 = v1;
-@@ -425,11 +420,30 @@ static AMDVIAddressSpace *amdvi_get_as_by_devid(AMDVIState *s, uint16_t devid)
-                              amdvi_find_as_by_devid, &devid);
- }
- 
-+static gboolean amdvi_iotlb_equal(gconstpointer v1, gconstpointer v2)
-+{
-+    const AMDVIIOTLBKey *key1 = v1;
-+    const AMDVIIOTLBKey *key2 = v2;
-+
-+    return key1->devid == key2->devid && key1->gfn == key2->gfn;
-+}
-+
-+static guint amdvi_iotlb_hash(gconstpointer v)
-+{
-+    const AMDVIIOTLBKey *key = v;
-+    /* Use GPA and DEVID to find the bucket */
-+    return (guint)(key->gfn << AMDVI_PAGE_SHIFT_4K |
-+                   (key->devid & ~AMDVI_PAGE_MASK_4K));
-+}
-+
-+
- static AMDVIIOTLBEntry *amdvi_iotlb_lookup(AMDVIState *s, hwaddr addr,
-                                            uint64_t devid)
- {
--    uint64_t key = (addr >> AMDVI_PAGE_SHIFT_4K) |
--                   ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+    AMDVIIOTLBKey key = {
-+        .gfn = AMDVI_GET_IOTLB_GFN(addr),
-+        .devid = devid,
-+    };
-     return g_hash_table_lookup(s->iotlb, &key);
- }
- 
-@@ -451,8 +465,10 @@ static gboolean amdvi_iotlb_remove_by_devid(gpointer key, gpointer value,
- static void amdvi_iotlb_remove_page(AMDVIState *s, hwaddr addr,
-                                     uint64_t devid)
- {
--    uint64_t key = (addr >> AMDVI_PAGE_SHIFT_4K) |
--                   ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+    AMDVIIOTLBKey key = {
-+        .gfn = AMDVI_GET_IOTLB_GFN(addr),
-+        .devid = devid,
-+    };
-     g_hash_table_remove(s->iotlb, &key);
- }
- 
-@@ -463,8 +479,10 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
-     /* don't cache erroneous translations */
-     if (to_cache.perm != IOMMU_NONE) {
-         AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
--        uint64_t *key = g_new(uint64_t, 1);
--        uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
-+        AMDVIIOTLBKey *key = g_new(AMDVIIOTLBKey, 1);
-+
-+        key->gfn = AMDVI_GET_IOTLB_GFN(gpa);
-+        key->devid = devid;
- 
-         trace_amdvi_cache_update(domid, PCI_BUS_NUM(devid), PCI_SLOT(devid),
-                 PCI_FUNC(devid), gpa, to_cache.translated_addr);
-@@ -477,7 +495,8 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
-         entry->perms = to_cache.perm;
-         entry->translated_addr = to_cache.translated_addr;
-         entry->page_mask = to_cache.addr_mask;
--        *key = gfn | ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+        entry->devid = devid;
-+
-         g_hash_table_replace(s->iotlb, key, entry);
-     }
- }
-@@ -2526,8 +2545,8 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-         }
-     }
- 
--    s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
--                                     amdvi_uint64_equal, g_free, g_free);
-+    s->iotlb = g_hash_table_new_full(amdvi_iotlb_hash,
-+                                     amdvi_iotlb_equal, g_free, g_free);
- 
-     s->address_spaces = g_hash_table_new_full(amdvi_as_hash,
-                                      amdvi_as_equal, g_free, g_free);
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 38471b95d1..302ccca512 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -220,8 +220,8 @@
- #define PAGE_SIZE_PTE_COUNT(pgsz)       (1ULL << ((ctz64(pgsz) - 12) % 9))
- 
- /* IOTLB */
--#define AMDVI_IOTLB_MAX_SIZE 1024
--#define AMDVI_DEVID_SHIFT    36
-+#define AMDVI_IOTLB_MAX_SIZE        1024
-+#define AMDVI_GET_IOTLB_GFN(addr)   (addr >> AMDVI_PAGE_SHIFT_4K)
- 
- /* default extended feature */
- #define AMDVI_DEFAULT_EXT_FEATURES \
+  migration: Introduce POSTCOPY_DEVICE state (2025-11-03 16:04:10 -0500)
+
+----------------------------------------------------------------
+mem + migration pull for 10.2
+
+- Fabiano's patch to fix snapshot crash by rejecting some caps
+- Marco's mapped-ram support on snapshot save/load
+- Steve's cpr maintainers entry update on retirement
+- Peter's coverity fixes
+- Chenyi's tdx fix on hugetlbfs regression
+- Peter's doc update on migrate resume flag
+- Peter's doc update on HMP set parameter for cpr-exec-command's char** parsing
+- Xiaoyao's guest-memfd fix for enabling shmem
+- Arun's fix on error_fatal regression for migration errors
+- Bin's fix on redundant error free for add block failures
+- Markus's cleanup around MigMode sets
+- Peter's two patches (out of loadvm threadify) to cleanup qio read peek process
+- Thomas's vmstate-static-checker update for possible deprecation of argparse use
+- Stefan's fix on windows deadlock by making unassigned MMIOs lockless
+
+----------------------------------------------------------------
+
+Arun Menon (1):
+  migration: Fix regression of passing error_fatal into
+    vmstate_load_state()
+
+Bin Guo (1):
+  migration: Don't free the reason after calling migrate_add_blocker
+
+Chenyi Qiang (2):
+  ram-block-attributes: fix interaction with hugetlb memory backends
+  ram-block-attributes: Unify the retrieval of the block size
+
+Fabiano Rosas (1):
+  migration/savevm: Add a compatibility check for capabilities
+
+Juraj Marcin (7):
+  migration: Flush migration channel after sending data of CMD_PACKAGED
+  migration: Move postcopy_ram_listen_thread() to postcopy-ram.c
+  migration: Introduce postcopy incoming setup and cleanup functions
+  migration: Refactor all incoming cleanup info
+    migration_incoming_destroy()
+  migration: Respect exit-on-error when migration fails before resuming
+  migration: Make postcopy listen thread joinable
+  migration: Introduce POSTCOPY_DEVICE state
+
+Marco Cavenati (3):
+  migration/ram: fix docs of ram_handle_zero
+  migration: add FEATURE_SEEKABLE to QIOChannelBlock
+  migration: mapped-ram: handle zero pages
+
+Markus Armbruster (3):
+  migration: Use unsigned instead of int for bit set of MigMode
+  migration: Use bitset of MigMode instead of variable arguments
+  migration: Put Error **errp parameter last
+
+Peter Xu (9):
+  migration: Fix error leak in postcopy_ram_listen_thread()
+  migration/cpr: Fix coverity report in cpr_exec_persist_state()
+  migration/cpr: Fix UAF in cpr_exec_cb() when execvp() fails
+  migration/cpr: Avoid crashing QEMU when cpr-exec runs with no args
+  migration/qmp: Update "resume" flag doc in "migrate" command
+  migration/cpr: Document obscure usage of g_autofree when parse str
+  io: Add qio_channel_wait_cond() helper
+  migration: Properly wait on G_IO_IN when peeking messages
+  migration: Do not try to start VM if disk activation fails
+
+Philippe Mathieu-Daudé (1):
+  migration: Remove unused VMSTATE_UINTTL_EQUAL[_V]() macros
+
+Stefan Hajnoczi (1):
+  system/physmem: mark io_mem_unassigned lockless
+
+Steve Sistare (1):
+  MAINTAINERS: update cpr reviewers
+
+Thomas Huth (1):
+  scripts/vmstate-static-checker: Fix deprecation warnings with latest
+    argparse
+
+Vladimir Sementsov-Ogievskiy (4):
+  migration: vmstate_save_state_v(): fix error path
+  tmp_emulator: improve and fix use of errp
+  migration/vmstate: stop reporting error number for new _errp APIs
+  migration: vmsd errp handlers: return bool
+
+Xiaoyao Li (1):
+  hostmem/shm: Allow shm memory backend serve as shared memory for
+    coco-VMs
+
+ MAINTAINERS                           |   3 +-
+ docs/devel/migration/main.rst         |   6 +-
+ qapi/migration.json                   |  15 +-
+ include/io/channel.h                  |  15 ++
+ include/migration/blocker.h           |   9 +-
+ include/migration/cpr.h               |   4 +-
+ include/migration/cpu.h               |   6 -
+ include/migration/misc.h              |  10 +-
+ include/migration/vmstate.h           |   6 +-
+ migration/migration.h                 |   4 +
+ migration/options.h                   |   1 +
+ migration/postcopy-ram.h              |   3 +
+ migration/savevm.h                    |   2 +
+ backends/hostmem-shm.c                |   1 +
+ backends/tpm/tpm_emulator.c           |  73 ++++++----
+ hw/display/virtio-gpu.c               |  21 ++-
+ hw/intc/arm_gicv3_kvm.c               |   1 -
+ hw/pci/pci.c                          |  15 +-
+ hw/s390x/virtio-ccw.c                 |  17 ++-
+ hw/scsi/spapr_vscsi.c                 |  10 +-
+ hw/vfio/container-legacy.c            |   6 +-
+ hw/vfio/cpr-iommufd.c                 |   6 +-
+ hw/vfio/cpr-legacy.c                  |   8 +-
+ hw/vfio/cpr.c                         |   5 +-
+ hw/vfio/device.c                      |   4 +-
+ hw/virtio/virtio-mmio.c               |  15 +-
+ hw/virtio/virtio-pci.c                |  15 +-
+ hw/virtio/virtio.c                    |  10 +-
+ io/channel.c                          |  21 +--
+ migration/channel-block.c             |  44 ++++++
+ migration/channel.c                   |   7 +-
+ migration/cpr-exec.c                  |  14 +-
+ migration/cpr.c                       |  15 +-
+ migration/migration-hmp-cmds.c        |   6 +
+ migration/migration.c                 | 188 ++++++++++++++------------
+ migration/options.c                   |  26 ++++
+ migration/postcopy-ram.c              | 161 ++++++++++++++++++++++
+ migration/qemu-file.c                 |   6 +-
+ migration/ram.c                       |  60 +++++++-
+ migration/savevm.c                    | 145 +++-----------------
+ migration/vmstate.c                   |  25 ++--
+ stubs/migr-blocker.c                  |   2 +-
+ system/physmem.c                      |  11 +-
+ system/ram-block-attributes.c         |  20 ++-
+ target/i386/sev.c                     |   1 -
+ tests/qtest/migration/precopy-tests.c |   3 +-
+ migration/trace-events                |   3 +-
+ scripts/vmstate-static-checker.py     |  13 +-
+ tests/qemu-iotests/194                |   2 +-
+ 49 files changed, 684 insertions(+), 380 deletions(-)
+
 -- 
-2.43.5
+2.50.1
 
 
