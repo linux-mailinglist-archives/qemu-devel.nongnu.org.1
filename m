@@ -2,101 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04906C2DF36
-	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 20:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D26C2E07A
+	for <lists+qemu-devel@lfdr.de>; Mon, 03 Nov 2025 21:31:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG0cW-0001l0-Sh; Mon, 03 Nov 2025 14:53:41 -0500
+	id 1vG1B2-0003mk-Do; Mon, 03 Nov 2025 15:29:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1vG0cT-0001jN-5c
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 14:53:37 -0500
-Received: from cyan.elm.relay.mailchannels.net ([23.83.212.47])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vG1Ap-0003dw-IA
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:29:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1vG0cH-0006ra-Vl
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 14:53:36 -0500
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id D5D4378053C;
- Mon, 03 Nov 2025 19:53:19 +0000 (UTC)
-Received: from pdx1-sub0-mail-a475.dreamhost.com
- (100-121-221-249.trex-nlb.outbound.svc.cluster.local [100.121.221.249])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id 74D56780B5D;
- Mon, 03 Nov 2025 19:53:19 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1762199599; a=rsa-sha256;
- cv=none;
- b=PjSXy/vh3Q8vBFth0xQTuWqqgiqSnS/+LI8lJPIf26AmoBggCxrxFnmeUiZ1ivnyL0hvh0
- wrX3VUBay02QH2VRHdEKGBjruAGlCZWPvpSa56U2adJgdbJD1td8/PzgdzSi5Xzyx198VB
- 3eBDxvhiQ69fjpByYaZlRkV7Z/hiJ/40qMBZUgK8O8B+2ojTQpckyZrPkNSxG98imGcKVD
- Hv0jGSBmL+vVj3QzNHQC4w4fivbiYRiPtTjB103hIA2GrP+mfy4l8WXhvtfws16oLxvmuU
- SgYTTDpb7AhuO3DoDIJaaV4oDuu62mk7FSu4ORZYMei3dWZrFijLUHhE9D+Ddg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1762199599;
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vG1Ai-0007dG-Dx
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 15:29:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762201735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=dy+16HPLQwACfYwD8nWZx5dmnnfylWeebfJGhKZEyJU=;
- b=2yCVrtpT3DcEPqnuE8UsZBLx9gVUi3xHpPRgBSCJNAaSgMwuUu04jdnrZQFGrLqiwMLcE+
- UMurD7R2My1n0XBDgDCFp2DEQPizUmEeNqJ3KLLmxk1+y3SqJ4isCU+tI8K1EMArAwUSho
- W6/XWgYpOhh3tw0jt1Ic/GOrwyyse1DpMc8iBmHgN2UrcsGIyccaWF48XYRCOjnjj9i3N4
- 7wkFbTd8XMjD62AaWLVxw46kurS8OFjNGN0n4B/Cy/+Sv/8ZHzStT/MIaNjfWCk5r6w9Gb
- OQfCnf3fVqJ7uXARf0Uo0GI4a+E+/HeEMzfcuD6CVX2K/RNjGQnI1nQRCRDTCA==
-ARC-Authentication-Results: i=1; rspamd-768b565cdb-k86dj;
- auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Blushing-Cure: 11a4f7a239a2d483_1762199599768_661496187
-X-MC-Loop-Signature: 1762199599768:3503063714
-X-MC-Ingress-Time: 1762199599767
-Received: from pdx1-sub0-mail-a475.dreamhost.com (pop.dreamhost.com
- [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.121.221.249 (trex/7.1.3); Mon, 03 Nov 2025 19:53:19 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
- s=dreamhost; t=1762199599;
- bh=dy+16HPLQwACfYwD8nWZx5dmnnfylWeebfJGhKZEyJU=;
- h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
- b=A4QFGTx/5+dmalhXlzIcEcU5fX7Ze/iueI2PdQt0P0ms5H/qLcr+JPyL9bCZzxg+m
- gm1n0KedmYjFC4lV0pVGWIDZk/pWZvDLzl/TCq3p2TzycIRVdd2zjlzLi8WsPqQvZo
- 1Zt4+mLUfChkfsJujlcYwD4GbWWxxXgC4n4jXbSY4RN8HvSDNi53YchUNEVYQN35Sd
- 7l7FeiAKy+VH4gcWhRm9eaiKphd9XC2SkDZGvEFnKSKBOzdofKttLNGPjfuLqqHdyz
- wRGsIHrDfeUvu4R8O9Rk79AiAbGWNZMEU3vX165z6gTxkzIlpElxr5wArjDLNejy7h
- o5OKrLd3qgbnA==
-Received: from offworld.lan (unknown [76.167.199.67])
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0XUARyoeMr/WblAxm6qKqDhZSxHc0wYCo4+p7f3O/Ig=;
+ b=YPq1ymW0vfI9zJhRiDe+0wktQv9Nl+mX2/KrjNfE38RdgPVV8LeIYd6v9m39OKh31kh3kX
+ EMi8AmsizL0ygNG000+9LsK8+0/8aQiPLcOdNbPLd6VtqHf+4sS2Zm7PcMiTekVgqdCjlD
+ XGxtzEB4PVCd4JYFolNGJLImOpoUTJo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-SEV3c5hiNfe7LY0LtYYFhw-1; Mon,
+ 03 Nov 2025 15:28:54 -0500
+X-MC-Unique: SEV3c5hiNfe7LY0LtYYFhw-1
+X-Mimecast-MFC-AGG-ID: SEV3c5hiNfe7LY0LtYYFhw_1762201733
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- (Authenticated sender: dave@stgolabs.net)
- by pdx1-sub0-mail-a475.dreamhost.com (Postfix) with ESMTPSA id 4d0j1p1J8Zz1wdh;
- Mon,  3 Nov 2025 11:53:18 -0800 (PST)
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: jonathan.cameron@huawei.com
-Cc: ira.weiny@intel.com, alucerop@amd.com, a.manzanares@samsung.com,
- dongjoo.seo1@samsung.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
- armbru@redhat.com, linux-cxl@vger.kernel.org, qemu-devel@nongnu.org,
- dave@stgolabs.net, Jonathan.Cameron@huawei.com
-Subject: [PATCH 5/5] hw/cxl: Remove register special_ops->read()
-Date: Mon,  3 Nov 2025 11:52:09 -0800
-Message-Id: <20251103195209.1319917-6-dave@stgolabs.net>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251103195209.1319917-1-dave@stgolabs.net>
-References: <20251103195209.1319917-1-dave@stgolabs.net>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2AA1D180035D; Mon,  3 Nov 2025 20:28:53 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.131])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F044030001A1; Mon,  3 Nov 2025 20:28:51 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+	berrange@redhat.com,
+	kwolf@redhat.com
+Subject: [PATCH 0/8] Fix deadlock with bdrv_open of self-served NBD
+Date: Mon,  3 Nov 2025 14:10:51 -0600
+Message-ID: <20251103202849.3687643-10-eblake@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=23.83.212.47; envelope-from=dave@stgolabs.net;
- helo=cyan.elm.relay.mailchannels.net
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,31 +79,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-... this is unused, unlike its write counterpart.
+https://gitlab.com/qemu-project/qemu/-/issues/3169 was an excellent
+bug report of a deadlock scenario when qemu opens both the server and
+client end of an NBD intermediary in a qcow2 backing chain.  It took
+me quite a bit of time to understand why the deadlock was even
+happening, and then some mental gymnastics on how best to break the
+deadlock.  Ideally - we'd get rid of all nested event loops, and have
+the main loop do EVERYTHING event-driven.  But that's a much bigger
+code change to the entire code base of QEMU, so I went with the next
+best thing of keeping the AioContext nested loop but ensuring that
+accepting NBD clients is now properly part of the AioContext rather
+than gated by only the main loop progress.
 
-Suggested-by: <Jonathan.Cameron@huawei.com>
-Tested-by: Dongjoo Seo <dongjoo.seo1@samsung.com>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
----
- hw/cxl/cxl-component-utils.c | 4 ----
- 1 file changed, 4 deletions(-)
+I have not researched how long the deadlock has been present, to
+determine if it has ever worked before earlier refactorings when we
+started using AioContext more heavily, or if it has always been broken
+until now to try and connect QEMU as a client to a self-served NBD
+server.  But either way, I think this series should be part of the
+10.2 release; I'm awfully close to soft freeze, but I think this
+counts as a bug fix worth having even if it doesn't make it in before
+-rc1.
 
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index 0221479613e8..31bbedb502e7 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -69,10 +69,6 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
- 
-     switch (size) {
-     case 4:
--        if (cregs->special_ops && cregs->special_ops->read) {
--            return cregs->special_ops->read(cxl_cstate, offset, 4);
--        }
--
-         QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
- 
-         if (offset == A_CXL_BI_RT_STATUS ||
+Eric Blake (8):
+  qio: Add trace points to net_listener
+  qio: Minor optimization when callback function is unchanged
+  qio: Remember context of qio_net_listener_set_client_func_full
+  qio: Factor out helpers qio_net_listener_[un]watch
+  qio: Let listening sockets remember their owning QIONetListener
+  qio: Hoist ref of listener outside loop
+  qio: Use AioContext for default-context QIONetListener
+  iotests: Add coverage of recent NBD qio deadlock fix
+
+ include/io/channel-socket.h                   |   1 +
+ include/io/net-listener.h                     |   1 +
+ io/channel-socket.c                           |   1 +
+ io/net-listener.c                             | 136 +++++++++++-------
+ io/trace-events                               |   5 +
+ tests/qemu-iotests/tests/nbd-in-qcow2-chain   |  84 +++++++++++
+ .../qemu-iotests/tests/nbd-in-qcow2-chain.out |  56 ++++++++
+ tests/qemu-iotests/tests/vvfat.out            |   0
+ 8 files changed, 236 insertions(+), 48 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
+ create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
+ mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
+
 -- 
-2.39.5
+2.51.1
 
 
