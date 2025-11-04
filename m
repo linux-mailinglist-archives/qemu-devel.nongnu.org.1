@@ -2,150 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD6BC2FFBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC134C30172
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:57:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCYb-0006Xv-Ce; Tue, 04 Nov 2025 03:38:25 -0500
+	id 1vGCqF-0004Hn-SR; Tue, 04 Nov 2025 03:56:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vGCYY-0006X1-EY
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:38:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vGCpW-00040R-Id
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:55:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vGCYV-0005Pi-O3
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:38:22 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vGCpU-00073U-Ni
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:55:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245497;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1762246551;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=RBxl96VvIKgtXPsH6iKaWsKYX1KeOafMFXnfBoWkLNs=;
- b=NwecBC/QvSb76SKnmJ0FQcZC1QkQ5G/AsckMydBJr8RbfwWPLxj9qYrl1Pcn6RhpHVQowZ
- EmtQmL49o6ufSaXfUXBxdlZFdFeOmurWSFFlOaD5Dq3Qudws6+TQQTS79KkNmNYPWATmGr
- rT0XAZPG4WpekVoPk1hvM9cP7gdTmJw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=HN62QGwthL8facCp3VPYNlRtyyweQYgUZyqjYbLgJVk=;
+ b=K9ZiRxel1OndwEZShsJyVAdevZ7iHrLAdgk2N6BRH9SZnGPNqbzJwvaYY7I3mZbhO9FdiR
+ MAnE7NA1jLe1Rg4ZiFnFOCkTUDLbYr+eWD77rVLRoQbE1cZ08UpHDmyufWFc95DmIMwr/m
+ SixF0/tWUXwLLyuLypSewWYJVzMnaSM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-zz3kAD1PPYei4KOz1p_bsA-1; Tue, 04 Nov 2025 03:38:15 -0500
-X-MC-Unique: zz3kAD1PPYei4KOz1p_bsA-1
-X-Mimecast-MFC-AGG-ID: zz3kAD1PPYei4KOz1p_bsA_1762245494
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-429c17b29f3so2607257f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 00:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762245494; x=1762850294; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=RBxl96VvIKgtXPsH6iKaWsKYX1KeOafMFXnfBoWkLNs=;
- b=YVPU6w0hljZEiHUlHZwoPdpcu8rjEY+L/bXp57MRaKRnCsoVOFDTHxD6Gobaz/82Nu
- i8fHnNuBBuMf2+TU4rVFr02rBzGrSzf1bPTShTBVqTWVRcmtGk5h+8OaUjvjV9OY/Qzw
- owd2NwiXcT9I5yrcD88hT/O96Thau2G10Up8bLGhfjI9LiZfDOw2HgZR+BhVrT7Bd23H
- oQcVghPsYwVRj8HXPSEmOfizDV0t7goa4caMM+q5xeSZWnhc08NAlTOV2hrV9bQMpiAf
- 6GZT0bq8FHTrnZLqNFVCVSb4A+mBtvoey8hhTCNgch1ZwBi8NQmHM38oCHD0LuB9QOOZ
- znLA==
+ us-mta-342-xuJtucddPg2kIcA4ldiHMg-1; Tue, 04 Nov 2025 03:55:49 -0500
+X-MC-Unique: xuJtucddPg2kIcA4ldiHMg-1
+X-Mimecast-MFC-AGG-ID: xuJtucddPg2kIcA4ldiHMg_1762246549
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-470fd92ad57so61063655e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 00:55:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762245494; x=1762850294;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
+ d=1e100.net; s=20230601; t=1762246548; x=1762851348;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=RBxl96VvIKgtXPsH6iKaWsKYX1KeOafMFXnfBoWkLNs=;
- b=wdHgeT2B33qUpYtU0GjQP5UhKzDZfxwDodSr+b4Ap0+8GaVbOejL446Jwe3pbAtroh
- iG6lz56DL19omjiodWnPyhFQ1aYy5pAdU/T8Ho0ZnQjrM1tg26ARu/hcCg7QB+6tP+Mn
- kNB5BRPUjI0ITIAnSW0EodaFTVDzQ7EX3mdTXWxVOEY0x+r3rQ5hvptKYNwblaNX4nTm
- pvQbTho+5PSvBOLrQLT/ePtY8NO/u5pGf2PuqO4nYFoY11P3jT4pIlGUPLWmQkTgzuRN
- gvp0aZAGy5H75oO/51YpN/LzLCRERubtld0XUUmKY0qQ3e1+OJIrvbuCUBao1nceFdZT
- CAPg==
+ bh=HN62QGwthL8facCp3VPYNlRtyyweQYgUZyqjYbLgJVk=;
+ b=RgWh3+xIo8z+PBTUA6VacgY+vsFeh8hAT+9/Ye7u/qiS3klfgvLL4Q6ykISmdaEkgK
+ qq6gtTobbljkSrVmtlcH3MNjl0GYJeO17LQbq8QdUo66w70ZB5pvKL5VSJC9JPW3zWl0
+ kV5ne3r/uuO9nXw4C5jDXbi3Mv1YoFIYEwGctNgOsiaXgD0XN6Z39abdYK3wzigUVnDj
+ XB2NcLBo6uJkoHt5uFdfGUyVbapk9M/U0T+4S5vBuy9TohuoDeAhKXvlMsLtjUJVt2jO
+ vv6CZfI06cDcQeHp1GEskDZe+2M1VVdSgNGmnYWjSUedaKlyLJo4xZ40CAFvT/tLi4AJ
+ S8DQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVJb0HZnJAfYWzrBF+PyssBs+wB7cEvWEed2l86kGNSNyvjpXiTo+vskV9iRvxHsgYawFvfQlFKECsL@nongnu.org
-X-Gm-Message-State: AOJu0Yx9VOBPmoU+Ndq7PoTytnK1Fvw647iFPhbx9w9FSgK28v5JD9s+
- pCuvdIBfK2bqdVOd72kwD9kEYebHqMXgz/73XDlBvcOQ2xxe3RPNuvVq5b6igQhOv7hVqe5NHzC
- 2X+a+gKJwu13dUmXlAI/bf/+2F8jwrJSnxrdu3E57R6Vlp//nOWZ/q9UJ
-X-Gm-Gg: ASbGncspLB4jn5cMCZZvdoT98XTm1OwoGWncsjhIcSZzXTzlr6dIOG8kLWYps8mV/qF
- W9n2Eoz1v/NuRxn8WAU6Q58g1YU+pu9For4oEJ1DR6BMVMlQ07yTYzJgYTXqawBnOvlfhRP9+vw
- v56djajXSBQJQ7cXlJIvJjsiYibLX5uILaloOy76k/HUPxiNhPxEM9agpS09zlAmJvL7agjqkdR
- krcCK4yoDvhRK7CQXIH8RT3V/+sxIpXDJkd8gXSGgvaIRJ7LhmvvtHS6vy0dqiTbyEKN7nv9yhA
- 5VI6k1S6aPerzwvbf3VpQMcBjlyTtKEi3uhc8eqgj2U66/xI3Z9m6iiawP2tfUbVfY+ZPOrM
-X-Received: by 2002:a05:6000:178d:b0:429:b6e2:1ecf with SMTP id
- ffacd0b85a97d-429bd682973mr14191662f8f.22.1762245493642; 
- Tue, 04 Nov 2025 00:38:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHo6I23zpNjvOsOlrM4fhPbChL7bdu9yrG/lMYtsCsICgJLGN+2uuIAvV9im3pFDSwh9vCgiw==
-X-Received: by 2002:a05:6000:178d:b0:429:b6e2:1ecf with SMTP id
- ffacd0b85a97d-429bd682973mr14191635f8f.22.1762245493140; 
- Tue, 04 Nov 2025 00:38:13 -0800 (PST)
-Received: from [192.168.0.7] ([47.64.114.171])
+ AJvYcCWobcAH5hhpJG4u7heHgkSYrnp9ShOZB6ffPi1a1UlUvPKYX2K9YyUlfqoy64+52ASQ8sTtr2eWlX3X@nongnu.org
+X-Gm-Message-State: AOJu0YwvKGKryDn/O6OkihS/yZtczUkJ/fEsn2/HKD9V0kZ+0ojYtFc+
+ mjegPvu5qOwfQd/L/FzPtAbUMG5Ph0DoPo+vu/ylcAiwOXrNq1q1h6EInsdJ9g24glq2U3nwlfH
+ sAEr6hauOyDYL2vaCFKWct80LCQYFg8J37vYZMPCtaAA+9Dd7AN0SqXxB
+X-Gm-Gg: ASbGncteYWdJMp91X/+9YZxQ1RcDu0SDz+YFDmkyl/1Fd9LX7VTNXrrqH6z8oiVnctq
+ XBpU2z/ZybJ9amL58l1lEn3L16hk730oG54YdkXAJGD7tkrwggh1ZkecZINJyy4Q2v9XfChp8Ys
+ K70A3I97fEC24ry6GtJrLRlcKN1ae2fMBFMxCvSRvzpq2CKT0koCrQdkUtkumbSfkdlBYv//9Iu
+ 7tLW00lBpWtejbWD8MQ69bCHdlOax7pZgISn/WV3j6axyAm2JQQ4RjkTbxveDYam1ZNcpmfwl3+
+ x7pzhXko2Gy08VoUgoR1rAj5ZUNRA9oaIQy3Ksfv8Wlsi78u60GJ5BJEj7zIypGXir4jG21ljQA
+ b7Z//byG6EFTyH4mXMLkz7y071hlq5ZuLpe1IZ7gD7hMnZw==
+X-Received: by 2002:a05:600c:3b13:b0:45d:5c71:769a with SMTP id
+ 5b1f17b1804b1-4773089c52fmr133016675e9.26.1762246548624; 
+ Tue, 04 Nov 2025 00:55:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHcS2niz5q7n38UG7b36aWFaAXXGFxK9u+bsbaWFxlhpVxtx4o48KibCE+hx/yFWkssgPfBWA==
+X-Received: by 2002:a05:600c:3b13:b0:45d:5c71:769a with SMTP id
+ 5b1f17b1804b1-4773089c52fmr133016405e9.26.1762246548165; 
+ Tue, 04 Nov 2025 00:55:48 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429dc192a96sm3321382f8f.13.2025.11.04.00.38.11
+ 5b1f17b1804b1-477563e25e1sm18275215e9.5.2025.11.04.00.55.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Nov 2025 00:38:12 -0800 (PST)
-Message-ID: <81072e45-182f-419a-a44e-fca22ed54167@redhat.com>
-Date: Tue, 4 Nov 2025 09:38:11 +0100
+ Tue, 04 Nov 2025 00:55:47 -0800 (PST)
+Message-ID: <b0a02ca2-6115-4313-88b2-f3218aa2b686@redhat.com>
+Date: Tue, 4 Nov 2025 09:55:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Regression with the "replay" test on target alpha
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20251028173430.2180057-1-pbonzini@redhat.com>
- <20251028173430.2180057-4-pbonzini@redhat.com>
- <cb41dc20-5a87-42b6-8819-08f5a1ee4303@redhat.com>
- <ebb0ac51-fbf0-4f93-8a9b-12880d2a0126@rsg.ci.i.u-tokyo.ac.jp>
- <30a9e854-e37b-4494-b372-f76ce6bdce25@redhat.com>
- <d9db8f08-f207-45b4-9637-9f13a04ab606@rsg.ci.i.u-tokyo.ac.jp>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 17/32] hw/arm/smmuv3-accel: Add support to issue
+ invalidation cmd to host
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <d9db8f08-f207-45b4-9637-9f13a04ab606@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Nicolin Chen <nicolinc@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>,
+ "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>,
+ "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
+ Krishnakant Jaju <kjaju@nvidia.com>
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
+ <20251031105005.24618-18-skolothumtho@nvidia.com>
+ <aQVVxV4I/nh3aAXn@Asurada-Nvidia>
+ <CH3PR12MB75481D898FF28E9832B0013EABC7A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <aQjpzdwbJVPN7AqF@Asurada-Nvidia>
+ <CH3PR12MB7548CBA8B4C962BE867C9362ABC7A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <aQj5xQwsq/kBaJP/@Asurada-Nvidia>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <aQj5xQwsq/kBaJP/@Asurada-Nvidia>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -153,7 +118,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,225 +131,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/11/2025 09.08, Akihiko Odaki wrote:
-> On 2025/11/04 16:41, Thomas Huth wrote:
->> On 04/11/2025 02.45, Akihiko Odaki wrote:
->>> On 2025/11/03 22:59, Thomas Huth wrote:
->>>> On 28/10/2025 18.34, Paolo Bonzini wrote:
->>>>> From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->>>>>
->>>>> Borrow the concept of force quiescent state from Linux to ensure readers
->>>>> remain fast during normal operation and to avoid stalls.
->>>>
->>>>   Hi Akihiko,
->>>>
->>>> looks like this commit has introduced a regression with the "replay" 
->>>> functional test on the alpha target.
->>>> When I run something like:
->>>>
->>>>   pyvenv/bin/meson test --no-rebuild -t 1 --setup thorough \
->>>>    --num-processes 1 --repeat 10 func-alpha-replay
->>>>
->>>> in the build folder, approx. half of the test runs are failing for me now.
->>>>
->>>> I bisected the issue to this patch here - when I rebuild qemu-system- 
->>>> alpha with the commit right before this change here, the above test runs 
->>>> work fine, so I'm pretty sure that the problem has been introduced by 
->>>> this commit here.
->>>>
->>>> Could you please have a look?
+Hi,
+
+On 11/3/25 7:51 PM, Nicolin Chen wrote:
+> On Mon, Nov 03, 2025 at 10:17:20AM -0800, Shameer Kolothum wrote:
+>>>> The general
+>>>> idea is, we will pass the errp to accel functions and report or
+>>>> propagate from here.
+>>> But there is no "errp" in smmuv3_cmdq_consume() to propagate the these
+>>> local_errs further? It ends at the error_report_err().
 >>>
->>> I cannot reproduce it with commit 55d98e3edeeb ("rcu: Unify force 
->>> quiescent state").
->>>
->>> Can you provide meson-logs/testlog-thorough.txt so that I can look into 
->>> the failure you are facing? If you think you have something useful for 
->>> debugging, please share it to me too.
+>>> If we only get local_err and print them, why not just print them inside the
+>>> _accel functions?
+>> Right, we don’t propagate error now. But in future it might come
+>> handy. I would personally keep the error propagation facility if possible.
+> smmuv3_cmdq_consume() is called in smmu_writel() only. Where do we
+> plan to propagate that in the future?
+>
+>> Also, this was added as per Eric's comment on RFC v3.
 >>
->> There's not much in that testlog-thorough.txt that could be helpful here,
->> it's basically just the information that the test has been killed due to
->> the timeout:
->>
->> ==================================== 1/1 ===================================
->> test:         qemu:func-thorough+func-alpha-thorough+thorough / func- 
->> alpha-replay
->> start time:   07:25:26
->> duration:     90.01s
->> result:       killed by signal 15 SIGTERM
->> command:      RUST_BACKTRACE=1 QEMU_TEST_QEMU_IMG=/tmp/qemu-rcu/qemu-img 
->> QEMU_TEST_GDB=/usr/bin/gdb MALLOC_PERTURB_=255 MESON_TEST_ITERATION=1 
->> PYTHONPATH=/home/thuth/devel/qemu/python:/home/thuth/devel/qemu/tests/ 
->> functional G_TEST_SLOW=1 SPEED=thorough QEMU_TEST_QEMU_BINARY=/tmp/qemu- 
->> rcu/qemu-system-alpha 
->> ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 
->> LD_LIBRARY_PATH=/tmp/qemu-rcu/tests/tcg/plugins:/tmp/qemu-rcu/contrib/ 
->> plugins 
->> UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 QEMU_BUILD_ROOT=/tmp/qemu-rcu /tmp/qemu-rcu/pyvenv/bin/python3 /home/thuth/devel/qemu/tests/functional/alpha/test_replay.py
->> =============================================================================
->>
->> Summary of Failures:
->>
->> 1/1 qemu:func-thorough+func-alpha-thorough+thorough / func-alpha-replay 
->> TIMEOUT        90.01s   killed by signal 15 SIGTERM
->>
->>
->> There is also not that much helpful information in
->> tests/functional/alpha/test_replay.AlphaReplay.test_clipper, apart from
->> the console.log file. For a good run, the console log looks like this:
->>
->> 2025-11-04 08:16:46,148: PCI: 00:01:0 class 0101 id 1095:0646
->> 2025-11-04 08:16:46,149: PCI:   region 0: 0000c000
->> 2025-11-04 08:16:46,149: PCI:   region 1: 0000c008
->> 2025-11-04 08:16:46,149: PCI:   region 2: 0000c010
->> 2025-11-04 08:16:46,149: PCI:   region 3: 0000c018
->> 2025-11-04 08:16:46,149: PCI:   region 4: 0000c020
->> 2025-11-04 08:16:46,149: PCI: 00:07:0 class 0601 id 8086:0484
->> 2025-11-04 08:16:48,149: [    0.000000] Initializing cgroup subsys cpu
->> 2025-11-04 08:16:48,149: [    0.000000] Linux version 2.6.26-2-alpha- 
->> generic (Debian 2.6.26-29) (dannf@debian.org) (gcc version 4.1.3 20080704 
->> (prerelease) (Debian 4.1.2-25)) #1 Sun Mar 4 21:08:03 UTC 2012
->> 2025-11-04 08:16:48,150: [    0.000000] Booting GENERIC on Tsunami 
->> variation Clipper using machine vector Clipper from SRM
->> 2025-11-04 08:16:48,150: [    0.000000] Major Options: MAGIC_SYSRQ
->> 2025-11-04 08:16:48,150: [    0.000000] Command line: printk.time=0 
->> console=ttyS0
->> 2025-11-04 08:16:48,150: [    0.000000] memcluster 0, usage 1, 
->> start        0, end       15
->> 2025-11-04 08:16:48,150: [    0.000000] memcluster 1, usage 0, start       
->> 15, end    16384
->> 2025-11-04 08:16:48,150: [    0.000000] freeing pages 15:2048
->> 2025-11-04 08:16:48,150: [    0.000000] freeing pages 2987:16384
->> 2025-11-04 08:16:48,151: [    0.000000] reserving pages 2987:2988
->> 2025-11-04 08:16:48,151: [    0.000000] Built 1 zonelists in Zone order, 
->> mobility grouping on.  Total pages: 16272
->> 2025-11-04 08:16:48,151: [    0.000000] Kernel command line: printk.time=0 
->> console=ttyS0
->> 2025-11-04 08:16:57,358: PCI: 00:01:0 class 0101 id 1095:0646
->> 2025-11-04 08:16:57,358: PCI:   region 0: 0000c000
->> 2025-11-04 08:16:57,358: PCI:   region 1: 0000c008
->> 2025-11-04 08:16:57,359: PCI:   region 2: 0000c010
->> 2025-11-04 08:16:57,359: PCI:   region 3: 0000c018
->> 2025-11-04 08:16:57,359: PCI:   region 4: 0000c020
->> 2025-11-04 08:16:57,360: PCI: 00:07:0 class 0601 id 8086:0484
->> 2025-11-04 08:17:08,468: [    0.000000] Initializing cgroup subsys cpu
->> 2025-11-04 08:17:08,470: [    0.000000] Linux version 2.6.26-2-alpha- 
->> generic (Debian 2.6.26-29) (dannf@debian.org) (gcc version 4.1.3 20080704 
->> (prerelease) (Debian 4.1.2-25)) #1 Sun Mar 4 21:08:03 UTC 2012
->> 2025-11-04 08:17:08,471: [    0.000000] Booting GENERIC on Tsunami 
->> variation Clipper using machine vector Clipper from SRM
->> 2025-11-04 08:17:08,471: [    0.000000] Major Options: MAGIC_SYSRQ
->> 2025-11-04 08:17:08,472: [    0.000000] Command line: printk.time=0 
->> console=ttyS0
->> 2025-11-04 08:17:08,472: [    0.000000] memcluster 0, usage 1, 
->> start        0, end       15
->> 2025-11-04 08:17:08,473: [    0.000000] memcluster 1, usage 0, start       
->> 15, end    16384
->> 2025-11-04 08:17:08,473: [    0.000000] freeing pages 15:2048
->> 2025-11-04 08:17:08,474: [    0.000000] freeing pages 2987:16384
->> 2025-11-04 08:17:08,474: [    0.000000] reserving pages 2987:2988
->> 2025-11-04 08:17:08,475: [    0.000000] Built 1 zonelists in Zone order, 
->> mobility grouping on.  Total pages: 16272
->> 2025-11-04 08:17:08,476: [    0.000000] Kernel command line: printk.time=0 
->> console=ttyS0
->>
->> I.e. the replay worked as expected. When it fails, console.log only contains:
->>
->> 2025-11-04 08:25:26,601: PCI: 00:01:0 class 0101 id 1095:0646
->> 2025-11-04 08:25:26,601: PCI:   region 0: 0000c000
->> 2025-11-04 08:25:26,601: PCI:   region 1: 0000c008
->> 2025-11-04 08:25:26,601: PCI:   region 2: 0000c010
->> 2025-11-04 08:25:26,601: PCI:   region 3: 0000c018
->> 2025-11-04 08:25:26,601: PCI:   region 4: 0000c020
->> 2025-11-04 08:25:26,602: PCI: 00:07:0 class 0601 id 8086:0484
->> 2025-11-04 08:25:28,601: [    0.000000] Initializing cgroup subsys cpu
->> 2025-11-04 08:25:28,602: [    0.000000] Linux version 2.6.26-2-alpha- 
->> generic (Debian 2.6.26-29) (dannf@debian.org) (gcc version 4.1.3 20080704 
->> (prerelease) (Debian 4.1.2-25)) #1 Sun Mar 4 21:08:03 UTC 2012
->> 2025-11-04 08:25:28,602: [    0.000000] Booting GENERIC on Tsunami 
->> variation Clipper using machine vector Clipper from SRM
->> 2025-11-04 08:25:28,602: [    0.000000] Major Options: MAGIC_SYSRQ
->> 2025-11-04 08:25:28,602: [    0.000000] Command line: printk.time=0 
->> console=ttyS0
->> 2025-11-04 08:25:28,602: [    0.000000] memcluster 0, usage 1, 
->> start        0, end       15
->> 2025-11-04 08:25:28,602: [    0.000000] memcluster 1, usage 0, start       
->> 15, end    16384
->> 2025-11-04 08:25:28,602: [    0.000000] freeing pages 15:2048
->> 2025-11-04 08:25:28,603: [    0.000000] freeing pages 2987:16384
->> 2025-11-04 08:25:28,603: [    0.000000] reserving pages 2987:2988
->> 2025-11-04 08:25:28,603: [    0.000000] Built 1 zonelists in Zone order, 
->> mobility grouping on.  Total pages: 16272
->> 2025-11-04 08:25:28,603: [    0.000000] Kernel command line: printk.time=0 
->> console=ttyS0
->>
->> I.e. the replay did not work.
->>
->> Could this RCU stuff somehow influence the replay mechanism in QEMU?
-> 
-> I don't know (yet).
-> 
-> Can you attach gdb and show a backtrace for each thread? It often reveals 
-> deadlock among threads.
+>> https://lore.kernel.org/qemu-devel/41ceadf1-07de-4c8a-8935-d709ac7cf6bc@redhat.com/
+> If only we have a top function that does error_report_err() in one
+> place.. Duplicating error_report_err(local_err) doesn't look clean
+> to me.
+>
+> Maybe smmu_writel() could do:
+> {
+> +   Error *errp = NULL;
+>
+>     switch (offset) {
+>     case A_XXX:
+>         smmuv3_cmdq_consume(..., errp);
+> +       return MEMTX_OK;
+> -       break;
+>     ...
+>     case A_YYY:
+>         smmuv3_cmdq_consume(..., errp);
+> +       return MEMTX_OK;
+> -       break;
+>     }
+> +   error_report_err(errp);
+> +   return MEMTX_OK;
+> }
+>
+> Any better idea, Eric?
 
-Sure, it looks like this:
+Can't we move local_err outside of case block and after the switch,
 
-(gdb) thread apply all bt
+ if (cmd_error) {
+   if (local_err) {
+      error_report_err(local_err);
+   }
+../..  
 
-Thread 4 (Thread 0x7f31bd1ff6c0 (LWP 89223) "qemu-system-alp"):
-#0  0x00007f31c47150cd in syscall () at /lib64/libc.so.6
-#1  0x00005593dd2b578d in qemu_futex_wait (f=0x5593ddad9e50 <rcu_call_ready_event>, val=4294967295) at /home/thuth/devel/qemu/include/qemu/futex.h:47
-#2  0x00005593dd2b59a1 in qemu_event_wait (ev=0x5593ddad9e50 <rcu_call_ready_event>) at ../../home/thuth/devel/qemu/util/event.c:162
-#3  0x00005593dd2c12e3 in call_rcu_thread (opaque=0x0) at ../../home/thuth/devel/qemu/util/rcu.c:304
-#4  0x00005593dd2b3311 in qemu_thread_start (args=0x5594051010c0) at ../../home/thuth/devel/qemu/util/qemu-thread-posix.c:393
-#5  0x00007f31c4693f54 in start_thread () at /lib64/libc.so.6
-#6  0x00007f31c471732c in __clone3 () at /lib64/libc.so.6
-
-Thread 3 (Thread 0x7f31bc8fd6c0 (LWP 89224) "qemu-system-alp"):
-#0  0x00007f31c469c462 in __syscall_cancel_arch () at /lib64/libc.so.6
-#1  0x00007f31c469075c in __internal_syscall_cancel () at /lib64/libc.so.6
-#2  0x00007f31c46907a4 in __syscall_cancel () at /lib64/libc.so.6
-#3  0x00007f31c470a7c6 in ppoll () at /lib64/libc.so.6
-#4  0x00007f31c6916890 in g_main_context_iterate_unlocked.isra () at /lib64/libglib-2.0.so.0
-#5  0x00007f31c6916a4f in g_main_loop_run () at /lib64/libglib-2.0.so.0
-#6  0x00005593dd0d1ab0 in iothread_run (opaque=0x559405a567a0) at ../../home/thuth/devel/qemu/iothread.c:70
-#7  0x00005593dd2b3311 in qemu_thread_start (args=0x559405a571a0) at ../../home/thuth/devel/qemu/util/qemu-thread-posix.c:393
-#8  0x00007f31c4693f54 in start_thread () at /lib64/libc.so.6
-#9  0x00007f31c471732c in __clone3 () at /lib64/libc.so.6
-
-Thread 2 (Thread 0x7f3137fff6c0 (LWP 89225) "qemu-system-alp"):
-#0  0x00007f31c469c462 in __syscall_cancel_arch () at /lib64/libc.so.6
-#1  0x00007f31c469075c in __internal_syscall_cancel () at /lib64/libc.so.6
-#2  0x00007f31c46907a4 in __syscall_cancel () at /lib64/libc.so.6
-#3  0x00007f31c470b2be in write () at /lib64/libc.so.6
-#4  0x00005593dd2af441 in event_notifier_set (e=0x559405a56a54) at ../../home/thuth/devel/qemu/util/event_notifier-posix.c:117
-#5  0x00005593dd2cdcde in aio_notify (ctx=0x559405a56980) at ../../home/thuth/devel/qemu/util/async.c:506
-#6  0x00005593dd2cdd2a in aio_timerlist_notify (opaque=0x559405a56980, type=QEMU_CLOCK_VIRTUAL) at ../../home/thuth/devel/qemu/util/async.c:524
-#7  0x00005593dd2d4014 in timerlist_notify (timer_list=0x559405a56d50) at ../../home/thuth/devel/qemu/util/qemu-timer.c:293
-#8  0x00005593dd2d3aaf in qemu_clock_notify (type=QEMU_CLOCK_VIRTUAL) at ../../home/thuth/devel/qemu/util/qemu-timer.c:147
-#9  0x00005593dcf92c2c in icount_notify_aio_contexts () at ../../home/thuth/devel/qemu/accel/tcg/tcg-accel-ops-icount.c:72
-#10 0x00005593dcf92c92 in icount_handle_deadline () at ../../home/thuth/devel/qemu/accel/tcg/tcg-accel-ops-icount.c:88
-#11 0x00005593dcf93c45 in rr_cpu_thread_fn (arg=0x559405ce47d0) at ../../home/thuth/devel/qemu/accel/tcg/tcg-accel-ops-rr.c:251
-#12 0x00005593dd2b3311 in qemu_thread_start (args=0x559405ce4720) at ../../home/thuth/devel/qemu/util/qemu-thread-posix.c:393
-#13 0x00007f31c4693f54 in start_thread () at /lib64/libc.so.6
-#14 0x00007f31c471732c in __clone3 () at /lib64/libc.so.6
-
-Thread 1 (Thread 0x7f31bd82bb00 (LWP 89222) "qemu-system-alp"):
-#0  0x00007f31c469c462 in __syscall_cancel_arch () at /lib64/libc.so.6
-#1  0x00007f31c469075c in __internal_syscall_cancel () at /lib64/libc.so.6
-#2  0x00007f31c46907a4 in __syscall_cancel () at /lib64/libc.so.6
-#3  0x00007f31c470a7c6 in ppoll () at /lib64/libc.so.6
-#4  0x00005593dd2d418e in qemu_poll_ns (fds=0x5594064aad30, nfds=5, timeout=993592000) at ../../home/thuth/devel/qemu/util/qemu-timer.c:342
-#5  0x00005593dd2cf1bd in os_host_main_loop_wait (timeout=993592000) at ../../home/thuth/devel/qemu/util/main-loop.c:308
-#6  0x00005593dd2cf30f in main_loop_wait (nonblocking=0) at ../../home/thuth/devel/qemu/util/main-loop.c:592
-#7  0x00005593dce7edf6 in qemu_main_loop () at ../../home/thuth/devel/qemu/system/runstate.c:903
-#8  0x00005593dd1e212e in qemu_default_main (opaque=0x0) at ../../home/thuth/devel/qemu/system/main.c:50
-#9  0x00005593dd1e21e8 in main (argc=25, argv=0x7ffdad60bf18) at ../../home/thuth/devel/qemu/system/main.c:93
-
-
-  HTH,
-   Thomas
+Eric
+ 
+>
+> Nicolin
+>
 
 
