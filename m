@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64D9C31FA9
+	by mail.lfdr.de (Postfix) with ESMTPS id D9057C31FA6
 	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGJba-0006gM-I8; Tue, 04 Nov 2025 11:09:58 -0500
+	id 1vGJbg-0006gt-FI; Tue, 04 Nov 2025 11:10:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbT-0006fP-Cl
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:51 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1vGJbV-0006fp-Jd
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:57 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbR-0007Jb-Qu
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:51 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so42786875e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:49 -0800 (PST)
+ id 1vGJbT-0007Jp-DK
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:52 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4775a52e045so1477235e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762272588; x=1762877388; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762272589; x=1762877389; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=09if3quT8vnKDUHuOjmOHKUfaA1XeBQDUDHKw2iQQ/M=;
- b=B/o2x6Dmy+AJcDbBDabYOlAJXQT4O6Ryfuyo535WP54b+ci50m2gpcXusQgSL0jJx+
- aaDtprGSpf9hR2NsBPCZYfkuqLp5Yf9c0K1FbEhm1nDEHVLTSdiZrGNuZ5UukFo0RXPi
- Q8HVtDMdgPlzCVzEAGPmA6nplRtwzAKEryozNVoUrAavfSqxWmTpaAwLiYxT6+YPB1UV
- /2jBCQ7U3Iute1FKQZCHreTUwg3RmXNJqLRR9srET0L6rDkVnx+R0RR8nhB0tyBZWDQP
- 1R06uDuphC0b69Tamjr4mdArnSDpA9ChH0AjD/tX/R0K4Ca3VVzhFEBMFY8of0ozP+4J
- ajaA==
+ bh=FjdCF4UgNd4SZkh6SP1qLa1Jn8mI7bzwm8Kk/HbIkE8=;
+ b=cFLiz4uWzzII04lqo4dEXgGk8Yp6CCtNQlwc7yWfneW4HG8CnAzwimNXSz8uf0KdB/
+ 2Zax+sfcEoTp7tcpPg4JBECwcmmCrIP9SsMUUuVPyws0iFoP44QrNKdVwJJ6tQKP0TjQ
+ KPpyF95H4sBy81BlWQlxkdCrozyhiDpkGnm+k0eVlSYriPBHRjZZTt7kdylCyGSZRG8C
+ eU4XRsgBSCPqsgOsTG6PhSK28WWaFWtBVuU9z6JxWQXg4W302T0f4pw+wppk2nMRBi59
+ BhoqMJ4x8+SGtmmmbDmJINKEkxBP/wwrnafyLSx++BPzVeZpSgRjrvjLBSMGHvDHbmDV
+ 3EZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762272588; x=1762877388;
+ d=1e100.net; s=20230601; t=1762272589; x=1762877389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=09if3quT8vnKDUHuOjmOHKUfaA1XeBQDUDHKw2iQQ/M=;
- b=s4tPlMpfmmn25o/wPi4LXL61GiIGGmyi5BQOaANRTH48XdXxwIUSX0ngyMQy8BNy2r
- 0k9Rj0vMbxH2o51ucwNufuKD+QQeU+OXZHqj2A+q5tMPjLhq0wrPcGdkSRqWC8Z2KM+x
- heORtzdL/D2gVGctm/6+b55QkUDaQXuGndWBpanRZ7n5pBw8EpbRH88xb7KpvnY7Ow1m
- oq9TGU27e8eCqu7Eo8aQOwv/YlJN0QMU5CPKSAF5acStDyOvQmt3KZnuA5dT3TNqreBu
- 4hSsOKbFRtFKi2E1Luxg9T0BG9o0BIBeF269q1bGIKWqTsWGH6tQvHkksRmfVysyMnHu
- mNQQ==
-X-Gm-Message-State: AOJu0YykSJYkQUmMtkkrKa4UbLTXTTXh98llf5biGnAmR61jS9T0c07w
- dIGDtFeJ/jUU7bomPgXEpO0KAOo6AbB75lOEMNQQ7sy0MUxX3KwrJIGI/zkD8CGQOqqL5nb1xsU
- bSWum
-X-Gm-Gg: ASbGnctkTBpAzru1gMd84cCaDj8e8Xx+qNm/gg1FBLf/L3UY+wWZ5FaU7Bqv0Q+1TpP
- mDKjYfwCVdXEEQPxuaBrkpTjPeyJKmaFBKyTjf/7wGMJoXPVl3CMeB+V/RBk+vQvxRrQFE/gWwo
- JH9p2YvC24Q4YRwweS3OpRCxYIIXblttBvGAepMg5mZ1e3N3Czxa8or5cBHxfv3f5OFTrcygSu1
- sQn4P9PyCM6x+eH26Ez1XUjzHtIYqtV2DWQAoe4hPSheEL5YaK26XYSY0/E1ZznjV7DNwZ8aBOk
- taL2qzcfo5CF/wOrH3RvkPSInLgxC3uvE0Zbl9HIKuyWMriY8PfYS+XPTxGyu9fRWRncF0hmCYr
- ZXAUiQP5suLceAhmkXv+LV+qAaZf+QFdiiL/DayNgmPr+1XwR+kvNgwyQE2yJ+7m8e0MgmxvtJ1
- J0qp+nDg==
-X-Google-Smtp-Source: AGHT+IFX0GrZA0QuN2x0bkKN4Rx22FC1wg7I1DyDOBg0/AbdhXmBriUU9eZ452O+rttpN5Hl36E72g==
-X-Received: by 2002:a05:600d:8346:b0:477:54cd:202f with SMTP id
- 5b1f17b1804b1-47754cd2267mr23515645e9.3.1762272588133; 
- Tue, 04 Nov 2025 08:09:48 -0800 (PST)
+ bh=FjdCF4UgNd4SZkh6SP1qLa1Jn8mI7bzwm8Kk/HbIkE8=;
+ b=mAXBJjIDZ9/MIfli0Avp/apNygy3hLk9SDtciTVxh8FVIM5uk8igvmuVJAGpRIlYWN
+ I7rwLb/6cMGKC+lF0iyY+XrGHPzRNpFGr1MuPQyWGtTZ3FYpeW5VeJYq4WsAPhqM6C+U
+ t+6XcU5I+mtBG4947p9ftdyymeK903aV3UU+eO622itkzA+X3u9dGv4IfbvXjPCh1HOY
+ +Sf8ctBYnrl5kXzgFotwwA0K6WzPzuoaXrLLYvdL28/q27vjqHKk/FxStdhqduaG6UMw
+ 7GEiczDxkSAds+HjTXd+pVsLgSeXA8Jv+LPY0G8+/tSXCdyTJNXVegz2/mBOoa6EiZnU
+ GV6w==
+X-Gm-Message-State: AOJu0YysCb9NXi7OuhuJ/DFKnwm3AnTXCH06915WhqGrSXjBi2MsXD9k
+ LyijXfyE1ekIJvcYJ53aELOEVvutpusjda4eEt/4bX49C5tNN0buLf82m8y/NMBpCYOwxdOlJWc
+ 6wSRW
+X-Gm-Gg: ASbGncv9pqkgRUR2R9I4/mig046ExyGozWzggqTxAFSreBD/thcRmX34P1gvYYJz7vy
+ rh3UhlwAks6PqxqmrikA7Cb6LnKhbD/ypMmpg16aBcLDgbRzIpOQo6XFlHpmgJxwl05KGTTKN7Q
+ 0qnWI9iotGpExYNkiw9PTOLPcz3Rew4ZVjWmxC3I4ZHHhhuveszKiql163Qs78dy3uH4IMBaEol
+ U1raxITYM85a+J/Iep94wJkp6G9ps93fnl4PrnDE5Xm8HOboHweW6OF9bHjZ/w5AmCW73Vj/08R
+ 9Z+3n2fZsHoDxcM6KWwT69SK4PuP+y10OoPWFTYttIZUwUgVr/p+B0GlnTntiEiVkPzM/j8ZYcs
+ Pjv8lXuBaUEfsDyHNNvUG5j3MaEA9TOKkQrNe4WPQOz2nb6PjVo392x5YJ958WczdjkEUpp6ytf
+ NiwIZ7wA==
+X-Google-Smtp-Source: AGHT+IHJ62yJOviHbRJJN3pTb5mDsFv4TuJup00cA8TE/7rVS6cNhwgGnmHDoUxNyTLddE/r5704Ig==
+X-Received: by 2002:a05:600d:634c:b0:477:5c45:8117 with SMTP id
+ 5b1f17b1804b1-4775c45824fmr2078785e9.41.1762272589263; 
+ Tue, 04 Nov 2025 08:09:49 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.47
+ 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 08:09:47 -0800 (PST)
+ Tue, 04 Nov 2025 08:09:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -71,16 +71,16 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Thanos Makatos <thanos.makatos@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 2/9] scripts/clean-includes: Remove outdated comment
-Date: Tue,  4 Nov 2025 16:09:36 +0000
-Message-ID: <20251104160943.751997-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/9] scripts/clean-includes: Make ignore-regexes one per line
+Date: Tue,  4 Nov 2025 16:09:37 +0000
+Message-ID: <20251104160943.751997-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104160943.751997-1-peter.maydell@linaro.org>
 References: <20251104160943.751997-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,35 +103,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove an old comment suggesting a manual shell line to use to find
-files to run the script on. The script's exclude-list and its
-support for directory names make this irrelevant.
+Currently we have a single extended regular expression defining
+files that clean-includes should ignore. This is now very long
+and awkward to read and edit.
+
+Switch to having a list of newline-separated EREs that we write
+to a file for grep's -f option, so we can express them more
+legibly in the shell script. We allow for comments in the
+regex list, which lets us document why we have put the
+exclusions in.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- scripts/clean-includes | 9 ---------
- 1 file changed, 9 deletions(-)
+ scripts/clean-includes | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
 diff --git a/scripts/clean-includes b/scripts/clean-includes
-index 07c0fd44e46..568033ee9c1 100755
+index 568033ee9c1..5ab3b071967 100755
 --- a/scripts/clean-includes
 +++ b/scripts/clean-includes
-@@ -39,15 +39,6 @@
- # removed.
- # Other files (including C++ and ObjectiveC) can't be handled by this script.
- 
--# The following one-liner may be handy for finding files to run this on.
--# However some caution is required regarding files that might be part
--# of the guest agent or standalone tests.
--
--# for i in $(git ls-tree --name-only HEAD) ; do test -f $i && \
--#   grep -E '^# *include' $i | head -1 | grep 'osdep.h' ; test $? != 0 && \
--#   echo $i ; done
--
--
+@@ -42,8 +42,6 @@
  GIT=no
  DUPHEAD=no
  
+-# Extended regular expression defining files to ignore when using --all
+-XDIRREGEX='^(tests/tcg|tests/multiboot|tests/fp|tests/plugin|tests/uefi-test-tools|pc-bios|subprojects|contrib/plugins|tools/ebpf|ebpf/rss.bpf.skeleton.h|linux-user/(mips64|x86_64)/(cpu_loop|signal).c)'
+ 
+ while true
+ do
+@@ -83,15 +81,33 @@ if [ "$1" = "--all" ]; then
+     set -- '.'
+ fi
+ 
+-# We assume there are no files in the tree with spaces in their name
+-set -- $(git ls-files "$@" | grep '\.[ch]$' | grep -E -v "$XDIRREGEX")
+-
+ # Annoyingly coccinelle won't read a scriptfile unless its
+ # name ends '.cocci', so write it out to a tempfile with the
+ # right kind of name.
+ COCCIFILE="$(mktemp --suffix=.cocci)"
++REGEXFILE="$(mktemp --suffix=.regex)"
+ 
+-trap 'rm -f -- "$COCCIFILE"' INT TERM HUP EXIT
++trap 'rm -f -- "$COCCIFILE" "$REGEXFILE"' INT TERM HUP EXIT
++
++# List of extended regular expressions defining files to ignore
++# Comments starting with '#' are permitted
++grep -v '^#' >"$REGEXFILE" <<EOT
++# These tests are generally standalone binaries
++^tests/(tcg|multiboot|fp|plugin|uefi-test-tools)
++# BIOS sources and third-party subprojects don't follow our rules
++^pc-bios
++^subprojects
++# plugin binaries are standalone
++^contrib/plugins
++# the ebpf tool is standalone, and the skeleton header is autogenerated
++^tools/ebpf
++^ebpf/rss.bpf.skeleton.h
++# These files just include some other .c file and have no content themselves
++^linux-user/(mips64|x86_64)/(cpu_loop|signal).c
++EOT
++
++# We assume there are no files in the tree with spaces in their name
++set -- $(git ls-files "$@" | grep '\.[ch]$' | grep -E -v -f "$REGEXFILE")
+ 
+ cat >"$COCCIFILE" <<EOT
+ @@
 -- 
 2.43.0
 
