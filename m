@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B752C30758
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 11:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8E9C30766
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 11:19:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGE6a-0001A3-Rz; Tue, 04 Nov 2025 05:17:37 -0500
+	id 1vGE6X-00018o-LE; Tue, 04 Nov 2025 05:17:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vGE6X-00018p-FD
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 05:17:33 -0500
+ id 1vGE6W-00018Y-4H
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 05:17:32 -0500
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vGE6U-0002lK-3y
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 05:17:33 -0500
+ id 1vGE6U-0002lQ-07
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 05:17:31 -0500
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3FAD2C00D4;
- Tue, 04 Nov 2025 13:17:25 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 11D15C00D9;
+ Tue, 04 Nov 2025 13:17:26 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:95c::1:2])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id NHhfHh1FIW20-UXpqpEJz; Tue, 04 Nov 2025 13:17:24 +0300
+ ESMTPSA id NHhfHh1FIW20-NxAdS7S0; Tue, 04 Nov 2025 13:17:25 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1762251444;
- bh=SKiXWkrfyerSyuI+MWim96D1B4dxWCuC8JvdpcwRjTg=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=V91QLJ/BM7Y7GD8t/XNrCcJuA12yC382HOUB6aSDPF3ngFKEG6uTYnmFx4uNCKZCY
- S11Egx9OpWXvNEiag8mlQIoUE+Zs3yY88ytgg70YY/opxxLaIGxEg8MxcctaW4DKeU
- sB/aS51icpaKtN0kBoJIdNeHHZTgjkI2KlQWLgzo=
+ s=default; t=1762251445;
+ bh=vEFpAi/SJoZ1FyW5/cNP/W5tIquHEsUoHiATdJxF5jc=;
+ h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+ b=uPFYThA4E2T/ATKctcc9m481GKYNSV8ib3ZY0MtvV2Zs4S/tvnPYMWcxGnWGEHlSl
+ 9ga9pL1J6BBeTOaO/1ml1gb9vej/SqKgWn4JPmfPXWQTJGswqLpRoQfgIrusEg5WNW
+ xqa3gqwln+UtKGPmCcUY9h6mIauCFFbqTi3384pw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,10 +42,12 @@ To: marcandre.lureau@redhat.com
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  qemu-devel@nongnu.org, vsementsov@yandex-team.ru, raphael@enfabrica.net,
  armbru@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v6 0/7] chardev: postpone connect
-Date: Tue,  4 Nov 2025 13:17:08 +0300
-Message-ID: <20251104101715.76691-1-vsementsov@yandex-team.ru>
+Subject: [PATCH v6 1/7] chardev/char-socket: simplify reconnect-ms handling
+Date: Tue,  4 Nov 2025 13:17:09 +0300
+Message-ID: <20251104101715.76691-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251104101715.76691-1-vsementsov@yandex-team.ru>
+References: <20251104101715.76691-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -72,43 +74,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all!
+We pass it to qmp_chardev_open_socket_client() only to write
+to s->reconnect_time_ms. Let's simply set this field earlier,
+together with other options.
 
-That's a preparation for backend-transfer migration of
-vhost-user-blk, and introduced DEFINE_PROP_CHR_NO_CONNECT()
-is unused now.
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ chardev/char-socket.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-v3 of "vhost-user-blk: live-backend local migration" is coming
-soon, and will be based on this series (and will use
-DEFINE_PROP_CHR_NO_CONNECT of course).
-
-changes in v6:
-05: move connect() call into "if (s)"
-07: - drop assertion
-    - improve doc comment, to cover @s==NULL relations with @connect
-    - add r-b by Marc-André
-
-Vladimir Sementsov-Ogievskiy (7):
-  chardev/char-socket: simplify reconnect-ms handling
-  chardev/char: split chardev_init_common() out of qemu_char_open()
-  chardev/char: qemu_char_open(): add return value
-  chardev/char: move filename and be_opened handling to qemu_char_open()
-  chardev/char: introduce .init() + .connect() initialization interface
-  chardev/char-socket: move to .init + .connect api
-  chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
-
- chardev/char-fe.c                   |  22 +++++-
- chardev/char-socket.c               |  64 ++++++++-------
- chardev/char.c                      | 118 ++++++++++++++++++++--------
- hw/core/qdev-properties-system.c    |  26 +++++-
- include/chardev/char-fe.h           |   9 ++-
- include/chardev/char-socket.h       |   1 +
- include/chardev/char.h              |  30 ++++++-
- include/hw/qdev-properties-system.h |   3 +
- tests/unit/test-char.c              |  14 ++--
- ui/dbus-chardev.c                   |  12 ++-
- 10 files changed, 223 insertions(+), 76 deletions(-)
-
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 62852e3caf..f3bc6290d2 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -1274,18 +1274,16 @@ skip_listen:
+ 
+ 
+ static int qmp_chardev_open_socket_client(Chardev *chr,
+-                                          int64_t reconnect_ms,
+                                           Error **errp)
+ {
+     SocketChardev *s = SOCKET_CHARDEV(chr);
+ 
+-    if (reconnect_ms > 0) {
+-        s->reconnect_time_ms = reconnect_ms;
++    if (s->reconnect_time_ms > 0) {
+         tcp_chr_connect_client_async(chr);
+         return 0;
+-    } else {
+-        return tcp_chr_connect_client_sync(chr, errp);
+     }
++
++    return tcp_chr_connect_client_sync(chr, errp);
+ }
+ 
+ 
+@@ -1378,7 +1376,6 @@ static void qmp_chardev_open_socket(Chardev *chr,
+     bool is_tn3270      = sock->has_tn3270  ? sock->tn3270  : false;
+     bool is_waitconnect = sock->has_wait    ? sock->wait    : false;
+     bool is_websock     = sock->has_websocket ? sock->websocket : false;
+-    int64_t reconnect_ms = sock->has_reconnect_ms ? sock->reconnect_ms : 0;
+     SocketAddress *addr;
+ 
+     s->is_listen = is_listen;
+@@ -1386,6 +1383,8 @@ static void qmp_chardev_open_socket(Chardev *chr,
+     s->is_tn3270 = is_tn3270;
+     s->is_websock = is_websock;
+     s->do_nodelay = do_nodelay;
++    s->reconnect_time_ms = sock->has_reconnect_ms ? sock->reconnect_ms : 0;
++
+     if (sock->tls_creds) {
+         Object *creds;
+         creds = object_resolve_path_component(
+@@ -1450,7 +1449,7 @@ static void qmp_chardev_open_socket(Chardev *chr,
+             return;
+         }
+     } else {
+-        if (qmp_chardev_open_socket_client(chr, reconnect_ms, errp) < 0) {
++        if (qmp_chardev_open_socket_client(chr, errp) < 0) {
+             return;
+         }
+     }
 -- 
 2.48.1
 
