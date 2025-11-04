@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82954C2FEC2
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F75C2FEC5
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCTI-0001Xj-GL; Tue, 04 Nov 2025 03:32:56 -0500
+	id 1vGCTD-000176-TB; Tue, 04 Nov 2025 03:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSn-0000ZH-HS
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSt-0000Ze-5k
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSl-0003Vy-JZ
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:25 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSq-0003WM-Vl
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245142;
+ s=mimecast20190719; t=1762245144;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3+qXPdiht40Ns3IGeKSy6XzeWbrsA8N/VZg93cVRdJ8=;
- b=W8eqhSN6tI8VRdPDgKyntXsPnubuTK1m0EMCylBEtSqt94ikCj75KgCZZeS1r1+EGjblDu
- 7tUkiEo9Kyu9yOMXorcBR8JotpI04Zzjh+yCasoz04a1cbGVC3Wh7W3m63XgasD2X2ekxJ
- fdzKLQ7p/Ljzs1lBwfpyB8zwC6DYW+g=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Tp8yEqgHCkGvsq0EA6sImb2lx2K+JuV7eVs2Qydr6NM=;
+ b=UtbJKndgGoSVpdtlTT25bXgwKQgCj6gR+0oJhRTolBAkAF3YPwyWYqLXPpU6HZB/QtAkSq
+ iQUXBCJ/UAw50reZB8kYMOtbKSodnxz0xphNOKT81R0JCM982TtOxhZGl0LhX9FtDlRbTp
+ KZ0C/CxwfMU5rSGlZMUQSUOhIciBEQE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-RKdyRpFbM5-DpbACtfE-jQ-1; Tue,
- 04 Nov 2025 03:32:19 -0500
-X-MC-Unique: RKdyRpFbM5-DpbACtfE-jQ-1
-X-Mimecast-MFC-AGG-ID: RKdyRpFbM5-DpbACtfE-jQ_1762245138
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-Tfgj1b-7OdCDoPo8uVQMOw-1; Tue,
+ 04 Nov 2025 03:32:21 -0500
+X-MC-Unique: Tfgj1b-7OdCDoPo8uVQMOw-1
+X-Mimecast-MFC-AGG-ID: Tfgj1b-7OdCDoPo8uVQMOw_1762245140
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4664F19560A7; Tue,  4 Nov 2025 08:32:18 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F52F195606F; Tue,  4 Nov 2025 08:32:20 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9F8FC19560B2; Tue,  4 Nov 2025 08:32:16 +0000 (UTC)
+ id C54DF19560B2; Tue,  4 Nov 2025 08:32:18 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/30] hw/arm/aspeed: Split AST2500 EVB machine into a separate
+Subject: [PULL 14/30] hw/arm/aspeed: Split Quanta-Q71L machine into a separate
  source file for maintainability
-Date: Tue,  4 Nov 2025 09:31:27 +0100
-Message-ID: <20251104083144.187806-14-clg@redhat.com>
+Date: Tue,  4 Nov 2025 09:31:28 +0100
+Message-ID: <20251104083144.187806-15-clg@redhat.com>
 In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
 References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,121 +85,142 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-This commit moves the AST2500 EVB machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2500_evb.c.
+This commit moves the Quanta-Q71L BMC machine implementation out of
+aspeed.c into a new standalone file aspeed_ast2400_quanta-q71l.c.
 
 This refactor continues the modularization effort for Aspeed platform
 support, placing each board’s logic in its own dedicated source file.
 It improves maintainability, readability, and simplifies future
-development for new platforms without cluttering aspeed.c.
+development for new platforms without cluttering aspeed.c
 
 Key updates include:
 
-- Moved AST2500_EVB_HW_STRAP1 macro definition into the new file.
-- Moved ast2500_evb_i2c_init() I²C initialization logic.
-- Moved aspeed_machine_ast2500_evb_class_init() and type registration.
-- Added aspeed_ast2500_evb.c to the build system (meson.build).
-- Removed all AST2500 EVB–specific code and macros from aspeed.c.
+- Moved QUANTA_Q71L_BMC_HW_STRAP1 macro definition into the new file.
+- Moved quanta_q71l_bmc_i2c_init() I²C initialization logic into the new file.
+- Moved aspeed_machine_quanta_q71l_class_init() and type registration.
+- Added aspeed_ast2400_quanta-q71l.c to the build system (meson.build).
+- Removed all Quanta-Q71L–specific code and macros from aspeed.c.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-14-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-15-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c             | 46 -------------------------
- hw/arm/aspeed_ast2500_evb.c | 67 +++++++++++++++++++++++++++++++++++++
- hw/arm/meson.build          |  1 +
- 3 files changed, 68 insertions(+), 46 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2500_evb.c
+ hw/arm/aspeed.c                     | 67 ----------------------
+ hw/arm/aspeed_ast2400_quanta-q71l.c | 86 +++++++++++++++++++++++++++++
+ hw/arm/meson.build                  |  1 +
+ 3 files changed, 87 insertions(+), 67 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2400_quanta-q71l.c
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index e1fa95b2c3ae..7d26d9241cb2 100644
+index 7d26d9241cb2..f9e6d8c4c6dc 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -71,17 +71,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+@@ -71,19 +71,6 @@ static struct arm_boot_info aspeed_board_binfo = {
          SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
          SCU_AST2400_HW_STRAP_BOOT_MODE(AST2400_SPI_BOOT))
  
--/* AST2500 evb hardware value: 0xF100C2E6 */
--#define AST2500_EVB_HW_STRAP1 ((                                        \
--        AST2500_HW_STRAP1_DEFAULTS |                                    \
--        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
--        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
--        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
--        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
--        SCU_HW_STRAP_MAC1_RGMII |                                       \
--        SCU_HW_STRAP_MAC0_RGMII) &                                      \
--        ~SCU_HW_STRAP_2ND_BOOT_WDT)
+-/* Quanta-Q71l hardware value */
+-#define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
+-        SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
+-        SCU_AST2400_HW_STRAP_DRAM_CONFIG(2/* DDR3 with CL=6, CWL=5 */) | \
+-        SCU_AST2400_HW_STRAP_ACPI_DIS |                                 \
+-        SCU_AST2400_HW_STRAP_SET_CLK_SOURCE(AST2400_CLK_24M_IN) |       \
+-        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
+-        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_PASS_THROUGH) |          \
+-        SCU_AST2400_HW_STRAP_SET_CPU_AHB_RATIO(AST2400_CPU_AHB_RATIO_2_1) | \
+-        SCU_HW_STRAP_SPI_WIDTH |                                        \
+-        SCU_HW_STRAP_VGA_SIZE_SET(VGA_8M_DRAM) |                        \
+-        SCU_AST2400_HW_STRAP_BOOT_MODE(AST2400_SPI_BOOT))
 -
- /* Quanta-Q71l hardware value */
- #define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
-         SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
-@@ -406,19 +395,6 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
-     /* TODO: i2c-8: Add BMC FRU eeprom@50 */
+ /* AST2600 evb hardware value */
+ #define AST2600_EVB_HW_STRAP1 0x000000C0
+ #define AST2600_EVB_HW_STRAP2 0x00000003
+@@ -363,38 +350,6 @@ static void palmetto_bmc_i2c_init(AspeedMachineState *bmc)
+     object_property_set_int(OBJECT(dev), "temperature3", 110000, &error_abort);
  }
  
--static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
+-static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
 -{
 -    AspeedSoCState *soc = bmc->soc;
--    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
 -
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 0x50,
--                          eeprom_buf);
+-    /*
+-     * The quanta-q71l platform expects tmp75s which are compatible with
+-     * tmp105s.
+-     */
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4c);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4e);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4f);
 -
--    /* The AST2500 EVB expects a LM75 but a TMP105 is compatible */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
--                     TYPE_TMP105, 0x4d);
+-    /* TODO: i2c-1: Add baseboard FRU eeprom@54 24c64 */
+-    /* TODO: i2c-1: Add Frontpanel FRU eeprom@57 24c64 */
+-    /* TODO: Add Memory Riser i2c mux and eeproms. */
+-
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9546", 0x74);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9548", 0x77);
+-
+-    /* TODO: i2c-3: Add BIOS FRU eeprom@56 24c64 */
+-
+-    /* i2c-7 */
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), "pca9546", 0x70);
+-    /*        - i2c@0: pmbus@59 */
+-    /*        - i2c@1: pmbus@58 */
+-    /*        - i2c@2: pmbus@58 */
+-    /*        - i2c@3: pmbus@59 */
+-
+-    /* TODO: i2c-7: Add PDB FRU eeprom@52 */
+-    /* TODO: i2c-8: Add BMC FRU eeprom@50 */
 -}
 -
  static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
  {
      AspeedSoCState *soc = bmc->soc;
-@@ -1177,23 +1153,6 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
+@@ -1118,23 +1073,6 @@ static void aspeed_machine_palmetto_class_init(ObjectClass *oc,
      aspeed_machine_class_init_cpus_defaults(mc);
- }
+ };
  
--static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
+-static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc,
 -                                                  const void *data)
 -{
 -    MachineClass *mc = MACHINE_CLASS(oc);
 -    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 -
--    mc->desc       = "Aspeed AST2500 EVB (ARM1176)";
--    amc->soc_name  = "ast2500-a1";
--    amc->hw_strap1 = AST2500_EVB_HW_STRAP1;
--    amc->fmc_model = "mx25l25635e";
--    amc->spi_model = "mx25l25635f";
+-    mc->desc       = "Quanta-Q71l BMC (ARM926EJ-S)";
+-    amc->soc_name  = "ast2400-a1";
+-    amc->hw_strap1 = QUANTA_Q71L_BMC_HW_STRAP1;
+-    amc->fmc_model = "n25q256a";
+-    amc->spi_model = "mx25l25635e";
 -    amc->num_cs    = 1;
--    amc->i2c_init  = ast2500_evb_i2c_init;
--    mc->default_ram_size       = 512 * MiB;
+-    amc->i2c_init  = quanta_q71l_bmc_i2c_init;
+-    mc->default_ram_size       = 128 * MiB;
 -    aspeed_machine_class_init_cpus_defaults(mc);
--};
+-}
 -
- static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
-                                                   const void *data)
+ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
+                                                         const void *data)
  {
-@@ -1549,11 +1508,6 @@ static const TypeInfo aspeed_machine_types[] = {
+@@ -1523,11 +1461,6 @@ static const TypeInfo aspeed_machine_types[] = {
          .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_supermicrox11_bmc_class_init,
+         .class_init    = aspeed_machine_qcom_firework_class_init,
          .interfaces    = arm_machine_interfaces,
 -    }, {
--        .name          = MACHINE_TYPE_NAME("ast2500-evb"),
+-        .name          = MACHINE_TYPE_NAME("quanta-q71l-bmc"),
 -        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_ast2500_evb_class_init,
+-        .class_init    = aspeed_machine_quanta_q71l_class_init,
 -        .interfaces    = arm_machine_interfaces,
      }, {
-         .name          = MACHINE_TYPE_NAME("ast2600-evb"),
+         .name          = MACHINE_TYPE_NAME("rainier-bmc"),
          .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2500_evb.c b/hw/arm/aspeed_ast2500_evb.c
+diff --git a/hw/arm/aspeed_ast2400_quanta-q71l.c b/hw/arm/aspeed_ast2400_quanta-q71l.c
 new file mode 100644
-index 000000000000..8b5cb67be9bf
+index 000000000000..42ad2a2303f7
 --- /dev/null
-+++ b/hw/arm/aspeed_ast2500_evb.c
-@@ -0,0 +1,67 @@
++++ b/hw/arm/aspeed_ast2400_quanta-q71l.c
+@@ -0,0 +1,86 @@
 +/*
-+ * ASPEED AST2500 EVB
++ * Quanta Q71l
 + *
 + * Copyright 2016 IBM Corp.
 + *
@@ -211,72 +232,91 @@ index 000000000000..8b5cb67be9bf
 +#include "hw/arm/machines-qom.h"
 +#include "hw/arm/aspeed.h"
 +#include "hw/arm/aspeed_soc.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+#include "hw/sensor/tmp105.h"
 +
-+/* AST2500 evb hardware value: 0xF100C2E6 */
-+#define AST2500_EVB_HW_STRAP1 ((                                        \
-+        AST2500_HW_STRAP1_DEFAULTS |                                    \
-+        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
-+        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
-+        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
-+        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
-+        SCU_HW_STRAP_MAC1_RGMII |                                       \
-+        SCU_HW_STRAP_MAC0_RGMII) &                                      \
-+        ~SCU_HW_STRAP_2ND_BOOT_WDT)
++/* Quanta-Q71l hardware value */
++#define QUANTA_Q71L_BMC_HW_STRAP1 (                                     \
++        SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_128MB) |               \
++        SCU_AST2400_HW_STRAP_DRAM_CONFIG(2/* DDR3 with CL=6, CWL=5 */) | \
++        SCU_AST2400_HW_STRAP_ACPI_DIS |                                 \
++        SCU_AST2400_HW_STRAP_SET_CLK_SOURCE(AST2400_CLK_24M_IN) |       \
++        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
++        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_PASS_THROUGH) |          \
++        SCU_AST2400_HW_STRAP_SET_CPU_AHB_RATIO(AST2400_CPU_AHB_RATIO_2_1) | \
++        SCU_HW_STRAP_SPI_WIDTH |                                        \
++        SCU_HW_STRAP_VGA_SIZE_SET(VGA_8M_DRAM) |                        \
++        SCU_AST2400_HW_STRAP_BOOT_MODE(AST2400_SPI_BOOT))
 +
-+static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
++static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
 +{
 +    AspeedSoCState *soc = bmc->soc;
-+    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
 +
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 0x50,
-+                          eeprom_buf);
++    /*
++     * The quanta-q71l platform expects tmp75s which are compatible with
++     * tmp105s.
++     */
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4c);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4e);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4f);
 +
-+    /* The AST2500 EVB expects a LM75 but a TMP105 is compatible */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
-+                     TYPE_TMP105, 0x4d);
++    /* TODO: i2c-1: Add baseboard FRU eeprom@54 24c64 */
++    /* TODO: i2c-1: Add Frontpanel FRU eeprom@57 24c64 */
++    /* TODO: Add Memory Riser i2c mux and eeproms. */
++
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9546", 0x74);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9548", 0x77);
++
++    /* TODO: i2c-3: Add BIOS FRU eeprom@56 24c64 */
++
++    /* i2c-7 */
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), "pca9546", 0x70);
++    /*        - i2c@0: pmbus@59 */
++    /*        - i2c@1: pmbus@58 */
++    /*        - i2c@2: pmbus@58 */
++    /*        - i2c@3: pmbus@59 */
++
++    /* TODO: i2c-7: Add PDB FRU eeprom@52 */
++    /* TODO: i2c-8: Add BMC FRU eeprom@50 */
 +}
 +
-+static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
++static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc,
 +                                                  const void *data)
 +{
 +    MachineClass *mc = MACHINE_CLASS(oc);
 +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 +
-+    mc->desc       = "Aspeed AST2500 EVB (ARM1176)";
-+    amc->soc_name  = "ast2500-a1";
-+    amc->hw_strap1 = AST2500_EVB_HW_STRAP1;
-+    amc->fmc_model = "mx25l25635e";
-+    amc->spi_model = "mx25l25635f";
++    mc->desc       = "Quanta-Q71l BMC (ARM926EJ-S)";
++    amc->soc_name  = "ast2400-a1";
++    amc->hw_strap1 = QUANTA_Q71L_BMC_HW_STRAP1;
++    amc->fmc_model = "n25q256a";
++    amc->spi_model = "mx25l25635e";
 +    amc->num_cs    = 1;
-+    amc->i2c_init  = ast2500_evb_i2c_init;
-+    mc->default_ram_size       = 512 * MiB;
++    amc->i2c_init  = quanta_q71l_bmc_i2c_init;
++    mc->default_ram_size       = 128 * MiB;
 +    aspeed_machine_class_init_cpus_defaults(mc);
-+};
++}
 +
-+static const TypeInfo aspeed_ast2500_evb_types[] = {
++static const TypeInfo aspeed_ast2400_quanta_q71l_types[] = {
 +    {
-+        .name          = MACHINE_TYPE_NAME("ast2500-evb"),
++        .name          = MACHINE_TYPE_NAME("quanta-q71l-bmc"),
 +        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2500_evb_class_init,
++        .class_init    = aspeed_machine_quanta_q71l_class_init,
 +        .interfaces    = arm_machine_interfaces,
 +    }
 +};
 +
-+DEFINE_TYPES(aspeed_ast2500_evb_types)
++DEFINE_TYPES(aspeed_ast2400_quanta_q71l_types)
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 76a456c33fc7..021daba2865a 100644
+index 021daba2865a..5467ee673db7 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
 @@ -44,6 +44,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
    'aspeed.c',
    'aspeed_soc_common.c',
    'aspeed_ast2400.c',
-+  'aspeed_ast2500_evb.c',
++  'aspeed_ast2400_quanta-q71l.c',
+   'aspeed_ast2500_evb.c',
    'aspeed_ast2500_fp5280g2.c',
    'aspeed_ast2500_g220a.c',
-   'aspeed_ast2500_romulus.c',
 -- 
 2.51.1
 
