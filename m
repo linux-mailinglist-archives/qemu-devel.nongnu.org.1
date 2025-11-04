@@ -2,70 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8754C32801
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 19:03:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74E7C32859
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 19:08:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGLL1-0006XK-Cq; Tue, 04 Nov 2025 13:01:02 -0500
+	id 1vGLNM-0001YR-2N; Tue, 04 Nov 2025 13:03:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFY-0001Rj-LH
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:55:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1vGLIU-0003dd-16; Tue, 04 Nov 2025 12:58:30 -0500
+Received: from mail-southcentralusazlp170130001.outbound.protection.outlook.com
+ ([2a01:111:f403:c10c::1] helo=SA9PR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFX-000761-4E
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:55:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762278918;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DpNqXUG11AGsY3sUGvyckw8XphYJ8cR1pOTzBckv6uc=;
- b=WxmlGOMYZUTFEoJMHT/GbHPPaIeMZSqQ+0gFVAgQz8sxJhg/Pod5xHP782xEH2PGQXAeIR
- ujY1xC8iyIka0HmcYOxNO8YWDBafpK3MJDLwtLwWU3jXlGZmTmKJH+VGD99Wq3WG/kYYtO
- u1hDIHedfL7M4oV4+P7/PQjX/efMO60=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-c9l3EHG2N5Wgu98VWXXA3w-1; Tue,
- 04 Nov 2025 12:55:14 -0500
-X-MC-Unique: c9l3EHG2N5Wgu98VWXXA3w-1
-X-Mimecast-MFC-AGG-ID: c9l3EHG2N5Wgu98VWXXA3w_1762278913
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F10C6180066C; Tue,  4 Nov 2025 17:55:12 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.45.226.47])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A8F6B180045B; Tue,  4 Nov 2025 17:55:11 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 27/27] qcow2,
- vmdk: Restrict creation with secondary file using protocol
-Date: Tue,  4 Nov 2025 18:54:15 +0100
-Message-ID: <20251104175415.525388-28-kwolf@redhat.com>
-In-Reply-To: <20251104175415.525388-1-kwolf@redhat.com>
-References: <20251104175415.525388-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1vGLIS-0007ao-A5; Tue, 04 Nov 2025 12:58:21 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lp2jeMFmBz81XAsDfoLeINVE7IzUvTLVlWOhdR3GpAveMCOvKDTvkq2Cnu6gKehzTEqqieHvzyCWGHuwKAzn07w352lXJKPUPtJN0QHgVyPAQ1+hWjQShKRCdiJk0SBqnAt/e1s5IN1Jt7ya5o0XWFgcviY1o2U92obsqfTvP+Vu518G2P4B0nWk0yHx0jy7PIpQJzbheZ1otoJaqeLpcqtuiwUequIVkcAG8Jrek1HfXDEQtzUEEpu16FFQGfMMAHeS+iLMxD6yJQkpQ0R5CnTjq1+DEXvYzCjPp9hoagoRjaeeC7m1vr9WuZBVy6oBskf+r/1Isse0ELh4hBdUPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZQWVHrN+Gj8syVpU70/Pec49UmvQPqFfwIuGqK4KrjI=;
+ b=PU9lhZWNWYuxG2mD70IUcXGOuthbhexBbAiDPOVF2pkL4l8Fo5NarWBvEj1ApWLQQAwR+P/Fys8m5+oU0vBkrmGV7IknZvC9+yrObpg7xm3wfTLVLhaoW+/TnVK2p6TB8puz1FDh0z33ePstTwbWRwyP86xbsCqoEHXlDdMWyFGt1os7llrYsFVVBvvYzDRATRbHUy5Tg4eC5FKOwOf+uo0DqTHsV1z9vyfxBunxcZOslGy8K46GET1c57a0eJz+V2XZioON7j0SnL16L2idE+dDBuGvkv4sZv2MGAhgN+Kw9sCqrIRxL0V7L/cUPqZLS4l1ThbxLq9velrFbMmuMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZQWVHrN+Gj8syVpU70/Pec49UmvQPqFfwIuGqK4KrjI=;
+ b=d74bhJ0TQT4mrywqAeXGmz4Owd2m7ghgkzxWrVL5kfKh2Vv8ivY/rCzgaqFEuOSjIfz6Nc+ZSpI3A45MTgU3Jz32SZV2NzXbPRm4mX9OJQykj/CtYa56w7s//OeMZx7apSfurEbBdr8g4xz1u2pgm4kzrqTWam5DAvaBm4CPNTnjx/LYbjpdv8kbHMJ9r2Vz6mSmgQluwvNLXA1glvnmWPE9CfwpsF8y71i00NWuepXXqdfpbtP5HH45+NEbIv4WO5AllsZmOIFxxsAefA+1Xc3TXo8U75Ty5O0eJoUsij7MY0gSwcUHWtBIBpvdipTyNZYM9EZaZYG77zt4bNmBpQ==
+Received: from DS7PR05CA0096.namprd05.prod.outlook.com (2603:10b6:8:56::28) by
+ CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Tue, 4 Nov
+ 2025 17:58:11 +0000
+Received: from DS1PEPF00017092.namprd03.prod.outlook.com
+ (2603:10b6:8:56:cafe::17) by DS7PR05CA0096.outlook.office365.com
+ (2603:10b6:8:56::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.7 via Frontend Transport; Tue, 4
+ Nov 2025 17:57:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF00017092.mail.protection.outlook.com (10.167.17.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Tue, 4 Nov 2025 17:58:11 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Nov
+ 2025 09:57:56 -0800
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Nov
+ 2025 09:57:55 -0800
+Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 4 Nov 2025 09:57:54 -0800
+Date: Tue, 4 Nov 2025 09:57:53 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: Shameer Kolothum <skolothumtho@nvidia.com>, Eric Auger
+ <eric.auger@redhat.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, "yi.l.liu@intel.com"
+ <yi.l.liu@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>
+Subject: Re: [PATCH v5 15/32] hw/pci/pci: Introduce optional
+ get_msi_address_space() callback
+Message-ID: <aQo+oT0GvhDqtTuT@Asurada-Nvidia>
+References: <318947de-4467-4ced-a5d2-929e3df210ef@redhat.com>
+ <20251104142052.GD1537560@nvidia.com>
+ <CH3PR12MB7548E5E1A2DFE297C4C65E0AABC4A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <20251104145157.GF1537560@nvidia.com>
+ <CH3PR12MB7548379E64E7A12904B5BF7AABC4A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <20251104151234.GG1537560@nvidia.com>
+ <CH3PR12MB754877D400D19E57AFB16D0BABC4A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <20251104153535.GH1537560@nvidia.com>
+ <aQoz2+bLMJWNoVwx@Asurada-Nvidia>
+ <20251104174152.GI1537560@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251104174152.GI1537560@nvidia.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017092:EE_|CH3PR12MB8403:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12319ac0-4014-4548-d545-08de1bcbb81c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|7416014|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NTjdujnhkjoQzf3lSFMSb5WV7DeftNGIHGfrd55+5imd0BIZAkbpuE3xy35e?=
+ =?us-ascii?Q?jbn2Jbepl3EGTDRqIbd1aieLOlPoLhLrj6EfgB6C255wsYxJBK+fl6gqIX4z?=
+ =?us-ascii?Q?vhuUu8BhUE0ESfPG9fsHQwEc2x1vOsPzDUuLUiUWGdxaC9LaQUhjIM0hwKxw?=
+ =?us-ascii?Q?qjpJ8TkmYyBnAKOiEgC3+m8mYjknnMtqenHBeQ7lu787sBqFwfMLYHYoFiaX?=
+ =?us-ascii?Q?yeUmVMNwRIxUMHCGgt0WNLrAEuNAfItXakznJetUHwjOtG1Y9b2cPaIAlmTt?=
+ =?us-ascii?Q?M1FRGKC/o6g0STQjo6lj+Gk71ISHcpWUKh+9Zar0GfOJIUvu2Y6A5Vi3If6M?=
+ =?us-ascii?Q?pujR+kn62S7vZXy2iILJ4wm0QFegEirVaeKVEuuQA+ijVz4MsANaeXS2aMzx?=
+ =?us-ascii?Q?dXVU/YWSsG99b7Cm5y3Yp/zyuwW2NXqsl+saiUfUmruXbAgu+d72NG7INcj/?=
+ =?us-ascii?Q?AziTfxJPkOnmwjkANwcAQSB18nLr53fn84GqI2bEBc4zh27N0iFOXxCHWDM4?=
+ =?us-ascii?Q?xZkwTA8768f9Fwx2oVb+Wg+VMR0+1xV9xVAkPYwop3oXi6ngTjHvMiZsKah6?=
+ =?us-ascii?Q?ZN6cJ/VT3Sf5MMxZborzGuApypcNAL26ECWf/OzMbgU63CkPgS8d2S/7AXet?=
+ =?us-ascii?Q?h91wnK0SM+jxgZ3f+2FjgyD6NcKAIQfy9x/3iaZBbbh5zMAfM2yGsHyGVpl5?=
+ =?us-ascii?Q?RV5ddKfloGV45+B/xCDqk5pMxU5I+40L+n0QY9gqjGIUMvwqZYeDoS2eDCG5?=
+ =?us-ascii?Q?wVsQb8alBY/IiC1SM3vJFNnYe1PfgfT7oUccy8IM8qgWPgqR0x7QKeK7a6O8?=
+ =?us-ascii?Q?XgRyAEh5jGUHKrLMnlQZazV+wOyqLTr0ZqsfPyrDVl7x0UzTUGNCQGkhWJy1?=
+ =?us-ascii?Q?/hXG8P4016mtX/O9/OmcQlkokL+sdE5XdeJlRtDWzYI2KbtgvOvZ3na3lXip?=
+ =?us-ascii?Q?WkULSK4ieBJq/TzODPQJaEoJFlykDr0L8qFpnz/mHI7FKs0T494wdCnwBt67?=
+ =?us-ascii?Q?480yMkWmtxwe4rjktPDlmTvzlxxxwny7tRGEfYnPtpZR9uplzXuQQxhwUESH?=
+ =?us-ascii?Q?4nfa7mh0EUiKsG8GfKf9q/SiziMEvWUUzSCZOzBAVnnxGNAj4o2AmUOpdRUn?=
+ =?us-ascii?Q?+KM1Yf6x5L22kvgUo3mXKHNlxCx2GpqVrIx9QQZIweb2+xHAXVqzOwGR+VAF?=
+ =?us-ascii?Q?3b1SoLIB5WlwOjCb/NBkxAGs31Iw+RW1nKZNoSvjajCRlcQaC44/xLmaVJML?=
+ =?us-ascii?Q?P2yJYBiu4kajVYXu9Y/KxS5y3T/G768KtmkmXqo6QXpBwKnddSIuX9i7dNRf?=
+ =?us-ascii?Q?wXr2W+xUextVGVcRZwjPTz/nn/6zy0JhqLeUnpQ9w2ZwY2bkMuFo0LU1+ijz?=
+ =?us-ascii?Q?leG7pK1F+GXWC3+nB0nQDCZ4cbwdIqQyaM8Y94gXyypSlXrEseGpfcNooXni?=
+ =?us-ascii?Q?OcycX7d//UGqj/9xccUlWZAJ2BInRtAWxsqDhb67YXiKscofJPWcZ5VVs4n1?=
+ =?us-ascii?Q?Ka+CDlDBdI1BcPNg6uZFpGblcXbZfxru63Te3y/eArbZXR28bPfrzAa2uBEJ?=
+ =?us-ascii?Q?Tx3f1tU3KmZfLj3KLuI=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 17:58:11.2975 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12319ac0-4014-4548-d545-08de1bcbb81c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017092.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8403
+Received-SPF: permerror client-ip=2a01:111:f403:c10c::1;
+ envelope-from=nicolinc@nvidia.com;
+ helo=SA9PR02CU001.outbound.protection.outlook.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,89 +173,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+On Tue, Nov 04, 2025 at 01:41:52PM -0400, Jason Gunthorpe wrote:
+> On Tue, Nov 04, 2025 at 09:11:55AM -0800, Nicolin Chen wrote:
+> > On Tue, Nov 04, 2025 at 11:35:35AM -0400, Jason Gunthorpe wrote:
+> > > On Tue, Nov 04, 2025 at 03:20:59PM +0000, Shameer Kolothum wrote:
+> > > > > On Tue, Nov 04, 2025 at 02:58:44PM +0000, Shameer Kolothum wrote:
+> > > > > > > Sure it is trapped, but nothing should be looking at the MSI address
+> > > > > > > from the guest, it is meaningless and wrong information. Just ignore
+> > > > > > > it.
+> > > > > >
+> > > > > > Hmm.. we need to setup the doorbell address correctly.
+> > > > > 
+> > > > > > If we don't do the translation here, it will use the Guest IOVA
+> > > > > > address. Remember, we are using the IORT RMR identity mapping to get
+> > > > > > MSI working.
+> > > > > 
+> > > > > Either you use the RMR value, which is forced by the kernel into the
+> > > > > physical MSI through iommufd and kernel ignores anything qemu
+> > > > > does. So fully ignore the guest's vMSI address.
+> > > > 
+> > > > Well, we are sort of trying to do the same through this patch here. 
+> > > > But to avoid a "translation" completely it will involve some changes to
+> > > > Qemu pci subsystem. I think this is the least intrusive path I can think
+> > > > of now. And this is a one time setup mostly.
+> > > 
+> > > Should be explained in the commit message that the translation is
+> > > pointless. I'm not sure about this, any translation seems risky
+> > > because it could fail. The guest can use any IOVA for MSI and none may
+> > > fail.
+> > 
+> > In the current design of KVM in QEMU, it does a generic translation
+> > from gIOVA->gPA for the doorbell location to inject IRQ, whether VM
+> > has an accelerated IOMMU or an emulated IOMMU.
+> 
+> And what happens if the translation fails because there is no mapping?
+> It should be ignored for this case and not ignored for others.
 
-Ever since CVE-2024-4467 (see commit 7ead9469 in qemu v9.1.0), we have
-intentionally treated the opening of secondary files whose name is
-specified in the contents of the primary file, such as a qcow2
-data_file, as something that must be a local file and not a protocol
-prefix (it is still possible to open a qcow2 file that wraps an NBD
-data image by using QMP commands, but that is from the explicit action
-of the QMP overriding any string encoded in the qcow2 file).  At the
-time, we did not prevent the use of protocol prefixes on the secondary
-image while creating a qcow2 file, but it results in a qcow2 file that
-records an empty string for the data_file, rather than the protocol
-passed in during creation:
+It errors out and does no injection. IOW, yea, "ignored".
 
-$ qemu-img create -f raw datastore.raw 2G
-$ qemu-nbd -e 0 -t -f raw datastore.raw &
-$ qemu-img create -f qcow2 -o data_file=nbd://localhost:10809/ \
-  datastore_nbd.qcow2 2G
-Formatting 'datastore_nbd.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=2147483648 data_file=nbd://localhost:10809/ lazy_refcounts=off refcount_bits=16
-$ qemu-img info datastore_nbd.qcow2 | grep data
-$ qemu-img info datastore_nbd.qcow2 | grep data
-image: datastore_nbd.qcow2
-    data file:
-    data file raw: false
-    filename: datastore_nbd.qcow2
-
-And since an empty string was recorded in the file, attempting to open
-the image without using QMP to supply the NBD data store fails, with a
-somewhat confusing error message:
-
-$ qemu-io -f qcow2 datastore_nbd.qcow2
-qemu-io: can't open device datastore_nbd.qcow2: The 'file' block driver requires a file name
-
-Although the ability to create an image with a convenience reference
-to a protocol data file is not a security hole (unlike the case with
-open, the image is not untrusted if we are the ones creating it), the
-above demo shows that it is still inconsistent.  Thus, it makes more
-sense if we also insist that image creation rejects a protocol prefix
-when using the same syntax.  Now, the above attempt produces:
-
-$ qemu-img create -f qcow2 -o data_file=nbd://localhost:10809/ \
-  datastore_nbd.qcow2 2G
-Formatting 'datastore_nbd.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=2147483648 data_file=nbd://localhost:10809/ lazy_refcounts=off refcount_bits=16
-qemu-img: datastore_nbd.qcow2: Could not create 'nbd://localhost:10809/': No such file or directory
-
-with datastore_nbd.qcow2 no longer created.
-
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20250915213919.3121401-6-eblake@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- block/qcow2.c | 2 +-
- block/vmdk.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/block/qcow2.c b/block/qcow2.c
-index ec72e27214..cb0bdb32ec 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -3971,7 +3971,7 @@ qcow2_co_create_opts(BlockDriver *drv, const char *filename, QemuOpts *opts,
-     /* Create and open an external data file (protocol layer) */
-     val = qdict_get_try_str(qdict, BLOCK_OPT_DATA_FILE);
-     if (val) {
--        ret = bdrv_co_create_file(val, opts, true, errp);
-+        ret = bdrv_co_create_file(val, opts, false, errp);
-         if (ret < 0) {
-             goto finish;
-         }
-diff --git a/block/vmdk.c b/block/vmdk.c
-index eb3c174eca..3b35b63cb5 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -2334,7 +2334,7 @@ vmdk_create_extent(const char *filename, int64_t filesize, bool flat,
-     int ret;
-     BlockBackend *blk = NULL;
- 
--    ret = bdrv_co_create_file(filename, opts, true, errp);
-+    ret = bdrv_co_create_file(filename, opts, false, errp);
-     if (ret < 0) {
-         goto exit;
-     }
--- 
-2.51.1
-
+Nicolin
 
