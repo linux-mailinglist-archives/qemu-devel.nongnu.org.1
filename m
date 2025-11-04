@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4641C2EF92
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 03:31:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D653C2EF9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 03:31:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG6nw-0006y7-Ny; Mon, 03 Nov 2025 21:29:52 -0500
+	id 1vG6o0-0006yr-4V; Mon, 03 Nov 2025 21:29:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vG6nu-0006x6-7j
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:50 -0500
+ id 1vG6nx-0006yc-E3
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vG6ns-0003tH-Ml
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:49 -0500
+ id 1vG6nv-0003uf-Ni
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762223387;
+ s=mimecast20190719; t=1762223391;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A4eBsQ02JlkSujwNhtGdbX6FLAtNyGzdAxZ9dBj/Igk=;
- b=YB6JoYfaywuEa2tN7S4xkNo83yRR6P9nD3CcKqRxMfQMUEzfG88KsrHePTbzZV0I3AX0+Q
- zHccZ9Sgnwyy+HCEMyrhzt6Ylv83edFil+R6OHIvXzNcccTw/POA4CwW3BOTQD6nRZC3cW
- Bz0dHNcbBCOWq0daulZniA32shCtyS0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=0oFHTWnYvTpTuorWMlOYX+CfxVfYYLPx7SRGFBc8MRQ=;
+ b=FtWIu86acJ2kiviKWZ1/b6kBwta+oxDT6z9F6b75FiTndM2PrWW7w4XO2QbHt3vIwJVMUK
+ ngnzwLwk6eJF2CXoO+rQAErqb6opiTk+FeefxDRWUbJ39rYkEabB1RLVPegZXN8a+APo8Z
+ WDwmFMeTtENTa8n33hkPz54Zo9e9PI8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-Fdv-DBgTP4KDefbXmchejA-1; Mon,
- 03 Nov 2025 21:29:44 -0500
-X-MC-Unique: Fdv-DBgTP4KDefbXmchejA-1
-X-Mimecast-MFC-AGG-ID: Fdv-DBgTP4KDefbXmchejA_1762223383
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-1ayQDKlDP5m2roXM0NQamg-1; Mon,
+ 03 Nov 2025 21:29:47 -0500
+X-MC-Unique: 1ayQDKlDP5m2roXM0NQamg-1
+X-Mimecast-MFC-AGG-ID: 1ayQDKlDP5m2roXM0NQamg_1762223386
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DDE301800245; Tue,  4 Nov 2025 02:29:42 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C05711956053; Tue,  4 Nov 2025 02:29:45 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.6])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 104E21956056; Tue,  4 Nov 2025 02:29:41 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CBE5719560A2; Tue,  4 Nov 2025 02:29:44 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  eblake@redhat.com, Hanna Czenczek <hreitz@redhat.com>,
  qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Fam Zheng <fam@euphon.net>, hibriansong@gmail.com
-Subject: [PATCH v6 02/15] aio-posix: fix fdmon-io_uring.c timeout stack
- variable lifetime
-Date: Mon,  3 Nov 2025 21:29:20 -0500
-Message-ID: <20251104022933.618123-3-stefanha@redhat.com>
+Subject: [PATCH v6 03/15] aio-posix: fix spurious return from ->wait() due to
+ signals
+Date: Mon,  3 Nov 2025 21:29:21 -0500
+Message-ID: <20251104022933.618123-4-stefanha@redhat.com>
 In-Reply-To: <20251104022933.618123-1-stefanha@redhat.com>
 References: <20251104022933.618123-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -69,7 +69,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,75 +85,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-io_uring_prep_timeout() stashes a pointer to the timespec struct rather
-than copying its fields. That means the struct must live until after the
-SQE has been submitted by io_uring_enter(2). add_timeout_sqe() violates
-this constraint because the SQE is not submitted within the function.
+io_uring_enter(2) only returns -EINTR in some cases when interrupted by
+a signal. Therefore the while loop in fdmon_io_uring_wait() is
+incomplete and can lead to a spurious early return.
 
-Inline add_timeout_sqe() into fdmon_io_uring_wait() so that the struct
-lives at least as long as io_uring_enter(2).
+Handle the case when a signal interrupts io_uring_enter(2) but the
+syscall returns the number of SQEs submitted (that takes priority over
+-EINTR).
 
-This fixes random hangs (bogus timeout values) when the kernel loads
-undefined timespec struct values from userspace after the original
-struct on the stack has been destroyed.
+This patch probably makes little difference for QEMU, but the test suite
+relies on the exact pattern of aio_poll() return values, so it's best to
+hide this io_uring syscall interface quirk.
+
+Here is the strace of test-aio receiving 3 SIGCONT signals after this
+fix has been applied. Notice how the io_uring_enter(2) return value is 1
+the first time because an SQE was submitted, but -EINTR the other times:
+
+  eventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK) = 9
+  io_uring_enter(7, 1, 0, 0, NULL, 8) = 1
+  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, 0x7ffe38a46240) = 0
+  io_uring_enter(7, 1, 1, IORING_ENTER_GETEVENTS, NULL, 8) = 1
+  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
+  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8) = -1 EINTR (Interrupted system call)
+  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
+  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8 <unfinished ...>
+  <... io_uring_enter resumed>) = -1 EINTR (Interrupted system call)
+  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
+  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8 <unfinished ...>
+  <... io_uring_enter resumed>) = 0
 
 Reported-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- util/fdmon-io_uring.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ util/fdmon-io_uring.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-index ad89160f31..b64ce42513 100644
+index b64ce42513..3d8638b0e5 100644
 --- a/util/fdmon-io_uring.c
 +++ b/util/fdmon-io_uring.c
-@@ -188,20 +188,6 @@ static void add_poll_remove_sqe(AioContext *ctx, AioHandler *node)
-     io_uring_sqe_set_data(sqe, NULL);
- }
- 
--/* Add a timeout that self-cancels when another cqe becomes ready */
--static void add_timeout_sqe(AioContext *ctx, int64_t ns)
--{
--    struct io_uring_sqe *sqe;
--    struct __kernel_timespec ts = {
--        .tv_sec = ns / NANOSECONDS_PER_SECOND,
--        .tv_nsec = ns % NANOSECONDS_PER_SECOND,
--    };
--
--    sqe = get_sqe(ctx);
--    io_uring_prep_timeout(sqe, &ts, 1, 0);
--    io_uring_sqe_set_data(sqe, NULL);
--}
--
- /* Add sqes from ctx->submit_list for submission */
- static void fill_sq_ring(AioContext *ctx)
- {
-@@ -291,13 +277,24 @@ static int process_cq_ring(AioContext *ctx, AioHandlerList *ready_list)
- static int fdmon_io_uring_wait(AioContext *ctx, AioHandlerList *ready_list,
-                                int64_t timeout)
- {
-+    struct __kernel_timespec ts;
-     unsigned wait_nr = 1; /* block until at least one cqe is ready */
-     int ret;
- 
-     if (timeout == 0) {
-         wait_nr = 0; /* non-blocking */
-     } else if (timeout > 0) {
--        add_timeout_sqe(ctx, timeout);
-+        /* Add a timeout that self-cancels when another cqe becomes ready */
-+        struct io_uring_sqe *sqe;
-+
-+        ts = (struct __kernel_timespec){
-+            .tv_sec = timeout / NANOSECONDS_PER_SECOND,
-+            .tv_nsec = timeout % NANOSECONDS_PER_SECOND,
-+        };
-+
-+        sqe = get_sqe(ctx);
-+        io_uring_prep_timeout(sqe, &ts, 1, 0);
-+        io_uring_sqe_set_data(sqe, NULL);
-     }
+@@ -299,9 +299,16 @@ static int fdmon_io_uring_wait(AioContext *ctx, AioHandlerList *ready_list,
  
      fill_sq_ring(ctx);
+ 
++    /*
++     * Loop to handle signals in both cases:
++     * 1. If no SQEs were submitted, then -EINTR is returned.
++     * 2. If SQEs were submitted then the number of SQEs submitted is returned
++     *    rather than -EINTR.
++     */
+     do {
+         ret = io_uring_submit_and_wait(&ctx->fdmon_io_uring, wait_nr);
+-    } while (ret == -EINTR);
++    } while (ret == -EINTR ||
++             (ret >= 0 && wait_nr > io_uring_cq_ready(&ctx->fdmon_io_uring)));
+ 
+     assert(ret >= 0);
+ 
 -- 
 2.51.1
 
