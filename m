@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2580EC326D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B532C326D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:49:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGL9K-0004LT-T9; Tue, 04 Nov 2025 12:49:00 -0500
+	id 1vGL9J-0004Kr-CN; Tue, 04 Nov 2025 12:48:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL8v-0004IR-KF
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:48:32 -0500
-Received: from mail-ed1-x542.google.com ([2a00:1450:4864:20::542])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL92-0004Iv-PZ
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:48:38 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL8t-0005ht-Jv
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:48:29 -0500
-Received: by mail-ed1-x542.google.com with SMTP id
- 4fb4d7f45d1cf-640a0812658so2833534a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 09:48:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL8z-0005ia-Ju
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:48:36 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-640a0812658so2833751a12.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 09:48:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762278505; x=1762883305; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=/zhoairPLtQSrbGeNqEjZd+Q/UzplYaMRB9A0sulArY=;
- b=jdE9Z6dJUwom7pd0Owz8iws2ipC6ENz4Koe+CmKJz8vEsyypw/hxsXPeOssw+B+fhA
- pKToNh123fZD10mj3bRPPgFR6aHjCv03YsJgNs8iPqTTVy/Nx47aaycigWGrvL/1vuTV
- bxmItZeelB0uHvDsp9IgdJ4H38OfIcIu2wxLn9jUztdVA29XMi01ub822F1VkKVAkbiU
- Pmt5ZFIDX1ykoiRCtiUnNcE3z7wtKpMdK/LMIRvQBSYfNXgL1jSTPzEinnMEwt7lMZdY
- RnebkoTjAinvYlp6UIjPeWw8G8PXC5MYDBkWQqO8cR++6m8a8p3gaFch7UQicsKjXHPK
- vszw==
+ d=linaro.org; s=google; t=1762278511; x=1762883311; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=6MvoNhO2a1p+1DZ/73vKddsN0uJ0hFh1RW/xrJuC5yo=;
+ b=FfoaIMRNEJsrx1EJu6AV191DG4TW0fuzWWSiwJOTfcVXgw+34hcAqTXMCmMV5GvHI+
+ RNZ8if1E05mHNdaJ9PhJjtz2w62a0sTCWGdXj3pFimaLHIBx8fVTrRT4fHp/JP1McGKy
+ 43uIzNtpFfsahweOiDRkC5nNe//QfNm9sen+N46hNgF+8E4d+ta8t2XMzoTKZ/rFKE0d
+ IhMpF4x1GUg3x5Ag2jb/YZ9Y6RfM97QQOx5/V+EQnqhHW0gFL80l+YVobgOYk5kygCYs
+ xl3iunmzKEY9HdTIKzkskmBpAHQzJudiLZbLgngQJMdy8S+DiGHjag+ZhWrG/37rbkPz
+ Xnmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762278505; x=1762883305;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/zhoairPLtQSrbGeNqEjZd+Q/UzplYaMRB9A0sulArY=;
- b=Vpy9HJF8lw6sAoFqmPiO3LKs+t0jgsuqqB5H+GKmuRfK7ZD+VVo5/Gra17rQN/UXH+
- vxknVt1RHBas0ZxEuvGlUxe0+GBhKMosDqKnvuIeN9CKaLtiZzMuGqtEeuEo29o0BhQg
- upP26sC/SMbRxBFTFX+Hx6hvY3WXrS0AYZHrp85T40nuNAFFSyyYc0Rcp9++OiCtTGco
- tLkDzAnnyOpf3o5pUVbFrppYxtl5t9502ikgEmlSv1sFNwkGYA5nbDx3DWZaEalECbaj
- F6ayWD9XvgvfeybxeNXkp8y2tIrFZ8+VQ2Rc41skUyn8NnMFysOAQ8654sV7C/4mlv8X
- bE0Q==
-X-Gm-Message-State: AOJu0Yw6Zmc1pqCdpIpNDgkSAuGdhZkymF6bbzfhWiFp3bU9TP/UuV8v
- pss/1wWV4cc9r6JfWaN5HrF/04Bt3dQDHcVvVRrAgh4ajOPVMK/4Jja1mkOoA12+es1YEsfC/Vj
- nqoh0nTQ53x9v
-X-Gm-Gg: ASbGncvA8iYaAnghB5ep2aAfbKvElPHdkKbbanxTKifvnvRpofMb7AkPQXN5gc1tfoL
- ox57rFoBgBwbQi8hTh6Zewp8vAsxARV3xBbdENjAGvthFvD+1Wtq0mb1F6lfDu5fQ8sAKOpkZXt
- 1rQdP+SZ7MXjVuU4/C4HJVCThXKLWqYkzXsF5deLDVXvjxx4on9OENu8ZWk9OrDy7Ji/WbBaFm4
- 80UFXbhfeDgtGzvLmS6BLSoODFHk+MPFaL7oaOutf24SksxmxGTy4RIMDHOLCMoN902KxH8G0hq
- /bY8u1vJmkmXJg1KQ0J8tJOO7kyo8YVPr75eOFxUvV5cixjagcOVzA6Wbk+uHYrm29DTd59Sxfb
- ip0lJSm0Vzdk3tDjaROHTo2+XuX8t+54chs4aM3pDdQ4azvkUdOsRv6wCmMYk6H3xyE3LMLuPaU
- JE/krvE2w8rWqQLmsZeYcsvQ==
-X-Google-Smtp-Source: AGHT+IFP7bJ8czVPMCYPIaa4nrIlccRC6qFxDFZX1aVnUpZFj+axnjz8BP2V1EU3J4G3j3H861Lp6Q==
-X-Received: by 2002:a05:6402:3509:b0:640:b2a1:8199 with SMTP id
- 4fb4d7f45d1cf-64105b7a131mr47411a12.36.1762278505100; 
- Tue, 04 Nov 2025 09:48:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1762278511; x=1762883311;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6MvoNhO2a1p+1DZ/73vKddsN0uJ0hFh1RW/xrJuC5yo=;
+ b=Mj33M8tJdBE6MyDP4JcPF0OsWoCxo68uDWigWULY/reeMf9npSpesPU6GcIlDBWr5X
+ EjNrgL38zxorB8sNVNgCc/uhJ+wmjyjU5jX/hTZ4/MUFIr4UKHWmG/uicbLsA6flhLtX
+ 3mFDpNyfD+sUxu4NtnTR2A30QubEEBxLhXFWrXuQVEhW5fwZEL2vEtSVWr+1XLUIuOck
+ Bfy3lp3mEy9fu8lPqgbUyX9TQoIMw5z7wUbPvnnGc5tirQwYaz9FJNocLTCFeGlMpRli
+ sp+5EKCcrneR/w9A0Feaz+qsEAwY2FLSKlRWgLvN0wHzBqUXYNwoimDp/C26QZtIwhpl
+ Z+Gw==
+X-Gm-Message-State: AOJu0Yz/j8p6H6UTQXici8h0PyXnewzzAY7RyQ9jtecNbyPTMTu5ZCoJ
+ 27LMKifRoiGZd+hAL/WePdS7BJwis7xi31GuJkHQdf+jBl+FFj346Nnoqfau/wkVmtpwob4xWhP
+ TUBxocSC5Wg==
+X-Gm-Gg: ASbGncvf4qTAPDBE52fgS5X9DecEtzDTVRe/z5ELB5dhOdhxLPrJhgmalkrnykA/DBr
+ 6Akt6n4PWyyxV5bW8nsqAOP/rg/W+JYR43CGPTlJkh70Atjc2TxO+FcM5RZFi750R2qbRqwIMYq
+ yzHPLcGjo/vqWUJycwdu8OV5drkSrIyuBqQwfDpfnDB5gf6GjhNUgaZOK8/twyfmTR7Xlf3N+de
+ 6FBpjJMpoF621rMgg9obiz8DRZJu7t55RLhurwUqMlm4Y6mIedJMyXUzt9MIy/ki6WPJSs7qj0+
+ hVYKBVGf2gn+pLLX9Af+Cos6tPA71GXOjL4jZ2v4Vm3fplsykGFzdYmiEDLjpV/cGz8IbvkFW9S
+ mXuOsD/eFikU+brjMPyfg/v4SfFmGe9cORlmMhkODWjB4kiDHBobEOuZg1ySFU+XUQV43xs+WwX
+ JmnU/74VLKqHvajwUR6ITfAMl6/+wbMJDW
+X-Google-Smtp-Source: AGHT+IHb7epuEjqrGSCfuBPFVg7kwU/R9U8BmDOoq8QQaiOWN3TBrnlt9oo/DmvbnAPVXADxVUUEqw==
+X-Received: by 2002:a05:6402:1ecf:b0:63c:1066:8bec with SMTP id
+ 4fb4d7f45d1cf-64105b7a621mr51174a12.35.1762278511372; 
+ Tue, 04 Nov 2025 09:48:31 -0800 (PST)
 Received: from localhost.localdomain ([87.213.113.147])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-640e6a5cb47sm2599698a12.19.2025.11.04.09.48.24
+ 4fb4d7f45d1cf-640e6806d82sm2602219a12.16.2025.11.04.09.48.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Nov 2025 09:48:24 -0800 (PST)
+ Tue, 04 Nov 2025 09:48:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/8] Misc HW patches for 2025-11-04
-Date: Tue,  4 Nov 2025 18:48:15 +0100
-Message-ID: <20251104174823.92412-1-philmd@linaro.org>
+Subject: [PULL 1/8] hw/sd/sdcard: Fix size check for backing block image
+Date: Tue,  4 Nov 2025 18:48:16 +0100
+Message-ID: <20251104174823.92412-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251104174823.92412-1-philmd@linaro.org>
+References: <20251104174823.92412-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::542;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x542.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,55 +97,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e9c692eabbbb7f395347605a6ef33a32d398ea25:
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-  Merge tag 'next-pr-pull-request' of https://gitlab.com/berrange/qemu into staging (2025-11-04 15:17:31 +0100)
+Alignment rules apply the the individual partitions (user, boot, later
+on also RPMB) and depend both on the size of the image and the type of
+the device. Up to and including 2GB, the power-of-2 rule applies to the
+user data area. For larger images, multiples of 512 sectors must be used
+for eMMC and multiples of 512K for SD-cards. Fix the check accordingly
+and also detect if the image is too small to even hold the boot
+partitions.
 
-are available in the Git repository at:
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Message-ID: <591f6d8a9dc86428723cb6876df6e717cc41a70e.1762261430.git.jan.kiszka@siemens.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/sd/sd.c | 69 +++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 48 insertions(+), 21 deletions(-)
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20251104
-
-for you to fetch changes up to f79fec0275ee7a5151ced9b893c4af676c7f5db6:
-
-  hw/audio: Remove dead code from ac97_realize (2025-11-04 18:19:16 +0100)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Add RPMB emulation to eMMC model :)
-- Use generic MachineState::fdt field in microvm machine
-- Remove dead code in ac97_realize()
-----------------------------------------------------------------
-
-Jan Kiszka (5):
-  hw/sd/sdcard: Fix size check for backing block image
-  hw/sd/sdcard: Add basic support for RPMB partition
-  hw/sd/sdcard: Handle RPMB MAC field
-  scripts: Add helper script to generate eMMC block device images
-  docs: Add eMMC device model description
-
-Jan Luebbe (1):
-  hw/sd/sdcard: Allow user creation of eMMCs
-
-Luigi Leonardi (1):
-  hw/i386/microvm: Use fdt field from MachineState
-
-Osama Abdelkader (1):
-  hw/audio: Remove dead code from ac97_realize
-
- docs/system/device-emulation.rst |   1 +
- docs/system/devices/emmc.rst     |  55 +++++
- hw/sd/sdmmc-internal.h           |  22 ++
- include/hw/i386/microvm.h        |   2 -
- hw/audio/ac97.c                  |  19 --
- hw/i386/microvm-dt.c             |  96 ++++----
- hw/sd/sd.c                       | 368 ++++++++++++++++++++++++++++---
- hw/sd/trace-events               |   2 +
- scripts/mkemmc.sh                | 216 ++++++++++++++++++
- 9 files changed, 686 insertions(+), 95 deletions(-)
- create mode 100644 docs/system/devices/emmc.rst
- create mode 100755 scripts/mkemmc.sh
-
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index d7a496d77c9..76e915e1900 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2759,9 +2759,32 @@ static void sd_instance_finalize(Object *obj)
+     timer_free(sd->ocr_power_timer);
+ }
+ 
++static void sd_blk_size_error(SDState *sd, int64_t blk_size,
++                              int64_t blk_size_aligned, const char *rule,
++                              Error **errp)
++{
++    const char *dev_type = sd_is_emmc(sd) ? "eMMC" : "SD card";
++    char *blk_size_str;
++
++    blk_size_str = size_to_str(blk_size);
++    error_setg(errp, "Invalid %s size: %s", dev_type, blk_size_str);
++    g_free(blk_size_str);
++
++    blk_size_str = size_to_str(blk_size_aligned);
++    error_append_hint(errp,
++                      "%s size has to be %s, e.g. %s.\n"
++                      "You can resize disk images with"
++                      " 'qemu-img resize <imagefile> <new-size>'\n"
++                      "(note that this will lose data if you make the"
++                      " image smaller than it currently is).\n",
++                      dev_type, rule, blk_size_str);
++    g_free(blk_size_str);
++}
++
+ static void sd_realize(DeviceState *dev, Error **errp)
+ {
+     SDState *sd = SDMMC_COMMON(dev);
++    int64_t blk_size = -ENOMEDIUM;
+     int ret;
+ 
+     switch (sd->spec_version) {
+@@ -2774,32 +2797,36 @@ static void sd_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     if (sd->blk) {
+-        int64_t blk_size;
+-
+         if (!blk_supports_write_perm(sd->blk)) {
+             error_setg(errp, "Cannot use read-only drive as SD card");
+             return;
+         }
+ 
+         blk_size = blk_getlength(sd->blk);
+-        if (blk_size > 0 && !is_power_of_2(blk_size)) {
+-            int64_t blk_size_aligned = pow2ceil(blk_size);
+-            char *blk_size_str;
+-
+-            blk_size_str = size_to_str(blk_size);
+-            error_setg(errp, "Invalid SD card size: %s", blk_size_str);
+-            g_free(blk_size_str);
+-
+-            blk_size_str = size_to_str(blk_size_aligned);
+-            error_append_hint(errp,
+-                              "SD card size has to be a power of 2, e.g. %s.\n"
+-                              "You can resize disk images with"
+-                              " 'qemu-img resize <imagefile> <new-size>'\n"
+-                              "(note that this will lose data if you make the"
+-                              " image smaller than it currently is).\n",
+-                              blk_size_str);
+-            g_free(blk_size_str);
+-
++    }
++    if (blk_size >= 0) {
++        blk_size -= sd->boot_part_size * 2;
++        if (blk_size > SDSC_MAX_CAPACITY) {
++            if (sd_is_emmc(sd) &&
++                !QEMU_IS_ALIGNED(blk_size, 1 << HWBLOCK_SHIFT)) {
++                int64_t blk_size_aligned =
++                    ((blk_size >> HWBLOCK_SHIFT) + 1) << HWBLOCK_SHIFT;
++                sd_blk_size_error(sd, blk_size, blk_size_aligned,
++                                  "multiples of 512", errp);
++                return;
++            } else if (!sd_is_emmc(sd) &&
++                !QEMU_IS_ALIGNED(blk_size, 512 * KiB)) {
++                int64_t blk_size_aligned = ((blk_size >> 19) + 1) << 19;
++                sd_blk_size_error(sd, blk_size, blk_size_aligned,
++                                  "multiples of 512K", errp);
++                return;
++            }
++        } else if (blk_size > 0 && !is_power_of_2(blk_size)) {
++            sd_blk_size_error(sd, blk_size, pow2ceil(blk_size), "a power of 2",
++                              errp);
++            return;
++        } else if (blk_size < 0) {
++            error_setg(errp, "eMMC image smaller than boot partitions");
+             return;
+         }
+ 
+@@ -2810,7 +2837,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
+         }
+         blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
+     }
+-    if (sd->boot_part_size % (128 * KiB) ||
++    if (!QEMU_IS_ALIGNED(sd->boot_part_size, 128 * KiB) ||
+         sd->boot_part_size > 255 * 128 * KiB) {
+         g_autofree char *size_str = size_to_str(sd->boot_part_size);
+ 
 -- 
 2.51.0
 
