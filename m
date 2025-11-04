@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FEEC2F24B
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 966C9C2F1D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:15:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG7V2-0002Y3-O3; Mon, 03 Nov 2025 22:14:24 -0500
+	id 1vG7V2-0002bI-Qz; Mon, 03 Nov 2025 22:14:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7UV-0002UJ-NZ; Mon, 03 Nov 2025 22:13:54 -0500
+ id 1vG7UT-0002Tz-Oe; Mon, 03 Nov 2025 22:13:50 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7UU-00034Q-2W; Mon, 03 Nov 2025 22:13:51 -0500
+ id 1vG7UQ-00031V-HF; Mon, 03 Nov 2025 22:13:49 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 4 Nov
@@ -29,17 +29,18 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v4 04/30] hw/arm/aspeed: Rename and export create_pca9554() as
- aspeed_create_pca9554()
-Date: Tue, 4 Nov 2025 11:12:42 +0800
-Message-ID: <20251104031325.146374-5-jamin_lin@aspeedtech.com>
+ <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
+ <clg@redhat.com>
+Subject: [PATCH v4 05/30] hw/arm/aspeed: Split FP5280G2 machine into a
+ separate source file for maintenance
+Date: Tue, 4 Nov 2025 11:12:43 +0800
+Message-ID: <20251104031325.146374-6-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
 References: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -65,82 +66,234 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The helper function create_pca9554() has been renamed to
-aspeed_create_pca9554() and made globally available.
+This commit moves the FP5280G2 BMC machine implementation from
+aspeed.c into a new standalone file aspeed_ast2500_fp5280g2.c.
 
-Previously, the function was declared static inside aspeed.c, restricting
-its visibility to that file. As more Aspeed machine implementations
-require PCA9554 I2C expander setup, it makes sense to rename it with the
-aspeed_ prefix and export its declaration in aspeed.h for shared use.
+The change improves code organization and prepares the Aspeed
+machine framework for future expansion and easier maintenance.
+
+Key updates include:
+- Moved fp5280g2_bmc_i2c_init() and related machine class init
+functions into aspeed_ast2500_fp5280g2.c.
+- Added new file to hw/arm/meson.build for compilation.
+- Removed obsolete FP5280G2 definitions from aspeed.c
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed.h | 14 ++++++++++++++
- hw/arm/aspeed.c         |  8 ++++----
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ hw/arm/aspeed.c                  | 66 -----------------------
+ hw/arm/aspeed_ast2500_fp5280g2.c | 89 ++++++++++++++++++++++++++++++++
+ hw/arm/meson.build               |  1 +
+ 3 files changed, 90 insertions(+), 66 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2500_fp5280g2.c
 
-diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index 9b765295d9..16b24e6887 100644
---- a/include/hw/arm/aspeed.h
-+++ b/include/hw/arm/aspeed.h
-@@ -80,4 +80,18 @@ void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
-  */
- void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
- 
-+/*
-+ * aspeed_create_pca9554:
-+ * @soc: pointer to the #AspeedSoCState.
-+ * @bus_id: the I2C bus index to attach the device.
-+ * @addr: the I2C address of the PCA9554 device.
-+ *
-+ * Create and attach a PCA9554 I/O expander to the specified I2C bus
-+ * of the given Aspeed SoC. The device is created via
-+ * i2c_slave_create_simple() and returned as an #I2CSlave pointer.
-+ *
-+ * Returns: a pointer to the newly created #I2CSlave instance.
-+ */
-+I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr);
-+
- #endif
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index c6f272d986..59416eb5ae 100644
+index 59416eb5ae..3dcd5fc540 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -543,7 +543,7 @@ void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
-                             TYPE_PCA9552, addr);
+@@ -131,21 +131,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+         SCU_HW_STRAP_VGA_SIZE_SET(VGA_64M_DRAM) |                       \
+         SCU_AST2500_HW_STRAP_RESERVED1)
+ 
+-/* FP5280G2 hardware value: 0XF100D286 */
+-#define FP5280G2_BMC_HW_STRAP1 (                                      \
+-        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
+-        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
+-        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
+-        SCU_AST2500_HW_STRAP_RESERVED28 |                               \
+-        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
+-        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
+-        SCU_HW_STRAP_LPC_RESET_PIN |                                    \
+-        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER) |                \
+-        SCU_AST2500_HW_STRAP_SET_AXI_AHB_RATIO(AXI_AHB_RATIO_2_1) |     \
+-        SCU_HW_STRAP_MAC1_RGMII |                                       \
+-        SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
+-        SCU_AST2500_HW_STRAP_RESERVED1)
+-
+ /* Witherspoon hardware value: 0xF10AD216 (but use romulus definition) */
+ #define WITHERSPOON_BMC_HW_STRAP1 ROMULUS_BMC_HW_STRAP1
+ 
+@@ -686,33 +671,6 @@ static void g220a_bmc_i2c_init(AspeedMachineState *bmc)
+                           eeprom_buf);
  }
  
--static I2CSlave *create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
-+I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
+-static void fp5280g2_bmc_i2c_init(AspeedMachineState *bmc)
+-{
+-    AspeedSoCState *soc = bmc->soc;
+-    I2CSlave *i2c_mux;
+-
+-    /* The at24c256 */
+-    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x50, 32768);
+-
+-    /* The fp5280g2 expects a TMP112 but a TMP105 is compatible */
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), TYPE_TMP105,
+-                     0x48);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), TYPE_TMP105,
+-                     0x49);
+-
+-    i2c_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2),
+-                     "pca9546", 0x70);
+-    /* It expects a TMP112 but a TMP105 is compatible */
+-    i2c_slave_create_simple(pca954x_i2c_get_bus(i2c_mux, 0), TYPE_TMP105,
+-                     0x4a);
+-
+-    /* It expects a ds3232 but a ds1338 is good enough */
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), "ds1338", 0x68);
+-
+-    /* It expects a pca9555 but a pca9552 is compatible */
+-    aspeed_create_pca9552(soc, 8, 0x30);
+-}
+-
+ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
  {
-     return i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
-                             TYPE_PCA9554, addr);
-@@ -1142,7 +1142,7 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
-     }
+     AspeedSoCState *soc = bmc->soc;
+@@ -1608,25 +1566,6 @@ static void aspeed_machine_g220a_class_init(ObjectClass *oc, const void *data)
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
  
-     /* Bus 5 Expander */
--    create_pca9554(soc, 4, 0x21);
-+    aspeed_create_pca9554(soc, 4, 0x21);
- 
-     /* Mux I2c Expanders */
-     i2c_slave_create_simple(i2c[5], "pca9546", 0x71);
-@@ -1153,12 +1153,12 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
-     i2c_slave_create_simple(i2c[5], "pca9546", 0x77);
- 
-     /* Bus 10 */
--    dev = DEVICE(create_pca9554(soc, 9, 0x20));
-+    dev = DEVICE(aspeed_create_pca9554(soc, 9, 0x20));
- 
-     /* Set FPGA_READY */
-     object_property_set_str(OBJECT(dev), "pin1", "high", &error_fatal);
- 
--    create_pca9554(soc, 9, 0x21);
-+    aspeed_create_pca9554(soc, 9, 0x21);
-     at24c_eeprom_init(i2c[9], 0x50, 64 * KiB);
-     at24c_eeprom_init(i2c[9], 0x51, 64 * KiB);
- 
+-static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc,
+-                                               const void *data)
+-{
+-    MachineClass *mc = MACHINE_CLASS(oc);
+-    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+-
+-    mc->desc       = "Inspur FP5280G2 BMC (ARM1176)";
+-    mc->deprecation_reason = "use 'ast2500-evb' instead";
+-    amc->soc_name  = "ast2500-a1";
+-    amc->hw_strap1 = FP5280G2_BMC_HW_STRAP1;
+-    amc->fmc_model = "n25q512a";
+-    amc->spi_model = "mx25l25635e";
+-    amc->num_cs    = 2;
+-    amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+-    amc->i2c_init  = fp5280g2_bmc_i2c_init;
+-    mc->default_ram_size = 512 * MiB;
+-    aspeed_machine_class_init_cpus_defaults(mc);
+-};
+-
+ static void aspeed_machine_rainier_class_init(ObjectClass *oc, const void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -2015,11 +1954,6 @@ static const TypeInfo aspeed_machine_types[] = {
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_qcom_firework_class_init,
+         .interfaces    = arm_machine_interfaces,
+-    }, {
+-        .name          = MACHINE_TYPE_NAME("fp5280g2-bmc"),
+-        .parent        = TYPE_ASPEED_MACHINE,
+-        .class_init    = aspeed_machine_fp5280g2_class_init,
+-        .interfaces    = arm_machine_interfaces,
+     }, {
+         .name          = MACHINE_TYPE_NAME("quanta-q71l-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+diff --git a/hw/arm/aspeed_ast2500_fp5280g2.c b/hw/arm/aspeed_ast2500_fp5280g2.c
+new file mode 100644
+index 0000000000..7952d677ac
+--- /dev/null
++++ b/hw/arm/aspeed_ast2500_fp5280g2.c
+@@ -0,0 +1,89 @@
++/*
++ * Inspur FP5280G2
++ *
++ * Copyright 2016 IBM Corp.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "hw/arm/machines-qom.h"
++#include "hw/arm/aspeed.h"
++#include "hw/arm/aspeed_soc.h"
++#include "hw/nvram/eeprom_at24c.h"
++#include "hw/i2c/i2c_mux_pca954x.h"
++#include "hw/sensor/tmp105.h"
++
++/* FP5280G2 hardware value: 0XF100D286 */
++#define FP5280G2_BMC_HW_STRAP1 (                                      \
++        SCU_AST2500_HW_STRAP_SPI_AUTOFETCH_ENABLE |                     \
++        SCU_AST2500_HW_STRAP_GPIO_STRAP_ENABLE |                        \
++        SCU_AST2500_HW_STRAP_UART_DEBUG |                               \
++        SCU_AST2500_HW_STRAP_RESERVED28 |                               \
++        SCU_AST2500_HW_STRAP_DDR4_ENABLE |                              \
++        SCU_HW_STRAP_VGA_CLASS_CODE |                                   \
++        SCU_HW_STRAP_LPC_RESET_PIN |                                    \
++        SCU_HW_STRAP_SPI_MODE(SCU_HW_STRAP_SPI_MASTER) |                \
++        SCU_AST2500_HW_STRAP_SET_AXI_AHB_RATIO(AXI_AHB_RATIO_2_1) |     \
++        SCU_HW_STRAP_MAC1_RGMII |                                       \
++        SCU_HW_STRAP_VGA_SIZE_SET(VGA_16M_DRAM) |                       \
++        SCU_AST2500_HW_STRAP_RESERVED1)
++
++static void fp5280g2_bmc_i2c_init(AspeedMachineState *bmc)
++{
++    AspeedSoCState *soc = bmc->soc;
++    I2CSlave *i2c_mux;
++
++    /* The at24c256 */
++    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x50, 32768);
++
++    /* The fp5280g2 expects a TMP112 but a TMP105 is compatible */
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), TYPE_TMP105,
++                     0x48);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), TYPE_TMP105,
++                     0x49);
++
++    i2c_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2),
++                     "pca9546", 0x70);
++    /* It expects a TMP112 but a TMP105 is compatible */
++    i2c_slave_create_simple(pca954x_i2c_get_bus(i2c_mux, 0), TYPE_TMP105,
++                     0x4a);
++
++    /* It expects a ds3232 but a ds1338 is good enough */
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), "ds1338", 0x68);
++
++    /* It expects a pca9555 but a pca9552 is compatible */
++    aspeed_create_pca9552(soc, 8, 0x30);
++}
++
++static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc,
++                                               const void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
++
++    mc->desc       = "Inspur FP5280G2 BMC (ARM1176)";
++    mc->deprecation_reason = "use 'ast2500-evb' instead";
++    amc->soc_name  = "ast2500-a1";
++    amc->hw_strap1 = FP5280G2_BMC_HW_STRAP1;
++    amc->fmc_model = "n25q512a";
++    amc->spi_model = "mx25l25635e";
++    amc->num_cs    = 2;
++    amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
++    amc->i2c_init  = fp5280g2_bmc_i2c_init;
++    mc->default_ram_size = 512 * MiB;
++    aspeed_machine_class_init_cpus_defaults(mc);
++};
++
++static const TypeInfo aspeed_ast2500_fp5280g2_types[] = {
++    {
++        .name          = MACHINE_TYPE_NAME("fp5280g2-bmc"),
++        .parent        = TYPE_ASPEED_MACHINE,
++        .class_init    = aspeed_machine_fp5280g2_class_init,
++        .interfaces    = arm_machine_interfaces,
++    }
++};
++
++DEFINE_TYPES(aspeed_ast2500_fp5280g2_types)
++
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 61c66ee2d0..ed637f2687 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -44,6 +44,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+   'aspeed.c',
+   'aspeed_soc_common.c',
+   'aspeed_ast2400.c',
++  'aspeed_ast2500_fp5280g2.c',
+   'aspeed_ast2600.c',
+   'aspeed_ast10x0.c',
+   'aspeed_eeprom.c',
 -- 
 2.43.0
 
