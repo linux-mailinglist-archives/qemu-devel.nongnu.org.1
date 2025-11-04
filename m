@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6B9C2FF07
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE350C2FE9B
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCSQ-0000JB-PB; Tue, 04 Nov 2025 03:32:02 -0500
+	id 1vGCSS-0000Ka-F0; Tue, 04 Nov 2025 03:32:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSM-0000Gz-Ss
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:58 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSO-0000HQ-L2
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSL-0003Oo-BH
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:58 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSM-0003PI-DQ
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245115;
+ s=mimecast20190719; t=1762245117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FTIgutNUjXiAKsujqsIDkgcCTQi3L2/Jgs5XBHJrSA4=;
- b=ZBNPoxsgyuVnSJ/FWdc+B0hBpebFs0BACjv2AtYpOYgswIfXXq2V6ammPu+PLzCCPjH9eI
- wzlRnlDnRpz4PelpMLISdxzIyf9ppCOpatGrhbtHDZN4kqYDQscxoiQ+rx4LV0XSNBAXNZ
- xZyvz8a9SIkkDCcyL+Dazb5QHXdppRM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=9WHl+0hcLS2vCwWcOCyf46ZiCQpNT73fp1xS0RoIud4=;
+ b=ZPTDV3JBwg+6UZd1Wck9bG1eN1J5QOt/UXxeXIBclFT2Cd64CjNA6qDP7IYXJVleHCAOHR
+ 7BP4kCMJ/LtUElNvxXDEsOn5AKavP5RRv0JfOY3R42x9DNAMVOzgFANzhmc+Jl4+vDiiH7
+ JdBH6Ycg9B0bhYYvXly8w/KNHY4dTpg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-WWk0crlYNbaX1u-O4bgjcg-1; Tue,
- 04 Nov 2025 03:31:52 -0500
-X-MC-Unique: WWk0crlYNbaX1u-O4bgjcg-1
-X-Mimecast-MFC-AGG-ID: WWk0crlYNbaX1u-O4bgjcg_1762245112
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-8cWgDoN7NgCJb8Z4WlBglQ-1; Tue,
+ 04 Nov 2025 03:31:54 -0500
+X-MC-Unique: 8cWgDoN7NgCJb8Z4WlBglQ-1
+X-Mimecast-MFC-AGG-ID: 8cWgDoN7NgCJb8Z4WlBglQ_1762245114
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 970841800675; Tue,  4 Nov 2025 08:31:51 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE4B719560B3; Tue,  4 Nov 2025 08:31:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B9C7019560A2; Tue,  4 Nov 2025 08:31:49 +0000 (UTC)
+ id 2270819560A2; Tue,  4 Nov 2025 08:31:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/30] hw/arm/aspeed: Move AspeedMachineState definition to
- common header for reuse
-Date: Tue,  4 Nov 2025 09:31:15 +0100
-Message-ID: <20251104083144.187806-2-clg@redhat.com>
+Subject: [PULL 02/30] hw/arm/aspeed: Make
+ aspeed_machine_class_init_cpus_defaults() globally accessible
+Date: Tue,  4 Nov 2025 09:31:16 +0100
+Message-ID: <20251104083144.187806-3-clg@redhat.com>
 In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
 References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,83 +85,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Aspeed machines will be moved into split C files for better
-modularization and future maintenance.
+The function aspeed_machine_class_init_cpus_defaults() is now made
+globally visible so that it can be used by other Aspeed machine C files.
 
-To allow all machine implementations to reuse the same
-AspeedMachineState structure, the struct definition is moved
-from aspeed.c to the shared header aspeed.h.
-
-This change centralizes the common state structure used across
-all Aspeed machine models, reduces redundancy, and simplifies
-future refactoring work for new machines.
+Previously, this function was declared as static, restricting its
+visibility to aspeed.c. Since future machine split files will also
+need to call this helper to initialize default CPU settings, its
+declaration has been moved to the common header aspeed.h and the
+static keyword has been removed.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-2-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-3-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed.h | 12 ++++++++++++
- hw/arm/aspeed.c         | 14 --------------
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ include/hw/arm/aspeed.h | 10 ++++++++++
+ hw/arm/aspeed.c         |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index 6c364556565a..9d34be68b2b3 100644
+index 9d34be68b2b3..712014497e90 100644
 --- a/include/hw/arm/aspeed.h
 +++ b/include/hw/arm/aspeed.h
-@@ -11,6 +11,7 @@
- 
- #include "hw/boards.h"
- #include "qom/object.h"
-+#include "hw/arm/aspeed_soc.h"
- 
- typedef struct AspeedMachineState AspeedMachineState;
- 
-@@ -24,6 +25,17 @@ DECLARE_OBJ_CHECKERS(AspeedMachineState, AspeedMachineClass,
- #define ASPEED_MAC2_ON   (1 << 2)
- #define ASPEED_MAC3_ON   (1 << 3)
- 
-+struct AspeedMachineState {
-+    MachineState parent_obj;
-+
-+    AspeedSoCState *soc;
-+    MemoryRegion boot_rom;
-+    bool mmio_exec;
-+    uint32_t uart_chosen;
-+    char *fmc_model;
-+    char *spi_model;
-+    uint32_t hw_strap1;
-+};
- 
- struct AspeedMachineClass {
-     MachineClass parent_obj;
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index ecc7272e67c2..4c92f1e1d953 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -36,20 +36,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-     .board_id = -1, /* device-tree-only board */
+@@ -57,5 +57,15 @@ struct AspeedMachineClass {
+     bool vbootrom;
  };
  
--struct AspeedMachineState {
--    /* Private */
--    MachineState parent_obj;
--    /* Public */
--
--    AspeedSoCState *soc;
--    MemoryRegion boot_rom;
--    bool mmio_exec;
--    uint32_t uart_chosen;
--    char *fmc_model;
--    char *spi_model;
--    uint32_t hw_strap1;
--};
--
- /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
- #if HOST_LONG_BITS == 32
- #define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
++/*
++ * aspeed_machine_class_init_cpus_defaults:
++ * @mc: the #MachineClass to be initialized.
++ *
++ * Initialize the default CPU configuration for an Aspeed machine class.
++ * This function sets the default, minimum, and maximum CPU counts
++ * to match the number of CPUs defined in the associated SoC class,
++ * and copies its list of valid CPU types.
++ */
++void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
+ 
+ #endif
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 4c92f1e1d953..f23af5bf8c39 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1339,7 +1339,7 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
+                                           "Change the SPI Flash model");
+ }
+ 
+-static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
++void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
+ {
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(mc);
+     AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
 -- 
 2.51.1
 
