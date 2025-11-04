@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3B2C2FEB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BC5C2FE8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCTK-0001g5-QM; Tue, 04 Nov 2025 03:32:59 -0500
+	id 1vGCTU-0001sn-P0; Tue, 04 Nov 2025 03:33:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT8-00015N-Mp
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT8-00015C-D0
  for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT6-0003av-I9
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:46 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT5-0003aG-4o
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245163;
+ s=mimecast20190719; t=1762245162;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0ra8SahqO93wb8Whi/sdkqAyMOyj1uv9oODSIvyozkw=;
- b=DD+AvQLbigR9tye0/xgNbjQRNdDzDytGHUKjPIuCHSVGgLlIWkK+yIHpLnbqBcDWi+UCI5
- AG8YvcOf14a7Cg4CDaXpgN7VGUL0n/CJwjgRxLOstMVI5XzBgkL2JPzkHNTf5m09rhJIds
- 0U+SZILbxdEym+OQI1jLQm/HfXNFYuc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=XLmaK9CaRduXldH/PhkEzo7M3x5D/0OEZxUcZFFlML4=;
+ b=Qny4PNwZflQX3o/TzNiABnmdi6t/1ldOVjr8Wvip73HyZt5esHpUnxWQ8Ijyr9xam2mUmm
+ Fmyj5ckBg+XE/Xn9Nj9tcEhv+jwmIM7PDDb4rdeasWB8pQ9LyiB3MX554CH+9tH+FFBgvy
+ NtUrcZA0uTajJm252X0vSm3tt1jXOoU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-FHgwttFIPz2s8Iz1W4jiwA-1; Tue,
- 04 Nov 2025 03:32:38 -0500
-X-MC-Unique: FHgwttFIPz2s8Iz1W4jiwA-1
-X-Mimecast-MFC-AGG-ID: FHgwttFIPz2s8Iz1W4jiwA_1762245157
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-oMXogLlrMBWauzAmWJMVkQ-1; Tue,
+ 04 Nov 2025 03:32:40 -0500
+X-MC-Unique: oMXogLlrMBWauzAmWJMVkQ-1
+X-Mimecast-MFC-AGG-ID: oMXogLlrMBWauzAmWJMVkQ_1762245159
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56AFD18002F5; Tue,  4 Nov 2025 08:32:37 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8DF91956095; Tue,  4 Nov 2025 08:32:39 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AFC3419560A2; Tue,  4 Nov 2025 08:32:35 +0000 (UTC)
+ id D528A19560B2; Tue,  4 Nov 2025 08:32:37 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 21/30] hw/arm/aspeed: Split QCOM Firework machine into a
+Subject: [PULL 22/30] hw/arm/aspeed: Split QCOM DC-SCM V1 machine into a
  separate source file for maintainability
-Date: Tue,  4 Nov 2025 09:31:35 +0100
-Message-ID: <20251104083144.187806-22-clg@redhat.com>
+Date: Tue,  4 Nov 2025 09:31:36 +0100
+Message-ID: <20251104083144.187806-23-clg@redhat.com>
 In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
 References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,8 +85,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-This commit moves the QCOM Firework BMC machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2600_qcom-firework.c.
+This commit moves the QCOM DC-SCM V1 BMC machine implementation out of
+aspeed.c into a new standalone file aspeed_ast2600_qcom-dc-scm-v1.c.
 
 This refactor continues the modularization effort for Aspeed platform support,
 placing each board’s logic in its own dedicated source file. It improves
@@ -94,85 +94,67 @@ maintainability, readability, and simplifies future development for new
 platforms without cluttering aspeed.c.
 
 Key updates include:
-- Removed qcom_dc_scm_firework_i2c_init() and its Firework-specific devices
-  from aspeed.c.
-- Removed aspeed_machine_qcom_firework_class_init() and its type registration
-  ("qcom-firework-bmc") from aspeed_machine_types[].
-- Added new source file aspeed_ast2600_qcom-firework.c containing the
-  Firework-specific initialization and machine class definition.
-- Updated hw/arm/meson.build to include aspeed_ast2600_qcom-firework.c.
-- Cleaned up all Firework-specific code from aspeed.c.
-- Renamed `QCOM_DC_SCM_V1_BMC_HW_STRAP1` to
-  `QCOM_DC_SCM_FIREWORK_BMC_HW_STRAP1` to avoid dependency conflicts with
-  other QCOM DC-SCM machines.
+- Moved QCOM_DC_SCM_V1_BMC_HW_STRAP1 and QCOM_DC_SCM_V1_BMC_HW_STRAP2 macro
+  into the new file aspeed_ast2600_qcom-dc-scm-v1.c.
+- Moved qcom_dc_scm_bmc_i2c_init() and aspeed_machine_qcom_dc_scm_v1_class_init()
+  into the new file aspeed_ast2600_qcom-dc-scm-v1.c.
+- Moved "qcom-dc-scm-v1-bmc" machine type registration from aspeed.c to the new file.
+- Updated hw/arm/meson.build to include aspeed_ast2600_qcom-dc-scm-v1.c.
+- Cleaned up all QCOM DC-SCM V1-specific code from aspeed.c.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-22-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-23-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c                       | 57 -----------------
- hw/arm/aspeed_ast2600_qcom-firework.c | 91 +++++++++++++++++++++++++++
- hw/arm/meson.build                    |  1 +
- 3 files changed, 92 insertions(+), 57 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2600_qcom-firework.c
+ hw/arm/aspeed.c                        | 36 -----------------
+ hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c | 55 ++++++++++++++++++++++++++
+ hw/arm/meson.build                     |  1 +
+ 3 files changed, 56 insertions(+), 36 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 29a036b675ea..f72b1e2eeac7 100644
+index f72b1e2eeac7..89a463242567 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -635,38 +635,6 @@ static void qcom_dc_scm_bmc_i2c_init(AspeedMachineState *bmc)
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 15), "tmp105", 0x4d);
+@@ -56,10 +56,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+ #define GB200NVL_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+ #define GB200NVL_BMC_HW_STRAP2 AST2600_EVB_HW_STRAP2
+ 
+-/* Qualcomm DC-SCM hardware value */
+-#define QCOM_DC_SCM_V1_BMC_HW_STRAP1  0x00000000
+-#define QCOM_DC_SCM_V1_BMC_HW_STRAP2  0x00000041
+-
+ #define AST_SMP_MAILBOX_BASE            0x1e6e2180
+ #define AST_SMP_MBOX_FIELD_ENTRY        (AST_SMP_MAILBOX_BASE + 0x0)
+ #define AST_SMP_MBOX_FIELD_GOSIGN       (AST_SMP_MAILBOX_BASE + 0x4)
+@@ -628,13 +624,6 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
+                           gb200nvl_bmc_fruid_len);
  }
  
--static void qcom_dc_scm_firework_i2c_init(AspeedMachineState *bmc)
+-static void qcom_dc_scm_bmc_i2c_init(AspeedMachineState *bmc)
 -{
 -    AspeedSoCState *soc = bmc->soc;
--    I2CSlave *therm_mux, *cpuvr_mux;
 -
--    /* Create the generic DC-SCM hardware */
--    qcom_dc_scm_bmc_i2c_init(bmc);
--
--    /* Now create the Firework specific hardware */
--
--    /* I2C7 CPUVR MUX */
--    cpuvr_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
--                                        "pca9546", 0x70);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 0), "pca9548", 0x72);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 1), "pca9548", 0x72);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 2), "pca9548", 0x72);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 3), "pca9548", 0x72);
--
--    /* I2C8 Thermal Diodes*/
--    therm_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8),
--                                        "pca9548", 0x70);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 0), TYPE_LM75, 0x4C);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 1), TYPE_LM75, 0x4C);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 2), TYPE_LM75, 0x48);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 3), TYPE_LM75, 0x48);
--    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 4), TYPE_LM75, 0x48);
--
--    /* I2C9 Fan Controller (MAX31785) */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), "max31785", 0x52);
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), "max31785", 0x54);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 15), "tmp105", 0x4d);
 -}
 -
  static bool aspeed_get_mmio_exec(Object *obj, Error **errp)
  {
      return ASPEED_MACHINE(obj)->mmio_exec;
-@@ -1063,26 +1031,6 @@ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- };
+@@ -1011,37 +1000,12 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
+ }
+ #endif
  
--static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
--                                                    const void *data)
+-static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
+-                                                     const void *data)
 -{
 -    MachineClass *mc = MACHINE_CLASS(oc);
 -    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 -
--    mc->desc       = "Qualcomm DC-SCM V1/Firework BMC (Cortex A7)";
+-    mc->desc       = "Qualcomm DC-SCM V1 BMC (Cortex A7)";
 -    mc->deprecation_reason = "use 'ast2600-evb' instead";
 -    amc->soc_name  = "ast2600-a3";
 -    amc->hw_strap1 = QCOM_DC_SCM_V1_BMC_HW_STRAP1;
@@ -181,7 +163,7 @@ index 29a036b675ea..f72b1e2eeac7 100644
 -    amc->spi_model = "n25q512a";
 -    amc->num_cs    = 2;
 -    amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
--    amc->i2c_init  = qcom_dc_scm_firework_i2c_init;
+-    amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
 -    mc->default_ram_size = 1 * GiB;
 -    aspeed_machine_class_init_cpus_defaults(mc);
 -};
@@ -189,26 +171,25 @@ index 29a036b675ea..f72b1e2eeac7 100644
  static const TypeInfo aspeed_machine_types[] = {
      {
          .name          = MACHINE_TYPE_NAME("ast2600-evb"),
-@@ -1094,11 +1042,6 @@ static const TypeInfo aspeed_machine_types[] = {
          .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
+         .class_init    = aspeed_machine_ast2600_evb_class_init,
          .interfaces    = arm_machine_interfaces,
 -    }, {
--        .name          = MACHINE_TYPE_NAME("qcom-firework-bmc"),
+-        .name          = MACHINE_TYPE_NAME("qcom-dc-scm-v1-bmc"),
 -        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_qcom_firework_class_init,
+-        .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
 -        .interfaces    = arm_machine_interfaces,
      }, {
          .name          = MACHINE_TYPE_NAME("rainier-bmc"),
          .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2600_qcom-firework.c b/hw/arm/aspeed_ast2600_qcom-firework.c
+diff --git a/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c b/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
 new file mode 100644
-index 000000000000..a4dbe6eea8ab
+index 000000000000..bbdeb6023686
 --- /dev/null
-+++ b/hw/arm/aspeed_ast2600_qcom-firework.c
-@@ -0,0 +1,91 @@
++++ b/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
+@@ -0,0 +1,55 @@
 +/*
-+ * Qualcomm DC-SCM V1/Firework
++ * Qualcomm DC-SCM V1
 + *
 + * Copyright 2016 IBM Corp.
 + *
@@ -220,14 +201,10 @@ index 000000000000..a4dbe6eea8ab
 +#include "hw/arm/machines-qom.h"
 +#include "hw/arm/aspeed.h"
 +#include "hw/arm/aspeed_soc.h"
-+#include "hw/i2c/i2c_mux_pca954x.h"
-+#include "hw/sensor/tmp105.h"
 +
-+/* Qualcomm DC-SCM Firework hardware value */
-+#define QCOM_DC_SCM_FIREWORK_BMC_HW_STRAP1  0x00000000
-+#define QCOM_DC_SCM_FIREWORK_BMC_HW_STRAP2  0x00000041
-+
-+#define TYPE_LM75 TYPE_TMP105
++/* Qualcomm DC-SCM hardware value */
++#define QCOM_DC_SCM_V1_BMC_HW_STRAP1  0x00000000
++#define QCOM_DC_SCM_V1_BMC_HW_STRAP2  0x00000041
 +
 +static void qcom_dc_scm_bmc_i2c_init(AspeedMachineState *bmc)
 +{
@@ -236,80 +213,48 @@ index 000000000000..a4dbe6eea8ab
 +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 15), "tmp105", 0x4d);
 +}
 +
-+static void qcom_dc_scm_firework_i2c_init(AspeedMachineState *bmc)
-+{
-+    AspeedSoCState *soc = bmc->soc;
-+    I2CSlave *therm_mux, *cpuvr_mux;
-+
-+    /* Create the generic DC-SCM hardware */
-+    qcom_dc_scm_bmc_i2c_init(bmc);
-+
-+    /* Now create the Firework specific hardware */
-+
-+    /* I2C7 CPUVR MUX */
-+    cpuvr_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7),
-+                                        "pca9546", 0x70);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 0), "pca9548", 0x72);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 1), "pca9548", 0x72);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 2), "pca9548", 0x72);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(cpuvr_mux, 3), "pca9548", 0x72);
-+
-+    /* I2C8 Thermal Diodes*/
-+    therm_mux = i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8),
-+                                        "pca9548", 0x70);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 0), TYPE_LM75, 0x4C);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 1), TYPE_LM75, 0x4C);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 2), TYPE_LM75, 0x48);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 3), TYPE_LM75, 0x48);
-+    i2c_slave_create_simple(pca954x_i2c_get_bus(therm_mux, 4), TYPE_LM75, 0x48);
-+
-+    /* I2C9 Fan Controller (MAX31785) */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), "max31785", 0x52);
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), "max31785", 0x54);
-+}
-+
-+static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
-+                                                    const void *data)
++static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
++                                                     const void *data)
 +{
 +    MachineClass *mc = MACHINE_CLASS(oc);
 +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 +
-+    mc->desc       = "Qualcomm DC-SCM V1/Firework BMC (Cortex A7)";
++    mc->desc       = "Qualcomm DC-SCM V1 BMC (Cortex A7)";
 +    mc->deprecation_reason = "use 'ast2600-evb' instead";
 +    amc->soc_name  = "ast2600-a3";
-+    amc->hw_strap1 = QCOM_DC_SCM_FIREWORK_BMC_HW_STRAP1;
-+    amc->hw_strap2 = QCOM_DC_SCM_FIREWORK_BMC_HW_STRAP2;
++    amc->hw_strap1 = QCOM_DC_SCM_V1_BMC_HW_STRAP1;
++    amc->hw_strap2 = QCOM_DC_SCM_V1_BMC_HW_STRAP2;
 +    amc->fmc_model = "n25q512a";
 +    amc->spi_model = "n25q512a";
 +    amc->num_cs    = 2;
 +    amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-+    amc->i2c_init  = qcom_dc_scm_firework_i2c_init;
++    amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
 +    mc->default_ram_size = 1 * GiB;
 +    aspeed_machine_class_init_cpus_defaults(mc);
 +};
 +
-+static const TypeInfo aspeed_ast2600_qcom_firework_types[] = {
++static const TypeInfo aspeed_ast2600_qcom_dc_scm_v1_types[] = {
 +    {
-+        .name          = MACHINE_TYPE_NAME("qcom-firework-bmc"),
++        .name          = MACHINE_TYPE_NAME("qcom-dc-scm-v1-bmc"),
 +        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_qcom_firework_class_init,
++        .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
 +        .interfaces    = arm_machine_interfaces,
 +    }
 +};
 +
-+DEFINE_TYPES(aspeed_ast2600_qcom_firework_types)
++DEFINE_TYPES(aspeed_ast2600_qcom_dc_scm_v1_types)
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index e6f6ab424547..fbe063cf0bd4 100644
+index fbe063cf0bd4..588a72bdf28d 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
 @@ -60,6 +60,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
    'aspeed_ast2600_bletchley.c',
    'aspeed_ast2600_fby35.c',
    'aspeed_ast2600_fuji.c',
-+  'aspeed_ast2600_qcom-firework.c',
++  'aspeed_ast2600_qcom-dc-scm-v1.c',
+   'aspeed_ast2600_qcom-firework.c',
    'aspeed_ast10x0.c',
    'aspeed_eeprom.c',
-   'fby35.c'))
 -- 
 2.51.1
 
