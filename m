@@ -2,69 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE9EC3177F
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 15:19:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C34C31935
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 15:41:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGHsP-0002d0-AS; Tue, 04 Nov 2025 09:19:14 -0500
+	id 1vGIE6-00020d-OX; Tue, 04 Nov 2025 09:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vGHsJ-0002cq-CF; Tue, 04 Nov 2025 09:19:07 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vGIE4-0001z9-Un
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 09:41:36 -0500
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vGHsG-0005cc-6W; Tue, 04 Nov 2025 09:19:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762265944; x=1793801944;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=AyKFq/mMVkaAjBzp3vp/hCzikcEuR0zvdiNVm1FGg7s=;
- b=Z8huc7rn6372L58HDNROw9fov5Xpjc77YoFs9ptsWTUND+TbO+L8a+/B
- oy/UvzPUKw2d096MIVm660iECp3Sachk+md0vIihoP7/jABXqzkaeOZs0
- gYtGaFYPnUAgqtRwT88qVACzIA8dShfWN/obrldXhqT8dUEpR4DEKaasF
- z+vXj6g4XxJkGOqXQ7a3lpDo53U9ECZ2J/dflB3ne7oBGK6bY+78xNUt4
- 20FwjUIgVC11hqwcLj4TbWi6UY6h0eoK2EdL5gFqHDUst9DPdq8eUmFXq
- Jb04ZI8AW0ykKp/CpBYdZuSHIFxEha84qbJX2HAbhHeuZQdY74zrAUN7l g==;
-X-CSE-ConnectionGUID: DQcUlhoKQZqlbtN37ZEmuQ==
-X-CSE-MsgGUID: yY3lFxEmRIy3JDy6UVMzPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="86988964"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="86988964"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 06:18:59 -0800
-X-CSE-ConnectionGUID: b55FLiJqRsKTmvN7FyXroA==
-X-CSE-MsgGUID: rabUJhE5Q7yB7UJxHHMVSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="186846571"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 04 Nov 2025 06:18:57 -0800
-Date: Tue, 4 Nov 2025 22:41:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 08/11] rust: qemu-macros: add ToMigrationState derive macro
-Message-ID: <aQoQh4tU+kR0tKwM@intel.com>
-References: <20251001075005.1041833-1-pbonzini@redhat.com>
- <20251001075210.1042479-8-pbonzini@redhat.com>
- <aQiDFo0Yv6sIZsH5@intel.com> <aQjPApAmM2Hma3Rm@intel.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vGIE0-0000Nt-Pe
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 09:41:36 -0500
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 8EFBEC0117;
+ Tue, 04 Nov 2025 17:41:28 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:95c::1:2] (unknown [2a02:6bf:8080:95c::1:2])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Rfl7bk1FDa60-j2awPBB6; Tue, 04 Nov 2025 17:41:27 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1762267288;
+ bh=7QfHHN3cIWYAeUQ9bjqQ8/rUVWxsqurQCg8JeB7A7sQ=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VZbN5Zj9/aQoQ1R6eWRM8Ai1ONBOCPlSA83Dj2/rE09l02kgX06WkzWEXVGw66Bng
+ zgyj2Th73LLJ1pEqAtTphJKNjIV2qLCzqAdWJp1fdmObpSfBF4tDGKycFLt1zMfBNb
+ tkkPsvbbcVBLlq5c99eRVajzIS1Uuw0t1l/5gxrQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b5cd5ae3-53c2-483d-af00-a55868c7b78b@yandex-team.ru>
+Date: Tue, 4 Nov 2025 17:41:27 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQjPApAmM2Hma3Rm@intel.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] qapi: Add documentation format validation
+To: Markus Armbruster <armbru@redhat.com>
+Cc: michael.roth@amd.com, qemu-devel@nongnu.org
+References: <20251031183129.246814-1-vsementsov@yandex-team.ru>
+ <87pl9yun57.fsf@pond.sub.org>
+ <f1e50de9-912d-430e-ac0d-8341e003be13@yandex-team.ru>
+ <87wm46t401.fsf@pond.sub.org>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87wm46t401.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,114 +76,267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> It seems the generated migration_state_struct needs a complete VMSD:
-> collect all its fields and build a VMSD.
+On 04.11.25 14:46, Markus Armbruster wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 > 
-> And then apply impl_vmstate_struct! to this  migration_state_struct.
+>> On 04.11.25 13:07, Markus Armbruster wrote:
+>>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>>>
+>>>> Add explicit validation for QAPI documentation formatting rules:
+>>>>
+>>>> 1. Lines must not exceed 70 columns in width (including '# ' prefix)
+>>>> 2. Sentences must be separated by two spaces
+>>>>
+>>>> Example sections and literal :: blocks (seldom case) are excluded, we
+>>>> don't require them to be <= 70, that would be too restrictive. Anyway,
+>>>> they share common 80-columns recommendations (not requirements).
+>>>>
+>>>> Add two simple tests, illustrating the change.
+>>>>
+>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>>> ---
+>>>>
+>>>> Hi all!
+>>>>
+>>>> v5: - break "literal" block at any decreasing the indent,
+>>>>         not only at no-indent
+>>>>       - add two simple tests
+>>>>
+>>>> This is based on
+>>>> [PATCH 0/8] A QAPI schema doc markup fix, and style cleanup
+>>>> Based-on: <20251031094751.2817932-1-armbru@redhat.com>
+>>>>
+>>>>    scripts/qapi/parser.py                     | 52 +++++++++++++++++++++-
+>>>>    tests/qapi-schema/doc-bad-long-line.err    |  1 +
+>>>>    tests/qapi-schema/doc-bad-long-line.json   |  6 +++
+>>>>    tests/qapi-schema/doc-bad-long-line.out    |  0
+>>>>    tests/qapi-schema/doc-bad-whitespaces.err  |  2 +
+>>>>    tests/qapi-schema/doc-bad-whitespaces.json |  6 +++
+>>>>    tests/qapi-schema/doc-bad-whitespaces.out  |  0
+>>>>    tests/qapi-schema/meson.build              |  2 +
+>>>>    8 files changed, 68 insertions(+), 1 deletion(-)
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-long-line.err
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-long-line.json
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-long-line.out
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-whitespaces.err
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-whitespaces.json
+>>>>    create mode 100644 tests/qapi-schema/doc-bad-whitespaces.out
+>>>>
+>>>> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+>>>> index 9fbf80a541..ffb149850d 100644
+>>>> --- a/scripts/qapi/parser.py
+>>>> +++ b/scripts/qapi/parser.py
+>>>> @@ -108,6 +108,11 @@ def __init__(self,
+>>>>            self.exprs: List[QAPIExpression] = []
+>>>>            self.docs: List[QAPIDoc] = []
+>>>>    
+>>>> +        # State for tracking qmp-example blocks and simple
+>>>> +        # :: literal blocks.
+>>>> +        self._literal_mode = False
+>>>> +        self._literal_mode_indent = 0
+>>>> +
+>>>>            # Showtime!
+>>>>            self._parse()
+>>>>    
+>>>> @@ -423,12 +428,57 @@ def get_doc_line(self) -> Optional[str]:
+>>>>                if self.val != '##':
+>>>>                    raise QAPIParseError(
+>>>>                        self, "junk after '##' at end of documentation comment")
+>>>> +            self._literal_mode = False
+>>>>                return None
+>>>>            if self.val == '#':
+>>>>                return ''
+>>>>            if self.val[1] != ' ':
+>>>>                raise QAPIParseError(self, "missing space after #")
+>>>> -        return self.val[2:].rstrip()
+>>>> +
+>>>> +        line = self.val[2:].rstrip()
+>>>> +
+>>>> +        if re.match(r'(\.\. +qmp-example)? *::$', line):
+>>>
+>>> After a closer reading of ReST docs and some testing: this isn't quite
+>>> right, although it works okay for what we have.
+>>>
+>>> A directive's '::' need not be at the end of a line.  The regexp fails
+>>> to match a qmp-example directive with text after '::'.  No such
+>>> directives exist right now.
+>>>
+>>> A literal block starts after a '::' at the end of a paragraph,
+>>> i.e. after '::' and a blank line.  The regexp only matches '::' on its
+>>> own line, not at the end of a line of text.  It matches it even when
+>>> it's not followed by a blank line.
+>>>
+>>> In review of v4, I claimed we don't use the contracted form "text::".
+>>> Not true.  For instance, in block-core.json:
+>>>
+>>>      # @bins: list of io request counts corresponding to histogram
+>>>      #     intervals, one more element than @boundaries has.  For the
+>>>      #     example above, @bins may be something like [3, 1, 5, 2], and
+>>>      #     corresponding histogram looks like::
+>>>      #
+>>>      #        5|           *
+>>>      #        4|           *
+>>>      #        3| *         *
+>>>      #        2| *         *    *
+>>>      #        1| *    *    *    *
+>>>      #         +------------------
+>>>      #             10   50   100
+>>>      #
+>>
+>> Ow, my old histograms)
 > 
-> If we zero the BASE, then `vmstate_of!(Self, migration_state)` seems
-> can't migrate its fields.
+> Haha!
+> 
+>>>      # Since: 4.0
+>>>      ##
+>>>
+>>> The literal block starts after "like::" and ends before "Since:'.
+>>>
+>>>> +            self._literal_mode = True
+>>>> +            self._literal_mode_indent = 0
+>>>> +        elif self._literal_mode and line:
+>>>> +            indent = re.match(r'^ *', line).end()
+>>>> +            if self._literal_mode_indent == 0:
+>>>> +                self._literal_mode_indent = indent
+>>>> +            elif indent < self._literal_mode_indent:
+>>>> +                # ReST directives stop at decreasing indentation
+>>>> +                self._literal_mode = False
+>>>
+>>> This isn't quite right, either.  We need to stop when indentation of
+>>> non-blank lines drops below the indentation of the line containing the
+>>> '::'.
+>>>
+>>> Perhaps it's easier for both of us if I fix this on top.  Thoughts?
+>>
+>> No objections, good for me!
+> 
+> I can merge this with a brief note, like so:
+> 
+>      Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> 
+>      The detection of example and literal blocks isn't quite correct, but
+>      it works well enough, and we can improve on top.
+> 
+>      Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> 
 
-I think the following generated vmstate implementation should be what we
-need:
+Ok, thanks!
 
-diff --git a/rust/qemu-macros/src/migration_state.rs b/rust/qemu-macros/src/migration_state.rs
-index 5edf0efe687f..cb047638e3da 100644
---- a/rust/qemu-macros/src/migration_state.rs
-+++ b/rust/qemu-macros/src/migration_state.rs
-@@ -1,6 +1,6 @@
- use std::borrow::Cow;
+>>>> +
+>>>> +        if not self._literal_mode:
+>>>> +            self._validate_doc_line_format(line)
+>>>> +
+>>>> +        return line
+>>>> +
+>>>> +    def _validate_doc_line_format(self, line: str) -> None:
+>>>> +        """
+>>>> +        Validate documentation format rules for a single line:
+>>>> +        1. Lines should not exceed 70 columns
+>>>> +        2. Sentences should be separated by two spaces
+>>>> +        """
+>>>> +        full_line_length = len(line) + 2  # "# " = 2 characters
+>>>> +        if full_line_length > 70:
+>>>> +            # Skip URL lines - they can't be broken
+>>>> +            if re.match(r' *(https?|ftp)://[^ ]*$', line):
+>>>> +                pass
+>>>> +            else:
+>>>> +                raise QAPIParseError(
+>>>> +                    self, "documentation line exceeds 70 columns"
+>>>> +                )
+>>>> +
+>>>> +        single_space_pattern = r'(\be\.g\.|^ *\d\.|([.!?])) [A-Z0-9(]'
+>>>> +        for m in list(re.finditer(single_space_pattern, line)):
+>>>> +            if not m.group(2):
+>>>> +                continue
+>>>> +            # HACK so the error message points to the offending spot
+>>>> +            self.pos = self.line_pos + 2 + m.start(2) + 1
+>>>> +            raise QAPIParseError(
+>>>> +                self, "Use two spaces between sentences\n"
+>>>> +                "If this not the end of a sentence, please report the bug",
+>>>> +            )
+>>>>    
+>>>>        @staticmethod
+>>>>        def _match_at_name_colon(string: str) -> Optional[Match[str]]:
+>>>> diff --git a/tests/qapi-schema/doc-bad-long-line.err b/tests/qapi-schema/doc-bad-long-line.err
+>>>> new file mode 100644
+>>>> index 0000000000..611a3b1fef
+>>>> --- /dev/null
+>>>> +++ b/tests/qapi-schema/doc-bad-long-line.err
+>>>> @@ -0,0 +1 @@
+>>>> +doc-bad-long-line.json:4:1: documentation line exceeds 70 columns
+>>>> diff --git a/tests/qapi-schema/doc-bad-long-line.json b/tests/qapi-schema/doc-bad-long-line.json
+>>>> new file mode 100644
+>>>> index 0000000000..d7f887694d
+>>>> --- /dev/null
+>>>> +++ b/tests/qapi-schema/doc-bad-long-line.json
+>>>> @@ -0,0 +1,6 @@
+>>>> +##
+>>>> +# @foo:
+>>>> +#
+>>>> +# This line has exactly 71 characters, including spaces and punctuation!
+>>>
+>>> Really?
+>>
+>> Oh, it's 72 characters actually! AI tricked me. Didn't I check it out?
+>>
+>> Maybe:
+>>
+>> # This line has exactly 71 chars, including the leading hash and space.
+> 
+> Works!
+> 
+>>>> +##
+>>>> +{ 'command': 'foo' }
+>>>> diff --git a/tests/qapi-schema/doc-bad-long-line.out b/tests/qapi-schema/doc-bad-long-line.out
+>>>> new file mode 100644
+>>>> index 0000000000..e69de29bb2
+>>>> diff --git a/tests/qapi-schema/doc-bad-whitespaces.err b/tests/qapi-schema/doc-bad-whitespaces.err
+>>>> new file mode 100644
+>>>> index 0000000000..5cca1954c0
+>>>> --- /dev/null
+>>>> +++ b/tests/qapi-schema/doc-bad-whitespaces.err
+>>>> @@ -0,0 +1,2 @@
+>>>> +doc-bad-whitespaces.json:4:48: Use two spaces between sentences
+>>>> +If this not the end of a sentence, please report the bug
+>>>> diff --git a/tests/qapi-schema/doc-bad-whitespaces.json b/tests/qapi-schema/doc-bad-whitespaces.json
+>>>> new file mode 100644
+>>>> index 0000000000..b0c318c670
+>>>> --- /dev/null
+>>>> +++ b/tests/qapi-schema/doc-bad-whitespaces.json
+>>>> @@ -0,0 +1,6 @@
+>>>> +##
+>>>> +# @foo:
+>>>> +#
+>>>> +# Sentences should be split by two whitespaces. But here is only one.
+>>>
+>>> two spaces
+>>>
+>>>> +##
+>>>> +{ 'command': 'foo' }
+>>>> diff --git a/tests/qapi-schema/doc-bad-whitespaces.out b/tests/qapi-schema/doc-bad-whitespaces.out
+>>>> new file mode 100644
+>>>> index 0000000000..e69de29bb2
+>>>> diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
+>>>> index c47025d16d..b24b27db21 100644
+>>>> --- a/tests/qapi-schema/meson.build
+>>>> +++ b/tests/qapi-schema/meson.build
+>>>> @@ -61,8 +61,10 @@ schemas = [
+>>>>      'doc-bad-event-arg.json',
+>>>>      'doc-bad-feature.json',
+>>>>      'doc-bad-indent.json',
+>>>> +  'doc-bad-long-line.json',
+>>>>      'doc-bad-symbol.json',
+>>>>      'doc-bad-union-member.json',
+>>>> +  'doc-bad-whitespaces.json',
+>>>>      'doc-before-include.json',
+>>>>      'doc-before-pragma.json',
+>>>>      'doc-duplicate-features.json',
+> 
+> Thanks!
+> 
 
--use proc_macro2::TokenStream;
-+use proc_macro2::{Literal, TokenStream};
- use quote::{format_ident, quote, ToTokens};
- use syn::{spanned::Spanned, DeriveInput, Error, Field, Ident, Result, Type};
 
-@@ -236,6 +236,43 @@ pub struct #name {
-         }
-     }
-
-+    fn generate_vmstate_impl(&self) -> TokenStream {
-+        let name = self.migration_state_name();
-+        let name_str = name.to_string();
-+        // Most of the time, const variables use uppercase snake case style,
-+        // while VMStateDescription.name uses lowercase snake case. But we're
-+        // not strictly following the usual snake case conventions here because
-+        // what we have is good enough for the generated code right now.
-+        //
-+        // QEMU struct names are typically in camel case, but there are exceptions
-+        // - like non-standard camel case such as HPETState. So converting from
-+        // camel to snake case would need an extra helper.
-+        let vmsd_name = format_ident!("VMSTATE_{}", name_str);
-+        // C-string literal "c" can't be used in quote! directly.
-+        let vmsd_c_name = Literal::c_string(&std::ffi::CString::new(name_str).unwrap());
-+
-+        let vmstate_fields = self.fields.iter().map(|field| {
-+            let field_name = &field.name;
-+            quote! {
-+                vmstate_of!(#name, #field_name),
-+            }
-+        });
-+
-+        quote! {
-+            const #vmsd_name: VMStateDescription<#name> =
-+                VMStateDescriptionBuilder::<#name>::new()
-+                    .name(#vmsd_c_name)
-+                    .version_id(0)
-+                    .minimum_version_id(0)
-+                    .fields(vmstate_fields! {
-+                        #(#vmstate_fields)*
-+                    })
-+                    .build();
-+
-+            impl_vmstate_struct!(#name, #vmsd_name);
-+        }
-+    }
-+
-     fn generate_snapshot_migration_state(&self) -> TokenStream {
-         let fields = self
-             .fields
-@@ -275,12 +312,15 @@ fn generate(&self) -> TokenStream {
-         let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
-         let name = self.migration_state_name();
-         let migration_state_struct = self.generate_migration_state_struct();
-+        let vmstate_impl = self.generate_vmstate_impl();
-         let snapshot_impl = self.generate_snapshot_migration_state();
-         let restore_impl = self.generate_restore_migrated_state();
-
-         quote! {
-             #migration_state_struct
-
-+            #vmstate_impl
-+
-             impl #impl_generics ToMigrationState for #struct_name #ty_generics #where_clause {
-                 type Migrated = #name;
-
-diff --git a/rust/qemu-macros/src/tests.rs b/rust/qemu-macros/src/tests.rs
-index 65691412ff57..d70ebf23c273 100644
---- a/rust/qemu-macros/src/tests.rs
-+++ b/rust/qemu-macros/src/tests.rs
-@@ -408,6 +408,20 @@ pub struct CustomMigration {
-                 pub nested_field: <NestedStruct as ToMigrationState>::Migrated,
-                 pub simple_field: <u32 as ToMigrationState>::Migrated,
-             }
-+            const VMSTATE_CustomMigration: VMStateDescription <CustomMigration> =
-+                VMStateDescriptionBuilder::<CustomMigration>::new()
-+                    .name(c"CustomMigration")
-+                    .version_id(0)
-+                    .minimum_version_id(0)
-+                    .fields(vmstate_fields! {
-+                        vmstate_of!(CustomMigration, shared_data),
-+                        vmstate_of!(CustomMigration, converted_field),
-+                        vmstate_of!(CustomMigration, fallible_field),
-+                        vmstate_of!(CustomMigration, nested_field),
-+                        vmstate_of!(CustomMigration, simple_field),
-+                    })
-+                    .build();
-+            impl_vmstate_struct!(CustomMigration, VMSTATE_CustomMigration);
-             impl ToMigrationState for MyStruct {
-                 type Migrated = CustomMigration;
-                 fn snapshot_migration_state(
-
-
+-- 
+Best regards,
+Vladimir
 
