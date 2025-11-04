@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0297AC3270C
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFA3C326FA
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:50:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGL9x-0004VM-R3; Tue, 04 Nov 2025 12:49:33 -0500
+	id 1vGL9z-0004en-Mq; Tue, 04 Nov 2025 12:49:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL9S-0004NA-4E
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:49:12 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL9W-0004Or-Q4
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:49:17 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL9Q-0005lR-1A
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:49:01 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-640e9a53ff6so1978789a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 09:48:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGL9V-0005mC-7E
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:49:06 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-6409e985505so5249126a12.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 09:49:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762278537; x=1762883337; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762278543; x=1762883343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yILkf0T8P7LvQ7q+vTBoHw4z3M0o0Y7BvJLfczUoIPQ=;
- b=UWegAhQaCZb/abTL3JEeJDU19DE8LmrJoeHSEeSFdabK41hb9waHQ2YLxtI15oyW/8
- S9tMsVR8GZDQ+re+9PT5BgARexzRjjJudEToek+s6hKSbSUuaKhHCBXeUqVZL1C+dkTG
- dR0LoRwJSs6RSCVjbi6tsxTfSTUdRdKt1FvTzYCjH4XIbgAnmQT56NWDUGzOyr+aKj4g
- ZPbAs7fnOjGJL6+fYRR1NBMsClKTRt/aataOOVAZp0jquqtL/ZPb2ul73k+Mgdycsz0B
- tJeW9yL05Z7/3lihxGYuahu6JdFIDAhMxzD/V1uLmFMUWRGGaTo6m0kPgtj/G+hxzITF
- 9niw==
+ :reply-to; bh=aiadY5QJPEYHmcpiUboyh5r4o+/TwBKt8ckhTG3KysA=;
+ b=TD6O04HiXvVlCDlf6XMLBoZvbEN26/YFzM2G14A7qAiIpNlIBDR4ogzZ5x5y5s/xQC
+ zfYOUASmHtpWvtYTf1CjfRpozU2Z5g5E80TO0cgkJSM2f84bj+SIfhoG8oZ0OnWmtsWq
+ 3dw2HWdBlUY2MBEOtiQQF2077d7YYJ8SHQSTSwkXoSymSmnzRme3n9hqOjGs/KFbc8fD
+ 2by2oZ24ZqUd6ZbgFFby6k1j0aZ+sH/U89qv5IcLBzxNfF0VptL0+l8CUlKLaZn/go70
+ by8bxwJ8Zi1LaKHE141XE14WhCYc+da0u/vAlFi8DTGuJ9nwZM9k2srAi4IsK6nAKJYa
+ lusQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762278537; x=1762883337;
+ d=1e100.net; s=20230601; t=1762278543; x=1762883343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yILkf0T8P7LvQ7q+vTBoHw4z3M0o0Y7BvJLfczUoIPQ=;
- b=IKEfiU5UsCaGibeygxuRQOLACD5DjYAtbRZlAzju4UZCl0Wiu2hLT5Y0LNN3PNq/e/
- whOCpjdOuX9xLzET80F3AQBew7i1zuS04HtTWAwDAlK71/tb9PXna8D3eBKkGWcl4mYn
- lfPlaRxmKKw1jVPB8ppLEQ6mcz0dpqjaHsf15qktssigkrl790n8r7aIhwPqNUXYItnV
- rnCJ7pev4sTyn5gP0pPKs2jkHuYfWeB74078L3kaZ0fA2wcLXOprvvpkUHOVK9ELePhF
- 3RK7m8LG4ABI9hHJ6YU7JJ/w651ij31y+ZvSKYd7Z4oQ/tQ50xGcyfwc0f32kpKMEg5X
- 0AwQ==
-X-Gm-Message-State: AOJu0YzwBEJI06NK3aSAauk4DjyiWx83fPTLjlo78YKlgS7iTLdIpPS+
- RhqDlDM/XVG3cJYBTJuj2tN0F6c59NwX33M0KXelP+Zt78hGDRhm7SKRKSnzJY+8zKCheDtt/On
- BtECufT+7mg==
-X-Gm-Gg: ASbGncsr2LwytYL/eAAeDKgXOhIPweCElE6ZFIaj9S8WxW6zNIANZzKng69Qe4BTWaC
- VqDNJXbYsw6kdRzXYtWem9Otj81578EoP5MeOZZH/bBtiv71CehXvAVKqWfvtSCIJNU/9WKE9bt
- Kn3TgmO6GajOJPvDPp6Jl/4pxRuUbY8Hvju61ELXRtwc2xJZ8Q7ZvNZR3xf9YdGbOdig05NbGmh
- Evhu3m46ySVlG7S/EkcZNJpRNaTgs8MWYP3yRPy4jPO64VROqNJQRdciWN4GFhKzyTyXJGLZ670
- VgBnxbDcMOzA01Dx6Psl6+66lVs4Ok/MceEisoC68brD+WB1SGdEIeyHmxBCWz24LvE6x1C+pd5
- 2Qpxytig28YYpfKroajA7fqvbGuHfhPDoGqAbrVojWPcze5AOkkIK2Yamrgu/WkPLzAPPQrqlgl
- SjnG6pG9kGZIhL3JAcs0jQGg==
-X-Google-Smtp-Source: AGHT+IHuxkydOGlIXGjtwpqfsdvJvR+JXJ9f3GWwoXPGDASM3isHjZ4w1HIz3iGPaTOt45dEaioyyg==
-X-Received: by 2002:a05:6402:13cb:b0:640:9ce9:a8e6 with SMTP id
- 4fb4d7f45d1cf-641058a22c3mr79564a12.4.1762278536551; 
- Tue, 04 Nov 2025 09:48:56 -0800 (PST)
+ bh=aiadY5QJPEYHmcpiUboyh5r4o+/TwBKt8ckhTG3KysA=;
+ b=nSOCbgIzkR8nOkvWaRAuSFjHB9Oabyj4hoO5ytLIAX8WqzPiO1pvTTrgVeOZ3RpqOr
+ 2rwZapJoNueagmq69hQInLtcJtXXTSh2CvWCfINiX1LLklaUsRO/4ISiqbmn92cXeGpH
+ sXg+JdTGCiKvguN+pc0asUCTVwb3yLvuO9WGstcb6c/gMW4JjSRCuSj7D/8lpwSiYprc
+ 0oIQYzF5R95qzmE0Vnu8iOZjlm0TgBjV7pG2V5UKh7AStTLOmygBJpICX2RQOL0oFAxa
+ a7272UXkvlg9BbWiDHrM6cWUJEiLvh/uek+/4MBM9fHKABac5dDjoUAuymqNvi4/3iLC
+ Lhbg==
+X-Gm-Message-State: AOJu0Yx8G13euni09NvejEYU6RzFQ/mWDXEpKdHJ7tQyHzdmMdnD50SQ
+ aI0UYzO5g16jE5gJzrEKZraudeB4mg1D0NHyWcoLPKVTid7dHSUwbYpYgqSPNkrMl8QIb3dahda
+ A84EChKesbg==
+X-Gm-Gg: ASbGncvD/SWy8C3RYUXsZ8H+uXTTKvmtQVvpZLvt2EC4YFYmq2fvjT9/NzpirrLWX5L
+ 7D6jTCC70oZ5K0Wx+56J4EnRU8qyYB9TBzWw0z5aBm+fY8BrVdCGD400vqES0/PhSInjw2NMJWl
+ Ix8lqKucWicUOtwi16W6Z9PBts3+suVX5XEck98ek9TFBmtBaV32OYyg17KmfTBKEcPkyEiUyny
+ +Vbtn6uLZZxZqT2QMeyhZghchhTJXAur4wcnTjntXru4Ncrsh4IZd232pxLzXexkiLVGdDZx3Z+
+ 5tUniCXXw9870qDar80/8xgu55BOgrKws/FBejO8ikkTYEZFGbB1iQl6S0kKAIfP0wsMGVVubT1
+ M7mQT68yASdXvdepvKENt4yZvX1kHO20LHI7R2drqVGhsv9f5GrtxqMml1jGPXkcJUk4Tl4fh+f
+ DcJTshgDc1RxNp8/sqnXHeOQ==
+X-Google-Smtp-Source: AGHT+IEbkuoF8c4UWfjH5v02tUeqKNe63ReKszxvf2TayKaOa6IZUGpWv3VNl5uJ8jwmdPEoJLq7IQ==
+X-Received: by 2002:a17:907:3f1d:b0:b70:d149:c33d with SMTP id
+ a640c23a62f3a-b72652981b1mr1926066b.18.1762278542928; 
+ Tue, 04 Nov 2025 09:49:02 -0800 (PST)
 Received: from localhost.localdomain ([87.213.113.147])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-640e67eb64dsm2578187a12.5.2025.11.04.09.48.55
+ a640c23a62f3a-b723f6e06edsm282860366b.47.2025.11.04.09.49.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Nov 2025 09:48:56 -0800 (PST)
+ Tue, 04 Nov 2025 09:49:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 5/8] scripts: Add helper script to generate eMMC block device
- images
-Date: Tue,  4 Nov 2025 18:48:20 +0100
-Message-ID: <20251104174823.92412-6-philmd@linaro.org>
+Subject: [PULL 6/8] docs: Add eMMC device model description
+Date: Tue,  4 Nov 2025 18:48:21 +0100
+Message-ID: <20251104174823.92412-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251104174823.92412-1-philmd@linaro.org>
 References: <20251104174823.92412-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,243 +99,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-As an eMMC block device image may consist of more than just the user
-data partition, provide a helper script that can compose the image from
-boot partitions, an RPMB partition and the user data image. The script
-also does the required size validation and/or rounding.
-
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <eecefa8e-44ae-45ff-85d0-3f9b786948e0@siemens.com>
+Message-ID: <b9c3ff21e7170fef5d0e7d08698a113d2a64e649.1762261430.git.jan.kiszka@siemens.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/mkemmc.sh | 216 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 216 insertions(+)
- create mode 100755 scripts/mkemmc.sh
+ docs/system/device-emulation.rst |  1 +
+ docs/system/devices/emmc.rst     | 55 ++++++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+)
+ create mode 100644 docs/system/devices/emmc.rst
 
-diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
-new file mode 100755
-index 00000000000..429388213c6
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index db714ad47aa..971325527a1 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -88,6 +88,7 @@ Emulated Devices
+    devices/canokey.rst
+    devices/ccid.rst
+    devices/cxl.rst
++   devices/emmc.rst
+    devices/igb.rst
+    devices/ivshmem-flat.rst
+    devices/ivshmem.rst
+diff --git a/docs/system/devices/emmc.rst b/docs/system/devices/emmc.rst
+new file mode 100644
+index 00000000000..e62adfd68ed
 --- /dev/null
-+++ b/scripts/mkemmc.sh
-@@ -0,0 +1,216 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Create eMMC block device image from boot, RPMB and user data images
-+#
-+# Copyright (c) Siemens, 2025
-+#
-+# Authors:
-+#  Jan Kiszka <jan.kiszka@siemens.com>
-+#
++++ b/docs/system/devices/emmc.rst
+@@ -0,0 +1,55 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
 +
-+usage() {
-+    echo "$0 [OPTIONS] USER_IMG[:SIZE] OUTPUT_IMG"
-+    echo ""
-+    echo "SIZE must be a power of 2 up to 2G and multiples of 512 byte from there on."
-+    echo "If no SIZE is specified, the size of USER_ING will be used (rounded up)."
-+    echo ""
-+    echo "Supported options:"
-+    echo "  -b BOOT1_IMG[:SIZE]   Add boot partitions. SIZE must be multiples of 128K. If"
-+    echo "                          no SIZE is specified, the size of BOOT1_IMG will be"
-+    echo "                          used (rounded up). BOOT1_IMG will be stored in boot"
-+    echo "                          partition 1, and a boot partition 2 of the same size"
-+    echo "                          will be created as empty (all zeros) unless -B is"
-+    echo "                          specified as well."
-+    echo "  -B BOOT2_IMG          Fill boot partition 2 with BOOT2_IMG. Must be combined"
-+    echo "                          with -b which is also defining the partition size."
-+    echo "  -r RPMB_IMG[:SIZE]    Add RPMB partition. SIZE must be multiples of 128K. If"
-+    echo "                          no SIZE is specified, the size of RPMB_IMG will be"
-+    echo "                          used (rounded up)."
-+    echo "  -h, --help            This help"
-+    echo ""
-+    echo "All SIZE parameters support the units K, M, G. If SIZE is smaller than the"
-+    echo "associated image, it will be truncated in the output image."
-+    exit "$1"
-+}
++==============
++eMMC Emulation
++==============
 +
-+process_size() {
-+    name=$1
-+    image_file=$2
-+    alignment=$3
-+    image_arg=$4
-+    if [ "${image_arg#*:}" = "$image_arg"  ]; then
-+        if ! size=$(wc -c < "$image_file" 2>/dev/null); then
-+            echo "Missing $name image '$image_file'." >&2
-+            exit 1
-+        fi
-+        if [ "$alignment" = 128 ]; then
-+            size=$(( (size + 128 * 1024 - 1) & ~(128 * 1024 - 1) ))
-+        elif [ $size -gt $((2 * 1024 * 1024 * 1024)) ]; then
-+            size=$(( (size + 511) & ~511 ))
-+        elif [ $(( size & (size - 1) )) -gt 0 ]; then
-+            n=0
-+            while [ "$size" -gt 0 ]; do
-+                size=$((size >> 1))
-+                n=$((n + 1))
-+            done
-+            size=$((1 << n))
-+        fi
-+    else
-+        value="${image_arg#*:}"
-+        if [ "${value%K}" != "$value" ]; then
-+            size=${value%K}
-+            multiplier=1024
-+        elif [ "${value%M}" != "$value" ]; then
-+            size=${value%M}
-+            multiplier=$((1024 * 1024))
-+        elif [ "${value%G}" != "$value" ]; then
-+            size=${value%G}
-+            multiplier=$((1024 * 1024 * 1024))
-+        else
-+            size=$value
-+            multiplier=1
-+        fi
-+        # check if "$size" is a valid integer by doing a self-comparison
-+        if [ "$size" -eq "$size" ] 2>/dev/null; then
-+            size=$((size * multiplier))
-+        else
-+            echo "Invalid value '$value' specified for $image_file image size." >&2
-+            exit 1
-+        fi
-+        if [ "$alignment" = 128 ]; then
-+            if [ $(( size & (128 * 1024 - 1) )) -ne 0 ]; then
-+                echo "The $name image size must be multiples of 128K." >&2
-+                exit 1
-+            fi
-+        elif [ $size -gt $((2 * 1024 * 1024 * 1024)) ]; then
-+            if [ $(( size & 511)) -ne 0 ]; then
-+                echo "The $name image size must be multiples of 512 (if >2G)." >&2
-+                exit 1
-+            fi
-+        elif [ $(( size & (size - 1) )) -gt 0 ]; then
-+            echo "The $name image size must be power of 2 (up to 2G)." >&2
-+            exit 1
-+        fi
-+    fi
-+    echo $size
-+}
++Besides SD card emulation, QEMU also offers an eMMC model as found on many
++embedded boards. An eMMC, just like an SD card, is connected to the machine
++via an SDHCI controller.
 +
-+check_truncation() {
-+    image_file=$1
-+    output_size=$2
-+    if [ "$image_file" = "/dev/zero" ]; then
-+        return
-+    fi
-+    if ! actual_size=$(wc -c < "$image_file" 2>/dev/null); then
-+        echo "Missing image '$image_file'." >&2
-+        exit 1
-+    fi
-+    if [ "$actual_size" -gt "$output_size" ]; then
-+        echo "Warning: image '$image_file' will be truncated on output."
-+    fi
-+}
++Create eMMC Images
++==================
 +
-+userimg=
-+outimg=
-+bootimg1=
-+bootimg2=/dev/zero
-+bootsz=0
-+rpmbimg=
-+rpmbsz=0
++A recent eMMC consists of 4 partitions: 2 boot partitions, 1 Replay protected
++Memory Block (RPMB), and the user data area. QEMU expects backing images for
++the eMMC to contain those partitions concatenated in exactly that order.
++However, the boot partitions as well as the RPMB might be absent if their sizes
++are configured to zero.
 +
-+while [ $# -gt 0 ]; do
-+    case "$1" in
-+        -b)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            bootimg1=${1%%:*}
-+            bootsz=$(process_size boot "$bootimg1" 128 "$1")
-+            shift
-+            ;;
-+        -B)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            bootimg2=$1
-+            shift
-+            ;;
-+        -r)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            rpmbimg=${1%%:*}
-+            rpmbsz=$(process_size RPMB "$rpmbimg" 128 "$1")
-+            shift
-+            ;;
-+        -h|--help)
-+            usage 0
-+            ;;
-+        *)
-+            if [ -z "$userimg" ]; then
-+                userimg=${1%%:*}
-+                usersz=$(process_size user "$userimg" U "$1")
-+            elif [ -z "$outimg" ]; then
-+                outimg=$1
-+            else
-+                usage 1
-+            fi
-+            shift
-+            ;;
-+    esac
-+done
++The eMMC specification defines alignment constraints for the partitions. The
++two boot partitions must be of the same size. Furthermore, boot and RPMB
++partitions must be multiples of 128 KB with a maximum of 32640 KB for each
++boot partition and 16384K for the RPMB partition.
 +
-+[ -n "$outimg" ] || usage 1
++The alignment constrain of the user data area depends on its size. Up to 2
++GByte, the size must be a power of 2. From 2 GByte onward, the size has to be
++multiples of 512 byte.
 +
-+if [ "$bootsz" -gt $((32640 * 1024)) ]; then
-+    echo "Boot image size is larger than 32640K." >&2
-+    exit 1
-+fi
-+if [ "$rpmbsz" -gt $((16384 * 1024)) ]; then
-+    echo "RPMB image size is larger than 16384K." >&2
-+    exit 1
-+fi
++QEMU is enforcing those alignment rules before instantiating the device.
++Therefore, the provided image has to strictly follow them as well. The helper
++script ``scripts/mkemmc.sh`` can be used to create compliant images, with or
++without pre-filled partitions. E.g., to create an eMMC image from a firmware
++image and an OS image with an empty 2 MByte RPMB, use the following command:
 +
-+echo "Creating eMMC image"
++.. code-block:: console
 +
-+truncate -s 0 "$outimg"
-+pos=0
++    scripts/mkemmc.sh -b firmware.img -r /dev/zero:2M os.img emmc.img
 +
-+if [ "$bootsz" -gt 0 ]; then
-+    echo "  Boot partition 1 and 2:   $((bootsz / 1024))K each"
-+    blocks=$(( bootsz / (128 * 1024) ))
-+    check_truncation "$bootimg1" "$bootsz"
-+    dd if="$bootimg1" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        status=none
-+    check_truncation "$bootimg2" "$bootsz"
-+    dd if="$bootimg2" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        seek=$blocks status=none
-+    pos=$((2 * bootsz))
-+fi
++This will take care of rounding up the partition sizes to the next valid value
++and will leave the RPMB and the second boot partition empty (zeroed).
 +
-+if [ "$rpmbsz" -gt 0 ]; then
-+    echo "  RPMB partition:           $((rpmbsz / 1024))K"
-+    blocks=$(( rpmbsz / (128 * 1024) ))
-+    check_truncation "$rpmbimg" "$rpmbsz"
-+    dd if="$rpmbimg" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        seek=$(( pos / (128 * 1024) )) status=none
-+    pos=$((pos + rpmbsz))
-+fi
++Adding eMMC Devices
++===================
 +
-+if [ "$usersz" -lt 1024 ]; then
-+    echo "  User data:                $usersz bytes"
-+elif [ "$usersz" -lt $((1024 * 1024)) ]; then
-+    echo "  User data:                $(( (usersz + 1023) / 1024 ))K ($usersz)"
-+elif [ "$usersz" -lt $((1024 * 1024 * 1024)) ]; then
-+    echo "  User data:                $(( (usersz + 1048575) / 1048576))M ($usersz)"
-+else
-+    echo "  User data:                $(( (usersz + 1073741823) / 1073741824))G ($usersz)"
-+fi
-+check_truncation "$userimg" "$usersz"
-+dd if="$userimg" of="$outimg" conv=sparse bs=128K seek=$(( pos / (128 * 1024) )) \
-+    count=$(( (usersz + 128 * 1024 - 1) / (128 * 1024) )) status=none
-+pos=$((pos + usersz))
-+truncate -s $pos "$outimg"
++An eMMC is either automatically created by a machine model (e.g. Aspeed boards)
++or can be user-created when using a PCI-attached SDHCI controller. To
++instantiate the eMMC image from the example above in a machine without other
++SDHCI controllers while assuming that the firmware needs a boot partitions of
++1 MB, use the following options:
 +
-+echo ""
-+echo "Instantiate by appending to the qemu command line:"
-+echo "  -drive file=$outimg,if=none,format=raw,id=emmc-img"
-+echo "  -device emmc,boot-partition-size=$bootsz,rpmb-partition-size=$rpmbsz,drive=emmc-img"
++.. code-block:: console
++
++    -drive file=emmc.img,if=none,format=raw,id=emmc-img
++    -device sdhci-pci
++    -device emmc,drive=emmc-img,boot-partition-size=1048576,rpmb-partition-size=2097152
 -- 
 2.51.0
 
