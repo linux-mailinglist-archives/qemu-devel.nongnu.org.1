@@ -2,68 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83200C3321D
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 23:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C340C3337D
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 23:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGPCJ-00013N-Ij; Tue, 04 Nov 2025 17:08:15 -0500
+	id 1vGPTY-0005Ay-9r; Tue, 04 Nov 2025 17:26:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbalint@gmail.com>) id 1vGPCH-00013D-UK
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:08:13 -0500
-Received: from mail-ed1-f51.google.com ([209.85.208.51])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1vGPTQ-0005AM-8p
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:25:57 -0500
+Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbalint@gmail.com>) id 1vGPCE-00054E-BT
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:08:13 -0500
-Received: by mail-ed1-f51.google.com with SMTP id
- 4fb4d7f45d1cf-64034284521so10421595a12.1
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 14:08:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1vGPTO-0002hO-R4
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:25:56 -0500
+Received: by mail-io1-xd2f.google.com with SMTP id
+ ca18e2360f4ac-9483ece8d4aso143920839f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 14:25:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1762295150; x=1762899950; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ad+01ZEwhsE8gjLnxNHNZX5rtgi6IEtaEAFRT9B9mCc=;
+ b=g58v+VRibWy07iWYPaQxthzD/RUQHVg2m5SacB2mQOywhJIod/Fmiza3A2Bzxfdznn
+ tB9q0/04N8oe2LDQB8xl/nazHjje54A107YCd/Y6EVA+Thw2ah5PiTencDrFoepme5MH
+ J2c8uqwRdPi1J+kNSF2asftpmn0ARtrQjejhormS1fwOBmCUbvcRe8PP8OtHp+vZHMpv
+ 2ilWOqIzg2o1xuT1Cmk5qQlfupQEWPOJmWF5AAw/QUfKtkE7HDz++QF/MXPQAjRDko9w
+ cYN5cBWMy1gbH7vAgotjzQCNBWnJAUUjSPNEgVv3DhoEAp7eM1EtPQ6qEAKwJQYzKFkc
+ qBuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762294086; x=1762898886;
- h=subject:date:cc:from:message-id:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HTF7/P+G6vQPwKuUcJEOsNzczUX4QA4ntI8YilOM9Dc=;
- b=mV2fQDtM/FbiDAA4Vw0K3iJ4hWG2aZA+5quFMo06PEwxhLeZVZia864WWX9kzieKbf
- HvXdaRdpURZ4xKLfwa/fgUaIfWsIGUloPWAYhqtGZahXKw3sDQ3KG1tpyBUs4UT9zeFe
- HymZKpBdmhHLX3ZXNcKG+KOhA+ankPniDnshpSxyvjfCgd8Rd7AGEvZSUwAYnTM8nY9D
- IKO5S9QxQ2sS4x2IDf37EwLG10rI/rVu2j+99cNinnxqGf+2UKQfUlfw27X9v5gOTLJQ
- zpTsL7Kmo2uoDoOl8XmPHGWDWi9o/YBfGhCVCX9UEYwkJT8QhCGQpy8z5lvtWU163KOc
- 9rkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUw4GOuJpoorngnN0FxvAdvVNBwFAP30p6Af30Z6GS6xsl7d/dnfAc26oj+kR88wlfCALdUFSUzsRBM@nongnu.org
-X-Gm-Message-State: AOJu0YwaKXTlsrQ5YJ5Ub3cZSmxclxsMrGfNWVO4JeXFAp84YAa+NOML
- oisB/G1yfDUQo00JmGayvZxJ5BXaUM269BRZD9DSenxuyf0A24Q2O68AsWtA5wbi
-X-Gm-Gg: ASbGncsTmux2Nlo25IKR2OtzFXziYVGzOeynUc42l6zHIaZG2TPKeE4IZpJAC9GLxf3
- Di0kZhadn/5pxXi7jVJchQfwOlRZFN736HuiquWzSHHPz0WD9N+jphwMaa0i0WzpC4lZ+kyy8o0
- Y6NTNf64ph33n02YFdkjB0QvI/TV3/5cSNyL9sE0Qkrlo+eajfxGIC+0hsj2zazvWWwHhxZF1Lz
- 8jrrI76KQh9zaMIq9ccXI06VXSco/TXZOo/TkMvG2IHvvN4cRZexHtK6BzUzd44zdycCb6Hwp0d
- hBv6HDC8usKd7eEMwOA5NR8HRdO/cOAzmgilTAQdVp1l3cYW3D/zSWvIK3B/kfRLLyCoGZAsxs4
- l5lIVQc788IJm7d1gzSq0FZqT1TWcQXVAOH+wO3M3C8smqkOqaEa8LfN1FikHAVqRWIsAjA==
-X-Google-Smtp-Source: AGHT+IHVG/SqX2WSmulciKXLuGyioQiF0oEpdn4Hm72eKC5Wsha8pjhVwwq1QVZPU5zCchkpuziW6A==
-X-Received: by 2002:a17:907:6d0c:b0:b3f:5049:9e81 with SMTP id
- a640c23a62f3a-b726554c6fbmr65187166b.47.1762294085947; 
- Tue, 04 Nov 2025 14:08:05 -0800 (PST)
-Received: from localhost ([149.200.120.62]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b723d3a3f8bsm318423266b.1.2025.11.04.14.08.04
+ d=1e100.net; s=20230601; t=1762295150; x=1762899950;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ad+01ZEwhsE8gjLnxNHNZX5rtgi6IEtaEAFRT9B9mCc=;
+ b=KlXjvkixNoKwZLCjWzToKT3yq6WSCeVPhWuJM9LtHYK7blXGeqGzpnLVrN8n3JvK2i
+ Mhp1rLdSistSE3n0YczouydJS8LpTY/0hmOarXSVTx1oYx8itGj0Y75iISUfEhpP2rr7
+ N/UeSAf3fGBRpF5FjQU1QSFmcDiDvMJqI61sgTAdmflMPJeBc4ubHXxaIM53u9fBTGgj
+ YvgcODik/Sl4yKJNrTsiXugs8PHHuiV8O1tbWLf7cfJ9jlrJGB7dfvK4NNIbwLuwmiD+
+ jdSaQNqUG5BtC00L+LJyzSJG+GTAoGUxgxoH6vR9E4gtfui4MhzDOpiop/8Q7J28fNC7
+ AsTw==
+X-Gm-Message-State: AOJu0Yxp7fBmYJjqfDuUmMO4qquIZtmbA01WgSWoApXk6nV66uH5HNZI
+ B7RZqxWpFJDnCXM+qCA8QRXQB8Z2K+tUnCsHJ4nIsKZ3OLa490upRY86ZdYj4ntBO5Q=
+X-Gm-Gg: ASbGncuJn6+jkzMcoMUNkZowWL1R1K8/R96kh3xdy6cJqJwKBF5dJUSImN/jY+gvQdd
+ Ap4m2Got4sOvLtbtJLZt1vnm5nexStEP9mUbrDhMuDsb1FlCND4S9DKfWK3uwsaMMln7AoBQSeA
+ yATU4kjt15mh/qKhSsowRFUY4AiIZMJBEtpxC1/58i0XaG3eu5Be+vyrRFx72rQP/HOF2JKzG8A
+ 8Q+2rmyY3EAIrjPgcJPRre2T/qt8ixf4MlhJGGuSInf2Ay9shYFcYOASZ3U4jMlZ9yJc0UfBzWq
+ cz+f0NtHpb/ia8NS5bvDNfe04Oqvxr07oqzavFGR74YVCxGbxeVQanh5YHXv0Ep6siNTWGHjOs8
+ 7vXJHzU+0GyMZipa5BadX1P3IkHnk39eFuqiX+IFNseQtV7pYU7/RNxEGymjkYcDHn6Z4j/pFcK
+ DmVWdZjc66XV2gVPn9ieLpxZNUFHDDmZ4a/o9chfK3rEVJl6daxSZmTtoah+aWERsYkh0rD2Tyi
+ YC0
+X-Google-Smtp-Source: AGHT+IHRb9WrtmmVMG7qHVJHymZADbhsAMCH9reJWpr1+F6q+kOJ4NeKmZX9194e8b5eAHRMdwEMTg==
+X-Received: by 2002:a05:6e02:1c08:b0:433:2dbd:e93c with SMTP id
+ e9e14a558f8ab-433407a6f3emr14604735ab.4.1762295150273; 
+ Tue, 04 Nov 2025 14:25:50 -0800 (PST)
+Received: from taylor-ubuntu.. (c-67-172-136-152.hsd1.co.comcast.net.
+ [67.172.136.152]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-5b7224a84c3sm1755789173.0.2025.11.04.14.25.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 14:08:05 -0800 (PST)
-Message-ID: <c50c166a14af171f77ba0956512cdee1.rbalint@gmail.com>
-CC: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>
-Date: Tue, 4 Nov 2025 14:54:23 +0100
-Subject: [PATCH 0/1] user: add runtime switch to call safe_syscall via libc
-Received-SPF: pass client-ip=209.85.208.51; envelope-from=rbalint@gmail.com;
- helo=mail-ed1-f51.google.com
-X-Spam_score_int: 7
-X-Spam_score: 0.7
-X-Spam_bar: /
-X-Spam_report: (0.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, MISSING_HEADERS=1.021,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ Tue, 04 Nov 2025 14:25:49 -0800 (PST)
+From: Taylor Simpson <ltaylorsimpson@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
+ sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
+ richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
+ ltaylorsimpson@gmail.com
+Subject: [PATCH v2 0/3] Hexagon (target/hexagon) Improve USR handling
+Date: Tue,  4 Nov 2025 15:25:45 -0700
+Message-ID: <20251104222548.108264-1-ltaylorsimpson@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd2f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,43 +97,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Balint Reczey <balint@balintreczey.hu>
-From:  Balint Reczey via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Currently, any instruction that writes USR disables short-circuiting a
+packet.  When the write is implicit, we can allow the short-circuit.
 
-qemu-user implements calling signal-race-safe syscalls for the guest
-in assembly directly to the kernel instead of going through the host's libc.
+Changes in v2:
+- Properly handle implicit USR writes when packet commit is necessary
+- Added test case
 
-The proposed patch adds a switch to go through libc, which allows interposition
-of libc's syscall(), even when the guest program is statically linked.
+Taylor Simpson (3):
+  Hexagon (target/hexagon) Add pkt_need_commit argument to arch_fpop_end
+  Hexagon (target/hexagon) Implicit writes to USR don't force packet
+    commit
+  Hexagon (tests/tcg/hexagon) Add test for USR changes in packet
 
-The motivation behind the change is intercepting statically linked binaries [1]
-with firebuild [2], a build accelerator implemented in userspace.
-
-I have tested the Linux changes, but not not BSD ones.
-I think they are trivial enough to work and I'd like to port firebuild
-to BSD, too, in the future.
-
-Cheers,
-Balint
-
-[1] https://github.com/firebuild/firebuild/pull/1334
-[2] https://github.com/firebuild/firebuild
-
-Balint Reczey (1):
-  user: add runtime switch to call safe_syscall via libc
-
- bsd-user/main.c             | 11 +++++++
- common-user/meson.build     |  1 +
- common-user/safe-syscall.c  | 57 +++++++++++++++++++++++++++++++++++++
- docs/user/main.rst          | 28 ++++++++++++++++--
- include/user/safe-syscall.h | 25 +++++++++++-----
- linux-user/main.c           |  9 ++++++
- 6 files changed, 122 insertions(+), 9 deletions(-)
- create mode 100644 common-user/safe-syscall.c
+ target/hexagon/arch.h              |   2 +-
+ target/hexagon/gen_tcg.h           | 114 ++++++------
+ target/hexagon/helper.h            | 114 ++++++------
+ target/hexagon/translate.h         |   1 +
+ target/hexagon/arch.c              |   3 +-
+ target/hexagon/op_helper.c         | 287 +++++++++++++++++------------
+ target/hexagon/translate.c         |  35 ++--
+ tests/tcg/hexagon/usr.c            |  26 +++
+ target/hexagon/gen_helper_funcs.py |   8 +-
+ target/hexagon/gen_tcg_funcs.py    |   4 +
+ 10 files changed, 343 insertions(+), 251 deletions(-)
 
 -- 
 2.43.0
