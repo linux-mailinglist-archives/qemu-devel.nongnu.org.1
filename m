@@ -2,91 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0998C31791
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 15:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5CDC317A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 15:21:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGHsm-0002in-SQ; Tue, 04 Nov 2025 09:19:36 -0500
+	id 1vGHuE-0003lA-F6; Tue, 04 Nov 2025 09:21:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1vGHsj-0002fN-VZ
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 09:19:34 -0500
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1vGHsi-0005hq-5U
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 09:19:33 -0500
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-7c53908e8b5so3278410a34.1
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 06:19:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1762265970; x=1762870770; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=6ikCHD3Tg1zx5QGXUH3vch8LsyelkzwIcQsX+rDl8vs=;
- b=BzX09ihAqxCBsvNZx9G8Eb2Nog1nsY0X5g1WFKrGyZH3hO/QGQA90diTYXgzLf607T
- W5Yenck5a5IAI2VtfOOuqHeP+4BAcdPlVoeuPZ7/gPXPd8A2Op4LC+HOMMHHyk/47BQe
- QLSETh7twsANg1Wln9GrOSDt6rFLJkSUB0DRnNQd762B1MY4kvIiouwmDGMCaEystz78
- U03mhWA5JZ1o4ahUhvY4TdcV4exJzc/Vu30uEEdNPThtYfj4RxdGr2MEkVoca3ax+uEf
- eZIyM4nHH35cj1gLcKYiFGxDNk3ZQ6Cj5gd+aTPcwp2rlhKCbx0MN6XCzIkb1H32+EnD
- KQJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762265970; x=1762870770;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6ikCHD3Tg1zx5QGXUH3vch8LsyelkzwIcQsX+rDl8vs=;
- b=ZKFSbysK80IXAktepkN85yOdi8u9SCuDUbsw/0hJtXnUprVv/MG+iVT5X+Lv9Rsssw
- jN8WMXF/sU/Xdg8x7kJZrIefh6Ue6/WlUWRsnKpQo5SOySQ/jG8t+ijw8mPLSfkJGyNC
- JaQDrHpKcMCDYnToK0dz0Lgi2cKJ5iWHzQdAb9QucYW6R5Vjf42b5/ucQA5kyHqnLJXQ
- GFX0UpSIFko5LxZGgFuX1Q2iB5PZkDxnMroVhsXRRgxp9aCZyJWuPjGYBP7jeAGnCu0q
- e1L7K6Z0Q5HmkA3yU25+GASHWP7p3gL78+wthwTG8TpVHhw5uRLHSUlci4yTprl7cJgL
- u+fw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUe2fUCHtAlHbgvvelUQDoNN8kGV0CxNB6Ah9/as+4YkGr8B/vTGA5AcwxKLWFGnHeeiTGXF0E/C2g@nongnu.org
-X-Gm-Message-State: AOJu0Yw+IGJ/ZWlVdDrqG9S2IEoDbsMmPUKz8N6PoumnQ0TPP6S77viz
- Xt2kZfbwsIkXHccUtv8Kd+fLEX2B85Y4m4DHN/reKf2dK7on3ZOJb6GO7RxDgmAgP24=
-X-Gm-Gg: ASbGncsrAtodrKy++Sj5xU/rc2uyJRX/OoMA+0XB3sCx0CbXW/q1ZembZUHs17HHohu
- Y0kqQ9eZxt6+KBab0i3SzqPcupD8Vr7KWlrXBG7wQdF8CpmO8c9LYQM4MrzOpMJp+eOeOqruN+6
- hnR6PsFePaTP9e3CqKSmjAKJyToA0qJPpHSOvVmdUi/PJz6+20unRvXeKXd/s997gs1cl/HSMFg
- OJmLnhFDA4XY30CExsuwoBDeCB0rHZH7DrVJ4L7QaMntwp/RA1j5BWbq/RkjJAHXs4F7h4V1Wfl
- yQ9auoC7mDthgIh9lJiGIb8PdAzPo+fYGUnJxL1bIfwqiCVKs7T6sG+e3xm/3qquIPDoXtxVwbf
- Stc/oUwIY+tl3X3gs7NbWx04ZV0XxpqLky9/mIzoJQ9Hk7ID/CIP/tvNXrLGvUTL/wg3z4sy9/i
- cejA==
-X-Google-Smtp-Source: AGHT+IFNlJESBqpqlXHlNZDbbp6q+9ga5s5K5T+a1Vuk4uN0MMNzFhrQlh3Depb4pjW8FW37W3yDbQ==
-X-Received: by 2002:a05:6808:1b0d:b0:43f:2cb1:aff2 with SMTP id
- 5614622812f47-44f95e5e308mr7174011b6e.16.1762265970209; 
- Tue, 04 Nov 2025 06:19:30 -0800 (PST)
-Received: from localhost ([140.82.166.162]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-44fd849533fsm758712b6e.3.2025.11.04.06.19.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 06:19:29 -0800 (PST)
-Date: Tue, 4 Nov 2025 08:19:28 -0600
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Chao Liu <chao.liu.riscv@isrc.iscas.ac.cn>, palmer@dabbelt.com, 
- alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [RFC v1 1/1] hw/riscv/server_platform_ref.c: add virtio bus
-Message-ID: <20251104-7b7ec269da2412cc24e99234@orel>
-References: <cover.1762172539.git.chao.liu.riscv@isrc.iscas.ac.cn>
- <38a180e7ed4014ba7d401dc9b8de755fadf33bea.1762172539.git.chao.liu.riscv@isrc.iscas.ac.cn>
- <4e825697-e57c-4f77-8920-9f18b787e425@ventanamicro.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1vGHuA-0003jZ-Gm; Tue, 04 Nov 2025 09:21:02 -0500
+Received: from mail-westcentralusazlp170100005.outbound.protection.outlook.com
+ ([2a01:111:f403:c112::5] helo=CY7PR03CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1vGHu8-00066x-WF; Tue, 04 Nov 2025 09:21:02 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DqX3epiIjPgg+o/9YkGGQenwkI53LSDvMVNCQRIErT80ftbgeTQAg9S810zD7WnyH8CWYpO6336ywTpflnbCiNZZEheLp7wsVVnZegstdLp5fy1+jbz8PdhuA3s0c5eYxOY9YaHUlef0QdhZ3Q8MFpEHLlOXFbaXRQWdP/9mOzOWlOfPEt+hcOByan/rpYilPIhmJULuLixqiPKHC3deQ7ZOZpekoAK/MZaAu6nAWSt6CFtsx7lIdG2emFkQ/xH7PP6IWmA5voUavper+MvHAr/RC8qAeBclK8l88xi86f/H9MQRenGMZoltT/PVAqqO5sJTJlSRKZUhtcjayaUgKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p6pmjmf0BBmLKdlSswsZaFuB44AzXp9XQHjTEDJ0Ips=;
+ b=lpY5/Oc9+IpJlcXNyiCFKAMr2I72wiJmg5xeae/dIrlhaXJUh8YnrmATYs9GH5v6kXbu4oGlbGnxFauNBSEsN2jYZJS7fnr4OAFiUHhup2oB8r+8K8xhqgX14M6JKIjeUswP+yPFsrb8Ek7THeNkMwttbWGjQjvaU8Z12kaysV7jjv/UtrnIKTZL6bir0UwIcmn7p6T8I64RwvI72WY34/8vnfwhh0LsVNzVsTYHVejRWzGJPmmKnD67xpSMXK5XeSqwlnmM/RL65vPcZ3jU6DENwKZ5HHl13vm0z90hUs5tSbVYP+J68t4dyk+ir+axVnS+fksqI1uLJRXXVgCYsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p6pmjmf0BBmLKdlSswsZaFuB44AzXp9XQHjTEDJ0Ips=;
+ b=SdhCXE4zPd8FzBlNFENKWLZs2owQPaj0h9bbNy8puJ0sYsSrRVycYMHDpVixERWrjcfOlrh+YoU7Oy9W8z+SKAAyMOGyJ/Bh2fOtTy9ew2QFvLVadzL+Cqa3ytR0ujLys6y/++SkuNR07roN8oVAL55fMMisOrKjUo8evn3fUrLQk2UMnleGuliqZGADeLepaWJiNcs6Dqputa+XFVxmGH/1e+/8OzW7SqWFe6o7yxAVK85kyqUgOy5hzFgqBGmZo5Vc3uNSoKnKErkIb/yEhUsIRko7ioGxihq01oNy/aGEWTcWOn7QjZhpgIDfsqK7GqrzeBizAgRB4TP2XJBhnA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by DS4PR12MB9747.namprd12.prod.outlook.com (2603:10b6:8:2a5::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Tue, 4 Nov
+ 2025 14:20:53 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9298.006; Tue, 4 Nov 2025
+ 14:20:53 +0000
+Date: Tue, 4 Nov 2025 10:20:52 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ nicolinc@nvidia.com, ddutile@redhat.com, berrange@redhat.com,
+ nathanc@nvidia.com, mochs@nvidia.com, smostafa@google.com,
+ wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
+ jonathan.cameron@huawei.com, zhangfei.gao@linaro.org,
+ zhenzhong.duan@intel.com, yi.l.liu@intel.com, kjaju@nvidia.com
+Subject: Re: [PATCH v5 15/32] hw/pci/pci: Introduce optional
+ get_msi_address_space() callback
+Message-ID: <20251104142052.GD1537560@nvidia.com>
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
+ <20251031105005.24618-16-skolothumtho@nvidia.com>
+ <318947de-4467-4ced-a5d2-929e3df210ef@redhat.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4e825697-e57c-4f77-8920-9f18b787e425@ventanamicro.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=ajones@ventanamicro.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <318947de-4467-4ced-a5d2-929e3df210ef@redhat.com>
+X-ClientProxiedBy: BN9PR03CA0891.namprd03.prod.outlook.com
+ (2603:10b6:408:13c::26) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|DS4PR12MB9747:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04c83671-c820-40db-df77-08de1bad5cf6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?46sXRyhcmH5MWJEzqI7AKsityK/qsAaqvDd9kqLFpR3V02DvXgNSn2jRUxNW?=
+ =?us-ascii?Q?2Kgq98CKBL1E/fu2xQqoUyViXZSCz4dvgOP6UPh3tvonvvP6fBS/cNsaDkBN?=
+ =?us-ascii?Q?i4Ogmq5vP30WRMacDZ0kSBNfXsfu2tDYd8IfHZPoRFgC8q0+jEDREKYqeto5?=
+ =?us-ascii?Q?cq640W/nEYtFH1TVLHSxOD0iK7Yn6OkGdfOKhToKqxD68t5dk0MFWutIqbvQ?=
+ =?us-ascii?Q?sg9IAYJK+hqmaSyAwoxNpbG2bpPN31AAo3D2mcg3tj0/0bagDjnYbG16uoGn?=
+ =?us-ascii?Q?bWiiDpgDhrRU3c6lAbhTKLZY9Z9x2dzp7wOpoqIJkHQ6tQV9LA+ICjsD8bwJ?=
+ =?us-ascii?Q?TCtgIZjp4qQ741BpHonTz9hmhCOsZU84y7C4X3wzCZ9IjxgQAg5LNqhnavdb?=
+ =?us-ascii?Q?9KTgzsPx2kf6OMsG+Gy5aVVyP6ah4df6hYmXoxJPfzKynX2AQtJfWhmtZd9Z?=
+ =?us-ascii?Q?Oaup9bWxiWVIkDUEPCjlJMWvEQejM0771jHUAM8rHvw3GGqHBCT8h71bf6n5?=
+ =?us-ascii?Q?dgzZhG1ZTmwHUUW8M4T4T/eUqNiJupTwcwcrRdjSHKPRLPN5TlUbjwTbDm3B?=
+ =?us-ascii?Q?H943qCqk/oULh/fKhsyRYg5jisxYa46yfdnBxM3GAQ8r3birWyn4ihilccSD?=
+ =?us-ascii?Q?YL/lNy5VQ3KnwSYcBmNbgFq8IFLFN+1/zVzoZRzq5RDx9UHT1lA0YMopgnRW?=
+ =?us-ascii?Q?Nju3C/JXOIqgZykhfIOxpyCOXdRvHKe3lZUbugY3iHyinx8kRJrHHKo7W791?=
+ =?us-ascii?Q?26U1u3j7YhRe/h/UNLfKVjpx3TLIa4Y/spUBjpq76oHMNfF3Q9uE0qJgLb2J?=
+ =?us-ascii?Q?b0nRhGrBZo5ac8uKlQWolLjt3Mg78x9ooRh+F9zP/6Dp7YKZartTBahyiPsc?=
+ =?us-ascii?Q?j93yGsqEHz1aijTl9BSod/jmRZo8aw39MJz8NUfDvAcpN+Z4sBVLcjZ5x3CZ?=
+ =?us-ascii?Q?+sjurHC1HVJJlEy4bOp79xYzaLj25jJu9E/SB5ZZlQu913YHBOuRWPJRjOPJ?=
+ =?us-ascii?Q?cpSoUaUmRGkoVJO1ASvaL4+cDCDQiowTz5b7M4GOTqd2yerQ5fXp3NHyC2E0?=
+ =?us-ascii?Q?5q6e3lEjlisVLqvzrw+9bFEYXC+7QShgeIDk5H0yA4mzkmg95eZIVnI9Bma+?=
+ =?us-ascii?Q?wE8Mr2TXPMuhyUMmpXZNWD0caOf0fphBHl9ZEf2fYMnzr5HYnOQ6tTNyxz1P?=
+ =?us-ascii?Q?/ZBn4STJHD9qNG/c7fWvFu4zDS1YF/JSgWX9P2vjkenvhJ9se5VV1Sf1+bpz?=
+ =?us-ascii?Q?78tkZOyOR176nHZ5v6aFNn1EkLPyoVgUfbqZShK3xbu/bHdjPIJxXk/ZlmBN?=
+ =?us-ascii?Q?OwoObP4xqLiKf79p6NlvvGcZoAKRFlK2X6EAir4UMNur1wFuAbykwa8Q2NmJ?=
+ =?us-ascii?Q?guX0j3/WNxF6Iv2liCSglbQqhhUv5kTHu8DoLjWHMsrGBCA2h2f4E7hSQ7VM?=
+ =?us-ascii?Q?d5tiur6AWgKLch1aFprlipxV264jim+M?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR12MB3613.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(7416014)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hszHoPt7iqSLMF7l/Aq5qm6nXAiQ9S1bm9elExaJo1fvvYvZewOFJSCnR/Wu?=
+ =?us-ascii?Q?hNOm+gFXMuNfDAxYxuMm+e/1rTR+fuvMUuf2Oh8zwJprujQMYabRHaECIwdb?=
+ =?us-ascii?Q?t1bzPEG8TxmOoyzBEvDi3MtiuOll1EFdf+E76r7hqDdEXN0mSaN6JlKliZEh?=
+ =?us-ascii?Q?KsgEw8YEhtaiRGunPEbgT4Mk0lgKBBTeS04GWaSjsVcnE4Y7TYLWDkT+K8RV?=
+ =?us-ascii?Q?/pwXJpP7t7Mq9BPLHSyZ5/4PbZ/YfGLO7fmwmMDHlTKDGD1w8taxXdKnyvlg?=
+ =?us-ascii?Q?x7josCpTnfuuLyMIlJy/pHci831jGtMph0pL1gvUO//cJFEeSZQjqrsYGSE5?=
+ =?us-ascii?Q?lruNOebxaQKgxNMooag67EuG4MI5Qw8/cmhkkYuS43e3lgu2UygzBpo9jSL9?=
+ =?us-ascii?Q?t8X1F4BQ8f+SrplUaTpVWsM2NDNW2gCz55Nhl/x9Q8wOWfNILVx0a6JuoVOy?=
+ =?us-ascii?Q?1+FJAf9x0XL/Fkt325mi1tl/j5mFUthoqiFgqphsW5JPFIXizbSlkxe1P/rl?=
+ =?us-ascii?Q?ld0cpaOFGt3Cd3HVFFWFS+hRE5Jj+CMxfdF5ke1Us/J/t57+UcjpuZakN8b4?=
+ =?us-ascii?Q?Q3rdXvC12YuW7alpmaIRkR1ngGAXLNA4em9novvFhjT5v9tKUx7i5GfmYtLF?=
+ =?us-ascii?Q?FEH1saAPqE+0B8TB87cQbuvuGXlzGNBzDosZEDjahbhHXtzTuU0ropcmRgZN?=
+ =?us-ascii?Q?JoCLSzjMQpOHGb5RPtlyq8nLIIBJcQNK1lK3E9V4IG9Fj3ApAbsiotmEXnny?=
+ =?us-ascii?Q?27iBdOHRstkA/XgRzdSgtPUSzIebzDHnNE4dgi8v37jDmHOsqRpSdjA6Bxyx?=
+ =?us-ascii?Q?1WKsw7OExHaGUSVwkdSKP5qEAb18yn5cCgnRssHguIVk5aWMVht5ieukhLsf?=
+ =?us-ascii?Q?V/SoMqfIsT9LEBgPYg0WX7kdeaHfpM8fmkHNH2HlHle/OWOn7nzmm221yKHM?=
+ =?us-ascii?Q?nPZSSuLnPYSVrDrs5dXjKmOT8fAFbJq+B+BQEB8IpDXjXjaACfYovuQZwO8Z?=
+ =?us-ascii?Q?4RDFdjqEKW9HKUOgqx8UXE2+Tu8JlmXSWZFscz2ikCMikA39+4put4YzcfcA?=
+ =?us-ascii?Q?JklpWfIJL363RezUSZG5xn67mnnz3dWMfhHqSXdfeVY4gBnQZcqNkLXqwFm9?=
+ =?us-ascii?Q?UP1zcsu6wv/uUrUiKZYezpgnmMfOfI2ydJcdLnET16buBn1V3DXJ2R+YCQCy?=
+ =?us-ascii?Q?I4QgCKeIeGY6985wwlzMc2VbYlYeI6D9tCR00rDUHwz7Z7H2QeNeFtvBfE1b?=
+ =?us-ascii?Q?Yn6R0SvfVLHoKUQvp+VpjnoLm5JHdoF97Nbm3Q+fruhXKaUWtXDCJpFMnpw+?=
+ =?us-ascii?Q?EcvkW/FvnnobXaOXLF0osZu6aTV//eQiINwFS71oFXyHTZyO82mubdlzkGIC?=
+ =?us-ascii?Q?82qts1XSL5JDz2EyRave+ueOr1HFIUpXGKVrLp1qHW8l6ykJsMF4bjlns+ac?=
+ =?us-ascii?Q?lJrhxLi2NOcz0F9Yck6g8TS4+8D2UW2LYjzQsn4UvcXMNfpnrvWWJKawwBeb?=
+ =?us-ascii?Q?z0ox/5qD6xEN+dWGXKKLp6QcD1UZ15sxr9SRP9aO5Jl/H8rtMmNxD9u8cfH5?=
+ =?us-ascii?Q?8Sbxbj6ShL3NtC/qO0Y=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04c83671-c820-40db-df77-08de1bad5cf6
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 14:20:53.7720 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C56IgUIXL6DWQD1SKsB06koRGD4Vf/6tsrEuuEV2zJ5QkYMBUuaB/8lw9Nz5akL3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9747
+Received-SPF: permerror client-ip=2a01:111:f403:c112::5;
+ envelope-from=jgg@nvidia.com;
+ helo=CY7PR03CU001.outbound.protection.outlook.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,122 +163,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 04, 2025 at 09:55:40AM -0300, Daniel Henrique Barboza wrote:
-> CCing Drew since he's the TG chair for this spec
-> 
-> On 11/3/25 9:39 AM, Chao Liu wrote:
-> > Add an always present virtio bus for the rvsp-ref board.
-> > 
-> > The IRQs being used are similar to what the 'virt' board is using: IRQs
-> > 40 to 47, one IRQ for queue.
-> > 
-> > Signed-off-by: Chao Liu <chao.liu.riscv@isrc.iscas.ac.cn>
-> > ---
-> >   hw/riscv/server_platform_ref.c | 42 ++++++++++++++++++++++++++++++++--
-> >   1 file changed, 40 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/hw/riscv/server_platform_ref.c b/hw/riscv/server_platform_ref.c
-> > index 975f07ddfb..24c3fc2e41 100644
-> > --- a/hw/riscv/server_platform_ref.c
-> > +++ b/hw/riscv/server_platform_ref.c
-> > @@ -46,6 +46,7 @@
-> >   #include "target/riscv/cpu.h"
-> >   #include "target/riscv/pmu.h"
-> >   #include "net/net.h"
-> > +#include "hw/virtio/virtio-mmio.h"
-> >   #define RVSP_CPUS_MAX_BITS             9
-> >   #define RVSP_CPUS_MAX                  (1 << RVSP_CPUS_MAX_BITS)
-> > @@ -108,16 +109,20 @@ enum {
-> >       RVSP_PCIE_MMIO,
-> >       RVSP_PCIE_PIO,
-> >       RVSP_PCIE_ECAM,
-> > -    RVSP_PCIE_MMIO_HIGH
-> > +    RVSP_PCIE_MMIO_HIGH,
-> > +    RVSP_VIRTIO
-> >   };
-> >   enum {
-> >       RVSP_UART0_IRQ = 10,
-> >       RVSP_RTC_IRQ = 11,
-> >       RVSP_PCIE_IRQ = 0x20, /* 32 to 35 */
-> > -    IOMMU_SYS_IRQ = 0x24 /* 36 to 39 */
-> > +    IOMMU_SYS_IRQ = 0x24, /* 36 to 39 */
-> > +    RVSP_VIRTIO_IRQ = 0x28 /* 40 to 47 */
-> >   };
-> > +#define RVSP_VIRTIO_COUNT 8
-> > +
-> >   /*
-> >    * The server soc reference machine physical address space used by some of the
-> >    * devices namely ACLINT, APLIC and IMSIC depend on number of Sockets, number
-> > @@ -151,6 +156,7 @@ static const MemMapEntry rvsp_ref_memmap[] = {
-> >       [RVSP_APLIC_M] =        {  0xc000000, APLIC_SIZE(RVSP_CPUS_MAX) },
-> >       [RVSP_APLIC_S] =        {  0xd000000, APLIC_SIZE(RVSP_CPUS_MAX) },
-> >       [RVSP_UART0] =          { 0x10000000,         0x100 },
-> > +    [RVSP_VIRTIO] =         { 0x10001000,        0x1000 },
-> >       [RVSP_FLASH] =          { 0x20000000,     0x4000000 },
-> >       [RVSP_IMSIC_M] =        { 0x24000000, RVSP_IMSIC_MAX_SIZE },
-> >       [RVSP_IMSIC_S] =        { 0x28000000, RVSP_IMSIC_MAX_SIZE },
-> > @@ -816,6 +822,29 @@ static void create_fdt_flash(RVSPMachineState *s, const MemMapEntry *memmap)
-> >       qemu_fdt_setprop_cell(ms->fdt, name, "bank-width", 4);
-> >   }
-> > +static void create_fdt_virtio(RVSPMachineState *s, uint32_t irq_virtio_phandle)
-> > +{
-> > +    int i;
-> > +    MachineState *ms = MACHINE(s);
-> > +    hwaddr virtio_base = rvsp_ref_memmap[RVSP_VIRTIO].base;
-> > +
-> > +    for (i = 0; i < RVSP_VIRTIO_COUNT; i++) {
-> > +        g_autofree char *name = NULL;
-> > +        uint64_t size = rvsp_ref_memmap[RVSP_VIRTIO].size;
-> > +        hwaddr addr = virtio_base + i * size;
-> > +
-> > +        name = g_strdup_printf("/soc/virtio_mmio@%"HWADDR_PRIx, addr);
-> > +
-> > +        qemu_fdt_add_subnode(ms->fdt, name);
-> > +        qemu_fdt_setprop_string(ms->fdt, name, "compatible", "virtio,mmio");
-> > +        qemu_fdt_setprop_sized_cells(ms->fdt, name, "reg", 2, addr, 2, size);
-> > +        qemu_fdt_setprop_cell(ms->fdt, name, "interrupt-parent",
-> > +            irq_virtio_phandle);
-> > +        qemu_fdt_setprop_cells(ms->fdt, name, "interrupts",
-> > +                            RVSP_VIRTIO_IRQ + i, 0x4);
-> > +    }
-> > +}
-> > +
-> >   static void finalize_fdt(RVSPMachineState *s)
-> >   {
-> >       uint32_t phandle = 1, irq_mmio_phandle = 1, msi_pcie_phandle = 1;
-> > @@ -835,6 +864,8 @@ static void finalize_fdt(RVSPMachineState *s)
-> >       create_fdt_uart(s, rvsp_ref_memmap, irq_mmio_phandle);
-> >       create_fdt_rtc(s, rvsp_ref_memmap, irq_mmio_phandle);
-> > +
-> > +    create_fdt_virtio(s, irq_mmio_phandle);
-> >   }
-> >   static void create_fdt(RVSPMachineState *s, const MemMapEntry *memmap)
-> > @@ -1205,6 +1236,13 @@ static void rvsp_ref_machine_init(MachineState *machine)
-> >           }
-> >       }
-> > +    /* VirtIO MMIO devices */
-> > +    for (i = 0; i < RVSP_VIRTIO_COUNT; i++) {
-> > +        sysbus_create_simple("virtio-mmio",
-> > +            memmap[RVSP_VIRTIO].base + i * memmap[RVSP_VIRTIO].size,
-> > +            qdev_get_gpio_in(mmio_irqchip, RVSP_VIRTIO_IRQ + i));
-> > +    }
-> > +
-> 
-> When you said virtio support I thought about virtio-pci and virtio-net-pci. I'm not sure if
-> we need a virtio-mmio for that.
-> 
-> Also, I can't say if adding a device like virtio-mmio might conflict with something else from
-> the server plat specification. Drew, care to comment?
+On Tue, Nov 04, 2025 at 03:11:55PM +0100, Eric Auger wrote:
+> > However, QEMU/KVM also calls this callback when resolving
+> > MSI doorbells:
+> >
+> >   kvm_irqchip_add_msi_route()
+> >     kvm_arch_fixup_msi_route()
+> >       pci_device_iommu_address_space()
+> >         get_address_space()
+> >
+> > VFIO device in the guest with a SMMUv3 is programmed with a gIOVA for
+> > MSI doorbell. This gIOVA can't be used to setup the MSI doorbell
+> > directly. This needs to be translated to vITS gPA. In order to do the
+> > doorbell transalation it needs IOMMU address space.
 
-I'd rather we don't add virtio-mmio to the reference platform. In
-hindsight, I guess the only reason virtio was brought up was for
-virtio-mmio, since virtio-pci devices could already have been used.
-So I apologize for misleading by saying adding virtio support was
-fine.
+Why does qemu do anything with the msi address? It is opaque and qemu
+cannot determine anything meaningful from it. I expect it to ignore it?
 
-Let's discuss the motivation. Which virtio devices were intended to
-be added to these virtio-mmio transports?
-
-Thanks,
-drew
+Jason
 
