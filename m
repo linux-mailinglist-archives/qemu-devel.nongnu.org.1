@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9057C31FA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A18C31FAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGJbg-0006gt-FI; Tue, 04 Nov 2025 11:10:05 -0500
+	id 1vGJbe-0006gd-Kd; Tue, 04 Nov 2025 11:10:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbV-0006fp-Jd
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:57 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1vGJbV-0006fq-JH
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:55 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbT-0007Jp-DK
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:52 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4775a52e045so1477235e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:50 -0800 (PST)
+ id 1vGJbT-0007K4-Vm
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:09:53 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4711810948aso40756635e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762272589; x=1762877389; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762272590; x=1762877390; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FjdCF4UgNd4SZkh6SP1qLa1Jn8mI7bzwm8Kk/HbIkE8=;
- b=cFLiz4uWzzII04lqo4dEXgGk8Yp6CCtNQlwc7yWfneW4HG8CnAzwimNXSz8uf0KdB/
- 2Zax+sfcEoTp7tcpPg4JBECwcmmCrIP9SsMUUuVPyws0iFoP44QrNKdVwJJ6tQKP0TjQ
- KPpyF95H4sBy81BlWQlxkdCrozyhiDpkGnm+k0eVlSYriPBHRjZZTt7kdylCyGSZRG8C
- eU4XRsgBSCPqsgOsTG6PhSK28WWaFWtBVuU9z6JxWQXg4W302T0f4pw+wppk2nMRBi59
- BhoqMJ4x8+SGtmmmbDmJINKEkxBP/wwrnafyLSx++BPzVeZpSgRjrvjLBSMGHvDHbmDV
- 3EZQ==
+ bh=a5F/yooW6pnu1OikcO4nD2DRUAh0kt3jpTBeUpOiYpU=;
+ b=MMT/Q89QumS+f5WQ5BFCaDFRYjZZ7DhFlAWwehxr9Uhp3s1xgPxu7Xe/y5ztttuXI5
+ 3A4ENITMMjIJ9QjWDrnxz+BpXjccoUtCaJ9I/NfD9rcn5/kf1tvdSDiZmIVFfoKd0xuz
+ m1CJBNsOt6RYK7kUVJeEZzerqOwITs1SlBpxL6yxVOuHT+pouGjnufQW0CuOlsVwehY4
+ 5zKoYlPXSeX0LpP7UlTy0FWJFaBSdlSujHYqM1bPNRWk2XIpfIFKfg9hI0uDWTc85Wc/
+ haZ6D/Ide8eW1knD4GbyGZTCyZDIIx46KH0aALRXz+LD9zC+KYMFx6JRkErEyg1L7VMB
+ fwKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762272589; x=1762877389;
+ d=1e100.net; s=20230601; t=1762272590; x=1762877390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FjdCF4UgNd4SZkh6SP1qLa1Jn8mI7bzwm8Kk/HbIkE8=;
- b=mAXBJjIDZ9/MIfli0Avp/apNygy3hLk9SDtciTVxh8FVIM5uk8igvmuVJAGpRIlYWN
- I7rwLb/6cMGKC+lF0iyY+XrGHPzRNpFGr1MuPQyWGtTZ3FYpeW5VeJYq4WsAPhqM6C+U
- t+6XcU5I+mtBG4947p9ftdyymeK903aV3UU+eO622itkzA+X3u9dGv4IfbvXjPCh1HOY
- +Sf8ctBYnrl5kXzgFotwwA0K6WzPzuoaXrLLYvdL28/q27vjqHKk/FxStdhqduaG6UMw
- 7GEiczDxkSAds+HjTXd+pVsLgSeXA8Jv+LPY0G8+/tSXCdyTJNXVegz2/mBOoa6EiZnU
- GV6w==
-X-Gm-Message-State: AOJu0YysCb9NXi7OuhuJ/DFKnwm3AnTXCH06915WhqGrSXjBi2MsXD9k
- LyijXfyE1ekIJvcYJ53aELOEVvutpusjda4eEt/4bX49C5tNN0buLf82m8y/NMBpCYOwxdOlJWc
- 6wSRW
-X-Gm-Gg: ASbGncv9pqkgRUR2R9I4/mig046ExyGozWzggqTxAFSreBD/thcRmX34P1gvYYJz7vy
- rh3UhlwAks6PqxqmrikA7Cb6LnKhbD/ypMmpg16aBcLDgbRzIpOQo6XFlHpmgJxwl05KGTTKN7Q
- 0qnWI9iotGpExYNkiw9PTOLPcz3Rew4ZVjWmxC3I4ZHHhhuveszKiql163Qs78dy3uH4IMBaEol
- U1raxITYM85a+J/Iep94wJkp6G9ps93fnl4PrnDE5Xm8HOboHweW6OF9bHjZ/w5AmCW73Vj/08R
- 9Z+3n2fZsHoDxcM6KWwT69SK4PuP+y10OoPWFTYttIZUwUgVr/p+B0GlnTntiEiVkPzM/j8ZYcs
- Pjv8lXuBaUEfsDyHNNvUG5j3MaEA9TOKkQrNe4WPQOz2nb6PjVo392x5YJ958WczdjkEUpp6ytf
- NiwIZ7wA==
-X-Google-Smtp-Source: AGHT+IHJ62yJOviHbRJJN3pTb5mDsFv4TuJup00cA8TE/7rVS6cNhwgGnmHDoUxNyTLddE/r5704Ig==
-X-Received: by 2002:a05:600d:634c:b0:477:5c45:8117 with SMTP id
- 5b1f17b1804b1-4775c45824fmr2078785e9.41.1762272589263; 
- Tue, 04 Nov 2025 08:09:49 -0800 (PST)
+ bh=a5F/yooW6pnu1OikcO4nD2DRUAh0kt3jpTBeUpOiYpU=;
+ b=sc9N2cEMxsH8Y3e9Gh9ODgoXnErE/+BimXXwu3FP7lTKP8xZBRg7FSXtUZWgNj+bS2
+ z14dcb36+WpgVhoM1wTapv/6dib5ZEwn0HzzpHxYqX5htnApO8YiirCecwOimZXaf/NJ
+ 3VY0XYmj/yOXtBlGxDXF0Gow0FK3lpoJTKVZQdieUHyUbZEdtuYYj7NvC6N6pUTSSRmU
+ 6DozVkj1PHeaEcMSHocP/8Gy0g72KMWRyxZYI6mU0Mc21kXuroJ6qezpvOghWjsAyum+
+ Qg9zW1Ai9UN6CpBNY/KB8EmObS3cyeik5zzpErcGuuMYxOxwpazJiQUO6lYFaWbD4xYg
+ jj5w==
+X-Gm-Message-State: AOJu0YwhjkJp7ExCkr3/sm38yIG1FioyQCOaRDWmoBqeNuj5r/zlP+8z
+ MfXCBtqG62AwFES+1TwCtBrKx55cSXKMc05PPpGv4W8FcYU0pnPKweH+IDEx9cOGs0AvgZocabn
+ /Er58
+X-Gm-Gg: ASbGnctGxIn4taQhQsMQuBSddZXECid3cMJ8k0QDhDy/dJp4v307/87M/ZmQaLbYbpR
+ KgY8cbUNtf7E131rz4cBApb9SgGKIlym8afzKTGz/tKZDtVH3HSHaGT0wbxK+HXdIOmLBQhng+1
+ lTzB+ukptDwVq17TWxbZjV3WHIklUEZtbiKy5pQEnIusnD4gUtgRTRkUk9ypwz451Tyodb376lg
+ Bd5duEKyjJ/Ir+A0aqGvIyfJXX8cFRvCVISe+dmLzDrxJk0e0vtkICmLhOURTB/3X2tiflrrWHf
+ MzJxim3iNtJzsPEdmcsLaR08JTud6UG/IDlZy8E0ZzTljBBUTJyHlr9ZTCylKKuICFcEWR7lna3
+ xduCXVQgvinnSHo00IrNSC1rd8qXn+WZaZ26kGoFecn7zR73tH91URdw3QJv022n0G0vkVUZl/k
+ t6chULJQ==
+X-Google-Smtp-Source: AGHT+IHia4kgfVTRl0WN2/dJ53EnZfa5whxOOhQqoOtPN+vqI8LI0Ja7TaGKV2Z+wIqOUymeW7e1fA==
+X-Received: by 2002:a05:600c:348d:b0:477:54f9:6ac2 with SMTP id
+ 5b1f17b1804b1-47754f96ce4mr29353415e9.0.1762272590273; 
+ Tue, 04 Nov 2025 08:09:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.48
+ 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 08:09:48 -0800 (PST)
+ Tue, 04 Nov 2025 08:09:49 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -71,16 +71,17 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Thanos Makatos <thanos.makatos@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 3/9] scripts/clean-includes: Make ignore-regexes one per line
-Date: Tue,  4 Nov 2025 16:09:37 +0000
-Message-ID: <20251104160943.751997-4-peter.maydell@linaro.org>
+Subject: [PATCH 4/9] scripts/clean-includes: Do all our exclusions with
+ REGEXFILE
+Date: Tue,  4 Nov 2025 16:09:38 +0000
+Message-ID: <20251104160943.751997-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104160943.751997-1-peter.maydell@linaro.org>
 References: <20251104160943.751997-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,72 +104,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have a single extended regular expression defining
-files that clean-includes should ignore. This is now very long
-and awkward to read and edit.
+We currently have two mechanisms for excluding files:
+ * the REGEXFILE which excludes by regex
+ * special cases in the "loop over each file" which make
+   us skip the file
 
-Switch to having a list of newline-separated EREs that we write
-to a file for grep's -f option, so we can express them more
-legibly in the shell script. We allow for comments in the
-regex list, which lets us document why we have put the
-exclusions in.
+Roll all the "skip this" cases into REGEXFILE, so we use
+a single mechanism for identifying which files to exclude.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- scripts/clean-includes | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ scripts/clean-includes | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
 
 diff --git a/scripts/clean-includes b/scripts/clean-includes
-index 568033ee9c1..5ab3b071967 100755
+index 5ab3b071967..a45421d2ff7 100755
 --- a/scripts/clean-includes
 +++ b/scripts/clean-includes
-@@ -42,8 +42,6 @@
- GIT=no
- DUPHEAD=no
+@@ -104,6 +104,15 @@ grep -v '^#' >"$REGEXFILE" <<EOT
+ ^ebpf/rss.bpf.skeleton.h
+ # These files just include some other .c file and have no content themselves
+ ^linux-user/(mips64|x86_64)/(cpu_loop|signal).c
++# These are autogenerated headers
++^include/standard-headers/
++# osdep.h itself and its friends are expected to include system headers
++^include/qemu/osdep.h
++^include/qemu/compiler.h
++^include/glib-compat.h
++^include/system/os-(posix|win32).h
++# This is for use by plugins, which are standalone binaries
++^include/qemu/qemu-plugin.h
+ EOT
  
--# Extended regular expression defining files to ignore when using --all
--XDIRREGEX='^(tests/tcg|tests/multiboot|tests/fp|tests/plugin|tests/uefi-test-tools|pc-bios|subprojects|contrib/plugins|tools/ebpf|ebpf/rss.bpf.skeleton.h|linux-user/(mips64|x86_64)/(cpu_loop|signal).c)'
- 
- while true
- do
-@@ -83,15 +81,33 @@ if [ "$1" = "--all" ]; then
-     set -- '.'
- fi
- 
--# We assume there are no files in the tree with spaces in their name
--set -- $(git ls-files "$@" | grep '\.[ch]$' | grep -E -v "$XDIRREGEX")
--
- # Annoyingly coccinelle won't read a scriptfile unless its
- # name ends '.cocci', so write it out to a tempfile with the
- # right kind of name.
- COCCIFILE="$(mktemp --suffix=.cocci)"
-+REGEXFILE="$(mktemp --suffix=.regex)"
- 
--trap 'rm -f -- "$COCCIFILE"' INT TERM HUP EXIT
-+trap 'rm -f -- "$COCCIFILE" "$REGEXFILE"' INT TERM HUP EXIT
-+
-+# List of extended regular expressions defining files to ignore
-+# Comments starting with '#' are permitted
-+grep -v '^#' >"$REGEXFILE" <<EOT
-+# These tests are generally standalone binaries
-+^tests/(tcg|multiboot|fp|plugin|uefi-test-tools)
-+# BIOS sources and third-party subprojects don't follow our rules
-+^pc-bios
-+^subprojects
-+# plugin binaries are standalone
-+^contrib/plugins
-+# the ebpf tool is standalone, and the skeleton header is autogenerated
-+^tools/ebpf
-+^ebpf/rss.bpf.skeleton.h
-+# These files just include some other .c file and have no content themselves
-+^linux-user/(mips64|x86_64)/(cpu_loop|signal).c
-+EOT
-+
-+# We assume there are no files in the tree with spaces in their name
-+set -- $(git ls-files "$@" | grep '\.[ch]$' | grep -E -v -f "$REGEXFILE")
- 
- cat >"$COCCIFILE" <<EOT
- @@
+ # We assume there are no files in the tree with spaces in their name
+@@ -137,21 +146,6 @@ for f in "$@"; do
+     *.c)
+       MODE=c
+       ;;
+-    *include/qemu/osdep.h | \
+-    *include/qemu/compiler.h | \
+-    *include/qemu/qemu-plugin.h | \
+-    *include/glib-compat.h | \
+-    *include/system/os-posix.h | \
+-    *include/system/os-win32.h | \
+-    *include/standard-headers/ )
+-      # Removing include lines from osdep.h itself would be counterproductive.
+-      echo "SKIPPING $f (special case header)"
+-      continue
+-      ;;
+-    *include/standard-headers/*)
+-      echo "SKIPPING $f (autogenerated header)"
+-      continue
+-      ;;
+     *.h)
+       MODE=h
+       ;;
 -- 
 2.43.0
 
