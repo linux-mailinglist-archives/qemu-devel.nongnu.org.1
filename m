@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2ADDC31265
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1D1C312C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:15:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGGnv-00025F-Iq; Tue, 04 Nov 2025 08:10:31 -0500
+	id 1vGGsy-0004Wf-B8; Tue, 04 Nov 2025 08:15:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vGGnr-00024R-E2
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:10:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGGsg-0004IP-JN
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:15:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vGGnn-00055e-OH
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:10:26 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGGse-0006sW-Fp
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:15:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762261820;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=0NlBOm1T8Hfdsw/aIBdJGE3Ec1MX6AjeHJd4fMcoWUc=;
- b=NKYTnE0Kj1eXWSBojIlT3N35KEsNkXZudInMOil628mfc6PdnkkzjV9TmRQp+9afQFK0WU
- +N8RCEzSSTY8EPseZV/SSI0O1+nOs1a39fLQJhf+2YgczbRxhz8pR73Fx1TVNgHM81AnoD
- Xp/5FfiwMPE32hnipflkDtH0SYAtlXE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1762262122;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=u6NJ/4YZf51p1NXprw/LPKiiug67Gz5cHGvR9SFQ2Zs=;
+ b=FtDCvMpmAN9I9xNpIE1Swt3EuOLGXoB3Ne8XMMyjJ5kyAaOmUJQD6Ksxg11DpUv1iAutYS
+ VmMpCRRPS21AyLx/kdGFuQsy2llC1v2bg9QzN8ET9Cf/W/hdTT9+Eif/Lvg5zmA7oMJZrQ
+ yPoioK8azePM81yzTkBXrZdd5GwFYGE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-M8G2XoNnNiKg7seb7eNUkg-1; Tue,
- 04 Nov 2025 08:10:18 -0500
-X-MC-Unique: M8G2XoNnNiKg7seb7eNUkg-1
-X-Mimecast-MFC-AGG-ID: M8G2XoNnNiKg7seb7eNUkg_1762261817
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-jX2NtskBN8isXQGF379NYQ-1; Tue,
+ 04 Nov 2025 08:15:21 -0500
+X-MC-Unique: jX2NtskBN8isXQGF379NYQ-1
+X-Mimecast-MFC-AGG-ID: jX2NtskBN8isXQGF379NYQ_1762262120
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5A42F19560A5; Tue,  4 Nov 2025 13:10:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.53])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D16F4180045B; Tue,  4 Nov 2025 13:10:15 +0000 (UTC)
-Date: Tue, 4 Nov 2025 13:10:12 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B7DE31956066; Tue,  4 Nov 2025 13:15:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.226.47])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D4ABB30001A1; Tue,  4 Nov 2025 13:15:18 +0000 (UTC)
+Date: Tue, 4 Nov 2025 14:15:16 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
 Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
  qemu-block@nongnu.org
 Subject: Re: [PATCH 4/8] qio: Factor out helpers qio_net_listener_[un]watch
-Message-ID: <aQn7NF8bVZ3TO3Zo@redhat.com>
+Message-ID: <aQn8ZITZmk3IWpED@redhat.com>
 References: <20251103202849.3687643-10-eblake@redhat.com>
  <20251103202849.3687643-14-eblake@redhat.com>
- <aQnzjtDgSakaTgPi@redhat.com>
+ <aQndkQ3knp-5d-YJ@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aQnzjtDgSakaTgPi@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aQndkQ3knp-5d-YJ@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -82,12 +81,11 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 04, 2025 at 01:37:34PM +0100, Kevin Wolf wrote:
-> Am 03.11.2025 um 21:10 hat Eric Blake geschrieben:
+Am 04.11.2025 um 12:03 hat Daniel P. Berrangé geschrieben:
+> On Mon, Nov 03, 2025 at 02:10:55PM -0600, Eric Blake wrote:
 > > The code had three similar repetitions of an iteration over one or all
 > > of nsiocs to set up a GSource, and likewise for teardown.  Since an
 > > upcoming patch wants to tweak whether GSource or AioContext is used,
@@ -98,37 +96,43 @@ On Tue, Nov 04, 2025 at 01:37:34PM +0100, Kevin Wolf wrote:
 > > ---
 > >  io/net-listener.c | 109 +++++++++++++++++++---------------------------
 > >  1 file changed, 45 insertions(+), 64 deletions(-)
-> 
-> > @@ -145,15 +174,11 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
-> >                                             GDestroyNotify notify,
-> >                                             GMainContext *context)
-> >  {
-> > -    size_t i;
-> > -
-> >      if (listener->io_func == func && listener->io_data == data) {
-> >          return;
-> >      }
 > > 
-> > -    if (listener->io_func) {
-> > -        trace_qio_net_listener_watch_disabled(listener, "set_client_func");
-> > -    }
-> > +    qio_net_listener_unwatch(listener, "set_client_func");
-> >      if (listener->io_notify) {
-> >          listener->io_notify(listener->io_data);
+> > diff --git a/io/net-listener.c b/io/net-listener.c
+> > index 15df673fb6e..e1378b9a612 100644
+> > --- a/io/net-listener.c
+> > +++ b/io/net-listener.c
+> > @@ -106,6 +106,45 @@ int qio_net_listener_open_sync(QIONetListener *listener,
 > >      }
+> >  }
 > 
-> This changes the order between the io_notify() call and the unwatch. Is
-> this intentional? If so, maybe mention it in the commit message and why
-> it's safe.
+> >  void qio_net_listener_add(QIONetListener *listener,
+> >                            QIOChannelSocket *sioc)
+> > @@ -125,17 +164,7 @@ void qio_net_listener_add(QIONetListener *listener,
+> >      object_ref(OBJECT(sioc));
+> >      listener->connected = true;
+> > 
+> > -    if (listener->io_func != NULL) {
+> > -        trace_qio_net_listener_watch_enabled(listener, listener->io_func,
+> > -                                             "add");
+> > -        object_ref(OBJECT(listener));
+> > -        listener->io_source[listener->nsioc] = qio_channel_add_watch_source(
+> > -            QIO_CHANNEL(listener->sioc[listener->nsioc]), G_IO_IN,
+> > -            qio_net_listener_channel_func,
+> > -            listener, (GDestroyNotify)object_unref, listener->context);
+> > -    }
+> > -
+> > -    listener->nsioc++;
+> > +    qio_net_listener_watch(listener, listener->nsioc++, "add");
+> 
+> Nit-picking, I'd have a slight preference to keep the 'nsioc' increment
+> on the following line from the qio_net_listener_watch call, as I don't
+> like side effects in passing the function arguments.
 
-At least conceptually I think this ordering is better, and I don't think
-there should be any functional consequences from the change.
+It actually wouldn't work any more because qio_net_listener_watch()
+iterates up to listener->nsioc. It needs the increased value in
+listener->nsioc, and the previous one for i, so that we get exactly one
+loop iteration.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Kevin
 
 
