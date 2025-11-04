@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54406C2FEB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A60C2FEE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:36:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCTG-0001LY-81; Tue, 04 Nov 2025 03:32:54 -0500
+	id 1vGCTD-00015c-Sr; Tue, 04 Nov 2025 03:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSy-0000fB-5v
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT0-0000mw-WF
  for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSw-0003Xn-43
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:35 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSw-0003Y1-Cq
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245152;
+ s=mimecast20190719; t=1762245153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rPCqiLTQQE310HcnmT1m3xCqvzQZL2w2H/+HGs21hNA=;
- b=AdH2kFSaoEK8wYMXPsq2HQTzfWPYu+C+xteTv0F0D3lSKBms2/qtyDUiHFQS/wX52jx7UB
- /0Wcn/tnlS4DSnUMuGzhnA/nCygDg86NVVs2v7vgD+SnrLAlHaq7hnFxoA32Rmfp4LbyYa
- S8NzLMxxsdGgTA8/noTw54Oi6CV2Dto=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=rDaB/IsENP/Y0ThuPfjXCrXO0e2vMI2w9CGr/c7whgE=;
+ b=AnnGUxIYF37uCQ5KLnAT5umXK0Lk5UkgBtV9edZOtUBv9Hv/OhUh1LbVexKqmilFEprkwB
+ Yo6qcEKk0h+9C3pMIDmFzYr/08wMv7pNnGOnqESSowiOCpOhkQovo9kSepApbInHpSDL5P
+ AMSx43Kp0ExTMiMff7OxXKesX1WTpQE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-pnqRixtOPYuJgLbRidg-aQ-1; Tue,
- 04 Nov 2025 03:32:29 -0500
-X-MC-Unique: pnqRixtOPYuJgLbRidg-aQ-1
-X-Mimecast-MFC-AGG-ID: pnqRixtOPYuJgLbRidg-aQ_1762245148
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-PEmda5ecNeyxTylJh7Rzdg-1; Tue,
+ 04 Nov 2025 03:32:31 -0500
+X-MC-Unique: PEmda5ecNeyxTylJh7Rzdg-1
+X-Mimecast-MFC-AGG-ID: PEmda5ecNeyxTylJh7Rzdg_1762245150
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0661618002C1; Tue,  4 Nov 2025 08:32:28 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5B6231955F04; Tue,  4 Nov 2025 08:32:30 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5E1F61955F01; Tue,  4 Nov 2025 08:32:26 +0000 (UTC)
+ id 8560319560A2; Tue,  4 Nov 2025 08:32:28 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 17/30] hw/arm/aspeed: Move ASPEED_RAM_SIZE() macro to common
- header for reuse
-Date: Tue,  4 Nov 2025 09:31:31 +0100
-Message-ID: <20251104083144.187806-18-clg@redhat.com>
+Subject: [PULL 18/30] hw/arm/aspeed: Split Bletchley machine into a separate
+ source file for maintainability
+Date: Tue,  4 Nov 2025 09:31:32 +0100
+Message-ID: <20251104083144.187806-19-clg@redhat.com>
 In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
 References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,57 +85,258 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Moving it into aspeed.h allows all Aspeed machine source files
-(AST2400, AST2500, AST2600, AST2700, etc.) to reuse the same macro
-definition for consistent behavior and maintainability.
+This commit moves the Facebook Bletchley BMC machine implementation out of
+aspeed.c into a new standalone file aspeed_ast2600_bletchley.c.
+
+This refactor continues the modularization effort for Aspeed platform support,
+placing each board’s logic in its own dedicated source file.
+It improves maintainability, readability, and simplifies future development for
+new platforms without cluttering aspeed.c.
+
+Key updates include:
+- Moved BLETCHLEY_BMC_HW_STRAP1 and BLETCHLEY_BMC_HW_STRAP2 macro definitions into the new file.
+- Moved bletchley_bmc_i2c_init() I²C initialization logic into the new file.
+- Moved aspeed_machine_bletchley_class_init() and type registration.
+- Added aspeed_ast2600_bletchley.c to the build system (meson.build).
+- Removed all Bletchley-specific code and macros from aspeed.c.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-18-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-19-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed.h | 7 +++++++
- hw/arm/aspeed.c         | 7 -------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ hw/arm/aspeed.c                   | 77 ------------------------
+ hw/arm/aspeed_ast2600_bletchley.c | 97 +++++++++++++++++++++++++++++++
+ hw/arm/meson.build                |  1 +
+ 3 files changed, 98 insertions(+), 77 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2600_bletchley.c
 
-diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index 16b24e68870a..84620f49ed2d 100644
---- a/include/hw/arm/aspeed.h
-+++ b/include/hw/arm/aspeed.h
-@@ -25,6 +25,13 @@ DECLARE_OBJ_CHECKERS(AspeedMachineState, AspeedMachineClass,
- #define ASPEED_MAC2_ON   (1 << 2)
- #define ASPEED_MAC3_ON   (1 << 3)
- 
-+/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
-+#if HOST_LONG_BITS == 32
-+#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
-+#else
-+#define ASPEED_RAM_SIZE(sz) (sz)
-+#endif
-+
- struct AspeedMachineState {
-     MachineState parent_obj;
- 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 15d3b045ac44..ba0c9a62ff66 100644
+index ba0c9a62ff66..3acb45b22c28 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -36,13 +36,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-     .board_id = -1, /* device-tree-only board */
+@@ -56,10 +56,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+ #define FUJI_BMC_HW_STRAP1    0x00000000
+ #define FUJI_BMC_HW_STRAP2    0x00000000
+ 
+-/* Bletchley hardware value */
+-#define BLETCHLEY_BMC_HW_STRAP1 0x00002000
+-#define BLETCHLEY_BMC_HW_STRAP2 0x00000801
+-
+ /* GB200NVL hardware value */
+ #define GB200NVL_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+ #define GB200NVL_BMC_HW_STRAP2 AST2600_EVB_HW_STRAP2
+@@ -685,53 +681,6 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     at24c_eeprom_init(i2c[15], 0x52, 8 * KiB);
+ }
+ 
+-static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+-{
+-    AspeedSoCState *soc = bmc->soc;
+-    I2CBus *i2c[13] = {};
+-    for (int i = 0; i < 13; i++) {
+-        if ((i == 8) || (i == 11)) {
+-            continue;
+-        }
+-        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+-    }
+-
+-    /* Bus 0 - 5 all have the same config. */
+-    for (int i = 0; i < 6; i++) {
+-        /* Missing model: ti,ina230 @ 0x45 */
+-        /* Missing model: mps,mp5023 @ 0x40 */
+-        i2c_slave_create_simple(i2c[i], TYPE_TMP421, 0x4f);
+-        /* Missing model: nxp,pca9539 @ 0x76, but PCA9552 works enough */
+-        i2c_slave_create_simple(i2c[i], TYPE_PCA9552, 0x76);
+-        i2c_slave_create_simple(i2c[i], TYPE_PCA9552, 0x67);
+-        /* Missing model: fsc,fusb302 @ 0x22 */
+-    }
+-
+-    /* Bus 6 */
+-    at24c_eeprom_init(i2c[6], 0x56, 65536);
+-    /* Missing model: nxp,pcf85263 @ 0x51 , but ds1338 works enough */
+-    i2c_slave_create_simple(i2c[6], "ds1338", 0x51);
+-
+-
+-    /* Bus 7 */
+-    at24c_eeprom_init(i2c[7], 0x54, 65536);
+-
+-    /* Bus 9 */
+-    i2c_slave_create_simple(i2c[9], TYPE_TMP421, 0x4f);
+-
+-    /* Bus 10 */
+-    i2c_slave_create_simple(i2c[10], TYPE_TMP421, 0x4f);
+-    /* Missing model: ti,hdc1080 @ 0x40 */
+-    i2c_slave_create_simple(i2c[10], TYPE_PCA9552, 0x67);
+-
+-    /* Bus 12 */
+-    /* Missing model: adi,adm1278 @ 0x11 */
+-    i2c_slave_create_simple(i2c[12], TYPE_TMP421, 0x4c);
+-    i2c_slave_create_simple(i2c[12], TYPE_TMP421, 0x4d);
+-    i2c_slave_create_simple(i2c[12], TYPE_PCA9552, 0x67);
+-}
+-
+-
+ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
+ {
+     AspeedSoCState *soc = bmc->soc;
+@@ -1059,27 +1008,6 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, const void *data)
+     aspeed_machine_class_init_cpus_defaults(mc);
  };
  
--/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
--#if HOST_LONG_BITS == 32
--#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
--#else
--#define ASPEED_RAM_SIZE(sz) (sz)
--#endif
+-#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
 -
- /* AST2600 evb hardware value */
- #define AST2600_EVB_HW_STRAP1 0x000000C0
- #define AST2600_EVB_HW_STRAP2 0x00000003
+-static void aspeed_machine_bletchley_class_init(ObjectClass *oc,
+-                                                const void *data)
+-{
+-    MachineClass *mc = MACHINE_CLASS(oc);
+-    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+-
+-    mc->desc       = "Facebook Bletchley BMC (Cortex-A7)";
+-    amc->soc_name  = "ast2600-a3";
+-    amc->hw_strap1 = BLETCHLEY_BMC_HW_STRAP1;
+-    amc->hw_strap2 = BLETCHLEY_BMC_HW_STRAP2;
+-    amc->fmc_model = "w25q01jvq";
+-    amc->spi_model = NULL;
+-    amc->num_cs    = 2;
+-    amc->macs_mask = ASPEED_MAC2_ON;
+-    amc->i2c_init  = bletchley_bmc_i2c_init;
+-    mc->default_ram_size = BLETCHLEY_BMC_RAM_SIZE;
+-    aspeed_machine_class_init_cpus_defaults(mc);
+-}
+-
+ static void aspeed_machine_catalina_class_init(ObjectClass *oc,
+                                                const void *data)
+ {
+@@ -1367,11 +1295,6 @@ static const TypeInfo aspeed_machine_types[] = {
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_fuji_class_init,
+         .interfaces    = arm_machine_interfaces,
+-    }, {
+-        .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+-        .parent        = TYPE_ASPEED_MACHINE,
+-        .class_init    = aspeed_machine_bletchley_class_init,
+-        .interfaces    = arm_machine_interfaces,
+     }, {
+         .name          = MACHINE_TYPE_NAME("gb200nvl-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+diff --git a/hw/arm/aspeed_ast2600_bletchley.c b/hw/arm/aspeed_ast2600_bletchley.c
+new file mode 100644
+index 000000000000..b7e84db1438a
+--- /dev/null
++++ b/hw/arm/aspeed_ast2600_bletchley.c
+@@ -0,0 +1,97 @@
++/*
++ * Facebook Bletchley
++ *
++ * Copyright 2016 IBM Corp.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "hw/arm/machines-qom.h"
++#include "hw/arm/aspeed.h"
++#include "hw/arm/aspeed_soc.h"
++#include "hw/gpio/pca9552.h"
++#include "hw/nvram/eeprom_at24c.h"
++
++#define TYPE_TMP421 "tmp421"
++/* Bletchley hardware value */
++#define BLETCHLEY_BMC_HW_STRAP1 0x00002000
++#define BLETCHLEY_BMC_HW_STRAP2 0x00000801
++#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
++
++static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
++{
++    AspeedSoCState *soc = bmc->soc;
++    I2CBus *i2c[13] = {};
++    for (int i = 0; i < 13; i++) {
++        if ((i == 8) || (i == 11)) {
++            continue;
++        }
++        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
++    }
++
++    /* Bus 0 - 5 all have the same config. */
++    for (int i = 0; i < 6; i++) {
++        /* Missing model: ti,ina230 @ 0x45 */
++        /* Missing model: mps,mp5023 @ 0x40 */
++        i2c_slave_create_simple(i2c[i], TYPE_TMP421, 0x4f);
++        /* Missing model: nxp,pca9539 @ 0x76, but PCA9552 works enough */
++        i2c_slave_create_simple(i2c[i], TYPE_PCA9552, 0x76);
++        i2c_slave_create_simple(i2c[i], TYPE_PCA9552, 0x67);
++        /* Missing model: fsc,fusb302 @ 0x22 */
++    }
++
++    /* Bus 6 */
++    at24c_eeprom_init(i2c[6], 0x56, 65536);
++    /* Missing model: nxp,pcf85263 @ 0x51 , but ds1338 works enough */
++    i2c_slave_create_simple(i2c[6], "ds1338", 0x51);
++
++
++    /* Bus 7 */
++    at24c_eeprom_init(i2c[7], 0x54, 65536);
++
++    /* Bus 9 */
++    i2c_slave_create_simple(i2c[9], TYPE_TMP421, 0x4f);
++
++    /* Bus 10 */
++    i2c_slave_create_simple(i2c[10], TYPE_TMP421, 0x4f);
++    /* Missing model: ti,hdc1080 @ 0x40 */
++    i2c_slave_create_simple(i2c[10], TYPE_PCA9552, 0x67);
++
++    /* Bus 12 */
++    /* Missing model: adi,adm1278 @ 0x11 */
++    i2c_slave_create_simple(i2c[12], TYPE_TMP421, 0x4c);
++    i2c_slave_create_simple(i2c[12], TYPE_TMP421, 0x4d);
++    i2c_slave_create_simple(i2c[12], TYPE_PCA9552, 0x67);
++}
++
++static void aspeed_machine_bletchley_class_init(ObjectClass *oc,
++                                                const void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
++
++    mc->desc       = "Facebook Bletchley BMC (Cortex-A7)";
++    amc->soc_name  = "ast2600-a3";
++    amc->hw_strap1 = BLETCHLEY_BMC_HW_STRAP1;
++    amc->hw_strap2 = BLETCHLEY_BMC_HW_STRAP2;
++    amc->fmc_model = "w25q01jvq";
++    amc->spi_model = NULL;
++    amc->num_cs    = 2;
++    amc->macs_mask = ASPEED_MAC2_ON;
++    amc->i2c_init  = bletchley_bmc_i2c_init;
++    mc->default_ram_size = BLETCHLEY_BMC_RAM_SIZE;
++    aspeed_machine_class_init_cpus_defaults(mc);
++}
++
++static const TypeInfo aspeed_ast2600_bletchley_types[] = {
++    {
++        .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
++        .parent        = TYPE_ASPEED_MACHINE,
++        .class_init    = aspeed_machine_bletchley_class_init,
++        .interfaces    = arm_machine_interfaces,
++    }
++};
++
++DEFINE_TYPES(aspeed_ast2600_bletchley_types)
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index e52901108be2..6d80e2caf9c5 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -57,6 +57,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+   'aspeed_ast2500_witherspoon.c',
+   'aspeed_ast2500_yosemitev2.c',
+   'aspeed_ast2600.c',
++  'aspeed_ast2600_bletchley.c',
+   'aspeed_ast10x0.c',
+   'aspeed_eeprom.c',
+   'fby35.c'))
 -- 
 2.51.1
 
