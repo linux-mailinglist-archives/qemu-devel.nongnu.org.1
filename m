@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12300C2F255
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590AC2F23F
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:18:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG7XJ-0000KR-J7; Mon, 03 Nov 2025 22:16:46 -0500
+	id 1vG7YJ-0001bS-3R; Mon, 03 Nov 2025 22:17:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7Wf-0007rE-R1; Mon, 03 Nov 2025 22:16:06 -0500
+ id 1vG7Wi-00084A-T1; Mon, 03 Nov 2025 22:16:11 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7Wa-0004m7-5d; Mon, 03 Nov 2025 22:16:05 -0500
+ id 1vG7Wg-0004m7-SD; Mon, 03 Nov 2025 22:16:08 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 4 Nov
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v4 27/30] hw/arm/aspeed: Split AST2600 EVB machine into a
+Subject: [PATCH v4 28/30] hw/arm/aspeed: Split AST2700 EVB machine into a
  separate source file for maintainability
-Date: Tue, 4 Nov 2025 11:13:05 +0800
-Message-ID: <20251104031325.146374-28-jamin_lin@aspeedtech.com>
+Date: Tue, 4 Nov 2025 11:13:06 +0800
+Message-ID: <20251104031325.146374-29-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
 References: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
@@ -65,118 +65,140 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit moves the Aspeed AST2600 EVB machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2600_evb.c.
+This commit moves the Aspeed AST2700 EVB machine implementation out of
+aspeed.c into a new standalone file aspeed_ast27x0_evb.c.
 
-This refactor continues the modularization effort of the Aspeed platform
-machine definitions, separating each board’s initialization logic into its
-own dedicated source file. It improves code maintainability, readability,
-and reduces clutter in aspeed.c, simplifying future platform extensions.
+This refactor continues the ongoing modularization of Aspeed platform
+support, organizing each board’s initialization logic into its own
+dedicated source file. It improves maintainability, readability, and
+makes it easier to extend or update individual platform support without
+cluttering aspeed.c.
 
 Key updates include:
-- Moved AST2600_EVB_HW_STRAP1 and AST2600_EVB_HW_STRAP2 macro definitions
-  into the new aspeed_ast2600_evb.c file.
-- Moved ast2600_evb_i2c_init() and related device initialization code into
-  the new aspeed_ast2600_evb.c file.
-- Moved aspeed_machine_ast2600_evb_class_init() and type registration logic
-  out of aspeed.c.
-- Added aspeed_ast2600_evb.c to the Meson build system (meson.build).
-- Cleaned up all AST2600 EVB-specific code and macros from aspeed.c.
+- Moved AST2700_EVB_HW_STRAP1 and AST2700_EVB_HW_STRAP2 macro definitions
+  into the new aspeed_ast27x0_evb.c file.
+- Moved ast2700_evb_i2c_init(), aspeed_machine_ast2700a0_evb_class_init(),
+  and aspeed_machine_ast2700a1_evb_class_init() into the new
+  aspeed_ast27x0_evb.c file.
+- Removed the AST2700 EVB machine type registration from aspeed.c.
+- Added aspeed_ast27x0_evb.c to the Meson build system (meson.build).
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed.c             | 44 -------------------------
- hw/arm/aspeed_ast2600_evb.c | 66 +++++++++++++++++++++++++++++++++++++
+ hw/arm/aspeed.c             | 75 -------------------------------
+ hw/arm/aspeed_ast27x0_evb.c | 89 +++++++++++++++++++++++++++++++++++++
  hw/arm/meson.build          |  1 +
- 3 files changed, 67 insertions(+), 44 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2600_evb.c
+ 3 files changed, 90 insertions(+), 75 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast27x0_evb.c
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index ad3bb8cbac..ce3610ce5a 100644
+index ce3610ce5a..924c02bcb8 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -33,10 +33,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+@@ -33,14 +33,6 @@ static struct arm_boot_info aspeed_board_binfo = {
      .board_id = -1, /* device-tree-only board */
  };
  
--/* AST2600 evb hardware value */
--#define AST2600_EVB_HW_STRAP1 0x000000C0
--#define AST2600_EVB_HW_STRAP2 0x00000003
+-#ifdef TARGET_AARCH64
+-/* AST2700 evb hardware value */
+-/* SCU HW Strap1 */
+-#define AST2700_EVB_HW_STRAP1 0x00000800
+-/* SCUIO HW Strap1 */
+-#define AST2700_EVB_HW_STRAP2 0x00000700
+-#endif
 -
- #ifdef TARGET_AARCH64
- /* AST2700 evb hardware value */
- /* SCU HW Strap1 */
-@@ -268,19 +264,6 @@ static void aspeed_machine_init(MachineState *machine)
-     arm_load_kernel(ARM_CPU(first_cpu), machine, &aspeed_board_binfo);
+ #define AST_SMP_MAILBOX_BASE            0x1e6e2180
+ #define AST_SMP_MBOX_FIELD_ENTRY        (AST_SMP_MAILBOX_BASE + 0x0)
+ #define AST_SMP_MBOX_FIELD_GOSIGN       (AST_SMP_MAILBOX_BASE + 0x4)
+@@ -512,78 +504,11 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
+     aspeed_machine_class_init_cpus_defaults(mc);
  }
  
--static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
+-#ifdef TARGET_AARCH64
+-static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
 -{
 -    AspeedSoCState *soc = bmc->soc;
--    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
--
--    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 7), 0x50,
--                          eeprom_buf);
 -
 -    /* LM75 is compatible with TMP105 driver */
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8),
--                     TYPE_TMP105, 0x4d);
+-    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0),
+-                            TYPE_TMP105, 0x4d);
 -}
 -
- void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
- {
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
-@@ -449,28 +432,6 @@ static void aspeed_machine_class_init(ObjectClass *oc, const void *data)
-     aspeed_machine_class_props_init(oc);
- }
- 
--static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
--                                                  const void *data)
+-static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc,
+-                                                    const void *data)
 -{
 -    MachineClass *mc = MACHINE_CLASS(oc);
 -    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 -
--    mc->desc       = "Aspeed AST2600 EVB (Cortex-A7)";
--    amc->soc_name  = "ast2600-a3";
--    amc->hw_strap1 = AST2600_EVB_HW_STRAP1;
--    amc->hw_strap2 = AST2600_EVB_HW_STRAP2;
--    amc->fmc_model = "w25q512jv";
+-    mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
+-    amc->soc_name  = "ast2700-a0";
+-    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
+-    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
+-    amc->fmc_model = "w25q01jvq";
 -    amc->spi_model = "w25q512jv";
--    amc->num_cs    = 1;
--    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
--                     ASPEED_MAC3_ON;
--    amc->sdhci_wp_inverted = true;
--    amc->i2c_init  = ast2600_evb_i2c_init;
+-    amc->num_cs    = 2;
+-    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
+-    amc->uart_default = ASPEED_DEV_UART12;
+-    amc->i2c_init  = ast2700_evb_i2c_init;
+-    amc->vbootrom = true;
 -    mc->default_ram_size = 1 * GiB;
 -    aspeed_machine_class_init_cpus_defaults(mc);
--    aspeed_machine_ast2600_class_emmc_init(oc);
--};
+-}
 -
- #define AST1030_INTERNAL_FLASH_SIZE (1024 * 1024)
- /* Main SYSCLK frequency in Hz (200MHz) */
- #define SYSCLK_FRQ 200000000ULL
-@@ -607,11 +568,6 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
- 
+-static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
+-                                                    const void *data)
+-{
+-    MachineClass *mc = MACHINE_CLASS(oc);
+-    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+-
+-    mc->alias = "ast2700-evb";
+-    mc->desc = "Aspeed AST2700 A1 EVB (Cortex-A35)";
+-    amc->soc_name  = "ast2700-a1";
+-    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
+-    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
+-    amc->fmc_model = "w25q01jvq";
+-    amc->spi_model = "w25q512jv";
+-    amc->num_cs    = 2;
+-    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
+-    amc->uart_default = ASPEED_DEV_UART12;
+-    amc->i2c_init  = ast2700_evb_i2c_init;
+-    amc->vbootrom = true;
+-    mc->default_ram_size = 1 * GiB;
+-    aspeed_machine_class_init_cpus_defaults(mc);
+-}
+-#endif
+-
  static const TypeInfo aspeed_machine_types[] = {
      {
--        .name          = MACHINE_TYPE_NAME("ast2600-evb"),
--        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_ast2600_evb_class_init,
--        .interfaces    = arm_machine_interfaces,
--    }, {
          .name           = MACHINE_TYPE_NAME("ast1030-evb"),
          .parent         = TYPE_ASPEED_MACHINE,
          .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
-diff --git a/hw/arm/aspeed_ast2600_evb.c b/hw/arm/aspeed_ast2600_evb.c
+-        .interfaces     = arm_machine_interfaces,
+-#ifdef TARGET_AARCH64
+-    }, {
+-        .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
+-        .parent        = TYPE_ASPEED_MACHINE,
+-        .class_init    = aspeed_machine_ast2700a0_evb_class_init,
+-        .interfaces    = aarch64_machine_interfaces,
+-    }, {
+-        .name          = MACHINE_TYPE_NAME("ast2700a1-evb"),
+-        .parent        = TYPE_ASPEED_MACHINE,
+-        .class_init    = aspeed_machine_ast2700a1_evb_class_init,
+-        .interfaces    = aarch64_machine_interfaces,
+-#endif
+     }, {
+         .name          = TYPE_ASPEED_MACHINE,
+         .parent        = TYPE_MACHINE,
+diff --git a/hw/arm/aspeed_ast27x0_evb.c b/hw/arm/aspeed_ast27x0_evb.c
 new file mode 100644
-index 0000000000..54173e24e7
+index 0000000000..cbeb098087
 --- /dev/null
-+++ b/hw/arm/aspeed_ast2600_evb.c
-@@ -0,0 +1,66 @@
++++ b/hw/arm/aspeed_ast27x0_evb.c
+@@ -0,0 +1,89 @@
 +/*
-+ * ASPEED AST2600 EVB
++ * ASPEED AST27x0 EVB
 + *
 + * Copyright 2016 IBM Corp.
 + *
@@ -188,71 +210,94 @@ index 0000000000..54173e24e7
 +#include "hw/arm/machines-qom.h"
 +#include "hw/arm/aspeed.h"
 +#include "hw/arm/aspeed_soc.h"
-+#include "hw/i2c/smbus_eeprom.h"
 +#include "hw/sensor/tmp105.h"
 +
-+/* AST2600 evb hardware value */
-+#define AST2600_EVB_HW_STRAP1 0x000000C0
-+#define AST2600_EVB_HW_STRAP2 0x00000003
++/* AST2700 evb hardware value */
++/* SCU HW Strap1 */
++#define AST2700_EVB_HW_STRAP1 0x00000800
++/* SCUIO HW Strap1 */
++#define AST2700_EVB_HW_STRAP2 0x00000700
 +
-+static void ast2600_evb_i2c_init(AspeedMachineState *bmc)
++static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
 +{
 +    AspeedSoCState *soc = bmc->soc;
-+    uint8_t *eeprom_buf = g_malloc0(8 * 1024);
-+
-+    smbus_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 7), 0x50,
-+                          eeprom_buf);
 +
 +    /* LM75 is compatible with TMP105 driver */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8),
-+                     TYPE_TMP105, 0x4d);
++    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0),
++                            TYPE_TMP105, 0x4d);
 +}
 +
-+static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
-+                                                  const void *data)
++static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc,
++                                                    const void *data)
 +{
 +    MachineClass *mc = MACHINE_CLASS(oc);
 +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
 +
-+    mc->desc       = "Aspeed AST2600 EVB (Cortex-A7)";
-+    amc->soc_name  = "ast2600-a3";
-+    amc->hw_strap1 = AST2600_EVB_HW_STRAP1;
-+    amc->hw_strap2 = AST2600_EVB_HW_STRAP2;
-+    amc->fmc_model = "w25q512jv";
++    mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
++    amc->soc_name  = "ast2700-a0";
++    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
++    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
++    amc->fmc_model = "w25q01jvq";
 +    amc->spi_model = "w25q512jv";
-+    amc->num_cs    = 1;
-+    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
-+                     ASPEED_MAC3_ON;
-+    amc->sdhci_wp_inverted = true;
-+    amc->i2c_init  = ast2600_evb_i2c_init;
++    amc->num_cs    = 2;
++    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
++    amc->uart_default = ASPEED_DEV_UART12;
++    amc->i2c_init  = ast2700_evb_i2c_init;
++    amc->vbootrom = true;
 +    mc->default_ram_size = 1 * GiB;
 +    aspeed_machine_class_init_cpus_defaults(mc);
-+    aspeed_machine_ast2600_class_emmc_init(oc);
-+};
++}
 +
-+static const TypeInfo aspeed_ast2600_evb_types[] = {
++static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
++                                                    const void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
++
++    mc->alias = "ast2700-evb";
++    mc->desc = "Aspeed AST2700 A1 EVB (Cortex-A35)";
++    amc->soc_name  = "ast2700-a1";
++    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
++    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
++    amc->fmc_model = "w25q01jvq";
++    amc->spi_model = "w25q512jv";
++    amc->num_cs    = 2;
++    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
++    amc->uart_default = ASPEED_DEV_UART12;
++    amc->i2c_init  = ast2700_evb_i2c_init;
++    amc->vbootrom = true;
++    mc->default_ram_size = 1 * GiB;
++    aspeed_machine_class_init_cpus_defaults(mc);
++}
++
++static const TypeInfo aspeed_ast27x0_evb_types[] = {
 +    {
-+        .name          = MACHINE_TYPE_NAME("ast2600-evb"),
++        .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
 +        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2600_evb_class_init,
-+        .interfaces    = arm_machine_interfaces,
++        .class_init    = aspeed_machine_ast2700a0_evb_class_init,
++        .interfaces    = aarch64_machine_interfaces,
++    }, {
++        .name          = MACHINE_TYPE_NAME("ast2700a1-evb"),
++        .parent        = TYPE_ASPEED_MACHINE,
++        .class_init    = aspeed_machine_ast2700a1_evb_class_init,
++        .interfaces    = aarch64_machine_interfaces,
 +    }
 +};
 +
-+DEFINE_TYPES(aspeed_ast2600_evb_types)
++DEFINE_TYPES(aspeed_ast27x0_evb_types)
 +
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 6b79517ec9..dc7cde4bc1 100644
+index dc7cde4bc1..1467a2034c 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
-@@ -59,6 +59,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_ast2600.c',
-   'aspeed_ast2600_bletchley.c',
-   'aspeed_ast2600_catalina.c',
-+  'aspeed_ast2600_evb.c',
-   'aspeed_ast2600_fby35.c',
-   'aspeed_ast2600_fuji.c',
-   'aspeed_ast2600_gb200nvl.c',
+@@ -70,6 +70,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+   'fby35.c'))
+ arm_common_ss.add(when: ['CONFIG_ASPEED_SOC', 'TARGET_AARCH64'], if_true: files(
+   'aspeed_ast27x0.c',
++  'aspeed_ast27x0_evb.c',
+   'aspeed_ast27x0-fc.c',
+   'aspeed_ast27x0-ssp.c',
+   'aspeed_ast27x0-tsp.c',
 -- 
 2.43.0
 
