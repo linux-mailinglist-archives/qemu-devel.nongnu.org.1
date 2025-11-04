@@ -2,63 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B539CC312A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2ADDC31265
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:11:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGGrU-0002vK-Hn; Tue, 04 Nov 2025 08:14:13 -0500
+	id 1vGGnv-00025F-Iq; Tue, 04 Nov 2025 08:10:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-2025110413035315aaa1fd07000207fc-ELuPtv@rts-flowmailer.siemens.com>)
- id 1vGGrN-0002qw-D9
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:06 -0500
-Received: from mta-65-226.siemens.flowmailer.net ([185.136.65.226])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vGGnr-00024R-E2
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:10:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-2025110413035315aaa1fd07000207fc-ELuPtv@rts-flowmailer.siemens.com>)
- id 1vGGrG-0005VS-S0
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:05 -0500
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id
- 2025110413035315aaa1fd07000207fc for <qemu-devel@nongnu.org>;
- Tue, 04 Nov 2025 14:03:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=jan.kiszka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=Aa16IkTRH9wGRMcu8vItbojNNj/gEEQnYnW57vAlPSA=;
- b=H3l6VBrh1DY426vkI8yN4v8MnXz9awskKkbmP5DjNV+gy6cueUMXbNdT/IsjfjTOLR3FZM
- GNiu5O2i5WMI8hEMe1yBJ05Al60TcfwVJ+MPsb9/cVLJD5DU0CKL/cpyxYrTYnFETAWXV9oS
- kGFA5QattwXCXRXT9/jqXptRcfxPsMqwq17tyi99AJ3xwCpwXV3bqaiUtzWnSewb44OXEHzX
- h1biCcd0AsUgJZTfegmAt8GIAgFHDL+1kGvQ52FNOdPcQyhXLIxzk/5G5HJ7OE14k+QskqxD
- QdigAU77+yDv9JurU2+56JgC0ZVrItMnUHItNy4W5tdzT0rtsptIvVqQ==;
-From: Jan Kiszka <jan.kiszka@siemens.com>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Jan=20L=C3=BCbbe?= <jlu@pengutronix.de>,
- Jerome Forissier <jerome.forissier@linaro.org>
-Subject: [PATCH v6 6/6] docs: Add eMMC device model description
-Date: Tue,  4 Nov 2025 14:03:50 +0100
-Message-ID: <b9c3ff21e7170fef5d0e7d08698a113d2a64e649.1762261430.git.jan.kiszka@siemens.com>
-In-Reply-To: <cover.1762261430.git.jan.kiszka@siemens.com>
-References: <cover.1762261430.git.jan.kiszka@siemens.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vGGnn-00055e-OH
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:10:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762261820;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=0NlBOm1T8Hfdsw/aIBdJGE3Ec1MX6AjeHJd4fMcoWUc=;
+ b=NKYTnE0Kj1eXWSBojIlT3N35KEsNkXZudInMOil628mfc6PdnkkzjV9TmRQp+9afQFK0WU
+ +N8RCEzSSTY8EPseZV/SSI0O1+nOs1a39fLQJhf+2YgczbRxhz8pR73Fx1TVNgHM81AnoD
+ Xp/5FfiwMPE32hnipflkDtH0SYAtlXE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-M8G2XoNnNiKg7seb7eNUkg-1; Tue,
+ 04 Nov 2025 08:10:18 -0500
+X-MC-Unique: M8G2XoNnNiKg7seb7eNUkg-1
+X-Mimecast-MFC-AGG-ID: M8G2XoNnNiKg7seb7eNUkg_1762261817
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A42F19560A5; Tue,  4 Nov 2025 13:10:17 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D16F4180045B; Tue,  4 Nov 2025 13:10:15 +0000 (UTC)
+Date: Tue, 4 Nov 2025 13:10:12 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH 4/8] qio: Factor out helpers qio_net_listener_[un]watch
+Message-ID: <aQn7NF8bVZ3TO3Zo@redhat.com>
+References: <20251103202849.3687643-10-eblake@redhat.com>
+ <20251103202849.3687643-14-eblake@redhat.com>
+ <aQnzjtDgSakaTgPi@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.65.226;
- envelope-from=fm-294854-2025110413035315aaa1fd07000207fc-ELuPtv@rts-flowmailer.siemens.com;
- helo=mta-65-226.siemens.flowmailer.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQnzjtDgSakaTgPi@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -73,92 +82,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+On Tue, Nov 04, 2025 at 01:37:34PM +0100, Kevin Wolf wrote:
+> Am 03.11.2025 um 21:10 hat Eric Blake geschrieben:
+> > The code had three similar repetitions of an iteration over one or all
+> > of nsiocs to set up a GSource, and likewise for teardown.  Since an
+> > upcoming patch wants to tweak whether GSource or AioContext is used,
+> > its better to consolidate that into one helper function for fewer
+> > places to edit later.
+> > 
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> >  io/net-listener.c | 109 +++++++++++++++++++---------------------------
+> >  1 file changed, 45 insertions(+), 64 deletions(-)
+> 
+> > @@ -145,15 +174,11 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
+> >                                             GDestroyNotify notify,
+> >                                             GMainContext *context)
+> >  {
+> > -    size_t i;
+> > -
+> >      if (listener->io_func == func && listener->io_data == data) {
+> >          return;
+> >      }
+> > 
+> > -    if (listener->io_func) {
+> > -        trace_qio_net_listener_watch_disabled(listener, "set_client_func");
+> > -    }
+> > +    qio_net_listener_unwatch(listener, "set_client_func");
+> >      if (listener->io_notify) {
+> >          listener->io_notify(listener->io_data);
+> >      }
+> 
+> This changes the order between the io_notify() call and the unwatch. Is
+> this intentional? If so, maybe mention it in the commit message and why
+> it's safe.
 
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/system/device-emulation.rst |  1 +
- docs/system/devices/emmc.rst     | 53 ++++++++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 docs/system/devices/emmc.rst
+At least conceptually I think this ordering is better, and I don't think
+there should be any functional consequences from the change.
 
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index db714ad47a..971325527a 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -88,6 +88,7 @@ Emulated Devices
-    devices/canokey.rst
-    devices/ccid.rst
-    devices/cxl.rst
-+   devices/emmc.rst
-    devices/igb.rst
-    devices/ivshmem-flat.rst
-    devices/ivshmem.rst
-diff --git a/docs/system/devices/emmc.rst b/docs/system/devices/emmc.rst
-new file mode 100644
-index 0000000000..7e15b62270
---- /dev/null
-+++ b/docs/system/devices/emmc.rst
-@@ -0,0 +1,53 @@
-+==============
-+eMMC Emulation
-+==============
-+
-+Besides SD card emulation, QEMU also offers an eMMC model as found on many
-+embedded boards. An eMMC, just like an SD card, is connected to the machine
-+via an SDHCI controller.
-+
-+Create eMMC Images
-+==================
-+
-+A recent eMMC consists of 4 partitions: 2 boot partitions, 1 Replay protected
-+Memory Block (RPMB), and the user data area. QEMU expects backing images for
-+the eMMC to contain those partitions concatenated in exactly that order.
-+However, the boot partitions as well as the RPMB might be absent if their sizes
-+are configured to zero.
-+
-+The eMMC specification defines alignment constraints for the partitions. The
-+two boot partitions must be of the same size. Furthermore, boot and RPMB
-+partitions must be multiples of 128 KB with a maximum of 32640 KB for each
-+boot partition and 16384K for the RPMB partition.
-+
-+The alignment constrain of the user data area depends on its size. Up to 2
-+GByte, the size must be a power of 2. From 2 GByte onward, the size has to be
-+multiples of 512 byte.
-+
-+QEMU is enforcing those alignment rules before instantiating the device.
-+Therefore, the provided image has to strictly follow them as well. The helper
-+script ``scripts/mkemmc.sh`` can be used to create compliant images, with or
-+without pre-filled partitions. E.g., to create an eMMC image from a firmware
-+image and an OS image with an empty 2 MByte RPMB, use the following command:
-+
-+.. code-block:: console
-+
-+    scripts/mkemmc.sh -b firmware.img -r /dev/zero:2MB os.img emmc.img
-+
-+This will take care of rounding up the partition sizes to the next valid value
-+and will leave the RPMB and the second boot partition empty (zeroed).
-+
-+Adding eMMC Devices
-+===================
-+
-+An eMMC is either automatically created by a machine model (e.g. Aspeed boards)
-+or can be user-created when using a PCI-attached SDHCI controller. To
-+instantiate the eMMC image from the example above in a machine without other
-+SDHCI controllers while assuming that the firmware needs a boot partitions of
-+1 MB, use the following options:
-+
-+.. code-block:: console
-+
-+    -drive file=emmc.img,if=none,format=raw,id=emmc-img
-+    -device sdhci-pci
-+    -device emmc,drive=emmc-img,boot-partition-size=1048576,rpmb-partition-size=2097152
+With regards,
+Daniel
 -- 
-2.51.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
