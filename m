@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0872AC31BD0
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 16:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC214C31BE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 16:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGIdd-0002Vi-6s; Tue, 04 Nov 2025 10:08:01 -0500
+	id 1vGIed-0003Mk-BS; Tue, 04 Nov 2025 10:09:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGIdR-0002VI-Ei
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:07:50 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGIeX-0003HF-RF
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:08:58 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGIdM-0004fF-QC
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:07:47 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-6406f3dcc66so9715165a12.3
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 07:07:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vGIeW-0004qC-GH
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:08:57 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-640b0639dabso4767731a12.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 07:08:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762268863; x=1762873663; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762268935; x=1762873735; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3gkApcen/u7PZg/AmNna6Nx5Sh0pjv/0bpJjfcjE7Z8=;
- b=s2r8noeMphij+YeFBApSzB5DMlvBkbbSIDJCnneu/CgkFW9qmREssvOgeyyfWZVUix
- H4M5HZWxH5MhJPnAVuLWXeD+MjbrQzMOSjQTxlj1+kzQ9QhKmiwU9+0MDFcwXALxlU8F
- I7YurCkGeMWbmVaqDMm9mu5J3LTWJuDQr/1P+SgMZgez1/Pwri6gib1F/D2cf3uoliHF
- bNWHHF5k17dzd/KbOx70mI4D3Oudt+iwk4ykKzlBhpJ0vFONw73LnRNI8rsONlSSfB6K
- mrBfgrWEyd3rBZqNO0+Hk6Aop0fQQ+Cpbo+xDhLtAb7ScNfWIzw7bamNUotQoEZbqNgp
- rtlg==
+ bh=FEFbh5ypGo36tJSXvx8HB6Cd3yotO9rnhJ1Cf7TY+ns=;
+ b=hjXtyS0tibJ2RSyfFaqs/tT6kDGhj5LDkxsrQuTLfo4Zka79l0bvdh2wWvgQ5o94XM
+ 7xpUoPL7zMYUEXMXXm4f44ntxxSyQEZCYw68Z2ItaRy+StIz+UlHae23VZRYiKt61TWf
+ ULO6S0Qk5RIPsgSHvBgKMsFM5sQJa40/sfYuhzXzyz1h00XJtGHpMfGFCUDrK5G6u5ir
+ C0VFP0+2iLeXBV7Om6Ws33JND619cU5GahYnBjBwwZlFNdaJuqyozo8pE/5BmAUTi6Le
+ 3IfBggw/MEr2qkP20vJYEZ1qh6vrC5I4/SMakMrQ4unfKO5stnmrjHSvLsqafmATO8A5
+ 8dUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762268863; x=1762873663;
+ d=1e100.net; s=20230601; t=1762268935; x=1762873735;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3gkApcen/u7PZg/AmNna6Nx5Sh0pjv/0bpJjfcjE7Z8=;
- b=Ew0rGBgXmfCBtrhSBHOM2QyROVdGkgwNmTRJHiR03FcbOzWZvGN61F5v9NA0HcfSkh
- 8Qa7l7AA6DppWcmi0HdrPJKQBXAw0220iJ/63nOF/Ot6AzXyxIpnWWUXGyoZgMC5jYOU
- uie6uyFhz7LpZ7phhLV3Ghb9CKFplrnarC0E2sAwgQa5x4vIZWsHjO4AG9qXPg7UPTVj
- CVMvZPUSSE2cQDWoN89MBEqlmF3UjZmfmerxNm69LUUmsEZDyFhowgP+6D3xGZYCLDoC
- iF7jV+8U68VQKb3y4PNt0NjqiyxDBl7NojliO+1WWirxswOdjGk0YFrsgHtnzvfyhTEe
- /ZkA==
+ bh=FEFbh5ypGo36tJSXvx8HB6Cd3yotO9rnhJ1Cf7TY+ns=;
+ b=pHa33jzQdyC3TyaxmslgoOlNeV3RJ2C5NQfs+U0XytfbKVGbu8ZID6nPRUaQ9p7yXX
+ y9edZ3TO/6HdOFvImN/Rn/9xghrLbSg9EH6kNMJvfNekS6oJYazT9qc5vVY6x3ZlO2cL
+ i2uQiZ06RAaC3qr+JixUdkdOvGux3bUB8QDQAGTgvErRLgkgDzmtShw6E6Da/GdRxYnw
+ TkgIN2b2yNGXREXzk3XVLvyuhDTmFzEGr5GEQJ5gi8cExeit7mvrwoTzt0bv1nvqk+Jv
+ RKOshwMhozPMOPhgjfR1f8ODjbW0qNmI06pHRVg3xQ323HsF64hhdGgCDqCv1HzggNnT
+ K5pA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVV0H4NV+kRqLwvuBHxkrVBzGW0ZViefMt05sdsFxCnWHf7v2KO0Hi+9YygWHVv0CFD4wVwuvXAYruo@nongnu.org
-X-Gm-Message-State: AOJu0Yz07HQ170aQOu+D1i+eRzXG7q4dJmYD0DhR6hXqExA+zFO9MSL8
- cGRnAwwu4oF9bE5LczpgJk0uJropRuG3GmYZXfYkIVWtJXkLzE9t+gZmqeadmmbAtVU=
-X-Gm-Gg: ASbGncu40bbqfy2ZeQ7CIJLPn3K3k4UDT9booWFyQFj0TsB9E2tuJyIVGmuU7DU1A8B
- 3THeouNbpyJ9PCgsPLpYdD7YdwrX3nkAht+h9mBxi+Uf0TETAloBazarT4oO5tTIY6bAmOf5kjs
- tpwv9S5Gf3p3fn1tARINOaNywiewnUHUQg7tX86EK1F9WBCMdc7Vm89pir9fxBq1p522EklyDnw
- zqi8+1KuhD2Notj7bH8NcQLmgqOze6yXZEZVlFrTsq3UN9aj/ciKqUSseYs4+5pXh94/U6Mkkme
- EQxHeoiZg6Fxb4o3C0YvwxjyEC2wLocGV3VdizsUrQRuFqD871nbRWptshC+CdTY4MZgDcy3e3a
- LlrWtyzmeZWXyYhyuX8ttIBUft9yMYLNVGGBCIKYhj9hDSbqBmd3W5ebc/SGHJ7s4HVkoNd6d8s
- QdrY3EKlIUmHvW7KlMa/s=
-X-Google-Smtp-Source: AGHT+IF7jaAfKfeePIja1K1/XReBS97lQlhZDT257gHOiypg1d/53s84pgXUyxYW+QIzg2cYoxGRvA==
-X-Received: by 2002:a05:6402:518c:b0:640:ba44:c731 with SMTP id
- 4fb4d7f45d1cf-640ba44ca96mr6880024a12.21.1762268863182; 
- Tue, 04 Nov 2025 07:07:43 -0800 (PST)
+ AJvYcCWEaI6IBuCVJFOtYEZFXHzBApv4uNMtDg0WLgpR5Yw4dvAhxJBhhQ2+WITyMwVJu2k4E15GjStM1lbb@nongnu.org
+X-Gm-Message-State: AOJu0Yzr7ml/QOe2yNwjbkLYMIe4VX7gQlga5/w7R8nVZ/CJ5XunrKhc
+ olDWxvkLVf3apMseboW31EnkeTCYgRDDyOY/M4uYa2bo+rCoebCvls1urhARThDdTyU=
+X-Gm-Gg: ASbGncvr08f+3+SWxmDVNEtjqTsSjmWZ7MBbO0xRd0bKVOlEbBJioHM0BePHFpf5zaO
+ Z9EEnrCrHAB+15+P/cXJUtPtLiXk78el1yK8mD2bT2tRl/pb6Cjvi4wZ3YZPb14s0Q8eRi5PpC4
+ WV0DRQwHUb78IeWGwpPaftOqHzbYnqdTrsZpXd3zqfFCNpiuiYsw+on1hqqfRE3aBnPloBtClgS
+ 2rBObYz9rlBhsS90Uu/l1XbuN+qsQLjlhoTpBJ9eU/75oBPnF4mJIKqzy9bfkEkgwysM7drDgrj
+ AfSm19wWstpeGo9GjHbtTxqOW8N7cy49r/xDlM+RY/r62Ut/KIFtr0pKiohYHoFlMG6YfbO7muK
+ aVmzR1rIxlW/U0JpGIFgXyDlUhkzSb2oW3x2wmIVDPn28QFtrYC4tSG8xxdDtTxwvqlPJPPWJRo
+ cVfFqJo54BJnFK5hT32TiEmobnJoLKzQ==
+X-Google-Smtp-Source: AGHT+IFjPO3t7G9le9dGOHkTQF4Hp9ZO151XxmsADNA0LqgBcc7paj4VnqglLmPKyRqUhDguBEtbcg==
+X-Received: by 2002:a05:6402:34c6:b0:640:9aed:6ab6 with SMTP id
+ 4fb4d7f45d1cf-6409aed6c84mr10142176a12.24.1762268934704; 
+ Tue, 04 Nov 2025 07:08:54 -0800 (PST)
 Received: from [172.20.148.75] ([87.213.113.147])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-640e67eb671sm2284178a12.2.2025.11.04.07.07.41
+ 4fb4d7f45d1cf-640e6a7f2a5sm2231179a12.34.2025.11.04.07.08.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Nov 2025 07:07:42 -0800 (PST)
-Message-ID: <bd382183-0cb0-40be-9ee9-18e637837d97@linaro.org>
-Date: Tue, 4 Nov 2025 16:07:40 +0100
+ Tue, 04 Nov 2025 07:08:54 -0800 (PST)
+Message-ID: <9b1aae8b-911f-49c3-84bd-67f5e0e8a137@linaro.org>
+Date: Tue, 4 Nov 2025 16:08:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/6] hw/sd/sdcard: Add basic support for RPMB partition
+Subject: Re: [PATCH v6 4/6] hw/sd/sdcard: Handle RPMB MAC field
 Content-Language: en-US
 To: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>
 Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
@@ -76,20 +76,20 @@ Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>,
  Jerome Forissier <jerome.forissier@linaro.org>
 References: <cover.1762261430.git.jan.kiszka@siemens.com>
- <d57388b599e47f5c95f30be7571b77f9016289eb.1762261430.git.jan.kiszka@siemens.com>
+ <b6f5698c0ca017871d54834f0c7bd4b4b6316bbd.1762261430.git.jan.kiszka@siemens.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <d57388b599e47f5c95f30be7571b77f9016289eb.1762261430.git.jan.kiszka@siemens.com>
+In-Reply-To: <b6f5698c0ca017871d54834f0c7bd4b4b6316bbd.1762261430.git.jan.kiszka@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,32 +108,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 4/11/25 14:03, Jan Kiszka wrote:
 > From: Jan Kiszka <jan.kiszka@siemens.com>
 > 
-> The Replay Protected Memory Block (RPMB) is available since eMMC 4.4
-> which has been obsoleted by 4.41. Therefore lift the provided
-> EXT_CSD_REV to 5 (4.41) and provide the basic logic to implement basic
-> support for it. This allows to set the authentication key, read the
-> write counter and authenticated perform data read and write requests.
-> Those aren't actually authenticated yet, support for that will be added
-> later.
+> Implement correct setting of the MAC field when passing RPMB frames back
+> to the guest. Also check the MAC on authenticated write requests.
 > 
-> The RPMB image needs to be added to backing block images after potential
-> boot partitions and before the user data. It's size is controlled by
-> the rpmb-partition-size property.
-> 
-> Also missing in this version (and actually not only for RPMB bits) is
-> persistence of registers that are supposed to survive power cycles. Most
-> prominent are the write counters or the authentication key. This feature
-> can be added later, e.g. by append a state structure to the backing
-> block image.
+> This depends on HMAC support for QCRYPTO_HASH_ALGO_SHA256 which is
+> always available via glib - assert this, just to be safe.
 > 
 > Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 > ---
->   hw/sd/sd.c             | 217 +++++++++++++++++++++++++++++++++++++++--
->   hw/sd/sdmmc-internal.h |  22 +++++
->   hw/sd/trace-events     |   2 +
->   3 files changed, 233 insertions(+), 8 deletions(-)
+>   hw/sd/sd.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 83 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thanks a lot for the ld/st API changes, very much appreciated :)
 
