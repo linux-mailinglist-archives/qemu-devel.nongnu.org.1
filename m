@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BC5C2FE8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD21C2FF0D
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:36:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCTU-0001sn-P0; Tue, 04 Nov 2025 03:33:10 -0500
+	id 1vGCUR-0002hA-Ma; Tue, 04 Nov 2025 03:34:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT8-00015C-D0
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:46 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCTA-0001Bg-8B
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT5-0003aG-4o
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:45 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCT7-0003b2-QW
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:32:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245162;
+ s=mimecast20190719; t=1762245164;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XLmaK9CaRduXldH/PhkEzo7M3x5D/0OEZxUcZFFlML4=;
- b=Qny4PNwZflQX3o/TzNiABnmdi6t/1ldOVjr8Wvip73HyZt5esHpUnxWQ8Ijyr9xam2mUmm
- Fmyj5ckBg+XE/Xn9Nj9tcEhv+jwmIM7PDDb4rdeasWB8pQ9LyiB3MX554CH+9tH+FFBgvy
- NtUrcZA0uTajJm252X0vSm3tt1jXOoU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=JTctBV+Hm2wIlHFFLKRwxqt9V/P4J88g4cqcpG/RzOA=;
+ b=X9fHdtHJz7j+T11On+500yXImfnSrGX/WtVwegcOtZYbUui/0DfHMICrtVUa2jSySuGyz1
+ voP0/E8nt5RToQDlfkCU+5phUMZP2+0mxGFSODHsf4Tzg4oT8uwMu11TNqmk1E9ajlmG85
+ 4KviMR71Mus2pwWn9eU7sL8/GVkZ9YM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-oMXogLlrMBWauzAmWJMVkQ-1; Tue,
- 04 Nov 2025 03:32:40 -0500
-X-MC-Unique: oMXogLlrMBWauzAmWJMVkQ-1
-X-Mimecast-MFC-AGG-ID: oMXogLlrMBWauzAmWJMVkQ_1762245159
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-69e1BZBIPAig3DGh7On8EA-1; Tue,
+ 04 Nov 2025 03:32:42 -0500
+X-MC-Unique: 69e1BZBIPAig3DGh7On8EA-1
+X-Mimecast-MFC-AGG-ID: 69e1BZBIPAig3DGh7On8EA_1762245162
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B8DF91956095; Tue,  4 Nov 2025 08:32:39 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DF4E918001D1; Tue,  4 Nov 2025 08:32:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D528A19560B2; Tue,  4 Nov 2025 08:32:37 +0000 (UTC)
+ id 43F5C19560A2; Tue,  4 Nov 2025 08:32:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 22/30] hw/arm/aspeed: Split QCOM DC-SCM V1 machine into a
- separate source file for maintainability
-Date: Tue,  4 Nov 2025 09:31:36 +0100
-Message-ID: <20251104083144.187806-23-clg@redhat.com>
+Subject: [PULL 23/30] hw/arm/aspeed: Make
+ aspeed_machine_ast2600_class_emmc_init() a common API for eMMC boot setup
+Date: Tue,  4 Nov 2025 09:31:37 +0100
+Message-ID: <20251104083144.187806-24-clg@redhat.com>
 In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
 References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,176 +85,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-This commit moves the QCOM DC-SCM V1 BMC machine implementation out of
-aspeed.c into a new standalone file aspeed_ast2600_qcom-dc-scm-v1.c.
+This commit exposes the function aspeed_machine_ast2600_class_emmc_init() as
+a common API so that other AST2600-based machine implementations can reuse it
+to enable the "boot-emmc" property.
 
-This refactor continues the modularization effort for Aspeed platform support,
-placing each board’s logic in its own dedicated source file. It improves
-maintainability, readability, and simplifies future development for new
-platforms without cluttering aspeed.c.
-
-Key updates include:
-- Moved QCOM_DC_SCM_V1_BMC_HW_STRAP1 and QCOM_DC_SCM_V1_BMC_HW_STRAP2 macro
-  into the new file aspeed_ast2600_qcom-dc-scm-v1.c.
-- Moved qcom_dc_scm_bmc_i2c_init() and aspeed_machine_qcom_dc_scm_v1_class_init()
-  into the new file aspeed_ast2600_qcom-dc-scm-v1.c.
-- Moved "qcom-dc-scm-v1-bmc" machine type registration from aspeed.c to the new file.
-- Updated hw/arm/meson.build to include aspeed_ast2600_qcom-dc-scm-v1.c.
-- Cleaned up all QCOM DC-SCM V1-specific code from aspeed.c.
+Previously, this function was defined as a static helper within aspeed.c,
+limiting its visibility to that file. By making it global and declaring it in
+aspeed.h, other machine definition files (e.g., for specific AST2600 boards)
+can now easily call this API to register eMMC boot configuration support.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-23-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-24-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c                        | 36 -----------------
- hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c | 55 ++++++++++++++++++++++++++
- hw/arm/meson.build                     |  1 +
- 3 files changed, 56 insertions(+), 36 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
+ include/hw/arm/aspeed.h | 10 ++++++++++
+ hw/arm/aspeed.c         |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+index 84620f49ed2d..87dcadab264f 100644
+--- a/include/hw/arm/aspeed.h
++++ b/include/hw/arm/aspeed.h
+@@ -101,4 +101,14 @@ void aspeed_create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
+  */
+ I2CSlave *aspeed_create_pca9554(AspeedSoCState *soc, int bus_id, int addr);
+ 
++/*
++ * aspeed_machine_ast2600_class_emmc_init:
++ * @oc: the #ObjectClass to initialize.
++ *
++ * Initialize eMMC-related properties for the AST2600 Aspeed machine class.
++ * This function is typically invoked during class initialization to set up
++ * default configuration or attach eMMC-specific devices for AST2600 platforms.
++ */
++void aspeed_machine_ast2600_class_emmc_init(ObjectClass *oc);
++
+ #endif
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index f72b1e2eeac7..89a463242567 100644
+index 89a463242567..2f385290a419 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -56,10 +56,6 @@ static struct arm_boot_info aspeed_board_binfo = {
- #define GB200NVL_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
- #define GB200NVL_BMC_HW_STRAP2 AST2600_EVB_HW_STRAP2
- 
--/* Qualcomm DC-SCM hardware value */
--#define QCOM_DC_SCM_V1_BMC_HW_STRAP1  0x00000000
--#define QCOM_DC_SCM_V1_BMC_HW_STRAP2  0x00000041
--
- #define AST_SMP_MAILBOX_BASE            0x1e6e2180
- #define AST_SMP_MBOX_FIELD_ENTRY        (AST_SMP_MAILBOX_BASE + 0x0)
- #define AST_SMP_MBOX_FIELD_GOSIGN       (AST_SMP_MAILBOX_BASE + 0x4)
-@@ -628,13 +624,6 @@ static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
-                           gb200nvl_bmc_fruid_len);
+@@ -755,7 +755,7 @@ static void aspeed_machine_ast2600_set_boot_from_emmc(Object *obj, bool value,
+     }
  }
  
--static void qcom_dc_scm_bmc_i2c_init(AspeedMachineState *bmc)
--{
--    AspeedSoCState *soc = bmc->soc;
--
--    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 15), "tmp105", 0x4d);
--}
--
- static bool aspeed_get_mmio_exec(Object *obj, Error **errp)
+-static void aspeed_machine_ast2600_class_emmc_init(ObjectClass *oc)
++void aspeed_machine_ast2600_class_emmc_init(ObjectClass *oc)
  {
-     return ASPEED_MACHINE(obj)->mmio_exec;
-@@ -1011,37 +1000,12 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
- }
- #endif
- 
--static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
--                                                     const void *data)
--{
--    MachineClass *mc = MACHINE_CLASS(oc);
--    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
--
--    mc->desc       = "Qualcomm DC-SCM V1 BMC (Cortex A7)";
--    mc->deprecation_reason = "use 'ast2600-evb' instead";
--    amc->soc_name  = "ast2600-a3";
--    amc->hw_strap1 = QCOM_DC_SCM_V1_BMC_HW_STRAP1;
--    amc->hw_strap2 = QCOM_DC_SCM_V1_BMC_HW_STRAP2;
--    amc->fmc_model = "n25q512a";
--    amc->spi_model = "n25q512a";
--    amc->num_cs    = 2;
--    amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
--    amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
--    mc->default_ram_size = 1 * GiB;
--    aspeed_machine_class_init_cpus_defaults(mc);
--};
--
- static const TypeInfo aspeed_machine_types[] = {
-     {
-         .name          = MACHINE_TYPE_NAME("ast2600-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_ast2600_evb_class_init,
-         .interfaces    = arm_machine_interfaces,
--    }, {
--        .name          = MACHINE_TYPE_NAME("qcom-dc-scm-v1-bmc"),
--        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
--        .interfaces    = arm_machine_interfaces,
-     }, {
-         .name          = MACHINE_TYPE_NAME("rainier-bmc"),
-         .parent        = TYPE_ASPEED_MACHINE,
-diff --git a/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c b/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
-new file mode 100644
-index 000000000000..bbdeb6023686
---- /dev/null
-+++ b/hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
-@@ -0,0 +1,55 @@
-+/*
-+ * Qualcomm DC-SCM V1
-+ *
-+ * Copyright 2016 IBM Corp.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/arm/machines-qom.h"
-+#include "hw/arm/aspeed.h"
-+#include "hw/arm/aspeed_soc.h"
-+
-+/* Qualcomm DC-SCM hardware value */
-+#define QCOM_DC_SCM_V1_BMC_HW_STRAP1  0x00000000
-+#define QCOM_DC_SCM_V1_BMC_HW_STRAP2  0x00000041
-+
-+static void qcom_dc_scm_bmc_i2c_init(AspeedMachineState *bmc)
-+{
-+    AspeedSoCState *soc = bmc->soc;
-+
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 15), "tmp105", 0x4d);
-+}
-+
-+static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-+                                                     const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc       = "Qualcomm DC-SCM V1 BMC (Cortex A7)";
-+    mc->deprecation_reason = "use 'ast2600-evb' instead";
-+    amc->soc_name  = "ast2600-a3";
-+    amc->hw_strap1 = QCOM_DC_SCM_V1_BMC_HW_STRAP1;
-+    amc->hw_strap2 = QCOM_DC_SCM_V1_BMC_HW_STRAP2;
-+    amc->fmc_model = "n25q512a";
-+    amc->spi_model = "n25q512a";
-+    amc->num_cs    = 2;
-+    amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-+    amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
-+    mc->default_ram_size = 1 * GiB;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+};
-+
-+static const TypeInfo aspeed_ast2600_qcom_dc_scm_v1_types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("qcom-dc-scm-v1-bmc"),
-+        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
-+        .interfaces    = arm_machine_interfaces,
-+    }
-+};
-+
-+DEFINE_TYPES(aspeed_ast2600_qcom_dc_scm_v1_types)
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index fbe063cf0bd4..588a72bdf28d 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -60,6 +60,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_ast2600_bletchley.c',
-   'aspeed_ast2600_fby35.c',
-   'aspeed_ast2600_fuji.c',
-+  'aspeed_ast2600_qcom-dc-scm-v1.c',
-   'aspeed_ast2600_qcom-firework.c',
-   'aspeed_ast10x0.c',
-   'aspeed_eeprom.c',
+     object_class_property_add_bool(oc, "boot-emmc",
+                                    aspeed_machine_ast2600_get_boot_from_emmc,
 -- 
 2.51.1
 
