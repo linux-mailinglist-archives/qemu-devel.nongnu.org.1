@@ -2,96 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7A4C3212F
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D64FAC3212E
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:32:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGJwc-0007dE-JA; Tue, 04 Nov 2025 11:31:43 -0500
+	id 1vGJwn-0007gT-Nr; Tue, 04 Nov 2025 11:31:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vGJwB-0007c9-Ta
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:31:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vGJwI-0007ce-7d
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:31:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vGJw6-0003x2-9H
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:31:13 -0500
+ id 1vGJwB-0003yL-Rr
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:31:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762273868;
+ s=mimecast20190719; t=1762273874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mZhOhNk8L+ywXDZp/a6UEPcgmooSTjn81Iqhl627VxA=;
- b=dUclAZef/EjomaDfaqN/d0uLvtT4M6pXNyDfI56gM8Qokvq++5lkiuszmKwZaPIaz+TrE9
- kFAWrp24gqp50b+zoynLQWor5ajN+dD2dxUMjwFGD2f5swrpyl3m3uEVhhhST1EqCT6zBJ
- J6VCMu2/n8nu4iDpICBVH2UTNrJj0Do=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CWdMa1znnBSu2wgLltL31AcGV76n2oLZuhzJyyM3hwg=;
+ b=Uf6VzoSyzOQHdXSutxFx1wxIKiWbKDenmx7w63Wssg1fdzceKC3KmhHaAzvQxnaxbM93Iq
+ JHv9zz+hvFY/9bEORzNSVadyUrXFkJ4cRujrDzxCNE9xDzGuZ75J5H20yagLN6njy4G1kQ
+ sTtHMGRoIQWqAGfHT8nhcaGfDRDlo1k=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-QazH3NnIMVGWfsvcI8gC9A-1; Tue, 04 Nov 2025 11:31:06 -0500
-X-MC-Unique: QazH3NnIMVGWfsvcI8gC9A-1
-X-Mimecast-MFC-AGG-ID: QazH3NnIMVGWfsvcI8gC9A_1762273865
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-640bb21b512so2880362a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:31:06 -0800 (PST)
+ us-mta-678-u6uullqNMMWk8Q-kPUlf3g-1; Tue, 04 Nov 2025 11:31:08 -0500
+X-MC-Unique: u6uullqNMMWk8Q-kPUlf3g-1
+X-Mimecast-MFC-AGG-ID: u6uullqNMMWk8Q-kPUlf3g_1762273867
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b7067f229b8so458987766b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:31:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762273865; x=1762878665; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=mZhOhNk8L+ywXDZp/a6UEPcgmooSTjn81Iqhl627VxA=;
- b=Aopc9QZug5vO34/M1sh/f+dg7B1pl7CqKTKM4RinrgBULgN6ranI3u24CBl8Hscyxj
- R7eNFSfDfnk+iqzq3+qULlUY2wiV1z4AdleaiOiNrahK62Hcq2fsuDLDEXUKLvowGm4T
- c0DZrZSElYevC6EHB3KvWT5SGcqKKblWC9SE+x2Za/5n072lHc1SsAz3bY0NAgSu9nQv
- iqmfaZcoTPaS8mRYo4AWRtI8PQNY9iizp+ybqael2c4kdwIuZ6FlbUGJf7y4vFd+H5ey
- QiujDy+qQEfQt+cs8/U+S5oiGOiFIiEuqIZaXFG7SV8K6itmuP/IHYyCGfHvDfJCMNzT
- scoQ==
+ d=redhat.com; s=google; t=1762273866; x=1762878666; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CWdMa1znnBSu2wgLltL31AcGV76n2oLZuhzJyyM3hwg=;
+ b=FNp7K+330ER14FGh37Ghlur5g9tQebUGVcxH759yhSy2VrNTrRLUfajDltlVu48gjs
+ +RZUhqCu9XIEb9oyRV9ND0eopRPOHUZuWIHphR81c1+ANWaeRcMo+2HpyhB2oBHO9l+u
+ eUKoY1ctt2uxRAg6wrQNcgOr1+4GStxF68RD9rPVPbMP7PRW4Er5i8o+VEkBbxM0P7Ru
+ 3afO3PdIrnUg+fVqfW5eJLxWb2+txMVkTRwN5kK+PyfCMlDXyxFX6DMOg/yjVnbg8pgJ
+ uepka0++b9jfmpbvyusaCRp8b+ODzYOoDgpp0QnrT36pXi1DowjEyowvM9LwZJynluzu
+ JCvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762273865; x=1762878665;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mZhOhNk8L+ywXDZp/a6UEPcgmooSTjn81Iqhl627VxA=;
- b=PiAT+SAytFMU9xbOBxc7D0oz3Qq8CdsCaOwBcGK5mRa2bSF4/NDvnCMb6d+AeELAUI
- 3GJh2edFCFjfQnWEk4sm4gVm56SQRDTzGday3tyw+LC3edcwz8eTppcW3CzwXMMXcFm+
- zUWyCc2v1FZKurYRu/uBRzY5zedaEvvDTOplyvT1fwJsIHJjMuguQaeAj0oPIGsRT6QA
- JRNUH3z4MEkMzB5rukSfMWNP3dSsrIp114GMcUKOj6Cg5lL5ViEpB1MphOZR0KD06fqt
- W4pITqLzyxx7rS/EKcoVKKDpiWE6ixE1IGftN9aSzFqo22cABlMjsCmrQEBS0BYThVzz
- /Atw==
-X-Gm-Message-State: AOJu0YyIvvk4alw9xF6OhpCFfyoNWBDD+FXH6zEOA6+y6B+FQQZT0Uuw
- Mqbw4w8oLSOXxZE5Bsos7O2rfV16p4nxCMROZQLGGQVoYj4hrQHg5lSlcDdmYIXP0GCQczGBce9
- vyhe3BLYhrn7vR1LBNQzDDA2H8kJoQDknb3WrBhPghpjCycx8uGLokcpi4b2BF+8f55BoVaPfll
- TVAxy+CDN+8d2W3QaAKnfYYjlZAXsDCt5xN77Jspda
-X-Gm-Gg: ASbGncsfj+68g0XHzfF29bNsUktVY5D4FMUNd/F7GpvbE7x8683GqlyP1bKwazR7zWX
- E4qBYO8NCEt3Bwp3/V2Eyq0vJqIBQQ/bDIboTJOxLUOUk76pDCX6jXGEjJhJ6YSjhqnTRjX5Kd/
- ecjgYIb9i53LowXaEXeqgq7ShcgJACPwK8epM3V1P5zVnghnLFzX4JnDfqAfLaGj6GQHOoMv/Kn
- cLyvBJ9UQO9zm1FDPc7gsm9ggrb6fP0smujo7D9+ES6uWEUulLildXJtkg/qQaYBf1TsMUE5yrT
- OelZlINq7tKIeKPV+c52KOtxq0i6PCwltZvRhngUsaDSMhmO6eSh2+5evPsRs/HU42xHBRc0Cex
- 4gkRrZ06ctNErUXLaKuKya8Amch5nZ2peJWv13IB1MadI+7puTqzDp7oHiNGyui4MLkP/qzwEAm
- XL7i41
-X-Received: by 2002:a17:907:97d0:b0:b40:8954:a8a9 with SMTP id
- a640c23a62f3a-b70704bc29fmr1576258366b.34.1762273864615; 
- Tue, 04 Nov 2025 08:31:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF83Hz9tcxY+yNI3WdPeblCsv23rjZa+NQ3lJNLOllvaDSumAjXlhTi+NJl3O2LEoo2VZpu1A==
-X-Received: by 2002:a17:907:97d0:b0:b40:8954:a8a9 with SMTP id
- a640c23a62f3a-b70704bc29fmr1576256366b.34.1762273864125; 
- Tue, 04 Nov 2025 08:31:04 -0800 (PST)
+ d=1e100.net; s=20230601; t=1762273866; x=1762878666;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CWdMa1znnBSu2wgLltL31AcGV76n2oLZuhzJyyM3hwg=;
+ b=NJgMC4rPbt6iVTpriSKgc0GxEqrEVVGYG1leluj+4lgt5Z3I4p9YhQbd0bh0g+QC5T
+ sbEs6hiw0a7LgmPWBwLIKGIGVtRXOixubkNllQlDj+FtfnfIDXtT+JXfMVgOVdGaRUXI
+ pBECYcL36nMyoH7wF7D0KB9bLtLMD302jvwqhFEM+Z+i2SmN2VDtN8bkeQtYh2fCwLXR
+ sdmYt/ToQvSAH/8PwJFH8yB6lcchPjiFw0r+GrHGxXA91QKGNKot1tEM74pK7tKRB3ib
+ 6DvWM2xHL08/CdPwT2P9E7h6OsSk5gkLThiQYPo0ayyop0GbziIr4J65RTqQwGEEqvbT
+ EMtw==
+X-Gm-Message-State: AOJu0YwudlI11I2ZNc+bv5dgj8Hfok6Ucz/21QOfxexcJH8JHXMpK/U4
+ ebp19mVXvgeWJfBr29DGHEHKOX3emiy/tkFMRKM4yj7/7ud3+Ru3U7VuQEZYNP+O9LrF6LfFLgb
+ ATEKe3qF13hhem4/5T71EAy9vPEuzlazF6GJH+IbJ1ddBoKUwxS8d0blUVTP3Rb5jVU8zZ9RUcy
+ CYLvtxXo+QCxJd6uXyzQdTALVrq1cfsqBaXgyT0trN
+X-Gm-Gg: ASbGncsPa7LGNKm+8g8nRaVwGwBft4NgdTbHOYoT68/SeCQVLXuyx/hjy4YxH2KeQWk
+ KP+zFRizU84K2pzBy2QZTfsUjfqiSYJAUFII4xTQRWHqonihCHR2dJkLzH9DT+syOWqtFaW3vMN
+ DY7VkPOyWVS1QGFaI3LCGFwn8w2yANlclOTmcwFMmEuuxSfqM4rqX9eBnrBvq1fGJxcZ0yMWEuA
+ gup84PsnHcXHihFBP/0BZu+rOhTHvitPm1JJ4rV8c6KpFMeqPugJAfU38EEPTs4HHbC0BpPRLQU
+ rKESpuHVMyD+EKHRxXi0CWGxuI7QwLJoVuT2cbn7KGYNR9rJ+JGuGS3M9vr9qRthqGwuqcVUCR/
+ JtIL9ptgkrATWCeWileO8DlwE6vu+jPZur/0VSt5XovmXNEfzhd4f5TqlLsuV/RpufdduSjXzvK
+ sMv2rx
+X-Received: by 2002:a17:907:724b:b0:b43:b740:b35d with SMTP id
+ a640c23a62f3a-b70704b95afmr1857181266b.33.1762273866583; 
+ Tue, 04 Nov 2025 08:31:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHgiWTNigbEv10AEYJe4BdwZsngYwVhyNsSDi8INqz/6G8HofgC48SncRK/MLxpVvnsDASahg==
+X-Received: by 2002:a17:907:724b:b0:b43:b740:b35d with SMTP id
+ a640c23a62f3a-b70704b95afmr1857177866b.33.1762273866089; 
+ Tue, 04 Nov 2025 08:31:06 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.110.222])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b723db0f1besm252102366b.31.2025.11.04.08.31.03
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-b723d3a3d6dsm248826866b.15.2025.11.04.08.31.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 08:31:03 -0800 (PST)
+ Tue, 04 Nov 2025 08:31:05 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/8] Cleanup patches for QEMU 10.2 soft freeze
-Date: Tue,  4 Nov 2025 17:30:54 +0100
-Message-ID: <20251104163102.738889-1-pbonzini@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PULL 1/8] scripts/checkpatch.pl: remove bogus patch prefix warning
+Date: Tue,  4 Nov 2025 17:30:55 +0100
+Message-ID: <20251104163102.738889-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251104163102.738889-1-pbonzini@redhat.com>
+References: <20251104163102.738889-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -116,56 +120,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a8e63c013016f9ff981689189c5b063551d04559:
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-  Merge tag 'igvm-20251103--pull-request' of https://gitlab.com/kraxel/qemu into staging (2025-11-03 10:21:01 +0100)
+Remove the 'patch prefix exists, appears to be a -p0 patch' warning
+entirely as it is fundamentally flawed and can only produce false
+positives.
 
-are available in the Git repository at:
+Sometimes I create test files with names 'a' and 'b', and then get
+surprised seeing this warning. It was not easy to understand where it
+comes from.
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+How it works:
+1. It extracts prefixes (a/, b/) from standard diff output
+2. Checks if files/directories with these names exist in the project
+   root
+3. Warns if they exist, claiming it's a '-p0 patch' issue
 
-for you to fetch changes up to fdeeb448458f0ed808a62314b57974ab16d3592e:
+This logic is wrong because:
+- Standard diff/patch tools always use a/ and b/ prefixes by default
+- The existence of files named 'a' or 'b' in the working directory is
+  completely unrelated to patch format
+- The working directory state may not correspond to the patch content
+  (different commits, branches, etc.)
+- In QEMU project, there are no single-letter files/directories in root,
+  so this check can only generate false positives
 
-  rust: add back to Ubuntu 22.04 jobs (2025-11-04 17:13:25 +0100)
+The correct way to detect -p0 patches would be to analyze the path
+format within the patch itself (e.g., absolute paths or paths without
+prefixes), not check filesystem state.
 
-----------------------------------------------------------------
-* rust: cleanup Error, add &error_fatal bindings
-* rust: do not add qemuutil to Rust crates
-* rust: migration: allow nested offset_of
-* rust: add back to Ubuntu 22.04 jobs
-* checkpatch: remove bogus patch prefix warning
+So, let's finally drop it.
 
-----------------------------------------------------------------
-Paolo Bonzini (7):
-      rust/util: add ensure macro
-      rust/util: use anyhow's native chaining capabilities
-      rust/util: replace Error::err_or_unit/err_or_else with Error::with_errp
-      rust: pull error_fatal out of SysbusDeviceMethods::sysbus_realize
-      rust: do not add qemuutil to Rust crates
-      rust: migration: allow nested offset_of
-      rust: add back to Ubuntu 22.04 jobs
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Link: https://lore.kernel.org/r/20251030201319.858480-1-vsementsov@yandex-team.ru
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ scripts/checkpatch.pl | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Vladimir Sementsov-Ogievskiy (1):
-      scripts/checkpatch.pl: remove bogus patch prefix warning
-
- docs/about/build-platforms.rst                   |  10 +-
- .gitlab-ci.d/buildtest.yml                       |   2 +-
- rust/chardev/meson.build                         |   2 +-
- rust/hw/char/pl011/src/device.rs                 |   4 +-
- rust/hw/core/src/sysbus.rs                       |  13 +-
- rust/hw/timer/hpet/src/device.rs                 |  21 +-
- rust/hw/timer/hpet/src/fw_cfg.rs                 |   7 +-
- rust/migration/src/vmstate.rs                    |  12 +-
- rust/util/meson.build                            |   2 +-
- rust/util/src/error.rs                           | 272 +++++++++++++----------
- rust/util/src/lib.rs                             |   2 +-
- scripts/checkpatch.pl                            |   8 +-
- scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml |   2 +-
- scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml   |   2 +-
- tests/docker/dockerfiles/ubuntu2204.docker       |   6 +-
- tests/lcitool/mappings.yml                       |   4 +-
- tests/lcitool/refresh                            |   4 +-
- 17 files changed, 207 insertions(+), 166 deletions(-)
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index d3d75f3f139..d0f4537f25e 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1741,13 +1741,7 @@ sub process {
+ 			}
+ 		} elsif ($line =~ /^\+\+\+\s+(\S+)/) {
+ 			$realfile = $1;
+-			$realfile =~ s@^([^/]*)/@@ if (!$file);
+-
+-			$p1_prefix = $1;
+-			if (!$file && $tree && $p1_prefix ne '' &&
+-			    -e "$root/$p1_prefix") {
+-				WARN("patch prefix '$p1_prefix' exists, appears to be a -p0 patch\n");
+-			}
++			$realfile =~ s@^[^/]*/@@  if (!$file);
+ 
+ 			if (defined $fileinfo && !$fileinfo->{isgit}) {
+ 				$fileinfo->{lineend} = $oldhere;
 -- 
 2.51.1
 
