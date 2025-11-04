@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99416C2F1D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B737DC2F1D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 04:15:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG7UT-0002SX-IB; Mon, 03 Nov 2025 22:13:49 -0500
+	id 1vG7Up-0002U3-CE; Mon, 03 Nov 2025 22:14:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7UI-0002RW-Bj; Mon, 03 Nov 2025 22:13:38 -0500
+ id 1vG7UM-0002SF-Nb; Mon, 03 Nov 2025 22:13:44 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vG7UG-00031V-6Q; Mon, 03 Nov 2025 22:13:37 -0500
+ id 1vG7UK-00031V-6f; Mon, 03 Nov 2025 22:13:42 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 4 Nov
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v4 01/30] hw/arm/aspeed: Move AspeedMachineState definition to
- common header for reuse
-Date: Tue, 4 Nov 2025 11:12:39 +0800
-Message-ID: <20251104031325.146374-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 02/30] hw/arm/aspeed: Make
+ aspeed_machine_class_init_cpus_defaults() globally accessible
+Date: Tue, 4 Nov 2025 11:12:40 +0800
+Message-ID: <20251104031325.146374-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
 References: <20251104031325.146374-1-jamin_lin@aspeedtech.com>
@@ -66,81 +66,57 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Aspeed machines will be moved into split C files for better
-modularization and future maintenance.
+The function aspeed_machine_class_init_cpus_defaults() is now made
+globally visible so that it can be used by other Aspeed machine C files.
 
-To allow all machine implementations to reuse the same
-AspeedMachineState structure, the struct definition is moved
-from aspeed.c to the shared header aspeed.h.
-
-This change centralizes the common state structure used across
-all Aspeed machine models, reduces redundancy, and simplifies
-future refactoring work for new machines.
+Previously, this function was declared as static, restricting its
+visibility to aspeed.c. Since future machine split files will also
+need to call this helper to initialize default CPU settings, its
+declaration has been moved to the common header aspeed.h and the
+static keyword has been removed.
 
 No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed.h | 12 ++++++++++++
- hw/arm/aspeed.c         | 14 --------------
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ include/hw/arm/aspeed.h | 10 ++++++++++
+ hw/arm/aspeed.c         |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index 6c36455656..9d34be68b2 100644
+index 9d34be68b2..712014497e 100644
 --- a/include/hw/arm/aspeed.h
 +++ b/include/hw/arm/aspeed.h
-@@ -11,6 +11,7 @@
- 
- #include "hw/boards.h"
- #include "qom/object.h"
-+#include "hw/arm/aspeed_soc.h"
- 
- typedef struct AspeedMachineState AspeedMachineState;
- 
-@@ -24,6 +25,17 @@ DECLARE_OBJ_CHECKERS(AspeedMachineState, AspeedMachineClass,
- #define ASPEED_MAC2_ON   (1 << 2)
- #define ASPEED_MAC3_ON   (1 << 3)
- 
-+struct AspeedMachineState {
-+    MachineState parent_obj;
-+
-+    AspeedSoCState *soc;
-+    MemoryRegion boot_rom;
-+    bool mmio_exec;
-+    uint32_t uart_chosen;
-+    char *fmc_model;
-+    char *spi_model;
-+    uint32_t hw_strap1;
-+};
- 
- struct AspeedMachineClass {
-     MachineClass parent_obj;
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index ecc7272e67..4c92f1e1d9 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -36,20 +36,6 @@ static struct arm_boot_info aspeed_board_binfo = {
-     .board_id = -1, /* device-tree-only board */
+@@ -57,5 +57,15 @@ struct AspeedMachineClass {
+     bool vbootrom;
  };
  
--struct AspeedMachineState {
--    /* Private */
--    MachineState parent_obj;
--    /* Public */
--
--    AspeedSoCState *soc;
--    MemoryRegion boot_rom;
--    bool mmio_exec;
--    uint32_t uart_chosen;
--    char *fmc_model;
--    char *spi_model;
--    uint32_t hw_strap1;
--};
--
- /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
- #if HOST_LONG_BITS == 32
- #define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
++/*
++ * aspeed_machine_class_init_cpus_defaults:
++ * @mc: the #MachineClass to be initialized.
++ *
++ * Initialize the default CPU configuration for an Aspeed machine class.
++ * This function sets the default, minimum, and maximum CPU counts
++ * to match the number of CPUs defined in the associated SoC class,
++ * and copies its list of valid CPU types.
++ */
++void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
+ 
+ #endif
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 4c92f1e1d9..f23af5bf8c 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1339,7 +1339,7 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
+                                           "Change the SPI Flash model");
+ }
+ 
+-static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
++void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
+ {
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(mc);
+     AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
 -- 
 2.43.0
 
