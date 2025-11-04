@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840F7C33380
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 23:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F8CC33383
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 23:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGPTb-0005CO-Jy; Tue, 04 Nov 2025 17:26:07 -0500
+	id 1vGPTZ-0005Bv-P1; Tue, 04 Nov 2025 17:26:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGPTT-0005Az-Uj
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:26:00 -0500
-Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
+ id 1vGPTR-0005AV-JO
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:25:57 -0500
+Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGPTO-0002ha-Re
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:25:59 -0500
-Received: by mail-io1-xd32.google.com with SMTP id
- ca18e2360f4ac-88703c873d5so219248939f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 14:25:53 -0800 (PST)
+ id 1vGPTO-0002hj-SG
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:25:57 -0500
+Received: by mail-io1-xd33.google.com with SMTP id
+ ca18e2360f4ac-940d327df21so260645939f.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 14:25:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762295152; x=1762899952; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1762295153; x=1762899953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kHBh4sfMHS3WxddSSw4wXbBZtVAKEG+HZPV0N4S5SJU=;
- b=Cu7QfJxKLTHAAD6Cgeoskk+FcL5cSAy8FBWMKDQDAM95DHoUYkFtsMrCBQoEnhgj1a
- AxS6koDBDMPYl8pIIB35knnRH2ar0rav1Gnz/1MCZvtky6f8iu4q/YI5gQPYdJecrEpc
- iYn1xDI0iCQ1hhE76IBZEt3g5t5K3gqKNFrYcZdqLYklO+skNkH2UUFSYDifLh0KTqq3
- Ycs66ttvMgT42xlUjMoFaBp+FNhWhlkpDPde+6Ygcug/lnZUlJ+fUd4riI13D/qiLJa0
- dYtuYWSTt44h2g1Lc9q5DcoJdAaLrs0PfANQ8MjTZLT3yl1B3Z1B2rAjQcI65DckMTpj
- KB7w==
+ bh=ne+KlfGH9wk2z4bZd3mvdd2WbCMDPCWdJHP7tFuYY0E=;
+ b=N0mQ98yQQaMy1nIyyu4IVc60hbIqZ4zhGjcF11KFtbnTmrFpio1edkavokaC73fLD5
+ EzGfBhJwm7N/raGA3HKhnnevHDfJinUL2cW2/rLJxcRXP5FB/VKCObOEQlEpzfgmu6y1
+ fJRqA581VPZrdBG6eP0zaP0BzuV4hwoKYdTnFVSC+vWpe5LOPlyFXsQE+M93SOJeLD8Q
+ 1w4hOcyYfkUq3q4u123dYhdZ+ygPbN6NZXCFohVCIfpiuayG9+GRl3L3e55Cvpq3CPI5
+ XR5fxS1RtI9AWJTxN6UCSM+j6/pUDZX/AzDvdxZeaqH7EcSgjXRF5oxkNPBsjZReENcA
+ 8pnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762295152; x=1762899952;
+ d=1e100.net; s=20230601; t=1762295153; x=1762899953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kHBh4sfMHS3WxddSSw4wXbBZtVAKEG+HZPV0N4S5SJU=;
- b=ZP1d8AZzi/er3xJ+r+qCIAJJ7ehYOO7/QENJ/7MSffEwe+c/dCmdSsFV8wTB9QE+8v
- Iej2kYt1s2y0riIrV7x6K3E5c00RmSNU4rhbVYb4GgLSeKPYz3V6rfLDzeWHb3gz2bV0
- Dy+iMOpb8vs7AF8I3uWulrthhsrmtUezWG4kU0FSzWBHfRbwDawj9qDr4Si8XdtbTVl5
- Dc+qe+keI6yj70gRLwJPsBw5ZmCJ0wDMNMIS/oohI0nE8iXGLrXNJGMS5tAPNOUlpiYM
- 0qnxqC0EDPVWfZ+pJ+O2d7062dHvgeWPPSEoObe0gWFnwqaKa9P2TttZJeA3wVZ6SUWS
- VJEg==
-X-Gm-Message-State: AOJu0Ywo9lEWq6+6MSznz29qr6gF7TphFKsdpyWdR4MLerBxHd6WENk1
- DpKAtP6VBeDkWnWCU2mdIClEm+GrlrdNWLe54G0UmAEQ8MVJf8aOD1Lv5pCO+o8czGE=
-X-Gm-Gg: ASbGncty9QKrBWaw8K/9yRpejITzVggrjLv1f1dWDs6SIbeIoncdRfqkR4h1aIlB96s
- nCXBLGmD2be7kcI1wcy72lPW7EJo4seBgsopdkPASCOsUo4+5/fmrsj4daYx9Zwmji8ZN6AWVw7
- p4Hr/eagSEYa9XhhqGuawtzhxD4O9L382fvchGioo3AktXbDVj3MMS4rhTcFQnmryIqt2kKBiF5
- hqXYlZ6sWdLIzVgb99w7aU+nM5EvDy21W6PjXi1e4PkJQBxykv5skHNDl299rcmhMCKfGs8cAJX
- y4uiSEwbr+VDX2crdpJWHMwWVbudpOTKrTFHgJ3qQ80cZ27N1qCKuhAv+qifVC3nuXvuF7ux/v1
- PfYZ6OKXhbaqAoMbTe8IHliwT6ndg6mHCxFbadb26r/4aZr+Pq69mPdc6JbSp4b+0NLMgJxvbig
- TfM26x1qTBhXOFoMQu66oa6e06iDK1C0WWGZKWdcPhgK2GvNWqgIOv1CEFNQTVgT1S8Q==
-X-Google-Smtp-Source: AGHT+IGM0MBIPHg6chiHYVwHE6DneLFQOhT8B8q5c1AoeZ3YLPmSwZ9/bp0I0UKzb9Swl0vNVHbMHA==
-X-Received: by 2002:a05:6e02:1d95:b0:433:29c3:c4f6 with SMTP id
- e9e14a558f8ab-433407bf421mr15201155ab.15.1762295151594; 
- Tue, 04 Nov 2025 14:25:51 -0800 (PST)
+ bh=ne+KlfGH9wk2z4bZd3mvdd2WbCMDPCWdJHP7tFuYY0E=;
+ b=Vr866jjquSP/2nb8eyjpfDrtufg21Fiu8bvzDYOmXy4IjH5glfGorOiOxt2t4UOzcJ
+ r1XNr1G/jhNjHJ9t0cJQtM2rk9ggsTLth1d8rKbIgX7ka/ntqT172cQxsGdhrsKFNVU2
+ 26CwVUwGBh+mU5ccOemxCUnwBjARJla+yM3E2+gD65/xWI1P6o3zKU80hWad1H4xCNSE
+ E3eYOgLm2+iRz8bvIdQw3eL5Es7BJDs6qrioqnVJpCTg2L2wOlnMR1TRe9nWyDrzGMtM
+ pLjdTk/v9VcIlKkl1UwNXpPu+fkEfT08BJDEv/vVw4opzkMGXUAeugaEWOymhd50RvTI
+ a/IQ==
+X-Gm-Message-State: AOJu0YzOsSLm3Fhxy0wMJwssFMMtNrilSMmX8ysJIHudh7CTegAh1gCK
+ 39TmVTihKMxt22C43qtRkIJhPrAip3YgDmM3R9O7TAvLh5pSrG2xPkH3JnkzCiu50bc=
+X-Gm-Gg: ASbGncv6espeFf0xW2SK6WHvNoslMXg2gOw0G7iab5iSzEN8ZP5g7fTS7JBaDkiivB0
+ 52oXjsD7iIkuYrVSIugXBHFXfSpVlG0g7YrZrNXDjnAvPxT8RI4941dom+HJbMTNeVDg3HTZMXJ
+ HUHstPfqhsFytAYek8PDuEgAabcaZ6F/zyOxpTbGR8VN6o5FEbuDhzqlduWH0boomlDgtm9d2xf
+ 25fer6dvmS55t8ExfcD5gsx/RR+1aU4Y5x8zYsNGRg/6LvsHx+2tJehBulfD/gjMDV3rZyZRh2L
+ 2ENBc6p/GyY8xr9KMHfcTLN94XlzT3f1p1/DudkEqy9BFXCqJH9HVRz0aSHMpbOxKEnixILzGba
+ RsESSArsVpJlRlpoo0f/dskaIvliq2wZqXYbYKVVD+a/O4TaCuXbTHFQpTrAr0D0TB+SKS5Ez3X
+ ZIE8oKJY1Jl/XIfw/BgA/MYhQhth8XXjsbSFKbtNIbc1x/rLx5Yi0tCMDUdHTO9xDsew==
+X-Google-Smtp-Source: AGHT+IFTjvcsReEHQN+St6B0Xnie65vdXXXsQIYfDpsqmZdQU0Ih0PtDyLSV2ONQV+Kxq3gWMUR/BA==
+X-Received: by 2002:a05:6e02:380b:b0:42d:7dea:1e04 with SMTP id
+ e9e14a558f8ab-433407c7e37mr14284385ab.25.1762295152965; 
+ Tue, 04 Nov 2025 14:25:52 -0800 (PST)
 Received: from taylor-ubuntu.. (c-67-172-136-152.hsd1.co.comcast.net.
  [67.172.136.152]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-5b7224a84c3sm1755789173.0.2025.11.04.14.25.50
+ 8926c6da1cb9f-5b7224a84c3sm1755789173.0.2025.11.04.14.25.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 14:25:51 -0800 (PST)
+ Tue, 04 Nov 2025 14:25:52 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
  sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
  richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
  ltaylorsimpson@gmail.com
-Subject: [PATCH v2 1/3] Hexagon (target/hexagon) Add pkt_need_commit argument
- to arch_fpop_end
-Date: Tue,  4 Nov 2025 15:25:46 -0700
-Message-ID: <20251104222548.108264-2-ltaylorsimpson@gmail.com>
+Subject: [PATCH v2 2/3] Hexagon (target/hexagon) Implicit writes to USR don't
+ force packet commit
+Date: Tue,  4 Nov 2025 15:25:47 -0700
+Message-ID: <20251104222548.108264-3-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104222548.108264-1-ltaylorsimpson@gmail.com>
 References: <20251104222548.108264-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,1213 +103,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arch_fpop_end function converts the softfloat fp_status flags to
-bits set in Hexagon USR.  It is hard-coded that the packet must need
-a commit.  We add an argument to the function and update all the helper
-call sites.
+Implicit writes to USR are only to specific fields of USR to indicate
+side effects (e.g., saturation overflow, floating point status).
+In these cases, we don't force a packet commit. This will allow more
+packets to be short-circuited (avoid writing the results to temporaries).
 
-In a subsequent commit, we will change the code that forces a commit
-when the packet contains an floating point instruction.
+When there is a packet commit with an implicit write to USR, we initialize
+new_value_usr during gen_start_packet and write to USR in gen_reg_writes.
 
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/arch.h              |   2 +-
- target/hexagon/gen_tcg.h           | 114 ++++++------
- target/hexagon/helper.h            | 114 ++++++------
- target/hexagon/arch.c              |   3 +-
- target/hexagon/op_helper.c         | 287 +++++++++++++++++------------
- target/hexagon/gen_helper_funcs.py |   8 +-
- target/hexagon/gen_tcg_funcs.py    |   4 +
- 7 files changed, 294 insertions(+), 238 deletions(-)
+ target/hexagon/translate.h |  1 +
+ target/hexagon/translate.c | 35 ++++++++++++++++++++++-------------
+ 2 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/target/hexagon/arch.h b/target/hexagon/arch.h
-index 70918065d3..c295a86600 100644
---- a/target/hexagon/arch.h
-+++ b/target/hexagon/arch.h
-@@ -28,7 +28,7 @@ uint64_t interleave(uint32_t odd, uint32_t even);
- uint64_t deinterleave(uint64_t src);
- int32_t conv_round(int32_t a, int n);
- void arch_fpop_start(CPUHexagonState *env);
--void arch_fpop_end(CPUHexagonState *env);
-+void arch_fpop_end(CPUHexagonState *env, bool pkt_need_commit);
- int arch_sf_recip_common(float32 *Rs, float32 *Rt, float32 *Rd,
-                          int *adjust, float_status *fp_status);
- int arch_sf_invsqrt_common(float32 *Rs, float32 *Rd, int *adjust,
-diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
-index 8a3b801287..f17eac2f1a 100644
---- a/target/hexagon/gen_tcg.h
-+++ b/target/hexagon/gen_tcg.h
-@@ -613,7 +613,7 @@
- #define fGEN_TCG_F2_sfrecipa(SHORTCODE) \
-     do { \
-         TCGv_i64 tmp = tcg_temp_new_i64(); \
--        gen_helper_sfrecipa(tmp, tcg_env, RsV, RtV);  \
-+        gen_helper_sfrecipa(tmp, tcg_env, RsV, RtV, pkt_need_commit);  \
-         tcg_gen_extrh_i64_i32(RdV, tmp); \
-         tcg_gen_extrl_i64_i32(PeV, tmp); \
-     } while (0)
-@@ -628,7 +628,7 @@
- #define fGEN_TCG_F2_sfinvsqrta(SHORTCODE) \
-     do { \
-         TCGv_i64 tmp = tcg_temp_new_i64(); \
--        gen_helper_sfinvsqrta(tmp, tcg_env, RsV); \
-+        gen_helper_sfinvsqrta(tmp, tcg_env, RsV, pkt_need_commit); \
-         tcg_gen_extrh_i64_i32(RdV, tmp); \
-         tcg_gen_extrl_i64_i32(PeV, tmp); \
-     } while (0)
-@@ -1204,122 +1204,122 @@
- 
- /* Floating point */
- #define fGEN_TCG_F2_conv_sf2df(SHORTCODE) \
--    gen_helper_conv_sf2df(RddV, tcg_env, RsV)
-+    gen_helper_conv_sf2df(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2sf(SHORTCODE) \
--    gen_helper_conv_df2sf(RdV, tcg_env, RssV)
-+    gen_helper_conv_df2sf(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_uw2sf(SHORTCODE) \
--    gen_helper_conv_uw2sf(RdV, tcg_env, RsV)
-+    gen_helper_conv_uw2sf(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_uw2df(SHORTCODE) \
--    gen_helper_conv_uw2df(RddV, tcg_env, RsV)
-+    gen_helper_conv_uw2df(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_w2sf(SHORTCODE) \
--    gen_helper_conv_w2sf(RdV, tcg_env, RsV)
-+    gen_helper_conv_w2sf(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_w2df(SHORTCODE) \
--    gen_helper_conv_w2df(RddV, tcg_env, RsV)
-+    gen_helper_conv_w2df(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_ud2sf(SHORTCODE) \
--    gen_helper_conv_ud2sf(RdV, tcg_env, RssV)
-+    gen_helper_conv_ud2sf(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_ud2df(SHORTCODE) \
--    gen_helper_conv_ud2df(RddV, tcg_env, RssV)
-+    gen_helper_conv_ud2df(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_d2sf(SHORTCODE) \
--    gen_helper_conv_d2sf(RdV, tcg_env, RssV)
-+    gen_helper_conv_d2sf(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_d2df(SHORTCODE) \
--    gen_helper_conv_d2df(RddV, tcg_env, RssV)
-+    gen_helper_conv_d2df(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2uw(SHORTCODE) \
--    gen_helper_conv_sf2uw(RdV, tcg_env, RsV)
-+    gen_helper_conv_sf2uw(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2w(SHORTCODE) \
--    gen_helper_conv_sf2w(RdV, tcg_env, RsV)
-+    gen_helper_conv_sf2w(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2ud(SHORTCODE) \
--    gen_helper_conv_sf2ud(RddV, tcg_env, RsV)
-+    gen_helper_conv_sf2ud(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2d(SHORTCODE) \
--    gen_helper_conv_sf2d(RddV, tcg_env, RsV)
-+    gen_helper_conv_sf2d(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2uw(SHORTCODE) \
--    gen_helper_conv_df2uw(RdV, tcg_env, RssV)
-+    gen_helper_conv_df2uw(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2w(SHORTCODE) \
--    gen_helper_conv_df2w(RdV, tcg_env, RssV)
-+    gen_helper_conv_df2w(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2ud(SHORTCODE) \
--    gen_helper_conv_df2ud(RddV, tcg_env, RssV)
-+    gen_helper_conv_df2ud(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2d(SHORTCODE) \
--    gen_helper_conv_df2d(RddV, tcg_env, RssV)
-+    gen_helper_conv_df2d(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2uw_chop(SHORTCODE) \
--    gen_helper_conv_sf2uw_chop(RdV, tcg_env, RsV)
-+    gen_helper_conv_sf2uw_chop(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2w_chop(SHORTCODE) \
--    gen_helper_conv_sf2w_chop(RdV, tcg_env, RsV)
-+    gen_helper_conv_sf2w_chop(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2ud_chop(SHORTCODE) \
--    gen_helper_conv_sf2ud_chop(RddV, tcg_env, RsV)
-+    gen_helper_conv_sf2ud_chop(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_sf2d_chop(SHORTCODE) \
--    gen_helper_conv_sf2d_chop(RddV, tcg_env, RsV)
-+    gen_helper_conv_sf2d_chop(RddV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2uw_chop(SHORTCODE) \
--    gen_helper_conv_df2uw_chop(RdV, tcg_env, RssV)
-+    gen_helper_conv_df2uw_chop(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2w_chop(SHORTCODE) \
--    gen_helper_conv_df2w_chop(RdV, tcg_env, RssV)
-+    gen_helper_conv_df2w_chop(RdV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2ud_chop(SHORTCODE) \
--    gen_helper_conv_df2ud_chop(RddV, tcg_env, RssV)
-+    gen_helper_conv_df2ud_chop(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_conv_df2d_chop(SHORTCODE) \
--    gen_helper_conv_df2d_chop(RddV, tcg_env, RssV)
-+    gen_helper_conv_df2d_chop(RddV, tcg_env, RssV, pkt_need_commit)
- #define fGEN_TCG_F2_sfadd(SHORTCODE) \
--    gen_helper_sfadd(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sfadd(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfsub(SHORTCODE) \
--    gen_helper_sfsub(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sfsub(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfcmpeq(SHORTCODE) \
--    gen_helper_sfcmpeq(PdV, tcg_env, RsV, RtV)
-+    gen_helper_sfcmpeq(PdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfcmpgt(SHORTCODE) \
--    gen_helper_sfcmpgt(PdV, tcg_env, RsV, RtV)
-+    gen_helper_sfcmpgt(PdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfcmpge(SHORTCODE) \
--    gen_helper_sfcmpge(PdV, tcg_env, RsV, RtV)
-+    gen_helper_sfcmpge(PdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfcmpuo(SHORTCODE) \
--    gen_helper_sfcmpuo(PdV, tcg_env, RsV, RtV)
-+    gen_helper_sfcmpuo(PdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfmax(SHORTCODE) \
--    gen_helper_sfmax(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sfmax(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfmin(SHORTCODE) \
--    gen_helper_sfmin(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sfmin(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sfclass(SHORTCODE) \
-     do { \
-         TCGv imm = tcg_constant_tl(uiV); \
--        gen_helper_sfclass(PdV, tcg_env, RsV, imm); \
-+        gen_helper_sfclass(PdV, tcg_env, RsV, imm, pkt_need_commit); \
-     } while (0)
- #define fGEN_TCG_F2_sffixupn(SHORTCODE) \
--    gen_helper_sffixupn(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sffixupn(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffixupd(SHORTCODE) \
--    gen_helper_sffixupd(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sffixupd(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffixupr(SHORTCODE) \
--    gen_helper_sffixupr(RdV, tcg_env, RsV)
-+    gen_helper_sffixupr(RdV, tcg_env, RsV, pkt_need_commit)
- #define fGEN_TCG_F2_dfadd(SHORTCODE) \
--    gen_helper_dfadd(RddV, tcg_env, RssV, RttV)
-+    gen_helper_dfadd(RddV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfsub(SHORTCODE) \
--    gen_helper_dfsub(RddV, tcg_env, RssV, RttV)
-+    gen_helper_dfsub(RddV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfmax(SHORTCODE) \
--    gen_helper_dfmax(RddV, tcg_env, RssV, RttV)
-+    gen_helper_dfmax(RddV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfmin(SHORTCODE) \
--    gen_helper_dfmin(RddV, tcg_env, RssV, RttV)
-+    gen_helper_dfmin(RddV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfcmpeq(SHORTCODE) \
--    gen_helper_dfcmpeq(PdV, tcg_env, RssV, RttV)
-+    gen_helper_dfcmpeq(PdV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfcmpgt(SHORTCODE) \
--    gen_helper_dfcmpgt(PdV, tcg_env, RssV, RttV)
-+    gen_helper_dfcmpgt(PdV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfcmpge(SHORTCODE) \
--    gen_helper_dfcmpge(PdV, tcg_env, RssV, RttV)
-+    gen_helper_dfcmpge(PdV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfcmpuo(SHORTCODE) \
--    gen_helper_dfcmpuo(PdV, tcg_env, RssV, RttV)
-+    gen_helper_dfcmpuo(PdV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfclass(SHORTCODE) \
-     do { \
-         TCGv imm = tcg_constant_tl(uiV); \
--        gen_helper_dfclass(PdV, tcg_env, RssV, imm); \
-+        gen_helper_dfclass(PdV, tcg_env, RssV, imm, pkt_need_commit); \
-     } while (0)
- #define fGEN_TCG_F2_sfmpy(SHORTCODE) \
--    gen_helper_sfmpy(RdV, tcg_env, RsV, RtV)
-+    gen_helper_sfmpy(RdV, tcg_env, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffma(SHORTCODE) \
--    gen_helper_sffma(RxV, tcg_env, RxV, RsV, RtV)
-+    gen_helper_sffma(RxV, tcg_env, RxV, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffma_sc(SHORTCODE) \
--    gen_helper_sffma_sc(RxV, tcg_env, RxV, RsV, RtV, PuV)
-+    gen_helper_sffma_sc(RxV, tcg_env, RxV, RsV, RtV, PuV, pkt_need_commit)
- #define fGEN_TCG_F2_sffms(SHORTCODE) \
--    gen_helper_sffms(RxV, tcg_env, RxV, RsV, RtV)
-+    gen_helper_sffms(RxV, tcg_env, RxV, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffma_lib(SHORTCODE) \
--    gen_helper_sffma_lib(RxV, tcg_env, RxV, RsV, RtV)
-+    gen_helper_sffma_lib(RxV, tcg_env, RxV, RsV, RtV, pkt_need_commit)
- #define fGEN_TCG_F2_sffms_lib(SHORTCODE) \
--    gen_helper_sffms_lib(RxV, tcg_env, RxV, RsV, RtV)
-+    gen_helper_sffms_lib(RxV, tcg_env, RxV, RsV, RtV, pkt_need_commit)
- 
- #define fGEN_TCG_F2_dfmpyfix(SHORTCODE) \
--    gen_helper_dfmpyfix(RddV, tcg_env, RssV, RttV)
-+    gen_helper_dfmpyfix(RddV, tcg_env, RssV, RttV, pkt_need_commit)
- #define fGEN_TCG_F2_dfmpyhh(SHORTCODE) \
--    gen_helper_dfmpyhh(RxxV, tcg_env, RxxV, RssV, RttV)
-+    gen_helper_dfmpyhh(RxxV, tcg_env, RxxV, RssV, RttV, pkt_need_commit)
- 
- /* Nothing to do for these in qemu, need to suppress compiler warnings */
- #define fGEN_TCG_Y4_l2fetch(SHORTCODE) \
-diff --git a/target/hexagon/helper.h b/target/hexagon/helper.h
-index f8baa599c8..64456822bc 100644
---- a/target/hexagon/helper.h
-+++ b/target/hexagon/helper.h
-@@ -24,72 +24,72 @@ DEF_HELPER_3(gather_store, void, env, i32, int)
- DEF_HELPER_1(commit_hvx_stores, void, env)
- DEF_HELPER_FLAGS_4(fcircadd, TCG_CALL_NO_RWG_SE, s32, s32, s32, s32, s32)
- DEF_HELPER_FLAGS_1(fbrev, TCG_CALL_NO_RWG_SE, i32, i32)
--DEF_HELPER_3(sfrecipa, i64, env, f32, f32)
--DEF_HELPER_2(sfinvsqrta, i64, env, f32)
-+DEF_HELPER_4(sfrecipa, i64, env, f32, f32, i32)
-+DEF_HELPER_3(sfinvsqrta, i64, env, f32, i32)
- DEF_HELPER_5(vacsh_val, s64, env, s64, s64, s64, i32)
- DEF_HELPER_FLAGS_4(vacsh_pred, TCG_CALL_NO_RWG_SE, s32, env, s64, s64, s64)
- DEF_HELPER_FLAGS_2(cabacdecbin_val, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(cabacdecbin_pred, TCG_CALL_NO_RWG_SE, s32, s64, s64)
- 
- /* Floating point */
--DEF_HELPER_2(conv_sf2df, f64, env, f32)
--DEF_HELPER_2(conv_df2sf, f32, env, f64)
--DEF_HELPER_2(conv_uw2sf, f32, env, s32)
--DEF_HELPER_2(conv_uw2df, f64, env, s32)
--DEF_HELPER_2(conv_w2sf, f32, env, s32)
--DEF_HELPER_2(conv_w2df, f64, env, s32)
--DEF_HELPER_2(conv_ud2sf, f32, env, s64)
--DEF_HELPER_2(conv_ud2df, f64, env, s64)
--DEF_HELPER_2(conv_d2sf, f32, env, s64)
--DEF_HELPER_2(conv_d2df, f64, env, s64)
--DEF_HELPER_2(conv_sf2uw, i32, env, f32)
--DEF_HELPER_2(conv_sf2w, s32, env, f32)
--DEF_HELPER_2(conv_sf2ud, i64, env, f32)
--DEF_HELPER_2(conv_sf2d, s64, env, f32)
--DEF_HELPER_2(conv_df2uw, i32, env, f64)
--DEF_HELPER_2(conv_df2w, s32, env, f64)
--DEF_HELPER_2(conv_df2ud, i64, env, f64)
--DEF_HELPER_2(conv_df2d, s64, env, f64)
--DEF_HELPER_2(conv_sf2uw_chop, i32, env, f32)
--DEF_HELPER_2(conv_sf2w_chop, s32, env, f32)
--DEF_HELPER_2(conv_sf2ud_chop, i64, env, f32)
--DEF_HELPER_2(conv_sf2d_chop, s64, env, f32)
--DEF_HELPER_2(conv_df2uw_chop, i32, env, f64)
--DEF_HELPER_2(conv_df2w_chop, s32, env, f64)
--DEF_HELPER_2(conv_df2ud_chop, i64, env, f64)
--DEF_HELPER_2(conv_df2d_chop, s64, env, f64)
--DEF_HELPER_3(sfadd, f32, env, f32, f32)
--DEF_HELPER_3(sfsub, f32, env, f32, f32)
--DEF_HELPER_3(sfcmpeq, s32, env, f32, f32)
--DEF_HELPER_3(sfcmpgt, s32, env, f32, f32)
--DEF_HELPER_3(sfcmpge, s32, env, f32, f32)
--DEF_HELPER_3(sfcmpuo, s32, env, f32, f32)
--DEF_HELPER_3(sfmax, f32, env, f32, f32)
--DEF_HELPER_3(sfmin, f32, env, f32, f32)
--DEF_HELPER_3(sfclass, s32, env, f32, s32)
--DEF_HELPER_3(sffixupn, f32, env, f32, f32)
--DEF_HELPER_3(sffixupd, f32, env, f32, f32)
--DEF_HELPER_2(sffixupr, f32, env, f32)
-+DEF_HELPER_3(conv_sf2df, f64, env, f32, i32)
-+DEF_HELPER_3(conv_df2sf, f32, env, f64, i32)
-+DEF_HELPER_3(conv_uw2sf, f32, env, s32, i32)
-+DEF_HELPER_3(conv_uw2df, f64, env, s32, i32)
-+DEF_HELPER_3(conv_w2sf, f32, env, s32, i32)
-+DEF_HELPER_3(conv_w2df, f64, env, s32, i32)
-+DEF_HELPER_3(conv_ud2sf, f32, env, s64, i32)
-+DEF_HELPER_3(conv_ud2df, f64, env, s64, i32)
-+DEF_HELPER_3(conv_d2sf, f32, env, s64, i32)
-+DEF_HELPER_3(conv_d2df, f64, env, s64, i32)
-+DEF_HELPER_3(conv_sf2uw, i32, env, f32, i32)
-+DEF_HELPER_3(conv_sf2w, s32, env, f32, i32)
-+DEF_HELPER_3(conv_sf2ud, i64, env, f32, i32)
-+DEF_HELPER_3(conv_sf2d, s64, env, f32, i32)
-+DEF_HELPER_3(conv_df2uw, i32, env, f64, i32)
-+DEF_HELPER_3(conv_df2w, s32, env, f64, i32)
-+DEF_HELPER_3(conv_df2ud, i64, env, f64, i32)
-+DEF_HELPER_3(conv_df2d, s64, env, f64, i32)
-+DEF_HELPER_3(conv_sf2uw_chop, i32, env, f32, i32)
-+DEF_HELPER_3(conv_sf2w_chop, s32, env, f32, i32)
-+DEF_HELPER_3(conv_sf2ud_chop, i64, env, f32, i32)
-+DEF_HELPER_3(conv_sf2d_chop, s64, env, f32, i32)
-+DEF_HELPER_3(conv_df2uw_chop, i32, env, f64, i32)
-+DEF_HELPER_3(conv_df2w_chop, s32, env, f64, i32)
-+DEF_HELPER_3(conv_df2ud_chop, i64, env, f64, i32)
-+DEF_HELPER_3(conv_df2d_chop, s64, env, f64, i32)
-+DEF_HELPER_4(sfadd, f32, env, f32, f32, i32)
-+DEF_HELPER_4(sfsub, f32, env, f32, f32, i32)
-+DEF_HELPER_4(sfcmpeq, s32, env, f32, f32, i32)
-+DEF_HELPER_4(sfcmpgt, s32, env, f32, f32, i32)
-+DEF_HELPER_4(sfcmpge, s32, env, f32, f32, i32)
-+DEF_HELPER_4(sfcmpuo, s32, env, f32, f32, i32)
-+DEF_HELPER_4(sfmax, f32, env, f32, f32, i32)
-+DEF_HELPER_4(sfmin, f32, env, f32, f32, i32)
-+DEF_HELPER_4(sfclass, s32, env, f32, s32, i32)
-+DEF_HELPER_4(sffixupn, f32, env, f32, f32, i32)
-+DEF_HELPER_4(sffixupd, f32, env, f32, f32, i32)
-+DEF_HELPER_3(sffixupr, f32, env, f32, i32)
- 
--DEF_HELPER_3(dfadd, f64, env, f64, f64)
--DEF_HELPER_3(dfsub, f64, env, f64, f64)
--DEF_HELPER_3(dfmax, f64, env, f64, f64)
--DEF_HELPER_3(dfmin, f64, env, f64, f64)
--DEF_HELPER_3(dfcmpeq, s32, env, f64, f64)
--DEF_HELPER_3(dfcmpgt, s32, env, f64, f64)
--DEF_HELPER_3(dfcmpge, s32, env, f64, f64)
--DEF_HELPER_3(dfcmpuo, s32, env, f64, f64)
--DEF_HELPER_3(dfclass, s32, env, f64, s32)
-+DEF_HELPER_4(dfadd, f64, env, f64, f64, i32)
-+DEF_HELPER_4(dfsub, f64, env, f64, f64, i32)
-+DEF_HELPER_4(dfmax, f64, env, f64, f64, i32)
-+DEF_HELPER_4(dfmin, f64, env, f64, f64, i32)
-+DEF_HELPER_4(dfcmpeq, s32, env, f64, f64, i32)
-+DEF_HELPER_4(dfcmpgt, s32, env, f64, f64, i32)
-+DEF_HELPER_4(dfcmpge, s32, env, f64, f64, i32)
-+DEF_HELPER_4(dfcmpuo, s32, env, f64, f64, i32)
-+DEF_HELPER_4(dfclass, s32, env, f64, s32, i32)
- 
--DEF_HELPER_3(sfmpy, f32, env, f32, f32)
--DEF_HELPER_4(sffma, f32, env, f32, f32, f32)
--DEF_HELPER_5(sffma_sc, f32, env, f32, f32, f32, f32)
--DEF_HELPER_4(sffms, f32, env, f32, f32, f32)
--DEF_HELPER_4(sffma_lib, f32, env, f32, f32, f32)
--DEF_HELPER_4(sffms_lib, f32, env, f32, f32, f32)
-+DEF_HELPER_4(sfmpy, f32, env, f32, f32, i32)
-+DEF_HELPER_5(sffma, f32, env, f32, f32, f32, i32)
-+DEF_HELPER_6(sffma_sc, f32, env, f32, f32, f32, f32, i32)
-+DEF_HELPER_5(sffms, f32, env, f32, f32, f32, i32)
-+DEF_HELPER_5(sffma_lib, f32, env, f32, f32, f32, i32)
-+DEF_HELPER_5(sffms_lib, f32, env, f32, f32, f32, i32)
- 
--DEF_HELPER_3(dfmpyfix, f64, env, f64, f64)
--DEF_HELPER_4(dfmpyhh, f64, env, f64, f64, f64)
-+DEF_HELPER_4(dfmpyfix, f64, env, f64, f64, i32)
-+DEF_HELPER_5(dfmpyhh, f64, env, f64, f64, f64, i32)
- 
- /* Histogram instructions */
- DEF_HELPER_1(vhist, void, env)
-diff --git a/target/hexagon/arch.c b/target/hexagon/arch.c
-index d053d68487..e17e714a6a 100644
---- a/target/hexagon/arch.c
-+++ b/target/hexagon/arch.c
-@@ -222,9 +222,8 @@ void arch_fpop_start(CPUHexagonState *env)
-         } \
-     } while (0)
- 
--void arch_fpop_end(CPUHexagonState *env)
-+void arch_fpop_end(CPUHexagonState *env, bool pkt_need_commit)
+diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
+index d251e2233f..a0102b6cbd 100644
+--- a/target/hexagon/translate.h
++++ b/target/hexagon/translate.h
+@@ -39,6 +39,7 @@ typedef struct DisasContext {
+     int reg_log_idx;
+     DECLARE_BITMAP(regs_written, TOTAL_PER_THREAD_REGS);
+     DECLARE_BITMAP(predicated_regs, TOTAL_PER_THREAD_REGS);
++    bool implicit_usr_write;
+     int preg_log[PRED_WRITES_MAX];
+     int preg_log_idx;
+     DECLARE_BITMAP(pregs_written, NUM_PREGS);
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 8fce219c0d..f3240953b5 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -272,12 +272,7 @@ static void mark_implicit_reg_write(DisasContext *ctx, int attrib, int rnum)
  {
--    const bool pkt_need_commit = true;
-     int flags = get_float_exception_flags(&env->fp_status);
-     if (flags != 0) {
-         SOFTFLOAT_TEST_FLAG(float_flag_inexact, FPINPF, FPINPE);
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index e2e80ca7ef..554e7dd447 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -200,7 +200,8 @@ static float32 build_float32(uint8_t sign, uint32_t exp, uint32_t mant)
-  * Since helpers can only return a single value, we pack the two results
-  * into a 64-bit value.
-  */
--uint64_t HELPER(sfrecipa)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+uint64_t HELPER(sfrecipa)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                          uint32_t pkt_need_commit)
- {
-     int32_t PeV = 0;
-     float32 RdV;
-@@ -217,11 +218,12 @@ uint64_t HELPER(sfrecipa)(CPUHexagonState *env, float32 RsV, float32 RtV)
-         exp = SF_BIAS - (float32_getexp(RtV) - SF_BIAS) - 1;
-         RdV = build_float32(extract32(RtV, 31, 1), exp, mant);
+     uint16_t opcode = ctx->insn->opcode;
+     if (GET_ATTRIB(opcode, attrib)) {
+-        /*
+-         * USR is used to set overflow and FP exceptions,
+-         * so treat it as conditional
+-         */
+-        bool is_predicated = GET_ATTRIB(opcode, A_CONDEXEC) ||
+-                             rnum == HEX_REG_USR;
++        bool is_predicated = GET_ATTRIB(opcode, A_CONDEXEC);
+ 
+         /* LC0/LC1 is conditionally written by endloop instructions */
+         if ((rnum == HEX_REG_LC0 || rnum == HEX_REG_LC1) &&
+@@ -291,6 +286,14 @@ static void mark_implicit_reg_write(DisasContext *ctx, int attrib, int rnum)
      }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return ((uint64_t)RdV << 32) | PeV;
  }
  
--uint64_t HELPER(sfinvsqrta)(CPUHexagonState *env, float32 RsV)
-+uint64_t HELPER(sfinvsqrta)(CPUHexagonState *env, float32 RsV,
-+                            uint32_t pkt_need_commit)
++static void mark_implicit_usr_write(DisasContext *ctx, int attrib)
++{
++    uint16_t opcode = ctx->insn->opcode;
++    if (GET_ATTRIB(opcode, attrib)) {
++        ctx->implicit_usr_write = true;
++    }
++}
++
+ static void mark_implicit_reg_writes(DisasContext *ctx)
  {
-     int PeV = 0;
-     float32 RdV;
-@@ -238,7 +240,7 @@ uint64_t HELPER(sfinvsqrta)(CPUHexagonState *env, float32 RsV)
-         exp = SF_BIAS - ((float32_getexp(RsV) - SF_BIAS) >> 1) - 1;
-         RdV = build_float32(extract32(RsV, 31, 1), exp, mant);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return ((uint64_t)RdV << 32) | PeV;
+     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_FP,  HEX_REG_FP);
+@@ -300,8 +303,9 @@ static void mark_implicit_reg_writes(DisasContext *ctx)
+     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_SA0, HEX_REG_SA0);
+     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_LC1, HEX_REG_LC1);
+     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_SA1, HEX_REG_SA1);
+-    mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_USR, HEX_REG_USR);
+-    mark_implicit_reg_write(ctx, A_FPOP, HEX_REG_USR);
++
++    mark_implicit_usr_write(ctx, A_IMPLICIT_WRITES_USR);
++    mark_implicit_usr_write(ctx, A_FPOP);
  }
  
-@@ -476,97 +478,108 @@ static void check_noshuf(CPUHexagonState *env, bool pkt_has_scalar_store_s1,
- #endif
- 
- /* Floating point */
--float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV)
-+float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV,
-+                           uint32_t pkt_need_commit)
- {
-     float64 out_f64;
-     arch_fpop_start(env);
-     out_f64 = float32_to_float64(RsV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return out_f64;
- }
- 
--float32 HELPER(conv_df2sf)(CPUHexagonState *env, float64 RssV)
-+float32 HELPER(conv_df2sf)(CPUHexagonState *env, float64 RssV,
-+                           uint32_t pkt_need_commit)
- {
-     float32 out_f32;
-     arch_fpop_start(env);
-     out_f32 = float64_to_float32(RssV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return out_f32;
- }
- 
--float32 HELPER(conv_uw2sf)(CPUHexagonState *env, int32_t RsV)
-+float32 HELPER(conv_uw2sf)(CPUHexagonState *env, int32_t RsV,
-+                           uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = uint32_to_float32(RsV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float64 HELPER(conv_uw2df)(CPUHexagonState *env, int32_t RsV)
-+float64 HELPER(conv_uw2df)(CPUHexagonState *env, int32_t RsV,
-+                           uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = uint32_to_float64(RsV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float32 HELPER(conv_w2sf)(CPUHexagonState *env, int32_t RsV)
-+float32 HELPER(conv_w2sf)(CPUHexagonState *env, int32_t RsV,
-+                          uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = int32_to_float32(RsV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float64 HELPER(conv_w2df)(CPUHexagonState *env, int32_t RsV)
-+float64 HELPER(conv_w2df)(CPUHexagonState *env, int32_t RsV,
-+                          uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = int32_to_float64(RsV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float32 HELPER(conv_ud2sf)(CPUHexagonState *env, int64_t RssV)
-+float32 HELPER(conv_ud2sf)(CPUHexagonState *env, int64_t RssV,
-+                           uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = uint64_to_float32(RssV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float64 HELPER(conv_ud2df)(CPUHexagonState *env, int64_t RssV)
-+float64 HELPER(conv_ud2df)(CPUHexagonState *env, int64_t RssV,
-+                           uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = uint64_to_float64(RssV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float32 HELPER(conv_d2sf)(CPUHexagonState *env, int64_t RssV)
-+float32 HELPER(conv_d2sf)(CPUHexagonState *env, int64_t RssV,
-+                          uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = int64_to_float32(RssV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float64 HELPER(conv_d2df)(CPUHexagonState *env, int64_t RssV)
-+float64 HELPER(conv_d2df)(CPUHexagonState *env, int64_t RssV,
-+                          uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = int64_to_float64(RssV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--uint32_t HELPER(conv_sf2uw)(CPUHexagonState *env, float32 RsV)
-+uint32_t HELPER(conv_sf2uw)(CPUHexagonState *env, float32 RsV,
-+                            uint32_t pkt_need_commit)
- {
-     uint32_t RdV;
-     arch_fpop_start(env);
-@@ -577,11 +590,12 @@ uint32_t HELPER(conv_sf2uw)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RdV = float32_to_uint32(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(conv_sf2w)(CPUHexagonState *env, float32 RsV)
-+int32_t HELPER(conv_sf2w)(CPUHexagonState *env, float32 RsV,
-+                          uint32_t pkt_need_commit)
- {
-     int32_t RdV;
-     arch_fpop_start(env);
-@@ -592,11 +606,12 @@ int32_t HELPER(conv_sf2w)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RdV = float32_to_int32(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--uint64_t HELPER(conv_sf2ud)(CPUHexagonState *env, float32 RsV)
-+uint64_t HELPER(conv_sf2ud)(CPUHexagonState *env, float32 RsV,
-+                            uint32_t pkt_need_commit)
- {
-     uint64_t RddV;
-     arch_fpop_start(env);
-@@ -607,11 +622,12 @@ uint64_t HELPER(conv_sf2ud)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RddV = float32_to_uint64(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--int64_t HELPER(conv_sf2d)(CPUHexagonState *env, float32 RsV)
-+int64_t HELPER(conv_sf2d)(CPUHexagonState *env, float32 RsV,
-+                          uint32_t pkt_need_commit)
- {
-     int64_t RddV;
-     arch_fpop_start(env);
-@@ -622,11 +638,12 @@ int64_t HELPER(conv_sf2d)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RddV = float32_to_int64(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--uint32_t HELPER(conv_df2uw)(CPUHexagonState *env, float64 RssV)
-+uint32_t HELPER(conv_df2uw)(CPUHexagonState *env, float64 RssV,
-+                            uint32_t pkt_need_commit)
- {
-     uint32_t RdV;
-     arch_fpop_start(env);
-@@ -637,11 +654,12 @@ uint32_t HELPER(conv_df2uw)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RdV = float64_to_uint32(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(conv_df2w)(CPUHexagonState *env, float64 RssV)
-+int32_t HELPER(conv_df2w)(CPUHexagonState *env, float64 RssV,
-+                          uint32_t pkt_need_commit)
- {
-     int32_t RdV;
-     arch_fpop_start(env);
-@@ -652,11 +670,12 @@ int32_t HELPER(conv_df2w)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RdV = float64_to_int32(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--uint64_t HELPER(conv_df2ud)(CPUHexagonState *env, float64 RssV)
-+uint64_t HELPER(conv_df2ud)(CPUHexagonState *env, float64 RssV,
-+                            uint32_t pkt_need_commit)
- {
-     uint64_t RddV;
-     arch_fpop_start(env);
-@@ -667,11 +686,12 @@ uint64_t HELPER(conv_df2ud)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RddV = float64_to_uint64(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--int64_t HELPER(conv_df2d)(CPUHexagonState *env, float64 RssV)
-+int64_t HELPER(conv_df2d)(CPUHexagonState *env, float64 RssV,
-+                          uint32_t pkt_need_commit)
- {
-     int64_t RddV;
-     arch_fpop_start(env);
-@@ -682,11 +702,12 @@ int64_t HELPER(conv_df2d)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RddV = float64_to_int64(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--uint32_t HELPER(conv_sf2uw_chop)(CPUHexagonState *env, float32 RsV)
-+uint32_t HELPER(conv_sf2uw_chop)(CPUHexagonState *env, float32 RsV,
-+                                 uint32_t pkt_need_commit)
- {
-     uint32_t RdV;
-     arch_fpop_start(env);
-@@ -697,11 +718,12 @@ uint32_t HELPER(conv_sf2uw_chop)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RdV = float32_to_uint32_round_to_zero(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(conv_sf2w_chop)(CPUHexagonState *env, float32 RsV)
-+int32_t HELPER(conv_sf2w_chop)(CPUHexagonState *env, float32 RsV,
-+                               uint32_t pkt_need_commit)
- {
-     int32_t RdV;
-     arch_fpop_start(env);
-@@ -712,11 +734,12 @@ int32_t HELPER(conv_sf2w_chop)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RdV = float32_to_int32_round_to_zero(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--uint64_t HELPER(conv_sf2ud_chop)(CPUHexagonState *env, float32 RsV)
-+uint64_t HELPER(conv_sf2ud_chop)(CPUHexagonState *env, float32 RsV,
-+                                 uint32_t pkt_need_commit)
- {
-     uint64_t RddV;
-     arch_fpop_start(env);
-@@ -727,11 +750,12 @@ uint64_t HELPER(conv_sf2ud_chop)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RddV = float32_to_uint64_round_to_zero(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--int64_t HELPER(conv_sf2d_chop)(CPUHexagonState *env, float32 RsV)
-+int64_t HELPER(conv_sf2d_chop)(CPUHexagonState *env, float32 RsV,
-+                               uint32_t pkt_need_commit)
- {
-     int64_t RddV;
-     arch_fpop_start(env);
-@@ -742,11 +766,12 @@ int64_t HELPER(conv_sf2d_chop)(CPUHexagonState *env, float32 RsV)
-     } else {
-         RddV = float32_to_int64_round_to_zero(RsV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--uint32_t HELPER(conv_df2uw_chop)(CPUHexagonState *env, float64 RssV)
-+uint32_t HELPER(conv_df2uw_chop)(CPUHexagonState *env, float64 RssV,
-+                                 uint32_t pkt_need_commit)
- {
-     uint32_t RdV;
-     arch_fpop_start(env);
-@@ -757,11 +782,12 @@ uint32_t HELPER(conv_df2uw_chop)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RdV = float64_to_uint32_round_to_zero(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(conv_df2w_chop)(CPUHexagonState *env, float64 RssV)
-+int32_t HELPER(conv_df2w_chop)(CPUHexagonState *env, float64 RssV,
-+                               uint32_t pkt_need_commit)
- {
-     int32_t RdV;
-     arch_fpop_start(env);
-@@ -772,11 +798,12 @@ int32_t HELPER(conv_df2w_chop)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RdV = float64_to_int32_round_to_zero(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--uint64_t HELPER(conv_df2ud_chop)(CPUHexagonState *env, float64 RssV)
-+uint64_t HELPER(conv_df2ud_chop)(CPUHexagonState *env, float64 RssV,
-+                                 uint32_t pkt_need_commit)
- {
-     uint64_t RddV;
-     arch_fpop_start(env);
-@@ -787,11 +814,12 @@ uint64_t HELPER(conv_df2ud_chop)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RddV = float64_to_uint64_round_to_zero(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--int64_t HELPER(conv_df2d_chop)(CPUHexagonState *env, float64 RssV)
-+int64_t HELPER(conv_df2d_chop)(CPUHexagonState *env, float64 RssV,
-+                               uint32_t pkt_need_commit)
- {
-     int64_t RddV;
-     arch_fpop_start(env);
-@@ -802,49 +830,54 @@ int64_t HELPER(conv_df2d_chop)(CPUHexagonState *env, float64 RssV)
-     } else {
-         RddV = float64_to_int64_round_to_zero(RssV, &env->fp_status);
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float32 HELPER(sfadd)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sfadd)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = float32_add(RsV, RtV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float32 HELPER(sfsub)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sfsub)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = float32_sub(RsV, RtV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(sfcmpeq)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+int32_t HELPER(sfcmpeq)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV;
-     arch_fpop_start(env);
-     PdV = f8BITSOF(float32_eq_quiet(RsV, RtV, &env->fp_status));
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(sfcmpgt)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+int32_t HELPER(sfcmpgt)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                        uint32_t pkt_need_commit)
- {
-     int cmp;
-     int32_t PdV;
-     arch_fpop_start(env);
-     cmp = float32_compare_quiet(RsV, RtV, &env->fp_status);
-     PdV = f8BITSOF(cmp == float_relation_greater);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(sfcmpge)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+int32_t HELPER(sfcmpge)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                        uint32_t pkt_need_commit)
- {
-     int cmp;
-     int32_t PdV;
-@@ -852,38 +885,42 @@ int32_t HELPER(sfcmpge)(CPUHexagonState *env, float32 RsV, float32 RtV)
-     cmp = float32_compare_quiet(RsV, RtV, &env->fp_status);
-     PdV = f8BITSOF(cmp == float_relation_greater ||
-                    cmp == float_relation_equal);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(sfcmpuo)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+int32_t HELPER(sfcmpuo)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV;
-     arch_fpop_start(env);
-     PdV = f8BITSOF(float32_unordered_quiet(RsV, RtV, &env->fp_status));
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--float32 HELPER(sfmax)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sfmax)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = float32_maximum_number(RsV, RtV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float32 HELPER(sfmin)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sfmin)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = float32_minimum_number(RsV, RtV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--int32_t HELPER(sfclass)(CPUHexagonState *env, float32 RsV, int32_t uiV)
-+int32_t HELPER(sfclass)(CPUHexagonState *env, float32 RsV, int32_t uiV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV = 0;
-     arch_fpop_start(env);
-@@ -903,100 +940,110 @@ int32_t HELPER(sfclass)(CPUHexagonState *env, float32 RsV, int32_t uiV)
-         PdV = 0xff;
-     }
-     set_float_exception_flags(0, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--float32 HELPER(sffixupn)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sffixupn)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                         uint32_t pkt_need_commit)
- {
-     float32 RdV = 0;
-     int adjust;
-     arch_fpop_start(env);
-     arch_sf_recip_common(&RsV, &RtV, &RdV, &adjust, &env->fp_status);
-     RdV = RsV;
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float32 HELPER(sffixupd)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sffixupd)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                         uint32_t pkt_need_commit)
- {
-     float32 RdV = 0;
-     int adjust;
-     arch_fpop_start(env);
-     arch_sf_recip_common(&RsV, &RtV, &RdV, &adjust, &env->fp_status);
-     RdV = RtV;
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float32 HELPER(sffixupr)(CPUHexagonState *env, float32 RsV)
-+float32 HELPER(sffixupr)(CPUHexagonState *env, float32 RsV,
-+                         uint32_t pkt_need_commit)
- {
-     float32 RdV = 0;
-     int adjust;
-     arch_fpop_start(env);
-     arch_sf_invsqrt_common(&RsV, &RdV, &adjust, &env->fp_status);
-     RdV = RsV;
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
--float64 HELPER(dfadd)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+float64 HELPER(dfadd)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                      uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = float64_add(RssV, RttV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float64 HELPER(dfsub)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+float64 HELPER(dfsub)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                      uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = float64_sub(RssV, RttV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float64 HELPER(dfmax)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+float64 HELPER(dfmax)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                      uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = float64_maximum_number(RssV, RttV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--float64 HELPER(dfmin)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+float64 HELPER(dfmin)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                      uint32_t pkt_need_commit)
- {
-     float64 RddV;
-     arch_fpop_start(env);
-     RddV = float64_minimum_number(RssV, RttV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
--int32_t HELPER(dfcmpeq)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+int32_t HELPER(dfcmpeq)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV;
-     arch_fpop_start(env);
-     PdV = f8BITSOF(float64_eq_quiet(RssV, RttV, &env->fp_status));
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(dfcmpgt)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+int32_t HELPER(dfcmpgt)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                        uint32_t pkt_need_commit)
- {
-     int cmp;
-     int32_t PdV;
-     arch_fpop_start(env);
-     cmp = float64_compare_quiet(RssV, RttV, &env->fp_status);
-     PdV = f8BITSOF(cmp == float_relation_greater);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(dfcmpge)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+int32_t HELPER(dfcmpge)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                        uint32_t pkt_need_commit)
- {
-     int cmp;
-     int32_t PdV;
-@@ -1004,20 +1051,22 @@ int32_t HELPER(dfcmpge)(CPUHexagonState *env, float64 RssV, float64 RttV)
-     cmp = float64_compare_quiet(RssV, RttV, &env->fp_status);
-     PdV = f8BITSOF(cmp == float_relation_greater ||
-                    cmp == float_relation_equal);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(dfcmpuo)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+int32_t HELPER(dfcmpuo)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV;
-     arch_fpop_start(env);
-     PdV = f8BITSOF(float64_unordered_quiet(RssV, RttV, &env->fp_status));
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--int32_t HELPER(dfclass)(CPUHexagonState *env, float64 RssV, int32_t uiV)
-+int32_t HELPER(dfclass)(CPUHexagonState *env, float64 RssV, int32_t uiV,
-+                        uint32_t pkt_need_commit)
- {
-     int32_t PdV = 0;
-     arch_fpop_start(env);
-@@ -1037,51 +1086,55 @@ int32_t HELPER(dfclass)(CPUHexagonState *env, float64 RssV, int32_t uiV)
-         PdV = 0xff;
-     }
-     set_float_exception_flags(0, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return PdV;
- }
- 
--float32 HELPER(sfmpy)(CPUHexagonState *env, float32 RsV, float32 RtV)
-+float32 HELPER(sfmpy)(CPUHexagonState *env, float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     float32 RdV;
-     arch_fpop_start(env);
-     RdV = float32_mul(RsV, RtV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RdV;
- }
- 
- float32 HELPER(sffma)(CPUHexagonState *env, float32 RxV,
--                      float32 RsV, float32 RtV)
-+                      float32 RsV, float32 RtV,
-+                      uint32_t pkt_need_commit)
- {
-     arch_fpop_start(env);
-     RxV = float32_muladd(RsV, RtV, RxV, 0, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RxV;
- }
- 
- float32 HELPER(sffma_sc)(CPUHexagonState *env, float32 RxV,
--                         float32 RsV, float32 RtV, float32 PuV)
-+                         float32 RsV, float32 RtV, float32 PuV,
-+                         uint32_t pkt_need_commit)
- {
-     arch_fpop_start(env);
-     RxV = float32_muladd_scalbn(RsV, RtV, RxV, fSXTN(8, 64, PuV),
-                                 float_muladd_suppress_add_product_zero,
-                                 &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RxV;
- }
- 
- float32 HELPER(sffms)(CPUHexagonState *env, float32 RxV,
--                      float32 RsV, float32 RtV)
-+                      float32 RsV, float32 RtV, uint32_t pkt_need_commit)
- {
-     arch_fpop_start(env);
-     RxV = float32_muladd(RsV, RtV, RxV, float_muladd_negate_product,
-                          &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RxV;
- }
- 
- static float32 do_sffma_lib(CPUHexagonState *env, float32 RxV,
--                            float32 RsV, float32 RtV, int negate)
-+                            float32 RsV, float32 RtV, int negate,
-+                            uint32_t pkt_need_commit)
- {
-     int flags;
- 
-@@ -1103,23 +1156,25 @@ static float32 do_sffma_lib(CPUHexagonState *env, float32 RxV,
+ static void mark_implicit_pred_write(DisasContext *ctx, int attrib, int pnum)
+@@ -351,11 +355,6 @@ static bool need_commit(DisasContext *ctx)
          }
      }
  
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RxV;
- }
- 
- float32 HELPER(sffma_lib)(CPUHexagonState *env, float32 RxV,
--                          float32 RsV, float32 RtV)
-+                          float32 RsV, float32 RtV, uint32_t pkt_need_commit)
- {
--    return do_sffma_lib(env, RxV, RsV, RtV, 0);
-+    return do_sffma_lib(env, RxV, RsV, RtV, 0, pkt_need_commit);
- }
- 
- float32 HELPER(sffms_lib)(CPUHexagonState *env, float32 RxV,
--                          float32 RsV, float32 RtV)
-+                          float32 RsV, float32 RtV, uint32_t pkt_need_commit)
- {
--    return do_sffma_lib(env, RxV, RsV, RtV, float_muladd_negate_product);
-+    return do_sffma_lib(env, RxV, RsV, RtV, float_muladd_negate_product,
-+                        pkt_need_commit);
- }
- 
--float64 HELPER(dfmpyfix)(CPUHexagonState *env, float64 RssV, float64 RttV)
-+float64 HELPER(dfmpyfix)(CPUHexagonState *env, float64 RssV, float64 RttV,
-+                         uint32_t pkt_need_commit)
- {
-     int64_t RddV;
-     arch_fpop_start(env);
-@@ -1136,16 +1191,16 @@ float64 HELPER(dfmpyfix)(CPUHexagonState *env, float64 RssV, float64 RttV)
-     } else {
-         RddV = RssV;
-     }
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RddV;
- }
- 
- float64 HELPER(dfmpyhh)(CPUHexagonState *env, float64 RxxV,
--                        float64 RssV, float64 RttV)
-+                        float64 RssV, float64 RttV, uint32_t pkt_need_commit)
- {
-     arch_fpop_start(env);
-     RxxV = internal_mpyhh(RssV, RttV, RxxV, &env->fp_status);
--    arch_fpop_end(env);
-+    arch_fpop_end(env, pkt_need_commit);
-     return RxxV;
- }
- 
-diff --git a/target/hexagon/gen_helper_funcs.py b/target/hexagon/gen_helper_funcs.py
-index a9c0e27a80..6206104424 100755
---- a/target/hexagon/gen_helper_funcs.py
-+++ b/target/hexagon/gen_helper_funcs.py
-@@ -84,11 +84,6 @@ def gen_helper_function(f, tag, tagregs, tagimms):
-         {hex_common.semdict[tag]}
-     """))
- 
--    if "A_FPOP" in hex_common.attribdict[tag]:
--        f.write(hex_common.code_fmt(f"""\
--            arch_fpop_end(env);
--        """))
+-    /* Floating point instructions are hard-coded to use new_value */
+-    if (check_for_attrib(pkt, A_FPOP)) {
+-        return true;
+-    }
 -
-     ## Return the scalar result
-     for regtype, regid in regs:
-         reg = hex_common.get_register(tag, regtype, regid)
-@@ -116,6 +111,9 @@ def main():
-             ## Skip the guest instructions
-             if "A_GUEST" in hex_common.attribdict[tag]:
-                 continue
-+            ## Skip the floating point instructions
-+            if "A_FPOP" in hex_common.attribdict[tag]:
-+                continue
-             ## Skip the diag instructions
-             if tag == "Y6_diag":
-                 continue
-diff --git a/target/hexagon/gen_tcg_funcs.py b/target/hexagon/gen_tcg_funcs.py
-index c2ba91ddc0..91b6a1e9d0 100755
---- a/target/hexagon/gen_tcg_funcs.py
-+++ b/target/hexagon/gen_tcg_funcs.py
-@@ -77,6 +77,10 @@ def gen_tcg_func(f, tag, regs, imms):
-         f.write(f"    emit_{tag}({arguments});\n")
+     if (ctx->read_after_write || ctx->has_hvx_overlap) {
+         return true;
+     }
+@@ -467,6 +466,12 @@ static void gen_start_packet(DisasContext *ctx)
+         }
+     }
  
-     elif hex_common.skip_qemu_helper(tag):
-+        if "A_FPOP" in hex_common.attribdict[tag]:
-+            f.write("    TCGv pkt_need_commit = ")
-+            f.write("tcg_constant_tl(ctx->need_commit);\n")
++    /* Preload usr to new_value_usr */
++    if (ctx->need_commit && ctx->implicit_usr_write &&
++        !test_bit(HEX_REG_USR, ctx->regs_written)) {
++        tcg_gen_mov_tl(hex_new_value_usr, hex_gpr[HEX_REG_USR]);
++    }
 +
-         f.write(f"    fGEN_TCG_{tag}({hex_common.semdict[tag]});\n")
-     else:
-         ## Generate the call to the helper
+     /*
+      * Preload the predicated pred registers into ctx->new_pred_value[pred_num]
+      * Only endloop instructions conditionally write to pred registers
+@@ -587,6 +592,10 @@ static void gen_reg_writes(DisasContext *ctx)
+             ctx->is_tight_loop = false;
+         }
+     }
++
++    if (ctx->implicit_usr_write && !test_bit(HEX_REG_USR, ctx->regs_written)) {
++        tcg_gen_mov_tl(hex_gpr[HEX_REG_USR], hex_new_value_usr);
++    }
+ }
+ 
+ static void gen_pred_writes(DisasContext *ctx)
 -- 
 2.43.0
 
