@@ -2,58 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12DAC2FE8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6B9C2FF07
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 09:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGCSP-0000H0-Rm; Tue, 04 Nov 2025 03:32:01 -0500
+	id 1vGCSQ-0000JB-PB; Tue, 04 Nov 2025 03:32:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSL-0000Fw-Cm
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSM-0000Gz-Ss
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSI-0003OP-DN
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:57 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGCSL-0003Oo-BH
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 03:31:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762245113;
+ s=mimecast20190719; t=1762245115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Swd1O68GyBddhiY3gOAJBYm7+QWL5XItAHPH67PsRYk=;
- b=MEPUal9OyptxWNaFilZDQOVdbKHRQbas8VMiZig6O0Rmd+GJXes3CrOojpACjvt5pcgzn0
- Q97XJGsbt4KTv4O1w76ERrQW/Z/GYeqPBNFdVHdJcb3x09Mx6A0nbxPXIW47N3LesAf4YS
- DxCz4Y5SAhXPsvSkqnxEMS4bc61tZlI=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FTIgutNUjXiAKsujqsIDkgcCTQi3L2/Jgs5XBHJrSA4=;
+ b=ZBNPoxsgyuVnSJ/FWdc+B0hBpebFs0BACjv2AtYpOYgswIfXXq2V6ammPu+PLzCCPjH9eI
+ wzlRnlDnRpz4PelpMLISdxzIyf9ppCOpatGrhbtHDZN4kqYDQscxoiQ+rx4LV0XSNBAXNZ
+ xZyvz8a9SIkkDCcyL+Dazb5QHXdppRM=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-0yksE5WQPSCKo0_zXUgBZA-1; Tue,
- 04 Nov 2025 03:31:50 -0500
-X-MC-Unique: 0yksE5WQPSCKo0_zXUgBZA-1
-X-Mimecast-MFC-AGG-ID: 0yksE5WQPSCKo0_zXUgBZA_1762245109
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-WWk0crlYNbaX1u-O4bgjcg-1; Tue,
+ 04 Nov 2025 03:31:52 -0500
+X-MC-Unique: WWk0crlYNbaX1u-O4bgjcg-1
+X-Mimecast-MFC-AGG-ID: WWk0crlYNbaX1u-O4bgjcg_1762245112
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E0D6180057A; Tue,  4 Nov 2025 08:31:49 +0000 (UTC)
+ id 970841800675; Tue,  4 Nov 2025 08:31:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 57C4D19560A2; Tue,  4 Nov 2025 08:31:46 +0000 (UTC)
+ id B9C7019560A2; Tue,  4 Nov 2025 08:31:49 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/30] aspeed queue
-Date: Tue,  4 Nov 2025 09:31:14 +0100
-Message-ID: <20251104083144.187806-1-clg@redhat.com>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 01/30] hw/arm/aspeed: Move AspeedMachineState definition to
+ common header for reuse
+Date: Tue,  4 Nov 2025 09:31:15 +0100
+Message-ID: <20251104083144.187806-2-clg@redhat.com>
+In-Reply-To: <20251104083144.187806-1-clg@redhat.com>
+References: <20251104083144.187806-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,109 +83,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a8e63c013016f9ff981689189c5b063551d04559:
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-  Merge tag 'igvm-20251103--pull-request' of https://gitlab.com/kraxel/qemu into staging (2025-11-03 10:21:01 +0100)
+Aspeed machines will be moved into split C files for better
+modularization and future maintenance.
 
-are available in the Git repository at:
+To allow all machine implementations to reuse the same
+AspeedMachineState structure, the struct definition is moved
+from aspeed.c to the shared header aspeed.h.
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20251104
+This change centralizes the common state structure used across
+all Aspeed machine models, reduces redundancy, and simplifies
+future refactoring work for new machines.
 
-for you to fetch changes up to 1d2a5f8f5d6478504e80be0fcee5ca88adac5921:
+No functional changes.
 
-  hw/arm/aspeed: Split AST1030 EVB machine into a separate source file for maintainability (2025-11-04 09:27:59 +0100)
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20251104031325.146374-2-jamin_lin@aspeedtech.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/arm/aspeed.h | 12 ++++++++++++
+ hw/arm/aspeed.c         | 14 --------------
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
-----------------------------------------------------------------
-aspeed queue:
-
-* Move Aspeed machine models in separate source files to ease maintenance
-
-----------------------------------------------------------------
-Jamin Lin (30):
-      hw/arm/aspeed: Move AspeedMachineState definition to common header for reuse
-      hw/arm/aspeed: Make aspeed_machine_class_init_cpus_defaults() globally accessible
-      hw/arm/aspeed: Export and rename create_pca9552() for reuse
-      hw/arm/aspeed: Rename and export create_pca9554() as aspeed_create_pca9554()
-      hw/arm/aspeed: Split FP5280G2 machine into a separate source file for maintenance
-      hw/arm/aspeed: Split G220A machine into a separate source file for better maintenance
-      hw/arm/aspeed: Split Tiogapass machine into a separate source file for cleanup
-      hw/arm/aspeed: Split YosemiteV2 machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Witherspoon machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Sonorapass machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Romulus machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Supermicro X11SPI machine into a separate file for maintainability
-      hw/arm/aspeed: Split AST2500 EVB machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Quanta-Q71L machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Supermicro X11 machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Palmetto machine into a separate source file for maintainability
-      hw/arm/aspeed: Move ASPEED_RAM_SIZE() macro to common header for reuse
-      hw/arm/aspeed: Split Bletchley machine into a separate source file for maintainability
-      hw/arm/aspeed: Split FBY35 BMC machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Fuji machine into a separate source file for maintainability
-      hw/arm/aspeed: Split QCOM Firework machine into a separate source file for maintainability
-      hw/arm/aspeed: Split QCOM DC-SCM V1 machine into a separate source file for maintainability
-      hw/arm/aspeed: Make aspeed_machine_ast2600_class_emmc_init() a common API for eMMC boot setup
-      hw/arm/aspeed: Split GB200NVL machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Rainier machine into a separate source file for maintainability
-      hw/arm/aspeed: Split Catalina machine into a separate source file for maintainability
-      hw/arm/aspeed: Split AST2600 EVB machine into a separate source file for maintainability
-      hw/arm/aspeed: Split AST2700 EVB machine into a separate source file for maintainability
-      hw/arm/aspeed: Rename and export connect_serial_hds_to_uarts() as aspeed_connect_serial_hds_to_uarts()
-      hw/arm/aspeed: Split AST1030 EVB machine into a separate source file for maintainability
-
- hw/arm/aspeed_eeprom.h                    |   32 -
- include/hw/arm/aspeed.h                   |   79 ++
- hw/arm/aspeed.c                           | 1678 +----------------------------
- hw/arm/aspeed_ast10x0_evb.c               |  108 ++
- hw/arm/aspeed_ast2400_palmetto.c          |   80 ++
- hw/arm/aspeed_ast2400_quanta-q71l.c       |   86 ++
- hw/arm/aspeed_ast2400_supermicrox11.c     |   81 ++
- hw/arm/aspeed_ast2500_evb.c               |   67 ++
- hw/arm/aspeed_ast2500_fp5280g2.c          |   88 ++
- hw/arm/aspeed_ast2500_g220a.c             |   92 ++
- hw/arm/aspeed_ast2500_romulus.c           |   62 ++
- hw/arm/aspeed_ast2500_sonorapass.c        |  102 ++
- hw/arm/aspeed_ast2500_supermicro-x11spi.c |   77 ++
- hw/arm/aspeed_ast2500_tiogapass.c         |   90 ++
- hw/arm/aspeed_ast2500_witherspoon.c       |  112 ++
- hw/arm/aspeed_ast2500_yosemitev2.c        |   91 ++
- hw/arm/aspeed_ast2600_bletchley.c         |   97 ++
- hw/arm/aspeed_ast2600_catalina.c          |  225 ++++
- hw/arm/aspeed_ast2600_evb.c               |   65 ++
- hw/arm/aspeed_ast2600_fby35.c             |  178 +++
- hw/arm/aspeed_ast2600_fuji.c              |  140 +++
- hw/arm/aspeed_ast2600_gb200nvl.c          |  111 ++
- hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c    |   55 +
- hw/arm/aspeed_ast2600_qcom-firework.c     |   91 ++
- hw/arm/aspeed_ast2600_rainier.c           |  198 ++++
- hw/arm/aspeed_ast27x0_evb.c               |   88 ++
- hw/arm/aspeed_eeprom.c                    |  192 ----
- hw/arm/meson.build                        |   24 +-
- 28 files changed, 2492 insertions(+), 1897 deletions(-)
- delete mode 100644 hw/arm/aspeed_eeprom.h
- create mode 100644 hw/arm/aspeed_ast10x0_evb.c
- create mode 100644 hw/arm/aspeed_ast2400_palmetto.c
- create mode 100644 hw/arm/aspeed_ast2400_quanta-q71l.c
- create mode 100644 hw/arm/aspeed_ast2400_supermicrox11.c
- create mode 100644 hw/arm/aspeed_ast2500_evb.c
- create mode 100644 hw/arm/aspeed_ast2500_fp5280g2.c
- create mode 100644 hw/arm/aspeed_ast2500_g220a.c
- create mode 100644 hw/arm/aspeed_ast2500_romulus.c
- create mode 100644 hw/arm/aspeed_ast2500_sonorapass.c
- create mode 100644 hw/arm/aspeed_ast2500_supermicro-x11spi.c
- create mode 100644 hw/arm/aspeed_ast2500_tiogapass.c
- create mode 100644 hw/arm/aspeed_ast2500_witherspoon.c
- create mode 100644 hw/arm/aspeed_ast2500_yosemitev2.c
- create mode 100644 hw/arm/aspeed_ast2600_bletchley.c
- create mode 100644 hw/arm/aspeed_ast2600_catalina.c
- create mode 100644 hw/arm/aspeed_ast2600_evb.c
- create mode 100644 hw/arm/aspeed_ast2600_fby35.c
- create mode 100644 hw/arm/aspeed_ast2600_fuji.c
- create mode 100644 hw/arm/aspeed_ast2600_gb200nvl.c
- create mode 100644 hw/arm/aspeed_ast2600_qcom-dc-scm-v1.c
- create mode 100644 hw/arm/aspeed_ast2600_qcom-firework.c
- create mode 100644 hw/arm/aspeed_ast2600_rainier.c
- create mode 100644 hw/arm/aspeed_ast27x0_evb.c
- delete mode 100644 hw/arm/aspeed_eeprom.c
+diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+index 6c364556565a..9d34be68b2b3 100644
+--- a/include/hw/arm/aspeed.h
++++ b/include/hw/arm/aspeed.h
+@@ -11,6 +11,7 @@
+ 
+ #include "hw/boards.h"
+ #include "qom/object.h"
++#include "hw/arm/aspeed_soc.h"
+ 
+ typedef struct AspeedMachineState AspeedMachineState;
+ 
+@@ -24,6 +25,17 @@ DECLARE_OBJ_CHECKERS(AspeedMachineState, AspeedMachineClass,
+ #define ASPEED_MAC2_ON   (1 << 2)
+ #define ASPEED_MAC3_ON   (1 << 3)
+ 
++struct AspeedMachineState {
++    MachineState parent_obj;
++
++    AspeedSoCState *soc;
++    MemoryRegion boot_rom;
++    bool mmio_exec;
++    uint32_t uart_chosen;
++    char *fmc_model;
++    char *spi_model;
++    uint32_t hw_strap1;
++};
+ 
+ struct AspeedMachineClass {
+     MachineClass parent_obj;
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index ecc7272e67c2..4c92f1e1d953 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -36,20 +36,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+     .board_id = -1, /* device-tree-only board */
+ };
+ 
+-struct AspeedMachineState {
+-    /* Private */
+-    MachineState parent_obj;
+-    /* Public */
+-
+-    AspeedSoCState *soc;
+-    MemoryRegion boot_rom;
+-    bool mmio_exec;
+-    uint32_t uart_chosen;
+-    char *fmc_model;
+-    char *spi_model;
+-    uint32_t hw_strap1;
+-};
+-
+ /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+ #if HOST_LONG_BITS == 32
+ #define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
+-- 
+2.51.1
 
 
