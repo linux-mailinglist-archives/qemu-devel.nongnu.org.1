@@ -2,79 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD94C33648
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 00:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7269BC33586
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 00:10:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGQYG-0000yB-Br; Tue, 04 Nov 2025 18:35:00 -0500
+	id 1vGQ8v-0005Id-2K; Tue, 04 Nov 2025 18:08:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbalint@gmail.com>) id 1vGPKS-00040j-0c
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:16:40 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vGQ8s-0005I7-Pr
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 18:08:46 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbalint@gmail.com>) id 1vGPKQ-0007Ig-Kb
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 17:16:39 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-640b2a51750so5554704a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 14:16:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vGQ8r-0003TZ-2Y
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 18:08:46 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-b6d3effe106so959001166b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 15:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762294596; x=1762899396; darn=nongnu.org;
- h=subject:date:cc:from:message-id:from:to:cc:subject:date:message-id
- :reply-to; bh=HTF7/P+G6vQPwKuUcJEOsNzczUX4QA4ntI8YilOM9Dc=;
- b=ZiERxoHOktMc9JhSgViCdkURq5hwuO1DxEYbrJ5VBPpowV9HGxOdoJnzzZzZfMvGeF
- qbiypVVntPCZTSjYXkcOPzRySP3T4Q24/TyT19RuaLzdIpQn0rYBIyq90rgtU5uuoBFR
- PK5zEl5otRIm43Cb+WSPJ0QPfh6kHXNg14wkR2vurmvLP4yyg7qwnk3gn47zn2ZTGLrP
- TD9P9qGPhEHVUE0aXMeVrNU+PxtJ2SMqoQL4QOYTNydWaGC8ECP2JGEFLMeo2lG7OPh6
- uNN7/85QiRz4XbDGqo+8FKfGpGbo1i3VhXhuXFElmdnDP9AhItnGF4cOmslzTPvvOlB0
- YMag==
+ d=gmail.com; s=20230601; t=1762297722; x=1762902522; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6pCLJZEgcYlWw9iD4ORoR7xWg2PSQRU6gFRhviyQ6RU=;
+ b=lep7H/0rGc1bfCob26K3b4ECicvgC4qe5SlTBtrMwecrhMAITCH1bRPX9mL7pAxMhh
+ EzbLv9/vW5T3uLTYnBBm1mBTEYapGYb2oUk0z7NqmBBepNA3CUfXXfDNTwXR/yOOqlp7
+ c99ujjxTUURoHtPCkO8Dl0Byif7RO5GWQDdSlL8foVYCPQsHdK5LUFRzWlZ6zKbOcRnW
+ Jg2oa6E+QHnLEfcGVUfpxRZFZaLAsc/UYkgdRH9ktVzn1mB+oqwRJMWD1aPbmrweO5ql
+ Bg/3VPE2wYWdoNV6KQMNxe628ElcfVK9z1tGy2PeMq5Qu+YA4eulaz/QaZdDD5yGAKq1
+ 6TUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762294596; x=1762899396;
- h=subject:date:cc:from:message-id:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1762297722; x=1762902522;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HTF7/P+G6vQPwKuUcJEOsNzczUX4QA4ntI8YilOM9Dc=;
- b=NNRNcmI8HmAjSSGqPeqzN5zCEBhwhPr/0rCG+A2+VnoQgC53jH8O5kJMGczum8HRJk
- ZZaHci3Bc8+GQUBod+9rHKwlzJkpv5vAREbZzx5ihmHdU4kLT9vjYwaTt5upGffphl9W
- W1K9y6hRCFt3w4QL4SuPC2rSSNkl+qsseb7isMRgGYxmvmpR58Iaq37Iue74F3J9nXSv
- he/Kg3cPOEJaOdzExQs7NNdJFYWCKTibowpXOXDz4FOMYfU9rV4kHn2SEUsRAhis7+55
- w2zRE8GqffB3asKZoxBb0RjuEHBtqYl5r3cKTbfBj1n4xaxMOxUXlSZaDAdF2WBNX9jI
- UK2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVz46mceIFCgFlQyOs1jLbUYDawuZEPwJ2IEXNKTXRi9MjRZfJT0FNZIWMTJ5Bzv9GM0OjoBy1QW0rS@nongnu.org
-X-Gm-Message-State: AOJu0YxRZW4t0aO083Egh2onHMgnioBnXH9K5l9uDMfgNU11yKeAd4PC
- nR9PJatlC12LxmQeHb13fmjY3IH497xzApdEwL4Nk1+FKXvJPtd2pBAYwaW3Vokk
-X-Gm-Gg: ASbGnctLCN96h421TJNtX3nsBi7ZX6FRq8Smx7AVslZRPyQKUEefpiXEAnmlF7dJnbK
- adCVHoa5GK9srHmZ+xAWq5EcPLs35Rwv9A8lFD7ArqfD577rcfhGNYVyx3O2R6fFtoPUAm0/zfB
- FTJFz0taVn3X8lRxQiP+YhXE3EB/EGMLhjJT1xyKPmXASsTEYL/E4Uf+JEZEZJAK8ilU4ICJfUm
- zqplYgisytJnV6wQlIcETJPbC5oYTQKQOcRqeXqvKsij3A0ihcSOcpUp+QkRGQFhmp/QGiXUYA/
- 8XZWb9kgmWu7m/XKJOcy6ZZXK0TM+/bhX+DTKXZkASfYfTfYb1J69jbo6up5I4HKMTRbzOpJMtx
- eQ+kCk8NCskI3JVabbYj7iA+/kKEXO39My+ZN7mRGyL2A8QOQhUDiZ2ZJOoVTpwvDvJE/zQ==
-X-Google-Smtp-Source: AGHT+IFLT+J82dndokLlu4KCoMxp7Wq/VYM273XopMJagmtUvCKU5s/6MyZq+LcRVGs1B1Hqpuq2+g==
-X-Received: by 2002:a05:6402:24ce:b0:640:bafb:3598 with SMTP id
- 4fb4d7f45d1cf-64105b990b5mr643406a12.38.1762294595781; 
- Tue, 04 Nov 2025 14:16:35 -0800 (PST)
-Received: from localhost ([149.200.120.62]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-640e6805813sm3450824a12.14.2025.11.04.14.16.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 14:16:35 -0800 (PST)
-Message-ID: <cddc5c730b912a058b54100b19adf552.rbalint@gmail.com>
-From: Balint Reczey <rbalint@gmail.com>
-CC: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>
-Date: Tue, 4 Nov 2025 14:54:23 +0100
-Subject: [PATCH 0/1] user: add runtime switch to call safe_syscall via libc
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=rbalint@gmail.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: 5
-X-Spam_score: 0.5
-X-Spam_bar: /
-X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ bh=6pCLJZEgcYlWw9iD4ORoR7xWg2PSQRU6gFRhviyQ6RU=;
+ b=qrWSnS1bXPOcV2hDglAc1u4VtuY/9lNmI7pjvVv+xfGCuAZl3QqHYtawYbT4pyp0/L
+ euRT519qaPZFiKUp8AIJzlhsH+z77f0oZ4Ad53KR7gMWMZ2MHtzGk6RNbvZ8EDQoQvFN
+ 3sQNZ5ai9+av2BwRvjKyz734iMN2k93sQGTz3/5perpNscvG12xkGloL/Orq03Ic+3iW
+ yOyjnUoS52512AzVrgPvmcIQqmFkvRhG+1ya8RdykGVLuCnS8GZNrTbgVZOt68jRWHPM
+ UAbkm+MUZv1AuCw1hbvTzr0JzMmVt8Lz66OJpRzm0kO7I6FxYzlPYmQpLGIbqqyraS4i
+ xCLw==
+X-Gm-Message-State: AOJu0YzNDgFJE1pzvFyY4x2/suz04C4Np21zzATmlDjVOIoWfcvZwxw5
+ OJD6GQaVWc+E4W/xv7p0tbM2rDms7/mizrHRkn4pdZXPqmGb4Ssz8EVZbY9nGA0FIkDmsaOVJCf
+ bdVCpmqo/WDU4UlLwR244oGYaFHoo8QQ=
+X-Gm-Gg: ASbGncsA8YV2Nhe361vvLTv+lnmOqakjRic2BBgAWF+Sm7Q2FO7P6HQAcI/1sRU1BaF
+ LlBoXg9xwNYd+0soWjRp/cCUvbmCbY1DMnAuyUPrBjLy5JMmbRFlgJZpqCJoD/LJlsORkkHpeOU
+ bEGQQSK7prDjZH3A0O0g0EGcmc3hADhe+yrmIcdph3Nykfbvq9DGxnWVKjCcMX/u/u6v9m4XsDN
+ mwW+xopB4BfcQjQYwTCZ4eMSWvodFzCzL26GS4BDwKvU9hdISCTjBX5miCx301Dh6vCTH6Mi1vj
+ nRzqE3J8iBbCmUo=
+X-Google-Smtp-Source: AGHT+IGR9WTdxWuM0ZHHHtqhW7vy8alVg+PuQj8KrA3w3kiBWA1ehja2I1G06PIIxSqIUUl0w/qjZ64xlWsCccD5poc=
+X-Received: by 2002:a17:907:6ea1:b0:b71:1420:3357 with SMTP id
+ a640c23a62f3a-b726554b5eemr84819066b.45.1762297722273; Tue, 04 Nov 2025
+ 15:08:42 -0800 (PST)
+MIME-Version: 1.0
+References: <20251104150708.3345289-1-djordje.todorovic@htecgroup.com>
+In-Reply-To: <20251104150708.3345289-1-djordje.todorovic@htecgroup.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 5 Nov 2025 09:08:15 +1000
+X-Gm-Features: AWmQ_bk99fJnp4N2O01t1o1H511gdv8d6pNwG_BXjsLF2cYpjFKmj21VhnfAHQk
+Message-ID: <CAKmqyKNV9Dc5-mszwg8aFCkqLiASLZ_u+dbLLyG_59usMAL6Mw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/1] riscv: Update MIPS vendor id
+To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, 
+ "cfu@mips.com" <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>, 
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>, 
+ "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, 
+ "thuth@redhat.com" <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 04 Nov 2025 18:34:58 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,40 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Wed, Nov 5, 2025 at 1:07=E2=80=AFAM Djordje Todorovic
+<Djordje.Todorovic@htecgroup.com> wrote:
+>
+> We have already sent patch set for introducing MIPS's
+> p8700 CPU in qemu at:
+>
+>   https://patchew.org/QEMU/20251018154522.745788-1-djordje.todorovic@htec=
+group.com/
 
-qemu-user implements calling signal-race-safe syscalls for the guest
-in assembly directly to the kernel instead of going through the host's libc.
+That series was dropped as it failed to pass the CI tests:
+https://patchew.org/QEMU/20251023041435.1775208-1-alistair.francis@wdc.com/
 
-The proposed patch adds a switch to go through libc, which allows interposition
-of libc's syscall(), even when the guest program is statically linked.
+You can just include this change in a new patchset
 
-The motivation behind the change is intercepting statically linked binaries [1]
-with firebuild [2], a build accelerator implemented in userspace.
+Alistair
 
-I have tested the Linux changes, but not not BSD ones.
-I think they are trivial enough to work and I'd like to port firebuild
-to BSD, too, in the future.
-
-Cheers,
-Balint
-
-[1] https://github.com/firebuild/firebuild/pull/1334
-[2] https://github.com/firebuild/firebuild
-
-Balint Reczey (1):
-  user: add runtime switch to call safe_syscall via libc
-
- bsd-user/main.c             | 11 +++++++
- common-user/meson.build     |  1 +
- common-user/safe-syscall.c  | 57 +++++++++++++++++++++++++++++++++++++
- docs/user/main.rst          | 28 ++++++++++++++++--
- include/user/safe-syscall.h | 25 +++++++++++-----
- linux-user/main.c           |  9 ++++++
- 6 files changed, 122 insertions(+), 9 deletions(-)
- create mode 100644 common-user/safe-syscall.c
-
--- 
-2.43.0
-
+>
+> So, this is a bugfix that should go on top of it.
+>
+> Djordje Todorovic (1):
+>   riscv: Update MIPS vendor id
+>
+>  target/riscv/cpu_vendorid.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> --
+> 2.34.1
 
