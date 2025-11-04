@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863D8C312A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3835FC312B0
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:15:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGGrU-0002vJ-Bb; Tue, 04 Nov 2025 08:14:12 -0500
+	id 1vGGrR-0002sG-Ax; Tue, 04 Nov 2025 08:14:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202511041303518f1fd7a6a600020793-O_4y_1@rts-flowmailer.siemens.com>)
- id 1vGGrN-0002qz-PE
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:06 -0500
-Received: from mta-65-228.siemens.flowmailer.net ([185.136.65.228])
+ <fm-294854-20251104130351d4476d700200020729-7qk_u5@rts-flowmailer.siemens.com>)
+ id 1vGGrL-0002qF-1E
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:03 -0500
+Received: from mta-65-227.siemens.flowmailer.net ([185.136.65.227])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202511041303518f1fd7a6a600020793-O_4y_1@rts-flowmailer.siemens.com>)
- id 1vGGrJ-0005WN-T4
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:05 -0500
-Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id
- 202511041303518f1fd7a6a600020793 for <qemu-devel@nongnu.org>;
+ <fm-294854-20251104130351d4476d700200020729-7qk_u5@rts-flowmailer.siemens.com>)
+ id 1vGGrG-0005VQ-TF
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:14:02 -0500
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id
+ 20251104130351d4476d700200020729 for <qemu-devel@nongnu.org>;
  Tue, 04 Nov 2025 14:03:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=jan.kiszka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=QRjz38RMCOPwtzK5Ros2NlGg2xruTpx/oGUIXM85cf0=;
- b=mND+q0wNRgRcFu0vK+OV0nehk5SiPCUm3EVAEUXPx26j6JPZnACuygzD4f7jzTPzie/qyi
- MOW8rBjFy0xjZMakQeZQmHgBo0brOniR9M4Ihe3pfcty039E+s4/Z/8kYTDqGvN6ZXWCu8bu
- TBfqsfk0+OQo0O2htdOnLv+T5KUFRTO6z1nXWh6C/qc3Yhw6X5pdPkAS6aF1KVIZ2FYZ5pod
- 8wUmaoDUb/qvPfvEmZ6CmfuosM6H8nsfhcNhwwnFNzXeg6z41KWNZ0I7dwNHL94CxGlcTNH/
- ogiAzOvSrxJhN+RshmfzbbAlQpGuqRA2iqmMUHnYc8dwSf80/iyDzRuQ==;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=cyHNINQrX0HyoRirhBGd3VHoxG1788Ib/R5yBwqDbvA=;
+ b=hgWmtENKHAc5Gb8GGlQt0I6OZwhewHp0Od3FXoyUy1DzjSEpSSy52mmACFSyvSiKvASNuF
+ +VAKkF35OpZEUbgQ7dRLfGLXz5I3cYasyuJ5u0OPndSRYFLogDkcT3G0jzxNK8faPsUFTwL7
+ nSs1TRJgwiFIU5I6zAOVvnOmhs/GLHuDyQkw5RuU4NvfnQ6GVUhraK36jK7ZXRtTk4X9knz5
+ JSgrAe/JSFJdwvgvUmdkFGDB0juhjHkG/qyTQIfJG29rGs8QU7/8Ta7DOZzPKUCcWJsxCXM6
+ NJO/lZyD3UI4rvUg7RFZtx58ndeBFD6QsxIaqJpABR8uGbkZkY/N60nQ==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -40,21 +40,23 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Jan=20L=C3=BCbbe?= <jlu@pengutronix.de>,
  Jerome Forissier <jerome.forissier@linaro.org>,
- Alexander Bulekov <alxndr@bu.edu>,
- Alistair Francis <alistair@alistair23.me>,
+ Warner Losh <imp@bsdimp.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, Warner Losh <imp@bsdimp.com>
-Subject: [PATCH v6 0/6] sd: Add RPMB emulation to eMMC model
-Date: Tue,  4 Nov 2025 14:03:44 +0100
-Message-ID: <cover.1762261430.git.jan.kiszka@siemens.com>
+ Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
+ Alexander Bulekov <alxndr@bu.edu>
+Subject: [PATCH v6 1/6] hw/sd/sdcard: Fix size check for backing block image
+Date: Tue,  4 Nov 2025 14:03:45 +0100
+Message-ID: <591f6d8a9dc86428723cb6876df6e717cc41a70e.1762261430.git.jan.kiszka@siemens.com>
+In-Reply-To: <cover.1762261430.git.jan.kiszka@siemens.com>
+References: <cover.1762261430.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.65.228;
- envelope-from=fm-294854-202511041303518f1fd7a6a600020793-O_4y_1@rts-flowmailer.siemens.com;
- helo=mta-65-228.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.65.227;
+ envelope-from=fm-294854-20251104130351d4476d700200020729-7qk_u5@rts-flowmailer.siemens.com;
+ helo=mta-65-227.siemens.flowmailer.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -62,7 +64,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,98 +80,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes in v6 [1]:
- - incorporated review suggestions, specifically
-    - style and structuring suggestion for sd.c changes
-    - usage of lduw_be_p, ldl_be_p, stw_be_p, stl_be_p
-    - usage of QEMU_IS_ALIGNED
-    - optimized rpmb_calc_hmac
-    - introduction of further RPMB_*_LEN constants
-    - truncate argument ordering in mkemmc.sh
-    - comment for unclear code in mkemmc.sh
-    - improvide description of patch 2
- - rebased over master + [2]
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Changes in v5:
- - fix regression of patch 1 with unplugged SD cards
- - address review comments on documentation
+Alignment rules apply the the individual partitions (user, boot, later
+on also RPMB) and depend both on the size of the image and the type of
+the device. Up to and including 2GB, the power-of-2 rule applies to the
+user data area. For larger images, multiples of 512 sectors must be used
+for eMMC and multiples of 512K for SD-cards. Fix the check accordingly
+and also detect if the image is too small to even hold the boot
+partitions.
 
-Changes in v4:
- - add truncation warning to mkemmc.sh
- - fix typos in doc and mkemmc.sh
-
-Changes in v3:
- - rebased, dropping merged patches
- - rework image alignment rules to match hardware
- - improve/fix mkemmc script
- - add emmc documentation
-
-Changes in v2:
- - handle write counter expiry
- - assert() availability of QCRYPTO_HASH_ALGO_SHA256
- - add missing SPDX-License-Identifier
-
-This closes an old gap in system integration testing for the very
-complex ARM firmware stacks by adding fairly advanced Replay Protected
-Memory Block (RPMB) emulation to the eMMC device model. Key programming
-and message authentication are working, so is the write counter. Known
-users are happy with the result. What is missing, but not only for RPMB-
-related registers, is state persistence across QEMU restarts. This is OK
-at this stage for most test scenarios, though, and could still be added
-later on.
-
-What can already be done with it is demonstrated in the WIP branch of
-isar-cip-core at [3]: TF-A + OP-TEE + StandaloneMM TA + fTPM TA, used by
-U-Boot and Linux for UEFI variable storage and TPM scenarios. If you
-want to try: build qemu-arm64 target for trixie with 6.12-cip *head*
-kernel, enable secure boot and disk encryption, then run
-
-$ QEMU_PATH=/path/to/qemu-build/ ./start-qemu.sh
-
-Deploy snakeoil keys into PK, KEK and db after first boot to enable
-secure booting:
-
-root@demo:~# cert-to-efi-sig-list PkKek-1-snakeoil.pem PK.esl
-root@demo:~# sign-efi-sig-list -k PkKek-1-snakeoil.key -c PkKek-1-snakeoil.pem PK PK.esl PK.auth
-root@demo:~# efi-updatevar -f PK.auth db
-root@demo:~# efi-updatevar -f PK.auth KEK
-root@demo:~# efi-updatevar -f PK.auth PK
-
-Note that emulation is a bit slow in general, and specifically the
-partition encryption on first boot is taking 20 min. - we should
-probably reduce its size or understand if there is still something to
-optimize.
-
-Jan
-
-[1] https://github.com/siemens/qemu/commits/queues/emmc/
-[2] https://patchwork.kernel.org/project/qemu-devel/patch/20251103133727.423041-4-berrange@redhat.com/
-[3] https://gitlab.com/cip-project/cip-core/isar-cip-core/-/commits/next
-
-CC: Alexander Bulekov <alxndr@bu.edu>
-CC: Alistair Francis <alistair@alistair23.me>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+CC: Warner Losh <imp@bsdimp.com>
 CC: Cédric Le Goater <clg@kaod.org>
 CC: Joel Stanley <joel@jms.id.au>
-CC: Warner Losh <imp@bsdimp.com>
+CC: Alistair Francis <alistair@alistair23.me>
+CC: Alexander Bulekov <alxndr@bu.edu>
+---
+ hw/sd/sd.c | 69 +++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 48 insertions(+), 21 deletions(-)
 
-Jan Kiszka (6):
-  hw/sd/sdcard: Fix size check for backing block image
-  hw/sd/sdcard: Allow user-instantiated eMMC
-  hw/sd/sdcard: Add basic support for RPMB partition
-  hw/sd/sdcard: Handle RPMB MAC field
-  scripts: Add helper script to generate eMMC block device images
-  docs: Add eMMC device model description
-
- docs/system/device-emulation.rst |   1 +
- docs/system/devices/emmc.rst     |  53 +++++
- hw/sd/sd.c                       | 369 ++++++++++++++++++++++++++++---
- hw/sd/sdmmc-internal.h           |  22 ++
- hw/sd/trace-events               |   2 +
- scripts/mkemmc.sh                | 219 ++++++++++++++++++
- 6 files changed, 636 insertions(+), 30 deletions(-)
- create mode 100644 docs/system/devices/emmc.rst
- create mode 100755 scripts/mkemmc.sh
-
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index d7a496d77c..76e915e190 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2759,9 +2759,32 @@ static void sd_instance_finalize(Object *obj)
+     timer_free(sd->ocr_power_timer);
+ }
+ 
++static void sd_blk_size_error(SDState *sd, int64_t blk_size,
++                              int64_t blk_size_aligned, const char *rule,
++                              Error **errp)
++{
++    const char *dev_type = sd_is_emmc(sd) ? "eMMC" : "SD card";
++    char *blk_size_str;
++
++    blk_size_str = size_to_str(blk_size);
++    error_setg(errp, "Invalid %s size: %s", dev_type, blk_size_str);
++    g_free(blk_size_str);
++
++    blk_size_str = size_to_str(blk_size_aligned);
++    error_append_hint(errp,
++                      "%s size has to be %s, e.g. %s.\n"
++                      "You can resize disk images with"
++                      " 'qemu-img resize <imagefile> <new-size>'\n"
++                      "(note that this will lose data if you make the"
++                      " image smaller than it currently is).\n",
++                      dev_type, rule, blk_size_str);
++    g_free(blk_size_str);
++}
++
+ static void sd_realize(DeviceState *dev, Error **errp)
+ {
+     SDState *sd = SDMMC_COMMON(dev);
++    int64_t blk_size = -ENOMEDIUM;
+     int ret;
+ 
+     switch (sd->spec_version) {
+@@ -2774,32 +2797,36 @@ static void sd_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     if (sd->blk) {
+-        int64_t blk_size;
+-
+         if (!blk_supports_write_perm(sd->blk)) {
+             error_setg(errp, "Cannot use read-only drive as SD card");
+             return;
+         }
+ 
+         blk_size = blk_getlength(sd->blk);
+-        if (blk_size > 0 && !is_power_of_2(blk_size)) {
+-            int64_t blk_size_aligned = pow2ceil(blk_size);
+-            char *blk_size_str;
+-
+-            blk_size_str = size_to_str(blk_size);
+-            error_setg(errp, "Invalid SD card size: %s", blk_size_str);
+-            g_free(blk_size_str);
+-
+-            blk_size_str = size_to_str(blk_size_aligned);
+-            error_append_hint(errp,
+-                              "SD card size has to be a power of 2, e.g. %s.\n"
+-                              "You can resize disk images with"
+-                              " 'qemu-img resize <imagefile> <new-size>'\n"
+-                              "(note that this will lose data if you make the"
+-                              " image smaller than it currently is).\n",
+-                              blk_size_str);
+-            g_free(blk_size_str);
+-
++    }
++    if (blk_size >= 0) {
++        blk_size -= sd->boot_part_size * 2;
++        if (blk_size > SDSC_MAX_CAPACITY) {
++            if (sd_is_emmc(sd) &&
++                !QEMU_IS_ALIGNED(blk_size, 1 << HWBLOCK_SHIFT)) {
++                int64_t blk_size_aligned =
++                    ((blk_size >> HWBLOCK_SHIFT) + 1) << HWBLOCK_SHIFT;
++                sd_blk_size_error(sd, blk_size, blk_size_aligned,
++                                  "multiples of 512", errp);
++                return;
++            } else if (!sd_is_emmc(sd) &&
++                !QEMU_IS_ALIGNED(blk_size, 512 * KiB)) {
++                int64_t blk_size_aligned = ((blk_size >> 19) + 1) << 19;
++                sd_blk_size_error(sd, blk_size, blk_size_aligned,
++                                  "multiples of 512K", errp);
++                return;
++            }
++        } else if (blk_size > 0 && !is_power_of_2(blk_size)) {
++            sd_blk_size_error(sd, blk_size, pow2ceil(blk_size), "a power of 2",
++                              errp);
++            return;
++        } else if (blk_size < 0) {
++            error_setg(errp, "eMMC image smaller than boot partitions");
+             return;
+         }
+ 
+@@ -2810,7 +2837,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
+         }
+         blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
+     }
+-    if (sd->boot_part_size % (128 * KiB) ||
++    if (!QEMU_IS_ALIGNED(sd->boot_part_size, 128 * KiB) ||
+         sd->boot_part_size > 255 * 128 * KiB) {
+         g_autofree char *size_str = size_to_str(sd->boot_part_size);
+ 
 -- 
 2.51.0
 
