@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D6EC32798
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D574DC3277F
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 18:56:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGLGj-0002Ai-3A; Tue, 04 Nov 2025 12:56:34 -0500
+	id 1vGLG0-0001i7-Q4; Tue, 04 Nov 2025 12:55:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLEo-0000q2-Qu
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:54:35 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLEq-0000re-KK
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:54:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLEn-0006iZ-58
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:54:34 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLEo-0006j9-Uh
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:54:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762278872;
+ s=mimecast20190719; t=1762278874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RhVA0YubTi5SGRuSN0fM7JVsTglFF5gQoqp/tSqn62I=;
- b=MVi6KrYPPkQN1WGXe1nBkXzjwa23ThQBml1PPtiKNsIWAFRVs7dcvIXtZTRW+MsHdH+6DK
- llBhUeQYPCg0CE1QN/zJq01VYTJv0Wn1ktsPe+zHADiJhhRSOo22b3fhEmEc06cN6KbW5W
- 8Z0MpgRuGaZdy+WVVut/9h8tcMd96qw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=AFueM27NLiZq+PeHyP0oGI+SClKRjJY3eSQT1wbYQdE=;
+ b=XanMJd6i4blhlfWKI1ryh0Azb0KYTex62RJg2Vq++goO/6fc3U4WqL3Kc9alj5N+IOhEqW
+ oj2ABjnb4RqzwRkv8x8GA8uTmIFLkHrAIFQBG+Nt1dXC7D/5gkbKp83S8UJyNLMK2KLc/l
+ KBTfhDFqoDu3k/503SccAHXzXsRq2NI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-134-A7m4YXY_MaO2vCl-nPpWtA-1; Tue,
- 04 Nov 2025 12:54:31 -0500
-X-MC-Unique: A7m4YXY_MaO2vCl-nPpWtA-1
-X-Mimecast-MFC-AGG-ID: A7m4YXY_MaO2vCl-nPpWtA_1762278870
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-knYBxHU-OjWJCG9rSq2O7A-1; Tue,
+ 04 Nov 2025 12:54:32 -0500
+X-MC-Unique: knYBxHU-OjWJCG9rSq2O7A-1
+X-Mimecast-MFC-AGG-ID: knYBxHU-OjWJCG9rSq2O7A_1762278872
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 34028180060D; Tue,  4 Nov 2025 17:54:30 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EDD5119560B7; Tue,  4 Nov 2025 17:54:31 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.45.226.47])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E4711180044F; Tue,  4 Nov 2025 17:54:28 +0000 (UTC)
+ id AB4DA1800451; Tue,  4 Nov 2025 17:54:30 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 03/27] aio-posix: fix spurious return from ->wait() due to
- signals
-Date: Tue,  4 Nov 2025 18:53:51 +0100
-Message-ID: <20251104175415.525388-4-kwolf@redhat.com>
+Subject: [PULL 04/27] aio-posix: keep polling enabled with fdmon-io_uring.c
+Date: Tue,  4 Nov 2025 18:53:52 +0100
+Message-ID: <20251104175415.525388-5-kwolf@redhat.com>
 In-Reply-To: <20251104175415.525388-1-kwolf@redhat.com>
 References: <20251104175415.525388-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -83,66 +82,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-io_uring_enter(2) only returns -EINTR in some cases when interrupted by
-a signal. Therefore the while loop in fdmon_io_uring_wait() is
-incomplete and can lead to a spurious early return.
+Commit 816a430c517e ("util/aio: Defer disabling poll mode as long as
+possible") kept polling enabled when the event loop timeout is 0. Since
+there is no timeout the event loop will continue immediately and the
+overhead of disabling and re-enabling polling can be avoided.
 
-Handle the case when a signal interrupts io_uring_enter(2) but the
-syscall returns the number of SQEs submitted (that takes priority over
--EINTR).
+fdmon-io_uring.c is unable to take advantage of this optimization
+because its ->need_wait() function returns true whenever there are new
+io_uring SQEs to submit:
 
-This patch probably makes little difference for QEMU, but the test suite
-relies on the exact pattern of aio_poll() return values, so it's best to
-hide this io_uring syscall interface quirk.
+  if (timeout || ctx->fdmon_ops->need_wait(ctx)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Here is the strace of test-aio receiving 3 SIGCONT signals after this
-fix has been applied. Notice how the io_uring_enter(2) return value is 1
-the first time because an SQE was submitted, but -EINTR the other times:
+Polling will be disabled even when timeout == 0.
 
-  eventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK) = 9
-  io_uring_enter(7, 1, 0, 0, NULL, 8) = 1
-  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, 0x7ffe38a46240) = 0
-  io_uring_enter(7, 1, 1, IORING_ENTER_GETEVENTS, NULL, 8) = 1
-  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
-  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8) = -1 EINTR (Interrupted system call)
-  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
-  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8 <unfinished ...>
-  <... io_uring_enter resumed>) = -1 EINTR (Interrupted system call)
-  --- SIGCONT {si_signo=SIGCONT, si_code=SI_USER, si_pid=596096, si_uid=1000} ---
-  io_uring_enter(7, 0, 1, IORING_ENTER_GETEVENTS, NULL, 8 <unfinished ...>
-  <... io_uring_enter resumed>) = 0
+Extend the optimization to handle the case when need_wait() returns true
+and timeout == 0.
 
-Reported-by: Kevin Wolf <kwolf@redhat.com>
+Cc: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20251104022933.618123-4-stefanha@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20251104022933.618123-5-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- util/fdmon-io_uring.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ util/aio-posix.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-index b64ce42513..3d8638b0e5 100644
---- a/util/fdmon-io_uring.c
-+++ b/util/fdmon-io_uring.c
-@@ -299,9 +299,16 @@ static int fdmon_io_uring_wait(AioContext *ctx, AioHandlerList *ready_list,
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index 2e0a5dadc4..824fdc34cc 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -559,7 +559,14 @@ static bool run_poll_handlers(AioContext *ctx, AioHandlerList *ready_list,
+         elapsed_time = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - start_time;
+         max_ns = qemu_soonest_timeout(*timeout, max_ns);
+         assert(!(max_ns && progress));
+-    } while (elapsed_time < max_ns && !ctx->fdmon_ops->need_wait(ctx));
++
++        if (ctx->fdmon_ops->need_wait(ctx)) {
++            if (fdmon_supports_polling(ctx)) {
++                *timeout = 0; /* stay in polling mode */
++            }
++            break;
++        }
++    } while (elapsed_time < max_ns);
  
-     fill_sq_ring(ctx);
- 
-+    /*
-+     * Loop to handle signals in both cases:
-+     * 1. If no SQEs were submitted, then -EINTR is returned.
-+     * 2. If SQEs were submitted then the number of SQEs submitted is returned
-+     *    rather than -EINTR.
-+     */
-     do {
-         ret = io_uring_submit_and_wait(&ctx->fdmon_io_uring, wait_nr);
--    } while (ret == -EINTR);
-+    } while (ret == -EINTR ||
-+             (ret >= 0 && wait_nr > io_uring_cq_ready(&ctx->fdmon_io_uring)));
- 
-     assert(ret >= 0);
- 
+     if (remove_idle_poll_handlers(ctx, ready_list,
+                                   start_time + elapsed_time)) {
+@@ -722,7 +729,7 @@ bool aio_poll(AioContext *ctx, bool blocking)
+          * up IO threads when some work becomes pending. It is essential to
+          * avoid hangs or unnecessary latency.
+          */
+-        if (poll_set_started(ctx, &ready_list, false)) {
++        if (timeout && poll_set_started(ctx, &ready_list, false)) {
+             timeout = 0;
+             progress = true;
+         }
 -- 
 2.51.1
 
