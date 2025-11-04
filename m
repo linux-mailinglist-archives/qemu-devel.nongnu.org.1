@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E210C31FC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B8BC31FC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:11:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGJc1-0006rK-ME; Tue, 04 Nov 2025 11:10:26 -0500
+	id 1vGJc2-0006ry-Ju; Tue, 04 Nov 2025 11:10:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbf-0006hr-3y
+ id 1vGJbg-0006iu-MV
  for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:10:05 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vGJbb-0007L6-4n
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:10:02 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-47112edf9f7so46285835e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:55 -0800 (PST)
+ id 1vGJbb-0007LG-4t
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:10:04 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-477563bcaacso6249625e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 08:09:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762272595; x=1762877395; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762272596; x=1762877396; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/5jT1nanV2HTon+gYa/5KcgwK7C7VkPnRzMePhdCgTY=;
- b=nwrdCwc5ls6sg6CzMLOwhMtNv7DFaTdy59KcbY3Y9yvX28+/oiMV9/Iz0tuvKtwUOq
- WdqNGBO7ZFN4OLFKR0VRFOemr4HW31wj3qMEgUrrDL/fpea4AfebWwzVStzZF0p77/Wf
- VXNZoynTuuMmSBXYHS8gsQFWrABoe9+OJxeTLo1xbOqg5lR5Fxw2x/HseF245cqfi0I5
- OROHvesJT6QgQbJy2InSUT7pE/lu0i4OHGnoUL5oaebp45m4/3yV6S9/HmmxFzZs7HfD
- eUa+ot0Ws+AhFakdrnpYaxVJ4uN+HpaMgVw1IXN1epyS/UMQBep8VviVCS4YYhdCibiP
- YDxg==
+ bh=+hEVObdsJT1oTtwhAwuxIspzQ82F1zrFTt1fpB0p3nQ=;
+ b=EkHaVtyAjtlYRa2AUDhya3t2u77u7T3jXnn8wvWmUL8ZWsnZD1d7YF/NVuqGEsblIT
+ ff81Uv9R3n9KdE7gVdoy+bKBV6uzDLKIe4WFZS2BBuifOC3p0lnH41pDIBMpYrCP3Lck
+ e3tTivmFFO1f+vqzRetBR5Su3ggIBADAWfChVq4JrqSdeO2bbI4a1GB4r3fs0K7UODEk
+ KolcWe1Xby0tsBjg13RubbSK1VshIVe3aXSglXadTvUssSfFlCAmD9ZH12xekA/LfyU6
+ Ns63x5Xq7JXzT00IQTTICXPVWoIZsvY29QUCGH7/E59D1T3kXSGWuOe/kNICwf3cf/lp
+ 8NLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762272595; x=1762877395;
+ d=1e100.net; s=20230601; t=1762272596; x=1762877396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/5jT1nanV2HTon+gYa/5KcgwK7C7VkPnRzMePhdCgTY=;
- b=FFAvzqdBFeH7BhPoBCblSu//uB9iDpk5UN8/bstCzXZuqah792ve3hCmExHEj6qvGY
- YWXgIKp7QJHer79T2XfARrFOaxcdG944Naq1/VMpeJv2TqyX1rKx5IpAWdPieuWmNvFE
- VOcQwDhnvQFdmtSpi7kILHyPVE3vTryKMCeh7ERgWgPb4SheBmfiATFYyxLa9/LRa/81
- +mHJMkaSiXFLUe2jdqu6GQvFWsUv63v8/15eL9VOYhS9AcCQ2wnk+eaUxgjU/ILAgiAG
- fnULJOjgpt2b0Seu2oKtEA3d9yTwu+543CqpbDiU1E5V9+MNf3HLG+shJiHsshdOSMmM
- tZ/g==
-X-Gm-Message-State: AOJu0Yz+HBS7OuPGBmsed5H23K/Nz10gcPHQI9UgvC3LkphzUwre8Lql
- DZdtPdgo7Dw94pkP8dPSuXE8QuAoAPOc8TjDuF5fXIpoTW/NKYLXBa9W4VbZwdUn48MVmOg7VVp
- cSy07
-X-Gm-Gg: ASbGncvH23L2XtjH01p7pQmAxTWcSlU4NYGvNbQUUkMPFdzf6w/zelNMJiRyf3ZEJCx
- rEvNlxJmn3txOsfAJWAqRRxFaMq9sR1pBeNwUbtXw0zo4TrxucAwjG9zW5r7S42/4+hhylXA33B
- Xxt6zc+GJDtrEAK4/Ep63PDASV3BWKJXd/YERwlKlkHnKD46iZ2IfZjhXdFkpADxwLvS1WqJ97I
- jtdgbUjtIVZwYSKf5+KrwiGdr3ODRLQL3cyvI1iBNo0wjTz7qOvuoW+7CpDcQ1d8uHuawTKuqMB
- E+T8v5EldT9TNR2oOjDrYSGjyTHfnulErVM9Vitct2EZJRoY5QU1xCdUqrjx19/SlX17spnKY1Z
- +Gt9sb3y3oFBmuqMIdyCk6mjWGV2I0wo4Dpwr1NmRfmk1Bp6NLCMePWTuLPRt/QPcsvL3BMWkZT
- elCVE/T7a8r/xEZkuo
-X-Google-Smtp-Source: AGHT+IFw0mHTVNQTPpVDHWOwRPNu28SoSm3vy3a0r7q4kvLWFQ2x1D7XC+YLnA6naNfmkaD+uC53Zg==
-X-Received: by 2002:a05:600c:190d:b0:46f:aac5:daf with SMTP id
- 5b1f17b1804b1-477308dbefdmr162934445e9.35.1762272594606; 
- Tue, 04 Nov 2025 08:09:54 -0800 (PST)
+ bh=+hEVObdsJT1oTtwhAwuxIspzQ82F1zrFTt1fpB0p3nQ=;
+ b=F+C/Qdifp681lMxJID2Pa2jk5ViO3Y1sy49oGQ9acUri1MK0Fg8ZzLnYYlf02CSUqr
+ fYBnV4O49VtQoP6fMQcOu5qSK0bE/gUXPyk1KuDZTftaaO3vNeC4Nuj8fxub1fJJoEWA
+ pAihrJ190ul28c9B0bQhAD2FCamrdBNE9j3NfHsEd+8Ovb60FcvU7zaz0uE/Bzg+Iuh9
+ 7Svd4i+2xKosN2qRCyfxSNBM9tavUEgCLvNPZjnltajqWVeWYJlZpu8MH9KowGN4NFtZ
+ DotdqjQvjkSwb+L0ISqW99Zn8NR53UbjCEaHNKq4tOKs+IVV34xRX+Tahj6UGvTUP2sn
+ Fo7w==
+X-Gm-Message-State: AOJu0YxQ6Zi9jNzEG9+ZApvJsbCWHW79opvTs6mVFVwXsQeCsQbd8w7x
+ 2huW7zeO1Bf2tJaQQAG6Dmbj1JGeJK0SNqp8AtZhxzoc+XEN2X4swRs/R0b2+e3++94XuErhWTS
+ W69PI
+X-Gm-Gg: ASbGncvgo4wZ9jF6k1vJQtHrQzElW0IMo/hjPJz+cyrASl3PM+PMJP1otq2rKX/TrMm
+ IKVkJZIhR4ZQc3UiZOGEBq/fVf3S5Zj9dX90/zNv/KZJFubqWqGPcKy8liTDr8fp6QsJQ5xFKAw
+ VoEq2FEoChum3JcWDxrrm4gFizUgnGPFkdjaCKXyTpfUeqEQhr5NUhOAGOh4HMUy1aCPvYsLjgK
+ iYZqyGQrPV4kXBf3exsYDPFv82wu2fbQVDdoDixDjPyfomUEtIRis/rOc+0Xc+rWAV0HTxYQp4Q
+ OeGb/wDbTe5p6+7VwXVihowJ0y9ZaLlrW4WhiMtYsa5bv09X43KidbOmj6JygIe7AlM3dfbp6nB
+ littiDbafhi+gimXV3iscXH3BuDB7wgDyM2NaGzMUov+RAz6ZyiPyjPlLrsnxNN+KTAF7zxGwxH
+ 0C6Rk22A==
+X-Google-Smtp-Source: AGHT+IFxJu+Idtm7BINARUFeLVnlHBVVShbfNbirprbsfxOvJ1uS+jcBP6brRdHSACjkiLhNhouCMw==
+X-Received: by 2002:a05:600c:1e25:b0:471:1306:aa0f with SMTP id
+ 5b1f17b1804b1-477308b60d9mr149403185e9.38.1762272595858; 
+ Tue, 04 Nov 2025 08:09:55 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.53
+ 5b1f17b1804b1-47754adcd08sm57314455e9.5.2025.11.04.08.09.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Nov 2025 08:09:53 -0800 (PST)
+ Tue, 04 Nov 2025 08:09:55 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -71,16 +71,16 @@ Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Thanos Makatos <thanos.makatos@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 8/9] vfio: Clean up includes
-Date: Tue,  4 Nov 2025 16:09:42 +0000
-Message-ID: <20251104160943.751997-9-peter.maydell@linaro.org>
+Subject: [PATCH 9/9] tests: Clean up includes
+Date: Tue,  4 Nov 2025 16:09:43 +0000
+Message-ID: <20251104160943.751997-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251104160943.751997-1-peter.maydell@linaro.org>
 References: <20251104160943.751997-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,7 +104,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This commit was created with scripts/clean-includes:
- ./scripts/clean-includes --git vfio hw/vfio hw/vfio-user
+ ./scripts/clean-includes --git tests tests
+
+with one hand-edit to remove a now-empty #ifndef WIN32...#endif
+from tests/qtest/dbus-display-test.c .
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -117,124 +120,118 @@ related cleanups:
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/vfio-user/container.h | 1 -
- hw/vfio-user/device.h    | 1 -
- hw/vfio/pci-quirks.h     | 1 -
- hw/vfio-user/container.c | 2 +-
- hw/vfio-user/pci.c       | 2 +-
- hw/vfio/ap.c             | 1 -
- hw/vfio/container.c      | 2 +-
- hw/vfio/cpr-legacy.c     | 2 +-
- 8 files changed, 4 insertions(+), 8 deletions(-)
+ tests/qtest/aspeed-hace-utils.h      | 1 -
+ tests/qtest/aspeed-smc-utils.h       | 1 -
+ tests/qtest/aspeed_gpio-test.c       | 1 -
+ tests/qtest/dbus-display-test.c      | 3 ---
+ tests/qtest/pnv-spi-seeprom-test.c   | 1 -
+ tests/unit/test-cutils.c             | 2 +-
+ tests/unit/test-error-report.c       | 1 -
+ tests/unit/test-io-channel-command.c | 2 --
+ 8 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/hw/vfio-user/container.h b/hw/vfio-user/container.h
-index a2b42e3169d..c952e090631 100644
---- a/hw/vfio-user/container.h
-+++ b/hw/vfio-user/container.h
-@@ -7,7 +7,6 @@
- #ifndef HW_VFIO_USER_CONTAINER_H
- #define HW_VFIO_USER_CONTAINER_H
+diff --git a/tests/qtest/aspeed-hace-utils.h b/tests/qtest/aspeed-hace-utils.h
+index c8b2ec45af2..27ab2bb9758 100644
+--- a/tests/qtest/aspeed-hace-utils.h
++++ b/tests/qtest/aspeed-hace-utils.h
+@@ -8,7 +8,6 @@
+ #ifndef TESTS_ASPEED_HACE_UTILS_H
+ #define TESTS_ASPEED_HACE_UTILS_H
  
 -#include "qemu/osdep.h"
+ #include "libqtest.h"
+ #include "qemu/bitops.h"
  
- #include "hw/vfio/vfio-container.h"
- #include "hw/vfio-user/proxy.h"
-diff --git a/hw/vfio-user/device.h b/hw/vfio-user/device.h
-index d183a3950e2..49c05848f1a 100644
---- a/hw/vfio-user/device.h
-+++ b/hw/vfio-user/device.h
-@@ -9,7 +9,6 @@
+diff --git a/tests/qtest/aspeed-smc-utils.h b/tests/qtest/aspeed-smc-utils.h
+index b07870f3b8f..e2fd8ff1bd1 100644
+--- a/tests/qtest/aspeed-smc-utils.h
++++ b/tests/qtest/aspeed-smc-utils.h
+@@ -26,7 +26,6 @@
+ #ifndef TESTS_ASPEED_SMC_UTILS_H
+ #define TESTS_ASPEED_SMC_UTILS_H
+ 
+-#include "qemu/osdep.h"
+ #include "qemu/bswap.h"
+ #include "libqtest-single.h"
+ #include "qemu/bitops.h"
+diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
+index c2f9ca2298a..decbba23c8f 100644
+--- a/tests/qtest/aspeed_gpio-test.c
++++ b/tests/qtest/aspeed_gpio-test.c
+@@ -27,7 +27,6 @@
+ #include "qemu/timer.h"
+ #include "qobject/qdict.h"
+ #include "libqtest-single.h"
+-#include "qemu/typedefs.h"
+ 
+ #define AST2600_GPIO_BASE 0x1E780000
+ 
+diff --git a/tests/qtest/dbus-display-test.c b/tests/qtest/dbus-display-test.c
+index f7fc873bfb3..1d5951b7117 100644
+--- a/tests/qtest/dbus-display-test.c
++++ b/tests/qtest/dbus-display-test.c
+@@ -7,9 +7,6 @@
+ #include <gio/gio.h>
+ #include <gio/gunixfdlist.h>
+ #include "libqtest.h"
+-#ifndef WIN32
+-#include <sys/mman.h>
+-#endif
+ #include "ui/dbus-display1.h"
+ 
+ static GDBusConnection*
+diff --git a/tests/qtest/pnv-spi-seeprom-test.c b/tests/qtest/pnv-spi-seeprom-test.c
+index 600493c425d..8033261758b 100644
+--- a/tests/qtest/pnv-spi-seeprom-test.c
++++ b/tests/qtest/pnv-spi-seeprom-test.c
+@@ -5,7 +5,6 @@
+  *
   * SPDX-License-Identifier: GPL-2.0-or-later
   */
- 
--#include "qemu/osdep.h"
- #include "linux/vfio.h"
- 
- #include "hw/vfio-user/proxy.h"
-diff --git a/hw/vfio/pci-quirks.h b/hw/vfio/pci-quirks.h
-index d1532e379b1..a6282e063a1 100644
---- a/hw/vfio/pci-quirks.h
-+++ b/hw/vfio/pci-quirks.h
-@@ -12,7 +12,6 @@
- #ifndef HW_VFIO_VFIO_PCI_QUIRKS_H
- #define HW_VFIO_VFIO_PCI_QUIRKS_H
- 
--#include "qemu/osdep.h"
- #include "exec/memop.h"
- 
- /*
-diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
-index e45192fef65..dab7a23224c 100644
---- a/hw/vfio-user/container.c
-+++ b/hw/vfio-user/container.c
-@@ -6,9 +6,9 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
+-#include <unistd.h>
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+ #include "qemu/bswap.h"
+diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+index 227acc59955..75fae29003a 100644
+--- a/tests/unit/test-cutils.c
++++ b/tests/unit/test-cutils.c
+@@ -25,9 +25,9 @@
+  * THE SOFTWARE.
   */
  
 +#include "qemu/osdep.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
--#include "qemu/osdep.h"
+ #include <math.h>
  
- #include "hw/vfio-user/container.h"
- #include "hw/vfio-user/device.h"
-diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
-index b53ed3b456f..353d07e7819 100644
---- a/hw/vfio-user/pci.c
-+++ b/hw/vfio-user/pci.c
-@@ -6,8 +6,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
+-#include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "qemu/units.h"
+ 
+diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
+index 0cbde3c4cf5..a8532fc58fc 100644
+--- a/tests/unit/test-error-report.c
++++ b/tests/unit/test-error-report.c
+@@ -8,7 +8,6 @@
   */
  
--#include <sys/ioctl.h>
  #include "qemu/osdep.h"
-+#include <sys/ioctl.h>
- #include "qapi-visit-sockets.h"
+-#include "glib-compat.h"
+ #include <locale.h>
+ 
  #include "qemu/error-report.h"
+diff --git a/tests/unit/test-io-channel-command.c b/tests/unit/test-io-channel-command.c
+index 4f022617df0..964418b5cd9 100644
+--- a/tests/unit/test-io-channel-command.c
++++ b/tests/unit/test-io-channel-command.c
+@@ -20,8 +20,6 @@
  
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 7719f245797..3368ac89150 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -10,7 +10,6 @@
-  * directory.
-  */
- 
--#include <stdbool.h>
  #include "qemu/osdep.h"
- #include CONFIG_DEVICES /* CONFIG_IOMMUFD */
- #include <linux/vfio.h>
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 9ddec300e35..013a691bc5a 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -10,10 +10,10 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
-+#include "qemu/osdep.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
- 
--#include "qemu/osdep.h"
- #include "system/tcg.h"
- #include "system/ram_addr.h"
+ #include <glib/gstdio.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+ #include "io/channel-command.h"
+ #include "io-channel-helpers.h"
  #include "qapi/error.h"
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index 7184c939912..273b5978806 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -4,9 +4,9 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
-+#include "qemu/osdep.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
--#include "qemu/osdep.h"
- #include "hw/vfio/vfio-container-legacy.h"
- #include "hw/vfio/vfio-device.h"
- #include "hw/vfio/vfio-listener.h"
 -- 
 2.43.0
 
