@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C03FC30AC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 12:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 258DBC30B07
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 12:14:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGEuC-0000ck-RB; Tue, 04 Nov 2025 06:08:52 -0500
+	id 1vGEzF-00021j-OQ; Tue, 04 Nov 2025 06:14:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vGEuB-0000cX-0D; Tue, 04 Nov 2025 06:08:51 -0500
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vGEzC-000216-LR
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 06:14:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vGEu8-0003g2-7I; Tue, 04 Nov 2025 06:08:50 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 1FECB804D1;
- Tue, 04 Nov 2025 14:08:43 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:95c::1:2] (unknown [2a02:6bf:8080:95c::1:2])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id g8iRxh1FJSw0-t9nJvVvm; Tue, 04 Nov 2025 14:08:42 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1762254522;
- bh=8hQkxFRPC+qH8VpoT7LPe/UFZ6JH8mq2YownRBOQCUA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=CI9a8eFkolTpznj7CtatHgMLL2qmRvjk4XvBjcaJxOk2in3+0lfauw9+z9LxYquEW
- 29vvP0x2nfUA4uH0nL+4VzGvIC8+aYH83X6NVOx2MjNknHChZs0sLYP0iXWvwBBZ5n
- hhvi9KVIwVuj7kOMqRRJu0rXrg2+Un0g8GmQvDTY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <aacd94b7-53c9-46e0-a519-7ac50a0e74e4@yandex-team.ru>
-Date: Tue, 4 Nov 2025 14:08:42 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vGEzA-0008ND-7L
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 06:14:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762254838;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=bRmmuuscW7C6TaQTx6vb9+Ehqc1RdYhsNCOIuOpzcAA=;
+ b=O0TCEJTN9tLlgjaknjRjigINx9rys1zau0yci7mRtnsDMZJjjMol+DPQo4m2YbfRZ4JexS
+ dkdRFQ7YSObVGP/j6R7VCnUOZvM6FUW8pcBg2cmH7EyVQ38yky+Y2bjxg14BPH1knaU3LW
+ xycTlIft+ZNJMmfRkH6/mE4GukgaP6w=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-qpJVCW1qOK2pELGz-nGAAA-1; Tue,
+ 04 Nov 2025 06:13:55 -0500
+X-MC-Unique: qpJVCW1qOK2pELGz-nGAAA-1
+X-Mimecast-MFC-AGG-ID: qpJVCW1qOK2pELGz-nGAAA_1762254834
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DE0F81800744; Tue,  4 Nov 2025 11:13:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 465BF1800451; Tue,  4 Nov 2025 11:13:51 +0000 (UTC)
+Date: Tue, 4 Nov 2025 11:13:48 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, kwolf@redhat.com
+Subject: Re: [PATCH 6/8] qio: Hoist ref of listener outside loop
+Message-ID: <aQnf7AVY17zEKl84@redhat.com>
+References: <20251103202849.3687643-10-eblake@redhat.com>
+ <20251103202849.3687643-16-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/23] vhost-user-blk: add some useful trace-points
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru,
- Raphael Norwitz <raphael.s.norwitz@gmail.com>, Kevin Wolf
- <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "open list:Block layer core" <qemu-block@nongnu.org>
-References: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
- <20251015145808.1112843-23-vsementsov@yandex-team.ru>
- <20251103162710-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20251103162710-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251103202849.3687643-16-eblake@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,143 +80,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.11.25 00:28, Michael S. Tsirkin wrote:
-> On Wed, Oct 15, 2025 at 05:58:06PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
->> Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
->> ---
->>   hw/block/trace-events     | 10 ++++++++++
->>   hw/block/vhost-user-blk.c | 19 +++++++++++++++++++
->>   2 files changed, 29 insertions(+)
->>
->> diff --git a/hw/block/trace-events b/hw/block/trace-events
->> index cc9a9f2460..dbaa5ca6cb 100644
->> --- a/hw/block/trace-events
->> +++ b/hw/block/trace-events
->> @@ -58,6 +58,16 @@ virtio_blk_handle_zone_mgmt(void *vdev, void *req, uint8_t op, int64_t sector, i
->>   virtio_blk_handle_zone_reset_all(void *vdev, void *req, int64_t sector, int64_t len) "vdev %p req %p sector 0x%" PRIx64 " cap 0x%" PRIx64 ""
->>   virtio_blk_handle_zone_append(void *vdev, void *req, int64_t sector) "vdev %p req %p, append sector 0x%" PRIx64 ""
->>   
->> +# vhost-user-blk.c
->> +vhost_user_blk_start_in(void *vdev) "vdev %p"
->> +vhost_user_blk_start_out(void *vdev) "vdev %p"
->> +vhost_user_blk_stop_in(void *vdev) "vdev %p"
->> +vhost_user_blk_stop_out(void *vdev) "vdev %p"
->> +vhost_user_blk_connect_in(void *vdev) "vdev %p"
->> +vhost_user_blk_connect_out(void *vdev) "vdev %p"
->> +vhost_user_blk_device_realize_in(void *vdev) "vdev %p"
->> +vhost_user_blk_device_realize_out(void *vdev) "vdev %p"
->> +
->>   # hd-geometry.c
->>   hd_geometry_lchs_guess(void *blk, int cyls, int heads, int secs) "blk %p LCHS %d %d %d"
->>   hd_geometry_guess(void *blk, uint32_t cyls, uint32_t heads, uint32_t secs, int trans) "blk %p CHS %u %u %u trans %d"
->> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
->> index de7a810c93..a5daed4346 100644
->> --- a/hw/block/vhost-user-blk.c
->> +++ b/hw/block/vhost-user-blk.c
->> @@ -31,6 +31,7 @@
->>   #include "hw/virtio/virtio-access.h"
->>   #include "system/system.h"
->>   #include "system/runstate.h"
->> +#include "trace.h"
->>   
->>   static const int user_feature_bits[] = {
->>       VIRTIO_BLK_F_SIZE_MAX,
->> @@ -137,6 +138,8 @@ static int vhost_user_blk_start(VirtIODevice *vdev, Error **errp)
->>       VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
->>       int i, ret;
->>   
->> +    trace_vhost_user_blk_start_in(vdev);
->> +
->>       if (!k->set_guest_notifiers) {
->>           error_setg(errp, "binding does not support guest notifiers");
->>           return -ENOSYS;
->> @@ -192,6 +195,8 @@ static int vhost_user_blk_start(VirtIODevice *vdev, Error **errp)
->>       }
->>       s->started_vu = true;
->>   
->> +    trace_vhost_user_blk_start_out(vdev);
->> +
->>       return ret;
->>   
->>   err_guest_notifiers:
->> @@ -212,6 +217,8 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
->>       int ret;
->>       bool force_stop = false;
->>   
->> +    trace_vhost_user_blk_stop_in(vdev);
->> +
->>       if (!s->started_vu) {
->>           return 0;
->>       }
->> @@ -233,6 +240,9 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
->>       }
->>   
->>       vhost_dev_disable_notifiers(&s->dev, vdev);
->> +
->> +    trace_vhost_user_blk_stop_out(vdev);
->> +
->>       return ret;
->>   }
->>   
->> @@ -340,6 +350,8 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
->>       VHostUserBlk *s = VHOST_USER_BLK(vdev);
->>       int ret = 0;
->>   
->> +    trace_vhost_user_blk_connect_in(vdev);
->> +
->>       if (s->connected) {
->>           return 0;
->>       }
->> @@ -365,6 +377,8 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
->>           ret = vhost_user_blk_start(vdev, errp);
->>       }
->>   
->> +    trace_vhost_user_blk_connect_out(vdev);
->> +
->>       return ret;
->>   }
->>   
->> @@ -455,6 +469,8 @@ static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
->>       int retries;
->>       int i, ret;
->>   
->> +    trace_vhost_user_blk_device_realize_in(vdev);
->> +
->>       if (!s->chardev.chr) {
->>           error_setg(errp, "chardev is mandatory");
->>           return;
->> @@ -514,6 +530,9 @@ static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
->>       qemu_chr_fe_set_handlers(&s->chardev,  NULL, NULL,
->>                                vhost_user_blk_event, NULL, (void *)dev,
->>                                NULL, true);
->> +
->> +    trace_vhost_user_blk_device_realize_out(vdev);
->> +
->>       return;
->>   
->>   virtio_err:
+On Mon, Nov 03, 2025 at 02:10:57PM -0600, Eric Blake wrote:
+> The point of QIONetListener is to allow a server to listen to more
+> than one socket address at a time, and respond to clients in a
+> first-come-first-serve order across any of those addresses.  While
+> some servers (like NBD) really do want to serve multiple simultaneous
+> clients, many other servers only care about the first client to
+> connect, and will immediately deregister the callback, possibly by
+> dropping their reference to the QIONetListener.  The existing code
+> ensures that all other pending callbacks remain safe once the first
+> callback drops the listener, by adding an extra reference to the
+> listener for each GSource created, where those references pair to the
+> eventual teardown of each GSource after a given callbacks has been
+> serviced or aborted.  But it is equally acceptable to hoist the
+> reference to the listener outside the loop - as long as there is a
+> callback function registered, it is sufficient to have a single
+> reference live for the entire array of sioc, rather than one reference
+> per sioc in the array.
 > 
+> Hoisting the reference like this will make it easier for an upcoming
+> patch to still ensure the listener cannot be prematurely garbage
+> collected during the user's callback, even when the callback no longer
+> uses a per-sioc GSource.
+
+It isn't quite this simple. Glib reference counts the callback
+func / data, holding a reference when dispatching the callback.
+
+IOW, even if the GSource is unrefed, the callback 'notify'
+function won't be called if the main loop is in the process
+of dispatching.
+
+With this change, the reference on 'listener' can now be
+released even if the callback is currently dispatching.
+
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>  io/net-listener.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> Is it ok that on error there's an in trace but not an out trace?
+> diff --git a/io/net-listener.c b/io/net-listener.c
+> index afdacdd5ff4..ce29bf3c993 100644
+> --- a/io/net-listener.c
+> +++ b/io/net-listener.c
+> @@ -118,12 +118,14 @@ qio_net_listener_watch(QIONetListener *listener, size_t i, const char *caller)
+>      }
+> 
+>      trace_qio_net_listener_watch_enabled(listener, listener->io_func, caller);
+> -    for ( ; i < listener->nsioc; i++) {
+> +    if (i == 0) {
+>          object_ref(OBJECT(listener));
+> +    }
+> +    for ( ; i < listener->nsioc; i++) {
+>          listener->io_source[i] = qio_channel_add_watch_source(
+>              QIO_CHANNEL(listener->sioc[i]), G_IO_IN,
+>              qio_net_listener_channel_func,
+> -            listener, (GDestroyNotify)object_unref, listener->context);
+> +            listener, NULL, listener->context);
+>      }
+>  }
+> 
+> @@ -144,6 +146,7 @@ qio_net_listener_unwatch(QIONetListener *listener, const char *caller)
+>              listener->io_source[i] = NULL;
+>          }
+>      }
+> +    object_unref(OBJECT(listener));
+>  }
+> 
+>  void qio_net_listener_add(QIONetListener *listener,
+> -- 
+> 2.51.1
 > 
 
-I thought about it.
-
-In my opinion, switching to use common "out: " and gotos instead of simple returns,
-is too much pay for proper out trace-points.
-
-So, it's a compromise: we have at least trace-point on success-out, and don't make
-the code more complicated just for good trace points.
-
-Probably, we can invent some smart macro, which will inject out tracepoint using
-g_auto...
-
+With regards,
+Daniel
 -- 
-Best regards,
-Vladimir
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
