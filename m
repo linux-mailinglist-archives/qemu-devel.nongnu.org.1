@@ -2,98 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D70C31C57
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 16:13:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E186C31C96
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 16:15:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGIiY-0004uF-2R; Tue, 04 Nov 2025 10:13:06 -0500
+	id 1vGIkG-0006RU-Kx; Tue, 04 Nov 2025 10:14:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vGIiV-0004tj-2k
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:13:03 -0500
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vGIiT-00011q-Ba
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:13:02 -0500
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-44f6c663452so1137552b6e.0
- for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 07:13:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1762269180; x=1762873980; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wGemEhcrpGKA4eRbEVkDZAuRtZYzqfqUGBeTEb4mjzo=;
- b=mPZHwVk5EXkMRcAEjJfNfqkxQufhGr1t8vtM1ee/W+NroShcy5qNXD7bE0jg7yZldp
- InYkz6SbPPIjBIt4GV37F1iEQgVtrxlcMPjRLJzd/oXAQoaJtUdOntFlUh8hI2XqpsYY
- rHMQeMGp8Tk6CW3YK6rylorqPyiFWrFZHzPxQe5yiAxXq3a2E1YUHZmwhmpFV+U5GCOE
- 2I0+rWBPuszAQuGlDBoW4SJymK5Sh4Ad+sBzK4B6PAg8fknNNm22J+o3N/GekXasEkjb
- Rw4V8VDSKtuCKqkri9kXP4YNLQz/m91tSZjTeUpkAmheT09JynAj4opNbtRYKR1Fy64z
- gt3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762269180; x=1762873980;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wGemEhcrpGKA4eRbEVkDZAuRtZYzqfqUGBeTEb4mjzo=;
- b=EaXPCa64gzwpWLbYEy9Lpj44qTmfv+M02ODQoPoiszYw5DwDiI7L2fSzts3QQIBZX4
- 52A4U6tRgmm951L3KvNEZz873ApfmKPAoITPenxoPyoMdzKVv5AET+roQmxZvRQS9l4F
- SDBhv0z44zZ1GN/GDBIjQHcFV6GPyiN+diGszhsZWIKfwNQGDKuJ5hWTuFf3u9/WsdeK
- 5ZXAcbhLVKqEjRSvpQKZ+FcGcsYoC0Gq88Pnq7k6SvScTFR4lL96ahdybOtkqJQPgGrh
- W6BWPP4PBCe56YmVRe9dUS97F90ls9m6J6jPsEFV/jwymmYHLCUUeLGKBNp6MQ0MQCY8
- nGSA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWUA0uIldj1X0Kmv5ZMa4SUQxrNHAuL8aV8N6k8b2QNOPNbrPQ1XJtw0sBQdm0imKeSVNULSsWf3CPN@nongnu.org
-X-Gm-Message-State: AOJu0YyzAR/ex+5baBp3covYVKYcRIbdWclxLErNr6r1+nX6ve7ZnE9X
- lggdN32Vj5rUuQrzLBVWMxTrxCS5qasMcYTOzCNA00WxyMyBwlL60XZorzKXAsrHW9Q=
-X-Gm-Gg: ASbGncvmBF/uGvxoeysoMPLZ+MG/FWfNZ3342NR6CM2pAob9gASIQzQtXBIBWQttG5O
- HHvK3Sj/+PaQ/RSb4cidkpjurh3tTnB2UgOre6bmcJZkxU5jwmbqe6+umIVDuxAjveZKMvdm3TH
- ntHtmXKlo5SgerlDtw50uxcxpDY4uEHg0kBGKn5PRSQpN6PLYdGCr4vtoXJf0aOyML2nVEimeya
- gE0nrqealZfe0EwkX3hMwOKejW1GTkt0iyYiIPXKsf0MH072fDpzwS49+O9prqB6HOpi1NlGQDN
- XirEigIKKS3sXtA56CwUCwwnozeh9mINpm6kmMoQ3QP/5/4tTXkRksZjgYJ7RLVpUaIKN3/gNmT
- hoiO/vb1x7AtOJanf5KHEW52DLMltE6byCcGrKDna6G95mMy7I9MufZFmIMbApm659oyoMDMXar
- 2uZF3HfE949jhF
-X-Google-Smtp-Source: AGHT+IHyVgyl/Q2wJkZ0asHz5cj7xtepVhfOT8TskfTMdzvAaTkZF5OvLdKZvd6tTP8vRlbQB8xjNw==
-X-Received: by 2002:a05:6808:23cd:b0:43d:24b7:2b93 with SMTP id
- 5614622812f47-44f95eb8411mr7378988b6e.17.1762269179923; 
- Tue, 04 Nov 2025 07:12:59 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.233])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-44fde2810dcsm469943b6e.4.2025.11.04.07.12.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Nov 2025 07:12:58 -0800 (PST)
-Message-ID: <a6e5f685-4bfc-4e13-b0b7-860fc0630b9e@ventanamicro.com>
-Date: Tue, 4 Nov 2025 12:12:55 -0300
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGIkE-0006RI-Dh
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:14:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGIkC-0001OV-EK
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 10:14:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762269287;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=3jS5/L7l6+M/sX+n2Ee2nQXmOif1GM9ugVVbUHIAplU=;
+ b=Rrkm3muAQnR2lWLUfxkhpM20SngU3IfqkexYFVQHV2jLbth59FuyYt0mZt7jG+GxoQCv4U
+ igQK3xEw8Tug1sJBfBXHJJies1uOHrStNic6r5yuCqr2TTws01IED8O9VecPuSoLWXajwA
+ 1vFrLtkBPh4kYQWI+5xX9nRvRzPXcbw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-e7RbG82COs-dAow1314KLw-1; Tue,
+ 04 Nov 2025 10:14:44 -0500
+X-MC-Unique: e7RbG82COs-dAow1314KLw-1
+X-Mimecast-MFC-AGG-ID: e7RbG82COs-dAow1314KLw_1762269283
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0343C1869BB5; Tue,  4 Nov 2025 15:14:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.226.47])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 342501956056; Tue,  4 Nov 2025 15:14:36 +0000 (UTC)
+Date: Tue, 4 Nov 2025 16:14:34 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, berrange@redhat.com
+Subject: Re: [PATCH 7/8] qio: Use AioContext for default-context QIONetListener
+Message-ID: <aQoYWusx1Wruhk_A@redhat.com>
+References: <20251103202849.3687643-10-eblake@redhat.com>
+ <20251103202849.3687643-17-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] riscv: Update MIPS vendor id
-To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
- "cfu@mips.com" <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "alistair23@gmail.com" <alistair23@gmail.com>,
- "thuth@redhat.com" <thuth@redhat.com>
-References: <20251104150708.3345289-1-djordje.todorovic@htecgroup.com>
- <20251104150708.3345289-2-djordje.todorovic@htecgroup.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Language: en-US
-In-Reply-To: <20251104150708.3345289-2-djordje.todorovic@htecgroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251103202849.3687643-17-eblake@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,32 +80,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/4/25 12:07 PM, Djordje Todorovic wrote:
-> According to MIPS programming guide, the id is 0x127.
-> A patch for this has been sent on Linux mailing list as well.
+Am 03.11.2025 um 21:10 hat Eric Blake geschrieben:
+> The user "John Doe" reported a deadlock when attempting to use
+> qemu-storage-daemon to serve both a base file over NBD, and a qcow2
+> file with that NBD export as its backing file, from the same process,
+> even though it worked just fine when there were two q-s-d processes.
+> The bulk of the NBD server code properly uses coroutines to make
+> progress in an event-driven manner, but the code for spawning a new
+> coroutine at the point when listen(2) detects a new client was
+> hard-coded to use the global GMainContext; in other words, the
+> callback that triggers nbd_client_new to let the server start the
+> negotiation sequence with the client requires the main loop to be
+> making progress.  However, the code for bdrv_open of a qcow2 image
+> with an NBD backing file uses an AIO_WAIT_WHILE nested event loop to
+> ensure that the entire qcow2 backing chain is either fully loaded or
+> rejected, without any side effects from the main loop causing unwanted
+> changes to the disk being loaded (in short, an AioContext represents
+> the set of actions that are known to be safe while handling block
+> layer I/O, while excluding any other pending actions in the global
+> main loop with potentially larger risk of unwanted side effects).
 > 
-> Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-> ---
->   target/riscv/cpu_vendorid.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> This creates a classic case of deadlock: the server can't progress to
+> the point of accept(2)ing the client to write to the NBD socket
+> because the main loop is being starved until the AIO_WAIT_WHILE
+> completes the bdrv_open, but the AIO_WAIT_WHILE can't progress because
+> it is blocked on the client coroutine stuck in a read() of the
+> expected magic number from the server side of the socket.
 > 
-> diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
-> index 28f0ce9370..f1ffc66542 100644
-> --- a/target/riscv/cpu_vendorid.h
-> +++ b/target/riscv/cpu_vendorid.h
-> @@ -2,7 +2,7 @@
->   #define TARGET_RISCV_CPU_VENDORID_H
->   
->   #define THEAD_VENDOR_ID         0x5b7
-> -#define MIPS_VENDOR_ID          0x722
-> +#define MIPS_VENDOR_ID          0x127
+> Fortunately, the way that AioContext is set up, any callback that is
+> registered to the global AioContext will also be serviced by the main
+> loop.  So the fix for the deadlock is to alter QIONetListener so that
+> if it is not being used in an explicit alternative GMainContext, then
+> it should perform its polling via the global AioContext (which
+> indirectly still progresses in the default GMainContext) rather than
+> directly in the default GMainContext.  This has no change in behavior
+> to any prior use that did not starve the main loop, but has the
+> additional benefit that in the bdrv_open case of a nested AioContext
+> loop, the server's listen/accept handler is no longer starved because
+> it is now part of the same AioContext loop.  From there, since NBD
+> already uses coroutines for both server and client code, the nested
+> AioContext loop finishes quickly and opening the qcow2 backing chain
+> no longer deadlocks.
+> 
+> The next patch will add a unit test (kept separate to make it easier
+> to rearrange the series to demonstrate the deadlock without this
+> patch).
+> 
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3169
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This assumes that you'll only ever want to listen on a socket in the
+main thread. I understand this is what the NBD server does today even if
+you specify an iothread, so despite the limitation the patch is useful.
+We just might need to change the interfaces again later.
 
->   
->   #define VEYRON_V1_MARCHID       0x8000000000010000
->   #define VEYRON_V1_MIMPID        0x111
+Kevin
 
 
