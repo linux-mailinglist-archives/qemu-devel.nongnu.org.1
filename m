@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B238C32835
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 19:05:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D5BC32811
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 19:03:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGLL8-0006jh-NQ; Tue, 04 Nov 2025 13:01:08 -0500
+	id 1vGLN9-0000ov-Qo; Tue, 04 Nov 2025 13:03:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFL-0001KO-5g
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFL-0001KP-5m
  for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:55:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFI-00070X-LL
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vGLFJ-00071q-5g
  for qemu-devel@nongnu.org; Tue, 04 Nov 2025 12:55:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762278903;
+ s=mimecast20190719; t=1762278904;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/JyZOAu8kJZG1l3piTbT+IR3lNXsnQ6tJXrxHnnA3CY=;
- b=O1ZvQ682A0hvpwfMZAS8ZiLIBclOviMZC8HVHP8W0F0nWL+1UGBLAjAQLzPR3uU2Zn4h9G
- yZrinqNLR9tUXH0US3yPfWD7t9+5z0zu/XHBAWPY0YhFLIB43sP1BmTzOF18UNCZ8bIEwb
- PnXmGTFWLFPtcfjw42KWhtkPH3MnK6g=
+ bh=mmHhshZnNaiyS7BfkMJf8KcDdSyD7WnoCR26ukj/Z4w=;
+ b=TtvxnBLpIy+1nvxqXPs+VbLOwuaBM08oODHmDSYQIBs2Ih2OSub7UpCNfY4Tw49fjD/bPM
+ nse6fj8D20S7HuW+UGKVwh81YMLddtukrROGMW/pUmssDXtQorNZAQQPh68wYJPFo1Bg0P
+ htBvDKu6HJATP9h8SrWkPXtm/V9zOl0=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-b1m9NJHSMhmM6S18MRXiyg-1; Tue,
- 04 Nov 2025 12:55:01 -0500
-X-MC-Unique: b1m9NJHSMhmM6S18MRXiyg-1
-X-Mimecast-MFC-AGG-ID: b1m9NJHSMhmM6S18MRXiyg_1762278900
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-GsaNExLpPdyCmv0eN-woMA-1; Tue,
+ 04 Nov 2025 12:55:03 -0500
+X-MC-Unique: GsaNExLpPdyCmv0eN-woMA-1
+X-Mimecast-MFC-AGG-ID: GsaNExLpPdyCmv0eN-woMA_1762278902
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7596C18002F9; Tue,  4 Nov 2025 17:55:00 +0000 (UTC)
+ id 3FB9018001E3; Tue,  4 Nov 2025 17:55:02 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.45.226.47])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 30170180044F; Tue,  4 Nov 2025 17:54:58 +0000 (UTC)
+ id ED6AA180045B; Tue,  4 Nov 2025 17:55:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 20/27] iotests: Run iotests with sanitizers
-Date: Tue,  4 Nov 2025 18:54:08 +0100
-Message-ID: <20251104175415.525388-21-kwolf@redhat.com>
+Subject: [PULL 21/27] qcow2: rename update_refcount_discard to queue_discard
+Date: Tue,  4 Nov 2025 18:54:09 +0100
+Message-ID: <20251104175415.525388-22-kwolf@redhat.com>
 In-Reply-To: <20251104175415.525388-1-kwolf@redhat.com>
 References: <20251104175415.525388-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -81,92 +80,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+From: Jean-Louis Dupond <jean-louis@dupond.be>
 
-Commit 2cc4d1c5eab1 ("tests/check-block: Skip iotests when sanitizers
-are enabled") changed iotests to skip when sanitizers are enabled.
-The rationale is that AddressSanitizer emits warnings and reports leaks,
-which results in test breakage. Later, sanitizers that are enabled for
-production environments (safe-stack and cfi-icall) were exempted.
+The function just queues discards, and doesn't do any refcount change.
+So let's change the function name to align with its function.
 
-However, this approach has a few problems.
-
-- It requires rebuild to disable sanitizers if the existing build has
-  them enabled.
-- It disables other useful non-production sanitizers.
-- The exemption of safe-stack and cfi-icall is not correctly
-  implemented, so qemu-iotests are incorrectly enabled whenever either
-  safe-stack or cfi-icall is enabled *and*, even if there is another
-  sanitizer like AddressSanitizer.
-
-To solve these problems, direct AddressSanitizer warnings to separate
-files to avoid changing the test results, and selectively disable
-leak detection at runtime instead of requiring to disable all
-sanitizers at buildtime.
-
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <20251023-iotests-v1-2-fab143ca4c2f@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+Message-ID: <20250513132628.1055549-2-jean-louis@dupond.be>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/testrunner.py | 12 ++++++++++++
- tests/qemu-iotests/meson.build   |  8 --------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ block/qcow2-refcount.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qemu-iotests/testrunner.py b/tests/qemu-iotests/testrunner.py
-index 14cc8492f9..e2a3658994 100644
---- a/tests/qemu-iotests/testrunner.py
-+++ b/tests/qemu-iotests/testrunner.py
-@@ -263,10 +263,21 @@ def do_run_test(self, test: str) -> TestResult:
-             Path(env[d]).mkdir(parents=True, exist_ok=True)
+diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
+index 0266542cee..8fb210501c 100644
+--- a/block/qcow2-refcount.c
++++ b/block/qcow2-refcount.c
+@@ -754,8 +754,8 @@ void qcow2_process_discards(BlockDriverState *bs, int ret)
+     }
+ }
  
-         test_dir = env['TEST_DIR']
-+        f_asan = Path(test_dir, f_test.name + '.out.asan')
-         f_bad = Path(test_dir, f_test.name + '.out.bad')
-         f_notrun = Path(test_dir, f_test.name + '.notrun')
-         f_casenotrun = Path(test_dir, f_test.name + '.casenotrun')
+-static void update_refcount_discard(BlockDriverState *bs,
+-                                    uint64_t offset, uint64_t length)
++static void queue_discard(BlockDriverState *bs,
++                          uint64_t offset, uint64_t length)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     Qcow2DiscardRegion *d, *p, *next;
+@@ -902,7 +902,7 @@ update_refcount(BlockDriverState *bs, int64_t offset, int64_t length,
+             }
  
-+        env['ASAN_OPTIONS'] = f'detect_leaks=0:log_path={f_asan}'
-+
-+        def unlink_asan():
-+            with os.scandir(test_dir) as it:
-+                for entry in it:
-+                    if entry.name.startswith(f_asan.name):
-+                        os.unlink(entry)
-+
-+        unlink_asan()
-+
-         for p in (f_notrun, f_casenotrun):
-             silent_unlink(p)
+             if (s->discard_passthrough[type]) {
+-                update_refcount_discard(bs, cluster_offset, s->cluster_size);
++                queue_discard(bs, cluster_offset, s->cluster_size);
+             }
+         }
+     }
+@@ -3619,7 +3619,7 @@ qcow2_discard_refcount_block(BlockDriverState *bs, uint64_t discard_block_offs)
+         /* discard refblock from the cache if refblock is cached */
+         qcow2_cache_discard(s->refcount_block_cache, refblock);
+     }
+-    update_refcount_discard(bs, discard_block_offs, s->cluster_size);
++    queue_discard(bs, discard_block_offs, s->cluster_size);
  
-@@ -312,6 +323,7 @@ def do_run_test(self, test: str) -> TestResult:
-                               description=f'output mismatch (see {f_bad})',
-                               diff=diff, casenotrun=casenotrun)
-         else:
-+            unlink_asan()
-             f_bad.unlink()
-             return TestResult(status='pass', elapsed=elapsed,
-                               casenotrun=casenotrun)
-diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-index fad340ad59..56b0446827 100644
---- a/tests/qemu-iotests/meson.build
-+++ b/tests/qemu-iotests/meson.build
-@@ -2,14 +2,6 @@ if not have_tools or host_os == 'windows'
-   subdir_done()
- endif
- 
--foreach cflag: qemu_ldflags
--  if cflag.startswith('-fsanitize') and \
--     not cflag.contains('safe-stack') and not cflag.contains('cfi-icall')
--    message('Sanitizers are enabled ==> Disabled the qemu-iotests.')
--    subdir_done()
--  endif
--endforeach
--
- bash = find_program('bash', required: false, version: '>= 4.0')
- if not bash.found()
-   message('bash >= v4.0 not available ==> Disabled the qemu-iotests.')
+     return 0;
+ }
 -- 
 2.51.1
 
