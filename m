@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0205C31353
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0938C31332
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:22:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGH04-0001QC-Lk; Tue, 04 Nov 2025 08:23:05 -0500
+	id 1vGGyg-0000CZ-Gp; Tue, 04 Nov 2025 08:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGyh-0000DM-Dc
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:40 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGye-0000CL-Ta
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGyf-0001Y2-3P
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGyd-0001U8-38
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762262496;
+ s=mimecast20190719; t=1762262494;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cZ46gL+hY4P6Gy/MfsaIds4gbhwgWt8fqCmfXfMQazo=;
- b=cQi7nRJvnujyd7wb/PGzDQv/q5UehbV68XKjym/tRpj1qLTRiSf/GMhPu4OuyD25gi30ys
- cAloQfEYm9U0xxAj6skNGEZ50NBd4dVLQ/Hn8KFAd7nRZNnSxWtnPOHoT9ccmqZkwHXt01
- sTU1bjGhQz8/SYw0oSNN4s27svZ2boI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=zu5G30QuLl31+UO3Ev2SMdWcF3Nqh5ryUNTfhDBGnNs=;
+ b=gkamR2NR53m1dcyutqAv0551YktvAux/GmDBSZHF+Ee3ZrzvMvba0PcXbvaY1+xJbms5+X
+ ujzp5jFWydQULeU7lXZi6E2/NhF0rCyFQf59RiZ6myG55+CUOywLTTX9wWwPTAqJADO4UJ
+ dJxhhfSPS4h/1biipQ17Vsfq6h/5fuI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-RYeSpsnKNruqTjxL9oRlvg-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-V7hAMwtSMxSwYCy-PHmang-1; Tue,
  04 Nov 2025 08:21:33 -0500
-X-MC-Unique: RYeSpsnKNruqTjxL9oRlvg-1
-X-Mimecast-MFC-AGG-ID: RYeSpsnKNruqTjxL9oRlvg_1762262492
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: V7hAMwtSMxSwYCy-PHmang-1
+X-Mimecast-MFC-AGG-ID: V7hAMwtSMxSwYCy-PHmang_1762262492
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DA7091956096; Tue,  4 Nov 2025 13:21:31 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DD57618001C6; Tue,  4 Nov 2025 13:21:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4FE5219560BC; Tue,  4 Nov 2025 13:21:31 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D8751800577; Tue,  4 Nov 2025 13:21:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 81FB321E677A; Tue, 04 Nov 2025 14:21:25 +0100 (CET)
+ id 8609021E66E0; Tue, 04 Nov 2025 14:21:25 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 09/12] docs/interop/vhost-user: Belatedly convert "Example"
- section
-Date: Tue,  4 Nov 2025 14:21:22 +0100
-Message-ID: <20251104132125.4134730-10-armbru@redhat.com>
+Subject: [PULL 10/12] docs/interop/firmware: Literal block markup
+Date: Tue,  4 Nov 2025 14:21:23 +0100
+Message-ID: <20251104132125.4134730-11-armbru@redhat.com>
 In-Reply-To: <20251104132125.4134730-1-armbru@redhat.com>
 References: <20251104132125.4134730-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
@@ -83,28 +84,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are gone since 3c5f6114d9f (qapi: remove "Example" doc section).
+A few doc comments show command line snippets.  The snippets are
+indented, which is legible enough.  Actually formatting these with
+Sphinx would fail with "Unexpected indentation", though.  We don't so
+far.  Add suitable markup anyway.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-ID: <20251103082354.3273027-8-armbru@redhat.com>
+Message-ID: <20251103082354.3273027-9-armbru@redhat.com>
 ---
- docs/interop/vhost-user.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/interop/firmware.json | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/docs/interop/vhost-user.json b/docs/interop/vhost-user.json
-index cd3a768615..29c84e86e5 100644
---- a/docs/interop/vhost-user.json
-+++ b/docs/interop/vhost-user.json
-@@ -266,7 +266,7 @@
+diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+index 7ffa7697e4..da0362a2c0 100644
+--- a/docs/interop/firmware.json
++++ b/docs/interop/firmware.json
+@@ -308,12 +308,19 @@
+ #     indicates whether there will be an associated NVRAM template
+ #     present.  The preferred corresponding QEMU command line options
+ #     are
++#
++#     ::
++#
+ #         -drive if=none,id=pflash0,readonly=on,file=@executable.@filename,format=@executable.@format
+ #         -machine pflash0=pflash0
++#
+ #     or equivalent -blockdev instead of -drive.  When @mode is
+ #     @combined the executable must be cloned before use and
+ #     configured with readonly=off.  With QEMU versions older than
+ #     4.0, you have to use
++#
++#     ::
++#
+ #         -drive if=pflash,unit=0,readonly=on,file=@executable.@filename,format=@executable.@format
  #
- # Since: 4.0
+ # @nvram-template: Identifies the NVRAM template compatible with
+@@ -326,10 +333,17 @@
+ #     typically used for persistently storing the non-volatile UEFI
+ #     variables of a virtual machine definition.  The preferred
+ #     corresponding QEMU command line options are
++#
++#     ::
++#
+ #         -drive if=none,id=pflash1,readonly=off,file=FILENAME_OF_PRIVATE_NVRAM_FILE,format=@nvram-template.@format
+ #         -machine pflash1=pflash1
++#
+ #     or equivalent -blockdev instead of -drive.  With QEMU versions
+ #     older than 4.0, you have to use
++#
++#     ::
++#
+ #         -drive if=pflash,unit=1,readonly=off,file=FILENAME_OF_PRIVATE_NVRAM_FILE,format=@nvram-template.@format
  #
--# Example:
-+# .. qmp-example:
- #
- # {
- #   "description": "QEMU vhost-user-gpu",
+ # Since: 3.0
 -- 
 2.49.0
 
