@@ -2,165 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F663C3223F
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE61C32245
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 17:52:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGKFG-0006oh-Ca; Tue, 04 Nov 2025 11:50:58 -0500
+	id 1vGKFI-00071B-RP; Tue, 04 Nov 2025 11:51:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1vGKCz-0006ij-JD; Tue, 04 Nov 2025 11:48:49 -0500
-Received: from mail-westus3azlp170110003.outbound.protection.outlook.com
- ([2a01:111:f403:c107::3] helo=PH0PR06CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <startergo@protonmail.com>)
+ id 1vGKCz-0006id-3m
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:48:50 -0500
+Received: from mail-10631.protonmail.ch ([79.135.106.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1vGKCu-0002kT-4h; Tue, 04 Nov 2025 11:48:37 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MpCeYF6gBL77reeI+JReP+wf/PaLYI/NasE39BzpvbzOFzRp3kw3Lley6ONf0dmviZK9O8U6XFWN+oPwjjJEQ05N2MYrnQGckOMzNeoRyaMkJW1StMOEG1z8xgsIunPjtAzvHajWt+pAPiftCtde+w/XpSZIf6Lmh3mhx70qs0FMPGetPSx9fVxMZ50wGrUKvaqrTVUFhX4DyA5M7k3FaIhsMKYNaKzQYO06DSVFvekiwfIL7rESoNUOIKTDCx5uXfe1zx57GQSBqu0FyXV/Dk8/0z4W5BKUFxi+YR1wB+0jc3T0spyana0N1ykDtT324Gt+RW76fNQurbJV8fHQ5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=32OpHf3QpZcVnnsAz6W8+huziSYgW777jvfTouk2q8A=;
- b=P9iSaV9pcWaywUuCgwcUzmG9oVb+LqzcLu/SPlhH38ty1jxyEq2eKfXLIyyQFyvKDLPfktAleH3L9ymiyU5UJG1oY0wbYEzbjFzgqKSMmz/FDib0LkhHP2Jb3kel4TwQtirk6PAUMZuZrKWZYyt0k4LYwoSVvTUtGuEkETE2xvJ1z93b+3R+3WjYiI9joPvW3ISCViPxDIKeRSfzO/mwhOt1aVWw0MfqysRxTomUu4lsr0AbwUMTMpjc4ippDyOWcp35A7/RNh7rGekPzIjqEe5X/49lV/2piVINKlxOiCgDClMU8tHAK+14Rw46CejrEjVx0NARO8Bk93dHTAKHew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=32OpHf3QpZcVnnsAz6W8+huziSYgW777jvfTouk2q8A=;
- b=ZpCrZp8CTRNPfqA8pyBHhHmSVEuSZ9hgn8sm7DYn65Jx+g/Qe0hfxjcsRF1/DOavhZ/90wC+4o8vM/k4hYlyxT6anI1m10z5tpo1WgzWT6T5VMY+kFKM6rNxsc+whYXAuAgGrDGbhNUWihOI+9fDjDJnP4LCyRoQ1N+cYzmDZiuB2nBF3XQyfWfHmELAMkaDFa6vI5Kp0AH0I2ABElPs2S5GBxk9dbpOy0JbMCRemgBIwVd4Io4G3XsXlhQvmlCPzCHgLGKndfnq7od9rckI0nVrpextm/2/zGPgAIZ6i3kXKV0kWKF7vbYjiaRRD+ILYhIVSzD8ugD7/VZWvoICXA==
-Received: from DS7PR03CA0281.namprd03.prod.outlook.com (2603:10b6:5:3ad::16)
- by MW4PR12MB7120.namprd12.prod.outlook.com (2603:10b6:303:222::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 4 Nov
- 2025 16:48:20 +0000
-Received: from DS3PEPF000099D5.namprd04.prod.outlook.com
- (2603:10b6:5:3ad:cafe::3a) by DS7PR03CA0281.outlook.office365.com
- (2603:10b6:5:3ad::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.16 via Frontend Transport; Tue,
- 4 Nov 2025 16:48:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS3PEPF000099D5.mail.protection.outlook.com (10.167.17.6) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Tue, 4 Nov 2025 16:48:20 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Nov
- 2025 08:48:09 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 4 Nov 2025 08:48:09 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 4 Nov 2025 08:48:08 -0800
-Date: Tue, 4 Nov 2025 08:48:07 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, Jason Gunthorpe
- <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
- <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>, "smostafa@google.com"
- <smostafa@google.com>, "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
- "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
- "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
- "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, "yi.l.liu@intel.com"
- <yi.l.liu@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>
-Subject: Re: [PATCH v5 13/32] hw/arm/smmuv3-accel: Add nested vSTE
- install/uninstall support
-Message-ID: <aQouR6WRyi1nCgje@Asurada-Nvidia>
-References: <20251031105005.24618-1-skolothumtho@nvidia.com>
- <20251031105005.24618-14-skolothumtho@nvidia.com>
- <987614d8-de6b-4cb5-b5a8-1723e24502f3@redhat.com>
- <CH3PR12MB7548B864AF133DEFFCFCBB2BABC4A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <startergo@protonmail.com>)
+ id 1vGKCp-0002if-N0
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 11:48:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail3; t=1762274904; x=1762534104;
+ bh=m8PiRNpPGb9MqMR3xD3mCobqyH9jVoDuB3GPE5WBNdg=;
+ h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+ Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+ Message-ID:BIMI-Selector;
+ b=J+bPap0NBsBXEIswCDWW+PUjKg+hYTpJUwgVa3pUFjcwQG5jSTkPyW8s6+UNIi8hc
+ nt6I7GGAq94OrK70z74CpjzXQs5rWgyWvFRl41MhBIoZnD0fot511E5SWYiaJ4959h
+ qHdNSLVpUR4gDA9rLiJcmy9Gn3ai/6vXp71f5OoMityiUg0Yf0A9uOBWoHoN5lm4Ja
+ Ep95df04ZjGFR5OqDOYF0xg6/EWxQfWktGzeMbVTHQtGkKP7XUAHXOf42TbGND8Ph7
+ 9hLGUb/EdQ2tfaYa42x27nRpFxB43sllRUTdRvg8QBWYhsA1VMpUn0vIDu7x/ALHgv
+ rLvWi5slq5Cdw==
+Date: Tue, 04 Nov 2025 16:48:18 +0000
+To: qemu-devel@nongnu.org
+From: startergo <startergo@protonmail.com>
+Cc: mohd.akram@outlook.com, startergo <startergo@protonmail.com>
+Subject: Re: [PATCH v3] ui/sdl2: Fix using GL display on macOS with
+ improvements
+Message-ID: <H77mgjukq822_nsOX2KWyOpMcXT6vh-IoFHveNUaqFyUcqqbGzC4qZbyRPZwtAnBCqceP2c3I0aK-chV_-aaWK5h99oku_luP3Y1l0Gr9uk=@protonmail.com>
+In-Reply-To: <20251103202322.24813-1-startergo@protonmail.com>
+References: <20251103202322.24813-1-startergo@protonmail.com>
+Feedback-ID: 25315608:user:proton
+X-Pm-Message-ID: f0b09cc3cb3482c94fe61f56e0a7d4e8c17907a6
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CH3PR12MB7548B864AF133DEFFCFCBB2BABC4A@CH3PR12MB7548.namprd12.prod.outlook.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D5:EE_|MW4PR12MB7120:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83bc391c-48ee-41bc-9946-08de1bc1f61b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|7416014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?S2tOYUxmRXVyYzJTRkdvSVFVMkk0cXoxaDNhTlVKZTB1SlZ3d3hxdVE2V0RQ?=
- =?utf-8?B?c0NGdmZDYjRXUjZ4UkQwYU1aQUVQeFhLZEFTT0VOdXIwRVZtbjE5ZEJOZ2VX?=
- =?utf-8?B?bGlhNFVmcGVPbW9lTFF2T0JlRlFndExUU2hjc3RDc1pWMTZVbm5Ra3RQZG1H?=
- =?utf-8?B?a3dDd1lMd2hvM2RuK3M2VVVCWUFENGdHYzNobzhMaWJlQU9JdkpMNllmSkhM?=
- =?utf-8?B?QjhoR01jdWlMRVplSkRCVXRSN25SbStvY2RCL1h5YmxrM1d1YkkvS0pEa0cr?=
- =?utf-8?B?bEFpdEZieWdzcFFNOEhDMHdXS0VlZnBiM0lOVG5ITFMwVlV6dEsrK2Y0bUcr?=
- =?utf-8?B?M0cwc3FBcmZvb0IwK0prSHl0dUZBZTVHNEpNcEZuSnpuWjlHN2o5M09hcmFD?=
- =?utf-8?B?Q3pnZVNNRnJJU21tSW1ULzZJckJZZkc0WlhKTXJrLzU4OEdtQnhXRS9jNXR2?=
- =?utf-8?B?ajBSYU1QYXMzUC80NmN3dFU3dlpYbTJlWmV3WWhTd21zMjl5QUdHVkpXR1pL?=
- =?utf-8?B?WjA5b09BUkRXN3dQZmZFbVl5S3R4bG1MTDdHZ1hnVWpVY09zN1BsYWwrd2Q4?=
- =?utf-8?B?Vk13dVFNZ1NvVFlBMmRqRFhBTnREWEl1UFVRbUxDa1A2aG5TZ0tya3BjSjFD?=
- =?utf-8?B?QUE4dWtRWU04NHNHRVFuNEd4VjkzVEhsb0prNGhpT0U0WnBIQVNBZG92dGw0?=
- =?utf-8?B?U0tRYkNXNWRZRCsxaHBvRmJWOXptVjI2YTVXemh3Q2k5NjAyTlJQamFsb0ZW?=
- =?utf-8?B?Qk9XdEZtN3QyY2M4ZG9MT2FyR2dLcnNUQjNxb0ZSZ2Rtei9teEZER01nOTZ6?=
- =?utf-8?B?SWRBRGs1QW9QcUgzWDQ2SlVhNVBqWXRtSTJtYmVPaGVvdlBEelM5akFuNitU?=
- =?utf-8?B?VkJvdFBUV3puYW05RlhNTnZlbFJJZXFiMTVWWnUrK1dvS2FHSGdtM0dSYjN2?=
- =?utf-8?B?MG04WFNiVmlRelpHY0RNR1N6eHZsMmdCQWVjYWxnWGliRkczdkFuN2JZdU9z?=
- =?utf-8?B?V0R4QXVzK0p1TTNXeTBkSzlPSW1hR09VQnpRSG9xRUN4Wm9HWFlvV3hGL0hG?=
- =?utf-8?B?Z2o2UHhORTMyWVhXSG1VZTFHaFpFaW8rWXlJSDBDRkswdnpEUk4vNnFiUDlk?=
- =?utf-8?B?SGVNUjl5N0NUYkJVM0l6Q1c2Q056eWs0anhpU1htKzZyaGdwankzVnpvRHU0?=
- =?utf-8?B?V0NEOER1eE4wa3cxYWhOeVluckxDbkNSWVVQUjFnZmI3ZVozbHoybmRVSGhY?=
- =?utf-8?B?MExvc2VWdThiVmxpZVpoK1NUWXBNa2svMVM3MGhrdzA1dTVTY1h6SitvQUdv?=
- =?utf-8?B?cjZvZm1ORm5sUE85MzIxcDl4Y2Vmb1BRS05WWlZva2dEY0V4Q0NWTHdEc256?=
- =?utf-8?B?RkhJWllyT28vSjhsNTZqTk9mMnRIMDJOQ1AzOXpjVGF3TUt1TWZpWk54LzNr?=
- =?utf-8?B?VEVYd1Zwdkc0cElCc0pjNHcrOVJ1bzBid0xEd3lMQ25INW5nTzJPQ0JzUjNn?=
- =?utf-8?B?cjM4M3hGejJUWWg3eEtZVTFyZm5lK0t5TjhGVVVRWDJxOEkzRG04WFA5UWRx?=
- =?utf-8?B?dTNiRFBWRVdVYVlScEs2aHdRZEZvU29zWS9odHJoNjVaRGE0aFBVUFdlaUI1?=
- =?utf-8?B?QUtPcklzQmpETVFKbXUwUU80Y0FaRUFoMTBLNzVnNkhxWFhWSEVYUnJYUENk?=
- =?utf-8?B?ejhuc3E0MUZFeTVyenNSbVR3ZHpZZGt3bmJKOXBuOEJsUXB4UUYvUFBMM3k2?=
- =?utf-8?B?L1BjaWkwTG5RaHdtY2xLY2NOOFZpKzF5bi9xNnV6SHpIT2VIT0R2QXcwS3kx?=
- =?utf-8?B?WTA0UzRQRDVsWnRKaUtpOXZJcEh0N1RBZlhKc3owVmJwdGRReFRzeVRBTFgy?=
- =?utf-8?B?SlBzREVIdGtaMVhWQk9ocFAzdWZxT0lYTVdiS1BYaENnTDJaeldYdEcrM2xm?=
- =?utf-8?B?WUxVZ2ZNdXA1L1F3WVVHQlliaWZlRkkxVkZjS29hTWhCWE9HSTBXbWxFWERV?=
- =?utf-8?B?WFZ0ZmRKYXh0VWtBTTU0bzFUall3eWVyUkZWSnQ3L0lzTVRpUTV2OU1MYlZR?=
- =?utf-8?B?MkdsbTFJK1NyZ0I0RDI3QnBWZkEvdjVRRWJEQzlhZ25PWWV3eVN5MGlhYld3?=
- =?utf-8?Q?aDrc=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 16:48:20.3758 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83bc391c-48ee-41bc-9946-08de1bc1f61b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D5.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7120
-Received-SPF: permerror client-ip=2a01:111:f403:c107::3;
- envelope-from=nicolinc@nvidia.com;
- helo=PH0PR06CU001.outbound.protection.outlook.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=79.135.106.31;
+ envelope-from=startergo@protonmail.com; helo=mail-10631.protonmail.ch
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -176,26 +70,341 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 04, 2025 at 04:26:56AM -0800, Shameer Kolothum wrote:
-> > > +static bool
-> > > +smmuv3_accel_dev_install_nested_ste(SMMUv3AccelDevice *accel_dev,
-> > > +                                    uint32_t data_type, uint32_t data_len,
-> > > +                                    void *data, Error **errp)
-> > the name is very close to the caller function, ie.
-> > smmuv3_accel_install_nested_ste which also takes a sdev.
-> > I would rename to smmuv3_accel_install_hwpt() or something alike
-> 
-> This one is going to change a bit based on Nicolin's feedback on taking 
-> care of SMMUEN/GBPA values.
-> 
-> Probably smmuv3_accel_attach_nested_hwpt() suits better considering
-> that’s what it finally ends up doing.
+Subject: Re: [PATCH v3] ui/sdl2: Fix using GL display on macOS with improve=
+ments
 
-Eric is right, because the current version passes in hwpt data for
-allocation.
+Please disregard this v3 patch. After discussion with Mohamed Akram, I'm=20
+withdrawing this submission due to authorship confusion.
 
-Yet, my new version passes in STE, so naming could keep "ste" IMHO.
+Mohamed's v2 patch (submitted October 25) should proceed as the correct=20
+minimal fix for this issue. I will submit any additional enhancements as a=
+=20
+separate follow-up patch series after his v2 is merged.
 
-Thanks
-Nicolin
+Apologies for any confusion caused.
+
+Best regards,
+startergo
+
+
+
+
+Sent with Proton Mail secure email.
+
+On Monday, November 3rd, 2025 at 3:23 PM, startergo <startergo@protonmail.c=
+om> wrote:
+
+> SDL_GL_CONTEXT_PROFILE_MASK needs to be set before creating the window
+> so that SDL can load the ANGLE library for GL ES support. The shader
+> source version also needs to match the library used. Avoid falling back
+> to GL ES on macOS since it will not be available if ANGLE was not the
+> library loaded initially.
+>=20
+> Enhancements in v3:
+> - Add better error handling and diagnostics
+> - Add GL context validation after creation
+> - Improve shader version detection for better compatibility
+> - Add conditional precision qualifiers for GLES vs GL
+> - Add runtime ANGLE detection
+> - Improve code comments and documentation
+> - Fix potential memory issues with shader compilation
+> - Add trace points for debugging
+>=20
+> Signed-off-by: Mohamed Akram mohd.akram@outlook.com
+>=20
+> ---
+> ui/sdl2-gl.c | 54 ++++++++++++++++++++++-----
+> ui/sdl2.c | 18 +++++++++
+> ui/shader.c | 64 ++++++++++++++++++++++++++++++--
+> ui/shader/texture-blit-flip.vert | 2 -
+> ui/shader/texture-blit.frag | 2 -
+> ui/shader/texture-blit.vert | 2 -
+> ui/trace-events | 7 ++++
+> 7 files changed, 130 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+> index 3be17d1..1db85d2 100644
+> --- a/ui/sdl2-gl.c
+> +++ b/ui/sdl2-gl.c
+> @@ -30,6 +30,11 @@
+> #include "ui/input.h"
+> #include "ui/sdl2.h"
+>=20
+> +#ifdef CONFIG_DARWIN
+> +#include <TargetConditionals.h>
+>=20
+> +#endif
+> +#include "trace.h"
+> +
+> static void sdl2_set_scanout_mode(struct sdl2_console *scon, bool scanout=
+)
+> {
+> if (scon->scanout_mode =3D=3D scanout) {
+>=20
+> @@ -147,27 +152,56 @@ QEMUGLContext sdl2_gl_create_context(DisplayGLCtx *=
+dgc,
+> SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+>=20
+>=20
+> SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+> - if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON ||
+>=20
+> - scon->opts->gl =3D=3D DISPLAY_GL_MODE_CORE) {
+>=20
+> - SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+> - SDL_GL_CONTEXT_PROFILE_CORE);
+> - } else if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ES) {
+>=20
+> - SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+> - SDL_GL_CONTEXT_PROFILE_ES);
+> - }
+> +
+> + /*
+> + * Note: SDL_GL_CONTEXT_PROFILE_MASK should be set before window creatio=
+n
+> + * (see sdl2_window_create) so SDL can load the correct GL library (ANGL=
+E
+> + * for ES support on macOS). Setting it here only affects shared context=
+s.
+> + */
+> +
+> SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, params->major_ver);
+>=20
+> SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, params->minor_ver);
+>=20
+>=20
+> ctx =3D SDL_GL_CreateContext(scon->real_window);
+>=20
+>=20
+> - /* If SDL fail to create a GL context and we use the "on" flag,
+> - * then try to fallback to GLES.
+> + if (ctx) {
+> + /* Validate the created context */
+> + SDL_GL_MakeCurrent(scon->real_window, ctx);
+>=20
+> + int profile =3D 0;
+> + SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile);
+> +
+> + trace_sdl2_gl_context_created(profile, params->major_ver,
+>=20
+> + params->minor_ver);
+>=20
+> +
+> + /* Check if ANGLE is being used */
+> + const char *renderer =3D (const char *)glGetString(GL_RENDERER);
+> + if (renderer && strstr(renderer, "ANGLE")) {
+> + trace_sdl2_gl_using_angle(renderer);
+> + }
+> + } else {
+> + const char *err =3D SDL_GetError();
+> + warn_report("Failed to create GL context (v%d.%d): %s",
+> + params->major_ver, params->minor_ver,
+>=20
+> + err ? err : "unknown error");
+> + }
+> +
+> + /*
+> + * If SDL fail to create a GL context and we use the "on" flag,
+> + * then try to fallback to GLES. On macOS, this will not work because
+> + * SDL must load ANGLE at window creation time for ES support. If the
+> + * Core profile was requested initially, ANGLE was not loaded and this
+> + * fallback will fail.
+> */
+> +#if !TARGET_OS_OSX
+> if (!ctx && scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON) {
+>=20
+> SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+> SDL_GL_CONTEXT_PROFILE_ES);
+> ctx =3D SDL_GL_CreateContext(scon->real_window);
+>=20
+> + if (ctx) {
+> + trace_sdl2_gl_fallback_to_es();
+> + }
+> }
+> +#endif
+> return (QEMUGLContext)ctx;
+> }
+>=20
+> diff --git a/ui/sdl2.c b/ui/sdl2.c
+> index 032dc14..5522bcc 100644
+> --- a/ui/sdl2.c
+> +++ b/ui/sdl2.c
+> @@ -34,6 +34,7 @@
+> #include "system/system.h"
+> #include "qemu/log.h"
+> #include "qemu-main.h"
+> +#include "trace.h"
+>=20
+> static int sdl2_num_outputs;
+> static struct sdl2_console *sdl2_console;
+> @@ -96,6 +97,23 @@ void sdl2_window_create(struct sdl2_console *scon)
+> #ifdef CONFIG_OPENGL
+> if (scon->opengl) {
+>=20
+> flags |=3D SDL_WINDOW_OPENGL;
+> +
+> + /*
+> + * Set GL context profile before creating the window.
+> + * This is critical on macOS where SDL needs to know which GL library
+> + * to load: the native OpenGL framework (for Core profile) or ANGLE
+> + * (for ES profile). This cannot be changed after window creation.
+> + */
+> + if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ON ||
+>=20
+> + scon->opts->gl =3D=3D DISPLAY_GL_MODE_CORE) {
+>=20
+> + SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+> + SDL_GL_CONTEXT_PROFILE_CORE);
+> + trace_sdl2_gl_request_core_profile();
+> + } else if (scon->opts->gl =3D=3D DISPLAY_GL_MODE_ES) {
+>=20
+> + SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+> + SDL_GL_CONTEXT_PROFILE_ES);
+> + trace_sdl2_gl_request_es_profile();
+> + }
+> }
+> #endif
+>=20
+> diff --git a/ui/shader.c b/ui/shader.c
+> index ab448c4..9a19ed4 100644
+> --- a/ui/shader.c
+> +++ b/ui/shader.c
+> @@ -26,6 +26,8 @@
+> */
+> #include "qemu/osdep.h"
+> #include "ui/shader.h"
+> +#include "ui/shader/texture-blit-frag.h"
+> +#include "qemu/error-report.h"
+>=20
+> #include "ui/shader/texture-blit-vert.h"
+> #include "ui/shader/texture-blit-flip-vert.h"
+> @@ -153,12 +155,68 @@ QemuGLShader *qemu_gl_init_shader(void)
+> {
+> QemuGLShader gls =3D g_new0(QemuGLShader, 1);
+>=20
+> + /
+> + * Detect GL version and set appropriate shader version.
+> + * Desktop GL: Use GLSL 1.40 (OpenGL 3.1) for broad compatibility
+> + * ES: Use GLSL ES 3.00 (OpenGL ES 3.0)
+> + */
+> + bool is_desktop =3D epoxy_is_desktop_gl();
+> + const char version =3D is_desktop ? "140" : "300 es";
+> +
+> + /
+> + * Add precision qualifiers for GLES (required), but not for desktop GL
+> + * where they may cause warnings on some drivers.
+> + */
+> + const char precision =3D is_desktop ? "" : "precision mediump float;\n"=
+;
+> +
+> + / Log GL context information for debugging */
+> + int gl_version =3D epoxy_gl_version();
+> + const char *vendor =3D (const char *)glGetString(GL_VENDOR);
+> + const char *renderer =3D (const char *)glGetString(GL_RENDERER);
+> + const char *gl_version_str =3D (const char )glGetString(GL_VERSION);
+> +
+> + info_report("Initializing shaders: %s GL %d.%d (%s / %s / %s)",
+> + is_desktop ? "Desktop" : "ES",
+> + gl_version / 10, gl_version % 10,
+> + vendor ? vendor : "unknown",
+> + renderer ? renderer : "unknown",
+> + gl_version_str ? gl_version_str : "unknown");
+> +
+> + / Check for required GL features /
+> + if (is_desktop &&
+> + !epoxy_has_gl_extension("GL_ARB_vertex_array_object")) {
+> + warn_report("GL_ARB_vertex_array_object not available, "
+> + "rendering may fail");
+> + }
+> +
+> + / Build shader source with appropriate version and precision */
+> + const char *vert_fmt =3D "#version %s\n%s";
+> + const char *frag_fmt =3D "#version %s\n%s%s";
+> +
+> + char *blit_vert_src =3D g_strdup_printf(
+> + vert_fmt, version, texture_blit_vert_src);
+> + char *blit_flip_vert_src =3D g_strdup_printf(
+> + vert_fmt, version, texture_blit_flip_vert_src);
+> + char blit_frag_src =3D g_strdup_printf(
+> + frag_fmt, version, precision, texture_blit_frag_src);
+> +
+> + / Compile and link shader programs */
+> gls->texture_blit_prog =3D qemu_gl_create_compile_link_program
+>=20
+> - (texture_blit_vert_src, texture_blit_frag_src);
+> + (blit_vert_src, blit_frag_src);
+> gls->texture_blit_flip_prog =3D qemu_gl_create_compile_link_program
+>=20
+> - (texture_blit_flip_vert_src, texture_blit_frag_src);
+> + (blit_flip_vert_src, blit_frag_src);
+> +
+> + /* Clean up temporary shader source strings */
+> + g_free(blit_vert_src);
+> + g_free(blit_flip_vert_src);
+> + g_free(blit_frag_src);
+> +
+> if (!gls->texture_blit_prog || !gls->texture_blit_flip_prog) {
+>=20
+> - exit(1);
+> + error_report("Failed to compile GL shaders (GL %s %d.%d)",
+> + is_desktop ? "Desktop" : "ES",
+> + gl_version / 10, gl_version % 10);
+> + qemu_gl_fini_shader(gls);
+> + return NULL;
+> }
+>=20
+> gls->texture_blit_vao =3D
+>=20
+> diff --git a/ui/shader/texture-blit-flip.vert b/ui/shader/texture-blit-fl=
+ip.vert
+> index f7a448d..1e4ac4c 100644
+> --- a/ui/shader/texture-blit-flip.vert
+> +++ b/ui/shader/texture-blit-flip.vert
+> @@ -1,5 +1,3 @@
+> -#version 300 es
+> -
+> in vec2 in_position;
+> out vec2 ex_tex_coord;
+>=20
+> diff --git a/ui/shader/texture-blit.frag b/ui/shader/texture-blit.frag
+> index 8ed95a4..bd296a2 100644
+> --- a/ui/shader/texture-blit.frag
+> +++ b/ui/shader/texture-blit.frag
+> @@ -1,5 +1,3 @@
+> -#version 300 es
+> -
+> uniform sampler2D image;
+> in mediump vec2 ex_tex_coord;
+> out mediump vec4 out_frag_color;
+> diff --git a/ui/shader/texture-blit.vert b/ui/shader/texture-blit.vert
+> index fb48d70..ae205f6 100644
+> --- a/ui/shader/texture-blit.vert
+> +++ b/ui/shader/texture-blit.vert
+> @@ -1,5 +1,3 @@
+> -#version 300 es
+> -
+> in vec2 in_position;
+> out vec2 ex_tex_coord;
+>=20
+> diff --git a/ui/trace-events b/ui/trace-events
+> index 3eba9ca..5effcc0 100644
+> --- a/ui/trace-events
+> +++ b/ui/trace-events
+> @@ -182,5 +182,12 @@ dbus_gl_gfx_switch(void *p) "surf: %p"
+> dbus_filter(unsigned int serial, unsigned int filter) "serial=3D%u (<=3D =
+%u)"
+> dbus_can_share_map(bool share) "can_share_map: %d"
+>=20
+> +# sdl2-gl.c
+> +sdl2_gl_context_created(int profile, int major, int minor) "profile=3D%d=
+ version=3D%d.%d"
+> +sdl2_gl_using_angle(const char *renderer) "renderer=3D%s"
+> +sdl2_gl_fallback_to_es(void) "Falling back to OpenGL ES"
+> +sdl2_gl_request_core_profile(void) "Requesting Core profile"
+> +sdl2_gl_request_es_profile(void) "Requesting ES profile"
+> +
+> # egl-helpers.c
+> egl_init_d3d11_device(void *p) "d3d device: %p"
+> --
+> 2.51.1
 
