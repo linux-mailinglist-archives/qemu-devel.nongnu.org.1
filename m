@@ -2,63 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BEDC31346
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37933C313B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 14:30:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGH02-0001Fw-E4; Tue, 04 Nov 2025 08:23:02 -0500
+	id 1vGH5T-0006jG-5O; Tue, 04 Nov 2025 08:28:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGyj-0000En-HQ
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:41 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vGH5P-0006iY-4N
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:28:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGGyh-0001cz-LK
- for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:21:41 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vGH5L-0006Vj-2G
+ for qemu-devel@nongnu.org; Tue, 04 Nov 2025 08:28:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762262497;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1762262907;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nB9bHUOCLBvQ5g3WUO0uBsAxrycGoa4Rljt33VyM9xs=;
- b=QKRLqjc53oyGMz0YkFTNau2/3XLf9GNLZehYXP9yjEcrq/h+HGmaCA158kT4RZsqnDtnYh
- 3yN+VMltqzutI6fX0sMRw9WctMKs4cYQn2KTEV93daTM+mpQdc9k9csPqrLlZhL6AC3eW/
- he7RBMO/mcVa4Dje8dhCIwsMm9SuBeQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-Jk7V5KHnMg-KQg-prgrCZA-1; Tue,
- 04 Nov 2025 08:21:33 -0500
-X-MC-Unique: Jk7V5KHnMg-KQg-prgrCZA-1
-X-Mimecast-MFC-AGG-ID: Jk7V5KHnMg-KQg-prgrCZA_1762262492
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 14D961956070; Tue,  4 Nov 2025 13:21:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C64219540DB; Tue,  4 Nov 2025 13:21:31 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8DFDB21E66E4; Tue, 04 Nov 2025 14:21:25 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 12/12] qapi: Add documentation format validation
-Date: Tue,  4 Nov 2025 14:21:25 +0100
-Message-ID: <20251104132125.4134730-13-armbru@redhat.com>
-In-Reply-To: <20251104132125.4134730-1-armbru@redhat.com>
-References: <20251104132125.4134730-1-armbru@redhat.com>
+ bh=PMvpD8RG5IOLUwsScffHHMVrs1zIFbBwA3oGpgyCADo=;
+ b=AOxfDWBT+SXf3Sy+OfkzZu+u7CIDDfBFdN8JVnpF7y/igzR+J4mCemcON3+NNVnOss3d3D
+ dFWP6Jfsm1gTaxdozlbLSoiy3JhBmdCctCIvhwRAMnqDQCb8bHUm+WW/xgoiIXh3vu1lBF
+ 36qbDrg0j9Glx5It88gcnCyTuQC6/X8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-AhlhH-_6NP2Hj9sXCeVK_A-1; Tue, 04 Nov 2025 08:28:26 -0500
+X-MC-Unique: AhlhH-_6NP2Hj9sXCeVK_A-1
+X-Mimecast-MFC-AGG-ID: AhlhH-_6NP2Hj9sXCeVK_A_1762262905
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-476b8c02445so44715285e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Nov 2025 05:28:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762262905; x=1762867705;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PMvpD8RG5IOLUwsScffHHMVrs1zIFbBwA3oGpgyCADo=;
+ b=eGGg7+SWiKhUIrVleAanqSE0NVjJKHGwVk5RkcTArG0JvytG6hkE8F/ZFOqV4DuIGw
+ TVAdk2zJ9qGwamET6iVQl7EUFOcuP8vFHO/HPCD9FOi8Cx24KCZaoRqN5qoq8C8mLjff
+ vnQ27bee+Cvh2ThyLQr/sgKNEleNeK/jGKJAYTa9emEiThNCDc4LeS5vKSVsP2UbtwMJ
+ /MsbEkU+3SiH+Ronc0VV70AXOrauUeqxanHkyeBdGaYETzozwOxLu+YngTZJ0Q/bh/ye
+ lDybhqQXY2/hF65SgEIigDneHwd5AShPQmx0UeWHwdHSBy2ldLc7+MdE+SYAVMYG5gka
+ 0+KQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0KraWwRZ6dFDg4ZQPXhCKrDybnNa6RaGFNZEofzVMUxUKEuf1qRDBaumevJ1uHX9GZx/kSanF9K9X@nongnu.org
+X-Gm-Message-State: AOJu0YykfJme67UFkQhIaW3THt8uq+ugiDBKWSmI7R71EVwdPFpv2WaH
+ fcultn4K6CrqvQ1iFmUDFquZE/np+8oiHFvGPztUiplEURC7NlaVK8S+qgUKzd6keJMTryyuwmY
+ ZZ3Fguy4U2MOQPDOk1btTOMdksVLx7BUHsEQ3Iwm60+1Qp5y7lUnM+jkl
+X-Gm-Gg: ASbGncucxi1NnrTn54kXugg///o2MqhrY/rHa0M180SF+CFPKmiW5htsyVyre8ZqPD2
+ UezsZifjDaZD/x99MfWpsLSD9iH8UY8SvmS2WEuLEhT4xc7YWImgYsdUxHWl+XnlA3wIBT/e6jS
+ H+9qDaz1d2GFydJPkM5tHhoyUJt32+BYw5O94Zf0Jed8e2Pc8L1jfjPbAgqoBMMg/QAJ+ACxqDk
+ jwZAQOgAg4WLOPw/1sJ7euc+oKA+yJR801DYr407o6QPI/J/wmkCkN91Je1mH0Pjpe1gdODxAn8
+ 4ttT4RVBeJJzi6GKJxXiOBZGu5phicppFM/df7QPs2zialT4QYHPUXyloKC9SZwcABFZwgxWUSs
+ nHRi0x64sxKjRqcuO7E7CFtIifel3MzGf2ovSeoJBD2vl7A==
+X-Received: by 2002:a05:600c:190e:b0:477:557b:6917 with SMTP id
+ 5b1f17b1804b1-477557b7939mr21697075e9.18.1762262905160; 
+ Tue, 04 Nov 2025 05:28:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqEdJPWOAbE4tEpkHuv7cnvFks1VMz/3iqI/nSU52vM2RuJvBCe2V199bCve1l2I19fZAKtw==
+X-Received: by 2002:a05:600c:190e:b0:477:557b:6917 with SMTP id
+ 5b1f17b1804b1-477557b7939mr21696765e9.18.1762262904716; 
+ Tue, 04 Nov 2025 05:28:24 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4775592226fsm17725095e9.11.2025.11.04.05.28.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Nov 2025 05:28:24 -0800 (PST)
+Message-ID: <21bcd8a4-53ad-4b00-baa4-98bccd08f2f2@redhat.com>
+Date: Tue, 4 Nov 2025 14:28:23 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/32] hw/arm/smmuv3-accel: Install SMMUv3 GBPA based
+ hwpt
+Content-Language: en-US
+To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
+ mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
+ zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
+ kjaju@nvidia.com
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
+ <20251031105005.24618-15-skolothumtho@nvidia.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251031105005.24618-15-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
 X-Spam_bar: --
@@ -66,7 +105,7 @@ X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,187 +118,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Hi Shameer,
 
-Add explicit validation for QAPI documentation formatting rules:
+On 10/31/25 11:49 AM, Shameer Kolothum wrote:
+> When the Guest reboots or updates the GBPA we need to attach a nested HWPT
+> based on the GBPA register values.
+In practice you only take into account GPBA.ABORT bit. Also reminds what
+this latter does, ie.
+"attach a nested HWPT based on the new GPBA.ABORT bit which either
+aborts all incoming transactions or bypass them"
+>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>  hw/arm/smmuv3-accel.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  hw/arm/smmuv3-accel.h |  8 ++++++++
+>  hw/arm/smmuv3.c       |  2 ++
+>  3 files changed, 52 insertions(+)
+>
+> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
+> index c74e95a0ea..0573ae3772 100644
+> --- a/hw/arm/smmuv3-accel.c
+> +++ b/hw/arm/smmuv3-accel.c
+> @@ -479,6 +479,48 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
+>      .unset_iommu_device = smmuv3_accel_unset_iommu_device,
+>  };
+>  
+> +
+> +/* Based on SMUUv3 GBPA configuration, attach a corresponding HWPT */
+> +void smmuv3_accel_gbpa_update(SMMUv3State *s)
+> +{
+> +    SMMUv3AccelDevice *accel_dev;
+> +    Error *local_err = NULL;
+> +    SMMUViommu *vsmmu;
+> +    uint32_t hwpt_id;
+> +
+> +    if (!s->accel || !s->s_accel->vsmmu) {
+> +        return;
+> +    }
+> +
+> +    vsmmu = s->s_accel->vsmmu;
+> +    /*
+> +     * The Linux kernel does not allow configuring GBPA MemAttr, MTCFG,
+> +     * ALLOCCFG, SHCFG, PRIVCFG, or INSTCFG fields for a vSTE. Host kernel
+I think in general we shall avoid doing any assumptions about linux
+kernel capability.
+> +     * has final control over these parameters. Hence, use one of the
+It seems to be contradictory to the above statement.
+> +     * pre-allocated HWPTs depending on GBPA.ABORT value.
+I would remove the comment
+> +     */
+> +    if (s->gbpa & SMMU_GBPA_ABORT) {
+> +        hwpt_id = vsmmu->abort_hwpt_id;
+> +    } else {
+> +        hwpt_id = vsmmu->bypass_hwpt_id;
+> +    }
+> +
+> +    QLIST_FOREACH(accel_dev, &vsmmu->device_list, next) {
+> +        if (!host_iommu_device_iommufd_attach_hwpt(accel_dev->idev, hwpt_id,
+> +                                                   &local_err)) {
+> +            error_append_hint(&local_err, "Failed to attach GBPA hwpt id %u "
+> +                              "for dev id %u", hwpt_id, accel_dev->idev->devid);
+> +            error_report_err(local_err);
+> +        }
+> +    }
+> +}
+> +
+> +void smmuv3_accel_reset(SMMUv3State *s)
+> +{
+> +     /* Attach a HWPT based on GBPA reset value */
+> +     smmuv3_accel_gbpa_update(s);
+> +}
+> +
+>  static void smmuv3_accel_as_init(SMMUv3State *s)
+>  {
+>  
+> diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
+> index 73b44cd7be..8931e83dc5 100644
+> --- a/hw/arm/smmuv3-accel.h
+> +++ b/hw/arm/smmuv3-accel.h
+> @@ -51,6 +51,8 @@ bool smmuv3_accel_install_nested_ste(SMMUv3State *s, SMMUDevice *sdev, int sid,
+>                                       Error **errp);
+>  bool smmuv3_accel_install_nested_ste_range(SMMUv3State *s, SMMUSIDRange *range,
+>                                             Error **errp);
+> +void smmuv3_accel_gbpa_update(SMMUv3State *s);
+> +void smmuv3_accel_reset(SMMUv3State *s);
+>  #else
+>  static inline void smmuv3_accel_init(SMMUv3State *s)
+>  {
+> @@ -67,6 +69,12 @@ smmuv3_accel_install_nested_ste_range(SMMUv3State *s, SMMUSIDRange *range,
+>  {
+>      return true;
+>  }
+> +static inline void smmuv3_accel_gbpa_update(SMMUv3State *s)
+> +{
+> +}
+> +static inline void smmuv3_accel_reset(SMMUv3State *s)
+> +{
+> +}
+>  #endif
+>  
+>  #endif /* HW_ARM_SMMUV3_ACCEL_H */
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 1fd8aaa0c7..cc32b618ed 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -1603,6 +1603,7 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
+>          if (data & R_GBPA_UPDATE_MASK) {
+>              /* Ignore update bit as write is synchronous. */
+>              s->gbpa = data & ~R_GBPA_UPDATE_MASK;
+> +            smmuv3_accel_gbpa_update(s);
+>          }
+>          return MEMTX_OK;
+>      case A_STRTAB_BASE: /* 64b */
+> @@ -1885,6 +1886,7 @@ static void smmu_reset_exit(Object *obj, ResetType type)
+>      }
+>  
+>      smmuv3_init_regs(s);
+> +    smmuv3_accel_reset(s);
+>  }
+>  
+>  static void smmu_realize(DeviceState *d, Error **errp)
+Besides
 
-1. Lines must not exceed 70 columns in width (including '# ' prefix)
-2. Sentences must be separated by two spaces
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Example sections and literal :: blocks (seldom case) are excluded, we
-don't require them to be <= 70, that would be too restrictive. Anyway,
-they share common 80-columns recommendations (not requirements).
-
-Add two simple tests, illustrating the change.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-ID: <20251031183129.246814-1-vsementsov@yandex-team.ru>
-
-The detection of example and literal blocks isn't quite correct, but
-it works well enough, and we can improve on top.
-
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Comments, error messages, and test file names tweaked]
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- scripts/qapi/parser.py                        | 50 ++++++++++++++++++-
- .../doc-bad-space-between-sentences.err       |  2 +
- .../doc-bad-space-between-sentences.json      |  6 +++
- .../doc-bad-space-between-sentences.out       |  0
- tests/qapi-schema/doc-long-line.err           |  1 +
- tests/qapi-schema/doc-long-line.json          |  6 +++
- tests/qapi-schema/doc-long-line.out           |  0
- tests/qapi-schema/meson.build                 |  2 +
- 8 files changed, 66 insertions(+), 1 deletion(-)
- create mode 100644 tests/qapi-schema/doc-bad-space-between-sentences.err
- create mode 100644 tests/qapi-schema/doc-bad-space-between-sentences.json
- create mode 100644 tests/qapi-schema/doc-bad-space-between-sentences.out
- create mode 100644 tests/qapi-schema/doc-long-line.err
- create mode 100644 tests/qapi-schema/doc-long-line.json
- create mode 100644 tests/qapi-schema/doc-long-line.out
-
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 9fbf80a541..1bb1af7051 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -108,6 +108,11 @@ def __init__(self,
-         self.exprs: List[QAPIExpression] = []
-         self.docs: List[QAPIDoc] = []
- 
-+        # State for tracking qmp-example blocks and simple
-+        # :: literal blocks.
-+        self._literal_mode = False
-+        self._literal_mode_indent = 0
-+
-         # Showtime!
-         self._parse()
- 
-@@ -423,12 +428,55 @@ def get_doc_line(self) -> Optional[str]:
-             if self.val != '##':
-                 raise QAPIParseError(
-                     self, "junk after '##' at end of documentation comment")
-+            self._literal_mode = False
-             return None
-         if self.val == '#':
-             return ''
-         if self.val[1] != ' ':
-             raise QAPIParseError(self, "missing space after #")
--        return self.val[2:].rstrip()
-+
-+        line = self.val[2:].rstrip()
-+
-+        if re.match(r'(\.\. +qmp-example)? *::$', line):
-+            self._literal_mode = True
-+            self._literal_mode_indent = 0
-+        elif self._literal_mode and line:
-+            indent = re.match(r'^ *', line).end()
-+            if self._literal_mode_indent == 0:
-+                self._literal_mode_indent = indent
-+            elif indent < self._literal_mode_indent:
-+                # ReST directives stop at decreasing indentation
-+                self._literal_mode = False
-+
-+        if not self._literal_mode:
-+            self._validate_doc_line_format(line)
-+
-+        return line
-+
-+    def _validate_doc_line_format(self, line: str) -> None:
-+        """
-+        Validate documentation format rules for a single line:
-+        1. Lines should not exceed 70 characters
-+        2. Sentences should be separated by two spaces
-+        """
-+        full_line_length = len(line) + 2  # "# " = 2 characters
-+        if full_line_length > 70:
-+            # Skip URL lines - they can't be broken
-+            if re.match(r' *(https?|ftp)://[^ ]*$', line):
-+                pass
-+            else:
-+                raise QAPIParseError(
-+                    self, "documentation line longer than 70 characters")
-+
-+        single_space_pattern = r'(\be\.g\.|^ *\d\.|([.!?])) [A-Z0-9(]'
-+        for m in list(re.finditer(single_space_pattern, line)):
-+            if not m.group(2):
-+                continue
-+            # HACK so the error message points to the offending spot
-+            self.pos = self.line_pos + 2 + m.start(2) + 1
-+            raise QAPIParseError(
-+                self, "Use two spaces between sentences\n"
-+                "If this not the end of a sentence, please report a bug.")
- 
-     @staticmethod
-     def _match_at_name_colon(string: str) -> Optional[Match[str]]:
-diff --git a/tests/qapi-schema/doc-bad-space-between-sentences.err b/tests/qapi-schema/doc-bad-space-between-sentences.err
-new file mode 100644
-index 0000000000..479982ce22
---- /dev/null
-+++ b/tests/qapi-schema/doc-bad-space-between-sentences.err
-@@ -0,0 +1,2 @@
-+doc-bad-space-between-sentences.json:4:47: Use two spaces between sentences
-+If this not the end of a sentence, please report a bug.
-diff --git a/tests/qapi-schema/doc-bad-space-between-sentences.json b/tests/qapi-schema/doc-bad-space-between-sentences.json
-new file mode 100644
-index 0000000000..87b6f6eb4e
---- /dev/null
-+++ b/tests/qapi-schema/doc-bad-space-between-sentences.json
-@@ -0,0 +1,6 @@
-+##
-+# @foo:
-+#
-+# Sentences should be separated by two spaces. But here is only one.
-+##
-+{ 'command': 'foo' }
-diff --git a/tests/qapi-schema/doc-bad-space-between-sentences.out b/tests/qapi-schema/doc-bad-space-between-sentences.out
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/qapi-schema/doc-long-line.err b/tests/qapi-schema/doc-long-line.err
-new file mode 100644
-index 0000000000..7baa5297cf
---- /dev/null
-+++ b/tests/qapi-schema/doc-long-line.err
-@@ -0,0 +1 @@
-+doc-long-line.json:4:1: documentation line longer than 70 characters
-diff --git a/tests/qapi-schema/doc-long-line.json b/tests/qapi-schema/doc-long-line.json
-new file mode 100644
-index 0000000000..c10153b0d5
---- /dev/null
-+++ b/tests/qapi-schema/doc-long-line.json
-@@ -0,0 +1,6 @@
-+##
-+# @foo:
-+#
-+# This line has exactly 71 chars, including the leading hash and space.
-+##
-+{ 'command': 'foo' }
-diff --git a/tests/qapi-schema/doc-long-line.out b/tests/qapi-schema/doc-long-line.out
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
-index c47025d16d..debff633ac 100644
---- a/tests/qapi-schema/meson.build
-+++ b/tests/qapi-schema/meson.build
-@@ -61,6 +61,7 @@ schemas = [
-   'doc-bad-event-arg.json',
-   'doc-bad-feature.json',
-   'doc-bad-indent.json',
-+  'doc-bad-space-between-sentences.json',
-   'doc-bad-symbol.json',
-   'doc-bad-union-member.json',
-   'doc-before-include.json',
-@@ -81,6 +82,7 @@ schemas = [
-   'doc-invalid-return2.json',
-   'doc-invalid-section.json',
-   'doc-invalid-start.json',
-+  'doc-long-line.json',
-   'doc-missing-colon.json',
-   'doc-missing-expr.json',
-   'doc-missing-space.json',
--- 
-2.49.0
+Eric
 
 
