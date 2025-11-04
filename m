@@ -2,65 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE72BC2EEB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 03:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA8EC2EFBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 04 Nov 2025 03:34:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vG6TO-0003k6-QB; Mon, 03 Nov 2025 21:08:39 -0500
+	id 1vG6nu-0006x5-OV; Mon, 03 Nov 2025 21:29:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vG6TC-0003jQ-77
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:08:27 -0500
+ id 1vG6nr-0006w9-TX
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vG6T9-0002cX-Qq
- for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:08:25 -0500
+ id 1vG6np-0003sp-93
+ for qemu-devel@nongnu.org; Mon, 03 Nov 2025 21:29:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762222101;
+ s=mimecast20190719; t=1762223383;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DaEUoXQtprXRljEa/AO3eufwxiT841MmdEmlqbsAhd0=;
- b=EYS9PdZdZK8QotZoFlGgNAwE9tgMeXNNi3fBwJr9KTpNrcjYxnQePWypa38bV4/kYXflxW
- 10wdtLyBe1FrD/mzPsnVUdr38Uasx9+DJQ0V2a/iVIoduMyp7UL4NnEhwTpRMcfZN+qcSI
- /E7JRrNiOUoxR2WTs+2R+f74NuhXA0w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kjYOaIiJyrJPA7b7wpcCGiW/fQ109TWEthXqz86hIG4=;
+ b=PYe3h+UlahTEioDXVq5iKUt4aBXyZlt8qcXXqvvmctaDbs1QQ8EV0Ili5OYUGS2Lp7Otd6
+ Yen6Ku9v95T6v/E4CzlhREcHHy0kxm/8J4HXRnvyQC0QddTtB8Nsv4Aco88zGaMKFPOgaf
+ 4NW/ED4XLnyQPTFvR5vUbU9gAjTrhaA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695--FjJJP0wPseyqCgY8yknbw-1; Mon,
- 03 Nov 2025 21:08:19 -0500
-X-MC-Unique: -FjJJP0wPseyqCgY8yknbw-1
-X-Mimecast-MFC-AGG-ID: -FjJJP0wPseyqCgY8yknbw_1762222098
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-vDBad9oKOw-i_HOk5YrKBg-1; Mon,
+ 03 Nov 2025 21:29:38 -0500
+X-MC-Unique: vDBad9oKOw-i_HOk5YrKBg-1
+X-Mimecast-MFC-AGG-ID: vDBad9oKOw-i_HOk5YrKBg_1762223377
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28C9D1956095; Tue,  4 Nov 2025 02:08:18 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2AEA2195609F; Tue,  4 Nov 2025 02:29:37 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.6])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6CD7B1800451; Tue,  4 Nov 2025 02:08:17 +0000 (UTC)
-Date: Mon, 3 Nov 2025 21:08:16 -0500
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4E36F19540DA; Tue,  4 Nov 2025 02:29:35 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, hibriansong@gmail.com,
- eblake@redhat.com, qemu-block@nongnu.org
-Subject: Re: [RESEND PATCH v5 00/13] aio: add the aio_add_sqe() io_uring API
-Message-ID: <20251104020816.GA114652@fedora>
-References: <20251030152150.470170-1-stefanha@redhat.com>
- <aQOqau-bpiJiNVHI@redhat.com> <aQiGjUW59RI12Gb_@redhat.com>
- <aQiuenOKNLPzYtGb@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ eblake@redhat.com, Hanna Czenczek <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, hibriansong@gmail.com
+Subject: [PATCH v6 00/15] aio: add the aio_add_sqe() io_uring API
+Date: Mon,  3 Nov 2025 21:29:18 -0500
+Message-ID: <20251104022933.618123-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="d9RfUKa2a2howWXm"
-Content-Disposition: inline
-In-Reply-To: <aQiuenOKNLPzYtGb@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,235 +82,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v6:
+- Add patch to fix timespec lifetime [Kevin]
+- Add patch to avoid spurious ->wait() returns on signals [Kevin]
 
---d9RfUKa2a2howWXm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+v5:
+- Explain how fdmon-io_uring.c differs from other fdmon implementations
+  in commit message [Kevin]
+- Move test-nested-aio-poll aio_get_g_source() removal into commit that touches test case [Kevin]
+- Avoid g_source_add_poll() use-after-free in fdmon_poll_update() [Kevin]
+- Avoid duplication in fdmon_epoll_gsource_dispatch(), use fdmon_epoll_wait() [Kevin]
+- Drop unnecessary revents checks in fdmon_poll_gsource_dispatch() [Kevin]
+- Mention in commit message that fdmon-io_uring.c is the new default [Kevin]
+- Add comments explaining how to clean up resources in error paths [Kevin]
+- Indicate error in return value from function with Error *errp arg [Kevin]
+- Add patch to unindent fdmon_io_uring_destroy() [Kevin]
+- Add patch to introduce FDMonOps->dispatch() callback [Kevin]
+- Drop patch with hacky BH optimization for fdmon-io_uring.c [Kevin]
+- Replace cqe_handler_bh with FDMonOps->dispatch() [Kevin]
+- Rename AioHandler->cqe_handler field to ->internal_cqe_handler [Kevin]
+- Consolidate fdmon-io_uring.c trace-events changes into this commit
+- Reduce #ifdef HAVE_IO_URING_PREP_WRITEV2 code duplication [Kevin]
 
-On Mon, Nov 03, 2025 at 02:30:34PM +0100, Kevin Wolf wrote:
-> Am 03.11.2025 um 11:40 hat Kevin Wolf geschrieben:
-> > Am 30.10.2025 um 19:11 hat Kevin Wolf geschrieben:
-> > > Am 30.10.2025 um 16:21 hat Stefan Hajnoczi geschrieben:
-> > > > v5:
-> > > > - Explain how fdmon-io_uring.c differs from other fdmon implementat=
-ions
-> > > >   in commit message [Kevin]
-> > > > - Move test-nested-aio-poll aio_get_g_source() removal into commit =
-that touches test case [Kevin]
-> > > > - Avoid g_source_add_poll() use-after-free in fdmon_poll_update() [=
-Kevin]
-> > > > - Avoid duplication in fdmon_epoll_gsource_dispatch(), use fdmon_ep=
-oll_wait() [Kevin]
-> > > > - Drop unnecessary revents checks in fdmon_poll_gsource_dispatch() =
-[Kevin]
-> > > > - Mention in commit message that fdmon-io_uring.c is the new defaul=
-t [Kevin]
-> > > > - Add comments explaining how to clean up resources in error paths =
-[Kevin]
-> > > > - Indicate error in return value from function with Error *errp arg=
- [Kevin]
-> > > > - Add patch to unindent fdmon_io_uring_destroy() [Kevin]
-> > > > - Add patch to introduce FDMonOps->dispatch() callback [Kevin]
-> > > > - Drop patch with hacky BH optimization for fdmon-io_uring.c [Kevin]
-> > > > - Replace cqe_handler_bh with FDMonOps->dispatch() [Kevin]
-> > > > - Rename AioHandler->cqe_handler field to ->internal_cqe_handler [K=
-evin]
-> > > > - Consolidate fdmon-io_uring.c trace-events changes into this commit
-> > > > - Reduce #ifdef HAVE_IO_URING_PREP_WRITEV2 code duplication [Kevin]
-> > >=20
-> > > The changes look good to me.
-> > >=20
-> > > However, the test cases are still failing. I just tried to see where
-> > > test-aio is stuck, and while I looked for a backtrace first, I noticed
-> > > that just attaching gdb to the process and immediately detaching again
-> > > makes the test unstuck. Very strange.
-> > >=20
-> > > This is the backtrace, maybe a bit unsurpring:
-> > >=20
-> > > (gdb) bt
-> > > #0  0x00007ffff7e6fec6 in __io_uring_submit () from /lib64/liburing.s=
-o.2
-> > > #1  0x00005555556f4394 in fdmon_io_uring_wait (ctx=3D0x555556409950, =
-ready_list=3D0x7fffffffcda0, timeout=3D749993088) at ../util/fdmon-io_uring=
-=2Ec:410
-> > > #2  0x00005555556ed29f in aio_poll (ctx=3D0x555556409950, blocking=3D=
-true) at ../util/aio-posix.c:699
-> > > #3  0x0000555555681547 in test_timer_schedule () at ../tests/unit/tes=
-t-aio.c:413
-> > > #4  0x00007ffff6f30e7e in test_case_run (tc=3D0x55555640d340, test_ru=
-n_name=3D0x55555640de10 "/aio/timer/schedule", path=3D<optimized out>) at .=
-=2E/glib/gtestutils.c:3115
-> > > #5  g_test_run_suite_internal (suite=3Dsuite@entry=3D0x5555558696d0, =
-path=3Dpath@entry=3D0x0) at ../glib/gtestutils.c:3210
-> > > #6  0x00007ffff6f30df3 in g_test_run_suite_internal (suite=3Dsuite@en=
-try=3D0x555555867480, path=3Dpath@entry=3D0x0) at ../glib/gtestutils.c:3229
-> > > #7  0x00007ffff6f30df3 in g_test_run_suite_internal (suite=3Dsuite@en=
-try=3D0x555555867720, path=3Dpath@entry=3D0x0) at ../glib/gtestutils.c:3229
-> > > #8  0x00007ffff6f313aa in g_test_run_suite (suite=3Dsuite@entry=3D0x5=
-55555867720) at ../glib/gtestutils.c:3310
-> > > #9  0x00007ffff6f31440 in g_test_run () at ../glib/gtestutils.c:2379
-> > > #10 g_test_run () at ../glib/gtestutils.c:2366
-> > > #11 0x000055555567e204 in main (argc=3D1, argv=3D0x7fffffffd488) at .=
-=2E/tests/unit/test-aio.c:872
-> > >=20
-> > > And running it under strace shows that we're indeed hanging in the
-> > > syscall:
-> > >=20
-> > > write(1, "# Start of timer tests\n", 23) =3D 23
-> > > eventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK)   =3D 9
-> > > io_uring_enter(7, 1, 0, 0, NULL, 8)     =3D 1
-> > > clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3D1, tv_nsec=3D0}, 0x7ffc2=
-39bec80) =3D 0
-> > > io_uring_enter(7, 1, 1, IORING_ENTER_GETEVENTS, NULL, 8
-> > >=20
-> > > Of course, if I start the test without strace and then attach strace =
-to
-> > > the running process, that gets it unstuck like attaching gdb (not very
-> > > surprising, I guess, it's both just ptrace).
-> > >=20
-> > > Finally I tried Ctrl-C while having strace logging to a file, and now
-> > > the io_uring_enter() returns 1 (rather than EINTR or 0 or whatever):
-> > >=20
-> > > io_uring_enter(7, 1, 1, IORING_ENTER_GETEVENTS, NULL, 8) =3D 1
-> > > --- SIGINT {si_signo=3DSIGINT, si_code=3DSI_KERNEL} ---
-> > > +++ killed by SIGINT +++
-> > >=20
-> > > Not sure what to make of this.
-> > >=20
-> > > I think you already said you run the same kernel version, but just to=
- be
-> > > sure, I'm running 6.17.5-200.fc42.x86_64.
-> >=20
-> > I'm at the point where I'm bisecting compiler flags...
-> >=20
-> > I have seen three different outcomes from test-aio:
-> >=20
-> > 1. It hangs. This is what I saw in my normal clang build. This configure
-> >    line seems to be enough to trigger it:
-> >    ../configure '--target-list=3Dx86_64-softmmu' '--cc=3Dclang' '--cxx=
-=3Dclang++'
-> >=20
-> > 2. An assertion failure. I haven't seen this in the actual QEMU tree
-> >    with clang. With gcc, it seems to happen if you use -O0:
-> >    ../configure '--target-list=3Dx86_64-softmmu' '--enable-debug'
-> >=20
-> >    Outside of the QEMU tree with a manual Makefile, I saw this behaviour
-> >    with clang and -fstack-protector-strong, but without
-> >    -ftrivial-auto-var-init=3Dzero. Add the latter turns it into the han=
-g.
-> >=20
-> > 3. It just passes. This is what I saw in my default gcc build without
-> >    --enable-debug. The test also passes with --disable-stack-protector
-> >    added to both configure lines in 1 and 2.
-> >=20
-> > Not sure yet where the flags make the difference, but I guess it does
-> > hint at something going wrong on the stack.
->=20
-> Ok, that was quite some debugging, but I think I have it. The problem is
-> add_timeout_sqe():
->=20
-> static void add_timeout_sqe(AioContext *ctx, int64_t ns)
-> {
->     struct io_uring_sqe *sqe;
->     ts =3D (struct __kernel_timespec) {
->         .tv_sec =3D ns / NANOSECONDS_PER_SECOND,
->         .tv_nsec =3D ns % NANOSECONDS_PER_SECOND,
->     };
->=20
->     sqe =3D get_sqe(ctx);
->     io_uring_prep_timeout(sqe, &ts, 1, 0);
->     io_uring_sqe_set_data(sqe, NULL);
-> }
->=20
-> What io_uring_prep_timeout() does is that it just stores the ts pointer
-> in the SQE, the timeout is never copied anywhere. Obviously, by the time
-> that we submit the SQE, ts has been out of scope for a long time, so the
-> kernel reads random data as a timeout.
->=20
-> # bpftrace -e 'kfunc:io_timeout { printf("%s: io_timeout %lld s + %lld ns=
-\n", comm, ((struct io_timeout_data *)args.req->async_data)->ts.tv_sec, ((s=
-truct io_timeout_data *)args.req->async_data)->ts.tv_nsec ) }'
-> Attaching 1 probe...
-> test-aio: io_timeout 0 s + 140736377549872 ns
->=20
-> >>> hex(140736377549872)
-> '0x7fffbdca7430'
->=20
-> That looked a bit suspicious for a timeout. :-)
->=20
-> After fixing this, we still have the problem that io_uring_enter() can
-> return early without failing with EINTR when something like a signal
-> arrives. This means that a blocking aio_poll(true) can actually return
-> without any progress.  Not sure if it matters in practice, but it can
-> make test cases fail.
->=20
-> Not completely sure when this happens, though. When running the aio-test
-> under strace, kill -CONT makes it return early and fail the assertion,
-> but without strace, I can't seem to reproduce the problem at the moment.
-> Attaching strace or gdb to the running process that is waiting for the
-> timeout also makes it return early and fail the assertion.
+v4:
+- Rebased and tested after the QEMU 10.1.0 release
 
-Thanks again for debugging the test failures. I am sending a new
-revision with the timeout variable lifetime fixed and a stronger loop
-condition that retries io_uring_submit_and_wait() when the awaited CQE
-is still missing.
+v3:
+- Add assertions documenting that ADD and REMOVE flags cannot be present
+  together with DELETE_AIO_HANDLER [Kevin]
 
-Thoughts on what you found:
+v2:
+- Performance improvements
+- Fix pre_sqe -> prep_sqe typo [Eric]
+- Add #endif terminator comment [Eric]
+- Fix spacing in aio_ctx_finalize() argument list [Eric]
+- Add new "block/io_uring: use non-vectored read/write when possible" patch [Eric]
+- Drop Patch 1 because multi-shot POLL_ADD has edge-triggered semantics instead
+  of level-triggered semantics required by QEMU's AioContext APIs. The
+  qemu-iotests 308 test case was hanging because block/export/fuse.c relies on
+  level-triggered semantics. Luckily the performance reason for switching from
+  one-shot to multi-shot has been solved by Patch 2 ("aio-posix: keep polling
+  enabled with fdmon-io_uring.c"), so it's okay to use single-shot.
+- Add a new Patch 1. It's a bug fix for a user-after-free in fdmon-io_uring.c
+  triggered by qemu-iotests iothreads-nbd-export.
 
-I've upgraded to Fedora 43 (kernel-6.17.5-300.fc43.x86_64) but I think
-the behavior is still the same.
+This patch series contains io_uring improvements:
 
-The difference in ptraced vs normal SIGCONT behavior is because the
-signal only actually interrupts processes that are stopped or ptraced.
-Otherwise SIGCONT disappears without interrupting the system call.
+1. Support the glib event loop in fdmon-io_uring.
+   - aio-posix: fix race between io_uring CQE and AioHandler deletion
+   - aio-posix: keep polling enabled with fdmon-io_uring.c
+   - tests/unit: skip test-nested-aio-poll with io_uring
+   - aio-posix: integrate fdmon into glib event loop
 
-When ptraced, io_uring_enter()'s return value will be 1 and not -EINTR
-because of how io_uring/io_uring.c:io_uring_enter() is implemented.
-There are two variables: ret is the return value from submitting SQEs
-and ret2 is the return value from waiting for CQEs. The first variable
-takes precendence, so even though ret2 can be -EINTR, it is overriden:
+2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
+   Otherwise continue using ppoll(2) or epoll(7).
+   - aio: remove aio_context_use_g_source()
 
-                  if (!ret) {
-                          ret =3D ret2;
-  			...
-                  }
-          }
-  out:
-          ...
-          return ret;
+3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
+   event loop.
+   - aio: free AioContext when aio_context_new() fails
+   - aio: add errp argument to aio_context_setup()
+   - aio-posix: gracefully handle io_uring_queue_init() failure
+   - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+   - aio-posix: avoid EventNotifier for cqe_handler_bh
 
-In our case ret is be >0, so ret2 =3D -EINTR is ignored and the
-io_uring_enter(2) return value is 1. This explains the behavior when
-SIGCONT is received while a ptraced io_uring_enter(2) is waiting.
+4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
+   io_uring context for --blockdev aio=io_uring. This simplifies the code,
+   reduces the number of file descriptors, and demonstrates the aio_add_sqe()
+   API.
+   - block/io_uring: use aio_add_sqe()
+   - block/io_uring: use non-vectored read/write when possible
 
-I confirmed in userspace that there are no CQEs ready when
-io_uring_enter(2) returns 1 after SIGCONT. This can be fixed in
-userspace by retrying when the expected CQE is missing.
+The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
+Google Summer of Code project and other future QEMU features that natively use
+Linux io_uring functionality.
 
-Regarding aio_poll(ctx, true) returning false: it happens when
-aio_notify() is called while aio_poll(ctx, true) is waiting. The tests
-rely on the internal details of when exactly false can be returned, so
-it will help if fdmon-io_uring.c avoids returning false in situations
-where other fdmon implementations wait longer.
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  78353  84860 +8.3%
+randread  4k      64 native        0 262370 269823 +2.8%
+randwrite 4k       1 native        0 142703 144348 +1.2%
+randwrite 4k      64 native        0 259947 263895 +1.5%
+randread  4k       1 io_uring      0  76883  78270 +1.8%
+randread  4k      64 io_uring      0 269712 250513 -7.1%
+randwrite 4k       1 io_uring      0 143657 131481 -8.5%
+randwrite 4k      64 io_uring      0 274461 264785 -3.5%
+randread  4k       1 native        1  84080  84097 0.0%
+randread  4k      64 native        1 314650 311193 -1.1%
+randwrite 4k       1 native        1 172463 159993 -7.2%
+randwrite 4k      64 native        1 303091 299726 -1.1%
+randread  4k       1 io_uring      1  83415  84081 +0.8%
+randread  4k      64 io_uring      1 324797 318429 -2.0%
+randwrite 4k       1 io_uring      1 174421 172809 -0.9%
+randwrite 4k      64 io_uring      1 323394 312286 -3.4%
 
-Stefan
+Performance is in the same ballpark as without fdmon-io_uring. Results vary
+from run to run due to the timing/batching of requests (even with iodepth=1 due
+to 8 vCPUs using a single IOThread).
 
---d9RfUKa2a2howWXm
-Content-Type: application/pgp-signature; name=signature.asc
+Here is the performance from v1 for reference:
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  76281 79707  +4.5%
+randread  4k      64 native        0 255078 247293 -3.1%
+randwrite 4k       1 native        0 132706 123337 -7.1%
+randwrite 4k      64 native        0 275589 245192 -11%
+randread  4k       1 io_uring      0  75284 78023  +3.5%
+randread  4k      64 io_uring      0 254637 248222 -2.5%
+randwrite 4k       1 io_uring      0 126519 128641 +1.7%
+randwrite 4k      64 io_uring      0 258967 249266 -3.7%
+randread  4k       1 native        1  90557 88436  -2.3%
+randread  4k      64 native        1 290673 280456 -3.5%
+randwrite 4k       1 native        1 183015 169106 -7.6%
+randwrite 4k      64 native        1 281316 280078 -0.4%
+randread  4k       1 io_uring      1  92479 86983  -5.9%
+randread  4k      64 io_uring      1 304229 257730 -15.3%
+randwrite 4k       1 io_uring      1 183983 157425 -14.4%
+randwrite 4k      64 io_uring      1 299979 264156 -11.9%
 
------BEGIN PGP SIGNATURE-----
+This series replaces the following older series that were held off from merging
+until the QEMU 10.1 development window opened and the performance results were
+collected:
+- "[PATCH 0/3] [RESEND] block: unify block and fdmon io_uring"
+- "[PATCH 0/4] aio-posix: integrate fdmon into glib event loop"
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmkJYA8ACgkQnKSrs4Gr
-c8iQZwgAlM3KATs+InUeGc2m5XyBT7ZFRxlLMBeN5RmDUEDIRYYG+YojVF6LEovA
-j6KAhKoJ+QOKGdvYqfSsEE05g7ydphkeD/ocio+7U/FV/dDsK6ChIPZ9i26I5SEp
-J3ZhDwRJWs8pjFimuH03kpi6vBqsmNmRsAJAr0kpryH1YH6kODTKruEaFW6Q3t2W
-YJhe9SgUoyweMB5gOu9Zba127sbjgjmjH0RDug0iFrannDxpXkb7Egu5SdzJ02UH
-uZKtQWjGaaptJIdJ1S5NAauljYt/shxOa/QAj08nvSoAlxjABvQ+GXttctq14aBn
-uKNp824WbELo2+N2jdMNEswh63fV8w==
-=tbzM
------END PGP SIGNATURE-----
+Stefan Hajnoczi (15):
+  aio-posix: fix race between io_uring CQE and AioHandler deletion
+  aio-posix: fix fdmon-io_uring.c timeout stack variable lifetime
+  aio-posix: fix spurious return from ->wait() due to signals
+  aio-posix: keep polling enabled with fdmon-io_uring.c
+  tests/unit: skip test-nested-aio-poll with io_uring
+  aio-posix: integrate fdmon into glib event loop
+  aio: remove aio_context_use_g_source()
+  aio: free AioContext when aio_context_new() fails
+  aio: add errp argument to aio_context_setup()
+  aio-posix: gracefully handle io_uring_queue_init() failure
+  aio-posix: unindent fdmon_io_uring_destroy()
+  aio-posix: add fdmon_ops->dispatch()
+  aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+  block/io_uring: use aio_add_sqe()
+  block/io_uring: use non-vectored read/write when possible
 
---d9RfUKa2a2howWXm--
+ include/block/aio.h               | 156 ++++++++-
+ include/block/raw-aio.h           |   5 -
+ util/aio-posix.h                  |  18 +-
+ block/file-posix.c                |  40 +--
+ block/io_uring.c                  | 507 ++++++++----------------------
+ stubs/io_uring.c                  |  32 --
+ tests/unit/test-aio.c             |   7 +-
+ tests/unit/test-nested-aio-poll.c |  13 +-
+ util/aio-posix.c                  | 141 ++++-----
+ util/aio-win32.c                  |   7 +-
+ util/async.c                      |  71 ++---
+ util/fdmon-epoll.c                |  34 +-
+ util/fdmon-io_uring.c             | 247 ++++++++++++---
+ util/fdmon-poll.c                 |  85 ++++-
+ block/trace-events                |  12 +-
+ stubs/meson.build                 |   3 -
+ util/trace-events                 |   4 +
+ 17 files changed, 730 insertions(+), 652 deletions(-)
+ delete mode 100644 stubs/io_uring.c
+
+-- 
+2.51.1
 
 
