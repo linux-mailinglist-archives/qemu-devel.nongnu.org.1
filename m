@@ -2,54 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A89C38341
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 23:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71107C3826B
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 23:10:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGm2o-00022H-BP; Wed, 05 Nov 2025 17:31:59 -0500
+	id 1vGli7-0005to-1X; Wed, 05 Nov 2025 17:10:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vGm2h-00021O-PT
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:31:54 -0500
-Received: from mail-a.sr.ht ([46.23.81.152])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGli3-0005ta-EN
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:10:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vGm2e-0007UN-Fm
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:31:50 -0500
-DKIM-Signature: a=rsa-sha256; bh=rN5skFE/7t7CivcRFcehEgzgv/YQF41xi+DFhFMhlZc=; 
- c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
- t=1762381904; v=1;
- b=XyYfe42HVuq5sHS6ubQVWZKbis8/IPnIm36tTXBdvZemuS+Gtcqn7TWv0qL3GHOmnc0eCd3C
- pZDEPsGKtnzPIPmC+CWXYfulVQi1GvHxBX/iTX7VBQmbj9808KTI+qAIfkySnCKvsoZCBBgEH9u
- 8h3+i2GzbTvQir7zT87dS1Ajmj0T6mHzy4joRzrSpQU7aXadPBjVN4eXDoa3idEwpcvk1DpWCNa
- uiCwI5eYJyh+/2dnMPF/zzZpt7a6/3v/3nf//GU4VUGUV2xgenbhSsi6cQujH5BIfYoXjLYrubq
- syGk5sA0Ui2TW07Rqs93EOG+teGbZ/wuH53gj8m1Sxxsw==
-Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id B0EB8240C3;
- Wed, 05 Nov 2025 22:31:44 +0000 (UTC)
-From: ~myrslint <myrslint@git.sr.ht>
-Date: Wed, 05 Nov 2025 22:07:10 +0000
-Subject: [PATCH qemu v9 1/1] i386/kvm: Honor guest PAT on x86,
- absent Bochs display
-Message-ID: <176238190422.23756.12141073071212582632-1@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <176238190422.23756.12141073071212582632-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGli1-00031G-M0
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:10:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762380628;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UU6SEqCQCQCYygF9DARCnliX0+KIg1jMvn7WW9Gaijc=;
+ b=ME46zxADFWmcUvsY5Y4hiWOQ4S6eVwsVBdR++3CHajCJU2QnCIgV+q+ZHwWGKY0zCxjhWk
+ MnEwV+AnBu9e1oQP9AP63eEnYOSH1w2ZifzO78nCYWHEeLAawIqT2Or6B92JFsP0cO4Ful
+ TFwA9DOr/EIctjMu1GDxs579pGzzYk8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-_iNHhetzM-WPTkVLIaiZKA-1; Wed,
+ 05 Nov 2025 17:10:23 -0500
+X-MC-Unique: _iNHhetzM-WPTkVLIaiZKA-1
+X-Mimecast-MFC-AGG-ID: _iNHhetzM-WPTkVLIaiZKA_1762380622
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 754CE180057A; Wed,  5 Nov 2025 22:10:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.131])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C0511800584; Wed,  5 Nov 2025 22:10:20 +0000 (UTC)
+Date: Wed, 5 Nov 2025 16:10:17 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, berrange@redhat.com, 
+ kwolf@redhat.com, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH 8/8] iotests: Add coverage of recent NBD qio deadlock fix
+Message-ID: <2cdptk665ijo3ioo7qdjf54qtnmgq5xvib4whtueqosrqzax4j@nhf2ayky7fvr>
+References: <20251103202849.3687643-10-eblake@redhat.com>
+ <20251103202849.3687643-18-eblake@redhat.com>
+ <98abcae5-9768-4a7b-af5a-1cdaa84020af@yandex-team.ru>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
- helo=mail-a.sr.ht
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98abcae5-9768-4a7b-af5a-1cdaa84020af@yandex-team.ru>
+User-Agent: NeoMutt/20250905
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.517,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,202 +80,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~myrslint <myrskylintu@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: myrslint <qemu.haziness801@passinbox.com>
+On Tue, Nov 04, 2025 at 02:38:22PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 03.11.25 23:10, Eric Blake wrote:
+> > Test that all images in a qcow2 chain using an NBD backing file can be
+> > served by the same process.  Prior to the recent QIONetListener fixes,
+> > this test would demonstrate deadlock.
+> > 
+> > The test borrows heavily from the original formula by "John Doe" in
+> > the gitlab bug, but uses a Unix socket rather than TCP to avoid port
+> > contention, and uses a full-blown QEMU rather than qemu-storage-daemon
+> > since both programs were impacted.
+> > 
+> > [While preparing this patch by making the new test executable, I
+> > noticed vvfat.out does not need execute permissions]
+> > 
+> > Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3169
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> >   tests/qemu-iotests/tests/nbd-in-qcow2-chain   | 84 +++++++++++++++++++
+> >   .../qemu-iotests/tests/nbd-in-qcow2-chain.out | 56 +++++++++++++
+> >   tests/qemu-iotests/tests/vvfat.out            |  0
+> >   3 files changed, 140 insertions(+)
+> >   create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
+> >   create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
+> >   mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
 
-On x86_64, where most CPUs support self-snoop, it is preferrable to
-always honor guest PAT. Not doing so is a quirk. There is a default
-enabled KVM quirk flag which enforces not doing so due to a former bug
-in Bochs display driver.
+Should I split out that file mode change to a separate cleanup patch?
 
-The bug has been fixed but not enough has yet passed since so we only
-disable said quirk flag if a Bochs display is not configured for the
-virtual machine.
+> > 
+> > diff --git a/tests/qemu-iotests/tests/nbd-in-qcow2-chain b/tests/qemu-iotests/tests/nbd-in-qcow2-chain
+> > new file mode 100755
+> > index 00000000000..b89f74d4552
+> > --- /dev/null
+> > +++ b/tests/qemu-iotests/tests/nbd-in-qcow2-chain
 
-This commit also moves around a bit of code that would be called when
-the initialization of a VM is done.
+> > +echo
+> > +echo "=== Creating wrapper image ==="
+> > +
+> > +_make_test_img -F raw -b "nbd+unix:///base?socket=$SOCK_DIR/nbd" $size
+> > +
+> > +echo
+> > +echo "=== Adding wrapper image ==="
+> > +
+> > +_send_qemu_cmd $QEMU_HANDLE '{"execute": "blockdev-add",
+> > +  "arguments": {"node-name":"wrap", "driver":"qcow2",
+> > +     "file":{"driver":"file", "filename":"'"$TEST_IMG"'"}}}' 'return'
+> 
+> Hmm. Why don't you specify "backing": "base" here?
 
-Signed-off-by: Myrsky Lintu <qemu.haziness801@passinbox.com>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # intel-ivb
----
- accel/kvm/kvm-all.c        |  1 +
- accel/stubs/kvm-stub.c     |  1 +
- hw/display/bochs-display.c | 17 +++++++++++++++
- include/system/kvm.h       |  9 ++++++++
- target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
- 5 files changed, 63 insertions(+), 7 deletions(-)
+Because the original bug report didn't either.  However, I can see the
+wisdom in enhancing the test to cover multiple scenarios: both a
+backing chain learned only by what is in the qcow2 file, and an
+explicit backing chain where the NBD client is spelled out in the QMP
+code.  I'll see if I can enhance that for v2.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f9254ae654..36a12593ee 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -103,6 +103,7 @@ bool kvm_readonly_mem_allowed;
- bool kvm_vm_attributes_allowed;
- bool kvm_msi_use_devid;
- bool kvm_pre_fault_memory_supported;
-+bool kvm_bochs_drm_quirk;
- static bool kvm_has_guest_debug;
- static int kvm_sstep_flags;
- static bool kvm_immediate_exit;
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index 68cd33ba97..a69c89e1ad 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -24,6 +24,7 @@ bool kvm_gsi_direct_mapping;
- bool kvm_allowed;
- bool kvm_readonly_mem_allowed;
- bool kvm_msi_use_devid;
-+bool kvm_bochs_drm_quirk;
-=20
- void kvm_flush_coalesced_mmio_buffer(void)
- {
-diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
-index ad2821c974..e8def68b41 100644
---- a/hw/display/bochs-display.c
-+++ b/hw/display/bochs-display.c
-@@ -20,6 +20,8 @@
- #include "ui/qemu-pixman.h"
- #include "qom/object.h"
-=20
-+#include "system/kvm.h"
-+
- typedef struct BochsDisplayMode {
-     pixman_format_code_t format;
-     uint32_t             bytepp;
-@@ -309,6 +311,21 @@ static void bochs_display_realize(PCIDevice *dev, Error =
-**errp)
-     }
-=20
-     memory_region_set_log(&s->vram, true, DIRTY_MEMORY_VGA);
-+
-+    /*
-+     * On x86_64, where most CPUs support self-snoop, it is preferrable to
-+     * always honor guest PAT. Not doing so is a quirk. There is a default
-+     * enabled KVM quirk flag which enforces not doing so due to a former bug
-+     * in Bochs display driver.
-+     *
-+     * The bug has been fixed but not enough has yet passed since so we only
-+     * disable said quirk flag if a Bochs display is not configured for the
-+     * virtual machine.
-+     *
-+     * The following flag tells KVM initialization code not to disable that
-+     * quirk flag.
-+     */
-+    kvm_bochs_drm_quirk =3D true;
- }
-=20
- static bool bochs_display_get_big_endian_fb(Object *obj, Error **errp)
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 8f9eecf044..123016777c 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -43,6 +43,7 @@ extern bool kvm_gsi_direct_mapping;
- extern bool kvm_readonly_mem_allowed;
- extern bool kvm_msi_use_devid;
- extern bool kvm_pre_fault_memory_supported;
-+extern bool kvm_bochs_drm_quirk;
-=20
- #define kvm_enabled()           (kvm_allowed)
- /**
-@@ -144,6 +145,13 @@ extern bool kvm_pre_fault_memory_supported;
-  */
- #define kvm_msi_devid_required() (kvm_msi_use_devid)
-=20
-+/**
-+ * kvm_has_bochs_drm:
-+ * Returns: true if KVM is possible and a Bochs DRM driver is
-+ * in use for display.
-+ */
-+#define kvm_has_bochs_drm() (kvm_bochs_drm_quirk)
-+
- #else
-=20
- #define kvm_enabled()           (0)
-@@ -158,6 +166,7 @@ extern bool kvm_pre_fault_memory_supported;
- #define kvm_gsi_direct_mapping() (false)
- #define kvm_readonly_mem_enabled() (false)
- #define kvm_msi_devid_required() (false)
-+#define kvm_has_bochs_drm() (false)
-=20
- #endif  /* CONFIG_KVM_IS_POSSIBLE */
-=20
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 60c7981138..dd2594f5af 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2709,13 +2709,13 @@ static bool kvm_rdmsr_pkg_energy_status(X86CPU *cpu,
-     return true;
- }
-=20
--static Notifier smram_machine_done;
-+static Notifier kvm_machine_done;
- static KVMMemoryListener smram_listener;
- static AddressSpace smram_address_space;
- static MemoryRegion smram_as_root;
- static MemoryRegion smram_as_mem;
-=20
--static void register_smram_listener(Notifier *n, void *unused)
-+static void register_smram_listener(void)
- {
-     CPUState *cpu;
-     MemoryRegion *smram =3D
-@@ -2754,6 +2754,37 @@ void kvm_smm_cpu_address_space_init(X86CPU *cpu)
-     cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root=
-);
- }
-=20
-+static bool kvm_x86_smm_enabled(void)
-+{
-+    return object_dynamic_cast(OBJECT(current_machine), TYPE_X86_MACHINE) &&
-+        x86_machine_is_smm_enabled(X86_MACHINE(current_machine));
-+}
-+
-+static int kvm_x86_disable_quirsk2_mask(void)
-+{
-+    return kvm_check_extension(kvm_state, KVM_CAP_DISABLE_QUIRKS2);
-+}
-+
-+static int kvm_disable_ignore_guest_pat(void)
-+{
-+    return kvm_vm_enable_cap(kvm_state, KVM_CAP_DISABLE_QUIRKS2, 0, \
-+                             KVM_X86_QUIRK_IGNORE_GUEST_PAT);
-+}
-+
-+static void handle_machine_done(Notifier *n, void *unused)
-+{
-+    if (kvm_x86_smm_enabled()) {
-+        register_smram_listener();
-+    }
-+    if (!kvm_has_bochs_drm() && \
-+        (kvm_x86_disable_quirsk2_mask() & KVM_X86_QUIRK_IGNORE_GUEST_PAT)) {
-+        if (kvm_disable_ignore_guest_pat()) {
-+            error_report("KVM_X86_QUIRK_IGNORE_GUEST_PAT available and "
-+                         "modifiable but we failed to disable it");
-+        }
-+    }
-+}
-+
- static void *kvm_msr_energy_thread(void *data)
- {
-     KVMState *s =3D data;
-@@ -3334,11 +3365,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         return ret;
-     }
-=20
--    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
--        x86_machine_is_smm_enabled(X86_MACHINE(ms))) {
--        smram_machine_done.notify =3D register_smram_listener;
--        qemu_add_machine_init_done_notifier(&smram_machine_done);
--    }
-+    kvm_machine_done.notify =3D handle_machine_done;
-+    qemu_add_machine_init_done_notifier(&kvm_machine_done);
-=20
-     if (enable_cpu_pm) {
-         ret =3D kvm_vm_enable_disable_exits(s);
---=20
-2.49.1
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
+
 
