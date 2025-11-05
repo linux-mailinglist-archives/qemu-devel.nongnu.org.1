@@ -2,92 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71372C38000
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 22:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC915C3816F
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 22:47:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGl15-0002S5-K0; Wed, 05 Nov 2025 16:26:07 -0500
+	id 1vGlKK-0008H6-Vq; Wed, 05 Nov 2025 16:46:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGl13-0002R0-1k
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:05 -0500
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGl10-0002DM-VY
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:04 -0500
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-4330dfb6ea3so1213045ab.0
- for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 13:26:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762377961; x=1762982761; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QM3K60OsI5L4i2OEIbf7h5rJNwATR23lL1MzRBepSwk=;
- b=NQ8sih3Tn80jsLZnZlCMFDh8tLvRXIUrtCGlI7p4X+bT6XqIfJY2fOmW4m81i/8/wn
- vRVGPJcsOfLAWH9pUeivtmZhxa6+0q9XtcHEibWC3CL6RDW1RfRbw4uBn4SSzQxjsXZ6
- JIxzhxVZQxgbdck+xVex9cpGBou4iDIebxD1BvBXA+BM0uwmjvYiiYd5aKLnsYmS4N3M
- XZfiGFCuDpq0Il40q8yRTP+4nCfdqus5SXo0ONpx/sw4Y4b/ETJeDCdGneUCfaLH8qI+
- kgMEYKpWYGMsIrp2y62ppChTfRJ6v0pnPJ7xAsBdJjXN9wW5hKmCrUCCBbTBFweDNHor
- 3b/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762377961; x=1762982761;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QM3K60OsI5L4i2OEIbf7h5rJNwATR23lL1MzRBepSwk=;
- b=tExwBs8/A/bG4rID8RT0xCbRoY2v12+4wuFE7nFEWQ5f9BIYMyBXdTrKg68Foc516/
- 3yLANf1Juajt0zeGeSBnX659vUl2gAni6Kp8kW69hnv0a/PnTnVxEBWx+PqdCEnkmztJ
- pPcYRbCqQ9ZqfrZuvqWcCBSw75k06b7Ci/xGdxvxavDBuAobBnan0KWAn+wY2MOISrFp
- 3Qd2EJ9jvRf8r2X/uxQT18HWUdAmLsJVIKvgMxPyNp+/MpbAf2xuD8H8oKCr4/xfiAQU
- xi0hFwCePyZR7suQqUTmELxIJO3wjLERggt0k8DHsE3Dz/1TmV2zoBu5xcWjDxOzI4vQ
- CWfw==
-X-Gm-Message-State: AOJu0Yy1f9WFkWw9wvUeqLNoeWEIdzJqjReAkyb9KnVCG12z2I7gw8kS
- QzPMuK6S8Gld+7f6vpIvkVll77oatEbq2aSpdnj8K61IhfIDW72ia8b+3MWOwvz6Vb4=
-X-Gm-Gg: ASbGncv0skp2FuzF5rOMjjdaQ7zrSyggW9hN9/GWSNgja+fF3JfGOynbwEAOGOdiu65
- PG4urH7O4ppyDdH4Ra+K79ImVf+z0JmM9uBreiBs8tj4RHd+Ty1PnIe9F8jb0GDx3689y0uopYQ
- 3Yyp/E3nrd5xwfOXkBHhbpH+TxlW0T0jZbs08vrBYr40K0AGzFBK/M5D3RajH20rOpdlWXR6vbr
- da9sdILx/5dRzkZ6FyXzlVRwQ3qmfQmFBmCaltmt87FpF+5BIFWsS7JEShwECSSMQiLQZO+FB+0
- UkrSFod5K8fZLPbCE1M5HlKx6dRVuGNBLYlzp6vUrf99cRuEvJ+qntk5Xa8XHRJ2c6mjZvkD5pw
- FpjtiFXDW/qW1o9Bt76I/ZVZF2Rfd0pu7jEM/epAdtEofWqBaJNWp5f66EMJ3NoU/e2O2E27YDZ
- VOQgOYVNobmB2CGHrOZCb4qmk1+NLUD+p2CZfniErFkkz9/mwEFJ3qswNTG9DiXhEUNw==
-X-Google-Smtp-Source: AGHT+IFxEoixYAmFcUGsjf/sq+3gwgk+BA5F01xOR8Ty/vemCY2FC3KlydrnybB7o1Ko0hdBERvzbw==
-X-Received: by 2002:a05:6e02:3182:b0:433:27c1:75c4 with SMTP id
- e9e14a558f8ab-433407dac54mr77782055ab.31.1762377961371; 
- Wed, 05 Nov 2025 13:26:01 -0800 (PST)
-Received: from taylor-ubuntu.. (c-67-172-136-152.hsd1.co.comcast.net.
- [67.172.136.152]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-5b7467d5a0asm127785173.2.2025.11.05.13.26.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Nov 2025 13:26:00 -0800 (PST)
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
- sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
- richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
- ltaylorsimpson@gmail.com
-Subject: [PATCH v3 3/3] Hexagon (tests/tcg/hexagon) Add test for USR changes
- in packet
-Date: Wed,  5 Nov 2025 14:25:54 -0700
-Message-ID: <20251105212554.127017-4-ltaylorsimpson@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251105212554.127017-1-ltaylorsimpson@gmail.com>
-References: <20251105212554.127017-1-ltaylorsimpson@gmail.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vGlKI-0008F9-J1
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:45:58 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vGlKG-0005Sh-Pu
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:45:58 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1762379142; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=COAg5DoEwNNHYRSQq5IvATpizze3CHVdoTNBF7EW0qJMJ4W+AhDk/6QOND3ZsRBXXWsx2ceFoxVdRhEGrBWML22S6GYQyXRFFnm73fNB+dLbjqwwdwzrHSG0hhxFI02twJzy8gMZ7iSaTvI9sIypxBSlv2WNMnMHrRyXGihF11s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1762379142;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=YVTmINNWBw9GzquVQkPLqImSqm5XFyiJVF93MCUyxQ4=; 
+ b=YJ/kIP1q7wdW6vgVoFoL8+RCMEFLppVUX7aOeLgmX+AXmteYsTdpj7UHZhn/lOq2hWUFH4+gG48/d4F3xvBlPnKDLP3hOmBvibgiB46IVHHKSYctZdV7iGJjIlKQoTMX2k38Nl7ZUxUr9MUtkZT1apSbxS/yk0ZyqXih9YWEFxU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762379142; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=YVTmINNWBw9GzquVQkPLqImSqm5XFyiJVF93MCUyxQ4=;
+ b=XkF/UoeKDdqiHzsl5M1pj13+t0NyBikJNcd4gQ8Chz8mA/9ldl569ew21ynoHTxR
+ mzYOpeUf3XQE27uLd0mR7JN95jc824Qj/S6DA7cO04mjyCaCYoLRI5Hm8GNoxne7G7d
+ 8QHDM1+y/L2Bi3Wb5o70WPYrwAXydB6BSY4Y9jJo=
+Received: by mx.zohomail.com with SMTPS id 1762379139453769.4345765432386;
+ Wed, 5 Nov 2025 13:45:39 -0800 (PST)
+Message-ID: <4f662547-4f19-4997-b6f4-dbf58db0e1fb@collabora.com>
+Date: Thu, 6 Nov 2025 00:45:35 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x12f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu v8 1/1] Honor guest PAT on x86, absent Bochs display
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+References: <176045956423.5579.13349691093596703310-1@git.sr.ht>
+ <2f9abed7-2cb8-4c96-b9cd-5e8d2084b1e7@collabora.com>
+ <c54a2b69-5af0-4319-8241-65bbae399e4c@collabora.com>
+Content-Language: en-US
+In-Reply-To: <c54a2b69-5af0-4319-8241-65bbae399e4c@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,84 +81,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
----
- tests/tcg/hexagon/usr.c | 54 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+On 10/14/25 23:07, Dmitry Osipenko wrote:
+> On 10/14/25 23:01, Dmitry Osipenko wrote:
+>> On 10/14/25 19:23, ~myrslint wrote:
+>>> From: myrslint <qemu.haziness801@passinbox.com>
+>>>
+>>> On x86_64, where most CPUs support self-snoop, it is preferrable to
+>>> always honor guest PAT. Not doing so is a quirk. There is a default
+>>> enabled KVM quirk flag which enforces not doing so due to a former bug
+>>> in Bochs display driver.
+>>>
+>>> The bug has been fixed but not enough has yet passed since so we only
+>>> disable said quirk flag if a Bochs display is not configured for the
+>>> virtual machine.
+>>>
+>>> This commit also moves around a bit of code that would be called when
+>>> the initialization of a VM is done.
+>>>
+>>> Signed-off-by: myrslint <qemu.haziness801@passinbox.com>
+>>> ---
+>>>  accel/kvm/kvm-all.c        |  1 +
+>>>  accel/stubs/kvm-stub.c     |  1 +
+>>>  hw/display/bochs-display.c | 17 +++++++++++++++
+>>>  include/system/kvm.h       |  9 ++++++++
+>>>  target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
+>>>  5 files changed, 63 insertions(+), 7 deletions(-)
+>>
+>> Looks perfect. Now up to Paolo to review further and apply the patch.
+>>
+>> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> 
+> Ah, the commit title still isn't ideal. It should be prefixed with
+> "i386/kvm:" like other kvm commits are in QEMU. Likely Paolo could
+> correct it while applying if v9 won't be needed.
 
-diff --git a/tests/tcg/hexagon/usr.c b/tests/tcg/hexagon/usr.c
-index f0b23d312b..ef1787c64c 100644
---- a/tests/tcg/hexagon/usr.c
-+++ b/tests/tcg/hexagon/usr.c
-@@ -608,6 +608,58 @@ TEST_CMP_xx(uint32_t, uint32_t, FUNC, SRC1, SRC2, RES, USR_RES)
- #define TEST_CMP_PP(FUNC, SRC1, SRC2, RES, USR_RES) \
- TEST_CMP_xx(uint64_t, uint64_t, FUNC, SRC1, SRC2, RES, USR_RES)
- 
-+static void test_usr_packets(void)
-+{
-+    uint32_t usr_out;
-+    /* Test setting USR bits inside and outside packets */
-+    asm(CLEAR_USRBITS \
-+        "r10 = satub(%[val_0xfff])                   /* Set usr.OVF */\n\t"
-+        "{\n\t"
-+        "    r11 = convert_uw2sf(%[val_0x010020a5])  /* Set usr.FPINPF */\n\t"
-+        "    r10 = memw(%[err])                      /* Force pkt commit */\n\t"
-+        "}\n\t"
-+        "{\n\t"
-+        "    r11 = sfadd(%[SF_one], %[SF_SNaN])      /* Set usr.FPINVF */\n\t"
-+        "    r10 = add(r10, #1)                      /* No pkt commit */\n\t"
-+        "}\n\t"
-+        "%[usr_out] = usr\n\t"
-+        : [usr_out]"=r"(usr_out)
-+        : [val_0xfff]"r"(0xfff),
-+          [SF_one]"r"(SF_one), [SF_SNaN]"r"(SF_SNaN),
-+          [val_0x010020a5]"r"(0x010020a5),
-+          [err]"m"(err)
-+        : "r2", "r10", "r11", "usr");
-+    check32(usr_out & 0x3f, USR_OVF | USR_FPINVF | USR_FPINPF);
-+
-+    /* Test setting several USR bits in the same packet (no pkt commit) */
-+    asm(CLEAR_USRBITS \
-+        "{\n\t"
-+        "    r10 = satub(%[val_0xfff])               /* Set usr.OVF */\n\t"
-+        "    r12 = sfadd(%[SF_one], %[SF_SNaN])      /* Set usr.FPINVF */\n\t"
-+        "}\n\t"
-+        "%[usr_out] = usr\n\t"
-+        : [usr_out]"=r"(usr_out)
-+        : [val_0xfff]"r"(0xfff),
-+          [SF_one]"r"(SF_one), [SF_SNaN]"r"(SF_SNaN)
-+        : "r2", "r10", "r11", "r12", "usr");
-+    check32(usr_out & 0x3f, USR_OVF | USR_FPINVF);
-+
-+    /* Test setting several USR bits in the same packet (with pkt commit) */
-+    asm(CLEAR_USRBITS \
-+        "{\n\t"
-+        "    r10 = satub(%[val_0xfff])               /* Set usr.OVF */\n\t"
-+        "    r11 = convert_uw2sf(%[val_0x010020a5])  /* Set usr.FPINPF */\n\t"
-+        "    r12 = memw(%[err])                      /* Force pkt commit */\n\t"
-+        "}\n\t"
-+        "%[usr_out] = usr\n\t"
-+        : [usr_out]"=r"(usr_out)
-+        : [val_0xfff]"r"(0xfff),
-+          [val_0x010020a5]"r"(0x010020a5),
-+          [err]"m"(err)
-+        : "r2", "r10", "r11", "r12", "usr");
-+    check32(usr_out & 0x3f, USR_OVF | USR_FPINPF);
-+}
-+
- int main()
- {
-     TEST_R_OP_R(satub,       0,         0,         USR_CLEAR);
-@@ -1097,6 +1149,8 @@ int main()
-     TEST_Rp_OP_R(sfinvsqrta, SF_small_neg,  SF_HEX_NaN,       0x00, USR_FPINVF);
-     TEST_Rp_OP_R(sfinvsqrta, SF_SNaN,       SF_HEX_NaN,       0x00, USR_FPINVF);
- 
-+    test_usr_packets();
-+
-     puts(err ? "FAIL" : "PASS");
-     return err;
- }
+Tested on older Intel IVB machine where virtio-gpu hostmem doesn't work
+without this patch. Please add my r-b and t-b, specify your full name
+"Myrsky Lintu" in the Signed-off-by of the commit msg, correct the patch
+title prefix and send the v9.
+
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # intel-ivb
+
 -- 
-2.43.0
-
+Best regards,
+Dmitry
 
