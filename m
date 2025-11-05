@@ -2,73 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C25C38247
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 23:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A89C38341
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 23:33:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGlea-0004xc-NX; Wed, 05 Nov 2025 17:06:56 -0500
+	id 1vGm2o-00022H-BP; Wed, 05 Nov 2025 17:31:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGleZ-0004xP-Do
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:06:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vGm2h-00021O-PT
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:31:54 -0500
+Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGleX-00029s-JF
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:06:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762380412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XEknK60kWuIToVr5a/bhtVHLWh19eGPX/zwfkZSvRFo=;
- b=CJsNAAgNj6rXWehTbGDCXraQ7zphpNQMnFdrHu2v8DQB/l6sX817aQqyGQEfYBFUrLdRU6
- JCah0DxxC1Q8Q/xKjRIbnhsIa1aw1NXBBHgq8QJHUVD/4fgkj98jOEy52yXWflXAcE1DrF
- YaAq1i8h21ADoLQhesG5u5RHmzhGXlk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-0ZCmevIWMsKmEm8dG0toXw-1; Wed,
- 05 Nov 2025 17:06:51 -0500
-X-MC-Unique: 0ZCmevIWMsKmEm8dG0toXw-1
-X-Mimecast-MFC-AGG-ID: 0ZCmevIWMsKmEm8dG0toXw_1762380410
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2BAA5195608A; Wed,  5 Nov 2025 22:06:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.131])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 65B5419560B2; Wed,  5 Nov 2025 22:06:48 +0000 (UTC)
-Date: Wed, 5 Nov 2025 16:06:45 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, kwolf@redhat.com
-Subject: Re: [PATCH 7/8] qio: Use AioContext for default-context QIONetListener
-Message-ID: <3gbdsutrugfyt4llt2f24kw36kogfj532qtxhapj2pglulnubs@ia5k2lidbsm7>
-References: <20251103202849.3687643-10-eblake@redhat.com>
- <20251103202849.3687643-17-eblake@redhat.com>
- <aQnlcVBqlfVMHE8I@redhat.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vGm2e-0007UN-Fm
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 17:31:50 -0500
+DKIM-Signature: a=rsa-sha256; bh=rN5skFE/7t7CivcRFcehEgzgv/YQF41xi+DFhFMhlZc=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
+ t=1762381904; v=1;
+ b=XyYfe42HVuq5sHS6ubQVWZKbis8/IPnIm36tTXBdvZemuS+Gtcqn7TWv0qL3GHOmnc0eCd3C
+ pZDEPsGKtnzPIPmC+CWXYfulVQi1GvHxBX/iTX7VBQmbj9808KTI+qAIfkySnCKvsoZCBBgEH9u
+ 8h3+i2GzbTvQir7zT87dS1Ajmj0T6mHzy4joRzrSpQU7aXadPBjVN4eXDoa3idEwpcvk1DpWCNa
+ uiCwI5eYJyh+/2dnMPF/zzZpt7a6/3v/3nf//GU4VUGUV2xgenbhSsi6cQujH5BIfYoXjLYrubq
+ syGk5sA0Ui2TW07Rqs93EOG+teGbZ/wuH53gj8m1Sxxsw==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id B0EB8240C3;
+ Wed, 05 Nov 2025 22:31:44 +0000 (UTC)
+From: ~myrslint <myrslint@git.sr.ht>
+Date: Wed, 05 Nov 2025 22:07:10 +0000
+Subject: [PATCH qemu v9 1/1] i386/kvm: Honor guest PAT on x86,
+ absent Bochs display
+Message-ID: <176238190422.23756.12141073071212582632-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <176238190422.23756.12141073071212582632-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aQnlcVBqlfVMHE8I@redhat.com>
-User-Agent: NeoMutt/20250905
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.517,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,76 +62,202 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~myrslint <myrskylintu@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 04, 2025 at 11:37:21AM +0000, Daniel P. Berrangé wrote:
-> On Mon, Nov 03, 2025 at 02:10:58PM -0600, Eric Blake wrote:
-> >      for ( ; i < listener->nsioc; i++) {
-> > -        listener->io_source[i] = qio_channel_add_watch_source(
-> > -            QIO_CHANNEL(listener->sioc[i]), G_IO_IN,
-> > -            qio_net_listener_channel_func,
-> > -            listener, NULL, listener->context);
-> > +        if (listener->context) {
-> > +            /*
-> > +             * The user passed a GMainContext with the async callback;
-> > +             * they plan on running their own g_main_loop.
-> > +             */
-> > +            listener->io_source[i] = qio_channel_add_watch_source(
-> > +                QIO_CHANNEL(listener->sioc[i]), G_IO_IN,
-> > +                qio_net_listener_channel_func,
-> > +                listener, NULL, listener->context);
-> > +        } else {
-> > +            /*
-> > +             * The user is fine with the default context. But by doing
-> > +             * it in the main thread's AioContext rather than
-> > +             * specifically in a GMainContext, we can remain
-> > +             * responsive even if another AioContext depends on
-> > +             * connecting to this server.
-> > +             */
-> > +            aio_set_fd_handler(qemu_get_aio_context(), listener->sioc[i]->fd,
-> > +                               qio_net_listener_aio_func, NULL, NULL, NULL,
-> > +                               listener->sioc[i]);
-> > +        }
-> 
-> I'm not really happy with the listener directly accessing the 'fd'
-> fields in the QIOSocketChannel, as compared to the GSource approach
-> where the underlying transport is not exposed to the caller.
-> 
-> If we want to use an AioContext instead of a GSource, then I think
-> we need to add a method to either QIOChannelSocket, or QIOChannel
-> base, as an alternative to the GSource watches, and then have the
-> listener conditionally use the AioContext APIs.
-> 
-> 
-> Also in QIOChannel base, we have a io_set_aio_fd_handler() method
-> that we use elsewhere. Can we perhaps leverage that in some way.
+From: myrslint <qemu.haziness801@passinbox.com>
 
-I will explore that idea for v2.
+On x86_64, where most CPUs support self-snoop, it is preferrable to
+always honor guest PAT. Not doing so is a quirk. There is a default
+enabled KVM quirk flag which enforces not doing so due to a former bug
+in Bochs display driver.
 
-> 
-> eg, instead of taking the AioContext code path based off
-> "if (listener->context)", take the code path based on whether
-> the QIOChannel has had a call qio_channel_set_aio_fd_handler
-> to register AIO handlers ? Maybe that method doesn't quite fit,
-> but conceptually I would be more comfortable with an approach
-> that explicitly associates an AioContext with either the
-> channel or the listener object, rather than this heuristic
-> of "if (listener->context)".
+The bug has been fixed but not enough has yet passed since so we only
+disable said quirk flag if a Bochs display is not configured for the
+virtual machine.
 
-I wonder if qio_channel_set_follow_coroutine_ctx() might be the
-trigger point you are thinking of. NBD code already calls this, but
-only AFTER the client has connected.  Would having
-ioc->follow_coroutine_ctx is a better witness that the caller
-specifically wants the channel behind NetListener to run in an
-AioContext, rather than blindly declaring that all NetListeners get
-AioContext unless they use qio_net_listener_set_client_func_full(),
-and where I change the NBD code to call follow_coroutine_ctx() sooner?
+This commit also moves around a bit of code that would be called when
+the initialization of a VM is done.
 
+Signed-off-by: Myrsky Lintu <qemu.haziness801@passinbox.com>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # intel-ivb
+---
+ accel/kvm/kvm-all.c        |  1 +
+ accel/stubs/kvm-stub.c     |  1 +
+ hw/display/bochs-display.c | 17 +++++++++++++++
+ include/system/kvm.h       |  9 ++++++++
+ target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
+ 5 files changed, 63 insertions(+), 7 deletions(-)
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f9254ae654..36a12593ee 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -103,6 +103,7 @@ bool kvm_readonly_mem_allowed;
+ bool kvm_vm_attributes_allowed;
+ bool kvm_msi_use_devid;
+ bool kvm_pre_fault_memory_supported;
++bool kvm_bochs_drm_quirk;
+ static bool kvm_has_guest_debug;
+ static int kvm_sstep_flags;
+ static bool kvm_immediate_exit;
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 68cd33ba97..a69c89e1ad 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -24,6 +24,7 @@ bool kvm_gsi_direct_mapping;
+ bool kvm_allowed;
+ bool kvm_readonly_mem_allowed;
+ bool kvm_msi_use_devid;
++bool kvm_bochs_drm_quirk;
+=20
+ void kvm_flush_coalesced_mmio_buffer(void)
+ {
+diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
+index ad2821c974..e8def68b41 100644
+--- a/hw/display/bochs-display.c
++++ b/hw/display/bochs-display.c
+@@ -20,6 +20,8 @@
+ #include "ui/qemu-pixman.h"
+ #include "qom/object.h"
+=20
++#include "system/kvm.h"
++
+ typedef struct BochsDisplayMode {
+     pixman_format_code_t format;
+     uint32_t             bytepp;
+@@ -309,6 +311,21 @@ static void bochs_display_realize(PCIDevice *dev, Error =
+**errp)
+     }
+=20
+     memory_region_set_log(&s->vram, true, DIRTY_MEMORY_VGA);
++
++    /*
++     * On x86_64, where most CPUs support self-snoop, it is preferrable to
++     * always honor guest PAT. Not doing so is a quirk. There is a default
++     * enabled KVM quirk flag which enforces not doing so due to a former bug
++     * in Bochs display driver.
++     *
++     * The bug has been fixed but not enough has yet passed since so we only
++     * disable said quirk flag if a Bochs display is not configured for the
++     * virtual machine.
++     *
++     * The following flag tells KVM initialization code not to disable that
++     * quirk flag.
++     */
++    kvm_bochs_drm_quirk =3D true;
+ }
+=20
+ static bool bochs_display_get_big_endian_fb(Object *obj, Error **errp)
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 8f9eecf044..123016777c 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -43,6 +43,7 @@ extern bool kvm_gsi_direct_mapping;
+ extern bool kvm_readonly_mem_allowed;
+ extern bool kvm_msi_use_devid;
+ extern bool kvm_pre_fault_memory_supported;
++extern bool kvm_bochs_drm_quirk;
+=20
+ #define kvm_enabled()           (kvm_allowed)
+ /**
+@@ -144,6 +145,13 @@ extern bool kvm_pre_fault_memory_supported;
+  */
+ #define kvm_msi_devid_required() (kvm_msi_use_devid)
+=20
++/**
++ * kvm_has_bochs_drm:
++ * Returns: true if KVM is possible and a Bochs DRM driver is
++ * in use for display.
++ */
++#define kvm_has_bochs_drm() (kvm_bochs_drm_quirk)
++
+ #else
+=20
+ #define kvm_enabled()           (0)
+@@ -158,6 +166,7 @@ extern bool kvm_pre_fault_memory_supported;
+ #define kvm_gsi_direct_mapping() (false)
+ #define kvm_readonly_mem_enabled() (false)
+ #define kvm_msi_devid_required() (false)
++#define kvm_has_bochs_drm() (false)
+=20
+ #endif  /* CONFIG_KVM_IS_POSSIBLE */
+=20
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 60c7981138..dd2594f5af 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2709,13 +2709,13 @@ static bool kvm_rdmsr_pkg_energy_status(X86CPU *cpu,
+     return true;
+ }
+=20
+-static Notifier smram_machine_done;
++static Notifier kvm_machine_done;
+ static KVMMemoryListener smram_listener;
+ static AddressSpace smram_address_space;
+ static MemoryRegion smram_as_root;
+ static MemoryRegion smram_as_mem;
+=20
+-static void register_smram_listener(Notifier *n, void *unused)
++static void register_smram_listener(void)
+ {
+     CPUState *cpu;
+     MemoryRegion *smram =3D
+@@ -2754,6 +2754,37 @@ void kvm_smm_cpu_address_space_init(X86CPU *cpu)
+     cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root=
+);
+ }
+=20
++static bool kvm_x86_smm_enabled(void)
++{
++    return object_dynamic_cast(OBJECT(current_machine), TYPE_X86_MACHINE) &&
++        x86_machine_is_smm_enabled(X86_MACHINE(current_machine));
++}
++
++static int kvm_x86_disable_quirsk2_mask(void)
++{
++    return kvm_check_extension(kvm_state, KVM_CAP_DISABLE_QUIRKS2);
++}
++
++static int kvm_disable_ignore_guest_pat(void)
++{
++    return kvm_vm_enable_cap(kvm_state, KVM_CAP_DISABLE_QUIRKS2, 0, \
++                             KVM_X86_QUIRK_IGNORE_GUEST_PAT);
++}
++
++static void handle_machine_done(Notifier *n, void *unused)
++{
++    if (kvm_x86_smm_enabled()) {
++        register_smram_listener();
++    }
++    if (!kvm_has_bochs_drm() && \
++        (kvm_x86_disable_quirsk2_mask() & KVM_X86_QUIRK_IGNORE_GUEST_PAT)) {
++        if (kvm_disable_ignore_guest_pat()) {
++            error_report("KVM_X86_QUIRK_IGNORE_GUEST_PAT available and "
++                         "modifiable but we failed to disable it");
++        }
++    }
++}
++
+ static void *kvm_msr_energy_thread(void *data)
+ {
+     KVMState *s =3D data;
+@@ -3334,11 +3365,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         return ret;
+     }
+=20
+-    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
+-        x86_machine_is_smm_enabled(X86_MACHINE(ms))) {
+-        smram_machine_done.notify =3D register_smram_listener;
+-        qemu_add_machine_init_done_notifier(&smram_machine_done);
+-    }
++    kvm_machine_done.notify =3D handle_machine_done;
++    qemu_add_machine_init_done_notifier(&kvm_machine_done);
+=20
+     if (enable_cpu_pm) {
+         ret =3D kvm_vm_enable_disable_exits(s);
+--=20
+2.49.1
 
