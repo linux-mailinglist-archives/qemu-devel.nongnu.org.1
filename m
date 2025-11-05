@@ -2,94 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048A7C378F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 20:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCB8C37CD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 21:57:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGjYX-00032D-Nd; Wed, 05 Nov 2025 14:52:33 -0500
+	id 1vGkYL-0002ae-Fb; Wed, 05 Nov 2025 15:56:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vGjYV-00031e-JF
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 14:52:31 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vGjYT-0008Lo-M8
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 14:52:31 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-b3c2c748bc8so22973466b.2
- for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 11:52:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762372348; x=1762977148; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5gXmES6vJZwCjqUC/zDfnWqDCTHuhj/G64WNmTGcO5M=;
- b=fnoMA5WlKMf5sWOWW0Mc5M7RG3qPiEPEoJtqESQZf0C6TP1/mtCBsN05hqtOIoMw1x
- nhe6JYVtYlEn7SP3l5SfTyoB6uzwzZ5Mblw0P45vLMkPByAEiNM4nB0JtoM521UtUVpi
- /lRF+wda4mnXRaXGt7sHDr19CsylFVWXkI96XNgE8mvF44vftVRnWUerBIQ/rVKSbnZU
- EUufbHiPyk9JsWfIWsh+Khr0mwCn1q9EfI2DrEqg3NwoVibbLJ1Ax2eZphTgNCkzpNHy
- 5iYhGx4+a4XSqJs0bTL9R+a2Jd/0wObt41avIuXeCzqnurb323BB1jyba5YsSuLmPHJE
- x0FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762372348; x=1762977148;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=5gXmES6vJZwCjqUC/zDfnWqDCTHuhj/G64WNmTGcO5M=;
- b=Kel6kUhH97Nw/Uf+heFC8ks35XCvYEVQuToyynMx4H+Fu4GD0DOSst9IRLpqixGXjY
- 1TGwky+fn/pfpf5Sno4TlslxMvYe6CoAGVfZp+b47IMrRsakXPFCgo0/6Q/6iXpJ1O36
- juo73IkznZL4WGz91oB5g7ddsNJ18oIrB7Y5rVf5hJ9xYacLTSP/HuSli+6e+E6SQdLr
- +YWBL8zqmjUEcizcRrzTw3udlaAmGamkwDmX6wKpAzDHFwyPfzhnLwCTqvVbIt2cSYj/
- 60ler5DKpPiQ9roGGLhj/xMdOywL9DJT9VpweZjUXTVTcNrFHdJer4Wupo/5djKGOvbb
- yGxQ==
-X-Gm-Message-State: AOJu0YxGMXm+RSii3xjcONuLEbD8MLSw4PpNblqdgivFLvYrRlqIX7hS
- BD167U9mWy13yVJ4H+hggou5ZveKtrJgmtjeDTmj0DWxiTn5kVEUf/xxkAhIeTzVB3A=
-X-Gm-Gg: ASbGnctSzqj8JD2jyv9epohX3nbCOSUDgYUOCnZU8Y86VM953OYKQ1MmUfy6d2Jl5dy
- RaFxsjq2Hrgu4gpeXd2VeJBCqnH3FGX1sIjgiDQpaNSJA541X9Ut7Ba6P08iaL82PFf22SgJNG+
- XOUW3k6hgRK+c/IH+nAEYiTaoseJyazJn0wVc/CTDfvFgpo3u3rvTsaD5oWoAyaTXsxV3YdqSyz
- akIYxkKr8MRL8112OcOtEREDBeuOUYmgMAkzGOEnGRCZoFB4QY3MT1Kvqh9zO37liXVay+Ea3tq
- d0EaIq0OsenZesToGxDMDZOoisDkEhAWGypXXy8tRfoYT8CNiqGrOWe9w2X9UQh05+nbyav5XqG
- jRabquroZKPd7+bJzuPXviNywKZYhizVF3ntUGLNTindehC6kkH5w9ZerkIw0j20MS4lxS2AOLp
- aiYWX9pzbcguM=
-X-Google-Smtp-Source: AGHT+IHlh+6y4ng7X+7hWFUO6Pl87/M0xtbRdXr6xYEu5Re5laTrEcedebrejwHhP6b5lY2P0J6K+g==
-X-Received: by 2002:a17:907:3f24:b0:b42:9840:eac1 with SMTP id
- a640c23a62f3a-b726553b597mr430898566b.49.1762372347760; 
- Wed, 05 Nov 2025 11:52:27 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72893cc686sm46862466b.32.2025.11.05.11.52.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Nov 2025 11:52:26 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0D40E5F88E;
- Wed, 05 Nov 2025 19:52:26 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: qemu-devel@nongnu.org,  mst@redhat.com,  bill.mills@linaro.org,
- edgar.iglesias@amd.com
-Subject: Re: [PATCH v1 5/5] docs: Describe virtio-msg-amp-pci
-In-Reply-To: <20251028152351.1247812-6-edgar.iglesias@gmail.com> (Edgar E.
- Iglesias's message of "Tue, 28 Oct 2025 16:23:50 +0100")
-References: <20251028152351.1247812-1-edgar.iglesias@gmail.com>
- <20251028152351.1247812-6-edgar.iglesias@gmail.com>
-User-Agent: mu4e 1.12.14-dev2; emacs 30.1
-Date: Wed, 05 Nov 2025 19:52:25 +0000
-Message-ID: <87tsz8tfye.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <i.repko@syntacore.com>)
+ id 1vGjcK-0005LC-7F; Wed, 05 Nov 2025 14:56:28 -0500
+Received: from m.syntacore.com ([178.249.69.228])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <i.repko@syntacore.com>)
+ id 1vGjcI-0000uk-Ii; Wed, 05 Nov 2025 14:56:27 -0500
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+ by m.syntacore.com (Postfix) with ESMTP id CB4EC1A0004;
+ Wed,  5 Nov 2025 19:56:15 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com CB4EC1A0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+ t=1762372575; bh=G1q86/DgqPNjCWBa7TyF1koxVFpglV1ohFFAZyKfyBs=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=HZkAzBDjqtvmZxgoj7TCx8vxmWwbZnW9IkwQpg2uvNMkj0WIljLmgs/RUTBEGAsS9
+ YrhEY9jFoLaLc69PIrocOBwUgj3Ty+GdAEcDCQvPs9kaxzNxN6pp7XJSxlQPsOXUvd
+ G8HRPoDAKHHzjJLa5bMJfRr92LztP34dn+xB8UWJL6heSWEHAgsJM0vbYBHwfrgnI1
+ r7uV1ppGgUIHtKS1119OyqV/8GfmgmBgz93KDFz0wnWCWzohKDxFg8KPZF8b4vdhAv
+ Rmfu79lzWmiV0XR+zVBBI4E0HQHyGv+91JCEL+wWTzT6heJ7bl6C6ba+JddZyTRt0Y
+ 1FLGw3pXofpZA==
+Received: from S-SC-EXCH-01.corp.syntacore.com (mail.syntacore.com
+ [10.76.202.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by m.syntacore.com (Postfix) with ESMTPS;
+ Wed,  5 Nov 2025 19:56:15 +0000 (UTC)
+Received: from NB-8361.lan (172.27.13.83) by S-SC-EXCH-01.corp.syntacore.com
+ (10.76.202.20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 5 Nov
+ 2025 22:55:22 +0300
+From: Ilya Repko <i.repko@syntacore.com>
+To: 
+CC: Ilya Repko <i.repko@syntacore.com>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, Alistair Francis <alistair@alistair23.me>, Peter
+ Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>, "open
+ list:Xilinx Zynq" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+Subject: [PATCH] Revert "hw/net: Fix the transmission return size"
+Date: Wed, 5 Nov 2025 22:55:30 +0300
+Message-ID: <20251105195532.347555-1-i.repko@syntacore.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.27.13.83]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310,
+ bases: 2025/11/05 19:22:00 #27886012
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
+Received-SPF: pass client-ip=178.249.69.228;
+ envelope-from=i.repko@syntacore.com; helo=m.syntacore.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 05 Nov 2025 15:56:12 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,113 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Edgar E. Iglesias" <edgar.iglesias@gmail.com> writes:
+This reverts commit 3a6d374b754b4b345195ff6846eeaffedc96a7c5.
 
-> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
->
-> Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-> ---
->  .../devices/virtio/virtio-msg-amp-pci.rst     | 70
-> +++++++++++++++++++
+During axienet_eth_rx_notify(), s->rxpos is modified to indicate how much
+data was pushed to AXI DMA. eth_rx() would then return this value.
+If at 0, network subsystem would consider packet reception as failed
+and put the packet in a queue for later.
 
-You also need to add this to index.rst otherwise the docs build will
-fail.
+Before we attempt to push packet data to AXI DMA, the packet is stored
+in s->rxmem buffer. If an attempt to push data fails, we will reattempt
+to deliver it from s->rxmem buffer once s2mm stream gets a new descriptor.
+s->rxmem would not be overwritten by a subsequent eth_rx() call, because
+eth_can_rx() protects it in case it has any data at all. Leaving the packet
+in a NetQueue though effectively duplicates it.
 
+Therefore, eth_rx() must indicate successful packet reception in case
+data push to AXI DMA fails.
 
->  1 file changed, 70 insertions(+)
->  create mode 100644 docs/system/devices/virtio/virtio-msg-amp-pci.rst
->
-> diff --git a/docs/system/devices/virtio/virtio-msg-amp-pci.rst b/docs/sys=
-tem/devices/virtio/virtio-msg-amp-pci.rst
-> new file mode 100644
-> index 0000000000..c73f7a878b
-> --- /dev/null
-> +++ b/docs/system/devices/virtio/virtio-msg-amp-pci.rst
-> @@ -0,0 +1,70 @@
-> +Virtio-msg AMP PCI
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +This document explains the setup and usage of the virtio-msg-amp-pci dev=
-ice..
-> +The virtio-msg-amp-pci, is an emulated PCI device that provides a small
-> +set of features to enable virtio-msg over shared-memory queue's.
-> +
-> +Usecase
-> +-------
-> +
-> +Virtio-msg is a virtio transport where driver and device communicate over
-> +messages rather than using memory accesses that get trapped and emulated.
-> +Virtio-msg depends on a lower lever virtio-msg-bus responsible for deliv=
-ering
-> +these messages. In this case, we're using the Virtio-msg AMP bus which m=
-oves
-> +messages back and forth using a FIFO on top of shared-memory and interru=
-pts.
-> +
-> +The virtio-msg-amp-pci device exposes a BAR with RAM and doorbell regist=
-ers
-> +so guests can implement the shared-memory FIFO protocol and QEMU impleme=
-nts
-> +the backend side of it.
-> +
-> +Virtio pmem allows to bypass the guest page cache and directly use
-> +host page cache. This reduces guest memory footprint as the host can
-> +make efficient memory reclaim decisions under memory pressure.
-> +
-> +Virtio-msg-amp-pci PCI device
-> +-----------------------------
-> +
-> +The virtio-msg-amp-pci device has the following layout:
-> +
-> +- BAR 0: Registers (Version, features and notification/doorbell regs)
-> +- BAR 1: RAM for FIFOs
-> +
-> +Each FIFO gets an MSI-X interrupt reserved for it and a dedicated doorbe=
-ll
-> +register::
-> +
-> +        REG32(VERSION,  0x00)
-> +        REG32(FEATURES, 0x04)
-> +        REG32(NOTIFY0,  0x20)
-> +        REG32(NOTIFY1,  0x24)
-> +        REG32(NOTIFY2,  0x28)
-> +        And so on.
-> +
-> +How does virtio-msg-amp-pci compare to virtio-pci emulation?
-> +------------------------------------------------------------
-> +
-> +Both virtio-msg-amp-pci and virtio-pci emulate PCI devices and allow use=
-rs
-> +to plug virtio devices behind them. The main difference is in how the
-> +guest uses virtio-msg vs virtio-pci to discover and configure the virtio=
- dev.
-> +
-> +virtio pmem usage
-> +-----------------
-> +
-> +A virtio-msg-amp-pci can be greated by adding the following to the QEMU
-> +command-line::
-> +
-> +    -device virtio-msg-amp-pci
-> +
-> +Virtio devices can then be attached to the virtio-msg bus with for examp=
-le
-> +the following::
-> +
-> +    -device virtio-rng-device,bus=3D/gpex-pcihost/pcie.0/virtio-msg-amp-=
-pci/fifo0/virtio-msg/bus0/virtio-msg-dev
-> +
-> +Multiple virtio devices can be connected by using bus1, bus2 and so on.
-> +
-> +Device properties
-> +-----------------
-> +
-> +The virtio-msg-amp-pci  device can be configured with the following prop=
-erties:
-> +
-> + * ``num-fifos`` number of fifos (default 2).
+Signed-off-by: Ilya Repko <i.repko@syntacore.com>
+---
+ hw/net/xilinx_axienet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
+index 31e7708082..101b3f260a 100644
+--- a/hw/net/xilinx_axienet.c
++++ b/hw/net/xilinx_axienet.c
+@@ -867,7 +867,7 @@ static ssize_t eth_rx(NetClientState *nc, const uint8_t *buf, size_t size)
+     axienet_eth_rx_notify(s);
+ 
+     enet_update_irq(s);
+-    return s->rxpos;
++    return size;
+ }
+ 
+ static size_t
+-- 
+2.51.1
+
 
