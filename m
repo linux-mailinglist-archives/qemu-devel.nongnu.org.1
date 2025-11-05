@@ -2,80 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCB8C37CD5
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 21:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B79C37A0E
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 21:07:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGkYL-0002ae-Fb; Wed, 05 Nov 2025 15:56:25 -0500
+	id 1vGjmF-0006aX-U1; Wed, 05 Nov 2025 15:06:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.repko@syntacore.com>)
- id 1vGjcK-0005LC-7F; Wed, 05 Nov 2025 14:56:28 -0500
-Received: from m.syntacore.com ([178.249.69.228])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGjlu-0006Zp-3M
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 15:06:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.repko@syntacore.com>)
- id 1vGjcI-0000uk-Ii; Wed, 05 Nov 2025 14:56:27 -0500
-Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
- by m.syntacore.com (Postfix) with ESMTP id CB4EC1A0004;
- Wed,  5 Nov 2025 19:56:15 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com CB4EC1A0004
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
- t=1762372575; bh=G1q86/DgqPNjCWBa7TyF1koxVFpglV1ohFFAZyKfyBs=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=HZkAzBDjqtvmZxgoj7TCx8vxmWwbZnW9IkwQpg2uvNMkj0WIljLmgs/RUTBEGAsS9
- YrhEY9jFoLaLc69PIrocOBwUgj3Ty+GdAEcDCQvPs9kaxzNxN6pp7XJSxlQPsOXUvd
- G8HRPoDAKHHzjJLa5bMJfRr92LztP34dn+xB8UWJL6heSWEHAgsJM0vbYBHwfrgnI1
- r7uV1ppGgUIHtKS1119OyqV/8GfmgmBgz93KDFz0wnWCWzohKDxFg8KPZF8b4vdhAv
- Rmfu79lzWmiV0XR+zVBBI4E0HQHyGv+91JCEL+wWTzT6heJ7bl6C6ba+JddZyTRt0Y
- 1FLGw3pXofpZA==
-Received: from S-SC-EXCH-01.corp.syntacore.com (mail.syntacore.com
- [10.76.202.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vGjlp-0007sB-Mj
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 15:06:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762373175;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AsYWFQ7M98c3CCWI0HedSJycDt764Q0g/uIoYQ6Su98=;
+ b=SaPbutWWLRJfQOBIRIvd5q6FF81J7Ga/xoDwHdOM+LMeOAmBlZ+nhwisf1NxDfX6vEsU4C
+ L4pfYbeGXByNu44OXALsQTDO8ASUC3DnpevziwrMurXeTOfKLA44Xz3filt5x5rGrlcZVA
+ jnd/Y2+NCnPZY2nBDkqNdwkyXuizZ04=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-WrTFEcVyN6aRJSwx2RaTtw-1; Wed,
+ 05 Nov 2025 15:06:12 -0500
+X-MC-Unique: WrTFEcVyN6aRJSwx2RaTtw-1
+X-Mimecast-MFC-AGG-ID: WrTFEcVyN6aRJSwx2RaTtw_1762373171
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by m.syntacore.com (Postfix) with ESMTPS;
- Wed,  5 Nov 2025 19:56:15 +0000 (UTC)
-Received: from NB-8361.lan (172.27.13.83) by S-SC-EXCH-01.corp.syntacore.com
- (10.76.202.20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 5 Nov
- 2025 22:55:22 +0300
-From: Ilya Repko <i.repko@syntacore.com>
-To: 
-CC: Ilya Repko <i.repko@syntacore.com>, "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>, Alistair Francis <alistair@alistair23.me>, Peter
- Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>, "open
- list:Xilinx Zynq" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-Subject: [PATCH] Revert "hw/net: Fix the transmission return size"
-Date: Wed, 5 Nov 2025 22:55:30 +0300
-Message-ID: <20251105195532.347555-1-i.repko@syntacore.com>
-X-Mailer: git-send-email 2.51.1
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F0DB219560A1; Wed,  5 Nov 2025 20:06:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.131])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 344821800872; Wed,  5 Nov 2025 20:06:08 +0000 (UTC)
+Date: Wed, 5 Nov 2025 14:06:06 -0600
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, berrange@redhat.com, kwolf@redhat.com
+Subject: Re: [PATCH 5/8] qio: Let listening sockets remember their owning
+ QIONetListener
+Message-ID: <3nyd5oqiiy5egwfuup4ibnw5kgb555ijshpiafax3xdjgvcy6b@a7qwjdlkpuwi>
+References: <20251103202849.3687643-10-eblake@redhat.com>
+ <20251103202849.3687643-15-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.27.13.83]
-X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310,
- bases: 2025/11/05 19:22:00 #27886012
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
-Received-SPF: pass client-ip=178.249.69.228;
- envelope-from=i.repko@syntacore.com; helo=m.syntacore.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251103202849.3687643-15-eblake@redhat.com>
+User-Agent: NeoMutt/20250905
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.517,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 05 Nov 2025 15:56:12 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,42 +82,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 3a6d374b754b4b345195ff6846eeaffedc96a7c5.
+On Mon, Nov 03, 2025 at 02:10:56PM -0600, Eric Blake wrote:
+> Make it easier to get from the sioc listening to a single address on
+> behalf of a NetListener back to its owning object, which will be
+> beneficial in an upcoming patch that teaches NetListener how to
+> interact with AioContext.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>  include/io/channel-socket.h | 1 +
+>  io/channel-socket.c         | 1 +
+>  io/net-listener.c           | 1 +
+>  3 files changed, 3 insertions(+)
+> 
+> diff --git a/include/io/channel-socket.h b/include/io/channel-socket.h
+> index a88cf8b3a9f..eee686f3b4d 100644
+> --- a/include/io/channel-socket.h
+> +++ b/include/io/channel-socket.h
+> @@ -49,6 +49,7 @@ struct QIOChannelSocket {
+>      socklen_t remoteAddrLen;
+>      ssize_t zero_copy_queued;
+>      ssize_t zero_copy_sent;
+> +    struct QIONetListener *listener;
 
-During axienet_eth_rx_notify(), s->rxpos is modified to indicate how much
-data was pushed to AXI DMA. eth_rx() would then return this value.
-If at 0, network subsystem would consider packet reception as failed
-and put the packet in a queue for later.
+Commenting on my own patch:
 
-Before we attempt to push packet data to AXI DMA, the packet is stored
-in s->rxmem buffer. If an attempt to push data fails, we will reattempt
-to deliver it from s->rxmem buffer once s2mm stream gets a new descriptor.
-s->rxmem would not be overwritten by a subsequent eth_rx() call, because
-eth_can_rx() protects it in case it has any data at all. Leaving the packet
-in a NetQueue though effectively duplicates it.
+After re-reading docs/devel/style.rst, I can see that this particular
+forward declaration of QIONetListener is not consistent with the
+guidelines.  I have to have a forward reference, since the style guide
+also forbids circular inclusion (net-listener.h already includes
+channel-socket.h, so channel-socket.h cannot include net-listener.h);
+but it may be better for me to move the forward reference into
+include/qemu/typedefs.h rather than inlining it how I did here.
 
-Therefore, eth_rx() must indicate successful packet reception in case
-data push to AXI DMA fails.
+(It is a red herring that struct QIOChannelSocket{} already contains
+two other uses of 'struct' in its declaration body - both of those are
+for 'struct sockaddr_storage' which is the POSIX type always spelled
+with struct, with no typical QEMU CamelCase wrapper)
 
-Signed-off-by: Ilya Repko <i.repko@syntacore.com>
----
- hw/net/xilinx_axienet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +++ b/io/channel-socket.c
+> @@ -65,6 +65,7 @@ qio_channel_socket_new(void)
+>      sioc->fd = -1;
+>      sioc->zero_copy_queued = 0;
+>      sioc->zero_copy_sent = 0;
+> +    sioc->listener = NULL;
 
-diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
-index 31e7708082..101b3f260a 100644
---- a/hw/net/xilinx_axienet.c
-+++ b/hw/net/xilinx_axienet.c
-@@ -867,7 +867,7 @@ static ssize_t eth_rx(NetClientState *nc, const uint8_t *buf, size_t size)
-     axienet_eth_rx_notify(s);
- 
-     enet_update_irq(s);
--    return s->rxpos;
-+    return size;
- }
- 
- static size_t
+Also, I added an explicit zero initialization to the new member to
+match existing explicit initializers.  But checking qom/object.c, I
+see that object_new() first uses g_malloc() instead of g_new0(), but
+then calls object_initialize_with_type() does a forced memset(,0,) -
+so all object constructors that do explicit field initialization to
+zero are doing redundant work.
+
+Dropping the sioc->listener = NULL assignment from this patch thus
+makes sense from the less work perspective, but now that I've pointed
+it out, dropping the sioc->zero_copy_* = 0 lines makes sense too.  But
+cleanups like that should probably be a separate patch, and maybe
+touch as many clients of object_new() as possible (perhaps via
+Coccinelle?), rather than shoehorning in a deletion of just those two
+lines into a v2 of this particular patch.
+
 -- 
-2.51.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
