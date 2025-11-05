@@ -2,52 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33079C33E75
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 05:01:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6211FC3407A
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 07:03:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGUh2-0008UR-K0; Tue, 04 Nov 2025 23:00:20 -0500
+	id 1vGWb7-0006hp-2f; Wed, 05 Nov 2025 01:02:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vGUgz-0008Tb-Ls; Tue, 04 Nov 2025 23:00:17 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGWb3-0006hS-RT
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 01:02:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vGUgy-0000YI-6V; Tue, 04 Nov 2025 23:00:17 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 5 Nov
- 2025 11:59:05 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 5 Nov 2025 11:59:05 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 17/17] hw/arm/aspeed: Model AST1700 PWM block as
- unimplemented device
-Date: Wed, 5 Nov 2025 11:58:55 +0800
-Message-ID: <20251105035859.3709907-18-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251105035859.3709907-1-kane_chen@aspeedtech.com>
-References: <20251105035859.3709907-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vGWb1-0007Vi-LY
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 01:02:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762322533;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kKauCUJzYVtBm7uuGDn1t5g4punLzkr3Dsj4cxV28hw=;
+ b=iuqPRc2lnryddFVWW7o6R9qC6J63JKWyklFuUsBigJnqaxOtEvLKaD0UwHhHzWOnkWqnRW
+ s3NlfrpTpLQjJxJkY3HfBxcpyuDqXngaF84ePk3yCpsKI5F2yQmv5hjiEfwHf7vepMMzPx
+ DBKG36AmmhDWuC9M7nYG3LWL1CilA9U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-j9FuNuQwOx2BRgwelb2DLw-1; Wed,
+ 05 Nov 2025 01:02:12 -0500
+X-MC-Unique: j9FuNuQwOx2BRgwelb2DLw-1
+X-Mimecast-MFC-AGG-ID: j9FuNuQwOx2BRgwelb2DLw_1762322531
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6000B180049F; Wed,  5 Nov 2025 06:02:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E4DF43000198; Wed,  5 Nov 2025 06:02:10 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2DBB521E6A27; Wed, 05 Nov 2025 07:02:08 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: MAINTAINERS spring-cleaning
+In-Reply-To: <CAFEAcA9oUfFSFXrN+swbCtr4LV+S+-DuUjdP5miGnSbkCt2ZYA@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 4 Nov 2025 17:36:47 +0000")
+References: <CAFEAcA9oUfFSFXrN+swbCtr4LV+S+-DuUjdP5miGnSbkCt2ZYA@mail.gmail.com>
+Date: Wed, 05 Nov 2025 07:02:07 +0100
+Message-ID: <87ikfpow4g.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.788,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,88 +79,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-AST1700 includes an PWM block, but QEMU has no functional model for
-aspeed product yet. Expose it as an unimplemented device so the
-address space is reserved and the missing functionality is explicit
-to users/guests.
+> I just did some analysis of our MAINTAINERS file with the aid of a
+> local copy of the public-inbox archive of qemu-devel, and (unless my
+> scripting is broken ;-)) of the 258 emails listed in MAINTAINERS,
+> 50 have not sent an email to qemu-devel in the last three years.
+>
+> Some of that will be things like "the address somebody uses to send
+> to the list is not quite the same as the one they have listed", so
+> it will need some manual checking, but I think this shows we could
+> use a bit of spring-cleaning of the file to remove stale entries.
+>
+> I propose to send some (not cc'd the list) emails to these people,
+> asking (politely!) if they're still interested in being in the
+> MAINTAINERS file, and treating "email bounces", "no" and "no reply
+> within a month" as "I'm no longer interested in being cc'd on patches".
+> Then we can update the file accordingly.
+>
+> (This was prompted by a series I sent out earlier today getting
+> a load of "address unknown" bounce-mails from a corporate server;
+> that's not a particularly rare thing to happen IME. And I also
+> have developed a habit of manually curating cc lists to drop
+> people I suspect of not actually being involved any more...)
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- include/hw/misc/aspeed_ast1700.h |  1 +
- hw/misc/aspeed_ast1700.c         | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
+Yes, please!
 
-diff --git a/include/hw/misc/aspeed_ast1700.h b/include/hw/misc/aspeed_ast1700.h
-index 8ada3a7775..9d432a7db0 100644
---- a/include/hw/misc/aspeed_ast1700.h
-+++ b/include/hw/misc/aspeed_ast1700.h
-@@ -45,6 +45,7 @@ struct AspeedAST1700SoCState {
- 
-     UnimplementedDeviceState i3c;
-     UnimplementedDeviceState sgpiom;
-+    UnimplementedDeviceState pwm;
- };
- 
- #endif /* ASPEED_AST1700_H */
-diff --git a/hw/misc/aspeed_ast1700.c b/hw/misc/aspeed_ast1700.c
-index 66a5f21d27..3d9a920a7a 100644
---- a/hw/misc/aspeed_ast1700.c
-+++ b/hw/misc/aspeed_ast1700.c
-@@ -20,9 +20,11 @@
- #define AST1700_SOC_SRAM_SIZE        0x00040000
- #define AST1700_SOC_I3C_SIZE         0x00010000
- #define AST1700_SOC_SGPIOM_SIZE      0x00002000
-+#define AST1700_SOC_PWM_SIZE         0x00000200
- 
- enum {
-     ASPEED_AST1700_DEV_SPI0,
-+    ASPEED_AST1700_DEV_PWM,
-     ASPEED_AST1700_DEV_SRAM,
-     ASPEED_AST1700_DEV_ADC,
-     ASPEED_AST1700_DEV_SCU,
-@@ -38,6 +40,7 @@ enum {
- 
- static const hwaddr aspeed_ast1700_io_memmap[] = {
-     [ASPEED_AST1700_DEV_SPI0]      =  0x00030000,
-+    [ASPEED_AST1700_DEV_PWM]       =  0x000C0000,
-     [ASPEED_AST1700_DEV_SRAM]      =  0x00BC0000,
-     [ASPEED_AST1700_DEV_ADC]       =  0x00C00000,
-     [ASPEED_AST1700_DEV_SCU]       =  0x00C02000,
-@@ -174,6 +177,15 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
-                         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->sgpiom), 0),
-                         -1000);
- 
-+    /* PWM */
-+    qdev_prop_set_string(DEVICE(&s->pwm), "name", "ioexp-pwm");
-+    qdev_prop_set_uint64(DEVICE(&s->pwm), "size", AST1700_SOC_PWM_SIZE);
-+    sysbus_realize(SYS_BUS_DEVICE(&s->pwm), errp);
-+    memory_region_add_subregion_overlap(&s->iomem,
-+                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_PWM],
-+                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->pwm), 0),
-+                        -1000);
-+
-     /* WDT */
-     for (i = 0; i < AST1700_WDT_NUM; i++) {
-         AspeedWDTClass *awc = ASPEED_WDT_GET_CLASS(&s->wdt[i]);
-@@ -241,6 +253,10 @@ static void aspeed_ast1700_instance_init(Object *obj)
-     object_initialize_child(obj, "ioexp-sgpiom[*]", &s->sgpiom,
-                             TYPE_UNIMPLEMENTED_DEVICE);
- 
-+    /* PWM */
-+    object_initialize_child(obj, "ioexp-pwm", &s->pwm,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+
-     /* WDT */
-     for (i = 0; i < AST1700_WDT_NUM; i++) {
-         snprintf(typename, sizeof(typename), "aspeed.wdt-%s", socname);
--- 
-2.43.0
+We talked about the issue of stale MAINTAINERS entries before, mostly
+when e-mail bounces get sufficiently annoying for somebody to submit or
+ask for a MAINTAINERS correction, but as far as I know it always stopped
+at talk.
+
+Ignored e-mail is arguably worse than bouncing e-mail.  50 entries out
+of 258 is a lot.
+
+If the cleaning you propose works, we should consider repeating it
+regularly, to avoid backsliding.  Annually?
 
 
