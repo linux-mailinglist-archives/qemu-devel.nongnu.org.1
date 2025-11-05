@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F00C36035
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 15:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9D4C3604F
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 15:20:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGeLg-0005Uj-3S; Wed, 05 Nov 2025 09:18:56 -0500
+	id 1vGeMS-0005yb-NN; Wed, 05 Nov 2025 09:19:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vGeLb-0005Tp-BU; Wed, 05 Nov 2025 09:18:51 -0500
+ id 1vGeMO-0005xk-MN; Wed, 05 Nov 2025 09:19:41 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vGeLa-00083h-0G; Wed, 05 Nov 2025 09:18:51 -0500
+ id 1vGeMN-00085x-5U; Wed, 05 Nov 2025 09:19:40 -0500
 Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4d1nQR5lXFz6L4xR;
- Wed,  5 Nov 2025 22:14:55 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d1nWR5c0gzJ46CX;
+ Wed,  5 Nov 2025 22:19:15 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
- by mail.maildlp.com (Postfix) with ESMTPS id 45BD01402E9;
- Wed,  5 Nov 2025 22:18:48 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 09E561402F7;
+ Wed,  5 Nov 2025 22:19:37 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
- 2025 14:18:47 +0000
-Date: Wed, 5 Nov 2025 14:18:46 +0000
+ 2025 14:19:36 +0000
+Date: Wed, 5 Nov 2025 14:19:35 +0000
 To: Gavin Shan <gshan@redhat.com>
 CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>,
  <mchehab+huawei@kernel.org>, <gengdongjiu1@gmail.com>, <mst@redhat.com>,
  <imammedo@redhat.com>, <anisinha@redhat.com>, <peter.maydell@linaro.org>,
  <pbonzini@redhat.com>, <shan.gavin@gmail.com>
-Subject: Re: [PATCH v3 6/8] acpi/ghes: Use error_abort in
- acpi_ghes_memory_errors()
-Message-ID: <20251105141846.000072e4@huawei.com>
-In-Reply-To: <20251105114453.2164073-7-gshan@redhat.com>
+Subject: Re: [PATCH v3 7/8] kvm/arm/kvm: Introduce helper
+ push_ghes_memory_errors()
+Message-ID: <20251105141935.00004db9@huawei.com>
+In-Reply-To: <20251105114453.2164073-8-gshan@redhat.com>
 References: <20251105114453.2164073-1-gshan@redhat.com>
- <20251105114453.2164073-7-gshan@redhat.com>
+ <20251105114453.2164073-8-gshan@redhat.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -71,15 +71,16 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed,  5 Nov 2025 21:44:51 +1000
+On Wed,  5 Nov 2025 21:44:52 +1000
 Gavin Shan <gshan@redhat.com> wrote:
 
-> Use error_abort in acpi_ghes_memory_errors() so that the caller needn't
-> explicitly call abort() on errors. With this change, its return value
-> isn't needed any more.
+> Introduce helper push_ghes_memory_errors(), which sends ACPI GHES memory
+> errors and injects SEA exception. With this, we can add more logics to
+> the function to support multiple ACPI GHES memory errors in the next
+> path.
 > 
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> No functional changes intended.
+> 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
 
