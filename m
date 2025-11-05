@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D578DC38003
+	by mail.lfdr.de (Postfix) with ESMTPS id 71372C38000
 	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 22:26:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGl13-0002RD-UA; Wed, 05 Nov 2025 16:26:05 -0500
+	id 1vGl15-0002S5-K0; Wed, 05 Nov 2025 16:26:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGl11-0002Pw-NT
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:03 -0500
-Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
+ id 1vGl13-0002R0-1k
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:05 -0500
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vGl0z-0002DH-Ua
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:03 -0500
-Received: by mail-io1-xd29.google.com with SMTP id
- ca18e2360f4ac-94868b991easo12450539f.1
- for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 13:26:01 -0800 (PST)
+ id 1vGl10-0002DM-VY
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 16:26:04 -0500
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-4330dfb6ea3so1213045ab.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 13:26:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762377960; x=1762982760; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1762377961; x=1762982761; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T/z+TNYYhCgAI/BfGtM/5w/zFoSuf4sdupwu/B7KwfM=;
- b=AUCCUdHaMsFJStrPJ1GVnvCOvV1dMsPbySnowqEeSyvVH292H3us2fVd/TT3B7tBVj
- zl75kl8tAxs8IkkUmNnHi0HqzN7vEvn3e/ybkT29trp6HEgAprDOsYzMM98kbUvmzjYM
- SVRKPint2Dnf6/hwYDWOSCWkTDQ0C0oq5/IBW03vUWlR2i/7nA9QGu7+AOoXMe6EFOrP
- 1b4HmdOS24uBKAYUWbR2mcGjkBmVHl0yjXh1rTnQCzRtm7GBXHPK5hU2xjdVbFetGYCI
- 2PyvqGjqFAKolAPAv54QtizXWqayXn07mtcNRvfosgjRLugL8lanliDWpCbZd3ggJTCM
- wq5Q==
+ bh=QM3K60OsI5L4i2OEIbf7h5rJNwATR23lL1MzRBepSwk=;
+ b=NQ8sih3Tn80jsLZnZlCMFDh8tLvRXIUrtCGlI7p4X+bT6XqIfJY2fOmW4m81i/8/wn
+ vRVGPJcsOfLAWH9pUeivtmZhxa6+0q9XtcHEibWC3CL6RDW1RfRbw4uBn4SSzQxjsXZ6
+ JIxzhxVZQxgbdck+xVex9cpGBou4iDIebxD1BvBXA+BM0uwmjvYiiYd5aKLnsYmS4N3M
+ XZfiGFCuDpq0Il40q8yRTP+4nCfdqus5SXo0ONpx/sw4Y4b/ETJeDCdGneUCfaLH8qI+
+ kgMEYKpWYGMsIrp2y62ppChTfRJ6v0pnPJ7xAsBdJjXN9wW5hKmCrUCCBbTBFweDNHor
+ 3b/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762377960; x=1762982760;
+ d=1e100.net; s=20230601; t=1762377961; x=1762982761;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T/z+TNYYhCgAI/BfGtM/5w/zFoSuf4sdupwu/B7KwfM=;
- b=jpm8LhKegcK+kms2fyqKstnBUQTN7ubTUEBvtuDkbE3JanNHGQORwZVs3q2Y+kNTdg
- 6TUX7E1J3d29ypIZSYMgL3NEvTKZG4D69zJuXHlELsKDEPbB1t4nLa6MtfbJ0usXJyU4
- jK9i89wGewffC1i27GO3MKkjEl0Ep2TCiVQ/xFvEAOMz3lf94A6R8ZmxYzWVRTwj3+ug
- 2bPM3H8cwwB9E5W0nk4ILoiJ4Meymk/FotvrEs5LJ8qpT/XLclvuVM5FUlUfbUAMgz3d
- Hm9kvWihCsS7ddSmpMjBI8GPxE+IUfClB6t43MsN0/1pKX41FW2hX7miFw9TX8Hsgrg8
- xVLQ==
-X-Gm-Message-State: AOJu0YxusAS4NPDn6jAmc+slEbnn6EiPu80nXrTI/JFXaWsOiTKmh6u0
- yG+hQdvqnun+8nqqPEUpq3FtEWOtIAe5yEElb5CWLx/JNCG5JJFmzcoT0KPIau5Mf6I=
-X-Gm-Gg: ASbGncsl1TVsGt0ZiTLH6GY/zqaE1eCjxGLJ8tB500RC8rm39bW3UZgtX8j449zDza+
- SzfKneszsDfiUXY3j604sEr5pf7M4LDIijpSnlc5bh12wCqclCAcnliIKF7iE0+3H4pw4eGkDQv
- rOW7MUOTeGaG1xMZ+UaN+zsaRPq269ITKBibJ4LH1C5Z4Hx8fVAIoaqlMEK3MZnXDTN0S9d6pzJ
- 21QZkRExtiepgcQMgKdbyRjWurB1aqKl28naTAl8q9BUixf6v8v0u6tIvsKLPGIJBMwrk8z2OEJ
- bqTtL7HFVAEcfO1fWRT1Ss5ujTcTL17nbXg74QGeiKJVKoXRgTTT1VMhqqb74Gob3yV3oSVU5rg
- YwcefMKwxK5W61T8ien3aVb9Jdttn/OLAlFqbf5g2+7WxsrsESHr1fdyTPdU3bAC7q+fX+E1G2S
- 9qk/hvgVGxibPe/wg8qn1pWeXIXHV0qdsjC84LIluM1iDNeVS/zz2thJTYteoQLSxgeA==
-X-Google-Smtp-Source: AGHT+IEHFd/0/FtiPFmTJmda58ZN7FaagZN7Qv5pKeF0pi6sKCErkgY96ZByFDg7AIIg1xYw54aEmw==
-X-Received: by 2002:a05:6e02:2141:b0:433:31a0:4e6d with SMTP id
- e9e14a558f8ab-433407af6c9mr71164675ab.10.1762377960087; 
- Wed, 05 Nov 2025 13:26:00 -0800 (PST)
+ bh=QM3K60OsI5L4i2OEIbf7h5rJNwATR23lL1MzRBepSwk=;
+ b=tExwBs8/A/bG4rID8RT0xCbRoY2v12+4wuFE7nFEWQ5f9BIYMyBXdTrKg68Foc516/
+ 3yLANf1Juajt0zeGeSBnX659vUl2gAni6Kp8kW69hnv0a/PnTnVxEBWx+PqdCEnkmztJ
+ pPcYRbCqQ9ZqfrZuvqWcCBSw75k06b7Ci/xGdxvxavDBuAobBnan0KWAn+wY2MOISrFp
+ 3Qd2EJ9jvRf8r2X/uxQT18HWUdAmLsJVIKvgMxPyNp+/MpbAf2xuD8H8oKCr4/xfiAQU
+ xi0hFwCePyZR7suQqUTmELxIJO3wjLERggt0k8DHsE3Dz/1TmV2zoBu5xcWjDxOzI4vQ
+ CWfw==
+X-Gm-Message-State: AOJu0Yy1f9WFkWw9wvUeqLNoeWEIdzJqjReAkyb9KnVCG12z2I7gw8kS
+ QzPMuK6S8Gld+7f6vpIvkVll77oatEbq2aSpdnj8K61IhfIDW72ia8b+3MWOwvz6Vb4=
+X-Gm-Gg: ASbGncv0skp2FuzF5rOMjjdaQ7zrSyggW9hN9/GWSNgja+fF3JfGOynbwEAOGOdiu65
+ PG4urH7O4ppyDdH4Ra+K79ImVf+z0JmM9uBreiBs8tj4RHd+Ty1PnIe9F8jb0GDx3689y0uopYQ
+ 3Yyp/E3nrd5xwfOXkBHhbpH+TxlW0T0jZbs08vrBYr40K0AGzFBK/M5D3RajH20rOpdlWXR6vbr
+ da9sdILx/5dRzkZ6FyXzlVRwQ3qmfQmFBmCaltmt87FpF+5BIFWsS7JEShwECSSMQiLQZO+FB+0
+ UkrSFod5K8fZLPbCE1M5HlKx6dRVuGNBLYlzp6vUrf99cRuEvJ+qntk5Xa8XHRJ2c6mjZvkD5pw
+ FpjtiFXDW/qW1o9Bt76I/ZVZF2Rfd0pu7jEM/epAdtEofWqBaJNWp5f66EMJ3NoU/e2O2E27YDZ
+ VOQgOYVNobmB2CGHrOZCb4qmk1+NLUD+p2CZfniErFkkz9/mwEFJ3qswNTG9DiXhEUNw==
+X-Google-Smtp-Source: AGHT+IFxEoixYAmFcUGsjf/sq+3gwgk+BA5F01xOR8Ty/vemCY2FC3KlydrnybB7o1Ko0hdBERvzbw==
+X-Received: by 2002:a05:6e02:3182:b0:433:27c1:75c4 with SMTP id
+ e9e14a558f8ab-433407dac54mr77782055ab.31.1762377961371; 
+ Wed, 05 Nov 2025 13:26:01 -0800 (PST)
 Received: from taylor-ubuntu.. (c-67-172-136-152.hsd1.co.comcast.net.
  [67.172.136.152]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-5b7467d5a0asm127785173.2.2025.11.05.13.25.58
+ 8926c6da1cb9f-5b7467d5a0asm127785173.2.2025.11.05.13.26.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Nov 2025 13:25:59 -0800 (PST)
+ Wed, 05 Nov 2025 13:26:00 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
  sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
  richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
  ltaylorsimpson@gmail.com
-Subject: [PATCH v3 2/3] Hexagon (target/hexagon) Implicit writes to USR don't
- force packet commit
-Date: Wed,  5 Nov 2025 14:25:53 -0700
-Message-ID: <20251105212554.127017-3-ltaylorsimpson@gmail.com>
+Subject: [PATCH v3 3/3] Hexagon (tests/tcg/hexagon) Add test for USR changes
+ in packet
+Date: Wed,  5 Nov 2025 14:25:54 -0700
+Message-ID: <20251105212554.127017-4-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251105212554.127017-1-ltaylorsimpson@gmail.com>
 References: <20251105212554.127017-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d29;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,114 +103,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implicit writes to USR are only to specific fields of USR to indicate
-side effects (e.g., saturation overflow, floating point status).
-In these cases, we don't force a packet commit. This will allow more
-packets to be short-circuited (avoid writing the results to temporaries).
-
-When there is a packet commit with an implicit write to USR, we initialize
-new_value_usr during gen_start_packet and write to USR in gen_reg_writes.
-
-Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/translate.h |  1 +
- target/hexagon/translate.c | 35 ++++++++++++++++++++++-------------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ tests/tcg/hexagon/usr.c | 54 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
-index d251e2233f..a0102b6cbd 100644
---- a/target/hexagon/translate.h
-+++ b/target/hexagon/translate.h
-@@ -39,6 +39,7 @@ typedef struct DisasContext {
-     int reg_log_idx;
-     DECLARE_BITMAP(regs_written, TOTAL_PER_THREAD_REGS);
-     DECLARE_BITMAP(predicated_regs, TOTAL_PER_THREAD_REGS);
-+    bool implicit_usr_write;
-     int preg_log[PRED_WRITES_MAX];
-     int preg_log_idx;
-     DECLARE_BITMAP(pregs_written, NUM_PREGS);
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 8fce219c0d..f3240953b5 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -272,12 +272,7 @@ static void mark_implicit_reg_write(DisasContext *ctx, int attrib, int rnum)
- {
-     uint16_t opcode = ctx->insn->opcode;
-     if (GET_ATTRIB(opcode, attrib)) {
--        /*
--         * USR is used to set overflow and FP exceptions,
--         * so treat it as conditional
--         */
--        bool is_predicated = GET_ATTRIB(opcode, A_CONDEXEC) ||
--                             rnum == HEX_REG_USR;
-+        bool is_predicated = GET_ATTRIB(opcode, A_CONDEXEC);
+diff --git a/tests/tcg/hexagon/usr.c b/tests/tcg/hexagon/usr.c
+index f0b23d312b..ef1787c64c 100644
+--- a/tests/tcg/hexagon/usr.c
++++ b/tests/tcg/hexagon/usr.c
+@@ -608,6 +608,58 @@ TEST_CMP_xx(uint32_t, uint32_t, FUNC, SRC1, SRC2, RES, USR_RES)
+ #define TEST_CMP_PP(FUNC, SRC1, SRC2, RES, USR_RES) \
+ TEST_CMP_xx(uint64_t, uint64_t, FUNC, SRC1, SRC2, RES, USR_RES)
  
-         /* LC0/LC1 is conditionally written by endloop instructions */
-         if ((rnum == HEX_REG_LC0 || rnum == HEX_REG_LC1) &&
-@@ -291,6 +286,14 @@ static void mark_implicit_reg_write(DisasContext *ctx, int attrib, int rnum)
-     }
- }
- 
-+static void mark_implicit_usr_write(DisasContext *ctx, int attrib)
++static void test_usr_packets(void)
 +{
-+    uint16_t opcode = ctx->insn->opcode;
-+    if (GET_ATTRIB(opcode, attrib)) {
-+        ctx->implicit_usr_write = true;
-+    }
++    uint32_t usr_out;
++    /* Test setting USR bits inside and outside packets */
++    asm(CLEAR_USRBITS \
++        "r10 = satub(%[val_0xfff])                   /* Set usr.OVF */\n\t"
++        "{\n\t"
++        "    r11 = convert_uw2sf(%[val_0x010020a5])  /* Set usr.FPINPF */\n\t"
++        "    r10 = memw(%[err])                      /* Force pkt commit */\n\t"
++        "}\n\t"
++        "{\n\t"
++        "    r11 = sfadd(%[SF_one], %[SF_SNaN])      /* Set usr.FPINVF */\n\t"
++        "    r10 = add(r10, #1)                      /* No pkt commit */\n\t"
++        "}\n\t"
++        "%[usr_out] = usr\n\t"
++        : [usr_out]"=r"(usr_out)
++        : [val_0xfff]"r"(0xfff),
++          [SF_one]"r"(SF_one), [SF_SNaN]"r"(SF_SNaN),
++          [val_0x010020a5]"r"(0x010020a5),
++          [err]"m"(err)
++        : "r2", "r10", "r11", "usr");
++    check32(usr_out & 0x3f, USR_OVF | USR_FPINVF | USR_FPINPF);
++
++    /* Test setting several USR bits in the same packet (no pkt commit) */
++    asm(CLEAR_USRBITS \
++        "{\n\t"
++        "    r10 = satub(%[val_0xfff])               /* Set usr.OVF */\n\t"
++        "    r12 = sfadd(%[SF_one], %[SF_SNaN])      /* Set usr.FPINVF */\n\t"
++        "}\n\t"
++        "%[usr_out] = usr\n\t"
++        : [usr_out]"=r"(usr_out)
++        : [val_0xfff]"r"(0xfff),
++          [SF_one]"r"(SF_one), [SF_SNaN]"r"(SF_SNaN)
++        : "r2", "r10", "r11", "r12", "usr");
++    check32(usr_out & 0x3f, USR_OVF | USR_FPINVF);
++
++    /* Test setting several USR bits in the same packet (with pkt commit) */
++    asm(CLEAR_USRBITS \
++        "{\n\t"
++        "    r10 = satub(%[val_0xfff])               /* Set usr.OVF */\n\t"
++        "    r11 = convert_uw2sf(%[val_0x010020a5])  /* Set usr.FPINPF */\n\t"
++        "    r12 = memw(%[err])                      /* Force pkt commit */\n\t"
++        "}\n\t"
++        "%[usr_out] = usr\n\t"
++        : [usr_out]"=r"(usr_out)
++        : [val_0xfff]"r"(0xfff),
++          [val_0x010020a5]"r"(0x010020a5),
++          [err]"m"(err)
++        : "r2", "r10", "r11", "r12", "usr");
++    check32(usr_out & 0x3f, USR_OVF | USR_FPINPF);
 +}
 +
- static void mark_implicit_reg_writes(DisasContext *ctx)
+ int main()
  {
-     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_FP,  HEX_REG_FP);
-@@ -300,8 +303,9 @@ static void mark_implicit_reg_writes(DisasContext *ctx)
-     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_SA0, HEX_REG_SA0);
-     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_LC1, HEX_REG_LC1);
-     mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_SA1, HEX_REG_SA1);
--    mark_implicit_reg_write(ctx, A_IMPLICIT_WRITES_USR, HEX_REG_USR);
--    mark_implicit_reg_write(ctx, A_FPOP, HEX_REG_USR);
+     TEST_R_OP_R(satub,       0,         0,         USR_CLEAR);
+@@ -1097,6 +1149,8 @@ int main()
+     TEST_Rp_OP_R(sfinvsqrta, SF_small_neg,  SF_HEX_NaN,       0x00, USR_FPINVF);
+     TEST_Rp_OP_R(sfinvsqrta, SF_SNaN,       SF_HEX_NaN,       0x00, USR_FPINVF);
+ 
++    test_usr_packets();
 +
-+    mark_implicit_usr_write(ctx, A_IMPLICIT_WRITES_USR);
-+    mark_implicit_usr_write(ctx, A_FPOP);
+     puts(err ? "FAIL" : "PASS");
+     return err;
  }
- 
- static void mark_implicit_pred_write(DisasContext *ctx, int attrib, int pnum)
-@@ -351,11 +355,6 @@ static bool need_commit(DisasContext *ctx)
-         }
-     }
- 
--    /* Floating point instructions are hard-coded to use new_value */
--    if (check_for_attrib(pkt, A_FPOP)) {
--        return true;
--    }
--
-     if (ctx->read_after_write || ctx->has_hvx_overlap) {
-         return true;
-     }
-@@ -467,6 +466,12 @@ static void gen_start_packet(DisasContext *ctx)
-         }
-     }
- 
-+    /* Preload usr to new_value_usr */
-+    if (ctx->need_commit && ctx->implicit_usr_write &&
-+        !test_bit(HEX_REG_USR, ctx->regs_written)) {
-+        tcg_gen_mov_tl(hex_new_value_usr, hex_gpr[HEX_REG_USR]);
-+    }
-+
-     /*
-      * Preload the predicated pred registers into ctx->new_pred_value[pred_num]
-      * Only endloop instructions conditionally write to pred registers
-@@ -587,6 +592,10 @@ static void gen_reg_writes(DisasContext *ctx)
-             ctx->is_tight_loop = false;
-         }
-     }
-+
-+    if (ctx->implicit_usr_write && !test_bit(HEX_REG_USR, ctx->regs_written)) {
-+        tcg_gen_mov_tl(hex_gpr[HEX_REG_USR], hex_new_value_usr);
-+    }
- }
- 
- static void gen_pred_writes(DisasContext *ctx)
 -- 
 2.43.0
 
