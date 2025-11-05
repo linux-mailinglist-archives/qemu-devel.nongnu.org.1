@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE618C37629
-	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 19:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00084C3763A
+	for <lists+qemu-devel@lfdr.de>; Wed, 05 Nov 2025 19:52:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGibQ-00047G-9I; Wed, 05 Nov 2025 13:51:30 -0500
+	id 1vGic8-0004Mz-4l; Wed, 05 Nov 2025 13:52:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vGib2-0003zO-2j
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 13:51:04 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1vGib3-0003zW-Mb
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 13:51:06 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vGiay-0003Bl-JV
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 13:51:03 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-429b7ba208eso118022f8f.1
- for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 10:50:59 -0800 (PST)
+ id 1vGiaz-0003C0-5I
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 13:51:05 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso1083125e9.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Nov 2025 10:51:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1762368658; x=1762973458;
+ d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1762368659; x=1762973459;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2if4ozVw8yt5djDJE9vZL0DPZmNx/MlAw6CBcParLWA=;
- b=iB/ce8X5G6XFkuqe8b2tFoVeVJzvTVka5rboPE0hrSRZgD7dJOJvihYBoMMvE99iIM
- wzZKh4x53HxbPWa4q0UVqdplk844LIzuwX0hBACn6Ab7tAet97fv2t/fJLH5cfEdgN4f
- bQSeVE2gbz0LDQvO7afWsdejjcyd2Xj85Wh9Zh9BYuoIumyKvoMZJLgudzXVJnpGbz1g
- cY3Thf8yLvJBZXRlIJ8oy0i5gc+cM8R2Zy61QL7V5VGaoEhNRVzKYOZ7aSFzsG8fqc0j
- LenLw+RflGjrzMjkRZFqDERzcy1IieNl+q3shj49mZSzt91B9C4LPl0HsDBAaofW0/uM
- YDnQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9kEAytXiAZieewyrZPC8a4xUKmBzYD9xvtE9UlfGJ7s=;
+ b=EFhzQbbv0wPlWykprjP3WKV6CmO+27CXO3CmArVK+u9jl8is1/7IErjbmBb5oYYaos
+ OhXU8AWnL+P0ABXDugPA64dKfztoZW/uC9kZuX/nAMyf+aeT2Rj2q17Wm/oV+GPq5m5K
+ MA0N5af18KTnbDLSVBOUSiC1GdIDPpkh6bhfLVbXaJ17cPztfVtlvgG7sumhV+ABoT+Z
+ KzsqyHyCOVdm69/ykmEbO4WrFr9LL/wsjavTQ1DQQCHzK7ZeBCK3SifhYaJYMWAjEXTS
+ UdP1bN41pZMqrrZ0KgLRaG9SiLq6mdKSIR4CUKHjHWzmHvvYxnIeyhEEVSLamonclYHe
+ a/Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762368658; x=1762973458;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2if4ozVw8yt5djDJE9vZL0DPZmNx/MlAw6CBcParLWA=;
- b=uoMkN549kWxm1hDBbLae2uGuow0P8gCLi69UUyemVccyw8Z28V/MUqi87GAUxKIQmt
- EW6I5+TKPmpOtJNxZgDOT/6q/cwtDZXBLw+mXAJL2zcKri6xzA03g9vn51wKsftUMUdI
- vBmcX79tybfq0RLk3QbrnF5LYrPwEcxlK1rm+cjhiqlQBa/LYnAoj3IpsUAq09ISpkWG
- BTW2GqY88FFnGAEb5KdjYSQNvtDQaNmHqjZQJ/xodrkZJSqMNVsae3YTTui0UzIOQPXj
- /5TVK9cHTSBG2SYjoOxWLzXqgO2BmN6EW4qyPFcRGeh/rOFj/D9JXcrFbQj13CWl3uf2
- npqA==
-X-Gm-Message-State: AOJu0YyEwWhSIBMIU24oQcYHPSBY3eFYTHyXOe+fomkhgIePX//eDY6e
- qjmsjoNxmp4gZ9yVN7g6Q1mDkoqP0nfnksZaE2WwbH7cBlZZ/IXDWNu28TV3vgNIA3X08t0ShUH
- OjL/Rn3I=
-X-Gm-Gg: ASbGnctk8NiGMEssr7OWGIlGrFmynDn2Ef4MYA+IVTZ+dm7AbdDDyrM9Qr8alVNo+cw
- qJKVMRNS7BUVsfkJK/VxfIbGvmeua2JHOhkbSO4Z3xJAI/DwzmuVgNoK9plppHZpGv73ketQCEm
- bBAxIVfWc/hxH28hbVDLLZmZWhBhaZKg3aD4fhPLkEtYe2cJqzjCK6ZLGlZvy6HoPI+akav6bBz
- VQtW0Q6+CjIyWGwyBZmbhEhnGlEot9eIgPZWzaXvVRXvUvkNSqQrPewX5nX5pX9tFfNS96TQBM8
- r1G1+dLM3JNHYUs4RWwztQzxE3O78L1bahaiQmpAfAKulVLUL0c09WQNawSOrMUpKb1bHMO+wlR
- KYpVUkOAfbQH74hzwD/wy0FwijdcRba+yww+UeOMxvKsESiqXNTlIJSvg6NrDbWzIYkccAN9MD0
- 8Y4LMs
-X-Google-Smtp-Source: AGHT+IFlpPTMNUnO9qYRrTXBi9prP4yQo/YngAVNjhCrIYbFUhXLhWGnp6vE80c6bZ44QKdQuGRruw==
-X-Received: by 2002:a05:6000:310d:b0:429:ba48:4d8 with SMTP id
- ffacd0b85a97d-429e32f478emr3892703f8f.25.1762368658174; 
- Wed, 05 Nov 2025 10:50:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1762368659; x=1762973459;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9kEAytXiAZieewyrZPC8a4xUKmBzYD9xvtE9UlfGJ7s=;
+ b=j6EeavBCFdrTlxD1wxIds8tOBlwB67PoERTrBSjvo723dLgkPWWanPYBE2q12K5okg
+ iYTqe4zBNfZ/vBl/3Emb9J1Nry3SGkQDHTO81TI9TwifIabQN5KPleoOL5ndv1sNwjzN
+ Y1Zd2FYa/T4WSq0eCpiTKxtVyCme/o4IzGJs1OVLsQwuftFfM2JUtXXM2o0+murqszd7
+ vNpfrkiluipuQebYpcrZW/eR8D5asnYNqQYNhAoTqDUogT99fYbHoLarRIn4cuvvrnp0
+ FDICk9kKT9FXnb1cLKXdW/+qqW5R+EJ91QmQXuO3dU6V3yvf646BFvFU0QSCt0jIc2oV
+ /71g==
+X-Gm-Message-State: AOJu0YwwCn39K3OKfVRhmiebLJaI9BoG/FBu9C0lHjlZ4KmDl12iay3x
+ nfWC3Uz3g8GK/Xbd6Cc903IV6/jBIGXsJAFc+np/D04Rm8cSPRN6w76OebgesWjrp6swrHDgduo
+ EOAwvMgk=
+X-Gm-Gg: ASbGncuyTThAIbabqx7UYUaivDxoeGve0PpCf4mXvBnkKjStGuAg+FzMbCD/NTMzZiu
+ JRsfIWBRKAHFGNt+0gZiSqNuS+ymgvZvD5yglwxGw4KJFnVMu3D7HyyWbrZQlrBmj18w3vff3JP
+ /sxwbLLNsAdFblagMj6Vq7JybHEgtw0O8i4JPWWbv0JbQAbDu6yyVIT94fbbQ0XSeh+6I/fQz2+
+ 2O/uUBFVf5tGpFClneqz0AYq/BzfqKe9ht8N+ao0cd+xVK6FGHwH6Xd7DDL6Z3/j68E/aHQH3ju
+ 2WjZYQqqljxAzF2x4eW/sLQIHJXrpc7E9sr9hNk1qv/72LSqON3gdFzUGd0k9+/qWvyrqAhsefT
+ zakMJMWFiBqq9y0ma4PZwc/9gFxD4dR8izkRVNInOaXxLf0H5Dd67RtScnlspqCnOUfNbAX3g+G
+ YEVhyq
+X-Google-Smtp-Source: AGHT+IFr3rNa2xQ4e9vLjx1Y/rvEMSbm9dL0Zbqa9OTH9Dnzfb9Wt0IYMagpbyuMQh9ZJht7z2oaxg==
+X-Received: by 2002:a05:600c:6288:b0:471:1717:40f with SMTP id
+ 5b1f17b1804b1-4775cdf4317mr34076545e9.22.1762368659324; 
+ Wed, 05 Nov 2025 10:50:59 -0800 (PST)
 Received: from DDesktop.local ([2a10:8012:d:eea4:f4de:376b:66b1:d7b5])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429eb42a354sm270622f8f.20.2025.11.05.10.50.57
+ ffacd0b85a97d-429eb42a354sm270622f8f.20.2025.11.05.10.50.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Nov 2025 10:50:57 -0800 (PST)
+ Wed, 05 Nov 2025 10:50:58 -0800 (PST)
 From: Michael Levit <michael@videogpu.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, philmd@linaro.org, pbonzini@redhat.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  liwei1518@gmail.com, smishash@gmail.com
-Subject: [PATCH v3 0/5] RISC-V: NEORV32 CPU, peripherials, and machine
-Date: Wed,  5 Nov 2025 20:50:51 +0200
-Message-ID: <20251105185056.23565-1-michael@videogpu.com>
+Subject: [PATCH v3 1/5] target/riscv: add NEORV32 RV32 CPU type and vendor CSR
+ hooks
+Date: Wed,  5 Nov 2025 20:50:52 +0200
+Message-ID: <20251105185056.23565-2-michael@videogpu.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251105185056.23565-1-michael@videogpu.com>
+References: <20251105185056.23565-1-michael@videogpu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::433;
- envelope-from=michael@videogpu.com; helo=mail-wr1-x433.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::335;
+ envelope-from=michael@videogpu.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,104 +102,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+From: Michael <michael@videogpu.com>
 
-This v3 reworks my initial NEORV32 submissions.
+Introduce NEORV32 RV32 CPU type under target/riscv, wire NEORV32 vendor ID,
+and add a vendor CSR (CSR_MXISA) guarded by mvendorid match, plus meson glue.
 
-The series introduces:
-  * a minimal NEORV32 RV32 CPU type and vendor CSR hook,
-  * the SYSINFO MMIO block,
-  * a small UART device,
-  * an SPI controller with command-mode chip-select,
-  * and the 'neorv32' RISC-V board wiring the above, plus docs.
-
-Tested by booting the NEORV32 bootloader as -bios and chaining into a
-Hello World from an MTD-backed SPI flash image, with UART on stdio.
-
-Changes since v2:
-  * Clean-up all errors and most of the warnings generated by scripts/checkpatch.pl 
-  * Sync with master, fix compile error
-  * No intentional functional changes; only file organization and clarity.
-  * Kept default.mak entry off by default (n).
-
-Patch layout
-============
-  1/5  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
-  2/5  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
-  3/5  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
-  4/5  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
-  5/5  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
-
-Quick usage
-===========
-  $ ./configure --target-list=riscv32-softmmu --enable-debug --enable-fdt
-  $ make -j$(nproc)
-
-Prepare a flash image (64MiB) and place your app at 4MiB offset:
-  $ dd if=/dev/zero of=$HOME/flash_contents.bin bs=1 count=$((0x04000000))
-  $ dd if=/path/to/neorv32_exe.bin of=$HOME/flash_contents.bin \\
-       bs=1 seek=$((0x00400000)) conv=notrunc
-
-Run bootloader and chain-load your app:
-  $ ./build/qemu-system-riscv32 -nographic -machine neorv32 \\
-      -bios /path/to/neorv32/bootloader/neorv32_raw_exe.bin \\
-      -drive file=$HOME/flash_contents.bin,if=mtd,format=raw
-
-Debugging:
-  $ ... -s -S   # gdbstub on :1234, start paused
-
-
-
-Thanks for reviewing!
-Michael
-
-Michael (5):
-  target/riscv: add NEORV32 RV32 CPU type and vendor CSR hooks
-  hw/misc: add NEORV32 SYSINFO block (CLK/MISC/SOC/CACHE)
-  hw/char: add NEORV32 UART (CTRL/DATA, fifo, chardev)
-  hw/ssi: add NEORV32 SPI controller (SSI master, CS command)
-  hw/riscv: introduce 'neorv32' board, docs, and riscv32 device config
-
- configs/devices/riscv32-softmmu/default.mak |   1 +
- docs/system/riscv/neorv32.rst               | 110 +++++
- hw/char/Kconfig                             |   3 +
- hw/char/meson.build                         |   1 +
- hw/char/neorv32_uart.c                      | 285 ++++++++++++
- hw/misc/Kconfig                             |   2 +
- hw/misc/meson.build                         |   1 +
- hw/misc/neorv32_sysinfo.c                   | 201 ++++++++
- hw/misc/neorv32_sysinfo.h                   |  88 ++++
- hw/misc/neorv32_sysinfo_rtl.h               | 239 ++++++++++
- hw/riscv/Kconfig                            |   8 +
- hw/riscv/meson.build                        |   1 +
- hw/riscv/neorv32.c                          | 215 +++++++++
- hw/ssi/Kconfig                              |   4 +
- hw/ssi/meson.build                          |   1 +
- hw/ssi/neorv32_spi.c                        | 478 ++++++++++++++++++++
- include/hw/char/neorv32_uart.h              |  54 +++
- include/hw/riscv/neorv32.h                  |  54 +++
- include/hw/ssi/neorv32_spi.h                |  57 +++
- target/riscv/cpu-qom.h                      |   2 +
- target/riscv/cpu.c                          |  18 +
- target/riscv/cpu.h                          |   3 +
- target/riscv/cpu_cfg.h                      |   1 +
- target/riscv/cpu_cfg_fields.h.inc           |   1 +
- target/riscv/cpu_vendorid.h                 |   2 +
- target/riscv/meson.build                    |   1 +
- target/riscv/neorv32_csr.c                  |  40 ++
- 27 files changed, 1871 insertions(+)
- create mode 100644 docs/system/riscv/neorv32.rst
- create mode 100644 hw/char/neorv32_uart.c
- create mode 100644 hw/misc/neorv32_sysinfo.c
- create mode 100644 hw/misc/neorv32_sysinfo.h
- create mode 100644 hw/misc/neorv32_sysinfo_rtl.h
- create mode 100644 hw/riscv/neorv32.c
- create mode 100644 hw/ssi/neorv32_spi.c
- create mode 100644 include/hw/char/neorv32_uart.h
- create mode 100644 include/hw/riscv/neorv32.h
- create mode 100644 include/hw/ssi/neorv32_spi.h
+Signed-off-by: Michael Levit <michael@videogpu.com>
+---
+ target/riscv/cpu-qom.h            |  2 ++
+ target/riscv/cpu.c                | 18 ++++++++++++++
+ target/riscv/cpu.h                |  3 +++
+ target/riscv/cpu_cfg.h            |  1 +
+ target/riscv/cpu_cfg_fields.h.inc |  1 +
+ target/riscv/cpu_vendorid.h       |  2 ++
+ target/riscv/meson.build          |  1 +
+ target/riscv/neorv32_csr.c        | 40 +++++++++++++++++++++++++++++++
+ 8 files changed, 68 insertions(+)
  create mode 100644 target/riscv/neorv32_csr.c
 
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 75f4e43408..d091807160 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -43,6 +43,7 @@
+ #define TYPE_RISCV_CPU_RVA23U64         RISCV_CPU_TYPE_NAME("rva23u64")
+ #define TYPE_RISCV_CPU_RVA23S64         RISCV_CPU_TYPE_NAME("rva23s64")
+ #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
++#define TYPE_RISCV_CPU_NEORV32          RISCV_CPU_TYPE_NAME("neorv32")
+ #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
+ #define TYPE_RISCV_CPU_SIFIVE_E         RISCV_CPU_TYPE_NAME("sifive-e")
+ #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
+@@ -58,6 +59,7 @@
+ #define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
++
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+ 
+ #endif /* RISCV_CPU_QOM_H */
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 73d4280d7c..ffe99f71e1 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -233,6 +233,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svrsw60t59b, PRIV_VERSION_1_13_0, ext_svrsw60t59b),
+     ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+     ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
++    ISA_EXT_DATA_ENTRY(xneorv32xisa, PRIV_VERSION_1_10_0, ext_xneorv32xisa),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+@@ -1366,6 +1367,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+     MULTI_EXT_CFG_BOOL("xtheadmempair", ext_xtheadmempair, false),
+     MULTI_EXT_CFG_BOOL("xtheadsync", ext_xtheadsync, false),
+     MULTI_EXT_CFG_BOOL("xventanacondops", ext_XVentanaCondOps, false),
++    MULTI_EXT_CFG_BOOL("xneorv32xisa", ext_xneorv32xisa, false),
+ 
+     { },
+ };
+@@ -3032,6 +3034,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.pmp_regions = 8
+     ),
+ 
++
+ #if defined(TARGET_RISCV32) || \
+     (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE32, TYPE_RISCV_DYNAMIC_CPU,
+@@ -3075,6 +3078,21 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .misa_mxl_max = MXL_RV32,
+         .misa_ext = RVE
+     ),
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_NEORV32, TYPE_RISCV_VENDOR_CPU,
++        .misa_mxl_max = MXL_RV32,
++        .misa_ext = RVI | RVM | RVA | RVC | RVU,
++        .priv_spec = PRIV_VERSION_1_10_0,
++
++        .cfg.max_satp_mode = VM_1_10_MBARE,
++        .cfg.ext_zifencei = true,
++        .cfg.ext_zicsr = true,
++        .cfg.pmp = true,
++        .cfg.pmp_regions = 16,
++        .cfg.mvendorid = NEORV32_VENDOR_ID,
++#ifndef CONFIG_USER_ONLY
++        .custom_csrs = neorv32_csr_list
++#endif
++    ),
+ #endif
+ 
+ #if (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 36e7f10037..6a9918a25a 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -985,5 +985,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+ /* In th_csr.c */
+ extern const RISCVCSR th_csr_list[];
+ 
++/* Implemented in neorv32_csr.c */
++extern const RISCVCSR neorv32_csr_list[];
++
+ const char *priv_spec_to_str(int priv_version);
+ #endif /* RISCV_CPU_H */
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index aa28dc8d7e..9ad38506e4 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -64,5 +64,6 @@ MATERIALISE_EXT_PREDICATE(xtheadmemidx)
+ MATERIALISE_EXT_PREDICATE(xtheadmempair)
+ MATERIALISE_EXT_PREDICATE(xtheadsync)
+ MATERIALISE_EXT_PREDICATE(XVentanaCondOps)
++MATERIALISE_EXT_PREDICATE(xneorv32xisa)
+ 
+ #endif
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index a154ecdc79..b84e1bd287 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -147,6 +147,7 @@ BOOL_FIELD(ext_xtheadmemidx)
+ BOOL_FIELD(ext_xtheadmempair)
+ BOOL_FIELD(ext_xtheadsync)
+ BOOL_FIELD(ext_XVentanaCondOps)
++BOOL_FIELD(ext_xneorv32xisa)
+ 
+ BOOL_FIELD(mmu)
+ BOOL_FIELD(pmp)
+diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
+index 96b6b9c2cb..66a8f30b81 100644
+--- a/target/riscv/cpu_vendorid.h
++++ b/target/riscv/cpu_vendorid.h
+@@ -7,4 +7,6 @@
+ #define VEYRON_V1_MIMPID        0x111
+ #define VEYRON_V1_MVENDORID     0x61f
+ 
++#define NEORV32_VENDOR_ID       0xF0000001
++
+ #endif /*  TARGET_RISCV_CPU_VENDORID_H */
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index fdefe88ccd..44e706ad3f 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -40,6 +40,7 @@ riscv_system_ss.add(files(
+   'th_csr.c',
+   'time_helper.c',
+   'riscv-qmp-cmds.c',
++  'neorv32_csr.c',
+ ))
+ 
+ subdir('tcg')
+diff --git a/target/riscv/neorv32_csr.c b/target/riscv/neorv32_csr.c
+new file mode 100644
+index 0000000000..3b0f0cab05
+--- /dev/null
++++ b/target/riscv/neorv32_csr.c
+@@ -0,0 +1,40 @@
++/*
++ * NEORV32-specific CSR.
++ *
++ * Copyright (c) 2025 Michael Levit
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "cpu_vendorid.h"
++
++#define    CSR_MXISA    (0xfc0)
++
++static RISCVException smode(CPURISCVState *env, int csrno)
++{
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException read_neorv32_xisa(CPURISCVState *env, int csrno,
++                                       target_ulong *val)
++{
++    /* We don't support any extension for now on QEMU */
++    *val = 0x00;
++    return RISCV_EXCP_NONE;
++}
++
++static bool test_neorv32_mvendorid(RISCVCPU *cpu)
++{
++    return cpu->cfg.mvendorid == NEORV32_VENDOR_ID;
++}
++
++const RISCVCSR neorv32_csr_list[] = {
++    {
++        .csrno = CSR_MXISA,
++        .insertion_test = test_neorv32_mvendorid,
++        .csr_ops = { "neorv32.xisa", smode, read_neorv32_xisa }
++    },
++    { }
++};
++
 -- 
 2.51.1
 
