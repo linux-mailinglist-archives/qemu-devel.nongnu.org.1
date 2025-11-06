@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CB3C39A7F
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA085C39AA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGvh2-0003g9-3b; Thu, 06 Nov 2025 03:50:08 -0500
+	id 1vGvh3-0003lE-Sn; Thu, 06 Nov 2025 03:50:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvgw-0003Y9-GD; Thu, 06 Nov 2025 03:50:02 -0500
+ id 1vGvh1-0003j9-WB; Thu, 06 Nov 2025 03:50:08 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvgu-0005Sg-Q1; Thu, 06 Nov 2025 03:50:02 -0500
+ id 1vGvh0-0005ZE-7P; Thu, 06 Nov 2025 03:50:07 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 6 Nov
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 09/12] hw/arm/aspeed_ast10x0_evb: Add AST1060 EVB machine
- support
-Date: Thu, 6 Nov 2025 16:49:18 +0800
-Message-ID: <20251106084925.1253704-10-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 10/12] tests/functional/arm/test_aspeed_ast1060: Add
+ functional tests for Aspeed AST1060 SoC
+Date: Thu, 6 Nov 2025 16:49:19 +0800
+Message-ID: <20251106084925.1253704-11-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
@@ -67,61 +67,88 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new machine definition ast1060-evb to support the Aspeed AST1060
-evaluation board. The new EVB reuses the same MiniBMC framework used by
-AST1030, as both SoCs share the same core peripherals and controller
-designs.
-
-The AST1060 EVB machine initializes the ast1060-a2 SoC and sets the
-FMC and SPI flash models (w25q80bl and w25q02jvm) for simulation.
-This enables QEMU to boot and emulate firmware images for AST1060-based
-platforms.
+Add functional tests for the Aspeed AST1060 SoC and its evaluation board.
+The new test test_aspeed_ast1060.py validates booting the AST1060 EVB
+machine using the Zephyr OS and ASPEED PROT application (ast1060_prot_v03.02.tgz)
+and ensures basic console functionality.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast10x0_evb.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tests/functional/arm/meson.build            |  1 +
+ tests/functional/arm/test_aspeed_ast1060.py | 52 +++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
+ create mode 100644 tests/functional/arm/test_aspeed_ast1060.py
 
-diff --git a/hw/arm/aspeed_ast10x0_evb.c b/hw/arm/aspeed_ast10x0_evb.c
-index 7af2a77865..a01385b543 100644
---- a/hw/arm/aspeed_ast10x0_evb.c
-+++ b/hw/arm/aspeed_ast10x0_evb.c
-@@ -96,12 +96,35 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
+diff --git a/tests/functional/arm/meson.build b/tests/functional/arm/meson.build
+index d1ed076a6a..1762a49604 100644
+--- a/tests/functional/arm/meson.build
++++ b/tests/functional/arm/meson.build
+@@ -28,6 +28,7 @@ tests_arm_system_quick = [
  
-+static void aspeed_minibmc_machine_ast1060_evb_class_init(ObjectClass *oc,
-+                                                          const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+ tests_arm_system_thorough = [
+   'aspeed_ast1030',
++  'aspeed_ast1060',
+   'aspeed_palmetto',
+   'aspeed_romulus',
+   'aspeed_witherspoon',
+diff --git a/tests/functional/arm/test_aspeed_ast1060.py b/tests/functional/arm/test_aspeed_ast1060.py
+new file mode 100644
+index 0000000000..034efa5342
+--- /dev/null
++++ b/tests/functional/arm/test_aspeed_ast1060.py
+@@ -0,0 +1,52 @@
++#!/usr/bin/env python3
++#
++# Functional test that boots the ASPEED SoCs with firmware
++#
++# Copyright (C) 2025 ASPEED Technology Inc
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+    mc->desc = "Aspeed AST1060 PFR (Cortex-M4)";
-+    amc->soc_name = "ast1060-a2";
-+    amc->hw_strap1 = 0;
-+    amc->hw_strap2 = 0;
-+    mc->init = aspeed_minibmc_machine_init;
-+    amc->fmc_model = "w25q80bl";
-+    amc->spi_model = "w25q02jvm";
-+    amc->num_cs = 2;
-+    amc->macs_mask = 0;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+}
++from aspeed import AspeedTest
++from qemu_test import Asset, exec_command_and_wait_for_pattern
 +
- static const TypeInfo aspeed_ast10x0_evb_types[] = {
-     {
-         .name           = MACHINE_TYPE_NAME("ast1030-evb"),
-         .parent         = TYPE_ASPEED_MACHINE,
-         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
-         .interfaces     = arm_machine_interfaces,
-+    }, {
-+        .name           = MACHINE_TYPE_NAME("ast1060-evb"),
-+        .parent         = TYPE_ASPEED_MACHINE,
-+        .class_init     = aspeed_minibmc_machine_ast1060_evb_class_init,
-+        .interfaces     = arm_machine_interfaces,
-     }
- };
- 
++
++class AST1060Machine(AspeedTest):
++    ASSET_ASPEED_AST1060_PROT_3_02 = Asset(
++        ('https://github.com/AspeedTech-BMC'
++         '/aspeed-zephyr-project/releases/download/v03.02'
++         '/ast1060_prot_v03.02.tgz'),
++         'dd5f1adc935316ddd1906506a02e15567bd7290657b52320f1a225564cc175bd')
++
++    def test_arm_ast1060_prot_3_02(self):
++        self.set_machine('ast1060-evb')
++
++        kernel_name = "ast1060_prot/zephyr.bin"
++        kernel_file = self.archive_extract(
++            self.ASSET_ASPEED_AST1060_PROT_3_02, member=kernel_name)
++
++        self.vm.set_console()
++        self.vm.add_args('-kernel', kernel_file, '-nographic')
++        self.vm.launch()
++        self.wait_for_console_pattern("Booting Zephyr OS")
++        exec_command_and_wait_for_pattern(self, "help",
++                                          "Available commands")
++
++    def test_arm_ast1060_otp_blockdev_device(self):
++        self.vm.set_machine("ast1060-evb")
++
++        kernel_name = "ast1060_prot/zephyr.bin"
++        kernel_file = self.archive_extract(self.ASSET_ASPEED_AST1060_PROT_3_02,
++                                           member=kernel_name)
++        otp_img = self.generate_otpmem_image()
++
++        self.vm.set_console()
++        self.vm.add_args(
++            "-kernel", kernel_file,
++            "-blockdev", f"driver=file,filename={otp_img},node-name=otp",
++            "-global", "aspeed-otp.drive=otp",
++        )
++        self.vm.launch()
++        self.wait_for_console_pattern("Booting Zephyr OS")
++
++if __name__ == '__main__':
++    AspeedTest.main()
 -- 
 2.43.0
 
