@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9BBC3A5FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 11:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D947C3A63B
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 11:54:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGxb1-00032i-5R; Thu, 06 Nov 2025 05:52:03 -0500
+	id 1vGxcd-0004V9-Se; Thu, 06 Nov 2025 05:53:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGxb0-00031O-6Y
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 05:52:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vGxay-0002go-Rp
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 05:52:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762426319;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=kxG4bcSIcVh95gyP/1qKSKNMarnpO4PpjXeU41lxtDY=;
- b=PUxTqTUgqp5JFIQ4cVtpQ+qA5RbL4pyAqZqNERjOomjUEPaQ9u0gnNUEV5gEyF2o1D2roK
- lsCg+Tr1PzD2jN71OfjDyTpR8JR07fSUGJgKeUbLKIDsE1J8ddbpwrTUWrRXcA5dwDXMtG
- CnepuuMLjGF7dw5xwN2SkhX2/c4T2Hc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-ZG-23U1NOTeLNDTo-i-LrA-1; Thu,
- 06 Nov 2025 05:51:56 -0500
-X-MC-Unique: ZG-23U1NOTeLNDTo-i-LrA-1
-X-Mimecast-MFC-AGG-ID: ZG-23U1NOTeLNDTo-i-LrA_1762426315
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0DF51956088; Thu,  6 Nov 2025 10:51:55 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.134])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8DAD9180049F; Thu,  6 Nov 2025 10:51:53 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PATCH] hw/intc/ioapic: Fix ACCEL_KERNEL_GSI_IRQFD_POSSIBLE typo
-Date: Thu,  6 Nov 2025 11:51:48 +0100
-Message-ID: <20251106105148.737093-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vGxcb-0004S4-85
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 05:53:41 -0500
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vGxcZ-0003aC-No
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 05:53:41 -0500
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-7868b7b90b8so7151447b3.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 02:53:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762426418; x=1763031218; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=q5UqKqzixkyhCrmKyU16eLnEU5O1ewEKG2IZTjLJxng=;
+ b=m8wZF5qxW4pCEWuxJmWD5YSUvEjZZXLVdmqmfrLS/4CyWBWioPhfZAbGhw1aN5aNvu
+ ZmYi4vyWEKbqkuZtr0tYsU6DO+Y439Q5s78Xnrv5HQceEG2VjbW/D4KxFmYZRBy9IV3N
+ m7m/r2wiXE/+99lxC0thnBUJ5bPXuh13iOwF2Jt78TPenthvv7PIeLX49OzMYpmDLUdp
+ PQtPHyucEV3j97s3wG5njHqjQWOVeRZ0PavY6M472jZvMBgFaRI09LVW9vUnHC0aywq9
+ EH+gUhyc62qFX4/qLsjRYuL+LHK0YHpI5wIBtusZOsDl8GKTEduDRX9cYl8RSbOWEnI7
+ mEJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762426418; x=1763031218;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=q5UqKqzixkyhCrmKyU16eLnEU5O1ewEKG2IZTjLJxng=;
+ b=ZlJeApgdrfxdKz8rGy7/2PTzx7zc3oRQr1ZenMpUD9U5/Hi1TGfp4ZO9jAroiNZKAT
+ bJFZgg6LPggQsi190HdA+mXUAwYbxl+at/KWAzV2P3jq4Ic8sovKm70n6bCWSeU9ZPfJ
+ bZfjv9lqMFao2WvwUAkhpaAMdhQE42eXjnxXl13VnIuO3aMC5dEHSEAuxc90hEHsqncw
+ SZU0kN4nmWKbrxFtTEmzRPgHhTq+3bIJQD5Tbt1+WSV0WDOsgZHb1FQLTc3894+onb/Y
+ 6HhzYjrTXmqrMix2qGeKMw1Rl06IdmM7ekM508PV3bBkiBKACiLSJleAX9oo8P4usioX
+ Mmmw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW1O+PQA0P6BEs9sGAnzAO8s5iEMES8mmaZt11+IfGPqiMTKM9y33lqVgjmfFDSuDHnGgk74Vz25G8O@nongnu.org
+X-Gm-Message-State: AOJu0YwRn0vzkh6WKW5opGaCr4ENMCaQ4HGK5H+pcw8aRwgDY++W/MyC
+ xfBLeMn4dt3HzbJjIv3Jlrve9OGsAYk0RmAOq4Yiksw9vwhP0H607Y8cvdtsev6Gr3U2hQtkeN4
+ O0D6nsXAhYkhWrgOYdnv3c8VDxUk7KHrzIajSYIOH6g==
+X-Gm-Gg: ASbGncvV9eYpXsw8ZY/v5oEXy9+J6cbb38hIl5RY05EyNRaMa8ObIK5rMNNkx6gzlxl
+ u/fPmMTUijh7aJb4cvxpxUgsb+Fk+MXB5Pi6URMbAyK0ITGBZTvsKZWEUHjcrh6+Iz9sGiZuffT
+ 9B/s9XkIVhwZmQcAmc0ZgCVdRj/fFyHNda3aVcHzBFdHMtWFT1ze6Ar4qGdKPXyxGCWyCEMr+Cd
+ wgAuI4ugEVw3JNSXA2qqq1J1R7rG21eQqSmuIp1nSG4j+8iniHThIwYmpfelJxyMIGB5xw0
+X-Google-Smtp-Source: AGHT+IHoo/kEocXEMBcNoNO3/UPShnET6BvkUK+1C47bKr6biOi57sVEFqXxU86/MsBn1vlqTx5SHZ2M0zF2+Eh5IJU=
+X-Received: by 2002:a53:d04a:0:20b0:63f:9dba:355e with SMTP id
+ 956f58d0204a3-63fd34db325mr4836273d50.29.1762426418002; Thu, 06 Nov 2025
+ 02:53:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <aQtAotYvzFY0Vpft@tcarey.uk>
+ <5c356c12-55b8-4d01-bc0f-025d3a3b9293@suse.cz>
+ <CAFEAcA9c0Y=ndvd-yV5tTr_+nbBO7W-TDcF4+=qCoknzyGPxAg@mail.gmail.com>
+ <508e699e-ba3e-4977-9507-8da7da14fa28@suse.cz>
+In-Reply-To: <508e699e-ba3e-4977-9507-8da7da14fa28@suse.cz>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 6 Nov 2025 10:53:25 +0000
+X-Gm-Features: AWmQ_bnhdfKQTKhrXJzgngfR1vyhxXf-LJuq4ktt0Xcm0yV5Ln0Zy0AYssfgHE4
+Message-ID: <CAFEAcA8z-voiUiBx2bTjUq-GuYJgL96ai81aPAyhYTJvg-uieg@mail.gmail.com>
+Subject: Re: [PATCH] hw/misc/edu: restrict dma access to dma buffer
+To: Jiri Slaby <jslaby@suse.cz>
+Cc: Torin Carey <torin@tcarey.uk>, qemu-devel@nongnu.org, 
+ Chris Friedt <chrisfriedt@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.517,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,52 +96,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 638ac1c78457 introduced a regression in interrupt remapping
-when running a VM configured with an intel-iommu device and an
-assigned PCI VF. During boot, Linux reports repeated messages :
+On Thu, 6 Nov 2025 at 10:45, Jiri Slaby <jslaby@suse.cz> wrote:
+>
+> On 06. 11. 25, 11:38, Peter Maydell wrote:
+> > On Thu, 6 Nov 2025 at 06:29, Jiri Slaby <jslaby@suse.cz> wrote:
+> >>
+> >> On 05. 11. 25, 13:18, Torin Carey wrote:
+> >>> The EDU device doesn't enforce any bound checks on the addresses provided,
+> >>> allowing users of the device to perform arbitrary reads and writes to QEMU's
+> >>> address space.
+> >>
+> >> Hmm, it was the intention to crash qemu before:
+> >> commit 7b608e5d6c1d61430e81cd5c71b0277b99b03f3a
+> >> Author: Chris Friedt <chrisfriedt@gmail.com>
+> >> Date:   Tue Oct 18 08:25:51 2022 -0400
+> >>
+> >>       hw: misc: edu: use qemu_log_mask instead of hw_error
+> >>
+> >>       Log a guest error instead of a hardware error when
+> >>       the guest tries to DMA to / from an invalid address.
+> >>
+> >>
+> >>
+> >> As with a standard device when you program it badly. I don't understand
+> >> why the commit changed it to log only and let the code to corrupt the
+> >> memory?
+> >
+> > It's a PCI device. Unless something in the spec of
+> > the device says "if you try to DMA outside this range
+> > it will be ignored", then typically devices will let you
+> > DMA anywhere in the address space. If the guest chooses
+> > to program the device to DMA somewhere silly, that's its choice.
+> >
+> > Is there a spec for this device anywhere? If so, we should
+> > follow that. If not, then it's a "make a best guess", and
+> > "don't arbitrarily constrain DMA" is a reasonable guess.
+>
+> It's an educational, fictional device, there is of course no spec for that.
 
- [   15.416794] __common_interrupt: 2.37 No irq handler for vector
- [   15.417266] __common_interrupt: 2.37 No irq handler for vector
- [   15.417733] __common_interrupt: 2.37 No irq handler for vector
- [   15.418202] __common_interrupt: 2.37 No irq handler for vector
- [   15.418670] __common_interrupt: 2.37 No irq handler for vector
+I think that for teaching purposes you would want a decent
+spec for the device: there will be a steady stream of new
+students who need to know how it works.
 
-and may eventually hang.
+In fact I've just noticed we do have a spec, in docs/specs/edu.rst.
+(It doesn't specify the behaviour if you attempt to DMA outside
+the range it documents.)
 
-The issue is caused by the incorrect use of the macro
-ACCEL_KERNEL_GSI_IRQFD_POSSIBLE, which should instead be
-ACCEL_GSI_IRQFD_POSSIBLE.
+> > The reason for the commit above is that devices should
+> > not call hw_error() as that crashes QEMU itself.
+>
+> But that was exactly my intention. Students should see an immediate
+> crash, not random, undebuggable (in the given class hours) writes
+> somewhere. And crashing a qemu instance was an intended pun.
 
-Fixes: 638ac1c78457 ("hw/intc: Generalize APIC helper names from kvm_* to accel_*")
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/intc/ioapic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sorry, your educational device doesn't get to break QEMU's
+usual rules. (Eventually we might be able to get rid of
+hw_error() altogether, though it's hardly a high priority.)
+People debugging drivers can turn on the GUEST_ERROR logging
+which should be a big clue.
 
-diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
-index e431d0031176800753795d6d29ccc22982e4f63b..38e438464861040341f73c576c3214e2ceab2f8a 100644
---- a/hw/intc/ioapic.c
-+++ b/hw/intc/ioapic.c
-@@ -216,7 +216,7 @@ static void ioapic_update_kvm_routes(IOAPICCommonState *s)
- #endif
- }
- 
--#ifdef ACCEL_KERNEL_GSI_IRQFD_POSSIBLE
-+#ifdef ACCEL_GSI_IRQFD_POSSIBLE
- static void ioapic_iec_notifier(void *private, bool global,
-                                 uint32_t index, uint32_t mask)
- {
-@@ -434,7 +434,7 @@ static const MemoryRegionOps ioapic_io_ops = {
- 
- static void ioapic_machine_done_notify(Notifier *notifier, void *data)
- {
--#ifdef ACCEL_KERNEL_GSI_IRQFD_POSSIBLE
-+#ifdef ACCEL_GSI_IRQFD_POSSIBLE
-     IOAPICCommonState *s = container_of(notifier, IOAPICCommonState,
-                                         machine_done);
- 
--- 
-2.51.1
+Incidentally, restricting DMA to "4K starting at 0x40000"
+makes the device not usable on all machine types -- there is
+no guarantee that the machine even has any RAM there at all.
 
+thanks
+-- PMM
 
