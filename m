@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD789C39A49
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65545C39A7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:51:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGvgj-00034U-BE; Thu, 06 Nov 2025 03:49:49 -0500
+	id 1vGvgn-00035v-2T; Thu, 06 Nov 2025 03:49:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvgh-000342-Mm; Thu, 06 Nov 2025 03:49:47 -0500
+ id 1vGvgk-00035X-Ke; Thu, 06 Nov 2025 03:49:50 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvgg-0005Sg-AY; Thu, 06 Nov 2025 03:49:47 -0500
+ id 1vGvgj-0005Sg-7D; Thu, 06 Nov 2025 03:49:50 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 6 Nov
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 04/12] hhw/misc/aspeed_scu: Add AST1060 A2 silicon revision
- definition
-Date: Thu, 6 Nov 2025 16:49:13 +0800
-Message-ID: <20251106084925.1253704-5-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 05/12] hw/arm/aspeed_ast10x0: Add common init function for
+ AST10x0 SoCs
+Date: Thu, 6 Nov 2025 16:49:14 +0800
+Message-ID: <20251106084925.1253704-6-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
@@ -67,41 +67,66 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new silicon revision constant AST1060_A2_SILICON_REV for the
-AST1060 SoC. This allows the SCU model and related SoC layers to
-identify and handle AST1060 A2 revision properly in the same way as
-other Aspeed SoC families.
+Introduce a new common initialization function
+aspeed_soc_ast10x0_init() for AST10x0 series SoCs. This separates the
+shared initialization logic from the AST1030-specific part, allowing
+reuse by future SoCs such as AST1060.
+
+The AST1060 does not include the LPC and PECI models, so the common
+initializer is used for all shared modules, while
+aspeed_soc_ast1030_init() adds initialization of LPC and PECI, which
+are unique to AST1030.
+
+This refactor improves code reuse and prepares the codebase for
+supporting the AST1060 platform.
+
+No functional changes.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/misc/aspeed_scu.h | 1 +
- hw/misc/aspeed_scu.c         | 1 +
- 2 files changed, 2 insertions(+)
+ hw/arm/aspeed_ast10x0.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
-index 684b48b722..76ef8dc592 100644
---- a/include/hw/misc/aspeed_scu.h
-+++ b/include/hw/misc/aspeed_scu.h
-@@ -51,6 +51,7 @@ struct AspeedSCUState {
- #define AST2600_A3_SILICON_REV   0x05030303U
- #define AST1030_A0_SILICON_REV   0x80000000U
- #define AST1030_A1_SILICON_REV   0x80010000U
-+#define AST1060_A2_SILICON_REV   0xA0030000U
- #define AST2700_A0_SILICON_REV   0x06000103U
- #define AST2720_A0_SILICON_REV   0x06000203U
- #define AST2750_A0_SILICON_REV   0x06000003U
-diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index 1f996d5398..300571256a 100644
---- a/hw/misc/aspeed_scu.c
-+++ b/hw/misc/aspeed_scu.c
-@@ -565,6 +565,7 @@ static uint32_t aspeed_silicon_revs[] = {
-     AST2600_A3_SILICON_REV,
-     AST1030_A0_SILICON_REV,
-     AST1030_A1_SILICON_REV,
-+    AST1060_A2_SILICON_REV,
-     AST2700_A0_SILICON_REV,
-     AST2720_A0_SILICON_REV,
-     AST2750_A0_SILICON_REV,
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index ca487774ae..5941ebe00c 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -107,7 +107,7 @@ static qemu_irq aspeed_soc_ast1030_get_irq(AspeedSoCState *s, int dev)
+     return qdev_get_gpio_in(DEVICE(&a->armv7m), sc->irqmap[dev]);
+ }
+ 
+-static void aspeed_soc_ast1030_init(Object *obj)
++static void aspeed_soc_ast10x0_init(Object *obj)
+ {
+     Aspeed10x0SoCState *a = ASPEED10X0_SOC(obj);
+     AspeedSoCState *s = ASPEED_SOC(obj);
+@@ -150,10 +150,6 @@ static void aspeed_soc_ast1030_init(Object *obj)
+         object_initialize_child(obj, "spi[*]", &s->spi[i], typename);
+     }
+ 
+-    object_initialize_child(obj, "lpc", &s->lpc, TYPE_ASPEED_LPC);
+-
+-    object_initialize_child(obj, "peci", &s->peci, TYPE_ASPEED_PECI);
+-
+     object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST10X0_SBC);
+ 
+     for (i = 0; i < sc->wdts_num; i++) {
+@@ -185,6 +181,15 @@ static void aspeed_soc_ast1030_init(Object *obj)
+                             TYPE_UNIMPLEMENTED_DEVICE);
+ }
+ 
++static void aspeed_soc_ast1030_init(Object *obj)
++{
++    AspeedSoCState *s = ASPEED_SOC(obj);
++
++    aspeed_soc_ast10x0_init(obj);
++    object_initialize_child(obj, "lpc", &s->lpc, TYPE_ASPEED_LPC);
++    object_initialize_child(obj, "peci", &s->peci, TYPE_ASPEED_PECI);
++}
++
+ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+ {
+     Aspeed10x0SoCState *a = ASPEED10X0_SOC(dev_soc);
 -- 
 2.43.0
 
