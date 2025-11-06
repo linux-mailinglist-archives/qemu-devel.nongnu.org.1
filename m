@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1710CC39A8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188B1C39A76
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:51:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGvh7-0003ri-1G; Thu, 06 Nov 2025 03:50:13 -0500
+	id 1vGvhE-000412-3B; Thu, 06 Nov 2025 03:50:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvh4-0003nL-SA; Thu, 06 Nov 2025 03:50:10 -0500
+ id 1vGvh7-0003vs-Sr; Thu, 06 Nov 2025 03:50:13 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvh3-0005ZE-AL; Thu, 06 Nov 2025 03:50:10 -0500
+ id 1vGvh6-0005ZE-7u; Thu, 06 Nov 2025 03:50:13 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 6 Nov
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 11/12] docs/system/arm/aspeed: Update Aspeed and 2700
- family boards list
-Date: Thu, 6 Nov 2025 16:49:20 +0800
-Message-ID: <20251106084925.1253704-12-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 12/12] docs/system/arm/aspeed: Update Aspeed MiniBMC
+ section to include AST1060 PFR processor
+Date: Thu, 6 Nov 2025 16:49:21 +0800
+Message-ID: <20251106084925.1253704-13-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
@@ -67,38 +67,75 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the ast2700-evb entry from the Aspeed family boards list in
-the documentation. The AST2700 platform now belongs to the new Aspeed
-2700 family group, which has its own dedicated documentation section
-and board definitions.
-
-Update the Aspeed 2700 family boards list in the documentation to include
-the new ast2700fc board entry.
+Added details describing AST1060 as a PFR processor board alongside
+AST1030 MiniBMC, and extended the list of missing devices to include
+SMBus Filter and QSPI Monitor controllers.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- docs/system/arm/aspeed.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/system/arm/aspeed.rst | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 6317c0e910..a0c05a6f73 100644
+index a0c05a6f73..ffa5f4b372 100644
 --- a/docs/system/arm/aspeed.rst
 +++ b/docs/system/arm/aspeed.rst
-@@ -1,4 +1,4 @@
--Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
- ====================================================================================================================================================================================================================================================================================================================================================================================================================================
+@@ -448,23 +448,25 @@ Use ``tio`` or another terminal emulator to connect to the consoles:
+    $ tio /dev/pts/57
  
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
-@@ -274,7 +274,7 @@ configuration file for OTP memory:
-     done > otpmem.img
-   fi
  
--Aspeed 2700 family boards (``ast2700-evb``)
-+Aspeed 2700 family boards (``ast2700-evb``, ``ast2700fc``)
- ==================================================================
+-Aspeed minibmc family boards (``ast1030-evb``)
+-==================================================================
++Aspeed minibmc and PFR processor family boards (``ast1030-evb``, ``ast1060-evb``)
++=================================================================================
  
- The QEMU Aspeed machines model BMCs of Aspeed evaluation boards.
+-The QEMU Aspeed machines model mini BMCs of various Aspeed evaluation
+-boards. They are based on different releases of the
+-Aspeed SoC : the AST1030 integrating an ARM Cortex M4F CPU (200MHz).
++The QEMU Aspeed machines model mini BMCs and PFR processors of various Aspeed
++evaluation boards. They are based on different releases of the
++Aspeed SoC : the AST1030 (MiniBMC) and AST1060 (PFR Processor), both integrating
++an ARM Cortex M4F CPU (200MHz).
+ 
+ The SoC comes with SRAM, SPI, I2C, etc.
+ 
+-AST1030 SoC based machines :
++AST10x0 SoC based machines :
+ 
+-- ``ast1030-evb``          Aspeed AST1030 Evaluation board (Cortex-M4F)
++- ``ast1030-evb``          Aspeed AST1030 MiniBMC Evaluation board (Cortex-M4F)
++- ``ast1060-evb``	   Aspeed AST1060 PFR Processor Evaluation board (Cortex-M4F)
+ 
+ Supported devices
+ -----------------
+ 
+- * SMP (for the AST1030 Cortex-M4F)
++ * SMP (for the Cortex-M4F)
+  * Interrupt Controller (VIC)
+  * Timer Controller
+  * I2C Controller
+@@ -492,6 +494,8 @@ Missing devices
+  * Virtual UART
+  * eSPI Controller
+  * I3C Controller
++ * SMBus Filter Controller
++ * QSPI Monitor Controller
+ 
+ Boot options
+ ------------
+@@ -502,9 +506,11 @@ ASPEED GitHub release repository :
+ 
+    https://github.com/AspeedTech-BMC/zephyr/releases
+ 
++   https://github.com/AspeedTech-BMC/aspeed-zephyr-project/releases
++
+ To boot a kernel directly from a Zephyr build tree:
+ 
+ .. code-block:: bash
+ 
+   $ qemu-system-arm -M ast1030-evb -nographic \
+-        -kernel zephyr.elf
++        -kernel zephyr.bin
 -- 
 2.43.0
 
