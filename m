@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCA6C3915E
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 05:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74443C39143
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 05:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGrUx-0006kw-Vv; Wed, 05 Nov 2025 23:21:24 -0500
+	id 1vGrUw-0006kG-S8; Wed, 05 Nov 2025 23:21:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vGrUj-0006co-3v
+ id 1vGrUm-0006hG-TK
  for qemu-devel@nongnu.org; Wed, 05 Nov 2025 23:21:14 -0500
 Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vGrUg-0000q1-OO
- for qemu-devel@nongnu.org; Wed, 05 Nov 2025 23:21:08 -0500
+ id 1vGrUk-0000q1-97
+ for qemu-devel@nongnu.org; Wed, 05 Nov 2025 23:21:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762402866; x=1793938866;
+ t=1762402870; x=1793938870;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=peJXHTxXPxde/WpkPUczMuLT971uytLCfaUMitfL9yk=;
- b=lvpzEm80yhOZb1VWhJKE5Y90BFgfP+4QycAflUSpZf7DEHhkqK9h63tT
- 7rwGeBWOcfOKVON9S5OGVr06O2SOSzRJdSWelPrgLOZIRkKgB8Z5HaGTb
- THJXEFNsQM/k5LBaijByYZjC3NK/IIfopjlnL1WiyhS3kZ3dOMRhZfIoB
- ER7vEVNv7rY5k+G7CCTo2hKGIZi4qVMkFWAsS9qcgGsKuApfDrvfxY2Ip
- 5m7a3XNQpXUAgJMsZpudZF5SVWiqjqUjwnEf/zqd475y+zJGH612AjhoL
- 6syqHfX3SA0dr8IBm9oJYfC2M2OQAzyQjzrwhwcfrPDcOAF+Tfz+g4PHI g==;
-X-CSE-ConnectionGUID: jyHQw80kT6iJpTAq/3MR9g==
-X-CSE-MsgGUID: y4/SNkVaSwWXRFaN2FzjcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64412862"
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="64412862"
+ bh=HO69VW8SibDtUJN19KiXuNqVxAucPxaf7olQ7U4zi1w=;
+ b=Y4B+m9TxWCEQUBSwahZ90g2Jxx5m6tVM4/dq1tsqz5XwhuGGfa0U/Oky
+ ZpwsQyTDhC9ZT1M2WhwKUBllMBuq8K2DhDC7qA/lF4qTXD+0V3dsWucNK
+ Y2uGoHIJuAc7N6v5rxiaewNWJUOcO51kiCO/6z8IGkfRtZN11n1vxpwL3
+ Vfwp2QsuOnPu9BBIQ++XTh4A4ROGCV1CXAWmyogpP/PIJN9dJ598sDGeH
+ UKH09eqoQXRY0rHPbx+0rb+Gskj89C8UvDuFFsg0XIq4/J3JxFRykma1t
+ 1O8hk7QIcKlZ8e5uTHz0QpFeO02WS03w6uQx8jAfT/Q4XLUifclhR72z9 Q==;
+X-CSE-ConnectionGUID: fKGbkcetQTGiq+U1JLHdMw==
+X-CSE-MsgGUID: T4RCqQKIQzuPu87W1vDxkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64412866"
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="64412866"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 20:21:05 -0800
-X-CSE-ConnectionGUID: H8Rgl97FSyiGyc061eSnEw==
-X-CSE-MsgGUID: JTz1xuqUT96hhXuFkF4Dsg==
+ 05 Nov 2025 20:21:09 -0800
+X-CSE-ConnectionGUID: KPk2WzSPRO6kDwTzeZITjA==
+X-CSE-MsgGUID: kUBxkFliSxa29y48KMdMWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="186901276"
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="186901289"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 20:21:02 -0800
+ 05 Nov 2025 20:21:06 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
@@ -52,10 +52,10 @@ Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
  xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
  mark.gross@intel.com, arjan.van.de.ven@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v5 6/9] intel_iommu: Fix unmap_bitmap failure with legacy VFIO
- backend
-Date: Wed,  5 Nov 2025 23:20:23 -0500
-Message-ID: <20251106042027.856594-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v5 7/9] vfio/listener: Construct iotlb entry when unmap memory
+ address space
+Date: Wed,  5 Nov 2025 23:20:24 -0500
+Message-ID: <20251106042027.856594-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251106042027.856594-1-zhenzhong.duan@intel.com>
 References: <20251106042027.856594-1-zhenzhong.duan@intel.com>
@@ -86,103 +86,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a VFIO device in guest switches from IOMMU domain to block domain,
-vtd_address_space_unmap() is called to unmap whole address space.
+If a VFIO device in guest switches from passthrough(PT) domain to block
+domain, the whole memory address space is unmapped, but we passed a NULL
+iotlb entry to unmap_bitmap, then bitmap query didn't happen and we lost
+dirty pages.
 
-If that happens during migration, migration fails with legacy VFIO
-backend as below:
+By constructing an iotlb entry with iova = gpa for unmap_bitmap, it can
+set dirty bits correctly.
 
-Status: failed (vfio_container_dma_unmap(0x561bbbd92d90, 0x100000000000, 0x100000000000) = -7 (Argument list too long))
-
-Because legacy VFIO limits maximum bitmap size to 256MB which maps to 8TB on
-4K page system, when 16TB sized UNMAP notification is sent, unmap_bitmap
-ioctl fails. Normally such large UNMAP notification come from IOVA range
-rather than system memory.
-
-Apart from that, vtd_address_space_unmap() sends UNMAP notification with
-translated_addr = 0, because there is no valid translated_addr for unmapping
-a whole iommu memory region. This breaks dirty tracking no matter which VFIO
-backend is used.
-
-Fix them all by iterating over DMAMap list to unmap each range with active
-mapping when migration is active. If migration is not active, unmapping the
-whole address space in one go is optimal.
+For IOMMU address space, we still send NULL iotlb because VFIO don't
+know the actual mappings in guest. It's vIOMMU's responsibility to send
+actual unmapping notifications, e.g., vtd_address_space_unmap_in_migration()
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-Tested-by: Rohith S R <rohith.s.r@intel.com>
 ---
- hw/i386/intel_iommu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ hw/vfio/listener.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c402643b56..8e98b0b71d 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -37,6 +37,7 @@
- #include "system/system.h"
- #include "hw/i386/apic_internal.h"
- #include "kvm/kvm_i386.h"
-+#include "migration/misc.h"
- #include "migration/vmstate.h"
- #include "trace.h"
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 2109101158..3b48f6796c 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -713,14 +713,27 @@ static void vfio_listener_region_del(MemoryListener *listener,
  
-@@ -4695,6 +4696,42 @@ static void vtd_dev_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
-     vtd_iommu_unlock(s);
- }
+     if (try_unmap) {
+         bool unmap_all = false;
++        IOMMUTLBEntry entry = {}, *iotlb = NULL;
  
-+/*
-+ * Unmapping a large range in one go is not optimal during migration because
-+ * a large dirty bitmap needs to be allocated while there may be only small
-+ * mappings, iterate over DMAMap list to unmap each range with active mapping.
-+ */
-+static void vtd_address_space_unmap_in_migration(VTDAddressSpace *as,
-+                                                 IOMMUNotifier *n)
-+{
-+    const DMAMap *map;
-+    const DMAMap target = {
-+        .iova = n->start,
-+        .size = n->end,
-+    };
-+    IOVATree *tree = as->iova_tree;
+         if (int128_eq(llsize, int128_2_64())) {
+             assert(!iova);
+             unmap_all = true;
+             llsize = int128_zero();
+         }
 +
-+    /*
-+     * DMAMap is created during IOMMU page table sync, it's either 4KB or huge
-+     * page size and always a power of 2 in size. So the range of DMAMap could
-+     * be used for UNMAP notification directly.
-+     */
-+    while ((map = iova_tree_find(tree, &target))) {
-+        IOMMUTLBEvent event;
++        /*
++         * Fake an IOTLB entry for identity mapping which is needed by dirty
++         * tracking. In fact, in unmap_bitmap, only translated_addr field is
++         * used to set dirty bitmap.
++         */
++        if (!memory_region_is_iommu(section->mr)) {
++            entry.iova = iova;
++            entry.translated_addr = iova;
++            iotlb = &entry;
++        }
 +
-+        event.type = IOMMU_NOTIFIER_UNMAP;
-+        event.entry.iova = map->iova;
-+        event.entry.addr_mask = map->size;
-+        event.entry.target_as = &address_space_memory;
-+        event.entry.perm = IOMMU_NONE;
-+        /* This field is needed to set dirty bigmap */
-+        event.entry.translated_addr = map->translated_addr;
-+        memory_region_notify_iommu_one(n, &event);
-+
-+        iova_tree_remove(tree, *map);
-+    }
-+}
-+
- /* Unmap the whole range in the notifier's scope. */
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
- {
-@@ -4704,6 +4741,11 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     IntelIOMMUState *s = as->iommu_state;
-     DMAMap map;
- 
-+    if (migration_is_running()) {
-+        vtd_address_space_unmap_in_migration(as, n);
-+        return;
-+    }
-+
-     /*
-      * Note: all the codes in this function has a assumption that IOVA
-      * bits are no more than VTD_MGAW bits (which is restricted by
+         ret = vfio_container_dma_unmap(bcontainer, iova, int128_get64(llsize),
+-                                       NULL, unmap_all);
++                                       iotlb, unmap_all);
+         if (ret) {
+             error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
 -- 
 2.47.1
 
