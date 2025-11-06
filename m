@@ -2,91 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86AC6C3A861
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 12:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4675DC3A913
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 12:29:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGy39-000597-DT; Thu, 06 Nov 2025 06:21:07 -0500
+	id 1vGy9q-0007DL-GP; Thu, 06 Nov 2025 06:28:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vGy31-000582-To
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 06:21:01 -0500
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vGy30-0002nR-3V
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 06:20:59 -0500
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-3d5bb03d5c2so518762fac.1
- for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 03:20:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1vGy9o-0007DA-96
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 06:28:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1vGy9m-00070D-0E
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 06:28:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762428475;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0twJYPvHLvVI99xPPBSaoOUC7uVZ6DZS4epy2UMVp64=;
+ b=aVcNrR9Ja9/qtQO/BoyXMOik6eH02QT4mC193K1o+Nq137sGCbbLFEPgvBcWZFIuqRUlJG
+ vHkMm35z0jJmUpHdE/xas1c6+KDKnaKYo728Hi24zAxi6N7ntUm9CySIzi87v5lO5Ta/kw
+ 9yBLZ4+8x7DxN+gb3aFAUTDF0zWKRDU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-83-mIahecuOP1WAg8vzaXl7QQ-1; Thu, 06 Nov 2025 06:27:53 -0500
+X-MC-Unique: mIahecuOP1WAg8vzaXl7QQ-1
+X-Mimecast-MFC-AGG-ID: mIahecuOP1WAg8vzaXl7QQ_1762428473
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-429b7b46eebso861930f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 03:27:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1762428056; x=1763032856; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=A4Cm1X0FRT6nMV7NKszGwc7YW2PJtWPtLODjaZRG/Rs=;
- b=BlFYyWzcjiQMfmFawQfh3K34uXWXbtXzr8DfmbpsMLkUJcLEOIgEXJtBPE8Hn7bjaW
- TOAIIpBt0LKJkXS61XksTBZ5zH+ZBIrN8/Xgzp9gp0I2n0/MYrnrelP/PURUQvmS8Dwv
- Xatm0N99Q1Sr4c4uFnsSN3DJMgZh18ej95Oryv1GxlK3GDMeiKJGonzHdcottQn8eYKw
- jOlSuBZss9eeXkh/Gy/OJ1m+2hEZeZWEY18/QujdedHTx3cwwHzRm1cd09rFVwIbVIyH
- z1WEyY09AVoS9NYd7BJpais1rytot9MGMx+ggdJWnNrn8avWFxtwxSJZlWWMcI1dtWFS
- hjnw==
+ d=redhat.com; s=google; t=1762428472; x=1763033272; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=0twJYPvHLvVI99xPPBSaoOUC7uVZ6DZS4epy2UMVp64=;
+ b=XLqrTJFrcuO7t4wVAYY67oUsHF8VcFugQkyoVcXSKAXPx5p3tWuKz0inGjHRJy/SSt
+ MUwCRRp0105uZu5tFtGm5ZPHPy1v+qGoOumlHENOt0vmHAtN/uy8OZI9MGbVilb1ozc8
+ 3KHo4oY9Qy+7Y0EP2xcP6RAGJpKZBuUhWilBB2lAPlmXZ+J0Bf7eMDWGhwtAjffH3VAS
+ i3JLdoshR9uRTKkYW6P0XtGTdgLhSzj1AFWGTqBeyD3gxx6gN7wd97+OMneGhna5+B3l
+ WUVL/DJAzm7yVGxAfYPMHQBlYUbfZXllH/A/vOuG2vC1MOmDfNZ4SlniJQXCWb5UJh4D
+ iFiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762428056; x=1763032856;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A4Cm1X0FRT6nMV7NKszGwc7YW2PJtWPtLODjaZRG/Rs=;
- b=BXzmlzsxPZP3Jxh2X4paw5Dm9b+MJLwhOn8t13GRlI76W9/A3zN/FZaMCClcdKWEQ2
- 7AADHKInEObW/ch/h2sMeuWKagNYjCRM4PfBFhHFhnIpZ48ZWBkMaSLkb+krcxN1V6UT
- 2m8AFWxX8Wiw6ujhZtgfvDETEJXOmhXJtUYnVnX3S7LUs7qwHtHiHoq6Bhf0Kt4RU3de
- oHbTO6EVskejf07+6RdENLd9HJwCBwr4FqROHu6eoOSu3D6JjJ7yNaB8JyVZLw489iqt
- 8XRY2mIUpZb1VXXQwvvy1lDskFQrm9hJv2pO6QlN89KlN6CJPag+A24kBiqoG0UKzONO
- 1iMA==
-X-Gm-Message-State: AOJu0YwnrhKro5Tz0h3h5L45au1Mg5isWK2Vh01ZFDF6AiZXR7xqJ3L5
- 2lDYcdpEj1g2h0a8YSFzR+scqeBQPqyc+RIQwnYd6jnz7YGOmDx79WNClCpjVfBqyeSUB002/ZN
- 9gto7hUw=
-X-Gm-Gg: ASbGnctHaR/i3olCcdFLEBtuYi6PMJVnZc+AtUR/u0z51rIKO+cLOKAaWVUhvvSjDE1
- c9/Hcvlj3bTR1bZsDWUbthLeQ8B+Gcsx4fAJgIbxfUftdiM3hhaisUiy97M+Prq5JyDeClgA84m
- by9reMtWHXTMPxSuM7YNvzOIB7ljseJyZEXCFMf2xFPDkdJQkbmVikU0F1YPDbovPJd5O/90Pz/
- Qut8SgGXJJwQTxVXyi1wkNbjUEBHNBHSLEvpDT+cUAUPH7FbYFr4GmT5QZ7/awRDb2qNjzD1oL6
- 4UKz26khMcWk4SagHQty0O6dx2exap8xT7k1zam3IDB49qWxE3JIDlovWmyPVRJud9zENcO9bCj
- 1rMRU+UnDjqNlRuYflfqWTSJI8nPNx/iQmCetJezsAqZpDdJwATxVjnOpQHqSc62ypUg3rRafeP
- EfuApyqYCaSrL1mDL3bIWiZcp2QwrNAw==
-X-Google-Smtp-Source: AGHT+IFZetbvhg8tLiQlizod7UrTOcoGmJ/D1cxNY7x8tY2HHNsZM8vZxRFSlCXt8tLjDd77sf18Ag==
-X-Received: by 2002:a05:6871:2896:b0:3d2:86bd:2ad2 with SMTP id
- 586e51a60fabf-3e19c0556b9mr3491807fac.35.1762428056483; 
- Thu, 06 Nov 2025 03:20:56 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com
- ([2804:7f0:bcc2:7873:e847:e589:d030:667d])
- by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3e30a439b97sm932716fac.16.2025.11.06.03.20.53
+ d=1e100.net; s=20230601; t=1762428472; x=1763033272;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0twJYPvHLvVI99xPPBSaoOUC7uVZ6DZS4epy2UMVp64=;
+ b=oh8fYiAU1Nhecmv8QWElqwGQuO0Jx2VHB9HSE3E1omhTOJsT3uFvXnzejTRcI36WUz
+ lwtxNA0iJsYd1xBgsabjaro2qlj+VMuV9Z17gygL7eKCh1tgD1GLJ7VpuX48BYG3klOk
+ jJYHWRcVdDnL2LBZtDyrX9VsbKGBxJaBJ6vj5VxWRr3MKju2QpVU070tLTDHEvYTq4ZI
+ GNLTZ2/dqwRj5NfqG/Wrzfwww/24CN+aFC1GrR/hbTaq6Zp/CdWstHtcIdBfKcYzzLzS
+ xeb1xHU6/Y45dzpADZ5UtVb9UePoAVH3RGszFO01oUmUbMmKK9S6kgskGElgsTQwqFmI
+ 5lIQ==
+X-Gm-Message-State: AOJu0Yxe1Nc6N7qdKCEouVe/wqjRL6XKVLqg108LaZEZyNStruBjN5K0
+ 7s5BPD8sIE1YeAMfce2r/cEpI5KILqiazyAJ0ItnnqQcSTuurN8LFun0UcVW+836dZkdSAA8kJv
+ KecJAlt/ME/r5Q9MDcNIg7bYK9/TqmxEwHbt8lmxAa5xLGqp/q1n58s04
+X-Gm-Gg: ASbGncuRssmnllPrjQVkuDXXFR/ACWN2ZTwv7DiheuMrTM0axytUrjuOVcwUJkeWxvT
+ sr1L9qwGZVIPkQOMGCfPQAGghVMA8HyF1uy0YmuOe7ndI8EAEsGriKoPvALywo5mWC5voh5sKz0
+ pf00Amk5vb0mixfKQHn8aB8ZrGANTfcN80bnSLUSTKmZKVESQWRdU/4IMNX37CsiZHD/E45IYN2
+ XUy3pSkPGEuJUJtm2Qg3BzSbXW/JRsiaolSOmxdfQ7dZkRl7u8/TtTAp57mG/RGviclUffOW6JG
+ AznPDbutzxVBZg2aToC9iUqXuGXHHHpYRvNSrVS+wO27N2bjgzqOIPk4z7YzJb/M
+X-Received: by 2002:a05:6000:607:b0:408:d453:e40c with SMTP id
+ ffacd0b85a97d-429e32eb338mr6401472f8f.25.1762428472590; 
+ Thu, 06 Nov 2025 03:27:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGagXDTWo3yU7cNXjylIa20U/Dh2kdmWPjoR/572UlNzP10BZ0j9lFe2V4WwW78LgVsmAPLpQ==
+X-Received: by 2002:a05:6000:607:b0:408:d453:e40c with SMTP id
+ ffacd0b85a97d-429e32eb338mr6401448f8f.25.1762428472132; 
+ Thu, 06 Nov 2025 03:27:52 -0800 (PST)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429eb410f7esm4489564f8f.14.2025.11.06.03.27.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Nov 2025 03:20:56 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 2/2] scripts: RISC-V python script to check isa_edata_arr[]
-Date: Thu,  6 Nov 2025 08:20:44 -0300
-Message-ID: <20251106112044.162617-3-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251106112044.162617-1-dbarboza@ventanamicro.com>
-References: <20251106112044.162617-1-dbarboza@ventanamicro.com>
+ Thu, 06 Nov 2025 03:27:51 -0800 (PST)
+Date: Thu, 6 Nov 2025 12:27:49 +0100
+From: Juraj Marcin <jmarcin@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] tests/migration-test: Check error-desc after pre-switch
+ cancel tests
+Message-ID: <zwihgptp2i2syyyakkwefg2pfhihurf6c5wlrvgtlzfydxjzmc@vvwjl6gk373e>
+References: <20251031164956.3409661-1-peterx@redhat.com>
+ <4r5wbhkkk346usjdgvnc3epcom3he3y547p3smxbkvvnk677tz@e4hsizwn5sfp>
+ <aQuq-ONNdEEJKmId@x1.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQuq-ONNdEEJKmId@x1.local>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.517,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,214 +117,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keeping isa_edata_arr[] from target/riscv/cpu.c in order is not a fun
-time. The RISC-V specification rules are very convoluted (Z extensions
-first, then if it's a Z extension then there's the IMAFD subcategory
-S and X exts are always alphabetical ...), very hard to follow during
-the patch review process, and in the end this array keeps getting
-out of order constantly during development.
+On 2025-11-05 14:52, Peter Xu wrote:
+> On Tue, Nov 04, 2025 at 01:35:53PM +0100, Juraj Marcin wrote:
+> > Hi Peter,
+> > 
+> > On 2025-10-31 12:49, Peter Xu wrote:
+> > > error-desc should present on dest QEMU after migration failed on dest when
+> > > exit-on-error is set to FALSE.  Check the error message.
+> > > 
+> > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > > ---
+> > >  tests/qtest/migration/precopy-tests.c | 9 +++++++++
+> > >  1 file changed, 9 insertions(+)
+> > > 
+> > > diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+> > > index 57ca623de5..5f02e35324 100644
+> > > --- a/tests/qtest/migration/precopy-tests.c
+> > > +++ b/tests/qtest/migration/precopy-tests.c
+> > > @@ -759,6 +759,14 @@ static void test_cancel_src_after_none(QTestState *from, QTestState *to,
+> > >      wait_for_migration_complete(to);
+> > >  }
+> > >  
+> > > +static void assert_migration_error(QTestState *vm)
+> > > +{
+> > > +    QDict *rep = migrate_query(vm);
+> > > +
+> > > +    g_assert(qdict_get_str(rep, "error-desc"));
+> > 
+> > I think it would be beneficial to also check if there even is
+> > "error-desc". That way if the "error-desc" is missing, it fails on
+> > assert with SIGABRT instead of SIGSEGV inside qdict_get_str().
+> 
+> IMHO it doesn't matter on how the test would crash.
+> 
+> > 
+> > With this change you can add my:
+> > 
+> > Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+> 
+> I would go ahead and merge a test patch if it had both lines, definitely
+> not a huge deal.
+> 
+> However strictly speaking, qdict_get_str() is actually pretty efficient to
+> make sure both that exists && is_string when used in testings. Would you
+> agree?
 
-This script aims to ease the suffering of reviewers by reading the
-array from target/riscv/cpu.c and pointing ordering errors that
-were introduced in the file:
+It is an efficient way, I just thought the less efficient might be a
+little bit easier to deduce why the test failed. But if nobody else
+opposes, you can also keep it as proposed,
 
-$ ./script/riscv-isaedata-check.py
-Wrong ordering: ssstateen must succeed ssctr
+> 
+> I definitely still want your R-b one way or another!
 
-A successful run will give no output and retval 0.
+and also add my R-b.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- scripts/riscv-isaedata-check.py | 164 ++++++++++++++++++++++++++++++++
- target/riscv/cpu.c              |   3 +
- 2 files changed, 167 insertions(+)
- create mode 100755 scripts/riscv-isaedata-check.py
-
-diff --git a/scripts/riscv-isaedata-check.py b/scripts/riscv-isaedata-check.py
-new file mode 100755
-index 0000000000..a276dc952f
---- /dev/null
-+++ b/scripts/riscv-isaedata-check.py
-@@ -0,0 +1,164 @@
-+#!/usr/bin/env python3
-+# Copyright (c) 2025 Ventana Micro Systems Inc.
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#
-+# Check if isa_edata_arr[] from target/riscv/cpu.c is
-+# ordered according to the RISC-V specification.
-+#
-+
-+import os
-+
-+"""
-+This script aims to check the ordering of isa_edata_arr[] array
-+from target/riscv/cpu.c.
-+
-+The RISC-V riscv,isa ordering has a lot of rules (see the comment
-+right before isa_edata_arr[] in target/riscv/cpu.c) and we're not
-+able to keep up with it during the review process. In the end
-+every new extension added has a good chance of breaking it.
-+
-+The idea with this script is to try to catch these errors earlier
-+by directly reading isa_edata_arr[] and pointing out discrepancies
-+found. E.g.:
-+
-+$ python3 riscv-isaedata-check.py
-+Wrong ordering: sspm must succeed ssctr
-+
-+This indicates that 'ssctr' must be put earlier that sspm in the
-+array.
-+
-+A successful run of this script has a retval = 0 and no output.
-+"""
-+
-+def ext_is_sorted(ext1: str, ext2: str) -> bool:
-+    """Check if the RISC-V ISA extension 'ext1' comes after
-+       the RISC-V ISA extension 'ext2' using the RISC-V sorting
-+       rules. We're summing up these rules in 3 steps when
-+       comparing isa_edata extensions:
-+
-+        1. If both extensions does not start with 'z', they're
-+           sorted with regular alphabetical order;
-+
-+        2. A 'z' extension always precedes a non 'z' extension;
-+
-+        3. If both extensions starts with 'z', check the second
-+           letter of both:
-+             - if they're the same, sort it in alphabetical order;
-+             - otherwise, sort it via the Z extension category
-+               (IMAFDQLCBKJTPVH).
-+
-+       Args:
-+            ext1 (str): lower-case RISC-V isa extension name
-+            ext2 (str): lower-case RISC-V isa extension name
-+
-+       Returns:
-+            bool: True ext1 precedes ext2, False otherwise.
-+    """
-+    z_order = ['i','m','a','f','d','q', 'l', 'c', 'b',
-+               'k', 'j', 't', 'p', 'v', 'h']
-+    order1 = len(z_order)
-+    order2 = len(z_order)
-+
-+    if ext1[0] != 'z' and ext2[0] != 'z':
-+        return ext1 < ext2
-+
-+    if ext1[0] == 'z' and ext2[0] != 'z':
-+        return True
-+
-+    if ext1[0] != 'z' and ext2[0] == 'z':
-+        return False
-+
-+    # At this point we know both starts with 'z'. If
-+    # they're both the same z_order use alphabetical
-+    # order.
-+    if ext1[1] == ext2[1]:
-+        return ext1 < ext2
-+
-+    # Get the order within the z category for each
-+    for i in range(len(z_order)):
-+        if ext1[1] == z_order[i]:
-+            order1 = i;
-+        if ext2[1] == z_order[i]:
-+            order2 = i;
-+        if order1 != len(z_order) and order2 != len(z_order):
-+            break
-+
-+    if order1 < order2:
-+        return True
-+
-+    return False
-+# end ext_is_sorted
-+
-+
-+def get_extension_name(line: str) -> str:
-+    """Given a 'line' str in the format
-+
-+       ISA_EXT_DATA_ENTRY(ext_name, ...)
-+
-+       Return 'ext_name' if successful or None otherwise.
-+    """
-+    match_str = "ISA_EXT_DATA_ENTRY("
-+    match_idx = line.rfind(match_str)
-+
-+    if match_idx < 0:
-+        return None
-+
-+    last_idx = line.find(",")
-+    if last_idx < 0:
-+        return None
-+
-+    match_idx += len(match_str)
-+
-+    return line[match_idx:last_idx]
-+#end get_extension_name
-+
-+
-+def main():
-+    dir_path = os.path.dirname(os.path.realpath(__file__))
-+    filename = dir_path + "/../target/riscv/cpu.c"
-+
-+    try:
-+        with open(filename, 'r') as file:
-+            isaEdataFound = False
-+            ext1 = None
-+            ext2 = None
-+
-+            for line in file:
-+                if "const RISCVIsaExtData isa_edata_arr[]" in line:
-+                    isaEdataFound = True
-+                    continue
-+
-+                if not isaEdataFound:
-+                    continue
-+
-+                if "{ }" in line:
-+                    break
-+
-+                tmp = get_extension_name(line)
-+
-+                if tmp is None:
-+                    continue
-+
-+                if ext1 is None:
-+                    ext1 = tmp
-+                    continue
-+
-+                if ext2 is None:
-+                    ext2 = tmp
-+                else:
-+                    ext1 = ext2
-+                    ext2 = tmp
-+
-+                if not ext_is_sorted(ext1, ext2):
-+                    print(f"Wrong ordering: {ext1} must succeed {ext2}")
-+                    exit(1)
-+    except FileNotFoundError:
-+        print(f"Error: The file '{filename}' was not found.")
-+    except Exception as e:
-+        print(f"An error occurred: {e}")
-+# end main
-+
-+
-+if __name__ == '__main__':
-+    main()
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 79fda08f9d..93c02bab27 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -102,6 +102,9 @@ static void riscv_cpu_cfg_merge(RISCVCPUConfig *dest, const RISCVCPUConfig *src)
-  *
-  * Single letter extensions are checked in riscv_cpu_validate_misa_priv()
-  * instead.
-+ *
-+ * **NOTE**: please run ./scripts/riscv-isaedata-check.py every time a
-+ * new entry is added in this array.
-  */
- const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zic64b, PRIV_VERSION_1_12_0, ext_zic64b),
--- 
-2.51.1
+> 
+> > 
+> > 
+> > diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+> > index 5f02e35324..87e33b8965 100644
+> > --- a/tests/qtest/migration/precopy-tests.c
+> > +++ b/tests/qtest/migration/precopy-tests.c
+> > @@ -763,6 +763,7 @@ static void assert_migration_error(QTestState *vm)
+> >  {
+> >      QDict *rep = migrate_query(vm);
+> > 
+> > +    g_assert(qdict_get(rep, "error-desc"));
+> >      g_assert(qdict_get_str(rep, "error-desc"));
+> >      qobject_unref(rep);
+> >  }
+> > 
+> > 
+> > > +    qobject_unref(rep);
+> > > +}
+> > > +
+> > >  static void test_cancel_src_pre_switchover(QTestState *from, QTestState *to,
+> > >                                             const char *uri, const char *phase)
+> > >  {
+> > > @@ -784,6 +792,7 @@ static void test_cancel_src_pre_switchover(QTestState *from, QTestState *to,
+> > >  
+> > >      wait_for_migration_status(to, "failed",
+> > >                                (const char * []) { "completed", NULL });
+> > > +    assert_migration_error(to);
+> > >  }
+> > >  
+> > >  static void test_cancel_src_after_status(void *opaque)
+> > > -- 
+> > > 2.50.1
+> > > 
+> > 
+> 
+> -- 
+> Peter Xu
+> 
 
 
