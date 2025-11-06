@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23439C3BDBD
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 15:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E15C3BE1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 15:53:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vH1Ia-0005Vz-5T; Thu, 06 Nov 2025 09:49:16 -0500
+	id 1vH1LV-0006Gp-SA; Thu, 06 Nov 2025 09:52:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vH1IY-0005Vc-4O
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 09:49:14 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vH1LU-0006GG-0L
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 09:52:16 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vH1IW-0005UJ-IZ
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 09:49:13 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-b7272012d30so180476066b.2
- for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 06:49:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vH1LR-0006by-NE
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 09:52:15 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b90so818717f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 06:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762440551; x=1763045351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762440732; x=1763045532; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=I0etlvZbNwYaPLzX0lVKmatPCLOUs+kyAR7zZ+B1IME=;
- b=mmZ9O/0GnzfxUY609YRnb8oMkVNffqozPlFk2kGc7Et2rF+t5vEC1SoEkINbwQLOMo
- 1WX5S0EnT1arENr/MBU7JIeMdhTpuBGvOdTVONND2QZRG9jp/eAM3l8cqDf6bvj/xSfC
- 2LDB4VUTwd2nr6Y+Pr1sCYqEN1iSom+3F2mS2BpBVno+yuzoUtkfIKXHASfTvVVHZMHg
- ug8cp+TpD7VWlps5W2g/D1wuit5gyleppDixnp8wGFOZN8POqcSp7w6hdoGw9MvPumOL
- 1q1P7mg4pQ5/SQXl8YyxjcLqFE117S+HPGk1zgopHzWMhcwR2ZzlNVXb1F2rRqGqbPd7
- DwNA==
+ bh=zaI8dwX6Y2BdaaWy6Agd0/TSyHU8TUnREyK7ku3Rgz0=;
+ b=jlb1fgSo4aVz8jl5d00Fs5/dFifhyMR6O3/Qh5WdEuo7JAfd2dojCj/TGlKpPXLQI9
+ OkC6SRn6tloeJuGMRRAX9cdtkLPn2sqwqUZB9KU2ouyQCUUAvrHgxrVLo2TeB9I90vcm
+ ha6x4dP6vs7kYAA/KHk94CpO0c5c9dACLGtx5nYnQ/U3x+yPFucsqInl6vPN3rdjYUee
+ jEKaAI3PlmDmcLoWxWUQehBvhm0lah7cBHA4cn9XbFdN1rdjhr7z7cAYdm3SjiNyP3Rm
+ c+Prhbw8wWIs3uzHwHfMTskYxkZ8vJyiTDSyHKWhhV4pjiwwppmfKah9eDuF/erZu9Ve
+ stOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762440551; x=1763045351;
+ d=1e100.net; s=20230601; t=1762440732; x=1763045532;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=I0etlvZbNwYaPLzX0lVKmatPCLOUs+kyAR7zZ+B1IME=;
- b=ZsFJTZ5aSjcmOKMVbD0tvp9eM31e47tpzHzQXLjJ4PQfX3cdBX5AX5yfovoVWHrpjH
- w21cDS51Z1ig0PZyEIYxiyOhTWLlN/rKkU1ekSlJ+AOkfey1IcxuXFrXHAF9p/dPzoAg
- p/tz9y9/etWQVoPP03ZYAjS174bMA72h4ZlF1tJ9Ur6ba7uemYAwZISogkT8QQ1Uq3pB
- vqUy+OVDnr+KvUVNEi6MdcraC8a4kx2bIFibWtONE8AX8ESLuYD/kTLc48b2d2ngYQPh
- thfp9xeR+JGfgUQFKBCVZpdScwGQXQCQ8BJoiVyxyd7Cwy9onwnqqXkD30cHuVUaJ/Ty
- E6EA==
-X-Gm-Message-State: AOJu0Yx9FLjGcQP3DMU6nw+Dfz8U9pT5PTaLXLBq3ltax75+2KlEwZoQ
- t6H0OaPZXAw4w4iA5TZpCL2GFdkGnKFLIoKbhPx2gAZQEUroX1fQNCb3Khqw1b/FmAE5FTBWUHI
- P2pp9PsQ=
-X-Gm-Gg: ASbGnctxW/etyv9L1UI8K0/XkUx5Phi0v3DUPrtNybb6ZgkXAxeZH3PWfjoi/5orZZj
- oM3hEp4O9BJHutMxsKznvnU/3aWCqB2Sb6HMNc3hRaaIJZUSBwO5OKMntYLM1Mpt0oKsh7gpsu2
- vf1zJlVj+vAIY5IV0CHxrfW+PZBZtMIwlWJLFGDUEyVbXyI6qxXiVjhEkSTOijGiwHoozqnB8Bn
- J0kSyIkYhLbHY7pS3lGwH4BNYctmgDh3c1VpliA/pnT6CGCMDBz5guPgC/BaPcbZ+3qYKDysQRD
- LkyyYlNahvqQ73IW8Rdfy8hA/ivBYEPesVyHDSvZac9pWiLrHyPbuPPY9pTZ/7QD5ZkwgFMNnHw
- WFm+Azo6jctpZtOsTmQ6bbCJiRPtGx+EFf+FmjyxUiUmdBkhDA+Z7D/ILAXlK2hmXqKUemuYCm3
- xyYOiW+TUg0eZ7TMWdhqzcdTCoXg==
-X-Google-Smtp-Source: AGHT+IFrrrJcfx/rA/QRrXL/E51LYSIMvbrRvA35T2k2fxTbvQdqmLizVXJbhz/Z6HOV2kiTteQd0Q==
-X-Received: by 2002:a17:907:3e0b:b0:b70:b3cb:3b30 with SMTP id
- a640c23a62f3a-b726567fa67mr727274266b.59.1762440550804; 
- Thu, 06 Nov 2025 06:49:10 -0800 (PST)
-Received: from stoup.. ([87.213.113.147]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b728933429fsm231990266b.9.2025.11.06.06.49.10
+ bh=zaI8dwX6Y2BdaaWy6Agd0/TSyHU8TUnREyK7ku3Rgz0=;
+ b=Ahq+8OClRgoc2WK8qErA61lue5xYVvX4GmzWpLmn5l+RnpR3ipb6P6mI+48371SJxI
+ H9CzHcQBjnJNhUSNXj+Ten29dWEXMOwQ4wPEdYH1GeAJQkQC/2580aH7r4yFh8AV+fzo
+ w72K3hBx6b1GNyQM3qaPFId3dQ5wyo2udO0x/VKelGcFj+avHw7yZHdESfH1BMOHz07o
+ TXPquPHfRJ1goX24+muIiI54eB3JVr8JlshWk6nl/HnDP1zUK9tRy5+ROiUSDQIFeIEm
+ SmfTMoe8FzWr1HmXuIkjb8DL7Ye2VbpGN2Q2n01F5FUJUdjQ5fpr7PtSsGqaVHV1y7yh
+ GHYA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjDPl+/CkeyK/93E+McpqnJoB/v50IGFGEm7Kob3xPTESW2uQOupf+5tRE8FkJrkAhd0IxoIpJPi4k@nongnu.org
+X-Gm-Message-State: AOJu0YwyvvVPx4oFfUd4VXedSbPtlxU8NDSHR9VpvMSS/1l6wiqn4F49
+ 6tVJh9bKXaWjSF8Cf1VMeJWrGd9cnpoDKIgIaB+XNx0Gty1NIZuCgBsUvAybXASI3b0=
+X-Gm-Gg: ASbGncs1QUBhrrXudYWMMLoDbbugk2qWA4d5DtA1zhD0cBaMXtj5SPkC24ZixeKMtyS
+ Xkuy8nkcdduluRdP04+CeM4ssujld/vXnG+9Djs23Hwz3ly0MdbcTvWZPI/hPJPnYH6zOhvTGOB
+ +lE2GJ+LIybSTUZTKlBndwpmrz2r9CDns2la9vVMh3c6aETcw+yYJc5nAc/Dema+69nRjJLPOAa
+ GHRPsJ2Lhswztfj2UpTqPFYYNU0/VATNu15G4e2l7h+xA41AnhEqJH5SB9bjSkcb38B5Y+4ljGA
+ DH09Kx6Mrm139cRC8OSo6MLyBwAKrhsMsR1IhzJMQpSBkQPTFediDhvWV0rSvDXPUK2Qq3wQkWH
+ k3MRU3vCO2BwDZ8n1Q/Zbm9pfax+b5E5rgTHhaKL636McvjAe4e+9UChaJIs1CWgSEKj/QoIBEu
+ 4s5Yxsp69R2+KwelIi
+X-Google-Smtp-Source: AGHT+IHjFsjMpxEgFpio8KVQEl5zJait4ivfHU5hGH9axzMaL7P7WlFSRKWsM2k/j2Jt+NwYUxRw8w==
+X-Received: by 2002:a05:6000:26c2:b0:429:cc6b:e011 with SMTP id
+ ffacd0b85a97d-429e33063b4mr6566070f8f.36.1762440731924; 
+ Thu, 06 Nov 2025 06:52:11 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429eb47721bsm5694891f8f.25.2025.11.06.06.52.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Nov 2025 06:49:10 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: gustavo.romero@linaro.org,
-	Anton Johansson <anjo@rev.ng>
-Subject: [PATCH] target/arm: Fix accidental write to TCG constant
-Date: Thu,  6 Nov 2025 15:49:09 +0100
-Message-ID: <20251106144909.533997-1-richard.henderson@linaro.org>
+ Thu, 06 Nov 2025 06:52:10 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH 0/2] xlnx-dp: fix a couple of fuzzer bugs
+Date: Thu,  6 Nov 2025 14:52:07 +0000
+Message-ID: <20251106145209.1083998-1-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,58 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently an unpredictable movw such as
+This patchset fixes a couple of bugs found ages ago by fuzzer,
+where a guest that tells the device to do silly things can
+trigger an assert() or abort():
 
-  movw pc, 0x123
+ https://gitlab.com/qemu-project/qemu/-/issues/1415
+ https://gitlab.com/qemu-project/qemu/-/issues/1418
+ https://gitlab.com/qemu-project/qemu/-/issues/1419
+ https://gitlab.com/qemu-project/qemu/-/issues/1424
 
-results in the tinycode
+None of them are really very interesting, but the fixes are
+straightforward.
 
-   and_i32 $0x123,$0x123,$0xfffffffc
-   mov_i32 pc,$0x123
-   exit_tb $0x0
+thanks
+-- PMM
 
-which is clearly a bug, writing to a constant is incorrect and discards
-the result of the mask.  Fix this by adding a temporary in store_reg().
+Peter Maydell (2):
+  hw/display/xlnx_dp.c: Don't abort on AUX FIFO overrun/underrun
+  hw/display/xlnx_dp: Don't abort for unsupported graphics formats
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-[rth: Avoid an extra temp and extra move.]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ hw/display/xlnx_dp.c | 81 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 5f64fed220..63735d9789 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -303,20 +303,23 @@ TCGv_i32 add_reg_for_lit(DisasContext *s, int reg, int ofs)
-    marked as dead.  */
- void store_reg(DisasContext *s, int reg, TCGv_i32 var)
- {
-+    uint32_t mask = 0;
-+
-     if (reg == 15) {
--        /* In Thumb mode, we must ignore bit 0.
-+        /*
-+         * In Thumb mode, we must ignore bit 0.
-          * In ARM mode, for ARMv4 and ARMv5, it is UNPREDICTABLE if bits [1:0]
-          * are not 0b00, but for ARMv6 and above, we must ignore bits [1:0].
-          * We choose to ignore [1:0] in ARM mode for all architecture versions.
-          */
--        tcg_gen_andi_i32(var, var, s->thumb ? ~1 : ~3);
-+        mask = s->thumb ? 1 : 3;
-         s->base.is_jmp = DISAS_JUMP;
-         s->pc_save = -1;
-     } else if (reg == 13 && arm_dc_feature(s, ARM_FEATURE_M)) {
-         /* For M-profile SP bits [1:0] are always zero */
--        tcg_gen_andi_i32(var, var, ~3);
-+        mask = 3;
-     }
--    tcg_gen_mov_i32(cpu_R[reg], var);
-+    tcg_gen_andi_i32(cpu_R[reg], var, ~mask);
- }
- 
- /*
 -- 
 2.43.0
 
