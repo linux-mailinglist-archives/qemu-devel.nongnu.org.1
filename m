@@ -2,90 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DCCC3C292
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 16:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B11C3C2A7
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 16:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vH2Dj-0004ey-9m; Thu, 06 Nov 2025 10:48:19 -0500
+	id 1vH2EG-0005TH-OX; Thu, 06 Nov 2025 10:48:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vH2Dh-0004eK-1n
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 10:48:17 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vH2Df-000771-Gx
- for qemu-devel@nongnu.org; Thu, 06 Nov 2025 10:48:16 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-641018845beso1770629a12.3
- for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 07:48:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762444093; x=1763048893; darn=nongnu.org;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eXIEWeMkepcz8wHGMCwaPQIWSj8kSf13l4VllygB0Yw=;
- b=lRjExJ+gynuLLwujaXbhg04GYsJAYZ+M7WToASA27zfrth/q+JcaQ+LF1I2QMdqVGY
- ycZJosxInTOt2TnwqJ9E3vb1DXEp29lW+BlPawtVTkHvvpQn1VyAScRq+TNKQ7jkwVVJ
- cQUefQNkKhTbvSnv7qRYbKDSbLkjBPclxrpysJkpvbzHuDBcHtg0LsFd9KDbfjn58A5Z
- g3HgtmzQquzov+hgSkJI9i1B+MtWqsMfF0dt04gCJ23A2TexonIPkijwkZPxUPcZ1h4k
- hqjBh5vP37Engcx3bKQbdx5nzQY9ucEL0/Agq687IH2bzQ/j+wdiyDmR0JrovrAH31mf
- ljGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762444093; x=1763048893;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=eXIEWeMkepcz8wHGMCwaPQIWSj8kSf13l4VllygB0Yw=;
- b=bBFhbwMGCSFvOeWSOpiuI2kXWr/aoOMvU4xBcjFxtLdH50KtBVNDjStX5ltIIiuDNs
- lygLq2l0zAkhmd2OeMhlBPR3saViW2mxNLa0e3LA+M4mreJbUyxZ9XCE/EfzKXvbY71E
- 3/ql8raQdZrnHjTIHfZw/ZGtSeb8hAtLOMKdZ1SDNmOKkjXEc95xuToFTphB0Q6skLmc
- xe/l33oYL8OgVdmO0ZE/0Rhehqxxdo3NHpYsd1BQ1JAc7fZQXAykoncK1dHokvdasMTD
- aId7Wt64utixnePvkXlXEoiCin1SS4qRnvzOi9lBnkEkxw5KyaK2mt6aApuKfQsZG+uw
- nMKg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWY7hC1rEOjPyjvqaJ+ryZe1LW9mnoj9YIMOeGNu4YhA0C6G/vPQUUmTNYu72/YGKw4VHjCqrBFZeRm@nongnu.org
-X-Gm-Message-State: AOJu0YyKSjCWArvcwBs7+pBqw+vjd3xdoZkVLKZ5aHLlWmcdz8jaPnK0
- TqJhtgipVHpzW0yIxNWr1a7j1cvO28ZIJqXPrUGS+QaxhDXNRrFyMpz77r6z7dgcVkI=
-X-Gm-Gg: ASbGnct77haca+uTPWTZxzEjh7rtQfXvpQ1/S81GskYcJ3+x4Giy84CzbK4Yd/dwNty
- ytmBnn+Qslr4hQp9m0BaIKGIUUZPwfeOCo7rvBXHpbHTGUW/mBlMxaS9ES36vnWzc5G7GuNTU0L
- W6QSsdBXgKjo9PaSOIMNlAM+DDLGKZRmLyFuuS2CXhe55+TK5HkVmlLzSpa0ncXQqvzOMZqwBzb
- eaWY4CniHIKJX/D/g03vHfxarKLrhgrmx4TSq81qM9BDql1unXoP+LjFZf/8XjIhv9/TZrhdHLO
- qdHYyZx+OrSLki4AnylqPRSWlZDvZSJfI8RCOHMnd9kvBCB15LECIUmGBS+zG9FgVj9L+U6Jj3U
- EqFNxw17un56y1GsEKhD0yUMhTiFSdOwxO2VF/J/a0kacC+dS1ueE1kLZVSSjbYp7H3lEFcI50J
- Ao08omMqVjRWRoJYWZQC30PPe6aS/YKJCh2g==
-X-Google-Smtp-Source: AGHT+IGtxibGHBsNeVJcwGC1l9I/+B0+fVJ3e03QCKZrghyxx0BNtt3wod+slr43JiwJ8NYPA/X+zA==
-X-Received: by 2002:a17:907:3da3:b0:b70:7cd8:9098 with SMTP id
- a640c23a62f3a-b72655ee49emr814782266b.61.1762444093373; 
- Thu, 06 Nov 2025 07:48:13 -0800 (PST)
-Received: from [172.20.148.161] ([87.213.113.147])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b7289682544sm241617366b.53.2025.11.06.07.48.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Nov 2025 07:48:12 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------hCW7Tf1Yz1wRSbXxvfiSGDBt"
-Message-ID: <5ad511f4-eb36-4d49-90a6-fbb1e5f67c6c@linaro.org>
-Date: Thu, 6 Nov 2025 16:48:11 +0100
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1vH2EE-0005Sj-Fk; Thu, 06 Nov 2025 10:48:50 -0500
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1vH2EC-0007AG-UK; Thu, 06 Nov 2025 10:48:50 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id 9F2894080D;
+ Thu,  6 Nov 2025 15:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D65C4CEFB;
+ Thu,  6 Nov 2025 15:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1762444117;
+ bh=VzM6jNEG5DCPm05kF9VC2zW4y6uzRBlaGistE432Kgk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=DnlccOH7OJ45pBL/fnSmIdwj2uMusWZo04ohpMgZOVlDmHWn0oBdOriuQFoqs9LLc
+ Xp+qyES/H48q0LYxanKcJpJqQ/hzchK0hazkyGE67AJ210cQkBE6/ZoUh4vlEjgW38
+ OeYq4XflupMqH9H+b5JFhIK823gzb90uilLn2HIm9nE9gix37njckMLWLGsW+jTB+t
+ MVhr4PIbXuMu3Fk3LyBlL3HE+4tYejj2vCjR+izcK65F6CGsbjZ6syvo1NuiJzXK7L
+ EvTM+zUKuSzfUp12q35qubtfYSz2RLGTpkuV3KEAdZo+oJWMB+8NKkmJ+6snhuHjia
+ 3dl84dVbrgePA==
+Date: Thu, 6 Nov 2025 15:48:33 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com
+Subject: Re: [PATCH 0/2] riscv: riscv,isa fixes + check script
+Message-ID: <20251106-napped-haunt-109e9e24ad40@spud>
+References: <20251106112044.162617-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Fix accidental write to TCG constant
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-References: <20251106144909.533997-1-richard.henderson@linaro.org>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <20251106144909.533997-1-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=gustavo.romero@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="2mmnlSxZnq/BKRxE"
+Content-Disposition: inline
+In-Reply-To: <20251106112044.162617-1-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=conor@kernel.org; helo=sea.source.kernel.org
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.271,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,102 +67,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------hCW7Tf1Yz1wRSbXxvfiSGDBt
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi folks,
+--2mmnlSxZnq/BKRxE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 11/6/25 15:49, Richard Henderson wrote:
-> Currently an unpredictable movw such as
-> 
->    movw pc, 0x123
+On Thu, Nov 06, 2025 at 08:20:42AM -0300, Daniel Henrique Barboza wrote:
+> Hi,
+>=20
+> We have an array called isa_edata_arr[] in target/riscv/cpu.c which
+> needs to be always kept in the RISC-V specification riscv,isa order.
+> Easier said that done: as more and more extensions are added we're
+> failing to keep up with the array ordering in the review process.
+>=20
+> I have considered changing how we're retrieving riscv,isa to not rely on
+> the array ordering (in fact I have code that does that). We would sort
+> the enabled extensions using riscv,is ordering during init time, before
+> writing it in the DT, ignoring the current isa_edata_arr ordering. When
+> all was said and done that sounded a bit extreme and I think there's
+> other stuff we can try first.
 
-bah, how did you get this insn.? Are you using any fuzzer? :P
+FWIW, I have yet to actually see a parser for it in a "real" application
+that relied on the ordering. It probably makes a parser more complicated
+to write than one where the ordering is ignored. The only time I can really
+see ordering mattering is if something has a very simple bit of code and
+is looking for "rv##ima" or similar, and using a string comparison
+function.
+Either way, my point basically is that you shouldn't have to go to any
+extreme effort to make sure it is perfect, particularly when it comes to
+the multiletter stuff as, at least for devicetree, the binding has never
+enforced ordering for multiletter extensions. I know ACPI cites spec
+order (and spec definitions, so GL there lol), and there could be relevant
+for some ACPI only code where the devicetree parser is not being reused.
 
+--2mmnlSxZnq/BKRxE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> results in the tinycode
-> 
->     and_i32 $0x123,$0x123,$0xfffffffc
->     mov_i32 pc,$0x123
->     exit_tb $0x0
-> 
-> which is clearly a bug, writing to a constant is incorrect and discards
-> the result of the mask.  Fix this by adding a temporary in store_reg().
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> [rth: Avoid an extra temp and extra move.]
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/translate.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-> index 5f64fed220..63735d9789 100644
-> --- a/target/arm/tcg/translate.c
-> +++ b/target/arm/tcg/translate.c
-> @@ -303,20 +303,23 @@ TCGv_i32 add_reg_for_lit(DisasContext *s, int reg, int ofs)
->      marked as dead.  */
->   void store_reg(DisasContext *s, int reg, TCGv_i32 var)
->   {
-> +    uint32_t mask = 0;
-> +
->       if (reg == 15) {
-> -        /* In Thumb mode, we must ignore bit 0.
-> +        /*
-> +         * In Thumb mode, we must ignore bit 0.
->            * In ARM mode, for ARMv4 and ARMv5, it is UNPREDICTABLE if bits [1:0]
->            * are not 0b00, but for ARMv6 and above, we must ignore bits [1:0].
->            * We choose to ignore [1:0] in ARM mode for all architecture versions.
->            */
-> -        tcg_gen_andi_i32(var, var, s->thumb ? ~1 : ~3);
-> +        mask = s->thumb ? 1 : 3;
->           s->base.is_jmp = DISAS_JUMP;
->           s->pc_save = -1;
->       } else if (reg == 13 && arm_dc_feature(s, ARM_FEATURE_M)) {
->           /* For M-profile SP bits [1:0] are always zero */
-> -        tcg_gen_andi_i32(var, var, ~3);
-> +        mask = 3;
->       }
-> -    tcg_gen_mov_i32(cpu_R[reg], var);
-> +    tcg_gen_andi_i32(cpu_R[reg], var, ~mask);
->   }
+-----BEGIN PGP SIGNATURE-----
 
-The difference between v1 and v2 is:
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQzDOQAKCRB4tDGHoIJi
+0mHiAP4iJvU+Gi5m5pzMZnx2xj8iGN1vmLXutQ7o49Ocv+pl+AD/UeI2jb3vOjs6
+XFVcqc65oibKNXVZlWK25aLsYBLkowo=
+=vDWC
+-----END PGP SIGNATURE-----
 
-v1:
-  mov_i32 tmp3,$0x123
-  and_i32 tmp3,tmp3,$0xfffffffc
-  mov_i32 pc,tmp3
-
-v2 (this version)
-and_i32 pc,$0x123,$0xfffffffc
-
-
-I think we need only a v3 that updates the commit message since we
-are not adding a temporary anymore.
-
-Interestingly, I was not able to crash the host when native code
-was generated from:
-
-and_i32 $0x123,$0x123,$0xfffffffc
-
-I'm sending the binary I used to test it attached for convenience.
-
-Anyways:
-
-Tested-by: Gustavo Romero <gustavo.romero@linaro.org>
-
-and with the commit message updated:
-
-Reviewed-by: <gustavo.romero@linaro.org>
---------------hCW7Tf1Yz1wRSbXxvfiSGDBt
-Content-Type: application/octet-stream; name="movw_pc.bin"
-Content-Disposition: attachment; filename="movw_pc.bin"
-Content-Transfer-Encoding: base64
-
-I/EA4w==
-
---------------hCW7Tf1Yz1wRSbXxvfiSGDBt--
+--2mmnlSxZnq/BKRxE--
 
