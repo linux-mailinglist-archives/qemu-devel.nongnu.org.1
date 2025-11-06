@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51E5C39A52
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C68C39A5E
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:50:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGvge-000339-Px; Thu, 06 Nov 2025 03:49:44 -0500
+	id 1vGvgh-000341-52; Thu, 06 Nov 2025 03:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvgc-00030T-0C; Thu, 06 Nov 2025 03:49:42 -0500
+ id 1vGvgf-00033C-0q; Thu, 06 Nov 2025 03:49:45 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvga-0005Sg-8M; Thu, 06 Nov 2025 03:49:41 -0500
+ id 1vGvgd-0005Sg-AJ; Thu, 06 Nov 2025 03:49:44 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 6 Nov
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 02/12] hw/block/m25p80: Add SFDP table for Winbond
- W25Q02JVM flash
-Date: Thu, 6 Nov 2025 16:49:11 +0800
-Message-ID: <20251106084925.1253704-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 03/12] hw/misc/aspeed_scu: Fix the revision ID cannot be
+ set in the SOC layer for AST2600 and AST1030
+Date: Thu, 6 Nov 2025 16:49:12 +0800
+Message-ID: <20251106084925.1253704-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
@@ -67,94 +67,49 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the SFDP data table for Winbond W25Q02JVM flash device. The table
-was generated under Linux kernel by dumping the SFDP content using
-the following command:
+According to the design of the AST2600, it has a Silicon Revision ID
+Register, specifically SCU004 and SCU014, to set the Revision ID for the
+AST2600. For the AST2600 A3, SCU004 is set to 0x05030303 and SCU014 is
+set to 0x05030303.
 
-```
-hexdump -v -e '8/1 "0x%02x, " "\n"' \
-    /sys/bus/spi/devices/spi0.0/spi-nor/sfdp
-```
+In the "aspeed_ast2600_scu_reset" function, the hardcoded value
+"AST2600_A3_SILICON_REV" was used for SCU004, while "s->silicon_rev" was
+used for SCU014. The value of "s->silicon_rev" is set by the SoC layer
+via the "silicon-rev" property. This patch aligns both SCU004 and SCU014
+to use "s->silicon_rev" for consistency and flexibility.
+
+Similarly, the "aspeed_ast1030_scu_reset" function also used a fixed
+revision constant ("AST1030_A1_SILICON_REV"). This change updates it to
+use the same "s->silicon_rev" property, ensuring that both SoCs follow
+a consistent and configurable revision handling mechanism.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/block/m25p80_sfdp.h |  1 +
- hw/block/m25p80.c      |  2 ++
- hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 39 insertions(+)
+ hw/misc/aspeed_scu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/block/m25p80_sfdp.h b/hw/block/m25p80_sfdp.h
-index 35785686a0..c1e532de5a 100644
---- a/hw/block/m25p80_sfdp.h
-+++ b/hw/block/m25p80_sfdp.h
-@@ -27,6 +27,7 @@ uint8_t m25p80_sfdp_w25q256(uint32_t addr);
- uint8_t m25p80_sfdp_w25q512jv(uint32_t addr);
- uint8_t m25p80_sfdp_w25q80bl(uint32_t addr);
- uint8_t m25p80_sfdp_w25q01jvq(uint32_t addr);
-+uint8_t m25p80_sfdp_w25q02jvm(uint32_t addr);
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index a0ab5eed8f..1f996d5398 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -841,7 +841,7 @@ static void aspeed_ast2600_scu_reset(DeviceState *dev)
+      * of actual revision. QEMU and Linux only support A1 onwards so this is
+      * sufficient.
+      */
+-    s->regs[AST2600_SILICON_REV] = AST2600_A3_SILICON_REV;
++    s->regs[AST2600_SILICON_REV] = s->silicon_rev;
+     s->regs[AST2600_SILICON_REV2] = s->silicon_rev;
+     s->regs[AST2600_HW_STRAP1] = s->hw_strap1;
+     s->regs[AST2600_HW_STRAP2] = s->hw_strap2;
+@@ -1137,7 +1137,7 @@ static void aspeed_ast1030_scu_reset(DeviceState *dev)
  
- uint8_t m25p80_sfdp_is25wp256(uint32_t addr);
+     memcpy(s->regs, asc->resets, asc->nr_regs * 4);
  
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index a5336d92ff..338e17bf1d 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -364,6 +364,8 @@ static const FlashPartInfo known_devices[] = {
-       .sfdp_read = m25p80_sfdp_w25q512jv },
-     { INFO("w25q01jvq",   0xef4021,      0,  64 << 10, 2048, ER_4K),
-       .sfdp_read = m25p80_sfdp_w25q01jvq },
-+    { INFO("w25q02jvm",   0xef7022,      0,  64 << 10, 4096, ER_4K),
-+      .sfdp_read = m25p80_sfdp_w25q02jvm },
- 
-     /* Microchip */
-     { INFO("25csm04",      0x29cc00,      0x100,  64 << 10,  8, 0) },
-diff --git a/hw/block/m25p80_sfdp.c b/hw/block/m25p80_sfdp.c
-index a03a291a09..87878c2bf0 100644
---- a/hw/block/m25p80_sfdp.c
-+++ b/hw/block/m25p80_sfdp.c
-@@ -440,6 +440,42 @@ static const uint8_t sfdp_w25q80bl[] = {
- };
- define_sfdp_read(w25q80bl);
- 
-+static const uint8_t sfdp_w25q02jvm[] = {
-+    0x53, 0x46, 0x44, 0x50, 0x06, 0x01, 0x01, 0xff,
-+    0x00, 0x06, 0x01, 0x10, 0x80, 0x00, 0x00, 0xff,
-+    0x84, 0x00, 0x01, 0x02, 0xd0, 0x00, 0x00, 0xff,
-+    0x03, 0x00, 0x01, 0x02, 0xf0, 0x00, 0x00, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xe5, 0x20, 0xfb, 0xff, 0xff, 0xff, 0xff, 0x7f,
-+    0x44, 0xeb, 0x08, 0x6b, 0x08, 0x3b, 0x42, 0xbb,
-+    0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00,
-+    0xff, 0xff, 0x40, 0xeb, 0x0c, 0x20, 0x0f, 0x52,
-+    0x10, 0xd8, 0x00, 0x00, 0x36, 0x02, 0xa6, 0x00,
-+    0x82, 0xea, 0x14, 0xe2, 0xe9, 0x63, 0x76, 0x33,
-+    0x7a, 0x75, 0x7a, 0x75, 0xf7, 0xa2, 0xd5, 0x5c,
-+    0x19, 0xf7, 0x4d, 0xff, 0xe9, 0x70, 0xf9, 0xa5,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0x0a, 0xf0, 0xff, 0x21, 0xff, 0xdc, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-+};
-+define_sfdp_read(w25q02jvm);
-+
- /*
-  * Integrated Silicon Solution (ISSI)
-  */
+-    s->regs[AST2600_SILICON_REV] = AST1030_A1_SILICON_REV;
++    s->regs[AST2600_SILICON_REV] = s->silicon_rev;
+     s->regs[AST2600_SILICON_REV2] = s->silicon_rev;
+     s->regs[AST2600_HW_STRAP1] = s->hw_strap1;
+     s->regs[AST2600_HW_STRAP2] = s->hw_strap2;
 -- 
 2.43.0
 
