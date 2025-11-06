@@ -2,54 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188B1C39A76
-	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 09:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F7FC39DAA
+	for <lists+qemu-devel@lfdr.de>; Thu, 06 Nov 2025 10:41:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vGvhE-000412-3B; Thu, 06 Nov 2025 03:50:20 -0500
+	id 1vGwTi-0001zz-4h; Thu, 06 Nov 2025 04:40:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvh7-0003vs-Sr; Thu, 06 Nov 2025 03:50:13 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vGvh6-0005ZE-7u; Thu, 06 Nov 2025 03:50:13 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 6 Nov
- 2025 16:49:30 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 6 Nov 2025 16:49:30 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, "Kevin
- Wolf" <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 12/12] docs/system/arm/aspeed: Update Aspeed MiniBMC
- section to include AST1060 PFR processor
-Date: Thu, 6 Nov 2025 16:49:21 +0800
-Message-ID: <20251106084925.1253704-13-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
-References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1vGwTg-0001xh-Gj
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 04:40:24 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1vGwTe-0005L3-O7
+ for qemu-devel@nongnu.org; Thu, 06 Nov 2025 04:40:24 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-b70fb7b54cdso130407866b.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Nov 2025 01:40:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762422021; x=1763026821; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=I9JtZzZZJ5Szb1swUQPzO9Qt81xOQJmVdlAU2ltZN3g=;
+ b=cRP2knaI8mrRHqxvdCWqs2XEf4qqM7PaR4iMJ/5tM+4Hd8KD7IjY5w49rR8xjOLGH1
+ We6FFfBvEcZOLjjd2Df8dzwV1rAorK15eh13vXnPKwQi14u0Z9eufy/BIPmiGGkL8Dx9
+ GfG0dw0J89bRgeMtbO0PqlHeDMoF+lwf551ETaigw58CcvNf5Pa3amny1njKwhxVghhT
+ xw3T27rHwgzvq1et+HHe4RAalZYI6Af+d7doskdYYduxPumcsaaDDeHHuygUC/T8T19d
+ 0QSMFTR0Nq0TVb94ytvpVJPzAHrSHFkqAreuIFdPRfZwMeZbZbVSX+XJYNwifD4IBIFb
+ 5rlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762422021; x=1763026821;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I9JtZzZZJ5Szb1swUQPzO9Qt81xOQJmVdlAU2ltZN3g=;
+ b=BEQitKOZy8woFzU2PzbHSkfEI+khqFqtrTU0LVGg2yL872Fxi9n9Z+xpCwLOZBV5yC
+ MnfjwCf0zPathWEkzVu2jOMy4G5xWtLL0SMtoQ5LBt1o2dHHKtIHNGsWfojN7MfdAnlW
+ hp4l/D2c5OWiPglpPwhF5VZ8fVzb8oLCnc57PSLjNPNyf49+5PhHGF4mgTPUkOZtZOMh
+ pjgzhxOkU7D7XMKJC+9FK2CyEB3U7rfuwt2P01PnQ0vpghwByVAvJaQqeZRjIqJyau3g
+ FeVErSUkk4hAyFTXYnyp2Tkw+lo/p8ZHB7Rki/LC1fyh7minIGHiFyzMPWk+UDEv8Wim
+ t2dA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcMyqn1z8OjHPG7eLSCO2aNegX3Q4IDdIvFCUDBnyI1td9SIKOGiJRpqX5wF3pRhRzvkVhFKpUEUkW@nongnu.org
+X-Gm-Message-State: AOJu0YxTHdQU0VjsYRtw15pjQffQSl5vlzCsIAXXzx2aZMaZ+rjC002F
+ s7RNsUmkm3p+IyV4l2Ye2sw2X5bANt5XJsF0Xvyz4ddrUlPomq6JGFsGofJUA37OkFE=
+X-Gm-Gg: ASbGnctjyouUM/x7VoN6msr4lTv/ATfQlYxWdwO2OD8JbiHCMdUlHcj8OucT9lsu3cF
+ KXtxZl5WGOZupd+887SYqTDdrHjuJvslVBOBvwh89z6cnjq89dzpXJKCzO2VedQC2eLlZzShyC4
+ PBSQhQ+VfBTLGSCZkGItsOwcMqvDsdbIhuAjarz1snbSXJH/o68O01og+HnHRL5EqqFoIoWPqZX
+ 3+MN112FJt9HXnlMThfQrtQoqrnR9QoomSzKA4tkUXvmDb5hghKKsp1kArngRkCTfCvC4t4HG74
+ h1IMKmZHg5QzHI8SV4eNSPiGAhUss+lOHIlxRQitAWtESnga62zJbGSX+kxtQCHg3pc961gogY5
+ Kvn6GmY5i71tG28KPM1doLrb3zyMWD6JweJKTpvRrtC4grO+SimpjLQIZdlj+gaX7w8Q3szohbY
+ 4hauHAiWtOewK2W726DnT69ThCfZlcdFRGYw==
+X-Google-Smtp-Source: AGHT+IEImNLvEv+BvoVzM3oQPw7O5b8dvobLF8MfGHU2pTrRO+7e3bcoq1UdHlWr9onQhn11vFBzbQ==
+X-Received: by 2002:a17:907:7f0f:b0:b3f:f207:b748 with SMTP id
+ a640c23a62f3a-b726515d4e2mr469991666b.10.1762422020826; 
+ Thu, 06 Nov 2025 01:40:20 -0800 (PST)
+Received: from [172.20.148.161] ([87.213.113.147])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b7289644819sm173764566b.45.2025.11.06.01.40.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Nov 2025 01:40:20 -0800 (PST)
+Message-ID: <e52c8dd0-d284-4dc0-ad0c-3832ce996884@linaro.org>
+Date: Thu, 6 Nov 2025 10:40:18 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 17/28] hw: arm: virt-acpi-build: add hack
+To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20251029165510.45824-1-mohamed@unpredictable.fr>
+ <20251029165510.45824-18-mohamed@unpredictable.fr>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20251029165510.45824-18-mohamed@unpredictable.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,81 +105,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added details describing AST1060 as a PFR processor board alongside
-AST1030 MiniBMC, and extended the list of missing devices to include
-SMBus Filter and QSPI Monitor controllers.
+Hi Mohamed and Phil,
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- docs/system/arm/aspeed.rst | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+On 10/29/25 17:54, Mohamed Mediouni wrote:
+> Looks like in the prior Qemu ACPI table handling, GICv2 configurations
+> had vms->its=1...
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index a0c05a6f73..ffa5f4b372 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -448,23 +448,25 @@ Use ``tio`` or another terminal emulator to connect to the consoles:
-    $ tio /dev/pts/57
- 
- 
--Aspeed minibmc family boards (``ast1030-evb``)
--==================================================================
-+Aspeed minibmc and PFR processor family boards (``ast1030-evb``, ``ast1060-evb``)
-+=================================================================================
- 
--The QEMU Aspeed machines model mini BMCs of various Aspeed evaluation
--boards. They are based on different releases of the
--Aspeed SoC : the AST1030 integrating an ARM Cortex M4F CPU (200MHz).
-+The QEMU Aspeed machines model mini BMCs and PFR processors of various Aspeed
-+evaluation boards. They are based on different releases of the
-+Aspeed SoC : the AST1030 (MiniBMC) and AST1060 (PFR Processor), both integrating
-+an ARM Cortex M4F CPU (200MHz).
- 
- The SoC comes with SRAM, SPI, I2C, etc.
- 
--AST1030 SoC based machines :
-+AST10x0 SoC based machines :
- 
--- ``ast1030-evb``          Aspeed AST1030 Evaluation board (Cortex-M4F)
-+- ``ast1030-evb``          Aspeed AST1030 MiniBMC Evaluation board (Cortex-M4F)
-+- ``ast1060-evb``	   Aspeed AST1060 PFR Processor Evaluation board (Cortex-M4F)
- 
- Supported devices
- -----------------
- 
-- * SMP (for the AST1030 Cortex-M4F)
-+ * SMP (for the Cortex-M4F)
-  * Interrupt Controller (VIC)
-  * Timer Controller
-  * I2C Controller
-@@ -492,6 +494,8 @@ Missing devices
-  * Virtual UART
-  * eSPI Controller
-  * I3C Controller
-+ * SMBus Filter Controller
-+ * QSPI Monitor Controller
- 
- Boot options
- ------------
-@@ -502,9 +506,11 @@ ASPEED GitHub release repository :
- 
-    https://github.com/AspeedTech-BMC/zephyr/releases
- 
-+   https://github.com/AspeedTech-BMC/aspeed-zephyr-project/releases
-+
- To boot a kernel directly from a Zephyr build tree:
- 
- .. code-block:: bash
- 
-   $ qemu-system-arm -M ast1030-evb -nographic \
--        -kernel zephyr.elf
-+        -kernel zephyr.bin
--- 
-2.43.0
+To me, ITS should not be present on machines that have GICv2, so we should not generate
+any ACPI table advertising ITS when GICv2 is used.
+
+
+Cheers,
+Gustavo
+
+> Match that assumption to not make the test suite fail. Probably not merge-worthy...
+> 
+> And then maybe see what to do for older releases too?
+> 
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> ---
+>   hw/arm/virt-acpi-build.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index a6a56455a9..39dd3d1020 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -472,7 +472,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>           nb_nodes = num_smmus + 1; /* RC and SMMUv3 */
+>           rc_mapping_count = rc_smmu_idmaps_len;
+>   
+> -        if (virt_is_its_enabled(vms)) {
+> +        if (virt_is_its_enabled(vms) || vms->gic_version == 2) {
+>               /*
+>                * Knowing the ID ranges from the RC to the SMMU, it's possible to
+>                * determine the ID ranges from RC that go directly to ITS.
+> @@ -483,7 +483,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>               rc_mapping_count += rc_its_idmaps->len;
+>           }
+>       } else {
+> -        if (virt_is_its_enabled(vms)) {
+> +        if (virt_is_its_enabled(vms) || vms->gic_version == 2) {
+>               nb_nodes = 2; /* RC and ITS */
+>               rc_mapping_count = 1; /* Direct map to ITS */
+>           } else {
+> @@ -498,7 +498,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>       build_append_int_noprefix(table_data, IORT_NODE_OFFSET, 4);
+>       build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+>   
+> -    if (virt_is_its_enabled(vms)) {
+> +    if (virt_is_its_enabled(vms) || vms->gic_version == 2) {
+>           /* Table 12 ITS Group Format */
+>           build_append_int_noprefix(table_data, 0 /* ITS Group */, 1); /* Type */
+>           node_size =  20 /* fixed header size */ + 4 /* 1 GIC ITS Identifier */;
+> @@ -517,7 +517,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>           int smmu_mapping_count, offset_to_id_array;
+>           int irq = sdev->irq;
+>   
+> -        if (virt_is_its_enabled(vms)) {
+> +        if (virt_is_its_enabled(vms) || vms->gic_version == 2) {
+>               smmu_mapping_count = 1; /* ITS Group node */
+>               offset_to_id_array = SMMU_V3_ENTRY_SIZE; /* Just after the header */
+>           } else {
+> @@ -610,7 +610,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>               }
+>           }
+>   
+> -        if (virt_is_its_enabled(vms)) {
+> +        if (virt_is_its_enabled(vms) || vms->gic_version == 2) {
+>               /*
+>                * Map bypassed (don't go through the SMMU) RIDs (input) to
+>                * ITS Group node directly: RC -> ITS.
 
 
