@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AA0C40737
-	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 15:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6D5C40734
+	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 15:54:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vHNqP-0003Z8-5F; Fri, 07 Nov 2025 09:53:41 -0500
+	id 1vHNqU-0003hp-Qz; Fri, 07 Nov 2025 09:53:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vHNqM-0003To-MO
+ id 1vHNqM-0003Tr-Mq
  for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:39 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vHNqK-0001uk-Aa
+ id 1vHNqK-0001v1-BO
  for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:38 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-429b7eecf7cso616320f8f.0
- for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:53:34 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3ed20bdfdffso795900f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:53:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1762527213; x=1763132013; darn=nongnu.org;
+ d=adacore.com; s=google; t=1762527214; x=1763132014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NgRV3D7A6AU7eoGPkfrJPq4UVKzASaP5OU2HV5V5XwY=;
- b=MzAChgCbhm8idL0k5WIWQHcq52R5Pq4rLEpXJVuYi2ApCI3bQnrPl7nuB7+f+a3ohN
- xrblK1x30ShjOpy+VMqxdbrx7TENRkvySkCChuq/E8K5Hmyj6DnIgu8NqPNeqk0BuNrT
- RQjX4tkqiZWAUoZWZReA3DKUo1zf5NhGPPDuHVcenA/Xc4MRMOEovRs0gagbiJceQimV
- 7uGt2od57Fi45lxR9oDJ6NQ30+VgTX7iHxkZxbHfylXX38IL9p3FLtWNkS2Wav706NBb
- OGcqW3/NXvG6oPn/5kF+wC4NYTI3yLCJnaaB6BpMcd33jW0lEV2lzb+3T14XELOXPN7s
- 3CHg==
+ bh=BThCjqaenmyeD9EsuFRpmtd4rv5WpUA+nY9VQioN73Y=;
+ b=G+szwIjuE5Ep4o8wwdujWBNPCnRi/m7iS7zMCi+BYD+HkuAIPmwZmpcYZ0nky+kQJ1
+ +GnlQYKQ1m8KttJbwX/+/01V4ewuFDnQvq8bf/eMECJUpHB6GJid1qAvTLZ9chvSNM3J
+ lTSW7VoOj6aLzGUbQE34PMlbP2NcWs1fjF6AYPZSZoOAmlQPpb6Md4YzCT0iJtQoiMe+
+ /6r9h3t3326FUyRssd+sUKE6IJCICm1obfxVs/rha3WTQlw7w0S5aD/dLazDTLr3EFAq
+ e22WOlTyufWNkl00DbEtSBMXUbStDaiaQ35lDOd715HsNDnLzurNrEfwiYxIk77b+1Vs
+ F42w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762527213; x=1763132013;
+ d=1e100.net; s=20230601; t=1762527214; x=1763132014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NgRV3D7A6AU7eoGPkfrJPq4UVKzASaP5OU2HV5V5XwY=;
- b=Fof99qBelkgN72k8zuBx3KOEo8Yy7NigGE558MHeVWE20FkAISZHt3gSbRVzXByKzU
- 353aleC+Rf5F8hcRNdIJkEu1qK0r4pxl0C5gWl2BiFdTWco1JBvOiUhYvtJoEZ4DO4Aw
- mFdnRKP7g4LYQL1n9w3q0rClChe4Rq1/0Gx0jDZqqZ8AH9iYiDfKMe1CZrhnK53IQWMf
- E17jh2DLjTTLY2bLoVACgDkad+82nIFUW/cMZ5WhZDxBcTlQvcoKegmAWTJWAozEEqsn
- jq8HkVNdA3wmYoQwrdf1AgR2OpYlWZwuyc0kUT1whv3G+c+pco4CjoKrEuJuytV1hgib
- Pk0Q==
-X-Gm-Message-State: AOJu0YyC1Likl2vDH78Z0a3hqdw46hAtICunbNHc/X3MUyeNVtbBjoM2
- O0kqEg8AVkD7ksglIsSw4/7LJzPVEsrFeXeiwY4jpS9ZFtPBh8xRDSi1REwlP594mw==
-X-Gm-Gg: ASbGncuJ+XMpp20TuaRTfkF+zb984p7v5lOYzE9+oeCx886+c9uaUD9mj7wes95S25N
- 2IyXDyZSOJvcw2jzoFQOWf4TSLug9Uo3VcpDq6gNcrFnyC/htNEJ+/w7OD2hhOH3x9oXjkFFYG1
- xu6PQLajKfuKrv/FYZ9a1SoDzY6c7Lu4yX2c7jvI8vx1j7mCaCk0C0ltk29lWOL62jxt295W3pD
- IM1ioVLS23KiLSaRC9pftFQ+UcPAkQCyWKlcmdbJaVkz9QqXSQCJxV/LuLWRyOESBD1NhTH13Bp
- GMnt4ybHr+xQufe/t4yzVtXGyRMzdYBT1y2PL/6fG+8I/9wJR8M9U8RWM4MQBZ4dHvfv8o5S0ry
- ldl2GKS1U3vvOKsAzajQdMqtwMxL5l24nUReGfUpHHe4s7AcgEsGHK9D5OK3lM8SC+bBVSKuFWD
- 1QMZFrWBU=
-X-Google-Smtp-Source: AGHT+IE9lrmPZkbZj+aG13ojPgDeArQzWU0HveRwgo8YI6t+ocODNiDJQTZqUO9jvYS6iotXoOQQ4w==
-X-Received: by 2002:a5d:5f83:0:b0:429:c6ba:d94e with SMTP id
- ffacd0b85a97d-42b26f689c6mr2243709f8f.12.1762527213269; 
+ bh=BThCjqaenmyeD9EsuFRpmtd4rv5WpUA+nY9VQioN73Y=;
+ b=UqFDFUcRVfRh2W9+4rJv2dDnGjFLBBn6I0TaKfXCslt7eWkg30dF8M3m7m3rGjRkXH
+ +2dO+otViyhLxx97Prm/LXgl3d9EVD6ZBBXgDtzgJxgpHvxV7pR07esPEc54NR3EH+kz
+ xGkWv3KRbwEznCu4NRAh36v4qOCNB2l1VGQgYomiHWRpp15McjFX56A76+XJT7VDvvCT
+ hgxYw3Caol8lD0MpNQ+CBPzhmW41Y3VJWLjILj2lCtOx1mFIBB2oUPvWcv1UPsgOAbp2
+ BNE52rlWc1q05R+InLFr3g49mBFa2I6kBkr9ABfdAE5EirUhcHEVQz+4L8C855sQhat1
+ VpfQ==
+X-Gm-Message-State: AOJu0YwF+wG6UsKbaTc9ZgSa+JIR9PbJeO+HxLVoboFZnHVAyPyCFgvg
+ H9ZZN6rPsJc5vsTihbbbXcWDc9/4JMma/CxOH0XPt5sGc92UPi4kZFBf+y3koAzJaQ==
+X-Gm-Gg: ASbGncvIAMBoMeBnMz98tqMydzYYjfklfMc/Wmwqs+tufu2Yo4FSux4X8fChiN0nFqF
+ XyxPFPGuJWW99+0DDvO+RlOA/NsoVXU91URVBSiW/OaxyUjOaKYDGwjP5EfNSsDzaqir26vAXsu
+ vFZawFC8SVQLNMu9q8puN0HP+HP/kNLY/vtQTwaWOiRQ4LMxPOip5gylcK1UUpfnbRq31pNqGd2
+ tqjSIB3EabhZog5u6E6trkWrEP7OUnp9Q6woApr9zhBT3AdLAdC4LxPbjYXAw+JGPpVihYEq186
+ UyYIhe0YRDTUfNP8nMP+5/JM2tPQgMauJQEyqYZaEPzPk0sZ82NW+IJ/JTg5YjNF7mDHMwTEv+J
+ tM8HIMh9MSVfvkWhmeAMx/9hUfkjJ/gxQWKae2gMABzV8g8jzXRZu3x3+QtQ89J7VzxybXwERLQ
+ OGtM8WkR0=
+X-Google-Smtp-Source: AGHT+IH53mykz/MiKBT8Ux/WHXoRE4h9QmmUOIyNK49LI8eTL0TCywmhx663ZwWjdoiXOIB9Ez/9Fw==
+X-Received: by 2002:a05:6000:2209:b0:429:f01d:dd92 with SMTP id
+ ffacd0b85a97d-42ae5af4989mr2784365f8f.59.1762527213878; 
  Fri, 07 Nov 2025 06:53:33 -0800 (PST)
 Received: from chigot-Dell.home ([2a01:cb15:80db:7c00:e453:acd:db85:b66e])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42abe63e131sm5922435f8f.20.2025.11.07.06.53.32
+ ffacd0b85a97d-42abe63e131sm5922435f8f.20.2025.11.07.06.53.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Nov 2025 06:53:32 -0800 (PST)
+ Fri, 07 Nov 2025 06:53:33 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  eblake@redhat.com, armbru@redhat.com,
  =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH v2 4/5] vvfat: move size parameters within driver structure
-Date: Fri,  7 Nov 2025 15:53:26 +0100
-Message-ID: <20251107145327.539481-5-chigot@adacore.com>
+Subject: [PATCH v2 5/5] vvfat: add support for "fat-size" options
+Date: Fri,  7 Nov 2025 15:53:27 +0100
+Message-ID: <20251107145327.539481-6-chigot@adacore.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251107145327.539481-1-chigot@adacore.com>
 References: <20251107145327.539481-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=chigot@adacore.com; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=chigot@adacore.com; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,138 +101,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At the same time, rename them to match bootsector fields.
+This allows more flexibility to vvfat backend. The values of "Number of
+Heads" and "Sectors per track" are based on SD specifications Part 2.
+
+Due to the FAT architecture, not all sizes are reachable. Therefore, it
+could be round up to the closest available size.
+
+FAT32 has not been adjusted and thus still default to 504 Mib.
+
+For floppy, only 1440 Kib and 2880 Kib are supported.
 
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 ---
- block/vvfat.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ block/vvfat.c        | 169 ++++++++++++++++++++++++++++++++++++++-----
+ qapi/block-core.json |   8 +-
+ 2 files changed, 158 insertions(+), 19 deletions(-)
 
 diff --git a/block/vvfat.c b/block/vvfat.c
-index 1c51dfa561..b0e591e35e 100644
+index b0e591e35e..96f5062939 100644
 --- a/block/vvfat.c
 +++ b/block/vvfat.c
-@@ -312,7 +312,10 @@ typedef struct BDRVVVFATState {
-     /* 0x3f for partitioned disk, 0x0 otherwise */
-     uint32_t offset_to_bootsector;
- 
-+    unsigned int cylinders;
-     unsigned int cluster_size;
-+    unsigned int number_of_heads;
-+    unsigned int sectors_per_track;
-     unsigned int sectors_per_cluster;
-     unsigned int sectors_per_fat;
-     uint32_t last_cluster_of_root_directory;
-@@ -366,7 +369,7 @@ static int sector2CHS(mbr_chs_t *chs, int spos, int cyls, int heads, int secs)
-     return 0;
+@@ -1095,6 +1095,11 @@ static QemuOptsList runtime_opts = {
+             .def_value_str = "true",
+             .help = "Do not add a Master Boot Record on this disk",
+         },
++        {
++            .name = "fat-size",
++            .type = QEMU_OPT_SIZE,
++            .help = "Virtual disk size"
++        },
+         { /* end of list */ }
+     },
+ };
+@@ -1152,10 +1157,150 @@ static void vvfat_parse_filename(const char *filename, QDict *options,
+     qdict_put_bool(options, "partitioned", partitioned);
  }
  
--static void init_mbr(BDRVVVFATState *s, int cyls, int heads, int secs)
-+static void init_mbr(BDRVVVFATState *s)
- {
-     /* TODO: if the files mbr.img and bootsect.img exist, use them */
-     mbr_t* real_mbr=(mbr_t*)s->first_sectors;
-@@ -382,9 +385,9 @@ static void init_mbr(BDRVVVFATState *s, int cyls, int heads, int secs)
- 
-     /* LBA is used when partition is outside the CHS geometry */
-     lba  = sector2CHS(&partition->start_CHS, s->offset_to_bootsector,
--                     cyls, heads, secs);
-+                      s->cylinders, s->number_of_heads, s->sectors_per_track);
-     lba |= sector2CHS(&partition->end_CHS,   s->bs->total_sectors - 1,
--                     cyls, heads, secs);
-+                      s->cylinders, s->number_of_heads, s->sectors_per_track);
- 
-     /*LBA partitions are identified only by start/length_sector_long not by CHS*/
-     partition->start_sector_long  = cpu_to_le32(s->offset_to_bootsector);
-@@ -896,8 +899,7 @@ static inline off_t cluster2sector(BDRVVVFATState* s, uint32_t cluster_num)
-     return s->offset_to_root_dir + s->sectors_per_cluster * cluster_num;
- }
- 
--static int init_directories(BDRVVVFATState* s,
--                            const char *dirname, int heads, int secs,
-+static int init_directories(BDRVVVFATState *s, const char *dirname,
-                             Error **errp)
- {
-     bootsector_t* bootsector;
-@@ -1031,8 +1033,8 @@ static int init_directories(BDRVVVFATState* s,
-     bootsector->media_type = (s->offset_to_bootsector > 0 ? 0xf8 : 0xf0);
-     s->fat.pointer[0] = bootsector->media_type;
-     bootsector->sectors_per_fat=cpu_to_le16(s->sectors_per_fat);
--    bootsector->sectors_per_track = cpu_to_le16(secs);
--    bootsector->number_of_heads = cpu_to_le16(heads);
-+    bootsector->sectors_per_track = cpu_to_le16(s->sectors_per_track);
-+    bootsector->number_of_heads = cpu_to_le16(s->number_of_heads);
-     bootsector->hidden_sectors = cpu_to_le32(s->offset_to_bootsector);
-     bootsector->total_sectors=cpu_to_le32(s->sector_count>0xffff?s->sector_count:0);
- 
-@@ -1154,7 +1156,6 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
++static void vvfat_get_size_parameters(uint64_t size, BDRVVVFATState *s,
++                                      bool floppy, Error **errp)
++{
++    if (floppy) {
++        if (s->fat_type == 16) {
++            /* The default for floppy FAT 16 is 2880 KiB */
++            if (!size) {
++                size = 2880 * 1024;
++            }
++
++            if (size != 2880 * 1024) {
++                error_setg(errp,
++                           "floppy FAT16 unsupported size; only support "
++                           "2880 KiB");
++            }
++
++        } else {
++            /* The default for floppy FAT 12 is 1440 KiB */
++            if (!size) {
++                size = 1440 * 1024;
++            }
++
++            if (size != 2880 * 1024 && size != 1440 * 1024) {
++                error_setg(errp,
++                           "floppy FAT12 unsupported size; only support "
++                           "1440 KiB or 2880 KiB");
++            }
++
++        }
++
++        if (s->fat_type == 12) {
++            if (size == 2880 * 1024) {
++                s->sectors_per_track = 36;
++            } else {
++                s->sectors_per_track = 18;
++            }
++        } else {
++            s->sectors_per_track = 36;
++        }
++
++        s->sectors_per_cluster = 0x10;
++        s->cylinders = 80;
++        s->number_of_heads = 2;
++    } else {
++
++        switch (s->fat_type) {
++        case 32:
++            /* TODO FAT32 adjust  */
++            if (size) {
++                warn_report("size parameters not supported with FAT32;"
++                            "default to 504 MiB.");
++            }
++            s->cylinders = 1024;
++            s->number_of_heads = 16;
++            s->sectors_per_cluster = 0x10;
++            s->sectors_per_track = 63;
++            return;
++
++        case 12:
++
++            /* Default is 32 MB */
++            if (!size) {
++                size = 32 * 1024 * 1024;
++            } else if (size > 32 * 1024 * 1024) {
++                error_setg(errp, "FAT12 unsupported size; higher than 32 MiB");
++            }
++
++            s->sectors_per_cluster = 0x10;
++            s->cylinders = 64;
++
++            /*
++             * Based on CHS Recommandation table:
++             *  Card Capacity | Number of Headers | Sectors per track
++             *      2 MiB     |         4         |       16
++             *      4 MiB     |         8         |       16
++             *      8 MiB     |        16         |       16
++             *      16 MiB    |         2         |       32
++             *      32 MiB    |         4         |       32
++             *
++             * For 2 MiB, the recommendation is heads = 2 and sectors = 16, but
++             * this requires a different number of cylinders. Thus, it was
++             * adjusted to keep this number constant.
++             */
++            if (size <= 8 * 1024 * 1024) {
++                s->sectors_per_track = 16;
++            } else {
++                s->sectors_per_track = 32;
++            }
++
++            break;
++
++        case 16:
++            /* Default is 504 MiB */
++            if (!size) {
++                size = 504 * 1024 * 1024;
++            } else if (size / 1024 > 4 * 1024 * 1024) {
++                error_setg(errp, "FAT16 unsupported size; higher than 4 GiB");
++            }
++
++            s->sectors_per_cluster = 0x10;
++            s->cylinders = 1024;
++
++            /*
++             * Based on CHS Recommandation table:
++             *  Card Capacity | Number of Headers | Sectors per track
++             *      64 MiB    |         4         |       32
++             *     128 MiB    |         8         |       32
++             *     256 MiB    |        16         |       32
++             *     504 MiB    |        16         |       63
++             *    1008 MiB    |        32         |       63
++             *    2016 MiB    |        64         |       63
++             */
++            if (size <= 256 * 1024 * 1024) {
++                s->sectors_per_track = 32;
++            } else {
++                s->sectors_per_track = 63;
++            }
++
++            break;
++        }
++
++        /*
++         * The formula between the size (in bytes) and the parameters are:
++         *  size = VVFAT_SECTOR_SIZE * sectors_per_track * number_of_headers *
++         *         cylinders
++         *
++         */
++        s->number_of_heads = size / s->sectors_per_track /
++            VVFAT_SECTOR_SIZE / s->cylinders;
++
++        /* Round up to the closest size if the given one cannot be reached. */
++        if (size %
++            (s->sectors_per_track * VVFAT_SECTOR_SIZE * s->cylinders) != 0) {
++            s->number_of_heads++;
++        }
++
++    }
++}
++
+ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
                        Error **errp)
  {
      BDRVVVFATState *s = bs->opaque;
--    int cyls, heads, secs;
++    uint64_t size;
      bool floppy;
      const char *dirname, *label;
      QemuOpts *opts;
-@@ -1221,18 +1222,18 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+@@ -1182,6 +1327,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
  
-     if (floppy) {
-         /* Choose floppy size. 1440 KiB for FAT 12, 2880 KiB for FAT-16 */
--        secs = s->fat_type == 12 ? 18 : 36;
--        cyls = 80;
--        heads = 2;
-+        s->sectors_per_track = s->fat_type == 12 ? 18 : 36;
-+        s->cylinders = 80;
-+        s->number_of_heads = 2;
-     } else {
-         /* Reserver space for MBR */
-         if (qemu_opt_get_bool(opts, "partitioned", true)) {
-             s->offset_to_bootsector = 0x3f;
-         }
-         /* 32MB or 504MB disk*/
--        cyls = s->fat_type == 12 ? 64 : 1024;
--        heads = 16;
--        secs = 63;
-+        s->cylinders = s->fat_type == 12 ? 64 : 1024;
-+        s->number_of_heads = 16;
-+        s->sectors_per_track = 63;
-     }
+     s->fat_type = qemu_opt_get_number(opts, "fat-type", 0);
+     floppy = qemu_opt_get_bool(opts, "floppy", false);
++    size = qemu_opt_get_size_del(opts, "fat-size", 0);
  
- 
-@@ -1249,10 +1250,13 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-     s->downcase_short_names = 1;
- 
-     DLOG(fprintf(stderr, "vvfat %s chs %d,%d,%d\n",
--                 dirname, cyls, heads, secs));
-+                 dirname, s->cylinders, s->number_of_heads,
-+                 s->sectors_per_track));
- 
--    s->sector_count = cyls * heads * secs - s->offset_to_bootsector;
--    bs->total_sectors = cyls * heads * secs;
-+    s->sector_count = s->cylinders * s->number_of_heads *
-+        s->sectors_per_track - s->offset_to_bootsector;
-+    bs->total_sectors = s->cylinders * s->number_of_heads *
-+        s->sectors_per_track;
- 
-     if (qemu_opt_get_bool(opts, "rw", false)) {
-         if (!bdrv_is_read_only(bs)) {
-@@ -1273,7 +1277,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-         }
-     }
- 
--    if (init_directories(s, dirname, heads, secs, errp)) {
-+    if (init_directories(s, dirname, errp)) {
-         ret = -EIO;
+     memset(s->volume_label, ' ', sizeof(s->volume_label));
+     label = qemu_opt_get(opts, "label");
+@@ -1219,29 +1365,15 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
          goto fail;
      }
-@@ -1294,7 +1298,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+ 
++    vvfat_get_size_parameters(size, s, floppy, errp);
+ 
+-    if (floppy) {
+-        /* Choose floppy size. 1440 KiB for FAT 12, 2880 KiB for FAT-16 */
+-        s->sectors_per_track = s->fat_type == 12 ? 18 : 36;
+-        s->cylinders = 80;
+-        s->number_of_heads = 2;
+-    } else {
+-        /* Reserver space for MBR */
+-        if (qemu_opt_get_bool(opts, "partitioned", true)) {
+-            s->offset_to_bootsector = 0x3f;
+-        }
+-        /* 32MB or 504MB disk*/
+-        s->cylinders = s->fat_type == 12 ? 64 : 1024;
+-        s->number_of_heads = 16;
+-        s->sectors_per_track = 63;
++    /* Reserver space for MBR */
++    if (!floppy && qemu_opt_get_bool(opts, "partitioned", true)) {
++        s->offset_to_bootsector = 0x3f;
      }
  
-     if (s->offset_to_bootsector > 0) {
--        init_mbr(s, cyls, heads, secs);
-+        init_mbr(s);
-     }
+-
+     s->bs = bs;
  
-     qemu_co_mutex_init(&s->lock);
+-    /* LATER TODO: if FAT32, adjust */
+-    s->sectors_per_cluster=0x10;
+-
+     s->current_cluster=0xffffffff;
+ 
+     s->qcow = NULL;
+@@ -3280,6 +3412,7 @@ static const char *const vvfat_strong_runtime_opts[] = {
+     "label",
+     "rw",
+     "partitioned",
++    "fat-size",
+ 
+     NULL
+ };
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 8a479ba090..0bcb360320 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3478,11 +3478,17 @@
+ #     (default: true)
+ #     (since 10.2)
+ #
++# @fat-size: size of the device in bytes.  Due to FAT underlying
++#     architecture, this size can be rounded up to the closest valid
++#     size.
++#     (since 10.2)
++#
+ # Since: 2.9
+ ##
+ { 'struct': 'BlockdevOptionsVVFAT',
+   'data': { 'dir': 'str', '*fat-type': 'int', '*floppy': 'bool',
+-            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool' } }
++            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool',
++            'fat-size': 'int' } }
+ 
+ ##
+ # @BlockdevOptionsGenericFormat:
 -- 
 2.43.0
 
