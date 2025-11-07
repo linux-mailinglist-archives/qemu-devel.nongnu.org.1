@@ -2,90 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6D5C40734
-	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 15:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652AAC407D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 16:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vHNqU-0003hp-Qz; Fri, 07 Nov 2025 09:53:46 -0500
+	id 1vHNvq-0007ra-0b; Fri, 07 Nov 2025 09:59:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vHNqM-0003Tr-Mq
- for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:39 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vHNqK-0001v1-BO
- for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:38 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3ed20bdfdffso795900f8f.2
- for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:53:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vHNvm-0007r2-6S
+ for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:59:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vHNvk-0002r4-4A
+ for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:59:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762527550;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=G7bZH5hXbSUYQo70UYPRI3c0LRZuYjPIiGpRwTWgsVs=;
+ b=XG3WWMQeKH6uxdvcNfdZ7/EyjItEK3Ymto8v1ZrvZIW7Slm26kzWar1r2BZWqZYUEmIibN
+ gpyzQgsJkSbQCaASm98hG25sbAzRkOUF6dN0PSJxdxETMBGunQ5Y/mtmJDcISzJgARfh9j
+ Z6Sk34GmkPqCMA6WbbLaQr5uhUrGM4c=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-XTAbdzfdMsKtEFnORuvNug-1; Fri, 07 Nov 2025 09:59:09 -0500
+X-MC-Unique: XTAbdzfdMsKtEFnORuvNug-1
+X-Mimecast-MFC-AGG-ID: XTAbdzfdMsKtEFnORuvNug_1762527544
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-b5edecdf94eso1933068a12.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1762527214; x=1763132014; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=redhat.com; s=google; t=1762527544; x=1763132344; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BThCjqaenmyeD9EsuFRpmtd4rv5WpUA+nY9VQioN73Y=;
- b=G+szwIjuE5Ep4o8wwdujWBNPCnRi/m7iS7zMCi+BYD+HkuAIPmwZmpcYZ0nky+kQJ1
- +GnlQYKQ1m8KttJbwX/+/01V4ewuFDnQvq8bf/eMECJUpHB6GJid1qAvTLZ9chvSNM3J
- lTSW7VoOj6aLzGUbQE34PMlbP2NcWs1fjF6AYPZSZoOAmlQPpb6Md4YzCT0iJtQoiMe+
- /6r9h3t3326FUyRssd+sUKE6IJCICm1obfxVs/rha3WTQlw7w0S5aD/dLazDTLr3EFAq
- e22WOlTyufWNkl00DbEtSBMXUbStDaiaQ35lDOd715HsNDnLzurNrEfwiYxIk77b+1Vs
- F42w==
+ bh=G7bZH5hXbSUYQo70UYPRI3c0LRZuYjPIiGpRwTWgsVs=;
+ b=bDrcOlGAj/dXOJYi0amCdpaIrwNgt0+MGzJiA/RQP+vES8iSr7q9XuZPOdaFPe/Akg
+ nXlAvQ90NcCxYdHhmRIhIpKJOrigc0gwypUpFr2RjbyF6XXV7HWmDtrikaV6HIp5GKGO
+ JibKTA5LKJABgPdIN2/s/1pKzVTsWbfwzolTvhecLqrZgAseuIVmIy4Z5W6gUk8w3yP2
+ 0YFxFw9p/cOXnBb3JJ849TZpfqqgtxC+BURpPZi9h5chg5+b6WpS7TmQf5i5Y8ewem/f
+ bJ8LfLO0FgTZaSSkuhAOo6p1nYIQdfeXuNEqUhfrTSvb/yFq5VQIBXdhZ0PRZ3EtgLhR
+ y3Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762527214; x=1763132014;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ d=1e100.net; s=20230601; t=1762527544; x=1763132344;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=BThCjqaenmyeD9EsuFRpmtd4rv5WpUA+nY9VQioN73Y=;
- b=UqFDFUcRVfRh2W9+4rJv2dDnGjFLBBn6I0TaKfXCslt7eWkg30dF8M3m7m3rGjRkXH
- +2dO+otViyhLxx97Prm/LXgl3d9EVD6ZBBXgDtzgJxgpHvxV7pR07esPEc54NR3EH+kz
- xGkWv3KRbwEznCu4NRAh36v4qOCNB2l1VGQgYomiHWRpp15McjFX56A76+XJT7VDvvCT
- hgxYw3Caol8lD0MpNQ+CBPzhmW41Y3VJWLjILj2lCtOx1mFIBB2oUPvWcv1UPsgOAbp2
- BNE52rlWc1q05R+InLFr3g49mBFa2I6kBkr9ABfdAE5EirUhcHEVQz+4L8C855sQhat1
- VpfQ==
-X-Gm-Message-State: AOJu0YwF+wG6UsKbaTc9ZgSa+JIR9PbJeO+HxLVoboFZnHVAyPyCFgvg
- H9ZZN6rPsJc5vsTihbbbXcWDc9/4JMma/CxOH0XPt5sGc92UPi4kZFBf+y3koAzJaQ==
-X-Gm-Gg: ASbGncvIAMBoMeBnMz98tqMydzYYjfklfMc/Wmwqs+tufu2Yo4FSux4X8fChiN0nFqF
- XyxPFPGuJWW99+0DDvO+RlOA/NsoVXU91URVBSiW/OaxyUjOaKYDGwjP5EfNSsDzaqir26vAXsu
- vFZawFC8SVQLNMu9q8puN0HP+HP/kNLY/vtQTwaWOiRQ4LMxPOip5gylcK1UUpfnbRq31pNqGd2
- tqjSIB3EabhZog5u6E6trkWrEP7OUnp9Q6woApr9zhBT3AdLAdC4LxPbjYXAw+JGPpVihYEq186
- UyYIhe0YRDTUfNP8nMP+5/JM2tPQgMauJQEyqYZaEPzPk0sZ82NW+IJ/JTg5YjNF7mDHMwTEv+J
- tM8HIMh9MSVfvkWhmeAMx/9hUfkjJ/gxQWKae2gMABzV8g8jzXRZu3x3+QtQ89J7VzxybXwERLQ
- OGtM8WkR0=
-X-Google-Smtp-Source: AGHT+IH53mykz/MiKBT8Ux/WHXoRE4h9QmmUOIyNK49LI8eTL0TCywmhx663ZwWjdoiXOIB9Ez/9Fw==
-X-Received: by 2002:a05:6000:2209:b0:429:f01d:dd92 with SMTP id
- ffacd0b85a97d-42ae5af4989mr2784365f8f.59.1762527213878; 
- Fri, 07 Nov 2025 06:53:33 -0800 (PST)
-Received: from chigot-Dell.home ([2a01:cb15:80db:7c00:e453:acd:db85:b66e])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42abe63e131sm5922435f8f.20.2025.11.07.06.53.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Nov 2025 06:53:33 -0800 (PST)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, armbru@redhat.com,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH v2 5/5] vvfat: add support for "fat-size" options
-Date: Fri,  7 Nov 2025 15:53:27 +0100
-Message-ID: <20251107145327.539481-6-chigot@adacore.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251107145327.539481-1-chigot@adacore.com>
-References: <20251107145327.539481-1-chigot@adacore.com>
+ bh=G7bZH5hXbSUYQo70UYPRI3c0LRZuYjPIiGpRwTWgsVs=;
+ b=PPPQlBzitOGu3A4th4jjr1s3TcbWB887aaL8ThQX6IeVLZE0af6kgbvoG1oG+Djeof
+ Nr+YHHgfm/rypifwaYmc1o4KIBKjgCMqVOa4lCqkXT89OoLrCzfA4PmFXnJGdd5PK6kr
+ WutNOgetRWXXQxu1Iebe9VSaHegJ4AoEg2im8a7vbwcwYlHrGRGxQyW502vuWGEBbbW0
+ w0xqMvc3ITPqdfSlxX8Ttmol0fid4xDttiHVUNV1gimC9ekzU9L9/blnKQbj8QYwqGG1
+ tN2R4PXvHB3XUpHWDMESgZ+uqtng7TDX10A0ieKRKoSkAhwUV4KAhB99m2nZ+cEs/Hi1
+ qfMQ==
+X-Gm-Message-State: AOJu0Yy0lRyfx9E/k868m79BOGqIPvic9chWpHeHeUGnClCzC2kHJ8Sd
+ 16cAezewnnKADOwm4BBsD/6puNPK5F+NWf00oIJ5JWFr0xycRgPjN0ka4JDHDEyt88o2tBXY2/N
+ q63UPyglBzaT1Q5ciDiqhq4wWCBCodot/rJt6awijiObx8QUYTornRhIXQIUt06lgWuOj24tqg8
+ /SovuVb3FNbGmxkpw5s00PyFyACSsmZa0=
+X-Gm-Gg: ASbGncuIbwsWUER1BaOcuIe6XOVLPmlk5B+G8TxbMBC9QcNxgKewJCCjx/XWrcBAJMi
+ tDzAfAiU8tm2xOeLKH6ehd20NxxrTGln5r9seY7ocVBpw7IVYC/pX6wU0ESJu9u3S5EVTjoBF0R
+ dyYCuz/aofM5b0IpJzSB5ilmEGG8r7oRhWfKKESKVOp17QJFCsT5U=
+X-Received: by 2002:a05:6a21:e098:b0:2e6:b58a:ddec with SMTP id
+ adf61e73a8af0-3522ae79178mr5332938637.36.1762527543932; 
+ Fri, 07 Nov 2025 06:59:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGgLBIiARFhPSEyVwmMob/LwtW0am02lvFcUYdRxNnCjH+ZdMjyxGRYGa1xiN7s1yEGKlKrTlvrhRePDxy+NkY=
+X-Received: by 2002:a05:6a21:e098:b0:2e6:b58a:ddec with SMTP id
+ adf61e73a8af0-3522ae79178mr5332906637.36.1762527543504; Fri, 07 Nov 2025
+ 06:59:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=chigot@adacore.com; helo=mail-wr1-x435.google.com
+References: <20251017072011.1874874-1-aesteve@redhat.com>
+ <20251017072011.1874874-2-aesteve@redhat.com>
+ <20251107082334-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20251107082334-mutt-send-email-mst@kernel.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Fri, 7 Nov 2025 15:58:52 +0100
+X-Gm-Features: AWmQ_bm7nKh1hhVFDHa2m4vJC7jctcffnZYbYDIqB6660I-zaCsuTF4h1dDJnt4
+Message-ID: <CADSE00+ZN0-KGj-zHJOsxbEbGeLFaG0WzZdW4joD2ypzbcqOeQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] vhost-user: fix shared object lookup handler logic
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
+ qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,263 +115,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows more flexibility to vvfat backend. The values of "Number of
-Heads" and "Sectors per track" are based on SD specifications Part 2.
+On Fri, Nov 7, 2025 at 2:26=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>
+> On Fri, Oct 17, 2025 at 09:20:11AM +0200, Albert Esteve wrote:
+> > Refactor backend_read() function and add a reply_ack variable
+> > to have the option for handlers to force tweak whether they should
+> > send a reply or not without depending on VHOST_USER_NEED_REPLY_MASK
+> > flag.
+> >
+> > This fixes an issue with
+> > vhost_user_backend_handle_shared_object_lookup() logic, as the
+> > error path was not closing the backend channel correctly. So,
+> > we can remove the reply call from within the handler, make
+> > sure it returns early on errors as other handlers do and
+> > set the reply_ack variable on backend_read() to true to ensure
+> > that it will send a response, thus keeping the original intent.
+> >
+> > Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
+>
+>
+> I fixed this, should include the subject.
+>
+> > Cc: qemu-stable@nongnu.org
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>
+>
+> So I picked this for now, but I worry that we are opening ourselves
+> up to buggy backends which forget to set the flag and expect
+> frontend to behave properly.
+>
+> I think a better fix would be instead of forcing, check reply_ack,
+> and fail if not set correctly.
 
-Due to the FAT architecture, not all sizes are reachable. Therefore, it
-could be round up to the closest available size.
+Fair point. I will send a follow-up PATCH with this check and fail early.
 
-FAT32 has not been adjusted and thus still default to 504 Mib.
-
-For floppy, only 1440 Kib and 2880 Kib are supported.
-
-Signed-off-by: Clément Chigot <chigot@adacore.com>
----
- block/vvfat.c        | 169 ++++++++++++++++++++++++++++++++++++++-----
- qapi/block-core.json |   8 +-
- 2 files changed, 158 insertions(+), 19 deletions(-)
-
-diff --git a/block/vvfat.c b/block/vvfat.c
-index b0e591e35e..96f5062939 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -1095,6 +1095,11 @@ static QemuOptsList runtime_opts = {
-             .def_value_str = "true",
-             .help = "Do not add a Master Boot Record on this disk",
-         },
-+        {
-+            .name = "fat-size",
-+            .type = QEMU_OPT_SIZE,
-+            .help = "Virtual disk size"
-+        },
-         { /* end of list */ }
-     },
- };
-@@ -1152,10 +1157,150 @@ static void vvfat_parse_filename(const char *filename, QDict *options,
-     qdict_put_bool(options, "partitioned", partitioned);
- }
- 
-+static void vvfat_get_size_parameters(uint64_t size, BDRVVVFATState *s,
-+                                      bool floppy, Error **errp)
-+{
-+    if (floppy) {
-+        if (s->fat_type == 16) {
-+            /* The default for floppy FAT 16 is 2880 KiB */
-+            if (!size) {
-+                size = 2880 * 1024;
-+            }
-+
-+            if (size != 2880 * 1024) {
-+                error_setg(errp,
-+                           "floppy FAT16 unsupported size; only support "
-+                           "2880 KiB");
-+            }
-+
-+        } else {
-+            /* The default for floppy FAT 12 is 1440 KiB */
-+            if (!size) {
-+                size = 1440 * 1024;
-+            }
-+
-+            if (size != 2880 * 1024 && size != 1440 * 1024) {
-+                error_setg(errp,
-+                           "floppy FAT12 unsupported size; only support "
-+                           "1440 KiB or 2880 KiB");
-+            }
-+
-+        }
-+
-+        if (s->fat_type == 12) {
-+            if (size == 2880 * 1024) {
-+                s->sectors_per_track = 36;
-+            } else {
-+                s->sectors_per_track = 18;
-+            }
-+        } else {
-+            s->sectors_per_track = 36;
-+        }
-+
-+        s->sectors_per_cluster = 0x10;
-+        s->cylinders = 80;
-+        s->number_of_heads = 2;
-+    } else {
-+
-+        switch (s->fat_type) {
-+        case 32:
-+            /* TODO FAT32 adjust  */
-+            if (size) {
-+                warn_report("size parameters not supported with FAT32;"
-+                            "default to 504 MiB.");
-+            }
-+            s->cylinders = 1024;
-+            s->number_of_heads = 16;
-+            s->sectors_per_cluster = 0x10;
-+            s->sectors_per_track = 63;
-+            return;
-+
-+        case 12:
-+
-+            /* Default is 32 MB */
-+            if (!size) {
-+                size = 32 * 1024 * 1024;
-+            } else if (size > 32 * 1024 * 1024) {
-+                error_setg(errp, "FAT12 unsupported size; higher than 32 MiB");
-+            }
-+
-+            s->sectors_per_cluster = 0x10;
-+            s->cylinders = 64;
-+
-+            /*
-+             * Based on CHS Recommandation table:
-+             *  Card Capacity | Number of Headers | Sectors per track
-+             *      2 MiB     |         4         |       16
-+             *      4 MiB     |         8         |       16
-+             *      8 MiB     |        16         |       16
-+             *      16 MiB    |         2         |       32
-+             *      32 MiB    |         4         |       32
-+             *
-+             * For 2 MiB, the recommendation is heads = 2 and sectors = 16, but
-+             * this requires a different number of cylinders. Thus, it was
-+             * adjusted to keep this number constant.
-+             */
-+            if (size <= 8 * 1024 * 1024) {
-+                s->sectors_per_track = 16;
-+            } else {
-+                s->sectors_per_track = 32;
-+            }
-+
-+            break;
-+
-+        case 16:
-+            /* Default is 504 MiB */
-+            if (!size) {
-+                size = 504 * 1024 * 1024;
-+            } else if (size / 1024 > 4 * 1024 * 1024) {
-+                error_setg(errp, "FAT16 unsupported size; higher than 4 GiB");
-+            }
-+
-+            s->sectors_per_cluster = 0x10;
-+            s->cylinders = 1024;
-+
-+            /*
-+             * Based on CHS Recommandation table:
-+             *  Card Capacity | Number of Headers | Sectors per track
-+             *      64 MiB    |         4         |       32
-+             *     128 MiB    |         8         |       32
-+             *     256 MiB    |        16         |       32
-+             *     504 MiB    |        16         |       63
-+             *    1008 MiB    |        32         |       63
-+             *    2016 MiB    |        64         |       63
-+             */
-+            if (size <= 256 * 1024 * 1024) {
-+                s->sectors_per_track = 32;
-+            } else {
-+                s->sectors_per_track = 63;
-+            }
-+
-+            break;
-+        }
-+
-+        /*
-+         * The formula between the size (in bytes) and the parameters are:
-+         *  size = VVFAT_SECTOR_SIZE * sectors_per_track * number_of_headers *
-+         *         cylinders
-+         *
-+         */
-+        s->number_of_heads = size / s->sectors_per_track /
-+            VVFAT_SECTOR_SIZE / s->cylinders;
-+
-+        /* Round up to the closest size if the given one cannot be reached. */
-+        if (size %
-+            (s->sectors_per_track * VVFAT_SECTOR_SIZE * s->cylinders) != 0) {
-+            s->number_of_heads++;
-+        }
-+
-+    }
-+}
-+
- static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-                       Error **errp)
- {
-     BDRVVVFATState *s = bs->opaque;
-+    uint64_t size;
-     bool floppy;
-     const char *dirname, *label;
-     QemuOpts *opts;
-@@ -1182,6 +1327,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
- 
-     s->fat_type = qemu_opt_get_number(opts, "fat-type", 0);
-     floppy = qemu_opt_get_bool(opts, "floppy", false);
-+    size = qemu_opt_get_size_del(opts, "fat-size", 0);
- 
-     memset(s->volume_label, ' ', sizeof(s->volume_label));
-     label = qemu_opt_get(opts, "label");
-@@ -1219,29 +1365,15 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-         goto fail;
-     }
- 
-+    vvfat_get_size_parameters(size, s, floppy, errp);
- 
--    if (floppy) {
--        /* Choose floppy size. 1440 KiB for FAT 12, 2880 KiB for FAT-16 */
--        s->sectors_per_track = s->fat_type == 12 ? 18 : 36;
--        s->cylinders = 80;
--        s->number_of_heads = 2;
--    } else {
--        /* Reserver space for MBR */
--        if (qemu_opt_get_bool(opts, "partitioned", true)) {
--            s->offset_to_bootsector = 0x3f;
--        }
--        /* 32MB or 504MB disk*/
--        s->cylinders = s->fat_type == 12 ? 64 : 1024;
--        s->number_of_heads = 16;
--        s->sectors_per_track = 63;
-+    /* Reserver space for MBR */
-+    if (!floppy && qemu_opt_get_bool(opts, "partitioned", true)) {
-+        s->offset_to_bootsector = 0x3f;
-     }
- 
--
-     s->bs = bs;
- 
--    /* LATER TODO: if FAT32, adjust */
--    s->sectors_per_cluster=0x10;
--
-     s->current_cluster=0xffffffff;
- 
-     s->qcow = NULL;
-@@ -3280,6 +3412,7 @@ static const char *const vvfat_strong_runtime_opts[] = {
-     "label",
-     "rw",
-     "partitioned",
-+    "fat-size",
- 
-     NULL
- };
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 8a479ba090..0bcb360320 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3478,11 +3478,17 @@
- #     (default: true)
- #     (since 10.2)
- #
-+# @fat-size: size of the device in bytes.  Due to FAT underlying
-+#     architecture, this size can be rounded up to the closest valid
-+#     size.
-+#     (since 10.2)
-+#
- # Since: 2.9
- ##
- { 'struct': 'BlockdevOptionsVVFAT',
-   'data': { 'dir': 'str', '*fat-type': 'int', '*floppy': 'bool',
--            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool' } }
-+            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool',
-+            'fat-size': 'int' } }
- 
- ##
- # @BlockdevOptionsGenericFormat:
--- 
-2.43.0
+>
+> > ---
+> >  hw/virtio/vhost-user.c | 42 +++++++++++++++---------------------------
+> >  1 file changed, 15 insertions(+), 27 deletions(-)
+> >
+> > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> > index 890be55937..762d7218d3 100644
+> > --- a/hw/virtio/vhost-user.c
+> > +++ b/hw/virtio/vhost-user.c
+> > @@ -1696,14 +1696,6 @@ static bool vhost_user_send_resp(QIOChannel *ioc=
+, VhostUserHeader *hdr,
+> >      return !qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), errp);
+> >  }
+> >
+> > -static bool
+> > -vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hd=
+r,
+> > -                                  VhostUserPayload *payload, Error **e=
+rrp)
+> > -{
+> > -    hdr->size =3D sizeof(payload->u64);
+> > -    return vhost_user_send_resp(ioc, hdr, payload, errp);
+> > -}
+> > -
+> >  int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char =
+*uuid,
+> >                                   int *dmabuf_fd)
+> >  {
+> > @@ -1744,19 +1736,15 @@ int vhost_user_get_shared_object(struct vhost_d=
+ev *dev, unsigned char *uuid,
+> >
+> >  static int
+> >  vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
+> > -                                               QIOChannel *ioc,
+> > -                                               VhostUserHeader *hdr,
+> > -                                               VhostUserPayload *paylo=
+ad)
+> > +                                               VhostUserShared *object=
+)
+> >  {
+> >      QemuUUID uuid;
+> >      CharBackend *chr =3D u->user->chr;
+> > -    Error *local_err =3D NULL;
+> >      int dmabuf_fd =3D -1;
+> >      int fd_num =3D 0;
+> >
+> > -    memcpy(uuid.data, payload->object.uuid, sizeof(payload->object.uui=
+d));
+> > +    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+> >
+> > -    payload->u64 =3D 0;
+> >      switch (virtio_object_type(&uuid)) {
+> >      case TYPE_DMABUF:
+> >          dmabuf_fd =3D virtio_lookup_dmabuf(&uuid);
+> > @@ -1765,18 +1753,16 @@ vhost_user_backend_handle_shared_object_lookup(=
+struct vhost_user *u,
+> >      {
+> >          struct vhost_dev *dev =3D virtio_lookup_vhost_device(&uuid);
+> >          if (dev =3D=3D NULL) {
+> > -            payload->u64 =3D -EINVAL;
+> > -            break;
+> > +            return -EINVAL;
+> >          }
+> >          int ret =3D vhost_user_get_shared_object(dev, uuid.data, &dmab=
+uf_fd);
+> >          if (ret < 0) {
+> > -            payload->u64 =3D ret;
+> > +            return ret;
+> >          }
+> >          break;
+> >      }
+> >      case TYPE_INVALID:
+> > -        payload->u64 =3D -EINVAL;
+> > -        break;
+> > +        return -EINVAL;
+> >      }
+> >
+> >      if (dmabuf_fd !=3D -1) {
+> > @@ -1785,11 +1771,6 @@ vhost_user_backend_handle_shared_object_lookup(s=
+truct vhost_user *u,
+> >
+> >      if (qemu_chr_fe_set_msgfds(chr, &dmabuf_fd, fd_num) < 0) {
+> >          error_report("Failed to set msg fds.");
+> > -        payload->u64 =3D -EINVAL;
+> > -    }
+> > -
+> > -    if (!vhost_user_backend_send_dmabuf_fd(ioc, hdr, payload, &local_e=
+rr)) {
+> > -        error_report_err(local_err);
+> >          return -EINVAL;
+> >      }
+> >
+> > @@ -2008,6 +1989,7 @@ static gboolean backend_read(QIOChannel *ioc, GIO=
+Condition condition,
+> >      struct iovec iov;
+> >      g_autofree int *fd =3D NULL;
+> >      size_t fdsize =3D 0;
+> > +    bool reply_ack;
+> >      int i;
+> >
+> >      /* Read header */
+> > @@ -2026,6 +2008,8 @@ static gboolean backend_read(QIOChannel *ioc, GIO=
+Condition condition,
+> >          goto err;
+> >      }
+> >
+> > +    reply_ack =3D hdr.flags & VHOST_USER_NEED_REPLY_MASK;
+> > +
+> >      /* Read payload */
+> >      if (qio_channel_read_all(ioc, (char *) &payload, hdr.size, &local_=
+err)) {
+> >          error_report_err(local_err);
+> > @@ -2051,11 +2035,14 @@ static gboolean backend_read(QIOChannel *ioc, G=
+IOCondition condition,
+> >                                                               &payload.=
+object);
+> >          break;
+> >      case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
+> > -        ret =3D vhost_user_backend_handle_shared_object_lookup(dev->op=
+aque, ioc,
+> > -                                                             &hdr, &pa=
+yload);
+> > +        /* The backend always expects a response */
+> > +        reply_ack =3D true;
+> > +        ret =3D vhost_user_backend_handle_shared_object_lookup(dev->op=
+aque,
+> > +                                                             &payload.=
+object);
+> >          break;
+> >      case VHOST_USER_BACKEND_SHMEM_MAP:
+> >          /* Handler manages its own response, check error and close con=
+nection */
+> > +        reply_ack =3D false;
+> >          if (vhost_user_backend_handle_shmem_map(dev, ioc, &hdr, &paylo=
+ad,
+> >                                                  fd ? fd[0] : -1) < 0) =
+{
+> >              goto err;
+> > @@ -2063,6 +2050,7 @@ static gboolean backend_read(QIOChannel *ioc, GIO=
+Condition condition,
+> >          break;
+> >      case VHOST_USER_BACKEND_SHMEM_UNMAP:
+> >          /* Handler manages its own response, check error and close con=
+nection */
+> > +        reply_ack =3D false;
+> >          if (vhost_user_backend_handle_shmem_unmap(dev, ioc, &hdr, &pay=
+load) < 0) {
+> >              goto err;
+> >          }
+> > @@ -2076,7 +2064,7 @@ static gboolean backend_read(QIOChannel *ioc, GIO=
+Condition condition,
+> >       * REPLY_ACK feature handling. Other reply types has to be managed
+> >       * directly in their request handlers.
+> >       */
+> > -    if (hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+> > +    if (reply_ack) {
+> >          payload.u64 =3D !!ret;
+> >          hdr.size =3D sizeof(payload.u64);
+> >
+> > --
+> > 2.49.0
+>
 
 
