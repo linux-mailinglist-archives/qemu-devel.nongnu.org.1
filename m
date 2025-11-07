@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA05C40686
-	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 15:40:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8418CC40738
+	for <lists+qemu-devel@lfdr.de>; Fri, 07 Nov 2025 15:54:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vHNca-0000Yq-8T; Fri, 07 Nov 2025 09:39:25 -0500
+	id 1vHNqN-0003Sr-8G; Fri, 07 Nov 2025 09:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vHNcX-0000Y5-4i
- for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:39:21 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vHNqI-0003Qi-JS
+ for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:34 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vHNcU-0001vT-3W
- for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:39:20 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4710683a644so5393965e9.0
- for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:39:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vHNqG-0001ti-VE
+ for qemu-devel@nongnu.org; Fri, 07 Nov 2025 09:53:34 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-429bf011e6cso839038f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Nov 2025 06:53:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762526355; x=1763131155; darn=nongnu.org;
+ d=adacore.com; s=google; t=1762527210; x=1763132010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VnOoY3GS9fZhgYAsHIoSmdYJhCdMuYARnS13WjC3+QA=;
- b=u9s9fCN+UCjFoOB6enH9HTaD1lCwHdzYN8uvVfn17i7MxhPl161mci33a+pvxc/AAm
- kmo7mOHI+9YkrdqdSHW4zklVCpHkYXz34H9lOdzbmlApJhGS1FYhwLDfD00oEZZHy5yK
- cvCdK4JYqDJmh7MNsjdMC5Li4F/H9hRi4ykp8XF+s2e00lInLvZo3aUL9s0OPFL5KE9N
- TiElRySV2P+7V3gqFTFX0dwBwuhhFzq2j8C3bggFPz6+cdgXmKmYAOwbIm+JfxxLRZXa
- Q5A0nvyFArb3++4hWUnAjblg2wckvga7AC/Nc/OrCKGJ/3xi/AXArYxWlgq6zy0E+IcW
- RBcQ==
+ bh=yp8KMMgUvKnxKtL9QZHGuo+bT1CzG82i3SYFL2gwN24=;
+ b=KY2UOA0ykEVOawt1gTPjQvgDRD/X9uU0F5Umdo6+Y+dyc0DCLUk6LxZ9jkWBDuC7cN
+ DbqJ4ILAFl4e20rK55A0A2zy/I0+d23GFcqmZqurRVbEnDLAR6PQgZXGz1R8WMFs7teH
+ YLCrka3Q3SdoFoqhYzP+eNsO8bnRCV+tG3tNlPL4irgrGkNRx+Xm7Kb+3G7IWQ5qwyU0
+ pxipU0aIJva4GmRSevhynyhgRZNGdIfu4ignu7+3FEb56Z22qsAvHF/NhkiCwDK3iuzr
+ obnmTsOcQvvxU+M/siRAihCj1WdzpYGdiB/pNcWLVC5zephaW1RoFOE3nsOISVo+KQvP
+ p/ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762526355; x=1763131155;
+ d=1e100.net; s=20230601; t=1762527210; x=1763132010;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VnOoY3GS9fZhgYAsHIoSmdYJhCdMuYARnS13WjC3+QA=;
- b=lRtTD5i8c/3dBQok2HiMV2eC5QRDM5Sk5+V2TZlC10p5cqpgUtsWsn6UlXWFn9iKk4
- b3bIxdESdIcd404h9r+FNt8ckVfRo/Pu1b2ZwF2BsW2Vfgjb4LsVFL3D/vNZ4BDOGrjF
- OoZIInVNhUixPc0nFo4imKP2hc+7JRSumN2KG6WIFFr+179lE4Kbcfos7ZvnJOHWMJ1n
- v4LslbWLyR+y6tzhp4RyjyoL7QCkAYWhgtYbmJOZtOXXkNPHJJqQVF3gOTcKk5YLgRp3
- Rrg5u1rovlydVQXBu8f1zXVjwed0xD1rAdowvDVCZdTHqrMMfYsYn9jEF9YBzqkZ+qyN
- P7tw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXKkxEsW1ZPRD2Yw223muEaSnwimHDiL2f935YwTWbueVgt0+Y8ygrBo6vMS2/3jui+NR0TM671WJ3q@nongnu.org
-X-Gm-Message-State: AOJu0YxUNkQ4YAJwZ9k6C07X+JJiHGfb9ckoi0p9f/y92khikhcdgpFK
- Kt7atsyLFTYyi03ytYM3X0Bhfe4pZh9NpRtypRdzRETvwcY1inMpnbqFYON5y3aNRmuZM905RoB
- 70Z2Z
-X-Gm-Gg: ASbGncvJUjhq4qQETR2IWqqRtDlcaQ4eiOkYXhOYVeuO3KK+l2eZvswDymduwJdSpc+
- rw61Tc+tx3fSvs73PAJ8x3C4pFuRskWhIh75PZbJx3LeygCpbJ0o3OXn9OWFgh/GakQomEILTU9
- JB3N4n+lHH0wX7I1kKSPOCSJLBSDApqMpevO6RTMqBko7CGz61GWgHRi/vMqoZRc6mkyVk0iWHv
- n3Bu20SxbkXNjqJmy8rmpH+Q+PvYExK+xvsC2CZZa6QDJ/4H6mRPnKOyRrPFtjvBybrGNFFmtxO
- +8Yif/mmc7UTxLvsoR1csL82AM5agD7G+y/+uxgT92fyRUDLY6TTHoJG3XDkGIgTqHyXMPXeT1/
- Fp74LEy9M8Um6fa/hiYRR+9SICDv5snHjrQvbGyVUCdVviOcsQXyi3D6+8S+1xtlOHLDKcvUfOf
- LWVn52kw==
-X-Google-Smtp-Source: AGHT+IHQpcK4t2r//EVnveuBQ0T3b2j+yA0t8l53Gs3DqQItfFdHqRX36K7vH1e6ExvfySCAL7FAww==
-X-Received: by 2002:a05:600c:154b:b0:46e:3b58:1b40 with SMTP id
- 5b1f17b1804b1-4776dc117a4mr21847005e9.4.1762526355397; 
- Fri, 07 Nov 2025 06:39:15 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ bh=yp8KMMgUvKnxKtL9QZHGuo+bT1CzG82i3SYFL2gwN24=;
+ b=h8jqDJ2KYnVPKZJOvP10QxpkM7W+W/m/XGGtwyzSXWBUI6+9HnDoWB+t5HBJ8PYLh7
+ oX9j/gjGA6Xy0fuT80N9SK2HNlL9owVYiTNvUgjKMUVnwaWUZDJO6s6HJ7RPeVnl8Y7s
+ 4EhjK8NuSp7sl0BotG7B7WmHRoXsUU0jgiBHltmesuH7uxLiXmhb9sL6fTEtIVYxVLPH
+ WxdRKe0MgSQhPiA+mrdUWla8VKRH6A0YJIxIKijjoWdLTQvObjxXZ7s1uPZcEqV+X39H
+ 5kUGeb9cpJVEIOzJN50TRd383CVhcpQTVBcmI0k6yijqDGVnUdZZWLUDyLFHCv6W5zu0
+ lfdQ==
+X-Gm-Message-State: AOJu0YzXypkC5YQMjmh4R2/0wJObMw2g2dqYh/lYuQSSaoEorkRT0nrE
+ UkVGW3rlCNblGKH4U6X99IIA/XSKWWIbEQvXgPxKFs082x1WZm734n3yVjmguW4jKw==
+X-Gm-Gg: ASbGncvDFDlNzTaWl6S0kw7UZ2a6TXSzblczFQ4OBFRM3vz7WHZTCOg5ubeUR1Am1qW
+ aMBmq4igo5i05yc9Yros9qaY1o+hJFyIGnJTlimSFI+nJNs7QoljCIO7KhCGDPcOKdrsM2xxhaM
+ XAeU8NZut2qQv2Q5ritDuPfSllxn3kDaj+XtOYh6fHOmytVbHzFgIfvCuvKVe/0knFAASvfbZz/
+ 1d5/FY68NYeqpCvAFYFTae6zfe5rcnubUeFUCD598KlX4HVOeU0iy92OXwfFnkxl7jdM9vJtlQb
+ Q9oTN02FV7CPq0ZBSe5vvTzaHZwtxEnZfO3TRsyk46UCsl0A2nPqVWWHXZ0Ybreb0PBobjFAGys
+ vY+/TtiuecI5n7I91yY6ds3KCVPeOoqOd/zuv8Hqx1/rhZJtC2TQglj2OrMJR2cR7XaUmH47SX7
+ rrmjtm0HE5RIzToCdDKQ==
+X-Google-Smtp-Source: AGHT+IHDNaymfK26JdBKgkh/r0KSyFZ7NKBOp8Aruazz2+D4HabuQDffGuq5jfeEawU/uK3GNbWeSw==
+X-Received: by 2002:a05:6000:220e:b0:429:d3e9:661 with SMTP id
+ ffacd0b85a97d-42ae588157fmr3089086f8f.15.1762527210369; 
+ Fri, 07 Nov 2025 06:53:30 -0800 (PST)
+Received: from chigot-Dell.home ([2a01:cb15:80db:7c00:e453:acd:db85:b66e])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4776bcfd2e5sm52744815e9.13.2025.11.07.06.39.14
+ ffacd0b85a97d-42abe63e131sm5922435f8f.20.2025.11.07.06.53.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Nov 2025 06:39:14 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>
-Subject: [PATCH] hw/display/exynos4210_fimd: Account for zero length in
- fimd_update_memory_section()
-Date: Fri,  7 Nov 2025 14:39:13 +0000
-Message-ID: <20251107143913.1341358-1-peter.maydell@linaro.org>
+ Fri, 07 Nov 2025 06:53:30 -0800 (PST)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ eblake@redhat.com, armbru@redhat.com,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH v2 0/5] block/vvfat: introduce "fat-size" option
+Date: Fri,  7 Nov 2025 15:53:22 +0100
+Message-ID: <20251107145327.539481-1-chigot@adacore.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=chigot@adacore.com; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,47 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fimd_update_memory_section() we attempt ot find and map part of
-the RAM MR which backs the framebuffer, based on guest-configurable
-size and start address.
+The main goal of this series is to introduce a new option "fat-size"
+within the vvfat backend (patch 5).
 
-If the guest configures framebuffer settings which result in a
-zero-sized framebuffer, we hit an assertion(), because
-memory_region_find() will return a NULL mem_section.mr.
+This series also includes minor patches:
+ - patch 1 introduces another option to create unpartitionned disks.
+ - patch 2-4 are minor improvements easing the introducing of
+   "fat-size" option
 
-Explicitly check for the zero-size case and treat this as a
-guest error.
+This was tested on with a aarch64-linux kernel taken from
+functional/aarch64/test-virt and on aarch64-qnx over raspi4b with a
+workaround, not included here (the SD bus must be associated to the EMMC2
+port instead of through GPIOs).
 
-Because we now have a code path which can reach error_return without
-calling memory_region_find to set w->mem_section, we must NULL out
-w->mem_section.mr after the unref of the old MR, so that error_return
-does not incorrectly double-unref the old MR.
+Changes since v1:
+ - patch 1:
+   - rename option "partitioned"
+   - add qapi entries
+   - add option in vvfat_strong_runtime_opts
+ - patch 2:
+   - make FAT12 1440K the default instead of FAT12 2880K
+ - patch 3:
+   - introduce rename VVFAT_SECTOR_SIZE
+   - replace BRDV_SECTOR_SIZE as those are actually VVFAT_SECTOR_SIZE
+   - introduce VVFAT_SECTOR_BITS
+ - patch 5
+   - rename option "fat-size"
+   - add qapi entries
+   - add option in vvfat_strong_runtime_opts
+   - replace floppy 1M/2M size limitation by 1440K or 2880K
+   - correctly round up when "fat-size" cannot be expressed by CHS values.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1407
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/display/exynos4210_fimd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Clément Chigot (5):
+  vvfat: introduce partitioned option
+  vvfat: move fat_type check prior to size setup
+  vvfat: add a define for VVFAT_SECTOR_BITS and VVFAT_SECTOR_SIZE
+  vvfat: move size parameters within driver structure
+  vvfat: add support for "fat-size" options
 
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index c61e0280a7c..eec874d0b1d 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -1147,6 +1147,13 @@ static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
-     if (w->mem_section.mr) {
-         memory_region_set_log(w->mem_section.mr, false, DIRTY_MEMORY_VGA);
-         memory_region_unref(w->mem_section.mr);
-+        w->mem_section.mr = NULL;
-+    }
-+
-+    if (w->fb_len == 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "FIMD: Guest config means framebuffer is zero length\n");
-+        goto error_return;
-     }
- 
-     w->mem_section = memory_region_find(s->fbmem, fb_start_addr, w->fb_len);
+ block/vvfat.c        | 353 +++++++++++++++++++++++++++++++------------
+ qapi/block-core.json |  16 +-
+ 2 files changed, 273 insertions(+), 96 deletions(-)
+
 -- 
 2.43.0
 
