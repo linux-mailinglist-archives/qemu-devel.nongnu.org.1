@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424F1C43603
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 00:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B31DC43653
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 00:17:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vHs0C-0005T9-9Z; Sat, 08 Nov 2025 18:05:48 -0500
+	id 1vHs0G-0005Ye-7w; Sat, 08 Nov 2025 18:05:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs02-0005Me-Eh
- for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:39 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs03-0005ND-HY
+ for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs00-0001cb-2D
- for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:38 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs01-0001dQ-8k
+ for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762643131;
+ s=mimecast20190719; t=1762643135;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=CNKywIXsglt9/Z5uwcUvgJDkV2Nfoh+iqaZMPfeFy9g=;
- b=UilgvCzHYe3UZyzD36wFYbGhCrKOQ1s+Zn1yHoyI8zqfxQ1iHPyUoYNmP1m/vWBjQU6Hdh
- pGsJhtLXWwlIv3KYfXrgM5hTr/SDMy5fNi1v5IIRAxxdBLZR4xBI/rCvnDNafK7qiI0ZGv
- rej/PA4lgBdfw0Q7xIab1+/IXNpttQc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3zpGiwoNkw9y4Du5TKeywYa7YTBc7fS3KNYRCSB4bHk=;
+ b=BDuDrW1A4kJNMPMXd5cuVlbi7KvaWrKkCxkVjA4QM8T/AO2hgFI1EM7C1iF3G0pMnjT1ee
+ wd2FrCcUFAlcfEdl0YQu3XeWGyOWZeRsQZaWfl2ejTdRHh6t4Hlrb+Hjrs7V8/x1D+rLK3
+ j65iVJ4O/hWUsFz36GHiTTNRThgqquk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-Q58P6JgrO7iqMXeGH0jllQ-1; Sat,
- 08 Nov 2025 18:05:30 -0500
-X-MC-Unique: Q58P6JgrO7iqMXeGH0jllQ-1
-X-Mimecast-MFC-AGG-ID: Q58P6JgrO7iqMXeGH0jllQ_1762643129
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-L3PxsogMMt-0pdoTMhuO4Q-1; Sat,
+ 08 Nov 2025 18:05:32 -0500
+X-MC-Unique: L3PxsogMMt-0pdoTMhuO4Q-1
+X-Mimecast-MFC-AGG-ID: L3PxsogMMt-0pdoTMhuO4Q_1762643131
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 80906195608F; Sat,  8 Nov 2025 23:05:29 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1697F1800451; Sat,  8 Nov 2025 23:05:31 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.2])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A424819560B0; Sat,  8 Nov 2025 23:05:27 +0000 (UTC)
+ id EFF2819560A7; Sat,  8 Nov 2025 23:05:29 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org,
 	berrange@redhat.com,
 	kwolf@redhat.com
-Subject: [PATCH v2 00/12] Fix deadlock with bdrv_open of self-served NBD
-Date: Sat,  8 Nov 2025 16:59:21 -0600
-Message-ID: <20251108230525.3169174-14-eblake@redhat.com>
+Subject: [PATCH v2 01/12] iotests: Drop execute permissions on vvfat.out
+Date: Sat,  8 Nov 2025 16:59:22 -0600
+Message-ID: <20251108230525.3169174-15-eblake@redhat.com>
+In-Reply-To: <20251108230525.3169174-14-eblake@redhat.com>
+References: <20251108230525.3169174-14-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -63,7 +66,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,77 +82,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1 was here:
-https://lore.kernel.org/qemu-devel/20251103202849.3687643-10-eblake@redhat.com/T/#t
+Output files are not executables. Noticed while preparing another
+iotest addition.
 
-In v2:
- - split or otherwise add a few patches
- - reorder latent bug fixes earlier in series
- - improved commit messages
- - improved consistency in trace naming, and make traces unconditional
- - rearrange contents of QIONetListener rather than adding field to
-   QIOChannelSocket
- - add new opt-in API rather than retro-fitting existing
-   qio_net_listener_set_client_func
- - use existing QIO aio functions rather than lower-level aio.h functions
- - further enhance iotest
-See individual patches for more details on changes since v1.  The series
-is different enough that I did not preserve any Reviewed-by tags from v1.
+Fixes: c8f60bfb43 ("iotests: Add `vvfat` tests", v9.1.0)
+Signed-off-by: Eric Blake <eblake@redhat.com>
 
-A deadlock fix counts as a bug fix, so even though this missed soft
-freeze, I'm hoping we can get it in -rc1 or at the latest -rc2.  But
-it's also not a new regression, but a long-standing issue; so if it
-slides into 11.0 out of concerns of being too risky this close to
-release, I understand.
-
-Key:
-[----] : patches are identical
-[####] : number of functional differences between upstream/downstream patch
-[down] : patch is downstream-only
-The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
-
-001/12:[down] 'iotests: Drop execute permissions on vvfat.out'
-002/12:[0027] [FC] 'qio: Add trace points to net_listener'
-003/12:[down] 'qio: Unwatch before notify in QIONetListener'
-004/12:[0026] [FC] 'qio: Remember context of qio_net_listener_set_client_func_full'
-005/12:[0003] [FC] 'qio: Minor optimization when callback function is unchanged'
-006/12:[0039] [FC] 'qio: Factor out helpers qio_net_listener_[un]watch'
-007/12:[0002] [FC] 'qio: Hoist ref of listener outside loop'
-	008/12:[down] 'qio: Provide accessor around QIONetListener->sioc'
-009/12:[down] 'qio: Prepare NetListener to use AioContext'
-010/12:[down] 'qio: Add QIONetListener API for using AioContext'
-011/12:[down] 'nbd: Avoid deadlock in client connecting to same-process server'
-012/12:[0035] [FC] 'iotests: Add coverage of recent NBD qio deadlock fix'
-
-Eric Blake (12):
-  iotests: Drop execute permissions on vvfat.out
-  qio: Add trace points to net_listener
-  qio: Unwatch before notify in QIONetListener
-  qio: Remember context of qio_net_listener_set_client_func_full
-  qio: Minor optimization when callback function is unchanged
-  qio: Factor out helpers qio_net_listener_[un]watch
-  qio: Hoist ref of listener outside loop
-  qio: Provide accessor around QIONetListener->sioc
-  qio: Prepare NetListener to use AioContext
-  qio: Add QIONetListener API for using AioContext
-  nbd: Avoid deadlock in client connecting to same-process server
-  iotests: Add coverage of recent NBD qio deadlock fix
-
- include/io/net-listener.h                     |  47 +++-
- blockdev-nbd.c                                |   4 +-
- chardev/char-socket.c                         |   3 +-
- io/net-listener.c                             | 233 ++++++++++++------
- migration/socket.c                            |   5 +-
- ui/vnc.c                                      |  36 ++-
- io/trace-events                               |   5 +
- tests/qemu-iotests/tests/nbd-in-qcow2-chain   |  94 +++++++
- .../qemu-iotests/tests/nbd-in-qcow2-chain.out |  75 ++++++
- tests/qemu-iotests/tests/vvfat.out            |   0
- 10 files changed, 411 insertions(+), 91 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
- create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
+---
+v2: split this change to separate patch
+---
+ tests/qemu-iotests/tests/vvfat.out | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
  mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
 
+diff --git a/tests/qemu-iotests/tests/vvfat.out b/tests/qemu-iotests/tests/vvfat.out
+old mode 100755
+new mode 100644
 -- 
 2.51.1
 
