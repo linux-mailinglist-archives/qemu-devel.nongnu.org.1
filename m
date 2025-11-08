@@ -2,96 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9E2C43470
-	for <lists+qemu-devel@lfdr.de>; Sat, 08 Nov 2025 21:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 424F1C43603
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 00:13:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vHpID-0000Ay-1B; Sat, 08 Nov 2025 15:12:13 -0500
+	id 1vHs0C-0005T9-9Z; Sat, 08 Nov 2025 18:05:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvyas1991@gmail.com>)
- id 1vHpI8-00009m-PM
- for qemu-devel@nongnu.org; Sat, 08 Nov 2025 15:12:10 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yvyas1991@gmail.com>)
- id 1vHpI4-00074f-FZ
- for qemu-devel@nongnu.org; Sat, 08 Nov 2025 15:12:08 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-b997ae045b7so178872a12.2
- for <qemu-devel@nongnu.org>; Sat, 08 Nov 2025 12:12:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762632722; x=1763237522; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mWAxk6Zt5RXepaT53mIPHPmeq+SCDJKNGcs1Y4tqsjA=;
- b=RYBsOIui1I/cMxVlf4la8/xPl/j4UrHN/0usmFJi3Hv6iEC7kOR7F07EeZgd200mBP
- 6BCdPwQcM60h5vqmc4xSc7cQQ/UY4em8eEqEqL/0Smk8FQyRdpzDstRmpeNfLSqISDmD
- s3jwPr6/MBSBvVq0hlwmBX687B7ykK3YZipyZllXstNYyOpdpeFuutZ4txksfYWXkCe4
- b+f9DZ3WT3Ln6CbrMtex+JQtWAbITqzzVVS3/Oq++S76mcw/XTbR2oAiarb3SUMnez7K
- M84d3U5xZo5HI0lQcsr/ErijDzs6YYItrEXuQQ+6tFFK7D8PeeR1k1lpNyJGhksq/cRt
- 7tSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762632722; x=1763237522;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mWAxk6Zt5RXepaT53mIPHPmeq+SCDJKNGcs1Y4tqsjA=;
- b=Gn8D+9fN25/cUdTiWhdgYPJJNWvtjm2hwWWrCA7Mjsgwvf5I6jRndAlO94vANI0Le8
- J9VrRrugGgN5PirSZ/vXgjEM2uJb6J+ldJFCgbU8qKj8tjwI/w30asUUm+CS5xEypZt9
- mYNRiXu9Wufd4VKJ7bt4QFHU+VeCDV1n7QtcZ1B7zH+mPgpOEZYQR63hc0TkviZcoi07
- 4ezfhFSeKDTjvSdS7Mst9P5qxOlhuj2ePx7jqfOUvCcgybFi7UTx1DEXKTOC+7j1kNZc
- m588wkgoZ1DxLO63xZaHiuANtmuLxnlSHdRmZ86pA9WwgcS0wj/kR05WAD5XHgLTtIbZ
- Xipg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXbQ8MytZ+RHN06AF1LKZYfbk1RKWssSc5CccjzuNOW9hdertC03YRo4GNfesSs57KtqFQ/TQxrOHQU@nongnu.org
-X-Gm-Message-State: AOJu0YzzRR2Yd3MwcWBqG6V/vWEpjBcqU2oHgJ0i1rm7RNmgAjLdaBEk
- r149sIddoWWRzK74mUXsOgNC9oW5ohDU9Pssg12uNRo5paG2xeEHgVJT
-X-Gm-Gg: ASbGncv5f+Ln5bwUho96j+WJEIjxWrqXI8rI9uhS/Sv8trO6M7XDtdYTI9U5pwOLv/B
- Uy32QxbtDxzL5eSP0Sz9sE0Hqwja2MBTJ3y79epdJNDTTYotjoXXitRoAJ2KC1TGGcveANigL1n
- DWEYUrs9qzZQVeRLBf7WkCSuI+I0dR938eVhB04hKRzmIeHDXAwSd3TIve8I5SLB60ME+B6eyrt
- ibAxaIE9UBQQMcetK+LEzKswsznzD/nsd+djl3hJk5725v+iAaceaPjm35gKO8IXkR50O91noUf
- RR64norvUN5dQcPmiA4kRXwXchdDmACFvg6ctA1HYCuP+vbn6T+aHNWxuHVIZOFRaUa5HsLRe00
- YAd0uqM7z/n7xFVS5K1MFI7Kbo4mmV9DZ535pNcWb6XjX7+jE2cN6ZSwf+zLgIRMXG3C+chmQuO
- ynnSEvpVUIO62brlYiyMcXNvx/N4CBZ5Mw6+Nz3534Q9UdOm+iK7HR37bK
-X-Google-Smtp-Source: AGHT+IEGwpN1tezFI8TPqFipzmgfiFhkztUbbb1dets93RAKPLe2vmimKhUkkQGhsrWPq1Ahn771Yw==
-X-Received: by 2002:a17:902:e353:b0:297:e604:598 with SMTP id
- d9443c01a7336-297e60407famr14268285ad.4.1762632722456; 
- Sat, 08 Nov 2025 12:12:02 -0800 (PST)
-Received: from ?IPV6:2402:e280:2177:35:a77f:15f7:4845:1af9?
- ([2402:e280:2177:35:a77f:15f7:4845:1af9])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-297ed6808ddsm23068205ad.17.2025.11.08.12.12.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 08 Nov 2025 12:12:02 -0800 (PST)
-Message-ID: <b32eeb42-66b4-4dff-accd-cab187ef073b@gmail.com>
-Date: Sun, 9 Nov 2025 01:41:59 +0530
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs02-0005Me-Eh
+ for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vHs00-0001cb-2D
+ for qemu-devel@nongnu.org; Sat, 08 Nov 2025 18:05:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762643131;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CNKywIXsglt9/Z5uwcUvgJDkV2Nfoh+iqaZMPfeFy9g=;
+ b=UilgvCzHYe3UZyzD36wFYbGhCrKOQ1s+Zn1yHoyI8zqfxQ1iHPyUoYNmP1m/vWBjQU6Hdh
+ pGsJhtLXWwlIv3KYfXrgM5hTr/SDMy5fNi1v5IIRAxxdBLZR4xBI/rCvnDNafK7qiI0ZGv
+ rej/PA4lgBdfw0Q7xIab1+/IXNpttQc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-Q58P6JgrO7iqMXeGH0jllQ-1; Sat,
+ 08 Nov 2025 18:05:30 -0500
+X-MC-Unique: Q58P6JgrO7iqMXeGH0jllQ-1
+X-Mimecast-MFC-AGG-ID: Q58P6JgrO7iqMXeGH0jllQ_1762643129
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 80906195608F; Sat,  8 Nov 2025 23:05:29 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.2])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A424819560B0; Sat,  8 Nov 2025 23:05:27 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+	berrange@redhat.com,
+	kwolf@redhat.com
+Subject: [PATCH v2 00/12] Fix deadlock with bdrv_open of self-served NBD
+Date: Sat,  8 Nov 2025 16:59:21 -0600
+Message-ID: <20251108230525.3169174-14-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pc-bios/dtb/pegasos*.dtb: Fix compiled dtb blobs
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20251108193717.DADA9597302@zero.eik.bme.hu>
-Content-Language: en-US
-From: Yogesh Vyas <yvyas1991@gmail.com>
-In-Reply-To: <20251108193717.DADA9597302@zero.eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=yvyas1991@gmail.com; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,90 +79,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Balaton,
+v1 was here:
+https://lore.kernel.org/qemu-devel/20251103202849.3687643-10-eblake@redhat.com/T/#t
 
-I just tested after applying this patch and it seems to solve the issue.
-Thank you very much.
+In v2:
+ - split or otherwise add a few patches
+ - reorder latent bug fixes earlier in series
+ - improved commit messages
+ - improved consistency in trace naming, and make traces unconditional
+ - rearrange contents of QIONetListener rather than adding field to
+   QIOChannelSocket
+ - add new opt-in API rather than retro-fitting existing
+   qio_net_listener_set_client_func
+ - use existing QIO aio functions rather than lower-level aio.h functions
+ - further enhance iotest
+See individual patches for more details on changes since v1.  The series
+is different enough that I did not preserve any Reviewed-by tags from v1.
 
-Reported-by: Yogesh Vyas <yvyas1991@gmail.com>
-Tested-by: Yogesh Vyas <yvyas1991@gmail.com>
+A deadlock fix counts as a bug fix, so even though this missed soft
+freeze, I'm hoping we can get it in -rc1 or at the latest -rc2.  But
+it's also not a new regression, but a long-standing issue; so if it
+slides into 11.0 out of concerns of being too risky this close to
+release, I understand.
 
-On 11/9/25 1:07 AM, BALATON Zoltan wrote:
-> When adding these files somehow an incomplete version was committed.
-> Regenerate and update these dtb files to match the dts which fixes
-> problems caused by missing nodes in the dtb.
-> 
-> Fixes: 9099b430a4 (hw/ppc/pegasos2: Change device tree generation)
-> Fixes: 3c21f9dfcf (hw/ppc/pegasos2: Add VOF support for pegasos1)
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> v2: updated commit message to mention the two commits fixed here
-> 
->   pc-bios/dtb/pegasos1.dtb | Bin 857 -> 1975 bytes
->   pc-bios/dtb/pegasos2.dtb | Bin 1701 -> 2963 bytes
->   2 files changed, 0 insertions(+), 0 deletions(-)
-> 
-> diff --git a/pc-bios/dtb/pegasos1.dtb b/pc-bios/dtb/pegasos1.dtb
-> index 3b863b25288a59bcede9459ff42afad713dde741..b776861602055ed068cac103ad8b2e9faad1e6e5 100644
-> GIT binary patch
-> literal 1975
-> zcmZuyO=}ZD7@lplwWzFuUaE&kE=9W9q^(VFE48#BXiz-$&~A1o>5~1*%%&xRwE8<d
-> z2%bHA@!}5<Jo*Pb3O#sG(Bk{d&Lr!$FT6AF^US<oGn38NtEWF0oBhZbYcVzx(Y!!<
-> zo%9+hiS?NHmBRjSv^1Kg`GU5=0beAw{e6*X9^56;TW#L+WGX>}gWhR81XT8An(ub9
-> z$V+Nlac6tX!*{*ndz-i|&DA!xpS5f4^pK18M(z1X<~)Y8m1aE2M5+K`<U?Pkj>V;W
-> zjZUMvOca|Uwfy~5@&vHJF^^L*a+efS_|KAU7rbIkZ##MqrXp50RE-kG9-PrGDa2sd
-> z=FG6(*I4;?y)cqqmtzwNd{l19Md;zCbe_x)-PTeeik-x_X$@34A8dnB4{{kiu>QPz
-> zQNpiJPY4z3xPzTz8jeUw;DZ}_YaRl~Qw)&fBCs|AmAs-62_b*A!qzbm6M5c)(_)3v
-> zbJq%B>ij@YbcQH{>HWTGl<;S=anEM`3!70H4F1O0{Lj+*_u|Q`{WplGyQH7PSuy@L
-> z)r3`pVVBPl=Zb`8{Wms{7(8G{3pXd&!reox;%?or*;V<mzk283u8`urQI4r!G~>*`
-> z(`?z=rm2(<sHo9uEv+=&@Im=aqgMDqD)HGKarixhN1X#w2r&6s^9oJY0n5GPEFjw7
-> zx=%LF3TpNFsFQjksMIq@YqnV<8v_4Q-)xVtsmt_@ybu*z<h~oOsWx?PW)p|?YOGBA
-> zfH$#lrV!&>?wh_-mK(^%a%<JmA&Z=O7<1u<EBbKZi+5@(9?{O`c8No-Y97@?H=rJt
-> zyXCvW9oWRvRPAH>gg6t+^nv`4bK^%@PVqY`SZR+<yzwcW`Sd3utMTzZA?L+6_l$Y2
-> z?gfG1QaV15BFO@N5c+&KA7z}yX}}{Uh>>BMu#KmWHn%pPEFSPANW~bcmoi2Hm%a$I
-> z91eo_SY3uMxsF};@$L1a)bBf8!3RU0_#@V8uC6;_l5-)3S?+j#KS>WG9`ra9Uee=|
-> zb%xSWCM!}qVW8`TW$J_NM;<z%x|tkyr25AJKLL{noW2&0jM7{(j85Xklxti_$)tcu
-> XF48FCg4M?xbW?sBXI>t5BF_E++M@cs
-> 
-> delta 53
-> zcmdnaf0Iq)0`I@K3=GVX3=9kw3=B+bfV2h>3j(nK5QD&4pm@nfjcTUJ$!yyIEp7@-
-> 
-> diff --git a/pc-bios/dtb/pegasos2.dtb b/pc-bios/dtb/pegasos2.dtb
-> index 29c35216ec2d77e4083a3ef618ca185925fb5d61..a6935a8c23d85e0251e7f424cf59c8fe54fe593a 100644
-> GIT binary patch
-> literal 2963
-> zcmb_ezmFU>6!z>v$dN?L@k2t8V$o5A=my<Sa;aDmP8X#JClI1Yk$64c-Qi|uCid)I
-> z79<E%bSY?&prW8dqNGS9{s0g)5*?yIA`%6WAmaNx_U_z5l!hmH=6%o4?|b&MJ@fsk
-> z`@acs;!`2Swh)WY;(Z2f3GE3qNb7wej{oe`qmRhL1-u{eI&H*{qP5k~l-^F;BHHtN
-> zdLV6K*Bf^By|Dh8vrs>QcD7e$GVkn;dKag5jz9k&<4?oB>+PKj7vJ3L>=lRF>|N-*
-> zHL;Z*F+fz5IxkJ(05Ew@p-uByS$la6n9@Rv)UdERpW%@n6=u?1b(VVkW6;~R-B}s)
-> zINBA5>PH=`99wUr57+AI93~8F$Nqhf-FQ>U`SI81{67GG8ZE^C1Ue<)&uTcuU(ez1
-> z=I{@|&3t|WW-cM#uU-%M9x(IvIAX1iH86AIdWHTMp>wSQ-h|FE0q;P6yn)|=&V3R3
-> zHT0zhE}%czz=zPEYT%EcGY7YxeVJxf_8Ei1n68#qn^b1b=KM;PcDGk+an>onXrqrN
-> zpO5RM9x&_MSg+_-^w$?}`+n@9=yNV^ko!S_k%K5VeWTvxV;Vd9@~$}fjmK`k-2~{O
-> zK|FtSr-ly0C;HK2zM|C1uBr{eAN5^o*6SA`K3;=M=)Vh{_d&pai(_sE9=E{p+#j?4
-> z)-!c^oIlqcXW|-O{}Ml5w2>1#1E$_sKX+b882DbI1H|L#miX`tI0J5Nx?aq+u4y-2
-> z@8f!_`{!%T7$?zqZo$#|6YsD$@ov2eOdraO?{p_%?90}rGB5Wo@2zaDa@FeGqwUqr
-> z^=|q~^UmNL+Rmen)!-G^VCTI#<ER~paTZ#ac%QB?=*-T1xvwaGoYNa?HGkK%-h~I(
-> zmMz-XlU^ZBGM6XMVmtIfr!fA5@(t@mUJ8Ai>$0)B;p~pnRH~bvbITHPZo?MFH91Nc
-> z!#)TctPRDFMeS>uawc|dV|y$1A?tZo=}4Pyy6KBSU+(v|v(Lsixw|lv>w!GJ=4-2U
-> zP&c=Jg1K$<Jxv%Z+OU&_u^Jo;zXJ!3FhAx+c^L1xCT~_&;O#k**;vtrJ;ZAAehcF~
-> zFV6+#VZ56SUe4Lgn|G!9pYF<qd)=>m9$3etcO?&}6YhMk-o~4a(s55W2hQ)xZ9F<?
-> zkT9=1&@npr9Jw3Ad={5wk{E4mtaO%Hk?4a|>8sVG)M8X5IuiyKn-;ma@W$&qyE~Ux
-> z4s@OrW(wV@nxaHoWzw?Z0HX(D*{1JlAA4Ex|9~I)_&^&M(*e5F<|MWF9h$^-7PU=-
-> zuZpdbd2D3m9knrqiL+u5kK_#y*-DxU2Lb;N`GJw6xUVZU^t!DIqs2g1F%Lmp^y5TM
-> zgq_1P9-)R>?Z^6tR$(GCiBb4i6?s1$h(nWBx@ib`tD!VfRob}dX`ZA?f?SmRPXlpZ
-> z*s;YAS|WyNPn(?cvF_h3Ho8|7l~7p$>b}v}$2wONVPrngR&1|tosZKTk<GZQVyX7?
-> z;xN<6Knv#8Gbz+KACC}K^u`uTg>j-TRh%ZiuGB(3sjEz~@~ATs>-kJzpMhBfjW1Vh
-> nv!b$s&p4MOBsR^-3RR3sS*5*9&#YXr$`o0Kw3es7en0#J=mwZO
-> 
-> delta 54
-> zcmbO%zLZzv0`I@K3=C{b85kHW7#LVi0BH>%76f7eAO-@)yFl>?8#PWdZ+7O`!~_68
-> C$qNtw
-> 
+Key:
+[----] : patches are identical
+[####] : number of functional differences between upstream/downstream patch
+[down] : patch is downstream-only
+The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
+
+001/12:[down] 'iotests: Drop execute permissions on vvfat.out'
+002/12:[0027] [FC] 'qio: Add trace points to net_listener'
+003/12:[down] 'qio: Unwatch before notify in QIONetListener'
+004/12:[0026] [FC] 'qio: Remember context of qio_net_listener_set_client_func_full'
+005/12:[0003] [FC] 'qio: Minor optimization when callback function is unchanged'
+006/12:[0039] [FC] 'qio: Factor out helpers qio_net_listener_[un]watch'
+007/12:[0002] [FC] 'qio: Hoist ref of listener outside loop'
+	008/12:[down] 'qio: Provide accessor around QIONetListener->sioc'
+009/12:[down] 'qio: Prepare NetListener to use AioContext'
+010/12:[down] 'qio: Add QIONetListener API for using AioContext'
+011/12:[down] 'nbd: Avoid deadlock in client connecting to same-process server'
+012/12:[0035] [FC] 'iotests: Add coverage of recent NBD qio deadlock fix'
+
+Eric Blake (12):
+  iotests: Drop execute permissions on vvfat.out
+  qio: Add trace points to net_listener
+  qio: Unwatch before notify in QIONetListener
+  qio: Remember context of qio_net_listener_set_client_func_full
+  qio: Minor optimization when callback function is unchanged
+  qio: Factor out helpers qio_net_listener_[un]watch
+  qio: Hoist ref of listener outside loop
+  qio: Provide accessor around QIONetListener->sioc
+  qio: Prepare NetListener to use AioContext
+  qio: Add QIONetListener API for using AioContext
+  nbd: Avoid deadlock in client connecting to same-process server
+  iotests: Add coverage of recent NBD qio deadlock fix
+
+ include/io/net-listener.h                     |  47 +++-
+ blockdev-nbd.c                                |   4 +-
+ chardev/char-socket.c                         |   3 +-
+ io/net-listener.c                             | 233 ++++++++++++------
+ migration/socket.c                            |   5 +-
+ ui/vnc.c                                      |  36 ++-
+ io/trace-events                               |   5 +
+ tests/qemu-iotests/tests/nbd-in-qcow2-chain   |  94 +++++++
+ .../qemu-iotests/tests/nbd-in-qcow2-chain.out |  75 ++++++
+ tests/qemu-iotests/tests/vvfat.out            |   0
+ 10 files changed, 411 insertions(+), 91 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
+ create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
+ mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
 
 -- 
-Regards,
-Yogesh Vyas
+2.51.1
 
 
