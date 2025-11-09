@@ -2,44 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D50C448AF
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DF8C448A4
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:08:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIDZ4-0007jj-OA; Sun, 09 Nov 2025 17:07:14 -0500
+	id 1vIDYz-0007eF-RG; Sun, 09 Nov 2025 17:07:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYx-0007cN-1C
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYx-0007dH-UU
  for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:07 -0500
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYv-0005t8-Jy
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:06 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYw-0005tt-Hi
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:07 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 282C040C4C;
+ by sea.source.kernel.org (Postfix) with ESMTP id AB99C439B2;
+ Sun,  9 Nov 2025 22:07:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EF2C4CEFB;
  Sun,  9 Nov 2025 22:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC81CC19422;
- Sun,  9 Nov 2025 22:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1762726024;
- bh=xvnVTfvyk4KDq0NeFm7fXlGBh2QTyO3Ky2iuae7PUFk=;
+ s=k20201202; t=1762726025;
+ bh=faF3cw0blnpSJDXWBDnPx0moZoO2Eaq0wCzTLHV9IOE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=jPD94MULDotRstlrW6EHTmbL3Hu18+dAL0mIqZ8O6fDNFvxl8SF98+wF9UhxFkQ7A
- NZLFFaUXXgyHg8hDc7fWJg7Ukb31FxyfkcwDqKEtTrNNEQ1/QJzefjgimA7LqgoYok
- rwmAX8Rd2w2I85zCzHYDpwv1uEwWP6mIdymiVB1+vce88jP7yr6whFIQ4p7QDr26ZK
- 8OyfZ5P6OJERJ/fuM+qGZQzuc+iIG2+E7TL+vQ7ZyIyaEK+pDJrPKqHTtfcA9gngkx
- JQ627p3opF/mu1N0Q/kehsBZjjyBu+tWxIwd4NiSuXVbxEKiekHRbZa+P5SWz5vp1O
- W0QhKSWRnSYPg==
+ b=NBPLWiwSXjXSVYJD2HFKI9s6V9lipgq7DRHc+axxBeuyRHuMSNLS6/+nHwvlUSbV9
+ 9kTkmFF2o6Nc3VgrtaSkfW1Aa+aY/afJv52jAL4f8EFOGkX/eoqBDrkGMTscQZ2nVf
+ eaO1aA7D2Yj8HuyKXRV2QFxQL2o6bre2ggyyBzpOwGg4+mfgpSWXfaNG/KJZczQjiB
+ SllfCJGxk/YWmYUIoKt1UCbvVVWaE653owCbM6WlNJhN7B8PaBEnwA9ePXVKY+K6PE
+ hqjRAgDFu05N5EAK9sD6hGyMxS8CciRYnCnF0mzV00DPAJ9iCoceqJ9tsB5rVraVCT
+ fO4ADloZVJJJw==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 4/7] i82596: Adding proper break-statement functionality in RX
- functions
-Date: Sun,  9 Nov 2025 23:06:51 +0100
-Message-ID: <20251109220654.46718-5-deller@kernel.org>
+Subject: [PULL 5/7] ncr710: Add missing vmstate entries
+Date: Sun,  9 Nov 2025 23:06:52 +0100
+Message-ID: <20251109220654.46718-6-deller@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251109220654.46718-1-deller@kernel.org>
 References: <20251109220654.46718-1-deller@kernel.org>
@@ -70,52 +69,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Fix coverty reported logic error CID 1642873.
-The initial issue was the break statement exited out of the for loop
-unconditionally.
-Now, the break only happens if rfd is null, out_of_resources or
-bytes_copied < payload_size.
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/net/i82596.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/scsi/lasi_ncr710.c | 4 ++++
+ hw/scsi/lasi_ncr710.h | 1 -
+ hw/scsi/ncr53c710.c   | 2 +-
+ hw/scsi/ncr53c710.h   | 1 +
+ 4 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/i82596.c b/hw/net/i82596.c
-index fb6b54fd71..af1abd4996 100644
---- a/hw/net/i82596.c
-+++ b/hw/net/i82596.c
-@@ -1092,6 +1092,7 @@ static ssize_t i82596_receive_packet(I82596State *s, const uint8_t *buf,
-                     rx_status |= RFD_STATUS_TRUNC | RFD_STATUS_NOBUFS;
-                     i82596_record_error(s, RFD_STATUS_NOBUFS, false);
-                     packet_completed = true;
-+                    break;
-                 } else {
-                     hwaddr remaining_rbd = I596_NULL;
-                     size_t rbd_bytes = i82596_rx_copy_to_rbds(
-@@ -1118,17 +1119,18 @@ static ssize_t i82596_receive_packet(I82596State *s, const uint8_t *buf,
-                         i82596_record_error(s, RFD_STATUS_NOBUFS, false);
-                         rx_status |= RFD_STATUS_TRUNC | RFD_STATUS_NOBUFS;
-                         packet_completed = true;
-+                        break;
-                     }
+diff --git a/hw/scsi/lasi_ncr710.c b/hw/scsi/lasi_ncr710.c
+index b674a4066f..7e0076c7a3 100644
+--- a/hw/scsi/lasi_ncr710.c
++++ b/hw/scsi/lasi_ncr710.c
+@@ -160,6 +160,10 @@ static const VMStateDescription vmstate_lasi_ncr710 = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(hw_type, LasiNCR710State),
++        VMSTATE_UINT32(sversion, LasiNCR710State),
++        VMSTATE_UINT32(hversion, LasiNCR710State),
++        VMSTATE_STRUCT(ncr710, LasiNCR710State, 1, vmstate_ncr710, NCR710State),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+diff --git a/hw/scsi/lasi_ncr710.h b/hw/scsi/lasi_ncr710.h
+index 3711233b0f..058718068e 100644
+--- a/hw/scsi/lasi_ncr710.h
++++ b/hw/scsi/lasi_ncr710.h
+@@ -46,7 +46,6 @@ typedef struct LasiNCR710State {
+     uint32_t hw_type;        /* Hardware type (HPHW_*) */
+     uint32_t sversion;       /* Software version */
+     uint32_t hversion;       /* Hardware version */
+-    SCSIBus bus;
+     NCR710State ncr710;
+ } LasiNCR710State;
  
-                     if (bytes_copied < payload_size) {
-                         trace_i82596_rx_incomplete(bytes_copied, payload_size);
-                         rx_status |= RFD_STATUS_TRUNC;
-                         packet_completed = true;
-+                        break;
-                     }
-                 }
-             }
-         }
--        break;
+diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
+index aaac31cbb9..ba064c6ecf 100644
+--- a/hw/scsi/ncr53c710.c
++++ b/hw/scsi/ncr53c710.c
+@@ -2250,7 +2250,7 @@ static const VMStateDescription vmstate_ncr710_scsi_fifo = {
+     }
+ };
  
-     } while (bytes_copied < payload_size);
+-static const VMStateDescription vmstate_ncr710 = {
++const VMStateDescription vmstate_ncr710 = {
+     .name = "ncr710",
+     .version_id = 1,
+     .minimum_version_id = 1,
+diff --git a/hw/scsi/ncr53c710.h b/hw/scsi/ncr53c710.h
+index 380e3959b3..6d30f9b663 100644
+--- a/hw/scsi/ncr53c710.h
++++ b/hw/scsi/ncr53c710.h
+@@ -242,5 +242,6 @@ void ncr710_transfer_data(SCSIRequest *req, uint32_t len);
+ void ncr710_execute_script(NCR710State *s);
+ void ncr710_set_phase(NCR710State *s, int phase);
+ void ncr710_reselection_retry_callback(void *opaque);
++extern const VMStateDescription vmstate_ncr710;
  
+ #endif /* HW_NCR53C710_H */
 -- 
 2.51.1
 
