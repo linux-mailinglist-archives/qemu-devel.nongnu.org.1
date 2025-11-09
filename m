@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378DEC4404C
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D02C4403D
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI6Vo-00029L-RX; Sun, 09 Nov 2025 09:35:24 -0500
+	id 1vI6Vq-00029w-CF; Sun, 09 Nov 2025 09:35:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vm-00028s-Tp
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vo-00029W-KP
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vl-0001mU-3H
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:22 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vn-0001mk-4B
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762698919;
+ s=mimecast20190719; t=1762698922;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xlzluGzx7auUP3YqO2kjwqtM8LvQRyJhDsEvxP82Pm4=;
- b=bjvJkMbLc8ML7HxpCq2Zx4TQpUarmYusjPhj2SDETyAk0Fctnx+Ze6Ygiukn4K56zbX/QO
- Jpfr+No4VFdIUApI9cAFCqTTBS6jjaVR5TiMM1IOWXtsgfeHpWGtQKrJGA+AQZUDsfc9aA
- h0qX57W43L3NgGd9Z1f1YXEczJFGr8M=
+ bh=Pt3iK4k3XJgwCHPG4a0Z+4Zt+KSBFtaVquZ5c/VlL5E=;
+ b=Pn9bypKN+a2LRKgC707sxRkzon6RFXNcytj1ERGntXBSTzhzWCwGPfcpL6PP38NybTdyE1
+ V3wtWj8X02esZRnOuG5mLmWfulkRL9TCfLL8bKID/EDFwnpSPA2hBMUA5Ik3HGpoiykb+a
+ P4I1XGoDP2km9KP3LUczyhnmi347RXw=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-N-mDW7oZM3qgmlw61mP4NQ-1; Sun, 09 Nov 2025 09:35:18 -0500
-X-MC-Unique: N-mDW7oZM3qgmlw61mP4NQ-1
-X-Mimecast-MFC-AGG-ID: N-mDW7oZM3qgmlw61mP4NQ_1762698917
+ us-mta-278-HkSkFu0dNEaiUcDlO8PR6Q-1; Sun, 09 Nov 2025 09:35:20 -0500
+X-MC-Unique: HkSkFu0dNEaiUcDlO8PR6Q-1
+X-Mimecast-MFC-AGG-ID: HkSkFu0dNEaiUcDlO8PR6Q_1762698919
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e47d14dceso10618805e9.2
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:18 -0800 (PST)
+ 5b1f17b1804b1-47496b3c1dcso16572265e9.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762698917; x=1763303717; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762698919; x=1763303719; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=xlzluGzx7auUP3YqO2kjwqtM8LvQRyJhDsEvxP82Pm4=;
- b=RSpccAueORIK4s9ZkD/sxHzbzaOzqcx4yk5EfJ8zmSPyRq4yLph/eTc5loWtAzs0G7
- wPjJ1vzoPXr5DywM1cP9Kn/WRc4uOqHyJC842YCf8Kz6HgoGRfvTuuHHrO0iRlqNdjg5
- 8NdrssCHbyV+rGKxcmqYLikkSL56rvTNUaF/g4gAVdjDN0fh3iQ7e+DwKd4mMEcJCwtS
- XeoevO6SZCn2vHaOEXoZQ8XMFf/KVR8RXCH2ch1sTQCcxDFzCcDZDeJPMlciEZAoSYiw
- sBx1MuCRDdRLxoq8NiwqU0Um76HordAVIZt8hXbvnyhsXAnRn9YEA4ZXyANwvXhwx2FT
- BcaQ==
+ bh=Pt3iK4k3XJgwCHPG4a0Z+4Zt+KSBFtaVquZ5c/VlL5E=;
+ b=JVdMkAIPsOD03kq3A1MRvLaUphwQvFa/C9mAnVwphC00Bgnj4ZZNsfkbD2OcMZ6wgx
+ LExaTax1AWERKdZpcI8RxETOfuoZGMgKb6ZFSJP8snFheCzvJgrQly1SKQrEhdg3+F0k
+ KTJvIzi3wJURs5xUYBRHV4Q57shgcp3Gs818NF6FbIwQajTBzGLh+oC1Wa8yFrJBrXfd
+ vd3rQt+BDSCw0S2UotT3bL121iavhDyCmfgaAFmJgl3K1Vb8uPUNoLnPKWsW8j4tbaPI
+ Gr97QxJpO1DjLZ3ZmI6Tyah+KhmBLfPncT3J0AX9Y8NbJXOcLf27GMUZGgZnwsGDB29j
+ AZSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762698917; x=1763303717;
+ d=1e100.net; s=20230601; t=1762698919; x=1763303719;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xlzluGzx7auUP3YqO2kjwqtM8LvQRyJhDsEvxP82Pm4=;
- b=IqCd1zBZ6wcofHGQkda5Wq55+E49Sgl8gj4L+tdSxJK1BATi51lKGJl9ViIuQKIG7d
- XxHf1bkJ5Ur4ImbBCLmTP4+1L+OjkouhQMN6qXLmh8wLD8Pa8XE2k8dIn5rkaiK7U4Ao
- Gem4k9YKSEwXPtAjDHl576MGu0c93N7JdjG9mJ3ig0sBNrDAWzREIKZJHEwFO9itzZzN
- 8JkWDYWbXtLgN6ss+COOQQPebKahnheCzFwjHs/uTPNYKtr4pnTOpZ+G5nY0UT2EJp6A
- K3YTSuDo7weWYg2w6/FKs1zp+Xg2m7vRDDNzKEVlzaX44uO+Kil/QqBPlmr3UkvlKrMt
- VMOA==
-X-Gm-Message-State: AOJu0YzrxR22toSIOGVQq8NNMTl50O0cZeAfJe8tm5wYnjNxpy3P+CsI
- bN5+Qd5qMz0IaMSTyJk7CJfYhuvByaihlh5hbEbEQVTsnGD8QyUxIvRoGn3eW4YEaqMKq6rpFUf
- zbv/BY+cREUPeA/kpfGyTXUUJIE2uSFQRukQKhjt2C3mWuorkwtpUyxFp+dGzfLCc649YcOFWFE
- a11+Qpk+YLY/XPqbJ3SzYwC6K/hFlLBeiHbw==
-X-Gm-Gg: ASbGncu0LjcN/12QtkWPHjpJq2RDreIJLbCa3arIesPucXAZM//VKOjGI9wNZqkWm4i
- 8Y4v3BEPbcpWe5km0+tm19fhDjZEQl8rU0U6hXHzS32ivWye1yYME8GvTAYVAgJP2W6V9Cb0soh
- SdDfM277NT+ViW9eX3yrjt7rvxS5P5nTaML//+39B4r4901CU3LFqBG4ph7y1kBWJkd0ub0QqqK
- I2BYUck7QnLiJ2JY36a91A9KlIieBvoAW/ub7CSh3Z6K2Lw4fhZjKrfeuSyApIuBTExbeE6jFA1
- H64eNUg6NCzqng2bsI9/fjsV1Xnnsbq3IpcKn2UmVL8YB7hte5Uhr0fA3VjVQpz73rA=
-X-Received: by 2002:a05:600c:45cf:b0:477:7b16:5fa6 with SMTP id
- 5b1f17b1804b1-4777b16628emr10215185e9.3.1762698916875; 
- Sun, 09 Nov 2025 06:35:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFyb/lF3WWnMNiqHos/VZyw7RvULl6ERJhsA2N1X8NB+2c1XkxHtR+PwxPWbgyQwUZrTQPMMA==
-X-Received: by 2002:a05:600c:45cf:b0:477:7b16:5fa6 with SMTP id
- 5b1f17b1804b1-4777b16628emr10214945e9.3.1762698916348; 
- Sun, 09 Nov 2025 06:35:16 -0800 (PST)
+ bh=Pt3iK4k3XJgwCHPG4a0Z+4Zt+KSBFtaVquZ5c/VlL5E=;
+ b=P+UI/LeobP0lkJ+vOmkAHew4RB7ELTxUpy/tIP3J2JvivefosyU8zpIsOZkBPMPqYJ
+ 9/PLpxhx5KFSFgBIr8VgE3V110gg+gx2balX/g7RUFnkraJ4tnhpy1mZ4VcgK6khUTh2
+ P50NQcCD2yVFW1DujKPqYOdAnOG4/EiflHNKxadwVy9FM1XAtKKH705P3GlFc7a8+KOE
+ Y/Ug275YdeMCdF6cxbMv068GbeyLjbVJFEl6MNWMthf1LzTYGcHjkFO1QRa4be7R1OQU
+ 0hI9Fa0m3vb2ph/f93sIPpeA0QArpDaOOLq9d0ckHjlaam8N9rw6YS6bW1CMawZUCAxn
+ bfYg==
+X-Gm-Message-State: AOJu0Ywy9cS7kNmf0lcaA/IUyVS9TywgDC1VqvJcMutyh5LyG3YnjpLe
+ ZHJUkYHFz84q3btL0ohiGFPk69zfGOGsAZxjRVhAKe34fMCRfXu7BaFVJdgn1qsY4YOZNP460Ri
+ n1rJja5nxUhKL3GxfJ6JIGrWPtR+5t7pUuSfXnJkaAGK1fK/JC7+ZxFvXV7Sx/jmpZ73Jb24ka7
+ D9QlUYhiLe3ERP4xvnl/ePuc9SwBCtiFWI4g==
+X-Gm-Gg: ASbGncsgXR7DEo2Ld40NBkall/Zse4A99ebbV3b+BY5CkmiPEcsZjIL8jFWmrJOSwZc
+ lpAsYzpyu6ArWO1SBbofPBXurDIas/U0baHv/Cf1ekJyz0iNRGpiKnf4ZKmIS83oGd/M6LE6KbB
+ 93fjoQsIipRwdocu2aTviBd/N6Fg9YvGSQIod5X0fKB/Dzwv+cmec4eMEcA/dbXHKTCmcMqHTfp
+ O2Nl1nSPWgV0yibm1rReIoF/MKJyeffyyn0xluP+3uWNQSxlaVWBP8n1yP+++73Nm+JrtDXEqDX
+ W5Qar8XQe0oYw1tk+bJHOmIAZGY99y4k6zkCNBVPMz0i6MiG2UXga/nzAdQPkZ+pAS8=
+X-Received: by 2002:a05:600c:468e:b0:477:63b5:7148 with SMTP id
+ 5b1f17b1804b1-477732298bbmr41798115e9.6.1762698918990; 
+ Sun, 09 Nov 2025 06:35:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVd3ngk0MBEx6uqvnrG/1n3mpzGOuiPvXoHFf2jzbyDF+3R4HArGNg6Pv6SIanSiXG3yBsEg==
+X-Received: by 2002:a05:600c:468e:b0:477:63b5:7148 with SMTP id
+ 5b1f17b1804b1-477732298bbmr41797785e9.6.1762698918244; 
+ Sun, 09 Nov 2025 06:35:18 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b2fb308f5sm8657371f8f.42.2025.11.09.06.35.15
+ 5b1f17b1804b1-47763e170ecsm87914155e9.2.2025.11.09.06.35.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 06:35:16 -0800 (PST)
-Date: Sun, 9 Nov 2025 09:35:14 -0500
+ Sun, 09 Nov 2025 06:35:17 -0800 (PST)
+Date: Sun, 9 Nov 2025 09:35:16 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 03/14] amd_iommu: Support 64-bit address for IOTLB lookup
-Message-ID: <637dc49a3ae6b72cdb6415dcdcdb22ff770f2c8d.1762698873.git.mst@redhat.com>
+ Albert Esteve <aesteve@redhat.com>, qemu-stable@nongnu.org,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL 04/14] vhost-user: fix shared object lookup handler logic
+Message-ID: <fde5930cc37175cfcd0f03a089e26f4458a52311.1762698873.git.mst@redhat.com>
 References: <cover.1762698873.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -97,7 +93,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1762698873.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,7 +102,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,166 +118,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Albert Esteve <aesteve@redhat.com>
 
-The physical AMD IOMMU supports up to 64 bits of IOVA. When a device tries
-to read or write from a given DMA address, the IOMMU translates the address
-using the I/O page tables assigned to that device. Since the emulated IOMMU
-uses per-device page tables, an ideal cache tag would need to be 68 bits
-(64-bit address - 12-bit page alignment + 16-bit device ID).
+Refactor backend_read() function and add a reply_ack variable
+to have the option for handlers to force tweak whether they should
+send a reply or not without depending on VHOST_USER_NEED_REPLY_MASK
+flag.
 
-The current software IOTLB implementation uses a GLib hash table with a
-64-bit key to hash both the IOVA and device ID, which limits the IOVA to 60
-bits. This causes a failure while setting up the device when a guest is
-booted with "iommu.forcedac=1", which forces the use of DMA addresses at the
-top of the 64-bit address space.
+This fixes an issue with
+vhost_user_backend_handle_shared_object_lookup() logic, as the
+error path was not closing the backend channel correctly. So,
+we can remove the reply call from within the handler, make
+sure it returns early on errors as other handlers do and
+set the reply_ack variable on backend_read() to true to ensure
+that it will send a response, thus keeping the original intent.
 
-To address this issue, construct the 64-bit hash key using the upper 52 bits
-of IOVA (GFN) and lower 12 bits of the device ID to avoid truncation as much
-as possible (reducing hash collisions).
-
-Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Fixes: 1609476662 ("vhost-user: add shared_object msg")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251103203209.645434-4-alejandro.j.jimenez@oracle.com>
+Message-Id: <20251017072011.1874874-2-aesteve@redhat.com>
 ---
- hw/i386/amd_iommu.h |  4 ++--
- hw/i386/amd_iommu.c | 57 ++++++++++++++++++++++++++++++---------------
- 2 files changed, 40 insertions(+), 21 deletions(-)
+ hw/virtio/vhost-user.c | 40 +++++++++++++---------------------------
+ 1 file changed, 13 insertions(+), 27 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 38471b95d1..302ccca512 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -220,8 +220,8 @@
- #define PAGE_SIZE_PTE_COUNT(pgsz)       (1ULL << ((ctz64(pgsz) - 12) % 9))
- 
- /* IOTLB */
--#define AMDVI_IOTLB_MAX_SIZE 1024
--#define AMDVI_DEVID_SHIFT    36
-+#define AMDVI_IOTLB_MAX_SIZE        1024
-+#define AMDVI_GET_IOTLB_GFN(addr)   (addr >> AMDVI_PAGE_SHIFT_4K)
- 
- /* default extended feature */
- #define AMDVI_DEFAULT_EXT_FEATURES \
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 5c5cfd4989..d689a06eca 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -106,6 +106,11 @@ typedef struct AMDVIAsKey {
-     uint8_t devfn;
- } AMDVIAsKey;
- 
-+typedef struct AMDVIIOTLBKey {
-+    uint64_t gfn;
-+    uint16_t devid;
-+} AMDVIIOTLBKey;
-+
- uint64_t amdvi_extended_feature_register(AMDVIState *s)
- {
-     uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
-@@ -377,16 +382,6 @@ static void amdvi_log_pagetab_error(AMDVIState *s, uint16_t devid,
-              PCI_STATUS_SIG_TARGET_ABORT);
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index aac98f898a..4b0fae12ae 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1668,14 +1668,6 @@ static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
+     return !qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), errp);
  }
  
--static gboolean amdvi_uint64_equal(gconstpointer v1, gconstpointer v2)
+-static bool
+-vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
+-                                  VhostUserPayload *payload, Error **errp)
 -{
--    return *((const uint64_t *)v1) == *((const uint64_t *)v2);
+-    hdr->size = sizeof(payload->u64);
+-    return vhost_user_send_resp(ioc, hdr, payload, errp);
 -}
 -
--static guint amdvi_uint64_hash(gconstpointer v)
--{
--    return (guint)*(const uint64_t *)v;
--}
--
- static gboolean amdvi_as_equal(gconstpointer v1, gconstpointer v2)
+ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
+                                  int *dmabuf_fd)
  {
-     const AMDVIAsKey *key1 = v1;
-@@ -425,11 +420,30 @@ static AMDVIAddressSpace *amdvi_get_as_by_devid(AMDVIState *s, uint16_t devid)
-                              amdvi_find_as_by_devid, &devid);
- }
+@@ -1716,19 +1708,15 @@ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
  
-+static gboolean amdvi_iotlb_equal(gconstpointer v1, gconstpointer v2)
-+{
-+    const AMDVIIOTLBKey *key1 = v1;
-+    const AMDVIIOTLBKey *key2 = v2;
-+
-+    return key1->devid == key2->devid && key1->gfn == key2->gfn;
-+}
-+
-+static guint amdvi_iotlb_hash(gconstpointer v)
-+{
-+    const AMDVIIOTLBKey *key = v;
-+    /* Use GPA and DEVID to find the bucket */
-+    return (guint)(key->gfn << AMDVI_PAGE_SHIFT_4K |
-+                   (key->devid & ~AMDVI_PAGE_MASK_4K));
-+}
-+
-+
- static AMDVIIOTLBEntry *amdvi_iotlb_lookup(AMDVIState *s, hwaddr addr,
-                                            uint64_t devid)
+ static int
+ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
+-                                               QIOChannel *ioc,
+-                                               VhostUserHeader *hdr,
+-                                               VhostUserPayload *payload)
++                                               VhostUserShared *object)
  {
--    uint64_t key = (addr >> AMDVI_PAGE_SHIFT_4K) |
--                   ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+    AMDVIIOTLBKey key = {
-+        .gfn = AMDVI_GET_IOTLB_GFN(addr),
-+        .devid = devid,
-+    };
-     return g_hash_table_lookup(s->iotlb, &key);
- }
+     QemuUUID uuid;
+     CharFrontend *chr = u->user->chr;
+-    Error *local_err = NULL;
+     int dmabuf_fd = -1;
+     int fd_num = 0;
  
-@@ -451,8 +465,10 @@ static gboolean amdvi_iotlb_remove_by_devid(gpointer key, gpointer value,
- static void amdvi_iotlb_remove_page(AMDVIState *s, hwaddr addr,
-                                     uint64_t devid)
- {
--    uint64_t key = (addr >> AMDVI_PAGE_SHIFT_4K) |
--                   ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+    AMDVIIOTLBKey key = {
-+        .gfn = AMDVI_GET_IOTLB_GFN(addr),
-+        .devid = devid,
-+    };
-     g_hash_table_remove(s->iotlb, &key);
- }
+-    memcpy(uuid.data, payload->object.uuid, sizeof(payload->object.uuid));
++    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
  
-@@ -463,8 +479,10 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
-     /* don't cache erroneous translations */
-     if (to_cache.perm != IOMMU_NONE) {
-         AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
--        uint64_t *key = g_new(uint64_t, 1);
--        uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
-+        AMDVIIOTLBKey *key = g_new(AMDVIIOTLBKey, 1);
-+
-+        key->gfn = AMDVI_GET_IOTLB_GFN(gpa);
-+        key->devid = devid;
- 
-         trace_amdvi_cache_update(domid, PCI_BUS_NUM(devid), PCI_SLOT(devid),
-                 PCI_FUNC(devid), gpa, to_cache.translated_addr);
-@@ -477,7 +495,8 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
-         entry->perms = to_cache.perm;
-         entry->translated_addr = to_cache.translated_addr;
-         entry->page_mask = to_cache.addr_mask;
--        *key = gfn | ((uint64_t)(devid) << AMDVI_DEVID_SHIFT);
-+        entry->devid = devid;
-+
-         g_hash_table_replace(s->iotlb, key, entry);
-     }
- }
-@@ -2526,8 +2545,8 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+-    payload->u64 = 0;
+     switch (virtio_object_type(&uuid)) {
+     case TYPE_DMABUF:
+         dmabuf_fd = virtio_lookup_dmabuf(&uuid);
+@@ -1737,18 +1725,16 @@ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
+     {
+         struct vhost_dev *dev = virtio_lookup_vhost_device(&uuid);
+         if (dev == NULL) {
+-            payload->u64 = -EINVAL;
+-            break;
++            return -EINVAL;
          }
+         int ret = vhost_user_get_shared_object(dev, uuid.data, &dmabuf_fd);
+         if (ret < 0) {
+-            payload->u64 = ret;
++            return ret;
+         }
+         break;
+     }
+     case TYPE_INVALID:
+-        payload->u64 = -EINVAL;
+-        break;
++        return -EINVAL;
      }
  
--    s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
--                                     amdvi_uint64_equal, g_free, g_free);
-+    s->iotlb = g_hash_table_new_full(amdvi_iotlb_hash,
-+                                     amdvi_iotlb_equal, g_free, g_free);
+     if (dmabuf_fd != -1) {
+@@ -1757,11 +1743,6 @@ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
  
-     s->address_spaces = g_hash_table_new_full(amdvi_as_hash,
-                                      amdvi_as_equal, g_free, g_free);
+     if (qemu_chr_fe_set_msgfds(chr, &dmabuf_fd, fd_num) < 0) {
+         error_report("Failed to set msg fds.");
+-        payload->u64 = -EINVAL;
+-    }
+-
+-    if (!vhost_user_backend_send_dmabuf_fd(ioc, hdr, payload, &local_err)) {
+-        error_report_err(local_err);
+         return -EINVAL;
+     }
+ 
+@@ -1790,6 +1771,7 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+     struct iovec iov;
+     g_autofree int *fd = NULL;
+     size_t fdsize = 0;
++    bool reply_ack;
+     int i;
+ 
+     /* Read header */
+@@ -1808,6 +1790,8 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+         goto err;
+     }
+ 
++    reply_ack = hdr.flags & VHOST_USER_NEED_REPLY_MASK;
++
+     /* Read payload */
+     if (qio_channel_read_all(ioc, (char *) &payload, hdr.size, &local_err)) {
+         error_report_err(local_err);
+@@ -1833,8 +1817,10 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+                                                              &payload.object);
+         break;
+     case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
+-        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
+-                                                             &hdr, &payload);
++        /* The backend always expects a response */
++        reply_ack = true;
++        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque,
++                                                             &payload.object);
+         break;
+     default:
+         error_report("Received unexpected msg type: %d.", hdr.request);
+@@ -1845,7 +1831,7 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+      * REPLY_ACK feature handling. Other reply types has to be managed
+      * directly in their request handlers.
+      */
+-    if (hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
++    if (reply_ack) {
+         payload.u64 = !!ret;
+         hdr.size = sizeof(payload.u64);
+ 
 -- 
 MST
 
