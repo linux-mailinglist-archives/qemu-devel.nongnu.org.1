@@ -2,106 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1B2C44049
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871C0C44159
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 16:20:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI6WC-0002JJ-4I; Sun, 09 Nov 2025 09:35:48 -0500
+	id 1vI7CO-0008MB-7i; Sun, 09 Nov 2025 10:19:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6WA-0002Iv-FS
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vI7CJ-0008Ke-AO
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 10:19:19 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W9-0001pm-1r
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762698944;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=91i3UOyc3eezBkr70nZBeo508ef7mwoghfHMmpZOf8Q=;
- b=K22F+vu/OzNm+u6G6B8UQnwFaow627TYeIgFiLSPVI5fwhs74R3/luDiZWlujN5wPfTu8K
- v8hqYFlidl+ctz9flWIgdy84a4K4y958EEzSNmG/7Y5LfzcdNGhA47Fb/59PLg/F6glON/
- KWST9H70iO94aS345u3UeW7jt6adJ+A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-LwZLiGvqMGS61XFzcNncGQ-1; Sun, 09 Nov 2025 09:35:43 -0500
-X-MC-Unique: LwZLiGvqMGS61XFzcNncGQ-1
-X-Mimecast-MFC-AGG-ID: LwZLiGvqMGS61XFzcNncGQ_1762698942
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-429c521cf2aso1515623f8f.3
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762698942; x=1763303742; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=91i3UOyc3eezBkr70nZBeo508ef7mwoghfHMmpZOf8Q=;
- b=CKamfHSHW8XHgQiscc6H+rNSMsWLwAZoH5igMCmbvxdUPfbdYDVQ+nT+csVNVDTvTi
- uJgNsBHt8qYJQhJQmBWfk0+GNlMk3YNOlO/Z1hx/et3wSbOg9sqoxvf4Vb390GXCE0AV
- OVfbGWpQDDe5OcFOafweiPmBzSVyQo5eMi+tT6iaZAwMpexZ7hyV/jtgv/JGiJgsnu94
- VsOqA6oBLLmGlXDrOtr69+sIE5hHN0XjOcUmWmFLm3BVR5eELJilNgKj1f/7nn+vz7dG
- +wPnHFi3R+v1CxCJFQTtW8Dydp4nMdtqhNSpXmdB60q0fi/Y3b9uWbHSvfhpAU9Ol/9+
- Aj8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762698942; x=1763303742;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=91i3UOyc3eezBkr70nZBeo508ef7mwoghfHMmpZOf8Q=;
- b=jh5kzzVjvzHt+QtB3K90WvdMWg1ZjwSqFVh172/lpUkDu1PLtS2gbX3C/uBi05WV3c
- gkHMn1fZQfcSMQTLNDQ5g11l7A1WkLpkpgY/+aIFdvrgPEbDZJTiMJOwLXVS3ogcSElm
- Id9mXgHuJmM86+Ik4SAp68U1CJVmVXVqd0hS0OwUhZC122n0QhHuPGE9UrVVONDx+czQ
- W6Od41XLr9/XRvstOtatAHQiCz3CW9bAbm/jZHSNuhMP4FFnYfrlrv+gMV6YFFlirnUZ
- hd+hFwGkqbVqstBavcX1iFk5bdXOEiK/d68lbHKAP3U3U4ejHQVU5WU6EilfoATBI2EB
- H/TQ==
-X-Gm-Message-State: AOJu0YzOFh7xSYL17JJ3h4vomlOszj9hZt5YMRj3BUegf+S0sl2P01cO
- iAwQuwWjUyBGuHj91QvZwvmQINWP/SrlwhZutm6PA/Ucmpd0r7pQ34+iizs2wryeAN9WIsFgp2W
- JNqTz64i3LNAzMUR4PYuRh3GEFV/wCIQeHRW+IIUrF6kGe6z3+4iOjatgnZLBSHT5bgsVtpDUYb
- fxHHQSasVt73CqAvf9/heuHumm6bkmgSDXTw==
-X-Gm-Gg: ASbGnctrbFg1axhpC+DHtGuS8QUuhO9eRqZlCUR28lofVvQ27iivbhS3Z6Pe67SH5Xj
- luXB4ZwquJpXVPGG/lu+kMoXwsofs6ISPysVVe7XR3PW1fxoOknivoE4KN2cRH9v90ylDV6MR2c
- F3G+/QnVWWaywaA55gJ5ctfJtSwInWAhxJbyg36pCjwRSahtmmh2BvzQK6yhFcdCwZHfCB/Cw88
- tmzoEWybqN2lPmtxqXim1Q3fTFsXGmHAsaCYs5msMnQqF7FsbyYQsdOHRTthtcu0ZyCbSkQo+s1
- 5KtTL+1A+ZBCow1zchY6k+A9hsx57JG1mBgA7Sd0/RidixkvevPfWkhZ6t/3SsEkXeE=
-X-Received: by 2002:a05:6000:3108:b0:429:c4bb:fbc7 with SMTP id
- ffacd0b85a97d-42b2dc1e2f9mr3968901f8f.16.1762698941659; 
- Sun, 09 Nov 2025 06:35:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEEoqDzmGV6WXGm+1tuYHmCXemRc+5x+atrWLC4vOdFzBABDC0YzorwiF+LSsBUyvIK0r+18w==
-X-Received: by 2002:a05:6000:3108:b0:429:c4bb:fbc7 with SMTP id
- ffacd0b85a97d-42b2dc1e2f9mr3968879f8f.16.1762698941070; 
- Sun, 09 Nov 2025 06:35:41 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b2f7a0512sm9051996f8f.18.2025.11.09.06.35.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 06:35:40 -0800 (PST)
-Date: Sun, 9 Nov 2025 09:35:39 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Alyssa Ross <hi@alyssa.is>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 14/14] vhost-user.rst: clarify when FDs can be sent
-Message-ID: <97f24a0496be9e0a7216fea1fa0d54c1db9066e2.1762698873.git.mst@redhat.com>
-References: <cover.1762698873.git.mst@redhat.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vI7CC-00012g-LV
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 10:19:15 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1762701530; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=k+TjIGx9qPothEjTOhhZ+96K0E36yTs9Lm0KhsdkXBRXTLBPZNwxJql6CZuw1BPyR7c/Q38VTaa8wejYtrDrqbxoPbQMMafRQlz671b6MSEtjaPswF1LqCwMjOu3vKYNT5MJs2hwmTBayYtJBmp7v/jL3IkAZ1ZCN0pMREMp1O0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1762701530;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=sNIGPchNyOyKBzNPFMt8KOVZ3abtZoOnoi0CS90fHFo=; 
+ b=TZZAtBThM5VqhrJL2OeXA7wC8MVimOlci9XFWeS5qUfCYi4BgmFjAbsy3O0MylT/Ebqg1uwwfpFedIsYuvGH9/oxq2DrTPgeyxXahchXpiNMfim/W/ucSUBTFwI1BJUI+kdoBzQpBqGzIVlbHzZIwefAkJuJA5l+frq3ETgn+Mk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762701530; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=sNIGPchNyOyKBzNPFMt8KOVZ3abtZoOnoi0CS90fHFo=;
+ b=CeHdEOurJjhuAWbfTine/dFSfnl/K2/ZyXlqxM2YaIoccXO/wHlAEiVd1yds3H7L
+ AuUgyMTKN3EsdhiSHY1wgYw3Yu/nqEphpklD4LlYW0baEKyjj2MWpxP4WxJisXhEWJO
+ aBJsRJe3qTWzLHe0ysKxAYH0nAl6SerwXeQnDqMY=
+Received: by mx.zohomail.com with SMTPS id 1762701526913339.8723152590693;
+ Sun, 9 Nov 2025 07:18:46 -0800 (PST)
+Message-ID: <9c98c743-c0bd-4b11-a899-923fd0b2633c@collabora.com>
+Date: Sun, 9 Nov 2025 18:18:39 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1762698873.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 00/10] Support virtio-gpu DRM native context
+To: Yiwei Zhang <zzyiwei@gmail.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>
+Cc: "Huang, Ray" <Ray.Huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
+ <gert.wollny@collabora.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Gurchetan Singh <gurchetansingh@chromium.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ Rob Clark <robdclark@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+References: <20251020233949.506088-1-dmitry.osipenko@collabora.com>
+ <DM8PR12MB543171EE8DB9CD0272C7A99D8DC4A@DM8PR12MB5431.namprd12.prod.outlook.com>
+ <CAJ+hS_gGVc++CXCOh6uTcD2H6cn4ZNA_A=EWdWHYyo8HBhUPmg@mail.gmail.com>
+ <CAJ+hS_j=WRqXZNQCe1DrxjnFB6Haw7nc+fu-2HYoaa2uounMrg@mail.gmail.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAJ+hS_j=WRqXZNQCe1DrxjnFB6Haw7nc+fu-2HYoaa2uounMrg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,45 +98,282 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alyssa Ross <hi@alyssa.is>
+On 11/9/25 04:29, Yiwei Zhang wrote:
+> On Sat, Nov 8, 2025 at 4:06 AM Yiwei Zhang <zzyiwei@gmail.com> wrote:
+>>
+>> On Tue, Nov 4, 2025 at 2:02 AM Pelloux-Prayer, Pierre-Eric
+>> <Pierre-eric.Pelloux-prayer@amd.com> wrote:
+>>>
+>>> [Public]
+>>>
+>>> Hi,
+>>>
+>>> The whole series is Acked-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+>>>
+>>> Thanks a lot Dmitry!
+>>>
+>>> Pierre-Eric
+>>>
+>>> ________________________________
+>>> From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>>> Sent: Tuesday, October 21, 2025 1:39 AM
+>>> To: Akihiko Odaki <akihiko.odaki@daynix.com>; Huang, Ray <Ray.Huang@amd.com>; Marc-André Lureau <marcandre.lureau@redhat.com>; Philippe Mathieu-Daudé <philmd@linaro.org>; Gerd Hoffmann <kraxel@redhat.com>; Alex Bennée <alex.bennee@linaro.org>; Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>; Michael S . Tsirkin <mst@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>
+>>> Cc: Gert Wollny <gert.wollny@collabora.com>; qemu-devel@nongnu.org <qemu-devel@nongnu.org>; Gurchetan Singh <gurchetansingh@chromium.org>; Alyssa Ross <hi@alyssa.is>; Roger Pau Monné <roger.pau@citrix.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Stabellini, Stefano <stefano.stabellini@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Ragiadakou, Xenia <Xenia.Ragiadakou@amd.com>; Huang, Honglei1 <Honglei1.Huang@amd.com>; Zhang, Julia <Julia.Zhang@amd.com>; Chen, Jiqian <Jiqian.Chen@amd.com>; Rob Clark <robdclark@gmail.com>; Yiwei Zhang <zzyiwei@gmail.com>; Sergio Lopez Pascual <slp@redhat.com>
+>>> Subject: [PATCH v14 00/10] Support virtio-gpu DRM native context
+>>>
+>>> This patchset adds DRM native context support to VirtIO-GPU on QEMU.
+>>>
+>>> Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
+>>> DRM native context [1] mediates lower level kernel driver UAPI, which
+>>> reflects in a less CPU overhead and less/simpler code needed to support it.
+>>> DRM context consists of a host and guest parts that have to be implemented
+>>> for each GPU driver. On a guest side, DRM context presents a virtual GPU as
+>>> a real/native host GPU device for GL/VK applications.
+>>>
+>>> [1] https://www.youtube.com/watch?v=9sFP_yddLLQ
+>>>
+>>> Today there are four DRM native context drivers existing in a wild:
+>>>
+>>>   - Freedreno (Qualcomm SoC GPUs), completely upstreamed
+>>>   - AMDGPU, completely upstreamed
+>>>   - Intel (i915), merge requests are opened
+>>>   - Asahi (Apple SoC GPUs), partially merged upstream
+>>>
+>>> # How to try out DRM context:
+>>>
+>>> 1. DRM context uses host blobs and on host requires v6.13 or newer version
+>>> of Linux kernel that contains necessary KVM fixes.
+>>>
+>>> 2. Use latest available Mesa (both guest and host) and libvirglrenderer
+>>> versions. On guest, build Mesa with enabled virtio native context support.
+>>>
+>>> 3. On guest, use latest Linux kernel v6.14 or newer.
+>>>
+>>> Example QEMU cmdline that enables DRM context:
+>>>
+>>>   qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm_native_context=on \
+>>>       -machine q35,accel=kvm -m 8G
+>>>
+>>> # Notes about known problems:
+>>>
+>>> 1. DRM contexts are mapping host blobs extensively and these mapping
+>>> operations work slowly in QEMU. We will need to optimize hostmem
+>>> unmapping that currently happens in a deffered RCU work, blocking
+>>> GPU for a substantial time. WIP fixes available at [2][3].
+>>>
+>>> [2] https://lore.kernel.org/qemu-devel/20251016-force-v1-1-919a82112498@rsg.ci.i.u-tokyo.ac.jp/
+>>> [3] https://lore.kernel.org/qemu-devel/20251014111234.3190346-6-alex.bennee@linaro.org/
+>>>
+>>> 2. Linux kernel virtio-gpu driver doesn't limit display refresh rate,
+>>> causing poor performance. Fix availalble in drm-misc-next tree [4]
+>>> and should land upstream with v6.19+ kernel.
+>>>
+>>> [4] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/a036f5fceedb9fbd715565fef7b824a121503de7
+>>>
+>>> 3. Xorg on guest creates initial dumb buffer that is a vrend buffer, which
+>>>    can't be re-used by native contexts. This may cause drawing artifacts.
+>>>    Boot kernel with disabled fbdev using drm_client_lib.active="" kernel
+>>>    cmdline parameter to work around the issue.
+>>>
+>>>    Wayland on guest isn't affected by this issue.
+>>>
+>>> Changelog:
+>>>
+>>> v14:- Rebased on top of recent QEMU staging tree.
+>>>
+>>>     - DRM native context in QEMU now requires virglrenderer v1.2.0+
+>>>       containing fix for async-fencing not working after guest reboot.
+>>>
+>>>     - Updated doc patch with new Asahi nctx rquirements info. Asahi
+>>>       support landed to virglrenderer v1.2.0.
+>>>
+>>> v13:- Updated Asahi nctx MR link in the doc patch. Old MR was closed
+>>>       and new opened.
+>>>
+>>>     - Fixed compiler warning about unused variable when using older
+>>>       virglrenderer version.
+>>>
+>>> v12:- Rebased on top of recent QEMU/staging and a fix from Yiwei Zhang:
+>>>
+>>>         https://lore.kernel.org/qemu-devel/20250518152651.334115-1-zzyiwei@gmail.com/
+>>>
+>>>     - Async-fence and native context features now require virglrenderer > 1.1.1
+>>>       that contains fix needed for resetting virtio-gpu-gl properly on QEMU
+>>>       reboot:
+>>>
+>>>         https://gitlab.freedesktop.org/virgl/virglrenderer/-/commit/6f4681ff09cb17aa2d6715dbc6034eb3abe5711d
+>>>
+>>>     - Added r-b from Akihiko Odaki to the doc patch.
+>>>
+>>>     - Corrected resetting of async fences list that was done on scanout
+>>>       reset in v11 instead of virtio-gpu reset.
+>>>
+>>> v11:- Added column for libvirglrenderer host requrements versions and
+>>>       corrected Asahi kernel link. Suggested by Akihiko Odaki.
+>>>
+>>> v10:- Added links to Asahi and i915 virglrenderer MRs, link to Asahi host
+>>>       kernel. Suggested by Akihiko Odaki.
+>>>
+>>>     - Renamed gfxstream guest requrements table's colum to match the host
+>>>       requirements table. Suggested by Akihiko Odaki.
+>>>
+>>> v9: - Updated doc patch by addresing review comments from Akihiko Odaki.
+>>>       Made kernel requirements section specific to guest kernel and
+>>>       removed reference to host requirements. Removed examples of
+>>>       external projects' build flags.
+>>>
+>>>     - Added guest kernel minimum versions to the guest requirements table.
+>>>
+>>> v8: - Addressed review comments from Akihiko Odaki on the doc patch.
+>>>
+>>>     - Added r-bs from Akihiko Odaki on the doc patches.
+>>>
+>>>     - Extended vrend doc with info about hostmem requirement for GL 4.6
+>>>
+>>> v7: - Added r-b from Alex Bennée to the async fencing patch.
+>>>
+>>>     - Updated virtio-gpu doc patch with addressed review comments
+>>>       from Akihiko Odaki.
+>>>
+>>> v6: - Fixed compilation warning using older version of virglrenderer,
+>>>       which wasn't fixed properly in v5.
+>>>
+>>>     - Added t-bs from Alex Bennée.
+>>>
+>>>     - Added patches to improve virgl/venus doc by adding links
+>>>       to the Mesa doc as was suggested by Akihiko Odaki.
+>>>
+>>>     - Updated patch that documents guest/host requirements. Added
+>>>       links to Asahi nctx and reworked the doc structure by adding
+>>>       requirements to each context-type section instead of having
+>>>       one big blob or requirements, which was objected by Akihiko Odaki.
+>>>
+>>> v5: - Added r-bs from Akihiko Odaki.
+>>>
+>>>     - Added acks from Michael Tsirkin.
+>>>
+>>>     - Fixed compilation warning using older version of virglrenderer that
+>>>       was reported by Alex Bennée. Noticed that I need to keep old
+>>>       virgl_write_fence() code around for the older virglrenderer in
+>>>       "Support  asynchronous fencing" patch, so added it back and verified
+>>>       that old virglrenderer works properly.
+>>>
+>>>     - Added new patch from Alex Bennée that adds more virtio-gpu
+>>>       documentation with a couple corrections and additions to it from me.
+>>>
+>>>     - Rebased patches on top of latest staging tree.
+>>>
+>>> v4: - Improved SDL2/dmabuf patch by reusing existing Meson X11 config
+>>>       option, better handling EGL error and extending comment telling
+>>>       that it's safe to enable SDL2 EGL preference hint. As was suggested
+>>>       by Akihiko Odaki.
+>>>
+>>>     - Replaced another QSLIST_FOREACH_SAFE with QSLIST_EMPTY+FIRST in
+>>>       the async-fencing patch for more consistency of the code. As was
+>>>       suggested by Akihiko Odaki.
+>>>
+>>>     - Added missing braces around if-statement that was spotted by
+>>>       Alex Bennée.
+>>>
+>>>     - Renamed 'drm=on' option of virtio-gpu-gl device to
+>>>       'drm_native_context=on' for more clarity as was suggested by
+>>>       Alex Bennée. Haven't added added new context-type option that
+>>>       was also proposed by Alex, might do it with a separate patch.
+>>>       This context-type option will duplicate and depecate existing
+>>>       options, but in a longer run likely will be worthwhile adding
+>>>       it.
+>>>
+>>>     - Dropped Linux headers-update patch as headers has been updated
+>>>       in the staging tree.
+>>>
+>>> v3: - Improved EGL presence-check code on X11 systems for the SDL2
+>>>       hint that prefers EGL over GLX by using better ifdefs and checking
+>>>       Xlib presence at a build time to avoid build failure if lib SDL2
+>>>       and system are configured with a disabled X11 support. Also added
+>>>       clarifying comment telling that X11 hint doesn't affect Wayland
+>>>       systems. Suggested by Akihiko Odaki.
+>>>
+>>>     - Corrected strerror(err) that used negative error where it should
+>>>       be positive and vice versa that was caught by Akihiko Odaki. Added
+>>>       clarifying comment for the case where we get positive error code
+>>>       from virglrenderer that differs from other virglrenderer API functions.
+>>>
+>>>     - Improved QSLIST usage by dropping mutex protecting the async fence
+>>>       list and using atomic variant of QSLIST helpers instead. Switched away
+>>>       from using FOREACH helper to improve readability of the code, showing
+>>>       that we don't precess list in unoptimal way. Like was suggested by
+>>>       Akihiko Odaki.
+>>>
+>>>     - Updated patchset base to Venus v18.
+>>>
+>>> v2: - Updated SDL2-dmabuf patch by making use of error_report() and
+>>>       checking presense of X11+EGL in the system before making SDL2
+>>>       to prefer EGL backend over GLX, suggested by Akihiko Odaki.
+>>>
+>>>     - Improved SDL2's dmabuf-presence check that wasn't done properly
+>>>       in v1, where EGL was set up only after first console was fully
+>>>       inited, and thus, SDL's display .has_dmabuf callback didn't work
+>>>       for the first console. Now dmabuf support status is pre-checked
+>>>       before console is registered.
+>>>
+>>>     - Updated commit description of the patch that fixes SDL2's context
+>>>       switching logic with a more detailed explanation of the problem.
+>>>       Suggested by Akihiko Odaki.
+>>>
+>>>     - Corrected rebase typo in the async-fencing patch and switched
+>>>       async-fencing to use a sigle-linked list instead of the double,
+>>>       as was suggested by Akihiko Odaki.
+>>>
+>>>     - Replaced "=true" with "=on" in the DRM native context documentation
+>>>       example and made virtio_gpu_virgl_init() to fail with a error message
+>>>       if DRM context can't be initialized instead of giving a warning
+>>>       message, as was suggested by Akihiko Odaki.
+>>>
+>>>     - Added patchew's dependecy tag to the cover letter as was suggested by
+>>>       Akihiko Odaki.
+>>>
+>>> Alex Bennée (1):
+>>>   docs/system: virtio-gpu: Document host/guest requirements
+>>>
+>>> Dmitry Osipenko (8):
+>>>   ui/sdl2: Restore original context after new context creation
+>>>   virtio-gpu: Handle virgl fence creation errors
+>>>   virtio-gpu: Support asynchronous fencing
+>>>   virtio-gpu: Support DRM native context
+>>>   ui/sdl2: Don't disable scanout when display is refreshed
+>>>   ui/gtk: Don't disable scanout when display is refreshed
+>>>   docs/system: virtio-gpu: Add link to Mesa VirGL doc
+>>>   docs/system: virtio-gpu: Update Venus link
+>>>
+>>> Pierre-Eric Pelloux-Prayer (1):
+>>>   ui/sdl2: Implement dpy dmabuf functions
+>>>
+>>>  docs/system/devices/virtio-gpu.rst | 116 +++++++++++++++++-
+>>>  hw/display/virtio-gpu-gl.c         |   7 ++
+>>>  hw/display/virtio-gpu-virgl.c      | 185 ++++++++++++++++++++++++++++-
+>>>  hw/display/virtio-gpu.c            |  15 +++
+>>>  include/hw/virtio/virtio-gpu.h     |  14 +++
+>>>  include/ui/sdl2.h                  |   7 ++
+>>>  meson.build                        |   8 +-
+>>>  ui/gtk-egl.c                       |   1 -
+>>>  ui/gtk-gl-area.c                   |   1 -
+>>>  ui/sdl2-gl.c                       |  70 ++++++++++-
+>>>  ui/sdl2.c                          |  42 +++++++
+>>>  11 files changed, 449 insertions(+), 17 deletions(-)
+>>>
+>>> --
+>>> 2.51.0
+>>>
+>>
+>> The whole series looks good to me, and Tested-by: Yiwei Zhang
+>> <zzyiwei@gmail.com>
+> 
+> Just to clarify. My testing is done with venus + virgl to verify async
+> fence cb in QEMU is working as intended.
 
-Previously the spec did not say where in a message the FDs should be
-sent.  As I understand it, FDs transferred in ancillary data will
-always be received along with the first byte of the data they were
-sent with, so we should define which byte that is.  Going by both
-libvhost-user in QEMU and the rust-vmm crate, that byte is the first
-byte of the message header.  This is important to specify because it
-would make back-end implementation significantly more complicated if
-receiving file descriptors in the middle of a message had to be
-handled.
+Thanks for the review and testing!
 
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251106192105.3456755-1-hi@alyssa.is>
----
- docs/interop/vhost-user.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-index 2e50f2ddfa..93a9c8df2b 100644
---- a/docs/interop/vhost-user.rst
-+++ b/docs/interop/vhost-user.rst
-@@ -411,6 +411,13 @@ in the ancillary data:
- * ``VHOST_USER_SET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
- * ``VHOST_USER_SET_DEVICE_STATE_FD``
- 
-+When sending file descriptors in ancilliary data, *front-end* should
-+associate the ancilliary data with a ``sendmsg`` operation (or
-+equivalent) that sends bytes starting with the first byte of the
-+message header.  *back-end* can therefore expect that file descriptors
-+will only be received in the first ``recvmsg`` operation for a message
-+header.
-+
- If *front-end* is unable to send the full message or receives a wrong
- reply it will close the connection. An optional reconnection mechanism
- can be implemented.
 -- 
-MST
-
+Best regards,
+Dmitry
 
