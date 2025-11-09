@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3A9C43F59
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 14:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF93C43F65
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:00:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI5vl-0006Wu-Hn; Sun, 09 Nov 2025 08:58:09 -0500
+	id 1vI5x8-0000kk-La; Sun, 09 Nov 2025 08:59:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI5uX-0005rD-Lw
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 08:56:54 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI5x5-0000j1-FU
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 08:59:31 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI5uU-0003Dg-UZ
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 08:56:52 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-640f627d01dso3953039a12.2
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 05:56:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI5x3-0003Rh-L9
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 08:59:31 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-640bd9039fbso4484721a12.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 05:59:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762696609; x=1763301409; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762696768; x=1763301568; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FXyWkcRB4xLhqbx591avjGr1JsFf+qkK+7mD7HDG6z8=;
- b=MkGBna0VBYxGvpT74kNLqjvE1vBfesbVeFQoxNvqkmjC0GTFKKcncixv4ZjJsdRkEo
- og73CTTbfr/pTRf38zjwclZoZNji7PUlXu68XUwcu3Vv9bl52WCKyZP+9Cn1UuQTyvJU
- yZDNCxKsdkX5nfH0PhmNxKoCeAeC9defo+ehYoINSd4LVryglnynvRTwQAMsNNC4G168
- 6t6VSolFbyyIZixIAll03swokwPl9t4wPuD2hsKrHENfOIAySLm4J/rzhphbSwIjCKXq
- RKQzOc+DGQlP68ZXhQpBWIGSV/pOhk3bJQATAPd+W4BRDJX1jVoQtcY9z4ho2vYJGg0l
- eQng==
+ bh=TwoLc0vvcAHe6FrRZqlSQXXFUE378WjuKdxhlU3DLRo=;
+ b=uFR77x+NAtELByd18bOnFHCVGPvUjVbORF6mYvq9vzAJ6Oq4APVB2Ca4/zZBzuIVKq
+ 1FY0RmkiVLjFQGImQS95FvBxBKCtuqdAA//aY+6WzWCLrlzJogfGH1EvIOYMkPkb3cnH
+ e3l9oztnMvIFp4FBlbEFIsNq3j/uYETF+wX9UjMlrDjwSv55S27cKUmQztmK7OvleMgM
+ CIJQzdesXfGyhm/zUSdHU7yNMC6LAhjNYMh07Zdao2rIM/K4ZrWbHlLzAJZbSx7F+uYw
+ f0w8eCta5pJybSZhMWIFs5CrOM3I4WJRE7FhOqnVEwNui+FP1mJzJSrkdIIHMXJzCqaK
+ A8yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762696609; x=1763301409;
+ d=1e100.net; s=20230601; t=1762696768; x=1763301568;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=FXyWkcRB4xLhqbx591avjGr1JsFf+qkK+7mD7HDG6z8=;
- b=ntWWWZqcPv/iezFbukn4gDzYY8c8d5NvI+152lLIUnN1PsI/S+WUfO/f93MHMZETAq
- ZCE7zcUBWdyE2j9QqJ6YsE7UWvet6x0eIev3CsWqOQ/N530Obsx3Snoz+RFiPOqicVDg
- 9oxRN8Yjyai8flamXbWdCa6nK/Tod28ojmsGVr4pohCPjSrkG+XcgJggVpQiMs4tLCMl
- ri2XZJ0Sid0+sAJ+vPHutNRDncH0BaHeZBRIjW1WNYuvkI1qzH4gbYsKxkYqz2QLYv/8
- L/AQW3QGSiKjIrGagMbjmrR68kP3/9e3NGqoLCMrVTFFoZYi8mfZzd/jwNFfkKPd4xla
- k/sg==
+ bh=TwoLc0vvcAHe6FrRZqlSQXXFUE378WjuKdxhlU3DLRo=;
+ b=Cjam2oDAz+ZVzFKsEW5765ICEIDx5YfmwdvMyAYEw1E9rxxC8UNrYJ0BvpPulbJtOu
+ 7V5QeioNwAfHZjHZmLvyMUHx7tdE73ynDX4HXfdr6aa0Fn0wp0EcepzwzB5NJePYZH2f
+ l0bu0DwCuijGxp7/v+jMKjLXvxcar80lw5d9rzXGGuE5Kpz2/JV9B5kFQv3Rp7JFEWuG
+ o8n9zoidVk6ybDHIplnvvmKDUHw9/gCX8MMz9BCFvqT6fdQzKpfnAj2kIh6PksaQVhER
+ iwLAkyvsiwCvy6W7YV1NvaA/bnUs0NafdImhU0vDID6w9zYdJ0W4/M/xBsgi2JjU2Nd1
+ bMww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU38A0SQ9VNwP4/lB6kwQ5H5Ah07sCvhJb05dzEqF/gI5mYt1dDcx75ch5Awoyr1tFUzfYwyUxBGIOT@nongnu.org
-X-Gm-Message-State: AOJu0Yzjj3zZtS113gXyNhoTv9jih9rm0uXIlcUwM1C4kG2bXZJiU003
- rMTJCRWiW5VumX2gmyev05bgwS2ifqTJxvi7tQtdHdQjX73DWnQGeD3MhemrS0/2+zg=
-X-Gm-Gg: ASbGncsEn6BdJSNvIIpcEBPSpKMiGY8Xls0pUJQ8SClUlnPY6adcvUeteEggdUUxI6u
- Xv5bleKJUyxUu59YouGd/M28d088I7sbYGQJ4HgQSNLSO72AL56DzVc3VqKajF9gGZ5srcUXdMU
- PA5OdA4kRHzKnjRBEAxYlXJlhtfWN89TZQt0SdIwnYyE0ohIq16zySrycckj3TBTlFPEz9s8LiD
- HoeqJsjx1IZ/BJWkhFYNPhm1datgYelnrHkH3UcFgjWFXA0BCQRh9WwlT6etGZ/rBhoanOl6RKV
- ffbDCTB9Vv3nZiwjvWWllo2whJjWkv7SuDwHoeu1V7I3CXthm/Mb57vuA5anHZFRrYl/glh7CV9
- +brDkchzK2ih659qo/UaLX4b0fPVnKcv6+2x5BIBslAjE25qssAsJWLw6w3qmBpUrZaWNBohs8w
- Hr/2J7XCra9bl14PpzsVszgfBOMFZATAZa+n+ftl0/O3615+M=
-X-Google-Smtp-Source: AGHT+IFCC7BjoObcMWhLaPE3JgaWE4Jy+KhQMFCHAUSpLEz1LLknJItQ2/MgnZ7VuLtOSaEv3Julfg==
-X-Received: by 2002:a05:6402:3546:b0:63c:1066:8bec with SMTP id
- 4fb4d7f45d1cf-6415e81d8d1mr4106416a12.35.1762696609097; 
- Sun, 09 Nov 2025 05:56:49 -0800 (PST)
+ AJvYcCUlgoOCtn6B0YgfzZlu9Pexj6mSAmsdYMiTUy2xsWpg6IinQiLCQY+UhgSJBeityISrvbOY7l9UZKMf@nongnu.org
+X-Gm-Message-State: AOJu0YzX1M+u7y1LIEVP0yDCrTHbWIpzc8hQ8tqk0M8gTTHCu6EQWYiK
+ JXLAwjt6mhJAfDl2ojDj6ov4JHDiwpWzKeXFWJPgabP1AcKQqUDg+8igM/Il6J571XA=
+X-Gm-Gg: ASbGncvxWUf5In1O/muK5YkiiL9nOlkCHZIMnM9mqCtpcw+uPH5Km8Ba7nMkdVzIaXe
+ y+nR7VLcqRsPp6vrNzhPFGpszFfngymzxiAoz4DG6DY+JwaN+z/aIVpZgR8/GVkNvdFNd1nu2oZ
+ hWFl7OkA/jUpeShK89VDqbelaCrxXWLB6b/7oji8XfpZG+yd+/5y+nckIJPqf74K7uJ4cBqnOJI
+ SwDz3OB7qV42l83AAWmN/3VOKCy1KAhdKHD4HBAbzWWGzJzwc4e8VHuPES2ZIfUFLvZuy6AIhTj
+ h5BkUd53sFQCxqWcPMvy7H0whlw7izigzhNeYkTne1jQKGV3m3h/9+6+ibF5Ok20OK0BjthqaXF
+ 34vLo7RG0F4DdfxXmzYScnKArHcFoQlo7hKAUO3APRXsKGtd3w5YmKePY4il9ISS76S7lp5SAZ6
+ 0DOwTDpTmBDnEj7T6GaQARM2hNZ1TTntTvTTfwm6vAvQj/ojdzvYpgabuFIA==
+X-Google-Smtp-Source: AGHT+IHWxZGfx2TvMYgSseWY40nHgOdTgkF/YV8pWgmQkftjg0gcgGHtub8jA3anYd20tKD9E6Gh6w==
+X-Received: by 2002:a05:6402:35d4:b0:640:be20:fc7b with SMTP id
+ 4fb4d7f45d1cf-6415e80a82cmr3912174a12.31.1762696767998; 
+ Sun, 09 Nov 2025 05:59:27 -0800 (PST)
 Received: from [192.168.2.7] (tmo-086-152.customers.d1-online.com.
  [80.187.86.152]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6411f862bd0sm9102037a12.26.2025.11.09.05.56.46
+ 4fb4d7f45d1cf-6415d91f486sm4414827a12.22.2025.11.09.05.59.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Nov 2025 05:56:48 -0800 (PST)
-Message-ID: <0a7bb9a8-c2c9-40b7-ade2-ea6c2da17251@linaro.org>
-Date: Sun, 9 Nov 2025 14:56:44 +0100
+ Sun, 09 Nov 2025 05:59:26 -0800 (PST)
+Message-ID: <264a1c41-dc4c-4158-9a71-5261f4d51b08@linaro.org>
+Date: Sun, 9 Nov 2025 14:59:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] hw/intc/riscv_aclint: rename cpu_riscv_read_rtc to
- riscv_aclint_mtimer_get_ticks
+Subject: Re: [PATCH 6/9] target/riscv: replace env->rdtime_fn with a time
+ source
 Content-Language: en-US
 To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org,
  qemu-riscv@nongnu.org
@@ -79,20 +79,20 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Francisco Iglesias <francisco.iglesias@amd.com>
 References: <20251107102340.471141-1-luc.michel@amd.com>
- <20251107102340.471141-4-luc.michel@amd.com>
+ <20251107102340.471141-7-luc.michel@amd.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251107102340.471141-4-luc.michel@amd.com>
+In-Reply-To: <20251107102340.471141-7-luc.michel@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,20 +109,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/11/25 11:23, Luc Michel wrote:
-> For more clarity, rename the cpu_riscv_read_rtc function to
-> riscv_aclint_mtimer_get_ticks:
->     - The ACLINT is the time source here, not the CPU,
->     - This function returns a number of ticks based on the timer
->       frequency.
+> Replace the env->rdtime_fn function pointer with an instance of the
+> RISCVCPUTimeSrcIf QOM interface.
 > 
-> Rename the _raw version of this function as well and the local variables
-> storing the result of those function.
+> This allows to remove the dependency on the ACLINT in the
+> riscv_timer_write_timecmp function:
+>     - This dependency was buggy because env->rdtime_fn_arg was an opaque
+>       pointer and was converted in riscv_timer_write_timecmp to a ACLINT
+>       without dynamic type check.
+>     - This will allow to have time sources provided by other devices than
+>       an ACLINT.
 > 
 > Signed-off-by: Luc Michel <luc.michel@amd.com>
 > ---
->   hw/intc/riscv_aclint.c | 31 ++++++++++++++++---------------
->   1 file changed, 16 insertions(+), 15 deletions(-)
+>   target/riscv/cpu.h         |  8 +++-----
+>   hw/intc/riscv_aclint.c     |  2 +-
+>   target/riscv/cpu_helper.c  |  7 -------
+>   target/riscv/csr.c         | 24 ++++++++++++------------
+>   target/riscv/time_helper.c | 15 +++++++++------
+>   5 files changed, 25 insertions(+), 31 deletions(-)
+
+
+> +void riscv_cpu_set_time_src(CPURISCVState *env, RISCVCPUTimeSrcIf *src)
+> +{
+> +    env->time_src = src;
+
+Worth asserting time_src is NULL? Regardless, good cleanup:
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +}
 
 
