@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DF8C448A4
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6286C44898
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:07:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIDYz-0007eF-RG; Sun, 09 Nov 2025 17:07:10 -0500
+	id 1vIDZ1-0007fO-W2; Sun, 09 Nov 2025 17:07:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYx-0007dH-UU
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:07 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYz-0007eM-EV
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:09 -0500
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYw-0005tt-Hi
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:07 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYy-0005uB-2I
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:09 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id AB99C439B2;
+ by sea.source.kernel.org (Postfix) with ESMTP id 351D440C18;
+ Sun,  9 Nov 2025 22:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06202C4CEF8;
  Sun,  9 Nov 2025 22:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EF2C4CEFB;
- Sun,  9 Nov 2025 22:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1762726025;
- bh=faF3cw0blnpSJDXWBDnPx0moZoO2Eaq0wCzTLHV9IOE=;
+ s=k20201202; t=1762726027;
+ bh=wYG7seUsKS5MQCHJuhkK5pMSkbpMKLwU9uw450sk38c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NBPLWiwSXjXSVYJD2HFKI9s6V9lipgq7DRHc+axxBeuyRHuMSNLS6/+nHwvlUSbV9
- 9kTkmFF2o6Nc3VgrtaSkfW1Aa+aY/afJv52jAL4f8EFOGkX/eoqBDrkGMTscQZ2nVf
- eaO1aA7D2Yj8HuyKXRV2QFxQL2o6bre2ggyyBzpOwGg4+mfgpSWXfaNG/KJZczQjiB
- SllfCJGxk/YWmYUIoKt1UCbvVVWaE653owCbM6WlNJhN7B8PaBEnwA9ePXVKY+K6PE
- hqjRAgDFu05N5EAK9sD6hGyMxS8CciRYnCnF0mzV00DPAJ9iCoceqJ9tsB5rVraVCT
- fO4ADloZVJJJw==
+ b=OOricwARyFaxtHOHf6WkDqy+sWiPRuMBYpRN0HsTJ1i6Y9MuVBG+ftJhUC7bkq0Gd
+ n6PUrr7Og4IBKppeSOb9J9nrSS9jNv7ik0SCOaBaEI6g3Gpj57nEYke1GcVBESvsyi
+ qTnWguQwFM9WE09UaNPBRjOms/pCIgeQJ6V5GxgZDfGhfG1JedwwejZCVYNvxn4N2j
+ psk25HIfvOqhYvmVwT8l2ztVxuuL1VD+T5oFAfl0IMziJ15moMgy1mE/1FatEBwKSX
+ yn3cYU8cDBmUf5z7ILUcL/sGbDyOkNinqfUgo5FeF1qN4Z9PUXVcL+cif0Co6JC1+v
+ k8knZFCg783Jg==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 5/7] ncr710: Add missing vmstate entries
-Date: Sun,  9 Nov 2025 23:06:52 +0100
-Message-ID: <20251109220654.46718-6-deller@kernel.org>
+Subject: [PULL 6/7] ncr710: Use address space of device instead of global
+ address space
+Date: Sun,  9 Nov 2025 23:06:53 +0100
+Message-ID: <20251109220654.46718-7-deller@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251109220654.46718-1-deller@kernel.org>
 References: <20251109220654.46718-1-deller@kernel.org>
@@ -73,63 +74,40 @@ Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/lasi_ncr710.c | 4 ++++
- hw/scsi/lasi_ncr710.h | 1 -
- hw/scsi/ncr53c710.c   | 2 +-
- hw/scsi/ncr53c710.h   | 1 +
- 4 files changed, 6 insertions(+), 2 deletions(-)
+ hw/scsi/ncr53c710.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/scsi/lasi_ncr710.c b/hw/scsi/lasi_ncr710.c
-index b674a4066f..7e0076c7a3 100644
---- a/hw/scsi/lasi_ncr710.c
-+++ b/hw/scsi/lasi_ncr710.c
-@@ -160,6 +160,10 @@ static const VMStateDescription vmstate_lasi_ncr710 = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32(hw_type, LasiNCR710State),
-+        VMSTATE_UINT32(sversion, LasiNCR710State),
-+        VMSTATE_UINT32(hversion, LasiNCR710State),
-+        VMSTATE_STRUCT(ncr710, LasiNCR710State, 1, vmstate_ncr710, NCR710State),
-         VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/hw/scsi/lasi_ncr710.h b/hw/scsi/lasi_ncr710.h
-index 3711233b0f..058718068e 100644
---- a/hw/scsi/lasi_ncr710.h
-+++ b/hw/scsi/lasi_ncr710.h
-@@ -46,7 +46,6 @@ typedef struct LasiNCR710State {
-     uint32_t hw_type;        /* Hardware type (HPHW_*) */
-     uint32_t sversion;       /* Software version */
-     uint32_t hversion;       /* Hardware version */
--    SCSIBus bus;
-     NCR710State ncr710;
- } LasiNCR710State;
- 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index aaac31cbb9..ba064c6ecf 100644
+index ba064c6ecf..47a6983491 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -2250,7 +2250,7 @@ static const VMStateDescription vmstate_ncr710_scsi_fifo = {
-     }
- };
- 
--static const VMStateDescription vmstate_ncr710 = {
-+const VMStateDescription vmstate_ncr710 = {
-     .name = "ncr710",
-     .version_id = 1,
-     .minimum_version_id = 1,
-diff --git a/hw/scsi/ncr53c710.h b/hw/scsi/ncr53c710.h
-index 380e3959b3..6d30f9b663 100644
---- a/hw/scsi/ncr53c710.h
-+++ b/hw/scsi/ncr53c710.h
-@@ -242,5 +242,6 @@ void ncr710_transfer_data(SCSIRequest *req, uint32_t len);
- void ncr710_execute_script(NCR710State *s);
- void ncr710_set_phase(NCR710State *s, int phase);
- void ncr710_reselection_retry_callback(void *opaque);
-+extern const VMStateDescription vmstate_ncr710;
- 
- #endif /* HW_NCR53C710_H */
+@@ -550,7 +550,7 @@ static inline uint8_t ncr710_scsi_fifo_dequeue(NCR710_SCSI_FIFO *fifo,
+ static inline uint32_t ncr710_read_dword(NCR710State *s, uint32_t addr)
+ {
+     uint32_t buf;
+-    address_space_read(&address_space_memory, addr, MEMTXATTRS_UNSPECIFIED,
++    address_space_read(s->as, addr, MEMTXATTRS_UNSPECIFIED,
+                        (uint8_t *)&buf, 4);
+     /*
+      * The NCR710 datasheet saying "operates internally in LE mode"
+@@ -565,7 +565,7 @@ static inline uint32_t ncr710_read_dword(NCR710State *s, uint32_t addr)
+ static inline void ncr710_dma_read(NCR710State *s, uint32_t addr,
+                                    void *buf, uint32_t len)
+ {
+-    address_space_read(&address_space_memory, addr, MEMTXATTRS_UNSPECIFIED,
++    address_space_read(s->as, addr, MEMTXATTRS_UNSPECIFIED,
+                        buf, len);
+     NCR710_DPRINTF("Read %d bytes from %08x: ", len, addr);
+     for (int i = 0; i < len && i < 16; i++) {
+@@ -577,7 +577,7 @@ static inline void ncr710_dma_read(NCR710State *s, uint32_t addr,
+ static inline void ncr710_dma_write(NCR710State *s, uint32_t addr,
+                                     const void *buf, uint32_t len)
+ {
+-    address_space_write(&address_space_memory, addr, MEMTXATTRS_UNSPECIFIED,
++    address_space_write(s->as, addr, MEMTXATTRS_UNSPECIFIED,
+                         buf, len);
+     NCR710_DPRINTF("Wrote %d bytes to %08x\n", len, addr);
+ }
 -- 
 2.51.1
 
