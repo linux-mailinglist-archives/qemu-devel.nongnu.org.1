@@ -2,86 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1867C44704
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 21:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3912C4489D
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:07:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vICTd-0003ro-SL; Sun, 09 Nov 2025 15:57:34 -0500
+	id 1vIDYx-0007cV-PC; Sun, 09 Nov 2025 17:07:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1vICTW-0003rQ-KW
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 15:57:26 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1vICTV-0005RX-7f
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 15:57:26 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-6407e617ad4so4039792a12.0
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 12:57:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762721843; x=1763326643; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=grl+RiUG7eW1UQXL729RuxCIWRUQQNndg33/cs3eK+4=;
- b=GYeF2Rh+59/EV0t0yRlvegZ8DG4XcCfrOGvs/m7XUzdeMNyjlT0XOH0A2AWmlHxpVi
- 7nAQ/ic6L1QLfU+o9RlpKcpKDHv7NgQXoC30Q0e2aqxZI5Sn/vfk9tAJdEyLoyxgx3G7
- QS0Ey7ocx7qgcqBtweDpfstNc5Ev1PBFF9bOCh/Upikl8Rx2XztdmB8DuLsq+XYNh+VG
- nnUQoCwmV+8CvPvz9ziDo3eatqaBcQK14GMjAzYBFH1QTxptRfFMuhhxMpNpYE9Ap9t/
- gBgUBreZzrWDd1gruyvtlK4eVrLsm7DQGG/805CT40eYZ7oEKrq9ab0qxYSCAztXX233
- 5+Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762721843; x=1763326643;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=grl+RiUG7eW1UQXL729RuxCIWRUQQNndg33/cs3eK+4=;
- b=TecPmiGoznw/nJN72vzx/+E32G/ZhtxSx2HN7go6AFdxX/T/xEEoH/dGS+uU2BBbWv
- 5OVJlAe5XedpCQfG6/bidqviiMK7k9zHM2h612W60oszeGjWwJ3nFwa7qkC/v2nJ51Lt
- SRnde6oU+IQLgTTBj79qUoRsBtaPJyryYYBYQqPxy/tmxry7ZYqtzc1CWuOYIP15/e5Z
- CXR1D8uC16cmhB1dPMPOAk8Fz/59k6iSYPeCrVpVlw3X836FC5rzJd+A6P8ynUtQHMfI
- oxnty+Ih17dAJ7qoQnhc8aXeNRGeZX4ucQxbkos1iVO8PzmhboXGqk6d04UvzUzSZ2gA
- vHYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVcVV7b+WHLKtIrg1yxsAfNU3lb1FbJn0uKi14wDPPqxGThkPqMqPouyZDYcdzqe6F0MI24bYNuIG07@nongnu.org
-X-Gm-Message-State: AOJu0YxF7QFMEvyYPQNdbtASY7Fz5u/B4xdFKw7IGiNBg4o8+D97+Md7
- xdFT0TNoZi0yGFRP3slAG5o51qhKCwRF60E/rLl/RH5wIdvUiDQ3efIuswDxvnXg/+Q/YABFrh1
- HUdjmlXA9gf/cDmfZN4LtBubX1teRwQ8=
-X-Gm-Gg: ASbGncsVEqfXHBDNXEfq/hlZXgd2wySZtP+qcc3jO2ZvDRMoJIRHHNofoUSMvYdcL13
- GIf1z2853oFJERVBgtJpTwziw7AAtdt6iqR/g6aLhdk4tjYipHJtdVQgOF9JitcCoEQUSlXYne6
- ExALAP1ME3JKPQsG3pNrhkZ5ROcrwanMB+zi97fTqv4fnI0Y2YdNR6jJvr3Qc9JIqeD2VjUHcKB
- 0h+EIRCgHhGcJTpgAXeaESJCTkeZku3+NgEg2Gwi7BWZNy5lvhOcgHD0OueLzkf49jk2g==
-X-Google-Smtp-Source: AGHT+IEVH1sz1yzxJk69LPL40ZvT7wHBHI5sCT+E7+UhaIahDVSKq0mhh8qWaEygtmYSFhdcjnVoU39wtQ16HR0Nozk=
-X-Received: by 2002:a05:6402:46dc:b0:640:37df:e798 with SMTP id
- 4fb4d7f45d1cf-64146c0cbe0mr7500567a12.1.1762721842548; Sun, 09 Nov 2025
- 12:57:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYu-0007Zz-Nu
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:04 -0500
+Received: from sea.source.kernel.org ([172.234.252.31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYr-0005rh-Si
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:03 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id 0F05E439B2;
+ Sun,  9 Nov 2025 22:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B5EC4CEF7;
+ Sun,  9 Nov 2025 22:06:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1762726017;
+ bh=X1UKHCY7sUexdXxDOTH9zYAzpArYzYhsLKxl1GCrkgo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=aZJbLDomFG8h7sBl0lY3h3C8/QRvxD4SqechirMGAopeXx0WJi3i8eBudph+ZRU8n
+ DGzt0V0L1t0fqvCVo/lKI1nWlORFfQXTwd8K/rr8GQ4gvgpbbNXiUXzBqXuPNGp2lF
+ 9TFqDmMXQ3OUZVou8vhMviCmm7KAhSK1PwlluX8BjcW2R1mDaPZPLVU4nH8GHxt4f+
+ GGuLtkDwMmPtZ9VHLuTF86AvOWHS/C0WyPH2wgZS1NYCvzJAYEzG1dOGJE74vzIBao
+ 4nCmWRCMO4rNcD0h7ISScK1NJ6goDLleJd9+Cpzx+72GXyCs3a0RmYAU7VYu14uhHb
+ AK87IbnVLZ9vg==
+From: deller@kernel.org
+To: Richard Henderson <richard.henderson@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
+ Helge Deller <deller@gmx.de>
+Subject: [PULL 0/7] Lasi fixes patches
+Date: Sun,  9 Nov 2025 23:06:47 +0100
+Message-ID: <20251109220654.46718-1-deller@kernel.org>
+X-Mailer: git-send-email 2.51.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20251103184031.22118-1-soumyajyotisarkar23@gmail.com>
-In-Reply-To: <20251103184031.22118-1-soumyajyotisarkar23@gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Sun, 9 Nov 2025 15:57:10 -0500
-X-Gm-Features: AWmQ_bkxiXrxqHQwtGWaMs_hDm2A2mV-kpG08Wgoqo9lNi8PhAuDvEX13ikQdcI
-Message-ID: <CAJSP0QW4Egf2iJMjUVBi9iNPvGtEUMN=ULwM4+ntsFLDC3otHA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] HP-PARISC: LASI's NCR710 SCSI Controller
-To: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Cc: deller@gmx.de, mark.cave-ayland@ilande.co.uk, 
- sarkarsoumyajyoti23@gmail.com, peter.maydell@linaro.org, 
- zhaoguohan@kylinos.cn, qemu-devel@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x536.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=172.234.252.31; envelope-from=deller@kernel.org;
+ helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +67,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 3, 2025 at 1:40=E2=80=AFPM Soumyajyotii Ssarkar
-<soumyajyotisarkar23@gmail.com> wrote:
->
-> Fixing Defects reported by Coverity Scan for NCR710 SCSI Controller in QE=
-MU.
-> QEMU runs the Coverity static analyzer to identify potential bugs in
-> code that has recently been merged.
->
-> In view of the above these issues came to light.
-> I would request you to please review the fixes for the same.
->
-> Reported by: Stefan Hajnoczi <stefanha@gmail.com>
-> and GuoHan Zhao <zhaoguohan@kylinos.cn>
->
-> Soumyajyotii Ssarkar (2):
->   hw/scsi/ncr53c710.c: Fixing null pointer dereference issue.
->   hw/scsi/ncr53c710.c: Fixing Incorrect expression  (IDENTICAL_BRANCHES)
->
->  hw/scsi/ncr53c710.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
+From: Helge Deller <deller@gmx.de>
 
-I am not familiar with the device being emulated, so I have only
-reviewed this for C issues:
+The following changes since commit 917ac07f9aef579b9538a81d45f45850aba42906:
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-05 16:07:18 +0100)
+
+are available in the Git repository at:
+
+  https://github.com/hdeller/qemu-hppa.git tags/lasi-fixes-pull-request
+
+for you to fetch changes up to 8c1fa9cbecba50ae7e732923ee567fe40551d1a6:
+
+  target/hppa: Update SeaBIOS-hppa to version 20 (2025-11-09 22:47:31 +0100)
+
+----------------------------------------------------------------
+hppa lasi bugfixes pull request
+
+Please pull a bunch of fixes which repair issues introduced due to the previous
+patch series which added LASI SCSI and LASI network card support as  well as
+the new 715 machines.
+This includes fixes for reported coverty issues, and repairs the B160L machine
+emulation.
+
+Thanks!
+Helge
+
+----------------------------------------------------------------
+
+Helge Deller (1):
+  target/hppa: Update SeaBIOS-hppa to version 20
+
+Soumyajyotii Ssarkar (6):
+  ncr710: Fix potential null pointer dereference
+  ncr710: Drop leftover debug code
+  i82596: Remove crc_valid variable
+  i82596: Adding proper break-statement functionality in RX functions
+  ncr710: Add missing vmstate entries
+  ncr710: Use address space of device instead of global address space
+
+ hw/net/i82596.c             |  14 +++++---------
+ hw/scsi/lasi_ncr710.c       |   4 ++++
+ hw/scsi/lasi_ncr710.h       |   1 -
+ hw/scsi/ncr53c710.c         |  16 +++++-----------
+ hw/scsi/ncr53c710.h         |   1 +
+ pc-bios/hppa-firmware.img   | Bin 630056 -> 630644 bytes
+ pc-bios/hppa-firmware64.img | Bin 699872 -> 700304 bytes
+ roms/seabios-hppa           |   2 +-
+ 8 files changed, 16 insertions(+), 22 deletions(-)
+
+-- 
+2.51.1
+
 
