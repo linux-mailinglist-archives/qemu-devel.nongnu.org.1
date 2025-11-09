@@ -2,92 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7775CC445B4
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 20:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1867C44704
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 21:58:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIAtB-0003Ve-Rw; Sun, 09 Nov 2025 14:15:49 -0500
+	id 1vICTd-0003ro-SL; Sun, 09 Nov 2025 15:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vIAt7-0003Qp-Rc
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 14:15:45 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1vICTW-0003rQ-KW
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 15:57:26 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <michael@videogpu.com>)
- id 1vIAt5-0007y7-5s
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 14:15:45 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47778704516so2754625e9.3
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 11:15:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1vICTV-0005RX-7f
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 15:57:26 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-6407e617ad4so4039792a12.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 12:57:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=videogpu-com.20230601.gappssmtp.com; s=20230601; t=1762715741; x=1763320541;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1762721843; x=1763326643; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9yGSINqfnIqpPp6b2Li10zDlwN1Cykb57MReBjofPH4=;
- b=HvJKiCAh/xeNo+7TQ0QhI81BkTIyGuwVLYfx1Wgz6R42Fsz55HdQZm4y/pGzGaFmDU
- QW5WnTjkYSMlvxpS6zfWimkQ2a8m9ZqrZf7AlKIFoWO+diWmm2eVQNRqMlqHQ9lXCF1k
- GLsuz1GeCypqfQ2Asjb1I8Y2GtnYA9epZb1EW/oLbnoTPjfnWvoEnIxc44a2dpWJUsiD
- /N56wfjYNvKLGZndxIGy1bu/Kox3cfFfsIzWBO5LChuij2pCRuEHHUhXQn2R7fVy/mZW
- kg6+5IFptz5NGbcy50+UFO/HSchlHIrzMaxQBgWlVq4i50X0wO93vonh5EG/ambGnl80
- nXNw==
+ bh=grl+RiUG7eW1UQXL729RuxCIWRUQQNndg33/cs3eK+4=;
+ b=GYeF2Rh+59/EV0t0yRlvegZ8DG4XcCfrOGvs/m7XUzdeMNyjlT0XOH0A2AWmlHxpVi
+ 7nAQ/ic6L1QLfU+o9RlpKcpKDHv7NgQXoC30Q0e2aqxZI5Sn/vfk9tAJdEyLoyxgx3G7
+ QS0Ey7ocx7qgcqBtweDpfstNc5Ev1PBFF9bOCh/Upikl8Rx2XztdmB8DuLsq+XYNh+VG
+ nnUQoCwmV+8CvPvz9ziDo3eatqaBcQK14GMjAzYBFH1QTxptRfFMuhhxMpNpYE9Ap9t/
+ gBgUBreZzrWDd1gruyvtlK4eVrLsm7DQGG/805CT40eYZ7oEKrq9ab0qxYSCAztXX233
+ 5+Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762715741; x=1763320541;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ d=1e100.net; s=20230601; t=1762721843; x=1763326643;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=9yGSINqfnIqpPp6b2Li10zDlwN1Cykb57MReBjofPH4=;
- b=sj1/hlKdqBwfC/T5g08vUAvn/JCuxAh32E2/xLGoZmvj9zHbk/04cnT4Tp/iiQwb7L
- Y3g/xL0Rw1TJWwQvY61d+GJmf/mtwPHlBENbGxk6JaGJ/9LE9utAkR0rKODee3pIcMQ4
- wJB5zWP8jNoE0L1z8HxL2BsgM2J9JWkOUmlIt+mTMHabVIdT35qq/qDxFFdXQxv7EU6o
- aiYwm3mg5fN/pPlCL+nZ/lrYuMHNGYaoQhduUjPxgSbvOH77GIlxMmelUTvieTk0RZR0
- 1qOOAJYW5ZSZmLPRjJY/OBDXvQdYgF7FbHp8TsfNJS8bQVPIrHMCd4QweZ437BBkOiBh
- kf3A==
-X-Gm-Message-State: AOJu0YyaLfnwFY9FV95VeUZNnQxiKwVXP8ZTeY9a/uIh84ni+41pV5JY
- +rixgsoiCetGJ2anv4M7lRndEy5HHeFP407xOJXm8xMxNMJtYissdjinJ8sUSGvee6EAzQLDilQ
- wmLsoHhM=
-X-Gm-Gg: ASbGncuwzmc9c/TRjdzwGR3NHheJv7+wdGMRE/+rf3zUPysHNmSx4/Mw1f5VKHJRXuy
- t+vtrPjyVsOVLpr1IemlUMok3arL1RN3nqqw5LxpR4LLFzyts2IFqIMIAe1bitK2NZyHL1UMWtR
- bZR8oY6qxGrpnw9Jtrr3sQsdfTNdDsJog9OLfYTzCX17arz33LlqkPZ0FFVXDMlpzzbyxzTqo6Y
- ya3aXK6HHlal4HgyXlv8zQKK3AJlLScS9tys1+dydIZ8UU+sVuedT6ipRord4IG2S8eIFzCQkaz
- oQ9fQ9u2t+A0h55VvYF4nQn8bWTNpIj6+os4q9X3vyF55aNGDREQQlqrX8nW4A2SRL5phOJxWmg
- 5WsKGq2uKxeNuqPpItfoMBjXvAEte/06HWlNsjMZ/RiyqCX5HjxfGIeD6XcUyKTkfOO76NwMH2l
- zc3PiQxoRVw7E=
-X-Google-Smtp-Source: AGHT+IGzWBq/G0yr9MbLP0dlv/ssCTpTQUOqiQgSZXzNf1+VYkvjEjML9hqHJqEX1i+kXJoDqTz+pA==
-X-Received: by 2002:a05:600c:3b1d:b0:45d:dc85:c009 with SMTP id
- 5b1f17b1804b1-47773239bd4mr40072045e9.10.1762715741213; 
- Sun, 09 Nov 2025 11:15:41 -0800 (PST)
-Received: from DDesktop.local ([2a10:8012:1:b32a:35:83e6:baea:8ad])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47778daf2c3sm54600265e9.10.2025.11.09.11.15.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 11:15:40 -0800 (PST)
-From: Michael Levit <michael@videogpu.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, philmd@linaro.org, pbonzini@redhat.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- liwei1518@gmail.com, smishash@gmail.com
-Subject: [PATCH v4 5/5] hw/riscv: introduce 'neorv32' board, docs,
- and riscv32 device config
-Date: Sun,  9 Nov 2025 21:15:32 +0200
-Message-ID: <20251109191532.32419-6-michael@videogpu.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251109191532.32419-1-michael@videogpu.com>
-References: <20251109191532.32419-1-michael@videogpu.com>
+ bh=grl+RiUG7eW1UQXL729RuxCIWRUQQNndg33/cs3eK+4=;
+ b=TecPmiGoznw/nJN72vzx/+E32G/ZhtxSx2HN7go6AFdxX/T/xEEoH/dGS+uU2BBbWv
+ 5OVJlAe5XedpCQfG6/bidqviiMK7k9zHM2h612W60oszeGjWwJ3nFwa7qkC/v2nJ51Lt
+ SRnde6oU+IQLgTTBj79qUoRsBtaPJyryYYBYQqPxy/tmxry7ZYqtzc1CWuOYIP15/e5Z
+ CXR1D8uC16cmhB1dPMPOAk8Fz/59k6iSYPeCrVpVlw3X836FC5rzJd+A6P8ynUtQHMfI
+ oxnty+Ih17dAJ7qoQnhc8aXeNRGeZX4ucQxbkos1iVO8PzmhboXGqk6d04UvzUzSZ2gA
+ vHYg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVcVV7b+WHLKtIrg1yxsAfNU3lb1FbJn0uKi14wDPPqxGThkPqMqPouyZDYcdzqe6F0MI24bYNuIG07@nongnu.org
+X-Gm-Message-State: AOJu0YxF7QFMEvyYPQNdbtASY7Fz5u/B4xdFKw7IGiNBg4o8+D97+Md7
+ xdFT0TNoZi0yGFRP3slAG5o51qhKCwRF60E/rLl/RH5wIdvUiDQ3efIuswDxvnXg/+Q/YABFrh1
+ HUdjmlXA9gf/cDmfZN4LtBubX1teRwQ8=
+X-Gm-Gg: ASbGncsVEqfXHBDNXEfq/hlZXgd2wySZtP+qcc3jO2ZvDRMoJIRHHNofoUSMvYdcL13
+ GIf1z2853oFJERVBgtJpTwziw7AAtdt6iqR/g6aLhdk4tjYipHJtdVQgOF9JitcCoEQUSlXYne6
+ ExALAP1ME3JKPQsG3pNrhkZ5ROcrwanMB+zi97fTqv4fnI0Y2YdNR6jJvr3Qc9JIqeD2VjUHcKB
+ 0h+EIRCgHhGcJTpgAXeaESJCTkeZku3+NgEg2Gwi7BWZNy5lvhOcgHD0OueLzkf49jk2g==
+X-Google-Smtp-Source: AGHT+IEVH1sz1yzxJk69LPL40ZvT7wHBHI5sCT+E7+UhaIahDVSKq0mhh8qWaEygtmYSFhdcjnVoU39wtQ16HR0Nozk=
+X-Received: by 2002:a05:6402:46dc:b0:640:37df:e798 with SMTP id
+ 4fb4d7f45d1cf-64146c0cbe0mr7500567a12.1.1762721842548; Sun, 09 Nov 2025
+ 12:57:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::32f;
- envelope-from=michael@videogpu.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20251103184031.22118-1-soumyajyotisarkar23@gmail.com>
+In-Reply-To: <20251103184031.22118-1-soumyajyotisarkar23@gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Sun, 9 Nov 2025 15:57:10 -0500
+X-Gm-Features: AWmQ_bkxiXrxqHQwtGWaMs_hDm2A2mV-kpG08Wgoqo9lNi8PhAuDvEX13ikQdcI
+Message-ID: <CAJSP0QW4Egf2iJMjUVBi9iNPvGtEUMN=ULwM4+ntsFLDC3otHA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] HP-PARISC: LASI's NCR710 SCSI Controller
+To: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Cc: deller@gmx.de, mark.cave-ayland@ilande.co.uk, 
+ sarkarsoumyajyoti23@gmail.com, peter.maydell@linaro.org, 
+ zhaoguohan@kylinos.cn, qemu-devel@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,473 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael <michael@videogpu.com>
+On Mon, Nov 3, 2025 at 1:40=E2=80=AFPM Soumyajyotii Ssarkar
+<soumyajyotisarkar23@gmail.com> wrote:
+>
+> Fixing Defects reported by Coverity Scan for NCR710 SCSI Controller in QE=
+MU.
+> QEMU runs the Coverity static analyzer to identify potential bugs in
+> code that has recently been merged.
+>
+> In view of the above these issues came to light.
+> I would request you to please review the fixes for the same.
+>
+> Reported by: Stefan Hajnoczi <stefanha@gmail.com>
+> and GuoHan Zhao <zhaoguohan@kylinos.cn>
+>
+> Soumyajyotii Ssarkar (2):
+>   hw/scsi/ncr53c710.c: Fixing null pointer dereference issue.
+>   hw/scsi/ncr53c710.c: Fixing Incorrect expression  (IDENTICAL_BRANCHES)
+>
+>  hw/scsi/ncr53c710.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 
-Introduce the 'neorv32' board wiring IMEM/DMEM/BOOTROM, SYSINFO, UART0, and SPI0;
-add docs/system/riscv/neorv32.rst and riscv32-softmmu device config entry.
+I am not familiar with the device being emulated, so I have only
+reviewed this for C issues:
 
-Signed-off-by: Michael Levit <michael@videogpu.com>
----
- configs/devices/riscv32-softmmu/default.mak |   1 +
- docs/system/riscv/neorv32.rst               | 112 ++++++++++
- docs/system/target-riscv.rst                |   1 +
- hw/riscv/Kconfig                            |   8 +
- hw/riscv/meson.build                        |   1 +
- hw/riscv/neorv32.c                          | 215 ++++++++++++++++++++
- include/hw/riscv/neorv32.h                  |  54 +++++
- 7 files changed, 392 insertions(+)
- create mode 100644 docs/system/riscv/neorv32.rst
- create mode 100644 hw/riscv/neorv32.c
- create mode 100644 include/hw/riscv/neorv32.h
-
-diff --git a/configs/devices/riscv32-softmmu/default.mak b/configs/devices/riscv32-softmmu/default.mak
-index c2cd86ce05..4fdc94ab48 100644
---- a/configs/devices/riscv32-softmmu/default.mak
-+++ b/configs/devices/riscv32-softmmu/default.mak
-@@ -10,3 +10,4 @@
- # CONFIG_SIFIVE_U=n
- # CONFIG_RISCV_VIRT=n
- # CONFIG_OPENTITAN=n
-+# CONFIG_NEORV32=n
-diff --git a/docs/system/riscv/neorv32.rst b/docs/system/riscv/neorv32.rst
-new file mode 100644
-index 0000000000..93ea751b1e
---- /dev/null
-+++ b/docs/system/riscv/neorv32.rst
-@@ -0,0 +1,112 @@
-+
-+NEORV32 Soft SoC (``neorv32``)
-+==============================
-+
-+The ``neorv32`` machine models a minimal NEORV32-based SoC sufficient to
-+exercise the stock NEORV32 bootloader and run example applications from an
-+emulated SPI NOR flash. It exposes a UART for console I/O and an MTD-backed
-+SPI flash device that can be populated with user binaries.
-+
-+Neorv32 full repo:
-+https://github.com/stnolting/neorv32
-+
-+Current QEMU implementation base on commit 7d0ef6b2 in Neorv32 repo.
-+
-+Supported devices
-+-----------------
-+
-+The ``neorv32`` machine provides the core peripherals needed by the
-+bootloader and examples:
-+
-+* UART for console (mapped to the QEMU stdio when ``-nographic`` or
-+  ``-serial stdio`` is used).
-+* SPI controller connected to an emulated SPI NOR flash (exposed to the
-+  guest via QEMU's ``if=mtd`` backend).
-+* Basic timer/CLINT-like facilities required by the example software.
-+
-+(Exact register maps and optional peripherals depend on the QEMU version and
-+the specific patch series you are using.)
-+
-+
-+QEMU build configuration:
-+-------------------------
-+
-+From the command line::
-+
-+  $ /path/to/qemu/configure \
-+  --python=/usr/local/bin/python3.12 \
-+  --target-list=riscv32-softmmu \
-+  --enable-fdt \
-+  --enable-debug \
-+  --disable-vnc \
-+  --disable-gtk
-+
-+Boot options
-+------------
-+
-+Typical usage is to boot the NEORV32 bootloader as the QEMU ``-bios`` image,
-+and to provide a raw SPI flash image via an MTD drive. The bootloader will
-+then jump to the application image placed at the configured flash offset.
-+
-+Preparing the SPI flash with a “Hello World” example
-+----------------------------------------------------
-+
-+1. Create a 64 MiB flash image (filled with zeros)::
-+
-+   $ dd if=/dev/zero of=$HOME/flash_contents.bin bs=1 count=$((0x04000000))
-+
-+2. Place your application binary at the **4 MiB** offset inside the flash.
-+   Replace ``/path/to/neorv32_exe.bin`` with the path to your compiled
-+   example application (e.g., the NEORV32 ``hello_world`` example)::
-+
-+   $ dd if=/path/to/neorv32_exe.bin of=$HOME/flash_contents.bin bs=1 seek=$((0x00400000)) conv=notrunc
-+
-+Running the “Hello World” example
-+---------------------------------
-+
-+Run QEMU with the NEORV32 bootloader as ``-bios`` and attach the prepared
-+flash image via the MTD interface. Replace the placeholder paths with your
-+local paths::
-+
-+  $ /path/to/qemu-system-riscv32 -nographic -machine neorv32 \
-+      -bios /path/to/neorv32/bootloader/neorv32_raw_exe.bin \
-+      -drive file=$HOME/flash_contents.bin,if=mtd,format=raw
-+
-+Notes:
-+
-+* ``-nographic`` routes the UART to your terminal (Ctrl-A X to quit when
-+  using the QEMU monitor hotkeys; or just close the terminal).
-+* The bootloader starts first and will transfer control to your application
-+  located at the 4 MiB offset of the flash image.
-+* If you prefer, you can use ``-serial stdio`` instead of ``-nographic``.
-+
-+Machine-specific options
-+------------------------
-+
-+Unless otherwise noted by the patch series, there are no special board
-+options beyond the standard QEMU options shown above. Commonly useful
-+generic options include:
-+
-+* ``-s -S`` to open a GDB stub on TCP port 1234 and start paused, so you can
-+  debug both QEMU and the guest.
-+* ``-d guest_errors,unimp`` (or other trace flags) for additional logging.
-+
-+Example: debugging with GDB::
-+
-+  $ /path/to/qemu-system-riscv32 -nographic -machine neorv32 \
-+      -bios /path/to/neorv32/bootloader/neorv32_raw_exe.bin \
-+      -drive file=$HOME/flash_contents.bin,if=mtd,format=raw \
-+      -s -S
-+
-+  # In another shell:
-+  $ riscv32-unknown-elf-gdb /path/to/neorv32/bootloader/main.elf
-+  (gdb) target remote :1234
-+
-+
-+Known limitations
-+-----------------
-+
-+This is a functional model intended for software bring-up and testing of
-+example programs. It may not model all timing details or every optional
-+peripheral available in a specific NEORV32 SoC configuration.
-+
-diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
-index 89b2cb732c..fbd8270022 100644
---- a/docs/system/target-riscv.rst
-+++ b/docs/system/target-riscv.rst
-@@ -68,6 +68,7 @@ undocumented; you can get a complete list by running
- 
-    riscv/microblaze-v-generic
-    riscv/microchip-icicle-kit
-+   riscv/neorv32
-    riscv/shakti-c
-    riscv/sifive_u
-    riscv/virt
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index fc9c35bd98..976acd2a1b 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -128,3 +128,11 @@ config XIANGSHAN_KUNMINGHU
-     select RISCV_APLIC
-     select RISCV_IMSIC
-     select SERIAL_MM
-+
-+config NEORV32
-+    bool
-+    default y
-+    depends on RISCV32
-+    select NEORV32_UART
-+    select NEORV32_SPI
-+    select NEORV32_SYSINFO_QEMU
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 2a8d5b136c..b8788e2035 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -14,5 +14,6 @@ riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files(
- 	'riscv-iommu.c', 'riscv-iommu-pci.c', 'riscv-iommu-sys.c', 'riscv-iommu-hpm.c'))
- riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-generic.c'))
- riscv_ss.add(when: 'CONFIG_XIANGSHAN_KUNMINGHU', if_true: files('xiangshan_kmh.c'))
-+riscv_ss.add(when: 'CONFIG_NEORV32', if_true: files('neorv32.c'))
- 
- hw_arch += {'riscv': riscv_ss}
-diff --git a/hw/riscv/neorv32.c b/hw/riscv/neorv32.c
-new file mode 100644
-index 0000000000..41494d2893
---- /dev/null
-+++ b/hw/riscv/neorv32.c
-@@ -0,0 +1,215 @@
-+/*
-+ * QEMU RISC-V Board Compatible with Neorv32 IP
-+ *
-+ * Provides a board compatible with the Neorv32 IP:
-+ *
-+ * 0) SYSINFO
-+ * 1) IMEM
-+ * 2) DMEM
-+ * 3) UART
-+ * 4) SPI
-+ *
-+ * Copyright (c) 2025 Michael Levit
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
-+#include "hw/loader.h"
-+#include "hw/sysbus.h"
-+#include "hw/char/serial.h"
-+#include "hw/misc/unimp.h"
-+#include "target/riscv/cpu.h"
-+#include "hw/riscv/riscv_hart.h"
-+#include "hw/riscv/boot.h"
-+#include "hw/intc/riscv_aclint.h"
-+#include "chardev/char.h"
-+#include "system/system.h"
-+#include "hw/ssi/ssi.h"    /* For ssi_realize_and_unref() */
-+
-+#include "hw/riscv/neorv32.h"
-+#include "hw/misc/neorv32_sysinfo.h"
-+#include "hw/char/neorv32_uart.h"
-+#include "hw/ssi/neorv32_spi.h"
-+
-+/* TODO: get BOOTLOADER_ROM, IMEM, DMEM sizes from rtl auto-generated header */
-+static const MemMapEntry neorv32_memmap[] = {
-+
-+    [NEORV32_IMEM]           = { NEORV32_IMEM_BASE,    SYSINFO_IMEM_SIZE},
-+    [NEORV32_BOOTLOADER_ROM] = { NEORV32_BOOTLOADER_BASE_ADDRESS, 0x2000},
-+    [NEORV32_DMEM]           = { NEORV32_DMEM_BASE,    SYSINFO_DMEM_SIZE},
-+    [NEORV32_SYSINFO]        = { NEORV32_SYSINFO_BASE, 0x100},
-+    [NEORV32_UART0]          = { NEORV32_UART0_BASE,   0x100},
-+    [NEORV32_SPI0]           = { NEORV32_SPI_BASE,     0x100},
-+};
-+
-+static void neorv32_machine_init(MachineState *machine)
-+{
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    const MemMapEntry *memmap = neorv32_memmap;
-+
-+    Neorv32State *s = NEORV32_MACHINE(machine);
-+    MemoryRegion *sys_mem = get_system_memory();
-+    int i;
-+    RISCVBootInfo boot_info;
-+    hwaddr start_addr = memmap[NEORV32_BOOTLOADER_ROM].base;
-+
-+    if (machine->ram_size != mc->default_ram_size) {
-+        char *sz = size_to_str(mc->default_ram_size);
-+        error_report("Invalid RAM size, should be %s", sz);
-+        g_free(sz);
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    /* Initialize SoC */
-+    object_initialize_child(OBJECT(machine), "soc", &s->soc,
-+                            TYPE_RISCV_NEORV32_SOC);
-+    qdev_realize(DEVICE(&s->soc), NULL, &error_fatal);
-+
-+    /* Data Tightly Integrated Memory */
-+    memory_region_add_subregion(sys_mem,
-+        memmap[NEORV32_DMEM].base, machine->ram);
-+
-+    /* Instruction Memory (IMEM) */
-+    memory_region_init_ram(&s->soc.imem_region, OBJECT(&s->soc),
-+                           "riscv.neorv32.imem",
-+                           memmap[NEORV32_IMEM].size, &error_fatal);
-+    memory_region_add_subregion(sys_mem, memmap[NEORV32_IMEM].base,
-+                                &s->soc.imem_region);
-+
-+    /* Mask ROM reset vector */
-+    uint32_t reset_vec[4];
-+
-+    reset_vec[1] = 0x204002b7;  /* 0x1004: lui     t0,0x20400 */
-+    reset_vec[2] = 0x00028067;      /* 0x1008: jr      t0 */
-+    reset_vec[0] = reset_vec[3] = 0;
-+
-+    /* copy in the reset vector in little_endian byte order */
-+    for (i = 0; i < sizeof(reset_vec) >> 2; i++) {
-+        reset_vec[i] = cpu_to_le32(reset_vec[i]);
-+    }
-+
-+    /* Neorv32 bootloader */
-+    if (machine->firmware) {
-+        riscv_find_and_load_firmware(machine, machine->firmware,
-+                                     &start_addr, NULL);
-+    }
-+
-+    /* Neorv32 example applications */
-+    riscv_boot_info_init(&boot_info, &s->soc.cpus);
-+    if (machine->kernel_filename) {
-+        riscv_load_kernel(machine, &boot_info,
-+                          memmap[NEORV32_IMEM].base,
-+                          false, NULL);
-+    }
-+}
-+
-+static void neorv32_machine_instance_init(Object *obj)
-+{
-+
-+    /* Placeholder for now */
-+    /* Neorv32State *s = NEORV32_MACHINE(obj); */
-+}
-+
-+static void neorv32_machine_class_init(ObjectClass *oc, const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    mc->desc = "RISC-V SOC compatible with Neorv32 SDK";
-+    mc->init = neorv32_machine_init;
-+    mc->max_cpus = 1;
-+    mc->default_cpu_type = NEORV32_CPU;
-+    mc->default_ram_id = "riscv.neorv32.dmem";
-+    mc->default_ram_size = neorv32_memmap[NEORV32_DMEM].size;
-+
-+}
-+
-+static const TypeInfo neorv32_machine_typeinfo = {
-+    .name          = MACHINE_TYPE_NAME("neorv32"),
-+    .parent        = TYPE_MACHINE,
-+    .class_init    = neorv32_machine_class_init,
-+    .instance_init = neorv32_machine_instance_init,
-+    .instance_size = sizeof(Neorv32State),
-+};
-+
-+static void neorv32_machine_init_register_types(void)
-+{
-+    type_register_static(&neorv32_machine_typeinfo);
-+}
-+
-+type_init(neorv32_machine_init_register_types)
-+
-+static void neorv32_soc_init(Object *obj)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    Neorv32SoCState *s = RISCV_NEORV32_SOC(obj);
-+
-+    object_initialize_child(obj, "cpus", &s->cpus, TYPE_RISCV_HART_ARRAY);
-+    object_property_set_int(OBJECT(&s->cpus), "num-harts", ms->smp.cpus,
-+                            &error_abort);
-+
-+    object_property_set_int(OBJECT(&s->cpus), "resetvec",
-+                            NEORV32_BOOTLOADER_BASE_ADDRESS, &error_abort);
-+
-+}
-+
-+static void neorv32_soc_realize(DeviceState *dev, Error **errp)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    const MemMapEntry *memmap = neorv32_memmap;
-+    Neorv32SoCState *s = RISCV_NEORV32_SOC(dev);
-+    MemoryRegion *sys_mem = get_system_memory();
-+
-+    object_property_set_str(OBJECT(&s->cpus), "cpu-type", ms->cpu_type,
-+                            &error_abort);
-+    sysbus_realize(SYS_BUS_DEVICE(&s->cpus), &error_fatal);
-+
-+    /* Bootloader ROM */
-+    memory_region_init_rom(&s->bootloader_rom, OBJECT(dev),
-+                           "riscv.bootloader.rom",
-+                           memmap[NEORV32_BOOTLOADER_ROM].size, &error_fatal);
-+    memory_region_add_subregion(sys_mem,
-+        memmap[NEORV32_BOOTLOADER_ROM].base, &s->bootloader_rom);
-+
-+
-+    /* Sysinfo ROM */
-+    neorv32_sysinfo_create(sys_mem, memmap[NEORV32_SYSINFO].base);
-+
-+    /* Uart0 */
-+    neorv32_uart_create(sys_mem, memmap[NEORV32_UART0].base, serial_hd(0));
-+
-+    /* SPI controller */
-+    NEORV32SPIState *spi = neorv32_spi_create(sys_mem,
-+                                              memmap[NEORV32_SPI0].base);
-+
-+    if (!spi) {
-+        error_setg(errp, "SPI is not created");
-+        return;
-+    }
-+}
-+
-+static void neorv32_soc_class_init(ObjectClass *oc, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    dc->realize = neorv32_soc_realize;
-+    dc->user_creatable = false;
-+}
-+
-+static const TypeInfo neorv32_soc_type_info = {
-+    .name = TYPE_RISCV_NEORV32_SOC,
-+    .parent = TYPE_DEVICE,
-+    .instance_size = sizeof(Neorv32SoCState),
-+    .instance_init = neorv32_soc_init,
-+    .class_init = neorv32_soc_class_init,
-+};
-+
-+static void neorv32_soc_register_types(void)
-+{
-+    type_register_static(&neorv32_soc_type_info);
-+}
-+
-+type_init(neorv32_soc_register_types)
-diff --git a/include/hw/riscv/neorv32.h b/include/hw/riscv/neorv32.h
-new file mode 100644
-index 0000000000..bc90c2bc04
---- /dev/null
-+++ b/include/hw/riscv/neorv32.h
-@@ -0,0 +1,54 @@
-+/*
-+ * NEORV32 SOC presentation in QEMU
-+ *
-+ * Copyright (c) 2025 Michael Levit
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_NEORV32_H
-+#define HW_NEORV32_H
-+
-+#include "hw/riscv/riscv_hart.h"
-+#include "hw/boards.h"
-+
-+#if defined(TARGET_RISCV32)
-+#define NEORV32_CPU TYPE_RISCV_CPU_NEORV32
-+#endif
-+
-+#define TYPE_RISCV_NEORV32_SOC "riscv.neorv32.soc"
-+#define RISCV_NEORV32_SOC(obj) \
-+    OBJECT_CHECK(Neorv32SoCState, (obj), TYPE_RISCV_NEORV32_SOC)
-+
-+typedef struct Neorv32SoCState {
-+    /*< private >*/
-+    DeviceState parent_obj;
-+
-+    /*< public >*/
-+    RISCVHartArrayState cpus;
-+    DeviceState *plic;
-+    MemoryRegion imem_region;
-+    MemoryRegion bootloader_rom;
-+} Neorv32SoCState;
-+
-+typedef struct Neorv32State {
-+    /*< private >*/
-+    MachineState parent_obj;
-+
-+    /*< public >*/
-+    Neorv32SoCState soc;
-+} Neorv32State;
-+
-+#define TYPE_NEORV32_MACHINE MACHINE_TYPE_NAME("neorv32")
-+#define NEORV32_MACHINE(obj) \
-+    OBJECT_CHECK(Neorv32State, (obj), TYPE_NEORV32_MACHINE)
-+
-+enum {
-+    NEORV32_IMEM,
-+    NEORV32_BOOTLOADER_ROM,
-+    NEORV32_DMEM,
-+    NEORV32_SYSINFO,
-+    NEORV32_UART0,
-+    NEORV32_SPI0,
-+};
-+
-+#endif /* HW_NEORV32_H */
--- 
-2.51.1
-
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
