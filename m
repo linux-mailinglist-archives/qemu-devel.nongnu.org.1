@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61B6C44043
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0143C44046
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI6W9-0002Hy-M7; Sun, 09 Nov 2025 09:35:45 -0500
+	id 1vI6WB-0002J4-95; Sun, 09 Nov 2025 09:35:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W6-0002G1-Mu
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W8-0002Hc-Qq
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W5-0001pG-AV
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:42 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W7-0001pS-9W
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762698940;
+ s=mimecast20190719; t=1762698942;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ONThtaYMpfEDNo4b/8/a5deM0gkmLYr9IT8+NA0OabQ=;
- b=FToP/BR2gUjCJmXMFtIHdCPfPYNXbm/9G5vLa6JqgOI/xKGSJ1zt4n8oHHgvRpwBA503tb
- MLudtbYe7CD5G/K0hgmf8vf+Upl3segDDl3rbkzKSP32uxuFY5mwN9AjtP4r1PZa9Tiibm
- 0TX+Ug+SDD3HEfMFAa0Zqlgh2ywimWY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/OeTxwvv54dni1NCLrJFSq1zlzTGsf0EcWk/x9CQJt8=;
+ b=VN8DUxXgpjQZ1HqX9cE5UooAjjeqY+cG+lLKcGMMyaaEho56PVqz7N8drpVrTguVB6A5IB
+ 0eSod1sSmu3T4O6o5g6WQZnev5IrJTP95b0NekFnFDSM5bvTIZ3hdIRyzS0TVrnRqE5iBG
+ tQvJ/ddUoe2SmAgYC2yKlHvkpXW7ON0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-reD1SJ-WPe-MHx8LEgprMA-1; Sun, 09 Nov 2025 09:35:39 -0500
-X-MC-Unique: reD1SJ-WPe-MHx8LEgprMA-1
-X-Mimecast-MFC-AGG-ID: reD1SJ-WPe-MHx8LEgprMA_1762698938
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47777158a85so10901395e9.3
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:39 -0800 (PST)
+ us-mta-135-L20qVr6PMDuBdNFFyfBJnQ-1; Sun, 09 Nov 2025 09:35:41 -0500
+X-MC-Unique: L20qVr6PMDuBdNFFyfBJnQ-1
+X-Mimecast-MFC-AGG-ID: L20qVr6PMDuBdNFFyfBJnQ_1762698940
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4777b03b90fso1446705e9.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762698938; x=1763303738; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762698940; x=1763303740; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=ONThtaYMpfEDNo4b/8/a5deM0gkmLYr9IT8+NA0OabQ=;
- b=izXf7Fel77FTb4akKgiYqPzo67vBQ5NU50bkmCpLwfojDjusWvb2uQtzfhI2baohv3
- SgMNIuDu9nxQJaspcBn8XJKEL/YkHHwC30zR+NFwIgylZgnpb6IkbpnvFUoLLRTtEjQ6
- lAOK2BZgHu4Qp3L2fIVJCHqtr5uPmqSMLsIRsy3C+jqYA5lkmO2IEeM6wJYwz+Tp4azC
- Gl2pSn3pJLtNmltPO7G5rz9796m5GUaMdKGnfa+evjz99NxtZ6daoZirWlVFfMof02hE
- +ZpjewWiKgBg1zwJ1G7KD0xJK2NJeW2vLR60woTD1tbLwW9ih7wY3H7PvjdVYSkqmCyT
- PCLQ==
+ bh=/OeTxwvv54dni1NCLrJFSq1zlzTGsf0EcWk/x9CQJt8=;
+ b=CNCX1zDLwK36xsUrc3Tz6Q6JL8lWyNJZuHDrOf87yeMb0b0RdWL/tUjulmY3UGG3fs
+ WIiCNbGA6OpkKGdDavDn9OtxxcJ+kZFb9iB6JIzzwMFhMZ40pKKtfMoh+p8KTYM9XEsC
+ JcejttzPfUolLeVyxLXSS0Ejfeh5aYpJzYtonSSvN1vGmC4CAlv9p1q+D0BzwIYdtVcH
+ PI5DoHDkKfbVvX/pIQ/DTDikSA8gNi3NBcYnQuGUk3wriVF4HNCHUrb5VrKlnF/0FG6F
+ heKlC2qk+6M2hR7C35v3F53PmUeJseUxP71o8ahqHW7sytRxJVniKd8SSE9XiHeqPak2
+ FU6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762698938; x=1763303738;
+ d=1e100.net; s=20230601; t=1762698940; x=1763303740;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ONThtaYMpfEDNo4b/8/a5deM0gkmLYr9IT8+NA0OabQ=;
- b=pBotKNii5BBq4neDFlYDkN23D02NjowcbgIC5SYIbtJO+JEElo+7LzFUyPGlhC4bPE
- qTVKTGkC5tRiHcdW+NH/zDI4AGmFaCh0yLFIWhvIYNC3uxrW95Xih/4UbRJKENHoUk0f
- q5mytUIFzxpEqp7c3Dp9ndnejvrDyVVvSsL8zM0nNv4lCycUgj1+RuMQlTaPeYIcQDZG
- LY6OwXcIHD+U4h1S/nQpI4pcmElzbClJiTcyVTDXWpZVM18VyNe0B/U5HBeHAadkxuPc
- AtJ3hUJ6JQKNcv0azKwdGkhRZ5isVOAbcikuz81LCFARROt47I3jX/9hqs8SWo6fHGpd
- cHzA==
-X-Gm-Message-State: AOJu0YxJr1tVoMbFQAR/iMdLI7EaDpNJ4EVwzEQRmQ9Q5fn4t0KzMs+F
- EdxlsfmPlcYebuLZlseDWTmDKbXL87sIfcyv97NhTHh0ygVMN307qLtyJpzMvD10i/0YRo1Tr2L
- EWJgWxllPFaePdH9JLIZE2ZPVL9nfFiHduLvdrvQ93TWxVR4Ed1CzjeLxaNFAAOfX6y00G3L2nj
- KLJNM4ogdj/q+ufeAX7YuPggCY9uiy4a5ZwA==
-X-Gm-Gg: ASbGncsA2ksoC2Ss6XyM34Yw2jl3zqZl182y83NYPwIyIOz+Lb7TX8s4LnhVtravhet
- 3OW05DG5mmEY2qxH+qJrZBZmMG5jJPn3Celp5APpcbfrNHQTzqZPa7C+OBU96aAl63nBMECQaL6
- C/1B5A321UjSHdxIXfizUhVogD3QA8Sl/aGppoqvmm6BNRIo69tP0OTr9bR2eB9/SFE9dxJebnb
- NaIPWmpAW82c4z3H06JuYKSwNK+rJopvADe0UNiyLXhaoAegsj2TyDvZi6rrowW1hty5OVPfhMZ
- +cPa2LpDjjGxURSaMqyDXUadq2vzupdXIuL3dSt5vvLosm+l6+9iN0r7AgWOs2ZaSsc=
-X-Received: by 2002:a05:600c:b86:b0:471:131f:85b7 with SMTP id
- 5b1f17b1804b1-47773236f9cmr44476565e9.15.1762698937872; 
- Sun, 09 Nov 2025 06:35:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEOlZrPkclZ2oUIzGWvQGRlGiYyVswgEkONUfufS1Ajv5GzdoYDMSHWWlw7jI4pLDAo3gkHpg==
-X-Received: by 2002:a05:600c:b86:b0:471:131f:85b7 with SMTP id
- 5b1f17b1804b1-47773236f9cmr44476315e9.15.1762698937266; 
- Sun, 09 Nov 2025 06:35:37 -0800 (PST)
+ bh=/OeTxwvv54dni1NCLrJFSq1zlzTGsf0EcWk/x9CQJt8=;
+ b=lItbMefxE8LdShei/eYK80OyhTtaIYqWAmPg/DYbOC3T6jNLOizE0lHrMfnEdM6Oaw
+ D/5i2MOIsMjIQ0lW8/b9zePSvzf4GpkZrh7IXB/JDdYJDbswWiiRfT2acSD1VvMVHH4w
+ QR/dAg5exZRowcQF0XcRCh/MZ23V3VfaxeDcKuUF4U6Ckci9+ULjKj2aYvF/TR57x+ay
+ eLYk/oTQkOqwvoDLzdtzbQvMDn2DnaTdwN1vFKfVg3aL/MLdm5YVtW/BsY6j5RvFdpwg
+ Ly87tQFG4+mk6uU2m7Gl4GFI7Kzl++V2XBucBBF5oliNi/D4OpUeqjMkShiOSBTGCd+i
+ sSmw==
+X-Gm-Message-State: AOJu0YxrmKt40t0V4zp9rBqTlD8plCllEw5/LyI7zRzTU4hWdygcX0Bl
+ Gi5mtFAmQUrLQOikbek+ZMigM/DD9ZntmUC1nfpP2EokLya54t9j7g+11vdC0QLtk/l/rsPCxix
+ YDM70fGTY7QNcc1X6gKeE/boYdCBp+VI6709CSBzd3s6GoR5KABsTEeTj4scKsZblZGB6rbxVf0
+ kjAnsMUUD0LBnett1YXm1OuJhlHV+ybdSRkg==
+X-Gm-Gg: ASbGncv1Nv9+HYAeijOkFgEAOhlHdXikFbpXgYcJ1Z4j+cCGSCuk3hpI/iEFEvIQga7
+ AnIuxp2/podq2yzlYT5sd5PBuHx84hFYaug/h9DQtoGLwFfWwEa0IZqS5JFrbmQchDGIv2T4BTn
+ mM9PswQxgXCLWSXqHoTMaBST+D7yZhy+yljqwL/q9DdvOO02qv6R0riKTDURPlY3cPdRVbhGVXk
+ jTsFcx/zq/0YttPvc4bQiL7dsp9An7gbHtpsI5A3Q23a9emxlosDCM6V2d+Uh9uh5ql9hNB16ZF
+ 2BghawQ7cvsQU5+nzr/IrEQ4LdSZJJ0XB6mu0M4U6B5WSYzJjMosLU96UQQcySyefrw=
+X-Received: by 2002:a05:600c:3b1f:b0:46f:b42e:e360 with SMTP id
+ 5b1f17b1804b1-4777329c723mr45271015e9.40.1762698939808; 
+ Sun, 09 Nov 2025 06:35:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkuNGllf4/CT5cAuxcdY8M4gjWAC0Cof73QCIxwvY9xRnGWpVxzq9nZKAh3waEjNSoXnyd3A==
+X-Received: by 2002:a05:600c:3b1f:b0:46f:b42e:e360 with SMTP id
+ 5b1f17b1804b1-4777329c723mr45270775e9.40.1762698939295; 
+ Sun, 09 Nov 2025 06:35:39 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477641b622asm90691765e9.4.2025.11.09.06.35.34
+ 5b1f17b1804b1-47764152a13sm86982255e9.13.2025.11.09.06.35.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 06:35:36 -0800 (PST)
-Date: Sun, 9 Nov 2025 09:35:33 -0500
+ Sun, 09 Nov 2025 06:35:38 -0800 (PST)
+Date: Sun, 9 Nov 2025 09:35:37 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Abeni <pabeni@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Gerd Hoffmann <kraxel@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 12/14] virtio-net: Advertise UDP tunnel GSO support by default
-Message-ID: <1c79ab6937ae938d3dfd4da1c01afc7eb599857e.1762698873.git.mst@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 13/14] q35: increase default tseg size
+Message-ID: <fa4136387928749d5a1b4fa3606ae0ce6dce75aa.1762698873.git.mst@redhat.com>
 References: <cover.1762698873.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -96,7 +96,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1762698873.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -121,67 +121,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-Allow bidirectional aggregated traffic for UDP encapsulated flows.
+With virtual machines becoming larger (more CPUs, more memory) the
+memory needed by the SMM code in OVMF to manage page tables and vcpu
+state grows too.
 
-Add the needed compatibility entries to avoid migration issues
-vs older QEMU instances.
+Default SMM memory (aka TSEG) size is 16 MB, and this often is not
+enough.  Bump it to 64 MB for new machine types.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <9c500fbcd2cf29afd1826b1ac906f9d5beac3601.1760104079.git.pabeni@redhat.com>
+Message-Id: <20251106105640.1642109-1-kraxel@redhat.com>
 ---
- hw/core/machine.c   | 4 ++++
- hw/net/virtio-net.c | 8 ++++----
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ hw/i386/pc.c      | 4 +++-
+ hw/pci-host/q35.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 0580550e12..06e0c9a179 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -40,6 +40,10 @@
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 4d6bcbb846..f8b919cb6c 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -81,7 +81,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
  
- GlobalProperty hw_compat_10_1[] = {
-     { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
-+    { TYPE_VIRTIO_NET, "host_tunnel", "off" },
-+    { TYPE_VIRTIO_NET, "host_tunnel_csum", "off" },
-+    { TYPE_VIRTIO_NET, "guest_tunnel", "off" },
-+    { TYPE_VIRTIO_NET, "guest_tunnel_csum", "off" },
- };
- const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
+-GlobalProperty pc_compat_10_1[] = {};
++GlobalProperty pc_compat_10_1[] = {
++    { "mch", "extended-tseg-mbytes", "16" },
++};
+ const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
  
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 17ed0ef919..3b85560f6f 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -4299,19 +4299,19 @@ static const Property virtio_net_properties[] = {
-     VIRTIO_DEFINE_PROP_FEATURE("host_tunnel", VirtIONet,
-                                host_features_ex,
-                                VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
--                               false),
-+                               true),
-     VIRTIO_DEFINE_PROP_FEATURE("host_tunnel_csum", VirtIONet,
-                                host_features_ex,
-                                VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM,
--                               false),
-+                               true),
-     VIRTIO_DEFINE_PROP_FEATURE("guest_tunnel", VirtIONet,
-                                host_features_ex,
-                                VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO,
--                               false),
-+                               true),
-     VIRTIO_DEFINE_PROP_FEATURE("guest_tunnel_csum", VirtIONet,
-                                host_features_ex,
-                                VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM,
--                               false),
-+                               true),
+ GlobalProperty pc_compat_10_0[] = {
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 1951ae440c..a708758d36 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -663,7 +663,7 @@ static void mch_realize(PCIDevice *d, Error **errp)
+ 
+ static const Property mch_props[] = {
+     DEFINE_PROP_UINT16("extended-tseg-mbytes", MCHPCIState, ext_tseg_mbytes,
+-                       16),
++                       64),
+     DEFINE_PROP_BOOL("smbase-smram", MCHPCIState, has_smram_at_smbase, true),
  };
  
- static void virtio_net_class_init(ObjectClass *klass, const void *data)
 -- 
 MST
 
