@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F15C4404F
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D017C44033
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI6Vz-0002DM-8Q; Sun, 09 Nov 2025 09:35:35 -0500
+	id 1vI6W1-0002Ek-JR; Sun, 09 Nov 2025 09:35:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vx-0002Cw-Mu
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:33 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vz-0002DN-5a
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vw-0001oH-1D
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:33 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vx-0001oU-QK
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762698931;
+ s=mimecast20190719; t=1762698933;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qEti7Ogz8rb9NG0Hkns7Wvi5D2MMh1SqCQoP/RLdhF4=;
- b=UJ9hME6zcuV2+2b+P5UGmOdYgL2at2ZGJxl/5mgbc9PuZ1Gl7+DPjg7Vs05j8NFoqyAqM0
- NuzUpRe1fPFf/SW6h3tANqAXlwOFlF8rcWTYJaLsyunyV8Ao2PW8b1EIgqjuMytc1b1/I5
- oL45F4UbLcKYmVj6AGvcXjJ9QWfUNXo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
+ b=EvgYQxDqg3bZ1GqmjHz6vOmYhjphvyFju7nn4/NRP/AJbk4/pkFzgnkpfWebGOmEFKsSB8
+ 7k1IB3oSrXRwNKhTbUjivOXaFSeWNgbzN584nO2AjFpXjDC+ZEKJmjA3jXebKJqGHbi/Cw
+ jyLQW5o1SWisOHOPfbeJ3i6i7vtsX/o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-BE_6j9uLO72nSS7-ut20Ng-1; Sun, 09 Nov 2025 09:35:29 -0500
-X-MC-Unique: BE_6j9uLO72nSS7-ut20Ng-1
-X-Mimecast-MFC-AGG-ID: BE_6j9uLO72nSS7-ut20Ng_1762698928
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-429cbed2b8fso1057388f8f.1
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:29 -0800 (PST)
+ us-mta-486-C5uNchdJO_6e3439a1NRjg-1; Sun, 09 Nov 2025 09:35:31 -0500
+X-MC-Unique: C5uNchdJO_6e3439a1NRjg-1
+X-Mimecast-MFC-AGG-ID: C5uNchdJO_6e3439a1NRjg_1762698931
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4777b03b90fso1446355e9.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762698928; x=1763303728; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762698930; x=1763303730; darn=nongnu.org;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date:from:to
  :cc:subject:date:message-id:reply-to;
- bh=qEti7Ogz8rb9NG0Hkns7Wvi5D2MMh1SqCQoP/RLdhF4=;
- b=Jo7jPyNN6bu88SYWpCXZRuDKs3pr5orA6GIIguJlgo+HG/8fQUktozJx6M6uc2ZOZZ
- zwd0i2ISRXmBXhX3QZU8Ab7x+ihHvyobvZxCkNCugt2tTd10jYvkq04jU3AHexhMafmc
- zgIqr6/7wsfWmkR7pLuOe+AEAjShEGdhKoxpcG6ed92gluxqSLsLrAW3JwicWbeZZIjQ
- +gEzOwf1PYJm5+RvBKfnXx0SFLZRS6268MsLH1dHM7QmUpXXuH1IUJWk1dQIXNCyyaJ0
- mTUanjsvI+cb8wc9ij51eH5MiBe5Kx8HtJ286RL2a0Qd3QDJV3ihrzEC+8aqgn+acLsb
- T3cg==
+ bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
+ b=ZyTOnGXaf/DSEK6woUfIAGsZ4XbclyufKiDMDp5ucA4drhMM/1QEzjVbmKJ62KOFSG
+ 8w1Wiw05hw5LDYCN8E1PZQrdwoSLd9KRe0xOzWeZ37HN8CF0wft43pP2dvPzenSmLHHm
+ IrnZEqDVm0ZBKyOGfYAHVqiPEyJYpyECwvjSmqN259uSSy2OqYR/PXmdA0VHE335BtHr
+ fXX2JCTw27dxoiF8tcoL9bC5v4+Cnuk1W09Knmh+QL2u9krT5+myU8+ZC5qzT/Sj7xn7
+ f08QPuDau00CBu8IwpAd8FJdm0EV6+PYZXHS9u6KGblggQz2Pl7k7O7F/WWcl5ZtV8le
+ l4dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762698928; x=1763303728;
+ d=1e100.net; s=20230601; t=1762698930; x=1763303730;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qEti7Ogz8rb9NG0Hkns7Wvi5D2MMh1SqCQoP/RLdhF4=;
- b=KjDh/wDAgJ8BFfHQZbQQyFmpZev5qR12CAje1X1o/PQ5zggZAGyZ8a9aL/rgWcWAN+
- 85M5E1uFaG7GG1BERwObfbqXH/f0VG19uBRFGnG1iD9DGDdPVtZTAOVo9TXtGw7Ob1z6
- TMaIVTG3XZM/LLj3ggts009ZtPwn2k5hE46VHM3cMmeB25rOFjuhqvtQUz+RE1qy4UMD
- HlM13MA0YYbMrsoZYbbHyt88gV5vGPz9Cpjoy7UANWApLCymTSxO+60VmUhH+pvmCRiL
- FfKT3i8h2LtNtxzXo0+fE0YJLyxA1MyUgslDC4WG8kSBLGndbvzLbt9YUBU5/ZXPnD/F
- xjsQ==
-X-Gm-Message-State: AOJu0YwBhAXwtRDr9PY7m/u7VAGXYRXo/BxvV237mDn2SDMmblnWAvH1
- WLa4YqLXEv+SaWFpGTdsY1chikljNcQlpsnN3B40hKMChjzbCQNRw456tQK456zdZnRcoyZYbPs
- O62oV9Tmzf7+4yJbKO+8IpIMKvNTtSLRbyoWbsDAAlf82Yjrld6OzyQhZhRgnVG7CBmpVORHfRC
- iSRL3MhzkQJrxwfymoBLyTN0ucsepN8g3DXg==
-X-Gm-Gg: ASbGnctw8hoy5oa/GC+frhOSpprYbAqA1iGPB3AsxgRXRby55YLuOsXPH6awTHmBfdz
- pqTDSNJTMMxwlfdhPzjg9qBH6kD673Fx71OHNXcyAwc2Ozwz2tWyohIoWgcNTORsC/5O9lXl9D5
- e/mWkNNZGsblmNOWq739YhHqzu+Gtsqsl4F/m+6F4P9O4d4NrQSjALZAM08J2QYhIXZEAW0FcGd
- bMfQsNSDQ8MHXDN+0dcuFzhBARX/2LursZeRdJhrVgoJLwf7wlwRs9QraYGkUimMQpzOadCiNeh
- 7VkrD4UsA94Zd59SI2wUVAOyvf2rylZjTyLZC4mfkSmapSVGMdRp0RrifjLxy7gIJRQ=
-X-Received: by 2002:a05:6000:2b05:b0:42b:3023:66be with SMTP id
- ffacd0b85a97d-42b30236929mr2584623f8f.32.1762698927536; 
- Sun, 09 Nov 2025 06:35:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpjVxelPkLoe9A0H7b3V2vdn1iAiCkblwTe6HkdSI+gKgsH90Ujvlm6fNcM4uTvnOBQXp8OA==
-X-Received: by 2002:a05:6000:2b05:b0:42b:3023:66be with SMTP id
- ffacd0b85a97d-42b30236929mr2584603f8f.32.1762698927013; 
- Sun, 09 Nov 2025 06:35:27 -0800 (PST)
+ bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
+ b=PtdmEFnKY4fSYcFHzpRqq83/aMbsyzWpscVV9eQL9vWP9Hy+P5gce8ihFE/79DOJXC
+ NtY2gYj2ADB3NcdfmSglZRo/01gu2gtmQPcHcmr9oPSaRfTkrkZv9Dmr00jJbjp4d2jO
+ WeI/XiQSZQKCPuz+epI8A2P+7VuP/uoQogghxS5nbDPnez9UdP64fxW82hHpVq3tkaXF
+ mG/10PtfIFhT1T5qRfraQGxlNy1aYxI6vfJuoIq/d+239Nx7BAXhQD9HOV3fK04t12Ef
+ K2Ya63bfdJSZ9WpO1+hm+Di0UEfKCPmQfRxNJTVbN0MFUC6geCmHnNVtziXyObxbicon
+ TiBQ==
+X-Gm-Message-State: AOJu0Yzw/c7nODXGCpoC6NjSFYldn5t24BPFbkvk9KxJUQuZP2FXG6/J
+ 20t4M/unwgwEdJknTAArKmoGc5ywMeaVSer+Up2By83aSZaxfq0Rp+hUlK04V2HMFv3Chflmoq4
+ Yk2lYAQI6otJFytgc0Rc91AdfAfc4jcqVCRfgp2PANvkF3ufwNyCoPfugijCrb8YYMW/D2KmUEn
+ Q/9YvNeZ5TJEmfFIw412spK3MtU9sNtMBDTg==
+X-Gm-Gg: ASbGnctF6iN6HHvKwWszPgGeCXdN74OnlwcbMgUhraaCCdvXh/BUnTmJ/nUXtLySGkx
+ oz1oOdrmvkPpAVkLmrmzcfqxIaSX01vkcHsAas2Tn+KgQYVhRC2oAAUGv2fjcisamzvYBhExB07
+ KVEUobg7EXxhvfLfYy2d9Qd+b2/XtF5ipKaC/g0tmuU2clfwCeHJEqnMCQEjKrS9mMI1AeJjAJ8
+ ZtyMojHculQQ5XrAhbSarkX9qVPjoSNYWf/at5oa3JQ5359uONS9HDt32ZlnTNVHa+i51frafml
+ 4Tx8sCkClTalGdHh6ogilzxT6mX3MeRNyHgFCb4n3EmxOTVH+5kyjOWA3rdDXKy/QtA=
+X-Received: by 2002:a05:600c:4583:b0:471:14af:c715 with SMTP id
+ 5b1f17b1804b1-47773229f38mr37995565e9.3.1762698930185; 
+ Sun, 09 Nov 2025 06:35:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHYEchCI9I3AjX399478DwBenJprOjh5JRZkwcWbSaLXhNNHV4NNokF1arMA49X7j/0e2rEYA==
+X-Received: by 2002:a05:600c:4583:b0:471:14af:c715 with SMTP id
+ 5b1f17b1804b1-47773229f38mr37995265e9.3.1762698929705; 
+ Sun, 09 Nov 2025 06:35:29 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b2f7a0512sm9050632f8f.18.2025.11.09.06.35.25
+ 5b1f17b1804b1-477773f7749sm69323585e9.7.2025.11.09.06.35.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 06:35:26 -0800 (PST)
-Date: Sun, 9 Nov 2025 09:35:25 -0500
+ Sun, 09 Nov 2025 06:35:29 -0800 (PST)
+Date: Sun, 9 Nov 2025 09:35:27 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- German Maglione <gmaglione@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 08/14] vhost-user: make vhost_set_vring_file() synchronous
-Message-ID: <1ba9a5220325dd5260a0c37b6299ce38364a5120.1762698873.git.mst@redhat.com>
+ Shameer Kolothum <skolothumtho@nvidia.com>,
+ Eric Auger <eric.auger@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 09/14] tests/qtest/bios-tables-test: Prepare for _DSM change
+ in the DSDT table
+Message-ID: <3e6ad83f209ea8cf497e5d160e44c1bc5e518f1a.1762698873.git.mst@redhat.com>
 References: <cover.1762698873.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -122,111 +123,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: German Maglione <gmaglione@redhat.com>
+From: Shameer Kolothum <skolothumtho@nvidia.com>
 
-QEMU sends all of VHOST_USER_SET_VRING_KICK, _CALL, and _ERR without
-setting the NEED_REPLY flag, i.e. by the time the respective
-vhost_user_set_vring_*() function returns, it is completely up to chance
-whether the back-end has already processed the request and switched over
-to the new FD for interrupts.
+Subsequent patch will fix the GPEX _DSM method. Add the affected DSDT blobs
+to allowed-diff list for bios-table tests.
 
-At least for vhost_user_set_vring_call(), that is a problem: It is
-called through vhost_virtqueue_mask(), which is generally used in the
-VirtioDeviceClass.guest_notifier_mask() implementation, which is in turn
-called by virtio_pci_one_vector_unmask().  The fact that we do not wait
-for the back-end to install the FD leads to a race there:
-
-Masking interrupts is implemented by redirecting interrupts to an
-internal event FD that is not connected to the guest.  Unmasking then
-re-installs the guest-connected IRQ FD, then checks if there are pending
-interrupts left on the masked event FD, and if so, issues an interrupt
-to the guest.
-
-Because guest_notifier_mask() (through vhost_user_set_vring_call())
-doesn't wait for the back-end to switch over to the actual IRQ FD, it's
-possible we check for pending interrupts while the back-end is still
-using the masked event FD, and then we will lose interrupts that occur
-before the back-end finally does switch over.
-
-Fix this by setting NEED_REPLY on those VHOST_USER_SET_VRING_* messages,
-so when we get that reply, we know that the back-end is now using the
-new FD.
-
-We have a few reports of a virtiofs mount hanging:
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/101
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/133
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/213
-
-This is quite difficult bug to reproduce, even for the reporters.
-It only happens on production, every few weeks, and/or on 1 in 300 VMs.
-So, we are not 100% sure this fixes that issue. However, we think this
-is still a bug, and at least we have one report that claims this fixed
-the issue:
-
-https://gitlab.com/virtio-fs/virtiofsd/-/issues/133#note_2743209419
-
-Fixes: 5f6f6664bf24 ("Add vhost-user as a vhost backend.")
-Signed-off-by: German Maglione <gmaglione@redhat.com>
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251022162405.318672-1-gmaglione@redhat.com>
+Message-Id: <20251022080639.243965-2-skolothumtho@nvidia.com>
 ---
- hw/virtio/vhost-user.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 4b0fae12ae..63fa9a1b4b 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1327,8 +1327,11 @@ static int vhost_set_vring_file(struct vhost_dev *dev,
-                                 VhostUserRequest request,
-                                 struct vhost_vring_file *file)
- {
-+    int ret;
-     int fds[VHOST_USER_MAX_RAM_SLOTS];
-     size_t fd_num = 0;
-+    bool reply_supported = virtio_has_feature(dev->protocol_features,
-+                                              VHOST_USER_PROTOCOL_F_REPLY_ACK);
-     VhostUserMsg msg = {
-         .hdr.request = request,
-         .hdr.flags = VHOST_USER_VERSION,
-@@ -1336,13 +1339,32 @@ static int vhost_set_vring_file(struct vhost_dev *dev,
-         .hdr.size = sizeof(msg.payload.u64),
-     };
- 
-+    if (reply_supported) {
-+        msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
-+    }
-+
-     if (file->fd > 0) {
-         fds[fd_num++] = file->fd;
-     } else {
-         msg.payload.u64 |= VHOST_USER_VRING_NOFD_MASK;
-     }
- 
--    return vhost_user_write(dev, &msg, fds, fd_num);
-+    ret = vhost_user_write(dev, &msg, fds, fd_num);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-+    if (reply_supported) {
-+        /*
-+         * wait for the back-end's confirmation that the new FD is active,
-+         * otherwise guest_notifier_mask() could check for pending interrupts
-+         * while the back-end is still using the masked event FD, losing
-+         * interrupts that occur before the back-end installs the FD
-+         */
-+        return process_message_reply(dev, &msg);
-+    }
-+
-+    return 0;
- }
- 
- static int vhost_user_set_vring_kick(struct vhost_dev *dev,
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..e2fce2e972 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,17 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
++"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
++"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
++"tests/data/acpi/aarch64/virt/DSDT.viot",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
++"tests/data/acpi/riscv64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/DSDT.topology",
++"tests/data/acpi/loongarch64/virt/DSDT.numamem",
++"tests/data/acpi/loongarch64/virt/DSDT.memhp",
++"tests/data/acpi/x86/microvm/DSDT.pcie",
 -- 
 MST
 
