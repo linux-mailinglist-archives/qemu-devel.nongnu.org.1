@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A732C4489F
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F7FC4489A
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 23:07:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIDYy-0007dG-S6; Sun, 09 Nov 2025 17:07:09 -0500
+	id 1vIDYw-0007c6-R7; Sun, 09 Nov 2025 17:07:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYv-0007ac-37
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:05 -0500
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYu-0007aJ-Sl
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:04 -0500
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYs-0005sP-Sc
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vIDYs-0005sk-IE
  for qemu-devel@nongnu.org; Sun, 09 Nov 2025 17:07:04 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id C264C60008;
+ by sea.source.kernel.org (Postfix) with ESMTP id 20C79437E4;
+ Sun,  9 Nov 2025 22:07:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBCFC4CEF8;
  Sun,  9 Nov 2025 22:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F28DC4CEF8;
- Sun,  9 Nov 2025 22:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1762726019;
- bh=FjRRjfXkVql2NimzOsvAxPczRCiES2X1ZlT8g/OPtes=;
+ s=k20201202; t=1762726021;
+ bh=RJJib2w6GC9LobFAqWjbssP3wkcGzztB3jlbcsTCuwo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=g79Fbf9pK10YZpxp0yRqjdUmiGLfXS43ceIdgeK7AQpisuxr7sUpvDAlE07muDju/
- eBkL22bFfWbZvhel1ssNyqt2KgzktOiRnqOcmF3fMzY5GFrHQDu9LWt/yGiQSq4bvk
- kWOmDucMb3S3uTH5sVPA8ufnbtLqZCq/S2UI03d0jfvdUXJZXtKxJo/5G6yaujrwQf
- tt+AtZ2P1pJRxVf4jMM2It6CPlqqREQECsvsqja27MdHAAFX0pKJmqCA/2zq0HDkNL
- i3O5ixxFxa1Vo25nMQzWaP7+j6ZDc7bt4MYBDg2g7qu2T2RTsekinWjmd8DI1a2vue
- LcoGM1NyWiHVA==
+ b=I3w2uKoQXsPUBnh6nBAdqDytOzenM0/EJra2BfBzGUKkMmVqK/kxOZPdGP8dWWLoJ
+ HVGMbHsbsk1y6vHXuM2EuB/Lx3y92yiqUa8pDeXGF3Or5LKDv2wAo4OC951wcm322Y
+ sGrJ328Ey9DJYReBl41vKfHWGCCAb+3CxXpZnM8P61YuYo+8dlvEOqrWuSqWlvjKAZ
+ nU+zx+ryqTUt3ETTFJCOi/H8FZPXz37G1ebCbPdsdQoaXU6VMWwZItuXIVRnXr7yTO
+ tqsBcV9EGif0S2rMjb3OFZC+ZQMPzVL5LTIipU7zxoQZ4mTexLamgAesjGeaCtrjwE
+ 2u0g4VE48oERw==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 1/7] ncr710: Fix potential null pointer dereference
-Date: Sun,  9 Nov 2025 23:06:48 +0100
-Message-ID: <20251109220654.46718-2-deller@kernel.org>
+Subject: [PULL 2/7] ncr710: Drop leftover debug code
+Date: Sun,  9 Nov 2025 23:06:49 +0100
+Message-ID: <20251109220654.46718-3-deller@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251109220654.46718-1-deller@kernel.org>
 References: <20251109220654.46718-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=deller@kernel.org; helo=tor.source.kernel.org
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=deller@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -69,41 +69,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-The code dereferences s->current before checking if it is NULL. Move the
-null check before the dereference to prevent potential crashes.
-
-This issue could occur if s->current is NULL when the function reaches
-the "Host adapter (re)connected" path, though this should not normally
-happen during correct operation.
+That code was part of some debugging code. Now it has no effect any
+longer, so let's drop it.
 
 Reported-by: Stefan Hajnoczi <stefanha@gmail.com>
-Reported-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
-Suggested-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/ncr53c710.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/scsi/ncr53c710.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index ade951b1d1..a35c41b67f 100644
+index a35c41b67f..aaac31cbb9 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -832,12 +832,11 @@ void ncr710_transfer_data(SCSIRequest *req, uint32_t len)
-     }
- 
-     /* Host adapter (re)connected */
--    s->current->dma_len = len;
-     s->command_complete = NCR710_CMD_DATA_READY;
--
-     if (!s->current) {
-         return;
-     }
-+    s->current->dma_len = len;
- 
-     if (s->waiting) {
-         s->scntl1 |= NCR710_SCNTL1_CON;
+@@ -1361,11 +1361,6 @@ again:
+         case PHASE_DI:
+             s->waiting = NCR710_WAIT_DMA;
+             ncr710_do_dma(s, 0);
+-            if (s->waiting != NCR710_WAIT_NONE) {
+-                /* Async - stop and wait */
+-                break;
+-            }
+-            /* Sync - continue execution */
+             break;
+         case PHASE_CO:
+             ncr710_do_command(s);
 -- 
 2.51.1
 
