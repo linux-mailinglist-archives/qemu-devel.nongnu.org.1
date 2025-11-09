@@ -2,97 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8028FC43F8C
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E193C44040
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI60t-0004aI-CF; Sun, 09 Nov 2025 09:03:27 -0500
+	id 1vI6Vj-00027j-VW; Sun, 09 Nov 2025 09:35:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI60o-0004Pp-Nr
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:03:23 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vI60n-0004Te-5Q
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:03:22 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-b7277324054so306057066b.0
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:03:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vg-000279-L0
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Ve-0001lV-4m
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762698912;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=xJhZlxm2Tl2LFNmCdLACioU0v0rdrau+1g+t5U9r+f8=;
+ b=FxAgcFqjBvAHZlBhx+76WNSRLp1W3gmeY/Cnp/dxR6yIVIkhAn9c5Um+oXuiBvUZIgWsU2
+ Jpc0ddYqkl5sgNxFsCV03wDgb4JSL1hTCLCtfRHdU12BAfCwS9a/nHZ/iIPy9GMtWpDyLQ
+ dk+X9B9S/+RyaqzJuraPlg9Q4cG+p7Q=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-98-Vl3bHKC0NDerEyi1UmZV4Q-1; Sun, 09 Nov 2025 09:35:11 -0500
+X-MC-Unique: Vl3bHKC0NDerEyi1UmZV4Q-1
+X-Mimecast-MFC-AGG-ID: Vl3bHKC0NDerEyi1UmZV4Q_1762698910
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47111dc7c5dso9874975e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762696999; x=1763301799; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=redhat.com; s=google; t=1762698910; x=1763303710; darn=nongnu.org;
+ h=content-disposition:mime-version:message-id:subject:cc:to:from:date
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zS7AbEGMddZbuw+7JMZ27pbVDA9qbRJcIRYc7b4x294=;
- b=VtgefT/qFxywkrdScrnF9LgBa1sTaMYgcXG/Mb8DUeR3Zx1Wp6rgtQUrHPkWljzqkH
- 0/cd1qvE3phC4nnCxPd0PRa0LgI1cZEtfdSTMXdmUyDhnGvbdNQIxqXlmi2oHfDRMxDt
- MY8NIUyhM6XHIW/0j0q9u25x0HH1jKllejXvf63w6IBu3QAv26KY8U7TU5M47o0F+5Hz
- +swXuD7bZZK8CIdyYXsK3wSFaoWH5G8w+gLKov40WTjvOIF+lec9gdPEoMSdq0bWgfJG
- 4CJ60M0PbKav9lO6Ki4j58kopz6hGtvsoHom3zgs9SdMFLCvhyWdFWEEklFTsGX9W5E8
- RSgA==
+ bh=xJhZlxm2Tl2LFNmCdLACioU0v0rdrau+1g+t5U9r+f8=;
+ b=idIpPt1qWjdaczWvGBYrygoYLSngUWoSnvnarOD2epoppKZYRDi+ode5SNBxnluhuY
+ Wu0rUFKHLAcd7W08ayjeqa8un4YBzrNWqnm6vkhJRIRMmbYUZeobcC3jrSU10L4Qj8V4
+ Nf1KKPDj8xgv08080PmoZ6EMrFVPiwshiUzBUArDCbRnydNS1fO4Bd7jXHORYCAfl2uC
+ Z+gmgbzsY/DgbOVKHf8XZr0hM2RwhuTG31FXnIjzM/u1flCmjpQfdpLJ1hCIeF4j+/Ta
+ mJCcf94ti4D0U5afBUVJ53scTsfCJjXV4AphBli21CbYSvczd8jCiVhigbCuaG8yVmPF
+ VN3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762696999; x=1763301799;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1762698910; x=1763303710;
+ h=content-disposition:mime-version:message-id:subject:cc:to:from:date
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zS7AbEGMddZbuw+7JMZ27pbVDA9qbRJcIRYc7b4x294=;
- b=k+CtBv4aTCOG7syNkSFDlBLdVZs4QJGhx3CD6zm7hh5tK6nNtBDwGLv4xlg1QQGaCz
- HPEJKAqpiy9veeNLcK7F4v9eJypQocp+NuqQPPSsDkmTsWPRfQkmWhCI5AIkblelylho
- lrhfkRJbwsbqDjxGyZCks5trYn2FJRRtLv9WTHE9wH7sEJGxsr28eBpmsHbmP2nc22ta
- Jzvi0/56H93XIGBKhlzuqUHQZJmR6Xt0L4l1DBtbSuzZp/MIa0jH1tmlgD+ZzmjaD29Y
- vUTNSXaZJvwf0YcTx8n8LcBlhZN6PVlR1/RFAR3JAs4habWpNRo1aJyWvketQxQDVbG0
- H9iw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCViAYTcaahgh0No1GjmhEXpIXBScUDtQ+iMlVYl+LGIoIDPx1DuIW3fifXOUOg8CS+PWkLjrjTrsEPU@nongnu.org
-X-Gm-Message-State: AOJu0YxLtn3eo0fmrvcYqAqVtz7l/en5ob0014xcbq91PjJfbTtLW07Z
- PjQbPKA1dpg1URaQX0YoLANjOWOXOuIWgGvDZNl4fyUuU90di8UHVZQPXdRLUHQT2j4=
-X-Gm-Gg: ASbGncv+yB7MveyWdWz4SU2EKcs0iXL6ESJ5VZq5lwWfGwUkgNf1PDcGARP8whDYbec
- dq/722zv8ELaqon5QpvQbv1i6ruTTqxdvRELh4pwD9viojJR6ym6hGxajHOjGlr/LlSi+QJDytg
- 2ocR5KM0C4JXUnK1Bsp4SQlfTBh/ZzyK0H2PMnAE9zHl5d7hnHOqfiYuBZqDpoof0XblIYgLsUm
- lDyqpC0QXLFB47T9Q9Za2/oQc23mPAZsf0wEHbBXN89y2fmko65Fgi2/NbNwK0mnZ52Lsu85lvP
- C3BdLXurkg52LVgfnxtPJdwMzhia4mZarJkxh08/c9m54l9MxyxIedEWVh5zOqWJWA/n6jaLdOR
- ytUnLWMmskEhIBOemK/5YEgi12SP1Mo+3nV+0sOAl76jrLAKW0zdeRhOgcGGCwQ8Hcolw/pP3Gd
- FyrUl/847nNgNA5IYmdXCj/Rt2ZF/lpInMYBr2lk73Izds/0wa66kll4KLAw==
-X-Google-Smtp-Source: AGHT+IGCuPjCiT+eu1j7JxHX7JwxbFo1LD5zY2H9EFgLMFKeuIzXqJuLq5xVhXYfLTrm13s7LT+YaA==
-X-Received: by 2002:a17:907:7e84:b0:b3f:f6d:1d90 with SMTP id
- a640c23a62f3a-b72e02b342emr472456766b.11.1762696999453; 
- Sun, 09 Nov 2025 06:03:19 -0800 (PST)
-Received: from [192.168.2.7] (tmo-086-152.customers.d1-online.com.
- [80.187.86.152]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72bf97e54asm806021766b.34.2025.11.09.06.03.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Nov 2025 06:03:18 -0800 (PST)
-Message-ID: <420ca5b8-861a-4ec6-b64a-461707a48866@linaro.org>
-Date: Sun, 9 Nov 2025 15:03:16 +0100
+ bh=xJhZlxm2Tl2LFNmCdLACioU0v0rdrau+1g+t5U9r+f8=;
+ b=Hr+FqqDduwfjyP8dRkW4xDhvyf5IXVUFnR79qrAFFnFafvFk1Yb4QZspYShNNdjFkP
+ zvFu5f4d48dSSsPsQPmjYbWID6ueZezkjdk2KGboVLSIeeQPPHyDwULwTEKXJUNabjZV
+ druWTcgSmitNe4swjtzX5RxdG7hYROOpVVjqNrNaXCQVL2fQNELfGpVGugNmh2eLw3cG
+ wPztg7z15RnTmdItylogYs1y03V0IT0NVQLY89uLRxhStaCeUufS8lW6+VSl2rP0uw0E
+ 9JttmHh9zJpkCx0f9dQID0ijIjMFQ1mgDNlw9NLNHdVEw78suSHvLhJZ6snHkXP/4lZW
+ euUg==
+X-Gm-Message-State: AOJu0Yzkg1gO8NdMkEMn7IPcU31zo3haX7dlTYfpLJXtRbednfUGJugR
+ kG+uxxqBDjziUZNNk0gluErTro0Mwl+7B+pXF+DarrLRCl+gOtb/t3V5Epu1aP8yIH9ITTa7uJ1
+ QI+jrHr+GVOo92VMoZD9oFmdBeha8OiG1XYhrmC2Ofh3pp6XLomcIcnloAGoI4dJDdcqIFUFSDc
+ lbAYpbiPEFJhSVzIM5yeipch34pjykjsFfkg==
+X-Gm-Gg: ASbGnctNQhixytoXe088FF3hFI1pcki2GvrRBoX+MyAYt2X/Oan3Qwi2jdmIC6gwV1t
+ n47QKWQpLjhfTaOSncCuYV2Jwmr0obwYMe7RyN6EXZ65I7AlH91wZiPPpfByU5ewJDdd1R0OmwD
+ CcZ8MrWCzuVEFusX+6ZVG/wfdCrn33yYqku5RzEdLVVZ6nDDKCtc+8T3sr/3FBeZhcPSTZNePjT
+ 6Ok8A2z7YBY69h352K/VMbXGX8ssn6IM1JNJx+pa2f6qY3W1lCkDb6ZuIUeG825712bvhVn3g1f
+ GOxvvc7IzwxmxaZjsI2j8K27aaYwyTrjuMROx+68mAfw2tbt8AuMRTB/5rXo8mFVpd8=
+X-Received: by 2002:a05:600c:2d48:b0:477:348b:1182 with SMTP id
+ 5b1f17b1804b1-4776dcd6fddmr40113205e9.18.1762698909609; 
+ Sun, 09 Nov 2025 06:35:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0QQOk2w7JkBD3ma4iVUZDG2Ni/Hcd6zl1oVf2jOmpUNnYJXXcpXDeS251nh/5Ye3WUgz9RQ==
+X-Received: by 2002:a05:600c:2d48:b0:477:348b:1182 with SMTP id
+ 5b1f17b1804b1-4776dcd6fddmr40113035e9.18.1762698908994; 
+ Sun, 09 Nov 2025 06:35:08 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42abe63e13csm16782993f8f.19.2025.11.09.06.35.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 09 Nov 2025 06:35:08 -0800 (PST)
+Date: Sun, 9 Nov 2025 09:35:07 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/14] virtio,pci,pc: fixes for 10.2
+Message-ID: <cover.1762698873.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] target/riscv: drop unused include directive in
- time_helper.c
-Content-Language: en-US
-To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>
-References: <20251107102340.471141-1-luc.michel@amd.com>
- <20251107102340.471141-2-luc.michel@amd.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251107102340.471141-2-luc.michel@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,14 +113,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/25 11:23, Luc Michel wrote:
-> Drop the unused qemu/log.h include directive in time_helper.c
-> 
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
-> ---
->   target/riscv/time_helper.c | 1 -
->   1 file changed, 1 deletion(-)
+The following changes since commit 917ac07f9aef579b9538a81d45f45850aba42906:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-05 16:07:18 +0100)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+
+for you to fetch changes up to 97f24a0496be9e0a7216fea1fa0d54c1db9066e2:
+
+  vhost-user.rst: clarify when FDs can be sent (2025-11-09 08:25:53 -0500)
+
+----------------------------------------------------------------
+virtio,pci,pc: fixes for 10.2
+
+small fixes all over the place.
+UDP tunnel and TSEG tweaks are kind of borderline,
+but I feel not making the change now will just add
+to compatibility headaches down the road.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Albert Esteve (1):
+      vhost-user: fix shared object lookup handler logic
+
+Alejandro Jimenez (1):
+      MAINTAINERS: Update entry for AMD-Vi Emulation
+
+Alyssa Ross (1):
+      vhost-user.rst: clarify when FDs can be sent
+
+Eric Auger (1):
+      hw/pci-host/gpex-acpi: Fix _DSM function 0 support return value
+
+Gerd Hoffmann (1):
+      q35: increase default tseg size
+
+German Maglione (1):
+      vhost-user: make vhost_set_vring_file() synchronous
+
+Paolo Abeni (1):
+      virtio-net: Advertise UDP tunnel GSO support by default
+
+Sairaj Kodilkar (2):
+      amd_iommu: Fix handling of devices on buses != 0
+      amd_iommu: Support 64-bit address for IOTLB lookup
+
+Shameer Kolothum (2):
+      tests/qtest/bios-tables-test: Prepare for _DSM change in the DSDT table
+      tests/qtest/bios-tables-test: Update DSDT blobs after GPEX _DSM change
+
+Zhenzhong Duan (3):
+      intel_iommu: Handle PASID cache invalidation
+      intel_iommu: Reset pasid cache when system level reset
+      intel_iommu: Fix DMA failure when guest switches IOMMU domain
+
+ hw/i386/amd_iommu.h                              |   6 +-
+ hw/i386/intel_iommu_internal.h                   |  17 +++
+ include/hw/i386/intel_iommu.h                    |   6 +
+ hw/core/machine.c                                |   4 +
+ hw/i386/amd_iommu.c                              | 179 +++++++++++++---------
+ hw/i386/intel_iommu.c                            | 181 +++++++++++++++++++++--
+ hw/i386/pc.c                                     |   4 +-
+ hw/net/virtio-net.c                              |   8 +-
+ hw/pci-host/gpex-acpi.c                          |   2 +-
+ hw/pci-host/q35.c                                |   2 +-
+ hw/virtio/vhost-user.c                           |  64 ++++----
+ MAINTAINERS                                      |   6 +-
+ docs/interop/vhost-user.rst                      |   7 +
+ hw/i386/trace-events                             |   4 +
+ tests/data/acpi/aarch64/virt/DSDT                | Bin 5337 -> 5337 bytes
+ tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt   | Bin 5423 -> 5423 bytes
+ tests/data/acpi/aarch64/virt/DSDT.acpipcihp      | Bin 6246 -> 6246 bytes
+ tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex | Bin 5391 -> 5391 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp          | Bin 6698 -> 6698 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb            | Bin 7812 -> 7812 bytes
+ tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev     | Bin 10274 -> 10274 bytes
+ tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy  | Bin 10274 -> 10274 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology       | Bin 5539 -> 5539 bytes
+ tests/data/acpi/aarch64/virt/DSDT.viot           | Bin 5354 -> 5354 bytes
+ tests/data/acpi/loongarch64/virt/DSDT            | Bin 4603 -> 4603 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.memhp      | Bin 5824 -> 5824 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.numamem    | Bin 4609 -> 4609 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.topology   | Bin 4905 -> 4905 bytes
+ tests/data/acpi/riscv64/virt/DSDT                | Bin 3538 -> 3538 bytes
+ tests/data/acpi/x86/microvm/DSDT.pcie            | Bin 2985 -> 2985 bytes
+ 30 files changed, 371 insertions(+), 119 deletions(-)
 
 
