@@ -2,94 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D017C44033
-	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D44C44055
+	for <lists+qemu-devel@lfdr.de>; Sun, 09 Nov 2025 15:37:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vI6W1-0002Ek-JR; Sun, 09 Nov 2025 09:35:37 -0500
+	id 1vI6W3-0002F6-7K; Sun, 09 Nov 2025 09:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vz-0002DN-5a
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:35 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6W1-0002El-7M
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vx-0001oU-QK
- for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:34 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vI6Vz-0001ol-Pj
+ for qemu-devel@nongnu.org; Sun, 09 Nov 2025 09:35:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762698933;
+ s=mimecast20190719; t=1762698935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
- b=EvgYQxDqg3bZ1GqmjHz6vOmYhjphvyFju7nn4/NRP/AJbk4/pkFzgnkpfWebGOmEFKsSB8
- 7k1IB3oSrXRwNKhTbUjivOXaFSeWNgbzN584nO2AjFpXjDC+ZEKJmjA3jXebKJqGHbi/Cw
- jyLQW5o1SWisOHOPfbeJ3i6i7vtsX/o=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e0/66sXsmsUJ5C1OsJfboRZvVx9JzW9VTegIObTcbHI=;
+ b=VxMjqQbh3K47pMYKYIbeJfKdyVww5QUs/YQh/8eSp9DCQl2TvNdsEJKRzSyNga59Wwam9d
+ iRmoEvLAEw08WIhC+rqjh6daq9HcyfH2EVwVMUlZAserDcSCIdCSf6gveZscJKiyWarcoO
+ nuV+skLxp+2Cq7zhu5pZ3jjdKHyer3k=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-C5uNchdJO_6e3439a1NRjg-1; Sun, 09 Nov 2025 09:35:31 -0500
-X-MC-Unique: C5uNchdJO_6e3439a1NRjg-1
-X-Mimecast-MFC-AGG-ID: C5uNchdJO_6e3439a1NRjg_1762698931
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4777b03b90fso1446355e9.1
- for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:31 -0800 (PST)
+ us-mta-18-J97FPfSQNd-_od0YcfEg7A-1; Sun, 09 Nov 2025 09:35:33 -0500
+X-MC-Unique: J97FPfSQNd-_od0YcfEg7A-1
+X-Mimecast-MFC-AGG-ID: J97FPfSQNd-_od0YcfEg7A_1762698933
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-42b2ad29140so855658f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Nov 2025 06:35:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762698930; x=1763303730; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762698932; x=1763303732; darn=nongnu.org;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date:from:to
  :cc:subject:date:message-id:reply-to;
- bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
- b=ZyTOnGXaf/DSEK6woUfIAGsZ4XbclyufKiDMDp5ucA4drhMM/1QEzjVbmKJ62KOFSG
- 8w1Wiw05hw5LDYCN8E1PZQrdwoSLd9KRe0xOzWeZ37HN8CF0wft43pP2dvPzenSmLHHm
- IrnZEqDVm0ZBKyOGfYAHVqiPEyJYpyECwvjSmqN259uSSy2OqYR/PXmdA0VHE335BtHr
- fXX2JCTw27dxoiF8tcoL9bC5v4+Cnuk1W09Knmh+QL2u9krT5+myU8+ZC5qzT/Sj7xn7
- f08QPuDau00CBu8IwpAd8FJdm0EV6+PYZXHS9u6KGblggQz2Pl7k7O7F/WWcl5ZtV8le
- l4dA==
+ bh=e0/66sXsmsUJ5C1OsJfboRZvVx9JzW9VTegIObTcbHI=;
+ b=q+OQtwGo2osDq0mWYNUtlxVmh7JKWTpriKcGG7A/LILPHcLhKl8DvAHKpL/dmu8b52
+ BK86JHfr2mZA+b9t7vtLkZprywxlftqUkAsyUUEqkVs4KaKR3tWa+4XfT/aqZgPfxz90
+ mxRgJZLNzTBNIMUE0jef/cTZk2kV3o/x3KXMhj4yK8WFothcyTSfkd2IXSbtukS4mAVg
+ UozUIB4X2b7fdYIsvSMGA2UdDEDZjDUCXdKBSZfb+w7g4XVwCf6UoSIsdZsj/v3cnuF5
+ cKWr/WNdX5Tf3x7mpvFIj8YG/KlJZxNzcSMEzqLVnMmqbdB8Jx8apnLSHHNKbP+J/p5O
+ 2kxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762698930; x=1763303730;
+ d=1e100.net; s=20230601; t=1762698932; x=1763303732;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wDQZ8/ZctjW7C+aZiLH0Gm46nUdO5UqyAPKuxlKrxtg=;
- b=PtdmEFnKY4fSYcFHzpRqq83/aMbsyzWpscVV9eQL9vWP9Hy+P5gce8ihFE/79DOJXC
- NtY2gYj2ADB3NcdfmSglZRo/01gu2gtmQPcHcmr9oPSaRfTkrkZv9Dmr00jJbjp4d2jO
- WeI/XiQSZQKCPuz+epI8A2P+7VuP/uoQogghxS5nbDPnez9UdP64fxW82hHpVq3tkaXF
- mG/10PtfIFhT1T5qRfraQGxlNy1aYxI6vfJuoIq/d+239Nx7BAXhQD9HOV3fK04t12Ef
- K2Ya63bfdJSZ9WpO1+hm+Di0UEfKCPmQfRxNJTVbN0MFUC6geCmHnNVtziXyObxbicon
- TiBQ==
-X-Gm-Message-State: AOJu0Yzw/c7nODXGCpoC6NjSFYldn5t24BPFbkvk9KxJUQuZP2FXG6/J
- 20t4M/unwgwEdJknTAArKmoGc5ywMeaVSer+Up2By83aSZaxfq0Rp+hUlK04V2HMFv3Chflmoq4
- Yk2lYAQI6otJFytgc0Rc91AdfAfc4jcqVCRfgp2PANvkF3ufwNyCoPfugijCrb8YYMW/D2KmUEn
- Q/9YvNeZ5TJEmfFIw412spK3MtU9sNtMBDTg==
-X-Gm-Gg: ASbGnctF6iN6HHvKwWszPgGeCXdN74OnlwcbMgUhraaCCdvXh/BUnTmJ/nUXtLySGkx
- oz1oOdrmvkPpAVkLmrmzcfqxIaSX01vkcHsAas2Tn+KgQYVhRC2oAAUGv2fjcisamzvYBhExB07
- KVEUobg7EXxhvfLfYy2d9Qd+b2/XtF5ipKaC/g0tmuU2clfwCeHJEqnMCQEjKrS9mMI1AeJjAJ8
- ZtyMojHculQQ5XrAhbSarkX9qVPjoSNYWf/at5oa3JQ5359uONS9HDt32ZlnTNVHa+i51frafml
- 4Tx8sCkClTalGdHh6ogilzxT6mX3MeRNyHgFCb4n3EmxOTVH+5kyjOWA3rdDXKy/QtA=
-X-Received: by 2002:a05:600c:4583:b0:471:14af:c715 with SMTP id
- 5b1f17b1804b1-47773229f38mr37995565e9.3.1762698930185; 
- Sun, 09 Nov 2025 06:35:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHYEchCI9I3AjX399478DwBenJprOjh5JRZkwcWbSaLXhNNHV4NNokF1arMA49X7j/0e2rEYA==
-X-Received: by 2002:a05:600c:4583:b0:471:14af:c715 with SMTP id
- 5b1f17b1804b1-47773229f38mr37995265e9.3.1762698929705; 
- Sun, 09 Nov 2025 06:35:29 -0800 (PST)
+ bh=e0/66sXsmsUJ5C1OsJfboRZvVx9JzW9VTegIObTcbHI=;
+ b=IetdLUOQTELNY3IR77IvD/vp4cLd5Q6HAhuU1aLHKH30dGFcuJMS5DzrbLZTl4eNbp
+ onqPSYEHEVD9ZPhHIxYlsOh8E7WvGoaMcAtTysx7awV2dPJ17fs0OdIHtdTXb2Ouuy39
+ unfMlofsgim06R/VAfjyz7SPPQdxlNV8ue/+k0QHgvaSn6lhRqN9tIWLL5HMY129VFit
+ cTYIqQRUo+DKaHpG7Qyu4mJMy/cUw3Cdy9xbiz9D+0bPyPHgYFIOiJ7D4sjmL6LGAkSI
+ NBAYfYjtiaBO5IigSRSB/WMLEAhNwbIhB38mtj61tcY4OZ2z5vUPx0h9Z89Zu7tUKoDE
+ CVlQ==
+X-Gm-Message-State: AOJu0YzwZYUIoDZjJeKg8XWuVk6w2E0O1S/Y7fn0zdd02g4fZixy7sPB
+ 4J15AW9kHHHM8T1aCXON0IVQmVHCZDJzYHKiHk60tFtoKFRokI3X/35gFer0jSOOzOxYo0L/oyR
+ OpEgHGreubqZRjBvSCP7JScfQ2J0IAgARX4v/epZRQ1XjLEMp2pErK4yl+1wjDgbz7Bjorr+gS9
+ YzDvGJfe8p7P+1gW2fO560jEauGGYSz+aSbQ==
+X-Gm-Gg: ASbGnctNNzN3lDp9kGvgY1QTDmESbhlYYyIfyxuyLhYDYml0+mqRGf45PkjREQvluzE
+ FibZVcA+S4fRzq/IGG+u/pFKMYcUlEcGyD5Acncjn1TmYcVIfM/eg9/N7AHKcL6fLNAcwuKmXLa
+ ivSdtanu5Ytqphr0Aofhoz8qdSGbHAtcxA0sQifXfVmRsAdIYZDBBnEm8BicWO8i8NlF2Ubsf2n
+ WfhmYrcNEpGQ7V5npRXhBB8LCE8EIwJDgjw0gDA9SpTBWV25lKWs91lsLAT5wayZvgAyh4DBzq5
+ y/mfGgNrT103H1YaT/PjD99uGHUtoyjA0NnFkaoWPpFumA8gOp0hxL16wCJ60JZUnjw=
+X-Received: by 2002:a05:6000:2903:b0:3e7:6418:247b with SMTP id
+ ffacd0b85a97d-42b2dbe4583mr4067484f8f.10.1762698932188; 
+ Sun, 09 Nov 2025 06:35:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG16L4udtSGhwZaR52tIdTfsgtDPm8uZJlGLoLGLR1RK7hvxW1R+02gxdiSVC3RBJGyTdl2eQ==
+X-Received: by 2002:a05:6000:2903:b0:3e7:6418:247b with SMTP id
+ ffacd0b85a97d-42b2dbe4583mr4067458f8f.10.1762698931659; 
+ Sun, 09 Nov 2025 06:35:31 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1536:2700:9203:49b4:a0d:b580])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477773f7749sm69323585e9.7.2025.11.09.06.35.27
+ ffacd0b85a97d-42b32c1ad2bsm5461214f8f.6.2025.11.09.06.35.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Nov 2025 06:35:29 -0800 (PST)
-Date: Sun, 9 Nov 2025 09:35:27 -0500
+ Sun, 09 Nov 2025 06:35:31 -0800 (PST)
+Date: Sun, 9 Nov 2025 09:35:29 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>,
  Shameer Kolothum <skolothumtho@nvidia.com>,
- Eric Auger <eric.auger@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 09/14] tests/qtest/bios-tables-test: Prepare for _DSM change
- in the DSDT table
-Message-ID: <3e6ad83f209ea8cf497e5d160e44c1bc5e518f1a.1762698873.git.mst@redhat.com>
+ Zhangfei Gao <zhangfei.gao@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Igor Mammedov <imammedo@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 10/14] hw/pci-host/gpex-acpi: Fix _DSM function 0 support
+ return value
+Message-ID: <325aa2d86a20786c308b0874d15a60d1b924bd0e.1762698873.git.mst@redhat.com>
 References: <cover.1762698873.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -123,42 +125,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <skolothumtho@nvidia.com>
+From: Eric Auger <eric.auger@redhat.com>
 
-Subsequent patch will fix the GPEX _DSM method. Add the affected DSDT blobs
-to allowed-diff list for bios-table tests.
+Currently, only function 0 is supported. According to the ACPI
+Specification, Revision 6.6, Section 9.1.1 “_DSM (Device Specific
+Method)”, bit 0 should be 0 to indicate that no other functions
+are supported beyond function 0.
 
+The resulting AML change looks like this:
+
+Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+{
+    If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d")
+    {
+        If ((Arg2 == Zero))
+        {
+            Return (Buffer (One)
+            {
+-               0x01                                             // .
++               0x00                                             // .
+            })
+        }
+    }
+}
+
+Fixes: 5b85eabe68f9 ("acpi: add acpi_dsdt_add_gpex")
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251022080639.243965-2-skolothumtho@nvidia.com>
+Message-Id: <20251022080639.243965-3-skolothumtho@nvidia.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ hw/pci-host/gpex-acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..e2fce2e972 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,17 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/DSDT",
-+"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
-+"tests/data/acpi/aarch64/virt/DSDT.memhp",
-+"tests/data/acpi/aarch64/virt/DSDT.pxb",
-+"tests/data/acpi/aarch64/virt/DSDT.topology",
-+"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
-+"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
-+"tests/data/acpi/aarch64/virt/DSDT.viot",
-+"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
-+"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
-+"tests/data/acpi/riscv64/virt/DSDT",
-+"tests/data/acpi/loongarch64/virt/DSDT",
-+"tests/data/acpi/loongarch64/virt/DSDT.topology",
-+"tests/data/acpi/loongarch64/virt/DSDT.numamem",
-+"tests/data/acpi/loongarch64/virt/DSDT.memhp",
-+"tests/data/acpi/x86/microvm/DSDT.pcie",
+diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+index 952a0ace19..4587baeb78 100644
+--- a/hw/pci-host/gpex-acpi.c
++++ b/hw/pci-host/gpex-acpi.c
+@@ -64,7 +64,7 @@ static Aml *build_pci_host_bridge_dsm_method(void)
+     UUID = aml_touuid("E5C937D0-3553-4D7A-9117-EA4D19C3434D");
+     ifctx = aml_if(aml_equal(aml_arg(0), UUID));
+     ifctx1 = aml_if(aml_equal(aml_arg(2), aml_int(0)));
+-    uint8_t byte_list[1] = {1};
++    uint8_t byte_list[1] = {0};
+     buf = aml_buffer(1, byte_list);
+     aml_append(ifctx1, aml_return(buf));
+     aml_append(ifctx, ifctx1);
 -- 
 MST
 
