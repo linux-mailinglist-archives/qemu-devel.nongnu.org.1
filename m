@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9331FC463C9
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7147C463D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:27:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQ2S-0005ec-Dq; Mon, 10 Nov 2025 06:26:24 -0500
+	id 1vIQ33-0006mV-8Y; Mon, 10 Nov 2025 06:27:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1vIPi3-0002KB-Sh
+ id 1vIPi1-0002Jr-4c
  for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:05:22 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1vIPhx-0003gq-Lc
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:05:19 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-b98983bae8eso1463622a12.0
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:05:13 -0800 (PST)
+ id 1vIPhz-0003h7-9J
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:05:16 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-29516a36affso26429365ad.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:05:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762772712; x=1763377512; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Lb2rlGVTHbET5wQXg50tkt0hb1LcaZkYx6gRbO5B25M=;
- b=g/FyD4CyrrtiFhOLsWsuP6QxNUsR263EH82Sx1G75L8zhVZlcr5pQDtOZJdHtBP9fM
- coYFGjRTMH+dHpChoC3dFv45BXnhdSo00jkMHcUooUcNqyuFESrQhqH9gvUuF5wBK9OF
- 56V5aqAkQko4ahLqf1QzpfF8X7Cxsng2Bf+HnFJLFtdMqKcHgdS/nilgTLYBtzCRkOrQ
- Yhh3TklsrXiOx0CgTMIFtoY2EHuugPJJTnXRVVyLQEW4ZgSmsFNX0/5InWBYKAxFhhF9
- +fRlrE4woZ0QZJfVCeZ/8j1f7Y2QmHhLgKNhyzGxCduoIb7KsUcdf5LZn1FTp3vpf2xM
- AYTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762772712; x=1763377512;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1762772714; x=1763377514; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lb2rlGVTHbET5wQXg50tkt0hb1LcaZkYx6gRbO5B25M=;
- b=WfJiB0OB7sPLAZC6wqWpRthNIKizOqYhKZS2vUS6C8UwTlVeQ03LMkop1rpkxR+XOR
- 7V6XI/DCyESy0QSkizf+oltlRc3g69SHm9c1qfcZwgKDHZCh0b297JkgfAIQeDm5j8tT
- KIn08l1iYqZI4Vcfl1FF2dguKe99mpqWGio4ezX8NYI7KGAIpIhRrQA6zvldlPqTj9Pm
- bi3138bJPsJ2wtcOcI/1BL7SyAD4dkLGsOt65rN9FaY/SBm91SsPV+2q1tNftJUkTiTd
- 9h63D7v1lFHpSinJtqWWmcCbw4+6fjY2+Wjm/1VOG3GHR2POiMrPKJ+zTa4SQf1yt5yJ
- kscQ==
-X-Gm-Message-State: AOJu0YwjqgtfRdAPQTERA/3VVRRw0LPMf/PVtygIle38pQMqgRWBByJV
- D5Z5gb4uLgjvMo5lMlofztDo2UYjNr+OdVzinVRvXdddUHuX6ujLbas6pMObcmcKWUE=
-X-Gm-Gg: ASbGncvzLg2/IBLV2IMHeFG9lhMQMEn/q9xfWq7KV+q8uEIngetNExKBbAT7vMDGfm4
- +HZu6NUwrXpqpAEz0JyqaoGnRQgQTaeyIuc/etJEfJU3vdZ05u3udaGdLqGfNegnBgVDRgjcfLh
- bqxWxiT1S48KzCRlpUkUpkx/XTiOgMEKMnsSWRjmr6gPBSAM55OcpWAVJOLjZ2r2j5grQuRetqF
- N3judsDy+mwyDVF4vTYKuJBiWe4FxQdMe+GfciX0x2cSqry70e6lh2ZWDQV80bq63mRF/QHpXaN
- qwJ+Q/ztwhz3E8BU6mkIyy/Gk8GwCKdoS3To284nHqaAOj8CLVcMRY4o5X8GIWjrnS5T6b5D5bL
- aOvd1VbKgMV0DVNRjrauofK7Gehl/0N754kMSU0WV7B6CYTTto6knjLr5Ah6jhyo9YGampDU=
-X-Google-Smtp-Source: AGHT+IGICWGN27heW+QGcDO7N3bj6P0xxfWAYk1tXoPnssWG5m+UICvl9FQLylD8dhcMzvCtJnMgjw==
-X-Received: by 2002:a17:903:350d:b0:298:8ec:9991 with SMTP id
- d9443c01a7336-29808ec9a10mr56530935ad.37.1762772711779; 
- Mon, 10 Nov 2025 03:05:11 -0800 (PST)
+ bh=PaPRV3m2ug6rViwh4fj+exaEjkJN6PuQ+MHs9M0qPJg=;
+ b=FWOurqUrNaXbhsgQfnTtPh6i1CiiBIN47m+y8pX9mXE+NdCkhExNi3HV0pV7w0gdyC
+ 27kuzBaxEuga2qJwyYLXcrZ2DryiYUL0zETKW8pRx5TEpBJqf1FWDh5c/Zd08R/z5brg
+ Wksmdq441MX1LXK03BN9Q21wT/ePzvwvPXclOH4AgF9phhxsit7oxhmei1mHq4d9XemH
+ TYVW4v2L2YfESv4NVPdH6jgMPpN3vY+eOIlzDyMXNc0UVRcpwWj01u5LG8EJdmq9ar74
+ E/yvcKN3t7PhTQ63AN9xyZBcFUb61jJWA66FZM3tN8LEXHAgeR+sQLKoWu5uA78jnrIB
+ +PIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762772714; x=1763377514;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PaPRV3m2ug6rViwh4fj+exaEjkJN6PuQ+MHs9M0qPJg=;
+ b=sF0m3cVFPawuRnhLijetzP9qJr9CiFrfKN2bkj9f1jOqZQI61Z5XhtwhiSeAxxpJkQ
+ bLDuo0M1nNf15ZKtboDpoIcgjPT1BaNLwRmWNSTKLG3EG0uru6Znlu+6AlBayShTPPrw
+ r63TdHxrv0MKTU9uAb6L8Hzl9UKTFBzUCEIHUZRJ35FPeVZMGQbSpQkfB23KQ4lcL6LD
+ hUHev92KHQnKmSszg19IEOK4QaIMiiVp+abh+BdXSNV8gUUJf+6RVcij13/XmUN6dWu1
+ SlguwDSl8vtndJbWkJ8KxRdV/xv5r37bSL8IAQFsCtraPRjgbQT5Zfh9RG8bDXU9YFmK
+ hQkQ==
+X-Gm-Message-State: AOJu0YzLpxnNtp/9qIL3Qz4yN3rUJAkizZdKNPM9dzgEZgbalj5kLsy9
+ LAoUIEG6hMFykrmRy+LomGx1Jxu2FCrfJbb8AZ/+3Jn6BKTu2VEe6MshNOdZ866cV0o=
+X-Gm-Gg: ASbGnct3n3LPo/cbK3i2rQRTSHZYZaIJsqtkLak3/xc+3ky9usZEedefM9oH3OKW4RG
+ nts6iW7Cs6b4B/AOPlRJubUVbAHEQVIm9Aa2ab5ZZsScFbsUttYroe1isYNysc9jk1SDjJpBSiG
+ EXhj4dFhKXxERcH7hqT/UP1bJL8yL9LC+exu0DiPAUf85yXIYlxCWwQp/s9L+VmQgQhk/ooDM3+
+ X6Z4Z5V28R/wimTlFjEknV7P/aOE1I1igmmvA3GnCvB9FO4QU4j4YVkuKK43MJnIrSK4TjIN65j
+ LoQGx2EhiPHG9sZsLMSfmCLUb9ONmVctluj8vIj5RmMqLHcAehlAvUxJTYjzEMtIitGOvkL0Uue
+ Qqa9GoYH5rSsnGaSTpXiWicOjTiuPm3mr8YKdPg4DCoxx51X1d4gOFKd18YA2tnDxwA8z7xvacx
+ BmD8yNow==
+X-Google-Smtp-Source: AGHT+IHW3Fp9tgZVbPsRDikj71R5JdyK7nwYS4hO5MSis4IhWXyi4VX8TfoBGVs1iuclVAecSavGnA==
+X-Received: by 2002:a17:903:244a:b0:295:82b5:73e9 with SMTP id
+ d9443c01a7336-297e56c9927mr98181715ad.35.1762772713605; 
+ Mon, 10 Nov 2025 03:05:13 -0800 (PST)
 Received: from ubuntu.. ([111.196.133.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29651ca1b8csm145706605ad.85.2025.11.10.03.05.10
+ d9443c01a7336-29651ca1b8csm145706605ad.85.2025.11.10.03.05.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Nov 2025 03:05:11 -0800 (PST)
+ Mon, 10 Nov 2025 03:05:13 -0800 (PST)
 From: Bin Meng <bmeng.cn@gmail.com>
 To: QEMU <qemu-devel@nongnu.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: Tom Rini <trini@konsulko.com>
-Subject: [PATCH 0/2] hw/sd: Fix broken ssi-sd implementation since v9.1.0
-Date: Mon, 10 Nov 2025 19:05:05 +0800
-Message-Id: <20251110110507.1641042-1-bmeng.cn@gmail.com>
+Subject: [PATCH 1/2] hw/sd: Fix incorrect idle state reporting in R1 response
+ for SPI mode
+Date: Mon, 10 Nov 2025 19:05:06 +0800
+Message-Id: <20251110110507.1641042-2-bmeng.cn@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251110110507.1641042-1-bmeng.cn@gmail.com>
+References: <20251110110507.1641042-1-bmeng.cn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=bmeng.cn@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=bmeng.cn@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,33 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Since commit b66f73a0 ("hw/sd: Add SDHC support for SD card SPI-mode"),
+the CARD_POWER_UP bit in the OCR register has been set after reset.
+Therefore, checking this bit against zero in sd_response_r1_make() to
+determine the card’s idle state is incorrect in SPI mode. As a result,
+QEMU makes the U-Boot mmc-spi driver believe the card never leaves the
+reset state.
 
-The U-Boot community reported a CI failure [1] where the
-`sifive_unleashed` target failed to boot from an SD card after
-upgrading from QEMU v8.2.0 to v9.2.3.
+Fixes: 1585ab9f ("hw/sd/sdcard: Fill SPI response bits in card code")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2945
+Reported-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+---
 
-At that time, the issue was traced to commit da954d0e
-("hw/sd/sdcard: Add spi_cmd_SEND_CSD/CID handlers (CMD9 & CMD10)")
-which was introduced in v9.1.0.
+ hw/sd/sd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Testing with the latest QEMU mainline shows that the problem still
-persists, although the underlying cause has changed due to refactoring
-since then.
-
-This series fixes the broken `ssi-sd` model. After applying these
-patches, U-Boot successfully boots again on the `sifive_unleashed`
-target using QEMU’s `sifive_u` machine.
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2945
-
-
-Bin Meng (2):
-  hw/sd: Fix incorrect idle state reporting in R1 response for SPI mode
-  hw/sd: Fix ACMD41 state machine in SPI mode
-
- hw/sd/sd.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
-
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 9c86c016cc..5aae541363 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -789,8 +789,7 @@ static size_t sd_response_size(SDState *sd, sd_rsp_type_t rtype)
+ static void sd_response_r1_make(SDState *sd, uint8_t *response)
+ {
+     if (sd_is_spi(sd)) {
+-        response[0] = sd->state == sd_idle_state
+-                   && !FIELD_EX32(sd->ocr, OCR, CARD_POWER_UP);
++        response[0] = sd->state == sd_idle_state;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, ERASE_RESET) << 1;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, ILLEGAL_COMMAND) << 2;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, COM_CRC_ERROR) << 3;
 -- 
 2.34.1
 
