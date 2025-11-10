@@ -2,65 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B605C45FE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 11:40:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A858C45F11
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 11:32:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIPJe-0007im-Rt; Mon, 10 Nov 2025 05:40:06 -0500
+	id 1vIPBW-0003pm-Ia; Mon, 10 Nov 2025 05:31:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vIP5m-0000Fi-DM
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:25:46 -0500
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1vIP5k-0001Cr-D5
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:25:45 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 03DB9601A4;
- Mon, 10 Nov 2025 10:25:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5546C16AAE;
- Mon, 10 Nov 2025 10:25:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1762770342;
- bh=FJx4GZo4EhcFFfhPu+lR1RRTb2CLulGDdWVz8Vd3SsI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BwUZEIQNPnjyilhX5ioIKGzsgMXAtqTBPITu+z0AHAqfgUXH0TpIhMQ9NYrh3l7RM
- Vf6NUh5+1ugjwHah0FbpYj8INjPiPSLgLzEA9SgsQFLlThE29l7mQL0IHStkI0HTPC
- +q6SoLZuMifWd+I8A7rJPVeuRb96fhVX4FIYPe6ohsnFcYFSHV1A0LxCkoQhmed2tG
- YK+57sRvK5Kyw85hOPBXkLuv7JdsmSWl3lWr++O9t0+/UVEAKphyhw140WeuTuKYql
- 6mzkTkvmqIwF+X/C9+/vxZpqMKz3WKa9yZPl90p0Vf+8uqzwloiuk/V+nqYJW4omAS
- 8FO9Db0lM+7og==
-Date: Mon, 10 Nov 2025 15:48:25 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
- Michael Roth <michael.roth@amd.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>,
- Srikanth Aithal <srikanth.aithal@amd.com>
-Subject: Re: [PATCH v3 8/9] target/i386: SEV: Add support for setting TSC
- frequency for Secure TSC
-Message-ID: <4owmig2dsml7a42latp3r4tvg6ci35zbfw6qnrj2qhtcpoultu@wqa4365pgey4>
-References: <cover.1761648149.git.naveen@kernel.org>
- <cc40fed64f62649891bb8234daaba8a5cc926695.1761648149.git.naveen@kernel.org>
- <87cy5vgy66.fsf@pond.sub.org>
- <ot37mpc4y2oferchx6yroyriqickajnkiouok7quaaijq25c7n@cpqitwnuwyz2>
- <87ecqacgut.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIP2X-0006gY-BL
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:22:27 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIP2V-0000aY-Ox
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:22:25 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-64166a57f3bso1985896a12.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 02:22:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762770141; x=1763374941; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=55xzI0BaR303IwKPDQx1rJHhead9W30id9nJBm/dyr4=;
+ b=Ivi85AqoRGxSG/ML2CFWriUZ8I1wKykcvd3wLPac0FO9kPZ8BRYbgs69LlX9HSVYGs
+ oWeWOwDjO63cEoobHgeQYWHZKWMyjQiqLPJF9pr3iZ2ifUAVyyfyvynpC2Q4nh3+bFSb
+ mEvFsn8RszVL7aQrQsPd3a6YvadoB/JUcObWh4LYTPWFSJnHam6h3k4HeIVY/G7BhjCG
+ vCNdLaK1kMdCSrIpKERH2gI37MvhdqT/qCzpoSFs9jQ7HeH88YmOBrWOXePpJS9IHVNa
+ nCVHkB/UtrlbNhMCRUDIjOKHQl+9O2OYy/1zNqW3pNCQTnsZRTW4q6pw93RlMKeeQBcr
+ opiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762770141; x=1763374941;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=55xzI0BaR303IwKPDQx1rJHhead9W30id9nJBm/dyr4=;
+ b=D8P7hUiOYooPxudNnAtK8Q5JSasQTsFx+shxY9TWAtfJIHnu0nqS+br50Gcw7LUitq
+ z5r8Usr+qEUIcUxaCPsLOhqf6/LqyAleoCN3petkZ6wI5/nn+4lLhl41YC+SjmKNI6Je
+ AkZe8Ix5gtGFZG0TI7xaGV5NILLlfK9N/dr7mjf/D+f19iJOTCFsBWVYMgj8JOHzQJGS
+ LURKI7Sn9uzbuxrxsPtz939Bs8L9uvVBCrid3j7tZ+mw/5ZrUA8tNgA+XmEEL1F2PAmK
+ qsb7JojJ2UL2ApO56u1vhQt5jvLhAJ9ETVEq4nwyHw+sJo0AH/VaSRt0tGgIww2ukhbc
+ 0B8Q==
+X-Gm-Message-State: AOJu0YxpyUvECMzwSM/1l4ESCrwJh4xyk2uKJ893WqZFanYHOvO2vJRp
+ 8OVIpI3r7I40hfaWgzoZ2aABE4p723HYJuWqJwGiPGxnxklekMleBAigAQ0ZLtPg/bA=
+X-Gm-Gg: ASbGncuIVehi7ON8MFFUp1fNZ110e7S/VsMGKUDIBTeSJpD53RHBdsfdMLEGbAsCaxD
+ My9aqcshJfnznIB39WLghbX6+TYbfrWRd7pY7uuBzaG/c3I0YqQdcu/yckqlhhteTjOXE6ELsSf
+ U5btNBLvsIvLbgSnPNQPLLtPHjVRvhq96Ef7++98eOugcM72eE7WVsoHNrGrH9sevDBLcFnyPoe
+ r7Gl1YIrfmPFbsFyl1qEsEsguhjhOUQPYlUOzeePFBtPnCgHKSiYU0qGXerjOkRNJDX4x7jpd4+
+ 6wUOuZnz+bSxvkplYYQ6ASvNXvrfaBY69T2Za7IGt8uDSXryuMsk9uECg2gRLOku0rfdraR6j3e
+ jPUY0E+R+zB39mW83BjtoeE2mXfOQ1a1eUI86o7b6sp9hwnQpreFWQ/NhfyOKEfy74KF+mTN1rj
+ Tb
+X-Google-Smtp-Source: AGHT+IG2ZR9GftqNaoSRiKKFKjRwqFrDX8bQbc60yBuZfThaQNtfRIoLenlR31dUkyV55D3uMhsh9Q==
+X-Received: by 2002:a05:6402:2688:b0:640:c3c4:45fd with SMTP id
+ 4fb4d7f45d1cf-6415dc00b0bmr6147233a12.5.1762770140828; 
+ Mon, 10 Nov 2025 02:22:20 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6411f862cbesm10895306a12.31.2025.11.10.02.22.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Nov 2025 02:22:20 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 37BD65F8D6;
+ Mon, 10 Nov 2025 10:22:19 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH] docs/about/emulation: update assets for uftrace plugin
+ documentation
+In-Reply-To: <20251027085808.2306054-1-pierrick.bouvier@linaro.org> (Pierrick
+ Bouvier's message of "Mon, 27 Oct 2025 01:58:08 -0700")
+References: <20251027085808.2306054-1-pierrick.bouvier@linaro.org>
+User-Agent: mu4e 1.12.14-dev2; emacs 30.1
+Date: Mon, 10 Nov 2025 10:22:19 +0000
+Message-ID: <87bjlarxus.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ecqacgut.fsf@pond.sub.org>
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=naveen@kernel.org; helo=tor.source.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,94 +104,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 07, 2025 at 10:49:30AM +0100, Markus Armbruster wrote:
-> Naveen N Rao <naveen@kernel.org> writes:
-> 
-> > On Thu, Nov 06, 2025 at 01:09:37PM +0100, Markus Armbruster wrote:
-> >> Pardon my ignorance...
-> >> 
-> >> "Naveen N Rao (AMD)" <naveen@kernel.org> writes:
-> >> 
-> >> > Add support for configuring the TSC frequency when Secure TSC is enabled
-> >> > in SEV-SNP guests through a new "tsc-frequency" property on SEV-SNP
-> >> > guest objects, similar to the vCPU-specific property used by regular
-> >> > guests and TDX.
-> >> 
-> >> Which property exactly?
-> >
-> > Same name: tsc-frequency specified with '-cpu'
-> 
-> Thanks.  It's x86_64-cpu property tsc-frequency.
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-Ok.
+> Linaro is discontinuing its fileserver service by end of the year.
+> Migrate assets to GitHub.
+>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-> 
-> >> 
-> >> >                 A new property is needed since SEV-SNP guests require
-> >> > the TSC frequency to be specified during early SNP_LAUNCH_START command
-> >> > before any vCPUs are created.
-> >> 
-> >> Sounds awkward.
-> >> 
-> >> Do the two properties set the same thing at different times?
-> >
-> > Yes. For regular guests, TSC frequency is set using a vCPU ioctl.  
-> > However, TDX and SEV-SNP (with Secure TSC) require the TSC frequency to 
-> > be set as a VM property (there is a VM ioctl for this purpose).
-> >
-> > This was Tom's question too (see v2): is there any way to re-use 
-> > 'tsc-frequency' specified with '-cpu' for Secure TSC.
-> 
-> Hmm, let's see whether I can guess how this stuff works.  Please correct
-> my misunderstandings.
-> 
-> When machine property confidential-guest-support is null, it's a regular
-> guest.
-> 
-> If it points to a sev-guest object, it's SEV.
+Queued to testing/next, thanks.
 
-Yes, or a SEV-ES guest.
-
-> 
-> If it points to a sev-snp-guest object, it's SEV-SNP.
-> 
-> If it points to a tdx-guest object, it's TDX.
-> 
-> Normally, the TSC frequency is specified with x86_64-cpu property
-> tsc-frequency.
-> 
-> Can different CPUs have different frequencies?
-
-I believe Daniel has answered this in his reply.
-
-> 
-> In certain cases (SEV-SNP or TDX guest with Secure TSC), tsc-frequency
-
-nit: TDX guest, or SEV-SNP with Secure TSC.
-
-> needs to be configured before any CPUs are created.  You're implementing
-> this for SEV-SNP, and you chose to create a sev-snp property
-> tsc-frequency for this.
-> 
-> What happens when I enable Secure TSC with sev-snp property
-> "secure-tsc": true, but don't set property tsc-frequency?
-
-KVM uses the host default if tsc-frequency is not explicitly specified.
-
-> 
-> What happens when I do set it, and then also set the CPU property?  To
-> the same frequency?  To a different frequency?
-
-From the commit log:
-  Attempts to set TSC frequency on both the SEV_SNP object and the cpu
-  object result in an error from KVM (on the vCPU ioctl), so do not add
-  separate checks for the same.
-
-If the same frequency is specified in both places, then no error is 
-thrown.
-
-
-Thanks,
-Naveen
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
