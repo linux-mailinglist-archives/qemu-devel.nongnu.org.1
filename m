@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3637C46416
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24679C464A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQ4y-00087e-QX; Mon, 10 Nov 2025 06:29:01 -0500
+	id 1vIQ7z-0003TD-2p; Mon, 10 Nov 2025 06:32:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPnW-0004vx-7g
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:11 -0500
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1vIPnb-0004yS-2c
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:15 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPnU-0004KZ-Oq
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:57 -0500
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-7c6cc366884so822216a34.1
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:56 -0800 (PST)
+ id 1vIPnX-0004Kq-A2
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:02 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-7c7060a2a53so329805a34.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762773055; x=1763377855; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762773058; x=1763377858; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WuF/v0yXtrg33Qqyg428lUouMv/b84r+E+BBuSI4+Io=;
- b=QjAfFNM8BmU6598I2uaaeASd5JX4vWmVJnqwJTiAs8/iG7Ktk3QCcE2Fye3TEh/SQd
- Ao2N9M6liB39VoGvQf2Nr877S65Z85YivOAKqYZ0gwwisJtdaQFPehjBJ1VNl+m3jTtG
- TaZcOHZrWIypUrHLI8NMcveG9lejDEwvWrZ0xcVCALiwjcRxNy0BpRfJJyYgdW5IEns8
- rO9XPY9IB4JQ3W7OYrIbgxgdUVU3KLj2tn1qqUV25s8BAiHVgqnMa+qjf4lKusCpgmwc
- FpMu+7JNEpisDx/D/FrFGr1fqEP+ppIG3kLgM3KMagx/G+A1Jrju0jlvkYVnUgVkcYGT
- AKLQ==
+ bh=8PDJij+lprVMROFEDVhRUxnDiwgjAkm1Tbin3Q0oIJM=;
+ b=BHYVpHKN1371/q4DpNwwclZlsBAGnh3f6Cz5eOE/sDFwf9ODzwagEGk9jXtG+IYw1q
+ fyTa3v4pAMFn5cM/mhD/RGUZR003KenP7qpUTk/hUQa6zUVlkL3O7ZSh3OnML9CF/qBv
+ 0j6newGBTWLqIhHzIFyyVhGTD3dO9vb+64gRqmmvj3uJD4AgJZD45bGB9kftZQ9TDZ7T
+ WK4Odr9wozIfw41Kb5CteUGmtdU6Wj2mSEcNkONn/p/MHUJA9P1v1ZUvV2qLC7WdniB6
+ dJblUNGLuATlyKm/X+CIX5T1gV8dtchVnyBS4okcM42EJU2w/7HYxpxwHXVMriK9J4gb
+ A7eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762773055; x=1763377855;
+ d=1e100.net; s=20230601; t=1762773058; x=1763377858;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=WuF/v0yXtrg33Qqyg428lUouMv/b84r+E+BBuSI4+Io=;
- b=v03qpIMYsJBHlVrV2jS2HIRhl522Dnz4eyWQacQkIW/rEhmuD57hyNqfcvnOOSmo0v
- sfKQ341CWS0xOSeXYuzawZVVxlDpEsPbC0h7eAoztwXvvOHWtUdvMB8ubuXewrnDDGVq
- k54vx+wqfqGS6PmlukxBUwgCtOwSxBtRjto4ALpIEVIkEelROCD9yP/xAWDhoYMkhEOI
- adf9vU8lL/dkh6PntRsbLZKH2oa9kLS5X2xqSBkksTlJPjuh40dZMeE3wd0C1WAE3J3r
- 5W65HbnBWEWy/Je0kkd5gXbNFZFbXf274mBq/1tDjOBZYUWjxb4niDCkzNYsbGjITDyj
- v99A==
-X-Gm-Message-State: AOJu0Yx8TvRbhcKlfuvw4kSNdwnUM1ue0D0KYL7K6sMUmZqW7HoSxj8Z
- a1D1YFTl9VwrJBEnjVUzKx65SBzQWhY6S24feVrqpb2L71GhSSq+4O7biWlMZqUE6jXh60XC/2Z
- B7J2u
-X-Gm-Gg: ASbGncuwUXHPqG6HGegGXZ2EhrgVi4691Z5DvqQUl5H6jeLc01qWxSPRalcf1eFGeOB
- 0filbmhK+daY503qVN0elRzEHeWK66Ztvbv/ero0pFeByBX9RANEIIzJag3dxnt3iYtrCRZ0HsQ
- W9MNrW2BfPKjKZLbx9yROtHm9DhHNN07FcExHdV6UBmrE8h7ELk365betd+hETEdvoyPLTyqX1B
- Im8pRr7nODtuWJap/qgMCJ4+5B+AFhwopYHUpz+6GuHC/VDKSIuxX2LBuoC/xQGYmIqR2ilYZOR
- fxuL1XbETXusdTORGBZzNjSoUnB8gq4uFmb2k0c0D88pzs/w46kByO/i7S4oVRcWf6yMplLAsjg
- Fhd0ik/rMPtZkyrIQquEhV5aCNfv8B+5burH6P9TkHNoAJZ/W1FYbIwjF2CmOeH0nJwHo85OYSi
- SrM6imD8T/NkjkWO4ntQXZW+oH1MEy7w==
-X-Google-Smtp-Source: AGHT+IFI3niuUwJ7IV2mY1l9nlRes14sbUXJiT5G24UKroXwdiibnIQIjJohSfUXrcbMl5WAN0mceA==
-X-Received: by 2002:a05:6808:f06:b0:450:4e1:47a3 with SMTP id
- 5614622812f47-4502a361af1mr5005166b6e.35.1762773055561; 
- Mon, 10 Nov 2025 03:10:55 -0800 (PST)
+ bh=8PDJij+lprVMROFEDVhRUxnDiwgjAkm1Tbin3Q0oIJM=;
+ b=VQ0HBNTAhZt2vlH3c54E4wHe5YyLBKIkeMDoCc4Imer+E3EQp29kZNs/xWiUdhGYmS
+ XOT36Bl6rUdLI9ISEPTphF+KP8uryDh9IKpFFOGF3OvLA1DFFxvQcySJGUkHT4xljLJW
+ LuiBmjYGd3JIudoVH2oSJyRs6kDjq+Lx0c02wC7kQy0Z1ZefhtA1/DVX2ahjdZn0MZTf
+ m3AC+nbM2IEPqCaQwIJWBzo5d2vNpgdZ28s3U0AKo6aeSPzm0YAv9P86kTPotKFFff2n
+ 8o/KM2WZCEJm5+vBhpUS4NHOHuWr/Zam0joaUqbwEdH9kNUhBos86EJe0VD6ybi+PaIH
+ VXdw==
+X-Gm-Message-State: AOJu0YyJ/m1EkmlJxitCIw40hbP/SZGP9LUJ3u23CHG9wf8gC9TWFC95
+ aPH4VKgSeAn9vz3U4/LP3kYKi1JPmNQFonfRYi0Joe2TCejWnlhY4dWMtJ7WEMPC0X9QAGROsDy
+ rDbyu
+X-Gm-Gg: ASbGnctrawON+ny3UmuDFZxC/o9fq4vNpf9afp5var5DvZdti/vQZh3K/CTCtWJNaXI
+ jocMtMhS45z+Dnh08gC+nrT+wimUDsnuWdkT8WLEDz6DXJmJiu9xqSe15xzUw0+PK3A9iqa/ywm
+ DtVtCzwqCu+UGOFnv5BOGCFZfWvZbk30d5HgE7Q1gesL/vV4AgJia+V2EToinjWeV8e7gULGcEy
+ TNgx6cmiMZhPlgscbfWOXl6imJViZ0lUNPCtlzCpP6NKeVJjJPjXn5kDsbrSxORfCYi/hFkQlY+
+ KC7R1F05HJjxo0eC8gL8pDf8GV6IIGJNt3aUvBp988TWW923S8GcfttLpWtdgEUO5qyZg6EEgmf
+ mnTYod6yRHNGVw47efFyw0NOL9SUR4o3pnCj2YqhwJ/nVqmu2u+OcMsqIaLbvOdsB5Yqpg/SzVz
+ 2uGioud4sNZ8E5qd5tn+vsfZ4hn7ZJlXYYloXjzXuYjn98BKGucHQ=
+X-Google-Smtp-Source: AGHT+IGAghpgLGQscYtdjsAwKnv7bFpYppTdkeAOsStGcNge5i7ssxg4grAYqHxl71vvSAOZtGseyw==
+X-Received: by 2002:a05:6808:6f91:b0:44d:b8b7:fbcf with SMTP id
+ 5614622812f47-4502a1bef92mr3955598b6e.21.1762773057998; 
+ Mon, 10 Nov 2025 03:10:57 -0800 (PST)
 Received: from stoup.. ([172.58.183.226]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-450426be56dsm1603412b6e.18.2025.11.10.03.10.54
+ 5614622812f47-450426be56dsm1603412b6e.18.2025.11.10.03.10.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Nov 2025 03:10:55 -0800 (PST)
+ Mon, 10 Nov 2025 03:10:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/5] accel/tcg: Trace tb_gen_code() buffer overflow
-Date: Mon, 10 Nov 2025 12:10:42 +0100
-Message-ID: <20251110111046.33990-3-richard.henderson@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PULL 3/5] qapi/parser: Mollify mypy
+Date: Mon, 10 Nov 2025 12:10:43 +0100
+Message-ID: <20251110111046.33990-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251110111046.33990-1-richard.henderson@linaro.org>
 References: <20251110111046.33990-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,57 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Markus Armbruster <armbru@redhat.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+re.match(r'^ *', ...) can't fail, but mypy doesn't know that and
+complains:
+
+    scripts/qapi/parser.py:444: error: Item "None" of "Match[str] | None" has no attribute "end"  [union-attr]
+
+Work around by using must_match() instead.
+
+Fixes: 8107ba47fd78 (qapi: Add documentation format validation)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250925035610.80605-3-philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251105152219.311154-1-armbru@redhat.com>
 ---
- accel/tcg/translate-all.c | 3 +++
- accel/tcg/trace-events    | 1 +
- 2 files changed, 4 insertions(+)
+ scripts/qapi/parser.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index da9d7f1675..fba4e9dc21 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -290,6 +290,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
-     if (unlikely(!tb)) {
-         /* flush must be done */
-         if (cpu_in_serial_context(cpu)) {
-+            trace_tb_gen_code_buffer_overflow("tcg_tb_alloc");
-             tb_flush__exclusive_or_serial();
-             goto buffer_overflow;
-         }
-@@ -325,6 +326,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
-     if (unlikely(gen_code_size < 0)) {
-         switch (gen_code_size) {
-         case -1:
-+            trace_tb_gen_code_buffer_overflow("setjmp_gen_code");
-             /*
-              * Overflow of code_gen_buffer, or the current slice of it.
-              *
-@@ -389,6 +391,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
- 
-     search_size = encode_search(tb, (void *)gen_code_buf + gen_code_size);
-     if (unlikely(search_size < 0)) {
-+        trace_tb_gen_code_buffer_overflow("encode_search");
-         tb_unlock_pages(tb);
-         goto buffer_overflow;
-     }
-diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
-index 121d6b5081..0816cafd33 100644
---- a/accel/tcg/trace-events
-+++ b/accel/tcg/trace-events
-@@ -12,6 +12,7 @@ memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
- 
- # translate-all.c
- translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
-+tb_gen_code_buffer_overflow(const char *reason) "reason: %s"
- 
- # ldst_atomicity
- load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 1bb1af7051..c3cf33904e 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -441,7 +441,7 @@ def get_doc_line(self) -> Optional[str]:
+             self._literal_mode = True
+             self._literal_mode_indent = 0
+         elif self._literal_mode and line:
+-            indent = re.match(r'^ *', line).end()
++            indent = must_match(r'\s*', line).end()
+             if self._literal_mode_indent == 0:
+                 self._literal_mode_indent = indent
+             elif indent < self._literal_mode_indent:
 -- 
 2.43.0
 
