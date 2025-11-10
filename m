@@ -2,55 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16AFC46FF9
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 14:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64421C470B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 14:54:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vISDK-0007HE-D9; Mon, 10 Nov 2025 08:45:46 -0500
+	id 1vISLX-0007P7-38; Mon, 10 Nov 2025 08:54:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1vIS4j-00009m-Af
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:36:55 -0500
-Received: from smtp232.sjtu.edu.cn ([202.120.2.232])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vISAJ-0005W2-NR
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:42:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1vIS4g-0003wc-NH
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:36:52 -0500
-Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
- by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id 660941283F151;
- Mon, 10 Nov 2025 21:35:52 +0800 (CST)
-Received: from localhost.localdomain (unknown [202.120.40.100])
- by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 426CB37C928;
- Mon, 10 Nov 2025 21:35:52 +0800 (CST)
-From: Ziyang Zhang <functioner@sjtu.edu.cn>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>,
- Alex Bennee <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhengwei Qi <qizhwei@sjtu.edu.cn>, Yun Wang <yunwang94@sjtu.edu.cn>,
- Mingyuan Xia <xiamy@ultrarisc.com>, Kailiang Xu <xukl2019@sjtu.edu.cn>,
- Ziyang Zhang <functioner@sjtu.edu.cn>
-Subject: [PATCH 2/2] tcg tests: add a test to verify the syscall filter plugin
- API
-Date: Mon, 10 Nov 2025 21:34:43 +0800
-Message-Id: <20251110133442.579086-3-functioner@sjtu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251110133442.579086-1-functioner@sjtu.edu.cn>
-References: <20251110133442.579086-1-functioner@sjtu.edu.cn>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vISAF-0004qq-EM
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:42:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762782153;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YhdkDoDLzl3DkAisWS71XVkKLFe4gnNlS8xdwLFj87Y=;
+ b=clgKMeffRlNNGDJEatWP3JKiaAZQnD/AWadEFJe4w28Cz18cOBKIUeTDbqCC0l9kCiaode
+ k0qBCNZlvQqlTjSYBVvUDtfLkiMeFp5XJxsWvUUf6fKlTSefRObgjGMN2mBo5P6nnEFG+I
+ JB9bfyLfliL7Bk5zTsUa4oaxYqru+zQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-gL0IHtNlMbGN22ugaF8lmA-1; Mon,
+ 10 Nov 2025 08:42:32 -0500
+X-MC-Unique: gL0IHtNlMbGN22ugaF8lmA-1
+X-Mimecast-MFC-AGG-ID: gL0IHtNlMbGN22ugaF8lmA_1762782151
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1A45B1956094; Mon, 10 Nov 2025 13:42:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 85F5E1800451; Mon, 10 Nov 2025 13:42:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CC7DD21E6A27; Mon, 10 Nov 2025 14:42:27 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Cl=C3=A9ment?= Chigot <chigot@adacore.com>
+Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org,  kwolf@redhat.com,
+ hreitz@redhat.com,  eblake@redhat.com
+Subject: Re: [PATCH v2 5/5] vvfat: add support for "fat-size" options
+In-Reply-To: <CAJ307EjZwiGj3N93Td9vA0JHyK0COZBXHqv-7cjpxxg+eKiisg@mail.gmail.com>
+ (=?utf-8?Q?=22Cl=C3=A9ment?= Chigot"'s message of "Mon, 10 Nov 2025
+ 14:26:46 +0100")
+References: <20251107145327.539481-1-chigot@adacore.com>
+ <20251107145327.539481-6-chigot@adacore.com>
+ <87zf8umbzh.fsf@pond.sub.org>
+ <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
+ <87bjlakpa5.fsf@pond.sub.org>
+ <CAJ307EjZwiGj3N93Td9vA0JHyK0COZBXHqv-7cjpxxg+eKiisg@mail.gmail.com>
+Date: Mon, 10 Nov 2025 14:42:27 +0100
+Message-ID: <87o6paj96k.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=202.120.2.232;
- envelope-from=functioner@sjtu.edu.cn; helo=smtp232.sjtu.edu.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,96 +91,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Register a syscall filter callback in tests/tcg/plugins/sycall.c,
-returns a specific value for a magic system call number, and check
-it in tests/tcg/multiarch/test-plugin-syscall-filter.c.
+Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
 
-Signed-off-by: Ziyang Zhang <functioner@sjtu.edu.cn>
-Co-authored-by: Mingyuan Xia <xiamy@ultrarisc.com>
----
- tests/tcg/multiarch/Makefile.target           |  4 +++-
- .../multiarch/test-plugin-syscall-filter.c    | 20 +++++++++++++++++++
- tests/tcg/plugins/syscall.c                   | 15 ++++++++++++++
- 3 files changed, 38 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/test-plugin-syscall-filter.c
+> On Mon, Nov 10, 2025 at 2:09=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>>
+>> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
+>>
+>> > On Mon, Nov 10, 2025 at 11:13=E2=80=AFAM Markus Armbruster <armbru@red=
+hat.com> wrote:
+>> >>
+>> >> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
+>> >>
+>> >> > This allows more flexibility to vvfat backend. The values of "Numbe=
+r of
+>> >> > Heads" and "Sectors per track" are based on SD specifications Part =
+2.
+>> >> >
+>> >> > Due to the FAT architecture, not all sizes are reachable. Therefore=
+, it
+>> >> > could be round up to the closest available size.
+>> >> >
+>> >> > FAT32 has not been adjusted and thus still default to 504 Mib.
+>> >> >
+>> >> > For floppy, only 1440 Kib and 2880 Kib are supported.
+>> >> >
+>> >> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+>> >>
+>> >> [...]
+>> >>
+>> >> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+>> >> > index 8a479ba090..0bcb360320 100644
+>> >> > --- a/qapi/block-core.json
+>> >> > +++ b/qapi/block-core.json
+>> >> > @@ -3478,11 +3478,17 @@
+>> >> >  #     (default: true)
+>> >> >  #     (since 10.2)
+>> >> >  #
+>> >> > +# @fat-size: size of the device in bytes.  Due to FAT underlying
+>> >> > +#     architecture, this size can be rounded up to the closest val=
+id
+>> >> > +#     size.
+>> >> > +#     (since 10.2)
+>> >> > +#
+>> >>
+>> >> Can you explain again why you moved from @size to @fat-size?
+>> >
+>> > Just to be sure, you mean in the above comment, in the commit message =
+or both ?
+>>
+>> Just to me, because I'm not sure I like the change, but that may well be
+>> due to a lack of understanding of your reasons.
+>
+> Naming `fat-size` instead of `size` ensures the parameter is only
+> recognized by the vvfat backend. In particular, it will be refused by
+> the default raw format, avoiding confusion:
+>  "-drive file=3Dfat:<path>,size=3D256M" results in a 504M FAT disk
+> truncated to 256M, raw format being implicit.
+>  "-drive file=3Dfat:<path>,fat-size=3D256M" is refused. "fat-size" is
+> unsupported by raw format.
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index f5b4d2b813..4005e3a8a9 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -202,8 +202,10 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
- 	CHECK_PLUGIN_OUTPUT_COMMAND= \
- 	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
- 	$(QEMU) $<
-+run-plugin-test-plugin-syscall-filter-with-libsyscall.so:
- 
--EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so
-+EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so \
-+			   			  run-plugin-test-plugin-syscall-filter-with-libsyscall.so
- endif
- 
- # Update TESTS
-diff --git a/tests/tcg/multiarch/test-plugin-syscall-filter.c b/tests/tcg/multiarch/test-plugin-syscall-filter.c
-new file mode 100644
-index 0000000000..cc694e0a71
---- /dev/null
-+++ b/tests/tcg/multiarch/test-plugin-syscall-filter.c
-@@ -0,0 +1,20 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This test attempts to execute a magic syscall. The syscall test plugin
-+ * should intercept this and returns an expected value.
-+ */
-+
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+int main(int argc, char *argv[]) {
-+    long ret = syscall(0x66CCFF);
-+    if (ret != 0xFFCC66) {
-+        perror("ERROR: syscall returned unexpected value!!!");
-+        return EXIT_FAILURE;
-+    }
-+    return EXIT_SUCCESS;
-+}
-\ No newline at end of file
-diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
-index 42801f5c86..1323e18bc0 100644
---- a/tests/tcg/plugins/syscall.c
-+++ b/tests/tcg/plugins/syscall.c
-@@ -170,6 +170,20 @@ static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
-     }
- }
- 
-+static bool vcpu_syscall_filter(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                                int64_t num, uint64_t a1, uint64_t a2,
-+                                uint64_t a3, uint64_t a4, uint64_t a5,
-+                                uint64_t a6, uint64_t a7, uint64_t a8,
-+                                uint64_t *ret)
-+{
-+    if (num == 0x66CCFF) {
-+        *ret = 0xFFCC66;
-+        qemu_plugin_outs("syscall 0x66CCFF filtered, ret=0xFFCC66\n");
-+        return true;
-+    }
-+    return false;
-+}
-+
- static void print_entry(gpointer val, gpointer user_data)
- {
-     SyscallStats *entry = (SyscallStats *) val;
-@@ -255,6 +269,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
-     qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
-+    qemu_plugin_register_vcpu_syscall_filter_cb(id, vcpu_syscall_filter);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-     return 0;
- }
--- 
-2.34.1
+I figure throwing in format=3Draw to make raw format explicit doesn't
+change anything.  Correct?
+
+>  "-drive file=3Dfat:<path>,format=3Dvvfat,fat-size=3D256M" results in a 2=
+56M FAT disk.
+>  "-drive file=3Dfat:<path>,format=3Dvvfat,size=3D256M" is refused. "size"=
+ is
+> unsupported by vvfat format.
+
+If it was called @size, what behavior would we get?  Just two cases, I
+think:
+
+1. With raw format:
+
+    -drive file=3Dfat:<path>,size=3D256M
+
+2. Without raw format:
+
+    -drive file=3Dfat:<path>,format=3Dvvfat,size=3D256M
 
 
