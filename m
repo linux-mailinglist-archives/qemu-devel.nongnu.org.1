@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2BDC47A7B
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE3EC47A7D
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 16:50:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIU94-0006Il-NV; Mon, 10 Nov 2025 10:49:31 -0500
+	id 1vIU97-0006TU-3a; Mon, 10 Nov 2025 10:49:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vIU91-0006Dn-Aw
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 10:49:28 -0500
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vIU94-0006Jv-H0
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 10:49:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vIU8z-0000x8-Qb
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 10:49:27 -0500
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vIU92-0000xT-5a
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 10:49:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762789765;
+ s=mimecast20190719; t=1762789767;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nqhZesfJg+z3U8THtkhPVMymF7wZcq2zgdkzZ1bqHh0=;
- b=KvldD4JZGhkKAFQmkUib/NQ5tN+WUl+f5ONS8UI6cMvrkOCCZpzBA4+2GZtFuk/zcwayq4
- tZTQDEiSb+H2xXy9papaj3mD1I8PW3y21Oo6R1qgZGVa7M8LFhWkTUbdCmhnkCbs6JoMdB
- ByloQgzrOSKxKvfmCFXx4wf6tCR5KeA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kcZ9cJ7XI8zX0UMxvj6MtEZfatW1I55Tpkyvd/DszeM=;
+ b=AZ4N9SSJ5fnZi7ME7llYwuNvrUPOtWKrYBoJrOiM3nMrVS+13/kqSmXOBTcvRRhkBiKkcT
+ f+KMIDeQ28H0Ak69S0791qw7A0vEx3SuRvX24a7h5hfZpPoxtNLk9LEjVLiZlzOjHUf70i
+ hwcS9I/eoITsAyVjOhL6C9J1kOCMD2Y=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-BHK2hOWROyCfRlhiZFKc2A-1; Mon, 10 Nov 2025 10:49:23 -0500
-X-MC-Unique: BHK2hOWROyCfRlhiZFKc2A-1
-X-Mimecast-MFC-AGG-ID: BHK2hOWROyCfRlhiZFKc2A_1762789762
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477632c240bso29447445e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 07:49:22 -0800 (PST)
+ us-mta-609--rNLfSNwOC-PsTFK1DoyZw-1; Mon, 10 Nov 2025 10:49:25 -0500
+X-MC-Unique: -rNLfSNwOC-PsTFK1DoyZw-1
+X-Mimecast-MFC-AGG-ID: -rNLfSNwOC-PsTFK1DoyZw_1762789765
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-429c5f1e9faso2506313f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 07:49:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762789762; x=1763394562; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762789764; x=1763394564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nqhZesfJg+z3U8THtkhPVMymF7wZcq2zgdkzZ1bqHh0=;
- b=e39vd3/RfRuL8ssF+cpv2fXUMGFAa9va5c3MWdSmCE1h2NoWHiRWw79e2FOO+yArIf
- MilAvFNjE1lTJOgobXj+UNWbCNZJESwa9Wp4cwcIXzIVDVZ2tyUOu0WurDGdUm1JwTgH
- O/DwFEKmcvKDxcKkPxFkvhOz4QeQTtyiCnMoXs6pOOE3AXD1Np09Q7vrwiSPWw/703Rw
- FS1K0Rhqz0jOikAjIbrBr89EPwQTXrIKE6dGjTSV//Zgv7wbJBtv2uFcyLfu1UG68cFp
- 2W133KJ7CEO1thDg1klQBBySuMqH1M4wFq0XXePLDAl/3f5PJmwIl5BsPoCLt/5Ah7NA
- Jt6Q==
+ bh=kcZ9cJ7XI8zX0UMxvj6MtEZfatW1I55Tpkyvd/DszeM=;
+ b=OuEA9Xw2eJ0Oc2mYE7sG+cZbd2NPJzzZKYebmOZC2a85WpTXjIGbFPz5F/98FNgxT3
+ QcXJoYTPntv1qlHGbXArEtt2kFq4HYiB+3lnm5DCviLG5C4tThiQjM4VmULaKf0jaPlr
+ VpUHY7nqJhySCRVDay/YYVsW3R7CbIppnghwKGZYVrvZzz07xKRNx3D9J+RGPZwFBAfZ
+ psChpLt/Wd7zOkj4b6cSozrI/qPk0a2uQuikXcLGPWq+TGphCPa48as4W8nh/Qr07gJE
+ gGTX2GKSUPgaiY660Hh1E0dUuGEUNRxbidANXd+MpPKBLGph6j+lt7l1XMBXGvYfBTye
+ /h7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762789762; x=1763394562;
+ d=1e100.net; s=20230601; t=1762789764; x=1763394564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=nqhZesfJg+z3U8THtkhPVMymF7wZcq2zgdkzZ1bqHh0=;
- b=D7TBptwvzi/uoxUT+/r/XDkoIv4/SNjSmbXsxxfH35crVOMhaau6TOaV4b95auNYyF
- JB7Z3c6qlt8TSseghUmpAO4CqIJdLoEaywtn+oZ8skLvoAu7TBWzx0u8HniyWw5/ufKk
- vjwvkLACowmY0tu4zvVfCNQ8ZnLi3g5cRgi4/0uS4jv7U+pwei8WRSLhmIOGKGrv9WFS
- 7bXidSOkJ1zIQYzhfINCzD2LCN0ub5tRMHuSMzBKAuc6A5cJUAEnSCS9aZy7dMEsqilE
- SPj4BhUvmLCqS847lS4u6Y12/m1VuXwmJKlQMSrICrT0dat+Dfc4lX2f5X79h2GkKoZE
- 0bhw==
-X-Gm-Message-State: AOJu0YwgQCKKv4aArFRA75P96nhtFNTgnXPQ1GEtMiUdJRefBJB+W5Te
- 0Ey7OUrVfbVdmrzd0VgI2GFzFaluq/9trokA/o/S72BfLE3gQ8OysAmnkPY72h4II31rlAy61CQ
- 03oPXotV+RfDPZCVpEEq5YkSBCRPBnx7Ex79VY3CQAccTqBlNKOou02/1
-X-Gm-Gg: ASbGncvucllmlK98o272vJ/wJZYcx+mj79RDThDFVpSbjlyGlRRetqBLyk0oNOqN5cV
- 45P5P5kFsHI53VRL4/UkI1wmlBbTSBv6cphIt7gqx378ofQvNaels1teYeYidSui4twdwhmkdQ2
- Ls+boyM4HfeT68u7AEYZEDF++mN4n2xlk1UBq9nMCZXslfALfhkQZ3waF6v24bKKe70u8zrmkMA
- kPEEkW3PE5ypJ5QRpoL7oSHIKzU6ybjp6sue5OeedLS1k68bmNf6cJbT3UrSft5Ma+mf/iweb4+
- pkAl8gNjcKB2O/AHWFS2T4LlK+zcrxKeVLxOcU9goL4s4vBVQEgDVLXssaM3NtX9aITJWxYR5VY
- xzwcBGeAeiPCmJ7xAs+DTHtgMs1YpflHwHB1s29XtBMKRrkfCSltHFQ1kxw==
-X-Received: by 2002:a05:600c:35d1:b0:477:7d94:9d05 with SMTP id
- 5b1f17b1804b1-4777d949e90mr26984185e9.35.1762789761742; 
- Mon, 10 Nov 2025 07:49:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEZExgFwiUxE1AUva6CmMz2LTGjZWaUziDKl4XN59PsAtzc5wzdD16+HlBbXn89wq4jeby4Rw==
-X-Received: by 2002:a05:600c:35d1:b0:477:7d94:9d05 with SMTP id
- 5b1f17b1804b1-4777d949e90mr26983775e9.35.1762789761330; 
- Mon, 10 Nov 2025 07:49:21 -0800 (PST)
+ bh=kcZ9cJ7XI8zX0UMxvj6MtEZfatW1I55Tpkyvd/DszeM=;
+ b=bk0bOlPOPvN5Wd7Ct5UxcegicQaN3Vd9ZO9RY1ltTxXpZuGTsv8+xCG2OWtA5vRfND
+ 2Y2A82zllwa3Hi3iCiW2maefZJ5BCVj6WG63RDkK+GIng9gt4B86Pr//2P4T4/S9IlXm
+ XPxAbjvep3hsNjrEkACdUx7MpHfKx4tRZ3H980ZWQfIi1gZYnPzHx00oF6YA4WZOU44j
+ jzDsFfVjuWrXtX+qxl/t2pfMj0AF948RLhgp3LCPoLGQ38Q92MmEbKv6ImFt/RgAQUpo
+ T7p5BQLrbsgcqjVBJ39o9oNsT7RKmsHsrdxBJ0AKN2z+C7m6IrtRJquTs8Rbgy+sSnRb
+ lCzg==
+X-Gm-Message-State: AOJu0Yyc4kOAlLlyFesVl/3EVTYG0UuBXPcr7ER7n+iNyyhXQK48QYAi
+ Wdoz3+yR1kH7wUsrP3Kn9KXgrpksdshaT4kziUiSgEeqKT3RrK8WUTLTCTzpdGnT2136h5m8yim
+ oGtRhVVh/enGAE65AhFw2EjZFgwsmtTdOu6tSEjdHd0yl1x9J6C5AmGt8
+X-Gm-Gg: ASbGncu4ZNpUEBmomU0+/BL3lKkg+ZodVCTsKnpfYeMY+yBSy/mdnqMGWtQFSz884fg
+ 2GEX+r2qpD2h163/0eIcoUcqs0+LDTj2aFdfVi/1DKtIwKP3cFiTxOHchkIA6H5Rju54kYMZaK6
+ hwFPIjXOk/2GKXkpSKTKynP4BTYx7ZXiDDlHrUZi1wy+mtICbX9NIDJiN3V+jSQpfGrfpUGeMgI
+ +2AyPn5TrAMdiJsyVNd7/VSD/JYCpDMhznE0BRPT+zXPVaUOaeO5t0cyo7X9aadBefmcqxnsfxE
+ 1MiXiqeq2XDTcSalg5Lg/KVRLbs3/t3OOHx+VukON3uRpuKsiALw8t1TBLyDl8YURp/tmJViKIW
+ huyJogJQwETXbbjgQKuOov3TRmwk2VIWk3gUhocfeq0Il4lh0Jfu02S6iBQ==
+X-Received: by 2002:a05:6000:4212:b0:42b:3c25:cd06 with SMTP id
+ ffacd0b85a97d-42b3c25d15emr2680114f8f.22.1762789764440; 
+ Mon, 10 Nov 2025 07:49:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMzYHbRYGc459AF8fuJ+BcXpot5aWeQZFSTZQxsQG73NJOnqkFgTeJXT+c4kjmUbrCZSYMrg==
+X-Received: by 2002:a05:6000:4212:b0:42b:3c25:cd06 with SMTP id
+ ffacd0b85a97d-42b3c25d15emr2680084f8f.22.1762789764041; 
+ Mon, 10 Nov 2025 07:49:24 -0800 (PST)
 Received: from localhost
  (p200300cfd7171f537afd31f3f827a45e.dip0.t-ipconnect.de.
  [2003:cf:d717:1f53:7afd:31f3:f827:a45e])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4775cd45466sm323132855e9.0.2025.11.10.07.49.19
+ ffacd0b85a97d-42b32c1ad2bsm11323758f8f.6.2025.11.10.07.49.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Nov 2025 07:49:19 -0800 (PST)
+ Mon, 10 Nov 2025 07:49:22 -0800 (PST)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
@@ -92,9 +92,9 @@ Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Subject: [PATCH v2 06/19] gluster: Do not move coroutine into BDS context
-Date: Mon, 10 Nov 2025 16:48:41 +0100
-Message-ID: <20251110154854.151484-7-hreitz@redhat.com>
+Subject: [PATCH v2 07/19] nvme: Kick and check completions in BDS context
+Date: Mon, 10 Nov 2025 16:48:42 +0100
+Message-ID: <20251110154854.151484-8-hreitz@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251110154854.151484-1-hreitz@redhat.com>
 References: <20251110154854.151484-1-hreitz@redhat.com>
@@ -111,7 +111,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,90 +127,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The request coroutine may not run in the BDS AioContext.  We should wake
-it in its own context, not move it.
+nvme_process_completion() must run in the main BDS context, so schedule
+a BH for requests that aren’t there.
 
-With that, we can remove GlusterAIOCB.aio_context.
+The context in which we kick does not matter, but let’s just keep kick
+and process_completion together for simplicity’s sake.
 
-Also add a comment why aio_co_schedule() is safe to use in this way.
+(For what it’s worth, a quick fio bandwidth test indicates that on my
+test hardware, if anything, this may be a bit better than kicking
+immediately before scheduling a pure nvme_process_completion() BH.  But
+I wouldn’t take more from those results than that it doesn’t really seem
+to matter either way.)
 
-**Note:** Due to a lack of a gluster set-up, I have not tested this
-commit.  It seemed safe enough to send anyway, just maybe not to
-qemu-stable.  To be clear, I don’t know of any user-visible bugs that
-would arise from the state without this patch; the request coroutine is
-moved into the main BDS AioContext, so guest device completion code will
-run in a different context than where the request started, which can’t
-be good, but I haven’t actually confirmed any bugs (due to not being
-able to test it).
-
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/gluster.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ block/nvme.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/block/gluster.c b/block/gluster.c
-index 89abd40f31..4fb25b2c6d 100644
---- a/block/gluster.c
-+++ b/block/gluster.c
-@@ -56,7 +56,6 @@ typedef struct GlusterAIOCB {
-     int64_t size;
-     int ret;
-     Coroutine *coroutine;
--    AioContext *aio_context;
- } GlusterAIOCB;
- 
- typedef struct BDRVGlusterState {
-@@ -743,7 +742,17 @@ static void gluster_finish_aiocb(struct glfs_fd *fd, ssize_t ret,
-         acb->ret = -EIO; /* Partial read/write - fail it */
+diff --git a/block/nvme.c b/block/nvme.c
+index 8df53ee4ca..7ed5f570bc 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -481,7 +481,7 @@ static void nvme_trace_command(const NvmeCmd *cmd)
      }
- 
--    aio_co_schedule(acb->aio_context, acb->coroutine);
-+    /*
-+     * Safe to call: The coroutine will yield exactly once awaiting this
-+     * scheduling, and the context is its own context, so it will be scheduled
-+     * once it does yield.
-+     *
-+     * (aio_co_wake() would call qemu_get_current_aio_context() to check whether
-+     * we are in the same context, but we are not in a qemu thread, so we cannot
-+     * do that.  Use aio_co_schedule() directly.)
-+     */
-+    aio_co_schedule(qemu_coroutine_get_aio_context(acb->coroutine),
-+                    acb->coroutine);
  }
  
- static void qemu_gluster_parse_flags(int bdrv_flags, int *open_flags)
-@@ -1006,7 +1015,6 @@ static coroutine_fn int qemu_gluster_co_pwrite_zeroes(BlockDriverState *bs,
-     acb.size = bytes;
-     acb.ret = 0;
-     acb.coroutine = qemu_coroutine_self();
--    acb.aio_context = bdrv_get_aio_context(bs);
+-static void nvme_deferred_fn(void *opaque)
++static void nvme_kick_and_check_completions(void *opaque)
+ {
+     NVMeQueuePair *q = opaque;
  
-     ret = glfs_zerofill_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
-     if (ret < 0) {
-@@ -1184,7 +1192,6 @@ static coroutine_fn int qemu_gluster_co_rw(BlockDriverState *bs,
-     acb.size = size;
-     acb.ret = 0;
-     acb.coroutine = qemu_coroutine_self();
--    acb.aio_context = bdrv_get_aio_context(bs);
+@@ -490,6 +490,18 @@ static void nvme_deferred_fn(void *opaque)
+     nvme_process_completion(q);
+ }
  
-     if (write) {
-         ret = glfs_pwritev_async(s->fd, qiov->iov, qiov->niov, offset, 0,
-@@ -1251,7 +1258,6 @@ static coroutine_fn int qemu_gluster_co_flush_to_disk(BlockDriverState *bs)
-     acb.size = 0;
-     acb.ret = 0;
-     acb.coroutine = qemu_coroutine_self();
--    acb.aio_context = bdrv_get_aio_context(bs);
- 
-     ret = glfs_fsync_async(s->fd, gluster_finish_aiocb, &acb);
-     if (ret < 0) {
-@@ -1299,7 +1305,6 @@ static coroutine_fn int qemu_gluster_co_pdiscard(BlockDriverState *bs,
-     acb.size = 0;
-     acb.ret = 0;
-     acb.coroutine = qemu_coroutine_self();
--    acb.aio_context = bdrv_get_aio_context(bs);
- 
-     ret = glfs_discard_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
-     if (ret < 0) {
++static void nvme_deferred_fn(void *opaque)
++{
++    NVMeQueuePair *q = opaque;
++
++    if (qemu_get_current_aio_context() == q->s->aio_context) {
++        nvme_kick_and_check_completions(q);
++    } else {
++        aio_bh_schedule_oneshot(q->s->aio_context,
++                                nvme_kick_and_check_completions, q);
++    }
++}
++
+ static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
+                                 NvmeCmd *cmd, BlockCompletionFunc cb,
+                                 void *opaque)
 -- 
 2.51.1
 
