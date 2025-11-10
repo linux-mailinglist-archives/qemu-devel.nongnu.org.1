@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2070C46E6A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 14:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7877C46F7B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 14:41:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIRyD-0004t5-6T; Mon, 10 Nov 2025 08:30:09 -0500
+	id 1vIS7n-0001yz-DQ; Mon, 10 Nov 2025 08:40:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vIReK-0008WS-77
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:09:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vIRiD-0002fs-Qm
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:13:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vIReH-0007Op-1X
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:09:35 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vIRi0-0008Lz-M3
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 08:13:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762780170;
+ s=mimecast20190719; t=1762780400;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=unkVU3Mob56G/23Yd9KyW8Y8lyUM3v3cRPBSbnhPFAI=;
- b=KhVysUey3IxdPquBXKiiZBYaGATU50hzBCgaJhtP0Wcw1mf3lq+iau3bs4HEVjK2MBzXRO
- t9Sa9pYu5voMk/NzeufKDIvuug2ClQe65woZqt4+YUV22Igeger65FWtHG5SInCnjyiFfN
- EgQSqgtP/MWmUF7XxdqLIVH9HiE2NgU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=7g9xL0RxGsoNnu+JdIUsQjWaA7KiC/WAha5ownuBQTc=;
+ b=UkhP9QnOZA1aKqo5vrtsSLpGe+OVecTrolgqAo9KebqZHrSqpLGy5q8Y9qbBNty0HHqknl
+ rMTAMnSwYaVpAGU3G6Sgp4LqBIJwpPyiX0dCVKncVzpKcj1AXR5XdNLNCaLs/vgKxw4L3Q
+ DFUZuFJFMp85NroLIYfQNrw8RImceV0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-5huX6p1FOv2xcMz1XWGJvA-1; Mon,
- 10 Nov 2025 08:09:27 -0500
-X-MC-Unique: 5huX6p1FOv2xcMz1XWGJvA-1
-X-Mimecast-MFC-AGG-ID: 5huX6p1FOv2xcMz1XWGJvA_1762780166
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-F2siaPzsN4aSWccHaSG0wA-1; Mon,
+ 10 Nov 2025 08:13:17 -0500
+X-MC-Unique: F2siaPzsN4aSWccHaSG0wA-1
+X-Mimecast-MFC-AGG-ID: F2siaPzsN4aSWccHaSG0wA_1762780396
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3681F18002C4; Mon, 10 Nov 2025 13:09:26 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6F9F31956089; Mon, 10 Nov 2025 13:13:16 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AF481800576; Mon, 10 Nov 2025 13:09:25 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DB34F19560A7; Mon, 10 Nov 2025 13:13:15 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DE9EE21E6A27; Mon, 10 Nov 2025 14:09:22 +0100 (CET)
+ id 276E721E6A27; Mon, 10 Nov 2025 14:13:13 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: =?utf-8?Q?Cl=C3=A9ment?= Chigot <chigot@adacore.com>
 Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org,  kwolf@redhat.com,
  hreitz@redhat.com,  eblake@redhat.com
-Subject: Re: [PATCH v2 5/5] vvfat: add support for "fat-size" options
-In-Reply-To: <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] vvfat: move fat_type check prior to size setup
+In-Reply-To: <CAJ307Ej8oNXjOZt2fkBMjR6bKSf=C2M6ncFFLCfy=Wk6+KMhNQ@mail.gmail.com>
  (=?utf-8?Q?=22Cl=C3=A9ment?= Chigot"'s message of "Mon, 10 Nov 2025
- 13:46:05 +0100")
+ 12:15:20 +0100")
 References: <20251107145327.539481-1-chigot@adacore.com>
- <20251107145327.539481-6-chigot@adacore.com>
- <87zf8umbzh.fsf@pond.sub.org>
- <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
-Date: Mon, 10 Nov 2025 14:09:22 +0100
-Message-ID: <87bjlakpa5.fsf@pond.sub.org>
+ <20251107145327.539481-3-chigot@adacore.com>
+ <874ir2nqr9.fsf@pond.sub.org>
+ <CAJ307Ej8oNXjOZt2fkBMjR6bKSf=C2M6ncFFLCfy=Wk6+KMhNQ@mail.gmail.com>
+Date: Mon, 10 Nov 2025 14:13:13 +0100
+Message-ID: <877bvykp3q.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -73,7 +73,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,47 +91,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
 
-> On Mon, Nov 10, 2025 at 11:13=E2=80=AFAM Markus Armbruster <armbru@redhat=
+> On Mon, Nov 10, 2025 at 11:09=E2=80=AFAM Markus Armbruster <armbru@redhat=
 .com> wrote:
 >>
 >> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
 >>
->> > This allows more flexibility to vvfat backend. The values of "Number of
->> > Heads" and "Sectors per track" are based on SD specifications Part 2.
+>> > This allows to handle the default FAT size in a single place and make =
+the
+>> > following part taking care only about size parameters. It will be later
+>> > moved away in a specific function.
 >> >
->> > Due to the FAT architecture, not all sizes are reachable. Therefore, it
->> > could be round up to the closest available size.
+>> > The selection of floppy size was a bit unusual:
+>> >  - fat-type undefined: a FAT 12 2880 Kib disk (default)
+>> >  - fat-type=3D16: a FAT 16 2880 Kib disk
+>> >  - fat-type=3D12: a FAT 12 1440 Kib disk
 >> >
->> > FAT32 has not been adjusted and thus still default to 504 Mib.
+>> > Now, that fat-type undefined means fat-type=3D12, it's no longer possi=
+ble
+>> > to make that size distinction. Therefore, it's being changed for the
+>> > following:
+>> >  - fat-type=3D12: a FAT 12 1440 Kib disk (default)
+>> >  - fat-type=3D16: a FAT 16 2880 Kib dis
 >> >
->> > For floppy, only 1440 Kib and 2880 Kib are supported.
+>> > This has been choosen for two reasons: keep fat-type=3D12 the default =
+and
+>> > creates a more usual size for it: 1440 Kib.
+>> >
+>> > The possibility to create a FAT 12 2880 Kib floppy will be added back
+>> > later, through the fat-size parameter.
+>> >
+>> > Side note to mention that s->sectors_per_cluster assignments are
+>> > removed because they are overidden a few line further.
 >> >
 >> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
 >>
->> [...]
->>
->> > diff --git a/qapi/block-core.json b/qapi/block-core.json
->> > index 8a479ba090..0bcb360320 100644
->> > --- a/qapi/block-core.json
->> > +++ b/qapi/block-core.json
->> > @@ -3478,11 +3478,17 @@
->> >  #     (default: true)
->> >  #     (since 10.2)
->> >  #
->> > +# @fat-size: size of the device in bytes.  Due to FAT underlying
->> > +#     architecture, this size can be rounded up to the closest valid
->> > +#     size.
->> > +#     (since 10.2)
->> > +#
->>
->> Can you explain again why you moved from @size to @fat-size?
+>> Is this a user-visible change?
 >
-> Just to be sure, you mean in the above comment, in the commit message or =
-both ?
+> Yes, just "floppy" will now result in a 1440 KiB instead of the
+> previous 2880 KiB. However, Kevin mentions in V1 that it would make
+> more sense and vvfat being known to be unstable, this would be fine.
+> FTR, here is the complete comment:
+>
+>> On Wed, Oct 29, 2025 at 5:06=E2=80=AFPM Kevin Wolf <kwolf@redhat.com> wr=
+ote:
+>> > In general, our stance is that we can change defaults whenever we want
+>> > to, and if you don't want to be surprised by changing defaults, you ne=
+ed
+>> > to specify the option explicitly.
 
-Just to me, because I'm not sure I like the change, but that may well be
-due to a lack of understanding of your reasons.
+Hmm, where is this stance on defaults documented?  Question for Kevin,
+of course.
 
-[...]
+>> >                                   What's a bit strange about the vvfat
+>> > interface is that the default actually represents a configuration that
+>> > can't even be expressed explicitly at the moment.
+
+Awkward.
+
+>> > So it is a special case in a way, but given that this is vvfat, which =
+is
+>> > known to be unstable, not widely used outside of the occasional manual
+>> > use and not supported by libvirt, I'm willing to just make the change.
+
+I'm fine to treat vvfat as unstable.  But it's not marked as such in the
+QAPI schema!  Is that a bug?  Again, for Kevin.
 
 
