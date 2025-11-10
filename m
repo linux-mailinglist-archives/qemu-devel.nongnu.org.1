@@ -2,66 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD373C44FF2
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 06:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC98C454CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 09:05:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIKJy-0001Wb-4Z; Mon, 10 Nov 2025 00:20:07 -0500
+	id 1vIMt3-0006iO-8o; Mon, 10 Nov 2025 03:04:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vIKJL-0001V6-NE
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 00:19:28 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vIMt0-0006hv-Ai
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 03:04:26 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vIKJI-0003th-G6
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 00:19:27 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AA5JHg0005727
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 10 Nov 2025 14:19:17 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=OVPfvQSvbTcYG8dx0YcYH+0uNm7NzE3f/ndUohfQLP0=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1762751957; v=1;
- b=IOR68jHjLZ9spHDPZuL6CaB4fDM0he6zLQjZ173FEVsDJioIXRdIq9xKf6mlMdSe
- ZxacMdhk078GkFsDquAbNJSkp3SP6vLYQqQRPSTjf3akYfAm8/0hTkl5kIpHObRl
- PHMdiEhpQ/1JpLqPAtUwdCa2f4sbX4QzMTBViIuo8xjfVYM2uwlG5EMelcRdTFOW
- eg6bpr9nDHLQQi+51SRK/eVp7uD8jpsWmTXwJ9dMFcI2+GALFq9p8e7YNQFRt60H
- /AVRaNNHGajvqEidwi0znXkWaYgBLdZBALkmduZQo308KFaB2vxSF6ur0fvF7/JK
- g19s7hqbnKtCclh2KTWT1Q==
-Message-ID: <83274ca7-dd37-4856-b198-f334bf630835@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 10 Nov 2025 14:19:16 +0900
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vIMst-00061t-Fd
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 03:04:26 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A9KlAGT029007
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=1obR5QbaUStggQY3KTMGN8eR44mpBuWEMWEYFC2rb
+ zs=; b=sGb58W8Lh1i/m5cYkh4pmlZWlu5eYZ9uo8eyDVgi+rz3WMpckmhlZiYeH
+ UydaZXwWaqn0CbGzgY3x0V2qppMGxzredkZbDxFJQmpDZoQ2o2JrCL6zANjHsTD0
+ NZ34uaMmGaHd4at53Dt1tVgPySJQpDyEubW5t2hfZXn2TkfS72FqmP5w+V3VKcyk
+ 85NelvrtyatTIiRbjl6gYKhl2KmiLfM/Vd3gcUG730fHnQlG1SAmoZOrpg2ZVjJ2
+ LvWGamxoJoQrDK1SquHGASHTZvTku5iTYX/wbc0Yzj/JH/cvdh0YYlWOizDScg1c
+ JuAhNDYCxyvQHX1YmsPotobSTfwsA==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5chww9x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:17 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AA50Rou014755
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:16 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpjvg34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:15 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5AA84EdC57278784
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:14 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EEB9F20040
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:13 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4EDDC20043
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:13 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
+ [9.124.217.7]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 08:04:13 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/2] PPC Patches for 10.2 Hard Freeze
+Date: Mon, 10 Nov 2025 13:33:59 +0530
+Message-ID: <20251110080401.3652497-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/10] virtio-gpu-dmabuf: Introduce
- qemu_iovec_same_memory_regions()
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20251109053801.2267149-1-vivek.kasireddy@intel.com>
- <20251109053801.2267149-10-vivek.kasireddy@intel.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251109053801.2267149-10-vivek.kasireddy@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Ss+dKfO0 c=1 sm=1 tr=0 ts=69119c81 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=6UeiqGixMTsA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=p0WdMEafAAAA:8 a=Oa6x5gj9M5ENrRiD9vEA:9 a=poXaRoVlC6wW9_mwW8W4:22
+ a=oH34dK2VZjykjzsv8OSz:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5NSBTYWx0ZWRfXxF/KdYV55y6Q
+ NX3iXCVUSnlJTghzXEyIJwaj13Qt5yLHBy3j2NmnXV9BELBp454XcIoCUWqUzQaqON8DpeWZNHG
+ xutsiIuxSnK6oo+xFOd3pr6+5W356YPEz6F5q7MW7i5jzEm+ASga1aQjxTylDIDOhz1rUwQ+oMz
+ f/LDaqBrlf7IJZxAKAY8tS8b+AMs9yHn0j3c+r2btUyitUphllozofTzmWPNmdIXtuEbiy3zng8
+ tjynL+Sli2/gKXu5esMJCnNFIp8y0Zuq1g9Vt704kcTBxWxkKwfK0bMN/IE+wAFN8toQU1bIjqj
+ ggabUVpjcK8qy1Y++vi4HXfHLa6qgspxtDd7FT46oYpAE9Fb5sAvHM5/L7p9Ds6u1TG5zO9Kqbv
+ 5Vc3IY2WaVZPyz8h5KiFbRc5MXCegQ==
+X-Proofpoint-GUID: zZwbhniWvDxVq2nj3Hyne2Zat7Y7IVkn
+X-Proofpoint-ORIG-GUID: zZwbhniWvDxVq2nj3Hyne2Zat7Y7IVkn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-10_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080095
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,75 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/09 14:33, Vivek Kasireddy wrote:
-> Add a helper to check whether the addresses in an iovec array
-> belong to the same memory region or not. This is useful to verify
-> before trying to create a dmabuf from an iovec array.
-> 
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Alex Bennée <alex.bennee@linaro.org>
-> Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Cc: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->   hw/display/virtio-gpu-dmabuf.c | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/hw/display/virtio-gpu-dmabuf.c b/hw/display/virtio-gpu-dmabuf.c
-> index c34d4c85bc..80143034d4 100644
-> --- a/hw/display/virtio-gpu-dmabuf.c
-> +++ b/hw/display/virtio-gpu-dmabuf.c
-> @@ -27,6 +27,31 @@
->   #include "standard-headers/linux/udmabuf.h"
->   #include "standard-headers/drm/drm_fourcc.h"
->   
-> +static bool qemu_iovec_same_memory_regions(const struct iovec *iov, int iov_cnt)
-> +{
-> +    RAMBlock *rb, *curr_rb;
-> +    ram_addr_t offset;
-> +    int i;
-> +
-> +    rb = qemu_ram_block_from_host(iov[0].iov_base, false, &offset);
-> +    if (!rb) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Could not find ramblock/memory region\n", __func__);
-> +        return false;
-> +    }
-> +
-> +    for (i = 1; i < iov_cnt; i++) {
-> +	curr_rb = qemu_ram_block_from_host(iov[i].iov_base, false, &offset);
-> +	if (curr_rb != rb) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "%s: memory regions not same for iov entries\n",
-> +                          __func__);
-> +            return false;
-> +	}
-> +    }
-> +    return true;
-> +}
-> +
->   static void virtio_gpu_create_udmabuf(struct virtio_gpu_simple_resource *res)
->   {
->       struct udmabuf_create_list *list;
-> @@ -137,6 +162,10 @@ void virtio_gpu_init_dmabuf(struct virtio_gpu_simple_resource *res)
->           res->iov[0].iov_len < 4096) {
->           pdata = res->iov[0].iov_base;
->       } else {
-> +        if (!qemu_iovec_same_memory_regions(res->iov, res->iov_cnt)) {
-> +            return;
-> +        }
-> +
+The following changes since commit 917ac07f9aef579b9538a81d45f45850aba42906:
 
-This check is unnecessary. Perhaps rejecting iov with different memory 
-regions may be fine if that simplifies the code, but this actually adds 
-some code.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-05 16:07:18 +0100)
 
->           virtio_gpu_create_udmabuf(res);
->           if (res->dmabuf_fd < 0) {
->               return;
+are available in the Git repository at:
 
-Regards,
-Akihiko Odaki
+  https://gitlab.com/harshpb/qemu.git tags/pull-ppc-for-10.2-d5-20251110
+
+for you to fetch changes up to 3149969a9f4d74ea8e568c91efbe4b2c4d336ba8:
+
+  pc-bios/dtb/pegasos*.dtb: Fix compiled dtb blobs (2025-11-09 16:56:21 +0530)
+
+----------------------------------------------------------------
+PPC Patches for 10.2 Hard Freeze
+
+* Pegasos fixes for mem leak and dtb blob updates
+
+----------------------------------------------------------------
+BALATON Zoltan (2):
+      hw/ppc/pegasos: Fix memory leak
+      pc-bios/dtb/pegasos*.dtb: Fix compiled dtb blobs
+
+ hw/ppc/pegasos.c         |   3 ++-
+ pc-bios/dtb/pegasos1.dtb | Bin 857 -> 1975 bytes
+ pc-bios/dtb/pegasos2.dtb | Bin 1701 -> 2963 bytes
+ 3 files changed, 2 insertions(+), 1 deletion(-)
 
