@@ -2,93 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC1AC475A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB06C475B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:52:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vITEt-0002mR-FY; Mon, 10 Nov 2025 09:51:27 -0500
+	id 1vITFb-00048P-Jz; Mon, 10 Nov 2025 09:52:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vITE7-0002Jc-0w
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:50:41 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vITE5-0008TF-20
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:50:38 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-477632d45c9so20779345e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 06:50:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vITFK-0003l9-5Y
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:51:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vITFH-00007S-Ru
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:51:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762786309;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Rvt+30g98YUK3RqNruQMpVntwkIfzfc8fcDCvUUlJBI=;
+ b=hn7KiR8CV5JYrCzqp8p0C+tID4hCgfs70dya8IK13VjxtwxH7Uj7BXvxkgQ96ZbJEBMlne
+ dPfF7TkLGNcqpL5/V6D7lwA57Os4vb0jhU8wJ+fkSHNjyoaDJUztMj14Grrj8fuOeUvzsE
+ VHgXBBDcLlPFcbyPzmgVR1HQ4NnUSyE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-516-pj-td_dUPnaVwlzgYMRHPg-1; Mon, 10 Nov 2025 09:51:46 -0500
+X-MC-Unique: pj-td_dUPnaVwlzgYMRHPg-1
+X-Mimecast-MFC-AGG-ID: pj-td_dUPnaVwlzgYMRHPg_1762786305
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477792eb8e4so11572155e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 06:51:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762786234; x=1763391034; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0CAKD0S0/ErduNCNipeGluQm7ocygcVqrsf6j+qqNgA=;
- b=Mv6Fe412cqTb4C4bdMxBElMvemV8/v6247J3VwFRC3ruZGQWGjz0uFNHMBge/al5mx
- Gu4tfpog6HKYPAb/Atp4/CG7F/ySgCrlfsfTkBMmq8ehLTulX+eo7Y5RHrA0XrLS7ZBc
- zYW+o2T5amOL+W9xobProWKkK0340h3jsoYhISBZ6x7No+W88n1IhO+Ta33TGn1NzGWc
- a55yPTWbJaRXEtx+RgVu6pg0ueGZpgpMLTxjecjlYvXE4vCOrsCGpAxw/YNMByBM/0BN
- UGVqAyKAc7kRW8q21VlYbVbzmivQ7tnHhP/o7gxEXI+8OPwihsdlxiMkBk2ju/CeBpW4
- HTcw==
+ d=redhat.com; s=google; t=1762786305; x=1763391105; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rvt+30g98YUK3RqNruQMpVntwkIfzfc8fcDCvUUlJBI=;
+ b=lvi7wfpJnZDjvIxsVd8t0Nntk3UdHkYc92ZwsLq12cujH8a8uTXeKnSBe/uxYuffN9
+ 2HDVdi3GHRTJLNncj8HK/eup3CFs4KCD5jBZDxJ24tIY0UZdUVd/f0VSBQOSIjcUhj10
+ ODPRCG+5rBHN91nvue0k/vMuX8m6FuJZZ6zMzMORQN0oTf8HQ3lKKjz9XsBtwDvmcdI2
+ xGj3INV6AJehgEsoNj1VyUsFHED6S5CObph0IKIVR/vdLZqoc/JiBSnR91k1xw7uebZ5
+ lBSInYAOG8rwjsrqnwO+xXOR9x0+bwYO89LO6y3WTNRxK0C6t/bpZ9y3+T+1g5amA9Eq
+ P3SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762786234; x=1763391034;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0CAKD0S0/ErduNCNipeGluQm7ocygcVqrsf6j+qqNgA=;
- b=Va+TFS4n7Ra+URSpFzPU3hJAP3+syBUa8lN53MEGI2fMsRUWkloNVYC3sNvSvGhhOg
- uHhk5ksySIjr0OWZLd6hrfZRf0knL1fhQnVlA5b8dgG4Ui8LWqmy2xSHCVlFDMKDjC+l
- d6ADEOu2DNRD/sem+/X72J4Uz0Mh6AsbtyYbBTbL7Kf4Q90u+VdvKvxSaHT8gs6xgats
- /8qhFFjVrrC504E9nEka0kDn+Ar9mfClpu45QvWJgIXOoNgA/HS20jINYUriRChWVhpo
- MrtPayiXO6Zg8UHbURdowruJ1hmtlMEV+56lKr4cpOfR2CmqCpB0g1gd43zYfvRJPQCy
- U8ow==
-X-Gm-Message-State: AOJu0Yw5zHBnPW67IEI9FGpW7N7d2zVwikaW1W6xYPr2TDUZ/RxDpaEg
- AuEByOVRnrY2K1u75tPELvOXzmhcfkh/Ib8v6Ad3xWD/vvGOVCrQDVDePN9geTMiKQ8=
-X-Gm-Gg: ASbGncsbS+hA2tja9UOLxRCg9sXb3C82o7iyruq0XAbTHUFhuOQaCNeVfHb1SjSQa83
- 1jMFQvLUYYyX8hyZ/KrjfPuH17RBTwxIwjJw1v/1IrrqmRVimRJth05N8kfk/c3rbdIzOLfavRC
- /A1wOdIygcqhZI0gAAB1fHrJXMJ0Y+Ywe8Topz9j/J8pXp3CdoqW2Q7YTiCpap/LHArFThDQnmR
- Ly3Y8idMBNXTeA+Rg/SP2QuMJ3p+AIfRN76iWwP1xhQ4gNNxbamevrTL9drxfZq3CJRWHIi3ex7
- 8zWUUBpQJNQsXk4TWP/EZK/dCgvcWrxpOxURmrAD6+N9ZgoSgRfe/z/Cg2qV3mERspE344RrGRM
- Tv6oOzDn+F/cGltswK2rOTw34+MMaacaJw+wdJoYsFiC/n/beqognso2TOdLF6MDTT5EV9JBFg2
- sl3I52YjpkHN5R7rgEZMd/26FPhQ+eEuqwWEx1j5YvZVnp4FUgtDfRg2p71GttFbwWTw==
-X-Google-Smtp-Source: AGHT+IEraepT+YybrtH94tWHAdlPkXYPXHFi3Jiwq6yifKUt8qZkapS1VyyOT5sb1Z5eYrAKiquFXg==
-X-Received: by 2002:a05:600c:46ce:b0:477:7b16:5f80 with SMTP id
- 5b1f17b1804b1-4777b166260mr38565975e9.10.1762786233862; 
- Mon, 10 Nov 2025 06:50:33 -0800 (PST)
-Received: from [192.168.68.117] (anancy-654-1-85-43.w90-26.abo.wanadoo.fr.
- [90.26.70.43]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42ac677abeasm22944538f8f.33.2025.11.10.06.50.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Nov 2025 06:50:33 -0800 (PST)
-Message-ID: <0398f3bd-f91c-46ff-9162-2d16db434ede@linaro.org>
-Date: Mon, 10 Nov 2025 15:50:32 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ d=1e100.net; s=20230601; t=1762786305; x=1763391105;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Rvt+30g98YUK3RqNruQMpVntwkIfzfc8fcDCvUUlJBI=;
+ b=llyolMB7sBDwtjt+dOljDqMDkQ90p4I/DjL+nfJtbqkXAdVTntmOu/WdtaxcLBCjOF
+ 4iakmsp7E49s2eMFz8Z6lTT/yH8zEnBn+73t/Mc37NUTzOPUqWNLN8Q1V0fKdKBb204b
+ oj+UoGRN39AjPz59sPYT3CiEbAe8q57GTnxow6i8vvifpQWt/hjqfZ/4aoxyNlqAeWPe
+ SIHz1Rp+RN/z+BBmy/vaTjrPGyVrEpd3afeKk84rdwBmKp5yhYL3YrRiKdotXXynk6Ni
+ WDBQo5gKaK6XDI4ODeCoaRs3HHKZAVBFimOBTghPitkey07shN3V2PoQZOgRfyBk+stm
+ liJA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWZb0xS3Xecx1+95iuNJAEWvOFwwCRuCCoxEGr7wvfeNAIh1F1W7m+pKaaxnXFpDmw9ySAlSwHRfkqz@nongnu.org
+X-Gm-Message-State: AOJu0Yxx7t/ma6bq2ZhuWUqGRhFVv4Wq6Jc6vyrZhcrOQA3bHmsty3J1
+ rGedd1xejlhIvAn5XS28DJ9WRrLYImm624/TKTajaKbIhfiaJ7SF5RdBN4WvICOGc76JKbs7APY
+ 8VAjw3pFuZmj/E/opn7sb/H99gDUvzJdjwHr34DPFFuTFjLZ0JLcelWcb
+X-Gm-Gg: ASbGncuXf2qYBS5HRgkOSlFXcfsJSz8CHJHSf3nOkcTO8C0OCfbFM+/svt8iN9nu0Ib
+ 56HTFnFJP98Tw8U22foSIYsvjfvq+z2jgXPwjNALu2PMhHMHO78Ouw8xcVLhEa9bWBCbVMRD6Nm
+ 7+kvmevCF+xCqlu9JzXUAqp/ACyrwJuzweUY6kyY8N4qzlIIwBpVy8l9QVx1P4SocUs7puuSvdW
+ VObfTwZhvQaxCJkJq0V+8tPzfyKiupJFy01YB6ihToTASAeN6zzLMunGB9MRf3CYZH6ijvgNTDV
+ HL9vq+gb9VgF8kKGCDH0polnEypAxhCPAAZYFcMhtENCfWGsB3AQrLjqRI2UqqC3lQ==
+X-Received: by 2002:a05:600c:358f:b0:46f:b42e:e38f with SMTP id
+ 5b1f17b1804b1-47772e04085mr94272965e9.19.1762786305141; 
+ Mon, 10 Nov 2025 06:51:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF7GqgfYJ/EzdUQOsp0/nA/yOyOV2b2aOwop4yVpvkvYTJzL8k7JThQ+PtYjCIOYtcSmZL3aw==
+X-Received: by 2002:a05:600c:358f:b0:46f:b42e:e38f with SMTP id
+ 5b1f17b1804b1-47772e04085mr94272635e9.19.1762786304751; 
+ Mon, 10 Nov 2025 06:51:44 -0800 (PST)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4776bcd51dfsm207584995e9.5.2025.11.10.06.51.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Nov 2025 06:51:44 -0800 (PST)
+Date: Mon, 10 Nov 2025 15:51:42 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
+ mchehab+huawei@kernel.org, gengdongjiu1@gmail.com, mst@redhat.com,
+ anisinha@redhat.com, peter.maydell@linaro.org, pbonzini@redhat.com,
+ shan.gavin@gmail.com
 Subject: Re: [PATCH v3 5/8] acpi/ghes: Bail early on error from
  get_ghes_source_offsets()
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
- mchehab+huawei@kernel.org, gengdongjiu1@gmail.com, mst@redhat.com,
- imammedo@redhat.com, anisinha@redhat.com, peter.maydell@linaro.org,
- pbonzini@redhat.com, shan.gavin@gmail.com
+Message-ID: <20251110155142.6408a7d1@fedora>
+In-Reply-To: <20251105114453.2164073-6-gshan@redhat.com>
 References: <20251105114453.2164073-1-gshan@redhat.com>
  <20251105114453.2164073-6-gshan@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251105114453.2164073-6-gshan@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,7 +124,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/11/25 12:44, Gavin Shan wrote:
+On Wed,  5 Nov 2025 21:44:50 +1000
+Gavin Shan <gshan@redhat.com> wrote:
+
 > For one particular error (Error), we can't call error_setg() for twice.
 > Otherwise, the assert(*errp == NULL) will be triggered unexpectedly in
 > error_setv(). In ghes_record_cper_errors(), get_ghes_source_offsets()
@@ -116,28 +138,26 @@ On 5/11/25 12:44, Gavin Shan wrote:
 > get_ghes_source_offsets() to avoid the exception.
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
+
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
 > ---
->   hw/acpi/ghes.c | 3 +++
->   1 file changed, 3 insertions(+)
+>  hw/acpi/ghes.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
 > diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
 > index 527b85c8d8..055e5d719a 100644
 > --- a/hw/acpi/ghes.c
 > +++ b/hw/acpi/ghes.c
 > @@ -513,6 +513,9 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
->       } else {
->           get_ghes_source_offsets(source_id, le64_to_cpu(ags->hest_addr_le),
->                                   &cper_addr, &read_ack_register_addr, errp);
+>      } else {
+>          get_ghes_source_offsets(source_id, le64_to_cpu(ags->hest_addr_le),
+>                                  &cper_addr, &read_ack_register_addr, errp);
 > +        if (*errp) {
 > +            return;
 > +        }
+>      }
+>  
+>      cpu_physical_memory_read(read_ack_register_addr,
 
-If get_ghes_source_offsets() can fail, then lets have it return a
-boolean.
-
-   if (!get_ghes_source_offsets(..., errp)) {
-       return;
-   }
-
-See commit e3fe3988d78 ("error: Document Error API usage rules").
 
