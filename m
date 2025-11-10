@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED111C46970
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 13:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B02C46BB6
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 13:58:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQys-0005lq-K8; Mon, 10 Nov 2025 07:26:46 -0500
+	id 1vIRSY-00020Y-5G; Mon, 10 Nov 2025 07:57:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vIQWn-0003gy-6h
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:57:52 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vIQtk-0004D9-11
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:21:39 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vIQWl-0003ry-HF
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:57:44 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-47117f92e32so25634355e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:57:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vIQtg-0000hj-AR
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:21:26 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-29558061c68so35539365ad.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 04:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762775861; x=1763380661; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1762777282; x=1763382082; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=y48iyNcR8AwY1r9+GFcZ4nk0kp4L4j9xSE/5/hC/t0c=;
- b=f4IKMpLgU11Cn6bIxmHP05wTcN2UW2afVcXx+7U+NzZDch0s0msGbFRENlNKzKDZcG
- bHUGNfiW7oCnVN2WnHHAJSU/FtZF5F3Os/EIy11PQ1qO5kB6Woa4nyYo+DNhY5Udn+QF
- 3kVvDIsrR+stPwOhu98OuV6cfREUpvev2RwRGqXn9fX+E0SyocqpJtx23i1A6QZsuAkw
- X5+ew0b7GupihALXiCkKBdBJb0xoJOuZ6Wsrtf/eX/w6rtdkWIZhYOVMueMl6MkB3ssh
- MCbq8Sk7iAriTD2Jn9vjugXEGOCbxF96V8Yy1BUFHp3eJqFbzN+phtSv8VaOrddbU//z
- vi7A==
+ bh=e44jDuR+hMq8gfTXbw9E1tkIcgT9CLYBdOdZSJsryjM=;
+ b=m5xUhvUG/s6/JRyKPV9o647JoIAXOkX3b1ezXk4c2GbHr1pQJjJr21uR9/aO6svmWt
+ u+K80gBkRn7wre6CCzC/2DDUwYiol46k1oVx0N8Vz1Y0qbs1UjkI05zd0qOjGeXcRgNe
+ hqZPmXpFfo/6W+tJZ0KOpYU11QeswLWLmQa5oq4632N7f9MuAf8a2LTvoLHYqCAUOBW8
+ uoXqrvCr/YS9NCXFQXtrRA+KpZnEadWxFRw6wCdd+MU3w0yDCp60Dhuu/56fVxjPWOjv
+ CIgjmBrSaBLYQAtOPw7Nqk1+FG7t8BPJuTugnubD9ykpngJFScYXT0BKQo7wU9uFRHXT
+ 4blw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762775861; x=1763380661;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1762777282; x=1763382082;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=y48iyNcR8AwY1r9+GFcZ4nk0kp4L4j9xSE/5/hC/t0c=;
- b=s61cWyi0WrTIqkOiA9eVgMidEf3A7E5ZakZx+vRhuWlXswx0z1rxWTVnMysYAIHMaD
- BhHXssHM0cmmesffrPblatY2aL/A6mV0slHQSa2UPaRFNja1mcKqfszsw4FYcXBgM5om
- FyvWcLjY9BKUOm1G1WbVSuQhl/BMkLqovtzyWjlI0/IvYwfPzQtJFB3A7OwYb2Pek+9i
- Fx3u+9YbD9gzX+4wQ2T9v2KpuZjwpsNAadtlUdDlxYR1nNOMLZWnB51Kc5kkiwSA8dAq
- Foa4I14koSifXkwXA1oloqPrz2NBPuZR7Ku7JZNhQl8qJtJRf3IW7CHYU6DBlGmS8s08
- Pmpw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVt4llccRxTKN94o2GU5ZkzHz/83HxbO7TCwV7RSrZiV1TFHsnnSmGa85ZAY9oRwZ+LFA/89QVTFDbM@nongnu.org
-X-Gm-Message-State: AOJu0YwGiM3lB9ltCI68mL2UgGhpmSdygFQ2bT7jVVfzTIJn28X8yoKn
- pNi1PI+rD1xNzw3wF6H8cOu1RtWCg1yhZqc1iorsi32SmF/jGjaST2fSE4QhKrCe5ZA=
-X-Gm-Gg: ASbGncsxmzDYbjjK/HMuDKa+rQU180muB9jxe7AeRF2D+drnjpAGFJb3rt/5HG151q4
- UHp9qkIDaY7S30QTrJD+nWk6tvGCKJpOH+nDbaAKRV+S+k7FA8MjRnRAXHDOAwfAoSkM+JSILUY
- Db/46jCB0CEeQNLuMo2uzmfGrOLjH/44f0lszetUjdgVpCcTWdf8jqKBzEKkTymakoZ14pT54nK
- TonGqpVLZZdTkY08yzJ/tQQUbfZVTqibrq8+TZk/yKMFWNuLQLcxmYk84vxL/1ge285y9okpzP+
- qh5noax6NpIG6pyw0+tNbWx1OnbyqDfYfEo1gsS3ee+BhqlHlo6CY/by/1bzXI0SXSm9FgnY66Y
- 5SpDyeGsStErEYjZLviq4AzfZBPvP9tG+PCcIkpBBegtrfiYfGLaLfoEBz2YL7v4/l0H/yOt2Hw
- 27kLPKe3NQfIYrftVFcWPFFLzT6nokwBoIxX2PnAbo3r8k8uPHiGeHefDtNaQe4LiFRA==
-X-Google-Smtp-Source: AGHT+IHEJsJxX4aSmUtSaQy4jQRVLHcEJ+qpTxMrpVYH0Ttf79ETmEOd1AeqIyN8Yqy3WLEjNk+QhQ==
-X-Received: by 2002:a05:600c:1381:b0:45c:4470:271c with SMTP id
- 5b1f17b1804b1-4777325ab51mr71770685e9.18.1762775861213; 
- Mon, 10 Nov 2025 03:57:41 -0800 (PST)
-Received: from [192.168.68.117] (anancy-654-1-85-43.w90-26.abo.wanadoo.fr.
- [90.26.70.43]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4775ce211d8sm330916365e9.11.2025.11.10.03.57.39
+ bh=e44jDuR+hMq8gfTXbw9E1tkIcgT9CLYBdOdZSJsryjM=;
+ b=XGLJD2OKDoBxQwAE4yAAuSpWH8MnZHTBHVFUSj5ohQ97eaJXrfCB0DUj7TvoXNpNNr
+ g1u+/oY4+dqtG8W+T5+m3XLKATKo1E1GpsUsfxu+zPdMIomGS4aTpLY9Zxxfb3gtb/sz
+ RoiSkYZJ7kFq9dwTw8+NMkFiA+VdVWVYm2ADMReymMw8+NUnJb5uIy4YxA4o8QjR6Su4
+ NP0IUCHFEKHIvIfxXBdy5bEZG6jiWkJ7xTbf7+TEXf1c7ku/8ih5yGGSMsHqwAHW8U6l
+ NxNJD0bWrqXtdMQNJZiJnwGvuedMGHYjdtY30hKOSX14tC0ERhLwHrpgxlyjQQTvp3sy
+ ccvA==
+X-Gm-Message-State: AOJu0YxIji3HVxples1JJbMEKwkCCw4HkxRCHduG4CW2k8k2QvKoVf4H
+ ZoOad+IF0F8rdHUnV7Q3IGGO16A0wp0Nc0DrYs+h4jK2WVHw19NC8HB2+lUZ/d/92j4=
+X-Gm-Gg: ASbGncvFpkBX40jC5v6NgjR4pS9do0LJTVUF5qgxuS02sQFLhCttZqnIBJmUh+awGfG
+ J68PDs1q6Qy52MUvNiTG7QXfMVatFXfINylSl2CRMTxEAuoZS4FSAvTP9tuQoiwi/lbfkjjyPjW
+ Xp//TDLpCRCC8s/YUZWPTuhb/YAuGZp/tKT/7rSA4/tdXCyvvl8eVtHKniK3s1NZVhAIbY85LV7
+ E5fddMu3Z5dSAkRQudUCvvBPc/7nMNIKHz3R4inHS7Eqh8W5d21/zWuaembI5MGlc9jYOktVUv1
+ N2H/KBI1CDUdAbbcQLbMs1TXTt/YX5o64ON5WC/Na1ids7EQrStH3K3DJ2Oog3g4NpflL24WSmv
+ D2bXkY+97k4DNDDklb0dkfFtDykH3Eo2TaILJZiN4i7kus1hpARlU+9exIamuRqKlyNUEYa1D3G
+ /+eX6ARbF5+PZ6RA==
+X-Google-Smtp-Source: AGHT+IE4vTHsDkQwpy8eWI9w4CA8/OgXexqzA46hhJ1XrLGM6B7ajCq3iKsVSRyqf/sWV92F3GOIpA==
+X-Received: by 2002:a17:903:a90:b0:295:7f1f:a808 with SMTP id
+ d9443c01a7336-297e56b8c0cmr99514005ad.38.1762777281841; 
+ Mon, 10 Nov 2025 04:21:21 -0800 (PST)
+Received: from [192.168.68.110] ([179.93.21.233])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7b0cc76c0e8sm11621965b3a.52.2025.11.10.04.21.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Nov 2025 03:57:40 -0800 (PST)
-Message-ID: <bb8eedd0-b061-416f-be49-33a760c6e1f7@linaro.org>
-Date: Mon, 10 Nov 2025 12:57:36 +0100
+ Mon, 10 Nov 2025 04:21:21 -0800 (PST)
+Message-ID: <6374e937-6de9-4d86-a833-fc519e91fac8@ventanamicro.com>
+Date: Mon, 10 Nov 2025 09:21:12 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] hw/sd: Fix broken ssi-sd implementation since v9.1.0
+Subject: Re: [PATCH 0/2] riscv: riscv,isa fixes + check script
+To: Conor Dooley <conor@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com
+References: <20251106112044.162617-1-dbarboza@ventanamicro.com>
+ <20251106-napped-haunt-109e9e24ad40@spud>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Content-Language: en-US
-To: Bin Meng <bmeng.cn@gmail.com>, QEMU <qemu-devel@nongnu.org>
-Cc: Tom Rini <trini@konsulko.com>
-References: <20251110110507.1641042-1-bmeng.cn@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251110110507.1641042-1-bmeng.cn@gmail.com>
+In-Reply-To: <20251106-napped-haunt-109e9e24ad40@spud>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,42 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Bin, Tom,
-
-On 10/11/25 12:05, Bin Meng wrote:
-> 
-> The U-Boot community reported a CI failure [1] where the
-> `sifive_unleashed` target failed to boot from an SD card after
-> upgrading from QEMU v8.2.0 to v9.2.3.
-> 
-> At that time, the issue was traced to commit da954d0e
-> ("hw/sd/sdcard: Add spi_cmd_SEND_CSD/CID handlers (CMD9 & CMD10)")
-> which was introduced in v9.1.0.
-> 
-> Testing with the latest QEMU mainline shows that the problem still
-> persists, although the underlying cause has changed due to refactoring
-> since then.
-> 
-> This series fixes the broken `ssi-sd` model. After applying these
-> patches, U-Boot successfully boots again on the `sifive_unleashed`
-> target using QEMU’s `sifive_u` machine.
-
-Thanks for fixing this issue!
-
-Do you mind adding this test as a functional one, so we get this
-code path covered?
-
-> 
-> [1] https://gitlab.com/qemu-project/qemu/-/issues/2945
-> 
-> 
-> Bin Meng (2):
->    hw/sd: Fix incorrect idle state reporting in R1 response for SPI mode
->    hw/sd: Fix ACMD41 state machine in SPI mode
-> 
->   hw/sd/sd.c | 26 +++++++++++++-------------
->   1 file changed, 13 insertions(+), 13 deletions(-)
-> 
 
 
+On 11/6/25 12:48 PM, Conor Dooley wrote:
+> On Thu, Nov 06, 2025 at 08:20:42AM -0300, Daniel Henrique Barboza wrote:
+>> Hi,
+>>
+>> We have an array called isa_edata_arr[] in target/riscv/cpu.c which
+>> needs to be always kept in the RISC-V specification riscv,isa order.
+>> Easier said that done: as more and more extensions are added we're
+>> failing to keep up with the array ordering in the review process.
+>>
+>> I have considered changing how we're retrieving riscv,isa to not rely on
+>> the array ordering (in fact I have code that does that). We would sort
+>> the enabled extensions using riscv,is ordering during init time, before
+>> writing it in the DT, ignoring the current isa_edata_arr ordering. When
+>> all was said and done that sounded a bit extreme and I think there's
+>> other stuff we can try first.
+> 
+> FWIW, I have yet to actually see a parser for it in a "real" application
+> that relied on the ordering. It probably makes a parser more complicated
+> to write than one where the ordering is ignored. The only time I can really
+> see ordering mattering is if something has a very simple bit of code and
+> is looking for "rv##ima" or similar, and using a string comparison
+> function.
+> Either way, my point basically is that you shouldn't have to go to any
+> extreme effort to make sure it is perfect, particularly when it comes to
+> the multiletter stuff as, at least for devicetree, the binding has never
+> enforced ordering for multiletter extensions. I know ACPI cites spec
+> order (and spec definitions, so GL there lol), and there could be relevant
+> for some ACPI only code where the devicetree parser is not being reused.
+
+Thanks for the insight. Yeah, I haven't seen software caring that much about
+the riscv,isa ordering either. In case it exists it would be broken in QEMU
+given that we're using the wrong order :D
+
+
+Thanks,
+
+Daniel
 
