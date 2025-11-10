@@ -2,89 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90949C47179
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D606CC471CC
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:12:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vISWH-0006YK-7B; Mon, 10 Nov 2025 09:05:21 -0500
+	id 1vISbo-0003bk-4V; Mon, 10 Nov 2025 09:11:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vISVa-0006MG-3B
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:04:38 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vISVT-0008Tr-RR
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:04:37 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-6417313bddaso2456924a12.3
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 06:04:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1762783470; x=1763388270; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=syjgwIM3b8qxD12w75PkW3b43QcHXx4/qIrEDjoOAEE=;
- b=Rnti7JPM2JM4VuCqvOevzEGokiEhxa/K2ufeAiPctb39TZ9YulYxvyeraHgztlkaGp
- UzEAL506rTSN+Y3uG6dNHB1KgC9BaBMzxucJNmiG7GT5JseJ8fQDsJjHq2JafJxZHXCM
- Yr0VH5HwuoyS30hPU26v0WBQ2TCchH6ikvllld8gfq//xLBrxRhN9UC1W/TFdQY5tiMB
- 858Gv3ueSuzbAQKZ369om/rZcitTMY35haVG00tGfSLcQQnZTsY9vw/rk9vy8yYR3sTf
- t/7guSIdVq/XN2pH/4LNrckdBndyAH7m3LOUSAevODWGil9kyPZWjSpAHl2ptjttGZ9X
- AW7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762783470; x=1763388270;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=syjgwIM3b8qxD12w75PkW3b43QcHXx4/qIrEDjoOAEE=;
- b=Q9DowJC5zXECj6Ko8lAfITkRScMrnxErctfTxaKK5Uo53UCrWAOkxisrA/v46YPE65
- /FCp3ZMrrNNITJnZtGUrR1KFJ6YkXTvv6jF7xUlXhgxNQkQaY773ruuJmqDz7QS9W3gQ
- LAfvF6M/aHCnSEFVylG/cXgDzV6PZwGFj+/kitcUcdnDWoHIla6SePuDYJ0Gm94pOwKC
- cWNtKTvp6WJcTqFUpmXHSMkpPCgtATIL6qs2H89BhJl5g96IU1CA1Odh9NtLqNwH1Flq
- hNyx0l8ANifmeFLMaezyb9txWtPgj3ftVmkjypGVkLm8fgFfEhI8hwKmSKrrtXfloM/z
- WshQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUXr18UIiWpersQAy3bFO6climKB80fMdaGjs+MtGA+Z0EPcs8rxi1SdLkvsr1/i2Zcf513RWHG/gw6@nongnu.org
-X-Gm-Message-State: AOJu0YyEj+n8KhXG52TiIltcpfkJATOIzUE2Tl10tgWULvCoLTd5ugL4
- WpLT8mXBxBrKjmoE16NbeIlLmdW78pPoyI9MwCDVQoAtDF5+8Wr4S7Fo55NhihGdHsi//L8hLPR
- hqBMxBi4BprvWzXrz4wNQBxScua6QEvjZkfoavMvQ
-X-Gm-Gg: ASbGnctSHAsbJs3HZvw4L0aV5dS3GpUFOXWnwgdCjuGr4yScEMQU6vzSbyceCdqhQQJ
- n7VVM1em1gcbifBx+cJr0fA8TZbMN9K/vA3oQZ4tdu2SdnYh6/7TNZDDy+0h2HMtvGiEsqqlLXl
- TfWryG/NszdsGj+X66rJF79bmF/ezNcMaqIBCAEJ3GQMtrGFqQydhklsoGFSwbcBiAku+eYmz4R
- t/ykKRzYEdUab0KYTUp1FO+0h2OQVUUWMouGVB3n/mDg5Kzl/KZv2BojoJou4Sgv7LbyKU=
-X-Google-Smtp-Source: AGHT+IGnZat1Ja7VBI00lHDVFE9CIoXvpSSMCwPjCJY/snrNF1go2pp3Lm5zwa56GHMCAmApAoj8qGZUHakNsZMiJu8=
-X-Received: by 2002:a17:907:7ea0:b0:b72:5a54:1712 with SMTP id
- a640c23a62f3a-b72e053d5camr720767066b.55.1762783464663; Mon, 10 Nov 2025
- 06:04:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vISVl-0006TF-En; Mon, 10 Nov 2025 09:04:54 -0500
+Received: from 6.mo552.mail-out.ovh.net ([188.165.49.222])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vISVi-0008V1-UQ; Mon, 10 Nov 2025 09:04:49 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.54.176])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4ryK555gz5yVM;
+ Mon, 10 Nov 2025 14:04:41 +0000 (UTC)
+Received: from kaod.org (37.59.142.105) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 10 Nov
+ 2025 15:04:40 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-105G006f1bbe094-e197-411f-8ce2-3849f78c3053,
+ 2CC8F654BF9A736B588295E2BFA8A60E013487DB) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <2a560734-ea59-4f4f-aa81-bf6e8cdb46ac@kaod.org>
+Date: Mon, 10 Nov 2025 15:04:39 +0100
 MIME-Version: 1.0
-References: <20251107145327.539481-1-chigot@adacore.com>
- <20251107145327.539481-6-chigot@adacore.com>
- <87zf8umbzh.fsf@pond.sub.org>
- <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
- <87bjlakpa5.fsf@pond.sub.org>
- <CAJ307EjZwiGj3N93Td9vA0JHyK0COZBXHqv-7cjpxxg+eKiisg@mail.gmail.com>
- <87o6paj96k.fsf@pond.sub.org>
-In-Reply-To: <87o6paj96k.fsf@pond.sub.org>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Mon, 10 Nov 2025 15:04:12 +0100
-X-Gm-Features: AWmQ_blNTlP3aP4VxvD-wlMadcMVkpFQcRmWHVCkH1n_1bRcME-glr2Kz5f-kMw
-Message-ID: <CAJ307EgVTOPm6OTaKmg4XkyosAQ9baEJHiqMQEegQ=gkGAW6GQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] vvfat: add support for "fat-size" options
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
- hreitz@redhat.com, eblake@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=chigot@adacore.com; helo=mail-ed1-x52c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/12] hw/block/m25p80: Add SFDP table for Winbond
+ W25Q02JVM flash
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, Kevin
+ Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, "open list:ASPEED
+ BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
+ <20251106084925.1253704-3-jamin_lin@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20251106084925.1253704-3-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: c0d29bcc-7afa-4409-9d02-3b5bf7f5b6ed
+X-Ovh-Tracer-Id: 17363909842272291646
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTF2hWyzW4TEMGEKhDrGYVejsYZ5P48B+8KNiSlHGojV5imaTcELfZw+EtI3j3nXbMOCeurHMGX51VsOBIu8EwAUirGsEp+VjyrOcGlEhzDp1O9m7WHbtiY1tEaX9nurYTOCyZoZYHntTarm1a880sDCOvGh7cEwVmVja4A7tf8BGmvwmd0KrKh4vMRWTXYpVE1RJaVoapdXe5N0J3VcMsTMkQk+IdV1V6pLyZIzpWinTRSjnmNSlNNhO5egOHyUvlr9EMkJBZwoDQJ1TC5jf2FI827wjl2YAg+4x2BBW+USedOtJfKkVHANKyrYotKMn4yZnFfAYS9mGQpG/2miUs/GrdDDQZXghLsZlshcK957Lg1j0qEX93FpxYPlJWRMoEkcdmV+dKqk/cGNy95SzQoSQlSp8nfxuGOMGhWcn0BUVvdXqtYkrtZkQmksFQNVi05vu3sdKmcUL9G+wzO0bzoMhM4dqwv7TVPggNHSTIYQfpGIB2zE/Ry2itH50Bm4C/7uDC2AKimhbzXV7FttGLIPWkah3+hiJPId1EQGPCspx7tjQouJLBYJU+AQ68PpSxMc9KWwS7FVMrXRGQzFpHfBuTECHRil78Pwdx6dY/ybYT8p+/QcgylkddYSfcCk790JFBFXM7oIL8jrmaXZ1LWNCjKKNMsXFR4+QkqcyGaiRw
+DKIM-Signature: a=rsa-sha256; bh=YlWKHUHnw3dbeW0ShCvfyUkeJciBNwsdpRbKu5SpHjs=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1762783483; v=1;
+ b=cDqFFDmEmHK93gb+Qet9TLPCYHSdW6FVTYdYn6ILtfBx0wdZWAAfjWsssAJ23YVVXpwsBI5l
+ uY1d4jTKYv3RIPxg66RNTVOlMG+wjtF1GW+GyRJhz73p3wI1+yVAg8fGxor2qWpo1jrvkwlnuzc
+ 85QqqX79jBYU/1IVQTd//CZdaCnLs1uyaga7xx/x+phwcpBbtW2geSUk3QNDPOLpSiyR2di9YQN
+ uGquKZRFiTzlgchQhmlTJ22h59kjVJnDbpXYz12BV41UHxNcpgbwKt2H6vRQnUZ4ku2UYmVGrY1
+ F8+wQ9cN1DPxiuEWM1hOeH2sNjRDJFq8dAj955x0MJDDg==
+Received-SPF: pass client-ip=188.165.49.222; envelope-from=clg@kaod.org;
+ helo=6.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,97 +131,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 10, 2025 at 2:42=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
->
-> > On Mon, Nov 10, 2025 at 2:09=E2=80=AFPM Markus Armbruster <armbru@redha=
-t.com> wrote:
-> >>
-> >> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
-> >>
-> >> > On Mon, Nov 10, 2025 at 11:13=E2=80=AFAM Markus Armbruster <armbru@r=
-edhat.com> wrote:
-> >> >>
-> >> >> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
-> >> >>
-> >> >> > This allows more flexibility to vvfat backend. The values of "Num=
-ber of
-> >> >> > Heads" and "Sectors per track" are based on SD specifications Par=
-t 2.
-> >> >> >
-> >> >> > Due to the FAT architecture, not all sizes are reachable. Therefo=
-re, it
-> >> >> > could be round up to the closest available size.
-> >> >> >
-> >> >> > FAT32 has not been adjusted and thus still default to 504 Mib.
-> >> >> >
-> >> >> > For floppy, only 1440 Kib and 2880 Kib are supported.
-> >> >> >
-> >> >> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> >> >>
-> >> >> [...]
-> >> >>
-> >> >> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> >> >> > index 8a479ba090..0bcb360320 100644
-> >> >> > --- a/qapi/block-core.json
-> >> >> > +++ b/qapi/block-core.json
-> >> >> > @@ -3478,11 +3478,17 @@
-> >> >> >  #     (default: true)
-> >> >> >  #     (since 10.2)
-> >> >> >  #
-> >> >> > +# @fat-size: size of the device in bytes.  Due to FAT underlying
-> >> >> > +#     architecture, this size can be rounded up to the closest v=
-alid
-> >> >> > +#     size.
-> >> >> > +#     (since 10.2)
-> >> >> > +#
-> >> >>
-> >> >> Can you explain again why you moved from @size to @fat-size?
-> >> >
-> >> > Just to be sure, you mean in the above comment, in the commit messag=
-e or both ?
-> >>
-> >> Just to me, because I'm not sure I like the change, but that may well =
-be
-> >> due to a lack of understanding of your reasons.
-> >
-> > Naming `fat-size` instead of `size` ensures the parameter is only
-> > recognized by the vvfat backend. In particular, it will be refused by
-> > the default raw format, avoiding confusion:
-> >  "-drive file=3Dfat:<path>,size=3D256M" results in a 504M FAT disk
-> > truncated to 256M, raw format being implicit.
-> >  "-drive file=3Dfat:<path>,fat-size=3D256M" is refused. "fat-size" is
-> > unsupported by raw format.
->
-> I figure throwing in format=3Draw to make raw format explicit doesn't
-> change anything.  Correct?
->
-> >  "-drive file=3Dfat:<path>,format=3Dvvfat,fat-size=3D256M" results in a=
- 256M FAT disk.
-> >  "-drive file=3Dfat:<path>,format=3Dvvfat,size=3D256M" is refused. "siz=
-e" is
-> > unsupported by vvfat format.
->
-> If it was called @size, what behavior would we get?  Just two cases, I
-> think:
->
-> 1. With raw format:
->
->     -drive file=3Dfat:<path>,size=3D256M
->
-> 2. Without raw format:
->
->     -drive file=3Dfat:<path>,format=3Dvvfat,size=3D256M
+On 11/6/25 09:49, Jamin Lin wrote:
+> Add the SFDP data table for Winbond W25Q02JVM flash device. The table
+> was generated under Linux kernel by dumping the SFDP content using
+> the following command:
+> 
+> ```
+> hexdump -v -e '8/1 "0x%02x, " "\n"' \
+>      /sys/bus/spi/devices/spi0.0/spi-nor/sfdp
+> ```
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   hw/block/m25p80_sfdp.h |  1 +
+>   hw/block/m25p80.c      |  2 ++
+>   hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
+>   3 files changed, 39 insertions(+)
 
-Yes and both result in a FAT system having different sizes. The only
-difference being "format=3Dvvfat". When @size is renamed @fat-size, you
-are certain to get an error when forgetting that format=3Dvvfat.
-Moreover, one could think that one day,
-`format=3Dvvfat,size=3D256M,fat-size=3D128M` could coexist, creating a 256M
-disk with a 128M FAT partition.
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Again, I'm not against renaming @size, but I like Kevin's idea to
-avoid confusing errors just because you forgot "format".
+Thanks,
+
+C.
+
+
 
