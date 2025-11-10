@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD5C46300
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB02DC4632A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:19:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIPtj-0008MF-1U; Mon, 10 Nov 2025 06:17:27 -0500
+	id 1vIPvd-0001Ko-Ic; Mon, 10 Nov 2025 06:19:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPYh-0005oA-HD
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:55:43 -0500
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1vIPb7-0006jg-I9
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:58:09 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPYd-0001gX-Gr
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:55:38 -0500
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-44fa4808c15so356622b6e.3
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 02:55:34 -0800 (PST)
+ id 1vIPb5-0002UR-Vu
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:58:09 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-7c6d3676455so871303a34.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 02:58:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762772132; x=1763376932; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762772286; x=1763377086; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SFyiQnZ+wHzrtBWZ0LzKsIkHvY79oMBVulmthLwF0Wo=;
- b=A2yCJmr24A1JXQt5zOob5ppLDpsrrA9CKcPOe0TalicS2NrXJIT3CvhVdm6PKnKLh4
- FEo/yIGWMwWce5zZIcyHARi/QtnX2s+S2Niwh24DipOtyAY6wGDyTCxqsPoPg0Y+XW4G
- TfsML911OZAGNf5VMxoH9mTllkDAMIs0546xotnd8IM1JKQ2jYUUlm1IRTinMZlSlkjg
- ENsZWaVQq8hqBFHsmjhJz8wR1tRCFNarkZm1phzxXalWuKfWRZV7pp2AsF4OYOCwW3EE
- rEbQiDzmF69aPnknCzxj8MR2Wl/t3HrodYRbUSS/PTXQRMx4VYdV8dZsvSflimhQwT/S
- 7sKw==
+ bh=XH1dyFYaMy41jqBk6zO4fEN1pY0YSH7APDXwfIHvgo8=;
+ b=EK5Y2iWvM3OF+mnet5RXDpkNzodolpDxEaLRnRlQmuw1QSahuAToUwIvgKWZ3JCmwN
+ FhsHspw/EcNyh7Pr95SwoCECuwjuTjjNkqqHk/hX2rqzvKUaoPbFpNfjiUtaJMtimFRA
+ 9Q3H+w3gcIjSUMo8qOQrNaL93LyV9mf8ue/MqjZHcltDr7gL+5ONKb5hQfy5F2HDtky+
+ BxXJfe2lmwfIRgFuyIVuBuOygaegdq76Kuh+eILImHkyWSwUr+tDpciJYXN3S+ag6KSI
+ qYNqXRM1JyvNHiOYkF6BpKpYHHgsh7Q40dY5yuWSPQbiZMTyngZVQoC2RZ9quW0RqTbn
+ z5tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762772132; x=1763376932;
+ d=1e100.net; s=20230601; t=1762772286; x=1763377086;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=SFyiQnZ+wHzrtBWZ0LzKsIkHvY79oMBVulmthLwF0Wo=;
- b=GXTHxWtxcDFzbEeK4MPU5uAI9wcKUmOBLVKVrmqNy3/vkRrhb7uY4JsBIxwU5erayu
- J5PgJzEDvZAKAq5MarQcIl2YV95lN9uK+FAgGdkEprlhs1QbeboeZKHNUSHVcifCpLEo
- OlJYujssMK7rgu9bHSiaa0CQEBW8wCGH4iaUHsLVAkBxM6+3U4JWn6kHhbMfNbbDZcni
- DN9KKZGtxgD5vNglcc0HJ21t4jL2qd0IUpzftEjsWD1Hvf7Pq69XcXHaqcf3ztvrnU8X
- J7+7BbzlGEx93WoGUhYxGLW0ebiWCVG5HmR3cKIE/8NYf68AxhHSQvlKeNSxU3z/4k6W
- 4Ytw==
+ bh=XH1dyFYaMy41jqBk6zO4fEN1pY0YSH7APDXwfIHvgo8=;
+ b=aFYpnAU+H6ny3YWSlTp3s//c988BdPPbERJ6fPo/xQT8UqXZoWW9RtCtQZfIy+bHfa
+ 365WzVZiJJ1nfkdd1L1W6hXVI6OK3FnHna/ohTrgoaMi7+ccJw9uR/ot3Ud3D4J3DFgB
+ Am8wlNGl88uumenXzNczJqkr2j8vAD+7sCPIB+XSTDcVGBIJQqIojLJsXnSunoL1nde2
+ 5jdjjR7Oc/16DOkIRmadsSTHvoC09dsN+l5NXmkEu/DySS8k9jRL8uquOntIrVIot0pG
+ RBSo3a2ZUayLbBSJHOb13hEVpPiLNTCMp6Qqcv/Hp6BzO1l2Z3W4TQAqCyQGAE2ADma+
+ vSng==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLhoDtVHeIeA9OuwbzN4F7srlWItFy4HP3WNY56SyAUQ98dOsJrB3EqhV2peHPMgmFVZAVdmvqxzNt@nongnu.org
-X-Gm-Message-State: AOJu0Yznn0R+xb9IE5YMuIm/1EH1ePKXT+iQ465mBdGdgzSx0fRkIwGP
- 93JJ1yOpTWlVivHrwitJyU9L8wow8vLis3IBS8oWxD21vSZWvtxmXV1m1Zsn5+BoBEQ=
-X-Gm-Gg: ASbGnctS0Z5RM2TGZnPRNPtiCucaM+hKv2Auy7oW0AQ0lFT1mcudCBoYgaKJoRz4+M4
- wqBZt09upamADm51OONH2jVPQRdiPcGYkN1vTepdR3P0abjTlCw2//1aK2q3HaNibLkoCPCpNsW
- Sw/imENgXkCIZVosGIW/fdmz0ySLk5Vj9hZNh5dme42KZ6oBpwDeDXmrmbS/tUrSGbetjq2IisU
- V1dh92X8/sczC/uQKX0E3DJ62UPm7elaF2yNKhOrA7E7yOGC+xUAAx+Q9tcxTLp1PdiN13ExOXJ
- GCdw2pk8CgWnJg93vTQi7EbhM8q/dFPY4g7Bm7ehXJwe+i5t8xnQoGqjgp4XmuYAbR466WuWHEy
- 1PmQm7a6dWtiiPMAGdYfzzIwHDHMo4mohKjRUaLeYJjKsbt8nA89gCPjktfg9SD0g3Y33pqWFp0
- HdWXFfm5sLZf2M/KuieTq+rQ2xi82uoF7T0zRHMBjYB5kVI6e4UBYibesYS7vz6h6oz9B8iy1H2
- awToQ==
-X-Google-Smtp-Source: AGHT+IGzJYh2luVQofzfPpVpmmKm6JwP04SHpnPkEsq17X2lxiwpS0dwbCB6aIQvAw6gDAf9iPHzMg==
-X-Received: by 2002:a05:6808:2187:b0:44f:e7bd:274b with SMTP id
- 5614622812f47-4502a3f8186mr4557731b6e.55.1762772132649; 
- Mon, 10 Nov 2025 02:55:32 -0800 (PST)
+ AJvYcCVKQwR0wjGJrM4an3/OJ28G2k0h2Cb4ajPWNLK3Mgpzi09fg37Cnnz3tPNzWgI+6pgu17gwOAh4az4v@nongnu.org
+X-Gm-Message-State: AOJu0YwD9kyL9bqWvgajVEhVteEgIBt/4ZLAzh7fYi4/zOIsZsr+gwKM
+ G5cb8KTL4k2gFrSxH57zqxxYmd78mW/7DCfn0SFV2YkjE+87YMXu3XvdmdNygNkz/Kg=
+X-Gm-Gg: ASbGncu5G/lEN6lfW+qn7aNC7x9BnEIabz9mHsuzh5WDFnbSFq7kei2vCfECQfLUU2O
+ QlmuRtOhD0PrrAZbKxxTkZm2T3cZ6ms2xwpQq2YbLI8eBhQjZ2NyYmr+8G1Z8KdYUlyEdZDD4jz
+ KoneHWiEV8acbv5GgNZG9XX5qqCyLkRI8Rj+3O6aiz5YtygrGTQ8jZC3mAuwZkQdk+ihYehkXqH
+ TRicHFkPG4Fy0tkZjzenM7V4jvNp2m2dlhA6rWG8Zyp18Xvs3py+WrOLQ4CTc5p6vBsHKiYU3qc
+ 3udPcUOjbr6OEpZr+QhnsUaNvt66DeW/MpsUY8uBCN99WaNczG1K2X7kEs4uWFSLOwAcWH+fjUF
+ SQ1fBgqXUQspSr/hQ+nHq/riBcSnEIGBCgGX8lQduXx29wgEl0vjNE1Aq9Vj2qEZZC5x79qK+pn
+ A5KATVA8mO96kq/0Jydrw5O8d2zjX/1MqIaXZe2l1wN12GG+2twpb3G9vLH0iasvqgNIY=
+X-Google-Smtp-Source: AGHT+IEFy2T+v2r0buRncwoIv3tjngNiSOgHKMV0z6V6y4y9JI/iWEITygedDulproA06J2Ja6clJw==
+X-Received: by 2002:a05:6830:2b2a:b0:7c6:de69:a05e with SMTP id
+ 46e09a7af769-7c6fd7d5db4mr5747098a34.19.1762772286651; 
+ Mon, 10 Nov 2025 02:58:06 -0800 (PST)
 Received: from [10.89.10.227] ([172.58.183.226])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-450426be56dsm1590055b6e.18.2025.11.10.02.55.30
+ 46e09a7af769-7c6f10f5c0bsm5477062a34.18.2025.11.10.02.58.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Nov 2025 02:55:32 -0800 (PST)
-Message-ID: <f84fe693-527c-4d76-a9a2-500ca64ecae8@linaro.org>
-Date: Mon, 10 Nov 2025 11:55:25 +0100
+ Mon, 10 Nov 2025 02:58:06 -0800 (PST)
+Message-ID: <5d05e71e-0ba0-4bde-81bf-1911ba5562ff@linaro.org>
+Date: Mon, 10 Nov 2025 11:58:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] accel/tcg: Trace tb_flush() and tb_gen_code() buffer
- overflow
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250925035610.80605-1-philmd@linaro.org>
- <5e4627f8-ae34-4b02-8540-a8fc008e0816@linaro.org>
+Subject: Re: [PATCH] qapi/parser: Mollify mypy
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: vsementsov@yandex-team.ru
+References: <20251105152219.311154-1-armbru@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <5e4627f8-ae34-4b02-8540-a8fc008e0816@linaro.org>
+In-Reply-To: <20251105152219.311154-1-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,27 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/29/25 18:56, Philippe Mathieu-Daudé wrote:
-> On 25/9/25 05:56, Philippe Mathieu-Daudé wrote:
->> Add trace events to better understand the changes introduced
->> by the "accel/tcg: Improve tb_flush usage" series recently
->> merged.
->>
->> Philippe Mathieu-Daudé (2):
->>    accel/tcg: Trace tb_flush() calls
->>    accel/tcg: Trace tb_gen_code() buffer overflow
->>
->>   accel/tcg/tb-maint.c      | 3 ++-
->>   accel/tcg/translate-all.c | 3 +++
->>   accel/tcg/trace-events    | 4 ++++
->>   3 files changed, 9 insertions(+), 1 deletion(-)
->>
+On 11/5/25 16:22, Markus Armbruster wrote:
+> re.match(r'^ *', ...) can't fail, but mypy doesn't know that and
+> complains:
 > 
-> ping?
+>      scripts/qapi/parser.py:444: error: Item "None" of "Match[str] | None" has no attribute "end"  [union-attr]
+> 
+> Work around by using must_match() instead.
+> 
+> Fixes: 8107ba47fd78 (qapi: Add documentation format validation)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   scripts/qapi/parser.py | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> index 1bb1af7051..c3cf33904e 100644
+> --- a/scripts/qapi/parser.py
+> +++ b/scripts/qapi/parser.py
+> @@ -441,7 +441,7 @@ def get_doc_line(self) -> Optional[str]:
+>               self._literal_mode = True
+>               self._literal_mode_indent = 0
+>           elif self._literal_mode and line:
+> -            indent = re.match(r'^ *', line).end()
+> +            indent = must_match(r'\s*', line).end()
+>               if self._literal_mode_indent == 0:
+>                   self._literal_mode_indent = indent
+>               elif indent < self._literal_mode_indent:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Thanks.  I'm going to queue this so that it's in the next CI run.
 
-and queued.
 
 r~
 
