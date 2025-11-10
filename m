@@ -2,120 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4D9C47194
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6E3C471D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vISWp-0007gG-Id; Mon, 10 Nov 2025 09:05:56 -0500
+	id 1vISch-0005i8-Uy; Mon, 10 Nov 2025 09:12:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vISWj-0007Wn-7o
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:05:49 -0500
-Received: from 1.mo552.mail-out.ovh.net ([178.32.96.117])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vISc2-0003nx-3J
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:11:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vISWf-0000Nx-RS
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:05:47 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.58.159])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4rzW6Xsbz5xy9;
- Mon, 10 Nov 2025 14:05:43 +0000 (UTC)
-Received: from kaod.org (37.59.142.97) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 10 Nov
- 2025 15:05:43 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-97G002ad4d19d4-2c8c-4be0-82f6-d5afa59b5d88,
- 2CC8F654BF9A736B588295E2BFA8A60E013487DB) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <8648546b-8c10-4cc8-b627-373eb1457d91@kaod.org>
-Date: Mon, 10 Nov 2025 15:05:42 +0100
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vISbz-0001GZ-IV
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:11:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762783874;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XnQX52BP8B72g2oD+fn3IJI+PJcrGdrAgHvNidLuJLw=;
+ b=NOoO8u4GOkIGoTotdER8bLw69VKK0QlgHxcKyczs1SFqYJgf915PXVng5JzIfd3BX/al5P
+ 1B6kEqBa9H9lefRG0gIO3vT7AB6eShxnzSdF/ixBQsxsglcJYeD5vdx+T8dY/87rdCuIf0
+ EECTTUKDiqeZTh1RKFGvvOQ5j7gBvUo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-551-OCeBooMRO5ytYdsh7T06wQ-1; Mon, 10 Nov 2025 09:11:12 -0500
+X-MC-Unique: OCeBooMRO5ytYdsh7T06wQ-1
+X-Mimecast-MFC-AGG-ID: OCeBooMRO5ytYdsh7T06wQ_1762783870
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-47775585257so14026405e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 06:11:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1762783870; x=1763388670; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XnQX52BP8B72g2oD+fn3IJI+PJcrGdrAgHvNidLuJLw=;
+ b=meeZ2NlWDLZCGpR8IQP4zQ3foJFptvc8b0WYj2YWbanfMOMv4emNahFROcwr+Da51e
+ igC+Q9riC26ZQviEpBMmIfKeo9StqUMyVzyFqlkfO9mLqSjvMcgJCYdGPcPjKwSTFvJi
+ 7Wh8tum1HwSwa+a67xIPy+pDmpMcQyJogGPpwubZcY7vN3CjLMBmiGqXtS94zHfvcS4C
+ w7izfD9PLCnDDvEh2cNwVnRNHfskqJ5LnbJDe5jRKcLLonw82odu4MVqk915deyJjDTr
+ efeThb/83iROaloobmYHVYurRNeXshTY8VVFB6rYM9rCa0AMpqEkEZ974y4phKgT22as
+ hOTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762783870; x=1763388670;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=XnQX52BP8B72g2oD+fn3IJI+PJcrGdrAgHvNidLuJLw=;
+ b=ofnUQajMBOTH+fBeLU6dY/2D8t8/JqlFKhZ3E086wprkfQm3IlsvndGB7e5u9IzGbU
+ 0AoLAPMmwNFnXgdnXHZgxm/vRg42ER+G+epLXM2yRuhMH1JLK+QKtKEaUW28j9a7aO9t
+ qUlIXXi//Yqgi+xjCRu59UkJe78fqtzp7BIfwOWFj7rwQwjqPem7ZObQ9Ns+hSpAi6fD
+ KnQWWAWwe0AvGIjG5cq/jFrN3MxQwwEmkRGuK8YcBIcqTDgLSWnmN5Axd3Ork+BTHCoZ
+ +2tugfjnSsYRnYKpwfJLH/T3sXw5CTK4A5oNG8BZ+qBTHWKM/Hk0m+gR63Dgq1QEwrto
+ pA7w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVc2KVjzxpLo3hGbyzTFnwMeP06Yq93z+frdNBf9Wy/zh8IFMN7tcfkYgNTZ+dsZMr9n9msvJY6T6TJ@nongnu.org
+X-Gm-Message-State: AOJu0Yy1siN4Fquq2UZbcWigPUKSt3Kmb9F/nimFc44z6zdilQX93BZj
+ tSAclZAOoAkqnxssN30lCjv3eYdtDpW+aEvixzk2EEO5pSx8bJalTHj23pcNWVCaW/1ibikImP/
+ 5gd/KbAF38qpYCwgo54lHnmZvXBLqtlS9ut1UZtVF1gVxhzemAg0qQgs8
+X-Gm-Gg: ASbGncsQOHaBM0XVIecGCfIqsyBgyNNGC2n32JEZeDwM8IggcxQ+GWcKCN/y301K/hi
+ dsW3Tl7Yl6IkGyTt4T3mm4pC8c9/pW3U97v2/sJOB2VN6DT6REsqTbDHApNYsB+zgO5DVLPyd/W
+ aZymY6Xfp8SMT7MsbldZvGLLZ+gQ9NNgFAPUZLC3YNwmGCSTVPgHcSSoizH6Vd/+xkZboBpjpbK
+ rWl4FUgBTHX7lmXCREmyxjVRumnTq/ioLOTIRWPj4DbId0w4f28kPSKEAhE/iM8Cgew7YXCxi2r
+ 47YaekoYTFvT8d2EOzFrDuphRLdy15BOBK1RjjvAVRzqihkQMQReam1mB2HO/cPPGA==
+X-Received: by 2002:a05:600c:8b38:b0:476:d494:41d2 with SMTP id
+ 5b1f17b1804b1-4777328683bmr75804615e9.29.1762783870314; 
+ Mon, 10 Nov 2025 06:11:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IElH4nhY/Rx50t8QLNR1GZHppzeNkOW+S13MslhbVkcCzzyxeCoLZoKELddpekTL9SitEuLfQ==
+X-Received: by 2002:a05:600c:8b38:b0:476:d494:41d2 with SMTP id
+ 5b1f17b1804b1-4777328683bmr75804185e9.29.1762783869821; 
+ Mon, 10 Nov 2025 06:11:09 -0800 (PST)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47761c2fe2asm266380765e9.5.2025.11.10.06.11.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Nov 2025 06:11:09 -0800 (PST)
+Date: Mon, 10 Nov 2025 15:11:07 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
+ mchehab+huawei@kernel.org, gengdongjiu1@gmail.com, mst@redhat.com,
+ anisinha@redhat.com, peter.maydell@linaro.org, pbonzini@redhat.com,
+ shan.gavin@gmail.com
+Subject: Re: [PATCH v3 2/8] acpi/ghes: Increase GHES raw data maximal length
+ to 4KiB
+Message-ID: <20251110151107.5e825ea0@fedora>
+In-Reply-To: <20251105114453.2164073-3-gshan@redhat.com>
+References: <20251105114453.2164073-1-gshan@redhat.com>
+ <20251105114453.2164073-3-gshan@redhat.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 05/12] hw/arm/aspeed_ast10x0: Add common init function
- for AST10x0 SoCs
-To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, Kevin
- Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
-References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
- <20251106084925.1253704-6-jamin_lin@aspeedtech.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20251106084925.1253704-6-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.97]
-X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: c83594d7-5796-4135-a4d5-3a7fec60ef29
-X-Ovh-Tracer-Id: 17381361287500565310
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF9Pp+bMD8ZprMQRoFmzl2wLUBR83UOfCZdhj4Cx81TQGQuvPKIgq9vcxxsNROTj+TjZHetNgMyoqjBPXOVeVgbm4fKGYde24JTqC+k6a0LiT/JYCL6WzQ0Pfrt0gxlc/zHUqinCDwzpt2lEggIHJCkNOBqlYig1lyOdHd/0dyQcrQ88A7qebxCFUCMlOxx1s95h4GXy/VY6cZB8agoo001VlPEDVm+KuyKS8cgZowIjHZOid+plvQ1Sv3svMJquPncXmpILBkAPyYeeIsT4TAqHHfXGdWm+HX4Zlx0NmeUB1S/14NCB/EE41qz22M4nw+BySSH9Y2hqGudV53XXASwtAyW7m9oSD/lEyoM1pno/Q7UJo3+sTsClRSkM4lekClv3NeSNcqtoXQmedEvJQ+TZeVsewlaUphb5AoIjbfeD8PIkawUO6gDGaex2SVcCjS+J+ZhsGrwTxa1+AjfHQZejNNuCYbuo/D46qsyExmOQsHD2UuvGC1YFuOkJ/j4bZz6evI4P2WdZznegPc2+QpGldUEe4WzR7YAQFCuyXLBwR1bONImvKzXefxp8JCkD1Brv+EdSBkFOLQNQDzDDZF9NZ8kI/sgd5bLFUKoGM8VXzJgxYUjk8S+3SZUJO5mZzJrxAN8vzTdlMQodf2xAeQRKyyIhTLSIjUM+VyJsG391A
-DKIM-Signature: a=rsa-sha256; bh=5B6e1wQ7/nzJiX8bAfhqOLK28kTkoBtk5ne8Brxb3lw=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1762783544; v=1;
- b=HeYHVbxTPHTEGtEexxUNVz2Y4SA2xykXTNwX/WKQnicpzGPbRZyfG6R3K+MlakQpG2nlGXn6
- S+Fg+v79avvYkSfJDmeeMcSB896jvarddQXyg54kNgudqoYK5+arqXGaNUFMH7420Gp3nSLzxU0
- MweEosAYY0qA9QENbcmGIqPlNWH3LGJnOeT2oduf1H/Rj69moJ2n02ZXZxzqmmI4t7lX+x9R0Hh
- /V5q26o1CUaF3q+4adbfaAZcf5hREQ8nuVzk5Tqj1uKcZuZTTjYVYIyNyDuUqxbzriK6PHgfIcg
- oyyi0AlY9LT02+CcEBGiFcswDaeLonaXXDiAISg5Y6Fmw==
-Received-SPF: pass client-ip=178.32.96.117; envelope-from=clg@kaod.org;
- helo=1.mo552.mail-out.ovh.net
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,32 +124,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/25 09:49, Jamin Lin wrote:
-> Introduce a new common initialization function
-> aspeed_soc_ast10x0_init() for AST10x0 series SoCs. This separates the
-> shared initialization logic from the AST1030-specific part, allowing
-> reuse by future SoCs such as AST1060.
+On Wed,  5 Nov 2025 21:44:47 +1000
+Gavin Shan <gshan@redhat.com> wrote:
+
+> The current GHES raw data maximal length isn't enough for 16 consecutive
+> CPER errors, which will be sent to a guest with 4KiB page size on a
+> erroneous 64KiB host page. Note those 16 CPER errors will be contained
+> in one single error block, meaning all CPER errors should be identical
+> in terms of type and severity and all of them should be delivered in
+> one shot.
 > 
-> The AST1060 does not include the LPC and PECI models, so the common
-> initializer is used for all shared modules, while
-> aspeed_soc_ast1030_init() adds initialization of LPC and PECI, which
-> are unique to AST1030.
+> Increase GHES raw data maximal length from 1KiB to 4KiB so that the
+> error block has enough storage space for 16 consecutive CPER errors.
 > 
-> This refactor improves code reuse and prepares the codebase for
-> supporting the AST1060 platform.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   hw/arm/aspeed_ast10x0.c | 15 ++++++++++-----
->   1 file changed, 10 insertions(+), 5 deletions(-)
+>  docs/specs/acpi_hest_ghes.rst | 2 +-
+>  hw/acpi/ghes.c                | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
+> diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
+> index aaf7b1ad11..acf31d6eeb 100644
+> --- a/docs/specs/acpi_hest_ghes.rst
+> +++ b/docs/specs/acpi_hest_ghes.rst
+> @@ -68,7 +68,7 @@ Design Details
+>      and N Read Ack Register entries. The size for each entry is 8-byte.
+>      The Error Status Data Block table contains N Error Status Data Block
+>      entries. The size for each entry is defined at the source code as
+> -    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
+> +    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 4096 bytes). The total size
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+is it safe to bump without compat glue?
 
-Thanks,
+consider VM migrated from old QEMU to new one,
+it will have  etc/hardware_errors allocated with 1K GESB,
+and more importantly error_block_addressN will have 1K offsets as well
 
-C.
+however with ACPI_GHES_MAX_RAW_DATA_LENGTH all length checks will
+let >1K blocks to be written into into 1K 'formated' etc/hardware_errors.
+
+Thanks to previous refactoring we get all addresses right (1K version),
+but if you write large GESB there it will either overlap with the next GESB
+or a smaller GESB might overwrite tail of preceding large one.
+And in works case it's OOB when writing large GESB in the last block.
+
+Given we have to write GESB successfully or abort, there is no point
+in adding compat knobs. But we still need to check if GEBS will fit into
+whatever block size etc/hardware_errors inside guest RAM is laid out originally.
+
+>      for the "etc/hardware_errors" fw_cfg blob is
+>      (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
+>      N is the number of the kinds of hardware error sources.
+> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> index 06555905ce..a9c08e73c0 100644
+> --- a/hw/acpi/ghes.c
+> +++ b/hw/acpi/ghes.c
+> @@ -33,7 +33,7 @@
+>  #define ACPI_HEST_ADDR_FW_CFG_FILE          "etc/acpi_table_hest_addr"
+>  
+>  /* The max size in bytes for one error block */
+> -#define ACPI_GHES_MAX_RAW_DATA_LENGTH   (1 * KiB)
+> +#define ACPI_GHES_MAX_RAW_DATA_LENGTH   (4 * KiB)
+>  
+>  /* Generic Hardware Error Source version 2 */
+>  #define ACPI_GHES_SOURCE_GENERIC_ERROR_V2   10
 
 
