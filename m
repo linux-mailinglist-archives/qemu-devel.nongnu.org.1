@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A283EC47188
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C906FC471CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:12:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vISWM-0006oY-41; Mon, 10 Nov 2025 09:05:26 -0500
+	id 1vISbl-0003VR-Ee; Mon, 10 Nov 2025 09:11:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1vISW1-0006Xp-7v; Mon, 10 Nov 2025 09:05:09 -0500
-Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vISW7-0006Zt-Mr
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:05:12 -0500
+Received: from 7.mo548.mail-out.ovh.net ([46.105.33.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1vISVq-0008Vg-27; Mon, 10 Nov 2025 09:05:00 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.54.85])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4ryW1ZHdz5xLP;
- Mon, 10 Nov 2025 14:04:51 +0000 (UTC)
-Received: from kaod.org (37.59.142.106) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vISW4-00005b-Go
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:05:11 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.134])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4d4ryk37VBz5xyk;
+ Mon, 10 Nov 2025 14:05:02 +0000 (UTC)
+Received: from kaod.org (37.59.142.114) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 10 Nov
- 2025 15:04:50 +0100
+ 2025 15:05:00 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-106R00684885a42-25f3-45c3-9ae2-09cdde02d242,
+ (GARM-114S008630e832b-99e4-4cda-aac2-ca3157944bbd,
  2CC8F654BF9A736B588295E2BFA8A60E013487DB) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <45cf41b6-9970-4d99-9a35-eeb476a8e363@kaod.org>
-Date: Mon, 10 Nov 2025 15:04:50 +0100
+Message-ID: <5fdca7c7-e9aa-42df-8eff-1ea45b2467ce@kaod.org>
+Date: Mon, 10 Nov 2025 15:04:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 03/12] hw/misc/aspeed_scu: Fix the revision ID cannot
- be set in the SOC layer for AST2600 and AST1030
+Subject: Re: [PATCH v1 04/12] hhw/misc/aspeed_scu: Add AST1060 A2 silicon
+ revision definition
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
@@ -42,7 +42,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
- <20251106084925.1253704-4-jamin_lin@aspeedtech.com>
+ <20251106084925.1253704-5-jamin_lin@aspeedtech.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -87,27 +87,27 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251106084925.1253704-4-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251106084925.1253704-5-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG8EX2.mxp5.local
+X-Originating-IP: [37.59.142.114]
+X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: c26c6293-5e7b-42f3-941e-84a60e8008a5
-X-Ovh-Tracer-Id: 17366724590433700670
+X-Ovh-Tracer-GUID: 7ef8ea20-cbec-4fb1-87fe-67f5ab594c7d
+X-Ovh-Tracer-Id: 17369539340142807870
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEPxfWj5YQ9s0E9neHbK1wkesQhcMng64lmOuBjOaWjwFGEulEY+92eq18Ic2VYNR/oM3RHfstEK7eExWDG44qcyTf+Loolpk36borfjTi6edQWpKIfHq+dwbL3/9L6hIt16Qkk3hdEj2B2eBcn4CS6bMHhT13xUv1GgV6uKMEpK1utUY7BsSyh440A9P9U5l7uNmhSNuPjT2xHK32O3/6lSGfOdsivsuyh8ehoT/3A84+sbihH7SQQBNDJSTvs86t8zODr21+VleFCaOO0hZXHR0sULzrLibhDUElNvcXSEv5BILNDQR3ES560XEbPiNnf2dpbuFA6c7tPW+EEQCY6gugpDDQPtavkOQUyqp/tUBX9ndjxWdM/COup4rPwpxlYRqqREf92ULS11x209XyDyqx+E7v+A93NZzebXD69R/XbTFmag3m0t7Rat0U9vilouZUzxtViVjKRPybVRCe7WCwbXxt3hOdCDqPGCgbhDOJ0ShuIuWXT66lTjQW3Tuk0eiGc9x46pqWiJCuusPUgWQAM7WUybX921exAS1pgq1r8e/M5mZiq6sphNaKC47uMoI0E67/1dZcO0ij2fk2t+NqzaTtMz2OkUuWWUwRErq3bwoal5vcx5c07z7uDCjHPA2EcDYZ5Uo/c3ObceViJnNA4l9d7xg4FQJOr/8O1ig
-DKIM-Signature: a=rsa-sha256; bh=k7OG6tU0kjy527xNj0LHGtRbnBLZ8zIuI8gHujiFYdI=; 
+X-VR-SPAMCAUSE: dmFkZTFXswTJJHzhsn0abB9hdsQSmehlkPhRAADzeu9n3hXwRttC1CdG2VACr6xE2JZqK0IWt+nKeNCX6+u8oifV7mw1+MHilWh6sOZVl6Gyb7cwmQnZyfOsreTDHoRkT8v1agZn5jNuTfnBtAR8kT6Ly75WxECgsWDyTgWevpiMCTmUxCI0zHT5h5M0fd9fLb3XHhX0L/vegDptr8pPFxcJm2F1VnDxJ1WFUpwfJ+nj+zFNb90HtgPrHKlH3Vc9y+0wjqkpf7HBJiAbUBixBQoH76Mb3ehzxBRUH7NNjPj+PNLGiKfrYFZBRZqM+y4i4SEBiv+wMFLnMaSCw4d9r1jBVkW9p909xTwPQUDGH5xu+ARQqXG8pbeMydNQhm+Zwp2Ogt336YD9gaeyb9VQ9+W9qWqy7vCPIzHEkWBd9UyHjFOFRZaFqY7WwZuYv+Hkz7sgMbZ1PD/EOqIYjOjvQKpk3QK6eR3em9uFJesghp/uZrvJ2HTDu9KUXAr1ed9AWr/vIvtAZfs07EUk8eVYpayjXDlmuhFx4v6rVxA3ahiOUVrSwSBHGacCWgi6KDFwmG4MUjL67bPxbfLNvtoj+n1wtVnb9Ly1hInUO9TdrX8IRtSCvSH0zU9Tm4bZz8BNoZY9UwdnVCOKDSK5oM0ts90kMO1U5vF0fRe7x5M+EYyZLhbPgA
+DKIM-Signature: a=rsa-sha256; bh=z4/ir0Iw5O6DNAtNIidU+Kijl11HHHzS3nb1xqh1sHY=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1762783491; v=1;
- b=NUufEwGRknwoqHmxbwMJXyWvFsklcxQ8aHbVnrsdC+5UPxrjvqSj0JuOLWB1yp2UAPBGZb51
- GV5l2w8GN9R0ouDzCcyy4TRFfaYO2ihdrjby+VVG8hvpvm1YSQ7zBW71cnpvCE/jhc5EhUdVX6+
- wtUmZwEdDnI/uAG5r7znJS4WT6qb6goKnBDhaW3EKohduAdIAoD5Qghu/Y5LyiwRJbBztpRr6lV
- JLkT6WTM6kULrqH6T9kzrKWo/mKxPD/pWWjQq2ff0JPOHQ2TeS+Japbh+hb80dTZmSt+8iu0GMh
- JvzSZ5qnJO/vRtq27BWII51foQWtg/ZiAWzgoVzVLDgrA==
-Received-SPF: pass client-ip=178.33.43.201; envelope-from=clg@kaod.org;
- helo=4.mo552.mail-out.ovh.net
+ t=1762783504; v=1;
+ b=ZtThXI0DHOjHkUGcmk+58LiGB7rLe1wR7886F+q7jj42eJNWnePlmpfsvWbzRBaY20cpWBBv
+ Tt8KfBL3Ct4vYuh7QoIOmX+KCcyoYuclG8Sk1b95fTx2thkHKAH1IvR5+wCGrogIpDgHABXkJba
+ uCt/TTPiVSY1/F+cOjmuU+LOK0jQuXD6N74A4Z4a67FOMXtInKBAFV03sSz6Wg/T4JT8u9Ln1M9
+ HPIZO5tnWS8z38n/DEl5GfFVVMsWkLnBkC+roup5n5qRKWWU34qc5ENpX7umic/kQstAogBalPb
+ 8cMvQNUyPzcwLRM61PNI6zbDJiPTDsjE0lPzMpNOREw4A==
+Received-SPF: pass client-ip=46.105.33.25; envelope-from=clg@kaod.org;
+ helo=7.mo548.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,7 +115,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,32 +132,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/6/25 09:49, Jamin Lin wrote:
-> According to the design of the AST2600, it has a Silicon Revision ID
-> Register, specifically SCU004 and SCU014, to set the Revision ID for the
-> AST2600. For the AST2600 A3, SCU004 is set to 0x05030303 and SCU014 is
-> set to 0x05030303.
-> 
-> In the "aspeed_ast2600_scu_reset" function, the hardcoded value
-> "AST2600_A3_SILICON_REV" was used for SCU004, while "s->silicon_rev" was
-> used for SCU014. The value of "s->silicon_rev" is set by the SoC layer
-> via the "silicon-rev" property. This patch aligns both SCU004 and SCU014
-> to use "s->silicon_rev" for consistency and flexibility.
-> 
-> Similarly, the "aspeed_ast1030_scu_reset" function also used a fixed
-> revision constant ("AST1030_A1_SILICON_REV"). This change updates it to
-> use the same "s->silicon_rev" property, ensuring that both SoCs follow
-> a consistent and configurable revision handling mechanism.
+> Add a new silicon revision constant AST1060_A2_SILICON_REV for the
+> AST1060 SoC. This allows the SCU model and related SoC layers to
+> identify and handle AST1060 A2 revision properly in the same way as
+> other Aspeed SoC families.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   hw/misc/aspeed_scu.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   include/hw/misc/aspeed_scu.h | 1 +
+>   hw/misc/aspeed_scu.c         | 1 +
+>   2 files changed, 2 insertions(+)
 > 
+> diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
+> index 684b48b722..76ef8dc592 100644
+> --- a/include/hw/misc/aspeed_scu.h
+> +++ b/include/hw/misc/aspeed_scu.h
+> @@ -51,6 +51,7 @@ struct AspeedSCUState {
+>   #define AST2600_A3_SILICON_REV   0x05030303U
+>   #define AST1030_A0_SILICON_REV   0x80000000U
+>   #define AST1030_A1_SILICON_REV   0x80010000U
+> +#define AST1060_A2_SILICON_REV   0xA0030000U
+>   #define AST2700_A0_SILICON_REV   0x06000103U
+>   #define AST2720_A0_SILICON_REV   0x06000203U
+>   #define AST2750_A0_SILICON_REV   0x06000003U
+> diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+> index 1f996d5398..300571256a 100644
+> --- a/hw/misc/aspeed_scu.c
+> +++ b/hw/misc/aspeed_scu.c
+> @@ -565,6 +565,7 @@ static uint32_t aspeed_silicon_revs[] = {
+>       AST2600_A3_SILICON_REV,
+>       AST1030_A0_SILICON_REV,
+>       AST1030_A1_SILICON_REV,
+> +    AST1060_A2_SILICON_REV,
+>       AST2700_A0_SILICON_REV,
+>       AST2720_A0_SILICON_REV,
+>       AST2750_A0_SILICON_REV,
+
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
+
 
 
