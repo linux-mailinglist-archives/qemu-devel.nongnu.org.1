@@ -2,112 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F3DC475AF
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5890C475BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:53:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vITFd-0004CV-PN; Mon, 10 Nov 2025 09:52:13 -0500
+	id 1vITGn-000688-2o; Mon, 10 Nov 2025 09:53:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1vITFQ-0003p2-3q
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:52:02 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vITGj-0005zb-Kx
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:53:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1vITFO-00008A-2m
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:51:59 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAD5FAD029737;
- Mon, 10 Nov 2025 14:51:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=9oRD42
- 8bu6yi4OqNBjqObEQvF9xkL8ympHHTLttR5ME=; b=nSreJzjSqRTMvgZfvTPVPX
- oxLWPpF/qR77BxqpGE7fERMCxAhT+HjxNhkiRGeKK88pEgOgUpAUCz2sWJXLpcLr
- 1q5/N6UlaC//1H37B9fLtX1n35fOTGrfi/tw0+w4Jr6Qy64Q09Dpdibb3p3Te2fw
- 1CRDGUC9rDv0gjif93ZPhDp+P9mpojKqlDD2pxSboIOGliwbAVkfs/93yYSJS+j2
- 3DjAx+YCm++qC8sQQ8/r2M5f0IrkbQlPArtnVvFoA4NBsPKBO0hh4yPsW3Z/7M8x
- SPD/GMDJWcc3eXWq5nZ1vTgs1yb+5DFCStW0gFoxurQdA45DLtuTX0kebsnVqb0g
- ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wk80pnc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Nov 2025 14:51:54 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAD7uCr007298;
- Mon, 10 Nov 2025 14:51:53 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdj5vr4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Nov 2025 14:51:53 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5AAEprRE20710014
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Nov 2025 14:51:53 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40E8A5805F;
- Mon, 10 Nov 2025 14:51:53 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 989B258054;
- Mon, 10 Nov 2025 14:51:52 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 10 Nov 2025 14:51:52 +0000 (GMT)
-Message-ID: <332e3480-d86f-4782-8694-65b1e459eb58@linux.ibm.com>
-Date: Mon, 10 Nov 2025 09:51:51 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vITGd-0000Pp-Px
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 09:53:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762786394;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mfVMdJfyaaPsUPMviEliedK60j/rWdz+0nevChecdnc=;
+ b=QVv7EfIw94fq98uKrLmaFaotu5iG5dolZETSs7iD7GODsT0kcpx3Pv6Am+yU07ZtdnCAXV
+ COmIojml5IPSKOdUL0SYX8wY6uR52NdXyrb54f+d4AkKZrRZz9ILxmCBApkvkzEjYE+XZW
+ d7xHadFXDzfaaNAmJ4s0BO//04beawI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-m243Eg4jN9mXPiPjezQnuA-1; Mon, 10 Nov 2025 09:53:10 -0500
+X-MC-Unique: m243Eg4jN9mXPiPjezQnuA-1
+X-Mimecast-MFC-AGG-ID: m243Eg4jN9mXPiPjezQnuA_1762786389
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-429cce847c4so1305480f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 06:53:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1762786389; x=1763391189; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mfVMdJfyaaPsUPMviEliedK60j/rWdz+0nevChecdnc=;
+ b=FP384B54+A80IBJ75AfJU0p7N2Jc4GIauhwisCkWpBBGIY66N2bV4+czdrtc4YB0L4
+ b0Y+bmYkfO/OxvKiJzwicyF7ntaAOFEmRvd4DTUhpRdQmfuFgQQQ8ybYVOmIWD2AUnTD
+ t09H8vg9awqZFsRm8nrT9Q8P875Sxe9L8QRE701W7YtKGMbwm57ips0RnrwV6IPBtnG7
+ GBG9BAaUS4i+3AmL2Me9hzzrRpucSC4zCrrsm99Z9YBAzAeBVfXBmzkIWfiE1Aqv6XB7
+ F6natgfA/EUl2B4Q3BjtSAF4QfltfauO9NZze+uiuB75vgMOK/mgphJrZX7cP/x9jaTL
+ PoQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762786389; x=1763391189;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=mfVMdJfyaaPsUPMviEliedK60j/rWdz+0nevChecdnc=;
+ b=otQ9UC6Kjov8kBNEMYfeyn919PskQonTg0WXhrIT3cQB1XfP6n7Q7TFHXAGBi64Xjq
+ 7CImWstsd4+z1v/EyE0GC8wNfyhbVUUZ9v17vVx/QJ42wRXXlDeZC/44n/wn8G0HmbXQ
+ F7DZBX8bQaGPr6ezXBG6lqDy1TWV/gdv6swEKLRTcZp76/iiwIMh2KiDF2p5ZdKLgA2M
+ yeZ7IjwTd1KqAu9zRKSdB+X5NiRcea0xJxhK2Rdq2KduRBr+pel863ikdEJwSucZ/8vy
+ 3LTIg88xCxxQihdkB/astIqoGK1jm5KtR/sPZatftBtpo/ygpwZChAxAQkJs5OFVczw6
+ nrpg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWXEhq8yVKuF8dXIz/PebhOHvE5FhLZFsxWaPgGWduDbJca1/C4mM1yvoyYVn6QBnvCzbXPlkdLbcgL@nongnu.org
+X-Gm-Message-State: AOJu0Ywg1DzLWIj15qeJWvFmtetoWed0caSbLKJzCz7LU0JkV4Nl8Z54
+ jnJwCapfjIb8ALBhRb+AxjJxlIsV1bhas+WMK3DO5bquahqYwyZ0VPEVFJwVmnwu85s/mvLxLO8
+ V/FpWp9HZQN7jKJS/6nkXODsMZ9dKLMMg/QdemN/IoMFI9e2AjL/AdjgI
+X-Gm-Gg: ASbGncs3GQOKpGko8WsqfXYXeI7/ZlVJA6Z4XsXg4XkVAeyRblChKFaWVhRxZlWGZLw
+ QtJ43YFIN1x0gYjfqc4a3PTzGA2/5hOW+cMmj/Z5Skrc7EAe1cCTxFRvpmEq5MJxAz56ZBRlbjW
+ iAmDPCepo4kJuvjw8xneLk/UvfjYWbl1VgFeN/hjwqX4hxwY4g6gQS7HFIagnbYPWKOVPXTIogl
+ MB75FuV5Ln3aOGOPG8n9nFtcvciYux4RZoha4QdiJ5/ubi8/Hpz8M6DMUXKIpqYesqSGExDsaDs
+ aF+ejKM4uOIyGsXNO6+M1iNsNn3stWAZclPE11sFcmR9xF0K0itrRQqhrrTq9ukOMQ==
+X-Received: by 2002:a05:6000:22c5:b0:42b:3806:2bb4 with SMTP id
+ ffacd0b85a97d-42b38062ee3mr4659077f8f.27.1762786389447; 
+ Mon, 10 Nov 2025 06:53:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF6IUThXKt0KKjHqEVdE+mYwAOPIdOCgZ1CY1+kF0yMKjCk3InWytT1vqqnXexM0MQpe3Ftyg==
+X-Received: by 2002:a05:6000:22c5:b0:42b:3806:2bb4 with SMTP id
+ ffacd0b85a97d-42b38062ee3mr4659041f8f.27.1762786388960; 
+ Mon, 10 Nov 2025 06:53:08 -0800 (PST)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42ac67920fcsm22466090f8f.39.2025.11.10.06.53.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Nov 2025 06:53:08 -0800 (PST)
+Date: Mon, 10 Nov 2025 15:53:07 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
+ mchehab+huawei@kernel.org, gengdongjiu1@gmail.com, mst@redhat.com,
+ anisinha@redhat.com, peter.maydell@linaro.org, pbonzini@redhat.com,
+ shan.gavin@gmail.com
+Subject: Re: [PATCH v3 6/8] acpi/ghes: Use error_abort in
+ acpi_ghes_memory_errors()
+Message-ID: <20251110155307.372dafb0@fedora>
+In-Reply-To: <20251105114453.2164073-7-gshan@redhat.com>
+References: <20251105114453.2164073-1-gshan@redhat.com>
+ <20251105114453.2164073-7-gshan@redhat.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] tpm_emulator: drop direct use of errno variable
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- stefanb@linux.vnet.ibm.com
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, peterx@redhat.com
-References: <20251106194126.569037-1-vsementsov@yandex-team.ru>
- <20251106194126.569037-3-vsementsov@yandex-team.ru>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20251106194126.569037-3-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfX0B4WRM55JsUk
- 0TJ6zgaiYm/Q7SFa8Ii09LOSsdS1xGoqbKKnO93Xr4avcX55xs71cOm3qfZq3lfuvZiZGLpOHcJ
- og1IHXZmgZu+4rJr2T2vR6OJDYOKdVfVLYF23i/ijPK+fSFXcn/Hv8KVlGaynstosrPhJuIsHwF
- /DIU+CiCk6CLU0Bmyu4BF2apeVply9hc8gBdT8J1X0L3ydohqS54AwBrvL0jPBLxLNqNFs4JU3E
- FgJL9p5Rv7eO+cfsrhEF8jqZUXwbpYh+QJQ6uBEIkzqZ1rXSkhpQw8sbof9aqAQTkLwQgzr0DLQ
- iBcrfXhLWIY/DwB5EeNfpXBUQcjTlulmaFgRaLbqcLUlvr3KSXRt52mXtTs+gJ6gGTMihI2fzqe
- YQNq7r02wZVBrSz254ur6p8PLloGMw==
-X-Authority-Analysis: v=2.4 cv=ZK3aWH7b c=1 sm=1 tr=0 ts=6911fc0a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=6R7veym_AAAA:8 a=VnNF1IyMAAAA:8 a=KdQi6C3LDGTg7i8PK7gA:9 a=QEXdDO2ut3YA:10
- a=ILCOIF4F_8SzUMnO7jNM:22 a=poXaRoVlC6wW9_mwW8W4:22 a=pHzHmUro8NiASowvMSCR:22
- a=nt3jZW36AmriUCFCBwmW:22
-X-Proofpoint-ORIG-GUID: 54gtTjYfshzp4iyTgYS-dB6FxxuELq41
-X-Proofpoint-GUID: 54gtTjYfshzp4iyTgYS-dB6FxxuELq41
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_05,2025-11-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 adultscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511080022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,37 +124,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed,  5 Nov 2025 21:44:51 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
+> Use error_abort in acpi_ghes_memory_errors() so that the caller needn't
+> explicitly call abort() on errors. With this change, its return value
+> isn't needed any more.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
-On 11/6/25 2:41 PM, Vladimir Sementsov-Ogievskiy wrote:
-> The code tends to include errno into error messages after
-> tpm_util_test_tpmdev() and tpm_emulator_ctrlcmd() calls.
+> ---
+>  hw/acpi/ghes-stub.c    |  6 +++---
+>  hw/acpi/ghes.c         | 15 ++++-----------
+>  include/hw/acpi/ghes.h |  5 +++--
+>  target/arm/kvm.c       | 10 +++-------
+>  4 files changed, 13 insertions(+), 23 deletions(-)
 > 
-> Both has error paths, where errno is not set, examples:
-> 
-> tpm_emulator_ctrlcmd()
->    qemu_chr_fe_write_all()
->      qemu_chr_write()
->        replay_char_write_event_load()
->          ...
->          *res = replay_get_dword();
->          ...
-> 
-> tpm_util_test_tpmdev()
->    tpm_util_test()
->      tpm_util_request()
->        ...
->        if (n != requestlen) {
->            return -EFAULT;
->        }
->        ...
-> 
-> Both doesn't document that they set errno.
-> 
-> Let's drop these explicit usage of errno. If we need this information,
-> it should be added to errp deeper in the stack.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+> index 4faf573aeb..4ef914ffc5 100644
+> --- a/hw/acpi/ghes-stub.c
+> +++ b/hw/acpi/ghes-stub.c
+> @@ -11,10 +11,10 @@
+>  #include "qemu/osdep.h"
+>  #include "hw/acpi/ghes.h"
+>  
+> -int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> -                            uint64_t *addresses, uint32_t num_of_addresses)
+> +void acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> +                             uint64_t *addresses, uint32_t num_of_addresses,
+> +                             Error **errp)
+>  {
+> -    return -1;
+>  }
+>  
+>  AcpiGhesState *acpi_ghes_get_state(void)
+> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> index 055e5d719a..aa469c03f2 100644
+> --- a/hw/acpi/ghes.c
+> +++ b/hw/acpi/ghes.c
+> @@ -543,8 +543,9 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
+>      notifier_list_notify(&acpi_generic_error_notifiers, &source_id);
+>  }
+>  
+> -int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> -                            uint64_t *addresses, uint32_t num_of_addresses)
+> +void acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> +                             uint64_t *addresses, uint32_t num_of_addresses,
+> +                             Error **errp)
+>  {
+>      /* Memory Error Section Type */
+>      const uint8_t guid[] =
+> @@ -555,7 +556,6 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+>       * Table 17-13 Generic Error Data Entry
+>       */
+>      QemuUUID fru_id = {};
+> -    Error *errp = NULL;
+>      int data_length;
+>      GArray *block;
+>      uint32_t block_status, i;
+> @@ -592,16 +592,9 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+>      }
+>  
+>      /* Report the error */
+> -    ghes_record_cper_errors(ags, block->data, block->len, source_id, &errp);
+> +    ghes_record_cper_errors(ags, block->data, block->len, source_id, errp);
+>  
+>      g_array_free(block, true);
+> -
+> -    if (errp) {
+> -        error_report_err(errp);
+> -        return -1;
+> -    }
+> -
+> -    return 0;
+>  }
+>  
+>  AcpiGhesState *acpi_ghes_get_state(void)
+> diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+> index f73908985d..35c7bbbb01 100644
+> --- a/include/hw/acpi/ghes.h
+> +++ b/include/hw/acpi/ghes.h
+> @@ -98,8 +98,9 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
+>                       const char *oem_id, const char *oem_table_id);
+>  void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+>                            GArray *hardware_errors);
+> -int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> -                            uint64_t *addresses, uint32_t num_of_addresses);
+> +void acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+> +                             uint64_t *addresses, uint32_t num_of_addresses,
+> +                             Error **errp);
+>  void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
+>                               uint16_t source_id, Error **errp);
+>  
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 459ca4a9b0..a889315606 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -2458,13 +2458,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>              addresses[0] = paddr;
+>              if (code == BUS_MCEERR_AR) {
+>                  kvm_cpu_synchronize_state(c);
+> -                if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
+> -                                             addresses, 1)) {
+> -                    kvm_inject_arm_sea(c);
+> -                } else {
+> -                    error_report("failed to record the error");
+> -                    abort();
+> -                }
+> +                acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
+> +                                        addresses, 1, &error_abort);
+> +                kvm_inject_arm_sea(c);
+>              }
+>              return;
+>          }
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
