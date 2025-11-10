@@ -2,86 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F58C463CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D90BC4640C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:29:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQ2x-0006Yk-19; Mon, 10 Nov 2025 06:26:55 -0500
+	id 1vIQ4y-00086F-3y; Mon, 10 Nov 2025 06:29:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vIPmj-0004RS-5x
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:09 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1vIPmh-0004Gi-6E
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:08 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-b714b1290aeso471794066b.2
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1vIPnJ-0004l7-4M
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1vIPnD-0004JZ-Qh
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762773037;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aktDvrJZFWRZUdhpU6PBPhEblVgeorLPMPLU5b2fnG0=;
+ b=a21hYyPrGjvnvxlJRRF8UZJ5rU9KiXhtk+l8bhwu/uz561s+9nyCJfvfRxOnd0Ugv2WSNX
+ jSnLcIJBp8gB9NfAki2CPTHHD1M9etJfjpk958VwkPhP20edFf3Rr7zuNSchQ4OjTRVqPA
+ rP0WmpasJpYkWG4abibtb6jhsgpPrpk=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-64MPK9eAOyasw2H9ArjJWA-1; Mon, 10 Nov 2025 06:10:36 -0500
+X-MC-Unique: 64MPK9eAOyasw2H9ArjJWA-1
+X-Mimecast-MFC-AGG-ID: 64MPK9eAOyasw2H9ArjJWA_1762773035
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-341661973daso3291025a91.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1762773005; x=1763377805; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OuqJpYoHuR2zBWeqRiofDYPVTNH7pBLQ/mXtbQSlLng=;
- b=UN+xycFCUkijVnALE9/SEFmOZWHbmbz3y54nqy6dP6Y5kSNwhX768626Zc5Jz6WqHF
- vJiLcKgZBxk8J3NSDFebeuTf6RRB7ZoJerTSTAtxUNXLQS5qcFxgx0g1PoRmdRxF7/hO
- uZJGtIx8VdReOylrjrXD0irYwzTGXQJ7sRpmdcSj6PVW30Q8mJWLOBw0tydj4MlMJ+Ej
- WsfSZA0B1vMWlDLO96a0DiLLseM4lAQQUU1X+8102NDj7c+dRBgz3eWn70Pf9wuY/exG
- aimrrvMTbC+5h15HjWRtERPksABGXKZMPpmKyU71ArCuk4RKGe1eicCsr+unLcNT8rm1
- 84fg==
+ d=redhat.com; s=google; t=1762773034; x=1763377834; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aktDvrJZFWRZUdhpU6PBPhEblVgeorLPMPLU5b2fnG0=;
+ b=EtxXdtp1X5oz3+i2F4Tp+uEfiS00siSmVCbZFOwe23AeSnZB1stUHFZo/pPVmp+uD8
+ Ex7XNDurf6QsRgguNAOK3yHOUeTvfo0o0KlPb5sg6aOtqHdFn8vdMhqDasZjx5Fs2/xt
+ gcPjBCTcrqbiw8Hgp4X55IyQMWXAPjzZDlQ3/UyWGGdZS1A/2amH7veIExNU2oCTrXiU
+ TT/TS60Vck83jcVFI2Z4rM3kh/pokchJSIG0OlLAE898xBbHXrniAlj86HEO+d5wHK7N
+ upkew31csg8Z5LAJh7H/I3PIsr1hSJrwiJ36xEjyp7WeSW74/a7Eeoj61FHwOQSEO2YT
+ ClQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762773005; x=1763377805;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=OuqJpYoHuR2zBWeqRiofDYPVTNH7pBLQ/mXtbQSlLng=;
- b=Mqz21MgB7X57SEOla8Zy+741QH2FF4xSLzCdiKNOlOqE9P9rmHZBsctzr2trfgnBPz
- gVVCvIlOk+x81eUuirEzLwzKwvwlqgLYPNIsAy08/STVB6qAOXqRQ42B2a9KItWuLml2
- ZiO1DcaZ2695g2LkTVh0XZj+t6niT2S10VxfwYTMi2OllXrkuHJ1KCYbOCecGaO6F0ZG
- WEuVJ3gMGnhqzvPxHW0VOHE8ZeacmrLie3x6cVbZmAhkCH+hf3TbZ3qs5L+wQi/VxBD6
- nJ6QfBxINkX1xlppOA/e62tW6TtbDFaaRQhibFban9AhO+AcOJHcAWtMsIDZ14Jfz3aS
- 8S0w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXRuZ7pyAp4JxBRKG4FHJmy20FJQacYs0zYrrDkPfDU4zGYItcpknNjFgUTl8YcDXvjXVjcin6S5qYk@nongnu.org
-X-Gm-Message-State: AOJu0Yz3CUqrACQ3zw4/0oYoC+qFxlFE2g/hx+I5MLhdBjeP+y9Zhgew
- NjjKtMDXw0w7UHTGpM3sNCMeiW7PBEQAAY0jhl9aY2XxvkklmCuqD3iL3bFDuCh8PVY4MaCjduF
- AmzGAtsE49Ln48XOg7tq/3NRTwgeNmUoKzMsFKc9h
-X-Gm-Gg: ASbGncvQ5gmmQGjT3viSyd/H3qSLUEM642N5szA/UrguKCCDp0DRl42GbfhSivVEkqH
- zRYEZxKO/qZeGb6WIk2IgEWVym6HKG1jOwcVNnogl1tl5mzCbg2DUljO+1MT4nOlThni2GQtroX
- vPCMKtf3HQ3VOWaSeaJ5KgpmvjMzIJJH9KbW7m0w+Zrf8lnLVEKqSAZMaN1c7VBf/6U78EnZ231
- FIzNrWWeH/aL57z8YqnWZkwvF0vtWDfO9XOXDEGxnsP+JUZkD6yoDOolc7A
-X-Google-Smtp-Source: AGHT+IHsyOyzPJCwZ+Rs6Wy5jRmTyOXcdTeeSxO+PCH3fLqLiiXyHK2Gy7iRHi29ttUHZcfyPirYH7JyfzsVQPvhzG4=
-X-Received: by 2002:a17:906:eecb:b0:b72:d6a9:e1d9 with SMTP id
- a640c23a62f3a-b72e0560451mr638064866b.41.1762773004618; Mon, 10 Nov 2025
- 03:10:04 -0800 (PST)
+ d=1e100.net; s=20230601; t=1762773034; x=1763377834;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aktDvrJZFWRZUdhpU6PBPhEblVgeorLPMPLU5b2fnG0=;
+ b=aEG65YQ8Asg9/8J5wIKPS1LtxNEwKmzV6QDdCOULz0qiMD0tMB8nUMmGh22XTuI42A
+ 7nspkwMv1+yk7BYc1G9O4U7PyOTMI8TWFV71DevAhp/pxGnwDKhEYiKq+b/dmzt8huC4
+ 2OO7V3fPEjvNJksA1McrBH3YPkJTu3wBVSDJ/txKIgCmevpvnXtN0TygtToZjD1ELTCt
+ pG4FaxLVeZWJtHQgu85sAoviMJ8tvhw37uFzfAwEqW7IZdzbxiNNjsCSQbmDcE7nXiWk
+ zHHt1Fd0TSmty1nWsmw6nN6kCq939xm/NOxCWUiZ+lWIb9DWIPwVvmtoLNkl5mPYPYfV
+ 6ZsA==
+X-Gm-Message-State: AOJu0YzIhtww49sD/1kOxNCPOPPfuaaJzD7UkwlspaWbRYF1Ltp0TAb3
+ kH0LhxETyKv8mO+dHRWQMYMsPX969ArSm8AIEpfRQAbR70P3lpe3zuzsZK/CzXfmBxE9u8KNFBD
+ qKFsFRgRNZ3tJwqBJHeBNvJO1fKp52ZpsgIDajT5nrVHA24RLshYU6HjEv/aOEt5UT4Sqc5spaX
+ x4iAcu83f39RJKIChG/U4jyDnTdGhixeN6r3+Y8t1V/g==
+X-Gm-Gg: ASbGncvdv6pb0NqHafueo2vNVpe6oUau60jrWe6Jfgc2XL8aD7ydFhIVofPqpJwbaIu
+ t8dtIN0rYs3UBmdsAgwkSGNsb7Ur4V5zAtyl2/urC0sCHGTZCNDqaLn0Z8QLAmpL3zgj9SnGsf3
+ 9kFFolHYoLAPuLYoFzH4wvZ4fCGG1otgqsoMat1ZRU4ppGVNpd0VyJETA=
+X-Received: by 2002:a17:90b:3bcb:b0:335:2823:3683 with SMTP id
+ 98e67ed59e1d1-3436cb89af5mr12362273a91.9.1762773034692; 
+ Mon, 10 Nov 2025 03:10:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEbUhIBEJL/jxacf792o+sNGSHz6/Sp72KPOVHeMcx04U65//u12mzyLE+Ifms74Ac+zQOotF5ecXz3ZRKHELA=
+X-Received: by 2002:a17:90b:3bcb:b0:335:2823:3683 with SMTP id
+ 98e67ed59e1d1-3436cb89af5mr12362236a91.9.1762773034277; Mon, 10 Nov 2025
+ 03:10:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20251107145327.539481-1-chigot@adacore.com>
- <20251107145327.539481-2-chigot@adacore.com>
- <878qgenqum.fsf@pond.sub.org>
-In-Reply-To: <878qgenqum.fsf@pond.sub.org>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Mon, 10 Nov 2025 12:09:53 +0100
-X-Gm-Features: AWmQ_bnpUUti63Ec_FT8CyxSnRWxbygoFjPA4YV57bbEu_bGJqzcCs7ulvg6GI0
-Message-ID: <CAJ307Eg7x_rKb5qybgW3XxAKLP=1ds524gqgXettv2cZ8WTMww@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] vvfat: introduce partitioned option
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
- hreitz@redhat.com, eblake@redhat.com
+References: <1943ea16-c3cb-4442-be72-5719026ee13a@gmail.com>
+ <pkglizwznrfj6fm7tdyew4tzmomgtp2cetxwfj2fx7ge4vtwhv@kdlj2jdxqheo>
+ <9535cd2e-239a-4002-be5b-b7c7fa85f081@gmail.com>
+In-Reply-To: <9535cd2e-239a-4002-be5b-b7c7fa85f081@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 10 Nov 2025 12:10:23 +0100
+X-Gm-Features: AWmQ_bl62OWWB_LlSDDHjnSUHEc2aFnXOkCl85Gc8krlhWAWuVmcHxuBZvP0fLQ
+Message-ID: <CAGxU2F5ag+gfhpCOpT_AQ_41GYhxs7U-tHMadUEN_gTUoeDqRA@mail.gmail.com>
+Subject: Re: vsock support for communication between guests
+To: Robert Hoo <robert.hoo.linux@gmail.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=chigot@adacore.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,92 +111,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 10, 2025 at 11:07=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
-om> wrote:
+On Sun, 9 Nov 2025 at 14:13, Robert Hoo <robert.hoo.linux@gmail.com> wrote:
 >
-> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
->
-> > This option tells whether a hard disk should be partitioned or not. It
-> > defaults to true and have the prime effect of preventing a master boot
-> > record (MBR) to be initialized.
+> On 11/6/2025 10:32 PM, Stefano Garzarella wrote:
+> > On Fri, Oct 10, 2025 at 09:00:21PM +0800, Robert Hoo wrote:
+> >> Hi,
+> >>
+> >> Does vsock support communication between guests?
+> >> From man page, and my experiment, seems it doesn't.
+> >> But why not?
+> >>
 > >
-> > This is useful as some operating system (QNX, Rtems) don't
-> > recognized FAT mounted disks (especially SD cards) if a MBR is present.
+> > It depends, vhost-user vsock device, supports it.
+> > See
+> > https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock#sibling-vm-communication
 > >
-> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
->
-> [...]
->
-> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > index b82af74256..8a479ba090 100644
-> > --- a/qapi/block-core.json
-> > +++ b/qapi/block-core.json
-> > @@ -3464,8 +3464,8 @@
-> >  #
-> >  # @fat-type: FAT type: 12, 16 or 32
-> >  #
-> > -# @floppy: whether to export a floppy image (true) or partitioned hard
-> > -#     disk (false; default)
-> > +# @floppy: whether to export a floppy image (true) or hard disk
-> > +#     (false; default)
-> >  #
-> >  # @label: set the volume label, limited to 11 bytes.  FAT16 and FAT32
-> >  #     traditionally have some restrictions on labels, which are
-> > @@ -3474,11 +3474,15 @@
-> >  #
-> >  # @rw: whether to allow write operations (default: false)
-> >  #
-> > +# @partitioned: whether a hard disk will be partitioned
->
-> How does "partitioned" combine with "floppy": true?
->
-> Is it silently ignored?
->
-> Is it an error if present?
->
-> Is it an error if true?
->
-> Does it add a partition table if true?
->
-> > +#     (default: true)
->
-> Hmm, this suggests it's silently ignored.
->
-> Silently ignoring nonsensical configuration is usually a bad idea.
-
-True, but that would mean "unpartitioned" must always be passed when
-"floppy" is requested. That would make such command lines a bit more
-verbose, but otherwise I don't think there is any issue to that.
-
-Note that I didn't add "partition" as a keyword in the command line.
-Currently, it's either the default (thus partitioned) or
-"unpartitioned" being requested. Do you think it makes sense to add it
-as well, even if it's redundant ?
-
-> > +#     (since 10.2)
-> > +#
->
-> Not sure I like "partitioned".  Is a disk with an MBR and a partition
-> table contraining a single partition partitioned?  Call it "mbr"?
-
-It used to be called "mbr/no-mbr" but Kevin suggested renaming it in
-V1. Honestly I'm fine with both options:
- - Technically, the option prevents MBR which has a side effect for
-preventing partition tables
- - Even it has a single partition, I think it makes sense to call a
-disk "partitioned" as long as it has a partition table
-
-But I'm not that familiar with disk formats, etc. I'll let you decide
-with Kevin, which one you prefer.
-
-> >  # Since: 2.9
-> >  ##
-> >  { 'struct': 'BlockdevOptionsVVFAT',
-> >    'data': { 'dir': 'str', '*fat-type': 'int', '*floppy': 'bool',
-> > -            '*label': 'str', '*rw': 'bool' } }
-> > +            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool' } }
+> > The vhost-vsock in-kernel device doesn't support it.
 > >
-> >  ##
-> >  # @BlockdevOptionsGenericFormat:
+> > The main problem is that vsock is designed for host<->guest communication, so
+> > implementing a guest<->guest communication is possible, but requires more
+> > configuration (e.g. some kind of firewall, etc.) and also an extension to the
+> > address (see the required
+> > `.svm_flags = VMADDR_FLAG_TO_HOST` in the link).
+> >
+> > The easy way to do that with vhost-vsock, is to use socat in the host to
+> > concatenate 2 VMs (some examples here:
+> > https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/)
+> >
+> > Cheers,
+> > Stefano
+> >
+> Nice, thanks Stefano. It sounds ideal for my VM <--> VM communication
+> requirement. I'll read the doc carefully later.
 >
+> BTW, I also found your vsock-bridge
+> (https://github.com/stefano-garzarella/vsock-bridge); but seems its last commit
+> was 5 yrs ago. It's not recommended, is it?
+>
+
+Oh, that was just a little exercise I did to learn Rust at the time,
+so I'd say no, it's not recommended.
+BTW `socat` supports a similar use case, so related to the example in
+the vsock-bridge's README, you can do the following:
+
+host$ socat VSOCK-LISTEN:5201 VSOCK-CONNECT:4:5201
+vm_cid3$ iperf --vsock -s
+vm_cid4$ iperf --vsock -c 2
+
+But yeah, it's not 2 ways like vsock-bridge (i.e. `vm_cid3` can't
+connect to `vm_cid4`).
+
+Cheers,
+Stefano
+
 
