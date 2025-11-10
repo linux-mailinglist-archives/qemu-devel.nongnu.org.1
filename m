@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2DEC46498
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3637C46416
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:29:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQ7v-0003Mi-Ta; Mon, 10 Nov 2025 06:32:03 -0500
+	id 1vIQ4y-00087e-QX; Mon, 10 Nov 2025 06:29:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPnU-0004uR-Qf
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:57 -0500
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1vIPnW-0004vx-7g
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:11 -0500
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPnT-0004KH-A4
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:56 -0500
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-44fff8c46bbso413232b6e.1
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:54 -0800 (PST)
+ id 1vIPnU-0004KZ-Oq
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:10:57 -0500
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-7c6cc366884so822216a34.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:10:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762773053; x=1763377853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762773055; x=1763377855; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7YLfkVi5M5AkSw/2s5VwSvjNTs56k54sKTHppQSSpW4=;
- b=o4U3DV/04E2/VFk2cSRKuFFplR8C/n4LZLMZaZdykKqM1S0P1lXTPRl2TcCROKLREQ
- XeAi3+ikNKfMd1hJbKSt2E7c3mv6k639rxoT0nCt+df6ESufOXWGaCBIP3ay0zUYGcsg
- R2xlWKbyW7Rysyba03U79O07sohMUU9UO0jOQqy3P7+FizQiiCf12jkuYqlZ2MxHQ5cz
- NlqZAzhOw5Zu45oKZlz/9qtkkQJR89DDuvBIobpBm+wLwLkRQOqn1mYYjclTtMgS/UcT
- xuUM678UGHiKqkgK+OlHm9G4EZ2RvUBHeLpzJJDv/hYTpeyy8ZESQpPl9wotfBGBI8E9
- tJrQ==
+ bh=WuF/v0yXtrg33Qqyg428lUouMv/b84r+E+BBuSI4+Io=;
+ b=QjAfFNM8BmU6598I2uaaeASd5JX4vWmVJnqwJTiAs8/iG7Ktk3QCcE2Fye3TEh/SQd
+ Ao2N9M6liB39VoGvQf2Nr877S65Z85YivOAKqYZ0gwwisJtdaQFPehjBJ1VNl+m3jTtG
+ TaZcOHZrWIypUrHLI8NMcveG9lejDEwvWrZ0xcVCALiwjcRxNy0BpRfJJyYgdW5IEns8
+ rO9XPY9IB4JQ3W7OYrIbgxgdUVU3KLj2tn1qqUV25s8BAiHVgqnMa+qjf4lKusCpgmwc
+ FpMu+7JNEpisDx/D/FrFGr1fqEP+ppIG3kLgM3KMagx/G+A1Jrju0jlvkYVnUgVkcYGT
+ AKLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762773053; x=1763377853;
+ d=1e100.net; s=20230601; t=1762773055; x=1763377855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7YLfkVi5M5AkSw/2s5VwSvjNTs56k54sKTHppQSSpW4=;
- b=i+J5QkdvwIhQ+aJMMgqN7VqcTW7Ks0VtsgItP8nmjE4BHyfP/w4AeD4HyrMTLGuMfU
- OEOQohbWsIx6MsrCYHNXkEcdSCqafEuriUn3JBxCv4C+EsxJZS87sKp1wNO8g+9+F450
- ehMidFnAsAYrXboAfT3CR015+Rq5mrObGIZwQWHAbsurriqNdeTE3UD01BDY2t97q0qB
- DQDTjcCCRoKDxcg9PtVAGd0FFXB5jkFzzKojWxCE4uAqTOVVL9DW9obIFrzfg4/gHwWG
- h1cAiBnBScxy+iVkXy2RaOriyalpvFr0HPfntc41xz3sQsDQjughWcRxNVCgDOHx5pW0
- Ykog==
-X-Gm-Message-State: AOJu0YwbpqR0vtpA4NZjb8LkU0sdM7rsXVsdW1QAKa5od1qKGpydq/t8
- FSlxeGFPh1n0QgHCVpalYTmwV64/zkAyvvhHJovtHH3QXknK2YnRqa1N/0wkAp5bSy5+MX4B8f8
- eoLmg
-X-Gm-Gg: ASbGncu46uRe1wLwjm90B958AqpR0oQNwLs2XGp5xlhxNL0nLeRrySNE92wYapV+hCu
- B/MDjQKBuG9kPeMzv+DaxLRsYhn0yieEi42YyryDdiy1laxgwvvDw/0uF36aEjmzcYfCSJNLWOG
- MjbCnAi34hN4WbmDeZW/6d2PpzhItev54J6KSVygfIYMXM8VMAx9WEMhoYI13r+KIz6s2+B9nu5
- lMkZOyFzFJ/Q++EV1NLGibtueiJTIqORhxWqJEI3Yaon4iDXpmOThVjnRqQTwO+FCzBzFxKy9jQ
- MHoPZCT1enFHy6KlfYnDVcFllGHtMqRurVIchub2qDrWWAp5l3l14RbfowJx1xzc+we45Kcx0ss
- mVgw37B3WZDC0xDwiqW272dDH2PdPBI266ulkprYBxwSX1qHaTe4J39NBXSWo4hmCQlzXyhLL+P
- CT3RddVG1iS3YPfbAczi/VKnJp7qmPeKnNMFo+Q0vZ
-X-Google-Smtp-Source: AGHT+IHJTHqqDs6gAZkp/H7tVSfQgyc7YXYWYgk5BXE+cncyGjPZC9+A4yuioWzf6iFsip4WuHNZbg==
-X-Received: by 2002:a05:6808:1587:b0:450:b3a:539e with SMTP id
- 5614622812f47-4502a2046admr3513985b6e.28.1762773053645; 
- Mon, 10 Nov 2025 03:10:53 -0800 (PST)
+ bh=WuF/v0yXtrg33Qqyg428lUouMv/b84r+E+BBuSI4+Io=;
+ b=v03qpIMYsJBHlVrV2jS2HIRhl522Dnz4eyWQacQkIW/rEhmuD57hyNqfcvnOOSmo0v
+ sfKQ341CWS0xOSeXYuzawZVVxlDpEsPbC0h7eAoztwXvvOHWtUdvMB8ubuXewrnDDGVq
+ k54vx+wqfqGS6PmlukxBUwgCtOwSxBtRjto4ALpIEVIkEelROCD9yP/xAWDhoYMkhEOI
+ adf9vU8lL/dkh6PntRsbLZKH2oa9kLS5X2xqSBkksTlJPjuh40dZMeE3wd0C1WAE3J3r
+ 5W65HbnBWEWy/Je0kkd5gXbNFZFbXf274mBq/1tDjOBZYUWjxb4niDCkzNYsbGjITDyj
+ v99A==
+X-Gm-Message-State: AOJu0Yx8TvRbhcKlfuvw4kSNdwnUM1ue0D0KYL7K6sMUmZqW7HoSxj8Z
+ a1D1YFTl9VwrJBEnjVUzKx65SBzQWhY6S24feVrqpb2L71GhSSq+4O7biWlMZqUE6jXh60XC/2Z
+ B7J2u
+X-Gm-Gg: ASbGncuwUXHPqG6HGegGXZ2EhrgVi4691Z5DvqQUl5H6jeLc01qWxSPRalcf1eFGeOB
+ 0filbmhK+daY503qVN0elRzEHeWK66Ztvbv/ero0pFeByBX9RANEIIzJag3dxnt3iYtrCRZ0HsQ
+ W9MNrW2BfPKjKZLbx9yROtHm9DhHNN07FcExHdV6UBmrE8h7ELk365betd+hETEdvoyPLTyqX1B
+ Im8pRr7nODtuWJap/qgMCJ4+5B+AFhwopYHUpz+6GuHC/VDKSIuxX2LBuoC/xQGYmIqR2ilYZOR
+ fxuL1XbETXusdTORGBZzNjSoUnB8gq4uFmb2k0c0D88pzs/w46kByO/i7S4oVRcWf6yMplLAsjg
+ Fhd0ik/rMPtZkyrIQquEhV5aCNfv8B+5burH6P9TkHNoAJZ/W1FYbIwjF2CmOeH0nJwHo85OYSi
+ SrM6imD8T/NkjkWO4ntQXZW+oH1MEy7w==
+X-Google-Smtp-Source: AGHT+IFI3niuUwJ7IV2mY1l9nlRes14sbUXJiT5G24UKroXwdiibnIQIjJohSfUXrcbMl5WAN0mceA==
+X-Received: by 2002:a05:6808:f06:b0:450:4e1:47a3 with SMTP id
+ 5614622812f47-4502a361af1mr5005166b6e.35.1762773055561; 
+ Mon, 10 Nov 2025 03:10:55 -0800 (PST)
 Received: from stoup.. ([172.58.183.226]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-450426be56dsm1603412b6e.18.2025.11.10.03.10.52
+ 5614622812f47-450426be56dsm1603412b6e.18.2025.11.10.03.10.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Nov 2025 03:10:53 -0800 (PST)
+ Mon, 10 Nov 2025 03:10:55 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/5] accel/tcg: Trace tb_flush() calls
-Date: Mon, 10 Nov 2025 12:10:41 +0100
-Message-ID: <20251110111046.33990-2-richard.henderson@linaro.org>
+Subject: [PULL 2/5] accel/tcg: Trace tb_gen_code() buffer overflow
+Date: Mon, 10 Nov 2025 12:10:42 +0100
+Message-ID: <20251110111046.33990-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251110111046.33990-1-richard.henderson@linaro.org>
 References: <20251110111046.33990-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +103,53 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250925035610.80605-2-philmd@linaro.org>
+Message-ID: <20250925035610.80605-3-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-maint.c   | 3 ++-
- accel/tcg/trace-events | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ accel/tcg/translate-all.c | 3 +++
+ accel/tcg/trace-events    | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 5a8d0784e7..cd7c32361b 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -40,7 +40,7 @@
- #else
- #include "system/runstate.h"
- #endif
--
-+#include "trace.h"
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index da9d7f1675..fba4e9dc21 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -290,6 +290,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
+     if (unlikely(!tb)) {
+         /* flush must be done */
+         if (cpu_in_serial_context(cpu)) {
++            trace_tb_gen_code_buffer_overflow("tcg_tb_alloc");
+             tb_flush__exclusive_or_serial();
+             goto buffer_overflow;
+         }
+@@ -325,6 +326,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
+     if (unlikely(gen_code_size < 0)) {
+         switch (gen_code_size) {
+         case -1:
++            trace_tb_gen_code_buffer_overflow("setjmp_gen_code");
+             /*
+              * Overflow of code_gen_buffer, or the current slice of it.
+              *
+@@ -389,6 +391,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
  
- /* List iterators for lists of tagged pointers in TranslationBlock. */
- #define TB_FOR_EACH_TAGGED(head, tb, n, field)                          \
-@@ -771,6 +771,7 @@ void tb_flush__exclusive_or_serial(void)
- {
-     CPUState *cpu;
- 
-+    trace_tb_flush();
-     assert(tcg_enabled());
-     /* Note that cpu_in_serial_context checks cpu_in_exclusive_context. */
-     assert(!runstate_is_running() ||
+     search_size = encode_search(tb, (void *)gen_code_buf + gen_code_size);
+     if (unlikely(search_size < 0)) {
++        trace_tb_gen_code_buffer_overflow("encode_search");
+         tb_unlock_pages(tb);
+         goto buffer_overflow;
+     }
 diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
-index 14f638810c..121d6b5081 100644
+index 121d6b5081..0816cafd33 100644
 --- a/accel/tcg/trace-events
 +++ b/accel/tcg/trace-events
-@@ -24,3 +24,6 @@ store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIx
- store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
- store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
- store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+
-+# tb-maint.c
-+tb_flush(void) ""
+@@ -12,6 +12,7 @@ memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
+ 
+ # translate-all.c
+ translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
++tb_gen_code_buffer_overflow(const char *reason) "reason: %s"
+ 
+ # ldst_atomicity
+ load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
 -- 
 2.43.0
 
