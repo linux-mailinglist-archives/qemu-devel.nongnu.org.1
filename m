@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9B2C4619A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D073CC46173
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:00:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIPen-0008Qa-V4; Mon, 10 Nov 2025 06:01:57 -0500
+	id 1vIPcA-00077B-Jk; Mon, 10 Nov 2025 05:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vIPJd-0007jw-SL
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:40:05 -0500
+ id 1vIPJf-0007m3-4f
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:40:07 -0500
 Received: from forwardcorp1d.mail.yandex.net
  ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vIPJb-0002el-2h
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:40:05 -0500
+ id 1vIPJc-0002fH-Cx
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 05:40:06 -0500
 Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7764A807B6;
- Mon, 10 Nov 2025 13:39:56 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id BCCFE804D1;
+ Mon, 10 Nov 2025 13:40:02 +0300 (MSK)
 Received: from dtalexundeer-nx.yandex-team.ru (unknown
  [2a02:6bf:8011:f00:439c:fb8b:9c87:386c])
  by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ndKaU81FteA0-9b6Y6Lpj; Mon, 10 Nov 2025 13:39:55 +0300
+ ESMTPSA id ndKaU81FteA0-B0qRAael; Mon, 10 Nov 2025 13:40:02 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1762771195;
- bh=PvTXeCLlSwgvoJvVunkV3jR13KgIOqDK7e1XiM5QBDg=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=BO7emDJ5p98ffOzFsmXFtOe6KvzHxIJ/8XvhcgaPXE3pXV8PEQ68lmA3wilHmsyHG
- RE8tF9Gba3ehi0lSgx4Fi4HtsLIvNUgEstoqj04wIOJVwjd5hX1L9V8uZgQ0+Sctd9
- fX/otGddUcsCKeEopAGRtDVGkTUP+pIsmBp0ncCk=
+ s=default; t=1762771202;
+ bh=BBaLzRPC1vSdvTfCEYutHaoyo6yavs9dofrXa1+5uLk=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=E+IFO966Zpi5xeei3K4aBMEjwb2P5/holGtyflKYqv7At5JsAJgCeywediuCwhwPz
+ Nr/yND6hR4oA+MlMZkgDHwnJhnASBsbSnHPdeKOuSq7HeXzL+D8hNeHt8LiN8jo1QA
+ b5kwR74N75nrfPpsmZp4OxWI5TUkLtlCKQEZfelU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
@@ -47,10 +47,12 @@ Cc: Raphael Norwitz <raphael@enfabrica.net>,
  Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: [PATCH v3 0/3] vhost-user-blk: support inflight migration
-Date: Mon, 10 Nov 2025 15:39:35 +0500
-Message-Id: <20251110103937.1944486-1-dtalexundeer@yandex-team.ru>
+Subject: [PATCH v3 1/3] vmstate: introduce VMSTATE_VBUFFER_UINT64
+Date: Mon, 10 Nov 2025 15:39:37 +0500
+Message-Id: <20251110103937.1944486-2-dtalexundeer@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251110103937.1944486-1-dtalexundeer@yandex-team.ru>
+References: <20251110103937.1944486-1-dtalexundeer@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
@@ -76,63 +78,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-- use pre_load_errp instead of pre_load in vhost.c
-- change vhost-user-blk property to
-  "skip-get-vring-base-inflight-migration"
-- refactor vhost-user-blk.c, by moving vhost_user_blk_inflight_needed() higher
+This is an analog of VMSTATE_VBUFFER_UINT32 macro, but for uint64 type.
 
-v2:
-- rewrite migration using VMSD instead of qemufile API
-- add vhost-user-blk parameter instead of migration capability
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Acked-by: Peter Xu <peterx@redhat.com>
+---
+ include/migration/vmstate.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-I don't know if VMSD was used cleanly in migration implementation, so
-feel free for comments.
-
-Based on Vladimir's work:
-[PATCH v2 00/25] vhost-user-blk: live-backend local migration
-  which was based on:
-    - [PATCH v4 0/7] chardev: postpone connect
-      (which in turn is based on [PATCH 0/2] remove deprecated 'reconnect' options)
-    - [PATCH v3 00/23] vhost refactoring and fixes
-    - [PATCH v8 14/19] migration: introduce .pre_incoming() vmsd handler
-
-Based-on: <20250924133309.334631-1-vsementsov@yandex-team.ru>
-Based-on: <20251015212051.1156334-1-vsementsov@yandex-team.ru>
-Based-on: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
-Based-on: <20251015132136.1083972-15-vsementsov@yandex-team.ru>
-Based-on: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
-
---- 
-
-Hi!
-
-During inter-host migration, waiting for disk requests to be drained
-in the vhost-user backend can incur significant downtime.
-
-This can be avoided if QEMU migrates the inflight region in vhost-user-blk. 
-Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
-then, after migration, they will be executed on another host. 
-
-At first, I tried to implement migration for all vhost-user devices that support inflight at once, 
-but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and 
-in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
-
-Therefore, for now I decided to leave this idea for later and 
-implement the migration of the inflight region first for vhost-user-blk.
-
-Alexandr Moshkov (3):
-  vmstate: introduce VMSTATE_VBUFFER_UINT64
-  vhost: add vmstate for inflight region with inner buffer
-  vhost-user-blk: support inter-host inflight migration
-
- hw/block/vhost-user-blk.c          | 29 +++++++++++++++++++++
- hw/virtio/vhost.c                  | 42 ++++++++++++++++++++++++++++++
- include/hw/virtio/vhost-user-blk.h |  1 +
- include/hw/virtio/vhost.h          |  6 +++++
- include/migration/vmstate.h        | 10 +++++++
- 5 files changed, 88 insertions(+)
-
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 7f1f1c166a..4c9e212d58 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -707,6 +707,16 @@ extern const VMStateInfo vmstate_info_qlist;
+     .offset       = offsetof(_state, _field),                        \
+ }
+ 
++#define VMSTATE_VBUFFER_UINT64(_field, _state, _version, _test, _field_size) { \
++    .name         = (stringify(_field)),                             \
++    .version_id   = (_version),                                      \
++    .field_exists = (_test),                                         \
++    .size_offset  = vmstate_offset_value(_state, _field_size, uint64_t),\
++    .info         = &vmstate_info_buffer,                            \
++    .flags        = VMS_VBUFFER | VMS_POINTER,                       \
++    .offset       = offsetof(_state, _field),                        \
++}
++
+ #define VMSTATE_VBUFFER_ALLOC_UINT32(_field, _state, _version,       \
+                                      _test, _field_size) {           \
+     .name         = (stringify(_field)),                             \
 -- 
 2.34.1
 
