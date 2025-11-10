@@ -2,153 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F2DC46BB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 13:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B6FC46D32
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 14:18:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIRSA-0001Tp-Jj; Mon, 10 Nov 2025 07:57:02 -0500
+	id 1vIRlf-0004qk-O6; Mon, 10 Nov 2025 08:17:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIR0r-0006pJ-CB
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:28:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIR0p-0001rp-88
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:28:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762777725;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UHCIcnmCFYluOts0s83RaynDq0U5VxapwBYKJ3qbFlY=;
- b=R99diqjNDBhNQRLJDqy/Mm1kaaH9FLwzxrdjXbzMg5L06KrMxtm2q4Vn6r9mB351/cd7RF
- RkZsoqHecnt4TF3XFXw053Sek4eR0bCF0Egxgg2llQFLCEfBTU+sJ6Gw7iZFv6AY4rWGow
- EEwz8+5v9UJPA5i4oxn7dXiR6Utb8Rc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-MYVSiR6SPWmCCjRoILC8vA-1; Mon, 10 Nov 2025 07:28:44 -0500
-X-MC-Unique: MYVSiR6SPWmCCjRoILC8vA-1
-X-Mimecast-MFC-AGG-ID: MYVSiR6SPWmCCjRoILC8vA_1762777723
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-471201dc0e9so22184205e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 04:28:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vIRHq-0004oW-EH
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:46:49 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vIRHo-0004WE-9M
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 07:46:22 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-640a3317b89so4485866a12.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 04:46:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762777723; x=1763382523; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=UHCIcnmCFYluOts0s83RaynDq0U5VxapwBYKJ3qbFlY=;
- b=TQ/cXgpr3ANNpNhQ5yZQGN0ymLRJksR3iMRTVSuhnEUb9Y2jPxYXXskPlR44TnjET3
- R+Lx0J8m0LCbmmbNzrGxTPFLrDaXGmz3J+tFhgWy9bZIvs3t6bFSnaNOkkqqYqFtRA8k
- 9vKzt2DX0THuBtHHD5/UlZTdHKYSj9pTZPg2yGOHgFUPteH+ViijymQXjnbg6+w/Eaji
- 1diffdFCw053Eqt79u8P8pcpUce5k3XXZbjbrt3yxRIOhsJGTFoqicOfieqPEr4GcYN0
- xKYp66G5Q7G1ieGg+9MZAs4NgdbPVGcReCEb1RyP8NvLmPlq80Se0OmGMkd7WrSe2SUy
- Ne6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762777723; x=1763382523;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=adacore.com; s=google; t=1762778777; x=1763383577; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UHCIcnmCFYluOts0s83RaynDq0U5VxapwBYKJ3qbFlY=;
- b=DfyGzpmDNZ+Z9Likqg2jJqPakYM6eYTrxUIyaiUddZe5P3ETJc4LHQ3JPU1QtW8iyi
- A8Qz2+3EXfMSvB7vgtYpXuI9ZVX+KGaaDcpRsDI/XNPqLFWv5wKpcIOzCDrqHzbX+ETZ
- C1BA2zMmSzMDGQQA9qp56U0FOTfuiXxbOYL4Bsyj98YQdUX9Ca2I4pXO4GP9XpK15RaA
- ngUPYwuDZSZ17tHZONTzabcwmG8DcKbk4YsJXc0lyf1cjBQhoL9ooFF4WytL4sem3SDJ
- 3fEQkt/A9ah3pn2nFuf6HWrxibF6pxGW/ybAl6Oa7v2sHaky+RZppkij4y5XlVl/sPSy
- Aa7Q==
+ bh=+8Qyeepfh5H+K/I4CAX9F0zVpJB9rap0MN1Sbk4QktU=;
+ b=GVJp4GYDA3fWPhXorA/+Rg3Mx7B2jNhQWhKJQicUdmIVdsSSK7CUTUqc+AY5teRSii
+ Y3zBbx6NTRwJ1KDJP8+VrHbZyexb535Jry69LvRvJqt8VSdjMrwsByfvSX9Ii55U6jIf
+ 2Ucab8nsu5WrAfM32e8zJbt2kr6H91TsOSZyyzfhzV8gIpoTijLkjkjJ0Wd/k09/n+dG
+ Ir4UzeuNleuEbysv0+FX9VucaiRjjTfXdmAIz+SgJqkRGRBKJWlaQHZtRRCYLyBfjTHE
+ p6qVehKGoaVJ2KP5WZRxSuQGWN0+HtRv/5TT/12m+oCe2uiOIOp3wUGW/PnQPja/3RLF
+ 4gnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762778777; x=1763383577;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+8Qyeepfh5H+K/I4CAX9F0zVpJB9rap0MN1Sbk4QktU=;
+ b=oCqPE6hB7ga6YOgvKkPYjtQagQ3Qj6n+JSgW2V/J7CtZmQBQF+2UqT2ocoGFZNm5V9
+ GjVqdkn2FN9uS98gJALl5PFKetpLs2vldy9axB5P/5SmMgPZaA1E5SOai2Bw3JpJGUAV
+ vfp/459lmLkDOHUXCpFcgB6EDCdaiUtiTsgm3KD2IhVUxlA0YWuyJwK6BKEOg9NirQju
+ 1jyvdOvsQv+DI/l6w6XQ9ROPVjtCAddyD6GaqV/bL9OExhvZT0P1hhmwxh+sTUACCkNy
+ 3SlhOJ3V19IxNzNtD2rQco4mlNmjlR2J4WIg//ir41fnGsVOPNN2duH3d7GseOy3g2gB
+ MaXg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWyLJj3q4jTbR9xPahKlrbty24ab91Z6DELELKVsP4d75OXJDhd5It7TSDPve8oBDnAFgW23P1F8avG@nongnu.org
-X-Gm-Message-State: AOJu0YxsdAPAF18edQCr1DHNIViXPLns4UV/WQZEyP24SZ+N+CQtRxNz
- vNP2fm3JGystmEF4y4NHBICFowYwLzBEcz0m7LdsUG9jLPEFNe0l556rvZxvqQBuNX8FaBXWWb/
- Ysh1F1mZeEltqa8LWhBov/aE0faSg9fZ5hFdZzqYguujq3Ro4lUwX59op
-X-Gm-Gg: ASbGnctU+Yv5e1YpB63LUYTOotyG+45a8FDqZkUO0J5293lcv/D6BH5l0+Uqr3+rhKf
- WssLaLtnl3fzj42M9zblL09bXtBF/cZQiYKCPuE+xOytOA9BYy9hAXAGUNqFXGa+U3tdIVvJrzm
- R78qu83lkUjezBmoQ2TKE9qhe36xYC/qOhI1WbRatkmeZEGdCUOzeVI7/3PqJB/Z1enJkDy5hWE
- MYAkfV19Pp+s8nq4tnvIvejq3EYk4h1+Ve5VmcZI2rLJAWjl8xqQ7neN62KhVQ2XVDf79U2zowU
- lnocZtAjDsNbjRvnCu2dq+KqRADWTvAcSOGXrM3X1dDd86b9LFhFSD8WBrtQHVcocfT9aw92
-X-Received: by 2002:a05:600c:474c:b0:475:da13:256b with SMTP id
- 5b1f17b1804b1-4777329777amr70078895e9.38.1762777722954; 
- Mon, 10 Nov 2025 04:28:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGlXidrtTJ/SWo+IjP9zsPqLqPY8EnUauEJtqayLmsohT+XVNgx1nnDrtMXulJvKsAvoNmA4A==
-X-Received: by 2002:a05:600c:474c:b0:475:da13:256b with SMTP id
- 5b1f17b1804b1-4777329777amr70078655e9.38.1762777722548; 
- Mon, 10 Nov 2025 04:28:42 -0800 (PST)
-Received: from [192.168.0.7] ([47.64.114.171])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42ac675cd25sm22203503f8f.22.2025.11.10.04.28.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Nov 2025 04:28:42 -0800 (PST)
-Message-ID: <d3f15618-3f1e-4e41-9e0b-228923c78e42@redhat.com>
-Date: Mon, 10 Nov 2025 13:28:40 +0100
+ AJvYcCUDgtTSn9Vx6uywe/IRBFXrYK1T8dt3QJolMzrRUpUjdUZKsjYR5v647SZEDO+EKwDiiZ/84ujAKiMV@nongnu.org
+X-Gm-Message-State: AOJu0Ywb04Nwx3/7t3p00ViJkIh7rUKa+lsS+YZRYjJnoFuC6Imne24Q
+ 4I1EvcfZq3UsgjBBUABhmQ4Q3GLAvWO+mEWnjbwkF5E9ex+UrzYzfCVh1WwMd5HaXiyWSzDmVSI
+ yVWJznRQJMgtVR0TgVckV+W2Ibu5AntIPdW3gpgXi
+X-Gm-Gg: ASbGnctviMnjuDRtBFVBIvDR3+x8gD7mfhorXVkn7yHpKcj9LFUofXec++Om4CJKrV1
+ N1tTqjXxtvUhd3rJgXJkuqydzo6B5eGf9sT2+WQ3upDjZnk5+Anb8A6ukjhw3U8rA6lB4N3oGe6
+ QDzSaBfrbd0xQ/QDByc6koSHbligrijbZ+zFFZVsSUkTytovR1H3FWiEC2ihSNbrPVVMkAl9a0m
+ fTY3wWTs7563DDVmgUt0W/vTD56oAb6UwesH+AOUFPuB0U1f2OR/ssjpsmI
+X-Google-Smtp-Source: AGHT+IGuAE8NjZX4CC1GsSz7iYQdfl5IjtZxCCzYO3a1mLKsNv/kMkYXGNU3axidJW38Cq5za8yzwUtfxnGL97Pyklc=
+X-Received: by 2002:a17:907:2daa:b0:b46:6718:3f30 with SMTP id
+ a640c23a62f3a-b72e04c75bcmr804868166b.51.1762778776522; Mon, 10 Nov 2025
+ 04:46:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] RISC-V: NEORV32 CPU, peripherials, and machine
-To: Michael Levit <michael@videogpu.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, philmd@linaro.org, pbonzini@redhat.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- liwei1518@gmail.com, smishash@gmail.com
-References: <20251109191532.32419-1-michael@videogpu.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251109191532.32419-1-michael@videogpu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20251107145327.539481-1-chigot@adacore.com>
+ <20251107145327.539481-6-chigot@adacore.com>
+ <87zf8umbzh.fsf@pond.sub.org>
+In-Reply-To: <87zf8umbzh.fsf@pond.sub.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Mon, 10 Nov 2025 13:46:05 +0100
+X-Gm-Features: AWmQ_bmoje3ecwelmMYgTmrR4vqDbiQ9IONV3oJFHZFJm6hID9bRrLSRml7FCxA
+Message-ID: <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] vvfat: add support for "fat-size" options
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
+ hreitz@redhat.com, eblake@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=chigot@adacore.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,28 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/11/2025 20.15, Michael Levit wrote:
-> 
-> This v4 reworks the initial NEORV32 submissions.
-> 
-> The series introduces:
->    * a minimal NEORV32 RV32 CPU type and vendor CSR hook,
->    * the SYSINFO MMIO block,
->    * a small UART device,
->    * an SPI controller with command-mode chip-select,
->    * and the 'neorv32' RISC-V board wiring the above, plus docs.
-> 
-> Tested by booting the NEORV32 bootloader as -bios and chaining into a
-> Hello World from an MTD-backed SPI flash image, with UART on stdio.
+On Mon, Nov 10, 2025 at 11:13=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
+om> wrote:
+>
+> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
+>
+> > This allows more flexibility to vvfat backend. The values of "Number of
+> > Heads" and "Sectors per track" are based on SD specifications Part 2.
+> >
+> > Due to the FAT architecture, not all sizes are reachable. Therefore, it
+> > could be round up to the closest available size.
+> >
+> > FAT32 has not been adjusted and thus still default to 504 Mib.
+> >
+> > For floppy, only 1440 Kib and 2880 Kib are supported.
+> >
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+>
+> [...]
+>
+> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> > index 8a479ba090..0bcb360320 100644
+> > --- a/qapi/block-core.json
+> > +++ b/qapi/block-core.json
+> > @@ -3478,11 +3478,17 @@
+> >  #     (default: true)
+> >  #     (since 10.2)
+> >  #
+> > +# @fat-size: size of the device in bytes.  Due to FAT underlying
+> > +#     architecture, this size can be rounded up to the closest valid
+> > +#     size.
+> > +#     (since 10.2)
+> > +#
+>
+> Can you explain again why you moved from @size to @fat-size?
 
-  Hi!
+Just to be sure, you mean in the above comment, in the commit message or bo=
+th ?
 
-Are these binaries available publically somewhere on the internet? If so, 
-could you please add a test in tests/functional/riscv32 that make sure that 
-the machine is basically working, so we don't face any regressions in the 
-future?
+> I assume you dropped the horrible special floppy sizes because ordinary
+> sizes suffice.  Correct?
 
-  Thanks,
-   Thomas
+Yes. Clearly better that way.
 
+> >  # Since: 2.9
+> >  ##
+> >  { 'struct': 'BlockdevOptionsVVFAT',
+> >    'data': { 'dir': 'str', '*fat-type': 'int', '*floppy': 'bool',
+> > -            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool' } }
+> > +            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool',
+> > +            'fat-size': 'int' } }
+> >
+> >  ##
+> >  # @BlockdevOptionsGenericFormat:
+>
 
