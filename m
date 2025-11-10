@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D606CC471CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A283EC47188
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 15:06:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vISbo-0003bk-4V; Mon, 10 Nov 2025 09:11:04 -0500
+	id 1vISWM-0006oY-41; Mon, 10 Nov 2025 09:05:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1vISVl-0006TF-En; Mon, 10 Nov 2025 09:04:54 -0500
-Received: from 6.mo552.mail-out.ovh.net ([188.165.49.222])
+ id 1vISW1-0006Xp-7v; Mon, 10 Nov 2025 09:05:09 -0500
+Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1vISVi-0008V1-UQ; Mon, 10 Nov 2025 09:04:49 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.54.176])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4ryK555gz5yVM;
- Mon, 10 Nov 2025 14:04:41 +0000 (UTC)
-Received: from kaod.org (37.59.142.105) by DAG8EX2.mxp5.local (172.16.2.72)
+ id 1vISVq-0008Vg-27; Mon, 10 Nov 2025 09:05:00 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.54.85])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4ryW1ZHdz5xLP;
+ Mon, 10 Nov 2025 14:04:51 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 10 Nov
- 2025 15:04:40 +0100
+ 2025 15:04:50 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-105G006f1bbe094-e197-411f-8ce2-3849f78c3053,
+ (GARM-106R00684885a42-25f3-45c3-9ae2-09cdde02d242,
  2CC8F654BF9A736B588295E2BFA8A60E013487DB) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <2a560734-ea59-4f4f-aa81-bf6e8cdb46ac@kaod.org>
-Date: Mon, 10 Nov 2025 15:04:39 +0100
+Message-ID: <45cf41b6-9970-4d99-9a35-eeb476a8e363@kaod.org>
+Date: Mon, 10 Nov 2025 15:04:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/12] hw/block/m25p80: Add SFDP table for Winbond
- W25Q02JVM flash
+Subject: Re: [PATCH v1 03/12] hw/misc/aspeed_scu: Fix the revision ID cannot
+ be set in the SOC layer for AST2600 and AST1030
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
@@ -42,7 +42,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
 References: <20251106084925.1253704-1-jamin_lin@aspeedtech.com>
- <20251106084925.1253704-3-jamin_lin@aspeedtech.com>
+ <20251106084925.1253704-4-jamin_lin@aspeedtech.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -87,27 +87,27 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251106084925.1253704-3-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251106084925.1253704-4-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.105]
-X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG8EX2.mxp5.local
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: c0d29bcc-7afa-4409-9d02-3b5bf7f5b6ed
-X-Ovh-Tracer-Id: 17363909842272291646
+X-Ovh-Tracer-GUID: c26c6293-5e7b-42f3-941e-84a60e8008a5
+X-Ovh-Tracer-Id: 17366724590433700670
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF2hWyzW4TEMGEKhDrGYVejsYZ5P48B+8KNiSlHGojV5imaTcELfZw+EtI3j3nXbMOCeurHMGX51VsOBIu8EwAUirGsEp+VjyrOcGlEhzDp1O9m7WHbtiY1tEaX9nurYTOCyZoZYHntTarm1a880sDCOvGh7cEwVmVja4A7tf8BGmvwmd0KrKh4vMRWTXYpVE1RJaVoapdXe5N0J3VcMsTMkQk+IdV1V6pLyZIzpWinTRSjnmNSlNNhO5egOHyUvlr9EMkJBZwoDQJ1TC5jf2FI827wjl2YAg+4x2BBW+USedOtJfKkVHANKyrYotKMn4yZnFfAYS9mGQpG/2miUs/GrdDDQZXghLsZlshcK957Lg1j0qEX93FpxYPlJWRMoEkcdmV+dKqk/cGNy95SzQoSQlSp8nfxuGOMGhWcn0BUVvdXqtYkrtZkQmksFQNVi05vu3sdKmcUL9G+wzO0bzoMhM4dqwv7TVPggNHSTIYQfpGIB2zE/Ry2itH50Bm4C/7uDC2AKimhbzXV7FttGLIPWkah3+hiJPId1EQGPCspx7tjQouJLBYJU+AQ68PpSxMc9KWwS7FVMrXRGQzFpHfBuTECHRil78Pwdx6dY/ybYT8p+/QcgylkddYSfcCk790JFBFXM7oIL8jrmaXZ1LWNCjKKNMsXFR4+QkqcyGaiRw
-DKIM-Signature: a=rsa-sha256; bh=YlWKHUHnw3dbeW0ShCvfyUkeJciBNwsdpRbKu5SpHjs=; 
+X-VR-SPAMCAUSE: dmFkZTEPxfWj5YQ9s0E9neHbK1wkesQhcMng64lmOuBjOaWjwFGEulEY+92eq18Ic2VYNR/oM3RHfstEK7eExWDG44qcyTf+Loolpk36borfjTi6edQWpKIfHq+dwbL3/9L6hIt16Qkk3hdEj2B2eBcn4CS6bMHhT13xUv1GgV6uKMEpK1utUY7BsSyh440A9P9U5l7uNmhSNuPjT2xHK32O3/6lSGfOdsivsuyh8ehoT/3A84+sbihH7SQQBNDJSTvs86t8zODr21+VleFCaOO0hZXHR0sULzrLibhDUElNvcXSEv5BILNDQR3ES560XEbPiNnf2dpbuFA6c7tPW+EEQCY6gugpDDQPtavkOQUyqp/tUBX9ndjxWdM/COup4rPwpxlYRqqREf92ULS11x209XyDyqx+E7v+A93NZzebXD69R/XbTFmag3m0t7Rat0U9vilouZUzxtViVjKRPybVRCe7WCwbXxt3hOdCDqPGCgbhDOJ0ShuIuWXT66lTjQW3Tuk0eiGc9x46pqWiJCuusPUgWQAM7WUybX921exAS1pgq1r8e/M5mZiq6sphNaKC47uMoI0E67/1dZcO0ij2fk2t+NqzaTtMz2OkUuWWUwRErq3bwoal5vcx5c07z7uDCjHPA2EcDYZ5Uo/c3ObceViJnNA4l9d7xg4FQJOr/8O1ig
+DKIM-Signature: a=rsa-sha256; bh=k7OG6tU0kjy527xNj0LHGtRbnBLZ8zIuI8gHujiFYdI=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1762783483; v=1;
- b=cDqFFDmEmHK93gb+Qet9TLPCYHSdW6FVTYdYn6ILtfBx0wdZWAAfjWsssAJ23YVVXpwsBI5l
- uY1d4jTKYv3RIPxg66RNTVOlMG+wjtF1GW+GyRJhz73p3wI1+yVAg8fGxor2qWpo1jrvkwlnuzc
- 85QqqX79jBYU/1IVQTd//CZdaCnLs1uyaga7xx/x+phwcpBbtW2geSUk3QNDPOLpSiyR2di9YQN
- uGquKZRFiTzlgchQhmlTJ22h59kjVJnDbpXYz12BV41UHxNcpgbwKt2H6vRQnUZ4ku2UYmVGrY1
- F8+wQ9cN1DPxiuEWM1hOeH2sNjRDJFq8dAj955x0MJDDg==
-Received-SPF: pass client-ip=188.165.49.222; envelope-from=clg@kaod.org;
- helo=6.mo552.mail-out.ovh.net
+ t=1762783491; v=1;
+ b=NUufEwGRknwoqHmxbwMJXyWvFsklcxQ8aHbVnrsdC+5UPxrjvqSj0JuOLWB1yp2UAPBGZb51
+ GV5l2w8GN9R0ouDzCcyy4TRFfaYO2ihdrjby+VVG8hvpvm1YSQ7zBW71cnpvCE/jhc5EhUdVX6+
+ wtUmZwEdDnI/uAG5r7znJS4WT6qb6goKnBDhaW3EKohduAdIAoD5Qghu/Y5LyiwRJbBztpRr6lV
+ JLkT6WTM6kULrqH6T9kzrKWo/mKxPD/pWWjQq2ff0JPOHQ2TeS+Japbh+hb80dTZmSt+8iu0GMh
+ JvzSZ5qnJO/vRtq27BWII51foQWtg/ZiAWzgoVzVLDgrA==
+Received-SPF: pass client-ip=178.33.43.201; envelope-from=clg@kaod.org;
+ helo=4.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -132,27 +132,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/6/25 09:49, Jamin Lin wrote:
-> Add the SFDP data table for Winbond W25Q02JVM flash device. The table
-> was generated under Linux kernel by dumping the SFDP content using
-> the following command:
+> According to the design of the AST2600, it has a Silicon Revision ID
+> Register, specifically SCU004 and SCU014, to set the Revision ID for the
+> AST2600. For the AST2600 A3, SCU004 is set to 0x05030303 and SCU014 is
+> set to 0x05030303.
 > 
-> ```
-> hexdump -v -e '8/1 "0x%02x, " "\n"' \
->      /sys/bus/spi/devices/spi0.0/spi-nor/sfdp
-> ```
+> In the "aspeed_ast2600_scu_reset" function, the hardcoded value
+> "AST2600_A3_SILICON_REV" was used for SCU004, while "s->silicon_rev" was
+> used for SCU014. The value of "s->silicon_rev" is set by the SoC layer
+> via the "silicon-rev" property. This patch aligns both SCU004 and SCU014
+> to use "s->silicon_rev" for consistency and flexibility.
+> 
+> Similarly, the "aspeed_ast1030_scu_reset" function also used a fixed
+> revision constant ("AST1030_A1_SILICON_REV"). This change updates it to
+> use the same "s->silicon_rev" property, ensuring that both SoCs follow
+> a consistent and configurable revision handling mechanism.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   hw/block/m25p80_sfdp.h |  1 +
->   hw/block/m25p80.c      |  2 ++
->   hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 39 insertions(+)
+>   hw/misc/aspeed_scu.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
-
 
 
