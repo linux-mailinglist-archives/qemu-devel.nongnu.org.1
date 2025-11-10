@@ -2,80 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7375CC47F5C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 17:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 389B5C48125
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 17:45:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIUoc-0004D4-P2; Mon, 10 Nov 2025 11:32:26 -0500
+	id 1vIUzx-000618-BU; Mon, 10 Nov 2025 11:44:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIUnm-00040d-MW
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 11:31:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vIUzb-0005y6-LC
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 11:43:48 -0500
+Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIUnk-0000Fy-2g
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 11:31:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762792290;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hRucd3p/guezkT2k31F9Cv1aXXheykWUgtKIH/EWdFo=;
- b=EbBQJffFCN6rAtqQ9k5ogUdaXuEsPj4XUnczO4wrOIv3tJAvCsit/vCrwU5vk1eCTY90OQ
- Q/xPIqQQ22lCfTQ/C4nekOilVnA4oITMash5ZvoSLzsf2BwWykg9ww1fFyXk2Rh6IiZW73
- fWyEI0/Yif8X/IvEj10J5/mu2WtOPEQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-JrARjhjWOBObH1GFAcrQoA-1; Mon,
- 10 Nov 2025 11:31:27 -0500
-X-MC-Unique: JrARjhjWOBObH1GFAcrQoA-1
-X-Mimecast-MFC-AGG-ID: JrARjhjWOBObH1GFAcrQoA_1762792286
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A2C061800357; Mon, 10 Nov 2025 16:31:25 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.209])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2D1F419560A7; Mon, 10 Nov 2025 16:31:22 +0000 (UTC)
-Date: Mon, 10 Nov 2025 17:31:20 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Chigot <chigot@adacore.com>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com,
- eblake@redhat.com
-Subject: Re: [PATCH v2 5/5] vvfat: add support for "fat-size" options
-Message-ID: <aRITWJo6R_oG9t7R@redhat.com>
-References: <20251107145327.539481-1-chigot@adacore.com>
- <20251107145327.539481-6-chigot@adacore.com>
- <87zf8umbzh.fsf@pond.sub.org>
- <CAJ307EjObqJ6Pr5N+WrEffTr3pWOpRCKVVamZhCG9ZgwHczVYw@mail.gmail.com>
- <87bjlakpa5.fsf@pond.sub.org>
- <CAJ307EjZwiGj3N93Td9vA0JHyK0COZBXHqv-7cjpxxg+eKiisg@mail.gmail.com>
- <87o6paj96k.fsf@pond.sub.org> <aRIC1NZXQUxkR7iR@redhat.com>
- <f301fcab-a7d6-1d89-aa56-52397f0d940a@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vIUzU-0002EG-FE
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 11:43:44 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.231.84])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d4wTh2yqjz5yJL;
+ Mon, 10 Nov 2025 16:43:36 +0000 (UTC)
+Received: from kaod.org (37.59.142.114) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 10 Nov
+ 2025 17:43:35 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-114S008b76823c4-6543-491b-9762-d2f85efe009b,
+ 2CC8F654BF9A736B588295E2BFA8A60E013487DB) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <3751eebe-8a2f-4e85-bb9c-3a856407cc4f@kaod.org>
+Date: Mon, 10 Nov 2025 17:43:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f301fcab-a7d6-1d89-aa56-52397f0d940a@eik.bme.hu>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/17] hw/arm/aspeed: AST1700 LTPI support and device
+ hookups
+To: Kane Chen <kane_chen@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
+ list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>
+References: <20251105035859.3709907-1-kane_chen@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
+ 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
+ yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
+ 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
+ ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
+ RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
+ gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
+ 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
+ Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
+ BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
+ M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
+ 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
+ jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
+ TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
+ neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
+ VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
+ QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
+ ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
+ WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
+ wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
+ SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
+ cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
+ S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
+ 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
+ hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
+ tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
+ t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
+ OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
+ KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
+ o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
+ ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
+ IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
+ d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
+ +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
+ HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
+ l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
+ 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
+ ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
+ KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20251105035859.3709907-1-kane_chen@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.114]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: a6cfb403-0914-4bae-83ba-8b77b53db6d8
+X-Ovh-Tracer-Id: 1601029671803259826
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFI1/+AcsJJ9GvOCHSVWSH5f+kRTmCZrYeDrf405lSJYlD698RzBtt5eKlkbRKbDvGkhZfE4V0E3dbMvP/+DLiDb/OSHl4zDrisTx1C1NPU1+wZIpOBDGNRE7jOBblsWgqaziahwDjPNkZbQcLtMlBNeChUhk7VwNw9guOIigGarXQ01S/8pGZ23eQyvW8UNLb2wOdBGWbEKcbHkcxcbbXG96/q7ZMK/Ib3rwcdtliNhmHnAQNvtl+2kdSzexFqu/HokUV4WguzrJBEM3N6U7j+GytZCP3iQLnY2VhWfzxBG79513VON8GL76U5tyAudjXNcQz6iuWB0E/eyRZcE50kj80kahZGaxH9iXkBKSMmxwBvOcK1lQpH/iEBnTAWpTe2VhlFLPyK1BblVoNlwl6fa01Inl4lO5QL+0ADQb9p8aNKJbY6kwAKjPmO5g7pnpJCMI6ywjM4dxmjljFW6z1imCTaQa1hCiY2Ie29xAB8U2U5nl6Wg2rlCqzM+mvJCqtw76/BvusEwgXy/dnM2HI7uLDxbVdwOZuffOSZlkfKuWfB9+shFW3vcPRh2qnayIylVWIDSNdmXTe8mVoQiAzV+nTW44CD4WQrzkBI/br3Z1KExxfCKhg1taJUK+iapGwEX3qNbwO7SBR/QV4Hl7EUSYYsArjs8KKfFPmJ+RAMcA
+DKIM-Signature: a=rsa-sha256; bh=oEdswl9Cx+KDXjFjg5r0xa3RnnmFnwxEWNAtwzurlWM=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1762793016; v=1;
+ b=oe9lzrPliB9a/O02XjAL2KlFL6D46CG/Byu+BrUV+LY12g0I0rr4mE1Gh93ZBE6Ht4Hy86d1
+ 9pwWsfzNT0km0i1UiPClOvQtlXRY8eElEmb0Yjrn84Pi6/sOJdW3JY1skQPUO6EU8stgdrMBzKF
+ /h7jaP1x+lW7N0kfZwETUrnWTw9YDciDVknvVC+h5cr0zBNDGlIEhPHXBv/HutpkG+48s2FtOED
+ d3mN8s6WSOlJOql/qpTnlEFlO4bE4B/j7C6/XUnLnJTw9LXFk3AqSQ9nmbIZH+6qRDep+ieqUwL
+ m8YM6GLQ4bWPn9tBDBGmCaNm4ZuUjd9fww26QPf2DYhlg==
+Received-SPF: pass client-ip=178.33.43.201; envelope-from=clg@kaod.org;
+ helo=4.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,149 +129,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 10.11.2025 um 16:36 hat BALATON Zoltan geschrieben:
-> On Mon, 10 Nov 2025, Kevin Wolf wrote:
-> > Am 10.11.2025 um 14:42 hat Markus Armbruster geschrieben:
-> > > Clément Chigot <chigot@adacore.com> writes:
-> > > 
-> > > > On Mon, Nov 10, 2025 at 2:09 PM Markus Armbruster <armbru@redhat.com> wrote:
-> > > > > 
-> > > > > Clément Chigot <chigot@adacore.com> writes:
-> > > > > 
-> > > > > > On Mon, Nov 10, 2025 at 11:13 AM Markus Armbruster <armbru@redhat.com> wrote:
-> > > > > > > 
-> > > > > > > Clément Chigot <chigot@adacore.com> writes:
-> > > > > > > 
-> > > > > > > > This allows more flexibility to vvfat backend. The values of "Number of
-> > > > > > > > Heads" and "Sectors per track" are based on SD specifications Part 2.
-> > > > > > > > 
-> > > > > > > > Due to the FAT architecture, not all sizes are reachable. Therefore, it
-> > > > > > > > could be round up to the closest available size.
-> > > > > > > > 
-> > > > > > > > FAT32 has not been adjusted and thus still default to 504 Mib.
-> > > > > > > > 
-> > > > > > > > For floppy, only 1440 Kib and 2880 Kib are supported.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Clément Chigot <chigot@adacore.com>
-> > > > > > > 
-> > > > > > > [...]
-> > > > > > > 
-> > > > > > > > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > > > > > > > index 8a479ba090..0bcb360320 100644
-> > > > > > > > --- a/qapi/block-core.json
-> > > > > > > > +++ b/qapi/block-core.json
-> > > > > > > > @@ -3478,11 +3478,17 @@
-> > > > > > > >  #     (default: true)
-> > > > > > > >  #     (since 10.2)
-> > > > > > > >  #
-> > > > > > > > +# @fat-size: size of the device in bytes.  Due to FAT underlying
-> > > > > > > > +#     architecture, this size can be rounded up to the closest valid
-> > > > > > > > +#     size.
-> > > > > > > > +#     (since 10.2)
-> > > > > > > > +#
-> > > > > > > 
-> > > > > > > Can you explain again why you moved from @size to @fat-size?
-> > > > > > 
-> > > > > > Just to be sure, you mean in the above comment, in the commit message or both ?
-> > > > > 
-> > > > > Just to me, because I'm not sure I like the change, but that may well be
-> > > > > due to a lack of understanding of your reasons.
-> > > > 
-> > > > Naming `fat-size` instead of `size` ensures the parameter is only
-> > > > recognized by the vvfat backend. In particular, it will be refused by
-> > > > the default raw format, avoiding confusion:
-> > > >  "-drive file=fat:<path>,size=256M" results in a 504M FAT disk
-> > > > truncated to 256M, raw format being implicit.
-> > > >  "-drive file=fat:<path>,fat-size=256M" is refused. "fat-size" is
-> > > > unsupported by raw format.
-> > > 
-> > > I figure throwing in format=raw to make raw format explicit doesn't
-> > > change anything.  Correct?
-> > > 
-> > > >  "-drive file=fat:<path>,format=vvfat,fat-size=256M" results in a 256M FAT disk.
-> > > >  "-drive file=fat:<path>,format=vvfat,size=256M" is refused. "size" is
-> > > > unsupported by vvfat format.
-> > > 
-> > > If it was called @size, what behavior would we get?  Just two cases, I
-> > > think:
-> > > 
-> > > 1. With raw format:
-> > > 
-> > >     -drive file=fat:<path>,size=256M
-> > 
-> > You'd silently get a 504 MiB filesystem truncated to 256 MiB (i.e. a
-> > corrupted file system). It's quite easy to forget format=vvfat, so
-> > something that initially looks like it might be working is not a great
-> > result for this user error.
+On 11/5/25 04:58, Kane Chen wrote:
+> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 > 
-> Why doesn't file=fat: imply format=vvfat? For what is the fat: part in
-> file then?
-
--drive is built pretty much on the assumption that you have an image
-format that runs on top of a protocol. Format probing probes the image
-format, not the protocol, while prefixes like fat: (or nbd:, http: etc.)
-specify the protocol.
-
-So if you don't specify the format, we first open the protocol level
-(which is vvfat) and then probing will detect that over this protocol,
-we access a raw image. So it's mostly like saying format=raw.
-
-I think that format=<protocol driver> works is really more accidental,
-but we can't change it now (and probably also don't want to). It results
-in opening only the protocol layer and not stacking any format driver on
-top of it.
-
-Options that you specify in -drive generally go to the top layer. So the
-consequence in our case is that with format=vvfat, the option goes to
-vvfat, but with format=raw (or unspecified format), it goes to the raw
-forma driver.
-
-> I currently recommend using:
+> Hi all,
 > 
-> -drive if=none,id=ufat,format=raw,file=fat:rw:/dir/to/export
-> -device usb-storage,drive=ufat
+> LTPI (LVDS Tunneling Protocol & Interface) is defined in the OCP DC-SCM
+> 2.0 specification (see Figure 2):
+> https://www.opencompute.org/documents/ocp-dc-scm-2-0-ltpi-ver-1-0-pdf
 > 
-> to my users which I got from somewhere but don't remember where and it
-> seems to work but maybe not the best way to specify this.
-
-It's fine, and I might use the same one myself (though you should be
-aware that fat:rw: is risky, it's full of bugs).
-
-But if you add an option like size=64M, it goes to the raw driver, which
-will take whatever image you access on the protocol level and truncate
-it at 64 MiB.
-
-If you want to give the size option on the vvfat level (and create a
-filesystem that is actually only 64 MiB instead of truncating a larger
-one), then obviously format=vvfat allows you to do that because then
-there is no raw format layer to begin with. Or if you do have the raw
-format layer, you can access options of the protocol layer by prefixing
-"file.". So format=raw,file.size=64M would still pass the size option to
-vvfat.
-
-So the command line does allow you to get the option to the right place,
-it's just very easy to get confused about this and to specify the option
-for the wrong layer.
-
-> After reading this thread I'm confused about how to use this
-> correctly. Is there some documentation on this? There only seems to be
-> some mentions in docs/system/qemu-block-drivers.rst.inc but all of
-> them using older options:
+> LTPI provides a protocol and physical interface for tunneling various
+> low-speed signals between the Host Processor Module (HPM) and the
+> Satellite Controller Module (SCM). In Figure 2 of the specification,
+> the AST27x0 SoC (left) integrates two LTPI controllers, allowing it to
+> connect to up to two AST1700 boards. On the other side, the AST1700
+> consolidates HPM FPGA functions and multiple peripheral interfaces
+> (GPIO, UART, I2C, I3C, etc.) onto a single board.
 > 
->   |qemu_system| linux.img -hdb fat:/my_directory
->   |qemu_system| linux.img -fda fat:floppy:/my_directory
->   |qemu_system| linux.img -fda fat:floppy:rw:/my_directory
+> Because the AST1700 exposes additional I/O interfaces (GPIO, I2C, I3C,
+> and others), it acts as an I/O expander. Once connected over LTPI,
+> the AST27x0 can control additional downstream devices through this link.
+> 
+> This patch series introduces a basic LTPI controller model and wires it
+> into the AST27x0 SoC. It also adds the AST1700-specific LTPI expander
+> device and gradually connects common peripherals on the AST1700 model.
+> For blocks that are not yet functionally implemented (I3C, SGPIOM, PWM),
+> their MMIO regions are modeled as unimplemented devices to reserve
+> address space and make the missing functionality explicit, ensuring that
+> guest probing remains stable.
 
-All of those are honestly fine, too, if you're happy with the defaults
-and don't want to set more advanced options.
+Thanks for the improved cover letter.
 
-I'll give you this bonus option if you want to be modern:
+> In the official release images, the AST1700 functions are not included
+> by default. To test the AST1700-related functionality, please include
+> the following DTS files for probing:
+> https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm64/boot/dts/aspeed/aspeed-ltpi0.dtsi
+> https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm64/boot/dts/aspeed/aspeed-ltpi1.dtsi
 
-    -blockdev vvfat,node-name=ufat,dir=/my_directory,rw=on
-    -device usb-storage,drive=ufat
+Is a release planned ?
 
-But I don't think any of the other options is going away anytime soon.
+> After including these DTS files in the BMC image, you can verify LTPI
+> functionality using the following scenarios:
+> 
+> 1. In U-Boot:
+>     Run the ltpi command to trigger the LTPI connection and display the
+>     current connection status.
+> 2. In BMC Linux:
+>     Run i2cdetect -y <16-38> to scan and test the I2C buses exposed by
+>     the AST1700.
 
-Kevin
+because this would be good to have for functional tests.
+
+> 
+> Any feedback or suggestions are appreciated!
+
+The AST1700 model is rather big and very similar to a SoC, without CPUs.
+Perhaps we should move the model under hw/arm instead ?
+
+
+Thanks,
+
+C.
+
+
+> 
+> Kane
+> ---
+> 
+> ChangeLog
+> ---------
+> v2:
+> - Separate the AST1700 model into a standalone implementation
+> - Refine the mechanism for assigning the AST1700 board number
+> 
+> v1:
+> - Initial version
+> ---
+> 
+> Kane-Chen-AS (17):
+>    hw/arm/aspeed: Add LTPI controller
+>    hw/arm/aspeed: Attach LTPI controller to AST27X0 platform
+>    hw/arm/aspeed: Add AST1700 LTPI expander device model
+>    hw/arm/aspeed: Integrate AST1700 device into AST27X0
+>    hw/arm/aspeed: Integrate interrupt controller for AST1700
+>    hw/arm/aspeed: Attach LTPI controller to AST1700 model
+>    hw/arm/aspeed: Attach UART device to AST1700 model
+>    hw/arm/aspeed: Attach SRAM device to AST1700 model
+>    hw/arm/aspeed: Attach SPI device to AST1700 model
+>    hw/arm/aspeed: Attach ADC device to AST1700 model
+>    hw/arm/aspeed: Attach SCU device to AST1700 model
+>    hw/arm/aspeed: Attach GPIO device to AST1700 model
+>    hw/arm/aspeed: Attach I2C device to AST1700 model
+>    hw/arm/aspeed: Attach WDT device to AST1700 model
+>    hw/arm/aspeed: Model AST1700 I3C block as unimplemented device
+>    hw/arm/aspeed: Model AST1700 SGPIOM block as unimplemented device
+>    hw/arm/aspeed: Model AST1700 PWM block as unimplemented device
+> 
+>   include/hw/arm/aspeed_soc.h      |  20 +-
+>   include/hw/intc/aspeed_intc.h    |   2 +
+>   include/hw/misc/aspeed_ast1700.h |  51 ++++++
+>   include/hw/misc/aspeed_ltpi.h    |  25 +++
+>   hw/arm/aspeed_ast27x0.c          | 154 ++++++++++++++--
+>   hw/intc/aspeed_intc.c            |  60 ++++++
+>   hw/misc/aspeed_ast1700.c         | 303 +++++++++++++++++++++++++++++++
+>   hw/misc/aspeed_ltpi.c            |  98 ++++++++++
+>   hw/misc/meson.build              |   2 +
+>   9 files changed, 700 insertions(+), 15 deletions(-)
+>   create mode 100644 include/hw/misc/aspeed_ast1700.h
+>   create mode 100644 include/hw/misc/aspeed_ltpi.h
+>   create mode 100644 hw/misc/aspeed_ast1700.c
+>   create mode 100644 hw/misc/aspeed_ltpi.c
+> 
 
 
