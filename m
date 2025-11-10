@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C479AC46438
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:30:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05BEC464EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Nov 2025 12:37:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIQ5W-0000Pf-Ai; Mon, 10 Nov 2025 06:29:39 -0500
+	id 1vIQCr-0005oK-5V; Mon, 10 Nov 2025 06:37:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPne-0004zN-UW
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:15 -0500
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vIPs1-0007dt-0U
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:15:42 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vIPnc-0004LA-C2
- for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:11:06 -0500
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-653652a4256so1270562eaf.0
- for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:11:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vIPrx-00054f-49
+ for qemu-devel@nongnu.org; Mon, 10 Nov 2025 06:15:36 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-b72134a5125so414084066b.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 03:15:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762773062; x=1763377862; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=adacore.com; s=google; t=1762773331; x=1763378131; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DHao9ZBgFmJVV7PunBlOeozDZldx+WvW4UpohKz1KQo=;
- b=F+JomiChUQN95CVxY2gPuhxx51qvkT+EO15kkDXs5loR8+oFn1rup2l0kYEvdGKPIB
- i89Qfhxz18xm5NlO6t1nNYi918Bh6BriOAj5Zpyoj2GRwhbsIxbzX1sw1ETmzzU2Tdk9
- SQHoTbfmoAqG6vJ0S1N6l/bKA6j/g1qhV0TjFOKiPfRKuii5DbClp75vIpC/V32lD7Pn
- 6ddSDyEChfIf8gn8wc1sCIgwDQE823OA7+aCGQT/mi4ZFJhAy7H9lYjuRg5U0N4h+NkM
- qvaOXU2pU+iUUtnKfDRAPXEm7JS8HsBkhtZp2+71N5DboBDUdylP3xI+zZ1j+/HjOpD6
- hHoA==
+ bh=ZPywwabZb+QCHESBwj0/v4EggNmWHyi2nYsN2LNmVDU=;
+ b=hM8dNe0oeup9A8w/uZy0c0/tqmQxBrDCFIM1zy4wyNWnZThT0+vVRj5ej32bxUg0Iq
+ UfWxU5CLH4iKzloXVWQnWPpVrEdvs12XHyLEFp65ijrXyHIoayMiv4HFG8oIMLzOOFSl
+ tUT9UQgwQf6omn4eoTUTepsIycs+bpy7q9oW4+jW4dRBVU3qtZlvLcTAXCMrhyLXHuet
+ 6Hzvkz6Kd8WrxutFO0rdtq8oS5beXXH89IUnX5W2FCqNZKx0sGofJDiSj5gS52kF/foT
+ OoGy/rAkRPUHKEiJYUw1j7uWwLmTbxHyt/z4dIVunlTCbPkBVpiB+j1nxmvddfvb9wqr
+ H/uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762773062; x=1763377862;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ d=1e100.net; s=20230601; t=1762773331; x=1763378131;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=DHao9ZBgFmJVV7PunBlOeozDZldx+WvW4UpohKz1KQo=;
- b=ki2feTO5bDeGh1Mi+fcCLnWX4h1qNUf1QjYEy/Jg5bnCw4N7dmZn8GT/POzv76wVhc
- v8S/iR/48aKfekn1dpHcn+M0ilc8LEHEEoGtAST9j7WY30FSrcwTkURz8UHSULMIe2fM
- /O0NKBfNqEO2dsHhNwB0iTVK/3/Y8m+izDAPzKbUXNU1lsodqQpMKQzEfDfnfDhkxtbs
- 4HVPyIT6ObIIUmwe1ZoKfIROBYbU5FKWwsWvZ6bOshusKW5Yo60znX8OAjyJ0xa8bIm7
- HwpU8IWvCJk9GeGJBtCeFAQGoU9nKYnRFvsdjExbEa5eoV0E61LSuocpIF0hG+pKQrAt
- KStQ==
-X-Gm-Message-State: AOJu0Yx18P+Bvx/66B+Sid8+DaLFKPpjCpZ41ilp6bL2/jwu1EBislwR
- BiL6HurUfLGlmbceme1AioS/qskG22TxMUavh+yZCk70Qj/NL87191EmuiRBdURkObhKKQ0SDOd
- U3hjL
-X-Gm-Gg: ASbGncsfUniB+JtN74ygYW4IBrKNpVh0t45jvYuH2tlT0jVwt7885fVVLIWImRLVbLd
- 7Hp91wKNR+QbK12Q729Zz/A3OSkReVQmIfl77K14OhqDPFLXi3w6EoNu6aQ7DBPsLIIK7qW+kJ/
- dXHb/6RxZ17hHCsuXkXhYG7iaOhSRFTtSbXE6LmKaPzwAn0GP8kBXLdK6Hw+Fe0HtV7hIincgSU
- IE+4S78x9AlmYawtSqp4+VcOw10OccQSnad6nWqfGJ4IUJJuyqFYME/i7BPrYVQZK5227jHcFz5
- xLFHIomXXi7wS+HPqt7NMtyNeAUeIN3jVxWmTu6maHUe4oYGn0JCkzL8THDXX1g+7l24P+pB8J8
- X5Aw9mkO/HPcWTlm8vW+KWSfQfFAxvQ4VZ/B74PNA6+7wQ+v0HGud63NoeiOyf57oM+YMR566Vz
- mQHzooUvLIy7J+h2IMnti4QcMbeiwdEQ==
-X-Google-Smtp-Source: AGHT+IEO1yibSeEEWE/tgqVbTFPKhY3z26+xK5EBB3HueJ1BWi/VUAoRI1GtPCADQCHGgwDLmAFWSg==
-X-Received: by 2002:a05:6808:220c:b0:43f:61b6:2ab9 with SMTP id
- 5614622812f47-4502a1cb1edmr4069511b6e.15.1762773061688; 
- Mon, 10 Nov 2025 03:11:01 -0800 (PST)
-Received: from stoup.. ([172.58.183.226]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-450426be56dsm1603412b6e.18.2025.11.10.03.10.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Nov 2025 03:11:01 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-stable@nongnu.org
-Subject: [PULL 5/5] target/x86: Correctly handle invalid 0x0f 0xc7 0xxx insns
-Date: Mon, 10 Nov 2025 12:10:45 +0100
-Message-ID: <20251110111046.33990-6-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251110111046.33990-1-richard.henderson@linaro.org>
-References: <20251110111046.33990-1-richard.henderson@linaro.org>
+ bh=ZPywwabZb+QCHESBwj0/v4EggNmWHyi2nYsN2LNmVDU=;
+ b=KJB71flvob/dRLQI2PD68wf7SYOn5J09XWct9ftOA/9+7Cm7whECA6pZT72r/J9Fbg
+ swr310TxMpuo+3uHmHENnrrjp/PH25zpU6fqgs0OHpV3ki0rCBoUtUH3FjMpLveurXkV
+ RqiQhn+JncfjJJrt200/pj2qWSYX9irTYrxZFFDfF3KsjF2mVj21zJDAPLbfi5EuESGs
+ F/08kJkGZbc1bRuz8yUTSeqA3v2bltGwpIENjKTIOrUr1S5u2JOEn5GFH/VuWnbIn46g
+ wZOkiW3jpb0rw6OvweIrcgJAtwOgntJgp6QS6VQMQKNdbsXJm+mC17dV0jTqKiiwT/AK
+ 5o/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVSKtH8+7xvlFYt1nbf8ZaGosBsDG1xNS7fUyR+1Pj8uxZD3l1zIaF/VQrYwcIfDqanF58VT+F2+fxn@nongnu.org
+X-Gm-Message-State: AOJu0YziYAlYAC1h4BsDICWTzQAUAdlm65GCeCGM6gzocsFEJAd0ESQ7
+ M177TVH72YdP1i8ZfmEOgaZ4Z+bRdKFG6iEX8nBrJC0f+lyaWvdC1yh/20420jlxvSnJqwAyWj2
+ HyCwRf7NsL7wnYECazk0I8aMd4o0fsuycUUd+6SDr
+X-Gm-Gg: ASbGncvw+1nbL25mJ6JKp5eRjs5sirY0FcoGA+zsUOj2s4kOaESKSszy5zQqg48/VXH
+ JgZxkzESx3SlgNHj/0SBkuQSGSF0y+/U6V9IH2ZIO2GTRj2ASfYqEtkcgvBEEnBIY4r+HH3mmmv
+ inO+uFFEnj678uPXd+RY/XIew/8tjDNIm0yRSuvd7/awOnFkLcEVJf/W5hR12+et3pftcKK+vJL
+ QR3AjUYf7Z58ZCIQivXmxCvaA/6HM7OEsTdi1V6NEwSOzGm7pRwENRq+3kl
+X-Google-Smtp-Source: AGHT+IFbQFDzTXiiY1iP0OE4DHU4pzOC06VlRgtFTCEQqVtW8Y7QKK4DXgZRrnRpUhxmnWh3oz9KbFNUC2L/kI+pJTQ=
+X-Received: by 2002:a17:907:da3:b0:b72:b389:b799 with SMTP id
+ a640c23a62f3a-b72e03617ffmr694553366b.23.1762773331556; Mon, 10 Nov 2025
+ 03:15:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+References: <20251107145327.539481-1-chigot@adacore.com>
+ <20251107145327.539481-3-chigot@adacore.com>
+ <874ir2nqr9.fsf@pond.sub.org>
+In-Reply-To: <874ir2nqr9.fsf@pond.sub.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Mon, 10 Nov 2025 12:15:20 +0100
+X-Gm-Features: AWmQ_bmoUDKj7Iocm7bn99SNNEZLUzgcAIb00YYfFpP9_6ayNoXWGIanHsOqfp4
+Message-ID: <CAJ307Ej8oNXjOZt2fkBMjR6bKSf=C2M6ncFFLCfy=Wk6+KMhNQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] vvfat: move fat_type check prior to size setup
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
+ hreitz@redhat.com, eblake@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=chigot@adacore.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,53 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+On Mon, Nov 10, 2025 at 11:09=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
+om> wrote:
+>
+> Cl=C3=A9ment Chigot <chigot@adacore.com> writes:
+>
+> > This allows to handle the default FAT size in a single place and make t=
+he
+> > following part taking care only about size parameters. It will be later
+> > moved away in a specific function.
+> >
+> > The selection of floppy size was a bit unusual:
+> >  - fat-type undefined: a FAT 12 2880 Kib disk (default)
+> >  - fat-type=3D16: a FAT 16 2880 Kib disk
+> >  - fat-type=3D12: a FAT 12 1440 Kib disk
+> >
+> > Now, that fat-type undefined means fat-type=3D12, it's no longer possib=
+le
+> > to make that size distinction. Therefore, it's being changed for the
+> > following:
+> >  - fat-type=3D12: a FAT 12 1440 Kib disk (default)
+> >  - fat-type=3D16: a FAT 16 2880 Kib dis
+> >
+> > This has been choosen for two reasons: keep fat-type=3D12 the default a=
+nd
+> > creates a more usual size for it: 1440 Kib.
+> >
+> > The possibility to create a FAT 12 2880 Kib floppy will be added back
+> > later, through the fat-size parameter.
+> >
+> > Side note to mention that s->sectors_per_cluster assignments are
+> > removed because they are overidden a few line further.
+> >
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+>
+> Is this a user-visible change?
 
-In the decode_group9() function, if we don't recognise the insn as
-one that we should handle, we leave the 'entry' pointer unaltered.
-Because the X86OpEntry struct has a union for the gen and decode
-pointers, this means that the top level code will call decode.e.gen()
-which tries to use the decode function pointer (still set to
-decode_group9) as a gen function pointer.
+Yes, just "floppy" will now result in a 1440 KiB instead of the
+previous 2880 KiB. However, Kevin mentions in V1 that it would make
+more sense and vvfat being known to be unstable, this would be fine.
+FTR, here is the complete comment:
 
-This is undefined behaviour, but seems to be mostly harmless in
-practice (we call decode_group9() again with bogus arguments and it
-does nothing).  If you have CFI enabled then it will trip the CFI
-check:
-
-../target/i386/tcg/decode-new.c.inc:2862:9: runtime error: control flow integrity check for type 'void (struct DisasContext *, struct X86DecodedInsn *)' failed during indirect function call
-
-Set *entry to UNKNOWN_OPCODE to provoke the #UD exception, as we do
-in decode_group1A() and decode_group11() for similar situations.
-
-Thanks to the bug reporter for the clear description and analysis of
-the bug and the simple reproducer.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3172
-Fixes: fcd16539ebfe2 ("target/i386: convert CMPXCHG8B/CMPXCHG16B to new decoder")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251021173152.1695997-1-peter.maydell@linaro.org>
----
- target/i386/tcg/decode-new.c.inc | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index a50f57dbaa..f4192f1006 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -335,6 +335,8 @@ static void decode_group9(DisasContext *s, CPUX86State *env, X86OpEntry *entry,
-         *entry = group9_reg;
-     } else if (op == 1) {
-         *entry = REX_W(s) ? cmpxchg16b : cmpxchg8b;
-+    } else {
-+        *entry = UNKNOWN_OPCODE;
-     }
- }
- 
--- 
-2.43.0
-
+> On Wed, Oct 29, 2025 at 5:06=E2=80=AFPM Kevin Wolf <kwolf@redhat.com> wro=
+te:
+> > In general, our stance is that we can change defaults whenever we want
+> > to, and if you don't want to be surprised by changing defaults, you nee=
+d
+> > to specify the option explicitly. What's a bit strange about the vvfat
+> > interface is that the default actually represents a configuration that
+> > can't even be expressed explicitly at the moment.
+> >
+> > So it is a special case in a way, but given that this is vvfat, which i=
+s
+> > known to be unstable, not widely used outside of the occasional manual
+> > use and not supported by libvirt, I'm willing to just make the change.
 
