@@ -2,92 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C010C4D7B9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 12:49:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2BAC4D89B
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 12:56:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vImrK-0006jS-QL; Tue, 11 Nov 2025 06:48:26 -0500
+	id 1vImzB-0006uy-Jp; Tue, 11 Nov 2025 06:56:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vImqi-00052u-B0
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:47:48 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vImqg-0004QU-AL
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:47:48 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-640d0ec9651so6782357a12.3
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 03:47:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vImyB-0004QH-E3
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:55:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vImy9-0005LJ-6I
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:55:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762862127;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yGgiowmDCPt5pBZQwvd890N8BsFgh9ETxA9LPRZN7Vs=;
+ b=BEkP56SjWdsfQKwq0VSfw961iAB7XssMwGT3Y7iJ8ynDOB+VG0+M9Pf4n+T33J+rEt6Pys
+ 4K1YN87id3xRJOWTQJEaN7NgRaqk23dto6QNvABydkbNV8EkYUk94oZoqL0uEgMqaR5Wej
+ jgOhaOapEjKoPQREW1Cf8NzeMJhXEZg=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-3iDQ6dOLOuSkJqL0tCM9Qg-1; Tue, 11 Nov 2025 06:55:26 -0500
+X-MC-Unique: 3iDQ6dOLOuSkJqL0tCM9Qg-1
+X-Mimecast-MFC-AGG-ID: 3iDQ6dOLOuSkJqL0tCM9Qg_1762862125
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-297dabf9fd0so37617975ad.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 03:55:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762861664; x=1763466464; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5CBEBtmFXIYhtD9uj/O0m0IZEIQnCBydNbN9HhNAKK8=;
- b=yP27YQbuxK6Kq/UT9Cj/J5aXO33twcYka0tRYd4623hHR6uAa34buIoHa4UJx/pD34
- YTZVnEAsOobsGnjG3CnbuwuLpfjSh4m2CLa6ad8vv9UPaS+70kcPARF0uYMXqU6+fr6y
- 7+iusrdT2ZY9Nz2hY23tz5TmELCS8x2Zm6h8uAU8I4lC0rWBVZO76LzV1aB0yt9efeQA
- UJ1cQNIKc2OM+sAgdY4OUPe2x9qTdpz0NZSXVneHFS9HQOPgoDUf+rBNO1piuAJzsWZs
- QSjOwK75T+herBP4gmPXYdHX3Oif+10C36mbL/WKDEU6w2uANYWZ4qULs91MaA/MqDib
- ihzA==
+ d=redhat.com; s=google; t=1762862125; x=1763466925; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=yGgiowmDCPt5pBZQwvd890N8BsFgh9ETxA9LPRZN7Vs=;
+ b=o1rBPVhPzwX30cp0PymNKVt7vlMpD6hEdEJNYRuDcaEbfqFcczSRlE690wTyomI+vg
+ JWFrytZRSEtbxhcf721vo16IxPmqilhlmwIbT7HeOQ2EEtR2eVT4m5eAWw79CcqGQqJ9
+ lebGIf+Xbw2c3hwkzn8KhtWYjcjKJ8AeLneGAsdqguU7+YvdGoaz9EmOzNKz/8qtUFFp
+ pJwIsTnmc+No5NfVhHdeB8GGcgx7mtGJ2+sTdkzzcu1CwjFNmxsvK+JsFQHg/+eMhFgF
+ h1kH5xNbztJyb5hANsdplXuICzOyiGMhE4S5yv+CXovV7WctZt8t8gumXrUD57plCv3E
+ k0cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762861664; x=1763466464;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5CBEBtmFXIYhtD9uj/O0m0IZEIQnCBydNbN9HhNAKK8=;
- b=nGTkpFhsHJ9l8MMzwMdQH2ODC5RE5RJQKvf8TaEgOZACq1S+9lMgUMYZI4kAl4JLry
- ZfBgPCymfbKmfXfyhPIZDdVTC3I2TSWs5d9C9XonTbQ+4zWLVCyrBYnwisdJ5NKqyQVw
- eJzky8mmR9T2UjVKzTGYXlAF6hXICqn32tNllUkYOAb7RyByPojET1hOAmIamS6NfeGg
- Pcw0UX7d1aSTX8L3F8+2lwWuCS27XJlASPk9lZXnRdlIny4Iv8Jw2DrZWFiCi6iInBvx
- FhyzdM8IgX7zVqaqLvTGOyRdPhbxtPAZ4+98+pHJGkVEoGCXms4IS1G8L5r5gpMp+IiA
- iFgQ==
-X-Gm-Message-State: AOJu0Yz+wjDAvKKVf9RBEi2HRScVGMJenRCKL31F/rXd81i68QIeO055
- DYUlFeYVSf9kcSDWLwfg+ZpWFuehRvDCpjr0bpTuzeRleEKOGRLjTh2hJ/sw/sQeilotkMhZisc
- 7kdigHS4=
-X-Gm-Gg: ASbGncu6JaFgLMo3NCCyt4ibjxQEpx+cBIkmm/aijoDUlyOCBjySyIuDwFIvcjjHvyU
- 35Fb/6ZVsc+fdvJJwlIk/1AWkmokbHC10wLdsGWG29JSi3xZ+4JrZ3dTVxFfn4PLUvg3gT/1b58
- GE3UCT3gM5hs6Tv4mF0zUH2Wir7LGAMbV7kOgmFGduiF0Rs4WcTZQtiyaAOgevd3Dnh/nQyV5vx
- 5l/KufNylb21FebWnr0jIcdFrKQYOjKKPhLIzhtVC8gHvxTmst5bHPFp9jf66p4CHDKodsqm7tE
- jLF0Qh+oIB57Ov0XfXr0rVr1DdOmsojlfL4/E11GL7M4lRyluyIYZeaqmbPzj20kES+bgCNVZzm
- nk2AuNmAkFbgfkaGbIGWSinBaByIq6i6xu+xwUOzPRu6dm3WnqoubZMgBm18IrtfQKoY1i+mk0N
- ric4xm4gqWFsw=
-X-Google-Smtp-Source: AGHT+IEUIwW0WkQrXpevTrRi1x3YysgnDtxgHUTJxSeTZOPBephkYD4MkNTvEieUtkDOSRNNNumJUg==
-X-Received: by 2002:a17:906:eec7:b0:b6d:5914:30c with SMTP id
- a640c23a62f3a-b72e04e3d76mr1391400666b.34.1762861664493; 
- Tue, 11 Nov 2025 03:47:44 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72bf97d43bsm1383702766b.45.2025.11.11.03.47.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 03:47:43 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0F4555F871;
- Tue, 11 Nov 2025 11:47:43 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  peter.maydell@linaro.org
-Subject: Re: [PATCH] target/arm/cpu64: remove duplicate include
-In-Reply-To: <20251110161552.700333-1-osama.abdelkader@gmail.com> (Osama
- Abdelkader's message of "Mon, 10 Nov 2025 18:15:52 +0200")
-References: <20251110161552.700333-1-osama.abdelkader@gmail.com>
-User-Agent: mu4e 1.12.14-dev2; emacs 30.1
-Date: Tue, 11 Nov 2025 11:47:42 +0000
-Message-ID: <87zf8srdsx.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1762862125; x=1763466925;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yGgiowmDCPt5pBZQwvd890N8BsFgh9ETxA9LPRZN7Vs=;
+ b=aP5P8x1WvHqRFnuUaQuUWYoIvg2ydhD4VbaO13RPDg6FfmhjHuAjXDGu4iGF705YB4
+ wnsF38MOMy2JiFX5ZT+r/jFJ7Xb8ouiPibeK3E03fVPNOY+itRWuYGU+VharZENeDPBv
+ t6uLY2AV1kiwU+Pjf0LHSlJjI6157eOzirqsrDuKaOWbCz29b/USrB9FQ2vrmma5bprt
+ Jk9B6pAianpyWXHPzw8faWBUouOpPBA9fqazuZTLPsfuxfAi8YXINGgFkrfcbyLvk4b6
+ QahHJARhm6lLkegYfAOqtnDQ2AO9MleSlYwYpGikZRtM7bdUYTxMZXH9S3xbSHd/lVrs
+ 0T4Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+gDrY9b3PNTnM/bODFDZ8Ir5f2AMe19dRLmBCJG3sIdERGjlR+k/kA/fHg/HG+tOKglH5lIOzRzC3@nongnu.org
+X-Gm-Message-State: AOJu0YwAh0k3iMbQf11z1DoQ6CZlqbf6qXc4Qua8z8jZn3EUMr3uCaih
+ WQwmnnFo8FC6rTMt+UjOVaVvqhFYLgbjeQd7XKLgjcjSb2iVDzv+PCIU9Gh0lGScqkny4LRF8Ya
+ VNE6dEFAPHURuAl8joBoi/C646ivQ7Xsqx6RPb8ntIED2dGQpANPvUEum
+X-Gm-Gg: ASbGnctPX3S2zzrxmMJkPa7mue+J3j7qBNWIq/XAOidmZoRXXnzv7Sb5//Vyih/O1Wd
+ JeoamrQXiK19nhqxKVykwn+HLykYTGyW3SR0vYQq7kTXrv5nZmsLaIgpTEdZInUZOZ7p4jZVMv3
+ QQ9tYB8+sfZWxwXbroVX8TmV9qQ8mR9wKfePMFyZ1yGZBhsxo9/C894HiWfOdUqtfjul6dgOqRb
+ 8VkkONAW7GUSYzH1qW7kVz8SUPri/gIoiwfqOfO7z8n5wCxwWIZmmH+UPwgyVyctraaAxpWU4F+
+ y4isHyMACvEpxFojOy849JDK/cec8bBK6KbBHZmS0gos/2i6tDtUIC6axlEe7AKvfHAIV+ydvLY
+ B+ofZNccMP5p9qP9/bpycv0vrIe/HaCqfreWZXYQ=
+X-Received: by 2002:a17:903:1c7:b0:24c:7b94:2f53 with SMTP id
+ d9443c01a7336-297e5411a12mr151114895ad.6.1762862125409; 
+ Tue, 11 Nov 2025 03:55:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFw8jKEgfrtBGTp+Bz7jmjeTDKyqWvqu+8Yp+vqNaPLtJtxSIaTsSYdhfBfPWvvsz171jIJMg==
+X-Received: by 2002:a17:903:1c7:b0:24c:7b94:2f53 with SMTP id
+ d9443c01a7336-297e5411a12mr151114695ad.6.1762862125063; 
+ Tue, 11 Nov 2025 03:55:25 -0800 (PST)
+Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au.
+ [175.34.62.5]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2965096b90asm178283755ad.23.2025.11.11.03.55.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Nov 2025 03:55:24 -0800 (PST)
+Message-ID: <7fe42ed3-4247-4406-b728-c6ad37a28545@redhat.com>
+Date: Tue, 11 Nov 2025 21:55:20 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/arm/cpu64: remove duplicate include
+To: Osama Abdelkader <osama.abdelkader@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org
+References: <20251110161552.700333-1-osama.abdelkader@gmail.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20251110161552.700333-1-osama.abdelkader@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,32 +121,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Osama Abdelkader <osama.abdelkader@gmail.com> writes:
-
+On 11/11/25 2:15 AM, Osama Abdelkader wrote:
 > cpregs.h is included twice.
->
+> 
 > Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
 > ---
->  target/arm/cpu64.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-> index f81cfd0113..ae84d8e420 100644
-> --- a/target/arm/cpu64.c
-> +++ b/target/arm/cpu64.c
-> @@ -34,7 +34,6 @@
->  #include "hw/qdev-properties.h"
->  #include "internals.h"
->  #include "cpu-features.h"
-> -#include "cpregs.h"
->=20=20
->  /* convert between <register>_IDX and SYS_<register> */
->  #define DEF(NAME, OP0, OP1, CRN, CRM, OP2)      \
+>   target/arm/cpu64.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
