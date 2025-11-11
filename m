@@ -2,104 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC7EC4BA3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 07:20:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352F1C4C092
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 08:15:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIhji-0001vr-Kd; Tue, 11 Nov 2025 01:20:14 -0500
+	id 1vIiZT-0008Ni-7R; Tue, 11 Nov 2025 02:13:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1vIhjf-0001oR-9N
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:20:11 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIiZJ-0008LD-Ti
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 02:13:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1vIhjd-0001kX-LZ
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:20:10 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB68EI8001041;
- Tue, 11 Nov 2025 06:20:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=vOa3O
- 0dowZ7B+SXuKhootqsWVoB6Ku5f0N3qcBEwP3s=; b=afqfaflZdpQdS3BpNltJR
- ZWSOSQRcxDwAl/El3nXiuW4Gtjc/kur/D7TEQjqrIBvJ8L3lHWWfNdQlbxD4bOo6
- gn7N0UyDYtWA5Rz2K7bFvzRoQwv9e1XR7jmiFa9vGBnATf3BmyxKaD/ooY/JXrx0
- wJcf8hrHxQ3I77zasD34n7ZwDIvdUcO2RMNreLiRuaP6NUsLD92fsFXQWB/o+O7z
- xm2OIaN3vj3JQdlRJr+MuJ2YlGWCi2dd62qL5UkWBkX48DJ9xiUQiph7ojmxLvS3
- /VVokBz7XoiEKRfexSQxzGlNAACYkupjbb4Qyt+Z8UBz8fBKr5WF7PSpFMkJh57H
- Q==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abxrt82q7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Nov 2025 06:20:03 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5AB51YH3007485; Tue, 11 Nov 2025 06:20:02 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 4a9va9mkeu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Nov 2025 06:20:02 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6r1029277;
- Tue, 11 Nov 2025 06:20:02 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 4a9va9mk84-10; Tue, 11 Nov 2025 06:20:02 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com
-Subject: [PATCH v7 9/9] target/i386/kvm: don't stop Intel PMU counters
-Date: Mon, 10 Nov 2025 22:14:58 -0800
-Message-ID: <20251111061532.36702-10-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251111061532.36702-1-dongli.zhang@oracle.com>
-References: <20251111061532.36702-1-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIiZH-0001SO-H5
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 02:13:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762845210;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=N2oDoIi3kGUSb81MXjIrh3MG8OL7GfYbSAOBTE4RDcY=;
+ b=fJVkEZ8/3aFlZ0ffTHda9hDRXGAKjOkdXs+zt9vsd6jO0Fw0WftIkvmOob0xLGNVkGF4pX
+ oVmTk9ry5+2VnzW6aKixQ+yq0z1aUCqrxdsLchFiSrX6FauS5/zmq6d2YjIga8xNlU4ioG
+ JjL7nluDd+SeslgIWFW8DTIq2liJecw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-sZxt_0zfO9axpJOfv5pOig-1; Tue, 11 Nov 2025 02:13:29 -0500
+X-MC-Unique: sZxt_0zfO9axpJOfv5pOig-1
+X-Mimecast-MFC-AGG-ID: sZxt_0zfO9axpJOfv5pOig_1762845208
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b6d4f19c13cso365787666b.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Nov 2025 23:13:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1762845208; x=1763450008; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=N2oDoIi3kGUSb81MXjIrh3MG8OL7GfYbSAOBTE4RDcY=;
+ b=FFxCv3HGEzYZs2RCuOjzbrC1Bg10ZWW4rSsrCG9lxP6rT+4GhAv6Mrc+Pwo028KhC6
+ wgVR5v4N15TYusoWKZLKhxQHbWb/sgXI8trFEDZ1EBK3pKpTAxjMnYuKnWFawVlW2pDP
+ gHKg13hyfn9/Ju5M/m8lZaCqnAtbUQnj5KX9HsIrGiWfZWPnIB+B2ACjrmSvM2LjCe3z
+ Hv5fhcSuaVNTobD/ZB+tppI7AfOUrKHTKKs6sdBngoLLTCAL/F7EvqAS5nfdzxElCZ4t
+ 7IfctC1QYWj+Pdha6uR/8A/db93RuSkkLiqht6X9u8yaUJsfBGpA1hwO0QsiFA+pAxO7
+ uT1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762845208; x=1763450008;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=N2oDoIi3kGUSb81MXjIrh3MG8OL7GfYbSAOBTE4RDcY=;
+ b=klpy2ZANWoJzh+k97aa0IXco7l/kQC2cr0tyktiqHpjBliUmlVpn8Y89vwthhbiVuh
+ SbdqIItndR9EZSqJADKSubPoiU7rKqpArR7SIeNNouaKkM0mmm5XyuGYKZI/gKGgWqgL
+ FfejnXQ2yxZ0zKjTfpp9qyuvXBqn0ZSON5hs01bBM93ZlP1Yo6kEtZG5CfwI/EtKJjdK
+ Pc1rvzslG2BFcZzq+qDuAKHFd4snuqxu4KgXHbm+CnXkZ3EoxdlkOfbOeLVUF8xU7JOy
+ uZDd1cOv9dfvXlfQP5r4tdAgQQTcg9kk+jg4piRlD5OrdM7kqeS0dkVILZImPSpO6OAU
+ exfQ==
+X-Gm-Message-State: AOJu0YyZtKEN4ApQnT/sjOkGkN2N+dq1f0Oto/ikFB+3zG9TMQVk3fDh
+ sz4dIO/lvLAdkR2zCk9t6/bO5Hv2N9U0T5pYjy/qYE9qhS75qswNnkshqDLYn44UGJMhqSTDMDm
+ SKRpcPrzXmfbghuTEIkteL1nunA3RmQR3uPCWxGkTD1n/RMOoUA08VpcH
+X-Gm-Gg: ASbGncvUXGPR13aJ6VMfQ0itD625uBl7k/WKkdaqVA5qi6Z0nJpt/uPjORVIqQevQEE
+ C2c6gPrfU3hX1X3a4WG3hXmxZYAxH7gS0OtBZevclDRqoBGCQOdpCWXBzrAUWQWkyBmU7l/xJWE
+ 1Soez4dDfjcoGtYKRpvII8A4bRwW/+I62n+C5Wzwmw4fIjgjH1ikpFAsHTohR8usXA/tWr2kEEQ
+ oEtlGIh+DamOm/+22wZVKhCn84vhQ45BOk20Bs4arbWltBzYUxuQ0JaPF7rZcxhLlxXmBM6QxH7
+ c5O07WVpo6lzQgj1Vnr4YYwt9W1i6tYvsUHT8an2gYNhCgAsPIWrxq9D/WG7QVdyI3XkaFs=
+X-Received: by 2002:a17:907:3e15:b0:b72:6b88:5cdc with SMTP id
+ a640c23a62f3a-b72e02ca207mr1039808866b.7.1762845207739; 
+ Mon, 10 Nov 2025 23:13:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJ7wEEATRrrNSuFEAB/VHrk8uFEi98iuxIP8VZ5HwNIEx7IciNPBIWEE1Bx6f9m/cIkeB/EA==
+X-Received: by 2002:a17:907:3e15:b0:b72:6b88:5cdc with SMTP id
+ a640c23a62f3a-b72e02ca207mr1039806866b.7.1762845207315; 
+ Mon, 10 Nov 2025 23:13:27 -0800 (PST)
+Received: from [192.168.0.7] ([47.64.113.41]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b72bfa24d2asm1262836966b.70.2025.11.10.23.13.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Nov 2025 23:13:26 -0800 (PST)
+Message-ID: <2c58b1c2-13c7-4551-bcf7-bf214933d4af@redhat.com>
+Date: Tue, 11 Nov 2025 08:13:25 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/5] RISC-V: NEORV32 CPU, peripherials, and machine
+To: Michael Levit <michael@videogpu.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, philmd@linaro.org,
+ pbonzini@redhat.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, smishash@gmail.com
+References: <20251109191532.32419-1-michael@videogpu.com>
+ <d3f15618-3f1e-4e41-9e0b-228923c78e42@redhat.com>
+ <CA+KCYksKitF6YO390y9JhHWaE2bvKw1nPJ0Axq8FvJyCgEEfqg@mail.gmail.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CA+KCYksKitF6YO390y9JhHWaE2bvKw1nPJ0Axq8FvJyCgEEfqg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_01,2025-11-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- malwarescore=0 spamscore=0
- mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511110047
-X-Authority-Analysis: v=2.4 cv=c7+mgB9l c=1 sm=1 tr=0 ts=6912d593 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
- a=A3X0-5CtyMG_TZ3YDawA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: BYFQM3QWp1zg9QQetq0jN3TAyQiGpIK2
-X-Proofpoint-ORIG-GUID: BYFQM3QWp1zg9QQetq0jN3TAyQiGpIK2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDAzNyBTYWx0ZWRfXxVqqfR43JXih
- 5DJYzk7bUayrJf9ZbOgHOViXKF/tnrGfaNaJfZWaut6ANQxGGx1cqQ2gXbc3DhZYFLswgu81cLx
- Uua38HQomTlDNrb3OnP1+Ioi1F8bBzXdSnlAPL1AhmqPcy8Un1igBJh+o5DssLrjn+mer4+WH6i
- jl/Iq4gJGjr8ozY0xzDkHfoD4nhxIJFpMf/Kyey+W3J+Zhw7b1mH1ynngjz1R0cFiLVXlwDTFWH
- KTk6+7KwaqsfTOazib7na3Ri/5H5XQCA8hBgny/LINq+SD5SjhXDnh036saZWHeAwlddetACyWa
- LdMvwF3LM/AwH13JNU2pM7dwwKn79cluKKYFiOVym2A3q9qaGYZa0XsUNlEZAyAX68xbFdKZv8l
- dLhTuL+azuhrvCzvcmdcystHWy1/Bg==
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,66 +163,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PMU MSRs are set by QEMU only at levels >= KVM_PUT_RESET_STATE,
-excluding runtime. Therefore, updating these MSRs without stopping events
-should be acceptable.
+On 10/11/2025 19.46, Michael Levit wrote:
+> 
+>     Are these binaries available publically somewhere on the internet? 
+> 
+> 
+> Currently, as far as I know, there are no prebuilt binaries — only source
+> files for the bootloader and firmware examples in the NEORV32 repository.
+> I compile the binaries and prepare the flash image locally.
+> 
+>     If so,
+>     could you please add a test in tests/functional/riscv32 that make sure that
+>     the machine is basically working, so we don't face any regressions in the
+>     future?
+> 
+> 
+> I can upload the generated image to my GitHub repository, or alternatively
+> to some QEMU-related storage if there’s a preferred location?
 
-In addition, KVM creates kernel perf events with host mode excluded
-(exclude_host = 1). While the events remain active, they don't increment
-the counter during QEMU vCPU userspace mode.
+The QEMU project does not maintain a storage for such third party binaries, 
+so if you could put them on your GitHub repo, that would be great!
 
-Finally, The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM
-processes these MSRs one by one in a loop, only saving the config and
-triggering the KVM_REQ_PMU request. This approach does not immediately stop
-the event before updating PMC. This approach is true since Linux kernel
-commit 68fb4757e867 ("KVM: x86/pmu: Defer reprogram_counter() to
-kvm_pmu_handle_event"), that is, v6.2.
+  Thanks,
+   Thomas
 
-No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
-migrate vPMU state"), because this isn't a bugfix.
 
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
----
-Changed since v3:
-  - Re-order reasons in commit messages.
-  - Mention KVM's commit 68fb4757e867 (v6.2).
-  - Keep Zhao's review as there isn't code change.
-Changed since v6:
-  - Add Reviewed-by from Dapeng Mi.
-
- target/i386/kvm/kvm.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 5258023fe7..d0df53807f 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4213,13 +4213,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-         }
- 
-         if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)) && pmu_version > 0) {
--            if (pmu_version > 1) {
--                /* Stop the counter.  */
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
--            }
--
--            /* Set the counter values.  */
-             for (i = 0; i < num_pmu_fixed_counters; i++) {
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
-                                   env->msr_fixed_counters[i]);
-@@ -4235,8 +4228,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-                                   env->msr_global_status);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
-                                   env->msr_global_ovf_ctrl);
--
--                /* Now start the PMU.  */
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
-                                   env->msr_fixed_ctr_ctrl);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL,
--- 
-2.39.3
+> The test image is around 4 MB, plus a few kilobytes for the bootloader.
+> I will add the test of course.
+> 
+> Thanks for the review and feedback!
+> 
 
 
