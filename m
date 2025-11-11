@@ -2,119 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC289C4F6F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 19:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C13FC4F720
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 19:31:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIt4i-0002H9-8s; Tue, 11 Nov 2025 13:26:40 -0500
+	id 1vIt8R-0006aq-TD; Tue, 11 Nov 2025 13:30:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vIt4f-0002D3-SA
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:26:37 -0500
-Received: from 5.mo552.mail-out.ovh.net ([188.165.45.220])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vIt4d-0007OQ-3X
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:26:36 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.109.254.74])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d5Zk03D07z5xHY;
- Tue, 11 Nov 2025 18:26:32 +0000 (UTC)
-Received: from kaod.org (37.59.142.111) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Tue, 11 Nov
- 2025 19:26:31 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-111S0052f381235-30e2-4440-9971-7f1797af687b,
- FED24A3CA347B2ADB49E2A92EE4521FA9BC47B0E) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <660f1bfc-383f-4681-98e7-19aa4555b5fe@kaod.org>
-Date: Tue, 11 Nov 2025 19:26:30 +0100
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vIt82-0006E0-1z
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:30:08 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vIt7w-0007fr-02
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:30:05 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-781ea2cee3fso33238b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 10:29:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1762885797; x=1763490597; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vpp9z0s0YDFeqz471tGX8huKPGNyqldTray744E+pAY=;
+ b=fpnhlVJMyKbESuRITcgZlOVoLk2AwuNpv2zRXGwxAyQiA6q58Ej05bzLy+sILdluSn
+ KDAEkrl3c0oEVchrSsC6WTsrfgzMHQ15jxcHiLJCVWINyfhntExZUZQvyfMn87NirwR4
+ iTOJxV1sK6DpLvzaKRyJ1pLkW2o0slk+pielIKOilpUqwEn2ZtOelj1fs2dQ2gtU4dgk
+ nKhuOuELB0mpxghpQbm4F+wLO6x1b1Sp9v6MabBmAMqMMjU7F/iGptT3sVnbjcf8xxY8
+ SY56+MfKCptFl2WvQ5ksUe10uPtQAwdcZxW9i+DZHVsOhIZjqR0iJJo35L2Gx1Rk1/Px
+ at1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762885797; x=1763490597;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vpp9z0s0YDFeqz471tGX8huKPGNyqldTray744E+pAY=;
+ b=D2CI+By+verWtHFhMvaPlS9qXGlgfIaN2qf2ZdkJ0dLsGoNtI0YGcIQEvpc8gsAmoN
+ lFiDWucUTe2DE4982Tm7/XWmUCu94uhYiJvBTFRqSsVRzjhepQIOSjx1fGxRzfLhY5ZI
+ xN8vPoZOhSce0p9euI1BEBgoVGfsYD81NqHcSfqyDW53wjaOt3u2efReSDKzQfGB6u4x
+ x6hmH8gNgKUl9Wx+GUJfGKMCTjabF5MM/TPMJ0I7tAcRZV4ZggaufI4p/d5NIj0xbSt8
+ 61lPoro2CwDIEMXeOnPC97h8tvf9iVOfupUyaqHKF/hgVMOyEF1uhZKdxj1yBMrZAcq4
+ 8mdQ==
+X-Gm-Message-State: AOJu0Yw1S1iVlS2QoFimrbr3gZ1MdBVJMWuiDkfM2EWlzSWPEm+FEL6z
+ unZ/iiZlhlRhyPNmoHU1YHiXFawOWwklsx61EF21wotR2AoAa+NVeK10fOJ7C+xz7OpofkF3qJz
+ +46TW1i0=
+X-Gm-Gg: ASbGncsLPo/xrbTddS3fKaUT5UNe8X/1Y55CnEPtFd29XvpCyJ6qDsxzTvuLQ0rdMKO
+ BaX+tWOOWZDQ8diFXxulp8wnV1UHppHEKlPRM26nlaItZdsLttZvS9fJtvjqhkftvoKimJH+EVQ
+ IZXWSLPuJDlSa+YPFTmZqSrdtS7OfrF9frKgDrrPrD0kLBISoL+UCIGyUiS0h6h3l2mEme9fvkz
+ F1Q097FZru2UMBZPjydOOixGTxrcApRRor8gL7eml7XEo3MROcX6OHbbmCMtIVbQdfMY3FrGnm2
+ EpjEjdPi6z8cu/RYW+8ns6Wr+tu5jbGU+1IwsYrBYBSNzF71/3C+aJBA9wcqC08Y/9LaZYXilBG
+ fcHYOsSmqJTKq3FafoRSAztQDLpZ6p4wqjUPhLVUJtNu59asnnGNhlj5JP8ztJ9RzzJE73qc3dF
+ PlM9VVW2N6NL9vGIVHHMTAEQH0n1iiActuMQEEZA==
+X-Google-Smtp-Source: AGHT+IFhYKUXIAtdPAOiVrYhqI5nD3tLUH8DT3WcVyxENEILvm9Y3b8WFhRn7m8JGiYSncob+U0s1g==
+X-Received: by 2002:a17:90b:4f45:b0:32e:9f1e:4ee4 with SMTP id
+ 98e67ed59e1d1-343dde816f8mr401471a91.17.1762885796824; 
+ Tue, 11 Nov 2025 10:29:56 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([179.93.21.233])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3434c2ffdecsm15207419a91.2.2025.11.11.10.29.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Nov 2025 10:29:56 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 0/5] hw/riscv: Experimental Server Platform Reference Board
+Date: Tue, 11 Nov 2025 15:29:39 -0300
+Message-ID: <20251111182944.2895892-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/arm: enable eeproms for quanta-q71l
-To: Yubin Zou <yubinz@google.com>
-CC: <qemu-devel@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>, Steven
- Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
- <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, <qemu-arm@nongnu.org>, Patrick Venture
- <venture@google.com>
-References: <20250916-quanta-q71l-eeproms-v1-0-3648692cc441@google.com>
- <20250916-quanta-q71l-eeproms-v1-2-3648692cc441@google.com>
- <08b6e571-bf4f-4e51-8a70-8c2c5c675277@kaod.org>
- <CABU_6BJ5zZ2VWHo4pS7r815RtTjdv5iZj=wYbXm5xc=X0+dh9w@mail.gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <CABU_6BJ5zZ2VWHo4pS7r815RtTjdv5iZj=wYbXm5xc=X0+dh9w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.111]
-X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 03eaf675-1893-473c-96a4-151a1da819ad
-X-Ovh-Tracer-Id: 9212113041593174962
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF8x/K3hG6UpYUo/OpzLMK6i/V4Uo+nf0BAUh4LR8ybaY4Lv9va95h4EL4U5qS3P6kd4eEM9ETzGSM+aJ8aD4u35fwx4Fa7ldD6LMxrKHAZ0x7vTg7rEs+Oi5ldGgPKh1Am/KAg2ZVYhDMypdDVXtF91QdcHytMEBOaOHqe9X/5aVNLjLnf8AIge9fOxDfmDvPGi8CfQRCxJzrqTai4iKpHCeCL/st5xaLA1+XVO+IxHTa7ZMx2TQbh0UJ2If40s34BsTYdye8ac+G1cmYU5ZssSNLwULf+qnKGayil9uqVW85W7KLhSihUUUMFGFJngKbc5UtjE4mRUsnIM91R/BFaaY/0xYnIGAMiBt2CCOxycs/Kmb6i8cQv8kKzm2ozKsClUracFvEJpHtRDSx1587paS/0Q9Ds4KX6YRafuR3r59g8bb07waMxeKNEZptDGZuE1MmXuAZOaM2SbD/R5dlX6gaDvqCziii8Lx0G6zyvBp5CMcT+cSPDk4ULLxACXgMlWG3yh2BVjfwRBpDs74M5areneLE6S5uIsmfnVuT9DcWGGfn4ArIENFNAJn7KwQrZVDiiHDfX65d/QtK3pBqvlVGyW6d8K0ZzRXwHNKW7bVtBQJgAVnGAprMx+5ZKIwoOgOyWH7PmoYIhI5o4a4lX6d8++RglQs5/1mXPyPOnZw
-DKIM-Signature: a=rsa-sha256; bh=xzuxq2wN24eLC3GyXfKKyr/bCaZ2uoa++HmwNnN5nJU=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1762885592; v=1;
- b=UG+2ttptFajJTAlzl76qnG8fvVWYQbbzcJWWJVy4LgsyQ6wkfoXNWUE1YgvE7km/7rlmIG8H
- zpl0d6Smy1FV4CdaTTwWGXD8Mqx8La1g8cO2JOWXnK93BwtbeM9wu2NMP28ifg6Sf9zEEK7F3RW
- TxnT7n3oIcNbpnQnhvSIkOq3guEM/ZbNy9RAa2Dv8YyJ4AOab1x+lx51TOom5h6AVF3vrlF0BhP
- +4jZYHWfa8NsW0x+CwbCbKcrxMJycJkTdoCZMLKnOESJ3guuCIbyEENhGbNu3do3Jva5kGZLW/B
- xA4BkSRGZo0S4l0z60a+mOEDyetYPvqsb3AXOH+RHzdDA==
-Received-SPF: pass client-ip=188.165.45.220; envelope-from=clg@kaod.org;
- helo=5.mo552.mail-out.ovh.net
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,80 +100,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi,
 
-On 10/1/25 00:17, Yubin Zou wrote:
-> Yes, I will include the patch containing the utility function of at24c_eeprom_init_one.
+In this new version we addressed the comments from Chao Liu in patches 2
+and 4.
 
-Will you send an update or have you given up on the idea ?
+We're also owning up the fact that the board is being contributed in an
+incomplete status, given that we're missing 'sdext'.In theory we
+shouldn't try to upstream it until we have 'sdext' implemented but this
+board seems to be used by a lot of folks for for firmware development
+and whatnot. Thus, I changed the board description in patch 3 to add an
+'EXPERIMENTAL' tag.
+
+This is how the board is presented with -M help:
+
+$ ./build/qemu-system-riscv64 -M help Supported machines are:
+amd-microblaze-v-generic AMD Microblaze-V generic platform
+microchip-icicle-kit Microchip PolarFire SoC Icicle Kit none
+empty machine rvsp-ref             RISC-V Server SoC Reference board
+(EXPERIMENTAL) (...)
+
+Patch 5 adds documentation for the board. Again, making it clear that
+this is an experimental board that will be subject to changes before
+being 100% compliant with the spec.
+
+Patches based on current master.
+
+Changes in v4:
+- patch 2:
+  - changed rvsp-ref CPU base type to BARE
+  - added a comment mentioning the lack of 'sdext'
+- patch 3:
+  - changed the board description to add 'experimental'
+- patch 4:
+  - fixed RVSP_IOMMU_SYS memmap addr: 0102000 -> 0x102000
+- patch 5 (new):
+  - add board documentation
+- v3 link: https://lore.kernel.org/qemu-riscv/20250528200129.1548259-1-dbarboza@ventanamicro.com/ 
 
 
-Thanks,
+Daniel Henrique Barboza (3):
+  target/riscv/cpu.c: remove 'bare' condition for .profile
+  hw/riscv/server_platform_ref.c: add riscv-iommu-sys
+  docs: add rvsp-ref.rst
 
-C.
+Fei Wu (2):
+  target/riscv: Add server platform reference cpu
+  hw/riscv: experimental server platform reference machine
 
+ configs/devices/riscv64-softmmu/default.mak |    1 +
+ docs/system/riscv/rvsp-ref.rst              |   28 +
+ docs/system/target-riscv.rst                |    1 +
+ hw/riscv/Kconfig                            |   15 +
+ hw/riscv/meson.build                        |    1 +
+ hw/riscv/server_platform_ref.c              | 1346 +++++++++++++++++++
+ target/riscv/cpu-qom.h                      |    1 +
+ target/riscv/cpu.c                          |   15 +-
+ 8 files changed, 1407 insertions(+), 1 deletion(-)
+ create mode 100644 docs/system/riscv/rvsp-ref.rst
+ create mode 100644 hw/riscv/server_platform_ref.c
 
-> 
-> Yubin
-> 
-> On Tue, Sep 16, 2025 at 11:07 PM Cédric Le Goater <clg@kaod.org <mailto:clg@kaod.org>> wrote:
-> 
->     Hi,
-> 
->     On 9/16/25 19:50, Yubin Zou wrote:
->      > From: Patrick Venture <venture@google.com <mailto:venture@google.com>>
->      >
->      > Tested: Quanta-q71l firmware booted to login and was populated via the
->      > -drives for the corresponding eeproms.
->      > Signed-off-by: Patrick Venture <venture@google.com <mailto:venture@google.com>>
->      > ---
->      >   hw/arm/aspeed.c | 10 +++++-----
->      >   1 file changed, 5 insertions(+), 5 deletions(-)
->      >
->      > diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
->      > index bae59ae7394882e3fc93863049a37ff5a8737ff8..8cef387a0b431576a873553704920886222cca86 100644
->      > --- a/hw/arm/aspeed.c
->      > +++ b/hw/arm/aspeed.c
->      > @@ -562,16 +562,16 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
->      >       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4f);
->      >
->      >       /* Baseboard FRU */
->      > -    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x54, 8192);
->      > +    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 1), 1, 0x54, 8192, 0);
-> 
->     Where is at24c_eeprom_init_one() implementation ?
-> 
-> 
->     Thanks,
-> 
->     C.
-> 
-> 
->      >       /* Frontpanel FRU */
->      > -    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x57, 8192);
->      > +    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 1), 1, 0x57, 8192, 1);
->      >       /* TODO: Add Memory Riser i2c mux and eeproms. */
->      >
->      >       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9546", 0x74);
->      >       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9548", 0x77);
->      >
->      >       /* Add BIOS FRU */
->      > -    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 3), 0x56, 8192);
->      > +    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 3, 0x56, 8192, 2);
->      >
->      >       /* i2c-7 */
->      >       i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), "pca9546", 0x70);
->      > @@ -581,9 +581,9 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
->      >       /*        - i2c@3: pmbus@59 */
->      >
->      >       /* PDB FRU */
->      > -    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 7), 0x52, 8192);
->      > +    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 7), 7, 0x52, 8192, 3);
->      >       /* BMC FRU */
->      > -    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50, 8192);
->      > +    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 8), 8, 0x50, 8192, 4);
->      >   }
->      >
->      >   static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
->      >
-> 
+-- 
+2.51.1
 
 
