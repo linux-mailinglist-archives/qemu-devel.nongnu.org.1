@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5ADC4CFD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB083C4CFE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:23:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIlVs-0000ef-Q7; Tue, 11 Nov 2025 05:22:13 -0500
+	id 1vIlWB-0000mp-Ka; Tue, 11 Nov 2025 05:22:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIlVr-0000cq-8F
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:22:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIlVs-0000g1-Ti
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:22:13 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIlVo-0007YI-Fk
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:22:10 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIlVr-0007Yu-0P
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:22:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762856527;
+ s=mimecast20190719; t=1762856530;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zdA/0YurBoYCyU7c6uV4yb0KbzFh7JxeG3Sw0XPSv+Q=;
- b=MQ2j3mswrtsqCYUiiGVoWaSwGsePr7pihccwhYJtO6jNuoG1iJt9fXASuXeh+sNumCK++t
- 9ULhMp5bHgjHkT07IWUWXYcWO9HZuRaCJPSWXX0DodGaLWQ+hp4D1jLnkvnfQpFX9xhPmL
- mUPXdnj1VZkkmXs0NETxrRz9m+76glQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=0oRc0cVg4BRzb1rR189tQt8bOHQIgTDWGlHbTWP4PKg=;
+ b=XIf37awIqWSGYqMOTCRFQhlQGEG8DrPa5Yj+MqIOj0la4cutujnr4Q3PQkzkocQAxqFlK3
+ IjM4iPHZQmfczFOgdYXtTpLoJmnqNpa3gt7jHahnPZgh3b44Fkq4NHQumYd+rOrR0Ewd5U
+ K0cYYCWK9EJIWGl8tlzrY4tKoEGR6cQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-oDJEeTONO1upspQL3aF3DQ-1; Tue,
- 11 Nov 2025 05:22:03 -0500
-X-MC-Unique: oDJEeTONO1upspQL3aF3DQ-1
-X-Mimecast-MFC-AGG-ID: oDJEeTONO1upspQL3aF3DQ_1762856523
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-221-Wkk0MzCMM3q6jtaiiWNPmg-1; Tue,
+ 11 Nov 2025 05:22:06 -0500
+X-MC-Unique: Wkk0MzCMM3q6jtaiiWNPmg-1
+X-Mimecast-MFC-AGG-ID: Wkk0MzCMM3q6jtaiiWNPmg_1762856525
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1A4F4193E8AC; Tue, 11 Nov 2025 10:22:03 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0BA811956094; Tue, 11 Nov 2025 10:22:05 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.97])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCBAA30044E0; Tue, 11 Nov 2025 10:22:01 +0000 (UTC)
+ id BD27F30044E1; Tue, 11 Nov 2025 10:22:03 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 1/4] tests/functional: Fix problems in testcase.py reported by
- pylint
-Date: Tue, 11 Nov 2025 11:21:55 +0100
-Message-ID: <20251111102158.92091-2-thuth@redhat.com>
+Subject: [PULL 2/4] tests/functional/aarch64/test_device_passthrough: Fix
+ warnings from pylint
+Date: Tue, 11 Nov 2025 11:21:56 +0100
+Message-ID: <20251111102158.92091-3-thuth@redhat.com>
 In-Reply-To: <20251111102158.92091-1-thuth@redhat.com>
 References: <20251111102158.92091-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -83,380 +82,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-- put 3rd party "import pycotap" after the standard imports
-- "help" is a built-in function in Python, don't use it as a variable name
-- put the doc strings in the right locations (after the "def" line)
-- use isinstance() instead of checking via type()
+Remove unused imports, write constants with capital letters and make
+sure that the code uses the right indentation / formatting.
 
-Message-Id: <a3413bbd-e98c-4267-81c7-aa42aeda8a09@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251030143203.297692-1-thuth@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 243 +++++++++++++------------
- 1 file changed, 122 insertions(+), 121 deletions(-)
+ .../aarch64/test_device_passthrough.py        | 26 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 1d773dd697d..58f27401004 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -14,7 +14,6 @@
- import logging
- import os
- from pathlib import Path
--import pycotap
- import shutil
- from subprocess import run
- import sys
-@@ -23,6 +22,8 @@
- import unittest
- import uuid
+diff --git a/tests/functional/aarch64/test_device_passthrough.py b/tests/functional/aarch64/test_device_passthrough.py
+index 05a3f52d5e2..10c73728f36 100755
+--- a/tests/functional/aarch64/test_device_passthrough.py
++++ b/tests/functional/aarch64/test_device_passthrough.py
+@@ -10,13 +10,13 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
  
-+import pycotap
+ from os.path import join
++from random import randbytes
+ 
+ from qemu_test import QemuSystemTest, Asset
+-from qemu_test import exec_command, wait_for_console_pattern
+-from qemu_test import exec_command_and_wait_for_pattern
+-from random import randbytes
++from qemu_test import wait_for_console_pattern
 +
- from qemu.machine import QEMUMachine
- from qemu.utils import hvf_available, kvm_available, tcg_available
  
-@@ -34,50 +35,50 @@
+-guest_script = '''
++GUEST_SCRIPT = '''
+ #!/usr/bin/env bash
  
- class QemuBaseTest(unittest.TestCase):
+ set -euo pipefail
+@@ -56,7 +56,7 @@
+ -device vfio-pci,host=$pci_iommufd,iommufd=iommufd0
+ '''
  
--    '''
--    @params compressed: filename, Asset, or file-like object to uncompress
--    @params format: optional compression format (gzip, lzma)
-+    def uncompress(self, compressed, format=None):
-+        '''
-+        @params compressed: filename, Asset, or file-like object to uncompress
-+        @params format: optional compression format (gzip, lzma)
+-nested_guest_script = '''
++NESTED_GUEST_SCRIPT = '''
+ #!/usr/bin/env bash
  
--    Uncompresses @compressed into the scratch directory.
-+        Uncompresses @compressed into the scratch directory.
+ set -euo pipefail
+@@ -75,6 +75,7 @@
+ echo device_passthrough_test_ok
+ '''
  
--    If @format is None, heuristics will be applied to guess the format
--    from the filename or Asset URL. @format must be non-None if @uncompressed
--    is a file-like object.
-+        If @format is None, heuristics will be applied to guess the
-+        format from the filename or Asset URL. @format must be non-None
-+        if @uncompressed is a file-like object.
- 
--    Returns the fully qualified path to the uncompressed file
--    '''
--    def uncompress(self, compressed, format=None):
-+        Returns the fully qualified path to the uncompressed file
-+        '''
-         self.log.debug(f"Uncompress {compressed} format={format}")
--        if type(compressed) == Asset:
-+        if isinstance(compressed, Asset):
-             compressed.fetch()
- 
--        (name, ext) = os.path.splitext(str(compressed))
-+        (name, _ext) = os.path.splitext(str(compressed))
-         uncompressed = self.scratch_file(os.path.basename(name))
- 
-         uncompress(compressed, uncompressed, format)
- 
-         return uncompressed
- 
--    '''
--    @params archive: filename, Asset, or file-like object to extract
--    @params format: optional archive format (tar, zip, deb, cpio)
--    @params sub_dir: optional sub-directory to extract into
--    @params member: optional member file to limit extraction to
--
--    Extracts @archive into the scratch directory, or a directory beneath
--    named by @sub_dir. All files are extracted unless @member specifies
--    a limit.
--
--    If @format is None, heuristics will be applied to guess the format
--    from the filename or Asset URL. @format must be non-None if @archive
--    is a file-like object.
--
--    If @member is non-None, returns the fully qualified path to @member
--    '''
-     def archive_extract(self, archive, format=None, sub_dir=None, member=None):
-+        '''
-+        @params archive: filename, Asset, or file-like object to extract
-+        @params format: optional archive format (tar, zip, deb, cpio)
-+        @params sub_dir: optional sub-directory to extract into
-+        @params member: optional member file to limit extraction to
 +
-+        Extracts @archive into the scratch directory, or a directory beneath
-+        named by @sub_dir. All files are extracted unless @member specifies
-+        a limit.
+ class Aarch64DevicePassthrough(QemuSystemTest):
+ 
+     # https://github.com/pbo-linaro/qemu-linux-stack/tree/device_passthrough
+@@ -86,7 +87,7 @@ class Aarch64DevicePassthrough(QemuSystemTest):
+     ASSET_DEVICE_PASSTHROUGH_STACK = Asset(
+         ('https://github.com/pbo-linaro/qemu-linux-stack/'
+          'releases/download/build/device_passthrough-a9612a2.tar.xz'),
+-         'f7d2f70912e7231986e6e293e1a2c4786dd02bec113a7acb6bfc619e96155455')
++        'f7d2f70912e7231986e6e293e1a2c4786dd02bec113a7acb6bfc619e96155455')
+ 
+     # This tests the device passthrough implementation, by booting a VM
+     # supporting it with two nvme disks attached, and launching a nested VM
+@@ -108,10 +109,14 @@ def test_aarch64_device_passthrough(self):
+         guest_cmd = join(stack, 'guest.sh')
+         nested_guest_cmd = join(stack, 'nested_guest.sh')
+         # we generate two random disks
+-        with open(disk_vfio, "wb") as d: d.write(randbytes(512))
+-        with open(disk_iommufd, "wb") as d: d.write(randbytes(1024))
+-        with open(guest_cmd, 'w') as s: s.write(guest_script)
+-        with open(nested_guest_cmd, 'w') as s: s.write(nested_guest_script)
++        with open(disk_vfio, "wb") as d:
++            d.write(randbytes(512))
++        with open(disk_iommufd, "wb") as d:
++            d.write(randbytes(1024))
++        with open(guest_cmd, 'w', encoding='utf-8') as s:
++            s.write(GUEST_SCRIPT)
++        with open(nested_guest_cmd, 'w', encoding='utf-8') as s:
++            s.write(NESTED_GUEST_SCRIPT)
+ 
+         self.vm.add_args('-cpu', 'max')
+         self.vm.add_args('-m', '2G')
+@@ -139,5 +144,6 @@ def test_aarch64_device_passthrough(self):
+         wait_for_console_pattern(self, 'device_passthrough_test_ok',
+                                  failure_message='Kernel panic')
+ 
 +
-+        If @format is None, heuristics will be applied to guess the
-+        format from the filename or Asset URL. @format must be non-None
-+        if @archive is a file-like object.
-+
-+        If @member is non-None, returns the fully qualified path to @member
-+        '''
-         self.log.debug(f"Extract {archive} format={format}" +
-                        f"sub_dir={sub_dir} member={member}")
--        if type(archive) == Asset:
-+        if isinstance(archive, Asset):
-             archive.fetch()
-         if sub_dir is None:
-             archive_extract(archive, self.scratch_file(), format, member)
-@@ -89,108 +90,108 @@ def archive_extract(self, archive, format=None, sub_dir=None, member=None):
-             return self.scratch_file(member)
-         return None
- 
--    '''
--    Create a temporary directory suitable for storing UNIX
--    socket paths.
--
--    Returns: a tempfile.TemporaryDirectory instance
--    '''
-     def socket_dir(self):
-+        '''
-+        Create a temporary directory suitable for storing UNIX
-+        socket paths.
-+
-+        Returns: a tempfile.TemporaryDirectory instance
-+        '''
-         if self.socketdir is None:
-             self.socketdir = tempfile.TemporaryDirectory(
-                 prefix="qemu_func_test_sock_")
-         return self.socketdir
- 
--    '''
--    @params args list of zero or more subdirectories or file
--
--    Construct a path for accessing a data file located
--    relative to the source directory that is the root for
--    functional tests.
--
--    @args may be an empty list to reference the root dir
--    itself, may be a single element to reference a file in
--    the root directory, or may be multiple elements to
--    reference a file nested below. The path components
--    will be joined using the platform appropriate path
--    separator.
--
--    Returns: string representing a file path
--    '''
-     def data_file(self, *args):
-+        '''
-+        @params args list of zero or more subdirectories or file
-+
-+        Construct a path for accessing a data file located
-+        relative to the source directory that is the root for
-+        functional tests.
-+
-+        @args may be an empty list to reference the root dir
-+        itself, may be a single element to reference a file in
-+        the root directory, or may be multiple elements to
-+        reference a file nested below. The path components
-+        will be joined using the platform appropriate path
-+        separator.
-+
-+        Returns: string representing a file path
-+        '''
-         return str(Path(Path(__file__).parent.parent, *args))
- 
--    '''
--    @params args list of zero or more subdirectories or file
--
--    Construct a path for accessing a data file located
--    relative to the build directory root.
--
--    @args may be an empty list to reference the build dir
--    itself, may be a single element to reference a file in
--    the build directory, or may be multiple elements to
--    reference a file nested below. The path components
--    will be joined using the platform appropriate path
--    separator.
--
--    Returns: string representing a file path
--    '''
-     def build_file(self, *args):
--        return str(Path(BUILD_DIR, *args))
-+        '''
-+        @params args list of zero or more subdirectories or file
- 
--    '''
--    @params args list of zero or more subdirectories or file
-+        Construct a path for accessing a data file located
-+        relative to the build directory root.
- 
--    Construct a path for accessing/creating a scratch file
--    located relative to a temporary directory dedicated to
--    this test case. The directory and its contents will be
--    purged upon completion of the test.
-+        @args may be an empty list to reference the build dir
-+        itself, may be a single element to reference a file in
-+        the build directory, or may be multiple elements to
-+        reference a file nested below. The path components
-+        will be joined using the platform appropriate path
-+        separator.
- 
--    @args may be an empty list to reference the scratch dir
--    itself, may be a single element to reference a file in
--    the scratch directory, or may be multiple elements to
--    reference a file nested below. The path components
--    will be joined using the platform appropriate path
--    separator.
-+        Returns: string representing a file path
-+        '''
-+        return str(Path(BUILD_DIR, *args))
- 
--    Returns: string representing a file path
--    '''
-     def scratch_file(self, *args):
-+        '''
-+        @params args list of zero or more subdirectories or file
-+
-+        Construct a path for accessing/creating a scratch file
-+        located relative to a temporary directory dedicated to
-+        this test case. The directory and its contents will be
-+        purged upon completion of the test.
-+
-+        @args may be an empty list to reference the scratch dir
-+        itself, may be a single element to reference a file in
-+        the scratch directory, or may be multiple elements to
-+        reference a file nested below. The path components
-+        will be joined using the platform appropriate path
-+        separator.
-+
-+        Returns: string representing a file path
-+        '''
-         return str(Path(self.workdir, *args))
- 
--    '''
--    @params args list of zero or more subdirectories or file
--
--    Construct a path for accessing/creating a log file
--    located relative to a temporary directory dedicated to
--    this test case. The directory and its log files will be
--    preserved upon completion of the test.
--
--    @args may be an empty list to reference the log dir
--    itself, may be a single element to reference a file in
--    the log directory, or may be multiple elements to
--    reference a file nested below. The path components
--    will be joined using the platform appropriate path
--    separator.
--
--    Returns: string representing a file path
--    '''
-     def log_file(self, *args):
-+        '''
-+        @params args list of zero or more subdirectories or file
-+
-+        Construct a path for accessing/creating a log file
-+        located relative to a temporary directory dedicated to
-+        this test case. The directory and its log files will be
-+        preserved upon completion of the test.
-+
-+        @args may be an empty list to reference the log dir
-+        itself, may be a single element to reference a file in
-+        the log directory, or may be multiple elements to
-+        reference a file nested below. The path components
-+        will be joined using the platform appropriate path
-+        separator.
-+
-+        Returns: string representing a file path
-+        '''
-         return str(Path(self.outputdir, *args))
- 
--    '''
--    @params plugin name
--
--    Return the full path to the plugin taking into account any host OS
--    specific suffixes.
--    '''
-     def plugin_file(self, plugin_name):
-+        '''
-+        @params plugin name
-+
-+        Return the full path to the plugin taking into account any host OS
-+        specific suffixes.
-+        '''
-         sfx = dso_suffix()
-         return os.path.join('tests', 'tcg', 'plugins', f'{plugin_name}.{sfx}')
- 
-     def assets_available(self):
-         for name, asset in vars(self.__class__).items():
--            if name.startswith("ASSET_") and type(asset) == Asset:
-+            if name.startswith("ASSET_") and isinstance(asset, Asset):
-                 if not asset.available():
-                     self.log.debug(f"Asset {asset.url} not available")
-                     return False
-@@ -216,9 +217,9 @@ def setUp(self):
-         self.log.setLevel(logging.DEBUG)
-         self._log_fh = logging.FileHandler(self.log_filename, mode='w')
-         self._log_fh.setLevel(logging.DEBUG)
--        fileFormatter = logging.Formatter(
-+        file_formatter = logging.Formatter(
-             '%(asctime)s - %(levelname)s: %(name)s.%(funcName)s %(message)s')
--        self._log_fh.setFormatter(fileFormatter)
-+        self._log_fh.setFormatter(file_formatter)
-         self.log.addHandler(self._log_fh)
- 
-         # Capture QEMUMachine logging
-@@ -260,7 +261,7 @@ def main():
-         res = unittest.main(module = None, testRunner = tr, exit = False,
-                             argv=[sys.argv[0], path] + sys.argv[1:])
-         failed = {}
--        for (test, message) in res.result.errors + res.result.failures:
-+        for (test, _message) in res.result.errors + res.result.failures:
-             if hasattr(test, "log_filename") and not test.id() in failed:
-                 print('More information on ' + test.id() + ' could be found here:'
-                       '\n %s' % test.log_filename, file=sys.stderr)
-@@ -279,7 +280,9 @@ def setUp(self):
-     def add_ldpath(self, ldpath):
-         self._ldpath.append(os.path.abspath(ldpath))
- 
--    def run_cmd(self, bin_path, args=[]):
-+    def run_cmd(self, bin_path, args=None):
-+        if args is None:
-+            args = []
-         return run([self.qemu_bin]
-                    + ["-L %s" % ldpath for ldpath in self._ldpath]
-                    + [bin_path]
-@@ -304,8 +307,8 @@ def setUp(self):
-         self._console_log_fh = logging.FileHandler(self.console_log_name,
-                                                    mode='w')
-         self._console_log_fh.setLevel(logging.DEBUG)
--        fileFormatter = logging.Formatter('%(asctime)s: %(message)s')
--        self._console_log_fh.setFormatter(fileFormatter)
-+        file_formatter = logging.Formatter('%(asctime)s: %(message)s')
-+        self._console_log_fh.setFormatter(file_formatter)
-         console_log.addHandler(self._console_log_fh)
- 
-     def set_machine(self, machinename):
-@@ -343,17 +346,15 @@ def require_accelerator(self, accelerator):
-                           "available" % accelerator)
- 
-     def require_netdev(self, netdevname):
--        help = run([self.qemu_bin,
--                    '-M', 'none', '-netdev', 'help'],
--                   capture_output=True, check=True, encoding='utf8').stdout;
--        if help.find('\n' + netdevname + '\n') < 0:
-+        helptxt = run([self.qemu_bin, '-M', 'none', '-netdev', 'help'],
-+                      capture_output=True, check=True, encoding='utf8').stdout
-+        if helptxt.find('\n' + netdevname + '\n') < 0:
-             self.skipTest('no support for " + netdevname + " networking')
- 
-     def require_device(self, devicename):
--        help = run([self.qemu_bin,
--                    '-M', 'none', '-device', 'help'],
--                   capture_output=True, check=True, encoding='utf8').stdout;
--        if help.find(devicename) < 0:
-+        helptxt = run([self.qemu_bin, '-M', 'none', '-device', 'help'],
-+                   capture_output=True, check=True, encoding='utf8').stdout
-+        if helptxt.find(devicename) < 0:
-             self.skipTest('no support for device ' + devicename)
- 
-     def _new_vm(self, name, *args):
-@@ -415,7 +416,7 @@ def tearDown(self):
-             try:
-                 vm.shutdown()
-             except Exception as ex:
--                self.log.error("Failed to teardown VM: %s" % ex)
-+                self.log.error("Failed to teardown VM: %s", ex)
-         logging.getLogger('console').removeHandler(self._console_log_fh)
-         self._console_log_fh.close()
-         super().tearDown()
+ if __name__ == '__main__':
+     QemuSystemTest.main()
 -- 
 2.51.1
 
