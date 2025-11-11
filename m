@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAD6C4FE30
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD04FC4FE19
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:36:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIvzp-0007gJ-5R; Tue, 11 Nov 2025 16:33:49 -0500
+	id 1vIvzq-0007lt-3b; Tue, 11 Nov 2025 16:33:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzg-0007QX-Rs
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:41 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzk-0007Z1-92
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzf-0001vc-AH
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:40 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzh-0001yj-EE
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762896818;
+ s=mimecast20190719; t=1762896820;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VTY5t+mi42Og4AXvn+4mUT3pJyYT+KoDFmfS0kG2Pro=;
- b=JcBE/Z5ZwzT9Ffc0AKUcex4gJT4qO5tetM2Yw66rmUqajCnwPrXIzHRNsCpeg2OgIHD6Xw
- 4lqERnIAy550lMME433/UaN/Q/bnx5clE7NvVQMb4N8GeeDiyxKSktv8WqVRz7h8+KR/TQ
- RbGJNPbzFNEyNCuFDFqAzmErCv9SgiQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=e3Twk6+8ae4PwFeo7u1w75GEqQK8dI54LHe5+TXEM+Q=;
+ b=BDwQWADUmdFWMdBHwO3jSC20VvZC3ckhDEnJKj5G5x4GSb+4kphg9gGUgSn+v9cYodM5/h
+ CxJMvwdzU+sSIJPny5bes5gndc/ByDLdaLuZL8kAIbPVbrNZ2Os461olJXnTylI+Vuwffl
+ /TtNxf5TLPd3xjqo8JsOPxGs5UWopx8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-I29Pz94mMCelgrQOSLk2eg-1; Tue,
- 11 Nov 2025 16:33:35 -0500
-X-MC-Unique: I29Pz94mMCelgrQOSLk2eg-1
-X-Mimecast-MFC-AGG-ID: I29Pz94mMCelgrQOSLk2eg_1762896814
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-gQEaC3j3MB2v3uNOniggfQ-1; Tue,
+ 11 Nov 2025 16:33:37 -0500
+X-MC-Unique: gQEaC3j3MB2v3uNOniggfQ-1
+X-Mimecast-MFC-AGG-ID: gQEaC3j3MB2v3uNOniggfQ_1762896816
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 084BA1800358; Tue, 11 Nov 2025 21:33:34 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 269801956089; Tue, 11 Nov 2025 21:33:36 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.225.214])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6F8B330044E0; Tue, 11 Nov 2025 21:33:32 +0000 (UTC)
+ id 8519130044E7; Tue, 11 Nov 2025 21:33:34 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL v2 15/28] block/io_uring: use non-vectored read/write when
- possible
-Date: Tue, 11 Nov 2025 22:32:25 +0100
-Message-ID: <20251111213238.181992-16-kwolf@redhat.com>
+Subject: [PULL v2 16/28] block: replace TABs with space
+Date: Tue, 11 Nov 2025 22:32:26 +0100
+Message-ID: <20251111213238.181992-17-kwolf@redhat.com>
 In-Reply-To: <20251111213238.181992-1-kwolf@redhat.com>
 References: <20251111213238.181992-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -82,81 +81,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 
-The io_uring_prep_readv2/writev2() man pages recommend using the
-non-vectored read/write operations when possible for performance
-reasons.
+Bring the block files in line with the QEMU coding style, with spaces
+for indentation. This patch partially resolves the issue 371.
 
-I didn't measure a significant difference but it doesn't hurt to have
-this optimization in place.
-
-Suggested-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20251104022933.618123-16-stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/371
+Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+Message-ID: <20230325085224.23842-1-fufuyqqqqqq@gmail.com>
+[thuth: Rebased the patch to the current master branch]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251007163511.334178-1-thuth@redhat.com>
+[kwolf: Fixed up vertical alignemnt]
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/io_uring.c | 34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ include/block/nbd.h |  2 +-
+ block/bochs.c       | 14 +++++------
+ block/file-posix.c  | 58 ++++++++++++++++++++++-----------------------
+ block/file-win32.c  | 38 ++++++++++++++---------------
+ block/qcow.c        | 10 ++++----
+ 5 files changed, 61 insertions(+), 61 deletions(-)
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index dd930ee57e..f1514cf024 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -46,17 +46,28 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
+diff --git a/include/block/nbd.h b/include/block/nbd.h
+index 92987c76fd..ab40842da9 100644
+--- a/include/block/nbd.h
++++ b/include/block/nbd.h
+@@ -296,7 +296,7 @@ enum {
+     NBD_CMD_BLOCK_STATUS = 7,
+ };
  
-     switch (req->type) {
-     case QEMU_AIO_WRITE:
--#ifdef HAVE_IO_URING_PREP_WRITEV2
-     {
-         int luring_flags = (flags & BDRV_REQ_FUA) ? RWF_DSYNC : 0;
--        io_uring_prep_writev2(sqe, fd, qiov->iov,
--                              qiov->niov, offset, luring_flags);
--    }
-+        if (luring_flags != 0 || qiov->niov > 1) {
-+#ifdef HAVE_IO_URING_PREP_WRITEV2
-+            io_uring_prep_writev2(sqe, fd, qiov->iov,
-+                                  qiov->niov, offset, luring_flags);
- #else
--        assert(flags == 0);
--        io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-+            /*
-+             * FUA should only be enabled with HAVE_IO_URING_PREP_WRITEV2, see
-+             * luring_has_fua().
-+             */
-+            assert(luring_flags == 0);
-+
-+            io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
- #endif
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_write(sqe, fd, iov->iov_base, iov->iov_len, offset);
-+        }
-         break;
-+    }
-     case QEMU_AIO_ZONE_APPEND:
-         io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-         break;
-@@ -65,8 +76,15 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
-         if (req->resubmit_qiov.iov != NULL) {
-             qiov = &req->resubmit_qiov;
-         }
--        io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
--                            offset + req->total_read);
-+        if (qiov->niov > 1) {
-+            io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
-+                                offset + req->total_read);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_read(sqe, fd, iov->iov_base, iov->iov_len,
-+                               offset + req->total_read);
-+        }
-         break;
-     }
-     case QEMU_AIO_FLUSH:
+-#define NBD_DEFAULT_PORT	10809
++#define NBD_DEFAULT_PORT 10809
+ 
+ /* Maximum size of a single READ/WRITE data buffer */
+ #define NBD_MAX_BUFFER_SIZE (32 * 1024 * 1024)
+diff --git a/block/bochs.c b/block/bochs.c
+index b099fb52fe..bfda88017d 100644
+--- a/block/bochs.c
++++ b/block/bochs.c
+@@ -300,15 +300,15 @@ static void bochs_close(BlockDriverState *bs)
+ }
+ 
+ static BlockDriver bdrv_bochs = {
+-    .format_name	= "bochs",
+-    .instance_size	= sizeof(BDRVBochsState),
+-    .bdrv_probe		= bochs_probe,
+-    .bdrv_open		= bochs_open,
++    .format_name         = "bochs",
++    .instance_size       = sizeof(BDRVBochsState),
++    .bdrv_probe          = bochs_probe,
++    .bdrv_open           = bochs_open,
+     .bdrv_child_perm     = bdrv_default_perms,
+     .bdrv_refresh_limits = bochs_refresh_limits,
+-    .bdrv_co_preadv = bochs_co_preadv,
+-    .bdrv_close		= bochs_close,
+-    .is_format          = true,
++    .bdrv_co_preadv      = bochs_co_preadv,
++    .bdrv_close          = bochs_close,
++    .is_format           = true,
+ };
+ 
+ static void bdrv_bochs_init(void)
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 8b7c02d19a..12d12970fa 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -133,7 +133,7 @@
+ #define FTYPE_FILE   0
+ #define FTYPE_CD     1
+ 
+-#define MAX_BLOCKSIZE	4096
++#define MAX_BLOCKSIZE 4096
+ 
+ /* Posix file locking bytes. Libvirt takes byte 0, we start from higher bytes,
+  * leaving a few more bytes for its future use. */
+@@ -4562,20 +4562,20 @@ static void coroutine_fn cdrom_co_lock_medium(BlockDriverState *bs, bool locked)
+ }
+ 
+ static BlockDriver bdrv_host_cdrom = {
+-    .format_name        = "host_cdrom",
+-    .protocol_name      = "host_cdrom",
+-    .instance_size      = sizeof(BDRVRawState),
+-    .bdrv_needs_filename = true,
+-    .bdrv_probe_device	= cdrom_probe_device,
+-    .bdrv_parse_filename = cdrom_parse_filename,
+-    .bdrv_open          = cdrom_open,
+-    .bdrv_close         = raw_close,
+-    .bdrv_reopen_prepare = raw_reopen_prepare,
+-    .bdrv_reopen_commit  = raw_reopen_commit,
+-    .bdrv_reopen_abort   = raw_reopen_abort,
+-    .bdrv_co_create_opts = bdrv_co_create_opts_simple,
+-    .create_opts         = &bdrv_create_opts_simple,
+-    .mutable_opts        = mutable_opts,
++    .format_name            = "host_cdrom",
++    .protocol_name          = "host_cdrom",
++    .instance_size          = sizeof(BDRVRawState),
++    .bdrv_needs_filename    = true,
++    .bdrv_probe_device      = cdrom_probe_device,
++    .bdrv_parse_filename    = cdrom_parse_filename,
++    .bdrv_open              = cdrom_open,
++    .bdrv_close             = raw_close,
++    .bdrv_reopen_prepare    = raw_reopen_prepare,
++    .bdrv_reopen_commit     = raw_reopen_commit,
++    .bdrv_reopen_abort      = raw_reopen_abort,
++    .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
++    .create_opts            = &bdrv_create_opts_simple,
++    .mutable_opts           = mutable_opts,
+     .bdrv_co_invalidate_cache = raw_co_invalidate_cache,
+ 
+     .bdrv_co_preadv         = raw_co_preadv,
+@@ -4688,20 +4688,20 @@ static void coroutine_fn cdrom_co_lock_medium(BlockDriverState *bs, bool locked)
+ }
+ 
+ static BlockDriver bdrv_host_cdrom = {
+-    .format_name        = "host_cdrom",
+-    .protocol_name      = "host_cdrom",
+-    .instance_size      = sizeof(BDRVRawState),
+-    .bdrv_needs_filename = true,
+-    .bdrv_probe_device	= cdrom_probe_device,
+-    .bdrv_parse_filename = cdrom_parse_filename,
+-    .bdrv_open          = cdrom_open,
+-    .bdrv_close         = raw_close,
+-    .bdrv_reopen_prepare = raw_reopen_prepare,
+-    .bdrv_reopen_commit  = raw_reopen_commit,
+-    .bdrv_reopen_abort   = raw_reopen_abort,
+-    .bdrv_co_create_opts = bdrv_co_create_opts_simple,
+-    .create_opts         = &bdrv_create_opts_simple,
+-    .mutable_opts       = mutable_opts,
++    .format_name            = "host_cdrom",
++    .protocol_name          = "host_cdrom",
++    .instance_size          = sizeof(BDRVRawState),
++    .bdrv_needs_filename    = true,
++    .bdrv_probe_device      = cdrom_probe_device,
++    .bdrv_parse_filename    = cdrom_parse_filename,
++    .bdrv_open              = cdrom_open,
++    .bdrv_close             = raw_close,
++    .bdrv_reopen_prepare    = raw_reopen_prepare,
++    .bdrv_reopen_commit     = raw_reopen_commit,
++    .bdrv_reopen_abort      = raw_reopen_abort,
++    .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
++    .create_opts            = &bdrv_create_opts_simple,
++    .mutable_opts           = mutable_opts,
+ 
+     .bdrv_co_preadv         = raw_co_preadv,
+     .bdrv_co_pwritev        = raw_co_pwritev,
+diff --git a/block/file-win32.c b/block/file-win32.c
+index af9aea631c..0efb609e1d 100644
+--- a/block/file-win32.c
++++ b/block/file-win32.c
+@@ -741,16 +741,16 @@ static QemuOptsList raw_create_opts = {
+ };
+ 
+ BlockDriver bdrv_file = {
+-    .format_name	= "file",
+-    .protocol_name	= "file",
+-    .instance_size	= sizeof(BDRVRawState),
+-    .bdrv_needs_filename = true,
+-    .bdrv_parse_filename = raw_parse_filename,
+-    .bdrv_open          = raw_open,
+-    .bdrv_refresh_limits = raw_probe_alignment,
+-    .bdrv_close         = raw_close,
+-    .bdrv_co_create_opts = raw_co_create_opts,
+-    .bdrv_has_zero_init = bdrv_has_zero_init_1,
++    .format_name            = "file",
++    .protocol_name          = "file",
++    .instance_size          = sizeof(BDRVRawState),
++    .bdrv_needs_filename    = true,
++    .bdrv_parse_filename    = raw_parse_filename,
++    .bdrv_open              = raw_open,
++    .bdrv_refresh_limits    = raw_probe_alignment,
++    .bdrv_close             = raw_close,
++    .bdrv_co_create_opts    = raw_co_create_opts,
++    .bdrv_has_zero_init     = bdrv_has_zero_init_1,
+ 
+     .bdrv_reopen_prepare = raw_reopen_prepare,
+     .bdrv_reopen_commit  = raw_reopen_commit,
+@@ -914,15 +914,15 @@ done:
+ }
+ 
+ static BlockDriver bdrv_host_device = {
+-    .format_name	= "host_device",
+-    .protocol_name	= "host_device",
+-    .instance_size	= sizeof(BDRVRawState),
+-    .bdrv_needs_filename = true,
+-    .bdrv_parse_filename = hdev_parse_filename,
+-    .bdrv_probe_device	= hdev_probe_device,
+-    .bdrv_open     	= hdev_open,
+-    .bdrv_close		= raw_close,
+-    .bdrv_refresh_limits = hdev_refresh_limits,
++    .format_name            = "host_device",
++    .protocol_name          = "host_device",
++    .instance_size          = sizeof(BDRVRawState),
++    .bdrv_needs_filename    = true,
++    .bdrv_parse_filename    = hdev_parse_filename,
++    .bdrv_probe_device      = hdev_probe_device,
++    .bdrv_open              = hdev_open,
++    .bdrv_close             = raw_close,
++    .bdrv_refresh_limits    = hdev_refresh_limits,
+ 
+     .bdrv_aio_preadv    = raw_aio_preadv,
+     .bdrv_aio_pwritev   = raw_aio_pwritev,
+diff --git a/block/qcow.c b/block/qcow.c
+index 8a3e7591a9..b442bfe835 100644
+--- a/block/qcow.c
++++ b/block/qcow.c
+@@ -1184,11 +1184,11 @@ static const char *const qcow_strong_runtime_opts[] = {
+ };
+ 
+ static BlockDriver bdrv_qcow = {
+-    .format_name	= "qcow",
+-    .instance_size	= sizeof(BDRVQcowState),
+-    .bdrv_probe		= qcow_probe,
+-    .bdrv_open		= qcow_open,
+-    .bdrv_close		= qcow_close,
++    .format_name            = "qcow",
++    .instance_size          = sizeof(BDRVQcowState),
++    .bdrv_probe             = qcow_probe,
++    .bdrv_open              = qcow_open,
++    .bdrv_close             = qcow_close,
+     .bdrv_child_perm        = bdrv_default_perms,
+     .bdrv_reopen_prepare    = qcow_reopen_prepare,
+     .bdrv_co_create         = qcow_co_create,
 -- 
 2.51.1
 
