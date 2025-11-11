@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD04FC4FE19
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D08C4FDFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:35:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIvzq-0007lt-3b; Tue, 11 Nov 2025 16:33:50 -0500
+	id 1vIvzt-000856-TD; Tue, 11 Nov 2025 16:33:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzk-0007Z1-92
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:44 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzm-0007dt-Np
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzh-0001yj-EE
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:43 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzk-000224-9W
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762896820;
+ s=mimecast20190719; t=1762896823;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e3Twk6+8ae4PwFeo7u1w75GEqQK8dI54LHe5+TXEM+Q=;
- b=BDwQWADUmdFWMdBHwO3jSC20VvZC3ckhDEnJKj5G5x4GSb+4kphg9gGUgSn+v9cYodM5/h
- CxJMvwdzU+sSIJPny5bes5gndc/ByDLdaLuZL8kAIbPVbrNZ2Os461olJXnTylI+Vuwffl
- /TtNxf5TLPd3xjqo8JsOPxGs5UWopx8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=lKtvsZ/mQSLh7/SR+SHV5PkkdTjZ3ppItOA25V3o2fM=;
+ b=DgvotE4PLL8tLMe0nZXg+INobsqA2VI7IFKA8kejCTLhIvfC81Tf2kpXHhXuADH3kVa1tJ
+ GJVOeHWvl/UCbaCCA9dm8//qEAWtJ45crghWCARMv8H1CGLahri1MDFhF2+OR/RK6257Hw
+ InzTAZQs8qz//GPmhl4dAH3XKHQ+YhI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-gQEaC3j3MB2v3uNOniggfQ-1; Tue,
- 11 Nov 2025 16:33:37 -0500
-X-MC-Unique: gQEaC3j3MB2v3uNOniggfQ-1
-X-Mimecast-MFC-AGG-ID: gQEaC3j3MB2v3uNOniggfQ_1762896816
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-7HEBf6mVNn6ItE_7jqGzGA-1; Tue,
+ 11 Nov 2025 16:33:39 -0500
+X-MC-Unique: 7HEBf6mVNn6ItE_7jqGzGA-1
+X-Mimecast-MFC-AGG-ID: 7HEBf6mVNn6ItE_7jqGzGA_1762896818
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 269801956089; Tue, 11 Nov 2025 21:33:36 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 401C41956061; Tue, 11 Nov 2025 21:33:38 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.225.214])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8519130044E7; Tue, 11 Nov 2025 21:33:34 +0000 (UTC)
+ id 9FBF730044E0; Tue, 11 Nov 2025 21:33:36 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL v2 16/28] block: replace TABs with space
-Date: Tue, 11 Nov 2025 22:32:26 +0100
-Message-ID: <20251111213238.181992-17-kwolf@redhat.com>
+Subject: [PULL v2 17/28] block: Drop detach_subchain for bdrv_replace_node
+Date: Tue, 11 Nov 2025 22:32:27 +0100
+Message-ID: <20251111213238.181992-18-kwolf@redhat.com>
 In-Reply-To: <20251111213238.181992-1-kwolf@redhat.com>
 References: <20251111213238.181992-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,227 +81,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yeqi Fu <fufuyqqqqqq@gmail.com>
+From: Wesley Hershberger <wesley.hershberger@canonical.com>
 
-Bring the block files in line with the QEMU coding style, with spaces
-for indentation. This patch partially resolves the issue 371.
+Detaching filters using detach_subchain=true can cause segfaults as
+described in #3149.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/371
-Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Message-ID: <20230325085224.23842-1-fufuyqqqqqq@gmail.com>
-[thuth: Rebased the patch to the current master branch]
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251007163511.334178-1-thuth@redhat.com>
-[kwolf: Fixed up vertical alignemnt]
+More specifically, this was observed when executing concurrent
+block-stream and query-named-block-nodes. block-stream adds a
+copy-on-read filter as the main BDS for the blockjob; that filter was
+dropped with detach_subchain=true but not unref'd until the the blockjob
+was free'd. Because query-named-block-nodes assumes that a filter will
+always have exactly one child, it caused a segfault when it observed the
+detached filter. Stacktrace:
+
+0  bdrv_refresh_filename (bs=0x5efed72f8350)
+    at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:8082
+1  0x00005efea73cf9dc in bdrv_block_device_info
+    (blk=0x0, bs=0x5efed72f8350, flat=true, errp=0x7ffeb829ebd8)
+    at block/qapi.c:62
+2  0x00005efea7391ed3 in bdrv_named_nodes_list
+    (flat=<optimized out>, errp=0x7ffeb829ebd8)
+    at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:6275
+3  0x00005efea7471993 in qmp_query_named_block_nodes
+    (has_flat=<optimized out>, flat=<optimized out>, errp=0x7ffeb829ebd8)
+    at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/blockdev.c:2834
+4  qmp_marshal_query_named_block_nodes
+    (args=<optimized out>, ret=0x7f2b753beec0, errp=0x7f2b753beec8)
+    at qapi/qapi-commands-block-core.c:553
+5  0x00005efea74f03a5 in do_qmp_dispatch_bh (opaque=0x7f2b753beed0)
+    at qapi/qmp-dispatch.c:128
+6  0x00005efea75108e6 in aio_bh_poll (ctx=0x5efed6f3f430)
+    at util/async.c:219
+7  0x00005efea74ffdb2 in aio_dispatch (ctx=0x5efed6f3f430)
+    at util/aio-posix.c:436
+8  0x00005efea7512846 in aio_ctx_dispatch (source=<optimized out>,
+    callback=<optimized out>,user_data=<optimized out>)
+    at util/async.c:361
+9  0x00007f2b77809bfb in ?? ()
+    from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+10 0x00007f2b77809e70 in g_main_context_dispatch ()
+    from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+11 0x00005efea7517228 in glib_pollfds_poll () at util/main-loop.c:287
+12 os_host_main_loop_wait (timeout=0) at util/main-loop.c:310
+13 main_loop_wait (nonblocking=<optimized out>) at util/main-loop.c:589
+14 0x00005efea7140482 in qemu_main_loop () at system/runstate.c:905
+15 0x00005efea744e4e8 in qemu_default_main (opaque=opaque@entry=0x0)
+    at system/main.c:50
+16 0x00005efea6e76319 in main
+    (argc=<optimized out>, argv=<optimized out>)
+    at system/main.c:93
+
+As discussed in 20251024-second-fix-3149-v1-1-d997fa3d5ce2@canonical.com,
+a filter should not exist without children in the first place; therefore,
+drop the parameter entirely as it is only used for filters.
+
+This is a partial revert of 3108a15cf09865456d499b08fe14e3dbec4ccbb3.
+
+After this change, a blockdev-backup job's copy-before-write filter will
+hold references to its children until the filter is unref'd. This causes
+an additional flush during bdrv_close, so also update iotest 257.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3149
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Wesley Hershberger <wesley.hershberger@canonical.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <20251029-third-fix-3149-v2-1-94932bb404f4@canonical.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/nbd.h |  2 +-
- block/bochs.c       | 14 +++++------
- block/file-posix.c  | 58 ++++++++++++++++++++++-----------------------
- block/file-win32.c  | 38 ++++++++++++++---------------
- block/qcow.c        | 10 ++++----
- 5 files changed, 61 insertions(+), 61 deletions(-)
+ block.c                    | 38 ++++----------------------------------
+ tests/qemu-iotests/257     |  8 ++++++--
+ tests/qemu-iotests/257.out | 14 +++++++-------
+ 3 files changed, 17 insertions(+), 43 deletions(-)
 
-diff --git a/include/block/nbd.h b/include/block/nbd.h
-index 92987c76fd..ab40842da9 100644
---- a/include/block/nbd.h
-+++ b/include/block/nbd.h
-@@ -296,7 +296,7 @@ enum {
-     NBD_CMD_BLOCK_STATUS = 7,
- };
+diff --git a/block.c b/block.c
+index cf08e64add..0fe0152a7c 100644
+--- a/block.c
++++ b/block.c
+@@ -5398,17 +5398,13 @@ bdrv_replace_node_noperm(BlockDriverState *from,
+  *
+  * With auto_skip=false the error is returned if from has a parent which should
+  * not be updated.
+- *
+- * With @detach_subchain=true @to must be in a backing chain of @from. In this
+- * case backing link of the cow-parent of @to is removed.
+  */
+ static int GRAPH_WRLOCK
+ bdrv_replace_node_common(BlockDriverState *from, BlockDriverState *to,
+-                         bool auto_skip, bool detach_subchain, Error **errp)
++                         bool auto_skip, Error **errp)
+ {
+     Transaction *tran = tran_new();
+     g_autoptr(GSList) refresh_list = NULL;
+-    BlockDriverState *to_cow_parent = NULL;
+     int ret;
  
--#define NBD_DEFAULT_PORT	10809
-+#define NBD_DEFAULT_PORT 10809
+     GLOBAL_STATE_CODE();
+@@ -5417,17 +5413,6 @@ bdrv_replace_node_common(BlockDriverState *from, BlockDriverState *to,
+     assert(to->quiesce_counter);
+     assert(bdrv_get_aio_context(from) == bdrv_get_aio_context(to));
  
- /* Maximum size of a single READ/WRITE data buffer */
- #define NBD_MAX_BUFFER_SIZE (32 * 1024 * 1024)
-diff --git a/block/bochs.c b/block/bochs.c
-index b099fb52fe..bfda88017d 100644
---- a/block/bochs.c
-+++ b/block/bochs.c
-@@ -300,15 +300,15 @@ static void bochs_close(BlockDriverState *bs)
+-    if (detach_subchain) {
+-        assert(bdrv_chain_contains(from, to));
+-        assert(from != to);
+-        for (to_cow_parent = from;
+-             bdrv_filter_or_cow_bs(to_cow_parent) != to;
+-             to_cow_parent = bdrv_filter_or_cow_bs(to_cow_parent))
+-        {
+-            ;
+-        }
+-    }
+-
+     /*
+      * Do the replacement without permission update.
+      * Replacement may influence the permissions, we should calculate new
+@@ -5439,11 +5424,6 @@ bdrv_replace_node_common(BlockDriverState *from, BlockDriverState *to,
+         goto out;
+     }
+ 
+-    if (detach_subchain) {
+-        /* to_cow_parent is already drained because from is drained */
+-        bdrv_remove_child(bdrv_filter_or_cow_child(to_cow_parent), tran);
+-    }
+-
+     refresh_list = g_slist_prepend(refresh_list, to);
+     refresh_list = g_slist_prepend(refresh_list, from);
+ 
+@@ -5462,7 +5442,7 @@ out:
+ int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
+                       Error **errp)
+ {
+-    return bdrv_replace_node_common(from, to, true, false, errp);
++    return bdrv_replace_node_common(from, to, true, errp);
  }
  
- static BlockDriver bdrv_bochs = {
--    .format_name	= "bochs",
--    .instance_size	= sizeof(BDRVBochsState),
--    .bdrv_probe		= bochs_probe,
--    .bdrv_open		= bochs_open,
-+    .format_name         = "bochs",
-+    .instance_size       = sizeof(BDRVBochsState),
-+    .bdrv_probe          = bochs_probe,
-+    .bdrv_open           = bochs_open,
-     .bdrv_child_perm     = bdrv_default_perms,
-     .bdrv_refresh_limits = bochs_refresh_limits,
--    .bdrv_co_preadv = bochs_co_preadv,
--    .bdrv_close		= bochs_close,
--    .is_format          = true,
-+    .bdrv_co_preadv      = bochs_co_preadv,
-+    .bdrv_close          = bochs_close,
-+    .is_format           = true,
- };
+ int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
+@@ -5478,7 +5458,7 @@ int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
  
- static void bdrv_bochs_init(void)
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 8b7c02d19a..12d12970fa 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -133,7 +133,7 @@
- #define FTYPE_FILE   0
- #define FTYPE_CD     1
+     bdrv_drained_begin(child_bs);
+     bdrv_graph_wrlock();
+-    ret = bdrv_replace_node_common(bs, child_bs, true, true, errp);
++    ret = bdrv_replace_node_common(bs, child_bs, true, errp);
+     bdrv_graph_wrunlock();
+     bdrv_drained_end(child_bs);
  
--#define MAX_BLOCKSIZE	4096
-+#define MAX_BLOCKSIZE 4096
+@@ -5929,17 +5909,7 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+         updated_children = g_slist_prepend(updated_children, c);
+     }
  
- /* Posix file locking bytes. Libvirt takes byte 0, we start from higher bytes,
-  * leaving a few more bytes for its future use. */
-@@ -4562,20 +4562,20 @@ static void coroutine_fn cdrom_co_lock_medium(BlockDriverState *bs, bool locked)
- }
+-    /*
+-     * It seems correct to pass detach_subchain=true here, but it triggers
+-     * one more yet not fixed bug, when due to nested aio_poll loop we switch to
+-     * another drained section, which modify the graph (for example, removing
+-     * the child, which we keep in updated_children list). So, it's a TODO.
+-     *
+-     * Note, bug triggered if pass detach_subchain=true here and run
+-     * test-bdrv-drain. test_drop_intermediate_poll() test-case will crash.
+-     * That's a FIXME.
+-     */
+-    bdrv_replace_node_common(top, base, false, false, &local_err);
++    bdrv_replace_node_common(top, base, false, &local_err);
+     bdrv_graph_wrunlock();
  
- static BlockDriver bdrv_host_cdrom = {
--    .format_name        = "host_cdrom",
--    .protocol_name      = "host_cdrom",
--    .instance_size      = sizeof(BDRVRawState),
--    .bdrv_needs_filename = true,
--    .bdrv_probe_device	= cdrom_probe_device,
--    .bdrv_parse_filename = cdrom_parse_filename,
--    .bdrv_open          = cdrom_open,
--    .bdrv_close         = raw_close,
--    .bdrv_reopen_prepare = raw_reopen_prepare,
--    .bdrv_reopen_commit  = raw_reopen_commit,
--    .bdrv_reopen_abort   = raw_reopen_abort,
--    .bdrv_co_create_opts = bdrv_co_create_opts_simple,
--    .create_opts         = &bdrv_create_opts_simple,
--    .mutable_opts        = mutable_opts,
-+    .format_name            = "host_cdrom",
-+    .protocol_name          = "host_cdrom",
-+    .instance_size          = sizeof(BDRVRawState),
-+    .bdrv_needs_filename    = true,
-+    .bdrv_probe_device      = cdrom_probe_device,
-+    .bdrv_parse_filename    = cdrom_parse_filename,
-+    .bdrv_open              = cdrom_open,
-+    .bdrv_close             = raw_close,
-+    .bdrv_reopen_prepare    = raw_reopen_prepare,
-+    .bdrv_reopen_commit     = raw_reopen_commit,
-+    .bdrv_reopen_abort      = raw_reopen_abort,
-+    .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
-+    .create_opts            = &bdrv_create_opts_simple,
-+    .mutable_opts           = mutable_opts,
-     .bdrv_co_invalidate_cache = raw_co_invalidate_cache,
+     if (local_err) {
+diff --git a/tests/qemu-iotests/257 b/tests/qemu-iotests/257
+index 7d3720b8e5..cd0468aaa1 100755
+--- a/tests/qemu-iotests/257
++++ b/tests/qemu-iotests/257
+@@ -310,14 +310,18 @@ def test_bitmap_sync(bsync_mode, msync_mode='bitmap', failure=None):
+                     'state': 1,
+                     'new_state': 2
+                 }, {
+-                    'event': 'read_aio',
++                    'event': 'flush_to_disk',
+                     'state': 2,
+                     'new_state': 3
++                }, {
++                    'event': "read_aio",
++                    'state': 3,
++                    'new_state': 4
+                 }],
+                 'inject-error': [{
+                     'event': 'read_aio',
+                     'errno': 5,
+-                    'state': 3,
++                    'state': 4,
+                     'immediately': False,
+                     'once': True
+                 }]
+diff --git a/tests/qemu-iotests/257.out b/tests/qemu-iotests/257.out
+index c33dd7f3a9..fb28333cb2 100644
+--- a/tests/qemu-iotests/257.out
++++ b/tests/qemu-iotests/257.out
+@@ -272,7 +272,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
  
-     .bdrv_co_preadv         = raw_co_preadv,
-@@ -4688,20 +4688,20 @@ static void coroutine_fn cdrom_co_lock_medium(BlockDriverState *bs, bool locked)
- }
+ --- Preparing image & VM ---
  
- static BlockDriver bdrv_host_cdrom = {
--    .format_name        = "host_cdrom",
--    .protocol_name      = "host_cdrom",
--    .instance_size      = sizeof(BDRVRawState),
--    .bdrv_needs_filename = true,
--    .bdrv_probe_device	= cdrom_probe_device,
--    .bdrv_parse_filename = cdrom_parse_filename,
--    .bdrv_open          = cdrom_open,
--    .bdrv_close         = raw_close,
--    .bdrv_reopen_prepare = raw_reopen_prepare,
--    .bdrv_reopen_commit  = raw_reopen_commit,
--    .bdrv_reopen_abort   = raw_reopen_abort,
--    .bdrv_co_create_opts = bdrv_co_create_opts_simple,
--    .create_opts         = &bdrv_create_opts_simple,
--    .mutable_opts       = mutable_opts,
-+    .format_name            = "host_cdrom",
-+    .protocol_name          = "host_cdrom",
-+    .instance_size          = sizeof(BDRVRawState),
-+    .bdrv_needs_filename    = true,
-+    .bdrv_probe_device      = cdrom_probe_device,
-+    .bdrv_parse_filename    = cdrom_parse_filename,
-+    .bdrv_open              = cdrom_open,
-+    .bdrv_close             = raw_close,
-+    .bdrv_reopen_prepare    = raw_reopen_prepare,
-+    .bdrv_reopen_commit     = raw_reopen_commit,
-+    .bdrv_reopen_abort      = raw_reopen_abort,
-+    .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
-+    .create_opts            = &bdrv_create_opts_simple,
-+    .mutable_opts           = mutable_opts,
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
  
-     .bdrv_co_preadv         = raw_co_preadv,
-     .bdrv_co_pwritev        = raw_co_pwritev,
-diff --git a/block/file-win32.c b/block/file-win32.c
-index af9aea631c..0efb609e1d 100644
---- a/block/file-win32.c
-+++ b/block/file-win32.c
-@@ -741,16 +741,16 @@ static QemuOptsList raw_create_opts = {
- };
+ --- Write #0 ---
+@@ -1017,7 +1017,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
  
- BlockDriver bdrv_file = {
--    .format_name	= "file",
--    .protocol_name	= "file",
--    .instance_size	= sizeof(BDRVRawState),
--    .bdrv_needs_filename = true,
--    .bdrv_parse_filename = raw_parse_filename,
--    .bdrv_open          = raw_open,
--    .bdrv_refresh_limits = raw_probe_alignment,
--    .bdrv_close         = raw_close,
--    .bdrv_co_create_opts = raw_co_create_opts,
--    .bdrv_has_zero_init = bdrv_has_zero_init_1,
-+    .format_name            = "file",
-+    .protocol_name          = "file",
-+    .instance_size          = sizeof(BDRVRawState),
-+    .bdrv_needs_filename    = true,
-+    .bdrv_parse_filename    = raw_parse_filename,
-+    .bdrv_open              = raw_open,
-+    .bdrv_refresh_limits    = raw_probe_alignment,
-+    .bdrv_close             = raw_close,
-+    .bdrv_co_create_opts    = raw_co_create_opts,
-+    .bdrv_has_zero_init     = bdrv_has_zero_init_1,
+ --- Preparing image & VM ---
  
-     .bdrv_reopen_prepare = raw_reopen_prepare,
-     .bdrv_reopen_commit  = raw_reopen_commit,
-@@ -914,15 +914,15 @@ done:
- }
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
  
- static BlockDriver bdrv_host_device = {
--    .format_name	= "host_device",
--    .protocol_name	= "host_device",
--    .instance_size	= sizeof(BDRVRawState),
--    .bdrv_needs_filename = true,
--    .bdrv_parse_filename = hdev_parse_filename,
--    .bdrv_probe_device	= hdev_probe_device,
--    .bdrv_open     	= hdev_open,
--    .bdrv_close		= raw_close,
--    .bdrv_refresh_limits = hdev_refresh_limits,
-+    .format_name            = "host_device",
-+    .protocol_name          = "host_device",
-+    .instance_size          = sizeof(BDRVRawState),
-+    .bdrv_needs_filename    = true,
-+    .bdrv_parse_filename    = hdev_parse_filename,
-+    .bdrv_probe_device      = hdev_probe_device,
-+    .bdrv_open              = hdev_open,
-+    .bdrv_close             = raw_close,
-+    .bdrv_refresh_limits    = hdev_refresh_limits,
+ --- Write #0 ---
+@@ -1762,7 +1762,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
  
-     .bdrv_aio_preadv    = raw_aio_preadv,
-     .bdrv_aio_pwritev   = raw_aio_pwritev,
-diff --git a/block/qcow.c b/block/qcow.c
-index 8a3e7591a9..b442bfe835 100644
---- a/block/qcow.c
-+++ b/block/qcow.c
-@@ -1184,11 +1184,11 @@ static const char *const qcow_strong_runtime_opts[] = {
- };
+ --- Preparing image & VM ---
  
- static BlockDriver bdrv_qcow = {
--    .format_name	= "qcow",
--    .instance_size	= sizeof(BDRVQcowState),
--    .bdrv_probe		= qcow_probe,
--    .bdrv_open		= qcow_open,
--    .bdrv_close		= qcow_close,
-+    .format_name            = "qcow",
-+    .instance_size          = sizeof(BDRVQcowState),
-+    .bdrv_probe             = qcow_probe,
-+    .bdrv_open              = qcow_open,
-+    .bdrv_close             = qcow_close,
-     .bdrv_child_perm        = bdrv_default_perms,
-     .bdrv_reopen_prepare    = qcow_reopen_prepare,
-     .bdrv_co_create         = qcow_co_create,
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
+ 
+ --- Write #0 ---
+@@ -2507,7 +2507,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
+ 
+ --- Preparing image & VM ---
+ 
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
+ 
+ --- Write #0 ---
+@@ -3252,7 +3252,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
+ 
+ --- Preparing image & VM ---
+ 
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
+ 
+ --- Write #0 ---
+@@ -3997,7 +3997,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
+ 
+ --- Preparing image & VM ---
+ 
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
+ 
+ --- Write #0 ---
+@@ -4742,7 +4742,7 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fbackup2" ==> Identical, OK!
+ 
+ --- Preparing image & VM ---
+ 
+-{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 3}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "read_aio", "new-state": 3, "state": 2}]}, "node-name": "drive0"}}
++{"execute": "blockdev-add", "arguments": {"driver": "qcow2", "file": {"driver": "blkdebug", "image": {"driver": "file", "filename": "TEST_DIR/PID-img"}, "inject-error": [{"errno": 5, "event": "read_aio", "immediately": false, "once": true, "state": 4}], "set-state": [{"event": "flush_to_disk", "new-state": 2, "state": 1}, {"event": "flush_to_disk", "new-state": 3, "state": 2}, {"event": "read_aio", "new-state": 4, "state": 3}]}, "node-name": "drive0"}}
+ {"return": {}}
+ 
+ --- Write #0 ---
 -- 
 2.51.1
 
