@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8306C4F3D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 18:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44F0C4F3B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 18:22:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIs4x-0002tr-AQ; Tue, 11 Nov 2025 12:22:58 -0500
+	id 1vIs3t-0001S1-JN; Tue, 11 Nov 2025 12:21:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vIrzx-0005lD-1k
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:41 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1vIrzt-0005dB-DJ
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:38 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vIrzp-0003xR-M3
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:40 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-640f4b6836bso8255020a12.3
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 09:17:33 -0800 (PST)
+ id 1vIrzm-0003vP-NJ
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:36 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-640b0639dabso7574428a12.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 09:17:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762881452; x=1763486252; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762881449; x=1763486249; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=06bmaVkTHcaq4jFseyDrJdNi7QHB236TwhvYBcaGYEw=;
- b=d4Ndk8hj2Q13L1O2pDQxuzFIqMvMXO+9jDWIy3qty43Z3GZHtXhVL9u/humP5HL3wy
- kRWzlR+faFNe3W1GyI5CcDe3PVFU3tayL1LU1b2Xh6+Av1hloyEe+LRKa12d31hgbLVU
- oqpVBoj6uJoOeqmDq0VNP1MaDsK9YhdFFXH3s9vEhTxq0DZEAL5FYg9mjxsKnzoJWqeN
- ukCmqYTU2kuL7i4zpulB2U1kv1smKGq7/6srQZoXJklOHW4MAYweMy7kKsnhpAkT9ywO
- vuXec/dhB5bkA9cpS54U6HadGyTAa1vAAFpr6UkyaHE6cTcgJCw0I3/KI9Hv7GJH/zan
- gFsA==
+ bh=aa/Hvu3+mj3VcYiY7ZS0/+etKelXn5JiA4GmeNDBBYs=;
+ b=COD5mG51AGi65Eq/doTQ4Qk3FLuIoCuP6IlvFcBpSGEod/PLss2jziOKrkNJ9sMhVy
+ z3ntuDP5hHLWyE5RH8196w1QDLd4z34m7TklX85jLjubARW4HCjXkCRy+1Qv99sLJYhH
+ lmOCVUrSrFTrF5Z/r19IEIpjoU3KMtrJKOKfRCHgNHh5CqO6Tfj0VCHdM2XbofbUEBpM
+ vQc834jj0UmnlwzqeSLsRNdZA1313zPpQZ3wyzv75bqDPJTWG+8fm841cKl9DxeF4aYs
+ ae7Ka7gpuBs2Ltn0RcJYwnZN0NXPj3OwxXJMrzDNLxVIVeHWhiI/Yc7ZBIGAQAFDCDQH
+ nkxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762881452; x=1763486252;
+ d=1e100.net; s=20230601; t=1762881449; x=1763486249;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=06bmaVkTHcaq4jFseyDrJdNi7QHB236TwhvYBcaGYEw=;
- b=pq+L6E+NnYo+vZECoOkQKTGXhoINu3BHgkTPG2mkkjrVHFLS4SCa9kSkvhXY+lMl/d
- 6CDYtk+g7DzFNQnyv4Ufkoe6lLkgU3KioLFNyuRPT5I9VhaTEKml96LoRW4ezw5GhrKB
- ejD5+J9FBVGRsynr8EyHtoy1hAZ8mlXfuU6mMs834yUJOpHJSsI3zZmV1Hsbl5O1T9AF
- afzHNJC4vuwx78lWYBYrDvlsBuYgAr0Jinc0o8egtEhJllvCbC2BV41D6+fLImw4LEsc
- 65i4X941b2S2mwCsNQBFJlrU1IUYIHtTGMLeQE3/QKIqU4dM1r53A3ICRvEfI4OxijYU
- obWA==
-X-Gm-Message-State: AOJu0YzujvfCA8OGwl8Z9TFAMcF0391mJsTxPaelEQj7QJEz1nXUlhLE
- WwtSOTM+2GAH0CPxcm3q1tGqilTYuXKKP1BUhglabmL4kt84B3gwad5gwLBCYlwL3NI=
-X-Gm-Gg: ASbGncs3SGKxRPh4F6Ji88W1IL/m4riA144GRcMK7cE2qH29wBXmkOqUFqdUEnsFLxe
- Mwn+76blDG0IiBxlYsAoeJut/OhESZ4RbkK8yKPPQbQATuOC85pO1izo63OKX4C9ZLvdw2Oc0jI
- yHFOiLFju8v/wn4By7/Bj5HdKcyAh6FwNzRoQ/hPRrMoo86BCNM73jm4h2nqpSbMUhnZneGcm7e
- D4qtGIrloO8uzB4WcBp9tayuhFWQ61NLsH20ui2a4mKIjsqzM1jmkkwqjWVg19seUpU/OFdCETq
- 14kxhcd7+ByN/Wd/8Kc1svcXgH1MAp2AvQ++7eAzPDbdJyAAGg2EqQ5coLLlhQs5HcmzKnsPGVD
- BdGPFVm222UKgDTkKlPsEGLjwEURBGpVrtV8JAF/DQl72VR1xpVu+fNKd64VZl+5bta7Wqqwerf
- 5bIiZNaybUADA=
-X-Google-Smtp-Source: AGHT+IGr3XLOugC8bzrCaYk2H56TbbkA5nKddOGaxJUwm/kqqfmw/9zhpFl4ujmyi3w4w994599hfw==
-X-Received: by 2002:a05:6402:3058:20b0:640:f994:b887 with SMTP id
- 4fb4d7f45d1cf-6415e8312d3mr9031169a12.38.1762881451935; 
- Tue, 11 Nov 2025 09:17:31 -0800 (PST)
+ bh=aa/Hvu3+mj3VcYiY7ZS0/+etKelXn5JiA4GmeNDBBYs=;
+ b=UalkxmwTzskHXu5K3YSs/An5Edh7UMeKGcWWXcLAsvvKtV2wzZ79cmzhzqO2+13N9+
+ Dui+oSBONSo5efdMbs+vhVWD3h8uP9eGrONlVBVNDEVh5lv92WjB10SAF58HIAUYz5++
+ ZKhVelHE1zBCIbO0FHoW59LwFDC8C4PJsNyFf6hrFqOBgLvNV4IWhP25wU5gXTuZwHRA
+ S3SUWuolprG0E+qVxuCMkwLGlrpsgFDNfzOizi9ou4BMby6sZOT8v3hbgrRlVRagjiKL
+ JA+q+4mBYTej+uPRVfYF8v6UicRQ9jqVg+qgmdw62mlAAWy/i/QelSGlDTn2/Qh3jbm7
+ aifg==
+X-Gm-Message-State: AOJu0YxjqZSJOd1DJRjL87jLXfCwAHZXIHh+rLLg8MPY2h5968Z/moVp
+ UeUMAMTK17JSmIa9ZIAsQHIOD71Gx3rwv2Pwm+pJIW2BHSqz4mBK8DGA/pPD24TJPkc=
+X-Gm-Gg: ASbGnculnJ4V5f7GalT3EwfNokx7fj/AiLhSk+OfLYqUP3vQuZkwhKzkeKQy/VYgNEq
+ NrlBy1k4HbxCYwKu7boRQTY9/XbYrSOFSmRGYbz3Z2+/GZi/ymiWP7p/LEZfUBIedDBNuBxOpRs
+ NuamSd7poHJFJy6/xd9kqsD1p8uiXoKzwrFZGTzpfKlMfwewgtmx/5uUXQ0qoQpl+mWb7wJ4oy0
+ RuHWNifLqrDwgrRVuhQZ4AFIWWLR+89O4XIvifXsVeUIiYBhFDiSdvHtuZf5sh6D9riw2OfWK0x
+ zX06dn0IMBBVmEhQzVtbJol+8s+K//TOayC+Kjzx+W+/HQcME0RfiJsWLxhJk8FxyOgbTAy73Vk
+ uVvQRat79NlF8RmE3KkZU8UfNrgvv+VEWxcS0Ffu/u2y4VWtcDfeomXkrsi2D26Oq0EU6WTCTAt
+ V3
+X-Google-Smtp-Source: AGHT+IFt1tpYSaCCrICy2rXEZq4OMYVJKMMMhCOjtx6avEQ7cfxPVVQ0hYV7iMDHT5tRZy036kAXww==
+X-Received: by 2002:a17:906:6a19:b0:b72:9d56:ab52 with SMTP id
+ a640c23a62f3a-b72e02d20c7mr1252795266b.8.1762881448962; 
+ Tue, 11 Nov 2025 09:17:28 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6415d91f486sm9287598a12.22.2025.11.11.09.17.26
+ a640c23a62f3a-b72bf9bc83asm1367946066b.51.2025.11.11.09.17.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 11 Nov 2025 09:17:27 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 00EC05F956;
+ by draig.lan (Postfix) with ESMTP id 186775FA43;
  Tue, 11 Nov 2025 17:17:25 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,18 +80,20 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
- Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH 05/16] gitlab: add initial ppc64le custom-runner test
-Date: Tue, 11 Nov 2025 17:17:12 +0000
-Message-ID: <20251111171724.78201-6-alex.bennee@linaro.org>
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 06/16] docs/about/emulation: update assets for uftrace plugin
+ documentation
+Date: Tue, 11 Nov 2025 17:17:13 +0000
+Message-ID: <20251111171724.78201-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251111171724.78201-1-alex.bennee@linaro.org>
 References: <20251111171724.78201-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,88 +116,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a plain configure/make check build.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Linaro is discontinuing its fileserver service by end of the year.
+Migrate assets to GitHub.
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/devel/testing/ci-jobs.rst.inc            |  6 +++
- .gitlab-ci.d/custom-runners.yml               |  1 +
- .../custom-runners/debian-13-ppc64le.yml      | 40 +++++++++++++++++++
- 3 files changed, 47 insertions(+)
- create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+ docs/about/emulation.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/docs/devel/testing/ci-jobs.rst.inc b/docs/devel/testing/ci-jobs.rst.inc
-index b92d372a0a9..f1c70344ece 100644
---- a/docs/devel/testing/ci-jobs.rst.inc
-+++ b/docs/devel/testing/ci-jobs.rst.inc
-@@ -174,6 +174,12 @@ If you've got access to an IBM Z host that can be used as a gitlab-CI
- runner, you can set this variable to enable the tests that require this
- kind of host. The runner should be tagged with "s390x".
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index 92c219119e8..4a7d1f41780 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -886,24 +886,24 @@ As an example, we can trace qemu itself running git::
+     $ uftrace dump --chrome | gzip > ~/qemu_aarch64_git_help.json.gz
  
-+PPC64LE_RUNNER_AVAILABLE
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+If you've got access to an PPC64LE host that can be used as a gitlab-CI
-+runner, you can set this variable to enable the tests that require this
-+kind of host. The runner should be tagged with "ppc64le".
-+
- CCACHE_DISABLE
- ~~~~~~~~~~~~~~
- The jobs are configured to use "ccache" by default since this typically
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 142fbf4a242..3e28e48c97c 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -31,3 +31,4 @@
- include:
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml'
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml'
-+  - local: '/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml'
-diff --git a/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-new file mode 100644
-index 00000000000..6733a8e0dae
---- /dev/null
-+++ b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-@@ -0,0 +1,40 @@
-+# All jobs should run successfully in an environment setup by the
-+# scripts/ci/setup/build-environment.yml task:
-+# "Install basic packages to build QEMU on Ubuntu/Debian"
-+
-+.debian_ppc64le_template:
-+  extends: .custom_runner_template
-+  needs: []
-+  stage: build
-+  tags:
-+    - debian_13
-+    - ppc64le
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: "$PPC64LE_RUNNER_AVAILABLE"
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-+    - JOBS=$(expr $(nproc) - 2)
-+    - section_end setup
-+  script:
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - ../configure $CONFIGURE_ARGS ||
-+          { cat config.log meson-logs/meson-log.txt && exit 1; }
-+    - section_end configure
-+    - section_start build "Building QEMU"
-+    - make --output-sync -j"$JOBS"
-+    - section_end build
-+    - section_start test "Running tests"
-+    - if test -n "$MAKE_CHECK_ARGS";
-+      then
-+        make -j"$JOBS" $MAKE_CHECK_ARGS ;
-+      fi
-+    - section_end test
-+
-+debian-13-ppc64le-default:
-+  extends: .debian_ppc64le_template
-+  variables:
-+    MAKE_CHECK_ARGS: check
+ For convenience, you can download this trace `qemu_aarch64_git_help.json.gz
+-<https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz>`_.
++<https://github.com/pbo-linaro/qemu-assets/raw/refs/heads/master/qemu-uftrace/qemu_aarch64_git_help.json.gz>`_.
+ Download it and open this trace on https://ui.perfetto.dev/. You can zoom in/out
+ using :kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys.
+ Some sequences taken from this trace:
+ 
+ - Loading program and its interpreter
+ 
+-.. image:: https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/loader_exec.png?raw=true
+    :height: 200px
+ 
+ - open syscall
+ 
+-.. image:: https://fileserver.linaro.org/s/rsXPTeZZPza4PcE/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/open_syscall.png?raw=true
+    :height: 200px
+ 
+ - TB creation
+ 
+-.. image:: https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/tb_translation.png?raw=true
+    :height: 200px
+ 
+ It's usually better to use ``uftrace record`` directly. However, tracing
+@@ -916,7 +916,7 @@ Example system trace
+ 
+ A full trace example (chrome trace, from instructions below) generated from a
+ system boot can be found `here
+-<https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz>`_.
++<https://github.com/pbo-linaro/qemu-assets/raw/refs/heads/master/qemu-uftrace/aarch64_boot.json.gz>`_.
+ Download it and open this trace on https://ui.perfetto.dev/. You can see code
+ executed for all privilege levels, and zoom in/out using
+ :kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys. You can find below some sequences
+@@ -924,27 +924,27 @@ taken from this trace:
+ 
+ - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+ 
+-.. image:: https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/bl3_to_bl1.png?raw=true
+    :height: 200px
+ 
+ - U-boot initialization (until code relocation, after which we can't track it)
+ 
+-.. image:: https://fileserver.linaro.org/s/LKTgsXNZFi5GFNC/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/uboot.png?raw=true
+    :height: 200px
+ 
+ - Stat and open syscalls in kernel
+ 
+-.. image:: https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/stat.png?raw=true
+    :height: 200px
+ 
+ - Timer interrupt
+ 
+-.. image:: https://fileserver.linaro.org/s/TM5yobYzJtP7P3C/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/timer_interrupt.png?raw=true
+    :height: 200px
+ 
+ - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+ 
+-.. image:: https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
++.. image:: https://github.com/pbo-linaro/qemu-assets/blob/master/qemu-uftrace/poweroff.png?raw=true
+    :height: 200px
+ 
+ Build and run system example
 -- 
 2.47.3
 
