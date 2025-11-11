@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BC3C4D065
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3407C4D069
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:30:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIlck-0008SF-W8; Tue, 11 Nov 2025 05:29:19 -0500
+	id 1vIlcw-00007y-Lb; Tue, 11 Nov 2025 05:29:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcN-0007h4-0g
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:28:55 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1vIlcR-0007pJ-1X
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:28:59 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcH-0000I6-Av
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:28:54 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-b72dad1b713so498793166b.2
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:28:48 -0800 (PST)
+ id 1vIlcH-0000IZ-Q4
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:28:58 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-b72dad1b713so498794466b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:28:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762856927; x=1763461727; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1762856928; x=1763461728; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ma7NM/EMUNjVg7q3k/Bpes+XFemvPD5AxIlXcPcgP2Y=;
- b=BMQlS3eGrjT4eJv8QTgjgm4N8uoSAoZ4TgP0qfAbv/VnVlCsRJ70mdM+Jt54h+vWWu
- DxmH1NxnM7pl5T00NMd4bwi1Y58s30WedoPU+yh1liAmQHPi7IaiQrbcwSOby2+dI57g
- wyTR/CCirc0FGRfbH8BEzNTh5ingMU+3Aj174eyVeX04wAPHgzj7I3oPRqh3R3iDbf5q
- 1sEeA2fXN9SxVuOj2CDo+gk7aAIXeWYGdm+MeIEG1f9Zh25V/kF36rZhhhcvQm+C9Edj
- fViBYrcdA6nGji9Qb858XLAR8/teDdfxeJqBmYvYSpATHmK9MUrOg8unensn1hUFN7t+
- oD0A==
+ bh=ZGgoXcGrS3dQFr7HRsHf2MQYE1FsV3OmHQ8tkmeJh/A=;
+ b=Q8j5tpB7ggiFb4nbX8/QS09ZvzL2VjYhp4SD+XBnIzya4lWP8ocXOpug8edskT6Z92
+ FBa/5Ei0dyPPNb8FgBqg8KIMn/m3WAFkj5yAdhlKfeeSgWqBa9UFi5CKr+JJXx0kQzUt
+ fKUnAiXFoxkbdDUQ4hVA+K89hS1TOq7YsqGT+4q4q/+26bNjcZEb5lFZ90jyuTSED89d
+ +nf8ep+lWb8paFcSsZudtRw48ULvIwHEryMnzZmofH9t2loKieoVz35HAxs3/0n0m2Yf
+ s5PptFIHVbh9Sk/gRPs1rFZp8LH596qCV//JvDSw0ah8jfh6j1vXR3V+gqqunk4gueel
+ r3nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762856927; x=1763461727;
+ d=1e100.net; s=20230601; t=1762856928; x=1763461728;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ma7NM/EMUNjVg7q3k/Bpes+XFemvPD5AxIlXcPcgP2Y=;
- b=jPYX2IurnrsDJRk02jgfejUhVHYu1pqQ+qRVew4M/7k+Mk0iKLvAcwVaX3ca1b1x6T
- ZwHkMYDbuepRjqEgRk9Df6V1WXYg7OuWjsgEwEI0nSepQ3FDrSzvdZJz6SbAO5yZJ0VX
- U/veT8w3F4CSJdqJl5ZR+t8OoOXw8UEK3rapgp5jCpbOzk4gI5Nx9XUacb+OcbXh2Zz5
- ilh5GHXcqWWzCXETSBI6mlFvwH+jHc7QBsQa9Y5PNKowYnLLeRbcdg7MKF60UbQrDesu
- oXjThcjPSfWxjJvWd6M4s/HqFVwVN3RETRlkWutNrEY2v/eUWwsKzjaYmaoJmsIuwM3v
- JDcw==
-X-Gm-Message-State: AOJu0YxBv0FndspqAxar0Q9X3G96xO6GRxvBtDT8utBSdnKY829wGMD7
- e6Ql1Ct/fZweWpaBQ81Cd0ZsF5KPJJ/itk2Ls85WdK99VjcWMVVJF2RFn8ECisaF
-X-Gm-Gg: ASbGncunj9pcpwu9pxIgKjCie+rofbBbRRcsuciMBtke+53UlYyhd7YyLUAFLFGgPsy
- O6ft9Q34UVcZut0oadhpJceEcFfGrgZeo+qBRLogHphHEYaub/vKhzDLI9U4elWwx4PFp5a6ZW6
- neqOntITZ2Ni8bw0beg5PX/qs5HgsXXHHbd9oDevmUfPa06cVmG+AgFq3PciRd6sY4+7CA4Otdd
- uwsIxe9egWEYFhFZAvVgMqV1YzhGBySfrBgPnjEqYvQWpqgXltXxLxbvY4Er00WTtBg8awlN6Yo
- a66Gf/9dA8f7RtezKvU8otwQ5bwb/RS8muPwysw5pjHDDUOf5/R/5OIE7tR7myPVfPmTl9QLQFT
- Z6qUe3DJZskUGyEWHcIvE4CRg6H4TEdwJ8SHlOjtFjnU5Q0W36sOB58wUY/Mw+Wq9ZK1/1Hre7z
- QPPj2AbifpJn95p9onAJ8IiQ==
-X-Google-Smtp-Source: AGHT+IG+7Go24+fJW3LJ9vVG3Gt+USa9fd+svrObP8SRVTu5gTVO0hL+MPzdSiNQmX0vn46emjNaow==
-X-Received: by 2002:a17:906:d554:b0:b3d:73e1:d809 with SMTP id
- a640c23a62f3a-b72e05e7b30mr1405730066b.48.1762856927038; 
+ bh=ZGgoXcGrS3dQFr7HRsHf2MQYE1FsV3OmHQ8tkmeJh/A=;
+ b=up325Zc7E0r6xKvmiHsxAq4uWHmxPMZTrQqCvTwGNnS/r87qvbQqdYsnnwSM9cqJoO
+ k05GGkt7Zg5aFR8XawtWk3uKd25pGVn5j0Gws8yEDLYUxbVwbZsNOO/Gl+GDtJC0zZRs
+ 8PpqqMS7vR0/lF/cI/mez3Uu1GLwIEHYC417ZXRgUA3kIoqLY1bHrqviBzgo8eNB3i4e
+ dspwtsNCJhPXlXn7tVwH/gKqPgyBq2FbmpsoKszKn6KdT9Nrp9mMr+Lox48Rlen3dFz3
+ uSX295e3Qsc3TwhJR5j8dpFPDWTCywZC2duykNqMuwKUtOVzXHRLXcWmRPBH3ExhNSG7
+ OQbQ==
+X-Gm-Message-State: AOJu0YxZzCDFTFF330pkFvjfkdJKIXbFkg8DPF/8Kvy/5D+8wKtsgzLE
+ aR2isO6rB5Va0bGxfNtEAEF2pynhDwgBHXP8f/k29qGmNlnWB+wpYz1/qDDmyKgb
+X-Gm-Gg: ASbGncvm8rA3RYJw8avLFnR2KLoAxi/j82k9yF/l/I3sUkz9kWAlBfmBEfFuvf64h+x
+ GhE64Vl/NXdKx9iZKp8hMtOw73qbGYTtjLL2BLNDeLNiAX7AIwYoNl8qckz4UhRderJJCR2/vKc
+ b/a7AgW1eSKbZtXAfqeWVS2aEeppaLaqE0CFzPtDciScVqAKOHek6gcNPN/Yw62LvgvJGIibHNV
+ euCX005EpLfQMwc5bokYE/1/zCdZ7uzj7ixZSF7W30/LHP6CU/8DVKH9ipZpONxOW9FCFXy0lX5
+ szOyEAdXpW2zDVZzN9uZPyxmaowTetTDHkhn/9n7hyEcJOB4UEplmNstx35SreE8r8VylLVeuLm
+ hjNn54OnppRHjJOT9edqNEWOMrHj95JqcURb3RpmwlQynUhD3aKwOZ+asswIRCnUycfiPCqNxE6
+ CmhbU743zUokTO83V6bzYucA==
+X-Google-Smtp-Source: AGHT+IEYF4QMJtiwKEWR/vdDVXUbeIzg2Y6H2dOfKtOPSRxbu/hbUsX7qU/BYk7O8WbDHcDC7azJlw==
+X-Received: by 2002:a17:906:6a09:b0:b4a:d60d:fb68 with SMTP id
+ a640c23a62f3a-b72e036bbccmr1081590566b.6.1762856927885; 
  Tue, 11 Nov 2025 02:28:47 -0800 (PST)
 Received: from PC-DA2D10.beckhoff.com
  ([2001:9e8:dc12:ce00:ae91:a1ff:fe8b:15a7])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72bdbd1ecfsm1290619366b.10.2025.11.11.02.28.46
+ a640c23a62f3a-b72bdbd1ecfsm1290619366b.10.2025.11.11.02.28.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 02:28:46 -0800 (PST)
+ Tue, 11 Nov 2025 02:28:47 -0800 (PST)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -74,18 +74,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Kevin Wolf <kwolf@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- YannickV <Y.Vossen@beckhoff.com>,
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-Subject: [PATCH v4 10/15] hw/misc/zynq_slcr: Add logic for DCI configuration
-Date: Tue, 11 Nov 2025 11:28:31 +0100
-Message-ID: <20251111102836.212535-11-corvin.koehne@gmail.com>
+ YannickV <Y.Vossen@beckhoff.com>
+Subject: [PATCH v4 11/15] hw/misc: Add Beckhoff CCAT device
+Date: Tue, 11 Nov 2025 11:28:32 +0100
+Message-ID: <20251111102836.212535-12-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251111102836.212535-1-corvin.koehne@gmail.com>
 References: <20251111102836.212535-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,94 +109,392 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-The registers for the digitally controlled impedance (DCI) clock are
-part of the system level control registers (SLCR). The DONE bit in
-the status register indicates a successfull DCI calibration. An
-description of the calibration process can be found here:
-https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/DDR-IOB-Impedance-Calibration
+This adds the Beckhoff Communication Controller (CCAT). The information
+block, EEPROM interface and DMA controller are currently  implemented.
 
-The DCI control register and status register have been added. As soon
-as the ENABLE and RESET bit are set, the RESET bit has also been toggled
-to 0 before and the UPDATE_CONTROL is not set, the DONE bit in the status
-register is set. If these bits change the DONE bit is reset. Note that the
-option bits are not taken into consideration.
+The EEPROM provides production information for Beckhoff Devices.
+An EEPORM binary must therefor be handed over. It should be aligned to
+a power of two. If no EEPROM binary is handed over an empty EEPROM of
+size 4096 is initialized.
+
+This device is needed for the Beckhoff CX7200 board emulation.
 
 Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/misc/zynq_slcr.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ hw/misc/Kconfig         |   3 +
+ hw/misc/beckhoff_ccat.c | 338 ++++++++++++++++++++++++++++++++++++++++
+ hw/misc/meson.build     |   1 +
+ 3 files changed, 342 insertions(+)
+ create mode 100644 hw/misc/beckhoff_ccat.c
 
-diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
-index a766bab182..d7a2994f47 100644
---- a/hw/misc/zynq_slcr.c
-+++ b/hw/misc/zynq_slcr.c
-@@ -180,6 +180,12 @@ REG32(GPIOB_CFG_HSTL, 0xb14)
- REG32(GPIOB_DRVR_BIAS_CTRL, 0xb18)
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 99548e146f..f3a2efa350 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -223,4 +223,7 @@ config XLNX_VERSAL_TRNG
+ config XLNX_ZYNQ_DDRC
+     bool
  
- REG32(DDRIOB, 0xb40)
-+REG32(DDRIOB_DCI_CTRL, 0xb70)
-+    FIELD(DDRIOB_DCI_CTRL, RESET, 0, 1)
-+    FIELD(DDRIOB_DCI_CTRL, ENABLE, 1, 1)
-+    FIELD(DDRIOB_DCI_CTRL, UPDATE_CONTROL, 20, 1)
-+REG32(DDRIOB_DCI_STATUS, 0xb74)
-+    FIELD(DDRIOB_DCI_STATUS, DONE, 13, 1)
- #define DDRIOB_LENGTH 14
- 
- #define ZYNQ_SLCR_MMIO_SIZE     0x1000
-@@ -193,6 +199,8 @@ struct ZynqSLCRState {
- 
-     MemoryRegion iomem;
- 
-+    bool ddriob_dci_ctrl_reset_toggled;
++config BECKHOFF_CCAT
++    bool
 +
-     uint32_t regs[ZYNQ_SLCR_NUM_REGS];
- 
-     Clock *ps_clk;
-@@ -331,6 +339,8 @@ static void zynq_slcr_reset_init(Object *obj, ResetType type)
- 
-     DB_PRINT("RESET\n");
- 
-+    s->ddriob_dci_ctrl_reset_toggled = false;
+ source macio/Kconfig
+diff --git a/hw/misc/beckhoff_ccat.c b/hw/misc/beckhoff_ccat.c
+new file mode 100644
+index 0000000000..cba570e767
+--- /dev/null
++++ b/hw/misc/beckhoff_ccat.c
+@@ -0,0 +1,338 @@
++/*
++ * Beckhoff Communication Controller Emulation
++ *
++ * Copyright (c) Beckhoff Automation GmbH. & Co. KG
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-     s->regs[R_LOCKSTA] = 1;
-     /* 0x100 - 0x11C */
-     s->regs[R_ARM_PLL_CTRL]   = 0x0001A008;
-@@ -418,6 +428,8 @@ static void zynq_slcr_reset_init(Object *obj, ResetType type)
-     s->regs[R_DDRIOB + 4] = s->regs[R_DDRIOB + 5] = s->regs[R_DDRIOB + 6]
-                           = 0x00000e00;
-     s->regs[R_DDRIOB + 12] = 0x00000021;
++#include "qemu/osdep.h"
++#include "hw/sysbus.h"
++#include "hw/register.h"
++#include "qemu/bitops.h"
++#include "qemu/log.h"
++#include "qapi/error.h"
++#include "system/block-backend.h"
++#include "exec/address-spaces.h"
++#include "exec/memory.h"
++#include "system/dma.h"
++#include "qemu/error-report.h"
++#include "block/block.h"
++#include "block/block_int.h"
++#include "block/qdict.h"
++#include "hw/block/block.h"
++#include "migration/vmstate.h"
++#include "qemu/bswap.h"
 +
-+    s->regs[R_DDRIOB_DCI_CTRL] = 0x00000020;
- }
- 
- static void zynq_slcr_reset_hold(Object *obj, ResetType type)
-@@ -554,6 +566,25 @@ static void zynq_slcr_write(void *opaque, hwaddr offset,
-                 (int)offset, (unsigned)val & 0xFFFF);
-         }
-         return;
++#ifndef CCAT_ERR_DEBUG
++#define CCAT_ERR_DEBUG 0
++#endif
 +
-+    case R_DDRIOB_DCI_CTRL:
-+        if (!FIELD_EX32(val, DDRIOB_DCI_CTRL, RESET) &&
-+            FIELD_EX32(s->regs[R_DDRIOB_DCI_CTRL], DDRIOB_DCI_CTRL, RESET)) {
++#define TYPE_BECKHOFF_CCAT "beckhoff-ccat"
++OBJECT_DECLARE_SIMPLE_TYPE(BeckhoffCcat, BECKHOFF_CCAT)
 +
-+            s->ddriob_dci_ctrl_reset_toggled = true;
-+            DB_PRINT("DDRIOB DCI CTRL RESET was toggled\n");
-+        }
++#define MAX_NUM_SLOTS 32
++#define CCAT_FUNCTION_BLOCK_SIZE 16
 +
-+        if (FIELD_EX32(val, DDRIOB_DCI_CTRL, ENABLE) &&
-+            FIELD_EX32(val, DDRIOB_DCI_CTRL, RESET) &&
-+            !FIELD_EX32(val, DDRIOB_DCI_CTRL, UPDATE_CONTROL) &&
-+            s->ddriob_dci_ctrl_reset_toggled) {
++#define CCAT_EEPROM_OFFSET 0x100
++#define CCAT_DMA_OFFSET 0x8000
 +
-+            s->regs[R_DDRIOB_DCI_STATUS] |= R_DDRIOB_DCI_STATUS_DONE_MASK;
-+        } else {
-+            s->regs[R_DDRIOB_DCI_STATUS] &= ~R_DDRIOB_DCI_STATUS_DONE_MASK;
++#define CCAT_MEM_SIZE 0xFFFF
++#define CCAT_DMA_SIZE 0x800
++#define CCAT_EEPROM_SIZE 0x20
++
++#define EEPROM_MEMORY_SIZE 0x1000
++
++#define EEPROM_CMD_OFFSET (CCAT_EEPROM_OFFSET + 0x00)
++    #define EEPROM_CMD_WRITE_MASK 0x2
++    #define EEPROM_CMD_READ_MASK 0x1
++#define EEPROM_ADR_OFFSET (CCAT_EEPROM_OFFSET + 0x04)
++#define EEPROM_DATA_OFFSET (CCAT_EEPROM_OFFSET + 0x08)
++
++#define DMA_BUFFER_OFFSET (CCAT_DMA_OFFSET + 0x00)
++#define DMA_DIRECTION_OFFSET (CCAT_DMA_OFFSET + 0x7c0)
++    #define DMA_DIRECTION_MASK 1
++#define DMA_TRANSFER_OFFSET (CCAT_DMA_OFFSET + 0x7c4)
++#define DMA_HOST_ADR_OFFSET (CCAT_DMA_OFFSET + 0x7c8)
++#define DMA_TRANSFER_LENGTH_OFFSET (CCAT_DMA_OFFSET + 0x7cc)
++
++/*
++ * The informationblock  is always located at address 0x0.
++ * Address and size are therefor replaced by two identifiers.
++ * The Parameter give information about the maximal number of
++ * function slots and the creation date (in this case 01.01.2001)
++ */
++#define CCAT_ID_1 0x88a4
++#define CCAT_ID_2 0x54414343
++#define CCAT_INFO_BLOCK_PARAMS ((MAX_NUM_SLOTS << 0) | (0x1 << 8) | \
++                              (0x1 << 16) | (0x1 << 24))
++
++#define CCAT_FUN_TYPE_ENTRY 0x0001
++#define CCAT_FUN_TYPE_EEPROM 0x0012
++#define CCAT_FUN_TYPE_DMA 0x0013
++
++typedef struct BeckhoffCcat {
++    SysBusDevice parent_obj;
++
++    MemoryRegion iomem;
++
++    uint8_t mem[CCAT_MEM_SIZE];
++
++    BlockBackend *eeprom_blk;
++    uint8_t *eeprom_storage;
++    uint32_t eeprom_size;
++} BeckhoffCcat;
++
++static void sync_eeprom(BeckhoffCcat *s)
++{
++    if (!s->eeprom_blk) {
++        return;
++    }
++    blk_pwrite(s->eeprom_blk, 0, s->eeprom_size, s->eeprom_storage, 0);
++}
++
++static uint64_t beckhoff_ccat_eeprom_read(void *opaque, hwaddr addr,
++                                          unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++    return ldn_le_p(&s->mem[addr], size);
++}
++
++static void beckhoff_ccat_eeprom_write(void *opaque, hwaddr addr, uint64_t val,
++                              unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++    uint64_t eeprom_adr;
++    uint64_t buf;
++    uint32_t bytes_to_read;
++
++    switch (addr) {
++    case EEPROM_CMD_OFFSET:
++        eeprom_adr = ldl_le_p(&s->mem[EEPROM_ADR_OFFSET]);
++        eeprom_adr = (eeprom_adr * 2) % s->eeprom_size;
++        if (val & EEPROM_CMD_READ_MASK) {
++            buf = 0;
++            bytes_to_read = 8;
++            if (eeprom_adr > s->eeprom_size - 8) {
++                bytes_to_read = s->eeprom_size - eeprom_adr;
++            }
++            buf = ldn_le_p(s->eeprom_storage + eeprom_adr, bytes_to_read);
++            stq_le_p(&s->mem[EEPROM_DATA_OFFSET], buf);
++        } else if (val & EEPROM_CMD_WRITE_MASK) {
++            buf = ldl_le_p(&s->mem[EEPROM_DATA_OFFSET]);
++            stw_le_p((uint16_t *)(s->eeprom_storage + eeprom_adr), buf);
++            sync_eeprom(s);
 +        }
 +        break;
-     }
++    default:
++        stn_le_p(&s->mem[addr], size, val);
++    }
++}
++
++static uint64_t beckhoff_ccat_dma_read(void *opaque, hwaddr addr, unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++
++    switch (addr) {
++    case DMA_TRANSFER_OFFSET:
++        if (s->mem[DMA_TRANSFER_OFFSET] & 0x1) {
++            s->mem[DMA_TRANSFER_OFFSET] = 0;
++        }
++        break;
++    }
++    return ldn_le_p(&s->mem[addr], size);
++}
++
++static void beckhoff_ccat_dma_write(void *opaque, hwaddr addr, uint64_t val,
++                           unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++    dma_addr_t dmaAddr;
++    uint8_t len;
++    uint8_t *mem_buf;
++
++    switch (addr) {
++    case DMA_TRANSFER_OFFSET:
++        len = s->mem[DMA_TRANSFER_LENGTH_OFFSET];
++        mem_buf = &s->mem[DMA_BUFFER_OFFSET];
++        dmaAddr = ldl_le_p(&s->mem[DMA_HOST_ADR_OFFSET]);
++        if (s->mem[DMA_DIRECTION_OFFSET] & DMA_DIRECTION_MASK) {
++            dma_memory_read(&address_space_memory, dmaAddr,
++                            mem_buf, len * 8, MEMTXATTRS_UNSPECIFIED);
++        } else {
++            /*
++             * The write transfer uses Host DMA Address + 8 as the target
++             * offset, as described in the CCAT manual Version 0.0.41
++             * section 20.2.
++             */
++            dma_memory_write(&address_space_memory, dmaAddr + 8,
++                                mem_buf, len * 8, MEMTXATTRS_UNSPECIFIED);
++        }
++        break;
++    }
++    stn_le_p(&s->mem[addr], size, val);
++}
++
++static uint64_t beckhoff_ccat_read(void *opaque, hwaddr addr, unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++    uint64_t val = 0;
++
++    assert(addr <= CCAT_MEM_SIZE - size);
++
++    if (addr >= CCAT_EEPROM_OFFSET &&
++                        addr <= CCAT_EEPROM_OFFSET + s->eeprom_size) {
++        return beckhoff_ccat_eeprom_read(opaque, addr, size);
++    } else if (addr >= CCAT_DMA_OFFSET &&
++                        addr <= CCAT_DMA_OFFSET + CCAT_DMA_SIZE) {
++        return beckhoff_ccat_dma_read(opaque, addr, size);
++    } else {
++        val = ldn_le_p(&s->mem[addr], size);
++    }
++
++    return val;
++}
++
++static void beckhoff_ccat_write(void *opaque, hwaddr addr, uint64_t val,
++                                unsigned size)
++{
++    BeckhoffCcat *s = opaque;
++
++    assert(addr <= CCAT_MEM_SIZE - size);
++
++    if (addr >= CCAT_EEPROM_OFFSET &&
++                        addr <= CCAT_EEPROM_OFFSET + s->eeprom_size) {
++        beckhoff_ccat_eeprom_write(opaque, addr, val, size);
++    } else if (addr >= CCAT_DMA_OFFSET &&
++                        addr <= CCAT_DMA_OFFSET + CCAT_DMA_SIZE) {
++        beckhoff_ccat_dma_write(opaque, addr, val, size);
++    } else {
++        stn_le_p(&s->mem[addr], size, val);
++    }
++}
++
++static const MemoryRegionOps beckhoff_ccat_ops = {
++    .read = beckhoff_ccat_read,
++    .write = beckhoff_ccat_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++};
++
++static void beckhoff_ccat_reset(DeviceState *dev)
++{
++    BeckhoffCcat *s = BECKHOFF_CCAT(dev);
++
++    memset(&s->mem[0], 0, MAX_NUM_SLOTS * CCAT_FUNCTION_BLOCK_SIZE);
++
++    size_t offset = 0 * CCAT_FUNCTION_BLOCK_SIZE;
++    stw_le_p(&s->mem[offset + 0], CCAT_FUN_TYPE_ENTRY);
++    stw_le_p(&s->mem[offset + 2], 0x0001);
++    stl_le_p(&s->mem[offset + 4], CCAT_INFO_BLOCK_PARAMS);
++    stl_le_p(&s->mem[offset + 8], CCAT_ID_1);
++    stl_le_p(&s->mem[offset + 12], CCAT_ID_2);
++
++    offset = 11 * CCAT_FUNCTION_BLOCK_SIZE;
++    stw_le_p(&s->mem[offset + 0], CCAT_FUN_TYPE_EEPROM);
++    stw_le_p(&s->mem[offset + 2], 0x0001);
++    stl_le_p(&s->mem[offset + 4], 0);
++    stl_le_p(&s->mem[offset + 8], CCAT_EEPROM_OFFSET);
++    stl_le_p(&s->mem[offset + 12], CCAT_EEPROM_SIZE);
++
++    offset = 15 * CCAT_FUNCTION_BLOCK_SIZE;
++    stw_le_p(&s->mem[offset + 0], CCAT_FUN_TYPE_DMA);
++    stw_le_p(&s->mem[offset + 2], 0x0000);
++    stl_le_p(&s->mem[offset + 4], 0);
++    stl_le_p(&s->mem[offset + 8], CCAT_DMA_OFFSET);
++    stl_le_p(&s->mem[offset + 12], CCAT_DMA_SIZE);
++}
++
++static void beckhoff_ccat_realize(DeviceState *dev, Error **errp)
++{
++    BeckhoffCcat *s = BECKHOFF_CCAT(dev);
++    BlockBackend *blk;
++
++    blk = s->eeprom_blk;
++
++    if (blk) {
++        uint64_t blk_size = blk_getlength(blk);
++        if (!is_power_of_2(blk_size)) {
++            error_setg(errp, "Blockend size is not a power of two.");
++            return;
++        }
++
++        if (blk_size < 512) {
++            error_setg(errp, "Blockend size is too small.");
++            return;
++        } else {
++            blk_set_perm(blk, BLK_PERM_WRITE, BLK_PERM_ALL, errp);
++
++            s->eeprom_size = blk_size;
++            s->eeprom_blk = blk;
++            s->eeprom_storage = blk_blockalign(s->eeprom_blk, s->eeprom_size);
++
++            if (!blk_check_size_and_read_all(s->eeprom_blk, DEVICE(s),
++                                             s->eeprom_storage, s->eeprom_size,
++                                             errp)) {
++                return;
++            }
++        }
++    } else {
++        s->eeprom_size = EEPROM_MEMORY_SIZE;
++        s->eeprom_storage = blk_blockalign(NULL, s->eeprom_size);
++        memset(s->eeprom_storage, 0x00, s->eeprom_size);
++    }
++}
++
++static void beckhoff_ccat_init(Object *obj)
++{
++    BeckhoffCcat *s = BECKHOFF_CCAT(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++
++    memory_region_init_io(&s->iomem, obj, &beckhoff_ccat_ops, s,
++                          TYPE_BECKHOFF_CCAT, CCAT_MEM_SIZE);
++    sysbus_init_mmio(sbd, &s->iomem);
++}
++
++static const VMStateDescription vmstate_beckhoff_ccat = {
++    .name = "beckhoff-ccat",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT8_ARRAY(mem, BeckhoffCcat, CCAT_MEM_SIZE),
++        VMSTATE_UINT32(eeprom_size, BeckhoffCcat),
++        VMSTATE_VBUFFER_UINT32(eeprom_storage, BeckhoffCcat, 1, NULL,
++                               eeprom_size),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static const Property beckhoff_ccat_properties[] = {
++    DEFINE_PROP_DRIVE("eeprom", BeckhoffCcat, eeprom_blk),
++};
++
++static void beckhoff_ccat_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    dc->realize = beckhoff_ccat_realize;
++    device_class_set_legacy_reset(dc, beckhoff_ccat_reset);
++    dc->vmsd = &vmstate_beckhoff_ccat;
++    device_class_set_props(dc, beckhoff_ccat_properties);
++}
++
++static const TypeInfo beckhoff_ccat_info = {
++ .name = TYPE_BECKHOFF_CCAT,
++ .parent = TYPE_SYS_BUS_DEVICE,
++ .instance_size = sizeof(BeckhoffCcat),
++ .instance_init = beckhoff_ccat_init,
++ .class_init = beckhoff_ccat_class_init,
++};
++
++static void beckhoff_ccat_register_types(void)
++{
++    type_register_static(&beckhoff_ccat_info);
++}
++
++type_init(beckhoff_ccat_register_types)
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 6ee7b6c71d..1fc1468464 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -14,6 +14,7 @@ system_ss.add(when: 'CONFIG_PL310', if_true: files('arm_l2x0.c'))
+ system_ss.add(when: 'CONFIG_INTEGRATOR_DEBUG', if_true: files('arm_integrator_debug.c'))
+ system_ss.add(when: 'CONFIG_A9SCU', if_true: files('a9scu.c'))
+ system_ss.add(when: 'CONFIG_ARM11SCU', if_true: files('arm11scu.c'))
++system_ss.add(when: 'CONFIG_BECKHOFF_CCAT', if_true: files('beckhoff_ccat.c'))
  
-     if (s->regs[R_LOCKSTA]) {
+ system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m_ras.c'))
+ 
 -- 
 2.47.3
 
