@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C0FC4D826
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 12:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C010C4D7B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 12:49:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vImtS-0002hx-Sc; Tue, 11 Nov 2025 06:50:44 -0500
+	id 1vImrK-0006jS-QL; Tue, 11 Nov 2025 06:48:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vImrq-0008MK-9f
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:49:00 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vImqi-00052u-B0
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:47:48 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vImro-0004b6-HA
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:48:57 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-297d4ac44fbso6423515ad.0
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 03:48:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vImqg-0004QU-AL
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 06:47:48 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-640d0ec9651so6782357a12.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 03:47:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1762861735; x=1763466535; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1762861664; x=1763466464; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kMw21UKyK4t+LLYVevUj5AWfKcUQpnJ5koYbjOeAsAc=;
- b=QRITqwmAU4rakrlcSj8fsPvcEssQjyRatrR6siDYNA3DHJbNUhOVZ6DSAhvQn6m+I6
- Vb2ZGziPPDK5IB2Y6zbWm/VOaajEUt9uut5O11Du3e5wnLC8mp5jO6uQebGPBAttz4AQ
- ySw8gktTg2qe/anLSvzLOW7qJcBge93HlidWg1qMKgQRQTFYNdCAV59+g9DP99xzQK3W
- uXT0pn8zqPcxociHenDET3LJU9WeM+0qT3nZGuSOOt8e5NWS0nSA6Jlcj80c/KriFgrW
- sKQhWfdrrUsXjXNcg77MgwOSVnJkKilvvx/l4q+O0/Tg9qUXtwsWisPuxuEp/ejupbB4
- oUjA==
+ bh=5CBEBtmFXIYhtD9uj/O0m0IZEIQnCBydNbN9HhNAKK8=;
+ b=yP27YQbuxK6Kq/UT9Cj/J5aXO33twcYka0tRYd4623hHR6uAa34buIoHa4UJx/pD34
+ YTZVnEAsOobsGnjG3CnbuwuLpfjSh4m2CLa6ad8vv9UPaS+70kcPARF0uYMXqU6+fr6y
+ 7+iusrdT2ZY9Nz2hY23tz5TmELCS8x2Zm6h8uAU8I4lC0rWBVZO76LzV1aB0yt9efeQA
+ UJ1cQNIKc2OM+sAgdY4OUPe2x9qTdpz0NZSXVneHFS9HQOPgoDUf+rBNO1piuAJzsWZs
+ QSjOwK75T+herBP4gmPXYdHX3Oif+10C36mbL/WKDEU6w2uANYWZ4qULs91MaA/MqDib
+ ihzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762861735; x=1763466535;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=kMw21UKyK4t+LLYVevUj5AWfKcUQpnJ5koYbjOeAsAc=;
- b=neHzY1mTLIqMsnHlAWBPoinHaxuliGvZczjZ0eCi4m38TWvsV2i1/C5Jn3hmNNvCNe
- DadsrTmQuna/3TLVR2U9/nS0GXCmPCmrbArA1mNze7NQBeEgWvrItqtckVWjqIMFWBmo
- w/QhZ/pAGXU5ieYgi/pOr0hujB3ccMeAvVLgbLl4vf9QshziK7W3ms31gQs+RJxc9kfe
- AB1mStpn+ohKhXyNLijuE7PAfY/kmr05gE1LoxOUqlGFGM0uWwuuAwcYWSlnsPmV3KoK
- ZBF7eCHtFTepeJwbeCaelssHGK/fYhuQLsY+wz/v433XesViEd7/X4AmbHs2G59k3Z+e
- +E+g==
-X-Gm-Message-State: AOJu0YzWlW/We7EczYFXxn8o1piXefY5QqpzHHd939wSX7WxWhsXCEWs
- jYka1UsxLRUr0AJM7zZrMjxt1M2ProhTGz6Ex2aoclnb7dUaJT8lWJ1iZGw+qwvCXcbF3rjvhpS
- 6272e9zg=
-X-Gm-Gg: ASbGncsx8wSVibiPEaCcUP8i4US7FJRMSMYRxL7u2tjlOdobC1/t63ajwtjWRDGPDSA
- tKby/acZHl3hfWB9yUgyLjeNvne6mAscKn/GVCU/QNq5ki2mB4k6RIVNslYt/pQQckw5aXXLGhq
- 922/AYmJ4c9OnFihio4vzOEOyixfRfdSu6hbWPAZz5tQtFcSJThL//TJPUEh8JvRoWR4vWk67si
- U6clNnEjoHqDirX7AVmBR8qLvTYhdOOG9HFCF0pcJ4Q+XuD08wQBw4b6+7d1VOe08WRTNRh+BdX
- gH1cwmQI1Bkv7FnG2+iA5neNJ4idiDhHEbTiFVQLxwLMdYACut1iXC9LR5aIWatAKlMZqBGEHmo
- S5b1Wx7MxiNVa+r+FVLHS/i4aZlqYscTEe1bV9lQuQfAEcbUL3TdClXkh8aqDwMHS8rKBRo72+x
- 3HCkd9x7ZUITsjNxaRM4B1ihrUSpkT+21IOPT53w==
-X-Google-Smtp-Source: AGHT+IGYm/nSXeXjJlUuHA7uZjEfwYGQm6kgEBF4QJobsyLe9FPWr9rDlbkokaZglq2gLw1AJ1K24w==
-X-Received: by 2002:a17:903:3bc8:b0:295:6850:a38d with SMTP id
- d9443c01a7336-29840842bdbmr35766615ad.19.1762861734691; 
- Tue, 11 Nov 2025 03:48:54 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com ([179.93.21.233])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29651c747d1sm177533125ad.63.2025.11.11.03.48.49
+ d=1e100.net; s=20230601; t=1762861664; x=1763466464;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5CBEBtmFXIYhtD9uj/O0m0IZEIQnCBydNbN9HhNAKK8=;
+ b=nGTkpFhsHJ9l8MMzwMdQH2ODC5RE5RJQKvf8TaEgOZACq1S+9lMgUMYZI4kAl4JLry
+ ZfBgPCymfbKmfXfyhPIZDdVTC3I2TSWs5d9C9XonTbQ+4zWLVCyrBYnwisdJ5NKqyQVw
+ eJzky8mmR9T2UjVKzTGYXlAF6hXICqn32tNllUkYOAb7RyByPojET1hOAmIamS6NfeGg
+ Pcw0UX7d1aSTX8L3F8+2lwWuCS27XJlASPk9lZXnRdlIny4Iv8Jw2DrZWFiCi6iInBvx
+ FhyzdM8IgX7zVqaqLvTGOyRdPhbxtPAZ4+98+pHJGkVEoGCXms4IS1G8L5r5gpMp+IiA
+ iFgQ==
+X-Gm-Message-State: AOJu0Yz+wjDAvKKVf9RBEi2HRScVGMJenRCKL31F/rXd81i68QIeO055
+ DYUlFeYVSf9kcSDWLwfg+ZpWFuehRvDCpjr0bpTuzeRleEKOGRLjTh2hJ/sw/sQeilotkMhZisc
+ 7kdigHS4=
+X-Gm-Gg: ASbGncu6JaFgLMo3NCCyt4ibjxQEpx+cBIkmm/aijoDUlyOCBjySyIuDwFIvcjjHvyU
+ 35Fb/6ZVsc+fdvJJwlIk/1AWkmokbHC10wLdsGWG29JSi3xZ+4JrZ3dTVxFfn4PLUvg3gT/1b58
+ GE3UCT3gM5hs6Tv4mF0zUH2Wir7LGAMbV7kOgmFGduiF0Rs4WcTZQtiyaAOgevd3Dnh/nQyV5vx
+ 5l/KufNylb21FebWnr0jIcdFrKQYOjKKPhLIzhtVC8gHvxTmst5bHPFp9jf66p4CHDKodsqm7tE
+ jLF0Qh+oIB57Ov0XfXr0rVr1DdOmsojlfL4/E11GL7M4lRyluyIYZeaqmbPzj20kES+bgCNVZzm
+ nk2AuNmAkFbgfkaGbIGWSinBaByIq6i6xu+xwUOzPRu6dm3WnqoubZMgBm18IrtfQKoY1i+mk0N
+ ric4xm4gqWFsw=
+X-Google-Smtp-Source: AGHT+IEUIwW0WkQrXpevTrRi1x3YysgnDtxgHUTJxSeTZOPBephkYD4MkNTvEieUtkDOSRNNNumJUg==
+X-Received: by 2002:a17:906:eec7:b0:b6d:5914:30c with SMTP id
+ a640c23a62f3a-b72e04e3d76mr1391400666b.34.1762861664493; 
+ Tue, 11 Nov 2025 03:47:44 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b72bf97d43bsm1383702766b.45.2025.11.11.03.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 03:48:54 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 17/17] hw/riscv/trace: update branch bit in sync messages
-Date: Tue, 11 Nov 2025 08:46:56 -0300
-Message-ID: <20251111114656.2285048-18-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251111114656.2285048-1-dbarboza@ventanamicro.com>
-References: <20251111114656.2285048-1-dbarboza@ventanamicro.com>
+ Tue, 11 Nov 2025 03:47:43 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0F4555F871;
+ Tue, 11 Nov 2025 11:47:43 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  peter.maydell@linaro.org
+Subject: Re: [PATCH] target/arm/cpu64: remove duplicate include
+In-Reply-To: <20251110161552.700333-1-osama.abdelkader@gmail.com> (Osama
+ Abdelkader's message of "Mon, 10 Nov 2025 18:15:52 +0200")
+References: <20251110161552.700333-1-osama.abdelkader@gmail.com>
+User-Agent: mu4e 1.12.14-dev2; emacs 30.1
+Date: Tue, 11 Nov 2025 11:47:42 +0000
+Message-ID: <87zf8srdsx.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,122 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have a working branch map update the branch bit in sync
-messages by checking if the sync address is a branch address that was
-taken (or not).
+Osama Abdelkader <osama.abdelkader@gmail.com> writes:
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- hw/riscv/rv-trace-messages.c |  6 +++---
- hw/riscv/rv-trace-messages.h |  3 ++-
- hw/riscv/trace-encoder.c     | 30 ++++++++++++++++++++++++++++--
- 3 files changed, 33 insertions(+), 6 deletions(-)
+> cpregs.h is included twice.
+>
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-diff --git a/hw/riscv/rv-trace-messages.c b/hw/riscv/rv-trace-messages.c
-index a93b0adfc6..a0a0cbb6ce 100644
---- a/hw/riscv/rv-trace-messages.c
-+++ b/hw/riscv/rv-trace-messages.c
-@@ -115,11 +115,12 @@ static void rv_etrace_write_header(uint8_t *buf, RVTraceMessageHeader header)
- }
- 
- size_t rv_etrace_gen_encoded_sync_msg(uint8_t *buf, uint64_t pc,
--                                      TracePrivLevel priv_level)
-+                                      TracePrivLevel priv_level,
-+                                      bool pc_is_branch)
- {
-     RVTraceSyncPayload payload = {.format = 0b11,
-                                   .subformat = 0b00,
--                                  .branch = 1,
-+                                  .branch = pc_is_branch,
-                                   .privilege = priv_level};
-     RVTraceMessageHeader header = {.flow = 0, .extend = 0,
-                                    .length = SYNC_PAYLOAD_SIZE_64BITS};
-@@ -158,7 +159,6 @@ size_t rv_etrace_gen_encoded_trap_msg(uint8_t *buf, uint64_t trap_addr,
- {
-     RVTraceTrapPayload payload = {.format = 0b11,
-                                   .subformat = 0b01,
--                                  .branch = 1,
-                                   .privilege = priv_level,
-                                   .ecause = ecause};
-     RVTraceMessageHeader header = {.flow = 0, .extend = 0,
-diff --git a/hw/riscv/rv-trace-messages.h b/hw/riscv/rv-trace-messages.h
-index 2b371641a4..fd4bb10860 100644
---- a/hw/riscv/rv-trace-messages.h
-+++ b/hw/riscv/rv-trace-messages.h
-@@ -20,7 +20,8 @@ typedef enum {
- } TracePrivLevel;
- 
- size_t rv_etrace_gen_encoded_sync_msg(uint8_t *buf, uint64_t pc,
--                                      TracePrivLevel priv_level);
-+                                      TracePrivLevel priv_level,
-+                                      bool pc_is_branch);
- size_t rv_etrace_gen_encoded_trap_msg(uint8_t *buf, uint64_t trap_addr,
-                                       TracePrivLevel priv_level,
-                                       uint8_t ecause,
-diff --git a/hw/riscv/trace-encoder.c b/hw/riscv/trace-encoder.c
-index 5b8f773b11..39ed8c8d54 100644
---- a/hw/riscv/trace-encoder.c
-+++ b/hw/riscv/trace-encoder.c
-@@ -394,15 +394,38 @@ static void trencoder_send_message_smem(TraceEncoder *trencoder,
-     trencoder_update_ramsink_writep(trencoder, dest, wrapped);
- }
- 
-+static bool trencoder_addr_is_branch_taken(TraceEncoder *te, uint64_t addr)
-+{
-+    uint8_t last_branch;
-+
-+    if (te->branches == 0) {
-+        return false;
-+    }
-+
-+    if (te->last_branch_pc == addr) {
-+        last_branch = extract32(te->branches, te->branches - 1, 1);
-+
-+        /* 0: branch taken, 1: not taken*/
-+        if (last_branch == 0) {
-+            return true;
-+        }
-+    }
-+
-+    return false;
-+}
-+
- static void trencoder_send_sync_msg(Object *trencoder_obj, uint64_t pc)
- {
-     TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
-     TracePrivLevel priv = trencoder_get_curr_priv_level(trencoder);
-     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
-     uint8_t msg_size;
-+    bool is_branch_taken;
- 
-     trencoder->first_pc = pc;
--    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
-+    is_branch_taken = trencoder_addr_is_branch_taken(trencoder, pc);
-+    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv,
-+                                              is_branch_taken);
- 
-     trencoder_send_message_smem(trencoder, msg, msg_size);
- }
-@@ -440,6 +463,7 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
-     TracePrivLevel priv = trencoder_get_curr_priv_level(trencoder);
-     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
-     uint8_t msg_size;
-+    bool is_branch_taken;
- 
-     if (trencoder->updiscon_pending) {
-         trencoder_send_updiscon(trencoder, pc);
-@@ -447,7 +471,9 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
- 
-     trencoder->first_pc = pc;
-     trace_trencoder_first_trace_insn(pc);
--    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
-+    is_branch_taken = trencoder_addr_is_branch_taken(trencoder, pc);
-+    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv,
-+                                              is_branch_taken);
- 
-     trencoder_send_message_smem(trencoder, msg, msg_size);
- }
--- 
-2.51.1
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+> ---
+>  target/arm/cpu64.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+> index f81cfd0113..ae84d8e420 100644
+> --- a/target/arm/cpu64.c
+> +++ b/target/arm/cpu64.c
+> @@ -34,7 +34,6 @@
+>  #include "hw/qdev-properties.h"
+>  #include "internals.h"
+>  #include "cpu-features.h"
+> -#include "cpregs.h"
+>=20=20
+>  /* convert between <register>_IDX and SYS_<register> */
+>  #define DEF(NAME, OP0, OP1, CRN, CRM, OP2)      \
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
