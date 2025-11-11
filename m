@@ -2,159 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A71C4BA03
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 07:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8853C4BA58
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 07:21:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIhek-0006vG-Iv; Tue, 11 Nov 2025 01:15:06 -0500
+	id 1vIhje-0001ky-HK; Tue, 11 Nov 2025 01:20:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vIheh-0006tC-K3
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:15:03 -0500
-Received: from mail-norwayeastazon11013015.outbound.protection.outlook.com
- ([40.107.159.15] helo=OSPPR02CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1vIhjc-0001fd-1G
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:20:08 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vIhef-0000iH-4w
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:15:03 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UmEqKF6PDGdDw0i/jOuFeHzIffnfbzSrX5euBSptMimDmPg8cpEmtPBjsO/GuJnN+6lCtXbV9Zzs0FSS4+RsTvtK7f9NKCGWD9yZ46chMeu/F+WOT79jp1wFcVMNhVE99ccFdUXLGR0y3vcN84TfNvDNopB5Ciw1MkaMtRnEOF2Bbp+jOBl6IcQePjukoKekxfoNqzxe2U7I4nN9jBCfH2Alhn55XVOvFuo1Gxwgp/tsk5L6s+LHVtkcxlfo5fE8+ftwdE4cQZqMwBSMVkcoQFQbzJ3JQmCSB20AlrjJz/a3ig+F414KjygqwSOx1hH+w9W/exV0T8QQIa8jMJM89Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5BRrLHN46AC6t7B6eb3DRCoBYEDUCJ41I6RNanAfyfg=;
- b=W1UReFN2z4QXg0jetuWBN0iEOmRu1/mjqVZd5JR8njQsKtYnFCpdIJRPaQTgPw4qXopxohi5zjvgOnR3QzXY7XEtmKFCvO2DkCvzaDKKwjMZ3/J5pYlIPVMJHndDRBUMOJUqi5EhhsmnBZtOF6N/BtLAn8SMDrPezY450QHwaUZPgoIUGcVn/gwsBKvmrdI09f5iQdW+ayBMP/cng5O4KLkGD6foZhhDaZukST/j1KRQfTlKNkE08h59GkF56mAACAa4K2rV4lB4ankvMCnOh9v+UBM5lIwzZnWT3zeq1xIX4XRFeaAt7pbGcNRkV8BAixenA6yJkr/lXJyLjAlxag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5BRrLHN46AC6t7B6eb3DRCoBYEDUCJ41I6RNanAfyfg=;
- b=TVT00VGOwyn0b/Y9nDdT9WQ2xYjz9WbQoOlUOJxh18+V/5aZ93mwMdY9EXQPKV048xPHV8ZsC4BVhUN+0ELn6yu4TsI995AmZ5ilYgVxO8kQw6AJqGKSGYoDEQe+3ZFpXTGbjFOIIccyfhJFqU38hyrHjwg5ySE0X8sb+J2jDiO+tdZjXUrAhhAo/OUwpkpKOwWF/A4828480osEcyR315nOR6J/zrhjd63/pKg61fksWHiY9hMfhntDNgL7WODjuqZ5V2arfuir8oAjRtTqqfD9fRMnTCAl8bcIyth2W1hA3nEhca+3KlUHI9RACgMj+p8/VNIueNP7bb4VUO8jMQ==
-Received: from AM9PR04MB8487.eurprd04.prod.outlook.com (2603:10a6:20b:41a::6)
- by PA4PR04MB7712.eurprd04.prod.outlook.com (2603:10a6:102:ec::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 06:09:57 +0000
-Received: from AM9PR04MB8487.eurprd04.prod.outlook.com
- ([fe80::1e08:e81f:d29:e1da]) by AM9PR04MB8487.eurprd04.prod.outlook.com
- ([fe80::1e08:e81f:d29:e1da%4]) with mapi id 15.20.9298.015; Tue, 11 Nov 2025
- 06:09:55 +0000
-From: Gaurav Sharma <gaurav.sharma_7@nxp.com>
-To: =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>
-Subject: RE: [EXT] Re: [PATCH 04/13] hw/arm/fsl-imx8mm: Adding support for
- USDHC storage controllers
-Thread-Topic: [EXT] Re: [PATCH 04/13] hw/arm/fsl-imx8mm: Adding support for
- USDHC storage controllers
-Thread-Index: AQHcUjRzryNtOF8Nk0i6sZyz7dMJS7TsAmuAgAD6sjA=
-Date: Tue, 11 Nov 2025 06:09:55 +0000
-Message-ID: <AM9PR04MB8487E41CDCB73BF6B6C84B2A87CFA@AM9PR04MB8487.eurprd04.prod.outlook.com>
-References: <20251110112257.184578-1-gaurav.sharma_7@nxp.com>
- <20251110112257.184578-5-gaurav.sharma_7@nxp.com>
- <5779078a-925b-4998-9534-5881e72e7125@linaro.org>
-In-Reply-To: <5779078a-925b-4998-9534-5881e72e7125@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8487:EE_|PA4PR04MB7712:EE_
-x-ms-office365-filtering-correlation-id: bb3158b4-cf23-44df-0581-08de20e8efb0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|19092799006|376014|366016|38070700021|7053199007; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?ytuF2tC2fh5jUzdX9hIXfP9pwvKQ3TuKVcsDJCfHjQekafp//eYaU4M7mE?=
- =?iso-8859-1?Q?kd4/74xl/bTz2WM0OMb3M/0rPofCURpLrOWcpfizBsHmRbn6KoyfKmrN8M?=
- =?iso-8859-1?Q?a7tGFtiZwKp5MlQsCR7/ajr0Qn7l1GkGFfS7vI5ewn9fvCVaSCbsUn2lCB?=
- =?iso-8859-1?Q?df3s3M5FV9aUaIrwhkd+zrs/ANZhj2RB7lXckQ1UjK1uc+x9wYUM0weuoU?=
- =?iso-8859-1?Q?m4TmF0jXZQvS62h7M/qNV4ab5hXRFfTLBFFCJP64Ys8QeJYyD8L4ylfd9j?=
- =?iso-8859-1?Q?Z3/hrqY+F6732iE4WPDRtW4wwxkpDDqqlbZU1iSexvVL4Y1U4/02jbtqXC?=
- =?iso-8859-1?Q?IFn1odYFsbGNmOyIF1QXcUsnnlh0iD10DoDez00k/3PNwNl/qm3f+SNGzv?=
- =?iso-8859-1?Q?A05349XbuBteqqCz7gRORqnekEHIADvsNRcV0Vq9zPWLZ2luifCRdSRuJJ?=
- =?iso-8859-1?Q?kstpVtLaqX4AAGDzWHSEvzM1BgZbeXGOHxJC6OhpFtqwHr5EBmzvpbdraz?=
- =?iso-8859-1?Q?4TGzHquSmDzDrod35ah/rBMG2UGJ7Eh8tMt9GcJ/D6ikF4Z52EgY4fhlxb?=
- =?iso-8859-1?Q?iZaCazzDLG30O4LlcFsutYKZ+yiwcwNoQtEViu0PcYALmJzlV31iwVIJ7t?=
- =?iso-8859-1?Q?806fV8yoFhBwLIc4YJJX7rNJpLweLA6xRz9Xqn38LgTNEVmyU/gcFqS9ZW?=
- =?iso-8859-1?Q?mxYi7xkiveqLHBdBSteh3ajf2x9CDS8vJksC8Sb5O+AUd337GbkqQqTO9u?=
- =?iso-8859-1?Q?V5DQ5hEaofH8MhXVDuoeXNduVN5fUL3vJMWNDmkVF5krdW5C57EIg7RDAt?=
- =?iso-8859-1?Q?QKB0iYSKCIwi+hV9Z9lSskHxOr4/YZW83P3/62fjf6wqn+uqj7pBi9H+b3?=
- =?iso-8859-1?Q?NUA2bpFr6az09+1pyTiugUOxJiibqOIVjeZFytnUCfcNYsWByZa52zPVNJ?=
- =?iso-8859-1?Q?XJWYysz0ririMLSYh1tp9L+IwIGy437aEm6J25poGG+Gbj4wJbIbP8I/mP?=
- =?iso-8859-1?Q?3MnSMgr6NH1z9yGna6PBd8R+ovCYM6GlsZ6IJyw9fAuz1/jwTLYzozjSJJ?=
- =?iso-8859-1?Q?yE+aDDNg/kbl6O9hfSffRaT/7vju99SZliMiH3xjj2GMX2JXeRT5DcWa25?=
- =?iso-8859-1?Q?14kRfXUky8vrCTBX6m+LGEe5is4otBWx7F0AtW3f332Wd4Nnzv3G28k2IT?=
- =?iso-8859-1?Q?uV0Gg4H1zmw0WjHhk3f24841v9X4WkwTzoB0XsbC1n09CKtv4N1GS/akpr?=
- =?iso-8859-1?Q?drRU5gvWAj68FjKiwUYIyK3VX8zmd6XZDm11KJUPW3PaBEbjBgmVe7aTKK?=
- =?iso-8859-1?Q?n1VBfinZJ0fVuhqmzG4D0XS4Hn40uikJCKl9SUn1uaRrMVvHIl2WDM9IEt?=
- =?iso-8859-1?Q?hILz6zOIj8I4bBisW8fyHk3IL4N0hM4odfWzAA7m06N1tGjyjdBnarfqoz?=
- =?iso-8859-1?Q?/lmOzk9rq4T0YEBEhIwd09x7jD57yKBmmcXxhkwxg7M5vkSfSS/dzOWaiB?=
- =?iso-8859-1?Q?5zGd2M+VajzBrb0zrO9h61k0tmGDclu2dAZgRueGcCJhcKo5WGbohOjbIb?=
- =?iso-8859-1?Q?5w5ZgJMaXhi64fyKCMU5Qw9woMwg?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM9PR04MB8487.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(19092799006)(376014)(366016)(38070700021)(7053199007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?rEvdOVNnioDNWgRk7Z6a50iE1BUYtnlGc0t6amx+Y/wFEeTAz/7Tp2v3w3?=
- =?iso-8859-1?Q?jX9TSPeNgzG1OcB5mKYcED0WG85tuQMMcgVi9Q6TI2A3vPe3hlh/jDB89Y?=
- =?iso-8859-1?Q?3Hs1GBH5iIdO3NNdRnzy9BHIwa58G6kMqmtp5OEDLIYRvauQzFfn0glyBm?=
- =?iso-8859-1?Q?cq9XhXrBsxaTut7vq4sC+UIr7MWxpTYtWt+/yrecsPhWwX7BW/ZrdlZD5J?=
- =?iso-8859-1?Q?xnvVorXgjUJfVj2slc3JoDgDVw4EQ0rP469CY+pAaYE7TGoRZ0sXNWbOa4?=
- =?iso-8859-1?Q?KmSleAKuJuxnvm8MmnpQeBZXs7CVvjalMcWpoq6KJ5MbCwRvglGY5kn+vH?=
- =?iso-8859-1?Q?h/F6UkmCC9uy4yGrNPyaPnItmlu16sh6H1BC+fvf+Z0c7w9xxIGxKtce7V?=
- =?iso-8859-1?Q?j7TyyhwjCPp/viXwR+2fuj/Zd+nnGqCpOMWfB4k+anI/RbWLFVs+xljH1/?=
- =?iso-8859-1?Q?p/NXaLO1zkyu1+vLR4xUmzrJWn2PnNbvqBI+sr7qH+7mtV552zN5NRJ23F?=
- =?iso-8859-1?Q?HrAdYMyItCrAsJ7SrxcqZsggMze26+UheUtTR2u7sJ0UH38+JJqbxMZmR3?=
- =?iso-8859-1?Q?htFWpB5Mi11G204PUsZMrtOa8bsFKYs6Ri+qc/inKNwhG4Zx4H9lYOhURA?=
- =?iso-8859-1?Q?fsP63k4evcL3K6BtiI0L4KQERKDZ9jcvbidj/BayDMXjtAsw6DnPHO4j0/?=
- =?iso-8859-1?Q?XK25FOFCLtn2szvUcgFKRkxat9o/QJClNvxUJtg+bc1feqvT9GJiWQWs96?=
- =?iso-8859-1?Q?YwU601d6qLXDPAITS9BsgfTP+fa6xNTuByRGEGs+iWIQWxWFEgUQF5GNzr?=
- =?iso-8859-1?Q?37lyY8CFC3RlNfKrYI4T/JEnJXy3Q3y3g/rFik4JD8CdgFE7smdqTCCRgX?=
- =?iso-8859-1?Q?CCL5S/5JG+ABdgd7YDkm8ZeJLzkCQCWkoM8YhlcYu4EGAuQUy9j55MBCDv?=
- =?iso-8859-1?Q?kpk+anPVOMBWVKGRs/Mruwt2ipcWRvn00cefWstr6kF5HMQq+1OUAKJJAk?=
- =?iso-8859-1?Q?LM0a+1GwkVdKEhT8ac+CUdhfEW5jlBACtLDZ4/V+uTNOzzX5e9u8yxJ+b/?=
- =?iso-8859-1?Q?uXl35P19vvvuGHnzvWAmVpbgcxSxy3e/leLoPskAodFWjB8T4RJ4m2cJ4D?=
- =?iso-8859-1?Q?zwGbdEl+OMjpvwmOTbqo2uM8r8Tfb3RgLoTS6rrzia/7tiR5Ras8ROulJ0?=
- =?iso-8859-1?Q?lPRKbsWLV/nt3Yig1GCo3LBkawRjflgjILvcbrDRQ6sNU1zhw1tC7h5M0Q?=
- =?iso-8859-1?Q?ku7P2fKaQ0dX91vw/rn18e6C81T692Ub6d/PrPvFGprLnhZFYQEX+m9onp?=
- =?iso-8859-1?Q?rF11muHgpx+vZrk5qn9t2Lnws52pObM/ZHNK0CtRIIDqP4oRDXYzF4Tmf6?=
- =?iso-8859-1?Q?78CoLwsRZk4XId4oAcR54ieBN0gD5UcGlKqdaSUl29q1DFmRXFCrPO/Mht?=
- =?iso-8859-1?Q?EwH/UmIe7jLMxq+ZUfs9YkowCzIAgAmGJzd1c1BrGJoZRhlNpLS1Bxl+f7?=
- =?iso-8859-1?Q?WpNY1dtZb5ofxutfT4NbQ3OLO+7jmtrJcZni9GuxYhW6wb7ioqpQvbnG6c?=
- =?iso-8859-1?Q?T4sQ+SiimK0zfH1qhAAfrWUDXQb3JgQW/TkKuzYtyWGloaIcEfSvNRvxL7?=
- =?iso-8859-1?Q?ygRirVeNTWHEMEC/3thyB/UexCzDsVO5fF?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1vIhjY-0001Ud-2g
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 01:20:07 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB3cpps025436;
+ Tue, 11 Nov 2025 06:19:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=xd4Hthn9sMbr+itpmFOzNHpgavLzS
+ qTDEvV1i4oGWVY=; b=kxbk8XiyZFeTYNrK9hVsjGLmnpvDXftXvVjLAh42ao1ea
+ 6mQUXMbB9DoTug9cIdaty/2Ib213KX0YMpOC0GnoXsmHLYXx0IWUvicmKE2RjqEQ
+ 5s7C6jXs7McDl/QeMLnwDL5qDiifczgWEgjZXy+VdpNylQOkoTsUDFcLiAAEEkxS
+ VNMyVEwwoVIiMgUN8uHSQekP2sEosOYIdh7pqKOoSJzn1lSfitdGyizZnY1WqLVB
+ zIBTEmdwI62pnXhQY7QKzcahJBdMNn/1Evq4poR4kjsIW1+eVBdd4qFGYfW0oZ5B
+ qjyFTRzXGzaoy//aB+ztzo1IDMCy701YQr9t409cw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abrpb8mjy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Nov 2025 06:19:53 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 5AB68PAq007603; Tue, 11 Nov 2025 06:19:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 4a9va9mk8x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Nov 2025 06:19:52 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6qh029277;
+ Tue, 11 Nov 2025 06:19:51 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 4a9va9mk84-1; Tue, 11 Nov 2025 06:19:51 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com
+Subject: [PATCH v7 0/9] target/i386/kvm/pmu: PMU Enhancement,
+ Bugfix and Cleanup
+Date: Mon, 10 Nov 2025 22:14:49 -0800
+Message-ID: <20251111061532.36702-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8487.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb3158b4-cf23-44df-0581-08de20e8efb0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2025 06:09:55.8939 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ptppaQ9p0tpv1IHzkUPVfTeUANMAtcEJnYrFinc8+8bDmOBmtoFpaTo7+i9W5T3TeP92AU1hrEoGnu48htEK+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7712
-Received-SPF: pass client-ip=40.107.159.15;
- envelope-from=gaurav.sharma_7@nxp.com;
- helo=OSPPR02CU001.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-11_01,2025-11-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 spamscore=0
+ mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511110047
+X-Proofpoint-GUID: Nobb7F94eErhj2oI-YPMDL9ImnqcarAl
+X-Proofpoint-ORIG-GUID: Nobb7F94eErhj2oI-YPMDL9ImnqcarAl
+X-Authority-Analysis: v=2.4 cv=FqEIPmrq c=1 sm=1 tr=0 ts=6912d58a cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NMLfzRoFxyNNWpThmMoA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDE4OSBTYWx0ZWRfX8KzGJXshM75+
+ vbeQCxV1YqfHYRprbwcKElCaQpzI5L7ctm0jHKHSk9wSXWui/dyzv/bP8qcc5s9if+Nu+qqBp6j
+ HGrc0hGLMT4xbX0BD5yFGKqh3GMcm6jBXIJK6RMH952GSPS/+6t8yujx9+NWH9cWkhk9xMt8WTQ
+ j9FxncZaLbob6lUI87GppuoBvdtT2XfHns+/YWtlmI3Y+G8xKI4f+MgRrAea0+ltgUul9/ibsQF
+ OP1ObO1gftgQztbWjxE1ZbdruS3xpXk+WEv7LeDp0BE/4t5pYAEVXumQ0UsopBrExwFltc2I6IN
+ 93GHhJpz1TAa1Uz8yQEHg0/dCzmKuaK/fRR9YymoxR9eqNnsN+FxcAAIDbPwCSRw/V8O2Xw2RKz
+ xz2XxWyXwYt0htZjaFThgF207WJ0mg==
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -170,80 +113,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Philippe for reviewing and catching this. Yes, it should be a 'stati=
-c const' since we do not expect this struct to be modified. My bad. This pa=
-ttern needs to be fixed in multiple patches. I will wait for additional rev=
-iew comments on the patch series before rolling out a v2. v2 will also have=
- changes to remove iMX8MM CSI and DSI dtb nodes since they are unimplemente=
-d.=20
+This patchset addresses four bugs related to AMD PMU virtualization.
 
------Original Message-----
-From: Philippe Mathieu-Daud=E9 <philmd@linaro.org>=20
-Sent: 10 November 2025 20:35
-To: Gaurav Sharma <gaurav.sharma_7@nxp.com>; qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com; peter.maydell@linaro.org
-Subject: [EXT] Re: [PATCH 04/13] hw/arm/fsl-imx8mm: Adding support for USDH=
-C storage controllers
+1. The PerfMonV2 is still available if PERCORE if disabled via
+"-cpu host,-perfctr-core".
 
-[You don't often get email from philmd@linaro.org. Learn why this is import=
-ant at https://aka.ms/LearnAboutSenderIdentification ]
+2. The VM 'cpuid' command still returns PERFCORE although "-pmu" is
+configured.
 
-Caution: This is an external email. Please take care when clicking links or=
- opening attachments. When in doubt, report the message using the 'Report t=
-his email' button
+3. The third issue is that using "-cpu host,-pmu" does not disable AMD PMU
+virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
+virtualization remains enabled. On the VM's Linux side, you might still
+see:
+
+[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+
+instead of:
+
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
+
+4. The fourth issue is that unreclaimed performance events (after a QEMU
+system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
+injected into the VM.
+
+The AMD PMU registers are not reset during QEMU system_reset.
+
+(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
+running "perf top", the PMU registers are not disabled properly.
+
+(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
+does not handle AMD PMU registers, causing some PMU events to remain
+enabled in KVM.
+
+(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
+preventing the reclamation of these events. Consequently, the
+kvm_pmc->perf_event remains active.
+
+(4) After a reboot, the VM kernel may report the following error:
+
+[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+
+(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
+NMIs randomly into the VM kernel:
+
+[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+
+To resolve these issues, we propose resetting AMD PMU registers during the
+VM reset process
 
 
-On 10/11/25 12:22, Gaurav Sharma wrote:
-> It enables emulation of SD/MMC cards through a virtual SDHCI interface=20
-> The emulated SDHCI controller allows guest OS to use emulated storage=20
-> as a standard block device.
-> This will allow running the images such as those generated by=20
-> Buildroot.
->
-> Signed-off-by: Gaurav Sharma <gaurav.sharma_7@nxp.com>
-> ---
->   docs/system/arm/imx8mm-evk.rst |  1 +
->   hw/arm/Kconfig                 |  1 +
->   hw/arm/fsl-imx8mm.c            | 25 +++++++++++++++++++++++++
->   hw/arm/imx8mm-evk.c            | 17 +++++++++++++++++
->   include/hw/arm/fsl-imx8mm.h    |  7 +++++++
->   5 files changed, 51 insertions(+)
+Changed since v1:
+  - Use feature_dependencies for CPUID_EXT3_PERFCORE and
+    CPUID_8000_0022_EAX_PERFMON_V2.
+  - Remove CPUID_EXT3_PERFCORE when !cpu->enable_pmu.
+  - Pick kvm_arch_pre_create_vcpu() patch from Xiaoyao Li.
+  - Use "-pmu" but not a global "pmu-cap-disabled" for KVM_PMU_CAP_DISABLE.
+  - Also use sysfs kvm.enable_pmu=N to determine if PMU is supported.
+  - Some changes to PMU register limit calculation.
+Changed since v2:
+  - Change has_pmu_cap to pmu_cap.
+  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+  - Rework the code flow of PATCH 07 related to kvm.enable_pmu=N following
+    Zhao's suggestion.
+  - Use object_property_get_int() to get CPU family.
+  - Add support to Zhaoxin.
+Changed since v3:
+  - Re-base on top of Zhao's queued patch.
+  - Use host_cpu_vendor_fms() from Zhao's patch.
+  - Pick new version of kvm_arch_pre_create_vcpu() patch from Xiaoyao.
+  - Re-split the cases into enable_pmu and !enable_pmu, following Zhao's
+    suggestion.
+  - Check AMD directly makes the "compat" rule clear.
+  - Some changes on commit message and comment.
+  - Bring back global static variable 'kvm_pmu_disabled' read from
+    /sys/module/kvm/parameters/enable_pmu.
+Changed since v4:
+  - Re-base on top of most recent mainline QEMU.
+  - Add more Reviewed-by.
+  - All patches are reviewed.
+Changed since v5:
+  - Re-base on top of most recent mainline QEMU.
+  - Remove patch "kvm: Introduce kvm_arch_pre_create_vcpu()" as it is
+    already merged.
+  - To resolve conflicts in new [PATCH v6 3/9] , move the PMU related code
+    before the call site of is_tdx_vm().
+Changed since v6:
+  - Re-base on top of most recent mainline QEMU (staging branch).
+  - Add more Reviewed-by from Dapeng and Sandipan.
 
 
-> @@ -342,6 +346,26 @@ static void fsl_imx8mm_realize(DeviceState *dev, Err=
-or **errp)
->                              qdev_get_gpio_in(gicdev, serial_table[i].irq=
-));
->       }
->
-> +    /* USDHCs */
-> +    for (i =3D 0; i < FSL_IMX8MM_NUM_USDHCS; i++) {
+Dongli Zhang (9):
+  target/i386: disable PerfMonV2 when PERFCORE unavailable
+  target/i386: disable PERFCORE when "-pmu" is configured
+  target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+  target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+  target/i386/kvm: rename architectural PMU variables
+  target/i386/kvm: query kvm.enable_pmu parameter
+  target/i386/kvm: reset AMD PMU registers during VM reset
+  target/i386/kvm: support perfmon-v2 for reset
+  target/i386/kvm: don't stop Intel PMU counters
 
-static const?
+ target/i386/cpu.c     |   8 +
+ target/i386/cpu.h     |  16 ++
+ target/i386/kvm/kvm.c | 355 +++++++++++++++++++++++++++++++++++++++------
+ 3 files changed, 332 insertions(+), 47 deletions(-)
 
-> +        struct {
-> +            hwaddr addr;
-> +            unsigned int irq;
-> +        } usdhc_table[FSL_IMX8MM_NUM_USDHCS] =3D {
-> +            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC1].addr, FSL_IMX8MM_USDH=
-C1_IRQ },
-> +            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC2].addr, FSL_IMX8MM_USDH=
-C2_IRQ },
-> +            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC3].addr, FSL_IMX8MM_USDH=
-C3_IRQ },
-> +        };
-> +
-> +        if (!sysbus_realize(SYS_BUS_DEVICE(&s->usdhc[i]), errp)) {
-> +            return;
-> +        }
-> +
-> +        sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0, usdhc_table[i].=
-addr);
-> +        sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
-> +                           qdev_get_gpio_in(gicdev, usdhc_table[i].irq))=
-;
-> +    }
+branch: remotes/origin/staging
+base-commit: 593aee5df98b4a862ff8841a57ea3dbf22131a5f
 
-Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+Thank you very much!
+
+Dongli Zhang
 
 
