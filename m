@@ -2,79 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220C1C4EF02
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 17:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5335CC4F382
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 18:18:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIquP-0004rp-Cp; Tue, 11 Nov 2025 11:07:53 -0500
+	id 1vIs04-0005v1-Qm; Tue, 11 Nov 2025 12:17:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vIqu4-0004XT-Ja
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 11:07:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vIqu3-000682-3f
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 11:07:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762877247;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TZ0aCg9lmgUFNLUpQ+riSAh9HFossYbNse6oA8/jLd0=;
- b=ENHWWgFLRzM7AFnH2O0teUR97rt2/KmLDlg/R2LCMX5C8VkdiIpBS+Uz0HU77AkWn8XSdH
- F99kir6XkgYr1LJSxnz5stkDW9zgzphkdd7x2iRAasIKPYp/s1cXpXVo8AxgtDOWanohoc
- RvOq4jaTnpCt6gfZDfHOq8oa1C5umPo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-DZa0J09sNDmbE2U-bICgiQ-1; Tue,
- 11 Nov 2025 11:07:25 -0500
-X-MC-Unique: DZa0J09sNDmbE2U-bICgiQ-1
-X-Mimecast-MFC-AGG-ID: DZa0J09sNDmbE2U-bICgiQ_1762877244
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 05FF819560AE; Tue, 11 Nov 2025 16:07:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.84])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 33130195608E; Tue, 11 Nov 2025 16:07:18 +0000 (UTC)
-Date: Tue, 11 Nov 2025 16:07:12 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, stefanha@redhat.com
-Subject: Re: [PATCH 6/8] qio: Hoist ref of listener outside loop
-Message-ID: <aRNfMNc-XJfCl_4E@redhat.com>
-References: <20251103202849.3687643-10-eblake@redhat.com>
- <20251103202849.3687643-16-eblake@redhat.com>
- <aQnf7AVY17zEKl84@redhat.com>
- <wscvm5qo2muser5hiwwl5wrvesuzacifdpgkh33shodxvltdas@lidjzqixmqpv>
- <aRNLhP_FdMtPfzvG@redhat.com> <aRNatBbLB29clhPk@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIrzm-0005WH-BC
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:32 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIrzk-0003uM-3w
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:29 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-6419aaced59so3584616a12.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 09:17:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1762881446; x=1763486246; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7PGrRKAvpWgdql03IMxILc4BiTJmKYPYpApvfDWwzvA=;
+ b=TbBjO6LMtm74z3nbNyoj7IPufsDg7Eo40EDJkSseRfgeuZvg18d/q69clCZUes9khr
+ IvFMdIrggdyCG5pSjgWm9+GfJbHsSiz4uaeb6GC9ybYozKUf1+SC6sxSU7hbFN9PWs3V
+ mmG8UFqJ8fGYgeNzHcsbY89vtQuoV6bcQZQgVOCyi+sCuw4MjY4bHySnla1MmXRt9GnQ
+ mApb3gXmpTWVJxOMlWG3W70KTNQIodAOMrUMQXstiXa73CWkjyU07pnBsCOPhCHxoNQf
+ zWMaXe68wBnQ2wgjmaOQ+3MKUyFLhZH8UHr7bdZLiRlYotDc9QRmm3P71V2h4PD6cbiz
+ 0gWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762881446; x=1763486246;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7PGrRKAvpWgdql03IMxILc4BiTJmKYPYpApvfDWwzvA=;
+ b=GlN77rWDTWzMT/WBWxLzRgBRvUG6kJz8LpGo7u5HqCjgTQCgU9PkR5yHEB99+2hP0k
+ jaMjsRhHDmpTOqYhPy6SLcsua4LU2fIdokGi9U0pbRSk4uS7B7K2B4EOeb806rU8uC94
+ 8zo0ckGgwtQ2kVKFLOw2ondHR9H+apbOt0515ZuLhpoHoxI9FE898qnFLEaQwEAKh/0l
+ xUH05ZkajdhxJzqAYgEKTahXrE0oSUvq7C1PbG7s0iUmKYazjbWNgkL/8+gY0wuSFhYC
+ z39lNlC1b2QpMaQX/XkyHoSkagGYc0lg/aovxRtw1vuaMEjGS1za7ugPr7oOjynZrrGZ
+ tJBg==
+X-Gm-Message-State: AOJu0YxQKFPUdTXhUM1vAmVQVMBDBunt+TfdfYRKEP6EcEe/sGVkRqOV
+ aOIv9Djpoz9WBq2zy98Hxqp3Kdl/4cmWQJMUkI99wcruNkNzU6TVPBG1MfIs23uaVYU=
+X-Gm-Gg: ASbGncs7m3yg0zx7L2Hx0XkDjVzma0qhg139FBp7SBQW60jtoSIj71Rr+r7fq3VIUI8
+ M01MOAeL+LDfJ752LHBJtLz5W7HB08lWbRUBh89vIa9atOxDG5+egz1qIG3ptl3ZXMEgjIIT5vr
+ mSz94D4Af3aIdxkV23cPAhGqfMPeH+EX7LZgLLkmFfMZX/iC2poZYGFLR6ZaTYtl88aLjkK5x8w
+ rCmy92V4WAhAYgHnC8KfxmVTbaZ3DJwnRjhvo4kuUFIvMAoMREWzErn7ziGLpPF6Ft4LQiRAbTv
+ YmvwYTozDZPn/3uXHSecF0jeN4WA1S1Ya+xb7OyrVUf4WyGCHNW7jxipjvWVmQYTc72Ftnfuzi4
+ ScZlOOM7BMK5Wf9TSBwye+4Lh8HQvvOAEnZskZv1/UHkaNhWSujeLOlawzAaRHAoYpvbrQe8l0Q
+ VC
+X-Google-Smtp-Source: AGHT+IEwSTQ9giAUEpNEQqdy9Mb+KGSmZ4U/SBQjFBhbZiXZVql4E4LlqT2bTNk3BMmFNZmAjcWUOQ==
+X-Received: by 2002:a05:6402:2554:b0:641:27d8:ec3f with SMTP id
+ 4fb4d7f45d1cf-6415e8126c2mr10443160a12.29.1762881445745; 
+ Tue, 11 Nov 2025 09:17:25 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6411f862697sm13947763a12.25.2025.11.11.09.17.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Nov 2025 09:17:25 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 3F51E5F8FC;
+ Tue, 11 Nov 2025 17:17:24 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Ed Maste <emaste@freebsd.org>, Paul Durrant <paul@xen.org>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Gustavo Romero <gustavo.romero@linaro.org>
+Subject: [PATCH 00/16] testing/next cleanups (docker, functional)
+Date: Tue, 11 Nov 2025 17:17:07 +0000
+Message-ID: <20251111171724.78201-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aRNatBbLB29clhPk@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,138 +108,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 11, 2025 at 04:48:04PM +0100, Kevin Wolf wrote:
-> Am 11.11.2025 um 15:43 hat Daniel P. Berrangé geschrieben:
-> > On Wed, Nov 05, 2025 at 03:57:29PM -0600, Eric Blake wrote:
-> > > On Tue, Nov 04, 2025 at 11:13:48AM +0000, Daniel P. Berrangé wrote:
-> > > > On Mon, Nov 03, 2025 at 02:10:57PM -0600, Eric Blake wrote:
-> > > > > The point of QIONetListener is to allow a server to listen to more
-> > > > > than one socket address at a time, and respond to clients in a
-> > > > > first-come-first-serve order across any of those addresses.  While
-> > > > > some servers (like NBD) really do want to serve multiple simultaneous
-> > > > > clients, many other servers only care about the first client to
-> > > > > connect, and will immediately deregister the callback, possibly by
-> > > > > dropping their reference to the QIONetListener.  The existing code
-> > > > > ensures that all other pending callbacks remain safe once the first
-> > > > > callback drops the listener, by adding an extra reference to the
-> > > > > listener for each GSource created, where those references pair to the
-> > > > > eventual teardown of each GSource after a given callbacks has been
-> > > > > serviced or aborted.  But it is equally acceptable to hoist the
-> > > > > reference to the listener outside the loop - as long as there is a
-> > > > > callback function registered, it is sufficient to have a single
-> > > > > reference live for the entire array of sioc, rather than one reference
-> > > > > per sioc in the array.
-> > > > > 
-> > > > > Hoisting the reference like this will make it easier for an upcoming
-> > > > > patch to still ensure the listener cannot be prematurely garbage
-> > > > > collected during the user's callback, even when the callback no longer
-> > > > > uses a per-sioc GSource.
-> > > > 
-> > > > It isn't quite this simple. Glib reference counts the callback
-> > > > func / data, holding a reference when dispatching the callback.
-> > > > 
-> > > > IOW, even if the GSource is unrefed, the callback 'notify'
-> > > > function won't be called if the main loop is in the process
-> > > > of dispatching.
+We have a new ppc64le custom runner box courtesy of OSUOSL. The
+ansible scripts where updated in the last pull request and now we can
+turn on the runner.
 
-snip
+On the subject runners I've done some more template clean-ups to
+improve maintainability and also tried to stop the custom runners
+appearing when not prompted for.
 
-> > That appears to work ok, however, there's still a race window that is
-> > not solved. Between the time thread 2 sees POLLIN, and when it calls
-> > the dispatch(sock) function, it is possible that thread 1 will drop
-> > the last reference:
-> > 
-> > 
-> > 
-> >   Thread 1:
-> >        qio_net_listener_set_client_func(lstnr, f, ...);
-> >            => object_ref(listener)
-> >            => foreach sock: socket
-> >                => sock_src = qio_channel_socket_add_watch_source(sock, ...., lstnr, NULL);
-> > 
-> >   Thread 2:
-> >        poll()
-> >           => event POLLIN on socket
-> > 
-> >   Thread 1:
-> >        qio_net_listener_set_client_func(lstnr, NULL, ...);
-> >           => foreach sock: socket
-> >                => g_source_unref(sock_src)
-> >           => object_unref(listener)
-> >        unref(lstnr)  (still 1 reference left)
-> 
-> Is what you're worried about that there is still a reference left in
-> the opaque pointer of an fd handler, but it's not in the refcount and
-> therefore this already frees the listener while thread 2 will still
-> access it?
+Finally fileserver.linaro.org is being shutdown at the end of the year
+so I have migrated the tests to a new server. Those changes have a Cc:
+qemu-stable@nongnu.org tag as they will need back-porting.
 
-Yes, exactly.
+Please review,
 
-> 
-> > 
-> >   Thread 2:
-> >                => call dispatch(sock)
-> >                     => ref(lstnr)
-> >                     ...do stuff..
-> >                     => unref(lstnr)    (the final reference)
-> >                         => finalize(lstnr)
-> >               => return dispatch(sock)
-> >               => unref(GSourceCallback)
-> > 
-> > 
-> > I don't see a way to solve this without synchronization with the event
-> > loop for releasing the reference on the opaque data for the dispatcher
-> > callback.  That's what the current code does, but I'm seeing no way for
-> > the AioContext event loop callbacks to have anything equivalent. This
-> > feels like a gap in the AioContext design.
-> 
-> I think the way you would normally do this is schedule a BH in thread 2
-> to do the critical work. If you delete the fd handler and unref the
-> listener in thread 2, then there is no race.
+Alex.
 
-Yes, using a BH would be safe, provided you put the BH in the right
-loop, given that we have choice of the main event loop, or a non-default
-GMainContext, or the special  AioContext that NBD is relying on.
+Alex Bennée (15):
+  tests/docker: drop --link from COPYs in emsdk docker
+  libvirt-ci: bump libvirt-ci to latest version
+  tests/lcitool: update ENV stazas outputted by refresh
+  tests/docker: add coreutils to the package list
+  gitlab: add initial ppc64le custom-runner test
+  tests: move test_xen assets to share.linaro.org
+  tests: move test_virt assets to share.linaro.org
+  tests: move test_netdev_ethtool to share.linaro.org
+  tests: move test_kvm_xen to share.linaro.org
+  tests: move test_kvm to share.linaro.org
+  tests: move test_virt_gpu to share.linaro.org
+  gitlab: use template for ubuntu-24.04-s390x jobs
+  gitlab: suppress custom runners being triggered by schedule
+  gitlab: make the schedule rules a bit more general
+  gitlab: add a weekly container building job
 
-> But maybe adding a callback for node deletion in AioHandler wouldn't
-> hurt because the opaque pointer pretty much always references something
-> and doing an unref when deleting the AioHandler should be a pretty
-> common pattern.
+Pierrick Bouvier (1):
+  docs/about/emulation: update assets for uftrace plugin documentation
 
-That would likely make the scenario less error-prone, compared to
-remembering to use a BH to synchronize.
+ docs/about/emulation.rst                      |  20 +-
+ docs/devel/testing/ci-jobs.rst.inc            |   6 +
+ .gitlab-ci.d/base.yml                         |   4 +-
+ .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars             |   2 +-
+ .gitlab-ci.d/container-template.yml           |   4 +
+ .gitlab-ci.d/containers.yml                   |  36 ++++
+ .gitlab-ci.d/custom-runners.yml               |   1 +
+ .../custom-runners/debian-13-ppc64le.yml      |  40 ++++
+ .../custom-runners/ubuntu-24.04-aarch64.yml   |  12 +-
+ .../custom-runners/ubuntu-24.04-s390x.yml     | 181 +++++++-----------
+ .../ci/setup/debian/debian-13-ppc64le.yaml    |   1 +
+ .../ci/setup/ubuntu/ubuntu-2404-aarch64.yaml  |   1 +
+ .../ci/setup/ubuntu/ubuntu-2404-s390x.yaml    |   1 +
+ tests/docker/Makefile.include                 |  11 ++
+ tests/docker/dockerfiles/alpine.docker        |  11 +-
+ tests/docker/dockerfiles/centos9.docker       |  11 +-
+ .../dockerfiles/debian-amd64-cross.docker     |  21 +-
+ .../dockerfiles/debian-arm64-cross.docker     |  21 +-
+ .../dockerfiles/debian-armhf-cross.docker     |  21 +-
+ .../dockerfiles/debian-i686-cross.docker      |  21 +-
+ .../dockerfiles/debian-mips64el-cross.docker  |  21 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |  21 +-
+ .../dockerfiles/debian-ppc64el-cross.docker   |  21 +-
+ .../dockerfiles/debian-riscv64-cross.docker   |  24 ++-
+ .../dockerfiles/debian-s390x-cross.docker     |  21 +-
+ tests/docker/dockerfiles/debian.docker        |  13 +-
+ .../dockerfiles/emsdk-wasm32-cross.docker     |   8 +-
+ .../dockerfiles/fedora-rust-nightly.docker    |  11 +-
+ .../dockerfiles/fedora-win64-cross.docker     |  19 +-
+ tests/docker/dockerfiles/fedora.docker        |  11 +-
+ tests/docker/dockerfiles/opensuse-leap.docker |  11 +-
+ tests/docker/dockerfiles/ubuntu2204.docker    |  11 +-
+ tests/functional/aarch64/test_kvm.py          |   7 +-
+ tests/functional/aarch64/test_virt.py         |   5 +-
+ tests/functional/aarch64/test_virt_gpu.py     |  16 +-
+ tests/functional/aarch64/test_xen.py          |  12 +-
+ tests/functional/x86_64/test_kvm_xen.py       |  17 +-
+ .../functional/x86_64/test_netdev_ethtool.py  |  14 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/projects/qemu.yml               |   1 +
+ tests/lcitool/refresh                         |   6 +-
+ tests/vm/generated/freebsd.json               |   1 +
+ 43 files changed, 371 insertions(+), 330 deletions(-)
+ create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
 
-> > This is admittedly an incredibly hard to trigger race condition. It would
-> > need a client to be calling a QMP command that tears down the NBD server,
-> > at the exact same time as a new NBD client was incoming. Or the same kind
-> > of scenario for other pieces of QEMU code using QIONetListener. This still
-> > makes me worried though, as rare races have a habit of hitting QEMU
-> > eventually.
-> 
-> Aren't both QMP and incoming NBD connections always handled in the main
-> thread? I'm not sure if I know a case where we would actually get this
-> pattern with two different threads today. Of course, that doesn't mean
-> that we couldn't get it in the future.
-
-Yeah, I believe we're probably safe in todays usage. My concern was
-primarily about any surprises in the conceptual design that might
-impact us in future.
-
-I guess if NBD is the only thing using AioContext for QIONetListener
-today, we could hoist the ref/unref only when using a AioContext,
-and keep the GDestroyNotify usage for the GMainContext code path
-to significantly limit the exposure. Avoid needing to do anything
-extra for AioHandlers right before release.
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.3
 
 
