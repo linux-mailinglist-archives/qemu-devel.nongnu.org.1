@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E73C4FDCA
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00C7C4FDD9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:34:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIvzS-0006w3-5P; Tue, 11 Nov 2025 16:33:26 -0500
+	id 1vIvzV-00070r-Px; Tue, 11 Nov 2025 16:33:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzQ-0006vR-IU
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzT-0006zv-Sj
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzP-0001rP-1U
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:24 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvzR-0001rp-H8
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762896802;
+ s=mimecast20190719; t=1762896804;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ot2YRVb68vmbRabsegBRxrSHPHgWCylNtI18CWvtA6o=;
- b=h3KxkCyoM2dWYUPnZxEWCUcsH9dX18laPf3zYXpmFlHwHERFs8vAwgZIzBaiKNL60yFGPW
- i0By0G10zone+hps9AO6cLBYN83Gx7i6Nrsyu3D8D6V0nDEVUBhl0QCO3paiJ2SS1jX99l
- b6yj/jotudvCW2zVV+PWzzmTGTSaEw8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=uWYRxSrvtjEffMo7XGHawDdlzSxJaz46itet0EPADNw=;
+ b=YBVUpqhqmzjKLQP93vi5kv/Jhoyu1qMVkb2gHAWoBhBjf1pa6KOzDiO6wQ6lFrG9n9dO3j
+ jS5HmUmRRA0edTxOoOsVb9MiINOjFPl4pJRO08EGM5mUkx3P/Ca87wj0C89/ntkN6su5P6
+ CnqvBq9BPsJQW59e2k6w1NL7uU9BJck=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-284-He6cJ8AeOw-fw7jMVbLYGw-1; Tue,
- 11 Nov 2025 16:33:19 -0500
-X-MC-Unique: He6cJ8AeOw-fw7jMVbLYGw-1
-X-Mimecast-MFC-AGG-ID: He6cJ8AeOw-fw7jMVbLYGw_1762896798
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-YOHW-GbzOSKo4H3XOvLZDQ-1; Tue,
+ 11 Nov 2025 16:33:21 -0500
+X-MC-Unique: YOHW-GbzOSKo4H3XOvLZDQ-1
+X-Mimecast-MFC-AGG-ID: YOHW-GbzOSKo4H3XOvLZDQ_1762896800
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 19647180048E; Tue, 11 Nov 2025 21:33:18 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B34D3195605C; Tue, 11 Nov 2025 21:33:20 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.225.214])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C8BF30044E0; Tue, 11 Nov 2025 21:33:15 +0000 (UTC)
+ id 93AF530044E5; Tue, 11 Nov 2025 21:33:18 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL v2 08/28] aio: free AioContext when aio_context_new() fails
-Date: Tue, 11 Nov 2025 22:32:18 +0100
-Message-ID: <20251111213238.181992-9-kwolf@redhat.com>
+Subject: [PULL v2 09/28] aio: add errp argument to aio_context_setup()
+Date: Tue, 11 Nov 2025 22:32:19 +0100
+Message-ID: <20251111213238.181992-10-kwolf@redhat.com>
 In-Reply-To: <20251111213238.181992-1-kwolf@redhat.com>
 References: <20251111213238.181992-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,116 +83,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-g_source_destroy() only removes the GSource from the GMainContext it's
-attached to, if any. It does not free it.
+When aio_context_new() -> aio_context_setup() fails at startup it
+doesn't really matter whether errors are returned to the caller or the
+process terminates immediately.
 
-Use g_source_unref() instead so that the AioContext (which embeds a
-GSource) is freed. There is no need to call g_source_destroy() in
-aio_context_new() because the GSource isn't attached to a GMainContext
-yet.
+However, it is not acceptable to terminate when hotplugging --object
+iothread at runtime. Refactor aio_context_setup() so that errors can be
+propagated. The next commit will set errp when fdmon_io_uring_setup()
+fails.
 
-aio_ctx_finalize() expects everything to be set up already, so introduce
-the new ctx->initialized boolean and do nothing when called with
-!initialized. This also requires moving aio_context_setup() down after
-event_notifier_init() since aio_ctx_finalize() won't release any
-resources that aio_context_setup() acquired.
-
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20251104022933.618123-9-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20251104022933.618123-10-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/aio.h |  3 +++
- util/async.c        | 31 ++++++++++++++++++++++++++++---
- 2 files changed, 31 insertions(+), 3 deletions(-)
+ include/block/aio.h | 5 ++++-
+ util/aio-posix.c    | 5 +++--
+ util/aio-win32.c    | 3 ++-
+ util/async.c        | 6 +++++-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/include/block/aio.h b/include/block/aio.h
-index 3ee6015424..6cddf4d13b 100644
+index 6cddf4d13b..13b6d34238 100644
 --- a/include/block/aio.h
 +++ b/include/block/aio.h
-@@ -291,6 +291,9 @@ struct AioContext {
-     void *epollfd_tag;
- 
-     const FDMonOps *fdmon_ops;
-+
-+    /* Was aio_context_new() successful? */
-+    bool initialized;
- };
+@@ -718,10 +718,13 @@ void qemu_set_current_aio_context(AioContext *ctx);
+ /**
+  * aio_context_setup:
+  * @ctx: the aio context
++ * @errp: error pointer
+  *
+  * Initialize the aio context.
++ *
++ * Returns: true on success, false otherwise
+  */
+-void aio_context_setup(AioContext *ctx);
++bool aio_context_setup(AioContext *ctx, Error **errp);
  
  /**
-diff --git a/util/async.c b/util/async.c
-index 9d6f0c73ee..95b1c6b610 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -366,12 +366,16 @@ aio_ctx_dispatch(GSource     *source,
+  * aio_context_destroy:
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index bebd9ce3a2..9806a75c12 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -718,7 +718,7 @@ bool aio_poll(AioContext *ctx, bool blocking)
+     return progress;
  }
  
- static void
--aio_ctx_finalize(GSource     *source)
-+aio_ctx_finalize(GSource *source)
+-void aio_context_setup(AioContext *ctx)
++bool aio_context_setup(AioContext *ctx, Error **errp)
  {
-     AioContext *ctx = (AioContext *) source;
-     QEMUBH *bh;
-     unsigned flags;
+     ctx->fdmon_ops = &fdmon_poll_ops;
+     ctx->epollfd = -1;
+@@ -726,10 +726,11 @@ void aio_context_setup(AioContext *ctx)
  
-+    if (!ctx->initialized) {
-+        return;
-+    }
-+
-     thread_pool_free_aio(ctx->thread_pool);
+     /* Use the fastest fd monitoring implementation if available */
+     if (fdmon_io_uring_setup(ctx)) {
+-        return;
++        return true;
+     }
  
- #ifdef CONFIG_LINUX_AIO
-@@ -580,16 +584,35 @@ AioContext *aio_context_new(Error **errp)
+     fdmon_epoll_setup(ctx);
++    return true;
+ }
+ 
+ void aio_context_destroy(AioContext *ctx)
+diff --git a/util/aio-win32.c b/util/aio-win32.c
+index 18cc9fb7a9..6e6f699e4b 100644
+--- a/util/aio-win32.c
++++ b/util/aio-win32.c
+@@ -419,8 +419,9 @@ bool aio_poll(AioContext *ctx, bool blocking)
+     return progress;
+ }
+ 
+-void aio_context_setup(AioContext *ctx)
++bool aio_context_setup(AioContext *ctx, Error **errp)
+ {
++    return true;
+ }
+ 
+ void aio_context_destroy(AioContext *ctx)
+diff --git a/util/async.c b/util/async.c
+index 95b1c6b610..7030047cfb 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -581,6 +581,7 @@ static void co_schedule_bh_cb(void *opaque)
+ 
+ AioContext *aio_context_new(Error **errp)
+ {
++    ERRP_GUARD();
      int ret;
      AioContext *ctx;
  
-+    /*
-+     * ctx is freed by g_source_unref() (e.g. aio_context_unref()). ctx's
-+     * resources are freed as follows:
-+     *
-+     * 1. By aio_ctx_finalize() after aio_context_new() has returned and set
-+     *    ->initialized = true.
-+     *
-+     * 2. By manual cleanup code in this function's error paths before goto
-+     *    fail.
-+     *
-+     * Be careful to free resources in both cases!
-+     */
-     ctx = (AioContext *) g_source_new(&aio_source_funcs, sizeof(AioContext));
-     QSLIST_INIT(&ctx->bh_list);
-     QSIMPLEQ_INIT(&ctx->bh_slice_list);
+@@ -611,7 +612,10 @@ AioContext *aio_context_new(Error **errp)
+      * you add any new resources to AioContext, it's probably best to acquire
+      * them before aio_context_setup().
+      */
 -    aio_context_setup(ctx);
++    if (!aio_context_setup(ctx, errp)) {
++        event_notifier_cleanup(&ctx->notifier);
++        goto fail;
++    }
  
-     ret = event_notifier_init(&ctx->notifier, false);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to initialize event notifier");
-         goto fail;
-     }
-+
-+    /*
-+     * Resources cannot easily be freed manually after aio_context_setup(). If
-+     * you add any new resources to AioContext, it's probably best to acquire
-+     * them before aio_context_setup().
-+     */
-+    aio_context_setup(ctx);
-+
      g_source_set_can_recurse(&ctx->source, true);
      qemu_lockcnt_init(&ctx->list_lock);
- 
-@@ -623,9 +646,11 @@ AioContext *aio_context_new(Error **errp)
- 
-     register_aiocontext(ctx);
- 
-+    ctx->initialized = true;
-+
-     return ctx;
- fail:
--    g_source_destroy(&ctx->source);
-+    g_source_unref(&ctx->source);
-     return NULL;
- }
- 
 -- 
 2.51.1
 
