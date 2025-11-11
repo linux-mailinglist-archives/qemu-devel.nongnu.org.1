@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98662C4D068
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EA7C4D390
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:56:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIlcm-0008U0-8I; Tue, 11 Nov 2025 05:29:20 -0500
+	id 1vIm2I-0001By-QA; Tue, 11 Nov 2025 05:55:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcU-0007yj-KV
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:02 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIm1P-0000qe-M6
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:54:48 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcL-0000L1-Ba
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:02 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b714b1290aeso670735566b.2
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:28:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vIm1M-00054s-Ek
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:54:46 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-b7272012d30so750714366b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:54:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762856932; x=1763461732; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KTAwoU/vFvjfdf76mRBJgt9Wu8TZhU78HWJTQRj5fFo=;
- b=WfPZIWGH7ezKTLA3SSVgfmZbZh4nU73V+ysws6+aiaqkpZns4xtQSGb0Pimp/jhjwS
- e2jKCv/kLLTJ2s7xSHM7teewKb30cHomBIKTlDYPeHyxSV+1lCmtDOM4Wmv3uzcal56M
- t3dN3TqDpJS3fRdiLVSeRvPhwixM/Q9In3fAp3++pzONiClOHhW4N+yTu7QkwZRV+D5U
- GNJCMF9rdad5iS/K1nlWuhb1qnwMXF6M94Fuis/Pw75ZppxX8fJx4U34BcYHpF3YfOk0
- 16zN2QTiH+lJj/ODOG/TD5o8VQHj84//N+v0Fh0I1BxdyRlVRXagskzKV1+QOquVIH2a
- 1pcw==
+ d=linaro.org; s=google; t=1762858482; x=1763463282; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y957JedXXz51HxEYpkd5rXFo9PIx1RfbJT3kt9mmiO4=;
+ b=wjx4iNfRLnrSYKVPtaZoR99U7NFD6a1cKo8SRchfxA6n/TbWuj1nUzhfYBogcS5HJf
+ 7q4NjoIUEowGkHfN9In5QVYk1LhxhiheL/17ZEPQIESNeDYGkuAxV4K4KUt+enS7fo/1
+ KX6Ga8sU3OBLujWDhVdhKsTVbue76WYyVrGP2GK/4NqFj89HPYlNqVZ3Xb25h8d4lVM5
+ V19JJsp+pjuOSgju0ej0EOf2f0IPHnAdXo2p7CVcmdjoN1L8KL7KnpnLMKOXiWU2lNmB
+ roG0H/0Pe2UI/hdqMigHEy27EY614JaNRw7LqtY+MoAVcxwrbBFJ6liO6rz39CAvw53/
+ kfqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762856932; x=1763461732;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=KTAwoU/vFvjfdf76mRBJgt9Wu8TZhU78HWJTQRj5fFo=;
- b=bGars4jNkAislXeJPW1cHN/JkJJoyu++Fl35C0r2rN8B9vrUK8O8YmxE128GYq7yTd
- FWDZraZPOvRCEiMgw6W7vYAkKHQzwoW7yQ1pyruj6CTPBe6yA6rLssKz0aotg2tP73J5
- YCojYeFlKcdgxW7XaQZ9M/02b4C58XvhuGdr/2dJ9H6CTytagy5ho62IoTynHMWKkblV
- tDTRRnRiuozIAe51Jlr/O/rBgXkw9yScpztNBdMsVSv6fE7oNitBC0Wz8V51VQLI6KjN
- NLuVwhAyY7jbsiGM8wHekhBwDzHZrVz2b3PneBs1R4RsFCIb5wsh8IUx+lnUpAhyIrkl
- PWtQ==
-X-Gm-Message-State: AOJu0YxJXwVZrgdzn8Wx/DJ3kqQF6HC+xdzFIOwfet1nVVJUWCCRXVC0
- A62RVi3/7eV6RrzpyFztNXpU0Sb4INQSB74YlF+GHdq5joIbu1Mzo837dpUd6e5+
-X-Gm-Gg: ASbGncvgndAnIUoO+/CiAI8E/HDZ72xieqob3csIYyDVpRL0Gh6YOLCPVGU/4sOBmTs
- uMjv4OMQJJdcmbsFgWKZjGE4/79KpmNDf0YT/L/Ha/uPO+GyfLsFXJ4DTfgfbtET6CLa0ohEMGZ
- 8qE2GRApn1qhSDE2ZQG1DXxv2Yk7caqeB1g3OWonyVZ62d3Wv/Ir0cgPcOoh5I2BZVSERzUNcU8
- MHDeN1Levi7RE+LwWv9a1C8vs6v9Nuc/DWbhp0CK7qxMDS7+FHgzK6H+EM5EUjhjskMZpv+CRU5
- LuWkz0Trl1GGpayOB6IPhTsIlmguWVDHCsgMBmrIv49V/huW4fCcpPEpMWyXMh5tLkWpVXo6AVK
- GOg9u+rkiet34ewZdmNAnxOLJvyvldmPqYFibhsNUcnXvIP7qj5U778pE9jX0VOm4tr4TWd0TH2
- 646+mo5shviJUizbQjDhFqMMjSQsEEmRwB
-X-Google-Smtp-Source: AGHT+IHM7PGebo7cIzDfUZUWGQzmalIBIMPc5QitvlTwhA7K5rcX+qNr3gE+ZfFwxwDPG96tlslHXg==
-X-Received: by 2002:a17:907:3f23:b0:b72:5983:dafd with SMTP id
- a640c23a62f3a-b72e036c329mr1108332266b.24.1762856931492; 
- Tue, 11 Nov 2025 02:28:51 -0800 (PST)
-Received: from PC-DA2D10.beckhoff.com
- ([2001:9e8:dc12:ce00:ae91:a1ff:fe8b:15a7])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72bdbd1ecfsm1290619366b.10.2025.11.11.02.28.50
+ d=1e100.net; s=20230601; t=1762858482; x=1763463282;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y957JedXXz51HxEYpkd5rXFo9PIx1RfbJT3kt9mmiO4=;
+ b=Bxn18ZCbmXfoaPdoBHmDtmpOLA1WJZJh3+HFuzpLZIi8/MdnYZtaB30txWmgWJBTl3
+ eZd11Etwh1tyaWzpsqt96C5d4ar8Jfw27OPMlfMqGQXZkh87hWoyqYOppiC/LDt6Y4OR
+ 6syyXklG8a4O/MGZh2oPTAomwEQ3cSNMSPIMBBb4s/70q46ygbp6cLHg8R5gxAsVZ94s
+ I8tzF4NvMR990lSw7kO/QYDN7rStnrnWYk1UjvDHhQXg2UP1thDvbSLDKYNRatilLOfO
+ 3YBKDwrp+OaAIz995wXDLNG1lq5bi7JpPdLDDkz3VyQacartoH9q8LUYEsbAvLfHJZib
+ MaZA==
+X-Gm-Message-State: AOJu0YzDtt0MQT480lvjYcpOG8fz7dSUmaR3swZpYASygKWVly4NRWdv
+ KuB+4c6pT25ZRCuRmlCvuYXaib0NqQ+nDHrytkZiJ+C21h3BT8P0G15VH0qQheGOAO8=
+X-Gm-Gg: ASbGncs+ddF1X7EqEtW4Lx2TWY68/kMHs6tt4q4tzDt7IioCkFnVEgj0Y6G5N+dITux
+ bWmS63cUwi+6WlM8XITeKjpVFvz+PlZmfztF1iIe8VO+GNlZTIgALrxLEWoUObvLUOjK+tIiRjI
+ C9fg6XBeuiY6a4APCFYCGWIqW4vG5vvFieF7J3vRoPtmFXTF/yqKGjL3hdCMMAnMJGiQpIJCk0O
+ hkZiK1go+srdsBfzcw1D03+zn1EoecctH13axQ3cdwiGz+huhhmceTV8JK8AMOmmiY+eP9guzB0
+ sACiaAnmWQZ2UUOqrHk+Omb2GxBZDYRaSAr1QaSHwrj8fnALZDNKGCTXFTZIZYCilPNeCeX/77r
+ +MkpWAyHYVSNL1xSEP5h9KCgtULua04vYWSuXyDZY+3m2p+czNORIHFv2vEMRdbhRuS6tZ/agFz
+ BbUME/UCdh8VI=
+X-Google-Smtp-Source: AGHT+IExVkWNHtM5qz3czOCTtjdDS2GyVLjr75WTKyeK8FvEBPdu6wOYT8qFzu8efTqZevIQtgJmaA==
+X-Received: by 2002:a17:907:1c1d:b0:b72:b433:1bb2 with SMTP id
+ a640c23a62f3a-b72e028b170mr1031959966b.7.1762858482159; 
+ Tue, 11 Nov 2025 02:54:42 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b72bf9bdf21sm1311057266b.59.2025.11.11.02.54.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 02:28:51 -0800 (PST)
-From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
+ Tue, 11 Nov 2025 02:54:41 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7DFF15F871;
+ Tue, 11 Nov 2025 10:54:40 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
- qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- Kevin Wolf <kwolf@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH v4 15/15] docs/system/arm: Add support for Beckhoff CX7200
-Date: Tue, 11 Nov 2025 11:28:36 +0100
-Message-ID: <20251111102836.212535-16-corvin.koehne@gmail.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org (open list:Raspberry Pi)
+Subject: [RFC PATCH] hw/dma: don't allow weird transfer lengths for bcm2835
+Date: Tue, 11 Nov 2025 10:54:29 +0000
+Message-ID: <20251111105429.3993300-1-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251111102836.212535-1-corvin.koehne@gmail.com>
-References: <20251111102836.212535-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,93 +103,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: YannickV <Y.Vossen@beckhoff.com>
+The datasheet doesn't explicitly say that TXFR_LEN has to be word
+aligned but the fact there is a DMA_D_WIDTH flag to select between 32
+bit and 128 bit strongly implies that is how it works. The downstream
+rpi kernel also goes to efforts to not write sub-4 byte lengths so
+lets:
 
-This commit offers some documentation on the Beckhoff CX7200
-qemu emulation.
+  - fail when mis-programmed and report GUEST_ERROR
+  - catch setting D_WIDTH for 128 bit and report UNIMP
+  - add comments that the DEBUG register isn't a straight write
 
-Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
+This includes the test case from the reported bug which is of unknown
+provenience but isn't particularly novel.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3201
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/system/arm/beckhoff-cx7200.rst | 57 +++++++++++++++++++++++++++++
- docs/system/target-arm.rst          |  1 +
- 2 files changed, 58 insertions(+)
- create mode 100644 docs/system/arm/beckhoff-cx7200.rst
+ hw/dma/bcm2835_dma.c           | 19 +++++++++++++++++++
+ tests/qtest/bcm2835-dma-test.c | 22 ++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
 
-diff --git a/docs/system/arm/beckhoff-cx7200.rst b/docs/system/arm/beckhoff-cx7200.rst
-new file mode 100644
-index 0000000000..f060319b0f
---- /dev/null
-+++ b/docs/system/arm/beckhoff-cx7200.rst
-@@ -0,0 +1,57 @@
-+Beckhoff CX7200 (``beckhoff-cx7200``)
-+======================================
-+The Beckhoff CX7200 is based on the same architecture as the Xilinx Zynq A9.
-+The Zynq 7000 family is based on the AMD SoC architecture. These products
-+integrate a feature-rich dual or single-core Arm Cortex-A9 MPCore based
-+processing system (PS) and AMD programmable logic (PL) in a single device.
-+The Beckhoff Communication Controller (CCAT) can be found in the PL of Zynq.
+diff --git a/hw/dma/bcm2835_dma.c b/hw/dma/bcm2835_dma.c
+index a2771ddcb52..e03247796cf 100644
+--- a/hw/dma/bcm2835_dma.c
++++ b/hw/dma/bcm2835_dma.c
+@@ -86,6 +86,19 @@ static void bcm2835_dma_update(BCM2835DMAState *s, unsigned c)
+         }
+         xlen_td = xlen;
+ 
++        if (ch->ti & BCM2708_DMA_D_WIDTH) {
++            qemu_log_mask(LOG_UNIMP, "%s: 128bit transfers not yet supported", __func__);
++            ch->cs |= BCM2708_DMA_ERR;
++            break;
++        }
 +
-+More details here:
-+https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Zynq-7000-SoC-Technical-Reference-Manual
-+https://www.beckhoff.com/de-de/produkte/ipc/embedded-pcs/cx7000-arm-r-cortex-r/cx7293.html
++        /* datasheet implies 32bit or 128bit transfers only */
++        if (xlen & 0x3) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: bad transfer size\n", __func__);
++            ch->cs |= BCM2708_DMA_ERR;
++            break;
++        }
 +
-+The CX7200 supports following devices:
-+    - A9 MPCORE
-+        - cortex-a9
-+        - GIC v1
-+        - Generic timer
-+        - wdt
-+    - OCM 256KB
-+    - SMC SRAM@0xe2000000 64MB
-+    - Zynq SLCR
-+    - SPI x2
-+    - QSPI
-+    - UART
-+    - TTC x2
-+    - Gigabit Ethernet Controller
-+    - SD Controller
-+    - XADC
-+    - Arm PrimeCell DMA Controller
-+    - DDR Memory
-+    - DDR Controller
-+    - Beckhoff Communication Controller (CCAT)
-+        - EEPROM Interface
-+        - DMA Controller
+         while (ylen != 0) {
+             /* Normal transfer mode */
+             while (xlen != 0) {
+@@ -229,6 +242,12 @@ static void bcm2835_dma_write(BCM2835DMAState *s, hwaddr offset,
+         ch->conblk_ad = value;
+         break;
+     case BCM2708_DMA_DEBUG:
++        /* this needs masking
++         * 31:29 - WAZRI
++         * 28:04 - RO
++         *    03 - WAZRI
++         * 00:02 - W1CLR
++         */
+         ch->debug = value;
+         break;
+     default:
+diff --git a/tests/qtest/bcm2835-dma-test.c b/tests/qtest/bcm2835-dma-test.c
+index 18901b76d21..4b100480f25 100644
+--- a/tests/qtest/bcm2835-dma-test.c
++++ b/tests/qtest/bcm2835-dma-test.c
+@@ -105,12 +105,34 @@ static void bcm2835_dma_test_interrupts(void)
+     bcm2835_dma_test_interrupt(14, 11);
+ }
+ 
++static void test_cve_underflow_txfr_len_1(void)
++{
++    uint64_t dma_base = RASPI3_DMA_BASE; // 0x3f007000
++    uint32_t cb_addr = 0x1000;
++    uint32_t src_addr = 0x2000;
++    uint32_t dst_addr = 0x3000;
++    /* Prepare DMA Control Block with VULNERABLE configuration */
++    writel(cb_addr + 0, BCM2708_DMA_S_INC | BCM2708_DMA_D_INC); /* TI */
++    writel(cb_addr + 4, src_addr); /* source address */
++    writel(cb_addr + 8, dst_addr); /* destination address */
++    writel(cb_addr + 12, 1); /* ⚠️ txfr_len = 1 (TRIGGER!) */
++    writel(cb_addr + 16, 0); /* stride */
++    writel(cb_addr + 20, 0); /* next CB = NULL */
++    /* Set control block address */
++    writel(dma_base + BCM2708_DMA_ADDR, cb_addr);
++    /* Trigger DMA - this will cause the vulnerability */
++    writel(dma_base + BCM2708_DMA_CS, BCM2708_DMA_ACTIVE);
++    /* Without the fix, QEMU process will hang at 100% CPU */
++}
 +
-+Following devices are not supported:
-+    - I2C
-+
-+Running
-+"""""""
-+Directly loading an ELF file to the CPU of the CX7200 to run f.e. TC/RTOS (based on FreeRTOS):
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-arm -M beckhoff-cx7200 \
-+        -device loader,file=CX7200_Zynq_Fsbl.elf \
-+        -display none \
-+        -icount shift=auto \
-+
-+
-+For setting the EEPROM content of the CCAT provide the following on the command line:
-+
-+.. code-block:: bash
-+
-+        -drive file=eeprom.bin,format=raw,id=ccat-eeprom
-+
-+The size of eeprom.bin must be aligned to a power of 2 and bigger than 256 bytes.
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index 9aaa9c414c..5f15fda630 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -81,6 +81,7 @@ Board-specific documentation
-    arm/aspeed
-    arm/bananapi_m2u.rst
-    arm/b-l475e-iot01a.rst
-+   arm/beckhoff-cx7200
-    arm/sabrelite
-    arm/highbank
-    arm/digic
+ int main(int argc, char **argv)
+ {
+     int ret;
+     g_test_init(&argc, &argv, NULL);
+     qtest_add_func("/bcm2835/dma/test_interrupts",
+                    bcm2835_dma_test_interrupts);
++    qtest_add_func("/bcm2835/dma/test_underflow_txfr",
++                   test_cve_underflow_txfr_len_1);
+     qtest_start("-machine raspi3b");
+     ret = g_test_run();
+     qtest_end();
 -- 
 2.47.3
 
