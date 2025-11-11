@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5335CC4F382
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 18:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0811AC4F38F
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 18:19:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIs04-0005v1-Qm; Tue, 11 Nov 2025 12:17:48 -0500
+	id 1vIs0O-0006TZ-M7; Tue, 11 Nov 2025 12:18:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vIrzm-0005WH-BC
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:32 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1vIrzp-0005Zc-JW
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:38 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vIrzk-0003uM-3w
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:29 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-6419aaced59so3584616a12.0
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 09:17:26 -0800 (PST)
+ id 1vIrzm-0003ux-2W
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 12:17:33 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-b6d402422c2so881932266b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 09:17:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762881446; x=1763486246; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7PGrRKAvpWgdql03IMxILc4BiTJmKYPYpApvfDWwzvA=;
- b=TbBjO6LMtm74z3nbNyoj7IPufsDg7Eo40EDJkSseRfgeuZvg18d/q69clCZUes9khr
- IvFMdIrggdyCG5pSjgWm9+GfJbHsSiz4uaeb6GC9ybYozKUf1+SC6sxSU7hbFN9PWs3V
- mmG8UFqJ8fGYgeNzHcsbY89vtQuoV6bcQZQgVOCyi+sCuw4MjY4bHySnla1MmXRt9GnQ
- mApb3gXmpTWVJxOMlWG3W70KTNQIodAOMrUMQXstiXa73CWkjyU07pnBsCOPhCHxoNQf
- zWMaXe68wBnQ2wgjmaOQ+3MKUyFLhZH8UHr7bdZLiRlYotDc9QRmm3P71V2h4PD6cbiz
- 0gWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762881446; x=1763486246;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1762881448; x=1763486248; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7PGrRKAvpWgdql03IMxILc4BiTJmKYPYpApvfDWwzvA=;
- b=GlN77rWDTWzMT/WBWxLzRgBRvUG6kJz8LpGo7u5HqCjgTQCgU9PkR5yHEB99+2hP0k
- jaMjsRhHDmpTOqYhPy6SLcsua4LU2fIdokGi9U0pbRSk4uS7B7K2B4EOeb806rU8uC94
- 8zo0ckGgwtQ2kVKFLOw2ondHR9H+apbOt0515ZuLhpoHoxI9FE898qnFLEaQwEAKh/0l
- xUH05ZkajdhxJzqAYgEKTahXrE0oSUvq7C1PbG7s0iUmKYazjbWNgkL/8+gY0wuSFhYC
- z39lNlC1b2QpMaQX/XkyHoSkagGYc0lg/aovxRtw1vuaMEjGS1za7ugPr7oOjynZrrGZ
- tJBg==
-X-Gm-Message-State: AOJu0YxQKFPUdTXhUM1vAmVQVMBDBunt+TfdfYRKEP6EcEe/sGVkRqOV
- aOIv9Djpoz9WBq2zy98Hxqp3Kdl/4cmWQJMUkI99wcruNkNzU6TVPBG1MfIs23uaVYU=
-X-Gm-Gg: ASbGncs7m3yg0zx7L2Hx0XkDjVzma0qhg139FBp7SBQW60jtoSIj71Rr+r7fq3VIUI8
- M01MOAeL+LDfJ752LHBJtLz5W7HB08lWbRUBh89vIa9atOxDG5+egz1qIG3ptl3ZXMEgjIIT5vr
- mSz94D4Af3aIdxkV23cPAhGqfMPeH+EX7LZgLLkmFfMZX/iC2poZYGFLR6ZaTYtl88aLjkK5x8w
- rCmy92V4WAhAYgHnC8KfxmVTbaZ3DJwnRjhvo4kuUFIvMAoMREWzErn7ziGLpPF6Ft4LQiRAbTv
- YmvwYTozDZPn/3uXHSecF0jeN4WA1S1Ya+xb7OyrVUf4WyGCHNW7jxipjvWVmQYTc72Ftnfuzi4
- ScZlOOM7BMK5Wf9TSBwye+4Lh8HQvvOAEnZskZv1/UHkaNhWSujeLOlawzAaRHAoYpvbrQe8l0Q
- VC
-X-Google-Smtp-Source: AGHT+IEwSTQ9giAUEpNEQqdy9Mb+KGSmZ4U/SBQjFBhbZiXZVql4E4LlqT2bTNk3BMmFNZmAjcWUOQ==
-X-Received: by 2002:a05:6402:2554:b0:641:27d8:ec3f with SMTP id
- 4fb4d7f45d1cf-6415e8126c2mr10443160a12.29.1762881445745; 
- Tue, 11 Nov 2025 09:17:25 -0800 (PST)
+ bh=OzQZP4Y3OptbZQiANnSpA5RTAqNZbiZmndRZjZG7Xks=;
+ b=HRpg7QzVU5VjJb0F6qEKCSPQrbFxNm0Q6H71sT/6AoFRD1UOpcUaHpQ8FDjAp351ev
+ Iz4S+VppTAfp8DX6jQUedkp3hpIYr09zL4Kl51LyP8eP2irqBndnBJrM3V0zEWGN1n5n
+ l7GYmc3XZB0deNuEjKA2miZo39vQaK/O0FjjBQB5CZ1BSqpzw3lduvHPAMgaew6KViTw
+ IszYUVGGJYzw4vkCORe2mVYh/3TreYoyzABdOrK0//5uXiQkb0FjBOBLn7r8HE40JYbP
+ leE53HxDH1r1ngpZf1GLfg5/5fRGKNL5C5TIa5N9TsdLx+L7UMRrCT+gxRAhjtK1Q/3C
+ /mRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762881448; x=1763486248;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=OzQZP4Y3OptbZQiANnSpA5RTAqNZbiZmndRZjZG7Xks=;
+ b=siXdmPIFmlbc/bGGd5zYfw/NeHGuQchIxv/9B9MAoBMRFYcgdIXYpTbxbqtHxH2J+k
+ w/BZ2TYIx00I7yaC9K3jc2Mc2/iHWbGXQmSJhG79AM+vjNUHU2yp+g2H4q6gK2Xz6c32
+ EUWSnMyglgJ7kYpKxRbJ+al1FLo9ZijaHiEsTWOZIFYxFS24YNAK7N/wZVh+8uT1uuoH
+ s7SCa/ocof7diDWTWcJvN0sACrSIuolQ/BK+kgzAiC4iOXUCzo3gxPo/QK4QpDwwFqRQ
+ W+JxVwPUKOaxeNLbN1tINCb3+iSdt/JdFJLJkgHKU5Ncwxuw2duf6sji+w+HH0IG6KJe
+ aB4A==
+X-Gm-Message-State: AOJu0YwR6Wws8t52WAj02Q2TJiDYtfbAXb6QbMQ4MlYGW+VA2uATbKtZ
+ 8StQ9466kbK4Lejd0msuKwEh/uhssEhJcirY2rkI9ToB1azfwadJuGH4U0rIVccEHNs=
+X-Gm-Gg: ASbGnctkSJN0pFiEe4xCiwk64ia4bTVHlPla283hxlgUO3wopfKknOh/D2of++uyffA
+ e1QNiavuSO5AufK4+/7TcZ+V/gvnQwyXEsjqQqon5Q5Sg6uwI5xfR47Sn1k6mgeZY0FAIGZxDvI
+ wVK01IPmvqolnkaSr1beJm4E+lg0IuVw9V4sWfgX5uRPb8legsCUG1FWPjhW7CqbtRY1EFOMK2w
+ P7xs32zHmbn1zlKF0jPXYZBpEVueQYGF6lnLnwBpIGPVY0pjh0jFmJ6bnfGjCFBJ57GfbD1zgxA
+ YQ++VPs6HGRDzAH9zzHn5msQ0wvy5hOJ3eqWI5VICIopKX4h9hONAZ+VDxPRkR2VP+qm9pNnnNI
+ aHHilXWH6K+g4eVWiNsjqX/QIy76qSd7ZOu0gNms2k6CmPNy3Tq9kJtqzerqhAAToTax8X/XA8j
+ 1zd9rTiHpYT0A=
+X-Google-Smtp-Source: AGHT+IHxICJl5UFBz8yK2n3dYhQFXsVP6b62miRVnToeVp0HWXNuOWm1+jnsASE4qGQJklN9WDBNEQ==
+X-Received: by 2002:a17:907:6d06:b0:b6d:4f1d:8c9e with SMTP id
+ a640c23a62f3a-b72e0305025mr1273596066b.24.1762881447746; 
+ Tue, 11 Nov 2025 09:17:27 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6411f862697sm13947763a12.25.2025.11.11.09.17.24
+ a640c23a62f3a-b72bf31286esm1383522766b.21.2025.11.11.09.17.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 11 Nov 2025 09:17:25 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3F51E5F8FC;
+ by draig.lan (Postfix) with ESMTP id 556F95F905;
  Tue, 11 Nov 2025 17:17:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,15 +81,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH 00/16] testing/next cleanups (docker, functional)
-Date: Tue, 11 Nov 2025 17:17:07 +0000
-Message-ID: <20251111171724.78201-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/16] tests/docker: drop --link from COPYs in emsdk docker
+Date: Tue, 11 Nov 2025 17:17:08 +0000
+Message-ID: <20251111171724.78201-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251111171724.78201-1-alex.bennee@linaro.org>
+References: <20251111171724.78201-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,88 +114,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have a new ppc64le custom runner box courtesy of OSUOSL. The
-ansible scripts where updated in the last pull request and now we can
-turn on the runner.
+As we need to build images in both docker and podman lets not have any
+incompatibilities. I don't think it makes any major difference.
 
-On the subject runners I've done some more template clean-ups to
-improve maintainability and also tried to stop the custom runners
-appearing when not prompted for.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/docker/dockerfiles/emsdk-wasm32-cross.docker | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Finally fileserver.linaro.org is being shutdown at the end of the year
-so I have migrated the tests to a new server. Those changes have a Cc:
-qemu-stable@nongnu.org tag as they will need back-porting.
-
-Please review,
-
-Alex.
-
-Alex Bennée (15):
-  tests/docker: drop --link from COPYs in emsdk docker
-  libvirt-ci: bump libvirt-ci to latest version
-  tests/lcitool: update ENV stazas outputted by refresh
-  tests/docker: add coreutils to the package list
-  gitlab: add initial ppc64le custom-runner test
-  tests: move test_xen assets to share.linaro.org
-  tests: move test_virt assets to share.linaro.org
-  tests: move test_netdev_ethtool to share.linaro.org
-  tests: move test_kvm_xen to share.linaro.org
-  tests: move test_kvm to share.linaro.org
-  tests: move test_virt_gpu to share.linaro.org
-  gitlab: use template for ubuntu-24.04-s390x jobs
-  gitlab: suppress custom runners being triggered by schedule
-  gitlab: make the schedule rules a bit more general
-  gitlab: add a weekly container building job
-
-Pierrick Bouvier (1):
-  docs/about/emulation: update assets for uftrace plugin documentation
-
- docs/about/emulation.rst                      |  20 +-
- docs/devel/testing/ci-jobs.rst.inc            |   6 +
- .gitlab-ci.d/base.yml                         |   4 +-
- .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
- .gitlab-ci.d/cirrus/macos-14.vars             |   2 +-
- .gitlab-ci.d/container-template.yml           |   4 +
- .gitlab-ci.d/containers.yml                   |  36 ++++
- .gitlab-ci.d/custom-runners.yml               |   1 +
- .../custom-runners/debian-13-ppc64le.yml      |  40 ++++
- .../custom-runners/ubuntu-24.04-aarch64.yml   |  12 +-
- .../custom-runners/ubuntu-24.04-s390x.yml     | 181 +++++++-----------
- .../ci/setup/debian/debian-13-ppc64le.yaml    |   1 +
- .../ci/setup/ubuntu/ubuntu-2404-aarch64.yaml  |   1 +
- .../ci/setup/ubuntu/ubuntu-2404-s390x.yaml    |   1 +
- tests/docker/Makefile.include                 |  11 ++
- tests/docker/dockerfiles/alpine.docker        |  11 +-
- tests/docker/dockerfiles/centos9.docker       |  11 +-
- .../dockerfiles/debian-amd64-cross.docker     |  21 +-
- .../dockerfiles/debian-arm64-cross.docker     |  21 +-
- .../dockerfiles/debian-armhf-cross.docker     |  21 +-
- .../dockerfiles/debian-i686-cross.docker      |  21 +-
- .../dockerfiles/debian-mips64el-cross.docker  |  21 +-
- .../dockerfiles/debian-mipsel-cross.docker    |  21 +-
- .../dockerfiles/debian-ppc64el-cross.docker   |  21 +-
- .../dockerfiles/debian-riscv64-cross.docker   |  24 ++-
- .../dockerfiles/debian-s390x-cross.docker     |  21 +-
- tests/docker/dockerfiles/debian.docker        |  13 +-
- .../dockerfiles/emsdk-wasm32-cross.docker     |   8 +-
- .../dockerfiles/fedora-rust-nightly.docker    |  11 +-
- .../dockerfiles/fedora-win64-cross.docker     |  19 +-
- tests/docker/dockerfiles/fedora.docker        |  11 +-
- tests/docker/dockerfiles/opensuse-leap.docker |  11 +-
- tests/docker/dockerfiles/ubuntu2204.docker    |  11 +-
- tests/functional/aarch64/test_kvm.py          |   7 +-
- tests/functional/aarch64/test_virt.py         |   5 +-
- tests/functional/aarch64/test_virt_gpu.py     |  16 +-
- tests/functional/aarch64/test_xen.py          |  12 +-
- tests/functional/x86_64/test_kvm_xen.py       |  17 +-
- .../functional/x86_64/test_netdev_ethtool.py  |  14 +-
- tests/lcitool/libvirt-ci                      |   2 +-
- tests/lcitool/projects/qemu.yml               |   1 +
- tests/lcitool/refresh                         |   6 +-
- tests/vm/generated/freebsd.json               |   1 +
- 43 files changed, 371 insertions(+), 330 deletions(-)
- create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-
+diff --git a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+index 6b1642a207c..1f08eb0b855 100644
+--- a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
++++ b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+@@ -115,8 +115,8 @@ RUN mkdir -p /glib
+ RUN curl -Lks https://download.gnome.org/sources/glib/${GLIB_MINOR_VERSION}/glib-$GLIB_VERSION.tar.xz | \
+     tar xJC /glib --strip-components=1
+ 
+-COPY --link --from=zlib-dev /builddeps/ /builddeps/
+-COPY --link --from=libffi-dev /builddeps/ /builddeps/
++COPY --from=zlib-dev /builddeps/ /builddeps/
++COPY --from=libffi-dev /builddeps/ /builddeps/
+ 
+ WORKDIR /glib
+ RUN <<EOF
+@@ -141,5 +141,5 @@ RUN sed -i -E "/#define HAVE_PTHREAD_GETNAME_NP 1/d" ./_build/config.h
+ RUN meson install -C _build
+ 
+ FROM build-base
+-COPY --link --from=glib-dev /builddeps/ /builddeps/
+-COPY --link --from=pixman-dev /builddeps/ /builddeps/
++COPY --from=glib-dev /builddeps/ /builddeps/
++COPY --from=pixman-dev /builddeps/ /builddeps/
 -- 
 2.47.3
 
