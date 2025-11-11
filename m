@@ -2,85 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4D1C4FD9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9AEC4FE00
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:35:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIvvC-0003D8-6s; Tue, 11 Nov 2025 16:29:02 -0500
+	id 1vIvzA-0006an-LY; Tue, 11 Nov 2025 16:33:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vIvvA-0003Co-77
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:29:00 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vIvv0-0001NL-Ov
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:28:59 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-bb2447d11ceso100693a12.0
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 13:28:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762896529; x=1763501329; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iZqZUND+X2tBdz3e/u7lhPrvrKt/w9shgAzcDRtROS0=;
- b=nNsG9XLhR2D8kFwSlBVMMHL6QEEa58SeNbnwQCsLJbF4g3KvjcN8aLfiCG6uGUDzRT
- Xvq5jEDqm76n5sKwVRYTrwTBPPtrDqzGG75nSsyQQCnlwI7iQrpULEPFDob3dJ25jHFN
- cHmbb8MIhjXfst4RfcpB7BRd6eyx+3UDAI1cEihyxkgnQtAxUlpdlNcD7CVU2tLcd8ld
- 9kXb1+0T214HDaITOI7Btk1MGf7XAPqqFHxmSn0OSp4xhZbOTp+Nvr8Hmq/hjJY+fp/V
- CcpvRN216+8x+9E2MUQoTiwtdiYJMMtwg0Jnmhw5v81Sz1TZSI+ckR1DckdKAGFbJIpB
- 0B7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762896529; x=1763501329;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iZqZUND+X2tBdz3e/u7lhPrvrKt/w9shgAzcDRtROS0=;
- b=CpVAd+dVRVaZBY0t5iTM92PNeIi6LGkCgMtr1dvHPB8pUvC9LwlDyuAAHcaBEubSHp
- p0MUbWSedG+as+Q8X5F0Cb86A1DecFHkeoe0it4YlSR8CdrCP8ZddFa/MAzdnNlJCXl6
- D0dNEerpOH6We+OfDkIOtm0Uv5vMLakhj4Afg6sSy+aHsP90L+QVG0qULadpNzXF5Efq
- Qwqtsq2tD39t4TY8iQ4lnQYGMeA04q13xiQKNC4jEie5VaVdCdAPFVGT8VRUhvqDDmQj
- 9bIvkrXVHhxUMWJIWIitwRzSzJvfkYhVxN487sdBEOuk9KbPCs2xEqnwQUnvBNG6XOOV
- B3/g==
-X-Gm-Message-State: AOJu0YzH/FXPTNoF0nRfkr/DpVGnVtZkYHo7C+LO5fydRrorqCo/BNm7
- G3YS7Bi+ZZR2PHjBRoC3NwedWp6drROcFeWfxksUi4zquR/EYHRi9s0+lwuCfdkm73DPOcdbd8L
- LKq5tGf2ZEXBrpTEH+YXLXBo9TYB5VzE=
-X-Gm-Gg: ASbGncs0jztOWNeQ83a8exKHj1rmLBEbG7nAvtmaghw9bQsnmTuYOHSqjNhoH++cK95
- oZtefPffqLi9cbWImkizVioZwnWKbUg346i2zE6bW0P+ikBTFv1VYwfvTFvKtgzQxigxZ5jCJxO
- FSZGpxC93mnM3NIaiCKo2JDD5CuvjNmq9MA86PCNFYZM5NwhaHTVfOowlho5/os8sqmqk0LwWvm
- A84BEzMO/nsMvaDc4Io4EaX7tNX018E4iVsAmCRWlGuj3hvy72OunaHUb59
-X-Google-Smtp-Source: AGHT+IEqBaL9uw2BOxssU6Jv5wZnFOCFIa7RalBcuvF2gDSJZMJAf4Xwo6F9WzgAmBAaDlZYp2KKhI86YQ+xiINvVSo=
-X-Received: by 2002:a17:902:ccd1:b0:295:570d:116e with SMTP id
- d9443c01a7336-2984eddda33mr9614755ad.41.1762896528640; Tue, 11 Nov 2025
- 13:28:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvz7-0006Yz-Nm
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIvz5-0001nv-FS
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:33:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1762896782;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=i+oXSFl4vjiaSM0BKvMVlZugB8Noir6B4IEuokBMK+g=;
+ b=KKGR2IOxvgjo0StyzpMT8lMaR0OYKkvIyzH3RhMa8sgiWHLGn/Of2lw9SaQqn+cvwcU/np
+ DfVcFv60YlRJCywSt3WoZSDuP8Rb37pAaQjS3NSdxosA/RUkHNr1SzJF1/38A+idN+zlT2
+ 4Xz959CJVSg/yORVEN8Pd3CLq3qXPTg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-ad8MWjwzOHSkoOH1NlA9tg-1; Tue,
+ 11 Nov 2025 16:33:00 -0500
+X-MC-Unique: ad8MWjwzOHSkoOH1NlA9tg-1
+X-Mimecast-MFC-AGG-ID: ad8MWjwzOHSkoOH1NlA9tg_1762896779
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A0E31956094; Tue, 11 Nov 2025 21:32:59 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.45.225.214])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BAFF830044E0; Tue, 11 Nov 2025 21:32:57 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	richard.henderson@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PULL v2 00/28] Block layer patches
+Date: Tue, 11 Nov 2025 22:32:10 +0100
+Message-ID: <20251111213238.181992-1-kwolf@redhat.com>
 MIME-Version: 1.0
-References: <20251021205741.57109-1-philmd@linaro.org>
- <20251021205741.57109-7-philmd@linaro.org>
-In-Reply-To: <20251021205741.57109-7-philmd@linaro.org>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Tue, 11 Nov 2025 15:28:35 -0600
-X-Gm-Features: AWmQ_bnufn-9weUIGB54U-Ya9xkEdb9bPyk_AqNvBEyu4xJuXX5BfHNEnQHEUmg
-Message-ID: <CAJy5ezqRdrpLvN5T_hZ2ec2FzQfQJvd+Osa9TpcFrOg=v8QW+Q@mail.gmail.com>
-Subject: Re: [PATCH v7 06/19] config/target: Implement per-binary TargetInfo
- structure (ARM, AARCH64)
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Anton Johansson <anjo@rev.ng>, 
- Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc.michel@amd.com>, 
- Zhao Liu <zhao1.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000005d8dc306435855af"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-pg1-x52a.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,63 +79,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000005d8dc306435855af
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit 593aee5df98b4a862ff8841a57ea3dbf22131a5f:
 
-On Tue, Oct 21, 2025 at 2:59=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-11-10 16:49:59 +0100)
 
-> Implement the TargetInfo structure for qemu-system-arm
-> and qemu-system-aarch64 binaries.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
+are available in the Git repository at:
 
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-Hi Phil!
+for you to fetch changes up to 909852ba6b4a22fd2b6f9d8b88adb5fc47dfa781:
 
-Trying to run xenpvh guests with latest QEMU but running into trouble, the
-xenpvh does get built into qemu-system-aarch64 any more.
-Bisecting pointed me to this patch.
+  qemu-img rebase: don't exceed IO_BUF_SIZE in one operation (2025-11-11 22:06:09 +0100)
 
-To reproduce --enable-xen, and see if xenpvh shows up in -M \? or not.
+----------------------------------------------------------------
+Block layer patches
 
-Any ideas?
+- stream: Fix potential crash during job completion
+- aio: add the aio_add_sqe() io_uring API
+- qcow2: put discards in discard queue when discard-no-unref is enabled
+- qcow2, vmdk: Restrict creation with secondary file using protocol
+- qemu-img rebase: Fix assertion failure due to exceeding IO_BUF_SIZE
+- iotests: Run iotests with sanitizers
+- iotests: Add more image formats to the thorough testing
+- iotests: Improve the dry run list to speed up thorough testing
+- Code cleanup
 
+----------------------------------------------------------------
+Akihiko Odaki (2):
+      qemu-img: Fix amend option parse error handling
+      iotests: Run iotests with sanitizers
 
->
+Alberto Garcia (1):
+      qemu-img rebase: don't exceed IO_BUF_SIZE in one operation
 
---0000000000005d8dc306435855af
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Eric Blake (2):
+      block: Allow drivers to control protocol prefix at creation
+      qcow2, vmdk: Restrict creation with secondary file using protocol
 
-<div dir=3D"ltr"><div dir=3D"ltr">On Tue, Oct 21, 2025 at 2:59=E2=80=AFPM P=
-hilippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@=
-linaro.org</a>&gt; wrote:</div><div class=3D"gmail_quote gmail_quote_contai=
-ner"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">Implement the Target=
-Info structure for qemu-system-arm<br>
-and qemu-system-aarch64 binaries.<br>
-<br>
-Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
-aro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
-Reviewed-by: Pierrick Bouvier &lt;<a href=3D"mailto:pierrick.bouvier@linaro=
-.org" target=3D"_blank">pierrick.bouvier@linaro.org</a>&gt;<br>
-Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
-ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br></blockqu=
-ote><div><br></div><div><br></div><div>Hi Phil!</div><div><br></div><div>Tr=
-ying to run xenpvh=C2=A0guests with latest QEMU but running into trouble, t=
-he xenpvh=C2=A0does get built into qemu-system-aarch64 any more.</div><div>=
-Bisecting pointed me to this patch.</div><div><br></div><div>To reproduce -=
--enable-xen, and see if xenpvh shows up in -M \? or not.</div><div><br></di=
-v><div>Any ideas?</div><div><br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex"><br>
-</blockquote></div></div>
+Jean-Louis Dupond (2):
+      qcow2: rename update_refcount_discard to queue_discard
+      qcow2: put discards in discard queue when discard-no-unref is enabled
 
---0000000000005d8dc306435855af--
+Kevin Wolf (1):
+      iotests: Test resizing file node under raw with size/offset
+
+Stefan Hajnoczi (15):
+      aio-posix: fix race between io_uring CQE and AioHandler deletion
+      aio-posix: fix fdmon-io_uring.c timeout stack variable lifetime
+      aio-posix: fix spurious return from ->wait() due to signals
+      aio-posix: keep polling enabled with fdmon-io_uring.c
+      tests/unit: skip test-nested-aio-poll with io_uring
+      aio-posix: integrate fdmon into glib event loop
+      aio: remove aio_context_use_g_source()
+      aio: free AioContext when aio_context_new() fails
+      aio: add errp argument to aio_context_setup()
+      aio-posix: gracefully handle io_uring_queue_init() failure
+      aio-posix: unindent fdmon_io_uring_destroy()
+      aio-posix: add fdmon_ops->dispatch()
+      aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+      block/io_uring: use aio_add_sqe()
+      block/io_uring: use non-vectored read/write when possible
+
+Thomas Huth (3):
+      tests/qemu-iotests/184: Fix skip message for qemu-img without throttle
+      tests/qemu-iotests: Improve the dry run list to speed up thorough testing
+      tests/qemu-iotest: Add more image formats to the thorough testing
+
+Wesley Hershberger (1):
+      block: Drop detach_subchain for bdrv_replace_node
+
+Yeqi Fu (1):
+      block: replace TABs with space
+
+ block/qcow2.h                                 |   4 +
+ include/block/aio.h                           | 156 +++++++-
+ include/block/block-global-state.h            |   3 +-
+ include/block/nbd.h                           |   2 +-
+ include/block/raw-aio.h                       |   5 -
+ util/aio-posix.h                              |  18 +-
+ block.c                                       |  42 +--
+ block/bochs.c                                 |  14 +-
+ block/crypto.c                                |   2 +-
+ block/file-posix.c                            |  98 +++--
+ block/file-win32.c                            |  38 +-
+ block/io_uring.c                              | 505 +++++++-------------------
+ block/parallels.c                             |   2 +-
+ block/qcow.c                                  |  12 +-
+ block/qcow2-cluster.c                         |  16 +-
+ block/qcow2-refcount.c                        |  25 +-
+ block/qcow2.c                                 |   4 +-
+ block/qed.c                                   |   2 +-
+ block/raw-format.c                            |   2 +-
+ block/vdi.c                                   |   2 +-
+ block/vhdx.c                                  |   2 +-
+ block/vmdk.c                                  |   2 +-
+ block/vpc.c                                   |   2 +-
+ qemu-img.c                                    |   4 +-
+ stubs/io_uring.c                              |  32 --
+ tests/unit/test-aio.c                         |   7 +-
+ tests/unit/test-nested-aio-poll.c             |  13 +-
+ util/aio-posix.c                              | 137 ++++---
+ util/aio-win32.c                              |   7 +-
+ util/async.c                                  |  74 ++--
+ util/fdmon-epoll.c                            |  34 +-
+ util/fdmon-io_uring.c                         | 249 ++++++++++---
+ util/fdmon-poll.c                             |  85 ++++-
+ tests/qemu-iotests/testrunner.py              |  12 +
+ block/trace-events                            |  12 +-
+ meson.build                                   |   2 +
+ stubs/meson.build                             |   3 -
+ tests/qemu-iotests/024                        |  46 +++
+ tests/qemu-iotests/024.out                    |  26 ++
+ tests/qemu-iotests/184                        |   2 +-
+ tests/qemu-iotests/257                        |   8 +-
+ tests/qemu-iotests/257.out                    |  14 +-
+ tests/qemu-iotests/check                      |  42 ++-
+ tests/qemu-iotests/meson.build                |  11 +-
+ tests/qemu-iotests/tests/resize-below-raw     |  53 ++-
+ tests/qemu-iotests/tests/resize-below-raw.out |   4 +-
+ util/trace-events                             |   4 +
+ 47 files changed, 1037 insertions(+), 802 deletions(-)
+ delete mode 100644 stubs/io_uring.c
+
 
