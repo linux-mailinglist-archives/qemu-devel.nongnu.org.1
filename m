@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C386C4D0AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98662C4D068
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 11:30:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIldJ-0000ox-JU; Tue, 11 Nov 2025 05:29:53 -0500
+	id 1vIlcm-0008U0-8I; Tue, 11 Nov 2025 05:29:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcT-0007tz-CO
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:01 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1vIlcU-0007yj-KV
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:02 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vIlcK-0000KL-BT
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:01 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-b72e43405e2so110708266b.0
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:28:51 -0800 (PST)
+ id 1vIlcL-0000L1-Ba
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 05:29:02 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-b714b1290aeso670735566b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 02:28:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762856931; x=1763461731; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1762856932; x=1763461732; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VswszwaiJ2zd/aEwrd6yTHXOVyT5h3XZLeUyB9lumkM=;
- b=RkuD7DHwLIcrHJg6ypHiNz+MU3EYDavIwtCaFj1j0lmQ1wrbNh/0y7hvcjqzJ9IxYV
- mu+ETOvMjNJRt1HC/gVkdgdeZVOdvzM+kHs2qrIgd3hYuBjrEEtHcu95VE3bbSQ5TAZ0
- kot1K9vXW4SuRPDvWPU2WEdGLrozqx33H5waRRrXKTLs8d74+UaYElwykhERZj7YrHXW
- JK82U0pB2lKbsNnfIYloIrYs5e55hXBwulZPwvhhuGBKZ2TZXCKFXdKHLzWVG1VJCWIv
- wLCa22j6vVSgUFazlILCYRGtV+CvFA32N26p6x1xpFvlOOb5w2K7fAeMj9StFzFvFww5
- uoEg==
+ bh=KTAwoU/vFvjfdf76mRBJgt9Wu8TZhU78HWJTQRj5fFo=;
+ b=WfPZIWGH7ezKTLA3SSVgfmZbZh4nU73V+ysws6+aiaqkpZns4xtQSGb0Pimp/jhjwS
+ e2jKCv/kLLTJ2s7xSHM7teewKb30cHomBIKTlDYPeHyxSV+1lCmtDOM4Wmv3uzcal56M
+ t3dN3TqDpJS3fRdiLVSeRvPhwixM/Q9In3fAp3++pzONiClOHhW4N+yTu7QkwZRV+D5U
+ GNJCMF9rdad5iS/K1nlWuhb1qnwMXF6M94Fuis/Pw75ZppxX8fJx4U34BcYHpF3YfOk0
+ 16zN2QTiH+lJj/ODOG/TD5o8VQHj84//N+v0Fh0I1BxdyRlVRXagskzKV1+QOquVIH2a
+ 1pcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762856931; x=1763461731;
+ d=1e100.net; s=20230601; t=1762856932; x=1763461732;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=VswszwaiJ2zd/aEwrd6yTHXOVyT5h3XZLeUyB9lumkM=;
- b=HzsjIHONFU/srzW+yIvWGs4rS1rRPS5SfJpPAg5jZgLvLOQkwSYz5D4uMZNUzsA0ey
- fFsyQpFzli79kDbB+peCSirbftSlVQnfU+ZWts+szcyAcAsFhYYJYAW5nRXMBipSIB+Z
- LdfNsuRr2iWgai4VshDuxL1pWnzUDh2MOniVlRwOn2rmV7z8K70fwANk12WcYfGqmyY/
- FR5SZNaJGtQ/xZuwEwfMgm3b4Y/1APgjNoGcc2Q5EgSRjrCVFc4/7QJiwc0WYOXmxnBi
- BF0VpIN6kRihfpfkMVKnFsUmGt/NbBV04pfyhN2rMxgJyFzKQxp0XHCHF+Q5tr878Wso
- 6cMA==
-X-Gm-Message-State: AOJu0YyWcWk8c+LxbsgrwPAsGUJB38TUoe+ugQgZU4CZZNWHpH204L9f
- rNcKNng/9oXQgcNNGuMOAYtlkT62PKsmsJkSbyMs3Kj1b8ZImm0kw11A0B+FkLus
-X-Gm-Gg: ASbGncsocqhus9iH8HCwk2N9rpTk4kkwyKvuVpIUzZhKi5ysTbQTeBWL7TJLBMPc/6T
- L4dG7sjg+GmpZWXRh0ocX7BIBAcr40CAdsFG3oxcaUZiq3y3B1+5JMJuTLue83IiWQtnyt1rlse
- jzv3kGiNLAJwreo3UyHYCcBHdArnosV2HW9hywuDs+sDUsGdLnbNY4yRFpWD0D7lwRbrjRDoSKe
- 75uiAkhObjH4qwJB4wSdEcPMfwaOQBPn3OT6BFMm4zVSvrZXB2t6FrlMK/qSjHHrNdnnliodKK2
- jGYT2HhNopUda30TC9EWMol2lXZb6eN5uQDaJsFrKQYGl+GjQdzHae8SiVK6WJgdz3cjwcI4ZIU
- CkFs66eJjz6IEHLGeyzXYvRDZVPT7cFkooounoRywPrEZrQ6AE56cGYB/TDesKoVeXfS5PxX2xS
- uD+CN5ShW9WzSo1WQNeP8Lhg==
-X-Google-Smtp-Source: AGHT+IFVYfkIGyEMl+nO4AtaIfCzV8I390aFwnCxstmdAw0kA9L47FY93oxjJ+iRO97Gzkkz/ssy7g==
-X-Received: by 2002:a17:907:d8b:b0:b50:94d1:8395 with SMTP id
- a640c23a62f3a-b731d1c00b3mr314123866b.9.1762856930619; 
- Tue, 11 Nov 2025 02:28:50 -0800 (PST)
+ bh=KTAwoU/vFvjfdf76mRBJgt9Wu8TZhU78HWJTQRj5fFo=;
+ b=bGars4jNkAislXeJPW1cHN/JkJJoyu++Fl35C0r2rN8B9vrUK8O8YmxE128GYq7yTd
+ FWDZraZPOvRCEiMgw6W7vYAkKHQzwoW7yQ1pyruj6CTPBe6yA6rLssKz0aotg2tP73J5
+ YCojYeFlKcdgxW7XaQZ9M/02b4C58XvhuGdr/2dJ9H6CTytagy5ho62IoTynHMWKkblV
+ tDTRRnRiuozIAe51Jlr/O/rBgXkw9yScpztNBdMsVSv6fE7oNitBC0Wz8V51VQLI6KjN
+ NLuVwhAyY7jbsiGM8wHekhBwDzHZrVz2b3PneBs1R4RsFCIb5wsh8IUx+lnUpAhyIrkl
+ PWtQ==
+X-Gm-Message-State: AOJu0YxJXwVZrgdzn8Wx/DJ3kqQF6HC+xdzFIOwfet1nVVJUWCCRXVC0
+ A62RVi3/7eV6RrzpyFztNXpU0Sb4INQSB74YlF+GHdq5joIbu1Mzo837dpUd6e5+
+X-Gm-Gg: ASbGncvgndAnIUoO+/CiAI8E/HDZ72xieqob3csIYyDVpRL0Gh6YOLCPVGU/4sOBmTs
+ uMjv4OMQJJdcmbsFgWKZjGE4/79KpmNDf0YT/L/Ha/uPO+GyfLsFXJ4DTfgfbtET6CLa0ohEMGZ
+ 8qE2GRApn1qhSDE2ZQG1DXxv2Yk7caqeB1g3OWonyVZ62d3Wv/Ir0cgPcOoh5I2BZVSERzUNcU8
+ MHDeN1Levi7RE+LwWv9a1C8vs6v9Nuc/DWbhp0CK7qxMDS7+FHgzK6H+EM5EUjhjskMZpv+CRU5
+ LuWkz0Trl1GGpayOB6IPhTsIlmguWVDHCsgMBmrIv49V/huW4fCcpPEpMWyXMh5tLkWpVXo6AVK
+ GOg9u+rkiet34ewZdmNAnxOLJvyvldmPqYFibhsNUcnXvIP7qj5U778pE9jX0VOm4tr4TWd0TH2
+ 646+mo5shviJUizbQjDhFqMMjSQsEEmRwB
+X-Google-Smtp-Source: AGHT+IHM7PGebo7cIzDfUZUWGQzmalIBIMPc5QitvlTwhA7K5rcX+qNr3gE+ZfFwxwDPG96tlslHXg==
+X-Received: by 2002:a17:907:3f23:b0:b72:5983:dafd with SMTP id
+ a640c23a62f3a-b72e036c329mr1108332266b.24.1762856931492; 
+ Tue, 11 Nov 2025 02:28:51 -0800 (PST)
 Received: from PC-DA2D10.beckhoff.com
  ([2001:9e8:dc12:ce00:ae91:a1ff:fe8b:15a7])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b72bdbd1ecfsm1290619366b.10.2025.11.11.02.28.49
+ a640c23a62f3a-b72bdbd1ecfsm1290619366b.10.2025.11.11.02.28.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 02:28:50 -0800 (PST)
+ Tue, 11 Nov 2025 02:28:51 -0800 (PST)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,23 +75,23 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH v4 14/15] tests/functional: Add a Beckhoff CX7200 test
-Date: Tue, 11 Nov 2025 11:28:35 +0100
-Message-ID: <20251111102836.212535-15-corvin.koehne@gmail.com>
+Subject: [PATCH v4 15/15] docs/system/arm: Add support for Beckhoff CX7200
+Date: Tue, 11 Nov 2025 11:28:36 +0100
+Message-ID: <20251111102836.212535-16-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251111102836.212535-1-corvin.koehne@gmail.com>
 References: <20251111102836.212535-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,38 +109,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-TODO
----
- tests/functional/test_arm_beckhoff_cx7200.py | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 tests/functional/test_arm_beckhoff_cx7200.py
+This commit offers some documentation on the Beckhoff CX7200
+qemu emulation.
 
-diff --git a/tests/functional/test_arm_beckhoff_cx7200.py b/tests/functional/test_arm_beckhoff_cx7200.py
+Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
+---
+ docs/system/arm/beckhoff-cx7200.rst | 57 +++++++++++++++++++++++++++++
+ docs/system/target-arm.rst          |  1 +
+ 2 files changed, 58 insertions(+)
+ create mode 100644 docs/system/arm/beckhoff-cx7200.rst
+
+diff --git a/docs/system/arm/beckhoff-cx7200.rst b/docs/system/arm/beckhoff-cx7200.rst
 new file mode 100644
-index 0000000000..a7fb88ac30
+index 0000000000..f060319b0f
 --- /dev/null
-+++ b/tests/functional/test_arm_beckhoff_cx7200.py
-@@ -0,0 +1,19 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots a bare metal application on the Beckhoff CX7200
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
++++ b/docs/system/arm/beckhoff-cx7200.rst
+@@ -0,0 +1,57 @@
++Beckhoff CX7200 (``beckhoff-cx7200``)
++======================================
++The Beckhoff CX7200 is based on the same architecture as the Xilinx Zynq A9.
++The Zynq 7000 family is based on the AMD SoC architecture. These products
++integrate a feature-rich dual or single-core Arm Cortex-A9 MPCore based
++processing system (PS) and AMD programmable logic (PL) in a single device.
++The Beckhoff Communication Controller (CCAT) can be found in the PL of Zynq.
 +
-+from qemu_test import LinuxKernelTest
++More details here:
++https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Zynq-7000-SoC-Technical-Reference-Manual
++https://www.beckhoff.com/de-de/produkte/ipc/embedded-pcs/cx7000-arm-r-cortex-r/cx7293.html
 +
-+class CX7200Test(LinuxKernelTest):
-+    def test_baremetal_elf(self):
-+        self.set_machine('beckhoff-cx7200')
-+        elf_path = '/home/yannickv/git/build-TCRTOS/FreeRTOS/Zynq7000/DriveZynq_Fsbl/build/CX7200/Optg/ZYNQ7000S/CX7200_Zynq_Fsbl.elf'
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', elf_path, '-nographic')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot mode is SD')
++The CX7200 supports following devices:
++    - A9 MPCORE
++        - cortex-a9
++        - GIC v1
++        - Generic timer
++        - wdt
++    - OCM 256KB
++    - SMC SRAM@0xe2000000 64MB
++    - Zynq SLCR
++    - SPI x2
++    - QSPI
++    - UART
++    - TTC x2
++    - Gigabit Ethernet Controller
++    - SD Controller
++    - XADC
++    - Arm PrimeCell DMA Controller
++    - DDR Memory
++    - DDR Controller
++    - Beckhoff Communication Controller (CCAT)
++        - EEPROM Interface
++        - DMA Controller
 +
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
-\ No newline at end of file
++Following devices are not supported:
++    - I2C
++
++Running
++"""""""
++Directly loading an ELF file to the CPU of the CX7200 to run f.e. TC/RTOS (based on FreeRTOS):
++
++.. code-block:: bash
++
++  $ qemu-system-arm -M beckhoff-cx7200 \
++        -device loader,file=CX7200_Zynq_Fsbl.elf \
++        -display none \
++        -icount shift=auto \
++
++
++For setting the EEPROM content of the CCAT provide the following on the command line:
++
++.. code-block:: bash
++
++        -drive file=eeprom.bin,format=raw,id=ccat-eeprom
++
++The size of eeprom.bin must be aligned to a power of 2 and bigger than 256 bytes.
+diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
+index 9aaa9c414c..5f15fda630 100644
+--- a/docs/system/target-arm.rst
++++ b/docs/system/target-arm.rst
+@@ -81,6 +81,7 @@ Board-specific documentation
+    arm/aspeed
+    arm/bananapi_m2u.rst
+    arm/b-l475e-iot01a.rst
++   arm/beckhoff-cx7200
+    arm/sabrelite
+    arm/highbank
+    arm/digic
 -- 
 2.47.3
 
