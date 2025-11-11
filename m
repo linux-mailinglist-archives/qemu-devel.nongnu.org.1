@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C631C4F5DE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 19:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D052C4F635
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 19:14:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIshp-0003eg-9r; Tue, 11 Nov 2025 13:03:02 -0500
+	id 1vIsrZ-0001tY-IU; Tue, 11 Nov 2025 13:13:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIshM-0003TY-7q
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:02:35 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIspI-0000MK-Fe
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:10:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIshI-0003KQ-TO
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:02:30 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vIspG-0004ht-Rh
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 13:10:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762884148;
+ s=mimecast20190719; t=1762884642;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=TTN5SXX6lLcJCCTOfwFeybQXnMnUgF+QYM7KqAj8vI0=;
- b=OpiIBxDZZXsI3tQo9zGTqvcSYZjCT/3uqZv45MeW2N/hdrv2gAqmbGlhe4tiVRlbMRIr8B
- LhGim9dwAERJr55+egnZ1kNSIfecwvXs8Hbv7I9T5yJ/iFFApVip3vEdeEkdDNApzWJmEW
- JnrxpnaKXr83xtAR55Z8PqWnAwsE2rY=
+ bh=IepPRqgK1jr/UOoANH4bVxcEIwwE2dFGrKTXGlRzhYQ=;
+ b=Nem+sYMzC0mXItEam/hmeFXKnBgfS8IxNM0cNpa8oKlj422zJYFxaS2zDcdLFI1SkeLx7x
+ ZZS2zEhfJXuWXNsJkFoAPLifXrtwt7kmQqMgu8P6G7pQPAXzD23t8JER2lWFGZYGWN8P0M
+ 4mHe+zZkq5Lo0cyft+5ZoU+0HlFzXMI=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-hB5cG1rUP3e-iogDEIr7VA-1; Tue, 11 Nov 2025 13:02:27 -0500
-X-MC-Unique: hB5cG1rUP3e-iogDEIr7VA-1
-X-Mimecast-MFC-AGG-ID: hB5cG1rUP3e-iogDEIr7VA_1762884146
+ us-mta-584-elpUan9HPGey_m38bAAmdQ-1; Tue, 11 Nov 2025 13:10:38 -0500
+X-MC-Unique: elpUan9HPGey_m38bAAmdQ-1
+X-Mimecast-MFC-AGG-ID: elpUan9HPGey_m38bAAmdQ_1762884637
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-429c521cf2aso2979336f8f.3
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 10:02:26 -0800 (PST)
+ ffacd0b85a97d-429c93a28ebso3310668f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 10:10:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762884145; x=1763488945; darn=nongnu.org;
+ d=redhat.com; s=google; t=1762884637; x=1763489437; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=TTN5SXX6lLcJCCTOfwFeybQXnMnUgF+QYM7KqAj8vI0=;
- b=PMBk0vcTgL0ld5Q+LT7p5ubFg1l94gGR1Fcna534DX0a4Pi1CrFLoVKaYqK2QNv9nf
- xHW1E1tJgN8/1eFc5hAr95SkOckaYDOtWpRE7q9jvJz0Tf97y1j3JmrcySU7oYt8Bmen
- GCkhuqu40aRRpq63yPlEvef1pblx8QPwBKHgfQ15md3fezpuYW3WdKbKH4iAPMurdRik
- 6x0YQ4JkwTvVJt1uKRJA1zqFZbkbMFiyOkpUR1PZII7oxdL2ulTS971orRsBrh2341DC
- N06UrC8WniqQ2MDMs5+16BWtPat5pYOZFEGFCQ2eE/qwnLIcaI3oWsdjRmXvnhNuZG4D
- URrA==
+ bh=IepPRqgK1jr/UOoANH4bVxcEIwwE2dFGrKTXGlRzhYQ=;
+ b=HG7KXjPAN2ODI2WsL0eFuPfeaUM4d8LmBRDirOS4o1uPU8cT7IxFDSCN0TqixploJJ
+ ejhM+8hfCgCsoTZUOvgYgne2m+FEI4+mS2JPPVv2IqtMPZ5gmarenJVAkAjz3/rLS7Gm
+ dvpf35IagHlrZUoUBiTg+/LlebUcHlkAHut6WYI6W5kEwq2kThrCCze32Vly2z+sYMZZ
+ AI7hnDVgmkSK/YP/elyY8Kgfu6kj6Td1FiubX/6JQxGzHABT4pquF/EbOXEWzUPizSjK
+ BDi+oWcDntReJMHdp+woWQELwTaR2R231xcKta6Xvs8M0mo5+ryIfmJuPjtTQ/9qy70d
+ pKtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762884145; x=1763488945;
+ d=1e100.net; s=20230601; t=1762884637; x=1763489437;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TTN5SXX6lLcJCCTOfwFeybQXnMnUgF+QYM7KqAj8vI0=;
- b=IYkrjvzsPiy361CGKnl7IpFfuyBHseqqXUIgCEIkbmwT7jw8a1rx1bhURv19hBU0ot
- BL+Wq5heBSxZyYpjWVzWhceNz5hTShayz5iFIHMPt8gUSBIqGSEm8bdcJ7rPuGu28Lvc
- 0K75FhNakhaHG9rATIfiejupI7pHBE7XBt1EcO4fNtHJpL5TInITRugPIoRHSqDlDsJ6
- /8k3F9td5jZjmd2WgdUPUCt0Xna12PXGGHnIz/9aPWlwzbR69m2MQHWqPTE9k1/KKPco
- zY7b9hZjb3F+3890ugAWqYWhm33uwCmU6xn1n00rj+N+DcWouJTfbClMyJ3n5/YRooXE
- dsYQ==
+ bh=IepPRqgK1jr/UOoANH4bVxcEIwwE2dFGrKTXGlRzhYQ=;
+ b=M9ITBENa1MuASgFMIehsUEwPkYq4peLlvvM4TwEdlKr9XbQ6DA5QOfIJaHTT52Ah8+
+ YZK/aFilCe+URZD8ctGKHqCfui3+tufxls6xf4X6Ruj9/aVLfWHaLOV3zWhhWoA1dnpJ
+ 8CmKjPut2HCiMX8V2ZpGcg3hwPpPTOkB/mjfqo3cUGg0zsDABQyqsJn/uCN+ESNv6KkO
+ i+Ys/+KupOoaHX8mrZcUZ1HYPssdtlLa5KgKM+RaFbM9lvibkjyl1Syp8k1OY/tyxSny
+ plm9b6WQZJM15YhYnC/7yxTsg3Yxh/xO13uumE09C6PT5uKUFt1SH/dR3a5riA7HHQ5B
+ DN1A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzE2/yiHDrmLIXDWpDLedt+it7KlHZalvA7LKOzb7Ybm57WL/iUzgXhGbyuDqW5LBvwtQO5N3Tl2c5@nongnu.org
-X-Gm-Message-State: AOJu0YzfjpUmbmPQDihoidy2yPXTF/ik4FGsgvKCcV44839OTHGPwbCb
- 1HUeblyEpq6C23mEu8CRqyZhS7j/XtYcuaz8DLx2Y7QLgrd4m9mBhAUhHp5ypnmDZd6TI04Pes/
- OlGdmVIH9kxR8GS8Yri+rqhmftuUPudi/f8k10SRBGi3V3QZKXukemwHg
-X-Gm-Gg: ASbGncsgJxSpPVsFXMQj2SXBA1omxgok16dABEJYW8/xOZLoBggLCIzX8hmKy+FVlk1
- Sqwbm4uXV9+ttd5C0rWekgiOOAaoZ/1Wm4hK4nW1vKuEuv8SEouwr3eqhxxEO7cPMP3qi9rGvdB
- wOYxrZqPKsjqAlLxShuQyqF6IdqUdVV/8OyvB9GrcwUlR6+rtdRzOy1uJYc0h2UT8mjR0JFoduP
- fhLM+6q240du0EVvMRiJ1UUVxB+LGpvt3fzikPmLKMYoLtWoGMSWtYJ5owFIVZb7yZgT8cndx7j
- QMXjArFEmGIFv5/eonWj5CKQTecUbvfATpBYRruXTr6Au0+m/TYwP/Kx+b8qBY2qPKvD65g=
-X-Received: by 2002:a05:6000:64c:b0:427:719f:de70 with SMTP id
- ffacd0b85a97d-42b4bb7bfa9mr97970f8f.14.1762884145517; 
- Tue, 11 Nov 2025 10:02:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEXmGGIxQW4UVktKiWPN3q0JgVSfTGugHVmSCr2qeTegBDXhikE2BpwPbjjaIAbsOm3kEDhyw==
-X-Received: by 2002:a05:6000:64c:b0:427:719f:de70 with SMTP id
- ffacd0b85a97d-42b4bb7bfa9mr97947f8f.14.1762884145122; 
- Tue, 11 Nov 2025 10:02:25 -0800 (PST)
+ AJvYcCV/t8vsMwW3qb8yjrrRBk7M5WWm1JDTzXw/NinTaetswf+D4tPHAgxlwOQdl1PE2Cbrw9Jr2dWW/0S2@nongnu.org
+X-Gm-Message-State: AOJu0YwGQZBc/Sqe0nETuSSeZzr02qPnVw6r1TAWivEBnqH+GDwXwl0P
+ lLp5oPVEr+CroLM46DK6OB5y3ZTw0hsdJQNDlmKNnvm64NFOdYYlAmwJnM1G10VgThXyLZZ5G29
+ y48e4ogla7Geh1AKgYmyR7Wn7tJZmKPh0nLxu8Hd38SGlwdK2uNcEQPFl4Bbo7BZ/
+X-Gm-Gg: ASbGncvbVoIKbCiuliJtXfXOKjjcHACeh5945pTEP21N3oInkllyQlpcOJMHTchYVVd
+ 4qHt1LKa97OUK7nTk2er4w0YspT0xFSfFsYkRBn+d4cwA6O9sr+4Hmz7fMBRYMC4UaZeGbl1tn4
+ Zobn6GZ7r29CK+yg15OZF1HursKRHYbhKPMLgkOjaygD9GtqA7KFD5Hb/SbQ5b7PkjnlEbBvEZF
+ J+DI3f8Ir2lGWWqZm4cQYYziRUpxc5VswjPwGp9O477L41o33w6OlZrU72I/GPTPBPyJBji8fao
+ L53OLpO3DuZYCqD1qzsJJ2c/11VqOMn16fFD1I0PoRrCeEqJHp0ahLaOxzLdDX6bUDTMv70=
+X-Received: by 2002:a5d:5d10:0:b0:42b:3d5f:ebfb with SMTP id
+ ffacd0b85a97d-42b4bd90943mr137150f8f.27.1762884637078; 
+ Tue, 11 Nov 2025 10:10:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVfvesgUZ0Zo9rnPPsmfDNpup0423SVZBOkeG1xdiM38JuPRvXpLM+BXYWWTMHPqbRPKtceA==
+X-Received: by 2002:a5d:5d10:0:b0:42b:3d5f:ebfb with SMTP id
+ ffacd0b85a97d-42b4bd90943mr137121f8f.27.1762884636663; 
+ Tue, 11 Nov 2025 10:10:36 -0800 (PST)
 Received: from [192.168.0.7] ([47.64.113.41]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42abe63e131sm29480878f8f.20.2025.11.11.10.02.23
+ ffacd0b85a97d-42ac679e06csm29121631f8f.47.2025.11.11.10.10.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Nov 2025 10:02:24 -0800 (PST)
-Message-ID: <5888d509-5fa6-4e65-9c24-186b2007af46@redhat.com>
-Date: Tue, 11 Nov 2025 19:02:23 +0100
+ Tue, 11 Nov 2025 10:10:36 -0800 (PST)
+Message-ID: <9c9bf493-7cb3-42fd-aa5d-6a8c89e6f373@redhat.com>
+Date: Tue, 11 Nov 2025 19:10:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/16] tests: move test_virt assets to share.linaro.org
+Subject: Re: [PATCH 09/16] tests: move test_netdev_ethtool to share.linaro.org
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
@@ -100,7 +100,7 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-stable@nongnu.org
 References: <20251111171724.78201-1-alex.bennee@linaro.org>
- <20251111171724.78201-9-alex.bennee@linaro.org>
+ <20251111171724.78201-10-alex.bennee@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -145,7 +145,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20251111171724.78201-9-alex.bennee@linaro.org>
+In-Reply-To: <20251111171724.78201-10-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -157,7 +157,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -175,44 +175,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/11/2025 18.17, Alex Bennée wrote:
 > Linaro are migrating file-hosting from the old NextCloud instance to
-> another sharing site. While I'm at it drop the old pauth-impdef flag
-> which is no longer needed.
+> another sharing site.
 > 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > Cc: qemu-stable@nongnu.org
 > ---
->   tests/functional/aarch64/test_virt.py | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+>   tests/functional/x86_64/test_netdev_ethtool.py | 14 ++++----------
+>   1 file changed, 4 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/functional/aarch64/test_virt.py b/tests/functional/aarch64/test_virt.py
-> index 63071f9b517..972b7bf783c 100755
-> --- a/tests/functional/aarch64/test_virt.py
-> +++ b/tests/functional/aarch64/test_virt.py
-> @@ -60,8 +60,7 @@ def test_alpine_virt_tcg_gic_max(self):
+> diff --git a/tests/functional/x86_64/test_netdev_ethtool.py b/tests/functional/x86_64/test_netdev_ethtool.py
+> index ee1a397bd24..ac8a92512cf 100755
+> --- a/tests/functional/x86_64/test_netdev_ethtool.py
+> +++ b/tests/functional/x86_64/test_netdev_ethtool.py
+> @@ -16,16 +16,10 @@ class NetDevEthtool(QemuSystemTest):
+>       # Runs in about 17s under KVM, 19s under TCG, 25s under GCOV
+>       timeout = 45
 >   
->   
->       ASSET_KERNEL = Asset(
-> -        ('https://fileserver.linaro.org/s/'
-> -         'z6B2ARM7DQT3HWN/download'),
-> +        ('https://share.linaro.org/downloadFile?id=3zGlbmXh8pXFewt'),
+> -    # Fetch assets from the netdev-ethtool subdir of my shared test
+> -    # images directory on fileserver.linaro.org.
+> -    ASSET_BASEURL = ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/'
+> -                     'download?path=%2Fnetdev-ethtool&files=')
+> -    ASSET_BZIMAGE = Asset(
+> -        ASSET_BASEURL + "bzImage",
+> -        "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
+> -    ASSET_ROOTFS = Asset(
+> -        ASSET_BASEURL + "rootfs.squashfs",
+> -        "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
+> +    ASSET_BZIMAGE = Asset("https://share.linaro.org/downloadFile?id=QD37GYYAJhGOgVe",
+> +                          "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
+> +    ASSET_ROOTFS = Asset("https://share.linaro.org/downloadFile?id=YAqnr0W8fruDh3f",
+> +                         "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
 
-Please drop the parentheses here, too.
+Close to 100 columns, but I think it's still ok.
 
-With that fixed:
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
-
->           '12a54d4805cda6ab647cb7c7bbdb16fafb3df400e0d6f16445c1a0436100ef8d')
->   
->       def common_aarch64_virt(self, machine):
-> @@ -77,7 +76,7 @@ def common_aarch64_virt(self, machine):
->           self.vm.set_console()
->           kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
->                                  'console=ttyAMA0')
-> -        self.vm.add_args('-cpu', 'max,pauth-impdef=on',
-> +        self.vm.add_args('-cpu', 'max',
->                            '-machine', machine,
->                            '-accel', 'tcg',
->                            '-kernel', kernel_path,
 
 
