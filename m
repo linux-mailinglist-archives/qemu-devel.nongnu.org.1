@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A992C4FDF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B765C4FE3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Nov 2025 22:41:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIw19-0000yB-It; Tue, 11 Nov 2025 16:35:11 -0500
+	id 1vIw6f-0004rz-Js; Tue, 11 Nov 2025 16:40:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIw0R-0000XO-Un
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:34:31 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIw6W-0004g0-KA
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:40:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIw0N-0002I2-3i
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:34:25 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vIw6T-0003Bb-JE
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 16:40:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762896846;
+ s=mimecast20190719; t=1762897240;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=dsWpJ1fT5oClZZ7jlO7mqvDN0tCOobR4rddQnL5QirM=;
- b=IgXdn83OgJssYqoJCXBpXSWC1titsWG1XPXtXVRr+YJU6g3H5lWZ4FfoCMqPkXEz4CSDZZ
- VvTuj/u9xJpGuGE0XfU5WT0NFysfP8wa4kqXxeok67Jtplyl2zZCuMZik+c6cLsflr+t+X
- g7ELarGAXCTVtnosz2Y4vBH7W7Oi0tQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FpJVK0UMWK1IVwMwlZwjtYT4XHhRC6C7igQENJxQmXE=;
+ b=D1YIYej573HEEiSa87NkdhuShBdqqfuI1aNVUL+893Yqq85S2OJrfMLniQE8NwKGxZk0bS
+ nu8+LwY9mheF/uEF3tYl6hhT3truVApKWb1A7uGeI8kAqv+9CJzb8BBzedc0yEgJWbZOgU
+ oJ/GKTHlcrS6ls0ut3kRtDb/r4PXNSU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-9mM8K_mGM1yu25r8vN8R1w-1; Tue,
- 11 Nov 2025 16:34:04 -0500
-X-MC-Unique: 9mM8K_mGM1yu25r8vN8R1w-1
-X-Mimecast-MFC-AGG-ID: 9mM8K_mGM1yu25r8vN8R1w_1762896843
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-aPhtfXGCPeiDJHanzChiOw-1; Tue,
+ 11 Nov 2025 16:40:37 -0500
+X-MC-Unique: aPhtfXGCPeiDJHanzChiOw-1
+X-Mimecast-MFC-AGG-ID: aPhtfXGCPeiDJHanzChiOw_1762897236
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB7951956063; Tue, 11 Nov 2025 21:34:03 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.45.225.214])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2534230044E0; Tue, 11 Nov 2025 21:34:01 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6DF8D1956096; Tue, 11 Nov 2025 21:40:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.225.214])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D39C180049F; Tue, 11 Nov 2025 21:40:35 +0000 (UTC)
+Date: Tue, 11 Nov 2025 22:40:32 +0100
 From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	richard.henderson@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PULL v2 28/28] qemu-img rebase: don't exceed IO_BUF_SIZE in one
- operation
-Date: Tue, 11 Nov 2025 22:32:38 +0100
-Message-ID: <20251111213238.181992-29-kwolf@redhat.com>
-In-Reply-To: <20251111213238.181992-1-kwolf@redhat.com>
-References: <20251111213238.181992-1-kwolf@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 06/27] aio-posix: integrate fdmon into glib event loop
+Message-ID: <aROtUHtR5jE4LV-H@redhat.com>
+References: <20251104175415.525388-1-kwolf@redhat.com>
+ <20251104175415.525388-7-kwolf@redhat.com>
+ <4dd86e70-fd42-4a70-9f0f-3944e04bc972@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4dd86e70-fd42-4a70-9f0f-3944e04bc972@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,151 +81,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alberto Garcia <berto@igalia.com>
+Am 05.11.2025 um 16:06 hat Richard Henderson geschrieben:
+> On 11/4/25 18:53, Kevin Wolf wrote:
+> > From: Stefan Hajnoczi <stefanha@redhat.com>
+> > 
+> > AioContext's glib integration only supports ppoll(2) file descriptor
+> > monitoring. epoll(7) and io_uring(7) disable themselves and switch back
+> > to ppoll(2) when the glib event loop is used. The main loop thread
+> > cannot use epoll(7) or io_uring(7) because it always uses the glib event
+> > loop.
+> > 
+> > Future QEMU features may require io_uring(7). One example is uring_cmd
+> > support in FUSE exports. Each feature could create its own io_uring(7)
+> > context and integrate it into the event loop, but this is inefficient
+> > due to extra syscalls. It would be more efficient to reuse the
+> > AioContext's existing fdmon-io_uring.c io_uring(7) context because
+> > fdmon-io_uring.c will already be active on systems where Linux io_uring
+> > is available.
+> > 
+> > In order to keep fdmon-io_uring.c's AioContext operational even when the
+> > glib event loop is used, extend FDMonOps with an API similar to
+> > GSourceFuncs so that file descriptor monitoring can integrate into the
+> > glib event loop.
+> > 
+> > A quick summary of the GSourceFuncs API:
+> > - prepare() is called each event loop iteration before waiting for file
+> >    descriptors and timers.
+> > - check() is called to determine whether events are ready to be
+> >    dispatched after waiting.
+> > - dispatch() is called to process events.
+> > 
+> > More details here: https://docs.gtk.org/glib/struct.SourceFuncs.html
+> > 
+> > Move the ppoll(2)-specific code from aio-posix.c into fdmon-poll.c and
+> > also implement epoll(7)- and io_uring(7)-specific file descriptor
+> > monitoring code for glib event loops.
+> > 
+> > Note that it's still faster to use aio_poll() rather than the glib event
+> > loop since glib waits for file descriptor activity with ppoll(2) and
+> > does not support adaptive polling. But at least epoll(7) and io_uring(7)
+> > now work in glib event loops.
+> > 
+> > Splitting this into multiple commits without temporarily breaking
+> > AioContext proved difficult so this commit makes all the changes. The
+> > next commit will remove the aio_context_use_g_source() API because it is
+> > no longer needed.
+> > 
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Reviewed-by: Eric Blake <eblake@redhat.com>
+> > Message-ID: <20251104022933.618123-7-stefanha@redhat.com>
+> > Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 
-During a rebase operation data is copied from the backing chain into
-the target image using a loop, and each iteration looks for a
-contiguous region of allocated data of at most IO_BUF_SIZE (2 MB).
+> > diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+> > index 3d8638b0e5..0a5ec5ead6 100644
+> > --- a/util/fdmon-io_uring.c
+> > +++ b/util/fdmon-io_uring.c
+> > @@ -262,6 +262,11 @@ static int process_cq_ring(AioContext *ctx, AioHandlerList *ready_list)
+> >       unsigned num_ready = 0;
+> >       unsigned head;
+> > +    /* If the CQ overflowed then fetch CQEs with a syscall */
+> > +    if (io_uring_cq_has_overflow(ring)) {
+> > +        io_uring_get_events(ring);
+> > +    }
+> 
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/11984045425#L2379
+> 
+> 
+> ../util/fdmon-io_uring.c: In function 'process_cq_ring':
+> ../util/fdmon-io_uring.c:315:9: error: implicit declaration of function
+> 'io_uring_cq_has_overflow' [-Werror=implicit-function-declaration]
+>   315 |     if (io_uring_cq_has_overflow(ring)) {
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~
+> ../util/fdmon-io_uring.c:315:9: error: nested extern declaration of
+> 'io_uring_cq_has_overflow' [-Werror=nested-externs]
+> ../util/fdmon-io_uring.c:316:9: error: implicit declaration of function
+> 'io_uring_get_events'; did you mean 'io_uring_get_sqe'?
+> [-Werror=implicit-function-declaration]
+>   316 |         io_uring_get_events(ring);
+>       |         ^~~~~~~~~~~~~~~~~~~
+>       |         io_uring_get_sqe
+> ../util/fdmon-io_uring.c:316:9: error: nested extern declaration of
+> 'io_uring_get_events' [-Werror=nested-externs]
 
-Once that region is found, and in order to avoid partial writes, its
-boundaries are extended so they are aligned to the (sub)clusters of
-the target image (see commit 12df580b).
+Thanks, I sent a v2 pull request.
 
-This operation can however result in a region that exceeds the maximum
-allowed IO_BUF_SIZE, crashing qemu-img.
+Please reply to all in the future instead of only to qemu-devel. I
+missed this reply until today, which due to the hard freeze meant a
+somewhat longer working day for me than I had hoped for.
 
-This can be easily reproduced when the source image has a smaller
-cluster size than the target image:
-
-base <- int <- active
-
-$ qemu-img create -f qcow2 base.qcow2 4M
-$ qemu-img create -f qcow2 -F qcow2 -b base.qcow2 -o cluster_size=1M int.qcow2
-$ qemu-img create -f qcow2 -F qcow2 -b int.qcow2  -o cluster_size=2M active.qcow2
-$ qemu-io -c "write -P 0xff 1M 2M" int.qcow2
-$ qemu-img rebase -F qcow2 -b base.qcow2 active.qcow2
-qemu-img: qemu-img.c:4102: img_rebase: Assertion `written + pnum <= IO_BUF_SIZE' failed.
-Aborted
-
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3174
-Fixes: 12df580b3b7f ("qemu-img: rebase: avoid unnecessary COW operations")
-Signed-off-by: Alberto Garcia <berto@igalia.com>
-Message-ID: <20251107091834.383781-1-berto@igalia.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- qemu-img.c                 |  2 +-
- tests/qemu-iotests/024     | 46 ++++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/024.out | 26 +++++++++++++++++++++
- 3 files changed, 73 insertions(+), 1 deletion(-)
-
-diff --git a/qemu-img.c b/qemu-img.c
-index 7a32d2d16c..c42dd4e995 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -4081,7 +4081,7 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
-             n += offset - QEMU_ALIGN_DOWN(offset, write_align);
-             offset = QEMU_ALIGN_DOWN(offset, write_align);
-             n += QEMU_ALIGN_UP(offset + n, write_align) - (offset + n);
--            n = MIN(n, size - offset);
-+            n = MIN(n, MIN(size - offset, IO_BUF_SIZE));
-             assert(!bdrv_is_allocated(unfiltered_bs, offset, n, &n_alloc) &&
-                    n_alloc == n);
- 
-diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-index b29c76e161..021169b4a1 100755
---- a/tests/qemu-iotests/024
-+++ b/tests/qemu-iotests/024
-@@ -315,6 +315,52 @@ echo
- 
- $QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
- 
-+# Check that the region to copy to the overlay during a rebase
-+# operation does not exceed the I/O buffer size.
-+#
-+# backing_new <-- backing_old <-- overlay
-+#
-+# Backing (new): -- -- -- --    <-- Empty image, size 4MB
-+# Backing (old):|--|ff|ff|--|   <-- 4 clusters, 1MB each
-+# Overlay:      |-- --|-- --|   <-- 2 clusters, 2MB each
-+#
-+# The data at [1MB, 3MB) must be copied from the old backing image to
-+# the overlay. However the rebase code will extend that region to the
-+# overlay's (sub)cluster boundaries to avoid CoW (see commit 12df580b).
-+# This test checks that IO_BUF_SIZE (2 MB) is taken into account.
-+
-+echo
-+echo "=== Test that the region to copy does not exceed 2MB (IO_BUF_SIZE) ==="
-+echo
-+
-+echo "Creating backing chain"
-+echo
-+
-+TEST_IMG=$BASE_NEW _make_test_img 4M
-+TEST_IMG=$BASE_OLD CLUSTER_SIZE=1M _make_test_img -b "$BASE_NEW" -F $IMGFMT
-+TEST_IMG=$OVERLAY  CLUSTER_SIZE=2M _make_test_img -b "$BASE_OLD" -F $IMGFMT
-+
-+echo
-+echo "Writing data to region [1MB, 3MB)"
-+echo
-+
-+$QEMU_IO "$BASE_OLD" -c "write -P 0xff 1M 2M" | _filter_qemu_io
-+
-+echo
-+echo "Rebasing"
-+echo
-+
-+$QEMU_IMG rebase -b "$BASE_NEW" -F $IMGFMT "$OVERLAY"
-+
-+echo "Verifying the data"
-+echo
-+
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00  0 1M" | _filter_qemu_io
-+$QEMU_IO "$OVERLAY" -c "read -P 0xff 1M 2M" | _filter_qemu_io
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00 3M 1M" | _filter_qemu_io
-+
-+$QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
-+
- echo
- 
- # success, all done
-diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-index 3d1e31927a..1b7522ba71 100644
---- a/tests/qemu-iotests/024.out
-+++ b/tests/qemu-iotests/024.out
-@@ -243,4 +243,30 @@ Offset          Length          File
- 0               0x20000         TEST_DIR/subdir/t.IMGFMT
- 0x40000         0x20000         TEST_DIR/subdir/t.IMGFMT
- 
-+=== Test that the region to copy does not exceed 2MB (IO_BUF_SIZE) ===
-+
-+Creating backing chain
-+
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_new', fmt=IMGFMT size=4194304
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_old', fmt=IMGFMT size=4194304 backing_file=TEST_DIR/subdir/t.IMGFMT.base_new backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/subdir/t.IMGFMT', fmt=IMGFMT size=4194304 backing_file=TEST_DIR/subdir/t.IMGFMT.base_old backing_fmt=IMGFMT
-+
-+Writing data to region [1MB, 3MB)
-+
-+wrote 2097152/2097152 bytes at offset 1048576
-+2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Rebasing
-+
-+Verifying the data
-+
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 2097152/2097152 bytes at offset 1048576
-+2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 1048576/1048576 bytes at offset 3145728
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Offset          Length          File
-+0               0x400000        TEST_DIR/subdir/t.IMGFMT
-+
- *** done
--- 
-2.51.1
+Kevin
 
 
