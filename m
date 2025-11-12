@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0ECC52AB9
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 15:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46641C52A8F
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 15:20:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJBgm-0003rB-9I; Wed, 12 Nov 2025 09:19:12 -0500
+	id 1vJBgq-0003v1-Ex; Wed, 12 Nov 2025 09:19:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vJ5gk-0000VM-AL
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 02:54:46 -0500
-Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
+ id 1vJ5gm-0000Wj-G4
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 02:54:48 -0500
+Received: from mail-northcentralusazlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::1] helo=CH1PR05CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vJ5gh-00036x-RD
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 02:54:45 -0500
+ id 1vJ5gk-00037O-Ih
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 02:54:48 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QjSnriKggDsrvWj6s7mw8pDnwCQ5pPtwHwegHL35OTdaT71x/YRnJomSw+/rd9NxkhKbJsUnJs+JVaZbAKQE9wvXsjCY2zw1xlEExk/eoq5v/CiWyZ2+dwWRwqoFLeQsZVg56BsJ/ENpg2gjxb++DqeH0od7k4/H+2CNaiEW4BvjA+Zjz/ynlnBHf6m8leEYStVK+DdW5a0jI6Ux8CugWqxRnsHZR0K0srCZDr39bwDR4kmnP/+gv2jSyXhpABY6rhkHKBMuWDCYOPy7MgCagoJR3GWmPfpKgaqeNGWbi6qFrQCDVBvW4C1clPn6w8mBgR6xu9YF/TrD3D5yweqZ+g==
+ b=qJG/sJHVZ7TUr7tps1ykxRZ8nRJEmXVM2ODA8eDtLC8lZSR6cksM8mXXj3IDV1zUd+WK/bLMhmXyuC1ObPeREAdfVKZP4PPerX/JvHy9gKAIul7ZXNNjbkk0TfM1LHC+QLDE1mIADoiftOu9bjXHR1vWB9vw6ycgqOJmpJFSzjIcxQC9brl98pOY8kERMjXm7YOzlzXhkoBCTESNumNlZ5YDTnaRhXAIvdQ1o+BdejBvnzpOESEKGXTy+2DF2ICV+3qaNXPfBXKJTERG1xIaNr4J75YvZpgdFMOe3NKlNERnOGcqSCFERY3DXxqC5ww6SojwzzjcTmXa/Aqy4s7hdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AZfkjAqHwQvF5b4CyD4zYNAlJRRnoe2uIYAfUTn62gc=;
- b=WK4Z7uQkubVTmeHjEp/ETZneYGia6qXn8ou4e6pVxMJZr0gt7FgDU6z3VnqT8TR0jfJWh6e0H091rU0ywEEc6+ZpWbcGgjTyzRVvuPeDsy3K4/GlGsvbqddRLmqbl8h1qtXsHEfdKL+Y2g1wravi+s6/cZ3bStQcBg59cDnjwfS34QndWDzASAwuOtEWRiiK0Fo2ga6Hg0OLejJFLQry0rfIevBpzPmgAcSg8px205mG0hNhd214fwmqysQd5mX2Uy6K3iZOBLJ4ieiwdZrXYuyKLRAWvsLeDd+Eg51PFgggpkReR/Te1ApF5VyIB3rs0TM9jzdU1bSCHx21OQzNgQ==
+ bh=iFu4503ISJFeKGv67QIVk9I8pXGL+xv1E4okLu5nYIY=;
+ b=EPeVg68VAP+QteUdrsItoKZyMGbGAhY8XE5pelzZ/nqHAMFTv3XJ+2QB10igZ3Jx1P58szcuDCLCcnKQ+Q99k37rgNAoW0PcNZAk0ZTPERropT7IwxpRNcU/ZXXlzf/edy/uFQedhoiE+UH3fSa99OKi3yFmZtNdzUyBPiPKr50hF8rrSMSGpHnjhvSgASgamojBTzt3tBrbm/lw3oodqi06wms52OvepHLsQhUUhpoNA3J3CRDs5O7w/qtoKfcoeo9dRQUpODCR4t1RWzW9GpqJKWhZEVgMm4MRokOnoLyNTHR7hVy/NjZFOdgRlmMtwnNIT7txpmbcZ4gVWwa3Bg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AZfkjAqHwQvF5b4CyD4zYNAlJRRnoe2uIYAfUTn62gc=;
- b=nKJL5q/s13xE9KOAWT/XDlqZjpmpnzjQXCDmBP1WEZc3X/Tfm46Jm04nQdEk38qSIvTx6hgvS6mJukAxgvsfvIYYkt6L03S/x8AM/4RZE0kXwt/dYEjwB5UrgONe86QE7dxWTWA5NRhh/7ToQsHQsp7fSvX2Up3GUNt8nGnnMZ0=
-Received: from BYAPR02CA0006.namprd02.prod.outlook.com (2603:10b6:a02:ee::19)
- by SA5PPFC3F406448.namprd12.prod.outlook.com
- (2603:10b6:80f:fc04::8e0) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Wed, 12 Nov
- 2025 07:54:38 +0000
-Received: from MWH0EPF000A6730.namprd04.prod.outlook.com
- (2603:10b6:a02:ee:cafe::6) by BYAPR02CA0006.outlook.office365.com
- (2603:10b6:a02:ee::19) with Microsoft SMTP Server (version=TLS1_3,
+ bh=iFu4503ISJFeKGv67QIVk9I8pXGL+xv1E4okLu5nYIY=;
+ b=g2c3I+Mu6i4T5oP/mGYKhREbJYMpN9LrOJ4X8cYIOTJxwZnqm5F+1Zp7a4YzTA+dH/FamDbxQoue4s1djSBwKVrrbaW0DygxgfEfkrXEAduRhQVrkhGQYzCNJHWYIWONYb7ic4YJogYreHy62pVey70Rlv7D/lCKm6p6a3/b31c=
+Received: from BYAPR02CA0021.namprd02.prod.outlook.com (2603:10b6:a02:ee::34)
+ by DS2PR12MB9637.namprd12.prod.outlook.com (2603:10b6:8:27b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 07:54:41 +0000
+Received: from MWH0EPF000A6731.namprd04.prod.outlook.com
+ (2603:10b6:a02:ee:cafe::bc) by BYAPR02CA0021.outlook.office365.com
+ (2603:10b6:a02:ee::34) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.15 via Frontend Transport; Wed,
- 12 Nov 2025 07:54:37 +0000
+ 12 Nov 2025 07:54:41 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,22 +51,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000A6730.mail.protection.outlook.com (10.167.249.22) with Microsoft
+ MWH0EPF000A6731.mail.protection.outlook.com (10.167.249.23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 07:54:37 +0000
+ 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 07:54:40 +0000
 Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 11 Nov
- 2025 23:54:35 -0800
+ 2025 23:54:37 -0800
 From: Honglei Huang <honghuan@amd.com>
 To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
  <Ray.Huang@amd.com>
 CC: <odaki@rsg.ci.i.u-tokyo.ac.jp>, <mst@redhat.com>, <cohuck@redhat.com>,
  <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, Honglei Huang
  <honghuan@amd.com>
-Subject: [PATCH 2/3] virtio-gpu: add configurable HSAKMT capset support
-Date: Wed, 12 Nov 2025 15:54:13 +0800
-Message-ID: <20251112075414.3719917-3-honghuan@amd.com>
+Subject: [PATCH 3/3] virtio-gpu: Add VIRTIO_GPU_F_RESOURCE_USERPTR feature
+ support
+Date: Wed, 12 Nov 2025 15:54:14 +0800
+Message-ID: <20251112075414.3719917-4-honghuan@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251112075414.3719917-1-honghuan@amd.com>
 References: <20251112075414.3719917-1-honghuan@amd.com>
@@ -78,56 +79,56 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6730:EE_|SA5PPFC3F406448:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad3beda2-7721-407d-bed9-08de21c0ba86
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6731:EE_|DS2PR12MB9637:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5d295cb-f665-4dc7-2da7-08de21c0bc3f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?GzpUMKcbkDAOqAuhXY3yDIx90+/v3CfmQejL0BpN8TfftywvN/daPTGdthDt?=
- =?us-ascii?Q?l0vFDBv3mRHghiQKnVE+aTGxX8eZPYmNgVpJP5DzzNntE3HyIsHPf5OE2FHC?=
- =?us-ascii?Q?PTJrc3FT3b3eov983CSdWBkHQvkQDh7au0sTghUtkwz3lqknDHJeGGkbLqDW?=
- =?us-ascii?Q?GkHcjpWmA0NRynH8QFWt1Ml6IS2mw9OC9qhyvhqJcpi6RaXdDM928KXt+ouQ?=
- =?us-ascii?Q?VhCtSLeU2geQDT7JaWnKJtXcs5wgm19sIVD4s+xI8txKUxVMiyeWchxcSgI4?=
- =?us-ascii?Q?v9aTmcLGyMX3LApCwJHNaYa4L4OJmUScMH0PWYaIQpOOXQD5NKsxQluXnGsV?=
- =?us-ascii?Q?rQyvdy73x4LrjSIdsojB4/I3xoGK8RHTPk9XwojmZxRlpUFKSO3HjdK7LgRg?=
- =?us-ascii?Q?KfSxssWby4WPNqdrnCSu/s9b6Ecyv2Nxbg6jy+ogm/+I3KUxHcwXqHUD5L4K?=
- =?us-ascii?Q?3BJMWuXIKA4cUtPoBu77QspStty9nU20Uxyf/ssVNTGlVdy6bcT4e+CDEyXg?=
- =?us-ascii?Q?/kA8EEQMXxKzDx7RA7aAq2CM27pLaH2U26sQh8EZEe04Vqp/B8a5Pz77JLrG?=
- =?us-ascii?Q?89JbyutPAgqlbkwm1Q2eu1Nah37BBBs4+xfBKscsVpkPnvVya1XqESEaKX5a?=
- =?us-ascii?Q?U3fwBPqujP9CJj3w+w7UxdHQIiuRoGyD7cTyaFl3/821Ck0luU0EhxEl+V9t?=
- =?us-ascii?Q?+E0w7/Hj1dDdWSbZDYo/PrHtdAFxFEQbVAaXfHIBzQBpetQCH81j3ffDmulQ?=
- =?us-ascii?Q?wzfqJP5TmBGUEZjyThN6NI9NHLVUlnbjzNhZSADHWN6iaMQgQn8r3jd1ASlH?=
- =?us-ascii?Q?5zev5e8yhkcjcqXmmrmLVCiiBvPrVi6km3nJJ6lj6IKrBIfmsJwLbW9vWGhe?=
- =?us-ascii?Q?deiVCSy5l91X5HDDTe3pFOacFGG1TsbjA5xZnGP4cX/NQERpZ2o26cUWyEAG?=
- =?us-ascii?Q?vd8A/nryi519WwFLAlPY9B8UuH4BUblmiwEA9mgOvtcNEjhPkCgMWiDrqvSP?=
- =?us-ascii?Q?rpYlUwN7bh4W3BzptyuOU/VxyrP5mNXRUaHWnUJGqUb4z5NDf9VtPGRESZaz?=
- =?us-ascii?Q?n+DkIqVDJrIqnYrgdI+i2DhwlWRORyPl04FldMtsA4zeY9uFW1rZMqJ0mB63?=
- =?us-ascii?Q?8d9n0mV8meqDoNlbpQehmoemG+4LMZNtDDwzvD++Ln3JhWczJmIkXKKdvOBe?=
- =?us-ascii?Q?kZdM31Z9GDv+y0uShwES9xk0sQVXvOvWMkjj3OwRqWhsKUlpUusRC+Z36cZr?=
- =?us-ascii?Q?kco3Ilww+ADt0RpIipMBsd0rW8agNDmHIQhR3s6gJO0QOmMcsqfkUKR0FMml?=
- =?us-ascii?Q?51z3ZIQowRwSievjLfCbDwGnnRyjJIe4KwNY9r11sbVS/AOYd0SfyVjUeac1?=
- =?us-ascii?Q?SQtPeWHs/yAVYl933zertLfTaQYvHu+f39FoM6eT2P3p8lnwxLbnRHIQ16ZZ?=
- =?us-ascii?Q?aC8qGkUwNiYBZhdvWVHbcIRBIjqw9nb5zj9xWBXHAGQ+PZsQiml6wHq+LiXI?=
- =?us-ascii?Q?E6WtcA+L3G4uGacDwPN2/cG/igdlOlZ+rMsCCe5ddf0In7NWPvTxEDAUC6QU?=
- =?us-ascii?Q?E3lYDEtQi240cckb3ME=3D?=
+ ARA:13230040|36860700013|1800799024|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?UZlY0Sr8LxjtwD6rLyg6NHjxTW0gBron0H856hivB7XIXtvL4i3ycWa9QCG+?=
+ =?us-ascii?Q?EXhlWsc6ymN40PMjN7P+4TgbccuxPYPR5j3sk/saro+nxH1lu08RD+SQrzKP?=
+ =?us-ascii?Q?2GR4fHkEcHKNh3IbRLL6XWjc0msHZrZ+3XiBhLtqE/fCgOeLpeiWueqS2GX7?=
+ =?us-ascii?Q?8f+viqoqJyrx+UaXxNL9P8fg3XJWnwQZ8eFicFUFMN8fzeoRC52uH5iSSc22?=
+ =?us-ascii?Q?ep/MaNvmwubWzcc4C2qLV/enzRNd3EC1BFRhwKR7bsXqhFK7YqdV1IdYZkw3?=
+ =?us-ascii?Q?nPzdhwyA/Xzsk89903S/WFMUFG3zLUTunJ9rFjaU8elqzT/miLI0UrGxIuH9?=
+ =?us-ascii?Q?v5B5ZR2CZfUWU0Qy2daRXCTO7HurNnL6G+OZ6JYcHIHknes6mpDWw1BBo5dN?=
+ =?us-ascii?Q?lw+xmQ902tRFL8/H9gzcS91wDH52+rDLiw8rHd7Q4xL+YWPtmo6f0Aw0a/Z5?=
+ =?us-ascii?Q?4rzMru5FNfAfpF1F7qNrjfeDcHDPT800W0KJ9NSeJwPRCdbYHjv7OuN025hI?=
+ =?us-ascii?Q?HyKalMTKk+n4+9uVHOIpYMnCeN9ZCqzf8M/Eju5wchVDaYJJT707tRqVZrIZ?=
+ =?us-ascii?Q?JTOvdvHlHX25Yxdck0bB872lyLrNwn9ruh2ZqCEBTPjtQCrEEpVHCfv9mZjH?=
+ =?us-ascii?Q?Q1/fjk+WpxldzOXftOVhK+GjvakPBNq/1t392wa81bUgt+z5Nas2IRxsW8gF?=
+ =?us-ascii?Q?zvk4xIuvlrLyl6uDOPSq7Hk849oRFJFoq4hy1HZcHUNPMthfPOr+QUzCqBwW?=
+ =?us-ascii?Q?iDP6U0dxMKXjZ89ynYPxiWGiiOXlT7MSYaiGj+NMngl/xTShRo8qkKnOM3qK?=
+ =?us-ascii?Q?PxYtf2p0K9BQXezdbPDm6NwpBZjKJrdc7nlQugsWRVB8Wmzk9OM8HPuzlqiF?=
+ =?us-ascii?Q?ZDkargKeUcJwpg24//Fu1E1BOowm7HfuM98jZiiLH3l2SfAI2qvNFELtV6Oe?=
+ =?us-ascii?Q?zwt5c2MCr391i2Iwi6GagS5l2B77auAAf17ph8lXKtuUIgs2m2MJgJCAjncI?=
+ =?us-ascii?Q?j9LuIW6DzQnc+GFdyAteg807Slwr6LAVZzvRLkvZkSIgiURhrd5k9jJ6/aEj?=
+ =?us-ascii?Q?ZI30fUXl8G6TaEW7UmBbdKAnZ7jUfIcBl7NiNrQiBsHV95F4hlbZaFXBLc91?=
+ =?us-ascii?Q?BIdPGWRTiEKzeJHQBDIKOOFVLV+NnUd3By74cXz73XL1mcfyBO630g9gArGQ?=
+ =?us-ascii?Q?ryrI1h/SS79HanJR/v8McOvSqwV1zpph2SQGZ2KwshkzyiqnjBFpssOZ9XOH?=
+ =?us-ascii?Q?ew5kiPEK3lp+8zNxr1Rr6yDAM264KPpIzWjggfoOsY5AWVpYWoDgmrE5MhV4?=
+ =?us-ascii?Q?lDLKPm3iZQFNlmS6tEobHnCyaWUvsTko+TfkrJJBs0eIwDjXvYJ1smJVPmnF?=
+ =?us-ascii?Q?E19Vt82DtYQ1HIDAaJL+4PWsCL3y2UUrJYRgSlHFW7hI1zllBhw2ZfrWWaV0?=
+ =?us-ascii?Q?XJ5j2BXYlzhGoZaBlNTNxgVZzlC/nZLfm2Re9D3sG2s4CLkuwjfS4RphgQuL?=
+ =?us-ascii?Q?ch1Y7YUStp1V2HN0iBEfmcZq/YH3sm7G+uyYfEAVDBXbX90F9AzShoTBIiT6?=
+ =?us-ascii?Q?CpZP0eyBlMVAquNe7tc=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 07:54:37.8675 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad3beda2-7721-407d-bed9-08de21c0ba86
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 07:54:40.7544 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5d295cb-f665-4dc7-2da7-08de21c0bc3f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A6730.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A6731.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFC3F406448
-Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9637
+Received-SPF: permerror client-ip=2a01:111:f403:c105::1;
  envelope-from=Honglei1.Huang@amd.com;
- helo=CH4PR04CU002.outbound.protection.outlook.com
+ helo=CH1PR05CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -136,7 +137,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 12 Nov 2025 09:19:00 -0500
+X-Mailman-Approved-At: Wed, 12 Nov 2025 09:19:05 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,96 +152,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes include:
-- Add VIRTIO_GPU_FLAG_HSAKMT_ENABLED flag to virtio_gpu_base_conf_flags
-- Add virtio_gpu_hsakmt_enabled() macro for configuration checking
-- Add "hsakmt" device property to virtio-gpu-gl device
-- Modify virtio_gpu_virgl_get_capsets() to conditionally enable HSAKMT
-  capset based on configuration flag and runtime capability check
+This patch introduces support for the VIRTIO_GPU_F_RESOURCE_USERPTR feature
+in virtio-gpu implementation:
 
-The HSAKMT capset is now only enabled when:
-1. The "hsakmt=on" device property is set (defaults to false)
-2. virgl_renderer_get_cap_set() reports capset_max_size > 0
+- Add VIRTIO_GPU_F_RESOURCE_USERPTR feature flag definition
+- Implement resource_userptr property as a configurable option
+- Add VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED configuration flag
+- Enable feature negotiation when resource_userptr is enabled
 
 Usage:
-  -device virtio-gpu-gl,hsakmt=on
+  -device virtio-gpu-gl,userptr=on
 
-This provides better control over HSAKMT functionality and avoids
-exposing unsupported capabilities to guests.
+This feature allows virtio-gpu to support user pointer resources,
+enhancing memory management capabilities for GPU virtualization
+scenarios.
 
 Signed-off-by: Honglei Huang <honghuan@amd.com>
 ---
- hw/display/virtio-gpu-gl.c                  | 2 ++
- hw/display/virtio-gpu-virgl.c               | 9 +++++++++
+ hw/display/virtio-gpu-base.c                | 3 +++
+ hw/display/virtio-gpu.c                     | 2 ++
  include/hw/virtio/virtio-gpu.h              | 3 +++
- include/standard-headers/linux/virtio_gpu.h | 1 +
- 4 files changed, 15 insertions(+)
+ include/standard-headers/linux/virtio_gpu.h | 2 ++
+ 4 files changed, 10 insertions(+)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index c06a078fb3..4ed2f53e4e 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -159,6 +159,8 @@ static const Property virtio_gpu_gl_properties[] = {
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-     DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-+    DEFINE_PROP_BIT("hsakmt", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_HSAKMT_ENABLED, false),
- };
- 
- static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 9da64bf16f..7162c4bfee 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1227,5 +1227,14 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-         }
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 7269477a1c..f013a4ece6 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -264,6 +264,9 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+     if (virtio_gpu_resource_uuid_enabled(g->conf)) {
+         features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
      }
- 
-+    if (virtio_gpu_hsakmt_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_HSAKMT,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_HSAKMT);
-+        }
++    if (virtio_gpu_resource_userptr_enabled(g->conf)) {
++        features |= (1 << VIRTIO_GPU_F_RESOURCE_USERPTR);
 +    }
-+
-     return capset_ids;
+ 
+     return features;
  }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 956dc811fa..5f1dc80060 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1685,6 +1685,8 @@ static const Property virtio_gpu_properties[] = {
+                      256 * MiB),
+     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
++    DEFINE_PROP_BIT("userptr", VirtIOGPU, parent_obj.conf.flags,
++                    VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED, false),
+     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
+     DEFINE_PROP_UINT8("x-scanout-vmstate-version", VirtIOGPU, scanout_vmstate_version, 2),
+ };
 diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 58e0f91fda..c820247db8 100644
+index c820247db8..ff68f3c451 100644
 --- a/include/hw/virtio/virtio-gpu.h
 +++ b/include/hw/virtio/virtio-gpu.h
-@@ -100,6 +100,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
+@@ -101,6 +101,7 @@ enum virtio_gpu_base_conf_flags {
      VIRTIO_GPU_FLAG_VENUS_ENABLED,
      VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED,
-+    VIRTIO_GPU_FLAG_HSAKMT_ENABLED,
+     VIRTIO_GPU_FLAG_HSAKMT_ENABLED,
++    VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED,
  };
  
  #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -122,6 +123,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.hostmem > 0)
- #define virtio_gpu_venus_enabled(_cfg) \
+@@ -125,6 +126,8 @@ enum virtio_gpu_base_conf_flags {
      (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
-+#define virtio_gpu_hsakmt_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_HSAKMT_ENABLED))
+ #define virtio_gpu_hsakmt_enabled(_cfg) \
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_HSAKMT_ENABLED))
++#define virtio_gpu_resource_userptr_enabled(_cfg) \
++    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED))
  
  struct virtio_gpu_base_conf {
      uint32_t max_outputs;
 diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-index b85e781a2d..6c54cb745f 100644
+index 6c54cb745f..321477598e 100644
 --- a/include/standard-headers/linux/virtio_gpu.h
 +++ b/include/standard-headers/linux/virtio_gpu.h
-@@ -313,6 +313,7 @@ struct virtio_gpu_cmd_submit {
- #define VIRTIO_GPU_CAPSET_VENUS 4
- #define VIRTIO_GPU_CAPSET_CROSS_DOMAIN 5
- #define VIRTIO_GPU_CAPSET_DRM 6
-+#define VIRTIO_GPU_CAPSET_HSAKMT 8
+@@ -65,6 +65,8 @@
+  */
+ #define VIRTIO_GPU_F_CONTEXT_INIT        4
  
- /* VIRTIO_GPU_CMD_GET_CAPSET_INFO */
- struct virtio_gpu_get_capset_info {
++#define VIRTIO_GPU_F_RESOURCE_USERPTR    5
++
+ enum virtio_gpu_ctrl_type {
+ 	VIRTIO_GPU_UNDEFINED = 0,
+ 
 -- 
 2.34.1
 
