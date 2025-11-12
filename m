@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39750C50663
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB4DC5065E
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1Bx-0000lw-II; Tue, 11 Nov 2025 22:06:41 -0500
+	id 1vJ1C1-0000pc-H6; Tue, 11 Nov 2025 22:06:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Bw-0000ky-4N; Tue, 11 Nov 2025 22:06:40 -0500
+ id 1vJ1By-0000nh-Ig; Tue, 11 Nov 2025 22:06:42 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Bu-00048F-KN; Tue, 11 Nov 2025 22:06:39 -0500
+ id 1vJ1Bx-00048F-7k; Tue, 11 Nov 2025 22:06:42 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 12 Nov
- 2025 11:05:56 +0800
+ 2025 11:05:57 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
  Transport; Wed, 12 Nov 2025 11:05:56 +0800
@@ -32,10 +32,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 10/12] tests/functional/arm/test_aspeed_ast1060: Add
- functional tests for Aspeed AST1060 SoC
-Date: Wed, 12 Nov 2025 11:05:47 +0800
-Message-ID: <20251112030553.291734-11-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 11/12] docs/system/arm/aspeed: Update Aspeed and 2700
+ family boards list
+Date: Wed, 12 Nov 2025 11:05:48 +0800
+Message-ID: <20251112030553.291734-12-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
 References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
@@ -67,88 +67,42 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add functional tests for the Aspeed AST1060 SoC and its evaluation board.
-The new test test_aspeed_ast1060.py validates booting the AST1060 EVB
-machine using the Zephyr OS and ASPEED PROT application (ast1060_prot_v03.02.tgz)
-and ensures basic console functionality.
+Remove the ast2700-evb entry from the Aspeed family boards list in
+the documentation. The AST2700 platform now belongs to the new Aspeed
+2700 family group, which has its own dedicated documentation section
+and board definitions.
+
+Update the Aspeed 2700 family boards list in the documentation to include
+the new ast2700fc board entry.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/functional/arm/meson.build            |  1 +
- tests/functional/arm/test_aspeed_ast1060.py | 52 +++++++++++++++++++++
- 2 files changed, 53 insertions(+)
- create mode 100644 tests/functional/arm/test_aspeed_ast1060.py
+ docs/system/arm/aspeed.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/arm/meson.build b/tests/functional/arm/meson.build
-index d1ed076a6a..1762a49604 100644
---- a/tests/functional/arm/meson.build
-+++ b/tests/functional/arm/meson.build
-@@ -28,6 +28,7 @@ tests_arm_system_quick = [
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index 6317c0e910..81a9699455 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -1,5 +1,5 @@
+-Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
+-====================================================================================================================================================================================================================================================================================================================================================================================================================================
++Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
++===================================================================================================================================================================================================================================================================================================================================================================================================================
  
- tests_arm_system_thorough = [
-   'aspeed_ast1030',
-+  'aspeed_ast1060',
-   'aspeed_palmetto',
-   'aspeed_romulus',
-   'aspeed_witherspoon',
-diff --git a/tests/functional/arm/test_aspeed_ast1060.py b/tests/functional/arm/test_aspeed_ast1060.py
-new file mode 100644
-index 0000000000..034efa5342
---- /dev/null
-+++ b/tests/functional/arm/test_aspeed_ast1060.py
-@@ -0,0 +1,52 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots the ASPEED SoCs with firmware
-+#
-+# Copyright (C) 2025 ASPEED Technology Inc
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from aspeed import AspeedTest
-+from qemu_test import Asset, exec_command_and_wait_for_pattern
-+
-+
-+class AST1060Machine(AspeedTest):
-+    ASSET_ASPEED_AST1060_PROT_3_02 = Asset(
-+        ('https://github.com/AspeedTech-BMC'
-+         '/aspeed-zephyr-project/releases/download/v03.02'
-+         '/ast1060_prot_v03.02.tgz'),
-+         'dd5f1adc935316ddd1906506a02e15567bd7290657b52320f1a225564cc175bd')
-+
-+    def test_arm_ast1060_prot_3_02(self):
-+        self.set_machine('ast1060-evb')
-+
-+        kernel_name = "ast1060_prot/zephyr.bin"
-+        kernel_file = self.archive_extract(
-+            self.ASSET_ASPEED_AST1060_PROT_3_02, member=kernel_name)
-+
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', kernel_file, '-nographic')
-+        self.vm.launch()
-+        self.wait_for_console_pattern("Booting Zephyr OS")
-+        exec_command_and_wait_for_pattern(self, "help",
-+                                          "Available commands")
-+
-+    def test_arm_ast1060_otp_blockdev_device(self):
-+        self.vm.set_machine("ast1060-evb")
-+
-+        kernel_name = "ast1060_prot/zephyr.bin"
-+        kernel_file = self.archive_extract(self.ASSET_ASPEED_AST1060_PROT_3_02,
-+                                           member=kernel_name)
-+        otp_img = self.generate_otpmem_image()
-+
-+        self.vm.set_console()
-+        self.vm.add_args(
-+            "-kernel", kernel_file,
-+            "-blockdev", f"driver=file,filename={otp_img},node-name=otp",
-+            "-global", "aspeed-otp.drive=otp",
-+        )
-+        self.vm.launch()
-+        self.wait_for_console_pattern("Booting Zephyr OS")
-+
-+if __name__ == '__main__':
-+    AspeedTest.main()
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
+ Aspeed evaluation boards. They are based on different releases of the
+@@ -274,8 +274,8 @@ configuration file for OTP memory:
+     done > otpmem.img
+   fi
+ 
+-Aspeed 2700 family boards (``ast2700-evb``)
+-==================================================================
++Aspeed 2700 family boards (``ast2700-evb``, ``ast2700fc``)
++==========================================================
+ 
+ The QEMU Aspeed machines model BMCs of Aspeed evaluation boards.
+ They are based on different releases of the Aspeed SoC :
 -- 
 2.43.0
 
