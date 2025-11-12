@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5683C5064D
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EECC50650
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:07:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1Bb-0000NX-A1; Tue, 11 Nov 2025 22:06:19 -0500
+	id 1vJ1Bc-0000Os-Py; Tue, 11 Nov 2025 22:06:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1BU-0000Bt-NS; Tue, 11 Nov 2025 22:06:12 -0500
+ id 1vJ1BX-0000JC-HG; Tue, 11 Nov 2025 22:06:15 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1BT-0003zx-C8; Tue, 11 Nov 2025 22:06:12 -0500
+ id 1vJ1BW-0003zx-11; Tue, 11 Nov 2025 22:06:15 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 12 Nov
@@ -33,10 +33,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v2 01/12] hw/arm/aspeed: Fix missing SPI IRQ connection
- causing DMA interrupt failure
-Date: Wed, 12 Nov 2025 11:05:38 +0800
-Message-ID: <20251112030553.291734-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 02/12] hw/block/m25p80: Add SFDP table for Winbond
+ W25Q02JVM flash
+Date: Wed, 12 Nov 2025 11:05:39 +0800
+Message-ID: <20251112030553.291734-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
 References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
@@ -68,61 +68,95 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It did not connect SPI IRQ to the Interrupt Controller, so even the SPI
-model raised the IRQ, the interrupt was not received. The CPU therefore
-did not trigger an interrupt via the controller, and the firmware never
-received the interrupt.
+Add the SFDP data table for Winbond W25Q02JVM flash device. The table
+was generated under Linux kernel by dumping the SFDP content using
+the following command:
 
-Fixes: 356b230ed13889e09d087a96498887de695df17e ("aspeed/soc: Add AST1030 support")
-Fixes: f25c0ae1079dc0b9de02676eb3e3949a09df9f41 ("aspeed/soc: Add AST2600 support")
-Fixes: 5dd883ab0635c9f715c77cc32622e458a0724581 ("aspeed/soc: Add AST2700 support")
+```
+hexdump -v -e '8/1 "0x%02x, " "\n"' \
+    /sys/bus/spi/devices/spi0.0/spi-nor/sfdp
+```
+
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast10x0.c | 2 ++
- hw/arm/aspeed_ast2600.c | 2 ++
- hw/arm/aspeed_ast27x0.c | 2 ++
- 3 files changed, 6 insertions(+)
+ hw/block/m25p80_sfdp.h |  1 +
+ hw/block/m25p80.c      |  2 ++
+ hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index 7f49c13391..ca487774ae 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -372,6 +372,8 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI1 + i]);
-         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast1030_get_irq(s, ASPEED_DEV_SPI1 + i));
-     }
+diff --git a/hw/block/m25p80_sfdp.h b/hw/block/m25p80_sfdp.h
+index 35785686a0..c1e532de5a 100644
+--- a/hw/block/m25p80_sfdp.h
++++ b/hw/block/m25p80_sfdp.h
+@@ -27,6 +27,7 @@ uint8_t m25p80_sfdp_w25q256(uint32_t addr);
+ uint8_t m25p80_sfdp_w25q512jv(uint32_t addr);
+ uint8_t m25p80_sfdp_w25q80bl(uint32_t addr);
+ uint8_t m25p80_sfdp_w25q01jvq(uint32_t addr);
++uint8_t m25p80_sfdp_w25q02jvm(uint32_t addr);
  
-     /* Secure Boot Controller */
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 498d1ecc07..4c5a42ea17 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -557,6 +557,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI1 + i]);
-         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast2600_get_irq(s, ASPEED_DEV_SPI1 + i));
-     }
+ uint8_t m25p80_sfdp_is25wp256(uint32_t addr);
  
-     /* EHCI */
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index c484bcd4e2..e02a674b13 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -831,6 +831,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI0 + i]);
-         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SPI0 + i));
-     }
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index a5336d92ff..338e17bf1d 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -364,6 +364,8 @@ static const FlashPartInfo known_devices[] = {
+       .sfdp_read = m25p80_sfdp_w25q512jv },
+     { INFO("w25q01jvq",   0xef4021,      0,  64 << 10, 2048, ER_4K),
+       .sfdp_read = m25p80_sfdp_w25q01jvq },
++    { INFO("w25q02jvm",   0xef7022,      0,  64 << 10, 4096, ER_4K),
++      .sfdp_read = m25p80_sfdp_w25q02jvm },
  
-     /* EHCI */
+     /* Microchip */
+     { INFO("25csm04",      0x29cc00,      0x100,  64 << 10,  8, 0) },
+diff --git a/hw/block/m25p80_sfdp.c b/hw/block/m25p80_sfdp.c
+index a03a291a09..87878c2bf0 100644
+--- a/hw/block/m25p80_sfdp.c
++++ b/hw/block/m25p80_sfdp.c
+@@ -440,6 +440,42 @@ static const uint8_t sfdp_w25q80bl[] = {
+ };
+ define_sfdp_read(w25q80bl);
+ 
++static const uint8_t sfdp_w25q02jvm[] = {
++    0x53, 0x46, 0x44, 0x50, 0x06, 0x01, 0x01, 0xff,
++    0x00, 0x06, 0x01, 0x10, 0x80, 0x00, 0x00, 0xff,
++    0x84, 0x00, 0x01, 0x02, 0xd0, 0x00, 0x00, 0xff,
++    0x03, 0x00, 0x01, 0x02, 0xf0, 0x00, 0x00, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xe5, 0x20, 0xfb, 0xff, 0xff, 0xff, 0xff, 0x7f,
++    0x44, 0xeb, 0x08, 0x6b, 0x08, 0x3b, 0x42, 0xbb,
++    0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00,
++    0xff, 0xff, 0x40, 0xeb, 0x0c, 0x20, 0x0f, 0x52,
++    0x10, 0xd8, 0x00, 0x00, 0x36, 0x02, 0xa6, 0x00,
++    0x82, 0xea, 0x14, 0xe2, 0xe9, 0x63, 0x76, 0x33,
++    0x7a, 0x75, 0x7a, 0x75, 0xf7, 0xa2, 0xd5, 0x5c,
++    0x19, 0xf7, 0x4d, 0xff, 0xe9, 0x70, 0xf9, 0xa5,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0x0a, 0xf0, 0xff, 0x21, 0xff, 0xdc, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++};
++define_sfdp_read(w25q02jvm);
++
+ /*
+  * Integrated Silicon Solution (ISSI)
+  */
 -- 
 2.43.0
 
