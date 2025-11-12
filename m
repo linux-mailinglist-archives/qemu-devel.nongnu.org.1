@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B6EC50646
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B291EC5065B
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:08:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1Bd-0000QL-Tj; Tue, 11 Nov 2025 22:06:21 -0500
+	id 1vJ1Bf-0000S4-3j; Tue, 11 Nov 2025 22:06:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Ba-0000MP-4F; Tue, 11 Nov 2025 22:06:18 -0500
+ id 1vJ1Bc-0000Pl-Qf; Tue, 11 Nov 2025 22:06:20 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1BY-0003zx-MO; Tue, 11 Nov 2025 22:06:17 -0500
+ id 1vJ1Bb-0003zx-D0; Tue, 11 Nov 2025 22:06:20 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 12 Nov
@@ -33,10 +33,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v2 03/12] hw/misc/aspeed_scu: Fix the revision ID cannot be
- set in the SOC layer for AST2600 and AST1030
-Date: Wed, 12 Nov 2025 11:05:40 +0800
-Message-ID: <20251112030553.291734-4-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 04/12] hhw/misc/aspeed_scu: Add AST1060 A2 silicon revision
+ definition
+Date: Wed, 12 Nov 2025 11:05:41 +0800
+Message-ID: <20251112030553.291734-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
 References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
@@ -68,50 +68,42 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the design of the AST2600, it has a Silicon Revision ID
-Register, specifically SCU004 and SCU014, to set the Revision ID for the
-AST2600. For the AST2600 A3, SCU004 is set to 0x05030303 and SCU014 is
-set to 0x05030303.
-
-In the "aspeed_ast2600_scu_reset" function, the hardcoded value
-"AST2600_A3_SILICON_REV" was used for SCU004, while "s->silicon_rev" was
-used for SCU014. The value of "s->silicon_rev" is set by the SoC layer
-via the "silicon-rev" property. This patch aligns both SCU004 and SCU014
-to use "s->silicon_rev" for consistency and flexibility.
-
-Similarly, the "aspeed_ast1030_scu_reset" function also used a fixed
-revision constant ("AST1030_A1_SILICON_REV"). This change updates it to
-use the same "s->silicon_rev" property, ensuring that both SoCs follow
-a consistent and configurable revision handling mechanism.
+Add a new silicon revision constant AST1060_A2_SILICON_REV for the
+AST1060 SoC. This allows the SCU model and related SoC layers to
+identify and handle AST1060 A2 revision properly in the same way as
+other Aspeed SoC families.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/misc/aspeed_scu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/misc/aspeed_scu.h | 1 +
+ hw/misc/aspeed_scu.c         | 1 +
+ 2 files changed, 2 insertions(+)
 
+diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
+index 684b48b722..76ef8dc592 100644
+--- a/include/hw/misc/aspeed_scu.h
++++ b/include/hw/misc/aspeed_scu.h
+@@ -51,6 +51,7 @@ struct AspeedSCUState {
+ #define AST2600_A3_SILICON_REV   0x05030303U
+ #define AST1030_A0_SILICON_REV   0x80000000U
+ #define AST1030_A1_SILICON_REV   0x80010000U
++#define AST1060_A2_SILICON_REV   0xA0030000U
+ #define AST2700_A0_SILICON_REV   0x06000103U
+ #define AST2720_A0_SILICON_REV   0x06000203U
+ #define AST2750_A0_SILICON_REV   0x06000003U
 diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index a0ab5eed8f..1f996d5398 100644
+index 1f996d5398..300571256a 100644
 --- a/hw/misc/aspeed_scu.c
 +++ b/hw/misc/aspeed_scu.c
-@@ -841,7 +841,7 @@ static void aspeed_ast2600_scu_reset(DeviceState *dev)
-      * of actual revision. QEMU and Linux only support A1 onwards so this is
-      * sufficient.
-      */
--    s->regs[AST2600_SILICON_REV] = AST2600_A3_SILICON_REV;
-+    s->regs[AST2600_SILICON_REV] = s->silicon_rev;
-     s->regs[AST2600_SILICON_REV2] = s->silicon_rev;
-     s->regs[AST2600_HW_STRAP1] = s->hw_strap1;
-     s->regs[AST2600_HW_STRAP2] = s->hw_strap2;
-@@ -1137,7 +1137,7 @@ static void aspeed_ast1030_scu_reset(DeviceState *dev)
- 
-     memcpy(s->regs, asc->resets, asc->nr_regs * 4);
- 
--    s->regs[AST2600_SILICON_REV] = AST1030_A1_SILICON_REV;
-+    s->regs[AST2600_SILICON_REV] = s->silicon_rev;
-     s->regs[AST2600_SILICON_REV2] = s->silicon_rev;
-     s->regs[AST2600_HW_STRAP1] = s->hw_strap1;
-     s->regs[AST2600_HW_STRAP2] = s->hw_strap2;
+@@ -565,6 +565,7 @@ static uint32_t aspeed_silicon_revs[] = {
+     AST2600_A3_SILICON_REV,
+     AST1030_A0_SILICON_REV,
+     AST1030_A1_SILICON_REV,
++    AST1060_A2_SILICON_REV,
+     AST2700_A0_SILICON_REV,
+     AST2720_A0_SILICON_REV,
+     AST2750_A0_SILICON_REV,
 -- 
 2.43.0
 
