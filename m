@@ -2,152 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69890C537BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 17:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E9BC537CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 17:45:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJDwc-0000qt-JG; Wed, 12 Nov 2025 11:43:44 -0500
+	id 1vJDwm-0001Ro-Rk; Wed, 12 Nov 2025 11:43:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vJDtj-0006ya-Qs
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 11:40:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vJDuH-0007g5-Ji; Wed, 12 Nov 2025 11:41:20 -0500
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vJDtg-0007sP-Dl
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 11:40:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762965638;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ekP2LoStC6atia7JLc6rGhNzk31oeeo9AHkN1/Jshi4=;
- b=M0b8KusD8PqJUhIBnhYSAVAgpOdS++eGXijPAUe+0dkcaqUI0jRryJWEutZRy25i6Tmflt
- xhXDtDwMFVINfj/estRmfuYW+Hwi0SAehhLPGYiTh5YWMElGtVA31kAkSURwD4upoWGFNS
- GzgSMlzA4SlGoyCekPOa6hHNrGthFBg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-NZmDcCkYMZGyySxUOeLS2w-1; Wed, 12 Nov 2025 11:40:37 -0500
-X-MC-Unique: NZmDcCkYMZGyySxUOeLS2w-1
-X-Mimecast-MFC-AGG-ID: NZmDcCkYMZGyySxUOeLS2w_1762965636
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-429cce847c4so652734f8f.2
- for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 08:40:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762965636; x=1763570436; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=ekP2LoStC6atia7JLc6rGhNzk31oeeo9AHkN1/Jshi4=;
- b=kRFl9NYtYirdzxlIqRqu5vIQEkB5Az0I1RdCMcaR6jXOU45Vp9DoDUFXV+zojDNHms
- 3hUNzYvMY8MxVOm/zZ4e44W0Lt/5LJZxR0zkuA3O5tOoW3TMErl5JKTGDODNXjxN+keD
- Cc63hiwint45tdA6e7xnpfVCZQib5aFky1+XCtfjl+h4AXOIlRAVW7+bbxidIbKD+1lc
- rulpwJiIMHWWk/AURAIk4ooK85+HsS4RLEbNtLq4+Lc6KbvvH4GhjWqBxkwLlu5daRyE
- hFZ2rWjUy4A5+nMuQeVGPOYAW44EvV80yVYxcu6q5lFps4c4ulCOD0hrRcJvIDU3uuhR
- ARiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762965636; x=1763570436;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ekP2LoStC6atia7JLc6rGhNzk31oeeo9AHkN1/Jshi4=;
- b=I5nqZJKYwdq83Y4SlFjka7zwquSdgP2ItvopPxXoMCuCEeG3yaPNoItWVxD0l0ToJC
- 9yMhD2g86evsB29yMQSta+I8IuXOy6R3oMuU7RDu4x/skv0VRL0xF55/zDdlfLsq8P41
- bION4CzHYtGR6qNEyFXGeLLVxlG9kq0r1tzeKTtcMBt6ZaVhJeh0ZXZ63BGBHEftfrpv
- dQIsxZ8huLXePgPRZYYD5e8e+Jj0ADT2qwcpDsPOwYpr/Lo4IUBpOIx0wgvXFTAuKFwF
- QBrmbmDSnHeA5BRPnQg7KlpI/yxKZsdpguGleYOpRdMmsq9vtUCPPhCYtmjGjFxm7gQC
- TqPA==
-X-Gm-Message-State: AOJu0Yw3BDuhtlhCsPQ66YJpoKfT7AjB6RkjiHgjNArmV0ANBO5aJYUQ
- T8LF91j/ZMHy0c6LcSx6h3F/fbs80/DgKqy6Mz3iXx46gDJunei6lWhtlfWV75b50ks6SCcIdMZ
- IE4zxmQY94fPB2x6AZHoaZ0WZK2YP3j081IJ4UPzg+V+92KqZ/tLZ8gnR
-X-Gm-Gg: ASbGncsvuB4CHeJq/vgXKA6eFXulK9UWG3lXxXAUf9O4VoAKTs+KZt0CLKVltOsxAcf
- KMubK3+9bHohTwecGVnHbLrdHVmQns0wwIyVJKLc4YF/yp3Y5PS/3IVVHaHb6mJYryueGSHSXQD
- ZypJZVBErzz0Es5hmFDZVMc/uIWZsYCNgGiru9fg1IeLwN5wDZiLcniypeT0BcpUTD0XrR+88mm
- MEZgVHm2bw0FyQhkumckCYVabhiEX23ykOxhfuuKoqLV4DChM0DmwwKxkoo/kaBlfQAaTLqYLKU
- REXNpesHQd61q314wHD/r5BfR8RIBQthV5WBctfOHsRNrkcjv1lumE90Q/wBxUf5k4Nt6+4=
-X-Received: by 2002:a05:6000:40cd:b0:429:d0b8:3850 with SMTP id
- ffacd0b85a97d-42b4bdb4884mr2891028f8f.48.1762965636149; 
- Wed, 12 Nov 2025 08:40:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpg/RiQDd6VD0n6A8rp3Q8E6xKZcyeWD8b/HcSfdtD2qh32H8NPx+29zXTCdssGRuL6W58jg==
-X-Received: by 2002:a05:6000:40cd:b0:429:d0b8:3850 with SMTP id
- ffacd0b85a97d-42b4bdb4884mr2891000f8f.48.1762965635703; 
- Wed, 12 Nov 2025 08:40:35 -0800 (PST)
-Received: from [192.168.0.7] ([47.64.114.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42abe63ba87sm35969688f8f.14.2025.11.12.08.40.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Nov 2025 08:40:35 -0800 (PST)
-Message-ID: <c8184f53-b0ed-4f74-adc2-080309568795@redhat.com>
-Date: Wed, 12 Nov 2025 17:40:33 +0100
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vJDuE-0007zt-Lb; Wed, 12 Nov 2025 11:41:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+ Content-Type; bh=7ZOowEZ2uXhtXPyyFDxTZw4mF9ye7De92pk040iwuXQ=; b=sImQbIsZ9UE2
+ daD4SmDnqHX/f6uWh4fP7jZm8x209FKvtNcHlh5ROu0ME7qcL8emDR9PjBTEtGtNARc4/JeRgiEB2
+ Ry/2EzP0sdsyRIWIYZl9e6nHY2JkS8WWFz+HmxGAXrM5mTJYD+N7F08jhujxTy00BtEAJFl7Wk5QI
+ 3zdzUexg2esM2K6xfnfG1wA7bhhGLAOIDN3+QTONqT5AIb47cJYqAOLKMJhdkMk0Y7T5iMPKioXeK
+ ogBuKRD6dHspvQGt6ZgG4FauexUeQc4xUDv3PK8Vy1+jLaybnVMSc57mLLf41vF0NHAkOcfkgQ59o
+ unvCnsZv6BAXgslY69YSxA==;
+Received: from [130.117.225.5] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1vJDsg-00H2e8-0v;
+ Wed, 12 Nov 2025 17:41:07 +0100
+From: andrey.drobyshev@virtuozzo.com
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, f.ebner@proxmox.com,
+ hreitz@redhat.com, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com
+Subject: [BUG] Block graph assertion failure on blockdev-add
+Date: Wed, 12 Nov 2025 18:41:07 +0200
+Message-ID: <20251112164108.506976-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 28/28] qemu-img rebase: don't exceed IO_BUF_SIZE in one
- operation
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Alberto Garcia <berto@igalia.com>
-Cc: qemu-devel@nongnu.org
-References: <20251111213238.181992-1-kwolf@redhat.com>
- <20251111213238.181992-29-kwolf@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251111213238.181992-29-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,178 +63,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-  Hi Alberto, hi Kevin,
+Hi all,
 
-this patch caused the iotest 024 to fail when being run with -qed:
+There's a bug in block layer which leads to an assertion failure and crash.
+The reproduce is flaky, which suggests there's a race involved.  Here's how
+it's reproduced:
 
-024   fail       [17:35:06] [17:35:08]   2.2s   (last: 2.0s)  output 
-mismatch (see .../tests/qemu-iotests/scratch/qed-file-024/024.out.bad)
---- .../qemu/tests/qemu-iotests/024.out
-+++ .../qemu-build/tests/qemu-iotests/scratch/qed-file-024/024.out.bad
-@@ -267,6 +267,7 @@
-  read 1048576/1048576 bytes at offset 3145728
-  1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-  Offset          Length          File
--0               0x400000        TEST_DIR/subdir/t.IMGFMT
-+0               0x200000        TEST_DIR/subdir/t.IMGFMT
-+0x200000        0x200000        TEST_DIR/subdir/t.IMGFMT
+1. Run QEMU with 2 disks: one system (with actual guest) and one empty; attach
+them to an iothread;
+2. In the guest, format the empty disk and start sequential IO on it;
+3. At the host, start growing a chain of snapshots upon the empty image.
 
-Could you please have a look?
+Here're the scripts:
 
-  Thanks,
-    Thomas
+1. Running QEMU:
+
+QMPSOCK=/var/run/qmp.sock
+SERIALSOCK=/var/run/serial.sock
+ROOTIMG=/path/to/rootimg.qcow2
+EMPTYIMG=/path/to/emptyimg.qcow2
+
+rm -f $EMPTYIMG
+qemu-img create -f qcow2 \
+    -o cluster_size=1M,extended_l2=on,lazy_refcounts=on \
+    $EMPTYIMG 64G
+
+/path/to/qemu/build/qemu-system-x86_64 -enable-kvm \
+    -machine q35 -cpu Nehalem \
+    -name guest=guestvm,debug-threads=on \
+    -m 2g -smp 2 \
+    -nographic \
+    \
+    -serial unix:$SERIALSOCK,server=on,wait=off \
+    -qmp unix:$QMPSOCK,server=on,wait=off \
+    \
+    -object iothread,id=iothread1 \
+    \
+    -blockdev node-name=disk-storage,driver=file,filename=$ROOTIMG,aio=native,cache.direct=on,cache.no-flush=off,auto-read-only=true,discard=unmap \
+    -blockdev node-name=disk-prealloc,driver=preallocate,file=disk-storage,discard=unmap \
+    -blockdev node-name=disk-format,driver=qcow2,file=disk-prealloc,read-only=false,discard=unmap \
+    \
+    -blockdev node-name=empty-storage,driver=file,filename=$EMPTYIMG,aio=native,cache.direct=on,cache.no-flush=off,auto-read-only=true,discard=unmap \
+    -blockdev node-name=empty-prealloc,driver=preallocate,file=empty-storage,discard=unmap \
+    -blockdev node-name=empty-format,driver=qcow2,file=empty-prealloc,read-only=false,discard=unmap \
+    \
+    -device pcie-root-port,id=root_port0,slot=1,bus=pcie.0 \
+    -device pcie-root-port,id=root_port1,slot=2,bus=pcie.0 \
+    -device virtio-blk-pci,drive=disk-format,id=virtio-disk0,bus=root_port0,bootindex=1 \
+    -device virtio-blk-pci,drive=empty-format,iothread=iothread1,id=virtio-disk1,bus=root_port1
+
+2. Formatting the disk in the guest and running sequential IO:
+
+BLKDEV=$(ls /dev/[sv]d[b-z] | sort | sed -n '1p')
+
+sgdisk -Z -n 1:0:0 -t 1:8300 $BLKDEV
+mkfs.ext4 -F "${BLKDEV}1"
+mkdir -p /mnt/empty
+mount "${BLKDEV}1" /mnt/empty
+
+fio --name=grow-disk --filename=/mnt/empty/growing.data \
+    --rw=write --bs=4K --size=60G --time_based --runtime=900 \
+    --ioengine=libaio --iodepth=32 --numjobs=4 --direct=0
+
+3. Grow a chain of snapshots:
+
+TESTDIR=/path/to/testdir
+QMPSOCK=/var/run/qmp.sock
+QMPSHELL=/path/to/qemu/scripts/qmp/qmp-shell
+
+rm -f $TESTDIR/snap*.qcow2
+SNAPNODE=empty-format
+
+for i in {1..200} ; do
+    SNAPIMG=$TESTDIR/snap$i.qcow2
+    qemu-img create -f qcow2 \
+        -o cluster_size=1M,extended_l2=on,lazy_refcounts=on \
+        $SNAPIMG 64G
+
+$QMPSHELL -p $QMPSOCK <<EOF
+    blockdev-add node-name=snap${i}-storage driver=file filename=$SNAPIMG auto-read-only=true aio=native cache={"no-flush":false,"direct":true} discard=unmap
+    blockdev-add node-name=snap${i}-prealloc driver=preallocate discard=unmap file=snap${i}-storage
+    blockdev-add node-name=snap${i}-format driver=qcow2 read-only=false cache={"no-flush":false,"direct":true} discard=unmap file=snap${i}-prealloc
+    blockdev-snapshot node=$SNAPNODE overlay=snap${i}-format
+EOF
+
+    SNAPNODE=snap${i}-format
+done
 
 
-PS: Thank you, Kevin, for merging the "Add more image formats to the 
-thorough testing" patch! As you can see, it already helped to spot the first 
-regression :-)
+Then, at some point, we get:
+
+qemu-system-x86_64: ../block/io.c:441: bdrv_drain_assert_idle: Assertion `qatomic_read(&bs->in_flight) == 0' failed.
+
+Stack trace:
+
+(gdb) bt
+#0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
+#1  0x00007f92e52a15a3 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at pthread_kill.c:78
+#2  0x00007f92e5254d06 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+#3  0x00007f92e52287f3 in __GI_abort () at abort.c:79
+#4  0x00007f92e522871b in __assert_fail_base (fmt=<optimized out>, assertion=<optimized out>, file=<optimized out>, line=<optimized out>, function=<optimized out>) at assert.c:92
+#5  0x00007f92e524dca6 in __assert_fail (assertion=0x555c50966200 "qatomic_read(&bs->in_flight) == 0", file=0x555c509660eb "../block/io.c", line=441, function=0x555c50966e60 <__PRETTY_FUNCTION__.33> "bdrv_drain_assert_idle") at assert.c:101
+#6  0x0000555c505cb3f7 in bdrv_drain_assert_idle (bs=0x555c5384de20) at ../block/io.c:441
+#7  0x0000555c505cb757 in bdrv_drain_all_begin () at ../block/io.c:531
+#8  0x0000555c505c93c3 in bdrv_graph_wrlock_drained () at ../block/graph-lock.c:168
+#9  0x0000555c505b83e3 in blk_remove_bs (blk=0x555c535b89f0) at ../block/block-backend.c:892
+#10 0x0000555c505b73cb in blk_delete (blk=0x555c535b89f0) at ../block/block-backend.c:487
+#11 0x0000555c505b77ac in blk_unref (blk=0x555c535b89f0) at ../block/block-backend.c:547
+#12 0x0000555c5058f7f9 in bdrv_open_inherit (filename=0x0, reference=0x0, options=0x555c5386a530, flags=8194, parent=0x0, child_class=0x0, child_role=0, parse_filename=true, errp=0x7ffd1d8cba68) at ../block.c:4196
+#13 0x0000555c5058fd89 in bdrv_open (filename=0x0, reference=0x0, options=0x555c53687680, flags=0, errp=0x7ffd1d8cba68) at ../block.c:4285
+#14 0x0000555c5057ade1 in bds_tree_init (bs_opts=0x555c53687680, errp=0x7ffd1d8cba68) at ../blockdev.c:680
+#15 0x0000555c50581c24 in qmp_blockdev_add (options=0x7ffd1d8cbaa0, errp=0x7ffd1d8cba68) at ../blockdev.c:3434
+#16 0x0000555c506b28f8 in qmp_marshal_blockdev_add (args=0x7f92c400a9e0, ret=0x7f92d9fe3da8, errp=0x7f92d9fe3da0) at qapi/qapi-commands-block-core.c:1417
+#17 0x0000555c5073d311 in do_qmp_dispatch_bh (opaque=0x7f92d9fe3e40) at ../qapi/qmp-dispatch.c:128
+#18 0x0000555c5076a318 in aio_bh_call (bh=0x555c53640580) at ../util/async.c:172
+#19 0x0000555c5076a43b in aio_bh_poll (ctx=0x555c52f635f0) at ../util/async.c:219
+#20 0x0000555c5074aac2 in aio_dispatch (ctx=0x555c52f635f0) at ../util/aio-posix.c:436
+#21 0x0000555c5076a8d5 in aio_ctx_dispatch (source=0x555c52f635f0, callback=0x0, user_data=0x0) at ../util/async.c:364
+#22 0x00007f92e6913e3f in g_main_dispatch (context=0x555c52f69c10) at ../glib/gmain.c:3364
+#23 g_main_context_dispatch (context=0x555c52f69c10) at ../glib/gmain.c:4079
+#24 0x0000555c5076c13c in glib_pollfds_poll () at ../util/main-loop.c:290
+#25 0x0000555c5076c1c3 in os_host_main_loop_wait (timeout=0) at ../util/main-loop.c:313
+#26 0x0000555c5076c2e3 in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
+#27 0x0000555c502126b2 in qemu_main_loop () at ../system/runstate.c:903
+#28 0x0000555c50681fb1 in qemu_default_main (opaque=0x0) at ../system/main.c:50
+#29 0x0000555c50682060 in main (argc=39, argv=0x7ffd1d8cbf68) at ../system/main.c:93
+(gdb) frame 6
+#6  0x0000555c505cb3f7 in bdrv_drain_assert_idle (bs=0x555c5384de20) at ../block/io.c:441
+441     {
+(gdb) printf "%s (%s): %d\n", bs->node_name, bs->drv->format_name, bs->in_flight
+snap40-storage (file): 1
 
 
-On 11/11/2025 22.32, Kevin Wolf wrote:
-> From: Alberto Garcia <berto@igalia.com>
-> 
-> During a rebase operation data is copied from the backing chain into
-> the target image using a loop, and each iteration looks for a
-> contiguous region of allocated data of at most IO_BUF_SIZE (2 MB).
-> 
-> Once that region is found, and in order to avoid partial writes, its
-> boundaries are extended so they are aligned to the (sub)clusters of
-> the target image (see commit 12df580b).
-> 
-> This operation can however result in a region that exceeds the maximum
-> allowed IO_BUF_SIZE, crashing qemu-img.
-> 
-> This can be easily reproduced when the source image has a smaller
-> cluster size than the target image:
-> 
-> base <- int <- active
-> 
-> $ qemu-img create -f qcow2 base.qcow2 4M
-> $ qemu-img create -f qcow2 -F qcow2 -b base.qcow2 -o cluster_size=1M int.qcow2
-> $ qemu-img create -f qcow2 -F qcow2 -b int.qcow2  -o cluster_size=2M active.qcow2
-> $ qemu-io -c "write -P 0xff 1M 2M" int.qcow2
-> $ qemu-img rebase -F qcow2 -b base.qcow2 active.qcow2
-> qemu-img: qemu-img.c:4102: img_rebase: Assertion `written + pnum <= IO_BUF_SIZE' failed.
-> Aborted
-> 
-> Cc: qemu-stable <qemu-stable@nongnu.org>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3174
-> Fixes: 12df580b3b7f ("qemu-img: rebase: avoid unnecessary COW operations")
-> Signed-off-by: Alberto Garcia <berto@igalia.com>
-> Message-ID: <20251107091834.383781-1-berto@igalia.com>
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->   qemu-img.c                 |  2 +-
->   tests/qemu-iotests/024     | 46 ++++++++++++++++++++++++++++++++++++++
->   tests/qemu-iotests/024.out | 26 +++++++++++++++++++++
->   3 files changed, 73 insertions(+), 1 deletion(-)
-> 
-> diff --git a/qemu-img.c b/qemu-img.c
-> index 7a32d2d16c..c42dd4e995 100644
-> --- a/qemu-img.c
-> +++ b/qemu-img.c
-> @@ -4081,7 +4081,7 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
->               n += offset - QEMU_ALIGN_DOWN(offset, write_align);
->               offset = QEMU_ALIGN_DOWN(offset, write_align);
->               n += QEMU_ALIGN_UP(offset + n, write_align) - (offset + n);
-> -            n = MIN(n, size - offset);
-> +            n = MIN(n, MIN(size - offset, IO_BUF_SIZE));
->               assert(!bdrv_is_allocated(unfiltered_bs, offset, n, &n_alloc) &&
->                      n_alloc == n);
->   
-> diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-> index b29c76e161..021169b4a1 100755
-> --- a/tests/qemu-iotests/024
-> +++ b/tests/qemu-iotests/024
-> @@ -315,6 +315,52 @@ echo
->   
->   $QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
->   
-> +# Check that the region to copy to the overlay during a rebase
-> +# operation does not exceed the I/O buffer size.
-> +#
-> +# backing_new <-- backing_old <-- overlay
-> +#
-> +# Backing (new): -- -- -- --    <-- Empty image, size 4MB
-> +# Backing (old):|--|ff|ff|--|   <-- 4 clusters, 1MB each
-> +# Overlay:      |-- --|-- --|   <-- 2 clusters, 2MB each
-> +#
-> +# The data at [1MB, 3MB) must be copied from the old backing image to
-> +# the overlay. However the rebase code will extend that region to the
-> +# overlay's (sub)cluster boundaries to avoid CoW (see commit 12df580b).
-> +# This test checks that IO_BUF_SIZE (2 MB) is taken into account.
-> +
-> +echo
-> +echo "=== Test that the region to copy does not exceed 2MB (IO_BUF_SIZE) ==="
-> +echo
-> +
-> +echo "Creating backing chain"
-> +echo
-> +
-> +TEST_IMG=$BASE_NEW _make_test_img 4M
-> +TEST_IMG=$BASE_OLD CLUSTER_SIZE=1M _make_test_img -b "$BASE_NEW" -F $IMGFMT
-> +TEST_IMG=$OVERLAY  CLUSTER_SIZE=2M _make_test_img -b "$BASE_OLD" -F $IMGFMT
-> +
-> +echo
-> +echo "Writing data to region [1MB, 3MB)"
-> +echo
-> +
-> +$QEMU_IO "$BASE_OLD" -c "write -P 0xff 1M 2M" | _filter_qemu_io
-> +
-> +echo
-> +echo "Rebasing"
-> +echo
-> +
-> +$QEMU_IMG rebase -b "$BASE_NEW" -F $IMGFMT "$OVERLAY"
-> +
-> +echo "Verifying the data"
-> +echo
-> +
-> +$QEMU_IO "$OVERLAY" -c "read -P 0x00  0 1M" | _filter_qemu_io
-> +$QEMU_IO "$OVERLAY" -c "read -P 0xff 1M 2M" | _filter_qemu_io
-> +$QEMU_IO "$OVERLAY" -c "read -P 0x00 3M 1M" | _filter_qemu_io
-> +
-> +$QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
-> +
->   echo
->   
->   # success, all done
-> diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-> index 3d1e31927a..1b7522ba71 100644
-> --- a/tests/qemu-iotests/024.out
-> +++ b/tests/qemu-iotests/024.out
-> @@ -243,4 +243,30 @@ Offset          Length          File
->   0               0x20000         TEST_DIR/subdir/t.IMGFMT
->   0x40000         0x20000         TEST_DIR/subdir/t.IMGFMT
->   
-> +=== Test that the region to copy does not exceed 2MB (IO_BUF_SIZE) ===
-> +
-> +Creating backing chain
-> +
-> +Formatting 'TEST_DIR/subdir/t.IMGFMT.base_new', fmt=IMGFMT size=4194304
-> +Formatting 'TEST_DIR/subdir/t.IMGFMT.base_old', fmt=IMGFMT size=4194304 backing_file=TEST_DIR/subdir/t.IMGFMT.base_new backing_fmt=IMGFMT
-> +Formatting 'TEST_DIR/subdir/t.IMGFMT', fmt=IMGFMT size=4194304 backing_file=TEST_DIR/subdir/t.IMGFMT.base_old backing_fmt=IMGFMT
-> +
-> +Writing data to region [1MB, 3MB)
-> +
-> +wrote 2097152/2097152 bytes at offset 1048576
-> +2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-> +
-> +Rebasing
-> +
-> +Verifying the data
-> +
-> +read 1048576/1048576 bytes at offset 0
-> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-> +read 2097152/2097152 bytes at offset 1048576
-> +2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-> +read 1048576/1048576 bytes at offset 3145728
-> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-> +Offset          Length          File
-> +0               0x400000        TEST_DIR/subdir/t.IMGFMT
-> +
->   *** done
+So draining doesn't work as expected: in-flight requests are supposed to be
+polled right before calling bdrv_drain_assert_idle(), but there's new IO
+arriving:
+
+void coroutine_mixed_fn bdrv_drain_all_begin(void)
+{
+...
+    bdrv_drain_all_begin_nopoll();
+
+    /* Now poll the in-flight requests */
+    AIO_WAIT_WHILE_UNLOCKED(NULL, bdrv_drain_all_poll());   <---------
+
+    while ((bs = bdrv_next_all_states(bs))) {
+        bdrv_drain_assert_idle(bs);
+    }
+}
+
+I've bisected the issue, and it seems to be introduced by Fiona's series [0]
+for fixing a deadlock.  Namely, before the commit b13f546545 ("block: move
+drain outside of bdrv_root_unref_child()") my reproducer above produces a
+deadlock similar to what we had in [1].  And after commit b13f546545 is
+applied, we get the crash.
+
+Attached is a naive fix which simply eliminates global draining (i.e. draining
+of all the block graph) in problematic codepaths.  While global draining might
+indeed be redundant there, the real problem, i.e. the race, still remains.
+
+Any comments and suggestions are welcomed.  Thanks!
+
+[0] https://lore.kernel.org/qemu-devel/20250530151125.955508-1-f.ebner@proxmox.com/
+[1] https://lore.kernel.org/qemu-devel/73839c04-7616-407e-b057-80ca69e63f51@virtuozzo.com/
+
+Andrey Drobyshev (1):
+  block: avoid global drain on graph subtrees manipulation
+
+ block.c               |  8 +++++++-
+ block/block-backend.c | 11 ++++++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+
+-- 
+2.43.5
 
 
