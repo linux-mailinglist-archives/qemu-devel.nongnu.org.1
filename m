@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6323C52908
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 14:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDCDC528C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 14:50:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJBGo-0002k5-TT; Wed, 12 Nov 2025 08:52:23 -0500
+	id 1vJBEI-0007Hw-KJ; Wed, 12 Nov 2025 08:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7b-0004Ib-Sm
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:53 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7i-0004LC-Vi
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:43:00 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7a-0001PX-F5
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:51 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-42b3377aaf2so503941f8f.2
- for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 05:42:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7h-0001Qf-CE
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:58 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4777a9aeedaso7707715e9.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 05:42:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762954969; x=1763559769; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762954976; x=1763559776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+FKtjjNLglLvZKO2jnLzMl6gZsHlOg0FzPTza935NrQ=;
- b=Mhf4m2aqs3yszqewGtCnGGJ0V2BJl3o80Zp+X1JPYhkGQhy6krI5wJlfKMfEDQn28y
- ibrfCm4/RWarUjy3RkIRqE7dGrGUKUrH5RniAav6RQLu0Dc4qEPdvnof2mDQodtuyLn3
- bu36gIX1eZgbq2dMSBCeAofxxMwQYnJSjNXAemPCddgxrSTQHeuLEDsPEw3PEW0VQIA4
- AyGk4IglBy3OUZjnWIIk56xkILhdYQapJuJDth3mTEpkZyy9nPdgKl2f9OM8wcJaAdFl
- 9HwN45p3B+2DMiQibvWSaKU0xzsbHy1JhtrIGFgL377B0M3oNmnwirIlu73otq20n3fZ
- ys9g==
+ bh=OJZy/Fy5K9acciKNQyPK4u1aveLBTjzoIj3j8wI0EAM=;
+ b=vXC73oQXX7AgRpit8PkFJJFOZX+BqOEWhpiA3cldOMQ+NGWwUtGitm1M49TBSHoXQx
+ qD000oYdDOtYBoiKIurkpn75S9rY1bbA38XMgGsSdPhyFP9QPbx4rFgUlwEc9lx2pJ96
+ bj0BoYGLNhx6/4IRrRMTd1i8kylqh6uows1uoWQt0LxvbShRs4R9mC/YpTsOunVzBkJ6
+ SiZMFV6pp/8xtQA8LDM8AdxzizrVAflRLD1sCaeNPvqHGuGsK2Hk6JeTd2xp5XgPFjuF
+ R5J0+JPTbtuE+Xe0S0ag44S0XxKXlJriC7i2A2SdvD0u2pMDRW0+iLgikSj5szlTtOSB
+ ZZ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762954969; x=1763559769;
+ d=1e100.net; s=20230601; t=1762954976; x=1763559776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=+FKtjjNLglLvZKO2jnLzMl6gZsHlOg0FzPTza935NrQ=;
- b=FUUGX1Zv3ET9XPhlyr8y2SnynG+LZIZ7Y6yhXY7f/vitUSjiCuxbRIjBdB4FuhjxbB
- rGreXhd2tMEWfRWZ8Z96V6QdM9sjZ625nlqcMwhVbW+loBrs/g5c1KDkxKOojxKrhE+7
- HtCBVuhDsbgH2mrbHtGULkJiNQwzObVesWM69Ir4jTMepRgEUImyutvQotk8NaDKfATT
- hWmpqy0s41B7ZhPdAcA12YQPhfAxNk4pae6q81VJEpiMr0v7PvG/bCBMUsxbeKf+fBaj
- EwAZfOmFZD6OfyzJkvpxLL8MvF3hshV1eMSKCpOjpdG9m94QeUPdw0QSeokb+GIXvZ9D
- HStA==
-X-Gm-Message-State: AOJu0YzzIXiZTkh4+gemOyapwtqSnqWsdJaAe8QmENL1eO3gL0GqXxdl
- ZPEeVlJ5sbzGoCc8FAam4BT8m4bXR7wFwTiJynjPd87m1F3LcCE0KwjoKOvc+qKLdp+suD0oNT8
- SJE7BZItDCA==
-X-Gm-Gg: ASbGncsL5VtA+aALb7kJvxS58pMHWwTSmEIQ2sns5e4/y9J29G8qfiB3770XypIyHqE
- QG45BJBDWMq1kJHhccfn/LBgGyLDhFmkQER1tbGoBwLjrLaVtPOGWLexkeFc+FKlJLuEVIOVj65
- E7Wul/OEL6jzK55ai73ZVJCNx7ZpSieHQw7XxCWAWR0pu3q3jvjRazM/Gt170Pl9YzBd1i35y+6
- qNzuhTU2pcNNZRQU+RLoVJt4GcDzdqh0yqLrLORmQB14oZB3lYxCjQ13W4TVCrUEJJy7qKMt1Gd
- +OPEhgRZnOmOioUEJzjfDQaNd/X33++YgINJYhpR+F1Iu+3FL9HVENfPOnn2zkj7W+GKd2SACqd
- qBvMOJPJJr/p1qW9C3wUh0ASNEbxL+gz6AazavWr8Ea4sSn/chuTjdvgT3cUHDCb3mY/fQ2j4zU
- jf6csw6+xI/Zlra6vPRX/Fkxk+1uL/uG1HF2f9Y9og6Bba6rXk0kl/MJc=
-X-Google-Smtp-Source: AGHT+IE6U1v+SxSpbcd7fRn/IKD99tBQOXOF7AIL563l2AwmeycAM8BBAUsouxCh8B0yHer2RLgpKA==
-X-Received: by 2002:a05:6000:2f82:b0:42b:2fc8:186 with SMTP id
- ffacd0b85a97d-42b4bdb7e9dmr2826173f8f.46.1762954968588; 
- Wed, 12 Nov 2025 05:42:48 -0800 (PST)
+ bh=OJZy/Fy5K9acciKNQyPK4u1aveLBTjzoIj3j8wI0EAM=;
+ b=mogWRsLjhB5gRr+NG7OXVnKmdZSk4UdlPxl2hV2kW0x/z6qtCUcgOVpka3tkZIzZS4
+ Wo5KILv12f3yxn3aW0iPIIEVwgvfznFk38qHR/ZcvMha6GJ3HHQiZ8DC5elIRZSCs0zk
+ R5XfysNbyzHDn3z9W+0eeyXFtL3g8GB+JK/H+bzeBXYRIcnJxz5lUMAFVmpXrckRFscg
+ JhHHkDK5msHY4lZnGNoGyXWNc6+K5+2v8bwHji2iohEuTwxU5+K797LUXI3UCe0s+imw
+ p+Z7DMu5N33rK89pc2ZwSEVghS8B5TTjowjyKPwyI197u9NlaKjO+RSgW73w1+vVvdnN
+ ZB5g==
+X-Gm-Message-State: AOJu0YxYWpyt4aktq4jRjElvSaTMb4dMbqJYOHfxas0LQulIrdk718kp
+ +I/dxEjlZ8DJKZRybKFQKMtblrTTWWXr+HD4mLoE0RLA4TVVs/8KjDVOTzk4bvZsH5AeLUyxvwE
+ usyA3yv2Ofg==
+X-Gm-Gg: ASbGncvVXXp7fC30kqUYU3TIAbWNK3fxsR5Q0uYxEAaPc5kAOD+lXcLoJXWhtr8ndce
+ 8rJq9va5lbWcthznh7FdUO3fb62PPNaJB/46aYPjuZBg2Cw3hR1tAOI6Z4/5oMtGMusd8zmWbvy
+ 5reTCypIAfgQtkExNJ2Iui+tLiEBc7MnmLmC1zaQFsLyXgCiv3UhJBHM5MHgbp1cp/lu28tL+z0
+ /WdTlhISQuq81TKwxHcH2Hm6qJ1Yej46mhOz4NDRo5RyL7/ZlWbecZ+/ThKg9zsDkDK0LO+vUt+
+ 2vJ51yykeMr8J7u+S9UC7ywkLVYXCN0A0ZpMRqoGJHovj55vnZkeCJu0p16PcWIIIwuoCQq1fPt
+ DkCiVxSO6e3gXZC5ZytS08AfdZqeE/9nmdkmLi+gSlnsKaZndqaiPaIsA5yOEP5dZuuOM0axg81
+ 72YuQP7GsTQBAiZg2+wkyUfUsoZGYicKUlWmPOZCB3si+2+mvDwaoXqg4=
+X-Google-Smtp-Source: AGHT+IEeyCCm2DEr0whAopnPgp8P83v70oyTslSXpqcj70WqAfDUouBOEFLMk66oGBSnbRIanNetIA==
+X-Received: by 2002:a05:600c:45c4:b0:475:dd59:d8da with SMTP id
+ 5b1f17b1804b1-477870c9a4bmr26406015e9.40.1762954975616; 
+ Wed, 12 Nov 2025 05:42:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b2e052f32sm27479368f8f.17.2025.11.12.05.42.47
+ 5b1f17b1804b1-47788a59190sm14282065e9.3.2025.11.12.05.42.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Nov 2025 05:42:48 -0800 (PST)
+ Wed, 12 Nov 2025 05:42:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org
-Subject: [PATCH v3 09/10] hw/char: Simplify when qemu_chr_fe_write() could not
- write
-Date: Wed, 12 Nov 2025 14:41:42 +0100
-Message-ID: <20251112134143.27194-10-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 10/10] system/replay: Rename some method parameters
+Date: Wed, 12 Nov 2025 14:41:43 +0100
+Message-ID: <20251112134143.27194-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112134143.27194-1-philmd@linaro.org>
 References: <20251112134143.27194-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,55 +102,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If no chars were written, avoid to access the FIFO.
+replay_char_read_all_save_error() saves %errno, so rename as @errcode,
+replay_char_write_event_save() saves the number of bytes written, so
+rename as @nbytes (same for replay_char_write_event_load).
+
+Use the forward declaration in both replay_register_char_driver() and
+replay_chr_be_write() declarations, matching their definitions.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/char/cadence_uart.c | 2 +-
- hw/char/ibex_uart.c    | 2 +-
- hw/char/sifive_uart.c  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/system/replay.h | 16 ++++++++--------
+ replay/replay-char.c    | 14 +++++++-------
+ stubs/replay-tools.c    | 10 +++++-----
+ 3 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/hw/char/cadence_uart.c b/hw/char/cadence_uart.c
-index 0dfa356b6d0..8908ebbe34a 100644
---- a/hw/char/cadence_uart.c
-+++ b/hw/char/cadence_uart.c
-@@ -316,7 +316,7 @@ static gboolean cadence_uart_xmit(void *do_not_use, GIOCondition cond,
+diff --git a/include/system/replay.h b/include/system/replay.h
+index 68f91bdfbf2..56d2aebac7f 100644
+--- a/include/system/replay.h
++++ b/include/system/replay.h
+@@ -136,18 +136,18 @@ uint64_t blkreplay_next_id(void);
  
-     ret = qemu_chr_fe_write(&s->chr, s->tx_fifo, s->tx_count);
+ /* Character device */
  
--    if (ret >= 0) {
-+    if (ret > 0) {
-         s->tx_count -= ret;
-         memmove(s->tx_fifo, s->tx_fifo + ret, s->tx_count);
+-/*! Registers char driver to save it's events */
+-void replay_register_char_driver(struct Chardev *chr);
+-/*! Saves write to char device event to the log */
+-void replay_chr_be_write(struct Chardev *s, const uint8_t *buf, int len);
++/*! Registers @chr char driver to save it's events */
++void replay_register_char_driver(Chardev *chr);
++/*! Saves write to char device @s event to the log */
++void replay_chr_be_write(Chardev *s, const uint8_t *buf, int len);
+ /*! Writes char write return value to the replay log. */
+-void replay_char_write_event_save(int res, int offset);
++void replay_char_write_event_save(int nbytes, int offset);
+ /*! Reads char write return value from the replay log. */
+-void replay_char_write_event_load(int *res, int *offset);
++void replay_char_write_event_load(int *nbytes, int *offset);
+ /*! Reads information about read_all character event. */
+ int replay_char_read_all_load(uint8_t *buf);
+-/*! Writes character read_all error code into the replay log. */
+-void replay_char_read_all_save_error(int res);
++/*! Writes character read_all error code @errcode into the replay log. */
++void replay_char_read_all_save_error(int errcode);
+ /*! Writes character read_all execution result into the replay log. */
+ void replay_char_read_all_save_buf(uint8_t *buf, int offset);
+ 
+diff --git a/replay/replay-char.c b/replay/replay-char.c
+index 81dc416e988..023159b155f 100644
+--- a/replay/replay-char.c
++++ b/replay/replay-char.c
+@@ -93,23 +93,23 @@ void *replay_event_char_read_load(void)
+     return event;
+ }
+ 
+-void replay_char_write_event_save(int res, int offset)
++void replay_char_write_event_save(int nbytes, int offset)
+ {
+     g_assert(replay_mutex_locked());
+ 
+     replay_save_instructions();
+     replay_put_event(EVENT_CHAR_WRITE);
+-    replay_put_dword(res);
++    replay_put_dword(nbytes);
+     replay_put_dword(offset);
+ }
+ 
+-void replay_char_write_event_load(int *res, int *offset)
++void replay_char_write_event_load(int *nbytes, int *offset)
+ {
+     g_assert(replay_mutex_locked());
+ 
+     replay_account_executed_instructions();
+     if (replay_next_event_is(EVENT_CHAR_WRITE)) {
+-        *res = replay_get_dword();
++        *nbytes = replay_get_dword();
+         *offset = replay_get_dword();
+         replay_finish_event();
+     } else {
+@@ -138,13 +138,13 @@ int replay_char_read_all_load(uint8_t *buf)
      }
-diff --git a/hw/char/ibex_uart.c b/hw/char/ibex_uart.c
-index d6f0d18c777..b7843c7a741 100644
---- a/hw/char/ibex_uart.c
-+++ b/hw/char/ibex_uart.c
-@@ -161,7 +161,7 @@ static gboolean ibex_uart_xmit(void *do_not_use, GIOCondition cond,
+ }
  
-     ret = qemu_chr_fe_write(&s->chr, s->tx_fifo, s->tx_level);
+-void replay_char_read_all_save_error(int res)
++void replay_char_read_all_save_error(int errcode)
+ {
+     g_assert(replay_mutex_locked());
+-    assert(res < 0);
++    assert(errcode < 0);
+     replay_save_instructions();
+     replay_put_event(EVENT_CHAR_READ_ALL_ERROR);
+-    replay_put_dword(res);
++    replay_put_dword(errcode);
+ }
  
--    if (ret >= 0) {
-+    if (ret > 0) {
-         s->tx_level -= ret;
-         memmove(s->tx_fifo, s->tx_fifo + ret, s->tx_level);
-     }
-diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index e7357d585a1..e5b381425a9 100644
---- a/hw/char/sifive_uart.c
-+++ b/hw/char/sifive_uart.c
-@@ -83,7 +83,7 @@ static gboolean sifive_uart_xmit(void *do_not_use, GIOCondition cond,
-                                    fifo8_num_used(&s->tx_fifo), &numptr);
-     ret = qemu_chr_fe_write(&s->chr, characters, numptr);
+ void replay_char_read_all_save_buf(uint8_t *buf, int offset)
+diff --git a/stubs/replay-tools.c b/stubs/replay-tools.c
+index c537485f401..df21475cec5 100644
+--- a/stubs/replay-tools.c
++++ b/stubs/replay-tools.c
+@@ -49,21 +49,21 @@ void replay_mutex_unlock(void)
+ {
+ }
  
--    if (ret >= 0) {
-+    if (ret > 0) {
-         /* We wrote the data, actually pop the fifo */
-         fifo8_pop_bufptr(&s->tx_fifo, ret, NULL);
-     }
+-void replay_register_char_driver(struct Chardev *chr)
++void replay_register_char_driver(Chardev *chr)
+ {
+ }
+ 
+-void replay_chr_be_write(struct Chardev *s, const uint8_t *buf, int len)
++void replay_chr_be_write(Chardev *s, const uint8_t *buf, int len)
+ {
+     abort();
+ }
+ 
+-void replay_char_write_event_save(int res, int offset)
++void replay_char_write_event_save(int nbytes, int offset)
+ {
+     abort();
+ }
+ 
+-void replay_char_write_event_load(int *res, int *offset)
++void replay_char_write_event_load(int *nbytes, int *offset)
+ {
+     abort();
+ }
+@@ -73,7 +73,7 @@ int replay_char_read_all_load(uint8_t *buf)
+     abort();
+ }
+ 
+-void replay_char_read_all_save_error(int res)
++void replay_char_read_all_save_error(int errcode)
+ {
+     abort();
+ }
 -- 
 2.51.0
 
