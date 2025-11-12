@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69943C5066A
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B69DFC5064C
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:07:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1Bp-0000cV-AS; Tue, 11 Nov 2025 22:06:33 -0500
+	id 1vJ1Br-0000es-Dh; Tue, 11 Nov 2025 22:06:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Bm-0000Zx-2A; Tue, 11 Nov 2025 22:06:30 -0500
+ id 1vJ1Bo-0000cr-WD; Tue, 11 Nov 2025 22:06:33 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Bk-0003zx-4M; Tue, 11 Nov 2025 22:06:29 -0500
+ id 1vJ1Bn-0003zx-Bi; Tue, 11 Nov 2025 22:06:32 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 12 Nov
- 2025 11:05:55 +0800
+ 2025 11:05:56 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
  Transport; Wed, 12 Nov 2025 11:05:55 +0800
@@ -32,10 +32,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 07/12] hw/arm/aspeed_ast10x0: Pass SoC name to common init
- for AST10x0 family reuse
-Date: Wed, 12 Nov 2025 11:05:44 +0800
-Message-ID: <20251112030553.291734-8-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 08/12] hw/arm/aspeed_ast10x0: Add AST1060 SoC support
+Date: Wed, 12 Nov 2025 11:05:45 +0800
+Message-ID: <20251112030553.291734-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
 References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
@@ -67,58 +66,111 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor the AST10x0 common initialization to accept a socname
-parameter.
+Add initial support for the Aspeed AST1060 SoC. The AST1060 reuses most
+of the AST1030 peripheral device models, as the two SoCs share nearly
+the same controllers including WDT, SCU, TIMER, HACE, ADC, I2C, FMC,
+and SPI.
 
-The AST1030 model can be reused by AST1060 since they share most of the
-same controllers. This approach allows AST1060 to leverage the existing
-AST1030 initialization flow while keeping separate SoC-specific init
-functions for components that differ.
-
-This prepares the framework for AST1060 support, allowing it to reuse
-AST1030 device models and initialization flow without code duplication.
-
-No functional changes.
+A new common initialization and realization framework (ast10x0_init
+and ast10x0_realize) is leveraged so AST1060 can instantiate the
+existing AST1030 models without redefining duplicate device types.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast10x0.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ hw/arm/aspeed_ast10x0.c | 59 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
 
 diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index 5bbe16af24..1521000af0 100644
+index 1521000af0..bcfe83bdb7 100644
 --- a/hw/arm/aspeed_ast10x0.c
 +++ b/hw/arm/aspeed_ast10x0.c
-@@ -107,19 +107,14 @@ static qemu_irq aspeed_soc_ast1030_get_irq(AspeedSoCState *s, int dev)
-     return qdev_get_gpio_in(DEVICE(&a->armv7m), sc->irqmap[dev]);
- }
- 
--static void aspeed_soc_ast10x0_init(Object *obj)
-+static void aspeed_soc_ast10x0_init(Object *obj, const char *socname)
- {
-     Aspeed10x0SoCState *a = ASPEED10X0_SOC(obj);
-     AspeedSoCState *s = ASPEED_SOC(obj);
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
--    char socname[8];
-     char typename[64];
-     int i;
- 
--    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
--        g_assert_not_reached();
--    }
--
-     object_initialize_child(obj, "armv7m", &a->armv7m, TYPE_ARMV7M);
- 
-     s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-@@ -185,7 +180,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
- {
-     AspeedSoCState *s = ASPEED_SOC(obj);
- 
--    aspeed_soc_ast10x0_init(obj);
-+    aspeed_soc_ast10x0_init(obj, "ast1030");
-     object_initialize_child(obj, "lpc", &s->lpc, TYPE_ASPEED_LPC);
+@@ -185,6 +185,23 @@ static void aspeed_soc_ast1030_init(Object *obj)
      object_initialize_child(obj, "peci", &s->peci, TYPE_ASPEED_PECI);
  }
+ 
++static void aspeed_soc_ast1060_init(Object *obj)
++{
++    /*
++     * The AST1060 SoC reuses the AST1030 device models. Since all peripheral
++     * models (e.g. WDT, SCU, TIMER, HACE, ADC, I2C, FMC, SPI) defined for
++     * AST1030 are compatible with AST1060, we simply reuse the existing
++     * AST1030 models for AST1060.
++     *
++     * To simplify the implementation, AST1060 sets its socname to that of
++     * AST1030, avoiding the need to create a full set of new
++     * TYPE_ASPEED_1060_XXX device definitions. This allows the same
++     * TYPE_ASPEED_1030_WDT and other models to be instantiated for both
++     * SoCs.
++     */
++    aspeed_soc_ast10x0_init(obj, "ast1030");
++}
++
+ static bool aspeed_soc_ast10x0_realize(Aspeed10x0SoCState *a, Error **errp)
+ {
+     AspeedSoCState *s = ASPEED_SOC(a);
+@@ -451,6 +468,15 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+                                 sc->irqmap[ASPEED_DEV_KCS] + aspeed_lpc_kcs_4));
+ }
+ 
++static void aspeed_soc_ast1060_realize(DeviceState *dev_soc, Error **errp)
++{
++    Aspeed10x0SoCState *a = ASPEED10X0_SOC(dev_soc);
++
++    if (!aspeed_soc_ast10x0_realize(a, errp)) {
++        return;
++    }
++}
++
+ static void aspeed_soc_ast1030_class_init(ObjectClass *klass, const void *data)
+ {
+     static const char * const valid_cpu_types[] = {
+@@ -479,6 +505,32 @@ static void aspeed_soc_ast1030_class_init(ObjectClass *klass, const void *data)
+     sc->num_cpus = 1;
+ }
+ 
++static void aspeed_soc_ast1060_class_init(ObjectClass *klass, const void *data)
++{
++    static const char * const valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-m4"), /* TODO cortex-m4f */
++        NULL
++    };
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedSoCClass *sc = ASPEED_SOC_CLASS(dc);
++
++    /* Reason: The Aspeed SoC can only be instantiated from a board */
++    dc->user_creatable = false;
++    dc->realize = aspeed_soc_ast1060_realize;
++
++    sc->valid_cpu_types = valid_cpu_types;
++    sc->silicon_rev = AST1060_A2_SILICON_REV;
++    sc->sram_size = 0xc0000;
++    sc->secsram_size = 0x40000; /* 256 * KiB */
++    sc->spis_num = 2;
++    sc->wdts_num = 4;
++    sc->uarts_num = 1;
++    sc->uarts_base = ASPEED_DEV_UART5;
++    sc->irqmap = aspeed_soc_ast1030_irqmap;
++    sc->memmap = aspeed_soc_ast1030_memmap;
++    sc->num_cpus = 1;
++}
++
+ static const TypeInfo aspeed_soc_ast10x0_types[] = {
+     {
+         .name           = TYPE_ASPEED10X0_SOC,
+@@ -490,7 +542,12 @@ static const TypeInfo aspeed_soc_ast10x0_types[] = {
+         .parent         = TYPE_ASPEED10X0_SOC,
+         .instance_init  = aspeed_soc_ast1030_init,
+         .class_init     = aspeed_soc_ast1030_class_init,
+-    },
++    }, {
++        .name           = "ast1060-a2",
++        .parent         = TYPE_ASPEED10X0_SOC,
++        .instance_init  = aspeed_soc_ast1060_init,
++        .class_init     = aspeed_soc_ast1060_class_init,
++    }
+ };
+ 
+ DEFINE_TYPES(aspeed_soc_ast10x0_types)
 -- 
 2.43.0
 
