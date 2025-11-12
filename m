@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7B9C5204E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 12:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA1C5210E
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 12:48:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ99o-0007wH-Gm; Wed, 12 Nov 2025 06:37:00 -0500
+	id 1vJ9Jf-00038t-Kj; Wed, 12 Nov 2025 06:47:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJ99d-0007tJ-F6
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 06:36:51 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJ9Fv-0001g9-1j
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 06:43:23 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJ99a-0005Mr-SS
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 06:36:48 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-42b379cd896so419679f8f.3
- for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 03:36:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJ9Ft-0006KD-9z
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 06:43:18 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-429c8632fcbso502669f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 03:43:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762947404; x=1763552204; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762947794; x=1763552594; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PuGEPMinRsSyf4OT/Ys7EFDIRyoLAeqt1kZN6UzuH14=;
- b=Nx2kTKLeVJ7COdsNqSon1Rc/32e0ia9uvbbC9C2vTPdKhIR38j87gnMmivWsEo5kSJ
- 8USZ6kLPDVtH+5GFyOw86qoicEyvdAFyY7bBJDfwy/PbSTzGB6vvCIOu+z+jUk8AQ1mu
- v57CP56Mu7g5P1J5UhDA09MkVGpbs1s2Yv2MCQdyi2lEOPPYq+j0NVcO8GkamlEnWjNy
- 3DYh9a7elAEULkD48sRYFglK+QUrK+3ZpVqpDJ9dMdgpJhIqxa9W5QCv7nRx5HNjAOdv
- SSrtCx4/gn/gTRo/TOhVUdEv2qe5jNZ5Z1mIoSTYa0T/4OfKFBg7RQerHdJ3bvT+VXSW
- biEg==
+ bh=oWt08JfmC5I/RW9AlFNFSUsZ57Ypm4q+BxEH35MpBec=;
+ b=HlZwrFcY5/HqqjUQxPC6UzBkE1JoebY+6+Lin2i6yQr1CEa8n97xFzbAJFzQ7eHI0k
+ XdW6r5DjGlfnlQIZSs7Ht2dpiHvZ3aUyKT8/yXpXxlyhyhYjWtkgFAJ65rJ90Vcul1C2
+ KvXs/ilTSklYWBo3z8xqgvZMX9AKVnGRmn153BsKbrFoXvYQIBE4SOy0pmO+oaencXG3
+ tB/wtmRgXx55HGDrX4wjQN1k7Q1z8BlWFCuijYQwXZNvKAfFgSsUa8VlpG/R4ulvBY4s
+ zDWfKW2abKhFSkloSjwf5NlBLGiaxQEnpleGXRqF5UjrkLVQoRAIwTCWUMxoHmM2D4Ag
+ ueRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762947404; x=1763552204;
+ d=1e100.net; s=20230601; t=1762947794; x=1763552594;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=PuGEPMinRsSyf4OT/Ys7EFDIRyoLAeqt1kZN6UzuH14=;
- b=uQ4sTgZrPNZwP/hKFzgyCCPEhCdESrIDFXVuyUz2st/qrhhZILCqpZtrDEqsPtz+ba
- sS3p9NEqJUTPPlinn/CBN9x2BEPWE9CJmBA8EEzAITOU6J+IlmqGX8lG1s1se1J8HcAQ
- riK3tyOIf2wxuoycyLIMv4oDCFD4524B5Hir8f7yE5jFv6uBoymDh0FSK+3D1oPqyxSH
- AoFX+BtViTmq7JIUb9haQan32OwH++NMBxdYNI6B+313SD47kZsiJP5sR5mHqOMv81RM
- rM5p2ZBrWeVAGKBhSWsWL386qBB7dvPrVUMy95XBnEWN0xd7cnOBA8P0Ht9okdXtY/Op
- YfMA==
+ bh=oWt08JfmC5I/RW9AlFNFSUsZ57Ypm4q+BxEH35MpBec=;
+ b=bV/qPBKqmDKXsI437CesTiP4CWq1LnLU8W/pQdGAM6nbvx/6pbX5p/2Yv7kquUKsiq
+ PEf5A2mCdkyI5tNhK0UAnsI+I0RxvHbS4ZNofCahBPlNqOstaUJZjTzzb4laFfb/fFTh
+ Fg+Cc0VpSS/bxV9X6cLEaZrVRJHwdxoAGPqVejJDteolXOFXJh9XA4oyWNq/xbpWJral
+ Avdt0F+W8p1R9DK55sKFnYcMqfXwej/wR39/eYZiiEIEss6aFOalVKcTCgFXIUd6YP4Z
+ 3vRgBbwQnUeW5/dnwqu7qPvkzGaa6TmLykCSJ4WBa4xZ0yLsDW4wM2DfoaKPbT2E8jra
+ mkDg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWKZ3H44qDHviQvovDFbXrl5l2JOdIng44oeQoiJgbsqmhbBBnIYD60bQ3qLVd90FX9ivNw17FBH0Gw@nongnu.org
-X-Gm-Message-State: AOJu0Yzxf0rS4tjKMN36Bf5QR/R5MVACe2YwHw2v1ImNKzPTGS/R5NJx
- Rp3dYPE51g2udF0ieyCGVZYF0q1XFSWdKqrB7WWFDkMaGtEZ4kDRSHBEE8ktiCFSBaM=
-X-Gm-Gg: ASbGncs3gEpcD2nfgsbvme8BsLLILp0QEk31BpjRHvH1lq9MsyjVzAP9yeICETn9FFH
- CLKOIIk4XErO7wYMl+mNJ35alGRc5P11sH5VJsS6Pwj4GW8AF6l6xAH3JpR8BCGPPJHVcdttsTN
- lxjhsByBI6Yljzr9tbG2Iyn7X3AVQ97tgjkwun9TE4S0w27xsXsQn/fHQVrJNpvGsYbKGrShIgg
- ltTzkKtsqY1c4sJY/0NjRo3gRFAeonaJKYyDTwA9pL22rXFlqSDc2cx8HxhYtIaAMLUFCDJr+xW
- UJChVDSdZrYzHiXIlsvPFHvHUA+a0vt+XIu312WhImqPpCHsm/jMR6OStj/rdZVHhFyr89FbTKp
- NQ3lPrr3pHwaS+cwXaS/2mZz6dhrMn2dqt2jgWjplAXbjSS9WxNwZNm6F0rPn44yNQwuKE/+1lw
- ERSlbdZLxN0okk9/nSpShM+udD0dYTDta2ZpUJ+wmYuCs=
-X-Google-Smtp-Source: AGHT+IGywUWY9ZzcscGVB2M4Ev8AaZQT8Lvp4W8LnHNx9cHUSJ+Lf2fBIbBFij/2ttFKNT4meBeKSw==
-X-Received: by 2002:a05:6000:2892:b0:429:c774:dc08 with SMTP id
- ffacd0b85a97d-42b4bdd3e92mr2634479f8f.53.1762947404524; 
- Wed, 12 Nov 2025 03:36:44 -0800 (PST)
+ AJvYcCXfaUqYooE5hlFbFx3D4iwo/u4EW+Oh2DeoNCXT9rE3FybCbli1bKW2WRtTNtKm7UpiF6+T1IwFu/8w@nongnu.org
+X-Gm-Message-State: AOJu0YwBsoALemMl57TpK3En4d3Zj/lQQY3btpW0RaBeRCdbOcWO02Pc
+ Sj6+oba+Wm2x5bOM3QvckFVwBKnl55/6C05wTlhR+fvJ00svOBdf/cHk9xsDdFZv4p0=
+X-Gm-Gg: ASbGncv3X5B0xnEKD+CsEDtApN3JUtZuJGeA6cfdELRt4s5OHtPqjDmPeFb0vU6KDI7
+ iBYTS5yJG8SDr4iXa92wu4gUkMRk0+YvoQ4PBPU7DW+9Cuw7ANLar5VAO88mu2R2J6hfCuVUTfh
+ ESuHbu5w8no6cd+oJaQBheL/a+J/pb3fJJzu91rZr2boyuaht78P/lJh4UOfl0vRhKVoKkaSgRD
+ jUq0UV2srHvmsyzpDRGq2HDchBCJTPA2r5kcv8PwxntLTx8eOxD4bLCmewKDF1xUvJpgsfOIslt
+ StEWSuI8Ax+ZNK7NXYRgMoh9tpQUOPmYrLywHVsvIgYljHz24fb2KKL59vDMyo+AunqgFu1OMF+
+ rFYBw6zz/2vCl54f4xGX4xy1AT94c7DfyEW2KFDLTVozqjw6VNursYzZKYU3Fu6ERbje6JB08+r
+ UsIvva7Q3yoay2iP2k2R2nccA43S8wFMSv0LK6O7xge8M=
+X-Google-Smtp-Source: AGHT+IHZtKBQ+vYyvg8Fd2aXKpmHtHipyc8Ym8h2Du7RgBbIHEGZoQmAG0GW3SHtZOlSAOoTnUhlDg==
+X-Received: by 2002:a05:6000:1849:b0:42b:3806:2ba0 with SMTP id
+ ffacd0b85a97d-42b4bb89b8amr2103888f8f.2.1762947794430; 
+ Wed, 12 Nov 2025 03:43:14 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42ac677ab75sm32506552f8f.35.2025.11.12.03.36.43
+ ffacd0b85a97d-42b314dae4bsm23976837f8f.34.2025.11.12.03.43.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Nov 2025 03:36:44 -0800 (PST)
-Message-ID: <f2c596fe-292c-4b82-a332-1087c1c61732@linaro.org>
-Date: Wed, 12 Nov 2025 12:36:43 +0100
+ Wed, 12 Nov 2025 03:43:13 -0800 (PST)
+Message-ID: <b189d246-74b2-4382-b0b9-8121caf713a5@linaro.org>
+Date: Wed, 12 Nov 2025 12:43:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/15] hw/misc: Add Beckhoff CCAT device
+Subject: Re: [PATCH v4 13/15] hw/arm: Add new machine based on xilinx-zynq-a9
+ for Beckhoff CX7200
 Content-Language: en-US
 To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>,
  qemu-devel@nongnu.org
@@ -79,20 +80,20 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org, =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Kevin Wolf <kwolf@redhat.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 References: <20251111102836.212535-1-corvin.koehne@gmail.com>
- <20251111102836.212535-12-corvin.koehne@gmail.com>
+ <20251111102836.212535-14-corvin.koehne@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251111102836.212535-12-corvin.koehne@gmail.com>
+In-Reply-To: <20251111102836.212535-14-corvin.koehne@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,46 +109,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Yannick, Corvin,
+
 On 11/11/25 11:28, Corvin Köhne wrote:
 > From: YannickV <Y.Vossen@beckhoff.com>
 > 
-> This adds the Beckhoff Communication Controller (CCAT). The information
-> block, EEPROM interface and DMA controller are currently  implemented.
-> 
-> The EEPROM provides production information for Beckhoff Devices.
-> An EEPORM binary must therefor be handed over. It should be aligned to
-> a power of two. If no EEPROM binary is handed over an empty EEPROM of
-> size 4096 is initialized.
-> 
-> This device is needed for the Beckhoff CX7200 board emulation.
+> This commit introduces a new machine, derived from xilinx-zynq-a9.
+> While retaining the foundational architecture, unnecessary peripherals
+> have been removed and the remaining peripherals have been adapted to
+> match the CX7200's hardware layout and behavior.
 > 
 > Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
 > ---
->   hw/misc/Kconfig         |   3 +
->   hw/misc/beckhoff_ccat.c | 338 ++++++++++++++++++++++++++++++++++++++++
->   hw/misc/meson.build     |   1 +
->   3 files changed, 342 insertions(+)
->   create mode 100644 hw/misc/beckhoff_ccat.c
+>   hw/arm/Kconfig           |  18 ++
+>   hw/arm/beckhoff_CX7200.c | 443 +++++++++++++++++++++++++++++++++++++++
+>   hw/arm/meson.build       |   1 +
+>   3 files changed, 462 insertions(+)
+>   create mode 100644 hw/arm/beckhoff_CX7200.c
 
 
-> +#define TYPE_BECKHOFF_CCAT "beckhoff-ccat"
-> +OBJECT_DECLARE_SIMPLE_TYPE(BeckhoffCcat, BECKHOFF_CCAT)
+> +static void beckhoff_cx7200_init(MachineState *machine)
+> +{
+> +    CX7200MachineState *cx7200_machine = CX7200_MACHINE(machine);
+
+[...]
+
+> +    n = beckhoff_cx7200_init_spi_flashes(0xE0006000, pic[58 - IRQ_OFFSET],
+> +                                         false, 0);
+> +    n = beckhoff_cx7200_init_spi_flashes(0xE0007000, pic[81 - IRQ_OFFSET],
+> +                                         false, n);
+> +    n = beckhoff_cx7200_init_spi_flashes(0xE000D000, pic[51 - IRQ_OFFSET],
+> +                                         true, n);
+
+[...]
+
+> +    beckhoff_cx7200_binfo.ram_size = machine->ram_size;
+> +    beckhoff_cx7200_binfo.board_id = 0xd32;
+> +    beckhoff_cx7200_binfo.loader_start = 0;
+> +    beckhoff_cx7200_binfo.board_setup_addr = BOARD_SETUP_ADDR;
+> +    beckhoff_cx7200_binfo.write_board_setup = beckhoff_cx7200_write_board_setup;
 > +
-> +#define MAX_NUM_SLOTS 32
-> +#define CCAT_FUNCTION_BLOCK_SIZE 16
+> +    arm_load_kernel(cx7200_machine->cpu[0], machine, &beckhoff_cx7200_binfo);
+> +}
 > +
-> +#define CCAT_EEPROM_OFFSET 0x100
-> +#define CCAT_DMA_OFFSET 0x8000
+> +static void beckhoff_cx7200_machine_class_init(ObjectClass *oc, void *data)
+> +{
+
+> +    mc->desc = "Beckhoff IPC based on the Xilinx Zynq Platform Baseboard";
+
+
+> +    prop = object_class_property_add_str(oc, "boot-mode", NULL,
+> +                                         beckhoff_cx7200_set_boot_mode);
+> +    object_class_property_set_description(oc, "boot-mode",
+> +                                          "Supported boot modes:"
+> +                                          " jtag qspi sd nor");
+> +    object_property_set_default_str(prop, "qspi");
+> +}
 > +
-> +#define CCAT_MEM_SIZE 0xFFFF
+> +static const TypeInfo beckhoff_cx7200_machine_type = {
+> +    .name = TYPE_CX7200_MACHINE,
 
-Likely
+A lot of code is duplicated from hw/arm/xilinx_zynq.c; this does not
+sounds right. Can't you have your machine inherit from TYPE_ZYNQ_MACHINE
+and expand it in a .instance_init() handler?
 
-   #define CCAT_MEM_SIZE (64 * KiB)
+If this isn't possible, then we need to refactor hw/arm/xilinx_zynq.c:
+- extract TYPE_ZYNQ_SOC from TYPE_ZYNQ_MACHINE
+- have TYPE_CX7200_MACHINE use TYPE_ZYNQ_SOC
 
-> +#define CCAT_DMA_SIZE 0x800
-> +#define CCAT_EEPROM_SIZE 0x20
-> +
-> +#define EEPROM_MEMORY_SIZE 0x1000
+> +    .parent = TYPE_MACHINE,
+> +    .class_init = beckhoff_cx7200_machine_class_init,
+> +    .instance_size = sizeof(CX7200MachineState),
+> +};
+Regards,
 
+Phil.
 
