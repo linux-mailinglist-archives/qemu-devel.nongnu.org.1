@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0B3C53ABF
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 18:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C95C53ACC
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 18:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJEcT-0004Jg-So; Wed, 12 Nov 2025 12:26:58 -0500
+	id 1vJEcV-0004Ra-Bt; Wed, 12 Nov 2025 12:26:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEcJ-0004A4-II
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEcS-0004KJ-CO
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEcH-0008Vt-ND
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:47 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEcQ-00005B-Np
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762968404;
+ s=mimecast20190719; t=1762968414;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wU4kMqQfV+AEQohBciUU8g8KnovejMbuh/fHSF2mL+Y=;
- b=iAztpqt0n0roOeV04p6rJP/9xiWCrbq3Lb6qS0NX3Gjp1udA3fW8AxOgrFFLofwkD5iBI/
- V6kHaEKTPznli8N9GC4u6x8x3txHurGuAceIwAEdJ15hCmN1Cn94BKGxGkhL1QUSXdeK20
- BzVk3tRH5rb5xYcWYZ/e99lluAh2XYI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=gpQ6g4lQQ5zXT/C3953+ecyaMt0+I/6RfvHCR0v2aEI=;
+ b=TPbLmzEun+gMRYpdc2bS2iai6tJs55gzbrtmlx+/EkcISJA45aMGr1Kr7P20Vn4/Cofc/2
+ uAXf24821M1qB85A1XXk2ZIeeKA0JtYSjmgoOXE6qoIHoA35k7sXDQb50ic759QAa/mMbY
+ PilTgMvaopHb7ohbk5reLd48dy5jBbU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-539-qnfMjovTM9-VRRusosZKJg-1; Wed,
- 12 Nov 2025 12:26:41 -0500
-X-MC-Unique: qnfMjovTM9-VRRusosZKJg-1
-X-Mimecast-MFC-AGG-ID: qnfMjovTM9-VRRusosZKJg_1762968399
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-VvqoC5NUN5KerNVGQde9ow-1; Wed,
+ 12 Nov 2025 12:26:49 -0500
+X-MC-Unique: VvqoC5NUN5KerNVGQde9ow-1
+X-Mimecast-MFC-AGG-ID: VvqoC5NUN5KerNVGQde9ow_1762968408
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 924B918007F2; Wed, 12 Nov 2025 17:26:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0BA19195608A; Wed, 12 Nov 2025 17:26:48 +0000 (UTC)
 Received: from gshan-thinkpadx1nanogen2.rmtau.csb (unknown [10.64.136.14])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4858B196B8F6; Wed, 12 Nov 2025 17:26:30 +0000 (UTC)
+ id 5F9DD1955F1A; Wed, 12 Nov 2025 17:26:39 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
@@ -51,16 +51,17 @@ Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
  eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
  wangyanan55@huawei.com, zhao1.liu@intel.com, peter.maydell@linaro.org,
  pbonzini@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v4 4/8] tests/qtest/bios-tables-test: Update HEST table
-Date: Thu, 13 Nov 2025 03:25:31 +1000
-Message-ID: <20251112172535.403042-5-gshan@redhat.com>
+Subject: [PATCH v4 5/8] acpi/ghes: Extend acpi_ghes_memory_errors() for
+ multiple CPERs
+Date: Thu, 13 Nov 2025 03:25:32 +1000
+Message-ID: <20251112172535.403042-6-gshan@redhat.com>
 In-Reply-To: <20251112172535.403042-1-gshan@redhat.com>
 References: <20251112172535.403042-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,160 +86,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update HEST table since GHES raw data maximal length has been increased
-from 1KiB to 4KiB.
+In the situation where host and guest has 64KiB and 4KiB page sizes,
+one problematic host page affects 16 guest pages. we need to send 16
+consective errors in this specific case.
 
- /*
-  * Intel ACPI Component Architecture
-  * AML/ASL+ Disassembler version 20240322 (64-bit version)
-  * Copyright (c) 2000 - 2023 Intel Corporation
-  *
-- * Disassembly of tests/data/acpi/aarch64/virt/HEST
-+ * Disassembly of /tmp/aml-28KMF3
-  *
-  * ACPI Data Table [HEST]
-  *
-  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue (in hex)
-  */
-
- [000h 0000 004h]                   Signature : "HEST"    [Hardware Error Source Table]
- [004h 0004 004h]                Table Length : 000000E0
- [008h 0008 001h]                    Revision : 01
--[009h 0009 001h]                    Checksum : 6C
-+[009h 0009 001h]                    Checksum : 3C
- [00Ah 0010 006h]                      Oem ID : "BOCHS "
- [010h 0016 008h]                Oem Table ID : "BXPC    "
- [018h 0024 004h]                Oem Revision : 00000001
- [01Ch 0028 004h]             Asl Compiler ID : "BXPC"
- [020h 0032 004h]       Asl Compiler Revision : 00000001
-
- [024h 0036 004h]          Error Source Count : 00000002
-
- [028h 0040 002h]               Subtable Type : 000A [Generic Hardware Error Source V2]
- [02Ah 0042 002h]                   Source Id : 0000
- [02Ch 0044 002h]           Related Source Id : FFFF
- [02Eh 0046 001h]                    Reserved : 00
- [02Fh 0047 001h]                     Enabled : 01
- [030h 0048 004h]      Records To Preallocate : 00000001
- [034h 0052 004h]     Max Sections Per Record : 00000001
--[038h 0056 004h]         Max Raw Data Length : 00000400
-+[038h 0056 004h]         Max Raw Data Length : 00001000
-
- [03Ch 0060 00Ch]        Error Status Address : [Generic Address Structure]
- [03Ch 0060 001h]                    Space ID : 00 [SystemMemory]
- [03Dh 0061 001h]                   Bit Width : 40
- [03Eh 0062 001h]                  Bit Offset : 00
- [03Fh 0063 001h]        Encoded Access Width : 04 [QWord Access:64]
- [040h 0064 008h]                     Address : 0000000043DA0000
-
- [048h 0072 01Ch]                      Notify : [Hardware Error Notification Structure]
- [048h 0072 001h]                 Notify Type : 08 [SEA]
- [049h 0073 001h]               Notify Length : 1C
- [04Ah 0074 002h]  Configuration Write Enable : 0000
- [04Ch 0076 004h]                PollInterval : 00000000
- [050h 0080 004h]                      Vector : 00000000
- [054h 0084 004h]     Polling Threshold Value : 00000000
- [058h 0088 004h]    Polling Threshold Window : 00000000
- [05Ch 0092 004h]       Error Threshold Value : 00000000
- [060h 0096 004h]      Error Threshold Window : 00000000
-
--[064h 0100 004h]   Error Status Block Length : 00000400
-+[064h 0100 004h]   Error Status Block Length : 00001000
- [068h 0104 00Ch]           Read Ack Register : [Generic Address Structure]
- [068h 0104 001h]                    Space ID : 00 [SystemMemory]
- [069h 0105 001h]                   Bit Width : 40
- [06Ah 0106 001h]                  Bit Offset : 00
- [06Bh 0107 001h]        Encoded Access Width : 04 [QWord Access:64]
- [06Ch 0108 008h]                     Address : 0000000043DA0010
-
- [074h 0116 008h]           Read Ack Preserve : FFFFFFFFFFFFFFFE
- [07Ch 0124 008h]              Read Ack Write : 0000000000000001
-
- [084h 0132 002h]               Subtable Type : 000A [Generic Hardware Error Source V2]
- [086h 0134 002h]                   Source Id : 0001
- [088h 0136 002h]           Related Source Id : FFFF
- [08Ah 0138 001h]                    Reserved : 00
- [08Bh 0139 001h]                     Enabled : 01
- [08Ch 0140 004h]      Records To Preallocate : 00000001
- [090h 0144 004h]     Max Sections Per Record : 00000001
--[094h 0148 004h]         Max Raw Data Length : 00000400
-+[094h 0148 004h]         Max Raw Data Length : 00001000
-
- [098h 0152 00Ch]        Error Status Address : [Generic Address Structure]
- [098h 0152 001h]                    Space ID : 00 [SystemMemory]
- [099h 0153 001h]                   Bit Width : 40
- [09Ah 0154 001h]                  Bit Offset : 00
- [09Bh 0155 001h]        Encoded Access Width : 04 [QWord Access:64]
- [09Ch 0156 008h]                     Address : 0000000043DA0008
-
- [0A4h 0164 01Ch]                      Notify : [Hardware Error Notification Structure]
- [0A4h 0164 001h]                 Notify Type : 07 [GPIO]
- [0A5h 0165 001h]               Notify Length : 1C
- [0A6h 0166 002h]  Configuration Write Enable : 0000
- [0A8h 0168 004h]                PollInterval : 00000000
- [0ACh 0172 004h]                      Vector : 00000000
- [0B0h 0176 004h]     Polling Threshold Value : 00000000
- [0B4h 0180 004h]    Polling Threshold Window : 00000000
- [0B8h 0184 004h]       Error Threshold Value : 00000000
- [0BCh 0188 004h]      Error Threshold Window : 00000000
-
--[0C0h 0192 004h]   Error Status Block Length : 00000400
-+[0C0h 0192 004h]   Error Status Block Length : 00001000
- [0C4h 0196 00Ch]           Read Ack Register : [Generic Address Structure]
- [0C4h 0196 001h]                    Space ID : 00 [SystemMemory]
- [0C5h 0197 001h]                   Bit Width : 40
- [0C6h 0198 001h]                  Bit Offset : 00
- [0C7h 0199 001h]        Encoded Access Width : 04 [QWord Access:64]
- [0C8h 0200 008h]                     Address : 0000000043DA0018
-
- [0D0h 0208 008h]           Read Ack Preserve : FFFFFFFFFFFFFFFE
- [0D8h 0216 008h]              Read Ack Write : 0000000000000001
-
- Raw Table Data: Length 224 (0xE0)
-
--    0000: 48 45 53 54 E0 00 00 00 01 6C 42 4F 43 48 53 20  // HEST.....lBOCHS
-+    0000: 48 45 53 54 E0 00 00 00 01 3C 42 4F 43 48 53 20  // HEST.....<BOCHS
-     0010: 42 58 50 43 20 20 20 20 01 00 00 00 42 58 50 43  // BXPC    ....BXPC
-     0020: 01 00 00 00 02 00 00 00 0A 00 00 00 FF FF 00 01  // ................
--    0030: 01 00 00 00 01 00 00 00 00 04 00 00 00 40 00 04  // .............@..
-+    0030: 01 00 00 00 01 00 00 00 00 10 00 00 00 40 00 04  // .............@..
-     0040: 00 00 DA 43 00 00 00 00 08 1C 00 00 00 00 00 00  // ...C............
-     0050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
--    0060: 00 00 00 00 00 04 00 00 00 40 00 04 10 00 DA 43  // .........@.....C
-+    0060: 00 00 00 00 00 10 00 00 00 40 00 04 10 00 DA 43  // .........@.....C
-     0070: 00 00 00 00 FE FF FF FF FF FF FF FF 01 00 00 00  // ................
-     0080: 00 00 00 00 0A 00 01 00 FF FF 00 01 01 00 00 00  // ................
--    0090: 01 00 00 00 00 04 00 00 00 40 00 04 08 00 DA 43  // .........@.....C
-+    0090: 01 00 00 00 00 10 00 00 00 40 00 04 08 00 DA 43  // .........@.....C
-     00A0: 00 00 00 00 07 1C 00 00 00 00 00 00 00 00 00 00  // ................
-     00B0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
--    00C0: 00 04 00 00 00 40 00 04 18 00 DA 43 00 00 00 00  // .....@.....C....
-+    00C0: 00 10 00 00 00 40 00 04 18 00 DA 43 00 00 00 00  // .....@.....C....
-     00D0: FE FF FF FF FF FF FF FF 01 00 00 00 00 00 00 00  // ................
+Extend acpi_ghes_memory_errors() to support multiple CPERs after the
+hunk of code to generate the GHES error status is pulled out from
+ghes_gen_err_data_uncorrectable_recoverable(). The status field of
+generic error status block is also updated accordingly if multiple
+error data entries are contained in the generic error status block.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 ---
- tests/data/acpi/aarch64/virt/HEST           | Bin 224 -> 224 bytes
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- 2 files changed, 1 deletion(-)
+ hw/acpi/ghes-stub.c    |  2 +-
+ hw/acpi/ghes.c         | 65 ++++++++++++++++++++++++------------------
+ include/hw/acpi/ghes.h |  2 +-
+ target/arm/kvm.c       |  4 ++-
+ 4 files changed, 43 insertions(+), 30 deletions(-)
 
-diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
-index 674272922db7d48f7821aa7c83ec76bb3b556d2a..247345901b9be41a86c51bcced59287f74f9e918 100644
-GIT binary patch
-delta 45
-ycmaFB_<)hi!!<bM0RsaAqs>GveMW(aR@#gL6VpJfY1$kD3=9ko3@j28bHxD$GYS#_
-
-delta 45
-ycmaFB_<)hi!!<bM0RsaAW6ne_eMXjvR@#g#6VpJfY1$kt3=9ko3@j28bHxD&iwY6|
-
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 39901c58d6..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/HEST",
+diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+index 40f660c246..4faf573aeb 100644
+--- a/hw/acpi/ghes-stub.c
++++ b/hw/acpi/ghes-stub.c
+@@ -12,7 +12,7 @@
+ #include "hw/acpi/ghes.h"
+ 
+ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+-                            uint64_t physical_address)
++                            uint64_t *addresses, uint32_t num_of_addresses)
+ {
+     return -1;
+ }
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 06f75df43d..160eedcf09 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -21,6 +21,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
++#include "hw/registerfields.h"
+ #include "hw/acpi/ghes.h"
+ #include "hw/acpi/aml-build.h"
+ #include "qemu/error-report.h"
+@@ -54,8 +55,12 @@
+ /* The memory section CPER size, UEFI 2.6: N.2.5 Memory Error Section */
+ #define ACPI_GHES_MEM_CPER_LENGTH           80
+ 
+-/* Masks for block_status flags */
+-#define ACPI_GEBS_UNCORRECTABLE         1
++/* Bits for block_status flags */
++FIELD(ACPI_GEBS, UNCORRECTABLE, 0, 1)
++FIELD(ACPI_GEBS, CORRECTABLE, 1, 1)
++FIELD(ACPI_GEBS, MULTIPLE_UNCORRECTABLE, 2, 1)
++FIELD(ACPI_GEBS, MULTIPLE_CORRECTABLE, 3, 1)
++FIELD(ACPI_GEBS, ERROR_DATA_ENTRIES, 4, 10)
+ 
+ /*
+  * Total size for Generic Error Status Block except Generic Error Data Entries
+@@ -209,26 +214,6 @@ static void acpi_ghes_build_append_mem_cper(GArray *table,
+     build_append_int_noprefix(table, 0, 7);
+ }
+ 
+-static void
+-ghes_gen_err_data_uncorrectable_recoverable(GArray *block,
+-                                            const uint8_t *section_type,
+-                                            int data_length)
+-{
+-    /* invalid fru id: ACPI 4.0: 17.3.2.6.1 Generic Error Data,
+-     * Table 17-13 Generic Error Data Entry
+-     */
+-    QemuUUID fru_id = {};
+-
+-    /* Build the new generic error status block header */
+-    acpi_ghes_generic_error_status(block, ACPI_GEBS_UNCORRECTABLE,
+-        0, 0, data_length, ACPI_CPER_SEV_RECOVERABLE);
+-
+-    /* Build this new generic error data entry header */
+-    acpi_ghes_generic_error_data(block, section_type,
+-        ACPI_CPER_SEV_RECOVERABLE, 0, 0,
+-        ACPI_GHES_MEM_CPER_LENGTH, fru_id, 0);
+-}
+-
+ static inline uint32_t ghes_max_raw_data_length(AcpiGhesState *ags)
+ {
+     if (ags->error_block_size == 0) {
+@@ -565,30 +550,56 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
+ }
+ 
+ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+-                            uint64_t physical_address)
++                            uint64_t *addresses, uint32_t num_of_addresses)
+ {
+     /* Memory Error Section Type */
+     const uint8_t guid[] =
+           UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+                   0xED, 0x7C, 0x83, 0xB1);
++    /*
++     * invalid fru id: ACPI 4.0: 17.3.2.6.1 Generic Error Data,
++     * Table 17-13 Generic Error Data Entry
++     */
++    QemuUUID fru_id = {};
+     Error *errp = NULL;
+     int data_length;
+     GArray *block;
++    uint32_t block_status = 0, i;
+ 
+     block = g_array_new(false, true /* clear */, 1);
+ 
+-    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH;
++    data_length = num_of_addresses *
++                  (ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH);
+     /*
+      * It should not run out of the preallocated memory if adding a new generic
+      * error data entry
+      */
+     assert((data_length + ACPI_GHES_GESB_SIZE) <=
+            ghes_max_raw_data_length(ags));
++    assert(num_of_addresses <=
++           FIELD_EX32(0xffffffff, ACPI_GEBS, ERROR_DATA_ENTRIES));
+ 
+-    ghes_gen_err_data_uncorrectable_recoverable(block, guid, data_length);
++    /* Build the new generic error status block header */
++    block_status = FIELD_DP32(block_status, ACPI_GEBS, UNCORRECTABLE, 1);
++    block_status = FIELD_DP32(block_status, ACPI_GEBS, ERROR_DATA_ENTRIES,
++                              num_of_addresses);
++    if (num_of_addresses > 1) {
++        block_status = FIELD_DP32(block_status, ACPI_GEBS,
++                                  MULTIPLE_UNCORRECTABLE, 1);
++    }
++
++    acpi_ghes_generic_error_status(block, block_status, 0, 0,
++                                   data_length, ACPI_CPER_SEV_RECOVERABLE);
+ 
+-    /* Build the memory section CPER for above new generic error data entry */
+-    acpi_ghes_build_append_mem_cper(block, physical_address);
++    for (i = 0; i < num_of_addresses; i++) {
++        /* Build generic error data entries */
++        acpi_ghes_generic_error_data(block, guid,
++                                     ACPI_CPER_SEV_RECOVERABLE, 0, 0,
++                                     ACPI_GHES_MEM_CPER_LENGTH, fru_id, 0);
++
++        /* Memory section CPER on top of the generic error data entry */
++        acpi_ghes_build_append_mem_cper(block, addresses[i]);
++    }
+ 
+     /* Report the error */
+     ghes_record_cper_errors(ags, block->data, block->len, source_id, &errp);
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index c98bd6d1e2..f7b084c039 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -100,7 +100,7 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+                           GArray *hardware_errors);
+ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+-                            uint64_t error_physical_addr);
++                            uint64_t *addresses, uint32_t num_of_addresses);
+ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
+                              uint16_t source_id, Error **errp);
+ 
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 0d57081e69..459ca4a9b0 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2434,6 +2434,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+     ram_addr_t ram_addr;
+     hwaddr paddr;
+     AcpiGhesState *ags;
++    uint64_t addresses[16];
+ 
+     assert(code == BUS_MCEERR_AR || code == BUS_MCEERR_AO);
+ 
+@@ -2454,10 +2455,11 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+              * later from the main thread, so doing the injection of
+              * the error would be more complicated.
+              */
++            addresses[0] = paddr;
+             if (code == BUS_MCEERR_AR) {
+                 kvm_cpu_synchronize_state(c);
+                 if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
+-                                             paddr)) {
++                                             addresses, 1)) {
+                     kvm_inject_arm_sea(c);
+                 } else {
+                     error_report("failed to record the error");
 -- 
 2.51.1
 
