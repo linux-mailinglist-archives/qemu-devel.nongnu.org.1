@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC40C50280
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 01:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C5FC50289
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 01:56:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vIz56-0004Qn-0z; Tue, 11 Nov 2025 19:51:28 -0500
+	id 1vIz9Y-0008Rx-6z; Tue, 11 Nov 2025 19:56:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vIz53-0004P9-3A
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 19:51:25 -0500
-Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vIz9V-0008Qr-EJ
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 19:56:01 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vIz51-0005pC-Ja
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 19:51:24 -0500
-Received: by mail-qv1-xf36.google.com with SMTP id
- 6a1803df08f44-88246676008so3513956d6.3
- for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 16:51:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vIz9T-0006lb-PM
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 19:56:01 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-b6d402422c2so60582466b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 16:55:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1762908682; x=1763513482; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rVrVdypkmr3E/RiyYnlF3XIe+i5PDhK0NolgWCoGEMM=;
- b=Uq3j8TucwtgP5rvUay6c2vL9ooed741bdY/X4mnyKNie6/IrnOa6do2E1EHy3r1Qjl
- BQZfK7UmY36KK+zb7cT03lFieyjFmUycZa2JXeFkRkYlE9xXo9XPQr75fNyBMiY2oLoY
- ebmlghAv++YQfP4u2nT3/1F3M7KKmVFsrwP5CMjITWybnsoBXjX7dz1qc9+QOAhhGXr8
- YT5OTxbg37L1i8H8k0mvVo/pblyw/MlU1qCpWLIyQ163Fg8pCBNDLBTxcWPUIaTd6T9C
- zBOvutblkxa6XVa4fVkeWX43uUpcZv1OpSlKozP9uU84iltSvjUWaI/VQ2LTJXIHZkCl
- Ffiw==
+ d=gmail.com; s=20230601; t=1762908958; x=1763513758; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nehsPj1Njbpw8eH6b7Hue3QIQrwja1lDXPbzCJGEejY=;
+ b=cjNpDbsMk2wuTfAK3IZCOcxuzgcMc/cDZ5s8xB5yWAjC35kDMhvtPIjVPp614x1KPQ
+ Z8qxOSRnXO5F1zlqVAwm9y5lMR4P5W6sXgz69bhoVY39oZxPftPdeNaAoVnlwZdFrXnB
+ vDb9YUhxUwfDcq+hDI3FF2wYwHO+JYd+GDwGfzCYDmTO2ljIrEq9DtMlSajswDV7HBBw
+ 2mchNmEV0S7ucwPc9w504oz9Xk1gwfcYcGGjinaNpTIL1lIfO/86ASbn06pmfB+j8n2a
+ R2HP3oSKZFSeOx7vbGT9eP/KqAsaiz1PPCCGCRgTIf+S1c//R9DLoI/5gOK953sEcOSU
+ UDJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762908682; x=1763513482;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=rVrVdypkmr3E/RiyYnlF3XIe+i5PDhK0NolgWCoGEMM=;
- b=P9IUedm8fgRuSnjF7DP73L7e+rFFaL736IdaNSb6RIe/A1OU9rwU9Imgoj1V8O4kin
- upkPLHQEEs8yEL0xzwrDPP5qzX8mGkbCIZEU53nleP7kzS09ZLmD9qX4//aFgdOxx9vK
- drw9DZRkCg/UbYBW3v2jG38pLIm11RA4Xn7fV05WO1CP6vQYWKpx3kwDoOt3w3szpH1r
- k7kugBIoYoX/kPYb1AIGcphwt+jxvf7aG3KYI1CV+yUSCh6GXUGnfLoOI6xIqiSYokTs
- icP7QNE5IbL3pn4f3w9TjM84gD/RoIvZyDIox6oK9XR0HwPky0DFmtW8JMM8cjp9u/DH
- lzFQ==
-X-Gm-Message-State: AOJu0Ywnzqqk/VN8t9KymSHj5E9ImjCDJVo8yEyBd3XY84CcP1/frYJ2
- Gn8WxD5drBHmA2RvIkvrWg10XB1V205TrT4MSeIDBkmJ637LB3kRKCuC
-X-Gm-Gg: ASbGnctIZs43nxATJPMp9meVEukXWy8M86XMwRgPFrqt/BgQdTKLZ1jK0/Q4kZwdXHm
- 3jHOLslw0d8r83QG1b95mIGOo4MzbyC83SiA/SQObiBYJBm/XH+KYxh43M4mpLOWN7PC97qtAU6
- tsiK4sF8KyxInUILhIx1BrV/jrHvWQrmd3eayafD7aED6W/wEXbcJdNj0XYxpwEkbthqQILoSKM
- yGWiyj7H9m1kfoi3pLmQLrNvNsuQroGXhhfPMCb6T5F2tc5f7e33pjeGvaQEpJcoxMHLxV0XhGG
- 75mwkUS+lpShxvbEPl3TOnuCOBMe7PScSO1KgyGVK7/Ea0qLH4/qU2MgU7rv5WZi7J1OSZTFGYH
- wycaNolpzZ5idGpVLbog8/Mn1yLKayMcg74Eqd3H9PEzSKmZXq5c78zeZ9BToGerwQvPuNUGm+U
- cqWKWGph0Y
-X-Google-Smtp-Source: AGHT+IHR4+2wsvWMJ2uexni3JJo6oV4CQ39Ih4GxApgCORsMnAdc3C0jeteLKykvcxXvemvFxxIKwQ==
-X-Received: by 2002:a05:6214:2a4c:b0:882:3afa:74 with SMTP id
- 6a1803df08f44-8827193ddc9mr19904556d6.29.1762908682575; 
- Tue, 11 Nov 2025 16:51:22 -0800 (PST)
-Received: from [10.0.0.22] ([185.213.193.149])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8823892a79fsm81445096d6.4.2025.11.11.16.51.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Nov 2025 16:51:22 -0800 (PST)
-From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Tue, 11 Nov 2025 19:50:54 -0500
-Subject: [PATCH RFC 5/5] docs: added MTE4 features to docs
+ d=1e100.net; s=20230601; t=1762908958; x=1763513758;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=nehsPj1Njbpw8eH6b7Hue3QIQrwja1lDXPbzCJGEejY=;
+ b=fvBgD6selmtwkJj+6U8MrbATgcos3c629xuO0o1EQvzeZ2VArptDlZNmr4ynLvLhgC
+ GcdhTRWEg/KK9tXFpOLXCyzZ1bbCSSbEXgPYQHoKLDjz6LkYi6rn43DzovQ25/kZOXa/
+ /VJpFIQcvhntc6VcrnHA8V8hOj5Qt5x29jaW+50FKpzVaVbnDO92yxxdVfyxIp51/nhu
+ dP8wyw+mvgVO5Fhte2Y02cYWK361AXEouC0NaD5cCRO7G23i6SygOjM9O7Mc+gdpKYU5
+ JGfetUcVEwxl9LlaJVQBA3a5Nn54NzT5PLLip/JksdyNBECm+4D2+F0FR5Dy487hXN3H
+ JjkQ==
+X-Gm-Message-State: AOJu0YzNrm+dNDhTtWm3Hj3l+ivUBbj/keArVbig0pA1ipXWAvlg1Uhh
+ vfafiwOLEX6RYGGlGGIvayyNLJuTtgJxPLqu51+DyVargBmL3xJtzaQI4FMN8XRXgJ8tnXonWuc
+ +ssjdcBYBLWSQeF2b5zVp9RClvgEicSg=
+X-Gm-Gg: ASbGnctao0adhTPvqQM6siiCjqZhoI+NVkASfiChL2Qd76tsxTQhAoqcysKGvXQzQpC
+ fytHBaM12M9jaFnBEptwN+5xCfwy2MRI83GPSrLuueIpdqvqYPC5ohCu0mcHp9A8sMdEXcCLecM
+ 1AIkoijSqVmCUDs1eWtGje9EZVVOY+URfLhelc5QTCss1ePqCDD1fKyfeySEM1EqPNHvB6yfla5
+ c16f2ynosWSMA9Oj7Zi+h6AMFa54OSrUPVrLU19oGf5eFt3uHSMRsqvhnX7Ef1YMUt7B/GdK+2k
+ 0L0x3R2g+7N7uvk=
+X-Google-Smtp-Source: AGHT+IEIxxKYkF495ywXanBzbf9Wuhz2V7w+3NNfAH8svum6wnRlvGHunvjMCTQ0DVmtiOYxO7i6xB8i7Xsmo1ELBJM=
+X-Received: by 2002:a17:907:1c9f:b0:b6d:c44a:b69b with SMTP id
+ a640c23a62f3a-b7331a6f6ffmr104447566b.35.1762908957725; Tue, 11 Nov 2025
+ 16:55:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251111-feat-mte4-v1-5-72ef5cf276f9@gmail.com>
-References: <20251111-feat-mte4-v1-0-72ef5cf276f9@gmail.com>
-In-Reply-To: <20251111-feat-mte4-v1-0-72ef5cf276f9@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, 
- Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org, 
- Gabriel Brookman <brookmangabriel@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762908676; l=900;
- i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=yMYVdAhFPzUk+dj5yY7HVAqBXvYMOye3T8cT36hK3K8=;
- b=Omlvu1wD6ymvmau/bEIFPE1YuQ1TuofHTJxinh/K8gU7BILZTwfivVqgkQmT1vErD+CJ6UfxU
- TdPhckojQUhCjiKCg1q9GGPK8M5zbt3lddS1MJF/a3gGwIHAqmN1KeF
-X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
- pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qv1-xf36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <20251029-n-novikov-aplic_aia_ro-v1-0-39fec74c918a@syntacore.com>
+ <20251029-n-novikov-aplic_aia_ro-v1-1-39fec74c918a@syntacore.com>
+In-Reply-To: <20251029-n-novikov-aplic_aia_ro-v1-1-39fec74c918a@syntacore.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 12 Nov 2025 10:55:31 +1000
+X-Gm-Features: AWmQ_bnL0PCh2AxaOy2JgJ0M8rfuVRy4FjL3jg8AgmehDERDXzMbLGTYhSfxTQc
+Message-ID: <CAKmqyKPDBx-xe4HHgySVM+4hRxXUUibOFeb1qBck2O28q8JGwg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] hw/intc/riscv_aplic: Expand inactive source handling
+ for AIA target[i]
+To: Nikita Novikov <n.novikov@syntacore.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,29 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implemented MTE4 features are now present in
-docs/system/arm/emulation.rst
+On Wed, Oct 29, 2025 at 5:19=E2=80=AFPM Nikita Novikov <n.novikov@syntacore=
+.com> wrote:
+>
+> According to the RISC-V AIA v1.0, section 4.5.2 ("Source configurations")=
+,
+> register target[i] shall be read-only zero when interrupt source i is ina=
+ctive
+> in this domain. A source is inactive if it is delegated to a child domain=
+ or
+> its source mode is INACTIVE.
+>
+> The previous implementation only checked SM =3D=3D INACTIVE. This patch a=
+dds
+> full compliance:
+> - Return zero on read if D =3D=3D 1 or SM =3D=3D INACTIVE
+> - Ignore writes in both cases
+>
+> Fixes: b6f1244678 ("intc/riscv_aplic: Fix target register read when sourc=
+e is inactive")
+> Signed-off-by: Nikita Novikov <n.novikov@syntacore.com>
 
-Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
----
- docs/system/arm/emulation.rst | 2 ++
- 1 file changed, 2 insertions(+)
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 31a5878a8f..1bf99c77bb 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -106,6 +106,8 @@ the following architecture extensions:
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
- - FEAT_MTE_ASYM_FAULT (Memory tagging asymmetric faults)
- - FEAT_MTE_ASYNC (Asynchronous reporting of Tag Check Fault)
-+- FEAT_MTE_TAGGED_FAR (Full address reporting of Tag Check Fault)
-+- FEAT_MTE_STORE_ONLY (Store-only tag checking)
- - FEAT_NMI (Non-maskable Interrupt)
- - FEAT_NV (Nested Virtualization)
- - FEAT_NV2 (Enhanced nested virtualization support)
+Alistair
 
--- 
-2.51.2
-
+> ---
+>  hw/intc/riscv_aplic.c | 28 +++++++++++++++++++++++++---
+>  1 file changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+> index a2041e702245211ba3bcf4334301d7c86272e36f..8c3b16074cd3ca1bc3004cfaa=
+a13f34b8860bd48 100644
+> --- a/hw/intc/riscv_aplic.c
+> +++ b/hw/intc/riscv_aplic.c
+> @@ -193,6 +193,26 @@ void riscv_aplic_set_kvm_msicfgaddr(RISCVAPLICState =
+*aplic, hwaddr addr)
+>  #endif
+>  }
+>
+> +/*
+> + * APLIC target[i] must be read-only zero if the source i is inactive
+> + * in this domain (delegated or SM =3D=3D INACTIVE)
+> + */
+> +static inline bool riscv_aplic_source_active(RISCVAPLICState *aplic,
+> +                                             uint32_t irq)
+> +{
+> +    uint32_t sc, sm;
+> +
+> +    if ((irq =3D=3D 0) || (aplic->num_irqs <=3D irq)) {
+> +        return false;
+> +    }
+> +    sc =3D aplic->sourcecfg[irq];
+> +    if (sc & APLIC_SOURCECFG_D) {
+> +        return false;
+> +    }
+> +    sm =3D sc & APLIC_SOURCECFG_SM_MASK;
+> +    return sm !=3D APLIC_SOURCECFG_SM_INACTIVE;
+> +}
+> +
+>  static bool riscv_aplic_irq_rectified_val(RISCVAPLICState *aplic,
+>                                            uint32_t irq)
+>  {
+> @@ -635,7 +655,7 @@ static void riscv_aplic_request(void *opaque, int irq=
+, int level)
+>
+>  static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned siz=
+e)
+>  {
+> -    uint32_t irq, word, idc, sm;
+> +    uint32_t irq, word, idc;
+>      RISCVAPLICState *aplic =3D opaque;
+>
+>      /* Reads must be 4 byte words */
+> @@ -703,8 +723,7 @@ static uint64_t riscv_aplic_read(void *opaque, hwaddr=
+ addr, unsigned size)
+>      } else if ((APLIC_TARGET_BASE <=3D addr) &&
+>              (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
+>          irq =3D ((addr - APLIC_TARGET_BASE) >> 2) + 1;
+> -        sm =3D aplic->sourcecfg[irq] & APLIC_SOURCECFG_SM_MASK;
+> -        if (sm =3D=3D APLIC_SOURCECFG_SM_INACTIVE) {
+> +        if (!riscv_aplic_source_active(aplic, irq)) {
+>              return 0;
+>          }
+>          return aplic->target[irq];
+> @@ -841,6 +860,9 @@ static void riscv_aplic_write(void *opaque, hwaddr ad=
+dr, uint64_t value,
+>      } else if ((APLIC_TARGET_BASE <=3D addr) &&
+>              (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
+>          irq =3D ((addr - APLIC_TARGET_BASE) >> 2) + 1;
+> +        if (!riscv_aplic_source_active(aplic, irq)) {
+> +            return;
+> +        }
+>          if (aplic->msimode) {
+>              aplic->target[irq] =3D value;
+>          } else {
+>
+> --
+> 2.51.0
+>
+>
 
