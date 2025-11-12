@@ -2,45 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6E5C50BE8
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 07:42:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261F2C50C40
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 07:52:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ4Xu-0004tG-Pp; Wed, 12 Nov 2025 01:41:34 -0500
+	id 1vJ4h9-0006gG-6z; Wed, 12 Nov 2025 01:51:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1vJ4XD-0004EC-3e; Wed, 12 Nov 2025 01:40:51 -0500
-Received: from out30-112.freemail.mail.aliyun.com ([115.124.30.112])
+ id 1vJ4gC-0006Le-M0; Wed, 12 Nov 2025 01:50:20 -0500
+Received: from out30-124.freemail.mail.aliyun.com ([115.124.30.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1vJ4XA-0000O3-NG; Wed, 12 Nov 2025 01:40:50 -0500
+ id 1vJ4g4-0001Vy-Lg; Wed, 12 Nov 2025 01:50:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux.alibaba.com; s=default;
- t=1762929643; h=From:To:Subject:Date:Message-Id:MIME-Version;
- bh=sNeu3GrLhvrRzSsokkv4ce2zQoYHo57v21pIm2tpfvo=;
- b=d4zXcNWjleO0+T0ydaX1atGN9Oe6rcetGl7ExJPmTnkjZwPsql3jKRlOgT5gt1uzG9pCOt33Oh/YzgWWDKJwGj9QvsdoYmqNROmmZjSq9dYqFu8Bs+EsythgpXRl/Qxd053f7+d3YsxopYR+E3LIP0vwsOGKWQhOkpDRvJyEiDs=
+ t=1762930190; h=From:To:Subject:Date:Message-Id:MIME-Version;
+ bh=AY8KLtHZTlkzQaYZgwDho71Pdbq6NvsksHRfgZE8ibo=;
+ b=Udz8GVchwCNWydl5hGj4NYceHhNG1xP0CizoXk8KTLP9j7YDREh4HeJJvpvTmeqquMct+a3lodcZEVWsqw2s0EANGCked8lMhgZC6J6zDZThsf4pMM5DyX2WBgznjvi3p0zuGZLujYbGJ/PYBQyVd0H3NDxfY3A43dT54NilLdU=
 Received: from localhost.localdomain(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WsF6VK2_1762929641 cluster:ay36) by smtp.aliyun-inc.com;
- Wed, 12 Nov 2025 14:40:41 +0800
+ fp:SMTPD_---0WsFCr8u_1762930188 cluster:ay36) by smtp.aliyun-inc.com;
+ Wed, 12 Nov 2025 14:49:49 +0800
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, Huang Tao <eric.huang@linux.alibaba.com>,
- TANG Tiancheng <lyndra@linux.alibaba.com>
-Subject: [PATCH v3 6/6] target/riscv: Enable SMMPT extension
-Date: Wed, 12 Nov 2025 14:40:26 +0800
-Message-Id: <20251112064026.44222-7-zhiwei_liu@linux.alibaba.com>
+ zhiwei_liu@linux.alibaba.com
+Subject: [PATCH v4 0/6] target/riscv: Implement Smsdid and Smmpt extension
+Date: Wed, 12 Nov 2025 14:49:39 +0800
+Message-Id: <20251112064945.46533-1-zhiwei_liu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20251112064026.44222-1-zhiwei_liu@linux.alibaba.com>
-References: <20251112064026.44222-1-zhiwei_liu@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.112;
+Received-SPF: pass client-ip=115.124.30.124;
  envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-112.freemail.mail.aliyun.com
+ helo=out30-124.freemail.mail.aliyun.com
 X-Spam_score_int: -174
 X-Spam_score: -17.5
 X-Spam_bar: -----------------
@@ -65,37 +62,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Co-authored-by: Huang Tao <eric.huang@linux.alibaba.com>
-Co-authored-by: TANG Tiancheng <lyndra@linux.alibaba.com>
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch set introduces support for the RISC-V Smmpt (Supervisor
+Memory-tracking and Protection Table) extension. Smmpt provides a
+hardware mechanism for fine-grained memory protection, checked after
+address translation, which is particularly useful for supervisor-level
+sandboxing and security monitoring.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index b32d19344b..2ef4b6da7b 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -204,8 +204,10 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_13_0, ext_smdbltrp),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smmpm, PRIV_VERSION_1_13_0, ext_smmpm),
-+    ISA_EXT_DATA_ENTRY(smmpt, PRIV_VERSION_1_13_0, ext_smmpt),
-     ISA_EXT_DATA_ENTRY(smnpm, PRIV_VERSION_1_13_0, ext_smnpm),
-     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
-+    ISA_EXT_DATA_ENTRY(smsdid, PRIV_VERSION_1_13_0, ext_smsdid),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-     ISA_EXT_DATA_ENTRY(ssccfg, PRIV_VERSION_1_13_0, ext_ssccfg),
-@@ -1372,6 +1374,8 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
- 
- /* These are experimental so mark with 'x-' */
- const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-+    MULTI_EXT_CFG_BOOL("x-smmpt", ext_smmpt, false),
-+    MULTI_EXT_CFG_BOOL("x-smsdid", ext_smsdid, false),
-     MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
- 
-     { },
+The rfc patch set:
+https://mail.gnu.org/archive/html/qemu-riscv/2025-09/msg00216.html
+
+v3->v4:
+    1. Add missing review tags.
+v2->v3:
+    1. Fix build error in patch 2.
+    2. Rebase to master.
+
+rfc->v2:
+    1. When ext_smmpt is false or BARE mode, make other fields in mmpt
+       CSR zero.
+    2. Add patch 5 to fix smrnmi ISA string order.
+    3. Fix patch 6 smmpt and smsdid ISA string order.
+    4. Make smmpt and smsdid experiment extensions.
+    5. Add review tags.
+
+
+LIU Zhiwei (6):
+  target/riscv: Add basic definitions and CSRs for SMMPT
+  target/riscv: Implement core SMMPT lookup logic
+  target/riscv: Integrate SMMPT checks into MMU and TLB fill
+  target/riscv: Implement SMMPT fence instructions
+  target/riscv: Fix smrnmi isa alphabetical order
+  target/riscv: Enable SMMPT extension
+
+ target/riscv/cpu.c                            |   6 +-
+ target/riscv/cpu.h                            |   9 +-
+ target/riscv/cpu_bits.h                       |  27 ++
+ target/riscv/cpu_cfg_fields.h.inc             |   2 +
+ target/riscv/cpu_helper.c                     |  81 +++++-
+ target/riscv/csr.c                            |  95 ++++++
+ target/riscv/insn32.decode                    |   2 +
+ .../riscv/insn_trans/trans_privileged.c.inc   |  30 ++
+ target/riscv/meson.build                      |   1 +
+ target/riscv/pmp.h                            |   3 +
+ target/riscv/riscv_smmpt.c                    | 274 ++++++++++++++++++
+ target/riscv/riscv_smmpt.h                    |  36 +++
+ 12 files changed, 560 insertions(+), 6 deletions(-)
+ create mode 100644 target/riscv/riscv_smmpt.c
+ create mode 100644 target/riscv/riscv_smmpt.h
+
 -- 
 2.25.1
 
