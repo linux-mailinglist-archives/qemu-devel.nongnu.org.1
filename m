@@ -2,53 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762C2C50726
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF13DC5072D
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:52:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1sp-0000nr-Sc; Tue, 11 Nov 2025 22:50:59 -0500
+	id 1vJ1tX-00025E-UM; Tue, 11 Nov 2025 22:51:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1vJ1so-0000m2-1t
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:50:58 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1vJ1sl-0005Tu-Rk
- for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:50:57 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxF9EdBBRpVEciAA--.8765S3;
- Wed, 12 Nov 2025 11:50:53 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJBxysAQBBRp9iMwAQ--.50588S4;
- Wed, 12 Nov 2025 11:50:52 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org,
-	lixianglai@loongson.cn
-Cc: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PATCH V2 2/2] fix pci device can't alloc irq from fdt
-Date: Wed, 12 Nov 2025 11:26:33 +0800
-Message-Id: <7f6ec86e3425b12a337d71d963a0e26577c84f51.1762917185.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1762917185.git.lixianglai@loongson.cn>
-References: <cover.1762917185.git.lixianglai@loongson.cn>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vJ1tQ-0001uO-I5
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:51:37 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vJ1tO-0005Yv-SF
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:51:36 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-b729a941e35so58188666b.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Nov 2025 19:51:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1762919492; x=1763524292; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qWmIFl2p3JmH5lLJKRpxSwj4K5BjNoadKE7MiwVKNs8=;
+ b=E9tObukFdrL05cxQfdnQbW0P/8FHbinlcIgfKcdwPy22XcdarogZLzosVOcS38JfWP
+ 4Zw++QFcu/KA6qZJ83VOiQlI9j2UFSiVEXoEwxJlqcfnETk+3KSc3J+u5ObzU5Ci5gAD
+ C27H0FA7jeTgqq0L2I3oLW/LVCXtFpogfB3M1ZnmNNTc3VQUBiFrfBd6bs8Lei0DtrIT
+ s6R9fG4NGqTiE59xKefFRCcjOUoG/6w3FtPefyO0ekwQrfSGykp5njGVGLoLEvU0jE+I
+ zExKL30PWsA9xpBIC7PHFWQx8olBx/0U8iJvIZiGBMt1SHtFnfraISWTbWyWOdv5d4nu
+ /R/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1762919492; x=1763524292;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=qWmIFl2p3JmH5lLJKRpxSwj4K5BjNoadKE7MiwVKNs8=;
+ b=NPTILkFCsMQ9V8E5qvFOHAB7I43C/sH7LEsG3UcDMXlQlOdyzXUHTC5d4VtrSzcxXp
+ ZmqUAt5GDbUZa4z7+r0Ax27b9Yhf9KK8cRP1JUdtK8CcyUW45WegE+Wfihb/u5CIY3uy
+ m9blouVxhWuBNhSxYNVpzOIOVliSMyn84q9Wmwd0R/aQ5Yxtq4kxAOcrTRVRWI7UZu2c
+ 9mEdzH2Y02u1ctBPaTaOF2ZH8IrggW+D4kjcUt+WF9hi3NbbAjRUb1Hfqzrd9HBKrUPg
+ uJTiYa1xwls0Id6ErLS2VAqXJ5M26R3Qwzja9UhC4faDI8OYuXEwMoE0cEzTF1Pku7yc
+ 3COg==
+X-Gm-Message-State: AOJu0YzLADanv+74dbXqJt4QrkyvGYadD0PaE9CDAETTWuUIi35xQtjr
+ giw3Vec5IGj1lutLVBm5Cs4Qt5PLSWyCFWg0beZW9YSMPNrACiRCqGKXvMeuyNp3GEXxm394wg7
+ 4rdoxprkPjIvR5+DhSTn/5iAIz7NM3Jo=
+X-Gm-Gg: ASbGncsBWDCHb8pVdPGmySySuQcTwL89tMPpHBtZArV/V28tXQkCbZHkpUSZfS5fnD+
+ oWa3lcyuxSct4X49ND8EyGCeRu8uqEcsuBDH2EkhXi75sNwVmf5h7AsIp6pVhUimKmEfhLdBOhk
+ r5kmTb8XhU+GaY24PeNoNRh8mLrFfGCOjmNFS2wvGGf0Vlwhv73X4ae76ls0XAh+3Itcvnysc5q
+ 57GiskIAsJPnxTcXauHq3AgfrnpRGMTkQ94vOjs8T1lsRJYRb9yaeZKkEgWqQNrqTPhxipgoYIV
+ /weAj9/GGIBfg6JuD9qUXhaDhw==
+X-Google-Smtp-Source: AGHT+IEPKki5sMlF5rKEC6UQU4jmuz/eE5cw2UPGz8+MrwdZzpD88tgp7MhyJFQBgokI3QtgSG7fqQcAO0QLPEBvI+s=
+X-Received: by 2002:a17:907:da6:b0:b70:7d61:b8a5 with SMTP id
+ a640c23a62f3a-b7331b331f7mr151240266b.62.1762919491437; Tue, 11 Nov 2025
+ 19:51:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxysAQBBRp9iMwAQ--.50588S4
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20250918061911.904-1-zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20250918061911.904-1-zhiwei_liu@linux.alibaba.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 12 Nov 2025 13:51:05 +1000
+X-Gm-Features: AWmQ_bkNNADSHjyRDUlKbor6n-ZaMPRgLnxcdJ8hTHOuxW9tgCotXsZZtWvTTe0
+Message-ID: <CAKmqyKM+18jY2YZkeCtRvB=cUJK9VrRZu70DSNm2WYEaQUn63Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] target/riscv: Implement Smsdid and Smmpt extension
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alistair23@gmail.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,126 +95,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we use the -kernel parameter to start an elf format kernel relying on
-fdt, we get the following error:
+On Thu, Sep 18, 2025 at 4:20=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibab=
+a.com> wrote:
+>
+> This patch set introduces support for the RISC-V Smmpt (Supervisor
+> Memory-tracking and Protection Table) extension. Smmpt provides a
+> hardware mechanism for fine-grained memory protection, checked after
+> address translation, which is particularly useful for supervisor-level
+> sandboxing and security monitoring.
+>
+> The rfc patch set:
+> https://mail.gnu.org/archive/html/qemu-riscv/2025-09/msg00216.html
+>
+> rfc->v2:
+>     1. When ext_smmpt is false or BARE mode, make other fields in mmpt
+>        CSR zero.
+>     2. Add patch 5 to fix smrnmi ISA string order.
+>     3. Fix patch 6 smmpt and smsdid ISA string order.
+>     4. Make smmpt and smsdid experiment extensions.
+>     5. Add review tags.
+>
+> LIU Zhiwei (6):
+>   target/riscv: Add basic definitions and CSRs for SMMPT
+>   target/riscv: Implement core SMMPT lookup logic
+>   target/riscv: Integrate SMMPT checks into MMU and TLB fill
+>   target/riscv: Implement SMMPT fence instructions
+>   target/riscv: Fix smrnmi isa alphabetical order
+>   target/riscv: Enable SMMPT extension
 
-pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.0: enabling device (0000 -> 0003)
-pcieport 0000:00:01.0: PME: Signaling with IRQ 19
-pcieport 0000:00:01.0: AER: enabled with IRQ 19
-pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.1: enabling device (0000 -> 0003)
-pcieport 0000:00:01.1: PME: Signaling with IRQ 20
-pcieport 0000:00:01.1: AER: enabled with IRQ 20
-pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.2: enabling device (0000 -> 0003)
-pcieport 0000:00:01.2: PME: Signaling with IRQ 21
-pcieport 0000:00:01.2: AER: enabled with IRQ 21
-pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.3: enabling device (0000 -> 0003)
-pcieport 0000:00:01.3: PME: Signaling with IRQ 22
-pcieport 0000:00:01.3: AER: enabled with IRQ 22
-pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
+Thanks!
 
-This is because  the description of interrupt-cell is missing in the pcie
-irq map.  And there is a lack of a description of the interrupt trigger
-type.  Now it is corrected and the correct interrupt-cell is added in the
-pcie irq map.
+Applied to riscv-to-apply.next
 
-Refer to the implementation in arm and add some comments.
+Alistair
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Song Gao <gaosong@loongson.cn>
-
- hw/loongarch/virt-fdt-build.c | 43 +++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
-
-diff --git a/hw/loongarch/virt-fdt-build.c b/hw/loongarch/virt-fdt-build.c
-index 7333019cf7..73ac28bcba 100644
---- a/hw/loongarch/virt-fdt-build.c
-+++ b/hw/loongarch/virt-fdt-build.c
-@@ -317,10 +317,13 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
-                                       uint32_t *pch_pic_phandle)
- {
-     int pin, dev;
--    uint32_t irq_map_stride = 0;
-+    int irq_map_stride = 0;
-     uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 10] = {};
-     uint32_t *irq_map = full_irq_map;
-     const MachineState *ms = MACHINE(lvms);
-+    uint32_t pch_pic_handle = *pch_pic_phandle;
-+    uint32_t pin_mask;
-+    uint32_t devfn_mask;
- 
-     /*
-      * This code creates a standard swizzle of interrupts such that
-@@ -339,31 +342,39 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
-             int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
--            /* Fill PCI address cells */
--            irq_map[i] = cpu_to_be32(devfn << 8);
--            i += 3;
--
--            /* Fill PCI Interrupt cells */
--            irq_map[i] = cpu_to_be32(pin + 1);
--            i += 1;
--
--            /* Fill interrupt controller phandle and cells */
--            irq_map[i++] = cpu_to_be32(*pch_pic_phandle);
--            irq_map[i++] = cpu_to_be32(irq_nr);
-+            uint32_t map[] = {
-+                devfn << 8, 0, 0,             /* devfn */
-+                pin + 1,                      /* PCI pin */
-+                pch_pic_handle,              /* interrupt controller handle */
-+                irq_nr,                       /* irq number */
-+                FDT_IRQ_TYPE_LEVEL_HIGH };    /* irq trigger level */
- 
-             if (!irq_map_stride) {
--                irq_map_stride = i;
-+                irq_map_stride = sizeof(map) / sizeof(uint32_t);
-             }
-+
-+            /* Convert map to big endian */
-+            for (i = 0; i < irq_map_stride; i++) {
-+                irq_map[i] = cpu_to_be32(map[i]);
-+            }
-+
-             irq_map += irq_map_stride;
-         }
-     }
- 
--
-     qemu_fdt_setprop(ms->fdt, nodename, "interrupt-map", full_irq_map,
-                      PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
-+
-+    /* The pci slot only needs to specify the matching of the lower bit */
-+    devfn_mask = cpu_to_be16(PCI_DEVFN((PCI_NUM_PINS - 1), 0));
-+    /* The pci pin only needs to match the specified low bit */
-+    pin_mask = (1 << ((PCI_NUM_PINS - 1))) - 1;
-+
-     qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupt-map-mask",
--                     0x1800, 0, 0, 0x7);
-+                           devfn_mask,
-+                           0, 0,
-+                           pin_mask);
- }
- 
- static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
-@@ -400,6 +411,8 @@ static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
-                                  2, base_mmio, 2, size_mmio);
-     qemu_fdt_setprop_cells(ms->fdt, nodename, "msi-map",
-                            0, *pch_msi_phandle, 0, 0x10000);
-+
-+    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
-     fdt_add_pcie_irq_map_node(lvms, nodename, pch_pic_phandle);
-     g_free(nodename);
- }
--- 
-2.39.1
-
+>
+>  target/riscv/cpu.c                            |   6 +-
+>  target/riscv/cpu.h                            |   9 +-
+>  target/riscv/cpu_bits.h                       |  27 ++
+>  target/riscv/cpu_cfg_fields.h.inc             |   2 +
+>  target/riscv/cpu_helper.c                     |  81 +++++-
+>  target/riscv/csr.c                            |  95 ++++++
+>  target/riscv/insn32.decode                    |   2 +
+>  .../riscv/insn_trans/trans_privileged.c.inc   |  30 ++
+>  target/riscv/meson.build                      |   1 +
+>  target/riscv/pmp.h                            |   3 +
+>  target/riscv/riscv_smmpt.c                    | 274 ++++++++++++++++++
+>  target/riscv/riscv_smmpt.h                    |  36 +++
+>  12 files changed, 560 insertions(+), 6 deletions(-)
+>  create mode 100644 target/riscv/riscv_smmpt.c
+>  create mode 100644 target/riscv/riscv_smmpt.h
+>
+> --
+> 2.25.1
+>
+>
 
