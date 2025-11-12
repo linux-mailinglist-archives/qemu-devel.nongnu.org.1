@@ -2,78 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5256C52959
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 15:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFFCC52DC0
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 16:00:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJBNV-0001cC-FG; Wed, 12 Nov 2025 08:59:17 -0500
+	id 1vJCJ8-00058z-CF; Wed, 12 Nov 2025 09:58:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vJBNS-0001aG-OF
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:59:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vJCJ5-00058a-Tp
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 09:58:47 -0500
+Received: from out28-78.mail.aliyun.com ([115.124.28.78])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vJBNP-000458-HX
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:59:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762955949;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yhhxbzefCBFKZEWYZUYFwHIjSoVhIMCNu5aEwTx0EB4=;
- b=cpn6oU5NxTBZaTMCx0x2vQ7T7BtduKBAtBg48DoApaJYFw2KfXv5TPP1Wiu6vl7W/G0Q8B
- 5mZ8zcY8bOmjUVkjMQVfA97yR5sqvWPrl6wq3EkgCkWCcE49E4+0J9wotfZAEMb4slEVAK
- zADPApNhiG7Bl3HuSNMchIEJArEPD6s=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-REgiiMrmPzSsbMkp7A2JyA-1; Wed,
- 12 Nov 2025 08:59:05 -0500
-X-MC-Unique: REgiiMrmPzSsbMkp7A2JyA-1
-X-Mimecast-MFC-AGG-ID: REgiiMrmPzSsbMkp7A2JyA_1762955944
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 86C4D180009D; Wed, 12 Nov 2025 13:59:04 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.56])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 587D019560BC; Wed, 12 Nov 2025 13:59:02 +0000 (UTC)
-Date: Wed, 12 Nov 2025 13:58:59 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v3 01/10] chardev/char-fe: Improve @docstrings
-Message-ID: <aRSSo9Pxe7c9-ZAh@redhat.com>
-References: <20251112134143.27194-1-philmd@linaro.org>
- <20251112134143.27194-2-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vJCJ2-0005fR-86
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 09:58:47 -0500
+Received: from Sun.localdomain(mailfrom:mail@jiesong.me
+ fp:SMTPD_---.fKqlE-B_1762959463 cluster:ay29) by smtp.aliyun-inc.com;
+ Wed, 12 Nov 2025 22:58:23 +0800
+From: Jie Song <mail@jiesong.me>
+To: berrange@redhat.com
+Cc: armbru@redhat.com, mail@jiesong.me, qemu-devel@nongnu.org,
+ songjie_yewu@cmss.chinamobile.com
+Subject: Re: [PATCH] monitor/qmp: cleanup socket listener sources early to
+ avoid fd handling race
+Date: Wed, 12 Nov 2025 22:57:42 +0800
+Message-ID: <20251112145743.15075-1-mail@jiesong.me>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <aRRN1pTjJCopPpS2@redhat.com>
+References: <aRRN1pTjJCopPpS2@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251112134143.27194-2-philmd@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=115.124.28.78; envelope-from=mail@jiesong.me;
+ helo=out28-78.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,64 +54,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 12, 2025 at 02:41:34PM +0100, Philippe Mathieu-Daudé wrote:
-> Describe the @c (this is the *frontend*) and @s (the *backend*)
-> parameters. Fill qemu_chr_fe_[gs]et_msgfds() method docstrings.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  include/chardev/char-fe.h | 24 +++++++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-> index 5f8a6df17dc..36bcf1f88a6 100644
-> --- a/include/chardev/char-fe.h
-> +++ b/include/chardev/char-fe.h
+Hi Daniel,
 
->  
->  /**
->   * qemu_chr_fe_get_msgfd:
-> + * @c: the character frontend to access
->   *
->   * For backends capable of fd passing, return the latest file descriptor passed
->   * by a client.
-> @@ -286,9 +302,12 @@ int qemu_chr_fe_get_msgfd(CharFrontend *c);
+Thank you for your review and valuable feedback.
 
-We should note here that if there is more than 1 pending FD,
-all except the first pending FD will be closed
+You're absolutely right about the concerns. Let me clarify the scenario 
+this patch addresses:
+The remove_fd_in_watch() function handles the client-side connection case. 
+However, when the chardev is configured in server mode 
+(e.g., -qmp unix:/var/lib/libvirt/qemu/qmp-xxx/qmp.monitor,server=on,wait=off), 
+there's listener that needs cleanup. The socket_chr_listener_cleanup() 
+is specifically intended to handle this server-side listener to prevent the 
+race condition between the main thread and IOThread monitoring the same listener fd.
 
->  
->  /**
->   * qemu_chr_fe_get_msgfds:
-> + * @c: the character frontend
-> + * @fds: an array of ancillary file descriptors to get
-> + * @num: the maximum number of ancillary file descriptors to get in @fds
->   *
->   * For backends capable of fd passing, return the number of file received
-> - * descriptors and fills the fds array up to num elements
-> + * descriptors and fills the fds array up to @num elements
+I apologize for the unsafe assumption that the chardev would always be a SocketChardev.
+You're correct that this could cause crashes with other chardev types. 
+To fix this properly, I’m considering a more general design. 
+Would the following approach be acceptable?
 
-Here we should note that if there are more pending FDs than @num,
-then all further FDs will be closed.
+  1.Add a chr_listener_cleanup callback to the ChardevClass structure
+  2.Implement this callback in SocketChardev
+  3.Register it in char_socket_class_init()
+  4.In monitor/qmp.c, call it through the class method
+    remove_fd_in_watch(chr);
+    ChardevClass *cc = CHARDEV_GET_CLASS(chr);
+    if (cc->chr_listener_cleanup) {
+        cc->chr_listener_cleanup(chr);
+    }
 
->   *
->   * Returns: -1 if fd passing isn't supported or there are no pending file
->   *          descriptors.  If file descriptors are returned, subsequent calls to
+This would maintain type safety while keeping the fix properly abstracted
+at the chardev layer. Would this fix make sense?
 
-Those are minor changes, so consider this tohave
+Looking forward to your guidance.
 
-  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Best regards,
+Jie Song 
 
