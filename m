@@ -2,54 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75F3C5064F
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C37CC5072A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 04:51:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJ1C6-0000rj-GL; Tue, 11 Nov 2025 22:06:50 -0500
+	id 1vJ1sm-0000hW-5E; Tue, 11 Nov 2025 22:50:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1C1-0000py-08; Tue, 11 Nov 2025 22:06:45 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vJ1Bz-00048F-Mj; Tue, 11 Nov 2025 22:06:44 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 12 Nov
- 2025 11:05:57 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 12 Nov 2025 11:05:57 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, "Kevin
- Wolf" <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 12/12] docs/system/arm/aspeed: Update Aspeed MiniBMC
- section to include AST1060 processor
-Date: Wed, 12 Nov 2025 11:05:49 +0800
-Message-ID: <20251112030553.291734-13-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
-References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1vJ1sj-0000fb-Oi
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:50:53 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1vJ1sh-0005T4-78
+ for qemu-devel@nongnu.org; Tue, 11 Nov 2025 22:50:53 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxmdEVBBRpTkciAA--.8914S3;
+ Wed, 12 Nov 2025 11:50:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJBxysAQBBRp9iMwAQ--.50588S2;
+ Wed, 12 Nov 2025 11:50:44 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org,
+	lixianglai@loongson.cn
+Cc: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Song Gao <gaosong@loongson.cn>
+Subject: [PATCH V2 0/2] fix pci device can't alloc irq from fdt
+Date: Wed, 12 Nov 2025 11:26:31 +0800
+Message-Id: <cover.1762914885.git.lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-CM-TRANSID: qMiowJBxysAQBBRp9iMwAQ--.50588S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,72 +59,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added details describing AST1060 as a Platform Root of Trust processor board alongside
-AST1030 MiniBMC, and extended the list of missing devices to include
-SMBus Filter and QSPI Monitor controllers.
+When we use the -kernel parameter to start an elf format kernel relying on
+fdt, we get the following error:
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- docs/system/arm/aspeed.rst | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.0: enabling device (0000 -> 0003)
+pcieport 0000:00:01.0: PME: Signaling with IRQ 19
+pcieport 0000:00:01.0: AER: enabled with IRQ 19
+pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.1: enabling device (0000 -> 0003)
+pcieport 0000:00:01.1: PME: Signaling with IRQ 20
+pcieport 0000:00:01.1: AER: enabled with IRQ 20
+pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.2: enabling device (0000 -> 0003)
+pcieport 0000:00:01.2: PME: Signaling with IRQ 21
+pcieport 0000:00:01.2: AER: enabled with IRQ 21
+pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.3: enabling device (0000 -> 0003)
+pcieport 0000:00:01.3: PME: Signaling with IRQ 22
+pcieport 0000:00:01.3: AER: enabled with IRQ 22
+pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 81a9699455..4fa1739cb5 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -448,23 +448,24 @@ Use ``tio`` or another terminal emulator to connect to the consoles:
-    $ tio /dev/pts/57
- 
- 
--Aspeed minibmc family boards (``ast1030-evb``)
--==================================================================
-+Aspeed MiniBMC and Platform Root of Trust processor family boards (``ast1030-evb``, ``ast1060-evb``)
-+====================================================================================================
- 
--The QEMU Aspeed machines model mini BMCs of various Aspeed evaluation
--boards. They are based on different releases of the
--Aspeed SoC : the AST1030 integrating an ARM Cortex M4F CPU (200MHz).
-+The QEMU Aspeed machines model mini BMCs and Platform Root of Trust processors of various Aspeed
-+evaluation boards. They are based on different releases of the Aspeed SoC : the AST1030 (MiniBMC)
-+and AST1060 (Platform Root of Trust Processor), both integrating an ARM Cortex M4F CPU (200MHz).
- 
- The SoC comes with SRAM, SPI, I2C, etc.
- 
--AST1030 SoC based machines :
-+AST10x0 SoC based machines :
- 
- - ``ast1030-evb``          Aspeed AST1030 Evaluation board (Cortex-M4F)
-+- ``ast1060-evb``          Aspeed AST1060 Evaluation board (Cortex-M4F)
- 
- Supported devices
- -----------------
- 
-- * SMP (for the AST1030 Cortex-M4F)
-+ * SMP (for the Cortex-M4F)
-  * Interrupt Controller (VIC)
-  * Timer Controller
-  * I2C Controller
-@@ -492,6 +493,8 @@ Missing devices
-  * Virtual UART
-  * eSPI Controller
-  * I3C Controller
-+ * SMBus Filter Controller
-+ * QSPI Monitor Controller
- 
- Boot options
- ------------
-@@ -507,4 +510,4 @@ To boot a kernel directly from a Zephyr build tree:
- .. code-block:: bash
- 
-   $ qemu-system-arm -M ast1030-evb -nographic \
--        -kernel zephyr.elf
-+        -kernel zephyr.bin
+This is because  the description of interrupt-cell is missing in the pcie
+irq map.  And there is a lack of a description of the interrupt trigger
+type.  Now it is corrected and the correct interrupt-cell is added in the
+pcie irq map.
+
+Refer to the implementation in arm and add some comments.
+
+changes:
+V1->V2:
+1.Fallback the incorrect modification of pch_pic interrupt-cells and add
+the interrupt trigger type in the pcie irq map
+2.Add macro definitions for the interrupt trigger types of fdt
+3.Refer to the implementation in arm and add some comments.
+
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Song Gao <gaosong@loongson.cn>
+
+Xianglai Li (2):
+  Modify the interrupt trigger type in loongarch virt fdt to macro
+    definition
+  fix pci device can't alloc irq from fdt
+
+ hw/loongarch/virt-fdt-build.c | 52 ++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
+
 -- 
-2.43.0
+2.39.1
 
 
