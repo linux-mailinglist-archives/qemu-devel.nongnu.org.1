@@ -2,100 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A17C53A7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 18:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BA6C53ACA
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 18:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJEXu-00062l-0n; Wed, 12 Nov 2025 12:22:14 -0500
+	id 1vJEc6-0003pK-Vq; Wed, 12 Nov 2025 12:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1vJEWe-0005Ij-NS
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:21:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEbl-0003R1-PR
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1vJEWc-0007N9-1m
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:20:55 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vJEbk-0008Qh-3c
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 12:26:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1762968051;
+ s=mimecast20190719; t=1762968370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yMxVuvAqoApe1n3kwx4U0GfXYBdIm/dWnshoZeslIHg=;
- b=R5b6uVFWQYeR+nk0uOXuWZ1rlIXyAwvAt/L8Ygp6M1wdBQ2bkHugCqmuH+xT14iDghKNt/
- pcYGjxgXQpzu0YM1LlYTtsC7lAKuV2KXJO4/gXgM94wq8F5093g5lORaw3BV7p/kK+J3uW
- BxV8BxQbDCaFiHr/rtLFp8mOfWo4ZvM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-Ljrxpz77Nme4d8N9rbo4DA-1; Wed, 12 Nov 2025 12:20:50 -0500
-X-MC-Unique: Ljrxpz77Nme4d8N9rbo4DA-1
-X-Mimecast-MFC-AGG-ID: Ljrxpz77Nme4d8N9rbo4DA_1762968049
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-475c422fd70so7841395e9.2
- for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 09:20:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1762968049; x=1763572849; darn=nongnu.org;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=yMxVuvAqoApe1n3kwx4U0GfXYBdIm/dWnshoZeslIHg=;
- b=pc6zMCSjtDkkmMnTSAwwemTnTzgiJK57lmE3r4XI68ObP0mx2/OhOL9zBkJwrN746Z
- pIORG/Wi1Xv+ZV8vFgq/VsviFgdKMWSd3mxAJqDw3RSzcqfPmPlRabJhNuUG1YFSRMUx
- 1D3nlwcu2ymzV+eYa+dsOuYNbVOMK0FGKCyvD0Qsnc9NcgUnIV/JsX+NPnfD8yEp8PxP
- wBjkDDILbdfjqf91e9N3pYcaDBx1rUujYvHBSJ1IP2LPPn40SDj1bHz5b6XfdMIW6kcd
- oir6e+g9MGe6BaDRrGUi5hdv+GzaxPJDlRAvVZGxSKz6fSYyTpGI/yw/NNKubTNeUkrD
- K9GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762968049; x=1763572849;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yMxVuvAqoApe1n3kwx4U0GfXYBdIm/dWnshoZeslIHg=;
- b=vmWIJ9YPJHzFxqxMU7Xj8XqECYFuhkIzxAvSkyuVDcuGn3K8hdNvTK5rVr9OGF0Zlv
- rGemvb7TyhpLSxS5bzj8c8e9sSFUn49GplYAEfkAsi8ipom8eZD0+ufBvwvNQ2g0KhKD
- +EdbgC0rO9VB7fSVz8pLcw12G8/L3rPZyOF3wRkVszgxQcc/+k9gDCTdpOG6iI0fnT38
- HXPtTWBIX+pt2tFtVWO9RNoGfEY0TQ5M9kiSmZlm7+gy0VAHX6d4uQFcDrZVFY+B7mXu
- Qrj5B2QKZCzqcNKEeU1NBiIafr5/PWVuFlYMLFcALl3g7LNvCWM4S8GaOmcWuJv3GhtE
- EJKQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXJRttPJ56GAWEfin4gBN/2xZQqtULsXKW+9A0tFPIcRK95P1IYwWNjSkvSNAtq853AxHy+/opHi02x@nongnu.org
-X-Gm-Message-State: AOJu0Ywk33+HhrWPvuUGr30cktaKs1tX1vGai9u9v3IjDTH8SE8fN4Af
- hxll4qPm0gadV8FmsIaatLv7+o4Nt3orTZLgNNjtxITkm3tylTLB0FIxMe85tYuiLPT9Mk3Ya+M
- K/8Mmn2FW/l3KSS0rcSPlpqgTDSa82cfu4Rg93T3hNM6/K4jMTTdotKSd
-X-Gm-Gg: ASbGncueUXeTYmrrrwSmEe8fKKToB00qQKIf6WUb9K05ZZC+1wfn1mt+cecepz1UBEz
- kAxmWp0yFRXJ8VI/HiTPAyHxa9yuXKYAMdGQjfrxIFSdHn8zbYrGssz2qlWuYrhxbtBbTkHwUUo
- vaqQ54O4nAZD5vnJfmt759LjSWTBOlp/PCw0O5BIsEfC10VLz/O8boIbr1OmDlTYTda6F7KLXMe
- GWrp9wfQtpPispNGjoiiHQAc4o5ctI7AzAxLjrhDCPMbQQ/vV9AO/BN9KAdL7yN7zJgpvaJWrC0
- D42dtttUwoQonJzjsYuzAXPTSEgSkEnWMF7inNwZ0SQH/ycNA/AJO5JQyrMNjlJIk2XVtolUR1q
- IgEVy5kdq7HfxZqrUxuhScIx6wGNyY2xEkH7t+e7YNOioyocc
-X-Received: by 2002:a05:600c:6305:b0:477:7a95:b971 with SMTP id
- 5b1f17b1804b1-477870a99d9mr38482865e9.31.1762968049292; 
- Wed, 12 Nov 2025 09:20:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEegzjrPUmLH9up7bKJ2Gnf4SouhSesuQw86AewfqbDWeqLNOhar2BDeK/AVLyrimDmRdJciA==
-X-Received: by 2002:a05:600c:6305:b0:477:7a95:b971 with SMTP id
- 5b1f17b1804b1-477870a99d9mr38482625e9.31.1762968048885; 
- Wed, 12 Nov 2025 09:20:48 -0800 (PST)
-Received: from rh (p200300f6af131a0027bd20bfc18c447d.dip0.t-ipconnect.de.
- [2003:f6:af13:1a00:27bd:20bf:c18c:447d])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47787e3a656sm46533675e9.2.2025.11.12.09.20.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Nov 2025 09:20:48 -0800 (PST)
-Date: Wed, 12 Nov 2025 18:20:47 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-cc: Peter Maydell <peter.maydell@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] target/arm/kvm: add kvm-psci-version vcpu property
-In-Reply-To: <0795ff4a-50d1-4b2d-84bf-e1bc9da11ba6@redhat.com>
-Message-ID: <cff8ff25-f4a6-6b90-8b90-10b8da7972ac@redhat.com>
-References: <20251030165905.73295-1-sebott@redhat.com>
- <20251030165905.73295-3-sebott@redhat.com>
- <0795ff4a-50d1-4b2d-84bf-e1bc9da11ba6@redhat.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5Av/PNyvOmm9Fzi63a7E7b3nnvDUZc3XfhsQBRojMJQ=;
+ b=M327qXP1542G5YfWfflo9tvuUuJM9qnVQO4Tfh2zvrd5shdTpuTShKuWf/1EygCA39Bsgr
+ fpPzT6K/x+FhIlSsnHbFK8KSqWwSVh3B7NWpJpJwGWLlGE1WxoC8qlbuloOzBNZudhHZgD
+ QorjtFavaLdSgSiYRU5SdS3Es+WfaVg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-7R6p3pjUPZObpV3n6BJssw-1; Wed,
+ 12 Nov 2025 12:26:07 -0500
+X-MC-Unique: 7R6p3pjUPZObpV3n6BJssw-1
+X-Mimecast-MFC-AGG-ID: 7R6p3pjUPZObpV3n6BJssw_1762968365
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5AE601956088; Wed, 12 Nov 2025 17:26:04 +0000 (UTC)
+Received: from gshan-thinkpadx1nanogen2.rmtau.csb (unknown [10.64.136.14])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 602011955F1A; Wed, 12 Nov 2025 17:25:55 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
+ mchehab+huawei@kernel.org, gengdongjiu1@gmail.com, mst@redhat.com,
+ imammedo@redhat.com, armbru@redhat.com, anisinha@redhat.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, zhao1.liu@intel.com, peter.maydell@linaro.org,
+ pbonzini@redhat.com, shan.gavin@gmail.com
+Subject: [PATCH v4 0/8] target/arm/kvm: Improve memory error handling
+Date: Thu, 13 Nov 2025 03:25:27 +1000
+Message-ID: <20251112172535.403042-1-gshan@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -120,48 +82,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 11 Nov 2025, Eric Auger wrote:
-> On 10/30/25 5:59 PM, Sebastian Ott wrote:
->> Provide a kvm specific vcpu property to override the default
->> (as of kernel v6.13 that would be PSCI v1.3) PSCI version emulated
->> by kvm. Current valid values are: 0.1, 0.2, 1.0, 1.1, 1.2, and 1.3
->>
->> Signed-off-by: Sebastian Ott <sebott@redhat.com>
->> ---
-[...]
->> +static char *kvm_get_psci_version(Object *obj, Error **errp)
->> +{
->> +    ARMCPU *cpu = ARM_CPU(obj);
->> +    const struct psci_version *ver;
->> +
->> +    for (ver = psci_versions; ver->number != -1; ver++) {
->> +        if (ver->number == cpu->prop_psci_version)
-> I still have the same question/comment as on v1. In case the end user
-> does not override the psci version I think you want to return the
-> default value, retrieved from KVM through KVM_REG_ARM_PSCI_VERSION and
-> which populates cpu->psci_version. So to me you should use
-> cpu->psci_version instead
+In the combination of 64KiB host and 4KiB guest, a problematic host
+page affects 16x guest pages. Those 16x guest pages are most likely
+owned by separate threads and accessed by the threads in parallel.
+It means 16x memory errors can be raised at once. However, we're
+unable to handle this situation because the only error source has
+one read acknowledgement register in current design. QEMU has to
+crash in the following path due to the previously delivered error
+isn't acknowledged by the guest on attempt to deliver another error.
 
-Sry, I didn't get your question the first time and double checked that the
-VM uses the default/most recent version when the property is not set.
+  kvm_vcpu_thread_fn
+    kvm_cpu_exec
+      kvm_arch_on_sigbus_vcpu
+        kvm_cpu_synchronize_state
+        acpi_ghes_memory_errors
+        abort
 
-I just found out how to actually call this function (via qom-get) and
-you're right: the VM uses the correct version but we report something
-different here - and in this version even trigger the assertion. Ouch.
+This series fixes the issue by sending 16x consective CPER errors
+which are contained in a single GHES error block.
 
-[...]
->> @@ -1959,7 +2008,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>      if (cs->start_powered_off) {
->>          cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_POWER_OFF;
->>      }
->> -    if (kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PSCI_0_2)) {
->> +    if (cpu->prop_psci_version != QEMU_PSCI_VERSION_0_1 &&
-> I don't understand what this change stands for. Please document it
-> through both a comment and a commit msg explanation
+PATCH[1-4] Increases GHES raw data maximal length from 1KiB to 4KiB
+PATCH[5]   Supports multiple error records in a single error block
+PATCH[6-7] Improves the error handling in the error delivery path
+PATCH[8]   Sends 16x consective CPERs in a single block if needed
 
-The explanation is in the cover letter - I'll move it to this patch.
+Changelog
+=========
+v4:
+  * v3: https://lists.nongnu.org/archive/html/qemu-arm/2025-11/msg00264.html
+  * Pick r-b tags from Jonathan
+  * Add compat property 'x-error-block-size' for migration     (Igor)
+  * Code and commit log improvements                           (Igor/Jonathan)
+  * Use error_fatal in the memory error delivery path          (Markus)
+  * Use APIs from registerfields.h                             (Philippe)
+v3:
+  * v2: https://lists.nongnu.org/archive/html/qemu-arm/2025-10/msg00372.html
+  * Code and changelog improvements                            (Jonathan)
+  * Fixed GHES error block status field and improved error
+    handling in the error delivery path                        (Igor)
+  * Fixed ACPI HEST table and document                         (Mauro)
+v2:
+  * v1: https://lists.nongnu.org/archive/html/qemu-arm/2025-02/msg00897.html
+  * Send 16x memory errors for the specific case               (Jonathan)
 
-Thanks,
-Sebastian
+Gavin Shan (8):
+  acpi/ghes: Make GHES max raw data length dynamic
+  tests/qtest/bios-tables-test: Prepare for changes in the HEST table
+  acpi/ghes: Increase GHES raw data maximal length to 4KiB
+  tests/qtest/bios-tables-test: Update HEST table
+  acpi/ghes: Extend acpi_ghes_memory_errors() for multiple CPERs
+  acpi/ghes: Bail early on error from get_ghes_source_offsets()
+  acpi/ghes: Use error_fatal in acpi_ghes_memory_errors()
+  target/arm/kvm: Support multiple memory CPERs injection
+
+ docs/specs/acpi_hest_ghes.rst     |   6 +-
+ hw/acpi/generic_event_device.c    |   2 +
+ hw/acpi/ghes-stub.c               |   7 +-
+ hw/acpi/ghes.c                    | 127 +++++++++++++++++-------------
+ hw/core/machine.c                 |   1 +
+ include/hw/acpi/ghes.h            |   8 +-
+ target/arm/kvm.c                  |  72 +++++++++++++++--
+ tests/data/acpi/aarch64/virt/HEST | Bin 224 -> 224 bytes
+ 8 files changed, 153 insertions(+), 70 deletions(-)
+
+-- 
+2.51.1
 
 
