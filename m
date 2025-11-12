@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB36C528C0
+	by mail.lfdr.de (Postfix) with ESMTPS id 78111C528C1
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Nov 2025 14:50:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJBEF-0007E3-FO; Wed, 12 Nov 2025 08:49:43 -0500
+	id 1vJBEG-0007FB-C8; Wed, 12 Nov 2025 08:49:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7H-0004Ae-5d
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:32 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7O-0004Cy-9F
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:41 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7F-0001Me-Nf
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:30 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-42b38693c4dso404039f8f.3
- for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 05:42:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJB7M-0001NJ-Ec
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 08:42:38 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4775ae77516so8961695e9.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Nov 2025 05:42:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1762954947; x=1763559747; darn=nongnu.org;
+ d=linaro.org; s=google; t=1762954954; x=1763559754; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6NuFzPNCwgBB9LblffFmsa55eQ/4iQv98wvI6PkiWGA=;
- b=owaGmlmgWg1p5xYyiifAAn3J6VH3Vhx1c7iYeQGw4wypdAZe3DIPw/SRm8mQxw+a6I
- Zym7NOUtqWcJ2Lu0/LrhOWSqP8HdXPh6ri5OkR+Weoe2R2P4uwda5fnd0CfJeoHJUtNR
- VYe+nChDm8ZyEJlaxHJUB386YpZvwdcI1zf2hZZnv1XziK66mPsi2LrDyc5sAG5rtJMO
- l+DngIHhlM5OiLrSuuy0Th3CLjUrj2tkwdxGUzmzmO71iTtdb7IJIaNuv5lsx3NtsbSQ
- DWW+NUpdCghHJgjNJtj/eL6G8onX2pq6/eIplgNG2rtBUiwrHYVeGgiaRdkFZ4s/B1hq
- twOg==
+ bh=QfROIVJKqfl7QKnSQpWNFzHIRml7qxEw0ys6YQW3ulo=;
+ b=xXfo6V9ltwRGH22ODMXuLEq6FI5CeWdLN77Vy5/UNZvtfTdUv/mX71CcvrK9y66dkA
+ x5MG/aOHoq2kuD6jV3XtMwW4P9mPMTqQHPFRNqRl1UTFAKToqswGPkXqhSa8flC8LyDs
+ kEeDBiQLqGPLbeajjXu1fsL/Ta3ZKDzVMpS6VVO6On8YA0BodgvU/Xj8r7k+FaxaGGQt
+ nFs1MIVKaBkompZLBGaR31v9sDaGUh/mWn3+oXJjzaIGoixWpfTo41Pbjoai1i5IoOrj
+ a12TRQDKJPU11m5t7+6MmUxJr4bRKTKsI+tg1Evgdu8T/349sXde4Rjm961/Mpvy0BkP
+ DPEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1762954947; x=1763559747;
+ d=1e100.net; s=20230601; t=1762954954; x=1763559754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=6NuFzPNCwgBB9LblffFmsa55eQ/4iQv98wvI6PkiWGA=;
- b=HHOrT3HBVQpyyBom7ov/vF0vpYMje6cI2HxgVVPfBnL7uE34Jifhfhq7qC/Pslevrc
- gaQsE28rgXfv3tUNdObXWOYeM+lSJy3DZmSpipyowNWCIufmXsUk5wN226HzjJo2+QLO
- 46SzxHpWi2GKuL5+4Xo9b17kdQPRlah0x3AvrvRJWL16KGLMCmy5sxw5ZzH12hs6PUBG
- AHyOvRX12Xc1U336y0SdaHd5bra5g7QtGeL6chSYjyaNhz00uJGjDbwHIPgfv80bxwbf
- aiVnQeJLA/cTLD/Cd83mFVQMRLu8uBFDZjEfQ/ZWPXEub2kR/k/SAEThKEHVWkmKeAEV
- ie6g==
-X-Gm-Message-State: AOJu0Yz82vs1w52mNz1Yv9+5mbcnvnUaXiskTqwH4obNyrdEboT8KiDQ
- McWV5dEl+2LJAHvksn4IEDgW6YL8W42L0y1KqieZpuZAHhy7crxIGfCUZbI7Xz4myv5k7LmN5mk
- X6TqPfKpnQg==
-X-Gm-Gg: ASbGncvmFBbYssArBIuozHSQ+dwMIJf5HDiRGxDhaCDOPDtC0LNm+A2L9RfnewS8Zot
- SHrk5Mfv4fXU6Xz3EFRSSnCAJmoOchA6T3iXK6ZT2JMkoSjCcSBKRv3oM23gdomsOdssICR8XuL
- kMUyVKDxY7A9rgd0eWdrebD+MRurlVtp1eRGf9KdLB3mpHHHvZiQTttYM6n1g+xa1XnyF1+Z2bw
- Sq01+av1vZ/rYbfvJNXw+v1zFheRogyN8VaQxf2tm0lyLGbYjza7RlmYaTof+XJNiIbf3vS/j3i
- FjhsgwgJ92WyhvyR2y/QZe9s8RkkhO+2HRW6vUzDF8DkisE655Rc19t4DAljuynbRssBOq0txh7
- HubvFvp2Jj89Cme2mS/HKvkI3NXzVzMYIO/74l2rxmweRIG2FWjkccGeDKaZp8y2xMR1e2RZDBo
- xl4zQqdYeeotiUR5AnsfZ3BurUt7FHJwq3at1keJkc1ofvvs4y+NKn+MA=
-X-Google-Smtp-Source: AGHT+IExEjIeS26/WorPB2eRgkhHxRI7V4iJI1VXXnfi0zNWFgmjvLuo2AoPLb/BheG19yMF7z8irw==
-X-Received: by 2002:a05:6000:2888:b0:429:cc1c:c2e with SMTP id
- ffacd0b85a97d-42b4bb90b6bmr2259806f8f.1.1762954947478; 
- Wed, 12 Nov 2025 05:42:27 -0800 (PST)
+ bh=QfROIVJKqfl7QKnSQpWNFzHIRml7qxEw0ys6YQW3ulo=;
+ b=wJlBE3CMteITKS0DXyN8E4IcqJJ+HDRREoSf/xuUgo7fI7Td4Z0JkazriHffbshkHp
+ TgaMdvKK8i+N/Qn+jib/fYMaLr+YnKYaOjA3YYgM6V/SMumWaFYf3TUGBILxWHz1LOub
+ Az+6nOtsuSBe1srjUb4535o8b9rDZEt5q26pQMYJH2B2jVpVese5g/8+GNQY59cZHFzP
+ WSR8o5NyMZPFkHw+AfPXrtAwba0w9wtHBsBmEK1v971ZAgsjzpIuGqU+9Q3HnUblUOhK
+ ieZ+0d52/hc9bXGmX3E8QZlEImmRknlf8gvFa2Yldo+q+umzx1l+qZf7ci4q6X6kMpAA
+ K63w==
+X-Gm-Message-State: AOJu0YyHYdT1XHAWBbzdPP0/at9genbYUy0rYQzV1wq/ointYGfKQD9Y
+ Pqvkd6eBPU4JABHEP7NoFi46dFuRn60Z6uw7dhwJgKJuIqUXew7JQZGYFsfAJHBoD70WYa/cAqj
+ DE5Q2IBdb7A==
+X-Gm-Gg: ASbGncuUI5iapTMtPe6sNF86O4FTbJPevfM9RSl17IDlEnUsaleVdwL0dOAu8IN3qso
+ IUyzw+VfjrhO+JZQeUn56N5yX8eT0ZZst/6D+TL2QUikL3gR7MzEFnTRneZqhf4xmmOk7WJeyYh
+ Q9wgusxMlYFfMWs5+EcjEJgj0X0f7vedjxoUshFT9SiDEC2sCfx3knTFWX1BJBgWdeMV2kJg3UU
+ kZKV/uIc/ViWa77kLvHwVDddctHbgAgqQ47hLyu2q7knDcGjF2S2jjYdO7i4FqUmP6AIcSH0uoT
+ TcDkEu7fIrYtpr3MZ+jfd9HwSR1uJ9NM/HXyZnEl3ONzWuNuJKfekfpFbsScxhE6xmBHHFpjbZX
+ TZly+lSWAsLdT+L4e81FxWOZw7MPR5DLo1eB4atUWURfA9tp0dZZJpOR4T5M00bd58fl99YEBmz
+ CGIz8fi+hwxHctNnU6G2n/r+Lkwbohy6FY/t/IGsm1HeYgieISYEzd80A=
+X-Google-Smtp-Source: AGHT+IFHHTPtzjtpxezcgC/tlkCl+4sqWp6QwK3mmQBikIms2T7kNlVM3+Z0g8E/zIvlPyBv58bN2w==
+X-Received: by 2002:a05:6000:2003:b0:42b:40df:2339 with SMTP id
+ ffacd0b85a97d-42b4bdb9f74mr2764618f8f.57.1762954954573; 
+ Wed, 12 Nov 2025 05:42:34 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42ac67921c3sm34772695f8f.40.2025.11.12.05.42.26
+ ffacd0b85a97d-42b2c6d3f67sm27951608f8f.37.2025.11.12.05.42.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Nov 2025 05:42:27 -0800 (PST)
+ Wed, 12 Nov 2025 05:42:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -70,25 +70,24 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-stable@nongnu.org
-Subject: [PATCH v3 06/10] chardev/char: Allow partial writes in
- qemu_chr_write()
-Date: Wed, 12 Nov 2025 14:41:39 +0100
-Message-ID: <20251112134143.27194-7-philmd@linaro.org>
+Subject: [PATCH v3 07/10] chardev/char: Preserve %errno in qemu_chr_write()
+Date: Wed, 12 Nov 2025 14:41:40 +0100
+Message-ID: <20251112134143.27194-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112134143.27194-1-philmd@linaro.org>
 References: <20251112134143.27194-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,34 +103,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If qemu_chr_write_buffer() returned an error, but could
-write some characters, return the number of character
-written. Otherwise frontends able to recover and resume
-writes re-write the partial chars already written.
+qemu_chr_write() dispatches to ChardevClass::chr_write(),
+and is expected to propagate the backend error, not some
+unrelated one produce by "best effort" logfile or replay.
+Preserve and return the relevant %errno.
 
 Cc: qemu-stable@nongnu.org
-Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  chardev/char.c | 5 +++++
  1 file changed, 5 insertions(+)
 
 diff --git a/chardev/char.c b/chardev/char.c
-index 105b0d53184..7931f4e0832 100644
+index 7931f4e0832..46a2dbfb5a3 100644
 --- a/chardev/char.c
 +++ b/chardev/char.c
-@@ -186,6 +186,11 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
+@@ -114,6 +114,7 @@ static int qemu_chr_write_buffer(Chardev *s,
+                                  int *offset, bool write_all)
+ {
+     ChardevClass *cc = CHARDEV_GET_CLASS(s);
++    int saved_errno;
+     int res = 0;
+     *offset = 0;
  
-     res = qemu_chr_write_buffer(s, buf, len, &offset, write_all);
- 
-+    if (!write_all && res < 0 && offset == 0) {
-+        /* Allow partial writes */
-+        return res;
-+    }
-+
-     if (qemu_chr_replay(s) && replay_mode == REPLAY_MODE_RECORD) {
-         replay_char_write_event_save(res, offset);
+@@ -139,6 +140,7 @@ static int qemu_chr_write_buffer(Chardev *s,
+             break;
+         }
      }
++    saved_errno = errno;
+     if (*offset > 0) {
+         /*
+          * If some data was written by backend, we should
+@@ -156,6 +158,7 @@ static int qemu_chr_write_buffer(Chardev *s,
+         qemu_chr_write_log(s, buf, len);
+     }
+     qemu_mutex_unlock(&s->chr_write_lock);
++    errno = saved_errno;
+ 
+     return res;
+ }
+@@ -192,7 +195,9 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
+     }
+ 
+     if (qemu_chr_replay(s) && replay_mode == REPLAY_MODE_RECORD) {
++        int saved_errno = errno;
+         replay_char_write_event_save(res, offset);
++        errno = saved_errno;
+     }
+ 
+     if (res < 0) {
 -- 
 2.51.0
 
