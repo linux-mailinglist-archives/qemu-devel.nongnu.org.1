@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51CCDC55BE5
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 06:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B83C55B93
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 05:59:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJPPh-0005C5-OA; Wed, 12 Nov 2025 23:58:30 -0500
+	id 1vJPPC-0004tN-Op; Wed, 12 Nov 2025 23:57:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOx-0004lP-H7; Wed, 12 Nov 2025 23:57:43 -0500
+ id 1vJPOx-0004lQ-I2; Wed, 12 Nov 2025 23:57:45 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOs-0001c6-K6; Wed, 12 Nov 2025 23:57:40 -0500
+ id 1vJPOs-0001cD-Kk; Wed, 12 Nov 2025 23:57:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763009859; x=1794545859;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zX1b/fem+6Jay0PpoUE7oh0H74VaN7d+HT2mFzMS8QA=;
- b=JSW5tEzMifHC2dr/Zn1gNtnx/b8Xm0gNndPVUhOnipXW72re5eFUN6aR
- NSwztqL+9S9OEwXwPx25gX5rkwVNQGaT6JShH0uiO9TZEGRpp6R/znXUt
- /CS6PyPjQWxEGMcDXUw2NpxW4cryMPsx7BYBhrZT83wrdhei98+ws1bqa
- 2soXkJlDfXSoVN6sS4pnuO05pEq8MIH81IX473dtMbY0vasBD9eyQrw3o
- Bq7qRUGem5RfulmZmAuK7PfT/wOzMRcH+FC+b3HfIEZZ9Fl2rLE6TgLkn
- HeSLCBUJ+GcgXiRciLcLWMaKqbi/vFOgXzLyHVI/inn5y8bsLAvBcZdWU Q==;
-X-CSE-ConnectionGUID: 4QgGMFKOS5K6H4dnZ/i9Mg==
-X-CSE-MsgGUID: LRcxAtDCRbqAWVvEO9+nhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682079"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208,217";a="67682079"
+ bh=9GE+hk+1IXfDmzkd0C2JXTi850FRaaGqtgpTyN8LixA=;
+ b=KqmMx80ypLkQ+pPgvN0EtNv6b+eiZv/AWdZYn/6r/dK7HqULpbeJQzPq
+ jCNSYM1mSi80zK9zPEQY30XFy3Io/RgetFhjWMB2EaWnRgqF2JKf+Q8qv
+ IN52lvDgNM2qO9lp+15d3DcczVwbLXeCCajPFv4s/1J2zKunr4F2WuyTq
+ Jh7FV8emnmCQLQouYnzJZaIiqWjOWEwl8OryxC6eH8eCbrh22JS8/m1LW
+ Z1uJ8QrPUVabYLkOM2dXq6I2YkaSKOVWC5ZY6kXmncVdYR/qN/tpETrBJ
+ p0J7vr0Py5/nONVjYTcKOMFeULmTEYbM4pZo9XY5j1al1KpO9ZnNQpUQ+ g==;
+X-CSE-ConnectionGUID: 5KMOHGDrRveUO0WnLzPhGw==
+X-CSE-MsgGUID: k6P4mUumTYKjx6s5n+ONnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682084"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682084"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 20:57:34 -0800
-X-CSE-ConnectionGUID: HAwCeUqDTg2mOu5CSWUuFQ==
-X-CSE-MsgGUID: Y4wtPsrZT++8QW+/HdOE8g==
+ 12 Nov 2025 20:57:36 -0800
+X-CSE-ConnectionGUID: fWcBP6ETR1eIk8oxB+g2VA==
+X-CSE-MsgGUID: Y2r+tZemR0WjRr3M8E4dww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; 
- d="scan'208,217";a="193663241"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663245"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:32 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:34 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
 Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
  qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 06/22] rust/memory: Add enable_lockless_io binding
-Date: Thu, 13 Nov 2025 13:19:21 +0800
-Message-Id: <20251113051937.4017675-7-zhao1.liu@intel.com>
+Subject: [PATCH 07/22] rust/hpet: Reduce unnecessary mutable self argument
+Date: Thu, 13 Nov 2025 13:19:22 +0800
+Message-Id: <20251113051937.4017675-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113051937.4017675-1-zhao1.liu@intel.com>
 References: <20251113051937.4017675-1-zhao1.liu@intel.com>
@@ -81,54 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Directly wrap the memory_region_enable_lockless_io() in
-MemoryRegion::enable_lockless_io.
-
-Although memory_region_enable_lockless_io() just sets 2 fields at C
-side, it's not necessary to totally implement it at Rust side, instead,
-simply wrap and reuse existing C interfaces.
-
-This will save some effort when modifying the interface in the future
-(changes are likely to occur, as there is a TODO in the C code).
+Methods of Timer and InterruptSource have been made as safe, so make the
+related methods of HPETTimer to accept immutable self reference.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/system/src/memory.rs | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ rust/hw/timer/hpet/src/device.rs | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/rust/system/src/memory.rs b/rust/system/src/memory.rs
-index 4b3316bf767f..e4bfbed1febe 100644
---- a/rust/system/src/memory.rs
-+++ b/rust/system/src/memory.rs
-@@ -12,7 +12,9 @@
- use common::{callbacks::FnCall, uninit::MaybeUninitField, zeroable::Zeroable, Opaque};
- use qom::prelude::*;
- 
--use crate::bindings::{self, device_endian, memory_region_init_io};
-+use crate::bindings::{
-+    self, device_endian, memory_region_enable_lockless_io, memory_region_init_io,
-+};
- pub use crate::bindings::{hwaddr, MemTxAttrs};
- 
- pub struct MemoryRegionOps<T>(
-@@ -172,6 +174,17 @@ pub fn init_io<T: IsA<Object>>(
-             );
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 3564aa79c6e5..5e08b91494cf 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -324,7 +324,7 @@ fn get_int_route(&self) -> usize {
          }
      }
-+
-+    /// Enable lockless (BQL free) acceess.
-+    ///
-+    /// Enable BQL-free access for devices that are well prepared to handle
-+    /// locking during I/O themselves: either by doing fine grained locking or
-+    /// by providing lock-free I/O schemes.
-+    pub fn enable_lockless_io(&self) {
-+        // SAFETY: MemoryRegion is wrapped by Opaque<>, it's safe to get a
-+        // raw pointer as *mut MemoryRegion.
-+        unsafe { memory_region_enable_lockless_io(self.as_mut_ptr()) }
-+    }
- }
  
- unsafe impl ObjectType for MemoryRegion {
+-    fn set_irq(&mut self, set: bool) {
++    fn set_irq(&self, set: bool) {
+         let route = self.get_int_route();
+ 
+         if set && self.is_int_enabled() && self.get_state().is_hpet_enabled() {
+@@ -350,7 +350,7 @@ fn set_irq(&mut self, set: bool) {
+         }
+     }
+ 
+-    fn update_irq(&mut self, set: bool) {
++    fn update_irq(&self, set: bool) {
+         // If Timer N Interrupt Enable bit is 0, "the timer will
+         // still operate and generate appropriate status bits, but
+         // will not cause an interrupt"
+@@ -388,7 +388,7 @@ fn set_timer(&mut self) {
+         self.arm_timer(self.cmp64);
+     }
+ 
+-    fn del_timer(&mut self) {
++    fn del_timer(&self) {
+         // Just remove the timer from the timer_list without destroying
+         // this timer instance.
+         self.qemu_timer.delete();
+@@ -657,7 +657,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
+             self.counter.set(self.get_ticks());
+ 
+             for timer in self.timers.iter().take(self.num_timers) {
+-                timer.borrow_mut().del_timer();
++                timer.borrow().del_timer();
+             }
+         }
+ 
+@@ -681,7 +681,7 @@ fn set_int_status_reg(&self, shift: u32, _len: u32, val: u64) {
+ 
+         for (index, timer) in self.timers.iter().take(self.num_timers).enumerate() {
+             if cleared & (1 << index) != 0 {
+-                timer.borrow_mut().update_irq(false);
++                timer.borrow().update_irq(false);
+             }
+         }
+     }
 -- 
 2.34.1
 
