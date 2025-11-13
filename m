@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3E4C55BAE
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 05:59:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 753DDC55BFA
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 06:03:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJPQ2-0005ic-Nw; Wed, 12 Nov 2025 23:58:51 -0500
+	id 1vJPPy-0005SY-UJ; Wed, 12 Nov 2025 23:58:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPPS-00056e-69; Wed, 12 Nov 2025 23:58:14 -0500
+ id 1vJPPS-00056f-9U; Wed, 12 Nov 2025 23:58:16 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPPQ-0001cQ-Fq; Wed, 12 Nov 2025 23:58:13 -0500
+ id 1vJPPQ-0001c6-BZ; Wed, 12 Nov 2025 23:58:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763009892; x=1794545892;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lrVjytpIrKcTyu9/1bvP/HoS+1Zqb/fXXacaaiI72xo=;
- b=aa72m3dosNmudRLZZCL8qNeuWiI1rTsf4x9uHf/dFk0pnItoc9Pdx9E8
- 6GIBsZrjGCkSltAiX16+MskGn0AZVKJCe+nVOf1fx/rhl/w0RDOHYxlX7
- MdkNXUJf/BRuLkcdR1izxteHrSHxZy2WYG0tiQmHsX+GzRiFw5StpM36T
- zN1tdGvujMQtaaCmnFiou7OoJOQOzr/ry7W08kEszK3VLe1sU+2/KQPeb
- 2CUqvm6R7CYkuNTKkfJDZKjop1ylVXLJlTTbgXdmppS/kXUurqrM04tK9
- x7IKOiQUvLjw9Yo/PULtujhGNocyZBS187gIJVk909Vh8qz95qRXYFeTJ Q==;
-X-CSE-ConnectionGUID: uQdApcnyS52kyn/vohivyA==
-X-CSE-MsgGUID: OKkw2sMbRKaePTm92tO3eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682129"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682129"
+ bh=JJO7Uy5utj+c6O5L1yTosvifZImBMCxlVXThZW9Y0ZQ=;
+ b=VZ5GVP7NtwdKRzf7XBHk3dsTWiIeWkHjC7tA5MU/+/0X3CZ2a40Z65Xw
+ yPFKU0tyHx3WsbJxoPu115Q09SQCPC0BalNhXm/x53BPdILQ5Kl4Bay/g
+ Fg5vCuubpDIEJTVXn8I/07h505mx0oqcjaqrbof4X7VUagPh62RYEYW7m
+ uJFM1kGTOFOhpt7QahZmCYoMQNV1vYVpxU3+VdT0UCVxAE1H9c7rgpJ1+
+ LUeUE60guCvxP8SEZuRJiu3YECGBfgcersN3eWZYuGBKDlUI6Gj1G7Yh7
+ fMk7qBx4vMR0iptqr0R7TGMsG+WBP86drqP0G5RJagitsWNNDG9hvOzoX A==;
+X-CSE-ConnectionGUID: J6zK7P61TleS6sgMPpCL8Q==
+X-CSE-MsgGUID: 3hanE8UySt+3FwMDGMhjEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682135"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682135"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 20:57:51 -0800
-X-CSE-ConnectionGUID: yv+S+AEWS7yhXC4K/DloWA==
-X-CSE-MsgGUID: UX9mqu2FRciqUtRrQIVOEA==
+ 12 Nov 2025 20:57:53 -0800
+X-CSE-ConnectionGUID: xkcwPd2yTC+9RTIsoZ7GgA==
+X-CSE-MsgGUID: DkmRB5jqQSWg8AIOCe+jNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663279"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663283"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:49 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:51 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
 Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
  qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 14/22] rust/hpet: Borrow HPETState.regs once in
- HPETState::post_load()
-Date: Thu, 13 Nov 2025 13:19:29 +0800
-Message-Id: <20251113051937.4017675-15-zhao1.liu@intel.com>
+Subject: [PATCH 15/22] rust/hpet: Explicitly initialize complex fields in
+ init()
+Date: Thu, 13 Nov 2025 13:19:30 +0800
+Message-Id: <20251113051937.4017675-16-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113051937.4017675-1-zhao1.liu@intel.com>
 References: <20251113051937.4017675-1-zhao1.liu@intel.com>
@@ -81,47 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Timers in post_load() access the same HPETState, which is the "self"
-HPETState.
+Explicitly initialize more fields which are complex structures.
 
-So there's no need to access HPETState from child HPETTimer again and
-again. Instead, just cache and borrow HPETState.regs at the beginning,
-and this could save some CPU cycles and reduce borrow() calls.
+For simple types (bool/u32/usize), they can be omitted since C has
+already initialized memory to all zeros and this is the valid
+initialization for those simple types.
 
-It's safe, because post_load() is called with BQL protection, so that
-there's no other chance to modify the regs.
+Previously such complex fields (InterruptSource/BqlCell/BqlRefCell) were
+not explicitly initialized in init() and it's fine, because simply
+setting all memory to zero aligns with their default initialization
+behavior. However, this behavior is not robust. When adding new complex
+struct or modifying the initial values of existing structs, this default
+behavior can easily be broken.
+
+Thus, do explicit initialization for HPET to become a good example.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 738ebb374fc9..bd673a1d0110 100644
+index bd673a1d0110..1bef94e560f6 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -885,9 +885,11 @@ fn pre_save(&self) -> Result<(), migration::Infallible> {
+@@ -737,6 +737,18 @@ unsafe fn init(mut this: ParentInit<Self>) {
+             HPET_REG_SPACE_LEN,
+         );
+ 
++        // Only consider members with more complex structures. C has already
++        // initialized memory to all zeros - simple types (bool/u32/usize) can
++        // rely on this without explicit initialization.
++        uninit_field_mut!(*this, regs).write(Default::default());
++        uninit_field_mut!(*this, hpet_offset).write(Default::default());
++        // Set null_mut for now and post_init() will fill it.
++        uninit_field_mut!(*this, irqs).write(Default::default());
++        uninit_field_mut!(*this, rtc_irq_level).write(Default::default());
++        uninit_field_mut!(*this, pit_enabled).write(Default::default());
++        uninit_field_mut!(*this, num_timers_save).write(Default::default());
++        uninit_field_mut!(*this, hpet_id).write(Default::default());
++
+         Self::init_timers(&mut this);
      }
  
-     fn post_load(&self, _version_id: u8) -> Result<(), migration::Infallible> {
-+        let regs = self.regs.borrow();
-+
-         for timer in self.timers.iter().take(self.num_timers) {
-             let mut t = timer.borrow_mut();
--            let cnt = t.get_state().regs.borrow().counter;
-+            let cnt = regs.counter;
- 
-             t.cmp64 = t.calculate_cmp64(cnt, t.regs.cmp);
-             t.last = CLOCK_VIRTUAL.get_ns() - NANOSECONDS_PER_SECOND;
-@@ -896,7 +898,7 @@ fn post_load(&self, _version_id: u8) -> Result<(), migration::Infallible> {
-         // Recalculate the offset between the main counter and guest time
-         if !self.hpet_offset_saved {
-             self.hpet_offset
--                .set(ticks_to_ns(self.regs.borrow().counter) - CLOCK_VIRTUAL.get_ns());
-+                .set(ticks_to_ns(regs.counter) - CLOCK_VIRTUAL.get_ns());
-         }
- 
-         Ok(())
 -- 
 2.34.1
 
