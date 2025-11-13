@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FE2C567B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 10:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210B2C56832
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 10:12:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJTIh-0004g9-82; Thu, 13 Nov 2025 04:07:31 -0500
+	id 1vJTN3-0007ic-ME; Thu, 13 Nov 2025 04:12:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vJTIf-0004fL-3h
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 04:07:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vJTLV-0006jT-9a
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 04:10:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vJTId-0006Gl-4b
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 04:07:28 -0500
+ id 1vJTLT-0008J1-8C
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 04:10:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763024843;
+ s=mimecast20190719; t=1763025022;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=AdHSlZNLdNEXCHS+wkPv/CQN5ik2ky+PiU98l298csY=;
- b=UA3dE9xvqZhUSA2EDG4UFShhXn49Pn74IvSDeDfmu3C01ohdR4jnJlvJYvq/ZUt6Z6CA6/
- ulPEgMe3LBWfVkFYCdEWnmHBEDxbn0yLY/wIgP8Olk4w5X1gzETzzVQa9A5/a0gVDrFakR
- U9hWiH84pxrJK2FPuQNqykhb/+I93Cg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hRbSVHvNpAW3JViyfL4rCaSjL1cSvAg03NJwWXd4Csc=;
+ b=Pg8STO+rAB8TXSdDkkQuOTnOngH12vA8PqTrOCH0U+PdGE6GIrcRZIy5xUajk726J/dkni
+ mX+xKsPE5O4EkdJGT1GJJTROFppe+wh2FkV2b7JuplWBLBAl1y697HSlSblvH0mI/7xQkn
+ Zl2b7TjRxLuK4D/eSrUbL0+9aHwT6S4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-QZu7uGZdObWy4PfOc1cdFw-1; Thu,
- 13 Nov 2025 04:07:21 -0500
-X-MC-Unique: QZu7uGZdObWy4PfOc1cdFw-1
-X-Mimecast-MFC-AGG-ID: QZu7uGZdObWy4PfOc1cdFw_1763024841
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-fsvyx2_eP_qMh-46C04frw-1; Thu,
+ 13 Nov 2025 04:10:18 -0500
+X-MC-Unique: fsvyx2_eP_qMh-46C04frw-1
+X-Mimecast-MFC-AGG-ID: fsvyx2_eP_qMh-46C04frw_1763025017
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC30D180047F; Thu, 13 Nov 2025 09:07:20 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D1590195606E; Thu, 13 Nov 2025 09:10:17 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.56])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B14F218004A3; Thu, 13 Nov 2025 09:07:18 +0000 (UTC)
-Date: Thu, 13 Nov 2025 09:07:14 +0000
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8C9361956048; Thu, 13 Nov 2025 09:10:16 +0000 (UTC)
+Date: Thu, 13 Nov 2025 09:10:12 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, kwolf@redhat.com
-Subject: Re: [PATCH v3 for-10.2 00/13] Fix deadlock with bdrv_open of
- self-served NBD
-Message-ID: <aRWfwmWz2LfgMKrs@redhat.com>
-References: <20251113011625.878876-15-eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+Subject: Re: [PATCH v3] tests/unit: add unit test for qemu_hexdump()
+Message-ID: <aRWgdCWsEr3cCSNl@redhat.com>
+References: <20251113064935.342018-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251113011625.878876-15-eblake@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251113064935.342018-1-vsementsov@yandex-team.ru>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,81 +86,68 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Seems you sent a v3 twice today. I reviewed the earlier v3 and
-assume this v3 is an identical accident dupe. If this is actually
-a v3 let me know and i'll review further...
+On Thu, Nov 13, 2025 at 09:49:35AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> Test, that fix in previous commit make sense.
+> 
+> To not break compilation when we build without
+> 'block', move hexdump.c out of "if have_block"
+> in meson.build.
+> 
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+> 
+> v3: change meson.build to compile hexdump.c always
+> 
+>  tests/unit/test-cutils.c | 43 ++++++++++++++++++++++++++++++++++++++++
+>  util/meson.build         |  2 +-
+>  2 files changed, 44 insertions(+), 1 deletion(-)
 
-On Wed, Nov 12, 2025 at 07:11:25PM -0600, Eric Blake wrote:
-> v2 was here:
-> https://lists.nongnu.org/archive/html/qemu-devel/2025-11/msg01243.html
-> 
-> Since then:
->  - drop patch 7/12; refcounting for GSource case is now unchanged
->  - add a couple of patches: fix a chardev leaky abstraction, and add a
->    mutex lock for cross-thread safety
->  - improve commit messages to document why NBD is safe now, even without
->    adding notify callbacks to AioContext
-> 
-> Now that the new behavior is opt-in rather than a change of defaults,
-> and only NBD opts in, it should still be safe to include in 10.2.
-> But the technical debt here means that we really should consider
-> improving the AioContext API for 11.0 to allow for a notify function
-> similar to what GSource provides.
-> 
-> Key:
-> [----] : patches are identical
-> [####] : number of functional differences between upstream/downstream patch
-> [down] : patch is downstream-only
-> The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
-> 
-> 001/13:[----] [--] 'iotests: Drop execute permissions on vvfat.out'
-> 002/13:[----] [--] 'qio: Add trace points to net_listener'
-> 003/13:[----] [--] 'qio: Unwatch before notify in QIONetListener'
-> 004/13:[----] [--] 'qio: Remember context of qio_net_listener_set_client_func_full'
-> 005/13:[down] 'qio: Protect NetListener callback with mutex'
-> 006/13:[----] [-C] 'qio: Minor optimization when callback function is unchanged'
-> 007/13:[0042] [FC] 'qio: Factor out helpers qio_net_listener_[un]watch'
-> 008/13:[down] 'chardev: Reuse channel's cached local address'
-> 009/13:[0053] [FC] 'qio: Provide accessor around QIONetListener->sioc'
-> 010/13:[0013] [FC] 'qio: Prepare NetListener to use AioContext'
-> 011/13:[0041] [FC] 'qio: Add QIONetListener API for using AioContext'
-> 012/13:[----] [--] 'nbd: Avoid deadlock in client connecting to same-process server'
-> 013/13:[----] [--] 'iotests: Add coverage of recent NBD qio deadlock fix'
-> 
-> Eric Blake (13):
->   iotests: Drop execute permissions on vvfat.out
->   qio: Add trace points to net_listener
->   qio: Unwatch before notify in QIONetListener
->   qio: Remember context of qio_net_listener_set_client_func_full
->   qio: Protect NetListener callback with mutex
->   qio: Minor optimization when callback function is unchanged
->   qio: Factor out helpers qio_net_listener_[un]watch
->   chardev: Reuse channel's cached local address
->   qio: Provide accessor around QIONetListener->sioc
->   qio: Prepare NetListener to use AioContext
->   qio: Add QIONetListener API for using AioContext
->   nbd: Avoid deadlock in client connecting to same-process server
->   iotests: Add coverage of recent NBD qio deadlock fix
-> 
->  include/io/channel-socket.h                   |   2 +-
->  include/io/net-listener.h                     |  71 ++++-
->  blockdev-nbd.c                                |   4 +-
->  chardev/char-socket.c                         |   2 +-
->  io/net-listener.c                             | 300 +++++++++++++-----
->  migration/socket.c                            |   4 +-
->  ui/vnc.c                                      |  34 +-
->  io/trace-events                               |   5 +
->  tests/qemu-iotests/tests/nbd-in-qcow2-chain   |  94 ++++++
->  .../qemu-iotests/tests/nbd-in-qcow2-chain.out |  75 +++++
->  tests/qemu-iotests/tests/vvfat.out            |   0
->  11 files changed, 498 insertions(+), 93 deletions(-)
->  create mode 100755 tests/qemu-iotests/tests/nbd-in-qcow2-chain
->  create mode 100644 tests/qemu-iotests/tests/nbd-in-qcow2-chain.out
->  mode change 100755 => 100644 tests/qemu-iotests/tests/vvfat.out
-> 
-> -- 
-> 2.51.1
-> 
+> +static void test_qemu_hexdump_alignment(void)
+> +{
+> +    /*
+> +     * Test that ASCII part is properly aligned for incomplete lines.
+> +     * This test catches the bug that was fixed in previous commit
+> +     * "util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic".
+> +     *
+> +     * We use data that is not aligned to 16 bytes, so last line
+> +     * is incomplete.
+> +     */
+> +    const uint8_t data[] = {
+> +        /* First line: 16 bytes */
+> +        0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f,  /* "Hello Wo" */
+> +        0x72, 0x6c, 0x64, 0x21, 0x20, 0x54, 0x68, 0x69,  /* "rld! Thi" */
+> +        /* Second line: 5 bytes (incomplete) */
+> +        0x73, 0x20, 0x69, 0x73, 0x20                     /* "s is " */
+> +    };
+> +    char *output = NULL;
+
+Could be  g_autofree, and avoid the later 'free()' call.
+
+> +    size_t size;
+> +    FILE *stream = open_memstream(&output, &size);
+> +
+> +    g_assert_nonnull(stream);
+> +
+> +    qemu_hexdump(stream, "test", data, sizeof(data));
+> +    fclose(stream);
+> +
+> +    g_assert_nonnull(output);
+> +
+> +    /* We expect proper alignment of "s is" part on the second line */
+> +    const char *expected =
+> +        "test: 0000: 48 65 6c 6c  6f 20 57 6f  72 6c 64 21  20 54 68 69   Hello World! Thi\n"
+> +        "test: 0010: 73 20 69 73  20                                      s is \n";
+> +
+> +    g_assert_cmpstr(output, ==, expected);
+> +
+> +    free(output);
+> +}
+
+The above comment is trivial, so
+
+  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
 
 With regards,
 Daniel
