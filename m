@@ -2,110 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D427EC57F94
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 15:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64717C58090
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 15:52:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJYS3-0000rJ-02; Thu, 13 Nov 2025 09:37:31 -0500
+	id 1vJYfc-0002Sg-Md; Thu, 13 Nov 2025 09:51:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vJYQO-0007JW-1S
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:35:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1vJYfS-0002G8-FX
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:51:27 -0500
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vJYQL-00039a-HJ
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:35:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763044542;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7KlH9s8L709HhmwmfZLNRXcFcHHTi3n4aoQODNuX7DM=;
- b=NpO3sNVXLLdFwcCBhLhKh+iZqQv/5/zuAkfmCzrSMcQI2Jo6j2pyGZHR++Aeed4pRrhpA9
- qjMz1vcNtQxOKrSx/hZREPDZih9H4pUylg0a1F/SDBmoupR4vPurjwiqg0dInrnnu2xoE4
- 7sTbjn1bhui5mYyYYiDUKzBt8cJ/fzY=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-100-qN7HHBP1Mem8I_O3PMZHbQ-1; Thu, 13 Nov 2025 09:35:41 -0500
-X-MC-Unique: qN7HHBP1Mem8I_O3PMZHbQ-1
-X-Mimecast-MFC-AGG-ID: qN7HHBP1Mem8I_O3PMZHbQ_1763044540
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-89090e340bfso199030185a.0
- for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 06:35:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763044540; x=1763649340;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7KlH9s8L709HhmwmfZLNRXcFcHHTi3n4aoQODNuX7DM=;
- b=LjZXaVajHla/KsGwF7HCJjpU8GiMLfTn5hPWQGGE+sQWZHTDbSOc64u1cnGOad6H5W
- 1H79+lqFokYsEVVOD2Q2GOGTEfzzFesx7ItrJugy2ZGA6Ux+miCvrJt5JC1f0LG0XpW0
- m6kaFvkAKu94iHpbZFtoM3wZnWvqy8EiNFW6VwaEj7cKI16AQ/Rq96vf1AqPqpGRz9XR
- sbf4YjjvIOAUCt0CqEJroxmVc7rlfhaqCdl4M+VBFqqGciLgSiTAimnRNdO+y2kss+Bz
- JZyA8LU/vZ6wqsh9HHoMeiy0pMgumGbWBl45cGLYsY9Ef6g42ETWPCMa8aRnSaGBBx5S
- BUpw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXFAbnfdOABnk3gl9US+EtkDjB6sQGRQKed6iCU38AGdEhTk+BWjMDD7+HkRoiByRL4QEYBaoMGvn7r@nongnu.org
-X-Gm-Message-State: AOJu0YycIoP+OshZm2YSBwEIjTFPYYpSma7mjW45ZZ5shr0Y24AFcak5
- U4ziExha2v9PNWB8Hbo0irwNGQj5SbrbTLdfsPjuVCgt0UIqGr4e5niwTW3U2xLqU8955k7ES7U
- 0h9n6mA9NF8g7hLnGyMNceRU0H4nG8d6xoJGXpOYKGeoBTnAuw8kYQd9X
-X-Gm-Gg: ASbGncsXjTrGMxLWJIhPlCLyM75kw0skiajkW4nmPNcttbs0FKn42wZKhOxT49NEqIK
- Ki/mHaGOz82UJqD6YD6F9fdnwXUk+S0PvVgzdYYWeViTMfJ+efDuYXk1jP0EWx6aZ5lPp4s2QLV
- D/zOgSgRqi6Ow7p9WNaj+A5hFdYdSN4vbB3z9GBXoniDltRf63VzKdEi+DuiCJ2HJBzbn2k3X/D
- fojf1Ku1f1DE1OwiFMUvSyhIoILfyTi825MTNStZpDnSV0ywh70UhxP67zWFq+B/2H3aPVL/Aqo
- /TgWPEG2urlPPNfCcSNxlEP2blu+VUrj2EyMvyf6jd0RNoxMPxu5jKkwQghtdNzgaLU6ZMBku0T
- o0qsB7Pl/HorlbgwReqkeOSaEBu5KwBc62IEETEIbUqA1rw==
-X-Received: by 2002:a05:620a:4409:b0:888:f40a:256 with SMTP id
- af79cd13be357-8b29b849758mr928416385a.65.1763044540319; 
- Thu, 13 Nov 2025 06:35:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbsjW7Lv0uOxhMYE6H+zXUrQykvudd58FoEt36AhaO1fhYEMNHxt18xfXxrK4BP0B6XxinXQ==
-X-Received: by 2002:a05:620a:4409:b0:888:f40a:256 with SMTP id
- af79cd13be357-8b29b849758mr928411585a.65.1763044539805; 
- Thu, 13 Nov 2025 06:35:39 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b2aee9fb7fsm141021985a.1.2025.11.13.06.35.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Nov 2025 06:35:39 -0800 (PST)
-Message-ID: <791e0383-c4c7-49bf-863c-d45428f3e48d@redhat.com>
-Date: Thu, 13 Nov 2025 15:35:36 +0100
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1vJYfO-0002ll-HI
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:51:20 -0500
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 986E5439EB
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 14:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1763045476;
+ bh=sqjVFeS5U0b1OUyLCVWjMryInKGWmsDWU0atApWOD6w=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=rhmufE0mKul0yMEOQG7mkV75ymqiB8WT1Uh9aFEXcd3WmsSZnbc8Bpw2DYjniFmpE
+ mwNpwxmHyptCuQ27ZZbI0mkYaQpXiIj4EftTpzO26386PPG/i4HQr3VWm55oEG8w0Z
+ SvyMGtYHNtIDUesOfv2h6b/Kscz+sgf6iseAN2/no0+t0FwpY2mji503dTzkytx51z
+ 0OtFou83SuTrGDX0oUYO48tFH5SzVQeHfBNU7L10FFJgqyfXFX4WRTslec93JXt0BM
+ W3KNxhGuVf7vp2ZmhnJm9gRvU23613smN2erkphGs/FPtFE2n7472oYFJDhN8wELY3
+ FsPifLgB87DXQ==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id 861B67F69C
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 14:51:16 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH 1/7] target/arm/machine: Improve traces on register
- mismatch during migration
-Content-Language: en-US
-To: Cornelia Huck <cohuck@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
- maz@kernel.org, oliver.upton@linux.dev, sebott@redhat.com, gshan@redhat.com,
- ddutile@redhat.com, peterx@redhat.com, philmd@linaro.org, pbonzini@redhat.com
-References: <20251016140039.250111-1-eric.auger@redhat.com>
- <20251016140039.250111-2-eric.auger@redhat.com> <877bwtvaj7.fsf@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <877bwtvaj7.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Nov 2025 14:42:01 -0000
+From: Heinrich Schuchardt <2123828@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Unknown;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=glibc; component=main;
+ status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ status=Fix Released; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=gcc-15;
+ component=None; status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=glibc;
+ component=main; status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
+ component=main; status=Won't Fix; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=gcc-15;
+ component=main; status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=glibc;
+ component=main; status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
+ component=main; status=Won't Fix; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
+ sourcepackage=gcc-15; component=main; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
+ sourcepackage=glibc; component=main; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
+ component=main; status=Fix Committed; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=resolute;
+ sourcepackage=glibc; component=main; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=resolute; sourcepackage=qemu;
+ component=main; status=Fix Released; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug-Tags: block-proposed-questing update-excuse verification-done
+ verification-done-questing
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: ahasenack enr0n hectorcao janitor paelzer schopin
+ slyon ubuntu-sru-bot vhaudiquet xypron
+X-Launchpad-Bug-Reporter: =?utf-8?q?Lukas_M=C3=A4rdian_=28slyon=29?=
+X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
+References: <175793222278.1250191.6568998309826575823.malonedeb@juju-98d295-prod-launchpad-2>
+Message-Id: <176304492121.1373086.2775383161863581049.malone@juju-98d295-prod-launchpad-2>
+Subject: [Bug 2123828] Re: [SRU] RISC-V: incorrect emulation of load and store
+ on big-endian systems
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 6197ee506a2a15df8baaf51f7a6ee82eccaa6917
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -114,94 +121,166 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
+Reply-To: Bug 2123828 <2123828@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I have create LP 2131236 to handle the VDSO related build error on
+amd64v3.
 
+This needs to be resolved first before going forward with the SRU.
 
-On 10/17/25 4:59 PM, Cornelia Huck wrote:
-> On Thu, Oct 16 2025, Eric Auger <eric.auger@redhat.com> wrote:
->
-> More information is really valuable here. I have some nits :)
->
->> Currently whenthe number of KVM registers exposed by the source is
-> s/whenthe/when the/
->
->> larger than the one exposed on the destination, the migration fails
->> with: "failed to load cpu:cpreg_vmstate_array_len"
->>
->> This gives no information about which registers are causing the trouble.
->>
->> This patches rework the target/arm/machine code so that it becomes
-> s/patches rework/patch reworks/
->
->> able to handle an input stream with a larger set of registers than
->> the destination and print useful information about which registers
->> are causing the trouble. The migration outcome is unchanged:
->> - unexpected registers still will fail the migration
->> - missing ones are print but will not fail the migration, as done today.
-> s/print/printed/
->
->> The input stream can contain MAX_CPREG_VMSTATE_ANOMALIES(10) extra
->> registers compared to what exists on the target.
->>
->> If there are more registers we will still hit the previous
->> "load cpu:cpreg_vmstate_array_len" error.
->>
->> At most, MAX_CPREG_VMSTATE_ANOMALIES missing registers
->> and MAX_CPREG_VMSTATE_ANOMALIES unexpected registers are print.
-> s/print/printed/
->
-> If we really get tons of register discrepancies, I'd expect the reason for
-> that to be something more obvious, so limiting should be fine.
->
->> Example:
->>
->> qemu-system-aarch64: kvm_arm_cpu_post_load Missing register in input stream: 0 0x6030000000160003 fw feat reg 3
->> qemu-system-aarch64: kvm_arm_cpu_post_load Unexpected register in input stream: 0 0x603000000013c103 op0:3 op1:0 crn:2 crm:0 op2:3
->> qemu-system-aarch64: kvm_arm_cpu_post_load Unexpected register in input stream: 1 0x603000000013c512 op0:3 op1:0 crn:10 crm:2 op2:2
->> qemu-system-aarch64: kvm_arm_cpu_post_load Unexpected register in input stream: 2 0x603000000013c513 op0:3 op1:0 crn:10 crm:2 op2:3
->> qemu-system-aarch64: error while loading state for instance 0x0 of device 'cpu'
->> qemu-system-aarch64: load of migration failed: Operation not permitted
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> ---
->>  target/arm/cpu.h        |  6 +++++
->>  target/arm/kvm.c        | 23 ++++++++++++++++
->>  target/arm/machine.c    | 58 ++++++++++++++++++++++++++++++++++++-----
->>  target/arm/trace-events |  7 +++++
->>  4 files changed, 88 insertions(+), 6 deletions(-)
->>
->> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
->> index bf221e6f97..a7ed3f34f8 100644
->> --- a/target/arm/cpu.h
->> +++ b/target/arm/cpu.h
->> @@ -936,6 +936,12 @@ struct ArchCPU {
->>      uint64_t *cpreg_vmstate_values;
->>      int32_t cpreg_vmstate_array_len;
->>  
->> +    #define MAX_CPREG_VMSTATE_ANOMALIES 10
->> +    uint64_t cpreg_vmstate_missing_indexes[MAX_CPREG_VMSTATE_ANOMALIES];
->> +    int32_t cpreg_vmstate_missing_indexes_array_len;
->> +    uint64_t cpreg_vmstate_unexpected_indexes[MAX_CPREG_VMSTATE_ANOMALIES];
->> +    int32_t cpreg_vmstate_unexpected_indexes_array_len;
-> "indices"?
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/2123828
 
-Originally we had
-   uint64_t *cpreg_vmstate_indexes;
-so I reused the same terminology
+Title:
+  [SRU] RISC-V: incorrect emulation of load and store on big-endian
+  systems
 
-As a non native english speaker I don't know if the usage is wrong. I
-thought some references on the net though
+Status in QEMU:
+  Fix Released
+Status in glibc package in Ubuntu:
+  Invalid
+Status in qemu package in Ubuntu:
+  Fix Released
+Status in gcc-15 source package in Noble:
+  Invalid
+Status in glibc source package in Noble:
+  Invalid
+Status in qemu source package in Noble:
+  Won't Fix
+Status in gcc-15 source package in Plucky:
+  Invalid
+Status in glibc source package in Plucky:
+  Invalid
+Status in qemu source package in Plucky:
+  Won't Fix
+Status in gcc-15 source package in Questing:
+  Invalid
+Status in glibc source package in Questing:
+  Invalid
+Status in qemu source package in Questing:
+  Fix Committed
+Status in glibc source package in Resolute:
+  Invalid
+Status in qemu source package in Resolute:
+  Fix Released
 
-Eric
->
->> +
->>      DynamicGDBFeatureInfo dyn_sysreg_feature;
->>      DynamicGDBFeatureInfo dyn_svereg_feature;
->>      DynamicGDBFeatureInfo dyn_smereg_feature;
-> (...)
->
+Bug description:
+  [ Impact ]
+
+  On s390x architecture, qemu cannot emulate riscv64 well because of an
+  endianess error. Original bug report :
+
+  QEMU's DEP-8 test fails on s390x, due to warning output on stderr
+  about "unsupported version 256 of Verdef record", which is blocking
+  migration of glibc 2.42-0ubuntu3.
+
+  DEP-8 logs:
+  """
+  323s =3D=3D=3D Checking if /usr/bin/qemu-riscv64 can run executables:
+  323s glob with sh: /usr/bin/qemu-riscv64 /bin/busybox ash -c "/usr/bin/qe=
+mu-riscv64 /bin/busybox ls -dCFl debian/*[t]*":
+  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libresolv.so.2: unsupported ver=
+sion 256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
+256 of Verdef record
+  323s
+  323s Reading package lists.../bin/busybox: /lib/riscv64-linux-gnu/libc.so=
+.6: unsupported version 256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
+256 of Verdef record
+  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
+256 of Verdef record
+  323s Expected output not found
+  [...]
+  328s autopkgtest [22:14:52]: @@@@@@@@@@@@@@@@@@@@ summary
+  328s test-qemu-img.sh     PASS (superficial)
+  328s test-qemu-system.sh  PASS (superficial)
+  328s test-qemu-user.sh    FAIL stderr: /bin/busybox: /lib/ld-linux-riscv6=
+4-lp64d.so.1: unsupported version 256 of Verdef record
+  """
+
+  Patched by flagging the faulty instructions with the endianness swap
+  marker.
+
+  [ Test Plan ]
+
+  Minimal reproducer: (after booting up an s390x vm)
+  ```
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt update && su=
+do apt install qemu-user
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg -l | grep libc6
+  ii  libc6:s390x                           2.42-0ubuntu3
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg -l | grep qemu-u=
+ser
+  ii  qemu-user                             1:10.1.0+ds-5ubuntu1
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg --print-architec=
+ture
+  s390x
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo dpkg --add-archi=
+tecture riscv64
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt update
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt install hell=
+o:riscv64
+  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ /usr/bin/qemu-riscv64=
+ /usr/bin/hello
+  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
+ of Verdef record
+  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
+ of Verdef record
+  ```
+
+  The same thing with the patch shows "Hello, world !".
+
+  [ Where problems could occur ]
+
+  This change is really small (3 lines), and only affects riscv64
+  emulation from QEMU. If the fix was entirely wrong, riscv64 emulation
+  of compressed instruction could be affected. It can be easily tested.
+
+  The patch was accepted upstream, so such tests are conducted upstream
+  as well, which reduces the amount of possible problems and work to do
+  to fix those.
+
+  [ Other Info ]
+
+  Patch applied upstream: https://gitlab.com/qemu-project/qemu/-/commit/b25=
+133d38fe693589cf695b85968caa0724bfafd
+  Patch available on ppa: https://launchpad.net/~vhaudiquet/+archive/ubuntu=
+/qemu-fix-lp2123828/+packages
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/2123828/+subscriptions
 
 
