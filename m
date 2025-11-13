@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D8FC5911C
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 18:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BFCC5911F
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 18:18:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJawq-0001Y8-CQ; Thu, 13 Nov 2025 12:17:29 -0500
+	id 1vJawi-0001Q2-TK; Thu, 13 Nov 2025 12:17:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vJavi-0000SZ-80
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 12:16:20 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1vJavj-0000Sw-PF
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 12:16:22 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vJavf-0006ZO-0h
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 12:16:17 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7aae5f2633dso1289419b3a.3
- for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 09:16:14 -0800 (PST)
+ id 1vJavh-0006Zr-Dd
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 12:16:18 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7aae5f2633dso1289481b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 09:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1763054173; x=1763658973; darn=nongnu.org;
+ d=sifive.com; s=google; t=1763054176; x=1763658976; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nmgh3LFk96HdrFD9152quz3Sn/dfARCWPL1thHveu/Q=;
- b=C+0xz9Q6436FDInTcBmo6p9z2CE2ka9ODSw+CNtPHAxJig87r3vMoc2Q1Q+u17d+sZ
- K0Sw+XE0XtuSK2GCJ1aBIMbiFrpysmikM36UJf+4hDnbdVWH2Dlkc1Um7/vwj9E/5U1j
- 4s4gxscw29TRABgvSeVFbhNoxJQnBqxuyuXRappVjpzlNXtsAOxguH5Lk8NTpv5LNqbX
- TaSNgtxK1GMU/SPy+qsjkdwPp/cw31Mvrb+T+eMUncOlY9CEOWe/jOhYzcvN8kDew3wX
- OX9hhjEnBLOgy4qOxlZA4856UohvVMkOVAyQZCH5yeKtg4Xejx0IVKIlGC5UbG86K8Kh
- n/vw==
+ bh=CSZeOBRdaJtR4VSZeBosQBp8vrblOwFu5a8eIkNfB8Y=;
+ b=m7CIWtr30j5cCa/UEm2u/pD7xFPxej8G9DT3hUIOOQ0q28DuP5XOQh6IthcimVL0aj
+ aqmiZYkqbV8sr1x6QPD3gE0Cax/C/ODz6WFqokKC5KM4HC+BYt+Z4WF61ngLjGBthAm5
+ HQZNN7uNq74xRysvapOTMysR6Gt9+VQ8La1i3l4E5qHPYZH/ZtHaRvlk4UvxJEHe6xoY
+ PVz8afIuFIUolbx+QNlhAUxyb8RQB7PQm+GCeRV3fyN/2WsRR/jTfVwPGrawd9xxkqIE
+ dVdub3UBXTK7jNhHHvi7/V4lbDT9dv3EgD1+IekWQBbgt37GJABRE1cscu2EAOrrhZxa
+ WF/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763054173; x=1763658973;
+ d=1e100.net; s=20230601; t=1763054176; x=1763658976;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=nmgh3LFk96HdrFD9152quz3Sn/dfARCWPL1thHveu/Q=;
- b=PyKTHeEIXcCUoc1yJv7tVd7H927TYHmEPAlkwePUNey7/bh7DSUfzCahn/TPKyfkF4
- Iqgf3gwRm6Ussn7/0hwd7ZgIIq8sy/Ckoe1TtntCAO+54V1HRS8Tmn3kzqIfZiGRK73Z
- PKEACaUxuGMgdKEpk6s5xHcsQQSxE5t2o2LhLSKYc7Or5m+9ZZz4xPoeq1lOjMIvzFOn
- JSJ/7hSqYFK7FLSCJkGI5Sy4EcwIGjBkLP/kVwvcvfpCrQLJCRAIPX0tBoi6xEkfJ85H
- jhK9ADa0tMxmODy1XcFB5r4Ti5/FVU5UjWFgZW44RAPiaedBaKWhIx7BgQLrgrH0h7jv
- 0HFw==
-X-Gm-Message-State: AOJu0Ywn2+XdURWt16lZj45endvlqZP660fkHynt5X37wNQogn6PjN3p
- yZiR3UumkmnPGUDtMZTcf/ouBTkcxByzDNkSCNVGux7H+8sNiZ9Ck/M2+JN5Y8zk1Rjdah6xI5E
- Rf/hJRkq26Ksn74wXD3hVx3ctdfB5N2fYIhelXEPczCxT3nY0oRfcZdct74kLXE1tkYQNR3oqEX
- iiaM+lCCmh9Fk4Sw/VdGHSfhFLSWtqAo8W9U0zZ5k+YA==
-X-Gm-Gg: ASbGncv65nvr3I2nF/gG4pxfaJ91JjHi2JBT9zRaUiFtSaAre0e7zRPiZyviHkO7iVK
- FsMuxr7YMMXW0NVn02Jv/9be3/lDf9zyF7cfuhXYHJHkS7FFDs3ZSN/ga47tDNLyYTilR7xtuYY
- xk4Jq1FM4z6F8FpR/U8/Q5ltiJLuGr0uGdVqr/MrqiL+7d89ZrXno11ijD78sxrOAVcBhHbyd2Z
- aknKVZkr4/JwrgxIhz/lfAVc1P1/ubzjf17glVPpuOmSzfDFJU9/C+ZacXxCURr2gZht27DXKzu
- /iDseQQzCgJ2Q5vMBpvOXVdMhpYm6XJvPIqY//LS0krUgW3pPXgeNd3a7wa6W9FotOgiL1wwVhj
- 2FqiKyuavTxiBMuCcooEd5KMCHZx54Lghg7O+q6mR3wvLwy8g63s42f9mi0moYAnsANPjAaxtY0
- LtXNnCRqdKWvsQAljecR4HOG8oepEYtbadNlCX1JicMsIFBidFlWofEq4=
-X-Google-Smtp-Source: AGHT+IEdoSbWfZxdWwzpFXHSrcTKZuNo8nYqoWn5rhqCV3Ii7IlMwTeCP5PNy4p7n08XWAdPpWuytQ==
-X-Received: by 2002:a05:6a20:1588:b0:2e5:655c:7f86 with SMTP id
- adf61e73a8af0-35ba17ae264mr402703637.39.1763054172852; 
- Thu, 13 Nov 2025 09:16:12 -0800 (PST)
+ bh=CSZeOBRdaJtR4VSZeBosQBp8vrblOwFu5a8eIkNfB8Y=;
+ b=s3VQ689KSRRe6apj4+fywjRTgfJnpfyhjfEmIvQRJxEORVa3EGb2M+cep8tgGdsIaj
+ c1d/rjBAIZ6M/OqtXiUTpCiO4NxW0lG786ZV7PG3jlbVj1KilnIU08LguUR3du6vR7UD
+ CEb5VT6w2iDv37Xx/5TkpUf9IN29pMJGyZFAsH/b7R+RTY8nolYOHu6eidsVk++Hxjzn
+ nc5+lBvMhWoodvYqU68eVSc2g+dk4xL1W1PJBXbKDAFTQ0FuBWTcEg3BRksOFCuqMHh/
+ L5j0ppf5KHUHsxQOR/9ob5nkdkvDV1c7dKo6dB4h+Mm43WleqO9DbSdgtjCVh2BgYPQd
+ 0T6g==
+X-Gm-Message-State: AOJu0YzQJmWo/v1QH6FjBeoQVNV1F1TzX0lglBxmqYeulnBQM8oy1QLs
+ nSEpmc/pb7lZPgrg3v+Uz97J0SG4H0sbPDmmakWcAE8Fg1K/J0H1WyGyh3LN2n2XXAJ7363U8JX
+ cMb53yVseZ0pn9btYESKT5xem0xmHveyaau09Gz3Jrc/QYCd8HCJBZy8+ZBC+iUnCS/RAKofVHV
+ 7JM5chgBckwroc81p6rsVpqNNLIM/IjOhHJKjtR700RQ==
+X-Gm-Gg: ASbGncskvE220gdT3VlWNJr+ZrN8ED23VHHtUjqclkebUyt8PVN50q81OuH9u4g2BnG
+ 0YRxUKUqPBd0YflYsBeUKolRZcQLvSm1J/8LjoBpMYk8A+76gmy86SqvdxIGys8Tjam6NAyDo7S
+ muwtS+BbsK23XImrousG9hLw/huinmEK4NMX7YcjQnV8WXG+EQDga48m6yvlfSMaQ5HR6q6pYg4
+ u5ekMzd50QDV/XW6+t0FHNNTTuqJz5+I/07MAo2SYbVWxOVbVNfw/IOJdNPesHidsfgcvo1tinQ
+ m19a5ClBS+O6gedlVGmn6RbuZ9QZyLMTGqOddb1/tw12EBqhCaoTP6FYcEfVUMVpIXPDYOoLTOl
+ zjlu8wV8Vkx1nM1FE8haB2h6dS+Q8aF8bXWkKaFht0n9NyzOz+3uXR0sO4VKdzekhGmMpDpuNvA
+ BAun6P/TlHP0Jaj0RMlG1tRnZLjHGASaSdupoVjWf2TAMdVdrHjpCC/JY=
+X-Google-Smtp-Source: AGHT+IHOQO+2owWcCKWIyQ3fBALgs8pKDWv/mNb1FtumrHARR+2+DKcMOHjAytEjVM3Teu7qEPdOpQ==
+X-Received: by 2002:a05:6a20:72ab:b0:334:a784:3046 with SMTP id
+ adf61e73a8af0-35ba17aa0e5mr367978637.38.1763054175723; 
+ Thu, 13 Nov 2025 09:16:15 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-bc375081023sm2712992a12.21.2025.11.13.09.16.11
+ 41be03b00d2f7-bc375081023sm2712992a12.21.2025.11.13.09.16.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Nov 2025 09:16:12 -0800 (PST)
+ Thu, 13 Nov 2025 09:16:15 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -73,19 +73,19 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anton Blanchard <antonb@tenstorrent.com>, Max Chou <max.chou@sifive.com>,
- Nutty Liu <liujingqi@lanxincomputing.com>
-Subject: [PATCH v3 1/3] target/riscv: rvv: Apply vext_check_input_eew to
- vector int/fp compare instructions
-Date: Fri, 14 Nov 2025 01:16:02 +0800
-Message-ID: <20251113171604.3034161-2-max.chou@sifive.com>
+ Anton Blanchard <antonb@tenstorrent.com>,
+ Nutty Liu <liujingqi@lanxincomputing.com>, Max Chou <max.chou@sifive.com>
+Subject: [PATCH v3 2/3] target/riscv: rvv: Apply vext_check_input_eew to
+ vector reduction instructions
+Date: Fri, 14 Nov 2025 01:16:03 +0800
+Message-ID: <20251113171604.3034161-3-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251113171604.3034161-1-max.chou@sifive.com>
 References: <20251113171604.3034161-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,100 +111,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Anton Blanchard <antonb@tenstorrent.com>
 
 Handle the overlap of source registers with different EEWs for vector
-integer/floatint point comare instructions.
+reduction instructions.
 
 Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
-Reviewed-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 2a487179f63..422e1a21185 100644
+index 422e1a21185..2d9cf27ef76 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -436,9 +436,10 @@ static bool vext_check_sss(DisasContext *s, int vd, int vs1, int vs2, int vm)
-            require_align(vs1, s->lmul);
- }
- 
--static bool vext_check_ms(DisasContext *s, int vd, int vs)
-+static bool vext_check_ms(DisasContext *s, int vd, int vs, int vm)
- {
--    bool ret = require_align(vs, s->lmul);
-+    bool ret = require_align(vs, s->lmul) &&
-+               vext_check_input_eew(s, vs, s->sew, -1, 0, vm);
-     if (vd != vs) {
-         ret &= require_noover(vd, 0, vs, s->lmul);
-     }
-@@ -461,9 +462,10 @@ static bool vext_check_ms(DisasContext *s, int vd, int vs)
-  *      with a mask value (e.g., comparisons) or the scalar result
-  *      of a reduction. (Section 5.3)
-  */
--static bool vext_check_mss(DisasContext *s, int vd, int vs1, int vs2)
-+static bool vext_check_mss(DisasContext *s, int vd, int vs1, int vs2, int vm)
- {
--    bool ret = vext_check_ms(s, vd, vs2) &&
-+    bool ret = vext_check_ms(s, vd, vs2, vm) &&
-+               vext_check_input_eew(s, vs1, s->sew, vs2, s->sew, vm) &&
-                require_align(vs1, s->lmul);
-     if (vd != vs1) {
-         ret &= require_noover(vd, 0, vs1, s->lmul);
-@@ -1823,7 +1825,7 @@ static bool opivv_vmadc_check(DisasContext *s, arg_rmrr *a)
+@@ -3076,6 +3076,7 @@ static bool reduction_check(DisasContext *s, arg_rmrr *a)
  {
      return require_rvv(s) &&
             vext_check_isa_ill(s) &&
--           vext_check_mss(s, a->rd, a->rs1, a->rs2);
-+           vext_check_mss(s, a->rd, a->rs1, a->rs2, a->vm);
++           vext_check_input_eew(s, a->rs1, s->sew, a->rs2, s->sew, a->vm) &&
+            vext_check_reduction(s, a->rs2);
  }
  
- GEN_OPIVV_TRANS(vmadc_vvm, opivv_vmadc_check)
-@@ -1859,7 +1861,7 @@ static bool opivx_vmadc_check(DisasContext *s, arg_rmrr *a)
+@@ -3092,7 +3093,8 @@ GEN_OPIVV_TRANS(vredxor_vs, reduction_check)
+ static bool reduction_widen_check(DisasContext *s, arg_rmrr *a)
  {
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
--           vext_check_ms(s, a->rd, a->rs2);
-+           vext_check_ms(s, a->rd, a->rs2, a->vm);
+     return reduction_check(s, a) && (s->sew < MO_64) &&
+-           ((s->sew + 1) <= (s->cfg_ptr->elen >> 4));
++           ((s->sew + 1) <= (s->cfg_ptr->elen >> 4)) &&
++           vext_check_input_eew(s, a->rs1, s->sew, a->rs2, s->sew + 1, a->vm);
  }
  
- GEN_OPIVX_TRANS(vmadc_vxm, opivx_vmadc_check)
-@@ -2033,7 +2035,7 @@ static bool opivv_cmp_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
--           vext_check_mss(s, a->rd, a->rs1, a->rs2);
-+           vext_check_mss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
- 
- GEN_OPIVV_TRANS(vmseq_vv, opivv_cmp_check)
-@@ -2047,7 +2049,7 @@ static bool opivx_cmp_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
--           vext_check_ms(s, a->rd, a->rs2);
-+           vext_check_ms(s, a->rd, a->rs2, a->vm);
- }
- 
- GEN_OPIVX_TRANS(vmseq_vx, opivx_cmp_check)
-@@ -2755,7 +2757,7 @@ static bool opfvv_cmp_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            vext_check_isa_ill(s) &&
--           vext_check_mss(s, a->rd, a->rs1, a->rs2);
-+           vext_check_mss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
- 
- GEN_OPFVV_TRANS(vmfeq_vv, opfvv_cmp_check)
-@@ -2768,7 +2770,7 @@ static bool opfvf_cmp_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            vext_check_isa_ill(s) &&
--           vext_check_ms(s, a->rd, a->rs2);
-+           vext_check_ms(s, a->rd, a->rs2, a->vm);
- }
- 
- GEN_OPFVF_TRANS(vmfeq_vf, opfvf_cmp_check)
+ GEN_OPIVV_WIDEN_TRANS(vwredsum_vs, reduction_widen_check)
 -- 
 2.43.0
 
