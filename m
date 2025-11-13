@@ -2,73 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F66C571FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 12:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5220EC573D5
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 12:41:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJVIC-0003YV-1V; Thu, 13 Nov 2025 06:15:08 -0500
+	id 1vJVh8-0006zY-QE; Thu, 13 Nov 2025 06:40:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJVHh-0003QL-Fk; Thu, 13 Nov 2025 06:14:41 -0500
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vJVgh-0006Nz-P4
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 06:40:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJVHe-0007Tn-PH; Thu, 13 Nov 2025 06:14:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763032475; x=1794568475;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=E15EvPAB9mcWDFyZnYUCrN4uc2YHoLzwasy+C5WvUdw=;
- b=P7t2pOYZdgKRiFfOrn0hD+bhIpXZbwTxnpmpKa+qAcG2tNBwy0YyS8KY
- idXrc2CieYbhaCPV2rw9/CFou3IinixpdfrxfGJJtoU9RXApsSnUtcg7V
- v+FuoL9vKGjP6YrHLRTIuRSX35S2Fy9uJLJGHdVhWxmaG/7mRRPD52OrO
- nKxtM8fFcXYnKpsfRICh51ZhQh5Y1+hVmjEuhTJOw1RXQLwrDVAP4kIfM
- nBvX2UgNF/a6lmR4b4V60WoBM9VK1qIGEsttvhKeJ1E5CZ9vIuTLAK2WI
- 9Gk4S9jFB+1TR6fk4Zvql3GoLsNbF1pnJpbOtoPWGCFLbSLzEE5oX5ZGG g==;
-X-CSE-ConnectionGUID: aiqaZ2zdRUWvIK/RFPZjMg==
-X-CSE-MsgGUID: evXVPTTlQCer5Zj9HmyGfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="52672491"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="52672491"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2025 03:14:30 -0800
-X-CSE-ConnectionGUID: txyJsHcgQXGWOv6/h9W/zw==
-X-CSE-MsgGUID: H8srIgstSeWnboVpOLXKUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="189276762"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 13 Nov 2025 03:14:28 -0800
-Date: Thu, 13 Nov 2025 19:36:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?utf-8?B?TWFyYy1BbmRy77+9?= Lureau <marcandre.lureau@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 21/22] rust/hpet: Replace BqlRefCell<HPETRegisters> with
- Mutex<HPETRegisters>
-Message-ID: <aRXCzNrv9d7vZHzN@intel.com>
-References: <20251113051937.4017675-1-zhao1.liu@intel.com>
- <20251113051937.4017675-22-zhao1.liu@intel.com>
- <aRWlfgShnpNbiLAP@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vJVgf-0000IJ-Rg
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 06:40:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763034025;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2DRMdaXpuVaaN1Y1AMzEVTG/HlfbgzSicIOV95ZCr68=;
+ b=Tx4odXASVbq+LWBQvykxPJOjPqqQXW9MpkTsQ15Zm1gDIBfjdP42qo/iOrgwc8ERhvpy3T
+ +2x8J1qzMC03RhhAVlImvNHHRvgNiXA7W7gyQLfuJ4ipWjgNg7xlprMTnmgRqYpxZbEJYU
+ 30kn7Lb0z0Um8oC8JrntiaFSOQ2e0gA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-XBoXe7-ZPki9pE0Ld5iZLA-1; Thu,
+ 13 Nov 2025 06:40:21 -0500
+X-MC-Unique: XBoXe7-ZPki9pE0Ld5iZLA-1
+X-Mimecast-MFC-AGG-ID: XBoXe7-ZPki9pE0Ld5iZLA_1763034020
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 43FCF180034F; Thu, 13 Nov 2025 11:40:20 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.127])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6F8F81800451; Thu, 13 Nov 2025 11:40:17 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3] tests/functional/x86_64/test_virtio_gpu: Fix various
+ issues reported by pylint
+Date: Thu, 13 Nov 2025 12:40:15 +0100
+Message-ID: <20251113114015.490303-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRWlfgShnpNbiLAP@intel.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,95 +79,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 13, 2025 at 05:31:42PM +0800, Zhao Liu wrote:
-> Date: Thu, 13 Nov 2025 17:31:42 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH 21/22] rust/hpet: Replace BqlRefCell<HPETRegisters>
->  with Mutex<HPETRegisters>
-> 
-> > @@ -179,8 +180,8 @@ const fn deactivating_bit(old: u64, new: u64, shift: usize) -> bool {
-> >  fn timer_handler(timer_cell: &BqlRefCell<HPETTimer>) {
-> >      let mut t = timer_cell.borrow_mut();
-> >      // SFAETY: state field is valid after timer initialization.
-> > -    let regs = &mut unsafe { t.state.as_mut() }.regs.borrow_mut();
-> > -    t.callback(regs)
-> > +    let mut regs = unsafe { t.state.as_ref() }.regs.lock().unwrap();
-> > +    t.callback(&mut regs)
-> >  }
-> 
-> callback()
->  -> arm_timer(): access timer N register
->  -> update_irq(): modify global register (int_status or "isr" in C code)
-> 
-> So timer handler needs to lock Mutex. But this may cause deadlock:
-> 
-> timer_hanlder -> lock BQL   -> try to lock Mutex
-> MMIO access   -> lock Mutex -> try to lock BQL
-> 
-> C HPET doesn't have such deadlock issue since it doesn't lock Mutex in
-> timer handler.
-> 
-> I think it seems necessay to lock Mutex in timer handler since there's
-> no guarantee to avoid data race...
+From: Thomas Huth <thuth@redhat.com>
 
-One possible way may be to introduce lockless timer callback, but at
-Rust side, this needs to extract timers from BqlRefCell and add extra
-Muetx to protect timer state.
+Use the recommended order for import statements, specify the kind of
+exceptions that we try to catch, use f-strings where it makes sense,
+rewrite the vug_log_file part with a proper "with" statement and
+fix some FIXMEs by checking for the availability of the devices, etc.
 
-So a simple way is to just unlock bql before acquiring Mutex in timer
-handler, which give a chance for MMIO to acquire BQL. And this way could
-fix locking order in timer handler.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v3: Fix stupid issue with unused parameter
 
-Code example:
+ tests/functional/x86_64/test_virtio_gpu.py | 56 +++++++++++-----------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index f96dfe1ebd06..389eb9b49eb6 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -178,10 +178,35 @@ const fn deactivating_bit(old: u64, new: u64, shift: usize) -> bool {
- }
-
- fn timer_handler(timer_cell: &BqlRefCell<HPETTimer>) {
--    let mut t = timer_cell.borrow_mut();
--    // SFAETY: state field is valid after timer initialization.
--    let mut regs = unsafe { t.state.as_ref() }.regs.lock().unwrap();
--    t.callback(&mut regs)
-+    let state_p = {
-+        let t = timer_cell.borrow();
-+        t.state
-+    };
+diff --git a/tests/functional/x86_64/test_virtio_gpu.py b/tests/functional/x86_64/test_virtio_gpu.py
+index be96de24da2..58b0f72ba42 100755
+--- a/tests/functional/x86_64/test_virtio_gpu.py
++++ b/tests/functional/x86_64/test_virtio_gpu.py
+@@ -5,22 +5,23 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
++import os
++import socket
++import subprocess
+ 
+ from qemu_test import QemuSystemTest, Asset
+ from qemu_test import wait_for_console_pattern
+ from qemu_test import exec_command_and_wait_for_pattern
+ from qemu_test import is_readable_executable_file
+ 
+-
+-import os
+-import socket
+-import subprocess
++from qemu.machine.machine import VMLaunchFailure
+ 
+ 
+ def pick_default_vug_bin(test):
+     bld_dir_path = test.build_file("contrib", "vhost-user-gpu", "vhost-user-gpu")
+     if is_readable_executable_file(bld_dir_path):
+         return bld_dir_path
++    return None
+ 
+ 
+ class VirtioGPUx86(QemuSystemTest):
+@@ -46,8 +47,8 @@ def wait_for_console_pattern(self, success_message, vm=None):
+         )
+ 
+     def test_virtio_vga_virgl(self):
+-        # FIXME: should check presence of virtio, virgl etc
+         self.require_accelerator('kvm')
++        self.require_device('virtio-vga-gl')
+ 
+         kernel_path = self.ASSET_KERNEL.fetch()
+         initrd_path = self.ASSET_INITRD.fetch()
+@@ -68,7 +69,7 @@ def test_virtio_vga_virgl(self):
+         )
+         try:
+             self.vm.launch()
+-        except:
++        except VMLaunchFailure:
+             # TODO: probably fails because we are missing the VirGL features
+             self.skipTest("VirGL not enabled?")
+ 
+@@ -78,8 +79,8 @@ def test_virtio_vga_virgl(self):
+         )
+ 
+     def test_vhost_user_vga_virgl(self):
+-        # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
+         self.require_accelerator('kvm')
++        self.require_device('vhost-user-vga')
+ 
+         vug = pick_default_vug_bin(self)
+         if not vug:
+@@ -95,27 +96,29 @@ def test_vhost_user_vga_virgl(self):
+         os.set_inheritable(qemu_sock.fileno(), True)
+         os.set_inheritable(vug_sock.fileno(), True)
+ 
+-        self._vug_log_path = self.log_file("vhost-user-gpu.log")
+-        self._vug_log_file = open(self._vug_log_path, "wb")
+-        self.log.info('Complete vhost-user-gpu.log file can be '
+-                      'found at %s', self._vug_log_path)
+-
+-        vugp = subprocess.Popen(
+-            [vug, "--virgl", "--fd=%d" % vug_sock.fileno()],
+-            stdin=subprocess.DEVNULL,
+-            stdout=self._vug_log_file,
+-            stderr=subprocess.STDOUT,
+-            shell=False,
+-            close_fds=False,
+-        )
+-        self._vug_log_file.close()
+-
++        vug_log_path = self.log_file("vhost-user-gpu.log")
++        self.log.info('Complete vhost-user-gpu.log file can be found at %s',
++                      vug_log_path)
++        with open(vug_log_path, "wb") as vug_log_file:
++            with subprocess.Popen([vug, "--virgl", f"--fd={vug_sock.fileno()}"],
++                                  stdin=subprocess.DEVNULL,
++                                  stdout=vug_log_file,
++                                  stderr=subprocess.STDOUT,
++                                  shell=False,
++                                  close_fds=False) as vugp:
++                self._test_vhost_user_vga_virgl(qemu_sock,
++                                                kernel_path, initrd_path)
++                qemu_sock.close()
++                vug_sock.close()
++                vugp.terminate()
 +
-+    // Release BQL first and acquire Mutex instead. This avoids deadlock
-+    // since lockless IO will lock Mutex first and then try to acquire
-+    // BQL.
-+    //
-+    // SAFETY: BQL free context only locks Mutex and will do nothing else.
-+    unsafe {
-+        bql::unlock();
-+    }
++    def _test_vhost_user_vga_virgl(self, qemu_sock, kernel_path, initrd_path):
+         self.vm.set_console()
+         self.vm.add_args("-cpu", "host")
+         self.vm.add_args("-m", "2G")
+         self.vm.add_args("-object", "memory-backend-memfd,id=mem,size=2G")
+         self.vm.add_args("-machine", "pc,memory-backend=mem,accel=kvm")
+-        self.vm.add_args("-chardev", "socket,id=vug,fd=%d" % qemu_sock.fileno())
++        self.vm.add_args("-chardev", f"socket,id=vug,fd={qemu_sock.fileno()}")
+         self.vm.add_args("-device", "vhost-user-vga,chardev=vug")
+         self.vm.add_args("-display", "egl-headless")
+         self.vm.add_args(
+@@ -128,17 +131,14 @@ def test_vhost_user_vga_virgl(self):
+         )
+         try:
+             self.vm.launch()
+-        except:
++        except VMLaunchFailure:
+             # TODO: probably fails because we are missing the VirGL features
+             self.skipTest("VirGL not enabled?")
+         self.wait_for_console_pattern("as init process")
+         exec_command_and_wait_for_pattern(self, "/usr/sbin/modprobe virtio_gpu",
+                                           "features: +virgl +edid")
+         self.vm.shutdown()
+-        qemu_sock.close()
+-        vug_sock.close()
+-        vugp.terminate()
+-        vugp.wait()
 +
-+    // SAFETY: state_p is valid and we just access Mutex and don't touch
-+    // other fields. Mutex could guarantee the registers access is safe
-+    // during BQL is unlocked.
-+    let mut regs = unsafe { state_p.as_ref() }.regs.lock().unwrap();
-+
-+    // After Mutex is locked, lock BQL again. This ensures both timer
-+    // handler and MMIO have the same locking order.
-+    //
-+    // SAFETY: BQL context is expected for timer handler and now the
-+    // correct locking order eliminates deadlock.
-+    unsafe {
-+        bql::lock();
-+    }
-+
-+    timer_cell.borrow_mut().callback(&mut regs);
- }
-
- #[repr(C)]
-
-
-Thanks,
-Zhao
-
+ 
+ if __name__ == '__main__':
+     QemuSystemTest.main()
+-- 
+2.51.1
 
 
