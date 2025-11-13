@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AFCC58087
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 15:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA2CC582E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 16:04:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJYfS-00029q-3g; Thu, 13 Nov 2025 09:51:27 -0500
+	id 1vJYqP-0007qr-Vf; Thu, 13 Nov 2025 10:02:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vJYfJ-000284-H5
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:51:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vJYfG-0002kl-Oi
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 09:51:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763045470;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VOtcdoqEc+WgC+7YZusdnHi/iVsfFWIv3oXbzAwR/64=;
- b=WN98P/f4PIzdWPH3YtoS+pPP2htwHJVliEN0ySwCyTnEvuCjVNwCr8KeXCATgLuMC2PKUt
- 0Vnylqc7Us/xxfmbgkMkw+KEul6absK6TBPddu9KAW0N1WBon4nRaZNCVtHgN+EgxbBKtL
- QU4gmFqtZ54qzhahrGLVZsGv4qjoV54=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-hdkqpjccNLCSkxvZ2PmJPw-1; Thu,
- 13 Nov 2025 09:51:06 -0500
-X-MC-Unique: hdkqpjccNLCSkxvZ2PmJPw-1
-X-Mimecast-MFC-AGG-ID: hdkqpjccNLCSkxvZ2PmJPw_1763045465
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8F41719560A5; Thu, 13 Nov 2025 14:51:04 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.177])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 03E181800451; Thu, 13 Nov 2025 14:51:03 +0000 (UTC)
-Date: Thu, 13 Nov 2025 09:51:02 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
- eblake@redhat.com, Hanna Czenczek <hreitz@redhat.com>,
- qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, hibriansong@gmail.com
-Subject: Re: [PATCH v6 00/15] aio: add the aio_add_sqe() io_uring API
-Message-ID: <20251113145102.GA189474@fedora>
-References: <20251104022933.618123-1-stefanha@redhat.com>
- <8ce36148-47a0-463f-9af6-669c69c8b575@tls.msk.ru>
- <aRXeAENqCj1sN7_2@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vJYpg-00077E-1P
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 10:01:59 -0500
+Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vJYpV-0007QI-P3
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 10:01:55 -0500
+Received: by mail-yx1-xb12e.google.com with SMTP id
+ 956f58d0204a3-63f996d4e1aso788839d50.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 07:01:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763046103; x=1763650903; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UQpCjXMzltzkBAk1cWSLy/WZzoIwfDzQGuuOWhLwCNE=;
+ b=iI5QvLHgq6PXBc0/Vfn8aTEExuZleVZ0KZSC1Ox1BSG4rYyFJVgLCs4h0+Ejoy1/0A
+ cd0wlLT9u5T8CnMnXFZnkuEXt9TuRKh6GbD72VPJrUZyVCTETgEfFohaRqWWAK/oIV6b
+ cLtZ+kYdEg2zrpYpBxXcmsMR02aKSSGs3jCCiRzlVlXmgCjyG73z39axqRy8f8rr/Vea
+ UltCVSgb+oDxmTYBkK4NhbQKm++WQ9bNPUb32EizNR0QartjwEh/zVh+gdNr9tscoUo1
+ ePsXY2NhssiJCJwMTKYv6moskfLiu9x0V/aE+2UlOwbmYyf+iY3NKxLrwyOrFY9kdJW6
+ Ruqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763046103; x=1763650903;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UQpCjXMzltzkBAk1cWSLy/WZzoIwfDzQGuuOWhLwCNE=;
+ b=iNk6DzO3ntvs+ZaZAoUJ3Ip0pmoFHxrvfAIIKP/fG+kOCiJ+VFYJ50XhFr8Tcypi2G
+ jHfHH+TGaFebXcEmc5Gya6rHgToyXmBr9kjgfONT1XQv9CN7lwYRLOE9hUYHpcj4AnkT
+ 9nXzSy01phoHs3zWAUIEhsAhSFluNFvU2N9dsYjEPR0Ld1zfD/OdvtvtiZuqzN1I3fPN
+ 1w1OhHrubEnUTF1zJJg+8+etAaB5M/swLmtfUldK9zhMZkmLNuq2h7vgBcj6jizxJeOa
+ HldJllHri4TImy65V1uSmx0zOVIFhIdUiZyBZYJRFRDINRlEoog+pNpu0OmM6bawQt2A
+ OYNg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWYUFn5E0n4xhDeAYB8x8NRywuRbtezlv5thR4XRb5ybbvhllSLjaE6Py8MLngzihZbwXi4kYSiMnwx@nongnu.org
+X-Gm-Message-State: AOJu0YxVB2eT+n/Pfxp16pIkxeA425S5MV+W0MSBMXmECbmD2bvjHied
+ nLbi7JgiGiCyOXmQaigiLcHGFJJzTmq2ZtWsT/qdWcs3pzf2qD2OSAWz9BZ8NS+oS5Vr+LCmpD7
+ 5SMTmJgNbtAwvflLGlryz/MfP1OCgouzHDRehLsiFrw==
+X-Gm-Gg: ASbGncvGk6i9m+xbhHzvdJNsSjTTqyiSR+YcugW4zQbFjoqg4GKexn3r+98+BL4ZOqC
+ kT2Z2NyeSGsLMkLvxy7atkYZlWseMrowR+Nx+Ui3joz9BbQ5po/o6ye+VcspUx1RUwKsuynOvZR
+ KB7SqHP44NH3Mii/Rp/V2Yz/w2tVuNlTEIXBtaLJNX54RD5O8+CC0xuTU1//JTCJ1L7Z4e1j09X
+ mou/9NJ8UFh5XP7N2tKa/JlMWMC6sYBacpweFNBvqm3gdG7IzHg0OdWFiacaw==
+X-Google-Smtp-Source: AGHT+IGcJpPS1WsYzqNoG9Dnm25rLKNVdipiNLeP2dqcu/KF+K5YZRKRsEaVb6OfY1WRgHiBAFPhS2NNVlDS20AQ2kc=
+X-Received: by 2002:a05:690e:4186:b0:63e:b62:5826 with SMTP id
+ 956f58d0204a3-64101bb51c3mr6052682d50.67.1763046103202; Thu, 13 Nov 2025
+ 07:01:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="pyiK2YIvmpARaygQ"
-Content-Disposition: inline
-In-Reply-To: <aRXeAENqCj1sN7_2@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20251016140039.250111-1-eric.auger@redhat.com>
+ <20251016140039.250111-2-eric.auger@redhat.com> <877bwtvaj7.fsf@redhat.com>
+ <791e0383-c4c7-49bf-863c-d45428f3e48d@redhat.com> <874iqyrnt3.fsf@redhat.com>
+In-Reply-To: <874iqyrnt3.fsf@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 13 Nov 2025 15:01:31 +0000
+X-Gm-Features: AWmQ_bk_FOYBCGthsQvsC4iCOFYns5evbDOjO7gyouMYynzLNQLMY5LXztggWFY
+Message-ID: <CAFEAcA8F2JFR-X9oWH9cX+qESWDUbxfU+ZiPmFg2h05dgb4gRQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH 1/7] target/arm/machine: Improve traces on register
+ mismatch during migration
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, maz@kernel.org, oliver.upton@linux.dev, 
+ sebott@redhat.com, gshan@redhat.com, ddutile@redhat.com, peterx@redhat.com, 
+ philmd@linaro.org, pbonzini@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,106 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 13 Nov 2025 at 14:48, Cornelia Huck <cohuck@redhat.com> wrote:
+>
+> On Thu, Nov 13 2025, Eric Auger <eric.auger@redhat.com> wrote:
+>
+> >>> +    #define MAX_CPREG_VMSTATE_ANOMALIES 10
+> >>> +    uint64_t cpreg_vmstate_missing_indexes[MAX_CPREG_VMSTATE_ANOMALIES];
+> >>> +    int32_t cpreg_vmstate_missing_indexes_array_len;
+> >>> +    uint64_t cpreg_vmstate_unexpected_indexes[MAX_CPREG_VMSTATE_ANOMALIES];
+> >>> +    int32_t cpreg_vmstate_unexpected_indexes_array_len;
+> >> "indices"?
+> >
+> > Originally we had
+> >    uint64_t *cpreg_vmstate_indexes;
+> > so I reused the same terminology
+> >
+> > As a non native english speaker I don't know if the usage is wrong. I
+> > thought some references on the net though
+>
+> Not a native English speaker, either; wiktionary says both are valid, so
+> probably a matter of taste.
 
---pyiK2YIvmpARaygQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Mmm. I tend to go with "indexes" as being clearer (especially
+for non-native speakers) than "indices". Within QEMU sources
+there are twice as many "indexes" as "indices".
 
-On Thu, Nov 13, 2025 at 02:32:48PM +0100, Kevin Wolf wrote:
-> Am 13.11.2025 um 09:27 hat Michael Tokarev geschrieben:
-> > On 11/4/25 05:29, Stefan Hajnoczi wrote:
-> > ..
-> > > This patch series contains io_uring improvements:
-> > >=20
-> > > 1. Support the glib event loop in fdmon-io_uring.
-> > >     - aio-posix: fix race between io_uring CQE and AioHandler deletion
-> > >     - aio-posix: keep polling enabled with fdmon-io_uring.c
-> > >     - tests/unit: skip test-nested-aio-poll with io_uring
-> > >     - aio-posix: integrate fdmon into glib event loop
-> > >=20
-> > > 2. Enable fdmon-io_uring on hosts where io_uring is available at runt=
-ime.
-> > >     Otherwise continue using ppoll(2) or epoll(7).
-> > >     - aio: remove aio_context_use_g_source()
-> > >=20
-> > > 3. Add the new aio_add_sqe() API for submitting io_uring requests in =
-the QEMU
-> > >     event loop.
-> > >     - aio: free AioContext when aio_context_new() fails
-> > >     - aio: add errp argument to aio_context_setup()
-> > >     - aio-posix: gracefully handle io_uring_queue_init() failure
-> > >     - aio-posix: add aio_add_sqe() API for user-defined io_uring requ=
-ests
-> > >     - aio-posix: avoid EventNotifier for cqe_handler_bh
-> > >=20
-> > > 4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedica=
-ted
-> > >     io_uring context for --blockdev aio=3Dio_uring. This simplifies t=
-he code,
-> > >     reduces the number of file descriptors, and demonstrates the aio_=
-add_sqe()
-> > >     API.
-> > >     - block/io_uring: use aio_add_sqe()
-> > >     - block/io_uring: use non-vectored read/write when possible
-> > >=20
-> > > The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_=
-uring
-> > > Google Summer of Code project and other future QEMU features that nat=
-ively use
-> > > Linux io_uring functionality.
-> > ..> Stefan Hajnoczi (15):
-> > >    aio-posix: fix race between io_uring CQE and AioHandler deletion
-> > >    aio-posix: fix fdmon-io_uring.c timeout stack variable lifetime
-> > >    aio-posix: fix spurious return from ->wait() due to signals
-> > >    aio-posix: keep polling enabled with fdmon-io_uring.c
-> > >    tests/unit: skip test-nested-aio-poll with io_uring
-> > >    aio-posix: integrate fdmon into glib event loop
-> > >    aio: remove aio_context_use_g_source()
-> > >    aio: free AioContext when aio_context_new() fails
-> > >    aio: add errp argument to aio_context_setup()
-> > >    aio-posix: gracefully handle io_uring_queue_init() failure
-> > >    aio-posix: unindent fdmon_io_uring_destroy()
-> > >    aio-posix: add fdmon_ops->dispatch()
-> > >    aio-posix: add aio_add_sqe() API for user-defined io_uring requests
-> > >    block/io_uring: use aio_add_sqe()
-> > >    block/io_uring: use non-vectored read/write when possible
-> >=20
-> > Is there anything in there which should go to qemu-stable?
-> >=20
-> > From the descriptions of a few changes it feels like something should.
->=20
-> fdmon-io_uring has effectively been dead code since commit ba607ca (and
-> until patch 7 in this series). The commit message of that commit makes
-> it sounds like there are cases where GSource is not enabled, but there
-> really aren't.
->=20
-> You may want to pick patch 2 anyway because it's a use after free and
-> may effectively hang QEMU (by using far too large timeouts), but from
-> what I can tell, without downstream code changes, you won't ever run
-> this code in relevant stable releases. QEMU 5.0 was the only release
-> that had it enabled before.
-
-Right, the fixes are for dead code (until re-enabled by this patch
-series). There is no practical benefit to backporting them.
-
-Stefan
-
---pyiK2YIvmpARaygQ
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmkV8FYACgkQnKSrs4Gr
-c8gqegf/d5KheLZIE79QwW9K5pL6bFHzDdBBseM0ZrNV8bBOPBGwYAHHUkDl4z1o
-PIhk/yQyKYe8RQ0NCtd+RTaVZcpiWStLum3BosPNVLwFjzVZP9dZ1kI3FWMO9gNu
-2kj8Z2N3Qh3k+o0xrZFFZYUKccZkIfTXx66Ul10znttasabUMTBM7xFc/+FNzeUl
-DzncABxxIwQtSJ3n7G6OMrYQk8dILREEzrwKqxycuVUV7h3cVcTdoEtfTcLWE3xA
-pjnaojIKlM3Igql9nRTtRtlXYoNQ5PxA30/xpG2TXYwNtiednT9tUfk1HtEANX6W
-RgcBYf74UzBra1/wBvgzOb+V3rev0w==
-=VB9C
------END PGP SIGNATURE-----
-
---pyiK2YIvmpARaygQ--
-
+thanks
+-- PMM
 
