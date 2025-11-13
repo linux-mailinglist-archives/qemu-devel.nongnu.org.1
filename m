@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BF5C553CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 02:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 485BCC55418
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 02:29:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJM1T-000396-NM; Wed, 12 Nov 2025 20:21:15 -0500
+	id 1vJM8z-0003lj-VE; Wed, 12 Nov 2025 20:29:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1vJM1A-0002ZK-Qu
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 20:20:56 -0500
+ id 1vJM8t-0003ZN-Rh
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 20:28:55 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1vJM17-0006Tl-Gl
- for qemu-devel@nongnu.org; Wed, 12 Nov 2025 20:20:56 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1vJM8q-0008Ca-FZ
+ for qemu-devel@nongnu.org; Wed, 12 Nov 2025 20:28:55 -0500
 Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8CxaNFpMhVpzawiAA--.10052S3;
- Thu, 13 Nov 2025 09:20:41 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bx379QNBVpfq0iAA--.7351S3;
+ Thu, 13 Nov 2025 09:28:48 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJDxQ+RnMhVpMhUxAQ--.14748S3;
- Thu, 13 Nov 2025 09:20:41 +0800 (CST)
-Subject: Re: [PATCH V2 1/2] Modify the interrupt trigger type in loongarch
- virt fdt to macro definition
+ by front1 (Coremail) with SMTP id qMiowJAxfcFNNBVpQRcxAQ--.20079S3;
+ Thu, 13 Nov 2025 09:28:47 +0800 (CST)
+Subject: Re: [PATCH V2 2/2] fix pci device can't alloc irq from fdt
 To: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>
 References: <cover.1762917185.git.lixianglai@loongson.cn>
- <56832788ca15ee896e4e7bd2a635e65e188d75c2.1762917185.git.lixianglai@loongson.cn>
+ <7f6ec86e3425b12a337d71d963a0e26577c84f51.1762917185.git.lixianglai@loongson.cn>
 From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <1910ee77-f492-63f7-af62-c711e055cdb2@loongson.cn>
-Date: Thu, 13 Nov 2025 09:18:16 +0800
+Message-ID: <342b3d95-dc51-f938-ddd1-bd3b5c1b7688@loongson.cn>
+Date: Thu, 13 Nov 2025 09:26:22 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <56832788ca15ee896e4e7bd2a635e65e188d75c2.1762917185.git.lixianglai@loongson.cn>
+In-Reply-To: <7f6ec86e3425b12a337d71d963a0e26577c84f51.1762917185.git.lixianglai@loongson.cn>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxQ+RnMhVpMhUxAQ--.14748S3
+X-CM-TRANSID: qMiowJAxfcFNNBVpQRcxAQ--.20079S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF47Zry3JrW7Cry3Zw4DJrc_yoW8uF4fpF
- W7Aa1DXr4DJr9xG39xua4Y9w1fAr1rGr1jgFnrur40kryDWw1fXr40k39rtF17u34rJ3WF
- vFsYgr9xWa42qrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF1kGF4rXr4DWrWfCr47Jrc_yoWrKw1fpF
+ WDC3ZIgrWxWr1I939xA3WUXF13Kr1fCry8twn7Xr10krnxur1xXr4DK3yIyFWUG3ykJayU
+ tFsIga4Ig3WUJagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
  0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
  e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
  GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
  6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
  vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
  wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
  0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
  xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7XTmDUUU
  U
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
  helo=mail.loongson.cn
@@ -84,9 +83,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 2025/11/12 上午11:26, Xianglai Li wrote:
-> In the loongarch virt fdt file, the interrupt trigger type directly
-> uses magic numbers. Now, refer to the definitions in the linux kernel and
-> use macro definitions.
+> When we use the -kernel parameter to start an elf format kernel relying on
+> fdt, we get the following error:
+> 
+> pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.0: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.0: PME: Signaling with IRQ 19
+> pcieport 0000:00:01.0: AER: enabled with IRQ 19
+> pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.1: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.1: PME: Signaling with IRQ 20
+> pcieport 0000:00:01.1: AER: enabled with IRQ 20
+> pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.2: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.2: PME: Signaling with IRQ 21
+> pcieport 0000:00:01.2: AER: enabled with IRQ 21
+> pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.3: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.3: PME: Signaling with IRQ 22
+> pcieport 0000:00:01.3: AER: enabled with IRQ 22
+> pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
+> 
+> This is because  the description of interrupt-cell is missing in the pcie
+> irq map.  And there is a lack of a description of the interrupt trigger
+> type.  Now it is corrected and the correct interrupt-cell is added in the
+> pcie irq map.
+> 
+> Refer to the implementation in arm and add some comments.
 > 
 > Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 > ---
@@ -94,46 +117,99 @@ On 2025/11/12 上午11:26, Xianglai Li wrote:
 > Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > Cc: Song Gao <gaosong@loongson.cn>
 > 
->   hw/loongarch/virt-fdt-build.c | 11 +++++++++--
->   1 file changed, 9 insertions(+), 2 deletions(-)
+>   hw/loongarch/virt-fdt-build.c | 43 +++++++++++++++++++++++------------
+>   1 file changed, 28 insertions(+), 15 deletions(-)
 > 
 > diff --git a/hw/loongarch/virt-fdt-build.c b/hw/loongarch/virt-fdt-build.c
-> index 1f0ba01f71..7333019cf7 100644
+> index 7333019cf7..73ac28bcba 100644
 > --- a/hw/loongarch/virt-fdt-build.c
 > +++ b/hw/loongarch/virt-fdt-build.c
-> @@ -16,6 +16,11 @@
->   #include "system/reset.h"
->   #include "target/loongarch/cpu.h"
->   
-> +#define FDT_IRQ_TYPE_EDGE_RISING  1
-> +#define FDT_IRQ_TYPE_EDGE_FALLING 2
-> +#define FDT_IRQ_TYPE_LEVEL_HIGH   4
-> +#define FDT_IRQ_TYPE_LEVEL_LOW    8
-> +
->   static void create_fdt(LoongArchVirtMachineState *lvms)
+> @@ -317,10 +317,13 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
+>                                         uint32_t *pch_pic_phandle)
 >   {
->       MachineState *ms = MACHINE(lvms);
-> @@ -415,7 +420,8 @@ static void fdt_add_uart_node(LoongArchVirtMachineState *lvms,
->       if (chosen) {
->           qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", nodename);
+>       int pin, dev;
+> -    uint32_t irq_map_stride = 0;
+> +    int irq_map_stride = 0;
+This change may be unnecessary.
+>       uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 10] = {};
+>       uint32_t *irq_map = full_irq_map;
+>       const MachineState *ms = MACHINE(lvms);
+> +    uint32_t pch_pic_handle = *pch_pic_phandle;
+This change may be unnecessary also, let us keep smallest modification.
+> +    uint32_t pin_mask;
+> +    uint32_t devfn_mask;
+>   
+>       /*
+>        * This code creates a standard swizzle of interrupts such that
+> @@ -339,31 +342,39 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
+>               int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
+>               int i = 0;
+>   
+> -            /* Fill PCI address cells */
+> -            irq_map[i] = cpu_to_be32(devfn << 8);
+> -            i += 3;
+> -
+> -            /* Fill PCI Interrupt cells */
+> -            irq_map[i] = cpu_to_be32(pin + 1);
+> -            i += 1;
+> -
+> -            /* Fill interrupt controller phandle and cells */
+> -            irq_map[i++] = cpu_to_be32(*pch_pic_phandle);
+> -            irq_map[i++] = cpu_to_be32(irq_nr);
+> +            uint32_t map[] = {
+> +                devfn << 8, 0, 0,             /* devfn */
+Is there any specification for two consecutive 0, 0 with interrupt-map? 
+Although many of code is copied from other places, we had better know 
+howto since the problem comes out already -:)
+
+Regards
+Bibo Mao
+> +                pin + 1,                      /* PCI pin */
+> +                pch_pic_handle,              /* interrupt controller handle */
+> +                irq_nr,                       /* irq number */
+> +                FDT_IRQ_TYPE_LEVEL_HIGH };    /* irq trigger level */
+>   
+>               if (!irq_map_stride) {
+> -                irq_map_stride = i;
+> +                irq_map_stride = sizeof(map) / sizeof(uint32_t);
+>               }
+> +
+> +            /* Convert map to big endian */
+> +            for (i = 0; i < irq_map_stride; i++) {
+> +                irq_map[i] = cpu_to_be32(map[i]);
+> +            }
+> +
+>               irq_map += irq_map_stride;
+>           }
 >       }
-> -    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts", irq, 0x4);
-> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts", irq,
-> +                           FDT_IRQ_TYPE_LEVEL_HIGH);
->       qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
->                             *pch_pic_phandle);
+>   
+> -
+>       qemu_fdt_setprop(ms->fdt, nodename, "interrupt-map", full_irq_map,
+>                        PCI_NUM_PINS * PCI_NUM_PINS *
+>                        irq_map_stride * sizeof(uint32_t));
+> +
+> +    /* The pci slot only needs to specify the matching of the lower bit */
+> +    devfn_mask = cpu_to_be16(PCI_DEVFN((PCI_NUM_PINS - 1), 0));
+> +    /* The pci pin only needs to match the specified low bit */
+> +    pin_mask = (1 << ((PCI_NUM_PINS - 1))) - 1;
+> +
+>       qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupt-map-mask",
+> -                     0x1800, 0, 0, 0x7);
+> +                           devfn_mask,
+> +                           0, 0,
+> +                           pin_mask);
+>   }
+>   
+>   static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
+> @@ -400,6 +411,8 @@ static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
+>                                    2, base_mmio, 2, size_mmio);
+>       qemu_fdt_setprop_cells(ms->fdt, nodename, "msi-map",
+>                              0, *pch_msi_phandle, 0, 0x10000);
+> +
+> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
+>       fdt_add_pcie_irq_map_node(lvms, nodename, pch_pic_phandle);
 >       g_free(nodename);
-> @@ -435,7 +441,8 @@ static void fdt_add_rtc_node(LoongArchVirtMachineState *lvms,
->                               "loongson,ls7a-rtc");
->       qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
->       qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-> -                           VIRT_RTC_IRQ - VIRT_GSI_BASE , 0x4);
-> +                           VIRT_RTC_IRQ - VIRT_GSI_BASE ,
-> +                           FDT_IRQ_TYPE_LEVEL_HIGH);
->       qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
->                             *pch_pic_phandle);
->       g_free(nodename);
+>   }
 > 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
 
