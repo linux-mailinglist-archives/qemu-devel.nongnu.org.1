@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A30C5A078
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 21:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BE8C5A19D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 22:26:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJeLx-0002Io-5i; Thu, 13 Nov 2025 15:55:43 -0500
+	id 1vJeon-0004HH-Rd; Thu, 13 Nov 2025 16:25:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vJeAL-0002Cy-KQ
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 15:43:37 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJeRs-00075c-Ks
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:01:44 -0500
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vJeAJ-00041U-AY
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 15:43:36 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7b8bbf16b71so1472518b3a.2
- for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 12:43:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vJeRq-0004No-Qk
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:01:44 -0500
+Received: by mail-wm1-x344.google.com with SMTP id
+ 5b1f17b1804b1-47777000dadso9634325e9.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 13:01:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763066613; x=1763671413; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=tjPcuT5UpejYoPDmNEcWvBzL3CoKzY+9HWbHP6ctQh0=;
- b=FAC9R6e8fiOfbmK55nrXro7KsJD8ZxVL+ERQzjX/m4Mu3I6CzUBRF5EXeTKjNKD+fk
- lzwxI5iGloXvjTRiPCKomtnBz1JfOvaLTxgojTNcxv+AhuGxpeHO3Twknira5/6P1F1w
- qa9tcCeY0OK3ri+hMffNunhx8PZAQO3OtDBPFiwm/3pxBdU5eWUpgwbNipPvrWJnpQG6
- +Diy7/RnA1q8L1f4fyUS+3hMgHjQowLVQDjRIwyz3Gy4OJ/JX/9ypnJhvCpHLW5RNCIj
- LFFm2HzcAgdzRqQYhn3ifE4CsdMZIlSIOzOI5nQlmWmRtpin8yDZJpf10M8Wgm0l5k0u
- of9w==
+ d=linaro.org; s=google; t=1763067700; x=1763672500; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bcXZxED5oaI5ZZ1ixxonT+EJs/qv1pAynNJUmT7AXNI=;
+ b=FQDmF81x75C8ufPCLsFVuYrjir2csouu833RiUtUZoPdFocKOeIbd6+LoCj/Aw/CyP
+ R053Ea2IiVXjAFQFmNBUBtHAjpP77VohrUSCg5XNCxtLIK12jDUt4PvqIck7WBiukJ1l
+ mNUf1DrV7chV3gtZhP97Lw3LXS/gaLZ6/CfOP81rvGuJNDgOjo1qgDcHhFq7bkyi7bqy
+ JS7WI4O5Vr6XzEuXOhGFh9eQ0I0Qsk7ZyKWnBbVGC8gq6C6oNO19rRt5nqOz0oAeRVUP
+ AKL1YWVsHNLFeycunEAN6XxAIakMtX/Y/sRpxU2xj8MJghEcrKEzCog3gXnBEsEfhTZe
+ dLlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763066613; x=1763671413;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tjPcuT5UpejYoPDmNEcWvBzL3CoKzY+9HWbHP6ctQh0=;
- b=Lfsh1jEDqbjFe4sbEO3z1ZHprdUdEWNRzFXrhjaSdP37VMn0L+kBd4LZkirWaq7IVe
- vkyu0xUsnmurNNOVDDUruHl62+Gs1vFNAba5abHjEc0PsZOZtPZNzM0Ja7ltt7Vigpk7
- 3SMi1A6pI1Zw4LAv74xtgDJT7BX56BTqB2/Sr/I0lzpNxt6OGRhp1GqYiomjbh7mWhUs
- bzCK83EgP77vtgnYny9AQGPz+l+qIreQZW7YavOym8I+X4RcF9f36e8N80rIccjZ583/
- rSX7G4wFjNnarsMn+yAbGN0kZZ09/RDMBQTqTOoIER6HVhaywVo6iUtCM7wgAVKIwHUJ
- kd0A==
-X-Gm-Message-State: AOJu0Yz77ty52M5F0JESCm9Y2pjmgkzHZCgnvfauQagIHTzJ5mmP5g0n
- yfUs11NIdB+NaHosCFP5SSzVrWidslVKFgDRyRcJovE6iS/zdyKgC5Ea+jKDs4aSGf5fKuUp6nf
- /znWZ+bjKTB2uq/GDKeYR/EcqIwuArlU=
-X-Gm-Gg: ASbGncs8fRCtByKqawjnRr1TEbZ9py76s6jrcACpv4gG5t1K7+UcxDcLh8ZK0bFNRCK
- VjPHwhlALnm/YXp2/Aq5JdISgOBw6WOXVshduQcHcyRJboTaP8cRC6eOMMrddFVa0dMb9gR5Tai
- QtwGpdXTjpvrC8xk6vcW5E+xvncPijBkFBB3R2DxmEaB/zQ47pQC0cgZnZYvZ6wiDUJoVwAAz4t
- A1laIUTgw7WqNsftxhC7Uzj6RGIQYlEKi1fclgOtnV9m/Mmw5oOUVTt7UqO
-X-Google-Smtp-Source: AGHT+IH1pgmbK5+tO5Ouyp0DPvUcnvWGO7ujMNGXwYnMwg9FdV7kli7NBO4KZG2RIy6z4PPIfN0qyzd46F5SWwRHGIg=
-X-Received: by 2002:a05:7022:43a6:b0:119:e569:fb91 with SMTP id
- a92af1059eb24-11b40b29675mr413195c88.0.1763066613191; Thu, 13 Nov 2025
- 12:43:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1763067700; x=1763672500;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bcXZxED5oaI5ZZ1ixxonT+EJs/qv1pAynNJUmT7AXNI=;
+ b=gq1o4Mb/+YqZiYyMk96LE6pjEHBZBnDX9KfgrwpC5PU6qIo3YvvntPlfA8NqeWnS5N
+ lnQ/bqjxmekvNp99LQPgzmTKTkj5ribewjKYjMPOh4/5H3e5YVt/gOsj+l7xIWLk47ug
+ 5XtXm8JtB/c4Riifve7OiOmjphLHq3IhAHsuy3n0qwuYhLjH/HzK6YrZ70zr4lRT+vt+
+ uWzCePa1pUN5O+6LgNTDGJ16nRxciIXXABZ8Ul5ZKgkHAoAES51jYBoWxpABQvkwh9T7
+ qR5aW4uGfxsplGCJus7hkTaxqA9/vNwFFRGzQkInZ9Yf9ZuwsePOs2scxulX5akni0eg
+ rCpw==
+X-Gm-Message-State: AOJu0YyC728ZTc+yDQKH7/SJzI37aBZDDma2wjkitV0C4ifFeAncqHOv
+ +8VAdE1FoV2DdyDxBmkaPPl+Kzxmo4cTk8hl34fB3nv6ipAg9/1ImVJqGr2Prmyj35Q=
+X-Gm-Gg: ASbGncs3k/4FUgrPAVBkmtjaj15KwYS756vhTQVCXjcsMIiBWfgmLZt/xuJOrVFqSQs
+ gnOvozO4GPyvb5N+r/jCEy/xQcmeyTzGzJzdWDGZNvTvZ+CHYxzZcFSvJOGfIdN1vsGCSo6JPqb
+ ET8GKQy6o8DPCyPT0fh/JDjz+txeLOGUmLm4pYwyXIpwZy5mTYLfhFENYZvbIPikAyazJw9NGVt
+ BIcYCOuMQMK5paj+6zIwkxn0gC56ep3b8D33QL9p1VRqtuskL3/vLY7XDkVYbdV+smS7Fqh5yi1
+ kqHWPQUMvfyKlSvroBWQ3POgXrNOD/BrT+QHDUDvnPIHyKRY+LSbU3qHatqYkHNWCAzphKg6uO1
+ 0hP+XYe6NCkmj5v0aau0js/ApDI/ayg6R2AUg7lI9cqfup+EyS8viZ8qyt4Z8d86ik0oyUsgZDe
+ RgzKctE/T6IrtQ5vuBh8YoqDuj6p74sqNRNdphvqQObVo9dVTO1zZ4vw==
+X-Google-Smtp-Source: AGHT+IGqAMPOSqw7mOTw5aC+vFnMhd3sFLTg/pCY4PAnSs9//2LImu3kaVtizxhCLWucWiQyQeWp3Q==
+X-Received: by 2002:a05:600c:4714:b0:477:8ba7:fe0a with SMTP id
+ 5b1f17b1804b1-4778feaa8ffmr6800795e9.24.1763067699828; 
+ Thu, 13 Nov 2025 13:01:39 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53f17291sm5899184f8f.32.2025.11.13.13.01.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Nov 2025 13:01:39 -0800 (PST)
+Message-ID: <a40731d0-7add-4d09-9a89-902f75e2eede@linaro.org>
+Date: Thu, 13 Nov 2025 22:01:38 +0100
 MIME-Version: 1.0
-References: <20251028152351.1247812-1-edgar.iglesias@gmail.com>
- <20251028152351.1247812-2-edgar.iglesias@gmail.com>
- <87bjlgvemk.fsf@draig.linaro.org>
-In-Reply-To: <87bjlgvemk.fsf@draig.linaro.org>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Thu, 13 Nov 2025 14:43:20 -0600
-X-Gm-Features: AWmQ_blXtLhPCYp7qI_p_j3IK8Sads20qcSkItiIVkAqOqUJm32fi3hzJvarUPM
-Message-ID: <CAJy5ezozbawVnB1vHZRtr35N5+VK903B72dqk4NusxWSFbqchA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/5] virtio: Introduce notify_queue
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- bill.mills@linaro.org, edgar.iglesias@amd.com
-Content-Type: multipart/alternative; boundary="00000000000031db8c06437fefe5"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-pf1-x431.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] tests/unit: add unit test for qemu_hexdump()
+Content-Language: en-US
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ berrange@redhat.com
+Cc: qemu-devel@nongnu.org
+References: <20251113064935.342018-1-vsementsov@yandex-team.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251113064935.342018-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::344;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,175 +100,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000031db8c06437fefe5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 13/11/25 07:49, Vladimir Sementsov-Ogievskiy wrote:
+> Test, that fix in previous commit make sense.
+> 
+> To not break compilation when we build without
+> 'block', move hexdump.c out of "if have_block"
+> in meson.build.
+> 
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+> 
+> v3: change meson.build to compile hexdump.c always
+> 
+>   tests/unit/test-cutils.c | 43 ++++++++++++++++++++++++++++++++++++++++
+>   util/meson.build         |  2 +-
+>   2 files changed, 44 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+> index 227acc5995..24fef16a7f 100644
+> --- a/tests/unit/test-cutils.c
+> +++ b/tests/unit/test-cutils.c
+> @@ -3626,6 +3626,44 @@ static void test_si_prefix(void)
+>       g_assert_cmpstr(si_prefix(18), ==, "E");
+>   }
+>   
+> +static void test_qemu_hexdump_alignment(void)
+> +{
+> +    /*
+> +     * Test that ASCII part is properly aligned for incomplete lines.
+> +     * This test catches the bug that was fixed in previous commit
+> +     * "util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic".
+> +     *
+> +     * We use data that is not aligned to 16 bytes, so last line
+> +     * is incomplete.
+> +     */
+> +    const uint8_t data[] = {
+> +        /* First line: 16 bytes */
+> +        0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f,  /* "Hello Wo" */
+> +        0x72, 0x6c, 0x64, 0x21, 0x20, 0x54, 0x68, 0x69,  /* "rld! Thi" */
+> +        /* Second line: 5 bytes (incomplete) */
+> +        0x73, 0x20, 0x69, 0x73, 0x20                     /* "s is " */
+> +    };
+> +    char *output = NULL;
+> +    size_t size;
+> +    FILE *stream = open_memstream(&output, &size);
+> +
+> +    g_assert_nonnull(stream);
+> +
+> +    qemu_hexdump(stream, "test", data, sizeof(data));
+> +    fclose(stream);
+> +
+> +    g_assert_nonnull(output);
+> +
+> +    /* We expect proper alignment of "s is" part on the second line */
+> +    const char *expected =
+> +        "test: 0000: 48 65 6c 6c  6f 20 57 6f  72 6c 64 21  20 54 68 69   Hello World! Thi\n"
+> +        "test: 0010: 73 20 69 73  20                                      s is \n";
 
-On Wed, Nov 5, 2025 at 6:38=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linaro=
-.org> wrote:
-
-> "Edgar E. Iglesias" <edgar.iglesias@gmail.com> writes:
->
-> > From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-> >
-> > Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-> > ---
-> >  hw/virtio/virtio.c             | 7 +++++++
-> >  include/hw/virtio/virtio-bus.h | 1 +
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> > index 153ee0a0cf..8a53fb5f93 100644
-> > --- a/hw/virtio/virtio.c
-> > +++ b/hw/virtio/virtio.c
-> > @@ -2700,12 +2700,19 @@ static void virtio_irq(VirtQueue *vq)
-> >
-> >  void virtio_notify(VirtIODevice *vdev, VirtQueue *vq)
-> >  {
-> > +    BusState *qbus =3D qdev_get_parent_bus(DEVICE(vdev));
-> > +    VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(qbus);
-> > +
-> >      WITH_RCU_READ_LOCK_GUARD() {
-> >          if (!virtio_should_notify(vdev, vq)) {
-> >              return;
-> >          }
-> >      }
-> >
-> > +    if (k->notify_queue) {
-> > +        k->notify_queue(qbus->parent, virtio_get_queue_index(vq));
-> > +    }
-> > +
-> >      trace_virtio_notify(vdev, vq);
-> >      virtio_irq(vq);
-> >  }
-> > diff --git a/include/hw/virtio/virtio-bus.h
-> b/include/hw/virtio/virtio-bus.h
-> > index 7ab8c9dab0..043dbeb4cf 100644
-> > --- a/include/hw/virtio/virtio-bus.h
-> > +++ b/include/hw/virtio/virtio-bus.h
-> > @@ -39,6 +39,7 @@ DECLARE_OBJ_CHECKERS(VirtioBusState, VirtioBusClass,
-> >  struct VirtioBusClass {
-> >      /* This is what a VirtioBus must implement */
-> >      BusClass parent;
-> > +    void (*notify_queue)(DeviceState *d, uint16_t index);
-> >      void (*notify)(DeviceState *d, uint16_t vector);
-> >      void (*save_config)(DeviceState *d, QEMUFile *f);
-> >      void (*save_queue)(DeviceState *d, int n, QEMUFile *f);
->
-> The code looks fine but we could do with a little outline of why we need
-> this is the commit messages. Why do we have notify and notify_queue? Are
-> they mutually exclusive?
->
-> Not specific to this patch but we should strive to document the
-> individual methods in each class to give a clearer idea of what they do.
->
-
-Thanks Alex,
-
-Actually, I can do without introducing this new callback.
-Thanks for the other comments as well, I'll fix those up for the next
-submission.
-
-Cheers,
-Edgar
-
-
-
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
->
-
---00000000000031db8c06437fefe5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote gmail=
-_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Nov 5, 2025=
- at 6:38=E2=80=AFAM Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@lina=
-ro.org">alex.bennee@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">&quot;Edgar E. Iglesias&quot; &lt;<a href=3D"=
-mailto:edgar.iglesias@gmail.com" target=3D"_blank">edgar.iglesias@gmail.com=
-</a>&gt; writes:<br>
-<br>
-&gt; From: &quot;Edgar E. Iglesias&quot; &lt;<a href=3D"mailto:edgar.iglesi=
-as@amd.com" target=3D"_blank">edgar.iglesias@amd.com</a>&gt;<br>
-&gt;<br>
-&gt; Signed-off-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.iglesias@=
-amd.com" target=3D"_blank">edgar.iglesias@amd.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/virtio/virtio.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0| 7 +++++++<br>
-&gt;=C2=A0 include/hw/virtio/virtio-bus.h | 1 +<br>
-&gt;=C2=A0 2 files changed, 8 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c<br>
-&gt; index 153ee0a0cf..8a53fb5f93 100644<br>
-&gt; --- a/hw/virtio/virtio.c<br>
-&gt; +++ b/hw/virtio/virtio.c<br>
-&gt; @@ -2700,12 +2700,19 @@ static void virtio_irq(VirtQueue *vq)<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 void virtio_notify(VirtIODevice *vdev, VirtQueue *vq)<br>
-&gt;=C2=A0 {<br>
-&gt; +=C2=A0 =C2=A0 BusState *qbus =3D qdev_get_parent_bus(DEVICE(vdev));<b=
-r>
-&gt; +=C2=A0 =C2=A0 VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(qbus);<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 WITH_RCU_READ_LOCK_GUARD() {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!virtio_should_notify(vdev, vq))=
- {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 if (k-&gt;notify_queue) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 k-&gt;notify_queue(qbus-&gt;parent, virti=
-o_get_queue_index(vq));<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 trace_virtio_notify(vdev, vq);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 virtio_irq(vq);<br>
-&gt;=C2=A0 }<br>
-&gt; diff --git a/include/hw/virtio/virtio-bus.h b/include/hw/virtio/virtio=
--bus.h<br>
-&gt; index 7ab8c9dab0..043dbeb4cf 100644<br>
-&gt; --- a/include/hw/virtio/virtio-bus.h<br>
-&gt; +++ b/include/hw/virtio/virtio-bus.h<br>
-&gt; @@ -39,6 +39,7 @@ DECLARE_OBJ_CHECKERS(VirtioBusState, VirtioBusClass,=
-<br>
-&gt;=C2=A0 struct VirtioBusClass {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* This is what a VirtioBus must implement */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 BusClass parent;<br>
-&gt; +=C2=A0 =C2=A0 void (*notify_queue)(DeviceState *d, uint16_t index);<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 void (*notify)(DeviceState *d, uint16_t vector);<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 void (*save_config)(DeviceState *d, QEMUFile *f);<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 void (*save_queue)(DeviceState *d, int n, QEMUFile=
- *f);<br>
-<br>
-The code looks fine but we could do with a little outline of why we need<br=
->
-this is the commit messages. Why do we have notify and notify_queue? Are<br=
->
-they mutually exclusive? <br>
-<br>
-Not specific to this patch but we should strive to document the<br>
-individual methods in each class to give a clearer idea of what they do.<br=
-></blockquote><div><br></div><div>Thanks Alex,</div><div><br></div><div>Act=
-ually, I can do without introducing this new callback.</div><div>Thanks for=
- the other comments as well, I&#39;ll fix those up for the next submission.=
-</div><div><br></div><div>Cheers,</div><div>Edgar</div><div><br></div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
--- <br>
-Alex Benn=C3=A9e<br>
-Virtualisation Tech Lead @ Linaro<br>
-</blockquote></div></div>
-
---00000000000031db8c06437fefe5--
+Thanks, queued wrapping the long lines to pass checkpatch.pl,
+as in:
+https://lore.kernel.org/qemu-devel/20251031211518.38503-9-philmd@linaro.org/
 
