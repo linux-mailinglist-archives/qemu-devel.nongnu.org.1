@@ -2,93 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1899C5708D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 11:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4204BC571C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 12:11:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJV0r-0006Im-LB; Thu, 13 Nov 2025 05:57:13 -0500
+	id 1vJVDK-0006g2-6X; Thu, 13 Nov 2025 06:10:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vJUyE-0003Ow-3y
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 05:54:31 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vJUyC-0002fH-FA
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 05:54:29 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-42b32a5494dso339985f8f.2
- for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 02:54:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763031266; x=1763636066; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=c60PujkVLQPQGwYj0ljUmIvgnvt/g65UJr1SOWD57x4=;
- b=DkKRlhKqjMBjh9WDt1iVZ22qa8f/EvNHfrPTUGGsahMDC/6Jka9C6dV+M6B8zwHSi/
- NqcPojCDGfTzpzWiqMEGkymcBNVWFTzWbgmZ6NErndQojMasb6glLHwb7dLP8sCQsRmA
- +AGMWC+kyO4sIQwtXArKHJnnzLYXNYOmDG7Ugtw0Mcs5z2NJbUhtPDPZ826wa6a7WzAE
- pXoEdEHQ/fabBWplXolSjm6N/e8OS57o+VG0ilMBjoy1WetRSorMbMHWJyWjxAdFK++H
- ytlc01MQgxy4mDntYJuCoqYtrcuobhbGmNBrrKIaZSxdcccy5khrWoz+uDVtl0e6Cyoy
- 6/oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763031266; x=1763636066;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c60PujkVLQPQGwYj0ljUmIvgnvt/g65UJr1SOWD57x4=;
- b=U9Hn5XCH3mVndmd8CUPkJ/Dcw8ztIfGi7lNFbMIWKmecwZlbzHurRmmLBGk7FsGheA
- NowTWhLultlmrBdFkv7JihhO0LK42/TKRITG1D7/4oZun6HuPwgHmwCei6ahnKcmTS7M
- g1l2SBTywWp95e/MdO2xYPFG80WC1uoBVyzouJBYWLHRTHnvsuiB/3NgDZst3f2TGgQQ
- L+XIE90s3xQYdnVgyXJge0wCscAV81SJ3fbEovffbu9DCQ5jGy2TCqNlbIY6cslX1yLv
- ctnQLxJJfoIgJU1Mu/Gta0BIdRWYGBT8XrKejUd8u3aMh1+eu78I/kwhunx7d1Yb07y/
- ZYWw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVvDJSDCAp8hlpPeoK6OluROI7T4joRnoPn9SXrh4J72R2lSIOzKaQj66JK2vLCpNPlhQ3hH+IK2c0R@nongnu.org
-X-Gm-Message-State: AOJu0Yz8/m7dhYx1iv3xx3/mb6JGaTOqQwtQtLyyk1v/DRSROtepsfG5
- 9skZL7bZmEyQOo4ZvqLFb7Mg/2hdm05QBlwMkDhAIBHW2jd0c+7+mLMbxnckrc4sONo=
-X-Gm-Gg: ASbGncuya7QuvDCa+swXe0ONeqIU4SO7bNiUuIJkWYK9h52fYPLnml6h7mo52oRXH1p
- 8LGMPmyO+FP1UPGWin2JETOAkcSo3Nb8rhK0muLG2Ehy6zXoj30OwU2b6ZMj3wmpzN+gqldUonW
- co+S6ztouaF6TdCwhbvN20Pqrk9eGZBvgnp5sXQk2HsQv1PRhdsq02AdWM85jL/XCJ9v2hefI32
- CCWmOz9uZpuDXwAlSngu6F6MQ0ksSUrDhbeeyKqb0clre6LUoOzfl4KsnJb5ZlAsyj4zN8Brs1c
- ydJHzyKza8IOBRL/SLpOZGoirNIZwUDcv64sgVliB8e3Xk0ueVaAxBzNodhRVJRNgjf0spUhrs+
- BvUn/6Xu2ojnrn5ertKeL8qvnm/U9phNp39GiF1LVQS5cVVhnKcIG37KiATxK5l8o91j2Prlh7z
- AAnCP7+feKhwudNmwOlWJMe0p6gIpIsm8QhGFgIlM+mT2b85imLUbMBXs=
-X-Google-Smtp-Source: AGHT+IFO6dVamTSftIGMw8NDdoX8EshnLT40t63u/6g2L0kwN6lwtUoXX0BUsk6XLVzRIgac1qpFDg==
-X-Received: by 2002:a05:6000:61e:b0:42b:3ee9:4772 with SMTP id
- ffacd0b85a97d-42b4bdb6744mr5637032f8f.52.1763031266147; 
- Thu, 13 Nov 2025 02:54:26 -0800 (PST)
-Received: from [192.168.8.105] (90.red-2-142-37.dynamicip.rima-tde.net.
- [2.142.37.90]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f0b513sm3229607f8f.30.2025.11.13.02.54.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Nov 2025 02:54:25 -0800 (PST)
-Message-ID: <ad83714b-ee19-4c0b-a230-2fd078a7dece@linaro.org>
-Date: Thu, 13 Nov 2025 11:54:22 +0100
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vJVDC-0006bN-Nq
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 06:10:00 -0500
+Received: from 7.mo552.mail-out.ovh.net ([188.165.59.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vJVD8-0006eU-3r
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 06:09:57 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.37.73])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4d6cx56W0dz5w7W;
+ Thu, 13 Nov 2025 11:09:45 +0000 (UTC)
+Received: from kaod.org (37.59.142.110) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Thu, 13 Nov
+ 2025 12:09:41 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-110S0040c1c3a20-2a90-49a1-9952-c70b6ca2bddb,
+ 4476756531275CA3349E6B909B2DFE5C65DEBF14) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <2f1397fe-3df3-4554-ae24-8c5e0ba89119@kaod.org>
+Date: Thu, 13 Nov 2025 12:09:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Add RISCV Zilsd extension
-To: Roan Richmond <roan.richmond@codethink.co.uk>, qemu-riscv@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- qemu-devel@nongnu.org, alistair23@gmail.com
-References: <20251110090510.84103-1-roan.richmond@codethink.co.uk>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251110090510.84103-1-roan.richmond@codethink.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 1/3] hw/nvram: Add a new auxiliary function to init
+ at24c eeprom
+To: Yubin Zou <yubinz@google.com>, <qemu-devel@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
+ <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, <qemu-arm@nongnu.org>, Hao Wu
+ <wuhaotsh@google.com>
+References: <20251113-quanta-q71l-eeproms-v2-0-e72451b974b0@google.com>
+ <20251113-quanta-q71l-eeproms-v2-1-e72451b974b0@google.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20251113-quanta-q71l-eeproms-v2-1-e72451b974b0@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
+X-Originating-IP: [37.59.142.110]
+X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: 4cb59560-feb8-44f3-81c6-b6a55e29f6e2
+X-Ovh-Tracer-Id: 13580886153342978994
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTGNX6EKlNqT32O3ZjTi/0lS8RAKjShRnZovoojPnVFtT3IQFBw1945DSc6DlGtEbvLqNyR+Z2dZtL/hH9aD+QlCvhWL5x019IeANISzErLjAV7p206oYzfex1WiKYdOKJmOkz72+E6ccJ8K1/oJNCbwXhVDDbjxNvbXGib0fuM2NzqcQ7NztW0znRkSHXs4fuFHuFOFV2bRipex4FUed5I3AP1ZF+3bHbbcnlF+WLlI4YQHtwdvBDuPfWgwgfISj1OZJ1Z9bKRLOAKhPIcGCEAgcDqFrSQdhr2/piUrZ9vS5AwGlWeZes1R8qYvovMHqBBY2IOkcjK4a8fJEopezSvjB8cPLopQJLqJdfDejdcDitQmydLC3neYouxoL7authi973ELl28DwG9wB8RpbFS/07MLXoc5I27gFSGhVCOJS0l0bYpjP1V1vy4EIlcTXf59Nh24ybtiJgcsQ7NjCFAHrw97muRzjw6pA0BIIFkOM0CEjn3GOd+uBXUFTP82NElnZpmCguGkpKQF6MXdzbaf9eA7ViHD7rYYkyaKKEN1nrB8LY/0t4OlC6q8aogYY3sWK9drQqftvFde23UDHgjT6j+oqepiu4HtKpwVPu8sXMFr4DzQGWehbRTSD2VnnvZ6jdfLSiKLcVpSAk21ET6VIhoWvnYnFJtxT7IQ5Bxu+A
+DKIM-Signature: a=rsa-sha256; bh=40CnKT+CERV0oCAK4RQDRYi+U6pxISEGfQFTFjCIQlc=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1763032188; v=1;
+ b=id91oYO3DQGGjICv3ox/egdY0hwV7HAzE016oNJ3qXk8tjQdl+IRBHk1/YDmjvHPLv6asKPq
+ GSashd+vkHBLUr0RG+xQ7CFcihOIsACuQ0IADvFg8dSj8UrBTAGdvaF8nIVr8dSi3yvy9yeyFE0
+ 3RiFg+UUItvBcXy2Cduzy7BgLPc2n7LtD2HQpb52LgtqKQI8XFC9XLBmbca2wDqJoIjKSFvhQOq
+ OKpt6L80bekOZBbZ8qx4u0HaWyj8A7pz0GLlw4NgwYSJ0gXZD0p/wsmC7jKqOybIvcX/uMYfdXi
+ cRR3voNjCKVe0TusGDhQLAc1koKJGLhLX+Mi0cjMrCUvg==
+Received-SPF: pass client-ip=188.165.59.253; envelope-from=clg@kaod.org;
+ helo=7.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,63 +129,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/25 10:05, Roan Richmond wrote:
-> +/* Zilsd extension adds load/store double for 32bit arch */
-> +static bool gen_store_zilsd(DisasContext *ctx, arg_sb *a)
+Hello Yubin,
+
+On 11/13/25 01:43, Yubin Zou wrote:
+> From: Hao Wu <wuhaotsh@google.com>
+> 
+> In NPCM7xx boards, at24c eeproms are backed by drives. 
+
+Are they ? I don't see any drive usage apart from the flash devices.
+
+> However,
+> these drives use unit number as unique identifier. So if we
+> specify two drives with the same unit number, error will occured:
+> `Device with id 'none85' exists`.
+
+Yes. The drive interface is very poor when it comes to the user
+interface. Something to avoid.
+
+A better alternative is to define the devices on the command line
+using a blockdev, something like :
+
+   -blockdev node-name=eprom0,driver=file,filename=/path/to/eprom0-contents \
+   -device at24c-eeprom,bus=aspeed.i2c.bus.1,address=0x54,id=foobar,drive=eprom0
+
+Please try that instead. Or use at24c_eeprom_init_rom() like the
+other machines.
+
+A functional test of the quanta-q71l board would be appreciated.
+
+Thanks,
+
+C.
+
+
+
+> Instead of using i2c address as unit number, we now assign unique
+> unit numbers for each eeproms in each board. This avoids conflict
+> in providing multiple eeprom contents with the same address.
+> 
+> We add an auxiliary function in the at24c eeprom module for this.
+> This allows it to easily add at24c eeprom to non-nuvoton boards
+> like aspeed as well.
+> 
+> Change-Id: I2f056cc0507d39164335a03bc18b5c94015b4b11
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> ---
+>   hw/nvram/eeprom_at24c.c         | 17 +++++++++++++++++
+>   include/hw/nvram/eeprom_at24c.h |  4 ++++
+>   2 files changed, 21 insertions(+)
+> 
+> diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
+> index 82ea97e552a15c8bcd38e38939b53545b01ad273..8542ca2b037d6e896c7b394e7ff4b6ec27297ad7 100644
+> --- a/hw/nvram/eeprom_at24c.c
+> +++ b/hw/nvram/eeprom_at24c.c
+> @@ -17,6 +17,7 @@
+>   #include "hw/qdev-properties.h"
+>   #include "hw/qdev-properties-system.h"
+>   #include "system/block-backend.h"
+> +#include "system/blockdev.h"
+>   #include "qom/object.h"
+>   
+>   /* #define DEBUG_AT24C */
+> @@ -264,3 +265,19 @@ static void at24c_eeprom_register(void)
+>   }
+>   
+>   type_init(at24c_eeprom_register)
+> +
+> +void at24c_eeprom_init_one(I2CBus *i2c_bus, int bus, uint8_t addr,
+> +                           uint32_t rsize, int unit_number)
 > +{
-> +    TCGv data_1 = tcg_temp_new();
-> +    TCGv data_2 = tcg_temp_new();
-> +    if (a->rs2 != 0) {
-> +        data_1 = get_gpr(ctx, a->rs2, EXT_NONE);
-> +        data_2 = get_gpr(ctx, a->rs2+1, EXT_NONE);
-> +    }
-> +    TCGv addr_1 = get_address(ctx, a->rs1, a->imm);
-> +    TCGv addr_2 = get_address(ctx, a->rs1, a->imm+4);
+> +    I2CSlave *i2c_dev = i2c_slave_new("at24c-eeprom", addr);
+> +    DeviceState *dev = DEVICE(i2c_dev);
+> +    BlockInterfaceType type = IF_NONE;
+> +    DriveInfo *dinfo;
 > +
-> +    if (ctx->ztso) {
-> +        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+> +    dinfo = drive_get(type, bus, unit_number);
+> +    if (dinfo) {
+> +        qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
 > +    }
+
+> +    qdev_prop_set_uint32(dev, "rom-size", rsize);> +    i2c_slave_realize_and_unref(i2c_dev, i2c_bus, &error_abort);
+> +}
+> diff --git a/include/hw/nvram/eeprom_at24c.h b/include/hw/nvram/eeprom_at24c.h
+> index acb9857b2adddd1fe5a924652f6ebae13b674b66..fdac7c1c022f9f73307bb3ecf761caa732e999bc 100644
+> --- a/include/hw/nvram/eeprom_at24c.h
+> +++ b/include/hw/nvram/eeprom_at24c.h
+> @@ -36,4 +36,8 @@ I2CSlave *at24c_eeprom_init(I2CBus *bus, uint8_t address, uint32_t rom_size);
+>   I2CSlave *at24c_eeprom_init_rom(I2CBus *bus, uint8_t address, uint32_t rom_size,
+>                                   const uint8_t *init_rom, uint32_t init_rom_size);
+>   
+> +/* Init one at24c eeprom device */
+> +void at24c_eeprom_init_one(I2CBus *i2c_bus, int bus, uint8_t addr,
+> +                           uint32_t rsize, int unit_number);
 > +
-> +    tcg_gen_qemu_st_tl(data_1, addr_1, ctx->mem_idx, MO_SL);
-> +    tcg_gen_qemu_st_tl(data_2, addr_2, ctx->mem_idx, MO_SL);
+>   #endif
+> 
 
-This is wrong, because if rs2 == 0, then data_1 and data_2 are uninitialized.  If you're 
-testing properly with --enable-debug-tcg, this should trigger an assertion failure.
-
-You wanted
-
-     if (a->rs2 == 0) {
-         data_1 = tcg_constant_tl(0);
-         data_2 = data_1;
-     } else {
-         data_1 = get_gpr(ctx, a->rs2, EXT_NONE);
-         data_2 = get_gpr(ctx, a->rs2 + 1, EXT_NONE);
-     }
-
-You're also missing the endianness indicator: mo_endian().
-
-You really should consider combining the two halves so that you can perform one 64-bit 
-store.  While I see that the spec allows the store to be non-atomic, you still probably do 
-not want to to allow the first half store to succeed when the second half store faults.  I 
-don't see clear language about that.  Anyway, that's as simple as
-
-     TCGv_i64 data;
-     MemOp end = mo_endian(ctx);
-
-     if (a->rs2 == 0) {
-         data = tcg_constant_i64(0);
-     } else {
-         TCGv data_1 = get_gpr(ctx, a->rs2, EXT_NONE);
-         TCGv data_2 = get_gpr(ctx, a->rs2 + 1, EXT_NONE);
-         data = tcg_temp_new_i64();
-         if (end == MO_LE) {
-             tcg_gen_concat_tl_i64(data, data_1, data_2);
-         } else {
-             tcg_gen_concat_tl_i64(data, data_2, data_1);
-         }
-     }
-     tcg_gen_qemu_st_i64(data, addr, ctx->mem_idx, MO_UQ | end);
-
-
-r~
 
