@@ -2,101 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50089C5A16A
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 22:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BE4C5A1F1
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 22:30:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJelG-0001jM-JN; Thu, 13 Nov 2025 16:21:46 -0500
+	id 1vJet7-00073u-Tb; Thu, 13 Nov 2025 16:29:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJeV8-0008O7-MU
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:05:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJeW5-0000ax-BU
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:06:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJeV6-0005Jl-Kz
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:05:06 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJeW3-0005Zj-U5
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 16:06:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763067903;
+ s=mimecast20190719; t=1763067962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YC03zGOlndvF12WKMPDVlfLrCJQWarSUtksVHqxWt2A=;
- b=annKfSF3uBGyxesXgNSQvLVOLPlBmDjnlOCKLKaZ0ZxlLkYmngOznaLbs3IvhS0Wm9lQ5w
- UbiVz0MaB4RxSuQ0ftwFBoDyf0qMm3mmfJvO7mJcwmtx2RP74uYKTDEkcowr7M7OTpTDFp
- zvQEqYRkyHQODCFbE2CSfH5l85KDaUM=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JL/v6J68lg2RvncxWRrbXTogTIMVK670L6+8XYBdfc4=;
+ b=FSnuaSVV4RfnZgn8c1oGODf24opS5zEQ07V/0Cy8/erE4mW2mgEyu6pCdLYC2ttQ67pT2G
+ aelTZqDX1CoTBvfyl7/a4Q+FCKtbflIx/WF/F85qmBM3KDcI5woCYcIMpajoMCb/zYtRvC
+ YOiQjprWtthTdszhCcriVXBEGKXY8HY=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-w3SWTTgQNkCkmojJq4xDBw-1; Thu, 13 Nov 2025 16:04:59 -0500
-X-MC-Unique: w3SWTTgQNkCkmojJq4xDBw-1
-X-Mimecast-MFC-AGG-ID: w3SWTTgQNkCkmojJq4xDBw_1763067899
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-8805c2acd64so40027816d6.3
- for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 13:04:59 -0800 (PST)
+ us-mta-423-twtmKbz6Nr6kwKLsavvrfQ-1; Thu, 13 Nov 2025 16:06:00 -0500
+X-MC-Unique: twtmKbz6Nr6kwKLsavvrfQ-1
+X-Mimecast-MFC-AGG-ID: twtmKbz6Nr6kwKLsavvrfQ_1763067960
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-89eb8ee2a79so766447985a.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Nov 2025 13:06:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763067899; x=1763672699; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763067960; x=1763672760; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=YC03zGOlndvF12WKMPDVlfLrCJQWarSUtksVHqxWt2A=;
- b=F9Zx9Ojon15gGT44Qimu7CaDS6n+7A+hFH4ZiJgdOT5jVgiBtfu7Q/Xdzg2VtShJab
- XuGYX+Uuh2XwanRgYGvZl1Yv412LdM1ZkaVFy48CfmihFQDyKMFgLdOgezlNaL40Gunx
- TKUleNP12sZHw0YvzgKFLXTTw14K5LFi4rtBb/R+orcbHUx4Z5X14jWjmfbm39TGMykT
- haK0cbvpcCqCttpxvW/82ko2KgJw0z+xsjzC27fvCjEP6dvS4Yu/mLZY8+2G9mAOV0fJ
- 6jxslAaGhB8w9n0D5wfcygWM8TFUrKldiOAWdy0WCX5FmF2q7VZ6q6VmZ5nXdmwu/b7L
- TVZg==
+ bh=JL/v6J68lg2RvncxWRrbXTogTIMVK670L6+8XYBdfc4=;
+ b=p5x5VIcLVZaU8xS+2HjC/GXJ5MMIVfH8CZr6xdeojz8rSCajFK0nblDZrAfk8067jx
+ M05JRgA4BdAgh/5V9gyfeAEheAFc70q//Mzj6jEAJO7XAHX5tM2nXxoULyjW0HxH2wb9
+ IWJRcKXvusTfRpcUw0BUKjTcimM43ONA2nAJuL0EH6E+qZyTL10PNfg1bHWh33zU4FGI
+ hOjYO8YjQ5ibY6k6z4qbiRNHTD8soss+W4UqwZatBq/67kALtnWjvZv68IdkIHEyqVT0
+ Hl9bs3prL0QqLEsN/RsnPnEHTNJr6WctIFZwRr9k/HDV835pWLofPfWB5z9+qzg0HBC/
+ 4qfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763067899; x=1763672699;
+ d=1e100.net; s=20230601; t=1763067960; x=1763672760;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YC03zGOlndvF12WKMPDVlfLrCJQWarSUtksVHqxWt2A=;
- b=V4rPC6GmRpcK/iNL+ACBaVK1ahBmfLtmSI4AsAXbcmZWV7rccKoCdPdDgCKW3Z50tr
- WeaQfQsCxuG3Wpmh4DGvt1wCAUse2IngmZjD90xcbsW0crweCdsOCY948I1cUQWLeh1B
- 1VigsNNocY8BfOGAI3m6W3vo6rM808jPIo+A/+SR/GUOGSoGUTQ+1Da3J41a4suMhcuV
- F09EJDMzwfQNxSdK5ALWlP2Qtbs9SxNfs9AS/p+vKYRA5Oq9Pcd/Aokd4kx0Hdvsgp+0
- 0+sJMdkXmoEiR7rZX27v8j5Zt+fiF8cS39Md3xC+MGggNH5ma64zSbEazNM/YrrZjgPw
- HfUw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoFxi7GDyFm3/yHbh3o2ZbuafVGkeKSNv5rMwnGugwopJWEpsQfrZTEtfwn+QT6GMc7//lqm3CGZ05@nongnu.org
-X-Gm-Message-State: AOJu0Yy2MXm2+Jfr5cFOOFbnj/bZbnZD+7ZrhJaCKrY7Ln5MYOA/dcwb
- yvH81q9i+e0AEiOJ4NawOh6enR0EAmAvYqgxH0O5D77fOFI6R3GzElk5z6seBhxC89R2uDOgysd
- RAFFSiWc+67s2zxRNTu8wnEPl3ppx8kczBRljJ6to5FZsQfhCz706c50q
-X-Gm-Gg: ASbGnctrz0qXHt/ERIum/Vy2sswCKVFgLBnOcLaesDEsjbu3DL7yI9t/0ciV4il0WJM
- e9TqnhucFgH+rneFWCWlmzpT57idqZJrY9jR0due8tAci1UwhRtZrueteQa0TV/GIx3fZz4cB2w
- FkVGXQe8Emw3T0B/6w8NV/izh+tzjRLyIf/moxh1F2ewKacf9rlJMiWsHYOvftif8sGyYfxHgZB
- 7xY9nqd8U114WDkcuOD492G8VQnpADNIa3fbks2npbiFFCF4wYnKSOdgTd+5IqG3kIOJ9KiEIkZ
- ayo6zQSQ2/oWpghSO/TfnzfmqsW337/d/Yxkxt5v1oGzQ+OHW5spHZyVFXIG81+b8AP23/VQpiG
- pDw==
-X-Received: by 2002:ad4:4eab:0:b0:87c:f92:a54e with SMTP id
- 6a1803df08f44-882925ba368mr9693156d6.4.1763067898898; 
- Thu, 13 Nov 2025 13:04:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2e3TcmaBGsqQy9D/wBhRvIhX7q+4vqS8BKOrHe4/109hRiY9D8pOW7PdSdhqAG6u7tNkaRg==
-X-Received: by 2002:ad4:4eab:0:b0:87c:f92:a54e with SMTP id
- 6a1803df08f44-882925ba368mr9692486d6.4.1763067898351; 
- Thu, 13 Nov 2025 13:04:58 -0800 (PST)
+ bh=JL/v6J68lg2RvncxWRrbXTogTIMVK670L6+8XYBdfc4=;
+ b=CcswDMXPAdylGf5BPMp0CfQ0pyT8rPIAC4bioTxi4YCfNsyQ5N8xw8lof8HivsOQv7
+ 1eMi39rQ6nR+e1bIv9Dggd2cwBSFM6Buc2ijNZAwi6j+I+D4MatgdtCY7cY85Bd37wWq
+ ByLZUcafuR6nlRT1ROf2TtmXClfS/fWJ9BPTL/K/d8+OKBIpFMzjN4jU5fMNVvobeoii
+ yLvz7R3Ui6RVJGrKPEiwr4PvOuk/rQO8IQz/vAUrygOpn0SLbwZDTRdkSn+jwVqWnfZP
+ iotDP57soA0HpBiGPhxlrjNgbUY0FQKuvvRrdPSfmLXiOjv3p1wYlsm3tM8V13Xl4vfj
+ jCRg==
+X-Gm-Message-State: AOJu0Yye9eN/8j7nSPMG5BV0HmCWqFBz9NMPSMkLx0vOJNgoZlonqoGQ
+ V24TcX9AtjhyZE+tQLaNvGQZfxTfpQhiW9qO3l9HTdZrQwLqpxQnBH2QaPo07HAFRagSZsKQugn
+ TIPZ8XE0zO+zlWT1cgvjTqLQpqyHWwH+8AkT2Qvdu9naMjNrsMuKGaCVG
+X-Gm-Gg: ASbGnctxHAush8IAOggNtM3hD0rfRQq9TDw/Qoh4CXvMoFNDJC1WNUolQAruEIk5XRB
+ AQ7Dlo0WDvWnM9GutxV7tC3DPZEWDgmUokocD+NOsYgoUcz5R4C/++40o1doH4WBMOijWBapckJ
+ gGzFq4ecbTO0nn1ELcsWhcMQsDBpVOb3dpjLthhX1D0kK9FgLlSzN13ej43BfuRSYIMPIktrcIW
+ LBW/UjnK+AOZgITXxozeR7vRYdkQV4NqL0+ZSixcbHXb0G/d225kASk/xPnUf7V/jVPKaEa1SnP
+ UXk8G4/sQV2gAa93+4Lngvucusv2jdjOKVgVGGGcXR05kXbsQBD6U0GjVi9Kh4WbtyOPUlOQxRm
+ /IQ==
+X-Received: by 2002:a05:620a:1708:b0:864:48eb:356 with SMTP id
+ af79cd13be357-8b2c315b9ffmr104922885a.25.1763067960194; 
+ Thu, 13 Nov 2025 13:06:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGpCw0YE7k3OOHTOSawkwOsg8ZVBdxfqqck/KM58R3ks/aOKEISHE/JSKhKDRCVG5QIgzD1eg==
+X-Received: by 2002:a05:620a:1708:b0:864:48eb:356 with SMTP id
+ af79cd13be357-8b2c315b9ffmr104917385a.25.1763067959720; 
+ Thu, 13 Nov 2025 13:05:59 -0800 (PST)
 Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ede887cb42sm18280781cf.36.2025.11.13.13.04.57
+ af79cd13be357-8b2bd0bfc23sm105605985a.17.2025.11.13.13.05.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Nov 2025 13:04:57 -0800 (PST)
-Date: Thu, 13 Nov 2025 16:04:54 -0500
+ Thu, 13 Nov 2025 13:05:59 -0800 (PST)
+Date: Thu, 13 Nov 2025 16:05:55 -0500
 From: Peter Xu <peterx@redhat.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- Alex Williamson <alex@shazbot.org>, Cedric Le Goater <clg@redhat.com>
-Subject: Re: [PULL 37/45] migration: multi-mode notifier
-Message-ID: <aRZH9tkhTuG84CAz@x1.local>
-References: <20251003153948.1304776-1-peterx@redhat.com>
- <20251003153948.1304776-38-peterx@redhat.com>
- <bb65bbe3-37b3-4e79-b662-82d33852e33b@linux.ibm.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Juraj Marcin <jmarcin@redhat.com>
+Subject: Re: [PATCH 2/8] kvm: Allow kvm_guest_memfd_supported for non-private
+ use case
+Message-ID: <aRZIM9baerzcuxOi@x1.local>
+References: <20251023185913.2923322-1-peterx@redhat.com>
+ <20251023185913.2923322-3-peterx@redhat.com>
+ <9614d727-97bf-4a50-be13-6754952bec96@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bb65bbe3-37b3-4e79-b662-82d33852e33b@linux.ibm.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <9614d727-97bf-4a50-be13-6754952bec96@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -121,61 +119,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 13, 2025 at 03:28:12PM -0500, Matthew Rosato wrote:
-> On 10/3/25 11:39 AM, Peter Xu wrote:
-> > From: Steve Sistare <steven.sistare@oracle.com>
+On Fri, Oct 24, 2025 at 10:30:19AM +0800, Xiaoyao Li wrote:
+> On 10/24/2025 2:59 AM, Peter Xu wrote:
+> > Guest-memfd is not 100% attached to private, it's a VM-specific memory
+> > provider.  Allow it to be created even without private attributes, for
+> > example, when the VM can use the guest-memfd memory completely shared.
 > > 
-> > Allow a notifier to be added for multiple migration modes.
-> > To allow a notifier to appear on multiple per-node lists, use
-> > a generic list type.  We can no longer use NotifierWithReturnList,
-> > because it shoe horns the notifier onto a single list.
-> > 
-> > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> > Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> > Link: https://lore.kernel.org/r/1759332851-370353-2-git-send-email-steven.sistare@oracle.com
 > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >   accel/kvm/kvm-all.c | 6 ++----
+> >   1 file changed, 2 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > index f9254ae654..1425dfd8b3 100644
+> > --- a/accel/kvm/kvm-all.c
+> > +++ b/accel/kvm/kvm-all.c
+> > @@ -2779,10 +2779,8 @@ static int kvm_init(AccelState *as, MachineState *ms)
+> >       }
+> >       kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+> > -    kvm_guest_memfd_supported =
+> > -        kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> > -        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
+> > -        (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> > +    kvm_guest_memfd_supported = kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
+> > +        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2);
+> >       kvm_pre_fault_memory_supported = kvm_vm_check_extension(s, KVM_CAP_PRE_FAULT_MEMORY);
+> >       if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
 > 
-> ...
 > 
-> >  void migration_remove_notifier(NotifierWithReturn *notify)
-> >  {
-> >      if (notify->notify) {
-> > -        notifier_with_return_remove(notify);
-> > +        for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-> > +            migration_blockers[mode] =
-> > +                g_slist_remove(migration_state_notifiers[mode], notify);
-> > +        }
-> >          notify->notify = NULL;
-> >      }
+> The check on KVM_MEMORY_ATTRIBUTE_PRIVATE is dropped silently. But using
+> guest memfd to serve as private memory does requires the support of
+> KVM_MEMORY_ATTRIBUTE_PRIVATE.
 > 
-> Hi, we started noticing occasional crashes on detach of vfio-pci devices on s390x.
-> 
-> The pattern we used to reliably hit the issue is to attach/detach the same hostdev to a guest; crash usually happens on the second detach, sometimes the third. 
-> 
-> I did a bisect and it points to this patch.  This code isn't my area of expertise, but the change above looks wrong.
-> 
-> I tried the following diff and it resolves the crash for me at least:
-> 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index c2daab6bdd..9e787749b2 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1693,7 +1693,7 @@ void migration_remove_notifier(NotifierWithReturn *notify)
->  {
->      if (notify->notify) {
->          for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-> -            migration_blockers[mode] =
-> +            migration_state_notifiers[mode] =
->                  g_slist_remove(migration_state_notifiers[mode], notify);
->          }
->          notify->notify = NULL;
+> My version of the patch was
 
-I bet you're correct, thanks for reporting and providing the fix.
-
-Could you prepare a formal patch and send it to the list?  I can collect it
-for the rc pull.
-
-Thanks,
+Your version looks good, I'll fetch yours to replace mine.  Thanks.
 
 -- 
 Peter Xu
