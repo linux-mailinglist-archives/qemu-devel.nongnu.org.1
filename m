@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC61C57B6C
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 14:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E118C57B6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 14:38:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJXVy-0005Fo-Ks; Thu, 13 Nov 2025 08:37:30 -0500
+	id 1vJXVw-0004zm-QW; Thu, 13 Nov 2025 08:37:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vJXRg-0002sZ-FY
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 08:33:04 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vJXUw-0004NG-4W
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 08:36:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vJXRe-0002pX-NK
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 08:33:04 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vJXUu-0003ZE-I5
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 08:36:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763040780;
+ s=mimecast20190719; t=1763040983;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jNDggFfp5p8KVMMjOi+58aNgFm/GxPJYTs70b5/XX3E=;
- b=QLPsukKCt3tRTf+6lnBDG4lxU2Q4mrFqouYvBp48PwzNstlS3boYD491vEBBp8MyYjMGiY
- 4PnY2b/jXZJXOV4zXQbLf1859JYRiUjpj4FxXUuz+w9DLXRV72BKSCJzUsnaGjO02X3FBh
- xbILKNZiTkFDQXFnAKXw2IaIgdWtdZk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=JeVZmaUnmGbNEzHrLmtUkyzI1970RQSOwSylWRM8dyg=;
+ b=OU+wB2vujeA79jiYLWFRyYQh2HVg6vekGJpbriamSAAbxRdERw6U1QIIrxdmpq/DR01LoK
+ 9L1yGWUHupGH9SosiWTULQxMr2aOYupTb603Iy5hRf9/MyhuGLAn/ChhZDvIXwez637YkV
+ TvPrBQCln9C+YemxsH0cliq398rIZIo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-fRK3WjV9POO1vjXSSL5new-1; Thu,
- 13 Nov 2025 08:32:58 -0500
-X-MC-Unique: fRK3WjV9POO1vjXSSL5new-1
-X-Mimecast-MFC-AGG-ID: fRK3WjV9POO1vjXSSL5new_1763040777
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-rnCtgUuPMaeViLXn9uktfQ-1; Thu,
+ 13 Nov 2025 08:36:22 -0500
+X-MC-Unique: rnCtgUuPMaeViLXn9uktfQ-1
+X-Mimecast-MFC-AGG-ID: rnCtgUuPMaeViLXn9uktfQ_1763040981
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8B16B1800359; Thu, 13 Nov 2025 13:32:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.224.162])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 29C3718004A3; Thu, 13 Nov 2025 13:32:50 +0000 (UTC)
-Date: Thu, 13 Nov 2025 14:32:48 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- eblake@redhat.com, Hanna Czenczek <hreitz@redhat.com>,
- qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, hibriansong@gmail.com
-Subject: Re: [PATCH v6 00/15] aio: add the aio_add_sqe() io_uring API
-Message-ID: <aRXeAENqCj1sN7_2@redhat.com>
-References: <20251104022933.618123-1-stefanha@redhat.com>
- <8ce36148-47a0-463f-9af6-669c69c8b575@tls.msk.ru>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B30A19560B0; Thu, 13 Nov 2025 13:36:21 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.22])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CCFBE1955F1B; Thu, 13 Nov 2025 13:36:19 +0000 (UTC)
+Date: Thu, 13 Nov 2025 07:36:17 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, kwolf@redhat.com
+Subject: Re: [PATCH v3 for-10.2 00/13] Fix deadlock with bdrv_open of
+ self-served NBD
+Message-ID: <ogeyatgiy225rpeon2uq6qke6j27lk2yxziiokq77y46drtz3l@2dez6hvaafpu>
+References: <20251113011625.878876-15-eblake@redhat.com>
+ <aRWfwmWz2LfgMKrs@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8ce36148-47a0-463f-9af6-669c69c8b575@tls.msk.ru>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aRWfwmWz2LfgMKrs@redhat.com>
+User-Agent: NeoMutt/20250905
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,71 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 13.11.2025 um 09:27 hat Michael Tokarev geschrieben:
-> On 11/4/25 05:29, Stefan Hajnoczi wrote:
-> ..
-> > This patch series contains io_uring improvements:
-> > 
-> > 1. Support the glib event loop in fdmon-io_uring.
-> >     - aio-posix: fix race between io_uring CQE and AioHandler deletion
-> >     - aio-posix: keep polling enabled with fdmon-io_uring.c
-> >     - tests/unit: skip test-nested-aio-poll with io_uring
-> >     - aio-posix: integrate fdmon into glib event loop
-> > 
-> > 2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
-> >     Otherwise continue using ppoll(2) or epoll(7).
-> >     - aio: remove aio_context_use_g_source()
-> > 
-> > 3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
-> >     event loop.
-> >     - aio: free AioContext when aio_context_new() fails
-> >     - aio: add errp argument to aio_context_setup()
-> >     - aio-posix: gracefully handle io_uring_queue_init() failure
-> >     - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
-> >     - aio-posix: avoid EventNotifier for cqe_handler_bh
-> > 
-> > 4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
-> >     io_uring context for --blockdev aio=io_uring. This simplifies the code,
-> >     reduces the number of file descriptors, and demonstrates the aio_add_sqe()
-> >     API.
-> >     - block/io_uring: use aio_add_sqe()
-> >     - block/io_uring: use non-vectored read/write when possible
-> > 
-> > The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
-> > Google Summer of Code project and other future QEMU features that natively use
-> > Linux io_uring functionality.
-> ..> Stefan Hajnoczi (15):
-> >    aio-posix: fix race between io_uring CQE and AioHandler deletion
-> >    aio-posix: fix fdmon-io_uring.c timeout stack variable lifetime
-> >    aio-posix: fix spurious return from ->wait() due to signals
-> >    aio-posix: keep polling enabled with fdmon-io_uring.c
-> >    tests/unit: skip test-nested-aio-poll with io_uring
-> >    aio-posix: integrate fdmon into glib event loop
-> >    aio: remove aio_context_use_g_source()
-> >    aio: free AioContext when aio_context_new() fails
-> >    aio: add errp argument to aio_context_setup()
-> >    aio-posix: gracefully handle io_uring_queue_init() failure
-> >    aio-posix: unindent fdmon_io_uring_destroy()
-> >    aio-posix: add fdmon_ops->dispatch()
-> >    aio-posix: add aio_add_sqe() API for user-defined io_uring requests
-> >    block/io_uring: use aio_add_sqe()
-> >    block/io_uring: use non-vectored read/write when possible
+On Thu, Nov 13, 2025 at 09:07:14AM +0000, Daniel P. Berrangé wrote:
+> Seems you sent a v3 twice today. I reviewed the earlier v3 and
+> assume this v3 is an identical accident dupe. If this is actually
+> a v3 let me know and i'll review further...
+
+Rather, you got two copies, but the list only got one - my first
+attempt botched the cc to Kevin's email to the point that the list
+rejected it.  Sorry for my fat fingers on that one!
+
 > 
-> Is there anything in there which should go to qemu-stable?
-> 
-> From the descriptions of a few changes it feels like something should.
+> On Wed, Nov 12, 2025 at 07:11:25PM -0600, Eric Blake wrote:
+> > v2 was here:
+> > https://lists.nongnu.org/archive/html/qemu-devel/2025-11/msg01243.html
+> > 
+> > Since then:
+> >  - drop patch 7/12; refcounting for GSource case is now unchanged
+> >  - add a couple of patches: fix a chardev leaky abstraction, and add a
+> >    mutex lock for cross-thread safety
+> >  - improve commit messages to document why NBD is safe now, even without
+> >    adding notify callbacks to AioContext
+> > 
+> > Now that the new behavior is opt-in rather than a change of defaults,
+> > and only NBD opts in, it should still be safe to include in 10.2.
+> > But the technical debt here means that we really should consider
+> > improving the AioContext API for 11.0 to allow for a notify function
+> > similar to what GSource provides.
+> >
 
-fdmon-io_uring has effectively been dead code since commit ba607ca (and
-until patch 7 in this series). The commit message of that commit makes
-it sounds like there are cases where GSource is not enabled, but there
-really aren't.
+I'll go ahead and queue this through my tree.
 
-You may want to pick patch 2 anyway because it's a use after free and
-may effectively hang QEMU (by using far too large timeouts), but from
-what I can tell, without downstream code changes, you won't ever run
-this code in relevant stable releases. QEMU 5.0 was the only release
-that had it enabled before.
-
-Kevin
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
