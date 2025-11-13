@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1647C55BAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 05:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D36C55BE6
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 06:02:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJPPk-0005HA-Gq; Wed, 12 Nov 2025 23:58:34 -0500
+	id 1vJPPZ-00051c-TS; Wed, 12 Nov 2025 23:58:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOz-0004mb-Oq; Wed, 12 Nov 2025 23:57:49 -0500
+ id 1vJPP1-0004mv-Gb; Wed, 12 Nov 2025 23:57:50 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOv-0001cQ-KP; Wed, 12 Nov 2025 23:57:44 -0500
+ id 1vJPOy-0001c6-5e; Wed, 12 Nov 2025 23:57:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763009862; x=1794545862;
+ t=1763009864; x=1794545864;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3OTgmbXWXa3j4MCRvhCK3zxnzKKL2HP9WGCm4S7ASyk=;
- b=Gd4v15LvH1PvqvQlAuAdD0IAlPl+DaNpOQ3FQvoL1pz13VhhN3O6cS8g
- 2w9kzRE5UVzEB1zalKfj9DQXy/NYHpOSEq1X8A59834DIB8qlaCU4DCVT
- MmITD+9GjaCgl93QNHXYexdpvUc/NWe0FteRvdmL2V4YyHPepvFRawwmO
- jM9sCNNjUWOalpxlobqHNg6Rv5OXl4QqcD46150n3G/Bnw04Fw9IHer6G
- 3M+HkwY3QPgKEomfzyVpyqwVA77nD5ZoXv1ibIljfPz4SNvydAP2G7HHM
- g7heHvvCdDFzvxlBjVtK9mjYPxRixAu0dZ4KkvFT5xpLp3Z1Rvrr/f2cb A==;
-X-CSE-ConnectionGUID: xwlkU8hZQiukCy+gSpQlmQ==
-X-CSE-MsgGUID: O4FLhJfsQJ2kwsycqKFvEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682091"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682091"
+ bh=xYpyItzvU+U1U89xSQkA8t3JXUFuUyTI1WKek/jbLis=;
+ b=SYARrW0vkfLqs6KnuK2sM5oqdXmncrTf9f22K8dTGWJdHzoAvabcLkzX
+ 8zQP/6mVgn13v85g/sFmRPYfkOahgeWJ6s6hReH6QlPxqZBJ0EBaMSyOz
+ xaLG0E8Z+6m/JQOYYq5zG3l6OZ6ZDPbqk+RtoWo6AOriefK0ieyPAL4xQ
+ kVxTOYTkIcAdS2HJjmSz0VQA4Zsp2QKqpFJq0RVdcTOs+5B7l42+4EPEp
+ i1ph8vzRS4ap7DzPGLFnwbj47fpb5rYjFcp11zcbgINt/v1UtbwXkxj9S
+ LlasqJLLORHB1SiToJRLDZwc6G6aVbCVKYorNKAUwH2V9tnR7Prt4B5/6 g==;
+X-CSE-ConnectionGUID: P2PNvTh9TC2VxzrbyOxmKA==
+X-CSE-MsgGUID: wdmg2CwsQOyZ7hQVygRVeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682095"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682095"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 20:57:38 -0800
-X-CSE-ConnectionGUID: YrPllLViQnKjvMQ2Z1gIXQ==
-X-CSE-MsgGUID: twD4nmjcQF+zNsNfCHifCQ==
+ 12 Nov 2025 20:57:40 -0800
+X-CSE-ConnectionGUID: zrsWifUPSGaI2GHmhZpYbQ==
+X-CSE-MsgGUID: qx5Ng6GAQ4KR/B1Y0spvjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663250"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663255"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:36 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:38 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
 Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
  qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 08/22] rust/hpet: Rename HPETRegister to DecodedRegister
-Date: Thu, 13 Nov 2025 13:19:23 +0800
-Message-Id: <20251113051937.4017675-9-zhao1.liu@intel.com>
+Subject: [PATCH 09/22] rust/hpet: Rename decoded "reg" enumeration to "target"
+Date: Thu, 13 Nov 2025 13:19:24 +0800
+Message-Id: <20251113051937.4017675-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113051937.4017675-1-zhao1.liu@intel.com>
 References: <20251113051937.4017675-1-zhao1.liu@intel.com>
@@ -80,105 +80,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HPETRegister represents the layout of register spaces of HPET timer
-block and timer N, and is used to decode register address into register
-enumeration.
+HPETAddrDecode has a `reg` field so that there're many variables named
+"reg" in MMIO read/write/decode functions.
 
-To avoid confusion with the subsequently introduced HPETRegisters (that
-is used to maintain values of HPET registers), rename HPETRegister to
-DecodedRegister.
+In the future, there'll be other HPETRegisters/HPETTimerRegisters
+structs containing values of HPET registers, and related variables or
+arguments will be named as "regs".
+
+To avoid potential confusion between many "reg" and "regs", rename
+HPETAddrDecode::reg to HPETAddrDecode::target, and rename decoding
+related variables from "reg" to "target".
+
+"target" is picked as the name since this clearly reflects the field or
+variable is the target decoded register.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 5e08b91494cf..c76f52a374de 100644
+index c76f52a374de..2105538cffe6 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -102,7 +102,7 @@
- #[derive(common::TryInto)]
- #[repr(u64)]
- #[allow(non_camel_case_types)]
--/// Timer registers, masked by 0x18
-+/// Timer register enumerations, masked by 0x18
- enum TimerRegister {
-     /// Timer N Configuration and Capability Register
-     CFG = 0,
-@@ -115,7 +115,7 @@ enum TimerRegister {
- #[derive(common::TryInto)]
- #[repr(u64)]
- #[allow(non_camel_case_types)]
--/// Global registers
-+/// Global register enumerations
- enum GlobalRegister {
-     /// General Capabilities and ID Register
-     CAP = 0,
-@@ -127,7 +127,7 @@ enum GlobalRegister {
-     COUNTER = 0xF0,
- }
- 
--enum HPETRegister<'a> {
-+enum DecodedRegister<'a> {
-     /// Global register in the range from `0` to `0xff`
-     Global(GlobalRegister),
- 
-@@ -142,7 +142,7 @@ enum HPETRegister<'a> {
+@@ -142,7 +142,7 @@ enum DecodedRegister<'a> {
  struct HPETAddrDecode<'a> {
      shift: u32,
      len: u32,
--    reg: HPETRegister<'a>,
-+    reg: DecodedRegister<'a>,
+-    reg: DecodedRegister<'a>,
++    target: DecodedRegister<'a>,
  }
  
  const fn hpet_next_wrap(cur_tick: u64) -> u64 {
-@@ -783,22 +783,22 @@ fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode<'_> {
+@@ -501,18 +501,18 @@ fn callback(&mut self) {
+         self.update_irq(true);
+     }
+ 
+-    const fn read(&self, reg: TimerRegister) -> u64 {
++    const fn read(&self, target: TimerRegister) -> u64 {
+         use TimerRegister::*;
+-        match reg {
++        match target {
+             CFG => self.config, // including interrupt capabilities
+             CMP => self.cmp,    // comparator register
+             ROUTE => self.fsb,
+         }
+     }
+ 
+-    fn write(&mut self, reg: TimerRegister, value: u64, shift: u32, len: u32) {
++    fn write(&mut self, target: TimerRegister, value: u64, shift: u32, len: u32) {
+         use TimerRegister::*;
+-        match reg {
++        match target {
+             CFG => self.set_tn_cfg_reg(shift, len, value),
+             CMP => self.set_tn_cmp_reg(shift, len, value),
+             ROUTE => self.set_tn_fsb_route_reg(shift, len, value),
+@@ -782,34 +782,34 @@ fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode<'_> {
+         let len = std::cmp::min(size * 8, 64 - shift);
  
          addr &= !4;
-         let reg = if (0..=0xff).contains(&addr) {
--            GlobalRegister::try_from(addr).map(HPETRegister::Global)
-+            GlobalRegister::try_from(addr).map(DecodedRegister::Global)
+-        let reg = if (0..=0xff).contains(&addr) {
++        let target = if (0..=0xff).contains(&addr) {
+             GlobalRegister::try_from(addr).map(DecodedRegister::Global)
          } else {
              let timer_id: usize = ((addr - 0x100) / 0x20) as usize;
              if timer_id < self.num_timers {
                  // TODO: Add trace point - trace_hpet_ram_[read|write]_timer_id(timer_id)
                  TimerRegister::try_from(addr & 0x18)
--                    .map(|reg| HPETRegister::Timer(&self.timers[timer_id], reg))
-+                    .map(|reg| DecodedRegister::Timer(&self.timers[timer_id], reg))
+-                    .map(|reg| DecodedRegister::Timer(&self.timers[timer_id], reg))
++                    .map(|target| DecodedRegister::Timer(&self.timers[timer_id], target))
              } else {
                  // TODO: Add trace point -  trace_hpet_timer_id_out_of_range(timer_id)
                  Err(addr)
              }
          };
  
--        // reg is now a Result<HPETRegister, hwaddr>
--        // convert the Err case into HPETRegister as well
--        let reg = reg.unwrap_or_else(HPETRegister::Unknown);
-+        // reg is now a Result<DecodedRegister, hwaddr>
-+        // convert the Err case into DecodedRegister as well
-+        let reg = reg.unwrap_or_else(DecodedRegister::Unknown);
-         HPETAddrDecode { shift, len, reg }
+-        // reg is now a Result<DecodedRegister, hwaddr>
++        // `target` is now a Result<DecodedRegister, hwaddr>
+         // convert the Err case into DecodedRegister as well
+-        let reg = reg.unwrap_or_else(DecodedRegister::Unknown);
+-        HPETAddrDecode { shift, len, reg }
++        let target = target.unwrap_or_else(DecodedRegister::Unknown);
++        HPETAddrDecode { shift, len, target }
      }
  
-@@ -807,7 +807,7 @@ fn read(&self, addr: hwaddr, size: u32) -> u64 {
-         let HPETAddrDecode { shift, reg, .. } = self.decode(addr, size);
+     fn read(&self, addr: hwaddr, size: u32) -> u64 {
+         // TODO: Add trace point - trace_hpet_ram_read(addr)
+-        let HPETAddrDecode { shift, reg, .. } = self.decode(addr, size);
++        let HPETAddrDecode { shift, target, .. } = self.decode(addr, size);
  
          use GlobalRegister::*;
--        use HPETRegister::*;
-+        use DecodedRegister::*;
-         (match reg {
-             Timer(timer, tn_reg) => timer.borrow_mut().read(tn_reg),
+         use DecodedRegister::*;
+-        (match reg {
+-            Timer(timer, tn_reg) => timer.borrow_mut().read(tn_reg),
++        (match target {
++            Timer(timer, tn_target) => timer.borrow_mut().read(tn_target),
              Global(CAP) => self.capability.get(), /* including HPET_PERIOD 0x004 */
-@@ -834,7 +834,7 @@ fn write(&self, addr: hwaddr, value: u64, size: u32) {
+             Global(CFG) => self.config.get(),
+             Global(INT_STATUS) => self.int_status.get(),
+@@ -830,13 +830,13 @@ fn read(&self, addr: hwaddr, size: u32) -> u64 {
+     }
+ 
+     fn write(&self, addr: hwaddr, value: u64, size: u32) {
+-        let HPETAddrDecode { shift, len, reg } = self.decode(addr, size);
++        let HPETAddrDecode { shift, len, target } = self.decode(addr, size);
  
          // TODO: Add trace point - trace_hpet_ram_write(addr, value)
          use GlobalRegister::*;
--        use HPETRegister::*;
-+        use DecodedRegister::*;
-         match reg {
-             Timer(timer, tn_reg) => timer.borrow_mut().write(tn_reg, value, shift, len),
+         use DecodedRegister::*;
+-        match reg {
+-            Timer(timer, tn_reg) => timer.borrow_mut().write(tn_reg, value, shift, len),
++        match target {
++            Timer(timer, tn_target) => timer.borrow_mut().write(tn_target, value, shift, len),
              Global(CAP) => {} // General Capabilities and ID Register: Read Only
+             Global(CFG) => self.set_cfg_reg(shift, len, value),
+             Global(INT_STATUS) => self.set_int_status_reg(shift, len, value),
 -- 
 2.34.1
 
