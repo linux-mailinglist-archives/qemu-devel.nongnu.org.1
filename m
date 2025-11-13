@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445C1C55C06
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 06:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 754D2C55BCD
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Nov 2025 06:01:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJPPA-0004pI-9t; Wed, 12 Nov 2025 23:57:56 -0500
+	id 1vJPPL-0004xV-Rb; Wed, 12 Nov 2025 23:58:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOp-0004jo-AZ; Wed, 12 Nov 2025 23:57:40 -0500
+ id 1vJPOr-0004k7-UF; Wed, 12 Nov 2025 23:57:41 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vJPOi-0001cQ-P3; Wed, 12 Nov 2025 23:57:32 -0500
+ id 1vJPOm-0001cD-9P; Wed, 12 Nov 2025 23:57:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763009849; x=1794545849;
+ t=1763009852; x=1794545852;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=y/Z27usq9NO6Gx7PFhdqImE5l1fhD5PaRWTiCqUeEvA=;
- b=lwBJcJhgpS5MYkqvArLq/cMzbPcONPe2zVhNK3sZENWztgyxmBHct16M
- X+s2wpRRvLhSQNHE7+gAf8G0T1ZXV23DHX4whz5/kVyu3jY5Wd0QwFQvp
- FbCUORtY1NEvTv7K01toOnzmKzhtcZler/+FjL550gdR3ZXYkb4KHt0nF
- uDnrN5IGBfNs3fHQuHROWV99CKCZZWiTMLq0w6+zDZAGHgVCECnqpqUJY
- 87K594t0n86fqMvdvo3vHuF0EoWQdpHJ0WcWfVLxrVP4PQ4h95U7ahVqm
- Zp8AZTWNHa51uCQyrAJStMkRS3VnOJFODM9m6ghZdA9lSdBsxpxl2O8G2 g==;
-X-CSE-ConnectionGUID: K2YArIYARR2QDopMwmSdZQ==
-X-CSE-MsgGUID: 8AdaWV7pSmCC7xNI4n5DNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682064"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682064"
+ bh=2S5WatjIoZmc7FdySy+887bRnIi9jDxZtOKrzrC+ftk=;
+ b=h1DZ5Lnph4DsIIGCJZfwGOGfS7zSlCtcvyomDKWZ7mAAkomr7RCfz3EO
+ rSECi0oqGFVtuSTtYJ4GP9n4H3nr5dAzMGnMmaHcZp8Zhr0IDYEd5Smwg
+ QUXUBuODPc37WhC3Xw4vOJnw7clSQM6vph7JjWey9CLZ9TYKIMA5SAx2V
+ C7q+XjGvmCRqREwSor33w4ixfHABLJcQDsnCX4xr2uPxI2WGphx6ZwSXs
+ xQyrwZYv5aQKAqtxM2FL8X4Mz1uS5YB7u2UpTNZxQpA1dDItMtmc/J3XV
+ jEOjbhMsw1nG3F7prVsyrcXqy9vDhnyfs12/N2ZFfgahrxN31mejR4rvU w==;
+X-CSE-ConnectionGUID: ZZn/7L1TRne8T81pgFGcHA==
+X-CSE-MsgGUID: 7JQ762OGS0qjwAo6uKqE6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67682067"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67682067"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 20:57:27 -0800
-X-CSE-ConnectionGUID: u+7KslJrTmqe+3Kv3s9kjQ==
-X-CSE-MsgGUID: cZlBZ7KgQ7eISp8U0fI/7A==
+ 12 Nov 2025 20:57:28 -0800
+X-CSE-ConnectionGUID: z3N6LOWLQ0OKBNXQDI9+Fw==
+X-CSE-MsgGUID: 0Oyf85xnQHSJ8Fa+1T5lKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663226"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193663229"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:25 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 12 Nov 2025 20:57:26 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
 Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
  qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 02/22] rust/migration: Fix missing name in the VMSD of
- Migratable<>
-Date: Thu, 13 Nov 2025 13:19:17 +0800
-Message-Id: <20251113051937.4017675-3-zhao1.liu@intel.com>
+Subject: [PATCH 03/22] rust/migration: Check name field in
+ VMStateDescriptionBuilder
+Date: Thu, 13 Nov 2025 13:19:18 +0800
+Message-Id: <20251113051937.4017675-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113051937.4017675-1-zhao1.liu@intel.com>
 References: <20251113051937.4017675-1-zhao1.liu@intel.com>
@@ -81,39 +81,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VMStateDescription of Migratable<T> missed the name field, and this
-casused segmentation fault in vmstate_save_state_v() when it tries to
-write name field by json_writer_str().
+The name field is necessary for VMStateDescription, so that it's
+necessary to check if it is set when build VMStateDescription.
 
-Due to the limitation of const, a custom name based on type would be
-more difficult. Instead, a straightforward and simple approach is to
-have all Migratable<T> instances use the same VMSD name -
-"migratable-wrapper".
+Since is_null()/as_ref() become rustc v1.84 and pointer cannot cast to
+integer in const, use Option<> to check name with a new field in
+VMStateDescriptionBuilder instead.
 
-This is availiable because Migratable<T> is always a field within a
-VMSD, and its parent VMSD should have a distinct name.
+This can be simplified in future when QEMU bumps up rustc version.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/migration/src/migratable.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/migration/src/vmstate.rs | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-index 5c47c7d1c2fa..76e524774a3c 100644
---- a/rust/migration/src/migratable.rs
-+++ b/rust/migration/src/migratable.rs
-@@ -421,7 +421,11 @@ impl<T: 'static + ToMigrationStateShared> Migratable<T> {
-         Migratable::<T>::FIELD
-     };
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 267f9c8e053a..8087f10832f1 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -530,7 +530,11 @@ macro_rules! vmstate_subsections {
+ unsafe impl<T: Sync> Sync for VMStateDescription<T> {}
  
-+    // All Migratable<T> instances share the same name. This is fine because
-+    // Migratable<T> is always a field within a VMSD. The parent VMSD has the
-+    // different name to distinguish child Migratable<T>.
-     const VMSD: &'static bindings::VMStateDescription = VMStateDescriptionBuilder::<Self>::new()
-+        .name(c"migratable-wrapper")
-         .version_id(1)
-         .minimum_version_id(1)
-         .pre_save(&Self::pre_save)
+ #[derive(Clone)]
+-pub struct VMStateDescriptionBuilder<T>(bindings::VMStateDescription, PhantomData<fn(&T)>);
++pub struct VMStateDescriptionBuilder<T>(
++    bindings::VMStateDescription,
++    Option<*const std::os::raw::c_char>, // the name of VMStateDescription
++    PhantomData<fn(&T)>,
++);
+ 
+ #[derive(Debug)]
+ pub struct InvalidError;
+@@ -591,7 +595,7 @@ fn from(_value: InvalidError) -> Errno {
+ impl<T> VMStateDescriptionBuilder<T> {
+     #[must_use]
+     pub const fn name(mut self, name_str: &CStr) -> Self {
+-        self.0.name = ::std::ffi::CStr::as_ptr(name_str);
++        self.1 = Some(::std::ffi::CStr::as_ptr(name_str));
+         self
+     }
+ 
+@@ -717,13 +721,16 @@ pub const fn subsections(mut self, subs: &'static VMStateSubsections) -> Self {
+     }
+ 
+     #[must_use]
+-    pub const fn build(self) -> VMStateDescription<T> {
++    pub const fn build(mut self) -> VMStateDescription<T> {
++        // FIXME: is_null()/as_ref() become const since v1.84.
++        assert!(self.1.is_some(), "VMStateDescription requires name field!");
++        self.0.name = self.1.unwrap();
+         VMStateDescription::<T>(self.0, PhantomData)
+     }
+ 
+     #[must_use]
+     pub const fn new() -> Self {
+-        Self(bindings::VMStateDescription::ZERO, PhantomData)
++        Self(bindings::VMStateDescription::ZERO, None, PhantomData)
+     }
+ }
+ 
 -- 
 2.34.1
 
