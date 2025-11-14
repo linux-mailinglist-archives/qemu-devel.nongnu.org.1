@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EC6C5DE4D
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5034CC5DDC0
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:28:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJvny-0008Qs-1x; Fri, 14 Nov 2025 10:33:43 -0500
+	id 1vJviS-0003lP-Rw; Fri, 14 Nov 2025 10:28:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc4-0006Rd-OM
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:25 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1vJvc6-0006Vi-85
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:27 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc3-0003vb-5e
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:24 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-47754e9cc7fso13140965e9.2
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:22 -0800 (PST)
+ id 1vJvc4-0003vl-D6
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:25 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-42b3d7c1321so1559483f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763133682; x=1763738482; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763133683; x=1763738483; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BWBLmsAkkYwVdETk16l9aBsdSyWo1bpWuw0Uuv+XzqA=;
- b=wiXzqnTR58xF8PItyUVkpVb//+2c6XcDt/RqxoVOOARQnuOoBNCgjvph3zrzFMFr9J
- 1vZK60uslOk2DXhB1N/bTATVOCyRWqW5jfUD4Cxq7RrolxSx+5FuyGtK0GzWHn71EZPW
- CZZcSCkfKUKHOZa5WRbbFyxwAUrqVhEHjVKm2P3uPBAgHvWDbqpiETxRIb8awncPsize
- w7ND1bLjOioGDx+NdHuWOGq/UIkEgTStRNIcR3tw1zeEkVKetz3ljo/6zrekdukf3KA6
- D57U2w8wWtaAVQrfERbYxrECvDqBZf7+Z7Z/M12DbfxyGv8+iWy8fAnMlDfi/XzKCdMX
- j7iQ==
+ :reply-to; bh=QIw9GgzRpa5cDAQSM5pDHi3MBoCBEr8BPmj9kJq1ADY=;
+ b=q9z5e0vFaMGs4C0gAVVntIPkslRVd33oawZ/86EpSviVh2MpM2BT2bMRf/QJ2cswuZ
+ GUNinbmJk2RVFDIJ8/0qYJa8x/abg++nrBw/ttUzErrjm/5EazQle+X74DgcED/cKph+
+ 83IhKuX/RBqGY0JQuSv6PiDAGY3qBAYiu6h3kvJ3BXR3GaiRFG0Ja26dulnIpqrzwSEy
+ 3VjzD/Rox4Mye3/aEXhsal2E5WaEbMtRotm6Oz3afM616OWJ9d4Lmj/xpUevKCelm72x
+ OHT4Gcpmja4HYC9yucHbDS7dNifxglDSbNhyRhEIYhDgHcL4GruG85onYuL4bLQFOCkk
+ j/Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763133682; x=1763738482;
+ d=1e100.net; s=20230601; t=1763133683; x=1763738483;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=BWBLmsAkkYwVdETk16l9aBsdSyWo1bpWuw0Uuv+XzqA=;
- b=Becp6h3YBCR041dwevs8AZuX4+ulGhSN//u7Hq0cd3J+sy1Bc55dGNWgDyDbBuCqTM
- pWsAqQsflV2rnDdOQpoyic+C2qgjddrCwCtncXwWQzSv6gbK4/4goRd3ozrdlVeN4XsF
- mJ3+V7cQgRLG1HQi1AbEJI4eyKLgsWOqtwjoRFhTRAMJeeidK+iI/vlo5geJAQA8cNgN
- 4zRhbuiOgatxUsXb8+MsC7WBerbw6HAO7gkn/0KJFuZX/1p8iM/HuVm4gBOe4hoYmXEU
- j4gZ2EoSaS/N/9FzBui/SgH2e7jnW320NbxKTArIyHAduAkNeIuCAydJC7RNBjrtwpkh
- EZOA==
-X-Gm-Message-State: AOJu0YxqQ42ZuILtBCi+fSBqdzncxyoyTfnnHb6GC6AfVOKAYy+uch72
- qy0O6YboA5zazDVBJesCdeCRDAlE1MuTf7BmiNEtu+MVaC78Rz/E4KS706U3/Kvf3NZBQIhdAxM
- yew1w
-X-Gm-Gg: ASbGncs/I4Ulp/LX73Go+ty9WUs332WWnaFXdFzG9cF7P15U/bayYQA60uEhLpjsfDJ
- PT9Xca32y62ekPuGRHiiQx/CBplqiyX4bKV96nXYzfjFEmellKK4QaBZkqPySErhF2awBKXLQU/
- H6fu3fRTkuyz0ffi7UYwTKWoMBxBDN2aJlD5XWgjd+FAIrMKhR78t00yqZ3xpqGWrde/Z9NDD/M
- Dz8nTwfGuB+F60olDKFXZnxx8n+fzpopgL6L9AFNMGrANRNTrFSComG+dn/z+aKZM7fnMU9BYU6
- y5lCfVP7neU/RwfKzfa31GW+5ByB3Jj/Bn3UMO759wCJ7Q5dzUyF/8aJcTGBz+w5PFLavUT2AuC
- bYbQScgXtvJSCr0BfX81OnGc/OHEKW+oPwPiyOqR+1PuRg8AGy1uNLurO/UspuxcZh9Q6GYp1jz
- w/JBx4T17X2qGaZmAq
-X-Google-Smtp-Source: AGHT+IGbayNZbFMyj7Ja54BJBiZ5C9/fAxu+KUIEbzW/RwnqguBXdW7d4oN/oW6z6ZTk2erT6o1MDw==
-X-Received: by 2002:a05:600c:45d5:b0:471:14b1:da13 with SMTP id
- 5b1f17b1804b1-4778fe59054mr32720115e9.14.1763133681665; 
- Fri, 14 Nov 2025 07:21:21 -0800 (PST)
+ bh=QIw9GgzRpa5cDAQSM5pDHi3MBoCBEr8BPmj9kJq1ADY=;
+ b=CMhLsI/DAiA17qmyN4nY/brfg0zDVUquL7yDB3N4NCfx/gPMS+PS+T2wjspjwo1506
+ gTm+fG1wooiIpEhickG/Grl7Y7HYp2D6nfpwYCNgB/+JmLNlR8EDAQ79B/du07kUzbGx
+ DCaPEEAbB6Vg9Z5Z5knGASD3mZiSklFygjFqS2PrUH7EuOOUM1lRd0xT36Ofak5gNsBL
+ 5M+8RMN/QH9qb8husQIg7QyjdS59EoqIs8Jg8b0peGpLBjvr0h3eieTNxF+lzGYR4lCw
+ kIpZL6t2G7Z8UTNnNt05mu/nhq/wRKlSc4DZMVPq3Q0QduOlGYjgPMFAYiQ+RB1VO9Lt
+ aigQ==
+X-Gm-Message-State: AOJu0YzKoZrt42d5VmkSIpF/HskUgi2qiVMuyC5STgCAOwl7E8ByGvaf
+ KiLch/cYpka9s+PUYVkeidmOUdsaegCL2mLLxJqFSalz1vOZNBvbpr55O0JpG+yWQkIAOlJPczv
+ 4HoiT
+X-Gm-Gg: ASbGnctrDaZWAG413ALI5J8u1buqJ70RriMDyqToNoAFSaVeDYAh11BPHO4Bi+SPYDk
+ Sm/C8cp78/mCGjtT8tpDezioS4bp1U7bdaaJyuzV5B1mTzO/0uda3+7NGYWbsZiAUrNkYS6Ps2E
+ 48bjogAIp1metZ9VRER5+uSTpLw9+h4+zUx3M6UFAQOjW/0UNBtqc3nmQQlyUOkqbbuvIWU5tCs
+ bKegF1gZriLxf7mPZ60Er0zFyAp/vW4+u9iseE6x3bRVdrKyrUzfMtArs28288fhK+CXxEw2d3V
+ egkBpxc8ovH/xFJr86hAw/3j50e4oZh+mcWEF9qIEd4xyU65WZW/LHwZw3ecJOTIFGRf0U+ndEA
+ bdBCfolfBTNCyjF5N7YXJj5gUHxepOJkvIPyOKfojOkiHWfO/Q9c7Q8K2/iXLPplayD7jKU2rzA
+ mkmne2rnUafZ77PaQ5
+X-Google-Smtp-Source: AGHT+IG9xi1AR6Nm6zyk0u5503J4BrXXpaUvcN0hZUNht7BBXmA2SM63cqX7IKiGkfBb9jjtmxY2XA==
+X-Received: by 2002:a05:6000:24c7:b0:428:52c7:feae with SMTP id
+ ffacd0b85a97d-42b593869b1mr3320488f8f.32.1763133682600; 
+ Fri, 14 Nov 2025 07:21:22 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.20
+ 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Nov 2025 07:21:20 -0800 (PST)
+ Fri, 14 Nov 2025 07:21:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/10] hw/misc/npcm_clk: Don't divide by zero when calculating
- frequency
-Date: Fri, 14 Nov 2025 15:21:09 +0000
-Message-ID: <20251114152110.2547285-10-peter.maydell@linaro.org>
+Subject: [PULL 10/10] hw/audio/lm4549: Don't try to open a zero-frequency
+ audio voice
+Date: Fri, 14 Nov 2025 15:21:10 +0000
+Message-ID: <20251114152110.2547285-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251114152110.2547285-1-peter.maydell@linaro.org>
 References: <20251114152110.2547285-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +100,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the guest misprograms the PLL registers to request a zero
-divisor, we currently fall over with a division by zero:
+If the guest incorrectly programs the lm4549 audio chip with a zero
+frequency, we will pass this to AUD_open_out(), which will complain:
 
-../../hw/misc/npcm_clk.c:221:14: runtime error: division by zero
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/misc/npcm_clk.c:221:14
+   A bug was just triggered in AUD_open_out
+   Save all your work and restart without audio
+   I am sorry
+   Context:
+   audio: frequency=0 nchannels=2 fmt=S16 endianness=little
 
-Thread 1 "qemu-system-aar" received signal SIGFPE, Arithmetic exception.
-0x00005555584d8f6d in npcm7xx_clk_update_pll (opaque=0x7fffed159a20) at ../../hw/misc/npcm_clk.c:221
-221             freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
+The datasheet doesn't say what we should do here, only that the valid
+range for the freqency is 4000 to 48000 Hz; we choose to log the
+guest error and ignore an attempt to change the DAC rate to something
+outside the valid range.
 
-Avoid this by treating this invalid setting like a stopped clock
-(setting freq to 0).
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/549
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/410
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251107150137.1353532-1-peter.maydell@linaro.org
+Message-id: 20251107154116.1396769-1-peter.maydell@linaro.org
 ---
- hw/misc/npcm_clk.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/audio/lm4549.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/npcm_clk.c b/hw/misc/npcm_clk.c
-index c48d40b4468..e202a8a2998 100644
---- a/hw/misc/npcm_clk.c
-+++ b/hw/misc/npcm_clk.c
-@@ -212,13 +212,14 @@ static void npcm7xx_clk_update_pll(void *opaque)
- {
-     NPCM7xxClockPLLState *s = opaque;
-     uint32_t con = s->clk->regs[s->reg];
--    uint64_t freq;
-+    uint64_t freq, freq_div;
+diff --git a/hw/audio/lm4549.c b/hw/audio/lm4549.c
+index 745441bd790..bf711c49c04 100644
+--- a/hw/audio/lm4549.c
++++ b/hw/audio/lm4549.c
+@@ -15,6 +15,7 @@
  
-     /* The PLL is grounded if it is not locked yet. */
-     if (con & PLLCON_LOKI) {
-         freq = clock_get_hz(s->clock_in);
-         freq *= PLLCON_FBDV(con);
--        freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
-+        freq_div = PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
-+        freq = freq_div ? freq / freq_div : 0;
-     } else {
-         freq = 0;
-     }
+ #include "qemu/osdep.h"
+ #include "hw/hw.h"
++#include "qemu/log.h"
+ #include "qemu/audio.h"
+ #include "lm4549.h"
+ #include "migration/vmstate.h"
+@@ -179,9 +180,23 @@ void lm4549_write(lm4549_state *s,
+         break;
+ 
+     case LM4549_PCM_Front_DAC_Rate:
+-        regfile[LM4549_PCM_Front_DAC_Rate] = value;
+         DPRINTF("DAC rate change = %i\n", value);
+ 
++        /*
++         * Valid sample rates are 4kHz to 48kHz.
++         * The datasheet doesn't say what happens if you try to
++         * set the frequency to zero. AUD_open_out() will print
++         * a bug message if we pass it a zero frequency, so just
++         * ignore attempts to set the DAC frequency to zero.
++         */
++        if (value < 4000 || value > 48000) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: DAC sample rate %d Hz is invalid, ignoring it\n",
++                          __func__, value);
++            break;
++        }
++        regfile[LM4549_PCM_Front_DAC_Rate] = value;
++
+         /* Re-open a voice with the new sample rate */
+         struct audsettings as;
+         as.freq = value;
 -- 
 2.43.0
 
