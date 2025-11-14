@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DEFC5F8CF
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 00:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A674CC5F8C6
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 00:02:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vK2nH-0007k6-Bc; Fri, 14 Nov 2025 18:01:27 -0500
+	id 1vK2nF-0007PQ-2q; Fri, 14 Nov 2025 18:01:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vK2mC-0007GU-0n
+ id 1vK2mD-0007GX-Px
  for qemu-devel@nongnu.org; Fri, 14 Nov 2025 18:00:26 -0500
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vK2mA-0004aV-AZ
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 18:00:19 -0500
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-4330eb0f232so15282305ab.0
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 15:00:17 -0800 (PST)
+ id 1vK2mB-0004af-8a
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 18:00:21 -0500
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-43320651e53so17416195ab.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 15:00:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763161216; x=1763766016; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=i9TvG2oqL1dQLCcfT9sslRfQECluHkcmdOPVWIjcQg8=;
- b=Hy+G0SPyQuWs4vQDKVsqS2yNk2hJU2oLBcm93NF/AoPqFxyZWOhF4uTTXbdPf2FvvT
- HkN4ZufINGX9qEXs0S+PfZlhtCtLBUTB9SzLFWg4VFIs1vm+giRdvcF0lG5eQwWfF5Vc
- DcQ2K+bD1ClwI8zS5wS4uUeqBhdo0cbPvf3Y9Z75N6mBfHQN6a10b/yQ6JPH4INgIZgb
- 9WwsAGLIFDN/1zjtxwbS40TeM9Um5+VIryaa4Eb4cyPhN16WH/2QCGgnV+MDJFwz//hd
- 5DTshjo+x32/3RSqNvJX+N6k84aOKtQ7kf4gl9BIxkhRUdt6DkBgYpp2hERJpoq/Ywqh
- FwEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763161216; x=1763766016;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1763161217; x=1763766017; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i9TvG2oqL1dQLCcfT9sslRfQECluHkcmdOPVWIjcQg8=;
- b=hPf035eAglqqA3J7BOyiSCkbbFOPTF2RdDISm3mnJDEEGk/V6XXpAlp2HIzIKp79I0
- MO0BT+U4jPdNpV+zgqUo9UXSoHzDAZOGkJbRfgGsvNkCyGCQhKKqodl4/bq8cFGwoy9L
- ZIDNIel7zV1Ehl4ruIvjHR2R+Kmn+wL2Jb+fRTeqNMf99wuJV7aOdaR2rb2t19hu1bEi
- 8Z3yFTq//x5rmPe9rf5jTdPJXOzIe0aUZq8rmKy60NPs18mOI6NM5oY/M0StTjyZUfNR
- L4o3EdVGPMd+fsm7Bf+LPz++r89icrfhdH+pEief6WJDT8ugMvfX9wu28buKrIEZlyKR
- 53FA==
-X-Gm-Message-State: AOJu0YzBNrOrZ9uzZDfVpMZkWMtxgpXz/sGcsHblitT9Dz7gVDblhci0
- cM1W4R8m4KFFgrq2pFl7CpS2yL8tlUxV1cfAAty4koxLct0f4pLYBEz7RmPgteH1
-X-Gm-Gg: ASbGncvUeGB5AaAYCE2oW5NcR2hRkXckXYWDY8s0evgHYJ1X8YSNV13UDdj71aD+bZu
- 3wzj6bv0PWd3vwKpfj8wFnRA0zBww+HwLf+ggU1iyEFRlMc7DPna4DDXwsDORns+jYnk1oFcBOQ
- 9jIgxIsZoCa5TdV9ygkEh78y0MRHDRQ0sZPMXsfig9J2QDxumTr7o1Xrkd2SvjC7Xo4VVTKqbUa
- y6NXseS8tVkvR7MXNV4rGBxzWXpOxtVieZqRqc/Pm+YKj4iFAEUXj1vECOTtYnoTru6erFu9KCi
- meH9chP25lXeIU8crfynqzjsJ7oYpPPfj6/fhl5AVsmGLzvYar+b5Wq+/iAxEzvE/5DGfph5smc
- vx2Vla9dA3u1V18w6z4NFncBizFaSfWXE2DLzkM67vjEQ7swXRFlsEAPlm4k773Chkx8pMsqSMN
- 6DMYvBglEBLU6QYZx20Qnf/o5mK1VbCEZOuM+liwi1X8TXTVFjreynSzKZtx61mXVDnUw/PngsP
- dDK
-X-Google-Smtp-Source: AGHT+IGSbxmCq/9qX4A8QnHP9uMocen+85yhvpOqobvInXB3RHTT1uDna7RXfrSmi7OE5DqL1LCfdQ==
-X-Received: by 2002:a92:d310:0:b0:434:96ea:ca1b with SMTP id
- e9e14a558f8ab-43496eacc97mr17921465ab.19.1763161215913; 
- Fri, 14 Nov 2025 15:00:15 -0800 (PST)
+ bh=F3YaVmM/0XrzFextwX0itGBRky+8Uqo16F2QBmoGm3k=;
+ b=XBx09r/nTsghGbeg9Io8/MbhK/p/cREHlSgkbX4Vy7X/JL7oCWIJuI+yQwOF1+sC9z
+ U89kI9sCqdU9wx0xKGpaGBGrnDpQMYs9Xak2LY8ikn0A/jgZ7B9Vl7L/+z4tA33AfLKR
+ notEzEwBDFAFergWsG0y3lIRS8arCNmcPvxUtyBSINVZlDVuAIymwVu1MIKXr1zW+NOk
+ gpbW01Fqvbg70hvNABKiTz4Gsb3sZoatzD6qWXmgoHebW7DsTWf5dGVYOiV+crQEM0dm
+ 0GiBLUKzkOLl79wJuS54OdhRpLxDH6uqfVTZYqkGQRI/36wBc86fI+z0XZAMLkE7wdNq
+ cxwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763161217; x=1763766017;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=F3YaVmM/0XrzFextwX0itGBRky+8Uqo16F2QBmoGm3k=;
+ b=ZkSTpm3V4BnBafYr2fBS+Zi7d8ySIPztMG6WeVTP7R/cTf375Pr9Tnptw0ptqDmB35
+ qIW8n9dg5V3bdBkTjrwxU1UPztwYHsQEI/NXnCk82vI4SXT1RGQ7ZLGmGahrtGioYJob
+ KFK33kGtXmaG2lEsryD56HT9bhT+P7nXuwdCB3g8qWF55ZdsaUYgRTS27+1FZe3jYdjo
+ MwmmxK8DEWnNqrgKRPYimmRi+VsFBF5QCF3PK+7j+wrAExD1dObGLciiQOAZbyj0DFaM
+ NVRue3ae4BZC/qQ+WRVqLkFrnM95vaWrpqajh0STAzgjfYcSnUvi/IeQ6SkjfHA7LETP
+ dBAA==
+X-Gm-Message-State: AOJu0YwokToU4q75Bc010jZsFpSZB4Tv4zWPhWBsnZTPjrC3zipmUXz2
+ 1VjhayrkWow/8V1z5/SfSlOMfh2JJ6obYnXz4fCrVZZOtRktiqQjLHQa9YrcV0cL
+X-Gm-Gg: ASbGncuOSZlw8ejKNGf0TE+UTByjzXzQ/LX+jzhfxkFidGMlQzm/zxGiIWKTHP73Cjm
+ FlkPoA9FrPY5iHgVVdo8sQgc17weB3pULftBgqWNB8fswfCg1MonJ2lpDKlPo4m2Im1F+nPibWU
+ KaF1jvU846RThMjiBVjK9uD+Mt4jVPI7uU7biMFdDVngiXAPxCbGsVd09MRrnrgupsguAOHDs6l
+ AfmOgmv9HV02AhofIEcnjZoanlMDgDeaACj4V2emGKPkpRsEgw/1TYVsuBH/197JCoqxJDT+mzf
+ kwno40wo/OrsRk3UXNnGrbHB1WoIHm3MDg3ZaPmwtT5oJ+eJYP+Nan9zBHWZaMol8LHqb6owCDg
+ 2cdMB46y841v7hqtGNGEgIhyuqM6kWDkEkjCVru2T0EwHR+C0G+SOVd5dUCsPClfLe+c0peb8aS
+ N9uyaNZhzwD+MVX7BKd0INJaRCGrgptxjfRFP1t90buyg0wBQi/rDCbaKGsCtrQjoE5w==
+X-Google-Smtp-Source: AGHT+IGapdMh4P9Wqm98DeUPgeyQbv+P9xyAfkSiOL25/IqLsEqT9PlM59jeYdtncsbbUlABK89VVA==
+X-Received: by 2002:a05:6e02:33a0:b0:433:3487:ea1d with SMTP id
+ e9e14a558f8ab-4348c86dbfbmr77011445ab.7.1763161217127; 
+ Fri, 14 Nov 2025 15:00:17 -0800 (PST)
 Received: from taylor-ubuntu.. (c-67-172-136-152.hsd1.co.comcast.net.
  [67.172.136.152]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-434838c24a1sm35673075ab.15.2025.11.14.15.00.14
+ e9e14a558f8ab-434838c24a1sm35673075ab.15.2025.11.14.15.00.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Nov 2025 15:00:15 -0800 (PST)
+ Fri, 14 Nov 2025 15:00:16 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
  sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
  richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
  ltaylorsimpson@gmail.com
-Subject: [PATCH 0/4] Clean up end-of-instruction processing
-Date: Fri, 14 Nov 2025 16:00:09 -0700
-Message-ID: <20251114230013.158098-1-ltaylorsimpson@gmail.com>
+Subject: [PATCH 1/4] Hexagon (target/hexagon) Remove gen_log_reg_write
+Date: Fri, 14 Nov 2025 16:00:10 -0700
+Message-ID: <20251114230013.158098-2-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251114230013.158098-1-ltaylorsimpson@gmail.com>
+References: <20251114230013.158098-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x12d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,26 +102,316 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The changes to packet processing have made some of the end-of-instruction
-processing obsolete.  With the addition of gen_analyze_funcs.py and the
-ability to short-circuit a packet commit, we no longer need to "log" the
-register writes of each instruction.
+The gen_log_reg_write function is a memnant of the original Hexagon
+target design.  With the addition of gen_analyze_funcs.py and the
+ability to short-circuit a packet commit, this function can be
+removed.
 
-Taylor Simpson (4):
-  Hexagon (target/hexagon) Remove gen_log_reg_write
-  Hexagon (target/hexagon) s/gen_log_pred_write/gen_pred_write
-  Hexagon (target/hexagon) s/gen_log_vreg_write/gen_vreg_write
-  Hexagon (target/hexagon) s/log_write/gen_write
+Note that the implementation of gen_log_reg_write contains a check
+of the register mutability mask.  This is only needed for control
+registers, so we move it to gen_write_ctrl_reg.
 
- target/hexagon/gen_tcg.h                    | 11 ++-
- target/hexagon/genptr.h                     |  3 +-
- target/hexagon/genptr.c                     | 86 +++++++++------------
- target/hexagon/idef-parser/parser-helpers.c |  4 +-
- target/hexagon/README                       | 10 ++-
- target/hexagon/gen_tcg_funcs.py             |  3 +-
- target/hexagon/hex_common.py                | 56 +++++++-------
- 7 files changed, 77 insertions(+), 96 deletions(-)
+We do need the gen_log_reg_write_pair function, but the name is
+now misleading, so we change the name go gen_write_reg_pair.
 
+Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+---
+ target/hexagon/gen_tcg.h                    |  7 +--
+ target/hexagon/genptr.h                     |  1 -
+ target/hexagon/genptr.c                     | 64 ++++++++-------------
+ target/hexagon/idef-parser/parser-helpers.c |  2 +-
+ target/hexagon/README                       | 10 ++--
+ target/hexagon/gen_tcg_funcs.py             |  1 -
+ target/hexagon/hex_common.py                | 14 ++---
+ 7 files changed, 40 insertions(+), 59 deletions(-)
+
+diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
+index 8a3b801287..10123336b1 100644
+--- a/target/hexagon/gen_tcg.h
++++ b/target/hexagon/gen_tcg.h
+@@ -509,10 +509,9 @@
+ /* sub-instruction version (no RxV, so handle it manually) */
+ #define fGEN_TCG_SS2_allocframe(SHORTCODE) \
+     do { \
+-        TCGv r29 = tcg_temp_new(); \
++        TCGv r29 = get_result_gpr(ctx, HEX_REG_SP); \
+         tcg_gen_mov_tl(r29, hex_gpr[HEX_REG_SP]); \
+         gen_allocframe(ctx, r29, uiV); \
+-        gen_log_reg_write(ctx, HEX_REG_SP, r29); \
+     } while (0)
+ 
+ /*
+@@ -528,7 +527,7 @@
+     do { \
+         TCGv_i64 r31_30 = tcg_temp_new_i64(); \
+         gen_deallocframe(ctx, r31_30, hex_gpr[HEX_REG_FP]); \
+-        gen_log_reg_write_pair(ctx, HEX_REG_FP, r31_30); \
++        gen_write_reg_pair(ctx, HEX_REG_FP, r31_30); \
+     } while (0)
+ 
+ /*
+@@ -546,7 +545,7 @@
+     do { \
+         TCGv_i64 RddV = get_result_gpr_pair(ctx, HEX_REG_FP); \
+         gen_return(ctx, RddV, hex_gpr[HEX_REG_FP]); \
+-        gen_log_reg_write_pair(ctx, HEX_REG_FP, RddV); \
++        gen_write_reg_pair(ctx, HEX_REG_FP, RddV); \
+     } while (0)
+ 
+ /*
+diff --git a/target/hexagon/genptr.h b/target/hexagon/genptr.h
+index a4b43c2910..d932255042 100644
+--- a/target/hexagon/genptr.h
++++ b/target/hexagon/genptr.h
+@@ -37,7 +37,6 @@ TCGv gen_read_reg(TCGv result, int num);
+ TCGv gen_read_preg(TCGv pred, uint8_t num);
+ TCGv get_result_gpr(DisasContext *ctx, int rnum);
+ TCGv get_result_pred(DisasContext *ctx, int pnum);
+-void gen_log_reg_write(DisasContext *ctx, int rnum, TCGv val);
+ void gen_log_pred_write(DisasContext *ctx, int pnum, TCGv val);
+ void gen_set_usr_field(DisasContext *ctx, int field, TCGv val);
+ void gen_set_usr_fieldi(DisasContext *ctx, int field, int x);
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index cecaece4ae..e58021ed6c 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -94,25 +94,17 @@ static TCGv_i64 get_result_gpr_pair(DisasContext *ctx, int rnum)
+     return result;
+ }
+ 
+-void gen_log_reg_write(DisasContext *ctx, int rnum, TCGv val)
+-{
+-    const target_ulong reg_mask = reg_immut_masks[rnum];
+-
+-    gen_masked_reg_write(val, hex_gpr[rnum], reg_mask);
+-    tcg_gen_mov_tl(get_result_gpr(ctx, rnum), val);
+-}
+-
+-static void gen_log_reg_write_pair(DisasContext *ctx, int rnum, TCGv_i64 val)
++static void gen_write_reg_pair(DisasContext *ctx, int rnum, TCGv_i64 val)
+ {
+     TCGv val32 = tcg_temp_new();
+ 
+     /* Low word */
+     tcg_gen_extrl_i64_i32(val32, val);
+-    gen_log_reg_write(ctx, rnum, val32);
++    tcg_gen_mov_tl(get_result_gpr(ctx, rnum), val32);
+ 
+     /* High word */
+     tcg_gen_extrh_i64_i32(val32, val);
+-    gen_log_reg_write(ctx, rnum + 1, val32);
++    tcg_gen_mov_tl(get_result_gpr(ctx, rnum + 1), val32);
+ }
+ 
+ TCGv get_result_pred(DisasContext *ctx, int pnum)
+@@ -240,7 +232,9 @@ static inline void gen_write_ctrl_reg(DisasContext *ctx, int reg_num,
+     if (reg_num == HEX_REG_P3_0_ALIASED) {
+         gen_write_p3_0(ctx, val);
+     } else {
+-        gen_log_reg_write(ctx, reg_num, val);
++        const target_ulong reg_mask = reg_immut_masks[reg_num];
++        gen_masked_reg_write(val, hex_gpr[reg_num], reg_mask);
++        tcg_gen_mov_tl(get_result_gpr(ctx, reg_num), val);
+         if (reg_num == HEX_REG_QEMU_PKT_CNT) {
+             ctx->num_packets = 0;
+         }
+@@ -256,23 +250,15 @@ static inline void gen_write_ctrl_reg(DisasContext *ctx, int reg_num,
+ static inline void gen_write_ctrl_reg_pair(DisasContext *ctx, int reg_num,
+                                            TCGv_i64 val)
+ {
+-    if (reg_num == HEX_REG_P3_0_ALIASED) {
+-        TCGv result = get_result_gpr(ctx, reg_num + 1);
+-        TCGv val32 = tcg_temp_new();
+-        tcg_gen_extrl_i64_i32(val32, val);
+-        gen_write_p3_0(ctx, val32);
+-        tcg_gen_extrh_i64_i32(val32, val);
+-        tcg_gen_mov_tl(result, val32);
+-    } else {
+-        gen_log_reg_write_pair(ctx, reg_num, val);
+-        if (reg_num == HEX_REG_QEMU_PKT_CNT) {
+-            ctx->num_packets = 0;
+-            ctx->num_insns = 0;
+-        }
+-        if (reg_num == HEX_REG_QEMU_HVX_CNT) {
+-            ctx->num_hvx_insns = 0;
+-        }
+-    }
++    TCGv val32 = tcg_temp_new();
++
++    /* Low word */
++    tcg_gen_extrl_i64_i32(val32, val);
++    gen_write_ctrl_reg(ctx, reg_num, val32);
++
++    /* High word */
++    tcg_gen_extrh_i64_i32(val32, val);
++    gen_write_ctrl_reg(ctx, reg_num + 1, val32);
+ }
+ 
+ TCGv gen_get_byte(TCGv result, int N, TCGv src, bool sign)
+@@ -541,8 +527,8 @@ static inline void gen_loop0r(DisasContext *ctx, TCGv RsV, int riV)
+ {
+     fIMMEXT(riV);
+     fPCALIGN(riV);
+-    gen_log_reg_write(ctx, HEX_REG_LC0, RsV);
+-    gen_log_reg_write(ctx, HEX_REG_SA0, tcg_constant_tl(ctx->pkt->pc + riV));
++    tcg_gen_mov_tl(get_result_gpr(ctx, HEX_REG_LC0), RsV);
++    tcg_gen_movi_tl(get_result_gpr(ctx, HEX_REG_SA0), ctx->pkt->pc + riV);
+     gen_set_usr_fieldi(ctx, USR_LPCFG, 0);
+ }
+ 
+@@ -555,8 +541,8 @@ static inline void gen_loop1r(DisasContext *ctx, TCGv RsV, int riV)
+ {
+     fIMMEXT(riV);
+     fPCALIGN(riV);
+-    gen_log_reg_write(ctx, HEX_REG_LC1, RsV);
+-    gen_log_reg_write(ctx, HEX_REG_SA1, tcg_constant_tl(ctx->pkt->pc + riV));
++    tcg_gen_mov_tl(get_result_gpr(ctx, HEX_REG_LC1), RsV);
++    tcg_gen_movi_tl(get_result_gpr(ctx, HEX_REG_SA1), ctx->pkt->pc + riV);
+ }
+ 
+ static void gen_loop1i(DisasContext *ctx, int count, int riV)
+@@ -568,8 +554,8 @@ static void gen_ploopNsr(DisasContext *ctx, int N, TCGv RsV, int riV)
+ {
+     fIMMEXT(riV);
+     fPCALIGN(riV);
+-    gen_log_reg_write(ctx, HEX_REG_LC0, RsV);
+-    gen_log_reg_write(ctx, HEX_REG_SA0, tcg_constant_tl(ctx->pkt->pc + riV));
++    tcg_gen_mov_tl(get_result_gpr(ctx, HEX_REG_LC0), RsV);
++    tcg_gen_movi_tl(get_result_gpr(ctx, HEX_REG_SA0), ctx->pkt->pc + riV);
+     gen_set_usr_fieldi(ctx, USR_LPCFG, N);
+     gen_log_pred_write(ctx, 3, tcg_constant_tl(0));
+ }
+@@ -773,25 +759,23 @@ static void gen_framecheck(TCGv EA, int framesize)
+ 
+ static void gen_allocframe(DisasContext *ctx, TCGv r29, int framesize)
+ {
+-    TCGv r30 = tcg_temp_new();
++    TCGv r30 = get_result_gpr(ctx, HEX_REG_FP);
+     TCGv_i64 frame;
+     tcg_gen_addi_tl(r30, r29, -8);
+     frame = gen_frame_scramble();
+     gen_store8(tcg_env, r30, frame, ctx->insn->slot);
+-    gen_log_reg_write(ctx, HEX_REG_FP, r30);
+     gen_framecheck(r30, framesize);
+     tcg_gen_subi_tl(r29, r30, framesize);
+ }
+ 
+ static void gen_deallocframe(DisasContext *ctx, TCGv_i64 r31_30, TCGv r30)
+ {
+-    TCGv r29 = tcg_temp_new();
++    TCGv r29 = get_result_gpr(ctx, HEX_REG_SP);
+     TCGv_i64 frame = tcg_temp_new_i64();
+     gen_load_frame(ctx, frame, r30);
+     gen_frame_unscramble(frame);
+     tcg_gen_mov_i64(r31_30, frame);
+     tcg_gen_addi_tl(r29, r30, 8);
+-    gen_log_reg_write(ctx, HEX_REG_SP, r29);
+ }
+ #endif
+ 
+@@ -833,7 +817,7 @@ static void gen_cond_return_subinsn(DisasContext *ctx, TCGCond cond, TCGv pred)
+ {
+     TCGv_i64 RddV = get_result_gpr_pair(ctx, HEX_REG_FP);
+     gen_cond_return(ctx, RddV, hex_gpr[HEX_REG_FP], pred, cond);
+-    gen_log_reg_write_pair(ctx, HEX_REG_FP, RddV);
++    gen_write_reg_pair(ctx, HEX_REG_FP, RddV);
+ }
+ 
+ static void gen_endloop0(DisasContext *ctx)
+diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
+index 1dc52b4e02..f5802ceadb 100644
+--- a/target/hexagon/idef-parser/parser-helpers.c
++++ b/target/hexagon/idef-parser/parser-helpers.c
+@@ -1315,7 +1315,7 @@ void gen_write_reg(Context *c, YYLTYPE *locp, HexValue *reg, HexValue *value)
+     value_m = rvalue_materialize(c, locp, &value_m);
+     OUT(c,
+         locp,
+-        "gen_log_reg_write(ctx, ", &reg->reg.id, ", ",
++        "tcg_gen_mov_tl(get_result_gpr(ctx, ", &reg->reg.id, "), ",
+         &value_m, ");\n");
+ }
+ 
+diff --git a/target/hexagon/README b/target/hexagon/README
+index ca617e3364..1938c91af8 100644
+--- a/target/hexagon/README
++++ b/target/hexagon/README
+@@ -80,12 +80,14 @@ tcg_funcs_generated.c.inc
+                     Insn *insn,
+                     Packet *pkt)
+     {
+-        TCGv RdV = tcg_temp_new();
++        Insn *insn G_GNUC_UNUSED = ctx->insn;
+         const int RdN = insn->regno[0];
+-        TCGv RsV = hex_gpr[insn->regno[1]];
+-        TCGv RtV = hex_gpr[insn->regno[2]];
++        TCGv RdV = get_result_gpr(ctx, RdN);
++        const int RsN = insn->regno[1];
++        TCGv RsV = hex_gpr[RsN];
++        const int RtN = insn->regno[2];
++        TCGv RtV = hex_gpr[RtN];
+         gen_helper_A2_add(RdV, tcg_env, RsV, RtV);
+-        gen_log_reg_write(ctx, RdN, RdV);
+     }
+ 
+ helper_funcs_generated.c.inc
+diff --git a/target/hexagon/gen_tcg_funcs.py b/target/hexagon/gen_tcg_funcs.py
+index c2ba91ddc0..bd241afde1 100755
+--- a/target/hexagon/gen_tcg_funcs.py
++++ b/target/hexagon/gen_tcg_funcs.py
+@@ -35,7 +35,6 @@
+ ##        TCGv RsV = hex_gpr[insn->regno[1]];
+ ##        TCGv RtV = hex_gpr[insn->regno[2]];
+ ##        <GEN>
+-##        gen_log_reg_write(ctx, RdN, RdV);
+ ##    }
+ ##
+ ##       where <GEN> depends on hex_common.skip_qemu_helper(tag)
+diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+index 6803908718..093def9386 100755
+--- a/target/hexagon/hex_common.py
++++ b/target/hexagon/hex_common.py
+@@ -452,9 +452,8 @@ def decl_tcg(self, f, tag, regno):
+             TCGv {self.reg_tcg()} = get_result_gpr(ctx, {self.reg_num});
+         """))
+     def log_write(self, f, tag):
+-        f.write(code_fmt(f"""\
+-            gen_log_reg_write(ctx, {self.reg_num}, {self.reg_tcg()});
+-        """))
++        ## No write needed
++        return
+     def analyze_write(self, f, tag, regno):
+         predicated = "true" if is_predicated(tag) else "false"
+         f.write(code_fmt(f"""\
+@@ -496,9 +495,8 @@ def decl_tcg(self, f, tag, regno):
+                 tcg_gen_mov_tl({self.reg_tcg()}, hex_gpr[{self.reg_num}]);
+             """))
+     def log_write(self, f, tag):
+-        f.write(code_fmt(f"""\
+-            gen_log_reg_write(ctx, {self.reg_num}, {self.reg_tcg()});
+-        """))
++        ## No write needed
++        return
+     def analyze_read(self, f, regno):
+         f.write(code_fmt(f"""\
+             ctx_log_reg_read(ctx, {self.reg_num});
+@@ -630,7 +628,7 @@ def decl_tcg(self, f, tag, regno):
+         """))
+     def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+-            gen_log_reg_write_pair(ctx, {self.reg_num}, {self.reg_tcg()});
++            gen_write_reg_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
+     def analyze_write(self, f, tag, regno):
+         predicated = "true" if is_predicated(tag) else "false"
+@@ -664,7 +662,7 @@ def decl_tcg(self, f, tag, regno):
+         """))
+     def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+-            gen_log_reg_write_pair(ctx, {self.reg_num}, {self.reg_tcg()});
++            gen_write_reg_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
+     def analyze_read(self, f, regno):
+         f.write(code_fmt(f"""\
 -- 
 2.43.0
 
