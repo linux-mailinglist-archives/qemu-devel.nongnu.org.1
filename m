@@ -2,91 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDF2C5F8CC
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 00:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99765C5F9DF
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 00:44:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vK2nL-0007wd-3Y; Fri, 14 Nov 2025 18:01:31 -0500
+	id 1vK3RB-0002UD-T4; Fri, 14 Nov 2025 18:42:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vK2mg-0007Km-NZ; Fri, 14 Nov 2025 18:00:57 -0500
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vK3Ol-0001KO-NQ
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 18:40:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vK2mc-0004cd-MM; Fri, 14 Nov 2025 18:00:48 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E713916A2EB;
- Sat, 15 Nov 2025 02:00:37 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 984BD3198BC;
- Sat, 15 Nov 2025 02:00:40 +0300 (MSK)
-Message-ID: <7522aad8-ba24-44fc-aeee-723159f45142@tls.msk.ru>
-Date: Sat, 15 Nov 2025 02:00:40 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vK3Og-0006XN-7r
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 18:40:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763163603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=l8whlAAKKkdIgjd7yfVV3zI1oFn1D/BV88eScV4sya0=;
+ b=i8l9/54UzcWMXNZlewtrDa/TOjaP8CTHcjE5L373VtRM/l5W5Sfs1xNEhnE5n4C1JNtzXB
+ J54V/S98mFlDTJ+I6a55Vrkg6PCdpQTF5i99XjV0hMu+k39CNNcqL4s2aFc6vvcOKgrip+
+ IaBIM3xBEYfYQFkox4zURiXuOuu6I/Y=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-NsRVrLJoNk6e7h8WHZVu_g-1; Fri, 14 Nov 2025 18:40:02 -0500
+X-MC-Unique: NsRVrLJoNk6e7h8WHZVu_g-1
+X-Mimecast-MFC-AGG-ID: NsRVrLJoNk6e7h8WHZVu_g_1763163601
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477771366cbso16397535e9.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 15:40:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1763163601; x=1763768401; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=l8whlAAKKkdIgjd7yfVV3zI1oFn1D/BV88eScV4sya0=;
+ b=LaZXJ1PlzDDorSgVOmYvDJftAOak+YvhZXjWDXPfJlJxsQzjToIl4oVQEvxQPRgbgc
+ rdA/m3QuQ8Ax3P7uuKD/LTafJJtLjCYciNeNENgFjuI3ugOKlgg84OSnd1p4xHvvGUHE
+ pSAVqVCr4NwIcrhhoRBhEUW2vXzM23eYpqieXgur5+/wXfIzl7LVYQUb0QiCtcwV111r
+ Pn76ay9wPDqfG1lVkRn9WK9TXxz/ru5ZUPpqvUb6eFhwN9BfjmJT2K+OrRsEoDAyhp9Y
+ 6kKnR3uIBkt8Gx9QciRipi0zpTGW6tjqoD/QUQLaHPBNKBI52mJJ3n+tNdwQNULRAfmG
+ Fd6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763163601; x=1763768401;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=l8whlAAKKkdIgjd7yfVV3zI1oFn1D/BV88eScV4sya0=;
+ b=lfR5Gx6xIxJFyckd53/lPCfdGrjmck+mBH9i8rHs8tzQ5OAJ6iWBXurIfQK2f9MM5P
+ KSmcijdVPVwtdGaSUKQ+3EoLjn2Y4Xhz8K5KT5sKjqNbV7wPPDt2jF9LnbQ6Kkbus1P5
+ EH+fZ3w7w+x+hqTBdxJNufIScQq3zaAtLZKjf6ds7Rqk67wr0xB5I+gzCVyvclyZV7Ec
+ TjDKT5aN8TyvvatikDlxIwJZpIhjFG6a49Hx7vkJJGB8bADFldGExCJl8kBSXOYMuVNg
+ hAolmpk15zVAWQkVbjZwd4NN0u8OqhwPRI8MM26VzHg4jE0DbRpje0Xv43JrFMKBbeFi
+ +9yw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW343vM8vV1zbcNmdRPNaug2iBcOwSzAtDY8N5xAFFpzIO4alFEvB2+W79pP9nrbYn9om8tEovUGiA3@nongnu.org
+X-Gm-Message-State: AOJu0YzDKDbWxpZOMThxFetUFixRwmH2PgKopF0kgkEzjjwaTbhgnwcq
+ uWhwNmHxxrdLPr3xMI2H/UZTSVL3WInEKzi8WNMF2OjnVrLpn4JJTYQh91qHQw47WZCAPQbElQy
+ IXbw4zuNDvHgyPpTU2AnM4GpGcMa61adcKZpd2CacpVfhYjmzmkpE1kaX
+X-Gm-Gg: ASbGncviu9OWqviV38oD7qz9o0ZBmrLfBZq4AvlAlvkoMmUzb2VuxVLkkuJwZ5JBycg
+ nGTfwJyzSUnicgUeI6moGOKp93UYjJRON32DmFhu1lNLQjg4KVt47H1PjKQQqWC3SrZXYDAJpM0
+ aZarOUMd828W9GgpBXxW+UQ5N9VadJJ5RuZ2kLQaVnvTZFZ1YoD64laJyPC47yO7nchNDjHxwPb
+ UDEnu1CzMV0wH4x3ommbWF9nFUEEpckUZtJu+wEJ+QljLKDABOSqsQael1ixgHbwfTjYUnJVd/K
+ u0oxkCis65PjUsT3O3mCmK3mmsH41GD885sDMYbYKlWMSJmnZZ+GXPUqyIiOjHCPztxAHBVXF8x
+ eJdJUfJR/8yGsSVCZKgM7EnsTklTJ7A5BN22H/XX3y4LTi8iXNXH6eyifPZleLWKqTB5vRho4EF
+ xufHje
+X-Received: by 2002:a05:600c:3587:b0:477:75eb:a643 with SMTP id
+ 5b1f17b1804b1-4778fe4f3demr40557125e9.4.1763163600892; 
+ Fri, 14 Nov 2025 15:40:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHN0WG1iS/sPiYKy9fqc7gwNxvUFvm/CsRF1EOI5/6pB07Y/PgDbTA10OfQsQdez4A2r7xLSQ==
+X-Received: by 2002:a05:600c:3587:b0:477:75eb:a643 with SMTP id
+ 5b1f17b1804b1-4778fe4f3demr40557075e9.4.1763163600476; 
+ Fri, 14 Nov 2025 15:40:00 -0800 (PST)
+Received: from [192.168.10.48] ([176.206.119.13])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-47787e2ad4csm176369815e9.1.2025.11.14.15.39.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Nov 2025 15:39:59 -0800 (PST)
+Message-ID: <6e695458-13bf-4d64-89ee-f39818ed2e52@redhat.com>
+Date: Sat, 15 Nov 2025 00:39:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/8] block-job patches 2025-04-29
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-block@nongnu.org, Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
-Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
-References: <20250429113335.423535-1-vsementsov@yandex-team.ru>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250429113335.423535-1-vsementsov@yandex-team.ru>
+Subject: Re: [PATCH] target/arm: Mark VPERMILPS as not valid with prefix 0
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20251114175417.2794804-1-peter.maydell@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
+ CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
+ hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
+ DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
+ P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
+ Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
+ UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
+ tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
+ wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
+ UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
+ 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
+ jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
+ VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
+ CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
+ SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
+ AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
+ AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
+ nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
+ bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
+ KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
+ m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
+ tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
+ dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
+ JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
+ sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
+ OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
+ GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
+ Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
+ usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
+ xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
+ JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
+ dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
+ b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
+In-Reply-To: <20251114175417.2794804-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,36 +160,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/29/25 14:33, Vladimir Sementsov-Ogievskiy wrote:
-...> block-job patches
+On 11/14/25 18:54, Peter Maydell wrote:
+> There are a small set of binary SSE insns which have no MMX
+> equivalent, which we create the gen functions for with the
+> BINARY_INT_SSE() macro.  This forwards to gen_binary_int_sse() with a
+> NULL pointer for 'mmx'.
 > 
-> - deprecate some old block-job- APIs
-> - on-cbw-error option for backup
-> - more efficient zero handling in block commit
+> For almost all of these insns we correctly mark them in the decode
+> table as not permitting a zero prefix byte; however we got this wrong
+> for VPERMILPS, with the result that a bogus instruction would get
+> through the decode checks and end up in gen_binary_int_sse() trying
+> to call a NULL pointer.
 > 
-> ----------------------------------------------------------------
-> Raman Dzehtsiar (1):
->        blockdev-backup: Add error handling option for copy-before-write jobs
+> Correct the decode table entry for VPERMILPD so that we get the
+> expected #UD exception.
+
+Fixed to VPERMILPS, and applied, thanks!
+
+Paolo>
+> In the x86 SDM, table A-4 "Three-byte Opcode Map: 08H-FFH
+> (First Two Bytes are 0F 38H)" confirms that there is no pfx 0
+> version of VPERMILPS.
 > 
-> Vincent Vanlaer (5):
->        block: get type of block allocation in commit_run
->        block: move commit_run loop to separate function
->        block: refactor error handling of commit_iteration
->        block: allow commit to unmap zero blocks
->        block: add test non-active commit with zeroed data
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3199
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/i386/tcg/decode-new.c.inc | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+> index f4192f10068..805cfd08e83 100644
+> --- a/target/i386/tcg/decode-new.c.inc
+> +++ b/target/i386/tcg/decode-new.c.inc
+> @@ -643,7 +643,7 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
+>       [0x0a] = X86_OP_ENTRY3(PSIGND,    V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+>       [0x0b] = X86_OP_ENTRY3(PMULHRSW,  V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+>       /* Listed incorrectly as type 4 */
+> -    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_00_66),
+> +    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+>       [0x0d] = X86_OP_ENTRY3(VPERMILPD, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+>       [0x0e] = X86_OP_ENTRY3(VTESTPS,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+>       [0x0f] = X86_OP_ENTRY3(VTESTPD,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
 
-There's a bug report in debian, for 10.0.x series of qemu, here:
-https://bugs.debian.org/1120389 .  This looks like it's about
-this very series, in particular, commit v10.0.0-369-g6f3199f996
-"block: allow commit to unmap zero blocks".  Does it look similar? :)
-(I haven't yet verified if this commit actually fixed the issue
-reported in the debian bug).
-
-But if it it, it looks like it should be a good idea to pick this
-series up for 10.0.x stable series too, what do you think?
-(it all applies cleanly and seems to work too).
-
-Thanks,
-
-/mjt
 
