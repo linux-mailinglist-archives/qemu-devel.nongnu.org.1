@@ -2,102 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837CAC5E763
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 18:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400C7C5E60E
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 17:59:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJxJ4-0005Ll-1s; Fri, 14 Nov 2025 12:09:54 -0500
+	id 1vJx7V-0004Lj-At; Fri, 14 Nov 2025 11:57:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <florian.kauer@koalo.de>)
- id 1vJx1q-00087V-9W
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 11:52:06 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vJx7S-0004KP-Rs
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 11:57:54 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <florian.kauer@koalo.de>)
- id 1vJx1o-0003VT-Br
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 11:52:06 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47728f914a4so14289315e9.1
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 08:52:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vJx7R-0004Q6-6m
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 11:57:54 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-37a48fc491aso20550931fa.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 08:57:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=koalo-de.20230601.gappssmtp.com; s=20230601; t=1763139122; x=1763743922;
- darn=nongnu.org; 
+ d=linaro.org; s=google; t=1763139470; x=1763744270; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qsBTokqs+RoEw8OM/0Z0PHq5bIEO5QvUmBWCJ5Sf8YA=;
- b=wYn5RX27tdRLVJl6wsNMs85x3HQyUclhTDF0ccnRSnXjcwzudXOmSHX6Mwt2NoGMXI
- Vl05QbpkdGH91TbS6rAzK+5SfkAc6YzVhsNJz/TVE3pD7ORyFmyPRPRrkLqBiWXfRtBz
- HQMJx3JwOuAknYAUjm221rVEDCGGYZYYLvdMfOlFtq8+JIgkEoruLy2CtQxlw1wTqt3w
- 08+2qQmqHJv89FuXUt6BNcETjvBWFFkBlbzcO5e3V6yXyli9m96c5jp31F68YfnX0W1v
- rFkeyxsz0Hv/YIGyXAXFMTwZTC91X+lAMKZCflS9DRRk0c3GOsjMhiM+o4nPSAQieS2N
- i4Fw==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=FNTCw1ZxeZUrEMbJIAgTzSPmC+fa/Byv4MwVnauU1Gw=;
+ b=wDJqhIkRYyBta3cdRlzwGioDsd/BO16OnSfPKK7IRt7tykvMU81FvL3op1+PGhopp5
+ Gfa9OmQSsXZj9Aqj01p53Ybu6T8PnxV1xh24uc9FjnV2ZIo+BiJCkp1fPQxdlBm5FOhg
+ sqe3HQTYODpe2F6YSH2hqUzIU8oB3jvNnqCcxl9VkX71moTsvAdg23R8rbpoLP4Bhyny
+ FAX49SxBoN0m/mkwLDhTkliOfvAuAMjmZCqyk8ANB9fM7qcRHq8aOI4Frn+ydAOH1Si4
+ KVrENcK4nUVPg3kbcJV+bvRHRIYaDaQFaxCvGMA0O75hvrNzk42g8Y6++0g/bLeJRZqS
+ bnrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763139122; x=1763743922;
+ d=1e100.net; s=20230601; t=1763139470; x=1763744270;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qsBTokqs+RoEw8OM/0Z0PHq5bIEO5QvUmBWCJ5Sf8YA=;
- b=kTP0dAkP28Z0WEjg/8TT2Fct9viVSUuLOJa92psxVqLXBkwO8uCFkAd/tpuqLTLnJG
- NRYcq89b4s1IFrGlxOoLJmUzV4CGeJ5jrlowUt9Yqh8PL23ogXcL0CXxzQ0csqS/mrU/
- QLh/rKnFUf0YRsF4T71mgR8d6m9EZDXMUlosrMvdqcG7oWOdD5i62tf4WMYKoKPHcA59
- X2FeuQrvRGhPFq5erb8wksnV2pEYaTseCcHjaOQ+qqVpmOjzfrz6My3EnbIRfJVRRXly
- 6QagDA85LbJHzQkSYJeDCk9OkWCa2ek0csauWFx4EBd+TSqe3lYN9pf8r8XaZqUeLdw1
- TJiA==
-X-Gm-Message-State: AOJu0Yxe8OD49IHtkoXNvhoC8cNWo4rYXAMhvJV5AuE0T3D7InRTmJpx
- akkSjeM38jBbhCKu9FnS8FspoACgYP2Dj/ug8Dzt7DfeRwSAE5OgPp+garACqP3gfPk=
-X-Gm-Gg: ASbGnctE22dib5+kTzVvkzAKGEupeSKYr7HOIiTak8Y9/PTCeGJvcducC2yNTaBiuoI
- 64MpGrIBRI1oG4/O5adewS0CHahCiNFbQ1MlqH19jZImc5H1NTr1zbF3fHYHe5vJCNAdC4oryTK
- bgqU8s0wMA8ODxyXs8mpCmE/7wyYsAOiW8MZcYA9vjLPg/l7Iw7HAIP+cHc2Uv8Zjm1qx0ErNZz
- WA/raF7QLPwp8gRPvSc2fs5fBPOrJzivLwW9SAndzUu+o8RqDHwQu9BMI2lZl551yXg60Rtd8Bm
- j3Brri/nDhHEwZjid4HOzCd2K5fifhq7hQ76rhnHTJDHXtLCLnCgfOVxv2zSyhhfqJTIeZEku2H
- IywAAUJXZR343oDi5GrJvv6N34ciS84jKWng2CBgfq7JrOsKhdIMBssrVSM8tUzz3jd6P3g2fOY
- XdiLfmBZ+a65/Zh5cME6MYv3OlfSNj72hKjALO5JjwHaMMuLL8CGnh3wN7qw==
-X-Google-Smtp-Source: AGHT+IGKsV5foJQx1/a+GnAxo7TMaGqEHklqDTqA6zJLH3JDLROSwb83rVogRBbnnPZG/kn1tNP8NQ==
-X-Received: by 2002:a05:600c:3112:b0:477:9650:3184 with SMTP id
- 5b1f17b1804b1-47796503351mr1320595e9.2.1763139121405; 
- Fri, 14 Nov 2025 08:52:01 -0800 (PST)
-Received: from ?IPV6:2001:9e8:e31b:a300:de87:2ce:e496:70e6?
- ([2001:9e8:e31b:a300:de87:2ce:e496:70e6])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4779524d265sm18165815e9.2.2025.11.14.08.52.00
+ bh=FNTCw1ZxeZUrEMbJIAgTzSPmC+fa/Byv4MwVnauU1Gw=;
+ b=ELsnPFs7haGkIzDEJDJljBoo02/SDNLtIN+Ti70WfbUs6upolLg2421SYXS9udfnGs
+ g0pKnlR+IKUL5F2JYmh6Pda5VUaozluKLvzbYev/lmBTV0MbbWvIuHfvbIi6dHQ2K/IK
+ dOw7lXNdTwhzguvMbBBI+OuoOSQSjYbWUb8ttuf6EtqlIZe6s3JtDp8JhMfo2lEaExjJ
+ fKNhZf7AwY5ZkRD2KhWLc0W7yNhzgvNdB/5+gMRqilKiBKmtyM6NjUF6ELFAVi4TV5Ri
+ FZkU7IXY4jgnsTyHB8kg1ZPhswx4MqwiZ3AJCW8wnGX5/8NRPg3OXN4DPuNWZG8diK3/
+ Pfgg==
+X-Gm-Message-State: AOJu0YzbE+HFXgjaHkps7/TKmePB22I1LZrz+vzhKS8rBaMueB3uTYnF
+ iP4m6Jg0NyZAhsHoipSKmcoleQP9XabtVxGFnU5ZYgtLKp8hRkKJm59B1crbLGuUz8Xu/+uZg59
+ AjHS+QJk=
+X-Gm-Gg: ASbGnctyZz4jdnx+RyD/DzI20Yr9VxnBUj3wJwxBDxAtSEXit2GUxNIWjtnR9fKrdQR
+ PnrRlrn1+D8K51HWftbWELA/B/0nhTvRmwGW7HvqEwozs1jRaCCyqarPMYouoF5g9KOcl9/T/1U
+ JzcPzR/mLAaeOZXsJV4E6BCjTIY3WHLlqpKhrJkPKWRDmFO9WWd9cJHDc+E3JMPYaUhiDfuG70E
+ ZccXjQkM48RgXvPdPfrvzC4myP3xtCTI5P91/Nzj4/eEL5emq+hS9uhxqrV294nmsWKiY6QBDuX
+ wl9N0m6loVG7ZO2lL80LvKQhlMMePqBc99iLK+JJAiBz36I5xp/szKlUTJeEcsxos7XKIoxYxNK
+ 5FaeZpOgYEUpDVzuLmTLcLZ9TmeNsrN2b1ePSw9QR8tFHwPOtQ5c5F4fWWR6GiOTjCMQJds7Mt1
+ wPK5WPCZosAaQtMDzh59RkMo/xyPOCJiwhvy+08QCHvNHd+vhcGIQcVp02rA==
+X-Google-Smtp-Source: AGHT+IEXBY476qh6ieIb+c+o1o+h8XOQUBenPcDSfT08ztP0HzVW75vfYp4hbpFR/ngXhniicl3dIg==
+X-Received: by 2002:a05:6512:1149:b0:595:7d95:eaad with SMTP id
+ 2adb3069b0e04-595841c0fe3mr1415227e87.22.1763139470301; 
+ Fri, 14 Nov 2025 08:57:50 -0800 (PST)
+Received: from [192.168.8.105] (86.red-80-27-231.dynamicip.rima-tde.net.
+ [80.27.231.86]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-595803b3019sm1160099e87.26.2025.11.14.08.57.49
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Nov 2025 08:52:00 -0800 (PST)
-Message-ID: <cc68c783-1f2b-4ecf-ab53-f0471e21114a@koalo.de>
-Date: Fri, 14 Nov 2025 17:51:57 +0100
+ Fri, 14 Nov 2025 08:57:49 -0800 (PST)
+Message-ID: <66e6265d-f71e-4709-aa37-7107fdd3b986@linaro.org>
+Date: Fri, 14 Nov 2025 17:57:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] hw/dma: don't allow weird transfer lengths for bcm2835
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Yodel Eldar <yodel.eldar@yodel.dev>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:Raspberry Pi" <qemu-arm@nongnu.org>,
- Florian Meier <florian.meier@koalo.de>,
- Florian Fainelli <florian.fainelli@broadcom.com>
-References: <20251111105429.3993300-1-alex.bennee@linaro.org>
- <4d6d7e9d-0952-4158-9ef4-6093a16e9dd9@yodel.dev>
- <87wm3so997.fsf@draig.linaro.org>
-From: Florian Kauer <florian.kauer@koalo.de>
+Subject: Re: [PULL for-10.2 00/15] NBD patches for 2025-11-13
+To: qemu-devel@nongnu.org
+References: <20251113225531.1077484-17-eblake@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <87wm3so997.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=2a00:1450:4864:20::331;
- envelope-from=florian.kauer@koalo.de; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+In-Reply-To: <20251113225531.1077484-17-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 14 Nov 2025 12:09:50 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,60 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 11/13/25 23:54, Eric Blake wrote:
+> The following changes since commit 9febfa94b69b7146582c48a868bd2330ac45037f:
+> 
+>    Merge tag 'for-upstream' ofhttps://repo.or.cz/qemu/kevin into staging (2025-11-12 11:47:42 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2025-11-13
+> 
+> for you to fetch changes up to 4c91719a6a78a1c24d8bb854f7594e767962d0d9:
+> 
+>    tests/qemu-iotest: fix iotest 024 with qed images (2025-11-13 16:43:21 -0600)
+> 
+> ----------------------------------------------------------------
+> NBD patches for 2025-11-13
+> 
+> - Fix NBD client deadlock when connecting to same-process server
+> - Several iotests improvements
 
 
-On 11/14/25 17:43, Alex Bennée wrote:
-> Yodel Eldar <yodel.eldar@yodel.dev> writes:
-> 
-> (add Florians to CC)
-> 
->> On 11/11/2025 04:54, Alex Bennée wrote:
->>> The datasheet doesn't explicitly say that TXFR_LEN has to be word
->>> aligned but the fact there is a DMA_D_WIDTH flag to select between 32
->>> bit and 128 bit strongly implies that is how it works. The downstream
->>
->> At the bottom of page 38, the datasheet [1] states "the DMA can deal
->> with byte aligned transfers and will minimise bus traffic by buffering
->> and packing misaligned accesses."
->>
->> IIUC, the *_WIDTH info fields are implied as maxima.
->>
->> [1] https://datasheets.raspberrypi.com/bcm2835/bcm2835-peripherals.pdf
-> 
-> That reads ambiguously - you could start a misaligned n*WIDTH transfer
-> and the hardware will write bytes until aligned?
-> 
-> If it does indeed work with byte accesses maybe we can just do:
-> 
->   if (xlen & 0x3) {
->     .. do one byte ..
->     xlen -= 1;
->   } else {
->     .. existing 32 bit code ..
->   }
-> 
-> but I guess we need to handle unaligned accesses as well.
-> 
-> Florian,
-> 
-> Can you help clarify what the datasheet means here?
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
-
-Sorry, I won't be of big help here. I have no further insights apart from what the datasheet says.
-I implemented this driver many years ago and it worked for my specific use case (enabling the I2S interface of the Raspberry Pi) this way,
-but I cannot make a confident statement about unaligned access :-(
-
-Greetings,
-Florian
-
-
-> 
-> Thanks,
-> 
-> <snip>
-> 
->>> rpi kernel also goes to efforts to not write sub-4 byte lengths so
->>> lets:
-> 
-
+r~
 
