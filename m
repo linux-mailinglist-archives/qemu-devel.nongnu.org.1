@@ -2,115 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60790C5F265
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 21:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE03C5F2EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 21:11:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJzwO-0002fW-Ob; Fri, 14 Nov 2025 14:58:40 -0500
+	id 1vK08b-00089N-9r; Fri, 14 Nov 2025 15:11:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vJzr5-0006p5-PS
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 14:53:14 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vK022-0006YY-TK
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 15:04:32 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vJzr3-00089Y-GZ
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 14:53:10 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 75E96218F9;
- Fri, 14 Nov 2025 19:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763149986; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sjiabFdUcc9LmbkYc1Li+f9ngy25fg8hINhtpQQx5/w=;
- b=lvLvjlMMTHgr9hA0pOK5yYf+Hv+bzBzVukZuD5lYiwpJc6F4xnOoznFTfzo0eNzcwE7hoa
- xx8NXpnj+2P1J/HvmEtYSe8fILDBfAqlwT1W70yR/2kjAQeV2ht0Vqx3W7aIa85Gk/pg4t
- WYLYwLXfNNFgF1AOr8KC2bx5s8KaOzM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763149986;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sjiabFdUcc9LmbkYc1Li+f9ngy25fg8hINhtpQQx5/w=;
- b=tu5VOrHe0ssmrEnTidP8zzGCVIJlMWwhZOdTTDb/13lrqoL7I+81inqOAzCcBmrxMQYqSQ
- FK/VAy3R/FuJCiCw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XDbvqyt0;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=n1AWirpm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763149985; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sjiabFdUcc9LmbkYc1Li+f9ngy25fg8hINhtpQQx5/w=;
- b=XDbvqyt0oYHNEeRIl2JwEWZZUBfqBXHLX8KBKv4F9zsjFZ78zu6gxYPL9nt4zV/d+0gQOe
- 3gXl+l4DVYUCFA+8kfRTb4anFR7PD3pSqDbNzNn7bGjOLS3XF+FWxwUExbM4v8oW4rspSZ
- t8Y+0vX0NuU2vV+3x0d9zLdJhrsyuA8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763149985;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sjiabFdUcc9LmbkYc1Li+f9ngy25fg8hINhtpQQx5/w=;
- b=n1AWirpmhMLV/cKvwZxHm9cvzDlpqeQ/x3V4h0mh2joLMOAe1vCamfHM518mtTDz3Q/xLf
- 3wr+VYAzwMC5qwBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E13CE3EA61;
- Fri, 14 Nov 2025 19:53:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id dQ6zJ6CIF2lTLwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Nov 2025 19:53:04 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] system/qtest.c: Allow for multiple CHR_EVENT_CLOSED events
-In-Reply-To: <CAFEAcA-ROzqrpb1Z9oR2LF5=YHhM95=Ae2RCsqPH7Yj3CRBwLA@mail.gmail.com>
-References: <20251107174306.1408139-1-peter.maydell@linaro.org>
- <CAFEAcA-ROzqrpb1Z9oR2LF5=YHhM95=Ae2RCsqPH7Yj3CRBwLA@mail.gmail.com>
-Date: Fri, 14 Nov 2025 16:53:02 -0300
-Message-ID: <875xbccrxd.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vK01z-0004hu-Q1
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 15:04:30 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-47117f92e32so20340215e9.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 12:04:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763150665; x=1763755465; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pXiZ10OJodTsvzbmca5AhlTxbQq2G43OiTHEwt1NF6s=;
+ b=zeiKb0V7fAoWhw+eOhOVbt70wgu/s6YbzORN6Nfn7muO6O+Vwbhm3K0tWayxVTa0zE
+ AMa/xajm9wr+T1OUys6HL/ynGZjl2RO04dn3OAYYYRGjJhlZToFLSNrvzhUFt+SX0TE2
+ e5BOZcgSk5m02sS9wpk7cvdgKzvcYdRYrRkWnyPVEXZ/rQK3AMB4MOj/ytLlkr/6PQBd
+ NdWOqi2aJNf3sTKWV4cOu2L03HcBjOogQ3dot2P1E4vdslQXnIsn5pX1enKzpdecidZY
+ wj/QMr3aOKCLOJHmyFShK/eCRTPN+Wl2awCMesY993gzpLunqXd8tUUrGS8qwGdko7JF
+ SRFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763150665; x=1763755465;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pXiZ10OJodTsvzbmca5AhlTxbQq2G43OiTHEwt1NF6s=;
+ b=fUMRqVOKCYWBHB7VmkIcuHCSsXhPKqhjXXc6jv0IQACEQaLT4EXMIwunRClv+RU27p
+ HlsL83QDoXAOUQesURH9oev+cmqMhrwFoS+0Ibj+1MJ+ttfqa/cTlSRv3Kz0aoJuXDg7
+ TXyvojnnJxxmvcTepMEU/gD20feVe+r2+adcVsLvydmC4PqQsLSBcKbX9WXJZNeKXaWq
+ +KHxg36sqHhw4RLNQ+47mYQPABcX+slFZpRLicdNKuyqx283CyQBY7lN+UQFMb18xPTN
+ qJzqr0hMSPfXMtqmnMiWMt3XDOKrU4b30KNYhkGmf+i2N+aDifH2rSs/HoAUQ4oeET3V
+ 8kpQ==
+X-Gm-Message-State: AOJu0YxJHxQgbmyMJ0+dA8STtmVP7r7pIjbm+46AREKvslGfFyafV0LA
+ mami8mdvvW52gJfthGe6v168kLntO6ROlgvnUtLlIsMM2cPRTfN3PEuf1xmSJS8u29329m8vk/g
+ a1FvWJ/XJkg==
+X-Gm-Gg: ASbGnct8SNl6hLLb0rJ5djC9zY16jrN9WWy7OsRO8WFT1bIFApN41lOmIHdoxkIGGSF
+ 9n6zfPCqMTn70vKPrJLQm6ZhvjShfbBa7/DBxvWP2QIsuvXRlDkzDRqkglJezhq9SgznZt17qEP
+ ngRIy87QRPFbnrYs/augsqGaIku89Q1EqA9xjGAMcqFKwzjATCkR/CQt82cP1JB4Fr2UGZgjbgL
+ AcDGgmqXq1GD1byiEfT3FqnIdav128IgFkLgGPObsSbZXZSbvSEEPay8ZPY/5CPTA7CKC0GzxEP
+ 98yzqj3/KD0CncyuvGb3Qi4dqFxE6/lQVz2qLXjJP9e5KglhJUCp6QfXWjKpdv7LjGlENj/9WN0
+ ONsk8A7ZMfcQ+pEME5DTdtEY1RMHW7vlh1DQXTx3ew/0EfzZ1XUFVOYYO0fr3wlITOr2NxAhuRx
+ A0Hq5KQ4634JlAml21MYyGI31A9E6SriHwZc7EfMUAyCTDwjWN7w==
+X-Google-Smtp-Source: AGHT+IGUBIHzsq1P8/uWuOSpYFIyXySXSD46MQNmE8TE0vBNydQbGCrTh8qC68xDOh+23jpV0ghqPg==
+X-Received: by 2002:a05:600c:4685:b0:45d:d353:a491 with SMTP id
+ 5b1f17b1804b1-4778fe59fe7mr44230515e9.1.1763150664924; 
+ Fri, 14 Nov 2025 12:04:24 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477983657cdsm711425e9.5.2025.11.14.12.04.23
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 14 Nov 2025 12:04:24 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Collingbourne <pcc@google.com>, Cameron Esfahani <dirty@apple.com>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH v5 00/19] target/arm/hvf: Consolidate
+Date: Fri, 14 Nov 2025 21:04:02 +0100
+Message-ID: <20251114200422.4280-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 75E96218F9
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_COUNT_TWO(0.00)[2];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,60 +104,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Missing review: #8
 
-> Ping for code review?
->
-> thanks
-> -- PMM
->
-> On Fri, 7 Nov 2025 at 17:43, Peter Maydell <peter.maydell@linaro.org> wrote:
->>
->> In the qtest_event() QEMUChrEvent handler, we create a timer
->> and log OPENED on CHR_EVENT_OPENED, and we destroy the timer and
->> log CLOSED on CHR_EVENT_CLOSED. However, the chardev subsystem
->> can send us more than one CHR_EVENT_CLOSED if we're reading from
->> a file chardev:
->>  * the first one happens when we read the last data from the file
->>  * the second one happens when the user hits ^C to exit QEMU
->>    and the chardev is finalized: char_fd_finalize()
->>
->> This causes us to call g_timer_elapsed() with a NULL timer
->> (which glib complains about) and print an extra CLOSED log line
->> with a zero timestamp:
->>
->> [I +0.063829] CLOSED
->> qemu-system-aarch64: GLib: g_timer_elapsed: assertion 'timer != NULL' failed
->> [I +0.000000] CLOSED
->>
->> Avoid this by ignoring a CHR_EVENT_CLOSED if we have already
->> processed one.
->>
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> ---
->>  system/qtest.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/system/qtest.c b/system/qtest.c
->> index baef06d4d1b..67e2385f4b0 100644
->> --- a/system/qtest.c
->> +++ b/system/qtest.c
->> @@ -815,6 +815,10 @@ static void qtest_event(void *opaque, QEMUChrEvent event)
->>          }
->>          break;
->>      case CHR_EVENT_CLOSED:
->> +        if (!qtest_opened) {
->> +            /* Ignore CLOSED events if we have already closed the log */
->> +            break;
->> +        }
->>          qtest_opened = false;
->>          if (qtest_log_fp) {
->>              fprintf(qtest_log_fp, "[I +" FMT_timeval "] CLOSED\n", g_timer_elapsed(timer, NULL));
->> --
->> 2.43.0
+- Patches 1-11 fix migration on HVF
+- Patches 12-14 remove a signal race with WFI
+- Patches 15-18 correct guest timer frequency
 
-I'm aware some qtest stuff is lingering on the list, I came back from
-vacations yesterday and will give attention to it in the next few days.
+Since v4:
+- Rename gva -> gpa in hvf_set_phys_mem (Akihiko)
+- Dropped missing VTimer synchronization patches for 10.2
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Since v3:
+- Call qemu_real_host_page_mask/size once (rth)
+
+Since v2:
+- Improve host page size/mask uses (rth)
+- Remove cpu_test_interrupt in hvf_wfi (rth)
+
+Since v1:
+- Addressed Mads & Richard comments
+- Fixed migration by reworking memory listeners
+  (unfortunately the current broken code has been
+   used as base for WHPX)
+- Sync CNTV_CTL/CVAL_EL0
+- Remove WFI racy signal implementation
+- Simplify PSCI Suspend (I expect the same can be
+  done for the other hvf_psci_cpu_off() calls).
+- Emulate more missing registers (PMU & Monitor Dbg)
+
+From v1:
+- Fix a pair of memory leak
+- Check a pair of return values
+- Mention calls which must be run on vCPU thread
+- Force MIDR
+- Use hv_vcpu_config_create/hv_vcpu_config_get_feature_reg
+  when not running on vCPU thread
+- Factor hvf_handle_vmexit() / hvf_handle_exception(() out
+- Call hv_vcpu_run() in loop
+- Guard hv_vcpu_run() between cpu_exec_start/end()
+- Restrict ARM specific in AccelCPUState
+
+Based-on: <20250829152909.1589668-14-pbonzini@redhat.com>
+
+Philippe Mathieu-Daudé (10):
+  target/i386/hvf: Use host page alignment in ept_emulation_fault()
+  accel/hvf: Enforce host alignment in hv_vm_protect()
+  accel/hvf: Skip WFI if CPU has work to do
+  accel/hvf: Implement WFI without using pselect()
+  accel/hvf: Have PSCI CPU_SUSPEND halt the vCPU
+  accel: Introduce AccelOpsClass::cpu_target_realize() hook
+  accel/hvf: Add hvf_arch_cpu_realize() stubs
+  target/arm: Create GTimers *after* features finalized / accel realized
+  target/arm/hvf: Really set Generic Timer counter frequency
+  target/arm: Only allow disabling NEON when using TCG
+
+Richard Henderson (9):
+  accel/hvf: Create hvf_protect_clean_range, hvf_unprotect_dirty_range
+  target/i386/hvf: Use hvf_unprotect_dirty_range
+  target/i386/hvf: Use address_space_translate in ept_emulation_fault
+  accel/hvf: Simplify hvf_log_*
+  accel/hvf: Move hvf_log_sync to hvf_log_clear
+  accel/hvf: Simplify hvf_set_phys_mem
+  accel/hvf: Drop hvf_slot and hvf_find_overlap_slot
+  accel/hvf: Remove mac_slots
+  target/arm/hvf: Implement dirty page tracking
+
+ include/accel/accel-cpu-ops.h |   1 +
+ include/system/hvf_int.h      |  22 +---
+ accel/accel-common.c          |   5 +
+ accel/hvf/hvf-accel-ops.c     |  19 +---
+ accel/hvf/hvf-all.c           | 186 ++++++++++------------------------
+ target/arm/cpu.c              |  67 ++++++------
+ target/arm/hvf/hvf.c          | 167 +++++++++++++++---------------
+ target/i386/hvf/hvf.c         |  44 ++++----
+ accel/hvf/trace-events        |   1 +
+ 9 files changed, 208 insertions(+), 304 deletions(-)
+
+-- 
+2.51.0
+
 
