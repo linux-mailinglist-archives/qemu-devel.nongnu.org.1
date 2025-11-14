@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FFFC5DDC6
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EC6C5DE4D
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:34:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJviJ-0003fF-Nq; Fri, 14 Nov 2025 10:27:52 -0500
+	id 1vJvny-0008Qs-1x; Fri, 14 Nov 2025 10:33:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc3-0006PS-Ue
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:24 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1vJvc4-0006Rd-OM
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:25 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc2-0003vF-9r
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:23 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso18572165e9.0
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:21 -0800 (PST)
+ id 1vJvc3-0003vb-5e
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:24 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-47754e9cc7fso13140965e9.2
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763133681; x=1763738481; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763133682; x=1763738482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kWsT9+pVP2bv7OoEAdZB0poxApdpHKvTDPxdXxBHL8M=;
- b=XrluESV+asICLy9+xCzDjQ+ux/Re7ZmYcc4xQkjvf4PNC9eXHAal/O9MABNTPl7Zlr
- 9qK9/VgpRWTx0GI5nSfrr2GRMtTQbT2sKVfhtmDDohz5vilNG1gj7VAefqAfB1m/caPV
- F6Gt6CHDL4SWZ69oYqit6s1N7nswFgcVry1uGKAuGfUg6anmGbfIqYB7A6at+c8rQzyk
- NfrBqUwfm3WZs+NMmg32rldJca2GN249E5UckmNRBdzPEFFyhgWxDGvQ/EjCPFFdhy4M
- J4OH2EGNnjtJuTXXwJ/zE1cKzdrt9C6CJ3qwbYg99YPZaetz8aP3GeJN2owskAGswkDt
- NkkQ==
+ :reply-to; bh=BWBLmsAkkYwVdETk16l9aBsdSyWo1bpWuw0Uuv+XzqA=;
+ b=wiXzqnTR58xF8PItyUVkpVb//+2c6XcDt/RqxoVOOARQnuOoBNCgjvph3zrzFMFr9J
+ 1vZK60uslOk2DXhB1N/bTATVOCyRWqW5jfUD4Cxq7RrolxSx+5FuyGtK0GzWHn71EZPW
+ CZZcSCkfKUKHOZa5WRbbFyxwAUrqVhEHjVKm2P3uPBAgHvWDbqpiETxRIb8awncPsize
+ w7ND1bLjOioGDx+NdHuWOGq/UIkEgTStRNIcR3tw1zeEkVKetz3ljo/6zrekdukf3KA6
+ D57U2w8wWtaAVQrfERbYxrECvDqBZf7+Z7Z/M12DbfxyGv8+iWy8fAnMlDfi/XzKCdMX
+ j7iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763133681; x=1763738481;
+ d=1e100.net; s=20230601; t=1763133682; x=1763738482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=kWsT9+pVP2bv7OoEAdZB0poxApdpHKvTDPxdXxBHL8M=;
- b=D+xsj437GhsFgRi8rxo1OQj8O8QPc+mKTwcbdQwRu+BU3AwiVsFAoSFhANN8/imhKA
- /aFw/ND/oEgfqTqSxglXl8EIHurUxRSb0/WmHdXH9ca6dEf9dC3J66N7VNn8dQ1eHWBj
- Lt744sxmSz8YYuW7+cIeLwqufZX+9XBlkHECenc548ROdiTwQKBnKo+3ZLZQQn2AMPZ4
- jgcMI12JrWKi1237BfhkZa+k9V7GGLMOXOjJzcorqynBQWfexlBKt9ke0+yZRNp+wf/U
- ZGFqVtJU3el5ahliaWh3VJ0/4hHfvR50pePIZ1BonuF/7QkfemmX8tJNkP40qEIwNtfL
- 1e+Q==
-X-Gm-Message-State: AOJu0YyTD0yz7/IXEUwlz9vwPG5m5rys77zHVkjMk5EzIcQF2ErVSRXI
- JZbTVJ5C+LWcrMU3hDnnigG37vtMZ3poIaRsQCzIZo2tzj1Tu6NCxJMzgCepuPSuK6HS1WPT3uE
- 0BpQr
-X-Gm-Gg: ASbGncv4IwwK4fH/7S8uJp9v4ZeiLHzLwFvAG9oAWK6HvdcDqeIzTSCUixbwDbDjoFp
- J1orwAXpZIWdY7kcLDCiJAqrwlgVCntKt25CY9WYJAfgtMbQu4jXH+ZcD/qWjN9Pzx+z/fo11Dl
- ikR6++K1QRLoQbPMgp3KOBjcXBkTVKUxkulgqpOAcf8OnI/A3mXvsZvHOVuNCmVH396LMndehkl
- +K3WTG2VmgtHTpW/kYzYJHfwiyAu6z+wSmx0Q8kOq/y/l2ddbomsM8DmA3aaeYQM0bzOSldfbAY
- d+JBXuIfg0TzXxQFWgJefpGCfSy28MEWGpcyoh2udESVL34pCVwEkCVmIFqzdN4iZKQBOXCwg8v
- gK5pA5fH4QqdR4Vc/PKm9Yc+acNjv+Hgpv8XQo1cMgBTRb5RI1Q1F1uVb0fFRoMnsGvABMB707U
- aK2o6KVzXNr0PFYZbo
-X-Google-Smtp-Source: AGHT+IEXjcz4rOHXge63edYxPva0/3U36XGyzkeEflVUW1U8R3cqWuvCW2YxlDFjRb7IpHFC+VL7pA==
-X-Received: by 2002:a05:600c:1e29:b0:477:5639:ff66 with SMTP id
- 5b1f17b1804b1-4778bd07ac2mr61434045e9.13.1763133680555; 
- Fri, 14 Nov 2025 07:21:20 -0800 (PST)
+ bh=BWBLmsAkkYwVdETk16l9aBsdSyWo1bpWuw0Uuv+XzqA=;
+ b=Becp6h3YBCR041dwevs8AZuX4+ulGhSN//u7Hq0cd3J+sy1Bc55dGNWgDyDbBuCqTM
+ pWsAqQsflV2rnDdOQpoyic+C2qgjddrCwCtncXwWQzSv6gbK4/4goRd3ozrdlVeN4XsF
+ mJ3+V7cQgRLG1HQi1AbEJI4eyKLgsWOqtwjoRFhTRAMJeeidK+iI/vlo5geJAQA8cNgN
+ 4zRhbuiOgatxUsXb8+MsC7WBerbw6HAO7gkn/0KJFuZX/1p8iM/HuVm4gBOe4hoYmXEU
+ j4gZ2EoSaS/N/9FzBui/SgH2e7jnW320NbxKTArIyHAduAkNeIuCAydJC7RNBjrtwpkh
+ EZOA==
+X-Gm-Message-State: AOJu0YxqQ42ZuILtBCi+fSBqdzncxyoyTfnnHb6GC6AfVOKAYy+uch72
+ qy0O6YboA5zazDVBJesCdeCRDAlE1MuTf7BmiNEtu+MVaC78Rz/E4KS706U3/Kvf3NZBQIhdAxM
+ yew1w
+X-Gm-Gg: ASbGncs/I4Ulp/LX73Go+ty9WUs332WWnaFXdFzG9cF7P15U/bayYQA60uEhLpjsfDJ
+ PT9Xca32y62ekPuGRHiiQx/CBplqiyX4bKV96nXYzfjFEmellKK4QaBZkqPySErhF2awBKXLQU/
+ H6fu3fRTkuyz0ffi7UYwTKWoMBxBDN2aJlD5XWgjd+FAIrMKhR78t00yqZ3xpqGWrde/Z9NDD/M
+ Dz8nTwfGuB+F60olDKFXZnxx8n+fzpopgL6L9AFNMGrANRNTrFSComG+dn/z+aKZM7fnMU9BYU6
+ y5lCfVP7neU/RwfKzfa31GW+5ByB3Jj/Bn3UMO759wCJ7Q5dzUyF/8aJcTGBz+w5PFLavUT2AuC
+ bYbQScgXtvJSCr0BfX81OnGc/OHEKW+oPwPiyOqR+1PuRg8AGy1uNLurO/UspuxcZh9Q6GYp1jz
+ w/JBx4T17X2qGaZmAq
+X-Google-Smtp-Source: AGHT+IGbayNZbFMyj7Ja54BJBiZ5C9/fAxu+KUIEbzW/RwnqguBXdW7d4oN/oW6z6ZTk2erT6o1MDw==
+X-Received: by 2002:a05:600c:45d5:b0:471:14b1:da13 with SMTP id
+ 5b1f17b1804b1-4778fe59054mr32720115e9.14.1763133681665; 
+ Fri, 14 Nov 2025 07:21:21 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.19
+ 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 14 Nov 2025 07:21:20 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/10] tests: Clean up includes
-Date: Fri, 14 Nov 2025 15:21:08 +0000
-Message-ID: <20251114152110.2547285-9-peter.maydell@linaro.org>
+Subject: [PULL 09/10] hw/misc/npcm_clk: Don't divide by zero when calculating
+ frequency
+Date: Fri, 14 Nov 2025 15:21:09 +0000
+Message-ID: <20251114152110.2547285-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251114152110.2547285-1-peter.maydell@linaro.org>
 References: <20251114152110.2547285-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,137 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit was created with scripts/clean-includes:
- ./scripts/clean-includes --git tests tests
+If the guest misprograms the PLL registers to request a zero
+divisor, we currently fall over with a division by zero:
 
-with one hand-edit to remove a now-empty #ifndef WIN32...#endif
-from tests/qtest/dbus-display-test.c .
+../../hw/misc/npcm_clk.c:221:14: runtime error: division by zero
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/misc/npcm_clk.c:221:14
 
-All .c should include qemu/osdep.h first.  The script performs three
-related cleanups:
+Thread 1 "qemu-system-aar" received signal SIGFPE, Arithmetic exception.
+0x00005555584d8f6d in npcm7xx_clk_update_pll (opaque=0x7fffed159a20) at ../../hw/misc/npcm_clk.c:221
+221             freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
 
-* Ensure .c files include qemu/osdep.h first.
-* Including it in a .h is redundant, since the .c  already includes
-  it.  Drop such inclusions.
-* Likewise, including headers qemu/osdep.h includes is redundant.
-  Drop these, too.
+Avoid this by treating this invalid setting like a stopped clock
+(setting freq to 0).
 
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/549
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-id: 20251104160943.751997-10-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251107150137.1353532-1-peter.maydell@linaro.org
 ---
- tests/qtest/aspeed-hace-utils.h      | 1 -
- tests/qtest/aspeed-smc-utils.h       | 1 -
- tests/qtest/aspeed_gpio-test.c       | 1 -
- tests/qtest/dbus-display-test.c      | 3 ---
- tests/qtest/pnv-spi-seeprom-test.c   | 1 -
- tests/unit/test-cutils.c             | 2 +-
- tests/unit/test-error-report.c       | 1 -
- tests/unit/test-io-channel-command.c | 2 --
- 8 files changed, 1 insertion(+), 11 deletions(-)
+ hw/misc/npcm_clk.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/aspeed-hace-utils.h b/tests/qtest/aspeed-hace-utils.h
-index c8b2ec45af2..27ab2bb9758 100644
---- a/tests/qtest/aspeed-hace-utils.h
-+++ b/tests/qtest/aspeed-hace-utils.h
-@@ -8,7 +8,6 @@
- #ifndef TESTS_ASPEED_HACE_UTILS_H
- #define TESTS_ASPEED_HACE_UTILS_H
+diff --git a/hw/misc/npcm_clk.c b/hw/misc/npcm_clk.c
+index c48d40b4468..e202a8a2998 100644
+--- a/hw/misc/npcm_clk.c
++++ b/hw/misc/npcm_clk.c
+@@ -212,13 +212,14 @@ static void npcm7xx_clk_update_pll(void *opaque)
+ {
+     NPCM7xxClockPLLState *s = opaque;
+     uint32_t con = s->clk->regs[s->reg];
+-    uint64_t freq;
++    uint64_t freq, freq_div;
  
--#include "qemu/osdep.h"
- #include "libqtest.h"
- #include "qemu/bitops.h"
- 
-diff --git a/tests/qtest/aspeed-smc-utils.h b/tests/qtest/aspeed-smc-utils.h
-index b07870f3b8f..e2fd8ff1bd1 100644
---- a/tests/qtest/aspeed-smc-utils.h
-+++ b/tests/qtest/aspeed-smc-utils.h
-@@ -26,7 +26,6 @@
- #ifndef TESTS_ASPEED_SMC_UTILS_H
- #define TESTS_ASPEED_SMC_UTILS_H
- 
--#include "qemu/osdep.h"
- #include "qemu/bswap.h"
- #include "libqtest-single.h"
- #include "qemu/bitops.h"
-diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
-index c2f9ca2298a..decbba23c8f 100644
---- a/tests/qtest/aspeed_gpio-test.c
-+++ b/tests/qtest/aspeed_gpio-test.c
-@@ -27,7 +27,6 @@
- #include "qemu/timer.h"
- #include "qobject/qdict.h"
- #include "libqtest-single.h"
--#include "qemu/typedefs.h"
- 
- #define AST2600_GPIO_BASE 0x1E780000
- 
-diff --git a/tests/qtest/dbus-display-test.c b/tests/qtest/dbus-display-test.c
-index f7fc873bfb3..1d5951b7117 100644
---- a/tests/qtest/dbus-display-test.c
-+++ b/tests/qtest/dbus-display-test.c
-@@ -7,9 +7,6 @@
- #include <gio/gio.h>
- #include <gio/gunixfdlist.h>
- #include "libqtest.h"
--#ifndef WIN32
--#include <sys/mman.h>
--#endif
- #include "ui/dbus-display1.h"
- 
- static GDBusConnection*
-diff --git a/tests/qtest/pnv-spi-seeprom-test.c b/tests/qtest/pnv-spi-seeprom-test.c
-index 600493c425d..8033261758b 100644
---- a/tests/qtest/pnv-spi-seeprom-test.c
-+++ b/tests/qtest/pnv-spi-seeprom-test.c
-@@ -5,7 +5,6 @@
-  *
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
--#include <unistd.h>
- #include "qemu/osdep.h"
- #include "libqtest.h"
- #include "qemu/bswap.h"
-diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
-index 227acc59955..75fae29003a 100644
---- a/tests/unit/test-cutils.c
-+++ b/tests/unit/test-cutils.c
-@@ -25,9 +25,9 @@
-  * THE SOFTWARE.
-  */
- 
-+#include "qemu/osdep.h"
- #include <math.h>
- 
--#include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/units.h"
- 
-diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
-index 0cbde3c4cf5..a8532fc58fc 100644
---- a/tests/unit/test-error-report.c
-+++ b/tests/unit/test-error-report.c
-@@ -8,7 +8,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "glib-compat.h"
- #include <locale.h>
- 
- #include "qemu/error-report.h"
-diff --git a/tests/unit/test-io-channel-command.c b/tests/unit/test-io-channel-command.c
-index 4f022617df0..964418b5cd9 100644
---- a/tests/unit/test-io-channel-command.c
-+++ b/tests/unit/test-io-channel-command.c
-@@ -20,8 +20,6 @@
- 
- #include "qemu/osdep.h"
- #include <glib/gstdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
- #include "io/channel-command.h"
- #include "io-channel-helpers.h"
- #include "qapi/error.h"
+     /* The PLL is grounded if it is not locked yet. */
+     if (con & PLLCON_LOKI) {
+         freq = clock_get_hz(s->clock_in);
+         freq *= PLLCON_FBDV(con);
+-        freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
++        freq_div = PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
++        freq = freq_div ? freq / freq_div : 0;
+     } else {
+         freq = 0;
+     }
 -- 
 2.43.0
 
