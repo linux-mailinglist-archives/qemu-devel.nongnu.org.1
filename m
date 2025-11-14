@@ -2,89 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5034CC5DDC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17BDC5DF22
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:43:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJviS-0003lP-Rw; Fri, 14 Nov 2025 10:28:01 -0500
+	id 1vJvwC-0004y4-V5; Fri, 14 Nov 2025 10:42:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc6-0006Vi-85
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:27 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvc4-0003vl-D6
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:25 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-42b3d7c1321so1559483f8f.3
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJvlC-0006JB-F9
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:30:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vJvl9-0007oa-LK
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:30:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763134241;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TmknJCZrc9DY/f44OvYULegMzpz4ssCah9OyrbLp8TY=;
+ b=f1b5T5zQApkb2roXM62qCuNeUgV3TbEFWvGkYekaFSdbPKGbCG0XTwLy2jPtyt+OY8l++f
+ gye1tgjKcXArOdnquHmXIVp8YyvoeW7AWOhRD6luV/YX014f3ioWYYhpRnkQzMb5DhKNfH
+ nP8PqTxnNz07yop1/9fG47zaI33Zig4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256--SdHeuJGORKBsuNNd4468w-1; Fri, 14 Nov 2025 10:30:38 -0500
+X-MC-Unique: -SdHeuJGORKBsuNNd4468w-1
+X-Mimecast-MFC-AGG-ID: -SdHeuJGORKBsuNNd4468w_1763134237
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4edad305681so47500601cf.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:30:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763133683; x=1763738483; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QIw9GgzRpa5cDAQSM5pDHi3MBoCBEr8BPmj9kJq1ADY=;
- b=q9z5e0vFaMGs4C0gAVVntIPkslRVd33oawZ/86EpSviVh2MpM2BT2bMRf/QJ2cswuZ
- GUNinbmJk2RVFDIJ8/0qYJa8x/abg++nrBw/ttUzErrjm/5EazQle+X74DgcED/cKph+
- 83IhKuX/RBqGY0JQuSv6PiDAGY3qBAYiu6h3kvJ3BXR3GaiRFG0Ja26dulnIpqrzwSEy
- 3VjzD/Rox4Mye3/aEXhsal2E5WaEbMtRotm6Oz3afM616OWJ9d4Lmj/xpUevKCelm72x
- OHT4Gcpmja4HYC9yucHbDS7dNifxglDSbNhyRhEIYhDgHcL4GruG85onYuL4bLQFOCkk
- j/Qw==
+ d=redhat.com; s=google; t=1763134237; x=1763739037; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=TmknJCZrc9DY/f44OvYULegMzpz4ssCah9OyrbLp8TY=;
+ b=QsES3J7GF0Ov/QaROBkFtx2lLvnWFBKmJVlkllLCyYCTADB+dMp9+b8QqijUais2Pm
+ OaRHQyjpwCJvKLW7vTSWVDOPgNuz5CLyIs/tNKuaGkQvm9MLd9+B2imESSBDJYvcczyz
+ YR3AMe+PaVg7oagaZBpBKvOM07t3t6Dyz5+4IvhV01I9Hxzs5hZSANv7cP5PGeuNFEl3
+ txDhXM9MIb8oPZq1MYhJEbOVWHyF9xNj4+LmY3Do+/6BoLa55MT4PVImFuOGQjkIYTEa
+ YMy+o4n4foVk2keEuCvd9QUaMeX4Cn2sW/TCvm9GbG8S+bcg8WvKbmbjQsepHUr1erD1
+ MylA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763133683; x=1763738483;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=QIw9GgzRpa5cDAQSM5pDHi3MBoCBEr8BPmj9kJq1ADY=;
- b=CMhLsI/DAiA17qmyN4nY/brfg0zDVUquL7yDB3N4NCfx/gPMS+PS+T2wjspjwo1506
- gTm+fG1wooiIpEhickG/Grl7Y7HYp2D6nfpwYCNgB/+JmLNlR8EDAQ79B/du07kUzbGx
- DCaPEEAbB6Vg9Z5Z5knGASD3mZiSklFygjFqS2PrUH7EuOOUM1lRd0xT36Ofak5gNsBL
- 5M+8RMN/QH9qb8husQIg7QyjdS59EoqIs8Jg8b0peGpLBjvr0h3eieTNxF+lzGYR4lCw
- kIpZL6t2G7Z8UTNnNt05mu/nhq/wRKlSc4DZMVPq3Q0QduOlGYjgPMFAYiQ+RB1VO9Lt
- aigQ==
-X-Gm-Message-State: AOJu0YzKoZrt42d5VmkSIpF/HskUgi2qiVMuyC5STgCAOwl7E8ByGvaf
- KiLch/cYpka9s+PUYVkeidmOUdsaegCL2mLLxJqFSalz1vOZNBvbpr55O0JpG+yWQkIAOlJPczv
- 4HoiT
-X-Gm-Gg: ASbGnctrDaZWAG413ALI5J8u1buqJ70RriMDyqToNoAFSaVeDYAh11BPHO4Bi+SPYDk
- Sm/C8cp78/mCGjtT8tpDezioS4bp1U7bdaaJyuzV5B1mTzO/0uda3+7NGYWbsZiAUrNkYS6Ps2E
- 48bjogAIp1metZ9VRER5+uSTpLw9+h4+zUx3M6UFAQOjW/0UNBtqc3nmQQlyUOkqbbuvIWU5tCs
- bKegF1gZriLxf7mPZ60Er0zFyAp/vW4+u9iseE6x3bRVdrKyrUzfMtArs28288fhK+CXxEw2d3V
- egkBpxc8ovH/xFJr86hAw/3j50e4oZh+mcWEF9qIEd4xyU65WZW/LHwZw3ecJOTIFGRf0U+ndEA
- bdBCfolfBTNCyjF5N7YXJj5gUHxepOJkvIPyOKfojOkiHWfO/Q9c7Q8K2/iXLPplayD7jKU2rzA
- mkmne2rnUafZ77PaQ5
-X-Google-Smtp-Source: AGHT+IG9xi1AR6Nm6zyk0u5503J4BrXXpaUvcN0hZUNht7BBXmA2SM63cqX7IKiGkfBb9jjtmxY2XA==
-X-Received: by 2002:a05:6000:24c7:b0:428:52c7:feae with SMTP id
- ffacd0b85a97d-42b593869b1mr3320488f8f.32.1763133682600; 
- Fri, 14 Nov 2025 07:21:22 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.21
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1763134237; x=1763739037;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TmknJCZrc9DY/f44OvYULegMzpz4ssCah9OyrbLp8TY=;
+ b=HNSBYlSvL6Be7OlXANhMj3UePTHoGMDyheShU+jHa30fgrcHz1SDvMh8HsRQnVCnqP
+ xxzxLue8Shau7uEtxPHXwrpojdtSQkAOhU3MNJrtOw2iXsr4Aam3P3x7xQiSDKKzaAEH
+ beDEvHIBGBrMw9qKqyEp+/x/Mc6pF1FdqMdZ1BUkZchrFKB6HY32hLPZKwUjkphjr7PU
+ JR1fj7KnC+OOQXPTlGnoOzZ3wwUU3Mchy9ZJF7AjkWq2REvcflPrJDEGnj75oKdDuCVT
+ WZwyVUDd3Kv5TYXZJ2uXkVDTHbiJyrtTiIXwx7XGxj34sB+Uu57+2O4GP13rErqfdSvn
+ 8dnw==
+X-Gm-Message-State: AOJu0YwNSnt7NYgqzSTxezpB5Zn9ZOBGyDSHupLbQm4ZEzLnvpamrFfm
+ rq22eY0kQNMSPao1hzBk22rJ97PMTVjDW3BK0Gi6k3L8FhTY7WqQbFhMqq/slRZhQ1TiOftizUe
+ gOH6pCbK6cO7E/N3gjOutk+U4kmjjdlHMcw+tQAxsxnfNzVpAaNt+PPa8
+X-Gm-Gg: ASbGncsBq14G/h7j94Ebp56Jjd5iSaIiREAH88hGtQbZLhuqYG3NQxNMRl8FKB9AlH2
+ F9aGiaZYJOIdo01fte3b2KESAx8W4thm+/TVbRDqVDt0DVt8C5kHYyWpA/SURbWXERVmQJn0Rij
+ Qmsi8vThs9WhOII6/yXb6r11Nk18/yHz8JnF4nPDOLJwE1lan81VtUUqw2Nmhvr5uofhVatc5SB
+ fJMXX6Nd7pQIMJWfQx8IBejrvKnVKad/t8FPuRgvNUEzn1VUTNd6rRCKbhlJAS8FNmlyaFwtyGg
+ YPOd2S8SS/pMUiLYTSnuhqbsSC/ShLOxSQzp+/HJxohkqMNJ3zx7uSnpLdOfp599YJygNra3gEN
+ RMQ==
+X-Received: by 2002:a05:622a:13ca:b0:4ed:dfd6:ec44 with SMTP id
+ d75a77b69052e-4edf217781fmr47347541cf.78.1763134237162; 
+ Fri, 14 Nov 2025 07:30:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLcDDhAloLfEsIX7rHurLwGRqNDhBrE3xdNx266+HFbvXXtUu/L7AoWeocnu5+tN6LUG+yyA==
+X-Received: by 2002:a05:622a:13ca:b0:4ed:dfd6:ec44 with SMTP id
+ d75a77b69052e-4edf217781fmr47346801cf.78.1763134236628; 
+ Fri, 14 Nov 2025 07:30:36 -0800 (PST)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4ede87eed39sm30044571cf.24.2025.11.14.07.30.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Nov 2025 07:21:21 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 10/10] hw/audio/lm4549: Don't try to open a zero-frequency
- audio voice
-Date: Fri, 14 Nov 2025 15:21:10 +0000
-Message-ID: <20251114152110.2547285-11-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251114152110.2547285-1-peter.maydell@linaro.org>
-References: <20251114152110.2547285-1-peter.maydell@linaro.org>
+ Fri, 14 Nov 2025 07:30:36 -0800 (PST)
+Date: Fri, 14 Nov 2025 10:30:31 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH 4/5] rcu: Wake the RCU thread when draining
+Message-ID: <aRdLFwxzJwjsXFpY@x1.local>
+References: <aQJbd5qYR10qcbr7@x1.local>
+ <38c07d37-1b4d-42d2-ab41-fbe1c860dd3b@rsg.ci.i.u-tokyo.ac.jp>
+ <aQu2_izqViAbJ3A9@x1.local>
+ <b419584d-f1af-4c05-81a6-35f533e8ff37@rsg.ci.i.u-tokyo.ac.jp>
+ <aQ0Ys09WtlSPoapm@x1.local>
+ <5279f15f-bf46-438e-9c1f-0873b08b59e7@rsg.ci.i.u-tokyo.ac.jp>
+ <aQ37hd0fVJltYtt-@x1.local>
+ <5002e5b4-0493-4dff-af11-402cebecbcc2@rsg.ci.i.u-tokyo.ac.jp>
+ <aRYPXh_9m5ZvTi2w@x1.local>
+ <ded7ef38-8c99-4d37-87b2-2f5ba1dc93fc@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ded7ef38-8c99-4d37-87b2-2f5ba1dc93fc@rsg.ci.i.u-tokyo.ac.jp>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,66 +124,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the guest incorrectly programs the lm4549 audio chip with a zero
-frequency, we will pass this to AUD_open_out(), which will complain:
+On Fri, Nov 14, 2025 at 10:24:40AM +0900, Akihiko Odaki wrote:
+> However it creates another problem. Think of the following sequence:
+> 
+> call_rcu_thread()              |
+>                                | call_rcu1()
+>                                |  qatomic_fetch_inc(&rcu_call_count)
+>                                |  qemu_sem_post(&sync_event)
+>                                |
+>  qatomic_read(&rcu_call_count) |
+>  enter_qs(false)               |
+>   wait_for_readers(false)      |
+>    qemu_sem_timedwait(         |
+>     &sync_event, 10)           |
+> 
+> qemu_sem_timedwait() incorrectly interrupts the RCU thread and enters the
+> force quiescent state.
 
-   A bug was just triggered in AUD_open_out
-   Save all your work and restart without audio
-   I am sorry
-   Context:
-   audio: frequency=0 nchannels=2 fmt=S16 endianness=little
+First thing to mention is, IIUC above can't happen because if
+call_rcu_thread() is already waked up and reaching enter_qs(), then there
+should have been, for example, a prior call_rcu1() that incremented
+rcu_call_count and posted to sync_event, hence rcu_call_count cannot be 0
+anymore in the call_rcu1() above, because the sub happens later:
 
-The datasheet doesn't say what we should do here, only that the valid
-range for the freqency is 4000 to 48000 Hz; we choose to log the
-guest error and ignore an attempt to change the DAC rate to something
-outside the valid range.
+call_rcu_thread:
+        ... sees rcu_call_count > 0, quit loop ...
+        ...
+        enter_qs(sleep);
+        qatomic_sub(&rcu_call_count, n); <-------------------------
+        ...
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/410
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251107154116.1396769-1-peter.maydell@linaro.org
----
- hw/audio/lm4549.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+That means the concurrent call_rcu1() above will not post sem anymore
+because it will only post it if rcu_call_count==0.
 
-diff --git a/hw/audio/lm4549.c b/hw/audio/lm4549.c
-index 745441bd790..bf711c49c04 100644
---- a/hw/audio/lm4549.c
-+++ b/hw/audio/lm4549.c
-@@ -15,6 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/hw.h"
-+#include "qemu/log.h"
- #include "qemu/audio.h"
- #include "lm4549.h"
- #include "migration/vmstate.h"
-@@ -179,9 +180,23 @@ void lm4549_write(lm4549_state *s,
-         break;
- 
-     case LM4549_PCM_Front_DAC_Rate:
--        regfile[LM4549_PCM_Front_DAC_Rate] = value;
-         DPRINTF("DAC rate change = %i\n", value);
- 
-+        /*
-+         * Valid sample rates are 4kHz to 48kHz.
-+         * The datasheet doesn't say what happens if you try to
-+         * set the frequency to zero. AUD_open_out() will print
-+         * a bug message if we pass it a zero frequency, so just
-+         * ignore attempts to set the DAC frequency to zero.
-+         */
-+        if (value < 4000 || value > 48000) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: DAC sample rate %d Hz is invalid, ignoring it\n",
-+                          __func__, value);
-+            break;
-+        }
-+        regfile[LM4549_PCM_Front_DAC_Rate] = value;
-+
-         /* Re-open a voice with the new sample rate */
-         struct audsettings as;
-         as.freq = value;
+Besides, IMHO replacing the event with sem shouldn't change similar
+behavior comparing to when using events.  Because any spot that can post()
+concurrently can also does qemu_event_set() concurrently... after all, we
+only have a few spots resettting the event in the original patch, after the
+reset a concurrent qemu_event_set() will re-activate it.
+
+Sem does introduce possible false positives on events, but as I was trying
+to justify, a generic VM boots and shutdown should need less than 1000 rcu
+calls, so worst case is we loop read rcu_call_count 1000 times... I also
+didn't measure how many of such call_rcu1() will see N>0 so they'll not
+post() to sem at all, I believe it'll be common.  So the perf overhead
+should really be rare, IMHO.
+
+Note that I was not requesting you to replace this event to sem before
+merging.  Frankly, I think your work is good enough to land.
+
+However I still want to discuss a sem replacement, not only because this is
+the best place to discuss it (after all, force rcu starts to introduce a
+genuine second user of the event besides call_rcu1, hence the "being able
+to remember more than 1" will start to make more sense than avoid resets),
+it looks also cleaner to remove some new code force rcu adds.
+
+When reviewing I found it also hard to justify qemu_event_reset() are
+proper all over the places.  Sem will remove that problem.  So at least to
+me, if you agree with using sem is better, it'll at least make me more
+confident to ack the series (not that merging needs my ack.. but I do feel
+more uncertain when the event needs explicit resets).  OTOH, false positive
+causes some loops in rcu thread which looks much safer even if happens
+(however in reality, I think sem shouldn't be more than 2).
+
+Thanks,
+
 -- 
-2.43.0
+Peter Xu
 
 
