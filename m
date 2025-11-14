@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C228C5B393
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 04:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AF3C5B39F
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 04:49:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJknW-00043b-Oa; Thu, 13 Nov 2025 22:48:30 -0500
+	id 1vJknc-0004BS-JG; Thu, 13 Nov 2025 22:48:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vJknU-0003vD-6h
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vJkna-0004AB-JK
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vJknQ-0002qF-FN
- for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:27 -0500
+ id 1vJknX-0002s9-SS
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763092103;
+ s=mimecast20190719; t=1763092111;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E0uEG2fJ/4Vjdgv1iPVa6yZo48Mgt4U2ZJJ7PuUWSIU=;
- b=jFOJuF4CZLV3MXRyJZidr7WZDMtCNey5X76qX6OpDNN1BODOyKjdPaRMd4MxCkUs81Xmyu
- Gz3L4P8n3cGkLXQPnQ9DHvDvBS7oim6iGS+4aYtUofpMssb2d8RgtvoRtlUy5GffuOu3Rq
- kgho3k/ZGKViXHbqG3kMLao1k8nTGUw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=B12n4h98KrXE/P5ZV/agTiNlVPfk6RPTg54Baixv8Jo=;
+ b=es0qj6Pcez3tsd1sFShREzBeN9Lg2Pxqfed2I4c95MCtvGTBbcDJufgoKJOZ9RxevD50aZ
+ 8R7JatzpcsC0rwaIyTXlSyfU2hXD+eo9yp5Oi0k1/leShRzaeJCKYTKA9zykI6xtxtfzbs
+ Dt+bfGkWJBM2gP5aULe2LceO2/9dTnA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-aP8pUp9uOT6NH7BzXOWMgg-1; Thu,
- 13 Nov 2025 22:48:21 -0500
-X-MC-Unique: aP8pUp9uOT6NH7BzXOWMgg-1
-X-Mimecast-MFC-AGG-ID: aP8pUp9uOT6NH7BzXOWMgg_1763092100
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-VL4nS5Z4P02tMxXrQ2QrVg-1; Thu,
+ 13 Nov 2025 22:48:27 -0500
+X-MC-Unique: VL4nS5Z4P02tMxXrQ2QrVg-1
+X-Mimecast-MFC-AGG-ID: VL4nS5Z4P02tMxXrQ2QrVg_1763092107
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9550D19373D8; Fri, 14 Nov 2025 03:48:20 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92ABB1956088; Fri, 14 Nov 2025 03:48:26 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.120.9])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4330A1800451; Fri, 14 Nov 2025 03:48:15 +0000 (UTC)
+ id B3F0D180094C; Fri, 14 Nov 2025 03:48:21 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Jonah Palmer <jonah.palmer@oracle.com>,
- David Woodhouse <dwmw2@infradead.org>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 1/5] net/hub: make net_hub_port_cleanup idempotent
-Date: Fri, 14 Nov 2025 11:48:02 +0800
-Message-ID: <20251114034806.2440-2-jasowang@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 2/5] hw/net/e1000e_core: Don't advance desc_offset for NULL
+ buffer RX descriptors
+Date: Fri, 14 Nov 2025 11:48:03 +0800
+Message-ID: <20251114034806.2440-3-jasowang@redhat.com>
 In-Reply-To: <20251114034806.2440-1-jasowang@redhat.com>
 References: <20251114034806.2440-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -84,65 +86,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonah Palmer <jonah.palmer@oracle.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Makes the net_hub_port_cleanup function idempotent to avoid double
-removals by guarding its QLIST_REMOVE with a flag.
+In e1000e_write_packet_to_guest() we don't write data for RX descriptors
+where the buffer address is NULL (as required by the i82574 datasheet
+section 7.1.7.2). However, when we do this we still update desc_offset
+by the amount of data we would have written to the RX descriptor if
+it had a valid buffer pointer, resulting in our dropping that data
+entirely. The data sheet is not 100% clear on the subject, but this
+seems unlikely to be the correct behaviour.
 
-When using a Xen networking device with hubport backends, e.g.:
+Rearrange the null-descriptor logic so that we don't treat these
+do-nothing descriptors as if we'd really written the data.
 
--accel kvm,xen-version=0x40011
--netdev hubport,...
--device xen-net-device,...
+This both fixes a bug and also is a prerequisite to cleaning up
+the size calculation logic in the next patch.
 
-the shutdown order starts with net_cleanup, which walks the list and
-deletes netdevs (including hubports). Then Xen's xen_device_unrealize is
-called, which eventually leads to a second net_hub_port_cleanup call,
-resulting in a segfault.
+(Cc to stable largely because it will be needed for the next patch,
+which fixes a more serious bug.)
 
-Fixes: e7891c57 ("net: move backend cleanup to NIC cleanup")
-Reported-by: David Woodhouse <dwmw2@infradead.org>
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/hub.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/net/e1000e_core.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/net/hub.c b/net/hub.c
-index e3b58b1c4f..ee5881f6d5 100644
---- a/net/hub.c
-+++ b/net/hub.c
-@@ -34,6 +34,7 @@ typedef struct NetHubPort {
-     QLIST_ENTRY(NetHubPort) next;
-     NetHub *hub;
-     int id;
-+    bool listed;
- } NetHubPort;
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 8fef598b49..ba77cb6011 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -1481,7 +1481,6 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
+     PCIDevice *d = core->owner;
+     dma_addr_t base;
+     union e1000_rx_desc_union desc;
+-    size_t desc_size;
+     size_t desc_offset = 0;
+     size_t iov_ofs = 0;
  
- struct NetHub {
-@@ -129,7 +130,10 @@ static void net_hub_port_cleanup(NetClientState *nc)
- {
-     NetHubPort *port = DO_UPCAST(NetHubPort, nc, nc);
+@@ -1500,12 +1499,6 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
+         E1000EBAState bastate = { { 0 } };
+         bool is_last = false;
  
--    QLIST_REMOVE(port, next);
-+    if (port->listed) {
-+        QLIST_REMOVE(port, next);
-+        port->listed = false;
-+    }
- }
+-        desc_size = total_size - desc_offset;
+-
+-        if (desc_size > core->rx_desc_buf_size) {
+-            desc_size = core->rx_desc_buf_size;
+-        }
+-
+         if (e1000e_ring_empty(core, rxi)) {
+             return;
+         }
+@@ -1519,6 +1512,12 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
+         e1000e_read_rx_descr(core, &desc, ba);
  
- static NetClientInfo net_hub_port_info = {
-@@ -159,8 +163,10 @@ static NetHubPort *net_hub_port_new(NetHub *hub, const char *name,
-     port = DO_UPCAST(NetHubPort, nc, nc);
-     port->id = id;
-     port->hub = hub;
-+    port->listed = false;
+         if (ba[0]) {
++            size_t desc_size = total_size - desc_offset;
++
++            if (desc_size > core->rx_desc_buf_size) {
++                desc_size = core->rx_desc_buf_size;
++            }
++
+             if (desc_offset < size) {
+                 static const uint32_t fcs_pad;
+                 size_t iov_copy;
+@@ -1582,13 +1581,13 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
+                           (const char *) &fcs_pad, e1000x_fcs_len(core->mac));
+                 }
+             }
++            desc_offset += desc_size;
++            if (desc_offset >= total_size) {
++                is_last = true;
++            }
+         } else { /* as per intel docs; skip descriptors with null buf addr */
+             trace_e1000e_rx_null_descriptor();
+         }
+-        desc_offset += desc_size;
+-        if (desc_offset >= total_size) {
+-            is_last = true;
+-        }
  
-     QLIST_INSERT_HEAD(&hub->ports, port, next);
-+    port->listed = true;
- 
-     return port;
- }
+         e1000e_write_rx_descr(core, &desc, is_last ? core->rx_pkt : NULL,
+                            rss_info, do_ps ? ps_hdr_len : 0, &bastate.written);
 -- 
 2.42.0
 
