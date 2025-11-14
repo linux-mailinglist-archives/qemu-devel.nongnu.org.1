@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12305C5DDA2
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBB7C5DE0E
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 16:31:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJvhs-0003In-Hb; Fri, 14 Nov 2025 10:27:26 -0500
+	id 1vJvlg-0006bA-0g; Fri, 14 Nov 2025 10:31:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvbw-00065E-74
+ id 1vJvbw-000662-Fs
  for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:16 -0500
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vJvbu-0003tC-9o
- for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:15 -0500
+ id 1vJvbu-0003tJ-Uw
+ for qemu-devel@nongnu.org; Fri, 14 Nov 2025 10:21:16 -0500
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4775ae77516so23589615e9.1
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:13 -0800 (PST)
+ 5b1f17b1804b1-4774f41628bso17032715e9.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 07:21:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763133672; x=1763738472; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=P8ubjuL45MQvtuL1jnJKk70iPWsS7zMJRiRaAWaROj8=;
- b=ApSvn6EHAX/LOJpGljnobIzJ7byGECRP8zqNhDDJ+nCazr8rtSRw3ni0ufYmeZZEgh
- o1IVzBw2X11lfrcFI6xQpm3NUYKblX14NbdVAWSYh6ZFJJzIPK9FGWGNgKc28l4quNJc
- y4LmMUsX3WgiLPrRkZtuO3DsBKn+iOvnoosRef7cUKU4MN/2QKQKOE9cvNNGsf4pJZc9
- 1M9r8mvwQpueTICEvH0yai94Sjez88BOVtfoZb5cAnkcX22ViHDvrpbGi//+mbyOUd6r
- UPVBPNqgzsi0CiW5VDbp3X9haKLp/S/mOesMFInneVp7toGmmu6zGsyr8Z22WXmkwd+R
- xZ9g==
+ d=linaro.org; s=google; t=1763133673; x=1763738473; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=q216H4IGLv9TaDoeKYNHluqwKP3p7ETBMiN5sai97GA=;
+ b=lvbfl8Ps8otQ5sIV+2/WC75iq7FPmpMjB3R3GV19RMpB0R8Hwreyg8ViaDTzr0uy/u
+ rpAGsvA9JIOlI8mxMJWGrW5NLOc70wFbnexWOvD6Hqm939JEblccVwlfRt+IlS6PB9Pc
+ lz0zzGdqiJxQnvYGA/5+bc6WkP4XCf1zqtCCrx4I9NtjO5gPC8z2XOMIF36PU6ZtUuBr
+ YecTynxmkZobYuHoOjZlKesO1+S4CYrRYy3xSMRLnZJroawsK2QJtL4Vx37HXRLS2NFb
+ exwwls7+dgrTS40JOVovNIWXe+5++CZ1FZ4j6z12SNf436cdRRuuRYZ+wuKnRKpuypcX
+ OVBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763133672; x=1763738472;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=P8ubjuL45MQvtuL1jnJKk70iPWsS7zMJRiRaAWaROj8=;
- b=QnvFldwPEeUmtE2LSj4fN6E+vvXPA7Wex8nJ8x31HFOTAl6kfK3ZpsJq1jol/KgzH8
- eaHtTKmVP7P1XLqbvQdnp+v2VzkbK4324dSFkoJDq/vFnqNy8abqJaD+83ytFFd0ROGz
- gjJKjKOqt2rimPZeDKNcMiGh8f01jCRn8SxHCMo45xkbSidBjIdM57+KwjkoOITkpxFp
- B6glws9tsT1bsDDkLiip8/7oUIlB+f4UIVMy10hojzEGx4eJ5YYqB08kO+t/xMWPVi1A
- 6ccnO9klyOCOJ1sXS0y6nAmLjKjYxVMfWWWE8wn6b40FJGilep8jk1rTJ/PboDExvkF9
- lq5A==
-X-Gm-Message-State: AOJu0YyW2hqiS9XCiBC2IB6MPsT25UhtqpROdxUZN/zDEqqlbbjPExJx
- s3uBLYx+NNIqQ4FRG1BhTqNkVHV6JVHh1jy9xohFYKzp0ayxJigGiJ8m3odFfWbkHDUscBqCA2/
- Cqdv4
-X-Gm-Gg: ASbGncu6xQRV9EB90cf1hEkkMThvnoPTF2Kj5TUyd1C0CuGoSwVCaEHgRmW5Ju756gy
- wvL9+Z+LLRwU/thQiQNXEPYVcIZY0Nexu9UlBb3zCzz+ZRHMv++xQQtzqCFUBm9BDzrvpwEGbQV
- alyDVaKwbxvdLOstS7WRoxvzGpO32UejRBMi4gODbPAQ31SvPdDoMoy/TUumZCvnCHkc6YzTQrK
- MAkD7i36tVYfc2WRonC1kmyEoD3ckK36MSgEcmmNYE8lS0UBf7bwnvb5XUPsXRcY/VF/eah8kEb
- RwcZUVycEZeJGKPcAwz6PTa3Oh13NmpfLQb68fBPPHZtKiprDfcR7adXgz4KUUsgSw695h2TRfp
- +0i1fIIBgGiN4NCPtZ/pVgWnZpzvkWzFSQJNI5PYhQGmdeIMNwZ7Ymweo99JcUzbZCX3bdljjat
- cEKsiq3/vDfcGrrUbL
-X-Google-Smtp-Source: AGHT+IENLVPpZtdSayPQtmtObWveMJe6Kh0hoQsxV7PaFgpyACN0PZ+t98CJQ5AlGtORaKp6eKdXiQ==
-X-Received: by 2002:a05:600c:c4a2:b0:477:c37:2ea7 with SMTP id
- 5b1f17b1804b1-4778fe9ac28mr32712315e9.21.1763133672370; 
- Fri, 14 Nov 2025 07:21:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1763133673; x=1763738473;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=q216H4IGLv9TaDoeKYNHluqwKP3p7ETBMiN5sai97GA=;
+ b=aO1wujVprCA6K/y1IA0IDxFzb1+LISzKx6+WIkg8TLdywjxjjPOjMDBgiUxQrgYU3x
+ t7X7JWOWXsD2qcPoNnd6yjWw2qcGTm6ri6mmA3KGeRpIC/UT43NCDu5qhgZ0asUkHvTw
+ E/bSYAJsdJBsuK9CLjHSfNwCuljD06XFTltoKYureWg2PqFY4+rLjmdLRMFcEGOpvshz
+ ngnnf5A/Oq/XIG430fq76Oa2MF6gwk99VU5+cFLZoHoymfb5NI6J2yNwlqbUfCcHn2Qq
+ e6OG8E537qFIYsitRR+m56nx7vOJ3AXQYsjzIC/O+yWsU2MW8xCVGRfEnbT3SRsULVk6
+ u1wQ==
+X-Gm-Message-State: AOJu0YwQ8jmyLXxFK0IZLhsnMpr2lqTAX+C+/x4465gfM0s2ebMOVohE
+ ivmWo1Z+Gm7cLfiQZ+9MGQn76osrfoTZRRorv8nwmfKgVDn08DWjPB6R57phZcEv6kqiCQHJY5s
+ 6M9KG
+X-Gm-Gg: ASbGncs4SUOxWEB+K9Of45+wzhOnrJHrtmWkNx5dkYk+FLbyWwzfAMf00aNkTtx8Nuv
+ 60tl8BIa1i64e3RgkgOZqbLLHU/ReaLjzcHg8TbfjXC83aF5HU7os1SuU9ny98QdYwZsbmE3AMO
+ pRv3SkjMjctGk1bwAFTHcfxIAYgo20+vrrYOxkwMEX1LgdKicy9w9MMbC7z1b7kLmxRz00Myy2P
+ 5pZ5eWsGO/peW8ltWwWFCDwVMEZTKEGFXSJ3OMu81piPHAzPkddhoBrULWQsYDduiAOqoFGAqKY
+ US5r8aAMdWLdeJo5x3+DdH/k3jnXTQnVGIoHbfgbE/9VJJ/6GaHzh+TKTj6tOW8BAvG6f92urlY
+ hRyIBbVz7/HX6nMcjZFOyERjaYbGAGInF8sO3f64PT+b/hQ4uVtjEXWvKtKojftY42CSzaH7BlJ
+ ZgvwWN7FUWS7/4Xa8p
+X-Google-Smtp-Source: AGHT+IGrv5r2bjsfe3P4YEEKsnEwebxnV9dTyViPgzWx5xgfue3aizZ5VgK/KVxVmyZIgpTNwLsDCA==
+X-Received: by 2002:a05:600c:1e29:b0:477:5639:ff66 with SMTP id
+ 5b1f17b1804b1-4778bd07ac2mr61429935e9.13.1763133673406; 
+ Fri, 14 Nov 2025 07:21:13 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.11
+ 5b1f17b1804b1-47787e8e798sm146772835e9.10.2025.11.14.07.21.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Nov 2025 07:21:11 -0800 (PST)
+ Fri, 14 Nov 2025 07:21:12 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/10] target-arm queue
-Date: Fri, 14 Nov 2025 15:21:00 +0000
-Message-ID: <20251114152110.2547285-1-peter.maydell@linaro.org>
+Subject: [PULL 01/10] MAINTAINERS: update maintainers for WHPX
+Date: Fri, 14 Nov 2025 15:21:01 +0000
+Message-ID: <20251114152110.2547285-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251114152110.2547285-1-peter.maydell@linaro.org>
+References: <20251114152110.2547285-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
  envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
@@ -97,84 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here are some arm patches for the freeze; mostly these are
-fairly unexciting minor bug fixes.
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
 
-I did find in my CI run for this that the check-python-minreqs
-job failed with:
-"ERROR: /builds/pm215/qemu/scripts/qapi/commands.py Imports are incorrectly sorted and/or formatted."
-https://gitlab.com/pm215/qemu/-/jobs/12092087877
+From Pedro Barbuda (on Teams):
 
-but since this pullreq doesn't touch that file or anything
-else python-related I assume that's a pre-existing CI failure.
+> we meant to have that switched a while back. you can add me as the maintainer. Pedro Barbuda (pbarbuda@microsoft.com)
 
-thanks
--- PMM
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+Message-id: 20251107072337.28932-1-mohamed@unpredictable.fr
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ MAINTAINERS | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The following changes since commit 9febfa94b69b7146582c48a868bd2330ac45037f:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9cb181e1da7..38325e0617c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -547,7 +547,8 @@ F: include/system/hvf.h
+ F: include/system/hvf_int.h
+ 
+ WHPX CPUs
+-M: Sunil Muthuswamy <sunilmut@microsoft.com>
++M: Pedro Barbuda <pbarbuda@microsoft.com>
++M: Mohamed Mediouni <mohamed@unpredictable.fr>
+ S: Supported
+ F: target/i386/whpx/
+ F: accel/stubs/whpx-stub.c
+-- 
+2.43.0
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-11-12 11:47:42 +0100)
-
-are available in the Git repository at:
-
-  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20251114
-
-for you to fetch changes up to 522444744eb79dd01e377ad2ed15544f10bcc70c:
-
-  hw/audio/lm4549: Don't try to open a zero-frequency audio voice (2025-11-14 13:20:10 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * MAINTAINERS file update for whpx
- * target/arm: Fix accidental write to TCG constant
- * target/arm/cpu64: remove duplicate include
- * hw/display/xlnx_dp: don't abort() on guest errors
- * cxl, vfio, tests: clean up includes
- * hw/misc/npcm_clk: Don't divide by zero when calculating frequency
- * hw/audio/lm4549: Don't try to open a zero-frequency audio voice
-
-----------------------------------------------------------------
-Mohamed Mediouni (1):
-      MAINTAINERS: update maintainers for WHPX
-
-Osama Abdelkader (1):
-      target/arm/cpu64: remove duplicate include
-
-Peter Maydell (7):
-      hw/display/xlnx_dp.c: Don't abort on AUX FIFO overrun/underrun
-      hw/display/xlnx_dp: Don't abort for unsupported graphics formats
-      cxl: Clean up includes
-      vfio: Clean up includes
-      tests: Clean up includes
-      hw/misc/npcm_clk: Don't divide by zero when calculating frequency
-      hw/audio/lm4549: Don't try to open a zero-frequency audio voice
-
-Richard Henderson (1):
-      target/arm: Fix accidental write to TCG constant
-
- MAINTAINERS                          |  3 +-
- hw/vfio-user/container.h             |  1 -
- hw/vfio-user/device.h                |  1 -
- hw/vfio/pci-quirks.h                 |  1 -
- tests/qtest/aspeed-hace-utils.h      |  1 -
- tests/qtest/aspeed-smc-utils.h       |  1 -
- hw/audio/lm4549.c                    | 17 +++++++-
- hw/cxl/cxl-mailbox-utils.c           |  2 +-
- hw/display/xlnx_dp.c                 | 83 ++++++++++++++++++++++++++++++++----
- hw/mem/cxl_type3.c                   |  2 +-
- hw/misc/npcm_clk.c                   |  5 ++-
- hw/vfio-user/container.c             |  2 +-
- hw/vfio-user/pci.c                   |  2 +-
- hw/vfio/ap.c                         |  1 -
- hw/vfio/container.c                  |  2 +-
- hw/vfio/cpr-legacy.c                 |  2 +-
- target/arm/cpu64.c                   |  1 -
- target/arm/tcg/translate.c           | 11 +++--
- tests/qtest/aspeed_gpio-test.c       |  1 -
- tests/qtest/dbus-display-test.c      |  3 --
- tests/qtest/pnv-spi-seeprom-test.c   |  1 -
- tests/unit/test-cutils.c             |  2 +-
- tests/unit/test-error-report.c       |  1 -
- tests/unit/test-io-channel-command.c |  2 -
- 24 files changed, 110 insertions(+), 38 deletions(-)
 
