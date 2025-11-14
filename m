@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2FCC5AFA9
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 03:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3636BC5B396
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Nov 2025 04:49:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vJjII-0003GU-5u; Thu, 13 Nov 2025 21:12:10 -0500
+	id 1vJknT-0003oY-7P; Thu, 13 Nov 2025 22:48:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <luzhipeng@cestc.cn>)
- id 1vJjIG-0003D4-5Q; Thu, 13 Nov 2025 21:12:08 -0500
-Received: from smtp-pop-umt-2.cecloud.com ([1.203.97.240]
- helo=smtp.cecloud.com) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <luzhipeng@cestc.cn>)
- id 1vJjIE-0003DW-KH; Thu, 13 Nov 2025 21:12:07 -0500
-Received: from localhost (localhost [127.0.0.1])
- by smtp.cecloud.com (Postfix) with ESMTP id 5844C900117;
- Fri, 14 Nov 2025 10:12:04 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-SKE-CHECKED: 1
-X-ANTISPAM-LEVEL: 2
-Received: from localhost.localdomain (unknown [111.48.69.245])
- by smtp.cecloud.com (postfix) whith ESMTP id
- P506955T281463492637040S1763086293564791_; 
- Fri, 14 Nov 2025 10:12:04 +0800 (CST)
-X-IP-DOMAINF: 1
-X-RL-SENDER: luzhipeng@cestc.cn
-X-SENDER: luzhipeng@cestc.cn
-X-LOGIN-NAME: luzhipeng@cestc.cn
-X-FST-TO: qemu-block@nongnu.org
-X-RCPT-COUNT: 6
-X-LOCAL-RCPT-COUNT: 1
-X-MUTI-DOMAIN-COUNT: 0
-X-SENDER-IP: 111.48.69.245
-X-ATTACHMENT-NUM: 0
-X-UNIQUE-TAG: <04a5a6d7d3eff6906be846f3d51141b0>
-X-System-Flag: 0
-From: luzhipeng <luzhipeng@cestc.cn>
-To: qemu-block@nongnu.org
-Cc: Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-devel@nongnu.org,
- luzhipeng <luzhipeng@cestc.cn>
-Subject: [PATCH] mirror: Optimize mirroring for zero blocks in
- mirror_read_complete
-Date: Fri, 14 Nov 2025 10:11:10 +0800
-Message-ID: <20251114021110.1464-2-luzhipeng@cestc.cn>
-X-Mailer: git-send-email 2.45.1.windows.1
-In-Reply-To: <20251114021110.1464-1-luzhipeng@cestc.cn>
-References: <20251114021110.1464-1-luzhipeng@cestc.cn>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1vJknP-0003Zh-Ab
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1vJknL-0002op-T3
+ for qemu-devel@nongnu.org; Thu, 13 Nov 2025 22:48:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763092098;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jFcBCSiH6VaRI6yNeGGWboucHOYpRjr/hSHqb2tj7Wk=;
+ b=F97N85K90mHqoIEnOlrgRRvvZs+32u7wytlYsZLvrhb08so7o5nrT9YfZmrr99jxgqy2kW
+ +dYo9Z83wYwxB1nlhAoT5D3A+sa8zz6l2ubXEAboUh02a/w7qLu/jCTye4eugzjEqgt98+
+ U5RueUPWrglT8t92j1nDlwhd9Zc1V5Q=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-G2Ayxy9PNxmON38KhTAV_w-1; Thu,
+ 13 Nov 2025 22:48:16 -0500
+X-MC-Unique: G2Ayxy9PNxmON38KhTAV_w-1
+X-Mimecast-MFC-AGG-ID: G2Ayxy9PNxmON38KhTAV_w_1763092095
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 636F919373D8
+ for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 03:48:15 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.120.9])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 489811800451; Fri, 14 Nov 2025 03:48:10 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>
+Subject: [PULL 0/5] Net patches
+Date: Fri, 14 Nov 2025 11:48:01 +0800
+Message-ID: <20251114034806.2440-1-jasowang@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: permerror client-ip=1.203.97.240;
- envelope-from=luzhipeng@cestc.cn; helo=smtp.cecloud.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.398,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,56 +81,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When mirroring data blocks, detect if the read data consists entirely of
-zeros. If so, use blk_co_pwrite_zeroes() instead of regular write to
-improve performance.
+The following changes since commit 9febfa94b69b7146582c48a868bd2330ac45037f:
 
-Signed-off-by: luzhipeng <luzhipeng@cestc.cn>
----
- block/mirror.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-11-12 11:47:42 +0100)
 
-diff --git a/block/mirror.c b/block/mirror.c
-index b344182c74..535112f65d 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -269,6 +269,33 @@ static void coroutine_fn mirror_read_complete(MirrorOp *op, int ret)
-         return;
-     }
- 
-+    /* Check if the read data is all zeros */
-+    bool is_zero = true;
-+    for (int i = 0; i < op->qiov.niov; i++) {
-+        if (!buffer_is_zero(op->qiov.iov[i].iov_base,
-+                           op->qiov.iov[i].iov_len)) {
-+            is_zero = false;
-+            break;
-+        }
-+    }
-+
-+    /* Write to target - optimized path for zero blocks */
-+    if (is_zero) {
-+        /*
-+         * Use zero-writing interface which may:
-+         * 1. Avoid actual data transfer
-+         * 2. Enable storage-level optimizations
-+         * 3. Potentially unmap blocks (if supported)
-+         */
-+        ret = blk_co_pwrite_zeroes(s->target, op->offset,
-+                                 op->qiov.size,
-+                                 BDRV_REQ_MAY_UNMAP);
-+    } else {
-+        /* Normal data write path */
-+        ret = blk_co_pwritev(s->target, op->offset,
-+                           op->qiov.size, &op->qiov, 0);
-+    }
-+
-     ret = blk_co_pwritev(s->target, op->offset, op->qiov.size, &op->qiov, 0);
-     mirror_write_complete(op, ret);
- }
--- 
-2.45.1.windows.1
+are available in the Git repository at:
 
+  https://github.com/jasowang/qemu.git tags/net-pull-request
+
+for you to fetch changes up to a01344d9d78089e9e585faaeb19afccff2050abf:
+
+  net: pad packets to minimum length in qemu_receive_packet() (2025-11-14 09:59:55 +0800)
+
+----------------------------------------------------------------
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEIV1G9IJGaJ7HfzVi7wSWWzmNYhEFAmkWo9EACgkQ7wSWWzmN
+YhHargf/Uf801PmKskryVENF9sVe6u5NxJZlT3BUJVsSTGitucBIHWZ5J7MMR1lw
+If4tfMho3BX5Wrtl5GuCEzolk9pCz3wmSN6nyOU25C5tKaoJ/uR135K25D0CwVmD
+eTOyg+gKktVfogXxJ/zwZpRHMq4XXrk/C2ZP41r/CdcLyaeuDS9GIbd/q4N7f3vv
+bEsVqECzjEwWr2JBY9SD0xlIRp3nWwEvRsgRZPzBiQzfjSTlImqGLUsxIpF5V2LV
+1BU0V/FShWyrwckBXSqCWBUh6uBUGgEl6qKnK4vH7+ed4Kd9giyp1vWAFEjHgIg+
+gZtPaT/MJQOtLyCuzfuSdUpAzz5Sfw==
+=Is8a
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+Jonah Palmer (1):
+      net/hub: make net_hub_port_cleanup idempotent
+
+Peter Maydell (4):
+      hw/net/e1000e_core: Don't advance desc_offset for NULL buffer RX descriptors
+      hw/net/e1000e_core: Correct rx oversize packet checks
+      hw/net/e1000e_core: Adjust e1000e_write_payload_frag_to_rx_buffers() assert
+      net: pad packets to minimum length in qemu_receive_packet()
+
+ hw/net/e1000e_core.c | 85 ++++++++++++++++++++++++++++++++++++----------------
+ net/hub.c            |  8 ++++-
+ net/net.c            | 10 +++++++
+ 3 files changed, 76 insertions(+), 27 deletions(-)
 
 
 
