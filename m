@@ -2,107 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752D3C60153
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 08:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17183C60248
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 10:14:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKB7m-00066v-BP; Sat, 15 Nov 2025 02:55:10 -0500
+	id 1vKCMH-0002Gc-Qr; Sat, 15 Nov 2025 04:14:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vKB7e-00064E-P6
- for qemu-devel@nongnu.org; Sat, 15 Nov 2025 02:55:02 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vKCMF-0002CT-R9
+ for qemu-devel@nongnu.org; Sat, 15 Nov 2025 04:14:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vKB7c-0005sh-Pf
- for qemu-devel@nongnu.org; Sat, 15 Nov 2025 02:55:02 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vKCME-0005eU-Kf
+ for qemu-devel@nongnu.org; Sat, 15 Nov 2025 04:14:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763193298;
+ s=mimecast20190719; t=1763198049;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xp8haX/tSUvRQBNPQ4sbb/FavjG8GzUVdNoTi4U72J8=;
- b=GTNIk12h8Uyr4gvZgINDzPe1X6J4ybASVIV6lHRwlWsCFJodwkaSBGpIYmuLbAjrG/8ekN
- vBvn+2lraPewaMDkS5hx9q8XGCuc9qF9/lMLQOZtyNtRCN7EsxFdc8Go3y7/16TW/kgPa0
- UBBWpt4w4fqDYicXMwWkYho2DIUIJZ4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-cTu2F7mEOV2yYWeYil_Yvw-1; Sat, 15 Nov 2025 02:54:56 -0500
-X-MC-Unique: cTu2F7mEOV2yYWeYil_Yvw-1
-X-Mimecast-MFC-AGG-ID: cTu2F7mEOV2yYWeYil_Yvw_1763193296
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-42b2ad29140so1289653f8f.0
- for <qemu-devel@nongnu.org>; Fri, 14 Nov 2025 23:54:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763193295; x=1763798095; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xp8haX/tSUvRQBNPQ4sbb/FavjG8GzUVdNoTi4U72J8=;
- b=Y7bM6ZcbBL50opKsVesoLCfaw5QOHj8j3WW52W4ZP7lvNQqgGrPAQMxhZNpQWLFkaa
- o1LDHU/Zz4o0rCSRHHyzLAL+XFgsWUvDqzM09Epa0xdQ4L3BMkEuZawsN4zorvKV4p7Q
- 43i+JBfO6yj4np/mMcxsP571ULopS50GCR8wYVpo2miy+ZYmhnympCI4x9amLoccwPys
- tK01eXB7p7Yb9WYve7+UFDFzs6bU6dqnD+A4+p1EH14Wiu+Q2Tkk3cUbDeok3h3DUt+G
- eN7f7idOZh/mwpu8m+Qn0MOtx3p0TeYczrPtHNIDWucBbtzy2/M8eKv63LpkMv7/wuJe
- 2j8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763193295; x=1763798095;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xp8haX/tSUvRQBNPQ4sbb/FavjG8GzUVdNoTi4U72J8=;
- b=OZT28ezDIU5u4Z8Xdne6rAY+JzCDImDfdnPq7VypwPGT6279qZKHEwp5lEt7xHp4LQ
- W5jq22fMko4JvoSKnpUKzpvdizHgQ5tqHz4ZqoVK5qsMWC1dUGFaFkfPAUhmrNQrCVeo
- sfJw/eO1rgucRaJnOGiSmBK1ExznPihU9F0fbyIpJJQPQ41izwqB8OIeOP00WuoV48No
- w1grCEb37tUwHtS5cc322BnlLVkAdZfww/mrer8aPrep1IMypkXbqfX9DgnxHY9MuzFs
- 1XgJxrGNfaz4c/b7zm8f4VRSWW3wfNxrJOzddEcZEf3Ovv6PCwXS3QXtOF4crsj/q8oc
- wd8g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXqDIJmganLsgqBgGDqTjA8naiqBGEOnOq2/CQNAcfqS5Z2VsWm4uhK2DWWVot1dYXfK4WlGaonQM8f@nongnu.org
-X-Gm-Message-State: AOJu0YzIeL61U5p01D9pdZGrWHYE1LxHgTjFV9wfuU1hNmnoX3A7KH3f
- FvBDNLllhm7GpPiU/dY+k7piIb85ln1FnyyQMbf29NFNxsYpvN+qWtdD30Ak9Ey18WES88x87TF
- Z64ascm6h1ZSL21NqVjA85CMY7kF/MXY/Rfit57p4qr9qcfaajW72j3R2T/hDWg5nWYo9rWQo2o
- pKWkMuoVgqrIQiPS0iCVlGADTq4VpqzbQ=
-X-Gm-Gg: ASbGnctUva81s1VRkyO6nTNc0o6m1LW8xytM5KWbAdEx7HEEPEcZRQ4rocniF+60NrL
- cZ2ebhrnDySZfnx1e+MJ49GepWklyWDV+c7Ev7RQYfcjSwgnCAfhyckqg/3+meuG/uQo8mgDa81
- C2jdkJ9Mj5jn69W92AyxTMyrT/fwEHFbU4KuYt7c+NrpS1UmQGMVC6tjTXgFP2hwpVyRjb/irXt
- +npDdPi77sh6pTVNZh7YS3FdAJB5H6jvXnLAZ0kZjMxZcQhDEeH3/3rtR5W
-X-Received: by 2002:a05:6000:26c8:b0:42b:3ee9:4773 with SMTP id
- ffacd0b85a97d-42b59323452mr5157736f8f.7.1763193295701; 
- Fri, 14 Nov 2025 23:54:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGj7D+5kJ2aA+4PRB0jCFxjIF3rwQgW/Ma3S4bH/iglxpZ99WlZw0lQ/IWT7sjVuspa/y2vSZ28AFtBSrJzC18=
-X-Received: by 2002:a05:6000:26c8:b0:42b:3ee9:4773 with SMTP id
- ffacd0b85a97d-42b59323452mr5157713f8f.7.1763193295290; Fri, 14 Nov 2025
- 23:54:55 -0800 (PST)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OqzH1n4kIGrstNOT9X9V4KJRjoQVqg9EfyhTBJ90tfM=;
+ b=KU31MMk+ZYT+W52V566Q3hXl6H2qApvUuFMdrT5V1T2E220EG8cMBCWxMKqhTRdpwjaOBn
+ oijSeG1xSVRH3Q39lCbzTXpLqLgULztHGnbLz90ZDbkZCq/DQg7rveV38hXHi/hjCvsP2o
+ 9PdyJWRTQNpH3C++2EihDUrMBSkAzv4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-gxDA4e8fNKmRnLlmCoVIDQ-1; Sat,
+ 15 Nov 2025 04:14:07 -0500
+X-MC-Unique: gxDA4e8fNKmRnLlmCoVIDQ-1
+X-Mimecast-MFC-AGG-ID: gxDA4e8fNKmRnLlmCoVIDQ_1763198046
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6B928195FDC9; Sat, 15 Nov 2025 08:35:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15B701955F41; Sat, 15 Nov 2025 08:35:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 11B1321E6A27; Sat, 15 Nov 2025 09:35:00 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com,
+	farosas@suse.de
+Subject: [PATCH 0/3] migration: Error fixes and improvements
+Date: Sat, 15 Nov 2025 09:34:57 +0100
+Message-ID: <20251115083500.2753895-1-armbru@redhat.com>
 MIME-Version: 1.0
-References: <20251113051937.4017675-1-zhao1.liu@intel.com>
- <20251113051937.4017675-11-zhao1.liu@intel.com>
- <12e93226-b70d-4c9c-bf8a-db7e0e05b585@redhat.com> <aRayIQYzGkUK4Emv@intel.com>
-In-Reply-To: <aRayIQYzGkUK4Emv@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 15 Nov 2025 08:54:43 +0100
-X-Gm-Features: AWmQ_blE2W28576FQu2SZVsBU9ciw0W2eOIn596d4q0mPkoXjOhw_kFHu9ZYO08
-Message-ID: <CABgObfZtmYkFAL9pFtqpoxUDi0OXPX3Dgfxmbk6bX_bx7dGztw@mail.gmail.com>
-Subject: Re: [PATCH 10/22] rust/hpet: Abstract HPETTimerRegisters struct
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- "open list:Rust-related patc..." <qemu-rust@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000000954e806439d6e0a"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,122 +80,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000000954e806439d6e0a
-Content-Type: text/plain; charset="UTF-8"
+Maintainers decide what to take for 10.2, if anything.
 
-Il ven 14 nov 2025, 05:15 Zhao Liu <zhao1.liu@intel.com> ha scritto:
+Let me know if you'd prefer the "perhaps should take ownership" idea
+in PATCH 1's commit message.
 
-> Yes, this will reduce BQL context in lockless IO a lot. And I'll based
-> on your patch to extract HPETTimer from BqlRefCell.
->
-> > Preserving the old migration format can then be solved in two ways:
-> >
-> > 1) with a handwritten ToMigrationStateShared implementation for
-> > HPETTimer (and marking the tn_regs array as #[migration_state(omit)])
->
-> Yes, compared with 2), I also this is the better choice, which looks
-> more common and could be an good example for other device.
->
-> > 2) by also adding num_timers_save and the timer's expiration to
-> > HPETRegisters and HPETTimerRegisters, respectively.
-> >
-> > I think I prefer the former, but I haven't written the code so it's
-> > not my choice. :)
->
+Markus Armbruster (3):
+  migration: Plug memory leaks after migrate_set_error()
+  migration: Use warn_reportf_err() where appropriate
+  migration/postcopy-ram: Improve error reporting after loadvm failure
 
-Yes, it is much better.
+ migration/cpr-exec.c     |  3 ++-
+ migration/multifd.c      |  6 ++++--
+ migration/postcopy-ram.c | 17 ++++++++---------
+ 3 files changed, 14 insertions(+), 12 deletions(-)
 
-> @@ -181,6 +181,9 @@ fn timer_handler(timer_cell: &BqlRefCell<HPETTimer>) {
-> >  #[repr(C)]
-> >  #[derive(Debug, Default, ToMigrationState)]
-> >  pub struct HPETTimerRegisters {
-> > +    // Only needed for migration
-> > +    index: u8,
->
-> I didn't get the point why we need to migrate this "index" instead of
-> HPETTimer::index?
->
-
-Just because it's still migrating HPETTimerRegisters, but yes it's not
-necessary with the custom ToMigrationStateShared, as you write below.
-
-Paolo
-
-
-> Anyway, if we continue to keep index in HPETTimerRegisters, we can make
-> it have usize type with a "#[migration_state(try_into(u8))]" property.
->
-> If we just HPETTimer::index for migration, I think it's possible to do
-> type convertion in handwritten ToMigrationStateShared.
->
-> Thanks,
-> Zhao
->
->
-
---0000000000000954e806439d6e0a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 14 nov 2025, 05:15 Zhao L=
-iu &lt;<a href=3D"mailto:zhao1.liu@intel.com">zhao1.liu@intel.com</a>&gt; h=
-a scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Yes, =
-this will reduce BQL context in lockless IO a lot. And I&#39;ll based<br>
-on your patch to extract HPETTimer from BqlRefCell.<br>
-<br>
-&gt; Preserving the old migration format can then be solved in two ways:<br=
->
-&gt; <br>
-&gt; 1) with a handwritten ToMigrationStateShared implementation for<br>
-&gt; HPETTimer (and marking the tn_regs array as #[migration_state(omit)])<=
-br>
-<br>
-Yes, compared with 2), I also this is the better choice, which looks<br>
-more common and could be an good example for other device.<br>
-<br>
-&gt; 2) by also adding num_timers_save and the timer&#39;s expiration to<br=
->
-&gt; HPETRegisters and HPETTimerRegisters, respectively.<br>
-&gt; <br>
-&gt; I think I prefer the former, but I haven&#39;t written the code so it&=
-#39;s<br>
-&gt; not my choice. :)<br></blockquote></div></div><div dir=3D"auto"><br></=
-div><div dir=3D"auto">Yes, it is much better.</div><div dir=3D"auto"><br></=
-div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><blo=
-ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
-:1px solid rgb(204,204,204);padding-left:1ex">&gt; @@ -181,6 +181,9 @@ fn t=
-imer_handler(timer_cell: &amp;BqlRefCell&lt;HPETTimer&gt;) {<br>
-&gt;=C2=A0 #[repr(C)]<br>
-&gt;=C2=A0 #[derive(Debug, Default, ToMigrationState)]<br>
-&gt;=C2=A0 pub struct HPETTimerRegisters {<br>
-&gt; +=C2=A0 =C2=A0 // Only needed for migration<br>
-&gt; +=C2=A0 =C2=A0 index: u8,<br>
-<br>
-I didn&#39;t get the point why we need to migrate this &quot;index&quot; in=
-stead of<br>
-HPETTimer::index?<br></blockquote></div></div><div dir=3D"auto"><br></div><=
-div dir=3D"auto">Just because it&#39;s still migrating HPETTimerRegisters, =
-but yes it&#39;s not necessary with the custom ToMigrationStateShared, as y=
-ou write below.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</d=
-iv><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote =
-gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0p=
-x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-Anyway, if we continue to keep index in HPETTimerRegisters, we can make<br>
-it have usize type with a &quot;#[migration_state(try_into(u8))]&quot; prop=
-erty.<br>
-<br>
-If we just HPETTimer::index for migration, I think it&#39;s possible to do<=
-br>
-type convertion in handwritten ToMigrationStateShared.<br>
-<br>
-Thanks,<br>
-Zhao<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000000954e806439d6e0a--
+-- 
+2.49.0
 
 
