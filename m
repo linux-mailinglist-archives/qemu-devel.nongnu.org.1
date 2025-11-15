@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC7DC600E8
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 07:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF13C600F7
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Nov 2025 07:54:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKA8z-0006UR-IM; Sat, 15 Nov 2025 01:52:21 -0500
+	id 1vKA90-0006Ut-OR; Sat, 15 Nov 2025 01:52:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vKA8x-0006TX-BG
+ id 1vKA8x-0006TW-5w
  for qemu-devel@nongnu.org; Sat, 15 Nov 2025 01:52:19 -0500
 Received: from inva020.nxp.com ([92.121.34.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vKA8u-0008L7-4q
- for qemu-devel@nongnu.org; Sat, 15 Nov 2025 01:52:19 -0500
+ id 1vKA8v-0008LQ-AD
+ for qemu-devel@nongnu.org; Sat, 15 Nov 2025 01:52:18 -0500
 Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1E6AA1A21EB;
- Sat, 15 Nov 2025 07:52:15 +0100 (CET)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 41D6E1A21F5;
+ Sat, 15 Nov 2025 07:52:16 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com
  (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D68A41A2170;
- Sat, 15 Nov 2025 07:52:14 +0100 (CET)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 089A61A2170;
+ Sat, 15 Nov 2025 07:52:16 +0100 (CET)
 Received: from lsv031015.swis.in-blr01.nxp.com
  (lsv031015.swis.in-blr01.nxp.com [10.12.177.77])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 059691800087;
- Sat, 15 Nov 2025 14:52:13 +0800 (+08)
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 2B70D1800087;
+ Sat, 15 Nov 2025 14:52:15 +0800 (+08)
 From: Gaurav Sharma <gaurav.sharma_7@nxp.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
  Gaurav Sharma <gaurav.sharma_7@nxp.com>
-Subject: [PATCHv2 04/13] hw/arm/fsl-imx8mm: Adding support for USDHC storage
- controllers
-Date: Sat, 15 Nov 2025 12:20:50 +0530
-Message-Id: <20251115065059.1884980-5-gaurav.sharma_7@nxp.com>
+Subject: [PATCHv2 05/13] hw/arm/fsl-imx8mm: Add PCIe support
+Date: Sat, 15 Nov 2025 12:20:51 +0530
+Message-Id: <20251115065059.1884980-6-gaurav.sharma_7@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251115065059.1884980-1-gaurav.sharma_7@nxp.com>
 References: <20251115065059.1884980-1-gaurav.sharma_7@nxp.com>
@@ -66,162 +65,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It enables emulation of SD/MMC cards through a virtual SDHCI interface
-The emulated SDHCI controller allows guest OS to use emulated storage as
-a standard block device.
-This will allow running the images such as those generated
-by Buildroot.
+This enables support for Designware PCI Express Controller emulation
+It provides a controlled environment to debug the linux pci subsystem
 
 Signed-off-by: Gaurav Sharma <gaurav.sharma_7@nxp.com>
 ---
  docs/system/arm/imx8mm-evk.rst |  1 +
- hw/arm/Kconfig                 |  1 +
- hw/arm/fsl-imx8mm.c            | 25 +++++++++++++++++++++++++
- hw/arm/imx8mm-evk.c            | 17 +++++++++++++++++
- include/hw/arm/fsl-imx8mm.h    |  7 +++++++
- 5 files changed, 51 insertions(+)
+ hw/arm/Kconfig                 |  3 +++
+ hw/arm/fsl-imx8mm.c            | 30 ++++++++++++++++++++++++++++++
+ include/hw/arm/fsl-imx8mm.h    | 10 ++++++++++
+ 4 files changed, 44 insertions(+)
 
 diff --git a/docs/system/arm/imx8mm-evk.rst b/docs/system/arm/imx8mm-evk.rst
-index cc285068dc..de9d1bd4de 100644
+index de9d1bd4de..3413ac097b 100644
 --- a/docs/system/arm/imx8mm-evk.rst
 +++ b/docs/system/arm/imx8mm-evk.rst
-@@ -12,6 +12,7 @@ The ``imx8mm-evk`` machine implements the following devices:
-  * Up to 4 Cortex-A53 cores
+@@ -13,6 +13,7 @@ The ``imx8mm-evk`` machine implements the following devices:
   * Generic Interrupt Controller (GICv3)
   * 4 UARTs
-+ * 3 USDHC Storage Controllers
+  * 3 USDHC Storage Controllers
++ * 1 Designware PCI Express Controller
   * Secure Non-Volatile Storage (SNVS) including an RTC
   * Clock Tree
  
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 314ffcd315..b5eb6553f5 100644
+index b5eb6553f5..6df1478c4f 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -632,6 +632,7 @@ config FSL_IMX8MM
+@@ -628,11 +628,14 @@ config FSL_IMX8MP_EVK
+ 
+ config FSL_IMX8MM
+     bool
++    imply PCI_DEVICES
+     select ARM_GIC
      select FSL_IMX8MM_ANALOG
      select FSL_IMX8MM_CCM
      select IMX
-+    select SDHCI
+     select SDHCI
++    select PCI_EXPRESS_DESIGNWARE
++    select PCI_EXPRESS_FSL_IMX8M_PHY
  
  config FSL_IMX8MM_EVK
      bool
 diff --git a/hw/arm/fsl-imx8mm.c b/hw/arm/fsl-imx8mm.c
-index 4ca5dd0af1..0c42fd16f2 100644
+index 0c42fd16f2..09e16786bc 100644
 --- a/hw/arm/fsl-imx8mm.c
 +++ b/hw/arm/fsl-imx8mm.c
-@@ -177,6 +177,10 @@ static void fsl_imx8mm_init(Object *obj)
-         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
+@@ -181,6 +181,10 @@ static void fsl_imx8mm_init(Object *obj)
+         g_autofree char *name = g_strdup_printf("usdhc%d", i + 1);
+         object_initialize_child(obj, name, &s->usdhc[i], TYPE_IMX_USDHC);
      }
- 
-+    for (i = 0; i < FSL_IMX8MM_NUM_USDHCS; i++) {
-+        g_autofree char *name = g_strdup_printf("usdhc%d", i + 1);
-+        object_initialize_child(obj, name, &s->usdhc[i], TYPE_IMX_USDHC);
-+    }
++
++    object_initialize_child(obj, "pcie", &s->pcie, TYPE_DESIGNWARE_PCIE_HOST);
++    object_initialize_child(obj, "pcie_phy", &s->pcie_phy,
++                            TYPE_FSL_IMX8M_PCIE_PHY);
  }
  
  static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
-@@ -342,6 +346,26 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
-                            qdev_get_gpio_in(gicdev, serial_table[i].irq));
-     }
+@@ -373,6 +377,30 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->snvs), 0,
+                     fsl_imx8mm_memmap[FSL_IMX8MM_SNVS_HP].addr);
  
-+    /* USDHCs */
-+    for (i = 0; i < FSL_IMX8MM_NUM_USDHCS; i++) {
-+        static const struct {
-+            hwaddr addr;
-+            unsigned int irq;
-+        } usdhc_table[FSL_IMX8MM_NUM_USDHCS] = {
-+            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC1].addr, FSL_IMX8MM_USDHC1_IRQ },
-+            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC2].addr, FSL_IMX8MM_USDHC2_IRQ },
-+            { fsl_imx8mm_memmap[FSL_IMX8MM_USDHC3].addr, FSL_IMX8MM_USDHC3_IRQ },
-+        };
-+
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->usdhc[i]), errp)) {
-+            return;
-+        }
-+
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0, usdhc_table[i].addr);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
-+                           qdev_get_gpio_in(gicdev, usdhc_table[i].irq));
++    /* PCIe */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->pcie), errp)) {
++        return;
 +    }
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie), 0,
++                    fsl_imx8mm_memmap[FSL_IMX8MM_PCIE1].addr);
 +
-     /* SNVS */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->snvs), errp)) {
-         return;
-@@ -359,6 +383,7 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 0,
++                       qdev_get_gpio_in(gicdev, FSL_IMX8MM_PCI_INTA_IRQ));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 1,
++                       qdev_get_gpio_in(gicdev, FSL_IMX8MM_PCI_INTB_IRQ));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 2,
++                       qdev_get_gpio_in(gicdev, FSL_IMX8MM_PCI_INTC_IRQ));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 3,
++                       qdev_get_gpio_in(gicdev, FSL_IMX8MM_PCI_INTD_IRQ));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 4,
++                       qdev_get_gpio_in(gicdev, FSL_IMX8MM_PCI_MSI_IRQ));
++
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->pcie_phy), errp)) {
++        return;
++    }
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie_phy), 0,
++                    fsl_imx8mm_memmap[FSL_IMX8MM_PCIE_PHY1].addr);
++
+     /* Unimplemented devices */
+     for (i = 0; i < ARRAY_SIZE(fsl_imx8mm_memmap); i++) {
+         switch (i) {
+@@ -380,6 +408,8 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
+         case FSL_IMX8MM_CCM:
+         case FSL_IMX8MM_GIC_DIST:
+         case FSL_IMX8MM_GIC_REDIST:
++        case FSL_IMX8MM_PCIE1:
++        case FSL_IMX8MM_PCIE_PHY1:
          case FSL_IMX8MM_RAM:
          case FSL_IMX8MM_SNVS_HP:
          case FSL_IMX8MM_UART1 ... FSL_IMX8MM_UART4:
-+        case FSL_IMX8MM_USDHC1 ... FSL_IMX8MM_USDHC3:
-             /* device implemented and treated above */
-             break;
- 
-diff --git a/hw/arm/imx8mm-evk.c b/hw/arm/imx8mm-evk.c
-index 82751dad7d..1366f84d4a 100644
---- a/hw/arm/imx8mm-evk.c
-+++ b/hw/arm/imx8mm-evk.c
-@@ -83,6 +83,23 @@ static void imx8mm_evk_init(MachineState *machine)
-     memory_region_add_subregion(get_system_memory(), FSL_IMX8MM_RAM_START,
-                                 machine->ram);
- 
-+    for (int i = 0; i < FSL_IMX8MM_NUM_USDHCS; i++) {
-+        BusState *bus;
-+        DeviceState *carddev;
-+        BlockBackend *blk;
-+        DriveInfo *di = drive_get(IF_SD, i, 0);
-+
-+        if (!di) {
-+            continue;
-+        }
-+
-+        blk = blk_by_legacy_dinfo(di);
-+        bus = qdev_get_child_bus(DEVICE(&s->usdhc[i]), "sd-bus");
-+        carddev = qdev_new(TYPE_SD_CARD);
-+        qdev_prop_set_drive_err(carddev, "drive", blk, &error_fatal);
-+        qdev_realize_and_unref(carddev, bus, &error_fatal);
-+    }
-+
-     if (!qtest_enabled()) {
-         arm_load_kernel(&s->cpu[0], machine, &boot_info);
-     }
 diff --git a/include/hw/arm/fsl-imx8mm.h b/include/hw/arm/fsl-imx8mm.h
-index 4fd11798a5..985a0a5571 100644
+index 985a0a5571..74a1a1349d 100644
 --- a/include/hw/arm/fsl-imx8mm.h
 +++ b/include/hw/arm/fsl-imx8mm.h
-@@ -15,6 +15,7 @@
+@@ -15,6 +15,8 @@
  #include "hw/misc/imx7_snvs.h"
  #include "hw/misc/imx8mm_analog.h"
  #include "hw/misc/imx8mm_ccm.h"
-+#include "hw/sd/sdhci.h"
++#include "hw/pci-host/designware.h"
++#include "hw/pci-host/fsl_imx8m_phy.h"
+ #include "hw/sd/sdhci.h"
  #include "qom/object.h"
  #include "qemu/units.h"
- 
-@@ -28,6 +29,7 @@ enum FslImx8mmConfiguration {
-     FSL_IMX8MM_NUM_CPUS         = 4,
-     FSL_IMX8MM_NUM_IRQS         = 128,
-     FSL_IMX8MM_NUM_UARTS        = 4,
-+    FSL_IMX8MM_NUM_USDHCS       = 3,
- };
- 
- struct FslImx8mmState {
-@@ -39,6 +41,7 @@ struct FslImx8mmState {
-     IMX8MMAnalogState  analog;
+@@ -42,6 +44,8 @@ struct FslImx8mmState {
      IMX7SNVSState      snvs;
      IMXSerialState     uart[FSL_IMX8MM_NUM_UARTS];
-+    SDHCIState         usdhc[FSL_IMX8MM_NUM_USDHCS];
+     SDHCIState         usdhc[FSL_IMX8MM_NUM_USDHCS];
++    DesignwarePCIEHost pcie;
++    FslImx8mPciePhyState   pcie_phy;
  };
  
  enum FslImx8mmMemoryRegions {
-@@ -153,6 +156,10 @@ enum FslImx8mmMemoryRegions {
- };
- 
- enum FslImx8mmIrqs {
-+    FSL_IMX8MM_USDHC1_IRQ   = 22,
-+    FSL_IMX8MM_USDHC2_IRQ   = 23,
-+    FSL_IMX8MM_USDHC3_IRQ   = 24,
-+
-     FSL_IMX8MM_UART1_IRQ    = 26,
+@@ -164,6 +168,12 @@ enum FslImx8mmIrqs {
      FSL_IMX8MM_UART2_IRQ    = 27,
      FSL_IMX8MM_UART3_IRQ    = 28,
+     FSL_IMX8MM_UART4_IRQ    = 29,
++
++    FSL_IMX8MM_PCI_INTA_IRQ = 122,
++    FSL_IMX8MM_PCI_INTB_IRQ = 123,
++    FSL_IMX8MM_PCI_INTC_IRQ = 124,
++    FSL_IMX8MM_PCI_INTD_IRQ = 125,
++    FSL_IMX8MM_PCI_MSI_IRQ  = 127,
+ };
+ 
+ #endif /* FSL_IMX8MM_H */
 -- 
 2.34.1
 
