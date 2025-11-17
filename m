@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6782C62C8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC57C62C89
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:44:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKttj-0003VB-8X; Mon, 17 Nov 2025 02:43:39 -0500
+	id 1vKttk-0003Yf-BN; Mon, 17 Nov 2025 02:43:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vKtsx-0003Rj-GR
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:42:51 -0500
+ id 1vKtsy-0003Rm-2o
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:42:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vKtsv-0005um-SU
+ id 1vKtsw-0005v2-HY
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:42:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763365367;
+ s=mimecast20190719; t=1763365369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A3DOmTTtUlRI29oyMtkqRVQpm1BCXvndErwb6vVQTDc=;
- b=ECdMUz1gydLzT4Qqmjzu9ByOKl1R99ZFB4N2GZrqpuQTMNeAcPff/RoSGip0QN4V5fbhe8
- polAiZb9SM1G7tSV+iPB1QlhVrUYd8DT3x2Kj3DUtE/0lKhlQPXMM7de6P7gcAE8yqK57H
- gfuEvxTHEYMEk6RbbGdV+5hyWGelhrg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WXWNBS5VhaBDKMLiYRt/qNQXMDrMpUmP4CgRsLrhNMs=;
+ b=X3NoekhkkX9xfZw+NCLzzN0Ic6oF8t6fWVDt+InBAxtbZhExq+W3pKavlgQaHN+dqyPbZa
+ MuN9PC0MhZ/ZGHdOim2z8WtPJmkUrI0nk5SZowphxBpR0ssYcSLjGuoBM2Rm/75aISgN+t
+ F64zaE5Lo4gMEfIus9IV7Ns9ZPrU/8E=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-QKBOIeYIO2KohkrB6XUxcw-1; Mon, 17 Nov 2025 02:42:45 -0500
-X-MC-Unique: QKBOIeYIO2KohkrB6XUxcw-1
-X-Mimecast-MFC-AGG-ID: QKBOIeYIO2KohkrB6XUxcw_1763365365
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4779da35d27so10053175e9.3
- for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 23:42:45 -0800 (PST)
+ us-mta-211-5nJzFF8fNZiNT-yfUt2POQ-1; Mon, 17 Nov 2025 02:42:48 -0500
+X-MC-Unique: 5nJzFF8fNZiNT-yfUt2POQ-1
+X-Mimecast-MFC-AGG-ID: 5nJzFF8fNZiNT-yfUt2POQ_1763365367
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-42b487cda00so1869061f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 23:42:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763365364; x=1763970164; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763365366; x=1763970166; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A3DOmTTtUlRI29oyMtkqRVQpm1BCXvndErwb6vVQTDc=;
- b=GLfgAiGGV9dmjd5h3OO17MoI33rUYd4lFyu7fJjJT/FQw78EW5xwJJekW5Rx9d1PMu
- tzEimoD2Y0FgZ80N/5gowz5mA8AHvFgt/kZdBEPMtLmNBGDWtgWhrdnMJb/+7ZUchxhx
- i2U1nXkVfERBpHQY+tdW2r46kPqnoETaraaFx016SxwpLQ9cV5KfGKaf4v3elo6okiYW
- rINMfNyHPK92He4vpVTjQqAguO7IrlA+oc9qGsismP0Amokh3ooDT4snXvrzGQo5TcKt
- 2VOd4ll1AMIewKV4CMvsNGndKKweafhzfFM4vX1Oapuu+POX/0sf80TDlPjZzjvAOg8W
- CYcQ==
+ bh=WXWNBS5VhaBDKMLiYRt/qNQXMDrMpUmP4CgRsLrhNMs=;
+ b=Y2f3d00f4p7me8PdNweZMulFxAKPVhfjTb5HIm9JGtJsR9kO9z1C7KUX1vzwHgSQWR
+ vzpkdfBrwqofePpSh0vkx4eTWJLoyi46e/xVGFCJjt4iRB6mF0aba67Cshb9Vowob91z
+ INjIXUmxH6zjAvfhZweEFOosIE2ZuB5i1VkpBi7MzB9MrIm4l+651CTH2005K0+dNNss
+ pvWUY48SuQzIig2KaxujuR6XclVplmmx651SQIn1aePB13ZPNXi6V6Vzdebj7rxvIUNh
+ 8N2az5NIwoPe6te336gMQjsAzZ0C0OZJMaEAFpTXemzN4BbokmIDks6tbJCmTbNhuvQJ
+ n2MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763365364; x=1763970164;
+ d=1e100.net; s=20230601; t=1763365366; x=1763970166;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=A3DOmTTtUlRI29oyMtkqRVQpm1BCXvndErwb6vVQTDc=;
- b=HP2BO/sAaREqMUehtum6UANvUoLmfQtixsWHIYuRCGXogfAEFv12qjYmXB5jE4ZXMO
- 8fBdxJkL3o+/0DRMV2Ma4FTOj33KAkDaRpySeXE7gwy9417M7ncrczXmlENzdKtruQPn
- /X0IifcEc1erB3Fp5s95Qcy1fFBtP22gTKSr4SqlX7UuzTtqC4Eo7g9oLSe4IDruzhbf
- 9QWijyeTE3qOQY2Dmr1Po4q5xBzmCdb0CLDDBh7HxBeIqU44YqeEaO4xkcIG9KN/0vM0
- z9TurrzDyA011nMJnfokz09ZhkXU9wOwwE+qJIsmushFLbgg1KQW1F6iSMMiI2qf0/6Q
- tUZA==
-X-Gm-Message-State: AOJu0Ywx4VHhccQmp08CTdPnV8scAD7v6nQo20vlZhU50HL1cw0g29lu
- /BrqJgFkWzK6/oictfkTFQN+rfZKvQ2J+illVIue7EAe8zuozvixJL3l/wG9FLj/gsZw3oji+x3
- SmHavuS8EI8UEkrnX58+UELZg56y/a/qOe8Nl9wBxjvm/PH8584ZZ45ajtTJO0N49sNEFvjS414
- kBURotKlFafNbEOZUbzSk7tizi2PtctjpD4LJ5+wJ7
-X-Gm-Gg: ASbGncuVXiNiiF0uLLfdeJ5XMt9PSN7+NulxFyhFc75jBivinicSgtFkLeQDtQXT6FH
- Nei4/1XjDURlRKdni+tWZUzRHTLZ95JykfJAW7siS+bjORVGl3zhV1PmPKujyQ6CtM2+2ypHJDO
- UL03WNysIRdz/gx/zQ14Vb5eOG5l29hmT610S45HSrcN1DtMxR4us2F2mKvkSecQYLya5FJGhNB
- mossgPwnKtSmBmbsOxDFFr8h3iYoL4NYxmp70szIN/Qz+zcS1TLnV7zjYCT5zUIr3CXVN06+f8j
- 8JriD50v2LV4DINH07OLGE5/H5BnxDEbBbXmr4sh5dZG4GnrQshMHE+/UEFr2n71QyM1Bhw90hI
- l/0aVJFzQ8kq6mzPcwk9tU5IdzdkzBmDT6eOsgMeBdoP12nQAfnVMjLrt6ZamZjGc+uH70e4End
- 6BFQmg
-X-Received: by 2002:a05:600c:c4a1:b0:475:dd7f:f6cd with SMTP id
- 5b1f17b1804b1-4778fe96c46mr94795825e9.35.1763365364221; 
- Sun, 16 Nov 2025 23:42:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFSxxfwKIqmVC45rPVAwvXfEMRLb+nGUQiQ9mYHEyIDE8dNbU1NYcZ49MsAqNBzM+bIaH1UnQ==
-X-Received: by 2002:a05:600c:c4a1:b0:475:dd7f:f6cd with SMTP id
- 5b1f17b1804b1-4778fe96c46mr94795525e9.35.1763365363713; 
- Sun, 16 Nov 2025 23:42:43 -0800 (PST)
+ bh=WXWNBS5VhaBDKMLiYRt/qNQXMDrMpUmP4CgRsLrhNMs=;
+ b=Jz1UaOAbDyGbztRM7JDhi2IrSYyPCvLFC1eviYxj0K0jrpHDXnyRDqfHd+Q0U61lU8
+ Qe9uTm0mREo591yrd93eAc27S9+QNycL4kgi91idKnX+7p3FqZNOAkDIYOVAi/Wd3zQn
+ uHOET1fLFrs4tFRT/5yMjrePIA5tUOfs1lDdCPncMPMxuoiPS963AEauZGL4xGkIlRTS
+ gsvoRkKDaNVGEsJ7EyAHSKh23KAy9IzfQudXsyTN7j+lIHWsofai/1+EpYWnrfyrgRvL
+ BWnW59TH3gyYygdglr2i4+kqd0t64XNo1doA6TPMHOGMvG2poV2vn2SV7vTYIUPkOj4r
+ pdZw==
+X-Gm-Message-State: AOJu0Yxso/ou+rvcruhTy1vzyC4eRpcyekezsLfYnXDFjPc9q0jv3gah
+ IwVhyj0WBTIAJgLSPVEpvNf1jro5XnTdhCvtvm/TNFpHJ1ZLCjTb9odLKbM4TRC6J0eiWiaqKyK
+ YM47S2dZwRrYyob+OCycbRzqpxyc9E+btXzYljRTkimFz1MT/JjPWAFADhTlsUyxTZPMAxt7/7N
+ YUv8vmB5sufAG3zLS3xPY5l1ftcVbPBWdVluJcYVK0
+X-Gm-Gg: ASbGncsLWsDSanfMcPKj+y/3xceFW/FIFUFGAu00mqkkHEd+HHAGxxMHH947LBTz6Qc
+ mSHpvjb1PI1nSvBlqxvZPvBPV3m3XUIq/5t6qgOHeZaN5dxHaPv1oAMmn36W5tpWc8o2AvAqzp1
+ StIw3i7ah16OQynDVexdjd3Rnyu9qz+5pDqDV4bkroH4CSVksYF3NbkFFHYa5ryNRvwKNz5IL+C
+ 3gP/EjwXrK00xpX8vfNe8tcFE4guYT9BD5lurtaxFhnXh1dQCB/jHPU3VUSj0HhE/n4P0eTRaB+
+ 7tGeb4HOsfK0KFtZTbeqmhpu5iIvkXRq1IEhuwPOJVEv/rHzLubGOBYVdjhu+DY5d3RFeMTBrzQ
+ V8r7ChnOXpHdFfGvAos8qLNvg39dAgoEA8bSsKMISQlL1JFNCd8JvehCVSrxymxcySkl7i1U5aL
+ sRo4fA
+X-Received: by 2002:a5d:584e:0:b0:42b:3cd2:e9bb with SMTP id
+ ffacd0b85a97d-42b5936c3dbmr10875010f8f.32.1763365366448; 
+ Sun, 16 Nov 2025 23:42:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFgORTIIi371fjt9Hr2AMNjaMxZheQOLEx6qGofV9948hnrMsOWalG76zVd2wtQ7zmbDeALqA==
+X-Received: by 2002:a5d:584e:0:b0:42b:3cd2:e9bb with SMTP id
+ ffacd0b85a97d-42b5936c3dbmr10874984f8f.32.1763365365876; 
+ Sun, 16 Nov 2025 23:42:45 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4779973ddcfsm116793655e9.15.2025.11.16.23.42.41
+ ffacd0b85a97d-42b53e7ae47sm24204521f8f.4.2025.11.16.23.42.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Nov 2025 23:42:42 -0800 (PST)
+ Sun, 16 Nov 2025 23:42:44 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 1/8] util: add prelude
-Date: Mon, 17 Nov 2025 08:42:31 +0100
-Message-ID: <20251117074239.190424-2-pbonzini@redhat.com>
+Subject: [PATCH 2/8] common: add prelude
+Date: Mon, 17 Nov 2025 08:42:32 +0100
+Message-ID: <20251117074239.190424-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251117074239.190424-1-pbonzini@redhat.com>
 References: <20251117074239.190424-1-pbonzini@redhat.com>
@@ -122,102 +122,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
+ rust/common/meson.build          | 13 +------------
+ rust/common/src/lib.rs           |  5 +++++
+ rust/common/src/prelude.rs       |  9 +++++++++
  rust/hw/char/pl011/src/device.rs |  2 +-
- rust/hw/timer/hpet/src/device.rs |  5 +----
- rust/hw/timer/hpet/src/fw_cfg.rs |  2 +-
- rust/util/meson.build            |  1 +
- rust/util/src/lib.rs             |  5 +++++
- rust/util/src/prelude.rs         | 11 +++++++++++
- 6 files changed, 20 insertions(+), 6 deletions(-)
- create mode 100644 rust/util/src/prelude.rs
+ rust/hw/timer/hpet/src/device.rs |  2 +-
+ 5 files changed, 17 insertions(+), 14 deletions(-)
+ create mode 100644 rust/common/src/prelude.rs
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 04155dabe1a..18f40fdc58b 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -17,7 +17,7 @@
- };
- use qom::{prelude::*, ObjectImpl, Owned, ParentField, ParentInit};
- use system::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder};
--use util::{log::Log, log_mask_ln, ResultExt};
-+use util::prelude::*;
+diff --git a/rust/common/meson.build b/rust/common/meson.build
+index aff601d1df2..db1365dbe0d 100644
+--- a/rust/common/meson.build
++++ b/rust/common/meson.build
+@@ -4,18 +4,7 @@ _common_cfg = run_command(rustc_args,
  
- use crate::registers::{self, Interrupt, RegisterOffset};
+ _common_rs = static_library(
+   'common',
+-  structured_sources(
+-    [
+-      'src/lib.rs',
+-      'src/assertions.rs',
+-      'src/bitops.rs',
+-      'src/callbacks.rs',
+-      'src/errno.rs',
+-      'src/opaque.rs',
+-      'src/uninit.rs',
+-      'src/zeroable.rs',
+-    ],
+-  ),
++  'src/lib.rs',
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   rust_args: _common_cfg,
+diff --git a/rust/common/src/lib.rs b/rust/common/src/lib.rs
+index 8311bf945da..6093d01a388 100644
+--- a/rust/common/src/lib.rs
++++ b/rust/common/src/lib.rs
+@@ -15,6 +15,11 @@
+ pub mod opaque;
+ pub use opaque::{Opaque, Wrapper};
  
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 3564aa79c6e..6e9c004ecae 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -25,10 +25,7 @@
-     bindings::{address_space_memory, address_space_stl_le, hwaddr},
-     MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder, MEMTXATTRS_UNSPECIFIED,
- };
--use util::{
--    ensure,
--    timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND},
--};
-+use util::prelude::*;
- 
- use crate::fw_cfg::HPETFwConfig;
- 
-diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
-index 777fc8ef45e..ad80acd998c 100644
---- a/rust/hw/timer/hpet/src/fw_cfg.rs
-+++ b/rust/hw/timer/hpet/src/fw_cfg.rs
-@@ -5,7 +5,7 @@
- use std::ptr::addr_of_mut;
- 
- use common::Zeroable;
--use util::{self, ensure};
-+use util::{self, prelude::*};
- 
- /// Each `HPETState` represents a Event Timer Block. The v1 spec supports
- /// up to 8 blocks. QEMU only uses 1 block (in PC machine).
-diff --git a/rust/util/meson.build b/rust/util/meson.build
-index 8ad344dccbd..da5d0f779d1 100644
---- a/rust/util/meson.build
-+++ b/rust/util/meson.build
-@@ -34,6 +34,7 @@ _util_rs = static_library(
-       'src/error.rs',
-       'src/log.rs',
-       'src/module.rs',
-+      'src/prelude.rs',
-       'src/timer.rs',
-     ],
-     {'.': _util_bindings_inc_rs}
-diff --git a/rust/util/src/lib.rs b/rust/util/src/lib.rs
-index d14aa14ca77..7d2de3ed811 100644
---- a/rust/util/src/lib.rs
-+++ b/rust/util/src/lib.rs
-@@ -4,6 +4,11 @@
- pub mod error;
- pub mod log;
- pub mod module;
-+
 +// preserve one-item-per-"use" syntax, it is clearer
 +// for prelude-like modules
 +#[rustfmt::skip]
 +pub mod prelude;
- pub mod timer;
++
+ pub mod uninit;
+ pub use uninit::MaybeUninitField;
  
- pub use error::{Error, Result, ResultExt};
-diff --git a/rust/util/src/prelude.rs b/rust/util/src/prelude.rs
+diff --git a/rust/common/src/prelude.rs b/rust/common/src/prelude.rs
 new file mode 100644
-index 00000000000..f52e7100e9f
+index 00000000000..7d38ea12055
 --- /dev/null
-+++ b/rust/util/src/prelude.rs
-@@ -0,0 +1,11 @@
++++ b/rust/common/src/prelude.rs
+@@ -0,0 +1,9 @@
 +//! Essential types and traits intended for blanket imports.
 +
-+pub use crate::error::ResultExt;
-+pub use crate::log::Log;
-+pub use crate::timer::Timer;
-+pub use crate::timer::CLOCK_VIRTUAL;
-+pub use crate::timer::NANOSECONDS_PER_SECOND;
++pub use crate::bitops::IntegerExt;
++pub use crate::uninit::MaybeUninitField;
 +
 +// Re-export commonly used macros
-+pub use crate::ensure;
-+pub use crate::log_mask_ln;
++pub use crate::static_assert;
++pub use crate::uninit_field_mut;
++pub use qemu_macros::TryInto;
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 18f40fdc58b..b7e8e393d2e 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -6,7 +6,7 @@
+ 
+ use bql::BqlRefCell;
+ use chardev::{CharFrontend, Chardev, Event};
+-use common::{static_assert, uninit_field_mut};
++use common::prelude::*;
+ use hwcore::{
+     Clock, ClockEvent, DeviceImpl, DeviceMethods, DeviceState, IRQState, InterruptSource,
+     ResetType, ResettablePhasesImpl, SysBusDevice, SysBusDeviceImpl, SysBusDeviceMethods,
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 6e9c004ecae..e9c7afa24d5 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -11,7 +11,7 @@
+ };
+ 
+ use bql::{BqlCell, BqlRefCell};
+-use common::{bitops::IntegerExt, uninit_field_mut};
++use common::prelude::*;
+ use hwcore::{
+     DeviceImpl, DeviceMethods, DeviceState, InterruptSource, ResetType, ResettablePhasesImpl,
+     SysBusDevice, SysBusDeviceImpl, SysBusDeviceMethods,
 -- 
 2.51.1
 
