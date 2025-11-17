@@ -2,116 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF814C64F81
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 16:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5C9C64FBF
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 16:54:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL1VK-00046f-4G; Mon, 17 Nov 2025 10:50:58 -0500
+	id 1vL1XJ-0006PY-OC; Mon, 17 Nov 2025 10:53:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vL1VF-000416-Ly
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:53 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vL1X1-00063O-8v
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:52:53 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vL1VE-0008Jt-5g
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:53 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9EADE211C4;
- Mon, 17 Nov 2025 15:50:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763394650; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qXAPh18vI7HzW726G2z85BEmaXGSSASnPcMI+fjlSPk=;
- b=DEk0nyXwuu3sVxgo0upgdxebOGw1Y1RuF0E5YVdRU4/KdqPEhh1/4CfMk4R90Yafo47Mu/
- cW9vo5c1+8GFKS92/FJMxNHkLQT2stb6VDxcEseFMjSXWD1Xld1NAq/4lqPUVa9wcMriIc
- IDhP8i/uUwGrVCC/rOsbssE/pOZkgOA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763394650;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qXAPh18vI7HzW726G2z85BEmaXGSSASnPcMI+fjlSPk=;
- b=yjFnkvbViwEsY2CZHA2PQYRZu16CBdWU2j3QCmtaoIBsrhQ/Rxl/1u+SyYlefbJt2dq6TE
- KC4tGsUjQBzQIVDg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0oY6Caa4;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h8dZZms6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763394649; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qXAPh18vI7HzW726G2z85BEmaXGSSASnPcMI+fjlSPk=;
- b=0oY6Caa4azy+1MO3pXkOJ/NacTeqUPdmc+A2nM0iD3drMgMCV5zXSb44iLhKaR+LUvryQl
- AazSGWRt3ApJhdlof9W+cTorhhNyaIvvAJU9oTRUIWpkEqSdciHP2M8HJBYn2Vj/Cimslp
- oucgkZZQfrFuxt3/WiRukvoNeNbDnGE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763394649;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qXAPh18vI7HzW726G2z85BEmaXGSSASnPcMI+fjlSPk=;
- b=h8dZZms6NApWkHCudNx8SNJEqCzYTguvYllxlwYZdv79vS1rWUxPNpdSHRZ2UoaAUiaAzt
- MZVDomH6UYLfzZAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CDF03EA61;
- Mon, 17 Nov 2025 15:50:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id CY2mM1hEG2lCfwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 17 Nov 2025 15:50:48 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com
-Subject: Re: [PATCH 3/3] migration/postcopy-ram: Improve error reporting
- after loadvm failure
-In-Reply-To: <20251115083500.2753895-4-armbru@redhat.com>
-References: <20251115083500.2753895-1-armbru@redhat.com>
- <20251115083500.2753895-4-armbru@redhat.com>
-Date: Mon, 17 Nov 2025 12:50:46 -0300
-Message-ID: <87zf8kbquh.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vL1Wz-0008SN-5C
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:52:43 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-42b3c965df5so2686949f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 07:52:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763394759; x=1763999559; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mIqRs+rCNE4Z2ctXJqeS35WeuYppkgXebW7tbFGonOc=;
+ b=rap8+QUAjwTzxQb+3idMsz/LSDNHWKqz4SB5cf1z/bjHyQ9d1RuCKpKh0pn+MGdiet
+ aNREphVV8nRNrrGQSlQakYZweBjvJSGsEIyBGpBXKrU2NdRlogyNsimmLiZFZ3FaFhiy
+ p2xpe4Qqpp7qY//tZbFDc8qWXNGV5WYdNVaFQRbbWN8Vw4/nCBhXDxKEXgAoLMVKq3KF
+ 2XVogYmLDK+Nd5Y4RyFMeiFvhSRDGOYkcSQsxlmReddb7D8kwFP5v+Gz830zUMudFLaT
+ KcNnekLlUnqVRoidsE2VeGHAft1pPuTKJM7y95Ghb4m5GMoPZWQ2OKoDiZBwMLYqMkz3
+ AejQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763394759; x=1763999559;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mIqRs+rCNE4Z2ctXJqeS35WeuYppkgXebW7tbFGonOc=;
+ b=ANEaXyYlPk4HzG4PcJo4LxyIKKLsGQTm6HUEpwuc6LSEsrfUO1mANKO+jQS6Ztcg0h
+ we2aIYYT13feDxYnlTIAqkw6R/AgSueeZN0jitEavIdH/QZyk56dtPXGg/A9jqzOv/7c
+ M8TrpKYiF4kCExQNMkXlfrEf6xgtxBnGpbnzP6eHrzqAlYddtZ5sZZ+XPhKxdHnQh83+
+ PNHgNC9GMEBX8hDek+vJTD8qJH0A+IhRQJqo5oTZe9NN+AiDkPZejt1kvwitUdqedueb
+ /6U8SLB1jzdMODNOkcpjPR7vOHza/ful5kB+/k95Lm+aJYy4VpEnWM8db5XAgJB6zU51
+ Dpag==
+X-Gm-Message-State: AOJu0YzMUhy7Q7fiCy+0Ebv64QUf0MnQ42B4J5aEI9XrJ4f7VDkEgats
+ GazPJFVb7/xpDqgVAkt+QCwq7UJi0Z00ZmRdd74CruVfi0hs2ZJBChiBrERAN0+lZtZ4CQRPf/U
+ PWsDs
+X-Gm-Gg: ASbGncv9vVZrZYcbDHIPWjx2O7zppNmSTEeCYFAUqJf04Ai2SeXSehJlkkJiHf+APik
+ EZ4z6UdNzyA5G2zXANxLMDx+TYaesAIczEfZ6x1ZzsSqWyFuJCmtu5MxiCoWhyTkwhEBB3R/tp8
+ 5oDnPJRsizgTYx8VhhH/0lOSuA87ov5kIOfesQTOR+OQQ/EY3WkTkxWKUG031Zmc4pRzR/P9gt6
+ Odx5zS8ZJjTTz6vTpKpmiap9dvD/a+B6Wv9ifjTKq/Ej86DGot+H1/iKgulGeNQGxeO6lJNYsFB
+ Gt1cH222Tmsd4bZRHVuVOdsq3JoCRJTAgQ32TRMUtCgBFQ80WjVg2Uhh6KRH73tW+efTiMvk9Zb
+ 5S7uL/Dri/WTC8KxyX/8/pPcdEcYfM0R5bVZxehx4SsVKgJ+ZNi+72/jml2qMz6rrKsKlLHUKDi
+ ZbGu9SMl05/CI=
+X-Google-Smtp-Source: AGHT+IHbTC2GUtGO4yvOmzCIJ29S6kM2/Vd/H2PAh4X9Ejk4XZApel6xoIBq5SPl7Km0ZFS0jsexlg==
+X-Received: by 2002:a05:6000:40c9:b0:429:8b01:c093 with SMTP id
+ ffacd0b85a97d-42b5934f642mr11796269f8f.15.1763394759093; 
+ Mon, 17 Nov 2025 07:52:39 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53f19aa0sm26930072f8f.37.2025.11.17.07.52.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Nov 2025 07:52:38 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id AA9A75F860;
+ Mon, 17 Nov 2025 15:52:37 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v2 00/18] testing updates for 10.2
+Date: Mon, 17 Nov 2025 15:52:37 +0000
+Message-ID: <20251117155237.4124861-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 9EADE211C4
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.41 / 50.00]; BAYES_HAM(-2.90)[99.57%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FUZZY_RATELIMITED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
- MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCPT_COUNT_THREE(0.00)[3]; MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
- imap1.dmz-prg2.suse.org:rdns, suse.de:email, suse.de:mid, suse.de:dkim]
-X-Rspamd-Action: no action
-X-Spam-Score: -4.41
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,22 +99,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+The following changes since commit e88510fcdc13380bd4895a17d6f8a0b3a3325b85:
 
-> One of two error messages show __func__.  Drop it; it doesn't help
-> users, and developers can grep for the message.  This also permits
-> de-duplicating the code to prepend to the error message.
->
-> Both error messages show a numeric error code.  I doubt that's
-> helpful, but I'm leaving it alone.
->
-> Use error_append_hint() for explaining that some dirty bitmaps may be
-> lost.  Polish the prose.
->
-> Don't faff around with g_clear_pointer(), it's not worth its keep
-> here.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+  Merge tag 'pull-target-arm-20251114' of https://gitlab.com/pm215/qemu into staging (2025-11-14 17:59:05 +0100)
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+are available in the Git repository at:
+
+  https://gitlab.com/stsquad/qemu.git tags/pull-10.2-maintainer-171125-2
+
+for you to fetch changes up to 8bec7b9874235e60f14172618121c60fdbd39302:
+
+  gitlab: add a weekly container building job (2025-11-17 15:51:00 +0000)
+
+----------------------------------------------------------------
+testing updates for 10.2
+
+  - fix emsdk image for podman
+  - update lcitool and clean-up ENV stanzas
+  - include coreutils for io tests
+  - move a number of assets due to linaro changes
+  - add ppc64le custom runner
+  - rationalise the gitlab custom runners with templates
+  - clean-up the custom runner rules
+  - add a scheduled container build
+
+----------------------------------------------------------------
+Alex Bennée (17):
+      tests/docker: drop --link from COPYs in emsdk docker
+      libvirt-ci: bump libvirt-ci to latest version
+      tests/lcitool: update ENV stanzas outputted by refresh
+      tests/docker: add coreutils to the package list
+      tests: move test_xen assets to share.linaro.org
+      tests: move test_virt assets to share.linaro.org
+      tests: move test_netdev_ethtool to share.linaro.org
+      tests: move test_kvm_xen to share.linaro.org
+      tests: move test_kvm to share.linaro.org
+      tests: move test_virt_gpu to share.linaro.org
+      gitlab: add initial ppc64le custom-runner test
+      gitlab: use template for ubuntu-24.04-s390x jobs
+      gitlab: simplify the ubuntu-24.04-aarch64 rules
+      gitlab: suppress custom runners being triggered by schedule
+      gitlab: make custom runners need QEMU_CI to run
+      gitlab: make the schedule rules a bit more general
+      gitlab: add a weekly container building job
+
+Pierrick Bouvier (1):
+      docs/about/emulation: update assets for uftrace plugin documentation
+
+ docs/about/emulation.rst                           |  20 +--
+ docs/devel/testing/ci-jobs.rst.inc                 |   6 +
+ .gitlab-ci.d/base.yml                              |   4 +-
+ .gitlab-ci.d/cirrus/freebsd-14.vars                |   2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars                  |   2 +-
+ .gitlab-ci.d/container-template.yml                |   5 +
+ .gitlab-ci.d/containers.yml                        |  39 +++++
+ .gitlab-ci.d/custom-runners.yml                    |   1 +
+ .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml  |  45 +++++
+ .../custom-runners/ubuntu-24.04-aarch64.yml        |  49 ++----
+ .gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml | 189 ++++++++-------------
+ scripts/ci/setup/debian/debian-13-ppc64le.yaml     |   1 +
+ scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml   |   1 +
+ scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml     |   1 +
+ tests/docker/Makefile.include                      |  11 ++
+ tests/docker/dockerfiles/alpine.docker             |  11 +-
+ tests/docker/dockerfiles/centos9.docker            |  11 +-
+ tests/docker/dockerfiles/debian-amd64-cross.docker |  21 +--
+ tests/docker/dockerfiles/debian-arm64-cross.docker |  21 +--
+ tests/docker/dockerfiles/debian-armhf-cross.docker |  21 +--
+ tests/docker/dockerfiles/debian-i686-cross.docker  |  21 +--
+ .../dockerfiles/debian-mips64el-cross.docker       |  21 +--
+ .../docker/dockerfiles/debian-mipsel-cross.docker  |  21 +--
+ .../docker/dockerfiles/debian-ppc64el-cross.docker |  21 +--
+ .../docker/dockerfiles/debian-riscv64-cross.docker |  24 ++-
+ tests/docker/dockerfiles/debian-s390x-cross.docker |  21 +--
+ tests/docker/dockerfiles/debian.docker             |  13 +-
+ tests/docker/dockerfiles/emsdk-wasm32-cross.docker |   8 +-
+ .../docker/dockerfiles/fedora-rust-nightly.docker  |  11 +-
+ tests/docker/dockerfiles/fedora-win64-cross.docker |  19 ++-
+ tests/docker/dockerfiles/fedora.docker             |  11 +-
+ tests/docker/dockerfiles/opensuse-leap.docker      |  11 +-
+ tests/docker/dockerfiles/ubuntu2204.docker         |  11 +-
+ tests/functional/aarch64/test_kvm.py               |   4 +-
+ tests/functional/aarch64/test_virt.py              |   5 +-
+ tests/functional/aarch64/test_virt_gpu.py          |   8 +-
+ tests/functional/aarch64/test_xen.py               |  12 +-
+ tests/functional/x86_64/test_kvm_xen.py            |  17 +-
+ tests/functional/x86_64/test_netdev_ethtool.py     |  14 +-
+ tests/lcitool/libvirt-ci                           |   2 +-
+ tests/lcitool/projects/qemu.yml                    |   1 +
+ tests/lcitool/refresh                              |   6 +-
+ tests/vm/generated/freebsd.json                    |   1 +
+ 43 files changed, 393 insertions(+), 351 deletions(-)
+ create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+
+-- 
+2.47.3
+
 
