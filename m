@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8823C65895
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 18:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96366C658A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 18:37:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL395-0001ow-CY; Mon, 17 Nov 2025 12:36:07 -0500
+	id 1vL39u-0002Xb-HT; Mon, 17 Nov 2025 12:36:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL392-0001jN-FU
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:36:04 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL39U-0002P1-5V
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:36:45 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL390-0003B6-9n
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:36:04 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-429c82bf86bso2641682f8f.1
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 09:36:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL39R-0003PZ-Fm
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:36:31 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42b31c610fcso4059554f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 09:36:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763400959; x=1764005759; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763400988; x=1764005788; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MRa/eb9bBJeLe4hxEkwhs6tOVk3XoEKOM6B4xW8GjOE=;
- b=TsJLRLfKwrtidYu+PztCur6ujTxglGkw4Jimkr6nlR50U4ifW+EuVLktCh1AQuAVqY
- PQ5YOYyMUIDhZdM0vwEgxYHZICZyKRNtctGEEp/DtnvAIzIMe6KC76FpWcmhDhOYwxGR
- CLiqUBfUNQHnul0MSCLPgr4dUEMNwwnFT6PFZTOWQC1omzI5kd/jfPprjDDYr6rWo+uS
- WmY4SIm03xCvKicafpMCzvecIC5HCJLZt5ydz6Lp21bFHNNnS2JuReI2vGPlUMHcceeg
- uqZ0lo/+abReuB1YMbr0wnveN+hlzZAjIVyFUw6GVwlcW5j9on909rj7M8LdbTWsHW5G
- wUJg==
+ bh=DY+d+C9qx6bWfSTFU7kH10XVOl5tPMSdURmrTpq6tao=;
+ b=a3ZJ2lQ6cgMllr7cMetpGTm1OK2AqDWC+kt/UAQJRjiqg4uTpJkC75WdfmdE6z9kOk
+ ynb4wVaioh+PZG+TYHvXLjQPkub/2+rB6GvyL4bm2nuuIJ0+WJUxVnvqI9r/iBr0CFGI
+ fpZ0LcU5WQDJsN4kyXz8SMJ/lp908cOj6IJlri29G0ncjiMh8ty5C687iusCmf9wtGI8
+ Uq7fHc8h8qyAeLSns7dH8rOOIsggn8Rq/NRhm8yRGrBUrAfA5Pt/Ql+zmLf7ZsKxhAHB
+ tJ2266vxkiU9ZGfJHnJQCaU7JcVSSpvJDYHwNjZzCHRiHqBnC1o1STZGVmYpUmIb4kUe
+ nTzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763400959; x=1764005759;
+ d=1e100.net; s=20230601; t=1763400988; x=1764005788;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=MRa/eb9bBJeLe4hxEkwhs6tOVk3XoEKOM6B4xW8GjOE=;
- b=MCRl+26UoDeGEQSWBTZVS1W4/gWopKQiBBb82Dv1zDgQABhXTWtDNuLEEUCMt7mQgw
- Kgu7tM1YkXT+g7RQDAiHwK4ytkS5mF8OA//3hSJdLStL4NQcm0M4xcGSPA7mceH37dtD
- +UchsnS9bbBHMmOqkMlkiS3rhukwLZu56aVB2dO2fZpUrN2NhCpS2Tc5TPNyBp/28p+x
- 4lb18z3zf04gmWZnKb/E8lpG3wC26Q5YRuxMBfNk6QxOzIqnACSTjO6CA+DgprXWoK3q
- xdcdJ1XHLLXks/AWfd7IMjN6xsC6/uEK0VN3lb70HKICyhUYKYIMKZk1k+SHhtLz6PAI
- pz3A==
+ bh=DY+d+C9qx6bWfSTFU7kH10XVOl5tPMSdURmrTpq6tao=;
+ b=wR99IDMl9XqJuhW78QWj1pHPbRltJUP+uzhdlhaco0QtG0NqIi6vKTk212TdDn89t/
+ nvxmjuGiUi9HHN8icLRNC3ECXEskPNcnzMSGrgZCsMYWKqTOF9nh9CJuyAqdMj6/g6Xi
+ Jfqbc5Bl0Pp82AOUwsMkib6aBbZvjRrRSbyrNq4P98YRx+qmMp656308KmtBblmL//61
+ lJwC2O91Jpfp7RjREIZt1FepfaKx9JJtdal/ffr9/VmiK3GCgALfOpVOWeAkmtfuTvsc
+ xOTzeH8lWCzf6s/QDHSE6yE52eYfHcLmi6G3+C4vUG3eRcOshkHBV6RlcUu1bt1Ly7Lr
+ zstQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVLKFDTYOTCMOgTA99cdrYAbFdfJVgG49NWoBLUwWobnGWl5cxamUEjdukvorU1V6MrKuZPVoSQrG70@nongnu.org
-X-Gm-Message-State: AOJu0Yy6ZjruQjYr5ki/XZKtr/S4WIcfizlLECRhUXUVObXa57YXSGpc
- vkmIKlNf4iRFBkG/tcBYYVFqkvpLYzCPWMz+nc7EX1E+34chUkmVGV9zSRahIIp0X68=
-X-Gm-Gg: ASbGncvxaiREP/OIOsNtEHoQtht42mBXfYAUFM6C17ex5s/ucFWW3C3O1ZZkW2KvWKj
- CUm9SoNnD8HTJQxvV4hsOWPsytZn/e63Dx7hSCSuZ75x2qRSMvwYICOPWcL/CClTRDVHx29mhfk
- 7pm5jyVtwilH2zlW7q/eTw00dQwNojevSA/L2iCQj6+48d8h5wvzR6hAXJyVd655JiS8dDLX40C
- zFBPaIJkiXnCwJGxAanwHwOmFOGIkdtx06OC4LMTfUSQu4QYNQoGoJXJIN+mYPiKD2V2NX+kvuW
- H61S26pC8I/sDWHF+lFvPypsmDdx/TG/udEvlaESbsNhYRJpXSmCC32Vd5kPWhfzaDyC9VsckZf
- wwI+yFYvE9ttrVmmX8Haa1tvGORFti9c7XVSjyet7F/JoIBv0kluysUKJ6rY4v1ULe8iQoaHj6v
- W/2LLVbi5Vx0hh6xcnLrOTlcA0LbU9HDmfpnBPM4BAzyH29NRxWE502A==
-X-Google-Smtp-Source: AGHT+IGjNjfRNB0HQG9b6VUSHT900cQhmthYNzz5LR87uTUJ7LtKei98vBXnymZT7JWOsLhPxajb+Q==
-X-Received: by 2002:a05:600c:1d16:b0:477:7c45:87b1 with SMTP id
- 5b1f17b1804b1-4778feb78e1mr123718455e9.36.1763400958749; 
- Mon, 17 Nov 2025 09:35:58 -0800 (PST)
+ AJvYcCUzGwK5edPBLKCkQCjEA6qUOkxW2aJWnpmgywwCk1aSl7HjwZTTG5DJKLGuga0J8jj+sksTZbmLSsNP@nongnu.org
+X-Gm-Message-State: AOJu0YxwQhnux5kABGvmrLKMzY34q/O7+OjP/Vb73uY9t3AoVKpGBb9u
+ zcoI7SqbqPwAH7Lk3XSM9vGvouSN7xz7XYXxTie9/Q3qjfj6yMIy4rDE/6XepfUDK1o=
+X-Gm-Gg: ASbGncsM5Rl/boixsNbPah9EJN2Pl6IRSA5c6Z9B2yaEeMY6tmQRib1S9op8fWJBRbH
+ gBwPdOWUYT8F7vp8JpIaSPHB1uh42UCxxoGFtAKU3nIMoGr13ZDvhEShh8KVelCTYd/J39PlZx3
+ zcz+waNtff0UMmFsr85a2/I/1FBvJqV8vwIXPeHEkQxy7m0c+k+1klhYalm6Gz92I8W7tzRnYER
+ ETJ1APxAENo/9EYyDC8GVPA3cm1owq38WcGNJzHgqcTv57IAbzhjsRUfAelMuFaFzejTJNVNO75
+ 8YnEbK/TADYc/xSVmoOu8Utj47ksZTM668YHETMMPplVpQELLocU8ItvCmgv9tf1Y/RwVLwMcZR
+ d06bARycJgMW3XsiLOG6/NVLZa75kuxD0Qj58mn0fbgSdFSwt/Xh3dl+DMQl+X93nuGff6mE4kJ
+ Gp6ViGLHjApUo3ouc07RNKxlvvP4ATcdHd6BCQtlw+EYE=
+X-Google-Smtp-Source: AGHT+IHzvHiltbSh+gRdd7UpK2tEJxYOagNBCdGQbobndfwA7mk3TsZiZLP782qcHt5F9FB04lxoYQ==
+X-Received: by 2002:a05:6000:1a8d:b0:42b:3d93:9a27 with SMTP id
+ ffacd0b85a97d-42b59385c46mr13314242f8f.36.1763400987775; 
+ Mon, 17 Nov 2025 09:36:27 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a04157c2sm90943175e9.1.2025.11.17.09.35.57
+ ffacd0b85a97d-42b53e7ae88sm26918085f8f.6.2025.11.17.09.36.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Nov 2025 09:35:58 -0800 (PST)
-Message-ID: <ec0655e9-9ade-4d9a-a6c0-19d40a2dd679@linaro.org>
-Date: Mon, 17 Nov 2025 18:35:57 +0100
+ Mon, 17 Nov 2025 09:36:27 -0800 (PST)
+Message-ID: <cf9bbaab-177b-43ce-a993-9f5157c4b773@linaro.org>
+Date: Mon, 17 Nov 2025 18:36:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] Hexagon (target/hexagon)
- s/gen_log_pred_write/gen_pred_write
+Subject: Re: [PATCH 3/4] Hexagon (target/hexagon)
+ s/gen_log_vreg_write/gen_vreg_write
 Content-Language: en-US
 To: Taylor Simpson <ltaylorsimpson@gmail.com>, qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, matheus.bernardino@oss.qualcomm.com,
  sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com,
  richard.henderson@linaro.org, ale@rev.ng, anjo@rev.ng
 References: <20251114230013.158098-1-ltaylorsimpson@gmail.com>
- <20251114230013.158098-3-ltaylorsimpson@gmail.com>
+ <20251114230013.158098-4-ltaylorsimpson@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251114230013.158098-3-ltaylorsimpson@gmail.com>
+In-Reply-To: <20251114230013.158098-4-ltaylorsimpson@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,16 +106,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 15/11/25 00:00, Taylor Simpson wrote:
-> The function doesn't "log" anything, it just generates the write
+> Note there are two functions impacted
+>      gen_log_vreg_write          -> gen_vreg_write
+>      gen_log_vreg_write_pair     -> gen_vreg_write_pair
+> These functions don't "log" anything, they just generate the write
 > 
 > Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 > ---
->   target/hexagon/gen_tcg.h                    |  4 ++--
->   target/hexagon/genptr.h                     |  2 +-
->   target/hexagon/genptr.c                     | 14 +++++++-------
->   target/hexagon/idef-parser/parser-helpers.c |  2 +-
->   target/hexagon/hex_common.py                |  4 ++--
->   5 files changed, 13 insertions(+), 13 deletions(-)
+>   target/hexagon/genptr.c      | 8 ++++----
+>   target/hexagon/hex_common.py | 8 ++++----
+>   2 files changed, 8 insertions(+), 8 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
