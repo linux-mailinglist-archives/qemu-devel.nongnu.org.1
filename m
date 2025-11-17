@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1847C62EF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 09:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D246C62F55
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 09:48:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKuop-0008UU-4Q; Mon, 17 Nov 2025 03:42:40 -0500
+	id 1vKuu0-0003pn-8W; Mon, 17 Nov 2025 03:48:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1vKuok-0008Ta-T9
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 03:42:34 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1vKuoj-0005ws-43
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 03:42:34 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-640fb1e568bso642348a12.2
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 00:42:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1763368950; x=1763973750; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Llcd3b0Po9TbQEb5FIMi4qpEZzxnXTdZUt0wCS68+qk=;
- b=R2L16N7Vr87sQdJCx3fK0Z5QrZBOaHtxx9bri336nNM20CEBRUIjEjFSChj3IkudEc
- oO/QjCo4iocPoUKdpGWaW+tRUxPg5S0pFioZSnLgSexmYS4qgPBODRIyuGZIEMYYdJqv
- 5g15vhc/kCYpmVvunmsbd4TG4GenJCiIf5iJ6BC5V9uhmOLB+e1CGsBWm3sFpXD7gUTL
- v5YQ/zR6VYCZ/GM8JX77aH4hsA6QHMsy8Y2ZZDLnBoeXJz3jjmNnWgq3qzDrgwPdW+1x
- bzEouZURusg+gb4EabW3asyQZNSEdLRBCygwoqTms+CgXqmp2bcsDjo0pn7edjx8/zd8
- olMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763368950; x=1763973750;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Llcd3b0Po9TbQEb5FIMi4qpEZzxnXTdZUt0wCS68+qk=;
- b=aiQLW80EjBIWHXKFQ2tr6kwOsFBEdGSz9TQ11ZAZjqcTZnyvyWKmWpJIvtlrAQz92U
- UewHtwVmgwQKG9TJb3DxRI2yaFDc5o6E4Kj9eyp7SypphfrJNGlud4/lXs0ZdsSb96uO
- XsGNF6dC/WpjUZzEtE6K3duYZdF7iNKWhKBviOv4wkGf8gNMcnl50ngh3FymEzWpahYE
- kt0ROjm+GqR+ptSJLRdE53gcl+Etd/SIG4CLUxJ+jk8Nw+IvttuSgh4XDG3LUeKHZQwu
- RNH+LYxewnP16DNWorgmAYucFV+RzOdBWM4No0p4Ha4monF8Q9ixI0CT9QJLlCqVonge
- tqoQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVfr3+xhheMrfD/7OAfV1Dv3l66gZVrmbvdAFjP+rZ1nqcxOLZg7PXaQTdKVlyE6n3nFvD1io3lRldD@nongnu.org
-X-Gm-Message-State: AOJu0YyE/6KpVyIReutcRZd1M+CQ+4NtD9CslXIQNRp8nmKx3SPscIBR
- aK/QNn5cz0tOpsFFw3dNhp3pZgtBmwMYqL2/CPueZpEGSv0Sn/uCu3zP/T1qk+H0NT04d3PYcQh
- +KgVJ/P8DBvRMSP2UO1Z9yaeVtdVeTqoXDnIsxOW1eQ==
-X-Gm-Gg: ASbGncuKxetzimkHD7PXgWnnfEHieCOQ3Ohie7oI3e3PJ+HNsBd8+zcLxZ21BR94yuZ
- wKoK2r8ycmEddXTyBajsG1uNZITllEsfBLPDQL1C4jEuYF2kJz3pfTiteOP3HM1dLkwmOOjZdva
- S7Bytyy3kg66q9h5qqCm43wRkFQYzmn6tMd6FMdgYO6CIqFww7Lo+gB0Rr7Gqmi0wSU7LbnLAKI
- fs0L/xFCHHdhk4JuRiRkMm//z+KfXPywRurJoE5SMTVJYGzTiwbZi5/txQ1jAXTqATpqNebOrug
- AN12qg==
-X-Google-Smtp-Source: AGHT+IFAW/Gd8S4+6WMPzH+eT1ywln6dLYD3zeUN9Z7qPKBY05pwutBWSPtRU1M3k1ZW0beAc8REETGcEMqf5MUx3S8=
-X-Received: by 2002:a05:6402:50c8:b0:640:baf7:7975 with SMTP id
- 4fb4d7f45d1cf-643515912bamr5757111a12.6.1763368950201; Mon, 17 Nov 2025
- 00:42:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vKute-0003eu-2X
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 03:47:42 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vKutZ-0006ze-Bc
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 03:47:34 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id EBF3E16AB4F;
+ Mon, 17 Nov 2025 11:47:28 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id BEE9C31D942;
+ Mon, 17 Nov 2025 11:47:29 +0300 (MSK)
+Message-ID: <b3d94838-8484-457e-ada4-8ed3c5b38f8a@tls.msk.ru>
+Date: Mon, 17 Nov 2025 11:47:29 +0300
 MIME-Version: 1.0
-References: <20251021053309.208957-1-jinpu.wang@ionos.com>
- <637696ee-f0a4-4e35-b281-0bd0b1089b09@tls.msk.ru>
-In-Reply-To: <637696ee-f0a4-4e35-b281-0bd0b1089b09@tls.msk.ru>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Mon, 17 Nov 2025 09:42:16 +0100
-X-Gm-Features: AWmQ_bmI4hWdQTsp--q3aO_-L85125P2MmyGEpkLigJ9ZWytOywjj0hikU7WdSo
-Message-ID: <CAMGffE=hb3Og+NBA4gN5bG7Wpi7EM10JX-jPx0jBHpxDNdojbw@mail.gmail.com>
-Subject: Re: [PATCH] qmp: Fix a typo for a USO feature
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: mst@redhat.com, qemu-devel@nongnu.org, yu.zhang@ionos.com, 
- "qemu-trivial@nongnu.org" <qemu-trivial@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: permerror client-ip=2a00:1450:4864:20::52f;
- envelope-from=jinpu.wang@ionos.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] virtio-gpu/next - misc fixes and MR handling
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20251014111234.3190346-1-alex.bennee@linaro.org>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20251014111234.3190346-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,46 +109,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 17, 2025 at 9:38=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
->
-> On 10/21/25 08:33, Jack Wang wrote:
-> > There is a copy & paste error, USO6 should be there.
-> >
-> > Fixes: 58f81689789f ("qmp: update virtio feature maps, vhost-user-gpio =
-introspection")
-> > Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
->
-> It looks like this patch has been forgotten.
-> I can push it through the trivial-patches queue
-> if you like.
->
-> Thanks,
->
-Hi Michael,
+Hi!
 
-Yes, that sounds excellent. Please go ahead and push it through the
-trivial-patches queue.
+2 changes from this series has been applied to the master branch:
 
-I agree the typo should be fixed regardless; I haven't had time to
-look into the FEATURE_ENTRY macros in detail yet.
+  9f714c4b20 hw/display: add blob map/unmap trace events
+  0c6d6d79a5 ui/gtk-gl-area: Remove extra draw call in refresh
+
+but the rest weren't.  And it looks like some are worth to be
+considered at least.
+
+Alex, maybe you can refresh the series and re-send?
+We're entering feature freeze stage with 10.2..
 
 Thanks,
-Jinpu
-> /mjt
-> > diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-> > index b338344c6cca..968299fda0c9 100644
-> > --- a/hw/virtio/virtio-qmp.c
-> > +++ b/hw/virtio/virtio-qmp.c
-> > @@ -299,7 +299,7 @@ static const qmp_virtio_feature_map_t virtio_net_fe=
-ature_map[] =3D {
-> >       FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-> >               "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
-> >       FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
-> > -            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
-> > +            "VIRTIO_NET_F_GUEST_USO6: Driver can receive USOv6"),
-> >       FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-> >               "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
-> >       FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
->
+
+/mjt
+
+On 10/14/25 14:12, Alex Bennée wrote:
+> I still have a number of patches that addressed a lock-up but were
+> never merged due to objections. However there is a bunch of discussion
+> around re-factoring the MemoryRegion code so I'm re-posting with an
+> additional functional test which demonstrates the lock-up is fixed.
+> Whatever the final solution for more cleanly handling the binding
+> between MemoryRegions and blobs it will at least need to pass the
+> test.
+> 
+> Blob memory issues aside I'll send a PR next week to merge the
+> per-head and ui/gtk-gl-area changes.
+> 
+> Discuss,
+> 
+> Alex.
+> 
+> Alex Bennée (4):
+>    system/memory: add memory_region_finalize tracepoint
+>    hw/display: add blob map/unmap trace events
+>    hw/display: re-arrange memory region tracking
+>    tests/functional: add GPU blob allocation test
+> 
+> Andrew Keesler (1):
+>    Support per-head resolutions with virtio-gpu
+> 
+> Dongwon Kim (1):
+>    ui/gtk-gl-area: Remove extra draw call in refresh
+> 
+> Manos Pitsidianakis (2):
+>    virtio-gpu: refactor async blob unmapping
+>    virtio-gpu: fix hang under TCG when unmapping blob
+> 
+>   qapi/virtio.json                          | 10 +++-
+>   include/system/memory.h                   |  1 +
+>   hw/display/virtio-gpu-base.c              | 10 ++++
+>   hw/display/virtio-gpu-virgl.c             | 62 +++++++++++--------
+>   system/memory.c                           |  5 ++
+>   ui/gtk-gl-area.c                          |  1 -
+>   hw/display/trace-events                   |  2 +
+>   system/trace-events                       |  1 +
+>   tests/functional/aarch64/meson.build      |  1 +
+>   tests/functional/aarch64/test_gpu_blob.py | 73 +++++++++++++++++++++++
+>   10 files changed, 138 insertions(+), 28 deletions(-)
+>   create mode 100755 tests/functional/aarch64/test_gpu_blob.py
+> 
+
 
