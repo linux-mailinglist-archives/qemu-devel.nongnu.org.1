@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53219C65028
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 17:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E782FC64FC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 16:54:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL1eo-0000cL-P1; Mon, 17 Nov 2025 11:00:47 -0500
+	id 1vL1VD-0003xu-UQ; Mon, 17 Nov 2025 10:50:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vL1e5-0000WY-QD
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 11:00:08 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1vL1US-0003eN-8A
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:13 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vL1e0-0001QC-Oz
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:59:59 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-42b3d7c1321so3214322f8f.3
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 07:59:55 -0800 (PST)
+ id 1vL1UO-0007zd-SD
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:02 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-429c48e05aeso2685217f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 07:50:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763395194; x=1763999994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763394599; x=1763999399; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MzjPz1y4BgxoUVJItsec9f9h6jjJhOZ9mjrKjQy+bwc=;
- b=cA28D4rZJzwevs9r8lKwdulzW2l0P3rmlxisLdLHa7VHB6rpOVyYnu5jDDziSGHnFf
- ZgYML/Finr27smRyMrUax1+PUD77Wi0Ha68yl93wGFGnmoXlH79RJ/94qplTnYrQniH/
- 1Mw4Z+y+wb1NkXhroT/njmD/ijxmtHmUnI/khIdT6T47sf6TTVoqvDPSbrqJKfYsAR7g
- LeH51KyQLaCi4bLP74uNXZ5WCGq2U1T0uX01ajTiCU8Hq6yUuljGysUUmLw1l07xKS3H
- jvVZouE8GFB8m/SzX4ifEUF0+FhYfPWp7R1Dyt10pbT5xku5iI1gnCthhAwdc+dvncqm
- WWbQ==
+ bh=ZxOA8K37oMKBuFRoD1DV4AZeTuJKB37x4dFLBjKeJfc=;
+ b=vP7SLwLF63FYAe77ylm252FZGsrvyjdFouGsqd0rPzgE+t2DrCUd6nhvMpOlyrlRf1
+ wZSmkqWy/oOiZqu0UyluGj8IOZE7MPmI/0O8Yskg6smtCD6dnoWkcZ6B1Lb1izncbV0z
+ ka6wRSXnTVVtZKphumzjMGJb0vgnFmZ/0vDHwuHbrlZPt1qHdAmYyW4VjXOTduEe7st1
+ ECy0cl3dl/8Wi+/4ySwG4V0hyiysXhD+eXmAHy3JADbtmqr3FUHKwhZRNJLJf/MP4pXj
+ zpDucjhp5a8R4ihsen46Lr+19Ui9Dalr7GeL6eVcuonxZTTjRUsldOyrs4sbSjKUV9oZ
+ 58Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763395194; x=1763999994;
+ d=1e100.net; s=20230601; t=1763394599; x=1763999399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=MzjPz1y4BgxoUVJItsec9f9h6jjJhOZ9mjrKjQy+bwc=;
- b=nhsWnzuEd9KO7zgmd7nA81Am5RyuxZF4KZsM+1oflu3bB+jUVOUYnDbz+CRTPGpjP0
- 8tyIBDOD8y1pzWgZEYGDwZoP4AkexWmL2L4wjEHJKZysRUbQgJJM+uRlRznecJCMg2nh
- +ihzFwRk9EskCv7MaFpXjJdnnF0IkNL6UgfhPpuLJGLNZr6QE8FKQ6ZcrLOXPVhqv8Az
- kn7kOwy3BXcPx6i2w8rprTF3ErjnWs36BLHJwElslvTtE6EytH/SQF1kaUZybQahUr1d
- Z6BIGuggZ/LycoM37AAzIAv7C82fJ44oktTlWuyRtxLXUSZ+UKu/jMjaoC1LtXd7kW3i
- fo6w==
-X-Gm-Message-State: AOJu0Yz6q7WfXIT/3OkHpolSaqYrezoVDraDVEGIlotuUW6Awujii/ig
- IGyp2nC5adSOLXTwDdCb3CBFtup/a4qJ+JTuVa3G5N143OPxbWlLWuaSdNUGnubJwJ0=
-X-Gm-Gg: ASbGnctKxvX+54u85/HUkIQVpYJhYhqOGNjn/LYTV59hwjiQSnbvAvF3AIN7wGSVsQN
- AEYDTQe1OQ4sq0rOb0uCVjU4+1xywQpoDoNUdmHLXycRslzQdALYWXkMc7gxs6NVfDbATeapXjd
- 8fgCjytpflLZNzJ1yuNV5dbvqk1jsZhFO6yspA06+ijU93W9qolC5sZxBZEj/T8VC7HFBmBub+X
- m1QA+nKb9a4YLTUHhpGmWig65D6HJFA8zSdftEXyKMki1nC/zw/3G6UBri3Knecq4c+8ZoGZlLN
- dqZqoQrax9QQZDo+E4lzlgXW8NTeGLp1CXqpiUNyQghAbYJhe+uEkK2gqtNymCEtxWMl6+pPvNM
- ldQt6t6hxgI0AbXdKr0FGSo2C+LdboEqAkXuR40BfouZix8/cKdSooIGBPn1qA/SxuKxoPh2JCr
- mz
-X-Google-Smtp-Source: AGHT+IFHU1TSSgy+Jf4uGqlkYA/+l54edUsn9Abnhr8rqmdri4O1aouGZ1an2CDtoCLICXzkjiKJ5w==
-X-Received: by 2002:a05:6000:178a:b0:42b:2ea5:61b6 with SMTP id
- ffacd0b85a97d-42b593951e4mr12960995f8f.46.1763395193741; 
- Mon, 17 Nov 2025 07:59:53 -0800 (PST)
+ bh=ZxOA8K37oMKBuFRoD1DV4AZeTuJKB37x4dFLBjKeJfc=;
+ b=G6ziGvw4atcWj2jIz2+rcJx112kBEY1/9T7EPRNT4/KlhhxSE5iAN4fCSv3a/iRt6E
+ Ef+iAQ0mZSMef4UUrFNp7b6RlCZDtkvdtEnfKboiZv1j9SR19BEoSEb+onXxP3aGrpyS
+ tDXK3HKUdLZav67TvkHgxC1oXtTKbhivskk0gm9aWVajRt/nnWKNbww4YkCHUDKt4zIt
+ 6j4rFV8Xr1F9y+7e3lEljug8R6Q8g6XdzBV4/OlEFyHEnD/McUZxLyg076A9Kb6oK1JX
+ b3RSChj4zN5m6cKrcOTYAtsEs2JOlNk54KnaZM440rEgkF2aHUYxCWSnKEvredK8bzL6
+ mRxQ==
+X-Gm-Message-State: AOJu0YzwsDkhrvo/7lT1azZvlc7k+BhKDu5v5untUXtXMszqHE0WOI7q
+ hFD9iux0BuNYIUudX8ySv7CYaX07aWuGX56XQyX5EzmSIYZNjcZQg9djtRbCV2Wf7mo=
+X-Gm-Gg: ASbGncsF22tIgm1233WIYdXPWku+stmz4cS6gAiAW5h1orJzGuNEKYDXICcxL/g2fBm
+ oGzf1RUjAeKugjRbTmSBB/DffdKOibuPJ+mSLChkn7qSQGOqZjA5e9/tftazsBz9uxY+N9DRUwi
+ fWyskYikJjoYYYmo0dgw2I+UiIkYrfsefAXvqDSmG8DpcBXRLt3DoqgjZlYFNb2fglRROBQhalO
+ gJq7AkOxeTSD8qN5WiVsgdVWXi0LuWxv51ceadEHIBjip61/pxfAYyYQbNqYimRwEJyEyuJOFM7
+ Jrqzk0RW4Q2Xup5WwQr9L9rPrDYiTD1Fe+5rNzXpUhgNLCYzZDlm3095nFp+hNwjjwlhFh7Dkq1
+ L1TMAQu+yHzHSN2UpRalt65oEmc9772i7QETfFDI3GQuEl0t+AuX5jA+BW5f3402HkeCOHcx8H9
+ 2dY1d/gyHjvZg=
+X-Google-Smtp-Source: AGHT+IGex0etjWIWHBLeOVUlCxQjYIFklNqCi9KLBU7jereDCv8koUq3JttyTd2LSdqyBeSR6kN19A==
+X-Received: by 2002:a05:6000:2911:b0:429:cc35:7032 with SMTP id
+ ffacd0b85a97d-42b52821778mr17468407f8f.23.1763394599212; 
+ Mon, 17 Nov 2025 07:49:59 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f17291sm26858933f8f.32.2025.11.17.07.59.52
+ ffacd0b85a97d-42b53f0b617sm26577444f8f.31.2025.11.17.07.49.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Nov 2025 07:59:52 -0800 (PST)
+ Mon, 17 Nov 2025 07:49:56 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E80B75FC43;
- Mon, 17 Nov 2025 15:49:49 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 0B0AD609CA;
+ Mon, 17 Nov 2025 15:49:50 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 16/18] gitlab: make custom runners need QEMU_CI to run
-Date: Mon, 17 Nov 2025 15:49:45 +0000
-Message-ID: <20251117154948.4122164-17-alex.bennee@linaro.org>
+Subject: [PULL 17/18] gitlab: make the schedule rules a bit more general
+Date: Mon, 17 Nov 2025 15:49:46 +0000
+Message-ID: <20251117154948.4122164-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251117154948.4122164-1-alex.bennee@linaro.org>
 References: <20251117154948.4122164-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,60 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In addition to not being triggered by schedule we should follow the
-same rules about QEMU_CI. One day we may figure out how to fold the
-custom runner rules into the .base_job_template but today is not that
-day.
+By default no jobs should run under the schedule and then we can be
+more explicit for the ones that we need to. Otherwise I trigger all my
+custom runners every time I do a scheduled run.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251117115523.3993105-17-alex.bennee@linaro.org>
+Message-ID: <20251117115523.3993105-18-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-index 40b1f408f90..23b188dc72b 100644
---- a/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-+++ b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-@@ -11,6 +11,10 @@
-     - ppc64le
-   rules:
-     - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-+      when: never
-+    - if: '$PPC64LE_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule" && $QEMU_CI == "1"'
-+      when: manual
-     - if: '$PPC64LE_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule"'
-   before_script:
-     - source scripts/ci/gitlab-ci-section
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-index c8adb8171c0..98d99193457 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-@@ -11,6 +11,10 @@
-     - aarch64
-   rules:
-     - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-+      when: never
-+    - if: '$AARCH64_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule" && $QEMU_CI == "1"'
-+      when: manual
-     - if: '$AARCH64_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule"'
-   before_script:
-     - source scripts/ci/gitlab-ci-section
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml
-index fb093d05b5d..efa8252d948 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml
-@@ -11,6 +11,10 @@
-     - s390x
-   rules:
-     - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-+      when: never
-+    - if: '$S390X_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule" && $QEMU_CI == "1"'
-+      when: manual
-     - if: '$S390X_RUNNER_AVAILABLE && $CI_PIPELINE_SOURCE != "schedule"'
-   before_script:
-     - source scripts/ci/gitlab-ci-section
+diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+index 60a24a9d14d..921c5620008 100644
+--- a/.gitlab-ci.d/base.yml
++++ b/.gitlab-ci.d/base.yml
+@@ -45,8 +45,8 @@ variables:
+     - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_TAG'
+       when: never
+ 
+-    # Scheduled runs on mainline don't get pipelines except for the special Coverity job
+-    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_PIPELINE_SOURCE == "schedule"'
++    # Scheduled jobs should explicitly enable the run in their job rules
++    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+       when: never
+ 
+     # Cirrus jobs can't run unless the creds / target repo are set
 -- 
 2.47.3
 
