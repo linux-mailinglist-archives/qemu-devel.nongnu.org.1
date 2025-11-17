@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5C2C63F21
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B0EC63F66
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:57:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKxpY-0008HV-HD; Mon, 17 Nov 2025 06:55:36 -0500
+	id 1vKxpZ-0008Iv-Rg; Mon, 17 Nov 2025 06:55:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpV-0008Fz-6I
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:33 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1vKxpW-0008Gd-IL
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:34 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpQ-0005fe-66
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:32 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-47775fb6c56so44802585e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:27 -0800 (PST)
+ id 1vKxpR-0005g7-MT
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:34 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-429c82bf86bso2368159f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763380526; x=1763985326; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763380528; x=1763985328; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VpUKmfaEKTlNTNJSKD1xW90pGm4ku3I0sxc5dq5csXU=;
- b=XColfPAHCz2o+4MDADE3EsBAGR7G+noDxhlI7VlU01OpC17gUAALpieifdDAjefuoj
- PbixPApiNWM9yGq1C9oQa30xjuqgJ02sWcYjedk10JIYgUmfpl9+lPTzjgOFyq58XmwW
- xmeeMPksduGKEfSDi6nsI/9oEX/mk7Kb/iqj9rJTnJlRzQLbVdVJBVxDk+TU7I/4kOhI
- k3IlvF6Qs33YdQd8g5/cUNyYHI+haMeh5EBFVnCvjWObSXeO6cmAH/bZuptxdx0r9uKP
- iYb7ZOtJXHoVJF9D6Cm0tif4miIcfcOlykGC5eD+GtglHEjgdGLaM95Bs698vbmmhqtD
- OOhw==
+ bh=7imAwaQy0BQ8L3TxMse2wLX0e+hZkTXypY3zi1UG2Ps=;
+ b=PgOLyeNniz6Yqfk+X80z5hGLzU4EU5ldEOWj/Kpxqdlls0JUNdGyiSj2IR4fm1xHFv
+ R6SBLsHg3VPh11YpCq2PKtcPTflUhC77aLJDJkeg9o+6vHACA6TaEsXfNOXaG/ZloCPV
+ IfYtxW8gkvmRbQ2D8niEKgD3NfVAlEWV0u2z/erkcWmRlaC3Ou/ERdpqL1Abp9mcAClr
+ fUvOgLOWPMjttMdTQhpsPACB5mjXkw2TqTZGPfiO+m5YWfYVltLInnr+/dId9ZzcVcKV
+ yTRRmuOsqmLNvuLZHhzJNHXhRse6KTfAEp0AJ+DtS3zjAxv7qwtHNxRD2bsmaCmulJf+
+ 8tTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763380526; x=1763985326;
+ d=1e100.net; s=20230601; t=1763380528; x=1763985328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=VpUKmfaEKTlNTNJSKD1xW90pGm4ku3I0sxc5dq5csXU=;
- b=XfC0RhSmJBRdj43lZIo6ECGGDgborGInyTEibaPqdKppDTM4FqDR0mfibMAKXTa2eV
- HbXQb4R/LNPkN25B/Y5unCQ3vLcE7HcpM8DwTz1rZO8/2XyhUexXz+gRBLa6o4fhUcvC
- oXrvFG0wyDv4mhMXI+OC7LHPZ59760XfM4HzCYi5IxYwggJKD4legwQcuCDep0QVwwnU
- 6zYQC1xf1CTdiAMdAo1kY8kUF4oqWgZn4s8DSj0d0QIM7/K6Oa4J3UT+sAyp/HaVlYp0
- qjcaBDrXCo/KF/KWcCwXSVTZdppdF7HDceIQLd2K0Gh4P8NPrGi0BCvBn+En3KeLyIla
- bOTA==
-X-Gm-Message-State: AOJu0YzomTDcB9/EDUg2PtVGtlId2QrFTCt4rPFiafKssqz6fPBiMCTx
- limwcNldvMgXt0kXt0xi3Wk4Q2Zk5aPLyNLEk+GaLRfc+Gb/Psy/CjVwnVbPqFrTtyI=
-X-Gm-Gg: ASbGncvs0j9jrWeINY/lDtzetU83k6uEXcNpsmdGoRP0laX+SOSYEU9rq9mxy5D7ChU
- uXyrr8leAmfa7q7A5EVa/zPjOROwFU1N1Q0VBk6oZBWx+ZjNAxBZ2Htte976x5ACXYnJaZVCNHG
- 25MIPMMnjZJ83mYBDr3wVBvDNLORZ2KJFLfvTLmXq8Pxjhi8s4oi5X+SO3jGBzxNmLQq9pIY0mY
- +5d7NKKbv7z2bopyg4We905uKNTkc7fPvd4QTee82sZpfA7biwj9eL9i5x133wIsELCF2C4g+1+
- Wo6XUlEBxF//aWUuhEfJPlIBhlLDma4qKYiyvBXtTK6uY+ri2m/1spJ9ufgcUh7gSDTTdtYfSb9
- 3wQH3kHZCKmT7zrMz1lU7OklzNqlY7wWSf4fkhNRp/EsO5Zg76orcFEFhaIiWec9+3Xi0yu8Ovm
- cj11HurKZ57f5hxZAXocCoZA==
-X-Google-Smtp-Source: AGHT+IGB3c3p5OwcxanqbiTXrKNXErlBsAu9cBDWko/AAsOGJwtgBBqt0G3G36SomlhiDBroekbJwQ==
-X-Received: by 2002:a05:600c:8b43:b0:477:6e02:54a5 with SMTP id
- 5b1f17b1804b1-4778fe6098dmr113707505e9.18.1763380526476; 
- Mon, 17 Nov 2025 03:55:26 -0800 (PST)
+ bh=7imAwaQy0BQ8L3TxMse2wLX0e+hZkTXypY3zi1UG2Ps=;
+ b=wMCfOdmn9sobhffYUJUlysZTxzNWrrZjICfYWVmZfjcXiI7vvmrQJwQFQPmdetYGrk
+ fMWssc7equzHTA9WFxQ2L4tOMFuNne8EZTitFyxtYLAisCw7MTaLGCCK2u97Zob9wLWk
+ Mod9fJ/qxiyMJZ3HgpasxHtny1uENv/AyYRVGO+pCJcoLiARCcv5damYwEyxgYE8XHlc
+ Lt8xqRR2eMjV91lbss3BGGIKReWl5uzyrhKxsYhUyUQh/YECM6t14sOmvPQdtwnHBbbO
+ AZ7VJ6RIkFXAn5x/yCOc/E9bsHFuW2bOqkJXrHX5KU5pS6/1Y4QNzDtqDQevjDZ2KZJw
+ PGXA==
+X-Gm-Message-State: AOJu0YzCwmJ+nFfyVgOqCotvECh5REpq4hiHV6qKTgeS/nBWObwHbZ2N
+ pM0wXVd+MEDzkRryuv28b2CXGhvx06X+ZfFt0IJcO7So0B/xqmwpflV32+cZ5NgUyzM=
+X-Gm-Gg: ASbGncvQhGEUcXYTqK4+qMWhDSTz3C5B+Nh29Lr7TFIL7sOSTIQc8SDkS/1QBM/TRfM
+ VLhtCz+OHypiJuOtlhvIrlx9XVkVBecFb6wUE6G0yajJVaXEq3NO0Yg59aPJbieqx0W1L6Qo+wV
+ ra22DjnJtRqq9920b7b+m2wukpvoyZlk3dXXbCq0rXMhCcV3bAWChu4o3xAzaUVhtc8rDDvm3GJ
+ BlC3ypDG06t+EDlBz+oe/FT9h3oILrR8niVtHgGXpvwYU4nPFPyQ6EWixAxHL7PVq3QTrVanyXy
+ q2jCwxO2Zp4fJV67ZebyUL6yZfLgf7g5y3l9gKD0bMsMVN4SrOPDG93HnvBVkS6tRnudZAptcJq
+ IiNkC49YYJeQ6usVQ6uOQQo7RiSqaBDI+Z250gIADHrqzPb94aA120r+IQHB5vg1JPnWsLOlzjA
+ dedfR53IZZTiI=
+X-Google-Smtp-Source: AGHT+IFyhyTN20RxcBzZD+uUFPjMYnNrgvzGRYDk3hAncx6yPd7SHJ9FKHW13rswfv6s1fo/AVluEw==
+X-Received: by 2002:a05:6000:4383:b0:42b:3c8d:1932 with SMTP id
+ ffacd0b85a97d-42b59345301mr10668485f8f.23.1763380527789; 
+ Mon, 17 Nov 2025 03:55:27 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4779973ddcfsm127060875e9.15.2025.11.17.03.55.24
+ ffacd0b85a97d-42b53e85cc0sm26652257f8f.17.2025.11.17.03.55.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 17 Nov 2025 03:55:25 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 79A5E5F8C8;
+ by draig.lan (Postfix) with ESMTP id AD2A75F915;
  Mon, 17 Nov 2025 11:55:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,17 +81,17 @@ Cc: Ed Maste <emaste@freebsd.org>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 03/18] tests/lcitool: update ENV stazas outputted by refresh
-Date: Mon, 17 Nov 2025 11:55:08 +0000
-Message-ID: <20251117115523.3993105-4-alex.bennee@linaro.org>
+Subject: [PATCH v3 04/18] tests/docker: add coreutils to the package list
+Date: Mon, 17 Nov 2025 11:55:09 +0000
+Message-ID: <20251117115523.3993105-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251117115523.3993105-1-alex.bennee@linaro.org>
 References: <20251117115523.3993105-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,214 +114,327 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now lcitool has been updated to use the non-legacy ENVs we should do
-the same for what refresh adds.
+We need coreutils to run the IO tests so we need to include it in the
+package list. Now we have the latest libvirt we can do that.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251113102525.1255370-4-alex.bennee@linaro.org>
+Message-ID: <20251113102525.1255370-5-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 4 ++--
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 4 ++--
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 4 ++--
- tests/docker/dockerfiles/debian-i686-cross.docker     | 4 ++--
- tests/docker/dockerfiles/debian-mips64el-cross.docker | 4 ++--
- tests/docker/dockerfiles/debian-mipsel-cross.docker   | 4 ++--
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 4 ++--
- tests/docker/dockerfiles/debian-riscv64-cross.docker  | 4 ++--
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 4 ++--
- tests/docker/dockerfiles/debian.docker                | 2 +-
- tests/docker/dockerfiles/fedora-win64-cross.docker    | 4 ++--
- tests/lcitool/refresh                                 | 6 +++---
- 12 files changed, 24 insertions(+), 24 deletions(-)
+ .gitlab-ci.d/cirrus/freebsd-14.vars                   | 2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars                     | 2 +-
+ scripts/ci/setup/debian/debian-13-ppc64le.yaml        | 1 +
+ scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml      | 1 +
+ scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml        | 1 +
+ tests/docker/dockerfiles/alpine.docker                | 1 +
+ tests/docker/dockerfiles/centos9.docker               | 1 +
+ tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-i686-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 +
+ tests/docker/dockerfiles/debian-riscv64-cross.docker  | 1 +
+ tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian.docker                | 1 +
+ tests/docker/dockerfiles/fedora-rust-nightly.docker   | 1 +
+ tests/docker/dockerfiles/fedora-win64-cross.docker    | 1 +
+ tests/docker/dockerfiles/fedora.docker                | 1 +
+ tests/docker/dockerfiles/opensuse-leap.docker         | 1 +
+ tests/docker/dockerfiles/ubuntu2204.docker            | 1 +
+ tests/lcitool/projects/qemu.yml                       | 1 +
+ tests/vm/generated/freebsd.json                       | 1 +
+ 24 files changed, 24 insertions(+), 2 deletions(-)
 
+diff --git a/.gitlab-ci.d/cirrus/freebsd-14.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
+index 19ca0d36638..6477440ef30 100644
+--- a/.gitlab-ci.d/cirrus/freebsd-14.vars
++++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
+@@ -11,6 +11,6 @@ MAKE='/usr/local/bin/gmake'
+ NINJA='/usr/local/bin/ninja'
+ PACKAGING_COMMAND='pkg'
+ PIP3='/usr/local/bin/pip'
+-PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache4 cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 vulkan-tools xorriso zstd'
++PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache4 cmocka coreutils ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 vulkan-tools xorriso zstd'
+ PYPI_PKGS=''
+ PYTHON='/usr/local/bin/python3'
+diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
+index b039465f56f..4701c388e14 100644
+--- a/.gitlab-ci.d/cirrus/macos-14.vars
++++ b/.gitlab-ci.d/cirrus/macos-14.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 vulkan-tools xorriso zlib zstd'
++PKGS='bash bc bindgen bison bzip2 capstone ccache cmocka coreutils ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio rust sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 vulkan-tools xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/scripts/ci/setup/debian/debian-13-ppc64le.yaml b/scripts/ci/setup/debian/debian-13-ppc64le.yaml
+index e29c9c18403..25d96cea460 100644
+--- a/scripts/ci/setup/debian/debian-13-ppc64le.yaml
++++ b/scripts/ci/setup/debian/debian-13-ppc64le.yaml
+@@ -14,6 +14,7 @@ packages:
+   - ca-certificates
+   - ccache
+   - clang
++  - coreutils
+   - dbus
+   - debianutils
+   - diffutils
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+index d303411391f..6a72eabca9e 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+@@ -14,6 +14,7 @@ packages:
+   - ca-certificates
+   - ccache
+   - clang
++  - coreutils
+   - dbus
+   - debianutils
+   - diffutils
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+index 4ee8630cc43..6001da12504 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+@@ -14,6 +14,7 @@ packages:
+   - ca-certificates
+   - ccache
+   - clang
++  - coreutils
+   - dbus
+   - debianutils
+   - diffutils
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 1da375c9158..03dd6851f60 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -22,6 +22,7 @@ RUN apk update && \
+         ceph-dev \
+         clang \
+         cmocka-dev \
++        coreutils \
+         ctags \
+         curl-dev \
+         cyrus-sasl-dev \
+diff --git a/tests/docker/dockerfiles/centos9.docker b/tests/docker/dockerfiles/centos9.docker
+index ff3e8069b45..670e22be5ad 100644
+--- a/tests/docker/dockerfiles/centos9.docker
++++ b/tests/docker/dockerfiles/centos9.docker
+@@ -26,6 +26,7 @@ RUN dnf distro-sync -y && \
+         ccache \
+         clang \
+         compiler-rt \
++        coreutils-single \
+         ctags \
+         cyrus-sasl-devel \
+         daxctl-devel \
 diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index 26a39940126..c38ab8247d5 100644
+index c38ab8247d5..c386b658b04 100644
 --- a/tests/docker/dockerfiles/debian-amd64-cross.docker
 +++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -181,8 +181,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/x86_64-linux-gnu && \
- ENV ABI="x86_64-linux-gnu"
- ENV MESON_OPTS="--cross-file=x86_64-linux-gnu"
- ENV RUST_TARGET="x86_64-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=x86_64-linux-gnu-
--ENV DEF_TARGET_LIST x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=x86_64-linux-gnu-
-+ENV DEF_TARGET_LIST=x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 4b0163fa1b9..2f62da0f5eb 100644
+index 2f62da0f5eb..9d83ab7a32e 100644
 --- a/tests/docker/dockerfiles/debian-arm64-cross.docker
 +++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -180,8 +180,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/aarch64-linux-gnu && \
- ENV ABI="aarch64-linux-gnu"
- ENV MESON_OPTS="--cross-file=aarch64-linux-gnu"
- ENV RUST_TARGET="aarch64-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=aarch64-linux-gnu-
--ENV DEF_TARGET_LIST aarch64-softmmu,aarch64-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=aarch64-linux-gnu-
-+ENV DEF_TARGET_LIST=aarch64-softmmu,aarch64-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index 742031ce0a2..62e297f5d12 100644
+index 62e297f5d12..c2077ec7a2c 100644
 --- a/tests/docker/dockerfiles/debian-armhf-cross.docker
 +++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -177,8 +177,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabihf && \
- ENV ABI="arm-linux-gnueabihf"
- ENV MESON_OPTS="--cross-file=arm-linux-gnueabihf"
- ENV RUST_TARGET="armv7-unknown-linux-gnueabihf"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=arm-linux-gnueabihf-
--ENV DEF_TARGET_LIST arm-softmmu,arm-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=arm-linux-gnueabihf-
-+ENV DEF_TARGET_LIST=arm-softmmu,arm-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index 1ccfde2e4bb..eb9a915d492 100644
+index eb9a915d492..db9f04ee93d 100644
 --- a/tests/docker/dockerfiles/debian-i686-cross.docker
 +++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -177,8 +177,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/i686-linux-gnu && \
- ENV ABI="i686-linux-gnu"
- ENV MESON_OPTS="--cross-file=i686-linux-gnu"
- ENV RUST_TARGET="i686-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=i686-linux-gnu-
--ENV DEF_TARGET_LIST i386-softmmu,i386-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=i686-linux-gnu-
-+ENV DEF_TARGET_LIST=i386-softmmu,i386-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index eeb77212d5d..42e8444d153 100644
+index 42e8444d153..7758afd80aa 100644
 --- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
 +++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -176,8 +176,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/mips64el-linux-gnuabi64 && \
- ENV ABI="mips64el-linux-gnuabi64"
- ENV MESON_OPTS="--cross-file=mips64el-linux-gnuabi64"
- ENV RUST_TARGET="mips64el-unknown-linux-gnuabi64"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=mips64el-linux-gnuabi64-
--ENV DEF_TARGET_LIST mips64el-softmmu,mips64el-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=mips64el-linux-gnuabi64-
-+ENV DEF_TARGET_LIST=mips64el-softmmu,mips64el-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 9b3dca44f15..1ab197b144d 100644
+index 1ab197b144d..cba7f43870f 100644
 --- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
 +++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -176,8 +176,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/mipsel-linux-gnu && \
- ENV ABI="mipsel-linux-gnu"
- ENV MESON_OPTS="--cross-file=mipsel-linux-gnu"
- ENV RUST_TARGET="mipsel-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=mipsel-linux-gnu-
--ENV DEF_TARGET_LIST mipsel-softmmu,mipsel-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=mipsel-linux-gnu-
-+ENV DEF_TARGET_LIST=mipsel-softmmu,mipsel-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 15c6b436d31..85d2c0ffdc2 100644
+index 85d2c0ffdc2..24f946d1441 100644
 --- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
 +++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -179,8 +179,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/powerpc64le-linux-gnu && \
- ENV ABI="powerpc64le-linux-gnu"
- ENV MESON_OPTS="--cross-file=powerpc64le-linux-gnu"
- ENV RUST_TARGET="powerpc64le-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=powerpc64le-linux-gnu-
--ENV DEF_TARGET_LIST ppc64-softmmu,ppc64-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=powerpc64le-linux-gnu-
-+ENV DEF_TARGET_LIST=ppc64-softmmu,ppc64-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-riscv64-cross.docker b/tests/docker/dockerfiles/debian-riscv64-cross.docker
-index 2591c4adc96..4f01eecf416 100644
+index 4f01eecf416..f476cf65eaa 100644
 --- a/tests/docker/dockerfiles/debian-riscv64-cross.docker
 +++ b/tests/docker/dockerfiles/debian-riscv64-cross.docker
-@@ -179,8 +179,8 @@ endian = 'little'\n" > /usr/local/share/meson/cross/riscv64-linux-gnu && \
- ENV ABI="riscv64-linux-gnu"
- ENV MESON_OPTS="--cross-file=riscv64-linux-gnu"
- ENV RUST_TARGET="riscv64gc-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=riscv64-linux-gnu-
--ENV DEF_TARGET_LIST riscv64-softmmu,riscv64-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=riscv64-linux-gnu-
-+ENV DEF_TARGET_LIST=riscv64-softmmu,riscv64-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 57aa3209c5c..2a3046e7859 100644
+index 2a3046e7859..a60b4ab01d1 100644
 --- a/tests/docker/dockerfiles/debian-s390x-cross.docker
 +++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -178,8 +178,8 @@ endian = 'big'\n" > /usr/local/share/meson/cross/s390x-linux-gnu && \
- ENV ABI="s390x-linux-gnu"
- ENV MESON_OPTS="--cross-file=s390x-linux-gnu"
- ENV RUST_TARGET="s390x-unknown-linux-gnu"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=s390x-linux-gnu-
--ENV DEF_TARGET_LIST s390x-softmmu,s390x-linux-user
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=s390x-linux-gnu-
-+ENV DEF_TARGET_LIST=s390x-softmmu,s390x-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       bzip2 \
+                       ca-certificates \
+                       ccache \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
 diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
-index bbb920c6815..c1817f162f6 100644
+index c1817f162f6..6c6ab0256ea 100644
 --- a/tests/docker/dockerfiles/debian.docker
 +++ b/tests/docker/dockerfiles/debian.docker
-@@ -169,7 +169,7 @@ RUN cd /usr/src/netmap/LINUX && \
-   ./configure --no-drivers --no-apps \
-   --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \
-   && make install
--ENV QEMU_CONFIGURE_OPTS --enable-netmap
-+ENV QEMU_CONFIGURE_OPTS=--enable-netmap
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+@@ -20,6 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       ca-certificates \
+                       ccache \
+                       clang \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
+diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+index e4233b53cbe..8e3b3a9fd90 100644
+--- a/tests/docker/dockerfiles/fedora-rust-nightly.docker
++++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+@@ -33,6 +33,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                ccache \
+                clang \
+                compiler-rt \
++               coreutils \
+                ctags \
+                cyrus-sasl-devel \
+                daxctl-devel \
 diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index e6f84dd556f..1da425768fc 100644
+index 1da425768fc..4f743c00434 100644
 --- a/tests/docker/dockerfiles/fedora-win64-cross.docker
 +++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -112,8 +112,8 @@ RUN nosync dnf install -y \
- 
- ENV ABI="x86_64-w64-mingw32"
- ENV MESON_OPTS="--cross-file=/usr/share/mingw/toolchain-mingw64.meson"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=x86_64-w64-mingw32-
--ENV DEF_TARGET_LIST x86_64-softmmu
-+ENV QEMU_CONFIGURE_OPTS=--cross-prefix=x86_64-w64-mingw32-
-+ENV DEF_TARGET_LIST=x86_64-softmmu
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index df186caffe6..3a31fcfee9c 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -121,7 +121,7 @@ debian13_extras = [
-     "  ./configure --no-drivers --no-apps \\\n",
-     "  --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \\\n",
-     "  && make install\n",
--    "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
-+    "ENV QEMU_CONFIGURE_OPTS=--enable-netmap\n"
- ]
- 
- # Based on the hub.docker.com/library/rust Dockerfiles
-@@ -162,8 +162,8 @@ ubuntu2204_rust_extras = [
- ]
- 
- def cross_build(prefix, targets):
--    conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
--    targets = "ENV DEF_TARGET_LIST %s\n" % (targets)
-+    conf = "ENV QEMU_CONFIGURE_OPTS=--cross-prefix=%s\n" % (prefix)
-+    targets = "ENV DEF_TARGET_LIST=%s\n" % (targets)
-     return "".join([conf, targets])
- 
- #
+@@ -26,6 +26,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                ca-certificates \
+                ccache \
+                compiler-rt \
++               coreutils \
+                ctags \
+                dbus-daemon \
+                diffutils \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index 632259378c9..9278d797693 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -33,6 +33,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                ccache \
+                clang \
+                compiler-rt \
++               coreutils \
+                ctags \
+                cyrus-sasl-devel \
+                daxctl-devel \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index def0ca9db46..a041d439768 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -20,6 +20,7 @@ RUN zypper update -y && \
+            ccache \
+            clang \
+            clang-devel \
++           coreutils \
+            ctags \
+            cyrus-sasl-devel \
+            dbus-1 \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index c8cc6249296..23b33d6ad44 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       ca-certificates \
+                       ccache \
+                       clang \
++                      coreutils \
+                       dbus \
+                       debianutils \
+                       diffutils \
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 82812e77365..1ee7dcf3d46 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -13,6 +13,7 @@ packages:
+  - clang
+  - cmocka
+  - column
++ - coreutils
+  - ctags
+  - cyrus-sasl
+  - daxctl
+diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
+index c03e1cd5863..f586827b136 100644
+--- a/tests/vm/generated/freebsd.json
++++ b/tests/vm/generated/freebsd.json
+@@ -15,6 +15,7 @@
+     "capstone4",
+     "ccache4",
+     "cmocka",
++    "coreutils",
+     "ctags",
+     "curl",
+     "cyrus-sasl",
 -- 
 2.47.3
 
