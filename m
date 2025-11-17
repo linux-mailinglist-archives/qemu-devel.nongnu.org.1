@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98309C633F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74657C633BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvjR-0006k0-9L; Mon, 17 Nov 2025 04:41:10 -0500
+	id 1vKvjU-0006zH-3o; Mon, 17 Nov 2025 04:41:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvif-0005no-R0
+ id 1vKvig-0005o0-44
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:24 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvie-0006Kh-7R
+ id 1vKvie-0006Kp-7i
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763372420; x=1794908420;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c5dF8mqYHu7gfuP8i1UUaLzVP/filoskPLjH8SEcuq0=;
- b=WPRfdCz7o1lXyUYAvllVWcAUfPGTtgKA/dh/jE4S3n25ADs7GJTRMPgT
- Um3IqL3+eYgKzNENIb+Zi1yd+k1qMOLZPqzIhA6p/xJ2tjoFdTPGjfe4o
- hVm80qKeKzMZAkWJDGcJIUtmQl/AzdQv+PVC0mgW5f1Vt8H9FnPFF0WEc
- 3ZJJvhXg+kBvPoq2cJattgLogomsOqJnNAUI6e3pJfQs+z2Otrb4K4x/B
- NeWkCcpWiaL30m0UCJ6VyZXPHHXcmLDZVmLpfXdXotXox+79XQaBYgbdS
- gfKCH5hXhdgAGwBiRdbREe2393UthxX89jkK2ZeoKkKH9oMkJlm4hPFNK A==;
-X-CSE-ConnectionGUID: xs1dbYkoSiO+JX5tlbkhDg==
-X-CSE-MsgGUID: jmRrD09ATm245n7/eiNQmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046111"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046111"
+ bh=s8x4SQJsqM3hIZ73DiLwWQChJ2mlRt/MJGgdnOThySk=;
+ b=PNHtgrgyWanr8skw3YaU40LSDOINyJLkChmTG095PclTw9y38cIU2Xtz
+ JnYKrQ3Vyp34UlgQ3+EzpzjHXjdnzYU4EbJReWXBXQvpO2Bs+lC/qzA6J
+ iYcRh2GOvWVcT/1U7ZkZ2f/9kJ8B36O7y84smaC/zIWR/KYpHN4lPKxm4
+ 9eWKDzvfc2/CxGlVlJRWPGzQ9tc/vcdtUNq/pkJzC5FsK2urnXhEpcca6
+ op6JQyAHM9B2q/GiIFye71LKnwruhFFuohZ/moULjiVgNxsp8Wqh8yfc/
+ J0eS9ZKkspiqBn6luvRMrvtbgtg6iFkyDfUisvcFhRLXpN6Xd1d08p9BZ Q==;
+X-CSE-ConnectionGUID: ZcR/AkDmSa2sIY3iqm4lFQ==
+X-CSE-MsgGUID: J95K7EoiT4G435SEltmNVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046121"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046121"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:59 -0800
-X-CSE-ConnectionGUID: NcBbNcjMSfWlFVu4D/ZJpA==
-X-CSE-MsgGUID: zd6fFbEdQ0aBeDUOElrE6A==
+ 17 Nov 2025 01:40:03 -0800
+X-CSE-ConnectionGUID: D2ghcJ9iQnaxSeUxm0hfuQ==
+X-CSE-MsgGUID: u3tAczwUTdC1t6TTk9eR/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190071010"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190071021"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:55 -0800
+ 17 Nov 2025 01:39:59 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,10 +51,9 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 22/23] intel_iommu: Enable host device when x-flts=on in
- scalable mode
-Date: Mon, 17 Nov 2025 04:37:25 -0500
-Message-ID: <20251117093729.1121324-23-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 23/23] docs/devel: Add IOMMUFD nesting documentation
+Date: Mon, 17 Nov 2025 04:37:26 -0500
+Message-ID: <20251117093729.1121324-24-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
@@ -85,31 +84,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all infrastructures of supporting passthrough device running
-with first stage translation are there, enable it now.
+Add documentation about using IOMMUFD backed VFIO device with intel_iommu with
+x-flts=on.
 
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 ---
- hw/i386/intel_iommu_accel.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ docs/devel/vfio-iommufd.rst | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
-index 700284864d..b0242a414a 100644
---- a/hw/i386/intel_iommu_accel.c
-+++ b/hw/i386/intel_iommu_accel.c
-@@ -48,9 +48,7 @@ bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-         return false;
-     }
+diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
+index 3d1c11f175..474549903e 100644
+--- a/docs/devel/vfio-iommufd.rst
++++ b/docs/devel/vfio-iommufd.rst
+@@ -164,3 +164,28 @@ RAM discarding for mdev.
  
--    error_setg(errp,
--               "host IOMMU is incompatible with guest first stage translation");
--    return false;
-+    return true;
- }
- 
- VTDHostIOMMUDevice *vtd_find_hiod_iommufd(VTDAddressSpace *as)
+ ``vfio-ap`` and ``vfio-ccw`` devices don't have same issue as their backend
+ devices are always mdev and RAM discarding is force enabled.
++
++Usage with intel_iommu featuring x-flts=on
++-------------------------------------
++
++Only IOMMUFD backed VFIO device is supported when intel_iommu is configured
++with x-flts=on, for legacy container backed VFIO device, below error shows:
++
++.. code-block:: none
++
++    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0: vfio 0000:02:00.0: Failed to set vIOMMU: Need IOMMUFD backend when x-flts=on
++
++VFIO device under PCI bridge is unsupported, use PCIE bridge if necessary,
++otherwise below error shows:
++
++.. code-block:: none
++
++    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0,bus=bridge1,iommufd=iommufd0: vfio 0000:02:00.0: Failed to set vIOMMU: Host device downstream to a PCI bridge is unsupported when x-flts=on
++
++If host IOMMU has ERRATA_772415_SPR17, kexec or reboot from "intel_iommu=on,sm_on"
++to "intel_iommu=on,sm_off" in guest is also unsupported. Configure scalable mode
++off as below if it's not needed by guest.
++
++.. code-block:: bash
++
++    -device intel-iommu,x-scalable-mode=off
 -- 
 2.47.1
 
