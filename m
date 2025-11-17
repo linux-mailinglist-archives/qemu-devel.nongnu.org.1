@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F25C65BDA
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2071C65CAC
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:52:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL44r-0006sm-Ve; Mon, 17 Nov 2025 13:35:49 -0500
+	id 1vL4KL-0002cg-6S; Mon, 17 Nov 2025 13:51:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vL44p-0006sJ-VM
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:35:47 -0500
-Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1vL44o-0005v4-BB
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:35:47 -0500
-Received: by mail-yw1-x112a.google.com with SMTP id
- 00721157ae682-786d1658793so41952317b3.1
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 10:35:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763404545; x=1764009345; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=K73Ao705R0Dy5FBdMxo0IeNm5wVkP23X22ouQxRWOBo=;
- b=K1b2lyRDF9C/0axmtjQNmicZRb04VyO91TG7TZ3sF/pQWs5l4h6DRtAlm0dAf9pAcR
- fXtY3ef1U7jT42c5fWIqaCr+DY4UdggCaNyEDKRo2ic60P9bPfxsApG8IlznI0+4/ctR
- Z2akB//UeY6G7i2oM6bYDvcxmt6a+UJdycFGG/k8VEMjg4lzh8qHKo7EBiz0hRhy8rt6
- ZIzDD3Qs3H2R5K8jhvCm5MNdQqxvd8KfS0kRyI8sCrOWav8mB+POmstCiHTxrAy2MFTn
- yT5yqdYMBa63rviClFqijshcVpiZLQNJQhfQrjdtQovaezezaQj1tHuRmRB85RTP4hpr
- rz+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763404545; x=1764009345;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=K73Ao705R0Dy5FBdMxo0IeNm5wVkP23X22ouQxRWOBo=;
- b=SM3GpPdq0KyXFy3++Bz9zRGC+28nisldiIVY4X+GW0WYCKiiE9diFOxcRZQYYevwE5
- 2MKfNn0uv11pOBs0V20EjkFv/PoG3XAslP+Yf4Gdyh8Juq8R/MkkaDYBKeU4WF85cJ9E
- JvcBJ2D+G4yV4dOFlwLUH14uLVrm3a1Jv3DVVGgArtZGyU5GA5dCZ5uL+oAH7ch+VlOl
- XCNZtmXIztbN6R90silR15koSXh30VMP9RYQ51ApKGILJaLFwQiKh4zJrPTs0SR772ip
- XrPKOngEI1q46Xj8ZqoCT441GHYBwpT/nXi/QcP9/SJJSLBAI+UvX1CrDWBtjT2Z0lG0
- fuuQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV0iKJ6PpW6R9pgudDfwk4kXBHc3vKNfD0crMlVHjtEElGgnHXXGA68hnU6Y5We9o5R+egtAJKktJvH@nongnu.org
-X-Gm-Message-State: AOJu0Yy4sWpZoe8dvtXDGw7VpwHMLu3pT6F3urrWygTIj1SmSnternzO
- aW2GniUxwfxgjBVVuEu5RQdu4MYL/SpZ+AZfiDZogInfYddsS6wY9B3CWqRoFFzroPIShVyHl4Y
- zU+HEQTGb/BkEhRmfb3ywLjsU0O29j1U=
-X-Gm-Gg: ASbGncvy6pmnoMkRSBNHg7kPgZTKzmycrh4o5N8gyLvtSA73y2vHeYBrKojH/rF09rR
- SP+Iutf9+JX35DOBqDWJzOjBsOQCkClWPIBc/8VHkLw90Hk+7iGytFv0HWD2yiS71GHnmb6rRCY
- fcko9mYBGa+IKRXMeO7r/SzBhGHDUzuMqy5bFfLf2orHlqoZRg6uHS3YrmWti6DyUpkatO/64SQ
- vs3gepNKCkMau48ZLSauBsk/Ur/hMYISSVncVaQqL1etdYFCwDBEV507zE/v+7mkJP5FwNzq2TO
- V8NaQn4hz9B5vBpPWjOi5c7x5JQ=
-X-Google-Smtp-Source: AGHT+IHKzUuvpg714Fgo+Zdh6Dv9mPLPmmROWTXjiHyYBjT9xeTDpJd3MCNR+hTIN1nx69dtw8MKdp1ztjvWyf3c1/I=
-X-Received: by 2002:a05:690c:3613:b0:786:5471:f44c with SMTP id
- 00721157ae682-78929f1df9amr227961867b3.63.1763404544526; Mon, 17 Nov 2025
- 10:35:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4KI-0002bl-4c
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:51:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4KE-00084Z-V8
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:51:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763405500;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hRjly9qUuW80gfD02w+t21wQeZ/XgyOYiPwyKH4zVdk=;
+ b=aiTT83hULJ4ZzbNuGed/ae7RTW1eBVz/SPLj2j1YLVQnWRO2P963jdgDhx76Aw9MAqQ2Tz
+ vwOjHU3KKvZ/3yp9jl2swHMy/mygaF1B+x06wEphUt4f5Uki9FsE7OrNUbiZWmqoQuGM0q
+ LiiCTkhV3jJ1vPCMtcjeGx6BE9jnWfw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-xGnTqVQHNM25GAyeMqxZjA-1; Mon,
+ 17 Nov 2025 13:51:37 -0500
+X-MC-Unique: xGnTqVQHNM25GAyeMqxZjA-1
+X-Mimecast-MFC-AGG-ID: xGnTqVQHNM25GAyeMqxZjA_1763405496
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AE7851956055; Mon, 17 Nov 2025 18:51:35 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.81.70])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B382D180047F; Mon, 17 Nov 2025 18:51:32 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-block@nongnu.org, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 00/22] python: drop qemu.qmp from qemu.git tree
+Date: Mon, 17 Nov 2025 13:51:08 -0500
+Message-ID: <20251117185131.953681-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20251114230013.158098-1-ltaylorsimpson@gmail.com>
- <d3323b18-5822-431e-aad6-cbe4470d1a2d@linaro.org>
- <CAEqNhNYCUwK6UDXKSONA67yfmLPaSt14gtgrK26AfAQqyBopTg@mail.gmail.com>
-In-Reply-To: <CAEqNhNYCUwK6UDXKSONA67yfmLPaSt14gtgrK26AfAQqyBopTg@mail.gmail.com>
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-Date: Mon, 17 Nov 2025 11:35:32 -0700
-X-Gm-Features: AWmQ_bnkvRxB9OIyZBKxygPNwTO3DJSnMWGZ_PA8SxmhyMFt7WJIzeBfG9Pnsmw
-Message-ID: <CAATN3Nps8qxYPBHxM6NfP6qt+NSNHzhiC_C-tuK796rQG+qbAQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Clean up end-of-instruction processing
-To: Brian Cain <brian.cain@oss.qualcomm.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, matheus.bernardino@oss.qualcomm.com, 
- sid.manning@oss.qualcomm.com, marco.liebel@oss.qualcomm.com, 
- richard.henderson@linaro.org, ale@rev.ng, anjo@rev.ng
-Content-Type: multipart/alternative; boundary="00000000000078cef50643ce9dc2"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-yw1-x112a.google.com
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,56 +85,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000078cef50643ce9dc2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi, this series does a few things, but it's ultimately in service of=0D
+dropping the python qemu.qmp package from the qemu.git tree in favor of=0D
+using the standalone package instead, to prevent any further issues from=0D
+the two codebases diverging.=0D
+=0D
+Patches 1-3: Fix linting issues that have cropped up with python=0D
+Patches 4-8,12,16: Set up new python dependency targets in Meson=0D
+Patches 9-10,17: Adjust test execution in GitLab to cope with new test=0D
+                 dependency structure=0D
+Patch 11: Add vendored qemu.qmp package for isolated/offline test=0D
+          execution=0D
+Patches 13-15: Fix meson build system (Paolo Bonzini)=0D
+Patches 18-20: Teach mkvenv how to install local packages=0D
+Patch 21: Replace "make check-venv" in Makefile with meson execution=0D
+Patch 22: Drop qemu.qmp.=0D
+=0D
+There are some quality problems with Patches 18-20, but all GitLab tests=0D
+are green and this is a great starting point to discuss this series.=0D
+=0D
+--js=0D
+=0D
+John Snow (19):=0D
+  python/mkvenv: ensure HAVE_LIB variables are actually constants=0D
+  python/qapi: add an ignore for Pylint 4.x=0D
+  python/qapi: delint import statements=0D
+  python/mkvenv: create timestamp file for each group "ensured"=0D
+  python/mkvenv: bump 'qemu.qmp' dependency for testdeps=0D
+  python/mkvenv: rename 'testdeps' to 'functests'=0D
+  python/mkvenv: add "checktests" dependency group=0D
+  meson, mkvenv: add checktests and functests custom targets=0D
+  tests/iotests: Use configured python to run GitLab iotests=0D
+  tests/iotests: use "make check-venv" to prepare for running iotests=0D
+  python: add vendored qemu.qmp package=0D
+  meson, mkvenv: make iotests depend on checktests group=0D
+  meson, mkvenv: make functional tests depend on functests group=0D
+  tests: forcibly run 'make check-venv' for crash tests=0D
+  python/mkvenv: add mechanism to install local package(s)=0D
+  mkvenv: add --no-build-isolation flag=0D
+  meson, mkvenv: add qemu.git/python/qemu package to pythondeps.toml=0D
+  tests/Makefile: replace old "check-venv" target with meson target=0D
+  python: delete qemu.qmp=0D
+=0D
+Paolo Bonzini (3):=0D
+  mtest2make: cleanup mtest-suites variables=0D
+  mtest2make: add dependencies to the "speed-qualified" suite=0D
+  mtest2make: do not repeat the same speed over and over=0D
+=0D
+ Makefile                                      |    4 +-=0D
+ meson.build                                   |    1 +=0D
+ .gitlab-ci.d/buildtest.yml                    |    9 +-=0D
+ python/qemu/qmp/__init__.py                   |   60 -=0D
+ python/qemu/qmp/error.py                      |   53 -=0D
+ python/qemu/qmp/events.py                     |  751 -----------=0D
+ python/qemu/qmp/legacy.py                     |  339 -----=0D
+ python/qemu/qmp/message.py                    |  217 ----=0D
+ python/qemu/qmp/models.py                     |  146 ---=0D
+ python/qemu/qmp/protocol.py                   | 1101 -----------------=0D
+ python/qemu/qmp/py.typed                      |    0=0D
+ python/qemu/qmp/qmp_client.py                 |  732 -----------=0D
+ python/qemu/qmp/qmp_shell.py                  |  689 -----------=0D
+ python/qemu/qmp/qmp_tui.py                    |  665 ----------=0D
+ python/qemu/qmp/util.py                       |  150 ---=0D
+ python/qemu/utils/qom_fuse.py                 |    1 -=0D
+ python/scripts/mkvenv.py                      |   35 +-=0D
+ python/scripts/vendor.py                      |    2 +=0D
+ python/setup.cfg                              |   32 +-=0D
+ python/tests/minreqs.txt                      |    8 +-=0D
+ python/tests/protocol.py                      |  596 ---------=0D
+ python/wheels/qemu_qmp-0.0.5-py3-none-any.whl |  Bin 0 -> 72263 bytes=0D
+ pythondeps.toml                               |    7 +-=0D
+ pyvenv/meson.build                            |   34 +=0D
+ scripts/mtest2make.py                         |   41 +-=0D
+ scripts/qapi/commands.py                      |    5 +-=0D
+ scripts/qapi/introspect.py                    |    2 +-=0D
+ tests/Makefile.include                        |   25 +-=0D
+ tests/functional/meson.build                  |    7 +-=0D
+ tests/qemu-iotests/meson.build                |    2 +-=0D
+ 30 files changed, 116 insertions(+), 5598 deletions(-)=0D
+ delete mode 100644 python/qemu/qmp/__init__.py=0D
+ delete mode 100644 python/qemu/qmp/error.py=0D
+ delete mode 100644 python/qemu/qmp/events.py=0D
+ delete mode 100644 python/qemu/qmp/legacy.py=0D
+ delete mode 100644 python/qemu/qmp/message.py=0D
+ delete mode 100644 python/qemu/qmp/models.py=0D
+ delete mode 100644 python/qemu/qmp/protocol.py=0D
+ delete mode 100644 python/qemu/qmp/py.typed=0D
+ delete mode 100644 python/qemu/qmp/qmp_client.py=0D
+ delete mode 100644 python/qemu/qmp/qmp_shell.py=0D
+ delete mode 100644 python/qemu/qmp/qmp_tui.py=0D
+ delete mode 100644 python/qemu/qmp/util.py=0D
+ delete mode 100644 python/tests/protocol.py=0D
+ create mode 100644 python/wheels/qemu_qmp-0.0.5-py3-none-any.whl=0D
+ create mode 100644 pyvenv/meson.build=0D
+=0D
+-- =0D
+2.51.1=0D
+=0D
 
-They are based on this one
-commit bc831f37398b51dfe65d99a67bcff9352f84a9d2 (origin/staging,
-origin/master, origin/HEAD)
-Merge: 76929d6117 7dbe2d7df0
-Author: Richard Henderson <richard.henderson@linaro.org>
-Date:   Tue Oct 28 11:48:05 2025 +0100
-
-They also apply cleanly to Brian's hex-next-express branch.
-
-What error are you getting on your end?
-
-Thanks,
-Taylor
-
-
-On Mon, Nov 17, 2025 at 10:08=E2=80=AFAM Brian Cain <brian.cain@oss.qualcom=
-m.com>
-wrote:
-
-> Maybe they're based on the other commits on my tree which are queued for
-> inclusion after 10.2?
-> https://github.com/quic/qemu/commits/hex-next-express/
->
-
---00000000000078cef50643ce9dc2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><br><div>They are based on this one</div><div>commit bc831=
-f37398b51dfe65d99a67bcff9352f84a9d2 (origin/staging, origin/master, origin/=
-HEAD)<br>Merge: 76929d6117 7dbe2d7df0<br>Author: Richard Henderson &lt;<a h=
-ref=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a=
->&gt;<br>Date: =C2=A0 Tue Oct 28 11:48:05 2025 +0100<br></div><div><br></di=
-v><div>They also apply cleanly to Brian&#39;s hex-next-express branch.</div=
-><div><br></div><div>What error are you getting on your end?</div><div><br>=
-</div><div>Thanks,</div><div>Taylor</div><div><br></div></div><br><div clas=
-s=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_att=
-r">On Mon, Nov 17, 2025 at 10:08=E2=80=AFAM Brian Cain &lt;<a href=3D"mailt=
-o:brian.cain@oss.qualcomm.com">brian.cain@oss.qualcomm.com</a>&gt; wrote:<b=
-r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr">=
-Maybe they&#39;re based on the other commits on my tree which are queued fo=
-r inclusion after 10.2?=C2=A0=C2=A0<a href=3D"https://github.com/quic/qemu/=
-commits/hex-next-express/" target=3D"_blank">https://github.com/quic/qemu/c=
-ommits/hex-next-express/</a></div>
-</blockquote></div>
-
---00000000000078cef50643ce9dc2--
 
