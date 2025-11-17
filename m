@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC06BC64FA1
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 16:53:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE30C64FB3
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 16:53:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL1VE-0003yq-PN; Mon, 17 Nov 2025 10:50:52 -0500
+	id 1vL1VE-0003yR-G0; Mon, 17 Nov 2025 10:50:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vL1UT-0003eo-P8
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:17 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1vL1V6-0003sr-UL
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:44 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vL1UO-0007zV-8P
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:02 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-477770019e4so49603235e9.3
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 07:49:59 -0800 (PST)
+ id 1vL1V2-0008Ha-Rk
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 10:50:44 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-42b3b29153fso2456132f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 07:50:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763394599; x=1763999399; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1763394627; x=1763999427; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JOTWnKm4DTCGpZ1/a5sMZIlg2R2K5QNc87Tidro0ZBI=;
- b=pgAbBM1pRhSbK4/Ka+qMo4V92WsQtQk9TyAOPL7QDYb/iOJCYZZ/xuoAkLEyCmry7G
- KeWbH1LhLbKT2VsUWi+0vr4ibSI4wCFRzEDxtSdjtbrxo3JuQB2FTUrVtC+Wg0mqnvCI
- ykWk+Dpp0uT4lRutMeJfyS2Um7hnfXV+KYpYXRenf1aGsDmfftE9i2E9/ulFsQY6aD9h
- oaZC7G+lYqLH8QG3J3kSvVE1EL881Soqqm8lcKWq7MwSPdnlQeLOciY5pc5IommPzEE2
- ZOBul6tvbNCvBu0gTHxVdWrBm5JjDEs/xtE9Anq10/FNBnc92eORMhjNoCaWmmYbgcbY
- /Mbg==
+ bh=7jc/nu/J0AL+pY15UNyyOgb11bFycenf4RnmDHJT64M=;
+ b=PzHeOvHTX9NdvRoEc+znlWEz9BtqwVISliBoLZeRFQ8eFc8SqlBuRkRLB0maT34swW
+ 3bZrUuckTvgEwIpCXQSYCfec7IhGp5yqnjx5xZZFTyt0KeRyzcxiBVMwEkQ/jRx8oGJo
+ Uv36f3R/ZyEY9UxV/vPFbV+b4tiFeBVEy0BbeJbOhNwWGC2Y81oSNi9g/85z1XGzoyae
+ V54Ao8T5nmxx6epbWlWTdBmhVDZrZtJQuvBhkO1S+jf4bTnAB7dK1M6DzVWIVVuOQZcO
+ 5G3sXKuL7fOwBS4qe+arBMmP7JEFXE2/80o76Dal8EdClcReefB6jrABeRk2EsMbk0m6
+ ZwUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763394599; x=1763999399;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=JOTWnKm4DTCGpZ1/a5sMZIlg2R2K5QNc87Tidro0ZBI=;
- b=K4HV2m6NoIgiVezpkFY32DgFOSWflUj/oabNDq1+MMMVt8Cz16ihdo/EGyrTGEMgsI
- i82jj1FgFf5LIfutqmh1tSfsIY9kWGtFTzg1LResDMYpCwMG5uUL+xa/J8DtQWpTJ6QL
- l9yH/2L2z2xdV3+wzR8DEjKELI1Brsr5MSeQhjlCIBhk9sWJF4Ra/xjAeyk5evtuhDJA
- y4PdC4etn45lB7SKU775HWDGQEtvKNd3D6OFZbjjQCmJXHizEiltpA7d+Hu7Z8DSmdQc
- bLowyk3zbV2lsl2QhmPajSj7Xmer6SjGRJXBzJ3+pEPtpDfiw/AstkAEzanLyvP0+2yC
- flEQ==
-X-Gm-Message-State: AOJu0YyOMAp/6zUt5J+KOWC8z/M07nVG+QjELqqDJ2eqUCd36nSt+lU8
- ZGD3l9OeGMyZBHH+fuY3Qj5OVXqNR/12t5s167Y3igI4cHgrKdQgn7NqR35LfFdPg9g=
-X-Gm-Gg: ASbGnctU5lpxvyrW8WuXUdG6+lIxyzpGtWBHxXO8qf/h5iOJClMMtBLAtTOePz8p/tZ
- ZYMVbbnnZ7zJwtaDmTmggLHJ9xhjUguh+7wkU7a+wFqZP98qYw3TT12VWZ3b1AzdqKKHy00QZyo
- 60wBefuiAwE6hluUXWFoj6JR2NNCO9dmpIuIizEPLkOf5ziww7y2n5jvP7rbOPFjNlVWjY+07Sg
- UJooTQcdA9G4j8LP1F6bWoV4tTSxSLdoppx2t69Rhn6trAZVxVvJ4X/3zbqKKOISg6+z9h22MwA
- HECdtmDr9unHEURxc5BVD+T+gMjLKQZjRnQBORCe2A26d+ICWfDy40SkMtNV9Od6+qYR0RTSQv9
- UHs93rk7JAg+sEt3jUjMp2ZMxSiwWauV9k7CtOzY/ObHsgxyzXPfaNH3mO0pN6ZWs+wPENLagLk
- 9hblSbxH0p5Iw=
-X-Google-Smtp-Source: AGHT+IFPfEQ4ubAj92QzXzLxhQLrDnGI41swdstS8gMVmIXnORI9UOPszWp/ozInWZbWCzEvfcTmrg==
-X-Received: by 2002:a05:600c:4707:b0:477:9eb8:97d2 with SMTP id
- 5b1f17b1804b1-4779eb89abfmr57844505e9.8.1763394598573; 
- Mon, 17 Nov 2025 07:49:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1763394627; x=1763999427;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7jc/nu/J0AL+pY15UNyyOgb11bFycenf4RnmDHJT64M=;
+ b=InM6b8esNzofCdpP/R9LYazzU7NMFNhTFXjwKus8OcQ4rbaM/z8o+KYjRPHOyCGAIi
+ typwjjFKa+Es/YnnetEHp52MNgDIEnvYVPqKyp2s+d3yKQ811AlcTY07EZ8ZruBohFNl
+ KuxF/IqWGpe2X6JYJfq6/0Z+X56AuSfECAuMNbRMY6dx2uNrCoEOSncRDv1Op6UKjcWF
+ dTu4ISL26jQtMpuW/s3jchBz1G2DtwOGj5YRZU63nZoCA4/VPkXEc8fJ8rq0Ja+eAZRn
+ 8D5zHUNqMaW6qW2T+I2ejE+OFs4IX5z/wfc4IsPGcEq5kRYnndQPBG2Np/Q/9V4Jk8Yp
+ MRCw==
+X-Gm-Message-State: AOJu0YzhTBIke66SyuIzXyqW3SA9lDL+vlwRMi5Zjm6KtdOgGh84used
+ rwEXjaZDLjs5o6Kdi2COHgZv351imDdFBHvo5cuURuyPIIufMMtbqVIlFra2oaO4ZYM=
+X-Gm-Gg: ASbGncvV44GfAFvJzerNNMxvG/bLU6TA6LVu2LYDnU2fKekFrM7fy6jXp4+W62fWTLx
+ pGtEs92yO/4Vwadx7kWKzhMAMS64E2K4KpBOKBvtFPx15aekdUM0Fvy0kW87HQ9+BN0ZXbvTe+U
+ coO97DYpL4AZzmW5Z+Gmx6ACJurlhefmp6K5/5H/DBPBehWO6QrvE0M7u0ea24JboZcjGxs7CxQ
+ x1Ei+Vh5neFM7wuKiI3GVgbJXzkiYig1y/watjRea2PZBAYnGxb+C1K++mw8fwbhf2D4dw9govu
+ QslKe7wx6qSeR9uCwCP+4Ye6f8Zi185lIMIsIiqFWLIFy551B7vWv5KpZfKO6PlEhX0ii1xIVVI
+ wvb+O5Irb9JWfwoWDQLIy9H0TM31xPDxJsRxuonawa1oSan5Hamik8SUhaWuT4JNDR2r74ZKMSx
+ 0uX8i6al4iLM4=
+X-Google-Smtp-Source: AGHT+IEPyg7Q7nST33WVAn4TLz8sqsSDTTZWkdxTE3F0TV1WIg2f/oxGFvVjB/aCngo9njTelxtQ9A==
+X-Received: by 2002:a05:6000:1a8b:b0:42b:2f90:bd05 with SMTP id
+ ffacd0b85a97d-42b59374c07mr12492448f8f.45.1763394627051; 
+ Mon, 17 Nov 2025 07:50:27 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47799768409sm144630225e9.3.2025.11.17.07.49.54
+ ffacd0b85a97d-42c961f6e64sm13559448f8f.27.2025.11.17.07.50.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Nov 2025 07:49:56 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 225E95F860;
- Mon, 17 Nov 2025 15:49:50 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 18/18] gitlab: add a weekly container building job
-Date: Mon, 17 Nov 2025 15:49:47 +0000
-Message-ID: <20251117154948.4122164-19-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251117154948.4122164-1-alex.bennee@linaro.org>
-References: <20251117154948.4122164-1-alex.bennee@linaro.org>
+ Mon, 17 Nov 2025 07:50:26 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 8AEBF5F860;
+ Mon, 17 Nov 2025 15:50:25 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Ed Maste <emaste@freebsd.org>,  Akihiko Odaki
+ <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Thomas Huth <thuth@redhat.com>,  BALATON
+ Zoltan <balaton@eik.bme.hu>,  Sriram Yagnaraman
+ <sriram.yagnaraman@ericsson.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,  Paul Durrant <paul@xen.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,  Kohei Tokunaga
+ <ktokunaga.mail@gmail.com>,  Li-Wen Hsu <lwhsu@freebsd.org>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>,  qemu-arm@nongnu.org,  Zhao Liu
+ <zhao1.liu@intel.com>,  qemu-s390x@nongnu.org,  Daniel P. =?utf-8?Q?Berra?=
+ =?utf-8?Q?ng=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 03/18] tests/lcitool: update ENV stazas outputted by
+ refresh
+In-Reply-To: <0d18d036-f93a-4874-9306-ec769cb375d2@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 17 Nov 2025 15:00:52
+ +0100")
+References: <20251117115523.3993105-1-alex.bennee@linaro.org>
+ <20251117115523.3993105-4-alex.bennee@linaro.org>
+ <0d18d036-f93a-4874-9306-ec769cb375d2@linaro.org>
+User-Agent: mu4e 1.12.14-pre3; emacs 30.1
+Date: Mon, 17 Nov 2025 15:50:25 +0000
+Message-ID: <87seeclku6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,108 +116,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will hopefully catch containers that break because of upstream
-changes as well as keep the container cache fresh.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-As we have all the container jobs as dependants we tweaks the
-container template to allow scheduled runs. Because we added a new
-rules stanza we also need to make sure we catch the normal runs as
-well.
+> Typo "stanzas" in subject?
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251117115523.3993105-19-alex.bennee@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+dammit - just as I sent it...
 
-diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
-index 4eec72f383d..82c1b69e8dd 100644
---- a/.gitlab-ci.d/container-template.yml
-+++ b/.gitlab-ci.d/container-template.yml
-@@ -19,3 +19,8 @@
-     - docker push "$TAG"
-   after_script:
-     - docker logout
-+  rules:
-+    # because we want to enable this for scheduled runs we also have to replicate the normal rules
-+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: '$QEMU_CI && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
-index db9b4d5e57f..f7d3e7205dc 100644
---- a/.gitlab-ci.d/containers.yml
-+++ b/.gitlab-ci.d/containers.yml
-@@ -33,3 +33,42 @@ amd64-fedora-rust-nightly-container:
-   variables:
-     NAME: fedora-rust-nightly
-   allow_failure: true
-+
-+# this scheduled job will trigger all the containers to build
-+weekly-container-builds:
-+  extends: .container_job_template
-+  allow_failure: true
-+  needs:
-+    # core
-+    - amd64-centos9-container
-+    - amd64-fedora-container
-+    # cross
-+    - amd64-debian-cross-container
-+    - amd64-debian-user-cross-container
-+    - amd64-debian-legacy-cross-container
-+    - arm64-debian-cross-container
-+    - armhf-debian-cross-container
-+    - hexagon-cross-container
-+    - loongarch-debian-cross-container
-+    - i686-debian-cross-container
-+    - mips64el-debian-cross-container
-+    - ppc64el-debian-cross-container
-+    - riscv64-debian-cross-container
-+    - s390x-debian-cross-container
-+    - tricore-debian-cross-container
-+    - xtensa-debian-cross-container
-+    - win64-fedora-cross-container
-+    - wasm-emsdk-cross-container
-+    # containers
-+    - amd64-alpine-container
-+    - amd64-debian-container
-+    - amd64-ubuntu2204-container
-+    - amd64-opensuse-leap-container
-+    - python-container
-+    - amd64-fedora-rust-nightly-container
-+  script:
-+    - apk -U add make bash skopeo
-+    - make docker-verify V=1 DOCKER_DEFAULT_REGISTRY=$CI_REGISTRY_IMAGE
-+  rules:
-+    # this only ever runes as a scheduled build
-+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 3959d8a028a..38467cca610 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -49,6 +49,15 @@ docker-image-%: $(DOCKER_FILES_DIR)/%.docker
- 		-t qemu/$* - < $< $(if $V,,> /dev/null),\
- 		"BUILD", $*)
- 
-+# General rule for inspecting registry images.
-+docker-verify-%: $(DOCKER_FILES_DIR)/%.docker
-+	  $(call quiet-command,			\
-+		skopeo inspect 			\
-+			--format '{{.Created}}' \
-+			docker://$(DOCKER_REGISTRY)/qemu/$*	\
-+		$(if $V,,> /dev/null),\
-+		"VERIFY", $*)
-+
- # Special rule for debootstraped binfmt linux-user images
- docker-binfmt-image-debian-%: $(DOCKER_FILES_DIR)/debian-bootstrap.docker
- 	$(if $(EXECUTABLE),,\
-@@ -236,6 +245,8 @@ docker-run: docker-qemu-src
- 
- docker-image: ${DOCKER_IMAGES:%=docker-image-%}
- 
-+docker-verify: ${DOCKER_IMAGES:%=docker-verify-%}
-+
- docker-clean:
- 	$(call quiet-command, $(DOCKER_SCRIPT) clean)
- 
--- 
-2.47.3
+spin v2
 
+
+>
+> On 17/11/25 12:55, Alex Benn=C3=A9e wrote:
+>> Now lcitool has been updated to use the non-legacy ENVs we should do
+>> the same for what refresh adds.
+>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Message-ID: <20251113102525.1255370-4-alex.bennee@linaro.org>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>   tests/docker/dockerfiles/debian-amd64-cross.docker    | 4 ++--
+>>   tests/docker/dockerfiles/debian-arm64-cross.docker    | 4 ++--
+>>   tests/docker/dockerfiles/debian-armhf-cross.docker    | 4 ++--
+>>   tests/docker/dockerfiles/debian-i686-cross.docker     | 4 ++--
+>>   tests/docker/dockerfiles/debian-mips64el-cross.docker | 4 ++--
+>>   tests/docker/dockerfiles/debian-mipsel-cross.docker   | 4 ++--
+>>   tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 4 ++--
+>>   tests/docker/dockerfiles/debian-riscv64-cross.docker  | 4 ++--
+>>   tests/docker/dockerfiles/debian-s390x-cross.docker    | 4 ++--
+>>   tests/docker/dockerfiles/debian.docker                | 2 +-
+>>   tests/docker/dockerfiles/fedora-win64-cross.docker    | 4 ++--
+>>   tests/lcitool/refresh                                 | 6 +++---
+>>   12 files changed, 24 insertions(+), 24 deletions(-)
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
