@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA758C633B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82400C633CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvjS-0006sZ-CG; Mon, 17 Nov 2025 04:41:11 -0500
+	id 1vKvid-0005d0-R2; Mon, 17 Nov 2025 04:40:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKviT-0005Fo-Qg
+ id 1vKviT-0005Fp-Ro
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:11 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKviK-0006Kh-Cd
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:06 -0500
+ id 1vKviO-0006Kp-JX
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763372400; x=1794908400;
+ t=1763372405; x=1794908405;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=m6JtVmIagroZy9cOs7RiyvaIEIEKcB6qKAzh5iaKdoA=;
- b=h3F29nHWashXt3EouFbpHCdQDwwUKwrqwLXHt1gs9AeC5o7SyBZ5Dhtg
- VdAJ4EkgdaybzOgjJ/qwsEkl6UVYQ8Jmw0WoSsmzNNodeUG3UZvj74PdH
- LT89yziuhUCrl1c16u3jw+6/prXeRbdEyuz5cbwmPY/N+lNyEXBrXgthY
- oeZ+Q+sebkgrGzeRY8uCJizwdvtzThhY4QBm34HSAVviCTX6Cp7pfAQmg
- UJfnDFw7acddMCETSCOYpyoEg5Reg8jNL15NqItbFACszS3W1APgnFLwQ
- sVJYiFagS+WYndW2z8Ww7fPydtj1wr6KvrUEcWgNMrad9GoNhdBlkh7IG Q==;
-X-CSE-ConnectionGUID: j2odEedIQJ+hd/OqjpKlAg==
-X-CSE-MsgGUID: laE2kILMQ0KFovDgMmUW2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046072"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046072"
+ bh=OkrsG+esTKod4mdcx5QKPDhC8H4DEd9zDUZfqRFMN4U=;
+ b=UbKiL2bufxEuyg+XvHdhjMm8PZ936KxqDptDgIXb81+lH6upFcp2n4q/
+ 239uoceVSXOMfqLxFvtQ0lBEUZyUt9M0DuYJUnk98aUUzr8Fa+RrZ+J1r
+ hlHDaMMspQxShuwz9KyuiiMdZ2XxGkyoO29D4rPl5FmyDUIYRRLowv5ja
+ fS+Pu0KZw2Vo1hR6SYP6EtRdmOWMYLFo6a6QPqDtdFRzlIYkUtROLic9n
+ GEmEWrqSXEX1X7r/ZfNtmbzHydBw/KGZJ7CX+3K5Wy2fjn1rkhOa1o1Pl
+ cQyAL9Upga5sL1uAKR0hF1d3qtydCHuaM8vwAFg2bHfdOs3O8J5EDqoo6 g==;
+X-CSE-ConnectionGUID: 1QPRjCzMQYWwSlRu+fpDLw==
+X-CSE-MsgGUID: TTS/3A13SuO4E9DLj3gluA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046089"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046089"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:47 -0800
-X-CSE-ConnectionGUID: 1F8/vIZlTvWTrrinTObGWQ==
-X-CSE-MsgGUID: yzKoOT3mTte52mi16+voCQ==
+ 17 Nov 2025 01:39:51 -0800
+X-CSE-ConnectionGUID: hMKXZCzEQNWz/U4xmtv9sg==
+X-CSE-MsgGUID: 8eYwztzuS6O7NdD/hZEfzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070983"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190071002"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:43 -0800
+ 17 Nov 2025 01:39:47 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,9 +51,10 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 19/23] hw/pci: Introduce pci_device_get_host_iommu_quirks()
-Date: Mon, 17 Nov 2025 04:37:22 -0500
-Message-ID: <20251117093729.1121324-20-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 20/23] intel_iommu_accel: Implement get_host_iommu_quirks()
+ callback
+Date: Mon, 17 Nov 2025 04:37:23 -0500
+Message-ID: <20251117093729.1121324-21-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
@@ -84,112 +85,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In VFIO core, we call iommufd_backend_get_device_info() to return vendor
-specific hardware information data, but it's not good to retrieve this raw
-data in VFIO core.
-
-Introduce a new PCIIOMMUOps optional callback, get_host_iommu_quirk() which
-allows to retrieve the vendor specific hardware information data and convert
-it into bitmaps defined with enum host_iommu_quirks.
-
-pci_device_get_host_iommu_quirks() is a wrapper that can be called on a PCI
-device potentially protected by a vIOMMU.
+Implement get_host_iommu_quirks() callback to retrieve the vendor specific
+hardware information data and convert it into bitmaps defined with enum
+host_iommu_quirks. It will be used by VFIO in subsequent patch.
 
 Suggested-by: Eric Auger <eric.auger@redhat.com>
 Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/iommu.h   |  5 +++++
- include/hw/pci/pci.h | 31 +++++++++++++++++++++++++++++++
- hw/pci/pci.c         | 12 ++++++++++++
- 3 files changed, 48 insertions(+)
+ hw/i386/intel_iommu_accel.h |  5 +++++
+ hw/i386/intel_iommu.c       |  2 ++
+ hw/i386/intel_iommu_accel.c | 21 +++++++++++++++++++++
+ 3 files changed, 28 insertions(+)
 
-diff --git a/include/hw/iommu.h b/include/hw/iommu.h
-index 9b8bb94fc2..6d61410703 100644
---- a/include/hw/iommu.h
-+++ b/include/hw/iommu.h
-@@ -22,4 +22,9 @@ enum viommu_flags {
-     VIOMMU_FLAG_WANT_NESTING_PARENT = BIT_ULL(0),
- };
- 
-+/* Host IOMMU quirks. Extracted from host IOMMU capabilities */
-+enum host_iommu_quirks {
-+    HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO = BIT_ULL(0),
-+};
+diff --git a/hw/i386/intel_iommu_accel.h b/hw/i386/intel_iommu_accel.h
+index 76862310c2..c7ad6daa87 100644
+--- a/hw/i386/intel_iommu_accel.h
++++ b/hw/i386/intel_iommu_accel.h
+@@ -20,6 +20,7 @@ bool vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, Error **errp);
+ void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s, uint16_t domain_id,
+                                       uint32_t pasid, hwaddr addr,
+                                       uint64_t npages, bool ih);
++void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops);
+ #else
+ static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
+                                         VTDHostIOMMUDevice *vtd_hiod,
+@@ -46,5 +47,9 @@ static inline void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s,
+                                                     uint64_t npages, bool ih)
+ {
+ }
 +
- #endif /* HW_IOMMU_H */
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index a3ca54859c..83dc995cf3 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -474,6 +474,23 @@ typedef struct PCIIOMMUOps {
-      * enum viommu_flags.
-      */
-     uint64_t (*get_viommu_flags)(void *opaque);
-+    /**
-+     * @get_host_iommu_quirks: get host IOMMU quirks
-+     *
-+     * Optional callback, if not implemented, then vIOMMU doesn't support
-+     * converting @type specific hardware information data into a standard
-+     * bitmap format.
-+     *
-+     * @type: IOMMU hardware info type
-+     *
-+     * @caps: IOMMU @type specific hardware information data
-+     *
-+     * @size: size of @caps
-+     *
-+     * Returns: bitmap with each bit representing a host IOMMU quirk defined in
-+     * enum host_iommu_quirks
-+     */
-+    uint64_t (*get_host_iommu_quirks)(uint32_t type, void *caps, uint32_t size);
-     /**
-      * @get_iotlb_info: get properties required to initialize a device IOTLB.
-      *
-@@ -666,6 +683,20 @@ void pci_device_unset_iommu_device(PCIDevice *dev);
-  */
- uint64_t pci_device_get_viommu_flags(PCIDevice *dev);
- 
-+/**
-+ * pci_device_get_host_iommu_quirks: get host IOMMU quirks.
-+ *
-+ * Returns: bitmap with each bit representing a host IOMMU quirk defined in
-+ * enum host_iommu_quirks. Or 0 if vIOMMU doesn't convert any.
-+ *
-+ * @dev: PCI device pointer.
-+ * @type: IOMMU hardware info type
-+ * @caps: IOMMU @type specific hardware information data
-+ * @size: size of @caps
-+ */
-+uint64_t pci_device_get_host_iommu_quirks(PCIDevice *dev, uint32_t type,
-+                                          void *caps, uint32_t size);
++static inline void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops)
++{
++}
+ #endif
+ #endif
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 269b7da958..33ed11e207 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -5590,6 +5590,8 @@ static void vtd_class_init(ObjectClass *klass, const void *data)
+     x86_class->int_remap = vtd_int_remap;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->desc = "Intel IOMMU (VT-d) DMA Remapping device";
 +
- /**
-  * pci_iommu_get_iotlb_info: get properties required to initialize a
-  * device IOTLB.
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 8b62044a8e..520ec19982 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -3032,6 +3032,18 @@ uint64_t pci_device_get_viommu_flags(PCIDevice *dev)
-     return 0;
++    vtd_iommu_ops_update_accel(&vtd_iommu_ops);
  }
  
-+uint64_t pci_device_get_host_iommu_quirks(PCIDevice *dev, uint32_t type,
+ static const TypeInfo vtd_info = {
+diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
+index 41d0e4107b..700284864d 100644
+--- a/hw/i386/intel_iommu_accel.c
++++ b/hw/i386/intel_iommu_accel.c
+@@ -12,6 +12,7 @@
+ #include "system/iommufd.h"
+ #include "intel_iommu_internal.h"
+ #include "intel_iommu_accel.h"
++#include "hw/iommu.h"
+ #include "hw/pci/pci_bus.h"
+ #include "trace.h"
+ 
+@@ -251,3 +252,23 @@ void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s, uint16_t domain_id,
+     g_hash_table_foreach(s->vtd_address_spaces,
+                          vtd_flush_host_piotlb_locked, &piotlb_info);
+ }
++
++static uint64_t vtd_get_host_iommu_quirks(uint32_t type,
 +                                          void *caps, uint32_t size)
 +{
-+    PCIBus *iommu_bus;
++    struct iommu_hw_info_vtd *vtd = caps;
++    uint64_t quirks = 0;
 +
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
-+    if (iommu_bus && iommu_bus->iommu_ops->get_host_iommu_quirks) {
-+        return iommu_bus->iommu_ops->get_host_iommu_quirks(type, caps, size);
++    if (type == IOMMU_HW_INFO_TYPE_INTEL_VTD &&
++        sizeof(struct iommu_hw_info_vtd) <= size &&
++        vtd->flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17) {
++        quirks |= HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO;
 +    }
-+    return 0;
++
++    return quirks;
 +}
 +
- int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
-                          bool exec_req, hwaddr addr, bool lpig,
-                          uint16_t prgi, bool is_read, bool is_write)
++void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops)
++{
++    ops->get_host_iommu_quirks = vtd_get_host_iommu_quirks;
++}
 -- 
 2.47.1
 
