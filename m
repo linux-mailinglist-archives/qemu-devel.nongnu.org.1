@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115A9C633A3
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA085C633DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvid-0005Me-HO; Mon, 17 Nov 2025 04:40:19 -0500
+	id 1vKvj6-0005og-DR; Mon, 17 Nov 2025 04:40:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKviA-00058a-2s
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:59 -0500
+ id 1vKviE-000592-9T
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:02 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvi8-0006Kh-9R
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:49 -0500
+ id 1vKviC-0006Kp-7z
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763372388; x=1794908388;
+ t=1763372392; x=1794908392;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=LbvgjMsdupmqKu4KT8bxZCand6VjQLHcYysOeBX4Uf0=;
- b=aZEVcrf2e+VC9dJW4/s3qObJU13LPgs/ulcz17iwH1qIQ1AI9hvOQJ9U
- wgfEGFLIKvspqpfKKA3YPhAHCPcG1djrp14AulDlIwyzeuyRQmC/6DeQg
- TwUVW+q+jUfuBYhakZ0K5ZenQXPdIOum1v+IYPs1qFotdyBHMzI9HZIPw
- 6Nn8AODVGIkejv8lNhDkJTQ0G+up8faG1/a3S++x8y3ZVye0l8wIICxoa
- jmE4zkQTrXZBHV3zFbeD9n1rBnX1zlwt53NjEBUnKW3UePD2wscLyk90E
- Z/K99eIxWu2G3cI1GHwbmhrq2IGFDJ4ahuKpiGApGgDylY8Bzmf8z98ZX g==;
-X-CSE-ConnectionGUID: HJ88rDXGRZSVC3NMEiSHjQ==
-X-CSE-MsgGUID: vlLqJvVsRi+H7I1QX4Pisw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046040"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046040"
+ bh=upukl2JcnyzmPxfGaIBFEQ3nzBlZZ2Dg6jwwVjvrLDI=;
+ b=Fd/tHJvxHEJexlyaulCX9GzXqEdcpVQKfKTSYu677i9yyN5ZfI22WbCR
+ msBQHn4tAS/y5WPFYyDyLo87654KYbuWZRaMq9YPT93r6t+oqiqTjLCA5
+ LkqGh0hIMSYuKjKZreG1QPBa3x0NhfKkKzxmoS9sKpBhR0VZIIqJFEB+T
+ QBJvHxVIdBn3LmtChdayuKtu4ieIK8zzAHmtQIiaAdBetBABpp+sSWlik
+ zzk8uNZ1NaaqFaXoIACtxPLtM8oukUTIVYjHIoRbKjN5cvdf+CbxK2MXh
+ fVeEu6M2VZMmwcFQiKDjdAwfGttqrviSXgo+RgFZAVsPn0bS/TrUw1Vhq g==;
+X-CSE-ConnectionGUID: 626O7UpXREmIrulQag6big==
+X-CSE-MsgGUID: e+L1ZlVlS4e/+/3Z58cn5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046049"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046049"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:36 -0800
-X-CSE-ConnectionGUID: 048mJjElQCe5ZDFNeyLuiw==
-X-CSE-MsgGUID: 6WHi2zEYS3eiE7Gyxd69MA==
+ 17 Nov 2025 01:39:40 -0800
+X-CSE-ConnectionGUID: xrybInCiS3aowhHWly128g==
+X-CSE-MsgGUID: nzTwrWrqShaa5dXIulXDZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070961"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070965"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:32 -0800
+ 17 Nov 2025 01:39:36 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,10 +51,10 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 16/23] intel_iommu: Replay pasid bindings after context
- cache invalidation
-Date: Mon, 17 Nov 2025 04:37:19 -0500
-Message-ID: <20251117093729.1121324-17-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 17/23] vfio/listener: Bypass readonly region for dirty
+ tracking
+Date: Mon, 17 Nov 2025 04:37:20 -0500
+Message-ID: <20251117093729.1121324-18-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
@@ -85,104 +85,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+When doing ditry tracking or calculating dirty tracking range, readonly
+regions can be bypassed, because corresponding DMA mappings are readonly
+and never become dirty.
 
-This replays guest pasid bindings after context cache invalidation.
-Actually, programmer should issue pasid cache invalidation with proper
-granularity after issuing context cache invalidation.
+This can optimize dirty tracking a bit for passthrough device.
 
-We see old linux such as 6.7.0-rc2 not following the spec, it sends
-pasid cache invalidation before context cache invalidation, then QEMU
-depends on context cache invalidation to get pasid entry and setup
-binding.
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/i386/intel_iommu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- hw/i386/trace-events  |  1 +
- 2 files changed, 43 insertions(+)
+ hw/vfio/listener.c   | 46 +++++++++++++++++++++++++++++++++-----------
+ hw/vfio/trace-events |  1 +
+ 2 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2c382fe7c8..42c1bf48f1 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -78,6 +78,8 @@ struct vtd_iotlb_key {
- static void vtd_address_space_refresh_all(IntelIOMMUState *s);
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n);
- static void vtd_replay_pasid_bindings_all(IntelIOMMUState *s);
-+static void vtd_pasid_cache_sync_locked(gpointer key, gpointer value,
-+                                        gpointer user_data);
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 3b48f6796c..ca2377d860 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainer *bcontainer)
+     return true;
+ }
  
- static void vtd_pasid_cache_reset_locked(IntelIOMMUState *s)
+-static bool vfio_listener_skipped_section(MemoryRegionSection *section)
++static bool vfio_listener_skipped_section(MemoryRegionSection *section,
++                                          bool bypass_ro)
  {
-@@ -2323,6 +2325,37 @@ static void vtd_context_global_invalidate(IntelIOMMUState *s)
-      * VT-d emulation codes.
-      */
-     vtd_iommu_replay_all(s);
++    if (bypass_ro && section->readonly) {
++        return true;
++    }
++
+     return (!memory_region_is_ram(section->mr) &&
+             !memory_region_is_iommu(section->mr)) ||
+            memory_region_is_protected(section->mr) ||
+@@ -368,9 +373,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
+ }
+ 
+ static bool vfio_listener_valid_section(MemoryRegionSection *section,
+-                                        const char *name)
++                                        bool bypass_ro, const char *name)
+ {
+-    if (vfio_listener_skipped_section(section)) {
++    if (vfio_listener_skipped_section(section, bypass_ro)) {
+         trace_vfio_listener_region_skip(name,
+                 section->offset_within_address_space,
+                 section->offset_within_address_space +
+@@ -497,7 +502,7 @@ void vfio_container_region_add(VFIOContainer *bcontainer,
+     int ret;
+     Error *err = NULL;
+ 
+-    if (!vfio_listener_valid_section(section, "region_add")) {
++    if (!vfio_listener_valid_section(section, false, "region_add")) {
+         return;
+     }
+ 
+@@ -663,7 +668,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+     int ret;
+     bool try_unmap = true;
+ 
+-    if (!vfio_listener_valid_section(section, "region_del")) {
++    if (!vfio_listener_valid_section(section, false, "region_del")) {
+         return;
+     }
+ 
+@@ -722,11 +727,11 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         }
+ 
+         /*
+-         * Fake an IOTLB entry for identity mapping which is needed by dirty
+-         * tracking. In fact, in unmap_bitmap, only translated_addr field is
+-         * used to set dirty bitmap.
++         * Fake an IOTLB entry for writable identity mapping which is needed
++         * by dirty tracking. In fact, in unmap_bitmap, only translated_addr
++         * field is used to set dirty bitmap.
+          */
+-        if (!memory_region_is_iommu(section->mr)) {
++        if (!memory_region_is_iommu(section->mr) && !section->readonly) {
+             entry.iova = iova;
+             entry.translated_addr = iova;
+             iotlb = &entry;
+@@ -834,7 +839,8 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+         container_of(listener, VFIODirtyRangesListener, listener);
+     hwaddr iova, end;
+ 
+-    if (!vfio_listener_valid_section(section, "tracking_update") ||
++    /* Bypass readonly section as it never becomes dirty */
++    if (!vfio_listener_valid_section(section, true, "tracking_update") ||
+         !vfio_get_section_iova_range(dirty->bcontainer, section,
+                                      &iova, &end, NULL)) {
+         return;
+@@ -1093,6 +1099,19 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     if (!mr) {
+         goto out_unlock;
+     }
++
 +    /*
-+     * Same for pasid cache invalidation, per VT-d spec 6.5.2.1, a global
-+     * context cache invalidation should be followed by global PASID cache
-+     * invalidation. In order to work with guest not following spec,
-+     * handle global PASID cache invalidation here.
++     * The mapping is readonly when either it's a readonly mapping in guest
++     * or mapped target is readonly, bypass it for dirty tracking as it
++     * never becomes dirty.
 +     */
-+    vtd_replay_pasid_bindings_all(s);
-+}
-+
-+static void vtd_pasid_cache_devsi(VTDAddressSpace *vtd_as)
-+{
-+    IntelIOMMUState *s = vtd_as->iommu_state;
-+    PCIBus *bus = vtd_as->bus;
-+    uint8_t devfn = vtd_as->devfn;
-+    struct vtd_as_key key = {
-+        .bus = bus,
-+        .devfn = devfn,
-+        .pasid = vtd_as->pasid,
-+    };
-+    VTDPASIDCacheInfo pc_info;
-+
-+    if (!s->fsts || !s->root_scalable || !s->dmar_enabled) {
++    if (!(iotlb->perm & IOMMU_WO) || mr->readonly) {
++        trace_vfio_iommu_map_dirty_notify_skip_ro(iova,
++                                                  iova + iotlb->addr_mask);
++        rcu_read_unlock();
 +        return;
 +    }
 +
-+    trace_vtd_pasid_cache_devsi(pci_bus_num(bus),
-+                                VTD_PCI_SLOT(devfn), VTD_PCI_FUNC(devfn));
-+
-+    /* We fake to be global invalidation just to bypass all checks */
-+    pc_info.type = VTD_INV_DESC_PASIDC_G_GLOBAL;
-+    vtd_pasid_cache_sync_locked(&key, vtd_as, &pc_info);
- }
+     translated_addr = memory_region_get_ram_addr(mr) + xlat;
  
- /* Do a context-cache device-selective invalidation.
-@@ -2383,6 +2416,15 @@ static void vtd_context_device_invalidate(IntelIOMMUState *s,
-              * happened.
-              */
-             vtd_address_space_sync(vtd_as);
-+            /*
-+             * Per spec 6.5.2.1, context flush should be followed by PASID
-+             * cache and iotlb flush. In order to work with a guest which does
-+             * not follow spec and missed PASID cache flush, e.g., linux
-+             * 6.7.0-rc2, we have vtd_pasid_cache_devsi() to invalidate PASID
-+             * cache of passthrough device. Host iommu driver would flush
-+             * piotlb when a pasid unbind is passed down to it.
-+             */
-+            vtd_pasid_cache_devsi(vtd_as);
-         }
+     ret = vfio_container_query_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+@@ -1228,7 +1247,12 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+     int ret;
+     Error *local_err = NULL;
+ 
+-    if (vfio_listener_skipped_section(section)) {
++    /*
++     * Bypass readonly section as it never becomes dirty, iommu memory section
++     * is RW and never bypassed. The readonly mappings in iommu MR are bypassed
++     * in vfio_iommu_map_dirty_notify().
++     */
++    if (vfio_listener_skipped_section(section, true)) {
+         return;
      }
- }
-diff --git a/hw/i386/trace-events b/hw/i386/trace-events
-index 5a3ee1cf64..5fa5e93b68 100644
---- a/hw/i386/trace-events
-+++ b/hw/i386/trace-events
-@@ -28,6 +28,7 @@ vtd_pasid_cache_reset(void) ""
- vtd_inv_desc_pasid_cache_gsi(void) ""
- vtd_inv_desc_pasid_cache_dsi(uint16_t domain) "Domain selective PC invalidation domain 0x%"PRIx16
- vtd_inv_desc_pasid_cache_psi(uint16_t domain, uint32_t pasid) "PASID selective PC invalidation domain 0x%"PRIx16" pasid 0x%"PRIx32
-+vtd_pasid_cache_devsi(uint8_t bus, uint8_t dev, uint8_t fn) "Dev selective PC invalidation dev: %02"PRIx8":%02"PRIx8".%02"PRIx8
- vtd_re_not_present(uint8_t bus) "Root entry bus %"PRIu8" not present"
- vtd_ce_not_present(uint8_t bus, uint8_t devfn) "Context entry bus %"PRIu8" devfn %"PRIu8" not present"
- vtd_iotlb_page_hit(uint16_t sid, uint64_t addr, uint64_t slpte, uint16_t domain) "IOTLB page hit sid 0x%"PRIx16" iova 0x%"PRIx64" slpte 0x%"PRIx64" domain 0x%"PRIx16
+ 
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 3c62bab764..180e3d526b 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -103,6 +103,7 @@ vfio_listener_region_del(uint64_t start, uint64_t end) "region_del 0x%"PRIx64" -
+ vfio_device_dirty_tracking_update(uint64_t start, uint64_t end, uint64_t min, uint64_t max) "section 0x%"PRIx64" - 0x%"PRIx64" -> update [0x%"PRIx64" - 0x%"PRIx64"]"
+ vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64, uint64_t minpci, uint64_t maxpci) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"], pci64:[0x%"PRIx64" - 0x%"PRIx64"]"
+ vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
++vfio_iommu_map_dirty_notify_skip_ro(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
+ 
+ # container.c
+ vfio_container_query_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t backend_flag, uint64_t bitmap_size, uint64_t translated_addr, uint64_t dirty_pages) "iova=0x%"PRIx64" size=0x%"PRIx64" backend_flag=0x%"PRIx64" bitmap_size=0x%"PRIx64" gpa=0x%"PRIx64" dirty_pages=%"PRIu64
 -- 
 2.47.1
 
