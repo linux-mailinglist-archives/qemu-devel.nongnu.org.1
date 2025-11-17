@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82400C633CA
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F4EC633D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvid-0005d0-R2; Mon, 17 Nov 2025 04:40:20 -0500
+	id 1vKvjO-0006WT-7C; Mon, 17 Nov 2025 04:41:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKviT-0005Fp-Ro
+ id 1vKviV-0005IB-GR
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:11 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKviO-0006Kp-JX
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:08 -0500
+ id 1vKviT-0006HR-Hr
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:40:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763372405; x=1794908405;
+ t=1763372410; x=1794908410;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=OkrsG+esTKod4mdcx5QKPDhC8H4DEd9zDUZfqRFMN4U=;
- b=UbKiL2bufxEuyg+XvHdhjMm8PZ936KxqDptDgIXb81+lH6upFcp2n4q/
- 239uoceVSXOMfqLxFvtQ0lBEUZyUt9M0DuYJUnk98aUUzr8Fa+RrZ+J1r
- hlHDaMMspQxShuwz9KyuiiMdZ2XxGkyoO29D4rPl5FmyDUIYRRLowv5ja
- fS+Pu0KZw2Vo1hR6SYP6EtRdmOWMYLFo6a6QPqDtdFRzlIYkUtROLic9n
- GEmEWrqSXEX1X7r/ZfNtmbzHydBw/KGZJ7CX+3K5Wy2fjn1rkhOa1o1Pl
- cQyAL9Upga5sL1uAKR0hF1d3qtydCHuaM8vwAFg2bHfdOs3O8J5EDqoo6 g==;
-X-CSE-ConnectionGUID: 1QPRjCzMQYWwSlRu+fpDLw==
-X-CSE-MsgGUID: TTS/3A13SuO4E9DLj3gluA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046089"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046089"
+ bh=X+cTR1IXNxdLo5t0HxEfQS4QmeEbXQKJfoPcX2q4jsg=;
+ b=hlNU4P3fjRmCYua9MDqoTIOJkBsUnEud42Krd5fkLaMDm04+JvJC7Hn1
+ VaAQ+rqPFfACHHvlSUYofve1CAXlx0rE6Ba8tDa2G0P878fTO+yie71Hj
+ pudyTwMqHaNJLQi1gGF2TK9aTu1ZyUK1G0NuBHM8DCK3GmImRbWVMzjY0
+ XAZiVhaP6uBJCYiAJ3xvdaDl3SrzrXDMpTVMAUEoPPLb569dgiiwu4iqS
+ povMTGtqI1KguBkUbg8eApNYkLCi1TX/CEhcpe0nSZn/ytnduJx3iwWyO
+ vMCkpSbDHTY59pPW8CXpow54JKQFo8NJZuRgDSdLZKsmpqTDYslnaVnh2 Q==;
+X-CSE-ConnectionGUID: 6kXXDRxzQDiLQkcXx2WPbQ==
+X-CSE-MsgGUID: zM8jre+QSGCsElwGkOgZBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76046104"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76046104"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:51 -0800
-X-CSE-ConnectionGUID: hMKXZCzEQNWz/U4xmtv9sg==
-X-CSE-MsgGUID: 8eYwztzuS6O7NdD/hZEfzA==
+ 17 Nov 2025 01:39:55 -0800
+X-CSE-ConnectionGUID: dZ0F/s85Q9er4ipgYQ2vxQ==
+X-CSE-MsgGUID: Et96+1cmST+7YjJGozTERQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190071002"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190071007"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:47 -0800
+ 17 Nov 2025 01:39:51 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,10 +51,9 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 20/23] intel_iommu_accel: Implement get_host_iommu_quirks()
- callback
-Date: Mon, 17 Nov 2025 04:37:23 -0500
-Message-ID: <20251117093729.1121324-21-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 21/23] Workaround for ERRATA_772415_SPR17
+Date: Mon, 17 Nov 2025 04:37:24 -0500
+Message-ID: <20251117093729.1121324-22-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
@@ -85,90 +84,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement get_host_iommu_quirks() callback to retrieve the vendor specific
-hardware information data and convert it into bitmaps defined with enum
-host_iommu_quirks. It will be used by VFIO in subsequent patch.
+On a system influenced by ERRATA_772415, IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17
+is repored by IOMMU_DEVICE_GET_HW_INFO. Due to this errata, even the readonly
+range mapped on second stage page table could still be written.
 
-Suggested-by: Eric Auger <eric.auger@redhat.com>
-Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+Reference from 4th Gen Intel Xeon Processor Scalable Family Specification
+Update, Errata Details, SPR17.
+https://edc.intel.com/content/www/us/en/design/products-and-solutions/processors-and-chipsets/eagle-stream/sapphire-rapids-specification-update/
+
+Also copied the SPR17 details from above link:
+"Problem: When remapping hardware is configured by system software in
+scalable mode as Nested (PGTT=011b) and with PWSNP field Set in the
+PASID-table-entry, it may Set Accessed bit and Dirty bit (and Extended
+Access bit if enabled) in first-stage page-table entries even when
+second-stage mappings indicate that corresponding first-stage page-table
+is Read-Only.
+
+Implication: Due to this erratum, pages mapped as Read-only in second-stage
+page-tables may be modified by remapping hardware Access/Dirty bit updates.
+
+Workaround: None identified. System software enabling nested translations
+for a VM should ensure that there are no read-only pages in the
+corresponding second-stage mappings."
+
+Introduce a helper vfio_device_get_host_iommu_quirk_bypass_ro to check if
+readonly mappings should be bypassed.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_accel.h |  5 +++++
- hw/i386/intel_iommu.c       |  2 ++
- hw/i386/intel_iommu_accel.c | 21 +++++++++++++++++++++
- 3 files changed, 28 insertions(+)
+ include/hw/vfio/vfio-container.h |  1 +
+ include/hw/vfio/vfio-device.h    |  3 +++
+ hw/vfio/device.c                 | 14 ++++++++++++++
+ hw/vfio/iommufd.c                |  9 ++++++++-
+ hw/vfio/listener.c               |  6 ++++--
+ 5 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i386/intel_iommu_accel.h b/hw/i386/intel_iommu_accel.h
-index 76862310c2..c7ad6daa87 100644
---- a/hw/i386/intel_iommu_accel.h
-+++ b/hw/i386/intel_iommu_accel.h
-@@ -20,6 +20,7 @@ bool vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, Error **errp);
- void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s, uint16_t domain_id,
-                                       uint32_t pasid, hwaddr addr,
-                                       uint64_t npages, bool ih);
-+void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops);
- #else
- static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
-                                         VTDHostIOMMUDevice *vtd_hiod,
-@@ -46,5 +47,9 @@ static inline void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s,
-                                                     uint64_t npages, bool ih)
- {
- }
-+
-+static inline void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops)
-+{
-+}
- #endif
- #endif
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 269b7da958..33ed11e207 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -5590,6 +5590,8 @@ static void vtd_class_init(ObjectClass *klass, const void *data)
-     x86_class->int_remap = vtd_int_remap;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "Intel IOMMU (VT-d) DMA Remapping device";
-+
-+    vtd_iommu_ops_update_accel(&vtd_iommu_ops);
+diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+index 9f6e8cedfc..a7d5c5ed67 100644
+--- a/include/hw/vfio/vfio-container.h
++++ b/include/hw/vfio/vfio-container.h
+@@ -52,6 +52,7 @@ struct VFIOContainer {
+     QLIST_HEAD(, VFIODevice) device_list;
+     GList *iova_ranges;
+     NotifierWithReturn cpr_reboot_notifier;
++    bool bypass_ro;
+ };
+ 
+ #define TYPE_VFIO_IOMMU "vfio-iommu"
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index 48d00c7bc4..f6f3d0e378 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -268,6 +268,9 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainer *bcontainer,
+ void vfio_device_unprepare(VFIODevice *vbasedev);
+ 
+ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev);
++bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
++                                                uint32_t type, void *caps,
++                                                uint32_t size);
+ 
+ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                                 struct vfio_region_info **info);
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 71eb069eb6..290011e154 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -533,6 +533,20 @@ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev)
+     return false;
  }
  
- static const TypeInfo vtd_info = {
-diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
-index 41d0e4107b..700284864d 100644
---- a/hw/i386/intel_iommu_accel.c
-+++ b/hw/i386/intel_iommu_accel.c
-@@ -12,6 +12,7 @@
- #include "system/iommufd.h"
- #include "intel_iommu_internal.h"
- #include "intel_iommu_accel.h"
-+#include "hw/iommu.h"
- #include "hw/pci/pci_bus.h"
- #include "trace.h"
- 
-@@ -251,3 +252,23 @@ void vtd_flush_host_piotlb_all_locked(IntelIOMMUState *s, uint16_t domain_id,
-     g_hash_table_foreach(s->vtd_address_spaces,
-                          vtd_flush_host_piotlb_locked, &piotlb_info);
- }
-+
-+static uint64_t vtd_get_host_iommu_quirks(uint32_t type,
-+                                          void *caps, uint32_t size)
++bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
++                                                uint32_t type, void *caps,
++                                                uint32_t size)
 +{
-+    struct iommu_hw_info_vtd *vtd = caps;
-+    uint64_t quirks = 0;
++    VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
 +
-+    if (type == IOMMU_HW_INFO_TYPE_INTEL_VTD &&
-+        sizeof(struct iommu_hw_info_vtd) <= size &&
-+        vtd->flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17) {
-+        quirks |= HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO;
++    if (vdev) {
++        return !!(pci_device_get_host_iommu_quirks(PCI_DEVICE(vdev), type,
++                                                   caps, size) &
++                  HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO);
 +    }
-+
-+    return quirks;
++    return false;
 +}
 +
-+void vtd_iommu_ops_update_accel(PCIIOMMUOps *ops)
-+{
-+    ops->get_host_iommu_quirks = vtd_get_host_iommu_quirks;
-+}
+ /*
+  * Traditional ioctl() based io
+  */
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 63f8442865..2a7b0d0c07 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -351,6 +351,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+     VFIOContainer *bcontainer = VFIO_IOMMU(container);
+     uint32_t type, flags = 0;
+     uint64_t hw_caps;
++    VendorCaps caps;
+     VFIOIOASHwpt *hwpt;
+     uint32_t hwpt_id;
+     int ret;
+@@ -396,7 +397,8 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+      * instead.
+      */
+     if (!iommufd_backend_get_device_info(vbasedev->iommufd, vbasedev->devid,
+-                                         &type, NULL, 0, &hw_caps, errp)) {
++                                         &type, &caps, sizeof(caps), &hw_caps,
++                                         errp)) {
+         return false;
+     }
+ 
+@@ -411,6 +413,11 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+      */
+     if (vfio_device_get_viommu_flags_want_nesting(vbasedev)) {
+         flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
++
++        if (vfio_device_get_host_iommu_quirk_bypass_ro(vbasedev, type,
++                                                       &caps, sizeof(caps))) {
++            bcontainer->bypass_ro = true;
++        }
+     }
+ 
+     if (cpr_is_incoming()) {
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index ca2377d860..090f935d30 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -502,7 +502,8 @@ void vfio_container_region_add(VFIOContainer *bcontainer,
+     int ret;
+     Error *err = NULL;
+ 
+-    if (!vfio_listener_valid_section(section, false, "region_add")) {
++    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
++                                     "region_add")) {
+         return;
+     }
+ 
+@@ -668,7 +669,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
+     int ret;
+     bool try_unmap = true;
+ 
+-    if (!vfio_listener_valid_section(section, false, "region_del")) {
++    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
++                                     "region_del")) {
+         return;
+     }
+ 
 -- 
 2.47.1
 
