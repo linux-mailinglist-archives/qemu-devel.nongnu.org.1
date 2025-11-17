@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2783CC63F24
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2385C63F78
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:58:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKxpk-0008VI-8N; Mon, 17 Nov 2025 06:55:48 -0500
+	id 1vKxqE-0000gT-Ij; Mon, 17 Nov 2025 06:56:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpe-0008RT-MH
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:42 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1vKxpi-0008W5-NE
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:48 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpX-0005k4-B6
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:42 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47778b23f64so28810745e9.0
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:34 -0800 (PST)
+ id 1vKxpZ-0005m3-Uf
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:46 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-42bb288c219so1462590f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763380534; x=1763985334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763380536; x=1763985336; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ddQPmTtLHjd+ba+Nnv9Q5/alJP/AtH8hBil+YOtIrqM=;
- b=Y56rlFrLRlo0wk5l2a8cka5Hjjv+hNM7AoPSZrNiCdQK7t790fRlHy6f8Kijbfyg7O
- HxLGsPXHKrTVwNZttmauf2l4q0CT57MlYJhNwkAAXZ5W43uxzPpXkHQZLfC0x44K/vrq
- kj8b0Y15qLip/4INnVxEDm/AP8HLSH3gt2oKvn1xKHII9OHx+94OvyOjhpln42w+6taD
- m6OXyRZJ9g11BXu/clfn5VhJEgHZBTWhmLa7JgT1SjXvEaAGG6QdJwnPRaTBmOxwiBos
- jhSaXfVozXC7ynKKOrf3QsUvEzfFiJWEKTfEd0B1wkmmGGf4mgmi5xbTYh9aM6gs1Ujj
- uw+Q==
+ bh=0fOUEkPwhvaQG6OX3bRBBhu6M7xGuUW1rQkX3xy0dv4=;
+ b=WMra4m2XJ9Hp1v0Ff34RqSg1rCG0y/FONdHTEYy+hixIyQQkOJ6xauGL1zGA9rhUFh
+ xM9dlPtbQuPtVhd+R2XsXxDBgljlaJGA4W9+MWzAiUVZVj+c/GxC6RM9XugTXE9IkRyI
+ Wel56NevrzMInADVdaHb/evEB7d0g70rrhjEVOrigtzENGFQFk6t6fk7+WVJb++549TM
+ 00IN/oZDGRZbm7qGhvEIBH3YPWLDizFPzkK7p7R+IyRgXMzBzzDrPKqYe1ScEH/+42h8
+ oFkXNfHCrRPyNE5UKGi4JdDzZGf5kQfQk6A3QEcE1OdA2DZNC34NFhk2xnjg28ehZ0DU
+ WKig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763380534; x=1763985334;
+ d=1e100.net; s=20230601; t=1763380536; x=1763985336;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ddQPmTtLHjd+ba+Nnv9Q5/alJP/AtH8hBil+YOtIrqM=;
- b=SGJZ4x3URIJ+BoCkvDeRg6CTqStHxT/uriCIWVlu9lycdrbAgesTSVixkg6u9xKU1d
- 3MOxr9zxHSQMmpmO3UYawhZ4dFj8ezegIFrYIzxbI92hEIfZ/wXkt2uSCa+AQiZlSAYu
- wT/HBAlfr5xjlUb419kFMM7Cl7gpIoxHHCWSVZgIFPSLZgFKrDsxlVcIBl4c5Ogk/sMp
- tprMXVh9plnOgw2VsbBOs12eY05/YOcsvyXpAyv4m75iS87RDhcAulZ//px3SQb4OYo/
- IhULgCMnC8yOAYHr7E/GVNT6J7qiM9SMPzYoagoivL8Wpehi/QVHEYMS0XWQimZGC4Q7
- NYOw==
-X-Gm-Message-State: AOJu0YwWjLiwNf+LXpc37pO0s4ftjW06Xyd6f8cS5t2q3Fu1TXJi9Mm8
- /rGTnlbRF/MTRNPuNr4OSpkzHUXX/0uF+T886hAv0yiZnfWdh7gozfPLizwb75Ato9A=
-X-Gm-Gg: ASbGnctuifLKJpDh64F8DTcyA4hJ5SwtFtNgzXtK+veCNCURnzDdprE1xSe/5vqnkw5
- NQs8ACz6Ik4hSFB3nKdPr1jAQnQgH8ySw3vfFqZSYAaj8KkiEJFk0hlH9uwJZo9AcFT46xYzIFF
- bY0Z6aggwys6Cuacv3wIjt9MfINhSnxec8WduWiFJHd+KbY8vUzLlyHQV+MSIxsEM0Pf7ATTQjv
- XNM3HJBuGT4kUNqT2inti/HPshW75ipT50mtMtGITuNecKh0OlU40Vu/E0t2naqEsirWAU8I+6Z
- KEyg1lvUjXkbEAm/zpgnmv0WyJgg75r34cDt9TjKKPFSf+j95tqekeBC4Nz9PCWBgNQRPw7gCCL
- jP3KoEDJCfAASHCYxmGD5XSF8ZAgz3tY9e0+k6lFnDKhF9veUWLu2QJaHQcjVVbvrLPCKfe5GnY
- 8tdLiF38tkkiI=
-X-Google-Smtp-Source: AGHT+IE9XT1/z3WZDB68SBtTcY3HF4o+hHRH9skQlfd6HRJiPbFe4AIRwfFV9ZZ+IH0NBmKs8jvyJg==
-X-Received: by 2002:a05:600c:1d19:b0:477:582e:7a81 with SMTP id
- 5b1f17b1804b1-4778fe50bb3mr91800995e9.4.1763380533851; 
- Mon, 17 Nov 2025 03:55:33 -0800 (PST)
+ bh=0fOUEkPwhvaQG6OX3bRBBhu6M7xGuUW1rQkX3xy0dv4=;
+ b=SAW2U+PvQQt46RSjPhM/VQErzL4l3hrOJGAPpgaRaqUJiaaMGo8nufe46yLDmgMPoO
+ I90Re7zj1UR10XJYqKZ1m9odpAolHSIMqinqNM44YYDWuAR3vsK2hNqZBNcB6jEtlkDC
+ TnC/DQ+qq9x4RcRFhdtqK+QD9mT6um5XUb/KdM/Aiy5WaXlyGAEqmjlyKiK9EZisnwWB
+ OT1lDcr1TeGWQ3QaV5ENq8vWNUVRXLEOLURBG3ACBX+LkH/mQgSb/OLKXYheVnqjJ15w
+ vsubYr1gZ6Z6Xu8oZnLMHz/vRg3cYDArv46fxESP8OhRUXVzcPVjCUOfv/zvZjedxMgO
+ NLLw==
+X-Gm-Message-State: AOJu0YylOWwIqIrouWrC9dDafjCoJNCKocVzUJKT3mVHDMbGsxbaVRrV
+ smAQgWOaAZTd5RuvbA/cEcGBEGMIEfJXvFtDVd0DeFZlom3jc4r5NlKemmljYsLLoZg=
+X-Gm-Gg: ASbGnct8pii+Ux1esUPOHMWRVflEokuAxiWde29Bq0u5X86eCvepuBbq/Hxn0RVX7pw
+ eI2FwIiZ1T05DXbwSVIEngobfvXxV6b+DMLWsW7YTuBSWWOfwSTc0fJoGHman/fM0V9X+m8n9XQ
+ W6H9oOmCFW9I7Bj/qJNPvEMmWM28rMMFgbMnHxUcV7QBTdVJY8+CEeSljpoxI3SZEG5h11D1Y3+
+ 8Adh8M4tMBC78/G43su1jHSUGGx6Z1bbGeg0DLVZnsbJuwU6LP4wO1C8wiyj0oiqixOXcoy8ZmL
+ i+mesut+yw77EymMjdzh11CVJZ2AkS5BeyIcw53YpPjqNSJuS6Niq2kEzYMiwL+qkS0tFyuilpA
+ mj4lMU4qPuzQbPWZIRIm/6n4zrrW2Gu/Hl7Rpl/hPqxkyI4JV4HJJX+7BSBrUEPYCbUgTqW9sr8
+ eQr4VCoGGQWeY=
+X-Google-Smtp-Source: AGHT+IFeD/hDtKO9YvM173MvDkgUZ+EvP5YUDp0RRachrwjonv1bq4baAlDSjKMMuEbsaA2CqZclXQ==
+X-Received: by 2002:a05:6000:2405:b0:42b:3b55:8917 with SMTP id
+ ffacd0b85a97d-42b59377ff8mr11391645f8f.36.1763380536325; 
+ Mon, 17 Nov 2025 03:55:36 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47796a8a695sm142872405e9.13.2025.11.17.03.55.28
+ ffacd0b85a97d-42b53e84a4fsm25748557f8f.11.2025.11.17.03.55.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 17 Nov 2025 03:55:32 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5E8A85FA6C;
+ by draig.lan (Postfix) with ESMTP id 7635D5FA6F;
  Mon, 17 Nov 2025 11:55:25 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,25 +80,25 @@ Cc: Ed Maste <emaste@freebsd.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
- qemu-stable@nongnu.org
-Subject: [PATCH v3 11/18] tests: move test_virt_gpu to share.linaro.org
-Date: Mon, 17 Nov 2025 11:55:16 +0000
-Message-ID: <20251117115523.3993105-12-alex.bennee@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 12/18] gitlab: add initial ppc64le custom-runner test
+Date: Mon, 17 Nov 2025 11:55:17 +0000
+Message-ID: <20251117115523.3993105-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251117115523.3993105-1-alex.bennee@linaro.org>
 References: <20251117115523.3993105-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,39 +114,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Linaro are migrating file-hosting from the old NextCloud instance to
-another sharing site.
+This is a plain configure build but I only run a subset of the tests
+until the kinks have been worked out.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251113102525.1255370-13-alex.bennee@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20251113102525.1255370-6-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/functional/aarch64/test_virt_gpu.py | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_virt_gpu.py b/tests/functional/aarch64/test_virt_gpu.py
-index 4e50887c3e9..c26a1f20c65 100755
---- a/tests/functional/aarch64/test_virt_gpu.py
-+++ b/tests/functional/aarch64/test_virt_gpu.py
-@@ -23,15 +23,11 @@
- class Aarch64VirtGPUMachine(LinuxKernelTest):
+---
+v3
+  - use QEMU_CI_UPSTREAM when checking namespace
+---
+ docs/devel/testing/ci-jobs.rst.inc            |  6 +++
+ .gitlab-ci.d/custom-runners.yml               |  1 +
+ .../custom-runners/debian-13-ppc64le.yml      | 41 +++++++++++++++++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+
+diff --git a/docs/devel/testing/ci-jobs.rst.inc b/docs/devel/testing/ci-jobs.rst.inc
+index b92d372a0a9..f1c70344ece 100644
+--- a/docs/devel/testing/ci-jobs.rst.inc
++++ b/docs/devel/testing/ci-jobs.rst.inc
+@@ -174,6 +174,12 @@ If you've got access to an IBM Z host that can be used as a gitlab-CI
+ runner, you can set this variable to enable the tests that require this
+ kind of host. The runner should be tagged with "s390x".
  
-     ASSET_VIRT_GPU_KERNEL = Asset(
--        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
--        'download?path=%2F&files='
--        'Image.6.12.16.aarch64',
-+        'https://share.linaro.org/downloadFile?id=lL8wgnMmSXZo7Co',
-         '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec8b')
- 
-     ASSET_VIRT_GPU_ROOTFS = Asset(
--        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
--        'download?path=%2F&files='
--        'rootfs.aarch64.ext2.zstd',
-+        'https://share.linaro.org/downloadFile?id=qOn1wbfKmS6KVHZ',
-         'd45118c899420b7e673f1539a37a35480134b3e36e3a59e2cb69b1781cbb14ef')
- 
-     def _launch_virt_gpu(self, gpu_device):
++PPC64LE_RUNNER_AVAILABLE
++~~~~~~~~~~~~~~~~~~~~~~~~
++If you've got access to an PPC64LE host that can be used as a gitlab-CI
++runner, you can set this variable to enable the tests that require this
++kind of host. The runner should be tagged with "ppc64le".
++
+ CCACHE_DISABLE
+ ~~~~~~~~~~~~~~
+ The jobs are configured to use "ccache" by default since this typically
+diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
+index 142fbf4a242..3e28e48c97c 100644
+--- a/.gitlab-ci.d/custom-runners.yml
++++ b/.gitlab-ci.d/custom-runners.yml
+@@ -31,3 +31,4 @@
+ include:
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml'
++  - local: '/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml'
+diff --git a/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+new file mode 100644
+index 00000000000..e088c3b67b7
+--- /dev/null
++++ b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+@@ -0,0 +1,41 @@
++# All jobs should run successfully in an environment setup by the
++# scripts/ci/setup/build-environment.yml task:
++# "Install basic packages to build QEMU on Ubuntu/Debian"
++
++.debian_ppc64le_template:
++  extends: .custom_runner_template
++  needs: []
++  stage: build
++  tags:
++    - debian_13
++    - ppc64le
++  rules:
++    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /^staging/'
++    - if: "$PPC64LE_RUNNER_AVAILABLE"
++  before_script:
++    - source scripts/ci/gitlab-ci-section
++    - section_start setup "Pre-script setup"
++    - JOBS=$(expr $(nproc) - 2)
++    - section_end setup
++  script:
++    - mkdir build
++    - cd build
++    - section_start configure "Running configure"
++    - ../configure $CONFIGURE_ARGS ||
++          { cat config.log meson-logs/meson-log.txt && exit 1; }
++    - section_end configure
++    - section_start build "Building QEMU"
++    - make --output-sync -j"$JOBS"
++    - section_end build
++    - section_start test "Running tests"
++    - if test -n "$MAKE_CHECK_ARGS";
++      then
++        make -j"$JOBS" $MAKE_CHECK_ARGS ;
++      fi
++    - section_end test
++
++debian-13-ppc64le-default:
++  extends: .debian_ppc64le_template
++  variables:
++    # qtest currently fails: https://gitlab.com/qemu-project/qemu/-/issues/3207
++    MAKE_CHECK_ARGS: check-unit check-tcg check-softfloat
 -- 
 2.47.3
 
