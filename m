@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290AEC633A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47502C633D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvhq-0004bK-QP; Mon, 17 Nov 2025 04:39:31 -0500
+	id 1vKvhr-0004bw-N1; Mon, 17 Nov 2025 04:39:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvhY-0004RF-CQ
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:12 -0500
+ id 1vKvhb-0004XR-Qf
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:17 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvhW-0006HR-Kd
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:12 -0500
+ id 1vKvhZ-0006HR-DL
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763372351; x=1794908351;
+ t=1763372353; x=1794908353;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=506YKE/Z/cOoeAPuJMZQcNMH9xKHCboDtQr3nvOJ598=;
- b=ErX5GYmBaDOpyTO0GlAPL55x4Tc+AZETFAgHb7Dvhc9s8Lizwgac2Ucp
- 0RVxKP2UXWXqAMfwKBYmJxskfjysF4IYnjJQm/sWsMTosEbauWEoQZeOJ
- LKL/CNbTxBASHQIAuJ+XoLLoHjLyCyCTjhEkDt3QosOtvkEP0R8hGFe/g
- 9erMCbB9tYOnMf51B226U4awj4uLe+C+uCv/zqMUKtD+OGP58g2AN/fJp
- fHIwO00EemnAh7hot+8K+A//NKdQJhaNR+/8IiGxWUz0tk7leO7cfT4Fh
- 9c5KdzmGhHTvcoyElo8E+5nRGliW5Ihr51/mQTOWvacdwwZPdcNkk4kPK g==;
-X-CSE-ConnectionGUID: PkcNhjNLRXWw9zkPFBuQ8w==
-X-CSE-MsgGUID: FvJVPlTWSDuc+Nbmq6BL/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76045973"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76045973"
+ bh=OF+vzJLCAHqZO5/sSzcok+C/XvWYe1dLyHkysStEf5g=;
+ b=kiVnnigv8JuzNh4bTHihJNnecHZiFIFiwLM1Hjt4pH7NE1BJyRdy5DL7
+ Fk3ZiLgDvGVlsxxsJp/JvlrKK2agDzbBUVHdwZB2Qfw0PNMuTXPiy8xaI
+ 1oaZMc0N/1lQ9Fu6EQF7/QE1r8MXUbfzChzANJ5ZlgM1e66k0W1pv2mCG
+ yFdZKEvwnImZSDfsTnaNX5/YnGcTQuMw4xzdZzd1B3IWOwqC/KcafTv2k
+ agMP5zJUbJx2MARtF7iE8gB+h91K50emQqb1AyoFQVVzM0QoxrYTIUAyp
+ 2FUrmiUV7N4y9Z7Ifh96lu3a18rj83I02Fmis2FUjkZcUk/0REgNtWpzL w==;
+X-CSE-ConnectionGUID: aG7ZZkC7QcKTI2ZPMxhsGQ==
+X-CSE-MsgGUID: sYhi+tyUR4GNxvcBlSlcVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76045981"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76045981"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:09 -0800
-X-CSE-ConnectionGUID: gpnI5MW7Qfq23IiSFKV1xw==
-X-CSE-MsgGUID: 6zSpBM+nS0ioAHlo+/vyZg==
+ 17 Nov 2025 01:39:13 -0800
+X-CSE-ConnectionGUID: mQdwXzMdQ5WfKUk+8iB+OA==
+X-CSE-MsgGUID: a9rfdm5dRjmR0InUSN/+zA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070917"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070924"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:39:05 -0800
+ 17 Nov 2025 01:39:09 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,15 +51,14 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 09/23] intel_iommu_accel: Check for compatibility with
- IOMMUFD backed device when x-flts=on
-Date: Mon, 17 Nov 2025 04:37:12 -0500
-Message-ID: <20251117093729.1121324-10-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 10/23] intel_iommu_accel: Fail passthrough device under PCI
+ bridge if x-flts=on
+Date: Mon, 17 Nov 2025 04:37:13 -0500
+Message-ID: <20251117093729.1121324-11-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.9;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -86,182 +85,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When vIOMMU is configured x-flts=on in scalable mode, first stage page table
-is passed to host to construct nested page table for passthrough devices.
+Currently we don't support nested translation for passthrough device with
+emulated device under same PCI bridge, because they require different address
+space when x-flts=on.
 
-We need to check compatibility of some critical IOMMU capabilities between
-vIOMMU and host IOMMU to ensure guest first stage page table could be used by
-host.
+In theory, we do support if devices under same PCI bridge are all passthrough
+devices. But emulated device can be hotplugged under same bridge. To simplify,
+just forbid passthrough device under PCI bridge no matter if there is, or will
+be emulated devices under same bridge. This is acceptable because PCIE bridge
+is more popular than PCI bridge now.
 
-For instance, vIOMMU supports first stage 1GB large page mapping, but host does
-not, then this IOMMUFD backed device should fail.
-
-Even of the checks pass, for now we willingly reject the association because
-all the bits are not there yet, it will be relaxed in the end of this series.
-
-Note vIOMMU has exposed IOMMU_HWPT_ALLOC_NEST_PARENT flag to force VFIO core to
-create nesting parent HWPT, if host doesn't support nested translation, the
-creation will fail. So no need to check nested capability here.
-
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- MAINTAINERS                 |  1 +
- hw/i386/intel_iommu_accel.h | 28 +++++++++++++++++++++++++
- hw/i386/intel_iommu.c       |  5 ++---
- hw/i386/intel_iommu_accel.c | 42 +++++++++++++++++++++++++++++++++++++
- hw/i386/Kconfig             |  5 +++++
- hw/i386/meson.build         |  1 +
- 6 files changed, 79 insertions(+), 3 deletions(-)
- create mode 100644 hw/i386/intel_iommu_accel.h
- create mode 100644 hw/i386/intel_iommu_accel.c
+ hw/i386/intel_iommu_accel.h |  4 ++--
+ hw/i386/intel_iommu.c       |  7 ++++---
+ hw/i386/intel_iommu_accel.c | 12 +++++++++++-
+ 3 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f4a30c126b..bc1d2b6261 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3929,6 +3929,7 @@ R: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
- S: Supported
- F: hw/i386/intel_iommu.c
- F: hw/i386/intel_iommu_internal.h
-+F: hw/i386/intel_iommu_accel.*
- F: include/hw/i386/intel_iommu.h
- F: tests/functional/x86_64/test_intel_iommu.py
- F: tests/qtest/intel-iommu-test.c
 diff --git a/hw/i386/intel_iommu_accel.h b/hw/i386/intel_iommu_accel.h
-new file mode 100644
-index 0000000000..c5274e342c
---- /dev/null
+index c5274e342c..7ebf137a1a 100644
+--- a/hw/i386/intel_iommu_accel.h
 +++ b/hw/i386/intel_iommu_accel.h
-@@ -0,0 +1,28 @@
-+/*
-+ * Intel IOMMU acceleration with nested translation
-+ *
-+ * Copyright (C) 2025 Intel Corporation.
-+ *
-+ * Authors: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_I386_INTEL_IOMMU_ACCEL_H
-+#define HW_I386_INTEL_IOMMU_ACCEL_H
-+#include CONFIG_DEVICES
-+
-+#ifdef CONFIG_VTD_ACCEL
-+bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-+                          Error **errp);
-+#else
-+static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
-+                                        HostIOMMUDevice *hiod,
-+                                        Error **errp)
-+{
-+    error_setg(errp,
-+               "host IOMMU is incompatible with guest first stage translation");
-+    return false;
-+}
-+#endif
-+#endif
+@@ -13,11 +13,11 @@
+ #include CONFIG_DEVICES
+ 
+ #ifdef CONFIG_VTD_ACCEL
+-bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
++bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+                           Error **errp);
+ #else
+ static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
+-                                        HostIOMMUDevice *hiod,
++                                        VTDHostIOMMUDevice *vtd_hiod,
+                                         Error **errp)
+ {
+     error_setg(errp,
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 3095d78321..d3c8a75878 100644
+index d3c8a75878..4ebf56a74f 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -26,6 +26,7 @@
- #include "hw/sysbus.h"
- #include "hw/iommu.h"
- #include "intel_iommu_internal.h"
-+#include "intel_iommu_accel.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/qdev-properties.h"
-@@ -4596,9 +4597,7 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
+@@ -4571,9 +4571,10 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+     return vtd_dev_as;
+ }
+ 
+-static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
++static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+                            Error **errp)
+ {
++    HostIOMMUDevice *hiod = vtd_hiod->hiod;
+     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_GET_CLASS(hiod);
+     int ret;
+ 
+@@ -4597,7 +4598,7 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
          return true;
      }
  
--    error_setg(errp,
--               "host device is uncompatible with first stage translation");
--    return false;
-+    return vtd_check_hiod_accel(s, hiod, errp);
+-    return vtd_check_hiod_accel(s, hiod, errp);
++    return vtd_check_hiod_accel(s, vtd_hiod, errp);
  }
  
  static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+@@ -4633,7 +4634,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+     vtd_hiod->iommu_state = s;
+     vtd_hiod->hiod = hiod;
+ 
+-    if (!vtd_check_hiod(s, hiod, errp)) {
++    if (!vtd_check_hiod(s, vtd_hiod, errp)) {
+         g_free(vtd_hiod);
+         vtd_iommu_unlock(s);
+         return false;
 diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
-new file mode 100644
-index 0000000000..6846c6ec4d
---- /dev/null
+index 6846c6ec4d..ead6c42879 100644
+--- a/hw/i386/intel_iommu_accel.c
 +++ b/hw/i386/intel_iommu_accel.c
-@@ -0,0 +1,42 @@
-+/*
-+ * Intel IOMMU acceleration with nested translation
-+ *
-+ * Copyright (C) 2025 Intel Corporation.
-+ *
-+ * Authors: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "system/iommufd.h"
-+#include "intel_iommu_internal.h"
-+#include "intel_iommu_accel.h"
-+
-+bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-+                          Error **errp)
-+{
-+    struct HostIOMMUDeviceCaps *caps = &hiod->caps;
-+    struct iommu_hw_info_vtd *vtd = &caps->vendor_caps.vtd;
-+
-+    if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
-+        error_setg(errp, "Need IOMMUFD backend when x-flts=on");
+@@ -12,12 +12,16 @@
+ #include "system/iommufd.h"
+ #include "intel_iommu_internal.h"
+ #include "intel_iommu_accel.h"
++#include "hw/pci/pci_bus.h"
+ 
+-bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
++bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+                           Error **errp)
+ {
++    HostIOMMUDevice *hiod = vtd_hiod->hiod;
+     struct HostIOMMUDeviceCaps *caps = &hiod->caps;
+     struct iommu_hw_info_vtd *vtd = &caps->vendor_caps.vtd;
++    PCIBus *bus = vtd_hiod->bus;
++    PCIDevice *pdev = bus->devices[vtd_hiod->devfn];
+ 
+     if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
+         error_setg(errp, "Need IOMMUFD backend when x-flts=on");
+@@ -36,6 +40,12 @@ bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
+         return false;
+     }
+ 
++    if (pci_device_get_iommu_bus_devfn(pdev, &bus, NULL, NULL)) {
++        error_setg(errp, "Host device downstream to a PCI bridge is "
++                   "unsupported when x-flts=on");
 +        return false;
 +    }
 +
-+    if (caps->type != IOMMU_HW_INFO_TYPE_INTEL_VTD) {
-+        error_setg(errp, "Incompatible host platform IOMMU type %d",
-+                   caps->type);
-+        return false;
-+    }
-+
-+    if (s->fs1gp && !(vtd->cap_reg & VTD_CAP_FS1GP)) {
-+        error_setg(errp,
-+                   "First stage 1GB large page is unsupported by host IOMMU");
-+        return false;
-+    }
-+
-+    error_setg(errp,
-+               "host IOMMU is incompatible with guest first stage translation");
-+    return false;
-+}
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 6a0ab54bea..12473acaa7 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -150,8 +150,13 @@ config X86_IOMMU
- 
- config VTD
-     bool
-+    imply VTD_ACCEL
-     select X86_IOMMU
- 
-+config VTD_ACCEL
-+    bool
-+    depends on VTD && IOMMUFD
-+
- config AMD_IOMMU
-     bool
-     select X86_IOMMU
-diff --git a/hw/i386/meson.build b/hw/i386/meson.build
-index 436b3ce52d..63ae57baa5 100644
---- a/hw/i386/meson.build
-+++ b/hw/i386/meson.build
-@@ -21,6 +21,7 @@ i386_ss.add(when: 'CONFIG_Q35', if_true: files('pc_q35.c'))
- i386_ss.add(when: 'CONFIG_VMMOUSE', if_true: files('vmmouse.c'))
- i386_ss.add(when: 'CONFIG_VMPORT', if_true: files('vmport.c'))
- i386_ss.add(when: 'CONFIG_VTD', if_true: files('intel_iommu.c'))
-+i386_ss.add(when: 'CONFIG_VTD_ACCEL', if_true: files('intel_iommu_accel.c'))
- i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
-                                 if_false: files('sgx-stub.c'))
- 
+     error_setg(errp,
+                "host IOMMU is incompatible with guest first stage translation");
+     return false;
 -- 
 2.47.1
 
