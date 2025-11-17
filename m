@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CE5C62063
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 02:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC464C6204C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 02:42:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKoF3-0002tu-GW; Sun, 16 Nov 2025 20:41:17 -0500
+	id 1vKoFL-0003BU-9Z; Sun, 16 Nov 2025 20:41:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vKoEf-0002Z5-A3
+ id 1vKoEg-0002Z9-0o
  for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:55 -0500
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vKoEd-0005yT-5c
- for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:52 -0500
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-4ee1939e70bso8419291cf.3
- for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 17:40:48 -0800 (PST)
+ id 1vKoEd-0005yf-82
+ for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:53 -0500
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-4edb7c8232aso57058861cf.3
+ for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 17:40:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763343647; x=1763948447; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1763343649; x=1763948449; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Dnbbf6q1KBWAEN9kQkeNkKZ6PakRiGS6+tTlmd1+/pE=;
- b=QnqAUT4xmBRAkVqJ0TsRdA9HLCsxRnwbkUTipI3w2KO819WGuc/tKlgIQl7UFKcgm1
- LoPXpEjDE10wmIbUj6gpbwFVEdUnXCsOuqHfv8z1vQh0qKZRBnMFPRS4kgqT02S41PRS
- 7PamkYfsRhcWLPnxi4G3ak9dIoE6YWw1Cwn6iRMu9RSvxiT3rUgqCOHh5UjceztoCa+o
- 4lOh8pSKbP/c5UDecW7sYOUSUORLd7G+7Mc0V/oQVOmqYsaaQoCqEFASFm5IxoTmbkYA
- ZTKeSsijgUQLDv0KIj1zDyeLbXCNScsTTJqy5qQLSvah6ZLsSuFcJv7nyDgjhSyVoN3q
- asNQ==
+ :reply-to; bh=Ihipyb7Ru3/tHKU6eXELZTfZpiyon46Jva01mBoEaT8=;
+ b=YYn175VRWcuoDHDge++TNRYyX5xUEimMmMdu+44ZvrLB2/dGE9a//jhcIaVx/Ok+GV
+ WlVWOGwP9zlXqXbEEuc4Qk3WwxxUl3FmSIJhFnwR6aBGDiEtfpWY3Fzstd0mxkrGmImt
+ Fyb0ugyRhDRfB+yIZbUIa9pe29qfce2AwooLjS2t8kUjrTL4CJT8VllC4XUMzND7hVr+
+ oCiGo6S4ZE1cXq04oeHwUCHPuObdByRHdqp1NhYBUJKrxY/ph7ugRbBSKBuSUkFDi51z
+ Pzk8ULrRfD5F4Zg+arIADBQRiZW+6+5cpfxzs7+1NRQoeelEfs+RUQ1tgX4W6lE6W15f
+ Xlwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763343647; x=1763948447;
+ d=1e100.net; s=20230601; t=1763343649; x=1763948449;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Dnbbf6q1KBWAEN9kQkeNkKZ6PakRiGS6+tTlmd1+/pE=;
- b=eRhg3Nc8ZYGoTqbKX6mbIW6euItJIOSoZH47g4TJtehPkRELMNqYutfIYOvn/l329v
- FDWQdAmIBxQ0BKSHj+u0NThmSxm24Y3IG//JKc48orWIqRQhPbjmkZNpqqxHkOv9NUzH
- B4wP6uyMA41icwAklE2qlkIeaRyqsHCJQuvHTuvJ+RJk74xSESOcNx6ESLFou9vXcYb8
- UQbYsmEk0EsfQ+1Fk018aft8tTBp/tZfS/NYHtDSzHIHUk2TFGT6woy/OypSpVLx1CJv
- 0Wtlqn0q9WU/TB755CuEqgMb/9VOjOSpDF+yXoBYdcuumwFoI1kYdIL+nzkb1rlJCGSQ
- MK6A==
-X-Gm-Message-State: AOJu0YyC7beygkS1Sv8RniE3UDyOkQIyuKw/TSwO95ehIDM54CxVJ5gj
- a9B7j7N9V3CnhsgaObCAchwa1P9FRTKovGNmypTXplHruXFXiT+o8y1E
-X-Gm-Gg: ASbGncu7LkINQZiukC2lbFgBEuC+6dpiNqNkuRw0Tia7bVf6AUx+JPfUkcMDoOxzL2E
- yDUAo0IEuC5RMNRMrHK/Fll1/9Bsj7gogvuQJYo/5lLmNU6VqvCOtSL4PPPgOTTDP5xFremiJ3e
- Vgn/2CllCHzHWYAtBibwBcBBLVK3loS36ndZgNugJ7gvWbzoHMB1d1Vw6fEp4YVEHDg/RAMHPiW
- fq4HA0Qc6ean3END7xlew3SU2kEOErEGZVqn7dpN2PrWPzyvT+BUiW9UiOuP+YvXMTVaWfgzBpw
- Ei2f088imWljsHqzYNY+ggjYdcJGGvr1Qctox1bATXyonMJ7I3i7/m0moss75b4lRCq7f7Pnkic
- y/0/noBdo3KDdPH9JSVEGMkqAnoBd/PdhC5ClFULs54a0q8SMVlopNBcU2ireI68sXXXGcYZIb+
- WRjd/T0aWR
-X-Google-Smtp-Source: AGHT+IGfGfCC6520aEJWYOsOhBFRPDDs/yZTSTasS4u2bpxZrScMeoWGou+IJax+a8HH46HT0V+kdw==
-X-Received: by 2002:a05:622a:1343:b0:4ed:43fe:f537 with SMTP id
- d75a77b69052e-4edf215b06amr153393461cf.76.1763343647497; 
- Sun, 16 Nov 2025 17:40:47 -0800 (PST)
+ bh=Ihipyb7Ru3/tHKU6eXELZTfZpiyon46Jva01mBoEaT8=;
+ b=esntmJWhpIXwx4Pb3pXBEKlKa6cqKL0wXx7q5j8EuSj4nOsiB8wmTj5anj1Q0hDFjf
+ EU4QC85OueLTb/36M/QfMkLo2WLw6x7RvgTvjjFP8yhpofTneIKwMBeCehr1VwBOi2Wo
+ hy3IbMXkBFkG/1Q7HYxQYWXhaVGP53lGScL+LqbReq84O8WqxfrIHuYz6Du35JBYv811
+ jdKkmQCIINfV8f6Dww+maF0VQ9ys0N1p1C1iYKyQD7Uee1bT/oFSKUI44wLiPrYEcZcg
+ xx6zuT1k4dDx2Q5+/vByt3aAqEdrm3RjWq7JiGje+bzUVLMKMQ0HmqSIAKBuGKavnpzh
+ cX2Q==
+X-Gm-Message-State: AOJu0YxN/b2rxK+k+HBtV9YSHmGwdVcUte/mLZbpQRpGQ7GMNwVYLCx3
+ w8vNdG6NE0ccmIrlTLHCr3ZLM/UEq+BMlNr4kPhWWBDmvSMr5xP32PAs
+X-Gm-Gg: ASbGncsqbjxwko3I0/37JxJEotBBuAEBKYj7fc4+iVZ/PiIEGTsc+mVRj9G0b3MHede
+ fN/Fvu3/aagefnJXbsTowWRbHM7unq/D/Q6XTx8x1R7EBMgf9xpxnM/niircQjYm9PbyXMgxr0/
+ 4T8o8r75T5n1NpkxO+p2B5AFEjFZDi3U58Nrjqj7QKA4D9vhAicFk6LGTdKri2HU6NJcHAiR2rH
+ XEIJUFCFU+D2Ll2hjI32h97bGZ+DZherIhfBBhOXsHVA4NjAWNAziCdrC+v7jZOgkdyPoPAnCV/
+ cWQjj2ViJADlgST9IL1Bsbm/nEMDOx4hfHt8SoMjTPoG7LhnuF4Ycwc8qYAq1oC7MAW+bO6LDEj
+ 0RqdfX6aFywN5Orm6uF+0+zUPTkuqN1S3L81YZKM34cqQp+8tMbA7V+dHONQgSlWku49E7jJ9xF
+ +exmpsg2nDToESH8pDlME=
+X-Google-Smtp-Source: AGHT+IE8lG32RhNeLkm0p2860xTfDGao3wwHUblBvro27NZk8A1ratAQ78qSLwkIe2DQNIu8RN9cBg==
+X-Received: by 2002:ac8:59c1:0:b0:4ee:24d0:454f with SMTP id
+ d75a77b69052e-4ee24d04d27mr10407171cf.37.1763343649047; 
+ Sun, 16 Nov 2025 17:40:49 -0800 (PST)
 Received: from [10.0.0.22] ([185.213.193.149])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee1c21ea34sm18246551cf.30.2025.11.16.17.40.46
+ d75a77b69052e-4ee1c21ea34sm18246551cf.30.2025.11.16.17.40.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Nov 2025 17:40:46 -0800 (PST)
+ Sun, 16 Nov 2025 17:40:47 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Sun, 16 Nov 2025 20:40:23 -0500
-Subject: [PATCH RFC v2 06/10] target/arm: add canonical and no-address tag
- logic
+Date: Sun, 16 Nov 2025 20:40:24 -0500
+Subject: [PATCH RFC v2 07/10] target/arm: ldg on canonical tag loads the
+ tag
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251116-feat-mte4-v2-6-9a7122b7fa76@gmail.com>
+Message-Id: <20251116-feat-mte4-v2-7-9a7122b7fa76@gmail.com>
 References: <20251116-feat-mte4-v2-0-9a7122b7fa76@gmail.com>
 In-Reply-To: <20251116-feat-mte4-v2-0-9a7122b7fa76@gmail.com>
 To: qemu-devel@nongnu.org
@@ -77,15 +77,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763343639; l=3340;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763343639; l=1576;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=F2pGZprB8kCYpSFO6b+fLbFMcjK4Pgwg8dscgoUacB0=;
- b=9RGQlL+ym4S7ny7TacHw8tgfdCWLHKD/gKIbmJ2TuIlbqjJfKgDCZdMfdAJT46sZWPENZyfLC
- f6RGirPwaiGA9BrpKUBvfv1BNBwpI+D1mCHuaAiCtVwx9utsCNbNMYY
+ bh=fIipJW6zdB7cgS7KaJpOQoZAsxlcOoekAcIhgxUqYiw=;
+ b=13d11fAol537wMifs7Pn6MTr+3m2Tko6JIS2dccj+7Z4vtRK12mM2Zm1rrA6feIc0JkcGBp17
+ 8oi1QxR2nkDAo15iGA2BK6tMO/TyDjHpageud9o192jWH2TWIa35FWf
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qt1-x830.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qt1-x82d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,97 +108,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This feature causes tag checks to compare logical address tags against
-their canonical form rather than against allocation tags. Described in
-the ARM ARM section "Logical Address Tagging".
+According to ARM ARM, section "Memory Tagging Region Types", loading
+tags from canonically tagged regions should use the canonical tags, not
+allocation tags.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 ---
- target/arm/internals.h      | 40 ++++++++++++++++++++++++++++++++++++++++
- target/arm/tcg/mte_helper.c | 12 ++++++++++++
- 2 files changed, 52 insertions(+)
+ target/arm/tcg/mte_helper.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 75677945af..5f0bcdaaac 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1633,6 +1633,46 @@ static inline bool tcma_check(uint32_t desc, int bit55, int ptr_tag)
-     return tcma && match;
- }
- 
-+/* Return whether or not the second nibble of a VA matches bit 55.  */
-+static inline bool tag_is_canonical(int ptr_tag, int bit55)
-+{
-+    return ((ptr_tag + bit55) & 0xf) == 0;
-+}
-+
-+/* Return true if mtx bits mean that the access is canonically checked.  */
-+static inline bool mtx_check(CPUARMState *env, bool bit55)
-+{
-+    /*
-+     * the MTX bits used in EL0 are those used in whichever EL is used
-+     * for the supervisor. The EL that contains the supervisor uses
-+     * bits 60 and 61 (MTX0 and MTX1), while the other ELs that aren't
-+     * used by the supervisor.
-+     */
-+    int el = arm_current_el(env);
-+    if (el == 0) {
-+        if (HCR_E2H & env->cp15.hcr_el2) {
-+            return (1l << (60 + bit55)) & env->cp15.tcr_el[2];
-+        } else {
-+            return (1l << (60 + bit55)) & env->cp15.tcr_el[1];
-+        }
-+    } else if (el == 1) {
-+        if (HCR_E2H & env->cp15.hcr_el2) {
-+            g_assert_not_reached();
-+        } else {
-+            return (1l << (60 + bit55)) & env->cp15.tcr_el[1];
-+        }
-+    } else if (el == 2) {
-+        if (HCR_E2H & env->cp15.hcr_el2) {
-+            return (1l << (60 + bit55)) & env->cp15.tcr_el[2];
-+        } else {
-+            return (1l << 33) & env->cp15.tcr_el[2];
-+        }
-+    } else if (el == 3) {
-+        return (1l << 33) & env->cp15.tcr_el[3];
-+    }
-+    return false;
-+}
-+
- /*
-  * For TBI, ideally, we would do nothing.  Proper behaviour on fault is
-  * for the tag to be present in the FAR_ELx register.  But for user-only
 diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index f9fd6fd408..513ee8d6a1 100644
+index 513ee8d6a1..ddb68e11fc 100644
 --- a/target/arm/tcg/mte_helper.c
 +++ b/target/arm/tcg/mte_helper.c
-@@ -799,6 +799,10 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
-         return 1;
-     }
+@@ -279,9 +279,14 @@ uint64_t HELPER(ldg)(CPUARMState *env, uint64_t ptr, uint64_t xt)
+     mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_LOAD, 1,
+                              MMU_DATA_LOAD, GETPC());
  
-+    if (mtx_check(env, bit55)) {
-+        return tag_is_canonical(ptr_tag, bit55);
-+    }
-+
-     mmu_idx = FIELD_EX32(desc, MTEDESC, MIDX);
-     type = FIELD_EX32(desc, MTEDESC, WRITE) ? MMU_DATA_STORE : MMU_DATA_LOAD;
-     sizem1 = FIELD_EX32(desc, MTEDESC, SIZEM1);
-@@ -962,6 +966,14 @@ uint64_t HELPER(mte_check_zva)(CPUARMState *env, uint32_t desc, uint64_t ptr)
-         goto done;
-     }
- 
-+    if (mtx_check(env, bit55)) {
-+        if (tag_is_canonical(ptr_tag, bit55)) {
-+            goto done;
+-    /* Load if page supports tags. */
++    /* Load if page supports tags. Set to canonical value if MTX is set. */
+     if (mem) {
+-        rtag = load_tag1(ptr, mem);
++        uint64_t bit55 = extract64(ptr, 55, 1);
++        if (mtx_check(env, bit55)) {
++            rtag = 0xF * bit55;
++        } else {
++            rtag = load_tag1(ptr, mem);
 +        }
-+        mte_check_fail(env, desc, ptr, ra);
+     }
+ 
+     return address_with_allocation_tag(xt, rtag);
+@@ -444,6 +449,11 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
+         return 0;
+     }
+ 
++    if (mtx_check(env, extract64(ptr, 55, 1))) {
++        shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
++        return (~0) << shift;
 +    }
-+
 +
      /*
-      * In arm_cpu_realizefn, we asserted that dcz > LOG2_TAG_GRANULE+1,
-      * i.e. 32 bytes, which is an unreasonably small dcz anyway, to make
+      * The ordering of elements within the word corresponds to
+      * a little-endian operation.  Computation of shift comes from
 
 -- 
 2.51.2
