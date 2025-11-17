@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED50BC63391
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D1EC63371
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 10:40:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKvhq-0004b7-33; Mon, 17 Nov 2025 04:39:30 -0500
+	id 1vKvhX-0004NO-Jl; Mon, 17 Nov 2025 04:39:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvhM-0004KI-AK
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:04 -0500
+ id 1vKvhQ-0004LQ-N8
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:06 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vKvhK-0006H0-G5
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:00 -0500
+ id 1vKvhO-0006HR-Dk
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 04:39:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763372339; x=1794908339;
+ t=1763372342; x=1794908342;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KhQR5tiHq2nlsQHsdWiG7YU6sxG6zpGR/PSttrNctaw=;
- b=QufvxFx5woViYxKWP78R7v6N3CysQuD+IHnXe7EfpGcaz0r/N08CrOZB
- IA+NofrnfNyUYe5mne+01JbpuAjRfWxQpR5rKCR85FMy6D6DEQaSe76rz
- Q1gEsBFldCp6NJNQJJZosZF4OqRN3RoarTH/51kIwKQ2pGer8OsBQqd0v
- qJB2H+wWEt2/pm8SvPWxs6t9VsoKp8U0XQmt/cgDfkGiSkAnHz8XK/9F+
- 96LH2ZOBfPsjvkQJftWD84YXFuaJk3Hj7cmeON5BKUFUhSovtnxeunL9U
- C4Svb69YaIwe0M8G2ysIYz6CljxI6+dOfkVt8EJog62fgkoeZOf67TezE A==;
-X-CSE-ConnectionGUID: kxyA8ExpR7ecrJMZeHHTXg==
-X-CSE-MsgGUID: Mdp8UtvnRY+WvS0px5Ootg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76045929"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76045929"
+ bh=4BT+d0D/HOhqnjY6XYfosheQDzftMiFU2NwzkVvs544=;
+ b=MV7b7EtrP3BTUW+o+C7pvGf9CerGnPl2cG1qrlrxJaXfOe+wOVjvKqAb
+ 8ygigRRDFPL/qEauBITXshbc3M2Ltwfa1ER9l8MM7p0C1FAr3QLVyGZUb
+ FZmA3lCof1fDfS/euqXR4SIEjC0itZlbLkoKQ0DZBgW+WfXm0PQhFNjOp
+ eGlWmJlQNjDO32U1YNc1QqSKuYhGvf9v+4hzpyxNg7nFG6ELBCJpcCxk0
+ 15KrKMBNDY/iP6435QX1X7tVADdIycP4pWhRGBrPRNrq6eZgyIzx40Z76
+ ICiGKIXTasckoe0gB3lWOdL1+GX4adNv999j2klcB4DjvYBWSngUcEibI w==;
+X-CSE-ConnectionGUID: qkXuTiVfQ5KK2w7SkuIVCA==
+X-CSE-MsgGUID: r7dragELRh+ZFSySjTyCcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76045942"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76045942"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:38:57 -0800
-X-CSE-ConnectionGUID: /VJjrsnuSkiuZwVLdGPYSg==
-X-CSE-MsgGUID: ZMkKwW4vSpu9Mn6XB9UoSg==
+ 17 Nov 2025 01:39:01 -0800
+X-CSE-ConnectionGUID: WktvqDBWSUiPcaKXmgsSrw==
+X-CSE-MsgGUID: 6Z9csp4sRoerIprlGj+NvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070893"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190070903"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 01:38:53 -0800
+ 17 Nov 2025 01:38:57 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,9 +51,10 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v8 06/23] intel_iommu: Implement get_viommu_flags() callback
-Date: Mon, 17 Nov 2025 04:37:09 -0500
-Message-ID: <20251117093729.1121324-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v8 07/23] intel_iommu: Introduce a new structure
+ VTDHostIOMMUDevice
+Date: Mon, 17 Nov 2025 04:37:10 -0500
+Message-ID: <20251117093729.1121324-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
 References: <20251117093729.1121324-1-zhenzhong.duan@intel.com>
@@ -84,58 +85,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement get_viommu_flags() callback and expose a request for nesting
-parent HWPT for now.
+Introduce a new structure VTDHostIOMMUDevice which replaces
+HostIOMMUDevice to be stored in hash table.
 
-VFIO uses it to create nesting parent HWPT which is further used to create
-nested HWPT in vIOMMU. All these will be implemented in following patches.
+It includes a reference to HostIOMMUDevice and IntelIOMMUState,
+also includes BDF information which will be used in future
+patches.
 
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 ---
- hw/i386/intel_iommu.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/i386/intel_iommu_internal.h |  7 +++++++
+ include/hw/i386/intel_iommu.h  |  2 +-
+ hw/i386/intel_iommu.c          | 15 +++++++++++++--
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 3330298884..02522f64e0 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -28,6 +28,7 @@
+ #ifndef HW_I386_INTEL_IOMMU_INTERNAL_H
+ #define HW_I386_INTEL_IOMMU_INTERNAL_H
+ #include "hw/i386/intel_iommu.h"
++#include "system/host_iommu_device.h"
+ 
+ /*
+  * Intel IOMMU register specification
+@@ -678,4 +679,10 @@ typedef struct VTDPASIDCacheInfo {
+ /* Bits to decide the offset for each level */
+ #define VTD_LEVEL_BITS           9
+ 
++typedef struct VTDHostIOMMUDevice {
++    IntelIOMMUState *iommu_state;
++    PCIBus *bus;
++    uint8_t devfn;
++    HostIOMMUDevice *hiod;
++} VTDHostIOMMUDevice;
+ #endif
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index 0b7832d25d..401322665a 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -302,7 +302,7 @@ struct IntelIOMMUState {
+     /* list of registered notifiers */
+     QLIST_HEAD(, VTDAddressSpace) vtd_as_with_notifiers;
+ 
+-    GHashTable *vtd_host_iommu_dev;             /* HostIOMMUDevice */
++    GHashTable *vtd_host_iommu_dev;             /* VTDHostIOMMUDevice */
+ 
+     /* interrupt remapping */
+     bool intr_enabled;              /* Whether guest enabled IR */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index ab8037a666..43f3a49769 100644
+index 43f3a49769..3095d78321 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -24,6 +24,7 @@
- #include "qemu/main-loop.h"
- #include "qapi/error.h"
- #include "hw/sysbus.h"
-+#include "hw/iommu.h"
- #include "intel_iommu_internal.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
-@@ -4696,6 +4697,16 @@ static void vtd_address_space_unmap_in_migration(VTDAddressSpace *as,
-     }
+@@ -289,7 +289,10 @@ static gboolean vtd_hiod_equal(gconstpointer v1, gconstpointer v2)
+ 
+ static void vtd_hiod_destroy(gpointer v)
+ {
+-    object_unref(v);
++    VTDHostIOMMUDevice *vtd_hiod = v;
++
++    object_unref(vtd_hiod->hiod);
++    g_free(vtd_hiod);
  }
  
-+static uint64_t vtd_get_viommu_flags(void *opaque)
-+{
-+    IntelIOMMUState *s = opaque;
-+    uint64_t flags;
-+
-+    flags = s->fsts ? VIOMMU_FLAG_WANT_NESTING_PARENT : 0;
-+
-+    return flags;
-+}
-+
- /* Unmap the whole range in the notifier's scope. */
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+ static gboolean vtd_hash_remove_by_domain(gpointer key, gpointer value,
+@@ -4602,6 +4605,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+                                      HostIOMMUDevice *hiod, Error **errp)
  {
-@@ -5354,6 +5365,7 @@ static PCIIOMMUOps vtd_iommu_ops = {
-     .pri_register_notifier = vtd_pri_register_notifier,
-     .pri_unregister_notifier = vtd_pri_unregister_notifier,
-     .pri_request_page = vtd_pri_request_page,
-+    .get_viommu_flags = vtd_get_viommu_flags,
- };
+     IntelIOMMUState *s = opaque;
++    VTDHostIOMMUDevice *vtd_hiod;
+     struct vtd_as_key key = {
+         .bus = bus,
+         .devfn = devfn,
+@@ -4624,7 +4628,14 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+         return false;
+     }
  
- static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
++    vtd_hiod = g_malloc0(sizeof(VTDHostIOMMUDevice));
++    vtd_hiod->bus = bus;
++    vtd_hiod->devfn = (uint8_t)devfn;
++    vtd_hiod->iommu_state = s;
++    vtd_hiod->hiod = hiod;
++
+     if (!vtd_check_hiod(s, hiod, errp)) {
++        g_free(vtd_hiod);
+         vtd_iommu_unlock(s);
+         return false;
+     }
+@@ -4634,7 +4645,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+     new_key->devfn = devfn;
+ 
+     object_ref(hiod);
+-    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, hiod);
++    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, vtd_hiod);
+ 
+     vtd_iommu_unlock(s);
+ 
 -- 
 2.47.1
 
