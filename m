@@ -2,93 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58ABC65219
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 17:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC420C6526A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 17:31:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL24G-0005TO-Tc; Mon, 17 Nov 2025 11:27:05 -0500
+	id 1vL28Q-00079y-UO; Mon, 17 Nov 2025 11:31:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vL24D-0005SP-B1
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 11:27:01 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vL24B-0007Fw-Qb
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 11:27:01 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-42b427cda88so3216313f8f.0
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 08:26:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vL28L-00076r-6u
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 11:31:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vL28I-0007gX-NJ
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 11:31:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763397073;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9EV0G8fOv9urSTQ/Zi9BrN+v8CBpmDQcEA3FMJ5hCDI=;
+ b=Z4SDfB/MnV65YACGRc8qfWyzHGCYfwkRBbOZEbj4Pbi++tO2uVRlUq0bjnhF0NfY8DHVsB
+ rRNCCLA54IBQABBVKldzU8b3oqxY7Du+w4yw+xym0+J94+EFAYteUn4dSRvi5HO3hrJIDc
+ VN0kcJmgxT5zRtoBjv8wNeMK8dnAya8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-204-OV4QJj6UOZy6ZW6Z--o6jA-1; Mon, 17 Nov 2025 11:31:11 -0500
+X-MC-Unique: OV4QJj6UOZy6ZW6Z--o6jA-1
+X-Mimecast-MFC-AGG-ID: OV4QJj6UOZy6ZW6Z--o6jA_1763397070
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-477563a0c75so26086935e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 08:31:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763396817; x=1764001617; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=EtL1yPRzRFJOyeu0MdFDP29cEIK5H5s4qaLsSZR9XCE=;
- b=Rph5LC3AKvXRq27Ey2TqTAQDfud3PcvHftrH9JfOu9IylKuMkBwPqldBPFmyxahlBE
- yaojRZpCjL7XKcdd4/0XE9k4Uo38RmqW5hegWhDEaVEhGPIfgRZM7UVO6flvwjDUxCwq
- 8PO4WiRd6GcUUTvO/CBGSQ6VdcefsciuBiufAW9BNg/qHLxK5MoBsxbLApeKjuOmpxaO
- SP0ENJf1x/AA9FWq8xo47jQ1cFKgKPKbta78UHW2s+4lMZRw+M29qhBiLEUu68jNWhUs
- ka7Zazh6oSKo4RwGxsCT1rO8kITgHES/4DsckjbVyORNMRxhlGzSQfs/l5yGbSqtdesc
- 6ywg==
+ d=redhat.com; s=google; t=1763397069; x=1764001869; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9EV0G8fOv9urSTQ/Zi9BrN+v8CBpmDQcEA3FMJ5hCDI=;
+ b=YwA6fsdpvUW+HuQy4HGgqBWT3Vn6hb0Td4WJSlhdpJRgMO1Q1X91/slKU92by15+9j
+ bo0qsZF7S12oUD1lcYpT6dPC4UFksE9dWHZdwSPtuWJoU6wWgYPym/ZH9VoffCcpyK6t
+ A4sfb+a8GgouqQb4BzRtaF2pwaETec8P1tzxsy49Ng6gOOEArozOfC2xM74gZAkAk2bC
+ +9N7rgAjmKJ4QQopZukoNV/A7tQ7EtuYlYAd+7yl1gsYaocb61RwvDcJGGvxxRJE1AUI
+ TPioAlESQ0HmasNMhw8j9VITxwSLwiGkyiWsHgE9O1hG70xk3csFAr1e6Zi3dsSu+vvu
+ Qj3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763396817; x=1764001617;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EtL1yPRzRFJOyeu0MdFDP29cEIK5H5s4qaLsSZR9XCE=;
- b=Q1+Yudi18xsWw/opsbYvAZdwSq+f/8wHn2QmPsJnVFxktrlcKpFcEJ+oJWJXZOsi3U
- PBUyw9D2IC313LSzoBZazYWCXa5FLRm0w3GyJgtE1scBvr7kZ0c5M/TCW9XMknt9Zowm
- PvYRY73pE8Vvu3zVeaGUhoNMh7a9IzOpGouqmNXuKpB8yXfsFsfxTmvIL+n/YxilEAWh
- o/vzaNguFW7n1+4RjP1QVn7Knyrwb5V1qp80clPQL0gPfsSFjz3zOZUHRJWejBqTyjQB
- 5FMmUNMMXkdhxIlVdEmRAQUbixsR0ibLg9J2gU9PKFQigYatJfg8TvEG1Jl0hz9EfSj8
- IAQA==
-X-Gm-Message-State: AOJu0Ywf2kEGpA+Vk1agtIC14gyjIrAUIT6GCaddsiwDK6oSB7y02ASF
- aPMQjl1o7qCyvhIIqu1OLwhi033W6xKeuYJysBaqp6cyrkBAdX/pIh7JEuCLGxWYu9oUR6zLQC1
- ld4vwVwo=
-X-Gm-Gg: ASbGncvfRT1bXCxkNKbGAyzG2VKf4RUwvWDPMj9TPyA5glkTJDlBAY9XQWCZ+TGpTG4
- 5m0GlwC+yVb+/uPaw4ndEyJJ8v7q6KPXptZGZREKZSAH45W403gFdwqLZzxHwiY55QUqynXT8sY
- XdO0N3VkVFsnTPJsXr6qB45BtpQggoJOHlGLTDSGMWel+Ocq4diQ8JA0uvCWAgXLuTBOspaO9a2
- U0sbo1OeUOPet0utlDnTShh9gEhgwieAJflj99cqMKPMZAHOUyAArfCx6IlzCrASBnKc8DFQ7jg
- moHvTosXjyHPj2kiV7PbCMjtBItJdb58h1zifz7rLsszno2e8cnz4mrSARijL3Nr46jO0EQdtdD
- 6wOl71fI47XOJCWIpGtPFH7iC4BhmGMTUVAKTIzHWy2GINpoUJA5sOZ2kBE/9BOz4/HZevyX4Ge
- iEVl49fHLOrrx7eVsZaGsvy4/YHVxsP79Iqh6May1fsyxQpqlnBqt//VuwB9r2
-X-Google-Smtp-Source: AGHT+IHokMC+SSq7vr0KJH6xw/a5H9oIMUgtp3HpsI36zTEXsnAZQjbvgYpm24bHdSFsuy6BNRzrlw==
-X-Received: by 2002:a05:6000:2f83:b0:429:d3e9:694 with SMTP id
- ffacd0b85a97d-42b5932360dmr11698978f8f.5.1763396817137; 
- Mon, 17 Nov 2025 08:26:57 -0800 (PST)
-Received: from [192.168.8.105] (66.red-37-158-132.dynamicip.rima-tde.net.
- [37.158.132.66]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53e845bdsm26164210f8f.12.2025.11.17.08.26.56
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Nov 2025 08:26:56 -0800 (PST)
-Message-ID: <b7d5b2dd-bdb2-49f5-8345-d55d5d74a65a@linaro.org>
-Date: Mon, 17 Nov 2025 17:26:54 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 07/10] target/arm: ldg on canonical tag loads the
- tag
+ d=1e100.net; s=20230601; t=1763397069; x=1764001869;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9EV0G8fOv9urSTQ/Zi9BrN+v8CBpmDQcEA3FMJ5hCDI=;
+ b=xSmQ22jngHvR6kY0NB8lqnWvLrLlp5YXeeCXFipCuLqjvQWMtZmTAeq6WtXDRbYTzD
+ ioxBvwV8z/TU0wohpFZmSfnYn+TodPJh4DxhJ0SGS7mropeL/425BVOeFJFjKV22qMp0
+ SATMFUxKpqy8GKDqJ9quc5SwMAABcd6lRK43RGcnIGK0takgjhPQRMvNyMxagBXKptld
+ kEq8oVn2FROJddeaEzum9FqyOh+39gNZBFTX8hhGjeLfdKm47d7VjME8fhN/LwGAF46h
+ sde+F1eKchgm5B9QZgK1Znh7IbfKaGJlqlgqbfhj/gVHgCpIXzQElWHHIlpcDHOCRrGh
+ 3hcg==
+X-Gm-Message-State: AOJu0YzDmk5Oeeu/saD+eZmSUo8JzFiFSGOsCE02FzaqB2922cohwFX5
+ 3Plz791PfjA9J3UFjgJixZa+hKQb7q+Tn9oq2AlwpJwqDiU8DF8lw5A1SqvZUJ5lRBTIDc+8hRM
+ LRH5ZtmI+/N0K6/ytXs9QWyfDNwa2+q07hPaDFbWGl9PF7XPdIQ7rMHNmiSoUjvG9G9noOR8uCn
+ tqGB1Ou2kB/jSHLnB1gaaNGPuWmkgd2GKeCqiKUuD4
+X-Gm-Gg: ASbGncvxoRt0g4c6s/1+CYzM00e7q2+317R7Gzb9CN7e+xy3ovklZ77lNsw7vKoTNG0
+ g/YQgn0Rbq0hMiWApX+6wgi7wEga7Yvjk+FT0NsjtVl2RMwkPTJDEmjHia+xHAYrCFGd41bAkc1
+ x7ldOkuCvm0CxghUbuDSekTlkSXNWoHGJJYgMlodnKvOSLa/98ugT5uvO63nzHhrjiZuatjm/OH
+ 8pdFkTyibglEQp6OZRh2AbG8UmbAzt0VWdEP8Qc9zZIMXK8Cb5Y4bYKSi178TIzLzA7PBGkAUm7
+ Zzt0ibSlTeq22yRscDfMt4owRjkqgb77uoD8ErNApvORVNKIlHsZ+rJvJF15+DnPrDlU1PWCYPG
+ ozfoefholkZu9EdLfMyLeaOACFksU4MdHnfZc/f94Qgtj63qjJ4k3y7lvhTloZN7ZxS/6S7TPy7
+ mr3p5F
+X-Received: by 2002:a05:600c:3587:b0:477:8a29:582c with SMTP id
+ 5b1f17b1804b1-4778feb23b3mr129423525e9.34.1763397069065; 
+ Mon, 17 Nov 2025 08:31:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF3lrjs4Ap1sFQcoO4p66XX8pM0YvYevbQYPjMR4436z8tfMJINA/9vZN5f1jzYpVKDeFHDHA==
+X-Received: by 2002:a05:600c:3587:b0:477:8a29:582c with SMTP id
+ 5b1f17b1804b1-4778feb23b3mr129423135e9.34.1763397068564; 
+ Mon, 17 Nov 2025 08:31:08 -0800 (PST)
+Received: from [192.168.10.48] ([176.206.119.13])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4779fc42f25sm99329855e9.6.2025.11.17.08.31.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Nov 2025 08:31:08 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-References: <20251116-feat-mte4-v2-0-9a7122b7fa76@gmail.com>
- <20251116-feat-mte4-v2-7-9a7122b7fa76@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251116-feat-mte4-v2-7-9a7122b7fa76@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+Cc: jsnow@redhat.com
+Subject: [PATCH 0/3] mtest2make: clean up and make dependencies more precise
+Date: Mon, 17 Nov 2025 17:31:04 +0100
+Message-ID: <20251117163107.372393-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,24 +116,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/25 02:40, Gabriel Brookman wrote:
-> @@ -444,6 +449,11 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
->           return 0;
->       }
->   
-> +    if (mtx_check(env, extract64(ptr, 55, 1))) {
-> +        shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
-> +        return (~0) << shift;
-> +    }
+You probably have never thought much about scripts/mtest2make.py, and in
+fact it has seen only a hendful of commits in the last few years.
+The idea is pretty simple: gather the list of testsuites and their
+dependencies, and turn a "make check-*" invocation into calling "ninja"
+first and "meson test" second.  On top of that, it magically turns
+SPEED=thorough into invoking up to three suites named XYZ, XYZ-slow
+and XYZ-thorough.
 
-This should load the canonical tag, which is 0 for bit55==0.
+But even this incospicuous script can harbor a bug, or rather an "I
+didn't really think too much about it" situation.  Dependencies are added
+to suite XYZ independent of the speed that is used in the meson.build
+file: add a dependency to a func-thorough test and "make check-func"
+will build it at any requested speed.
 
-The ~0 is wrong because it's not 64-bit.
-The field also needs to be bound by gm_bs.
-Something like
+Fixing this is a one line change, but it is easiest with a small cleanup
+on the front, which is patch 1.  This (at least to me) makes the generated
+Makefile.mtest file a little bit easier to read, which is also nice
+to have.
 
-   return MAKE_64BIT_MASK(shift, shift + (2 << gm_bs));
+Paolo
 
 
-r~
+Paolo Bonzini (3):
+  mtest2make: cleanup mtest-suites variables
+  mtest2make: add dependencies to the "speed-qualified" suite
+  mtest2make: do not repeat the same speed over and over
+
+ Makefile              |  4 +++-
+ scripts/mtest2make.py | 43 ++++++++++++++++++-------------------------
+ 2 files changed, 21 insertions(+), 26 deletions(-)
+
+-- 
+2.51.1
+
 
