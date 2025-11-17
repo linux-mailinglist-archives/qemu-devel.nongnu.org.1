@@ -2,60 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450D6C63F15
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93725C63F36
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKxok-0007jw-9x; Mon, 17 Nov 2025 06:54:46 -0500
+	id 1vKxpV-0008Fb-Dm; Mon, 17 Nov 2025 06:55:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlugg@mlugg.co.uk>)
- id 1vKxoh-0007ja-JC; Mon, 17 Nov 2025 06:54:43 -0500
-Received: from mlugg.co.uk ([104.238.170.239] helo=mail.mlugg.co.uk)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <mlugg@mlugg.co.uk>)
- id 1vKxof-0005ND-Rb; Mon, 17 Nov 2025 06:54:43 -0500
-Received: from ehlo.thunderbird.net
- (4.d.b.5.0.3.8.6.2.e.f.3.f.5.c.9.f.b.9.2.0.c.b.a.0.b.8.0.1.0.0.2.ip6.arpa
- [IPv6:2001:8b0:abc0:29bf:9c5f:3fe2:6830:5bd4])
- by mail.mlugg.co.uk (Postfix) with ESMTPSA id 99ECE359B5;
- Mon, 17 Nov 2025 11:54:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mlugg.co.uk; s=20200703;
- t=1763380478; h=from:from:sender:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8FjC2Vzm5uiZsxsZ+JFFLLGCeOawz6hUm7qOD+BY228=;
- b=wzGP57SyDBXibzPNujrn3auzLnKSI+pF6WMOLFIDrmKeGqb9N833fmSjmtNSncmhjMqDpD
- Gbq3RBwPjPbnsRE+cvajUNcaJQeYzrSbZ4PPhDhaQEbuX3J88z0HcUOkTZRoI+Qj2B+ps+
- 0RavgrGoUb5ROkTzwXWywhMeC9LFOxo=
-Date: Mon, 17 Nov 2025 11:54:37 +0000
-From: "mlugg@mlugg.co.uk" <mlugg@mlugg.co.uk>
-To: Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>
-CC: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-stable@nongnu.org
-Subject: Re: [PATCH 0/4] linux-user: fix several mremap bugs
-User-Agent: K-9 Mail for Android
-In-Reply-To: <a794dd06-cf28-4d04-be08-c87796296a72@tls.msk.ru>
-References: <20251011200337.30258-1-mlugg@mlugg.co.uk>
- <f495c43b-3d35-4763-853e-4e70428cb666@tls.msk.ru>
- <CAFEAcA_8DbBoQdxRzqedssk6hdKrCNSVrO8i6iK4o5SWrkrNaw@mail.gmail.com>
- <a794dd06-cf28-4d04-be08-c87796296a72@tls.msk.ru>
-Message-ID: <5981537F-9EA0-4BE1-BC00-63A626136153@mlugg.co.uk>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vKxpS-0008Dm-PJ
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:30 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vKxpP-0005fO-J5
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:30 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-42b2a0c18caso2160527f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763380526; x=1763985326; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2mFk16eA35+b526666aLfCHadkorYyQHQl7927DfZuw=;
+ b=OpOZxKcD7itK7jvH8+sudkqgJ3wm2+DWVMSboMCKCqKIhWiuVsfzd2kIfrdQUOhLjv
+ nO7/t2D4/jUKiOTa/S1FqTlLc1C8Y1TQgbVbYwmyHKRArsrB/jSK/uyS8udv5A9k9rHQ
+ ne4TeW6d2If4NuM6kZGB+TBIgQM+VHdYfIGjwGOkfpfosmevfCu9y7R+c11fC0BVfwDo
+ 0IfW/+cL5iiULu/lMgimzPpkfkKisbndFJRLI3FhC9U8dMmFdYWmwSKyoS46rBBovuzH
+ YwKeC4no5+KHmGA3rWxe5KxzEYT6IuTUZ/Gl7YJ9xKq+yZgyNfKbj1c/7EmczjCu6hpW
+ voSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763380526; x=1763985326;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2mFk16eA35+b526666aLfCHadkorYyQHQl7927DfZuw=;
+ b=lRR0JxqaczLL3cyQvjCgxMUIO+5dae1yDoY4/wACw1IwdqPkHPNzXvpg6X/lc3IGbU
+ cyM1V1GrZunj0Dpawv2jnoi2/as70lBEh6ueJ+p/IUlo7BGZQtmH9Ds8z1rtMvfSTI11
+ tojT1wTveXOEm1W5UzEoud122UgsGBw7rp9bbF2J/pRvPvTY81aNvzppcxmlKJRiXXTi
+ UFAYhKfyrqPqWeCFxKgklkrUHkG/BAFGBLYmM1ggj8NnqRkSZgkmuokLqrex7mMBuRjX
+ qSs3SpQE9MnP/1rUfASpJ//pwPj6TnO9IWNvTjaxtYku9AgMP7XbegotmkO/iRDzl2Cv
+ OIYg==
+X-Gm-Message-State: AOJu0YzwMFiwL5KTlHWvCP7ZNCVIFfRYkGqIKmbZ1OH9Zzkuy10surLB
+ urlW8V4v2W64GRQIQyPAyE4DOVSi9APGsWqQFojYEXQLXz2BkiNyrX+zcck38JHoZPY=
+X-Gm-Gg: ASbGncs5vTRHEdCc2S3UYfOahDUPo5B8OrGGrr9jMB1fCYXApSfZ8H8ovLQVX+fAxXO
+ 34SIbM9/ZBOkovxRP5zNaUziqoc5XMkmJKhUiuWbMQSJBQAWTF4fMzZ9XqnjPoyxjtDoK5W4OoE
+ CkbIJbiB3WkXo2OwpXY93hUunI6jZdJvzBqQxL05m+fd/emUy8Hz8oL57uz8SG4xVgm6L81RiV1
+ 4oqhQ71+ETn0bD8Ko0RKkVGDS3bTiXRViunM8ZMNozf4WJPf23V9tgQxqdUA02Esh5nKERvWyN+
+ a6L2DHjZl8B/vy1FSN+jAn4BVkiJE0PndzeBzuAdaiH/NcERGMuaYTRWUwnoRbfz89eB29jtulf
+ 9gQZ1+oueemkigf9E3XzPxIKtXDB5pzmibUIRYivjlco/V2RtXO/PZQ/QnmjDGFaz2vTKIybNfx
+ 4lIRZXYyAfecA=
+X-Google-Smtp-Source: AGHT+IFIIAGYoLB+c7BjC3IOMhukgp1LH0I6j5kpRdg9Nij3UQNnI9u015V3d3MQDZt8JrcX61ijDQ==
+X-Received: by 2002:a05:6000:2504:b0:429:b8f9:a887 with SMTP id
+ ffacd0b85a97d-42b5935e272mr10291156f8f.6.1763380525904; 
+ Mon, 17 Nov 2025 03:55:25 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53f0b62dsm26004290f8f.24.2025.11.17.03.55.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Nov 2025 03:55:24 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0FCF05F860;
+ Mon, 17 Nov 2025 11:55:24 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Ed Maste <emaste@freebsd.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Thomas Huth <thuth@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, qemu-arm@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org
+Subject: [PATCH v3 00/18] testing/next cleanups (docker,
+ functional) - pre-PR-final-1
+Date: Mon, 17 Nov 2025 11:55:05 +0000
+Message-ID: <20251117115523.3993105-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=104.238.170.239; envelope-from=mlugg@mlugg.co.uk;
- helo=mail.mlugg.co.uk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,29 +111,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Sorry for top post, replying on mobile=2E)
+We have a new ppc64le custom runner box courtesy of OSUOSL. The
+ansible scripts where updated in the last pull request and now we can
+turn on the runner. The initial runs showed some issues so for v2 I've
+kept the tests basic.
 
-Ah, yes, I'd kind of forgotten about this; apologies! I'll aim to address =
-the feedback and send a new version of the series by the end of today (UTC+=
-0)=2E Thanks for the ping!
+On the subject runners I've done some more template clean-ups to
+improve maintainability and also tried to stop the custom runners
+appearing when not prompted for. I've iterated on that for v2.
 
-On 17 November 2025 11:43:49 GMT, Michael Tokarev <mjt@tls=2Emsk=2Eru> wro=
-te:
->On 11/17/25 14:42, Peter Maydell wrote:
->> On Mon, 17 Nov 2025 at 08:40, Michael Tokarev <mjt@tls=2Emsk=2Eru> wrot=
-e:
->>>=20
->>> A friendly ping?  Has this series been forgotten?
->>> It looks like it should be picked up for 10=2E2 release=2E
->>=20
->> No, there are review comments on the series that need to be
->> addressed before it can be applied=2E
->
->Yes that's what I actually mean, - just used the wrong wording=2E
->What I mean is that this series is better be fixed and applied
->before/for 10=2E2=2E
->
->Thanks,
->
->/mjt
+Finally fileserver.linaro.org is being shutdown at the end of the year
+so I have migrated the tests to a new server. Those changes have a Cc:
+qemu-stable@nongnu.org tag as they will need back-porting.
+
+For v3 its mostly GitLab clean-up for the rules as suggested by danpb.
+I did fix-up the download URL for the KVM test which I only picked up
+because running a staging build in my context tripped up on it. I now
+have a fancy new alias in .git/config:
+
+  [alias]
+          push-ci-fake-staging = push -o ci.variable=QEMU_CI_UPSTREAM=stsquad -f gitlab HEAD:staging
+
+Which will run as if you are pushing to staging although it will fail
+if you don't have access to the custom runners.
+
+Only one still needs review:
+
+  gitlab: make custom runners need QEMU_CI to run
+
+I left existing r-b's in the other patches as the changes where only
+tweaks.
+
+Alex.
+
+Alex Bennée (17):
+  tests/docker: drop --link from COPYs in emsdk docker
+  libvirt-ci: bump libvirt-ci to latest version
+  tests/lcitool: update ENV stazas outputted by refresh
+  tests/docker: add coreutils to the package list
+  tests: move test_xen assets to share.linaro.org
+  tests: move test_virt assets to share.linaro.org
+  tests: move test_netdev_ethtool to share.linaro.org
+  tests: move test_kvm_xen to share.linaro.org
+  tests: move test_kvm to share.linaro.org
+  tests: move test_virt_gpu to share.linaro.org
+  gitlab: add initial ppc64le custom-runner test
+  gitlab: use template for ubuntu-24.04-s390x jobs
+  gitlab: simplify the ubuntu-24.04-aarch64 rules
+  gitlab: suppress custom runners being triggered by schedule
+  gitlab: make custom runners need QEMU_CI to run
+  gitlab: make the schedule rules a bit more general
+  gitlab: add a weekly container building job
+
+Pierrick Bouvier (1):
+  docs/about/emulation: update assets for uftrace plugin documentation
+
+ docs/about/emulation.rst                      |  20 +-
+ docs/devel/testing/ci-jobs.rst.inc            |   6 +
+ .gitlab-ci.d/base.yml                         |   4 +-
+ .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars             |   2 +-
+ .gitlab-ci.d/container-template.yml           |   5 +
+ .gitlab-ci.d/containers.yml                   |  39 ++++
+ .gitlab-ci.d/custom-runners.yml               |   1 +
+ .../custom-runners/debian-13-ppc64le.yml      |  45 +++++
+ .../custom-runners/ubuntu-24.04-aarch64.yml   |  49 ++---
+ .../custom-runners/ubuntu-24.04-s390x.yml     | 189 +++++++-----------
+ .../ci/setup/debian/debian-13-ppc64le.yaml    |   1 +
+ .../ci/setup/ubuntu/ubuntu-2404-aarch64.yaml  |   1 +
+ .../ci/setup/ubuntu/ubuntu-2404-s390x.yaml    |   1 +
+ tests/docker/Makefile.include                 |  11 +
+ tests/docker/dockerfiles/alpine.docker        |  11 +-
+ tests/docker/dockerfiles/centos9.docker       |  11 +-
+ .../dockerfiles/debian-amd64-cross.docker     |  21 +-
+ .../dockerfiles/debian-arm64-cross.docker     |  21 +-
+ .../dockerfiles/debian-armhf-cross.docker     |  21 +-
+ .../dockerfiles/debian-i686-cross.docker      |  21 +-
+ .../dockerfiles/debian-mips64el-cross.docker  |  21 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |  21 +-
+ .../dockerfiles/debian-ppc64el-cross.docker   |  21 +-
+ .../dockerfiles/debian-riscv64-cross.docker   |  24 +--
+ .../dockerfiles/debian-s390x-cross.docker     |  21 +-
+ tests/docker/dockerfiles/debian.docker        |  13 +-
+ .../dockerfiles/emsdk-wasm32-cross.docker     |   8 +-
+ .../dockerfiles/fedora-rust-nightly.docker    |  11 +-
+ .../dockerfiles/fedora-win64-cross.docker     |  19 +-
+ tests/docker/dockerfiles/fedora.docker        |  11 +-
+ tests/docker/dockerfiles/opensuse-leap.docker |  11 +-
+ tests/docker/dockerfiles/ubuntu2204.docker    |  11 +-
+ tests/functional/aarch64/test_kvm.py          |   4 +-
+ tests/functional/aarch64/test_virt.py         |   5 +-
+ tests/functional/aarch64/test_virt_gpu.py     |   8 +-
+ tests/functional/aarch64/test_xen.py          |  12 +-
+ tests/functional/x86_64/test_kvm_xen.py       |  17 +-
+ .../functional/x86_64/test_netdev_ethtool.py  |  14 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/projects/qemu.yml               |   1 +
+ tests/lcitool/refresh                         |   6 +-
+ tests/vm/generated/freebsd.json               |   1 +
+ 43 files changed, 393 insertions(+), 351 deletions(-)
+ create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+
+-- 
+2.47.3
+
 
