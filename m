@@ -2,73 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D853C62B11
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:15:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A234C62C3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:40:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKtRY-0000Xz-7z; Mon, 17 Nov 2025 02:14:32 -0500
+	id 1vKtqA-0001TH-FH; Mon, 17 Nov 2025 02:39:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vKtQk-0000IM-8C
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:13:54 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vKtQg-00029C-9Y
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:13:41 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AH7DUuW083492
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 17 Nov 2025 16:13:30 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=hYmABUl8IANAnqtrHqiZN1dXxAViNumtd3PAxUufUjM=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1763363610; v=1;
- b=i9cD+HdwBS2YgU80zu3p/YpOL8X+E6Zjv+WCl07HboZSz+hAw4G25YeOvBU2Faui
- dAeryXkVKQhiLW8/tagxI26kHtPSvZrJZGKlYkdsmLxBQPf4/04YQ/7ojASa02Jm
- KsEAxJoiZRzW30eq83W544y+nX7nq3URk1kH1nltnQ5u94U0ZT9LpbQxPLBQq92T
- 8gkgt8pOPIeDPJ6/oYlbaLuQZlE8QNwOcbnRErSxXJo72K6eHC1i8xSlHjO+OflQ
- 6qvHFpw11GYXdYi/Jd60Xq+Q+W6AIX1Le4O+LMNj1uEuosKCLUo9tfGXcksNnHaB
- 4eRWMY18wL6aULm//X44UA==
-Message-ID: <8dcffe42-da84-44cf-a240-90680cdb0953@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 17 Nov 2025 16:13:30 +0900
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1vKtp6-0001Of-In
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:38:58 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1vKtp1-0005aj-U2
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:38:51 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Dx_9P30BppOVYkAA--.7790S3;
+ Mon, 17 Nov 2025 15:38:31 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJAxVOTz0BppX881AQ--.26947S2;
+ Mon, 17 Nov 2025 15:38:30 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org,
+	lixianglai@loongson.cn
+Cc: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Song Gao <gaosong@loongson.cn>
+Subject: [PATCH V3 0/2] fix pci device can't alloc irq from fdt
+Date: Mon, 17 Nov 2025 15:14:14 +0800
+Message-Id: <cover.1763347485.git.lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
- associated with VFIO devices
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20251109053801.2267149-1-vivek.kasireddy@intel.com>
- <20251109053801.2267149-11-vivek.kasireddy@intel.com>
- <5c224e00-8114-4586-b502-3819770bc8ff@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB71853FE6CD48B77FA586B628F8CCA@IA0PR11MB7185.namprd11.prod.outlook.com>
- <3c0fe9e8-7efa-4936-b5ef-5cabc4239cdd@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB71855ADFEEC4E3267B464768F8CDA@IA0PR11MB7185.namprd11.prod.outlook.com>
- <8451c0ee-6c9d-4fbf-b1c2-05fd5fd8e4c3@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB7185D06DA886C3758E9B0FB5F8C9A@IA0PR11MB7185.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <IA0PR11MB7185D06DA886C3758E9B0FB5F8C9A@IA0PR11MB7185.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJAxVOTz0BppX881AQ--.26947S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,118 +62,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/17 13:19, Kasireddy, Vivek wrote:
-> Hi Akihiko,
-> 
->> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
->> associated with VFIO devices
->>
->> On 2025/11/13 12:17, Kasireddy, Vivek wrote:
->>> Hi Akihiko,
->>>
->>>> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for
->> blobs
->>>> associated with VFIO devices
->>>>
->>>> On 2025/11/12 13:26, Kasireddy, Vivek wrote:
->>>>> Hi Akihiko,
->>>>>
->>>>>> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for
->>>> blobs
->>>>>> associated with VFIO devices
->>>>>>
->>>>>> On 2025/11/09 14:33, Vivek Kasireddy wrote:
->>>>>>> In addition to memfd, a blob resource can also have its backing
->>>>>>> storage in a VFIO device region. Therefore, we first need to figure
->>>>>>> out if the blob is backed by a VFIO device region or a memfd before
->>>>>>> we can call the right API to get a dmabuf fd created.
->>>>>>>
->>>>>>> So, once we have the ramblock and the associated mr, we rely on
->>>>>>> memory_region_is_ram_device() to tell us where the backing storage
->>>>>>> is located. If the blob resource is VFIO backed, we try to find the
->>>>>>> right VFIO device that contains the blob and then invoke the API
->>>>>>> vfio_device_create_dmabuf().
->>>>>>>
->>>>>>> Note that in virtio_gpu_remap_udmabuf(), we first try to test if
->>>>>>> the VFIO dmabuf exporter supports mmap or not. If it doesn't, we
->>>>>>> use the VFIO device fd directly to create the CPU mapping.
->>>>>>
->>>>>> I have just remembered that mremap() will work for either of udmabuf
->>>> and
->>>>>> VFIO. That will avoid having two different methods and make
->>>>>> vfio_get_region_index_from_mr() and vfio_device_get_region_info()
->>>>>> unnecessary.
->>>>> IIUC, the name virtio_gpu_remap_dmabuf() is misleading because we
->> are
->>>> not
->>>>> actually doing remap but are simply calling mmap(). In other words, we
->>>> are not
->>>>> expanding or shrinking existing mapping but are creating a new
->> mapping.
->>>>> And, for dmabufs associated with VFIO devices, without having to call
->>>>> vfio_get_region_index_from_mr() and vfio_device_get_region_info(), I
->>>> don't see
->>>>> any other way to determine the region offset.
->>>>>
->>>>> So, I guess I'll create a new patch to do s/remapped/map.
->>>>
->>>> I mean calling mremap() with 0 as the old_size parameter. The man page
->>>> says:
->>>>    > If the value of old_size is zero, and old_address refers to a
->>>>    > shareable mapping (see the description of MAP_SHARED in mmap(2)),
->>>> then
->>>>    > mremap() will create a new mapping of the same pages.
->>> It might be possible to use mremap() here but using mmap() seems very
->>> straightforward given that we are actually not shrinking or expanding
->>> an existing mapping but are instead creating a new mapping. Also, I am
->>> wondering what benefit would mremap() bring as opposed to just using
->>> mmap()?
->>
->> As I noted earlier, mremap() removes the need of having two different
->> paths for udmabuf and VFIO, and make vfio_get_region_index_from_mr()
->> and
->> vfio_device_get_region_info() unnecessary, reducing code complexity.
-> Sorry, I should have researched thoroughly before but after looking at the code
-> again, I don't see how mremap() removes the need for having two different
-> paths for udmabuf and VFIO and make vfio_get_region_index_from_mr()
-> and vfio_device_get_region_info() unnecessary. Could you please elaborate
-> how it can be done?
+When we use the -kernel parameter to start an elf format kernel relying on
+fdt, we get the following error:
 
-Not tested, but something like the following:
+pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.0: enabling device (0000 -> 0003)
+pcieport 0000:00:01.0: PME: Signaling with IRQ 19
+pcieport 0000:00:01.0: AER: enabled with IRQ 19
+pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.1: enabling device (0000 -> 0003)
+pcieport 0000:00:01.1: PME: Signaling with IRQ 20
+pcieport 0000:00:01.1: AER: enabled with IRQ 20
+pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.2: enabling device (0000 -> 0003)
+pcieport 0000:00:01.2: PME: Signaling with IRQ 21
+pcieport 0000:00:01.2: AER: enabled with IRQ 21
+pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
+pcieport 0000:00:01.3: enabling device (0000 -> 0003)
+pcieport 0000:00:01.3: PME: Signaling with IRQ 22
+pcieport 0000:00:01.3: AER: enabled with IRQ 22
+pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
 
-head = qemu_ram_mmap(-1, res->blob_size, qemu_real_host_page_size(),
-                      QEMU_MAP_READONLY | QEMU_MAP_SHARED, 0);
-if (head == MAP_FAILED) {
-     return NULL;
-}
+This is because  the description of interrupt-cell is missing in the pcie
+irq map.  And there is a lack of a description of the interrupt trigger
+type.  Now it is corrected and the correct interrupt-cell is added in the
+pcie irq map.
 
-cursor = head;
+Refer to the implementation in arm and add some comments.
 
-for (i = 0; i < res->iov_cnt; i++) {
-     if (mremap(res->iov[i].iov_base, 0, res->iov[i].iov_len,
-                MREMAP_FIXED, cursor) == MAP_FAILED) {
-         qemu_ram_munmap(-1, head, res->blob_size);
-         return NULL;
-     }
+changes:
+V2->V3:
+1.Delete unnecessary changes
+2.Replace some magic numbers with macro definitions
 
-     cursor += res->iov[i].iov_len;
-}
+V1->V2:
+1.Fallback the incorrect modification of pch_pic interrupt-cells and add
+the interrupt trigger type in the pcie irq map
+2.Add macro definitions for the interrupt trigger types of fdt
+3.Refer to the implementation in arm and add some comments.
 
-return head;
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Song Gao <gaosong@loongson.cn>
 
-Regards,
-Akihiko Odaki
+Xianglai Li (2):
+  Modify the interrupt trigger type in loongarch virt fdt to macro
+    definition
+  fix pci device can't alloc irq from fdt
 
-> 
-> Thanks,
-> Vivek
-> 
->>
->> mremap() is also sufficiently straightforward. The man page explicitly
->> states it is designed to create a new mapping. Using it for the purpose
->> (not shrinking or expanding an existing mapping) is not an abuse of the API.
->>
->> Regards,
->> Akihiko Odaki
+ hw/loongarch/virt-fdt-build.c | 55 +++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 18 deletions(-)
+
+-- 
+2.39.1
 
 
