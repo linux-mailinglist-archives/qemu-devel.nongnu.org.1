@@ -2,107 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE95C6671E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 23:40:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA53C667E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 23:54:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL7ss-00055y-Bj; Mon, 17 Nov 2025 17:39:42 -0500
+	id 1vL86J-0004J0-G3; Mon, 17 Nov 2025 17:53:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vL7si-00053t-Iu
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 17:39:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vL86F-0004Ie-Vv
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 17:53:32 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vL7sd-0003Vx-SK
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 17:39:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763419162;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ih8mt1S/dK6l1RZ22LUm8+7bTSCfVNi+19N02b7VVyM=;
- b=Bw4R7YpCoOdLD5pJ5/jtNmXk+GGX5BRqmZznvCuhthAJqu/UK0Kzz8ablAJQM8d2JX9bl7
- SVkPeT+wya9yggtSk85YcFj3UX6xGzjjlLOUpKHNtvKssP/qxwdjk+AjaCkoclA0bhKnmK
- campLBJt7mtvtR5WC1HvodkikyK416k=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-6oUDAlreMeGMgMYWgEwjgw-1; Mon, 17 Nov 2025 17:39:21 -0500
-X-MC-Unique: 6oUDAlreMeGMgMYWgEwjgw-1
-X-Mimecast-MFC-AGG-ID: 6oUDAlreMeGMgMYWgEwjgw_1763419161
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4ed7591799eso143558281cf.0
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 14:39:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763419160; x=1764023960; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ih8mt1S/dK6l1RZ22LUm8+7bTSCfVNi+19N02b7VVyM=;
- b=ATbna1Fsu90DzMAJKv/WyJ6oR/kdMBoGUVzimeb9IRQWCGnC70mvsSaFmkYlylolGf
- AQgk9MAhi11iZIFNpL4QYlImoh4xuxLeEvxfJDJ4DJ/Dea+1MJLnypmAJfuRewzwhHGS
- t7W/ZvIpzgd4h1nDcD2BZNQcAe8WoDgkZCB6FfoV7df8GekPJTmvMSBRi8PBjJYlb5b7
- czLtcbq9WHp4TW4qtTtADT/nZj/zqEQ2duXzTUQbxQFq7iYh4tuN5ryO6bai6X7WFUxN
- FyNRldIGhlbCe1Mus4J+O9gYEHc2iHGgK8yicpQke8dhyT48c4aczk7iVrcSV+OHlEIr
- Ud8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763419160; x=1764023960;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Ih8mt1S/dK6l1RZ22LUm8+7bTSCfVNi+19N02b7VVyM=;
- b=hbypg8ruznOH3qQv+hmS0MySPaEabQlNxwPsZCaya1CXYbnk5qmLtdYA94kbXCtv6E
- gGEdkGAjEzMPIOa9Ia/1TAfCVpLkxNv0iQ8i0U+RMUAAGxJVcf31jsHdqX0VP0kHl5hV
- GbpBXkm9ILl6Oks+zYKlXGTyKMgqW6HFkWk8fao63+wVXRHoeo8ad/G1HLVslmcSDUvT
- gtNRCPXKQPl0vt/3TeuOxkUfawTLGvcSdOBpiGY6OXDoVIxnRTe0C8ktQw91aF339jX7
- 6PNhR2yAob0rtk7xrkbCs5KV8gKCLzuXv2G3EDQYJaX51t9Y9vIL5P9Is/zcnhjpVo9Q
- aO9g==
-X-Gm-Message-State: AOJu0Yzxx+m/iLLg0lCFy97p63cXcPE0/kPgAXOTXphAiNnCTMtsOVb/
- TVPKb+lQZbZLPi6g+KM3zA4JRASWfasQTGTtU5cC5t7T5h6ppL8h30ZaKR9lUsZf6rcJd1jPFjt
- H2ZUB2BWj+UGHe5Ui+yQwti73ZHKDfw7XOeEQ6oOTxSy8ZRqFtTSn+oFaXZ9oYZyLe/sY1nhAqm
- lDRssqhAPoKWVm826VZWxr4wbTqh1ilXmXhjn89A==
-X-Gm-Gg: ASbGnct0psEZ+04nPUf0flFsVqvwzI9hVEN2VVE4UNxGqx0ascWOSrG78T3I00yKB08
- jqA0j0OXmHZcUNfFK7PJSutsK0mmjc5tVthYAE0q2CJzqqV6nWGmivpPdzK+JOCUL05JJuAsgy+
- D6dNQCw8w3Crf4TdSMkYYHsPteBSyp/c0gpXDsHh0fmNljFLEJeFlu8FFJQ+gyFj5zX5aI8OWBn
- Sn4gZq0bJc4foMYH9jh+FfrMbRqWcf4OG8sSbFH2HnwBEJLzFVxgUp8i5SInuopwehxSHXZ7bCs
- 1phWz7FG/0yoytZz8g6TS8ZeaABl5zLgI4psUXVRJ/DXvb1APryybDsRmrJAQEeSHL4QG4jxzNg
- =
-X-Received: by 2002:a05:622a:4a15:b0:4ed:df82:ca30 with SMTP id
- d75a77b69052e-4edfc875136mr175173791cf.13.1763419160227; 
- Mon, 17 Nov 2025 14:39:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGSgbJNRUEz0YasY2a4WtBYI9gwZaFtYrHBh9hcW3zoxmt5sTrzVtoZtqSWPCg3uNne1Z3wKQ==
-X-Received: by 2002:a05:622a:4a15:b0:4ed:df82:ca30 with SMTP id
- d75a77b69052e-4edfc875136mr175173391cf.13.1763419159651; 
- Mon, 17 Nov 2025 14:39:19 -0800 (PST)
-Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee1c21ea34sm37693521cf.30.2025.11.17.14.39.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Nov 2025 14:39:19 -0800 (PST)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 4/4] tests/migration-test: Use MEM_TYPE_MEMFD for
- memory_backend
-Date: Mon, 17 Nov 2025 17:39:08 -0500
-Message-ID: <20251117223908.415965-5-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251117223908.415965-1-peterx@redhat.com>
-References: <20251117223908.415965-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vL86D-0005hE-3I
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 17:53:31 -0500
+Received: from [192.168.10.110] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AHMrGm2014938
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Tue, 18 Nov 2025 07:53:17 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=xTd+F72y/EJGy+yOoAdShSygA7ECXF/Mec+8GssCCkI=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1763419997; v=1;
+ b=OMB0YTgw24GscRF2Erm6XSGnjlSO6va/13b/s63CYsxXy0QwDWdwvzC3OxO6SmoH
+ VTUQEy8HhGuGji5p4rNYRJDXezfGUwZVzltLYDmRJKQEMQ1uNAShcyjbNgFiK+TU
+ 54nX77WkLGgFv3Vu8oynPbVKEQSWf0VPN3MJ7yLJszjBTPP2FXWvcSELxR/BNx4c
+ sVmajG0A3aQ3uDtMnPKyBqka0RkxmFtgqwHiYzkSKCPWPQus+5z1XmaUN7Bgb3/z
+ LLBVuxMgj5ZQYOtamUPGGGG19I5Dk2y7JkOKfsGuWf7VKgUrxVVQSOJVhOB1AaVg
+ PLdAwHceQyORbLzJHEMmcw==
+Message-ID: <692cdc87-a384-42ed-bd97-843a936a5bcb@rsg.ci.i.u-tokyo.ac.jp>
+Date: Tue, 18 Nov 2025 07:53:16 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] rcu: Wake the RCU thread when draining
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <b419584d-f1af-4c05-81a6-35f533e8ff37@rsg.ci.i.u-tokyo.ac.jp>
+ <aQ0Ys09WtlSPoapm@x1.local>
+ <5279f15f-bf46-438e-9c1f-0873b08b59e7@rsg.ci.i.u-tokyo.ac.jp>
+ <aQ37hd0fVJltYtt-@x1.local>
+ <5002e5b4-0493-4dff-af11-402cebecbcc2@rsg.ci.i.u-tokyo.ac.jp>
+ <aRYPXh_9m5ZvTi2w@x1.local>
+ <ded7ef38-8c99-4d37-87b2-2f5ba1dc93fc@rsg.ci.i.u-tokyo.ac.jp>
+ <aRdLFwxzJwjsXFpY@x1.local>
+ <a8c03d1e-a3f4-40de-a633-7b15ec2288e3@rsg.ci.i.u-tokyo.ac.jp>
+ <3c3ad5f1-37ac-4c4b-93c4-ca67b5a1edef@rsg.ci.i.u-tokyo.ac.jp>
+ <aRtQbzMifFW3BejM@x1.local>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <aRtQbzMifFW3BejM@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,79 +83,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only two users of memory_backend as of now (cpr-exec, cpr-transfer)
-uses memfd as backend, now we fully support it.  We can move memory_backend
-usage to mem_type and drop it.
+On 2025/11/18 1:42, Peter Xu wrote:
+> On Sat, Nov 15, 2025 at 11:59:01AM +0900, Akihiko Odaki wrote:
+>> This is wrong. The following can still happen:
+>>
+>> call_rcu_thread()                |
+>>   qatomic_sub(&rcu_call_count, n) |
+>>   (sets rcu_call_count to 0)      |
+>>                                   | call_rcu1()
+>>                                   |  qatomic_fetch_inc(&rcu_call_count)
+>>   qatomic_read(&rcu_call_count)   |
+>>   qemu_event_reset(&sync_event)   |
+>>                                   |  qemu_event_set(&sync_event)
+>>   enter_qs(false)                 |
+>>    wait_for_readers(false)        |
+>>     qemu_sem_timedwait(           |
+>>      &sync_event, 10)             |
+>>
+>> I'll fix it with the next version.
+> 
+> Please take this as an example of why I think these orderings are very hard
+> to make 100% accurate.  Consider when someone else who is less familiar
+> with the rcu code and may mess up with some of the orderings without being
+> noticed.
+> 
+> That's also why I personally liked a sem because the important thing here
+> is not missing an event, which sem always guarantees as it doesn't have
+> resetting at all.  Then we can be open to false positives on events as long
+> as keeping it as minimum as possible.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration/framework.h |  5 -----
- tests/qtest/migration/cpr-tests.c |  6 ++----
- tests/qtest/migration/framework.c | 10 +++-------
- 3 files changed, 5 insertions(+), 16 deletions(-)
+It doesn't matter if it is a semaphore or event in this case. You can 
+simply drop qemu_event_reset(&sync_event) here and the situation will be 
+same for both event and semaphore.
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 9dec21c344..ed85ed502d 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -134,11 +134,6 @@ typedef struct {
-     bool suspend_me;
-     /* enable OOB QMP capability */
-     bool oob;
--    /*
--     * Format string for the main memory backend, containing one %s where the
--     * size is plugged in.  If omitted, "-m %s" is used.
--     */
--    const char *memory_backend;
- 
-     /* Do not connect to target monitor and qtest sockets in qtest_init */
-     bool defer_target_connect;
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 70f8e69633..2a186c6f35 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -89,8 +89,7 @@ static void test_mode_transfer_common(bool incoming_defer)
-         .start.opts_source = opts,
-         .start.opts_target = opts_target,
-         .start.defer_target_connect = true,
--        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
--                                " -machine memory-backend=pc.ram",
-+        .start.mem_type = MEM_TYPE_MEMFD,
-         .listen_uri = incoming_defer ? "defer" : uri,
-         .connect_channels = connect_channels,
-         .cpr_channel = cpr_channel,
-@@ -235,8 +234,7 @@ static void test_mode_exec(void)
-     MigrateCommon args = {
-         .start.only_source = true,
-         .start.opts_source = "-machine aux-ram-share=on -nodefaults",
--        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
--                                " -machine memory-backend=pc.ram",
-+        .start.mem_type = MEM_TYPE_MEMFD,
-         .connect_uri = uri,
-         .listen_uri = listen_uri,
-         .start_hook = test_mode_exec_start,
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 4d1663356a..81eae09c92 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -366,13 +366,9 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
-         ignore_stderr = "";
-     }
- 
--    if (args->memory_backend) {
--        memory_backend = g_strdup_printf(args->memory_backend, memory_size);
--    } else {
--        mem_object = migrate_mem_type_get_opts(args->mem_type, memory_size);
--        memory_backend = g_strdup_printf("-machine memory-backend=%s %s",
--                                         MIG_MEM_ID, mem_object);
--    }
-+    mem_object = migrate_mem_type_get_opts(args->mem_type, memory_size);
-+    memory_backend = g_strdup_printf("-machine memory-backend=%s %s",
-+                                     MIG_MEM_ID, mem_object);
- 
-     if (args->use_dirty_ring) {
-         kvm_opts = ",dirty-ring-size=4096";
--- 
-2.50.1
-
+Regards,
+Akihiko Odaki
 
