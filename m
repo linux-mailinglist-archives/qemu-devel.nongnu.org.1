@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1023DC62054
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 02:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 326B2C62057
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 02:43:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKoF2-0002tX-HW; Sun, 16 Nov 2025 20:41:16 -0500
+	id 1vKoF3-0002tx-GZ; Sun, 16 Nov 2025 20:41:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vKoEa-0002VR-2R
- for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:49 -0500
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ id 1vKoEd-0002XA-Em
+ for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:52 -0500
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vKoEY-0005xa-Ay
- for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:47 -0500
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-4ee0ce50b95so10940781cf.0
- for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 17:40:46 -0800 (PST)
+ id 1vKoEZ-0005y3-JO
+ for qemu-devel@nongnu.org; Sun, 16 Nov 2025 20:40:49 -0500
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4ed66b5abf7so54100561cf.1
+ for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 17:40:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763343645; x=1763948445; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1763343646; x=1763948446; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YZPS9rJuRYJQhQMaUWtzxXr08fJQQ2IjJz7xMKY7qDM=;
- b=b8LRRln4EUZiUykSgQf7JKoUC0a60cbBfkvTbrRvQpQfgowfICEy5L4pILe5xpF1lV
- Hua4hqz3tbmPlaFJ47KIM20dEd62KVOwK93/l2HNXMJf+YzRVq/pZugF5KixzrCcnGZg
- hY+l6WiVlm6rLKSmUpz29Dg3aG2mw3XotEqp9T0ZToTEnWTvSo07BopJ0KS+BJIrj4pL
- 3EW06xNP2V3zy375ZJwvL8Wr6x4GKnDU/56A3QYMEn20NIpvS3Y2HBspvR5nLJazctia
- 56MfqEhwhyI02H5MTuasN6Vm+YtzInpx0y8yaG+FYE7sH/uR6kha7WfEC5ejIsdtYUrx
- if6g==
+ :reply-to; bh=1QKoUu8BlGHfDs3PD9C4DZ89TPN3YY4wK9WcP+sPaow=;
+ b=W4ZJFSzYsaPbSoU5hTRNy5ddYlu8kswUP/xItK6hSsrLwO8fBaoDX4qDzB9jCVxvHq
+ VCBmaKsz9zAwpyQynPfqzNgj2+q3PTRRcDrfrSO2HR5KWFj2DLQ72YNnvpxzBzU4p0cn
+ mzW/eJzaKhH3x7wGAZBChyi+067QuT3/Hp2aVwj+e942Snx7wblictHJ4dAYKdNYgWCB
+ jQIgD6dwHsCmO7uVXU+7El7YHvgw5frpIoMtKAV5ieRg2eoUCYIB77VWxJ9OtlNlVKxH
+ 8uRe7e1Srdw+E2rOrgF9da2xFJGySeM05DLxMfYiYkNjtadW2EzV/jwNsO0Ky/5VLq1K
+ jw9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763343645; x=1763948445;
+ d=1e100.net; s=20230601; t=1763343646; x=1763948446;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=YZPS9rJuRYJQhQMaUWtzxXr08fJQQ2IjJz7xMKY7qDM=;
- b=saqNbs80kk1okIh6356DgXYWs1w0cT5s5XWx5DEJ39kRXyqj6MINofRmwcqAZBChQD
- FAmkKAR2mzkXJj9NiMwixOpdFTDYd9q3A1slZsSxx2yseeM8SUpOzF+ZRMTV4ygkHelL
- /i3Cn+djC6YdAxNtisMynm8kQZf30onxBpdpPPIvyFc/3ID8zJWCwQRnN+meU0XjMAem
- p7OtqcDDOHyvKfEUqC4uoeCJX+4XGJCViZai7szkOTa90QuVnTslUha83LerRNas4Kk1
- daHCXYUUkmqMViV62tPbMlBz62AZ0r9FzLwy1hmzMhr0ehZWApa78fOwP2ggAhuCTNdj
- w3TQ==
-X-Gm-Message-State: AOJu0YwWWrHdWhbujgOHyszjtAhrx5l9XKNbXqdbOslkLrvvc6AOYnUv
- BHxen9mCNe+nqg+tG0y9H5q6+Lr8P+7T2kXBPn9xVEuIxSn6DgMW0nGk
-X-Gm-Gg: ASbGncsUY7SpBpxVSL96eiiv1nAhMzmg0vRSs+fBcm2+AqZ0kJI+SBN3HnHGX+351JB
- cFQ/C+Esfz/9+7ErngiQrS5o2OwQ9NCvi7xw4vQyXhb9cPUP79A+AOgCo3ze3/quJ+q18HXn/Mx
- rQa0+G5wbrB7d5FNBZ2EZsEWGdibvBoEwjIyzRnaZAZ6SdDNtp+2HmC40vZLE4TuYgq2xYb7MHM
- HI/eWO0Ox77f/jAAcvrfqP9YSrbD6Qpz3n73psv/KUXJH7YOUy2QgUEnCEn+bWE0C+0PdAJEE+F
- 1tSAY0GtAXRBvPDFrdTfn8wrxrw4QszcwgK1rlaMbJQWBEyZ7oKbciWgnNSsuDJT+MTJmZ1VcVV
- xw2kmqQtycHuS3LE/dZ+rZRV4ZpEGuS9zKAk5XVZkLZZ3ZYSVxctpYwnhny4wH2vR7dh3t466vn
- aHUd1BQYWqGv/ABKtxhOM=
-X-Google-Smtp-Source: AGHT+IHgvieHxSRUO9TsHKNvJgshRAHk/5Gv34QSSGE6MsBMKM1XUkjD3wkxJ7wnGGvD6rkSbLrljg==
-X-Received: by 2002:ac8:5996:0:b0:4ed:2715:6130 with SMTP id
- d75a77b69052e-4edf216e10cmr143023481cf.36.1763343645435; 
- Sun, 16 Nov 2025 17:40:45 -0800 (PST)
+ bh=1QKoUu8BlGHfDs3PD9C4DZ89TPN3YY4wK9WcP+sPaow=;
+ b=ggVYJ7KTXBs4szJcJdCgSplTMCubOj7YgxU9b/I64Ho4P42l9NJDzBe2k6Uv17xije
+ rqiNVn/3mrz7+eD2eTB27VqXo/RrJVpkuRCpZ9S3N6bL+vgPk8sssK7bwDKe4RyWVWfp
+ G1DDXXLBmw77bjYBWGc7/kC66Pg11ekqIoHDhhYw5pkAEQzfNlenTQXuwn9HkxigdGKi
+ 7t7GGjObpgv9yE0zud8NqsGI8hE+dS2b6QtgJQQE5cZy3R03/n6jWqo6pSN70sI4DmYE
+ MaeviumzNCTGYVrwAoJN22anM8pu4iKGIiAqPPzAX0T9mHFrvz2VFizbwZnQIQQYpz6x
+ P9Ng==
+X-Gm-Message-State: AOJu0YwR9oaDYAZ+w+9QFMxU7OGgqJNWIAqhjTFN1W1CaOBfDhs5LDuJ
+ 2n5WkD/9JQIRWqqJWztcVila3jNjSjziuYz0XqUfL8W2t3lbp2onkoLk
+X-Gm-Gg: ASbGncuP1eJKfawUbyyjMfECEU1M5uM2KQAcIIhouyxaoHsOHWbaVH4ZBuWNz4QEEPN
+ 40QOcechB3oW+HOjfPMM1/0qweO6DOqmNO+Rx+A7EpBsnTukY4d5deH2ltoAGXV/AGLoWvMAXCo
+ vqqwDdIJtZ7E38hlt32mPpZrMX3ulYOKwLYb3BNHnXIde/9od7Nnk9c128vbbOmegfJp2/zeuS4
+ JQks017+guhBlgMGEpt++uKC4rxCyY6+H8BVjNOjIX3+X15zBb3KBhQ1cEUKx5xhO90Bar0vP07
+ FRo0CLOD4mf1va+G5f8popFwhwdU/GGqQxMVOoVL0zYXKOfVe/kgkfX+/SQM7vh3uLI4V7vrh9V
+ M/PCMFoW64QMLj90shFEwB0Mq+ahNqumb1bphC843F7q5ta7CxZ1qY8drsQxZzuoAVBntOwVVKn
+ oXsFzH9ZR9f7mL4cAYSFw=
+X-Google-Smtp-Source: AGHT+IGtk+ku1IIDb8bDLAxmXk0SUFnCFIxPd4sHk3RUX/w6oKGfuNkxUuOrXA3tIMQibzAHkiA0NA==
+X-Received: by 2002:a05:622a:1492:b0:4ed:b185:f49d with SMTP id
+ d75a77b69052e-4edf206c97dmr140382211cf.1.1763343646529; 
+ Sun, 16 Nov 2025 17:40:46 -0800 (PST)
 Received: from [10.0.0.22] ([185.213.193.149])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee1c21ea34sm18246551cf.30.2025.11.16.17.40.44
+ d75a77b69052e-4ee1c21ea34sm18246551cf.30.2025.11.16.17.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Nov 2025 17:40:44 -0800 (PST)
+ Sun, 16 Nov 2025 17:40:45 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Sun, 16 Nov 2025 20:40:21 -0500
-Subject: [PATCH RFC v2 04/10] target/arm: add FEAT_MTE_STORE_ONLY logic
+Date: Sun, 16 Nov 2025 20:40:22 -0500
+Subject: [PATCH RFC v2 05/10] tests/tcg: added test for MTE write-only
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251116-feat-mte4-v2-4-9a7122b7fa76@gmail.com>
+Message-Id: <20251116-feat-mte4-v2-5-9a7122b7fa76@gmail.com>
 References: <20251116-feat-mte4-v2-0-9a7122b7fa76@gmail.com>
 In-Reply-To: <20251116-feat-mte4-v2-0-9a7122b7fa76@gmail.com>
 To: qemu-devel@nongnu.org
@@ -76,15 +76,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763343639; l=1520;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763343639; l=2569;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=68ZM+10B9YHoYASDZcGdBy4XhZSBVkzEJDAZb1ZURqE=;
- b=wC980mUNguhEfrIR5Nq6/5CttN9iRGDU71qsPwjgXzgFeylMIbfREmburYaJ/twikPUTvdsb6
- ShAT0Y1fbGWCJNRkdc2aY45uYXLfHK1h5D7T3C5IycYmjf0IwtGBCQM
+ bh=+MW5eKyHmFp9lQRa143T4qRhRjYlTU7oYxdQCpWyD18=;
+ b=uq6fD+kwIaV7oIcJ/6+wobrRZ3ZDAit3vkKR+4CyEE3dVUnUzdHKyJYPOiWb6+WGm3DJU9Iu1
+ suPPYK3TXXGD/pP2BKcd38STp/lE7osYumWOG3yElWxFbokONjUy6/1
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qt1-x82b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qt1-x832.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,51 +107,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This feature automatically succeeds tag checks on load instructions when
-the appropriate SCTLR_TCSO register for the current exception level is
-set. Find information on this feature in the "Tag Checking" section of
-the ARM ARM, Memory Tagging Extension chapter.
+This test cannot be run in user-mode because the control bit that
+enables this feature is only writable at EL1.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 ---
- target/arm/tcg/mte_helper.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tests/tcg/aarch64/Makefile.target |  2 +-
+ tests/tcg/aarch64/mte-10.c        | 55 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index bb48fe359b..f9fd6fd408 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -865,8 +865,30 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
-     return 0;
- }
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index b491cfb5e1..6203ac9b51 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -64,7 +64,7 @@ AARCH64_TESTS += bti-2
  
-+static bool mte_store_only_active(CPUARMState *env)
+ # MTE Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_MTE),)
+-AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8 mte-9
++AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8 mte-9 mte-10
+ mte-%: CFLAGS += $(CROSS_CC_HAS_ARMV8_MTE)
+ endif
+ 
+diff --git a/tests/tcg/aarch64/mte-10.c b/tests/tcg/aarch64/mte-10.c
+new file mode 100644
+index 0000000000..0fa3f97e1d
+--- /dev/null
++++ b/tests/tcg/aarch64/mte-10.c
+@@ -0,0 +1,55 @@
++/*
++ * Memory tagging, write-only tag checking
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "mte.h"
++
++void pass(int sig, siginfo_t *info, void *uc)
 +{
-+    int el = arm_current_el(env);
-+    if (el) {
-+        if (SCTLR_TCSO & env->cp15.sctlr_el[el]) {
-+            return true;
-+        }
-+    } else {
-+        if ((HCR_E2H & env->cp15.hcr_el2) &&
-+            (SCTLR_TCSO0 & env->cp15.sctlr_el[2])) {
-+            return true;
-+        } else if (SCTLR_TCSO0 & env->cp15.sctlr_el[1]) {
-+            return true;
-+        }
-+    }
-+    return false;
++    exit(0);
 +}
 +
- uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra)
- {
-+    if (!FIELD_EX32(desc, MTEDESC, WRITE) && mte_store_only_active(env)) {
-+        return useronly_clean_ptr(ptr);
-+    }
++int main(int ac, char **av)
++{
++    struct sigaction sa;
++    int *p0, *p1, *p2;
++    long excl = 1;
 +
-     uint64_t fault;
-     int ret = mte_probe_int(env, desc, ptr, ra, &fault);
- 
++    /*
++     * NOTE FOR REVIEWERS: to run this test locally, I modified
++     * enable_mte to also activate write-only tag checking by writing
++     * to ID_AA64PFR2_EL1. I am not sure how to modify the test so that
++     * it works without that modification. Input appreciated.
++     */
++    enable_mte(PR_MTE_TCF_SYNC);
++    p0 = alloc_mte_mem(sizeof(*p0));
++
++    /* Create two differently tagged pointers. */
++    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(excl));
++    asm("gmi %0,%1,%0" : "+r"(excl) : "r" (p1));
++    assert(excl != 1);
++    asm("irg %0,%1,%2" : "=r"(p2) : "r"(p0), "r"(excl));
++    assert(p1 != p2);
++
++    /* Store the tag from the first pointer.  */
++    asm("stg %0, [%0]" : : "r"(p1));
++
++    /*
++     * We write to p1 (stg above makes this check pass) and read from
++     * p2 (improperly tagged, but since it's a read, we don't care).
++     */
++    *p1 = *p2;
++
++    /* enable handler */
++    memset(&sa, 0, sizeof(sa));
++    sa.sa_sigaction = pass;
++    sa.sa_flags = SA_SIGINFO;
++    sigaction(SIGSEGV, &sa, NULL);
++
++    /* now we write to badly checked p2, should fault. */
++    *p2 = 0;
++
++    abort();
++}
 
 -- 
 2.51.2
