@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46580C65D12
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9ADDC65CE0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL4MT-0003t3-33; Mon, 17 Nov 2025 13:54:03 -0500
+	id 1vL4MW-000424-81; Mon, 17 Nov 2025 13:54:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4Kr-0002k1-La
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:27 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4Ks-0002k5-Vr
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4Kp-00089v-SY
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:21 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4Kq-0008AD-M4
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763405539;
+ s=mimecast20190719; t=1763405540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=My6nnBh84bMr0XzxdTm9zizvBrB/58C97qMYov5euxo=;
- b=CIX8RXL3f9JdlAKlSVB1syDZAAkHYW5R1u88EdoROJ7lAKD/DdwZ+72phfBfaJNJw8J2nV
- c24DW8aTvGyDK5beS8Tfws84+6ErY48Z/W4AputpciRtIq9RZr0EyAhLcXSi6SDJy9OeLW
- PGYZdDMdsop1U31bUbwVVEIc69tuDzU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=VbYkG+U0X52W7QPAk+stT3R0B5yCs3OAw72+kWHIJsc=;
+ b=gZ5z2CzkqAdskkjqcdDcaIjl8seJu/t5cg2SsbAIvEu6QXSUpiCAXItsjUGKARvPvH0/X9
+ 2DsrkTGlSCsfHewbA9i6GVa0BV1YHdxDbtEi02ixahnhhXUdNyyHkC/wncX2Ddg73dQOaF
+ 4FMWf8HowncV10dTskM1GdwKDcproH8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-361--DLTxW08M-eqZG0wz8ss2A-1; Mon,
- 17 Nov 2025 13:52:15 -0500
-X-MC-Unique: -DLTxW08M-eqZG0wz8ss2A-1
-X-Mimecast-MFC-AGG-ID: -DLTxW08M-eqZG0wz8ss2A_1763405534
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-ez-8gUVUOuC2ImNDH1V6FQ-1; Mon,
+ 17 Nov 2025 13:52:18 -0500
+X-MC-Unique: ez-8gUVUOuC2ImNDH1V6FQ-1
+X-Mimecast-MFC-AGG-ID: ez-8gUVUOuC2ImNDH1V6FQ_1763405537
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6FEC1180048E; Mon, 17 Nov 2025 18:52:14 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 234A61800473; Mon, 17 Nov 2025 18:52:17 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.81.70])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 166BF180047F; Mon, 17 Nov 2025 18:52:11 +0000 (UTC)
+ id B36CC180047F; Mon, 17 Nov 2025 18:52:14 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -54,9 +54,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 13/22] mtest2make: cleanup mtest-suites variables
-Date: Mon, 17 Nov 2025 13:51:21 -0500
-Message-ID: <20251117185131.953681-14-jsnow@redhat.com>
+Subject: [PATCH 14/22] mtest2make: add dependencies to the "speed-qualified"
+ suite
+Date: Mon, 17 Nov 2025 13:51:22 -0500
+Message-ID: <20251117185131.953681-15-jsnow@redhat.com>
 In-Reply-To: <20251117185131.953681-1-jsnow@redhat.com>
 References: <20251117185131.953681-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -71,7 +72,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,113 +90,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Remove the "--suite" argument from the .*.mtest-suites variables, and
-add it only when actually computing the arguments to "meson test".
-This makes it possible to look at the set of suites to set ninja-cmd-goals,
-instead of doing it via many different .ninja-goals.* variables.
-
-As a bonus, this removes code duplication between emit_suite_deps
-and its caller emit_suite.  Since emit_suite_deps would now be one or
-two lines of code, integrate it into emit_suite directly.
+Thorough tests may have more dependencies than faster ones.
+Dependencies are now looked up based on the suites being
+executed, not on the suites passed as goals to the makefile.
+Therefore, it is possible to limit dependencies to the
+speeds that need them.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- Makefile              |  4 +++-
- scripts/mtest2make.py | 33 +++++++++++++--------------------
- 2 files changed, 16 insertions(+), 21 deletions(-)
+ scripts/mtest2make.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 74c2da20372..9fb55dcf330 100644
---- a/Makefile
-+++ b/Makefile
-@@ -96,6 +96,8 @@ meson.stamp: config-host.mak
- 
- # 3. ensure meson-generated build files are up-to-date
- 
-+ninja-cmd-goals =
-+
- ifneq ($(NINJA),)
- Makefile.ninja: build.ninja
- 	$(quiet-@){ \
-@@ -150,7 +152,7 @@ NINJAFLAGS = \
-           $(or $(filter -l% -j%, $(MAKEFLAGS)), \
-                $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1))) \
-         -d keepdepfile
--ninja-cmd-goals = $(or $(MAKECMDGOALS), all)
-+ninja-cmd-goals += $(or $(MAKECMDGOALS), all)
- ninja-cmd-goals += $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
- 
- makefile-targets := build.ninja ctags TAGS cscope dist clean
 diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 2ef375fc6fb..af4ee56de54 100644
+index af4ee56de54..d32eef2f7f4 100644
 --- a/scripts/mtest2make.py
 +++ b/scripts/mtest2make.py
-@@ -20,12 +20,12 @@ def names(self, base):
-         return [base if speed == 'quick' else f'{base}-{speed}' for speed in self.speeds]
+@@ -59,13 +59,13 @@ def process_tests(test, targets, suites):
+             s = s.split(':')[1]
+             if s == 'slow' or s == 'thorough':
+                 continue
++        suites[s].deps.update(deps)
+         if s.endswith('-slow'):
+             s = s[:-5]
+             suites[s].speeds.append('slow')
+         if s.endswith('-thorough'):
+             s = s[:-9]
+             suites[s].speeds.append('thorough')
+-        suites[s].deps.update(deps)
  
- 
--print('''
-+print(r'''
- SPEED = quick
- 
--.speed.quick = $(foreach s,$(sort $(filter-out %-slow %-thorough, $1)), --suite $s)
--.speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
--.speed.thorough = $(foreach s,$(sort $1), --suite $s)
-+.speed.quick = $(sort $(filter-out %-slow %-thorough, $1))
-+.speed.slow = $(sort $(filter-out %-thorough, $1))
-+.speed.thorough = $(sort $1)
- 
- TIMEOUT_MULTIPLIER ?= 1
- .mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
-@@ -34,8 +34,10 @@ def names(self, base):
- endif
- .mtestargs += $(subst -j,--num-processes , $(filter-out -j, $(lastword -j1 $(filter -j%, $(MAKEFLAGS)))))
- 
--.check.mtestargs = $(MTESTARGS) $(.mtestargs) $(if $(V),--verbose,--print-errorlogs)
--.bench.mtestargs = $(MTESTARGS) $(.mtestargs) --benchmark --verbose''')
-+.check.mtestargs = $(MTESTARGS) $(.mtestargs) $(if $(V),--verbose,--print-errorlogs) \
-+    $(foreach s, $(sort $(.check.mtest-suites)), --suite $s)
-+.bench.mtestargs = $(MTESTARGS) $(.mtestargs) --benchmark --verbose \
-+    $(foreach s, $(sort $(.bench.mtest-suites)), --suite $s)''')
- 
- introspect = json.load(sys.stdin)
- 
-@@ -72,29 +74,20 @@ def emit_prolog(suites, prefix):
-     print(f'all-{prefix}-targets = {all_targets}')
-     print(f'all-{prefix}-xml = {all_xml}')
-     print(f'.PHONY: {prefix} do-meson-{prefix} {prefix}-report.junit.xml $(all-{prefix}-targets) $(all-{prefix}-xml)')
--    print(f'ifeq ($(filter {prefix}, $(MAKECMDGOALS)),)')
--    print(f'.{prefix}.mtestargs += $(call .speed.$(SPEED), $(.{prefix}.mtest-suites))')
--    print(f'endif')
-+    print(f'ninja-cmd-goals += $(foreach s, $(.{prefix}.mtest-suites), $(.{prefix}-$s.deps))')
-     print(f'{prefix}-build: run-ninja')
-     print(f'{prefix} $(all-{prefix}-targets): do-meson-{prefix}')
-     print(f'do-meson-{prefix}: run-ninja; $(if $(MAKE.n),,+)$(MESON) test $(.{prefix}.mtestargs)')
-     print(f'{prefix}-report.junit.xml $(all-{prefix}-xml): {prefix}-report%.junit.xml: run-ninja')
-     print(f'\t$(MAKE) {prefix}$* MTESTARGS="$(MTESTARGS) --logbase {prefix}-report$*" && ln -f meson-logs/$@ .')
- 
--def emit_suite_deps(name, suite, prefix):
-+def emit_suite(name, suite, prefix):
-     deps = ' '.join(suite.deps)
--    targets = [f'{prefix}-{name}', f'{prefix}-report-{name}.junit.xml', f'{prefix}', f'{prefix}-report.junit.xml',
--               f'{prefix}-build']
--    print()
-+    targets = f'{prefix}-{name} {prefix}-report-{name}.junit.xml {prefix} {prefix}-report.junit.xml {prefix}-build'
-+    names = ' '.join(suite.names(name))
-     print(f'.{prefix}-{name}.deps = {deps}')
--    for t in targets:
--        print(f'.ninja-goals.{t} += $(.{prefix}-{name}.deps)')
--
--def emit_suite(name, suite, prefix):
--    emit_suite_deps(name, suite, prefix)
--    targets = f'{prefix}-{name} {prefix}-report-{name}.junit.xml {prefix} {prefix}-report.junit.xml'
-     print(f'ifneq ($(filter {targets}, $(MAKECMDGOALS)),)')
--    print(f'.{prefix}.mtest-suites += ' + ' '.join(suite.names(name)))
-+    print(f".{prefix}.mtest-suites += $(call .speed.$(SPEED), {names})")
-     print(f'endif')
- 
- targets = {t['id']: [os.path.relpath(f) for f in t['filename']]
+ def emit_prolog(suites, prefix):
+     all_targets = ' '.join((f'{prefix}-{k}' for k in suites.keys()))
 -- 
 2.51.1
 
