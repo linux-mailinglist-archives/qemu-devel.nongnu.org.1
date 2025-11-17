@@ -2,53 +2,167 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD48C62C29
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2440EC62B67
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKtqI-0001XC-DZ; Mon, 17 Nov 2025 02:40:08 -0500
+	id 1vKtdA-0007Et-Pg; Mon, 17 Nov 2025 02:26:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1vKtp6-0001Og-Im
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:38:58 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1vKtp1-0005am-1A
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:38:50 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Dx9tD60BppPlYkAA--.7995S3;
- Mon, 17 Nov 2025 15:38:34 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJAxVOTz0BppX881AQ--.26947S4;
- Mon, 17 Nov 2025 15:38:33 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org,
-	lixianglai@loongson.cn
-Cc: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PATCH V3 2/2] fix pci device can't alloc irq from fdt
-Date: Mon, 17 Nov 2025 15:14:16 +0800
-Message-Id: <894d7a034593e5ccd53b7f3695569c05cd2620e0.1763347485.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1763347485.git.lixianglai@loongson.cn>
-References: <cover.1763347485.git.lixianglai@loongson.cn>
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vKtct-00078N-Hz
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:26:16 -0500
+Received: from mail-westusazlp170120002.outbound.protection.outlook.com
+ ([2a01:111:f403:c001::2] helo=SJ2PR03CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vKtcq-00040E-R6
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:26:15 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f4HVoO/InyjkhINWu/Vcu0LGmbjPilFIi+OdQNLJ38mhOiRGoluc5FafeT8GZs8LdfvVMoI24l+g5df4fQtBPFLYUjA/F/PaDBbOkRGkBcSn6Rrx5G+Me3J/r1dUT89eVeyYPHDVBM/e9DshpVLY8nPBRZNrHZsXytuWtxuPbNKvVJXJycj9mMDSuzGrKZlwig1/dvTMuqXwlVdiebfkgwW6kWLTOJvVS92bahwaXAV6HDuXBuqwJaMWVE7ePzqjmabsIz0dL5XIBMgSSyyUhZ0llXekliGR9k4KhZt3kqGomVY4HL6aGSrDuJMy6ev3LWGC0ACoSSUNqpIXPgUv+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AA8Pf5/F6HlKNXZ5xaUDc8UV56KUxEdONzmy1A0OncE=;
+ b=ehZr3McOt7+SC9aykDXlFSfgrZRnFwgxw3ibNMEs0rEARyPhG/rxRlwasmyf/t9YshvbpIiumxSdDqKDPvY8E5yYCQsKwmFkX2LwJycMtcEmKRhEZSlA++IaFutx2TQ8eW4mlIc0LiIQzJUUs/InZO7447RPyvs3/0UA+V6RSzdEwo0RsdbXqYoez9gwi4k99NQyryFKpMfUxbpSC8AeCSs2HeeuZJXYiBpmMiSKUck122w1v/LJlZKgIi0oYDby/dqDXEG0gQTj6EA3vTA76tCegALxBd4/t2NTS3mKhid0qPYh8282yprovYXZJ8xVMxgqdJVtgncc1fDzOPDPYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AA8Pf5/F6HlKNXZ5xaUDc8UV56KUxEdONzmy1A0OncE=;
+ b=tl9kqVXWK6JA9RRzeA9v3t+wwHoxIsFnvQsiXiCQGR47Hog8HDCNbVTzKZBdFFhF3DXNU1maS2KXho0iubXhoxXP5St5zh8toKVkZ00wzm1cVisC8+1v+rCPsdEHSDESBSUDzw9UTRdmQaWbn/F6xFLOWIyRA8g3VEe7bFb04N0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
+ by IA0PR12MB8088.namprd12.prod.outlook.com (2603:10b6:208:409::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
+ 2025 07:26:06 +0000
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::273a:80c9:35fc:6941]) by IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::273a:80c9:35fc:6941%3]) with mapi id 15.20.9275.015; Mon, 17 Nov 2025
+ 07:26:06 +0000
+Message-ID: <27e24af2-683a-48f2-9b10-e6f4061d49d4@amd.com>
+Date: Mon, 17 Nov 2025 15:26:01 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virtio-gpu-virgl: fix error handling in
+ virgl_cmd_resource_create_blob
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, Ray.Huang@amd.com, alex.bennee@linaro.org,
+ dmitry.osipenko@collabora.com
+References: <20251117055112.99046-1-honghuan@amd.com>
+ <5eca552d-31e6-4918-adf1-da2568af18ef@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: "Honglei1.Huang@amd.com" <honghuan@amd.com>
+In-Reply-To: <5eca552d-31e6-4918-adf1-da2568af18ef@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYCP286CA0169.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c6::12) To IA1PR12MB6435.namprd12.prod.outlook.com
+ (2603:10b6:208:3ad::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxVOTz0BppX881AQ--.26947S4
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|IA0PR12MB8088:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4844c72-9cf3-4594-b6a1-08de25aa9248
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SWlIc0MwOXkxc0IwZTJjWEhNNGZ5emRQOTVELzBxTDlNQXBHeGR1MktqZ2cw?=
+ =?utf-8?B?TUkxeWs0MlJaZjk5dHJLUFFrSmVMWmZWVlYrSmFhZ1ZQSENyTWFOTXV3YkM3?=
+ =?utf-8?B?RVF4WnBqT2ZtTlU5WHlHaFVPQ1Y5anN4bnBBSUEreVp5OGNiVUw1ZnA3NHkv?=
+ =?utf-8?B?TEszbDAvcURyb3ZZVjZmQW0zUnNmNFFVOElkTEUzQ1M3VG5mSTZCM0FxU2kz?=
+ =?utf-8?B?b0Zaelh4bG0zbUR5THQ4a1lmc0ZXVmVuTUYzTE5jSkc4NForeTM4VDc1RG5q?=
+ =?utf-8?B?QVh2R0VkV1VFaENqVHlVZjEzUWVWa0xiQVk5NlE4VlNtck82eWVHTWpFTUN5?=
+ =?utf-8?B?ODZmUnQ5ZklxekdmWlJmeUhqWVBCVnIvUW02SDd1d280T05BdjFEMkRIZ3dp?=
+ =?utf-8?B?OGZjbzN5K2xGNjYwcHNZZXNYQmVKSUR4Ym1OcUI5bThSOGxDVmUwaXFxUy9a?=
+ =?utf-8?B?N3hob3ZxejRMUHB5S0UyY2lqREVSSEdra2svTDczaXVnTkJqMzFCSytXN2lr?=
+ =?utf-8?B?VjRMemF0YnpTdmF5Q3J3dU93VUkwQ2ViSUVYS2JaWU50VVFOa2NLZFlockFa?=
+ =?utf-8?B?Uy9QdW9QYzdpTWZRK2k4NXUveGhwYjJJM3RDRWhiejFPc0FiallobERVK255?=
+ =?utf-8?B?dVRhVnNKdkprbXU1bENKYjN3QmpiN3pXRkNGQXE2MzZiWVVrMytPc3JEMXli?=
+ =?utf-8?B?aVBoaXZOQjdicUkzV1JrZlBFYnA4Uy8xcTF0OWxwS216bm83aVNISWdvUk9y?=
+ =?utf-8?B?cy9aSXVHWUJ2d3dmc1MyNjcxRloxbGh3czlVd1FhUnVHWnBtbnRDdTZqM0cv?=
+ =?utf-8?B?NlBrUjc4M0JzOHJIS2UxT1ZqM2xmVG4zZmQxWkVNazY1VDB6T0RQT0lpcTBM?=
+ =?utf-8?B?YlhkRnR3djlIYlp4QWJLR0dCdGtFT2JFeW8rdndPR3kyclIzZnZWOEpGajN6?=
+ =?utf-8?B?R1dZdk55bGF4c2p4a2F3ZEdObEZJUGVsTjZpRUwvdzFTSUx2VEFOdHlxZTBa?=
+ =?utf-8?B?bkprc0RtUHFnbndlU09LY0tONHQ5VjhYVStYZDI5WFZSWmZmWDc5YjdGWTBk?=
+ =?utf-8?B?dXBlejIzdmxkcVJKSjdMd2pLd1h4QTUxaXhoLzk2MnBDeWF0M2paSnM0bm0z?=
+ =?utf-8?B?SXdLVlZENWRpV3NjQnMyOXdtVGN0OHVRVGdvQm53M3hzcHdzNVQySW1qaXh0?=
+ =?utf-8?B?dG51SitaZm1xWm1sdjNPSWs0a3NsOWh5eTEzUi92WTRwbDEwR2RLQjh0NkRs?=
+ =?utf-8?B?ek9OZnExNGh2OTVuTkgvZGRkcDVIM2FuZ0p1OXhoRU53U3JnSGZjelk1aXph?=
+ =?utf-8?B?M2V4Qnc1TGFDVzNXSlVlT0h0U2MvRTdPdDJWTEZnR3VwNU1zNXB1djVyZ0Fw?=
+ =?utf-8?B?Y3JUNUZnYVBSbExKRjlMMDBaTlhtc29BYmo4SHpSUmhtV1l4SHh4Nm1odUE0?=
+ =?utf-8?B?b3dRcm1rNDZoNUtBRkxUQ05jcitQWFpnVnY2M3JvRzBGRWNXdEg4bjArT09v?=
+ =?utf-8?B?S01KVjhtZ0hyeUQ1cFkwY2N4Rllra3ZTZk5uN0psT2h0elNuSW0zZFVkUVEz?=
+ =?utf-8?B?ZlZldFpzRTVXSTBabll2L2E4Snc1R2IwS01IMXcwUUNWaGVYN1E3YjM4UUlV?=
+ =?utf-8?B?elEweWw1UDJDUU54VUlHcHhCNUJITjlONW5FYkZOOGFOalpxVHBtLy9BUGN1?=
+ =?utf-8?B?Nm5wUnFVazRNN0ROc2JycGZhbTFacFVVbnpwT3kxazB0NDBvM0cyemNxbWhn?=
+ =?utf-8?B?Vmo2aGpVdkQ0Z1hrOVpsTTczb1ljM1lXeHE3MlY4U3Q0d2pWU2xiTEJGdlQ2?=
+ =?utf-8?B?WXhlMk9Ga2o0OC9jb0NqTUQwZWpoZkJ0a3h1YlhRUzFwSmlEUENJZVgzT1Zv?=
+ =?utf-8?B?SlhHV2dHZ05XV1JaQlU5ZlVQellQdDBXNXBFNzBNb1ZYM1IrMVkrSXdmNDNS?=
+ =?utf-8?Q?ZJ7/oEjECZqszVpT1LRlqtqKCqQvr3pu?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB6435.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z05XSGRkSisxaXplVEVOYndKMFVWam51bVZ5bi90VzF4WEZNUEV5TjNYakJp?=
+ =?utf-8?B?TUY4YkN2M0FkMlNtWS9QY2hZTXlBc3h5THhDeVY0a1lpa3N2clRWUUxobVh5?=
+ =?utf-8?B?Wi9SWW9uRzNwSXk2VXpNbGRiZmc3U01IOEcwNmltSlc4R2h2ampvSnNHdnVW?=
+ =?utf-8?B?MEl6QlMvdm40dkRzWXR4QUFHdWViZW1WUmg5cEdseWRuL2g4a1hRYmRrd3lD?=
+ =?utf-8?B?QUNKaTkvZDlPZnFzZ1Z3dzZDZFlYUVF6Y0dBL0tvdStKelgwTlpwWmRGQzd5?=
+ =?utf-8?B?bHJhcCtYWlBIRHpLMFl6T1VNNWpwSDU1QUsyUnhFV1dPUzFSZElBdE04YVRT?=
+ =?utf-8?B?M0N0S2trOXl0NEhnQkZmKzd0OXpBRHZwcHJiZDJpYnVyVHJIbG5GeWZrREsr?=
+ =?utf-8?B?NXkwdjRWdVJ4LzlTN0Uvb1kxN210eWlaTGc5ZDdlZFVJOGgzSmdtRlBMNzJq?=
+ =?utf-8?B?d21IMkp0azJrSExZd1hMQmpYL2xVMlBEZFQveHFqdnhBZ2owVm9LWlZyd3pi?=
+ =?utf-8?B?eGo3VlU5bDZ2RkpHV2thYW5HVkRWRVBqVXRvemVnMW56dUF0TCtYMy9IaFBS?=
+ =?utf-8?B?RjFuNk1Ya2Z4ZWFaOWdOeWNOSllPTi9nRlZVWGdFd0RMM3huQmYrcjJVTzhp?=
+ =?utf-8?B?SFVCcFhIZWVsNzdIWjIvYUJWcmM0RDg4OG05WEkxdDVQUmp4aklXRnZYd2h1?=
+ =?utf-8?B?WXJwT05KTmZFRFV0Mm9jUy9UeFJOYXFWZmxCUlJGUjFtUkY3YVl4WUpPSXAz?=
+ =?utf-8?B?cDQyTFplYU5uUnBrWit1NkVCcU01NHhkbUJnOE5wZmFNbFMrQy9JQTU1NTVZ?=
+ =?utf-8?B?aUxmWkpJOXpMNXUrQXJSRjhGbms2aG1RSDlZZU5QTDBrVnJjaUlvVituTVlj?=
+ =?utf-8?B?UUc1aU4rUEhOTVpyVnE3UHJxRUZicHlaRXUyQklyTGxSZGdDS2FPRHZWWlhQ?=
+ =?utf-8?B?cVJSUzA5Y29oM01uTFh3eXNxb3UyNVRQV2drWXh6UW1uOVZrb2VVdE1OUldY?=
+ =?utf-8?B?SHhQaFQ0R0QzRHFYRUozc0g2Ny9lNUhmZ2N5Szlsang0cGFodFFHdHY2NVR0?=
+ =?utf-8?B?WXU5d3lnYnYxVGgwcllQV2V4cmJQdDl4dTlWNUkrQ2tQSWczaWdVd0cvQXh1?=
+ =?utf-8?B?NWxZTDFGU0hUZjVqYjJ0cjNLS2c5TGV0cldZOTJ3Y2xqRUhZMW5peGdxVHha?=
+ =?utf-8?B?bnE4Sk1ZSlQrYktCMEd4aTcxa3c3N2x6Q2c5T2xvb1ZSemZMZ0xKSU9heEt3?=
+ =?utf-8?B?bTc0bVF0VEQ2eWNxZmRXM2ZnOG0zT2xyYUdmNWpjSEZwbjlLUUhNWnpVNEkx?=
+ =?utf-8?B?Wno3a2I1anBBalQ5V2tKT2FkNHpNVHN0Sm9Kb0ZlQUlIOW40K1pkTUpGSCtQ?=
+ =?utf-8?B?UE9xeStlQ2dGY2NwK1M1T2U2QzAzdVVWWnpsTmlyWTZWQjBOUVpUU3VkbVFL?=
+ =?utf-8?B?ck5tZkt5MFM1WkI1bUpoQU40ZEdwT2tOZzZ1WUN5bkhJcHV3U09zMDJ0MnQ4?=
+ =?utf-8?B?S2tNSFIwOVl5aFpFZTZSb0hzaXVWbW8vSlN1MkQ0ZkNmMlQ4RGZPZXNTcllK?=
+ =?utf-8?B?US9OVzlUdTRkWHlDNkthczFodG81MTd1NVpyZDF0elB5QVY0ODA1WUFiSXo3?=
+ =?utf-8?B?Y0lYSU11eVJsMDZmWEp1c1Vtb01nL3R2VHhqL0YzNDNJa0ZMWUxkd3VqdmFi?=
+ =?utf-8?B?czZ5WndTbmJvQ0RkeStnTWExSGxoaHRaMlZveksxbmdHVWVKZ3g0N2plam9O?=
+ =?utf-8?B?cGdxaG5OamtnUGkwdCt2S3dHSTViMFRmTi9heHg2NzN5V1M4U3hrcGc1akdC?=
+ =?utf-8?B?YnNrUVlBeWxMelU5VHEvQnpxRWxmVHp0SW5TdlRkckFYdDYxeFNjQUpJRUc2?=
+ =?utf-8?B?c1ZjSDdTL2JHOVhwb21EYk5mWnh0TE4xdkhwNjJiYXNnalN2NXpOQ2ROdzF5?=
+ =?utf-8?B?YWZxME4xMHl5YWZCV3c2eWloVkxwcjB4dkFpdzJ3eG9ZUUhvMkZTeTdRMCtQ?=
+ =?utf-8?B?b1dweFE3ZENLajV3bkJHS0hwSjhxelpMVVF3aUY5VGkwQ1J4OWFZMEV0MmNq?=
+ =?utf-8?B?N29Kb3NDRmV4L1NuYjJHWGN0dC9BYTlnVmhidkIvZGZ4YnFGUlZVM0h4elhI?=
+ =?utf-8?Q?Vb7Hsn7esF5oS4txJ6maWNrDp?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4844c72-9cf3-4594-b6a1-08de25aa9248
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 07:26:06.4601 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p04/RGccoYWfkvdHW4BOhUy+ADmzYHEmJhpDUnQ3amTnmG7G2hiZOYxEZvS7Oa3RpAnDz2rs73MdzZ3hk2L0Pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8088
+Received-SPF: permerror client-ip=2a01:111:f403:c001::2;
+ envelope-from=Honglei1.Huang@amd.com;
+ helo=SJ2PR03CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NAME_EMAIL_DIFF=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,128 +178,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we use the -kernel parameter to start an elf format kernel relying on
-fdt, we get the following error:
 
-pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.0: enabling device (0000 -> 0003)
-pcieport 0000:00:01.0: PME: Signaling with IRQ 19
-pcieport 0000:00:01.0: AER: enabled with IRQ 19
-pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.1: enabling device (0000 -> 0003)
-pcieport 0000:00:01.1: PME: Signaling with IRQ 20
-pcieport 0000:00:01.1: AER: enabled with IRQ 20
-pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.2: enabling device (0000 -> 0003)
-pcieport 0000:00:01.2: PME: Signaling with IRQ 21
-pcieport 0000:00:01.2: AER: enabled with IRQ 21
-pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
-pcieport 0000:00:01.3: enabling device (0000 -> 0003)
-pcieport 0000:00:01.3: PME: Signaling with IRQ 22
-pcieport 0000:00:01.3: AER: enabled with IRQ 22
-pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
 
-This is because  the description of interrupt-cell is missing in the pcie
-irq map.  And there is a lack of a description of the interrupt trigger
-type.  Now it is corrected and the correct interrupt-cell is added in the
-pcie irq map.
+On 2025/11/17 14:39, Akihiko Odaki wrote:
+> On 2025/11/17 14:51, Honglei Huang wrote:
+>> The error handling logic was incorrect in virgl_cmd_resource_create_blob.
+>> virtio_gpu_create_mapping_iov() returns 0 on success and non-zero on
+>> failure, but the code was checking whether to set the error response.
+>>
+>> The fix changes the condition from 'if (!ret)' to 'if (ret != 0)' to
+>> properly handle the return value, consistent with other usage patterns
+>> in the same codebase (see virtio-gpu.c:932 and virtio-gpu.c:354).
+>>
+>> Signed-off-by: Honglei Huang <honghuan@amd.com>
+> 
+> Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> 
+> This should also have:
+> 
+> Fixes: 7c092f17ccee ("virtio-gpu: Handle resource blob commands")
 
-Refer to the implementation in arm and add some comments.
+Really thanks for the review, will add fixes tag in v2.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Song Gao <gaosong@loongson.cn>
-
- hw/loongarch/virt-fdt-build.c | 44 ++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 16 deletions(-)
-
-diff --git a/hw/loongarch/virt-fdt-build.c b/hw/loongarch/virt-fdt-build.c
-index 7333019cf7..52082b2483 100644
---- a/hw/loongarch/virt-fdt-build.c
-+++ b/hw/loongarch/virt-fdt-build.c
-@@ -321,6 +321,8 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
-     uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 10] = {};
-     uint32_t *irq_map = full_irq_map;
-     const MachineState *ms = MACHINE(lvms);
-+    uint32_t pin_mask;
-+    uint32_t devfn_mask;
- 
-     /*
-      * This code creates a standard swizzle of interrupts such that
-@@ -333,37 +335,45 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
-      */
- 
-     for (dev = 0; dev < PCI_NUM_PINS; dev++) {
--        int devfn = dev * 0x8;
-+        int devfn = PCI_DEVFN(dev, 0);
- 
-         for (pin = 0; pin < PCI_NUM_PINS; pin++) {
--            int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-+            int irq_nr = VIRT_DEVICE_IRQS + \
-+                         ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
--            /* Fill PCI address cells */
--            irq_map[i] = cpu_to_be32(devfn << 8);
--            i += 3;
--
--            /* Fill PCI Interrupt cells */
--            irq_map[i] = cpu_to_be32(pin + 1);
--            i += 1;
--
--            /* Fill interrupt controller phandle and cells */
--            irq_map[i++] = cpu_to_be32(*pch_pic_phandle);
--            irq_map[i++] = cpu_to_be32(irq_nr);
-+            uint32_t map[] = {
-+                cpu_to_be16(devfn), 0, 0,     /* devfn */
-+                pin + 1,                      /* PCI pin */
-+                *pch_pic_phandle,             /* interrupt controller handle */
-+                irq_nr,                       /* irq number */
-+                FDT_IRQ_TYPE_LEVEL_HIGH };    /* irq trigger level */
- 
-             if (!irq_map_stride) {
--                irq_map_stride = i;
-+                irq_map_stride = sizeof(map) / sizeof(uint32_t);
-             }
-+
-+            /* Convert map to big endian */
-+            for (i = 0; i < irq_map_stride; i++) {
-+                irq_map[i] = cpu_to_be32(map[i]);
-+            }
-+
-             irq_map += irq_map_stride;
-         }
-     }
- 
--
-     qemu_fdt_setprop(ms->fdt, nodename, "interrupt-map", full_irq_map,
-                      PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
-+
-+    /* The pci slot only needs to specify the matching of the lower bit */
-+    devfn_mask = cpu_to_be16(PCI_DEVFN((PCI_NUM_PINS - 1), 0));
-+    /* The pci interrupt only needs to match the specified low bit */
-+    pin_mask = (1 << ((PCI_NUM_PINS - 1))) - 1;
-+
-     qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupt-map-mask",
--                     0x1800, 0, 0, 0x7);
-+                           devfn_mask, 0, 0,  /* address cells */
-+                           pin_mask);
- }
- 
- static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
-@@ -400,6 +410,8 @@ static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
-                                  2, base_mmio, 2, size_mmio);
-     qemu_fdt_setprop_cells(ms->fdt, nodename, "msi-map",
-                            0, *pch_msi_phandle, 0, 0x10000);
-+
-+    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
-     fdt_add_pcie_irq_map_node(lvms, nodename, pch_pic_phandle);
-     g_free(nodename);
- }
--- 
-2.39.1
-
+Regards,
+Honglei
 
