@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1995C65D03
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D358C65D0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 19:56:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL4O7-0006zQ-Fc; Mon, 17 Nov 2025 13:55:44 -0500
+	id 1vL4O1-0006Ve-G6; Mon, 17 Nov 2025 13:55:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4LL-0002qy-HS
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4LL-0002r3-Il
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4LD-0008Bs-8L
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:46 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vL4LF-0008CN-2v
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 13:52:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763405553;
+ s=mimecast20190719; t=1763405560;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u7QgNts0LQW/4YxR/3WxRcvz60hrnd8IOAFqxu0kUuc=;
- b=SFdbUlwH6dh3FYMpl17kGLfj6lPIwTmTnGaEjzHE42/s83aQLyu5OHDbmxWGzyKU9NiSVo
- E++8Uw9Xv35RIjnZlbfQyuCvY5nf0jLbc71BHPSyuhGzlg9mMIG8HEwe9dDl2YrL7MsZDG
- GIGBslgiWFx8SgkQLDKpgcrKQFCyQGw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Ptymuq8v7ash1scEmFO0Z2XjVsWWDXaXQ/vkFcbJa/g=;
+ b=UuPGU0Wk30G1TtK5ImX/b1x63nx1sTqESGtqNRX6o+PT2IE318hQ9o+unZjszA7bVcSbpS
+ /WpnPq5UtfmvZzAfUCDHUEuBs/ZDO30zoUIovTncqUrMUuou3sJAVxecdTcd0cKP33OUs5
+ XhsO7RhdDOo71KpL/WUq6hMBjY+BTic=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-EOY39rFoN-O28wp3EctfNA-1; Mon,
- 17 Nov 2025 13:52:32 -0500
-X-MC-Unique: EOY39rFoN-O28wp3EctfNA-1
-X-Mimecast-MFC-AGG-ID: EOY39rFoN-O28wp3EctfNA_1763405551
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-vbCFX4siORmaDpUnUt9_aQ-1; Mon,
+ 17 Nov 2025 13:52:34 -0500
+X-MC-Unique: vbCFX4siORmaDpUnUt9_aQ-1
+X-Mimecast-MFC-AGG-ID: vbCFX4siORmaDpUnUt9_aQ_1763405553
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D741D1800452; Mon, 17 Nov 2025 18:52:30 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 88B871956089; Mon, 17 Nov 2025 18:52:33 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.81.70])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A365180047F; Mon, 17 Nov 2025 18:52:28 +0000 (UTC)
+ id 266C8180047F; Mon, 17 Nov 2025 18:52:31 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -54,9 +54,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 19/22] mkvenv: add --no-build-isolation flag
-Date: Mon, 17 Nov 2025 13:51:27 -0500
-Message-ID: <20251117185131.953681-20-jsnow@redhat.com>
+Subject: [PATCH 20/22] meson,
+ mkvenv: add qemu.git/python/qemu package to pythondeps.toml
+Date: Mon, 17 Nov 2025 13:51:28 -0500
+Message-ID: <20251117185131.953681-21-jsnow@redhat.com>
 In-Reply-To: <20251117185131.953681-1-jsnow@redhat.com>
 References: <20251117185131.953681-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -87,26 +88,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-WIP. This is needed to process local installs for newer versions of
-pip/setuptools. There may be other options. Investigating.
+Add the local python package group into pythondeps.toml for the
+checktests group.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/scripts/mkvenv.py | 1 +
+ pythondeps.toml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index e38292b63a6..9cf7a6e2b2a 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -677,6 +677,7 @@ def pip_install(
-         "-m",
-         "pip",
-         "install",
-+        "--no-build-isolation",
-         "--disable-pip-version-check",
-         "-v" if loud else "-q",
-     ]
+diff --git a/pythondeps.toml b/pythondeps.toml
+index b931d8bb578..d39a68e106e 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -33,6 +33,7 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
+ 
+ [checktests]
+ "qemu.qmp" = { accepted = ">=0.0.5", installed = "0.0.5" }
++"$SRCROOT/python/" = { }
+ 
+ [functests]
+ pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
 -- 
 2.51.1
 
