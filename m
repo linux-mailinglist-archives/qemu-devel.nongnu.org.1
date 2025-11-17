@@ -2,137 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4274C62C2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440BDC62C77
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 08:43:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKtq6-0001SH-2H; Mon, 17 Nov 2025 02:39:56 -0500
+	id 1vKttb-0003Sq-Lb; Mon, 17 Nov 2025 02:43:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vKtp8-0001Op-7Q
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:39:03 -0500
-Received: from mail-westus3azlp170120001.outbound.protection.outlook.com
- ([2a01:111:f403:c107::1] helo=PH8PR06CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vKtsw-0003Rf-2u
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:42:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vKtp4-0005aw-Or
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:38:53 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AoV74JIrfIRALHskrzD9sJinHcYcYb9S8COo1LNWpTLVR+UJfJMJ1MgiUSMxxI4ifqJH7K71xVZmmMnpuSZ5U7Y6DEKDmkDjyRJMd25fB3G9HmucbMfH5+bcYCJn40k+v1KMK84iYitYm5n1houbTNq0554Xo9ci8RZOFPhdOrX9EgKVpTXxPivt9+qWiqgwmpkRPNMdmE5Z+fNlNBgNEaYvddYiO3mT8KJxQW7ebQXiXEAUOqbGCiCqrFjpvtPZE2jCTSumFx30daRVaxSA9Hu3vUC5BodcQc96Zq+BK0M9nTtR4tNEqfbO9R7qBgNmLpLOi0zbdmkoZFtpC2GRAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vurPIQEBgUEpzH5sWQR6vn4OFToANJqHOyBe3u4IwzM=;
- b=aRJzpIoXYpMpe9zLZ+GB+3gZLhLFMhnY7n3U1weUGyS8Bkehd7O8Bog71bc06Y3VphiK9umKjpZJqRqXpLvuO/KVAm6KbVd9R5ogKUGOWrbVwOyt2lutG+lNqsL+RYR3e34Z5POv1Xcnwd0VYvmVJH8sK4euatNQmBOZMob2aNwsXXjvy+juyoLuaIAlzx9kIqObfMO1I/fLzpgCEevfhgVIOao73slUFgiFD48XVYzViRCLkKJ8p9zOR6iMYSKW0BrBYw/Keq+JBlQlPnezCiW1rWgWyvgV4n7c9Kn8lf4LnFM1RfuM1YJliWMWf63OSYAiJa16KlKIA+BeG3O9Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vurPIQEBgUEpzH5sWQR6vn4OFToANJqHOyBe3u4IwzM=;
- b=sSgCYF/BR71oQVXWcn0Fv20LZqzEIfY5NVW/6fnpEvG9Hs4lVMpRBVCgK+Vaq9KnAA6YPeWnd/hfKD5bCg51KvI/7FlGw/JLF1rEdxfokNJlUnu6NaTFRelaBQ/18Nb6l6p/yctr/W9t40aORMT1tckTYf++PFsEyA6h0OHas0g=
-Received: from BYAPR02CA0061.namprd02.prod.outlook.com (2603:10b6:a03:54::38)
- by BN7PPF39B20C1D8.namprd12.prod.outlook.com
- (2603:10b6:40f:fc02::6cc) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Mon, 17 Nov
- 2025 07:38:43 +0000
-Received: from SJ1PEPF000023D5.namprd21.prod.outlook.com
- (2603:10b6:a03:54:cafe::38) by BYAPR02CA0061.outlook.office365.com
- (2603:10b6:a03:54::38) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.21 via Frontend Transport; Mon,
- 17 Nov 2025 07:38:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000023D5.mail.protection.outlook.com (10.167.244.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.1 via Frontend Transport; Mon, 17 Nov 2025 07:38:42 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 16 Nov
- 2025 23:38:39 -0800
-From: Honglei Huang <honghuan@amd.com>
-To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
- <odaki@rsg.ci.i.u-tokyo.ac.jp>
-CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
- <qemu-devel@nongnu.org>, <Ray.Huang@amd.com>, Honglei Huang
- <honghuan@amd.com>
-Subject: [v2] virtio-gpu-virgl: fix error handling in
- virgl_cmd_resource_create_blob
-Date: Mon, 17 Nov 2025 15:38:27 +0800
-Message-ID: <20251117073827.114891-1-honghuan@amd.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vKtsu-0005ui-6L
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 02:42:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763365366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=C0Y4M8+NX7tANAXldXz3ofawHVWZXdO3U/J/Xyv4eaM=;
+ b=WRbHsmhJw3rwzNn5wqIWNi1zlLqhKjbGRA+f8Uk/xgW84QiITmcgkMknFnrgjf9aaQ0zam
+ FCaWockkuY92Ho58MR8FqQLQPYNuxKCm/qHMGvlVLuiboo2fmRgt9ZzcAU2+vtOHTP3Fgh
+ zdBZjBw9MbGBSaeL7gEtelnyA2J9P0Y=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-70-7-rbIaQBMZmC72-W0Zcd8A-1; Mon, 17 Nov 2025 02:42:43 -0500
+X-MC-Unique: 7-rbIaQBMZmC72-W0Zcd8A-1
+X-Mimecast-MFC-AGG-ID: 7-rbIaQBMZmC72-W0Zcd8A_1763365363
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-42b3086a055so2635412f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 16 Nov 2025 23:42:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1763365361; x=1763970161; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=C0Y4M8+NX7tANAXldXz3ofawHVWZXdO3U/J/Xyv4eaM=;
+ b=rDUGd4eTlXx+UaPSLbXXDnles73znBk4O4L9RKwVC73Y5FRBaLm6KZjppkHTuRhFfh
+ DRecu8JfAtCHSEUBcy+7nuJsIimu15QSdhv5ncP9rHYQ7nts4ytviZVPS9PgGTCyRzsm
+ tNlBECM4qz21kywVXe/UJbxfkdhfeJ3o7am6b9CsEL14JJmn3bzCA/UFfv+zKeDJJbId
+ tC8gtA4A8+neAJ0lpXHof7VF0+vx/Zwc8Z36KpRMRWZ6J3bGsDcU2Qg5015g+/8WTWDV
+ s4FsrnQIxE+GlfTo3Qh5Iky+29eTpjQutvOliIwyyAp/++w60WV5r8wzeR7jWxjFx2vJ
+ 3k3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763365361; x=1763970161;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=C0Y4M8+NX7tANAXldXz3ofawHVWZXdO3U/J/Xyv4eaM=;
+ b=gxPoAMr3mCy9gMDmugnr7JDuyekeIbZWMxc1UifKqUphKn+VyIrB1MtdjslI4WCOD2
+ sjwRecuPEOkeAtZnhH/fn40DdTFELZbBSW/nhbfeqZrqOOt1pTAbTrVC3487myW2M3rk
+ kTXUMdTP+H0eHlIXnJjbR+txOpBeDYDRhz3L8/pwYWnF576MJH7iLANTfDwgDIGBcoa8
+ gdJTCBIrKwsj8hOyByxQIllfNzKtu493Cmed/ucC4hBzIZwbEGSM7338Tmha4NS1Wsqv
+ BilRSTw/rN0x3dWUQPp5kmORf3vDkjz24jWyl9WW1rqoc2SnORwN1wLgDmo1y0BQinbc
+ W1fg==
+X-Gm-Message-State: AOJu0Yxp08gButvegdT5pQteYSlEmPVor38xkER1AoDBPekhlaeoTdO2
+ 4krbnH3ntPSs2QkhMzdqG39ShLgfmrIUMuGRhfiBv7xIsRX6IvjUwQpMO/2M8cXwYBcRi0HRgl5
+ gPNaFCeXSu/GkxvLBmsODRgzq2e4sVNIfaTjQacEDkXB8uL5LngO6eyBQDNEl6Re7/L2hOZcSMp
+ dujU6RLCd5f2cSq0jkwWYe24KeyWqM5ohP0iPBCNsI
+X-Gm-Gg: ASbGncsrXhV+zxANKK2qYBkOlXnGMPGxoyIiuQOmPQP3pCRwbFcxAo+zjknQ4SsHzMv
+ AOgzL8cJTkXommhD0/HBEjUHmTyVCqGLxanE3fdumMM4m82hDgzmTQwDxexUZNMgO6rwreMpv0Z
+ kA0bBDMBFFrZ9+LAZtf5NoA7aJ5l4QLJH1Byf1mXxVwXuiT5ncpgYDx77aklAr8geQMW8DZQbBx
+ Uuy0Q3Ed3mMokfce2/c0k6fT3ekssNcE5KoOmZanPygLwSJJ3NYhbcy9XU2xTnjvhnGaWvNfglg
+ GWZaX05jWJLDxjFbCD7oF+E+v5E6f6acMdjRCavji6PHDCSzjp3yGScy1F+vm3in2EX0ftq2ijr
+ IffHvQe6O4Nu594hyWQ5DUUMrxlB101F6bj2/xthXTEgStQvKF15Ji92sHlPKrjpAR/c9/r0qiU
+ bf3G6o
+X-Received: by 2002:a05:6000:2913:b0:429:c851:69b3 with SMTP id
+ ffacd0b85a97d-42b5938687bmr11168249f8f.30.1763365361363; 
+ Sun, 16 Nov 2025 23:42:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6uqIQNfbp1MOz1J/AjjpFXN4eYcOq8wtb9PtoJW1kLHKT5b2O3HLURN9g00ellg+coUOPLQ==
+X-Received: by 2002:a05:6000:2913:b0:429:c851:69b3 with SMTP id
+ ffacd0b85a97d-42b5938687bmr11168200f8f.30.1763365360831; 
+ Sun, 16 Nov 2025 23:42:40 -0800 (PST)
+Received: from [192.168.10.48] ([176.206.119.13])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53e7ae5bsm24647881f8f.8.2025.11.16.23.42.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 16 Nov 2025 23:42:40 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 0/8] rust: add preludes to all crates
+Date: Mon, 17 Nov 2025 08:42:30 +0100
+Message-ID: <20251117074239.190424-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D5:EE_|BN7PPF39B20C1D8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fe08a24-80d5-46b8-9724-08de25ac5548
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|36860700013|1800799024|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?93B9Ajh4Dj9G/A2+VC3M6b+8dXZfKXGw3XbCiCw2CQ0Gz9mhQ2Ht/yj7WObT?=
- =?us-ascii?Q?kzL7yisYzIflD+nGpIEwNCf/rkpMowQ5roR+hjtMbY/ikt+WXWAYs9HyQDQR?=
- =?us-ascii?Q?e+jVK4nMLNXImaZAHt3B/gRAtNn6ggY9LSdB+5aYa+dJDNPF2fF/j8QtL7DH?=
- =?us-ascii?Q?a1VDgClw8qwip+8qmeOIG1T3/HOwAgq3TQaIoHQvhiwKXp/3t/xZisDAkq9j?=
- =?us-ascii?Q?5Sr93dh0uPDlcCxpZf5VRZToEUmo7gF9Vl/LyUyFNSMYf3sOYyhTAtli/RBg?=
- =?us-ascii?Q?4ImsTjOJphf2ZIa+DkkfX/MUTWeynViH0apzJpOielLl4Q+IS6pVC1OAdQ80?=
- =?us-ascii?Q?YQHvwFK0iir+0A4nWAUU5F1Kx8mFWdO8ets0OLdFTGwAJhdb479LSgPu7XXq?=
- =?us-ascii?Q?eM5rAEh0EQFEYWt7lGnRUr6fOoAu85B6uPJxfdQhUyKsghWAQjW0mPkOY1b3?=
- =?us-ascii?Q?S9IwAINOIMvJSiZKK/88CW8AoUmPSMqbVyhJNpztlzsyehFQD+s8PBdkNDGe?=
- =?us-ascii?Q?UY6bJP1yg/wmPpXP4fJlr5tqWici02MUA/N+OS/WuR5bpeyWF3e1xb522x0/?=
- =?us-ascii?Q?fy6DxsDPDn09A9RdiGgnOOJvTF8kNzHYRmy402yQr+w+lPTaUsqVpMNjc2T2?=
- =?us-ascii?Q?RjPCPNDQt210Mty8kGqSfaMY74E6BkmFPsq/Tq+rwXSWoqGmTSR5HpxdpFfZ?=
- =?us-ascii?Q?fLJkx4JN9M4EEJvGvk3dCLbMSn6QKr7qfExjpYuJQUV60qb5bo9vKQuKRjGo?=
- =?us-ascii?Q?woSILnJrVNMExJEP1sYNTPwWho7diO/XDjNO56aheCAXgCEHMVU4BpyaNIfF?=
- =?us-ascii?Q?+U3SanrJah3ML44KivMq5yP4mMi263rhQUPdYtBsmrv2Cw8StTaDEw1rWyKy?=
- =?us-ascii?Q?Of3ipDTdz1SRng+Es16AykM6RH75OGBZmGe5V2RPQt9kECl9fEEfJVv3zz7H?=
- =?us-ascii?Q?1BuKUtF5/VpI7+bxOAT6X6MIUM/IFri38IUn6t9846ghlryj5P7JpZXj1qug?=
- =?us-ascii?Q?VE4gY0EQc3jcge0pdpQApONPmGYh+4NL/AMegwksYhhRPCmoz5rB5qVnydt9?=
- =?us-ascii?Q?7U1BNwJ2WiRUT+JNQG/A4sEp+pXxPM7ys34sWHJ31E+Pa8WSPEOsFISBbmSC?=
- =?us-ascii?Q?U4bDBGmRZ0+uEfu1JnNZHt1iqaeUe/vjM6k+2WKOqNyz/nET8iDryWKTYjNh?=
- =?us-ascii?Q?+wqVZyPdptqJuD2LqGHtU9kpTT5RRKk1wY9cF46b0odjfp7Yw71NNGzdyK+E?=
- =?us-ascii?Q?SIv8t70MXHPjFokHCd5eCMsX6HvVF9pMQANBus24yqca819YVA9I2HrXqRbh?=
- =?us-ascii?Q?LpsQjUgwFth+FaBMLG1riqnCzJxzHyLHr4aEE2V2PZs5tNmiKFd4s+EsZ4VQ?=
- =?us-ascii?Q?Rzk7KeFyfBIGEW7ZlIL+N9yKAKbNAdNJE16jyvyAWmCUzbSWrDgKBqiutXLz?=
- =?us-ascii?Q?bDdCOYKMGT992q9E221Y3MscklDBrUMJVyMTuib9OGD3EY0ltj7PPCY6ID5J?=
- =?us-ascii?Q?tWvG47V+ph2lq6YmLqu8hVMG1InFenn1jdACVucp/j+CqDiBI1RF+jqeCtwu?=
- =?us-ascii?Q?RXlxiyhwmDw1Nc8vy+g=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 07:38:42.7276 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fe08a24-80d5-46b8-9724-08de25ac5548
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000023D5.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF39B20C1D8
-Received-SPF: permerror client-ip=2a01:111:f403:c107::1;
- envelope-from=Honglei1.Huang@amd.com;
- helo=PH8PR06CU001.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,35 +116,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error handling logic was incorrect. virtio_gpu_create_mapping_iov()
-returns 0 on success and non-zero on failure, but the code was checking
-whether to set the error response.
+This series adds a prelude module to all crates, so that
+it becomes possible to import from each crate with either
+of the following
 
-The fix changes the condition from 'if (!ret)' to 'if (ret != 0)' to
-properly handle the return value, consistent with other usage patterns
-in the same codebase (see virtio-gpu.c:932 and virtio-gpu.c:354).
+   use XYZ::prelude::*;
+   use XYZ::{self, prelude::*};
 
-Fixes: 7c092f17ccee ("virtio-gpu: Handle resource blob commands")
-Signed-off-by: Honglei Huang <honghuan@amd.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- hw/display/virtio-gpu-virgl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The latter is used for items that have a "too common"
+name to be put in the prelude: util::Error, util::Result,
+migration::Infallible.
 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 94ddc01f91..e60e1059df 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -701,7 +701,7 @@ static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
-         ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
-                                             cmd, &res->base.addrs,
-                                             &res->base.iov, &res->base.iov_cnt);
--        if (!ret) {
-+        if (ret != 0) {
-             cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-             return;
-         }
+Thanks,
+
+Paolo
+
+Paolo Bonzini (8):
+  util: add prelude
+  common: add prelude
+  hwcore: add prelude
+  migration: add prelude
+  chardev: add prelude
+  bql: add prelude
+  system: add prelude
+  qom: add more to the prelude
+
+ rust/bql/meson.build              |  1 +
+ rust/bql/src/lib.rs               |  5 +++++
+ rust/bql/src/prelude.rs           |  4 ++++
+ rust/chardev/meson.build          |  1 +
+ rust/chardev/src/chardev.rs       |  2 +-
+ rust/chardev/src/lib.rs           |  5 +++++
+ rust/chardev/src/prelude.rs       |  5 +++++
+ rust/common/meson.build           | 13 +------------
+ rust/common/src/lib.rs            |  5 +++++
+ rust/common/src/prelude.rs        |  9 +++++++++
+ rust/hw/char/pl011/src/device.rs  | 22 ++++++++--------------
+ rust/hw/core/meson.build          |  1 +
+ rust/hw/core/src/lib.rs           |  5 +++++
+ rust/hw/core/src/prelude.rs       | 14 ++++++++++++++
+ rust/hw/core/src/qdev.rs          |  2 +-
+ rust/hw/core/src/sysbus.rs        |  2 +-
+ rust/hw/core/tests/tests.rs       |  8 ++++----
+ rust/hw/timer/hpet/src/device.rs  | 26 +++++++++-----------------
+ rust/hw/timer/hpet/src/fw_cfg.rs  |  2 +-
+ rust/migration/meson.build        |  1 +
+ rust/migration/src/lib.rs         |  5 +++++
+ rust/migration/src/migratable.rs  |  2 +-
+ rust/migration/src/prelude.rs     | 19 +++++++++++++++++++
+ rust/qom/src/prelude.rs           |  4 ++++
+ rust/system/meson.build           |  1 +
+ rust/system/src/lib.rs            |  5 +++++
+ rust/system/src/prelude.rs        |  8 ++++++++
+ rust/tests/tests/vmstate_tests.rs |  7 +++----
+ rust/util/meson.build             |  1 +
+ rust/util/src/lib.rs              |  5 +++++
+ rust/util/src/prelude.rs          | 11 +++++++++++
+ 31 files changed, 145 insertions(+), 56 deletions(-)
+ create mode 100644 rust/bql/src/prelude.rs
+ create mode 100644 rust/chardev/src/prelude.rs
+ create mode 100644 rust/common/src/prelude.rs
+ create mode 100644 rust/hw/core/src/prelude.rs
+ create mode 100644 rust/migration/src/prelude.rs
+ create mode 100644 rust/system/src/prelude.rs
+ create mode 100644 rust/util/src/prelude.rs
+
 -- 
-2.34.1
+2.51.1
 
 
