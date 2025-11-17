@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD316C655E4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 18:11:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E999C655D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 18:11:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL2kg-0003Oj-G4; Mon, 17 Nov 2025 12:10:54 -0500
+	id 1vL2kl-0003lq-H3; Mon, 17 Nov 2025 12:10:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlugg@mlugg.co.uk>) id 1vL2kV-000398-0n
+ (Exim 4.90_1) (envelope-from <mlugg@mlugg.co.uk>) id 1vL2kV-00039s-3h
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:10:44 -0500
 Received: from mlugg.co.uk ([2001:19f0:7401:8244:5400:ff:fe24:ff33]
  helo=mail.mlugg.co.uk) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <mlugg@mlugg.co.uk>) id 1vL2kS-0006Ft-AT
+ (envelope-from <mlugg@mlugg.co.uk>) id 1vL2kS-0006G4-8X
  for qemu-devel@nongnu.org; Mon, 17 Nov 2025 12:10:42 -0500
 Received: from localhost.localdomain
  (3.c.0.2.2.e.e.a.9.8.5.7.2.1.b.b.f.b.9.2.0.c.b.a.0.b.8.0.1.0.0.2.ip6.arpa
  [IPv6:2001:8b0:abc0:29bf:bb12:7589:aee2:20c3])
- by mail.mlugg.co.uk (Postfix) with ESMTPSA id 68FCB35A1A;
- Mon, 17 Nov 2025 17:10:28 +0000 (UTC)
+ by mail.mlugg.co.uk (Postfix) with ESMTPSA id 7BD8035A1C;
+ Mon, 17 Nov 2025 17:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mlugg.co.uk; s=20200703;
- t=1763399428; h=from:from:sender:reply-to:subject:subject:date:date:
+ t=1763399430; h=from:from:sender:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wCgFAaPHpD5gNoEv09hbpHDRSkXCw2FXZqDCN4+OZNk=;
- b=ACjzg5neOfZAPpwEuTf391NQv6nOG/gaejiWYNHdKaGjkWCsjUb1ZWRlSAU9g4bgNyZTMC
- Hq2nxt1ihPwBeYgQ7XYGmWy/h3i349bugS+w1Z+hUwBEH8ljTBX6wJ7JCWHZ96cFHZyxVz
- miYW7svGg7K2p8GiP7W4gouunHxleU0=
+ bh=AWfnuXhrrYu4GZc3sZxhBSpbxAB6CnHusHek1i/jNVg=;
+ b=FYdBPEJcKbnXiJhcEXI0LJL6vniHV2Nt4kDv6ogMZ56iavlFfeDnQv/SLFrMFaFugVI+DO
+ JEk8SnFj5D9rccmcZ2iJr63JMbjHghSKngHci20tVUzzMBJyg2iMdQeKG8DQ5xO3G7UDQP
+ oOPsWjQ7GOFowwFqy2C2AJLeRq03ULY=
 From: Matthew Lugg <mlugg@mlugg.co.uk>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu, peter.maydell@linaro.org,
  Matthew Lugg <mlugg@mlugg.co.uk>
-Subject: [PATCH v2 1/4] linux-user: fix mremap unmapping adjacent region
-Date: Mon, 17 Nov 2025 17:09:51 +0000
-Message-ID: <20251117170954.31451-2-mlugg@mlugg.co.uk>
+Subject: [PATCH v2 2/4] linux-user: fix mremap errors for invalid ranges
+Date: Mon, 17 Nov 2025 17:09:52 +0000
+Message-ID: <20251117170954.31451-3-mlugg@mlugg.co.uk>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251117170954.31451-1-mlugg@mlugg.co.uk>
 References: <20251117170954.31451-1-mlugg@mlugg.co.uk>
@@ -65,32 +65,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This typo meant that calls to `mremap` which shrink a mapping by some N
-bytes would, when the virtual address space was pre-reserved (e.g.
-32-bit guest on 64-bit host), unmap the N bytes following the *original*
-mapping.
+If an address range given to `mremap` is invalid (exceeds addressing
+bounds on the guest), we were previously returning `ENOMEM`, which is
+not correct. The manpage and the Linux kernel implementation both agree
+that if `old_addr`/`old_size` refer to an invalid address, `EFAULT` is
+returned, and if `new_addr`/`new_size` refer to an invalid address,
+`EINVAL` is returned.
 
 Signed-off-by: Matthew Lugg <mlugg@mlugg.co.uk>
 ---
- linux-user/mmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ linux-user/mmap.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-No changes from last revision, just rebased.
+Changes from last revision: the EINVAL case has been moved before the EFAULT
+case in accordance with Richard's feedback.
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 423c77856a..ef3833a2bb 100644
+index ef3833a2bb..6163f1a0d1 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -1171,7 +1171,8 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                     errno = ENOMEM;
-                     host_addr = MAP_FAILED;
-                 } else if (reserved_va && old_size > new_size) {
--                    mmap_reserve_or_unmap(old_addr + old_size,
-+                    /* Re-reserve pages we just shrunk out of the mapping */
-+                    mmap_reserve_or_unmap(old_addr + new_size,
-                                           old_size - new_size);
-                 }
-             }
+@@ -1110,12 +1110,15 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+     int prot;
+     void *host_addr;
+ 
+-    if (!guest_range_valid_untagged(old_addr, old_size) ||
+-        ((flags & MREMAP_FIXED) &&
++    if (((flags & MREMAP_FIXED) &&
+          !guest_range_valid_untagged(new_addr, new_size)) ||
+         ((flags & MREMAP_MAYMOVE) == 0 &&
+          !guest_range_valid_untagged(old_addr, new_size))) {
+-        errno = ENOMEM;
++        errno = EINVAL;
++        return -1;
++    }
++    if (!guest_range_valid_untagged(old_addr, old_size)) {
++        errno = EFAULT;
+         return -1;
+     }
+ 
 -- 
 2.51.2
 
