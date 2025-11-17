@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DACCC63F72
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:57:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2783CC63F24
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:56:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKxph-0008T0-BQ; Mon, 17 Nov 2025 06:55:45 -0500
+	id 1vKxpk-0008VI-8N; Mon, 17 Nov 2025 06:55:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpd-0008Oe-Af
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:41 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1vKxpe-0008RT-MH
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:42 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpW-0005jQ-7o
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:41 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-477632b0621so27772965e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:33 -0800 (PST)
+ id 1vKxpX-0005k4-B6
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:42 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-47778b23f64so28810745e9.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763380532; x=1763985332; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763380534; x=1763985334; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TNe986N1oAGIBabCsODBcDfYvCszxDoEGJSFW4ycP7o=;
- b=ck5FVhQbf2XHwhZVi7Zqjom1tzOPJ6SrhdpXHPCjzollXq8OrCovzrLyrStxzwoVEt
- 8+svgtBerOYVAuLhyKE+wAmTi4ZYAx+SpM2VhO1iya/HL/A/ENCmnQWTb6/8o79F/pdo
- /sN9jME2lapvtnt/pC9frNYv0LNZug2ERk8YhhBOA6fHe11LOCbtGczCju9bXfR1ueeT
- kd2zJSlQ2FUl9Wi9nD7v1rZWkMpUEyTV1H8RPq+GvtA8s17mW2DJvDggtp0J5oqN/oJL
- h+RkdGs/IwUWIzOBJI1ZHzZX4W2tuT83c1/qJLWmYTp7U/NtgnA3dJuX7SF2+N+Dfxcr
- z6XA==
+ bh=ddQPmTtLHjd+ba+Nnv9Q5/alJP/AtH8hBil+YOtIrqM=;
+ b=Y56rlFrLRlo0wk5l2a8cka5Hjjv+hNM7AoPSZrNiCdQK7t790fRlHy6f8Kijbfyg7O
+ HxLGsPXHKrTVwNZttmauf2l4q0CT57MlYJhNwkAAXZ5W43uxzPpXkHQZLfC0x44K/vrq
+ kj8b0Y15qLip/4INnVxEDm/AP8HLSH3gt2oKvn1xKHII9OHx+94OvyOjhpln42w+6taD
+ m6OXyRZJ9g11BXu/clfn5VhJEgHZBTWhmLa7JgT1SjXvEaAGG6QdJwnPRaTBmOxwiBos
+ jhSaXfVozXC7ynKKOrf3QsUvEzfFiJWEKTfEd0B1wkmmGGf4mgmi5xbTYh9aM6gs1Ujj
+ uw+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763380532; x=1763985332;
+ d=1e100.net; s=20230601; t=1763380534; x=1763985334;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TNe986N1oAGIBabCsODBcDfYvCszxDoEGJSFW4ycP7o=;
- b=d1mX3EELfVKpjEtI2zkUjH7hLNmu6sDY+2PceI/XXxp85LBJJc0CQKC+FslUuQ6c2G
- ESQAM2GO03u0Sa8OEs5q05+3xYJxz9oS3HbXQZKRDzid6GCuTLrBBQfM62QFP1jEau+g
- I8AA1111t942+YndYS9XrczQYL1lhiPamkNIst51EnIg6gHxkD9DXHpr0vE6kv0c3qTr
- DFGyxla+q66Tc1jS3yrpBHMILjLHCoTSjetACvuiaEAiM4XQ+rV1shkYnbLe8ihKIgEJ
- 0QbnH1ADljn1XZXTTH2oacPGB43vhnHXMRkoD0RqtMEfVXgzYqULTv40ioYUrCJHqaKf
- 1x3w==
-X-Gm-Message-State: AOJu0YzybUnL9zXFrNCyzCWlFyN0vfA7WT+qM6fXk3SrHc5Pjud1veSS
- J14jqS83jhHGv9EP6Qi6UnPvuHxwcvGHdVxFyUjw8MtNkNmSeTKNEsUmUZ/p9XSwIas=
-X-Gm-Gg: ASbGncvFRgAoJnU7OyCl6D5m8QlQi5MDlLw5j5zD5QiuFT5dt6ZcFYTAUgnEOHT7PDE
- dr+JcUAfWJ3Mnisr7L7+6sTYWKc1ng+DgGPnEuucchSHSpaTOcpvA8lX3VQDbqOvvEWpKhlb+LA
- l5nhyddg1shh8lBIvUourrFz9e9dmAAuc6qpkoTOZrOYYLnb+cBcDzNDTPluKb8YoMjwgA85jOR
- 4e87sWYLMcRHoDVJls83b90rN68YOFb/9KGr2KIAV3OXCI17N/ZuxDXf4SKxB8DTchXNHhfpGcn
- SvwberTREYgM06yR5rBPFXFOolPCB8A6mRRDMW69MCHv70xTe/eeYyTZL2JkI8LOgD14B7ZhE7S
- dodm3N37TUuOHAdN1f1E/GZg0ZnnHFRwcTCChyL67mtZmMxsAa4BQLJD4OF3tBT2ZrBuVriZnF/
- t2tmhPRe/5hZ8=
-X-Google-Smtp-Source: AGHT+IGEMvYMkFPRKGN4wUoDcbsbyC2wxVh4Z1nk3SuU5gmtS8Uuk4PMlICNl6kX/PndGaSF07jGiw==
-X-Received: by 2002:a05:600c:3512:b0:477:7ab8:ad7 with SMTP id
- 5b1f17b1804b1-4778fe5ddd2mr121599285e9.9.1763380532489; 
- Mon, 17 Nov 2025 03:55:32 -0800 (PST)
+ bh=ddQPmTtLHjd+ba+Nnv9Q5/alJP/AtH8hBil+YOtIrqM=;
+ b=SGJZ4x3URIJ+BoCkvDeRg6CTqStHxT/uriCIWVlu9lycdrbAgesTSVixkg6u9xKU1d
+ 3MOxr9zxHSQMmpmO3UYawhZ4dFj8ezegIFrYIzxbI92hEIfZ/wXkt2uSCa+AQiZlSAYu
+ wT/HBAlfr5xjlUb419kFMM7Cl7gpIoxHHCWSVZgIFPSLZgFKrDsxlVcIBl4c5Ogk/sMp
+ tprMXVh9plnOgw2VsbBOs12eY05/YOcsvyXpAyv4m75iS87RDhcAulZ//px3SQb4OYo/
+ IhULgCMnC8yOAYHr7E/GVNT6J7qiM9SMPzYoagoivL8Wpehi/QVHEYMS0XWQimZGC4Q7
+ NYOw==
+X-Gm-Message-State: AOJu0YwWjLiwNf+LXpc37pO0s4ftjW06Xyd6f8cS5t2q3Fu1TXJi9Mm8
+ /rGTnlbRF/MTRNPuNr4OSpkzHUXX/0uF+T886hAv0yiZnfWdh7gozfPLizwb75Ato9A=
+X-Gm-Gg: ASbGnctuifLKJpDh64F8DTcyA4hJ5SwtFtNgzXtK+veCNCURnzDdprE1xSe/5vqnkw5
+ NQs8ACz6Ik4hSFB3nKdPr1jAQnQgH8ySw3vfFqZSYAaj8KkiEJFk0hlH9uwJZo9AcFT46xYzIFF
+ bY0Z6aggwys6Cuacv3wIjt9MfINhSnxec8WduWiFJHd+KbY8vUzLlyHQV+MSIxsEM0Pf7ATTQjv
+ XNM3HJBuGT4kUNqT2inti/HPshW75ipT50mtMtGITuNecKh0OlU40Vu/E0t2naqEsirWAU8I+6Z
+ KEyg1lvUjXkbEAm/zpgnmv0WyJgg75r34cDt9TjKKPFSf+j95tqekeBC4Nz9PCWBgNQRPw7gCCL
+ jP3KoEDJCfAASHCYxmGD5XSF8ZAgz3tY9e0+k6lFnDKhF9veUWLu2QJaHQcjVVbvrLPCKfe5GnY
+ 8tdLiF38tkkiI=
+X-Google-Smtp-Source: AGHT+IE9XT1/z3WZDB68SBtTcY3HF4o+hHRH9skQlfd6HRJiPbFe4AIRwfFV9ZZ+IH0NBmKs8jvyJg==
+X-Received: by 2002:a05:600c:1d19:b0:477:582e:7a81 with SMTP id
+ 5b1f17b1804b1-4778fe50bb3mr91800995e9.4.1763380533851; 
+ Mon, 17 Nov 2025 03:55:33 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4778bd11165sm112199175e9.6.2025.11.17.03.55.27
+ 5b1f17b1804b1-47796a8a695sm142872405e9.13.2025.11.17.03.55.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Nov 2025 03:55:28 -0800 (PST)
+ Mon, 17 Nov 2025 03:55:32 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 45F605FA3D;
+ by draig.lan (Postfix) with ESMTP id 5E8A85FA6C;
  Mon, 17 Nov 2025 11:55:25 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,24 +81,24 @@ Cc: Ed Maste <emaste@freebsd.org>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH v3 10/18] tests: move test_kvm to share.linaro.org
-Date: Mon, 17 Nov 2025 11:55:15 +0000
-Message-ID: <20251117115523.3993105-11-alex.bennee@linaro.org>
+Subject: [PATCH v3 11/18] tests: move test_virt_gpu to share.linaro.org
+Date: Mon, 17 Nov 2025 11:55:16 +0000
+Message-ID: <20251117115523.3993105-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251117115523.3993105-1-alex.bennee@linaro.org>
 References: <20251117115523.3993105-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,31 +119,34 @@ another sharing site.
 
 Cc: qemu-stable@nongnu.org
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251113102525.1255370-12-alex.bennee@linaro.org>
+Message-ID: <20251113102525.1255370-13-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v3
-  - fixed download URL
----
- tests/functional/aarch64/test_kvm.py | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tests/functional/aarch64/test_virt_gpu.py | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_kvm.py b/tests/functional/aarch64/test_kvm.py
-index 9fb9286139f..7545f5ed554 100755
---- a/tests/functional/aarch64/test_kvm.py
-+++ b/tests/functional/aarch64/test_kvm.py
-@@ -19,9 +19,7 @@
- class Aarch64VirtKVMTests(LinuxKernelTest):
+diff --git a/tests/functional/aarch64/test_virt_gpu.py b/tests/functional/aarch64/test_virt_gpu.py
+index 4e50887c3e9..c26a1f20c65 100755
+--- a/tests/functional/aarch64/test_virt_gpu.py
++++ b/tests/functional/aarch64/test_virt_gpu.py
+@@ -23,15 +23,11 @@
+ class Aarch64VirtGPUMachine(LinuxKernelTest):
  
-     ASSET_KVM_TEST_KERNEL = Asset(
--        'https://fileserver.linaro.org/s/HmjaxXXYHYSqbes/'
+     ASSET_VIRT_GPU_KERNEL = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
 -        'download?path=%2F&files='
--        'image-with-kvm-tool-and-unit-tests.gz',
-+        'https://share.linaro.org/downloadFile?id=Bs8Eb2Wb7yWtkTA',
-         '34de4aaea90db5da42729e7d28b77f392c37a2f4da859f889a5234aaf0970696')
+-        'Image.6.12.16.aarch64',
++        'https://share.linaro.org/downloadFile?id=lL8wgnMmSXZo7Co',
+         '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec8b')
  
-     # make it easier to detect successful return to shell
+     ASSET_VIRT_GPU_ROOTFS = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+-        'download?path=%2F&files='
+-        'rootfs.aarch64.ext2.zstd',
++        'https://share.linaro.org/downloadFile?id=qOn1wbfKmS6KVHZ',
+         'd45118c899420b7e673f1539a37a35480134b3e36e3a59e2cb69b1781cbb14ef')
+ 
+     def _launch_virt_gpu(self, gpu_device):
 -- 
 2.47.3
 
