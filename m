@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609E9C661F0
+	by mail.lfdr.de (Postfix) with ESMTPS id 51742C661EE
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 21:39:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vL5zu-0005Iv-JS; Mon, 17 Nov 2025 15:38:50 -0500
+	id 1vL60B-0005Ki-Ud; Mon, 17 Nov 2025 15:39:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL5zl-0005IW-5H
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 15:38:41 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL5zt-0005JR-AR
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 15:38:50 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL5zj-0000bO-IX
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 15:38:40 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-477632b0621so31617925e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 12:38:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vL5zr-0000bp-9p
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 15:38:48 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-47790b080e4so17805025e9.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 12:38:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763411917; x=1764016717; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zTInPho37rHm/qO7ZFS6pA8QVfK4rpRL6wvD6QhEAcU=;
- b=kWkGFWALcypkDZdL2Sknz4yXGrL7pdSx9ttR96Ri2icXYCcdrswYXfYq8O3Kqykm/W
- TO+hkGkBbjD/S0wwMx6BRuzarGPKYPHoobdTgHE228gNZzTMD2W1zr8+zmxSRn6Ex009
- M5Qn7ttFrHkHCRmQ6KAeP+RkNuqWboI7HTH4HzyTE9/f65eIIa8z3s0HXDzzmtgImXOm
- D0sfA1YlJEE38LF0fDChAUsUO+gZyQu2VTDx3HdQVSk5rLyehhKHJt5JAMKR5LsSHI1/
- xvEI303SnGp5EE3NB/eB/5X3K7DQnRhGHnRBFPxOfZ6Mj3eJC39xNeGXFuaZO21O733Y
- frKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763411917; x=1764016717;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1763411924; x=1764016724; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zTInPho37rHm/qO7ZFS6pA8QVfK4rpRL6wvD6QhEAcU=;
- b=Av5YwjwA8CRuZPvJOF5PJIc9wLizMyE2OIVs+mGuNWsveUTc4cYP5Yisuq1TENtp4l
- hUGZWYE2bP5FxJeERIKjTSm+IqMmQGrdvGERMM17UqnQw/E9gO4LnO2axoqi/x2nUVDj
- /YUvVwDVTIqSX+rzqHj3C5baYJxgYt/NljuiLrTJpN4g2rJzCLUlmO7z2mMgZ39PBe2J
- Jom8167o3qIPlEZlnaxWUeNx6xQmDuZIvvdXOINp+4aJnBp9JjBxOmdd6AgdkSBKM5Up
- 2pKEwq8BpYiqKXL2PranTdCgOt4YKWb82HbNQZ6NysrLVxM/JmwZJlLmeNYXSo+bvJKC
- SLGg==
-X-Gm-Message-State: AOJu0Yz3yI1HMtepKiw7Xq7W+u0Oo6VndQ4EQkNLtdLSOGUwm2wRaniB
- 13PY4hxTABJE5thdnNDz8Gp93QBsVji2aWhspLpRQ63jwFCQHzKDS7kgZ17vD1+6Zym0//Skaai
- zkbxO1edPnQ==
-X-Gm-Gg: ASbGncuaKqQQ2DFBx3kY+6U6dt+EIu/0S8wr3b3UomxHMJry0k4JuK2S91kqkhyalTr
- VSCnvsbBtH8DWU6TVXW/5FpNKGb1NbGWtXt77hjGH3pmtyzp8LscYlFt9N89PW8HALskqLDNhNT
- ohdnIb2wXnenV/wLo13kS/3HfFdZyu5xj40zq1EM24d0pAq0KB1QnEK9p+6LjSfooK7VMTuQmrk
- Kon+zaT2h6V+zu0ATTveDuzUvQxGFJaH8qBHZHqcfUBoZavz5ftS0RXxj8nk874U/ZyluHaqLIx
- LnVV0Zacd/IeaXesXaQlHukZzso87t7QzgrHruRpSt/sNvQV+XUYroKO9VXhLHsohyFUncuuogY
- d3PZV912cLRD1hTD/8qlTQLm5MO9taub/EKDM8yd7Y1hm/OPcS5W3tkX2e78GifjFrjGsa0dnWL
- To7MlvkwoFvLqY8DQ2luKdiOLENMqUVKgxE8dLYc4vshv5XavZ2yGomeXH8QsM
-X-Google-Smtp-Source: AGHT+IGg16NCbWU59x4qKTYBMi/x6cMFj1R/FWIrsPX2S6SLrbKpTPOlyRHREDR4IGyyDvDpad1nmg==
-X-Received: by 2002:a05:6000:2509:b0:42b:3e0a:649e with SMTP id
- ffacd0b85a97d-42b59328f9fmr14437781f8f.13.1763411917322; 
- Mon, 17 Nov 2025 12:38:37 -0800 (PST)
+ bh=+dQxn+7K1DnLqxzX8+uoAG3/GgxJkaJRF7+GxCfNDfM=;
+ b=ykZbnHG4WasXQc+fS4neQXliGUX4GvxOPxyEnfoAtsTj6sQOxrunZulytBgbRhvLXi
+ OI1PxjgA5j/QfUS5RnrR0UhbKMnk7T47zklAa1gVsI9dSkuAOOlgHG5fBpbjVpnsEAPn
+ jL+VzR6zJMExJJFS7mX5mzAtg/6MxYCu+8kfXrtbhXK/VySuIjSIr0VWy+fOr0RE+nrf
+ QD14tjUCCun14/KI829UypgGp+8KJPUOhKAKkWLtY5rsFKT8pgWD2+yqoz3HlcaS6uzg
+ ghau0UTKWfbxz8+U0czjWnUIBQtP2oQ3HrOj9Q6WF9uSY5OOAlVDkveQxWEBrewqgZoo
+ eySw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763411924; x=1764016724;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+dQxn+7K1DnLqxzX8+uoAG3/GgxJkaJRF7+GxCfNDfM=;
+ b=sFf8vIGkNmCzoJZA2FxIEf/Bif3YTs8e94b7fRraaeddRJpSbMfZYBps0Jbw1BvblT
+ 0ChrgGmRF95rZ638Flsd8CwOypPnw19h69BPSaV6LdQqiXzbYHunPwPSJBd4xFLRqDzh
+ 4vH/pOaPF730miBe3KwE71UKvOfjFBqeLDA5RZtBCd/LqcMwh9eEKyOIwGWwlkh+ktnF
+ FFWJY3s8PrCKqE27sptX2Ye7ZtxUBMxWdEMovtBvUw+7mNIrLPt5WRrRhq0yP6KsE60j
+ BlnXWdpVzZ2Yv7B+Wax6mRrPqM6M26d8y3R5NNB0uorBDgBZxOxEeNvOonc/LFLCuCkl
+ nhbw==
+X-Gm-Message-State: AOJu0YyqDfdLGkVdADGqbPi1G6HWKjES9UXA1Ze9daszRVb0pkxPDIPk
+ NnkixF8aLj3mf7eJdX2R5QeGAg96IKl0LmQruPQvSJGaqOvRcrSCnTxv4S7zt5IGV4vbqd60Utm
+ /PYZ3pbAwwQ==
+X-Gm-Gg: ASbGncu9kvmG37WedfFkBUj7n4ia5PjVuPUEhY2WhwCahRo4BO+0srVeRUz7pJpJ4cd
+ m0Fsv9LpZoa+TsDQP7UQyWS7AoQkbmJGvpLuqu8vXkz07cr8/WePB591jArEsw0iLgOhaL2fzGx
+ fMPtSnbknC626zOFbdVfgtliKkrbepHXq6pawqTLvA9ubJM2DXxGGDtU7jAe2UXH8ymTzNisiGV
+ BBfAsYHq2b4+7XY3SS/qizmCbcLudM54FK5zGU5hU92UvEMbvMgxk9GbrV6uX1uHNOYWe/RCvqM
+ v8ZwmlB3Fn54SuHjIdS6+HH4jaWpZVq+GLwWnEnGkx5fSxGs0V7SsLKPRkVMz+7xz0yeIOrpMMi
+ JDcJYlvR1bTNkCIBN9WnvrIJDvEbPI07/HcittFnAiEoXfM/lx0sg14fAIIkt0Xxl1c/CAuOsFW
+ QXCZ3auX0YdiGsOZtrMSgo2P2DwVmdrk76pLFIn/VSdU3PxeeFfvNoemaGZA6D
+X-Google-Smtp-Source: AGHT+IGLme3x2Ng/f07RZoW67xnz84j5DP/TeuewLy0le9/Bq16JZ7Pe7g29mJr5Lt2Mt2h0b+4vqA==
+X-Received: by 2002:a05:600c:630d:b0:471:1765:839c with SMTP id
+ 5b1f17b1804b1-4778fea2bf7mr114591505e9.20.1763411924405; 
+ Mon, 17 Nov 2025 12:38:44 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f17cbfsm28011422f8f.35.2025.11.17.12.38.35
+ 5b1f17b1804b1-47787e442c2sm335227675e9.7.2025.11.17.12.38.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Nov 2025 12:38:36 -0800 (PST)
+ Mon, 17 Nov 2025 12:38:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Nick Briggs <nicholas.h.briggs@gmail.com>,
@@ -73,22 +74,25 @@ Cc: Nick Briggs <nicholas.h.briggs@gmail.com>,
  Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH-for-10.2 0/3] buildsys: Fix Solaris build
-Date: Mon, 17 Nov 2025 21:38:31 +0100
-Message-ID: <20251117203834.83713-1-philmd@linaro.org>
+Subject: [PATCH-for-10.2 1/3] qga/commands: Include proper Solaris header for
+ getloadavg()
+Date: Mon, 17 Nov 2025 21:38:32 +0100
+Message-ID: <20251117203834.83713-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251117203834.83713-1-philmd@linaro.org>
+References: <20251117203834.83713-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,20 +108,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately Solaris OS is not tested in our CI, so it
-bit-rotted. Fortunately the fixes are easy.
+Solaris declares getloadavg() in <sys/loadavg.h>:
 
-Philippe Mathieu-Daudé (3):
-  qga/commands: Include proper Solaris header for getloadavg()
-  migration/rdma: Check ntohll() availability with meson
-  target/arm/tcg: Undefine Solaris FSCALE definition as a kludge
+    getloadavg(3C)       Standard C Library Functions       getloadavg(3C)
 
- meson.build                    | 4 ++++
- migration/rdma.c               | 4 +---
- qga/commands-posix.c           | 3 +++
- target/arm/tcg/translate-sve.c | 3 +++
- 4 files changed, 11 insertions(+), 3 deletions(-)
+    NAME
+           getloadavg - get system load averages
 
+    SYNOPSIS
+           #include <sys/loadavg.h>
+
+           int getloadavg(double loadavg[], int nelem);
+
+    [...]
+
+    Oracle Solaris 11.4           23 Jul 2020               getloadavg(3C)
+
+Include it in order to avoid:
+
+  ../qga/commands-posix.c: In function 'qmp_guest_get_load':
+  ../qga/commands-posix.c:1408:9: error: implicit declaration of function 'getloadavg' [-Wimplicit-function-declaration]
+   1408 |     if (getloadavg(loadavg, G_N_ELEMENTS(loadavg)) < 0) {
+      |         ^~~~~~~~~~
+  ../qga/commands-posix.c:1408:9: warning: nested extern declaration of 'getloadavg' [-Wnested-externs]
+
+../configure relevant output:
+
+  C compiler for the host machine: gcc (gcc 14.2.0 "gcc (GCC) 14.2.0")
+  C linker for the host machine: gcc ld.solaris 5.11-1.3315
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ qga/commands-posix.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index c7059857e44..66f3e6f6733 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -43,6 +43,9 @@
+ #include <net/ethernet.h>
+ #endif
+ #ifdef CONFIG_SOLARIS
++#ifdef CONFIG_GETLOADAVG
++#include <sys/loadavg.h>
++#endif
+ #include <sys/sockio.h>
+ #endif
+ #endif
 -- 
 2.51.0
 
