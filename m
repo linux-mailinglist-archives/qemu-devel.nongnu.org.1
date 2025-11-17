@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFC2C63F4E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB89C63F63
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Nov 2025 12:57:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vKxpd-0008ND-0s; Mon, 17 Nov 2025 06:55:41 -0500
+	id 1vKxpe-0008Q8-Gu; Mon, 17 Nov 2025 06:55:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpY-0008Iy-UA
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:37 -0500
+ id 1vKxpa-0008KZ-93
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:38 -0500
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vKxpT-0005hJ-OY
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:36 -0500
+ id 1vKxpU-0005i0-6m
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 06:55:37 -0500
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so30896205e9.3
+ 5b1f17b1804b1-4779aa4f928so19325425e9.1
  for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 03:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763380530; x=1763985330; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763380531; x=1763985331; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Azih3R+3AAU41tCVa285s70I8vzeVrobT+k83nNHXws=;
- b=ptnzQhV3TyHmDW9DxGAih5xss4HhV/rvjeFju6N2ZiDUPRB8gPjFUcKAr9pMcPIVmv
- xxwg4QH/TNphPxM+qY+70xDM7qCZ5EA+P29zdBO4J1Y/ve9+lepAGhkJbV7/n363fj5/
- CI5njvXmSK/p8BGLlpMLad1NZgFsVxWR9f+0i/TBeijBmDSouUjxLiO3yBxAvFuCECKS
- icdIKMzJHO4Oywia2E2JPDOIKOsu2lmjUSTswiR3VxOYXMq96057hkUbTvSy3xY3GytJ
- /8JTUtcn78d//SDYDYGrikDU1mgwnb3jlY6S1Fq8QFP10OpWRNAyBKIxydLsUBZwau34
- jZ1A==
+ bh=FCObaqAbinD7KhsOP46zwmYSxm2YKTey6+ugit7HEQk=;
+ b=ALPlya6uzZW3ukeSgyoT7pOdP71nh2sVdeiQ9zA6OwZHUQP+YYm0Ic7TSDzQyX/NXF
+ NFTK33qNqthCNfkZL47Xug3GwRXccJ95ctWRTvSOv6+K+S0m3DE17XuFP3l4Lc7om5Wp
+ ANAxhVjCm9x3r263hHTkQgz5Sni9lTMIwa1ryi84RIBfjMRc2t9zxb6dZKfHsQ4bFCmK
+ Bs4DSYimOxE7qPeoHjoV3AHWD7Y0nWJh/+X8h1iMF9OjJSS+RiWiXAp91rLuPMGzExO8
+ Wn8dcTmY9HqLqSZpiyrMvwTsimkYNtCQ2nhuohBTMdRKOZ3zX7BQRf5JRA5Nv/bMXM1b
+ xdyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763380530; x=1763985330;
+ d=1e100.net; s=20230601; t=1763380531; x=1763985331;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Azih3R+3AAU41tCVa285s70I8vzeVrobT+k83nNHXws=;
- b=mHKlntXixH3f+o0kzrTjTeWMoHmAAKjxuOj8d9j8paeg82wJpJQmxEz4vkXsUa3qJH
- Zb0DToCyDJh6GBKHPhyQ4YIV59sENksSJUr+4I/AgZwu3Rx3ZgjNDrzqu+/1uijuzaG6
- ocIlJEhRELpKlSt0HpoGknIHR1E14r1iuLgBBQYWDEN5aWL1KyqdxNVi2MeSoIIuQf7o
- WHGuspVoICq3zF6IvT39QALOGJdtcZUwjHWtsZ0lx6zfkYOVK3q3E6SXZlR9KT6FtUcn
- o+/oydwMgw8vnvTjUnVIoaJUvWzMzLrYFukP+uctuWcvzgdNHv30JNScUEFT8AlGVQoQ
- 1Qeg==
-X-Gm-Message-State: AOJu0YwDvZCvz9j3ufUlygeEJ+DIxElrfk25VKDL/PkP8nz/dZXr/A0n
- 0sfct1ak2SvcqHFcqU/6kEmFbfEhArF6OflBKt8YNWe95zifve+yU+LxSk7Fc/tmPQI=
-X-Gm-Gg: ASbGncuuDFIn2WWkXi5WkEyWLLZoM/JQBxMVvH+V055nAk5RKKtXtWXmnNiQzMp04cj
- YWE8pFm3LYvLPiU9aX+oRFXYBCGmwNLPolaw9o6GuxET0Zu38Bvfv7MGzjEK7Neio/Qf3OvtIb8
- EoTW3Ib44QllRed3DnjMGz6V6H7E+rGSUHenZzd10K/TnVrJS9Xusp45Ods4wFic3HH9Xb94mtk
- tG4QJQepGgbgZtt1LGfVY4fMuhBxN1ZnmxiXcCSe6KBynrhZoGbmcsWwhGH5qR/V2Bpmig29a3v
- twKopkh27v23wfEcHbSiVK3UW2Kf24ps8p3Gy/V00CZbi6NX4/HCh8p9M9xjN3bF+hcYnkFytlt
- 7a4jcwfdZijGPCuUoqFGcFqdw/m1jQV/9zmY68Qay9vpTOh9ltaijzzChoiyUYogPCMOYtpHIV6
- vF
-X-Google-Smtp-Source: AGHT+IFeR68tuFZWlZvHwqZGhXKmm6024Famlat4kQ5cannYdkpXoc3gBrZOeSvyT0URopF2krU+Nw==
-X-Received: by 2002:a05:600c:1f87:b0:475:de68:3c30 with SMTP id
- 5b1f17b1804b1-4778fe68a14mr127109415e9.16.1763380529888; 
- Mon, 17 Nov 2025 03:55:29 -0800 (PST)
+ bh=FCObaqAbinD7KhsOP46zwmYSxm2YKTey6+ugit7HEQk=;
+ b=FkIRHVpWdvBUwzEIromriJTh37phG9d9QzoVZqtikyLv6tELHalK7+iAimzX98OfPb
+ Y7xgWugLKGlQN33DrmTzjhxKrghxS6wEdqwYEDJPmtZR5p7fHyF+8lb4TFT3H0hJelIf
+ Zo4C408T1Dnnbix0SGVuBkQvyaWftDprKvN2QwzAg7vNVEIbPZgeA0/Dle3eRiUzgAQt
+ J+X0NwZIfHn9EkH4L7Zu8mzDSQuCvXBrj/mJYm5RNg9HWI9eQykl7p12FpP3FLK6lgQb
+ l4+3H52cRvBm/aT0wDCmnCmZfp2C6dcfoMDFiBFqx3BUzCh4LoScOOBkfvsnA2aaofSk
+ v7xw==
+X-Gm-Message-State: AOJu0YzwnQN4WfOUJDWjvMKq4CstDPoJWOva5AIXs0scPHFJxYclU8DO
+ ExdEZO5NT65ta3cLycjk5iyh8b5PigXRXkJHK68iZmRjEvvhog9dI3pLbulAXb/ntxA=
+X-Gm-Gg: ASbGncuyYEOOToNtTLUbP9coY9vCL1lw5ZINwLjin5X+phH/mCKPozuEvBArWrP9TDa
+ 5ENUS2hgJj93c31PUPOznXA2g/goXL0F2ij8qd3m8Kx6dBqE3P6iKYSXpH2iSg6TM8t/2RADqMB
+ T5AuB63tocn11wMqLd0D+DtoaikKjNq4n9qxKSJ6r2egW6reY/XS1PtIqC9KJX49znBwaYqIzA8
+ wGmJyAdDViBHlMO1sVYhIv1yRCpjHazu3bWXQxv2lekHiqAffD1DqtJZPCHzm6igVtr6coqe0vX
+ 88gWu69zSmRE8kakRyGsa0DpgKheBa/6VmWlRHc4KuNtSBxvcPEcAYyQh2KwZqtlQSoq6hZAfyC
+ CGSuRKu6tF1qKy8BXlXnoiFMHEKgHaZgbuIMBHURKUU3hDqIp2uwdF55LiTYRwG6m21ZcUKwgSi
+ KW
+X-Google-Smtp-Source: AGHT+IHY5ZW7slDHeduf0BbaZP7/4sghMucY8A7TA7mUGcJEP3u1zxUEoyUQhJi6FUBSJkj6jQ9LHg==
+X-Received: by 2002:a05:600c:450f:b0:477:76bf:e1fb with SMTP id
+ 5b1f17b1804b1-4778fe4a05emr126134275e9.16.1763380530575; 
+ Mon, 17 Nov 2025 03:55:30 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4779f44a0e4sm87685405e9.15.2025.11.17.03.55.26
+ 5b1f17b1804b1-4779525d2bcsm161132535e9.5.2025.11.17.03.55.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 17 Nov 2025 03:55:28 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F1C395F93E;
- Mon, 17 Nov 2025 11:55:24 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 14AAB5F94D;
+ Mon, 17 Nov 2025 11:55:25 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ed Maste <emaste@freebsd.org>,
@@ -81,9 +81,9 @@ Cc: Ed Maste <emaste@freebsd.org>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH v3 07/18] tests: move test_virt assets to share.linaro.org
-Date: Mon, 17 Nov 2025 11:55:12 +0000
-Message-ID: <20251117115523.3993105-8-alex.bennee@linaro.org>
+Subject: [PATCH v3 08/18] tests: move test_netdev_ethtool to share.linaro.org
+Date: Mon, 17 Nov 2025 11:55:13 +0000
+Message-ID: <20251117115523.3993105-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251117115523.3993105-1-alex.bennee@linaro.org>
 References: <20251117115523.3993105-1-alex.bennee@linaro.org>
@@ -115,40 +115,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Linaro are migrating file-hosting from the old NextCloud instance to
-another sharing site. While I'm at it drop the old pauth-impdef flag
-which is no longer needed.
+another sharing site.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251113102525.1255370-9-alex.bennee@linaro.org>
+Message-ID: <20251113102525.1255370-10-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/aarch64/test_virt.py | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tests/functional/x86_64/test_netdev_ethtool.py | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_virt.py b/tests/functional/aarch64/test_virt.py
-index 63071f9b517..f9e3ec08fad 100755
---- a/tests/functional/aarch64/test_virt.py
-+++ b/tests/functional/aarch64/test_virt.py
-@@ -60,8 +60,7 @@ def test_alpine_virt_tcg_gic_max(self):
+diff --git a/tests/functional/x86_64/test_netdev_ethtool.py b/tests/functional/x86_64/test_netdev_ethtool.py
+index ee1a397bd24..ac8a92512cf 100755
+--- a/tests/functional/x86_64/test_netdev_ethtool.py
++++ b/tests/functional/x86_64/test_netdev_ethtool.py
+@@ -16,16 +16,10 @@ class NetDevEthtool(QemuSystemTest):
+     # Runs in about 17s under KVM, 19s under TCG, 25s under GCOV
+     timeout = 45
  
+-    # Fetch assets from the netdev-ethtool subdir of my shared test
+-    # images directory on fileserver.linaro.org.
+-    ASSET_BASEURL = ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/'
+-                     'download?path=%2Fnetdev-ethtool&files=')
+-    ASSET_BZIMAGE = Asset(
+-        ASSET_BASEURL + "bzImage",
+-        "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
+-    ASSET_ROOTFS = Asset(
+-        ASSET_BASEURL + "rootfs.squashfs",
+-        "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
++    ASSET_BZIMAGE = Asset("https://share.linaro.org/downloadFile?id=QD37GYYAJhGOgVe",
++                          "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
++    ASSET_ROOTFS = Asset("https://share.linaro.org/downloadFile?id=YAqnr0W8fruDh3f",
++                         "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
  
-     ASSET_KERNEL = Asset(
--        ('https://fileserver.linaro.org/s/'
--         'z6B2ARM7DQT3HWN/download'),
-+        'https://share.linaro.org/downloadFile?id=3zGlbmXh8pXFewt',
-         '12a54d4805cda6ab647cb7c7bbdb16fafb3df400e0d6f16445c1a0436100ef8d')
- 
-     def common_aarch64_virt(self, machine):
-@@ -77,7 +76,7 @@ def common_aarch64_virt(self, machine):
-         self.vm.set_console()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'console=ttyAMA0')
--        self.vm.add_args('-cpu', 'max,pauth-impdef=on',
-+        self.vm.add_args('-cpu', 'max',
-                          '-machine', machine,
-                          '-accel', 'tcg',
-                          '-kernel', kernel_path,
+     def common_test_code(self, netdev, extra_args=None):
+         self.set_machine('q35')
 -- 
 2.47.3
 
