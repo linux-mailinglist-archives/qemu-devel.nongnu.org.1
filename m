@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D20C6AD21
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 18:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA7FC6AD42
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 18:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLP7M-0000ih-Ek; Tue, 18 Nov 2025 12:03:48 -0500
+	id 1vLP78-0000Qy-Nz; Tue, 18 Nov 2025 12:03:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP7K-0000hK-3b
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP76-0000OX-Sp
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP7I-0004qc-83
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:45 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP75-0004mY-25
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763485423;
+ s=mimecast20190719; t=1763485410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yl7dqp9QOx/ISaDt5/CgTZ4Jf2aFUCybK+nzp1SYQ1o=;
- b=JqPbiW+i173uFs0xbpTdE1FZBazRwLbeEmUugONmI7vzd/NM1BrT67+2Udq/X88YAiWQJ3
- POJQYsYW7z9fmvBAlN4pyWkFXW4M1gzz4/IH3m47DXef6K/ahols+tbTPcKoXpS7AlFl0Q
- tw5XjWbLKAGxN/gxGzHf95vKAGmHyDY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=S4u1Ymd5RKTOCSITlgHRWtGfb/XdaQUQ2oYUqnr2rVI=;
+ b=LMfHIC2X1SwWjrWGhYlat3desplUqzYsdUNBrFUk3EPqJPig0n5rdfkGzMCdkyZymg893s
+ H8yTNEwyI1sNd2bAymEiFQgus9ULVKqlNLbF0++gkS9CDN/76EQ5NX9VFch1d/0Qj2sS7W
+ q8YiSuP4nNh8yRSVOQz5rWpWVjms/OA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-325-OkvHLKMNOgaGFRVByrhrNw-1; Tue,
- 18 Nov 2025 12:03:26 -0500
-X-MC-Unique: OkvHLKMNOgaGFRVByrhrNw-1
-X-Mimecast-MFC-AGG-ID: OkvHLKMNOgaGFRVByrhrNw_1763485406
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-9s03E6clOX2qlwuYF_IC5w-1; Tue,
+ 18 Nov 2025 12:03:28 -0500
+X-MC-Unique: 9s03E6clOX2qlwuYF_IC5w-1
+X-Mimecast-MFC-AGG-ID: 9s03E6clOX2qlwuYF_IC5w_1763485408
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DF49F18002E9; Tue, 18 Nov 2025 17:03:25 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0303D1956057; Tue, 18 Nov 2025 17:03:28 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.32.26])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 56D37300A88D; Tue, 18 Nov 2025 17:03:24 +0000 (UTC)
+ id 6345F300A88D; Tue, 18 Nov 2025 17:03:26 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 10/19] block/io: Take reqs_lock for tracked_requests
-Date: Tue, 18 Nov 2025 18:02:47 +0100
-Message-ID: <20251118170256.272087-11-kwolf@redhat.com>
+Subject: [PULL 11/19] qcow2: Re-initialize lock in invalidate_cache
+Date: Tue, 18 Nov 2025 18:02:48 +0100
+Message-ID: <20251118170256.272087-12-kwolf@redhat.com>
 In-Reply-To: <20251118170256.272087-1-kwolf@redhat.com>
 References: <20251118170256.272087-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,55 +83,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hanna Czenczek <hreitz@redhat.com>
 
-bdrv_co_get_self_request() does not take a lock around iterating through
-bs->tracked_requests.  With multiqueue, it may thus iterate over a list
-that is in the process of being modified, producing an assertion
-failure:
+After clearing our state (memset()-ing it to 0), we should
+re-initialize objects that need it.  Specifically, that applies to
+s->lock, which is originally initialized in qcow2_open().
 
-../block/file-posix.c:3702: raw_do_pwrite_zeroes: Assertion `req' failed.
+Given qemu_co_mutex_init() is just a memset() to 0, this is functionally
+a no-op, but still seems like the right thing to do.
 
-[0] abort() at /lib64/libc.so.6
-[1] __assert_fail_base.cold() at /lib64/libc.so.6
-[2] raw_do_pwrite_zeroes() at ../block/file-posix.c:3702
-[3] bdrv_co_do_pwrite_zeroes() at ../block/io.c:1910
-[4] bdrv_aligned_pwritev() at ../block/io.c:2109
-[5] bdrv_co_do_zero_pwritev() at ../block/io.c:2192
-[6] bdrv_co_pwritev_part() at ../block/io.c:2292
-[7] bdrv_co_pwritev() at ../block/io.c:2225
-[8] handle_alloc_space() at ../block/qcow2.c:2573
-[9] qcow2_co_pwritev_task() at ../block/qcow2.c:2625
-
-Fix this by taking reqs_lock.
-
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20251110154854.151484-11-hreitz@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20251110154854.151484-12-hreitz@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/io.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/qcow2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/io.c b/block/io.c
-index 928c02d1ad..c4a4301321 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -718,11 +718,14 @@ BdrvTrackedRequest *coroutine_fn bdrv_co_get_self_request(BlockDriverState *bs)
-     Coroutine *self = qemu_coroutine_self();
-     IO_CODE();
+diff --git a/block/qcow2.c b/block/qcow2.c
+index cb0bdb32ec..4e4f77170a 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -2873,6 +2873,8 @@ qcow2_co_invalidate_cache(BlockDriverState *bs, Error **errp)
+     data_file = s->data_file;
+     memset(s, 0, sizeof(BDRVQcow2State));
+     s->data_file = data_file;
++    /* Re-initialize objects initialized in qcow2_open() */
++    qemu_co_mutex_init(&s->lock);
  
-+    qemu_mutex_lock(&bs->reqs_lock);
-     QLIST_FOREACH(req, &bs->tracked_requests, list) {
-         if (req->co == self) {
-+            qemu_mutex_unlock(&bs->reqs_lock);
-             return req;
-         }
-     }
-+    qemu_mutex_unlock(&bs->reqs_lock);
+     options = qdict_clone_shallow(bs->options);
  
-     return NULL;
- }
 -- 
 2.51.1
 
