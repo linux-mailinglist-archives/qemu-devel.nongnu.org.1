@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9849DC680BC
+	by mail.lfdr.de (Postfix) with ESMTPS id 74682C680B9
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 08:47:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLGQV-0007B1-Qf; Tue, 18 Nov 2025 02:46:59 -0500
+	id 1vLGQU-00076D-UZ; Tue, 18 Nov 2025 02:46:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLGQ3-00073C-59
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 02:46:31 -0500
+ id 1vLGQ4-00073o-OF
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 02:46:34 -0500
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLGQ0-0000vb-AA
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 02:46:30 -0500
+ id 1vLGQ3-0000vO-7g
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 02:46:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763451988; x=1794987988;
+ t=1763451991; x=1794987991;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PUZISDYrocHYKBv1q7HljlOEOaD9HTduMbi5u14w+PY=;
- b=MjPzfaLiwdyr7f3RaKAu51W/AtVwgWgpzSNPtnamswxjjeXH96wzD6si
- d7+oArk95RtTH2YLj91pRB9akrJGdypOBnzG50tIu+JDuZsgw/aG2dH4S
- a1Ad0fOSK8b/FMfMtzRFaP/XNDRiTaeJYPqS9Xr0C1rrQSU/A+vrck+fM
- gM4FGYveLIvq3hnTkefUnuePk29RK2pvLR0/4xP82Q+nWz9ROuwEGP1AZ
- kboBluT6gRTYOJesO76qK5fxrTZ0vCxB2FGJIP7L5xxdV3jrZyPPrVJ9u
- yndnslFKcIVdLI89BHfzT4zPMGa3TLyDJTh/ywjRpqkUDiubYi28b7Qvr g==;
-X-CSE-ConnectionGUID: T5vUDVreSauxDq8x+iyb7w==
-X-CSE-MsgGUID: 10N7j3swS3CAg+Qan9J/Yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76142120"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="76142120"
+ bh=u3yCc6xj7EMhaBRQaQuxB3xeSTwO9P6ETK7zC/lQAyw=;
+ b=ctJXxJbxReBjf27H3HWuPaOVlYY82nZFBc0zR00n/J/X33ngZBKEP8Rj
+ nNmb/6qoCK8Z6NVlJ/21220DS6L7QPyOdd2nBx6ipVlJCYKtxKIMr8LDp
+ 4do0aNDABxDELyxqodp+VqnGPiz7AHpZZy2N2/V0A6oYn5cZ1fG9nvAm3
+ vm+jAxjr6CGq9lJyRSm8hy5RcGX5DgYevl/M7L1Mu3nhL5y+byIuCU0Hd
+ eyt/ttCvAKbL1JOTYZ+9Oi607S4ZfhkgpgmuyICu2k5VaIUkW7syAs7wN
+ t19eP9gIrmSkVWbruIZLSXHiCgY0p3y7nJiPAzA9J0uK//OfmuXYQIADI w==;
+X-CSE-ConnectionGUID: Hq0vLFJBSK+/xExo8bldMA==
+X-CSE-MsgGUID: z0tjtRhrQE2eGNlk44ddNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76142123"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="76142123"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 23:46:25 -0800
-X-CSE-ConnectionGUID: fgZ+ykTXSrSyctPY+8oqvw==
-X-CSE-MsgGUID: ImjKHWnHQl6OAp3mKvr0Vg==
+ 17 Nov 2025 23:46:26 -0800
+X-CSE-ConnectionGUID: KjA14gVORniUXiu+I/5c8g==
+X-CSE-MsgGUID: 0hShYtBxRNKn+Ofj4z6LdA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="190479566"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="190479569"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 17 Nov 2025 23:46:24 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 17 Nov 2025 23:46:25 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 1/2] i386/cpu: Drop incorrect comment for CPUID 0x1D
-Date: Tue, 18 Nov 2025 16:08:36 +0800
-Message-Id: <20251118080837.837505-2-zhao1.liu@intel.com>
+Subject: [PATCH 2/2] i386/cpu: Drop incorrect comment for CPUID 0x1E
+Date: Tue, 18 Nov 2025 16:08:37 +0800
+Message-Id: <20251118080837.837505-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251118080837.837505-1-zhao1.liu@intel.com>
 References: <20251118080837.837505-1-zhao1.liu@intel.com>
@@ -80,15 +80,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The information in CPUID 0x1D.0x1 is for tile palette 1, and is not
-SPR-specific.
+The information (tmul_maxk and tmul_maxn) in CPUID 0x1E.0x0.EBX is
+defined for architecture, not for SPR.
 
 This is to say, these "hardcoded" values won't change in future. If
-the palette needs to be extended, a new tile palette (maybe in a new
-subleaf) will be introduced instead of changing current information of
-tile palette 1.
+the TMUL component needs to be extended for new palettes, there'll
+likely be the new TMUL instructions, or new types of AMX instructions
+that are _parallel_ to TMUL that operate in particular palettes,
+instead of changing current tmul_maxk and tmul_maxn fields in CPUID
+0x1E.0x0.EBX.
 
-Furthermore, the previous attempt [*] to make the 0x1D.0x1 fields
+Furthermore, the previous attempt [*] to make the 0x1E.0x0.EBX fields
 user-configurable is incorrect and unnecessary.
 
 Therefore, drop the incorrect and misleading comment.
@@ -97,30 +99,22 @@ Therefore, drop the incorrect and misleading comment.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f703b1478d71..41d224330d05 100644
+index 41d224330d05..0c954202cea8 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8381,7 +8381,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *edx = 0; /* EDX is reserved. */
+@@ -8403,7 +8403,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
          break;
-     case 0x1D: {
--        /* AMX TILE, for now hardcoded for Sapphire Rapids*/
-+        /* AMX TILE */
+     }
+     case 0x1E: {
+-        /* AMX TMUL, for now hardcoded for Sapphire Rapids */
++        /* AMX TMUL */
          *eax = 0;
          *ebx = 0;
          *ecx = 0;
-@@ -8394,6 +8394,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             /* Highest numbered palette subleaf */
-             *eax = INTEL_AMX_TILE_MAX_SUBLEAF;
-         } else if (count == 1) {
-+            /* Tile palette 1 */
-             *eax = INTEL_AMX_TOTAL_TILE_BYTES |
-                    (INTEL_AMX_BYTES_PER_TILE << 16);
-             *ebx = INTEL_AMX_BYTES_PER_ROW | (INTEL_AMX_TILE_MAX_NAMES << 16);
 -- 
 2.34.1
 
