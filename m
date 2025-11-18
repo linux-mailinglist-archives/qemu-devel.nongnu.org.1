@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E87C6B54D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF127C6B55C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLQy4-0000z5-T4; Tue, 18 Nov 2025 14:02:20 -0500
+	id 1vLQy8-00019i-ML; Tue, 18 Nov 2025 14:02:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQy0-0000r7-6T
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:17 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQy4-00013T-Ev
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:20 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxj-00063e-Qw
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:15 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-47775fb6cb4so42379235e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:01:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQy0-000648-0f
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:19 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4777771ed1aso41154235e9.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:02:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763492518; x=1764097318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763492525; x=1764097325; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gXiO5nPfAcYV2Wewa5o/aax8KoL/hNVg9xCYOqbljoU=;
- b=RcecxDpOPCNAAH7VMq0PyOOW5DnyJAU43FojxmrIgeszSn0KfVWQJlxZraoWlgTMfn
- POe/nkWtUC5VAELtCBWDGzNHQRXv8qCghpTmeGPlaS6hRPthbb8UujPswnUXcJQ5S9NG
- kOOJSnCaKUxEMhoUYDG7FC+rAFBiOhQMQdClq5OX7SEySx4Me92k9H+NU3zM/ImmQ0Cb
- XEefFIq1wAxVTL7dTT8TeHhrcKhE/5sY1ccif3dxDzbr2vOBRoDDaW2EvPPBB1jwmHMo
- /1zMObPIPhSz/AUXpJJmXLDq+XrfDMvbUNGtNZZMBiJBI36lYN+XNhUEbN99j9GQt44Z
- nZ/Q==
+ :reply-to; bh=+qt8vwVa1HZgU3pdePfudr37pK0aeUekWhl0ULV6H2k=;
+ b=oQcndevZam6h3O8c4XqxYl7suZlVmIsOO8tQ29dt/VHB2kygr4Q5PrNs5D6N1IJ+jF
+ POAVeZmO8WGkPCrTQNa2QpaeqRtHx7eQD4RukmQMKMoOrfLbHYnNsC5Cw5QxK7Rwx9M5
+ 0V9nm2w9eF28DfAHqA46FWt9qv2sbWktIwIYu4huuVkbFvd061jPZZuePfFflOjezW7K
+ JYzIY+6jMKF89ueKtpmMQh0ZSw8DA3kAES7LEMHVr1PJZDBmMb9HJIcFMs0XomDURd8U
+ sN0pxq45R+hwggKFGEqUYjo8xvq2KnWySbhPSAel0WmNHaKRXix8pdvubqvtJvTf+e6I
+ GzgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763492518; x=1764097318;
+ d=1e100.net; s=20230601; t=1763492525; x=1764097325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=gXiO5nPfAcYV2Wewa5o/aax8KoL/hNVg9xCYOqbljoU=;
- b=abw0qZjI6leJZaaSmqYqQ0Gah5bBwgmj8CGyt+JpFSfZ/tQDfKMZfQd+C1TcyCoOkn
- mDVKZztfijIyIWRMTEaYv5wKHMpoyPDDA14/ADP4HT/tsnhfcvMGEppGnMD2I3A/k+ML
- 1iIf+V1C6Z8u6yaYPzsjuvIT0A0a44FpzKEV0lRJTKqjMuXNOHf/NT9e4PWXIfaRV3VO
- X60fsyUPLDd/XfmSC1LXpqJRV3dMcljTHwIZDbuZwB53QJH1W37cJHaPeVU8fxCOsN3a
- CgZCjwAY8/7fgShKXQl+NrewbmSBpc/fIcSRHN9XOLxdanRWoq06A2WMSx7o1SI2KopL
- kSeA==
-X-Gm-Message-State: AOJu0YyyiysT2j1AGziWOQchYbIV1PC0N5BkNrwsLpxjkESFKFFn9AW0
- 0mViirXPbeKBthqPIzV3K7mQhNROVgx8+xvHwpXlSSUy+Khk2P88EuG/ndD/hW7hv+87xKjZe2e
- cBT0ilKgZVQ==
-X-Gm-Gg: ASbGncukdp0GRSKDoieNZBl8WosFBKXl12C5G5F0hQqOQzTATgYkN4NZ+bmamHTlghE
- W/rdPXqPrAUZqMhxXouAOLQBeXjSbC1aaUxmYMjgEb3zdP0BB7Fi6W31ly1MV4pfHs7H4XTbFV+
- szR8SCmGbH01GPIGn7BIZUHnU1S2IF4UHMlmXQa601g+D3hkqY56jXvLbfFyNkAeP2Zlz7h69wF
- AB342QzMWc/AOY+Qjl+pv4umsrk78XEY8Alrit/FsRK2Y4/sbjm8K+sKiQHWJC46bpspS0SrA2W
- s4vI2grCMo5yVmMWx4zCtCYg8WStrYi6GVOozaaPUA62BtRLQTOBICoPP31WDBSUNDcu3CbJJMh
- X47dayj/A0bj5gVeagVlCO82QXo62bQZmFHT574u1ojop0RGplcShRli/evgKzNJCSfEp9d6I7j
- S8EHS7tSXGs60PL1+xjPiGV7GWILzHufbiD4DqtdqrbicGITHjoT2qXI1/sW1uKkOYb7XUx2w78
- enwGFKXIw==
-X-Google-Smtp-Source: AGHT+IFmW7hb3No794ZGBnkpEBuGFkQvoaUG214AuAgxt+Ks2pwKrZwSd1O0dUDExG7EAzEO8GmONw==
-X-Received: by 2002:a05:600c:4585:b0:477:54cd:202e with SMTP id
- 5b1f17b1804b1-4778fe59a0bmr167414665e9.2.1763492517763; 
- Tue, 18 Nov 2025 11:01:57 -0800 (PST)
+ bh=+qt8vwVa1HZgU3pdePfudr37pK0aeUekWhl0ULV6H2k=;
+ b=is0AqQYHbM8tDnOC1qGHeM1seGRQVTidIn48z3TZ2NMn+Du8yBFqGVKbT/tkAqlSKl
+ 3ZFnkO5TtgQTWTkYnAJ6Rf69Q9XnyT15zJ1nQgX44NGCnBA7Hqqrkd2EgBahkUzJ11oc
+ NI5NAZLAMqgUn25Lv+BkieQxPUpvj6sBvVsAyt/Z/3zsi8bcewoO5Lko1llkmfWwNhDt
+ QJhbFhy06Xvaid0DMjwTeSR5/1vuhkVdySTxCcOmNXtR5rC37RKjnmH700yBh3ifcIJr
+ 7wFk3bk+xo+AEXjO1CR2KOsTIvwe1mUL5z5XiLu9YpX27ULXUODSgMboO2WM5IdiXVvy
+ XGHg==
+X-Gm-Message-State: AOJu0YwpE6dQYisRy52F1NqfunycpARKyLXX1rUU0IITTfCVblO+dRul
+ BvH2cX3t/0rt5ulwo6Nup9Id7Rz3YTLqJb7cOOnHRsa3u1MWqvt9DNiv8So6vio76ReLpDykP3T
+ /SO9mpouzaw==
+X-Gm-Gg: ASbGncvp8oQyUZo1bLKvegTc9g2/XQQOHel5qKtaVKsT2z9Lwhwmqra7MTXGVsgWGV5
+ tDx+NlfVZIAWBlCsgtO8wRMtIpkoVfWdLezks65N2FfPQrzkHPYQZs8Jk0onUHmGgwIQTJkjpzP
+ FyAxf7SCjZQFXWcMFwVZ8ZFHLHa/jeuM0deKOLrsRvg7m43VXnyemyLfHKW7tLcJaOYySl62wEE
+ vTAOBM/FQMvj0eXs4hp3Z6Hla0dDwI0FEI3Hq1PeihJZg4AHzBDxbYu2+Eqv3foZ1vf+CQZ9L7s
+ ouRdaFeyvdo+oj54rthDyKnj0S8Nz8sd3RUlJiEjpS60zoSknogDYHifBZnisaKDR5QceHyIUKL
+ V8uxRv+81QPbFFYIAfSsyyEP2HfLqOAlQw3ei3wVYTiLbgYBwci+kfC+mKu/5oEnKUk41D2cRAh
+ MqSOSGSD/4dk79IocdZx+OZGbstAq29W2eND5tzxbw8OFI6ZVV1GwkaYFX740o8/k4EbucKkY=
+X-Google-Smtp-Source: AGHT+IEaq365Tu8QIb33dokgmONZs2Px9DMjMP4er9cLNKpsYcyhpmBiolKNGRzkDkSt7fEv4UR8Wg==
+X-Received: by 2002:a05:600c:45d4:b0:477:df7:b020 with SMTP id
+ 5b1f17b1804b1-4778fe7f6d4mr169725905e9.18.1763492524783; 
+ Tue, 18 Nov 2025 11:02:04 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477b106a9b0sm4924475e9.11.2025.11.18.11.01.54
+ ffacd0b85a97d-42b53f19664sm34722822f8f.36.2025.11.18.11.02.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Nov 2025 11:01:55 -0800 (PST)
+ Tue, 18 Nov 2025 11:02:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/18] hw/sd/sdcard: Avoid confusing address calculation in
- rpmb_calc_hmac
-Date: Tue, 18 Nov 2025 20:00:43 +0100
-Message-ID: <20251118190053.39015-9-philmd@linaro.org>
+Subject: [PULL 09/18] qga/commands: Include proper Solaris header for
+ getloadavg()
+Date: Tue, 18 Nov 2025 20:00:44 +0100
+Message-ID: <20251118190053.39015-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251118190053.39015-1-philmd@linaro.org>
 References: <20251118190053.39015-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,43 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+Solaris declares getloadavg() in <sys/loadavg.h>:
 
-From the source frame, we initially need to copy out all fields after
-data, thus starting from nonce on. Avoid expressing this indirectly by
-pointing to the end of the data field - which also raised the attention
-of Coverity (out-of-bound read /wrt data).
+    getloadavg(3C)       Standard C Library Functions       getloadavg(3C)
 
-Resolves: CID 1642869
-Reported-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <4f7e1952-ecbd-4484-b128-9d02de3a7935@siemens.com>
-[PMD: Add comment before the memcpy() call]
+    NAME
+           getloadavg - get system load averages
+
+    SYNOPSIS
+           #include <sys/loadavg.h>
+
+           int getloadavg(double loadavg[], int nelem);
+
+    [...]
+
+    Oracle Solaris 11.4           23 Jul 2020               getloadavg(3C)
+
+Include it in order to avoid:
+
+  ../qga/commands-posix.c: In function 'qmp_guest_get_load':
+  ../qga/commands-posix.c:1408:9: error: implicit declaration of function 'getloadavg' [-Wimplicit-function-declaration]
+   1408 |     if (getloadavg(loadavg, G_N_ELEMENTS(loadavg)) < 0) {
+      |         ^~~~~~~~~~
+  ../qga/commands-posix.c:1408:9: warning: nested extern declaration of 'getloadavg' [-Wnested-externs]
+
+../configure relevant output:
+
+  C compiler for the host machine: gcc (gcc 14.2.0 "gcc (GCC) 14.2.0")
+  C linker for the host machine: gcc ld.solaris 5.11-1.3315
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20251117203834.83713-2-philmd@linaro.org>
 ---
- hw/sd/sd.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ qga/commands-posix.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index df5a36fad9d..40a75a43ffb 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -1160,8 +1160,13 @@ static bool rpmb_calc_hmac(SDState *sd, const RPMBDataFrame *frame,
- 
-         assert(RPMB_HASH_LEN <= sizeof(sd->data));
- 
--        memcpy((uint8_t *)buf + RPMB_DATA_LEN, &frame->data[RPMB_DATA_LEN],
-+        /*
-+         * We will hash everything from data field to the end of RPMBDataFrame.
-+         */
-+        memcpy((uint8_t *)buf + RPMB_DATA_LEN,
-+               (uint8_t *)frame + offsetof(RPMBDataFrame, nonce),
-                RPMB_HASH_LEN - RPMB_DATA_LEN);
-+
-         offset = lduw_be_p(&frame->address) * RPMB_DATA_LEN + sd_part_offset(sd);
-         do {
-             if (blk_pread(sd->blk, offset, RPMB_DATA_LEN, buf, 0) < 0) {
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index c7059857e44..66f3e6f6733 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -43,6 +43,9 @@
+ #include <net/ethernet.h>
+ #endif
+ #ifdef CONFIG_SOLARIS
++#ifdef CONFIG_GETLOADAVG
++#include <sys/loadavg.h>
++#endif
+ #include <sys/sockio.h>
+ #endif
+ #endif
 -- 
 2.51.0
 
