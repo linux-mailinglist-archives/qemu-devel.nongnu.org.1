@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38871C67231
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B61C67219
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:22:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLCI5-00033B-4D; Mon, 17 Nov 2025 22:22:01 -0500
+	id 1vLCI4-00030X-0V; Mon, 17 Nov 2025 22:22:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCHr-0002TU-PR
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:47 -0500
+ id 1vLCHu-0002Z8-Kn
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:50 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCHg-0004Cz-Lw
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:38 -0500
+ id 1vLCHj-0004Hi-4M
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763436097; x=1794972097;
+ t=1763436099; x=1794972099;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Lnoh54IK1xdUE7ReHUApDtVaHR1nAbgq/jys15IExB8=;
- b=cu2ivq/oCFaaMEMv0+dhcbvozQ7qwV4cK8wnfvYABuT/aU88arbDd4oV
- 0pn+AL8gPfjSLsOFCbhvYciraGmt73DhMd3/Fn7TunOMz0uc/he/NS0Zv
- 1n6LSR0ImLRF3vY+rgCOYp5DUZv2kYanbzimRFscf+K20RZ5AqCRfl2kd
- jrYp1rEXm3EjLtQosP7izyKuREZJIiF08tMl6YSSwwbfU6DlcFcaX+KUg
- ybWMpILbErTHsT4YlUtS5ZR7n8p4Ce+FuHfZzRsrsqhACFTr1K1paajZc
- 9gdwFUDJS2npgs/Cs4nIAEDomP7Z3MVszIh37nqhOTv7QpaUz16hfBjmp Q==;
-X-CSE-ConnectionGUID: NpqbyXXLTMaMkPmekE21+Q==
-X-CSE-MsgGUID: +EmHwkvJTr6Wxo5bCgklUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053905"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053905"
+ bh=Jyuv1slaPKAV+w4F0aJEddngoY9lcGquMMXzXgXMpc4=;
+ b=Z2gB9UB8gUsIKJjFVKkw2G1eCWZ+MRV5JoXYg4af6bwYppktLIzQxT8J
+ Hsf5Yi2NovoyxO9fHYNJGtCrhLrz/aap8sz7xnHvwjtrj6GHPDB3+NfEG
+ 7tjXFhxNeIGRKip98dA2cADoNR2wQ/myquvnlAbrNpJH9lk3siG50506p
+ SC54D4cqTKfeLDfAVWh7V/jHdfC9WAOmueuB+yDv+pbfFrHxYhwkkpgGf
+ 2juGOQzw/Ft5vRaBFMVH6fporSWDXlRbZOKWZ45tn3MaNzYhb+QogS238
+ Pp9Bdks4bbn6miHYCshvtas6yvzPnjoPmoEg2F6wwphU+3+Jfu2GihJLk A==;
+X-CSE-ConnectionGUID: J4DdENNSQJKueD2QpO/wnA==
+X-CSE-MsgGUID: 7pSl7GDESKmjd4wLkyVpEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053912"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053912"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 19:21:17 -0800
-X-CSE-ConnectionGUID: 2sxYWs5mSRKM+l9YBIWrPA==
-X-CSE-MsgGUID: ocOj5Iz7TNGxnJo70sxTfw==
+ 17 Nov 2025 19:21:20 -0800
+X-CSE-ConnectionGUID: bpQZXi/8Q6qs4/MvhT6veg==
+X-CSE-MsgGUID: UuyFg7lLR/GWc64cBHO2ew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537340"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537350"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:21:13 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:21:16 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -50,11 +50,11 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 17/23] i386/cpu: Migrate MSR_IA32_PL0_SSP for FRED and
- CET-SHSTK
-Date: Tue, 18 Nov 2025 11:42:25 +0800
-Message-Id: <20251118034231.704240-18-zhao1.liu@intel.com>
+ Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Yang Weijiang <weijiang.yang@intel.com>
+Subject: [PATCH v4 18/23] i386/machine: Add vmstate for cet-shstk and cet-ibt
+Date: Tue, 18 Nov 2025 11:42:26 +0800
+Message-Id: <20251118034231.704240-19-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251118034231.704240-1-zhao1.liu@intel.com>
 References: <20251118034231.704240-1-zhao1.liu@intel.com>
@@ -85,67 +85,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Yang Weijiang <weijiang.yang@intel.com>
 
-Both FRED and CET-SHSTK need MSR_IA32_PL0_SSP, so add the vmstate for
-this MSR.
-
-When CET-SHSTK is not supported, MSR_IA32_PL0_SSP keeps accessible, but
-its value doesn't take effect. Therefore, treat this vmstate as a
-subsection rather than a fix for the previous FRED vmstate.
+Add vmstates for cet-shstk and cet-ibt
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+Co-developed-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes Since v3:
- - New commit.
+ - Rename vmstate_ss to vmstate_shstk.
+ - Split pl0_ssp into a seperate vmstate in another patch.
+
+Changes Since v2:
+ - Split a subsection "vmstate_ss" since shstk is user-configurable.
 ---
- target/i386/machine.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ target/i386/machine.c | 52 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
 diff --git a/target/i386/machine.c b/target/i386/machine.c
-index 45b7cea80aa7..0a756573b6cd 100644
+index 0a756573b6cd..265388f1fd36 100644
 --- a/target/i386/machine.c
 +++ b/target/i386/machine.c
-@@ -1668,6 +1668,31 @@ static const VMStateDescription vmstate_triple_fault = {
+@@ -1693,6 +1693,57 @@ static const VMStateDescription vmstate_pl0_ssp = {
      }
  };
  
-+static bool pl0_ssp_needed(void *opaque)
++static bool shstk_needed(void *opaque)
 +{
 +    X86CPU *cpu = opaque;
 +    CPUX86State *env = &cpu->env;
 +
-+#ifdef TARGET_X86_64
-+    if (env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
-+        return true;
-+    }
-+#endif
-+
 +    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
 +}
 +
-+static const VMStateDescription vmstate_pl0_ssp = {
-+    .name = "cpu/msr_pl0_ssp",
++static const VMStateDescription vmstate_shstk = {
++    .name = "cpu/cet_shstk",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
-+    .needed = pl0_ssp_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(env.pl0_ssp, X86CPU),
++    .needed = shstk_needed,
++    .fields = (VMStateField[]) {
++        /* pl0_ssp has been covered by vmstate_pl0_ssp. */
++        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
++        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
++        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
++#ifdef TARGET_X86_64
++        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
++#endif
++        VMSTATE_UINT64(env.guest_ssp, X86CPU),
 +        VMSTATE_END_OF_LIST()
 +    }
++};
++
++static bool cet_needed(void *opaque)
++{
++    X86CPU *cpu = opaque;
++    CPUX86State *env = &cpu->env;
++
++    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
++              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
++}
++
++static const VMStateDescription vmstate_cet = {
++    .name = "cpu/cet",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = cet_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(env.u_cet, X86CPU),
++        VMSTATE_UINT64(env.s_cet, X86CPU),
++        VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_shstk,
++        NULL,
++    },
 +};
 +
  const VMStateDescription vmstate_x86_cpu = {
      .name = "cpu",
      .version_id = 12,
-@@ -1817,6 +1842,7 @@ const VMStateDescription vmstate_x86_cpu = {
- #endif
+@@ -1843,6 +1894,7 @@ const VMStateDescription vmstate_x86_cpu = {
          &vmstate_arch_lbr,
          &vmstate_triple_fault,
-+        &vmstate_pl0_ssp,
+         &vmstate_pl0_ssp,
++        &vmstate_cet,
          NULL
      }
  };
