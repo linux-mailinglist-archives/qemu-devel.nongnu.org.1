@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D4EC6A65E
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB182C6A66D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:50:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLNxe-0005nU-Q0; Tue, 18 Nov 2025 10:49:44 -0500
+	id 1vLNyR-0006k4-C2; Tue, 18 Nov 2025 10:50:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vLNwv-000514-ST
+ id 1vLNwv-000515-TF
  for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:58 -0500
-Received: from fhigh-b2-smtp.messagingengine.com ([202.12.124.153])
+Received: from fout-b2-smtp.messagingengine.com ([202.12.124.145])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vLNwt-0001xC-Sg
+ id 1vLNwt-0001xd-Rv
  for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:57 -0500
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
- by mailfhigh.stl.internal (Postfix) with ESMTP id D05337A01E7;
- Tue, 18 Nov 2025 10:48:37 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-02.internal (MEProxy); Tue, 18 Nov 2025 10:48:37 -0500
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+ by mailfout.stl.internal (Postfix) with ESMTP id 4270E1D00254;
+ Tue, 18 Nov 2025 10:48:38 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+ by phl-compute-03.internal (MEProxy); Tue, 18 Nov 2025 10:48:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1763480917; x=
- 1763567317; bh=DHfMJm90VsM7kQKgvIvw0QuFSuaf25hpBjZModfq2y0=; b=H
- 2oHVDKXOvjyC877uQrR6ig2o11RNAiFi6XfdITzOtoU4A9T7+cq6DQk2lxcQzSPb
- 11yJIPZXMGY/mKxEZIzGGDvXWTDksXkZdUehgIuVxGOC3w8E0lrY/C6tMFLO4ezI
- pEyR0OBxX/101h5iFdd1iCqACNWxuRYccQLXUevzJitOtriygxt7fiVF0ULdSwEK
- cotNXcJM5UeGP7whdMWZe+TV5MQRqbxM1hLFAu630UL1YDzR/8YFJrquA2LzZRdi
- 0VGcZMlgU7K5oO3jK9t3OOikGsJXdHmTZRr6PMiRC6qVXKzmXU67Eumz03c4NcP0
- K8e/DBNQgtvFHjh7d8o+g==
+ :reply-to:subject:subject:to:to; s=fm2; t=1763480918; x=
+ 1763567318; bh=MEKPQ/5QkQOI38vCicNvNTZNvNWJjbMdB3KIU43gg9I=; b=X
+ PhC6OGd8C7IOIsFkWxw3tc5H+3DwO/NAZG07zV87364luLZN7CTO7zvNpaMYeN7X
+ 20K1/gWkDdh4ERDi3gSIhOP3w5fC35fSmW6IyAP/wg/9Kcf+DMT6NGJF+sGn5vKK
+ ATVz1WZ9mEsNhYDTcNGmsY1RQILVbFBUlrFXqhh/cT0bnL6Q1LNmRZp4yhQe7M9M
+ 5TtAaS2kLGmFKReHeQYJdaNX0/F4qAOJx+8+17thOGIVW73cfwD05TLXshMkq5/K
+ +4EZsXHsgtYCtgLWN5ZuTER3cu7/+fTeyjaTWsgnifvG2qTxpJUrBtxmjLJtmw8G
+ l32Zyk4chy3uYWK0+lq7A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1763480917; x=1763567317; bh=D
- HfMJm90VsM7kQKgvIvw0QuFSuaf25hpBjZModfq2y0=; b=fjdkir2hJU8brX3F7
- xuJFdmKdcSmyOzy7ots7JdvIZuZ5dS1UGN7zJ3s+h925sVHPI9P4hmsCMLfOLl5e
- w0p57d0TfipUneebj4mbkhsaz2X2wAfQrfKy+8zWgetqVWUmLE6F1+h7ZcRDZ0Fk
- bt9bXR4j3mZU4tcIcSFSjU3YuFEj8U9kYxFc2EqJAM/mC8FtPmwDoYi/2zF+a0LT
- YWLuIQ2P1tVn0I9ipY1dpwqOjYmT1Yxh2T1i8oMnnZ0y5KZPYWl8ylgAJdB1MPL5
- APpI55IOMk3HSPCCNKspvbKh84FmAJ55q7O5hYBCDH2L9YbIpDq72RCkbhn4T1+S
- K5K9Q==
-X-ME-Sender: <xms:VZUcaQK3lEl0BgpYcAV95FuxyHVVIx4JGSbECzYhj6lNLtLxOOYi5A>
- <xme:VZUcaXmvZxTtx-9QNEimmLBuExEH5WBxKiUDIeWH6aREcARGQoCBBGQ-5EObry2RE
- 5QFJpgn6SbllspKs4LmlzUdh8W4jmHQhm_bdSvDegdGw4n3Bzjy6Wk>
-X-ME-Received: <xmr:VZUcaeF01r2t9bw12HEoTtZ0aEov5R-Ol9v7yOfImOe45E0RnWB8W973vHUv>
+ :x-me-sender:x-sasl-enc; s=fm3; t=1763480918; x=1763567318; bh=M
+ EKPQ/5QkQOI38vCicNvNTZNvNWJjbMdB3KIU43gg9I=; b=IeexcOGUYn3WuAlJz
+ 0CQLBgCcifc6yRUm3rSpa3BPDhDo1W6NKqCkQ55HmU4Ojc3BcXeSn5zfakKoFi2F
+ 2pmRGj2c0jWqvCx/QQfbR5gytb2ONhv6wH+hzZzyK1rAAMffLepPgw0imvZP48ow
+ +Ewn/HXg+MhziWrGLQw2sfEyIKiYBhilDgA3+gjMsEQzJMkaiUP60SCV4nbqZ8nM
+ 3BolG/ZgnW9lizeIVz44wyq5eggKJSN+BlHruXq35R0GxX8ljZfho4Su2lwzAcjf
+ FjQmWy1eDuKXOJ9ft+k1ZFeuRlZl4ubu0O1IAEicpzwO4yovKHAzRQk16KrmbanI
+ KrrHg==
+X-ME-Sender: <xms:VpUcaT-8eooy1L78B6Bz1YGfdBZY6KOdSN5QiTgWTIRGqnIZ2slJRw>
+ <xme:VpUcaXK4SBmYPjGgElO01lsY9tI3daE1ZMlbaSMH1sgi2ApzEnHen1119GPVCMNqc
+ aLiiY352zH6SGvagG2GxeGHFtZYsTl-C-Et4Eii-YVuXJNVOZcpc4Y>
+X-ME-Received: <xmr:VpUcaeb8QjM0XSrtouFvkAbRCJBlB9oD3nh4QAugqLEntOn8NBZBu_GEuwTJ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddujedvucetufdoteggodetrf
  dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
  rghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvfevuf
@@ -59,34 +59,34 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddujedvucetufdote
  eiteejhfelheefieetjefgleejfffhueffvdduieejgfeuueeuvddvkeejhfelnecuvehl
  uhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomheptghhrggusehjrg
  gslhhonhhskhhirdighiiipdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhu
- thdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpth
- htoheptghhrggusehjrggslhhonhhskhhirdighiiipdhrtghpthhtohepsggrlhgrthho
- nhesvghikhdrsghmvgdrhhhu
-X-ME-Proxy: <xmx:VZUcaXFtiEfTUlGI8app84ElZV5uQTeClPoet0-0O46GvAquSsaHAQ>
- <xmx:VZUcabOa91MDNqd2YVtRNJrLSP8uYczv2bQ3lxYrvE_HyyRxtGJ7Vw>
- <xmx:VZUcaWEx_xZgZ4YCfs5orlMHFLKCeNxENaxF9Y34mj0fM1GEwC8OHg>
- <xmx:VZUcaSM2RCIn7xg6Ick0G-ymODJtPl-Sf3BDi7MEjHSesqcIC3ruhQ>
- <xmx:VZUcaeyX264EPezSDGOrTmGIZYSbuV49li5qD7sU-Imt9OgS6IV83yXV>
+ thdprhgtphhtthhopegthhgrugesjhgrsghlohhnshhkihdrgiihiidprhgtphhtthhope
+ gsrghlrghtohhnsegvihhkrdgsmhgvrdhhuhdprhgtphhtthhopehqvghmuhdquggvvhgv
+ lhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:VpUcaZLVjoMtIQiuLubLu9IKw8RRZ65RiBwiVC0jLlmKZErR0A1hNg>
+ <xmx:VpUcacCWq0BfD1dMRqlB-oh704jYfVSee9nn6hcbAqfgvNfgWpORwg>
+ <xmx:VpUcaeowETaCg5x852QTMZFtZCzEg2qLybrTC5UkWL3z-FIotyXndg>
+ <xmx:VpUcaXgZz-jkXe8DeaWCk0p5FVDrHsXfLBlrslB2MCoYJY7RW7U4vg>
+ <xmx:VpUcaZ0twrpFavQjMyD5SGNeypkG5SlLVo6OjDHX8EyHh7rAmJkET1ur>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
  18 Nov 2025 10:48:37 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id d2f15234;
+ by chomposaur (OpenSMTPD) with ESMTPA id a3116f29;
  Tue, 18 Nov 2025 15:48:31 +0000 (UTC)
 From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu,
 	Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH v3 10/11] ati-vga: Implement HOST_DATA register writes
-Date: Tue, 18 Nov 2025 10:48:11 -0500
-Message-ID: <20251118154812.57861-11-chad@jablonski.xyz>
+Subject: [PATCH v3 11/11] ati-vga: Implement HOST_DATA flush to VRAM
+Date: Tue, 18 Nov 2025 10:48:12 -0500
+Message-ID: <20251118154812.57861-12-chad@jablonski.xyz>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251118154812.57861-1-chad@jablonski.xyz>
 References: <20251118154812.57861-1-chad@jablonski.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=202.12.124.153; envelope-from=chad@jablonski.xyz;
- helo=fhigh-b2-smtp.messagingengine.com
+Received-SPF: pass client-ip=202.12.124.145; envelope-from=chad@jablonski.xyz;
+ helo=fout-b2-smtp.messagingengine.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -111,183 +111,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Writing to any of the HOST_DATA0-7 registers pushes the written data
-into a 128-bit accumulator. When the accumulator is full a flush is
-triggered to copy it to the framebuffer. A final write to HOST_DATA_LAST
-will also initiate a flush. The flush itself is left for the next patch.
+Implement flushing the 128-bit HOST_DATA accumulator to VRAM to enable
+text rendering in X. Currently supports only the monochrome
+foreground/background datatype with the SRCCOPY ROP.
 
-Unaligned HOST_DATA* writes result in, from what I can tell, undefined
-behavior on real hardware. A well-behaved driver shouldn't be doing this
-anyway. For that reason they are not handled here at all.
+The flush is broken up into two steps for clarity. First, expansion of the
+monochrome bits to the destination color depth. Then the expanded pixels
+are clipped and copied into VRAM.
 
 Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
 ---
- hw/display/ati.c      | 33 +++++++++++++++++++++++++++++++++
- hw/display/ati_dbg.c  |  9 +++++++++
- hw/display/ati_int.h  |  9 +++++++++
- hw/display/ati_regs.h |  9 +++++++++
- 4 files changed, 60 insertions(+)
+ hw/display/ati.c      |   4 +-
+ hw/display/ati_2d.c   | 127 ++++++++++++++++++++++++++++++++++++++++++
+ hw/display/ati_int.h  |   3 +
+ hw/display/ati_regs.h |  13 +++++
+ 4 files changed, 145 insertions(+), 2 deletions(-)
 
 diff --git a/hw/display/ati.c b/hw/display/ati.c
-index cfb5dc2fb8..dc302eb6f2 100644
+index dc302eb6f2..c5892a6305 100644
 --- a/hw/display/ati.c
 +++ b/hw/display/ati.c
-@@ -555,6 +555,13 @@ static inline void ati_reg_write_offs(uint32_t *reg, int offs,
-     }
- }
- 
-+static void ati_host_data_reset(ATIHostDataState *hd)
-+{
-+    hd->next = 0;
-+    hd->row = 0;
-+    hd->col = 0;
-+}
-+
- static void ati_mm_write(void *opaque, hwaddr addr,
-                            uint64_t data, unsigned int size)
- {
-@@ -830,6 +837,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
+@@ -1038,7 +1038,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
+     case HOST_DATA7:
+         s->host_data.acc[s->host_data.next] = data;
+         if (s->host_data.next >= 3) {
+-            qemu_log_mask(LOG_UNIMP, "HOST_DATA flush not yet implemented\n");
++            ati_flush_host_data(s);
+             s->host_data.next = 0;
+             break;
+         }
+@@ -1046,7 +1046,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
          break;
-     case DST_WIDTH:
-         s->regs.dst_width = data & 0x3fff;
-+        ati_host_data_reset(&s->host_data);
-         ati_2d_blt(s);
-         break;
-     case DST_HEIGHT:
-@@ -880,6 +888,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-     case DST_HEIGHT_WIDTH:
-         s->regs.dst_width = data & 0x3fff;
-         s->regs.dst_height = (data >> 16) & 0x3fff;
-+        ati_host_data_reset(&s->host_data);
-         ati_2d_blt(s);
-         break;
-     case DP_GUI_MASTER_CNTL:
-@@ -910,6 +919,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-     case DST_WIDTH_X:
-         s->regs.dst_x = data & 0x3fff;
-         s->regs.dst_width = (data >> 16) & 0x3fff;
-+        ati_host_data_reset(&s->host_data);
-         ati_2d_blt(s);
-         break;
-     case SRC_X_Y:
-@@ -923,6 +933,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-     case DST_WIDTH_HEIGHT:
-         s->regs.dst_height = data & 0x3fff;
-         s->regs.dst_width = (data >> 16) & 0x3fff;
-+        ati_host_data_reset(&s->host_data);
-         ati_2d_blt(s);
-         break;
-     case DST_HEIGHT_Y:
-@@ -1017,6 +1028,26 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-         break;
-     case SRC_SC_BOTTOM:
-         s->regs.src_sc_bottom = data & 0x3fff;
-+    case HOST_DATA0:
-+    case HOST_DATA1:
-+    case HOST_DATA2:
-+    case HOST_DATA3:
-+    case HOST_DATA4:
-+    case HOST_DATA5:
-+    case HOST_DATA6:
-+    case HOST_DATA7:
-+        s->host_data.acc[s->host_data.next] = data;
-+        if (s->host_data.next >= 3) {
-+            qemu_log_mask(LOG_UNIMP, "HOST_DATA flush not yet implemented\n");
-+            s->host_data.next = 0;
-+            break;
-+        }
-+        s->host_data.next += 1;
-+        break;
-+    case HOST_DATA_LAST:
-+        s->host_data.acc[s->host_data.next] = data;
-+        qemu_log_mask(LOG_UNIMP, "HOST_DATA flush not yet implemented\n");
-+        ati_host_data_reset(&s->host_data);
+     case HOST_DATA_LAST:
+         s->host_data.acc[s->host_data.next] = data;
+-        qemu_log_mask(LOG_UNIMP, "HOST_DATA flush not yet implemented\n");
++        ati_flush_host_data(s);
+         ati_host_data_reset(&s->host_data);
          break;
      default:
-         break;
-@@ -1123,6 +1154,8 @@ static void ati_vga_reset(DeviceState *dev)
-     /* reset vga */
-     vga_common_reset(&s->vga);
-     s->mode = VGA_MODE;
+diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
+index e30a4cd941..2cd5348965 100644
+--- a/hw/display/ati_2d.c
++++ b/hw/display/ati_2d.c
+@@ -123,6 +123,12 @@ static ATIBlitDest setup_2d_blt_dst(ATIVGAState *s)
+ 
+ void ati_2d_blt(ATIVGAState *s)
+ {
++    uint32_t src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
++    if (src == GMC_SRC_SOURCE_HOST_DATA) {
++        /* HOST_DATA blits are handled separately by ati_flush_host_data() */
++        return;
++    }
 +
-+    ati_host_data_reset(&s->host_data);
+     /* FIXME it is probably more complex than this and may need to be */
+     /* rewritten but for now as a start just to get some output: */
+     DisplaySurface *ds = qemu_console_surface(s->vga.con);
+@@ -299,3 +305,124 @@ void ati_2d_blt(ATIVGAState *s)
+                       (s->regs.dp_mix & GMC_ROP3_MASK) >> 16);
+     }
  }
- 
- static void ati_vga_exit(PCIDevice *dev)
-diff --git a/hw/display/ati_dbg.c b/hw/display/ati_dbg.c
-index 3ffa7f35df..5c799d540a 100644
---- a/hw/display/ati_dbg.c
-+++ b/hw/display/ati_dbg.c
-@@ -252,6 +252,15 @@ static struct ati_regdesc ati_reg_names[] = {
-     {"MC_SRC1_CNTL", 0x19D8},
-     {"TEX_CNTL", 0x1800},
-     {"RAGE128_MPP_TB_CONFIG", 0x01c0},
-+    {"HOST_DATA0", 0x17c0},
-+    {"HOST_DATA1", 0x17c4},
-+    {"HOST_DATA2", 0x17c8},
-+    {"HOST_DATA3", 0x17cc},
-+    {"HOST_DATA4", 0x17d0},
-+    {"HOST_DATA5", 0x17d4},
-+    {"HOST_DATA6", 0x17d8},
-+    {"HOST_DATA7", 0x17dc},
-+    {"HOST_DATA_LAST", 0x17e0},
-     {NULL, -1}
- };
- 
++
++void ati_flush_host_data(ATIVGAState *s)
++{
++    DisplaySurface *ds;
++    unsigned src = s->regs.dp_gui_master_cntl & GMC_SRC_SOURCE_MASK;
++    unsigned src_datatype = s->regs.dp_gui_master_cntl & GMC_SRC_DATATYPE_MASK;
++    unsigned rop = s->regs.dp_mix & GMC_ROP3_MASK;
++    ATIBlitDest dst;
++    bool lsb_to_msb;
++    uint32_t fg, bg;
++    unsigned bypp, row, col, idx;
++    uint8_t pix_buf[ATI_HOST_DATA_ACC_BITS * sizeof(uint32_t)];
++
++    if (src != GMC_SRC_SOURCE_HOST_DATA) {
++        qemu_log_mask(LOG_UNIMP,
++                      "host_data_blt: only GMC_SRC_SOURCE_HOST_DATA "
++                      "supported\n");
++        return;
++    }
++
++    if (src_datatype != GMC_SRC_DATATYPE_MONO_FRGD_BKGD) {
++        qemu_log_mask(LOG_UNIMP,
++                      "host_data_blt: only GMC_SRC_DATATYPE_MONO_FRGD_BKGD "
++                      "supported\n");
++        return;
++    }
++
++    if (rop != ROP3_SRCCOPY) {
++        qemu_log_mask(LOG_UNIMP,
++                      "host_data_blt: only ROP3_SRCCOPY supported. rop: %x\n",
++                      rop);
++        return;
++    }
++
++    dst = setup_2d_blt_dst(s);
++    if (!dst.valid) {
++        return;
++    }
++
++    if (!dst.left_to_right || !dst.top_to_bottom) {
++        qemu_log_mask(LOG_UNIMP, "host_data_blt: only L->R, T->B supported\n");
++        return;
++    }
++
++    lsb_to_msb = s->regs.dp_gui_master_cntl & GMC_BYTE_ORDER_LSB_TO_MSB;
++    fg = s->regs.dp_src_frgd_clr;
++    bg = s->regs.dp_src_bkgd_clr;
++    bypp = dst.bpp / 8;
++
++    /* Expand monochrome bits to color pixels */
++    idx = 0;
++    for (int word = 0; word < 4; word++) {
++        for (int i = 0; i < 32; i++) {
++            int bit = lsb_to_msb ? i : (31 - i);
++            bool is_fg = extract32(s->host_data.acc[word], bit, 1);
++            uint32_t color = is_fg ? fg : bg;
++            stn_he_p(&pix_buf[idx * bypp], bypp, color);
++            idx += 1;
++        }
++    }
++
++    /* Copy to VRAM one scanline at a time */
++    row = s->host_data.row;
++    col = s->host_data.col;
++    idx = 0;
++    while (idx < ATI_HOST_DATA_ACC_BITS && row < dst.rect.height) {
++        uint8_t *vram_dst;
++        unsigned start_col, end_col, vis_row, num_pix, pix_idx;
++        unsigned pix_in_scanline = MIN(ATI_HOST_DATA_ACC_BITS -
++                                       idx, dst.rect.width - col);
++
++        /* Row-based clipping */
++        if (row < dst.src_top_offset ||
++            row >= dst.src_top_offset + dst.visible.height) {
++            goto skip_pix;
++        }
++
++        /* Column-based clipping */
++        start_col = MAX(col, dst.src_left_offset);
++        end_col = MIN(col + pix_in_scanline,
++                      dst.src_left_offset + dst.visible.width);
++        if (end_col <= start_col) {
++            goto skip_pix;
++        }
++
++        /* Copy expanded bits/pixels to VRAM */
++        vis_row = row - dst.src_top_offset;
++        num_pix = end_col - start_col;
++        vram_dst = dst.bits +
++                   (dst.visible.y + vis_row) * dst.stride +
++                   (dst.visible.x + (start_col - dst.src_left_offset)) * bypp;
++
++        pix_idx = (idx + (start_col - col)) * bypp;
++        memcpy(vram_dst, &pix_buf[pix_idx], num_pix * bypp);
++
++    skip_pix:
++        idx += pix_in_scanline;
++        col += pix_in_scanline;
++        if (col >= dst.rect.width) {
++            col = 0;
++            row += 1;
++        }
++    }
++    /* Track state of the overall blit for use by the next flush */
++    s->host_data.row = row;
++    s->host_data.col = col;
++
++    /*
++     * TODO: This is setting the entire blit region to dirty.
++     *       We maybe just need this tiny section?
++     */
++    ds = qemu_console_surface(s->vga.con);
++    if (dst.bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
++        dst.bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
++        s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
++        memory_region_set_dirty(&s->vga.vram, s->vga.vbe_start_addr +
++                                s->regs.dst_offset +
++                                dst.visible.y * surface_stride(ds),
++                                dst.visible.height * surface_stride(ds));
++    }
++}
 diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-index 1e999b11c2..b9142ce6d8 100644
+index b9142ce6d8..f38f6a43d7 100644
 --- a/hw/display/ati_int.h
 +++ b/hw/display/ati_int.h
-@@ -15,6 +15,7 @@
- #include "hw/i2c/bitbang_i2c.h"
- #include "vga_int.h"
- #include "qom/object.h"
-+#include "qemu/units.h"
+@@ -34,6 +34,8 @@
+ #define ATI_RAGE128_LINEAR_APER_SIZE (64 * MiB)
+ #define ATI_R100_LINEAR_APER_SIZE (128 * MiB)
  
- /*#define DEBUG_ATI*/
- 
-@@ -95,6 +96,13 @@ typedef struct ATIVGARegs {
-     uint16_t src_sc_right;
- } ATIVGARegs;
- 
-+typedef struct ATIHostDataState {
-+    uint32_t row;
-+    uint32_t col;
-+    uint32_t next;
-+    uint32_t acc[4];
-+} ATIHostDataState;
++#define ATI_HOST_DATA_ACC_BITS 128
 +
- struct ATIVGAState {
-     PCIDevice dev;
-     VGACommonState vga;
-@@ -112,6 +120,7 @@ struct ATIVGAState {
-     MemoryRegion io;
-     MemoryRegion mm;
-     ATIVGARegs regs;
-+    ATIHostDataState host_data;
- };
+ #define TYPE_ATI_VGA "ati-vga"
+ OBJECT_DECLARE_SIMPLE_TYPE(ATIVGAState, ATI_VGA)
  
+@@ -126,5 +128,6 @@ struct ATIVGAState {
  const char *ati_reg_name(int num);
+ 
+ void ati_2d_blt(ATIVGAState *s);
++void ati_flush_host_data(ATIVGAState *s);
+ 
+ #endif /* ATI_INT_H */
 diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
-index 02025eef36..9eb68fbec6 100644
+index 9eb68fbec6..8f3335817f 100644
 --- a/hw/display/ati_regs.h
 +++ b/hw/display/ati_regs.h
-@@ -252,6 +252,15 @@
- #define DP_T12_CNTL                             0x178c
- #define DST_BRES_T1_LNTH                        0x1790
- #define DST_BRES_T2_LNTH                        0x1794
-+#define HOST_DATA0                              0x17c0
-+#define HOST_DATA1                              0x17c4
-+#define HOST_DATA2                              0x17c8
-+#define HOST_DATA3                              0x17cc
-+#define HOST_DATA4                              0x17d0
-+#define HOST_DATA5                              0x17d4
-+#define HOST_DATA6                              0x17d8
-+#define HOST_DATA7                              0x17dc
-+#define HOST_DATA_LAST                          0x17e0
- #define SCALE_SRC_HEIGHT_WIDTH                  0x1994
- #define SCALE_OFFSET_0                          0x1998
- #define SCALE_PITCH                             0x199c
+@@ -404,6 +404,7 @@
+ #define GMC_BRUSH_SOLIDCOLOR                    0x000000d0
+ #define GMC_SRC_DSTCOLOR                        0x00003000
+ #define GMC_BYTE_ORDER_MSB_TO_LSB               0x00000000
++#define GMC_BYTE_ORDER_LSB_TO_MSB               0x00004000
+ #define GMC_DP_SRC_RECT                         0x02000000
+ #define GMC_3D_FCN_EN_CLR                       0x00000000
+ #define GMC_AUX_CLIP_CLEAR                      0x20000000
+@@ -431,6 +432,18 @@
+ #define GMC_DST_CLIP_DEFAULT                    0x00000000
+ #define GMC_DST_CLIP_LEAVE_ALONE                0x00000008
+ 
++/* DP_GUI_MASTER_CNTL DP_SRC_DATATYPE named constants */
++#define GMC_SRC_DATATYPE_MASK                   0x00003000
++#define GMC_SRC_DATATYPE_MONO_FRGD_BKGD         0x00000000
++#define GMC_SRC_DATATYPE_MONO_FRGD              0x00001000
++#define GMC_SRC_DATATYPE_COLOR                  0x00003000
++
++/* DP_GUI_MASTER_CNTL DP_SRC_SOURCE named constants */
++#define GMC_SRC_SOURCE_MASK                     0x07000000
++#define GMC_SRC_SOURCE_MEMORY                   0x02000000
++#define GMC_SRC_SOURCE_HOST_DATA                0x03000000
++#define GMC_SRC_SOURCE_HOST_DATA_ALIGNED        0x04000000
++
+ /* DP_GUI_MASTER_CNTL ROP3 named constants */
+ #define GMC_ROP3_MASK                           0x00ff0000
+ #define ROP3_BLACKNESS                          0x00000000
 -- 
 2.51.0
 
