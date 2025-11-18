@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0997FC67A55
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 07:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F07C67C00
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 07:37:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLEnW-0002iW-Fz; Tue, 18 Nov 2025 01:02:38 -0500
+	id 1vLFKB-0005lt-KY; Tue, 18 Nov 2025 01:36:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vLEnS-0002iM-27
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:02:34 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLFJz-0005ij-PE
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:36:13 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vLEnO-000243-3d
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:02:33 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AI62OFn066626
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 18 Nov 2025 15:02:24 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=zsJu1UMzg+/CjOAizhlOCV+U72/Xaayq34U7zvmZQBc=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1763445744; v=1;
- b=M0D0d79diTz8j8Ilq1FWBbhQpOxQnKMHfyU61ww9WECDiZ4Z5oVBTDaJ2ePKiAni
- I0tw0oeW0gK31VUZgVYOfIFzqV9iJc4Z7TQRvC0h0/OGfRI+sipqnsAGIioJOm5c
- 7wjJ4JtBomWpL9ZrUL7ROnRxva0o2rPlvT/JmkZ3H5D6CfhSc0q4A17OYavSOwSI
- GbvkyswMEuDbQdK5fH3m0PSea+aMl5ulasqgAoKeEsNTEfiND/RMozixFyyxZStc
- xBudTky+14L0/DOOqEwTedB1PxFRFCIx+72URr/31qx4AUUz5KQIB7RuXpXFbyMT
- fh2gdfpeLK88/kNpPOzKHg==
-Message-ID: <04410e24-43e9-4302-8a88-8de870cd53e0@rsg.ci.i.u-tokyo.ac.jp>
-Date: Tue, 18 Nov 2025 15:02:23 +0900
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLFJu-0007C4-My
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:36:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763447767; x=1794983767;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=A65mMd5lWNs6XXTjhO21knFYXJM3Yt8rXvU/WLqh2Ko=;
+ b=F0NLzyjEEt0KIOmaSwEwjen2EE+SdGmpG9KNoprzbM8KQ902bEjadvwH
+ FyNXNcftNgCifL2yGMLEQPlTpTrOylYFBWklqFjStVweMlhY/QPFkZMlP
+ bvg4qWbD4TrzVxJ7UrvQlmuXljdpyRxVTf21AUHb05wx19M42BBBXp2+w
+ Qm4MrMYepfrJYNwi1SFnmT6NpGGJTujeXZPaOOjm8hl5fASYi+9wjcQ2x
+ xj5wXQJ7zF4v+4wSiA9d2IyID49q/T9DEdxAPNNhfQ770PEZeFcoGl7eO
+ ykOsHYCfiHxkOKUyTRRT8i5zV9DJD3ZSItFwcAdarIkwQqDUTxMeg9C+q Q==;
+X-CSE-ConnectionGUID: /KT5NToySvadmrsPHsft/w==
+X-CSE-MsgGUID: GhWGiopHQF6Qfay8d2kIRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="82850935"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="82850935"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 22:36:01 -0800
+X-CSE-ConnectionGUID: NHinHyBvTS+9fcI76gGa9g==
+X-CSE-MsgGUID: 9zQlB8GdQYK4i39ikxw46g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="189962628"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa010.jf.intel.com with ESMTP; 17 Nov 2025 22:35:59 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ "Chang S . Bae" <chang.seok.bae@intel.com>,
+ Zide Chen <zide.chen@intel.com>, Xudong Hao <xudong.hao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/5] i386/cpu: Support APX for KVM
+Date: Tue, 18 Nov 2025 14:58:12 +0800
+Message-Id: <20251118065817.835017-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
- associated with VFIO devices
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20251109053801.2267149-1-vivek.kasireddy@intel.com>
- <20251109053801.2267149-11-vivek.kasireddy@intel.com>
- <5c224e00-8114-4586-b502-3819770bc8ff@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB71853FE6CD48B77FA586B628F8CCA@IA0PR11MB7185.namprd11.prod.outlook.com>
- <3c0fe9e8-7efa-4936-b5ef-5cabc4239cdd@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB71855ADFEEC4E3267B464768F8CDA@IA0PR11MB7185.namprd11.prod.outlook.com>
- <8451c0ee-6c9d-4fbf-b1c2-05fd5fd8e4c3@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB7185D06DA886C3758E9B0FB5F8C9A@IA0PR11MB7185.namprd11.prod.outlook.com>
- <8dcffe42-da84-44cf-a240-90680cdb0953@rsg.ci.i.u-tokyo.ac.jp>
- <IA0PR11MB71850777A66759ADCAFEB53EF8D6A@IA0PR11MB7185.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <IA0PR11MB71850777A66759ADCAFEB53EF8D6A@IA0PR11MB7185.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,159 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/18 14:22, Kasireddy, Vivek wrote:
-> Hi Akihiko,
-> 
->> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
->> associated with VFIO devices
->>
->> On 2025/11/17 13:19, Kasireddy, Vivek wrote:
->>> Hi Akihiko,
->>>
->>>> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
->>>> associated with VFIO devices
->>>>
->>>> On 2025/11/13 12:17, Kasireddy, Vivek wrote:
->>>>> Hi Akihiko,
->>>>>
->>>>>> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for
->>>> blobs
->>>>>> associated with VFIO devices
->>>>>>
->>>>>> On 2025/11/12 13:26, Kasireddy, Vivek wrote:
->>>>>>> Hi Akihiko,
->>>>>>>
->>>>>>>> Subject: Re: [PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for
->>>>>> blobs
->>>>>>>> associated with VFIO devices
->>>>>>>>
->>>>>>>> On 2025/11/09 14:33, Vivek Kasireddy wrote:
->>>>>>>>> In addition to memfd, a blob resource can also have its backing
->>>>>>>>> storage in a VFIO device region. Therefore, we first need to figure
->>>>>>>>> out if the blob is backed by a VFIO device region or a memfd before
->>>>>>>>> we can call the right API to get a dmabuf fd created.
->>>>>>>>>
->>>>>>>>> So, once we have the ramblock and the associated mr, we rely on
->>>>>>>>> memory_region_is_ram_device() to tell us where the backing storage
->>>>>>>>> is located. If the blob resource is VFIO backed, we try to find the
->>>>>>>>> right VFIO device that contains the blob and then invoke the API
->>>>>>>>> vfio_device_create_dmabuf().
->>>>>>>>>
->>>>>>>>> Note that in virtio_gpu_remap_udmabuf(), we first try to test if
->>>>>>>>> the VFIO dmabuf exporter supports mmap or not. If it doesn't, we
->>>>>>>>> use the VFIO device fd directly to create the CPU mapping.
->>>>>>>>
->>>>>>>> I have just remembered that mremap() will work for either of udmabuf
->>>>>> and
->>>>>>>> VFIO. That will avoid having two different methods and make
->>>>>>>> vfio_get_region_index_from_mr() and vfio_device_get_region_info()
->>>>>>>> unnecessary.
->>>>>>> IIUC, the name virtio_gpu_remap_dmabuf() is misleading because we
->>>> are
->>>>>> not
->>>>>>> actually doing remap but are simply calling mmap(). In other words, we
->>>>>> are not
->>>>>>> expanding or shrinking existing mapping but are creating a new
->>>> mapping.
->>>>>>> And, for dmabufs associated with VFIO devices, without having to call
->>>>>>> vfio_get_region_index_from_mr() and vfio_device_get_region_info(), I
->>>>>> don't see
->>>>>>> any other way to determine the region offset.
->>>>>>>
->>>>>>> So, I guess I'll create a new patch to do s/remapped/map.
->>>>>>
->>>>>> I mean calling mremap() with 0 as the old_size parameter. The man page
->>>>>> says:
->>>>>>     > If the value of old_size is zero, and old_address refers to a
->>>>>>     > shareable mapping (see the description of MAP_SHARED in
->> mmap(2)),
->>>>>> then
->>>>>>     > mremap() will create a new mapping of the same pages.
->>>>> It might be possible to use mremap() here but using mmap() seems very
->>>>> straightforward given that we are actually not shrinking or expanding
->>>>> an existing mapping but are instead creating a new mapping. Also, I am
->>>>> wondering what benefit would mremap() bring as opposed to just using
->>>>> mmap()?
->>>>
->>>> As I noted earlier, mremap() removes the need of having two different
->>>> paths for udmabuf and VFIO, and make vfio_get_region_index_from_mr()
->>>> and
->>>> vfio_device_get_region_info() unnecessary, reducing code complexity.
->>> Sorry, I should have researched thoroughly before but after looking at the
->> code
->>> again, I don't see how mremap() removes the need for having two different
->>> paths for udmabuf and VFIO and make vfio_get_region_index_from_mr()
->>> and vfio_device_get_region_info() unnecessary. Could you please elaborate
->>> how it can be done?
->>
->> Not tested, but something like the following:
->>
->> head = qemu_ram_mmap(-1, res->blob_size, qemu_real_host_page_size(),
->>                        QEMU_MAP_READONLY | QEMU_MAP_SHARED, 0);
->> if (head == MAP_FAILED) {
->>       return NULL;
->> }
->>
->> cursor = head;
->>
->> for (i = 0; i < res->iov_cnt; i++) {
->>       if (mremap(res->iov[i].iov_base, 0, res->iov[i].iov_len,
->>                  MREMAP_FIXED, cursor) == MAP_FAILED) {
-> This is very elegant and I can now see how it is expected to work. However,
-> I went ahead and tested it and it does not seem to work for VFIO backed
-> buffers. It works for buffers based out of System RAM though. Here is the
-> actual code I tested with that I am unconditionally calling for both VFIO
-> and udmabuf cases:
-> static void *vfio_dmabuf_mmap2(struct virtio_gpu_simple_resource *res,
->                                 VFIODevice *vdev)
-> {
->      void *head, *cursor;
->      int i;
-> 
->      head = qemu_ram_mmap(-1, res->blob_size, qemu_real_host_page_size(),
->                           			QEMU_MAP_READONLY | QEMU_MAP_SHARED, 0);
+Hi,
 
-By the way, please do:
-head = mmap(NULL, res->blob_size, PROT_NONE, MAP_SHARED, -1, 0);
+This series adds APX (Advanced Performance Extensions) support in QEMU
+to enable APX in Guest based on KVM.
 
-I forgot that we don't need to map a RAM but mmap() with PROT_NONE is 
-sufficient. It will catch a bug that fails to mmap() a real resource on 
-top of it.
+This series is based on CET v4:
 
->      if (head == MAP_FAILED) {
->          return head;
->      }
-> 
->      cursor = head;
->      for (i = 0; i < res->iov_cnt; i++) {
->           if (mremap(res->iov[i].iov_base, 0, res->iov[i].iov_len,
->               MREMAP_FIXED | MREMAP_MAYMOVE, cursor) == MAP_FAILED) {
->               goto err;
->           }
->           cursor += res->iov[i].iov_len;
->      }
->      return head;
-> err:
->      qemu_ram_munmap(-1, head, res->blob_size);
->      return MAP_FAILED;
-> }
-> 
-> It (mremap) initially errored with -EINVAL in all cases but adding MREMAP_MAYMOVE
-> fixed it for buffers based out of RAM but for VFIO backed buffers, it seems to be
-> throwing -EFAULT/Bad Address error. I did not yet check why or where the kernel
-> driver is returning this error from.
+https://lore.kernel.org/qemu-devel/20251118034231.704240-1-zhao1.liu@intel.com/
 
-The man page says that EFAULT means:
- > Some address in the range old_address to old_address+old_size is an
- > invalid virtual memory address for this process. You can also get
- > EFAULT even if there exist mappings that cover the whole address space
- > requested, but those mappings are of different types.
+And you can also find the code here:
 
-None of this should be true so it should be a bug, though I'm not sure 
-if it is a bug of QEMU, Linux, or the man page (i.e., the man page 
-failed to mention another failure scenario). In any case it needs to be 
-debugged.
+https://gitlab.com/zhao.liu/qemu/-/commits/i386-all-for-dmr-v1.1-11-17-2025
 
-Regards,
-Akihiko Odaki
+The patches for KVM side can be found at:
+
+https://lore.kernel.org/kvm/20251110180131.28264-1-chang.seok.bae@intel.com/
+
+
+Thanks for your review!
+
+
+Overview
+========
+
+Intel Advanced Performance Extensions (Intel APX) expands the Intel 64
+instruction set architecture with access to more registers (16
+additional general-purpose registers (GPRs) R16–R31) and adds various
+new features that improve general-purpose performance. The extensions
+are designed to provide efficient performance gains across a variety of
+workloads without significantly increasing silicon area or power
+consumption of the core. 
+
+APX spec link (rev.07) is:
+https://cdrdv2.intel.com/v1/dl/getContent/861610
+
+At QEMU side, the enabling work mainly includes two parts:
+
+1. save/restore/migrate the xstate of APX.
+   * APX xstate is a user xstate, but it reuses MPX xstate area in
+     un-compacted XSAVE buffer.
+   * To address this, QEMU will reject both APX and MPX if their CPUID
+     feature bits are set at the same (in Patch 1).
+
+2. add related CPUIDs support in feature words.
+
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (2):
+  i386/cpu: Support APX CPUIDs
+  i386/cpu: Mark apx xstate as migratable
+
+Zide Chen (3):
+  i386/cpu: Add APX EGPRs into xsave area
+  i386/cpu: Cache EGPRs in CPUX86State
+  i386/cpu: Add APX migration support
+
+ target/i386/cpu.c          | 68 ++++++++++++++++++++++++++++++++++++--
+ target/i386/cpu.h          | 26 +++++++++++++--
+ target/i386/machine.c      | 24 ++++++++++++++
+ target/i386/xsave_helper.c | 14 ++++++++
+ 4 files changed, 128 insertions(+), 4 deletions(-)
+
+-- 
+2.34.1
+
 
