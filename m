@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593B3C6AD45
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 18:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0161C6ACDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 18:06:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLP6x-00005b-G9; Tue, 18 Nov 2025 12:03:23 -0500
+	id 1vLP6y-00006J-D1; Tue, 18 Nov 2025 12:03:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP6u-0008Ut-Vs
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP6w-0008W0-CW
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP6t-0004j7-Aw
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:20 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLP6u-0004jq-Oy
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 12:03:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763485398;
+ s=mimecast20190719; t=1763485400;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BoVAI3DNADf87T1Nn/o5IlvAFQmrRR/j4uz+LlarMK8=;
- b=FejO6JO9E4Wt5X1X1ewXnANxGPkFIKQwpazMYbTXGQ8ABQ5I9tS7YDGJyhgkMt9rAfZxed
- P0eNidK1lTKMDIp1jfL/mevrQsxM4JRRO9f7aDuoQqp6NINIMZ/VgAWZf+9jVlctkGJc/K
- jrlP5Cc/5ZTjGcvr4yTgMgt/R8EMo40=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=L8meUzKvO6KX2QLIVnDxoDj1RumboLDFbRJuX950bDI=;
+ b=VCH64tvBA1wj0xoqAXTeHepITuNcOpajD6DDZGzQVVWfsxPXs63c5oyAbnNIvYN/XPgDzb
+ /8nZ/fmVdHlJBf15NT40SXVE9YL8rwsY6M/3cZbm3POkujWKTXHbjmUnFm8ErOmQlHsqqi
+ XPryi3m5cJdGtqDUSzOS7B950ANvAPs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-U1WFyAmUNKWCCISDpaKiSg-1; Tue,
- 18 Nov 2025 12:03:14 -0500
-X-MC-Unique: U1WFyAmUNKWCCISDpaKiSg-1
-X-Mimecast-MFC-AGG-ID: U1WFyAmUNKWCCISDpaKiSg_1763485393
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-DvkrLMPkPEWD-LnmcVL6sA-1; Tue,
+ 18 Nov 2025 12:03:16 -0500
+X-MC-Unique: DvkrLMPkPEWD-LnmcVL6sA-1
+X-Mimecast-MFC-AGG-ID: DvkrLMPkPEWD-LnmcVL6sA_1763485395
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8B295191B4C1; Tue, 18 Nov 2025 17:03:13 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 97DFF1956069; Tue, 18 Nov 2025 17:03:15 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.32.26])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 01CC8300A88D; Tue, 18 Nov 2025 17:03:11 +0000 (UTC)
+ id 0EC74300A88D; Tue, 18 Nov 2025 17:03:13 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 04/19] =?UTF-8?q?nfs:=20Run=20co=20BH=20CB=20in=20the=20cor?=
- =?UTF-8?q?outine=E2=80=99s=20AioContext?=
-Date: Tue, 18 Nov 2025 18:02:41 +0100
-Message-ID: <20251118170256.272087-5-kwolf@redhat.com>
+Subject: [PULL 05/19] curl: Fix coroutine waking
+Date: Tue, 18 Nov 2025 18:02:42 +0100
+Message-ID: <20251118170256.272087-6-kwolf@redhat.com>
 In-Reply-To: <20251118170256.272087-1-kwolf@redhat.com>
 References: <20251118170256.272087-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -85,127 +84,158 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hanna Czenczek <hreitz@redhat.com>
 
-Like in “rbd: Run co BH CB in the coroutine’s AioContext”, drop the
-completion flag, yield exactly once, and run the BH in the coroutine’s
-AioContext.
+If we wake a coroutine from a different context, we must ensure that it
+will yield exactly once (now or later), awaiting that wake.
+
+curl’s current .ret == -EINPROGRESS loop may lead to the coroutine not
+yielding if the request finishes before the loop gets run.  To fix it,
+we must drop the loop and yield exactly once, if we need to yield.
+
+Finding out that latter part ("if we need to yield") makes it a bit
+complicated: Requests may be served from a cache internal to the curl
+block driver, or fail before being submitted.  In these cases, we must
+not yield.  However, if we find a matching but still ongoing request in
+the cache, we will have to await that, i.e. still yield.
+
+To address this, move the yield inside of the respective functions:
+- Inside of curl_find_buf() when awaiting ongoing concurrent requests,
+- Inside of curl_setup_preadv() when having created a new request.
+
+Rename curl_setup_preadv() to curl_do_preadv() to reflect this.
 
 (Can be reproduced with multiqueue by adding a usleep(100000) before the
-`while (!task.complete)` loops.)
+`while (acb.ret == -EINPROGRESS)` loop.)
 
-Like in “iscsi: Run co BH CB in the coroutine’s AioContext”, this makes
-nfs_co_generic_bh_cb() trivial, so we can drop it in favor of just
-calling aio_co_wake() directly.
+Also, add a comment why aio_co_wake() is safe regardless of whether the
+coroutine and curl_multi_check_completion() run in the same context.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20251110154854.151484-5-hreitz@redhat.com>
+Message-ID: <20251110154854.151484-6-hreitz@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/nfs.c | 41 ++++++++++++++++-------------------------
- 1 file changed, 16 insertions(+), 25 deletions(-)
+ block/curl.c | 45 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 31 insertions(+), 14 deletions(-)
 
-diff --git a/block/nfs.c b/block/nfs.c
-index 0a7d38db09..1d3a34a30c 100644
---- a/block/nfs.c
-+++ b/block/nfs.c
-@@ -69,7 +69,6 @@ typedef struct NFSClient {
- typedef struct NFSRPC {
-     BlockDriverState *bs;
-     int ret;
--    int complete;
-     QEMUIOVector *iov;
-     struct stat *st;
-     Coroutine *co;
-@@ -230,14 +229,6 @@ static void coroutine_fn nfs_co_init_task(BlockDriverState *bs, NFSRPC *task)
-     };
+diff --git a/block/curl.c b/block/curl.c
+index d7d93d967f..4e77c93b46 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -258,8 +258,8 @@ read_end:
  }
  
--static void nfs_co_generic_bh_cb(void *opaque)
--{
--    NFSRPC *task = opaque;
--
--    task->complete = 1;
--    aio_co_wake(task->co);
--}
--
- /* Called (via nfs_service) with QemuMutex held.  */
- static void
- nfs_co_generic_cb(int ret, struct nfs_context *nfs, void *data,
-@@ -256,8 +247,16 @@ nfs_co_generic_cb(int ret, struct nfs_context *nfs, void *data,
-     if (task->ret < 0) {
-         error_report("NFS Error: %s", nfs_get_error(nfs));
-     }
--    replay_bh_schedule_oneshot_event(task->client->aio_context,
--                                     nfs_co_generic_bh_cb, task);
-+
+ /* Called with s->mutex held.  */
+-static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
+-                          CURLAIOCB *acb)
++static bool coroutine_fn
++curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len, CURLAIOCB *acb)
+ {
+     int i;
+     uint64_t end = start + len;
+@@ -307,6 +307,10 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
+             for (j=0; j<CURL_NUM_ACB; j++) {
+                 if (!state->acb[j]) {
+                     state->acb[j] = acb;
++                    /* Await ongoing request */
++                    qemu_mutex_unlock(&s->mutex);
++                    qemu_coroutine_yield();
++                    qemu_mutex_lock(&s->mutex);
+                     return true;
+                 }
+             }
+@@ -378,6 +382,16 @@ static void curl_multi_check_completion(BDRVCURLState *s)
+                 acb->ret = error ? -EIO : 0;
+                 state->acb[i] = NULL;
+                 qemu_mutex_unlock(&s->mutex);
++                /*
++                 * Current AioContext is the BDS context, which may or may not
++                 * be the request (coroutine) context.
++                 * - If it is, the coroutine must have yielded or the FD handler
++                 *   (curl_multi_do()/curl_multi_timeout_do()) could not have
++                 *   been called and we would not be here
++                 * - If it is not, it doesn't matter whether it has already
++                 *   yielded or not; it will be scheduled once it does yield
++                 * So aio_co_wake() is safe to call.
++                 */
+                 aio_co_wake(acb->co);
+                 qemu_mutex_lock(&s->mutex);
+             }
+@@ -868,7 +882,7 @@ out_noclean:
+     return -EINVAL;
+ }
+ 
+-static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
++static void coroutine_fn curl_do_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+ {
+     CURLState *state;
+     int running;
+@@ -880,10 +894,13 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+ 
+     qemu_mutex_lock(&s->mutex);
+ 
+-    // In case we have the requested data already (e.g. read-ahead),
+-    // we can just call the callback and be done.
 +    /*
-+     * Safe to call: nfs_service(), which called us, is only run from the FD
-+     * handlers, never from the request coroutine.  The request coroutine in
-+     * turn will yield unconditionally.
-+     * No need to release the lock, even if we directly enter the coroutine, as
-+     * the lock is never re-taken after yielding.  (Note: If we do enter the
-+     * coroutine, @task will probably be dangling once aio_co_wake() returns.)
++     * In case we have the requested data already (e.g. read-ahead),
++     * we can just call the callback and be done.  This may have to
++     * await an ongoing request, in which case it itself will yield.
 +     */
-+    aio_co_wake(task->co);
+     if (curl_find_buf(s, start, acb->bytes, acb)) {
+-        goto out;
++        goto dont_yield;
+     }
+ 
+     // No cache found, so let's start a new request
+@@ -898,7 +915,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+     if (curl_init_state(s, state) < 0) {
+         curl_clean_state(state);
+         acb->ret = -EIO;
+-        goto out;
++        goto dont_yield;
+     }
+ 
+     acb->start = 0;
+@@ -913,7 +930,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+     if (state->buf_len && state->orig_buf == NULL) {
+         curl_clean_state(state);
+         acb->ret = -ENOMEM;
+-        goto out;
++        goto dont_yield;
+     }
+     state->acb[0] = acb;
+ 
+@@ -925,13 +942,16 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
+         acb->ret = -EIO;
+ 
+         curl_clean_state(state);
+-        goto out;
++        goto dont_yield;
+     }
+ 
+     /* Tell curl it needs to kick things off */
+     curl_multi_socket_action(s->multi, CURL_SOCKET_TIMEOUT, 0, &running);
++    qemu_mutex_unlock(&s->mutex);
++    qemu_coroutine_yield();
++    return;
+ 
+-out:
++dont_yield:
+     qemu_mutex_unlock(&s->mutex);
  }
  
- static int coroutine_fn nfs_co_preadv(BlockDriverState *bs, int64_t offset,
-@@ -278,9 +277,7 @@ static int coroutine_fn nfs_co_preadv(BlockDriverState *bs, int64_t offset,
+@@ -947,10 +967,7 @@ static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
+         .bytes = bytes
+     };
  
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
+-    curl_setup_preadv(bs, &acb);
+-    while (acb.ret == -EINPROGRESS) {
 -        qemu_coroutine_yield();
 -    }
-+    qemu_coroutine_yield();
- 
-     if (task.ret < 0) {
-         return task.ret;
-@@ -328,9 +325,7 @@ static int coroutine_fn nfs_co_pwritev(BlockDriverState *bs, int64_t offset,
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     if (my_buffer) {
-         g_free(buf);
-@@ -358,9 +353,7 @@ static int coroutine_fn nfs_co_flush(BlockDriverState *bs)
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     return task.ret;
- }
-@@ -723,8 +716,8 @@ nfs_get_allocated_file_size_cb(int ret, struct nfs_context *nfs, void *data,
-     if (task->ret < 0) {
-         error_report("NFS Error: %s", nfs_get_error(nfs));
-     }
--    replay_bh_schedule_oneshot_event(task->client->aio_context,
--                                     nfs_co_generic_bh_cb, task);
-+    /* Safe to call, see nfs_co_generic_cb() */
-+    aio_co_wake(task->co);
++    curl_do_preadv(bs, &acb);
+     return acb.ret;
  }
  
- static int64_t coroutine_fn nfs_co_get_allocated_file_size(BlockDriverState *bs)
-@@ -748,9 +741,7 @@ static int64_t coroutine_fn nfs_co_get_allocated_file_size(BlockDriverState *bs)
- 
-         nfs_set_events(client);
-     }
--    while (!task.complete) {
--        qemu_coroutine_yield();
--    }
-+    qemu_coroutine_yield();
- 
-     return (task.ret < 0 ? task.ret : st.st_blocks * 512);
- }
 -- 
 2.51.1
 
