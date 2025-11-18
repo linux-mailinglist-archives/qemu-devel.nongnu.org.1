@@ -2,101 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CB3C68D6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 11:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928FEC68D8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 11:32:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLIyH-0006VY-18; Tue, 18 Nov 2025 05:30:01 -0500
+	id 1vLJ0M-0000C4-OZ; Tue, 18 Nov 2025 05:32:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLIyE-0006UW-6R
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:29:58 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vLJ0I-00007o-LK
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:32:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLIyC-00032h-P5
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:29:57 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vLJ0D-0003bg-6t
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:32:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763461796;
+ s=mimecast20190719; t=1763461917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=do+UbaBiOOwddVkAoLI/+bC2dQuwohtwYVd2EuLCMA4=;
- b=Z0nSG5lE9NhtcWZ49wmqOnh2aMv7ohfgjAzxp1pJizbsqFv51FcQ+aetkjgVxcV9N9R1Cl
- oV6UHomshfKhSfIxgZnFZOdcNm6KkL1i1AokwgtngMNLh32VyXchJMXij9/CZiUsO44c44
- QbTIIXhh3Y5Pg8nZycRef1u3/0KPZCo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-h73dvMsEOPexueXTj6VddA-1; Tue, 18 Nov 2025 05:29:54 -0500
-X-MC-Unique: h73dvMsEOPexueXTj6VddA-1
-X-Mimecast-MFC-AGG-ID: h73dvMsEOPexueXTj6VddA_1763461793
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-477964c22e0so23717865e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 02:29:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763461792; x=1764066592; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=do+UbaBiOOwddVkAoLI/+bC2dQuwohtwYVd2EuLCMA4=;
- b=LI0C8v3cvh+rOJ9foQezRcaEdCyGUjtAj0Hk4xDrKgKtw0OuiBaA2YHuNU/3R63/s/
- vqnEZ8is5MQ4oaKYd9JWz/EL6hXjj3I+WIvHTp4uecL+2OSg4VK/VYCQV5wAGTFM71lQ
- SVDzUpRSR2ilJwafanNdhCbRsuqTjpeH+6nApEzRCj/A9GtwVoiFd7ijpIL5PxwLi422
- 6yDGAEBkfbUenVOKt6nh4CjH51Z6rLpeRY/JMA5yY6eDssVmKhpJfbr23dcYHIgcnLQ0
- 0FsLWOuvEVTWyUdmMpjtRJfsOreoMoEwbqUO/KO2B5ScgTVlOajJ/zIQnGkhtJpWnfH5
- RXkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763461792; x=1764066592;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=do+UbaBiOOwddVkAoLI/+bC2dQuwohtwYVd2EuLCMA4=;
- b=ioP4Vyx0meozGwVGyKdL62XOfDJnE0iohwD5JtgdfXHtodgJoic4uPra1Ma4S1eCXm
- 7QkIM8FIkxiCEsCGQb3Q26Fk9+D98i8vnU5LiJxiCECoDo6422DjYrPPhNKtydhlgTNu
- rzWm9xCXEBLM4Y9hOIbiKJdFMjlr3Qja2k8nvdtBJqgV7IPsungHphzuxiqIQBpxclFE
- wJRGDCRMSmnrnT5hEwaLFxmrLQy6plBveTSze3Jt9lGIgQtdszN3Jv3EiUO15My6ZrHb
- e61NJ4FJ8fYE6X7aCIcj820IfEh9IOitE87qMIg4tdS2L8kTLQTI4lcTQZHctR7kCnA0
- 38lg==
-X-Gm-Message-State: AOJu0YzvFB6Kwcchk1bNd0VGcGVgp3e6fSI4PKidopi/rswuaFKtZ5qR
- cfLgNLFusIjc487phzKr8RdqRVejdrg/LY9V4Fvfl12khZ65sh/xdQHTzRS2JfTppgb9ERArsw5
- 1h39wNjRmKf8qLTRg1rMA2HBYFQgDW0tKzeUX2t0q0lRdham/4f8o5semmjIYXWaxMwqaY+Y+z8
- BG0Tg9eeipg4naoDQeFG73nsPRaL/hBA2EUjoCJJMl
-X-Gm-Gg: ASbGncs0rxD9D0VH5txSSLBR2vNH3ArYqUQfTgFeKw+CtKRzELAaJFgFg9taqrVRZkX
- m7qOYdaQJOHLa5kgUcEGjyqx3nDuWFCc9ZBD4ONF/9/fIVkqHDaaimeJax18rh0PESRQsvtl2WG
- JaKV+KYttfLq7Ke96jW8ubroe9YUxdPC0oYi7mee9d6pOdkmGMvpZY9GIH/ULB3OiAHDME0TUVO
- gSsyOEXC9nmhe16Ox2OFOJzsMELg8W02l6mKd7WrmbCjxfTjvljyuX2F3Qhnvyl/nqYxz59FrFg
- 99jhbComDFLf5oRdcSHlw/gh88dLhHAJiyhK02egthhGkmnR3xs2Gpo27sxivEQqReBHmv/EnSp
- VZ9h7TAnHLb9l/eEsKr6SRp+iIvUKgP4SYvYXt4vYqHZsLaOcWabMDGHYktdHQveT9+st+88KbW
- muEdXIF1/MdxveCZA=
-X-Received: by 2002:a05:600c:a0b:b0:477:bf1:8c82 with SMTP id
- 5b1f17b1804b1-477a94fd02amr24196655e9.15.1763461792274; 
- Tue, 18 Nov 2025 02:29:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEy6/5UJNYCpNSIxBQZA7Mx7WNuk7k6GYNY3910D0VMtBf+TDiyacXTpCeZGx+swsAuTizSyQ==
-X-Received: by 2002:a05:600c:a0b:b0:477:bf1:8c82 with SMTP id
- 5b1f17b1804b1-477a94fd02amr24196345e9.15.1763461791842; 
- Tue, 18 Nov 2025 02:29:51 -0800 (PST)
-Received: from [192.168.10.48] ([176.206.119.13])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a96a58c5sm15553695e9.0.2025.11.18.02.29.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Nov 2025 02:29:50 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: jsnow@redhat.com,
-	alex.bennee@linaro.org
-Subject: [PATCH v2 3/3] mtest2make: do not repeat the same speed over and over
-Date: Tue, 18 Nov 2025 11:29:42 +0100
-Message-ID: <20251118102942.551194-4-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251118102942.551194-1-pbonzini@redhat.com>
-References: <20251118102942.551194-1-pbonzini@redhat.com>
+ bh=qpGKVfxpR3uzkZFalIW0XXvc/XZgTdX1WlXEz5efcmk=;
+ b=M1p+/1hubcFs3BqT+2r4fEXQCvJgaFcCI4wcP4FWZkiVzo0yrGAs4Y6BB1SauQhx3SRJJ/
+ CpcgvRndArRarRntd9O1ry8lq/uL1JTr+/e2MT+UvvSVzN07Mo/cv5P1piPoSYK84SBTy2
+ kk9DDar44kgC7DJTB5GNFD3OMMlb28Q=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-UYHwd70JO562nr1vLl5HoQ-1; Tue,
+ 18 Nov 2025 05:31:55 -0500
+X-MC-Unique: UYHwd70JO562nr1vLl5HoQ-1
+X-Mimecast-MFC-AGG-ID: UYHwd70JO562nr1vLl5HoQ_1763461915
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F898195608D; Tue, 18 Nov 2025 10:31:54 +0000 (UTC)
+Received: from localhost (dhcp-192-224.str.redhat.com [10.33.192.224])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C6BC11955F1B; Tue, 18 Nov 2025 10:31:53 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 1/2] hw/arm/imx8mp-evk: Add KVM support
+In-Reply-To: <CAFEAcA_XORdwONC2YbVKPois6BLPEr0dFt_QjTHE=UWmiCiv-g@mail.gmail.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Avril Crosse O'Flaherty"
+References: <20251101120130.236721-1-shentey@gmail.com>
+ <20251101120130.236721-2-shentey@gmail.com> <87v7j8r399.fsf@redhat.com>
+ <CAFEAcA_XORdwONC2YbVKPois6BLPEr0dFt_QjTHE=UWmiCiv-g@mail.gmail.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Tue, 18 Nov 2025 11:31:51 +0100
+Message-ID: <87seebr5rc.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -121,41 +87,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are just two of them (slow and thorough; quick is simply the
-default).  Avoid repeating them for as many times as there are tests.
+On Mon, Nov 17 2025, Peter Maydell <peter.maydell@linaro.org> wrote:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- scripts/mtest2make.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> On Mon, 17 Nov 2025 at 17:13, Cornelia Huck <cohuck@redhat.com> wrote:
+>> Running current master (resp. with this patch applied), I'm getting make
+>> check failures on an aarch64 (Mt. Snow) host ("qemu-system-aarch64:
+>> unknown type 'arm-gicv3'" while using this machine); going back right
+>> before this patch, everything works fine. Haven't tried to debug this
+>> yet (maybe I'm the one with the weird config again...)
+>
+> Is this a KVM-only config (no TCG) ?
 
-diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 692e4867ec7..19c11ed9352 100644
---- a/scripts/mtest2make.py
-+++ b/scripts/mtest2make.py
-@@ -14,7 +14,7 @@
- class Suite(object):
-     def __init__(self):
-         self.deps = set()
--        self.speeds = []
-+        self.speeds = set()
- 
-     def names(self, base):
-         return [f'{base}-{speed}' for speed in self.speeds]
-@@ -62,10 +62,10 @@ def process_tests(test, targets, suites):
-         suites[s].deps.update(deps)
-         if s.endswith('-slow'):
-             s = s[:-5]
--            suites[s].speeds.append('slow')
-+            suites[s].speeds.add('slow')
-         if s.endswith('-thorough'):
-             s = s[:-9]
--            suites[s].speeds.append('thorough')
-+            suites[s].speeds.add('thorough')
- 
- def emit_prolog(suites, prefix):
-     all_targets = ' '.join((f'{prefix}-{k}' for k in suites.keys()))
--- 
-2.51.1
+Yes, it is. (Forgot about that...)
+
+However, I noticed that a build I did after enabling tcg still failed,
+and only after starting over with a fresh build directory, it worked  --
+I'm wondering if I managed to trigger an unrelated problem?
+
+>
+> I think this happens because the KConfig now says
+> +    depends on TCG || KVM
+>
+> but because the machine by default doesn't use KVM then
+> trying to run the machine with no extra arguments falls
+> over if TCG isn't present.
+>
+> This thing we put in to handle "creation of the SoC object
+> via device introspection means it doesn't have an ms->cpu_type
+> to look at":
+>
+> +    const char *cpu_type = ms->cpu_type ?: ARM_CPU_TYPE_NAME("cortex-a53");
+>
+> also probably won't do anything useful under a KVM-only config.
+>
+> I think the simplest thing here is to put the KConfig back to:
+>
+>   depends on TCG && AARCH64
+>
+> People building a KVM-only config almost certainly do not
+> want this machine type and its devices, because the main
+> reason to build KVM-only is because you're in the
+> "virtualization use case" and want to not build in a
+> load of not-security-supported machine types.
+
+I think that's a reasonable assumption.
 
 
