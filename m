@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A873DC69594
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 13:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B0CC69591
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 13:22:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLKiT-0004t2-Js; Tue, 18 Nov 2025 07:21:49 -0500
+	id 1vLKiU-0004u2-W9; Tue, 18 Nov 2025 07:21:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vLKiQ-0004r7-Fy
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 07:21:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vLKiS-0004sE-1Q
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 07:21:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vLKiP-0005Hv-4H
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 07:21:46 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vLKiQ-0005IO-Hy
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 07:21:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763468504;
+ s=mimecast20190719; t=1763468505;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nAeTjmgqoilYb7echaBt27tnizEGJUjLY1rSJl9if8c=;
- b=cr38T7Crs6HYmI5kenVTQQoXgYWRjsLATKcWdmz8S3lmLFnyOdYCXdoM1+CtuOXUqeimha
- u8j4DI2rIxRpaVkHVDOzPysP9ooq8k/1qMkOBv+DeernGwaGWXR7YN1qyiEbYYqZXQQZhS
- FTengSKHXfLCuNxzTkjYH2o/T4CuAH0=
+ bh=pQivBRCSF6+GiWlSUjzSe5VG7ineUGQJlIEltid67L0=;
+ b=aL1ytjlmttvDh86NPOd5h4TBj2HOD5ZxgN/wx8Hid3eNv3eXWz/tF0LpxiEG6sl3ANXHo7
+ 6dB0nji1N6F/RzZO1kDvRrvuV+3hTQCgNOD7u9ULp8iFrpPhbdGh5JSLS+zci8JpIix5wM
+ fOSBpS1Qh8s+8Gwyt6Kn51YkxkauqCk=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-Ma_3a52dMOSnikmSxuF3iA-1; Tue,
- 18 Nov 2025 07:21:41 -0500
-X-MC-Unique: Ma_3a52dMOSnikmSxuF3iA-1
-X-Mimecast-MFC-AGG-ID: Ma_3a52dMOSnikmSxuF3iA_1763468500
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-IDcom3MtNQmiuQqyN2YvLw-1; Tue,
+ 18 Nov 2025 07:21:44 -0500
+X-MC-Unique: IDcom3MtNQmiuQqyN2YvLw-1
+X-Mimecast-MFC-AGG-ID: IDcom3MtNQmiuQqyN2YvLw_1763468503
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4847018AB42D; Tue, 18 Nov 2025 12:21:40 +0000 (UTC)
+ id 3C87E18D95D1; Tue, 18 Nov 2025 12:21:43 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.167])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8D7FD1955F1B; Tue, 18 Nov 2025 12:21:39 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC12019560B6; Tue, 18 Nov 2025 12:21:42 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 895F7182C027; Tue, 18 Nov 2025 13:21:33 +0100 (CET)
+ id A0022182C029; Tue, 18 Nov 2025 13:21:33 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -54,15 +54,15 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Luigi Leonardi <leonardi@redhat.com>, Oliver Steffen <osteffen@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 3/4] igvm: add trace point for igvm file loading and processing
-Date: Tue, 18 Nov 2025 13:21:31 +0100
-Message-ID: <20251118122133.1695767-4-kraxel@redhat.com>
+Subject: [PATCH 4/4] igvm: move igvm file processing to reset callbacks
+Date: Tue, 18 Nov 2025 13:21:32 +0100
+Message-ID: <20251118122133.1695767-5-kraxel@redhat.com>
 In-Reply-To: <20251118122133.1695767-1-kraxel@redhat.com>
 References: <20251118122133.1695767-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,52 +87,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move igvm file processing from machine init to reset callbacks.  With
+that the igvm file is properly re-loaded on reset.  Also the loading
+happens later in the init process now.  This will simplify future
+support for some IGVM parameters which depend on initialization steps
+which happen after machine init.
+
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- backends/igvm.c       | 5 +++++
- backends/trace-events | 2 ++
- 2 files changed, 7 insertions(+)
+ backends/igvm-cfg.c |  7 +++++++
+ hw/i386/pc_piix.c   | 10 ----------
+ hw/i386/pc_q35.c    | 10 ----------
+ 3 files changed, 7 insertions(+), 20 deletions(-)
 
-diff --git a/backends/igvm.c b/backends/igvm.c
-index 05d197fdfe85..a350c890cc95 100644
---- a/backends/igvm.c
-+++ b/backends/igvm.c
-@@ -18,6 +18,8 @@
- #include "system/address-spaces.h"
- #include "hw/core/cpu.h"
+diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+index 08501a67e58e..c1b45401f429 100644
+--- a/backends/igvm-cfg.c
++++ b/backends/igvm-cfg.c
+@@ -15,6 +15,8 @@
+ #include "system/igvm.h"
+ #include "system/reset.h"
+ #include "qom/object_interfaces.h"
++#include "hw/qdev-core.h"
++#include "hw/boards.h"
  
-+#include "trace.h"
-+
- #include <igvm/igvm.h>
- #include <igvm/igvm_defs.h>
+ #include "trace.h"
  
-@@ -884,6 +886,8 @@ IgvmHandle qigvm_file_init(char *filename, Error **errp)
-         error_setg(errp, "Unable to parse IGVM file %s: %d", filename, igvm);
-         return -1;
-     }
+@@ -44,7 +46,12 @@ static void igvm_reset_enter(Object *obj, ResetType type)
+ 
+ static void igvm_reset_hold(Object *obj, ResetType type)
+ {
++    MachineState *ms = MACHINE(qdev_get_machine());
++    IgvmCfg *igvm = IGVM_CFG(obj);
 +
-+    trace_igvm_file_loaded(filename, igvm);
-     return igvm;
+     trace_igvm_reset_hold(type);
++
++    qigvm_process_file(igvm, ms->cgs, false, &error_fatal);
  }
  
-@@ -901,6 +905,7 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
-         return -1;
+ static void igvm_reset_exit(Object *obj, ResetType type)
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 7b3611e973cd..b3b71df64bfc 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -320,16 +320,6 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+                                x86_nvdimm_acpi_dsmio,
+                                x86ms->fw_cfg, OBJECT(pcms));
      }
-     ctx.file = cfg->file;
-+    trace_igvm_process_file(cfg->file, onlyVpContext);
+-
+-#if defined(CONFIG_IGVM)
+-    /* Apply guest state from IGVM if supplied */
+-    if (x86ms->igvm) {
+-        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
+-                ->process(x86ms->igvm, machine->cgs, false, &error_fatal) < 0) {
+-            g_assert_not_reached();
+-        }
+-    }
+-#endif
+ }
  
-     /*
-      * The ConfidentialGuestSupport object is optional and allows a confidential
-diff --git a/backends/trace-events b/backends/trace-events
-index 45ac46dc2454..7a00e9bf6c16 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -26,3 +26,5 @@ iommufd_backend_invalidate_cache(int iommufd, uint32_t id, uint32_t data_type, u
- igvm_reset_enter(int type) "type=%u"
- igvm_reset_hold(int type) "type=%u"
- igvm_reset_exit(int type) "type=%u"
-+igvm_file_loaded(const char *fn, int32_t handle) "fn=%s, handle=0x%x"
-+igvm_process_file(int32_t handle, bool context_only) "handle=0x%x context-only=%d"
+ typedef enum PCSouthBridgeOption {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 6015e639d7bc..f2e6ebfe294c 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -328,16 +328,6 @@ static void pc_q35_init(MachineState *machine)
+                                x86_nvdimm_acpi_dsmio,
+                                x86ms->fw_cfg, OBJECT(pcms));
+     }
+-
+-#if defined(CONFIG_IGVM)
+-    /* Apply guest state from IGVM if supplied */
+-    if (x86ms->igvm) {
+-        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
+-                ->process(x86ms->igvm, machine->cgs, false, &error_fatal) < 0) {
+-            g_assert_not_reached();
+-        }
+-    }
+-#endif
+ }
+ 
+ #define DEFINE_Q35_MACHINE(major, minor) \
 -- 
 2.51.1
 
