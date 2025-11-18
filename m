@@ -2,75 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996DFC6A64C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B44EC6A66A
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLNwz-00052y-3b; Tue, 18 Nov 2025 10:49:01 -0500
+	id 1vLNyL-000694-Rv; Tue, 18 Nov 2025 10:50:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLNvu-0004au-8n
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
+ id 1vLNwl-0004wl-Mu
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:57 -0500
+Received: from fhigh-b2-smtp.messagingengine.com ([202.12.124.153])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLNvs-0001us-S2
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:47:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763480872;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MbGOVueTX9DUaLsVj+a+6vgmHY+pg2JzMr0b9qjbJCQ=;
- b=hYvjEXQ9nvuhH1M3D9bMvaZgOLj0fhIRGORFmYz7D2VWhX9scezo7rhXMysxhVifPIsWY7
- hcgeWvk3iOMvIWjxgxBmeQWiI8GkPfmVClEa+18Jn/qW9N1ncmuv8KJ3sqrs2PMIz7hVbS
- 0c815vB4zXUt1S7l86SlX2AGS7oysy0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-_a8yZfZCP2e3bNwc3JZeTA-1; Tue,
- 18 Nov 2025 10:47:44 -0500
-X-MC-Unique: _a8yZfZCP2e3bNwc3JZeTA-1
-X-Mimecast-MFC-AGG-ID: _a8yZfZCP2e3bNwc3JZeTA_1763480863
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6CD111977017
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 15:47:21 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2064B3003777
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 15:47:20 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2451E21E66EF; Tue, 18 Nov 2025 16:47:18 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
+ id 1vLNwV-0001wA-1X
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:32 -0500
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id AC7377A00FA;
+ Tue, 18 Nov 2025 10:48:26 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-01.internal (MEProxy); Tue, 18 Nov 2025 10:48:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm2; t=1763480906; x=1763567306; bh=0z5pP8RPoz
+ WbwSF90KR9lGuqIMlcti0MiexUPvXb9FQ=; b=ZtysCWKhz+4G5xUFb4W23IYXqz
+ rKGhww7EIemsDXNZSyt9c6uRUKMan2fckXia7bhCGVyh1FazIF+BJ0G2jkGRtI34
+ zKTkRFYemql3AbCZKgzoq1pIxJcvQjT4JWaRxc4bLBXKfoGPCxURk9rN+jJGcE6/
+ r6vRgx5AayZKeqXPw/zNNCirw2rwUi/DOGQIAFutRYxaW/LylkU9fwo0D7VygE+Q
+ lhymlkTGfvs/L7P0sDWx5EcPIoMcENcUCp3mQOPTu6hNCIY5JJg0pu6GK57zxhLO
+ NNt8DbWYPum6A0xcnSNPAvkwrbkNwtdEjKotzzwrCU/Z9G84OmHgSKlw9giw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+ 1763480906; x=1763567306; bh=0z5pP8RPozWbwSF90KR9lGuqIMlcti0Miex
+ UPvXb9FQ=; b=TzC3OD7cHY14Qf3H9lhNkYqNtuTcuVs7jM0lfDlIFcbl5cT0nrX
+ phCFdaaXumD2cCwPi9KQANhnfwJ2f96X95Jt7667jtcBM73NAuwPdliB5L9U5MmF
+ D4HiHX5XdNxuujlU/nfbMH2ytgu3x+Pyh2yYjRCu+0qFs3LL5XAz5U2zHLc62OU/
+ Io4b/JFRXIpMHv/c4Zc0QWCQtzfah+nrMmN6l2exwbF8mPa/CoKQN6QmxKBoc3/J
+ jnGtryQww0sxEpePxoKZ72nPBjzHNHCUnCOMEgIxLqdnAJ5QtmNTeo8Vdhv5Zrc8
+ P9P3n7VgWjxgSgFqGSuhR7SsnDBE65tRvKg==
+X-ME-Sender: <xms:SZUcaXKRDHuJC2BDda3TipMIy1swo8eNkmSsvG3aAUyTw1UJpH-HIA>
+ <xme:SZUcaSlR8FEUOxVb2yztkramkqiJ2bB8JXmmzURtUGiWvytN_1qwHE-3bjm3k9mxK
+ x3XY_Qr7Suy14yfXA_ZNBIg6e8miaLvUMCMn_gM2b4oGpstfJTucFA>
+X-ME-Received: <xmr:SZUcadFsh2B_04XN-dJ4FM4nKKuEWTiDOiWX4aJ0bTVeE1UGQtXH1X1eEBZf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddujeduucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+ rghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfeehmdenucfjughrpefhvfevuf
+ ffkffoggfgsedtkeertdertddtnecuhfhrohhmpeevhhgrugculfgrsghlohhnshhkihcu
+ oegthhgrugesjhgrsghlohhnshhkihdrgiihiieqnecuggftrfgrthhtvghrnhephfdtvd
+ ehieevgefgteffheeigeehtdelvddvueeijeejvdeliefftedvffejtdeunecuffhomhgr
+ ihhnpegtohguvggsvghrghdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+ grmhepmhgrihhlfhhrohhmpegthhgrugesjhgrsghlohhnshhkihdrgiihiidpnhgspghr
+ tghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepqhgvmhhuqdguvg
+ hvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopegthhgrugesjhgrsghlohhnshhk
+ ihdrgiihiidprhgtphhtthhopegsrghlrghtohhnsegvihhkrdgsmhgvrdhhuh
+X-ME-Proxy: <xmx:SZUcaaGe4zwvviMA-04rGb4c6sUO3p-cUr03BqN0ItyAQ43TFJV-xg>
+ <xmx:SZUcaSOsPLJL1yPLXimRRFPee1OU2cArJDG4yvIJqunWK_assHjxRQ>
+ <xmx:SZUcaRE-Unt08VVHd3iLCULQYaqY_Hxg6lAmWZknTTJ-Rii66a95Gg>
+ <xmx:SZUcaRO9RsnNBeIBEz6p4x9RP-6V33BPWNkSjBJ7VQ3mttng0IK7AQ>
+ <xmx:SpUcaRyE-JpQXsz66t5sC-BE7QnE0NvLvCC5snL_NFTuppeUOYwCGPr2>
+Feedback-ID: ib26944c1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 18 Nov 2025 10:48:25 -0500 (EST)
+Received: from localhost (chomposaur [local])
+ by chomposaur (OpenSMTPD) with ESMTPA id cdc12a91;
+ Tue, 18 Nov 2025 15:48:23 +0000 (UTC)
+From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
-Cc: jasowang@redhat.com,
-	mst@redhat.com,
-	berrange@redhat.com
-Subject: [PATCH 3/3] ebpf: Make ebpf_rss_load() return value consistent with
- @errp
-Date: Tue, 18 Nov 2025 16:47:18 +0100
-Message-ID: <20251118154718.3969982-4-armbru@redhat.com>
-In-Reply-To: <20251118154718.3969982-1-armbru@redhat.com>
-References: <20251118154718.3969982-1-armbru@redhat.com>
+Cc: balaton@eik.bme.hu,
+	Chad Jablonski <chad@jablonski.xyz>
+Subject: [PATCH v3 00/11] ati-vga: Implement HOST_DATA transfers to
+Date: Tue, 18 Nov 2025 10:48:01 -0500
+Message-ID: <20251118154812.57861-1-chad@jablonski.xyz>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=202.12.124.153; envelope-from=chad@jablonski.xyz;
+ helo=fhigh-b2-smtp.messagingengine.com
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FROM_SUSPICIOUS_NTLD=0.499,
+ FROM_SUSPICIOUS_NTLD_FP=1.999, PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,51 +107,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ebpf_rss_load() returns false for failure without setting an Error
-when its @ctx argument already has an eBPF program loaded.  This is
-wrong.  Fortunately, it is only called @ctx has a program.  Replace
-the incorrect error check by an assertion.
+This series implements HOST_DATA as a blit source enabling text rendering in
+xterm under X.org with 2D acceleration.
 
-The return value is now obviously reliable.  Change the caller to use
-it, because it's more concise.
+The series builds up functionality incrementally:
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- ebpf/ebpf_rss.c     | 4 +---
- hw/net/virtio-net.c | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+* Patches 1-5:   Bug fixes and register implementations
+* Patches 6-7:   Scissor clipping
+* Patches 8-9:   Destination setup refactor
+* Patches 10-11: HOST_DATA register writes, color expansion, and
+                 accumulator flush
 
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index b64e9da3e3..926392b3c5 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -106,9 +106,7 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx, Error **errp)
- {
-     struct rss_bpf *rss_bpf_ctx;
- 
--    if (ebpf_rss_is_loaded(ctx)) {
--        return false;
--    }
-+    g_assert(!ebpf_rss_is_loaded(ctx));
- 
-     rss_bpf_ctx = rss_bpf__open();
-     if (rss_bpf_ctx == NULL) {
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 3b85560f6f..f5d93eb400 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1363,9 +1363,7 @@ static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
-         return virtio_net_load_ebpf_fds(n, errp);
-     }
- 
--    ebpf_rss_load(&n->ebpf_rss, &err);
--    /* Beware, ebpf_rss_load() can return false with @err unset */
--    if (err) {
-+    if (!ebpf_rss_load(&n->ebpf_rss, &err)) {
-         warn_report_err(err);
-     }
-     return true;
+Tested with xterm on X.org using the r128 driver built with
+--disable-dri (MMIO mode).
+
+Hardware tests can be found at: https://codeberg.org/cjab/ati-tests.
+
+Changes from v2:
+
+- Verified with hardware that clipping default bit latches
+- Verified with hardware that pitch/offset default bits latch
+  (supersedes BALATON's "ati-vga: Separate default control bit for
+  source")
+- A new approach to HOST_DATA using a 128-bit accumulator instead of a
+  large buffer
+- Fixed a longstanding bug in (DST/SRC)_PITCH reads that zeroed pitch value.
+- Removed mask from the DP_GUI_MASTER_CNTL write, all fields are
+  important
+- Created helpers for code shared between ati_2d_blt and
+  ati_host_data_flush
+
+Changes from v1:
+
+- Split monolithic patch into 7 logical patches as requested
+- Integrate HOST_DATA blit into existing ati_2d_blt()
+- Add fallback implementation for non-pixman builds
+- Remove unnecessary initialization in realize (kept in reset only)
+- Fixed DP_GUI_MASTER_CNTL mask to preserve GMC_SRC_SOURCE field
+- Implement scissor clipping
+
+Chad Jablonski (11):
+  ati-vga: Fix DST_PITCH and SRC_PITCH reads
+  ati-vga: Add scissor clipping register support
+  ati-vga: Implement foreground and background color register writes
+  ati-vga: Latch src and dst pitch and offset on master_cntl default
+  ati-vga: Fix DP_GUI_MASTER_CNTL register mask
+  ati-vga: Create dst and sc rectangle helpers
+  ati-vga: Implement scissor rectangle clipping for 2D operations
+  ati-vga: Create 2d_blt destination setup helper
+  ati-vga: Refactor ati_2d_blt to use dst setup helper
+  ati-vga: Implement HOST_DATA register writes
+  ati-vga: Implement HOST_DATA flush to VRAM
+
+ hw/display/ati.c      | 124 +++++++++++++-
+ hw/display/ati_2d.c   | 370 +++++++++++++++++++++++++++++++-----------
+ hw/display/ati_dbg.c  |   9 +
+ hw/display/ati_int.h  |  21 ++-
+ hw/display/ati_regs.h |  44 ++++-
+ 5 files changed, 467 insertions(+), 101 deletions(-)
+
 -- 
-2.49.0
+2.51.0
 
 
