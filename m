@@ -2,65 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1B0C68EDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 11:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDB3C68F28
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 12:00:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLJM4-0002Hj-8U; Tue, 18 Nov 2025 05:54:36 -0500
+	id 1vLJR6-00057O-Vr; Tue, 18 Nov 2025 05:59:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1vLJLz-0002Gp-08; Tue, 18 Nov 2025 05:54:31 -0500
-Received: from tor.source.kernel.org ([172.105.4.254])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1vLJLu-0007wJ-1m; Tue, 18 Nov 2025 05:54:27 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 7C73A60192;
- Tue, 18 Nov 2025 10:54:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF396C2BCAF;
- Tue, 18 Nov 2025 10:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1763463255;
- bh=tAkXN+13vI+etnX7QQ55xN7IwHc8AoV6kMD5t3mLpU0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=nVHsPmOaeq54Wx2fCaKDWu2+L49C9ALp3EOkp5UGPh/tN+9l9sbFs16u5xGLRp2th
- /bjAm4fVrFcNhp/iRrn50DDA+NkhM/YxszhS0AJLHOBRwnEDYoCweXKtq8aL7sETPI
- n0ofHU6Kv8AXTYpF/xyHSDeXKPpqwcEDR2ByL8oENIJPnhpwZ8TOiwjiJO2hsign9g
- EMzILgLmIwodT9+TNCbqjCqnGflTrnoPMLVAnrGWH2rsKtwTYNoumxgifB07QOmaq0
- RrU78rskIi+Rf5BQqWwQ/CCdkegZzyI2TGNysN2Bl1gs3+If49DBWO2gpdNTLu9nDx
- U0pSAFjbY/aHA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1vLJLf-00000002Wnt-2rHh; Tue, 18 Nov 2025 11:54:11 +0100
-Date: Tue, 18 Nov 2025 11:54:11 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>, 
- Gavin Shan <gshan@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, mchehab+huawei@kernel.org, 
- gengdongjiu1@gmail.com, mst@redhat.com, imammedo@redhat.com, armbru@redhat.com,
- anisinha@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
- philmd@linaro.org, wangyanan55@huawei.com, zhao1.liu@intel.com, 
- peter.maydell@linaro.org, pbonzini@redhat.com, shan.gavin@gmail.com, 
- zhangliang5@huawei.com
-Subject: Re: [PATCH v4 0/8] target/arm/kvm: Improve memory error handling
-Message-ID: <lghhh6xohwekbst2bbuqksiono5dgtrkyjxoypb4ahij2t2qgs@7dmgytmbiehd>
-References: <20251112172535.403042-1-gshan@redhat.com>
- <20251118104755.000024c8@huawei.com>
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1vLJR4-00055Y-St
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:47 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1vLJR3-00009T-7x
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:46 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7b9387df58cso1598156b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 02:59:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1763463583; x=1764068383; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Is3BbcfmauA71t6fvcSpUGDXXuuhKoITYqwGWhnwxuk=;
+ b=gpc3O3NfgoD3Pjqd9DBUw15ul6zjrXY88p6g3EjEkFKnWXfpKAGXW2cW0X/2TCTB+Y
+ 1ayO76SGGp0S73gXQ41FM1LK28kLrE0YlcSFI6bVspI75kfeGgNJlo1IiF+zAacWoTnF
+ 27/U3iwYLLKTJWkHKrlaYMq8QrotvSiXZUm7AoXz6MDLR/z21B0aGaB2mKO+EiaWWpKs
+ JOjSLvqHuZRVbCJ2Bj0mLMxGdYi5s6zYpjMhphcudKPKP+mB3BjQ4hnHhuNZMOTeLwvU
+ iENtTo31yvNwnNlhmiBtRWPdwqU8gkz7yzsFUjPlXdBkzjxhCS7YjuUH8aMIXV1xn2fA
+ 9xGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763463583; x=1764068383;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Is3BbcfmauA71t6fvcSpUGDXXuuhKoITYqwGWhnwxuk=;
+ b=RRCgkoKAIWhMX1sfp4Xnp1M5GrtcAmXCUzIGL+SKvh5vLwlvO4DSXXvljV5Z1i3cmc
+ sVI2A9MClIHiFSVBh+V3cbUkYg/U07FNz+PfZoewDdoEMV7rbL2TdHd6/KTrslgcVdyK
+ D7YdAGpG2rLjjq56qsjcGz5uvqgti5Lz4/J568PkYhkP7qbesa8pdlOtrAq2y1HApule
+ DZKBvqvDUrDh4zJykWMapVwVL9PxVSNLYN0/gB6cvgHcgTQnhhYy/GICYSTG/yPPzjWf
+ FNFdWqaKuaRmMTYknukqQ/MEMe8qSzIok38p2pmCz+4nm0VDe8t/U09CqukUiRazFvYp
+ dT7Q==
+X-Gm-Message-State: AOJu0YzMGGwgIVpVe7ckkCXUhu7GsOgFx1JWGEW7JqmT4F7IkKG5KKp8
+ wl0tX1muVAQOcV/svxAXuJDhYxQv7ztXJKXMW/zHKvIxQgSIKPIF3N0/kR7uAD2eVbfoNk2s/aY
+ +ejOn82w07xWQ6IiKCPtfgbU8jenMjhQSP14nbR9RMcIE4y/MmwfXhYF0kK1F/YFHL+0CpM262/
+ n/fFB56xUYkpM1XZIpHStodTWt3lYQnLBK9YPPMecXTrc=
+X-Gm-Gg: ASbGncuZ9xcBn4sCNb90UzTOR7GEWYBoe6LY4JkYLLfjQ7v+Wear8gAjnNw9GHtXZqT
+ ZJMoNqVzTQRBbY1aFrMjl6amx5V8hNHenoTXEyHasFkqpEXpOxxhFl24tzOqEXykpaymGZkpeVQ
+ t376kyKaB1VMiTD9n+rSswcBXoAF+U5vI5h1pblEFrDLQTg92ftGyYp9eHIVVjVPx7akOAYE6wn
+ U/Umkfah/1MJRsNgAXqubuJpYFljQfOStkVRDnvAe5uHn5yiF9whKtoduCod3b8FFC+aA0OSxTH
+ L/7fGIltAJfcwNwU6jfoL4tjfrTjY+xlvwH23TmigjavqHuY9o0PzNfaq+5paUfLnSNq+r2ppXI
+ RmZNSGbUtLKk2S2EwDPVGOngR1Gg5r3bntQ1XX4v75uCU84D3oyA819o6ULdsq/81cmqVHz1lIv
+ pE/3QaEPD7/1Ye9YIJ+2g5KQ670AZjaCTnUBflWupbn1UJ6V/b
+X-Google-Smtp-Source: AGHT+IFLea9ZvxKN0VmTFnwklXclNlNZD3sp+zhRfu/ROzmfWHLbucPjb4tPVJrGb9HA+xjW93+dkQ==
+X-Received: by 2002:a05:7022:f30e:b0:11b:9386:7ed2 with SMTP id
+ a92af1059eb24-11b93868332mr4049518c88.47.1763463582499; 
+ Tue, 18 Nov 2025 02:59:42 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-2a49db4a36asm43989903eec.5.2025.11.18.02.59.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Nov 2025 02:59:42 -0800 (PST)
+From: frank.chang@sifive.com
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH 0/3] Fix Zjpm implementation
+Date: Tue, 18 Nov 2025 18:59:33 +0800
+Message-ID: <20251118105936.2839054-1-frank.chang@sifive.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118104755.000024c8@huawei.com>
-Received-SPF: pass client-ip=172.105.4.254;
- envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=frank.chang@sifive.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,52 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 18, 2025 at 10:47:55AM +0000, Jonathan Cameron wrote:
-> On Thu, 13 Nov 2025 03:25:27 +1000
-> Gavin Shan <gshan@redhat.com> wrote:
-> 
-> > In the combination of 64KiB host and 4KiB guest, a problematic host
-> > page affects 16x guest pages. Those 16x guest pages are most likely
-> > owned by separate threads and accessed by the threads in parallel.
-> > It means 16x memory errors can be raised at once. However, we're
-> > unable to handle this situation because the only error source has
-> > one read acknowledgement register in current design. QEMU has to
-> > crash in the following path due to the previously delivered error
-> > isn't acknowledged by the guest on attempt to deliver another error.
-> > 
-> >   kvm_vcpu_thread_fn
-> >     kvm_cpu_exec
-> >       kvm_arch_on_sigbus_vcpu
-> >         kvm_cpu_synchronize_state
-> >         acpi_ghes_memory_errors
-> >         abort
-> > 
-> > This series fixes the issue by sending 16x consective CPER errors
-> > which are contained in a single GHES error block.
-> > 
-> > PATCH[1-4] Increases GHES raw data maximal length from 1KiB to 4KiB
-> > PATCH[5]   Supports multiple error records in a single error block
-> > PATCH[6-7] Improves the error handling in the error delivery path
-> > PATCH[8]   Sends 16x consective CPERs in a single block if needed
-> > 
-> 
-> Hi Gavin,
-> 
-> Just a quick head's up to say we've had some internal discussions around the
-> kernel handling of broader address masks in CPER and think it is probably
-> broken. Rectifying that may at least simplify what is needed on the QEMU side
-> of things and maybe even handle much larger blocks (2M and larger).
+From: Frank Chang <frank.chang@sifive.com>
 
-Btw, I just added a logic at rasdaemon to catch SIGBUS errors:
-https://github.com/mchehab/rasdaemon/pull/199
+The current Zjpm implementation has two issues:
 
-But so far, I didn't find a proper way to check such code.
+1. The address is shifted before obtaining the correct PMLEN value.
+2. riscv_pm_get_pmm() does not handle VS/VU modes correctly.
 
-Jonathan/Gavin,
+This patchset fixes the above issues and also renames
+riscv_pm_get_virt_pmm() to riscv_pm_get_vm_ldst_pmm(), as the helper
+is only used when checking the PMM configuration for virtual-machine
+load/store instructions (HLV.* and HSV.*), rather than for VS/VU modes.
 
-Do you know a good way for us to check how the mm SEA notification
-is handled with QEMU?
+Frank Chang (2):
+  target/riscv: Fix pointer masking PMM field selection logic
+  target/riscv: Rename riscv_pm_get_virt_pmm() to
+    riscv_pm_get_vm_ldst_pmm()
 
-Regards,
-Mauro
+Yong-Xuan Wang (1):
+  target/riscv: fix address masking
+
+ target/riscv/cpu.h        |  2 +-
+ target/riscv/cpu_helper.c | 24 ++++++++++++++++--------
+ target/riscv/internals.h  |  4 ++--
+ 3 files changed, 19 insertions(+), 11 deletions(-)
+
+--
+2.43.0
+
 
