@@ -2,73 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C95C67210
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFD0C67303
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:51:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLCIK-0004Kp-Cj; Mon, 17 Nov 2025 22:22:16 -0500
+	id 1vLCjW-0006GT-2q; Mon, 17 Nov 2025 22:50:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCI7-0003MO-GO
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:22:03 -0500
-Received: from mgamail.intel.com ([192.198.163.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCI5-0004Cz-IH
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:22:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763436122; x=1794972122;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0uF8jj575zYxVcWmkztmsgjmlH5SFSks+bBKxFEAv3A=;
- b=SXnw1JtrEcGiLRdoMWu2BvGRpA4jIpY31CecQSdToh5VmEG/o3P4pUOn
- iFGO4Hxs71FF0EnKWxBltgMexaM8xet/+HzDuhfcJJnRTtt8sOpewJSPj
- CpFF2a/vI3OJYlKl9P4U3weElci8CnJCO1Ds3zYRlw81QqQcWBFqTx4mk
- U7PD7cKBxODCt7tRFdQ+hodZw24jgB+1viDOJpUIgNMihrS34RY8w1I0U
- BhdDSKQ1xxN8gWV+lIf0gihbXOChTTJAuGS4AhIhxP0d/czzQHuS5UwPG
- 5Y1yMctBneAyfbPx2j34CDW3CUH5pe8ppkxxZ69tBah7GYDDmG1O8z7FH w==;
-X-CSE-ConnectionGUID: 1SjSTyZBTG6kD8RhhaZtHQ==
-X-CSE-MsgGUID: 6GNDG37XSZi9TeGDOe2qHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053959"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053959"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 19:21:38 -0800
-X-CSE-ConnectionGUID: yAf05xPZRri5ON25CMKy6A==
-X-CSE-MsgGUID: YjWtQHYSQQGvzBGxuphx5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537478"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:21:34 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- Xin Li <xin@zytor.com>, John Allen <john.allen@amd.com>,
- Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 23/23] i386/tdx: Add CET SHSTK/IBT into the supported CPUID
- by XFAM
-Date: Tue, 18 Nov 2025 11:42:31 +0800
-Message-Id: <20251118034231.704240-24-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251118034231.704240-1-zhao1.liu@intel.com>
-References: <20251118034231.704240-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@linaro.org>)
+ id 1vLCjR-0006Fq-TO
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:50:18 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@linaro.org>)
+ id 1vLCjO-0000v1-By
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:50:15 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5957e017378so5843728e87.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Nov 2025 19:50:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763437811; x=1764042611; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/YYBa4PpVDAlOdsy90H26Rh9+Rc0h1fgXzQPvbTBnJ8=;
+ b=THCDkSX4QzpOShB6zIZ8jMJF6bVn85wZBb6aeOYB9SYo6LNTuILbIYgPUDdZrHGEl3
+ d0/WiwdFGz+KUTer3rJD1Akr8WLhK9mg5oXTOfJoKHJEQ6rT1JcOaNS9SA6IyvJm2QQE
+ TMfrgOsyIpktDdZZ5aRT9DwprDncjJi/AlLLcUpqjEP+/qQmv39TSvMa1XfojHumgILB
+ 33EGZbhIBA58dkIQy/wwFUx9SW6Vo3YGp5Os0na9mc3pp7MKOhjhNipHTR5IZ6/kufn1
+ GQw/vyZ/I18j9YKl0FKk1AZJe1oevvLM7muZwwGg0w0p7Z9y/1RQzJlFUzjps18UMN94
+ 5dbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763437811; x=1764042611;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/YYBa4PpVDAlOdsy90H26Rh9+Rc0h1fgXzQPvbTBnJ8=;
+ b=grnqSZ/oSOIaipsamE7qExNJi6TQ5UIWElv4for3pNa4+phYB9GUqQj2J1cMAC3Prz
+ GEQzuDzB9vfCDlPjYUwaSyhdE8IaMZFU9AfuE585nKc3HHcxrB8AlDPffdxOeorNuNrT
+ yaUNJHJheP+v/20RKkSVpWWerSqeKYS81q++3TNSvQyIqbb8S7XuorydzRIYm/5F3hzt
+ krWEbyttBKxhEiEZ5YUxVVJb/+B1bexGEHGPUtr/F1u/9sB6z+vEJGMPwY6KdW+Jfmbm
+ LW/QxBE0OM5HiKTdiJaFs9a4/kuR5662bZs3YE5070dSXPusMKpTPiK+qLCZWzg21AVO
+ 0bgQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUgjSL3Z0v16gJXA8Ir3S1G7pg0dcvIJn6oKZM+Mhkb0flmS+sCLkn1dDCrjtk/eIKUGrgCVZ23X74N@nongnu.org
+X-Gm-Message-State: AOJu0YyBkzHxWMnGomPw1zjCi7AB1g7Uzy2qInrVreVaf9Ea+r7zU7qp
+ NbcAz+nXceBqj9DYrkBOFrCLnEIzJ9Po89tDAcW1m/Ooc0l/fE53tIdGTtMa8Gg8jcKSspFPKSH
+ fTQHhuB5D3sbRBUzw2QUfjx5qv3bG3u/1qvO8dvMSGQ==
+X-Gm-Gg: ASbGncvYc4qaT7tCiWgIyAk/B3qptkr5XiKxIT+OhuzJpVNu0vwpFtxyfXfMPAsdL19
+ 6PqCNNKgSi6F8uUI2gRgfavb66q5H8U1VK1nSquz/sL1/BatuY5HDZIVIxu5eJhn1HXF8WF/hFe
+ ITR6MYx+W9EUujwrZzBA8Sr5zzpvmxeZBiOqnFzPmjCTwIJH0Gxu7epZhcNlovXFJ3RAfrbYEQ9
+ iy1U8AEhTct64RndQVmyC3tFggtEBTOiDKwQj4HTrG2yVl7DnbI+oEUGO0=
+X-Google-Smtp-Source: AGHT+IFbpIvrRXrMOL+wB0jCx280hL8PUu9I6kYDKZn3cRCZrRyzEhBWqtHGGPllA9/hFh6C1D6eFlbfSN8PF0mGRwI=
+X-Received: by 2002:a05:6512:b05:b0:592:f7cf:9f6f with SMTP id
+ 2adb3069b0e04-595841a287amr5217964e87.14.1763437811224; Mon, 17 Nov 2025
+ 19:50:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20251031105005.24618-1-skolothumtho@nvidia.com>
+ <20251031105005.24618-15-skolothumtho@nvidia.com>
+In-Reply-To: <20251031105005.24618-15-skolothumtho@nvidia.com>
+From: Zhangfei Gao <zhangfei.gao@linaro.org>
+Date: Tue, 18 Nov 2025 11:49:58 +0800
+X-Gm-Features: AWmQ_bkuZd8W0hXs1QCRa9eWKcTPjGiBbqevhvrNYrTYQB2fyG4AOlPPGBzdLp0
+Message-ID: <CABQgh9Fk2qHkHbpepY0j8MaLe-TkxrVaMi_R3C-oD2HihK-wGA@mail.gmail.com>
+Subject: Re: [PATCH v5 14/32] hw/arm/smmuv3-accel: Install SMMUv3 GBPA based
+ hwpt
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, eric.auger@redhat.com, 
+ peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com, 
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com, mochs@nvidia.com, 
+ smostafa@google.com, wangzhou1@hisilicon.com, jiangkunkun@huawei.com, 
+ jonathan.cameron@huawei.com, zhenzhong.duan@intel.com, yi.l.liu@intel.com, 
+ kjaju@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=zhangfei.gao@linaro.org; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,39 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chenyi Qiang <chenyi.qiang@intel.com>
+Hi, Shameer
 
-So that it can be configured in TD guest.
+On Fri, 31 Oct 2025 at 18:53, Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+>
+> When the Guest reboots or updates the GBPA we need to attach a nested HWPT
+> based on the GBPA register values.
+>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>  hw/arm/smmuv3-accel.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  hw/arm/smmuv3-accel.h |  8 ++++++++
+>  hw/arm/smmuv3.c       |  2 ++
+>  3 files changed, 52 insertions(+)
+>
+> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
+> index c74e95a0ea..0573ae3772 100644
+> --- a/hw/arm/smmuv3-accel.c
+> +++ b/hw/arm/smmuv3-accel.c
+> @@ -479,6 +479,48 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
+>      .unset_iommu_device = smmuv3_accel_unset_iommu_device,
+>  };
+>
+> +
+> +/* Based on SMUUv3 GBPA configuration, attach a corresponding HWPT */
+> +void smmuv3_accel_gbpa_update(SMMUv3State *s)
+> +{
+> +    SMMUv3AccelDevice *accel_dev;
+> +    Error *local_err = NULL;
+> +    SMMUViommu *vsmmu;
+> +    uint32_t hwpt_id;
+> +
+> +    if (!s->accel || !s->s_accel->vsmmu) {
+> +        return;
+> +    }
+> +
+> +    vsmmu = s->s_accel->vsmmu;
+> +    /*
+> +     * The Linux kernel does not allow configuring GBPA MemAttr, MTCFG,
+> +     * ALLOCCFG, SHCFG, PRIVCFG, or INSTCFG fields for a vSTE. Host kernel
+> +     * has final control over these parameters. Hence, use one of the
+> +     * pre-allocated HWPTs depending on GBPA.ABORT value.
+> +     */
+> +    if (s->gbpa & SMMU_GBPA_ABORT) {
+> +        hwpt_id = vsmmu->abort_hwpt_id;
+> +    } else {
+> +        hwpt_id = vsmmu->bypass_hwpt_id;
+> +    }
+> +
+> +    QLIST_FOREACH(accel_dev, &vsmmu->device_list, next) {
+v4 has this, while v5 removes it.
+             if (!accel_dev->vdev)
+                continue;
 
-And considerring CET_U and CET_S bits are always same in supported
-XFAM reported by TDX module, i.e., either 00 or 11. So, only need to
-choose one of them.
+So I got a warning when accel_dev->vdev = NULL in the beginning.
+"Failed to attach GBPA hwpt id xx for dev id xx"
 
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes Since v3:
- - Refine the commit message.
----
- target/i386/kvm/tdx.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index a3444623657f..01619857685b 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -526,6 +526,8 @@ TdxXFAMDep tdx_xfam_deps[] = {
-     { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
-     { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
-     { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_ECX, CPUID_7_0_ECX_CET_SHSTK } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_EDX, CPUID_7_0_EDX_CET_IBT } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
--- 
-2.34.1
-
+Thanks
 
