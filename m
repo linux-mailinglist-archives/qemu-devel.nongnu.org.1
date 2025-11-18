@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C50AC67216
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38871C67231
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:24:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLCHw-0002VT-K7; Mon, 17 Nov 2025 22:21:52 -0500
+	id 1vLCI5-00033B-4D; Mon, 17 Nov 2025 22:22:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCHg-00028H-Qm
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:38 -0500
+ id 1vLCHr-0002TU-PR
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:47 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCHa-0004Hi-8Z
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:36 -0500
+ id 1vLCHg-0004Cz-Lw
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:21:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763436090; x=1794972090;
+ t=1763436097; x=1794972097;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7Y+10AA8RxhybijSx1coYUp7NV9ph4l57Sz0FOZYoxA=;
- b=VRSkfmDzg43ALX/g1Mc7AcrMIn6/AsRSPAdu5K0qzSQN68uHGqCA26EZ
- y5vvRZM7E7Hgd8/Bq3E6VUK265A6qNCOItaYwq5oyJOeI5G1kDgATnfeZ
- fZFfYjLMuG1AtXX9zZep5n2DdNcXGLDcWg4gJJXniNMkefST/gv2ujqLS
- SZtwXmEGk3JtHItqi1AyQKPz8GkdOf8X4OFe5kghWS2u+LBwkFezioSWO
- ruugsjcfoVLDo0UD+/DK55DkURqbB5rEy5Wh1RLmAJ3y9/wjmqE/G86mD
- kjCEgNiqTf6xcVAjK/ZTS40+Ub6R0ay23UP1DjM8XBwPO1EMXz2NE2es5 w==;
-X-CSE-ConnectionGUID: H4VjBGFrSMywJmUse5gJdw==
-X-CSE-MsgGUID: dXIE0Al1QgilbWbdajXfIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053896"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053896"
+ bh=Lnoh54IK1xdUE7ReHUApDtVaHR1nAbgq/jys15IExB8=;
+ b=cu2ivq/oCFaaMEMv0+dhcbvozQ7qwV4cK8wnfvYABuT/aU88arbDd4oV
+ 0pn+AL8gPfjSLsOFCbhvYciraGmt73DhMd3/Fn7TunOMz0uc/he/NS0Zv
+ 1n6LSR0ImLRF3vY+rgCOYp5DUZv2kYanbzimRFscf+K20RZ5AqCRfl2kd
+ jrYp1rEXm3EjLtQosP7izyKuREZJIiF08tMl6YSSwwbfU6DlcFcaX+KUg
+ ybWMpILbErTHsT4YlUtS5ZR7n8p4Ce+FuHfZzRsrsqhACFTr1K1paajZc
+ 9gdwFUDJS2npgs/Cs4nIAEDomP7Z3MVszIh37nqhOTv7QpaUz16hfBjmp Q==;
+X-CSE-ConnectionGUID: NpqbyXXLTMaMkPmekE21+Q==
+X-CSE-MsgGUID: +EmHwkvJTr6Wxo5bCgklUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053905"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053905"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 19:21:13 -0800
-X-CSE-ConnectionGUID: 2j+ZZLwKShGHa6BNPVxORA==
-X-CSE-MsgGUID: qs9qdH5nQLGfGnDJ/i30Rg==
+ 17 Nov 2025 19:21:17 -0800
+X-CSE-ConnectionGUID: 2sxYWs5mSRKM+l9YBIWrPA==
+X-CSE-MsgGUID: ocOj5Iz7TNGxnJo70sxTfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537320"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537340"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:21:09 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:21:13 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -50,12 +50,11 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yang Weijiang <weijiang.yang@intel.com>
-Subject: [PATCH v4 16/23] i386/kvm: Add save/restore support for
- KVM_REG_GUEST_SSP
-Date: Tue, 18 Nov 2025 11:42:24 +0800
-Message-Id: <20251118034231.704240-17-zhao1.liu@intel.com>
+ Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v4 17/23] i386/cpu: Migrate MSR_IA32_PL0_SSP for FRED and
+ CET-SHSTK
+Date: Tue, 18 Nov 2025 11:42:25 +0800
+Message-Id: <20251118034231.704240-18-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251118034231.704240-1-zhao1.liu@intel.com>
 References: <20251118034231.704240-1-zhao1.liu@intel.com>
@@ -86,117 +85,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Weijiang <weijiang.yang@intel.com>
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-CET provides a new architectural register, shadow stack pointer (SSP),
-which cannot be directly encoded as a source, destination or memory
-operand in instructions. But Intel VMCS & VMCB provide fields to
-save/load guest & host's ssp.
+Both FRED and CET-SHSTK need MSR_IA32_PL0_SSP, so add the vmstate for
+this MSR.
 
-It's necessary to save & restore Guest's ssp before & after migration.
-To support this, KVM implements Guest's SSP as a special KVM internal
-register - KVM_REG_GUEST_SSP, and allows QEMU to save & load it via
-KVM_GET_ONE_REG/KVM_SET_ONE_REG.
-
-Cache KVM_REG_GUEST_SSP in X86CPUState.
+When CET-SHSTK is not supported, MSR_IA32_PL0_SSP keeps accessible, but
+its value doesn't take effect. Therefore, treat this vmstate as a
+subsection rather than a fix for the previous FRED vmstate.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Co-developed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.h     |  3 ++-
- target/i386/kvm/kvm.c | 39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 1 deletion(-)
+Changes Since v3:
+ - New commit.
+---
+ target/i386/machine.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 661b798da4d0..c4412012c780 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1982,7 +1982,7 @@ typedef struct CPUArchState {
-     uint64_t fred_config;
- #endif
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index 45b7cea80aa7..0a756573b6cd 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -1668,6 +1668,31 @@ static const VMStateDescription vmstate_triple_fault = {
+     }
+ };
  
--    /* CET MSRs */
-+    /* CET MSRs and register */
-     uint64_t u_cet;
-     uint64_t s_cet;
-     uint64_t pl0_ssp; /* also used for FRED */
-@@ -1992,6 +1992,7 @@ typedef struct CPUArchState {
- #ifdef TARGET_X86_64
-     uint64_t int_ssp_table;
- #endif
-+    uint64_t guest_ssp;
- 
-     uint64_t tsc_adjust;
-     uint64_t tsc_deadline;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4eb58ca19d79..1ebe20f7fb57 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4292,6 +4292,35 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-     return kvm_buf_set_msrs(cpu);
- }
- 
-+static int kvm_put_kvm_regs(X86CPU *cpu)
++static bool pl0_ssp_needed(void *opaque)
 +{
++    X86CPU *cpu = opaque;
 +    CPUX86State *env = &cpu->env;
-+    int ret;
 +
-+    if ((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK)) {
-+        ret = kvm_set_one_reg(CPU(cpu), KVM_X86_REG_KVM(KVM_REG_GUEST_SSP),
-+                              &env->guest_ssp);
-+        if (ret) {
-+            return ret;
-+        }
++#ifdef TARGET_X86_64
++    if (env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
++        return true;
 +    }
-+    return 0;
++#endif
++
++    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
 +}
 +
-+static int kvm_get_kvm_regs(X86CPU *cpu)
-+{
-+    CPUX86State *env = &cpu->env;
-+    int ret;
++static const VMStateDescription vmstate_pl0_ssp = {
++    .name = "cpu/msr_pl0_ssp",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = pl0_ssp_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(env.pl0_ssp, X86CPU),
++        VMSTATE_END_OF_LIST()
++    }
++};
 +
-+    if ((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK)) {
-+        ret = kvm_get_one_reg(CPU(cpu), KVM_X86_REG_KVM(KVM_REG_GUEST_SSP),
-+                              &env->guest_ssp);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+    return 0;
-+}
- 
- static int kvm_get_xsave(X86CPU *cpu)
- {
-@@ -5445,6 +5474,11 @@ int kvm_arch_put_registers(CPUState *cpu, KvmPutState level, Error **errp)
-         error_setg_errno(errp, -ret, "Failed to set MSRs");
-         return ret;
+ const VMStateDescription vmstate_x86_cpu = {
+     .name = "cpu",
+     .version_id = 12,
+@@ -1817,6 +1842,7 @@ const VMStateDescription vmstate_x86_cpu = {
+ #endif
+         &vmstate_arch_lbr,
+         &vmstate_triple_fault,
++        &vmstate_pl0_ssp,
+         NULL
      }
-+    ret = kvm_put_kvm_regs(x86_cpu);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set KVM type registers");
-+        return ret;
-+    }
-     ret = kvm_put_vcpu_events(x86_cpu, level);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to set vCPU events");
-@@ -5517,6 +5551,11 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-         error_setg_errno(errp, -ret, "Failed to get MSRs");
-         goto out;
-     }
-+    ret = kvm_get_kvm_regs(cpu);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get KVM type registers");
-+        goto out;
-+    }
-     ret = kvm_get_apic(cpu);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to get APIC");
+ };
 -- 
 2.34.1
 
