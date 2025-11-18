@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5525CC66E68
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 02:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9085C67258
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:24:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLAx2-0005Pd-5o; Mon, 17 Nov 2025 20:56:12 -0500
+	id 1vLCKg-0004Bn-5J; Mon, 17 Nov 2025 22:24:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1vLAwo-0005PC-H2
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 20:55:59 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vLCKc-0004Ac-IG; Mon, 17 Nov 2025 22:24:38 -0500
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1vLAwk-0007ux-JH
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 20:55:57 -0500
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8CxK9Ij0htpOL0kAA--.11427S3;
- Tue, 18 Nov 2025 09:55:47 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJDxrcEg0htpz7g2AQ--.60648S3;
- Tue, 18 Nov 2025 09:55:46 +0800 (CST)
-Subject: Re: [PATCH V3 2/2] fix pci device can't alloc irq from fdt
-To: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>
-References: <cover.1763347485.git.lixianglai@loongson.cn>
- <894d7a034593e5ccd53b7f3695569c05cd2620e0.1763347485.git.lixianglai@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <4e77e390-6c09-96f7-4732-b2601e69c5fb@loongson.cn>
-Date: Tue, 18 Nov 2025 09:53:20 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vLCKX-0004rB-MC; Mon, 17 Nov 2025 22:24:37 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDX3mLe5htp1KZGAg--.28S2;
+ Tue, 18 Nov 2025 11:24:14 +0800 (CST)
+Received: from [10.31.62.13] (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwCX8O3Z5htpoX0FAA--.10819S2;
+ Tue, 18 Nov 2025 11:24:10 +0800 (CST)
+Message-ID: <225c5e16-8e50-495e-9785-05edf25ce86f@phytium.com.cn>
+Date: Tue, 18 Nov 2025 11:24:09 +0800
 MIME-Version: 1.0
-In-Reply-To: <894d7a034593e5ccd53b7f3695569c05cd2620e0.1763347485.git.lixianglai@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 1/3] hw/misc: introduce iommu-testdev for bare-metal
+ IOMMU testing
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251112162152.447327-1-tangtao1634@phytium.com.cn>
+ <20251112162152.447327-2-tangtao1634@phytium.com.cn>
+ <b087405f179f2d2b8c4224c87c2c562455b9ab6d.camel@eviden.com>
+ <7f38ee63-eb24-460c-b8b3-51f3402c4d69@phytium.com.cn>
+ <875xb8l4ns.fsf@draig.linaro.org>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <875xb8l4ns.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxrcEg0htpz7g2AQ--.60648S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZF1kGF4rXr4DWrWfCr47Jrc_yoWrKF1rpr
- WDC3ZIgrWIqr1I939xA3WUWF15Kr1fCFyUJwnxXr10kwnxuw1xXr4DK3y7tFy7K3ykJayU
- XFnIgayIg3WUJagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.064,
+X-CM-TRANSID: AQAAfwCX8O3Z5htpoX0FAA--.10819S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQARBWkaMBEG7wAHsp
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxWFyfWry3ur4rWr47Cr13XFb_yoWrWF1UpF
+ 93GFy3tFWUJrn7Cr4Sqw18GryFv348Jw4UXr13JFn5Xr90yr10qr1jgrWFgFykJrWrJF1U
+ Zw1DtF17uw15AFJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,135 +82,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Alex
 
+On 2025/11/18 05:39, Alex Bennée wrote:
+> Tao Tang <tangtao1634@phytium.com.cn> writes:
+>
+>> Hi Clement,
+>>
+>> On 2025/11/13 15:02, CLEMENT MATHIEU--DRIF wrote:
+>>> Hi Tao,
+>>>
+>>> On Thu, 2025-11-13 at 00:21 +0800, Tao Tang wrote:
+>>>> Add a minimal PCI test device designed to exercise IOMMU translation
+>>>> (such as ARM SMMUv3) without requiring guest firmware or OS. The device
+>>>> provides MMIO registers to configure and trigger DMA operations with
+>>>> controllable attributes (security state, address space), enabling
+>>>> deterministic IOMMU testing.
+>>>>
+>>>> Key features:
+>>>> - Bare-metal IOMMU testing via simple MMIO interface
+>>>> - Configurable DMA attributes for security states and address spaces
+>>>> - Write-then-read verification pattern with automatic result checking
+>>>>
+>>>> The device performs a deterministic DMA test pattern: write a known
+>>>> value(0x88888888) to a configured IOVA, read it back, and verify data
+>>>> integrity. Results are reported through a dedicated result register,
+>>>> eliminating the need for complex interrupt handling or driver
+>>>> infrastructure in tests.
+>>>>
+>>>> This is purely a test device and not intended for production use or
+>>>> machine realism. It complements existing test infrastructure like
+>>>> pci-testdev but focuses specifically on IOMMU translation path
+>>>> validation.
+>>>>
+>>>> Signed-off-by: Tao Tang <[tangtao1634@phytium.com.cn](mailto:tangtao1634@phytium.com.cn)>
+>>>> ---
+>>>>    docs/specs/index.rst            |   1 +
+>>>>    docs/specs/iommu-testdev.rst    |  96 +++++++++++
+>>>>    hw/misc/Kconfig                 |   5 +
+>>>>    hw/misc/iommu-testdev.c         | 292 ++++++++++++++++++++++++++++++++
+>>>>    hw/misc/meson.build             |   1 +
+>>>>    hw/misc/trace-events            |  10 ++
+>>>>    include/hw/misc/iommu-testdev.h |  78 +++++++++
+>>>>    7 files changed, 483 insertions(+)
+>>>>    create mode 100644 docs/specs/iommu-testdev.rst
+>>>>    create mode 100644 hw/misc/iommu-testdev.c
+>>>>    create mode 100644 include/hw/misc/iommu-testdev.h
+>>>>
+>>>> ------------------------------<snip>------------------------------
+>>>>
+>>>>
+>>>>
+>>>> ------------------------------<snip>------------------------------
+>>>> +
+>>>> +static void iommu_testdev_maybe_run_dma(IOMMUTestDevState *s)
+>>>> +{
+>>>> +    int i, j, remaining_bytes;
+>>> I think i and j could be declared in their respective loop
+>>
+>> Thanks a lot for taking the time to review the patch. All your
+>> suggestions are excellent and make a lot of sense.
+>>
+>>
+>> Move the i and j loop variable declarations into their respective for
+>> loops sounds a good idea. But I wasn't entirely sure if QEMU had a
+>> strict code style requirement for this, such as mandating all
+>> variables be defined at the start of the function before any
+>> executable code (C89 style), so I appreciate the clarification.
+>>
+> <snip>
+>
+> We have a special exemption, from style.rst:
+>
+>    Mixed declarations (interleaving statements and declarations within
+>    blocks) are generally not allowed; declarations should be at the beginning
+>    of blocks. To avoid accidental re-use it is permissible to declare
+>    loop variables inside for loops:
+>
+>    .. code-block:: c
+>
+>        for (int i = 0; i < ARRAY_SIZE(thing); i++) {
+>            /* do something loopy */
+>        }
+>
+>    Every now and then, an exception is made for declarations inside a
+>    #ifdef or #ifndef block: if the code looks nicer, such declarations can
+>    be placed at the top of the block even if there are statements above.
+>    On the other hand, however, it's often best to move that #ifdef/#ifndef
+>    block to a separate function altogether.
+>
 
-On 2025/11/17 下午3:14, Xianglai Li wrote:
-> When we use the -kernel parameter to start an elf format kernel relying on
-> fdt, we get the following error:
-> 
-> pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
-> pcieport 0000:00:01.0: enabling device (0000 -> 0003)
-> pcieport 0000:00:01.0: PME: Signaling with IRQ 19
-> pcieport 0000:00:01.0: AER: enabled with IRQ 19
-> pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
-> pcieport 0000:00:01.1: enabling device (0000 -> 0003)
-> pcieport 0000:00:01.1: PME: Signaling with IRQ 20
-> pcieport 0000:00:01.1: AER: enabled with IRQ 20
-> pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
-> pcieport 0000:00:01.2: enabling device (0000 -> 0003)
-> pcieport 0000:00:01.2: PME: Signaling with IRQ 21
-> pcieport 0000:00:01.2: AER: enabled with IRQ 21
-> pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
-> pcieport 0000:00:01.3: enabling device (0000 -> 0003)
-> pcieport 0000:00:01.3: PME: Signaling with IRQ 22
-> pcieport 0000:00:01.3: AER: enabled with IRQ 22
-> pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
-> 
-> This is because  the description of interrupt-cell is missing in the pcie
-> irq map.  And there is a lack of a description of the interrupt trigger
-> type.  Now it is corrected and the correct interrupt-cell is added in the
-> pcie irq map.
-> 
-> Refer to the implementation in arm and add some comments.
-> 
-> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> ---
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Cc: Song Gao <gaosong@loongson.cn>
-> 
->   hw/loongarch/virt-fdt-build.c | 44 ++++++++++++++++++++++-------------
->   1 file changed, 28 insertions(+), 16 deletions(-)
-> 
-> diff --git a/hw/loongarch/virt-fdt-build.c b/hw/loongarch/virt-fdt-build.c
-> index 7333019cf7..52082b2483 100644
-> --- a/hw/loongarch/virt-fdt-build.c
-> +++ b/hw/loongarch/virt-fdt-build.c
-> @@ -321,6 +321,8 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
->       uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 10] = {};
->       uint32_t *irq_map = full_irq_map;
->       const MachineState *ms = MACHINE(lvms);
-> +    uint32_t pin_mask;
-> +    uint32_t devfn_mask;
->   
->       /*
->        * This code creates a standard swizzle of interrupts such that
-> @@ -333,37 +335,45 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
->        */
->   
->       for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-> -        int devfn = dev * 0x8;
-> +        int devfn = PCI_DEVFN(dev, 0);
->   
->           for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-> -            int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-> +            int irq_nr = VIRT_DEVICE_IRQS + \
-> +                         ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
->               int i = 0;
->   
-> -            /* Fill PCI address cells */
-> -            irq_map[i] = cpu_to_be32(devfn << 8);
-> -            i += 3;
-> -
-> -            /* Fill PCI Interrupt cells */
-> -            irq_map[i] = cpu_to_be32(pin + 1);
-> -            i += 1;
-> -
-> -            /* Fill interrupt controller phandle and cells */
-> -            irq_map[i++] = cpu_to_be32(*pch_pic_phandle);
-> -            irq_map[i++] = cpu_to_be32(irq_nr);
-> +            uint32_t map[] = {
-> +                cpu_to_be16(devfn), 0, 0,     /* devfn */
-here it seems that it should be devfn << 8 rather than cpu_to_be16(devfn).
+Thanks for the clarification and the pointer to style.rst.
+Good to know for (int i = ...) is explicitly allowed — I’ll update the 
+patch to declare the loop variables in the for headers in v4.
 
-Otherwise look good to me.
-
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-> +                pin + 1,                      /* PCI pin */
-> +                *pch_pic_phandle,             /* interrupt controller handle */
-> +                irq_nr,                       /* irq number */
-> +                FDT_IRQ_TYPE_LEVEL_HIGH };    /* irq trigger level */
->   
->               if (!irq_map_stride) {
-> -                irq_map_stride = i;
-> +                irq_map_stride = sizeof(map) / sizeof(uint32_t);
->               }
-> +
-> +            /* Convert map to big endian */
-> +            for (i = 0; i < irq_map_stride; i++) {
-> +                irq_map[i] = cpu_to_be32(map[i]);
-> +            }
-> +
->               irq_map += irq_map_stride;
->           }
->       }
->   
-> -
->       qemu_fdt_setprop(ms->fdt, nodename, "interrupt-map", full_irq_map,
->                        PCI_NUM_PINS * PCI_NUM_PINS *
->                        irq_map_stride * sizeof(uint32_t));
-> +
-> +    /* The pci slot only needs to specify the matching of the lower bit */
-> +    devfn_mask = cpu_to_be16(PCI_DEVFN((PCI_NUM_PINS - 1), 0));
-> +    /* The pci interrupt only needs to match the specified low bit */
-> +    pin_mask = (1 << ((PCI_NUM_PINS - 1))) - 1;
-> +
->       qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupt-map-mask",
-> -                     0x1800, 0, 0, 0x7);
-> +                           devfn_mask, 0, 0,  /* address cells */
-> +                           pin_mask);
->   }
->   
->   static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
-> @@ -400,6 +410,8 @@ static void fdt_add_pcie_node(const LoongArchVirtMachineState *lvms,
->                                    2, base_mmio, 2, size_mmio);
->       qemu_fdt_setprop_cells(ms->fdt, nodename, "msi-map",
->                              0, *pch_msi_phandle, 0, 0x10000);
-> +
-> +    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
->       fdt_add_pcie_irq_map_node(lvms, nodename, pch_pic_phandle);
->       g_free(nodename);
->   }
-> 
+Best regards,
+Tao
 
 
