@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD70C671FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38A3C671EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:21:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLCGa-0001IB-QU; Mon, 17 Nov 2025 22:20:28 -0500
+	id 1vLCGd-0001JB-9y; Mon, 17 Nov 2025 22:20:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCGY-0001Hy-Rm
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:26 -0500
+ id 1vLCGb-0001J1-R1
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:29 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCGX-0004Cz-5k
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:26 -0500
+ id 1vLCGa-0004Cz-1V
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763436025; x=1794972025;
+ t=1763436028; x=1794972028;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=enKcO38L6D4368mFk9WuGh+dSr2WFd6BUxl4+hq0Pz4=;
- b=HBYI7k617H5oqeSL+lNSk0IluxoOiDBM11bws3uZxZkzXCgZ2tdWyZE9
- RQok+joCbGAN9B8ixY0PPfe6YFpVE/ra8Qf2KZmkclnP5uG+0ROxq3bq9
- S6ftAuY/b7SmBR3+uWFbQGe6BPTYaOvzCim5TaZn5EZUHuKE9AlPNM1eB
- BmLKtwQg4AX80dQ68Qht+RIjk/miK0315m0/pFVGGogvxcV0LK5ul4wNr
- HwuIyqGVuyw+YkW0rpP8wcuchlD/8vp9foZKaP1r7hcwVfFU0yi/LUDlo
- 2WjR/Vlrw+eQuPwaKCRUFAf7dCxEQ1nl7Yw/+8yl8zUwWD3mVZ1feblvr A==;
-X-CSE-ConnectionGUID: Q+H5fnxbTAeqfgqICsKk2g==
-X-CSE-MsgGUID: 08VedOSbTBGX86aKV1QSYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053738"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053738"
+ bh=8C3Jr7X1l8TpBRvZp6B109oTdbjj9lF4vCeG//3Doqk=;
+ b=kEdLMrBMgV8Wl7Pi2m/fAj66XwZIPxWolo2sON9V+tDALvwQvQq9S7vD
+ ljORfvixVzYjQtnOIaH+9M0Msy0R9cNacY/PvrVeWH3PYEEd1S4JTy4ek
+ AFct1XjfLSIQYQz7aPeYkoqAjITAn+ImSto/0xVWlktnKpMVB8BDjhvRX
+ 6XMNEvkaxHAhQN9yWOk4STIyAQ/Fo8xtUh2ZyIAz50JRxstTDSNlqn6Lt
+ fvr7icn6RYe1zGaWLKNWJ6fmrBjeQRyMvbJ4VL4niXfcChtZ2LMy4z48/
+ 7nQLUzlxlFTxl/vPGa2U7EBr39vo15X0uUap+oEEhFySqZzua+IKb2Yuw g==;
+X-CSE-ConnectionGUID: 10uLzF/mSoujAzA401JzDg==
+X-CSE-MsgGUID: MSP4xc5BQJqTfnxG6ZM1LA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053745"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053745"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 19:20:24 -0800
-X-CSE-ConnectionGUID: KloAmZodSrWOopC6xpWqrg==
-X-CSE-MsgGUID: B3BIwUb5Rsuu6KBSN/t8IA==
+ 17 Nov 2025 19:20:28 -0800
+X-CSE-ConnectionGUID: uSrAk/myTAuRrbqhnqyNbg==
+X-CSE-MsgGUID: dL83uZetQhGlRy+SVpzJBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537139"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537149"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:20:20 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:20:24 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,9 +51,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 02/23] i386/cpu: Clean up arch lbr xsave struct and comment
-Date: Tue, 18 Nov 2025 11:42:10 +0800
-Message-Id: <20251118034231.704240-3-zhao1.liu@intel.com>
+Subject: [PATCH v4 03/23] i386/cpu: Reorganize arch lbr structure definitions
+Date: Tue, 18 Nov 2025 11:42:11 +0800
+Message-Id: <20251118034231.704240-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251118034231.704240-1-zhao1.liu@intel.com>
 References: <20251118034231.704240-1-zhao1.liu@intel.com>
@@ -84,74 +84,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Arch LBR state is area 15, not 19. Fix this comment. And considerring
-other areas don't mention user or supervisor state, for consistent
-style, remove "Supervisor mode" from its comment.
+- Move ARCH_LBR_NR_ENTRIES macro and LBREntry definition before XSAVE
+  areas definitions.
+- Reorder XSavesArchLBR (area 15) between XSavePKRU (area 9) and
+  XSaveXTILECFG (area 17), and reorder the related QEMU_BUILD_BUG_ON
+  check to keep the same ordering.
 
-Moreover, rename XSavesArchLBR to XSaveArchLBR since there's no need to
-emphasize XSAVES in naming; the XSAVE related structure is mainly
-used to represent memory layout.
-
-In addition, arch lbr specifies its offset of xsave component as 0. But
-this cannot help on anything. The offset of ExtSaveArea is initialized
-by accelerators (e.g., hvf_cpu_xsave_init(), kvm_cpu_xsave_init() and
-x86_tcg_cpu_xsave_init()), so explicitly setting the offset doesn't
-work and CPUID 0xD encoding has already ensure supervisor states won't
-have non-zero offsets. Drop the offset initialization and its comment
-from the xsave area of arch lbr.
+This makes xsave structures to be organized together and makes them
+clearer.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 Reviewed-by: Zide Chen <zide.chen@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 3 +--
- target/i386/cpu.h | 8 ++++----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ target/i386/cpu.h | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c598f09f3d50..34a4c2410d03 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2058,8 +2058,7 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
-     },
-     [XSTATE_ARCH_LBR_BIT] = {
-         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
--        .offset = 0 /*supervisor mode component, offset = 0 */,
--        .size = sizeof(XSavesArchLBR),
-+        .size = sizeof(XSaveArchLBR),
-     },
-     [XSTATE_XTILE_CFG_BIT] = {
-         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index cee1f692a1c3..c95b772719ce 100644
+index c95b772719ce..a183394eca7f 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1747,15 +1747,15 @@ typedef struct {
+@@ -1652,6 +1652,14 @@ typedef struct {
  
- #define ARCH_LBR_NR_ENTRIES            32
+ #define NB_OPMASK_REGS 8
  
--/* Ext. save area 19: Supervisor mode Arch LBR state */
--typedef struct XSavesArchLBR {
-+/* Ext. save area 15: Arch LBR state */
-+typedef struct XSaveArchLBR {
++typedef struct {
++    uint64_t from;
++    uint64_t to;
++    uint64_t info;
++} LBREntry;
++
++#define ARCH_LBR_NR_ENTRIES 32
++
+ /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
+  * that APIC ID hasn't been set yet
+  */
+@@ -1729,24 +1737,6 @@ typedef struct XSavePKRU {
+     uint32_t padding;
+ } XSavePKRU;
+ 
+-/* Ext. save area 17: AMX XTILECFG state */
+-typedef struct XSaveXTILECFG {
+-    uint8_t xtilecfg[64];
+-} XSaveXTILECFG;
+-
+-/* Ext. save area 18: AMX XTILEDATA state */
+-typedef struct XSaveXTILEDATA {
+-    uint8_t xtiledata[8][1024];
+-} XSaveXTILEDATA;
+-
+-typedef struct {
+-       uint64_t from;
+-       uint64_t to;
+-       uint64_t info;
+-} LBREntry;
+-
+-#define ARCH_LBR_NR_ENTRIES            32
+-
+ /* Ext. save area 15: Arch LBR state */
+ typedef struct XSaveArchLBR {
      uint64_t lbr_ctl;
-     uint64_t lbr_depth;
-     uint64_t ler_from;
-     uint64_t ler_to;
-     uint64_t ler_info;
+@@ -1757,6 +1747,16 @@ typedef struct XSaveArchLBR {
      LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
--} XSavesArchLBR;
-+} XSaveArchLBR;
+ } XSaveArchLBR;
  
++/* Ext. save area 17: AMX XTILECFG state */
++typedef struct XSaveXTILECFG {
++    uint8_t xtilecfg[64];
++} XSaveXTILECFG;
++
++/* Ext. save area 18: AMX XTILEDATA state */
++typedef struct XSaveXTILEDATA {
++    uint8_t xtiledata[8][1024];
++} XSaveXTILEDATA;
++
  QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
  QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
-@@ -1766,7 +1766,7 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveBNDCSR) != 0x40);
+@@ -1764,9 +1764,9 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveOpmask) != 0x40);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveZMM_Hi256) != 0x200);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
  QEMU_BUILD_BUG_ON(sizeof(XSavePKRU) != 0x8);
++QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
  QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
  QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
--QEMU_BUILD_BUG_ON(sizeof(XSavesArchLBR) != 0x328);
-+QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+-QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
  
  typedef struct ExtSaveArea {
      uint32_t feature, bits;
