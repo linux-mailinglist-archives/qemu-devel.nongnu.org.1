@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA1EC671FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056E4C671E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 04:21:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLCGl-0001KG-Aq; Mon, 17 Nov 2025 22:20:39 -0500
+	id 1vLCGp-0001L9-BM; Mon, 17 Nov 2025 22:20:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCGi-0001Jv-KE
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:36 -0500
+ id 1vLCGm-0001Kf-GO
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:40 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLCGg-0004Cz-VH
- for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:36 -0500
+ id 1vLCGk-0004Cz-Ey
+ for qemu-devel@nongnu.org; Mon, 17 Nov 2025 22:20:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763436035; x=1794972035;
+ t=1763436039; x=1794972039;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c/VS1/2chdkAwU46yWRjXngVNYQ5YwGggg1BKVSm57Q=;
- b=PE74lcJ61nzG6wCsObaOQj2uALLMwp7uXZr087i1vHzARdblHzxCVj0S
- V6wihAGsUdpbE7DCmHairXtMI9qaohXRBkDuFYq50khMUO4wkqW007lax
- EArPz9XlL9K1LpvV9uDGqxW8AacrMCNDJ9gfEeFD+ULRNPcBpnALD/Bwi
- ooBknLQkTn7d+egyZmqMnVzO2BEyG2J9TEtS/FHKIzk/8Tj4Fk6v5u17C
- 2+JpibM3JZN3D4MfhsOgf6C5HnIXD+ArD4uCGBaUgTt6nmNBwTEPO1Vk+
- 4xLCoASqhi7dOEwBvwuPkOwbdixKU7MXWjY+7hYlCnvDRdr8YkvWF9LVF A==;
-X-CSE-ConnectionGUID: 99dnE949Rnage0cqfqp3rQ==
-X-CSE-MsgGUID: /Zrdn6x7T0u1zUW4pfm6PQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053767"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053767"
+ bh=itRs9sDLTa1KpZpW5WfGEJxQx/1ikIuO3q3OzD0yhqQ=;
+ b=V75okEjy3q5bmUGMeLMMkajCYUMqvhJAURW54iPsoWATZVvTj6LaVyHW
+ UAqknduuOiDJvnxYCTM+HUmalqOR1KD090+matzIkggfPZFGFcE/Y3VYc
+ qPOoC9lIwevXaS+xLHvL4QUFnyW58vDZcZJ8lQyHTwmtmcuu7Y7MYTemD
+ K1f70PNh5fBenz74mlFFdt93rbj4YF6KlAkKSzKPkqiWX2AWQcrgZrrYS
+ y92XHVb7qaFuyjLFdDzER8IPkmSeNZFvrXBdekmhRKvRIRNPE2EzwMAQ1
+ ddmeiL7mfPLFSuowP1U7wgl7ORnPoQ0ityjAYKyEBRQ313IGi2sDUd1Jt g==;
+X-CSE-ConnectionGUID: 1IaNTNTXQs6UEVI+hO7j9w==
+X-CSE-MsgGUID: ZEDydnCPTPWs7HUG1wGsjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="68053779"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="68053779"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 19:20:34 -0800
-X-CSE-ConnectionGUID: tY2UtiO5SReuvQs52PsQQw==
-X-CSE-MsgGUID: 6S7lQ1wKSUGghZcA7lHJdQ==
+ 17 Nov 2025 19:20:38 -0800
+X-CSE-ConnectionGUID: +RhnrtYQTviyFlq2NTlZug==
+X-CSE-MsgGUID: 2T4g6T12T0uBMeJ7MFDFzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537165"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="221537175"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:20:31 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 19:20:34 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,10 +51,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 05/23] i386/cpu: Add avx10 dependency for
- Opmask/ZMM_Hi256/Hi16_ZMM
-Date: Tue, 18 Nov 2025 11:42:13 +0800
-Message-Id: <20251118034231.704240-6-zhao1.liu@intel.com>
+Subject: [PATCH v4 06/23] i386/kvm: Initialize x86_ext_save_areas[] based on
+ KVM support
+Date: Tue, 18 Nov 2025 11:42:14 +0800
+Message-Id: <20251118034231.704240-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251118034231.704240-1-zhao1.liu@intel.com>
 References: <20251118034231.704240-1-zhao1.liu@intel.com>
@@ -85,54 +85,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With feature array in ExtSaveArea, add avx10 as the second dependency
-for Opmask/ZMM_Hi256/Hi16_ZMM xsave components, and drop the special
-check in cpuid_has_xsave_feature().
+At present, in KVM, x86_ext_save_areas[] is initialized based on Host
+CPUIDs.
+
+Except AMX xstates, both user & supervisor xstates have their
+information exposed in KVM_GET_SUPPORTED_CPUID. Therefore, their entries
+in x86_ext_save_areas[] should be filled based on KVM support.
+
+For AMX xstates (XFEATURE_MASK_XTILE_DATA and XFEATURE_MASK_XTILE_CFG),
+KVM doesn't report their details before they (mainly
+XSTATE_XTILE_DATA_MASK) get permission on host. But this happens within
+the function kvm_request_xsave_components(), after the current
+initialization. So still fill AMX entries with Host CPUIDs.
+
+In addition, drop a check: "if (eax != 0)" when assert the assert the
+size of xstate. In fact, this check is incorrect, since any valid
+xstate should have non-zero size of xstate area.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Changes Since v3:
+ - New commit.
+---
+ target/i386/cpu.h         |  3 +++
+ target/i386/kvm/kvm-cpu.c | 23 +++++++++++++++++------
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e495e6d9b21c..70a282668f72 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2054,18 +2054,21 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
-         .size = sizeof(XSaveOpmask),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_ZMM_Hi256_BIT] = {
-         .size = sizeof(XSaveZMM_Hi256),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_Hi16_ZMM_BIT] = {
-         .size = sizeof(XSaveHi16_ZMM),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_PKRU_BIT] = {
-@@ -8648,12 +8651,6 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
-         }
-     }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 3d74afc5a8e7..f065527757c4 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -609,6 +609,9 @@ typedef enum X86Seg {
  
--    if (esa->features[0].index == FEAT_7_0_EBX &&
--        esa->features[0].mask == CPUID_7_0_EBX_AVX512F &&
--        (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
--        return true;
--    }
--
-     return false;
+ #define XSTATE_DYNAMIC_MASK             (XSTATE_XTILE_DATA_MASK)
+ 
++#define XSTATE_XTILE_MASK               (XSTATE_XTILE_DATA_MASK | \
++                                         XSTATE_XTILE_CFG_MASK)
++
+ #define ESA_FEATURE_ALIGN64_BIT         1
+ #define ESA_FEATURE_XFD_BIT             2
+ 
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 9c25b5583955..2e2d47d2948a 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -136,7 +136,7 @@ static void kvm_cpu_max_instance_init(X86CPU *cpu)
+ static void kvm_cpu_xsave_init(void)
+ {
+     static bool first = true;
+-    uint32_t eax, ebx, ecx, edx;
++    uint32_t eax, ebx, ecx, unused;
+     int i;
+ 
+     if (!first) {
+@@ -154,12 +154,23 @@ static void kvm_cpu_xsave_init(void)
+         if (!esa->size) {
+             continue;
+         }
+-        host_cpuid(0xd, i, &eax, &ebx, &ecx, &edx);
+-        if (eax != 0) {
+-            assert(esa->size == eax);
+-            esa->offset = ebx;
+-            esa->ecx = ecx;
++
++        /*
++         * AMX xstates are supported in KVM_GET_SUPPORTED_CPUID only when
++         * XSTATE_XTILE_DATA_MASK gets guest permission in
++         * kvm_request_xsave_components().
++         */
++        if (!((1 << i) & XSTATE_XTILE_MASK)) {
++            eax = kvm_arch_get_supported_cpuid(kvm_state, 0xd, i, R_EAX);
++            ebx = kvm_arch_get_supported_cpuid(kvm_state, 0xd, i, R_EBX);
++            ecx = kvm_arch_get_supported_cpuid(kvm_state, 0xd, i, R_ECX);
++        } else {
++            host_cpuid(0xd, i, &eax, &ebx, &ecx, &unused);
+         }
++
++        assert(esa->size == eax);
++        esa->offset = ebx;
++        esa->ecx = ecx;
+     }
  }
  
 -- 
