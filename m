@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDB3C68F28
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 12:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FA0C68F31
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 12:00:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLJR6-00057O-Vr; Tue, 18 Nov 2025 05:59:49 -0500
+	id 1vLJR8-0005BW-I8; Tue, 18 Nov 2025 05:59:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vLJR4-00055Y-St
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:47 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1vLJR6-00057P-IZ
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:48 -0500
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vLJR3-00009T-7x
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:46 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7b9387df58cso1598156b3a.3
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 02:59:44 -0800 (PST)
+ id 1vLJR5-0000A6-AV
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:59:48 -0500
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-bc0e89640b9so3680116a12.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 02:59:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1763463583; x=1764068383; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Is3BbcfmauA71t6fvcSpUGDXXuuhKoITYqwGWhnwxuk=;
- b=gpc3O3NfgoD3Pjqd9DBUw15ul6zjrXY88p6g3EjEkFKnWXfpKAGXW2cW0X/2TCTB+Y
- 1ayO76SGGp0S73gXQ41FM1LK28kLrE0YlcSFI6bVspI75kfeGgNJlo1IiF+zAacWoTnF
- 27/U3iwYLLKTJWkHKrlaYMq8QrotvSiXZUm7AoXz6MDLR/z21B0aGaB2mKO+EiaWWpKs
- JOjSLvqHuZRVbCJ2Bj0mLMxGdYi5s6zYpjMhphcudKPKP+mB3BjQ4hnHhuNZMOTeLwvU
- iENtTo31yvNwnNlhmiBtRWPdwqU8gkz7yzsFUjPlXdBkzjxhCS7YjuUH8aMIXV1xn2fA
- 9xGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763463583; x=1764068383;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=sifive.com; s=google; t=1763463585; x=1764068385; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Is3BbcfmauA71t6fvcSpUGDXXuuhKoITYqwGWhnwxuk=;
- b=RRCgkoKAIWhMX1sfp4Xnp1M5GrtcAmXCUzIGL+SKvh5vLwlvO4DSXXvljV5Z1i3cmc
- sVI2A9MClIHiFSVBh+V3cbUkYg/U07FNz+PfZoewDdoEMV7rbL2TdHd6/KTrslgcVdyK
- D7YdAGpG2rLjjq56qsjcGz5uvqgti5Lz4/J568PkYhkP7qbesa8pdlOtrAq2y1HApule
- DZKBvqvDUrDh4zJykWMapVwVL9PxVSNLYN0/gB6cvgHcgTQnhhYy/GICYSTG/yPPzjWf
- FNFdWqaKuaRmMTYknukqQ/MEMe8qSzIok38p2pmCz+4nm0VDe8t/U09CqukUiRazFvYp
- dT7Q==
-X-Gm-Message-State: AOJu0YzMGGwgIVpVe7ckkCXUhu7GsOgFx1JWGEW7JqmT4F7IkKG5KKp8
- wl0tX1muVAQOcV/svxAXuJDhYxQv7ztXJKXMW/zHKvIxQgSIKPIF3N0/kR7uAD2eVbfoNk2s/aY
- +ejOn82w07xWQ6IiKCPtfgbU8jenMjhQSP14nbR9RMcIE4y/MmwfXhYF0kK1F/YFHL+0CpM262/
- n/fFB56xUYkpM1XZIpHStodTWt3lYQnLBK9YPPMecXTrc=
-X-Gm-Gg: ASbGncuZ9xcBn4sCNb90UzTOR7GEWYBoe6LY4JkYLLfjQ7v+Wear8gAjnNw9GHtXZqT
- ZJMoNqVzTQRBbY1aFrMjl6amx5V8hNHenoTXEyHasFkqpEXpOxxhFl24tzOqEXykpaymGZkpeVQ
- t376kyKaB1VMiTD9n+rSswcBXoAF+U5vI5h1pblEFrDLQTg92ftGyYp9eHIVVjVPx7akOAYE6wn
- U/Umkfah/1MJRsNgAXqubuJpYFljQfOStkVRDnvAe5uHn5yiF9whKtoduCod3b8FFC+aA0OSxTH
- L/7fGIltAJfcwNwU6jfoL4tjfrTjY+xlvwH23TmigjavqHuY9o0PzNfaq+5paUfLnSNq+r2ppXI
- RmZNSGbUtLKk2S2EwDPVGOngR1Gg5r3bntQ1XX4v75uCU84D3oyA819o6ULdsq/81cmqVHz1lIv
- pE/3QaEPD7/1Ye9YIJ+2g5KQ670AZjaCTnUBflWupbn1UJ6V/b
-X-Google-Smtp-Source: AGHT+IFLea9ZvxKN0VmTFnwklXclNlNZD3sp+zhRfu/ROzmfWHLbucPjb4tPVJrGb9HA+xjW93+dkQ==
-X-Received: by 2002:a05:7022:f30e:b0:11b:9386:7ed2 with SMTP id
- a92af1059eb24-11b93868332mr4049518c88.47.1763463582499; 
- Tue, 18 Nov 2025 02:59:42 -0800 (PST)
+ bh=xYm/oafUQ96KV1KrJ5UIi5YiWsP4bo/zOXkfAj3wvwo=;
+ b=RizR/oj4piycARk89LIg+OFMFELZGSh0HFqjzY83Q7o9PUudATtn+Ut0zOy+SdLSGc
+ AkXunBSOBph3Rf1hhNMuXyztsqRzSCYzvNCqLZSn9yV5TSx8nYOvv8Rsq6Zv+oTcxH4F
+ 9R4Dq47uYf40WYy/JTGim1fQZX+QMvEqiAMwhAfivQpyjNAlJS6MxxgDGLn1vGG4TbnJ
+ ClTvG0CSpG+UBoTBsJ1XWZgCGz0He6KaZqopv2RmUywLbPYqTjZ33N8AcDq4ShYxV23L
+ ZQBCFD4Li/N/bUao1TQvaMKmNzBYNGBnNmbUXCDPfHE729BbjNQ7Okl6IM14UZGYA7HQ
+ EKRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763463585; x=1764068385;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=xYm/oafUQ96KV1KrJ5UIi5YiWsP4bo/zOXkfAj3wvwo=;
+ b=n2dEE1rjbr66eXRFZbOlVOZCQCanbnXRjSEJa+rK6GYp6Rs1BOxRkUBlqG5tC6MmLX
+ l/PIQMmBPpj1OQJo94BQLzRDBgNUi/7cl/hhaPKu3sI/jUZhyBI1Y1P1vrPX3+MajYLv
+ eWVJPlEmNmhr+Q9aR1AY8oFDZOMxMILcYTGueNWsWHqU+ZNKBU4DN27rVoEilBOnrcwe
+ NpU+zP7zcQsBILbW+Ir/0KBwXFLKkF6wcj9Ub86QedMkuMM+13EFSgCKdf+QkJR1FTZY
+ +ht5LvbiL+3QVdf3W8+usiMQ6hunvAqRKpbMl65Ok4MNcO+AUrqAgCV1B+s1X9p4bUWH
+ HZ0w==
+X-Gm-Message-State: AOJu0YwxhPT5B45l44VfAg3GtGFVX+SKzfadXyxFSRFGJujlwYs/fFqL
+ 5N22A/01oCJdSVvcjHCh0CVboIS+RH1UKwdGOCmjSC2o3sqMnnKKe7JCr66hk62F26Bhmj/OcKC
+ hMv9AykHcyzj/JEfTqyJ7DiJSKRf2WGzM6gUI47nNWj5xrnmdws9A30DBOd8K0x2hDB/9q1+9wQ
+ mYS+3lR0r627klV78NnWPa933oGK94MLpNOWINfI34rHc=
+X-Gm-Gg: ASbGncvDy32nfL+1ywyKInoNpGT+iCew/6nX+YI5Y/1QyeVp9uMcvQAa/XMKOR1JuMW
+ 3wxJOPdiCzoZAzJGcPAuwQqT49l3IboZ1pDJ6ESlhA4ZgitM7RF2u62LLbTpWWVmO4d7p6VB2Gh
+ iqWAM2JBqxeyC4Ok2+HehdvXfWn84FyzMw5Uqw9pe8TVtxI9uNUBrX4n79FQie5n8XNKCArFPHE
+ /K9NbarbyPbnXtODaHn31UXo9MJw27BR1tCcUbFr1hCti5h+hATutBO3ct+jfo6SUYcWW8CFhLt
+ NTf5fnC3YDwYVSWWKrRmY7r8llS5Fn6P1p7L4PLMs9O2yTKwEFFXit9j5WOrN8rc4gt+Dkz0rGp
+ JiRzYy7VwglrPieiGAV2I1NXbYmz1TiXgm25ylJE26GNVkNdAyE4ms/Eznayu0oWM/Hiq8tirDY
+ LPuxLEBqPAnhhCne1u8VOQGRuR5/qb9X5TZX91eI/+hCXA9cZe
+X-Google-Smtp-Source: AGHT+IH/Zm526KDj+WaH8ttm5/E8z62aV1zhs++U9UuITo2EzODoxGkPnBboZmi+SkuqkF0DLGtuwQ==
+X-Received: by 2002:a05:7300:d581:b0:2a4:83c0:6509 with SMTP id
+ 5a478bee46e88-2a4abb54ebamr6282350eec.27.1763463585179; 
+ Tue, 18 Nov 2025 02:59:45 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2a49db4a36asm43989903eec.5.2025.11.18.02.59.40
+ 5a478bee46e88-2a49db4a36asm43989903eec.5.2025.11.18.02.59.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Nov 2025 02:59:42 -0800 (PST)
+ Tue, 18 Nov 2025 02:59:44 -0800 (PST)
 From: frank.chang@sifive.com
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>,
@@ -72,15 +73,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>,
  Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH 0/3] Fix Zjpm implementation
-Date: Tue, 18 Nov 2025 18:59:33 +0800
-Message-ID: <20251118105936.2839054-1-frank.chang@sifive.com>
+Subject: [PATCH 1/3] target/riscv: fix address masking
+Date: Tue, 18 Nov 2025 18:59:34 +0800
+Message-ID: <20251118105936.2839054-2-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251118105936.2839054-1-frank.chang@sifive.com>
+References: <20251118105936.2839054-1-frank.chang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=frank.chang@sifive.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=frank.chang@sifive.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,32 +107,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-The current Zjpm implementation has two issues:
+The pmlen should get the corresponding value before shifting address.
 
-1. The address is shifted before obtaining the correct PMLEN value.
-2. riscv_pm_get_pmm() does not handle VS/VU modes correctly.
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+---
+ target/riscv/internals.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patchset fixes the above issues and also renames
-riscv_pm_get_virt_pmm() to riscv_pm_get_vm_ldst_pmm(), as the helper
-is only used when checking the PMM configuration for virtual-machine
-load/store instructions (HLV.* and HSV.*), rather than for VS/VU modes.
-
-Frank Chang (2):
-  target/riscv: Fix pointer masking PMM field selection logic
-  target/riscv: Rename riscv_pm_get_virt_pmm() to
-    riscv_pm_get_vm_ldst_pmm()
-
-Yong-Xuan Wang (1):
-  target/riscv: fix address masking
-
- target/riscv/cpu.h        |  2 +-
- target/riscv/cpu_helper.c | 24 ++++++++++++++++--------
- target/riscv/internals.h  |  4 ++--
- 3 files changed, 19 insertions(+), 11 deletions(-)
-
---
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index 172296f12e2..9b3f01144d2 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -203,8 +203,8 @@ static inline target_ulong adjust_addr_body(CPURISCVState *env,
+     if (!is_virt_addr) {
+         signext = riscv_cpu_virt_mem_enabled(env);
+     }
+-    addr = addr << pmlen;
+     pmlen = riscv_pm_get_pmlen(pmm);
++    addr = addr << pmlen;
+ 
+     /* sign/zero extend masked address by N-1 bit */
+     if (signext) {
+-- 
 2.43.0
 
 
