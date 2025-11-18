@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F13C6B538
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E87C6B54D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:02:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLQxv-0000RA-RX; Tue, 18 Nov 2025 14:02:12 -0500
+	id 1vLQy4-0000z5-T4; Tue, 18 Nov 2025 14:02:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxc-0008LZ-6e
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:55 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQy0-0000r7-6T
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:17 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxa-00062g-MX
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:51 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-42b3d7c1321so4228874f8f.3
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:01:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxj-00063e-Qw
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:02:15 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-47775fb6cb4so42379235e9.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:01:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763492509; x=1764097309; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763492518; x=1764097318; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+Cgq1nPDbrgVNM6eBtgyf6KBbF6NBZzhdBWfVQaqrO0=;
- b=v6JbdAVx05NbQK4yB8I5ATYktV0IbtzxBZcKjgRQNQC2DNOuXG0bs6JHOhBa7PvyWZ
- EDwMi+p4lxbnHzvcQ2Do34G83VIF5dTnXNOwyibIGMQP27YDN7j9U+6rkZMfWQOO0VY2
- WRei/kD5FCtslrNT3Ld6rjgNEZZMYNagu1C932u2JW1vpyJQEsOOdbqvo3Ps3LosTfHU
- WXG2LOOIFTh8HkEKXC3XISLeSl+nj59AZBQXtSi03i6IiPAnhTc/ZUhSqcyUtRUGCEo3
- 0fdp2vbFQCb+8aO5JpTTTaZy22Xt67LNav5pJsUPDW5P22/iSrcXk5A554PY/1GakjJN
- h3/Q==
+ :reply-to; bh=gXiO5nPfAcYV2Wewa5o/aax8KoL/hNVg9xCYOqbljoU=;
+ b=RcecxDpOPCNAAH7VMq0PyOOW5DnyJAU43FojxmrIgeszSn0KfVWQJlxZraoWlgTMfn
+ POe/nkWtUC5VAELtCBWDGzNHQRXv8qCghpTmeGPlaS6hRPthbb8UujPswnUXcJQ5S9NG
+ kOOJSnCaKUxEMhoUYDG7FC+rAFBiOhQMQdClq5OX7SEySx4Me92k9H+NU3zM/ImmQ0Cb
+ XEefFIq1wAxVTL7dTT8TeHhrcKhE/5sY1ccif3dxDzbr2vOBRoDDaW2EvPPBB1jwmHMo
+ /1zMObPIPhSz/AUXpJJmXLDq+XrfDMvbUNGtNZZMBiJBI36lYN+XNhUEbN99j9GQt44Z
+ nZ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763492509; x=1764097309;
+ d=1e100.net; s=20230601; t=1763492518; x=1764097318;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=+Cgq1nPDbrgVNM6eBtgyf6KBbF6NBZzhdBWfVQaqrO0=;
- b=FF339jH36A9H69n2RTKKaDnj2B+gIUMRlHeQCbgy02Ayzet4miQyIgK2wfA1nrZ9Pv
- DrX+gTwJm1ZQN6u0c1OLZc/yH2SklOm+G09HTGvAG0zpY3kM2i8Ei3yxXJ5dn0OCOrF4
- G9gZu3mT6QSEafuGFAhp2neTGvt+y/DLtAAXNTgt9GNxtCIJ5OfHBtureabPLZBcKBlZ
- 8zqF7CqChg5b8Xd7570Qfjl0VYwrzwL/KIOuM/LccGRCUwZmJM3IBNnRPIyVNneWmJv0
- hr1ebitT6au1xFFG9y362w/m3mpYetco3ailVJ3tgimqwXAqF2QralGC5oRmk9QZD5nT
- 1v7w==
-X-Gm-Message-State: AOJu0YxASqE8Io2TEie3xRfEf+qw6UXY/DFVpNcKmYG+Tc9+6DBzFjW5
- ImqxS/TN8EtVK0mytDM4XYWixWcJVLu1JXlubw9HIObKf27Ayk6RtbWBf9ce39y+z+Csy3M+1Ed
- Iygy33UOKqA==
-X-Gm-Gg: ASbGncupnjxZsoOTX5CwBA/yF9dA6B3jG2dqhMDRiw6FS4OKmvkNjhimcvP4gOeeW1z
- X92SFpxhKpI35j6qwZqp5/IBUEplJnn917LRTAIZoj0hYBGM6g9wAwCZ3JaZ+UzRUxTLYsUBHbz
- 6BFSF0ZmSXfNzc9+cnda0b67zqvSTYPXitOWj4NsnyEobfLOQZByO/4E3fEB2+r5WZ2kKOS5qIi
- p0ezrMvD77qlbaLOZdbUZT9Q+M7rR9xxKVY24dmRlvS98l/wvuUi0AoemYruPGPSp5Zy8uXmMWX
- 5f9dghzbIjJfbwKboZ6ih03hAVktK2bCQuYpNmhsCg4iMagKS0VAeNmoX0yPwhNf73z09O+r8f1
- rHxqbZzdpm15jXD4SHulJsw9GnHE6DjR3vW7ScmSiOS0XCIws3XLDPgBEaaFnHb45Yg7pQgUV7V
- +BPlOjh+Ps7e0r/alqzNKGMEnBgbx+tBLWLfZ6QwkngORC4lPGbCmQXhT1r+nNKO3H4yIEMz4=
-X-Google-Smtp-Source: AGHT+IH18rYxk/+S9TGaATYnDltnQ9XBBZ+6uQG7n/MKLwdelr0BsNhSZG6QhmqksyeP3dqmI/lIFQ==
-X-Received: by 2002:a05:6000:4020:b0:42b:3302:f7d4 with SMTP id
- ffacd0b85a97d-42b5934e25bmr18741385f8f.22.1763492508813; 
- Tue, 18 Nov 2025 11:01:48 -0800 (PST)
+ bh=gXiO5nPfAcYV2Wewa5o/aax8KoL/hNVg9xCYOqbljoU=;
+ b=abw0qZjI6leJZaaSmqYqQ0Gah5bBwgmj8CGyt+JpFSfZ/tQDfKMZfQd+C1TcyCoOkn
+ mDVKZztfijIyIWRMTEaYv5wKHMpoyPDDA14/ADP4HT/tsnhfcvMGEppGnMD2I3A/k+ML
+ 1iIf+V1C6Z8u6yaYPzsjuvIT0A0a44FpzKEV0lRJTKqjMuXNOHf/NT9e4PWXIfaRV3VO
+ X60fsyUPLDd/XfmSC1LXpqJRV3dMcljTHwIZDbuZwB53QJH1W37cJHaPeVU8fxCOsN3a
+ CgZCjwAY8/7fgShKXQl+NrewbmSBpc/fIcSRHN9XOLxdanRWoq06A2WMSx7o1SI2KopL
+ kSeA==
+X-Gm-Message-State: AOJu0YyyiysT2j1AGziWOQchYbIV1PC0N5BkNrwsLpxjkESFKFFn9AW0
+ 0mViirXPbeKBthqPIzV3K7mQhNROVgx8+xvHwpXlSSUy+Khk2P88EuG/ndD/hW7hv+87xKjZe2e
+ cBT0ilKgZVQ==
+X-Gm-Gg: ASbGncukdp0GRSKDoieNZBl8WosFBKXl12C5G5F0hQqOQzTATgYkN4NZ+bmamHTlghE
+ W/rdPXqPrAUZqMhxXouAOLQBeXjSbC1aaUxmYMjgEb3zdP0BB7Fi6W31ly1MV4pfHs7H4XTbFV+
+ szR8SCmGbH01GPIGn7BIZUHnU1S2IF4UHMlmXQa601g+D3hkqY56jXvLbfFyNkAeP2Zlz7h69wF
+ AB342QzMWc/AOY+Qjl+pv4umsrk78XEY8Alrit/FsRK2Y4/sbjm8K+sKiQHWJC46bpspS0SrA2W
+ s4vI2grCMo5yVmMWx4zCtCYg8WStrYi6GVOozaaPUA62BtRLQTOBICoPP31WDBSUNDcu3CbJJMh
+ X47dayj/A0bj5gVeagVlCO82QXo62bQZmFHT574u1ojop0RGplcShRli/evgKzNJCSfEp9d6I7j
+ S8EHS7tSXGs60PL1+xjPiGV7GWILzHufbiD4DqtdqrbicGITHjoT2qXI1/sW1uKkOYb7XUx2w78
+ enwGFKXIw==
+X-Google-Smtp-Source: AGHT+IFmW7hb3No794ZGBnkpEBuGFkQvoaUG214AuAgxt+Ks2pwKrZwSd1O0dUDExG7EAzEO8GmONw==
+X-Received: by 2002:a05:600c:4585:b0:477:54cd:202e with SMTP id
+ 5b1f17b1804b1-4778fe59a0bmr167414665e9.2.1763492517763; 
+ Tue, 18 Nov 2025 11:01:57 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f17291sm33724503f8f.32.2025.11.18.11.01.47
+ 5b1f17b1804b1-477b106a9b0sm4924475e9.11.2025.11.18.11.01.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Nov 2025 11:01:47 -0800 (PST)
+ Tue, 18 Nov 2025 11:01:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/18] hw/arm: Re-enable xenpvh machine in
- qemu-system-arm/aarch64 binaries
-Date: Tue, 18 Nov 2025 20:00:42 +0100
-Message-ID: <20251118190053.39015-8-philmd@linaro.org>
+Subject: [PULL 08/18] hw/sd/sdcard: Avoid confusing address calculation in
+ rpmb_calc_hmac
+Date: Tue, 18 Nov 2025 20:00:43 +0100
+Message-ID: <20251118190053.39015-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251118190053.39015-1-philmd@linaro.org>
 References: <20251118190053.39015-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While registering the ARM/Aarch64 machine interfaces
-in commit 38c5ab40031 ("hw/arm: Filter machine types
-for qemu-system-arm/aarch64 binaries"), we missed the
-XenPV machine. Correct that.
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Reported-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+From the source frame, we initially need to copy out all fields after
+data, thus starting from nonce on. Avoid expressing this indirectly by
+pointing to the end of the data field - which also raised the attention
+of Coverity (out-of-bound read /wrt data).
+
+Resolves: CID 1642869
+Reported-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <4f7e1952-ecbd-4484-b128-9d02de3a7935@siemens.com>
+[PMD: Add comment before the memcpy() call]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-Id: <20251117091253.56009-1-philmd@linaro.org>
 ---
- hw/arm/xen-pvh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/sd/sd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
-index 1a9eeb01c8e..86a02966161 100644
---- a/hw/arm/xen-pvh.c
-+++ b/hw/arm/xen-pvh.c
-@@ -10,6 +10,7 @@
- #include "hw/boards.h"
- #include "system/system.h"
- #include "hw/xen/xen-pvh-common.h"
-+#include "hw/arm/machines-qom.h"
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index df5a36fad9d..40a75a43ffb 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -1160,8 +1160,13 @@ static bool rpmb_calc_hmac(SDState *sd, const RPMBDataFrame *frame,
  
- #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
+         assert(RPMB_HASH_LEN <= sizeof(sd->data));
  
-@@ -95,6 +96,7 @@ static const TypeInfo xen_arm_machine_type = {
-     .class_init = xen_arm_machine_class_init,
-     .instance_size = sizeof(XenPVHMachineState),
-     .instance_init = xen_arm_instance_init,
-+    .interfaces = arm_aarch64_machine_interfaces,
- };
- 
- static void xen_arm_machine_register_types(void)
+-        memcpy((uint8_t *)buf + RPMB_DATA_LEN, &frame->data[RPMB_DATA_LEN],
++        /*
++         * We will hash everything from data field to the end of RPMBDataFrame.
++         */
++        memcpy((uint8_t *)buf + RPMB_DATA_LEN,
++               (uint8_t *)frame + offsetof(RPMBDataFrame, nonce),
+                RPMB_HASH_LEN - RPMB_DATA_LEN);
++
+         offset = lduw_be_p(&frame->address) * RPMB_DATA_LEN + sd_part_offset(sd);
+         do {
+             if (blk_pread(sd->blk, offset, RPMB_DATA_LEN, buf, 0) < 0) {
 -- 
 2.51.0
 
