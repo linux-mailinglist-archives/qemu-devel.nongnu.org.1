@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF48EC6A673
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:50:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35039C6A655
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 16:49:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLNyY-0007HA-A9; Tue, 18 Nov 2025 10:50:38 -0500
+	id 1vLNxO-0005WF-F5; Tue, 18 Nov 2025 10:49:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vLNwu-0004zq-3K
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:58 -0500
+ id 1vLNwr-0004xM-Sp
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:57 -0500
 Received: from fout-b2-smtp.messagingengine.com ([202.12.124.145])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vLNwn-0001we-0s
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:54 -0500
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
- by mailfout.stl.internal (Postfix) with ESMTP id 993081D00251;
- Tue, 18 Nov 2025 10:48:35 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Tue, 18 Nov 2025 10:48:35 -0500
+ id 1vLNwl-0001wm-R3
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 10:48:51 -0500
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+ by mailfout.stl.internal (Postfix) with ESMTP id 3F91B1D00225;
+ Tue, 18 Nov 2025 10:48:36 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+ by phl-compute-11.internal (MEProxy); Tue, 18 Nov 2025 10:48:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1763480915; x=
- 1763567315; bh=tQp67q5sgOzzLystrbHSfTO9r8/JxJBC9DhfWgkhB/0=; b=n
- 9H+lEuWqCHzrBVzi7xJfNRMacnrNgnrOTQxNFjvlXj0LxFogQUrRAlYNfnhY40i6
- NRhr5J1JTQeWl+UpMiaQDbXLM0xbUUhzPr8+KhJDWaHxbOXPkdJOkwe7Q86GNSFR
- zK1azlqprPqnhuMK6XNtRodnAK7rHIw+yhlXxgrbv5cJIYaPQfOuEovjq3WtLjsS
- AAx291GEF+aP7+oarfRm+gG9ZEEHy7zNcIE2XlYe7x81O+JSZurM1raaE0S01dnU
- FlwgZ4i+3M//1S7woT8k7BPiP3AmSORbZtYzEDeUA22FC93k8ztCNdapBPL0mRDT
- dvxn7r9uSTIID8nlSKB+A==
+ :reply-to:subject:subject:to:to; s=fm2; t=1763480916; x=
+ 1763567316; bh=3HiKTWbbX3nGBGCA1/ulpIz7A57sFOKCiV+MHceVi9A=; b=H
+ hhAw2L7Ne9R1NKY7na//E9rP3KA5IoF6o0FZmTzILnKdE4pz25krU5RNFu6Yv7vr
+ GbuG2nGsWcpivm6NicA54lukJ3FJ3/1Y8b7UXoMXihSiGQb0ODEpcVEGo3LH/E40
+ cQNuNs3atiQlOTr81Npbv5Zbyotvh0VWxoNgSgpM5GZUgAdDJm1PBCjyFIKqxFl2
+ UtgtEEzJM/839Jaq1CVApjqOH6NHu5Dlouqj8FkKr/+3vszZ0PpfZPPt+unKAglz
+ Scsms52FffyjWIatwwwV/+Zz04aBsaFTXA88eMlFB0DB+S8ty2XKqo2I8jkcDyAS
+ 7d0uNQxkq056+XwFfzbeg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1763480915; x=1763567315; bh=t
- Qp67q5sgOzzLystrbHSfTO9r8/JxJBC9DhfWgkhB/0=; b=KAnS2Sc9+8r9717iu
- UKpgZn2En9bI/a2hZkz41R0kYct9b7aZEpHZfE46tT7l37mke2QAGJOGP7i2KS2f
- qJt1vHR5xyMToNK11GnRYWmhSItz13WU1NmOBmEytDQI19PBAFj4KxU+284V4O1d
- Gfr0oMvlQI7/CIjFLwSFA/Mk/wN78ANNujXcDLppB5LIhwrglGbZ5cueh16Ycl1I
- N80JzZeIqxswiE83AQbHe6sK2IXYfdN+aKUk9qloHPP/sMzQ5JgNKwjm+PcHP5/6
- 3S4NHV7nIBpCTiTb2wV6n/nzbaUC0JtvjKOS3IizdoTOPm6XbrDpuG8hYtYnpBQx
- CQC0A==
-X-ME-Sender: <xms:U5UcaYWSbvoV3X0jRAhstG-0BeQwWDbRDEXhyuJX2_rpAQ9qxqRpbQ>
- <xme:U5UcaUDYJRNBnSn1onT8PmfB-pYsDWy-Hf-ZGuyU9oI6kbXohl2wnKqqcdbgtSJl7
- XXY6XUiWojnMbJzVdJx8yUUmvwN5IwyfRAWw_yIlhTwM3qB4W4Q>
-X-ME-Received: <xmr:U5UcaZyb5DYbl3Z3dzunJkvoGeZD3nW-K5I6ptZeLZ3NxwHa9iHNLHj1_U3B>
+ :x-me-sender:x-sasl-enc; s=fm3; t=1763480916; x=1763567316; bh=3
+ HiKTWbbX3nGBGCA1/ulpIz7A57sFOKCiV+MHceVi9A=; b=Abq4FlGUeNhcBy0Ov
+ twi0N4eTLs59DYCwno4l41F7brFKX4llOjm+BW/vKIPm+//UN3VvgMM7jGsChxbD
+ bTYkmYOXr5QTM3R8rclWR/M2BvpuMarlRNi6Na6Go0JZf02nmSC8ZsZxrITS03Su
+ CFKYd5OmV0M3/oHHV3deMO2C+/a9Ki5V9cEArJx6mG8sxk9qXWR0e5stH4fAR3dv
+ HoMfjlv5jknVbpvwsbyp1vkEhoIV/QBAcpxWZNIDBCQoRQ+STixX6ngVf2/NkKl+
+ iN2OG1xDqVbl6lDPvDkaRnWDyshlQhEG95nzAYB5LmCcsq+0q8ZKQZPBALgRSPRb
+ 30BGA==
+X-ME-Sender: <xms:U5UcaQArPqdlJJ2ZHvIR9l0FpYC6nHYjgtZrNCLliGi4hQmH9STaSw>
+ <xme:U5UcaZ9G7GV2phaecfEP-hJK28OPuASP96MrC8_OuZ-UNd64JGuLcbnx1r8OTEjic
+ n88_aLRqmKhNVpQeQb5v1T6DXPWrea1_J8DD_-lo4BG8ZpsH1N6JSM>
+X-ME-Received: <xmr:U5UcaQ_0Ht5rvJdeG1NfpUf4H9WFz2Q9YikGRRFu0YYFlpBPeMPC87kw26pJ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddujedvucetufdoteggodetrf
  dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
  rghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvfevuf
@@ -62,24 +62,24 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddujedvucetufdote
  thdprhgtphhtthhopegthhgrugesjhgrsghlohhnshhkihdrgiihiidprhgtphhtthhope
  gsrghlrghtohhnsegvihhkrdgsmhgvrdhhuhdprhgtphhtthhopehqvghmuhdquggvvhgv
  lhesnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:U5UcaRDtvmeQ9b1P0Of0x0qMh6y34dLZfh8GQmxDDcKCITyM9gd7Lg>
- <xmx:U5UcaWbLaIpXO0tmUZvE_AVYpsymEP_h3ycySLx-vdEEMduAY4kunA>
- <xmx:U5UcaZi_9RXR94hQ8PibIgXACPDQL3LLhe8IfKXI9qoeBRi4nLpieA>
- <xmx:U5UcaY4tuAF-dLk5Q20XEMaNmsNJ72npPoF7-qeDbnghe6yVNKpT5w>
- <xmx:U5UcafuFXfnapfOhQaPNmKxSqyd2W8r4mTMAxXjzGFsSf9tqmnv9Fqaq>
+X-ME-Proxy: <xmx:U5UcaQfoEUuaW0pQt_wegMVLxaxaZHrAuiOI5sD4lYVDsHprwFOxIQ>
+ <xmx:U5UcaZGQ628r4VAegYqgryui-YSqO1EEml1y8DFmR4abVdJlx3jU-A>
+ <xmx:U5UcaedUbFk4YYPeWRtw5SR2ev31uF2nnT0pdbTz5aVXt3SiOFQK1g>
+ <xmx:U5UcaTG6LmyPq73A6guAk_fRILJiKZxM1hOz7IU14ehUmQHFenyWtA>
+ <xmx:VJUcaeKYfr8uYysMP4H8KaVHbbLiMaA5qb76YJSt-1u7z3u6ujwnBVF2>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Nov 2025 10:48:34 -0500 (EST)
+ 18 Nov 2025 10:48:35 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id a03257e3;
+ by chomposaur (OpenSMTPD) with ESMTPA id 2a057767;
  Tue, 18 Nov 2025 15:48:31 +0000 (UTC)
 From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu,
 	Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH v3 05/11] ati-vga: Fix DP_GUI_MASTER_CNTL register mask
-Date: Tue, 18 Nov 2025 10:48:06 -0500
-Message-ID: <20251118154812.57861-6-chad@jablonski.xyz>
+Subject: [PATCH v3 06/11] ati-vga: Create dst and sc rectangle helpers
+Date: Tue, 18 Nov 2025 10:48:07 -0500
+Message-ID: <20251118154812.57861-7-chad@jablonski.xyz>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251118154812.57861-1-chad@jablonski.xyz>
 References: <20251118154812.57861-1-chad@jablonski.xyz>
@@ -111,29 +111,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the register mask on DP_GUI_MASTER_CNTL writes. Masking on writes
-is usually used to exclude reserved fields. This register contains no
-reserved fields. All of the fields are important, even if not yet fully
-implemented.
+This creates helper functions for building QemuRects using the dst and
+sc registers. These are useful during blit setup and the next patch in
+this series will make use of them.
 
 Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
 ---
- hw/display/ati.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/display/ati_2d.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index d0fa51f773..cfb5dc2fb8 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -883,7 +883,7 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-         ati_2d_blt(s);
-         break;
-     case DP_GUI_MASTER_CNTL:
--        s->regs.dp_gui_master_cntl = data & 0xf800000f;
-+        s->regs.dp_gui_master_cntl = data;
-         s->regs.dp_datatype = (data & 0x0f00) >> 8 | (data & 0x30f0) << 4 |
-                               (data & 0x4000) << 16;
-         s->regs.dp_mix = (data & GMC_ROP3_MASK) | (data & 0x7000000) >> 16;
+diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
+index a8c4c534b9..0695c26b3b 100644
+--- a/hw/display/ati_2d.c
++++ b/hw/display/ati_2d.c
+@@ -13,6 +13,7 @@
+ #include "qemu/log.h"
+ #include "ui/pixel_ops.h"
+ #include "ui/console.h"
++#include "ui/rect.h"
+ 
+ /*
+  * NOTE:
+@@ -43,6 +44,29 @@ static int ati_bpp_from_datatype(ATIVGAState *s)
+     }
+ }
+ 
++static QemuRect dst_rect(ATIVGAState *s)
++{
++    QemuRect dst;
++    unsigned dst_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
++                     s->regs.dst_x :
++                     s->regs.dst_x + 1 - s->regs.dst_width);
++    unsigned dst_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
++                     s->regs.dst_y :
++                     s->regs.dst_y + 1 - s->regs.dst_height);
++    qemu_rect_init(&dst, dst_x, dst_y, s->regs.dst_width, s->regs.dst_height);
++    return dst;
++}
++
++static QemuRect sc_rect(ATIVGAState *s)
++{
++    QemuRect sc;
++    qemu_rect_init(&sc,
++                   s->regs.sc_left, s->regs.sc_top,
++                   s->regs.sc_right - s->regs.sc_left + 1,
++                   s->regs.sc_bottom - s->regs.sc_top + 1);
++    return sc;
++}
++
+ void ati_2d_blt(ATIVGAState *s)
+ {
+     /* FIXME it is probably more complex than this and may need to be */
 -- 
 2.51.0
 
