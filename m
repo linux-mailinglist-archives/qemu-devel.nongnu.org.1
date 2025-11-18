@@ -2,156 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E0C69DFF
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAA2C69DFD
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 15:17:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLMV6-0001HF-Cr; Tue, 18 Nov 2025 09:16:11 -0500
+	id 1vLMVe-0001g6-8j; Tue, 18 Nov 2025 09:16:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vLMUo-0001GW-GI
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 09:15:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vLMUm-0005LN-A1
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 09:15:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763475340;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=4YjYgnv3pJA8KXR9PSUbOZGoj46F2MG6jHiAadTXH3M=;
- b=MoHrtZw0ZNuPNYZDM5zLEe9gmbW9VZvepl8RZ4AattXpv/qXkjcUm3aSyLuysam0d7ePj0
- FsX4bK/HRHK1J17YBIkN1yyVbZUoe5mQ+czx30sQHtcRpjhYfkntfZM1FQVP7lbaM9m/49
- fPXdoiGi9ETJZtdNAZ6Y7ALrX6z7k9c=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-QGeiZjALPz-8wsU3gp-g6Q-1; Tue, 18 Nov 2025 09:15:38 -0500
-X-MC-Unique: QGeiZjALPz-8wsU3gp-g6Q-1
-X-Mimecast-MFC-AGG-ID: QGeiZjALPz-8wsU3gp-g6Q_1763475337
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-42b2fb13b79so2669664f8f.3
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 06:15:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLMVY-0001eW-O3
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 09:16:37 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLMVW-0005Oa-Rp
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 09:16:36 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-429c48e05aeso3351353f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 06:16:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763475337; x=1764080137; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=4YjYgnv3pJA8KXR9PSUbOZGoj46F2MG6jHiAadTXH3M=;
- b=JfAFvZ2Sx/wPwHSQDFz5Op93RPoyh6zJOC3ob9uQsIoMXOP/PrSitQuPnFEI/coTCW
- /4/0WrIAiwKqsWlSmIbETDEZxHUH5yambPEmHMNIt1kF40TC2Ij0docHfI1uCDwxqUbk
- 13utvSwqvX76hHMepEngMc1+dmp6+uMqs0dzX1B0gGs24h/4eJZhDV5EqH7aIMlvbmQg
- jmL0ruaUhu1POQLM+e7pHTpIYfXV4+DCgraKNGtYJgjOZjHtiVrD7ZA5Nox2NCfP4d9y
- fABlO5xSz8U4iw1/dlhDIn29buJOMT2A/vjEz9G6FmuXpawFbBKMYn5d1mGRzm5V8xz6
- wRiQ==
+ d=linaro.org; s=google; t=1763475393; x=1764080193; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=G+Af4QdjkVgtDe5aYTVI85tKJi7oVWCXPPLTx5kI1A8=;
+ b=rhSKRA5EO5+mbSvkhHN7gR1+Npd5s8kss+Tbvlif4RfVeasqxwlNWjECcHsmYHuAqQ
+ UWQGLEsv0/i++im7aiU4kYAfIaNsk4DGUWNiXAVs2rcLA37IWcFvsrErMjzUhXlCKI+s
+ 9rMHGriXh50Dxh2g4AmMN9+Y+iG8kqVTQ6UAUQwlAa9qm314tNPd5cuQrcenVeT4v07s
+ t/UFm8JhWgTNBpEF1n+pUuuDFpW+YiVPmiAo6UGAnT8gtpiiFSJqoUyc+g9BzAAcHQJz
+ Zjq7pDWhzh/68wZqKFPJJZT1lYQ0IWfPRMfntZBvlTWhz2j8OTE2986PBZvMVuP0hhyN
+ GvzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763475337; x=1764080137;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4YjYgnv3pJA8KXR9PSUbOZGoj46F2MG6jHiAadTXH3M=;
- b=gDX/LVvGRv+93tLoMNX1njbRRZfLtfo6mT04Pb/E6Ut262gSUnn3RLGioVGddvH1w6
- 9rpnZma+DuwC2/IL1akuvAXpUDiWwlFDG7yBYxpfr69N1YnTzaRvUQC5l6p6+pFrbXKy
- fMn+dpBp8Htug436g7T8ewLpLydqdqUfHoxvo1s0BShngOdKpe0PNOJTxCWVSYCULrNn
- OglmrvG6v6hZ5bfp4wrjr2ua8LKF+qrM+Sw1BVOINXOHn2P7o9QIh5XypSukkEMEuhjH
- MyAIGuOb8h1ql+Lo6x2Rg9hVev4+l4v2CaRcWdX6hEwFbV97MmUvW8Mi6FF7I0Ci55AS
- 2wPw==
+ d=1e100.net; s=20230601; t=1763475393; x=1764080193;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G+Af4QdjkVgtDe5aYTVI85tKJi7oVWCXPPLTx5kI1A8=;
+ b=nRf3OfmbNWL5k0/t2buuvbpucMzU28X5iGxXW4+F6rqPAH7x/5Dx2cA6tzDEruqDo7
+ g4dNb3uObJPNlxQdWUByn7+ZhviC6FyKkIENBilPPkQz4IHw2dSZ2K2C16H2ohEYgpQm
+ SqDlo2qlwF+OS77zMFaVnAT9rz+WrD+PQ8bcLfhOSEIp68b2mGedtQ6M+oaDbqNzJvty
+ +23rOrenpvd+aXklc+u5l79aBADKpYC6Thcm4jDul1MR4VHEVPQsbVfmaDsK8uAnO92B
+ ARzMOqAsDbcr3W++h/zW2yHyhievO4ZbC3rNdPG0x/l7XrPQFu7XAXAYDLQSLW2Rgxa4
+ tWvw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX3GnFKI8Rqe6tpvRfggcrE5SR04hL0GMzEYIBRtz2cVvjcAvhjkNikxJltkUla8igbp435tXmFgcFG@nongnu.org
-X-Gm-Message-State: AOJu0YytqOmi8le87OqsJ3O/+AQZqnZLnzYHisqWzgeMQJHf69kU9vnN
- /P2zuccd5rFKezW6Fj2ZVBx/hqrhEiRNP94E8VqID4D6vwjhEjRRl8FzmxqzPk9lxn9E5gUi+Zy
- Lv2nYBNhGCdV42YSM3AxTpU4KA+NYtOJ54+cRmj3QGn0sk4F1qZE0BzBg8DOxRHs0
-X-Gm-Gg: ASbGnctSAV4ucCKpLnUwTjP3EeUHbkQmwYLPUhwx2Rv9rhZFYvkb+DvfWirxXPmJ9yC
- byN6TCrYDhZ4efmcK12v14r8NKzb5JcASWdbFTP/67B8GPKWBjuUauV7l2/0gBW9CtgRx6e8BQS
- 3eXHtKiWYsbHAJRiRo6B9cfUZkMKX0Eyx1Q/EHt86zCpLpEBQgleHxO+/9wITZRpAmAz55+REwv
- ut6gv8M/xNIGvLpodCUZepui51koZR0wbTqrPsB0RkGEgLU8dI1gGvjvkWo8LiXutcwRpTetvFe
- FdsR7cIRBJwbaYQH0mDole8YsCEuqR8yC1RE7NXWUBaht1nX8Wc3jOV/qHtpU3BrK5l+9LFzUcn
- KxGr8CnnhVeYObbyasuL1d+zBONxq56xaOgGaOg==
-X-Received: by 2002:a05:6000:430e:b0:42b:39d0:6386 with SMTP id
- ffacd0b85a97d-42b5936796fmr13878172f8f.31.1763475336747; 
- Tue, 18 Nov 2025 06:15:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEbCIgK6vwAWJ+bbWAc/ZJPS2Noo1+Wf0NhNzfilqTaHLZryQJqqUJLU6va1q3+6MTSl5I9eQ==
-X-Received: by 2002:a05:6000:430e:b0:42b:39d0:6386 with SMTP id
- ffacd0b85a97d-42b5936796fmr13878146f8f.31.1763475336282; 
- Tue, 18 Nov 2025 06:15:36 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53e982d6sm32717318f8f.21.2025.11.18.06.15.35
+ AJvYcCX66or5S2ztrHWyhlkTRPIS1xtIKzq4EBqOzzGf8BSiHN4jlbQV5Hy6aoa5MKaY8Q9hjLrUr6KR9EC2@nongnu.org
+X-Gm-Message-State: AOJu0YzSG2MwXObZeW8ByfJTgerC941hKFQamZmnFA3UFgoUpW0exm/H
+ RDXZW7Nr0LHPCCHamcrcXv/cRGs7cVBLjonhjx3x4MchfaJQX9z8pw9LfO87N/UzoH0=
+X-Gm-Gg: ASbGnctG8WMLUm9bgG3mfz3mppw7gzsOezmgeu5650Wht6bFRsZpy5EmWxzpHAlUSx2
+ DbnNz/ScZcJfQjPBT70oFsOQ6lSf4kt7NaB0l7WCBro9aqUk5WE7RC3Zx5febeIHRw4ufADpgND
+ lFz+J5zlZ4c8LAhC8ZUfd+MoqPel1hnQjvfIEjl44Trbu4Ca45zYuH9/9oO/nxq2OpO2vNAuO7J
+ OwokZbsSGryUQcXmVOiPLlIzf62hvVNKoGIby/uhbE+GkMzluE6CGBkhXl/5pv0aLEoFzvHfAEx
+ 6LPmnD4+3pYhxpLIGTBARkL7bZmxGcsfjP+8VHmi86iLSgYsdAdhgpmWZowODw2w3UtsT08DMeX
+ TFwVnZLsZRRygf1EOkTczAGMuq0KCUsiF49ULH7NBw9JqEHysSYrJrRKcFV2PDnOtlWYJyWHUj+
+ 5z/aX1bkBnWq6ywNAxLV9JYTrGYVMaZLPALxj4pUt74XQ=
+X-Google-Smtp-Source: AGHT+IHqOYsH1m6y94Fjq9eQyc4T4FXmE6rPEGJbQhvAoaXrCx9CPI54L5vDyHqRFmxhv3sfo5aPYA==
+X-Received: by 2002:a5d:584a:0:b0:425:86da:325f with SMTP id
+ ffacd0b85a97d-42ca8cd213cmr3304015f8f.27.1763475392493; 
+ Tue, 18 Nov 2025 06:16:32 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53f1fd50sm32357869f8f.38.2025.11.18.06.16.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Nov 2025 06:15:35 -0800 (PST)
-Message-ID: <38066e7a-8e05-4c8a-9779-273ae3d88d59@redhat.com>
-Date: Tue, 18 Nov 2025 15:15:35 +0100
+ Tue, 18 Nov 2025 06:16:31 -0800 (PST)
+Message-ID: <77d7afeb-3dbc-4fcf-976b-09fe01cf542e@linaro.org>
+Date: Tue, 18 Nov 2025 15:16:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] vfio-user: clarify partial message handling
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20251117155656.2060336-1-john.levon@nutanix.com>
- <20251117155656.2060336-3-john.levon@nutanix.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251117155656.2060336-3-john.levon@nutanix.com>
+Subject: Re: [PATCH v6 2/4] hw/misc/pvpanic: add PCI interface support
+Content-Language: en-US
+To: Mihai Carabas <mihai.carabas@oracle.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, yvugenfi@redhat.com, kraxel@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <1611759570-3645-1-git-send-email-mihai.carabas@oracle.com>
+ <1611759570-3645-3-git-send-email-mihai.carabas@oracle.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1611759570-3645-3-git-send-email-mihai.carabas@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -167,37 +104,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/25 16:56, John Levon wrote:
-> Improve a comment for this.
+Hi,
+
+(old patch merged as commit d097b3dcb62)
+
+On 27/1/21 15:59, Mihai Carabas wrote:
+> Add PCI interface support for PVPANIC device. Create a new file pvpanic-pci.c
+> where the PCI specific routines reside and update the build system with the new
+> files and config structure.
 > 
-> Signed-off-by: John Levon <john.levon@nutanix.com>
+> Signed-off-by: Mihai Carabas <mihai.carabas@oracle.com>
+> Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Mihai Carabas <mihai.carabas@oracle.com>
 > ---
->   hw/vfio-user/proxy.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>   docs/specs/pci-ids.txt    |  1 +
+>   hw/misc/Kconfig           |  6 +++
+>   hw/misc/meson.build       |  1 +
+>   hw/misc/pvpanic-pci.c     | 94 +++++++++++++++++++++++++++++++++++++++++++++++
+>   include/hw/misc/pvpanic.h |  1 +
+>   include/hw/pci/pci.h      |  1 +
+>   6 files changed, 104 insertions(+)
+>   create mode 100644 hw/misc/pvpanic-pci.c
 > 
-> diff --git a/hw/vfio-user/proxy.c b/hw/vfio-user/proxy.c
-> index 75845d7c89..82c76c6665 100644
-> --- a/hw/vfio-user/proxy.c
-> +++ b/hw/vfio-user/proxy.c
-> @@ -362,7 +362,10 @@ static int vfio_user_recv_one(VFIOUserProxy *proxy, Error **errp)
->       while (msgleft > 0) {
->           ret = qio_channel_read(proxy->ioc, data, msgleft, errp);
+> diff --git a/docs/specs/pci-ids.txt b/docs/specs/pci-ids.txt
+> index abbdbca..5e407a6 100644
+> --- a/docs/specs/pci-ids.txt
+> +++ b/docs/specs/pci-ids.txt
+> @@ -64,6 +64,7 @@ PCI devices (other than virtio):
+>   1b36:000d  PCI xhci usb host adapter
+>   1b36:000f  mdpy (mdev sample device), linux/samples/vfio-mdev/mdpy.c
+>   1b36:0010  PCIe NVMe device (-device nvme)
+> +1b36:0011  PCI PVPanic device (-device pvpanic-pci)
 >   
-> -        /* prepare to complete read on next iternation */
-> +        /*
-> +         * We'll complete this read on the next go around; keep track of the
-> +         * partial message until then.
-> +         */
->           if (ret == QIO_CHANNEL_ERR_BLOCK) {
->               proxy->part_recv = msg;
->               proxy->recv_left = msgleft;
+>   All these devices are documented in docs/specs.
+>   
+> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+> index 23bc978..19c216f 100644
+> --- a/hw/misc/Kconfig
+> +++ b/hw/misc/Kconfig
+> @@ -124,6 +124,12 @@ config IOTKIT_SYSINFO
+>   config PVPANIC_COMMON
+>       bool
+>   
+> +config PVPANIC_PCI
+> +    bool
+> +    default y if PCI_DEVICES
+> +    depends on PCI
+> +    select PVPANIC_COMMON
+> +
+>   config PVPANIC_ISA
+>       bool
+>       depends on ISA_BUS
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index edaaec2..6292839 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -100,6 +100,7 @@ softmmu_ss.add(when: 'CONFIG_ARMSSE_CPUID', if_true: files('armsse-cpuid.c'))
+>   softmmu_ss.add(when: 'CONFIG_ARMSSE_MHU', if_true: files('armsse-mhu.c'))
+>   
+>   softmmu_ss.add(when: 'CONFIG_PVPANIC_ISA', if_true: files('pvpanic-isa.c'))
+> +softmmu_ss.add(when: 'CONFIG_PVPANIC_PCI', if_true: files('pvpanic-pci.c'))
+>   softmmu_ss.add(when: 'CONFIG_AUX', if_true: files('auxbus.c'))
+>   softmmu_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_scu.c', 'aspeed_sdmc.c', 'aspeed_xdma.c'))
+>   softmmu_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-sysreg.c'))
+> diff --git a/hw/misc/pvpanic-pci.c b/hw/misc/pvpanic-pci.c
+> new file mode 100644
+> index 0000000..d629639
+> --- /dev/null
+> +++ b/hw/misc/pvpanic-pci.c
+> @@ -0,0 +1,94 @@
+> +/*
+> + * QEMU simulated PCI pvpanic device.
+> + *
+> + * Copyright (C) 2020 Oracle
+> + *
+> + * Authors:
+> + *     Mihai Carabas <mihai.carabas@oracle.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/log.h"
+> +#include "qemu/module.h"
+> +#include "sysemu/runstate.h"
+> +
+> +#include "hw/nvram/fw_cfg.h"
+> +#include "hw/qdev-properties.h"
+> +#include "migration/vmstate.h"
+> +#include "hw/misc/pvpanic.h"
+> +#include "qom/object.h"
+> +#include "hw/pci/pci.h"
+> +
+> +OBJECT_DECLARE_SIMPLE_TYPE(PVPanicPCIState, PVPANIC_PCI_DEVICE)
+> +
+> +/*
+> + * PVPanicPCIState for PCI device
+> + */
+> +typedef struct PVPanicPCIState {
+> +    PCIDevice dev;
+> +    PVPanicState pvpanic;
+> +} PVPanicPCIState;
+> +
+> +static const VMStateDescription vmstate_pvpanic_pci = {
+> +    .name = "pvpanic-pci",
+> +    .version_id = 1,
+> +    .minimum_version_id = 1,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_PCI_DEVICE(dev, PVPanicPCIState),
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +static void pvpanic_pci_realizefn(PCIDevice *dev, Error **errp)
+> +{
+> +    PVPanicPCIState *s = PVPANIC_PCI_DEVICE(dev);
+> +    PVPanicState *ps = &s->pvpanic;
+> +
+> +    pvpanic_setup_io(&s->pvpanic, DEVICE(s), 2);
 
+Why registering 2-bytes of I/O when the underlying device is 1-byte
+wide? Is this to allow 16-bit I/O instructions?
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
+> +
+> +    pci_register_bar(dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &ps->mr);
+> +}
+> +
+> +static Property pvpanic_pci_properties[] = {
+> +    DEFINE_PROP_UINT8("events", PVPanicPCIState, pvpanic.events, PVPANIC_PANICKED | PVPANIC_CRASHLOADED),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void pvpanic_pci_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
+> +
+> +    device_class_set_props(dc, pvpanic_pci_properties);
+> +
+> +    pc->realize = pvpanic_pci_realizefn;
+> +    pc->vendor_id = PCI_VENDOR_ID_REDHAT;
+> +    pc->device_id = PCI_DEVICE_ID_REDHAT_PVPANIC;
+> +    pc->revision = 1;
+> +    pc->class_id = PCI_CLASS_SYSTEM_OTHER;
+> +    dc->vmsd = &vmstate_pvpanic_pci;
+> +
+> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+> +}
+> +
+> +static TypeInfo pvpanic_pci_info = {
+> +    .name          = TYPE_PVPANIC_PCI_DEVICE,
+> +    .parent        = TYPE_PCI_DEVICE,
+> +    .instance_size = sizeof(PVPanicPCIState),
+> +    .class_init    = pvpanic_pci_class_init,
+> +    .interfaces = (InterfaceInfo[]) {
+> +        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void pvpanic_register_types(void)
+> +{
+> +    type_register_static(&pvpanic_pci_info);
+> +}
+> +
+> +type_init(pvpanic_register_types);
+> diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
+> index abc9dde..ca3c5bb 100644
+> --- a/include/hw/misc/pvpanic.h
+> +++ b/include/hw/misc/pvpanic.h
+> @@ -18,6 +18,7 @@
+>   #include "qom/object.h"
+>   
+>   #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
+> +#define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+>   
+>   #define PVPANIC_IOPORT_PROP "ioport"
+>   
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index 259f9c9..66db084 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -107,6 +107,7 @@ extern bool pci_available;
+>   #define PCI_DEVICE_ID_REDHAT_PCIE_BRIDGE 0x000e
+>   #define PCI_DEVICE_ID_REDHAT_MDPY        0x000f
+>   #define PCI_DEVICE_ID_REDHAT_NVME        0x0010
+> +#define PCI_DEVICE_ID_REDHAT_PVPANIC     0x0011
+>   #define PCI_DEVICE_ID_REDHAT_QXL         0x0100
+>   
+>   #define FMT_PCIBUS                      PRIx64
 
 
