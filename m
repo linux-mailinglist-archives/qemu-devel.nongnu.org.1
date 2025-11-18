@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F07C67C00
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 07:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72D7C67BF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 07:37:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLFKB-0005lt-KY; Tue, 18 Nov 2025 01:36:23 -0500
+	id 1vLFKE-0005mT-S8; Tue, 18 Nov 2025 01:36:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLFJz-0005ij-PE
+ id 1vLFJz-0005il-Q2
  for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:36:13 -0500
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLFJu-0007C4-My
+ id 1vLFJu-0007C8-Lr
  for qemu-devel@nongnu.org; Tue, 18 Nov 2025 01:36:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763447767; x=1794983767;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=A65mMd5lWNs6XXTjhO21knFYXJM3Yt8rXvU/WLqh2Ko=;
- b=F0NLzyjEEt0KIOmaSwEwjen2EE+SdGmpG9KNoprzbM8KQ902bEjadvwH
- FyNXNcftNgCifL2yGMLEQPlTpTrOylYFBWklqFjStVweMlhY/QPFkZMlP
- bvg4qWbD4TrzVxJ7UrvQlmuXljdpyRxVTf21AUHb05wx19M42BBBXp2+w
- Qm4MrMYepfrJYNwi1SFnmT6NpGGJTujeXZPaOOjm8hl5fASYi+9wjcQ2x
- xj5wXQJ7zF4v+4wSiA9d2IyID49q/T9DEdxAPNNhfQ770PEZeFcoGl7eO
- ykOsHYCfiHxkOKUyTRRT8i5zV9DJD3ZSItFwcAdarIkwQqDUTxMeg9C+q Q==;
-X-CSE-ConnectionGUID: /KT5NToySvadmrsPHsft/w==
-X-CSE-MsgGUID: GhWGiopHQF6Qfay8d2kIRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="82850935"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="82850935"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=3SBdBPQBRxL5z9Idz9iWiTCAiuxoH88bRpb2EOhC/tU=;
+ b=N25Q59D4FBHYrtVMdQjK8DoroWr0bhdo22BP9LokyUrX5VWCazcGJ/V/
+ hJxar4gUj40mV6ddjGgxsR5CS3SEgZvpLLNHUaYL1CRbCFxAaYZ1qp8uq
+ 2KSALCQ4F6idI6ctJNaQWD32SRU9Il5yWFNykeR6xSJYMvTFyeaY62eRi
+ Wa/bBk8/vwPeKO9jnhRcTDLGzpPBSuJPUZGJ3Ev8GbwbZxPhqrPFpJtzx
+ lLGX7Pz0OHSFS84X3sdzkktuJoYec5c5vwbxGUEzRVTjHrk/sB/jbx2UI
+ wgrM9GWJAqZzpsvEwYBdiS7wZesWBZgnMiRVYDDX6s3BoCRHCuFHPHc+N A==;
+X-CSE-ConnectionGUID: lrmahDTmQZWDHtfI+erH9A==
+X-CSE-MsgGUID: fnAZHPeESca6D56EO97Z8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="82850941"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="82850941"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 22:36:01 -0800
-X-CSE-ConnectionGUID: NHinHyBvTS+9fcI76gGa9g==
-X-CSE-MsgGUID: 9zQlB8GdQYK4i39ikxw46g==
+ 17 Nov 2025 22:36:04 -0800
+X-CSE-ConnectionGUID: QKH0LtM+Q9K2rg0wDDzQzg==
+X-CSE-MsgGUID: 2Dp6btboRKSwTvu5x3nGyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="189962628"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="189962637"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 17 Nov 2025 22:35:59 -0800
+ by orviesa010.jf.intel.com with ESMTP; 17 Nov 2025 22:36:01 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  "Chang S . Bae" <chang.seok.bae@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xudong Hao <xudong.hao@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/5] i386/cpu: Support APX for KVM
-Date: Tue, 18 Nov 2025 14:58:12 +0800
-Message-Id: <20251118065817.835017-1-zhao1.liu@intel.com>
+Subject: [PATCH 1/5] i386/cpu: Add APX EGPRs into xsave area
+Date: Tue, 18 Nov 2025 14:58:13 +0800
+Message-Id: <20251118065817.835017-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251118065817.835017-1-zhao1.liu@intel.com>
+References: <20251118065817.835017-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -81,69 +82,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Zide Chen <zide.chen@intel.com>
 
-This series adds APX (Advanced Performance Extensions) support in QEMU
-to enable APX in Guest based on KVM.
+APX feature bit is in CPUID_7_1_EDX[21], and APX has EGPR component with
+index 19 in xstate area, EGPR component has 16 64bit regs. Add EGRP
+component into xstate area.
 
-This series is based on CET v4:
+Note, APX re-uses the 128-byte XSAVE area that had been previously
+allocated by MPX which has been deprecated on Intel processors, so check
+whether APX and MPX are set at the same for Guest, if this case happens,
+mask off them both to avoid conflict for xsave area.
 
-https://lore.kernel.org/qemu-devel/20251118034231.704240-1-zhao1.liu@intel.com/
-
-And you can also find the code here:
-
-https://gitlab.com/zhao.liu/qemu/-/commits/i386-all-for-dmr-v1.1-11-17-2025
-
-The patches for KVM side can be found at:
-
-https://lore.kernel.org/kvm/20251110180131.28264-1-chang.seok.bae@intel.com/
-
-
-Thanks for your review!
-
-
-Overview
-========
-
-Intel Advanced Performance Extensions (Intel APX) expands the Intel 64
-instruction set architecture with access to more registers (16
-additional general-purpose registers (GPRs) R16–R31) and adds various
-new features that improve general-purpose performance. The extensions
-are designed to provide efficient performance gains across a variety of
-workloads without significantly increasing silicon area or power
-consumption of the core. 
-
-APX spec link (rev.07) is:
-https://cdrdv2.intel.com/v1/dl/getContent/861610
-
-At QEMU side, the enabling work mainly includes two parts:
-
-1. save/restore/migrate the xstate of APX.
-   * APX xstate is a user xstate, but it reuses MPX xstate area in
-     un-compacted XSAVE buffer.
-   * To address this, QEMU will reject both APX and MPX if their CPUID
-     feature bits are set at the same (in Patch 1).
-
-2. add related CPUIDs support in feature words.
-
-Thanks and Best Regards,
-Zhao
+Tested-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (2):
-  i386/cpu: Support APX CPUIDs
-  i386/cpu: Mark apx xstate as migratable
+ target/i386/cpu.c | 25 +++++++++++++++++++++++++
+ target/i386/cpu.h | 17 +++++++++++++++--
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
-Zide Chen (3):
-  i386/cpu: Add APX EGPRs into xsave area
-  i386/cpu: Cache EGPRs in CPUX86State
-  i386/cpu: Add APX migration support
-
- target/i386/cpu.c          | 68 ++++++++++++++++++++++++++++++++++++--
- target/i386/cpu.h          | 26 +++++++++++++--
- target/i386/machine.c      | 24 ++++++++++++++
- target/i386/xsave_helper.c | 14 ++++++++
- 4 files changed, 128 insertions(+), 4 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 84adfaf99dc8..16bc4b18266c 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2111,6 +2111,12 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
+             { FEAT_7_0_EDX,         CPUID_7_0_EDX_AMX_TILE },
+         },
+     },
++    [XSTATE_APX_BIT] = {
++        .size = sizeof(XSaveAPX),
++        .features = {
++            { FEAT_7_1_EDX,         CPUID_7_1_EDX_APX },
++        },
++    },
+ };
+ 
+ uint32_t xsave_area_size(uint64_t mask, bool compacted)
+@@ -9116,6 +9122,25 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         env->features[FEAT_KVM] = 0;
+     }
+ 
++    /*
++     * Since Intel MPX had been previously deprecated, APX re-purposes the
++     * 128-byte XSAVE area that had been previously allocated by MPX (state
++     * component indices 3 and 4, making up a 128-byte area located at an
++     * offset of 960 bytes into an un-compacted XSAVE buffer), as a single
++     * state component housing 128-bytes of storage for EGPRs (8-bytes * 16
++     * registers).
++     *
++     * Check the conflict between MPX and APX before initializing xsave
++     * components.
++     */
++    if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_MPX) &&
++        (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_APX)) {
++        mark_unavailable_features(cpu, FEAT_7_0_EBX, CPUID_7_0_EBX_MPX,
++            "this feature is conflict with APX");
++        mark_unavailable_features(cpu, FEAT_7_1_EDX, CPUID_7_1_EDX_APX,
++            "this feature is conflict with MPX");
++    }
++
+     x86_cpu_enable_xsave_components(cpu);
+ 
+     /* CPUID[EAX=7,ECX=0].EBX always increased level automatically: */
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index d8bdf342f98d..bc7e16d6e6c1 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -604,6 +604,7 @@ typedef enum X86Seg {
+ #define XSTATE_ARCH_LBR_BIT             15
+ #define XSTATE_XTILE_CFG_BIT            17
+ #define XSTATE_XTILE_DATA_BIT           18
++#define XSTATE_APX_BIT                  19
+ 
+ #define XSTATE_FP_MASK                  (1ULL << XSTATE_FP_BIT)
+ #define XSTATE_SSE_MASK                 (1ULL << XSTATE_SSE_BIT)
+@@ -620,6 +621,7 @@ typedef enum X86Seg {
+ #define XSTATE_ARCH_LBR_MASK            (1ULL << XSTATE_ARCH_LBR_BIT)
+ #define XSTATE_XTILE_CFG_MASK           (1ULL << XSTATE_XTILE_CFG_BIT)
+ #define XSTATE_XTILE_DATA_MASK          (1ULL << XSTATE_XTILE_DATA_BIT)
++#define XSTATE_APX_MASK                 (1ULL << XSTATE_APX_BIT)
+ 
+ #define XSTATE_DYNAMIC_MASK             (XSTATE_XTILE_DATA_MASK)
+ 
+@@ -639,7 +641,8 @@ typedef enum X86Seg {
+                                  XSTATE_BNDCSR_MASK | XSTATE_OPMASK_MASK | \
+                                  XSTATE_ZMM_Hi256_MASK | \
+                                  XSTATE_Hi16_ZMM_MASK | XSTATE_PKRU_MASK | \
+-                                 XSTATE_XTILE_CFG_MASK | XSTATE_XTILE_DATA_MASK)
++                                 XSTATE_XTILE_CFG_MASK | \
++                                 XSTATE_XTILE_DATA_MASK | XSTATE_APX_MASK)
+ 
+ /* CPUID feature bits available in XSS */
+ #define CPUID_XSTATE_XSS_MASK   (XSTATE_ARCH_LBR_MASK | XSTATE_CET_U_MASK | \
+@@ -1042,6 +1045,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_7_1_EDX_PREFETCHITI       (1U << 14)
+ /* Support for Advanced Vector Extensions 10 */
+ #define CPUID_7_1_EDX_AVX10             (1U << 19)
++/* Support for Advanced Performance Extensions  */
++#define CPUID_7_1_EDX_APX               (1U << 21)
+ 
+ /* Indicate bit 7 of the IA32_SPEC_CTRL MSR is supported */
+ #define CPUID_7_2_EDX_PSFD              (1U << 0)
+@@ -1684,6 +1689,8 @@ typedef struct {
+ 
+ #define ARCH_LBR_NR_ENTRIES 32
+ 
++#define EGPR_NUM  16
++
+ /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
+  * that APIC ID hasn't been set yet
+  */
+@@ -1794,6 +1801,11 @@ typedef struct XSaveXTILEDATA {
+     uint8_t xtiledata[8][1024];
+ } XSaveXTILEDATA;
+ 
++/* Ext. save area 19: APX state */
++typedef struct XSaveAPX {
++    uint64_t egprs[EGPR_NUM];
++} XSaveAPX;
++
+ QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveBNDCSR) != 0x40);
+@@ -1806,6 +1818,7 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveCETS) != 0x18);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
++QEMU_BUILD_BUG_ON(sizeof(XSaveAPX) != 0x80);
+ 
+ typedef struct ExtSaveArea {
+     uint32_t offset, size;
+@@ -1820,7 +1833,7 @@ typedef struct ExtSaveArea {
+     const FeatureMask features[2];
+ } ExtSaveArea;
+ 
+-#define XSAVE_STATE_AREA_COUNT (XSTATE_XTILE_DATA_BIT + 1)
++#define XSAVE_STATE_AREA_COUNT (XSTATE_APX_BIT + 1)
+ 
+ extern ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT];
+ 
 -- 
 2.34.1
 
