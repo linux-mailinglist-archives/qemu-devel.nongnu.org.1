@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC31FC6B530
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89271C6B53E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 20:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLQxB-0008IN-JL; Tue, 18 Nov 2025 14:01:25 -0500
+	id 1vLQxf-0008LJ-BQ; Tue, 18 Nov 2025 14:01:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQx9-0008F4-IE
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:23 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxW-0008Kc-Ay
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:47 -0500
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQx8-00060n-2w
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:23 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-47778b23f64so40001565e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:01:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLQxF-00061H-FH
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 14:01:46 -0500
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-4777771ed1aso41149475e9.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 11:01:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763492480; x=1764097280; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763492487; x=1764097287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DvqP0yYSnga49L7kwxAU3PVeYVK1Qd/VcAbwUPzRRds=;
- b=OLDcwJ9CFR4GQ0pBpE69GHeByVL5nTrrVtOXcYS+myoYRAyb2PNRTWEkfkH2Tzb67h
- TQbnonAN1fjGOmDQ4dOsokftMmeVbPJgvAs5bFb9Z56/S/mBhFWcKP74M7bPFP1kXJc0
- r9lep29Qf4zhI/ERJj2YFDt0m8QTbRJB/rZ5uOmsg5U0TcuklsFKVqKW9xf4zotDMDw+
- Xqy05R6T63yz5vSCvVg168hhW56Of2xDdDMzvMNNVXDN8MstasdzV2lKhcgfeO3VqIN6
- Vp8CHqPzUlaM47rjbOxQch8+/gx2C9EaMJjjpnrP4JobtZnjvIH8wsNAI5CZVHrU0iRy
- buDA==
+ :reply-to; bh=ok/ItGqyIFjLquLTm5tPFckGPKjD2Kp3ocnHaYbZ5ZY=;
+ b=gi+zZfrdRRyVWU8m412vixUlxqZ4GOPwFdkySo1NOHPXRXaIDFn1P4R9R6B+4PRLLB
+ N2wsg4TIodQNrnzcwMWQTHEV8i0Hv3g8fpghGMF75mXtwvBiTYr1g6qwMI6z7QSH0w4w
+ YcWL++NfmLrQuZYNaMoBnDm8FjiWRVyNjhL7/8bYoWJUyban2tbFjPUcbqUNV+uUpBNo
+ 2ES5GMgujtKVuT+XT7acnGTK6ktS95dumOmrBVo/D41yJt6qZIDvUB7Oxh2v5qC3SGuL
+ 5qvBuZtW632MVCNauyT7pCsOtvImXx+COQAsonMXwuNLoIh6op3Bp8tfHDKjP2k2LLA6
+ I1+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763492480; x=1764097280;
+ d=1e100.net; s=20230601; t=1763492487; x=1764097287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=DvqP0yYSnga49L7kwxAU3PVeYVK1Qd/VcAbwUPzRRds=;
- b=VCCyZpX6WrwVI5V1s1wyo8d9RT1XxzIi5JUtbQLRPJ6O9dUycnWyfQtfaQQtlc6d5V
- HJF34nTUZbFmHPSLunP0XUItQqGssZviW1sdyNB2sB67isPFxtUtgUwE8ynCi5/c0Fbd
- zghT6JprjGQF/6/HvgHHTFGJOVAWcbVqTjvjTdgb1r4EYaaLvhiSZeFY9Mg0LQcKPmut
- o/f9n/ILbHIqvdEgC4DLbAU9EX1XPiBoPG3LjlZF4HzPCQFAzYsfjIZQEbxNSA8aDXGa
- 1EfwQ3GtJGAlWxYWJ4Wd6tUoqhGqSC1UKip8yG2gqy4WZOGeIxntV2rXSFMIrn6rQYUa
- oY8Q==
-X-Gm-Message-State: AOJu0YwuKWv6/+6sptw1WkMXpjqjEtwYh8m5SuUjwgiQez6xMJ1Zu2Fe
- hueekjBmFE5wdmN0kRQXVcVxwCa/TWqCFJEX2g0XijTdGfrLBZkwgasEe5MACaM5IS3T+wgeIIl
- 1ZioSpLYTIQ==
-X-Gm-Gg: ASbGncvTKzAKGxCzthIMSWELXAhxO5hTJLo+30HEt77QF3kSjtl3Kyw0Z1qXCmgSOkh
- Pu8slU7fUy5TdH2bkSHLaWfvyuPkdEkpefgf07ge/RvUwRjqAhl75XncaInsFU/lo0HwLPJx3gi
- pZyD6+oTwGPLYLZWHzAlfbkjrQNfbR5xC8RDe/TuWB8zUTSQhFYQ0Qzw0Y3KIUNJpllyZIHRf2O
- sUowT/hp7s51vWSsfCSINP+DAPOfsKHhp6SmhhfHxQw2dXMniSpWyTHGyLLJr7wMFZz1d0/nTBx
- 1Qlh2oEn5UK1j+26HIaf2lCdCd42EviwSPZCo+YiqQ7+Ijl33p5+7bsg1Vxoin4qhuvoVJvLs0K
- ijd18lpMCRYgxmEmpE25jWJ0jTJa7zNKv2VKpL3xqRzo/yzRvUwmbEX+vVWzs5coth5PWCBiA5g
- 2S1+HhKh4AJO3PNyxi5oILnVeMoq3FmRjHzWMM9GK6kNC/ES3RLcyul/XCRy1BAoZM4KKIA4Y=
-X-Google-Smtp-Source: AGHT+IFwf4FrvFejTsS/5cKXe7xHqIlpmVM2ovW+om+PstlGID1pH/dC+rvOw6kZZW9cb24b81WuFQ==
-X-Received: by 2002:a05:600c:4744:b0:46e:48fd:a1a9 with SMTP id
- 5b1f17b1804b1-4778fea8ab2mr178062855e9.33.1763492480099; 
- Tue, 18 Nov 2025 11:01:20 -0800 (PST)
+ bh=ok/ItGqyIFjLquLTm5tPFckGPKjD2Kp3ocnHaYbZ5ZY=;
+ b=fXIBX38WXuO95dVtN1X3cS47y91pYV3YEOGhFYhC+JF8tT61xfYA/yPWD0EpL701zv
+ CZK+3uGzqBo1NKhDcdeUtrlUF6bYOfoVYtAOow7JRt7ZQpSFRLv3zQtHaBYidKOlLNtx
+ WjLTYSn1hFJAnVgnCGdTePvdChc8B6ntEzwICwESKThMOM5NnESDa7ScswmhGpAdToHf
+ YOm2eS323RJe1p3tyCTJ/OYqjhGUrfsUsK/A3+yQmnX1NOXuHpyVV26UWxYf0WfCUxWN
+ hiZV0x6Z4UGqR4XPbrTOmOlvyLOpB6ut6qAiyJ02KRRmXtKyLDPsPCXnQngxSlWGQpxi
+ mXOg==
+X-Gm-Message-State: AOJu0YwTnjpIpUdrzV/UQRHwNovCYo9jkgv5fb1CayhSn3qhxL51W4g5
+ b70BbM5xONcm/pmnc5SzZ+RzcTbvELL88hh4H27iO1QaM1+ROKfL2ISr71OErCdLhizBLatE1B+
+ SoYZlErwsKT50
+X-Gm-Gg: ASbGncuoDrqIdC0F/bCPDKFaQx2HBeKlB+jINywmjIrwjAwf1E1rUhWSuIlkJIxfTiJ
+ VS1fxflgLr7JfGIVZpGDsQou1lkorOLCooAdOs+of93kQjOxOX/5ba43h3MwoBZuOyPK/G6ItLg
+ Lr0UJh+2/vLNkY4I2WG7fIeA6xCtZYD1uUy4CbvWvDZ/lhwr4zMD6ClOsmnV+ebVd55QRIAkOJA
+ 8UKx4fuJqca9oqoCyqCINYt7AuCKe7rfQbzyt9ORIkz5qDcplzoMsZ5APzQMzSrED/+D54Sr47n
+ CIM8iGHQNThH5agAh+XTUTltKFESHMf3GVt49PQNU+HDCxRo4HvXMBqUIcKkC2OHGXGHOuVZtUp
+ /bN4Ovqddc9HCU2DagNkxamAlEyeIsCZEGlnaVKUUSocTmBnAQvT/h55vdCT2s8U+15lO9IrPEH
+ nRALuPWhuurrlEIgzA8YTOICDBiLocnK4mygV2JpJpdkf9aOer+PW/saZ6OIFTYKVcJq8DJPLIx
+ GOq8IcJLw==
+X-Google-Smtp-Source: AGHT+IGw6Xu8KrZbLXHP2Jy49Df/Reg4BZcu0hQhzVtNZyQaOqrakiKTO8YzP7/uooSfalDKHyb70A==
+X-Received: by 2002:a05:600c:4714:b0:477:8ba7:fe0a with SMTP id
+ 5b1f17b1804b1-4778feaa8ffmr161157095e9.24.1763492487134; 
+ Tue, 18 Nov 2025 11:01:27 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a972141bsm24016645e9.2.2025.11.18.11.01.18
+ 5b1f17b1804b1-477b1035c78sm4971755e9.11.2025.11.18.11.01.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Nov 2025 11:01:18 -0800 (PST)
+ Tue, 18 Nov 2025 11:01:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/18] system/qtest.c: Allow for multiple CHR_EVENT_CLOSED
- events
-Date: Tue, 18 Nov 2025 20:00:38 +0100
-Message-ID: <20251118190053.39015-4-philmd@linaro.org>
+Subject: [PULL 04/18] hw/sd: Fix incorrect idle state reporting in R1 response
+ for SPI mode
+Date: Tue, 18 Nov 2025 20:00:39 +0100
+Message-ID: <20251118190053.39015-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251118190053.39015-1-philmd@linaro.org>
 References: <20251118190053.39015-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Bin Meng <bmeng.cn@gmail.com>
 
-In the qtest_event() QEMUChrEvent handler, we create a timer
-and log OPENED on CHR_EVENT_OPENED, and we destroy the timer and
-log CLOSED on CHR_EVENT_CLOSED. However, the chardev subsystem
-can send us more than one CHR_EVENT_CLOSED if we're reading from
-a file chardev:
- * the first one happens when we read the last data from the file
- * the second one happens when the user hits ^C to exit QEMU
-   and the chardev is finalized: char_fd_finalize()
+Since commit b66f73a0 ("hw/sd: Add SDHC support for SD card SPI-mode"),
+the CARD_POWER_UP bit in the OCR register has been set after reset.
+Therefore, checking this bit against zero in sd_response_r1_make() to
+determine the card’s idle state is incorrect in SPI mode. As a result,
+QEMU makes the U-Boot mmc-spi driver believe the card never leaves the
+reset state.
 
-This causes us to call g_timer_elapsed() with a NULL timer
-(which glib complains about) and print an extra CLOSED log line
-with a zero timestamp:
-
-[I +0.063829] CLOSED
-qemu-system-aarch64: GLib: g_timer_elapsed: assertion 'timer != NULL' failed
-[I +0.000000] CLOSED
-
-Avoid this by ignoring a CHR_EVENT_CLOSED if we have already
-processed one.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20251107174306.1408139-1-peter.maydell@linaro.org>
+Fixes: 1585ab9f ("hw/sd/sdcard: Fill SPI response bits in card code")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2945
+Reported-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251110110507.1641042-2-bmeng.cn@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/qtest.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/sd/sd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/system/qtest.c b/system/qtest.c
-index e4d1cd75daa..cbeb7f37728 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -808,6 +808,10 @@ static void qtest_event(void *opaque, QEMUChrEvent event)
-         }
-         break;
-     case CHR_EVENT_CLOSED:
-+        if (!qtest_opened) {
-+            /* Ignore CLOSED events if we have already closed the log */
-+            break;
-+        }
-         qtest_opened = false;
-         if (qtest_log_fp) {
-             fprintf(qtest_log_fp, "[I +" FMT_timeval "] CLOSED\n", g_timer_elapsed(timer, NULL));
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 9c86c016cc9..5aae5413636 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -789,8 +789,7 @@ static size_t sd_response_size(SDState *sd, sd_rsp_type_t rtype)
+ static void sd_response_r1_make(SDState *sd, uint8_t *response)
+ {
+     if (sd_is_spi(sd)) {
+-        response[0] = sd->state == sd_idle_state
+-                   && !FIELD_EX32(sd->ocr, OCR, CARD_POWER_UP);
++        response[0] = sd->state == sd_idle_state;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, ERASE_RESET) << 1;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, ILLEGAL_COMMAND) << 2;
+         response[0] |= FIELD_EX32(sd->card_status, CSR, COM_CRC_ERROR) << 3;
 -- 
 2.51.0
 
