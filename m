@@ -2,93 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83E3C68B55
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 11:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65D2C68C21
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Nov 2025 11:17:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLId1-0003vq-6s; Tue, 18 Nov 2025 05:08:03 -0500
+	id 1vLIl9-00077G-7S; Tue, 18 Nov 2025 05:16:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLIcy-0003vP-Lh
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:08:00 -0500
-Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLIcv-0005rU-Hf
- for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:08:00 -0500
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-9490b441c3bso77154439f.0
- for <qemu-devel@nongnu.org>; Tue, 18 Nov 2025 02:07:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763460475; x=1764065275; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=9OqoMSfRSiGMaBYlctVk6O3Ph/aO6VH8ek256eIclBg=;
- b=SoZjhnnqjohQHA3J7mEswVibujZ50d3qxFhc87z5SX6vKvP92tMB/DhubWNkXilHno
- xi4W6XaKhjawfxIFthvcypSUx1b+ibTYmUJ4A0LezbZlYvJ7OveHZQb04alCZU7JEehH
- 36fYIuRUG/5KL6VyFPNSaBRhLJ7YCkzYDnVB2kF8P2+Oykp+zoAYUfdQg9+0D3/dAdhB
- O2F98R4H/5/ZCGaT/Asfn87/+4Jy0F42sqzJKKmV0NHbKfxmhTpNP2y4+rG83Ir7HdSU
- DDYj/B3Yo/nHWIxyyEA+ST//UKDU+bnIpHS5muqxpbENBQpYIB0pinteS0x0Xzy6Nffb
- U3Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763460475; x=1764065275;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9OqoMSfRSiGMaBYlctVk6O3Ph/aO6VH8ek256eIclBg=;
- b=gbnggue4Em6maQ3HXzmG1NYL6Oy/vJ7Kb44JZZtOs1aJMqD2k5M2WwrVTRuE7W3yWW
- EIxW7johkC+x+H6hHrSSM4lLWjzhKl/PcOdMIE+xe0v1HD1+WUsut8wQ/LYolNfRgVNJ
- IyrSjgB7umjcNfJUT7jazlVnViFdQTLzp7hCWxb7ZWLVLWoTl6S1vRTrikOVIDJo65RN
- hOLvHGdyRpjBMMC3uTMPlaqLUR7iHW0+aiLpQQo/gZCOqrvXHdkAhWoqA9FCZPtBks4l
- LFJfTpLqGbpOKYIhesnBcRJSbL8c6fbrBZlzQKEaiy/z4VwxBrtGVHtj95Eu55h66Xui
- A1dA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVYOIB8ZybyC/3eQoKHircHjDUhZjvKYLHKrtIlInBJVYhuH8SC99UERW22B1D8cVVINOVQ/ASf8FEx@nongnu.org
-X-Gm-Message-State: AOJu0YxbxjUTY6m3xHZh137gzLvv7qFLZi4qbUgW+WPWES17N4G1ZMsT
- /9Uc21DatVfWR+Ko4hlRflpj/xT+GjzGSmU/HucksHa65tFoaC6bb3+psYpMUSRU6oE=
-X-Gm-Gg: ASbGncuE6gUNZxrSMWaw+ClgTpDSSa7rNtQoo6YfAlCPzqn1V2XL50Otx1a1ARNGulI
- DkaflXp6e6iZrgwV6gtBSV7g22J/CS5X0zDbVWjSIzrOHSuSxfBnBnAv3W6zR+nsp9kd7BVfB6Y
- E6Hx9GCjE97tPqRQbf2dAPW7sR9COMa9cKEC80s+2qQehyo0atU28WEU1nBeQ0O6tP25Ivj7gEb
- EfykrXiciehRFwuUWCCKPZeHJi6KIMXJaJhUJN4n8byrhQgJS0OsvhulJczT/Aax44/D7INd5Vx
- OTuCs7B7N9xhM7WB/aIq/3YhR+3DoV7jtG9ckgadxo10w1hKOZ0hEnDA442tbgcYKkXEre6tvRm
- I+a2x6kpVB1y1e+kTzgbR7cpoyaUnynmUkq8QlSbvCvQRs5ahl9qMymTd4aS7/yGxFa+LM8Al1G
- NcRjbpOjhWiihjtuucFZ/mhuPb2V0igg7jyki1k5P2m1JfCXGFNyi2rwe6SUo82OWc+vG5ELobe
- flbfeMYmnElzkKP
-X-Google-Smtp-Source: AGHT+IET8bj7eX974k9ENpB5hpsMrebY4Gu8A6SwDc0+lbR4YbEcMYiBa+mUKc+fa1ZfMRi6YS7Rkg==
-X-Received: by 2002:a05:6638:1393:b0:5b7:aba4:ccd5 with SMTP id
- 8926c6da1cb9f-5b7c9c69d91mr13165003173.5.1763460474840; 
- Tue, 18 Nov 2025 02:07:54 -0800 (PST)
-Received: from [10.89.10.227] ([172.59.191.229])
- by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-5b7bd3171cbsm5881506173.32.2025.11.18.02.07.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Nov 2025 02:07:54 -0800 (PST)
-Message-ID: <973da932-97d5-46f0-ac0e-14136720955e@linaro.org>
-Date: Tue, 18 Nov 2025 11:07:50 +0100
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1vLIkm-0006xA-Ho
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:16:06 -0500
+Received: from mail-southcentralusazlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c10d::3] helo=SN4PR0501CU005.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1vLIkj-0007ne-8w
+ for qemu-devel@nongnu.org; Tue, 18 Nov 2025 05:16:03 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IVhTTk6RAQdR7fB+K9o7iNKjhAFzsd6ZcU9Pqn6NV7FKC+FXGO9shXwGMUmBBkLwOgOX8hh93ARV1KwTpdPNK48zw8bg6at5yZp8kULsBVSe3XEJ4QVYQzDS9/ajsFQ1C19D52lWXQRcNZ1B5/dNV0zcrCExo236Tuqc1zqBkqVAdXp7yXVwUnA6BFHv3jxWA7f5tv1AYQchVloIG1VQ64RSSf7kOXypdzgSkdqoBapBv0aLqR8hFyYpN8MgyGOlVqOegJMhjMXbDKafcRAaPwNs+UObd3JdaL6pZN958FV2/pO96BTZmUZrWAROuVSVLdtKotBiEVc61Q45Ly7V7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VD+XLOIYqHMFDAuYsUNBc6y8QNRjnNI/gCc7eF7sO6I=;
+ b=tdMwv6Ppk7b69PakQhV5NxyWSh92burz1RjfyY44A329IY6OMXx882WBRJg+xksZ0S3tCqNkeOd809zCR0LKZdLMTJn5RocYemoLXlUVCcHBYHxxJQQpcERxCf8Ew7LqHPLVEs2A7Udr1/C1E4lMc1UDuZqoyL7J6uA+9dPXzVO/GaR4eEiPo/BMNnn/VkhYuGFgcKQeDdUZM8l1LHYVjo0K8yBwWasaY2c3iQtWQ9yKNJQD2yyBnDq/j6K/f3Q8JuWr4ZUNQyafOpXj0vGxke9HhOxs2O2B1dqBs/JQ2Bwjk4q2MhCZSdgTMDcY1WeuCmA8ypoHo5Fw3YDJ3cxH3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VD+XLOIYqHMFDAuYsUNBc6y8QNRjnNI/gCc7eF7sO6I=;
+ b=lmX7y8olYtG/tHbY9ahio/ONMqq2NGfmmNt/KIfaNBh/Sshq92YcSQKTKPENVw+zzCyrRyGREm5tOgcvibp1qSTFSXWcZNkmr6wdUbhmnQ/QIOurqXUP/eL9DDhu+1frHSeFc7wrhYBzvBj3MA1Zjps5QNfE8p8a6omR3pIf7+E=
+Received: from MW4PR04CA0357.namprd04.prod.outlook.com (2603:10b6:303:8a::32)
+ by SA1PR12MB8093.namprd12.prod.outlook.com (2603:10b6:806:335::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Tue, 18 Nov
+ 2025 10:15:53 +0000
+Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
+ (2603:10b6:303:8a:cafe::6f) by MW4PR04CA0357.outlook.office365.com
+ (2603:10b6:303:8a::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Tue,
+ 18 Nov 2025 10:15:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Tue, 18 Nov 2025 10:15:52 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 18 Nov
+ 2025 02:15:46 -0800
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
+ <alejandro.j.jimenez@oracle.com>, <vasant.hegde@amd.com>,
+ <suravee.suthikulpanit@amd.com>
+CC: <mst@redhat.com>, <imammedo@redhat.com>, <anisinha@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <eduardo@habkost.net>, <yi.l.liu@intel.com>,
+ <eric.auger@redhat.com>, <zhenzhong.duan@intel.com>, <cohuck@redhat.com>,
+ <seanjc@google.com>, <iommu@lists.linux.dev>, <kevin.tian@intel.com>,
+ <joro@8bytes.org>, Sairaj Kodilkar <sarunkod@amd.com>
+Subject: [RFC PATCH RESEND 0/5] amd_iommu: support up to 2048 MSI vectors per
+ IRT
+Date: Tue, 18 Nov 2025 15:45:27 +0530
+Message-ID: <20251118101532.4315-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 00/18] testing updates for 10.2
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20251117155237.4124861-1-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251117155237.4124861-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd31.google.com
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SA1PR12MB8093:EE_
+X-MS-Office365-Filtering-Correlation-Id: e40957e9-0e10-4d09-f672-08de268b7441
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|36860700013|376014|7416014|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NXhYUjV3dzlqb2lWRXpETi9ma1crOTc3dGROWm03c0tQNEhrSVZkZkptUjdD?=
+ =?utf-8?B?Y1l4QjRjMDArd1lqbmQxcEhUU3lZeWE2K1Rna1VWQm51aVArVm1RYmRVYUlO?=
+ =?utf-8?B?cHBkRTc0UFNVMER3S0s0WWpTbzI1Z2xGR2ZDSDN4ZmtuODZYQXRqZXcrL2Vq?=
+ =?utf-8?B?eFJzdmpRd1crVUUzUzcrZ2d2NGRVc3RLNFhYRDVTNnQ4cXg1cmJIZVJXMzNj?=
+ =?utf-8?B?dml2b2hMcVorMGFVcXpDK3gyVm5lOWlYNzNRazRhSlJtR2dQaC9EUlNsZXVD?=
+ =?utf-8?B?cUZkVGNCTmh3YjdaMXFBaEU3Q1phQjBtMllKYTBJeXhEcEFhVTVyWE5Rd0pw?=
+ =?utf-8?B?MnVZbUZrMzYxRG8wUHdncHlLL1EzR1M1cDhaOWdvWlBGVFh3SVpEWjU0YzJy?=
+ =?utf-8?B?T2JORlNVQWlJWWdnNFFXK3E4ckFwbi9WWm9yblkyZjJaS3owMzJjaXFTc1JQ?=
+ =?utf-8?B?UUdMZTNQNmZXSno3eUxjTElsZGQ1T2hDN1VTZkdIKzh3d0t6SkJUeVFxeENM?=
+ =?utf-8?B?UStBeGJ0YkRoemMxNURqaEF1TFJ1VWZkcDhUSXl3NVhNZ094RlNxM0tKOTl3?=
+ =?utf-8?B?Q0hVSXVhZkcvYmJyYWZvbUZiOWJyTDgyTEFKRSswMWh6RDVGYUNxVllaYVgr?=
+ =?utf-8?B?ZUhQMGsrU0l4akhPY2RRVU9CMUFjbWREK3JHN2ducmhNS2t0eXJCZE9Pd1pR?=
+ =?utf-8?B?OW9pZnRYa3BuUkZTRGVjTm9saUl2b2dZaXVvZkw0dkZuM1drYXpob0VneFRE?=
+ =?utf-8?B?d1RCbmlzdGtROXRxcUtBZjNFR1FpRERxejFqbUlKUnpVY2laaFN4cDBhSU15?=
+ =?utf-8?B?QUdFYUdVY2QvVXpZRGtnajRuZ3JLSW9iMEl0K3NZLzlwcGZ4Ukl2eGRkY1RB?=
+ =?utf-8?B?TzNrcTBKakR4Q1ZTSDByZXNiUXlTZThhbWY5NXN4M2E4Um9GUjh0bWFpb0NL?=
+ =?utf-8?B?WUlZWTFUbmVrT290NTh1b1Y4SmEvMitwUnN5SXZzbjd2cVJLVCtuUjJlZEJF?=
+ =?utf-8?B?M25iUE5YL2JGVWJRUkZIVVF2VkdzSVl4NjFUeFcxb1JaWllRdGxEOWpVR2Ru?=
+ =?utf-8?B?c3d0OCtVbEJPeVF3S1JrTDd3Q0NaN2poNFZpWGpCREMyenZOR3RORGxLOFdP?=
+ =?utf-8?B?NCtWSDRodmlQSkVHaDFPU0UxUlM5bUtpbnBUdzE4WE1JV3RBSGVpZHZrOHRj?=
+ =?utf-8?B?WWJOcHpoSkhBVVRXMm91Yk1iOWNmdnVxTHh2TnZvclhSNU9LdDNuRUpsYVlR?=
+ =?utf-8?B?d2xkNUFTbStnMlFVc0docFEzNVJwbm5NL09qS0JzOVpXa0JVNm5nZGVvdHhH?=
+ =?utf-8?B?aURQdWRZcEgxVmlkdWxGZVp1SUpRSXI3bmd1ck9SV0U4Ni9MVkthTlI1L3lt?=
+ =?utf-8?B?L1RIZHZxcEtDZ1dmQk9MSW81RVBObERHY0t0RkJpbGw1STNIZDk4RVNiSlNV?=
+ =?utf-8?B?YTNidVVEVmY5NHptb2ZCMGtsaGp5YWNTMCttR21raVRBc0RKSUQ1UmlEZzAx?=
+ =?utf-8?B?TnRqcFRPSkpkWFNvWnNlbUlXb25PdG91NXhidGRTYTJrckNqTzZjM242a28y?=
+ =?utf-8?B?TFFsZ2NRbUZrejNscndYc2hnUC9wSVAwSzV3Zy9NUDlIUXNYSGVPVU5oTTBz?=
+ =?utf-8?B?SlhaeVBpRlhKcXYxbk4rSThPOU9TQmZMS0RtWC9GaU84R3IwMndtK1k2bXhX?=
+ =?utf-8?B?Vmx6NlkvTGZXZ2JmY2w3SHVtMXFwVnp3c1hZcFFUY3dTMkN3S2FJdk4zYnNv?=
+ =?utf-8?B?b1lDamY5dEhLUDFpbHRIZFhrMEZuY0t4VW5DdEJUeFJPODZ2dERacDVCUHln?=
+ =?utf-8?B?azM5bEdNb1cxYlVld0cvaVdIYzVlMmhZMytKdTROTmlNMXJQUmZxTjFCMnRI?=
+ =?utf-8?B?eUxVcXd5NjQ1UlBWOC9GR3AzdXdub095RjhqYm5aZFhzVFVWb3kyblZBbmlz?=
+ =?utf-8?B?UHlqd3lWTDcwS2wrSytuRXN4RGhqZnJLcWhjS3RkNVVyUkV5WEg1TUpIUWlm?=
+ =?utf-8?B?Qnd4NFVDQ1hxZUlzQXY3TlAvOHZHTGdZL0lqb09IWk5qVkE0ajdpU3VNelVi?=
+ =?utf-8?B?YW9TWkd6YXpzejFaZ3U4SCsraWpwZnAxV25kVGlYbzZpbzQvSVRlc3l0dTl5?=
+ =?utf-8?Q?gsS4=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 10:15:52.4619 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e40957e9-0e10-4d09-f672-08de268b7441
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002312.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8093
+Received-SPF: permerror client-ip=2a01:111:f403:c10d::3;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=SN4PR0501CU005.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,32 +161,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/25 16:52, Alex Bennée wrote:
-> The following changes since commit e88510fcdc13380bd4895a17d6f8a0b3a3325b85:
-> 
->    Merge tag 'pull-target-arm-20251114' ofhttps://gitlab.com/pm215/qemu into staging (2025-11-14 17:59:05 +0100)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/stsquad/qemu.git tags/pull-10.2-maintainer-171125-2
-> 
-> for you to fetch changes up to 8bec7b9874235e60f14172618121c60fdbd39302:
-> 
->    gitlab: add a weekly container building job (2025-11-17 15:51:00 +0000)
-> 
-> ----------------------------------------------------------------
-> testing updates for 10.2
-> 
->    - fix emsdk image for podman
->    - update lcitool and clean-up ENV stanzas
->    - include coreutils for io tests
->    - move a number of assets due to linaro changes
->    - add ppc64le custom runner
->    - rationalise the gitlab custom runners with templates
->    - clean-up the custom runner rules
->    - add a scheduled container build
+Resending this series with KVM and IOMMU maintainers in CC.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
+AMD IOMMU can route upto 2048 MSI vectors through a single
+Interrupt Remapping Table (IRT) entry. This series brings the same
+capability to the emulated AMD IOMMU in QEMU.
 
-r~
+Highlights
+----------
+* Sets bits [9:8] in Extended-Feature-Register-2 to advertise 2K MSI
+  support to the guest.
+* Uses bits [10:0] of the MSI data to select the IRTE when the guest
+  programs MSIs in logical-destination mode.
+* Introduces a new IOMMU device property:
+        -device amd-iommu,...,numint2k=on
+
+  The feature is **opt-in**; guests keep the 512-MSI behaviour unless
+  `numint2k=on` is supplied.
+
+Passthrough devices
+-------------------
+When a PCI function is passed through via iommufd the code checks the
+host’s vendor capabilities.  If the host IOMMU has not enabled
+2K-MSI support (bits [44:43] set in the control register) the guest
+feature is disabled even if `numint2k=on` was requested.
+
+The detection logic relies on the iommufd interface; with the legacy
+VFIO container the guest always falls back to 512 MSIs.
+
+Example
+-------
+qemu-system-x86_64 \
+-enable-kvm -m 10G -smp cpus=8 \
+-kernel /boot/vmlinuz \
+-initrd /boot/initrd.img \
+-append "console=ttyS0 earlyprintk=serial root=<DEVICE>" 
+-device amd-iommu,dma-remap=on,numint2k=on \
+-object iommufd,id=iommufd0 \
+-device vfio-pci,host=<DEVID>,iommufd=iommufd0 \
+-global kvm-pit.lost_tick_policy=discard \
+-cpu host \
+-machine q35,kernel_irqchip=split \
+-nographic \
+-smbios type=0,version=2.8 \
+-blockdev node-name=drive0,driver=qcow2,file.driver=file,file.filename=<IMAGE> \
+-device virtio-blk-pci,drive=drive0
+
+Limitations
+-----------
+This approach works well for features queried after IOMMUFD
+initialization but cannot handle features needed during early QEMU
+setup, before IOMMUFD is available.
+
+A key example is EFR2[HTRangeIgnore]. When this bit is set, the physical
+IOMMU treats HyperTransport (HT) address ranges as regular memory
+accesses rather than reserved regions. This has important implications
+for memory layout:
+
+* Without HTRangeIgnore: QEMU must relocate RAM above 4G to above 1T on
+  AMD platforms to avoid HT conflicts
+* With HTRangeIgnore: QEMU can safely place RAM immediately above 4G,
+  improving memory utilization
+
+Since RAM layout must be determined before IOMMUFD initialization, QEMU
+cannot use hwinfo to query EFR2[HTRangeIgnore] feature bit.
+
+Another limitation with using the control register is that, if BIOS enables
+particular feature (e.g. ControlRegister[GCR3TRPMode) without kernel support
+QEMU incorrectly assumes that host kernel supports that feature potentially
+causing guest failure. 
+
+Alternative considered
+----------------------
+We also explored alternate approach which uses KVM capability
+"KVM_CAP_AMD_NUM_INT_2K_SUP", which user can query to know if host
+kernel supports 2K MSIs. Similarly, this enables qemu to detect the
+presence of EFR2[HTRangeIgnore] during RAM initialization.
+
+Although current implementation allows 2K MSI support only with
+iommufd, it keeps the logic inside the vfio/iommufd and avoids
+modifying KVM ABI. I am happy to discuss advantages and drawbacks of
+both approaches.
+
+------------------------------------------------------------------------
+
+The patches are based on top of bc831f37398b (qemu master). Additionally
+it requires linux kernel with patches[1] which expose control register
+via IOMMU_GET_HW_INFO ioctl.
+
+[1] https://lore.kernel.org/linux-iommu/20251029095846.4486-1-sarunkod@amd.com/
+
+------------------------------------------------------------------------
+
+Sairaj Kodilkar (3):
+  vfio/iommufd: Add amd specific hardware info struct to vendor
+    capability
+  amd_iommu: Add support for extended feature register 2
+  amd_iommu: Add support for upto 2048 interrupts per IRT
+
+Suravee Suthikulpanit (2):
+  [DO NOT MERGE] linux-headers: Introduce struct iommu_hw_info_amd
+  amd-iommu: Add support for set/unset IOMMU for VFIO PCI devices
+
+ hw/i386/acpi-build.c               |   4 +-
+ hw/i386/amd_iommu-stub.c           |   5 +
+ hw/i386/amd_iommu.c                | 163 +++++++++++++++++++++++++++--
+ hw/i386/amd_iommu.h                |  24 +++++
+ include/system/host_iommu_device.h |   1 +
+ linux-headers/linux/iommufd.h      |  20 ++++
+ 6 files changed, 207 insertions(+), 10 deletions(-)
+
+-- 
+2.34.1
+
 
