@@ -2,99 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8BEC70783
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 18:30:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA323C7077D
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 18:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLm00-00034r-Qn; Wed, 19 Nov 2025 12:29:44 -0500
+	id 1vLm02-00038b-EU; Wed, 19 Nov 2025 12:29:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzn-00031R-OI
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzq-00031c-IQ
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzk-0004PR-HT
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:30 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzn-0004Pr-HS
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763573367;
+ s=mimecast20190719; t=1763573369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1WZk9+lCKlczElZt5LYeArbAXZ8shM2UJ0/dTfEE7/g=;
- b=HZiyw44rvUcFi6EoRui+bvHF/B+n5McKLdcetf1N4Ms2/QKuGDYYtCYFoi1y1pAtbee7Gc
- dBmfPwSDBsmO/DdCS5DJCgImcFdY8TvXrJKMfaD1c1pkNb4QMmOHbKg+si2gSuJM1zWbKw
- WAJsIxS9zra5HBXVK8+uwa5d12jcyfI=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mT/ZTbTQ7j2oul5VXYz9qUwuJg/LSQ1GLNpf4vuAZng=;
+ b=HVfWAERB+1fU93DK5c5rOgFn2qQWS4WqBu+50PXIs5rReQLDzoyBnHq4rou0mE2Uou3udI
+ RYrbNQhGNQqNhYMub3r6JgvbWuN+gTnHaxAtcS8KBbwaj5G+VX+EYIDdjWnnx0tN8oABSE
+ Qfm6yhTaDGPYCBL4AobAHIwgeoO+MTY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-_fmf5LbXMOeyxNIRfFexWA-1; Wed, 19 Nov 2025 12:29:26 -0500
-X-MC-Unique: _fmf5LbXMOeyxNIRfFexWA-1
-X-Mimecast-MFC-AGG-ID: _fmf5LbXMOeyxNIRfFexWA_1763573366
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8a5b03118f4so349456885a.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 09:29:26 -0800 (PST)
+ us-mta-225-BrrmIwpyM2OsbWX0rHj46A-1; Wed, 19 Nov 2025 12:29:28 -0500
+X-MC-Unique: BrrmIwpyM2OsbWX0rHj46A-1
+X-Mimecast-MFC-AGG-ID: BrrmIwpyM2OsbWX0rHj46A_1763573367
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-8b233e206ddso1878450285a.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 09:29:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763573365; x=1764178165; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763573366; x=1764178166; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1WZk9+lCKlczElZt5LYeArbAXZ8shM2UJ0/dTfEE7/g=;
- b=Bg5LdQmw94dIh2wk4JBRv1QOO6jsXCiBhdhi1JZMR3rGtls9uTfIrybQdVnqfRJAgl
- 45MRwybwvQz3hXOKOeXZ1S38lTIrskoBcIEyC9prtJOzik2+Mo9dgio2k3kRz06CimgA
- psTk2Eg21EDz9ysMTqXi95ap3DhJsRegD2Dboc/dh7H0VJV/CZDlf6OzmtaSsYllsCA/
- lJhSejKquT1yBdc3sYyws5n+pXapeguGrw+PJwaM8GJBRKaUfu10SLgPBpxMs9eT3W0d
- B3tZSKFFnQ1HshE9xl3pt9AXE+ECxZvp6Fsw6PA5dIPt/oagXFRsL5+9nL2lGuwrWst/
- zi+A==
+ bh=mT/ZTbTQ7j2oul5VXYz9qUwuJg/LSQ1GLNpf4vuAZng=;
+ b=cfZe1wONhHXlD2sx/LKR5qF/wjFgMqohwCtjqSULpijFCoGF+cUTyegEqxsZ+UGwBD
+ p2hKcVzoFx4cu3tPyu9sGFBgGTzHh9znHcM5mVqGgQgvzDt2smGHxgvprDNUG8lLJ+I3
+ 3W1haR0HZnm+oASAI7Ha0FrOOC8LtKL3G8kTN6iJcGQapUqH5woymrccJSND8bryw9JE
+ 3huF/Mf+y7wRG2xOmYLwKt816pOW0By+YsulWqD/pVVw2sPxVA/Q/LNJG5QYsLrQQ112
+ mMtxDoMUtCnzdy9Oh+963UIiVhSSutEpTWjifjYctGXNddrY+21wuFIiiRNtzP48cjKg
+ NXQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763573365; x=1764178165;
+ d=1e100.net; s=20230601; t=1763573366; x=1764178166;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=1WZk9+lCKlczElZt5LYeArbAXZ8shM2UJ0/dTfEE7/g=;
- b=sNJ1RjhUxx93Gs/i+Vmt3RKKfWwW6o8olsvzZtaaQo9HDhJvEifjgKZfRn23FiReY2
- vwV+5ZyGdlVKYHFM3QkCLBG2aO2TLdiSprdqMUGV3i42LirFylLUkZsYWFqRttcE4eZP
- FYNn61WiKai7NASYijNagcDXDNuAAdo4TdD/f/NcYRxphHfVc/vH64/2Gif7Hd65N5eE
- 2609RoJVwh1dvAzkbJSaFaogrcVH66cOb6hpiYMw/UI+4HOyjNcxHcT/rkD2rdjF04sK
- AFhoJRsV95k3oFVt3AHUo6tPKGfU8GHwnbcDG3p3WcpQlXfeJXdbxkOpPL4ow8GRfzxf
- 2EPQ==
-X-Gm-Message-State: AOJu0YzN+8g4XWKjNnNs+VPDmPvu6nDfvdV1nmqx4PpLQbblEU0APhpq
- wsEekWtDtEOVtPr7/iMJdwupiQegqO+R3Ohs//mfiZu6g8H+w9RYgmRc5jRzYNqGd65/gs16vhw
- ctRwt6/ZdlDmP0eYxGmfXpQQzBovt9HxaagVMUVhS6kYZeoCL/gceBaR8P7aaRX9HF2ou6fIkXg
- xzUszPAboiXfTlUA6Ul94nQs5cKCQsmdbPCjwdyw==
-X-Gm-Gg: ASbGncuZckjsFHSOhRYd/WwQyicXmnFT2e1e9eTPYT98+ZnwJY26t5Sf49IJkIes7mM
- gSg2tmGN8cmzqGvcXoyvg6fBS5fcxLFI6bqd0iwFuiAFwqMVxGdfOxUQbBob8LopZlxhjqgmzu3
- ks7EUhNCLrcPUMgXaXVhsMTIKjI1CmlyZHHhuoQkDp9OWXzV6FZGi+uqCrDCXjyZLMnpTPhXinJ
- 5b+ogajE9TlwRxidxdCeBHt9+AUmGOcjqzt1XX6uPPSE3LpjXrgv/SmDk1jY8c4CK0gmFSDEUw7
- bB/kjTd32tGyx6QgbHbaTyA19sq0WyY9AOZms3UmFU4sUA5bD87QD+bKZ/XplyJRlnFGJPLbc91
- F
-X-Received: by 2002:a05:620a:191b:b0:8a3:90cb:9224 with SMTP id
- af79cd13be357-8b317d92f5bmr498145585a.2.1763573365199; 
+ bh=mT/ZTbTQ7j2oul5VXYz9qUwuJg/LSQ1GLNpf4vuAZng=;
+ b=DffXNDbCC+06isqVLTDt1CLGRMIwQgOrM3Hi0UZkoKJdsTyXpxKChxHRvafpJlhcxH
+ tBGSVQ6uifge1UnlQXlryMUUoeplFb6y+vYR20WX0lPPhk5TeZ9w/cbhBdLrm4Jt4Z/d
+ rZQa8C51ZMn/sUQhWtzIGn8ItXt6Yhf6rHk/PMszOiAQpkeIVQU31811T7/XKlb1j7Vg
+ z1pYvV3j65Ir6ko/Rr0XkwFndaLKzOe6jEKn+O+02LmxEgz3NKr7nqDxm9LGV4UDYegH
+ XKzpOsC0X54XuyEaYoll7rXV7Jx4u3oV9Z8ai+sU9OXrUT5ipMkJGoMOnBtt+UweiiE5
+ wljw==
+X-Gm-Message-State: AOJu0Ywtb2RRaIOrjh2okG81FO1DiK/pqgOu2ADvRwhydsUiuSbhm6HC
+ pjYN3rlf75IzAwelktaVKYCIkWzSCmn7imfdcUjGQzkjGh8RYTXwWf5FPiVifumVPTWBVOxuZxj
+ Mqx8MLVnEtTPx/3OrCuqoDr7e5rBYAJgQ6NzE6CIT7vVaolt18j/XvjpUvm4wacgJQJfKHK63uW
+ xLNsiRzBzUNaV5wJaVC54sHouPPFu0K2Wp9lMjoQ==
+X-Gm-Gg: ASbGncsub2l/FhNSqeFdPvD2oPijPRUTnRYnKarru/YdsaE6JR5qPHa6gCN/+/39DIf
+ rlYEYdIjGXTtlmskACzSreM5dI0OExM+4klMA+vMOjJWjpEdfcTzxAq2s6OPy13mDlpJ0UQzBDK
+ txurlYoOKJr1xcfQWeFJLOUH4nAj18qWNFeqDVUZhdZENMDVaf770O3lZRV+OvVWDVckeuX4/Rw
+ pxYLlyCacrNkLhcLHjMJienkP+AgAj3GwWUHCp+gjMixfnQfaR9acHrgjkMSSwH/9MjvK1bDGDq
+ gYNzw15Z/dsLk+z39Vwqgv0SCs7DNzt5LPSSM5bGhKDqnJ+7pXbEAOjbyRl3rTPoSaqPT/T4RVn
+ p
+X-Received: by 2002:a05:620a:1724:b0:8b2:e1da:7532 with SMTP id
+ af79cd13be357-8b327321202mr25676985a.34.1763573366362; 
+ Wed, 19 Nov 2025 09:29:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHdHSRxnSzvkY2AhBaph2YGKHOABMh41v1V1DQTAu5wWGg8/33DDdRSIXzXKE+omjl3bNwIQw==
+X-Received: by 2002:a05:620a:1724:b0:8b2:e1da:7532 with SMTP id
+ af79cd13be357-8b327321202mr25672385a.34.1763573365774; 
  Wed, 19 Nov 2025 09:29:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGhgk3d+3020lnhD16jZy7knIrKKKoIFUZQH/w4oWA3KyBu8LLlvimHnmJYkz12Xk2sR+meYw==
-X-Received: by 2002:a05:620a:191b:b0:8a3:90cb:9224 with SMTP id
- af79cd13be357-8b317d92f5bmr498138385a.2.1763573364547; 
- Wed, 19 Nov 2025 09:29:24 -0800 (PST)
 Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b2af042c9csm1444759485a.46.2025.11.19.09.29.22
+ af79cd13be357-8b2af042c9csm1444759485a.46.2025.11.19.09.29.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 09:29:23 -0800 (PST)
+ Wed, 19 Nov 2025 09:29:25 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Alexey Kardashevskiy <aik@amd.com>, peterx@redhat.com,
  Chenyi Qiang <chenyi.qiang@intel.com>, Juraj Marcin <jmarcin@redhat.com>,
  Li Xiaoyao <xiaoyao.li@intel.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 7/9] hostmem: Support in-place guest memfd to back a VM
-Date: Wed, 19 Nov 2025 12:29:11 -0500
-Message-ID: <20251119172913.577392-8-peterx@redhat.com>
+Subject: [PATCH v2 8/9] tests/migration-test: Support guest-memfd init shared
+ mem type
+Date: Wed, 19 Nov 2025 12:29:12 -0500
+Message-ID: <20251119172913.577392-9-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251119172913.577392-1-peterx@redhat.com>
 References: <20251119172913.577392-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -119,156 +120,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Host backends supports guest-memfd now by detecting whether it's a
-confidential VM.  There's no way to choose it yet from the memory level to
-use it in-place.  If we use guest-memfd, it so far always implies we need
-two layers of memory backends, while the guest-memfd only provides the
-private set of pages.
-
-This patch introduces a way so that QEMU can consume guest memfd as the
-only source of memory to back the object (aka, in place), rather than
-having another backend supporting the pages converted to shared.
-
-To use the in-place guest-memfd, one can add a memfd object with:
-
-  -object memory-backend-memfd,guest-memfd=on,share=on
-
-Note that share=on is required with in-place guest_memfd.
+Support the guest-memfd type when the fd has init share enabled.  It means
+the gmemfd can be used similarly to memfd.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/qom.json            |  6 +++-
- backends/hostmem-memfd.c | 66 +++++++++++++++++++++++++++++++++++++---
- 2 files changed, 67 insertions(+), 5 deletions(-)
+ tests/qtest/migration/framework.h |  4 +++
+ tests/qtest/migration/framework.c | 60 +++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 6f5c9de0f0..9ebf17bfc7 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -763,13 +763,17 @@
- # @seal: if true, create a sealed-file, which will block further
- #     resizing of the memory (default: true)
- #
-+# @guest-memfd: if true, use guest-memfd to back the memory region.
-+#     (default: false, since: 11.0)
-+#
- # Since: 2.12
- ##
- { 'struct': 'MemoryBackendMemfdProperties',
-   'base': 'MemoryBackendProperties',
-   'data': { '*hugetlb': 'bool',
-             '*hugetlbsize': 'size',
--            '*seal': 'bool' },
-+            '*seal': 'bool',
-+            '*guest-memfd': 'bool' },
-   'if': 'CONFIG_LINUX' }
- 
- ##
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index ea93f034e4..1fa16c1e1d 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -18,6 +18,8 @@
- #include "qapi/error.h"
- #include "qom/object.h"
- #include "migration/cpr.h"
-+#include "system/kvm.h"
-+#include <linux/kvm.h>
- 
- OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendMemfd, MEMORY_BACKEND_MEMFD)
- 
-@@ -28,6 +30,13 @@ struct HostMemoryBackendMemfd {
-     bool hugetlb;
-     uint64_t hugetlbsize;
-     bool seal;
+diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
+index ed85ed502d..b4c5edcad3 100644
+--- a/tests/qtest/migration/framework.h
++++ b/tests/qtest/migration/framework.h
+@@ -34,6 +34,10 @@ typedef enum {
+      * but only anonymously allocated.
+      */
+     MEM_TYPE_MEMFD,
 +    /*
-+     * NOTE: this differs from HostMemoryBackend's guest_memfd_private,
-+     * which represents a internally private guest-memfd that only backs
-+     * private pages.  Instead, this flag marks the memory backend will
-+     * 100% use the guest-memfd pages in-place.
++     * Use guest-memfd, shared mappings.
 +     */
-+    bool guest_memfd;
- };
++    MEM_TYPE_GUEST_MEMFD,
+     MEM_TYPE_NUM,
+ } MemType;
  
- static bool
-@@ -47,10 +56,40 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-         goto have_fd;
-     }
+diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
+index 81eae09c92..73536c8f29 100644
+--- a/tests/qtest/migration/framework.c
++++ b/tests/qtest/migration/framework.c
+@@ -26,6 +26,10 @@
+ #include "qemu/range.h"
+ #include "qemu/sockets.h"
  
--    fd = qemu_memfd_create(TYPE_MEMORY_BACKEND_MEMFD, backend->size,
--                           m->hugetlb, m->hugetlbsize, m->seal ?
--                           F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL : 0,
--                           errp);
-+    if (m->guest_memfd) {
-+        /* User choose to use in-place guest-memfd to back the VM.. */
-+        if (!backend->share) {
-+            error_setg(errp, "In-place guest-memfd must be used with share=on");
-+            return false;
-+        }
-+
-+        /*
-+         * This is the request to have a guest-memfd to back private pages.
-+         * In-place guest-memfd doesn't work like that.  Disable it for now
-+         * to make it simple, so that each memory backend can only have
-+         * guest-memfd either as private, or fully shared.
-+         */
-+        if (backend->guest_memfd_private) {
-+            error_setg(errp, "In-place guest-memfd cannot be used with another "
-+                       "private guest-memfd");
-+            return false;
-+        }
-+
-+        /* TODO: add huge page support */
-+        fd = kvm_create_guest_memfd(backend->size,
-+                                    GUEST_MEMFD_FLAG_MMAP |
-+                                    GUEST_MEMFD_FLAG_INIT_SHARED,
-+                                    errp);
-+        if (fd < 0) {
-+            return false;
-+        }
-+    } else {
-+        fd = qemu_memfd_create(TYPE_MEMORY_BACKEND_MEMFD, backend->size,
-+                               m->hugetlb, m->hugetlbsize, m->seal ?
-+                               F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL : 0,
-+                               errp);
-+    }
-+
-     if (fd == -1) {
-         return false;
-     }
-@@ -65,6 +104,18 @@ have_fd:
-                                           backend->size, ram_flags, fd, 0, errp);
++#ifdef CONFIG_LINUX
++#include <linux/kvm.h>
++#include <sys/ioctl.h>
++#endif
+ 
+ #define QEMU_VM_FILE_MAGIC 0x5145564d
+ #define QEMU_ENV_SRC "QTEST_QEMU_BINARY_SRC"
+@@ -279,6 +283,9 @@ static char *migrate_mem_type_get_opts(MemType type, const char *memory_size)
+     case MEM_TYPE_MEMFD:
+         backend = g_strdup("-object memory-backend-memfd");
+         break;
++    case MEM_TYPE_GUEST_MEMFD:
++        backend = g_strdup("-object memory-backend-memfd,guest-memfd=on");
++        break;
+     case MEM_TYPE_ANON:
+         backend = g_strdup("-object memory-backend-ram");
+         share = false;
+@@ -425,8 +432,55 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
+     return 0;
  }
  
-+static bool
-+memfd_backend_get_guest_memfd(Object *o, Error **errp)
++static bool kvm_guest_memfd_init_shared_supported(const char **reason)
 +{
-+    return MEMORY_BACKEND_MEMFD(o)->guest_memfd;
++    assert(*reason == NULL);
++
++#ifdef CONFIG_LINUX
++    int ret, fd = -1;
++
++    if (!migration_get_env()->has_kvm) {
++        *reason = "KVM is not enabled in the current QEMU build";
++        goto out;
++    }
++
++    fd = open("/dev/kvm", O_RDWR);
++    if (fd < 0) {
++        *reason = "KVM module isn't available or missing permission";
++        goto out;
++    }
++
++    ret = ioctl(fd, KVM_CHECK_EXTENSION, KVM_CAP_GUEST_MEMFD);
++    if (!ret) {
++        *reason = "KVM module doesn't suport guest-memfd";
++        goto out;
++    }
++
++    ret = ioctl(fd, KVM_CHECK_EXTENSION, KVM_CAP_GUEST_MEMFD_FLAGS);
++    if (ret < 0) {
++        *reason = "KVM doesn't support KVM_CAP_GUEST_MEMFD_FLAGS";
++        goto out;
++    }
++
++    if (!(ret & GUEST_MEMFD_FLAG_INIT_SHARED)) {
++        *reason = "KVM doesn't support GUEST_MEMFD_FLAG_INIT_SHARED";
++        goto out;
++    }
++out:
++    if (fd >= 0) {
++        close(fd);
++    }
++#else
++    *reason = "KVM not supported on non-Linux OS";
++#endif
++
++    return !*reason;
 +}
 +
-+static void
-+memfd_backend_set_guest_memfd(Object *o, bool value, Error **errp)
-+{
-+    MEMORY_BACKEND_MEMFD(o)->guest_memfd = value;
-+}
-+
- static bool
- memfd_backend_get_hugetlb(Object *o, Error **errp)
+ static bool migrate_mem_type_prepare(MemType type)
  {
-@@ -152,6 +203,13 @@ memfd_backend_class_init(ObjectClass *oc, const void *data)
-         object_class_property_set_description(oc, "hugetlbsize",
-                                               "Huge pages size (ex: 2M, 1G)");
++    const char *reason = NULL;
++
+     switch (type) {
+     case MEM_TYPE_SHMEM:
+         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
+@@ -434,6 +488,12 @@ static bool migrate_mem_type_prepare(MemType type)
+             return false;
+         }
+         break;
++    case MEM_TYPE_GUEST_MEMFD:
++        if (!kvm_guest_memfd_init_shared_supported(&reason)) {
++            g_test_skip(reason);
++            return false;
++        }
++        break;
+     default:
+         break;
      }
-+
-+    object_class_property_add_bool(oc, "guest-memfd",
-+                                   memfd_backend_get_guest_memfd,
-+                                   memfd_backend_set_guest_memfd);
-+    object_class_property_set_description(oc, "guest-memfd",
-+                                          "Use guest memfd");
-+
-     object_class_property_add_bool(oc, "seal",
-                                    memfd_backend_get_seal,
-                                    memfd_backend_set_seal);
 -- 
 2.50.1
 
