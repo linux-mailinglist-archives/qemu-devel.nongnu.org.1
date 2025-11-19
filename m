@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B1EC6D698
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 09:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F6BC6D695
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 09:28:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLdYB-0004k9-7o; Wed, 19 Nov 2025 03:28:27 -0500
+	id 1vLdYD-0004xb-66; Wed, 19 Nov 2025 03:28:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdY4-0004R7-Jr
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:28:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdY9-0004lG-I9
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:28:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdY2-0000xn-SZ
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:28:20 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdY7-0000y5-N3
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:28:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763540898;
+ s=mimecast20190719; t=1763540903;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6nu5LuitdGviKiN9aEDUZqaxz6ZXF3o7GGL7eBgYZgc=;
- b=EN885+1hGMAkYcWQWFlHws5vKHKOKSPkuvcRPp2qbqaGnDnKWp+JM/Yjv7jotzIuPp20JG
- q3te2NyRFMw7TquJg7P9vERXJNilCgin5xGhgd4TG6StJfWVukJ6Sw9DDf4c0NRkwPy1s2
- V8HTecRMn67XNBeoOdqkP5M15RWBG2I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=1JjP04p/a3qVWmVtwDi217sBbPAhwIDdHPY9477Xyuo=;
+ b=NWo4YXAk6Ilwo81cJP8316deWjeNhe/uOAG3tQn+ADvc8FepBA4+JnRK9GcYgQp0JZS5nS
+ D2FbDv3jgflT7nB9CUFPrgQyys7C9jij3YsatATKpvFLjiXhLjyuVdbk9ov5XSJVYImEVl
+ lUzCKZ8+cSXC4rV2Gwt7ROsDaF/uocM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-IRgxfoeDO1SNBNEXo0Karw-1; Wed,
- 19 Nov 2025 03:28:12 -0500
-X-MC-Unique: IRgxfoeDO1SNBNEXo0Karw-1
-X-Mimecast-MFC-AGG-ID: IRgxfoeDO1SNBNEXo0Karw_1763540890
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-1xzJYJwJOI-uOCWtNJXETw-1; Wed,
+ 19 Nov 2025 03:28:18 -0500
+X-MC-Unique: 1xzJYJwJOI-uOCWtNJXETw-1
+X-Mimecast-MFC-AGG-ID: 1xzJYJwJOI-uOCWtNJXETw_1763540895
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED4DB1956080; Wed, 19 Nov 2025 08:28:09 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C941C1801237; Wed, 19 Nov 2025 08:28:15 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BC2DF180049F; Wed, 19 Nov 2025 08:28:04 +0000 (UTC)
+ id 5E295180047F; Wed, 19 Nov 2025 08:28:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -63,16 +63,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH for-11.0 14/15] tests/functional/aarch64/test_rme_sbsaref:
- Silence issues reported by pylint
-Date: Wed, 19 Nov 2025 09:26:35 +0100
-Message-ID: <20251119082636.43286-15-thuth@redhat.com>
+Subject: [PATCH for-11.0 15/15] tests/functional: Add a generic test that
+ checks the files with pylint
+Date: Wed, 19 Nov 2025 09:26:36 +0100
+Message-ID: <20251119082636.43286-16-thuth@redhat.com>
 In-Reply-To: <20251119082636.43286-1-thuth@redhat.com>
 References: <20251119082636.43286-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,34 +99,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Drop unused import and use an encoding for open().
+To avoid that new pylint-related warnings get committed, let's check
+the files with pylint during each run (similar to what we are doing
+for the iotests already).
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/aarch64/test_rme_sbsaref.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/functional/generic/meson.build     |  1 +
+ tests/functional/generic/test_linters.py | 41 ++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
+ create mode 100755 tests/functional/generic/test_linters.py
 
-diff --git a/tests/functional/aarch64/test_rme_sbsaref.py b/tests/functional/aarch64/test_rme_sbsaref.py
-index 6f92858397a..4845c824960 100755
---- a/tests/functional/aarch64/test_rme_sbsaref.py
-+++ b/tests/functional/aarch64/test_rme_sbsaref.py
-@@ -14,7 +14,6 @@
- import shutil
- 
- from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
--from qemu_test import exec_command_and_wait_for_pattern
- 
- 
- class Aarch64RMESbsaRefMachine(QemuSystemTest):
-@@ -48,7 +47,7 @@ def test_aarch64_rme_sbsaref(self):
-         efi = join(rme_stack, 'out', 'EFI')
-         os.makedirs(efi, exist_ok=True)
-         shutil.copyfile(join(rme_stack, 'out', 'Image'), join(efi, 'Image'))
--        with open(join(efi, 'startup.nsh'), 'w') as startup:
-+        with open(join(efi, 'startup.nsh'), 'w', encoding='ascii') as startup:
-             startup.write('fs0:Image nokaslr root=/dev/vda rw init=/init --'
-                           ' /host/out/lkvm run --realm'
-                           ' -m 256m'
+diff --git a/tests/functional/generic/meson.build b/tests/functional/generic/meson.build
+index 013cc96fbf8..09763c5d229 100644
+--- a/tests/functional/generic/meson.build
++++ b/tests/functional/generic/meson.build
+@@ -3,6 +3,7 @@
+ tests_generic_system = [
+   'empty_cpu_model',
+   'info_usernet',
++  'linters',
+   'version',
+   'vnc',
+ ]
+diff --git a/tests/functional/generic/test_linters.py b/tests/functional/generic/test_linters.py
+new file mode 100755
+index 00000000000..b5b90fcf7a3
+--- /dev/null
++++ b/tests/functional/generic/test_linters.py
+@@ -0,0 +1,41 @@
++#!/usr/bin/env python3
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++'''Python linter tests'''
++
++import os
++
++from pathlib import Path
++from qemu_test import QemuBaseTest, skipIfMissingImports
++
++
++class LinterTest(QemuBaseTest):
++    '''
++    Run python linters on the test *.py files
++    '''
++
++    @skipIfMissingImports("pylint")
++    def test_pylint(self):
++        '''Check source files with pylint'''
++        from pylint.lint import Run as pylint_run
++        from pylint.reporters.collecting_reporter import CollectingReporter
++        srcdir = os.path.join(Path(__file__).parent.parent, self.arch)
++        rcfile = os.path.join(Path(__file__).parent.parent, "pylintrc")
++        self.log.info('Checking files in %s with pylint', srcdir)
++        reporter = CollectingReporter()
++        pylint_run(["--rcfile", rcfile, srcdir], reporter=reporter, exit=False)
++        if reporter.messages:
++            fmt = '"{path}:{line}: {msg_id}: {msg} ({symbol})"'
++            for msg in reporter.messages:
++                if msg.category == "error":
++                    self.log.error(msg.format(fmt))
++                elif msg.category == "warning":
++                    self.log.warning(msg.format(fmt))
++                else:
++                    self.log.info(msg.format(fmt))
++            self.fail("Pylint failed, see base.log for details.")
++
++
++if __name__ == '__main__':
++    QemuBaseTest.main()
 -- 
 2.51.1
 
