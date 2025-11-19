@@ -2,51 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB45C6FB9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 16:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C90C6FB11
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 16:38:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLkLf-000092-93; Wed, 19 Nov 2025 10:43:59 -0500
+	id 1vLkFU-0004Sf-A1; Wed, 19 Nov 2025 10:37:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1vLkLb-00007x-EX; Wed, 19 Nov 2025 10:43:55 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLkFR-0004Rr-5c; Wed, 19 Nov 2025 10:37:33 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1vLkLZ-0001Gl-KP; Wed, 19 Nov 2025 10:43:55 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C55FA873A4;
- Wed, 19 Nov 2025 16:43:51 +0100 (CET)
-Message-ID: <5fbead4c-4a84-42bf-ba33-0d3f46ddd6cb@proxmox.com>
-Date: Wed, 19 Nov 2025 16:43:50 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLkFP-0000EM-DF; Wed, 19 Nov 2025 10:37:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763566652; x=1795102652;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=U1Cbs/dBqo8E/y7M+ZKP5CPf3bCsrxw04UQ6VD+I5iU=;
+ b=XDEe5mnqB4Wy7vMeSAX95L5Z44UFOoPCE7A5SUR0wErieyQZmP8rngNo
+ wJNtAfbgd3gbhegJfDW1jGQVWIMKnWdin/q0KW9EnvmSRvA2dms5PHOkV
+ G2byX1uRc09V1o18hhmeHyN31t4FEqJSKAcgUsmoqXRhR7LMVI5z/cSQv
+ 40vKK8POYfVMux2xU/TfWFth02z56VM7pxVBtXp4rVJZZCO6EdL0ysBg8
+ ahB8DToTzJ/3xmZpiGSpqGVuuK4r2KtakA58a+khhwQFjFoUJ1VOukU2f
+ 0WRI28w2k9EKui37r10eWUlG/7RG81uIJGyXXOlsaiBUiMk8I9aFOOREx g==;
+X-CSE-ConnectionGUID: Cp8JAlQlQLOEZ89Cki+aVg==
+X-CSE-MsgGUID: PcLKnquqQju02FC1eJn3hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="75939192"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="75939192"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2025 07:37:28 -0800
+X-CSE-ConnectionGUID: SPmAQJjhRaW5H3pF61pHCA==
+X-CSE-MsgGUID: 3rVW5UpNS5muPbVbZqwFlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="190896620"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 19 Nov 2025 07:37:27 -0800
+Date: Wed, 19 Nov 2025 23:59:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 0/5] rust/hpet: complete moving state out of HPETTimer
+Message-ID: <aR3pcja8gtkH0Eb/@intel.com>
+References: <20251117084752.203219-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] block: use pwrite_zeroes_alignment when writing
- first sector
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Jean-Louis Dupond <jean-louis@dupond.be>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, qemu-stable@nongnu.org
-References: <20251007141700.71891-1-stefanha@redhat.com>
- <72665cb8-88df-4223-8f43-91bd60552bc9@proxmox.com>
-Content-Language: en-US
-In-Reply-To: <72665cb8-88df-4223-8f43-91bd60552bc9@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1763567000298
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117084752.203219-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,49 +78,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.11.25 um 4:40 PM schrieb Fiona Ebner:
-> Am 07.10.25 um 6:07 PM schrieb Stefan Hajnoczi:
->> v2:
->> - Simplify condition to if (!s->needs_alignment) in patch 1 [Vladimir]
->>
->> This series fixes a bug I introduced in commit 5634622bcb33 ("file-posix: allow
->> BLKZEROOUT with -t writeback"). The Linux fallocate(2) and ioctl(BLKZEROOUT)
->> syscalls require logical block size alignment of the offset and length, even
->> when the file is opened in buffered I/O mode where read/write operations do not
->> require alignment.
->>
->> The fix is to populate the pwrite_zeroes_alignment block limits field and to
->> use that limit in create_file_fallback_zero_first_sector().
->>
->> One issue I want to raise is that pwrite_zeroes_alignment is an "optimal
->> alignment" hint. Hence create_file_fallback_zero_first_sector() had to be
->> modified to honor the limit explicitly. The block layer doesn't automatically
->> apply padding in order to align requests. This is different from how QEMU's
->> block layer pwrite/pread works, where it does automatically apply padding and
->> read/modify/write as necessary. If you want consistency, please let me know.
->>
->> Stefan Hajnoczi (3):
->>   file-posix: populate pwrite_zeroes_alignment
->>   block: use pwrite_zeroes_alignment when writing first sector
->>   iotests: add Linux loop device image creation test
->>
->>  include/system/block-backend-io.h             |  1 +
->>  block.c                                       |  3 +-
->>  block/block-backend.c                         | 11 ++++
->>  block/file-posix.c                            | 16 +++++
->>  tests/qemu-iotests/tests/loop-create-file     | 59 +++++++++++++++++++
->>  tests/qemu-iotests/tests/loop-create-file.out |  8 +++
->>  6 files changed, 97 insertions(+), 1 deletion(-)
->>  create mode 100755 tests/qemu-iotests/tests/loop-create-file
->>  create mode 100644 tests/qemu-iotests/tests/loop-create-file.out
->>
+On Mon, Nov 17, 2025 at 09:47:47AM +0100, Paolo Bonzini wrote:
+> Date: Mon, 17 Nov 2025 09:47:47 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 0/5] rust/hpet: complete moving state out of HPETTimer
+> X-Mailer: git-send-email 2.51.1
 > 
-> Thank you for the fix!
+> This state continues the cleanups of the HPET state, moving fields out of
+> BqlCells and into HPETRegisters and HPETTimerRegisters.  It also restores
+> the old migration format and shows an interesting trick: HPETTimer is now
+> a very simple object that handles the "unsafe" backreference from the
+> timer to the HPETState, but it also implements ToMigrationStateShared
+> and is stored in the HPETState as Migratable<[HPETTimer; N]>.  I find
+> it pretty cool that the composition works naturally.
 > 
-> Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-> Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+> The less beautiful part is that I had to modify Timer::init_full for
+> this to compile.  It's probably time to work on the final design for
+> initialization, because this is becoming very ad hoc and the differences
+> between timer, MemoryRegion and Clock initialization have no real
+> justification.
 
-Oh, and CC qemu-stable, because 5634622bcb33 ("file-posix: allow
-BLKZEROOUT with -t writeback") is in 10.1.
+<Just some rough thoughts/understanding>
+
+Yes, Timer requires Pin<> and it seems MemoryRegion also should requires
+it because of callback...
+
+MemoryRegion requires MaybeUninitField, but it would be not necessary
+for HPET, since HPETTimer has already initialized its other field before
+calling init_full(). But as a general interface, MaybeUninitField could
+be also useful for Timer, as we can't require how device initialize its
+field.
+
+Clock's ParentInit<> is also different. We don't need to require
+Timer::init_full must be called in init(). MemoryRegion may also don't
+need it And some C device even calls memory_region_init_io() in
+realize().
+
+Regards,
+Zhao
 
 
