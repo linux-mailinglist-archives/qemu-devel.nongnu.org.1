@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD886C6E47C
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4486AC6E458
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:41:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLgXn-0002yj-NG; Wed, 19 Nov 2025 06:40:15 -0500
+	id 1vLgXx-00031d-Cw; Wed, 19 Nov 2025 06:40:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vLgXa-0002rN-Af
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:02 -0500
+ id 1vLgXd-0002wI-T8
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:06 -0500
 Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vLgXY-0001tw-Je
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:01 -0500
+ id 1vLgXc-0001ur-2m
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:05 -0500
 Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42b3ad51fecso4874370f8f.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:40:00 -0800 (PST)
+ ffacd0b85a97d-42b3720e58eso6056110f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:40:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763552399; x=1764157199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763552401; x=1764157201; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SWFoMzvL5gC25K4imKNMLFdTsbgzYSdBH/lndv5XZNQ=;
- b=V8jwPppgewJQywdCZ9+E7b4eXN5jX6s46spTtogDBTdB+iGpuWzp50hgH97ZfPt6dt
- pS5BD1BPSShXIPRTd4MdeGf2G0798GqvSeJ9w6MEezAcTLNk2poUXl4hZmcd/0X1wWcx
- v6j3tjiKEX0WBkfS93dqXeCd4ylgfoot6vt4zOhrCL4jQiyyU0Rlr/osfSeA+Q+xRLcZ
- zyjx6kadCbWviD1FwPO3LoKwPxA4FwXmB0ZcJE3ghX/Dh0aVAe9mF3xygY1GAkNgkxO5
- 4xoco6n+Tw/qYwxHsqfYdMnTaKDE1xoCp72rlDQCMAW/lMVF15ZUO6qX6PGUgts+dh7R
- ZeqQ==
+ bh=G0d5xhWfIjdXOpWvZDeAgLXbA7VXttJjNtkylyOiLvA=;
+ b=dj02lHrpVfVBWO8RZQTYgbuca+nuiau8jBrwxuBI/gchk3UErkJ5EqjDxnz2SbRdvS
+ LMy6WgrRx+LQbbvhob0wttO2a0vJBA8t0FMMuW40gsEkSbm76bcelbOWwnCpXl5XpMDf
+ ASZKYsoSIBpOr4JNRDiOHFGgTTdUZxjGR3tJlN61zv3FMj59a/WlkzP9eTZ1aAr6VwpY
+ 18OYYej/5LnOzxdfbDMFJNkhzuQrJirX2xJCtt2KYFUS8Yxj1YA0m0U4LzCInfQmAxF2
+ 0lsDKPLQZfAT7Kl4jDLreZkjabXcQEbX5jGZYMMHL55iKVcUhRWKbgVMUMzy0mzz/4Uv
+ oSLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763552399; x=1764157199;
+ d=1e100.net; s=20230601; t=1763552401; x=1764157201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=SWFoMzvL5gC25K4imKNMLFdTsbgzYSdBH/lndv5XZNQ=;
- b=NcQi5o6acoeUgEDr3x6WYnvl5CyKjRIrtRYQFFC/IwqnzLZ0rojhkDtePC0ZOaUZs6
- FZRuGmQZ3P0cPhRYW8zA9HZbXRXcW7jpu17vuq6e8pBTYFGpQAp/SBUXHyHFR3dgziOK
- YrzOnrkvZUjEK4pZkQSr13TauOM414qhHVPJ5Gd9ivO85QQvSAHok6FmSj86N7XVtyQe
- +yTZDhL06XCZR0vPlkVTAr00FfQJZxnXCyhJFRRVKx3bfVynt6uZHPpZxVJlDPTWfciC
- wxEVgFT6QFhN+kD9lpm9cKX/XMgS9nGHSp1hdgvxSvBeye0GrVG0rSGyYlKdV9/+1ioT
- cXBA==
-X-Gm-Message-State: AOJu0Yz36GKdGOs88MYkeYZnFNNYhQ0QgQiVtfIlFqu+9UYzn4afI3EK
- fhRIYm+dcZxsSDKh+GuSOCB5lnVWOvs5oNry0ocGE6ds89p+9kPH8MUrgR8UTAXP3E2wqplC3fy
- Cwm3C
-X-Gm-Gg: ASbGnctIJQEmreY9OoYbLsAH59VAIPkVwTbyBhfpODcSeEDTNqalJWjfPoPUUzYayVt
- 7heifpRFoj4h5fffs9VD9BWs3n3UiTUsZo/+oPU2yi8fW5nJIp2BDKy4e+thYGOqXlYLWUCvFsi
- rABMz9D24GPajDNt10zmXNIrOLfOAvAuhM81f5y5gCDbO9frOlZMxFhQac6CvlWVqghW/ZP9+Wo
- 24eFbgKmnFWRYHkKIqSpkerVKegQQHParpxzioUhCHeJuRJrjKKKOqkzKd0Py3GkCpEItIV/aAu
- YUjO1jPrzjw5dyYyqNBOu3fH2p5ynq+Y+mHDE56uz8gCyVHf+TSSKr6kvlubwFsNiVtmL/5QA/c
- 2857iEsyXO4Ut/S5gZ2zUIYAbGul8EEjv6khdUH46VeCujtqxGANEG7ReAFMtCvPEljrswsRFMX
- MBO+feeSlIwj9fmtsNtMUW2z4WqVvGlCTo
-X-Google-Smtp-Source: AGHT+IGjxt5QBB9oGl7JNay9ATHRTGLBN17q7vGBghld6GjjXiYhVCZ5dITJNtVqJlE34DxF0J168g==
-X-Received: by 2002:a5d:5f47:0:b0:3e8:b4cb:c3dc with SMTP id
- ffacd0b85a97d-42b5933dee3mr21035143f8f.3.1763552398894; 
- Wed, 19 Nov 2025 03:39:58 -0800 (PST)
+ bh=G0d5xhWfIjdXOpWvZDeAgLXbA7VXttJjNtkylyOiLvA=;
+ b=WruInFnbIJ4xm/EfO3MZa5l2saPJnt4pDt6P43WPNfIy+SXd6v3Je+9H5plI326gqg
+ V8mfRfPAbJ6N3kENyhkdQXSpJvfM/lhfsCISi7DLGanKe7Tg6COktCTavVfp0dnp7SBt
+ nHddS5JV19TpSFrM8hoAoXUX1AYKnwTdg2U9ydq+o+JrXumewsM4Dgt+u4DGQzuAqgbN
+ 88MYZU418Be5RJJ4lXur/QvWHSxPXk8Bx3/DffSK+gcjFmhbLMRxKT9pE0gp9NeX1x/j
+ VXRyx8g0+nGHGZ3vAKW0yCTdYv6mzF+6PnJa+BjMKy1n/wqZUfk/2685sbAW0ESCQ9eC
+ geBw==
+X-Gm-Message-State: AOJu0YyOG+Zw2fn3o5kzIZ7nR/6GusDeFdM1Icd8Et3BWwJfG/D6vrTH
+ fsZklrsIr82SW0eqfUtWfkYp7x4O0P0zr4Tw4AvvEsVudwmVHVJamA/9qxFRQKfpydg=
+X-Gm-Gg: ASbGnctzhuQbN3pcr/LIjt8n0TMI7bgCc+hr02aMbWRmEWyEyABJj1UbWvkpUYWwY3H
+ jxam2K7tqCTbhEJGRf7XlajQRz7rnaLiPe49WpUl4zH+vPcmP4RpWhp6R/pwSh7fFS5b70xor3w
+ WFRTFO6K8QI9kkia2j+CidAAf9Qf8w/rSwTwGhRfTGcGd++C89htEvWKNeXVOpchJBuN/LYEOjU
+ +qHCzUZ45u6ZbSBGnb98jdldhS6CVJhuNW8GC2GXHpCMVNVilErKGyXmLgzEWB/I4iaXbQPd+fJ
+ gy2HNE6ydlKRqgZ/iU2GmbU6faFvcILhtzjI4RdwDG0YLCSrG75je8ITcbUuDVKLVNuZgc5fQkx
+ 6QPxkJlZdHENsZTWTmj3UDkg69UZ28GVCFzn/7Z6TlSTKmIDlMLjs8WHZWY06iPKsYdLtCLWjIf
+ SLrxqccTl9bU+OXY7E0Ux4kA==
+X-Google-Smtp-Source: AGHT+IGaqiwpbbAoySH5CK3qY7UOe0AHilUKRjydd4hi1fVtukTj4oF6INhAzPLAdn3oYVG76eB5TQ==
+X-Received: by 2002:a05:6000:2888:b0:42b:3978:157a with SMTP id
+ ffacd0b85a97d-42b5937876fmr19650689f8f.39.1763552401284; 
+ Wed, 19 Nov 2025 03:40:01 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f0b622sm36862330f8f.29.2025.11.19.03.39.56
+ ffacd0b85a97d-42b53f0b8a0sm38200969f8f.25.2025.11.19.03.39.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 03:39:56 -0800 (PST)
+ Wed, 19 Nov 2025 03:39:57 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1619D5F93E;
+ by draig.lan (Postfix) with ESMTP id 2B3765F94D;
  Wed, 19 Nov 2025 11:39:54 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Brian Cain <brian.cain@oss.qualcomm.com>,
- Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Subject: [PATCH 8/9] contrib/gitdm: add mapping for Qualcomm
-Date: Wed, 19 Nov 2025 11:39:51 +0000
-Message-ID: <20251119113953.1432303-9-alex.bennee@linaro.org>
+ Amarjargal Gundjalam <amarjargal16@gmail.com>,
+ Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Julian Ganz <neither@nut.email>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>, Sean Wei <me@sean.taipei>,
+ Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Jackson Donaldson <jackson88044@gmail.com>,
+ Weifeng Liu <weifeng.liu.z@gmail.com>, Roman Penyaev <r.peniaev@gmail.com>,
+ William Kosasih <kosasihwilliam4@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>, Tanish Desai <tanishdesai37@gmail.com>
+Subject: [PATCH 9/9] contrib/gitdm: add more individual contributors
+Date: Wed, 19 Nov 2025 11:39:52 +0000
+Message-ID: <20251119113953.1432303-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251119113953.1432303-1-alex.bennee@linaro.org>
 References: <20251119113953.1432303-1-alex.bennee@linaro.org>
@@ -104,29 +111,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This might be sub-optimal as we also have a mapping for quicinc.com
-where a bunch of open source patches came from before. Maybe we should
-just have a domain map to collect this together?
+I'll only add names explicitly acked here as its quite possible people
+are using different addresses than their company affiliation. Let me
+know if you want contributions mapped to a company or academia instead.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Brian Cain <brian.cain@oss.qualcomm.com>
-Cc: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Cc: Amarjargal Gundjalam <amarjargal16@gmail.com>
+Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Cc: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: Julian Ganz <neither@nut.email>
+Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Cc: Sean Wei <me@sean.taipei>
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>
+Cc: Jackson Donaldson <jackson88044@gmail.com>
+Cc: Weifeng Liu <weifeng.liu.z@gmail.com>
+Cc: Roman Penyaev <r.peniaev@gmail.com>
+Cc: William Kosasih <kosasihwilliam4@gmail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Tanish Desai <tanishdesai37@gmail.com>
 ---
- contrib/gitdm/domain-map | 1 +
- 1 file changed, 1 insertion(+)
+ contrib/gitdm/group-map-individuals | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/contrib/gitdm/domain-map b/contrib/gitdm/domain-map
-index c07dffc51bd..bffd2e9a3da 100644
---- a/contrib/gitdm/domain-map
-+++ b/contrib/gitdm/domain-map
-@@ -40,6 +40,7 @@ nuviainc.com    NUVIA
- nvidia.com      NVIDIA
- oracle.com      Oracle
- proxmox.com     Proxmox
-+qualcomm.com    Qualcomm
- quicinc.com     Qualcomm Innovation Center
- redhat.com      Red Hat
- rev.ng          rev.ng Labs
+diff --git a/contrib/gitdm/group-map-individuals b/contrib/gitdm/group-map-individuals
+index d7116f5444f..4ac0f99b87c 100644
+--- a/contrib/gitdm/group-map-individuals
++++ b/contrib/gitdm/group-map-individuals
+@@ -42,3 +42,17 @@ shentey@gmail.com
+ bmeng@tinylab.org
+ strahinja.p.jankovic@gmail.com
+ Jason@zx2c4.com
++amarjargal16@gmail.com
++soumyajyotisarkar23@gmail.com
++tomitamoeko@gmail.com
++neither@nut.email
++ktokunaga.mail@gmail.com
++me@sean.taipei
++roy.hopkins@randomman.co.uk
++phil@philjordan.eu
++jackson88044@gmail.com
++weifeng.liu.z@gmail.com
++r.peniaev@gmail.com
++kosasihwilliam4@gmail.com
++linux@roeck-us.net
++tanishdesai37@gmail.com
 -- 
 2.47.3
 
