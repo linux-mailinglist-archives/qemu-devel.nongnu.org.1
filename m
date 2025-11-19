@@ -2,55 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07802C6EA8E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 14:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C30BC6EBEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 14:12:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLho6-0001a7-L8; Wed, 19 Nov 2025 08:01:11 -0500
+	id 1vLhwH-0000Pw-KO; Wed, 19 Nov 2025 08:09:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vLhnd-0001KM-4A
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:00:41 -0500
-Received: from inva020.nxp.com ([92.121.34.13])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLhvt-000056-J1
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:09:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vLhna-0002CS-Hi
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:00:40 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4924A1A3BCA;
- Wed, 19 Nov 2025 14:00:34 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com
- (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 130731A0872;
- Wed, 19 Nov 2025 14:00:34 +0100 (CET)
-Received: from lsv031015.swis.in-blr01.nxp.com
- (lsv031015.swis.in-blr01.nxp.com [10.12.177.77])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 88C901800096;
- Wed, 19 Nov 2025 21:00:33 +0800 (+08)
-From: Gaurav Sharma <gaurav.sharma_7@nxp.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLhvp-00036v-Ml
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:09:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763557748;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Js6BO4VeBey2OiZe7AjXj3GXLYuEHV85DWPD2FEQA2I=;
+ b=C29Is0ujG1XXyz/FtjNuYxoFFXUXTsShKG9WJtMrG1ghsyelFcqFGH5atcBiRy1b/3TxPG
+ p88JRqYQMiCraA/rnmpJRLaDIEZpy+CS6OpMVDQMkJAJL5ignENRNJmDJhRqX5b55jQurg
+ 39Dy48qiVHVNZGu7XDWRyQjxa/Cg/JY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-WePI68LnPQCITVv1F2bMiQ-1; Wed,
+ 19 Nov 2025 08:09:04 -0500
+X-MC-Unique: WePI68LnPQCITVv1F2bMiQ-1
+X-Mimecast-MFC-AGG-ID: WePI68LnPQCITVv1F2bMiQ_1763557741
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6E5D219560AD; Wed, 19 Nov 2025 13:09:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 720CA180047F; Wed, 19 Nov 2025 13:08:58 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 766DA21E6A27; Wed, 19 Nov 2025 14:08:55 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
- Gaurav Sharma <gaurav.sharma_7@nxp.com>
-Subject: [PATCHv3 13/13] hw/arm/fsl-imx8mm: Adding functional testing of
- iMX8MM emulation
-Date: Wed, 19 Nov 2025 18:30:27 +0530
-Message-Id: <20251119130027.3312971-14-gaurav.sharma_7@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251119130027.3312971-1-gaurav.sharma_7@nxp.com>
-References: <20251119130027.3312971-1-gaurav.sharma_7@nxp.com>
+Cc: kwolf@redhat.com, hreitz@redhat.com, mst@redhat.com, imammedo@redhat.com,
+ anisinha@redhat.com, gengdongjiu1@gmail.com, peter.maydell@linaro.org,
+ alistair@alistair23.me, edgar.iglesias@gmail.com, npiggin@gmail.com,
+ harshpb@linux.ibm.com, palmer@dabbelt.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ berrange@redhat.com, peterx@redhat.com, farosas@suse.de, eblake@redhat.com,
+ vsementsov@yandex-team.ru, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, zhao1.liu@intel.com,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, xen-devel@lists.xenproject.org
+Subject: [PATCH 0/5] A bit of cleanup around Error
+Date: Wed, 19 Nov 2025 14:08:50 +0100
+Message-ID: <20251119130855.105479-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=92.121.34.13;
- envelope-from=gaurav.sharma_7@nxp.com; helo=inva020.nxp.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,112 +88,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added script that would validate the iMX8MM emulation by checking the
-linux console log. If it succeeds, it will return:-
+Note: the last patch adds a drive-by FIXME.  I asked for advice on how
+to fix it:
 
-ok 1 test_imx8mm_evk.Imx8mmEvkMachine.test_aarch64_imx8mm_evk_usdhc
+    Subject: Incorrect error handling in xen_enable_tpm()
+    To: qemu-devel@nongnu.org
+    Cc: Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD <anthony@xenproject.org>, Paul
+     Durrant <paul@xen.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+     xen-devel@lists.xenproject.org, Vikram Garhwal <vikram.garhwal@amd.com> 
+    Date: Fri, 14 Nov 2025 10:16:58 +0100
+    Message-ID: <87jyzt0y9h.fsf@pond.sub.org>
 
-Signed-off-by: Gaurav Sharma <gaurav.sharma_7@nxp.com>
----
- tests/functional/aarch64/meson.build        |  2 +
- tests/functional/aarch64/test_imx8mm_evk.py | 67 +++++++++++++++++++++
- 2 files changed, 69 insertions(+)
- create mode 100755 tests/functional/aarch64/test_imx8mm_evk.py
+No reply so far.
 
-diff --git a/tests/functional/aarch64/meson.build b/tests/functional/aarch64/meson.build
-index 5ad52f93e1..c0e5be1b58 100644
---- a/tests/functional/aarch64/meson.build
-+++ b/tests/functional/aarch64/meson.build
-@@ -4,6 +4,7 @@ test_aarch64_timeouts = {
-   'aspeed_ast2700' : 600,
-   'aspeed_ast2700fc' : 600,
-   'device_passthrough' : 720,
-+  'imx8mm_evk' : 240,
-   'imx8mp_evk' : 240,
-   'raspi4' : 480,
-   'reverse_debug' : 180,
-@@ -27,6 +28,7 @@ tests_aarch64_system_thorough = [
-   'aspeed_ast2700fc',
-   'device_passthrough',
-   'hotplug_pci',
-+  'imx8mm_evk',
-   'imx8mp_evk',
-   'kvm',
-   'multiprocess',
-diff --git a/tests/functional/aarch64/test_imx8mm_evk.py b/tests/functional/aarch64/test_imx8mm_evk.py
-new file mode 100755
-index 0000000000..224fe4669e
---- /dev/null
-+++ b/tests/functional/aarch64/test_imx8mm_evk.py
-@@ -0,0 +1,67 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots a Linux kernel and checks the console
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import LinuxKernelTest, Asset
-+
-+class Imx8mmEvkMachine(LinuxKernelTest):
-+
-+    ASSET_IMAGE = Asset(
-+        ('https://cloud.debian.org/images/cloud/bookworm/20231210-1590/'
-+         'debian-12-generic-arm64-20231210-1590.tar.xz'),
-+        '7ebf1577b32d5af6204df74b54ca2e4675de9b5a9fa14f3ff70b88eeb7b3b359')
-+
-+    KERNEL_OFFSET = 0x51000000
-+    KERNEL_SIZE = 32622528
-+    INITRD_OFFSET = 0x76000000
-+    INITRD_SIZE = 30987766
-+    DTB_OFFSET = 0x64DB5000
-+    DTB_SIZE = 36812
-+
-+    def extract(self, in_path, out_path, offset, size):
-+        try:
-+            with open(in_path, "rb") as source:
-+                source.seek(offset)
-+                data = source.read(size)
-+            with open(out_path, "wb") as target:
-+                target.write(data)
-+        except (IOError, ValueError) as e:
-+            self.log.error(f"Failed to extract {out_path}: {e}")
-+            raise
-+
-+    def setUp(self):
-+        super().setUp()
-+
-+        self.image_path = self.scratch_file("disk.raw")
-+        self.kernel_path = self.scratch_file("linux")
-+        self.initrd_path = self.scratch_file("initrd.zstd")
-+        self.dtb_path = self.scratch_file("imx8mm-evk.dtb")
-+
-+        self.archive_extract(self.ASSET_IMAGE)
-+        self.extract(self.image_path, self.kernel_path,
-+                     self.KERNEL_OFFSET, self.KERNEL_SIZE)
-+        self.extract(self.image_path, self.initrd_path,
-+                     self.INITRD_OFFSET, self.INITRD_SIZE)
-+        self.extract(self.image_path, self.dtb_path,
-+                     self.DTB_OFFSET, self.DTB_SIZE)
-+
-+    def test_aarch64_imx8mm_evk_usdhc(self):
-+        self.require_accelerator("tcg")
-+        self.set_machine('imx8mm-evk')
-+        self.vm.set_console(console_index=1)
-+        self.vm.add_args('-m', '2G',
-+                         '-smp', '4',
-+                         '-kernel', self.kernel_path,
-+                         '-initrd', self.initrd_path,
-+                         '-dtb', self.dtb_path,
-+                         '-append', 'root=/dev/mmcblk2p1',
-+                         '-drive', f'file={self.image_path},if=sd,bus=2,'
-+                                    'format=raw,id=mmcblk2,snapshot=on')
-+
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Welcome to ')
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+Markus Armbruster (5):
+  hw/core/loader: Make load_elf_hdr() return bool, simplify caller
+  hw/nvram/xlnx-bbram: More idiomatic and simpler error reporting
+  nbd/client-connection: Replace error_propagate() by assignment
+  error: error_free(NULL) is safe, drop unnecessary conditionals
+  error: Consistently name Error * objects err, and not errp
+
+ include/hw/loader.h         |  4 +++-
+ block/crypto.c              |  8 ++++----
+ hw/acpi/ghes.c              |  8 ++++----
+ hw/acpi/pcihp.c             |  4 +---
+ hw/arm/boot.c               |  6 +-----
+ hw/core/loader.c            |  8 ++++++--
+ hw/nvram/xlnx-bbram.c       | 18 ++++--------------
+ hw/ppc/spapr.c              | 16 ++++++++--------
+ hw/riscv/spike.c            | 10 +---------
+ hw/xen/xen-pvh-common.c     | 13 ++++++++++---
+ io/channel-websock.c        |  4 +---
+ io/task.c                   |  4 +---
+ migration/migration.c       |  6 ++----
+ nbd/client-connection.c     |  3 +--
+ nbd/common.c                |  6 +++---
+ tests/unit/test-smp-parse.c |  5 +----
+ 16 files changed, 51 insertions(+), 72 deletions(-)
+
 -- 
-2.34.1
+2.49.0
 
 
