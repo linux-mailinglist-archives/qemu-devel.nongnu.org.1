@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2311C6D689
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 09:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F385EC6D68F
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 09:28:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLdXx-0003wm-A5; Wed, 19 Nov 2025 03:28:14 -0500
+	id 1vLdY1-00049E-6U; Wed, 19 Nov 2025 03:28:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdXX-0003XT-Hm
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:27:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdXa-0003ap-Bm
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:27:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdXV-0000vu-7L
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:27:47 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vLdXY-0000wA-8h
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 03:27:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763540861;
+ s=mimecast20190719; t=1763540867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VClsjSE/lJj44/MxOnS27ywXz1EbQ0juDDgmS3m/32I=;
- b=ifI+/bUQKH2CDRggVeg+QIaAQH82bKIX19ayMRHIeWITsOPPDF/dpPgsg0LqIsxUglAGmt
- DmFxh82AwclDDHtNlLArVlTtaWvKZxuCq8xehOmvtB7G8DYYWX/j6+WMJZu1HmXaOOcwvE
- p73OmWtSxIh0qsrx9zPamtSToDt2CIM=
+ bh=9eYpbHkbboeqGDjLjd0tKacdsmgmhRfnYu1bcQyCJsY=;
+ b=WOc+B7DktWw50eLNIQI9x+8tGgWhWtna6X1MQUYp6An4jmR8AOzrMtcEYSJHqvXjUkRUYf
+ m/k6wGnm4tNOnEnsRwfTbLW9RPzdXUUu5k2Tt8uFjJYc5+U4HnMq33x/OnuCQJtEkkxQX4
+ 5q+B2bbrn02bvEa3gWrQdhnjd9Po9HI=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-Hw4_cOfwMQyYAlofR4P9Gg-1; Wed,
- 19 Nov 2025 03:27:37 -0500
-X-MC-Unique: Hw4_cOfwMQyYAlofR4P9Gg-1
-X-Mimecast-MFC-AGG-ID: Hw4_cOfwMQyYAlofR4P9Gg_1763540855
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-CZmYnqPzOJSR-8pE5FiUqg-1; Wed,
+ 19 Nov 2025 03:27:44 -0500
+X-MC-Unique: CZmYnqPzOJSR-8pE5FiUqg-1
+X-Mimecast-MFC-AGG-ID: CZmYnqPzOJSR-8pE5FiUqg_1763540861
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7491B18AB400; Wed, 19 Nov 2025 08:27:35 +0000 (UTC)
+ id 514CA18AB410; Wed, 19 Nov 2025 08:27:41 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1D050180047F; Wed, 19 Nov 2025 08:27:29 +0000 (UTC)
+ id DBF79180049F; Wed, 19 Nov 2025 08:27:35 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -63,16 +63,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH for-11.0 08/15] tests/functional/x86_64/test_memlock: Silence
- pylint warnings
-Date: Wed, 19 Nov 2025 09:26:29 +0100
-Message-ID: <20251119082636.43286-9-thuth@redhat.com>
+Subject: [PATCH for-11.0 09/15] tests/functional/ppc/test_amiga: Fix issues
+ reported by pylint and flake8
+Date: Wed, 19 Nov 2025 09:26:30 +0100
+Message-ID: <20251119082636.43286-10-thuth@redhat.com>
 In-Reply-To: <20251119082636.43286-1-thuth@redhat.com>
 References: <20251119082636.43286-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,36 +99,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Pylint complains about a missing "encoding" parameter for the open()
-function here, and about a missing return statement in the "except"
-block (which cannot happen since skipTest() never returns). Rework
-the code a little bit to silence the warnings.
+Pylint complains about unused variable "tar_name" and a missing "check"
+for subprocess.run(), and flake8 suggest a second empty line after the
+class. While we're at it, also remove the unused "timeout" class variable
+(that was only necessary for the avocado framework which we don't use
+anymore).
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/x86_64/test_memlock.py | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/functional/ppc/test_amiga.py | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/x86_64/test_memlock.py b/tests/functional/x86_64/test_memlock.py
-index 81bce80b0c4..f970a2c3095 100755
---- a/tests/functional/x86_64/test_memlock.py
-+++ b/tests/functional/x86_64/test_memlock.py
-@@ -69,11 +69,13 @@ def get_process_status_values(self, pid: int) -> Dict[str, int]:
-         return result
+diff --git a/tests/functional/ppc/test_amiga.py b/tests/functional/ppc/test_amiga.py
+index 8600e2e9633..36378fb6972 100755
+--- a/tests/functional/ppc/test_amiga.py
++++ b/tests/functional/ppc/test_amiga.py
+@@ -15,8 +15,6 @@
  
-     def _get_raw_process_status(self, pid: int) -> str:
-+        status = None
-         try:
--            with open(f'/proc/{pid}/status', 'r') as f:
--                return f.read()
-+            with open(f'/proc/{pid}/status', 'r', encoding="ascii") as f:
-+                status = f.read()
-         except FileNotFoundError:
-             self.skipTest("Can't open status file of the process")
-+        return status
+ class AmigaOneMachine(QemuSystemTest):
  
+-    timeout = 90
+-
+     ASSET_IMAGE = Asset(
+         ('https://www.hyperion-entertainment.com/index.php/'
+          'downloads?view=download&format=raw&file=25'),
+@@ -25,19 +23,19 @@ class AmigaOneMachine(QemuSystemTest):
+     def test_ppc_amigaone(self):
+         self.require_accelerator("tcg")
+         self.set_machine('amigaone')
+-        tar_name = 'A1Firmware_Floppy_05-Mar-2005.zip'
+         self.archive_extract(self.ASSET_IMAGE, format="zip")
+         bios = self.scratch_file("u-boot-amigaone.bin")
+         with open(bios, "wb") as bios_fh:
+             subprocess.run(['tail', '-c', '524288',
+                             self.scratch_file("floppy_edition",
+                                               "updater.image")],
+-                           stdout=bios_fh)
++                           stdout=bios_fh, check=True)
  
+         self.vm.set_console()
+         self.vm.add_args('-bios', bios)
+         self.vm.launch()
+         wait_for_console_pattern(self, 'FLASH:')
+ 
++
  if __name__ == '__main__':
+     QemuSystemTest.main()
 -- 
 2.51.1
 
