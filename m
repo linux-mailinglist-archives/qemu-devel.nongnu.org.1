@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08876C6E461
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12865C6E488
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:41:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLgXe-0002sW-4v; Wed, 19 Nov 2025 06:40:06 -0500
+	id 1vLgXn-0002zy-TS; Wed, 19 Nov 2025 06:40:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vLgXY-0002qT-8v
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:00 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1vLgXY-0002qv-Mj
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:02 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vLgXV-0001tI-N8
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:39:59 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-477a219db05so23608385e9.2
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:39:56 -0800 (PST)
+ id 1vLgXX-0001tU-1o
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:40:00 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-47774d3536dso7002965e9.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:39:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763552396; x=1764157196; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763552397; x=1764157197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tWFmulcyAYLlojJst2j+AUfpLHkRImQzp1f8BUoZkh0=;
- b=njBFHqCFcWk8fA3kN3t/Z7HeBpfu/UA1SawAxtpj/VPwkhIhRu1WyjYRYPGfMoMS3K
- O0P7gcX1B00pn26TqgP0sF9QnPuOrpBagO/WRZ3qtJnRsI+2vB1U5TjQFKR78/6DcOY2
- ng09/HEv5zP0hpG9qcS1qClBTam6thmoLKlepJAEI7oAAacJxW6kaNXDp7WSD6OrSnmg
- iXlmCt6U/rjRKBwl46Kronx6TNMr77LXhFuKycGKsQeF2zfkno5iUsiWkeNdVRb4I7gW
- IZe1gtf98HIFwORNgvP0Gv+s+TwgbS0H7a00BfmgT8Uqh5IgcIzsOiovwdNTahH3ZCMy
- 1IdA==
+ bh=63iFUpPNC5YuIoBQc2FwNOaqtjMFWESDJWVTrrUl1PY=;
+ b=hsjwLhBZ2xy9+Yp/CeZjuDItkorVYb+UR1beQJHNh23/9q2JsxCy/5vWqoRDB2wzEs
+ ghdnGnsmXJkU4dLQ90M3V3d1eG+axjiuk6PdVpv2kTs7QPTT1ECCFFsyMNICOjFJjZ0v
+ +1LS1zvLFqsR1E+ijKE/BxIPCIiBLKl96h0s4m2midDw0FwvL4emG8GfSnX+P6zwCUv9
+ qctozXAU0ImrjRCKpOV8YV36s74LRijmk2KYWtO1Mj7SIwMth43hXnBnQqN2MrDviG+x
+ /EdMdKug0FNQ8BI2hRXghK/AICF/TiOjm5rJtFmcHa3TMMFlarIyzUCr3G7T08kiMFTq
+ pMmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763552396; x=1764157196;
+ d=1e100.net; s=20230601; t=1763552397; x=1764157197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=tWFmulcyAYLlojJst2j+AUfpLHkRImQzp1f8BUoZkh0=;
- b=qJNEwmBpk7cir5WNlpVO13mXxpgqXnZRxCZ5GCo7GIk1HazOETRHuBhMdcQ4ohQAXt
- SZ2ozRUjFoefeJUsA/uNRZp55HClXRNBQiRYOvDGe8hrNwU9cGaUStGVeK0MROYnUBpo
- KPpbcYFNWFLNd143b3k3En8Rl+4R8Bw98W5xAJj7EkENPa28GGCpvlwQHgCNvoXRjCYg
- JpmaEZpCPbCJQNod+iiWfiERlC9h9Cx1Uhvhx6KkLLWro9WaWCKZCd7mcY+chikAOgCo
- L6p+BTKDyNZTZJ0+qzJOrq6v1e9TBYdB8HEm7NBob4hRlT421PHM/I3DRoSAuuYaBuDq
- /biA==
-X-Gm-Message-State: AOJu0YxjeExDDVTQnTjkP744V2+xHwR53+9xC5fT53DOZN4N11obeYCY
- JyHlHoPasaY5V1HNSGl4VBBaN+JRU4C36aqQ/ojAyaBqitnUIZcDxmNHwuzEyTkL6KH9biYhwaX
- F0goj
-X-Gm-Gg: ASbGnctG12X3mRaT79cUAXyEuQw1hdqeNmSkA+ycYwb7npp5tElkDWTxYjdG7Bt9yol
- GF4wz2mU6t2jHq8D5DzmpbnSZKktlx0hlYehw5U25RAC/o4gGwuP+ISleyQ9dGskVfMne1bGvdX
- NwC19BuN1idy/QtCxBhkoWIPGYsEcjwd4gr0AO8Q4E1iYFcsW1UXBMVU9myQ/ApBcyiKDh3Eh6V
- MaNauWB5PDoYpj7v9OhE8End8oBVQOc0Um00UW5OwV9IHo4/rar18NS15oS5J3jTI1bwfQAJSwe
- gcBFYlo0Bt+VhG06Mv3SByemppgsk3NLeTnVrVZGtYrIyHvdzrrv+eZeiN8TWwtJdwL2ylPQIZL
- 1S/nlVA/hhc25wpHYodDbkEvMJDUDsyOTxqARvq7ZpeAZFC3Rt1V4NPabOAffi0mBtNxF8iBuuU
- LIlm1Yud9ZR7G/1W1v8j2+fg==
-X-Google-Smtp-Source: AGHT+IEwFWkYHUpHzkffJakfjhsSk9CNuwfMQkraAv9bzN95RVtdmw6ykPwoeWiGNqllMHIzYJntEw==
-X-Received: by 2002:a05:600c:1d19:b0:476:d494:41d2 with SMTP id
- 5b1f17b1804b1-4778feadf96mr176857165e9.29.1763552395619; 
- Wed, 19 Nov 2025 03:39:55 -0800 (PST)
+ bh=63iFUpPNC5YuIoBQc2FwNOaqtjMFWESDJWVTrrUl1PY=;
+ b=MhoQMta3NNVOWw26AuXWXK6eIvGeSAuheabsndP5VVsL0C0K8XUexad5fQdWfpT/B2
+ laxvtILhyQh8xAIW4lNTUjseXh8kR6iYe791EZx2PzVD+jaJsy03jciXjVmEaa8w8axP
+ GD1qSq9tgt6glgjgrH2Oc/IMr7gDc95HUiB/dh8UGlvfSFooNkbDlydn2AeKpJNLPv7v
+ o/ZhfIPMHnc4gG5GNgaa0wTtJrDZ7OWBcMlcryNl+FdC+YcR6P5UA93ZsiW24b/J+rm4
+ Bvu64IidLEM0hc7bdMP0jMBXjgBqF9sEI2eGMOuEHHzIqgXQgG34cf/LlfIhyAYAWTaC
+ i48Q==
+X-Gm-Message-State: AOJu0Yznt560s4HDfFyzAMFnHDKZ99KIDdj0/wajh/KM/zG7uVagXj1V
+ UuX/uaAms485hpp7V7SbginzJCQnwqr72jLoELdbulFnY8JYQdBRcrZVRfunfwSQ3s+Pt+W8M73
+ RAsJ3
+X-Gm-Gg: ASbGncvT0IAo4HFgbEm7WrJExBVvIyDrQBwWolKBT6hlIoGRsT+7Zk/4L9AO4/OnaHe
+ HxuQ8Wc2WbjIn7g/2mVHAGJIDpyxrUCaH5SGuML5tCNDHYa2ZG4XfCjjtwnq/4VcZFO0rCxkrzs
+ QrQl80R78r4LP0qK5lr2oyLuCgNGJBi+MpcVjG2udmXdD5lC/ChPvO1IeC8xIcn9ZGiMadDiN5d
+ soY9kzhdSq/zACZMycqoQ0mX0El3QWiWWNryEjqtZniZaMaRbn07MJqqJSFCrUrjJ4i0Vzpl1mu
+ pnXwMdM0ilS58HUF9vfiRfjm9RaNzMWQGHYrmPXpn/OvAHxtPfR0zmLiKvSqtceS5/j2jJSNBQ4
+ 26Dc+H/0G7jYwekXjJAxjCSFBU1m3ogKpNXPUHU2049D9/9XAkktY36rNBVMINhKLth1YMqfWDH
+ gglZ8laRZNIGQ=
+X-Google-Smtp-Source: AGHT+IHS7V6+W5gohjYHnFRU0MFBKD06SaibLMsA/OkXcgE2zyODUPjrnLqbfSmgt5A2iEL27kkMpQ==
+X-Received: by 2002:a05:600c:b93:b0:475:ddad:c3a9 with SMTP id
+ 5b1f17b1804b1-477b18efb58mr23587075e9.13.1763552396912; 
+ Wed, 19 Nov 2025 03:39:56 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477b103d312sm53639005e9.13.2025.11.19.03.39.53
+ 5b1f17b1804b1-477b0ffef34sm43885775e9.2.2025.11.19.03.39.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 19 Nov 2025 03:39:54 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8085E5F8C1;
+ by draig.lan (Postfix) with ESMTP id 982F75F8C8;
  Wed, 19 Nov 2025 11:39:53 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 2/9] contrib/gitdm: add group-map for Huawei
-Date: Wed, 19 Nov 2025 11:39:45 +0000
-Message-ID: <20251119113953.1432303-3-alex.bennee@linaro.org>
+ Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 3/9] contrib/gitdm: add group-map for Microsoft
+Date: Wed, 19 Nov 2025 11:39:46 +0000
+Message-ID: <20251119113953.1432303-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251119113953.1432303-1-alex.bennee@linaro.org>
 References: <20251119113953.1432303-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,41 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we do see contributions from the top-level domain some
-contributors also post via other addresses.
+While we do see contributions from the top-level domain we want to
+catch the linux.microsoft subdomain and those contributors also post
+via other addresses.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
 ---
- contrib/gitdm/group-map-huawei | 5 +++++
- gitdm.config                   | 1 +
- 2 files changed, 6 insertions(+)
- create mode 100644 contrib/gitdm/group-map-huawei
+ contrib/gitdm/group-map-microsoft | 8 ++++++++
+ gitdm.config                      | 1 +
+ 2 files changed, 9 insertions(+)
+ create mode 100644 contrib/gitdm/group-map-microsoft
 
-diff --git a/contrib/gitdm/group-map-huawei b/contrib/gitdm/group-map-huawei
+diff --git a/contrib/gitdm/group-map-microsoft b/contrib/gitdm/group-map-microsoft
 new file mode 100644
-index 00000000000..c287dd5d2b3
+index 00000000000..989a307b6db
 --- /dev/null
-+++ b/contrib/gitdm/group-map-huawei
-@@ -0,0 +1,5 @@
++++ b/contrib/gitdm/group-map-microsoft
+@@ -0,0 +1,8 @@
 +#
-+# Some Huawei contributors submit via another domain
++# Some Microsoft contributors post from other emails
 +#
 +
-+mchehab+huawei@kernel.org
++# Some posting don't use the main domain
++linux.microsoft.com
++
++wei.liu@kernel.org
 diff --git a/gitdm.config b/gitdm.config
-index 06ac729c7bc..2d75dd4deee 100644
+index 2d75dd4deee..8206c0af8a9 100644
 --- a/gitdm.config
 +++ b/gitdm.config
-@@ -36,6 +36,7 @@ GroupMap contrib/gitdm/group-map-amd AMD
- GroupMap contrib/gitdm/group-map-cadence Cadence Design Systems
- GroupMap contrib/gitdm/group-map-codeweavers CodeWeavers
- GroupMap contrib/gitdm/group-map-facebook Facebook
-+GroupMap contrib/gitdm/group-map-huawei Huawei
+@@ -39,6 +39,7 @@ GroupMap contrib/gitdm/group-map-facebook Facebook
+ GroupMap contrib/gitdm/group-map-huawei Huawei
  GroupMap contrib/gitdm/group-map-ibm IBM
  GroupMap contrib/gitdm/group-map-janustech Janus Technologies
++GroupMap contrib/gitdm/group-map-microsoft Microsoft
  GroupMap contrib/gitdm/group-map-netflix Netflix
+ GroupMap contrib/gitdm/group-map-redhat Red Hat
+ GroupMap contrib/gitdm/group-map-sifive SiFive
 -- 
 2.47.3
 
