@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D64C70750
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 18:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D037C70A1D
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 19:24:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLly3-0002Il-N4; Wed, 19 Nov 2025 12:27:43 -0500
+	id 1vLmqp-0000y3-GK; Wed, 19 Nov 2025 13:24:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLly0-0002IZ-Va
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:27:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vLlxz-0004Gw-FI
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:27:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763573257;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=4fymG22orDPkn/XtJWFnqe9Dr1Z6dXU8U6gAVbZ4qn8=;
- b=Rwi1jdlFILkubyNc1E3fotY0FHdIrhWwQJPjWSBBkZgCym5UToHX7Kah5rsaYVELoHIAA7
- ANXvzkai4Xgw0lS2qP2CjfuPB7FrsLDwYfdSLQhz2gHcNUwy5RNFm1Q1RqaktT+wv7X/9k
- OlW9E24YES0+MWlEnptL/11juZnatns=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-y7SMuzkCM_aONSEk1-1yow-1; Wed,
- 19 Nov 2025 12:27:35 -0500
-X-MC-Unique: y7SMuzkCM_aONSEk1-1yow-1
-X-Mimecast-MFC-AGG-ID: y7SMuzkCM_aONSEk1-1yow_1763573253
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A16BD19560A1; Wed, 19 Nov 2025 17:27:32 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.45.225.145])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B5E751800947; Wed, 19 Nov 2025 17:27:29 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, hreitz@redhat.com, andrey.drobyshev@virtuozzo.com,
- den@virtuozzo.com, f.ebner@proxmox.com, qemu-stable@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] block-backend: Fix race when resuming queued requests
-Date: Wed, 19 Nov 2025 18:27:20 +0100
-Message-ID: <20251119172720.135424-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <konrad.schwarz@gmail.com>)
+ id 1vLlyf-0002S5-5f
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:28:22 -0500
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <konrad.schwarz@gmail.com>)
+ id 1vLlyd-0004JT-Mq
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:28:20 -0500
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-4332381ba9bso101695ab.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 09:28:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1763573298; x=1764178098; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=gtPbqc+AMCqouNpafbfHY6FEx0CZ0+IPs9jgeWbmnW0=;
+ b=i2sgw+kLyd1FtZVYwJU9Di2Gsc/KQp0OiQsNJtIWIRisPvClNt807s8f9EdxU5dIdz
+ LmbVrpGOw241MXaAjR6IpyeBkrgzhHupxaQludDk3OdCDQw9sPz7qOrtLGQLPPo8lMi1
+ qlicREOAkyCFqHR3wfA50vp4zmtMMLvbY7P6iPtPZbyasa3Y0ZwHwScBqJmdKOqHi7Ey
+ nsL8hcmgRy1fkkv+8b5+oIUxNFOdji0+ekqwkRFp/hvWaRee6DpBhwYOtvA1zGry1GAJ
+ a/pp7lyY2oh2B7coB9Aoyomq2eSiKqXKdTjWYo+ifU8AdXdPu3mVmerVlkb0l3tCTswE
+ 0/bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763573298; x=1764178098;
+ h=cc:to:subject:message-id:date:mime-version:from:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gtPbqc+AMCqouNpafbfHY6FEx0CZ0+IPs9jgeWbmnW0=;
+ b=BuskUgC0uYHhhCrgLVjJq3K/klmVi1f7e7Gh66EdsAG9IFhCv1e5jN+xLBp7uLj7lR
+ pNx6wqFJHZcMGLvUu4/aX6uYqWzSlJqbZkNnutTK0p2jr0ETQP/72WJerzW/6PT12P9J
+ bj+UtBCzP5dxzd1eh85KzhNpn6B9lB2verGvSHhs1DsWUHeclISBR84/gXV50KO+KhUf
+ XYhM9ZtbwwwC6d12lSUA9xtwJgSChg2IT/JAAUX94ysW2yWu08EZJ2BFHglpL9bnTa/5
+ Wh7XcCLtAOnNF/3dhA29yMTFMw+1nWB490yJ2pbUOweWluj0qXmNt0EoF82WvGEYUYqS
+ zGaA==
+X-Gm-Message-State: AOJu0YwoBqUVUIAwtT4ywK0WtUB9Cnj4acjf+a1I0ylKiBsy9cPgLXnf
+ Nfji3cdmQeFQ4EXQusPzNyccDNPibaWq0bHvyIwQ+YSh8s/I3kPwAAW8KkEfQXDmEGseMvTdInF
+ c85nuO9+/DD+QPT4NuUIuLIo5YWZtv65/P42o
+X-Gm-Gg: ASbGncs+tc/m97PC4oiAiQat/dbNmmf2W23eMUZnnymbNLo12AEVlJpd38msvXLsh9D
+ VrCEuCT1qlzoQM73dO9dUf2UTbq4oP6IMj2TKGpHiq0UNqVJONFrPKTL0ulykcjWnCHBnQ2jYuP
+ ZZjfP2SS/ENPjwJ59EwyT50Oj3yHufTGRN7doIYs4eGAurV8FK7tm4N6eDsoZg3ZnCi6b16j0BS
+ URGDHSl3JZM5tUt9gy/eErcj4MWl5JHKSjk2N8ay5ZfvqiLAUX0timfQ68u4cFAcLD1w/kQS3FB
+ fYQPKQ==
+X-Google-Smtp-Source: AGHT+IGseESW3+TiyVtUnh2rZyg+uK4cev1+1hkrm4TZ4XrmLI6ulCRgJHyF+Y1pce/ktftxg4muswV4qK6Ggaa1raY=
+X-Received: by 2002:a05:6e02:1fc1:b0:433:80d9:708a with SMTP id
+ e9e14a558f8ab-435a90397f9mr2949175ab.17.1763573297778; Wed, 19 Nov 2025
+ 09:28:17 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 19 Nov 2025 12:28:16 -0500
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 19 Nov 2025 12:28:16 -0500
+From: konrad.schwarz@gmail.com
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Date: Wed, 19 Nov 2025 12:28:16 -0500
+X-Gm-Features: AWmQ_bmxDrPqQHqirOr4JNKV_MvO3XAJ0Poygr60YQE1UpKWXZL8xMrGgdNAAQg
+Message-ID: <CA+kmUXafV4PPo2t+P23g9QRXHjaH_XBke3DjzbvciqBtw+i-OA@mail.gmail.com>
+Subject: [PATCH 1/1] scripts: Changed potential O(n) file size calculation to
+ O(1)
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, Konrad Schwarz <konrad.schwarz@siemens.com>,
+ jan.kiszka@siemens.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=konrad.schwarz@gmail.com; helo=mail-il1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 19 Nov 2025 13:24:16 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,58 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When new requests arrive at a BlockBackend that is currently drained,
-these requests are queued until the drain section ends.
+The mkemmc.sh script calculates file sizes via `wc -c'.  `wc'
+normally works by reading the entire file, resulting in O(n) performance.
 
-There is a race window between blk_root_drained_end() waking up a queued
-request in an iothread from the main thread and blk_wait_while_drained()
-actually being woken up in the iothread and calling blk_in_flight(). If
-the BlockBackend is drained again during this window, drain won't wait
-for this request and it will sneak in when the BlockBackend is already
-supposed to be quiesced. This causes assertion failures in
-bdrv_drain_all_begin() and can have other unintended consequences.
+Unix file systems obviously know a file's size and POSIX `ls' reports this
+information unambiguously, so replacing `wc' with `ls' ensures O(1)
+performance.  The files in question tend to be large making this change
+worthwhile.
 
-Fix this by increasing the in_flight counter immediately when scheduling
-the request to be resumed so that the next drain will wait for it to
-complete.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Konrad Schwarz <konrad.schwarz@siemens.com>
 ---
- block/block-backend.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ scripts/mkemmc.sh | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index f8d6ba65c1..d6df369188 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -1318,9 +1318,9 @@ static void coroutine_fn blk_wait_while_drained(BlockBackend *blk)
-          * section.
-          */
-         qemu_mutex_lock(&blk->queued_requests_lock);
-+        /* blk_root_drained_end() has the corresponding blk_inc_in_flight() */
-         blk_dec_in_flight(blk);
-         qemu_co_queue_wait(&blk->queued_requests, &blk->queued_requests_lock);
--        blk_inc_in_flight(blk);
-         qemu_mutex_unlock(&blk->queued_requests_lock);
-     }
+diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
+index 45dc3f08fa..d2c4e84b16 100755
+--- a/scripts/mkemmc.sh
++++ b/scripts/mkemmc.sh
+@@ -37,13 +37,19 @@ usage() {
+     exit "$1"
  }
-@@ -2767,9 +2767,11 @@ static void blk_root_drained_end(BdrvChild *child)
-             blk->dev_ops->drained_end(blk->dev_opaque);
-         }
-         qemu_mutex_lock(&blk->queued_requests_lock);
--        while (qemu_co_enter_next(&blk->queued_requests,
--                                  &blk->queued_requests_lock)) {
-+        while (!qemu_co_queue_empty(&blk->queued_requests)) {
-             /* Resume all queued requests */
-+            blk_inc_in_flight(blk);
-+            qemu_co_enter_next(&blk->queued_requests,
-+                               &blk->queued_requests_lock);
-         }
-         qemu_mutex_unlock(&blk->queued_requests_lock);
-     }
--- 
-2.51.1
 
++file_size() {
++	ls_line=$(ls -Hdog "$1") || return
++	printf %s\\n "$ls_line" | cut -d\  -f3
++	unset ls_line
++}
++
+ process_size() {
+     name=$1
+     image_file=$2
+     alignment=$3
+     image_arg=$4
+     if [ "${image_arg#*:}" = "$image_arg"  ]; then
+-        if ! size=$(wc -c < "$image_file" 2>/dev/null); then
++        if ! size=$(file_size "$image_file"); then
+             echo "Missing $name image '$image_file'." >&2
+             exit 1
+         fi
+@@ -105,7 +111,7 @@ check_truncation() {
+     if [ "$image_file" = "/dev/zero" ]; then
+         return
+     fi
+-    if ! actual_size=$(wc -c < "$image_file" 2>/dev/null); then
++    if ! actual_size=$(file_size "$image_file"); then
+         echo "Missing image '$image_file'." >&2
+         exit 1
+     fi
+-- 
+2.39.5
 
