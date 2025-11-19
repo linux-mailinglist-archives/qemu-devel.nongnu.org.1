@@ -2,96 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737B0C6E52A
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1CAC6E76C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 13:30:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLgev-000110-SB; Wed, 19 Nov 2025 06:47:37 -0500
+	id 1vLhJ0-0004uF-FZ; Wed, 19 Nov 2025 07:29:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLgeq-0000zj-Mz
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:47:32 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLgeo-00031H-7S
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:47:32 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-477b1cc8fb4so3770485e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763552847; x=1764157647; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zyYcqZXPjxQo7eXtH5Egj6+pzsjzgmzi6DJRwQ8tT98=;
- b=vgdatpWVBfXO2snlP1L8xMEcv+rd+yCd2Yuwy/bwIPqTmpTLYJAmpOIjdqzSHkfMZu
- 4kTFjSqK3kvI1amF51rgoxq2N3m3G70HZ2b3UKpOBcdN46e/GKs/LGndfeZq7i0YVDKn
- +k4cOyJFUC0IN/kujUUuQ+RwuVCUNIttIR+vOCihatGVmtiJMfigC+X7UIfRPbLstX2y
- 00c6Pe6BdjhQp9FeLQbCuQehUXTOdXc7zLCQL1hGG7aPRlqHJUoeDX7VtQMYsvyLc6wO
- guok6va21C4AqJJEhHvsR71fH/YffCNWnRDUxF+Bo0XiNWKHONj9n2yeEeavVGeaXMFM
- Fv+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763552847; x=1764157647;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zyYcqZXPjxQo7eXtH5Egj6+pzsjzgmzi6DJRwQ8tT98=;
- b=wUUWmw9cNpYaq20yAIP+TFDVodp+HVMRa6et0PpYomV2NZf81gNGxg/QlDR0qogxK1
- ldezLI4wnCqclMh/1kqOiaj0v/Bak6Lf8w5jz/FahTKbRAVC63tiZkuzSq8u/GyRclaf
- 6R7ceMWqE+L2KPktsjctAo6qglf3cKfLzWpivgy7/lM4WuOvnI7p77a1E6oWvFcFBG0L
- DsLhS7w+QeOIatNYg6vPRA1jMK7ZwmIP+9DDIIrTcKDsWTs4uqbxgD1kc6G8ZzC+NvVR
- 9iHvZHS+DQp2BI9Ucit+dxircsY3DhNg7Wit61TQ3R5n16K7wbDpGSsVOtywtiZMPJ6F
- SNYw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUeGi9jCBh3+ORF3HPYXI9uGw48HVTfWn/ycctPTugFYq0gQk6cMozyCC/YoeAASOKoWn/RqfcanQ/o@nongnu.org
-X-Gm-Message-State: AOJu0Yx8HdCuR+TkULUvuMOtkIkPbVZEsaCwpeYp+pdhIq1d+ASIkCc/
- LiSwkAkSBNjAbGf1hyciE9PcRHC9U5BAe6BP5mwMROf0Dwgv48Sn2PT3hZr+mIuAWvw=
-X-Gm-Gg: ASbGncsTSGiPn6CfzOCL3xnPTZdy64I4jkTXnB7QQKYkdMvcMj9wpWxTFiVi/R18xvR
- dI2kCk9IsH6ixts+aHComK6DqB9tRQhVLSsrLqw3OpI6szzv3faiq04GU6BAFad4c9Ch+m2aKwM
- C3rJhonIWZ2rFxMwaiRy1+EApEMfY+ymec8zXHEPj0AVX2VTHfps5lRP3pu6cAUztm4CrRUW/+T
- A/y19bfUMYukHUSP0YXykhLV+m6ShKSeVMvT+yN8xBKe/Jjb1np2kY8ESSZLvRk4TswxyVYhTg4
- bFV0fCQRzKKZsw5r9jrkN3djwpq9GaAfwagQpH3Y+HSTaRd/L2olK3xjJwG+QiEwkCkJbUw9y9Q
- 3BkpMJdo8DhYJgLefKx8fNkv81lrP8t/OjPNvUOl85AtD2NDAX2G7xetHbAIkyiFZjBsLTiErp4
- e/DztiJwq/E3l7Blv8k5lFzDn+pkPvKEYzvVFbs3Ao8ZQjmKwp4XHGIAytD0BX/UnT4mc=
-X-Google-Smtp-Source: AGHT+IE16eJ36y+cPNx9HSyxZ+rnwIXZXvw9LdMKhxCzg+dqm2gzIgNQQ5I91fhC9bKVcIJ99Vfq+g==
-X-Received: by 2002:a05:600c:c178:b0:458:a7fa:211d with SMTP id
- 5b1f17b1804b1-4778feb2401mr176378795e9.29.1763552847210; 
- Wed, 19 Nov 2025 03:47:27 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:ed5:b1f0:90e8:1fdb:2cba:9db1?
- ([2a01:e0a:ed5:b1f0:90e8:1fdb:2cba:9db1])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a9e0c802sm37706455e9.15.2025.11.19.03.47.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Nov 2025 03:47:26 -0800 (PST)
-Message-ID: <ec06af13-b944-4d44-937f-5ebe1a66f54b@linaro.org>
-Date: Wed, 19 Nov 2025 12:47:24 +0100
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhIs-0004tV-02
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:28:54 -0500
+Received: from hognose1.porkbun.com ([35.82.102.206])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhIp-0004bX-B5
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:28:53 -0500
+Received: from cslab-raptor.s.cslab.moe (unknown [166.111.238.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 9E8E849A7E9;
+ Wed, 19 Nov 2025 12:28:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1763555322; bh=FyMr2OJGmqvQsrW7g6Xf9aexPY0tteLQ5bIpfD7/shA=;
+ h=From:To:Cc:Subject:Date;
+ b=utTYkcqzrFXpI1yoSxQagkp2Bx1HshhZHa+2UcA/9Yv4N8S/J98buqethmDrFLEI1
+ buaxo5cYjZQPNR50nLisG8B8oQ2BpuVojU0A0rDHoJATT4ndGQj7LttRHi38rwxVI1
+ iPS0LrWG7VxSEOwEXwKSDeS/GcmqkuJ/U0qmLXqI=
+From: Jiajie Chen <c@jia.je>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
+ Jiajie Chen <c@jia.je>
+Subject: [PATCH v2 0/7] Add LoongArch v1.1 instructions
+Date: Wed, 19 Nov 2025 20:24:45 +0800
+Message-ID: <20251119122822.1513788-1-c@jia.je>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Python: fix tests
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster
- <armbru@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <20251118200657.1043688-1-jsnow@redhat.com>
- <40e40d05-e491-4513-85b7-48dfe8f5c178@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <40e40d05-e491-4513-85b7-48dfe8f5c178@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,31 +64,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/19/25 12:30, Philippe Mathieu-Daudé wrote:
-> On 18/11/25 21:06, John Snow wrote:
->> Whack some minor annoyances down to make the tests green again. Fixes
->> both minreqs and the optional check-tox.
->>
->> John Snow (3):
->>    python/mkvenv: ensure HAVE_LIB variables are actually constants
->>    python/qapi: add an ignore for Pylint 4.x
->>    python/qapi: delint import statements
->>
->>   python/scripts/mkvenv.py   | 24 ++++++++++++++++--------
->>   python/setup.cfg           |  1 +
->>   scripts/qapi/commands.py   |  5 +----
->>   scripts/qapi/introspect.py |  2 +-
->>   4 files changed, 19 insertions(+), 13 deletions(-)
+Latest revision of LoongArch ISA is out at
+https://www.loongson.cn/uploads/images/2023102309132647981.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%84%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C%E5%8D%B7%E4%B8%80_r1p10.pdf
+(Chinese only). The revision includes the following updates:
 
-Thanks, John.  I am applying this series to master as a build fix, being the last 
-non-flaky failure we have right now.
+- estimated fp reciporcal instructions: frecip -> frecipe, frsqrt ->
+  frsqrte
+- 128-bit width store-conditional instruction: sc.q
+- ll.w/d with acquire semantic: llacq.w/d, sc.w/d with release semantic:
+  screl.w/d
+- compare and swap instructions: amcas[_db].b/w/h/d
+- byte and word-wide amswap/add instructions: am{swap/add}[_db].{b/h}
+- new definition for dbar hints
+- clarify 32-bit division instruction hebavior
+- clarify load ordering when accessing the same address
+- introduce message signaled interrupt
+- introduce hardware page table walker
 
-> FTR, per https://lore.kernel.org/qemu-devel/20251117185131.953681-1-jsnow@redhat.com/ 
-> reviews:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+The new revision is implemented in the Loongson 3A6000 processor.
 
-Also, kudos to b4 shazam, which picked up Thomas' r-b automatically.  :-)
+This patch series implements all the new instructions. The v1 version
+can be found at
+https://patchew.org/QEMU/20231023153029.269211-2-c@jia.je/.
 
+A simple testcase to test the new fp and sc.q instructions:
 
-r~
+#include <assert.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void test_fp() {
+  float a = 3.0;
+  float b;
+
+  asm volatile("frecip.s %0, %1" : "=f"(b) : "f"(a));
+  printf("frecip: %f\n", b);
+  asm volatile("frecipe.s %0, %1" : "=f"(b) : "f"(a));
+  printf("frecipe: %f\n", b);
+
+  asm volatile("frsqrt.s %0, %1" : "=f"(b) : "f"(a));
+  printf("frsqrt: %f\n", b);
+  asm volatile("frsqrte.s %0, %1" : "=f"(b) : "f"(a));
+  printf("frsqrte: %f\n", b);
+}
+
+uint64_t rand64() { return ((uint64_t)rand() << 32) | rand(); }
+
+void test_sc_q() {
+  __int128 val = rand64();
+  val = (val << 64) | rand64();
+  __int128 *ptr = &val;
+  uint64_t add_lo = rand64();
+  uint64_t add_hi = rand64();
+  __int128 add = add_hi;
+  add = (add << 64) | add_lo;
+  __int128 expect = val + add;
+  int res = 0;
+
+  asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\nadd.d $t1, $t1, %2\nadd.d "
+               "$t2, $t2, %3\nsc.q $t1, $t2, %1\nmove %0, $t1"
+               : "=r"(res), "+r"(ptr)
+               : "r"(add_lo), "r"(add_hi)
+               : "$t1", "$t2", "memory");
+  assert(res == 1);
+  assert(val == expect);
+
+  // change memory content to make sc fail
+  res = 1;
+  asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\naddi.d $t1, $t1, 1\nst.d "
+               "$t1, %1, 0\nsc.q $t1, $t2, %1\nmove %0, $t1"
+               : "=r"(res), "+r"(ptr)
+               :
+               : "$t1", "$t2", "memory");
+  assert(res == 0);
+
+  res = 1;
+  asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\naddi.d $t2, $t2, 1\nst.d "
+               "$t2, %1, 8\nsc.q $t1, $t2, %1\nmove %0, $t1"
+               : "=r"(res), "+r"(ptr)
+               :
+               : "$t1", "$t2", "memory");
+  assert(res == 0);
+
+  printf("SC.Q passed\n");
+}
+
+int main(int argc, char *argv[]) {
+  test_fp();
+  test_sc_q();
+  return 0;
+}
+
+Compile and test by:
+
+loongarch64-linux-gnu-gcc test.c -o test -static && ./qemu-loongarch64 -cpu max test
+
+Jiajie Chen (7):
+  target/loongarch: Require atomics to be aligned
+  target/loongarch: Add am{swap/add}[_db].{b/h}
+  target/loongarch: Add amcas[_db].{b/h/w/d}
+  target/loongarch: Add estimated reciprocal instructions
+  target/loongarch: Add llacq/screl instructions
+  target/loongarch: Add sc.q instructions
+  target/loongarch: Add LA v1.1 instructions to max cpu
+
+ target/loongarch/cpu.c                        |  11 +-
+ target/loongarch/cpu.h                        |   7 +
+ target/loongarch/disas.c                      |  33 ++++
+ target/loongarch/insns.decode                 |  34 ++++
+ .../tcg/insn_trans/trans_atomic.c.inc         | 145 ++++++++++++++++--
+ .../tcg/insn_trans/trans_farith.c.inc         |   4 +
+ .../tcg/insn_trans/trans_memory.c.inc         |  22 +++
+ .../loongarch/tcg/insn_trans/trans_vec.c.inc  |   8 +
+ target/loongarch/tcg/translate.c              |   6 +-
+ target/loongarch/translate.h                  |  30 ++--
+ 10 files changed, 280 insertions(+), 20 deletions(-)
+
+-- 
+2.51.0
+
 
