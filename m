@@ -2,90 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A3CC6F06D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 14:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8AFC6F1B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 15:02:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLiXq-0006Xp-P9; Wed, 19 Nov 2025 08:48:26 -0500
+	id 1vLikM-0000Wo-0w; Wed, 19 Nov 2025 09:01:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLiXo-0006X0-9p
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:48:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1vLikJ-0000OH-2a; Wed, 19 Nov 2025 09:01:19 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vLiXm-0004CK-HD
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 08:48:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763560101;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xsySjUAW/OC81jZhGvxSBn3taIt42d+Gp2Dn5EiAh3I=;
- b=WAg03mFpf54yDXLZF5qTaxZ3c+wfDAyoSZpKJZP8A0MH8YbjuFvHAvwjaHZ4gzAMuOjPeZ
- vSqKoY/wS7zPjBGJuUO5OcoGA/otBQLdq6NJHZj+LnQoT/niwodiWC2Svq9WzRdXmF09yi
- WUotWLcjcOoMYbONFOAo2a0ugntcG4M=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-c9AsqnwVO_K6HMYJOAg8Tg-1; Wed,
- 19 Nov 2025 08:48:20 -0500
-X-MC-Unique: c9AsqnwVO_K6HMYJOAg8Tg-1
-X-Mimecast-MFC-AGG-ID: c9AsqnwVO_K6HMYJOAg8Tg_1763560096
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC8DB180035F; Wed, 19 Nov 2025 13:48:15 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7A14B18004A3; Wed, 19 Nov 2025 13:48:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A94D221E6A27; Wed, 19 Nov 2025 14:48:11 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,  qemu-devel@nongnu.org,
- kwolf@redhat.com,  hreitz@redhat.com,  mst@redhat.com,
- imammedo@redhat.com,  anisinha@redhat.com,  gengdongjiu1@gmail.com,
- peter.maydell@linaro.org,  alistair@alistair23.me,
- edgar.iglesias@gmail.com,  npiggin@gmail.com,  harshpb@linux.ibm.com,
- palmer@dabbelt.com,  liwei1518@gmail.com,  dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com,  sstabellini@kernel.org,
- anthony@xenproject.org,  paul@xen.org,  peterx@redhat.com,
- farosas@suse.de,  eblake@redhat.com,  vsementsov@yandex-team.ru,
- eduardo@habkost.net,  marcel.apfelbaum@gmail.com,  philmd@linaro.org,
- wangyanan55@huawei.com,  zhao1.liu@intel.com,  qemu-block@nongnu.org,
- qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  qemu-riscv@nongnu.org,
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 5/5] error: Consistently name Error * objects err, and
- not errp
-In-Reply-To: <aR3HpH88od11v8qL@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 19 Nov 2025 13:35:32 +0000")
-References: <20251119130855.105479-1-armbru@redhat.com>
- <20251119130855.105479-6-armbru@redhat.com>
- <3ffe11b9-db81-4930-aefa-e55d758645bf@citrix.com>
- <aR3HpH88od11v8qL@redhat.com>
-Date: Wed, 19 Nov 2025 14:48:11 +0100
-Message-ID: <87a50ixhes.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1vLikG-0006FJ-Ee; Wed, 19 Nov 2025 09:01:18 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJ40VMt014162;
+ Wed, 19 Nov 2025 14:01:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=4gqlMW
+ nkBOJXqOu3AxvpWE2hOBlYH6otz5slXWkIUKc=; b=WzupwgVh0Qjo5ltXoHXWNk
+ 0P5frtWsOXygW3epzPgBBQyC+BB510RUYE9brLFZGDy3qTUJeRD3QiBotTjw1D0o
+ 7KT2QzYxvPJ1QrFIdoQ3irm9J7Qz/7MevDgx5Gcsqp8TWIYpqXIH0POQ6QuKD3YX
+ VdineHXvT7Ed8RbiPEn54jBxIvIqfDT08VDn0nOZzrYvQHCPH94uLi/Au4ap+bkM
+ /gvevUQmgw9kGeaYvsSqZKdeIwXca3xAmgHS8518bg/3hoB4aqojFeIY/U1LENB9
+ xratzJqSp6jDU5GI6d4x/jVYtQ2/5H4MA1dx4/rOC7uICBZUHf6g1WQB3L+3Uo3w
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejka0r8b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Nov 2025 14:01:04 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJBOAxW005231;
+ Wed, 19 Nov 2025 14:01:03 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4af5bk8xk5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Nov 2025 14:01:03 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5AJE12Oc31392460
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Nov 2025 14:01:02 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1837258056;
+ Wed, 19 Nov 2025 14:01:02 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6875658052;
+ Wed, 19 Nov 2025 14:01:01 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.147.101]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Nov 2025 14:01:01 +0000 (GMT)
+Message-ID: <dcea76416ffe30278bad0cec5c4a009d63cabf3b.camel@linux.ibm.com>
+Subject: Re: [PATCH v3] hw/s390x: Fix a possible crash with passed-through
+ virtio devices
+From: Eric Farman <farman@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Matthew Rosato	 <mjrosato@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Cornelia Huck <cohuck@redhat.com>
+Date: Wed, 19 Nov 2025 09:01:01 -0500
+In-Reply-To: <e399cffc-155c-4846-9c68-5f449ab9a6f4@redhat.com>
+References: <20251118174047.73103-1-thuth@redhat.com>
+ <8fd35be2f4d424f0093110a050c7e29830561012.camel@linux.ibm.com>
+ <e399cffc-155c-4846-9c68-5f449ab9a6f4@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1OFyaIcCCTz9tBuronckv-mOOgq3rKiQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX0tcsbmDB0J2z
+ ybQuz0+uSioL/YFQcCbel/Wpkelyp8RFbR8qBXnTofOeQuOKEIw2yFrFOIo5sybL28/1BEZlZIP
+ p/R8Bv+AsHmzsQYrCLDcfZovTkg7NRH2gBg15+VxNTePonhlPBCFz+Z5hZBiz73WXluxlhuHPgM
+ xn/wQpJZ1CVtUxvkblRO7XGc6M/6GciP4RxE2FTco98XCyVikObLko0y1fHlS9toM2l8eNuvVnL
+ 0PlgSPZecDsLkQ4NqO9qwEg3f7tWZ6nNzKpScmErPhdtO8U3tIsSO2l7x/ztwW4qQnYxb7KCCGH
+ +80Di6fGfAAe8p4knoo6j//B9LbRs2xYZcyb3QUGlaCFvsDA8IsTpd7U5nRDAArJGUDIOt+L6gz
+ 60v6JEaaeUzL/i8+Ju//sSTi+8S38g==
+X-Proofpoint-ORIG-GUID: 1OFyaIcCCTz9tBuronckv-mOOgq3rKiQ
+X-Authority-Analysis: v=2.4 cv=XtL3+FF9 c=1 sm=1 tr=0 ts=691dcda0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Pjb7V9Cc-weC0biJHUsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-19_04,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,60 +122,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On Wed, 2025-11-19 at 08:33 +0100, Thomas Huth wrote:
+> On 18/11/2025 22.45, Eric Farman wrote:
+> > On Tue, 2025-11-18 at 18:40 +0100, Thomas Huth wrote:
+> > > From: Thomas Huth <thuth@redhat.com>
+> > >=20
+> > > Consider the following nested setup: An L1 host uses some virtio devi=
+ce
+> > > (e.g. virtio-keyboard) for the L2 guest, and this L2 guest passes thi=
+s
+> > > device through to the L3 guest. Since the L3 guest sees a virtio devi=
+ce,
+> > > it might send virtio notifications to the QEMU in L2 for that device.
+> > > But since the QEMU in L2 defined this device as vfio-ccw, the functio=
+n
+> > > handle_virtio_ccw_notify() cannot handle this and crashes: It calls
+> > > virtio_ccw_get_vdev() that casts sch->driver_data into a VirtioCcwDev=
+ice,
+> > > but since "sch" belongs to a vfio-ccw device, that driver_data rather
+> > > points to a CcwDevice instead. So as soon as QEMU tries to use some
+> > > VirtioCcwDevice specific data from that device, we've lost.
+> > >=20
+> > > We must not take virtio notifications for such devices. Thus fix the
+> > > issue by adding a check to the handle_virtio_ccw_notify() handler to
+> > > refuse all devices that are not our own virtio devices. Like in the
+> > > other branches that detect wrong settings, we return -EINVAL from the
+> > > function, which will later be placed in GPR2 to inform the guest abou=
+t
+> > > the error.
+> >=20
+> > I still think this is a good idea, but of course "let's try it" got me =
+into the weeds. I
+> > reconstructed a configuration (dasd->virtio-blk-ccw->vfio-ccw->virtio-b=
+lk-ccw) that crashes the
+> > nested guest upon startup with today's master. Applying this patch gene=
+rates that message to point
+> > out where it's broken (yay!), but the nested guest hangs during boot. N=
+eed to ponder this more
+> > tomorrow.
+>=20
+> FWIW, we only tried to passthrough a virtio-input device to the L3 guest,=
+ we=20
+> did not try a virtio-blk device here ... so that might be the reason why =
+I=20
+> did not see any further hangs after applying my fix.
 
-> On Wed, Nov 19, 2025 at 01:22:06PM +0000, Andrew Cooper wrote:
->> On 19/11/2025 1:08 pm, Markus Armbruster wrote:
->> > diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
->> > index b93ff80c85..3e62ec09d0 100644
->> > --- a/hw/xen/xen-pvh-common.c
->> > +++ b/hw/xen/xen-pvh-common.c
->> > @@ -101,7 +101,7 @@ static void xen_create_virtio_mmio_devices(XenPVHM=
-achineState *s)
->> >  #ifdef CONFIG_TPM
->> >  static void xen_enable_tpm(XenPVHMachineState *s)
->> >  {
->> > -    Error *errp =3D NULL;
->> > +    Error *err =3D NULL;
->> >      DeviceState *dev;
->> >      SysBusDevice *busdev;
->> >=20=20
->> > @@ -111,8 +111,15 @@ static void xen_enable_tpm(XenPVHMachineState *s)
->> >          return;
->> >      }
->> >      dev =3D qdev_new(TYPE_TPM_TIS_SYSBUS);
->> > -    object_property_set_link(OBJECT(dev), "tpmdev", OBJECT(be), &errp=
-);
->> > -    object_property_set_str(OBJECT(dev), "tpmdev", be->id, &errp);
->> > +    /*
->> > +     * FIXME This use of &err is is wrong.  If both calls fail, the
->> > +     * second will trip error_setv()'s assertion.  If just one call
->> > +     * fails, we leak an Error object.  Setting the same property
->> > +     * twice (first to a QOM path, then to an ID string) is almost
->> > +     * certainly wrong, too.
->> > +     */
->> > +    object_property_set_link(OBJECT(dev), "tpmdev", OBJECT(be), &err);
->> > +    object_property_set_str(OBJECT(dev), "tpmdev", be->id, &err);
->>=20
->> To your question, I don't know the answer, but I think it's far more
->> likely that the original author didn't grok the proper use of &errp,
->> than for this behaviour to be intentional.
->>=20
->> Surely we just want a failure path and abort the construction if this
->> goes wrong?
->
-> In the caller of xen_enable_tpm, we just have error_report+exit calls,
-> so there's no error propagation ability in the call chain.
->
-> The caller will also skip  xen_enable_tpm unless a TPM was explicitly
-> requested in the config.
->
-> Given that, I'm inclined to say that the object_property_set_* calls
-> in xen_enable_tpm should be using &error_abort, as a failure to setup
-> the explicitly requested TPM should be fatal.
+Ah, that could be. Well, as you and Halil discussed in v2, there's more tha=
+t can be done on top but
+since this solves the guest crashes:
 
-I *suspect* that the first call always fails, and the second one always
-works.  If that's the case, the fix is to delete the first call, and
-pass &error_abort to the second.
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
 
+>=20
+>   Thomas
 
