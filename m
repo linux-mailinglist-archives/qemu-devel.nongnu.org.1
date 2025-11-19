@@ -2,67 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B1EC6F12B
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 14:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 949C3C6E3B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:31:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLieM-0001nr-QC; Wed, 19 Nov 2025 08:55:11 -0500
+	id 1vLgOL-0000tD-Cn; Wed, 19 Nov 2025 06:30:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiyuan.plct@isrc.iscas.ac.cn>)
- id 1vLgLh-0007xG-Dt; Wed, 19 Nov 2025 06:27:45 -0500
-Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <zhiyuan.plct@isrc.iscas.ac.cn>)
- id 1vLgLe-0007l3-GK; Wed, 19 Nov 2025 06:27:45 -0500
-Received: from chenxiaoou-ubuntu-02.. (unknown [210.73.43.101])
- by APP-01 (Coremail) with SMTP id qwCowAD3js6gqR1pq9FAAQ--.30793S2;
- Wed, 19 Nov 2025 19:27:29 +0800 (CST)
-From: TravisYang <zhiyuan.plct@isrc.iscas.ac.cn>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: =?UTF-8?q?=E6=9D=A8=E6=99=BA=E6=BA=90?= <zhiyuan.plct@isrc.iscas.ac.cn>,
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v1] target/riscv: add support for RV64 THEAD C910 CPU
-Date: Wed, 19 Nov 2025 11:27:24 +0000
-Message-Id: <20251119112724.1342110-1-zhiyuan.plct@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLgOK-0000t3-1C
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:30:28 -0500
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLgOI-0008Uc-Cq
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:30:27 -0500
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-4775ae5684fso33603495e9.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:30:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1763551824; x=1764156624; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lluPvpIpNfIbtLgB2Xwyt0bFItl0gbX00AAtLCZSLa0=;
+ b=f9UwNbG4oT/9WK9WnCeHw/e5ZTXvON45xQj24wlwNNrm/IO/3x2/ucqwD1PkxJunp6
+ eo6I/McW5hvXOSPGtb/iuY5d3SwAdHg/TBIBjkTkb7OSgJKNwOE36vwhIIjEkxdZ+TmU
+ VT3qdhofAG8te5YYj5X9AH4twf+NcNr6cxqxdPMFYru6AHfy6TJ5NGDru+ABrCIQ8/7V
+ LTC2Df0ynn9eO9oefOzaqt7HANA6UmV+Hn/zj1PH4ejb2iyGSWII6T4QhnN6KWQmdC8E
+ oZcczEJhtjeTBlMkqXKsrZnZO4mFDdS5pksYBYW3buIPnYjLcWR2XeH+jMBxYzGZ9TPf
+ XcbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763551824; x=1764156624;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lluPvpIpNfIbtLgB2Xwyt0bFItl0gbX00AAtLCZSLa0=;
+ b=YC0Xw9ppfEp1gv2BrttXc4g/HoaJwuLbZ/bv8lsNrNJqzoFfzZBwxvuEe9bRdW+ohX
+ nqND0DAkyqAAFOr08r3S/pyb4y8FTZdBVVS1wDE0U5m/dTr06qnsgNaHYxzMPK+iJ25h
+ oQx4esmtZ2hq0ZhxMoUx22Jq4qcnlC8ecF1TWWV9LndZVi8zLuJQnnNmyVLesycmhCfL
+ vJwrrNEruuSHR1ikjijTsUDH/HsHBk9XM12uYgtwbbHMJwZmG1glsh7oRbiLv1JQsEre
+ IlbhNceGOhnh8nx1zYp/ZU925HJFATxs/c5gZYY5EwmsHA29HzLTr5n9+MEjtINFsh+v
+ 4/Rg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNH4cPXP5UH7JHZLuuTfsYth+xoA9h3+31hJUMYk9YuDx7hNF+wIgQ8LpxBKxF3QWgMZMI8GOvSXIk@nongnu.org
+X-Gm-Message-State: AOJu0Yx8psTqZS4Aum/pDh5JtyXagDEDo64E6X1uJbBigEnsxMnh/D5m
+ fc3LDH0gDgIfYaiBdCLe2qrg7iMq4JuoWr8PTd8VITLAMf3C8w8hIfoc1vZBalTqGH8=
+X-Gm-Gg: ASbGncuLcIrvyauF8Hm83NIkhBz3m7FtrA534UWds8l938hdRZvYW63L8c2Sjb18eVF
+ la+7EHUxZsL5eW6ICIxGJLXcPk6wo0Cu6NxTG1eMM3RgOmnPG9y99igMEm2/Y3/++9xtKHaZKtu
+ cJxvRWTAY9PVXsQCWVbPGjVLLmclRjn+qZP0VGnT1oEUxixb5lKaxWxnDWa7bqbxsK6JnKGJBRD
+ GZhJvlEZ4aQOFvCvuGhDDzFtCCQYVTcyuehMpGzN3JWj9d3CD+PPZdTr8ayH5ad+Lq6QtAdth9S
+ s3IfXhmcVMt/QSA6vImKWF8dDWEZazFWIUgMUIvZ6Tubfld/1bUo/HAE2/4SqVPyI6F/AtnkfA0
+ bGtZPbeNuTL5ycqSHm945KBkro0Bm98mFKEY3R9UZXu+Mx+m7ghRDZ3ukiCVE+qzRiIMMJQmIjv
+ i2yO3EK5CmxcbcEdHteOExolYTq6JUsMtzXZxmTwGBIMQLSSrEtg43Kw==
+X-Google-Smtp-Source: AGHT+IEoXvExm0Bz0x5XflpTMGTkw62WDApxTosdQh0Onld4ksW7Bvmj0DATe1xOywuLFmlFrl8WuA==
+X-Received: by 2002:a05:600c:1910:b0:477:9e10:3e63 with SMTP id
+ 5b1f17b1804b1-4779e103efamr116881105e9.35.1763551824496; 
+ Wed, 19 Nov 2025 03:30:24 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477b10804c8sm44687055e9.15.2025.11.19.03.30.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Nov 2025 03:30:23 -0800 (PST)
+Message-ID: <40e40d05-e491-4513-85b7-48dfe8f5c178@linaro.org>
+Date: Wed, 19 Nov 2025 12:30:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowAD3js6gqR1pq9FAAQ--.30793S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF4UWr1UAF4UCr43ZF18Xwb_yoW5XrW8pr
- 15GFZ0k34DJFZrtws3JFWDXrn5Wr4ru3yIg3sxZ3ZrGr4akFW3Jrn7JrWDGr4vqF1rJ3WF
- gr18Cw15Gws0qa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
- 6r4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
- 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VCY1x0262k0Y48FwI0_Jr0_Gr1lYx0Ex4A2jsIE14v26F
- 4j6r4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS
- 5cI20VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFV
- Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
- x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
- 1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_
- JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCT
- nIWIevJa73UjIFyTuYvjfUYWrWUUUUU
-X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: 52kl53ddqo1z1fw6x21ufox2xfdvhtffof0/
-Received-SPF: pass client-ip=159.226.251.21;
- envelope-from=zhiyuan.plct@isrc.iscas.ac.cn; helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] Python: fix tests
+Content-Language: en-US
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster
+ <armbru@redhat.com>, Cleber Rosa <crosa@redhat.com>
+References: <20251118200657.1043688-1-jsnow@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251118200657.1043688-1-jsnow@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 19 Nov 2025 08:54:55 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,89 +102,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: 杨智源 <zhiyuan.plct@isrc.iscas.ac.cn>
+On 18/11/25 21:06, John Snow wrote:
+> Whack some minor annoyances down to make the tests green again. Fixes
+> both minreqs and the optional check-tox.
+> 
+> John Snow (3):
+>    python/mkvenv: ensure HAVE_LIB variables are actually constants
+>    python/qapi: add an ignore for Pylint 4.x
+>    python/qapi: delint import statements
+> 
+>   python/scripts/mkvenv.py   | 24 ++++++++++++++++--------
+>   python/setup.cfg           |  1 +
+>   scripts/qapi/commands.py   |  5 +----
+>   scripts/qapi/introspect.py |  2 +-
+>   4 files changed, 19 insertions(+), 13 deletions(-)
+> 
 
-Add a CPU entry for the RV64 THEAD C910 CPU which supports single-core
-and dual-core configurations.More details can be found at
-https://www.xrvm.cn/product/xuantie/C910?spm=a2d5.28054257.0.0.4a0f7a32qXoU1w
-
-Signed-off-by: TravisYang <zhiyuan.plct@isrc.iscas.ac.cn>
----
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 47 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
-
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 75f4e43408..1fc8140190 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -56,6 +56,7 @@
- #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
- #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
- #define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
-+#define TYPE_RISCV_CPU_THEAD_C910       RISCV_CPU_TYPE_NAME("thead-c910")
- #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
- 
- OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index ae8b721e55..f522bc856b 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -3281,6 +3281,53 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .cfg.max_satp_mode = VM_1_10_SV48,
-     ),
- 
-+    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_THEAD_C910, TYPE_RISCV_VENDOR_CPU,
-+        .misa_mxl_max = MXL_RV64,
-+        .misa_ext = RVG | RVC | RVS | RVU,
-+        .priv_spec = PRIV_VERSION_1_12_0,
-+
-+        .cfg.ext_zcf = true,
-+        .cfg.ext_zcd = true,
-+        .cfg.ext_zfa = true,
-+        .cfg.ext_zfh = true,
-+        .cfg.ext_zfhmin = true,
-+
-+        .cfg.mmu = true,
-+        .cfg.ext_xtheadba = true,
-+        .cfg.ext_xtheadbb = true,
-+        .cfg.ext_xtheadbs = true,
-+        .cfg.ext_xtheadcmo = true,
-+        .cfg.ext_xtheadcondmov = true,
-+        .cfg.ext_xtheadfmemidx = true,
-+        .cfg.ext_xtheadmac = true,
-+        .cfg.ext_xtheadmemidx = true,
-+        .cfg.ext_xtheadmempair = true,
-+        .cfg.ext_xtheadsync = true,
-+        .cfg.pmp = true,
-+
-+        .cfg.ext_svinval = true,
-+        .cfg.ext_svadu = true,
-+        .cfg.ext_zicbom = true,
-+        .cfg.ext_zicboz = true,
-+
-+        .cfg.ext_zba = true,
-+        .cfg.ext_zbb = true,
-+        .cfg.ext_zbc = true,
-+        .cfg.ext_zbs = true,
-+
-+        .cfg.ext_zknd = true,
-+        .cfg.ext_zkne = true,
-+        .cfg.ext_zknh = true,
-+
-+        .cfg.mvendorid = THEAD_VENDOR_ID,
-+
-+        .cfg.max_satp_mode = VM_1_10_SV39,
-+#ifndef CONFIG_USER_ONLY
-+        .custom_csrs = th_csr_list,
-+#endif
-+    ),
-+
-+
- #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
-     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
-         .cfg.max_satp_mode = VM_1_10_SV57,
--- 
-2.34.1
+FTR, per 
+https://lore.kernel.org/qemu-devel/20251117185131.953681-1-jsnow@redhat.com/ 
+reviews:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
