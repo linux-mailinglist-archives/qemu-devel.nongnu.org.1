@@ -2,96 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873F4C6E34A
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B1EC6F12B
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 14:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLgGA-0006JH-5y; Wed, 19 Nov 2025 06:22:02 -0500
+	id 1vLieM-0001nr-QC; Wed, 19 Nov 2025 08:55:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLgG8-0006H5-8g
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:22:00 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vLgG6-0006R8-RU
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:22:00 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-42b3ac40ae4so4007421f8f.0
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:21:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763551317; x=1764156117; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3tvGCO+spDxkBwlHG1v9svfAPielplP2gHFj6KYX0Kw=;
- b=K062l+6oxCuDxwI3PtdrKcAOfts/pxgbZmXYdZ2duAfSt0mqWlRTpFufsNLnuD5qAo
- C0nuzt1O1W40cU8GY9XOnR7fu5kVGXEuYwN9WlSg5hf2Pv7sFB70U0jZwB7L+mLDpyjn
- t2EB9OhzI6Z9pnp3W+k9PCoIq2U0An8jB/F8P5wjPS/foiUME5MR9DagUmdajDwFSLG7
- UlY5lKuCIfpPDvD6dJN+fBeDeKwfwdbaHyAFwGM0r8LDC/lORZ68cxSebDcM4pKxCyvZ
- 4B51oBTxROVh/gk8gNjCwsMFga3Z71F4c4TctptMT3MHLgAsPJn8hO7A6EWONP0SLSpi
- Jh3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763551317; x=1764156117;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3tvGCO+spDxkBwlHG1v9svfAPielplP2gHFj6KYX0Kw=;
- b=h5JMCwhXp7awZ4dlbMnvQgrLmJ9LfEc3DbJ/AakIxLd3XfLbIvM2qoKKYyUZfSWY9p
- Dj4gSmTKCseM/wjtwghXyRmfMjc5obNw/yZP9clro/tfUGIFEKQ7kWGwmAvIpk3cttNV
- v8YZb1bpUQwJI6gTfomt9SuhlFLQH7uoqyqNifrhKRxsgzlX1w1tLMnU98cwx+406TBu
- BVC++7k0E7pcHW4RnbFaZqDAZU80ompmbxyNW59pqcBtxYplJCa+RzKOXtm0VLiQiyLB
- fc6pbKDReK/KS1Cduk96bp8//nTPmjSazFZhbWCbo1hAlFLPkreYaa1UoDvJUr2WN8j1
- SLVA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXwlCx8kITv2ZClogkwvp6+qbq6199aLOjRzpnyGBcvhLUOK6pKJo5sRQky7gVFQNprDnLCfEiT7OYl@nongnu.org
-X-Gm-Message-State: AOJu0YxdeO5c2qQHiD9NxYlZolNYExcnOUpWgNUObqpJAgkUzvY0SGzj
- R2C21oh79fnKzPeP/OAitli+toMj7dffyanppJewWeLqX3o0OqsGudwM0DHcYclZcdU=
-X-Gm-Gg: ASbGnctRE2+qHCASb3VwKks+80KOnCKfFujsEOKNWhfJLGEFqy4jtnpqo5Gr4Dmurso
- emoRTB1OKQBP3pg2nj9X6b9mth/bzs4oaawuZYmCd4lnpIdHbYAn4b5ExzwPPyOmI1Zk1y1jksN
- DRbtb9C/SdQnij1iYnpr232qVBWL5dRyd5i+Fc6wLHkpYVOllxfVSPHcFBL87cRFjdOcdL1t6w0
- 0rrbz/VPw1E7qWuqYGi567qHvgG/eJlognBYc3YKrUZRuKxAhv7AYpyXwbO3TFue6NKH6R/gUyL
- lH0cqtLemvpCD+137pnW7u1J20N6FE/cYC+tdUAypT8B6jQ4KHySdMtkGtpeFYumJydReycjnjp
- 8UOFDxv0Nq5dhx0irhF6Z+SEaJhnMs16rh/hZqzv/K9REi3vlU5L2UkmPt8cKZUaXRubezyrSrJ
- CJ1bGD/fR6/t+4db5Li92nT0R/vdT+KzvCsmN5SQNaGfqG6Ur67rOCFLUhYOXXeGMmteCvr1go3
- Y38DQ==
-X-Google-Smtp-Source: AGHT+IEABwIUuG9cgCTByjKHaJ/8KGlhcj+La7UTo15cC78kMQtVUHces0ThHHTxKYGRiSNKYcthew==
-X-Received: by 2002:a05:6000:4024:b0:42b:3b55:8928 with SMTP id
- ffacd0b85a97d-42b59344ab4mr18786360f8f.20.1763551316976; 
- Wed, 19 Nov 2025 03:21:56 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:ed5:b1f0:90e8:1fdb:2cba:9db1?
- ([2a01:e0a:ed5:b1f0:90e8:1fdb:2cba:9db1])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42b53f1fd50sm37685360f8f.38.2025.11.19.03.21.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Nov 2025 03:21:56 -0800 (PST)
-Message-ID: <18f5e9b1-d4f3-4c7c-90ce-aa9ca5032f40@linaro.org>
-Date: Wed, 19 Nov 2025 12:21:54 +0100
+ (Exim 4.90_1) (envelope-from <zhiyuan.plct@isrc.iscas.ac.cn>)
+ id 1vLgLh-0007xG-Dt; Wed, 19 Nov 2025 06:27:45 -0500
+Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <zhiyuan.plct@isrc.iscas.ac.cn>)
+ id 1vLgLe-0007l3-GK; Wed, 19 Nov 2025 06:27:45 -0500
+Received: from chenxiaoou-ubuntu-02.. (unknown [210.73.43.101])
+ by APP-01 (Coremail) with SMTP id qwCowAD3js6gqR1pq9FAAQ--.30793S2;
+ Wed, 19 Nov 2025 19:27:29 +0800 (CST)
+From: TravisYang <zhiyuan.plct@isrc.iscas.ac.cn>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: =?UTF-8?q?=E6=9D=A8=E6=99=BA=E6=BA=90?= <zhiyuan.plct@isrc.iscas.ac.cn>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v1] target/riscv: add support for RV64 THEAD C910 CPU
+Date: Wed, 19 Nov 2025 11:27:24 +0000
+Message-Id: <20251119112724.1342110-1-zhiyuan.plct@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] linux-user: fix reserved_va page leak in do_munmap
-To: Matthew Lugg <mlugg@mlugg.co.uk>, qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, peter.maydell@linaro.org
-References: <20251117170954.31451-1-mlugg@mlugg.co.uk>
- <20251117170954.31451-4-mlugg@mlugg.co.uk>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251117170954.31451-4-mlugg@mlugg.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qwCowAD3js6gqR1pq9FAAQ--.30793S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF4UWr1UAF4UCr43ZF18Xwb_yoW5XrW8pr
+ 15GFZ0k34DJFZrtws3JFWDXrn5Wr4ru3yIg3sxZ3ZrGr4akFW3Jrn7JrWDGr4vqF1rJ3WF
+ gr18Cw15Gws0qa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+ 6r4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+ 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VCY1x0262k0Y48FwI0_Jr0_Gr1lYx0Ex4A2jsIE14v26F
+ 4j6r4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS
+ 5cI20VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+ Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+ x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+ 1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+ JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCT
+ nIWIevJa73UjIFyTuYvjfUYWrWUUUUU
+X-Originating-IP: [210.73.43.101]
+X-CM-SenderInfo: 52kl53ddqo1z1fw6x21ufox2xfdvhtffof0/
+Received-SPF: pass client-ip=159.226.251.21;
+ envelope-from=zhiyuan.plct@isrc.iscas.ac.cn; helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 19 Nov 2025 08:54:55 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,23 +77,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/25 18:09, Matthew Lugg wrote:
-> The old logic had an off-by-one bug. For instance, assuming 4k pages on
-> host and guest, if 'len' is '4097' (indicating to unmap 2 pages), then
-> 'last = start + 4096', so 'real_last = start + 4095', so ultimately
-> 'real_len = 4096'. I do not believe this could cause any observable bugs
-> in guests, because `target_munmap` page-aligns the length it passes in.
-> However, calls to this function in `target_mremap` do not page-align the
-> length, so those calls could "drop" pages, leading to a part of the
-> reserved region becoming unmapped. At worst, a host allocation could get
-> mapped into that hole, then clobbered by a new guest mapping.
-> 
-> Signed-off-by: Matthew Lugg<mlugg@mlugg.co.uk>
-> ---
->   linux-user/mmap.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+From: 杨智源 <zhiyuan.plct@isrc.iscas.ac.cn>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Add a CPU entry for the RV64 THEAD C910 CPU which supports single-core
+and dual-core configurations.More details can be found at
+https://www.xrvm.cn/product/xuantie/C910?spm=a2d5.28054257.0.0.4a0f7a32qXoU1w
 
-r~
+Signed-off-by: TravisYang <zhiyuan.plct@isrc.iscas.ac.cn>
+---
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 47 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 75f4e43408..1fc8140190 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -56,6 +56,7 @@
+ #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
+ #define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
++#define TYPE_RISCV_CPU_THEAD_C910       RISCV_CPU_TYPE_NAME("thead-c910")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ae8b721e55..f522bc856b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -3281,6 +3281,53 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.max_satp_mode = VM_1_10_SV48,
+     ),
+ 
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_THEAD_C910, TYPE_RISCV_VENDOR_CPU,
++        .misa_mxl_max = MXL_RV64,
++        .misa_ext = RVG | RVC | RVS | RVU,
++        .priv_spec = PRIV_VERSION_1_12_0,
++
++        .cfg.ext_zcf = true,
++        .cfg.ext_zcd = true,
++        .cfg.ext_zfa = true,
++        .cfg.ext_zfh = true,
++        .cfg.ext_zfhmin = true,
++
++        .cfg.mmu = true,
++        .cfg.ext_xtheadba = true,
++        .cfg.ext_xtheadbb = true,
++        .cfg.ext_xtheadbs = true,
++        .cfg.ext_xtheadcmo = true,
++        .cfg.ext_xtheadcondmov = true,
++        .cfg.ext_xtheadfmemidx = true,
++        .cfg.ext_xtheadmac = true,
++        .cfg.ext_xtheadmemidx = true,
++        .cfg.ext_xtheadmempair = true,
++        .cfg.ext_xtheadsync = true,
++        .cfg.pmp = true,
++
++        .cfg.ext_svinval = true,
++        .cfg.ext_svadu = true,
++        .cfg.ext_zicbom = true,
++        .cfg.ext_zicboz = true,
++
++        .cfg.ext_zba = true,
++        .cfg.ext_zbb = true,
++        .cfg.ext_zbc = true,
++        .cfg.ext_zbs = true,
++
++        .cfg.ext_zknd = true,
++        .cfg.ext_zkne = true,
++        .cfg.ext_zknh = true,
++
++        .cfg.mvendorid = THEAD_VENDOR_ID,
++
++        .cfg.max_satp_mode = VM_1_10_SV39,
++#ifndef CONFIG_USER_ONLY
++        .custom_csrs = th_csr_list,
++#endif
++    ),
++
++
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+         .cfg.max_satp_mode = VM_1_10_SV57,
+-- 
+2.34.1
+
 
