@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949C3C6E3B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02EBC6E45E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 12:41:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLgOL-0000tD-Cn; Wed, 19 Nov 2025 06:30:29 -0500
+	id 1vLgXc-0002qx-8A; Wed, 19 Nov 2025 06:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLgOK-0000t3-1C
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:30:28 -0500
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vLgXX-0002qG-4m
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:39:59 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vLgOI-0008Uc-Cq
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:30:27 -0500
-Received: by mail-wm1-x343.google.com with SMTP id
- 5b1f17b1804b1-4775ae5684fso33603495e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:30:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vLgXV-0001tE-Cq
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 06:39:58 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-477b5e0323bso2748105e9.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 03:39:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763551824; x=1764156624; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lluPvpIpNfIbtLgB2Xwyt0bFItl0gbX00AAtLCZSLa0=;
- b=f9UwNbG4oT/9WK9WnCeHw/e5ZTXvON45xQj24wlwNNrm/IO/3x2/ucqwD1PkxJunp6
- eo6I/McW5hvXOSPGtb/iuY5d3SwAdHg/TBIBjkTkb7OSgJKNwOE36vwhIIjEkxdZ+TmU
- VT3qdhofAG8te5YYj5X9AH4twf+NcNr6cxqxdPMFYru6AHfy6TJ5NGDru+ABrCIQ8/7V
- LTC2Df0ynn9eO9oefOzaqt7HANA6UmV+Hn/zj1PH4ejb2iyGSWII6T4QhnN6KWQmdC8E
- oZcczEJhtjeTBlMkqXKsrZnZO4mFDdS5pksYBYW3buIPnYjLcWR2XeH+jMBxYzGZ9TPf
- XcbA==
+ d=linaro.org; s=google; t=1763552395; x=1764157195; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=p9AizpaX4sVdo9wOuyFetTfOXb+TgZzExlLqjEkh1s4=;
+ b=KyotmqHaD9hz/i3STBa/TcefvJZzfgrlnqA0AbSifum3S2e/2NF4q3C4doh1BV5OqQ
+ ZXKYx90ON+FxWf8JZwEnUkHfc1K/K284rb6GIPTmkyQKyv27YVK3u4JXMQtJShH79k1s
+ G2vUiBjzsACfYoIq3H+2Kr3tpFurtmLAyz2Ury9QwBD4KKqSDs3cz/+xkP2aefeit9mD
+ Lr24o2p6xPHXYdFd6YI2IMqT4fc6qL25axR8JyCkVcZ4Eh2f3r5cFq72mrjBZglpBwLO
+ uabIJEmDpEUfsd2tcNG/zyJLBqx2cbB98rPD/nLQPLLVTouJH3UkTmP9vhQNMY9CjHaX
+ nEUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763551824; x=1764156624;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lluPvpIpNfIbtLgB2Xwyt0bFItl0gbX00AAtLCZSLa0=;
- b=YC0Xw9ppfEp1gv2BrttXc4g/HoaJwuLbZ/bv8lsNrNJqzoFfzZBwxvuEe9bRdW+ohX
- nqND0DAkyqAAFOr08r3S/pyb4y8FTZdBVVS1wDE0U5m/dTr06qnsgNaHYxzMPK+iJ25h
- oQx4esmtZ2hq0ZhxMoUx22Jq4qcnlC8ecF1TWWV9LndZVi8zLuJQnnNmyVLesycmhCfL
- vJwrrNEruuSHR1ikjijTsUDH/HsHBk9XM12uYgtwbbHMJwZmG1glsh7oRbiLv1JQsEre
- IlbhNceGOhnh8nx1zYp/ZU925HJFATxs/c5gZYY5EwmsHA29HzLTr5n9+MEjtINFsh+v
- 4/Rg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUNH4cPXP5UH7JHZLuuTfsYth+xoA9h3+31hJUMYk9YuDx7hNF+wIgQ8LpxBKxF3QWgMZMI8GOvSXIk@nongnu.org
-X-Gm-Message-State: AOJu0Yx8psTqZS4Aum/pDh5JtyXagDEDo64E6X1uJbBigEnsxMnh/D5m
- fc3LDH0gDgIfYaiBdCLe2qrg7iMq4JuoWr8PTd8VITLAMf3C8w8hIfoc1vZBalTqGH8=
-X-Gm-Gg: ASbGncuLcIrvyauF8Hm83NIkhBz3m7FtrA534UWds8l938hdRZvYW63L8c2Sjb18eVF
- la+7EHUxZsL5eW6ICIxGJLXcPk6wo0Cu6NxTG1eMM3RgOmnPG9y99igMEm2/Y3/++9xtKHaZKtu
- cJxvRWTAY9PVXsQCWVbPGjVLLmclRjn+qZP0VGnT1oEUxixb5lKaxWxnDWa7bqbxsK6JnKGJBRD
- GZhJvlEZ4aQOFvCvuGhDDzFtCCQYVTcyuehMpGzN3JWj9d3CD+PPZdTr8ayH5ad+Lq6QtAdth9S
- s3IfXhmcVMt/QSA6vImKWF8dDWEZazFWIUgMUIvZ6Tubfld/1bUo/HAE2/4SqVPyI6F/AtnkfA0
- bGtZPbeNuTL5ycqSHm945KBkro0Bm98mFKEY3R9UZXu+Mx+m7ghRDZ3ukiCVE+qzRiIMMJQmIjv
- i2yO3EK5CmxcbcEdHteOExolYTq6JUsMtzXZxmTwGBIMQLSSrEtg43Kw==
-X-Google-Smtp-Source: AGHT+IEoXvExm0Bz0x5XflpTMGTkw62WDApxTosdQh0Onld4ksW7Bvmj0DATe1xOywuLFmlFrl8WuA==
-X-Received: by 2002:a05:600c:1910:b0:477:9e10:3e63 with SMTP id
- 5b1f17b1804b1-4779e103efamr116881105e9.35.1763551824496; 
- Wed, 19 Nov 2025 03:30:24 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477b10804c8sm44687055e9.15.2025.11.19.03.30.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Nov 2025 03:30:23 -0800 (PST)
-Message-ID: <40e40d05-e491-4513-85b7-48dfe8f5c178@linaro.org>
-Date: Wed, 19 Nov 2025 12:30:23 +0100
+ d=1e100.net; s=20230601; t=1763552395; x=1764157195;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=p9AizpaX4sVdo9wOuyFetTfOXb+TgZzExlLqjEkh1s4=;
+ b=KRw+K3gGaVLpBmL7oiOL5Rkc08ELigRXqg7q/CnQdxfQVhhPLjJ5T48M7yS0ocA0UE
+ L0kmviOz4W10bLRuSgAEvEKdB8XF+uomcSxYGPAHRX/9GaRQSDSi2F0bhSgUSB39+cEA
+ 6HuyKFfLxog0azXBCEJG0ya3xnG/rzNKxwdlbEKJyLmqg72cdzxd0OZJcQehRKjbwSOd
+ jHb9s+WrqZw07yk5WWiecjrRh/cRXmeFT6lEcxeqFrx9MJS/YW/iYrL3zlCUzzKGctm1
+ IhidIN0qUG/oQFTksR9C/UYzVFhzyV7UV94FNJpGayVrWpqk+yh9m+4tBaRrqPUpXkna
+ 0APA==
+X-Gm-Message-State: AOJu0YyplBzKAQ4LNQuq6v+kM0oVEmMTJ5rIk0IXMA5yN8eoX/+osf0x
+ usk69NSp482kPokr6MgIR3TR2+KNtyCjnutsn3FfrcjyHcrzKRbU8zn96U1oUHvaPbAi8FWvGVO
+ 4CsyK
+X-Gm-Gg: ASbGncuJy4YBYl8vuSBXoBgf0Wso+8sFIxmes1KDEZZZXTuopzdVcoOsJwoizYkwqdr
+ ieiyNorKT3jNNikM2vifjMg7kpJtzR1nus7Ea6bLzNG+Cmh7g4O2s31JXINFyUO2k9G8GeSWU2H
+ Ox4TtKCJZPkbTuEejKuyf8S9xCX6v0XkwxUEjPoadaT8js71IONnK2V+ovTqSu0CMcUz3qcFRnE
+ dOqQAfSx7l8qIiZO4YNbaYysvZ5xMM/hJ/evd1TOEpFR5bUKS9WP8V8/YIZpvhDmNpQKMgkgdQv
+ 1jB9TlI15e/cTvB3GbOOBSbn9qaYBZ97AzhRSRWVPLQu6FvOyjq14z7yaH7gjwk6L2NrZXPJjf8
+ c3G//M4T2NFXEwQnoZSFPM8mfRsv4U4z2KI5SrIR0VmkjKV2RSS5wvjTspdpVsS3VOsm/cpRn3N
+ k5Ct7iZlv0fueN0KhSgN7KGA==
+X-Google-Smtp-Source: AGHT+IEoFShTOvldW61QB80A0j4h1Ztn8sXXqY2ZF6su+hUZ65xKuNOe6OuiWFWsMYIYY5vGSv6+Jw==
+X-Received: by 2002:a05:600c:1c87:b0:477:a1bb:c58e with SMTP id
+ 5b1f17b1804b1-477b18c1aecmr25530405e9.7.1763552394953; 
+ Wed, 19 Nov 2025 03:39:54 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42b53e84a4fsm37418602f8f.11.2025.11.19.03.39.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Nov 2025 03:39:54 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 52D605F83E;
+ Wed, 19 Nov 2025 11:39:53 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/9] gitdm metadata updates 2025 edition
+Date: Wed, 19 Nov 2025 11:39:43 +0000
+Message-ID: <20251119113953.1432303-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Python: fix tests
-Content-Language: en-US
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster
- <armbru@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <20251118200657.1043688-1-jsnow@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251118200657.1043688-1-jsnow@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::343;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,25 +99,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/11/25 21:06, John Snow wrote:
-> Whack some minor annoyances down to make the tests green again. Fixes
-> both minreqs and the optional check-tox.
-> 
-> John Snow (3):
->    python/mkvenv: ensure HAVE_LIB variables are actually constants
->    python/qapi: add an ignore for Pylint 4.x
->    python/qapi: delint import statements
-> 
->   python/scripts/mkvenv.py   | 24 ++++++++++++++++--------
->   python/setup.cfg           |  1 +
->   scripts/qapi/commands.py   |  5 +----
->   scripts/qapi/introspect.py |  2 +-
->   4 files changed, 19 insertions(+), 13 deletions(-)
-> 
+Hi,
 
-FTR, per 
-https://lore.kernel.org/qemu-devel/20251117185131.953681-1-jsnow@redhat.com/ 
-reviews:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+As another year draws to a close I thought it would be worth checking
+the current gitdm mappings and if we are missing anyone. As I didn't
+have much time to go internet stalking in LinkedIn so most of the
+non-corporate emails have been added to the individual contributors
+group. As usual I'll only finalise those when I get acks from the
+individuals involved.
+
+I've added a few group maps to account for known company hackers using
+different domains. With these changes the contribution profile for the
+last year looks like this:
+
+  Top changeset contributors by employer
+  Linaro                    2969 (37.2%)
+  Red Hat                   1893 (23.7%)
+  (None)                     493 (6.2%)
+  Intel                      315 (3.9%)
+  IBM                        281 (3.5%)
+  ASPEED Technology Inc.     231 (2.9%)
+  Loongson Technology        227 (2.8%)
+  Oracle                     187 (2.3%)
+  Nutanix                    133 (1.7%)
+  Academics (various)         99 (1.2%)
+
+  Top lines changed by employer
+  Linaro                    110080 (31.8%)
+  Red Hat                   90792 (26.3%)
+  (None)                    25410 (7.4%)
+  IBM                       12750 (3.7%)
+  ASPEED Technology Inc.    11811 (3.4%)
+  Intel                     10608 (3.1%)
+  Oracle                    8574 (2.5%)
+  Loongson Technology       7614 (2.2%)
+  Nutanix                   7404 (2.1%)
+  Microsoft                 6927 (2.0%)
+
+Thanks,
+
+Alex.
+
+Alex Bennée (9):
+  contrib/gitdm: add a group map for SiFive
+  contrib/gitdm: add group-map for Huawei
+  contrib/gitdm: add group-map for Microsoft
+  contrib/gitdm: add Nicholas to the IBM group map
+  contrib/gitdm: add University of Tokyo to academic group
+  contrib/gitdm: add mapping for Eviden
+  contrib/gitdm: add mapping for Nutanix
+  contrib/gitdm: add mapping for Qualcomm
+  contrib/gitdm: add more individual contributors
+
+ contrib/gitdm/domain-map            |  3 +++
+ contrib/gitdm/group-map-academics   |  3 +++
+ contrib/gitdm/group-map-huawei      |  5 +++++
+ contrib/gitdm/group-map-ibm         |  1 +
+ contrib/gitdm/group-map-individuals | 14 ++++++++++++++
+ contrib/gitdm/group-map-microsoft   |  8 ++++++++
+ contrib/gitdm/group-map-sifive      |  5 +++++
+ gitdm.config                        |  3 +++
+ 8 files changed, 42 insertions(+)
+ create mode 100644 contrib/gitdm/group-map-huawei
+ create mode 100644 contrib/gitdm/group-map-microsoft
+ create mode 100644 contrib/gitdm/group-map-sifive
+
+-- 
+2.47.3
 
 
