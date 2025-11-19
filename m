@@ -2,86 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D037C70A1D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 19:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D63C70771
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 18:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLmqp-0000y3-GK; Wed, 19 Nov 2025 13:24:19 -0500
+	id 1vLlzz-00033q-4v; Wed, 19 Nov 2025 12:29:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <konrad.schwarz@gmail.com>)
- id 1vLlyf-0002S5-5f
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:28:22 -0500
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <konrad.schwarz@gmail.com>)
- id 1vLlyd-0004JT-Mq
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:28:20 -0500
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-4332381ba9bso101695ab.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 09:28:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzk-000316-11
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLlzf-0004Nl-7X
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 12:29:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763573361;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8nP0d5IOtnXzEI8CONRKrnrb1qyZ4MkyviAvMdYvPqc=;
+ b=C638Zt/5QwrYEG6p4qBnXFEe9g7VdR1EPpitXGuCLcCK/LEbz7oNOjRPstYo9ouXmp4mEF
+ y0yis91GLI507txYIPMDStmoSjxSRGymdfi6YEzokGY6LA9Rx+lkhKqrTJ0SmxRGU5vTpr
+ 4ualeYQCFYMd30YXwtYGRQHwrmInmlE=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-164-WUp-imaAM5SkwEQ2FfSgnQ-1; Wed, 19 Nov 2025 12:29:17 -0500
+X-MC-Unique: WUp-imaAM5SkwEQ2FfSgnQ-1
+X-Mimecast-MFC-AGG-ID: WUp-imaAM5SkwEQ2FfSgnQ_1763573357
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8b286006ffaso2183499085a.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 09:29:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763573298; x=1764178098; darn=nongnu.org;
- h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
- :date:message-id:reply-to;
- bh=gtPbqc+AMCqouNpafbfHY6FEx0CZ0+IPs9jgeWbmnW0=;
- b=i2sgw+kLyd1FtZVYwJU9Di2Gsc/KQp0OiQsNJtIWIRisPvClNt807s8f9EdxU5dIdz
- LmbVrpGOw241MXaAjR6IpyeBkrgzhHupxaQludDk3OdCDQw9sPz7qOrtLGQLPPo8lMi1
- qlicREOAkyCFqHR3wfA50vp4zmtMMLvbY7P6iPtPZbyasa3Y0ZwHwScBqJmdKOqHi7Ey
- nsL8hcmgRy1fkkv+8b5+oIUxNFOdji0+ekqwkRFp/hvWaRee6DpBhwYOtvA1zGry1GAJ
- a/pp7lyY2oh2B7coB9Aoyomq2eSiKqXKdTjWYo+ifU8AdXdPu3mVmerVlkb0l3tCTswE
- 0/bA==
+ d=redhat.com; s=google; t=1763573357; x=1764178157; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8nP0d5IOtnXzEI8CONRKrnrb1qyZ4MkyviAvMdYvPqc=;
+ b=KZp7ypWcFtfUApZXBv1K1GwDSAQzoeCVvVbdz+D6YVNpGDCGKO12j+ET5PA5paUI3A
+ rpN4mVZVqP4BymXh/Lo5dZom40YnO5F7SxD/+ZoOnOpmpin+lwFzvcm8OszZjXTX9f5I
+ JbnIRUWGPOIqHdqw0itzPg7h3ozgAWsKNL2dZkZZzyGRUkhbVCYJWNIrvXsJmL9Y4usA
+ xshR4DyY2s+I3/nlWz+zY2x0/mlMasEf/SbjcW3grOODTJ3rMs1ISzkqB0dfF03PHNR9
+ 8lF2u6t2PJHRjBPEC4KaUGlVqU9lll6nR3KGZYbBDpBWAQieiz0BztnesCLS3e/Ou+BN
+ jlXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763573298; x=1764178098;
- h=cc:to:subject:message-id:date:mime-version:from:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gtPbqc+AMCqouNpafbfHY6FEx0CZ0+IPs9jgeWbmnW0=;
- b=BuskUgC0uYHhhCrgLVjJq3K/klmVi1f7e7Gh66EdsAG9IFhCv1e5jN+xLBp7uLj7lR
- pNx6wqFJHZcMGLvUu4/aX6uYqWzSlJqbZkNnutTK0p2jr0ETQP/72WJerzW/6PT12P9J
- bj+UtBCzP5dxzd1eh85KzhNpn6B9lB2verGvSHhs1DsWUHeclISBR84/gXV50KO+KhUf
- XYhM9ZtbwwwC6d12lSUA9xtwJgSChg2IT/JAAUX94ysW2yWu08EZJ2BFHglpL9bnTa/5
- Wh7XcCLtAOnNF/3dhA29yMTFMw+1nWB490yJ2pbUOweWluj0qXmNt0EoF82WvGEYUYqS
- zGaA==
-X-Gm-Message-State: AOJu0YwoBqUVUIAwtT4ywK0WtUB9Cnj4acjf+a1I0ylKiBsy9cPgLXnf
- Nfji3cdmQeFQ4EXQusPzNyccDNPibaWq0bHvyIwQ+YSh8s/I3kPwAAW8KkEfQXDmEGseMvTdInF
- c85nuO9+/DD+QPT4NuUIuLIo5YWZtv65/P42o
-X-Gm-Gg: ASbGncs+tc/m97PC4oiAiQat/dbNmmf2W23eMUZnnymbNLo12AEVlJpd38msvXLsh9D
- VrCEuCT1qlzoQM73dO9dUf2UTbq4oP6IMj2TKGpHiq0UNqVJONFrPKTL0ulykcjWnCHBnQ2jYuP
- ZZjfP2SS/ENPjwJ59EwyT50Oj3yHufTGRN7doIYs4eGAurV8FK7tm4N6eDsoZg3ZnCi6b16j0BS
- URGDHSl3JZM5tUt9gy/eErcj4MWl5JHKSjk2N8ay5ZfvqiLAUX0timfQ68u4cFAcLD1w/kQS3FB
- fYQPKQ==
-X-Google-Smtp-Source: AGHT+IGseESW3+TiyVtUnh2rZyg+uK4cev1+1hkrm4TZ4XrmLI6ulCRgJHyF+Y1pce/ktftxg4muswV4qK6Ggaa1raY=
-X-Received: by 2002:a05:6e02:1fc1:b0:433:80d9:708a with SMTP id
- e9e14a558f8ab-435a90397f9mr2949175ab.17.1763573297778; Wed, 19 Nov 2025
- 09:28:17 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 19 Nov 2025 12:28:16 -0500
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 19 Nov 2025 12:28:16 -0500
-From: konrad.schwarz@gmail.com
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Date: Wed, 19 Nov 2025 12:28:16 -0500
-X-Gm-Features: AWmQ_bmxDrPqQHqirOr4JNKV_MvO3XAJ0Poygr60YQE1UpKWXZL8xMrGgdNAAQg
-Message-ID: <CA+kmUXafV4PPo2t+P23g9QRXHjaH_XBke3DjzbvciqBtw+i-OA@mail.gmail.com>
-Subject: [PATCH 1/1] scripts: Changed potential O(n) file size calculation to
- O(1)
+ d=1e100.net; s=20230601; t=1763573357; x=1764178157;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8nP0d5IOtnXzEI8CONRKrnrb1qyZ4MkyviAvMdYvPqc=;
+ b=bS4awhubR2BnQVjwdC4XSy2LR7v/OAYZaRvBalP3kX7IHf57pCr7EXsTraiKknSuGD
+ 7ZX9fE0i9VHqHyAdoMlwWUiXq8UHazYKXIVKJ4wo4cQWxdbGXb14ZN+E6FXadPZd8Opj
+ JT7hvNaBublvZhecr0gl0zxywQmzsuxvMea4/3+TbaEylw2iB2zCXGSonnVPoU5/4T26
+ E/z/jBrAvfSnmXULSm+U94nlEmWPZouAl6x3Jgxfz1+1heggvJvuZfTTdTlGAVDYk/3l
+ XXm+urpkNNzRblZvi0IQm9I3NKpLPg+dYyZ8dGrfq5UcBoKP55liCu1e3unPlthKN3Bn
+ vBIw==
+X-Gm-Message-State: AOJu0YzmcdsDKx9DqTD4bRGGJ2bpgy+ucsF0EgSN193Zg37ywFxM9CZD
+ xgAFaOzcCIIxK7KOUwC7v5046XQUvL025WE/mh0kAGHm2LQ6eorzUcO/43C7p1Hnv3WTtNP+lg4
+ 8ZpxkzM7Fch4cVQEXWHjPs1JS4GnRhVuvo+6SkBrgIAvGz7dUAt/6u9Dt8utyDx7DR5ji0QyDEI
+ gbprvZVTl73QSVV060dbpHvmKbqMlfG3/knEFkYg==
+X-Gm-Gg: ASbGncv2hAFQUulgjmn00CcFkv2Ytdx4JsyEnXnNvWRvUzlvNuth9urlzKDCcpVDFoY
+ 3flGU1pNoMUst9VWW3c/XQ+xw1nOGAKdumwDUi200TMO9nL1yLowPmU7RPcX/9DtavQE0M88GF1
+ maEVqGneZzy2NUq+lxPjqzwlMHEI0AilOgfLhAkV8P+/+MqGrMqcKkB94T26UdEHtAh8u/0CYJ1
+ fv/dS9oIrjj0Q7HymMEZPnDEMaycWzelx5TywSj4AkRRRkY9lvscMU44+QnALyvcmsaTkV9EiZ6
+ i5XHFi3MvcZ+19jbs7BfuIo9veYlbF3lhnItFHlWWqBmOIF7+q3wk83UVtvxziOUVSQ2Qct8Spm
+ i
+X-Received: by 2002:a05:620a:4606:b0:8a6:e2b4:ba73 with SMTP id
+ af79cd13be357-8b3274882fdmr19319285a.51.1763573356770; 
+ Wed, 19 Nov 2025 09:29:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEhNKgwlKQRz1zzFPvr3WArMYAILFQ3/nb7PZXumpsPhBxpr9xsOPlrL7XZfOWnIQMCF2R5Kw==
+X-Received: by 2002:a05:620a:4606:b0:8a6:e2b4:ba73 with SMTP id
+ af79cd13be357-8b3274882fdmr19313385a.51.1763573356113; 
+ Wed, 19 Nov 2025 09:29:16 -0800 (PST)
+Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8b2af042c9csm1444759485a.46.2025.11.19.09.29.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Nov 2025 09:29:15 -0800 (PST)
+From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, Konrad Schwarz <konrad.schwarz@siemens.com>,
- jan.kiszka@siemens.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
- envelope-from=konrad.schwarz@gmail.com; helo=mail-il1-x12f.google.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Alexey Kardashevskiy <aik@amd.com>, peterx@redhat.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>, Juraj Marcin <jmarcin@redhat.com>,
+ Li Xiaoyao <xiaoyao.li@intel.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v2 0/9] KVM/hostmem: Support init-shared guest-memfd as VM
+ backends
+Date: Wed, 19 Nov 2025 12:29:04 -0500
+Message-ID: <20251119172913.577392-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 19 Nov 2025 13:24:16 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,53 +117,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mkemmc.sh script calculates file sizes via `wc -c'.  `wc'
-normally works by reading the entire file, resulting in O(n) performance.
+NOTE: The test cases of this series needs a dependency small series:
 
-Unix file systems obviously know a file's size and POSIX `ls' reports this
-information unambiguously, so replacing `wc' with `ls' ensures O(1)
-performance.  The files in question tend to be large making this change
-worthwhile.
+Based-on: <20251117223908.415965-1-peterx@redhat.com>
 
-Signed-off-by: Konrad Schwarz <konrad.schwarz@siemens.com>
----
- scripts/mkemmc.sh | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+[PATCH 0/4] tests/migration-test: Introduce mem_type
+https://lore.kernel.org/r/20251117223908.415965-1-peterx@redhat.com
 
-diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
-index 45dc3f08fa..d2c4e84b16 100755
---- a/scripts/mkemmc.sh
-+++ b/scripts/mkemmc.sh
-@@ -37,13 +37,19 @@ usage() {
-     exit "$1"
- }
+v2 changelog:
+- Linux-header update patch dropped because a similar version has landed
+- Replaced old patch 2 with a similar but better one from Xiaoyao Li
+- Target this series for QEMU 11.0 (hence, update in qapi/ "Since:")
+- Added a qtest covering guest-memfd boot and basic precopy migration
+- Fix checkpatch issues
 
-+file_size() {
-+	ls_line=$(ls -Hdog "$1") || return
-+	printf %s\\n "$ls_line" | cut -d\  -f3
-+	unset ls_line
-+}
-+
- process_size() {
-     name=$1
-     image_file=$2
-     alignment=$3
-     image_arg=$4
-     if [ "${image_arg#*:}" = "$image_arg"  ]; then
--        if ! size=$(wc -c < "$image_file" 2>/dev/null); then
-+        if ! size=$(file_size "$image_file"); then
-             echo "Missing $name image '$image_file'." >&2
-             exit 1
-         fi
-@@ -105,7 +111,7 @@ check_truncation() {
-     if [ "$image_file" = "/dev/zero" ]; then
-         return
-     fi
--    if ! actual_size=$(wc -c < "$image_file" 2>/dev/null); then
-+    if ! actual_size=$(file_size "$image_file"); then
-         echo "Missing image '$image_file'." >&2
-         exit 1
-     fi
+=========8<===========
+
+This series allows QEMU to consume init-shared guest-memfd to be a common
+memory backend. Before this series, guest-memfd was only used in CoCo and
+the fds will be created implicitly whenever CoCo environment is detected.
+When used in init-shared mode, the guest-memfd will be specified in the
+command lines directly just like other types of memory backends.
+
+In the current patchset, I reused the memory-backend-memfd object, rather
+than creating a new type of object.  After all, guest-memfd (at least from
+userspace POV) works similarly like a memfd, except that it was tailored
+for VM's use case.
+
+This approach so far also does not involve gmem bindings to KVM instances,
+hence it is not prone to issues when the same chunk of RAM will be attached
+to more than one KVM memslots.
+
+Now, instead of using a normal memfd backend using:
+
+  -object memory-backend-memfd,id=ID,size=SIZE,share=on
+
+One can also boot a VM with guest-memfd:
+
+  -object memory-backend-memfd,id=ID,size=SIZE,share=on,guest-memfd=on
+
+The init-shared guest-memfd relies on almost the latest linux, as the
+mmap() support just landed v6.18-rc2.  When run it on an older qemu, we'll
+see errors like:
+
+  qemu-system-x86_64: KVM does not support guest_memfd
+
+One thing to mention is live migration is by default supported, however
+postcopy is still currently not supported.  The postcopy support will have
+some kernel dependency work to be merged in Linux first.
+
+Thanks,
+
+Peter Xu (8):
+  kvm: Detect guest-memfd flags supported
+  memory: Rename RAM_GUEST_MEMFD to RAM_GUEST_MEMFD_PRIVATE
+  memory: Rename memory_region_has_guest_memfd() to *_private()
+  ramblock: Rename guest_memfd to guest_memfd_private
+  hostmem: Rename guest_memfd to guest_memfd_private
+  hostmem: Support in-place guest memfd to back a VM
+  tests/migration-test: Support guest-memfd init shared mem type
+  tests/migration-test: Add a precopy test for guest-memfd
+
+Xiaoyao Li (1):
+  kvm: Decouple memory attribute check from kvm_guest_memfd_supported
+
+ qapi/qom.json                         |  6 ++-
+ include/system/hostmem.h              |  2 +-
+ include/system/kvm.h                  |  1 +
+ include/system/memory.h               | 17 +++----
+ include/system/ram_addr.h             |  2 +-
+ include/system/ramblock.h             |  7 ++-
+ tests/qtest/migration/framework.h     |  4 ++
+ accel/kvm/kvm-all.c                   | 27 ++++++++---
+ accel/stubs/kvm-stub.c                |  5 ++
+ backends/hostmem-file.c               |  2 +-
+ backends/hostmem-memfd.c              | 68 +++++++++++++++++++++++++--
+ backends/hostmem-ram.c                |  2 +-
+ backends/hostmem-shm.c                |  2 +-
+ backends/hostmem.c                    |  2 +-
+ system/memory.c                       |  7 +--
+ system/physmem.c                      | 37 +++++++++------
+ tests/qtest/migration/framework.c     | 60 +++++++++++++++++++++++
+ tests/qtest/migration/precopy-tests.c | 12 +++++
+ 18 files changed, 219 insertions(+), 44 deletions(-)
+
 -- 
-2.39.5
+2.50.1
+
 
