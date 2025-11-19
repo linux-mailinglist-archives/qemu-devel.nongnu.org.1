@@ -2,67 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB88C7116E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 21:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A234AC71192
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 21:59:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLpA5-0007yg-Lg; Wed, 19 Nov 2025 15:52:21 -0500
+	id 1vLpGC-0002f7-Bl; Wed, 19 Nov 2025 15:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vLpA4-0007xw-B0
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 15:52:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLpGA-0002ey-Po
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 15:58:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vLpA2-00025O-1L
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 15:52:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vLpG8-0002wz-KN
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 15:58:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763585537;
+ s=mimecast20190719; t=1763585914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=inJHY2mpT+t2Kxjje60f2B/u2frM4y4WcLTs+HH+0ts=;
- b=YO7qNFmuRarzj0kdNLBfyn/+VFzSsIJK8LidhlinddPXbKSFovTI3Xg0WgIwdKchhYrdYo
- butUl5wKdJYpmVeLkCXF2deILq5XnRrLmVp3X4Mbo1hVyDtaxZj28buUlulL6uvdLXvNhN
- ZwKq8tGzu4KhzR78MtxpS3fE9wvkkfM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-S6oWsReUPuCHqRRSu_RpWg-1; Wed,
- 19 Nov 2025 15:52:12 -0500
-X-MC-Unique: S6oWsReUPuCHqRRSu_RpWg-1
-X-Mimecast-MFC-AGG-ID: S6oWsReUPuCHqRRSu_RpWg_1763585531
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 54F851801233; Wed, 19 Nov 2025 20:52:11 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.175])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 57E3230001A4; Wed, 19 Nov 2025 20:52:10 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-rust@nongnu.org, Mads Ynddal <mads@ynddal.dk>,
- Thomas Huth <thuth@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Josh Stone <jistone@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v2 4/4] tracetool: add Rust DTrace/SystemTap SDT support
-Date: Wed, 19 Nov 2025 15:52:00 -0500
-Message-ID: <20251119205200.173170-5-stefanha@redhat.com>
-In-Reply-To: <20251119205200.173170-1-stefanha@redhat.com>
-References: <20251119205200.173170-1-stefanha@redhat.com>
+ bh=5LbzGF/gMz8eDBIbqfbcHyOmXImhBxKnPsjhIZ0rbIQ=;
+ b=SqBcBUE9G7NTyYyicQygkU9wnsA0dhiKvOPReHreXf888eJltEfDQkglnaaNU4YVuZZamz
+ MnTrKB/nrFeoB/0l5X5K5Fl/Hhd8JOp1F9HPFfHHTRqplA+vO7+cXVT7J1Zs6jaD5lirxg
+ NltpjXv+uW1dEzwQc5MaPIEdhPCI2uA=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-gkYW4mgWP_e0OH2KXX0SEw-1; Wed, 19 Nov 2025 15:58:33 -0500
+X-MC-Unique: gkYW4mgWP_e0OH2KXX0SEw-1
+X-Mimecast-MFC-AGG-ID: gkYW4mgWP_e0OH2KXX0SEw_1763585913
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4ee42d99125so4520141cf.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 12:58:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1763585912; x=1764190712; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=5LbzGF/gMz8eDBIbqfbcHyOmXImhBxKnPsjhIZ0rbIQ=;
+ b=jtPbIHn/vRbM8rT37974cJeoXX6WZxSln+p8ZFq+0DjC6X9BK+dvEOmVfGnkE5jO++
+ oGzqmeUpQcsuB7X/GJU5erUETctJ7W0nkSxJo81DZqRcHSXkO4oH1Wb0LImgn1DG6Nny
+ +lqBnYw3pS3sxvVOkAhYUwy8a3jYNEz+/DzjXAh0pQ3IDzwm8wApaHr200GrBt/Pj6h2
+ x6mzZC7Y4lMaJbCYjtF1QVbBiOrCXGLOCbtfYBE6gM3SFlnJTbiWpdHLIAa/ljHo8weP
+ j4OcRKIstys5YgQyrUEffk9VBwx6Exo2zzOBJ05tWhG21x1z+7RdXMg71+3S+iApdGm9
+ YvUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763585912; x=1764190712;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5LbzGF/gMz8eDBIbqfbcHyOmXImhBxKnPsjhIZ0rbIQ=;
+ b=Qw6w8ncUeGqhDgJuTkXJoPPSmBdOTXtoQWzYcjzZpLdIdr4q3CXh5JfWIICuY05zea
+ PdFM4kgQnGgCmaY0lyp0IzW2Op38nnq8GFOK9vTkvaqEemMe2/LynALMi0utl2C/Cm1N
+ GiOBLcL5FL004wRPPrhx2lVGgy6bxcnibXcLw/FFjHqyyPeHEzKofKm/ds+7rTRqrKIb
+ zEUhxlM9KPi4htDc5nqOp1805dL+d1CKc0ylqy9Xjlf+O+VJ+HEVcfTO5w2+jjm/dOqO
+ cXA59ia5RX6tfwavRHUhhFZDQGKXMIc7QBr6efTAYTdQQJw96P1oCH1ZglN4B6F+Mtre
+ dq4g==
+X-Gm-Message-State: AOJu0YzouNEtNES6hrfa35vBcni5THlkft1QGXziGmCM6oEesVFlR1OK
+ yGirnTLp9OsGkGqYuksavU/GKaEoDC2ixncmM7GYUkG0i5Kp1gxuZNtM6uJOlgPp76l0/vP4xO0
+ znhDjNVIR5FqmN1lNZ13nn83riIRMhKeGaJ/UqbIxvM7z6lt5rIhv2J2o+r4u+qjy
+X-Gm-Gg: ASbGncvLwsR1i9yV4vCuX7lF2ZgwY/OcuhSKdF1gqRWA1xa6xdtjEW5gc+R8P3M6yrP
+ AQnAuGqYsqbWvwSGA2VqOfCF1H7hQh3tHnVSybQAJVveG8+NaPJKnOxw+wLXUGd/NzEBz2dBjJ9
+ q0GWe6K9aUmR4+mFd6Ee1G4OJfoYET/d7yD0JBvviAbLyuUyNCjCGhyMWfed+bkVIceRMCvdLt8
+ 8VsMPRcPROEW5ZCGBkS/TEXwSjdmHBzLO2AjCwkjWtmJEyul9XDM57Ccy3R6FpG7cf1LfU20umU
+ elA5JXWexQ26EzLRBEDmASIb/8WQgbosyxZTitAM9u6xq7lb9Vgnia59yEPkbyv0S+9uIALrdmF
+ xCUM=
+X-Received: by 2002:ac8:578c:0:b0:4ee:219e:e66 with SMTP id
+ d75a77b69052e-4ee4974cfadmr8475571cf.83.1763585912337; 
+ Wed, 19 Nov 2025 12:58:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsjPeBkojMy/3g6BVfDa6V3RabBfVx/cOygPUvnZHctdv9X+Et6J0LIOuMWsLEIcS7drp7Qg==
+X-Received: by 2002:ac8:578c:0:b0:4ee:219e:e66 with SMTP id
+ d75a77b69052e-4ee4974cfadmr8475191cf.83.1763585911551; 
+ Wed, 19 Nov 2025 12:58:31 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4ee48e6c2c3sm3726911cf.28.2025.11.19.12.58.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Nov 2025 12:58:30 -0800 (PST)
+Date: Wed, 19 Nov 2025 15:58:29 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de
+Subject: Re: [PATCH 0/3] migration: Error fixes and improvements
+Message-ID: <aR4vdRcORY4em3yB@x1.local>
+References: <20251115083500.2753895-1-armbru@redhat.com>
+ <aRtHWbWcTh3OF2wY@x1.local> <87a50jlr8f.fsf@pond.sub.org>
+ <aRyuZbS7iALvx-BT@x1.local> <87cy5ecvoc.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87cy5ecvoc.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -71,7 +99,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,533 +115,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement DTrace/SystemTap SDT by emitting the following:
-- The probe crate's probe!() macro is used to emit a DTrace/SystemTap
-  SDT probe.
-- Every trace event gets a corresponding trace_<name>_enabled() -> bool
-  generated function that Rust code can use to avoid expensive
-  computation when a trace event is disabled. This API works for other
-  trace backends too.
+On Wed, Nov 19, 2025 at 08:45:39AM +0100, Markus Armbruster wrote:
 
-`#[allow(dead_code)]` additions are necessary for QEMU's dstate in
-generated trace-<dir>.rs files since they are unused by the dtrace
-backend. `./configure --enable-trace-backends=` can enable multiple
-backends, so keep it simple and just silence the warning instead of
-trying to detect the condition when generating the dstate code can be
-skipped.
+[...]
 
-The tracetool tests are updated. Take a look at
-tests/tracetool/dtrace.rs to see what the new generated code looks like.
+> The hairy part is the background task.
+> 
+> I believe it used to simply do its job, reporting errors to stderr along
+> the way, until it either succeeded or failed.  The errors reported made
+> success / failure "obvious" for users.
+> 
+> This can report multiple errors, which can be confusing.
+> 
+> Worse, it was no good for management applications.  These need to
+> observe migration as a state machine, with final success and error
+> states, where the error state comes with an indication of what went
+> wrong.  So we made migration store the first of certain errors in the
+> migration state in addition to reporting to stderr.
+> 
+> "First", because we store only when the state doesn't already have an
+> error.  "Certain", because I doubt we do it for all errors we report.
+> 
+> Compare this to how jobs solve this problem.  These are a much, much
+> later invention, and designed for management applications from the
+> start[*].  A job is a state machine.  Management applications can
+> observe and control the state.  Errors are not supposed to be reported,
+> they should be fed to the state machine, which goes into an error state
+> then.  The job is not supposed to do actual work in an error state.
+> Therefore, no further errors should be possible.  When something goes
+> wrong, we get a single error, stored in the job state, where the
+> management application can find it.
+> 
+> Migration is also a state machine, and we long ago retrofitted the means
+> for management applications to observe and control the state.  What we
+> haven't done is the disciplined feeding of errors to the state machine.
+> We can still get multiple errors.  We store the first of certain errors
+> where the managament application can find it, but whether that error
+> suffices to explain what went wrong is a crap shot.  As long as that's
+> the case, we need to spew the other errors to stderr, where a human can
+> find it.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- rust/Cargo.lock                     |  6 +++
- rust/trace/Cargo.toml               |  1 +
- rust/trace/meson.build              |  2 +-
- rust/trace/src/lib.rs               |  4 ++
- scripts/tracetool/__init__.py       |  1 +
- scripts/tracetool/backend/dtrace.py | 31 ++++++++++++++
- scripts/tracetool/format/rs.py      | 27 ++++++++++--
- tests/tracetool/dtrace.rs           | 65 +++++++++++++++++++++++++++++
- tests/tracetool/ftrace.rs           | 21 ++++++++++
- tests/tracetool/log.rs              | 21 ++++++++++
- tests/tracetool/simple.rs           | 21 ++++++++++
- tests/tracetool/syslog.rs           | 21 ++++++++++
- tests/tracetool/tracetool-test.py   |  2 +-
- 13 files changed, 217 insertions(+), 6 deletions(-)
- create mode 100644 tests/tracetool/dtrace.rs
+Since above mentioned once more on the possibility of reusing Jobs idea, I
+did try to list things explicitly this time, that why I think it should be
+challenging and maybe not as worthwhile (?) to do so, however I might be
+wrong.  I attached it at the end of this email almost for myself in the
+future to reference, please feel free comment, or, to ignore all of those!
+IMHO it's not directly relevant to the error reporting issues.
 
-diff --git a/rust/Cargo.lock b/rust/Cargo.lock
-index 0c1df625df..5bd768cb0d 100644
---- a/rust/Cargo.lock
-+++ b/rust/Cargo.lock
-@@ -144,6 +144,7 @@ dependencies = [
-  "migration",
-  "qom",
-  "system",
-+ "trace",
-  "util",
- ]
- 
-@@ -229,6 +230,10 @@ dependencies = [
-  "util",
- ]
- 
-+[[package]]
-+name = "probe"
-+version = "0.5.2"
-+
- [[package]]
- name = "proc-macro-error"
- version = "1.0.4"
-@@ -429,6 +434,7 @@ name = "trace"
- version = "0.1.0"
- dependencies = [
-  "libc",
-+ "probe",
- ]
- 
- [[package]]
-diff --git a/rust/trace/Cargo.toml b/rust/trace/Cargo.toml
-index fc81bce580..11e27f8d28 100644
---- a/rust/trace/Cargo.toml
-+++ b/rust/trace/Cargo.toml
-@@ -14,6 +14,7 @@ rust-version.workspace = true
- 
- [dependencies]
- libc = { workspace = true }
-+probe = "0.5"
- 
- [lints]
- workspace = true
-diff --git a/rust/trace/meson.build b/rust/trace/meson.build
-index adca57e550..cf6b0355a8 100644
---- a/rust/trace/meson.build
-+++ b/rust/trace/meson.build
-@@ -12,7 +12,7 @@ _trace_rs = static_library(
-   lib_rs,
-   trace_rs_targets,         # List of generated `.rs` custom targets
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
--  dependencies: [libc_rs],
-+  dependencies: [libc_rs, probe_rs],
-   rust_abi: 'rust',
- )
- 
-diff --git a/rust/trace/src/lib.rs b/rust/trace/src/lib.rs
-index e03bce43c4..49331f07c6 100644
---- a/rust/trace/src/lib.rs
-+++ b/rust/trace/src/lib.rs
-@@ -7,6 +7,10 @@
- /// Re-exported item to avoid adding libc as a dependency everywhere.
- pub use libc::{syslog, LOG_INFO};
- 
-+#[doc(hidden)]
-+/// Re-exported item to avoid adding probe as a dependency everywhere.
-+pub use probe::probe;
-+
- #[macro_export]
- /// Define the trace-points from the named directory (which should have slashes
- /// replaced by underscore characters) as functions in a module called `trace`.
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 74062d21a7..61ba6f1ba8 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -461,6 +461,7 @@ def formats(self):
- 
-     QEMU_TRACE               = "trace_%(name)s"
-     QEMU_TRACE_TCG           = QEMU_TRACE + "_tcg"
-+    QEMU_RUST_DSTATE         = "trace_%(name)s_enabled"
-     QEMU_DSTATE              = "_TRACE_%(NAME)s_DSTATE"
-     QEMU_BACKEND_DSTATE      = "TRACE_%(NAME)s_BACKEND_DSTATE"
-     QEMU_EVENT               = "_TRACE_%(NAME)s_EVENT"
-diff --git a/scripts/tracetool/backend/dtrace.py b/scripts/tracetool/backend/dtrace.py
-index b4af403025..f0b58cc158 100644
---- a/scripts/tracetool/backend/dtrace.py
-+++ b/scripts/tracetool/backend/dtrace.py
-@@ -70,3 +70,34 @@ def generate_h(event, group):
- def generate_h_backend_dstate(event, group):
-     out('    QEMU_%(uppername)s_ENABLED() || \\',
-         uppername=event.name.upper())
-+
-+
-+def generate_rs_begin(events, group):
-+    out('use std::cell::UnsafeCell;',
-+        '',
-+        'extern "C" {')
-+    # These are the Rust declarations of the .probes section semaphores
-+    # generated by dtrace(1) in its .o file output.
-+    for e in events:
-+        if 'disable' in e.properties:
-+            continue
-+        out('    #[allow(dead_code)]',
-+            f'    static qemu_{e.name}_semaphore: UnsafeCell<u16>;')
-+    out('}',
-+        '')
-+
-+
-+def generate_rs(event, group):
-+    args = event.args.rust_call_extern()
-+    if args:
-+        args = ', ' + args
-+
-+    out(f'    ::trace::probe!(qemu, {event.name}{args});')
-+
-+
-+def generate_rs_backend_dstate(event, group):
-+    # Rust does not have access to the <provider>_<name>_ENABLED() macro from
-+    # the dtrace(1) generated .h file. Use the matching semaphore declarations
-+    # generated by generate_rs_begin() instead.
-+    out('    (unsafe {qemu_%(n)s_semaphore.get().read_volatile()}) != 0 ||',
-+        n=event.name)
-diff --git a/scripts/tracetool/format/rs.py b/scripts/tracetool/format/rs.py
-index 32ac4e5977..7d9af7edfe 100644
---- a/scripts/tracetool/format/rs.py
-+++ b/scripts/tracetool/format/rs.py
-@@ -24,25 +24,43 @@ def generate(events, backend, group):
-         '#[allow(unused_imports)]',
-         'use util::bindings;',
-         '',
-+        '#[allow(dead_code)]',
-         '#[inline(always)]',
-         'fn trace_event_state_is_enabled(dstate: u16) -> bool {',
-         '    (unsafe { trace_events_enabled_count }) != 0 && dstate != 0',
-         '}',
-         '',
-         'extern "C" {',
-+        '    #[allow(dead_code)]',
-         '    static mut trace_events_enabled_count: u32;',
-         '}',)
- 
-     out('extern "C" {')
- 
-     for e in events:
--        out('    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
--    out('}')
-+        out('    #[allow(dead_code)]',
-+            '    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
-+    out('}',
-+        '')
- 
-     backend.generate_begin(events, group)
- 
-     for e in events:
--        out('',
-+        out('#[inline(always)]',
-+            '#[allow(dead_code)]',
-+            'pub fn %(api)s() -> bool',
-+            '{',
-+            api=e.api(e.QEMU_RUST_DSTATE))
-+
-+        if "disable" not in e.properties:
-+            backend.generate_backend_dstate(e, group)
-+            if backend.check_trace_event_get_state:
-+                out('    trace_event_state_is_enabled(unsafe { _%(event_id)s_DSTATE}) ||',
-+                    event_id = 'TRACE_' + e.name.upper())
-+
-+        out('    false',
-+            '}',
-+            '',
-             '#[inline(always)]',
-             '#[allow(dead_code)]',
-             'pub fn %(api)s(%(args)s)',
-@@ -59,6 +77,7 @@ def generate(events, backend, group):
-                     api=e.api())
-                 backend.generate(e, group, check_trace_event_get_state=True)
-                 out('    }')
--        out('}')
-+        out('}',
-+            '')
- 
-     backend.generate_end(events, group)
-diff --git a/tests/tracetool/dtrace.rs b/tests/tracetool/dtrace.rs
-new file mode 100644
-index 0000000000..233c2ef159
---- /dev/null
-+++ b/tests/tracetool/dtrace.rs
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// This file is @generated by tracetool, do not edit.
-+
-+#[allow(unused_imports)]
-+use std::ffi::c_char;
-+#[allow(unused_imports)]
-+use util::bindings;
-+
-+#[allow(dead_code)]
-+#[inline(always)]
-+fn trace_event_state_is_enabled(dstate: u16) -> bool {
-+    (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
-+}
-+
-+extern "C" {
-+    #[allow(dead_code)]
-+    static mut trace_events_enabled_count: u32;
-+}
-+extern "C" {
-+    #[allow(dead_code)]
-+    static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-+    static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
-+}
-+
-+use probe::probe;
-+use std::cell::UnsafeCell;
-+
-+extern "C" {
-+    #[allow(dead_code)]
-+    static qemu_test_blah_semaphore: UnsafeCell<u16>;
-+    #[allow(dead_code)]
-+    static qemu_test_wibble_semaphore: UnsafeCell<u16>;
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    (unsafe {qemu_test_blah_semaphore.get().read_volatile()}) != 0 ||
-+    false
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-+{
-+    probe!(qemu, test_blah, _context, _filename.as_ptr());
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    (unsafe {qemu_test_wibble_semaphore.get().read_volatile()}) != 0 ||
-+    false
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-+{
-+    probe!(qemu, test_wibble, _context, _value);
-+}
-+
-diff --git a/tests/tracetool/ftrace.rs b/tests/tracetool/ftrace.rs
-index 07b9259cf2..34f6600490 100644
---- a/tests/tracetool/ftrace.rs
-+++ b/tests/tracetool/ftrace.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe {bindings::ftrace_write(format_string.as_ptr() as *const c_char, _context /* as *mut () */, _value /* as std::ffi::c_int */);}
-     }
- }
-+
-diff --git a/tests/tracetool/log.rs b/tests/tracetool/log.rs
-index c191895c8f..770758611d 100644
---- a/tests/tracetool/log.rs
-+++ b/tests/tracetool/log.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -31,6 +43,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -42,3 +62,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         }
-     }
- }
-+
-diff --git a/tests/tracetool/simple.rs b/tests/tracetool/simple.rs
-index 9ee39495e3..92f896ef17 100644
---- a/tests/tracetool/simple.rs
-+++ b/tests/tracetool/simple.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe { _simple_trace_test_wibble(_context, _value); }
-     }
- }
-+
-diff --git a/tests/tracetool/syslog.rs b/tests/tracetool/syslog.rs
-index 9d3675a0b5..378d03d34b 100644
---- a/tests/tracetool/syslog.rs
-+++ b/tests/tracetool/syslog.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe {::trace::syslog(::trace::LOG_INFO, format_string.as_ptr() as *const c_char, _context /* as *mut () */, _value /* as std::ffi::c_int */);}
-     }
- }
-+
-diff --git a/tests/tracetool/tracetool-test.py b/tests/tracetool/tracetool-test.py
-index 786083ad7f..30006a9919 100755
---- a/tests/tracetool/tracetool-test.py
-+++ b/tests/tracetool/tracetool-test.py
-@@ -14,7 +14,7 @@ def get_formats(backend):
-         "c",
-         "h",
-     ]
--    if backend in {"ftrace", "log", "simple", "syslog"}:
-+    if backend in {"dtrace", "ftrace", "log", "simple", "syslog"}:
-         formats += ["rs"]
-     if backend == "dtrace":
-         formats += [
+IMHO rewriting migration with Jobs will not help much in error reporting,
+because the challenge for refactoring from migration side is not the "Jobs"
+interfacing, but internally of migration.  Say, even if migration provided
+a "job", it's the "job" impl that did error reporting bad, not the Jobs
+interfacing.. the "job" impl will need to manage quite some threads on its
+own, making sure errors are properly reported at least to the "job"
+interface.
+
+Said that, I totally agree we should try to improve error reporting in
+migration.. with / without Jobs.
+
+[...]
+
+> > Maybe I should ping Vladimir on his recent work here?
+> >
+> > https://lore.kernel.org/r/20251028231347.194844-1-vsementsov@yandex-team.ru
+> >
+> > That'll be part of such cleanup effort (and yes unfortunately many
+> > migration related cleanups will need a lot of code churns...).
+> 
+> I know...
+> 
+> Can we afford modest efforts to reduce the mess one step at a time?
+
+Yes, I'll try to follow up on that.
+
+[...]
+
+> [*] If the job abstraction had been available in time, migration would
+> totally be a job.  There's no *design* reason for it being not a job.
+> Plenty of implementation and backward compatibility reasons, though.
+
+There might be something common between Jobs that block uses and a
+migration process.  If so, we can provide CommonJob and make MigrationJob
+and BlockJobs dependent on it.
+
+However, I sincerely don't know how much common function will there be.
+IOW, I doubt even in an imaginery world, if we could go back to when Jobs
+was designed and if we would make migration a Job too (note!  snapshots is
+definitely a too simple migration scenario..).  Is it possible after
+evaluation we still don't?  I don't know, but I think it's possible.
+
+Thanks!
+Peter
+
+
+
+
+Possible challenges of adopting Jobs in migration flow
+======================================================
+
+- Many Jobs defined property doesn't directly suite migration
+
+  - JobStatus is not directly suitable for migration purposes.  There're
+    some of the JobStatus that I can't think of any use
+    (e.g. JOB_STATUS_WAITING, JOB_STATUS_PENDING, which is fine, because we
+    can simply not use it), but there're other status that migration needs
+    but isn't availble. Introducing them seems to be an overkill instead to
+    block layer's use case.
+
+  - Similarly to JobVerb.  E.g. JOB_VERB_CHANGE doesn't seem to apply to
+    any concept to migration, but it misses quite some others
+    (e.g. JOB_VERB_SET_DOWNTIME, JOB_VERB_POSTCOPY_START, and more).
+
+  - Similarly, JobInfo reports in current-progress (which is not optional
+    but required), which may make perfect sense for block jobs. However
+    migration is OTOH convergence-triggered process, or user-triggered (in
+    case of postcopy).  It doesn't have a quantified process but only
+    "COMPLETED" / "IN_PROGRESS".
+
+  - Another very major example that I have discussed a few times
+    previously, Jobs are close attached to AioContext, while migration
+    doesn't have, meanwhile migration is moving even further away from
+    event driven model..  See:
+
+    https://lore.kernel.org/all/20251022192612.2737648-1-peterx@redhat.com/#t
+
+  There're just too many example showing that Jobs are defined almost only
+  for block layer.. e.g. job-finalize (which may not make much sense in a
+  migration context anyway..) mentions finalizing of graph changes, which
+  also doesn't exist in migration process.
+
+  So if we rewrite migration somehow with Jobs or keeping migration in mind
+  designing Jobs, Jobs may need to be very bloated containing both
+  migration and block layer requirements.
+
+- Migration involves "two" QEMU instances instead of one
+
+  I'm guessing existing Jobs operations are not as such, and providing such
+  mechanisms in "Jobs" only for migration may introduce unnecessary code
+  that block layer will never use.
+
+  E.g. postcopy migration attached the two QEMU instances to represent one
+  VM instance.  I do not have a clear picture in mind yet on how we can
+  manage that if we see it as two separate Jobs on each side, and what
+  happens if each side operates on its own Job with different purposes, and
+  how we should connect two Jobs to say they're relevant (or maybe we don't
+  need to?).
+
+- More challenges on dest QEMU (VM loader) than src QEMU
+
+  Unlike on the src side, the dest QEMU, when in an incoming state, is not
+  a VM at all yet, but waiting to receive the migration data to become a
+  working VM. It's not a generic long term process, but a pure listening
+  port of QEMU where QEMU can do nothing without this "job" being
+  completed..
+
+  If we think about CPR it's even more complicated, because we essential
+  require part of incoming process to happen before almost everything.. it
+  may even include monitors being initialized.
+
+- Deep integration with other subsystems
+
+  Migration is deeply integrated into many other subsystems (auto-converge
+  being able to throttle vCPUs, RAM being able to ignore empty pages
+  reported from balloons, dirty trackings per-module, etc.), so we're not
+  sure if there'll be some limitation from Jobs (when designed with block
+  layer in mind) that will make such transition harder.
+
+  For example, we at least want to make sure Jobs won't have simple locks
+  that will be held while running migration, that can further deadlock if
+  the migration code may invoke something else that tries to re-take the
+  Jobs lock, which may cause dead-locks.
+
+  Or, since migration runs nowadays with quite some threads concurrently,
+  whether the main migration Job can always properly synchronize between
+  all of them with no problem (maybe yes, but I just don't know Jobs enough
+  to say).  This is also a relevant question about how much AioContext
+  plays a role in core of Jobs idea and whether it can work well with
+  complicated threaded environment.
+
 -- 
-2.51.1
+Peter Xu
 
 
