@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8EAC6E7B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 13:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A077FC6E7CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Nov 2025 13:33:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLhMW-0007sq-Go; Wed, 19 Nov 2025 07:32:40 -0500
+	id 1vLhMs-0008WN-De; Wed, 19 Nov 2025 07:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhMH-0007qA-2S
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:32:26 -0500
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhMp-0008V3-U6
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:32:59 -0500
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhME-00057R-1f
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:32:23 -0500
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1vLhMn-00059c-3B
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 07:32:59 -0500
 Received: from cslab-raptor.s.cslab.moe (unknown [166.111.238.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id E638D49A7E9;
- Wed, 19 Nov 2025 12:32:15 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 909C549A7E7;
+ Wed, 19 Nov 2025 12:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1763555537; bh=dxV7C6QfUefSt1XKUJGbvphyErev3tTV2/yWZyHusj8=;
+ t=1763555575; bh=88oi0S5i+ruLPjvaInPKifU47JfIBK7DmaKwzRiwJlQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=nCJb/4V188z/MgvBoAeGZf7aQZwO42etrRHUR2KNSB9ZCo+GLNscYJmoOJx/nwsOz
- NJP3yGMm3hJOQuh2xG0oAUers2O/QVK5TxSjAK1tOVkIhN+m8AvhLTshzGGtdkbOYF
- 9wRQVg1JZfevkNKoKTRfmYIuBZN04NhZ1gaDI5So=
+ b=O+TXXjzQUzE+P/xl6Ud4QNi9/+hvr8CuzAfp7MYIJK8bDel52I1IwdqaR8S6NNppM
+ TO4lZXgIJNPBf/xrcAx24udAl124cp8/lYSvmjpyORkdCc/X9Yb3tq2TSBImLcjrdG
+ iXDMZ6oLmXZi+TtAeyliRCT47eqF/srgOw/h5zwU=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
  Jiajie Chen <c@jia.je>
-Subject: [PATCH v2 5/7] target/loongarch: Add llacq/screl instructions
-Date: Wed, 19 Nov 2025 20:30:56 +0800
-Message-ID: <20251119123101.1542976-5-c@jia.je>
+Subject: [PATCH v2 6/7] target/loongarch: Add sc.q instructions
+Date: Wed, 19 Nov 2025 20:30:57 +0800
+Message-ID: <20251119123101.1542976-6-c@jia.je>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251119123101.1542976-4-c@jia.je>
 References: <20251119122822.1513788-1-c@jia.je>
@@ -67,148 +67,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the following instructions in LoongArch v1.1:
+Add the sc.q instruction in LoongArch v1.1, guarded by CPUCFG2.SCQ. It
+is implemented by reading 128bit data (llval + llval_high) in ll.d when
+aligned to 16B boundary, and cmpxchg 128bit in sc.q. If ld.d
+matches the higher part of the 128bit, its data is taken from
+llval_high.
 
-- llacq.w
-- screl.w
-- llacq.d
-- screl.d
+Expected assembly sequence:
 
-They are guarded by CPUCFG2.LLACQ_SCREL.
+ll.d lo, base, 0
+ld.d hi, base, 8
+sc.q lo, hi, base
 
 Signed-off-by: Jiajie Chen <c@jia.je>
-Co-developed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/cpu.h                        |  1 +
- target/loongarch/disas.c                      |  4 ++++
- target/loongarch/insns.decode                 |  5 ++++
- .../tcg/insn_trans/trans_atomic.c.inc         | 24 ++++++++++++++-----
- target/loongarch/translate.h                  |  3 +++
- 5 files changed, 31 insertions(+), 6 deletions(-)
+ target/loongarch/cpu.h                        |  3 +
+ target/loongarch/disas.c                      |  1 +
+ target/loongarch/insns.decode                 |  1 +
+ .../tcg/insn_trans/trans_atomic.c.inc         | 82 +++++++++++++++++++
+ .../tcg/insn_trans/trans_memory.c.inc         | 22 +++++
+ target/loongarch/tcg/translate.c              |  6 +-
+ target/loongarch/translate.h                  |  1 +
+ 7 files changed, 115 insertions(+), 1 deletion(-)
 
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 740e474d79..5cab02ad6f 100644
+index 5cab02ad6f..0a89c06b01 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -141,6 +141,7 @@ FIELD(CPUCFG2, HPTW, 24, 1)
- FIELD(CPUCFG2, FRECIPE, 25, 1)
+@@ -142,6 +142,7 @@ FIELD(CPUCFG2, FRECIPE, 25, 1)
  FIELD(CPUCFG2, LAM_BH, 27, 1)
  FIELD(CPUCFG2, LAMCAS, 28, 1)
-+FIELD(CPUCFG2, LLACQ_SCREL, 29, 1)
+ FIELD(CPUCFG2, LLACQ_SCREL, 29, 1)
++FIELD(CPUCFG2, SCQ, 30, 1)
  
  /* cpucfg[3] bits */
  FIELD(CPUCFG3, CCDMA, 0, 1)
+@@ -377,6 +378,8 @@ typedef struct CPUArchState {
+     uint32_t fcsr0_mask;
+     uint64_t lladdr; /* LL virtual address compared against SC */
+     uint64_t llval;
++    uint64_t llval_high; /* For 128-bit atomic SC.Q */
++    uint64_t llbit_scq; /* Potential LL.D+LD.D+SC.Q sequence in effect */
+ #endif
+ #ifndef CONFIG_USER_ONLY
+ #ifdef CONFIG_TCG
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index e5e1b37ce0..3164fade9b 100644
+index 3164fade9b..3249ab7ac6 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -584,6 +584,10 @@ INSN(fldx_s,       frr)
+@@ -584,6 +584,7 @@ INSN(fldx_s,       frr)
  INSN(fldx_d,       frr)
  INSN(fstx_s,       frr)
  INSN(fstx_d,       frr)
-+INSN(llacq_w,      rr_i)
-+INSN(screl_w,      rr_i)
-+INSN(llacq_d,      rr_i)
-+INSN(screl_d,      rr_i)
- INSN(amcas_b,      rrr)
- INSN(amcas_h,      rrr)
- INSN(amcas_w,      rrr)
++INSN(sc_q,         rrr)
+ INSN(llacq_w,      rr_i)
+ INSN(screl_w,      rr_i)
+ INSN(llacq_d,      rr_i)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 92078f0f9f..7898f5f719 100644
+index 7898f5f719..3089d42044 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -69,6 +69,7 @@
- @rr_i14s2         .... ....  .............. rj:5 rd:5    &rr_i imm=%i14s2
- @rr_i16                     .... .. imm:s16 rj:5 rd:5    &rr_i
- @rr_i16s2         .... ..  ................ rj:5 rd:5    &rr_i imm=%offs16
-+@rr_i0            .... ..  ................ rj:5 rd:5    &rr_i imm=0
- @hint_r_i12           .... ...... imm:s12 rj:5 hint:5    &hint_r_i
- @hint_rr         .... ........ ..... rk:5 rj:5 hint:5    &hint_rr
- @rrr_sa2p1        .... ........ ... .. rk:5 rj:5 rd:5    &rrr_sa  sa=%sa2p1
-@@ -261,6 +262,10 @@ ll_w            0010 0000 .............. ..... .....     @rr_i14s2
+@@ -262,6 +262,7 @@ ll_w            0010 0000 .............. ..... .....     @rr_i14s2
  sc_w            0010 0001 .............. ..... .....     @rr_i14s2
  ll_d            0010 0010 .............. ..... .....     @rr_i14s2
  sc_d            0010 0011 .............. ..... .....     @rr_i14s2
-+llacq_w         0011 10000101 01111 00000 ..... .....    @rr_i0
-+screl_w         0011 10000101 01111 00001 ..... .....    @rr_i0
-+llacq_d         0011 10000101 01111 00010 ..... .....    @rr_i0
-+screl_d         0011 10000101 01111 00011 ..... .....    @rr_i0
- amcas_b         0011 10000101 10000 ..... ..... .....    @rrr
- amcas_h         0011 10000101 10001 ..... ..... .....    @rrr
- amcas_w         0011 10000101 10010 ..... ..... .....    @rrr
++sc_q            0011 10000101 01110 ..... ..... .....    @rrr
+ llacq_w         0011 10000101 01111 00000 ..... .....    @rr_i0
+ screl_w         0011 10000101 01111 00001 ..... .....    @rr_i0
+ llacq_d         0011 10000101 01111 00010 ..... .....    @rr_i0
 diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-index 1b2673b82d..c9a6dcfdeb 100644
+index c9a6dcfdeb..565daa7219 100644
 --- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
 +++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2021 Loongson Technology Corporation Limited
-  */
- 
--static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-+static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool acq)
+@@ -6,14 +6,48 @@
+ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool acq)
  {
      TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
      TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-@@ -14,10 +14,14 @@ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv t0 = make_address_i(ctx, src1, a->imm);
++    TCGv_i128 t16 = tcg_temp_new_i128();
++    TCGv mask = tcg_constant_tl(0xf);
++    TCGv one = tcg_constant_tl(1);
++    TCGv zero = tcg_constant_tl(0);
++    TCGLabel *l1 = gen_new_label();
++    TCGLabel *done = gen_new_label();
++
++    if (avail_SCQ(ctx) && mop == MO_TEUQ) {
++        /*
++         * The LL.D+LD.D may be paired with SC.Q,
++         * load 128-bit if aligned: (t0 & 0xf) == 0
++         */
++        tcg_gen_and_tl(t1, t0, mask);
++        tcg_gen_brcond_tl(TCG_COND_EQ, t1, zero, l1);
++        /* fallthrough if not aligned to 16B */
++    }
+ 
+     tcg_gen_qemu_ld_i64(t1, t0, ctx->mem_idx, mop | MO_ALIGN);
+     tcg_gen_st_tl(t0, tcg_env, offsetof(CPULoongArchState, lladdr));
      tcg_gen_st_tl(t1, tcg_env, offsetof(CPULoongArchState, llval));
      gen_set_gpr(a->rd, t1, EXT_NONE);
  
-+    if (acq) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++    if (avail_SCQ(ctx) && mop == MO_TEUQ) {
++        tcg_gen_br(done);
++
++        gen_set_label(l1);
++
++        /* Load 16B data and save into llval/llval_high */
++        tcg_gen_qemu_ld_i128(t16, t0, ctx->mem_idx, MO_128 | MO_ALIGN);
++        tcg_gen_st_tl(t0, tcg_env, offsetof(CPULoongArchState, lladdr));
++        tcg_gen_extr_i128_i64(t1, t2, t16);
++        tcg_gen_st_tl(t1, tcg_env, offsetof(CPULoongArchState, llval));
++        tcg_gen_st_tl(t2, tcg_env, offsetof(CPULoongArchState, llval_high));
++        tcg_gen_st_tl(one, tcg_env, offsetof(CPULoongArchState, llbit_scq));
++        gen_set_gpr(a->rd, t1, EXT_NONE);
++
++        gen_set_label(done);
 +    }
 +
-     return true;
- }
+     if (acq) {
+         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+     }
+@@ -28,6 +62,7 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool rel)
+     TCGv src2 = gpr_src(ctx, a->rd, EXT_NONE);
+     TCGv t0 = tcg_temp_new();
+     TCGv val = tcg_temp_new();
++    TCGv zero = tcg_constant_tl(0);
  
--static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-+static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool rel)
- {
-     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-@@ -29,6 +33,10 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGLabel *l1 = gen_new_label();
      TCGLabel *done = gen_new_label();
- 
-     tcg_gen_addi_tl(t0, src1, a->imm);
+@@ -37,6 +72,11 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool rel)
+     if (rel) {
+         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+     }
 +
-+    if (rel) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++    if (avail_SCQ(ctx)) {
++        tcg_gen_st_tl(zero, tcg_env, offsetof(CPULoongArchState, llbit_scq));
 +    }
++
      tcg_gen_brcond_tl(TCG_COND_EQ, t0, cpu_lladdr, l1);
      tcg_gen_movi_tl(dest, 0);
      tcg_gen_br(done);
-@@ -86,10 +94,14 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+@@ -53,6 +93,47 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop, bool rel)
      return true;
  }
  
--TRANS(ll_w, ALL, gen_ll, MO_TESL)
--TRANS(sc_w, ALL, gen_sc, MO_TESL)
--TRANS(ll_d, 64, gen_ll, MO_TEUQ)
--TRANS(sc_d, 64, gen_sc, MO_TEUQ)
-+TRANS(ll_w, ALL, gen_ll, MO_TESL, false)
-+TRANS(sc_w, ALL, gen_sc, MO_TESL, false)
-+TRANS(ll_d, 64, gen_ll, MO_TEUQ, false)
-+TRANS(sc_d, 64, gen_sc, MO_TEUQ, false)
-+TRANS(llacq_w, LLACQ_SCREL, gen_ll, MO_TESL, true)
-+TRANS(screl_w, LLACQ_SCREL, gen_sc, MO_TESL, true)
-+TRANS(llacq_d, LLACQ_SCREL_64, gen_ll, MO_TEUQ, true)
-+TRANS(screl_d, LLACQ_SCREL_64, gen_sc, MO_TEUQ, true)
- TRANS(amcas_b, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_SB)
- TRANS(amcas_h, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESW)
- TRANS(amcas_w, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESL)
++static bool gen_sc_q(DisasContext *ctx, arg_rrr *a, MemOp mop)
++{
++    TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
++    TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
++    TCGv src2 = gpr_src(ctx, a->rd, EXT_NONE);
++    TCGv src3 = gpr_src(ctx, a->rk, EXT_NONE);
++    TCGv_i128 t16 = tcg_temp_new_i128();
++    TCGv_i128 c16 = tcg_temp_new_i128();
++    TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
++    TCGv zero = tcg_constant_tl(0);
++
++    TCGLabel *l1 = gen_new_label();
++    TCGLabel *done = gen_new_label();
++
++    tcg_gen_st_tl(zero, tcg_env, offsetof(CPULoongArchState, llbit_scq));
++    tcg_gen_brcond_tl(TCG_COND_EQ, src1, cpu_lladdr, l1);
++    tcg_gen_movi_tl(dest, 0);
++    tcg_gen_br(done);
++
++    gen_set_label(l1);
++    tcg_gen_concat_i64_i128(t16, src2, src3);
++    tcg_gen_concat_i64_i128(c16, cpu_llval,
++                            cpu_llval_high);
++
++    /* generate cmpxchg */
++    tcg_gen_atomic_cmpxchg_i128(t16, cpu_lladdr, c16,
++                              t16, ctx->mem_idx, mop | MO_ALIGN);
++
++    /* check if success */
++    tcg_gen_extr_i128_i64(t1, t2, t16);
++    tcg_gen_xor_i64(t1, t1, cpu_llval);
++    tcg_gen_xor_i64(t2, t2, cpu_llval_high);
++    tcg_gen_or_i64(t1, t1, t2);
++    tcg_gen_setcondi_i64(TCG_COND_EQ, dest, t1, 0);
++    gen_set_label(done);
++    gen_set_gpr(a->rd, dest, EXT_NONE);
++
++    return true;
++}
++
+ static bool gen_cas(DisasContext *ctx, arg_rrr *a,
+                     void (*func)(TCGv, TCGv, TCGv, TCGv, TCGArg, MemOp),
+                     MemOp mop)
+@@ -98,6 +179,7 @@ TRANS(ll_w, ALL, gen_ll, MO_TESL, false)
+ TRANS(sc_w, ALL, gen_sc, MO_TESL, false)
+ TRANS(ll_d, 64, gen_ll, MO_TEUQ, false)
+ TRANS(sc_d, 64, gen_sc, MO_TEUQ, false)
++TRANS(sc_q, 64, gen_sc_q, MO_128)
+ TRANS(llacq_w, LLACQ_SCREL, gen_ll, MO_TESL, true)
+ TRANS(screl_w, LLACQ_SCREL, gen_sc, MO_TESL, true)
+ TRANS(llacq_d, LLACQ_SCREL_64, gen_ll, MO_TEUQ, true)
+diff --git a/target/loongarch/tcg/insn_trans/trans_memory.c.inc b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
+index 42f4e74012..8b3c1b037c 100644
+--- a/target/loongarch/tcg/insn_trans/trans_memory.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
+@@ -7,11 +7,33 @@ static bool gen_load(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+ {
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
++    TCGv t1 = tcg_temp_new();
++    TCGv mask = tcg_constant_tl(0x8);
++    TCGv zero = tcg_constant_tl(0);
++    TCGLabel *done = gen_new_label();
++    TCGLabel *l1 = gen_new_label();
+ 
+     addr = make_address_i(ctx, addr, a->imm);
+ 
++    if (avail_SCQ(ctx) && mop == MO_TEUQ) {
++        /*
++         * The LL.D+LD.D may be paired with SC.Q,
++         * use llval_high if llbit_scq && (addr == lladdr ^ 0x8)
++         */
++        tcg_gen_brcond_tl(TCG_COND_EQ, cpu_llbit_scq, zero, l1);
++        tcg_gen_xor_tl(t1, addr, mask);
++        tcg_gen_brcond_tl(TCG_COND_NE, cpu_lladdr, t1, l1);
++        gen_set_gpr(a->rd, cpu_llval_high, EXT_NONE);
++        tcg_gen_br(done);
++        gen_set_label(l1);
++    }
++
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
++
++    if (avail_SCQ(ctx) && mop == MO_TEUQ) {
++        gen_set_label(done);
++    }
+     return true;
+ }
+ 
+diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
+index 055f6fb604..2023f892be 100644
+--- a/target/loongarch/tcg/translate.c
++++ b/target/loongarch/tcg/translate.c
+@@ -24,7 +24,7 @@
+ 
+ /* Global register indices */
+ TCGv cpu_gpr[32], cpu_pc;
+-static TCGv cpu_lladdr, cpu_llval;
++static TCGv cpu_lladdr, cpu_llval, cpu_llval_high, cpu_llbit_scq;
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
+@@ -360,6 +360,10 @@ void loongarch_translate_init(void)
+                     offsetof(CPULoongArchState, lladdr), "lladdr");
+     cpu_llval = tcg_global_mem_new(tcg_env,
+                     offsetof(CPULoongArchState, llval), "llval");
++    cpu_llval_high = tcg_global_mem_new(tcg_env,
++                    offsetof(CPULoongArchState, llval_high), "llval_high");
++    cpu_llbit_scq = tcg_global_mem_new(tcg_env,
++                    offsetof(CPULoongArchState, llbit_scq), "llbit_scq");
+ 
+ #ifndef CONFIG_USER_ONLY
+     loongarch_csr_translate_init();
 diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
-index 331f79c8f2..76bceedf98 100644
+index 76bceedf98..ba1c89e57b 100644
 --- a/target/loongarch/translate.h
 +++ b/target/loongarch/translate.h
-@@ -39,6 +39,9 @@
- #define avail_FRECIPE_LSX(C)   (avail_FRECIPE(C) && avail_LSX(C))
- #define avail_FRECIPE_LASX(C)   (avail_FRECIPE(C) && avail_LASX(C))
+@@ -30,6 +30,7 @@
+ #define avail_LAMCAS(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAMCAS))
+ #define avail_LSX(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSX))
+ #define avail_LASX(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LASX))
++#define avail_SCQ(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, SCQ))
+ #define avail_IOCSR(C)  (FIELD_EX32((C)->cpucfg1, CPUCFG1, IOCSR))
+ #define avail_CRC(C)    (FIELD_EX32((C)->cpucfg1, CPUCFG1, CRC))
  
-+#define avail_LLACQ_SCREL(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LLACQ_SCREL))
-+#define avail_LLACQ_SCREL_64(C) (avail_64(C) && avail_LLACQ_SCREL(C))
-+
- /*
-  * If an operation is being performed on less than TARGET_LONG_BITS,
-  * it may require the inputs to be sign- or zero-extended; which will
 -- 
 2.51.0
 
