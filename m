@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F16C762B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 21:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291CCC762B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 21:20:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMB8S-0004oY-35; Thu, 20 Nov 2025 15:20:08 -0500
+	id 1vMB8c-0004r4-1F; Thu, 20 Nov 2025 15:20:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMB8P-0004nx-Lu
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 15:20:05 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMB8Z-0004qK-6a
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 15:20:15 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMB8O-0001VR-5U
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 15:20:05 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-477aa218f20so8667605e9.0
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 12:20:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMB8V-0001hX-66
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 15:20:12 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4779d47be12so10546595e9.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 12:20:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763670002; x=1764274802; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763670009; x=1764274809; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gX9jGmeu+KwJPxY0MI+9o8DmOfeDSzlJfBVH4f7ccoo=;
- b=x7gbxKhN+0D5AumKI5gqxYDszawSbEZ7B4LgwRAKJ7O0hSkyDQOYaDDfYExJpaSQ7t
- TB39BuhiGiH1s4qk9hjG0DOac6Wzcen08sFPabpTcd+q9ohWnzKTKiXBHX4GUclRD/oe
- mW08jKem66y3z3ofYWZpWH322z4dM+QoM1CbfDwS0wMY9gfZD8j8a4i1paRb0QGtUcrB
- Vj6U5XwUi/nvwvlegX4tz1DgjG4ZyhhhyxxqZM6msqzq8oIXx1OmA9WCBa5fl/8vCSA1
- KsGUMv3uGbqHv+6gwGCwYLj8ru9CirjhUTYZG35mBrMtB70ORDWFnrfCvt/MCRboMkYc
- BDzw==
+ bh=uQ4pDasl6Y/n9YuRjyNRdPW3qukt+LDvP4yTxJ1TJQI=;
+ b=eDWMijDy337o3HBwQvHeRMZ93cwa/l+rkeGBm8yYQCeh9sSwYWbvCJgsOGKXtntrxt
+ lIc6ufwC7QE5C0mLbIQHOZADaDYrkf4IvSJzQwcx4y0hpMpMlWDPTVoVlhqAiMGWuABb
+ AyQiG64AiC/Db5+x8Oi7QTQMkMHDo8Qm4ot51uBVsq3bZzk7TlLonodSVq2/ur8Vv5hE
+ OWEh/e+bhgHnehWrfpcLnUO6NdgaUgE2gFRw/2ao8monv1vPjsE3zUPzMGrVKtKbAecZ
+ kLKizZ+lZemBhUBRimF7hAn6REuM2a1dQ5liFRHeTNoDHcuCwaeHZXgKV39WnlObDPAk
+ xJQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763670002; x=1764274802;
+ d=1e100.net; s=20230601; t=1763670009; x=1764274809;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=gX9jGmeu+KwJPxY0MI+9o8DmOfeDSzlJfBVH4f7ccoo=;
- b=ADhOxJ/BN/oXvULmXCjtTWEQ3uYAxXSvAwJpQzsygz/1ylBZh38nBITMoC4CSDyD0g
- qpI/ahfgiiJ/JuUybU3UXxHenfgFTZ2eBdTipERiP7DMdn71HZxHuzOt1QqhCMlC4e1i
- LFpynYdMIurL/n5no8JnCU2Wu/zg9gqcgOR4PfVb1rSujoPQl4NeiTaAoNLRkwNyaivm
- Kbib7+z8fDrfuJyhZrWdgWtwdt4ITxrbMtbUb+DucXyfuNEYEX8V7tEvIQMISfO8EAcn
- 4z7F7TwaDCZNFxSNP3c3YiKpy4u3LDnKCJ/myYSreE/XYsG/0HayEquIcfV7m5eopmk0
- rusA==
-X-Gm-Message-State: AOJu0Ywhqu9vJmn+dz6n6PJaQqtvsgY5b9PMAy3d93bjgtXZnCg+bpfy
- Vk7CBE96ZK123Ng+110HKDbTOnWBSLYBjlbQdT9eYDvao785HuuLGXM7jcg/1dv1ov4OTs0FWpq
- SbiqOQ8hYRw==
-X-Gm-Gg: ASbGncsMf1G8Qa2wFbXn02Mkmo/XwIQuAPbJIuNpWiwhkVph9xF66jUgIk4qHj8gVaL
- BVY6rLa1LONXHhvNHnVp7W2IL7VqNcexHTbhZzdXWVTo/bktgpHuOwC5xBpsFLXUg/5RkrsXJwq
- XnAeDb5/gRE/DzCfMJt8mmYzPNGZGGPEat11mNXVTi0e/ybfeHYtOyoP7+pqq3sGwmCDaVeNqx2
- u+D9ZVsfRMWdy5VrlT13t6m0eo691UbMWbyY2m+KXfuTyUu2QeyCQWp/srB5TwJg6aKXqjJKXnU
- zxuVZNNO8QYkKEdwnKHyao2FNOwK0ZPOfUWLQUACtDNKlVfPGv8E9Zhyc7PXC2szw0gm8Lm3lAu
- 59ZyV0rqESH0nL5hza0FzP3g/291KB567R78Mcf7MnPwHGBVPGr0+AK+oe1mkqQzqXiY1DVvaK3
- H5GOvQKjw2t60uiKz0AI+M8iIgfZMZgIAFob0l66USgw6XtPXUJeUCU5KBJKe9
-X-Google-Smtp-Source: AGHT+IEgRh2WzW9puMcn9L7Dayst+plw1+PoZJs39NQMANt5Cj3iX4RlK7Rl2iN304JfDaAfoyyIrw==
-X-Received: by 2002:a05:600c:4443:b0:46d:a04:50c6 with SMTP id
- 5b1f17b1804b1-477bf12126amr8079285e9.30.1763670001888; 
- Thu, 20 Nov 2025 12:20:01 -0800 (PST)
+ bh=uQ4pDasl6Y/n9YuRjyNRdPW3qukt+LDvP4yTxJ1TJQI=;
+ b=etBFgPSLqhEtyNkYLUsRAz5Mdi5JJgwGEXtUk6s8gyi2foyFPQsel7P/GEdhFotP1k
+ qaJD9qPtsIF5JhxyQ0f3Ql2RqPC+ezX96aRnBrTr1ZRRHUSZEwdBfqpHAEurQFVyktye
+ uzKFH2dGxyZZFFzX7Vkx7hCmsJsX54KTIByF8Efwtp9WvCnN6xWAhcCTRR+ir/pMHhCR
+ k63jZs3s78ihIxvTz9OG8inPzM2RynU+ga4uinMDq0wwBTOhvxVqW9GwI9QT7Ep1uLgY
+ HOKCz7LhmoSvkeE9cMipaPlnmrZTyc/8jrIL2dVTHUvW1+ZzT269PbTR2CJNQKfnhfPN
+ sAgQ==
+X-Gm-Message-State: AOJu0YweQiI/arb1ppFIhC2ZZkUtqi2zhUB1neSoCsx7A5iTmEsJgvPi
+ LiujF9fZWvvkqdYc1sduby5dFqqVXifJ8pwBLAZulSoJ8FZ1o9ctKJW0Ef2O0+USXEmhPxhGRID
+ DlwwXVN9eqg==
+X-Gm-Gg: ASbGncvl3WPQFbG3pl42O35gDvnJBGDDwa0gCUTD0Jyw2C0ohVWOqdPyZCmz1G96ASU
+ s5ox4wNJe8x7piPq81z3A59tzVy4P00Y6IEAJtbmaCve+/qunHCPfincXY4z8oKqFiKeWO2pcwI
+ uDZemgpM0vnTqjiiuVbyZni4T23ATql7QuTAorsGCkP9oGg+tbjRAqM2yniHtovfoY0PMKfhrZi
+ ysKAlaYvv5LH7iqB3C9fCN5Vp5kEnIA+MWin4N5BdweRUtBV5zNbRktDysje9xGyX7jcrBjMKOJ
+ IaIIa9svuqeFI7GlSRQ127tw0Rkq3hAZln/pRsKRbzs+gHQVYZhqg1fcbCfDJFBsdPcLj1XEf2J
+ VXs3Njq1YZgchafO3H00okqLmpv0/881x2Nyy9T7P+y7Z9JkCAvbKRRS/lBEhgjp9v/OUYe6ppx
+ +mivxqUadX57yJUMRLwBKViUK7jq7IXFsYDh+u71YvSdDX6Y56jt5vffBTcOCq
+X-Google-Smtp-Source: AGHT+IHfqoEqhjnhk60tUs4cs2o6mVWrl8iQpPqPnZWhjlQBBWpkHhZrn9TQCIzWKFvhw5I0W261ww==
+X-Received: by 2002:a05:600c:3b09:b0:471:13fa:1b84 with SMTP id
+ 5b1f17b1804b1-477c0185bc8mr100295e9.12.1763670008695; 
+ Thu, 20 Nov 2025 12:20:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf1e868bsm6943635e9.4.2025.11.20.12.20.01
+ 5b1f17b1804b1-477bf1f365fsm6916135e9.8.2025.11.20.12.20.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 20 Nov 2025 12:20:01 -0800 (PST)
+ Thu, 20 Nov 2025 12:20:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC-PATCH-for-11.0 v2 6/8] target/riscv: Use little-endian variant
- of cpu_ld{l, q}_code()
-Date: Thu, 20 Nov 2025 21:19:17 +0100
-Message-ID: <20251120201919.8460-7-philmd@linaro.org>
+Subject: [RFC-PATCH-for-11.0 v2 7/8] target/ppc: Replace cpu_ldl_code() by
+ explicit endianness variants
+Date: Thu, 20 Nov 2025 21:19:18 +0100
+Message-ID: <20251120201919.8460-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251120201919.8460-1-philmd@linaro.org>
 References: <20251120201919.8460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,47 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISC-V instructions are always stored in little-endian order
-(see "Volume I: RISC-V Unprivileged ISA" document, chapter
-'Instruction Encoding Spaces and Prefixes': "instruction fetch
-in RISC-V is little-endian").
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/translate.c  | 2 +-
- target/riscv/zce_helper.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/ppc/tcg-excp_helper.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index e1f4dc5ffd0..847481a9b41 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1182,7 +1182,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
-     CPUState *cpu = ctx->cs;
-     CPURISCVState *env = cpu_env(cpu);
- 
--    return cpu_ldl_code(env, pc);
-+    return cpu_ldl_le_code(env, pc);
+diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
+index edecfb85725..6058efb09cd 100644
+--- a/target/ppc/tcg-excp_helper.c
++++ b/target/ppc/tcg-excp_helper.c
+@@ -424,22 +424,11 @@ G_NORETURN void powerpc_checkstop(CPUPPCState *env, const char *reason)
+     cpu_loop_exit_noexc(cs);
  }
  
- #define SS_MMU_INDEX(ctx) (ctx->mem_idx | MMU_IDX_SS_WRITE)
-diff --git a/target/riscv/zce_helper.c b/target/riscv/zce_helper.c
-index 55221f5f375..992e2f964e0 100644
---- a/target/riscv/zce_helper.c
-+++ b/target/riscv/zce_helper.c
-@@ -44,10 +44,10 @@ target_ulong HELPER(cm_jalt)(CPURISCVState *env, uint32_t index)
+-/* Return true iff byteswap is needed to load instruction */
+-static inline bool insn_need_byteswap(CPUArchState *env)
+-{
+-    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
+-    return !!(env->msr & ((target_ulong)1 << MSR_LE));
+-}
+-
+ uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
+ {
+-    uint32_t insn = cpu_ldl_code(env, addr);
+-
+-    if (insn_need_byteswap(env)) {
+-        insn = bswap32(insn);
+-    }
+-
+-    return insn;
++    return FIELD_EX64(env->msr, MSR, MSR_LE)
++           ? cpu_ldl_le_code(env, addr)
++           : cpu_ldl_be_code(env, addr);
+ }
  
-     if (xlen == 32) {
-         t0 = base + (index << 2);
--        target = cpu_ldl_code(env, t0);
-+        target = cpu_ldl_le_code(env, t0);
-     } else {
-         t0 = base + (index << 3);
--        target = cpu_ldq_code(env, t0);
-+        target = cpu_ldq_le_code(env, t0);
-     }
- 
-     return target & ~0x1;
+ #if defined(TARGET_PPC64)
 -- 
 2.51.0
 
