@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2CFC76062
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037CFC76098
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:16:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMA6u-0006YT-15; Thu, 20 Nov 2025 14:14:28 -0500
+	id 1vMA6y-0006kt-DX; Thu, 20 Nov 2025 14:14:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6b-0005wx-Iq
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6c-0005xP-OE
  for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6R-00077l-JU
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:09 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6R-00077p-KZ
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1763666037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=i91/aRc2V0WW39WS58hSriJ7oXz4L2KTH569rGq9FSU=;
- b=ilMJUrUPdFiflo5LNUnSH0hv0I4PKWTzlXMiebs+u+0JAC+0MMSGEkioRuK4Htit6nQrsZ
- SLXmI85Xj0caGEf6GITv4qtAMdE2rNkY+enOZnR23CqDMmPVoTpFt3J2gFNGLLx+5xQfuB
- F9dgtND2LgHAdKjUXzKjPKr9+zFVEmE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=s+f/YPMyhiw0MODLrT/W+QVnkFDpo2Q2VNPNda433v0=;
+ b=epT6d98VlrmCWnXJprpJ/aArsiaAKhaNh789m/ge+38H/a+r4Tpcak8ESaqxR0mwasruB1
+ GE5Op6q3JJhLZgspFjDJaRV70nJmz1op8OnjvH7la1bpXR9/wQjeaOQSqfu39rVPR0LzSH
+ nqZ5K7PYK0oVv/NkWhz+zBju9pV1ksU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-Sn9f2AgJO2O1Hmg4rwq_2Q-1; Thu,
- 20 Nov 2025 14:13:52 -0500
-X-MC-Unique: Sn9f2AgJO2O1Hmg4rwq_2Q-1
-X-Mimecast-MFC-AGG-ID: Sn9f2AgJO2O1Hmg4rwq_2Q_1763666027
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-m10SDGhuPzaFE5VhiICI4w-1; Thu,
+ 20 Nov 2025 14:13:53 -0500
+X-MC-Unique: m10SDGhuPzaFE5VhiICI4w-1
+X-Mimecast-MFC-AGG-ID: m10SDGhuPzaFE5VhiICI4w_1763666027
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D46EC1954B0C; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DEFC1800650; Thu, 20 Nov 2025 19:13:47 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17EDA30044E7; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB2471955F67; Thu, 20 Nov 2025 19:13:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 66E4C21E660B; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+ id 6C27521E65DA; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
@@ -63,15 +63,15 @@ Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH 07/14] net/tap: Use error_setg_file_open() for a better error
+Subject: [PATCH 08/14] blkdebug: Use error_setg_file_open() for a better error
  message
-Date: Thu, 20 Nov 2025 20:13:32 +0100
-Message-ID: <20251120191339.756429-8-armbru@redhat.com>
+Date: Thu, 20 Nov 2025 20:13:33 +0100
+Message-ID: <20251120191339.756429-9-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,37 +99,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The error message changes from
 
-    tap: open vhost char device failed
+    Could not read blkdebug config file: REASON
 
 to
 
-    Could not open '/dev/vhost-net': REASON
+    Could not open 'FNAME': REASON
 
 I think the exact file name is more useful to know than the file's
 purpose.
 
-We could put back the "tap: " prefix with error_prepend().  Not
-worth the bother.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- net/tap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ block/blkdebug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index abe3b2d036..bfba3fd7a7 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -747,8 +747,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         } else {
-             vhostfd = open("/dev/vhost-net", O_RDWR);
-             if (vhostfd < 0) {
--                error_setg_errno(errp, errno,
--                                 "tap: open vhost char device failed");
-+                error_setg_file_open(errp, errno, "/dev/vhost-net");
-                 goto failed;
-             }
-             if (!qemu_set_blocking(vhostfd, false, errp)) {
+diff --git a/block/blkdebug.c b/block/blkdebug.c
+index c54aee0c84..8a4a8cb85e 100644
+--- a/block/blkdebug.c
++++ b/block/blkdebug.c
+@@ -288,7 +288,7 @@ static int read_config(BDRVBlkdebugState *s, const char *filename,
+     if (filename) {
+         f = fopen(filename, "r");
+         if (f == NULL) {
+-            error_setg_errno(errp, errno, "Could not read blkdebug config file");
++            error_setg_file_open(errp, errno, filename);
+             return -errno;
+         }
+ 
 -- 
 2.49.0
 
