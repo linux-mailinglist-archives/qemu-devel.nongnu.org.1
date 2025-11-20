@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E8DC7188A
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FE1C71881
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLsML-00039l-2r; Wed, 19 Nov 2025 19:17:13 -0500
+	id 1vLsMO-0003Am-AH; Wed, 19 Nov 2025 19:17:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsMH-00038g-PN
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:09 -0500
+ id 1vLsMM-0003AE-0f
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsMF-0007Qh-VU
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:09 -0500
+ id 1vLsMK-0007RQ-Ci
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763597827;
+ s=mimecast20190719; t=1763597831;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+VnR7WQ4phvEKh0Jwt424ldKYy6fvpgQ+MNLeSCq/oA=;
- b=LA6wBKTvMI3mSaJJGuiK1czNv/uhDJn8Ngjk8c2/YKVxfZDmn+gxpE9TAXPTpvm11jURbk
- sxior2efXxkyyUZ7K+KOO7ftF5DLAtFi14ud7H6GCPReS6A4oowr0ouvdwSY9KIJzkOyhL
- V6F/k60glGhF7jlzo3CWjK4g792DtmU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BBW85pbyW1JiYUXYRrf6v5xu2V5GcK8qF6OmC8TQVL4=;
+ b=FerCf5DdMMk1PxSmrE4tsNlKRfmvqfu4fsYT9rSo+frELzWmID33Pmeqb+Zk/WACCu1qz1
+ mfITx+551epyIUc2d8p2uE2bC8eL19QTgS9ITpZeoFcnC+goC5rBQ5hDZihVxCoUoijxNa
+ VWm+r0eAtiBJRjYZJaIUo8XuELdCEus=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-218-lV0o60ajPtiag8ua0lqAjg-1; Wed, 19 Nov 2025 19:17:05 -0500
-X-MC-Unique: lV0o60ajPtiag8ua0lqAjg-1
-X-Mimecast-MFC-AGG-ID: lV0o60ajPtiag8ua0lqAjg_1763597825
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-42b352355a1so664924f8f.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:17:05 -0800 (PST)
+ us-mta-402-OcSFa8JpPvSbWuOcVMKAhg-1; Wed, 19 Nov 2025 19:17:10 -0500
+X-MC-Unique: OcSFa8JpPvSbWuOcVMKAhg-1
+X-Mimecast-MFC-AGG-ID: OcSFa8JpPvSbWuOcVMKAhg_1763597829
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477b8a667bcso4031755e9.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:17:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763597824; x=1764202624; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763597828; x=1764202628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+VnR7WQ4phvEKh0Jwt424ldKYy6fvpgQ+MNLeSCq/oA=;
- b=nrl5YH79EV9Exw0vWDfpwKLCUEyTNL03+jDc3rtjc9koUUdCeHqvpIS3F+/iIQi6Ui
- O1bB5WvrEQhd+7jekB/xCsef6evVpO2ES3fyblrIrmDEVB3r/i3uZezsNJuwZ2mBxuco
- ptMbEbkIDEZQbbWmWpvRYh+STMGzp96Dtue8eEo8gwCO/dZGHqgdRuiX5oCvEr3TUqrj
- mynJAs6r980m96Usth7cIomZlfovZumnO6TcP3Vo5/nHIZ0URTndsavV6ubsHyVXwbAL
- CGsXgB8eJ1TrXlRaIN+aIM6Nk6B2lnlp12H1avGYdAI7ECODbhWasY2EHazt2MH224iF
- LDKQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=BBW85pbyW1JiYUXYRrf6v5xu2V5GcK8qF6OmC8TQVL4=;
+ b=Pe5hK9dL/zAaSc9x5jOKftMYcwUeoirOY6fzV88yv0idjQgL/yk0W67XuzWGURBGu1
+ +ltMiXVL9tymFH25cFJ9u4UHgEZ7VKUjcLfCEGy1vjb5sV76+qN+gWPvZGyxf5Et+QOC
+ Py8GvDAm78xlRIuNKEO+wQ6m77/pc+Sy2Bq/Y6MeQc7hurZN3McVPBcOBSV2lPBFEUce
+ 45CDTf2m7cOOEhTwJUr1VlaBnYenmlUnjei4VqBm39mQWiXKg1xPy1AY7DW4ODmv0dRc
+ o/ZeCSwI97IotdnoQqfNyMzfyXuRcE0Z5BY0zWH72T7Vto1v5Z/x0IYWWul2RO4k3eoi
+ hUTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763597824; x=1764202624;
+ d=1e100.net; s=20230601; t=1763597828; x=1764202628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+VnR7WQ4phvEKh0Jwt424ldKYy6fvpgQ+MNLeSCq/oA=;
- b=LmXAG2Fe48nhU0PRDg7qClExcDn1ftIZ4tm9ZfnD6TAzv6xRc824wblBUd/YaFKfYB
- las3kZxF2r+zREDuVWavpUUq185bB6Lqv9A2ofRtoFKdl3igK4qb9vZjgFA1CCR8cTMR
- Qoddi4tSFdNeu5qbsm12Sp3gjeY6IHuy5djUH84KqoDwkMDUgCich+ce1p8gV6gEgR+c
- uz0rYbHNoXwoxjSScJLXfidU3Rf2fmOQzICIzayIInJ/trO1aNfSGfJ7HLW7LeWMXy3H
- 9mBubZE6EJdkRvKSHyM5/+DyyhawaBivSxmbF0BrHbYaBr0G8F9VT4gUBEBhV8CWlHTo
- YOzQ==
-X-Gm-Message-State: AOJu0Yx7/xqjpeK+weR+ZG9g5/Qe4BGdjSJWtGlrgzxJKCYs8Y6P1gJU
- V+7T/IqQsdTyzP5xWJVB/L2erb2XBsljjgmqndtJQfygWWjgEPgelDHgrh6Bqdfdhz7Idpn6154
- C5/RHYeCe1WNYJh7AyhL9n85fiy5ye7VCBBTxWhnEUEGj39O/Xx8Nqu9vumguNgJyzun+E4u/zT
- QkcQO1nhMNW1Af+RAFhmAlmZNh70iPKIJzo9cAipTF
-X-Gm-Gg: ASbGncv35EZsI67G+9QRdrnxZYH1wilUthaXclKd07jMVvmozrETmztVijPy5OueD9b
- FGYaodA8RuXz/UpBKxWEj2aUYkt8CHhZC/M1MxFTe/y981ulVsxiQRAKEmK67T6qcOmCTadPFkn
- BYc6HLHGx0fpn5IRCuX8uq5cxIGXPnSxXWH6doyMJ4XB9piW1X1KQOoA8i4V2MjzY/cILDiBfuU
- 78KPQ+wEOfDoY7acWaIghNlJ58k9mqfy1TupJ3gJYOjFrjwue4wZqw50Nrwh+nPE/Ng5WjdXwUS
- qJAUs2/VC1uGmFhhjvaOTJXJ7GgzOX/1uO0Mge1h53olOOvJc4bmGKdEKpaha+SQCvhfHROyKM6
- dHztDQaZw12mUFczerkfAIIG+doIIPinl0yiME1J2dINbzatnYN/55mtJv6EROc/7w7+NVMgmx1
- ussmsGdYiH+a50b7c=
-X-Received: by 2002:a05:600c:5952:b0:477:3fcf:368c with SMTP id
- 5b1f17b1804b1-477b9ee4fbfmr2115715e9.9.1763597823842; 
- Wed, 19 Nov 2025 16:17:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNPTSYh1ymhmLyrT7IPljGvzm4VXNO4iGtc/i1HKup8BrNsnZ0PnP/2mI5ru6Hdtz0fPeAlg==
-X-Received: by 2002:a05:600c:5952:b0:477:3fcf:368c with SMTP id
- 5b1f17b1804b1-477b9ee4fbfmr2115565e9.9.1763597823456; 
- Wed, 19 Nov 2025 16:17:03 -0800 (PST)
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=BBW85pbyW1JiYUXYRrf6v5xu2V5GcK8qF6OmC8TQVL4=;
+ b=qp8E9BWAJPESwDfcfTXceaH68HFBoRjPXmyFcvBOGXgu9XRRtXBmjV5TzexWomMNgK
+ /eFHLwxOmezLpfCpNsGSVoAnxsBtLam+FT9scvbAoew/DR+DU4hYAFcI3zbobAZztuY9
+ 2LJ9dbtuHin0gecBewyU+5VioV0qFZMAv/yVQwjWTfvVTocXOZ1Je4mGcLyOO0jYYcwC
+ /75qWTQXRXE3uw8ozvS3HCRlxdIFt9kfCmd/jicVrLhpdEdIOWjsmXlR8Au863m1QMQI
+ OpHz9VxLgeK2gZXAUbGZsFpqdYaGtRaFNfOuXRU5Voza+kbXDCmc8EjYjAIjdToeZNLI
+ fgaQ==
+X-Gm-Message-State: AOJu0Yw3sZoXCelLMgaTAqCWZPJpVNXm1B4y+5pYADdHXC4vT46OI/by
+ wuAedhAw2WkqmpsNlfH5Yw8Lh5bb9JjnBtoQUebJHEXxIJ++hf+3kUzfrlXgJudoqkHI61wspgD
+ 4wwYyiQ0b+lLos/kQoSaCP3dA14LXrrJ099VtBGvicH/B1rWPSeHJsk6/ewMKvEhGpolkr6HbcS
+ aRuluGUC07ZlUNQDUw7mY2hm5PKMfHH17AOT7J20uK
+X-Gm-Gg: ASbGncvKXvh/E44tuHxIDa1bYMpBpm52VktJ99J2jg9nvBcMsFdEnMbcfTv430Z11XC
+ 5NY7cosdup2c0sZgtEiKEWgil9THde+K+qSRrYtCxf0LMpz8d8kNIYGcbhNJYaX6TTeEa040xgR
+ 28C1HRciQIyKXFQz5zIDhM2Cy/WVkXbOYM8CgwQuuwOcRdqFfSALGxS0vcTm9gckVuoeNvZpbyO
+ UCrRNakmBNTUgIhl8rT0rX+YcXkSy6QvLgpz8Dy8t1WoMQhxFAFGVOJIDIiHvdGVoYcYtCZ1gnX
+ PQsm4kp6eh5PpMzKYHp9H7wNlHlb4twVSEWnLk/bUVpARHa+tZuEsupc8FyjyCxE+oSCjJFaiCz
+ bhdKKNh+btOH49HCzT3LS4Mcb6Bxbh0RKXY1b7cKVpa/36Khj9DiqNntDkVMrPLWFIFoA5GH29T
+ 7ezcRcxBYcPi8kBno=
+X-Received: by 2002:a05:600c:4f8b:b0:477:79c7:8994 with SMTP id
+ 5b1f17b1804b1-477b8a9f74cmr10963975e9.30.1763597827590; 
+ Wed, 19 Nov 2025 16:17:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhiraFOWeMl5xdxy+IzthTwaC9fPlXW9vvn6cc2zJbPvyMRPj6fHJ3A9aRgpAYXLRpq/f5ow==
+X-Received: by 2002:a05:600c:4f8b:b0:477:79c7:8994 with SMTP id
+ 5b1f17b1804b1-477b8a9f74cmr10963585e9.30.1763597825876; 
+ Wed, 19 Nov 2025 16:17:05 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477b10804c8sm76635165e9.15.2025.11.19.16.17.01
+ ffacd0b85a97d-42cb7fb8a29sm1903427f8f.30.2025.11.19.16.17.04
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 16:17:02 -0800 (PST)
+ Wed, 19 Nov 2025 16:17:04 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PULL 05/10] target/i386: svm: fix sign extension of exit code
-Date: Thu, 20 Nov 2025 01:16:44 +0100
-Message-ID: <20251120001649.1085913-6-pbonzini@redhat.com>
+Subject: [PULL 06/10] target/i386: fix stack size when delivering real mode
+ interrupts
+Date: Thu, 20 Nov 2025 01:16:45 +0100
+Message-ID: <20251120001649.1085913-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251120001649.1085913-1-pbonzini@redhat.com>
 References: <20251120001649.1085913-1-pbonzini@redhat.com>
@@ -104,7 +104,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,63 +120,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The exit_code parameter of cpu_vmexit is declared as uint32_t, but exit
-codes are 64 bits wide according to the AMD SVM specification.  And because
-uint32_t is unsigned, this causes exit codes to be zero-extended, for example
-writing SVM_EXIT_ERR as 0xffff_ffff instead of the expected 0xffff_ffff_ffff_ffff.
+The stack can be 32-bit even in real mode, and in this case
+the stack pointer must be updated in its entirety rather than
+just the bottom 16 bits.  The same is true of real mode IRET,
+for which there was even a comment suggesting the right thing
+to do.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2977
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1506
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/helper-tcg.h        | 2 +-
- target/i386/tcg/system/svm_helper.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ target/i386/tcg/seg_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
-index be011b06b7c..e41cbda407a 100644
---- a/target/i386/tcg/helper-tcg.h
-+++ b/target/i386/tcg/helper-tcg.h
-@@ -99,7 +99,7 @@ void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index 667b1c38696..227336c4ef2 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -1161,7 +1161,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
+     sa.env = env;
+     sa.ra = 0;
+     sa.sp = env->regs[R_ESP];
+-    sa.sp_mask = 0xffff;
++    sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.ss_base = env->segs[R_SS].base;
+     sa.mmu_index = x86_mmu_index_pl(env, 0);
  
- /* system/svm_helper.c */
- #ifndef CONFIG_USER_ONLY
--G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint32_t exit_code,
-+G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint64_t exit_code,
-                            uint64_t exit_info_1, uintptr_t retaddr);
- void do_vmexit(CPUX86State *env);
- #endif
-diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
-index 505788b0e26..4b86796518f 100644
---- a/target/i386/tcg/system/svm_helper.c
-+++ b/target/i386/tcg/system/svm_helper.c
-@@ -128,7 +128,7 @@ static inline bool virtual_gif_enabled(CPUX86State *env)
-     return false;
- }
+@@ -1964,7 +1964,7 @@ void helper_iret_real(CPUX86State *env, int shift)
+     sa.env = env;
+     sa.ra = GETPC();
+     sa.mmu_index = x86_mmu_index_pl(env, 0);
+-    sa.sp_mask = 0xffff; /* XXXX: use SS segment size? */
++    sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.sp = env->regs[R_ESP];
+     sa.ss_base = env->segs[R_SS].base;
  
--static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint32_t exit_code, uintptr_t retaddr)
-+static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint64_t exit_code, uintptr_t retaddr)
- {
-     uint64_t lbr_ctl;
- 
-@@ -723,7 +723,7 @@ void helper_svm_check_io(CPUX86State *env, uint32_t port, uint32_t param,
-     }
- }
- 
--void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
-+void cpu_vmexit(CPUX86State *env, uint64_t exit_code, uint64_t exit_info_1,
-                 uintptr_t retaddr)
- {
-     CPUState *cs = env_cpu(env);
-@@ -732,7 +732,7 @@ void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
- 
-     qemu_log_mask(CPU_LOG_TB_IN_ASM, "vmexit(%08x, %016" PRIx64 ", %016"
-                   PRIx64 ", " TARGET_FMT_lx ")!\n",
--                  exit_code, exit_info_1,
-+                  (uint32_t)exit_code, exit_info_1,
-                   x86_ldq_phys(cs, env->vm_vmcb + offsetof(struct vmcb,
-                                                    control.exit_info_2)),
-                   env->eip);
 -- 
 2.51.1
 
