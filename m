@@ -2,102 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F050C71890
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D68C71893
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLsMA-00036H-UH; Wed, 19 Nov 2025 19:17:03 -0500
+	id 1vLsMD-000372-El; Wed, 19 Nov 2025 19:17:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsM7-00035m-W8
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vLsMB-00036s-Cr
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsM5-0007Ow-TS
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:16:59 -0500
+ id 1vLsM9-0007PC-Si
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763597817;
+ s=mimecast20190719; t=1763597819;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8aaUR6WzSNP4cK/DMriqb/j4Ba2z3R/UyBF2bczQJeI=;
- b=QEyUa30A+PLaLmmeHLBp5FLHC+6xU+OfMYUj2FlCvspcbn9J7H3WP60tTPXla9tmG6gJTS
- MV7dqGV9cvOjnyAXJwUoNZBUS8z4LaGjAeeDOO30AYpCBLkc7hWhk01MjqOxPlwBMI8ej/
- 8s6ntAv06nSCm4gUVtprtMq6952lc34=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
+ b=K5pZZq+LS+kV4NVjAYYifrdl8wO49Gn5FzOVwgdHQ2/89M9UGuNO70sB/piRGbaxvUpaw8
+ 3a40SK4zc280zGczFxmXI7FU3CDodXtNKf69Izi6BMvU8AdBFmy0vrMDEkID7iZ5+wY4xh
+ +WrJhBAqpQTThUWriV/Ed7MsEs3Kq84=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-DVOER5kPOHahvIZNyHa6QQ-1; Wed, 19 Nov 2025 19:16:55 -0500
-X-MC-Unique: DVOER5kPOHahvIZNyHa6QQ-1
-X-Mimecast-MFC-AGG-ID: DVOER5kPOHahvIZNyHa6QQ_1763597814
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-477a11d9e67so1571735e9.2
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:16:55 -0800 (PST)
+ us-mta-88-wVHt3bmoOfGGvuKdLAh0jg-1; Wed, 19 Nov 2025 19:16:58 -0500
+X-MC-Unique: wVHt3bmoOfGGvuKdLAh0jg-1
+X-Mimecast-MFC-AGG-ID: wVHt3bmoOfGGvuKdLAh0jg_1763597817
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-47777158a85so5166345e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:16:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763597813; x=1764202613; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763597816; x=1764202616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8aaUR6WzSNP4cK/DMriqb/j4Ba2z3R/UyBF2bczQJeI=;
- b=P770kqb6eUi1H898SLnnMTayKfmN083oZO7OCclHfevASZD97tqHrvPKNtv5GUGPZR
- osKofTRs0qfc3mRDMCOS30r8O+AClewXG9Z5YHA+c/yfFm0rlmBup/SH9tiz9mskduXo
- DatEFrmMrxFQYlgWz21oCRGlhe3THkf4F50R96QyqksQEQrEjLihwkGNIuZKh+9CJC5r
- jfLfF1leWWBZfQLzdFeia+MSU1uBTUwxl/PJx1UZ9jsnuwJP0Necaal7/Bc9ng5hoovj
- gLB6+k9KId79pFKdUrarUWH/n2AvCw4e/DxcOEmTbNuYMdWe0UkrAZMG+LvrtWIZDR0r
- xDAQ==
+ bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
+ b=Yn/JCrwPz6iI3JpV949xWxHmhLMCx1DP7EuRVYVA8APa+nO657vg/xKFGFfD5jUZcE
+ TR0qRwTTWVYyrd7shPpYPg7auj4WVEh7zj7Zb+BhsuxZK9znW3Oa52cb6N2tT4xel/ry
+ 2S+iTK2y9avsdyPGWrbxRLpO7Vl32lW2Z4TEeiFHJMv8Vh1JWStUgIfiiGNow9vdHHdB
+ JUFv5RoP2MUhizJ/iB0Fwu+RvAKR+TvW1jJ79sr+mcGfyP4fH94qMF2DouVAF7N2rUGC
+ QaloeMjpeAs6/Ou5BXaNM/nYZpDu67Fv3Ho9MXvmY5MvexGqk9PI1Mk5FbVVwZs6LP3p
+ nGgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763597813; x=1764202613;
+ d=1e100.net; s=20230601; t=1763597816; x=1764202616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=8aaUR6WzSNP4cK/DMriqb/j4Ba2z3R/UyBF2bczQJeI=;
- b=CkBpNiv5QsR3zXI0XtBwn1YJ0xlqoFMxbuDT9SRgSZdLx9TPL0PdmbTauvQpKro8vD
- O9tkiv/+gsUswOS9V3RTkjoKnWhiSS82qo11QWyHOXX42bAP2R153woJXTlF2EyaTioK
- DUFJd5wn0u0/Jz1ZsrjQNnwTy7wOMAFSjIWld01WvRlhwY4i38UTJ5dxMlbOXzPcD6nK
- EU0qx7ynG3poF/5jzfcEt6GTbhRHl9APqdkFeKZ20qt2uLfnfYnd0tnIeV4i2J4i/oJG
- 3wTN+35ZfuAVQ6KnwqWI8Vnn6ysIuiDyyhEzeZPUdk/SbLR9oOZv+By1QSeZ6wZKI8wU
- q3og==
-X-Gm-Message-State: AOJu0Yxm86yXTaUNTNRBJU9+8825Pj8eqCsQmJ8iAtDQPJtVOkhVUcZ4
- eSWIr7GXJkCsg8gmJ7jca6I7nBag+XyIYBZIiTSs2j752CYIP9t4xo6kgg0ZK7l2yIasfnzdNas
- qtVM5XdKEjnBSfg2JzzBlYv7K5bevRZRT1OLkuFxkoIj36kY60CZTDx6TKqcmuwUc/EzS+ZufC1
- i/saSSkq8dJq8xYRO7mSrtJ9qV4rchAgKUVKsdVpI7
-X-Gm-Gg: ASbGncvv+Ndpwk+j+Q5oGnsBUWjRmjCZ7ZNjsrr0MmMgFV9uZvl3hhkF3MRUXciMEyb
- ZPUfICZOxjxd5FUHDTbgcxuX3+4TWbmm/bTmJI0+KXw69L5pF+WE1qwHHrDUtNJd1vmjYV6wQHz
- KzdflxgOcOkR1jbkfxYMHiCuccc6c/JEzIpQ7nTJFf1I/TFNpFIyTR3+6RJRwm1Jyep9uMXQGBi
- UMiRS+tDq8SngIWQ00XzMNS06/RHCDrivfGtH1MBDl6+aTEYSPdNsPd3vjPPsW9MkYw8zb06OAD
- 6iSVRvjJXwCSuLcuUuLKU6jqwXeIKQusrt9OYJ4v+2VEB9+r2zCmmy++9RelxTop62uQputM+9c
- xjWin6Bk1DaDJ+b6hf7Fr0x2y/mnsuFrQkOvTffnFddBwDJWweKz9I24SRf7x7LduU7/K8HDsua
- /dkYVXLE5RzbgwjSA=
-X-Received: by 2002:a05:600c:c8f:b0:477:7b16:5f77 with SMTP id
- 5b1f17b1804b1-477b8671ff3mr8969535e9.3.1763597813441; 
- Wed, 19 Nov 2025 16:16:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFj3xzE6u774s/47T8gKXOnWMgAG84i6RAKPUsm9ek39gds3LW6a3xQ/J5fm7vLrBGy8xd8ow==
-X-Received: by 2002:a05:600c:c8f:b0:477:7b16:5f77 with SMTP id
- 5b1f17b1804b1-477b8671ff3mr8969345e9.3.1763597812968; 
- Wed, 19 Nov 2025 16:16:52 -0800 (PST)
+ bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
+ b=HJ/clZPWJxK1Xd1KKtlUEZbhfhzdKubmd5YOrjQPqiVE491TRzmJK26jyyjiJyZ5tc
+ iopQKk0g7uGkTZmAvjUpBfCt7S9XorXM0OWVHk63FiIK2DCZ//V6Qqv/QWFRsxWACq7x
+ eealFFrNm8A/gbgy4GmeZ9cg4bsls04Pf1oodoGHaVwiwuVl7/9BwiUkYFVgUBQswBPN
+ 3Kk7ImTxNLmFjM65vJ7JfJnXxBS5CGbO2881KOTzz6fGvp9d1HZ9lwp8e174w4zFguwb
+ D+4cRKXSnn/kglFr0wnMKnWzUJTzRtVnt2llqzdODe/QYwH2D1Vtwx6CMjliUY+978S1
+ u9Ug==
+X-Gm-Message-State: AOJu0YzSXxDxfsoM88nQ73qExzx2Q/nuPkso88dgGoYaOUVsyzjle66g
+ qR4rSoZ75a87CrjxC279LcG8feL6B7Of62vDbUAKgiMadtaSELWmw2tHIzejGCyyhf7MSVaRjOK
+ Cc4/RqWvNtjMEYWWBU/GbVekdedJD8yROKfkaskQdJRbE2l/hFrNVL1fdXQY+PeRrOqbGO/+Lm7
+ gnNSkdHAihqzfMI5+Nik+1lU//Varj3iJEXBv9Fb0p
+X-Gm-Gg: ASbGnctJgmmm/1kMlPTzZ+ldQyP/HKyE2R7WKsp+A5n53/jQVSforVNQjTvIPJyjnSa
+ 4TtjSdyhdP6eVKGVylLklsZDAycRrz4sOF5DfFlLkLYhtlmj+YHfKu68dyNBTmgWW66nM2qSZfH
+ 6UTP6aNlo7z4vQEc/7Iwulz1wWEZoa6fMYe/o8ThvUYkP1snbb9ODO0e8uXLYHFCis4pTpuUk4p
+ t2jULTN+hN03eoFiXSADYlqyoDxxoWbihNcrloWu2yDO6AEWiFet1Pe2Cj2olBgUihj77g8IFTy
+ mambn8LNM62ptttgjSOhXEKV3FOQnrtHdjNMSo6x2PaazcE/qU+HPVtJzEe6T6q67mzVJnq2gWG
+ UsB84gl+2/HGA861gjlGyaeBKPKGvIAlRQwOcX/PgttPo7RR7ut1v5cHGuJTf7tSlYx8BKxwOA/
+ /WMbDL77AJXEoDqiw=
+X-Received: by 2002:a05:600c:5490:b0:475:dae5:d972 with SMTP id
+ 5b1f17b1804b1-477b8a90470mr11069485e9.23.1763597816271; 
+ Wed, 19 Nov 2025 16:16:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGQ8DQ3mw2eXmW1Ae4dkwMy8vr6W4MnSf2zlUNdKAHSQEmtBHxgdOPA8vu2dAanpS6wGt63EQ==
+X-Received: by 2002:a05:600c:5490:b0:475:dae5:d972 with SMTP id
+ 5b1f17b1804b1-477b8a90470mr11069415e9.23.1763597815846; 
+ Wed, 19 Nov 2025 16:16:55 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477b82d825dsm16085535e9.5.2025.11.19.16.16.52
+ ffacd0b85a97d-42cb7fb9022sm1965265f8f.36.2025.11.19.16.16.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 16:16:52 -0800 (PST)
+ Wed, 19 Nov 2025 16:16:54 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 01/10] ioapic: fix typo in irqfd check
-Date: Thu, 20 Nov 2025 01:16:40 +0100
-Message-ID: <20251120001649.1085913-2-pbonzini@redhat.com>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>
+Subject: [PULL 02/10] target/i386: emulate: Make sure fetch_instruction exist
+ before calling it
+Date: Thu, 20 Nov 2025 01:16:41 +0100
+Message-ID: <20251120001649.1085913-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251120001649.1085913-1-pbonzini@redhat.com>
 References: <20251120001649.1085913-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -122,40 +121,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not registering the IEC notifier results in a regression with interrupt remapping
-when running a VM configured with an intel-iommu device and an assigned
-PCI VF. At boot, Linux complains with :
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-[   15.416794] __common_interrupt: 2.37 No irq handler for vector
+Currently, this function is only available in MSHV. If a different accelerator
+is used, and the code jumps to this section, a segfault will occur.
+(I ran into this with HVF)
 
-Reported-by: Cédric Le Goater <clg@redhat.com>
-Analyzed-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+Link: https://lore.kernel.org/r/20251114082915.71884-2-phind.uet@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/intc/ioapic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/emulate/x86_decode.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
-index e431d003117..38e43846486 100644
---- a/hw/intc/ioapic.c
-+++ b/hw/intc/ioapic.c
-@@ -216,7 +216,7 @@ static void ioapic_update_kvm_routes(IOAPICCommonState *s)
- #endif
- }
- 
--#ifdef ACCEL_KERNEL_GSI_IRQFD_POSSIBLE
-+#ifdef ACCEL_GSI_IRQFD_POSSIBLE
- static void ioapic_iec_notifier(void *private, bool global,
-                                 uint32_t index, uint32_t mask)
- {
-@@ -434,7 +434,7 @@ static const MemoryRegionOps ioapic_io_ops = {
- 
- static void ioapic_machine_done_notify(Notifier *notifier, void *data)
- {
--#ifdef ACCEL_KERNEL_GSI_IRQFD_POSSIBLE
-+#ifdef ACCEL_GSI_IRQFD_POSSIBLE
-     IOAPICCommonState *s = container_of(notifier, IOAPICCommonState,
-                                         machine_done);
+diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
+index 97bd6f1a3be..d037ed11420 100644
+--- a/target/i386/emulate/x86_decode.c
++++ b/target/i386/emulate/x86_decode.c
+@@ -77,7 +77,11 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
+         memcpy(&val, decode->stream->bytes + decode->len, size);
+     } else {
+         target_ulong va = linear_rip(env_cpu(env), env->eip) + decode->len;
+-        emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
++        if (emul_ops->fetch_instruction) {
++            emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
++        } else {
++            emul_ops->read_mem(env_cpu(env), &val, va, size);
++        }
+     }
+     decode->len += size;
  
 -- 
 2.51.1
