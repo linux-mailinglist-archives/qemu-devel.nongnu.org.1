@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35351C74BB7
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 16:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6FAC749DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:41:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM6BY-0004Ae-V1; Thu, 20 Nov 2025 10:03:00 -0500
+	id 1vM5qN-0007TM-Uk; Thu, 20 Nov 2025 09:41:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vM6BN-0004AJ-Fr
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 10:02:51 -0500
-Received: from sender3-pp-f112.zoho.com ([136.143.184.112])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vM5pl-0007QZ-IR
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 09:40:30 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vM6BK-0003dz-Qi
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 10:02:48 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1763650945; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=YE44AQJcTQ/7pt9VqGOy+ES+7rr8oacuLNLjIrLGteNYTYeBsMyecBSPdAnDOgkCUCefKsDOhOl7y2/CxE2X1JEPYN4UI3R0ofzO5z/KciDe1qGrAJozJ8xxkmy5z6856XFs+4qEhoYaXEmoo4fx9svgKOMoYiC/EEzbt7x7K9s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1763650945;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=xXaxWFOo2SEnymgNZGckHlZrPr/Y4qrKn6YQevluswg=; 
- b=aC/vn/CGz6OF6JykKBp7jBiz3iSKTi24zCgu7nJMVduUUhy/dI348O/0tAXgxTWNABoqWIykmR1YDtrmRpHZquEWFk6u6ho8F7wlvv/VLv0S+YjyTHEGNEFQhUlipuZcYSFpuBGREqyLZgEkRjSiHlvBz98pB5+VndJWtj5do2g=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763650945; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=xXaxWFOo2SEnymgNZGckHlZrPr/Y4qrKn6YQevluswg=;
- b=ip1Xy2c6iSzZ/NBD7v7LwuhNoHBjxIpYC5K+driwaJZ5PE7EQwGT07+xs5i3GBeY
- RwjX/U7KsEwHDMFxMYppLiFT7uK/nvPQy/oQRDDhUv6IUzDx1F9uvFDHZXd0uVcnzyH
- ghcgG7/rAwJq2SRXg+rj6NZmM2B69dfPwWcJLmwI=
-Received: by mx.zohomail.com with SMTPS id 176365094203343.17242703444606;
- Thu, 20 Nov 2025 07:02:22 -0800 (PST)
-Message-ID: <2207c76d-a800-45e5-9acc-66e9d4cfa089@collabora.com>
-Date: Thu, 20 Nov 2025 18:02:13 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vM5ph-0008Iu-NW
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 09:40:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763649625; x=1795185625;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ZQPBGdwEVZys6Nj70wp7Yb3SiJyeCijBmhuG0lV6h5Q=;
+ b=BteejHV/AG3Vq+oE4avKYfnFcJoX7IPV7UhGTbCLHvJeWtFHlhW8AeXt
+ 9AgxKVk2GaQdUhs1Fr7eTw2vDWVbo6NFPqiAL2gIGEVElg+1lKiXY68gX
+ cUianrTXkd+HxeSjyEpNSdOpHkphKp3aX8H3JqigmwT7GXNAJw4mTqQZn
+ oK4smUZCC9OrpfcNotSWFoiD8neWKtqjSAFCU8OfMC+NKoUn6atv7pnD4
+ LhL2I0T2sYiazamlhfRu+8ZRjama8e8AY86OAKHtN2umRR2rwc0F5juW8
+ qLy8UH9Pc913ajALDv1eNnqCBCaI1ZrUhQ6bpV3amd6FtgEfjJGAAiNyo A==;
+X-CSE-ConnectionGUID: X+/aKlYpTreOFaZvv8AmwQ==
+X-CSE-MsgGUID: hhY7LSWzRESn2USZCKTY9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65661695"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="65661695"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 06:40:23 -0800
+X-CSE-ConnectionGUID: dk/z4CbpQpyAYTgHbvfJ5g==
+X-CSE-MsgGUID: WUqPPN0USVmVeYvcg4tdeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191634661"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 20 Nov 2025 06:40:18 -0800
+Date: Thu, 20 Nov 2025 23:02:38 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Glenn Miles <milesg@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH for-11.0 08/15] tests/functional/x86_64/test_memlock:
+ Silence pylint warnings
+Message-ID: <aR8tjvwkI8k+GBPR@intel.com>
+References: <20251119082636.43286-1-thuth@redhat.com>
+ <20251119082636.43286-9-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 5/7] virtio-gpu: Destroy virgl resources on
- virtio-gpu reset
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Yiwei Zhang <zzyiwei@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Robert Beckett <bob.beckett@collabora.com>
-References: <20251120040632.4036204-1-dmitry.osipenko@collabora.com>
- <20251120040632.4036204-6-dmitry.osipenko@collabora.com>
- <94e92cb0-3e5a-48e3-bf3c-12d27c23c27f@rsg.ci.i.u-tokyo.ac.jp>
- <00064b47-ca94-4eb9-a443-bb2739ed885a@collabora.com>
-Content-Language: en-US
-In-Reply-To: <00064b47-ca94-4eb9-a443-bb2739ed885a@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.184.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender3-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119082636.43286-9-thuth@redhat.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,37 +99,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/25 17:54, Dmitry Osipenko wrote:
-> On 11/20/25 08:07, Akihiko Odaki wrote:
->>> +int virtio_gpu_virgl_reset(VirtIOGPU *g)
->>>   {
->>> +    struct virtio_gpu_simple_resource *res, *tmp;
->>> +
->>> +    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
->>> +        virtio_gpu_virgl_resource_destroy(g, res, NULL);
->>> +    }
->>> +
->>> +    if (!QTAILQ_EMPTY(&g->reslist)) {
->>> +        error_report("failed to reset virgl resources");
->>> +        return -1;
->>
->> It shouldn't report an error if suspended.
+On Wed, Nov 19, 2025 at 09:26:29AM +0100, Thomas Huth wrote:
+> Date: Wed, 19 Nov 2025 09:26:29 +0100
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: [PATCH for-11.0 08/15] tests/functional/x86_64/test_memlock:
+>  Silence pylint warnings
 > 
-> Could you please expand on what you're meaning by "suspended"?
+> From: Thomas Huth <thuth@redhat.com>
 > 
-> Suppose you're talking about guest's kernel suspension. There was a
-> discussion on [1] RE a need to use `x-pcie-pm-no-soft-reset=true` option
-> to avoid virtio-gpu resetting across S3 suspend-resume. This option
-> works with virtio-vga, but not with virtio-vga-gl device where VM hangs
-> on startup. So currently S3 doesn't work for virgl and needs further fixing.
+> Pylint complains about a missing "encoding" parameter for the open()
+> function here, and about a missing return statement in the "except"
+> block (which cannot happen since skipTest() never returns). Rework
+> the code a little bit to silence the warnings.
 > 
-> [1]
-> https://lore.kernel.org/dri-devel/20250924194755.1265531-1-dongwon.kim@intel.com/
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  tests/functional/x86_64/test_memlock.py | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-Correction: `x-pcie-pm-no-soft-reset=true` works with virgl without
-enabled hostmem. It's hostmem that doesn't work with the additional PCI bus.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
--- 
-Best regards,
-Dmitry
 
