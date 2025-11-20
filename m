@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D68C71893
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C4BC71887
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLsMD-000372-El; Wed, 19 Nov 2025 19:17:05 -0500
+	id 1vLsMF-00037a-Pz; Wed, 19 Nov 2025 19:17:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsMB-00036s-Cr
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:03 -0500
+ id 1vLsMD-000373-7y
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsM9-0007PC-Si
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:03 -0500
+ id 1vLsMB-0007PP-HA
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763597819;
+ s=mimecast20190719; t=1763597822;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
- b=K5pZZq+LS+kV4NVjAYYifrdl8wO49Gn5FzOVwgdHQ2/89M9UGuNO70sB/piRGbaxvUpaw8
- 3a40SK4zc280zGczFxmXI7FU3CDodXtNKf69Izi6BMvU8AdBFmy0vrMDEkID7iZ5+wY4xh
- +WrJhBAqpQTThUWriV/Ed7MsEs3Kq84=
+ bh=VScUxvTA0V9fVcKlY6sj0omEw5O4+ANSWsdN9yl+u+8=;
+ b=VkuYf8eHqB4T1jUH5WNT7/IKL1FteZDMJRyeFbbh+a6ImgH9nMAD19PoK2R8qGOQA86Bq5
+ 38+tqupF44s7oYJAqyag59+RRlNw1r6vrIbAJohqyfc5dDvvjGZHjGa0Y6WAYkBluM4sDu
+ jFjtlbG6c+Dpnr8mbSzdRxLSeDcm7VQ=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-88-wVHt3bmoOfGGvuKdLAh0jg-1; Wed, 19 Nov 2025 19:16:58 -0500
-X-MC-Unique: wVHt3bmoOfGGvuKdLAh0jg-1
-X-Mimecast-MFC-AGG-ID: wVHt3bmoOfGGvuKdLAh0jg_1763597817
+ us-mta-488-1-kz-T8LN-uYG0X6v3akzA-1; Wed, 19 Nov 2025 19:17:00 -0500
+X-MC-Unique: 1-kz-T8LN-uYG0X6v3akzA-1
+X-Mimecast-MFC-AGG-ID: 1-kz-T8LN-uYG0X6v3akzA_1763597819
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-47777158a85so5166345e9.3
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:16:58 -0800 (PST)
+ 5b1f17b1804b1-4779981523fso4306215e9.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:17:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763597816; x=1764202616; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763597819; x=1764202619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
- b=Yn/JCrwPz6iI3JpV949xWxHmhLMCx1DP7EuRVYVA8APa+nO657vg/xKFGFfD5jUZcE
- TR0qRwTTWVYyrd7shPpYPg7auj4WVEh7zj7Zb+BhsuxZK9znW3Oa52cb6N2tT4xel/ry
- 2S+iTK2y9avsdyPGWrbxRLpO7Vl32lW2Z4TEeiFHJMv8Vh1JWStUgIfiiGNow9vdHHdB
- JUFv5RoP2MUhizJ/iB0Fwu+RvAKR+TvW1jJ79sr+mcGfyP4fH94qMF2DouVAF7N2rUGC
- QaloeMjpeAs6/Ou5BXaNM/nYZpDu67Fv3Ho9MXvmY5MvexGqk9PI1Mk5FbVVwZs6LP3p
- nGgw==
+ bh=VScUxvTA0V9fVcKlY6sj0omEw5O4+ANSWsdN9yl+u+8=;
+ b=sJxaOqSkvDgMIEVOhWWjt64iqub9v5HlF9XYvhqkrdFt+9y0Q5qLy49hcuLvIG/NZc
+ tGfmS4eQvNsUUPuh8TW2Cxj7OEA4CAUKCBZXegh057a37eX8SjKk1wXly7O89+GewcTU
+ AqdkxFLLh5nXuW4aLVRe1Jq2xIjw9airGab33HlfWoIweWmmoi6/0j0xdTM3zbmEK4+0
+ l0iAkZP/TLEFtJj0gOBJNCAlAtX9KDJAZXyzGqaB5hVAGxNjgNbSUM7keEIOSNREqhQK
+ 2fFB+Lbsr3iwr7zefVspgRpaTAIslWpO4z2hPqgHUtXCNqMWGWiRMg/0z1kwQAlYpE99
+ lEPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763597816; x=1764202616;
+ d=1e100.net; s=20230601; t=1763597819; x=1764202619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=pyGxYNW5IV1mR/jWc9nz65+A1YzvJPGyS3EIkWGspqo=;
- b=HJ/clZPWJxK1Xd1KKtlUEZbhfhzdKubmd5YOrjQPqiVE491TRzmJK26jyyjiJyZ5tc
- iopQKk0g7uGkTZmAvjUpBfCt7S9XorXM0OWVHk63FiIK2DCZ//V6Qqv/QWFRsxWACq7x
- eealFFrNm8A/gbgy4GmeZ9cg4bsls04Pf1oodoGHaVwiwuVl7/9BwiUkYFVgUBQswBPN
- 3Kk7ImTxNLmFjM65vJ7JfJnXxBS5CGbO2881KOTzz6fGvp9d1HZ9lwp8e174w4zFguwb
- D+4cRKXSnn/kglFr0wnMKnWzUJTzRtVnt2llqzdODe/QYwH2D1Vtwx6CMjliUY+978S1
- u9Ug==
-X-Gm-Message-State: AOJu0YzSXxDxfsoM88nQ73qExzx2Q/nuPkso88dgGoYaOUVsyzjle66g
- qR4rSoZ75a87CrjxC279LcG8feL6B7Of62vDbUAKgiMadtaSELWmw2tHIzejGCyyhf7MSVaRjOK
- Cc4/RqWvNtjMEYWWBU/GbVekdedJD8yROKfkaskQdJRbE2l/hFrNVL1fdXQY+PeRrOqbGO/+Lm7
- gnNSkdHAihqzfMI5+Nik+1lU//Varj3iJEXBv9Fb0p
-X-Gm-Gg: ASbGnctJgmmm/1kMlPTzZ+ldQyP/HKyE2R7WKsp+A5n53/jQVSforVNQjTvIPJyjnSa
- 4TtjSdyhdP6eVKGVylLklsZDAycRrz4sOF5DfFlLkLYhtlmj+YHfKu68dyNBTmgWW66nM2qSZfH
- 6UTP6aNlo7z4vQEc/7Iwulz1wWEZoa6fMYe/o8ThvUYkP1snbb9ODO0e8uXLYHFCis4pTpuUk4p
- t2jULTN+hN03eoFiXSADYlqyoDxxoWbihNcrloWu2yDO6AEWiFet1Pe2Cj2olBgUihj77g8IFTy
- mambn8LNM62ptttgjSOhXEKV3FOQnrtHdjNMSo6x2PaazcE/qU+HPVtJzEe6T6q67mzVJnq2gWG
- UsB84gl+2/HGA861gjlGyaeBKPKGvIAlRQwOcX/PgttPo7RR7ut1v5cHGuJTf7tSlYx8BKxwOA/
- /WMbDL77AJXEoDqiw=
-X-Received: by 2002:a05:600c:5490:b0:475:dae5:d972 with SMTP id
- 5b1f17b1804b1-477b8a90470mr11069485e9.23.1763597816271; 
- Wed, 19 Nov 2025 16:16:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGQ8DQ3mw2eXmW1Ae4dkwMy8vr6W4MnSf2zlUNdKAHSQEmtBHxgdOPA8vu2dAanpS6wGt63EQ==
-X-Received: by 2002:a05:600c:5490:b0:475:dae5:d972 with SMTP id
- 5b1f17b1804b1-477b8a90470mr11069415e9.23.1763597815846; 
- Wed, 19 Nov 2025 16:16:55 -0800 (PST)
+ bh=VScUxvTA0V9fVcKlY6sj0omEw5O4+ANSWsdN9yl+u+8=;
+ b=mRgcinwgb9Zk+tFTdlrESdtTRLKzO0n83WGuJxVwdchtpcHP2BLavHqF1tM/ceDist
+ siAtSFmCE07KE5AOG5Ja/QfKPJJyB8SyLB0VeYZWaz8BStN+6ghmrNjgaUBuJQw+50Fg
+ Cmuxdm6eV6EvDAntE2zUdq+esZ314bFyASch48O/Zo4QL5565mAe2z88liavic3t6hqN
+ jhojPYhWGkN6UUKFkWM7GqxeXB4axGcwL6UAqATCvRLjHv+SPkyhh4c1sBj2VAn1b05K
+ D+Gu+ViGEcIV2m0sCJskLOGmOqdfe+5RjvUm8/4WYmmun+I1IjEnWChgRoEw10wP/vd1
+ 1krQ==
+X-Gm-Message-State: AOJu0YzT/jDHr3B/Pp0V4Xs8z6AXVWic6pyasPJdQHwOpin5Uil57V1d
+ pYdaj202jR0dV7nDu3uXoXWPcMgEDdD7+yHriU2G55aSgch9czuEpsNjmbLhfFCKDc72kCtVEHl
+ hJPXfqGC1HoPJHk5hwKNDzfQlMPw+IorzNXkN0KkAdDd5vqDcTYd+VwUVPSZ74vwmURprS4GKbF
+ XBxCMyoF40ZUYd1VAnurBq7qN4SbiAhNY7iFdbsDzT
+X-Gm-Gg: ASbGncv87S4JsGmcOlb5E3n0UkuYOBUd8m9uzfTfI5Q5923FVNpTPZ8S2HOqcgb03VL
+ rJOC9zoA3yxyAAxQ+sPxkLDfSMLNK+mDKaaVzOphu9bB2lAP5W5/2cPWqdtd4eb5GCXHMxTDyH6
+ uIkehlwAWBFVkAjP2Xpk5UVXJHf1DWXSDLI00tTZ2o21PL4gTNvzMaqaEM1XKhhwD2RQOfqx9lq
+ swMv4dKRADLXbCZB9D4+OVbRAUnrxV8CxRkDLHnNpoR3KmFpxRB1j4lZ/4yQU/p11UdVOKJcN93
+ lJeSaLaaDjS8Z+Ikx3eTXfmT9ykzFdCGBQk+FhabnjwD1HWc+bVUvdLyIkjQao6l1TzoC9cVZM+
+ subalDmF3Ptk0kxO/r3Sd9tgNeJCW7BiOETe7e1z6e3xAWsOJTIc6U4GXzAbNccn9HGT09TPMHX
+ /lJXSVk/VEspvcDXU=
+X-Received: by 2002:a05:600c:45d0:b0:475:dde5:d91b with SMTP id
+ 5b1f17b1804b1-477b8a84acfmr9946305e9.17.1763597818690; 
+ Wed, 19 Nov 2025 16:16:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+82/zn492FLmKBZZofCi3g95NICfGS9SNuYpReGiEDkp2DBIyWfUUBuom2BoRCvvFpC0HqQ==
+X-Received: by 2002:a05:600c:45d0:b0:475:dde5:d91b with SMTP id
+ 5b1f17b1804b1-477b8a84acfmr9946115e9.17.1763597818330; 
+ Wed, 19 Nov 2025 16:16:58 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fb9022sm1965265f8f.36.2025.11.19.16.16.53
+ 5b1f17b1804b1-477b0ffe377sm75071285e9.1.2025.11.19.16.16.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 16:16:54 -0800 (PST)
+ Wed, 19 Nov 2025 16:16:56 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>
-Subject: [PULL 02/10] target/i386: emulate: Make sure fetch_instruction exist
- before calling it
-Date: Thu, 20 Nov 2025 01:16:41 +0100
-Message-ID: <20251120001649.1085913-3-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-stable@nongnu.org
+Subject: [PULL 03/10] target/i386: Mark VPERMILPS as not valid with prefix 0
+Date: Thu, 20 Nov 2025 01:16:42 +0100
+Message-ID: <20251120001649.1085913-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251120001649.1085913-1-pbonzini@redhat.com>
 References: <20251120001649.1085913-1-pbonzini@redhat.com>
@@ -121,36 +121,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Currently, this function is only available in MSHV. If a different accelerator
-is used, and the code jumps to this section, a segfault will occur.
-(I ran into this with HVF)
+There are a small set of binary SSE insns which have no MMX
+equivalent, which we create the gen functions for with the
+BINARY_INT_SSE() macro.  This forwards to gen_binary_int_sse() with a
+NULL pointer for 'mmx'.
 
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Link: https://lore.kernel.org/r/20251114082915.71884-2-phind.uet@gmail.com
+For almost all of these insns we correctly mark them in the decode
+table as not permitting a zero prefix byte; however we got this wrong
+for VPERMILPS, with the result that a bogus instruction would get
+through the decode checks and end up in gen_binary_int_sse() trying
+to call a NULL pointer.
+
+Correct the decode table entry for VPERMILPS so that we get the
+expected #UD exception.
+
+In the x86 SDM, table A-4 "Three-byte Opcode Map: 08H-FFH
+(First Two Bytes are 0F 38H)" confirms that there is no pfx 0
+version of VPERMILPS.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3199
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/r/20251114175417.2794804-1-peter.maydell@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/emulate/x86_decode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ target/i386/tcg/decode-new.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-index 97bd6f1a3be..d037ed11420 100644
---- a/target/i386/emulate/x86_decode.c
-+++ b/target/i386/emulate/x86_decode.c
-@@ -77,7 +77,11 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
-         memcpy(&val, decode->stream->bytes + decode->len, size);
-     } else {
-         target_ulong va = linear_rip(env_cpu(env), env->eip) + decode->len;
--        emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-+        if (emul_ops->fetch_instruction) {
-+            emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-+        } else {
-+            emul_ops->read_mem(env_cpu(env), &val, va, size);
-+        }
-     }
-     decode->len += size;
- 
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index f4192f10068..805cfd08e83 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -643,7 +643,7 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
+     [0x0a] = X86_OP_ENTRY3(PSIGND,    V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+     [0x0b] = X86_OP_ENTRY3(PMULHRSW,  V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+     /* Listed incorrectly as type 4 */
+-    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_00_66),
++    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0d] = X86_OP_ENTRY3(VPERMILPD, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0e] = X86_OP_ENTRY3(VTESTPS,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0f] = X86_OP_ENTRY3(VTESTPD,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
 -- 
 2.51.1
 
