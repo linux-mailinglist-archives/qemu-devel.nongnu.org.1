@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B660C725F5
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 07:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6451BC7260D
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 07:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLyTB-0005Cn-P8; Thu, 20 Nov 2025 01:48:41 -0500
+	id 1vLyTP-0005Ji-Ja; Thu, 20 Nov 2025 01:48:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLyT6-000579-Ab
+ id 1vLyT6-00058B-PG
  for qemu-devel@nongnu.org; Thu, 20 Nov 2025 01:48:36 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vLyT3-0005ql-Cx
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 01:48:34 -0500
+ id 1vLyT3-0005r2-D7
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 01:48:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763621313; x=1795157313;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3EMUWkHSCA/tfmKappgbzqr0Ir4rokgyHvMpaedvWFs=;
- b=JrTI++X8HFePnrzUaoVk7MpwXuamt7/5fELTAe8vHLvEBwMuOzuh+J2K
- 7L5LDObS7fe7JmlAhJe7gqdVh+XnA72KVSrEFOxxl9d9wmuH7frtmh5pR
- 2DpdbvmbYgfBIQsZ9MM959QChwAbHKjw3kWKhTZmFnYGaiyL4oc009M8L
- xKvV48ZV8OG6LPFEiLZe1H2lnNH864vQgyJyIwBZmDY2QaaUua4utbUcB
- IapwVoBrugyXqDpnOkHQzRSEiDik0zBVg9yPwqtdf9SbbldPKX6Eoevoy
- UEtxpSnQAiBJneJHUMgLIJTN7nc12d30KGgSR7J6vQGWc95SifWXLX8KT A==;
-X-CSE-ConnectionGUID: ApjU5gZ9TyG8kv+r9c3VfQ==
-X-CSE-MsgGUID: 0qJsNSkzQduEcH3rwDux0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65572553"
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65572553"
+ bh=574zbqZFLl0H5Q58F1V7zuPmhB+LkfNx4Ps2RZbvteM=;
+ b=DVwFZPZt4O/ACeje/edf1kSKgPLPqN3GOE+y/CVdq5PA4IIgAwOTFvwE
+ DS0J8FAFMPplYh03gdfo6KMk8S2E6cMDmI2RKGS9EB8+aZZZtWJLhHIXy
+ qv6e7Be6lfJtqJOGeCDx4y88vsT3dzcXsTVOc5slUNE2jnmr8+qva1UHn
+ LeKSdHLKEGcaQC6sXfY/cJEJPhNz1eUUpm2vACTGPMxO1mvZXRSq96g3J
+ qwVlpKgsSaIEvPr890LgKmcr+P6iuTVUeKOrkO1euOA2zrfwDmUhZWbsi
+ 3uzqTUgnE8ZeCLEIrJJJqPoCWkHjQWLtufGhelIAiuP4xVKTwyOPbrktS Q==;
+X-CSE-ConnectionGUID: mM5FIMXvTgCU9LBI54ZEwg==
+X-CSE-MsgGUID: gpv9T+QCTnS5blIZH0mnRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65572556"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65572556"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2025 22:48:28 -0800
-X-CSE-ConnectionGUID: Q59W+5vXQommWYSKxiUHnQ==
-X-CSE-MsgGUID: ToipA4PaTV2jIbPGbBDDjg==
+ 19 Nov 2025 22:48:30 -0800
+X-CSE-ConnectionGUID: YMm1LzpRTfuAUcq2JpCDbA==
+X-CSE-MsgGUID: 1UYw/PgGSp6RtqBaDb2amg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="191296126"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="191296130"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 19 Nov 2025 22:48:27 -0800
+ by orviesa007.jf.intel.com with ESMTP; 19 Nov 2025 22:48:29 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Xudong Hao <xudong.hao@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 06/10] i386/cpu: Allow cache to be shared at thread level
-Date: Thu, 20 Nov 2025 15:10:26 +0800
-Message-Id: <20251120071030.961230-7-zhao1.liu@intel.com>
+Subject: [PATCH 07/10] i386/cpu: Add an option in X86CPUDefinition to control
+ CPUID 0x1f
+Date: Thu, 20 Nov 2025 15:10:27 +0800
+Message-Id: <20251120071030.961230-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251120071030.961230-1-zhao1.liu@intel.com>
 References: <20251120071030.961230-1-zhao1.liu@intel.com>
@@ -81,108 +82,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In CPUID 0x4 leaf, it's possible to make the cache privated at thread
-level when there's no HT within the core. In this case, while cache per
-thread and cache per core are essentially identical, their topology
-information differs in CPUID 0x4.
+Many Intel CPUs enable CPUID 0x1f by default to encode CPU topology
+information.
 
-Diamond Rapids assigns the L1 i/d cache at the thread level. To allow
-accurate emulation of DMR cache topology, remove the cache-per-thread
-restriction in max_thread_ids_for_cache(), which enables CPUID 0x4 to
-support cache per thread topology.
+Add the "cpuid_0x1f" option to X86CPUDefinition to allow named CPU
+models to configure CPUID 0x1f from the start, thereby forcing 0x1f
+to be present for guest.
 
-Given that after adding thread-level support, the topology offset
-information required by max_thread_ids_for_cache() can be sufficiently
-provided by apicid_offset_by_topo_level(), so it's straightforward to
-re-implement max_thread_ids_for_cache() based on
-apicid_offset_by_topo_level() to reduce redundant duplicate codes.
+With this option, there's no need to explicitly add v1 model to an
+unversioned CPU model for explicitly enabling the x-force-cpuid-0x1f
+property.
 
 Tested-by: Xudong Hao <xudong.hao@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 53 ++++++++++++++---------------------------------
- 1 file changed, 15 insertions(+), 38 deletions(-)
+Note: this patch is also inclued in Zhaoxin's series:
+
+https://lore.kernel.org/qemu-devel/20251027102139.270662-2-ewanhai-oc@zhaoxin.com/
+---
+ target/i386/cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 118ce43e4267..c5f1f5d18d07 100644
+index c5f1f5d18d07..143b3e9e0c21 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -304,33 +304,30 @@ static void encode_cache_cpuid2(X86CPU *cpu,
-                        ((t) == UNIFIED_CACHE) ? CACHE_TYPE_UNIFIED : \
-                        0 /* Invalid value */)
- 
--static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
--                                         enum CpuTopologyLevel share_level)
-+static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
-+                                            enum CpuTopologyLevel topo_level)
- {
--    uint32_t num_ids = 0;
--
--    switch (share_level) {
-+    switch (topo_level) {
-+    case CPU_TOPOLOGY_LEVEL_THREAD:
-+        return 0;
-     case CPU_TOPOLOGY_LEVEL_CORE:
--        num_ids = 1 << apicid_core_offset(topo_info);
--        break;
-+        return apicid_core_offset(topo_info);
-     case CPU_TOPOLOGY_LEVEL_MODULE:
--        num_ids = 1 << apicid_module_offset(topo_info);
--        break;
-+        return apicid_module_offset(topo_info);
-     case CPU_TOPOLOGY_LEVEL_DIE:
--        num_ids = 1 << apicid_die_offset(topo_info);
--        break;
-+        return apicid_die_offset(topo_info);
-     case CPU_TOPOLOGY_LEVEL_SOCKET:
--        num_ids = 1 << apicid_pkg_offset(topo_info);
--        break;
-+        return apicid_pkg_offset(topo_info);
-     default:
--        /*
--         * Currently there is no use case for THREAD, so use
--         * assert directly to facilitate debugging.
--         */
-         g_assert_not_reached();
+@@ -2313,6 +2313,12 @@ typedef struct X86CPUDefinition {
+     int model;
+     int stepping;
+     uint8_t avx10_version;
++    /*
++     * Whether to present CPUID 0x1f by default.
++     * If true, encode CPU topology in 0x1f leaf even if there's no
++     * extended topology levels.
++     */
++    bool cpuid_0x1f;
+     FeatureWordArray features;
+     const char *model_id;
+     const CPUCaches *const cache_info;
+@@ -8014,6 +8020,10 @@ static void x86_cpu_load_model(X86CPU *cpu, const X86CPUModel *model)
+                                  def->avx10_version, &error_abort);
      }
-+    return 0;
-+}
  
--    return num_ids - 1;
-+static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-+                                         enum CpuTopologyLevel share_level)
-+{
-+    return (1 << apicid_offset_by_topo_level(topo_info, share_level)) - 1;
- }
++    if (def->cpuid_0x1f) {
++        object_property_set_bool(OBJECT(cpu), "x-force-cpuid-0x1f",
++                                 def->cpuid_0x1f, &error_abort);
++    }
+     x86_cpu_apply_version_props(cpu, model);
  
- static uint32_t max_core_ids_in_package(X86CPUTopoInfo *topo_info)
-@@ -398,26 +395,6 @@ static uint32_t num_threads_by_topo_level(X86CPUTopoInfo *topo_info,
-     return 0;
- }
- 
--static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
--                                            enum CpuTopologyLevel topo_level)
--{
--    switch (topo_level) {
--    case CPU_TOPOLOGY_LEVEL_THREAD:
--        return 0;
--    case CPU_TOPOLOGY_LEVEL_CORE:
--        return apicid_core_offset(topo_info);
--    case CPU_TOPOLOGY_LEVEL_MODULE:
--        return apicid_module_offset(topo_info);
--    case CPU_TOPOLOGY_LEVEL_DIE:
--        return apicid_die_offset(topo_info);
--    case CPU_TOPOLOGY_LEVEL_SOCKET:
--        return apicid_pkg_offset(topo_info);
--    default:
--        g_assert_not_reached();
--    }
--    return 0;
--}
--
- static uint32_t cpuid1f_topo_type(enum CpuTopologyLevel topo_level)
- {
-     switch (topo_level) {
+     /*
 -- 
 2.34.1
 
