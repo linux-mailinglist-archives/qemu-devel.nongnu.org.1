@@ -2,80 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA46C723D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 06:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B04BC725FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 07:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLx8l-00042U-0b; Thu, 20 Nov 2025 00:23:31 -0500
+	id 1vLyTA-0005CM-Hb; Thu, 20 Nov 2025 01:48:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vLx8k-00042I-2B
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 00:23:30 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLySz-00055E-Ci
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 01:48:30 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vLx8i-0006LS-Cl
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 00:23:29 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AK5N7LY046625
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 20 Nov 2025 14:23:08 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=5YuIyapGXkQO3tV0yo8w+UBKgC0e96pI3aXYKgQv/A8=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1763616188; v=1;
- b=B9qOWATG9ofvBlcLw+DN0fbD8s5LXcjTpSUya8FSS3YePwemHS8YF7O6Yj88I0zT
- LI7VDET8ru0mwgzPig+HFBeJAVzu/glKpyf+y0cN0OHuTnhHsXB83t1CbCQbTMSK
- gByJ6/9GpW8z583zJDfDfy7uOxXWZXQuZ0Mf2/EaAGSDQvD7dQAEB9ZfOj+oWHP8
- dwdw2oWzqFJY0mpVqsvux30I3RUVr+3q/+ZPzhfX5BoAMc4qYODla7kgQ7pEOw9W
- MciJVXXurb5TL0ZVzSNQN+bcjsZLdUWQV1mWILUNX5yONpdKUJhnpx0n+RTW5t6T
- LoX4tmoT13Ex4WRCy3nJQQ==
-Message-ID: <565005a9-4841-450d-97f7-d03d5a1020be@rsg.ci.i.u-tokyo.ac.jp>
-Date: Thu, 20 Nov 2025 14:23:07 +0900
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vLySr-0005ql-NR
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 01:48:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763621301; x=1795157301;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YymZpa1JDPwZJAi9YVFaRnL59lBXfY6Irs8c2nT16hU=;
+ b=ZR0mpHRt21l8AF9jfvbEsben0sSK8OiteqPe2Rz0hpkNvALRInF0VfRO
+ NN2uxsAl18dhu6pF5QB8k3oPdeVQLaJRYVo2YQ0u7pKvcKSgugBWiKf7y
+ XddC6sGAmuCII5/FTBNXgk3I5AHZ1t+dZF6PVlL++xVrH+SAkzqhDAtyL
+ 2rLznuUdEmW1ImnQBQk/4NRXAoXa7pObraCwFmWDTJ6lM7nMXVP7cehX7
+ W7C3FJqKIYtVJOefPeK1rdqluozNAoRXQyrB9PY7amU/ndQFVtkLRhDSR
+ TvJMnt8XlLRu80ti9lS4YsGfCXGl5OV1qIbzwtMGthdnbV5TV5fY/STyQ g==;
+X-CSE-ConnectionGUID: oWYvI5BxRFyfpVlOfPcX8w==
+X-CSE-MsgGUID: JDiUM31cQv2Cv8y+G16g9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65572525"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65572525"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2025 22:48:18 -0800
+X-CSE-ConnectionGUID: zPS4Qx/IRG2T52i59D8z8Q==
+X-CSE-MsgGUID: jsUkFvnUR9q41AC2lBa6VA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="191296100"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 19 Nov 2025 22:48:16 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Xudong Hao <xudong.hao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 00/10] i386/cpu: Add new instructions & CPU model for Intel
+ Diamond Rapids
+Date: Thu, 20 Nov 2025 15:10:20 +0800
+Message-Id: <20251120071030.961230-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 4/7] virtio-gpu: Blame host for virgl blob resource
- unmapping error
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
- Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>,
- Rob Clark <robdclark@gmail.com>, Robert Beckett <bob.beckett@collabora.com>
-References: <20251120040632.4036204-1-dmitry.osipenko@collabora.com>
- <20251120040632.4036204-5-dmitry.osipenko@collabora.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251120040632.4036204-5-dmitry.osipenko@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,36 +80,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/20 13:06, Dmitry Osipenko wrote:
-> Report virgl blob resource unmapping error as a host error since it's
-> host's fault.
-> 
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> ---
->   hw/display/virtio-gpu-virgl.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index bc22763cc931..ae8de8ee47da 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -196,9 +196,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
->   
->           ret = virgl_renderer_resource_unmap(res->base.resource_id);
->           if (ret) {
-> -            qemu_log_mask(LOG_GUEST_ERROR,
-> -                          "%s: failed to unmap virgl resource: %s\n",
-> -                          __func__, strerror(-ret));
-> +            error_report("%s: failed to unmap virgl resource: %s",
-> +                         __func__, strerror(-ret));
+Hi,
 
-I'm not sure about this. Unlike plain mmap(), virglrenderer *may* return 
-an error because of the current state it has. Skimming the virglrenderer 
-code it apparently does not happen, but there is no guarantee.
+This series addes new instrucions and CPU model support for Intel
+Diamond Rapids.
 
-I also checked crosvm but it didn't help; it don't distinguish guest and 
-host errors.
+This series mainly includes:
+ * MOVRS CPUID
+ * new AMX CPUIDs
+ * AVX10.2 & AVX10_VNNI_INT
+ * DMR CPU model & topology documentation
 
-Regards,
-Akihiko Odaki
+This series is based on the previous minor cleanup:
+
+https://lore.kernel.org/qemu-devel/20251118080837.837505-1-zhao1.liu@intel.com/
+
+And you can find the code here:
+
+https://gitlab.com/zhao.liu/qemu/-/tree/i386-all-for-dmr-v1.1-11-17-2025
+
+
+One Thing More
+==============
+
+I'm a bit unsure about the AVX10 model (patch 4). In principle, AVX10.1
+should be allowed to run on an AVX10.2 host. For similarly version
+drived features, introducing a model might be a preferable way. However,
+PMU doesn't serve as a good example here.
+
+
+Thanks for your review!
+
+Best Regards,
+Zhao
+---
+Zhao Liu (10):
+  i386/cpu: Add support for MOVRS in CPUID enumeration
+  i386/cpu: Add CPUID.0x1E.0x1 subleaf for AMX instructions
+  i386/cpu: Add support for AVX10_VNNI_INT in CPUID enumeration
+  i386/cpu: Support AVX10.2 with AVX10 feature models
+  i386/cpu: Add a helper to get host avx10 version
+  i386/cpu: Allow cache to be shared at thread level
+  i386/cpu: Add an option in X86CPUDefinition to control CPUID 0x1f
+  i386/cpu: Define dependency for VMX_VM_ENTRY_LOAD_IA32_FRED
+  i386/cpu: Add CPU model for Diamond Rapids
+  dosc/cpu-models-x86: Add documentation for DiamondRapids
+
+ docs/system/cpu-models-x86.rst.inc |  20 ++
+ target/i386/cpu.c                  | 443 +++++++++++++++++++++++++----
+ target/i386/cpu.h                  |  27 ++
+ 3 files changed, 441 insertions(+), 49 deletions(-)
+
+-- 
+2.34.1
+
 
