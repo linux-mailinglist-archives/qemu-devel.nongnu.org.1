@@ -2,89 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA977C748C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 675BFC741B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 14:13:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM5cr-0007Ct-94; Thu, 20 Nov 2025 09:27:09 -0500
+	id 1vM4Rw-0002yL-OQ; Thu, 20 Nov 2025 08:11:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
- id 1vM4IE-0001zx-9O
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:01:46 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
- id 1vM4IC-0006y5-Gc
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:01:46 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-429c7869704so730317f8f.2
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 05:01:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1vM4Rt-0002xi-RD
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:11:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1vM4Rr-0000Jj-SQ
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:11:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763644301;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qyhhdzn0BYMbkUVey/n2YMFPr5fhLGbTZAGvpz5pi1c=;
+ b=JlCb4T4c5JtVhbbUQc631/tFniz0gdXHBP6bJFqefzcumugrszFfzF5b8kxK1bnnAj87Ej
+ RsoXng8UyMr+JPPAyKxoSRfN5rqP45vflfOupFxHFCBsfbYlPKnkISKl6qeKwHcHY2gFP7
+ J8uHb0mjl75pwFKwIvqEjs6Oh+EHEoQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-9-6OvnX6EePCW-ULeab7o0mQ-1; Thu, 20 Nov 2025 08:11:39 -0500
+X-MC-Unique: 6OvnX6EePCW-ULeab7o0mQ-1
+X-Mimecast-MFC-AGG-ID: 6OvnX6EePCW-ULeab7o0mQ_1763644298
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477a60a23adso5828905e9.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 05:11:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763643702; x=1764248502; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lCfFWku/1xsXAfo7s3Bc/FmCppPeSa1oiiEWTvBMHBk=;
- b=lBINq7absFqE8jM2N+yZ+MDsLwoLET934HdgRl5ikOLp7Zy7CXdI/pZ3eTbRFb/+VT
- qU3xhbcTfhQt+AbANZ9xzXzex5J4X7oh9fpq8vGNZ4dH8Mt+HMNlLTFKoRcsrf6snTA5
- XNroivggQddIUdH4vtlDrjTrYFPI9J4P0WB3hoqVWFg/Dm37huQetVm0Xx/MjjL+VeC6
- kRltbuZqpBUetzy5XlNSriDk/te3ZHDauXjccKGNxcYV+qGdPdCFendK4KOur1+O2Tty
- 2ZYObIZiOPahGyG2WTgPj+puOq/Z+j1DH8zZyoCiJD8v3pjoKCFRL0zurzmfTiLSGJrv
- 5Vhg==
+ d=redhat.com; s=google; t=1763644298; x=1764249098; darn=nongnu.org;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Qyhhdzn0BYMbkUVey/n2YMFPr5fhLGbTZAGvpz5pi1c=;
+ b=P82PP92Kc1iW2g7yR5wjsmMPlamN4PSliCjvyBclNcY8V4HORN+2FSm8KzARbnY1E9
+ frMVG22xxN4LyrKd85sC+kxk07vBi5/o1fkQWnQnry7JhTKJK1icoU0bivEHWiAxP8+8
+ jt/YFirD+mr83Pxpabginjuh0SUQ8v596ktKyekDT80NvjC63KKWfvwchAxFIbs7rp2d
+ A1KtPKz5QwoJBZlBrJisWa3DMfYn8eSBra2Glmt7BBFke0I6JGdKE/KIfG3/VinvVgbD
+ my7eBKmUraeaRoEbwqjlQ0QSChqlRKw3NpEYosAhK7tF4asPrZj0O6JCxEXYXfceGoWF
+ GTvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763643702; x=1764248502;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lCfFWku/1xsXAfo7s3Bc/FmCppPeSa1oiiEWTvBMHBk=;
- b=rOMP+QSTzs3ZtzV2/MZoxUrIqbMyNpWeVRj58MzXBUVzMSFxMabsFu1eCTTHV58XIl
- v1pz96snFtdmJBLjdk7cEaXo7+u1YrJjbTZgN4HrvfoQNdmPH8w7M2Uk0hF0OD6O7ALg
- rasGQJp79tJIK62+p3yBwvfahy4Fwqp0/BpcYmr5QzuA9M19mTnpdF9f0e02Cbye1B//
- SPiSPIOg2uiMoL1XEelluoHsk49DMqF5nER/5thCzrp2DjIcJeDk/iEKv7t8hrR8Z6fk
- Y4+oalV8vMSirTADSwvWMkIgbLd4ZSnZgZ79w30EcVARJOXKr/BkSjjW9GcawloPPTZK
- 4qSw==
-X-Gm-Message-State: AOJu0YyqsBbTOrwNm5PXLsVAZZkp4uIUgZlrwfvWg/+xnhyCRzyVGQba
- y7Z4Bv2+s/LzvI0bwmgvCqONCw1+e1K97JDaiz8/oZU79fjIJVIUUWNuCMYkGg==
-X-Gm-Gg: ASbGncvTWQeT2S1EHlMMfvf+6tn9dHs1d6SVwSExnQZEEQOk3ZlsMkwFCyXkzejOZ4w
- gkLzzAdrhympes01gwVeDeQcbq35KEA850IoGs9NtelMPIwv8O9fNwwnY/3+dDNe0IBxYVeHRnd
- T3iveSnwnxmSCYqj4f0LhNiNTNabmdUg4RI1Ovhu5k5DURDfzLKEEd33LkoBnkzvDaQnGoUf+L+
- DURS9JYCQMtEjosfBhkww9VvBhM+AaSarQ1e805gHA4SzVLamochZdscPqGBSuhi6SmbsCRR7jN
- Ocptn3FvswKT5XuZo+ERGVN/Ss52ZrJw/wycLNARcEDzMMd1V16i0rC5XvVmCZArVAhl6J31hy8
- zQPaKUZa0XrTOuWI9et09QDwX0iBwH4bOeblxZGHx5ohBk/YjPYzqvfAeFY3Kafib5Jh5vqYEjY
- V7l/iDAjqYvzsWm3ALDiZmlcKPkA==
-X-Google-Smtp-Source: AGHT+IFLcKTGGdluurfHKaVpkyPISPiobH4HQY8EBrMi62znznaGJZ5Yxn0yF1tI44/V/mo4QYwqnA==
-X-Received: by 2002:a05:6000:4006:b0:42b:2e94:5a8f with SMTP id
- ffacd0b85a97d-42cb9a5593emr2463462f8f.52.1763643701506; 
- Thu, 20 Nov 2025 05:01:41 -0800 (PST)
-Received: from [192.168.43.207] ([188.113.193.112])
+ d=1e100.net; s=20230601; t=1763644298; x=1764249098;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Qyhhdzn0BYMbkUVey/n2YMFPr5fhLGbTZAGvpz5pi1c=;
+ b=Y1BlAuh+DMD+0nvOtnrCe5TKyAnx0YuRglr46ERVU9ink983JcIJStTEVl66zfWCKA
+ 8H0cXiliDm4X+FV7EMAGBC9Idzonz6jMd/kHhjpyLCAN2fKiOFRFnx4ER3X5lMZ09Srn
+ iaQZx1l5FIkv888Xpw5jrwACUfTvENn4+P/ETX9OevMpZ9ReLlyByfG5rqTxqgc3aR72
+ 2V/BlMBRZjeuorZ0wcNhOtmTGiibTN/WAV18dIk2HpXYFlqiBV/G2VwQJjZxt2WMnsni
+ +u9Nk3sYsQjfHEjmafILSx5Q7lyNZ+f5iKu5olbN3OqGaJnhfab3hyiqty0xMty10xbt
+ IzDA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUxeM+O28Uo9a8Fp7yzfRv+YLDIX2uIVBCovpHaJIM8jWXjMXP3KupFk0VSEBuye0eMZcM6MkwOASkb@nongnu.org
+X-Gm-Message-State: AOJu0YzauD8GM35W/IJfAwRNPB9Lb8MOP4Bwn8M4XwpTtRgT2cAP1YUm
+ SAMxqemMrUMpMYF56qXY/Q3XHz+1YH+IQjGCn8FtCkGMvsZcPOeXVLzIrcYW7ZRMLPt64/ZXA96
+ ofV24Y0+vBqHkSx+PeZdNQpYYlm/jSprNP33bmt1suoGF0ce/px3d1Bob
+X-Gm-Gg: ASbGncsQ57DeM77kDgvEnnbWSecdaFabAYUhGBjWAUnCmLaOofczZMlQFuuptq6nM5X
+ 9EZALI5rsr/yy/wuJUWzSTs/zao9ICOWNfuVktye52ZHJ5sotiv3zJJmgEtXK+QgXVVBztTA6+f
+ Ka57rKt6cjWjfGwcBehuRhl3M0Ger+839+wDtCmk0Ae91XGr5oXRv43wVgEMp5wZJlVLgrSGzwU
+ y1nVSFt67O3aFEtsFtvFnB6Gurg08o86pRGyJBcdzcrUqiqmGxlJVZOxgqxRoOG4OZHcqf9l9bT
+ ieozhgflOyCxGU3lbzBkzkGdJXPRuFM3AOvuDBpgKdcS1Bk7DhB6TKcPNImxbc18VC7JDtRX0bT
+ WJ9CIe4eBbYfCNjwP/CGMdyEVzB9A+OB112Wps2P/x9sHtewbZxGy4/gXTa0=
+X-Received: by 2002:a05:600c:19cf:b0:477:7725:c16a with SMTP id
+ 5b1f17b1804b1-477b9deb5fcmr27551055e9.10.1763644298198; 
+ Thu, 20 Nov 2025 05:11:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqk0rLj6ifgE7tCamOIWPRaEiyBBbqDGCq1Uha6rrPDrmf26u75w870PL6lQD0kcpOCi1brA==
+X-Received: by 2002:a05:600c:19cf:b0:477:7725:c16a with SMTP id
+ 5b1f17b1804b1-477b9deb5fcmr27550685e9.10.1763644297761; 
+ Thu, 20 Nov 2025 05:11:37 -0800 (PST)
+Received: from rh (p200300f6af131a0027bd20bfc18c447d.dip0.t-ipconnect.de.
+ [2003:f6:af13:1a00:27bd:20bf:c18c:447d])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fd8e54sm5282754f8f.40.2025.11.20.05.01.39
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Nov 2025 05:01:40 -0800 (PST)
-Message-ID: <5e07267f-b990-47fc-ade7-934209ea942f@gmail.com>
-Date: Thu, 20 Nov 2025 18:01:36 +0500
+ 5b1f17b1804b1-477a974cdc8sm67987845e9.2.2025.11.20.05.11.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Nov 2025 05:11:37 -0800 (PST)
+Date: Thu, 20 Nov 2025 14:11:35 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, 
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3 2/2] target/arm/kvm: add kvm-psci-version vcpu property
+In-Reply-To: <a2d0ddf1-f00c-42dd-851d-53f2ec789986@redhat.com>
+Message-ID: <8c679736-a168-0a33-e44a-4367e9e7b8d4@redhat.com>
+References: <20251112181357.38999-1-sebott@redhat.com>
+ <20251112181357.38999-3-sebott@redhat.com>
+ <d4f17034-94d9-4fdb-9d9d-c027dbc1e9b3@linaro.org>
+ <c082340f-31b1-e690-8c29-c8d39edf8d35@redhat.com>
+ <a2d0ddf1-f00c-42dd-851d-53f2ec789986@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-From: Andrey Erokhin <language.lawyer@gmail.com>
-Subject: [PATCH] hw/9pfs: Follow native symlinks when security-model=mapped
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=language.lawyer@gmail.com; helo=mail-wr1-x429.google.com
+Content-Type: multipart/mixed;
+ boundary="-1463806286-370073406-1763644297=:54158"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 20 Nov 2025 09:27:05 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,40 +124,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A directory mounted via virtfs with security-model=mapped[-xattr|-file] can contain "native" symlinks
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-This can happen e.g. when booting from a rootfs directory tree (usually with writable overlay set up on the host side)
+---1463806286-370073406-1763644297=:54158
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Currently, with security-model=mapped, QEMU expects that all host "symlinks" are in "mapped" format, i.e. are files containing the linked path, so it tries to open with O_NOFOLLOW and fails with ELOOP in case of a native symlink
+On Thu, 20 Nov 2025, Eric Auger wrote:
+> On 11/13/25 1:05 PM, Sebastian Ott wrote:
+>> Hi Philippe,
+>>
+>> On Wed, 12 Nov 2025, Philippe Mathieu-Daudé wrote:
+>>> On 12/11/25 19:13, Sebastian Ott wrote:
+>>>>  Provide a kvm specific vcpu property to override the default
+>>>>  (as of kernel v6.13 that would be PSCI v1.3) PSCI version emulated
+>>>>  by kvm. Current valid values are: 0.1, 0.2, 1.0, 1.1, 1.2, and 1.3
+>>>>
+>>>>  Note: in order to support PSCI v0.1 we need to drop vcpu
+>>>>  initialization with KVM_CAP_ARM_PSCI_0_2 in that case.
+>>>>
+>>>>  Signed-off-by: Sebastian Ott <sebott@redhat.com>
+>>>>  ---
+>>>>    docs/system/arm/cpu-features.rst |  5 +++
+>>>>    target/arm/cpu.h                 |  6 +++
+>>>>    target/arm/kvm.c                 | 64
+>>>> +++++++++++++++++++++++++++++++-
+>>>>    3 files changed, 74 insertions(+), 1 deletion(-)
+>>>
+>>>
+>>>>  diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+>>>>  index 0d57081e69..e91b1abfb8 100644
+>>>>  --- a/target/arm/kvm.c
+>>>>  +++ b/target/arm/kvm.c
+>>>>  @@ -484,6 +484,49 @@ static void kvm_steal_time_set(Object *obj, bool
+>>>>  value, Error **errp)
+>>>>        ARM_CPU(obj)->kvm_steal_time = value ? ON_OFF_AUTO_ON :
+>>>>    ON_OFF_AUTO_OFF;
+>>>>    }
+>>>>
+>>>>  +struct psci_version {
+>>>>  +    uint32_t number;
+>>>>  +    const char *str;
+>>>>  +};
+>>>>  +
+>>>>  +static const struct psci_version psci_versions[] = {
+>>>>  +    { QEMU_PSCI_VERSION_0_1, "0.1" },
+>>>>  +    { QEMU_PSCI_VERSION_0_2, "0.2" },
+>>>>  +    { QEMU_PSCI_VERSION_1_0, "1.0" },
+>>>>  +    { QEMU_PSCI_VERSION_1_1, "1.1" },
+>>>>  +    { QEMU_PSCI_VERSION_1_2, "1.2" },
+>>>>  +    { QEMU_PSCI_VERSION_1_3, "1.3" },
+>>>>  +    { -1, NULL },
+>>>>  +};
+>>>
+>>>
+>>>>  @@ -505,6 +548,12 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
+>>>>                                 kvm_steal_time_set);
+>>>>        object_property_set_description(obj, "kvm-steal-time",
+>>>>                                        "Set off to disable KVM steal
+>>>>  time.");
+>>>>  +
+>>>>  +    object_property_add_str(obj, "kvm-psci-version",
+>>>>  kvm_get_psci_version,
+>>>>  +                            kvm_set_psci_version);
+>>>>  +    object_property_set_description(obj, "kvm-psci-version",
+>>>>  +                                    "Set PSCI version. "
+>>>>  +                                    "Valid values are 0.1, 0.2,
+>>>> 1.0, 1.1,
+>>>>  1.2, 1.3");
+>>>
+>>> Could we enumerate from psci_versions[] here?
+>>>
+>>
+>> Hm, we'd need to concatenate these. Either manually:
+>> "Valid values are " psci_versions[0].str ", " psci_versions[1].str ",
+>> " ... which is not pretty and still needs to be touched for a new
+>> version.
+>>
+>> Or by a helper function that puts these in a new array and uses smth like
+>> g_strjoinv(", ", array);
+>> But that's quite a bit of extra code that needs to be maintained without
+>> much gain.
+>>
+>> Or we shy away from the issue and rephrase that to:
+>> "Valid values include 1.0, 1.1, 1.2, 1.3" 
+> Personally I would vote for keeping it as is
 
-This patch gives such cases a second chance: trying to open as a native symlink, by reusing security-model=[none|passthrough] else if branch
+OK, thanks!
 
-QEMU issues:
-https://gitlab.com/qemu-project/qemu/-/issues/173 (from https://bugs.launchpad.net/qemu/+bug/1831354)
-https://gitlab.com/qemu-project/qemu/-/issues/3088 (dup of the first one)
+> (by the way why did you
+> moit 0.1 and 0.2 above?)
 
+Just to clarify that this is an incomplete list of possible values
+that we don't have to change when a new psci version is introduced.
 
-Signed-off-by: Andrey Erokhin <language.lawyer@gmail.com>
-
-
-diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index 31e216227c..b4f8be2c81 100644
---- a/hw/9pfs/9p-local.c
-+++ b/hw/9pfs/9p-local.c
-@@ -468,12 +468,14 @@ static ssize_t local_readlink(FsContext *fs_ctx, V9fsPath *fs_path,
-  
-          fd = local_open_nofollow(fs_ctx, fs_path->data, O_RDONLY, 0);
-          if (fd == -1) {
-+            if (errno == ELOOP) goto native_symlink;
-              return -1;
-          }
-          tsize = RETRY_ON_EINTR(read(fd, (void *)buf, bufsz));
-          close_preserve_errno(fd);
-      } else if ((fs_ctx->export_flags & V9FS_SM_PASSTHROUGH) ||
-                 (fs_ctx->export_flags & V9FS_SM_NONE)) {
-+native_symlink:;
-          char *dirpath = g_path_get_dirname(fs_path->data);
-          char *name = g_path_get_basename(fs_path->data);
-          int dirfd;
+Sebastian
+---1463806286-370073406-1763644297=:54158--
 
 
