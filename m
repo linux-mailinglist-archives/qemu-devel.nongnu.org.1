@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50349C760B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFF7C76095
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:16:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMA6v-0006bl-Qp; Thu, 20 Nov 2025 14:14:29 -0500
+	id 1vMA6y-0006kY-0x; Thu, 20 Nov 2025 14:14:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6T-0005lY-M1
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:03 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6a-0005vy-EC
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:09 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6P-000769-5R
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:00 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6R-00077h-3v
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763666036;
+ s=mimecast20190719; t=1763666037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qZGp8vuRR8VrNmTSQmIzBXvqSkRg69sI4h/KDVaUFuE=;
- b=QofNWpS8uLA29ixW7+s300bBUtOuQzkPmSnndpYo4NhkSuTk+wIFN55NLsat1DbDP11XQX
- SOSeP3VKzAFn+AUaLx90le50doz8B+j8n894I+ZP0JvhvPMLx/yLJETET0x+7Q+2XydQhA
- vVKKhLHoEladdGasz+4Fceq6UbXdMe4=
+ bh=/xtGdog7VgzIfQmeSQKWrv+vlf3j6c1d+FLveMONGz8=;
+ b=cjNNtF68M4hNzwwbwZra1hIglRgSjANmB/vZ8aV0qAsir2T+jI4e/6qkiwgLh3EPEaLDm5
+ 9gsyOSCHAWthfZxKiaptUM51ewlyuEE+FxNbHv9OczYhKLbdJ5FSrjCCr3u33jvF+VZeog
+ qFTa2CB/aESqfjrXKxqCIPZYPUyEQj8=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-LvjNWB7rPgenSYGmtZdSaA-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-gSO2B6tkNASi5AxKkflOCA-1; Thu,
  20 Nov 2025 14:13:52 -0500
-X-MC-Unique: LvjNWB7rPgenSYGmtZdSaA-1
-X-Mimecast-MFC-AGG-ID: LvjNWB7rPgenSYGmtZdSaA_1763666027
+X-MC-Unique: gSO2B6tkNASi5AxKkflOCA-1
+X-Mimecast-MFC-AGG-ID: gSO2B6tkNASi5AxKkflOCA_1763666027
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B5935195607A; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
+ id EB4CF1955F28; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EFDEB1956045; Thu, 20 Nov 2025 19:13:45 +0000 (UTC)
+ id 09C651955F66; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5BDDA21E66A9; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+ id 612BE21E66B9; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
@@ -63,10 +63,10 @@ Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH 05/14] hw/scsi: Use error_setg_file_open() for a better error
- message
-Date: Thu, 20 Nov 2025 20:13:30 +0100
-Message-ID: <20251120191339.756429-6-armbru@redhat.com>
+Subject: [PATCH 06/14] hw/virtio: Use error_setg_file_open() for a better
+ error message
+Date: Thu, 20 Nov 2025 20:13:31 +0100
+Message-ID: <20251120191339.756429-7-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -81,7 +81,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,37 +99,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The error message changes from
 
-    vhost-scsi: open vhost char device failed: REASON
+    vhost-vsock: failed to open vhost device: REASON
 
 to
 
-    Could not open '/dev/vhost-scsi': REASON
+    Could not open '/dev/vhost-vsock': REASON
 
 I think the exact file name is more useful to know than the file's
 purpose.
 
-We could put back the "vhost-scsi: " prefix with error_prepend().  Not
-worth the bother.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/scsi/vhost-scsi.c | 3 +--
+ hw/virtio/vhost-vsock.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index cdf405b0f8..239138c931 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -245,8 +245,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
+index 107d88babe..7940b60d8a 100644
+--- a/hw/virtio/vhost-vsock.c
++++ b/hw/virtio/vhost-vsock.c
+@@ -153,8 +153,7 @@ static void vhost_vsock_device_realize(DeviceState *dev, Error **errp)
      } else {
-         vhostfd = open("/dev/vhost-scsi", O_RDWR);
+         vhostfd = open("/dev/vhost-vsock", O_RDWR);
          if (vhostfd < 0) {
--            error_setg(errp, "vhost-scsi: open vhost char device failed: %s",
--                       strerror(errno));
-+            error_setg_file_open(errp, errno, "/dev/vhost-scsi");
+-            error_setg_errno(errp, errno,
+-                             "vhost-vsock: failed to open vhost device");
++            error_setg_file_open(errp, errno, "/dev/vhost-vsock");
              return;
          }
-     }
+ 
 -- 
 2.49.0
 
