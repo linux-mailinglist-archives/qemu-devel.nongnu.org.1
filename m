@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452B6C7188D
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB61C71884
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 01:18:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLsMP-0003BJ-Hu; Wed, 19 Nov 2025 19:17:17 -0500
+	id 1vLsMR-0003Bk-6Q; Wed, 19 Nov 2025 19:17:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsMN-0003AZ-L7
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:15 -0500
+ id 1vLsMP-0003BK-EF
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vLsMM-0007Ro-7a
- for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:15 -0500
+ id 1vLsMO-0007SE-18
+ for qemu-devel@nongnu.org; Wed, 19 Nov 2025 19:17:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763597833;
+ s=mimecast20190719; t=1763597835;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1NK+wIpV+Q2uLt75RKB2mtL15WC7Pac5R8gwVj0dKEA=;
- b=EFIfDTSFg9xm5rt7r2DeJ+kXAxHBwLLNZHfSVMdUzU1zFu/YAURNSe4Cb4pwEtRBwmXoG+
- xib7ftiEsE89cjB3aDqBlXQnDu/1YKKDYowGwZy/DiT0N5y+c7Q63S8GNGE3tZOzmpcstr
- 3+UvVATJFLvr/AyRG90MsHrs9iJtGWo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=U+ZM1ZqiMdfgA1oCQRd2zAK+9NPqIfMNQvMcX6iBu/E=;
+ b=SPDnitet6Iz3fM0EwVLhP6DfsITYpd2qGNr5ZFIvSrllgYoRmJLe9BJoW+l/P226hhWhqa
+ qsw90D3lnQnGTNAbg8F5d8G99Guw1uqFZOpVD1K/WuFzn+LVuYk0sTdjxxa93PlKKnT2us
+ bf7XFyHTXKiQDYfT2lNHuK4hqRvYr3I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-StYW3iqFPVKEd5Ws7uneoA-1; Wed, 19 Nov 2025 19:17:12 -0500
-X-MC-Unique: StYW3iqFPVKEd5Ws7uneoA-1
-X-Mimecast-MFC-AGG-ID: StYW3iqFPVKEd5Ws7uneoA_1763597831
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-429c5da68e5so127775f8f.1
- for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:17:12 -0800 (PST)
+ us-mta-572-KwwgDqFROXygL7vEul1uEQ-1; Wed, 19 Nov 2025 19:17:14 -0500
+X-MC-Unique: KwwgDqFROXygL7vEul1uEQ-1
+X-Mimecast-MFC-AGG-ID: KwwgDqFROXygL7vEul1uEQ_1763597833
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-47496b3c1dcso2841885e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Nov 2025 16:17:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763597831; x=1764202631; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763597832; x=1764202632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1NK+wIpV+Q2uLt75RKB2mtL15WC7Pac5R8gwVj0dKEA=;
- b=I7uQ5OkY8igmg7kXv8w+grkW+2XrmP5ogKWnYrLPw33aATmAadI6OGNAjgKEwNC8iK
- BhipSZ8yMSTZieaj3QLKPakx2KiSZpfJYgh0PZm6AUFtquLlP6kcHOJP4xAWiQV5GmMq
- DXVFHXYW/Z9OCBiQLEOQAa3kheiTX9pJezg2i73CvvA5fcJ1ziEmfbccixINXmpgPC3I
- iCkawF+MRrL+6er7jZgpDZjNJH/p0yN++uPv2OWine2Vrj98R/nzpTQ/UmUXItOwcRoI
- OAsEhqZF4F4vKVNnuzWVCL0OjbO46C/5AQxaEG5E2eZr+JYCrv9VUcnKCWcLvnzDn3Iq
- Qlxw==
+ bh=U+ZM1ZqiMdfgA1oCQRd2zAK+9NPqIfMNQvMcX6iBu/E=;
+ b=jPsZWa1fIRizEVYpIxncotY+VKlLnQhLf/NpWF03UrpTSqDxeEYuwgR7jYvttR7tEC
+ UDVfSK7wyEEziVGa3HpUN6cTLDGeKxp+ceVswghi8Y8Zi6LSn7DsWzi3HDqDMi1N9T1J
+ zfog42tbZ9dIkGZQwJ7uHNSHbKPPor6OktpbtyPyd99rTTnTFwa8QNwR3PqDoshduQqC
+ uVxF0njpfcB3M8k4fVZ+cRiPHNprhMPREhm2xuEUM8vjW+0bNHcUt+y8UcgdBWDEskRZ
+ IIFIlbvSuNXCqL+wqs687zRcpi+LWNDVYrkyWaU0bRw2JGU1PikJBWmB8CZ4dlTO71fZ
+ 75Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763597831; x=1764202631;
+ d=1e100.net; s=20230601; t=1763597832; x=1764202632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=1NK+wIpV+Q2uLt75RKB2mtL15WC7Pac5R8gwVj0dKEA=;
- b=isffgXBIWAQytr9kkjThv4uTY+OF0HtpPrYeiXAThsN0CgTkIsVyYQ4+cXVjcjimQb
- hQEgKTenmBUeoOn1M+q/Yk2TNP2kUnKvy12hIdgLiAV8EjBWv3qLEZlwcJCWu7298eyb
- BihZjnV8BgKgBgZC/znr6cG/lUjTWWsZ+4qKAKeUFuJ/9lnlmQ6lIuNtX6iIzflBGrsJ
- UT4Dsav3Z18iVFvNRkYgk1Rwz9zX91nqNO1DY+WN3b19/YHkFJvVFlWHo5tdgM0skrzR
- 4I2zUxe2tf0sUwBNjyC/f0lr+JcvStOw05NYLCyS7MhNlKtj6gYCZDdtKKlxQS7jERT0
- +xfQ==
-X-Gm-Message-State: AOJu0YwA0mBANrFvBB6U/ubQjuM4s6lHNNyVcn/ms0wSKY6oN/YfLlWu
- /1Qglvvd0q3HK/WlERgpKzHCM8b6UFdzSqZcK3lpqEQaN7ofpDIOvI4R2SDU4yt/i6R3rkkLnf2
- TV/+gNtIddiRjmCkNJO5Hyfn5nK2ntvRH0IAGPJ5TXZvnon4wgCyIVsj4VCj0ZEYBpbjKOFP0Ni
- otedXu+FBnEctI5iAgi4CZ3vfZhf+IbE7iYNdY/Q15
-X-Gm-Gg: ASbGncvAEV3A09HiluMvfbFX36MDDlzQftnzrkj4f+K88uqMR+QPCp5nlciqrz/36b+
- h3ooLvtIBOWuMXtw3K2ZVQLtflsc3mf9pXHpq8oH1CgGCrwP1ddgkg0r+xHzc6R3LrVLYXLNuNx
- 6zyq9DIrjO3iQTiY19qTDtRtctRPogd6cDeTmbPvKgiCVe4gvcQI0zkeRqGGL+BA+0GqdG/EXHb
- t9m0DIIIv3Hxa8QumEz7kb1b2hQ6M7IOgqlYTfiu4Uz1sQghu/8Grfq00tnm1bKMdXb20oug8rB
- +w5wkFfM3z/oNW3HG3ZhoynXtUzEGmMbgkNbzYBcCnQxBNCPWIp1eBr3tWgGd0wPZRqnFhFNzFO
- qJZdNOPhxEtp+4uZOkDKgyFyW+sLdLJj9XmHBK/qA9fyq6DEQPNrbgn9SELZ3Pw9jeOCVmTZzbv
- mJ1hCHOaaIAapvVEE=
-X-Received: by 2002:a05:6000:401e:b0:425:6fb5:2add with SMTP id
- ffacd0b85a97d-42cba7b3fb8mr406273f8f.19.1763597830655; 
- Wed, 19 Nov 2025 16:17:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELPpkpOUTkzLgRq/wJ325bdxTrRVpcXzz0M08oUI7v1aIwnE3H9Xk3L0nohQJ9XoYh507rkA==
-X-Received: by 2002:a05:6000:401e:b0:425:6fb5:2add with SMTP id
- ffacd0b85a97d-42cba7b3fb8mr406240f8f.19.1763597830136; 
- Wed, 19 Nov 2025 16:17:10 -0800 (PST)
+ bh=U+ZM1ZqiMdfgA1oCQRd2zAK+9NPqIfMNQvMcX6iBu/E=;
+ b=Vax0vLwelAF0NrxbS79IsCox4fag09BpY6nVw7L5LHfl8KX6f3kKyX+0aXHfcgKHzB
+ F7cDtU9cFLt7cP6cweWPbVI/mcmmQZAU8j/ipUSAcKbVRIp49GgESKHPX1AbqBCjJW4U
+ krbczUxBDeVXi3eXG9t1RkhuhkfJkJ38T/Pg29Gz4Emh65pBuwTm8ydAh14feFylO+ux
+ UHjQM+vX1gY10UOi9rpNVkm9t5YWxG7IMPzukb2VOnNIGAOuF+4FwYI9nC2gsyr+uIKl
+ ZXeewxLRnABDlmCgIrmuUj1IdBC6UrzHCgw6Vtmj3f6r8LTCpIX8q7+hM1rxsZBHkhno
+ fepg==
+X-Gm-Message-State: AOJu0YyYKKr9NxKIO5yUiU4cHhAgw1eIHtnv4U45gUdYbGeccNy85GXW
+ WUIkw34FoGmBDKPSwrfYX5Dc2ECaV9eBeCWuUDG72R4Fvbc+kZLb9UF/r4mxtY9zL5HWtUVFWX5
+ low93UJOzKK30W7ydPo3+t2w7AVKRWeKMDMbrfx5/LzaUaQy5xR9tI/T1Q/k0Bic5ne97yQTZGh
+ M9WaMZG+eCn58gTautTcL+anQkxX1RzDUg9aebak0C
+X-Gm-Gg: ASbGncvNzzVy8E0sFLSqPZua6zupFzdqDBBkE6NM5DEKb8YVkUtyMPORSTutrMHFGx7
+ Q7V9/Nkg0YSIm0dr98yq0tlaOq48wfAIJDFe/DvZL9WLRTSUcNTPbYIqHieAynKMrAIZFFCxcSo
+ ONh0F+GW8VDU2DZZ8jcQX0z/2LsAizLsC3BEWf/k7bp4AyefcNKC8KoYC9df+06x5Xq4t8UNT14
+ EMQa5SlBmQEy6PtnMiKASR3kDIo/YLLwzRneLbawjFojijEQ0mDfMIEpzZk9u8HSs7A5um3qiSz
+ GIa0HLb40Wku7SeLTerV4G7Dx4v9RHDuub5dR0m6pw9VQXfWqtBTxKxtHC8r4EqjiLu530W+kDx
+ p3b85Z04uvFemEVSgdoBF0pVBq1MIK45S0JLkea/AXN1BczsUm5bS6CdqJ09GWnHfaYKqq9u9Vk
+ M2waiE0xOLoTB5UKw=
+X-Received: by 2002:a05:600c:3146:b0:477:79cf:89d4 with SMTP id
+ 5b1f17b1804b1-477b9e34890mr3921745e9.31.1763597832325; 
+ Wed, 19 Nov 2025 16:17:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWpZtOpnMr/YZU3MnOtMC1GMl/WX/5tMEzhayD6CvgLGyPI2lySHH8XdbYBIBys1rm9N491g==
+X-Received: by 2002:a05:600c:3146:b0:477:79cf:89d4 with SMTP id
+ 5b1f17b1804b1-477b9e34890mr3921535e9.31.1763597831834; 
+ Wed, 19 Nov 2025 16:17:11 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f49a7bsm2035124f8f.19.2025.11.19.16.17.07
+ 5b1f17b1804b1-477b8314279sm16575225e9.11.2025.11.19.16.17.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Nov 2025 16:17:08 -0800 (PST)
+ Wed, 19 Nov 2025 16:17:10 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 08/10] mtest2make: add dependencies to the "speed-qualified"
- suite
-Date: Thu, 20 Nov 2025 01:16:47 +0100
-Message-ID: <20251120001649.1085913-9-pbonzini@redhat.com>
+Subject: [PULL 09/10] mtest2make: do not repeat the same speed over and over
+Date: Thu, 20 Nov 2025 01:16:48 +0100
+Message-ID: <20251120001649.1085913-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251120001649.1085913-1-pbonzini@redhat.com>
 References: <20251120001649.1085913-1-pbonzini@redhat.com>
@@ -122,35 +121,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thorough tests may have more dependencies than faster ones.
-Dependencies are now looked up based on the suites being
-executed, not on the suites passed as goals to the makefile.
-Therefore, it is possible to limit dependencies to the
-speeds that need them.
+There are just two of them (slow and thorough; quick is simply the
+default).  Avoid repeating them for as many times as there are tests.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/mtest2make.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/mtest2make.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index d7c514243a5..38512046d97 100644
+index 38512046d97..4b252defc3f 100644
 --- a/scripts/mtest2make.py
 +++ b/scripts/mtest2make.py
-@@ -58,13 +58,13 @@ def process_tests(test, targets, suites):
-             s = s.split(':')[1]
-             if s == 'slow' or s == 'thorough':
-                 continue
-+        suites[s].deps.update(deps)
+@@ -13,7 +13,7 @@
+ class Suite(object):
+     def __init__(self):
+         self.deps = set()
+-        self.speeds = []
++        self.speeds = set()
+ 
+     def names(self, base):
+         return [f'{base}-{speed}' for speed in self.speeds]
+@@ -61,10 +61,10 @@ def process_tests(test, targets, suites):
+         suites[s].deps.update(deps)
          if s.endswith('-slow'):
              s = s[:-5]
-             suites[s].speeds.append('slow')
+-            suites[s].speeds.append('slow')
++            suites[s].speeds.add('slow')
          if s.endswith('-thorough'):
              s = s[:-9]
-             suites[s].speeds.append('thorough')
--        suites[s].deps.update(deps)
+-            suites[s].speeds.append('thorough')
++            suites[s].speeds.add('thorough')
  
  def emit_prolog(suites, prefix):
      all_targets = ' '.join((f'{prefix}-{k}' for k in suites.keys()))
