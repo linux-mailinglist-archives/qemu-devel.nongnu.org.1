@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2678AC74AFF
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4BCC7494E
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:34:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM64K-0002DH-9V; Thu, 20 Nov 2025 09:55:32 -0500
+	id 1vM5jC-00040G-Hp; Thu, 20 Nov 2025 09:33:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vM64E-0002D9-68
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 09:55:26 -0500
-Received: from sender3-pp-f112.zoho.com ([136.143.184.112])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vM5jA-0003zS-F1; Thu, 20 Nov 2025 09:33:40 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vM64C-00021x-6D
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 09:55:25 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1763650504; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=LmsNH/EUHWsFKsn11u562A7EZVkPynuaC7C7if/+1F7Qg6MkeI9HXcYd+ENQLCjbixnorEzu1rTmA/2aJgmtEiSc2k/eOrFpfAl2ARVFbWe/u3mDZo8RLfz8ZsPRmZLw096SaZ8/682sXFdfxVLP4LAn+vG0T8mUO/hHUrJOER0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1763650504;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=GFPcDL17IIunLGbyTsX8w+sKZjuLQsXZwn4GtlEDc28=; 
- b=G5lda19m3UknrineYMkorm/8bsuafSUcg0QNwFhZaQBDmtsaPM6pkopYMq2vtrHHSKbofsDRPjQksN8f5Ilnm5CAVnWRTnmWSz2iBmUKjQPUa1/VsZu9PxNq3p7BNst8yOSzq5b8fIiip3XVFa2UZCxYjT62C9k3rkmHpgdbcPo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763650504; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=GFPcDL17IIunLGbyTsX8w+sKZjuLQsXZwn4GtlEDc28=;
- b=aLzqLy355PcIWrDQPwOS1/7XpXrM+aCN9gDTdXgT1E2D3UG7cgCZJhHDXYkFB5qe
- WYQA3W4okkeKsrSevPWO/ELzebNaVHUZBy7udpY9jbkcyCXfZV0C8YpYlrqLegquNT6
- phZ2dlFEE0Raw66LNz6tLHSTFFDbqQeWeEUdutow=
-Received: by mx.zohomail.com with SMTPS id 1763650502211123.17228119804327;
- Thu, 20 Nov 2025 06:55:02 -0800 (PST)
-Message-ID: <00064b47-ca94-4eb9-a443-bb2739ed885a@collabora.com>
-Date: Thu, 20 Nov 2025 17:54:53 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vM5j8-0006bx-UD; Thu, 20 Nov 2025 09:33:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763649219; x=1795185219;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=sQyxYXW7PPbgad6LMRVwa4jqmK6s2KwTJtkRXoZqVk8=;
+ b=beQHTH7LO/Y3nK9spZ2K0TfKTXqUZVzlCLUQZgQBFwLtzLGB3iJO5+Kl
+ 87EdeC9m2IA+LQNXvhoQ7acQBUqcR2bJ0J6R86xpR9JvsleoI5Ua13sPf
+ eC925KN1c6/dgXofl9z5Ptbg/X1aAyDZPIIOpA0Yg0HYEdCxpJmNQV7Gj
+ lgQmUXaqHE7Me1dRr9MsONxZaEkir1Eg6VQn6//B/BFuNnSnyjn++Qr+0
+ j74SP66zdWDl6bs8f5BlBZOTUIZwHl34nWQ/VtELBVtnU8ge21HBUqoon
+ gsz3OT3MFtJUvLMF2a5gyMuEs+VHixf7Byecnl5QJqIdE4/VzdN+wfWwT w==;
+X-CSE-ConnectionGUID: RhUOtFLeQ0aUWgHEUm5+KQ==
+X-CSE-MsgGUID: Kinya3hDQcWTraCTMB5wGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76824898"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76824898"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 06:33:36 -0800
+X-CSE-ConnectionGUID: iNkqu0PST0O5MuzQO2Nlgw==
+X-CSE-MsgGUID: eSoSkmy/QXuBrOhkef7vzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191058805"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa007.fm.intel.com with ESMTP; 20 Nov 2025 06:33:28 -0800
+Date: Thu, 20 Nov 2025 22:55:48 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ gengdongjiu1@gmail.com, peter.maydell@linaro.org,
+ alistair@alistair23.me, edgar.iglesias@gmail.com, npiggin@gmail.com,
+ harshpb@linux.ibm.com, palmer@dabbelt.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ berrange@redhat.com, peterx@redhat.com, farosas@suse.de,
+ eblake@redhat.com, vsementsov@yandex-team.ru, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 3/5] nbd/client-connection: Replace error_propagate() by
+ assignment
+Message-ID: <aR8r9PwcBCqidxUp@intel.com>
+References: <20251119130855.105479-1-armbru@redhat.com>
+ <20251119130855.105479-4-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 5/7] virtio-gpu: Destroy virgl resources on
- virtio-gpu reset
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Yiwei Zhang <zzyiwei@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Robert Beckett <bob.beckett@collabora.com>
-References: <20251120040632.4036204-1-dmitry.osipenko@collabora.com>
- <20251120040632.4036204-6-dmitry.osipenko@collabora.com>
- <94e92cb0-3e5a-48e3-bf3c-12d27c23c27f@rsg.ci.i.u-tokyo.ac.jp>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <94e92cb0-3e5a-48e3-bf3c-12d27c23c27f@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.184.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender3-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119130855.105479-4-armbru@redhat.com>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,33 +91,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/25 08:07, Akihiko Odaki wrote:
->> +int virtio_gpu_virgl_reset(VirtIOGPU *g)
->>   {
->> +    struct virtio_gpu_simple_resource *res, *tmp;
->> +
->> +    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
->> +        virtio_gpu_virgl_resource_destroy(g, res, NULL);
->> +    }
->> +
->> +    if (!QTAILQ_EMPTY(&g->reslist)) {
->> +        error_report("failed to reset virgl resources");
->> +        return -1;
+On Wed, Nov 19, 2025 at 02:08:53PM +0100, Markus Armbruster wrote:
+> Date: Wed, 19 Nov 2025 14:08:53 +0100
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: [PATCH 3/5] nbd/client-connection: Replace error_propagate() by
+>  assignment
 > 
-> It shouldn't report an error if suspended.
+> connect_thread_func() sets a variable to null, then error_propagate()s
+> an Error * to it.  This is a roundabout way to assign the Error * to
+> it, so replace it by just that.
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  nbd/client-connection.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Could you please expand on what you're meaning by "suspended"?
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Suppose you're talking about guest's kernel suspension. There was a
-discussion on [1] RE a need to use `x-pcie-pm-no-soft-reset=true` option
-to avoid virtio-gpu resetting across S3 suspend-resume. This option
-works with virtio-vga, but not with virtio-vga-gl device where VM hangs
-on startup. So currently S3 doesn't work for virgl and needs further fixing.
-
-[1]
-https://lore.kernel.org/dri-devel/20250924194755.1265531-1-dongwon.kim@intel.com/
-
--- 
-Best regards,
-Dmitry
 
