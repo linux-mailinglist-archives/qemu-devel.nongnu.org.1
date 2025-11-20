@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910D9C7431C
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 14:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A781FC743D0
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 14:30:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM4ee-00074X-PK; Thu, 20 Nov 2025 08:24:56 -0500
+	id 1vM4ed-0006zN-Aj; Thu, 20 Nov 2025 08:24:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vM4eO-0006jP-Vq; Thu, 20 Nov 2025 08:24:46 -0500
-Received: from mail-westcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c112::7] helo=CY3PR05CU001.outbound.protection.outlook.com)
+ id 1vM4eQ-0006jT-2d; Thu, 20 Nov 2025 08:24:46 -0500
+Received: from mail-westus3azlp170100009.outbound.protection.outlook.com
+ ([2a01:111:f403:c107::9] helo=PH7PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vM4eM-0002KR-26; Thu, 20 Nov 2025 08:24:40 -0500
+ id 1vM4eN-0002KY-Dt; Thu, 20 Nov 2025 08:24:41 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XkjSeHEDleNy8eDc7xbr2XhWRDesTqgF3vysL4HvR39UbNLcIYHgAuz57MAlFnWv4n0gflMr1Yha+iN+bsmQ+G3ClXqd8jA46HnB1aIwRqjEh0NLu4cZZLl+2nNMDDv46RqUHp/vZrfzCTSJp00/wnfmLfDcMvIyo/7+3wmP8WlMg5wQkjAm9nQRXsdiDzz1CF9lIMPllNgaYQSpediXWaMvda8AfoPqNwE94JQd0gVWtumsYy1WP11gIPNgIg13ZOX120b0QIhdAerXkFxxXpw0wFIK5wnQ7TP6MG7lrUE2vUmbnezcundNazRglFWtY+2//A1f0ioWxe0wkQUprQ==
+ b=gWzNVzUGFzMmyiUoNXxgvzLURfaUy1GRYtmMbzPhWU4nBS5DSQWcN/4WB1y6bZolRN+6tvnjFF/OXYR4bwC4t6bs4KWVgBt3PTqi9Yu9DmikioNWvWpOK1ZiViaIS8Us7x6vm3+WVC9zrLusqIRLxi1KPJk/JQmLdmokKh72Ac+5zjwbvWTkZgGFVBorFruduBTrssyipDaxQ/cz1ApQ0Ix1UGdx+Zg5e8KOIlA4VCU1Q8EOfY/qvY9B5nT/BlnGR+pZcrcyPPflSstKuQBgiNc5ibQatWbg2n0jwAzVdbe7IVhedzaA8R07Gn0pTWjLhceVp2KNYDE9y6rhzcZYFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bH1L84xJUgoD4LTcj7+Osfl0+2SNo+lDALfS25AtnUg=;
- b=C38qnKqd8+CFpkINAA6gPJrOwm3bEAzvT2/qMknPSn1Pg5+OXno6JNiuVFg/izOiO9P0K0pJhK//CDkhw6RF7UDFzZKm4gkaXW5KToJkJQ5kU9/qDXM12DUlz/BxJ6Zd6AHcFDqjqH4/p5VM2phwNcr6SmVuK44yqQCnOCdk232i7zwlFuq9hPU5QAYiWYrkTTuFcvDNKlzi3l4LwV5hzDWk8ITjYjc84JRQnqUc5iz1OXXBC6La8lC0wHECauDDiM/OkXmvKEea1Ek3RjZ8CozHljQbzO7E4pKIagWvV9ECTJTy2J4mZQo4pCOaYYSokaY0BYSQgtMzR0vDxahofQ==
+ bh=nT2h1AF9uinuiH777NFWjRC5ErErzWSBcc+gq64aArM=;
+ b=PcMLvZqoXYDIWfHMEDS4nRsGs5TBrqcc+W4KXlUWAUeFWnt/HIFRWHUR9piMqQYEk3JG/VbaQsKMC3vf14NyHHr21/BVNhFs8l4oocABEUlbA/WLGTGGi5Ng/uQ2dHlzfdBZ7BFLmCLfKbusOvtYKIoh2qSZELie5rpbVl4YaUrf4/FKoOLfemwDmjri7VEEhGwDChHK3yhGDfC1lyuBeE9l2rXpuKvl5lfHRQlHvxhXnliYqUZ1C977bmL/CJMNrQMKlwOW+ZMQXr1gu1GKI2TmlQ4+m6iaQ+AgTrFXyS8rDIpDhhkTDDSl+R1oR+Z6qvMuybRKGJPb39BRZsQmhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -31,18 +31,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bH1L84xJUgoD4LTcj7+Osfl0+2SNo+lDALfS25AtnUg=;
- b=avnRyfCJSn4a6AbH9I4nwHJWstUbFcqleAdBALJhIyyW7UuzBSPpfemjE903duy8uhXnvZf3VBQVT8BFK45XdAFmbUsD1XBnCb6vV3OVli3kQsukvzPqoWF/4wX2l2wlM8u+aJ40K8ePsfpG0ruPgtcn4uChfqdQvqHvXxXqK6fFJWHXXJejPjkEwr3olOXYePc/IgX4RBOChqVtxn3uhEioL2LZBbOJbF4MAzjQou7lCQ2+DXatzDjYLJPTNyNiNlSm+u4zdvH77tZWIQRcuMAo3FDK8pYLK6pE3RaL+tzI4mdX5l/mDsb75/qj6KjN0JU9o2C1NxDvuvGiIiuKgQ==
-Received: from BYAPR08CA0059.namprd08.prod.outlook.com (2603:10b6:a03:117::36)
- by DS0PR12MB8070.namprd12.prod.outlook.com (2603:10b6:8:dc::15) with
+ bh=nT2h1AF9uinuiH777NFWjRC5ErErzWSBcc+gq64aArM=;
+ b=PFUkW+g1Ad9piP97PIID99AkagfxtS/rOURAmrFKmhC8le4s0Y2K6ylSGfhvOUPmeaRUsM/wBssDJnjdvL47Ui+x2XyWtFbJm9jxLOPDLJVevsLzElCASmd0yc7EdswKWWaeyXpOQBSVSdhwLvf4TRlgAt5zfXkF4qwHuPiAUL5EpGeJImtYTXx0k0CpYnmNVdv3GqxL0JxxMoVykQlazp3umvp2aeXcfqE3XLEjqoc6buqzpIsHZpByRlcpFjOYuwKjBrGFtDDaovx2Q9IsmMQdbE/BaTy7Ue/Kj1J2m+PzkjecI7esiemm6VSsOpSs7Okm2HW4SA2psApBAEAK1g==
+Received: from BY3PR10CA0012.namprd10.prod.outlook.com (2603:10b6:a03:255::17)
+ by DS0PR12MB7747.namprd12.prod.outlook.com (2603:10b6:8:138::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 13:24:29 +0000
-Received: from MWH0EPF000971E8.namprd02.prod.outlook.com
- (2603:10b6:a03:117:cafe::92) by BYAPR08CA0059.outlook.office365.com
- (2603:10b6:a03:117::36) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 13:24:32 +0000
+Received: from MWH0EPF000971E3.namprd02.prod.outlook.com
+ (2603:10b6:a03:255:cafe::24) by BY3PR10CA0012.outlook.office365.com
+ (2603:10b6:a03:255::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.11 via Frontend Transport; Thu,
- 20 Nov 2025 13:24:28 +0000
+ 20 Nov 2025 13:24:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -51,17 +51,17 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- MWH0EPF000971E8.mail.protection.outlook.com (10.167.243.68) with Microsoft
+ MWH0EPF000971E3.mail.protection.outlook.com (10.167.243.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Thu, 20 Nov 2025 13:24:28 +0000
+ 15.20.9343.9 via Frontend Transport; Thu, 20 Nov 2025 13:24:31 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 20 Nov
- 2025 05:24:08 -0800
+ 2025 05:24:13 -0800
 Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 20 Nov
- 2025 05:24:04 -0800
+ 2025 05:24:09 -0800
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
@@ -70,87 +70,77 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
  <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <kjaju@nvidia.com>
-Subject: [PATCH v6 12/33] hw/arm/smmuv3-accel: Add set/unset_iommu_device
- callback
-Date: Thu, 20 Nov 2025 13:21:52 +0000
-Message-ID: <20251120132213.56581-13-skolothumtho@nvidia.com>
+Subject: [PATCH v6 13/33] hw/arm/smmuv3: propagate smmuv3_cmdq_consume()
+ errors to caller
+Date: Thu, 20 Nov 2025 13:21:53 +0000
+Message-ID: <20251120132213.56581-14-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251120132213.56581-1-skolothumtho@nvidia.com>
 References: <20251120132213.56581-1-skolothumtho@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.126.231.35]
 X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E8:EE_|DS0PR12MB8070:EE_
-X-MS-Office365-Filtering-Correlation-Id: b78cab47-ca15-40a6-e638-08de283821ed
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E3:EE_|DS0PR12MB7747:EE_
+X-MS-Office365-Filtering-Correlation-Id: d09df552-3444-4b25-8717-08de283823e7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|7416014|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cXJEZEpzUnpaMk5FN2N2NXRtVm5vMHJ2V3RKRW14TTRWWjlHM2Q0WURPZ21B?=
- =?utf-8?B?eFZRQVVRckVwVmdTYkRNY0FtZllKMkpSeHlYdUFYRzFWQUhYQW9vWUM5MUl5?=
- =?utf-8?B?L1hhclR6cFRxUVdjTGZadFczK0xDZVZHOGwybkx3bUxmOExIK0pPdVJtVStE?=
- =?utf-8?B?cTBlam9ESktYVmtCWDNJTSt2TzN3d3VHS3hKSk5NaFdUSmJCclJ5dGtZeG1q?=
- =?utf-8?B?UzE1NW5Kcy9IZkFtTTdUUDMwL3VkVkR1bS9nYUdSYXk2VmxuajlvbUhlTkRr?=
- =?utf-8?B?aEh5Y2tMamtwaTNHREhtSkNVRExsQ2hETEx4Zi91dU80R01rcUZyQ3M5MTFK?=
- =?utf-8?B?R0pYRTB4L1ZOWlFsbGJ6djRsY2hNV0hjbnhhbDRucGNyaXpFaFUrL3RHVXVH?=
- =?utf-8?B?RTZ0Z2tERFVYYlY2bmFCdVphSm8wbjNRUjlrQzlYZTRrSHBCTk16a0YzWWJR?=
- =?utf-8?B?L3N4Z3NqSG50d3pYTmIxZi8yMGJzMDFmRmNzOS9aSVQ1Q2hqNFArdnZMaGJW?=
- =?utf-8?B?TjZNcTR5bHRZbGJQcGZ3VGJHQ3kxSmgzQzJQU2FyN0J6dW04ZmlXdEtYUGd1?=
- =?utf-8?B?b1pqbmc2NEk3TEg1eHIzRTBXSk9teU1OV1orTjJ3QVA5MXgyUFNLZitWU3Np?=
- =?utf-8?B?Zi9TQWxYblhRSW5CREppSVlUTXFUT2FkYldRbzRqTnAydkt3amY0aFV5R09E?=
- =?utf-8?B?aG8vUVh5TGhkZWZoWEhNeDBJNzVDYWZOM1hHaWRoMEZuOFU2UUI4aXFnVWFY?=
- =?utf-8?B?UVRJYTlzSVIxUURsUktHMkZsaEVPaXEwSnFIUFQ1TTB6Z2dWUm5hd2ljTFd4?=
- =?utf-8?B?cEV0TjlSSVBia1hSQ3FoVWJBcVhnYXJEbE5vOFNaZXYrU3JOWEhoQTEzUE16?=
- =?utf-8?B?d2NrZExGYWQ1SzI5aTdkLzJLTkNVbXJ1ZWJveUtIR0x5L2lzUFpkMFdaTzBt?=
- =?utf-8?B?azhpMkcwT0crSWtWRzY5RHdBajEvVVYxalVwM2UwdDV6OWZzOXlZREJMZi9C?=
- =?utf-8?B?NEtwaUpuSml3L2NndXBlWHVLbjFxZVlYMWxZVG9UMFhnVzhHUzFrL2VMTnBG?=
- =?utf-8?B?SEg2TWF2U0dmZ3pHakxqUFVrTXdjTnViRkRCYzduU0FEYmVEejdXYjJGR0NN?=
- =?utf-8?B?RWVRd2dPUm1XMDBrcERrTHhvR3pHNXVNbDFxOE9zb2VmL040TzRmZHhxa2pQ?=
- =?utf-8?B?OWJWYnVCL1FYLzFUQ2pZUDZ6UXhBaWhyZzlIaElZT2hvbU1Scyt0Rlo4cTRM?=
- =?utf-8?B?dGlxaWs2L0wwNjZpS3JsN1Rwd0Y2bEtWQTMxNjVUYURYS2pYZXpObXJMcTBX?=
- =?utf-8?B?alpWV1NaM1NSSFlSSUpaTVUrS1VLQ2dEQVVDeXo4dDRseU9tWjZBWHNDNHQ5?=
- =?utf-8?B?bmJZU2FyT1ZGTjRVdXlzalI4aDZNVGpmZDRzVnVtczNKMDRuLzRIQWQyeHdH?=
- =?utf-8?B?YzZ5MEVhRHpZQzZuSUo4UldUZStoSCtMSGFqUGxENUIvZllHRkhOVGdKMEww?=
- =?utf-8?B?WC9yRW53L3ZHRGNvR1kyR0ZTY0RncHh2dUhqd292ZFNSR2NVcENNM1NZK0J4?=
- =?utf-8?B?K216bFRCMFplbExpdjBKN211c3I5bjM2UENaMHNReklWUHdORzhHRjNCT0Qy?=
- =?utf-8?B?MVZhcHZsUFZEcmtEd1padUc4Z3V1cjI1a2RrRVg4YUxReVJhREhMZS9FM2dv?=
- =?utf-8?B?YW5DdFlYRjZNN2lEdWlNOWh6WXp1dW1aNmJHTTdkUVUrcmpaYngxWkwyY3g2?=
- =?utf-8?B?TFhYM3k3a1VyeVNYR3pkcWZ2aUE3L291ZzRxQ09DODQ3NkxlNXNDZHI4UU1Q?=
- =?utf-8?B?Zm1VSm1SMEdBdXQ2UjFRT04zdnpwbityWlU3c0NEMStPTkNhV1pXdWNGVTVF?=
- =?utf-8?B?ZWxsY091WVVZNWMzbmtpK0xUNWU1azh0Rzcyc3RlM2FVeHU1c01HQjJFZXVD?=
- =?utf-8?B?ZElHVnJ3QXh5VnhvR05rVHhWYUtPamFOT1dFMUZFa0dMeVovTXNjK3U2cHFY?=
- =?utf-8?B?a1ZucXAzTGNDci9ERk4yeWNteGJ2SHhVN2RvRDdHaTNiZkY0cnVzbkNmcHhJ?=
- =?utf-8?B?bnZnNDU4dTU2Qlg2MXR5dnk3b0NCNDBSZE5JMUFkOVIzNzBRWGRucFBYaTVo?=
- =?utf-8?Q?12Fs=3D?=
+ ARA:13230040|36860700013|1800799024|376014|7416014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?W5jNCtEnznjPrUy9kD+7cyUSi1bQOYyK84RfEjauDLAwlcL5uz80JCYRqJs2?=
+ =?us-ascii?Q?5+ZcRDphhEtAdBiV2PT583Ceu+f0fUq6To9MLedSD4FK9x3n6pwX/tCckkjI?=
+ =?us-ascii?Q?jfLHDuUgW18K85w20sCuBp6Pn+HY1i1yyzwpuqw0CAZg9QKx0uRfR1x82QS5?=
+ =?us-ascii?Q?oI51mtufMgiH0vp1Rcau4+6vOsyNs/QNbMXcROj4K2W+Zf4oTUr63DxEM/64?=
+ =?us-ascii?Q?eAYPCeoMjLIQ+C3TRHapvwU+Gd344HC53nYoNyvqfHA3uM2RYRkbBO+TAuae?=
+ =?us-ascii?Q?EjhziF7UT59Pve9ZNfhdrNhlptz7iabmjyjIXtFTQ3B3Q6ftT+O/iAFor5gC?=
+ =?us-ascii?Q?VAzu1vzV3eG1BGHNgEBVRngOVqISxDhM7tvkIs+wmPRjyFgV3w6LjvH+UtRm?=
+ =?us-ascii?Q?vx1v/OvZkfZzEgFJtSS2XRjhIGF0sDRP6GMRK5G1dodB6Jkyw+G/GEO90Ivc?=
+ =?us-ascii?Q?b5ndPr+VrZC5x3q6Mreg+oCoweRYOLfXxAb5zOwspULPNqoc8gjbmga4tCVz?=
+ =?us-ascii?Q?QAXHc//OS1YJsjP1GogGd/gBvvjdTpEmUf+RWUOMBtU+k0J/3e2U5/AYN7hn?=
+ =?us-ascii?Q?gcCsti1HC7wZ7l3ipMZ7sYvW+3+zxMkZO71348eWmi0Teql/r94zH0aCS12F?=
+ =?us-ascii?Q?6Cs8GI5ZnaugZvE1o0zh3Vhu88Ji2UhsJbOden115cpk25nwrmZ3orAw1c80?=
+ =?us-ascii?Q?sX9qbTepkoAnLDzYqlXHAru9rub2zZ3D2H1X70hAr3ozkLI7R0uJDrs8sVHD?=
+ =?us-ascii?Q?gjqM3+W+fQ/5mmouaNhJr0jOSLgnVEVbgHIvV78tCxArbDwkcqgXOMEAF7o1?=
+ =?us-ascii?Q?9uJOZRx7oiL+WCgEnfwsftioYVbYkgxgVCVR5US/9fp/dtpCyOqeJAH/G9QU?=
+ =?us-ascii?Q?cp2YRMRm3PPtsLM31K7fR8wUz/tv+PMecyRX08b8vRcUe4G83LQDNLPMmOPh?=
+ =?us-ascii?Q?+/NhbLPI6oreu60fYuizbrPLA93RvfLT6+lEgRq2dfxgMUz+fQFPpn2zTLHG?=
+ =?us-ascii?Q?afp0r/MgT+wSK1rHvmY18C3BEXJ6htPJx5eqbmKganpRvEX0wsXojvCXmAzW?=
+ =?us-ascii?Q?jGUK3BnvNewrqH1iJd7xH+AaSTow51MVuYx1QZdbzdXYgMw1RMlH24gT8czi?=
+ =?us-ascii?Q?rA7RQU9wpU1hd8uvc23oD70DqPhlNOL87QKSkxbO0M0lFLIP8OeAwoX4wclT?=
+ =?us-ascii?Q?9H7JJIH90Ri05YV0EEhcRvorrXQXlhDJUulLSok2VJFrBsM0sn2mPjuohBIW?=
+ =?us-ascii?Q?Wu2vmxgQIdrUI9Qv0Zw8gU1arWbdgbZKlsNesARLT10+d+L4ww9Ky5JITMUd?=
+ =?us-ascii?Q?BE9pfMR1wkLmKA8LNUPgCA7NKj2wcY1Yshz6MYIDV45NqESxaAW+3h5Se3c7?=
+ =?us-ascii?Q?SgJHlsc/KUET1bEoT2tS84M03u79Wani6HbxBmtL8XoUxynu1kue/+NumPaW?=
+ =?us-ascii?Q?Rj1GwLZos3yQmAUyBpVvh42wE50RyYDaV5kf7M+FxMT8jRdzGUafTYLu45oL?=
+ =?us-ascii?Q?g5i58cdxEGqWXD9x0d4vqC6JH5Sv2MOpcQ9MmAuorm245AvvQOyDLg3kyEwN?=
+ =?us-ascii?Q?vv3NJqgzkAhEqxBRkcY=3D?=
 X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024); DIR:OUT;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 13:24:28.3979 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b78cab47-ca15-40a6-e638-08de283821ed
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 13:24:31.7768 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d09df552-3444-4b25-8717-08de283823e7
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E3.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8070
-Received-SPF: permerror client-ip=2a01:111:f403:c112::7;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7747
+Received-SPF: permerror client-ip=2a01:111:f403:c107::9;
  envelope-from=skolothumtho@nvidia.com;
- helo=CY3PR05CU001.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ helo=PH7PR06CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,335 +156,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+smmuv3_cmdq_consume() is updated to return detailed errors via errp.
 
-Implement the VFIO/PCI callbacks to attach and detach a HostIOMMUDevice
-to a vSMMUv3 when accel=on,
+Although this is currently a no-op, it prepares the ground for accel
+SMMUv3 specific command handling where proper error reporting will be
+useful.
 
- - set_iommu_device(): attach a HostIOMMUDevice to a vIOMMU
- - unset_iommu_device(): detach and release associated resources
-
-In SMMUv3 accel=on mode, the guest SMMUv3 is backed by the host SMMUv3 via
-IOMMUFD. A vIOMMU object (created via IOMMU_VIOMMU_ALLOC) provides a per-VM,
-security-isolated handle to the physical SMMUv3. Without a vIOMMU, the
-vSMMUv3 cannot relay guest operations to the host hardware nor maintain
-isolation across VMs or devices. Therefore, set_iommu_device() allocates
-a vIOMMU object if one does not already exist.
-
-There are two main points to consider in this implementation:
-
-1) VFIO core allocates and attaches a S2 HWPT that acts as the nesting
-   parent for nested HWPTs(IOMMU_DOMAIN_NESTED). This parent HWPT will
-   be shared across multiple vSMMU instances within a VM.
-
-2) A device cannot attach directly to a vIOMMU. Instead, it attaches
-   through a proxy nested HWPT (IOMMU_DOMAIN_NESTED). Based on the STE
-   configuration,there are three types of nested HWPTs: bypass, abort,
-   and translate.
-    -The bypass and abort proxy HWPTs are pre-allocated. When SMMUv3
-     operates in global abort or bypass modes, as controlled by the GBPA
-     register, or issues a vSTE for bypass or abort we attach these
-     pre-allocated nested HWPTs.
-    -The translate HWPT requires a vDEVICE to be allocated first, since
-     invalidations and events depend on a valid vSID.
-    -The vDEVICE allocation and attach operations for vSTE based HWPTs
-     are implemented in subsequent patches.
-
-In summary, a device placed behind a vSMMU instance must have a vSID for
-translate vSTE. The bypass and abort vSTEs are pre-allocated as proxy
-nested HWPTs and is attached based on GBPA register. The core-managed
-nesting parent S2 HWPT is used as parent S2 HWPT for all the nested
-HWPTs and is intended to be shared across vSMMU instances within the
-same VM.
-
-set_iommu_device():
-  - Reuse an existing vIOMMU for the same physical SMMU if available.
-    If not, allocate a new one using the nesting parent S2 HWPT.
-  - Pre-allocate two proxy nested HWPTs (bypass and abort) under the
-    vIOMMU and install one based on GBPA.ABORT value.
-  - Add the device to the vIOMMU’s device list.
-
-unset_iommu_device():
-  - Re-attach device to the nesting parent S2 HWPT.
-  - Remove the device from the vIOMMU’s device list.
-  - If the list is empty, free the proxy HWPTs (bypass and abort)
-    and release the vIOMMU object.
-
-Introduce struct SMMUv3AccelState, representing an accelerated SMMUv3
-instance backed by an iommufd vIOMMU object, and storing the bypass and
-abort proxy HWPT IDs.
-
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
- hw/arm/smmuv3-accel.c    | 154 +++++++++++++++++++++++++++++++++++++++
- hw/arm/smmuv3-accel.h    |  16 ++++
- hw/arm/smmuv3-internal.h |   3 +
- hw/arm/trace-events      |   4 +
- include/hw/arm/smmuv3.h  |   1 +
- 5 files changed, 178 insertions(+)
+ hw/arm/smmuv3.c | 67 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 30 deletions(-)
 
-diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-index bd4a7dbde1..4dd56a8e65 100644
---- a/hw/arm/smmuv3-accel.c
-+++ b/hw/arm/smmuv3-accel.c
-@@ -8,6 +8,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "trace.h"
- 
- #include "hw/arm/smmuv3.h"
- #include "hw/iommu.h"
-@@ -15,6 +16,7 @@
- #include "hw/pci-host/gpex.h"
- #include "hw/vfio/pci.h"
- 
-+#include "smmuv3-internal.h"
- #include "smmuv3-accel.h"
- 
- /*
-@@ -43,6 +45,156 @@ static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
-     return accel_dev;
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index ef991cb7d8..374ae08baa 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -1279,7 +1279,7 @@ static void smmuv3_range_inval(SMMUState *s, Cmd *cmd, SMMUStage stage)
+     }
  }
  
-+static uint32_t smmuv3_accel_gbpa_hwpt(SMMUv3State *s, SMMUv3AccelState *accel)
-+{
-+    return FIELD_EX32(s->gbpa, GBPA, ABORT) ?
-+           accel->abort_hwpt_id : accel->bypass_hwpt_id;
-+}
-+
-+static bool
-+smmuv3_accel_alloc_viommu(SMMUv3State *s, HostIOMMUDeviceIOMMUFD *idev,
-+                          Error **errp)
-+{
-+    struct iommu_hwpt_arm_smmuv3 bypass_data = {
-+        .ste = { SMMU_STE_CFG_BYPASS | SMMU_STE_VALID, 0x0ULL },
-+    };
-+    struct iommu_hwpt_arm_smmuv3 abort_data = {
-+        .ste = { SMMU_STE_VALID, 0x0ULL },
-+    };
-+    uint32_t s2_hwpt_id = idev->hwpt_id;
-+    uint32_t viommu_id, hwpt_id;
-+    SMMUv3AccelState *accel;
-+
-+    if (!iommufd_backend_alloc_viommu(idev->iommufd, idev->devid,
-+                                      IOMMU_VIOMMU_TYPE_ARM_SMMUV3,
-+                                      s2_hwpt_id, &viommu_id, errp)) {
-+        return false;
-+    }
-+
-+    accel = g_new0(SMMUv3AccelState, 1);
-+    accel->viommu.viommu_id = viommu_id;
-+    accel->viommu.s2_hwpt_id = s2_hwpt_id;
-+    accel->viommu.iommufd = idev->iommufd;
-+
-+    /*
-+     * Pre-allocate HWPTs for S1 bypass and abort cases. These will be attached
-+     * later for guest STEs or GBPAs that require bypass or abort configuration.
-+     */
-+    if (!iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid, viommu_id,
-+                                    0, IOMMU_HWPT_DATA_ARM_SMMUV3,
-+                                    sizeof(abort_data), &abort_data,
-+                                    &accel->abort_hwpt_id, errp)) {
-+        goto free_viommu;
-+    }
-+
-+    if (!iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid, viommu_id,
-+                                    0, IOMMU_HWPT_DATA_ARM_SMMUV3,
-+                                    sizeof(bypass_data), &bypass_data,
-+                                    &accel->bypass_hwpt_id, errp)) {
-+        goto free_abort_hwpt;
-+    }
-+
-+    /* Attach a HWPT based on SMMUv3 GBPA.ABORT value */
-+    hwpt_id = smmuv3_accel_gbpa_hwpt(s, accel);
-+    if (!host_iommu_device_iommufd_attach_hwpt(idev, hwpt_id, errp)) {
-+        goto free_bypass_hwpt;
-+    }
-+    s->s_accel = accel;
-+    return true;
-+
-+free_bypass_hwpt:
-+    iommufd_backend_free_id(idev->iommufd, accel->bypass_hwpt_id);
-+free_abort_hwpt:
-+    iommufd_backend_free_id(idev->iommufd, accel->abort_hwpt_id);
-+free_viommu:
-+    iommufd_backend_free_id(idev->iommufd, accel->viommu.viommu_id);
-+    g_free(accel);
-+    return false;
-+}
-+
-+static bool smmuv3_accel_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-+                                          HostIOMMUDevice *hiod, Error **errp)
-+{
-+    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
-+    SMMUState *bs = opaque;
-+    SMMUv3State *s = ARM_SMMUV3(bs);
-+    SMMUPciBus *sbus = smmu_get_sbus(bs, bus);
-+    SMMUv3AccelDevice *accel_dev = smmuv3_accel_get_dev(bs, sbus, bus, devfn);
-+
-+    if (!idev) {
-+        return true;
-+    }
-+
-+    if (accel_dev->idev) {
-+        if (accel_dev->idev != idev) {
-+            error_setg(errp, "Device already has an associated idev 0x%x",
-+                       idev->devid);
-+            return false;
-+        }
-+        return true;
-+    }
-+
-+    if (s->s_accel) {
-+        goto done;
-+    }
-+
-+    if (!smmuv3_accel_alloc_viommu(s, idev, errp)) {
-+        error_append_hint(errp, "Unable to alloc vIOMMU: idev devid 0x%x: ",
-+                          idev->devid);
-+        return false;
-+    }
-+
-+done:
-+    accel_dev->idev = idev;
-+    accel_dev->s_accel = s->s_accel;
-+    QLIST_INSERT_HEAD(&s->s_accel->device_list, accel_dev, next);
-+    trace_smmuv3_accel_set_iommu_device(devfn, idev->devid);
-+    return true;
-+}
-+
-+static void smmuv3_accel_unset_iommu_device(PCIBus *bus, void *opaque,
-+                                            int devfn)
-+{
-+    SMMUState *bs = opaque;
-+    SMMUv3State *s = ARM_SMMUV3(bs);
-+    SMMUPciBus *sbus = g_hash_table_lookup(bs->smmu_pcibus_by_busptr, bus);
-+    HostIOMMUDeviceIOMMUFD *idev;
-+    SMMUv3AccelDevice *accel_dev;
-+    SMMUv3AccelState *accel;
-+    SMMUDevice *sdev;
-+
-+    if (!sbus) {
-+        return;
-+    }
-+
-+    sdev = sbus->pbdev[devfn];
-+    if (!sdev) {
-+        return;
-+    }
-+
-+    accel_dev = container_of(sdev, SMMUv3AccelDevice, sdev);
-+    idev = accel_dev->idev;
-+    accel = accel_dev->s_accel;
-+    /* Re-attach the default s2 hwpt id */
-+    if (!host_iommu_device_iommufd_attach_hwpt(idev, idev->hwpt_id, NULL)) {
-+        error_report("Unable to attach the default HW pagetable: idev devid "
-+                     "0x%x", idev->devid);
-+    }
-+
-+    accel_dev->idev = NULL;
-+    accel_dev->s_accel = NULL;
-+    QLIST_REMOVE(accel_dev, next);
-+    trace_smmuv3_accel_unset_iommu_device(devfn, idev->devid);
-+
-+    if (QLIST_EMPTY(&accel->device_list)) {
-+        iommufd_backend_free_id(accel->viommu.iommufd, accel->bypass_hwpt_id);
-+        iommufd_backend_free_id(accel->viommu.iommufd, accel->abort_hwpt_id);
-+        iommufd_backend_free_id(accel->viommu.iommufd, accel->viommu.viommu_id);
-+        g_free(accel);
-+        s->s_accel = NULL;
-+    }
-+}
-+
- /*
-  * Only allow PCIe bridges, pxb-pcie roots, and GPEX roots so vfio-pci
-  * endpoints can sit downstream. Accelerated SMMUv3 requires a vfio-pci
-@@ -145,6 +297,8 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
-     .supports_address_space = smmuv3_accel_supports_as,
-     .get_address_space = smmuv3_accel_find_add_as,
-     .get_viommu_flags = smmuv3_accel_get_viommu_flags,
-+    .set_iommu_device = smmuv3_accel_set_iommu_device,
-+    .unset_iommu_device = smmuv3_accel_unset_iommu_device,
- };
- 
- static void smmuv3_accel_as_init(SMMUv3State *s)
-diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
-index 0dc6b00d35..c72605caab 100644
---- a/hw/arm/smmuv3-accel.h
-+++ b/hw/arm/smmuv3-accel.h
-@@ -10,10 +10,26 @@
- #define HW_ARM_SMMUV3_ACCEL_H
- 
- #include "hw/arm/smmu-common.h"
-+#include "system/iommufd.h"
-+#include <linux/iommufd.h>
- #include CONFIG_DEVICES
- 
-+/*
-+ * Represents an accelerated SMMU instance backed by an iommufd vIOMMU object.
-+ * Holds bypass and abort proxy HWPT IDs used for device attachment.
-+ */
-+typedef struct SMMUv3AccelState {
-+    IOMMUFDViommu viommu;
-+    uint32_t bypass_hwpt_id;
-+    uint32_t abort_hwpt_id;
-+    QLIST_HEAD(, SMMUv3AccelDevice) device_list;
-+} SMMUv3AccelState;
-+
- typedef struct SMMUv3AccelDevice {
-     SMMUDevice sdev;
-+    HostIOMMUDeviceIOMMUFD *idev;
-+    QLIST_ENTRY(SMMUv3AccelDevice) next;
-+    SMMUv3AccelState *s_accel;
- } SMMUv3AccelDevice;
- 
- #ifdef CONFIG_ARM_SMMUV3_ACCEL
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index b6b7399347..81212a58f1 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -583,6 +583,9 @@ typedef struct CD {
-     ((extract64((x)->word[7], 0, 16) << 32) |           \
-      ((x)->word[6] & 0xfffffff0))
- 
-+#define SMMU_STE_VALID      (1ULL << 0)
-+#define SMMU_STE_CFG_BYPASS (1ULL << 3)
-+
- static inline int oas2bits(int oas_field)
+-static int smmuv3_cmdq_consume(SMMUv3State *s)
++static int smmuv3_cmdq_consume(SMMUv3State *s, Error **errp)
  {
-     switch (oas_field) {
-diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-index f3386bd7ae..2aaa0c40c7 100644
---- a/hw/arm/trace-events
-+++ b/hw/arm/trace-events
-@@ -66,6 +66,10 @@ smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s
- smmuv3_inv_notifiers_iova(const char *name, int asid, int vmid, uint64_t iova, uint8_t tg, uint64_t num_pages, int stage) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64" stage=%d"
- smmu_reset_exit(void) ""
- 
-+#smmuv3-accel.c
-+smmuv3_accel_set_iommu_device(int devfn, uint32_t devid) "devfn=0x%x (idev devid=0x%x)"
-+smmuv3_accel_unset_iommu_device(int devfn, uint32_t devid) "devfn=0x%x (idev devid=0x%x)"
+     SMMUState *bs = ARM_SMMU(s);
+     SMMUCmdError cmd_error = SMMU_CERROR_NONE;
+@@ -1547,42 +1547,44 @@ static MemTxResult smmu_writell(SMMUv3State *s, hwaddr offset,
+ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
+                                uint64_t data, MemTxAttrs attrs)
+ {
++    Error *local_err = NULL;
 +
- # strongarm.c
- strongarm_uart_update_parameters(const char *label, int speed, char parity, int data_bits, int stop_bits) "%s speed=%d parity=%c data=%d stop=%d"
- strongarm_ssp_read_underrun(void) "SSP rx underrun"
-diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
-index bb7076286b..e54ece2d38 100644
---- a/include/hw/arm/smmuv3.h
-+++ b/include/hw/arm/smmuv3.h
-@@ -66,6 +66,7 @@ struct SMMUv3State {
+     switch (offset) {
+     case A_CR0:
+         s->cr[0] = data;
+         s->cr0ack = data & ~SMMU_CR0_RESERVED;
+         /* in case the command queue has been enabled */
+-        smmuv3_cmdq_consume(s);
+-        return MEMTX_OK;
++        smmuv3_cmdq_consume(s, &local_err);
++        break;
+     case A_CR1:
+         s->cr[1] = data;
+-        return MEMTX_OK;
++        break;
+     case A_CR2:
+         s->cr[2] = data;
+-        return MEMTX_OK;
++        break;
+     case A_IRQ_CTRL:
+         s->irq_ctrl = data;
+-        return MEMTX_OK;
++        break;
+     case A_GERRORN:
+         smmuv3_write_gerrorn(s, data);
+         /*
+          * By acknowledging the CMDQ_ERR, SW may notify cmds can
+          * be processed again
+          */
+-        smmuv3_cmdq_consume(s);
+-        return MEMTX_OK;
++        smmuv3_cmdq_consume(s, &local_err);
++        break;
+     case A_GERROR_IRQ_CFG0: /* 64b */
+         s->gerror_irq_cfg0 = deposit64(s->gerror_irq_cfg0, 0, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_GERROR_IRQ_CFG0 + 4:
+         s->gerror_irq_cfg0 = deposit64(s->gerror_irq_cfg0, 32, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_GERROR_IRQ_CFG1:
+         s->gerror_irq_cfg1 = data;
+-        return MEMTX_OK;
++        break;
+     case A_GERROR_IRQ_CFG2:
+         s->gerror_irq_cfg2 = data;
+-        return MEMTX_OK;
++        break;
+     case A_GBPA:
+         /*
+          * If UPDATE is not set, the write is ignored. This is the only
+@@ -1592,71 +1594,76 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
+             /* Ignore update bit as write is synchronous. */
+             s->gbpa = data & ~R_GBPA_UPDATE_MASK;
+         }
+-        return MEMTX_OK;
++        break;
+     case A_STRTAB_BASE: /* 64b */
+         s->strtab_base = deposit64(s->strtab_base, 0, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_STRTAB_BASE + 4:
+         s->strtab_base = deposit64(s->strtab_base, 32, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_STRTAB_BASE_CFG:
+         s->strtab_base_cfg = data;
+         if (FIELD_EX32(data, STRTAB_BASE_CFG, FMT) == 1) {
+             s->sid_split = FIELD_EX32(data, STRTAB_BASE_CFG, SPLIT);
+             s->features |= SMMU_FEATURE_2LVL_STE;
+         }
+-        return MEMTX_OK;
++        break;
+     case A_CMDQ_BASE: /* 64b */
+         s->cmdq.base = deposit64(s->cmdq.base, 0, 32, data);
+         s->cmdq.log2size = extract64(s->cmdq.base, 0, 5);
+         if (s->cmdq.log2size > SMMU_CMDQS) {
+             s->cmdq.log2size = SMMU_CMDQS;
+         }
+-        return MEMTX_OK;
++        break;
+     case A_CMDQ_BASE + 4: /* 64b */
+         s->cmdq.base = deposit64(s->cmdq.base, 32, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_CMDQ_PROD:
+         s->cmdq.prod = data;
+-        smmuv3_cmdq_consume(s);
+-        return MEMTX_OK;
++        smmuv3_cmdq_consume(s, &local_err);
++        break;
+     case A_CMDQ_CONS:
+         s->cmdq.cons = data;
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_BASE: /* 64b */
+         s->eventq.base = deposit64(s->eventq.base, 0, 32, data);
+         s->eventq.log2size = extract64(s->eventq.base, 0, 5);
+         if (s->eventq.log2size > SMMU_EVENTQS) {
+             s->eventq.log2size = SMMU_EVENTQS;
+         }
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_BASE + 4:
+         s->eventq.base = deposit64(s->eventq.base, 32, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_PROD:
+         s->eventq.prod = data;
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_CONS:
+         s->eventq.cons = data;
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_IRQ_CFG0: /* 64b */
+         s->eventq_irq_cfg0 = deposit64(s->eventq_irq_cfg0, 0, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_IRQ_CFG0 + 4:
+         s->eventq_irq_cfg0 = deposit64(s->eventq_irq_cfg0, 32, 32, data);
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_IRQ_CFG1:
+         s->eventq_irq_cfg1 = data;
+-        return MEMTX_OK;
++        break;
+     case A_EVENTQ_IRQ_CFG2:
+         s->eventq_irq_cfg2 = data;
+-        return MEMTX_OK;
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP,
+                       "%s Unexpected 32-bit access to 0x%"PRIx64" (WI)\n",
+                       __func__, offset);
+-        return MEMTX_OK;
++        break;
+     }
++
++    if (local_err) {
++        error_report_err(local_err);
++    }
++    return MEMTX_OK;
+ }
  
-     /* SMMU has HW accelerator support for nested S1 + s2 */
-     bool accel;
-+    struct SMMUv3AccelState *s_accel;
- };
- 
- typedef enum {
+ static MemTxResult smmu_write_mmio(void *opaque, hwaddr offset, uint64_t data,
 -- 
 2.43.0
 
