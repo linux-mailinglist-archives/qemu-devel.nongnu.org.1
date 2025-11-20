@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DC2C71A44
+	by mail.lfdr.de (Postfix) with ESMTPS id A99EBC71A41
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 02:04:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vLt50-0000GU-Ve; Wed, 19 Nov 2025 20:03:22 -0500
+	id 1vLt4z-0000Eu-5e; Wed, 19 Nov 2025 20:03:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fustini@kernel.org>)
- id 1vLski-0004Gw-S9; Wed, 19 Nov 2025 19:42:24 -0500
+ id 1vLskk-0004HI-58; Wed, 19 Nov 2025 19:42:26 -0500
 Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fustini@kernel.org>)
- id 1vLskg-0002ST-8M; Wed, 19 Nov 2025 19:42:24 -0500
+ id 1vLskg-0002SV-Ss; Wed, 19 Nov 2025 19:42:25 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id EEA656018E;
- Thu, 20 Nov 2025 00:42:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693A7C19422;
+ by tor.source.kernel.org (Postfix) with ESMTP id 458376019D;
+ Thu, 20 Nov 2025 00:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD191C116B1;
  Thu, 20 Nov 2025 00:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1763599340;
- bh=jAv/LJcu+YDt6rWODkmoxza4mWGaoWkXIDlrxwdhxdM=;
+ s=k20201202; t=1763599341;
+ bh=OZkhn5pjjQ2Q3QlWagDHaKGU9UJL0kw5S10Ux3BRkZE=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=Klg8oOGRz/QH8Zo4ncCwjvSbmJj7QKjy5BZmewlxqWMY1vgQux7uEotrVzGfPskqt
- kP9o5ci8tJTlRTsrzYHHZkFlY3NJxRmqbh3NETAUZQkS17apXR4e8f5r7Ymg63REEW
- 08Qa0uZNci7Ka/S8SIn1iqWTg+PmKOGgoL/cYOibvocWwLmQqHM51n9Zv/vqLchFM4
- T/edUYPrtxWG3swwIB9eDctWNgcHE+mtDTnAvW1p7HOxrnFcFhnoiw0R/ERXz2YhbG
- CNxrWCOb8RUHn0BQSyqQ0RV7E7XZPxBR6wRwJVt64Ne0TznQPApYxmK40J2pywujiK
- udjakWV7C6udQ==
+ b=QHmYXdnWaoJpXVy/6uq27xxsF+ia6BoEd9aaLaQS1/ooDOMBhmoPSeYaSZ2RUTXh1
+ b8UB74ZR3WWq/Qq6S/YVVBhOCJ0rePOdLUNLS667BbOtID72jCjTqzC88sA77K5FJD
+ XmaJzJrrMTqmDj2ZCkAB0mQYiBfxQBtU2/UFu694jajxGsMZF5Z6LUw8BLrGU8W7YP
+ ec0wu+2R0lYLuhbZLhnJKRb480dA1GqWAFH26Zkv2oyq+Fuki5xQJML3X+f3frmzHs
+ AIyvMOf0+UIedl27Hoq9t6qCA7WSmzpgma0uJnJ2LS1gev8YYD4Biybx5/qqmJbi0B
+ wPlDaG00m1SSw==
 From: Drew Fustini <fustini@kernel.org>
-Date: Wed, 19 Nov 2025 16:42:22 -0800
-Subject: [PATCH 6/7] hw/riscv: meson: add CBQRI controllers to the build
+Date: Wed, 19 Nov 2025 16:42:23 -0800
+Subject: [PATCH 7/7] hw/riscv: add CBQRI controllers to virt machine
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-riscv-ssqosid-cbqri-v1-6-3392fc760e48@kernel.org>
+Message-Id: <20251119-riscv-ssqosid-cbqri-v1-7-3392fc760e48@kernel.org>
 References: <20251119-riscv-ssqosid-cbqri-v1-0-3392fc760e48@kernel.org>
 In-Reply-To: <20251119-riscv-ssqosid-cbqri-v1-0-3392fc760e48@kernel.org>
 To: qemu-devel@nongnu.org
@@ -65,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 19 Nov 2025 20:03:17 -0500
+X-Mailman-Approved-At: Wed, 19 Nov 2025 20:03:18 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,25 +82,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicolas Pitre <npitre@baylibre.com>
 
-Build the CBQRI controllers when RISC-V CBQRI is enabled by Kconfig.
+Add CBQRI controllers to the RISC-V virt machine. The device properties
+can be fully configured from the command line:
+
+  $ qemu-system-riscv64 -M virt ... \
+      -device riscv.cbqri.capacity,mmio_base=0x04828000[,...]
+      -device riscv.cbqri.bandwidth,mmio_base=0x04829000[,...]
+
+The mmio_base option is mandatory, the others are optional.
+
+Many -device arguments as wanted can be provided as long as their
+mmio regions don't conflict.
+
+To see all possible options:
+
+  $ qemu-system-riscv64 -device riscv.cbqri.capacity,help
+  riscv.cbqri.capacity options:
+    alloc_op_config_limit=<bool> -  (default: true)
+    alloc_op_flush_rcid=<bool> -  (default: true)
+    alloc_op_read_limit=<bool> -  (default: true)
+    at_code=<bool>         -  (default: true)
+    at_data=<bool>         -  (default: true)
+    max_mcids=<uint16>     -  (default: 256)
+    max_rcids=<uint16>     -  (default: 64)
+    mmio_base=<uint64>     -  (default: 0)
+    mon_evt_id_none=<bool> -  (default: true)
+    mon_evt_id_occupancy=<bool> -  (default: true)
+    mon_op_config_event=<bool> -  (default: true)
+    mon_op_read_counter=<bool> -  (default: true)
+    ncblks=<uint16>        -  (default: 16)
+    target=<str>
+
+  $ qemu-system-riscv64 -device riscv.cbqri.bandwidth,help
+  riscv.cbqri.bandwidth options:
+    alloc_op_config_limit=<bool> -  (default: true)
+    alloc_op_read_limit=<bool> -  (default: true)
+    at_code=<bool>         -  (default: true)
+    at_data=<bool>         -  (default: true)
+    max_mcids=<uint16>     -  (default: 256)
+    max_rcids=<uint16>     -  (default: 64)
+    mmio_base=<uint64>     -  (default: 0)
+    mon_evt_id_none=<bool> -  (default: true)
+    mon_evt_id_rdonly_count=<bool> -  (default: true)
+    mon_evt_id_rdwr_count=<bool> -  (default: true)
+    mon_evt_id_wronly_count=<bool> -  (default: true)
+    mon_op_config_event=<bool> -  (default: true)
+    mon_op_read_counter=<bool> -  (default: true)
+    nbwblks=<uint16>       -  (default: 1024)
+    target=<str>
+
+Boolean options correspond to hardware capabilities that can be disabled
 
 Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
 Signed-off-by: Drew Fustini <fustini@kernel.org>
 ---
- hw/riscv/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ hw/riscv/virt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 2a8d5b136cc4..79e15514b797 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -14,5 +14,6 @@ riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files(
- 	'riscv-iommu.c', 'riscv-iommu-pci.c', 'riscv-iommu-sys.c', 'riscv-iommu-hpm.c'))
- riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-generic.c'))
- riscv_ss.add(when: 'CONFIG_XIANGSHAN_KUNMINGHU', if_true: files('xiangshan_kmh.c'))
-+riscv_ss.add(when: 'CONFIG_RISCV_CBQRI', if_true: files('cbqri_capacity.c', 'cbqri_bandwidth.c'))
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 17909206c7ef..498f606d33b1 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -55,6 +55,7 @@
+ #include "hw/pci-host/gpex.h"
+ #include "hw/display/ramfb.h"
+ #include "hw/acpi/aml-build.h"
++#include "hw/riscv/cbqri.h"
+ #include "qapi/qapi-visit-common.h"
+ #include "hw/virtio/virtio-iommu.h"
+ #include "hw/uefi/var-service-api.h"
+@@ -1941,6 +1942,8 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+ #ifdef CONFIG_TPM
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
+ #endif
++    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RISCV_CBQRI_BC);
++    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RISCV_CBQRI_CC);
  
- hw_arch += {'riscv': riscv_ss}
+     object_class_property_add_bool(oc, "aclint", virt_get_aclint,
+                                    virt_set_aclint);
 
 -- 
 2.43.0
