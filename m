@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DF4C75D60
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 19:00:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA24CC75D72
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 19:00:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM8wL-0006rh-2j; Thu, 20 Nov 2025 12:59:29 -0500
+	id 1vM8wR-0006t4-PO; Thu, 20 Nov 2025 12:59:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vM8wI-0006qC-Vj
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 12:59:26 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vM8wP-0006sv-HO
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 12:59:33 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vM8wH-0006yg-Fy
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 12:59:26 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-477632b0621so8401495e9.2
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 09:59:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vM8wN-0006zJ-SP
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 12:59:33 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-477b198f4bcso9058055e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 09:59:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763661563; x=1764266363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763661570; x=1764266370; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EctDLYXHneCSbnit9AgBWHWi2e7ESBxD60JGtambQRU=;
- b=ibJDPCeE5luEjrKvlJ3Sjyp5ZYr+x7j7sMwgcqtACGE0NVqZh/gIeM3A0oJISZq4Fv
- 6C04s4Xmbs1Wul8jfYdVDzfheeb4at9GPd7TcKN3G2O6KM0OF2zlttCDYIlgAIfw2b/U
- DJO1eiTFeSy40rth66NalY6keVlBLfTMo8Rha+ncqnDSEyes6NrIuFCrYSuCoOzEiBZm
- lV4/wE6tfeg6jWzogF5IgH0DAQFtYu+XeaA+RW1l8OLJxY7ZyHDm/Rmj87Po0K7jmweO
- jzdSIkybvs4TCOFxgCmxK4GEY1yS8cHSYxzfloXaM7hWt0+SkDQ+lGRAqZuHkwul1q4u
- jCgg==
+ bh=6xCot8ZMuJc0WEaRNHsFDH1bHxjKgiQSQ4OxE/tzY4Q=;
+ b=vDNbNG4LgaVgbGWIfc9Ifg60U1JfRU5L3r522bpBKnIJOPRa+uGD8UH7zbz3urlwjn
+ ava+Y+MuyvR+yzxY9TFJ1sc+7XtMX48ZG4vu+UBPmNEi09j6tgUdjZN/fbMK/RHEXM6J
+ V5ry3jBPzdwGS4h9Y2esPVZVtM1edySoUBjRL2/kxIoLnyJVr4pgjbw5KTuvT6CDP9xz
+ yBOtsbTaIhTV4smcBKOjdQlUT7sISk7XjNNZInk/p1lIj/vDwLMmTwxaAb+ZCCOoN/aL
+ kWV/Z7ca76VDGWI6vywmGKYFEB4FWULZxN3ftj3B21rVRI33dnd+iJud4BZq0vSQ4/DL
+ eLaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763661563; x=1764266363;
+ d=1e100.net; s=20230601; t=1763661570; x=1764266370;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=EctDLYXHneCSbnit9AgBWHWi2e7ESBxD60JGtambQRU=;
- b=loej47bxuN0wDXyuqv6sR97d/eaAYWDnc1wuNh242y+QSOj0HfVTJctXMJJwymGAzL
- ieuHKWnB2E1kEU7FYKu41fuBT4CqKGoMTNlcP4pwOdiM0EtwMTD5FK8pd3bwM/MGRxhF
- J6ia0glVkVAnWlQrSr2uEBxfBr5LOyz8RIXjrBfOzsAKDd+0a1E2Pkv5Mbz3D6BcBw+H
- Pk6kstEjd0oyqXLQhvnPAvKE9MreP3ffRmo1oUihqeEmzWTkomdyYTJHtyfhrpJPlDWu
- OqqDSsUgPl/0msJoahu/tRX8Y4AYzfRyO1epNGSxdIw3MEWumdpasKDE3++NpnqUJ4vX
- NGRQ==
-X-Gm-Message-State: AOJu0Yzq6KnAsxeZaFcUBFLd65enr5hDv/v00sdrB9KB40aRR+B1aftb
- 5akAdCs9SPhKhy499KYgEv37UjLppyWR6uLCQvJenizppjCD/yBVq3OPMUO3KC3o19J9t80BNqs
- 7JEvl51j8Wg==
-X-Gm-Gg: ASbGnctBdIFdn/uYDLwaEDUKUxAH0IU2NFeMAWBIWP8XyKGKDZ4iiXP8s0+XAaSGrSL
- 2bRzPlbsHdoZ/GqLNwLQMug+39nrZDWDDTqSNnL1Dr8dLBBYnj3FWVk1xJucNrcKOfLhCfjIfW+
- NPvBuwPDNIXDZjYGNi0WDJ3Aq/OZOkzUrnwb8kyY662dxvrY1bIKCnvM6AYhti+7MhHmQkVlvoc
- Tu3XaWtXt2hzBWMXcEnF/nHifN+AV3GkS5I7+n/Fy+csbTMwpo/QyHLmTQOeZQfVOsUrgHIStKT
- L/9oTL6ftofaka+4+ahjLtt/+AUxTRgBK2DVNdBd2azByUPhYhoNqq5/d2cS8+BY60MHr+e7PDa
- p2m5vR7dn4MMW1B1qersCKEsrtaRehgOxoCkTSmxqQ3gwWPgRvZkvZmokD9fkl5VBNB+Yb59RqB
- /6GKneOeWIDUueq9eL7tOHnCRX32I6HLD2zcPdk+BRPWvWmj8hQyd6ToBy95RJqf8vLMNPNbE=
-X-Google-Smtp-Source: AGHT+IFGNX+0G/mPk+Y5npk6yjXlbh0i5nDBV7z9KOCIHItBvpAUwHD1RjcnlzfXyUmgzFC/+OQ7Cg==
-X-Received: by 2002:a05:600c:190e:b0:45d:f83b:96aa with SMTP id
- 5b1f17b1804b1-477b867184emr6545485e9.7.1763661563039; 
- Thu, 20 Nov 2025 09:59:23 -0800 (PST)
+ bh=6xCot8ZMuJc0WEaRNHsFDH1bHxjKgiQSQ4OxE/tzY4Q=;
+ b=j+4WvlfVIKsxCVmJfsbJcUa/nW5PZu1ASgAVbJf7C13MNBPPkF5S67+/j1yfPwX7Oi
+ qKg+tL2dyD0k1p/zFh5CIeHLvISbwA2u2Sj6Yy/JPF0PwCmkInmARW5DelWsUt9+Uh6R
+ zfPzTOE5dYswxL44jO5AqYKSCJ/4XUtw6iNjur88wNTqVcxpgC0NgPnGoGT5H7tc+Qk3
+ 25PJn+V/6tB9zN6eozKZ9ju2lwGBQkWRVSqb8ijPNOkPsFH555+B9xF9aj7iNqwqy8rk
+ NAdY6/sXv619FbtuGUXjnKzboRHgs0VSAFgggxxfqwsWHfCO8RhkXVq0KiHmQMY3ul+A
+ 1jEA==
+X-Gm-Message-State: AOJu0YxdvGTXYpKdcgzGIiRssTQmcAkTgmZTPRw+1n6Y78Eie7tHz60D
+ r1BrqwyZyzq4iIZnlfyTEQ/okuoXLSovwVPQ8duw48Cn31SvGu4EXlw2FEEEmWzEKMWjoffcump
+ t4JLQuRX9ug==
+X-Gm-Gg: ASbGncvCRK79f3NWt5lLYq5/Z5OZ/4wRiZ4TSKoYujF31g9RVh81zLyfNgnKQSS33vw
+ h22PBd5oI8rt8GDect0iK3uvYqoiIvnTSrlhi6BPCYCP8cORz/KpjWmqkgwX5GWB23b7NILU/P9
+ pscD/7rCLlyg+JYxc7wDHtMDIXTPgxyRRTpEC4T/44RGCUawrP6qFRzH8IjwqYVseBmUXo01eIX
+ FV6V+r5+qzFwfP7WwIW362SH7ZZTXX7NaKt58hl5767y+LaRclzZiPSoFm5QJ/quBrbWUP2tXqI
+ BqEwdZMd4GyY+tayCsx5dgwpDTV4Cm5G6o8otWogeoQ6PFgn4uOQCGYux4rfPKk88R6dcXM1ivG
+ 67pe6He86bCxRgR9Hn5A9CaibikxGN3lBOysp0IzzxYheS/ywAPHCKr9x/V4o/CdhWOrhJYTRFA
+ y7mrU1rKrh0fM1diqiNU6bqLPyHupnqVF6ZPvg448HhDgoUBaezMOJSBz7dbVY
+X-Google-Smtp-Source: AGHT+IHLLUx5/6Oa23hi3//qdiSaXxGavPp/kaQEF2RaMd0ncVuffdHM3wR6a7WMbAj6Cb11K40grw==
+X-Received: by 2002:a05:600c:19ce:b0:477:9650:3184 with SMTP id
+ 5b1f17b1804b1-477bf0dd4bamr4098095e9.2.1763661569716; 
+ Thu, 20 Nov 2025 09:59:29 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a974cdc8sm72988995e9.2.2025.11.20.09.59.22
+ 5b1f17b1804b1-477bf3b4eb2sm990765e9.12.2025.11.20.09.59.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 20 Nov 2025 09:59:22 -0800 (PST)
+ Thu, 20 Nov 2025 09:59:29 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC-PATCH-for-11.0 1/5] accel/tcg: Add endianness variants of
- cpu_ld{uw, l, q}_code()
-Date: Thu, 20 Nov 2025 18:59:10 +0100
-Message-ID: <20251120175914.6515-2-philmd@linaro.org>
+Subject: [RFC-PATCH-for-11.0 2/5] target/alpha: Use little-endian variant of
+ cpu_ldl_code()
+Date: Thu, 20 Nov 2025 18:59:11 +0100
+Message-ID: <20251120175914.6515-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251120175914.6515-1-philmd@linaro.org>
 References: <20251120175914.6515-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,80 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow target with fixed-endianness to not use the MO_TE definition.
+Alpha is always little-endian.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/accel/tcg/cpu-ldst.h | 43 +++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 6 deletions(-)
+ target/alpha/mem_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/accel/tcg/cpu-ldst.h b/include/accel/tcg/cpu-ldst.h
-index 0de7f5eaa6b..e4ec4e7d367 100644
---- a/include/accel/tcg/cpu-ldst.h
-+++ b/include/accel/tcg/cpu-ldst.h
-@@ -481,25 +481,56 @@ static inline uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
-     return cpu_ldb_code_mmu(env, addr, oi, 0);
- }
+diff --git a/target/alpha/mem_helper.c b/target/alpha/mem_helper.c
+index 2113fe33ae2..d04d086b59d 100644
+--- a/target/alpha/mem_helper.c
++++ b/target/alpha/mem_helper.c
+@@ -30,7 +30,7 @@ static void do_unaligned_access(CPUAlphaState *env, vaddr addr, uintptr_t retadd
+     cpu_restore_state(env_cpu(env), retaddr);
  
--static inline uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
-+static inline uint32_t cpu_lduw_le_code(CPUArchState *env, abi_ptr addr)
- {
-     CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
-+    MemOpIdx oi = make_memop_idx(MO_LEUW, cpu_mmu_index(cs, true));
-     return cpu_ldw_code_mmu(env, addr, oi, 0);
- }
+     pc = env->pc;
+-    insn = cpu_ldl_code(env, pc);
++    insn = cpu_ldl_le_code(env, pc);
  
--static inline uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
-+static inline uint32_t cpu_ldl_le_code(CPUArchState *env, abi_ptr addr)
- {
-     CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
-+    MemOpIdx oi = make_memop_idx(MO_LEUL, cpu_mmu_index(cs, true));
-     return cpu_ldl_code_mmu(env, addr, oi, 0);
- }
- 
--static inline uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
-+static inline uint64_t cpu_ldq_le_code(CPUArchState *env, abi_ptr addr)
- {
-     CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
-+    MemOpIdx oi = make_memop_idx(MO_LEUQ, cpu_mmu_index(cs, true));
-     return cpu_ldq_code_mmu(env, addr, oi, 0);
- }
- 
-+static inline uint32_t cpu_lduw_be_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_BEUW, cpu_mmu_index(cs, true));
-+    return cpu_ldw_code_mmu(env, addr, oi, 0);
-+}
-+
-+static inline uint32_t cpu_ldl_be_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_BEUL, cpu_mmu_index(cs, true));
-+    return cpu_ldl_code_mmu(env, addr, oi, 0);
-+}
-+
-+static inline uint64_t cpu_ldq_be_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_BEUQ, cpu_mmu_index(cs, true));
-+    return cpu_ldq_code_mmu(env, addr, oi, 0);
-+}
-+
-+#if TARGET_BIG_ENDIAN
-+# define cpu_lduw_code        cpu_lduw_be_code
-+# define cpu_ldl_code         cpu_ldl_be_code
-+# define cpu_ldq_code         cpu_ldq_be_code
-+#else
-+# define cpu_lduw_code        cpu_lduw_le_code
-+# define cpu_ldl_code         cpu_ldl_le_code
-+# define cpu_ldq_code         cpu_ldq_le_code
-+#endif
-+
- #endif /* ACCEL_TCG_CPU_LDST_H */
+     env->trap_arg0 = addr;
+     env->trap_arg1 = insn >> 26;                /* opcode */
 -- 
 2.51.0
 
