@@ -2,59 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5062AC74763
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:10:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78290C748CC
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM5Lw-000306-IH; Thu, 20 Nov 2025 09:09:40 -0500
+	id 1vM5ca-0007As-Ks; Thu, 20 Nov 2025 09:26:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vM5Lu-0002zZ-Bt; Thu, 20 Nov 2025 09:09:38 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
+ id 1vM5cY-0007A6-7y; Thu, 20 Nov 2025 09:26:50 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vM5Lr-0001zT-Rm; Thu, 20 Nov 2025 09:09:38 -0500
+ id 1vM5cW-0005gH-B0; Thu, 20 Nov 2025 09:26:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763647776; x=1795183776;
+ t=1763648808; x=1795184808;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Q8KeSbdWaGONmhL/JAY67x/dYgup8wjYuXIA5QQXZyQ=;
- b=dvvjcxFNeotUvrBht1gOUKkcRomhD1XHHhlvUKqsWaVdO4Dv165shYGH
- uTaDdWVl9aIIbDBrkB8xdiIV7TRYXzc7DR9hm9YJlXodgvDJNuBdSyRJS
- G3ww4/MWERHdRoq1L4vudrKdAp3OY3WLn3l3xdiFhBfKBBSsLuKMpu7YP
- IA/JKX9+A3Z2wKh58J/VJtvxJO5ah9ldLCKym3NNtMAbxdhbsco25pst2
- /vnTuLdgsY0WYSq9V+4wNRQ8G2lLNLLtO5HuSLnqOGMJAibxLTt0yg4xD
- YvvzTUv8i1YR6ojb5Mb2jnMLB0PAU+kNUUMgfcDbIsnyvPQG7KLuSKDYm Q==;
-X-CSE-ConnectionGUID: C+zEj1dJTnKjtmiTavXumA==
-X-CSE-MsgGUID: 9bfR1u7nTl27Bm8ERGLIxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="77185545"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="77185545"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 06:09:32 -0800
-X-CSE-ConnectionGUID: VVO3mw4KTHO6SfZ7l8tBmg==
-X-CSE-MsgGUID: c9OHG9NLQMSsHndYMuJAbg==
+ bh=ykhT5gy+36T80ZBPebaRSAxIa86CBnNAierAR1qmek4=;
+ b=ImXDUTtB8LwnV75EF8lDlP9D+J8r7RU0/pPeROS3UFXdHv+mDRsx+bT1
+ fehbS9cJCfOcKxepUblic1NUm4+6BFTgkoVuE10rBOO3aNAKZzvaR5iRB
+ ZmRRD9ey3jxBLkuKSrpaWLeC71x1//DwAF80wtE7sU8KoH+jYJgPkQgDd
+ GtS2zU/FSuZ7w09QLnECvK71HPfmy+Ao2s5zhLS9kABy7eEXkpROXgZ+u
+ xNZZhqhHO+ABb047rhVFgQrhnwYFKqxasaMsqBAvchLtoVpR7a6eOmyyV
+ dCnx6gnula/aWV7sMgbwdF5S6gckAtJRZZVYLlC4lb67ZZSpStKYcifUx g==;
+X-CSE-ConnectionGUID: 8446eRjOTMO6iGsEGWn0yg==
+X-CSE-MsgGUID: 7NKWeadOTvWuQyPDtnVKlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="64725568"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="64725568"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 06:26:45 -0800
+X-CSE-ConnectionGUID: IwPCd6B3Qh+J1yLP1sE9Kw==
+X-CSE-MsgGUID: rqutV1yaQnCScar0hEuD0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="228682253"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="222313220"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 20 Nov 2025 06:09:30 -0800
-Date: Thu, 20 Nov 2025 22:31:50 +0800
+ by fmviesa001.fm.intel.com with ESMTP; 20 Nov 2025 06:26:43 -0800
+Date: Thu, 20 Nov 2025 22:49:04 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 4/5] rust: migration: implement ToMigrationState for Timer
-Message-ID: <aR8mVll8OeclCBxs@intel.com>
-References: <20251117084752.203219-1-pbonzini@redhat.com>
- <20251117084752.203219-5-pbonzini@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-rust@nongnu.org, Mads Ynddal <mads@ynddal.dk>,
+ Thomas Huth <thuth@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Josh Stone <jistone@redhat.com>
+Subject: Re: [PATCH v2 2/4] rust/hpet: add trace events
+Message-ID: <aR8qYPwzsuCfTliL@intel.com>
+References: <20251119205200.173170-1-stefanha@redhat.com>
+ <20251119205200.173170-3-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251117084752.203219-5-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20251119205200.173170-3-stefanha@redhat.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -79,138 +85,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 17, 2025 at 09:47:51AM +0100, Paolo Bonzini wrote:
-> Date: Mon, 17 Nov 2025 09:47:51 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 4/5] rust: migration: implement ToMigrationState for Timer
-> X-Mailer: git-send-email 2.51.1
+On Wed, Nov 19, 2025 at 03:51:58PM -0500, Stefan Hajnoczi wrote:
+> Date: Wed, 19 Nov 2025 15:51:58 -0500
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> Subject: [PATCH v2 2/4] rust/hpet: add trace events
 > 
-> Timer is a complex struct, allow adding it to a struct that
-> uses #[derive(ToMigrationState)]; similar to vmstate_timer, only
-> the expiration time has to be preserved.
+> Implement the same trace events as the C implementation.
 > 
-> In fact, because it is thread-safe, ToMigrationStateShared can
-> also be implemented without needing a cell or mutex that wraps
-> the timer.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Notes:
+> - Keep order of hpet_ram_write_invalid_tn_cmp and hpet_ram_write_tn_cmp
+>   the same as the C implementation.
+> - Put hpet_ram_write_timer_id in HPETTimer::write() instead of
+>   HPETState::decode() so that reads can be excluded.
+
+Yes, these changes are accurate and clear.
+
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->  rust/hw/timer/hpet/src/device.rs |  1 -
->  rust/migration/src/migratable.rs | 31 +++++++++++++++++++++++++++++++
->  rust/util/src/timer.rs           | 10 +++++++++-
->  3 files changed, 40 insertions(+), 2 deletions(-)
+>  rust/hw/timer/hpet/Cargo.toml    |  1 +
+>  rust/hw/timer/hpet/meson.build   |  1 +
+>  rust/hw/timer/hpet/src/device.rs | 45 +++++++++++++++++++-------------
+>  3 files changed, 29 insertions(+), 18 deletions(-)
 
-I just, based on previous discussion, try to complete the timer's
-ToMigrationState - use modify_ns() instead of modify(). This is on top
-of this series.
-
-From eb8b99a45ffccba7e0508141553c2c24c5efa410 Mon Sep 17 00:00:00 2001
-From: Zhao Liu <zhao1.liu@intel.com>
-Date: Thu, 20 Nov 2025 22:26:35 +0800
-Subject: [PATCH] rust/timer: Use modify_ns() in restore_migrated_state()
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- include/qemu/timer.h             | 11 +++++++++++
- rust/migration/src/migratable.rs |  2 +-
- rust/util/src/timer.rs           | 21 +++++++++++++++++----
- util/qemu-timer.c                |  4 ++++
- 4 files changed, 33 insertions(+), 5 deletions(-)
-
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index 8b561cd6960b..4c6a51d600fb 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -392,6 +392,17 @@ int64_t timerlistgroup_deadline_ns(QEMUTimerListGroup *tlg);
-  * QEMUTimer
-  */
-
-+/**
-+ * timer_get_scale
-+ * @ts: the timer to be accessed
-+ *
-+ * Get the scale value of the specified timer. The scale represents
-+ * the number of nanoseconds per unit of time for this timer.
-+ *
-+ * Returns: the scale of the timer (nanoseconds per unit)
-+ */
-+int timer_get_scale(QEMUTimer *ts);
-+
- /**
-  * timer_init_full:
-  * @ts: the timer to be initialised
-diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-index c82a6b9a7cf2..7748aac2f27d 100644
---- a/rust/migration/src/migratable.rs
-+++ b/rust/migration/src/migratable.rs
-@@ -260,7 +260,7 @@ fn restore_migrated_state(
- impl ToMigrationStateShared for util::timer::Timer {
-     fn restore_migrated_state(&self, source: i64, _version_id: u8) -> Result<(), InvalidError> {
-         if source >= 0 {
--            self.modify(source as u64);
-+            self.modify_ns(source as u64);
-         } else {
-             self.delete();
-         }
-diff --git a/rust/util/src/timer.rs b/rust/util/src/timer.rs
-index 4109d84c398a..6114892f084f 100644
---- a/rust/util/src/timer.rs
-+++ b/rust/util/src/timer.rs
-@@ -10,8 +10,8 @@
- use common::{callbacks::FnCall, Opaque};
-
- use crate::bindings::{
--    self, qemu_clock_get_ns, timer_del, timer_expire_time_ns, timer_init_full, timer_mod,
--    QEMUClockType,
-+    self, qemu_clock_get_ns, timer_del, timer_expire_time_ns, timer_get_scale, timer_init_full,
-+    timer_mod_ns, QEMUClockType,
- };
-
- /// A safe wrapper around [`bindings::QEMUTimer`].
-@@ -96,10 +96,23 @@ pub fn expire_time_ns(&self) -> Option<i64> {
-         i64::try_from(ret).ok()
-     }
-
--    pub fn modify(&self, expire_time: u64) {
-+    fn scale(&self) -> u32 {
-+        // SAFETY: the only way to obtain a Timer safely is via methods that
-+        // take a Pin<&mut Self>, therefore the timer is pinned. And when Timer
-+        // is created, its fields (including scale) are initialized to zero.
-+        unsafe { timer_get_scale(self.as_mut_ptr()) }
-+            .try_into()
-+            .unwrap()
-+    }
-+
-+    pub fn modify_ns(&self, expire_time: u64) {
-         // SAFETY: the only way to obtain a Timer safely is via methods that
-         // take a Pin<&mut Self>, therefore the timer is pinned
--        unsafe { timer_mod(self.as_mut_ptr(), expire_time as i64) }
-+        unsafe { timer_mod_ns(self.as_mut_ptr(), expire_time.try_into().unwrap()) }
-+    }
-+
-+    pub fn modify(&self, expire_time: u64) {
-+        self.modify_ns(expire_time * u64::from(self.scale()))
-     }
-
-     pub fn delete(&self) {
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index 2a6be4c7f958..233fdb2aa847 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -346,6 +346,10 @@ int qemu_poll_ns(GPollFD *fds, guint nfds, int64_t timeout)
- #endif
- }
-
-+int timer_get_scale(QEMUTimer *ts)
-+{
-+    return ts->scale;
-+}
-
- void timer_init_full(QEMUTimer *ts,
-                      QEMUTimerListGroup *timer_list_group, QEMUClockType type,
---
-2.34.1
-
-
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
