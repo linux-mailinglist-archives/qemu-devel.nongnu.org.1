@@ -2,64 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22B8C740DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 13:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA977C748C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 15:27:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vM4C8-0007PG-8O; Thu, 20 Nov 2025 07:55:28 -0500
+	id 1vM5cr-0007Ct-94; Thu, 20 Nov 2025 09:27:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vM4C5-0007NO-8O; Thu, 20 Nov 2025 07:55:25 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vM4C3-0005uv-5s; Thu, 20 Nov 2025 07:55:24 -0500
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 851795969FB;
- Thu, 20 Nov 2025 13:55:15 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id UFymzwfFm40x; Thu, 20 Nov 2025 13:55:13 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6C8115969F7; Thu, 20 Nov 2025 13:55:13 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 695685969FC;
- Thu, 20 Nov 2025 13:55:13 +0100 (CET)
-Date: Thu, 20 Nov 2025 13:55:13 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- kwolf@redhat.com, hreitz@redhat.com, mst@redhat.com, imammedo@redhat.com, 
- anisinha@redhat.com, gengdongjiu1@gmail.com, peter.maydell@linaro.org, 
- alistair@alistair23.me, edgar.iglesias@gmail.com, npiggin@gmail.com, 
- harshpb@linux.ibm.com, palmer@dabbelt.com, liwei1518@gmail.com, 
- zhiwei_liu@linux.alibaba.com, sstabellini@kernel.org, 
- anthony@xenproject.org, paul@xen.org, berrange@redhat.com, 
- peterx@redhat.com, farosas@suse.de, eblake@redhat.com, 
- vsementsov@yandex-team.ru, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
- philmd@linaro.org, wangyanan55@huawei.com, zhao1.liu@intel.com, 
- qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 1/5] hw/core/loader: Make load_elf_hdr() return bool,
- simplify caller
-In-Reply-To: <4fb0a736-4450-47c0-9f9e-6cb86a3b28ea@ventanamicro.com>
-Message-ID: <072c1f11-1bb4-6f19-f847-e4ba07c148c3@eik.bme.hu>
-References: <20251119130855.105479-1-armbru@redhat.com>
- <20251119130855.105479-2-armbru@redhat.com>
- <4fb0a736-4450-47c0-9f9e-6cb86a3b28ea@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
+ id 1vM4IE-0001zx-9O
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:01:46 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
+ id 1vM4IC-0006y5-Gc
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 08:01:46 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-429c7869704so730317f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 05:01:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1763643702; x=1764248502; darn=nongnu.org;
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lCfFWku/1xsXAfo7s3Bc/FmCppPeSa1oiiEWTvBMHBk=;
+ b=lBINq7absFqE8jM2N+yZ+MDsLwoLET934HdgRl5ikOLp7Zy7CXdI/pZ3eTbRFb/+VT
+ qU3xhbcTfhQt+AbANZ9xzXzex5J4X7oh9fpq8vGNZ4dH8Mt+HMNlLTFKoRcsrf6snTA5
+ XNroivggQddIUdH4vtlDrjTrYFPI9J4P0WB3hoqVWFg/Dm37huQetVm0Xx/MjjL+VeC6
+ kRltbuZqpBUetzy5XlNSriDk/te3ZHDauXjccKGNxcYV+qGdPdCFendK4KOur1+O2Tty
+ 2ZYObIZiOPahGyG2WTgPj+puOq/Z+j1DH8zZyoCiJD8v3pjoKCFRL0zurzmfTiLSGJrv
+ 5Vhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763643702; x=1764248502;
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lCfFWku/1xsXAfo7s3Bc/FmCppPeSa1oiiEWTvBMHBk=;
+ b=rOMP+QSTzs3ZtzV2/MZoxUrIqbMyNpWeVRj58MzXBUVzMSFxMabsFu1eCTTHV58XIl
+ v1pz96snFtdmJBLjdk7cEaXo7+u1YrJjbTZgN4HrvfoQNdmPH8w7M2Uk0hF0OD6O7ALg
+ rasGQJp79tJIK62+p3yBwvfahy4Fwqp0/BpcYmr5QzuA9M19mTnpdF9f0e02Cbye1B//
+ SPiSPIOg2uiMoL1XEelluoHsk49DMqF5nER/5thCzrp2DjIcJeDk/iEKv7t8hrR8Z6fk
+ Y4+oalV8vMSirTADSwvWMkIgbLd4ZSnZgZ79w30EcVARJOXKr/BkSjjW9GcawloPPTZK
+ 4qSw==
+X-Gm-Message-State: AOJu0YyqsBbTOrwNm5PXLsVAZZkp4uIUgZlrwfvWg/+xnhyCRzyVGQba
+ y7Z4Bv2+s/LzvI0bwmgvCqONCw1+e1K97JDaiz8/oZU79fjIJVIUUWNuCMYkGg==
+X-Gm-Gg: ASbGncvTWQeT2S1EHlMMfvf+6tn9dHs1d6SVwSExnQZEEQOk3ZlsMkwFCyXkzejOZ4w
+ gkLzzAdrhympes01gwVeDeQcbq35KEA850IoGs9NtelMPIwv8O9fNwwnY/3+dDNe0IBxYVeHRnd
+ T3iveSnwnxmSCYqj4f0LhNiNTNabmdUg4RI1Ovhu5k5DURDfzLKEEd33LkoBnkzvDaQnGoUf+L+
+ DURS9JYCQMtEjosfBhkww9VvBhM+AaSarQ1e805gHA4SzVLamochZdscPqGBSuhi6SmbsCRR7jN
+ Ocptn3FvswKT5XuZo+ERGVN/Ss52ZrJw/wycLNARcEDzMMd1V16i0rC5XvVmCZArVAhl6J31hy8
+ zQPaKUZa0XrTOuWI9et09QDwX0iBwH4bOeblxZGHx5ohBk/YjPYzqvfAeFY3Kafib5Jh5vqYEjY
+ V7l/iDAjqYvzsWm3ALDiZmlcKPkA==
+X-Google-Smtp-Source: AGHT+IFLcKTGGdluurfHKaVpkyPISPiobH4HQY8EBrMi62znznaGJZ5Yxn0yF1tI44/V/mo4QYwqnA==
+X-Received: by 2002:a05:6000:4006:b0:42b:2e94:5a8f with SMTP id
+ ffacd0b85a97d-42cb9a5593emr2463462f8f.52.1763643701506; 
+ Thu, 20 Nov 2025 05:01:41 -0800 (PST)
+Received: from [192.168.43.207] ([188.113.193.112])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42cb7fd8e54sm5282754f8f.40.2025.11.20.05.01.39
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Nov 2025 05:01:40 -0800 (PST)
+Message-ID: <5e07267f-b990-47fc-ade7-934209ea942f@gmail.com>
+Date: Thu, 20 Nov 2025 18:01:36 +0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+From: Andrey Erokhin <language.lawyer@gmail.com>
+Subject: [PATCH] hw/9pfs: Follow native symlinks when security-model=mapped
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=language.lawyer@gmail.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 20 Nov 2025 09:27:05 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,123 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Nov 2025, Daniel Henrique Barboza wrote:
-> On 11/19/25 10:08 AM, Markus Armbruster wrote:
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->
-> Nice cleanup
->
->
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->
->>   include/hw/loader.h |  4 +++-
->>   hw/arm/boot.c       |  6 +-----
->>   hw/core/loader.c    |  8 ++++++--
->>   hw/riscv/spike.c    | 10 +---------
->>   4 files changed, 11 insertions(+), 17 deletions(-)
->> 
->> diff --git a/include/hw/loader.h b/include/hw/loader.h
->> index d035e72748..6f91703503 100644
->> --- a/include/hw/loader.h
->> +++ b/include/hw/loader.h
->> @@ -188,8 +188,10 @@ ssize_t load_elf(const char *filename,
->>    *
->>    * Inspect an ELF file's header. Read its full header contents into a
->>    * buffer and/or determine if the ELF is 64bit.
->> + *
->> + * Returns true on success, false on failure.
->>    */
->> -void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error 
->> **errp);
->> +bool load_elf_hdr(const char *filename, void *hdr, bool *is64, Error 
->> **errp);
->>     ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
->>                     bool big_endian, hwaddr target_page_size);
->> diff --git a/hw/arm/boot.c b/hw/arm/boot.c
->> index b91660208f..06b303aab8 100644
->> --- a/hw/arm/boot.c
->> +++ b/hw/arm/boot.c
->> @@ -766,16 +766,12 @@ static ssize_t arm_load_elf(struct arm_boot_info 
->> *info, uint64_t *pentry,
->>       int data_swab = 0;
->>       int elf_data_order;
->>       ssize_t ret;
->> -    Error *err = NULL;
->>   -
->> -    load_elf_hdr(info->kernel_filename, &elf_header, &elf_is64, &err);
->> -    if (err) {
->> +    if (!load_elf_hdr(info->kernel_filename, &elf_header, &elf_is64, 
->> NULL)) {
->>           /*
->>            * If the file is not an ELF file we silently return.
->>            * The caller will fall back to try other formats.
->>            */
->> -        error_free(err);
->>           return -1;
->>       }
->>   diff --git a/hw/core/loader.c b/hw/core/loader.c
->> index 590c5b02aa..10687fe1c8 100644
->> --- a/hw/core/loader.c
->> +++ b/hw/core/loader.c
->> @@ -364,8 +364,9 @@ const char *load_elf_strerror(ssize_t error)
->>       }
->>   }
->>   -void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error 
->> **errp)
->> +bool load_elf_hdr(const char *filename, void *hdr, bool *is64, Error 
->> **errp)
->>   {
->> +    bool ok = false;
->>       int fd;
->>       uint8_t e_ident_local[EI_NIDENT];
->>       uint8_t *e_ident;
->> @@ -380,7 +381,7 @@ void load_elf_hdr(const char *filename, void *hdr, bool 
->> *is64, Error **errp)
->>       fd = open(filename, O_RDONLY | O_BINARY);
->>       if (fd < 0) {
->>           error_setg_errno(errp, errno, "Failed to open file: %s", 
->> filename);
->> -        return;
->> +        return false;
->>       }
->>       if (read(fd, hdr, EI_NIDENT) != EI_NIDENT) {
->>           error_setg_errno(errp, errno, "Failed to read file: %s", 
->> filename);
->> @@ -415,8 +416,11 @@ void load_elf_hdr(const char *filename, void *hdr, 
->> bool *is64, Error **errp)
->>           off += br;
->>       }
->>   +    ok = true;
->> +
->>   fail:
->>       close(fd);
->> +    return ok;
->>   }
->>     /* return < 0 if error, otherwise the number of bytes loaded in memory 
->> */
->> diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
->> index b0bab3fe00..8531e1d121 100644
->> --- a/hw/riscv/spike.c
->> +++ b/hw/riscv/spike.c
->> @@ -180,15 +180,7 @@ static void create_fdt(SpikeState *s, const 
->> MemMapEntry *memmap,
->>     static bool spike_test_elf_image(char *filename)
->>   {
->> -    Error *err = NULL;
->> -
->> -    load_elf_hdr(filename, NULL, NULL, &err);
->> -    if (err) {
->> -        error_free(err);
->> -        return false;
->> -    } else {
->> -        return true;
->> -    }
->> +    return load_elf_hdr(filename, NULL, NULL, NULL);
+A directory mounted via virtfs with security-model=mapped[-xattr|-file] can contain "native" symlinks
 
-Does it worth to keep this function or could just be inlined at the two 
-callers now that it's equivalent with load_elf_hdr?
+This can happen e.g. when booting from a rootfs directory tree (usually with writable overlay set up on the host side)
 
-Regards,
-BALATON Zoltan
+Currently, with security-model=mapped, QEMU expects that all host "symlinks" are in "mapped" format, i.e. are files containing the linked path, so it tries to open with O_NOFOLLOW and fails with ELOOP in case of a native symlink
+
+This patch gives such cases a second chance: trying to open as a native symlink, by reusing security-model=[none|passthrough] else if branch
+
+QEMU issues:
+https://gitlab.com/qemu-project/qemu/-/issues/173 (from https://bugs.launchpad.net/qemu/+bug/1831354)
+https://gitlab.com/qemu-project/qemu/-/issues/3088 (dup of the first one)
+
+
+Signed-off-by: Andrey Erokhin <language.lawyer@gmail.com>
+
+
+diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
+index 31e216227c..b4f8be2c81 100644
+--- a/hw/9pfs/9p-local.c
++++ b/hw/9pfs/9p-local.c
+@@ -468,12 +468,14 @@ static ssize_t local_readlink(FsContext *fs_ctx, V9fsPath *fs_path,
+  
+          fd = local_open_nofollow(fs_ctx, fs_path->data, O_RDONLY, 0);
+          if (fd == -1) {
++            if (errno == ELOOP) goto native_symlink;
+              return -1;
+          }
+          tsize = RETRY_ON_EINTR(read(fd, (void *)buf, bufsz));
+          close_preserve_errno(fd);
+      } else if ((fs_ctx->export_flags & V9FS_SM_PASSTHROUGH) ||
+                 (fs_ctx->export_flags & V9FS_SM_NONE)) {
++native_symlink:;
+          char *dirpath = g_path_get_dirname(fs_path->data);
+          char *name = g_path_get_basename(fs_path->data);
+          int dirfd;
+
 
