@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51459C76061
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 149DFC760AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Nov 2025 20:16:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMA6x-0006iy-MD; Thu, 20 Nov 2025 14:14:31 -0500
+	id 1vMA6u-0006aX-NM; Thu, 20 Nov 2025 14:14:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6e-0005xe-0p
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6a-0005wB-Rf
  for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6T-00079E-AI
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:11 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMA6R-00078A-6v
+ for qemu-devel@nongnu.org; Thu, 20 Nov 2025 14:14:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763666039;
+ s=mimecast20190719; t=1763666038;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tDP8FM9QFpX4om5r6DeJVNNuFVvQYDlKs2mHtRlqAfQ=;
- b=iBKaHYl9EhWpKrlSbIIN9VxaGkkgijw7PfF8Ju1jw8nhHSJRS9DasXhKZWNPwtuFCMPlTT
- Ibt/oRT9pHaa0qAfYS/1EidVnhYClPL0ARj241vkX9CacwtpuhQUpxX70RwJ4RWMZc8V15
- iGrBKO3UvED2x4f21KGx0h6NDifgNOA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=oeDPJTEK/mbRoQ9G1reQyHyjo6pRRwMOwFAV76+b8w0=;
+ b=KZRXclE/DtddxmnSYGyVOHiAKy++lpq8Gr6XypAMcaEPzYc5YysEN/2IZ5yPO+0TJ45PRc
+ R6fSKBOQOpzrGPYqFruLXQTyZnLplaqVMC+rNwsABYlZAcPUzIMZvJ/uwSDT3d+LHwFmZa
+ XPplsJUBXHlUgAWdyB2Kpl/BKx1/bDc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-b5T3lBd2OV2uCxy3edrDZw-1; Thu,
- 20 Nov 2025 14:13:55 -0500
-X-MC-Unique: b5T3lBd2OV2uCxy3edrDZw-1
-X-Mimecast-MFC-AGG-ID: b5T3lBd2OV2uCxy3edrDZw_1763666026
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-M7p59jwPOHWlO-WKfumvYQ-1; Thu,
+ 20 Nov 2025 14:13:54 -0500
+X-MC-Unique: M7p59jwPOHWlO-WKfumvYQ-1
+X-Mimecast-MFC-AGG-ID: M7p59jwPOHWlO-WKfumvYQ_1763666027
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 66F73195422D; Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3A8F11955F17; Thu, 20 Nov 2025 19:13:47 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D535A1800984; Thu, 20 Nov 2025 19:13:45 +0000 (UTC)
+ id DEF1F18009BC; Thu, 20 Nov 2025 19:13:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 87A9C21EC344; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+ id 8D09221EC346; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
@@ -63,10 +63,9 @@ Cc: arei.gonglei@huawei.com, pizhenwei@bytedance.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH 13/14] qga/commands-win32: Use error_setg_win32() for better
- error messages
-Date: Thu, 20 Nov 2025 20:13:38 +0100
-Message-ID: <20251120191339.756429-14-armbru@redhat.com>
+Subject: [PATCH 14/14] block/file-win32: Improve an error message
+Date: Thu, 20 Nov 2025 20:13:39 +0100
+Message-ID: <20251120191339.756429-15-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -97,63 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We include numeric GetLastError() codes in error messages in a few
-places, like this:
-
-    error_setg(errp, "GRIPE: %d", (int)GetLastError());
-
-Show text instead, like this:
-
-    error_setg_win32(errp, GetLastError(), "GRIPE");
+Two out of three calls of CreateFile() use error_setg_win32() to
+report errors.  The third uses error_setg_errno(), mapping
+ERROR_ACCESS_DENIED to EACCES, and everything else to EINVAL, throwing
+away detail.  Switch it to error_setg_win32().
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/commands-win32.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ block/file-win32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index acc2c11589..0fd0c966e4 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -1798,8 +1798,8 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-     tf.dwHighDateTime = (DWORD) (time >> 32);
- 
-     if (!FileTimeToSystemTime(&tf, &ts)) {
--        error_setg(errp, "Failed to convert system time %d",
--                   (int)GetLastError());
-+        error_setg_win32(errp, GetLastError(),
-+                         "Failed to convert system time");
-         return;
-     }
- 
-@@ -1810,7 +1810,8 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-     }
- 
-     if (!SetSystemTime(&ts)) {
--        error_setg(errp, "Failed to set time to guest: %d", (int)GetLastError());
-+        error_setg_win32(errp, GetLastError(),
-+                         "Failed to set time to guest");
-         return;
-     }
- }
-@@ -1834,13 +1835,12 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
-         (length > sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION))) {
-         ptr = pslpi = g_malloc0(length);
-         if (GetLogicalProcessorInformation(pslpi, &length) == FALSE) {
--            error_setg(&local_err, "Failed to get processor information: %d",
--                       (int)GetLastError());
-+            error_setg_win32(&local_err, GetLastError(),
-+                             "Failed to get processor information");
+diff --git a/block/file-win32.c b/block/file-win32.c
+index 0efb609e1d..78961837c8 100644
+--- a/block/file-win32.c
++++ b/block/file-win32.c
+@@ -904,7 +904,7 @@ static int hdev_open(BlockDriverState *bs, QDict *options, int flags,
+         } else {
+             ret = -EINVAL;
          }
-     } else {
--        error_setg(&local_err,
--                   "Failed to get processor information buffer length: %d",
--                   (int)GetLastError());
-+        error_setg_win32(&local_err, GetLastError(),
-+                         "Failed to get processor information buffer length");
+-        error_setg_errno(errp, -ret, "Could not open device");
++        error_setg_win32(errp, err, "Could not open device");
+         goto done;
      }
  
-     while ((local_err == NULL) && (length > 0)) {
 -- 
 2.49.0
 
