@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C865CC7C329
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C409C7C4C6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:35:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcqj-0005Th-GR; Fri, 21 Nov 2025 20:55:42 -0500
+	id 1vMcvn-0001P5-Uh; Fri, 21 Nov 2025 21:00:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbiE-0006z0-6l; Fri, 21 Nov 2025 19:42:50 -0500
+ id 1vMbxr-0008B1-W0; Fri, 21 Nov 2025 19:59:00 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbi2-0007B3-PJ; Fri, 21 Nov 2025 19:42:45 -0500
+ id 1vMbvm-0001Y0-CM; Fri, 21 Nov 2025 19:58:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4DF1516CA5C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 60D2116CA5D;
  Fri, 21 Nov 2025 21:44:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0C19E321C98;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1E91A321C99;
  Fri, 21 Nov 2025 21:44:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 33/81] target/microblaze: Handle signed division
- overflows
-Date: Fri, 21 Nov 2025 21:43:32 +0300
-Message-ID: <20251121184424.1137669-33-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 34/81] target/s390x: Fix missing interrupts for small
+ CKC values
+Date: Fri, 21 Nov 2025 21:43:33 +0300
+Message-ID: <20251121184424.1137669-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -52,54 +51,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Handle signed division overflows as specified in UG984:
-https://docs.amd.com/r/en-US/ug984-vivado-microblaze-ref/idiv
+Suppose TOD clock value is 0x1111111111111111 and clock-comparator
+value is 0, in which case clock-comparator interruption should occur
+immediately.
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit cfc1d54251d3b4c4cf21c4fa278c8aea2fe25a99)
+With the current code, tod2time(env->ckc - td->base.low) ends up being
+a very large number, so this interruption never happens.
+
+Fix by firing the timer immediately if env->ckc < td->base.low.
+
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <20251016175954.41153-2-iii@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit df7e9243d540ee130f044f975af8de33c45f5299)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index e44ddd5307..8d92389c48 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -85,6 +85,7 @@ typedef struct CPUArchState CPUMBState;
- #define          ESR_ESS_FSL_OFFSET     5
- 
- #define          ESR_ESS_MASK  (0x7f << 5)
-+#define          ESR_ESS_DEC_OF  (1 << 11) /* DEC: 0=DBZ, 1=OF */
- 
- #define          ESR_EC_FSL             0
- #define          ESR_EC_UNALIGNED_DATA  1
-diff --git a/target/microblaze/op_helper.c b/target/microblaze/op_helper.c
-index 0e9b725c1b..bdaf0ca2f8 100644
---- a/target/microblaze/op_helper.c
-+++ b/target/microblaze/op_helper.c
-@@ -90,6 +90,21 @@ uint32_t helper_divs(CPUMBState *env, uint32_t ra, uint32_t rb)
-         raise_divzero(env, ESR_EC_DIVZERO, GETPC());
-         return 0;
+diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
+index 31266aeda4..06b75aa453 100644
+--- a/target/s390x/tcg/misc_helper.c
++++ b/target/s390x/tcg/misc_helper.c
+@@ -199,11 +199,15 @@ static void update_ckc_timer(CPUS390XState *env)
+         return;
      }
-+
-+    /*
-+     * Check for division overflows.
-+     *
-+     * Spec: https://docs.amd.com/r/en-US/ug984-vivado-microblaze-ref/idiv
-+     * UG984, Chapter 5 MicroBlaze Instruction Set Architecture, idiv.
-+     *
-+     * If the U bit is clear, the value of rA is -1, and the value of rB is
-+     * -2147483648 (divide overflow), the DZO bit in MSR will be set and
-+     * the value in rD will be -2147483648, unless an exception is generated.
-+     */
-+    if ((int32_t)ra == -1 && (int32_t)rb == INT32_MIN) {
-+        raise_divzero(env, ESR_EC_DIVZERO | ESR_ESS_DEC_OF, GETPC());
-+        return INT32_MIN;
-+    }
-     return (int32_t)rb / (int32_t)ra;
- }
  
+-    /* difference between origins */
+-    time = env->ckc - td->base.low;
++    if (env->ckc < td->base.low) {
++        time = 0;
++    } else {
++        /* difference between origins */
++        time = env->ckc - td->base.low;
+ 
+-    /* nanoseconds */
+-    time = tod2time(time);
++        /* nanoseconds */
++        time = tod2time(time);
++    }
+ 
+     timer_mod(env->tod_timer, time);
+ }
 -- 
 2.47.3
 
