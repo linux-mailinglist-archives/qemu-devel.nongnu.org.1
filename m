@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BA5C7C3F0
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A60F2C7C6E6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:51:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdVU-0000c8-IA; Fri, 21 Nov 2025 21:37:49 -0500
+	id 1vMdBy-0001Ji-NW; Fri, 21 Nov 2025 21:17:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdVN-0000an-PB; Fri, 21 Nov 2025 21:37:41 -0500
+ id 1vMd2f-0001bK-5b; Fri, 21 Nov 2025 21:08:01 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdUX-0001fM-HL; Fri, 21 Nov 2025 21:37:38 -0500
+ id 1vMd1w-0002be-LI; Fri, 21 Nov 2025 21:07:57 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1DD7416C715;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3159D16C716;
  Fri, 21 Nov 2025 16:51:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6E2F53219B2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8AFC13219B3;
  Fri, 21 Nov 2025 16:52:07 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 61/76] tests: move test_kvm to share.linaro.org
-Date: Fri, 21 Nov 2025 16:51:39 +0300
-Message-ID: <20251121135201.1114964-61-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 62/76] tests: move test_virt_gpu to share.linaro.org
+Date: Fri, 21 Nov 2025 16:51:40 +0300
+Message-ID: <20251121135201.1114964-62-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -65,26 +65,33 @@ another sharing site.
 
 Cc: qemu-stable@nongnu.org
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251117115523.3993105-11-alex.bennee@linaro.org>
+Message-ID: <20251117115523.3993105-12-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit ced9f2ffc20dd182b2504fb08391a796c65bb0af)
+(cherry picked from commit 497d3e87ce2d58a4781de03c6f5b0200ef79909f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_aarch64_kvm.py b/tests/functional/test_aarch64_kvm.py
-index 9fb9286139..7545f5ed55 100755
---- a/tests/functional/test_aarch64_kvm.py
-+++ b/tests/functional/test_aarch64_kvm.py
-@@ -19,9 +19,7 @@
- class Aarch64VirtKVMTests(LinuxKernelTest):
+diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
+index 3844727857..28ae7592fc 100755
+--- a/tests/functional/test_aarch64_virt_gpu.py
++++ b/tests/functional/test_aarch64_virt_gpu.py
+@@ -23,15 +23,11 @@
+ class Aarch64VirtGPUMachine(LinuxKernelTest):
  
-     ASSET_KVM_TEST_KERNEL = Asset(
--        'https://fileserver.linaro.org/s/HmjaxXXYHYSqbes/'
+     ASSET_VIRT_GPU_KERNEL = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
 -        'download?path=%2F&files='
--        'image-with-kvm-tool-and-unit-tests.gz',
-+        'https://share.linaro.org/downloadFile?id=Bs8Eb2Wb7yWtkTA',
-         '34de4aaea90db5da42729e7d28b77f392c37a2f4da859f889a5234aaf0970696')
+-        'Image.6.12.16.aarch64',
++        'https://share.linaro.org/downloadFile?id=lL8wgnMmSXZo7Co',
+         '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec8b')
  
-     # make it easier to detect successful return to shell
+     ASSET_VIRT_GPU_ROOTFS = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+-        'download?path=%2F&files='
+-        'rootfs.aarch64.ext2.zstd',
++        'https://share.linaro.org/downloadFile?id=qOn1wbfKmS6KVHZ',
+         'd45118c899420b7e673f1539a37a35480134b3e36e3a59e2cb69b1781cbb14ef')
+ 
+     def _launch_virt_gpu(self, gpu_device):
 -- 
 2.47.3
 
