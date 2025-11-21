@@ -2,37 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABEFC7C2FF
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C20C7C57A
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:01:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdIQ-00020P-PD; Fri, 21 Nov 2025 21:24:19 -0500
+	id 1vMdBz-0001KF-Af; Fri, 21 Nov 2025 21:17:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdIH-0001qV-Ke; Fri, 21 Nov 2025 21:24:09 -0500
+ id 1vMd3W-000293-Ih; Fri, 21 Nov 2025 21:08:54 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdHL-000565-MR; Fri, 21 Nov 2025 21:24:05 -0500
+ id 1vMd32-00030B-LH; Fri, 21 Nov 2025 21:08:50 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 267DB16C6F3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3E8AD16C6F4;
  Fri, 21 Nov 2025 16:51:56 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 74C8F321990;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 93F6B321991;
  Fri, 21 Nov 2025 16:52:04 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Richard W.M. Jones" <rjones@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 27/76] block/curl.c: Fix CURLOPT_VERBOSE parameter type
-Date: Fri, 21 Nov 2025 16:51:05 +0300
-Message-ID: <20251121135201.1114964-27-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sean Anderson <sean.anderson@linux.dev>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 28/76] gdbstub: Fix %s formatting
+Date: Fri, 21 Nov 2025 16:51:06 +0300
+Message-ID: <20251121135201.1114964-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,33 +60,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Richard W.M. Jones" <rjones@redhat.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-In commit ed26056d90 ("block/curl.c: Use explicit long constants in
-curl_easy_setopt calls") we missed a further call that takes a long
-parameter.
+The format string for %s has two format characters. This causes it to
+emit strings like "466f5bd8/6x" instead of "466f5bd8/6". GDB detects
+this and returns EIO, causing all open File I/O calls to fail.
 
-Reported-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-Message-ID: <20251013124127.604401-1-rjones@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit ad97769e9dcf4dbdaae6d859176e5f37fd6a7c66)
+Fixes: 0820a075af ("gdbstub: Adjust gdb_do_syscall to only use uint32_t and uint64_t")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251027110344.2289945-35-alex.bennee@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+(cherry picked from commit 524fc77d2322814f0dfde272559d74ec1599f01e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/curl.c b/block/curl.c
-index 1102a3aa2f..cbfb847dc4 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -524,7 +524,7 @@ static int curl_init_state(BDRVCURLState *s, CURLState *state)
- #endif
- 
- #ifdef DEBUG_VERBOSE
--        if (curl_easy_setopt(state->curl, CURLOPT_VERBOSE, 1)) {
-+        if (curl_easy_setopt(state->curl, CURLOPT_VERBOSE, 1L)) {
-             goto err;
-         }
- #endif
+diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
+index e855df21ab..d8bb90cc1c 100644
+--- a/gdbstub/syscalls.c
++++ b/gdbstub/syscalls.c
+@@ -127,7 +127,7 @@ void gdb_do_syscall(gdb_syscall_complete_cb cb, const char *fmt, ...)
+             case 's':
+                 i64 = va_arg(va, uint64_t);
+                 i32 = va_arg(va, uint32_t);
+-                p += snprintf(p, p_end - p, "%" PRIx64 "/%x" PRIx32, i64, i32);
++                p += snprintf(p, p_end - p, "%" PRIx64 "/%" PRIx32, i64, i32);
+                 break;
+             default:
+             bad_format:
 -- 
 2.47.3
 
