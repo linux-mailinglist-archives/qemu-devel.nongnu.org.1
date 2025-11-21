@@ -2,100 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBC2C77378
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 05:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123E1C773B1
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 05:10:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMIMS-0000nH-VS; Thu, 20 Nov 2025 23:03:04 -0500
+	id 1vMISK-00029h-Rk; Thu, 20 Nov 2025 23:09:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vMIMQ-0000ml-1m
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 23:03:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vMISF-00029K-Li; Thu, 20 Nov 2025 23:09:03 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vMIMN-0004YF-Ms
- for qemu-devel@nongnu.org; Thu, 20 Nov 2025 23:03:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763697776;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hRr6W8diSd59J3YABzUjNB7wJzD3GQ6WHK20PczeJIs=;
- b=SbeSvgQR/L/iY6s02fUtiqLmeKz04PRZ9esB9YDq450MmjR1pdqhspPxrDAnYFUBViwYbh
- 8vaDncFxV1o0oictnDF2wxok5POH3pvtgx4YK80Wjj0xsHahSDPh5Lkju6Cv7ICg4EqNGe
- nojRfWiBhG9Sj8PU9CUXwAxmpbQTRJs=
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
- [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137-65y1rm8aNlWRktaORM78bw-1; Thu, 20 Nov 2025 23:02:54 -0500
-X-MC-Unique: 65y1rm8aNlWRktaORM78bw-1
-X-Mimecast-MFC-AGG-ID: 65y1rm8aNlWRktaORM78bw_1763697774
-Received: by mail-vs1-f71.google.com with SMTP id
- ada2fe7eead31-5dbcb1740daso846317137.2
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 20:02:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763697773; x=1764302573; darn=nongnu.org;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hRr6W8diSd59J3YABzUjNB7wJzD3GQ6WHK20PczeJIs=;
- b=WwbB/wIyPJRsL1ewduGjHqnqT43i3dOpqyiarzOG1/HX0+Gnie08P7rbyvOmIgNw3V
- hCW2cU4TKK+LqVRl2GNiErYaHUPdYD0ERZZ5KJQhS1cAz+VCkrDHtMB7tn2kYoyT9qaf
- 00cteUH9sryCIBvZijS2T/Ka/V3l/LHo/OqkN2HNHW3C8xq9JubIsGkZhkh4ZC95tjfy
- TGR6BYAxNza79WPcU49AUvPjnhV5sQ8+UwfOC2vTxR5McFuIOzDwiaEsotszVNYbCd86
- qSrXQrsLpibXcJBLhaDGW3QwNo+OLlNjRwfBoenZd267RHATyQDxPt3Q/AZkV9nhnd5K
- y6lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763697773; x=1764302573;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=hRr6W8diSd59J3YABzUjNB7wJzD3GQ6WHK20PczeJIs=;
- b=J/3N7sKCkQu1T3dyFI4+aysQL4dTtlP4ESHcqqPa4YeaBtBE/Q3+8B992MWJwdhKBR
- cqgSnM3luQpwF8u823mB/JTUR0+/0go50GRHnTn05Ggq97DAs52Bf3Q90+xEwiRPJlh3
- fXCTY2vpNou71dxl9FcjzqqOwCWMC3hiC4jYyRV0Mz7MNfZHVxoim3mSSvMZ5JbW58zB
- 11yb8mAAl8DYF7N0W1Xj5Li9XuLVI1hicStZNt6QfXD97O3zxQVOxiv9tVXOtM5h+uOw
- kcNWaWh3D8rFeipGnCEkJsqUf2op6AqZwiCjQ4Cctur1NCJgvLq84dCtYWoybrFU5H/i
- n3JA==
-X-Gm-Message-State: AOJu0YzdwCaHv377l2+h1zEbXDRSUv1LzovqbDiRN6p+tgJR9vOWofq+
- w7Nb0V7TnQ0+ZxgKtAqhyeYAGDoEue7iXbipAuUVQrDmD00iv1MXzulYbR+vybKnu2sIFmgDg79
- ybs/f/KSFCHv1EFEdmHYr3/rYjEXo9YI22Y8EOTU9Cu6p3d4kczIgC7EOsQVCmI46Rkgu7GoN5E
- 0+v/YiiTyf99AwUGfp+3EydojWuqojOYHj2SqW7wY2Fg==
-X-Gm-Gg: ASbGncvG8os9pF+wPe4sPpxooWIRxsg+vFVNHdwJmi22dfp+MYkg489CFo86M4F0BZG
- 14ZaeJYPhH2Qb+bqRMufTEdpzK5o2HDDS/Gj82T+3k6MEe5GDV0lj4T5cb46cA3iI80yDHW+rco
- 29EunSIW6a/egsCGRINooTTqgpDQfy5vz+hQntCcMUuZlUZJvszTzrpNCzeewhX47FeWU=
-X-Received: by 2002:a05:6102:41a5:b0:5dd:8819:e68a with SMTP id
- ada2fe7eead31-5e1de3a6b22mr232038137.36.1763697773281; 
- Thu, 20 Nov 2025 20:02:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBFExOfqNUf6PNOuqEjnvQLikir34VNbbi/trER/3N7JgdGHLHLuQ++GV+IDcrcKrdnja9d3reKYSAHa++nXI=
-X-Received: by 2002:a05:6102:41a5:b0:5dd:8819:e68a with SMTP id
- ada2fe7eead31-5e1de3a6b22mr232034137.36.1763697772889; Thu, 20 Nov 2025
- 20:02:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vMISC-0006w9-ON; Thu, 20 Nov 2025 23:09:03 -0500
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 21 Nov
+ 2025 12:08:50 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Fri, 21 Nov 2025 12:08:50 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <nabihestefan@google.com>
+Subject: [PATCH v1 0/1] hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root Port
+ capabilities and enable MSI to support hotplug
+Date: Fri, 21 Nov 2025 12:08:48 +0800
+Message-ID: <20251121040849.3287437-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251114034806.2440-1-jasowang@redhat.com>
-In-Reply-To: <20251114034806.2440-1-jasowang@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 21 Nov 2025 12:02:40 +0800
-X-Gm-Features: AWmQ_bn7_YbRIRux9nd2erRevkvnt1BPH0n0uDcg_WaKZr1aG6xmnlRLQp71Ryc
-Message-ID: <CACGkMEvmuwGC_U3wW51v=qyuvU8qt5R-xx-jf5OR8gB8Fc3XOA@mail.gmail.com>
-Subject: Re: [PULL 0/5] Net patches
-To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,63 +58,102 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 14, 2025 at 11:48=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
-rote:
->
-> The following changes since commit 9febfa94b69b7146582c48a868bd2330ac4503=
-7f:
->
->   Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging =
-(2025-11-12 11:47:42 +0100)
->
-> are available in the Git repository at:
->
->   https://github.com/jasowang/qemu.git tags/net-pull-request
->
-> for you to fetch changes up to a01344d9d78089e9e585faaeb19afccff2050abf:
->
->   net: pad packets to minimum length in qemu_receive_packet() (2025-11-14=
- 09:59:55 +0800)
+v1:
+  1.  Update ASPEED PCIe Root Port capabilities and enable MSI to support hotplug
 
-Ping.
+How to test it:
 
-Thanks
+Firmware Requirements
+ 
+Before testing, please make sure the Linux kernel has the following configuration enabled:
+Reference defconfig:
+https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm64/configs/aspeed_g7_defconfig
 
->
-> ----------------------------------------------------------------
-> -----BEGIN PGP SIGNATURE-----
->
-> iQEzBAABCAAdFiEEIV1G9IJGaJ7HfzVi7wSWWzmNYhEFAmkWo9EACgkQ7wSWWzmN
-> YhHargf/Uf801PmKskryVENF9sVe6u5NxJZlT3BUJVsSTGitucBIHWZ5J7MMR1lw
-> If4tfMho3BX5Wrtl5GuCEzolk9pCz3wmSN6nyOU25C5tKaoJ/uR135K25D0CwVmD
-> eTOyg+gKktVfogXxJ/zwZpRHMq4XXrk/C2ZP41r/CdcLyaeuDS9GIbd/q4N7f3vv
-> bEsVqECzjEwWr2JBY9SD0xlIRp3nWwEvRsgRZPzBiQzfjSTlImqGLUsxIpF5V2LV
-> 1BU0V/FShWyrwckBXSqCWBUh6uBUGgEl6qKnK4vH7+ed4Kd9giyp1vWAFEjHgIg+
-> gZtPaT/MJQOtLyCuzfuSdUpAzz5Sfw=3D=3D
-> =3DIs8a
-> -----END PGP SIGNATURE-----
->
-> ----------------------------------------------------------------
-> Jonah Palmer (1):
->       net/hub: make net_hub_port_cleanup idempotent
->
-> Peter Maydell (4):
->       hw/net/e1000e_core: Don't advance desc_offset for NULL buffer RX de=
-scriptors
->       hw/net/e1000e_core: Correct rx oversize packet checks
->       hw/net/e1000e_core: Adjust e1000e_write_payload_frag_to_rx_buffers(=
-) assert
->       net: pad packets to minimum length in qemu_receive_packet()
->
->  hw/net/e1000e_core.c | 85 ++++++++++++++++++++++++++++++++++++----------=
-------
->  net/hub.c            |  8 ++++-
->  net/net.c            | 10 +++++++
->  3 files changed, 76 insertions(+), 27 deletions(-)
->
->
+--- a/arch/arm64/configs/aspeed_g7_defconfig
++++ b/arch/arm64/configs/aspeed_g7_defconfig
+@@ -66,6 +66,11 @@ CONFIG_PCI_IOV=y
+CONFIG_PCI_PRI=y
+CONFIG_PCIE_BUS_SAFE=y
+CONFIG_PCIE_ASPEED=y
++CONFIG_HOTPLUG_PCI_PCIE=y
++CONFIG_HOTPLUG_PCI=y
++# CONFIG_HOTPLUG_PCI_CPCI is not set
++# CONFIG_HOTPLUG_PCI_SHPC is not set
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_DEVTMPFS_SAFE=y
+
+QEMU Testing Procedure
+1. Boot Linux and verify the root port
+
+root@ast2700-a1-spl:~# lspci
+0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+
+2. Add an e1000e device dynamically (Hot-plug)
+
+In QEMU monitor:
+(qemu) device_add e1000e,bus=pcie.2,id=mye1000e
+[  103.919703] pcieport 0002:00:00.0: pciehp: Slot(0): Button press: will power on in 5 sec
+[  103.921921] pcieport 0002:00:00.0: pciehp: Slot(0): Card present
+[  103.922557] pcieport 0002:00:00.0: pciehp: Slot(0): Link Up
+[  105.047374] pci 0002:01:00.0: [8086:10d3] type 00 class 0x020000
+[  105.048859] pci 0002:01:00.0: reg 0x10: [mem 0x00000000-0x0001ffff]
+[  105.049786] pci 0002:01:00.0: reg 0x14: [mem 0x00000000-0x0001ffff]
+[  105.050453] pci 0002:01:00.0: reg 0x18: [io  0x0000-0x001f]
+[  105.051049] pci 0002:01:00.0: reg 0x1c: [mem 0x00000000-0x00003fff]
+[  105.051904] pci 0002:01:00.0: reg 0x30: [mem 0x00000000-0x0003ffff pref]
+[  105.052880] pci 0002:01:00.0: enabling Extended Tags
+[  105.063878] pci 0002:01:00.0: BAR 6: assigned [mem 0xa0000000-0xa003ffff pref]
+[  105.064889] pci 0002:01:00.0: BAR 0: assigned [mem 0xa0040000-0xa005ffff]
+[  105.066104] pci 0002:01:00.0: BAR 1: assigned [mem 0xa0060000-0xa007ffff]
+[  105.066881] pci 0002:01:00.0: BAR 3: assigned [mem 0xa0080000-0xa0083fff]
+[  105.067637] pci 0002:01:00.0: BAR 2: assigned [io  0x1000-0x101f]
+[  105.068360] pcieport 0002:00:00.0: PCI bridge to [bus 01]
+[  105.068828] pcieport 0002:00:00.0:   bridge window [io  0x1000-0x1fff]
+[  105.072140] pcieport 0002:00:00.0:   bridge window [mem 0xa0000000-0xa01fffff]
+[  105.075017] pcieport 0002:00:00.0:   bridge window [mem 0xa0200000-0xa03fffff 64bit pref]
+[  105.081561] pcieport 0002:00:00.0: Max Payload Size set to  128/ 128 (was  128), Max Read Rq  128
+[  105.082733] pci 0002:01:00.0: Max Payload Size set to  128/ 128 (was  128), Max Read Rq  128
+[  105.089597] e1000e 0002:01:00.0: enabling device (0000 -> 0002)
+[  105.098995] e1000e 0002:01:00.0: Interrupt Throttling Rate (ints/sec) set to dynamic conservative mode
+[  105.160515] e1000e 0002:01:00.0 0002:01:00.0 (uninitialized): registered PHC clock
+[  105.231396] e1000e 0002:01:00.0 eth2: (PCI Express:2.5GT/s:Width x1) 52:54:00:12:34:56
+[  105.232279] e1000e 0002:01:00.0 eth2: Intel(R) PRO/1000 Network Connection
+[  105.233696] e1000e 0002:01:00.0 eth2: MAC: 3, PHY: 8, PBA No: 000000-000
+[  105.489627] 8021q: adding VLAN 0 to HW filter on device eth2
+[  105.788193] e1000e 0002:01:00.0 eth2: NIC Link is Up 1000 Mbps Full Duplex, Flow Control: Rx/Tx
+
+Leave QEMU monitor mode and lspci now lists the device:
+
+root@ast2700-a1-spl:~# lspci
+0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+0002:01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+
+3. Remove the device dynamically (Hot-unplug)  
+
+In QEMU monitor:
+(qemu) device_del mye1000e
+[  203.354941] pcieport 0002:00:00.0: pciehp: Slot(0): Button press: will power off in 5 sec
+[  208.411558] e1000e 0002:01:00.0 eth2: removed PHC
+[  208.486799] e1000e 0002:01:00.0 eth2: NIC Link is Down
+
+Leave QEMU monitor mode and lspci again shows only the root port:
+root@ast2700-a1-spl:~# lspci
+0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+
+Jamin Lin (1):
+  hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root Port capabilities and
+    enable MSI to support hotplug
+
+ hw/pci-host/aspeed_pcie.c | 40 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
 
 
