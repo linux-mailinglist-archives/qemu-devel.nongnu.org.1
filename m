@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187B7C78432
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A383C78424
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:58:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNtW-0008My-NU; Fri, 21 Nov 2025 04:57:34 -0500
+	id 1vMNta-0008PW-RI; Fri, 21 Nov 2025 04:57:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMe7-0005B2-Fs
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:35 -0500
-Received: from mail-westusazlp170100001.outbound.protection.outlook.com
- ([2a01:111:f403:c000::1] helo=BYAPR05CU005.outbound.protection.outlook.com)
+ id 1vMMeR-0005Eh-8J
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:55 -0500
+Received: from mail-westus2azlp170120002.outbound.protection.outlook.com
+ ([2a01:111:f403:c007::2] helo=MW6PR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMe5-0000Nv-65
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:35 -0500
+ id 1vMMeP-0000P7-3A
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:54 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K8qZ9MgTtgz4vLehh1r/7EwrJym4gN5gon0gDUwN5kVYPZN2s9TqHNcG+df1uJ+aIYiKAovmZJqFD6bpVZ/8KncsK5IlQJza8CtcIBEN/vABLG9D2OO8zjqHOI8rSBUyUQONWyA1adwLI5rHHjxjCNLMivApSuQkgBrRbbqbCu6A3qHQ22T39FX/2KO1v7oEyOzZkQdiHlAl4qUR9o5Zt3APOdurxfCokMR0vZQoGDzKrWI4KzkQOfSN9KMklDhmhLiw1/jh/kkFi9QunB2CiLO+2AkR4/oM9iumaZIiCTyMXvxKeQKsAKsC4MBRsfls8Ma6DSRl4kdQqItL0+FhwQ==
+ b=MSdEJUDJPYcJdFlVyomXI6RjRvm4B95u3hfMFd7RkEyKNGhkz5G8rj10mmGAOfCAFWw69Skr1effKVHqZ2zpAUHiBRF0Y/AOLVA7DsCGvkscD2oSpXh5ag/xeXoVAVE5rKuy9jbOBWmFMTJS760cgDD+jwkhf72s7tMewCWVI+dFpSPoZrH8mHuqQMaacJ12eE/pMv6U2gl0XRCxCgiqAbkr3BdeY7NodkZdIjDZxMS08yr+PAu3yAq+YQM8xYfyXALIoT3FSK6F+iW6pQNQGVGZutKrCnqwrmsP1Sy+MkQGhUsE7YPNCsuDe3MeGU1Cns9+/a+gR2FYe5INEEe+1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OXhv61nONhbhl9R9HnyIcIs6s6XFIbwUzS+V8scz/pQ=;
- b=fkqAIk8TR7Y+xDR6AH8Pdqcj/uLoYU8q3WwpfWn0HWTxYdy8xTKzq0iRHlTrCWdccXJsB4c/PKNbu2IHgg9YlNb4Ib0QLv8SqW/fwsqqEBCvfvzMjmSR0j9fNb0RAEmw5LNee9j2bWtiXZ9A6Xa/f9A+f+x/AMTyZvTZWXsMZzA+6T5GwPcRdu0Ih8mYqTaH2cKV9BNhLpc+vKrCCXVhNJolYNXrN1NXFAggfDaFWaCl7/WRTync/FdJrZQHwWDzvKhg/x+2gw4S2yFxPB8u6hiH347rfeGbAzE9J50rMIMvhH+mauMb4dCb2LESowS3wo/s1eaG8c56wH274JA+gA==
+ bh=I8R6BVjSDZP6lhstmdFD8xZnLsbVMFiBgo3iX6PFKJg=;
+ b=L0yvaaik8ZZWvefM9QVdImU1yBmn6X13Sa1aduI/4e+MSKBgjI8KIHQrlN5MqyuSatqsYUr//nDOctvnUsyJ2ML7e/R7EOniTAsvAgjeiS1CDEMm26gWLkJW80W8XsClcMalCy1iXmfTHLRai6WjTko5kbmFDAv9falaKJUj3Y+xYdYBS5JUR+syDfDKCuZamO4Wz8bHm4m9ZH+Tr6ZFD3EwOUA3W/MMAY793t6qdadIVJ3r46j3DVKe95m8X0d/XErF8frtPihDvIXFPPt4Ki6Vo5C5kKAj6y6ej2SJQ3KPWENn1pp9tpOUlonLKs30G/9GGxieNIPMaf4Qo4Jjcg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OXhv61nONhbhl9R9HnyIcIs6s6XFIbwUzS+V8scz/pQ=;
- b=43bA8Zo1VIxyOToX1sbmL9FTy+KocKHhNxT7IgHPFu3HJ7CurSp7yhPQUHr6Il79/M932xiQ/s4ZvjGhb/k1nNB9LkDvZV1tUYKzIedNFu26jhUWa/e8lh6fKNpQ3DECRcvEY+XuZyw/PtqOmpXiuCFEYlIM5vMgWDIPvUubk3c=
-Received: from MN2PR20CA0048.namprd20.prod.outlook.com (2603:10b6:208:235::17)
- by SA1PR12MB8600.namprd12.prod.outlook.com (2603:10b6:806:257::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
- 2025 08:37:27 +0000
-Received: from BN2PEPF000044A8.namprd04.prod.outlook.com
- (2603:10b6:208:235:cafe::93) by MN2PR20CA0048.outlook.office365.com
- (2603:10b6:208:235::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.12 via Frontend Transport; Fri,
- 21 Nov 2025 08:37:25 +0000
+ bh=I8R6BVjSDZP6lhstmdFD8xZnLsbVMFiBgo3iX6PFKJg=;
+ b=2evXGuiOFx8kAbo4rEQghn7q4DfpOrTjzN2t1WLyPbZGUHraHDp10RVU3o5PGj0zKH8CEj36n8s8bTBaCtZoytT4DT+hoZkOvKSFTI2hMILgo/uclXeLQf/V85q//iyJ4Qjc6F1ZGsJOgSEBKtRO8iyTXvCQ7Q/c0hz8trToK6c=
+Received: from BL0PR01CA0008.prod.exchangelabs.com (2603:10b6:208:71::21) by
+ IA0PR12MB8932.namprd12.prod.outlook.com (2603:10b6:208:492::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
+ 2025 08:37:47 +0000
+Received: from BN2PEPF000044A5.namprd04.prod.outlook.com
+ (2603:10b6:208:71:cafe::2f) by BL0PR01CA0008.outlook.office365.com
+ (2603:10b6:208:71::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.13 via Frontend Transport; Fri,
+ 21 Nov 2025 08:37:22 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,22 +51,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044A8.mail.protection.outlook.com (10.167.243.102) with Microsoft
+ BN2PEPF000044A5.mail.protection.outlook.com (10.167.243.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:37:26 +0000
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:37:47 +0000
 Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
- 2025 00:37:23 -0800
+ 2025 00:37:44 -0800
 From: Shivansh Dhiman <shivansh.dhiman@amd.com>
 To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>,
  <kvm@vger.kernel.org>
 CC: <qemu-devel@nongnu.org>, <seanjc@google.com>, <santosh.shukla@amd.com>,
  <nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <babu.moger@amd.com>,
  <shivansh.dhiman@amd.com>
-Subject: [PATCH 3/5] i386: Enable CPUID 80000026 for EPYC-Genoa/Turin vCPU
-Date: Fri, 21 Nov 2025 08:34:50 +0000
-Message-ID: <20251121083452.429261-4-shivansh.dhiman@amd.com>
+Subject: [PATCH 4/5] i386: Add Bus Lock Detect support
+Date: Fri, 21 Nov 2025 08:34:51 +0000
+Message-ID: <20251121083452.429261-5-shivansh.dhiman@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121083452.429261-1-shivansh.dhiman@amd.com>
 References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
@@ -78,65 +78,64 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A8:EE_|SA1PR12MB8600:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9987d76-26c1-42ef-00ae-08de28d9337f
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A5:EE_|IA0PR12MB8932:EE_
+X-MS-Office365-Filtering-Correlation-Id: 407bcec0-b86a-4d27-96e4-08de28d93fb6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|1800799024|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3gMtBR9+D2FgL+LAFSZXAcoTKuA+XRv+crcIP2S4xh28dhtPkBh41in4D0jw?=
- =?us-ascii?Q?TrxGKRHnG/XAi4aHUtw934yozVj9ESJDoR2MRg3OP+cVkBaEjTw/dEYB02yY?=
- =?us-ascii?Q?M3NZi1WTKopeJQ5KN9/vOKJi5C9gfXTYvcPokasD7yyAsBQFka0D8ZMqK1yA?=
- =?us-ascii?Q?/fYVUsIkzjAw9t46UgAKwxs6Dq+6Zsjmy25hng74B8IUZKmLX6K9YdOz2YVp?=
- =?us-ascii?Q?4AYAw89V+fU8d72kOOrEO6p2l6UNiZRJ064RvqrjYS0CzLrjmgIx91cXo7XB?=
- =?us-ascii?Q?NO54QnNkXY27DnvpalOlsuCDTA4IUqtm2A32U4TlajfQTaJtw05xb4HRHo9D?=
- =?us-ascii?Q?yxOoK6l+VjH7TNhK3vfhMH2lGoi0Sin8wf2A8AsKSBw94HKI0FwBVS6YBsNK?=
- =?us-ascii?Q?m7Mezyccv4N1UjpyLjqlCa75JocUPxwCib48TjEyTVWwG/6qZZWy9urtNOMA?=
- =?us-ascii?Q?qJ29LF6084wr9Xtf+3pHUWlRaJvRAwfmFvouXXagRwwyGRLTBA/MoxTjc0xA?=
- =?us-ascii?Q?jsF9gWyP77x+ZCd/ZHvAHaXxxFrUfFafiOEu0vI3TVA+jdY5swiYr68wVDJc?=
- =?us-ascii?Q?FDS070/yv7LKqtHve/dXPg6RNu8xvFWGgcJa5OMQuW5Yg4I6lPKZvsKTWpxo?=
- =?us-ascii?Q?1c8FA/UYgpSAf6/UJJsqPyChL5E+V+3F4EHXx0bye+hbmCZyQ/02cNuJIXkT?=
- =?us-ascii?Q?QanVvbsrL4xiVSvvsiZt/bWCFgekfpCA4y4ixRH1Acd8VVP+Ti6ohx/rKaao?=
- =?us-ascii?Q?y2JfncNlYWKRLWHmLfyNEoD0UwRPAas9BZFTk+y3VUCM2Pl6+5im8av28KKi?=
- =?us-ascii?Q?glxs0j1I+WIXAQWhDHZxTNa+9OqnJ41fBE1mABc8uKa9hAq6KE/F8czcuft/?=
- =?us-ascii?Q?llpzyiZSonMH1wUSOozWxUvU6bsd8bCNDO5uzH8QiiiXja/7vUsPI4Ofa2CO?=
- =?us-ascii?Q?gDhgGZoC79r9uJyyNaDQSJZn5sGx5/QtlgaHCUnFpDfW7ecJ/f6ofHMUKyil?=
- =?us-ascii?Q?u+nUF/5iqkYFsecdhFD7VCLiGxxp4SaCbVBrrdxbtt7DII9+pPa128CZ5jHz?=
- =?us-ascii?Q?Hatl/DbgQoYvsrh9ZEKJ7JTnhap4R4ljKeWeOOHac8p5V1CuCV5AOK63uhzd?=
- =?us-ascii?Q?fLr3BOpNlTm4h8iTdrW6PN0n7QUoA75YiuzFJS24T+dDTDyFfsdIOfWFHheN?=
- =?us-ascii?Q?GXoM4hgsk6FKCkI1AipuOpiSRNe7xz2VqW9JFf/CkvyEJrL21OVb8D1j1mGc?=
- =?us-ascii?Q?4aH47MdilRJIZws6FpFxFUA3cxQT+dh4Azel+lkezTM29SGZkutrESoFcNQ9?=
- =?us-ascii?Q?0JcrMrDtDYUjpye/99Frzug7Rjp6dIxkGiufXbLYlgvu21AwIx98y4l4WPDI?=
- =?us-ascii?Q?Uk47/iqNTHqNhdSxXktzZsPnBLEEm0RYb67xctOqzPhyMXUy0sCVKLeQ7buy?=
- =?us-ascii?Q?lWxqLllwHP8Nd7s/ixFqYPV+YjF/kYZ1mSwuZF3a7Cp3E+LrczERcpU1cvUX?=
- =?us-ascii?Q?jM6tzj+B2WpizSmphKairJtwAQfQdo+86/wCrDIFA8aJg/B3VTkwS5+14IKg?=
- =?us-ascii?Q?vUnO+fHey1gltlPzCY0=3D?=
+ ARA:13230040|36860700013|1800799024|82310400026|376014|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?RpM065m7BHYvTgzB77PVxapBkS1YERvooB9XZ/T9NsykhERKn96isHv7hpDk?=
+ =?us-ascii?Q?w5wwom4LajYfQlMQnJW+87SXx/eW9Z4ZDRbWGXLJRzWy1tqHz/0W+fJbIckP?=
+ =?us-ascii?Q?ssasocZk8P4A8TjGV7KSbPncogarPu0lnVd6BEwk3+US0WjTIFMQR5DZwVXU?=
+ =?us-ascii?Q?xZt2sJ5H6yiHgNzEHFqVKUvXadae+TMPWEC0xa6pz6jNHnMyEl7vxJweXoNE?=
+ =?us-ascii?Q?lJuLctp8FYPfT7nx9s4y7/oqQugOwJfQ/Qul11Mxdiq9wEHwRjzZrgMmOmr3?=
+ =?us-ascii?Q?uV/81P2Lg5ZA8akTgAk5gB1HT0UKivkYgp6UnHKZBUipAxv4xC+kQo4sYE/d?=
+ =?us-ascii?Q?cDv/KaihVPyEUc9DroQTLxQEfCULDnI7FrVsl3wBLijB03CIEJRRnIkECFeh?=
+ =?us-ascii?Q?R4LITA9Cn+3rJ5NYuVfeHnLeJTfXWCe9wnPuwVqCaxjvNTBJAJEOP8KJjkGs?=
+ =?us-ascii?Q?tmXhdBNULAZrs1hTa4K6o5zThA8IQasE3eQORZumtHqpWr2toLSAR787M9Pw?=
+ =?us-ascii?Q?xV9E3iJK7crCm6+ufW5OmSIGoNYfQLHIW4FfGyoXmMTN9YGIo0AWc0U2P0ze?=
+ =?us-ascii?Q?a0P7x/MoEHeq4/s+Wd9ZvlzfEFdBeMGCRop91U+Vxvf6Ry9swAspFxOeDTkF?=
+ =?us-ascii?Q?/tZy/hXLRRFaxpUI/JhgG7UWb1Fs1LvpOKW7Cz2aolEOtCBKXmuQsMHoifoI?=
+ =?us-ascii?Q?dYp+3HYYAa9keAFd2A+KlnPlbgz1d8O+31bvGWddZgcyqYgpviTYmMSDs1MW?=
+ =?us-ascii?Q?2ZNw31qKxE+Y2r10WzFHeOxWbip4GLnjUq64bo1RaYiSy3C9E1DVD+UoyIkm?=
+ =?us-ascii?Q?cp3izsl6VHZ6Km1MyjRylODGACQk1tJ0RrXSJUIem+6/GQbPwkKymSJ0tVDP?=
+ =?us-ascii?Q?7pD3n1wLY6EohnvbBnnomveI16MYU7iyDFfwx8GdQmPniZTRWVIL52V3MFDL?=
+ =?us-ascii?Q?glQleUk58SCx7/bOFXXhppv4vR9jFFplAN4qIEYzullqwSlW+Nxk8zyn8eDr?=
+ =?us-ascii?Q?U8c5RlU1J1pts2UFULcZ0SkOMr9f2uas8Gvbzh+cm0J7vQS9uCKuZuBz6PYr?=
+ =?us-ascii?Q?F/i1cEpHtmUM4GaW4AQXqjqeMvL0YT8YRKZOK6WzhK7yh1OFE1G425fg+Esu?=
+ =?us-ascii?Q?ljcTcR9XYkFOdszRz/PCujpyGuFQaIjQ3eA3ezBlBq+kmFXwsIHCKw0+A/pr?=
+ =?us-ascii?Q?iUoCyj0UAWi+U9Ix+Bf37zyvuVWg7cXLLZe1rW4FoImlr8PcVNdO7oj0TiZ6?=
+ =?us-ascii?Q?cvr80hot4eoNJVjPViEEeFpFsQEfjJ3h5IlV2R36aBVA5aVcELnPu7sqQmAG?=
+ =?us-ascii?Q?eTn85kJztYICnwmc6xScniWbgkRLBa9r1SZYaO2DB3d+tZIJNT5vTV38ApO1?=
+ =?us-ascii?Q?0HiCOTGGmNAVXl6M8y8TzwOLvCrbI8hTUBVzx/dVhNEheSxRPwbiaYfw6nH9?=
+ =?us-ascii?Q?J5LU5b0EtZJRpAhZgbbWFrJx+qS7ocw3aCjpYGX7+EHeSz68aI5z3WNmVPEn?=
+ =?us-ascii?Q?Q3TqSMxHefl3F3yhTXMbgxF75zIrKSv2XsVNIcDcyQa8FeJO3+x8AuBZJSc1?=
+ =?us-ascii?Q?JQG60xBHtEV1CudmUC4=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
- SFP:1101; 
+ SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(13003099007);
+ DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:37:26.9756 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9987d76-26c1-42ef-00ae-08de28d9337f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:37:47.4705 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 407bcec0-b86a-4d27-96e4-08de28d93fb6
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A8.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A5.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8600
-Received-SPF: permerror client-ip=2a01:111:f403:c000::1;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8932
+Received-SPF: permerror client-ip=2a01:111:f403:c007::2;
  envelope-from=Shivansh.Dhiman@amd.com;
- helo=BYAPR05CU005.outbound.protection.outlook.com
+ helo=MW6PR02CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Nov 2025 04:57:32 -0500
+X-Mailman-Approved-At: Fri, 21 Nov 2025 04:57:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,50 +150,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable CPUID leaf 0x80000026 (Extended CPU Topology) for AMD Zen4+ processors,
-i.e, Genoa and above. Add version 3 to EPYC-Genoa and version 2 to EPYC-Turin
-CPU models with x-force-cpuid-0x80000026 property enabled.
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
+Bus Lock Detect is enumerated with cpuid Fn0000_0007_ECX_x0 
+bit [24 / BUSLOCKTRAP]. It can be enabled through MSR_IA32_DEBUGCTLMSR.
+When enabled, hardware clears DR6[11] and raises a #DB exception on
+occurrence of Bus Lock if CPL > 0. More detail about the feature can be
+found in AMD APM[1].
+
+Qemu supports remote debugging through host gdb (the "gdbstub" facility)
+where some of the remote debugging features like instruction and data
+breakpoints relies on the same hardware infrastructure (#DB, DR6 etc.)
+that Bus Lock Detect also uses. Instead of handling internally, KVM
+forwards #DB to Qemu when remote debugging is ON and #DB is being
+intercepted. It's Qemu's responsibility to re-inject the exception to
+guest when some of the exception source bits (in DR6) are not being
+handled by Qemu remote debug handler. Bus Lock Detect is one such case.
+
+[1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
+     2023, Vol 2, 13.1.3.6 Bus Lock Trap
+     https://bugzilla.kernel.org/attachment.cgi?id=304653
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 ---
- target/i386/cpu.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ target/i386/cpu.h     | 1 +
+ target/i386/kvm/kvm.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 01c4da7cf134..12500d6b7bed 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6505,6 +6505,13 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                 },
-                 .cache_info = &epyc_genoa_v2_cache_info
-             },
-+            {
-+                .version = 3,
-+                .props = (PropValue[]) {
-+                    { "x-force-cpuid-0x80000026", "on" },
-+                    { /* end of list */ }
-+                }
-+            },
-             { /* end of list */ }
-         }
-     },
-@@ -6735,6 +6742,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-         .xlevel = 0x80000022,
-         .model_id = "AMD EPYC-Turin Processor",
-         .cache_info = &epyc_turin_cache_info,
-+        .versions = (X86CPUVersionDefinition[]) {
-+            { .version = 1 },
-+            {
-+                .version = 2,
-+                .props = (PropValue[]) {
-+                    { "x-force-cpuid-0x80000026", "on" },
-+                    { /* end of list */ }
-+                }
-+            },
-+            { /* end of list */ }
-+        }
-     },
- };
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 0fecca26dc4a..852b3a33b54d 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -276,6 +276,7 @@ typedef enum X86Seg {
+                 | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
+                 | CR4_LAM_SUP_MASK | CR4_FRED_MASK))
+ 
++#define DR6_BLD         (1 << 11)
+ #define DR6_BD          (1 << 13)
+ #define DR6_BS          (1 << 14)
+ #define DR6_BT          (1 << 15)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ed3d40bf073e..00c44c2de650 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5864,14 +5864,14 @@ static int kvm_handle_debug(X86CPU *cpu,
+     } else if (kvm_find_sw_breakpoint(cs, arch_info->pc)) {
+         ret = EXCP_DEBUG;
+     }
+-    if (ret == 0) {
++    if (ret == 0 || !(arch_info->dr6 & DR6_BLD)) {
+         cpu_synchronize_state(cs);
+         assert(env->exception_nr == -1);
+ 
+         /* pass to guest */
+         kvm_queue_exception(env, arch_info->exception,
+                             arch_info->exception == EXCP01_DB,
+-                            arch_info->dr6);
++                            ret == 0 ? arch_info->dr6 ^ DR6_BLD : DR6_BLD);
+         env->has_error_code = 0;
+     }
  
 -- 
 2.43.0
