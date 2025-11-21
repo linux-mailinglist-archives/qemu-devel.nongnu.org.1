@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508BCC7C225
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90671C7C5D5
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:19:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcod-0004cN-Pq; Fri, 21 Nov 2025 20:53:32 -0500
+	id 1vMcpO-0004wr-9G; Fri, 21 Nov 2025 20:54:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbZg-0001io-CH
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:01 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbbA-0002l7-QP
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:35:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbZW-0005Hm-Nj
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:33:58 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbb0-0005gZ-EN
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:35:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771614;
+ s=mimecast20190719; t=1763771706;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jN2hNANWVWTCu1f5WR+vOsR5aIOIA2pYSQMMfmQp7wI=;
- b=Mryt9+vN/G2YHrJAwj9w4gQBp6t73R9ZNiqAmiuXDOqNBuvTUHCAyrKxFLDhgfIBR7HDOD
- qVdbQZH5CvA/WyKwaKTxoe8Ke8GKlYbC6BaUxgQdqRtPus0bPbP0kUDTPYteIVo532RfVj
- vuKSoK6x1BMOnZObtelFe0A1a+pZgO8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=LvfjndzC9yIe2vReLTAtPHT920hAL1fUKXGYa8VIiFA=;
+ b=iXTNjhvMZX+O2n1fL9o/dMVnLMK0yeTwGdU6+qDo8Fh/YnbvbbzfQko4a+XyZutXXEDJCA
+ j1E2xANnxqB9I/hC866T8ZyDJVpoFCsM2ESutqrr6DR9C9k0DxXFm1StEu2HjAQ0Hk3A1j
+ NHs+tBTxaw9abXJUKJ5E3StJaEjeLvI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-362-mFYJ-q5wMPuQuTz0rIqCBA-1; Fri,
- 21 Nov 2025 07:14:49 -0500
-X-MC-Unique: mFYJ-q5wMPuQuTz0rIqCBA-1
-X-Mimecast-MFC-AGG-ID: mFYJ-q5wMPuQuTz0rIqCBA_1763727284
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-298-J3mo8o2FOba0ZJnznZes4g-1; Fri,
+ 21 Nov 2025 07:14:47 -0500
+X-MC-Unique: J3mo8o2FOba0ZJnznZes4g-1
+X-Mimecast-MFC-AGG-ID: J3mo8o2FOba0ZJnznZes4g_1763727284
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 701F51800358; Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6FF25180034A; Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E68AA30044DB; Fri, 21 Nov 2025 12:14:40 +0000 (UTC)
+ id 05D4030044DC; Fri, 21 Nov 2025 12:14:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8F86121E66EF; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+ id 9569B21E66F8; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
@@ -63,10 +63,10 @@ Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH v2 03/15] ui: Convert to qemu_create() for simplicity and
- consistency
-Date: Fri, 21 Nov 2025 13:14:26 +0100
-Message-ID: <20251121121438.1249498-4-armbru@redhat.com>
+Subject: [PATCH v2 04/15] tap-solaris: Use error_setg_file_open() for better
+ error messages
+Date: Fri, 21 Nov 2025 13:14:27 +0100
+Message-ID: <20251121121438.1249498-5-armbru@redhat.com>
 In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
 References: <20251121121438.1249498-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -88,35 +88,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message changes from
+Error messages change from
 
-    failed to open file 'FILENAME': REASON
+    Can't open /dev/ip (actually /dev/udp)
+    Can't open /dev/tap
+    Can't open /dev/tap (2)
 
 to
 
-    Could not create 'FILENAME': REASON
+    Could not open '/dev/udp': REASON
+    Could not open '/dev/tap': REASON
+
+where REASON is the value of strerror(errno).
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- ui/ui-qmp-cmds.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/tap-solaris.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
-index 74fa6c6ec5..b49b636152 100644
---- a/ui/ui-qmp-cmds.c
-+++ b/ui/ui-qmp-cmds.c
-@@ -369,10 +369,8 @@ qmp_screendump(const char *filename, const char *device,
-     }
-     image = pixman_image_ref(surface->image);
+diff --git a/net/tap-solaris.c b/net/tap-solaris.c
+index 75397e6c54..faf7922ea8 100644
+--- a/net/tap-solaris.c
++++ b/net/tap-solaris.c
+@@ -87,13 +87,13 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
  
--    fd = qemu_open_old(filename, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
-+    fd = qemu_create(filename, O_WRONLY | O_TRUNC | O_BINARY, 0666, errp);
-     if (fd == -1) {
--        error_setg(errp, "failed to open file '%s': %s", filename,
--                   strerror(errno));
-         return;
+     ip_fd = RETRY_ON_EINTR(open("/dev/udp", O_RDWR, 0));
+     if (ip_fd < 0) {
+-        error_setg(errp, "Can't open /dev/ip (actually /dev/udp)");
++        error_setg_file_open(errp, errno, "/dev/udp");
+         return -1;
      }
  
+     tap_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
+     if (tap_fd < 0) {
+-        error_setg(errp, "Can't open /dev/tap");
++        error_setg_file_open(errp, errno, "/dev/tap");
+         return -1;
+     }
+ 
+@@ -107,7 +107,7 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
+ 
+     if_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
+     if (if_fd < 0) {
+-        error_setg(errp, "Can't open /dev/tap (2)");
++        error_setg_file_open(errp, errno, "/dev/tap");
+         return -1;
+     }
+     if(ioctl(if_fd, I_PUSH, "ip") < 0){
 -- 
 2.49.0
 
