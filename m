@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F15C7C2E1
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7183FC7C550
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:50:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdOB-0000gu-HJ; Fri, 21 Nov 2025 21:30:16 -0500
+	id 1vMeJ9-0004Gi-75; Fri, 21 Nov 2025 22:29:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdO5-0000cD-T2; Fri, 21 Nov 2025 21:30:09 -0500
+ id 1vMeJ1-0004Di-MT; Fri, 21 Nov 2025 22:28:59 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdNY-0007SQ-71; Fri, 21 Nov 2025 21:30:05 -0500
+ id 1vMeIR-0002eK-Uh; Fri, 21 Nov 2025 22:28:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5ADCE16C670;
+ by isrv.corpit.ru (Postfix) with ESMTP id 75F0316C671;
  Fri, 21 Nov 2025 15:54:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9A18D3218E9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B6A703218EA;
  Fri, 21 Nov 2025 15:54:58 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Jack Wang <jinpu.wang@ionos.com>, qemu-trivial@nongnu.org,
+Cc: Yanghang Liu <yanghliu@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 2/3] qmp: Fix a typo for a USO feature
-Date: Fri, 21 Nov 2025 15:54:50 +0300
-Message-ID: <20251121125455.1108509-3-mjt@tls.msk.ru>
+Subject: [PULL 3/3] Fix the typo of vfio-pci device's enable-migration option
+Date: Fri, 21 Nov 2025 15:54:51 +0300
+Message-ID: <20251121125455.1108509-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251121125455.1108509-1-mjt@tls.msk.ru>
 References: <20251121125455.1108509-1-mjt@tls.msk.ru>
@@ -56,31 +56,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Yanghang Liu <yanghliu@redhat.com>
 
-There is a copy & paste error, USO6 should be there.
-
-Fixes: 58f81689789f ("qmp: update virtio feature maps, vhost-user-gpio introspection")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Yanghang Liu <yanghliu@redhat.com>
+Reported-by: Mario Casquero <mcasquer@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/virtio/virtio-qmp.c | 2 +-
+ hw/vfio/pci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index b338344c6c..968299fda0 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -299,7 +299,7 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-             "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
-     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
--            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
-+            "VIRTIO_NET_F_GUEST_USO6: Driver can receive USOv6"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-             "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 8b8bc5a421..b46b1305a7 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3871,7 +3871,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
+                                           "(DEBUG)");
+     object_class_property_set_description(klass, /* 5.2, 8.0 non-experimetal */
+                                           "enable-migration",
+-                                          "Enale device migration. Also requires a host VFIO PCI "
++                                          "Enable device migration. Also requires a host VFIO PCI "
+                                           "variant or mdev driver with migration support enabled");
+     object_class_property_set_description(klass, /* 8.1 */
+                                           "vf-token",
 -- 
 2.47.3
 
