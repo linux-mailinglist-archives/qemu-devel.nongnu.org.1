@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D5CC7C5E7
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F02C7C56B
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:57:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd7Y-00052q-Ku; Fri, 21 Nov 2025 21:13:05 -0500
+	id 1vMd2V-0001Rx-8T; Fri, 21 Nov 2025 21:07:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMd1g-0000yn-Hx
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:07:00 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcIg-0002mv-Gw
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:20:30 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMd0G-0001xw-OW
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:06:10 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-477a1c28778so29139155e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 18:05:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcIR-0006zU-DO
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:20:27 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-477a2ab455fso28022665e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:19:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763777111; x=1764381911; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763774394; x=1764379194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HDoRFtIf4DtlaKu8FqeCDNwKdTIWIuyOpEl6R55IExI=;
- b=wpAT4l8/ZVZ2A4tH+Tt5s5Ff5LzJw/VgGr2G4/R2YIcGyomJDXsiTr9yt7utLF28Ls
- m+JTRCPZUFsAa8IydxSue+e5+PGxG07+ed9PC1NJflFtsd3qIWTPIjKiChEombYvE4Ni
- 3Ox8DxKNCIP9HiiYZ1w/ifZdNXCVwouh5RnEGFPd1SaU/hSMdgdZkzxbNeXtb2Fs93zN
- WehPT9rluiKADANxDYUirksYQU5x0P9kSFn3sVOVOB9X3DyayoiSh31u/NTakHwszWGD
- lCuaiTJweDRUylCcsMf2BM2m84Sg8Zqd3D3MxCNFw6S48QCvGrU2FP1JIcGJR5ePjX/R
- +Nhg==
+ bh=CBepVKYV1tqDt+M6yeXJGPjMchvP/4Ty5uCcKnUn5wM=;
+ b=tBJ4hpsNVK8zT3Fhlg/w+EA+QeGeqWqhVNrpzXBtUvKTpqUcmyEh9MNoXRkBoT81rI
+ fnkoNSTBt/LiZzjy5V/GPWVDgZ70ysGGQSIIv9D5XPFzvLDoKPJJGRXPI2hGhWneZmRI
+ 4g3dHhlM+n39+lNgqkA3A4WosWpT28M4J/jX+XOUSrPOjTg+JQa2F9k7jlluFA50CHQB
+ gQjMofPbF5BRb8lJO8bG48JDsksBtqmr2A3NW7x8nV7Y002yO1eiu14tkwERx3C2BHEI
+ e93PJQvPs0mNWnCGY9HsasTpGKe/4Sb6uyiNvKL1CHXX8o2TYNzhOUthnr4DBJmnqdLq
+ PmZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763777111; x=1764381911;
+ d=1e100.net; s=20230601; t=1763774394; x=1764379194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HDoRFtIf4DtlaKu8FqeCDNwKdTIWIuyOpEl6R55IExI=;
- b=dbNSzcIBS4mWLQ2jE2qg94Y3nZ8WXpW0THzK7HGKj+zABjBzVjgUZsDx+2MLTpb9+n
- Frp3b4hfDrHd+pkXeOiyTo8sI/X9gW1IDN4kQXb3K01QYXxuNDOKqege2EAze3Jal/AI
- TT6GQ6mLrtertgb97mTAfVRc4+Dc3mKI2nwLWglPjyQgNqCer9b3hdJV4+dV1V3migtK
- DIpTxFHJpWbk6+P/FpqKMJPqJE2ZcnfOJfxvko2ylE1TV7tZVN/OEugz2qV1ZRyxEf/b
- xX7zEA0a1bfG1qhRV4AwHIyTdjCz4YMZUKeL6+6Fct7nIqPuZoLYOTcwFE4JwDniiQxn
- Z0zQ==
-X-Gm-Message-State: AOJu0YzHRhW7O+gv96nj1rcUccq9MRQaagUNCCQkU5Ak+nZ76Ca4k1gG
- TU8A2V3J/y3r5GgYeMOH24ULbe+Shr9E07ONH4vUNOT9/71c9SjDTtD5blTBW8lbL/8ncscvGvO
- tLCOZ3pyHvg==
-X-Gm-Gg: ASbGncsnNUYWfmVzThPPQ7+yk8bmumgAEmvQr1Ln4bqFb2sHLsmW6TFt7h6EoyrJZiC
- lE+9UyAiGJZvDNlJqgs/vgTGIQGobvX3TWTEVksZ6kzs/s3VGFef8bAX0qjmTMHIScE/0QZjNYj
- kfCZT2puxbOnnggjlG4wiwIt94K/mIx5WD5W/xnMeaZ5gSjJWMsC176teznSG+qk+WA8/OFg8U/
- 31Ebs5XYslbnTxf5DrCpum4dWSulWFF0CsE/liANfbABGDnb71XRXpscQ4rVIyiah1d9ILWKXrF
- aRiAXWWhPvnRmpXWaFscD6aP7/mgZAElKFbPhgQZ7CeFmUMIkLQO9HMwoE7aVkopc9OiuZaKZ17
- JVOkwHoCNBqN80Szp2/t9yRsyz6kDnv3PzqXTIdIs1TUfHFQlOssF0oqh/9OqnzgWEFyJr1F2DA
- iZ9Lx2Rvlbt/y7MsKX5vRXqdX5Rk25b7P5WM6jkVJ2zWtw7bmNF+fuZ5k//6OY
-X-Google-Smtp-Source: AGHT+IFD0J886aRuJCwxM+lr3oZToXhoQkCPQeMIBZKljBTRmVX89ASa5Vj5hoAeAA3cyx7j/j2/6Q==
-X-Received: by 2002:a05:6000:40c9:b0:42b:394a:9b1 with SMTP id
- ffacd0b85a97d-42cc1d27a2fmr2597184f8f.37.1763732838510; 
- Fri, 21 Nov 2025 05:47:18 -0800 (PST)
+ bh=CBepVKYV1tqDt+M6yeXJGPjMchvP/4Ty5uCcKnUn5wM=;
+ b=uAKtoCCA4lDV+KYJ5SrlgSZXRUq44S1Sn5lMJ0a692skpyq+4qwK55/bIzOmA6IUDS
+ ezdZ5d2PvkwvvV9O3hZ9cNcKG3RNJzF91xF/n7Hjq5LjuE0TlI0xBVXZpXizgFPMcBUR
+ DyBd04+SWtE6cYZiC3+I/KYrD0pmkzHfKNJ1NIrJL9Egx9Z8mD1e8e9mltnm1Jcpufmj
+ 5+KpF4emuxOww80+63bFCNXvCEQ/5KngoKyEHrUBFheVM1rDISZWFm0lna/l7G3EKWqM
+ vaDduvCaJOjnqNiY3sYRVbnyQ42qx9y+OET56YzvzhBWkl7DxJgsBeXs8MXkwPPA5C2u
+ SURQ==
+X-Gm-Message-State: AOJu0YwbaJmKq6gkqlMrteOeXhpA8NJjkCyHJa/fqCjelXYSyCPMWRmT
+ fagbMO2G5Hob1yuKcqspFH1NN0+Nl5ygqLDIH8R20dpebGut8nbH+iQFgGkmxhLMeOG5HGfC2Pr
+ GMyPjr64Y3A==
+X-Gm-Gg: ASbGnct+aHX4JOhjhybDDiNfi8xxAaXW8D2u5PUDLui5sBSa/wTMNbuWjBcVR4bnITD
+ dK0KPmuW+gxfZ2zAL1siVheqADOelQHRSnOjiOTxzBgUCaTfLmM5BEEK8+5MxxJxWoNvfXnk1qQ
+ qfwazz1URyjVTquAET9f//DIEqvc9JtF39DSk/P7ug1CZRz37phDj3kigArjJmURlw3flW+jmaW
+ uLeV2+V6epROU/0a3oLSM0cLnqOdWMxMNOhakFUN9w5PMshZomeBTf74hXvkI89GidMiu12OgLu
+ oCtK5jeUiO9eb2jG9x3w/NOYEtMVSV7Of897X3HC1j9AqFmxSSrUxo39QFR4CGMWnA/bKEyz6XY
+ E3mdlq+LU6DGHWevu2gXCF9yi1g5WIyqZTsstxLJ4ev6SbTEhQaoBbOBmLPSBVGt4olEQ5v7dJ4
+ thjiyBY1T9ZHdxWW0NJ8FWObVjRctHfv77/d1YO0/HGBYGPXV6mwBfES5ALER2KfmeN+kSh5g=
+X-Google-Smtp-Source: AGHT+IGNrQmrpxmF7PoFIbUzaaLYwg9orSTcPtVnBOTCdObQ9Ayepn30kjIe9MJIUdIx5/S1YODG/g==
+X-Received: by 2002:a05:6000:2681:b0:42b:41a6:a670 with SMTP id
+ ffacd0b85a97d-42cc1d51b98mr2460147f8f.54.1763732845183; 
+ Fri, 21 Nov 2025 05:47:25 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f2e432sm10714737f8f.9.2025.11.21.05.47.17
+ ffacd0b85a97d-42cb7f2e574sm11223189f8f.3.2025.11.21.05.47.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 05:47:18 -0800 (PST)
+ Fri, 21 Nov 2025 05:47:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [RFC-PATCH-for-11.0 v3 20/21] target/mips: Use big-endian variant of
- cpu_ld/st_data*() for MSA
-Date: Fri, 21 Nov 2025 14:45:02 +0100
-Message-ID: <20251121134503.30914-21-philmd@linaro.org>
+Subject: [RFC-PATCH-for-11.0 v3 21/21] accel/tcg: Remove non-explicit endian
+ cpu_ld/st*_data*() helpers
+Date: Fri, 21 Nov 2025 14:45:03 +0100
+Message-ID: <20251121134503.30914-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251121134503.30914-1-philmd@linaro.org>
 References: <20251121134503.30914-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
-X-Spam_action: no action
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,418 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MSA vectors are accessed in big endianness.
-
-Per the "MIPS® SIMD Architecture" (MD00926 rev 1.03):
-
-  3.1 Registers Layout
-
-  MSA vectors are stored in memory starting from the 0th element at
-  the lowest byte address. The byte order of each element follows the
-  big- or little-endian convention of the system configuration.
-
-Use the explicit big-endian variants of cpu_ld/st_data*().
-
-Running files in tests/tcg/mips/user/ase/msa shows:
-
- NLOC.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.21 ms  |
- NLOC.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.22 ms  |
- NLOC.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- NLOC.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- NLZC.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.19 ms  |
- NLZC.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- NLZC.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.21 ms  |
- NLZC.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- PCNT.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.17 ms  |
- PCNT.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.19 ms  |
- PCNT.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- PCNT.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.19 ms  |
- BINSL.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- BINSL.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- BINSL.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- BINSL.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- BINSR.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- BINSR.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- BINSR.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- BINSR.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- BMNZ.V            | PASS: 112  | FAIL:   0  | elapsed time:  0.65 ms  |
- BMZ.V             | PASS: 112  | FAIL:   0  | elapsed time:  0.59 ms  |
- BSEL.V            | PASS: 112  | FAIL:   0  | elapsed time:  0.60 ms  |
- BCLR.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BCLR.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BCLR.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BCLR.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- BNEG.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BNEG.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- BNEG.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BNEG.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BSET.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- BSET.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BSET.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- BSET.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- MADD_Q.H          | PASS: 112  | FAIL:   0  | elapsed time:  0.60 ms  |
- MADD_Q.W          | PASS: 112  | FAIL:   0  | elapsed time:  0.83 ms  |
- MADDR_Q.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.62 ms  |
- MADDR_Q.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MSUB_Q.H          | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- MSUB_Q.W          | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- MSUBR_Q.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MSUBR_Q.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MUL_Q.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MUL_Q.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MULR_Q.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MULR_Q.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- FMAX_A.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.36 ms  |
- FMAX_A.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- FMAX.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- FMAX.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- FMIN_A.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.36 ms  |
- FMIN_A.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- FMIN.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.35 ms  |
- FMIN.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ADD_A.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADD_A.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADD_A.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADD_A.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- ADDS_A.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- ADDS_A.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- ADDS_A.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_A.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_S.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.80 ms  |
- ADDS_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ADDS_U.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDS_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDV.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ADDV.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ADDV.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ADDV.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HADD_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HADD_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HADD_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HADD_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HADD_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- HADD_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVE_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- AVE_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_S.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- AVER_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_U.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- AVER_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AVER_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CEQ.B             | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- CEQ.H             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CEQ.W             | PASS:  80  | FAIL:   0  | elapsed time:  0.38 ms  |
- CEQ.D             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLE_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLE_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLE_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLE_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- CLE_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- CLE_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- CLE_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- CLE_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- CLT_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- CLT_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- CLT_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLT_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLT_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLT_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- CLT_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- CLT_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- DIV_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- DIV_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- DIV_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DIV_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DIV_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.39 ms  |
- DIV_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- DIV_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DIV_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DOTP_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DOTP_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.35 ms  |
- DOTP_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DOTP_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DOTP_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- DOTP_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- DPADD_S.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.59 ms  |
- DPADD_S.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPADD_S.D         | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- DPADD_U.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPADD_U.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPADD_U.D         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPSUB_S.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPSUB_S.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- DPSUB_S.D         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- DPSUB_U.H         | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- DPSUB_U.W         | PASS: 112  | FAIL:   0  | elapsed time:  0.59 ms  |
- DPSUB_U.D         | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MAX_A.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_A.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- MAX_A.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- MAX_A.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.35 ms  |
- MAX_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.35 ms  |
- MAX_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MAX_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MAX_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_A.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MIN_A.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_A.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_A.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.33 ms  |
- MIN_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MIN_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MIN_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MOD_S.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- MOD_S.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- MOD_S.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MOD_S.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MOD_U.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.37 ms  |
- MOD_U.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- MOD_U.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MOD_U.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MADDV.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- MADDV.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.63 ms  |
- MADDV.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MADDV.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- MSUBV.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MSUBV.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.65 ms  |
- MSUBV.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- MSUBV.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.65 ms  |
- MULV.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MULV.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MULV.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- MULV.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_S.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_U.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.44 ms  |
- ASUB_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ASUB_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ASUB_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HSUB_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HSUB_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- HSUB_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- HSUB_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HSUB_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- HSUB_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- SUBS_S.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SUBS_S.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.38 ms  |
- SUBS_S.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SUBS_S.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBS_U.B          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBS_U.H          | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- SUBS_U.W          | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- SUBS_U.D          | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUS_U.B        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUS_U.H        | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SUBSUS_U.W        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUS_U.D        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUU_S.B        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUU_S.H        | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- SUBSUU_S.W        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBSUU_S.D        | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBV.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBV.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBV.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SUBV.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVEV.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.35 ms  |
- ILVEV.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- ILVEV.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- ILVEV.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- ILVOD.B           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVOD.H           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVOD.W           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVOD.D           | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVL.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- ILVL.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVL.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVL.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVR.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVR.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- ILVR.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- ILVR.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- AND.V             | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- NOR.V             | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- OR.V              | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- XOR.V             | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- MOVE.V            | PASS:  80  | FAIL:   0  | elapsed time:  0.18 ms  |
- PCKEV.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- PCKEV.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.56 ms  |
- PCKEV.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.68 ms  |
- PCKEV.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- PCKOD.B           | PASS: 112  | FAIL:   0  | elapsed time:  0.61 ms  |
- PCKOD.H           | PASS: 112  | FAIL:   0  | elapsed time:  0.62 ms  |
- PCKOD.W           | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- PCKOD.D           | PASS: 112  | FAIL:   0  | elapsed time:  0.58 ms  |
- VSHF.B            | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- VSHF.H            | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- VSHF.W            | PASS: 112  | FAIL:   0  | elapsed time:  0.62 ms  |
- VSHF.D            | PASS: 112  | FAIL:   0  | elapsed time:  0.57 ms  |
- SLL.B             | PASS:  80  | FAIL:   0  | elapsed time:  0.34 ms  |
- SLL.H             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SLL.W             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SLL.D             | PASS:  80  | FAIL:   0  | elapsed time:  0.38 ms  |
- SRA.B             | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- SRA.H             | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- SRA.W             | PASS:  80  | FAIL:   0  | elapsed time:  0.37 ms  |
- SRA.D             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRAR.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SRAR.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SRAR.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- SRAR.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRL.B             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRL.H             | PASS:  80  | FAIL:   0  | elapsed time:  0.32 ms  |
- SRL.W             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRL.D             | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRLR.B            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
- SRLR.H            | PASS:  80  | FAIL:   0  | elapsed time:  0.29 ms  |
- SRLR.W            | PASS:  80  | FAIL:   0  | elapsed time:  0.31 ms  |
- SRLR.D            | PASS:  80  | FAIL:   0  | elapsed time:  0.30 ms  |
+All uses were converted to the explicit cpu_ld/st*_{be,le}_data*()
+helpers, no need for the non-explicit versions anymore.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/msa_helper.c | 51 ++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 20 deletions(-)
+FIXME: Still some PPC/MIPS uses
+---
+ include/accel/tcg/cpu-ldst.h | 46 ------------------------------------
+ 1 file changed, 46 deletions(-)
 
-diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
-index f554b3d10ee..d6ce17abf9a 100644
---- a/target/mips/tcg/msa_helper.c
-+++ b/target/mips/tcg/msa_helper.c
-@@ -8231,8 +8231,8 @@ void helper_msa_ld_b(CPUMIPSState *env, uint32_t wd,
-     uint64_t d0, d1;
- 
-     /* Load 8 bytes at a time.  Vector element ordering makes this LE.  */
--    d0 = cpu_ldq_le_data_ra(env, addr + 0, ra);
--    d1 = cpu_ldq_le_data_ra(env, addr + 8, ra);
-+    d0 = cpu_ldq_be_data_ra(env, addr + 0, ra);
-+    d1 = cpu_ldq_be_data_ra(env, addr + 8, ra);
-     pwd->d[0] = d0;
-     pwd->d[1] = d1;
- }
-@@ -8248,9 +8248,9 @@ void helper_msa_ld_h(CPUMIPSState *env, uint32_t wd,
-      * Load 8 bytes at a time.  Use little-endian load, then for
-      * big-endian target, we must then swap the four halfwords.
-      */
--    d0 = cpu_ldq_le_data_ra(env, addr + 0, ra);
--    d1 = cpu_ldq_le_data_ra(env, addr + 8, ra);
--    if (mips_env_is_bigendian(env)) {
-+    d0 = cpu_ldq_be_data_ra(env, addr + 0, ra);
-+    d1 = cpu_ldq_be_data_ra(env, addr + 8, ra);
-+    if (!mips_env_is_bigendian(env)) {
-         d0 = bswap16x4(d0);
-         d1 = bswap16x4(d1);
-     }
-@@ -8269,9 +8269,9 @@ void helper_msa_ld_w(CPUMIPSState *env, uint32_t wd,
-      * Load 8 bytes at a time.  Use little-endian load, then for
-      * big-endian target, we must then bswap the two words.
-      */
--    d0 = cpu_ldq_le_data_ra(env, addr + 0, ra);
--    d1 = cpu_ldq_le_data_ra(env, addr + 8, ra);
--    if (mips_env_is_bigendian(env)) {
-+    d0 = cpu_ldq_be_data_ra(env, addr + 0, ra);
-+    d1 = cpu_ldq_be_data_ra(env, addr + 8, ra);
-+    if (!mips_env_is_bigendian(env)) {
-         d0 = bswap32x2(d0);
-         d1 = bswap32x2(d1);
-     }
-@@ -8286,8 +8286,12 @@ void helper_msa_ld_d(CPUMIPSState *env, uint32_t wd,
-     uintptr_t ra = GETPC();
-     uint64_t d0, d1;
- 
--    d0 = cpu_ldq_data_ra(env, addr + 0, ra);
--    d1 = cpu_ldq_data_ra(env, addr + 8, ra);
-+    d0 = cpu_ldq_be_data_ra(env, addr + 0, ra);
-+    d1 = cpu_ldq_be_data_ra(env, addr + 8, ra);
-+    if (!mips_env_is_bigendian(env)) {
-+        d0 = bswap64(d0);
-+        d1 = bswap64(d1);
-+    }
-     pwd->d[0] = d0;
-     pwd->d[1] = d1;
- }
-@@ -8320,8 +8324,8 @@ void helper_msa_st_b(CPUMIPSState *env, uint32_t wd,
-     ensure_writable_pages(env, addr, mmu_idx, ra);
- 
-     /* Store 8 bytes at a time.  Vector element ordering makes this LE.  */
--    cpu_stq_le_data_ra(env, addr + 0, pwd->d[0], ra);
--    cpu_stq_le_data_ra(env, addr + 8, pwd->d[1], ra);
-+    cpu_stq_be_data_ra(env, addr + 0, pwd->d[0], ra);
-+    cpu_stq_be_data_ra(env, addr + 8, pwd->d[1], ra);
+diff --git a/include/accel/tcg/cpu-ldst.h b/include/accel/tcg/cpu-ldst.h
+index a3125fc9026..70442bd08af 100644
+--- a/include/accel/tcg/cpu-ldst.h
++++ b/include/accel/tcg/cpu-ldst.h
+@@ -428,52 +428,6 @@ cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
+     cpu_stq_le_data_ra(env, addr, val, 0);
  }
  
- void helper_msa_st_h(CPUMIPSState *env, uint32_t wd,
-@@ -8337,12 +8341,12 @@ void helper_msa_st_h(CPUMIPSState *env, uint32_t wd,
-     /* Store 8 bytes at a time.  See helper_msa_ld_h. */
-     d0 = pwd->d[0];
-     d1 = pwd->d[1];
--    if (mips_env_is_bigendian(env)) {
-+    if (!mips_env_is_bigendian(env)) {
-         d0 = bswap16x4(d0);
-         d1 = bswap16x4(d1);
-     }
--    cpu_stq_le_data_ra(env, addr + 0, d0, ra);
--    cpu_stq_le_data_ra(env, addr + 8, d1, ra);
-+    cpu_stq_be_data_ra(env, addr + 0, d0, ra);
-+    cpu_stq_be_data_ra(env, addr + 8, d1, ra);
- }
- 
- void helper_msa_st_w(CPUMIPSState *env, uint32_t wd,
-@@ -8358,12 +8362,12 @@ void helper_msa_st_w(CPUMIPSState *env, uint32_t wd,
-     /* Store 8 bytes at a time.  See helper_msa_ld_w. */
-     d0 = pwd->d[0];
-     d1 = pwd->d[1];
--    if (mips_env_is_bigendian(env)) {
-+    if (!mips_env_is_bigendian(env)) {
-         d0 = bswap32x2(d0);
-         d1 = bswap32x2(d1);
-     }
--    cpu_stq_le_data_ra(env, addr + 0, d0, ra);
--    cpu_stq_le_data_ra(env, addr + 8, d1, ra);
-+    cpu_stq_be_data_ra(env, addr + 0, d0, ra);
-+    cpu_stq_be_data_ra(env, addr + 8, d1, ra);
- }
- 
- void helper_msa_st_d(CPUMIPSState *env, uint32_t wd,
-@@ -8372,9 +8376,16 @@ void helper_msa_st_d(CPUMIPSState *env, uint32_t wd,
-     wr_t *pwd = &(env->active_fpu.fpr[wd].wr);
-     int mmu_idx = mips_env_mmu_index(env);
-     uintptr_t ra = GETPC();
-+    uint64_t d0, d1;
- 
-     ensure_writable_pages(env, addr, mmu_idx, GETPC());
- 
--    cpu_stq_data_ra(env, addr + 0, pwd->d[0], ra);
--    cpu_stq_data_ra(env, addr + 8, pwd->d[1], ra);
-+    d0 = pwd->d[0];
-+    d1 = pwd->d[1];
-+    if (!mips_env_is_bigendian(env)) {
-+        d0 = bswap64(d0);
-+        d1 = bswap64(d1);
-+    }
-+    cpu_stq_be_data_ra(env, addr + 0, d0, ra);
-+    cpu_stq_be_data_ra(env, addr + 8, d1, ra);
- }
+-#if TARGET_BIG_ENDIAN
+-# define cpu_lduw_data        cpu_lduw_be_data
+-# define cpu_ldsw_data        cpu_ldsw_be_data
+-# define cpu_ldl_data         cpu_ldl_be_data
+-# define cpu_ldq_data         cpu_ldq_be_data
+-# define cpu_lduw_data_ra     cpu_lduw_be_data_ra
+-# define cpu_ldsw_data_ra     cpu_ldsw_be_data_ra
+-# define cpu_ldl_data_ra      cpu_ldl_be_data_ra
+-# define cpu_ldq_data_ra      cpu_ldq_be_data_ra
+-# define cpu_lduw_mmuidx_ra   cpu_lduw_be_mmuidx_ra
+-# define cpu_ldsw_mmuidx_ra   cpu_ldsw_be_mmuidx_ra
+-# define cpu_ldl_mmuidx_ra    cpu_ldl_be_mmuidx_ra
+-# define cpu_ldq_mmuidx_ra    cpu_ldq_be_mmuidx_ra
+-# define cpu_stw_data         cpu_stw_be_data
+-# define cpu_stl_data         cpu_stl_be_data
+-# define cpu_stq_data         cpu_stq_be_data
+-# define cpu_stw_data_ra      cpu_stw_be_data_ra
+-# define cpu_stl_data_ra      cpu_stl_be_data_ra
+-# define cpu_stq_data_ra      cpu_stq_be_data_ra
+-# define cpu_stw_mmuidx_ra    cpu_stw_be_mmuidx_ra
+-# define cpu_stl_mmuidx_ra    cpu_stl_be_mmuidx_ra
+-# define cpu_stq_mmuidx_ra    cpu_stq_be_mmuidx_ra
+-#else
+-# define cpu_lduw_data        cpu_lduw_le_data
+-# define cpu_ldsw_data        cpu_ldsw_le_data
+-# define cpu_ldl_data         cpu_ldl_le_data
+-# define cpu_ldq_data         cpu_ldq_le_data
+-# define cpu_lduw_data_ra     cpu_lduw_le_data_ra
+-# define cpu_ldsw_data_ra     cpu_ldsw_le_data_ra
+-# define cpu_ldl_data_ra      cpu_ldl_le_data_ra
+-# define cpu_ldq_data_ra      cpu_ldq_le_data_ra
+-# define cpu_lduw_mmuidx_ra   cpu_lduw_le_mmuidx_ra
+-# define cpu_ldsw_mmuidx_ra   cpu_ldsw_le_mmuidx_ra
+-# define cpu_ldl_mmuidx_ra    cpu_ldl_le_mmuidx_ra
+-# define cpu_ldq_mmuidx_ra    cpu_ldq_le_mmuidx_ra
+-# define cpu_stw_data         cpu_stw_le_data
+-# define cpu_stl_data         cpu_stl_le_data
+-# define cpu_stq_data         cpu_stq_le_data
+-# define cpu_stw_data_ra      cpu_stw_le_data_ra
+-# define cpu_stl_data_ra      cpu_stl_le_data_ra
+-# define cpu_stq_data_ra      cpu_stq_le_data_ra
+-# define cpu_stw_mmuidx_ra    cpu_stw_le_mmuidx_ra
+-# define cpu_stl_mmuidx_ra    cpu_stl_le_mmuidx_ra
+-# define cpu_stq_mmuidx_ra    cpu_stq_le_mmuidx_ra
+-#endif
+-
+ static inline uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
+ {
+     CPUState *cs = env_cpu(env);
 -- 
 2.51.0
 
