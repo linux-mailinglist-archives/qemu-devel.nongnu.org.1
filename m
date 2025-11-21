@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136A6C7C3D2
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:04:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54C3C7C5DE
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:20:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdPD-0002Bw-CJ; Fri, 21 Nov 2025 21:31:20 -0500
+	id 1vMeDZ-0006DS-Jc; Fri, 21 Nov 2025 22:23:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdP4-0001wP-3k; Fri, 21 Nov 2025 21:31:11 -0500
+ id 1vMeDO-0005ru-81; Fri, 21 Nov 2025 22:23:10 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdOS-0007qH-Cn; Fri, 21 Nov 2025 21:31:05 -0500
+ id 1vMeCt-0000fE-U9; Fri, 21 Nov 2025 22:23:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 591BF16C6EB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7831D16C6EC;
  Fri, 21 Nov 2025 16:51:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B01B7321988;
+ by tsrv.corpit.ru (Postfix) with ESMTP id CC83D321989;
  Fri, 21 Nov 2025 16:52:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 19/76] qtest/am53c974-test: add additional test for
- cmdfifo overflow
-Date: Fri, 21 Nov 2025 16:50:57 +0300
-Message-ID: <20251121135201.1114964-19-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bastian Blank <bblank@thinkmo.de>,
+ Bastian Blank <waldi@debian.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 20/76] linux-user: Use correct type for FIBMAP and
+ FIGETBSZ emulation
+Date: Fri, 21 Nov 2025 16:50:58 +0300
+Message-ID: <20251121135201.1114964-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,76 +58,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Bastian Blank <bblank@thinkmo.de>
 
-Based upon the qtest reproducer posted to Gitlab issue #3082 at
-https://gitlab.com/qemu-project/qemu/-/issues/3082.
+Both the FIBMAP and FIGETBSZ ioctl get "int *" (pointer to 32bit
+integer) as argument, not "long *" as specified in qemu.  Using the
+correct type makes the emulation work in cross endian context.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20250925122846.527615-3-mark.cave-ayland@ilande.co.uk
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e9d02b59316fcbc9650d747b06e2755374ab3b70)
+Both ioctl does not seem to be documented. However the kernel
+implementation has always used "int *".
+
+Signed-off-by: Bastian Blank <waldi@debian.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3185
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Reviwed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 7c7089321670fb51022a1c4493cbcc69aa288a0f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qtest/am53c974-test.c b/tests/qtest/am53c974-test.c
-index ed3ac7db20..a3667275ac 100644
---- a/tests/qtest/am53c974-test.c
-+++ b/tests/qtest/am53c974-test.c
-@@ -109,6 +109,44 @@ static void test_cmdfifo_overflow2_ok(void)
-     qtest_quit(s);
- }
+diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
+index 3b41128fd7..2f62fd2cb9 100644
+--- a/linux-user/ioctls.h
++++ b/linux-user/ioctls.h
+@@ -130,7 +130,7 @@
+      IOCTL(FDTWADDLE, 0, TYPE_NULL)
+      IOCTL(FDEJECT, 0, TYPE_NULL)
  
-+/* Reported as https://issues.oss-fuzz.com/issues/439878564 */
-+static void test_cmdfifo_overflow3_ok(void)
-+{
-+    QTestState *s = qtest_init(
-+        "-device am53c974,id=scsi -device scsi-hd,drive=disk0 "
-+        "-drive id=disk0,if=none,file=null-co://,format=raw -nodefaults");
-+    qtest_outl(s, 0xcf8, 0x80001010);
-+    qtest_outl(s, 0xcfc, 0xc000);
-+    qtest_outl(s, 0xcf8, 0x80001004);
-+    qtest_outw(s, 0xcfc, 0x01);
-+    qtest_outb(s, 0xc00c, 0x43);
-+    qtest_outl(s, 0xc00b, 0x9100);
-+    qtest_outl(s, 0xc009, 0x02000000);
-+    qtest_outl(s, 0xc000, 0x0b);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outl(s, 0xc00b, 0xc200);
-+    qtest_outl(s, 0xc00b, 0x1000);
-+    qtest_outl(s, 0xc00b, 0x9000);
-+    qtest_outb(s, 0xc008, 0x00);
-+    qtest_outb(s, 0xc008, 0x00);
-+    qtest_outl(s, 0xc03f, 0x0300);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outw(s, 0xc00b, 0x4200);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outw(s, 0xc00b, 0x1200);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outb(s, 0xc00c, 0x43);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outl(s, 0xc00b, 0x00);
-+    qtest_outl(s, 0xc007, 0x00);
-+    qtest_outl(s, 0xc007, 0x00);
-+    qtest_outl(s, 0xc007, 0x00);
-+    qtest_outl(s, 0xc00b, 0x1000);
-+    qtest_outl(s, 0xc007, 0x00);
-+    qtest_quit(s);
-+}
-+
- /* Reported as crash_0900379669 */
- static void test_fifo_pop_buf(void)
- {
-@@ -266,6 +304,8 @@ int main(int argc, char **argv)
-                        test_cmdfifo_overflow_ok);
-         qtest_add_func("am53c974/test_cmdfifo_overflow2_ok",
-                        test_cmdfifo_overflow2_ok);
-+        qtest_add_func("am53c974/test_cmdfifo_overflow3_ok",
-+                       test_cmdfifo_overflow3_ok);
-         qtest_add_func("am53c974/test_fifo_pop_buf",
-                        test_fifo_pop_buf);
-         qtest_add_func("am53c974/test_target_selected_ok",
+-     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_LONG))
++     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_INT))
+ #ifdef FICLONE
+      IOCTL(FICLONE, IOC_W, TYPE_INT)
+      IOCTL(FICLONERANGE, IOC_W, MK_PTR(MK_STRUCT(STRUCT_file_clone_range)))
+@@ -145,7 +145,7 @@
+      IOCTL(FITRIM, IOC_W | IOC_R, MK_PTR(MK_STRUCT(STRUCT_fstrim_range)))
+ #endif
+ 
+-     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
++     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_INT))
+ #ifdef CONFIG_FIEMAP
+      IOCTL_SPECIAL(FS_IOC_FIEMAP, IOC_W | IOC_R, do_ioctl_fs_ioc_fiemap,
+                    MK_PTR(MK_STRUCT(STRUCT_fiemap)))
 -- 
 2.47.3
 
