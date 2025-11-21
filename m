@@ -2,98 +2,218 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D20AC7C496
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF13C7C26A
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:04:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcjI-0000H8-5t; Fri, 21 Nov 2025 20:48:02 -0500
+	id 1vMcv0-0000OT-8o; Fri, 21 Nov 2025 21:00:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbSh-0006Cz-9g
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:26:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1vMbwh-0007XT-Da
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:57:48 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbSV-0003PM-St
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:26:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771173;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2SVWp3UcHLJlx8vgRa9P5kdSxFYaBZ5YKy42Qimtdds=;
- b=aYcm1/pa/e2Kdb7OYRXpyKLIpCWUV36bDK6LbUBYm0sf3XVQiXdDPF37amaBKjwAd2vPJb
- JalzEPJf+KIeNPT5wCORWyuEbVBIqDX56lUDwSxSfCBREoIuJWZW9D+/8nXwp/5KaZ/W7+
- VrdubzfQ3JjXT1injujZEX7/61Kurok=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-i4BH3fQ3NuOqUqy74ErssQ-1; Fri, 21 Nov 2025 11:07:53 -0500
-X-MC-Unique: i4BH3fQ3NuOqUqy74ErssQ-1
-X-Mimecast-MFC-AGG-ID: i4BH3fQ3NuOqUqy74ErssQ_1763741273
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8b2de6600c0so716866085a.1
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 08:07:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1vMbwV-0001h8-GD
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:57:44 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ALEh8ur028608;
+ Fri, 21 Nov 2025 16:36:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=KBzs7SOGz92vpjFvRsiXkGu3L3Q/BrNdf6H6GphlLrc=; b=
+ V/qsDIQtInKwhZkek0gD+EdbylhYCFoGoyi48IEdohczjRV7+jy9gnPliIDUW/1H
+ l2KcLe1b3EX/c4g+LgB6GBL39DbbNjPknnIdSFjMeItfiXADftvueeB4EZ5/9Pow
+ vVJ3Dache5NCuiB/WwMWUUzDysmKvzpljdV2nb7ZFJWf0Uo4uewz2izb7YHuXroj
+ g5J1LneCfYACJCfUGSKm+Ngr9/D4pLq6l7UhWKSIhIu2A4UhMrNhJbWZ33Ahn/8Q
+ pLFqEG2pCowZCXjcsefvnRer0qXgmMXNzqgfNMPv48uMJaiCmg8U6NOk6zI8vC77
+ K1G71Y9pbU829bbq1vymmg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej96btbj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Nov 2025 16:36:56 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 5ALGDD9U009444; Fri, 21 Nov 2025 16:36:55 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com
+ (mail-northcentralusazon11013032.outbound.protection.outlook.com
+ [40.107.201.32])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 4aefyhwus5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Nov 2025 16:36:55 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PW8ZGINY9nKOP413/JMO8VKKDaYvM8lB5LnqJKXH9XN8IH4w+xu12pVGfW53/kvPsfE4JgaP76KRIbIwEIJnB9zjyntEi6QfuyPnS99xdGbE2TdaH8F4Fj8/OJ8TW8jBM3G3n0oIQX7/6z9q2ewKjcGqwa0XF/LmoEecoslvjVHMCdKgH7d+bBnGRm9fLAzDVYQHykBSYNMJY619815bV8OXSdA2GTNC7nTdUTTiOgo65Qe6/rVHYvbg6y3XnGCLu5viEW3Q9IpLvqLVzaoziHJMto95xjR6xWyPTLa6kh/jGdMgH7aHGIM0DLZL7mEbRM8y3Xj1WvPzBl5kQGHI9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KBzs7SOGz92vpjFvRsiXkGu3L3Q/BrNdf6H6GphlLrc=;
+ b=QufT4+KtWylIy7igv/QSSXrPhEzhPflF1r+nUR7w4yUdZJWuNWcEmjdZsPFI5XUXXbLjbZs9yKR+e3b5bt0W8kSLXJxDj22tG+aywORTJD/tCv+8Je6uXVO8iZ8i7xNV+6rkXTVBIw7tiRXd8UmMnP1uxdo+IFkH+okPmKszuy+TD10TiRkrYoHEp8HtmZMXFjWBLZkb0GMADy9yjhOW8oVXzvahGhZqtaKE8u6fyAH093LwCfOtHLMXMNKCAtvYfDMVOxmNWmJqQm4nx0ke9joLMgP9ubZ68xjnw6EX04XC/JtySySKb/T1Kwv7ntqBeEQTcvfbKmnVjK15vP17bg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763741273; x=1764346073; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=2SVWp3UcHLJlx8vgRa9P5kdSxFYaBZ5YKy42Qimtdds=;
- b=HqJA/AxlQr7IcNacgN4N9OmTvZI+TSlRi+IQMpaqkCQAt4btVnj7v3fIGov1Tw+GPV
- 7nbR3tyYSP7hbUbySwXr7yc4GG7UELVTDehVXAFDlAA4kqXL9B1muPKiN2qxbaOPvV7X
- z8YX8289CdkLU5ptbTibPZwodE+GijS7uoMD1X5hCvff3vkDxUCtAOrbKSEOzzKziUk6
- b3VPLC7jNa0Cvt2UNF4oWoCVIJ1L+nqiZQbzeI7DEogNAnmwMVVG/8D5XXiD2Guq4Dmj
- Hrm8DkKO7LhzClIqd0foxLwHczPlRpjZuyuJ22iG3o5aVOz/BfEpBxM1i56m00nsiDa1
- RH+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763741273; x=1764346073;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2SVWp3UcHLJlx8vgRa9P5kdSxFYaBZ5YKy42Qimtdds=;
- b=mBAHQuxz8O68gSxRINgnILvdD+KiLRRIgtdx0MpKjqwFQ1I3UomXJhGEU4qOiVcs3D
- krTnK0/tBCo1Erctcu0YtV2EKJZZvrOZyXqyboNU/tbQcGuM27O2dZ94aYjrZ5EMi3MD
- MGTJxZfA5mpJ8s49SmhlQ9bzUmxEx+NlfTFwU0zwO4GmGxbLUGXSCHKLIARsIunIIC2G
- uKcTIbrZCYkSOtF9GVX9BNDKAKpYYIc4Jb7P12D65y5TaMDaMZTuVP6qYHZOiMYuY3hp
- n7DV3V11mdSHCDgUX60kIhy0CRapwC5Ae+n5SkL0TqkPLqU91ggDTVhCFPtvE9iaQ4+Q
- RQfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXw0YsZrz0q+fVfiBiw8uNdEQObvu1bC6a8j9VOGdTRvL6GEJ4pQ29remFmOd00323m+UIcuh7TPBPs@nongnu.org
-X-Gm-Message-State: AOJu0YysnL7Hkl+PHsN8hQxc9rbpeS8OlwLpCBuWDTquInWEkoKGcXoJ
- LVVKEA66ord/ENoEeFC2CghCt/zqoBGYLKpifAFvXhU03/YFqjvKTpEhqFWc08f0jf0RK4rhydc
- OzLgDb14905S8bX73jCP8GEl1XSpTZD1uBRQKh5We7P+0/9iPWbAFo7hx
-X-Gm-Gg: ASbGnctetwqIMMPACfRJnPbCYmBOjHPMQqdUdcn4wqqcNVEU11uFgs/9y5GGVteAtFE
- pRuh/Y+GNbx5VxfBbtS2Zst1bfdOq9xsL0SkBWq71ugI/pWfq1F92I9a8Vh7P3pvMbOGmDYE33i
- jTn+btp1W0ZrFxR9t+mQBEPPko9mLpdct7o2inCzpVffDXooJMSAlq4Dl0G+FWxlFki7/PGAbcn
- qwXaYY/SK037/tYDBE3Ti5Fpvytx6MomK3b9TFC9dY61+AR0qFdIGzkL4pqd6vCmMgppL/NEJOw
- zxil80e9oJWcX1+hmLuh6fGtlFiOo+TwH/1xvuoEyviaepKOcv6UUxHFfUIIS0a7gcuX0CNjbGU
- 4nhM=
-X-Received: by 2002:a05:622a:594:b0:4ee:1676:faa6 with SMTP id
- d75a77b69052e-4ee58854020mr43460611cf.20.1763741272551; 
- Fri, 21 Nov 2025 08:07:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGxeLyAnN1PobIUBKAJvWUIt6z5UHPOlRiwhy03n29bh+9Vw1MSQpnPwZ0apZwyEdxIcKt3+Q==
-X-Received: by 2002:a05:622a:594:b0:4ee:1676:faa6 with SMTP id
- d75a77b69052e-4ee58854020mr43458431cf.20.1763741270631; 
- Fri, 21 Nov 2025 08:07:50 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b32e82eb0dsm346727085a.5.2025.11.21.08.07.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 08:07:50 -0800 (PST)
-Date: Fri, 21 Nov 2025 11:07:48 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Ben Chaney <bchaney@akamai.com>
-Cc: berrange@redhat.com, farosas@suse.de, armbru@redhat.com,
- mark.kanda@oracle.com, qemu-devel@nongnu.org, johunt@akamai.com,
- mtottenh@akamai.com, nhudson@akamai.com
-Subject: Re: [PATCH] migration: cpr socket permissions fix
-Message-ID: <aSCOVNMJ-NK_9PuH@x1.local>
-References: <20251120185733.141912-1-bchaney@akamai.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KBzs7SOGz92vpjFvRsiXkGu3L3Q/BrNdf6H6GphlLrc=;
+ b=t4iZ9GsLaADafjjFcG21GV5wYlpaYDOHapVzK2ET/vR0W7ayxL2BC+CHakOX0dO9OSfZpCl41c+flSkIkQy3ecjWigrcfodpZKpf7Aecl7+KelWr4Q2wxTMMfcdB26L4DJqf6bcjC6bco4NtZokZn3bOKWgiEdHI7Jbk6/WNUfs=
+Received: from BLAPR10MB5041.namprd10.prod.outlook.com (2603:10b6:208:30e::6)
+ by CY5PR10MB5985.namprd10.prod.outlook.com (2603:10b6:930:2b::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 16:36:50 +0000
+Received: from BLAPR10MB5041.namprd10.prod.outlook.com
+ ([fe80::2c19:641c:14b9:b1b4]) by BLAPR10MB5041.namprd10.prod.outlook.com
+ ([fe80::2c19:641c:14b9:b1b4%4]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 16:36:50 +0000
+Message-ID: <6ed6db13-f23d-4e76-8e1b-804fe6a91e53@oracle.com>
+Date: Fri, 21 Nov 2025 11:36:46 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] amd_iommu: Use switch case to determine mmio register
+ name
+To: Sairaj Kodilkar <sarunkod@amd.com>, qemu-devel@nongnu.org,
+ Vasant Hegde <vasant.hegde@amd.com>
+Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ mst@redhat.com, marcel.apfelbaum@gmail.com
+References: <20251118082403.3455-1-sarunkod@amd.com>
+ <20251118082403.3455-2-sarunkod@amd.com>
+ <eaf49cf3-e56b-40f1-974d-207969c7371e@oracle.com>
+ <c8e2ca43-c577-411a-a8de-176c5f85c15f@amd.com>
+ <53a08e47-a9bc-484e-b510-faa76541dbbc@oracle.com>
+ <503782ef-f764-4263-8493-d18c162e0615@amd.com>
+Content-Language: en-US
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+In-Reply-To: <503782ef-f764-4263-8493-d18c162e0615@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH7P220CA0153.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:33b::15) To BLAPR10MB5041.namprd10.prod.outlook.com
+ (2603:10b6:208:30e::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251120185733.141912-1-bchaney@akamai.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB5041:EE_|CY5PR10MB5985:EE_
+X-MS-Office365-Filtering-Correlation-Id: 676b7785-9cac-472f-cfd6-08de291c2bdf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?d0FTbEVBSWtjZXBVRDlCS085TGNNOVN1QjVYUmhPZDVGZERyMVdYM0pxS1BG?=
+ =?utf-8?B?Q05RMUVMRXpKOVhCaG9RTWVDT3crbjNVMDhxaWxNRWNxSHJzSjUyVkUzU3Vj?=
+ =?utf-8?B?R2N0dGt1NUovOEpiV3UxSVZEbnA5bUM1Q05qNmYyNVgycjMyMno4bmJ4TVR2?=
+ =?utf-8?B?MUtFaE1JcTBHamdzOEwydU8vT1RTM2pkQlduTncxeW9RdzJvMjNyUDl2RHdF?=
+ =?utf-8?B?TmRyalR2R2xOVnhjM2RtYzJJK0lRUDJHbTdxcEhsWXl5NnVSdWpoZWhGd2la?=
+ =?utf-8?B?UmZJY2lMQXU0WlY1L1N0SVdiVE9sNUttVWg2YjhnTHdBOUJvamptdndWZEoy?=
+ =?utf-8?B?M0xldHBxeGpIUjQ2SkdlYlYzaXE2aWp2NzlXWjNRNVM1dmhaYnc5Tm5VZ1BE?=
+ =?utf-8?B?TGR4dUdtUWhZbXI4WUh4RXRNcmZLRW9Wc0VvbDVDZG9iM2ZCeU1WZENIaXhq?=
+ =?utf-8?B?V0VRZ1pUQXhPU0xMRGZCc2FmenBqMnVHSXpuTDBQMzRQeCtXdUpndUxQTjZn?=
+ =?utf-8?B?Uk0veENoMnNCRzdaTHVWeFFSK1FuNmkrR0pSbE1TMUF3VmZ6Vjc5UjI1a3RL?=
+ =?utf-8?B?QkRjU3BNWXZLM1hXb0ZZeFlDU2xObXRCRnNaQ2xRK2lPMUo3SzNSTnBNYmt3?=
+ =?utf-8?B?Zmc5aml2aUVvWHkrMElaQzd5NXNxdkVueTU0MXlmN1gvUngzcGtoVkVJSnk1?=
+ =?utf-8?B?WGFVTUVGSExNSlJqRkNhaXpBZFRzWll5SWdhME1pcnlIYXFTVmU4c05yM2RO?=
+ =?utf-8?B?bklnZkdyS0JqYS82dUR4WWFDUGRVaU92NlB2SGxKSlhNUWxHREdLbGJoWXp1?=
+ =?utf-8?B?TExKNG5DemxPWnpkanRaek5vdnhjN1FxTXptb25ydmtOV2ZwQ3JLOTRCU3VN?=
+ =?utf-8?B?bDY5N29tVVAzQWluUk5qbnBndWNqUGRpTUQzU2JhV3h3eG56cUJhQUZLbEZy?=
+ =?utf-8?B?NGZjazJVNjNrZGdSRmQ3OUN3TUFIUE9FK0hMYmg2TjR2QmVoZnRQcGk3YXZw?=
+ =?utf-8?B?TkR2TXhYc1dJbFczSE8wdHFVYlYzMjlDRUlZcGJJRmFYQ04zR2ZFeEd3emFv?=
+ =?utf-8?B?Wkg4bVZDcmx3QXdKKzFkWEltMy9MUXh6blZFN3hVWU9qNDM5M21qWjkrbjcv?=
+ =?utf-8?B?RllMeVJzY3Avb2l6TVMyeG9uMmo0dld6ZDJ6bUNHMFZyRm9uNlFoeC9SZTh1?=
+ =?utf-8?B?MCtBNXV1V1FUNndnNitYL09vMjEyZDRzZXo1ek16bXlGaUFpQ1Y2UUNqZGox?=
+ =?utf-8?B?V0paRTBOcmRXQzFWNUptaUJSWG1Qdnh3TjAxM1lYcFhpclVtN1VSMDJzTHlO?=
+ =?utf-8?B?YlNnSkVSb2JVQktpTlRvS1VYZVpGOCsyMEtvZUVSV3VvU0l6UFBmQ0dVZEtI?=
+ =?utf-8?B?MGUvRWg4T1hPQkVWbHpGdlEydXBWZUVSM3ltSmwxYUVxRk1kM2ZYb2wycGxK?=
+ =?utf-8?B?MXhlaXdSeUdaMGlPdDFkbG44ZW53TWc3WGpaLzdPOXE1cHFNM29sa1IzSUhI?=
+ =?utf-8?B?S0lTellSazREZG12WGJEaEY1aUpMMHpjYllaZGZSWkdIeHI5TFZoT2xxaHMx?=
+ =?utf-8?B?UnJ5cFE1b3g2NmVXTitGRmpRL2VGdTF4aGRUbWV5cnJScnRZcEhkTVg0UmJh?=
+ =?utf-8?B?Uld5eFVVSVVRNVhGaEVHaHFpMytrWkZqd0VCRFdOTHhKOEJYQ0V3cWFISVBE?=
+ =?utf-8?B?MERoVENKWDdiQkJPVFJ2dnV4MDA4UEtNRVNkcWJrRHdxbytNQkpWQ2F2bHhW?=
+ =?utf-8?B?eVRsL3hNejdHMUtFTklxSnBoMDhOQXBCUEF6ell4L1NXSjdmQVNIWkR5RDlV?=
+ =?utf-8?B?SDYrNE1CZnhRY3pHSzFhd3k1dlRPNGZmUU1MUDE3Z0Y1RmxxVGJ6c1dkbys5?=
+ =?utf-8?B?Uk1ZSEtTQ3F0SEVUZ0RTK3orZlpZaU5hbXNUVkF3eWE3M0JuaUh6akVPWS94?=
+ =?utf-8?Q?VU6+OuKWmtlP09VqFJa/KBLcDhuktrOt?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB5041.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QnBnemhKeGRHSDcxMm9rMytUM3pWQlljM2VYVEJLWDZFVTVIRStqb0R2RWVN?=
+ =?utf-8?B?c3VOWDlpY2RiSjFFZERaalFtaTZqdnk3SnRYMmkxaHlHZGNHcWtzdCtFRDFw?=
+ =?utf-8?B?RWx5YlBuMFRTcUZRSXFHMlAvd0FyUnp5UkJhNVhBdXdJbWZncSt6bVN0TjU0?=
+ =?utf-8?B?NExJMjJkNDdhZTd0QlMxSnRaWjAwVmlrRTJSQnBUODdzOTRvbjFCR2pVWXJV?=
+ =?utf-8?B?RTNLTG55Y1BYTFBoUjh0ZHEyNE9pbEdFMkVvVTZrQUxsQkRiczVYdVZHSkM4?=
+ =?utf-8?B?ODBnSzZCeVUvck5BZVZndC85Qm1MdDdCNGRMb1kvZTVlNVd6Y2FGRmNFY2s5?=
+ =?utf-8?B?RTkrWGg3QzJ6ZEpBV1p6Ri9WYTFxNHZIaTl0eXM4YlB0VnIxdUxTdlRVRnEr?=
+ =?utf-8?B?MHdqRVVtMG1qdnUxNURIcmZ4d3NDQXVrN3lnd04xWjhDRkUrU1kvY2NnUnND?=
+ =?utf-8?B?STcrdXo3d3o4OFhrL1NPbEM3dGFCUkphclQxbzl3dTRpYjBaTjB5aUdxME15?=
+ =?utf-8?B?ckx4V2cwZEw3S1AvU2VlYWk3YTEyRUs2VkdRbEZyTG1RbTErL1B1alJaamVa?=
+ =?utf-8?B?Wkg0T0svRUpFWVJlOWtUbWxKcXpCK05oMjk0NkYrUFdQT0VCNG1BcmpGL3J3?=
+ =?utf-8?B?cmhXd1pYTnhOdW5IWHlPQ1dMZzNwS2tPRkV3SVRhVFN0cFNNWVc4V0pZZUxT?=
+ =?utf-8?B?L29lUXZEUENVRkhldTBiWXd4SkIxZ1Q4OW9qTXZiNVRxR2FJczhwU0ZxM3dt?=
+ =?utf-8?B?SmdKUW0wUHFOOFpyVUF4ZjhVMTVFZ1VDZTBSbWFJUDlKZVNEQzlhWHd6QnFZ?=
+ =?utf-8?B?dUJrR0pLcEJVbHgxM0J5a0M2ZEdsSkJOQkxoZE5WUDV2UWppV1NLcnZna0pO?=
+ =?utf-8?B?Q1ZPMzc1K0UrOTJ0S0NXNUxoSlJlQW1nd3lHRElFWjBpNUJRUjV4TnIvZDFq?=
+ =?utf-8?B?NDQ3SlBVYjJYb014YnNHSDlmZVREaFJPemhoMDd1NThaNmVoRzlzVmxna0p4?=
+ =?utf-8?B?M25uMHJacnlRcnZFOFpreWRsam95akowREFxZVRnWFlqVmM3UDh3K1FuVU0v?=
+ =?utf-8?B?ajJ2SVgwbUp0YlpOdGpObEkxOXRzbmpQK0RGSUZPQW5lVlRKUDcwelErZnM0?=
+ =?utf-8?B?amZvSkdPRklFWE9FSkZGWk4wWGd1eWJNWnVDbko1RGxuUk1BUTVFRjN1VDZZ?=
+ =?utf-8?B?Y2xTcXMrdEEwRy82TWY4L2x3V2RqdWVaMVp6KzU4U1d5SWhUSU5tUC9hWGoz?=
+ =?utf-8?B?YzVoYU44U05MbE83b1FGMmQveW0vNHU0TDE4ZVZkQTREV2EybU54bU41NEZT?=
+ =?utf-8?B?MDR0c2ROQWI0UFVhdTAzL0JjTjZlUnZtWXc4V29mbk9ZaXByUzFFVDVxRlBy?=
+ =?utf-8?B?d2w2UlhySklnZ0dFZzVzWEI1NkdyeG1wNnFoc3p1VmY2M2duaFRnRW1WVW1l?=
+ =?utf-8?B?N3liWjZNT2FJdGliMDg5ci8xZ3pLMlBCMzVoT2IzenZ6MDVqbUJLTnhSQVB1?=
+ =?utf-8?B?SmpmcnFVcXZzanVXVUxLR3JaelovaGdmOGNPcnA3MEc5RVk2MjhqMC8vNHJx?=
+ =?utf-8?B?RzJ5eVZwdjZ6aWtDQ0lsMjkvYWROTzhDM2FxNHZ3eUhJdm92djJja0lqQXZn?=
+ =?utf-8?B?OVdVdHkrb0MxM2lmZGtoMHVUOE1haGhFTElmKzNaVXJnWURqeXBPalJuaDRE?=
+ =?utf-8?B?Y1NDYm8vVit0dHlPWnZodDdDT2hDaVhiL0tNeEZ1OHBRNys2K1R5M3NEaFo4?=
+ =?utf-8?B?QnJoQ283QzBGSGU0LzRnQVVjalpTS0lneVNIREIyRW81WHQ2aEp4ZkpCZmdh?=
+ =?utf-8?B?Y1MvVXh3bWo0amxlZkVpVTBtUGdIcTNmNkljLzUvaWtNV3Ivaml6N2hNT2hF?=
+ =?utf-8?B?NHMySFRZTXdvU3RZOUVIbFNNOUJvR1g1elAxV2lQNXZxYVdyRE9KbE5uWFBE?=
+ =?utf-8?B?dzU2MHhFSk13bGhHZjVCRU5EMXhTTzlTREFQUUkyWi9UQzhJYlBIanpURGN3?=
+ =?utf-8?B?Mm5KdFd4RGRmZkNmaFlZMUk0bDZLUjhCaUpQOXFkTExrekhOWXpsNVNIc0xl?=
+ =?utf-8?B?OGpRcUxIb01EWHVReHZKTSs3amZrK2xpWlYraTNRb3Uzb2MvZEdpMDVBa1l2?=
+ =?utf-8?B?STlDWU12UTdEUVFTSTFhZFZqVytHdWRYeDFKcjFGdmVqaStyWkt1QytIM0Rx?=
+ =?utf-8?Q?mnabbhKXmgkzNwqF8SCwZZg=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: F6v53IzEQrKlI2KuROo7NS3+V1yc/frkFlh9u8dfHNw9ylFUbTDMQuuT+jmPwDsvKdEpZv0Ok6aqo/mfh216Vww5tXdi/yoFMdrj6lDfLiOMpr03zWyqQ8sQsJXTVaqhkF65iw0hbgPAWiAfUMiqXw3v7sHZy1MGiX6OjZsWB80H2l275aa1XX421+LRq8WoLBaQukSm2zCDzJI6Y+PLCimEdpW11WICSZHA+x/Rs4R3NboZ3yJqgQtTnZOvO/GYpLDPRXBj6+DM3Bon/Tymx08i4Srf7es1+mdo7IMKfgGYrsQ2EuqeJ0ujLFbCL4szSBgqQjDs0/ytkCdW1MppfVKK905wktkVWlsWLy+NINRPlv7azxJ/vQmZWENPjTmWGkGae9NWZHsN6LarX7DDM1SDP7QsctpZ3v1JCHhWg43T1XL4j0jbJ+FM4MQ3XZXJU09ZHrUecdRYbmipEJeDFwwhF6MdWQpPyS2r0pTcE7QPzHiJfLo+BXYOOtrTYEvGkRPtFGH2l3Q9J8blNjAhHlnv4YPDUmC8p+7mxSMAYY+5hdKoZnqJk/v32axC8CMSYcBok+vmaI58TVNWXCg42MWSS96wOWdi3juZi85kcxg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 676b7785-9cac-472f-cfd6-08de291c2bdf
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5041.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 16:36:50.7091 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8CjVXxYUbaR8/UfCWk8zoZ4iIAoJ5cYM6kw1rNPODD5ojHKiAjJQko1ZljN7RTE9dcALPNEnL+gr2a6bhRc9tLR2PdODEQu4yNr5SsIShtY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB5985
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-21_04,2025-11-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0 bulkscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511210123
+X-Authority-Analysis: v=2.4 cv=DYoaa/tW c=1 sm=1 tr=0 ts=69209528 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117
+ a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=zd2uoN0lAAAA:8 a=UvJYUAcIRtX6ouBY6RMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:13642
+X-Proofpoint-GUID: Gs_bjci5vHeaV3uk-3QGWT21d6a-Wm8T
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX4D/ju65FvZsq
+ trmlX47tlncQG77QwwkYIN76qEax2kDN3lp7JJVwocSGBoxUPwhliPFufaJ8WUF8aiR4B5hVzen
+ a/e7+gpMUfb+eoLVXsPLF+G2cdzmUBnbJHbIZUzBQRBQEa5O2K7mdcd1YXDIchT5gKituzek/MK
+ 6IQe69hZyg9R5BqGrad0TPSUbOzhE1Kgzk4uXFvFnn2qKch/LOAcWF/m71m0abrBn3BwvOshILQ
+ ZCsM22qjDjlq7WituXUwZ7tXxqLaW+4l+B6yij2ODMHZH/OkbXB2DlGXewIM1YdM7P4Ege6Djiw
+ dmu3r27NrUL9DWgN0PZ27k3asSzbEeDX+QNdCCWHDLflzLS0QYhzP0oJ7gqN32aJEDVKV9AHbTm
+ TaSDboBnhHsJU/OGq65scnE0VQM7+ari3ylmyP4mI/5sEEHp4Fo=
+X-Proofpoint-ORIG-GUID: Gs_bjci5vHeaV3uk-3QGWT21d6a-Wm8T
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,153 +228,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 20, 2025 at 01:57:33PM -0500, Ben Chaney wrote:
-> Fix an issue where cpr transfer fails when running with the
-> -run-with user=$USERID with a permission denied error. This issue
-> occurs because the destination host creates the transfer sockets before
-> it drops permissions while the source host tries to connect after
-> dropping permissions. Fix this by changing the ownership of the cpr
-> socket to the lower level so it is accessible to both parties.
+
+
+On 11/21/25 12:20 AM, Sairaj Kodilkar wrote:
 > 
-> Resolves: https://lore.kernel.org/all/3D32B62F-29E2-4470-86A5-9A2B3B29E371@akamai.com/
-> Signed-off-by: Ben Chaney <bchaney@akamai.com>
-> ---
->  include/system/os-posix.h |  1 +
->  include/system/os-wasm.h  |  1 +
->  include/system/os-win32.h |  1 +
->  os-posix.c                | 12 ++++++++++++
->  stubs/meson.build         |  1 +
->  stubs/os-file.c           |  6 ++++++
->  util/qemu-sockets.c       |  6 ++++++
->  7 files changed, 28 insertions(+)
->  create mode 100644 stubs/os-file.c
 > 
-> diff --git a/include/system/os-posix.h b/include/system/os-posix.h
-> index ce5b3bccf8..e4b69fc316 100644
-> --- a/include/system/os-posix.h
-> +++ b/include/system/os-posix.h
-> @@ -54,6 +54,7 @@ void os_set_chroot(const char *path);
->  void os_setup_limits(void);
->  void os_setup_post(void);
->  int os_mlock(bool on_fault);
-> +void os_set_socket_permissions(const char *path);
->  
->  /**
->   * qemu_alloc_stack:
-> diff --git a/include/system/os-wasm.h b/include/system/os-wasm.h
-> index 3abb3aaa03..eeac092183 100644
-> --- a/include/system/os-wasm.h
-> +++ b/include/system/os-wasm.h
-> @@ -57,6 +57,7 @@ static inline int os_set_daemonize(bool d)
->  };
->  bool is_daemonized(void);
->  static inline void os_daemonize(void) {}
-> +static inline void os_set_socket_permissions(const char *dummy) {};
->  
->  /**
->   * qemu_alloc_stack:
-> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
-> index 22d72babdf..79e42ec297 100644
-> --- a/include/system/os-win32.h
-> +++ b/include/system/os-win32.h
-> @@ -103,6 +103,7 @@ static inline void os_setup_post(void) {}
->  static inline void os_set_proc_name(const char *dummy) {}
->  void os_set_line_buffering(void);
->  void os_setup_early_signal_handling(void);
-> +static inline void os_set_socket_permissions(const char *dummy) {};
->  
->  int getpagesize(void);
->  
-> diff --git a/os-posix.c b/os-posix.c
-> index 52925c23d3..bbd17ff2b9 100644
-> --- a/os-posix.c
-> +++ b/os-posix.c
-> @@ -94,6 +94,18 @@ static struct passwd *user_pwd;    /*   NULL   non-NULL   NULL   */
->  static uid_t user_uid = (uid_t)-1; /*   -1      -1        >=0    */
->  static gid_t user_gid = (gid_t)-1; /*   -1      -1        >=0    */
->  
-> +void os_set_socket_permissions(const char *path)
-> +{
-> +    uid_t uid = user_pwd ? user_pwd->pw_uid : user_uid;
-> +    gid_t gid = user_pwd ? user_pwd->pw_gid : user_gid;
-> +
-> +    if (chown(path, uid, gid) < 0) {
-> +        error_report("Failed to chown socket %s: %s", path, strerror(errno));
-> +        exit(1);
-> +    }
-> +}
-> +
-> +
->  /*
->   * Prepare to change user ID. user_id can be one of 3 forms:
->   *   - a username, in which case user ID will be changed to its uid,
-> diff --git a/stubs/meson.build b/stubs/meson.build
-> index 0b2778c568..4a4342344b 100644
-> --- a/stubs/meson.build
-> +++ b/stubs/meson.build
-> @@ -24,6 +24,7 @@ if have_block
->    stub_ss.add(files('ram-block.c'))
->    stub_ss.add(files('runstate-check.c'))
->    stub_ss.add(files('uuid.c'))
-> +  stub_ss.add(files('os-file.c'))
->  endif
->  
->  if have_block or have_ga
-> diff --git a/stubs/os-file.c b/stubs/os-file.c
-> new file mode 100644
-> index 0000000000..c32cbc7efa
-> --- /dev/null
-> +++ b/stubs/os-file.c
-> @@ -0,0 +1,6 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +#include "qemu/osdep.h"
-> +
-> +void os_set_socket_permissions(const char *dummy)
-> +{
-> +}
-> diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
-> index 4773755fd5..77b2d9287b 100644
-> --- a/util/qemu-sockets.c
-> +++ b/util/qemu-sockets.c
-> @@ -1026,6 +1026,12 @@ static int unix_listen_saddr(UnixSocketAddress *saddr,
->          error_setg_errno(errp, errno, "Failed to bind socket to %s", path);
->          goto err;
->      }
-> +    /*
-> +     * Change the permissions on the socket to match the permission of the
-> +     * counterparty process
-> +     */
-> +    os_set_socket_permissions(un.sun_path);
+> On 11/20/2025 7:01 PM, Alejandro Jimenez wrote:
+>>
+>>
+>> On 11/19/25 11:43 PM, Sairaj Kodilkar wrote:
+>>>
+>>>
+>>> On 11/20/2025 7:06 AM, Alejandro Jimenez wrote:
+>>>> Hi Sairaj,
+>>>>
+>>>> On 11/18/25 3:24 AM, Sairaj Kodilkar wrote:
+>>>>> This makes it easier to add new MMIO registers for tracing and removes
+>>>>> the unnecessary complexity introduced by amdvi_mmio_(low/high) array.
+>>>>>
+>>>>> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+>>>>> ---
+>>>>>   hw/i386/amd_iommu.c | 76 ++++++++++++++++++++++ 
+>>>>> +----------------------
+>>>>>   1 file changed, 39 insertions(+), 37 deletions(-)
+>>>>>
+>>>>
 
-QEMU's -run-with described user= as:
+[...]
 
-  user=username or user=uid:gid can be used to drop root privileges before
-  starting guest execution. QEMU will use the setuid and setgid system
-  calls to switch to the specified identity...
 
-So it explicitly mentioned "before starting guest execution", hence at
-least from that doc it's hard to say if unix socket should be created with
-the privilege or after dropped..  Here I believe cpr socket should be the
-case for latter, however when it's a generic change to unix listening
-ports, I wonder if there's other unwanted side effects.
-
-Considering unix socket itself doesn't really have a UID attached to it,
-it's only the unix path that needs a chmod(), meanwhile the mgmt of course
-knows both the right UID (as specified in -run-with) and the path, would it
-make sense if the mgmt chmod() after it starts dest QEMU?  That'll reduce
-the scope of impact to minimum.
-
-Thanks,
-
-> +
->      if (listen(sock, num) < 0) {
->          error_setg_errno(errp, errno, "Failed to listen on socket");
->          goto err;
-> -- 
-> 2.34.1
+> I am in favor of this approach. Will do this in the next patch version. 
+> Could you please provide your signed-off-by ?
 > 
 
--- 
-Peter Xu
+No need. I suggested some adjustments, but I think your original idea 
+still stands and Vasant's R-b still applies (unless he has an objection 
+to the proposed changes...).
+
+I'm still reviewing the other patches in the series, but might not get 
+to reply until early next week.
+
+Thank you,
+Alejandro
+
+> Thanks
+> Sairaj
+> 
+> .../...
 
 
