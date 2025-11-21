@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1139C7C6CB
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8D9C7C571
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:58:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdFy-0005yz-2A; Fri, 21 Nov 2025 21:21:47 -0500
+	id 1vMdim-0004uI-4C; Fri, 21 Nov 2025 21:51:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdFn-0005o5-BB; Fri, 21 Nov 2025 21:21:36 -0500
+ id 1vMdif-0004sc-Q7; Fri, 21 Nov 2025 21:51:25 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdEi-0004DK-55; Fri, 21 Nov 2025 21:21:32 -0500
+ id 1vMdi4-0006Bt-M3; Fri, 21 Nov 2025 21:51:21 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E918C16C6FC;
- Fri, 21 Nov 2025 16:51:56 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0CBEA16C6FD;
+ Fri, 21 Nov 2025 16:51:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4A544321999;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 623DF32199A;
  Fri, 21 Nov 2025 16:52:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Chenyi Qiang <chenyi.qiang@intel.com>,
- David Hildenbrand <david@redhat.com>, Farrah Chen <farrah.chen@intel.com>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 36/76] ram-block-attributes: fix interaction with
- hugetlb memory backends
-Date: Fri, 21 Nov 2025 16:51:14 +0300
-Message-ID: <20251121135201.1114964-36-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 37/76] hostmem/shm: Allow shm memory backend serve as
+ shared memory for coco-VMs
+Date: Fri, 21 Nov 2025 16:51:15 +0300
+Message-ID: <20251121135201.1114964-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -58,111 +59,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chenyi Qiang <chenyi.qiang@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Currently, CoCo VMs can perform conversion at the base page granularity,
-which is the granularity that has to be tracked. In relevant setups, the
-target page size is assumed to be equal to the host page size, thus
-fixing the block size to the host page size.
+shm can surely serve as the shared memory for coco-VMs. But currently it
+doesn't check the backend->guest_memfd to pass down the RAM_GUEST_MEMFD
+flag. It leads to failure when creating coco-VMs (e.g., TDX guest) which
+require private mmeory.
 
-However, since private memory and shared memory have different backend
-at present, users can specify shared memory with a hugetlbfs backend
-while private memory with guest_memfd backend only supports 4K page
-size. In this scenario, ram_block->page_size is different from the host
-page size which will trigger an assertion when retrieving the block
-size.
+Set and pass down RAM_GUEST_MEMFD when backend->guest_memfd is true, to
+allow shm memory backend serve as shared memory for coco-VMs.
 
-To address this, return the host page size directly to relax the
-restriction. This changes fixes a regression of using hugetlbfs backend
-for shared memory within CoCo VMs, with or without VFIO devices' presence.
-
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Link: https://lore.kernel.org/r/20251023095526.48365-2-chenyi.qiang@intel.com
-[peterx: fix subject, per david]
+Cc: Stefano Garzarella <sgarzare@redhat.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20250721065220.895606-1-xiaoyao.li@intel.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 8922a758b29251d9009ec509e7f580b76509ab3d)
+(cherry picked from commit 75e2cb144191ecdbba87cfea3608cdc0664c8142)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/system/ram-block-attributes.c b/system/ram-block-attributes.c
-index 68e8a02703..a7579de5b4 100644
---- a/system/ram-block-attributes.c
-+++ b/system/ram-block-attributes.c
-@@ -22,16 +22,14 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RamBlockAttributes,
-                                           { })
+diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
+index f66211a2ec..806e2670e0 100644
+--- a/backends/hostmem-shm.c
++++ b/backends/hostmem-shm.c
+@@ -54,6 +54,7 @@ have_fd:
+     /* Let's do the same as memory-backend-ram,share=on would do. */
+     ram_flags = RAM_SHARED;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
++    ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
  
- static size_t
--ram_block_attributes_get_block_size(const RamBlockAttributes *attr)
-+ram_block_attributes_get_block_size(void)
- {
-     /*
-      * Because page conversion could be manipulated in the size of at least 4K
-      * or 4K aligned, Use the host page size as the granularity to track the
-      * memory attribute.
-      */
--    g_assert(attr && attr->ram_block);
--    g_assert(attr->ram_block->page_size == qemu_real_host_page_size());
--    return attr->ram_block->page_size;
-+    return qemu_real_host_page_size();
- }
- 
- 
-@@ -40,7 +38,7 @@ ram_block_attributes_rdm_is_populated(const RamDiscardManager *rdm,
-                                       const MemoryRegionSection *section)
- {
-     const RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
--    const size_t block_size = ram_block_attributes_get_block_size(attr);
-+    const size_t block_size = ram_block_attributes_get_block_size();
-     const uint64_t first_bit = section->offset_within_region / block_size;
-     const uint64_t last_bit =
-         first_bit + int128_get64(section->size) / block_size - 1;
-@@ -81,7 +79,7 @@ ram_block_attributes_for_each_populated_section(const RamBlockAttributes *attr,
- {
-     unsigned long first_bit, last_bit;
-     uint64_t offset, size;
--    const size_t block_size = ram_block_attributes_get_block_size(attr);
-+    const size_t block_size = ram_block_attributes_get_block_size();
-     int ret = 0;
- 
-     first_bit = section->offset_within_region / block_size;
-@@ -122,7 +120,7 @@ ram_block_attributes_for_each_discarded_section(const RamBlockAttributes *attr,
- {
-     unsigned long first_bit, last_bit;
-     uint64_t offset, size;
--    const size_t block_size = ram_block_attributes_get_block_size(attr);
-+    const size_t block_size = ram_block_attributes_get_block_size();
-     int ret = 0;
- 
-     first_bit = section->offset_within_region / block_size;
-@@ -163,7 +161,7 @@ ram_block_attributes_rdm_get_min_granularity(const RamDiscardManager *rdm,
-     const RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
- 
-     g_assert(mr == attr->ram_block->mr);
--    return ram_block_attributes_get_block_size(attr);
-+    return ram_block_attributes_get_block_size();
- }
- 
- static void
-@@ -265,7 +263,7 @@ ram_block_attributes_is_valid_range(RamBlockAttributes *attr, uint64_t offset,
-     g_assert(mr);
- 
-     uint64_t region_size = memory_region_size(mr);
--    const size_t block_size = ram_block_attributes_get_block_size(attr);
-+    const size_t block_size = ram_block_attributes_get_block_size();
- 
-     if (!QEMU_IS_ALIGNED(offset, block_size) ||
-         !QEMU_IS_ALIGNED(size, block_size)) {
-@@ -322,7 +320,7 @@ int ram_block_attributes_state_change(RamBlockAttributes *attr,
-                                       uint64_t offset, uint64_t size,
-                                       bool to_discard)
- {
--    const size_t block_size = ram_block_attributes_get_block_size(attr);
-+    const size_t block_size = ram_block_attributes_get_block_size();
-     const unsigned long first_bit = offset / block_size;
-     const unsigned long nbits = size / block_size;
-     const unsigned long last_bit = first_bit + nbits - 1;
+     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
+                                               backend_name, backend->size,
 -- 
 2.47.3
 
