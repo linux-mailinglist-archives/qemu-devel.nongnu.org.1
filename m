@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9852FC7C295
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A541C7C4B1
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:34:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMctv-0007yz-K6; Fri, 21 Nov 2025 20:59:00 -0500
+	id 1vMd2K-0001MM-2o; Fri, 21 Nov 2025 21:07:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbpK-0002z0-Qu; Fri, 21 Nov 2025 19:50:10 -0500
+ id 1vMcf2-0005vb-Id; Fri, 21 Nov 2025 20:43:36 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbnG-0008IX-7y; Fri, 21 Nov 2025 19:50:06 -0500
+ id 1vMccz-0003ZN-Ga; Fri, 21 Nov 2025 20:43:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 32B1116CA7A;
+ by isrv.corpit.ru (Postfix) with ESMTP id B42F916CA7B;
  Fri, 21 Nov 2025 21:44:28 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E4C14321CB6;
- Fri, 21 Nov 2025 21:44:36 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 37B85321CB7;
+ Fri, 21 Nov 2025 21:44:37 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 63/81] tests: move test_xen assets to share.linaro.org
-Date: Fri, 21 Nov 2025 21:44:02 +0300
-Message-ID: <20251121184424.1137669-63-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 64/81] tests: move test_virt assets to share.linaro.org
+Date: Fri, 21 Nov 2025 21:44:03 +0300
+Message-ID: <20251121184424.1137669-64-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -55,59 +55,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Alex Bennée <alex.bennee@linaro.org>
 
 Linaro are migrating file-hosting from the old NextCloud instance to
-another sharing site.
+another sharing site. While I'm at it drop the old pauth-impdef flag
+which is no longer needed.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251117115523.3993105-7-alex.bennee@linaro.org>
+Message-ID: <20251117115523.3993105-8-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit 863449cc8ec7ff23d41ac71d462e2349e11b3852)
+(cherry picked from commit dfaf3695b20d653338c2f34edbbb552f697033c3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_aarch64_xen.py b/tests/functional/test_aarch64_xen.py
-index 339904221b..d03799cab8 100755
---- a/tests/functional/test_aarch64_xen.py
-+++ b/tests/functional/test_aarch64_xen.py
-@@ -25,8 +25,7 @@ class BootXen(LinuxKernelTest):
-     XEN_COMMON_COMMAND_LINE = 'dom0_mem=128M loglvl=all guest_loglvl=all'
+diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
+index 884aad7af6..249f22d978 100755
+--- a/tests/functional/test_aarch64_virt.py
++++ b/tests/functional/test_aarch64_virt.py
+@@ -64,8 +64,7 @@ def test_alpine_virt_tcg_gic_max(self):
+ 
  
      ASSET_KERNEL = Asset(
--        ('https://fileserver.linaro.org/s/JSsewXGZ6mqxPr5/'
--         'download?path=%2F&files=linux-5.9.9-arm64-ajb'),
-+        'https://share.linaro.org/downloadFile?id=RRahAWwAwYKTZQd',
-         '00366fa51ea957c19462d2e2aefd480bef80ce727120e714ae48e0c88f261edb')
+-        ('https://fileserver.linaro.org/s/'
+-         'z6B2ARM7DQT3HWN/download'),
++        'https://share.linaro.org/downloadFile?id=3zGlbmXh8pXFewt',
+         '12a54d4805cda6ab647cb7c7bbdb16fafb3df400e0d6f16445c1a0436100ef8d')
  
-     def launch_xen(self, xen_path):
-@@ -54,8 +53,7 @@ def launch_xen(self, xen_path):
-         wait_for_console_pattern(self, console_pattern, "Panic on CPU 0:")
- 
-     ASSET_XEN_4_11 = Asset(
--        ('https://fileserver.linaro.org/s/JSsewXGZ6mqxPr5/download?path=%2F&'
--         'files=xen-hypervisor-4.11-arm64_4.11.4%2B37-g3263f257ca-1_arm64.deb'),
-+        'https://share.linaro.org/downloadFile?id=ALU4n2NGGYbE4fO',
-         'b745c2631342f9fcc0147ddc364edb62c20ecfebd430e5a3546e7d7c6891c0bc')
- 
-     def test_arm64_xen_411_and_dom0(self):
-@@ -65,8 +63,7 @@ def test_arm64_xen_411_and_dom0(self):
-         self.launch_xen(xen_path)
- 
-     ASSET_XEN_4_14 = Asset(
--        ('https://fileserver.linaro.org/s/JSsewXGZ6mqxPr5/download?path=%2F&'
--         'files=xen-hypervisor-4.14-arm64_4.14.0%2B80-gd101b417b7-1_arm64.deb'),
-+        'https://share.linaro.org/downloadFile?id=os4zSXPl7WW4lqX',
-         'e930a3293248edabd367d5b4b3b6448b9c99c057096ea8b47228a7870661d5cb')
- 
-     def test_arm64_xen_414_and_dom0(self):
-@@ -76,8 +73,7 @@ def test_arm64_xen_414_and_dom0(self):
-         self.launch_xen(xen_path)
- 
-     ASSET_XEN_4_15 = Asset(
--        ('https://fileserver.linaro.org/s/JSsewXGZ6mqxPr5/download?path=%2F&'
--         'files=xen-upstream-4.15-unstable.deb'),
-+        'https://share.linaro.org/downloadFile?id=jjjG4uTp2wuO4Ks',
-         '2a9a8af8acf0231844657cc28baab95bd918b0ee2d493ee4ee6f8846e1358bc9')
- 
-     def test_arm64_xen_415_and_dom0(self):
+     def common_aarch64_virt(self, machine):
+@@ -83,7 +82,7 @@ def common_aarch64_virt(self, machine):
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'console=ttyAMA0')
+-        self.vm.add_args('-cpu', 'max,pauth-impdef=on',
++        self.vm.add_args('-cpu', 'max',
+                          '-machine', machine,
+                          '-accel', 'tcg',
+                          '-kernel', kernel_path,
 -- 
 2.47.3
 
