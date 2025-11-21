@@ -2,98 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2AAC77BF2
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 08:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC46C77B2F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 08:30:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMLsU-00054t-P1; Fri, 21 Nov 2025 02:48:23 -0500
+	id 1vMLZA-0007Uv-Oh; Fri, 21 Nov 2025 02:28:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMLsF-00053G-6l
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:48:09 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMLsC-0006ho-A9
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:48:05 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-6419e6dab7fso2428385a12.2
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 23:48:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763711282; x=1764316082; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2QHlCaGfSMKRdwqtRWgbF8anpHq+SdRcUndJ2C6EJpk=;
- b=CfBA4gzSub0Sqb5BOeI4vc6XaVwCmJJrdPtbcfeYo85lxjyFJ/UU9ImPbN+MSCmf8R
- qiI0WnsanD4hZaR5dPw2TLCF9sF9K3G1SwyM2hDGqHJs3+vMJhw1949Mu4nfq0Gz+vyH
- Vk+tFmZq39vVnKx2VhskEycqzVQg+4Knmr2Tyq/Je8KfAbwwUNBdydpglQkbw54WjFyA
- hWOwclvXBYpZp8KRIPZhXQATUXKn/c21T5UUj3MeMj8UjZ23SIzZvR8Jsxp1eJdSDo8y
- DSld0sHfmSBAnI4DuRcxTgKB4XMD0pfN69T+KAiLXTe6OujCbKpUgkwY/gboKSTDBxXQ
- fjJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763711282; x=1764316082;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2QHlCaGfSMKRdwqtRWgbF8anpHq+SdRcUndJ2C6EJpk=;
- b=CGMmSbXN4q2PKgqmdCs43Bnjgl1Jk6bo1LaGDAXNlMMQuvm/zeW/aer5asDir9RSVy
- 3wpNvZuwOToePMA2L4NIkVC3awIyLhmSKRzkbnb580UvXoV5Ly8FdlpfdXauGniCYlBe
- 4MU1LzPcSrqdpSokajTjYlWc2TLyPknm1OhvYbs9q0RSL2NWz3QLACkBmJP8lTd/Yd8h
- epc8nU2gxyo/YoGv/6gosEIhLNWiyDzhcxQ+U0GQ6E9hAe73dxHnoTYq2kF0pmxLPWIF
- ocscToQ4epKmzsnR8nJzjeGEue7kTRcI2EPP6QcjA98rsEttD9kUKZskr2LNtcdZpHBX
- Ek5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU1XaDsaK6b0x1c+3iWoYnOHPRdjpMV7dkjQJdgBxmNqhRddFUO3LqDJK2p0yGxP/czBFGUe/IusLNj@nongnu.org
-X-Gm-Message-State: AOJu0Yxh8fFhpj2jKvvGt9gOxDMoONxN6KeFsoPrYN9kBaKQzcNNoxHb
- GIuRUYe+pCE1kY7WfP/k80iMZNr2/njfANQ+NcvM4ktbf8qrjF7bqSzgl3mGlyKnP1WLTDW39cC
- VzPAoWjUwNw==
-X-Gm-Gg: ASbGncsK5T/QPycD2M2iUy3jCN5t+wcQhwpKvhmwguIA+kLrSQ92TH0ruVRXz1JdDf9
- VEucD4wkcCnKZhdmYBUx5MfmInZiLRfS3LUPmY9PRbVdwYTF7wx/Dx8iz5GcFSYhoiqb+IAfyjD
- k5VpIbqqN/54dX0Maw3eo5if7yvcSy7pcp6F86w5T5+53Q0gv+9IfIOpzYp2y3R6ZI8vjZcZh9w
- ezuweBoFdQbVu7g9qwx4/xfGnXaiZl+X8NQWSDOzopnaxP3Tx686FzcbYvNS+KT2C1ymbgBxd9S
- 5MZRTrOmfHOwtS2qoraNmP3bquDxOXmO4GpadB3dyKNMCcOpyEeeOaW3Ju94OcTki3YP8hP6Xge
- 1qFPE61opVFKUEwwY7+jGvAc7GTqYQ371ubeHGXSzpZBmhdYXVJqRSmRC1rJF99Z/OTKjAByV1Q
- L/XtCvUpvhfFq7hlM6FUoBOFXrFwNiuPZTi5EBDa0CyjsQxfBrMBLdRg==
-X-Google-Smtp-Source: AGHT+IHbIcyPgqBOGCDqMzARZWb0patayV39xvk+WMlc/IycWV9IUh/g4u/yzx5vG2abqsAAp1p1aw==
-X-Received: by 2002:a05:600c:354f:b0:477:641a:1402 with SMTP id
- 5b1f17b1804b1-477c016e74bmr11772745e9.4.1763708788613; 
- Thu, 20 Nov 2025 23:06:28 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a9739964sm82685845e9.1.2025.11.20.23.06.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Nov 2025 23:06:28 -0800 (PST)
-Message-ID: <f5892baf-cb8d-4026-9c1c-c8761889729a@linaro.org>
-Date: Fri, 21 Nov 2025 08:06:25 +0100
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vMLYP-00075Q-OY
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:27:39 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vMLN2-0005bb-Ne
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:27:37 -0500
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5AL78RJL090194
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 21 Nov 2025 16:08:27 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=t4ucEnCtr5yTRV+TFbuVApNYKbRehI3sgtcPZiS+A7Q=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1763708907; v=1;
+ b=Hx4iS3dUi4aOofRxeV3EexuEa7oX33B2XdRbLa150ut5EB1TKO3637k5qQiF99XK
+ U8rFf6y4fju8WEPpvkL7EnpCCia3G+H6+C4GLmo3zYi22AZFEylvkikA9hb6YKfn
+ 6Q7uv58iOKTsYIlAvgQCujHsefWIeTbye3hYRyhuYZOhBGg5KTyoktX36NqfD9dG
+ PA7/oNfhxx5JHwlc0VVIhYxfW6Po2wTamiDx+zEMGmjTCMJDQBFUaO/vYPnk/A/Y
+ V0OZZvqa1o1g09OxjVnxXTvRiXvhZTBVniMCyJC/EXo6VB3qQ8PnA542uJmdmORa
+ esNdL2j3M6msSw0dj+/xXQ==
+Message-ID: <bd32aba4-4be8-4c58-a265-5db9383bd707@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 21 Nov 2025 16:08:26 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root
- Port capabilities and enable MSI to support hotplug
+Subject: Re: [PATCH v2 02/10] virtio-gpu: Find hva for Guest's DMA addr
+ associated with a ram device
+To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20251109053801.2267149-1-vivek.kasireddy@intel.com>
+ <20251109053801.2267149-3-vivek.kasireddy@intel.com>
+ <ea2e1bd7-d681-4929-b902-1948b854e488@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB7185866AD30B9A73097934CCF8CCA@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <8b8e3b19-7696-4b7c-8d74-eab2028dcd02@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB71857687EC63A9A8D46476C7F8CDA@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <e9424a92-f612-4cce-abc1-5336949ca71b@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB71852A2F1894A75CE0B7EB13F8C9A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <a5b4e817-93b2-45c3-8c59-21a4b65174b4@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB71852665F80155422F4714E2F8D6A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <329aaeec-0fb6-467b-922a-a17743a62a05@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB7185B46F9919473A37BBFC0DF8D7A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <3c68353c-f62f-4e37-aa4e-3920e9ef0c5f@rsg.ci.i.u-tokyo.ac.jp>
+ <IA0PR11MB7185706A5A2A1A4FD2845D81F8D5A@IA0PR11MB7185.namprd11.prod.outlook.com>
 Content-Language: en-US
-To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, nabihestefan@google.com
-References: <20251121050108.3407445-1-jamin_lin@aspeedtech.com>
- <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <IA0PR11MB7185706A5A2A1A4FD2845D81F8D5A@IA0PR11MB7185.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,31 +90,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/11/25 06:01, Jamin Lin via wrote:
-> This patch updates the ASPEED PCIe Root Port capability layout and interrupt
-> handling to match the hardware-defined capability structure as documented in
-> the PCI Express Controller (PCIE) chapter of the ASPEED SoC datasheet.
+On 2025/11/21 15:56, Kasireddy, Vivek wrote:
+> Hi Akihiko,
 > 
-> The following capability offsets and fields are now aligned with the actual
-> hardware implementation (validated using EVB config-space dumps via
-> 'lspci -s <bdf> -vvv'):
-> 
-> - Added MSI capability at offset 0x50 and enabled 1-vector MSI support
-> - Added PCI Express Capability structure at offset 0x80
-> - Added Secondary Subsystem Vendor ID (SSVID) at offset 0xC0
-> - Added AER capability at offset 0x100
-> - Implemented aer_vector() callback and MSI init/uninit hooks
-> - Updated Root Port SSID to 0x1150 to reflect the platform default
-> 
-> Enabling MSI is required for proper PCIe Hotplug event signaling. This change
-> improves correctness and ensures QEMU Root Port behavior matches the behavior
-> of ASPEED hardware and downstream kernel expectations.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> ---
->   hw/pci-host/aspeed_pcie.c | 40 ++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 39 insertions(+), 1 deletion(-)
+>> Subject: Re: [PATCH v2 02/10] virtio-gpu: Find hva for Guest's DMA addr
+>> associated with a ram device
+>>
+>> On 2025/11/19 14:42, Kasireddy, Vivek wrote:
+>>> Hi Akihiko,
+>>>
+>>>> Subject: Re: [PATCH v2 02/10] virtio-gpu: Find hva for Guest's DMA addr
+>>>> associated with a ram device
+>>>>>>>>>>>> On 2025/11/09 14:33, Vivek Kasireddy wrote:
+>>>>>>>>>>>>> If the Guest provides a DMA address that is associated with a
+>>>> ram
+>>>>>>>>>>>>> device (such as a PCI device region and not its system memory),
+>>>> then
+>>>>>>>>>>>>> we can obtain the hva (host virtual address) by invoking
+>>>>>>>>>>>>> address_space_translate() followed by
+>>>>>>>> memory_region_get_ram_ptr().
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> This is because the ram device's address space is not accessible
+>>>> to
+>>>>>>>>>>>>> virtio-gpu directly and hence dma_memory_map() cannot be
+>>>> used.
+>>>>>>>>>>>>> Therefore, we first need to identify the memory region
+>>>> associated
+>>>>>>>> with
+>>>>>>>>>>>>> the DMA address and figure out if it belongs to a ram device or
+>>>> not
+>>>>>>>>>>>>> and decide how to obtain the host address accordingly.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Note that we take a reference on the memory region if it
+>> belongs
+>>>> to a
+>>>>>>>>>>>>> ram device but we would still call dma_memory_unmap() later
+>>>> (to
+>>>>>>>> unref
+>>>>>>>>>>>>> mr) regardless of how we obtained the hva.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Cc: Marc-André Lureau<marcandre.lureau@redhat.com>
+>>>>>>>>>>>>> Cc: Alex Bennée<alex.bennee@linaro.org>
+>>>>>>>>>>>>> Cc: Akihiko Odaki<odaki@rsg.ci.i.u-tokyo.ac.jp>
+>>>>>>>>>>>>> Cc: Dmitry Osipenko<dmitry.osipenko@collabora.com>
+>>>>>>>>>>>>> Cc: Alex Williamson<alex.williamson@redhat.com>
+>>>>>>>>>>>>> Cc: Cédric Le Goater<clg@redhat.com>
+>>>>>>>>>>>>> Signed-off-by: Vivek Kasireddy<vivek.kasireddy@intel.com>
+>>>>>>>>>>>>> ---
+>>>>>>>>>>>>>         hw/display/virtio-gpu.c | 24 +++++++++++++++++++++---
+>>>>>>>>>>>>>         1 file changed, 21 insertions(+), 3 deletions(-)
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+>>>> index
+>>>>>>>>>>>>> 199b18c746..d352b5afd6 100644
+>>>>>>>>>>>>> --- a/hw/display/virtio-gpu.c
+>>>>>>>>>>>>> +++ b/hw/display/virtio-gpu.c
+>>>>>>>>>>>>> @@ -798,6 +798,26 @@ static void
+>>>>>>>>>> virtio_gpu_set_scanout_blob(VirtIOGPU
+>>>>>>>>>>>> *g,
+>>>>>>>>>>>>>                                       &fb, res, &ss.r, &cmd->error);
+>>>>>>>>>>>>>         }
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> +static void *virtio_gpu_dma_memory_map(VirtIOGPU *g,
+>>>>>>>>>>>>> +                                       struct virtio_gpu_ctrl_command *cmd,
+>>>>>>>>>>>>> +                                       uint64_t a, hwaddr *len) {
+>>>>>>>>>>>>> +    MemoryRegion *mr = NULL;
+>>>>>>>>>>>>> +    hwaddr xlat;
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +    mr = address_space_translate(VIRTIO_DEVICE(g)->dma_as,
+>> a,
+>>>>>>>> &xlat,
+>>>>>>>>>> len,
+>>>>>>>>>>>>> +                                 DMA_DIRECTION_TO_DEVICE,
+>>>>>>>>>>>>> +                                 MEMTXATTRS_UNSPECIFIED);
+>>>>>>>>>>>>> +    if (memory_region_is_ram_device(mr)) {
+>>>>>>>>>>>>> +        memory_region_ref(mr);
+>>>>>>>>>>>>> +        return memory_region_get_ram_ptr(mr) + xlat;
+>>>>>>>>>>>>> +    }
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +    return dma_memory_map(VIRTIO_DEVICE(g)->dma_as, a,
+>> len,
+>>>>>>>>>>>>> +                          DMA_DIRECTION_TO_DEVICE,
+>>>>>>>>>>>>> +                          MEMTXATTRS_UNSPECIFIED);
+>>>>>>>>>>>> This function should:
+>>>>>>>>>>>> - call memory_region_get_ram_ptr(mr)
+>>>>>>>>>>>>          if memory_region_is_ram(mr)
+>>>>>>>>>>>> - return NULL otherwise
+>>>>>>>>>>>>
+>>>>>>>>>>>> There are a few reasons. First, the documentation of
+>>>>>>>>>> dma_memory_map()
+>>>>>>>>>>>> tells to use it "only for reads OR writes - not for read-modify-write
+>>>>>>>>>>>> operations." It can be used for read-modify-write operations so
+>>>>>>>>>>>> dma_memory_map() should be avoided.
+>>>>>>>>>>> This patch series only deals with non-virgl use-cases where AFAICS
+>>>>>>>>>> resources
+>>>>>>>>>>> are not written to on the Host.
+>>>>>>>>>>>
+>>>>>>>>>>>> Second, it ensures that the mapped pointer is writable.
+>>>>>>>>>>>> "[PATCH v2 10/10] virtio-gpu-dmabuf: Create dmabuf for blobs
+>>>>>>>>>> associated
+>>>>>>>>>>>> with VFIO devices" adds checks for memory_region_is_ram() and
+>>>>>>>>>>>> memory_region_is_ram_device() to virtio_gpu_init_dmabuf(),
+>> but
+>>>> the
+>>>>>>>>>> other
+>>>>>>>>>>>> callers also use the function to map writable pointers.
+>>>>>>>>>>> Unless I am missing something, I don't see where writable pointers
+>>>> are
+>>>>>>>>>> used
+>>>>>>>>>>> in non-virgl use-cases?
+>>>>>>>>>> Rutabaga uses too, but you are right about that 2D operations
+>> won't
+>>>> use
+>>>>>>>> it.
+>>>>>>>>>>
+>>>>>>>>>> That said, exposing non-writable memory to Virgl and Rutabaga lets
+>>>> the
+>>>>>>>>>> guest corrupt memory so should be avoided. On the other hand, it
+>> is
+>>>>>>>>>> unlikely that rejecting non-writable memory will cause any
+>> problem.
+>>>> You
+>>>>>>>>>> can also add another code path to use
+>>>>>>>>>> memory_region_supports_direct_access() instead of
+>>>>>>>>>> memory_region_is_ram()
+>>>>>>>>>> for virtio-gpu for 2D and avoid calling memory_region_is_ram() in
+>>>>>>>>>> virtio_gpu_init_dmabuf() if you want to keep non-writable memory
+>>>>>>>> working.
+>>>>>>>>> AFAICS, virtio_gpu_init_dmabuf() is only called in non-virgl/non-
+>>>> rutabaga
+>>>>>>>> code.
+>>>>>>>>> And, this patch series and my use-case (GPU SRIOV) only needs to
+>>>> deal
+>>>>>>>> with
+>>>>>>>>> non-writeable memory because the rendering is already done by the
+>>>>>>>> Guest and
+>>>>>>>>> the Host only needs to display the Guest's FB.
+>>>>>>>>>
+>>>>>>>>> However, I see that virtio_gpu_create_mapping_iov() is used by
+>>>>>>>> virgl/rutabaga
+>>>>>>>>> code as well, so I am wondering how do things work right now given
+>>>> that
+>>>>>>>>> virtio_gpu_create_mapping_iov() always calls dma_memory_map()?
+>>>>>>>>> In other words, is there no problem currently with non-writeable
+>>>> memory
+>>>>>>>>> in virgl/rutabaga use-cases?
+>>>>>>>>
+>>>>>>>> The current code is problematic, and using memory_region_is_ram()
+>>>> will
+>>>>>>>> fix it.
+>>>>>>> Ok, I'll make the change.
+>>>>>>>
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>>>> It also makes the check of memory_region_is_ram_device() and
+>>>>>>>>>>>> memory_region_is_ram() unnecessary for
+>>>> virtio_gpu_init_dmabuf(),
+>>>>>>>>>> reducing
+>>>>>>>>>>>> the overall complexity.
+>>>>>>>>>>> Since buffers reside completely in either ram or ram_device
+>>>> regions,
+>>>>>>>> using
+>>>>>>>>>> both
+>>>>>>>>>>> memory_region_is_ram_device() and memory_region_is_ram() to
+>>>>>> check
+>>>>>>>>>> where
+>>>>>>>>>>> they are located seems necessary and unavoidable.
+>>>>>>>>>> It can unconditionally call virtio_gpu_create_udmabuf(), and if the
+>>>>>>>>>> function finds the memory is incompatible with udmabuf, it can call
+>>>>>>>>>> vfio_device_lookup() to tell if the memory belongs to VFIO or not.
+>>>>>>>>> Yeah, what you suggest is doable but seems a bit convoluted to have
+>>>> to
+>>>>>>>>> first call virtio_gpu_create_udmabuf() and if it fails then call VFIO
+>>>> related
+>>>>>>>>> functions.
+>>>>>>>>>
+>>>>>>>>> I think using memory_region_is_ram_device() and
+>>>>>>>> memory_region_is_ram()
+>>>>>>>>> to identify the right memory region and calling either
+>>>>>>>> virtio_gpu_create_udmabuf()
+>>>>>>>>> or vfio_create_dmabuf() is much more intuitive and readable.
+>>>>>>>>
+>>>>>>>> memory_region_is_ram_device() and memory_region_is_ram() are
+>> not
+>>>>>>>> sufficient to identify the right memory region.
+>>>>>>>> memory_region_is_ram_device() returns true for RAM device created
+>>>> by
+>>>>>>>> non-VFIO devices, and memory_region_is_ram() returns true for
+>>>> memory
+>>>>>>>> regions created with memory_region_init_ram_ptr(), which is not
+>>>> backed
+>>>>>>>> with memfd.
+>>>>>>> Right, but structuring the code in the following way would address your
+>>>>>> concerns
+>>>>>>> and make it more robust:
+>>>>>>>             if (memory_region_is_ram_device(rb->mr) && (vdev =
+>>>>>> vfio_device_lookup(rb->mr))) {
+>>>>>>> 	vfio_create_dmabuf(vdev, res);
+>>>>>>>             } else if (memory_region_is_ram(rb->mr) &&
+>>>>>> virtio_gpu_have_udmabuf()) {
+>>>>>>> 	virtio_gpu_create_udmabuf(res);
+>>>>>>>             } else {
+>>>>>>> 	...
+>>>>>>>             }
+>>>>>>
+>>>>>> One of the concerns I raised is that having such checks has an inherent
+>>>>>> hazard that they can be inconsistent with the actual implementations.
+>>>>>>
+>>>>>> The original checks had such inconsistency, and the updated one still
+>>>>>> have too. memory_region_is_ram(rb->mr) &&
+>>>> virtio_gpu_have_udmabuf()
+>>>>>> can
+>>>>>> be still true even for memory regions that do not have memfd; please
+>>>>>> refer to the example of memory_region_init_ram_ptr() I pointed out in
+>>>>>> the last email.
+>>>>>>
+>>>>>> Even if you somehow managed to write checks that match with the
+>>>>>> implementations, it is still possible that a future change can break it.
+>>>>>> Letting the implementations check their prerequisite conditions
+>>>>>> completely prevents such an error by construction and makes the code
+>>>>>> more robust.
+>>>>> IIUC, your suggestion is to add a check for
+>>>> memory_region_supports_direct_access()
+>>>>> inside virtio_gpu_create_udmabuf() and call it unconditionally right?
+>>>>
+>>>> No, my suggestion is to remove it at all. Creating udmabuf only requires
+>>>> that the memory regions are backed with memfd.
+>>> If we unconditionally call virtio_gpu_create_udmabuf() for VFIO backed
+>> buffers,
+>>> I think it makes sense to return early without having to iterate over all the
+>> iov
+>>> entries to check their memory regions. So, I am thinking adding a
+>>> memory_region_supports_direct_access() or
+>> !memory_region_is_ram_device()
+>>> check would help with this.
+>>
+>> They don't make a difference.
+>>
+>> If the first memory region is backed by VFIO, the loop ends with the
+>> first iteration and you do not need to iterate over all the iov entries.
+>>
+>> If the first memory region is backed by memfd but a succeeding memory
+>> regions is backed by VFIO, checking
+>> memory_region_supports_direct_access() or
+>> !memory_region_is_ram_device()
+>> only for the first memory region is ineffective.
+> Given that we have not yet encountered buffers with mixed memory regions
+> (memfd and VFIO) and since this is only a theoretical possibility at this point
+> (as we have no evidence of their existence), I think it is reasonable to assume
+> that the first entry's memory region is representative of the whole buffer.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Input validation is mandated by docs/devel/secure-coding-practices.rst.
 
+> 
+> In other words, if the first memory region is backed by memfd, then we have
+> to assume that memory regions associated with other entries are also backed
+> by memfd.
+
+Again, memory_region_supports_direct_access() and 
+!memory_region_is_ram_device() do *not* tell if it is backed by memfd.
+
+And memory_region_supports_direct_access() and 
+!memory_region_is_ram_device() still don't make difference even when 
+assuming that all elements point to one memory region and they tell if 
+it is backed by memfd.
+
+If the memory region is backed by memfd, the checks of 
+memory_region_supports_direct_access() and 
+!memory_region_is_ram_device() passes so there will be no change by 
+having them in virtio_gpu_create_udmabuf().
+
+If the memory region is not backed by memfd, the loop in 
+virtio_gpu_create_udmabuf() ends with the first iteration, so there is 
+no real difference.
+
+Regards,
+Akihiko Odaki
 
