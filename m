@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B8FC7C668
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07990C7C371
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:52:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd7r-0005gS-SZ; Fri, 21 Nov 2025 21:13:24 -0500
+	id 1vMd4Q-0002bt-Hr; Fri, 21 Nov 2025 21:09:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcr9-0005wx-UX; Fri, 21 Nov 2025 20:56:07 -0500
+ id 1vMcNz-0005YT-OK; Fri, 21 Nov 2025 20:25:59 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcp7-0006m6-L6; Fri, 21 Nov 2025 20:56:03 -0500
+ id 1vMcLx-0007w9-W3; Fri, 21 Nov 2025 20:25:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C02A116CA56;
+ by isrv.corpit.ru (Postfix) with ESMTP id D34D316CA57;
  Fri, 21 Nov 2025 21:44:23 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7996F321C92;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 90AC6321C93;
  Fri, 21 Nov 2025 21:44:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 27/81] block: remove 'detached-header' option from
- opts after use
-Date: Fri, 21 Nov 2025 21:43:26 +0300
-Message-ID: <20251121184424.1137669-27-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 28/81] block: fix luks 'amend' when run in coroutine
+Date: Fri, 21 Nov 2025 21:43:27 +0300
+Message-ID: <20251121184424.1137669-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -56,55 +54,115 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The code for creating LUKS devices references a 'detached-header'
-option in the QemuOpts  data, but does not consume (remove) the
-option.
+Launch QEMU with
 
-Thus when the code later tries to convert the remaining unused
-QemuOpts into a QCryptoBlockCreateOptions struct, an error is
-reported by the QAPI code that 'detached-header' is not a valid
-field.
+  $ qemu-img create \
+      --object secret,id=sec0,data=123456 \
+      -f luks -o key-secret=sec0 demo.luks 1g
 
-This fixes a regression caused by
+  $ qemu-system-x86_64 \
+      --object secret,id=sec0,data=123456 \
+      -blockdev  driver=luks,key-secret=sec0,file.filename=demo.luks,file.driver=file,node-name=luks
 
-  commit e818c01ae6e7c54c7019baaf307be59d99ce80b9
-  Author: Daniel P. Berrangé <berrange@redhat.com>
-  Date:   Mon Feb 19 15:12:59 2024 +0000
+Then in QMP shell attempt
 
-    qapi: drop unused QCryptoBlockCreateOptionsLUKS.detached-header
+  x-blockdev-amend job-id=fish node-name=luks options={'state':'active','new-secret':'sec0','driver':'luks'}
 
-which identified that the QAPI field was unused, but failed to
-realize the QemuOpts -> QCryptoBlockCreateOptions conversion
-was seeing the left-over 'detached-header' option which had not
-been removed from QemuOpts.
+It will result in an assertion
 
-This problem was identified by the 'luks-detached-header' I/O
-test, but unfortunately I/O tests are not run regularly for the
-LUKS format.
+  #0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
+  #1  0x00007fad18b73f63 in __pthread_kill_internal (threadid=<optimized out>, signo=6) at pthread_kill.c:89
+  #2  0x00007fad18b19f3e in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+  #3  0x00007fad18b016d0 in __GI_abort () at abort.c:77
+  #4  0x00007fad18b01639 in __assert_fail_base
+      (fmt=<optimized out>, assertion=<optimized out>, file=<optimized out>, line=<optimized out>, function=<optimized out>) at assert.c:118
+  #5  0x00007fad18b120af in __assert_fail (assertion=<optimized out>, file=<optimized out>, line=<optimized out>, function=<optimized out>)
+      at assert.c:127
+  #6  0x000055ff74fdbd46 in bdrv_graph_rdlock_main_loop () at ../block/graph-lock.c:260
+  #7  0x000055ff7548521b in graph_lockable_auto_lock_mainloop (x=<optimized out>)
+      at /usr/src/debug/qemu-9.2.4-1.fc42.x86_64/include/block/graph-lock.h:266
+  #8  block_crypto_read_func (block=<optimized out>, offset=4096, buf=0x55ffb6d66ef0 "", buflen=256000, opaque=0x55ffb5edcc30, errp=0x55ffb6f00700)
+      at ../block/crypto.c:71
+  #9  0x000055ff75439f8b in qcrypto_block_luks_load_key
+      (block=block@entry=0x55ffb5edbe90, slot_idx=slot_idx@entry=0, password=password@entry=0x55ffb67dc260 "123456", masterkey=masterkey@entry=0x55ffb5fb0c40 "", readfunc=readfunc@entry=0x55ff754851e0 <block_crypto_read_func>, opaque=opaque@entry=0x55ffb5edcc30, errp=0x55ffb6f00700)
+      at ../crypto/block-luks.c:927
+  #10 0x000055ff7543b90f in qcrypto_block_luks_find_key
+      (block=<optimized out>, password=<optimized out>, masterkey=<optimized out>, readfunc=<optimized out>, opaque=<optimized out>, errp=<optimized out>) at ../crypto/block-luks.c:1045
+  #11 qcrypto_block_luks_amend_add_keyslot
+      (block=0x55ffb5edbe90, readfunc=0x55ff754851e0 <block_crypto_read_func>, writefunc=0x55ff75485100 <block_crypto_write_func>, opaque=0x55ffb5edcc3, opts_luks=0x7fad1715aef8, force=<optimized out>, errp=0x55ffb6f00700) at ../crypto/block-luks.c:1673
+  #12 qcrypto_block_luks_amend_options
+      (block=0x55ffb5edbe90, readfunc=0x55ff754851e0 <block_crypto_read_func>, writefunc=0x55ff75485100 <block_crypto_write_func>, opaque=0x55ffb5edcc30, options=0x7fad1715aef0, force=<optimized out>, errp=0x55ffb6f00700) at ../crypto/block-luks.c:1865
+  #13 0x000055ff75485b95 in block_crypto_amend_options_generic_luks
+      (bs=<optimized out>, amend_options=<optimized out>, force=<optimized out>, errp=<optimized out>) at ../block/crypto.c:949
+  #14 0x000055ff75485c28 in block_crypto_co_amend_luks (bs=<optimized out>, opts=<optimized out>, force=<optimized out>, errp=<optimized out>)
+      at ../block/crypto.c:1008
+  #15 0x000055ff754778e5 in blockdev_amend_run (job=0x55ffb6f00640, errp=0x55ffb6f00700) at ../block/amend.c:52
+  #16 0x000055ff75468b90 in job_co_entry (opaque=0x55ffb6f00640) at ../job.c:1106
+  #17 0x000055ff755a0fc2 in coroutine_trampoline (i0=<optimized out>, i1=<optimized out>) at ../util/coroutine-ucontext.c:175
 
-Fixes: e818c01ae6e7c54c7019baaf307be59d99ce80b9
-Reported-by: Thomas Huth <thuth@redhat.com>
+This changes the read/write callbacks to not assert that they
+are run in mainloop context if already in a coroutine.
+
+This is also reproduced by qemu-iotests cases 295 and 296.
+
+Fixes: 1f051dcbdf2e4b6f518db731c84e304b2b9d15ce
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250919103810.1513109-1-berrange@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20250919112213.1530079-1-berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 6eda39a87f4fda78befa4085e3644e4440afc1dd)
+(cherry picked from commit c86488abaf017ed3f5a636c3247cd640a93d3b08)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/block/crypto.c b/block/crypto.c
-index d4226cc68a..17b4749a1e 100644
+index 17b4749a1e..7c37b23e36 100644
 --- a/block/crypto.c
 +++ b/block/crypto.c
-@@ -792,7 +792,7 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
-     char *buf = NULL;
-     int64_t size;
-     bool detached_hdr =
--        qemu_opt_get_bool(opts, "detached-header", false);
-+        qemu_opt_get_bool_del(opts, "detached-header", false);
-     unsigned int cflags = 0;
-     int ret;
-     Error *local_err = NULL;
+@@ -67,11 +67,18 @@ static int block_crypto_read_func(QCryptoBlock *block,
+     BlockCrypto *crypto = bs->opaque;
+     ssize_t ret;
+ 
+-    GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    if (qemu_in_coroutine()) {
++        GRAPH_RDLOCK_GUARD();
+ 
+-    ret = bdrv_pread(crypto->header ? crypto->header : bs->file,
+-                     offset, buflen, buf, 0);
++        ret = bdrv_co_pread(crypto->header ? crypto->header : bs->file,
++                            offset, buflen, buf, 0);
++    } else {
++        GLOBAL_STATE_CODE();
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
++
++        ret = bdrv_pread(crypto->header ? crypto->header : bs->file,
++                         offset, buflen, buf, 0);
++    }
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not read encryption header");
+         return ret;
+@@ -90,11 +97,18 @@ static int block_crypto_write_func(QCryptoBlock *block,
+     BlockCrypto *crypto = bs->opaque;
+     ssize_t ret;
+ 
+-    GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    if (qemu_in_coroutine()) {
++        GRAPH_RDLOCK_GUARD();
+ 
+-    ret = bdrv_pwrite(crypto->header ? crypto->header : bs->file,
+-                      offset, buflen, buf, 0);
++        ret = bdrv_co_pwrite(crypto->header ? crypto->header : bs->file,
++                             offset, buflen, buf, 0);
++    } else {
++        GLOBAL_STATE_CODE();
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
++
++        ret = bdrv_pwrite(crypto->header ? crypto->header : bs->file,
++                          offset, buflen, buf, 0);
++    }
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not write encryption header");
+         return ret;
 -- 
 2.47.3
 
