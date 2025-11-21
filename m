@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5901FC7C36E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 719F0C7C5FF
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:26:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdf8-0000am-KU; Fri, 21 Nov 2025 21:47:47 -0500
+	id 1vMdL0-0005fT-QK; Fri, 21 Nov 2025 21:26:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdb8-0005qi-0R; Fri, 21 Nov 2025 21:43:38 -0500
+ id 1vMdKp-0005ZA-VG; Fri, 21 Nov 2025 21:26:48 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdZv-0003IO-4O; Fri, 21 Nov 2025 21:43:34 -0500
+ id 1vMdJs-00061a-58; Fri, 21 Nov 2025 21:26:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 90FF116C724;
+ by isrv.corpit.ru (Postfix) with ESMTP id A20D316C725;
  Fri, 21 Nov 2025 16:52:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id EC5373219C0;
- Fri, 21 Nov 2025 16:52:08 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 09E933219C1;
+ Fri, 21 Nov 2025 16:52:09 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 75/76] target/i386: svm: fix sign extension of exit
- code
-Date: Fri, 21 Nov 2025 16:51:53 +0300
-Message-ID: <20251121135201.1114964-75-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 76/76] target/i386: fix stack size when delivering
+ real mode interrupts
+Date: Fri, 21 Nov 2025 16:51:54 +0300
+Message-ID: <20251121135201.1114964-76-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -59,61 +59,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-The exit_code parameter of cpu_vmexit is declared as uint32_t, but exit
-codes are 64 bits wide according to the AMD SVM specification.  And because
-uint32_t is unsigned, this causes exit codes to be zero-extended, for example
-writing SVM_EXIT_ERR as 0xffff_ffff instead of the expected 0xffff_ffff_ffff_ffff.
+The stack can be 32-bit even in real mode, and in this case
+the stack pointer must be updated in its entirety rather than
+just the bottom 16 bits.  The same is true of real mode IRET,
+for which there was even a comment suggesting the right thing
+to do.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2977
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1506
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 9c3afb9d9b92d166d227b43d890c6a8ad33a928d)
+(cherry picked from commit 106d766c9d5b549bc9780d2d2c519aa2bbebc89a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
-index be011b06b7..e41cbda407 100644
---- a/target/i386/tcg/helper-tcg.h
-+++ b/target/i386/tcg/helper-tcg.h
-@@ -99,7 +99,7 @@ void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index f49fe851cd..de49d21756 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -1160,7 +1160,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
+     sa.env = env;
+     sa.ra = 0;
+     sa.sp = env->regs[R_ESP];
+-    sa.sp_mask = 0xffff;
++    sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.ss_base = env->segs[R_SS].base;
+     sa.mmu_index = x86_mmu_index_pl(env, 0);
  
- /* system/svm_helper.c */
- #ifndef CONFIG_USER_ONLY
--G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint32_t exit_code,
-+G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint64_t exit_code,
-                            uint64_t exit_info_1, uintptr_t retaddr);
- void do_vmexit(CPUX86State *env);
- #endif
-diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
-index dea039b87a..e09dd44588 100644
---- a/target/i386/tcg/system/svm_helper.c
-+++ b/target/i386/tcg/system/svm_helper.c
-@@ -128,7 +128,7 @@ static inline bool virtual_gif_enabled(CPUX86State *env)
-     return false;
- }
+@@ -1960,7 +1960,7 @@ void helper_iret_real(CPUX86State *env, int shift)
+     sa.env = env;
+     sa.ra = GETPC();
+     sa.mmu_index = x86_mmu_index_pl(env, 0);
+-    sa.sp_mask = 0xffff; /* XXXX: use SS segment size? */
++    sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
+     sa.sp = env->regs[R_ESP];
+     sa.ss_base = env->segs[R_SS].base;
  
--static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint32_t exit_code, uintptr_t retaddr)
-+static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint64_t exit_code, uintptr_t retaddr)
- {
-     uint64_t lbr_ctl;
- 
-@@ -723,7 +723,7 @@ void helper_svm_check_io(CPUX86State *env, uint32_t port, uint32_t param,
-     }
- }
- 
--void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
-+void cpu_vmexit(CPUX86State *env, uint64_t exit_code, uint64_t exit_info_1,
-                 uintptr_t retaddr)
- {
-     CPUState *cs = env_cpu(env);
-@@ -732,7 +732,7 @@ void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
- 
-     qemu_log_mask(CPU_LOG_TB_IN_ASM, "vmexit(%08x, %016" PRIx64 ", %016"
-                   PRIx64 ", " TARGET_FMT_lx ")!\n",
--                  exit_code, exit_info_1,
-+                  (uint32_t)exit_code, exit_info_1,
-                   x86_ldq_phys(cs, env->vm_vmcb + offsetof(struct vmcb,
-                                                    control.exit_info_2)),
-                   env->eip);
 -- 
 2.47.3
 
