@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA32C78312
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3002C78318
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:39:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNbG-0005iq-31; Fri, 21 Nov 2025 04:38:42 -0500
+	id 1vMNbJ-0005lE-9f; Fri, 21 Nov 2025 04:38:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNbD-0005i6-GV
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNbF-0005ix-Hb
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNbC-0004Ft-1a
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:39 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNbE-0004G7-49
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763717917;
+ s=mimecast20190719; t=1763717919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DeDRoWBB9TbgKtU6mS6Xjj7Vuu0DKHi3TUFj2HD7JBs=;
- b=Ydi884vudomejFpSaEGLSvQbURMqsThaxFv87k9b8q8gaxPCMTeg+F9JBIB5DiS5Gp+LSK
- VJ+2GiSYlyomhlDovqJItWsGD2AGGlDO5wvTZ9xFAUL64Wa+9PawvcwIERGY2K0JlXq6pV
- 99YLxztYTFI0K2TKNH7L/YM7X0tA+Dw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Advk8nTouYTDMnPgDAojC/bT/uqHZiQIY13UhsNpTNM=;
+ b=N1uy2kQbT7Iqf/Tv07DuZBW0hFJTZQTEem5h+b3g42LCoV95TH97GeGj120BhNhiOQj2fa
+ SVrUP5fy+IejVwG+oC0SjOUSHS7qYMq/aWBBmwzGKLQzJI4obrccakEDHK9PEbECXRN5Ly
+ NhsHYdDZ5n9COU6DlGVIbT1aQj18Au4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-nzniYfLSMtu6FXD1_H-P_g-1; Fri,
- 21 Nov 2025 04:38:33 -0500
-X-MC-Unique: nzniYfLSMtu6FXD1_H-P_g-1
-X-Mimecast-MFC-AGG-ID: nzniYfLSMtu6FXD1_H-P_g_1763717912
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-k2Tuq18FNiC7QXr5u6fSQw-1; Fri,
+ 21 Nov 2025 04:38:35 -0500
+X-MC-Unique: k2Tuq18FNiC7QXr5u6fSQw-1
+X-Mimecast-MFC-AGG-ID: k2Tuq18FNiC7QXr5u6fSQw_1763717914
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00B5D19560B5; Fri, 21 Nov 2025 09:38:32 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 187F3195608F; Fri, 21 Nov 2025 09:38:34 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.78])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6C05530044DB; Fri, 21 Nov 2025 09:38:30 +0000 (UTC)
+ id 743BD30044DB; Fri, 21 Nov 2025 09:38:32 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Glenn Miles <milesg@linux.ibm.com>
-Subject: [PULL 07/10] tests/functional/ppc/test_ppe42: Fix style issues
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/10] tests/functional/aarch64/test_reverse_debug: Fix issues
  reported by pylint
-Date: Fri, 21 Nov 2025 10:38:09 +0100
-Message-ID: <20251121093812.280911-8-thuth@redhat.com>
+Date: Fri, 21 Nov 2025 10:38:10 +0100
+Message-ID: <20251121093812.280911-9-thuth@redhat.com>
 In-Reply-To: <20251121093812.280911-1-thuth@redhat.com>
 References: <20251121093812.280911-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,66 +84,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Pylint suggests to write some parts of the code in a slightly different
-way ... thus rework the code to make the linter happy.
+Don't use underscores in CamelCase names and drop an unused import.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251119082636.43286-11-thuth@redhat.com>
+Message-ID: <20251119082636.43286-13-thuth@redhat.com>
 ---
- tests/functional/ppc/test_ppe42.py | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/functional/aarch64/test_reverse_debug.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/ppc/test_ppe42.py b/tests/functional/ppc/test_ppe42.py
-index 26bbe11b2d3..7b360a40a54 100644
---- a/tests/functional/ppc/test_ppe42.py
-+++ b/tests/functional/ppc/test_ppe42.py
-@@ -6,8 +6,9 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/tests/functional/aarch64/test_reverse_debug.py b/tests/functional/aarch64/test_reverse_debug.py
+index ec3348c96d8..e9fa4479d73 100755
+--- a/tests/functional/aarch64/test_reverse_debug.py
++++ b/tests/functional/aarch64/test_reverse_debug.py
+@@ -14,11 +14,11 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
  
--from qemu_test import QemuSystemTest, Asset
- import asyncio
-+from qemu_test import QemuSystemTest, Asset
-+
+-from qemu_test import Asset, skipFlakyTest
++from qemu_test import Asset
+ from reverse_debugging import ReverseDebugging
  
- class Ppe42Machine(QemuSystemTest):
  
-@@ -30,13 +31,13 @@ def _test_completed(self):
-             raise
+-class ReverseDebugging_AArch64(ReverseDebugging):
++class ReverseDebuggingAArch64(ReverseDebugging):
  
-         self.log.info(output)
--        if "NIP fff80200" in output:
--            self.log.info("<test completed>")
--            return True
--        else:
-+        if "NIP fff80200" not in output:
-             self.log.info("<test not completed>")
-             return False
- 
-+        self.log.info("<test completed>")
-+        return True
-+
-     def _wait_pass_fail(self, timeout):
-         while not self._test_completed():
-             if timeout >= self.poll_period:
-@@ -49,14 +50,13 @@ def _wait_pass_fail(self, timeout):
- 
-                 except asyncio.TimeoutError:
-                     self.log.info("Poll period ended.")
--                    pass
- 
-                 except Exception as err:
-                     self.log.debug(f"event_wait() failed due to {err=},"
-                                     " {type(err)=}")
-                     raise
- 
--                if e != None:
-+                if e is not None:
-                     self.log.debug(f"Execution stopped: {e}")
-                     self.log.debug("Exiting due to test failure")
-                     self.fail("Failure detected!")
+     ASSET_KERNEL = Asset(
+         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
 -- 
 2.51.1
 
