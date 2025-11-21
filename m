@@ -2,57 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01F6C7C28C
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A296C7C2B4
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:20:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcze-0004CF-PC; Fri, 21 Nov 2025 21:04:55 -0500
+	id 1vMcle-0001px-NW; Fri, 21 Nov 2025 20:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vMcAD-0006iy-Py; Fri, 21 Nov 2025 20:11:45 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vMbSb-000683-6i; Fri, 21 Nov 2025 19:26:41 -0500
+Received: from mail-westeuropeazlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c201::1] helo=AM0PR83CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vMcA0-0004dw-RP; Fri, 21 Nov 2025 20:11:41 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5ALC1MwC000804
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 21 Nov 2025 21:01:23 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=4NXv6EwW2QRaAJOJTTRauVs49o3MSdW1+DjtNFk7ULA=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1763726483; v=1;
- b=Zcs3Lxe7pUp14O5Dz4a+mw4zarbdGUhX2XwCU92UTBhbYpQ4pr78dFWfrlE9bs8e
- MUAgKWqDe1tYw6Pu8xwn8ThJfseZnP0txcHPd1pBDeS0S2qUPccNnlfED2o7ECDU
- FdOZUHUl2hGl2gv0IL1Jd4Ql9z2gl9jkEkZhf6kigj6IcidXgdbckxtTns/nem1e
- RRs/de18dmo0qGB37yWL7460jvdh3TztnL31XTpY5oAzJogoN7rM3nSEtIaBspkq
- HaZoouiG+ZZlFPJZWJgRSevs68gDQqpHH740prXHLnK2BqFTnFv7XAViat/0YoMN
- P86SmuW/1M/oUpryATsuTw==
-Message-ID: <2aab212b-0770-4cdf-a30f-5b914e815543@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 21 Nov 2025 21:01:22 +0900
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vMbSN-0003H8-1v; Fri, 21 Nov 2025 19:26:35 -0500
+Received: from AS4PR08MB8219.eurprd08.prod.outlook.com (2603:10a6:20b:51e::11)
+ by PAWPR08MB9099.eurprd08.prod.outlook.com (2603:10a6:102:343::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
+ 2025 23:14:16 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yhZ9BCpIriLEBeyqhRDsOfcXYoVrX2gV/GMrs69R09zuYDBgXOhECFt1+xQttyDILAptEoacvteuzi6H7y92feoqApoAqH4bVo5W2zXQvV64P9R6HCd+yL40ziZXEg1UxiF/Q7HsNE4K/dECGfQqfE7NnJcJYNjLz++ZrIPnnymRxsZU23vn2Z/2OxUT4sj/nE3k7lxZnde82jHxyP6Z0JDyka/5PufLZRaFu9hZTbuNyOOQZLFzYL/YfiEs2HpNsbpeUiy7Qug4FFVL8igLgK+yEQLT7/SNOTI8GxmnULt2jpfg004yHBaKnb1LSNO+SjxKwSkadXFeOM/LT+YrIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dt+hRAHGvIOBogp/qmj46ioEqG0gvO/P/9T/O3+b7wg=;
+ b=Go96wwYq4ZmCYwydOmKiNNxpgDeTBNk+yPTnEd9zCi7qaaR3cAkDmqQUwn82QXss+Kxe9vo2qLqHMpPd8V8hQP+cw67+PR/l0xxEadXbJJ8YvT0JA59qIQq7lp6hs+MCQiwu4N5aFmD7TU8Ja17MtQd3DKlikLCn1MpLhLCv9LqLD+Q4VJAA9J2fnpu1jDMFUAUBilb585NHVAkkapf/DNJXxG+10csC1OzdvMLtne8yE9umaGYZZysNf26WLW0MgBvGGEjq/a5yh62jiZrvDn97SApE7a36M2haCfRMbJ7M//lGqmz1EhNR+NiyWmri054qam0jzaHj3RG9tqykXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dt+hRAHGvIOBogp/qmj46ioEqG0gvO/P/9T/O3+b7wg=;
+ b=AEm8nMPoa8qBXgtgurLzFXfAzFx+VIT98uPEl34yBwlfl6JtoTfIrh8OqSILLqDRxzJNE4sRQRSmYiI32hb94C/bubI+T6fMKJjFyKgW19TMe+yLqUU9Hj/yLSZC2dF+LcTQdLJdtruuNCuHk2wgAs3yjhL5WKjtYNGWRXL4bMX38xJFNncEKj97kl4ecsXGK0VOeQhAU0wHbqgR+/2mH1t9auiJeNqwWLDHxkneFK0OfPJqgwqgK+6uf5t1KHByTUOOpoxoHvoRXk9PefWjnsPh/tX5seRXk1CRPfVFk0wtnLKYw7k+azptrKsrdNpeMGaJtmD8WxS6mri1Y4zZIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AS4PR08MB8219.eurprd08.prod.outlook.com
+ (2603:10a6:20b:51e::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 12:04:43 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
+ 12:04:43 +0000
+Message-ID: <8ac88a67-6c41-429a-897a-2d5cea59bd63@virtuozzo.com>
+Date: Fri, 21 Nov 2025 14:01:57 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 14/28] whpx: change memory management logic
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Xu <peterx@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-References: <20251121100240.89117-1-mohamed@unpredictable.fr>
- <20251121100240.89117-15-mohamed@unpredictable.fr>
+Subject: Re: [PATCH] block-backend: Fix race when resuming queued requests
+To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
+Cc: hreitz@redhat.com, den@virtuozzo.com, f.ebner@proxmox.com,
+ qemu-stable@nongnu.org, qemu-devel@nongnu.org
+References: <20251119172720.135424-1-kwolf@redhat.com>
 Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251121100240.89117-15-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20251119172720.135424-1-kwolf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-ClientProxiedBy: FR4P281CA0026.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c9::11) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS4PR08MB8219:EE_|PAWPR08MB9099:EE_
+X-MS-Office365-Filtering-Correlation-Id: 996dafa6-5d2c-4faf-5253-08de28f6280b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UkJubzNUdEwwSkZ3Wjhrb01tMTl0Y3k2UU1SZnhXMUxSNWpWOElNUjFHMGVm?=
+ =?utf-8?B?Ykg3a24rajk0enN2V1dManE1aStJYXl5R2JJc0xvcTAzVW9sNXc0eWJVVjFG?=
+ =?utf-8?B?T0RrQmRwcW00dGpOZ2xmWDl0NW5BUTdQSmdXN0ZhRWI0NjQvbFVya2pFQXlp?=
+ =?utf-8?B?RGpDVVhPRE1renJ0bDAxWDFHRFgyMVZLSnVzY08zVUdpUHVzd1crTnB3Wk1m?=
+ =?utf-8?B?WHhxazhaRjVBN3JDRHB3a1g3d1FTaVNuOHdpTmNqOHBqRXdCNm5uQi9Qc1Ar?=
+ =?utf-8?B?YU12elIwRFJRcUVlUlo5TmFBSDltY2xXbjYrOXQzdTVoSGRrazNpRzIwR0hD?=
+ =?utf-8?B?dVdoWlgvSzJub2dURVI5Q1JYZTBrTFVnWjVPR3A4Qlp4bzVkUGNURWVEU1lu?=
+ =?utf-8?B?b3dyTHEyN01EaFF1a2JuWExLVVJ1UFdNQW9CNmVzbVg4bW5tOVhYWmxKKys5?=
+ =?utf-8?B?VlY3UEhMWWVESE15UDExZndLejh5K3RibjgvNjJmNmRJdkt4aXl6RzhJK3Rp?=
+ =?utf-8?B?aW01RlNmaHRjSHM1Z2FvSURPM3NRK1Nlb2djSUpFT3VpaWQraFpkbmpKSkdV?=
+ =?utf-8?B?ZWZYaEFSTS8wa2cva1hLVVFoVUJKd21Va2ZtRVdpcEZpWEV6bW54c1AvT1dV?=
+ =?utf-8?B?SE12WkM2NU1jWTU3VHlZcEVHLzk1WTNhQktwcGtMclZDdG1UM1lITU04Z1VS?=
+ =?utf-8?B?T2U3VHNtYm1CUHVrTTJVcE5nWnFjSHczbU9mN1k0ajArbUdxZFE4MmxWSm8y?=
+ =?utf-8?B?RHdwcjRnVmZmY1c3YzJQSDB4d2t4UVRLNVFSbHRySVc2RHh5ZzV2bit0VVgw?=
+ =?utf-8?B?aGV0WGM2UTBocWxha0FScjV6ODFzdUFTRkg5Um16RGY5ek5xTjlGVUJaQThj?=
+ =?utf-8?B?Rm9tVVJZRVBpWGdiam9YVXJrak1IVmhQTnJiL1J2aEZjOTBjT0RQeWg3dnhx?=
+ =?utf-8?B?b1p5Tm92Ky9tUkJsYXN1UldaTXdWRFZYU0RSZHpUR3lyaUdMT1BLdDRyQzRo?=
+ =?utf-8?B?OTJkMStMci9CTWl5Rk9FWlU3YmZOY0FQRlV6dExrZmJpSUJGQWlEeGwwZUs0?=
+ =?utf-8?B?K2w5eTdFd1oyVTFvdHY1OGdTTTJiTWpRenlsblpXUmh6TENQOTFVNVlnM3R5?=
+ =?utf-8?B?MzZDN2tGcHRXSjZOUW5zQy9NajU3TEVJWFg2bklleWRyMWs3bTJqVFZ2RjJO?=
+ =?utf-8?B?RWFVaEt4STREWnlFTEw5T0tHeEhkQk1BR1A3eGd1eUw3ZFhwOGFxVTgvQnZo?=
+ =?utf-8?B?anZ1NU9wdzZkZnlEbTU3dFU2TVBGajJlTHVpa3VVTG5DSUQ5RHdPQ3B2Mzh3?=
+ =?utf-8?B?cTA1VVBKMHNqdmlMWG5hWm53QlBFWG9Ca25xQ0p0WDJmdWZCeXJDRWtPVXkv?=
+ =?utf-8?B?aGpPTE5nZVkxdmQyUzRxcjlRSEJxU3V3UC9sOVFQSkp1TlAzc0diQ1VObE9R?=
+ =?utf-8?B?Y3FqWlRQcWxET3FYR205cFRNTzErRmo2YnRocG5oZzZtcUtRRFg4VkR1MjZz?=
+ =?utf-8?B?bVZ0azNOYjZvczJWNzUyRm9KbThiazBHUzhrZC92c1JtWEpjR2NRb0pkTHNq?=
+ =?utf-8?B?WGxSQmNwOEN3MGxOaGhtcDZtU0lZN09XQWt4aTlqZEx3Z09qU0RPOG9LNFRr?=
+ =?utf-8?B?VC9IeEZwbVpCMGxwMSs3ZE44UHpienlaOWRwZ21PZStqTmw4dlBaVTBKcmRB?=
+ =?utf-8?B?MEtNTWU2d0NiVHNPY2RoaEM2WDBiTnVudmJMbEN5ZDFxTkpKUTE2UEhRSWlS?=
+ =?utf-8?B?c1AveUd1dW5qaThtV3VhUkluRWZpYkVwZmdNaVk0K0g4L01POVBhMlcyYnpP?=
+ =?utf-8?B?dHhnQjlsYVdjOVJwOVhHK2JQZ1hGU3cyMXlXWCtJWlBxNzdHbjFDUnYxQXUx?=
+ =?utf-8?B?eVRLQ2VWZzRtTFBvU2IxankvU1UyRFZ0aStOYkxQZWJwTWxiQWttelpPU3Nw?=
+ =?utf-8?Q?Du0rIW37DO4LJrtPE3aL4lwWqf8ahO9X?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHg4NUxKanZYOERlSjRUY3RFbHBiRUNWUUZGaTcrMHlYKzRPMG03ZW1GeHlD?=
+ =?utf-8?B?eFZ1bUFWNE1sWnVWV2dydExReDQ0TjMzRjhYV0pnaXFUWjl5aFZyOWRNY0I2?=
+ =?utf-8?B?QmZrdDZCOVM4SkU5RWNNMEFNMUJqcVRWUjgvYVl5ZU5sUTFObFdxRnl4T3pR?=
+ =?utf-8?B?VVd1LzBwVVRSekNTNU41QWQ5ZWtjWDg4YVBZYm5yRk0xMzk3NERFbnVLL0VY?=
+ =?utf-8?B?S3BlZ2RZQXlqUGs0YUI3cXBXSjFuWStiaDRPeGtQb205dWllY0R6V1BKSFlS?=
+ =?utf-8?B?eGFXY2tuT2tVSFM2QUx0KzZ2YVNyN281RGs1enExRWxFS25zRGZhQk16bHVV?=
+ =?utf-8?B?TUoxV1FjRysrd0tjRkE1NEZVZ3UyWnEzeE9lNTV4dlY5TzZQTWVLNHplUGsz?=
+ =?utf-8?B?ejVlcnJpenN5K0xzNUk4VnpyQ1FiY09pRHBIZXBRVnVzaUVreCtRWmhsdC9G?=
+ =?utf-8?B?SnZFOXpaeHlid3pqRlZmKzFHcXRLTTZJMkhJUXBaKzJ1aUY3NXVoWmRPeWkz?=
+ =?utf-8?B?UVppSzExQXNMUkxLRm1WTzRla2ZhV3M3TENLVS9QMzZ2RndPMEJXemFrMnUr?=
+ =?utf-8?B?Yk5RMlVOL3JvMnA3djF2MXNwVklVZWgxYWR5dFN5YmpjcG5mR1oyL0VGcHJE?=
+ =?utf-8?B?eWtWY0lRNWoxQUtIS1NDWXJMYTM0T3FYa0t0WFk0akh1aTcwU3BRRUpqYUh1?=
+ =?utf-8?B?VzBvT2cxVWh0cE1CVDRmdVNBa3JlQTF4dThaeHhpM2JqeU01NGJpcHU1c2V5?=
+ =?utf-8?B?ZzZlanpUMytLbzNIbHV3aHVBNldRZUZ5MzhHbGVYaFN6WDJiOFAzMDFyUFFl?=
+ =?utf-8?B?V3NnNTY4R1ZHZytqTG0rMlNlQlVNODdiMERXYzhCUnhveitNZC9TOGdLS1ph?=
+ =?utf-8?B?bkxaTDhsekIyM0lzMUpZbEoyUDJzYUp6aU9LWS9yckQzcVcybDdxd2VQTVAr?=
+ =?utf-8?B?SnhJYmgyRmJlMHhFeEU3ZVNIMUl0eUdlZktTekVHOWRCdFdFeVBkN3JoSnVa?=
+ =?utf-8?B?c1F5R2l5dWRuTlhXMnFydzZYUnhKdVpFMGduVHZPOEkxU3FQK3JjTkFrUk9j?=
+ =?utf-8?B?aERGQlZDK1Vib0hBNHVYVm9PQUdIb1FUYTlRbFhrY1lmT1AyV2Y2cElqNTRP?=
+ =?utf-8?B?TjY4dStZQmw0N3FzSEpUTXloNnBrZHV5aEFrQnZBeHd1MExmSGo0NG4vOUQ0?=
+ =?utf-8?B?bVp4THJoSDgySndta3ZnOEFGZ2dka09kekt5amlXNWdheVFqUkJ5Mlk1SktH?=
+ =?utf-8?B?YnJNTFZySC9acDVib3RZZHB1UGdrWEhXbVdkaVFjdUJyMjBSZnd4NjQ5dmZO?=
+ =?utf-8?B?bGNvZkZudVlhVEM1YXd0N1lRaVlBZXFsMTlUYUtDZFpYcElTLzBxL0xya25G?=
+ =?utf-8?B?KzBodHAwNW4xY1czNmFKSVB2clFIcklhZHArSFQ0Q0t4UWtHK0FPb3FGVU8v?=
+ =?utf-8?B?L2oxTGdRN3ptUDFzNHMydm0xcnd0NHJoN2pCczBDbno1RzNpMGNQQ3Vvb1k2?=
+ =?utf-8?B?K0VyNnE1YkxVbzJRR3FGU1J6b2k0Y2tBRk1Ra1FHK2lLT0h4elVUSXV4NW9C?=
+ =?utf-8?B?L3RKRHZxQVVEYlhPazBuazQ0WjRudmJOdXp5V2s0WHFOREN5M2pLeW1nUUlX?=
+ =?utf-8?B?M1NMTHlUZysvK1BlaGpZMDJ4RTdtcER2WFRGelFpVlVYeU0zaEZFL1hyWEdz?=
+ =?utf-8?B?UGRkeUtxZmNHUFBsRkJ6S2pZNEFDNnV2aW10VzBsL3hKYUxSclRDTlk4MFdE?=
+ =?utf-8?B?RVNldHBmdlJHNk05ay9JZTBMVzVIOUxSdGFDcmszQ2s1NWQvMDJQYlFDa2hy?=
+ =?utf-8?B?ajk4ZTBJdndRRjNyandUSmlVOUh2alFUSHVkNjkxR0IvVi9YMDU4Nzd4M0xH?=
+ =?utf-8?B?KzhyVFdNUDVDaE51RGpRbmhEa2RrTnR1cjFPV2JNeXE4OGxVNWwrYjY2dGFh?=
+ =?utf-8?B?RTZVRUNscnNiRUFYRVRMa29UM2tGc1VFaWFWb3V0dkl5Q3ZDUFFaeWFpU1ln?=
+ =?utf-8?B?RGRUa2YrZVB2S1hselM2YXNtVWJweXRKY1J0czdEZUQyUXkzTlprS3BuOU1G?=
+ =?utf-8?B?OWNDcTlQY2dGUWlqb05MaE1CREZKUzZuVnFEV3dUTDI4OWZzbWk4TUgvaWZP?=
+ =?utf-8?B?eWlNVGc2TjRsM0lVY0pEV2J4cU90dVVDRHduZ2tjWWdFME0zM29pd0ZXTU5M?=
+ =?utf-8?B?aUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 996dafa6-5d2c-4faf-5253-08de28f6280b
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 12:04:43.4182 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Oxg2yKkMUihk2xDNBhaseNg2pTJARl28SzL1+NGS+1H/aH5ay5T4l/5C+oCHC3yQQKOjrMCbWUg75Q3uIZNvlRFF12LXuzG7jKXanKhXGMY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB8219
+X-OriginatorOrg: virtuozzo.com
+Received-SPF: pass client-ip=2a01:111:f403:c201::1;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=AM0PR83CU005.outbound.protection.outlook.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,151 +172,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/21 19:02, Mohamed Mediouni wrote:
-> This allows edk2 to work on Arm, although u-boot is still not functional.
+On 11/19/25 7:27 PM, Kevin Wolf wrote:
+> When new requests arrive at a BlockBackend that is currently drained,
+> these requests are queued until the drain section ends.
 > 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> There is a race window between blk_root_drained_end() waking up a queued
+> request in an iothread from the main thread and blk_wait_while_drained()
+> actually being woken up in the iothread and calling blk_in_flight(). If
+> the BlockBackend is drained again during this window, drain won't wait
+> for this request and it will sneak in when the BlockBackend is already
+> supposed to be quiesced. This causes assertion failures in
+> bdrv_drain_all_begin() and can have other unintended consequences.
+> 
+> Fix this by increasing the in_flight counter immediately when scheduling
+> the request to be resumed so that the next drain will wait for it to
+> complete.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > ---
->   accel/whpx/whpx-common.c | 101 +++++++++++++++------------------------
->   1 file changed, 38 insertions(+), 63 deletions(-)
-> 
-> diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-> index 399cf1914c..53b8cb06cc 100644
-> --- a/accel/whpx/whpx-common.c
-> +++ b/accel/whpx/whpx-common.c
-> @@ -259,89 +259,64 @@ void whpx_vcpu_kick(CPUState *cpu)
->    * Memory support.
->    */
->   
-> -static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
-> -                                void *host_va, int add, int rom,
-> -                                const char *name)
-> +static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
->   {
->       struct whpx_state *whpx = &whpx_global;
-> -    HRESULT hr;
-> -
-> -    /*
-> -    if (add) {
-> -        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
-> -               (void*)start_pa, (void*)size, host_va,
-> -               (rom ? "ROM" : "RAM"), name);
-> -    } else {
-> -        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
-> -               (void*)start_pa, (void*)size, host_va, name);
-> -    }
-> -    */
-> -
-> -    if (add) {
-> -        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
-> -                                         host_va,
-> -                                         start_pa,
-> -                                         size,
-> -                                         (WHvMapGpaRangeFlagRead |
-> -                                          WHvMapGpaRangeFlagExecute |
-> -                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
-> -    } else {
-> -        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-> -                                           start_pa,
-> -                                           size);
-> -    }
-> -
-> -    if (FAILED(hr)) {
-> -        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
-> -                     " Host:%p, hr=%08lx",
-> -                     (add ? "MAP" : "UNMAP"), name,
-> -                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
-> +    MemoryRegion *area = section->mr;
-> +    bool writable = !area->readonly && !area->rom_device;
-> +    WHV_MAP_GPA_RANGE_FLAGS flags;
-> +    uint64_t page_size = qemu_real_host_page_size();
-> +    uint64_t gva = section->offset_within_address_space;
-> +    uint64_t size = int128_get64(section->size);
-> +    HRESULT res;
+>  block/block-backend.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
-Let's keep it named as hr for consistency.
+I can confirm that the crash is no longer reproducible with this fix
+applied.  Thanks for looking into this!
 
-> +    void *mem;
-> +
-> +    if (!memory_region_is_ram(area)) {
-> +        if (writable) {
-> +            return;
-> +        } else if (!memory_region_is_romd(area)) {
-> +             add = false;
-> +        }
->       }
-> -}
-> -
-> -static void whpx_process_section(MemoryRegionSection *section, int add)
-> -{
-> -    MemoryRegion *mr = section->mr;
-> -    hwaddr start_pa = section->offset_within_address_space;
-> -    ram_addr_t size = int128_get64(section->size);
-> -    unsigned int delta;
-> -    uint64_t host_va;
->   
-> -    if (!memory_region_is_ram(mr)) {
-> -        return;
-> +    if (!QEMU_IS_ALIGNED(size, page_size) ||
-> +        !QEMU_IS_ALIGNED(gva, page_size)) {
-> +        /* Not page aligned, so we can not map as RAM */
-> +        add = false;
->       }
->   
-> -    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
-> -    delta &= ~qemu_real_host_page_mask();
-> -    if (delta > size) {
-> -        return;
-> -    }
-> -    start_pa += delta;
-> -    size -= delta;
-> -    size &= qemu_real_host_page_mask();
-> -    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
-> +    if (!add) {
-> +        res = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-> +                gva, size);
-> +        if (!SUCCEEDED(res)) {
-
-Simpler: if (FAILED(res))
-
-> +            error_report("WHPX: failed to unmap GPA range");
-> +            abort();
-> +        }
->           return;
->       }
->   
-> -    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
-> -            + section->offset_within_region + delta;
-> +    flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute
-> +     | (writable ? WHvMapGpaRangeFlagWrite : 0);
-> +    mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
->   
-> -    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
-> -                        memory_region_is_rom(mr), mr->name);
-> +    res = whp_dispatch.WHvMapGpaRange(whpx->partition,
-> +         mem, gva, size, flags);
-> +    if (!SUCCEEDED(res)) {
-> +        error_report("WHPX: failed to map GPA range");
-> +        abort();
-> +    }
->   }
->   
->   static void whpx_region_add(MemoryListener *listener,
->                              MemoryRegionSection *section)
->   {
-> -    memory_region_ref(section->mr);
-> -    whpx_process_section(section, 1);
-> +    whpx_set_phys_mem(section, true);
->   }
->   
->   static void whpx_region_del(MemoryListener *listener,
->                              MemoryRegionSection *section)
->   {
-> -    whpx_process_section(section, 0);
-> -    memory_region_unref(section->mr);
-> +    whpx_set_phys_mem(section, false);
->   }
->   
->   static void whpx_transaction_begin(MemoryListener *listener)
-
+Tested-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
