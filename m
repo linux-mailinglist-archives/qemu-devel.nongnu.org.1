@@ -2,162 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A296C7C2B4
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46C7C7C4E4
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:37:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcle-0001px-NW; Fri, 21 Nov 2025 20:50:27 -0500
+	id 1vMczl-0004Ei-4l; Fri, 21 Nov 2025 21:05:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vMbSb-000683-6i; Fri, 21 Nov 2025 19:26:41 -0500
-Received: from mail-westeuropeazlp170100001.outbound.protection.outlook.com
- ([2a01:111:f403:c201::1] helo=AM0PR83CU005.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vMcAd-0006wz-Rd; Fri, 21 Nov 2025 20:12:13 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vMbSN-0003H8-1v; Fri, 21 Nov 2025 19:26:35 -0500
-Received: from AS4PR08MB8219.eurprd08.prod.outlook.com (2603:10a6:20b:51e::11)
- by PAWPR08MB9099.eurprd08.prod.outlook.com (2603:10a6:102:343::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 23:14:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yhZ9BCpIriLEBeyqhRDsOfcXYoVrX2gV/GMrs69R09zuYDBgXOhECFt1+xQttyDILAptEoacvteuzi6H7y92feoqApoAqH4bVo5W2zXQvV64P9R6HCd+yL40ziZXEg1UxiF/Q7HsNE4K/dECGfQqfE7NnJcJYNjLz++ZrIPnnymRxsZU23vn2Z/2OxUT4sj/nE3k7lxZnde82jHxyP6Z0JDyka/5PufLZRaFu9hZTbuNyOOQZLFzYL/YfiEs2HpNsbpeUiy7Qug4FFVL8igLgK+yEQLT7/SNOTI8GxmnULt2jpfg004yHBaKnb1LSNO+SjxKwSkadXFeOM/LT+YrIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dt+hRAHGvIOBogp/qmj46ioEqG0gvO/P/9T/O3+b7wg=;
- b=Go96wwYq4ZmCYwydOmKiNNxpgDeTBNk+yPTnEd9zCi7qaaR3cAkDmqQUwn82QXss+Kxe9vo2qLqHMpPd8V8hQP+cw67+PR/l0xxEadXbJJ8YvT0JA59qIQq7lp6hs+MCQiwu4N5aFmD7TU8Ja17MtQd3DKlikLCn1MpLhLCv9LqLD+Q4VJAA9J2fnpu1jDMFUAUBilb585NHVAkkapf/DNJXxG+10csC1OzdvMLtne8yE9umaGYZZysNf26WLW0MgBvGGEjq/a5yh62jiZrvDn97SApE7a36M2haCfRMbJ7M//lGqmz1EhNR+NiyWmri054qam0jzaHj3RG9tqykXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dt+hRAHGvIOBogp/qmj46ioEqG0gvO/P/9T/O3+b7wg=;
- b=AEm8nMPoa8qBXgtgurLzFXfAzFx+VIT98uPEl34yBwlfl6JtoTfIrh8OqSILLqDRxzJNE4sRQRSmYiI32hb94C/bubI+T6fMKJjFyKgW19TMe+yLqUU9Hj/yLSZC2dF+LcTQdLJdtruuNCuHk2wgAs3yjhL5WKjtYNGWRXL4bMX38xJFNncEKj97kl4ecsXGK0VOeQhAU0wHbqgR+/2mH1t9auiJeNqwWLDHxkneFK0OfPJqgwqgK+6uf5t1KHByTUOOpoxoHvoRXk9PefWjnsPh/tX5seRXk1CRPfVFk0wtnLKYw7k+azptrKsrdNpeMGaJtmD8WxS6mri1Y4zZIA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AS4PR08MB8219.eurprd08.prod.outlook.com
- (2603:10a6:20b:51e::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
- 2025 12:04:43 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
- 12:04:43 +0000
-Message-ID: <8ac88a67-6c41-429a-897a-2d5cea59bd63@virtuozzo.com>
-Date: Fri, 21 Nov 2025 14:01:57 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block-backend: Fix race when resuming queued requests
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: hreitz@redhat.com, den@virtuozzo.com, f.ebner@proxmox.com,
- qemu-stable@nongnu.org, qemu-devel@nongnu.org
-References: <20251119172720.135424-1-kwolf@redhat.com>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20251119172720.135424-1-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0026.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::11) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vMcAS-0004dw-Pt; Fri, 21 Nov 2025 20:12:08 -0500
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5ALC5PTd002022
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 21 Nov 2025 21:05:25 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=+5GNtLSFKyQzhBbZfhNfyO2/GtHz4fBldl1unhI9Xjk=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1763726725; v=1;
+ b=HrL0XQTYBRNpwmKEEvNw+rk36Pgg+a+5ccfZxKvh6MMUZ0VBkoHzMT27L70nfY1M
+ YuCyfoooSAQ0H1IV4ygZtI1W7jWQEEmRZa3fyDFaCTEDXr2b5PRqryUpgGsg+Bt9
+ aUmcgEJF0EcfU+OdZSpo0+yHOscJZcNaQM+srxu/G4XaqyAql6EkXBm8jn67At6E
+ bzIxs+b3dIkFv1FDs42eH3f5JwW4nOmdEoc2W62CJ/3qQzG9j0Y9OV6oCwAXvseb
+ FSX0Lgt+ryLD8JyppJX++nT3hMhw3zgglACgI8iYfLtLFNSGvmFUFb97GtjwiCwz
+ RcXVuV/AOOIMWkVhEr0BvA==
+Message-ID: <6ffd15c9-3928-4b66-a004-e9864432773e@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 21 Nov 2025 21:05:25 +0900
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS4PR08MB8219:EE_|PAWPR08MB9099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 996dafa6-5d2c-4faf-5253-08de28f6280b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UkJubzNUdEwwSkZ3Wjhrb01tMTl0Y3k2UU1SZnhXMUxSNWpWOElNUjFHMGVm?=
- =?utf-8?B?Ykg3a24rajk0enN2V1dManE1aStJYXl5R2JJc0xvcTAzVW9sNXc0eWJVVjFG?=
- =?utf-8?B?T0RrQmRwcW00dGpOZ2xmWDl0NW5BUTdQSmdXN0ZhRWI0NjQvbFVya2pFQXlp?=
- =?utf-8?B?RGpDVVhPRE1renJ0bDAxWDFHRFgyMVZLSnVzY08zVUdpUHVzd1crTnB3Wk1m?=
- =?utf-8?B?WHhxazhaRjVBN3JDRHB3a1g3d1FTaVNuOHdpTmNqOHBqRXdCNm5uQi9Qc1Ar?=
- =?utf-8?B?YU12elIwRFJRcUVlUlo5TmFBSDltY2xXbjYrOXQzdTVoSGRrazNpRzIwR0hD?=
- =?utf-8?B?dVdoWlgvSzJub2dURVI5Q1JYZTBrTFVnWjVPR3A4Qlp4bzVkUGNURWVEU1lu?=
- =?utf-8?B?b3dyTHEyN01EaFF1a2JuWExLVVJ1UFdNQW9CNmVzbVg4bW5tOVhYWmxKKys5?=
- =?utf-8?B?VlY3UEhMWWVESE15UDExZndLejh5K3RibjgvNjJmNmRJdkt4aXl6RzhJK3Rp?=
- =?utf-8?B?aW01RlNmaHRjSHM1Z2FvSURPM3NRK1Nlb2djSUpFT3VpaWQraFpkbmpKSkdV?=
- =?utf-8?B?ZWZYaEFSTS8wa2cva1hLVVFoVUJKd21Va2ZtRVdpcEZpWEV6bW54c1AvT1dV?=
- =?utf-8?B?SE12WkM2NU1jWTU3VHlZcEVHLzk1WTNhQktwcGtMclZDdG1UM1lITU04Z1VS?=
- =?utf-8?B?T2U3VHNtYm1CUHVrTTJVcE5nWnFjSHczbU9mN1k0ajArbUdxZFE4MmxWSm8y?=
- =?utf-8?B?RHdwcjRnVmZmY1c3YzJQSDB4d2t4UVRLNVFSbHRySVc2RHh5ZzV2bit0VVgw?=
- =?utf-8?B?aGV0WGM2UTBocWxha0FScjV6ODFzdUFTRkg5Um16RGY5ek5xTjlGVUJaQThj?=
- =?utf-8?B?Rm9tVVJZRVBpWGdiam9YVXJrak1IVmhQTnJiL1J2aEZjOTBjT0RQeWg3dnhx?=
- =?utf-8?B?b1p5Tm92Ky9tUkJsYXN1UldaTXdWRFZYU0RSZHpUR3lyaUdMT1BLdDRyQzRo?=
- =?utf-8?B?OTJkMStMci9CTWl5Rk9FWlU3YmZOY0FQRlV6dExrZmJpSUJGQWlEeGwwZUs0?=
- =?utf-8?B?K2w5eTdFd1oyVTFvdHY1OGdTTTJiTWpRenlsblpXUmh6TENQOTFVNVlnM3R5?=
- =?utf-8?B?MzZDN2tGcHRXSjZOUW5zQy9NajU3TEVJWFg2bklleWRyMWs3bTJqVFZ2RjJO?=
- =?utf-8?B?RWFVaEt4STREWnlFTEw5T0tHeEhkQk1BR1A3eGd1eUw3ZFhwOGFxVTgvQnZo?=
- =?utf-8?B?anZ1NU9wdzZkZnlEbTU3dFU2TVBGajJlTHVpa3VVTG5DSUQ5RHdPQ3B2Mzh3?=
- =?utf-8?B?cTA1VVBKMHNqdmlMWG5hWm53QlBFWG9Ca25xQ0p0WDJmdWZCeXJDRWtPVXkv?=
- =?utf-8?B?aGpPTE5nZVkxdmQyUzRxcjlRSEJxU3V3UC9sOVFQSkp1TlAzc0diQ1VObE9R?=
- =?utf-8?B?Y3FqWlRQcWxET3FYR205cFRNTzErRmo2YnRocG5oZzZtcUtRRFg4VkR1MjZz?=
- =?utf-8?B?bVZ0azNOYjZvczJWNzUyRm9KbThiazBHUzhrZC92c1JtWEpjR2NRb0pkTHNq?=
- =?utf-8?B?WGxSQmNwOEN3MGxOaGhtcDZtU0lZN09XQWt4aTlqZEx3Z09qU0RPOG9LNFRr?=
- =?utf-8?B?VC9IeEZwbVpCMGxwMSs3ZE44UHpienlaOWRwZ21PZStqTmw4dlBaVTBKcmRB?=
- =?utf-8?B?MEtNTWU2d0NiVHNPY2RoaEM2WDBiTnVudmJMbEN5ZDFxTkpKUTE2UEhRSWlS?=
- =?utf-8?B?c1AveUd1dW5qaThtV3VhUkluRWZpYkVwZmdNaVk0K0g4L01POVBhMlcyYnpP?=
- =?utf-8?B?dHhnQjlsYVdjOVJwOVhHK2JQZ1hGU3cyMXlXWCtJWlBxNzdHbjFDUnYxQXUx?=
- =?utf-8?B?eVRLQ2VWZzRtTFBvU2IxankvU1UyRFZ0aStOYkxQZWJwTWxiQWttelpPU3Nw?=
- =?utf-8?Q?Du0rIW37DO4LJrtPE3aL4lwWqf8ahO9X?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHg4NUxKanZYOERlSjRUY3RFbHBiRUNWUUZGaTcrMHlYKzRPMG03ZW1GeHlD?=
- =?utf-8?B?eFZ1bUFWNE1sWnVWV2dydExReDQ0TjMzRjhYV0pnaXFUWjl5aFZyOWRNY0I2?=
- =?utf-8?B?QmZrdDZCOVM4SkU5RWNNMEFNMUJqcVRWUjgvYVl5ZU5sUTFObFdxRnl4T3pR?=
- =?utf-8?B?VVd1LzBwVVRSekNTNU41QWQ5ZWtjWDg4YVBZYm5yRk0xMzk3NERFbnVLL0VY?=
- =?utf-8?B?S3BlZ2RZQXlqUGs0YUI3cXBXSjFuWStiaDRPeGtQb205dWllY0R6V1BKSFlS?=
- =?utf-8?B?eGFXY2tuT2tVSFM2QUx0KzZ2YVNyN281RGs1enExRWxFS25zRGZhQk16bHVV?=
- =?utf-8?B?TUoxV1FjRysrd0tjRkE1NEZVZ3UyWnEzeE9lNTV4dlY5TzZQTWVLNHplUGsz?=
- =?utf-8?B?ejVlcnJpenN5K0xzNUk4VnpyQ1FiY09pRHBIZXBRVnVzaUVreCtRWmhsdC9G?=
- =?utf-8?B?SnZFOXpaeHlid3pqRlZmKzFHcXRLTTZJMkhJUXBaKzJ1aUY3NXVoWmRPeWkz?=
- =?utf-8?B?UVppSzExQXNMUkxLRm1WTzRla2ZhV3M3TENLVS9QMzZ2RndPMEJXemFrMnUr?=
- =?utf-8?B?Yk5RMlVOL3JvMnA3djF2MXNwVklVZWgxYWR5dFN5YmpjcG5mR1oyL0VGcHJE?=
- =?utf-8?B?eWtWY0lRNWoxQUtIS1NDWXJMYTM0T3FYa0t0WFk0akh1aTcwU3BRRUpqYUh1?=
- =?utf-8?B?VzBvT2cxVWh0cE1CVDRmdVNBa3JlQTF4dThaeHhpM2JqeU01NGJpcHU1c2V5?=
- =?utf-8?B?ZzZlanpUMytLbzNIbHV3aHVBNldRZUZ5MzhHbGVYaFN6WDJiOFAzMDFyUFFl?=
- =?utf-8?B?V3NnNTY4R1ZHZytqTG0rMlNlQlVNODdiMERXYzhCUnhveitNZC9TOGdLS1ph?=
- =?utf-8?B?bkxaTDhsekIyM0lzMUpZbEoyUDJzYUp6aU9LWS9yckQzcVcybDdxd2VQTVAr?=
- =?utf-8?B?SnhJYmgyRmJlMHhFeEU3ZVNIMUl0eUdlZktTekVHOWRCdFdFeVBkN3JoSnVa?=
- =?utf-8?B?c1F5R2l5dWRuTlhXMnFydzZYUnhKdVpFMGduVHZPOEkxU3FQK3JjTkFrUk9j?=
- =?utf-8?B?aERGQlZDK1Vib0hBNHVYVm9PQUdIb1FUYTlRbFhrY1lmT1AyV2Y2cElqNTRP?=
- =?utf-8?B?TjY4dStZQmw0N3FzSEpUTXloNnBrZHV5aEFrQnZBeHd1MExmSGo0NG4vOUQ0?=
- =?utf-8?B?bVp4THJoSDgySndta3ZnOEFGZ2dka09kekt5amlXNWdheVFqUkJ5Mlk1SktH?=
- =?utf-8?B?YnJNTFZySC9acDVib3RZZHB1UGdrWEhXbVdkaVFjdUJyMjBSZnd4NjQ5dmZO?=
- =?utf-8?B?bGNvZkZudVlhVEM1YXd0N1lRaVlBZXFsMTlUYUtDZFpYcElTLzBxL0xya25G?=
- =?utf-8?B?KzBodHAwNW4xY1czNmFKSVB2clFIcklhZHArSFQ0Q0t4UWtHK0FPb3FGVU8v?=
- =?utf-8?B?L2oxTGdRN3ptUDFzNHMydm0xcnd0NHJoN2pCczBDbno1RzNpMGNQQ3Vvb1k2?=
- =?utf-8?B?K0VyNnE1YkxVbzJRR3FGU1J6b2k0Y2tBRk1Ra1FHK2lLT0h4elVUSXV4NW9C?=
- =?utf-8?B?L3RKRHZxQVVEYlhPazBuazQ0WjRudmJOdXp5V2s0WHFOREN5M2pLeW1nUUlX?=
- =?utf-8?B?M1NMTHlUZysvK1BlaGpZMDJ4RTdtcER2WFRGelFpVlVYeU0zaEZFL1hyWEdz?=
- =?utf-8?B?UGRkeUtxZmNHUFBsRkJ6S2pZNEFDNnV2aW10VzBsL3hKYUxSclRDTlk4MFdE?=
- =?utf-8?B?RVNldHBmdlJHNk05ay9JZTBMVzVIOUxSdGFDcmszQ2s1NWQvMDJQYlFDa2hy?=
- =?utf-8?B?ajk4ZTBJdndRRjNyandUSmlVOUh2alFUSHVkNjkxR0IvVi9YMDU4Nzd4M0xH?=
- =?utf-8?B?KzhyVFdNUDVDaE51RGpRbmhEa2RrTnR1cjFPV2JNeXE4OGxVNWwrYjY2dGFh?=
- =?utf-8?B?RTZVRUNscnNiRUFYRVRMa29UM2tGc1VFaWFWb3V0dkl5Q3ZDUFFaeWFpU1ln?=
- =?utf-8?B?RGRUa2YrZVB2S1hselM2YXNtVWJweXRKY1J0czdEZUQyUXkzTlprS3BuOU1G?=
- =?utf-8?B?OWNDcTlQY2dGUWlqb05MaE1CREZKUzZuVnFEV3dUTDI4OWZzbWk4TUgvaWZP?=
- =?utf-8?B?eWlNVGc2TjRsM0lVY0pEV2J4cU90dVVDRHduZ2tjWWdFME0zM29pd0ZXTU5M?=
- =?utf-8?B?aUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 996dafa6-5d2c-4faf-5253-08de28f6280b
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 12:04:43.4182 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Oxg2yKkMUihk2xDNBhaseNg2pTJARl28SzL1+NGS+1H/aH5ay5T4l/5C+oCHC3yQQKOjrMCbWUg75Q3uIZNvlRFF12LXuzG7jKXanKhXGMY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB8219
-X-OriginatorOrg: virtuozzo.com
-Received-SPF: pass client-ip=2a01:111:f403:c201::1;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=AM0PR83CU005.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 17/28] hw: arm: virt: rework MSI-X configuration
+To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org, Pedro Barbuda <pbarbuda@microsoft.com>,
+ Peter Xu <peterx@redhat.com>, Mads Ynddal <mads@ynddal.dk>
+References: <20251121100240.89117-1-mohamed@unpredictable.fr>
+ <20251121100240.89117-18-mohamed@unpredictable.fr>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20251121100240.89117-18-mohamed@unpredictable.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -172,31 +67,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/19/25 7:27 PM, Kevin Wolf wrote:
-> When new requests arrive at a BlockBackend that is currently drained,
-> these requests are queued until the drain section ends.
+On 2025/11/21 19:02, Mohamed Mediouni wrote:
+> Introduce a -M msi= argument to be able to control MSI-X support independently
+> from ITS, as part of supporting GICv3 + GICv2m platforms.
 > 
-> There is a race window between blk_root_drained_end() waking up a queued
-> request in an iothread from the main thread and blk_wait_while_drained()
-> actually being woken up in the iothread and calling blk_in_flight(). If
-> the BlockBackend is drained again during this window, drain won't wait
-> for this request and it will sneak in when the BlockBackend is already
-> supposed to be quiesced. This causes assertion failures in
-> bdrv_drain_all_begin() and can have other unintended consequences.
+> Remove vms->its as it's no longer needed after that change.
 > 
-> Fix this by increasing the in_flight counter immediately when scheduling
-> the request to be resumed so that the next drain will wait for it to
-> complete.
-> 
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 > ---
->  block/block-backend.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>   hw/arm/virt-acpi-build.c |   3 +-
+>   hw/arm/virt.c            | 111 +++++++++++++++++++++++++++++++--------
+>   include/hw/arm/virt.h    |   4 +-
+>   3 files changed, 94 insertions(+), 24 deletions(-)
+> 
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index c8ac58b64e..15e6239e5f 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -962,8 +962,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>           }
+>       }
+>   
+> -    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms))
+> -     && !vms->no_gicv3_with_gicv2m) {
+> +    if (virt_is_gicv2m_enabled(vms)) {
+>           const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
+>   
+>           /* 5.2.12.16 GIC MSI Frame Structure */
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index ddc6d4d3b1..7b776187f8 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -967,12 +967,12 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>   
+>       fdt_add_gic_node(vms);
+>   
+> -    if (vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms)) {
+> +    if (virt_is_its_enabled(vms)) {
+>           create_its(vms);
+> -    } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
+> -        create_v2m(vms);
+> -    } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
+> +    } else if (virt_is_gicv2m_enabled(vms)) {
+>           create_v2m(vms);
+> +    } else {
+> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
+>       }
+>   }
+>   
+> @@ -2713,32 +2713,94 @@ static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
+>   
+>   bool virt_is_its_enabled(VirtMachineState *vms)
+>   {
+> -    if (vms->its == ON_OFF_AUTO_OFF) {
+> -        return false;
+> +    switch (vms->msi_controller) {
+> +        case VIRT_MSI_CTRL_NONE:
+> +            return false;
+> +        case VIRT_MSI_CTRL_ITS:
+> +            return true;
+> +        case VIRT_MSI_CTRL_GICV2M:
+> +            return false;
+> +        case VIRT_MSI_CTRL_AUTO:
+> +            if (whpx_enabled() && whpx_irqchip_in_kernel()) {
+> +                return false;
+> +            }
+> +            if (vms->gic_version == VIRT_GIC_VERSION_2) {
+> +                return false;
+> +            }
+> +            return true;
+> +        default:
+> +            return false;
+>       }
+> -    if (vms->its == ON_OFF_AUTO_AUTO) {
+> -        if (whpx_enabled()) {
+> +}
+> +
+> +bool virt_is_gicv2m_enabled(VirtMachineState *vms)
+> +{
+> +    switch (vms->msi_controller) {
+> +        case VIRT_MSI_CTRL_NONE:
+>               return false;
+> -        }
+> +        default:
+> +            return !virt_is_its_enabled(vms);
+>       }
+> -    return true;
+>   }
+>   
+> -static void virt_get_its(Object *obj, Visitor *v, const char *name,
+> -                          void *opaque, Error **errp)
+> +static char *virt_get_msi(Object *obj, Error **errp)
+>   {
+>       VirtMachineState *vms = VIRT_MACHINE(obj);
+> -    OnOffAuto its = vms->its;
+> +    const char *val;
+>   
+> -    visit_type_OnOffAuto(v, name, &its, errp);
+> +    switch (vms->msi_controller) {
+> +    case VIRT_MSI_CTRL_NONE:
+> +        val = "off";
+> +        break;
+> +    case VIRT_MSI_CTRL_ITS:
+> +        val = "its";
+> +        break;
+> +    case VIRT_MSI_CTRL_GICV2M:
+> +        val = "gicv2m";
+> +        break;
+> +    default:
+> +        val = "auto";
+> +        break;
+> +    }
+> +    return g_strdup(val);
+>   }
+>   
+> -static void virt_set_its(Object *obj, Visitor *v, const char *name,
+> -                          void *opaque, Error **errp)
+> +static void virt_set_msi(Object *obj, const char *value, Error **errp)
+>   {
+>       VirtMachineState *vms = VIRT_MACHINE(obj);
+>   
+> -    visit_type_OnOffAuto(v, name, &vms->its, errp);
+> +    if (!strcmp(value, "auto")) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_AUTO; /* Will be overriden later */
+> +    } else if (!strcmp(value, "its")) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_ITS;
+> +    } else if (!strcmp(value, "gicv2m")) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
+> +    } else if (!strcmp(value, "none")) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
+> +    } else {
+> +        error_setg(errp, "Invalid msi value");
+> +        error_append_hint(errp, "Valid values are auto, gicv2m, its, off\n");
 
-I can confirm that the crash is no longer reproducible with this fix
-applied.  Thanks for looking into this!
+This should have ERRP_GUARD().
 
-Tested-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> +    }
+> +}
+> +
+> +static bool virt_get_its(Object *obj, Error **errp)
+> +{
+> +    VirtMachineState *vms = VIRT_MACHINE(obj);
+> +
+> +    return virt_is_its_enabled(vms);
+> +}
+> +
+> +static void virt_set_its(Object *obj, bool value, Error **errp)
+> +{
+> +    VirtMachineState *vms = VIRT_MACHINE(obj);
+> +
+> +    if (value) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_ITS;
+> +    } else if (vms->no_gicv3_with_gicv2m) {
+> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
+> +    } else {
+> +        vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
+> +    }
+>   }
+>   
+>   static bool virt_get_dtb_randomness(Object *obj, Error **errp)
+> @@ -3065,6 +3127,8 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+>               db_start = base_memmap[VIRT_GIC_V2M].base;
+>               db_end = db_start + base_memmap[VIRT_GIC_V2M].size - 1;
+>               break;
+> +        case VIRT_MSI_CTRL_AUTO:
+> +            g_assert_not_reached();
+>           }
+>           resv_prop_str = g_strdup_printf("0x%"PRIx64":0x%"PRIx64":%u",
+>                                           db_start, db_end,
+> @@ -3455,13 +3519,18 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+>                                             "guest CPU which implements the ARM "
+>                                             "Memory Tagging Extension");
+>   
+> -    object_class_property_add(oc, "its", "OnOffAuto",
+> -        virt_get_its, virt_set_its,
+> -        NULL, NULL);
+> +    object_class_property_add_bool(oc, "its", virt_get_its,
+> +                                   virt_set_its);
+>       object_class_property_set_description(oc, "its",
+>                                             "Set on/off to enable/disable "
+>                                             "ITS instantiation");
+>   
+> +    object_class_property_add_str(oc, "msi", virt_get_msi,
+> +                                  virt_set_msi);
+> +    object_class_property_set_description(oc, "msi",
+> +                                          "Set MSI settings. "
+> +                                          "Valid values are auto/gicv2m/its/off");
+> +
+>       object_class_property_add_bool(oc, "dtb-randomness",
+>                                      virt_get_dtb_randomness,
+>                                      virt_set_dtb_randomness);
+> @@ -3518,7 +3587,7 @@ static void virt_instance_init(Object *obj)
+>       vms->highmem_redists = true;
+>   
+>       /* Default allows ITS instantiation if available */
+> -    vms->its = ON_OFF_AUTO_AUTO;
+> +    vms->msi_controller = VIRT_MSI_CTRL_AUTO;
+>       /* Allow ITS emulation if the machine version supports it */
+>       vms->tcg_its = !vmc->no_tcg_its;
+>       vms->no_gicv3_with_gicv2m = false;
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index abacc366bf..8d6493ae7f 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -101,6 +101,8 @@ typedef enum VirtIOMMUType {
+>   
+>   typedef enum VirtMSIControllerType {
+>       VIRT_MSI_CTRL_NONE,
+> +    /* This value is overriden at runtime.*/
+> +    VIRT_MSI_CTRL_AUTO,
+>       VIRT_MSI_CTRL_GICV2M,
+>       VIRT_MSI_CTRL_ITS,
+>   } VirtMSIControllerType;
+> @@ -147,7 +149,6 @@ struct VirtMachineState {
+>       bool highmem_ecam;
+>       bool highmem_mmio;
+>       bool highmem_redists;
+> -    OnOffAuto its;
+>       bool tcg_its;
+>       bool virt;
+>       bool ras;
+> @@ -217,5 +218,6 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
+>   }
+>   
+>   bool virt_is_its_enabled(VirtMachineState *vms);
+> +bool virt_is_gicv2m_enabled(VirtMachineState *vms);
+>   
+>   #endif /* QEMU_ARM_VIRT_H */
+
 
