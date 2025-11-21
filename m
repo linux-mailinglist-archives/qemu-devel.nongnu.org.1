@@ -2,82 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F02C7C56B
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FBFC7C6FE
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:52:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd2V-0001Rx-8T; Fri, 21 Nov 2025 21:07:52 -0500
+	id 1vMcwy-0002Li-Ej; Fri, 21 Nov 2025 21:02:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcIg-0002mv-Gw
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:20:30 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcIR-0006zU-DO
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:20:27 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-477a2ab455fso28022665e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:19:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1vMc9v-0006a3-2K
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:11:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1vMc7t-0004C0-IZ
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:11:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763773746;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=j+F6WIwWKwxNMDi4qAm/LtNKAUJiCHrgptJWiL6wqhg=;
+ b=TvG7uB1kKr9m1vvhpc5lcBHOFQ/0g1mlwkXzmJWK0a7xofYVUMK8neukWK+aOW7Z9UMy5W
+ LK8OdQa1zKfdbV19NMapenMJQVPLOy2JXUe8UxHdtzWKDgTUR6P2xtdpWMouH+bSPVeh0u
+ izfMEUV7vPrkF7OspxLm8iUroBVEhtw=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-MO7MSC3_PVG92bf0qfucPQ-1; Fri, 21 Nov 2025 08:48:49 -0500
+X-MC-Unique: MO7MSC3_PVG92bf0qfucPQ-1
+X-Mimecast-MFC-AGG-ID: MO7MSC3_PVG92bf0qfucPQ_1763732928
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-7b96038aa68so2311790b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:48:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763774394; x=1764379194; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=redhat.com; s=google; t=1763732928; x=1764337728; darn=nongnu.org;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CBepVKYV1tqDt+M6yeXJGPjMchvP/4Ty5uCcKnUn5wM=;
- b=tBJ4hpsNVK8zT3Fhlg/w+EA+QeGeqWqhVNrpzXBtUvKTpqUcmyEh9MNoXRkBoT81rI
- fnkoNSTBt/LiZzjy5V/GPWVDgZ70ysGGQSIIv9D5XPFzvLDoKPJJGRXPI2hGhWneZmRI
- 4g3dHhlM+n39+lNgqkA3A4WosWpT28M4J/jX+XOUSrPOjTg+JQa2F9k7jlluFA50CHQB
- gQjMofPbF5BRb8lJO8bG48JDsksBtqmr2A3NW7x8nV7Y002yO1eiu14tkwERx3C2BHEI
- e93PJQvPs0mNWnCGY9HsasTpGKe/4Sb6uyiNvKL1CHXX8o2TYNzhOUthnr4DBJmnqdLq
- PmZg==
+ bh=j+F6WIwWKwxNMDi4qAm/LtNKAUJiCHrgptJWiL6wqhg=;
+ b=LW/bn4zQFCX80JCMwcIw9p1F/dEJ33jh+stSGqm2DC+DNnfG99KDHpL/VG1V7X/Iyi
+ f19laEkVQCs87M7CIGMGXLhlCQfg1JmlKoAI0KQ2bGrlRRSXbA8ySDGz83KBZSbtImka
+ m7S6FF6TksXSBcvBPjtFp0/+L+29VDz0LZVxHZ4MOZTcGDVd7TfjumuaUT052sb9ZwY4
+ hHXtff4LgIxIGMPzZhYiB45uQDTcpYcv4IhhI0Va9DdVJKrC1aECaK5EjGBzKKVIpdWo
+ qP9s40H2XZvctwXOWd1tnzMF9Dvs0/4hAWS9DypgjKIFquxuj9wN1odFtgPKpm3WCAnR
+ 7SwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763774394; x=1764379194;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=CBepVKYV1tqDt+M6yeXJGPjMchvP/4Ty5uCcKnUn5wM=;
- b=uAKtoCCA4lDV+KYJ5SrlgSZXRUq44S1Sn5lMJ0a692skpyq+4qwK55/bIzOmA6IUDS
- ezdZ5d2PvkwvvV9O3hZ9cNcKG3RNJzF91xF/n7Hjq5LjuE0TlI0xBVXZpXizgFPMcBUR
- DyBd04+SWtE6cYZiC3+I/KYrD0pmkzHfKNJ1NIrJL9Egx9Z8mD1e8e9mltnm1Jcpufmj
- 5+KpF4emuxOww80+63bFCNXvCEQ/5KngoKyEHrUBFheVM1rDISZWFm0lna/l7G3EKWqM
- vaDduvCaJOjnqNiY3sYRVbnyQ42qx9y+OET56YzvzhBWkl7DxJgsBeXs8MXkwPPA5C2u
- SURQ==
-X-Gm-Message-State: AOJu0YwbaJmKq6gkqlMrteOeXhpA8NJjkCyHJa/fqCjelXYSyCPMWRmT
- fagbMO2G5Hob1yuKcqspFH1NN0+Nl5ygqLDIH8R20dpebGut8nbH+iQFgGkmxhLMeOG5HGfC2Pr
- GMyPjr64Y3A==
-X-Gm-Gg: ASbGnct+aHX4JOhjhybDDiNfi8xxAaXW8D2u5PUDLui5sBSa/wTMNbuWjBcVR4bnITD
- dK0KPmuW+gxfZ2zAL1siVheqADOelQHRSnOjiOTxzBgUCaTfLmM5BEEK8+5MxxJxWoNvfXnk1qQ
- qfwazz1URyjVTquAET9f//DIEqvc9JtF39DSk/P7ug1CZRz37phDj3kigArjJmURlw3flW+jmaW
- uLeV2+V6epROU/0a3oLSM0cLnqOdWMxMNOhakFUN9w5PMshZomeBTf74hXvkI89GidMiu12OgLu
- oCtK5jeUiO9eb2jG9x3w/NOYEtMVSV7Of897X3HC1j9AqFmxSSrUxo39QFR4CGMWnA/bKEyz6XY
- E3mdlq+LU6DGHWevu2gXCF9yi1g5WIyqZTsstxLJ4ev6SbTEhQaoBbOBmLPSBVGt4olEQ5v7dJ4
- thjiyBY1T9ZHdxWW0NJ8FWObVjRctHfv77/d1YO0/HGBYGPXV6mwBfES5ALER2KfmeN+kSh5g=
-X-Google-Smtp-Source: AGHT+IGNrQmrpxmF7PoFIbUzaaLYwg9orSTcPtVnBOTCdObQ9Ayepn30kjIe9MJIUdIx5/S1YODG/g==
-X-Received: by 2002:a05:6000:2681:b0:42b:41a6:a670 with SMTP id
- ffacd0b85a97d-42cc1d51b98mr2460147f8f.54.1763732845183; 
- Fri, 21 Nov 2025 05:47:25 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f2e574sm11223189f8f.3.2025.11.21.05.47.24
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 05:47:24 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: [RFC-PATCH-for-11.0 v3 21/21] accel/tcg: Remove non-explicit endian
- cpu_ld/st*_data*() helpers
-Date: Fri, 21 Nov 2025 14:45:03 +0100
-Message-ID: <20251121134503.30914-22-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251121134503.30914-1-philmd@linaro.org>
-References: <20251121134503.30914-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+ d=1e100.net; s=20230601; t=1763732928; x=1764337728;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=j+F6WIwWKwxNMDi4qAm/LtNKAUJiCHrgptJWiL6wqhg=;
+ b=YLVBrfrifEK7d8VNk3kXFou9RiyZgaEUHuxU4zj59CDMIEZq9Clk0g8KgYgq6nAyfb
+ N/qdCn21lKlJ7NKu5sqMirFOmMHeMcaCANMwmaTrv4Cavu3obRkGnHwkSznj7XL2pO0u
+ ML3uch/mT6jX6s7oftq9tw7FcHUO/jMrwP/R0kStlBXG1vPjIprauDXSug1XWGYwK3Cx
+ uruc7Fshnr7J9mvXPKXOSXZokstOco/ulERKuaCxNQ/ibPTCyx6lEpjPa2M6mDaBtNFN
+ bjyaNpT66Ewh3Is4Jc8A86LSDlbpOvb0orLwyr5cp8gHAMkGY89UjmRS4SrwMtbQzhqq
+ K2Eg==
+X-Gm-Message-State: AOJu0Yw+NUoiTsFLwiQVz/f7BcH79lDLPvPKBLz5s2ZquNvYBPnuLndu
+ x8R4x0khVm4CBXiPM4xj+qG9CknBX3gtimYY28b8RTFdofjZv/u4xyB/oan81V0QtmdoH7ieuMY
+ DhywnsCz9oECoG+H44/VAb5SBfuYucF1pDbgtt/EY+bLYiVWDegJC3RgR
+X-Gm-Gg: ASbGncsosy/7flxEp2oSVaggTp5gHzhDUslD3qT7v4uvQj7TVB1CsytuQRrbFpJbtbV
+ APrE6itY3VNSem72EJr36iWkxff7RrtI4arBFjnNF0GLCzJuVvyu/5DAxCljigHGR1lBzoZMy18
+ qu9miIwatIrA0/GEe7Hb88AqXUkHnLmB1sC5aKqGHBTJcqUmurDrllaxiDSsRAELndWgX6f7axE
+ He7YJPfHpcEiRZ9AoLEhULQEOiKEIeepxNliZmmDwuPN7UIYCja9eMCB9z5x2c7ChadSOBXmRVK
+ aLqTCYej04deXG+oiUDjkF0ARS0+/XJ3oakZT9xXTRcpSyfSenPRMdSnLwbDKhEmUeK3mMNFsP/
+ STbnz9l67eR+9wiBjmY7FKG1omutpcCrfalkYID5S6JTqVALNLD49W1m/
+X-Received: by 2002:a05:6a00:73a7:b0:7aa:8c11:b520 with SMTP id
+ d2e1a72fcca58-7c41e6f85b1mr5428880b3a.7.1763732928043; 
+ Fri, 21 Nov 2025 05:48:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJOOyLt24wTeytOAaTI6/XGYVDnbu/8SCrj0ZSnYrKDSUxCkvHhUq1VBUb4DQEJMPFx2Rilw==
+X-Received: by 2002:a05:6a00:73a7:b0:7aa:8c11:b520 with SMTP id
+ d2e1a72fcca58-7c41e6f85b1mr5428855b3a.7.1763732927660; 
+ Fri, 21 Nov 2025 05:48:47 -0800 (PST)
+Received: from smtpclient.apple ([106.212.87.16])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7c3f174c9dasm6149063b3a.65.2025.11.21.05.48.44
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 21 Nov 2025 05:48:47 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.7\))
+Subject: Re: [PATCH 4/4] igvm: move igvm file processing to reset callbacks
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20251118122133.1695767-5-kraxel@redhat.com>
+Date: Fri, 21 Nov 2025 19:18:32 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Luigi Leonardi <leonardi@redhat.com>, Oliver Steffen <osteffen@redhat.com>,
+ Michael Tsirkin <mst@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <155EBDE9-0859-4235-8685-13B3398A35C9@redhat.com>
+References: <20251118122133.1695767-1-kraxel@redhat.com>
+ <20251118122133.1695767-5-kraxel@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.7)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,74 +118,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All uses were converted to the explicit cpu_ld/st*_{be,le}_data*()
-helpers, no need for the non-explicit versions anymore.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-FIXME: Still some PPC/MIPS uses
----
- include/accel/tcg/cpu-ldst.h | 46 ------------------------------------
- 1 file changed, 46 deletions(-)
 
-diff --git a/include/accel/tcg/cpu-ldst.h b/include/accel/tcg/cpu-ldst.h
-index a3125fc9026..70442bd08af 100644
---- a/include/accel/tcg/cpu-ldst.h
-+++ b/include/accel/tcg/cpu-ldst.h
-@@ -428,52 +428,6 @@ cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
-     cpu_stq_le_data_ra(env, addr, val, 0);
- }
- 
--#if TARGET_BIG_ENDIAN
--# define cpu_lduw_data        cpu_lduw_be_data
--# define cpu_ldsw_data        cpu_ldsw_be_data
--# define cpu_ldl_data         cpu_ldl_be_data
--# define cpu_ldq_data         cpu_ldq_be_data
--# define cpu_lduw_data_ra     cpu_lduw_be_data_ra
--# define cpu_ldsw_data_ra     cpu_ldsw_be_data_ra
--# define cpu_ldl_data_ra      cpu_ldl_be_data_ra
--# define cpu_ldq_data_ra      cpu_ldq_be_data_ra
--# define cpu_lduw_mmuidx_ra   cpu_lduw_be_mmuidx_ra
--# define cpu_ldsw_mmuidx_ra   cpu_ldsw_be_mmuidx_ra
--# define cpu_ldl_mmuidx_ra    cpu_ldl_be_mmuidx_ra
--# define cpu_ldq_mmuidx_ra    cpu_ldq_be_mmuidx_ra
--# define cpu_stw_data         cpu_stw_be_data
--# define cpu_stl_data         cpu_stl_be_data
--# define cpu_stq_data         cpu_stq_be_data
--# define cpu_stw_data_ra      cpu_stw_be_data_ra
--# define cpu_stl_data_ra      cpu_stl_be_data_ra
--# define cpu_stq_data_ra      cpu_stq_be_data_ra
--# define cpu_stw_mmuidx_ra    cpu_stw_be_mmuidx_ra
--# define cpu_stl_mmuidx_ra    cpu_stl_be_mmuidx_ra
--# define cpu_stq_mmuidx_ra    cpu_stq_be_mmuidx_ra
--#else
--# define cpu_lduw_data        cpu_lduw_le_data
--# define cpu_ldsw_data        cpu_ldsw_le_data
--# define cpu_ldl_data         cpu_ldl_le_data
--# define cpu_ldq_data         cpu_ldq_le_data
--# define cpu_lduw_data_ra     cpu_lduw_le_data_ra
--# define cpu_ldsw_data_ra     cpu_ldsw_le_data_ra
--# define cpu_ldl_data_ra      cpu_ldl_le_data_ra
--# define cpu_ldq_data_ra      cpu_ldq_le_data_ra
--# define cpu_lduw_mmuidx_ra   cpu_lduw_le_mmuidx_ra
--# define cpu_ldsw_mmuidx_ra   cpu_ldsw_le_mmuidx_ra
--# define cpu_ldl_mmuidx_ra    cpu_ldl_le_mmuidx_ra
--# define cpu_ldq_mmuidx_ra    cpu_ldq_le_mmuidx_ra
--# define cpu_stw_data         cpu_stw_le_data
--# define cpu_stl_data         cpu_stl_le_data
--# define cpu_stq_data         cpu_stq_le_data
--# define cpu_stw_data_ra      cpu_stw_le_data_ra
--# define cpu_stl_data_ra      cpu_stl_le_data_ra
--# define cpu_stq_data_ra      cpu_stq_le_data_ra
--# define cpu_stw_mmuidx_ra    cpu_stw_le_mmuidx_ra
--# define cpu_stl_mmuidx_ra    cpu_stl_le_mmuidx_ra
--# define cpu_stq_mmuidx_ra    cpu_stq_le_mmuidx_ra
--#endif
--
- static inline uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
- {
-     CPUState *cs = env_cpu(env);
--- 
-2.51.0
+> On 18 Nov 2025, at 5:51=E2=80=AFPM, Gerd Hoffmann <kraxel@redhat.com> =
+wrote:
+>=20
+> Move igvm file processing from machine init to reset callbacks.  With
+> that the igvm file is properly re-loaded on reset.  Also the loading
+> happens later in the init process now.  This will simplify future
+> support for some IGVM parameters which depend on initialization steps
+> which happen after machine init.
+
+LGTM.
+
+>=20
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> backends/igvm-cfg.c |  7 +++++++
+> hw/i386/pc_piix.c   | 10 ----------
+> hw/i386/pc_q35.c    | 10 ----------
+> 3 files changed, 7 insertions(+), 20 deletions(-)
+>=20
+> diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+> index 08501a67e58e..c1b45401f429 100644
+> --- a/backends/igvm-cfg.c
+> +++ b/backends/igvm-cfg.c
+> @@ -15,6 +15,8 @@
+> #include "system/igvm.h"
+> #include "system/reset.h"
+> #include "qom/object_interfaces.h"
+> +#include "hw/qdev-core.h"
+> +#include "hw/boards.h"
+>=20
+> #include "trace.h"
+>=20
+> @@ -44,7 +46,12 @@ static void igvm_reset_enter(Object *obj, ResetType =
+type)
+>=20
+> static void igvm_reset_hold(Object *obj, ResetType type)
+> {
+> +    MachineState *ms =3D MACHINE(qdev_get_machine());
+> +    IgvmCfg *igvm =3D IGVM_CFG(obj);
+> +
+>     trace_igvm_reset_hold(type);
+> +
+> +    qigvm_process_file(igvm, ms->cgs, false, &error_fatal);
+> }
+>=20
+> static void igvm_reset_exit(Object *obj, ResetType type)
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index 7b3611e973cd..b3b71df64bfc 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -320,16 +320,6 @@ static void pc_init1(MachineState *machine, const =
+char *pci_type)
+>                                x86_nvdimm_acpi_dsmio,
+>                                x86ms->fw_cfg, OBJECT(pcms));
+>     }
+> -
+> -#if defined(CONFIG_IGVM)
+> -    /* Apply guest state from IGVM if supplied */
+> -    if (x86ms->igvm) {
+> -        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
+> -                ->process(x86ms->igvm, machine->cgs, false, =
+&error_fatal) < 0) {
+> -            g_assert_not_reached();
+> -        }
+> -    }
+> -#endif
+> }
+>=20
+> typedef enum PCSouthBridgeOption {
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 6015e639d7bc..f2e6ebfe294c 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -328,16 +328,6 @@ static void pc_q35_init(MachineState *machine)
+>                                x86_nvdimm_acpi_dsmio,
+>                                x86ms->fw_cfg, OBJECT(pcms));
+>     }
+> -
+> -#if defined(CONFIG_IGVM)
+> -    /* Apply guest state from IGVM if supplied */
+> -    if (x86ms->igvm) {
+> -        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
+> -                ->process(x86ms->igvm, machine->cgs, false, =
+&error_fatal) < 0) {
+> -            g_assert_not_reached();
+> -        }
+> -    }
+> -#endif
+> }
+>=20
+> #define DEFINE_Q35_MACHINE(major, minor) \
+> --=20
+> 2.51.1
+>=20
 
 
