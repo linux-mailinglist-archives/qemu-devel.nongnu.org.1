@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F02C7C44E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666C7C7CFF0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 13:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd5Z-0003VF-KF; Fri, 21 Nov 2025 21:11:02 -0500
+	id 1vMcuD-0008KG-Go; Fri, 21 Nov 2025 20:59:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1vMcrY-00069h-Gs; Fri, 21 Nov 2025 20:56:32 -0500
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1vMcph-0006qV-Cw; Fri, 21 Nov 2025 20:56:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=xZBmjOGSZoa+2aL5x4woIrYjfLg3sU220QEFMHUTJpM=; b=hlMINAeetPLPFGP9
- DCXVzhiePadQthcnxsCXyVmnW6VwsN1f99YyTIMGXBLFzlLAwQCCfRhohhA8JHQw9WopgvmlZSNe9
- ChraoHtEO7/JtJnq3fVoHZSpK0yD4PJlxvZ3fXI/CMaLqwdygqlojLOxzQicqgvH6rEKIaYV5q+dC
- 9fF4budUObNUXPneqDI13Oa2zg4oAEkUQwrwYAbtWiuXFycihblAtcYwuw9rIQQxGhcvtCahj4M19
- h+hB/OQXLls/7hLaOzXx6U9CGb2mAaDDOK7VGfvA3Pz2jzo1yj5RRGthzOR1lOLnIa/nKutnvrU+1
- aFYpkjxx4ViSutOaLw==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
- (envelope-from <dg@treblig.org>) id 1vMVCi-00000005pJs-2dXP;
- Fri, 21 Nov 2025 17:45:52 +0000
-Date: Fri, 21 Nov 2025 17:45:52 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, arei.gonglei@huawei.com, pizhenwei@bytedance.com,
- alistair.francis@wdc.com, stefanb@linux.vnet.ibm.com,
- kwolf@redhat.com, hreitz@redhat.com, sw@weilnetz.de,
- qemu_oss@crudebyte.com, groug@kaod.org, mst@redhat.com,
- imammedo@redhat.com, anisinha@redhat.com, kraxel@redhat.com,
- shentey@gmail.com, npiggin@gmail.com, harshpb@linux.ibm.com,
- sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
- jag.raman@oracle.com, sgarzare@redhat.com, pbonzini@redhat.com,
- fam@euphon.net, philmd@linaro.org, alex@shazbot.org, clg@redhat.com,
- peterx@redhat.com, farosas@suse.de, lizhijian@fujitsu.com,
- jasowang@redhat.com, samuel.thibault@ens-lyon.org,
- michael.roth@amd.com, kkostiuk@redhat.com, zhao1.liu@intel.com,
- mtosatti@redhat.com, rathc@linux.ibm.com, palmer@dabbelt.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, marcandre.lureau@redhat.com,
- qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: Re: [PATCH 09/14] error: Use error_setg_file_open() for simplicity
- and consistency
-Message-ID: <aSClUIvI2W-PVv6B@gallifrey>
-References: <20251120191339.756429-1-armbru@redhat.com>
- <20251120191339.756429-10-armbru@redhat.com>
- <aR-q2YeegIEPmk2R@gallifrey> <87see8q6qm.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vMbpp-0003NM-SC
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:50:41 -0500
+Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vMbnn-0008Qy-NX
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:50:38 -0500
+Received: by mail-il1-x132.google.com with SMTP id
+ e9e14a558f8ab-43379b57065so36565ab.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:48:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1763772500; x=1764377300; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VfohI4ZesDVgxljj2Xjn7DIzuGAqMdIVECFPKbt2OKM=;
+ b=DSl9GEovQO/8mydClP9ZTxuD3uX4o2arcuU6CQ4wA5NY9sY+GVOiPTQtXrw+C+/HlX
+ aERsknqMNDRvjGmdAEFuMJPXoY7D1nHvbWmYXGlGVyb+hxqeEalb5zg24Q2uBOT6qA8g
+ T4Wp04emlf86nFzXo6qmjm91Nsfzu8WKB1T7CrMKb7VZbPW7AIQe241QmK+lYi+QuuiO
+ LLzti0IA09ZQ2lmobGfg2IZU1B0UicUohUSYErGbMZ3tFDZK4JF/PupG4QIfkqnlZ5hw
+ BHYaW+q5Uhe7SplDv6Of/WCkgbySoxw4YKxS2LdGyh9OiQ37FWDy5jDzxvwkukXdbvFi
+ YkUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763772500; x=1764377300;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=VfohI4ZesDVgxljj2Xjn7DIzuGAqMdIVECFPKbt2OKM=;
+ b=t+b7CpqK0XrrWe5Hue6W+bZKHi/IlnxnC3bo+fR6C1OOBSU9a1CU3fzFo4cY4y4Slb
+ l6Y0gj89huJVjEh7V3Z+EPfWQkhoq2zQqVNBkBoQATgfFrtPpao2CY4sIMjecK/vH8Qc
+ V7HBk3PCOxGnlOPtOGVBl0i/8Uwc4qEkpBq0bZnhfhw8mezhWa62Y1yDfw9tvdkRjtbk
+ QQ9K3boL52WfcTsgHXAj8jXwqZbSIvJ20atqZr6CdwLfK7/lLrNc2gb9h6EQR9W43ybp
+ WemrX3slVKW7Te4f+BXptLvbBbJRxbrziH/vN2LuZ0XFvsiRsiVCr2s4MVWQ5XVguNGT
+ d4hA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXRjccbJ2krGgeyiG/EOkhK3thHBPv32Bc6v6MXG2UYfCOVu06Kz+thT2vJm3Q+7RY2I5xTRLUTs7qX@nongnu.org
+X-Gm-Message-State: AOJu0Yz84bdTAhZHUcXmtkZRZNOF61KzPI96JaGiIPyS0zpev/E15DbD
+ PeUMyZO5ubW1ijJuFmYq8QgjSWO+v3yzYImJ8CXyEd6nSOw7G1JEGsXejvaE8j4BAkBxnW+MGxP
+ TkuUA0NmAukMZPMgF4rsIwE0FPIYYn8qosSMioNLYdzOjl7AD/MGaKIzlj9Pv7jnT
+X-Gm-Gg: ASbGnctqSjXH2mz4L8TzYTpB+H0hetsCFNdlIFRIKq3Wn6VZSmtE4B0RWBPBt1yo2+K
+ lX0RpREfESN8F8GNryUwlI5LmYLH9ihB8xflHEGh7VsRsj1/klLjYUKpBFeGwkMPALrz8ErpLGQ
+ cqDEXqmWYVgtnK7xIYqnBVcUGxhOx7KigzKcfR/RvZEwt4V8dgeuyAOXIbYBZqiKkJe6OFTZvfu
+ QTcomCSY7Xot9Uag8EVZyoI8DqGrhusdtTnbBMR5x1r3aYPJnQAzW4Uf5e+VZrVAQrj/EAmXKqS
+ iUyMzZdEtiXpowtI6+mckt+88A==
+X-Google-Smtp-Source: AGHT+IEDl+YXxrkmLWtlDaOM6/sKpBey+hHUuLtr+6bBZbFiWZpre0mfNEXJL9aVLlCpsbzcApR7mm9mgbL0WOI3EjY=
+X-Received: by 2002:a05:6e02:2404:b0:433:5ac6:78e with SMTP id
+ e9e14a558f8ab-435b847f715mr6800105ab.16.1763747225768; Fri, 21 Nov 2025
+ 09:47:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+References: <20251121050108.3407445-1-jamin_lin@aspeedtech.com>
+ <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
+ <f5892baf-cb8d-4026-9c1c-c8761889729a@linaro.org>
+In-Reply-To: <f5892baf-cb8d-4026-9c1c-c8761889729a@linaro.org>
+From: Nabih Estefan <nabihestefan@google.com>
+Date: Fri, 21 Nov 2025 09:46:53 -0800
+X-Gm-Features: AWmQ_bm2LF82oMGJ6gduvrvr8gyRvfSR87bKfL8B9iI0yaLErtHRaRR6HuP0PHM
+Message-ID: <CA+QoejWajueR+y-StkT-uYtHhpyHS2GEgUR4kyrZ3wjpijgcXA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root
+ Port capabilities and enable MSI to support hotplug
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, 
+ Troy Lee <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ troy_lee@aspeedtech.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <87see8q6qm.fsf@pond.sub.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 17:44:26 up 25 days, 17:20,  2 users,  load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
-X-Spam_action: no action
+Received-SPF: pass client-ip=2607:f8b0:4864:20::132;
+ envelope-from=nabihestefan@google.com; helo=mail-il1-x132.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,61 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Markus Armbruster (armbru@redhat.com) wrote:
-> "Dr. David Alan Gilbert" <dave@treblig.org> writes:
->=20
-> > * Markus Armbruster (armbru@redhat.com) wrote:
-> >> Replace
-> >>=20
-> >>     error_setg_errno(errp, errno, MSG, FNAME);
-> >>=20
-> >> by
-> >>=20
-> >>     error_setg_file_open(errp, errno, FNAME);
-> >>=20
-> >> where MSG is "Could not open '%s'" or similar.
-> >>=20
-> >> Also replace equivalent uses of error_setg().
-> >>=20
-> >> A few messages lose prefixes ("net dump: ", "SEV: ", __func__ ": ").
-> >> We could put them back with error_prepend().  Not worth the bother.
+On Thu, Nov 20, 2025 at 11:06=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> On 21/11/25 06:01, Jamin Lin via wrote:
+
+Thank you for the quick turnaround on the bug fix, Jamin! Tested it
+against internal models
+on our end. Hotplugged devices now appear with `lspci`.
+
+> > This patch updates the ASPEED PCIe Root Port capability layout and inte=
+rrupt
+> > handling to match the hardware-defined capability structure as document=
+ed in
+> > the PCI Express Controller (PCIE) chapter of the ASPEED SoC datasheet.
 > >
-> > Yeh, I guess you could just do it with another macro using
-> > the same internal function just with string concatenation.
->=20
-> I'm no fan of such prefixes.  A sign of developers not caring enough to
-> craft a good error message for *users*.  *Especially* in the case of
-> __func__.
->=20
-> The error messages changes in question are:
->=20
->     net dump: can't open DUMP-FILE: REASON
->     Could not open 'DUMP-FILE': REASON
->=20
->     SEV: Failed to open SEV-DEVICE: REASON
->     Could not open 'SEV-DEVICE': REASON
->=20
->     sev_common_kvm_init: Failed to open SEV_DEVICE 'REASON'
->     Could not open 'SEV-DEVICE': REASON
->=20
-> I think these are all improvements, and the loss of the prefix is fine.
-
-Yeh, although I find the error messages aren't just for users;
-they're often for the first dev to see it to guess which other
-dev to pass the problem to, so a hint about where it's coming
-=66rom can be useful.
-
-Dave
-
-> >> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> > The following capability offsets and fields are now aligned with the ac=
+tual
+> > hardware implementation (validated using EVB config-space dumps via
+> > 'lspci -s <bdf> -vvv'):
 > >
-> > Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
->=20
-> Thanks!
->=20
---=20
- -----Open up your eyes, open up your mind, open up your code -------  =20
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \=20
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> > - Added MSI capability at offset 0x50 and enabled 1-vector MSI support
+> > - Added PCI Express Capability structure at offset 0x80
+> > - Added Secondary Subsystem Vendor ID (SSVID) at offset 0xC0
+> > - Added AER capability at offset 0x100
+> > - Implemented aer_vector() callback and MSI init/uninit hooks
+> > - Updated Root Port SSID to 0x1150 to reflect the platform default
+> >
+> > Enabling MSI is required for proper PCIe Hotplug event signaling. This =
+change
+> > improves correctness and ensures QEMU Root Port behavior matches the be=
+havior
+> > of ASPEED hardware and downstream kernel expectations.
+> >
+> > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> > ---
+> >   hw/pci-host/aspeed_pcie.c | 40 ++++++++++++++++++++++++++++++++++++++=
+-
+> >   1 file changed, 39 insertions(+), 1 deletion(-)
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+Reviewed-by: Nabih Estefan <nabihestefan@google.com>
+Tested-by: Nabih Estefan <nabihestefan@google.com>
 
