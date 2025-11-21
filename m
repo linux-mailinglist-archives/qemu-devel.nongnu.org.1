@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2592C7C5B9
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBF8C7CEEB
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 12:54:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd1A-0000kG-GX; Fri, 21 Nov 2025 21:06:29 -0500
+	id 1vMcym-0003tY-Me; Fri, 21 Nov 2025 21:04:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcUc-0000ab-DA
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:32:50 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMc82-0005Ri-L3
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:09:30 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcSZ-0001Ep-2H
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:32:45 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-6431b0a1948so4387126a12.3
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:30:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMc61-0003hS-2P
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:09:27 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-b736d883ac4so480458066b.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:07:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763775018; x=1764379818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763773622; x=1764378422; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vESko8GQ2ceP2oMkbBNKvzIYyYx9GKCYINNyOwGklUg=;
- b=yQLHSJ9VSbXQSo+w+5sEEmjcZ+oCtFAwyF8hSCdY9DmduJ3epsj1etdoVs6a9XZ19X
- 8F+yVtqm7B8M6wc9N5KMIVy3OoYI1pb+eHamSD2Um2Vu2UuT0vB/J6kOMFQ/aN00iZOd
- qI+s85vD07amoh4uMWJ4OJf1rX7TL4rpaOcq3154mFxE0UhmSS51DcX5ZNCfDryMfLhT
- CJrlUJpIEkc62C+QLRt0AsqMMS1MStr8et6ulVIOW/eUvH+dJ7lcCxb7zDQeMIMM5gZd
- S3hW4S5Snd+xDB1D/0qJ4argbQbLJaS5niyaF9pbA1C9Mb/p3oW4GHVjhCXDvshIU1di
- 48xw==
+ bh=g6GufoGaaceDifeP+Y5j1u2tXZkEGmQIoKK0KjlWQxI=;
+ b=QcmHwVUSfUI66wGfvzfAFMbLbPs3CGFNwJjgh+MPerIur9TWHwkw5HD/iZxQrdL3vl
+ daOciwc7diYwPFZFib0uJr8dtzv2O85o3aUS6EL+dx3X0TX20bXNXc0pn2TxLdoG2TW2
+ 2447twYFJG5aH+aVc/CaITODW390koumctbgFEaljN7Orx4Pz2bsUkTSGPfVgqJgjAQv
+ MLP17s6INdPoahbrh2oMtTHY61i9MFUXAIqdJahgx221VlVvkLKB9uV52yDPjDuGC7T9
+ DVusniGfhoqB+mhR25dYMGfspXXNRWngwzXQXT/mw5wsw2OxWiZiAOB3ga4mkT4Yo3dI
+ qk0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763775018; x=1764379818;
+ d=1e100.net; s=20230601; t=1763773622; x=1764378422;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=vESko8GQ2ceP2oMkbBNKvzIYyYx9GKCYINNyOwGklUg=;
- b=Or3/zbum+A6ZMyENhpWVM9ht/46GBR4DZKcF2pYywuI9oAgDulVXnDrjpRDlWvd/a1
- oUZ1yABzQNfo7d9+ESVagm3fDSgiTVp32OMjUzrLSa6m8zsOolKxU8zobaki4FPjdlNE
- CLxQuLBthnJhsGwfNHEaMk4kILVs7kpHIB+n5DQo2CjZ9tE7XKLNcjZru0vm7+wmKgaB
- 0f8FRFKq0jE3jdd8+RkSztNFka+cF6cHEFtnaPabGbovJaF6C7R1KvYNqIK4BiZcsPQx
- QjCoI5CQwzinLNFFP2yCNqD/+DuBerZ5zOmwbrWmToBsdL5q320nbEqQziwwardl4bS0
- YDRw==
-X-Gm-Message-State: AOJu0Yxo7mCwB0XT2uAKLUQGDNA8vqeI5uvpN4nGWlGxLV5QZeL50zFx
- +YE5cDM8/B5G9MIS3rKZ2QgQfd/ydVtoEIiogUt/9ZexKfYycs3z03lelHKaK9FoFjcRN2OltsK
- mgJWoCQy2Bw==
-X-Gm-Gg: ASbGncsrc2iWrTcdr0YudGTBhmwRkjfn9sllW8lujpJnzcC2jJwkJIuecdyIu114vem
- p/GBZseFbGCRXuXe3v4VrG/XCZrEUA1u1d4JgYUv4tCEa57rqHAyrvx/tDzDRPj7Z51JCBErzxY
- r3NDbmPrQv4pwZEz9eUfL3tLPg0oW1scJ0Ek4j1oXA89tHj6vw1qgqVtJVrN6MgkXZMNl9tvud8
- AOWKCyVbW9ovZeM5TD9SKBlmCzl4CJ1X+gRN7N20DJW87sPs+GkUm10LQcZJpR0a+N3wUESEBTE
- vh46CD4YJRaxkuEwffjs2gOrHhUjzxvRXJdfhg2w0HwYvB2+fvXysKMv9aMN6QbmzK6j6jb/Naj
- zO599V/gVXG4RA8hzDBbr76g6i5GIVtdjiSeIl/ngzLGNDzrvSmBA2VG3dVi1Eap46slQ5qC/8k
- xHfZhS3QROUCIH0NnZI83D9lkJATiO1HOw51k2Y0S7Sdt9WB5feTyXE4q0op0w
-X-Google-Smtp-Source: AGHT+IGHTqgyl1vrXL3wcw+ANlMLiuuycekcVyYOBzjuSrK6eO43371ZUi+5CO6J8ZKFoSmLyQgWag==
-X-Received: by 2002:a05:600c:4f83:b0:45d:e28c:875a with SMTP id
- 5b1f17b1804b1-477c01fb88cmr27959155e9.31.1763732772260; 
- Fri, 21 Nov 2025 05:46:12 -0800 (PST)
+ bh=g6GufoGaaceDifeP+Y5j1u2tXZkEGmQIoKK0KjlWQxI=;
+ b=ZXmQTnHgJG2wWedW45/Zu0ZissFcWBej+aAUZV50688ochUmSiEbz5fBm1fi2l7LMh
+ AQeut6svz518EwnmVW4K4PonWGU5h/PdT7CU8WO4SglTVYGoIJnp9JrAFQX2rFqF3zq5
+ CFJuCtin5E4vQi/XK1n74PBYhqiaDAYeh1L+aaAEV1BX99fqcElx+pRECYUPHZB/MVoU
+ ipRzVs/3qr7qZCwuJxLwCWKNnhwyGk+Gv+EGlE9DE8BpTUKs8XdpQBKLumc4u1bKTNV7
+ xqzeqh6EOGXMmuPyQDV7M789XSXwbjht/NO7Ys/1YGfRdxLZCE+dmf8kb1mF0mbH8z3/
+ uk/g==
+X-Gm-Message-State: AOJu0YyWSLnlBBhscNoCtyQivOLLRu8ZQ2XyiUKAIqgoASLaQ6NgYnHQ
+ Z4vSdSeB3B2Ic4zqRwSb5DSkBqCnup4f4zkkKRnTB/4U3SvtPeHng5iLf2CBBYTVFKygaAjOwA/
+ UDXDsgE7IhA==
+X-Gm-Gg: ASbGncu5B+H2VR0SL1JmP3WRqxHn8B2MkvgUTDBYARo1Ox0zzvPydUQmiHenCrQnJt3
+ 2ptcGzbGUZmZaQ7onfymTTXNCdhskMU7rhQIaPdvQxRPofbj/YW1NcX9JyWuuW9KAxSs6H8RCF0
+ MnWt83DJ1zp78s0FIshgaM3PsGF3VgTfNRrKu7qTbFVRMAQVFDuDwju8+/GUjhJ46lu9Tp/Gq4P
+ VT+RpJBjThsOg9qhKiCxZZN+v+905W1g2FypWPEvDKCwS8E4Yr/tgp0SSRct1bhCZqmzFSsq/Ap
+ o8YcksfI44wwSkfkst7pnYI8j9Oj7e7VWD6u3FxyBFRerwy8GB6JMHg+1HGbZV3aoyhOf0LAWCs
+ k0u+/ALV1juZ+H7mSY5HRwyYDulogCq34X3p/e1vYZsmDOuD2b7uz6mUpEmB9J9amRbPnTAo6RK
+ NKX2HQPblyvtAaOXOZwzlBehG9dEh7sJEJjZl7fPKnK8i8WmfMqEJQEwQ72rD/
+X-Google-Smtp-Source: AGHT+IFEr1L37DDCfdrNIDzi/3UTfYU9WR/5linL3zRdS9ErRGrUqnsYjkIglEr/vK2vRoT+SqG2zQ==
+X-Received: by 2002:a05:600c:3590:b0:471:672:3486 with SMTP id
+ 5b1f17b1804b1-477c0184a94mr35783445e9.15.1763732778819; 
+ Fri, 21 Nov 2025 05:46:18 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf3af0e1sm42006415e9.10.2025.11.21.05.46.11
+ 5b1f17b1804b1-477bf355af6sm44415315e9.3.2025.11.21.05.46.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 05:46:11 -0800 (PST)
+ Fri, 21 Nov 2025 05:46:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [RFC-PATCH-for-11.0 v3 10/21] target/hexagon: Use little-endian
+Subject: [RFC-PATCH-for-11.0 v3 11/21] target/tricore: Use little-endian
  variant of cpu_ld/st_data*()
-Date: Fri, 21 Nov 2025 14:44:52 +0100
-Message-ID: <20251121134503.30914-11-philmd@linaro.org>
+Date: Fri, 21 Nov 2025 14:44:53 +0100
+Message-ID: <20251121134503.30914-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251121134503.30914-1-philmd@linaro.org>
 References: <20251121134503.30914-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,13 +92,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the Hexagon target using little endianness order,
+We only build the TriCore target using little endianness order,
 therefore the cpu_ld/st_data*() definitions expand to the little
 endian declarations. Use the explicit little-endian variants.
 
 Mechanical change running:
 
-  $ tgt=hexagon; \
+  $ tgt=tricore; \
     end=le; \
     for op in data mmuidx_ra; do \
       for ac in uw sw l q; do \
@@ -113,48 +113,243 @@ Mechanical change running:
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hexagon/macros.h    | 6 +++---
- target/hexagon/op_helper.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ target/tricore/op_helper.c | 152 ++++++++++++++++++-------------------
+ 1 file changed, 76 insertions(+), 76 deletions(-)
 
-diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
-index 088e5961ab7..6c2862a2320 100644
---- a/target/hexagon/macros.h
-+++ b/target/hexagon/macros.h
-@@ -519,9 +519,9 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
- #define fLOAD(NUM, SIZE, SIGN, EA, DST) MEM_LOAD##SIZE##SIGN(DST, EA)
- #else
- #define MEM_LOAD1 cpu_ldub_data_ra
--#define MEM_LOAD2 cpu_lduw_data_ra
--#define MEM_LOAD4 cpu_ldl_data_ra
--#define MEM_LOAD8 cpu_ldq_data_ra
-+#define MEM_LOAD2 cpu_lduw_le_data_ra
-+#define MEM_LOAD4 cpu_ldl_le_data_ra
-+#define MEM_LOAD8 cpu_ldq_le_data_ra
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 2c8281a67e0..88b50bc1a9b 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -2451,84 +2451,84 @@ static bool cdc_zero(uint32_t *psw)
  
- #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
-     do { \
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index e2e80ca7efa..08db1e9c56b 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -77,13 +77,13 @@ static void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
-         cpu_stb_data_ra(env, va, env->mem_log_stores[slot_num].data32, ra);
-         break;
-     case 2:
--        cpu_stw_data_ra(env, va, env->mem_log_stores[slot_num].data32, ra);
-+        cpu_stw_le_data_ra(env, va, env->mem_log_stores[slot_num].data32, ra);
-         break;
-     case 4:
--        cpu_stl_data_ra(env, va, env->mem_log_stores[slot_num].data32, ra);
-+        cpu_stl_le_data_ra(env, va, env->mem_log_stores[slot_num].data32, ra);
-         break;
-     case 8:
--        cpu_stq_data_ra(env, va, env->mem_log_stores[slot_num].data64, ra);
-+        cpu_stq_le_data_ra(env, va, env->mem_log_stores[slot_num].data64, ra);
-         break;
-     default:
-         g_assert_not_reached();
+ static void save_context_upper(CPUTriCoreState *env, uint32_t ea)
+ {
+-    cpu_stl_data(env, ea, env->PCXI);
+-    cpu_stl_data(env, ea+4, psw_read(env));
+-    cpu_stl_data(env, ea+8, env->gpr_a[10]);
+-    cpu_stl_data(env, ea+12, env->gpr_a[11]);
+-    cpu_stl_data(env, ea+16, env->gpr_d[8]);
+-    cpu_stl_data(env, ea+20, env->gpr_d[9]);
+-    cpu_stl_data(env, ea+24, env->gpr_d[10]);
+-    cpu_stl_data(env, ea+28, env->gpr_d[11]);
+-    cpu_stl_data(env, ea+32, env->gpr_a[12]);
+-    cpu_stl_data(env, ea+36, env->gpr_a[13]);
+-    cpu_stl_data(env, ea+40, env->gpr_a[14]);
+-    cpu_stl_data(env, ea+44, env->gpr_a[15]);
+-    cpu_stl_data(env, ea+48, env->gpr_d[12]);
+-    cpu_stl_data(env, ea+52, env->gpr_d[13]);
+-    cpu_stl_data(env, ea+56, env->gpr_d[14]);
+-    cpu_stl_data(env, ea+60, env->gpr_d[15]);
++    cpu_stl_le_data(env, ea, env->PCXI);
++    cpu_stl_le_data(env, ea+4, psw_read(env));
++    cpu_stl_le_data(env, ea+8, env->gpr_a[10]);
++    cpu_stl_le_data(env, ea+12, env->gpr_a[11]);
++    cpu_stl_le_data(env, ea+16, env->gpr_d[8]);
++    cpu_stl_le_data(env, ea+20, env->gpr_d[9]);
++    cpu_stl_le_data(env, ea+24, env->gpr_d[10]);
++    cpu_stl_le_data(env, ea+28, env->gpr_d[11]);
++    cpu_stl_le_data(env, ea+32, env->gpr_a[12]);
++    cpu_stl_le_data(env, ea+36, env->gpr_a[13]);
++    cpu_stl_le_data(env, ea+40, env->gpr_a[14]);
++    cpu_stl_le_data(env, ea+44, env->gpr_a[15]);
++    cpu_stl_le_data(env, ea+48, env->gpr_d[12]);
++    cpu_stl_le_data(env, ea+52, env->gpr_d[13]);
++    cpu_stl_le_data(env, ea+56, env->gpr_d[14]);
++    cpu_stl_le_data(env, ea+60, env->gpr_d[15]);
+ }
+ 
+ static void save_context_lower(CPUTriCoreState *env, uint32_t ea)
+ {
+-    cpu_stl_data(env, ea, env->PCXI);
+-    cpu_stl_data(env, ea+4, env->gpr_a[11]);
+-    cpu_stl_data(env, ea+8, env->gpr_a[2]);
+-    cpu_stl_data(env, ea+12, env->gpr_a[3]);
+-    cpu_stl_data(env, ea+16, env->gpr_d[0]);
+-    cpu_stl_data(env, ea+20, env->gpr_d[1]);
+-    cpu_stl_data(env, ea+24, env->gpr_d[2]);
+-    cpu_stl_data(env, ea+28, env->gpr_d[3]);
+-    cpu_stl_data(env, ea+32, env->gpr_a[4]);
+-    cpu_stl_data(env, ea+36, env->gpr_a[5]);
+-    cpu_stl_data(env, ea+40, env->gpr_a[6]);
+-    cpu_stl_data(env, ea+44, env->gpr_a[7]);
+-    cpu_stl_data(env, ea+48, env->gpr_d[4]);
+-    cpu_stl_data(env, ea+52, env->gpr_d[5]);
+-    cpu_stl_data(env, ea+56, env->gpr_d[6]);
+-    cpu_stl_data(env, ea+60, env->gpr_d[7]);
++    cpu_stl_le_data(env, ea, env->PCXI);
++    cpu_stl_le_data(env, ea+4, env->gpr_a[11]);
++    cpu_stl_le_data(env, ea+8, env->gpr_a[2]);
++    cpu_stl_le_data(env, ea+12, env->gpr_a[3]);
++    cpu_stl_le_data(env, ea+16, env->gpr_d[0]);
++    cpu_stl_le_data(env, ea+20, env->gpr_d[1]);
++    cpu_stl_le_data(env, ea+24, env->gpr_d[2]);
++    cpu_stl_le_data(env, ea+28, env->gpr_d[3]);
++    cpu_stl_le_data(env, ea+32, env->gpr_a[4]);
++    cpu_stl_le_data(env, ea+36, env->gpr_a[5]);
++    cpu_stl_le_data(env, ea+40, env->gpr_a[6]);
++    cpu_stl_le_data(env, ea+44, env->gpr_a[7]);
++    cpu_stl_le_data(env, ea+48, env->gpr_d[4]);
++    cpu_stl_le_data(env, ea+52, env->gpr_d[5]);
++    cpu_stl_le_data(env, ea+56, env->gpr_d[6]);
++    cpu_stl_le_data(env, ea+60, env->gpr_d[7]);
+ }
+ 
+ static void restore_context_upper(CPUTriCoreState *env, uint32_t ea,
+                                   uint32_t *new_PCXI, uint32_t *new_PSW)
+ {
+-    *new_PCXI = cpu_ldl_data(env, ea);
+-    *new_PSW = cpu_ldl_data(env, ea+4);
+-    env->gpr_a[10] = cpu_ldl_data(env, ea+8);
+-    env->gpr_a[11] = cpu_ldl_data(env, ea+12);
+-    env->gpr_d[8]  = cpu_ldl_data(env, ea+16);
+-    env->gpr_d[9]  = cpu_ldl_data(env, ea+20);
+-    env->gpr_d[10] = cpu_ldl_data(env, ea+24);
+-    env->gpr_d[11] = cpu_ldl_data(env, ea+28);
+-    env->gpr_a[12] = cpu_ldl_data(env, ea+32);
+-    env->gpr_a[13] = cpu_ldl_data(env, ea+36);
+-    env->gpr_a[14] = cpu_ldl_data(env, ea+40);
+-    env->gpr_a[15] = cpu_ldl_data(env, ea+44);
+-    env->gpr_d[12] = cpu_ldl_data(env, ea+48);
+-    env->gpr_d[13] = cpu_ldl_data(env, ea+52);
+-    env->gpr_d[14] = cpu_ldl_data(env, ea+56);
+-    env->gpr_d[15] = cpu_ldl_data(env, ea+60);
++    *new_PCXI = cpu_ldl_le_data(env, ea);
++    *new_PSW = cpu_ldl_le_data(env, ea+4);
++    env->gpr_a[10] = cpu_ldl_le_data(env, ea+8);
++    env->gpr_a[11] = cpu_ldl_le_data(env, ea+12);
++    env->gpr_d[8]  = cpu_ldl_le_data(env, ea+16);
++    env->gpr_d[9]  = cpu_ldl_le_data(env, ea+20);
++    env->gpr_d[10] = cpu_ldl_le_data(env, ea+24);
++    env->gpr_d[11] = cpu_ldl_le_data(env, ea+28);
++    env->gpr_a[12] = cpu_ldl_le_data(env, ea+32);
++    env->gpr_a[13] = cpu_ldl_le_data(env, ea+36);
++    env->gpr_a[14] = cpu_ldl_le_data(env, ea+40);
++    env->gpr_a[15] = cpu_ldl_le_data(env, ea+44);
++    env->gpr_d[12] = cpu_ldl_le_data(env, ea+48);
++    env->gpr_d[13] = cpu_ldl_le_data(env, ea+52);
++    env->gpr_d[14] = cpu_ldl_le_data(env, ea+56);
++    env->gpr_d[15] = cpu_ldl_le_data(env, ea+60);
+ }
+ 
+ static void restore_context_lower(CPUTriCoreState *env, uint32_t ea,
+                                   uint32_t *ra, uint32_t *pcxi)
+ {
+-    *pcxi = cpu_ldl_data(env, ea);
+-    *ra = cpu_ldl_data(env, ea+4);
+-    env->gpr_a[2] = cpu_ldl_data(env, ea+8);
+-    env->gpr_a[3] = cpu_ldl_data(env, ea+12);
+-    env->gpr_d[0] = cpu_ldl_data(env, ea+16);
+-    env->gpr_d[1] = cpu_ldl_data(env, ea+20);
+-    env->gpr_d[2] = cpu_ldl_data(env, ea+24);
+-    env->gpr_d[3] = cpu_ldl_data(env, ea+28);
+-    env->gpr_a[4] = cpu_ldl_data(env, ea+32);
+-    env->gpr_a[5] = cpu_ldl_data(env, ea+36);
+-    env->gpr_a[6] = cpu_ldl_data(env, ea+40);
+-    env->gpr_a[7] = cpu_ldl_data(env, ea+44);
+-    env->gpr_d[4] = cpu_ldl_data(env, ea+48);
+-    env->gpr_d[5] = cpu_ldl_data(env, ea+52);
+-    env->gpr_d[6] = cpu_ldl_data(env, ea+56);
+-    env->gpr_d[7] = cpu_ldl_data(env, ea+60);
++    *pcxi = cpu_ldl_le_data(env, ea);
++    *ra = cpu_ldl_le_data(env, ea+4);
++    env->gpr_a[2] = cpu_ldl_le_data(env, ea+8);
++    env->gpr_a[3] = cpu_ldl_le_data(env, ea+12);
++    env->gpr_d[0] = cpu_ldl_le_data(env, ea+16);
++    env->gpr_d[1] = cpu_ldl_le_data(env, ea+20);
++    env->gpr_d[2] = cpu_ldl_le_data(env, ea+24);
++    env->gpr_d[3] = cpu_ldl_le_data(env, ea+28);
++    env->gpr_a[4] = cpu_ldl_le_data(env, ea+32);
++    env->gpr_a[5] = cpu_ldl_le_data(env, ea+36);
++    env->gpr_a[6] = cpu_ldl_le_data(env, ea+40);
++    env->gpr_a[7] = cpu_ldl_le_data(env, ea+44);
++    env->gpr_d[4] = cpu_ldl_le_data(env, ea+48);
++    env->gpr_d[5] = cpu_ldl_le_data(env, ea+52);
++    env->gpr_d[6] = cpu_ldl_le_data(env, ea+56);
++    env->gpr_d[7] = cpu_ldl_le_data(env, ea+60);
+ }
+ 
+ void helper_call(CPUTriCoreState *env, uint32_t next_pc)
+@@ -2566,7 +2566,7 @@ void helper_call(CPUTriCoreState *env, uint32_t next_pc)
+     ea = ((env->FCX & MASK_FCX_FCXS) << 12) +
+          ((env->FCX & MASK_FCX_FCXO) << 6);
+     /* new_FCX = M(EA, word); */
+-    new_FCX = cpu_ldl_data(env, ea);
++    new_FCX = cpu_ldl_le_data(env, ea);
+     /* M(EA, 16 * word) = {PCXI, PSW, A[10], A[11], D[8], D[9], D[10], D[11],
+                            A[12], A[13], A[14], A[15], D[12], D[13], D[14],
+                            D[15]}; */
+@@ -2632,7 +2632,7 @@ void helper_ret(CPUTriCoreState *env)
+         A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_upper(env, ea, &new_PCXI, &new_PSW);
+     /* M(EA, word) = FCX; */
+-    cpu_stl_data(env, ea, env->FCX);
++    cpu_stl_le_data(env, ea, env->FCX);
+     /* FCX[19: 0] = PCXI[19: 0]; */
+     env->FCX = (env->FCX & 0xfff00000) + (env->PCXI & 0x000fffff);
+     /* PCXI = new_PCXI; */
+@@ -2662,7 +2662,7 @@ void helper_bisr(CPUTriCoreState *env, uint32_t const9)
+     ea = ((env->FCX & 0xf0000) << 12) + ((env->FCX & 0xffff) << 6);
+ 
+     /* new_FCX = M(EA, word); */
+-    new_FCX = cpu_ldl_data(env, ea);
++    new_FCX = cpu_ldl_le_data(env, ea);
+     /* M(EA, 16 * word) = {PCXI, A[11], A[2], A[3], D[0], D[1], D[2], D[3], A[4]
+                            , A[5], A[6], A[7], D[4], D[5], D[6], D[7]}; */
+     save_context_lower(env, ea);
+@@ -2726,7 +2726,7 @@ void helper_rfe(CPUTriCoreState *env)
+       A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_upper(env, ea, &new_PCXI, &new_PSW);
+     /* M(EA, word) = FCX;*/
+-    cpu_stl_data(env, ea, env->FCX);
++    cpu_stl_le_data(env, ea, env->FCX);
+     /* FCX[19: 0] = PCXI[19: 0]; */
+     env->FCX = (env->FCX & 0xfff00000) + (env->PCXI & 0x000fffff);
+     /* PCXI = new_PCXI; */
+@@ -2744,10 +2744,10 @@ void helper_rfm(CPUTriCoreState *env)
+     icr_set_ccpn(env, pcxi_get_pcpn(env));
+ 
+     /* {PCXI, PSW, A[10], A[11]} = M(DCX, 4 * word); */
+-    env->PCXI = cpu_ldl_data(env, env->DCX);
+-    psw_write(env, cpu_ldl_data(env, env->DCX+4));
+-    env->gpr_a[10] = cpu_ldl_data(env, env->DCX+8);
+-    env->gpr_a[11] = cpu_ldl_data(env, env->DCX+12);
++    env->PCXI = cpu_ldl_le_data(env, env->DCX);
++    psw_write(env, cpu_ldl_le_data(env, env->DCX+4));
++    env->gpr_a[10] = cpu_ldl_le_data(env, env->DCX+8);
++    env->gpr_a[11] = cpu_ldl_le_data(env, env->DCX+12);
+ 
+     if (tricore_has_feature(env, TRICORE_FEATURE_131)) {
+         env->DBGTCR = 0;
+@@ -2794,7 +2794,7 @@ void helper_svlcx(CPUTriCoreState *env)
+     ea = ((env->FCX & MASK_FCX_FCXS) << 12) +
+          ((env->FCX & MASK_FCX_FCXO) << 6);
+     /* new_FCX = M(EA, word); */
+-    new_FCX = cpu_ldl_data(env, ea);
++    new_FCX = cpu_ldl_le_data(env, ea);
+     /* M(EA, 16 * word) = {PCXI, PSW, A[10], A[11], D[8], D[9], D[10], D[11],
+                            A[12], A[13], A[14], A[15], D[12], D[13], D[14],
+                            D[15]}; */
+@@ -2837,7 +2837,7 @@ void helper_svucx(CPUTriCoreState *env)
+     ea = ((env->FCX & MASK_FCX_FCXS) << 12) +
+          ((env->FCX & MASK_FCX_FCXO) << 6);
+     /* new_FCX = M(EA, word); */
+-    new_FCX = cpu_ldl_data(env, ea);
++    new_FCX = cpu_ldl_le_data(env, ea);
+     /* M(EA, 16 * word) = {PCXI, PSW, A[10], A[11], D[8], D[9], D[10], D[11],
+                            A[12], A[13], A[14], A[15], D[12], D[13], D[14],
+                            D[15]}; */
+@@ -2887,9 +2887,9 @@ void helper_rslcx(CPUTriCoreState *env)
+         A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_lower(env, ea, &env->gpr_a[11], &new_PCXI);
+     /* M(EA, word) = FCX; */
+-    cpu_stl_data(env, ea, env->FCX);
++    cpu_stl_le_data(env, ea, env->FCX);
+     /* M(EA, word) = FCX; */
+-    cpu_stl_data(env, ea, env->FCX);
++    cpu_stl_le_data(env, ea, env->FCX);
+     /* FCX[19: 0] = PCXI[19: 0]; */
+     env->FCX = (env->FCX & 0xfff00000) + (env->PCXI & 0x000fffff);
+     /* PCXI = new_PCXI; */
 -- 
 2.51.0
 
