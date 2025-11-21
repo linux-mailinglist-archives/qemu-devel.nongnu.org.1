@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E94C7C611
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A24C7C614
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:34:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd1T-0000uW-4v; Fri, 21 Nov 2025 21:06:48 -0500
+	id 1vMd7T-00050k-KK; Fri, 21 Nov 2025 21:13:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcEM-0000Vc-2Y; Fri, 21 Nov 2025 20:16:02 -0500
+ id 1vMcok-0004es-Kh; Fri, 21 Nov 2025 20:53:38 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcCK-0005HT-9F; Fri, 21 Nov 2025 20:15:58 -0500
+ id 1vMcmi-00062e-0m; Fri, 21 Nov 2025 20:53:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ACB1D16CA5E;
+ by isrv.corpit.ru (Postfix) with ESMTP id C454416CA5F;
  Fri, 21 Nov 2025 21:44:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 326E2321C9A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7D778321C9B;
  Fri, 21 Nov 2025 21:44:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 35/81] target/s390x: Fix missing clock-comparator
- interrupts after reset
-Date: Fri, 21 Nov 2025 21:43:34 +0300
-Message-ID: <20251121184424.1137669-35-mjt@tls.msk.ru>
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Heiko Carstens <hca@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 36/81] target/s390x: Use address generation for
+ register branch targets
+Date: Fri, 21 Nov 2025 21:43:35 +0300
+Message-ID: <20251121184424.1137669-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -53,55 +56,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-After reset, CKC value is set to 0, so if clock-comparator interrupts
-are enabled, one should occur very shortly thereafter.
+Indirect branches to addresses taken from registers go through address
+generation, e.g., for BRANCH ON CONDITION Principles of Operation says:
 
-Currently the code that loads the respective control register does not
-set tod_timer, so this does not happen.
+    In the RR format, the contents of general register R2 are used to
+    generate the branch address
 
-Fix by adding a tcg_s390_tod_updated() call to LCTL and LCTLG.
+QEMU uses r2_nz handler for the respective register operands. Currently
+it does not zero out extra bits in 24- and 31-bit addressing modes as
+required by address generation. The very frequently used
+s390x_tr_init_disas_context() function has a workaround for this,
+but the code for saving an old PSW during an interrupt does not.
 
+Add the missing masking to r2_nz. Enforce PSW validity by replacing the
+workaround with an assertion.
+
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.de/
 Cc: qemu-stable@nongnu.org
-Suggested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20251016175954.41153-3-iii@linux.ibm.com>
+Tested-by: Thomas Weißschuh <linux@weissschuh.net>
+Message-ID: <20251016175954.41153-4-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit dacfec5157fb9e2249cf393a143bd545e80a6e31)
+(cherry picked from commit fc976a67ded4232cf0b9ae3c11fe051da01e4456)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 8187b917ba..116349b17c 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -1956,6 +1956,10 @@ void HELPER(lctlg)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-         if (env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-         }
-+        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val & CR0_CKC_SC)) {
-+            BQL_LOCK_GUARD();
-+            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
-+        }
-         env->cregs[i] = val;
-         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%" PRIx64 "\n",
-                    i, src, val);
-@@ -1986,10 +1990,15 @@ void HELPER(lctl)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 00073c5560..6aa1f30d58 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -5618,6 +5618,7 @@ static void in2_r2_nz(DisasContext *s, DisasOps *o)
+     int r2 = get_field(s, r2);
+     if (r2 != 0) {
+         o->in2 = load_reg(r2);
++        gen_addi_and_wrap_i64(s, o->in2, o->in2, 0);
+     }
+ }
+ #define SPEC_in2_r2_nz 0
+@@ -6384,10 +6385,12 @@ static void s390x_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
  
-     for (i = r1;; i = (i + 1) % 16) {
-         uint32_t val = cpu_ldl_data_ra(env, src, ra);
-+        uint64_t val64 = deposit64(env->cregs[i], 0, 32, val);
-         if ((uint32_t)env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-         }
--        env->cregs[i] = deposit64(env->cregs[i], 0, 32, val);
-+        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val64 & CR0_CKC_SC)) {
-+            BQL_LOCK_GUARD();
-+            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
+-    /* 31-bit mode */
+-    if (!(dc->base.tb->flags & FLAG_MASK_64)) {
+-        dc->base.pc_first &= 0x7fffffff;
+-        dc->base.pc_next = dc->base.pc_first;
++    if (dc->base.tb->flags & FLAG_MASK_32) {
++        if (!(dc->base.tb->flags & FLAG_MASK_64)) {
++            assert(!(dc->base.pc_first & ~((1ULL << 31) - 1)));
 +        }
-+        env->cregs[i] = val64;
-         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%x\n", i, src, val);
-         src += sizeof(uint32_t);
++    } else {
++        assert(!(dc->base.pc_first & ~((1ULL << 24) - 1)));
+     }
  
+     dc->cc_op = CC_OP_DYNAMIC;
 -- 
 2.47.3
 
