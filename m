@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8882C7C577
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:01:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935F2C7C4AF
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:34:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdMC-0006vY-VN; Fri, 21 Nov 2025 21:28:13 -0500
+	id 1vMdau-0005a4-Fy; Fri, 21 Nov 2025 21:43:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdM6-0006pQ-LZ; Fri, 21 Nov 2025 21:28:06 -0500
+ id 1vMdZY-0004Qg-Dx; Fri, 21 Nov 2025 21:42:00 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdLD-0006XF-F7; Fri, 21 Nov 2025 21:28:03 -0500
+ id 1vMdYQ-0002oz-TH; Fri, 21 Nov 2025 21:41:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A25FE16C6DA;
+ by isrv.corpit.ru (Postfix) with ESMTP id BC03E16C6DB;
  Fri, 21 Nov 2025 16:51:53 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0357D321951;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1B136321952;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 02/76] tests/tcg/multiarch/linux/linux-test: Don't try
- to test atime update
-Date: Fri, 21 Nov 2025 16:50:40 +0300
-Message-ID: <20251121135201.1114964-2-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 03/76] hw/ppc/e500: Check for compatible CPU type
+ instead of aborting ungracefully
+Date: Fri, 21 Nov 2025 16:50:41 +0300
+Message-ID: <20251121135201.1114964-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -61,76 +62,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-The linux-test test includes an attempt to check the utime and stat
-syscalls by setting the atime and mtime of a file to specific values,
-and then calling stat() to check that the values read back correctly.
+When using the ppce500 machine with an embedded CPU type that has
+the right MMU model, but is not part of the e500 CPU family, QEMU
+currently aborts ungracefully:
 
-Unfortunately this is flaky, as it will fail if some other process
-(for instance a virus scanner, backup program, etc) gets in and reads
-the file between the utime() and stat() call, resulting in a host
-syscall sequence like this:
+ $ ./qemu-system-ppc -machine ppce500 -cpu e200z5 -nographic
+ qemu-system-ppc: ../qemu/hw/core/gpio.c:108: qdev_get_gpio_in_named:
+  Assertion `n >= 0 && n < gpio_list->num_in' failed.
+ Aborted (core dumped)
 
-utimensat(AT_FDCWD, "file2",
-  [{tv_sec=1001, tv_nsec=0} /* 1970-01-01T01:16:41+0100 */,
-   {tv_sec=1000, tv_nsec=0} /* 1970-01-01T01:16:40+0100 */], 0) = 0
-# successfully set atime to 1001 and mtime to 1000
-statx(AT_FDCWD, "file2", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT,
-  STATX_BASIC_STATS,
-  {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID,
-   stx_blksize=4096, stx_attributes=0, stx_nlink=1, stx_uid=32808,
-   stx_gid=32808, stx_mode=S_IFREG|0600, stx_ino=21659016,
-   stx_size=100, stx_blocks=8,
-   stx_attributes_mask=STATX_ATTR_COMPRESSED|STATX_ATTR_IMMUTABLE|
-         STATX_ATTR_APPEND|STATX_ATTR_NODUMP|STATX_ATTR_ENCRYPTED|
-         STATX_ATTR_AUTOMOUNT|STATX_ATTR_MOUNT_ROOT|STATX_ATTR_VERITY|
-         STATX_ATTR_DAX,
-   stx_atime={tv_sec=1760091862, tv_nsec=63509009} /* 2025-10-10T11:24:22.063509009+0100 */,
-   stx_ctime={tv_sec=1760091862, tv_nsec=63509009} /* 2025-10-10T11:24:22.063509009+0100 */,
-   stx_mtime={tv_sec=1000, tv_nsec=0} /* 1970-01-01T01:16:40+0100 */,
-   stx_rdev_major=0, stx_rdev_minor=0, stx_dev_major=252,
-   stx_dev_minor=0, stx_mnt_id=0x1f}) = 0
-# but when we statx the file, we get back an mtime of 1000
-# but an atime corresponding to when the other process read it
+The ppce500 machine expects a CPU with certain GPIO interrupt pins,
+so let's replace the coarse check for the MMU_BOOKE206 model with
+a more precise check that only allows CPUs from the e500 family.
 
-and which will cause the test program to fail with the error
-message "stat time".
-
-In theory we could defend against this by e.g.  operating on files in
-a dummy loopback mount filesystem which we mounted as 'noatime', but
-this isn't worth the hassle.  Just drop the check on atime.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251016150357.876415-4-alex.bennee@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit 77dc9d662f80b9f4eb450df27f60a0a9b3c97785)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3162
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-ID: <20251015111243.1585018-1-thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 270b28681e369082dc17f58eae2871b75d3e8e6c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/multiarch/linux/linux-test.c b/tests/tcg/multiarch/linux/linux-test.c
-index 64f57cb287..bf6e0fda26 100644
---- a/tests/tcg/multiarch/linux/linux-test.c
-+++ b/tests/tcg/multiarch/linux/linux-test.c
-@@ -155,9 +155,14 @@ static void test_file(void)
-         error("stat mode");
-     if ((st.st_mode & 0777) != 0600)
-         error("stat mode2");
--    if (st.st_atime != 1001 ||
--        st.st_mtime != 1000)
-+    /*
-+     * Only check mtime, not atime: other processes such as
-+     * virus scanners might race with this test program and get
-+     * in and update the atime, causing random failures.
-+     */
-+    if (st.st_mtime != 1000) {
-         error("stat time");
-+    }
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 723c97fad2..3d69428f31 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -20,6 +20,7 @@
+ #include "qemu/guest-random.h"
+ #include "exec/target_page.h"
+ #include "qapi/error.h"
++#include "cpu-models.h"
+ #include "e500.h"
+ #include "e500-ccsr.h"
+ #include "net/net.h"
+@@ -942,9 +943,8 @@ void ppce500_init(MachineState *machine)
+         env = &cpu->env;
+         cs = CPU(cpu);
  
-     chk_error(stat(tmpdir, &st));
-     if (!S_ISDIR(st.st_mode))
+-        if (env->mmu_model != POWERPC_MMU_BOOKE206) {
+-            error_report("MMU model %i not supported by this machine",
+-                         env->mmu_model);
++        if (!(POWERPC_CPU_GET_CLASS(cpu)->svr & POWERPC_SVR_E500)) {
++            error_report("This machine needs a CPU from the e500 family");
+             exit(1);
+         }
+ 
 -- 
 2.47.3
 
