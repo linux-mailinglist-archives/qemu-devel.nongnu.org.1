@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593FBC7C421
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C2FC7C547
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:49:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd2W-0001SH-1n; Fri, 21 Nov 2025 21:07:53 -0500
+	id 1vMd4W-0002na-GQ; Fri, 21 Nov 2025 21:09:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcf4-0005wT-5c; Fri, 21 Nov 2025 20:43:39 -0500
+ id 1vMcmK-0002eR-Jh; Fri, 21 Nov 2025 20:51:08 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcd1-0003Zn-Ka; Fri, 21 Nov 2025 20:43:33 -0500
+ id 1vMckF-0005Qp-UT; Fri, 21 Nov 2025 20:51:03 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BCCE616CA74;
+ by isrv.corpit.ru (Postfix) with ESMTP id CE28A16CA75;
  Fri, 21 Nov 2025 21:44:27 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 09EB3321CB0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8C8BC321CB1;
  Fri, 21 Nov 2025 21:44:36 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Vincent Vanlaer <libvirt-e6954efa@volkihar.be>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 57/81] hw/misc/npcm_clk: Don't divide by zero when
- calculating frequency
-Date: Fri, 21 Nov 2025 21:43:56 +0300
-Message-ID: <20251121184424.1137669-57-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 58/81] block: get type of block allocation in
+ commit_run
+Date: Fri, 21 Nov 2025 21:43:57 +0300
+Message-ID: <20251121184424.1137669-58-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -53,50 +52,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
 
-If the guest misprograms the PLL registers to request a zero
-divisor, we currently fall over with a division by zero:
+bdrv_co_common_block_status_above not only returns whether the block is
+allocated, but also if it contains zeroes.
 
-../../hw/misc/npcm_clk.c:221:14: runtime error: division by zero
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/misc/npcm_clk.c:221:14
-
-Thread 1 "qemu-system-aar" received signal SIGFPE, Arithmetic exception.
-0x00005555584d8f6d in npcm7xx_clk_update_pll (opaque=0x7fffed159a20) at ../../hw/misc/npcm_clk.c:221
-221             freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
-
-Avoid this by treating this invalid setting like a stopped clock
-(setting freq to 0).
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/549
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251107150137.1353532-1-peter.maydell@linaro.org
-(cherry picked from commit 5fc50b4ec841c8a01e7346c2c804088fc3accb6b)
+Signed-off-by: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-Id: <20241026163010.2865002-2-libvirt-e6954efa@volkihar.be>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+(cherry picked from commit 71365ee433125026d9744a0a37142c81ff312b53)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/misc/npcm_clk.c b/hw/misc/npcm_clk.c
-index b6a893ffb2..e6b28c7a57 100644
---- a/hw/misc/npcm_clk.c
-+++ b/hw/misc/npcm_clk.c
-@@ -212,13 +212,14 @@ static void npcm7xx_clk_update_pll(void *opaque)
- {
-     NPCM7xxClockPLLState *s = opaque;
-     uint32_t con = s->clk->regs[s->reg];
--    uint64_t freq;
-+    uint64_t freq, freq_div;
- 
-     /* The PLL is grounded if it is not locked yet. */
-     if (con & PLLCON_LOKI) {
-         freq = clock_get_hz(s->clock_in);
-         freq *= PLLCON_FBDV(con);
--        freq /= PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
-+        freq_div = PLLCON_INDV(con) * PLLCON_OTDV1(con) * PLLCON_OTDV2(con);
-+        freq = freq_div ? freq / freq_div : 0;
-     } else {
-         freq = 0;
-     }
+diff --git a/block/commit.c b/block/commit.c
+index 5df3d05346..ba0ba59316 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -15,6 +15,8 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "trace.h"
++#include "block/block-common.h"
++#include "block/coroutines.h"
+ #include "block/block_int.h"
+ #include "block/blockjob_int.h"
+ #include "qapi/error.h"
+@@ -167,9 +169,13 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
+             break;
+         }
+         /* Copy if allocated above the base */
+-        ret = blk_co_is_allocated_above(s->top, s->base_overlay, true,
+-                                        offset, COMMIT_BUFFER_SIZE, &n);
+-        copy = (ret > 0);
++        WITH_GRAPH_RDLOCK_GUARD() {
++            ret = bdrv_co_common_block_status_above(blk_bs(s->top),
++                s->base_overlay, true, true, offset, COMMIT_BUFFER_SIZE,
++                &n, NULL, NULL, NULL);
++        }
++
++        copy = (ret >= 0 && ret & BDRV_BLOCK_ALLOCATED);
+         trace_commit_one_iteration(s, offset, n, ret);
+         if (copy) {
+             assert(n < SIZE_MAX);
 -- 
 2.47.3
 
