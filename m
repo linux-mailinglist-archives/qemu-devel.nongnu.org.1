@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4645C7C5C2
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2827C7C3C0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:00:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcxF-0002Vx-AM; Fri, 21 Nov 2025 21:02:26 -0500
+	id 1vMd53-0003ES-K5; Fri, 21 Nov 2025 21:10:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcAH-0006ku-Me; Fri, 21 Nov 2025 20:11:49 -0500
+ id 1vMccd-0004lU-16; Fri, 21 Nov 2025 20:41:07 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcA6-0004fo-8J; Fri, 21 Nov 2025 20:11:45 -0500
+ id 1vMcaZ-00030T-Vg; Fri, 21 Nov 2025 20:41:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AC6E216CA6F;
+ by isrv.corpit.ru (Postfix) with ESMTP id BE4E516CA70;
  Fri, 21 Nov 2025 21:44:26 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6969E321CAB;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7BCD8321CAC;
  Fri, 21 Nov 2025 21:44:35 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 52/81] hw/net/e1000e_core: Correct rx oversize packet
- checks
-Date: Fri, 21 Nov 2025 21:43:51 +0300
-Message-ID: <20251121184424.1137669-52-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 53/81] hw/net/e1000e_core: Adjust
+ e1000e_write_payload_frag_to_rx_buffers() assert
+Date: Fri, 21 Nov 2025 21:43:52 +0300
+Message-ID: <20251121184424.1137669-53-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -54,166 +54,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In e1000e_write_packet_to_guest() we attempt to ensure that we don't
-write more of a packet to a descriptor than will fit in the guest
-configured receive buffers.  However, this code does not allow for
-the "packet split" feature.  When packet splitting is enabled, the
-first of up to 4 buffers in the descriptor is used for the packet
-header only, with the payload going into buffers 2, 3 and 4.  Our
-length check only checks against the total sizes of all 4 buffers,
-which meant that if an incoming packet was large enough to fit in (1
-+ 2 + 3 + 4) but not into (2 + 3 + 4) and packet splitting was
-enabled, we would run into the assertion in
-e1000e_write_hdr_frag_to_rx_buffers() that we had enough buffers for
-the data:
+An assertion in e1000e_write_payload_frag_to_rx_buffers() attempts to
+guard against the calling code accidentally trying to write too much
+data to a single RX descriptor, such that the E1000EBAState::cur_idx
+indexes off the end of the EB1000BAState::written[] array.
 
-qemu-system-i386: ../../hw/net/e1000e_core.c:1418: void e1000e_write_payload_frag_to_rx_buffers(E1000ECore *, hwaddr *, E1000EBAState *, const char *, dma_addr_t): Assertion `bastate->cur_idx < MAX_PS_BUFFERS' failed.
+Unfortunately it is overzealous: it asserts that cur_idx is in
+range after it has been incremented. This will fire incorrectly
+for the case where the guest configures four buffers and exactly
+enough bytes are written to fill all four of them.
 
-A malicious guest could provoke this assertion by configuring the
-device into loopback mode, and then sending itself a suitably sized
-packet into a suitably arrange rx descriptor.
-
-The code also fails to deal with the possibility that the descriptor
-buffers are sized such that the trailing checksum word does not fit
-into the last descriptor which has actual data, which might also
-trigger this assertion.
-
-Rework the length handling to use two variables:
- * desc_size is the total amount of data DMA'd to the guest
-   for the descriptor being processed in this iteration of the loop
- * rx_desc_buf_size is the total amount of space left in it
-
-As we copy data to the guest (packet header, payload, checksum),
-update these two variables.  (Previously we attempted to calculate
-desc_size once at the top of the loop, but this is too difficult to
-do correctly.) Then we can use the variables to ensure that we clamp
-the amount of copied payload data to the remaining space in the
-descriptor's buffers, even if we've used one of the buffers up in the
-packet-split code, and we can tell whether we have enough space for
-the full checksum word in this descriptor or whether we're going to
-need to split that to the following descriptor.
-
-I have included comments that hopefully help to make the loop
-logic a little clearer.
+The only places where we use cur_idx and index in to the written[]
+array are the functions e1000e_write_hdr_frag_to_rx_buffers() and
+e1000e_write_payload_frag_to_rx_buffers(), so we can rewrite this to
+assert before doing the array dereference, rather than asserting
+after updating cur_idx.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/537
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 9d946d56a2ac8a6c2df186e20d24810255c83a3f)
+(cherry picked from commit bab496a18358643b686f69e2b97d73fb98d37e79)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index 8e93bd3d81..58a34125e9 100644
+index 58a34125e9..a2df627119 100644
 --- a/hw/net/e1000e_core.c
 +++ b/hw/net/e1000e_core.c
-@@ -1495,6 +1495,13 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-     rxi = rxr->i;
- 
-     do {
-+        /*
-+         * Loop processing descriptors while we have packet data to
-+         * DMA to the guest.  desc_offset tracks how much data we have
-+         * sent to the guest in total over all descriptors, and goes
-+         * from 0 up to total_size (the size of everything to send to
-+         * the guest including possible trailing 4 bytes of CRC data).
-+         */
-         hwaddr ba[MAX_PS_BUFFERS];
-         E1000EBAState bastate = { { 0 } };
-         bool is_last = false;
-@@ -1512,23 +1519,27 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-         e1000e_read_rx_descr(core, &desc, ba);
- 
-         if (ba[0]) {
--            size_t desc_size = total_size - desc_offset;
--
--            if (desc_size > core->rx_desc_buf_size) {
--                desc_size = core->rx_desc_buf_size;
--            }
-+            /* Total amount of data DMA'd to the guest in this iteration */
-+            size_t desc_size = 0;
-+            /*
-+             * Total space available in this descriptor (we will update
-+             * this as we use it up)
-+             */
-+            size_t rx_desc_buf_size = core->rx_desc_buf_size;
- 
-             if (desc_offset < size) {
--                static const uint32_t fcs_pad;
-                 size_t iov_copy;
-+                /* Amount of data to copy from the incoming packet */
-                 size_t copy_size = size - desc_offset;
--                if (copy_size > core->rx_desc_buf_size) {
--                    copy_size = core->rx_desc_buf_size;
--                }
- 
-                 /* For PS mode copy the packet header first */
-                 if (do_ps) {
-                     if (is_first) {
-+                        /*
-+                         * e1000e_do_ps() guarantees that buffer 0 has enough
-+                         * space for the header; otherwise we will not split
-+                         * the packet (i.e. do_ps is false).
-+                         */
-                         size_t ps_hdr_copied = 0;
-                         do {
-                             iov_copy = MIN(ps_hdr_len - ps_hdr_copied,
-@@ -1550,14 +1561,26 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                         } while (ps_hdr_copied < ps_hdr_len);
- 
-                         is_first = false;
-+                        desc_size += ps_hdr_len;
-                     } else {
-                         /* Leave buffer 0 of each descriptor except first */
-                         /* empty as per spec 7.1.5.1                      */
-                         e1000e_write_hdr_frag_to_rx_buffers(core, ba, &bastate,
-                                                             NULL, 0);
-                     }
-+                    rx_desc_buf_size -= core->rxbuf_sizes[0];
-                 }
- 
-+                /*
-+                 * Clamp the amount of packet data we copy into what will fit
-+                 * into the remaining buffers in the descriptor.
-+                 */
-+                if (copy_size > rx_desc_buf_size) {
-+                    copy_size = rx_desc_buf_size;
-+                }
-+                desc_size += copy_size;
-+                rx_desc_buf_size -= copy_size;
+@@ -1392,10 +1392,13 @@ e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
+                                         dma_addr_t data_len)
+ {
+     while (data_len > 0) {
+-        uint32_t cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
+-        uint32_t cur_buf_bytes_left = cur_buf_len -
+-                                      bastate->written[bastate->cur_idx];
+-        uint32_t bytes_to_write = MIN(data_len, cur_buf_bytes_left);
++        uint32_t cur_buf_len, cur_buf_bytes_left, bytes_to_write;
 +
-                 /* Copy packet payload */
-                 while (copy_size) {
-                     iov_copy = MIN(copy_size, iov->iov_len - iov_ofs);
-@@ -1574,12 +1597,22 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                         iov_ofs = 0;
-                     }
-                 }
-+            }
++        assert(bastate->cur_idx < MAX_PS_BUFFERS);
++
++        cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
++        cur_buf_bytes_left = cur_buf_len - bastate->written[bastate->cur_idx];
++        bytes_to_write = MIN(data_len, cur_buf_bytes_left);
  
--                if (desc_offset + desc_size >= total_size) {
--                    /* Simulate FCS checksum presence in the last descriptor */
--                    e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
--                          (const char *) &fcs_pad, e1000x_fcs_len(core->mac));
--                }
-+            if (rx_desc_buf_size &&
-+                desc_offset >= size && desc_offset < total_size) {
-+                /*
-+                 * We are in the last 4 bytes corresponding to the FCS checksum.
-+                 * We only ever write zeroes here (unlike the hardware).
-+                 */
-+                static const uint32_t fcs_pad;
-+                /* Amount of space for the trailing checksum */
-+                size_t fcs_len = MIN(rx_desc_buf_size,
-+                                     total_size - desc_offset);
-+                e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
-+                                                        (const char *)&fcs_pad,
-+                                                        fcs_len);
-+                desc_size += fcs_len;
-             }
-             desc_offset += desc_size;
-             if (desc_offset >= total_size) {
+         trace_e1000e_rx_desc_buff_write(bastate->cur_idx,
+                                         ba[bastate->cur_idx],
+@@ -1414,8 +1417,6 @@ e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
+         if (bastate->written[bastate->cur_idx] == cur_buf_len) {
+             bastate->cur_idx++;
+         }
+-
+-        assert(bastate->cur_idx < MAX_PS_BUFFERS);
+     }
+ }
+ 
 -- 
 2.47.3
 
