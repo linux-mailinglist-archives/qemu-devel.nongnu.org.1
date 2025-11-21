@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F183C7C541
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897BCC7C662
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:40:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdfV-0001Fi-W8; Fri, 21 Nov 2025 21:48:11 -0500
+	id 1vMdFv-0005pW-Pi; Fri, 21 Nov 2025 21:21:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdeB-0008H8-ND; Fri, 21 Nov 2025 21:46:47 -0500
+ id 1vMdFl-0005mb-CC; Fri, 21 Nov 2025 21:21:33 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdcm-0004NW-Fp; Fri, 21 Nov 2025 21:46:41 -0500
+ id 1vMdEf-0004CE-1j; Fri, 21 Nov 2025 21:21:29 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CD97316C712;
+ by isrv.corpit.ru (Postfix) with ESMTP id E162D16C713;
  Fri, 21 Nov 2025 16:51:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 332613219AF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 46F4E3219B0;
  Fri, 21 Nov 2025 16:52:07 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 58/76] tests: move test_virt assets to share.linaro.org
-Date: Fri, 21 Nov 2025 16:51:36 +0300
-Message-ID: <20251121135201.1114964-58-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 59/76] tests: move test_netdev_ethtool to
+ share.linaro.org
+Date: Fri, 21 Nov 2025 16:51:37 +0300
+Message-ID: <20251121135201.1114964-59-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -61,39 +62,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Alex Bennée <alex.bennee@linaro.org>
 
 Linaro are migrating file-hosting from the old NextCloud instance to
-another sharing site. While I'm at it drop the old pauth-impdef flag
-which is no longer needed.
+another sharing site.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251117115523.3993105-8-alex.bennee@linaro.org>
+Message-ID: <20251117115523.3993105-9-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit dfaf3695b20d653338c2f34edbbb552f697033c3)
+(cherry picked from commit 5ff8d1fac98ba35391412883a17feb16a5b464e9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
-index 4d0ad90ff8..7a6297f75c 100755
---- a/tests/functional/test_aarch64_virt.py
-+++ b/tests/functional/test_aarch64_virt.py
-@@ -60,8 +60,7 @@ def test_alpine_virt_tcg_gic_max(self):
+diff --git a/tests/functional/test_netdev_ethtool.py b/tests/functional/test_netdev_ethtool.py
+index ee1a397bd2..ac8a92512c 100755
+--- a/tests/functional/test_netdev_ethtool.py
++++ b/tests/functional/test_netdev_ethtool.py
+@@ -16,16 +16,10 @@ class NetDevEthtool(QemuSystemTest):
+     # Runs in about 17s under KVM, 19s under TCG, 25s under GCOV
+     timeout = 45
  
+-    # Fetch assets from the netdev-ethtool subdir of my shared test
+-    # images directory on fileserver.linaro.org.
+-    ASSET_BASEURL = ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/'
+-                     'download?path=%2Fnetdev-ethtool&files=')
+-    ASSET_BZIMAGE = Asset(
+-        ASSET_BASEURL + "bzImage",
+-        "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
+-    ASSET_ROOTFS = Asset(
+-        ASSET_BASEURL + "rootfs.squashfs",
+-        "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
++    ASSET_BZIMAGE = Asset("https://share.linaro.org/downloadFile?id=QD37GYYAJhGOgVe",
++                          "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
++    ASSET_ROOTFS = Asset("https://share.linaro.org/downloadFile?id=YAqnr0W8fruDh3f",
++                         "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
  
-     ASSET_KERNEL = Asset(
--        ('https://fileserver.linaro.org/s/'
--         'z6B2ARM7DQT3HWN/download'),
-+        'https://share.linaro.org/downloadFile?id=3zGlbmXh8pXFewt',
-         '12a54d4805cda6ab647cb7c7bbdb16fafb3df400e0d6f16445c1a0436100ef8d')
- 
-     def common_aarch64_virt(self, machine):
-@@ -79,7 +78,7 @@ def common_aarch64_virt(self, machine):
-         self.vm.set_console()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'console=ttyAMA0')
--        self.vm.add_args('-cpu', 'max,pauth-impdef=on',
-+        self.vm.add_args('-cpu', 'max',
-                          '-machine', machine,
-                          '-accel', 'tcg',
-                          '-kernel', kernel_path,
+     def common_test_code(self, netdev, extra_args=None):
+         self.set_machine('q35')
 -- 
 2.47.3
 
