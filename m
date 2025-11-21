@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BC3C78423
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 187B7C78432
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:58:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNtS-0008KI-R3; Fri, 21 Nov 2025 04:57:30 -0500
+	id 1vMNtW-0008My-NU; Fri, 21 Nov 2025 04:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMdo-00057M-TL
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:16 -0500
-Received: from mail-southcentralusazlp170120001.outbound.protection.outlook.com
- ([2a01:111:f403:c10d::1] helo=SN4PR2101CU001.outbound.protection.outlook.com)
+ id 1vMMe7-0005B2-Fs
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:35 -0500
+Received: from mail-westusazlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c000::1] helo=BYAPR05CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMdm-0000LB-TR
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:16 -0500
+ id 1vMMe5-0000Nv-65
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:37:35 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rBOpUIQEOunXbH94WaamwHBsAknGT2LGR+5KbIHC2TL0nojayCZxYzqqmBZQn007/OeHd6EBalyFuT5BwQDKohGxfZ6DRxNnT8QiupwsbW7eHglKJa/OE/MT9gtifW5A4E2cR45vB76hdzBPoa6enk+Ncinq8pDudP1hCUM2chm0yVPr9Y8N1oZ1dBvNrCFjD71+vYUN8xh2ZeJYCsrn0gS30NH64zH4pvpMr7R+AS07fPa/yT+nTNfAG4zLudbMaPUuj9b62ycmzRpsOBGuKM52XEXtVb42j8FgF/dgLE7Y8OZAQSsspJbRicwJ5a568V10oJOuWKOGbgF8Aa/WBA==
+ b=K8qZ9MgTtgz4vLehh1r/7EwrJym4gN5gon0gDUwN5kVYPZN2s9TqHNcG+df1uJ+aIYiKAovmZJqFD6bpVZ/8KncsK5IlQJza8CtcIBEN/vABLG9D2OO8zjqHOI8rSBUyUQONWyA1adwLI5rHHjxjCNLMivApSuQkgBrRbbqbCu6A3qHQ22T39FX/2KO1v7oEyOzZkQdiHlAl4qUR9o5Zt3APOdurxfCokMR0vZQoGDzKrWI4KzkQOfSN9KMklDhmhLiw1/jh/kkFi9QunB2CiLO+2AkR4/oM9iumaZIiCTyMXvxKeQKsAKsC4MBRsfls8Ma6DSRl4kdQqItL0+FhwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G51lSEc6VqjRlnMr8fMP+FY47sjitLjNoVRPZrLeTQQ=;
- b=LWGjiUOBx/Iwe+caIyVO+89YCkwgpdmz8YODCSmHlrEUGsAMAslsbzi70lGlLzrXsMrc++kKdjCWKPnJ9Y3Af8xWZBzm2EQeIwJ5DqvNWSxk3gJU+KqbBIGWkDL+SelCq/IMR6jUOWjOwRBrT+N+9Iq9YqTZbk5yn6sPY0pjg/+1zSF/Zc7Hz/U+TNlCuv2tPk/b+aZ2ChkYb6Q5pjxJG7zZPq5y3i4dvchKDq9tVWG/cONsFDa/w481UNzxsfZKd9Mkuuxxin8QXN6TW+owtLT1KjfyCjwCvYbcDfmsHN5ZsgylIIuzXPimvbF49OyEiMB/8upehqpTFo/C7kfhLg==
+ bh=OXhv61nONhbhl9R9HnyIcIs6s6XFIbwUzS+V8scz/pQ=;
+ b=fkqAIk8TR7Y+xDR6AH8Pdqcj/uLoYU8q3WwpfWn0HWTxYdy8xTKzq0iRHlTrCWdccXJsB4c/PKNbu2IHgg9YlNb4Ib0QLv8SqW/fwsqqEBCvfvzMjmSR0j9fNb0RAEmw5LNee9j2bWtiXZ9A6Xa/f9A+f+x/AMTyZvTZWXsMZzA+6T5GwPcRdu0Ih8mYqTaH2cKV9BNhLpc+vKrCCXVhNJolYNXrN1NXFAggfDaFWaCl7/WRTync/FdJrZQHwWDzvKhg/x+2gw4S2yFxPB8u6hiH347rfeGbAzE9J50rMIMvhH+mauMb4dCb2LESowS3wo/s1eaG8c56wH274JA+gA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G51lSEc6VqjRlnMr8fMP+FY47sjitLjNoVRPZrLeTQQ=;
- b=SJ2qbBgpPlqI1pz5sMajRsM24JMrwM/zMPeeiQGC1tgQ5wz5k/5YFH5pMw/iJGupheXAaSylrFfBozj7Enb2Gw7sL59FzAaTPsgXYgffGshRqrFiRPSlHiv8Nc5A/2JYUuz/yxIBPNU3mhlBNfxtOirt2bI3aFkLZ0J9tP3CFYk=
-Received: from BL1PR13CA0069.namprd13.prod.outlook.com (2603:10b6:208:2b8::14)
- by PH8PR12MB7230.namprd12.prod.outlook.com (2603:10b6:510:226::17)
+ bh=OXhv61nONhbhl9R9HnyIcIs6s6XFIbwUzS+V8scz/pQ=;
+ b=43bA8Zo1VIxyOToX1sbmL9FTy+KocKHhNxT7IgHPFu3HJ7CurSp7yhPQUHr6Il79/M932xiQ/s4ZvjGhb/k1nNB9LkDvZV1tUYKzIedNFu26jhUWa/e8lh6fKNpQ3DECRcvEY+XuZyw/PtqOmpXiuCFEYlIM5vMgWDIPvUubk3c=
+Received: from MN2PR20CA0048.namprd20.prod.outlook.com (2603:10b6:208:235::17)
+ by SA1PR12MB8600.namprd12.prod.outlook.com (2603:10b6:806:257::19)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
- 2025 08:37:07 +0000
-Received: from BN2PEPF000044AB.namprd04.prod.outlook.com
- (2603:10b6:208:2b8:cafe::1d) by BL1PR13CA0069.outlook.office365.com
- (2603:10b6:208:2b8::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Fri,
- 21 Nov 2025 08:37:07 +0000
+ 2025 08:37:27 +0000
+Received: from BN2PEPF000044A8.namprd04.prod.outlook.com
+ (2603:10b6:208:235:cafe::93) by MN2PR20CA0048.outlook.office365.com
+ (2603:10b6:208:235::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.12 via Frontend Transport; Fri,
+ 21 Nov 2025 08:37:25 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,22 +51,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044AB.mail.protection.outlook.com (10.167.243.106) with Microsoft
+ BN2PEPF000044A8.mail.protection.outlook.com (10.167.243.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:37:06 +0000
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:37:26 +0000
 Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
- 2025 00:37:03 -0800
+ 2025 00:37:23 -0800
 From: Shivansh Dhiman <shivansh.dhiman@amd.com>
 To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>,
  <kvm@vger.kernel.org>
 CC: <qemu-devel@nongnu.org>, <seanjc@google.com>, <santosh.shukla@amd.com>,
  <nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <babu.moger@amd.com>,
  <shivansh.dhiman@amd.com>
-Subject: [PATCH 2/5] i386: Add CPU property x-force-cpuid-0x80000026
-Date: Fri, 21 Nov 2025 08:34:49 +0000
-Message-ID: <20251121083452.429261-3-shivansh.dhiman@amd.com>
+Subject: [PATCH 3/5] i386: Enable CPUID 80000026 for EPYC-Genoa/Turin vCPU
+Date: Fri, 21 Nov 2025 08:34:50 +0000
+Message-ID: <20251121083452.429261-4-shivansh.dhiman@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121083452.429261-1-shivansh.dhiman@amd.com>
 References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
@@ -78,64 +78,65 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044AB:EE_|PH8PR12MB7230:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92efa55c-068c-4459-5124-08de28d9278f
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A8:EE_|SA1PR12MB8600:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9987d76-26c1-42ef-00ae-08de28d9337f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/hQN5uhv20Ybqs1GXCS0B4Zx+epvnn56av0BeFTAA7Zmv11Mig+1e0M5bAAX?=
- =?us-ascii?Q?LhMB1MMw5YiRmrpTFiFo+lzf3snbhfGJslRrK6mNPhnCtxfxXoQixhQtQ39m?=
- =?us-ascii?Q?3pdrRASVRjGpCPO7PvnrDFA2/irZY7DkZcqtA94ZBPz4MdzXbiZGIMFCw5st?=
- =?us-ascii?Q?mFPGkS4am+S4uQkxstvMGSqby76GqcmPaqmGWKwE14UhvDJbIYxvtwn80jxc?=
- =?us-ascii?Q?wGFawI19iJo+pG9hpK39GZSss3/LkLexHcIqy5vDdyyHU7RUdWrRDqYCh1Cv?=
- =?us-ascii?Q?m7oWQ8ru52U6MW3j33/a/nYLXFwDVnSnr0su+QhEgQt8ONKcv6QkFn6VW/Lt?=
- =?us-ascii?Q?gw+eK1JigTinNwGv1B8+CTFyTfN00W3eHDyRUEdO0InHF30pEw4/bsIXeQoa?=
- =?us-ascii?Q?eXzVFfqlh7Ra5eSl6/8qRgbjKLeCKLUm4x3mCTaFiyDqstZiIvrBBbW38YuQ?=
- =?us-ascii?Q?5cK+w4G5yoIJnXY2gJpkqJfyS1bs7Kc3k70iEX+iw9U/Q5gMtwdK6srsQDZL?=
- =?us-ascii?Q?4MR6Mn4NeMh5Px4F0IRvWcq3F3zCe8lOkXWYdCiMvvgroZwFSybr3vM2TCtB?=
- =?us-ascii?Q?2YyF22mDxZG77r5wEXDDj8WkQJhGP7KhtZFy3HcHDqL6AfeG02yRmCGdIilp?=
- =?us-ascii?Q?zcPCWusSeCrdrzEblP2TP/skv77MR8yn6G2o0gjnIu1uHCTd0IMbOVk6DB+M?=
- =?us-ascii?Q?ZFk2xl7uwQsufTXjVzFil8BR2kNpIwcPi/3dvNmizBzVSsL5MOkO2EN/fhSm?=
- =?us-ascii?Q?0/m3lyrthopCvda+7vSRGmJqFmVzhvKYMnn8yxD6tnFOc+kwqq4uGKWS0YQZ?=
- =?us-ascii?Q?X2ZhV9ApoY/PvpOLUWSEZB7dfZKm3PeL/AQZgF0frl7ob6vbbaY7Zo5R+M+W?=
- =?us-ascii?Q?yaXfkQx4ivCZHfApim+VL5z4zOLh1n/iXmCFb5Gd+n5dY6I3ptH+e91AMeyA?=
- =?us-ascii?Q?4s5Lcu/30dDh/DdjCiiiXTJjM4sVFTwyeQyj7CODsEpNe6Arg91QSqc0tjWg?=
- =?us-ascii?Q?Bzm1YT1lx6V1wJWC+lNMhpk44YNQ+IZO/7J6IwyRhIkx9cWu7gtRgHA0ubok?=
- =?us-ascii?Q?sdQFeP4XzdIEJzFkbgo+R8l6cPX+pm9d67SfNHCuupfzmHCQuYU+bae8B8QB?=
- =?us-ascii?Q?ZloAAePKSjWdXDXeM9DoghgLEJoZEyIpA/8BclUps8/tZolUJ9tZ+V1Z3WFU?=
- =?us-ascii?Q?g0wTlbV90SS+ZHW29mZHuDSzzG3p/jda0rLrZaXUzMgQUB9oJVII2fYGy3eE?=
- =?us-ascii?Q?hVu9PvGn2CKbXu+ruvDHmaXBtKdgUcvus5Xxb6oe39KMOenplP4c4AKPLhCg?=
- =?us-ascii?Q?TpZYYAY+BWs3s7RVxtm+vtztXFIm1xlqrrpE46zEwELpbzucSyqf0EDTiDPW?=
- =?us-ascii?Q?oWY0O9vfPpR7DjxLTKFDQ/bDjurldeHWMIZeW9Vc2+BbI9TLtCc+f5il7tBD?=
- =?us-ascii?Q?H55eNjgQWCwCqSStG5mkwGiaZ5fVVp/1E9qFgOVTwsNWg3cfdpVP3/UKrV04?=
- =?us-ascii?Q?4MZqEBDaFljap8O8E+Cz+ho8eRymgpKMkbXwgBmdyKOVe16Rf61Jmj3uJp+1?=
- =?us-ascii?Q?XiWkrqOIKC02Fn4DO0U=3D?=
+ ARA:13230040|376014|36860700013|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3gMtBR9+D2FgL+LAFSZXAcoTKuA+XRv+crcIP2S4xh28dhtPkBh41in4D0jw?=
+ =?us-ascii?Q?TrxGKRHnG/XAi4aHUtw934yozVj9ESJDoR2MRg3OP+cVkBaEjTw/dEYB02yY?=
+ =?us-ascii?Q?M3NZi1WTKopeJQ5KN9/vOKJi5C9gfXTYvcPokasD7yyAsBQFka0D8ZMqK1yA?=
+ =?us-ascii?Q?/fYVUsIkzjAw9t46UgAKwxs6Dq+6Zsjmy25hng74B8IUZKmLX6K9YdOz2YVp?=
+ =?us-ascii?Q?4AYAw89V+fU8d72kOOrEO6p2l6UNiZRJ064RvqrjYS0CzLrjmgIx91cXo7XB?=
+ =?us-ascii?Q?NO54QnNkXY27DnvpalOlsuCDTA4IUqtm2A32U4TlajfQTaJtw05xb4HRHo9D?=
+ =?us-ascii?Q?yxOoK6l+VjH7TNhK3vfhMH2lGoi0Sin8wf2A8AsKSBw94HKI0FwBVS6YBsNK?=
+ =?us-ascii?Q?m7Mezyccv4N1UjpyLjqlCa75JocUPxwCib48TjEyTVWwG/6qZZWy9urtNOMA?=
+ =?us-ascii?Q?qJ29LF6084wr9Xtf+3pHUWlRaJvRAwfmFvouXXagRwwyGRLTBA/MoxTjc0xA?=
+ =?us-ascii?Q?jsF9gWyP77x+ZCd/ZHvAHaXxxFrUfFafiOEu0vI3TVA+jdY5swiYr68wVDJc?=
+ =?us-ascii?Q?FDS070/yv7LKqtHve/dXPg6RNu8xvFWGgcJa5OMQuW5Yg4I6lPKZvsKTWpxo?=
+ =?us-ascii?Q?1c8FA/UYgpSAf6/UJJsqPyChL5E+V+3F4EHXx0bye+hbmCZyQ/02cNuJIXkT?=
+ =?us-ascii?Q?QanVvbsrL4xiVSvvsiZt/bWCFgekfpCA4y4ixRH1Acd8VVP+Ti6ohx/rKaao?=
+ =?us-ascii?Q?y2JfncNlYWKRLWHmLfyNEoD0UwRPAas9BZFTk+y3VUCM2Pl6+5im8av28KKi?=
+ =?us-ascii?Q?glxs0j1I+WIXAQWhDHZxTNa+9OqnJ41fBE1mABc8uKa9hAq6KE/F8czcuft/?=
+ =?us-ascii?Q?llpzyiZSonMH1wUSOozWxUvU6bsd8bCNDO5uzH8QiiiXja/7vUsPI4Ofa2CO?=
+ =?us-ascii?Q?gDhgGZoC79r9uJyyNaDQSJZn5sGx5/QtlgaHCUnFpDfW7ecJ/f6ofHMUKyil?=
+ =?us-ascii?Q?u+nUF/5iqkYFsecdhFD7VCLiGxxp4SaCbVBrrdxbtt7DII9+pPa128CZ5jHz?=
+ =?us-ascii?Q?Hatl/DbgQoYvsrh9ZEKJ7JTnhap4R4ljKeWeOOHac8p5V1CuCV5AOK63uhzd?=
+ =?us-ascii?Q?fLr3BOpNlTm4h8iTdrW6PN0n7QUoA75YiuzFJS24T+dDTDyFfsdIOfWFHheN?=
+ =?us-ascii?Q?GXoM4hgsk6FKCkI1AipuOpiSRNe7xz2VqW9JFf/CkvyEJrL21OVb8D1j1mGc?=
+ =?us-ascii?Q?4aH47MdilRJIZws6FpFxFUA3cxQT+dh4Azel+lkezTM29SGZkutrESoFcNQ9?=
+ =?us-ascii?Q?0JcrMrDtDYUjpye/99Frzug7Rjp6dIxkGiufXbLYlgvu21AwIx98y4l4WPDI?=
+ =?us-ascii?Q?Uk47/iqNTHqNhdSxXktzZsPnBLEEm0RYb67xctOqzPhyMXUy0sCVKLeQ7buy?=
+ =?us-ascii?Q?lWxqLllwHP8Nd7s/ixFqYPV+YjF/kYZ1mSwuZF3a7Cp3E+LrczERcpU1cvUX?=
+ =?us-ascii?Q?jM6tzj+B2WpizSmphKairJtwAQfQdo+86/wCrDIFA8aJg/B3VTkwS5+14IKg?=
+ =?us-ascii?Q?vUnO+fHey1gltlPzCY0=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:37:06.9471 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92efa55c-068c-4459-5124-08de28d9278f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:37:26.9756 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9987d76-26c1-42ef-00ae-08de28d9337f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044AB.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A8.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7230
-Received-SPF: permerror client-ip=2a01:111:f403:c10d::1;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8600
+Received-SPF: permerror client-ip=2a01:111:f403:c000::1;
  envelope-from=Shivansh.Dhiman@amd.com;
- helo=SN4PR2101CU001.outbound.protection.outlook.com
+ helo=BYAPR05CU005.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Nov 2025 04:57:26 -0500
+X-Mailman-Approved-At: Fri, 21 Nov 2025 04:57:32 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -150,81 +151,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce new CPU property x-force-cpuid-0x80000026 using which the CPUID
-0x80000026 is enabled. It defaults to false.
-
-If a vCPU's model is host, then CPUID is enabled based on CPU family/model.
-Implement x86_is_amd_zen4_or_above() helper to detect Zen4+ CPUs using
-family/model.
+Enable CPUID leaf 0x80000026 (Extended CPU Topology) for AMD Zen4+ processors,
+i.e, Genoa and above. Add version 3 to EPYC-Genoa and version 2 to EPYC-Turin
+CPU models with x-force-cpuid-0x80000026 property enabled.
 
 Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 ---
- target/i386/cpu.c |  8 ++++++++
- target/i386/cpu.h | 18 ++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ target/i386/cpu.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b7827e448aa5..01c4da7cf134 100644
+index 01c4da7cf134..12500d6b7bed 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -9158,6 +9158,12 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
-             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
+@@ -6505,6 +6505,13 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                 },
+                 .cache_info = &epyc_genoa_v2_cache_info
+             },
++            {
++                .version = 3,
++                .props = (PropValue[]) {
++                    { "x-force-cpuid-0x80000026", "on" },
++                    { /* end of list */ }
++                }
++            },
+             { /* end of list */ }
          }
-+
-+        /* Enable CPUID[0x80000026] for AMD Genoa models and above */
-+        if (cpu->force_cpuid_0x80000026 ||
-+            (!xcc->model && x86_is_amd_zen4_or_above(cpu))) {
-+            x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x80000026);
+     },
+@@ -6735,6 +6742,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .xlevel = 0x80000022,
+         .model_id = "AMD EPYC-Turin Processor",
+         .cache_info = &epyc_turin_cache_info,
++        .versions = (X86CPUVersionDefinition[]) {
++            { .version = 1 },
++            {
++                .version = 2,
++                .props = (PropValue[]) {
++                    { "x-force-cpuid-0x80000026", "on" },
++                    { /* end of list */ }
++                }
++            },
++            { /* end of list */ }
 +        }
-     }
- 
-     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
-@@ -10133,6 +10139,8 @@ static const Property x86_cpu_properties[] = {
-                      arch_cap_always_on, false),
-     DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
-                      pdcm_on_even_without_pmu, false),
-+    DEFINE_PROP_BOOL("x-force-cpuid-0x80000026", X86CPU, force_cpuid_0x80000026,
-+                     false),
+     },
  };
  
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index cee1f692a1c3..0fecca26dc4a 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2292,6 +2292,9 @@ struct ArchCPU {
-     /* Force to enable cpuid 0x1f */
-     bool force_cpuid_0x1f;
- 
-+    /* Force to enable cpuid 0x80000026 */
-+    bool force_cpuid_0x80000026;
-+
-     /* Enable auto level-increase for all CPUID leaves */
-     bool full_cpuid_auto_level;
- 
-@@ -2879,6 +2882,21 @@ void x86_cpu_xsave_all_areas(X86CPU *cpu, void *buf, uint32_t buflen);
- uint32_t xsave_area_size(uint64_t mask, bool compacted);
- void x86_update_hflags(CPUX86State* env);
- 
-+static inline bool x86_is_amd_zen4_or_above(X86CPU *cpu)
-+{
-+    uint32_t family = x86_cpu_family(cpu->env.cpuid_version);
-+    uint32_t model = x86_cpu_model(cpu->env.cpuid_version);
-+
-+    if (!IS_AMD_CPU(&cpu->env) || family < 0x19) {
-+        return false;
-+    }
-+    if (family > 0x19) {
-+        return true;
-+    }
-+    return (model >= 0x10 && model <= 0x1f) ||
-+           (model >= 0x60 && model <= 0xaf);
-+}
-+
- static inline bool hyperv_feat_enabled(X86CPU *cpu, int feat)
- {
-     return !!(cpu->hyperv_features & BIT(feat));
 -- 
 2.43.0
 
