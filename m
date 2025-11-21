@@ -2,84 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD413C7C31A
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED4DC7C395
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:56:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcq8-0005G3-5u; Fri, 21 Nov 2025 20:55:05 -0500
+	id 1vMd3Q-0001wA-Bx; Fri, 21 Nov 2025 21:08:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vMbge-00064v-6X
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:41:13 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vMbgT-0006tB-P4
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:41:09 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-477b91680f8so20731645e9.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:40:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1vMcMR-0004dT-6L
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:24:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1vMcKO-0007cT-M3
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:24:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763774521;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
+ b=cgS1TStTzQaQiQLaxoVJT3b744lbvgo9CeGQrXVRRSSOJO/OIsJ8bQL1DiRhERe0NqKtzD
+ DhG9AX3VEHf+LAdMXeioI4GEWt5rS+w0d6W3g6CgYb/r8qYG9/AYmQQXoI7/69j3oUtkPd
+ Lo5Ig56HYtvfN53m23vKoRuiWZSbbVs=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-nHW_3suoOHqcYoF1NDmALw-1; Fri, 21 Nov 2025 08:03:59 -0500
+X-MC-Unique: nHW_3suoOHqcYoF1NDmALw-1
+X-Mimecast-MFC-AGG-ID: nHW_3suoOHqcYoF1NDmALw_1763730238
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-34378c914b4so7228629a91.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763772041; x=1764376841; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LdWAJH6s7XticPUwO+/xRlCKqNuhKhU8yKqVINAJxXA=;
- b=ZpRuV3DrHMSL8kGwFaPbXNSNFTzN7Gp8F2H4E/0iwv7aYEHhINBi9IOIzymHGp91Q3
- t7ZtuBoL6Y6O/ahWtC8Qq7q5zTUUPOTBrfYIpWBx+U2wj3x8SkRCIEYOshuL55MjtTTk
- gpiqlrIPr2HBwjOOLzkwo+PZ/psA3xiAHtlwIN038ObhCG5rTuV9yYefPZGyVCCa2Jib
- emhuNFbnqH8Q3QFXa4eJWFPgLH1lZbBAPhgtaWILuVadWbB+Z0G08jbGfkL8IpFjkUZS
- 2KgeMa6pg5GWuQp9XvjzGw0G/xk3oSdR1v2xf2mglK9G/F7xt2EP5GCZibSa7u/YwltI
- nc/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763772041; x=1764376841;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=redhat.com; s=google; t=1763730238; x=1764335038; darn=nongnu.org;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LdWAJH6s7XticPUwO+/xRlCKqNuhKhU8yKqVINAJxXA=;
- b=XUvjys3X62R3LKtHjQKpztuEkuHhwhhduFqsdemMtqXwXoXUywecKIt+ysGPoAU99Z
- zFpTs2MX1OgTF2SKEr+9YgFn+qvWCOsQqFS0ci9M+ZKG7wEgkEUBCnFKjHQGIpvqwVDF
- PxBheZeW58lDHejFhj8EbCTT7o+UV3bt4kvgn1ZYMrCXOTuJkmLYa3jYnFpIgkbh0SyJ
- Y/8RhAae8gFNKuTigvSRh+ZmofzfOUXPC2u7I0dgjTg7sMGu7AU8PEvkhNli1F8vLB5O
- bYnEtW2qFdESmtrE+Kuh0A5KxmOgCLcgsypIUVx4uY1EOm2Fo1fu2Fy77GY0WmS6VnOQ
- mhvQ==
-X-Gm-Message-State: AOJu0YznUjoy3Tx5QtglMh4OThXqjfp2cI8EhI4dVFEpAVWvasDeehUK
- XqWFGi0PNBPthK2fE13sfI1zN9lITE5iqC58zKmliMYRteKEeBK7QXFj5qiGlFAogn9doWHqdGD
- cx8Ry
-X-Gm-Gg: ASbGncvwDvg9HZ5oAYA2tv1Uim/w4R5VRnp8mmv7JSnFBsOWFzg2n86IeG6ao/yk80s
- AVXvKs90Ugy8f4u0mnQtkGxUzZoD5It9otEHWlJMI+W69cqVgBvrND4RnAem8+rZGhsbLDafoD7
- g86Drb5fkj714T0DUsoQiycrhJvxzOq3uwFD/0lZgURjcMNsLEg9rGaz0jPcVdbqLRbEfUHJd40
- +5SiVQC3m5vVhZyZAlf8OgrJ/PatgDWQoYRYorxjkIO6Da+3t0WapA3NEvA0oe76oRG4Nltt3q5
- vj3hag+GNwLzEjLX41ksYt/LYyoT1f/bjcHv5BOYrsVEoB52XNFlniJsLkKAAw2hV+aIOZfpLbw
- HIuIxjhCW1aiPTde5z27UcjM/Y5tWsU+u5OMoB0l1EODYXr5V+xLLS1uFz8114cgR99fRhJHbEX
- DQaBNgl+zGhjY=
-X-Google-Smtp-Source: AGHT+IGdaEJgL4z9YyY1O9xJYAAayq2BOL8yrGefufK0H1u6XZHEI5QaPTIkycSFEuXJXrJbxG2xHg==
-X-Received: by 2002:a05:600c:a07:b0:477:a219:cdb7 with SMTP id
- 5b1f17b1804b1-477c10523aamr28667635e9.0.1763730205762; 
- Fri, 21 Nov 2025 05:03:25 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf3af0e1sm40285325e9.10.2025.11.21.05.03.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 05:03:24 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0D0755F841;
- Fri, 21 Nov 2025 13:03:24 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH] plugins: shorten aggressively long name
-Date: Fri, 21 Nov 2025 13:03:17 +0000
-Message-ID: <20251121130317.2874416-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+ bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
+ b=pb8hFaY2FTWOUAVGN5Ew9Xmr9qzoHjMgd8JgWaD+AAhb6OUqxaI2+HmxbK5Ex7Uk58
+ HKC+49y2U0Ou92oOwiTDJ3se+ANPX/RsmVgwIpt6amkmW5127W5GyUnyGsAPoW5eNwiD
+ PlZEQIy7FnrWWmb5aMyayp5wUjBV0YC7EQitLQ/t0Sf1mcTWQBEkR0a2lTnlVwmXHaMX
+ zTYlSJshQ7Bnc222nmh3nyuF6d9RxTFLi76Ealze28Ouf+vUmy5uVk/NmOleKgUhYg3c
+ KJzGQD2WbVkb0gfrOEl660ppgMv/dFbrCJs+Wi3XytrNHQ1tEKG81cPBCaGuJrnJ8vTN
+ VaBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763730238; x=1764335038;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
+ b=uUoXN2qoWNXJTCOoQC2kyySKobcZiLRZX6FNLwkwysDbSq9W5v/Q43dDfAR9TR3uZZ
+ wAa+ffyR5WlkF6iVTF7oW5+GILMC0RXHgM5sHAHmB/qiEJugG/bPrSQvKJjnGUqzYn+F
+ /aHWPfqK+snlTj3P84GcCOvPur7kIWg3eNVDMdHxZ+EpFrsQ5EUfcfbQKCRFx2R/qMJy
+ aD4O6BPFI/CEczJXUjEhGG+o+/BsVy2ghnAjSiQAPmnH1JLjev1xaYIijkpLSlwI6gp+
+ Pfgb6XwsJwfB+0rBGvo83+IVuyQ29gR9Xi7jpMMEjvRnwGqtHgzz/E3f4XcTMfJ1VZrz
+ I19A==
+X-Gm-Message-State: AOJu0YzFSOtx1IwnZ3/0kVQuBKXl0+c0wZr/GtI4vNxkXtXt5ycRA6iS
+ jS7+1rPshMAuNcHQRCbmy/1jaHs5O2hujC0JP9LZB1rHq09mKNRPZH6sGuZUYUpKxiEt5QSmWoe
+ vQ7GhSGM9oRmscfLTtoLXk+e09MMbEs6GCG731zQsu6yYrftl6bloGaiA
+X-Gm-Gg: ASbGncuU1fp6sJmqYwftynV+Us8KBGa0a+P2lja3cB/W8C4ZkhTyaMZIVV3uAfzuAmn
+ pd93TBqmDAhnmmg5DebI5INgLl4PM37HEGK4OZ2i6o+vqhuRpjObKbXvKIQsZZH28OCQPcqLtM6
+ PasfAuS4Q9LonUhMv/cDeewC8RM3ADaaD0I0HmEJCCn81zdGQjcHCn1TfYfq3xCAJ83U71YXejs
+ LXc+Wst1EGzR1wKeVgW+AuDJg4Vj1LIOZQ4ReYEFsH1tXN6jNVVEwMNUjQWaiM1dVMaBmDPQhqj
+ ZRjTSd2oaSFG5vumeJ6iawnV5WcpaY7fugDhN840OIev2kwh9vW39lTv4OxkLfwUhkAAApkCcru
+ 2dM7qfIYxGZltaJRUBW6dPgdxsbUMPihKkCwUVXwsurQsp0IH3XdAqdEf
+X-Received: by 2002:a17:90b:5291:b0:32b:baaa:21b0 with SMTP id
+ 98e67ed59e1d1-34733e2cf72mr2736500a91.6.1763730237875; 
+ Fri, 21 Nov 2025 05:03:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG9z73w+xTeL8Oai95QwLGhoJSyZVulqhtwks2fXFfW287REBfLy+RqGo+iG4NY+2Niiqjnqg==
+X-Received: by 2002:a17:90b:5291:b0:32b:baaa:21b0 with SMTP id
+ 98e67ed59e1d1-34733e2cf72mr2736458a91.6.1763730237396; 
+ Fri, 21 Nov 2025 05:03:57 -0800 (PST)
+Received: from smtpclient.apple ([106.212.87.16])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-34726696cd4sm5701513a91.4.2025.11.21.05.03.54
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 21 Nov 2025 05:03:57 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.7\))
+Subject: Re: [PATCH 2/4] igvm: move file load to complete callback
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20251118122133.1695767-3-kraxel@redhat.com>
+Date: Fri, 21 Nov 2025 18:33:42 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Luigi Leonardi <leonardi@redhat.com>, Oliver Steffen <osteffen@redhat.com>,
+ Michael Tsirkin <mst@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <17BD5E34-2195-4F84-A96F-83A8054EF62B@redhat.com>
+References: <20251118122133.1695767-1-kraxel@redhat.com>
+ <20251118122133.1695767-3-kraxel@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.7)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,203 +118,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old name comes in at a 51 characters, contains at least one
-redundant token and exec is arguably implied by inline as all inline
-operations occur when instructions are executing.
 
-By putting the name on a substantial diet we can reduce it by 15% and
-gain valuable white-space in the process.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- include/qemu/qemu-plugin.h    |  4 ++--
- contrib/plugins/cflow.c       | 22 +++++++++++-----------
- contrib/plugins/howvec.c      |  2 +-
- contrib/plugins/stoptrigger.c | 10 ++++++----
- plugins/api.c                 |  2 +-
- tests/tcg/plugins/discons.c   | 18 +++++++++---------
- tests/tcg/plugins/inline.c    |  6 +++---
- tests/tcg/plugins/insn.c      |  5 +++--
- 8 files changed, 36 insertions(+), 33 deletions(-)
+> On 18 Nov 2025, at 5:51=E2=80=AFPM, Gerd Hoffmann <kraxel@redhat.com> =
+wrote:
+>=20
+> Add UserCreatableClass->complete callback function for igvm-cfg =
+object.
+>=20
+> Move file loading and parsing of the igvm file from the process =
+function
+> to the to the new complete callback function.  Keep the igvm file =
+loaded
+> instead of releasing it after processing, so we parse it only once.
+>=20
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+> include/system/igvm-cfg.h |  3 +++
+> include/system/igvm.h     |  1 +
+> backends/igvm-cfg.c       | 10 ++++++++++
+> backends/igvm.c           |  9 ++++-----
+> 4 files changed, 18 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/include/system/igvm-cfg.h b/include/system/igvm-cfg.h
+> index 312f77c092b0..7dc48677fd99 100644
+> --- a/include/system/igvm-cfg.h
+> +++ b/include/system/igvm-cfg.h
+> @@ -15,6 +15,8 @@
+> #include "qom/object.h"
+> #include "hw/resettable.h"
+>=20
+> +#include <igvm/igvm.h>
+> +
+> typedef struct IgvmCfg {
+>     ObjectClass parent_class;
+>=20
+> @@ -24,6 +26,7 @@ typedef struct IgvmCfg {
+>      *           format.
+>      */
+>     char *filename;
+> +    IgvmHandle file;
+>     ResettableState reset_state;
+> } IgvmCfg;
+>=20
+> diff --git a/include/system/igvm.h b/include/system/igvm.h
+> index 48ce20604259..ec2538daa0e1 100644
+> --- a/include/system/igvm.h
+> +++ b/include/system/igvm.h
+> @@ -16,6 +16,7 @@
+> #include "system/igvm-cfg.h"
+> #include "qapi/error.h"
+>=20
+> +IgvmHandle qigvm_file_init(char *filename, Error **errp);
+> int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
+>                       bool onlyVpContext, Error **errp);
+>=20
+> diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+> index 4e3ef88ffc27..08501a67e58e 100644
+> --- a/backends/igvm-cfg.c
+> +++ b/backends/igvm-cfg.c
+> @@ -52,6 +52,13 @@ static void igvm_reset_exit(Object *obj, ResetType =
+type)
+>     trace_igvm_reset_exit(type);
+> }
+>=20
+> +static void igvm_complete(UserCreatable *uc, Error **errp)
+> +{
+> +    IgvmCfg *igvm =3D IGVM_CFG(uc);
+> +
+> +    igvm->file =3D qigvm_file_init(igvm->filename, errp);
+> +}
+> +
+> OBJECT_DEFINE_TYPE_WITH_INTERFACES(IgvmCfg, igvm_cfg, IGVM_CFG, =
+OBJECT,
+>                                    { TYPE_USER_CREATABLE },
+>                                    { TYPE_RESETTABLE_INTERFACE },
+> @@ -61,6 +68,7 @@ static void igvm_cfg_class_init(ObjectClass *oc, =
+const void *data)
+> {
+>     IgvmCfgClass *igvmc =3D IGVM_CFG_CLASS(oc);
+>     ResettableClass *rc =3D RESETTABLE_CLASS(oc);
+> +    UserCreatableClass *uc =3D USER_CREATABLE_CLASS(oc);
+>=20
+>     object_class_property_add_str(oc, "file", get_igvm, set_igvm);
+>     object_class_property_set_description(oc, "file",
+> @@ -72,6 +80,8 @@ static void igvm_cfg_class_init(ObjectClass *oc, =
+const void *data)
+>     rc->phases.enter =3D igvm_reset_enter;
+>     rc->phases.hold =3D igvm_reset_hold;
+>     rc->phases.exit =3D igvm_reset_exit;
+> +
+> +    uc->complete =3D igvm_complete;
+> }
+>=20
+> static void igvm_cfg_init(Object *obj)
+> diff --git a/backends/igvm.c b/backends/igvm.c
+> index 905bd8d98994..05d197fdfe85 100644
+> --- a/backends/igvm.c
+> +++ b/backends/igvm.c
+> @@ -867,7 +867,7 @@ static int qigvm_handle_policy(QIgvm *ctx, Error =
+**errp)
+>     return 0;
+> }
+>=20
+> -static IgvmHandle qigvm_file_init(char *filename, Error **errp)
+> +IgvmHandle qigvm_file_init(char *filename, Error **errp)
+> {
+>     IgvmHandle igvm;
+>     g_autofree uint8_t *buf =3D NULL;
+> @@ -896,10 +896,11 @@ int qigvm_process_file(IgvmCfg *cfg, =
+ConfidentialGuestSupport *cgs,
+>     QIgvm ctx;
+>=20
+>     memset(&ctx, 0, sizeof(ctx));
+> -    ctx.file =3D qigvm_file_init(cfg->filename, errp);
+> -    if (ctx.file < 0) {
+> +    if (!cfg->file) {
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 60de4fdd3fa..29663591ebf 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -516,7 +516,7 @@ void qemu_plugin_register_vcpu_insn_exec_cond_cb(
-     void *userdata);
- 
- /**
-- * qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu() - insn exec inline op
-+ * qemu_plugin_register_inline_per_vcpu() - insn exec inline op
-  * @insn: the opaque qemu_plugin_insn handle for an instruction
-  * @op: the type of qemu_plugin_op (e.g. ADD_U64)
-  * @entry: entry to run op
-@@ -525,7 +525,7 @@ void qemu_plugin_register_vcpu_insn_exec_cond_cb(
-  * Insert an inline op to every time an instruction executes.
-  */
- QEMU_PLUGIN_API
--void qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+void qemu_plugin_register_inline_per_vcpu(
-     struct qemu_plugin_insn *insn,
-     enum qemu_plugin_op op,
-     qemu_plugin_u64 entry,
-diff --git a/contrib/plugins/cflow.c b/contrib/plugins/cflow.c
-index b5e33f25f9b..cef5ae2239f 100644
---- a/contrib/plugins/cflow.c
-+++ b/contrib/plugins/cflow.c
-@@ -320,14 +320,14 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-      * check where we are at. Do this on the first instruction and not
-      * the TB so we don't get mixed up with above.
-      */
--    qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(first_insn,
--                                                      QEMU_PLUGIN_INLINE_STORE_U64,
--                                                      end_block, qemu_plugin_insn_vaddr(last_insn));
--    qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(first_insn,
--                                                      QEMU_PLUGIN_INLINE_STORE_U64,
--                                                      pc_after_block,
--                                                      qemu_plugin_insn_vaddr(last_insn) +
--                                                      qemu_plugin_insn_size(last_insn));
-+    qemu_plugin_register_inline_per_vcpu(first_insn,
-+                                         QEMU_PLUGIN_INLINE_STORE_U64,
-+                                         end_block, qemu_plugin_insn_vaddr(last_insn));
-+    qemu_plugin_register_inline_per_vcpu(first_insn,
-+                                         QEMU_PLUGIN_INLINE_STORE_U64,
-+                                         pc_after_block,
-+                                         qemu_plugin_insn_vaddr(last_insn) +
-+                                         qemu_plugin_insn_size(last_insn));
- 
-     for (int idx = 0; idx < qemu_plugin_tb_n_insns(tb); ++idx) {
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, idx);
-@@ -355,9 +355,9 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         }
- 
-         /* Store the PC of what we are about to execute */
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(insn,
--                                                            QEMU_PLUGIN_INLINE_STORE_U64,
--                                                            last_pc, ipc);
-+        qemu_plugin_register_inline_per_vcpu(insn,
-+                                             QEMU_PLUGIN_INLINE_STORE_U64,
-+                                             last_pc, ipc);
-     }
- }
- 
-diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
-index 42bddb6566d..c60737d57f1 100644
---- a/contrib/plugins/howvec.c
-+++ b/contrib/plugins/howvec.c
-@@ -321,7 +321,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- 
-         if (cnt) {
-             if (do_inline) {
--                qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+                qemu_plugin_register_inline_per_vcpu(
-                     insn, QEMU_PLUGIN_INLINE_ADD_U64,
-                     qemu_plugin_scoreboard_u64(cnt), 1);
-             } else {
-diff --git a/contrib/plugins/stoptrigger.c b/contrib/plugins/stoptrigger.c
-index b3a6ed66a7b..68c0ed432af 100644
---- a/contrib/plugins/stoptrigger.c
-+++ b/contrib/plugins/stoptrigger.c
-@@ -73,10 +73,12 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- 
-         if (exit_on_icount) {
-             /* Increment and check scoreboard for each instruction */
--            qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
--                insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
--            qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
--                insn, QEMU_PLUGIN_INLINE_STORE_U64, current_pc, insn_vaddr);
-+            qemu_plugin_register_inline_per_vcpu(insn,
-+                                                 QEMU_PLUGIN_INLINE_ADD_U64,
-+                                                 insn_count, 1);
-+            qemu_plugin_register_inline_per_vcpu(insn,
-+                                                 QEMU_PLUGIN_INLINE_STORE_U64,
-+                                                 current_pc, insn_vaddr);
-             qemu_plugin_register_vcpu_insn_exec_cond_cb(
-                 insn, exit_icount_reached, QEMU_PLUGIN_CB_NO_REGS,
-                 QEMU_PLUGIN_COND_EQ, insn_count, icount + 1, NULL);
-diff --git a/plugins/api.c b/plugins/api.c
-index eac04cc1f6b..267fa2fd503 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -154,7 +154,7 @@ void qemu_plugin_register_vcpu_insn_exec_cond_cb(
-                                        cond, entry, imm, udata);
- }
- 
--void qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+void qemu_plugin_register_inline_per_vcpu(
-     struct qemu_plugin_insn *insn,
-     enum qemu_plugin_op op,
-     qemu_plugin_u64 entry,
-diff --git a/tests/tcg/plugins/discons.c b/tests/tcg/plugins/discons.c
-index 2e0e664e823..1348d6e5020 100644
---- a/tests/tcg/plugins/discons.c
-+++ b/tests/tcg/plugins/discons.c
-@@ -156,15 +156,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         uint64_t next_pc = pc + qemu_plugin_insn_size(insn);
-         uint64_t has_next = (i + 1) < n_insns;
- 
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(insn,
--                                                            QEMU_PLUGIN_INLINE_STORE_U64,
--                                                            last_pc, pc);
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(insn,
--                                                            QEMU_PLUGIN_INLINE_STORE_U64,
--                                                            from_pc, next_pc);
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(insn,
--                                                            QEMU_PLUGIN_INLINE_STORE_U64,
--                                                            has_from, has_next);
-+        qemu_plugin_register_inline_per_vcpu(insn,
-+                                             QEMU_PLUGIN_INLINE_STORE_U64,
-+                                             last_pc, pc);
-+        qemu_plugin_register_inline_per_vcpu(insn,
-+                                             QEMU_PLUGIN_INLINE_STORE_U64,
-+                                             from_pc, next_pc);
-+        qemu_plugin_register_inline_per_vcpu(insn,
-+                                             QEMU_PLUGIN_INLINE_STORE_U64,
-+                                             has_from, has_next);
-         qemu_plugin_register_vcpu_insn_exec_cb(insn, insn_exec,
-                                                QEMU_PLUGIN_CB_NO_REGS, NULL);
-     }
-diff --git a/tests/tcg/plugins/inline.c b/tests/tcg/plugins/inline.c
-index 73dde995781..35307501105 100644
---- a/tests/tcg/plugins/inline.c
-+++ b/tests/tcg/plugins/inline.c
-@@ -244,15 +244,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         void *insn_store = insn;
-         void *mem_store = (char *)insn_store + 0xff;
- 
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+        qemu_plugin_register_inline_per_vcpu(
-             insn, QEMU_PLUGIN_INLINE_STORE_U64, data_insn,
-             (uintptr_t) insn_store);
-         qemu_plugin_register_vcpu_insn_exec_cb(
-             insn, vcpu_insn_exec, QEMU_PLUGIN_CB_NO_REGS, insn_store);
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+        qemu_plugin_register_inline_per_vcpu(
-             insn, QEMU_PLUGIN_INLINE_ADD_U64, count_insn_inline, 1);
- 
--        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+        qemu_plugin_register_inline_per_vcpu(
-             insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_cond_track_count, 1);
-         qemu_plugin_register_vcpu_insn_exec_cond_cb(
-             insn, vcpu_insn_cond_exec, QEMU_PLUGIN_CB_NO_REGS,
-diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
-index 0c723cb9ed8..b337fda9f13 100644
---- a/tests/tcg/plugins/insn.c
-+++ b/tests/tcg/plugins/insn.c
-@@ -147,8 +147,9 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
- 
-         if (do_inline) {
--            qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
--                insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
-+            qemu_plugin_register_inline_per_vcpu(insn,
-+                                                 QEMU_PLUGIN_INLINE_ADD_U64,
-+                                                 insn_count, 1);
-         } else {
-             qemu_plugin_register_vcpu_insn_exec_cb(
-                 insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS, NULL);
--- 
-2.47.3
+This is not right I think. qigvm_file_init() returns -1 if =
+igvm_new_from_binary() fails and returns < 0. Looking at=20
+https://docs.rs/igvm/latest/igvm/c_api/fn.igvm_new_from_binary.html this =
+seems correct.
+
+> +        error_setg(errp, "No IGVM file loaded.");
+>         return -1;
+>     }
+> +    ctx.file =3D cfg->file;
+>=20
+>     /*
+>      * The ConfidentialGuestSupport object is optional and allows a =
+confidential
+> @@ -990,7 +991,5 @@ cleanup_parameters:
+>     g_free(ctx.id_auth);
+>=20
+> cleanup:
+> -    igvm_free(ctx.file);
+> -
+>     return retval;
+> }
+> --=20
+> 2.51.1
+>=20
 
 
