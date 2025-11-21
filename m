@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821C0C7CA6F
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB15BC7C3D5
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:06:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcrJ-00060Q-S1; Fri, 21 Nov 2025 20:56:18 -0500
+	id 1vMct4-0007hG-D3; Fri, 21 Nov 2025 20:58:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbke-00008L-4Z; Fri, 21 Nov 2025 19:45:21 -0500
+ id 1vMbvn-00073q-H4; Fri, 21 Nov 2025 19:56:51 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbib-0007Il-CD; Fri, 21 Nov 2025 19:45:15 -0500
+ id 1vMbtl-0001DP-04; Fri, 21 Nov 2025 19:56:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4C89916CA88;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6140616CA89;
  Fri, 21 Nov 2025 21:44:30 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F04B2321CC4;
- Fri, 21 Nov 2025 21:44:38 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1CCB3321CC5;
+ Fri, 21 Nov 2025 21:44:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 77/81] hw/southbridge/lasi: Correct LasiState parent
-Date: Fri, 21 Nov 2025 21:44:16 +0300
-Message-ID: <20251121184424.1137669-77-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 78/81] target/i386: Mark VPERMILPS as not valid with
+ prefix 0
+Date: Fri, 21 Nov 2025 21:44:17 +0300
+Message-ID: <20251121184424.1137669-78-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -53,45 +51,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-TYPE_LASI_CHIP inherits from TYPE_SYS_BUS_DEVICE, not
-TYPE_PCI_HOST_BRIDGE, so its parent structure is of
-SysBusDevice type.
+There are a small set of binary SSE insns which have no MMX
+equivalent, which we create the gen functions for with the
+BINARY_INT_SSE() macro.  This forwards to gen_binary_int_sse() with a
+NULL pointer for 'mmx'.
+
+For almost all of these insns we correctly mark them in the decode
+table as not permitting a zero prefix byte; however we got this wrong
+for VPERMILPS, with the result that a bogus instruction would get
+through the decode checks and end up in gen_binary_int_sse() trying
+to call a NULL pointer.
+
+Correct the decode table entry for VPERMILPS so that we get the
+expected #UD exception.
+
+In the x86 SDM, table A-4 "Three-byte Opcode Map: 08H-FFH
+(First Two Bytes are 0F 38H)" confirms that there is no pfx 0
+version of VPERMILPS.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 376b851909d ("hppa: Add support for LASI chip with i82596 NIC")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20251117091804.56529-1-philmd@linaro.org>
-(cherry picked from commit 9c3b76a0d40671cbdf1f97c662311ec8bb517c76)
-(Mjt: context fixup)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3199
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/r/20251114175417.2794804-1-peter.maydell@linaro.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit ebd9ea2947d88f237e20333fe547ca8817d0b0ee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/hw/misc/lasi.h b/include/hw/misc/lasi.h
-index f01c0f680a..4a8e6df3ab 100644
---- a/include/hw/misc/lasi.h
-+++ b/include/hw/misc/lasi.h
-@@ -13,8 +13,8 @@
- #define LASI_H
- 
- #include "exec/address-spaces.h"
--#include "hw/pci/pci_host.h"
- #include "hw/boards.h"
-+#include "hw/sysbus.h"
- 
- #define TYPE_LASI_CHIP "lasi-chip"
- OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
-@@ -61,7 +61,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
- #define LASI_IRQ_PS2MOU_HPA 26
- 
- struct LasiState {
--    PCIHostState parent_obj;
-+    SysBusDevice parent_obj;
- 
-     uint32_t irr;
-     uint32_t imr;
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 223f39ae0c..66a506c497 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -643,7 +643,7 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
+     [0x0a] = X86_OP_ENTRY3(PSIGND,    V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+     [0x0b] = X86_OP_ENTRY3(PMULHRSW,  V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+     /* Listed incorrectly as type 4 */
+-    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_00_66),
++    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0d] = X86_OP_ENTRY3(VPERMILPD, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0e] = X86_OP_ENTRY3(VTESTPS,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x0f] = X86_OP_ENTRY3(VTESTPD,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
 -- 
 2.47.3
 
