@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ED9C7832D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20309C78321
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNb5-0005el-K8; Fri, 21 Nov 2025 04:38:31 -0500
+	id 1vMNb6-0005fR-Rh; Fri, 21 Nov 2025 04:38:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb2-0005dn-Oc
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb4-0005em-Sf
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb0-0004Ee-Ai
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:28 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb3-0004F0-8Q
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763717905;
+ s=mimecast20190719; t=1763717908;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zyiv1sdADRwIVpXXrB8xWg6kM+itGWwh96xh4VQQA6A=;
- b=JNTnq4vPKNH9f8ebPrq3HY1eIgW6CMwVSJypGlIM0YKZfTDqU6rHBG9CV2EOV5o5AkDdpm
- CYRQ3LaNVvt4q5WoNxJYj4ekSLHi+rWDzwBSbDzHb9MpMlABE2ns84rfB0DEeoY1C0WuuT
- OBAPWKcO79Uu9RejdvEaMvhokc1Pcwk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Io0s1tnUZyrqZWP1vXpYf7coc9LTL5KfzTYr+KpgWRc=;
+ b=gvTCTqDHC99aH36l8PPHjvOuIamiSax9+mdbIBimV7cG9ZDTEEm3E81qZG+pqz7u8hMZhj
+ Zko9gse/UPgvC0YulKT+PQfPws3MGXcwLuAMvpzSav+HJFPCe3DPJG8X1uN4w7dFDxJo9M
+ ZHAAgbuaORzzid70Fg3rF/yYPFJOuEE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-rAYW5VMUNOOy0qVixVau9A-1; Fri,
- 21 Nov 2025 04:38:21 -0500
-X-MC-Unique: rAYW5VMUNOOy0qVixVau9A-1
-X-Mimecast-MFC-AGG-ID: rAYW5VMUNOOy0qVixVau9A_1763717900
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-Tlkv-qsoMdC_pAbkGfyk-g-1; Fri,
+ 21 Nov 2025 04:38:25 -0500
+X-MC-Unique: Tlkv-qsoMdC_pAbkGfyk-g-1
+X-Mimecast-MFC-AGG-ID: Tlkv-qsoMdC_pAbkGfyk-g_1763717904
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 77A49180028A; Fri, 21 Nov 2025 09:38:20 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BC111800370; Fri, 21 Nov 2025 09:38:23 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.78])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCB6F30044DB; Fri, 21 Nov 2025 09:38:18 +0000 (UTC)
+ id 2560730044DC; Fri, 21 Nov 2025 09:38:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 02/10] tests/functional/arm/test_aspeed_ast2600_buildroot: Fix
- pylint warnings
-Date: Fri, 21 Nov 2025 10:38:04 +0100
-Message-ID: <20251121093812.280911-3-thuth@redhat.com>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 03/10] tests/functional/x86_64/test_virtio_gpu: Fix various
+ issues reported by pylint
+Date: Fri, 21 Nov 2025 10:38:05 +0100
+Message-ID: <20251121093812.280911-4-thuth@redhat.com>
 In-Reply-To: <20251121093812.280911-1-thuth@redhat.com>
 References: <20251121093812.280911-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,74 +86,149 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Pylint recommends to use a "with" context for tempfile.TemporaryDirectory()
-to make sure that the directory is deleted once it is not needed anymore,
-and it recommends to use the "check" parameter for subprocess.run().
-For style reasons, the imports at the beginning of the file should be
-grouped by module.
+Use the recommended order for import statements, specify the kind of
+exceptions that we try to catch, use f-strings where it makes sense,
+rewrite the vug_log_file part with a proper "with" statement and
+fix some FIXMEs by checking for the availability of the devices, etc.
 
-Message-Id: <20251113100601.476900-1-thuth@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20251113114015.490303-1-thuth@redhat.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251119082636.43286-4-thuth@redhat.com>
+Message-ID: <20251119082636.43286-5-thuth@redhat.com>
 ---
- .../arm/test_aspeed_ast2600_buildroot.py      | 21 +++++++++++--------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tests/functional/x86_64/test_virtio_gpu.py | 56 +++++++++++-----------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast2600_buildroot.py b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-index 51f2676c906..575a5f64143 100755
---- a/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-+++ b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-@@ -9,8 +9,8 @@
- import tempfile
- import subprocess
+diff --git a/tests/functional/x86_64/test_virtio_gpu.py b/tests/functional/x86_64/test_virtio_gpu.py
+index be96de24da2..58b0f72ba42 100755
+--- a/tests/functional/x86_64/test_virtio_gpu.py
++++ b/tests/functional/x86_64/test_virtio_gpu.py
+@@ -5,22 +5,23 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
  
--from qemu_test import Asset
- from aspeed import AspeedTest
-+from qemu_test import Asset
- from qemu_test import exec_command_and_wait_for_pattern, skipIfMissingCommands
++import os
++import socket
++import subprocess
  
+ from qemu_test import QemuSystemTest, Asset
+ from qemu_test import wait_for_console_pattern
+ from qemu_test import exec_command_and_wait_for_pattern
+ from qemu_test import is_readable_executable_file
  
-@@ -66,21 +66,18 @@ def test_arm_ast2600_evb_buildroot(self):
-          'images/ast2600-evb/buildroot-2023.02-tpm/flash.img'),
-         'a46009ae8a5403a0826d607215e731a8c68d27c14c41e55331706b8f9c7bd997')
- 
--    @skipIfMissingCommands('swtpm')
--    def test_arm_ast2600_evb_buildroot_tpm(self):
--        self.set_machine('ast2600-evb')
 -
-+    def _test_arm_ast2600_evb_buildroot_tpm(self, tpmstate_dir):
-         image_path = self.ASSET_BR2_202302_AST2600_TPM_FLASH.fetch()
+-import os
+-import socket
+-import subprocess
++from qemu.machine.machine import VMLaunchFailure
  
--        tpmstate_dir = tempfile.TemporaryDirectory(prefix="qemu_")
--        socket = os.path.join(tpmstate_dir.name, 'swtpm-socket')
-+        socket = os.path.join(tpmstate_dir, 'swtpm-socket')
  
-         # We must put the TPM state dir in /tmp/, not the build dir,
-         # because some distros use AppArmor to lock down swtpm and
-         # restrict the set of locations it can access files in.
-         subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
--                        '--tpmstate', f'dir={tpmstate_dir.name}',
--                        '--ctrl', f'type=unixio,path={socket}'])
-+                        '--tpmstate', f'dir={tpmstate_dir}',
-+                        '--ctrl', f'type=unixio,path={socket}'],
-+                       check=True)
+ def pick_default_vug_bin(test):
+     bld_dir_path = test.build_file("contrib", "vhost-user-gpu", "vhost-user-gpu")
+     if is_readable_executable_file(bld_dir_path):
+         return bld_dir_path
++    return None
  
-         self.vm.add_args('-chardev', f'socket,id=chrtpm,path={socket}')
-         self.vm.add_args('-tpmdev', 'emulator,id=tpm0,chardev=chrtpm')
-@@ -97,6 +94,12 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
  
-         self.do_test_arm_aspeed_buildroot_poweroff()
+ class VirtioGPUx86(QemuSystemTest):
+@@ -46,8 +47,8 @@ def wait_for_console_pattern(self, success_message, vm=None):
+         )
  
-+    @skipIfMissingCommands('swtpm')
-+    def test_arm_ast2600_evb_buildroot_tpm(self):
-+        self.set_machine('ast2600-evb')
-+        with tempfile.TemporaryDirectory(prefix="qemu_") as tpmstate_dir:
-+            self._test_arm_ast2600_evb_buildroot_tpm(tpmstate_dir)
+     def test_virtio_vga_virgl(self):
+-        # FIXME: should check presence of virtio, virgl etc
+         self.require_accelerator('kvm')
++        self.require_device('virtio-vga-gl')
+ 
+         kernel_path = self.ASSET_KERNEL.fetch()
+         initrd_path = self.ASSET_INITRD.fetch()
+@@ -68,7 +69,7 @@ def test_virtio_vga_virgl(self):
+         )
+         try:
+             self.vm.launch()
+-        except:
++        except VMLaunchFailure:
+             # TODO: probably fails because we are missing the VirGL features
+             self.skipTest("VirGL not enabled?")
+ 
+@@ -78,8 +79,8 @@ def test_virtio_vga_virgl(self):
+         )
+ 
+     def test_vhost_user_vga_virgl(self):
+-        # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
+         self.require_accelerator('kvm')
++        self.require_device('vhost-user-vga')
+ 
+         vug = pick_default_vug_bin(self)
+         if not vug:
+@@ -95,27 +96,29 @@ def test_vhost_user_vga_virgl(self):
+         os.set_inheritable(qemu_sock.fileno(), True)
+         os.set_inheritable(vug_sock.fileno(), True)
+ 
+-        self._vug_log_path = self.log_file("vhost-user-gpu.log")
+-        self._vug_log_file = open(self._vug_log_path, "wb")
+-        self.log.info('Complete vhost-user-gpu.log file can be '
+-                      'found at %s', self._vug_log_path)
+-
+-        vugp = subprocess.Popen(
+-            [vug, "--virgl", "--fd=%d" % vug_sock.fileno()],
+-            stdin=subprocess.DEVNULL,
+-            stdout=self._vug_log_file,
+-            stderr=subprocess.STDOUT,
+-            shell=False,
+-            close_fds=False,
+-        )
+-        self._vug_log_file.close()
+-
++        vug_log_path = self.log_file("vhost-user-gpu.log")
++        self.log.info('Complete vhost-user-gpu.log file can be found at %s',
++                      vug_log_path)
++        with open(vug_log_path, "wb") as vug_log_file:
++            with subprocess.Popen([vug, "--virgl", f"--fd={vug_sock.fileno()}"],
++                                  stdin=subprocess.DEVNULL,
++                                  stdout=vug_log_file,
++                                  stderr=subprocess.STDOUT,
++                                  shell=False,
++                                  close_fds=False) as vugp:
++                self._test_vhost_user_vga_virgl(qemu_sock,
++                                                kernel_path, initrd_path)
++                qemu_sock.close()
++                vug_sock.close()
++                vugp.terminate()
++
++    def _test_vhost_user_vga_virgl(self, qemu_sock, kernel_path, initrd_path):
+         self.vm.set_console()
+         self.vm.add_args("-cpu", "host")
+         self.vm.add_args("-m", "2G")
+         self.vm.add_args("-object", "memory-backend-memfd,id=mem,size=2G")
+         self.vm.add_args("-machine", "pc,memory-backend=mem,accel=kvm")
+-        self.vm.add_args("-chardev", "socket,id=vug,fd=%d" % qemu_sock.fileno())
++        self.vm.add_args("-chardev", f"socket,id=vug,fd={qemu_sock.fileno()}")
+         self.vm.add_args("-device", "vhost-user-vga,chardev=vug")
+         self.vm.add_args("-display", "egl-headless")
+         self.vm.add_args(
+@@ -128,17 +131,14 @@ def test_vhost_user_vga_virgl(self):
+         )
+         try:
+             self.vm.launch()
+-        except:
++        except VMLaunchFailure:
+             # TODO: probably fails because we are missing the VirGL features
+             self.skipTest("VirGL not enabled?")
+         self.wait_for_console_pattern("as init process")
+         exec_command_and_wait_for_pattern(self, "/usr/sbin/modprobe virtio_gpu",
+                                           "features: +virgl +edid")
+         self.vm.shutdown()
+-        qemu_sock.close()
+-        vug_sock.close()
+-        vugp.terminate()
+-        vugp.wait()
 +
  
  if __name__ == '__main__':
-     AspeedTest.main()
+     QemuSystemTest.main()
 -- 
 2.51.1
 
