@@ -2,86 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6375C782E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F24C78330
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:40:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNY7-0004bz-E2; Fri, 21 Nov 2025 04:35:27 -0500
+	id 1vMNb1-0005cv-93; Fri, 21 Nov 2025 04:38:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMNXv-0004aN-3b
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:35:15 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMNXt-00040e-Lf
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:35:14 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-42b427cda88so1246308f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 01:35:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763717712; x=1764322512; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lscgF91ypRxV9/SV8iyaXiAxCk048Dx6xn/+pJER6kE=;
- b=oDZ0FevemFFkOhbOWWO2b9xbMh/qwbcqYx0Yz3z235bhXumYxdPfdzvmUZ5kw7NchQ
- IOl3ej3sJ3tpGcJ4xNoUYuF+B9CI3rUrnluvtPPDMIZ8jh5gjQD4YeOTqWVmy7OhWXCX
- AJ8mYrf7hHkcf7LGkD15KMYANPhKCMzabGzQ2vsmpP70mPrLwHfqzvQHDveBNnnFZlgr
- IAV6/vJkxBiI0eJjtaGQciykvBHkvSO9+iO2t1U7SqQQO9tRZz9NpK1y+0i+tZnWpMEB
- eVNwhjUr/FATC11AJYBUuzGvtgkDlndSFz2ihfXQCURznlzirifX/omQRXgzYfRGoG+Q
- vQzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763717712; x=1764322512;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lscgF91ypRxV9/SV8iyaXiAxCk048Dx6xn/+pJER6kE=;
- b=vNbUoyNHAr/R3z39rzlp9Mu9jOt31G9g1lGISodaxcXCKCEiHKVH0W6X80uIofezYV
- urkv2CNDlS2kAq5w2rOo1ZzDzRnZWSTeDzH5O2iqNT4P3XOcykufIkDICWQiP3ejNnxL
- HsoJhHTDpNQxy0HjphlHEW+2fZMPNdlWfhg0QzPv0MWgmYb7kajPOHaTWty+IWvohqfN
- kHlK/pu8TAuY1OPXDnsgKGsebfg+QHRH3WchhjG9hI85MBJWKu8RBazRfVdj1i8B2G+p
- hGhW1BKdx/z2ShdwxD8Om05/trWhHjJD/5ZhiGIY/QKdZ5h0adljgpNqfLQ4NgivNOYC
- IRRg==
-X-Gm-Message-State: AOJu0Yw5MOOUuVqZpEAp/w7pdWfzpoFmAO3eMbO7Ri1HM6Ji77li9w3k
- gZPef4lXbVf/UISPKxMG3YjtkdOUopwCKN4WmRjz5YqBi8TUaZTvKLMf7NK0e6WDPLwHpOT94dG
- kiukvnJgjZA==
-X-Gm-Gg: ASbGncu0vt4NE0qp/a3JDNYtrzwBovqStvmjkjC9m6n2N3Ob7+42N5PdPBpb4VioK4j
- zeZ7qAFTaiaLDE7FyjD/ESZCX8a5gzaz1FCSq7OO1Mq/VDCMEREcA+aGRUwHD03bU+9NNEeOUxM
- ODy+PfGAQhv2dbbSqIS7odQsBu/zg76JH8oNKB/tX6cBkr3RS07CKhXPGzEJQmiQ6HOIBuGQHx6
- EpflNQhh8DjnGi/x6Tj0rCHQh6fNizX/B8pVS5QkSdtpalQhTkk3sp3ND+30b6rz6c3AbQNgavi
- +3RXGdUSsKwoUYnfo6uPeysu01MA9pwpVbvdriR1BZ7YvzzPaRG+VJhWbHky2xdawhkJUhHVxlG
- gYSXpcO44VSyGSbgRFhga91PwIKrBAcl9z19bu7icF48F90u6a9Q4o15S2jokq2BVAWZGled9Ri
- 6uoElvWaZnSDjpvOEdl28z9W+C0PLxc55mke/QIeuAncAT9imuy4/tTt6pYNTT
-X-Google-Smtp-Source: AGHT+IGwrnp1eKx+lCMYDkfzoWz7Aj53lG/PrYMZiv0/816IlixTS3nqNyNxnBoTzfOOi9EMY49siA==
-X-Received: by 2002:a05:6000:40cc:b0:42b:4223:e63c with SMTP id
- ffacd0b85a97d-42cc1ab8944mr1545447f8f.11.1763717711814; 
- Fri, 21 Nov 2025 01:35:11 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fba201sm9965392f8f.32.2025.11.21.01.35.10
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 01:35:11 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNax-0005cV-UZ
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNaw-0004E7-71
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763717900;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=RTV/2GasZwK+V3a4O7pDbu+1ZIgmtGsM0tn08ahWq5g=;
+ b=SZIow2kE9PiGkyNGzNqfuVhIMw4n9lvGNypfXAKshH2HzoxNfeTUVmeCKpADdyrmXRISXH
+ 9LS3nBNcYQcI/J0EzllXbpbrcS0oIrzM+J3+ZE6z0QKwmUxhOubjJhcWUfaA5q7zrJp9Nk
+ HEh/IsmaRuGOvI9xERb2JaAQqH+b/9Y=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-En8vXxWBMQq4a1ss4j3QiA-1; Fri,
+ 21 Nov 2025 04:38:16 -0500
+X-MC-Unique: En8vXxWBMQq4a1ss4j3QiA-1
+X-Mimecast-MFC-AGG-ID: En8vXxWBMQq4a1ss4j3QiA_1763717895
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B57419560BE; Fri, 21 Nov 2025 09:38:15 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.78])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 911A530044DB; Fri, 21 Nov 2025 09:38:14 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/display/exynos4210_fimd: Remove duplicated definition
-Date: Fri, 21 Nov 2025 10:35:09 +0100
-Message-ID: <20251121093509.25088-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/10] Fixes for QEMU v10.2rc2
+Date: Fri, 21 Nov 2025 10:38:02 +0100
+Message-ID: <20251121093812.280911-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,26 +77,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FIMD_VIDWADD0_END is defined twice, keep only one.
+ Hi Richard!
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/display/exynos4210_fimd.c | 1 -
- 1 file changed, 1 deletion(-)
+The following changes since commit 5a5b06d2f6f71d7789719b97143fc5b543bec07a:
 
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index c61e0280a7c..6b1eb43987c 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -131,7 +131,6 @@
- /* Frame buffer address registers */
- #define FIMD_VIDWADD0_START         0x00A0
- #define FIMD_VIDWADD0_END           0x00C4
--#define FIMD_VIDWADD0_END           0x00C4
- #define FIMD_VIDWADD1_START         0x00D0
- #define FIMD_VIDWADD1_END           0x00F4
- #define FIMD_VIDWADD2_START         0x0100
--- 
-2.51.0
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-20 08:12:59 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-11-21
+
+for you to fetch changes up to 88175cff49dedd709b7a01e0e5e1bdcad69e0c8d:
+
+  MAINTAINERS: s390 maintainer updates (2025-11-21 08:34:53 +0100)
+
+----------------------------------------------------------------
+* Fix a crash that occurs when passing through virtio devices to nested guest
+* Update s390x MAINTAINERS
+* Fix various pylint warnings in functional tests
+
+----------------------------------------------------------------
+David Hildenbrand (Red Hat) (1):
+      MAINTAINERS: s390 maintainer updates
+
+Thomas Huth (9):
+      hw/s390x: Fix a possible crash with passed-through virtio devices
+      tests/functional/arm/test_aspeed_ast2600_buildroot: Fix pylint warnings
+      tests/functional/x86_64/test_virtio_gpu: Fix various issues reported by pylint
+      tests/functional/x86_64/test_reverse_debug: Silence pylint warning
+      tests/functional/x86_64/test_memlock: Silence pylint warnings
+      tests/functional/ppc/test_amiga: Fix issues reported by pylint and flake8
+      tests/functional/ppc/test_ppe42: Fix style issues reported by pylint
+      tests/functional/aarch64/test_reverse_debug: Fix issues reported by pylint
+      tests/functional/aarch64/test_rme_sbsaref: Silence issues reported by pylint
+
+ MAINTAINERS                                        |  9 ++--
+ hw/s390x/s390-hypercall.c                          | 14 ++++++
+ tests/functional/aarch64/test_reverse_debug.py     |  4 +-
+ tests/functional/aarch64/test_rme_sbsaref.py       |  3 +-
+ .../arm/test_aspeed_ast2600_buildroot.py           | 21 ++++----
+ tests/functional/ppc/test_amiga.py                 |  6 +--
+ tests/functional/ppc/test_ppe42.py                 | 14 +++---
+ tests/functional/x86_64/test_memlock.py            |  6 ++-
+ tests/functional/x86_64/test_reverse_debug.py      |  2 +-
+ tests/functional/x86_64/test_virtio_gpu.py         | 56 +++++++++++-----------
+ 10 files changed, 76 insertions(+), 59 deletions(-)
 
 
