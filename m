@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B29C7C8A0
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 07:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E22C7C323
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMh3g-0003Qw-LR; Sat, 22 Nov 2025 01:25:28 -0500
+	id 1vMd6b-0004Pu-IK; Fri, 21 Nov 2025 21:12:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vMgVt-0006tf-RJ
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 00:50:31 -0500
+ id 1vMckc-0001D8-NX
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:49:25 -0500
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vMgVC-0000lg-1Y
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 00:50:06 -0500
+ id 1vMcib-000556-6z
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:49:19 -0500
 ARC-Seal: i=1; a=rsa-sha256; t=1763748063; cv=none; 
  d=zohomail.com; s=zohoarc; 
  b=SGdq7p4vxF1vCuwhfTM2lLRQShqNfpiE7rZYRgJs015bZPHIe6KE8YVF0T11lguQR488AT/4HDuDwJBnkpkMcbAQUVXUkF5p3sGTRz4shm0jI+Zo5hXjxU4OLhq+5oP6Xy6i85N2eNaDmicFsLGeIYyGFmSX4gZdn94jIzI8rAI=
@@ -59,13 +59,6 @@ Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 Received-SPF: pass client-ip=136.143.188.112;
  envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
-X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
