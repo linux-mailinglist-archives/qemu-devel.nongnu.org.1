@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B63BC7C60E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BA5C7C3F0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdgh-0002lv-Uk; Fri, 21 Nov 2025 21:49:24 -0500
+	id 1vMdVU-0000c8-IA; Fri, 21 Nov 2025 21:37:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdg3-0001zr-Ub; Fri, 21 Nov 2025 21:48:43 -0500
+ id 1vMdVN-0000an-PB; Fri, 21 Nov 2025 21:37:41 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdfW-0005Jy-0K; Fri, 21 Nov 2025 21:48:39 -0500
+ id 1vMdUX-0001fM-HL; Fri, 21 Nov 2025 21:37:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 00DF216C714;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1DD7416C715;
  Fri, 21 Nov 2025 16:51:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5A3E13219B1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6E2F53219B2;
  Fri, 21 Nov 2025 16:52:07 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 60/76] tests: move test_kvm_xen to share.linaro.org
-Date: Fri, 21 Nov 2025 16:51:38 +0300
-Message-ID: <20251121135201.1114964-60-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 61/76] tests: move test_kvm to share.linaro.org
+Date: Fri, 21 Nov 2025 16:51:39 +0300
+Message-ID: <20251121135201.1114964-61-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -63,41 +63,28 @@ From: Alex Bennée <alex.bennee@linaro.org>
 Linaro are migrating file-hosting from the old NextCloud instance to
 another sharing site.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251117115523.3993105-10-alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251117115523.3993105-11-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit 533b5ac2d6a826619cf80b009bf23ae3246d7011)
+(cherry picked from commit ced9f2ffc20dd182b2504fb08391a796c65bb0af)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_x86_64_kvm_xen.py b/tests/functional/test_x86_64_kvm_xen.py
-index a5d445023c..424d4b2001 100755
---- a/tests/functional/test_x86_64_kvm_xen.py
-+++ b/tests/functional/test_x86_64_kvm_xen.py
-@@ -23,18 +23,11 @@ class KVMXenGuest(QemuSystemTest):
-     kernel_path = None
-     kernel_params = None
+diff --git a/tests/functional/test_aarch64_kvm.py b/tests/functional/test_aarch64_kvm.py
+index 9fb9286139..7545f5ed55 100755
+--- a/tests/functional/test_aarch64_kvm.py
++++ b/tests/functional/test_aarch64_kvm.py
+@@ -19,9 +19,7 @@
+ class Aarch64VirtKVMTests(LinuxKernelTest):
  
--    # Fetch assets from the kvm-xen-guest subdir of my shared test
--    # images directory on fileserver.linaro.org where you can find
--    # build instructions for how they where assembled.
--    ASSET_KERNEL = Asset(
--        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
--         'path=%2Fkvm-xen-guest&files=bzImage'),
--        'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
--
--    ASSET_ROOTFS = Asset(
--        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
--         'path=%2Fkvm-xen-guest&files=rootfs.ext4'),
--        'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
-+    ASSET_KERNEL = Asset('https://share.linaro.org/downloadFile?id=UG0V8dzzHrrHb9X',
-+                         'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
-+
-+    ASSET_ROOTFS = Asset('https://share.linaro.org/downloadFile?id=VwLRKDXKFl6oKti',
-+                         'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
+     ASSET_KVM_TEST_KERNEL = Asset(
+-        'https://fileserver.linaro.org/s/HmjaxXXYHYSqbes/'
+-        'download?path=%2F&files='
+-        'image-with-kvm-tool-and-unit-tests.gz',
++        'https://share.linaro.org/downloadFile?id=Bs8Eb2Wb7yWtkTA',
+         '34de4aaea90db5da42729e7d28b77f392c37a2f4da859f889a5234aaf0970696')
  
-     def common_vm_setup(self):
-         # We also catch lack of KVM_XEN support if we fail to launch
+     # make it easier to detect successful return to shell
 -- 
 2.47.3
 
