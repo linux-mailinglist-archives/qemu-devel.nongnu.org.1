@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54C3C7C5DE
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2023C7C320
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:41:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMeDZ-0006DS-Jc; Fri, 21 Nov 2025 22:23:22 -0500
+	id 1vMdCQ-0001f9-39; Fri, 21 Nov 2025 21:18:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMeDO-0005ru-81; Fri, 21 Nov 2025 22:23:10 -0500
+ id 1vMd5W-0003bd-MF; Fri, 21 Nov 2025 21:11:00 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMeCt-0000fE-U9; Fri, 21 Nov 2025 22:23:05 -0500
+ id 1vMd51-0003bx-OZ; Fri, 21 Nov 2025 21:10:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7831D16C6EC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E61B16C6ED;
  Fri, 21 Nov 2025 16:51:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id CC83D321989;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E591E32198A;
  Fri, 21 Nov 2025 16:52:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bastian Blank <bblank@thinkmo.de>,
- Bastian Blank <waldi@debian.org>, Peter Maydell <peter.maydell@linaro.org>,
- Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 20/76] linux-user: Use correct type for FIBMAP and
- FIGETBSZ emulation
-Date: Fri, 21 Nov 2025 16:50:58 +0300
-Message-ID: <20251121135201.1114964-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [Stable-10.1.3 21/76] linux-user: permit sendto() with NULL buf and 0
+ len
+Date: Fri, 21 Nov 2025 16:50:59 +0300
+Message-ID: <20251121135201.1114964-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,46 +60,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bastian Blank <bblank@thinkmo.de>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Both the FIBMAP and FIGETBSZ ioctl get "int *" (pointer to 32bit
-integer) as argument, not "long *" as specified in qemu.  Using the
-correct type makes the emulation work in cross endian context.
+If you pass sendto() a NULL buffer, this is usually an error
+(causing an EFAULT return); however if you pass a 0 length then
+we should not try to validate the buffer provided. Instead we
+skip the copying of the user data and possible processing
+through fd_trans_target_to_host_data, and call the host syscall
+with NULL, 0.
 
-Both ioctl does not seem to be documented. However the kernel
-implementation has always used "int *".
+(unlock_user() permits a NULL buffer pointer for "do nothing"
+so we don't need to special case the unlock code.)
 
-Signed-off-by: Bastian Blank <waldi@debian.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3185
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviwed-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3102
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251028142001.3011630-1-peter.maydell@linaro.org>
+(cherry picked from commit 0db2de22fcbf90adafab9d9dd1fc8203c66bfa75)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 7c7089321670fb51022a1c4493cbcc69aa288a0f)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
-index 3b41128fd7..2f62fd2cb9 100644
---- a/linux-user/ioctls.h
-+++ b/linux-user/ioctls.h
-@@ -130,7 +130,7 @@
-      IOCTL(FDTWADDLE, 0, TYPE_NULL)
-      IOCTL(FDEJECT, 0, TYPE_NULL)
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 91360a072c..c236b28345 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -3583,7 +3583,7 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
+                           abi_ulong target_addr, socklen_t addrlen)
+ {
+     void *addr;
+-    void *host_msg;
++    void *host_msg = NULL;
+     void *copy_msg = NULL;
+     abi_long ret;
  
--     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_LONG))
-+     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_INT))
- #ifdef FICLONE
-      IOCTL(FICLONE, IOC_W, TYPE_INT)
-      IOCTL(FICLONERANGE, IOC_W, MK_PTR(MK_STRUCT(STRUCT_file_clone_range)))
-@@ -145,7 +145,7 @@
-      IOCTL(FITRIM, IOC_W | IOC_R, MK_PTR(MK_STRUCT(STRUCT_fstrim_range)))
- #endif
+@@ -3591,16 +3591,19 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
+         return -TARGET_EINVAL;
+     }
  
--     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
-+     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_INT))
- #ifdef CONFIG_FIEMAP
-      IOCTL_SPECIAL(FS_IOC_FIEMAP, IOC_W | IOC_R, do_ioctl_fs_ioc_fiemap,
-                    MK_PTR(MK_STRUCT(STRUCT_fiemap)))
+-    host_msg = lock_user(VERIFY_READ, msg, len, 1);
+-    if (!host_msg)
+-        return -TARGET_EFAULT;
+-    if (fd_trans_target_to_host_data(fd)) {
+-        copy_msg = host_msg;
+-        host_msg = g_malloc(len);
+-        memcpy(host_msg, copy_msg, len);
+-        ret = fd_trans_target_to_host_data(fd)(host_msg, len);
+-        if (ret < 0) {
+-            goto fail;
++    if (len != 0) {
++        host_msg = lock_user(VERIFY_READ, msg, len, 1);
++        if (!host_msg) {
++            return -TARGET_EFAULT;
++        }
++        if (fd_trans_target_to_host_data(fd)) {
++            copy_msg = host_msg;
++            host_msg = g_malloc(len);
++            memcpy(host_msg, copy_msg, len);
++            ret = fd_trans_target_to_host_data(fd)(host_msg, len);
++            if (ret < 0) {
++                goto fail;
++            }
+         }
+     }
+     if (target_addr) {
 -- 
 2.47.3
 
