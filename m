@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCB7C7C59B
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5901FC7C36E
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:52:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdDM-0002sb-6a; Fri, 21 Nov 2025 21:19:05 -0500
+	id 1vMdf8-0000am-KU; Fri, 21 Nov 2025 21:47:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdD3-0002l8-A7; Fri, 21 Nov 2025 21:18:45 -0500
+ id 1vMdb8-0005qi-0R; Fri, 21 Nov 2025 21:43:38 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdBt-0000UV-CS; Fri, 21 Nov 2025 21:18:41 -0500
+ id 1vMdZv-0003IO-4O; Fri, 21 Nov 2025 21:43:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7F31316C723;
+ by isrv.corpit.ru (Postfix) with ESMTP id 90FF116C724;
  Fri, 21 Nov 2025 16:52:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C73863219BF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EC5373219C0;
  Fri, 21 Nov 2025 16:52:08 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 74/76] target/i386/tcg: validate segment registers
-Date: Fri, 21 Nov 2025 16:51:52 +0300
-Message-ID: <20251121135201.1114964-74-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 75/76] target/i386: svm: fix sign extension of exit
+ code
+Date: Fri, 21 Nov 2025 16:51:53 +0300
+Message-ID: <20251121135201.1114964-75-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -58,34 +59,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Correctly reject invalid segment registers, including CS when used as
-the destination of a MOV.  Ignore the REX prefix as well.
+The exit_code parameter of cpu_vmexit is declared as uint32_t, but exit
+codes are 64 bits wide according to the AMD SVM specification.  And because
+uint32_t is unsigned, this causes exit codes to be zero-extended, for example
+writing SVM_EXIT_ERR as 0xffff_ffff instead of the expected 0xffff_ffff_ffff_ffff.
 
-Fixes: 5e9e21bcc4d ("target/i386: move 60-BF opcodes to new decoder", 2024-05-07)
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3195
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2977
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit ebb46ba6a4a20d393a6889c21e8a80dabab4cc8e)
+(cherry picked from commit 9c3afb9d9b92d166d227b43d890c6a8ad33a928d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 805cfd08e8..0f8c5d1693 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -2059,7 +2059,12 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index be011b06b7..e41cbda407 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -99,7 +99,7 @@ void cpu_load_eflags(CPUX86State *env, int eflags, int update_mask);
  
-     case X86_TYPE_S:  /* reg selects a segment register */
-         op->unit = X86_OP_SEG;
--        goto get_reg;
-+        op->n = (get_modrm(s, env) >> 3) & 7;
-+        /* Values outside [CDEFGS]S, as well as storing to CS, are invalid.  */
-+        if (op->n >= 6 || (op->n == R_CS && op == &decode->op[0])) {
-+            return false;
-+        }
-+        break;
+ /* system/svm_helper.c */
+ #ifndef CONFIG_USER_ONLY
+-G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint32_t exit_code,
++G_NORETURN void cpu_vmexit(CPUX86State *nenv, uint64_t exit_code,
+                            uint64_t exit_info_1, uintptr_t retaddr);
+ void do_vmexit(CPUX86State *env);
+ #endif
+diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
+index dea039b87a..e09dd44588 100644
+--- a/target/i386/tcg/system/svm_helper.c
++++ b/target/i386/tcg/system/svm_helper.c
+@@ -128,7 +128,7 @@ static inline bool virtual_gif_enabled(CPUX86State *env)
+     return false;
+ }
  
-     case X86_TYPE_P:
-         op->unit = X86_OP_MMX;
+-static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint32_t exit_code, uintptr_t retaddr)
++static inline bool virtual_vm_load_save_enabled(CPUX86State *env, uint64_t exit_code, uintptr_t retaddr)
+ {
+     uint64_t lbr_ctl;
+ 
+@@ -723,7 +723,7 @@ void helper_svm_check_io(CPUX86State *env, uint32_t port, uint32_t param,
+     }
+ }
+ 
+-void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
++void cpu_vmexit(CPUX86State *env, uint64_t exit_code, uint64_t exit_info_1,
+                 uintptr_t retaddr)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -732,7 +732,7 @@ void cpu_vmexit(CPUX86State *env, uint32_t exit_code, uint64_t exit_info_1,
+ 
+     qemu_log_mask(CPU_LOG_TB_IN_ASM, "vmexit(%08x, %016" PRIx64 ", %016"
+                   PRIx64 ", " TARGET_FMT_lx ")!\n",
+-                  exit_code, exit_info_1,
++                  (uint32_t)exit_code, exit_info_1,
+                   x86_ldq_phys(cs, env->vm_vmcb + offsetof(struct vmcb,
+                                                    control.exit_info_2)),
+                   env->eip);
 -- 
 2.47.3
 
