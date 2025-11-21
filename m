@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589B5C7C4F0
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DEFC7C6B6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:46:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcvn-0001NO-4u; Fri, 21 Nov 2025 21:00:56 -0500
+	id 1vMct2-0007h4-Ar; Fri, 21 Nov 2025 20:58:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMc6l-0004ky-KJ; Fri, 21 Nov 2025 20:08:11 -0500
+ id 1vMbpT-00036Z-PE; Fri, 21 Nov 2025 19:50:19 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMc4j-0003Nj-OZ; Fri, 21 Nov 2025 20:08:08 -0500
+ id 1vMbnR-0008KF-7M; Fri, 21 Nov 2025 19:50:15 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 27D4716CA5A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3C3F716CA5B;
  Fri, 21 Nov 2025 21:44:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D653F321C96;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EC2DB321C97;
  Fri, 21 Nov 2025 21:44:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,10 +28,10 @@ Cc: qemu-stable@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 31/81] target/microblaze: Remove unused arg from
- check_divz()
-Date: Fri, 21 Nov 2025 21:43:30 +0300
-Message-ID: <20251121184424.1137669-31-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 32/81] target/microblaze: div: Break out
+ raise_divzero()
+Date: Fri, 21 Nov 2025 21:43:31 +0300
+Message-ID: <20251121184424.1137669-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -56,45 +56,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Remove unused arg from check_divz(). No functional change.
+Break out raise_divzero() and take the opportunity to rename
+and reorder function args to better match with spec and
+pseudo code.
+
+No functional change.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit a04c5ba543c1bc83a25a557e3b62ee811869b373)
+(cherry picked from commit 0e46b4d1f13b26c3c0e30eafa2be8eed76548bd3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/microblaze/op_helper.c b/target/microblaze/op_helper.c
-index f6378030b7..85ba8c9b89 100644
+index 85ba8c9b89..0e9b725c1b 100644
 --- a/target/microblaze/op_helper.c
 +++ b/target/microblaze/op_helper.c
-@@ -70,7 +70,7 @@ void helper_raise_exception(CPUMBState *env, uint32_t index)
+@@ -70,38 +70,36 @@ void helper_raise_exception(CPUMBState *env, uint32_t index)
      cpu_loop_exit(cs);
  }
  
--static bool check_divz(CPUMBState *env, uint32_t a, uint32_t b, uintptr_t ra)
-+static bool check_divz(CPUMBState *env, uint32_t b, uintptr_t ra)
+-static bool check_divz(CPUMBState *env, uint32_t b, uintptr_t ra)
++/* Raises ESR_EC_DIVZERO if exceptions are enabled.  */
++static void raise_divzero(CPUMBState *env, uint32_t esr, uintptr_t unwind_pc)
  {
-     if (unlikely(b == 0)) {
-         env->msr |= MSR_DZ;
-@@ -90,7 +90,7 @@ static bool check_divz(CPUMBState *env, uint32_t a, uint32_t b, uintptr_t ra)
+-    if (unlikely(b == 0)) {
+-        env->msr |= MSR_DZ;
++    env->msr |= MSR_DZ;
  
- uint32_t helper_divs(CPUMBState *env, uint32_t a, uint32_t b)
+-        if ((env->msr & MSR_EE) &&
+-            env_archcpu(env)->cfg.div_zero_exception) {
+-            CPUState *cs = env_cpu(env);
++    if ((env->msr & MSR_EE) && env_archcpu(env)->cfg.div_zero_exception) {
++        CPUState *cs = env_cpu(env);
+ 
+-            env->esr = ESR_EC_DIVZERO;
+-            cs->exception_index = EXCP_HW_EXCP;
+-            cpu_loop_exit_restore(cs, ra);
+-        }
+-        return false;
++        env->esr = esr;
++        cs->exception_index = EXCP_HW_EXCP;
++        cpu_loop_exit_restore(cs, unwind_pc);
+     }
+-    return true;
+ }
+ 
+-uint32_t helper_divs(CPUMBState *env, uint32_t a, uint32_t b)
++uint32_t helper_divs(CPUMBState *env, uint32_t ra, uint32_t rb)
  {
--    if (!check_divz(env, a, b, GETPC())) {
-+    if (!check_divz(env, b, GETPC())) {
+-    if (!check_divz(env, b, GETPC())) {
++    if (!ra) {
++        raise_divzero(env, ESR_EC_DIVZERO, GETPC());
          return 0;
      }
-     return (int32_t)a / (int32_t)b;
-@@ -98,7 +98,7 @@ uint32_t helper_divs(CPUMBState *env, uint32_t a, uint32_t b)
+-    return (int32_t)a / (int32_t)b;
++    return (int32_t)rb / (int32_t)ra;
+ }
  
- uint32_t helper_divu(CPUMBState *env, uint32_t a, uint32_t b)
+-uint32_t helper_divu(CPUMBState *env, uint32_t a, uint32_t b)
++uint32_t helper_divu(CPUMBState *env, uint32_t ra, uint32_t rb)
  {
--    if (!check_divz(env, a, b, GETPC())) {
-+    if (!check_divz(env, b, GETPC())) {
+-    if (!check_divz(env, b, GETPC())) {
++    if (!ra) {
++        raise_divzero(env, ESR_EC_DIVZERO, GETPC());
          return 0;
      }
-     return a / b;
+-    return a / b;
++    return rb / ra;
+ }
+ 
+ /* raise FPU exception.  */
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index b54e5ac4b2..88904fc728 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -467,16 +467,8 @@ DO_TYPEA0_CFG(flt, use_fpu >= 2, true, gen_flt)
+ DO_TYPEA0_CFG(fint, use_fpu >= 2, true, gen_fint)
+ DO_TYPEA0_CFG(fsqrt, use_fpu >= 2, true, gen_fsqrt)
+ 
+-/* Does not use ENV_WRAPPER3, because arguments are swapped as well. */
+-static void gen_idiv(TCGv_i32 out, TCGv_i32 ina, TCGv_i32 inb)
+-{
+-    gen_helper_divs(out, tcg_env, inb, ina);
+-}
+-
+-static void gen_idivu(TCGv_i32 out, TCGv_i32 ina, TCGv_i32 inb)
+-{
+-    gen_helper_divu(out, tcg_env, inb, ina);
+-}
++ENV_WRAPPER3(gen_idiv, gen_helper_divs)
++ENV_WRAPPER3(gen_idivu, gen_helper_divu)
+ 
+ DO_TYPEA_CFG(idiv, use_div, true, gen_idiv)
+ DO_TYPEA_CFG(idivu, use_div, true, gen_idivu)
 -- 
 2.47.3
 
