@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E983C7C592
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E52CC7C55C
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:54:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdBk-00018g-Fe; Fri, 21 Nov 2025 21:17:25 -0500
+	id 1vMd8o-0006LX-9X; Fri, 21 Nov 2025 21:14:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd1j-0000yn-5d; Fri, 21 Nov 2025 21:07:03 -0500
+ id 1vMd7M-0004ye-DT; Fri, 21 Nov 2025 21:12:52 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd00-0001q8-0K; Fri, 21 Nov 2025 21:05:53 -0500
+ id 1vMd6i-0004NV-7q; Fri, 21 Nov 2025 21:12:49 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4E07C16C6E1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6268816C6E2;
  Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A745E321958;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BC67F32197F;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,10 +28,9 @@ Cc: qemu-stable@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 09/76] target/riscv/kvm: fix env->priv setting in
- reset_regs_csr()
-Date: Fri, 21 Nov 2025 16:50:47 +0300
-Message-ID: <20251121135201.1114964-9-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 10/76] target/riscv: fix riscv_cpu_sirq_pending() mask
+Date: Fri, 21 Nov 2025 16:50:48 +0300
+Message-ID: <20251121135201.1114964-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -61,47 +60,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This patch was originally made by Gitlab user Bo Gan (@ganboing) 4
-months ago in the context of issue [1]. I asked the author to send a
-patch to the mailing list ~3 months ago and got no reply. I'm sending
-the patch myself because we already missed 10.1 without this fix.
+We're filtering out (MIP_VSSIP | MIP_VSTIP | MIP_VSEIP) from S-mode
+pending interrupts without apparent reason. There's no special treatment
+for these ints as far as the spec goes, and this filtering is causing
+read_stopi() to miss those VS interrupts [1].
 
-I'll also just post verbatim Bo Gan comment in the commit msg:
+We shouldn't return delegated VS interrupts in S-mode though, so change
+the current mask with "~env->hideleg". Note that this is the same
+handling we're doing in riscv_cpu_mirq_pending() and env->mideleg.
 
-"In RISCV Linux with KVM enabled, gdbstub is broken. The
-get_physical_address isn't able to page-walk correctly and resolve the
-physical page. This is due to that the vcpu is being treated as starting
-in M mode even if KVM enabled. However, with KVM, the vcpu is actually
-started in S mode. The mmu_idx will give 3 (M), instead of 1 (S),
-resulting in Guest PA == VA (wrong)!"
+[1] https://gitlab.com/qemu-project/qemu/-/issues/2820
 
-Set env->priv to PRV_S in kvm_riscv_reset_regs_csr() since the VCPU is
-always started in S-mode for KVM.
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2991
-
-Cc: qemu-stable@nongnu.org
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2991
-Originally-by: Bo Gan (@ganboing in Gitlab)
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2820
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251022111105.483992-1-dbarboza@ventanamicro.com>
+Message-ID: <20251022124340.493358-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 2a21cbee47a124edf43fc9ee156d7093e2f957fd)
+Cc: qemu-stable@nongnu.org
+(cherry picked from commit 06e01941ffca3c246a9770f477e43118793fde59)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5c19062c19..e06d2126ba 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -704,6 +704,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
-     env->satp = 0;
-     env->scounteren = 0;
-     env->senvcfg = 0;
-+    env->priv = PRV_S;
- }
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 3479a62cc7..360db133e2 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -443,8 +443,7 @@ int riscv_cpu_mirq_pending(CPURISCVState *env)
  
- static int kvm_riscv_get_regs_fp(CPUState *cs)
+ int riscv_cpu_sirq_pending(CPURISCVState *env)
+ {
+-    uint64_t irqs = riscv_cpu_all_pending(env) & env->mideleg &
+-                    ~(MIP_VSSIP | MIP_VSTIP | MIP_VSEIP);
++    uint64_t irqs = riscv_cpu_all_pending(env) & env->mideleg & ~env->hideleg;
+     uint64_t irqs_f = env->mvip & env->mvien & ~env->mideleg & env->sie;
+ 
+     return riscv_cpu_pending_to_irq(env, IRQ_S_EXT, IPRIO_DEFAULT_S,
 -- 
 2.47.3
 
