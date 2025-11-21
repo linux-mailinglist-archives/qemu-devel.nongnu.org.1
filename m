@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E74C7C595
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9081C7C475
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:24:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdRg-00059Y-Un; Fri, 21 Nov 2025 21:33:53 -0500
+	id 1vMdfu-0001pj-5R; Fri, 21 Nov 2025 21:48:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdRZ-00055v-S5; Fri, 21 Nov 2025 21:33:45 -0500
+ id 1vMdfe-0001ND-L1; Fri, 21 Nov 2025 21:48:18 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdQg-0000N1-Az; Fri, 21 Nov 2025 21:33:41 -0500
+ id 1vMdf0-0005BR-Um; Fri, 21 Nov 2025 21:48:15 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D98DF16C6E7;
- Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0305616C6E8;
+ Fri, 21 Nov 2025 16:51:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3F0BE321984;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 52608321985;
  Fri, 21 Nov 2025 16:52:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 15/76] hw/scsi: avoid deadlock upon TMF request
- cancelling with VirtIO
-Date: Fri, 21 Nov 2025 16:50:53 +0300
-Message-ID: <20251121135201.1114964-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 16/76] target/hppa: Set FPCR exception flag bits for
+ non-trapped exceptions
+Date: Fri, 21 Nov 2025 16:50:54 +0300
+Message-ID: <20251121135201.1114964-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,80 +60,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-When scsi_req_dequeue() is reached via
-scsi_req_cancel_async()
-virtio_scsi_tmf_cancel_req()
-virtio_scsi_do_tmf_aio_context(),
-there is a deadlock when trying to acquire the SCSI device's requests
-lock, because it was already acquired in
-virtio_scsi_do_tmf_aio_context().
+In commit ebd394948de4e8 ("target/hppa: Fix FPE exceptions") when
+we added the code for setting up the registers correctly on trapping
+FP exceptions, we accidentally broke the handling of the flag bits
+for non-trapping exceptions.
 
-In particular, the issue happens with a FreeBSD guest (13, 14, 15,
-maybe more), when it cancels SCSI requests, because of timeout.
+In update_fr0_op() we incorrectly zero out the flag bits and the C
+bit, so any fp operation would clear previously set flag bits. We
+also stopped setting the flag bits when the fp operation raises
+an exception and the trap is not enabled.
 
-This is a regression caused by commit da6eebb33b ("virtio-scsi:
-perform TMFs in appropriate AioContexts") and the introduction of the
-requests_lock earlier.
+Adjust the code so that we set the Flag bits for every exception that
+happened and where the trap is not enabled.  (This is the correct
+behaviour for the case where an instruction triggers two exceptions,
+one of which traps and one of which does not; that can only happen
+for inexact + underflow or inexact + overflow.)
 
-To fix the issue, only cancel the requests after releasing the
-requests_lock. For this, the SCSI device's requests are iterated while
-holding the requests_lock and the requests to be cancelled are
-collected in a list. Then, the collected requests are cancelled
-one by one while not holding the requests_lock. This is safe, because
-only requests from the current AioContext are collected and acted
-upon.
-
-Originally reported by Proxmox VE users:
-https://bugzilla.proxmox.com/show_bug.cgi?id=6810
-https://forum.proxmox.com/threads/173914/
-
-Fixes: da6eebb33b ("virtio-scsi: perform TMFs in appropriate AioContexts")
-Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-id: 20251017094518.328905-1-f.ebner@proxmox.com
-[Changed g_list_append() to g_list_prepend() to avoid traversing the
-list each time.
---Stefan]
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 6910f04aa646f63a0257f77201ad8ea15992b816)
+Cc: qemu-stable@nongnu.org
+Fixes: ebd394948de4e8 ("target/hppa: Fix FPE exceptions")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3158
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
+Message-ID: <20251017085350.895681-1-peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 1a8ffd6172f3d9ad8232189adb879a16ec416f89)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 34ae14f7bf..3b635053b5 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -343,6 +343,7 @@ static void virtio_scsi_do_tmf_aio_context(void *opaque)
-     SCSIDevice *d = virtio_scsi_device_get(s, tmf->req.tmf.lun);
-     SCSIRequest *r;
-     bool match_tag;
-+    g_autoptr(GList) reqs = NULL;
+diff --git a/target/hppa/fpu_helper.c b/target/hppa/fpu_helper.c
+index 45353202fa..2d272730f6 100644
+--- a/target/hppa/fpu_helper.c
++++ b/target/hppa/fpu_helper.c
+@@ -94,7 +94,8 @@ static void update_fr0_op(CPUHPPAState *env, uintptr_t ra)
+ {
+     uint32_t soft_exp = get_float_exception_flags(&env->fp_status);
+     uint32_t hard_exp = 0;
+-    uint32_t shadow = env->fr0_shadow & 0x3ffffff;
++    uint32_t shadow = env->fr0_shadow;
++    uint32_t to_flag = 0;
+     uint32_t fr1 = 0;
  
-     if (!d) {
-         tmf->resp.tmf.response = VIRTIO_SCSI_S_BAD_TARGET;
-@@ -378,10 +379,21 @@ static void virtio_scsi_do_tmf_aio_context(void *opaque)
-             if (match_tag && cmd_req->req.cmd.tag != tmf->req.tmf.tag) {
-                 continue;
-             }
--            virtio_scsi_tmf_cancel_req(tmf, r);
-+            /*
-+             * Cannot cancel directly, because scsi_req_dequeue() would deadlock
-+             * when attempting to acquire the request_lock a second time. Taking
-+             * a reference here is paired with an unref after cancelling below.
-+             */
-+            scsi_req_ref(r);
-+            reqs = g_list_prepend(reqs, r);
+     if (likely(soft_exp == 0)) {
+@@ -122,6 +123,10 @@ static void update_fr0_op(CPUHPPAState *env, uintptr_t ra)
+             fr1 |= hard_exp << (R_FPSR_FLAGS_SHIFT - R_FPSR_ENABLES_SHIFT);
          }
      }
- 
-+    for (GList *elem = g_list_first(reqs); elem; elem = g_list_next(elem)) {
-+        virtio_scsi_tmf_cancel_req(tmf, elem->data);
-+        scsi_req_unref(elem->data);
-+    }
++    /* Set the Flag bits for every exception that was not enabled */
++    to_flag = hard_exp & ~shadow;
++    shadow |= to_flag << (R_FPSR_FLAGS_SHIFT - R_FPSR_ENABLES_SHIFT);
 +
-     /* Incremented by virtio_scsi_do_tmf() */
-     virtio_scsi_tmf_dec_remaining(tmf);
+     env->fr0_shadow = shadow;
+     env->fr[0] = (uint64_t)shadow << 32 | fr1;
  
 -- 
 2.47.3
