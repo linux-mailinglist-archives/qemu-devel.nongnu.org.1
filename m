@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8A7C7C32F
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B19C7C4FD
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:43:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd4j-0002uX-PV; Fri, 21 Nov 2025 21:10:10 -0500
+	id 1vMcwn-0002Hi-R7; Fri, 21 Nov 2025 21:01:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcQS-0006s2-Sm; Fri, 21 Nov 2025 20:28:32 -0500
+ id 1vMc1B-0001X7-6z; Fri, 21 Nov 2025 20:02:30 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcOQ-0000Cz-Bu; Fri, 21 Nov 2025 20:28:28 -0500
+ id 1vMbz8-0002CU-96; Fri, 21 Nov 2025 20:02:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D8F1E16CA7D;
+ by isrv.corpit.ru (Postfix) with ESMTP id EA7A116CA7E;
  Fri, 21 Nov 2025 21:44:28 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9667D321CB9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A8686321CBA;
  Fri, 21 Nov 2025 21:44:37 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 66/81] tests: move test_kvm_xen to share.linaro.org
-Date: Fri, 21 Nov 2025 21:44:05 +0300
-Message-ID: <20251121184424.1137669-66-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 67/81] tests: move test_virt_gpu to share.linaro.org
+Date: Fri, 21 Nov 2025 21:44:06 +0300
+Message-ID: <20251121184424.1137669-67-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -57,41 +57,35 @@ From: Alex Bennée <alex.bennee@linaro.org>
 Linaro are migrating file-hosting from the old NextCloud instance to
 another sharing site.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251117115523.3993105-10-alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251117115523.3993105-12-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit 533b5ac2d6a826619cf80b009bf23ae3246d7011)
+(cherry picked from commit 497d3e87ce2d58a4781de03c6f5b0200ef79909f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_x86_64_kvm_xen.py b/tests/functional/test_x86_64_kvm_xen.py
-index c6abf6bba3..0f1f5d8f0b 100755
---- a/tests/functional/test_x86_64_kvm_xen.py
-+++ b/tests/functional/test_x86_64_kvm_xen.py
-@@ -25,18 +25,11 @@ class KVMXenGuest(QemuSystemTest):
-     kernel_path = None
-     kernel_params = None
+diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
+index 3844727857..28ae7592fc 100755
+--- a/tests/functional/test_aarch64_virt_gpu.py
++++ b/tests/functional/test_aarch64_virt_gpu.py
+@@ -23,15 +23,11 @@
+ class Aarch64VirtGPUMachine(LinuxKernelTest):
  
--    # Fetch assets from the kvm-xen-guest subdir of my shared test
--    # images directory on fileserver.linaro.org where you can find
--    # build instructions for how they where assembled.
--    ASSET_KERNEL = Asset(
--        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
--         'path=%2Fkvm-xen-guest&files=bzImage'),
--        'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
--
--    ASSET_ROOTFS = Asset(
--        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
--         'path=%2Fkvm-xen-guest&files=rootfs.ext4'),
--        'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
-+    ASSET_KERNEL = Asset('https://share.linaro.org/downloadFile?id=UG0V8dzzHrrHb9X',
-+                         'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
-+
-+    ASSET_ROOTFS = Asset('https://share.linaro.org/downloadFile?id=VwLRKDXKFl6oKti',
-+                         'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
+     ASSET_VIRT_GPU_KERNEL = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+-        'download?path=%2F&files='
+-        'Image.6.12.16.aarch64',
++        'https://share.linaro.org/downloadFile?id=lL8wgnMmSXZo7Co',
+         '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec8b')
  
-     def common_vm_setup(self):
-         # We also catch lack of KVM_XEN support if we fail to launch
+     ASSET_VIRT_GPU_ROOTFS = Asset(
+-        'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+-        'download?path=%2F&files='
+-        'rootfs.aarch64.ext2.zstd',
++        'https://share.linaro.org/downloadFile?id=qOn1wbfKmS6KVHZ',
+         'd45118c899420b7e673f1539a37a35480134b3e36e3a59e2cb69b1781cbb14ef')
+ 
+     def _launch_virt_gpu(self, gpu_device):
 -- 
 2.47.3
 
