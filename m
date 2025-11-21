@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA285C7830F
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ED9C7832D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:40:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNb3-0005ds-Ip; Fri, 21 Nov 2025 04:38:29 -0500
+	id 1vMNb5-0005el-K8; Fri, 21 Nov 2025 04:38:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNaz-0005cl-80
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:25 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb2-0005dn-Oc
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNax-0004EE-G8
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:24 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vMNb0-0004Ee-Ai
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 04:38:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763717901;
+ s=mimecast20190719; t=1763717905;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9/ixhXhR+CrA8nu7nsFvLBm5U+Vy9Xhe2mKEVAMZ184=;
- b=aLJ4Mwj8fDkXc3jJq2L6o26JLNFHff0sS/x30Os5zqFPkWHpBZ85/iJzLZ20+hzmv2m9+N
- BmAFY6+HqA3+RDu1IY4zTl+v4UmfFBQsvbdAbu+aooICk6pafPCtJOJcCr8L6cSiyEg4tf
- nooMnOdtjJ0asjwU9T5gnCzO/epfx4U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=zyiv1sdADRwIVpXXrB8xWg6kM+itGWwh96xh4VQQA6A=;
+ b=JNTnq4vPKNH9f8ebPrq3HY1eIgW6CMwVSJypGlIM0YKZfTDqU6rHBG9CV2EOV5o5AkDdpm
+ CYRQ3LaNVvt4q5WoNxJYj4ekSLHi+rWDzwBSbDzHb9MpMlABE2ns84rfB0DEeoY1C0WuuT
+ OBAPWKcO79Uu9RejdvEaMvhokc1Pcwk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-19-0gal5EwbNZCi47_7XO3xGw-1; Fri,
- 21 Nov 2025 04:38:19 -0500
-X-MC-Unique: 0gal5EwbNZCi47_7XO3xGw-1
-X-Mimecast-MFC-AGG-ID: 0gal5EwbNZCi47_7XO3xGw_1763717898
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-rAYW5VMUNOOy0qVixVau9A-1; Fri,
+ 21 Nov 2025 04:38:21 -0500
+X-MC-Unique: rAYW5VMUNOOy0qVixVau9A-1
+X-Mimecast-MFC-AGG-ID: rAYW5VMUNOOy0qVixVau9A_1763717900
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 540321954B14; Fri, 21 Nov 2025 09:38:18 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 77A49180028A; Fri, 21 Nov 2025 09:38:20 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.78])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3EB3930044DB; Fri, 21 Nov 2025 09:38:15 +0000 (UTC)
+ id CCB6F30044DB; Fri, 21 Nov 2025 09:38:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PULL 01/10] hw/s390x: Fix a possible crash with passed-through
- virtio devices
-Date: Fri, 21 Nov 2025 10:38:03 +0100
-Message-ID: <20251121093812.280911-2-thuth@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 02/10] tests/functional/arm/test_aspeed_ast2600_buildroot: Fix
+ pylint warnings
+Date: Fri, 21 Nov 2025 10:38:04 +0100
+Message-ID: <20251121093812.280911-3-thuth@redhat.com>
 In-Reply-To: <20251121093812.280911-1-thuth@redhat.com>
 References: <20251121093812.280911-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -85,67 +84,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Consider the following nested setup: An L1 host uses some virtio device
-(e.g. virtio-keyboard) for the L2 guest, and this L2 guest passes this
-device through to the L3 guest. Since the L3 guest sees a virtio device,
-it might send virtio notifications to the QEMU in L2 for that device.
-But since the QEMU in L2 defined this device as vfio-ccw, the function
-handle_virtio_ccw_notify() cannot handle this and crashes: It calls
-virtio_ccw_get_vdev() that casts sch->driver_data into a VirtioCcwDevice,
-but since "sch" belongs to a vfio-ccw device, that driver_data rather
-points to a CcwDevice instead. So as soon as QEMU tries to use some
-VirtioCcwDevice specific data from that device, we've lost.
+Pylint recommends to use a "with" context for tempfile.TemporaryDirectory()
+to make sure that the directory is deleted once it is not needed anymore,
+and it recommends to use the "check" parameter for subprocess.run().
+For style reasons, the imports at the beginning of the file should be
+grouped by module.
 
-We must not take virtio notifications for such devices. Thus fix the
-issue by adding a check to the handle_virtio_ccw_notify() handler to
-refuse all devices that are not our own virtio devices. Like in the
-other branches that detect wrong settings, we return -EINVAL from the
-function, which will later be placed in GPR2 to inform the guest about
-the error.
-
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Tested-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Message-Id: <20251113100601.476900-1-thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251118174047.73103-1-thuth@redhat.com>
+Message-ID: <20251119082636.43286-4-thuth@redhat.com>
 ---
- hw/s390x/s390-hypercall.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../arm/test_aspeed_ast2600_buildroot.py      | 21 +++++++++++--------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/hw/s390x/s390-hypercall.c b/hw/s390x/s390-hypercall.c
-index ac1b08b2cd5..508dd97ca0d 100644
---- a/hw/s390x/s390-hypercall.c
-+++ b/hw/s390x/s390-hypercall.c
-@@ -10,6 +10,7 @@
-  */
+diff --git a/tests/functional/arm/test_aspeed_ast2600_buildroot.py b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
+index 51f2676c906..575a5f64143 100755
+--- a/tests/functional/arm/test_aspeed_ast2600_buildroot.py
++++ b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
+@@ -9,8 +9,8 @@
+ import tempfile
+ import subprocess
  
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "cpu.h"
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/s390-hypercall.h"
-@@ -42,6 +43,19 @@ static int handle_virtio_ccw_notify(uint64_t subch_id, uint64_t data)
-     if (!sch || !css_subch_visible(sch)) {
-         return -EINVAL;
-     }
-+    if (sch->id.cu_type != VIRTIO_CCW_CU_TYPE) {
-+        /*
-+         * This might happen in nested setups: If the L1 host defined the
-+         * L2 guest with a virtio device (e.g. virtio-keyboard), and the
-+         * L2 guest passes this device through to the L3 guest, the L3 guest
-+         * might send virtio notifications to the QEMU in L2 for that device.
-+         * But since the QEMU in L2 defined this device as vfio-ccw, it's not
-+         * a VirtIODevice that we can handle here!
-+         */
-+        warn_report_once("Got virtio notification for unsupported device "
-+                         "on subchannel %02x.%1x.%04x!", cssid, ssid, schid);
-+        return -EINVAL;
-+    }
+-from qemu_test import Asset
+ from aspeed import AspeedTest
++from qemu_test import Asset
+ from qemu_test import exec_command_and_wait_for_pattern, skipIfMissingCommands
  
-     vdev = virtio_ccw_get_vdev(sch);
-     if (vq_idx >= VIRTIO_QUEUE_MAX || !virtio_queue_get_num(vdev, vq_idx)) {
+ 
+@@ -66,21 +66,18 @@ def test_arm_ast2600_evb_buildroot(self):
+          'images/ast2600-evb/buildroot-2023.02-tpm/flash.img'),
+         'a46009ae8a5403a0826d607215e731a8c68d27c14c41e55331706b8f9c7bd997')
+ 
+-    @skipIfMissingCommands('swtpm')
+-    def test_arm_ast2600_evb_buildroot_tpm(self):
+-        self.set_machine('ast2600-evb')
+-
++    def _test_arm_ast2600_evb_buildroot_tpm(self, tpmstate_dir):
+         image_path = self.ASSET_BR2_202302_AST2600_TPM_FLASH.fetch()
+ 
+-        tpmstate_dir = tempfile.TemporaryDirectory(prefix="qemu_")
+-        socket = os.path.join(tpmstate_dir.name, 'swtpm-socket')
++        socket = os.path.join(tpmstate_dir, 'swtpm-socket')
+ 
+         # We must put the TPM state dir in /tmp/, not the build dir,
+         # because some distros use AppArmor to lock down swtpm and
+         # restrict the set of locations it can access files in.
+         subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
+-                        '--tpmstate', f'dir={tpmstate_dir.name}',
+-                        '--ctrl', f'type=unixio,path={socket}'])
++                        '--tpmstate', f'dir={tpmstate_dir}',
++                        '--ctrl', f'type=unixio,path={socket}'],
++                       check=True)
+ 
+         self.vm.add_args('-chardev', f'socket,id=chrtpm,path={socket}')
+         self.vm.add_args('-tpmdev', 'emulator,id=tpm0,chardev=chrtpm')
+@@ -97,6 +94,12 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+ 
+         self.do_test_arm_aspeed_buildroot_poweroff()
+ 
++    @skipIfMissingCommands('swtpm')
++    def test_arm_ast2600_evb_buildroot_tpm(self):
++        self.set_machine('ast2600-evb')
++        with tempfile.TemporaryDirectory(prefix="qemu_") as tpmstate_dir:
++            self._test_arm_ast2600_evb_buildroot_tpm(tpmstate_dir)
++
+ 
+ if __name__ == '__main__':
+     AspeedTest.main()
 -- 
 2.51.1
 
