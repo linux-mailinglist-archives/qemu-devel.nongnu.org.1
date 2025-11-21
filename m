@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD232C7C46C
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CF9C7C448
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:20:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdS4-0005Xa-C3; Fri, 21 Nov 2025 21:34:17 -0500
+	id 1vMdh0-0003EN-3M; Fri, 21 Nov 2025 21:49:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdRy-0005Of-E2; Fri, 21 Nov 2025 21:34:10 -0500
+ id 1vMdgc-0002kJ-Aj; Fri, 21 Nov 2025 21:49:18 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdRB-0000XC-RN; Fri, 21 Nov 2025 21:34:06 -0500
+ id 1vMdg2-0005WU-3n; Fri, 21 Nov 2025 21:49:15 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB0B616C71E;
- Fri, 21 Nov 2025 16:51:59 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0619716C71F;
+ Fri, 21 Nov 2025 16:52:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 32E303219BA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 54C333219BB;
  Fri, 21 Nov 2025 16:52:08 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 69/76] tests/functional: fix formatting of exception
- args
-Date: Fri, 21 Nov 2025 16:51:47 +0300
-Message-ID: <20251121135201.1114964-69-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 70/76] tests/functional: handle URLError when fetching
+ assets
+Date: Fri, 21 Nov 2025 16:51:48 +0300
+Message-ID: <20251121135201.1114964-70-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -63,30 +62,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The catch-all exception handler forgot the placeholder for
-the exception details.
+We treat most HTTP errors as non-fatal when fetching assets,
+but forgot to handle network level errors. This adds catching
+of URLError so that we retry on failure, and will ultimately
+trigger graceful skipping in the pre-cache task.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250829142616.2633254-3-berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250829142616.2633254-4-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 124ab930ba38c41a86533dbfabb7a3b3b270ef98)
+(cherry picked from commit 335da23abec85cd2f6d10f1fe36b28a02088e723)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index 704b84d0ea..debed88f5e 100644
+index debed88f5e..5aceb8f27a 100644
 --- a/tests/functional/qemu_test/asset.py
 +++ b/tests/functional/qemu_test/asset.py
-@@ -169,7 +169,7 @@ def fetch(self):
+@@ -15,7 +15,7 @@
+ from time import sleep
+ from pathlib import Path
+ from shutil import copyfileobj
+-from urllib.error import HTTPError
++from urllib.error import HTTPError, URLError
+ 
+ class AssetError(Exception):
+     def __init__(self, asset, msg, transient=False):
+@@ -167,6 +167,14 @@ def fetch(self):
+                     raise AssetError(self, "Unable to download: "
+                                      "HTTP error %d" % e.code)
                  continue
++            except URLError as e:
++                # This is typically a network/service level error
++                # eg urlopen error [Errno 110] Connection timed out>
++                tmp_cache_file.unlink()
++                self.log.error("Unable to download %s: URL error %s",
++                               self.url, e.reason)
++                raise AssetError(self, "Unable to download: URL error %s" %
++                                 e.reason, transient=True)
              except Exception as e:
                  tmp_cache_file.unlink()
--                raise AssetError(self, "Unable to download: " % e)
-+                raise AssetError(self, "Unable to download: %s" % e)
- 
-         if not os.path.exists(tmp_cache_file):
-             raise AssetError(self, "Download retries exceeded", transient=True)
+                 raise AssetError(self, "Unable to download: %s" % e)
 -- 
 2.47.3
 
