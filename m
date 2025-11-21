@@ -2,94 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33799C7C553
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D03DC7CA75
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:16:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd8A-0005pr-P3; Fri, 21 Nov 2025 21:13:43 -0500
+	id 1vMcue-0000Lw-9f; Fri, 21 Nov 2025 20:59:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcs2-0006pA-2K
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:57:03 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMbwJ-0007Kk-9A
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:57:24 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcqQ-00078Z-CK
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:56:59 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-644fcafdce9so4052135a12.1
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:55:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMbw9-0001br-Lj
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:57:21 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-64162c04f90so4432895a12.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:56:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763776500; x=1764381300; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8wnLnzkfTxGkB5nMfGcr42ZPTyrdMDCae7DvzUu+59I=;
- b=YyLYYazPxfOZAzhso0sE4ajB/DNe+34axkxDXR65cIsCW1cjOOYGS0uRHXlfFgdWkE
- qOrTGC9s1YKsBFEuWDFrbW4j3fRaPIZTYk+ydYOPeu5t7QLzCv10GrejF+x62sbr6ori
- x68jBXbbo9StdmJlLQrmYmYrD9CWcdnTQn1SpROk8eyrluONuQ2iACxrKDKKMMj77oWm
- sdV7PITOQsO6zTSwm6VdJfSO0bwnJquPf97fAPCC0aRra0qS5srEiHvVes0U1y3NC9jB
- UR3SNbHM9tcDs0lDc7DGvnPf+DpLhQdWDZDufOJqA+ZRT/8g1OYxQVdKMElfQbSgJjlX
- zUxA==
+ d=linaro.org; s=google; t=1763773011; x=1764377811; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=iLEP31p2q67fyTZDvOclkWnM5THQY23jVRVbitVYWqI=;
+ b=j9oHgxxSApHP/bbVcmcjTCsG9fD6GuOSkpm0dMjHqVPn84VPgy7/bBSsqRCbvSY7G1
+ Ck5v5C4e4uxdg0otgrTGLyx3XzVOhgtnX9BMlHvGGwBoOek9d8XMMiZUNJnUVyLYKTRK
+ h92p7kZBe7MNTqoUZpNC+03Lf6DNgADWcMkpdrd75NAmJeS5lAXkCRtORnen4xbnSQOM
+ Ojirm+Evjqo4oo5IxnpaxzvTvuhLvk7DSM7F8EHRCjHaxgldGKbuQfth4JOkaiTw/abw
+ rHwd/yQfkeezkfsZqd7qQ/FzV/6k30Gtg5JC/5G5/Z+dB0+icLT1ksNOBrVK5dN5uPhQ
+ 6Fxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763776500; x=1764381300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8wnLnzkfTxGkB5nMfGcr42ZPTyrdMDCae7DvzUu+59I=;
- b=FEYZvSsZu3tDD34ON9orFBcMXYYpMnWfL3Pb/kovPbQ9FqeoQQLAxvaTi2KHG4y/2f
- bzMXPaAe/1dDxmexX8ugr+WAGYdeNirbziKCxQRZYjmiNpRR3/S2Afg1SqQt2ZsVtyKx
- TN9jgWZCPnlTC4sg9cPJIGyPGn4IfqbeDYDjZo36KZLwmOuUBLxdzlPoPrEzbtsi/cLP
- gV0PhDXCB04W/RmrUasoTPLpKgZ8HhdnKeeCq8dqGnvVTQRsga2ExoslPLhzkst9+Cel
- Bgo6SAWg4seshFzKxt3wojwJsMSjcIu9mxNd17UnbRGcX7KdIZfjDwyAh+46TGTvV7xA
- Vp0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVlbA5st+wWR8zWUlNZYq8Wc1qjtqtSsQH9I6TpgArp7VMZ7++QK/O366vdksfFLtrOSE9NToXkmPXG@nongnu.org
-X-Gm-Message-State: AOJu0YyDiicsZPCO0ESlUXZ4+JO1JWgteVP7Soy4fqgMIeFGmpiQ4J44
- DmMHGWuy8BoD2538xxALHecY4pRroZ4lT4E2vb5GW90x2lisY2rlfZYSZDrhkMYVJrQIZk06qej
- fYhINsPj46g==
-X-Gm-Gg: ASbGncudQ6E0cpPtmed/zK7gjm74xkD2TIfh804iyrdZsRkcKLdrPvOnTvKNO17P+Aq
- L1o2cVG4e0m++q2PzvZs+Q7PFaEuKTRY+6iFp11Czd+kRvKoKQI69yXy8yRa+FZ7KhMM7jP/A94
- pDagfdpB3cQakeMoX/oIu5ni6hs8v1cpJMxv5LYleuwoTnX3YrltnVPKhNCi0aACdZsDJrOOmiv
- Q+PUVrAmKEO8jbGT5f1oYGn74Gv/qqCoQ01wWDOwz5Stj+klP/A/lhVtuhmJtyOfpXXWYtNdX7M
- 8Tu5U8sGXg1GWrwDyjWROT3+0QKIBC/XLbPNa1dV55lDuMhXPTvrYPoveDlnqgvyxx/SQX21Jh7
- GGTJ8SUj3uuMBLyLFYQO+uLQpcjEz7AS8QdWJOI4xYN1NMMO2chhnvTYr5pOBkOxj0qWpsGyBVq
- BqhIRIFsOnHFMFr8WHPFoVerjcUS0/Yf0AQCaJTYBIacQZQvb4qe+zOw==
-X-Google-Smtp-Source: AGHT+IEvAyGK/GgqiFHWPFXhBRSCSYyV5bnV+bp4jB5vxrKf8lIRZtJvyUJO+iivXXMq3TjPC5fXDg==
-X-Received: by 2002:a05:6000:2f85:b0:42b:32c3:3949 with SMTP id
- ffacd0b85a97d-42cc1d27ad3mr2317439f8f.31.1763732001195; 
- Fri, 21 Nov 2025 05:33:21 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1763773011; x=1764377811;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iLEP31p2q67fyTZDvOclkWnM5THQY23jVRVbitVYWqI=;
+ b=RZOc4YyqCDiBWiR2kil+iQBhc9d5Rp2yWRMf5Mv58hm4RFGoEBgFa9ecuQKAqhX9mC
+ 43L7wEI7LLSdd45FfZkqYV+Jv1rOHmJZ3tC14U4U9QYnAqdwSjpK08baodl2Z0czF8al
+ kKYbYV2Ttj+UB6lRQHKlf5ho2ytK1FPT3K7ktgbMa36hoP0YE3hO2ESGzhxN74Ofa7/Q
+ peXetwZJaesEdrcRxS+7Ayz8//yuP9BsMFZ3QqSu+Lx3iw+hXn06Zn2IBrkUaM19zx27
+ asvDcxpM2zFnDZ51GB6UV5jz8lDyaEjq+Pftc1YOpSinVHmrz0Kx/0vLyhK8FXLQwAy+
+ bIFw==
+X-Gm-Message-State: AOJu0YxEWPmfSigvPGts42EBCuK7jro0I2yj+BzQ4BCLz5R1E3OdaZI8
+ TkdQO9XHrWQO8zadVaYyB4vAWJak5EFrVpoNBphw61w6udWU/qW2y54xdadQmN2b+uu/xUZcveS
+ DskSc/k1K/A==
+X-Gm-Gg: ASbGncvPbTGH0swp7WgDM3FfWBaek3oMebdarizKvATw4+3TChsGa8FhLWsMD9lnhJa
+ N9+nt3VFuVDM0oxdzIGc6vwDt229RPNPnMZKWceU/LxadatXJFVuz1EvjpDRaP/1Dzob6nZ6icD
+ QFROjpCgLLdS8EtKlaxp76j8Xw87e6m0PUTQh1iFm49Qrfb5sMRmT0or5bB93giFSmIkI4UcJVJ
+ sakNX2p10mSlWeVrftCLWt2jfYI5dU2VRM4jEXSzi8aM0SdNjEckSnigA8dhqmTTrIdGSqLue+T
+ UD7ptzTUl18lb/RZ5NPCdvpU7YjT/+DnlsCa+1l+CnCju52dT1k96dxGOqCaVyv0x+Z9H5DVTi5
+ VP2QnysH2IBoLqwBVO6Ajivj9YjnVmA6UqbfMNkYkUttWI/IWQV1KXS8dxPX/VbN0tCcSTvD3MB
+ YcQS2rYrgm9qQwVRlj5VcfbwTGc+O2tIXG4OeWT0qETQr+/ltCxDZ/VIRjy6T0
+X-Google-Smtp-Source: AGHT+IHWcb4RKS7iqER8mCdDuj0STip9RUovE2X2+ev2r6OYPEl8ZKJV/LvXwo1MwRvs07MDSpLMUw==
+X-Received: by 2002:a05:600c:3b05:b0:475:e007:baf1 with SMTP id
+ 5b1f17b1804b1-477c1133955mr21845385e9.34.1763732705088; 
+ Fri, 21 Nov 2025 05:45:05 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fb9022sm10942917f8f.36.2025.11.21.05.33.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Nov 2025 05:33:20 -0800 (PST)
-Message-ID: <803dd0a8-8b78-4e47-9c28-46af413c6967@linaro.org>
-Date: Fri, 21 Nov 2025 14:33:19 +0100
+ ffacd0b85a97d-42cb7fba201sm11207379f8f.32.2025.11.21.05.45.04
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 21 Nov 2025 05:45:04 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [RFC-PATCH-for-11.0 v3 00/21] accel/tcg: Remove most MO_TE uses in
+ cpu_ld/st_code/data()
+Date: Fri, 21 Nov 2025 14:44:42 +0100
+Message-ID: <20251121134503.30914-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] target/ppc: Use probe_access for LSW, STSW
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>
-Cc: hsp.cat7@gmail.com, qemu-ppc@nongnu.org, david@gibson.dropbear.id.au,
- Chinmay Rath <rathc@linux.ibm.com>
-References: <20200129235040.24022-1-richard.henderson@linaro.org>
- <20200129235040.24022-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20200129235040.24022-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
-X-Spam_action: no action
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,213 +89,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Quick attempt to remove MO_TE uses for fixed-endianness targets.
 
-(old patch merged as commit bb99b391896f3c7a477777e3d47a2524fd795357)
+v3: convert all CODE uses, almost all DATA uses (except PPC/MIPS).
+v2: convert all but mips targets and remove unexplicit API.
 
-On 30/1/20 00:50, Richard Henderson wrote:
-> Use a minimum number of mmu lookups for the contiguous bytes
-> that are accessed.  If the lookup succeeds, we can finish the
-> operation with host addresses only.
-> 
-> Reported-by: Howard Spoelstra <hsp.cat7@gmail.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/ppc/mem_helper.c | 148 ++++++++++++++++++++++++++++++++++------
->   1 file changed, 128 insertions(+), 20 deletions(-)
-> 
-> diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
-> index e8e2a8ac2a..508d472a2f 100644
-> --- a/target/ppc/mem_helper.c
-> +++ b/target/ppc/mem_helper.c
-> @@ -56,6 +56,32 @@ static inline target_ulong addr_add(CPUPPCState *env, target_ulong addr,
->       }
->   }
->   
-> +static void *probe_contiguous(CPUPPCState *env, target_ulong addr, uint32_t nb,
-> +                              MMUAccessType access_type, int mmu_idx,
-> +                              uintptr_t raddr)
-> +{
-> +    void *host1, *host2;
-> +    uint32_t nb_pg1, nb_pg2;
-> +
-> +    nb_pg1 = -(addr | TARGET_PAGE_MASK);
-> +    if (likely(nb <= nb_pg1)) {
-> +        /* The entire operation is on a single page.  */
-> +        return probe_access(env, addr, nb, access_type, mmu_idx, raddr);
-> +    }
-> +
-> +    /* The operation spans two pages.  */
-> +    nb_pg2 = nb - nb_pg1;
-> +    host1 = probe_access(env, addr, nb_pg1, access_type, mmu_idx, raddr);
-> +    addr = addr_add(env, addr, nb_pg1);
-> +    host2 = probe_access(env, addr, nb_pg2, access_type, mmu_idx, raddr);
-> +
-> +    /* If the two host pages are contiguous, optimize.  */
-> +    if (host2 == host1 + nb_pg1) {
-> +        return host1;
-> +    }
-> +    return NULL;
-> +}
-> +
->   void helper_lmw(CPUPPCState *env, target_ulong addr, uint32_t reg)
->   {
->       for (; reg < 32; reg++) {
-> @@ -84,23 +110,65 @@ void helper_stmw(CPUPPCState *env, target_ulong addr, uint32_t reg)
->   static void do_lsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
->                      uint32_t reg, uintptr_t raddr)
->   {
-> -    int sh;
-> +    int mmu_idx;
-> +    void *host;
-> +    uint32_t val;
->   
-> -    for (; nb > 3; nb -= 4) {
-> -        env->gpr[reg] = cpu_ldl_data_ra(env, addr, raddr);
+Superseeded: <20251120201919.8460-1-philmd@linaro.org>
 
-This target-endian call ...
+Philippe Mathieu-Daudé (21):
+  accel/tcg: Add endianness variants of cpu_ld{uw,l,q}_code()
+  target/alpha: Use little-endian variant of cpu_ldl_code()
+  target/loongarch: Use little-endian variant of cpu_ldl_code()
+  target/sparc: Use big-endian variant of cpu_ldl_code()
+  target/s390x: Use big-endian variant of cpu_ld{uw,l}_code()
+  target/riscv: Use little-endian variant of cpu_ld{l,q}_code()
+  target/ppc: Replace cpu_ldl_code() by explicit endianness variants
+  target/mips: Replace cpu_ld{uw,l}_code() by explicit endianness
+    variants
+  accel/tcg: Remove non-explicit endian cpu_ld*_code() helpers
+  target/hexagon: Use little-endian variant of cpu_ld/st_data*()
+  target/tricore: Use little-endian variant of cpu_ld/st_data*()
+  target/rx: Use little-endian variant of cpu_ld/st_data*()
+  target/m68k: Use little-endian variant of cpu_ld/st_data*()
+  target/s390x: Use little-endian variant of cpu_ld/st_data*()
+  target/sparc: Use little-endian variant of cpu_ld/st_data*()
+  target/i386: Use little-endian variant of cpu_ld/st_data*()
+  target/hppa: Use little-endian variant of cpu_ld/st_data*()
+  target/riscv: Use little-endian variant of cpu_ld/st_data*() for
+    vector
+  target/sh4: Replace cpu_stl_data() by explicit endianness variants
+  target/mips: Use big-endian variant of cpu_ld/st_data*() for MSA
+  accel/tcg: Remove non-explicit endian cpu_ld/st*_data*() helpers
 
-> -        reg = (reg + 1) % 32;
-> -        addr = addr_add(env, addr, 4);
-> +    if (unlikely(nb == 0)) {
-> +        return;
->       }
-> -    if (unlikely(nb > 0)) {
-> -        env->gpr[reg] = 0;
-> -        for (sh = 24; nb > 0; nb--, sh -= 8) {
-> -            env->gpr[reg] |= cpu_ldub_data_ra(env, addr, raddr) << sh;
-> -            addr = addr_add(env, addr, 1);
-> +
-> +    mmu_idx = cpu_mmu_index(env, false);
-> +    host = probe_contiguous(env, addr, nb, MMU_DATA_LOAD, mmu_idx, raddr);
-> +
-> +    if (likely(host)) {
-> +        /* Fast path -- the entire operation is in RAM at host.  */
-> +        for (; nb > 3; nb -= 4) {
-> +            env->gpr[reg] = (uint32_t)ldl_be_p(host);
+ include/accel/tcg/cpu-ldst.h         |  79 +++++---------
+ target/hexagon/macros.h              |   6 +-
+ target/i386/ops_sse.h                |  12 +--
+ target/i386/tcg/seg_helper.h         |  12 +--
+ linux-user/vm86.c                    |   4 +-
+ target/alpha/mem_helper.c            |   2 +-
+ target/hexagon/op_helper.c           |   6 +-
+ target/hppa/op_helper.c              |  44 ++++----
+ target/i386/tcg/mem_helper.c         |   8 +-
+ target/i386/tcg/mpx_helper.c         |  28 ++---
+ target/i386/tcg/seg_helper.c         |  16 +--
+ target/i386/tcg/system/excp_helper.c |   8 +-
+ target/i386/tcg/system/svm_helper.c  |  48 ++++-----
+ target/loongarch/tcg/tcg_cpu.c       |   2 +-
+ target/m68k/fpu_helper.c             |  12 +--
+ target/m68k/op_helper.c              |  88 ++++++++--------
+ target/mips/tcg/msa_helper.c         |  51 +++++----
+ target/mips/tcg/system/tlb_helper.c  |  22 +++-
+ target/ppc/tcg-excp_helper.c         |  16 +--
+ target/riscv/translate.c             |   2 +-
+ target/riscv/vector_helper.c         |  12 +--
+ target/riscv/zce_helper.c            |   4 +-
+ target/rx/helper.c                   |  14 +--
+ target/rx/op_helper.c                |   6 +-
+ target/s390x/tcg/mem_helper.c        |  54 +++++-----
+ target/s390x/tcg/vec_helper.c        |   8 +-
+ target/sh4/op_helper.c               |   6 +-
+ target/sparc/int32_helper.c          |   2 +-
+ target/sparc/ldst_helper.c           |   6 +-
+ target/tricore/op_helper.c           | 152 +++++++++++++--------------
+ 30 files changed, 360 insertions(+), 370 deletions(-)
 
-... is replaced by a big-endian one here ...
-
-> +            reg = (reg + 1) % 32;
-> +            host += 4;
-> +        }
-> +        switch (nb) {
-> +        default:
-> +            return;
-> +        case 1:
-> +            val = ldub_p(host) << 24;
-> +            break;
-> +        case 2:
-> +            val = lduw_be_p(host) << 16;
-> +            break;
-> +        case 3:
-> +            val = (lduw_be_p(host) << 16) | (ldub_p(host + 2) << 8);
-> +            break;
-> +        }
-> +    } else {
-> +        /* Slow path -- at least some of the operation requires i/o.  */
-> +        for (; nb > 3; nb -= 4) {
-> +            env->gpr[reg] = cpu_ldl_mmuidx_ra(env, addr, mmu_idx, raddr);
-> +            reg = (reg + 1) % 32;
-> +            addr = addr_add(env, addr, 4);
-> +        }
-> +        switch (nb) {
-> +        default:
-> +            return;
-> +        case 1:
-> +            val = cpu_ldub_mmuidx_ra(env, addr, mmu_idx, raddr) << 24;
-> +            break;
-> +        case 2:
-> +            val = cpu_lduw_mmuidx_ra(env, addr, mmu_idx, raddr) << 16;
-
-... while still using target-endianness here, why?
-
-> +            break;
-> +        case 3:
-> +            val = cpu_lduw_mmuidx_ra(env, addr, mmu_idx, raddr) << 16;
-> +            addr = addr_add(env, addr, 2);
-> +            val |= cpu_ldub_mmuidx_ra(env, addr, mmu_idx, raddr) << 8;
-> +            break;
->           }
->       }
-> +    env->gpr[reg] = val;
->   }
->   
-> -void helper_lsw(CPUPPCState *env, target_ulong addr, uint32_t nb, uint32_t reg)
-> +void helper_lsw(CPUPPCState *env, target_ulong addr,
-> +                uint32_t nb, uint32_t reg)
->   {
->       do_lsw(env, addr, nb, reg, GETPC());
->   }
-> @@ -130,17 +198,57 @@ void helper_lswx(CPUPPCState *env, target_ulong addr, uint32_t reg,
->   void helper_stsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
->                    uint32_t reg)
->   {
-> -    int sh;
-> +    uintptr_t raddr = GETPC();
-> +    int mmu_idx;
-> +    void *host;
-> +    uint32_t val;
->   
-> -    for (; nb > 3; nb -= 4) {
-> -        cpu_stl_data_ra(env, addr, env->gpr[reg], GETPC());
-> -        reg = (reg + 1) % 32;
-> -        addr = addr_add(env, addr, 4);
-> +    if (unlikely(nb == 0)) {
-> +        return;
->       }
-> -    if (unlikely(nb > 0)) {
-> -        for (sh = 24; nb > 0; nb--, sh -= 8) {
-> -            cpu_stb_data_ra(env, addr, (env->gpr[reg] >> sh) & 0xFF, GETPC());
-> -            addr = addr_add(env, addr, 1);
-> +
-> +    mmu_idx = cpu_mmu_index(env, false);
-> +    host = probe_contiguous(env, addr, nb, MMU_DATA_STORE, mmu_idx, raddr);
-> +
-> +    if (likely(host)) {
-> +        /* Fast path -- the entire operation is in RAM at host.  */
-> +        for (; nb > 3; nb -= 4) {
-> +            stl_be_p(host, env->gpr[reg]);
-> +            reg = (reg + 1) % 32;
-> +            host += 4;
-> +        }
-> +        val = env->gpr[reg];
-> +        switch (nb) {
-> +        case 1:
-> +            stb_p(host, val >> 24);
-> +            break;
-> +        case 2:
-> +            stw_be_p(host, val >> 16);
-> +            break;
-> +        case 3:
-> +            stw_be_p(host, val >> 16);
-> +            stb_p(host + 2, val >> 8);
-
-(ditto)
-
-> +            break;
-> +        }
-> +    } else {
-> +        for (; nb > 3; nb -= 4) {
-> +            cpu_stl_mmuidx_ra(env, addr, env->gpr[reg], mmu_idx, raddr);
-> +            reg = (reg + 1) % 32;
-> +            addr = addr_add(env, addr, 4);
-> +        }
-> +        val = env->gpr[reg];
-> +        switch (nb) {
-> +        case 1:
-> +            cpu_stb_mmuidx_ra(env, addr, val >> 24, mmu_idx, raddr);
-> +            break;
-> +        case 2:
-> +            cpu_stw_mmuidx_ra(env, addr, val >> 16, mmu_idx, raddr);
-> +            break;
-> +        case 3:
-> +            cpu_stw_mmuidx_ra(env, addr, val >> 16, mmu_idx, raddr);
-> +            addr = addr_add(env, addr, 2);
-> +            cpu_stb_mmuidx_ra(env, addr, val >> 8, mmu_idx, raddr);
-> +            break;
->           }
->       }
->   }
+-- 
+2.51.0
 
 
