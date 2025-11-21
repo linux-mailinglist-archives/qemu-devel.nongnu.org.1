@@ -2,52 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6060C774F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:03:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CCDC774FC
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:04:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMJHL-0004Ii-Pn; Fri, 21 Nov 2025 00:01:51 -0500
+	id 1vMJK7-0006Ei-TW; Fri, 21 Nov 2025 00:04:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vMJGr-0003z1-Hk; Fri, 21 Nov 2025 00:01:25 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vMJGp-0006BY-S9; Fri, 21 Nov 2025 00:01:21 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 21 Nov
- 2025 13:01:08 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 21 Nov 2025 13:01:08 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>
-Subject: [PATCH v1 1/1] hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root Port
- capabilities and enable MSI to support hotplug
-Date: Fri, 21 Nov 2025 13:01:08 +0800
-Message-ID: <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1vMJJn-00065n-KL
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:28 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1vMJJl-0006lt-Pl
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:23 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-29844c68068so17659365ad.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 21:04:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1763701459; x=1764306259; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BTX9KwD2YwTQRbsWY7vHTSd5zYZGddNybkmBjyJO5EQ=;
+ b=Df1kpNfBhGEOaq1A8Q4y6aKIGHCJTJCO9j9pFtDAzDxnE4Ov+oulaEBZemSaFlqAoV
+ 0W/S8QzPaBvZ8Amw9DTJDDQIT5IY844t3bgecjeBLK/91rWAd6eGSXdOCA1xrD69FSkL
+ AFVrLTJKy6Wx7kc7zgPbkNsHEvZxl9rwjF35982KM3YMesVGsnLcAkZialP452Z1c+v0
+ G8a3Jy2qvrAqGRmfn2xqQyGG1YMYv/JFDx5E0TTUX0rxC47Eve/R2/X3ZBeCY+Hsa0XL
+ JlK0vcuhh2YARU6X0eq9LyZrA0expUckJELNeRuG17Ad3hN28QmaBvha5hWA6SmLM/+7
+ Z2bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763701459; x=1764306259;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BTX9KwD2YwTQRbsWY7vHTSd5zYZGddNybkmBjyJO5EQ=;
+ b=LMg5VaQg1HebFwmh1yhEZEIB/OqWwVSR5hKKuaNHmZm6cPIhd+2mZySZdPwSR+hRYe
+ QlVt975Fb66NBbYDo/DpPhdfcrBIaBx1lU+gg7gSNQ2x/0a9nDwLvcmOn2qhJOmusx2g
+ MFCs7Q77CmqfDjowBiD6tS0Px1lEguzGrMPmniy6ev3gTUYE4AETXK7G9qjE/ejd3yIz
+ Etpg9wNbqyGI6KUZSaDSs++FNEXrSxbdOFnQWqE7eQgqMENIsL6P/HapS8jOrWdfT5sI
+ 4QtzS5PhJ3ITxITEH7lw7pWVwIKvbncznDM0ROL3bSSPFZXvJTcHo3HN7EoaC2mXE9du
+ 2hsQ==
+X-Gm-Message-State: AOJu0YzP5xEQA+q6yoLfyG95uwPMcETpF9XXrkfwDKux0VfqIEC1nZdV
+ 6/Z/XngVtvYqzqaJtucA2UISdD5LPWAav/pKJoS8FsUCM+VJXHSceKaveQTv9kSkliKhLx95pC+
+ xm3tyvakXaFVvSd3aLWRtSWM+m3gAF2NNsdwRUu3QhU7nnnJd34PN+RxBxbYeqmI/jaHyUU6C8m
+ Y36zGUDxXx0fuUaSF41bu7VzZdgO2PzbLdGAacPXssiIE=
+X-Gm-Gg: ASbGnctJBHWC3WR8UEraRckvMhsQ8/twrXcXIM46gqzXzgsF93DBsCNclau7e2iUz7o
+ +zQaYplbgnrSABQap9IOKYCWg4P/IGgYQHGvdD9i4cRTY50idmdHJZtDtTMKqmUD5ft6FMLT7Ar
+ AB6PXTlHaDqn13ZR7jhsh8pGQ2saTaYVXTLczKetvFxF//Cve+nuTVJzTOhAWG2iJWTHXAlo4RA
+ juYJ1qhu1rjqQB6m2sjU0YnxxaBCcILLDF8XN0JMNSVMzXMB56guY2OGpBBqfZipI9p6WZDKAoB
+ OonPTxwgxj6Yyd2C2N4WwawIkKKv58yAFlssIHYV4DZIMi6ZgksC8nCruKfC+8Z+YRYyvG1Nx8Z
+ 2T4r81n7X/Z5Lbsw7TRACkvSmuUrAGiSfSnibE9YYxGgBQIXG1W+hurteXY04fASZ849sdsypz5
+ qNVkoNC+76cPljpI+BxS799vdXKGbCKpQJirp3oQ==
+X-Google-Smtp-Source: AGHT+IEoRRo3pJqVKagvUXJ/NGdN7mzygWs30fVakmjHnjxX0HLZuTtcJ98wvYjDb7CT/s69D7kRBg==
+X-Received: by 2002:a17:903:903:b0:295:9db1:ff4b with SMTP id
+ d9443c01a7336-29b6be8b66dmr15673355ad.4.1763701458625; 
+ Thu, 20 Nov 2025 21:04:18 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29b5b26fed2sm43384525ad.69.2025.11.20.21.04.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Nov 2025 21:04:18 -0800 (PST)
+From: frank.chang@sifive.com
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH v2 0/6] Fix Zjpm implementation
+Date: Fri, 21 Nov 2025 13:04:07 +0800
+Message-ID: <20251121050413.3718427-1-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251121050108.3407445-1-jamin_lin@aspeedtech.com>
-References: <20251121050108.3407445-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=frank.chang@sifive.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,94 +100,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch updates the ASPEED PCIe Root Port capability layout and interrupt
-handling to match the hardware-defined capability structure as documented in
-the PCI Express Controller (PCIE) chapter of the ASPEED SoC datasheet.
+From: Frank Chang <frank.chang@sifive.com>
 
-The following capability offsets and fields are now aligned with the actual
-hardware implementation (validated using EVB config-space dumps via
-'lspci -s <bdf> -vvv'):
+The current Zjpm implementation has the following issues:
 
-- Added MSI capability at offset 0x50 and enabled 1-vector MSI support
-- Added PCI Express Capability structure at offset 0x80
-- Added Secondary Subsystem Vendor ID (SSVID) at offset 0xC0
-- Added AER capability at offset 0x100
-- Implemented aer_vector() callback and MSI init/uninit hooks
-- Updated Root Port SSID to 0x1150 to reflect the platform default
+1. The address is shifted before obtaining the correct PMLEN value.
+2. riscv_pm_get_pmm() does not handle effective privilege mode correctly.
+3. mstatus.MPRV does not affect virtual-machine load/store instructions.
+4. Sign extension for virtual-machine load/store instructions (HLV.* and
+   HSV.*) must be performed when vsatp.MODE != Bare.
 
-Enabling MSI is required for proper PCIe Hotplug event signaling. This change
-improves correctness and ensures QEMU Root Port behavior matches the behavior
-of ASPEED hardware and downstream kernel expectations.
+This patchset fixes the above issues and also renames
+riscv_pm_get_virt_pmm() to riscv_pm_get_vm_ldst_pmm(), as the helper
+is only used when checking the PMM configuration for virtual-machine
+load/store instructions, rather than for VS/VU modes.
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/pci-host/aspeed_pcie.c | 40 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+Frank Chang (5):
+  target/riscv: Add a helper to return the current effective priv mode
+  target/riscv: Fix pointer masking PMM field selection logic
+  target/riscv: Fix pointer masking for virtual-machine load/store insns
+  target/riscv: Rename riscv_pm_get_virt_pmm() to
+    riscv_pm_get_vm_ldst_pmm()
+  target/riscv: Fix pointer masking translation mode check bug
 
-diff --git a/hw/pci-host/aspeed_pcie.c b/hw/pci-host/aspeed_pcie.c
-index f7593444fc..1fc2c61772 100644
---- a/hw/pci-host/aspeed_pcie.c
-+++ b/hw/pci-host/aspeed_pcie.c
-@@ -68,6 +68,38 @@ static const TypeInfo aspeed_pcie_root_device_info = {
-  * PCIe Root Port
-  */
- 
-+#define ASPEED_PCIE_ROOT_PORT_MSI_OFFSET        0x50
-+#define ASPEED_PCIE_ROOT_PORT_MSI_NR_VECTOR     1
-+#define ASPEED_PCIE_ROOT_PORT_SSVID_OFFSET      0xC0
-+#define ASPEED_PCIE_ROOT_PORT_EXP_OFFSET        0x80
-+#define ASPEED_PCIE_ROOT_PORT_AER_OFFSET        0x100
-+
-+static uint8_t aspeed_pcie_root_port_aer_vector(const PCIDevice *d)
-+{
-+    return 0;
-+}
-+
-+static int aspeed_pcie_root_port_interrupts_init(PCIDevice *d, Error **errp)
-+{
-+    int rc;
-+
-+    rc = msi_init(d, ASPEED_PCIE_ROOT_PORT_MSI_OFFSET,
-+                  ASPEED_PCIE_ROOT_PORT_MSI_NR_VECTOR,
-+                  PCI_MSI_FLAGS_MASKBIT & PCI_MSI_FLAGS_64BIT,
-+                  PCI_MSI_FLAGS_MASKBIT & PCI_MSI_FLAGS_MASKBIT,
-+                  errp);
-+    if (rc < 0) {
-+        assert(rc == -ENOTSUP);
-+    }
-+
-+    return rc;
-+}
-+
-+static void aspeed_pcie_root_port_interrupts_uninit(PCIDevice *d)
-+{
-+    msi_uninit(d);
-+}
-+
- static void aspeed_pcie_root_port_class_init(ObjectClass *klass,
-                                              const void *data)
- {
-@@ -80,7 +112,13 @@ static void aspeed_pcie_root_port_class_init(ObjectClass *klass,
-     k->device_id = 0x1150;
-     dc->user_creatable = true;
- 
--    rpc->aer_offset = 0x100;
-+    rpc->aer_vector = aspeed_pcie_root_port_aer_vector;
-+    rpc->interrupts_init = aspeed_pcie_root_port_interrupts_init;
-+    rpc->interrupts_uninit = aspeed_pcie_root_port_interrupts_uninit;
-+    rpc->exp_offset = ASPEED_PCIE_ROOT_PORT_EXP_OFFSET;
-+    rpc->aer_offset = ASPEED_PCIE_ROOT_PORT_AER_OFFSET;
-+    rpc->ssvid_offset = ASPEED_PCIE_ROOT_PORT_SSVID_OFFSET;
-+    rpc->ssid = 0x1150;
- }
- 
- static const TypeInfo aspeed_pcie_root_port_info = {
--- 
+Yong-Xuan Wang (1):
+  target/riscv: fix address masking
+
+ target/riscv/cpu.h         |   5 +-
+ target/riscv/cpu_helper.c  | 164 +++++++++++++++++++++++++++++--------
+ target/riscv/internals.h   |   8 +-
+ target/riscv/tcg/tcg-cpu.c |   4 +-
+ 4 files changed, 138 insertions(+), 43 deletions(-)
+
+--
 2.43.0
 
 
