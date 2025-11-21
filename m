@@ -2,38 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9ACAC7C5AD
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD232C7C46C
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:21:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdcT-00073H-Q9; Fri, 21 Nov 2025 21:45:02 -0500
+	id 1vMdS4-0005Xa-C3; Fri, 21 Nov 2025 21:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdZw-0004p2-S0; Fri, 21 Nov 2025 21:42:24 -0500
+ id 1vMdRy-0005Of-E2; Fri, 21 Nov 2025 21:34:10 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdYs-0002z1-JE; Fri, 21 Nov 2025 21:42:20 -0500
+ id 1vMdRB-0000XC-RN; Fri, 21 Nov 2025 21:34:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B228916C71D;
+ by isrv.corpit.ru (Postfix) with ESMTP id DB0B616C71E;
  Fri, 21 Nov 2025 16:51:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 153EB3219B9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 32E303219BA;
  Fri, 21 Nov 2025 16:52:08 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 68/76] block/io: Take reqs_lock for tracked_requests
-Date: Fri, 21 Nov 2025 16:51:46 +0300
-Message-ID: <20251121135201.1114964-68-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 69/76] tests/functional: fix formatting of exception
+ args
+Date: Fri, 21 Nov 2025 16:51:47 +0300
+Message-ID: <20251121135201.1114964-69-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,56 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hanna Czenczek <hreitz@redhat.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-bdrv_co_get_self_request() does not take a lock around iterating through
-bs->tracked_requests.  With multiqueue, it may thus iterate over a list
-that is in the process of being modified, producing an assertion
-failure:
+The catch-all exception handler forgot the placeholder for
+the exception details.
 
-../block/file-posix.c:3702: raw_do_pwrite_zeroes: Assertion `req' failed.
-
-[0] abort() at /lib64/libc.so.6
-[1] __assert_fail_base.cold() at /lib64/libc.so.6
-[2] raw_do_pwrite_zeroes() at ../block/file-posix.c:3702
-[3] bdrv_co_do_pwrite_zeroes() at ../block/io.c:1910
-[4] bdrv_aligned_pwritev() at ../block/io.c:2109
-[5] bdrv_co_do_zero_pwritev() at ../block/io.c:2192
-[6] bdrv_co_pwritev_part() at ../block/io.c:2292
-[7] bdrv_co_pwritev() at ../block/io.c:2225
-[8] handle_alloc_space() at ../block/qcow2.c:2573
-[9] qcow2_co_pwritev_task() at ../block/qcow2.c:2625
-
-Fix this by taking reqs_lock.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20251110154854.151484-11-hreitz@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 9b9ee60c07f52009f9bb659f54c42afae95c1d94)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250829142616.2633254-3-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 124ab930ba38c41a86533dbfabb7a3b3b270ef98)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/io.c b/block/io.c
-index 9bd8ba8431..37df1e0253 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -721,11 +721,14 @@ BdrvTrackedRequest *coroutine_fn bdrv_co_get_self_request(BlockDriverState *bs)
-     Coroutine *self = qemu_coroutine_self();
-     IO_CODE();
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index 704b84d0ea..debed88f5e 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -169,7 +169,7 @@ def fetch(self):
+                 continue
+             except Exception as e:
+                 tmp_cache_file.unlink()
+-                raise AssetError(self, "Unable to download: " % e)
++                raise AssetError(self, "Unable to download: %s" % e)
  
-+    qemu_mutex_lock(&bs->reqs_lock);
-     QLIST_FOREACH(req, &bs->tracked_requests, list) {
-         if (req->co == self) {
-+            qemu_mutex_unlock(&bs->reqs_lock);
-             return req;
-         }
-     }
-+    qemu_mutex_unlock(&bs->reqs_lock);
- 
-     return NULL;
- }
+         if not os.path.exists(tmp_cache_file):
+             raise AssetError(self, "Download retries exceeded", transient=True)
 -- 
 2.47.3
 
