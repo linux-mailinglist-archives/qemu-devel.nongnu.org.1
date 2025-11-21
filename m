@@ -2,41 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A24C7C614
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AD1C7C6F2
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:52:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd7T-00050k-KK; Fri, 21 Nov 2025 21:13:00 -0500
+	id 1vMd3P-0001wS-OR; Fri, 21 Nov 2025 21:08:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcok-0004es-Kh; Fri, 21 Nov 2025 20:53:38 -0500
+ id 1vMcO2-0005a6-Oz; Fri, 21 Nov 2025 20:26:02 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcmi-00062e-0m; Fri, 21 Nov 2025 20:53:34 -0500
+ id 1vMcM0-0007xU-KR; Fri, 21 Nov 2025 20:25:59 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C454416CA5F;
+ by isrv.corpit.ru (Postfix) with ESMTP id D604116CA60;
  Fri, 21 Nov 2025 21:44:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7D778321C9B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 94DB1321C9C;
  Fri, 21 Nov 2025 21:44:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Heiko Carstens <hca@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 36/81] target/s390x: Use address generation for
- register branch targets
-Date: Fri, 21 Nov 2025 21:43:35 +0300
-Message-ID: <20251121184424.1137669-36-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 37/81] tests/tcg/s390x: Test SET CLOCK COMPARATOR
+Date: Fri, 21 Nov 2025 21:43:36 +0300
+Message-ID: <20251121184424.1137669-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,61 +52,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Indirect branches to addresses taken from registers go through address
-generation, e.g., for BRANCH ON CONDITION Principles of Operation says:
+Add a small test to prevent regressions.
 
-    In the RR format, the contents of general register R2 are used to
-    generate the branch address
-
-QEMU uses r2_nz handler for the respective register operands. Currently
-it does not zero out extra bits in 24- and 31-bit addressing modes as
-required by address generation. The very frequently used
-s390x_tr_init_disas_context() function has a workaround for this,
-but the code for saving an old PSW during an interrupt does not.
-
-Add the missing masking to r2_nz. Enforce PSW validity by replacing the
-workaround with an assertion.
-
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.de/
 Cc: qemu-stable@nongnu.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Thomas Weißschuh <linux@weissschuh.net>
-Message-ID: <20251016175954.41153-4-iii@linux.ibm.com>
+Message-ID: <20251016175954.41153-5-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit fc976a67ded4232cf0b9ae3c11fe051da01e4456)
+(cherry picked from commit 0408c61e27aca56c2d40aeb6ca0e5c5f8b8c3845)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 00073c5560..6aa1f30d58 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -5618,6 +5618,7 @@ static void in2_r2_nz(DisasContext *s, DisasOps *o)
-     int r2 = get_field(s, r2);
-     if (r2 != 0) {
-         o->in2 = load_reg(r2);
-+        gen_addi_and_wrap_i64(s, o->in2, o->in2, 0);
-     }
- }
- #define SPEC_in2_r2_nz 0
-@@ -6384,10 +6385,12 @@ static void s390x_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
- 
--    /* 31-bit mode */
--    if (!(dc->base.tb->flags & FLAG_MASK_64)) {
--        dc->base.pc_first &= 0x7fffffff;
--        dc->base.pc_next = dc->base.pc_first;
-+    if (dc->base.tb->flags & FLAG_MASK_32) {
-+        if (!(dc->base.tb->flags & FLAG_MASK_64)) {
-+            assert(!(dc->base.pc_first & ~((1ULL << 31) - 1)));
-+        }
-+    } else {
-+        assert(!(dc->base.pc_first & ~((1ULL << 24) - 1)));
-     }
- 
-     dc->cc_op = CC_OP_DYNAMIC;
+diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
+index 8cd4667c63..a4425d3184 100644
+--- a/tests/tcg/s390x/Makefile.softmmu-target
++++ b/tests/tcg/s390x/Makefile.softmmu-target
+@@ -28,6 +28,7 @@ ASM_TESTS =                                                                    \
+     mc                                                                         \
+     per                                                                        \
+     precise-smc-softmmu                                                        \
++    sckc                                                                       \
+     ssm-early                                                                  \
+     stosm-early                                                                \
+     stpq                                                                       \
+diff --git a/tests/tcg/s390x/sckc.S b/tests/tcg/s390x/sckc.S
+new file mode 100644
+index 0000000000..ecd64a3059
+--- /dev/null
++++ b/tests/tcg/s390x/sckc.S
+@@ -0,0 +1,63 @@
++/*
++ * Test clock comparator.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++    .org 0x130
++ext_old_psw:
++    .org 0x1b0
++ext_new_psw:
++    .quad 0x180000000, _ext            /* 64-bit mode */
++    .org 0x1d0
++pgm_new_psw:
++    .quad 0x2000000000000,0            /* disabled wait */
++    .org 0x200                         /* lowcore padding */
++
++    .globl _start
++_start:
++    lpswe start31_psw
++_start31:
++    stctg %c0,%c0,c0
++    oi c0+6,8                          /* set clock-comparator subclass mask */
++    lctlg %c0,%c0,c0
++
++0:
++    brasl %r14,_f                      /* %r14's most significant bit is 1 */
++    jg 0b
++_f:
++    br %r14                            /* it must not end up in ext_old_psw */
++
++_ext:
++    stg %r0,ext_saved_r0
++
++    lg %r0,ext_counter
++    aghi %r0,1
++    stg %r0,ext_counter
++
++    cgfi %r0,0x1000
++    jnz 0f
++    lpswe success_psw
++0:
++
++    stck clock
++    lg %r0,clock
++    agfi %r0,0x40000                   /* 64us * 0x1000 =~ 0.25s */
++    stg %r0,clock
++    sckc clock
++
++    lg %r0,ext_saved_r0
++    lpswe ext_old_psw
++
++    .align 8
++start31_psw:
++    .quad 0x100000080000000,_start31   /* EX, 31-bit mode */
++success_psw:
++    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
++c0:
++    .skip 8
++clock:
++    .quad 0
++ext_counter:
++    .quad 0
++ext_saved_r0:
++    .skip 8
 -- 
 2.47.3
 
