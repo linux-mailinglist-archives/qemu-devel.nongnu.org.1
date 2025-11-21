@@ -2,33 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AD1C7C6F2
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90E3C7C2FC
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:38:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd3P-0001wS-OR; Fri, 21 Nov 2025 21:08:48 -0500
+	id 1vMcxY-0002d8-Kn; Fri, 21 Nov 2025 21:02:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcO2-0005a6-Oz; Fri, 21 Nov 2025 20:26:02 -0500
+ id 1vMc3c-0002li-BU; Fri, 21 Nov 2025 20:04:56 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcM0-0007xU-KR; Fri, 21 Nov 2025 20:25:59 -0500
+ id 1vMc1Z-0002f2-Q9; Fri, 21 Nov 2025 20:04:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D604116CA60;
+ by isrv.corpit.ru (Postfix) with ESMTP id EFDD516CA61;
  Fri, 21 Nov 2025 21:44:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 94DB1321C9C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A60C9321C9D;
  Fri, 21 Nov 2025 21:44:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 37/81] tests/tcg/s390x: Test SET CLOCK COMPARATOR
-Date: Fri, 21 Nov 2025 21:43:36 +0300
-Message-ID: <20251121184424.1137669-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 38/81] hostmem/shm: Allow shm memory backend serve as
+ shared memory for coco-VMs
+Date: Fri, 21 Nov 2025 21:43:37 +0300
+Message-ID: <20251121184424.1137669-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -50,99 +53,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Add a small test to prevent regressions.
+shm can surely serve as the shared memory for coco-VMs. But currently it
+doesn't check the backend->guest_memfd to pass down the RAM_GUEST_MEMFD
+flag. It leads to failure when creating coco-VMs (e.g., TDX guest) which
+require private mmeory.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20251016175954.41153-5-iii@linux.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 0408c61e27aca56c2d40aeb6ca0e5c5f8b8c3845)
+Set and pass down RAM_GUEST_MEMFD when backend->guest_memfd is true, to
+allow shm memory backend serve as shared memory for coco-VMs.
+
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20250721065220.895606-1-xiaoyao.li@intel.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 75e2cb144191ecdbba87cfea3608cdc0664c8142)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 8cd4667c63..a4425d3184 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -28,6 +28,7 @@ ASM_TESTS =                                                                    \
-     mc                                                                         \
-     per                                                                        \
-     precise-smc-softmmu                                                        \
-+    sckc                                                                       \
-     ssm-early                                                                  \
-     stosm-early                                                                \
-     stpq                                                                       \
-diff --git a/tests/tcg/s390x/sckc.S b/tests/tcg/s390x/sckc.S
-new file mode 100644
-index 0000000000..ecd64a3059
---- /dev/null
-+++ b/tests/tcg/s390x/sckc.S
-@@ -0,0 +1,63 @@
-+/*
-+ * Test clock comparator.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+    .org 0x130
-+ext_old_psw:
-+    .org 0x1b0
-+ext_new_psw:
-+    .quad 0x180000000, _ext            /* 64-bit mode */
-+    .org 0x1d0
-+pgm_new_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
-+    .org 0x200                         /* lowcore padding */
-+
-+    .globl _start
-+_start:
-+    lpswe start31_psw
-+_start31:
-+    stctg %c0,%c0,c0
-+    oi c0+6,8                          /* set clock-comparator subclass mask */
-+    lctlg %c0,%c0,c0
-+
-+0:
-+    brasl %r14,_f                      /* %r14's most significant bit is 1 */
-+    jg 0b
-+_f:
-+    br %r14                            /* it must not end up in ext_old_psw */
-+
-+_ext:
-+    stg %r0,ext_saved_r0
-+
-+    lg %r0,ext_counter
-+    aghi %r0,1
-+    stg %r0,ext_counter
-+
-+    cgfi %r0,0x1000
-+    jnz 0f
-+    lpswe success_psw
-+0:
-+
-+    stck clock
-+    lg %r0,clock
-+    agfi %r0,0x40000                   /* 64us * 0x1000 =~ 0.25s */
-+    stg %r0,clock
-+    sckc clock
-+
-+    lg %r0,ext_saved_r0
-+    lpswe ext_old_psw
-+
-+    .align 8
-+start31_psw:
-+    .quad 0x100000080000000,_start31   /* EX, 31-bit mode */
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+c0:
-+    .skip 8
-+clock:
-+    .quad 0
-+ext_counter:
-+    .quad 0
-+ext_saved_r0:
-+    .skip 8
+diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
+index f67ad2740b..befa0020b7 100644
+--- a/backends/hostmem-shm.c
++++ b/backends/hostmem-shm.c
+@@ -54,6 +54,7 @@ have_fd:
+     /* Let's do the same as memory-backend-ram,share=on would do. */
+     ram_flags = RAM_SHARED;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
++    ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
+ 
+     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
+                                               backend_name, backend->size,
 -- 
 2.47.3
 
