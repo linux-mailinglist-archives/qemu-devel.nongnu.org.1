@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD92C7CAD6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C5BC7C5F0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:23:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcqv-0005XI-4x; Fri, 21 Nov 2025 20:55:54 -0500
+	id 1vMcoO-0004Wl-Q5; Fri, 21 Nov 2025 20:53:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbcU-0003jL-5r
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbcE-0003Tn-J8
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbcI-0005yJ-JI
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:50 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbc3-0005uk-7K
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771787;
+ s=mimecast20190719; t=1763771772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tDP8FM9QFpX4om5r6DeJVNNuFVvQYDlKs2mHtRlqAfQ=;
- b=Y+u+eiBUl9XsQJ2owHgeEyDPTInfnutdaa18LJdLfFFw8bCUGG6K2ULBdoP+ayE0ahXzMI
- DAT0KOlDjy4OXa4U79bXDicMHUeNYk7G1s1UMbaF+Rj4xN7ELjX9lc4RY8HR+MJ8zS6Raw
- M7yNZU4oAvJEdGKVhU3qYsxu3hSRCe8=
+ bh=oeDPJTEK/mbRoQ9G1reQyHyjo6pRRwMOwFAV76+b8w0=;
+ b=OWU3DuhIF1JuGNlJy7uSkk8uOlH8HQdR4NVcMYvzG4KixJ8rcCNN9ILbYAttUea70MUtqw
+ IKdWR5h0R5ZhZgAN8obhXDSdn74wcYXKDvT+2hVxXP5XCauGdJ+yLkOvglGBfBineCoPDw
+ vx+XC7gdtxilPG0G/pc00zyNKVfnjUE=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-5hh7LVJnPmWjjIuQzCm6LQ-1; Fri,
- 21 Nov 2025 07:14:50 -0500
-X-MC-Unique: 5hh7LVJnPmWjjIuQzCm6LQ-1
-X-Mimecast-MFC-AGG-ID: 5hh7LVJnPmWjjIuQzCm6LQ_1763727286
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-9KVhRz1PNjG4B1qvQhE2_Q-1; Fri,
+ 21 Nov 2025 07:14:53 -0500
+X-MC-Unique: 9KVhRz1PNjG4B1qvQhE2_Q-1
+X-Mimecast-MFC-AGG-ID: 9KVhRz1PNjG4B1qvQhE2_Q_1763727289
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 439A7195605B; Fri, 21 Nov 2025 12:14:46 +0000 (UTC)
+ id F29621956061; Fri, 21 Nov 2025 12:14:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C40981940E82; Fri, 21 Nov 2025 12:14:45 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A221C1800451; Fri, 21 Nov 2025 12:14:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D147221EC346; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+ id D6F9B21EC348; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
@@ -63,16 +63,15 @@ Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH v2 14/15] qga/commands-win32: Use error_setg_win32() for
- better error messages
-Date: Fri, 21 Nov 2025 13:14:37 +0100
-Message-ID: <20251121121438.1249498-15-armbru@redhat.com>
+Subject: [PATCH v2 15/15] block/file-win32: Improve an error message
+Date: Fri, 21 Nov 2025 13:14:38 +0100
+Message-ID: <20251121121438.1249498-16-armbru@redhat.com>
 In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
 References: <20251121121438.1249498-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,63 +87,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We include numeric GetLastError() codes in error messages in a few
-places, like this:
-
-    error_setg(errp, "GRIPE: %d", (int)GetLastError());
-
-Show text instead, like this:
-
-    error_setg_win32(errp, GetLastError(), "GRIPE");
+Two out of three calls of CreateFile() use error_setg_win32() to
+report errors.  The third uses error_setg_errno(), mapping
+ERROR_ACCESS_DENIED to EACCES, and everything else to EINVAL, throwing
+away detail.  Switch it to error_setg_win32().
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/commands-win32.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ block/file-win32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index acc2c11589..0fd0c966e4 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -1798,8 +1798,8 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-     tf.dwHighDateTime = (DWORD) (time >> 32);
- 
-     if (!FileTimeToSystemTime(&tf, &ts)) {
--        error_setg(errp, "Failed to convert system time %d",
--                   (int)GetLastError());
-+        error_setg_win32(errp, GetLastError(),
-+                         "Failed to convert system time");
-         return;
-     }
- 
-@@ -1810,7 +1810,8 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-     }
- 
-     if (!SetSystemTime(&ts)) {
--        error_setg(errp, "Failed to set time to guest: %d", (int)GetLastError());
-+        error_setg_win32(errp, GetLastError(),
-+                         "Failed to set time to guest");
-         return;
-     }
- }
-@@ -1834,13 +1835,12 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
-         (length > sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION))) {
-         ptr = pslpi = g_malloc0(length);
-         if (GetLogicalProcessorInformation(pslpi, &length) == FALSE) {
--            error_setg(&local_err, "Failed to get processor information: %d",
--                       (int)GetLastError());
-+            error_setg_win32(&local_err, GetLastError(),
-+                             "Failed to get processor information");
+diff --git a/block/file-win32.c b/block/file-win32.c
+index 0efb609e1d..78961837c8 100644
+--- a/block/file-win32.c
++++ b/block/file-win32.c
+@@ -904,7 +904,7 @@ static int hdev_open(BlockDriverState *bs, QDict *options, int flags,
+         } else {
+             ret = -EINVAL;
          }
-     } else {
--        error_setg(&local_err,
--                   "Failed to get processor information buffer length: %d",
--                   (int)GetLastError());
-+        error_setg_win32(&local_err, GetLastError(),
-+                         "Failed to get processor information buffer length");
+-        error_setg_errno(errp, -ret, "Could not open device");
++        error_setg_win32(errp, err, "Could not open device");
+         goto done;
      }
  
-     while ((local_err == NULL) && (length > 0)) {
 -- 
 2.49.0
 
