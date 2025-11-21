@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9DFC7C6B9
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D406C7C695
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:42:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdCv-0002S1-KB; Fri, 21 Nov 2025 21:18:38 -0500
+	id 1vMeK0-0004ij-5a; Fri, 21 Nov 2025 22:30:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd8U-00066M-JN; Fri, 21 Nov 2025 21:14:02 -0500
+ id 1vMeJp-0004hM-SF; Fri, 21 Nov 2025 22:29:49 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd7j-0004wT-U7; Fri, 21 Nov 2025 21:13:58 -0500
+ id 1vMeJO-0002xE-8U; Fri, 21 Nov 2025 22:29:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6BF5216C70D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7F33C16C70E;
  Fri, 21 Nov 2025 16:51:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C43BE3219AA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D882C3219AB;
  Fri, 21 Nov 2025 16:52:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 53/76] net: pad packets to minimum length in
- qemu_receive_packet()
-Date: Fri, 21 Nov 2025 16:51:31 +0300
-Message-ID: <20251121135201.1114964-53-mjt@tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 54/76] hw/display/xlnx_dp.c: Don't abort on AUX FIFO
+ overrun/underrun
+Date: Fri, 21 Nov 2025 16:51:32 +0300
+Message-ID: <20251121135201.1114964-54-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,61 +62,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In commits like 969e50b61a28 ("net: Pad short frames to minimum size
-before sending from SLiRP/TAP") we switched away from requiring
-network devices to handle short frames to instead having the net core
-code do the padding of short frames out to the ETH_ZLEN minimum size.
-We then dropped the code for handling short frames from the network
-devices in a series of commits like 140eae9c8f7 ("hw/net: e1000:
-Remove the logic of padding short frames in the receive path").
+The documentation of the Xilinx DisplayPort subsystem at
+https://www.xilinx.com/support/documents/ip_documentation/v_dp_txss1/v3_1/pg299-v-dp-txss1.pdf
+doesn't say what happens if a guest tries to issue an AUX write
+command with a length greater than the amount of data in the AUX
+write FIFO, or tries to write more data to the write FIFO than it can
+hold, or issues multiple commands that put data into the AUX read
+FIFO without reading it such that it overflows.
 
-This missed one route where the device's receive code can still see a
-short frame: if the device is in loopback mode and it transmits a
-short frame via the qemu_receive_packet() function, this will be fed
-back into its own receive code without being padded.
-
-Add the padding logic to qemu_receive_packet().
-
-This fixes a buffer overrun which can be triggered in the
-e1000_receive_iov() logic via the loopback code path.
-
-Other devices that use qemu_receive_packet() to implement loopback
-are cadence_gem, dp8393x, lan9118, msf2-emac, pcnet, rtl8139
-and sungem.
+Currently QEMU will abort() in these guest-error situations, either
+in xlnx_dp.c itself or in the fifo8 code.  Make these cases all be
+logged as guest errors instead.  We choose to ignore the new data on
+overflow, and return 0 on underflow. This is in line with how we handled
+the "read from empty RX FIFO" case in commit a09ef5040477.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3043
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1418
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1419
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1424
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit a01344d9d78089e9e585faaeb19afccff2050abf)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Message-id: 20251106145209.1083998-2-peter.maydell@linaro.org
+(cherry picked from commit f52db7f34242d3398bab0bacaa3e5dde99be5258)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/net.c b/net/net.c
-index da275db86e..63fafb583b 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -766,10 +766,20 @@ ssize_t qemu_send_packet(NetClientState *nc, const uint8_t *buf, int size)
+diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
+index 7c980ee642..4120f03a3b 100644
+--- a/hw/display/xlnx_dp.c
++++ b/hw/display/xlnx_dp.c
+@@ -435,7 +435,18 @@ static void xlnx_dp_aux_clear_rx_fifo(XlnxDPState *s)
  
- ssize_t qemu_receive_packet(NetClientState *nc, const uint8_t *buf, int size)
+ static void xlnx_dp_aux_push_rx_fifo(XlnxDPState *s, uint8_t *buf, size_t len)
  {
-+    uint8_t min_pkt[ETH_ZLEN];
-+    size_t min_pktsz = sizeof(min_pkt);
-+
-     if (!qemu_can_receive_packet(nc)) {
-         return 0;
-     }
- 
-+    if (net_peer_needs_padding(nc)) {
-+        if (eth_pad_short_frame(min_pkt, &min_pktsz, buf, size)) {
-+            buf = min_pkt;
-+            size = min_pktsz;
-+        }
++    size_t avail = fifo8_num_free(&s->rx_fifo);
+     DPRINTF("Push %u data in rx_fifo\n", (unsigned)len);
++    if (len > avail) {
++        /*
++         * Data sheet doesn't specify behaviour here: we choose to ignore
++         * the excess data.
++         */
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: ignoring %zu bytes pushed to full RX_FIFO\n",
++                      __func__, len - avail);
++        len = avail;
 +    }
-+
-     return qemu_net_queue_receive(nc->incoming_queue, buf, size);
+     fifo8_push_all(&s->rx_fifo, buf, len);
  }
  
+@@ -466,7 +477,18 @@ static void xlnx_dp_aux_clear_tx_fifo(XlnxDPState *s)
+ 
+ static void xlnx_dp_aux_push_tx_fifo(XlnxDPState *s, uint8_t *buf, size_t len)
+ {
++    size_t avail = fifo8_num_free(&s->tx_fifo);
+     DPRINTF("Push %u data in tx_fifo\n", (unsigned)len);
++    if (len > avail) {
++        /*
++         * Data sheet doesn't specify behaviour here: we choose to ignore
++         * the excess data.
++         */
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: ignoring %zu bytes pushed to full TX_FIFO\n",
++                      __func__, len - avail);
++        len = avail;
++    }
+     fifo8_push_all(&s->tx_fifo, buf, len);
+ }
+ 
+@@ -475,8 +497,10 @@ static uint8_t xlnx_dp_aux_pop_tx_fifo(XlnxDPState *s)
+     uint8_t ret;
+ 
+     if (fifo8_is_empty(&s->tx_fifo)) {
+-        error_report("%s: TX_FIFO underflow", __func__);
+-        abort();
++        /* Data sheet doesn't specify behaviour here: we choose to return 0 */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: attempt to read empty TX_FIFO\n",
++                      __func__);
++        return 0;
+     }
+     ret = fifo8_pop(&s->tx_fifo);
+     DPRINTF("pop 0x%2.2X from tx_fifo.\n", ret);
 -- 
 2.47.3
 
