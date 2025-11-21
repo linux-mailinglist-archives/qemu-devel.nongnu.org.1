@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96CCC7C6AA
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E8FC7C49C
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:31:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdgt-0002zj-9H; Fri, 21 Nov 2025 21:49:36 -0500
+	id 1vMdH5-0000Bk-AB; Fri, 21 Nov 2025 21:22:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdgn-0002pj-IY; Fri, 21 Nov 2025 21:49:29 -0500
+ id 1vMdGz-00005J-4f; Fri, 21 Nov 2025 21:22:49 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdgQ-0005dv-Dh; Fri, 21 Nov 2025 21:49:25 -0500
+ id 1vMdG7-0004dl-SM; Fri, 21 Nov 2025 21:22:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0873B16C6DE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 265BA16C6DF;
  Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 60849321955;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 74E49321956;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Zejun Zhao <jelly.zhao.42@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 06/76] target/arm: Fix reads of CNTFRQ_EL0 in
- linux-user mode
-Date: Fri, 21 Nov 2025 16:50:44 +0300
-Message-ID: <20251121135201.1114964-6-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 07/76] hw/riscv: Correct mmu-type property of sifive_u
+ harts in device tree
+Date: Fri, 21 Nov 2025 16:50:45 +0300
+Message-ID: <20251121135201.1114964-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,48 +59,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Zejun Zhao <jelly.zhao.42@gmail.com>
 
-In commit bd8e9ddf6f6 ("target/arm: Refactor default generic timer
-frequency handling") we changed how we initialized the generic timer
-frequency as reported in the CNTFRQ_EL0 register.  As part of that,
-we chanegd the linux-user version of the CNTFRQ_EL0 sysreg from
-having a constant value set at compile time through the .resetvalue
-field to having a reset value which we compute in a .resetfn.
+Correct mmu-type property of sifive_u harts from Sv48 to Sv39 in 64-bit
+mode since it's the only supported SATP mode.
 
-This accidentally broke the reading of CNTFRQ_EL0 in linux-user mode,
-because the cpreg is marked as ARM_CP_CONST, which means we translate
-it as a read of the compile-time constant value in the .resetvalue
-field.  This is now zero, so userspace sees a 0 frequency value.
-
-Fix the bug by dropping the ARM_CP_CONST marking.  This will cause us
-to translate the read as a load of the value from the CPU state
-struct cp15.c14_cntfrq field, which is where the real frequency value
-now lives.
-
+Signed-off-by: Zejun Zhao <jelly.zhao.42@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20251013133242.1945681-1-jelly.zhao.42@gmail.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3159
-Fixes: bd8e9ddf6f6 ("target/arm: Refactor default generic timer frequency handling")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251013161040.216819-1-peter.maydell@linaro.org
-(cherry picked from commit 3f462d79a080060e54e39d31ce10fdf1a20317ef)
+(cherry picked from commit e41139eaad1d6ea7c52b8ebb5def2dcb84ff57e1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index e2ef4ea2cc..9e5eb50ff7 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2252,7 +2252,7 @@ static uint64_t gt_virt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
- static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
-     { .name = "CNTFRQ_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 0,
--      .type = ARM_CP_CONST, .access = PL0_R /* no PL1_RW in linux-user */,
-+      .access = PL0_R /* no PL1_RW in linux-user */,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_cntfrq),
-       .resetfn = arm_gt_cntfrq_reset,
-     },
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index d69f942cfb..3e1ed209ca 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -176,7 +176,7 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+             if (is_32_bit) {
+                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv32");
+             } else {
+-                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
++                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv39");
+             }
+             riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
+         } else {
 -- 
 2.47.3
 
