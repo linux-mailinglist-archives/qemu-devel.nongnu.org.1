@@ -2,63 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F19AC77D4D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 09:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA8DC77E3D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 09:25:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMMKh-0007bP-1y; Fri, 21 Nov 2025 03:17:32 -0500
+	id 1vMMRj-0002GG-Le; Fri, 21 Nov 2025 03:24:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@kernel.org>)
- id 1vMMKa-0007Yz-3v; Fri, 21 Nov 2025 03:17:24 -0500
-Received: from tor.source.kernel.org ([172.105.4.254])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1vMMRg-0002Fu-TY; Fri, 21 Nov 2025 03:24:45 -0500
+Received: from mail-westus2azlp170100005.outbound.protection.outlook.com
+ ([2a01:111:f403:c005::5] helo=CO1PR03CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@kernel.org>)
- id 1vMMKY-0004UI-6G; Fri, 21 Nov 2025 03:17:23 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id E3D0360225;
- Fri, 21 Nov 2025 08:17:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B604C113D0;
- Fri, 21 Nov 2025 08:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1763713038;
- bh=XOHN5JVsLO5OxDzIloXtT+r7pwk2KC8RMCKn/h6vKDg=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=tLdLljGRKRoN/z2cQfC9r12upDgNWUd1b2vhHN0PHXGXS5xKdRr/kdyrxea6t6lLD
- a3tdTR+k8LVEBWPbbqRVMf4cPvtaIgua8gPubCVrZQRMEWunW9HG0DfhPxcX6GSCXs
- USFSZFsNwZO+PWj0vY+MBCat623sq+dKIBcnqFc7/mfLQ25iM0MKEP9GOlpTsYNhof
- IvVqPvqFKA1UgBvaBUIPa/4GpgZ3E/o1Bh/T3pICaYVWTsY76wTkGwxNPeSk5QSMEZ
- 4wy4SAaRjsD/kPVm6W1GalOGBIrKeRs+O/qWAl278w5RE+gmJQq6/4fqRoymICyBqv
- K8LNkAAxjJwUQ==
-Message-ID: <32bd7a2e-5030-4170-846c-b9c01cde6bc9@kernel.org>
-Date: Fri, 21 Nov 2025 09:17:14 +0100
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1vMMRe-0006Hv-Lw; Fri, 21 Nov 2025 03:24:44 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bCcYKQ1dWyxV24f44W/FwRGWjIVQnEm/Ccetf62HduL4wOAOboNivHIWYo+o+b7j21diS5j8FpJuqef0qzXUrlq/Ir/b52lsQvOUzHIJ1H2Vt4hilATQiHZYnUFrZK8CUVD05JKXlRqz5hu4KG9bWQXVKKudlXrrPJ+KYF/5vWB0YAMbUVf+eYniT9eNYTOwhBHsGeq/BOPwP9nJvnY5vFVp2J/XMkEOAY4Q4+HAUctSVBOPqPkm6fLAEa4v7D3c0Ff/9gSDTUAxbVEypxmYI8X5Cb2o8tpfZGFFjrTwstTmhj/zrTkfkdvB40NHcgJV/AixjA6AA27W9m6xs3AbVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1oIpnDKtu1r7lXZJ9aC3dvuHClNl+g/XaMQLl7oWLBw=;
+ b=Xv5yeiu1BufnAEepYahs8lGBAUXye9YZMMRgtuF68mOnkvHRsRBL27MPXAsCdf5c/WsCJDHzpp7Pdl8YrU3JwCu/4kmnofVr4EupoR87QGYdOz7N0LnF+pNuyyWP0Zk/doaJ5npgfDAeTbzDW08fXw0CMWX3JicZFBJgOS0XZLFAwr9sUtBw7kdHOZ63+AJFrul233I1H+RxXgJi+sc1mIhtgd/M2gcwoPFybq9wzEc+It2WWiJSJdw0I3W78rlkn11W13ao3GuK0tAV2jRVspK8IXrNkR+28MWC8lh20RiOcmjmkaFGxoU2NYLTdutOKMehUDEdNndeyA4bkz2yfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1oIpnDKtu1r7lXZJ9aC3dvuHClNl+g/XaMQLl7oWLBw=;
+ b=ycEu1GJ5o5ZxsiOYmEQoGgRO83NoLywPhAo6GV5eKPusC8ykWnhy9UaIOgY2ebvUdphuEH7O2GkzfQ+8FF7ljqbWvLo0MJVZQnNG58E6oYHAGPZzfT1WIRVjtPy9DcsOC+JbZp8IJVz2BMqhWy0zOMSTRSmu80mqpIdMvsf9/mA=
+Received: from SJ0PR05CA0128.namprd05.prod.outlook.com (2603:10b6:a03:33d::13)
+ by MN0PR12MB5811.namprd12.prod.outlook.com (2603:10b6:208:377::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 08:24:34 +0000
+Received: from SJ5PEPF000001CF.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::9a) by SJ0PR05CA0128.outlook.office365.com
+ (2603:10b6:a03:33d::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.5 via Frontend Transport; Fri,
+ 21 Nov 2025 08:24:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001CF.mail.protection.outlook.com (10.167.242.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:24:33 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
+ 2025 00:24:33 -0800
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
+ 2025 00:24:33 -0800
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 21 Nov 2025 00:24:30 -0800
+Date: Fri, 21 Nov 2025 09:24:30 +0100
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Francisco Iglesias
+ <francisco.iglesias@amd.com>
+Subject: Re: [PATCH 8/9] target/riscv: RISCVCPUTimeSrcIf: add
+ register_time_change_notifier
+Message-ID: <aSAhvvS5EkZeI7o0@XFR-LUMICHEL-L2.amd.com>
+References: <20251107102340.471141-1-luc.michel@amd.com>
+ <20251107102340.471141-9-luc.michel@amd.com>
+ <350863e7-19eb-4c7e-8b33-c4f7956ead4b@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] MAINTAINERS: s390 maintainer updates
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20251120104602.205718-1-david@kernel.org>
- <5ef76d62-ff82-4766-9ce2-dd2c3e21c8d4@redhat.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <5ef76d62-ff82-4766-9ce2-dd2c3e21c8d4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=172.105.4.254; envelope-from=david@kernel.org;
- helo=tor.source.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <350863e7-19eb-4c7e-8b33-c4f7956ead4b@linaro.org>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CF:EE_|MN0PR12MB5811:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2676e41-6765-4708-ac98-08de28d766ae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dloycXVlOGJLcWxQOUNTV3NDZUVsUGxpMFZiYkpsZjN0VG9WcHVWVU9USjZj?=
+ =?utf-8?B?YlF3eCt0aG5xNDVMb2h5WitBQi95dkJSajU2RlRER2x4MElKTTYxUU15bndu?=
+ =?utf-8?B?RjZCTFI2OW9hcHFGRVZBaWsrNlcxZ1NtQzFjdUx6Y05vNmk5VitVb0ovVkJ1?=
+ =?utf-8?B?Uy9MWXlaOFN2cUluRWwrOWEzNzh2bGlXWXB5ayt1WUxQSzZHZ0YxQ1lhWTU5?=
+ =?utf-8?B?a2RzK1p1Si9GSDZQUVlWMWlhUFFSQ0RZSGVPZ0t5d1FRMjBOZ1Q3QnF5UXU3?=
+ =?utf-8?B?cDgyYVZXWTR3YVQzcUxPLzIwclVaeWNBV1c5RGdDMjFWWDV4WEVPaWNkay9O?=
+ =?utf-8?B?VTExOUlsYzhhNzlhYmZiNzdETmtublV4MVhYOWI0VUQ0UHZGUWlFV0dwQmIx?=
+ =?utf-8?B?aU1COFdlY0xwRmVJb1lVemgxWlFCZisxYy9jQXU3Qm10a2Flc3kvMEk4N1Bn?=
+ =?utf-8?B?SHpGVHE1TEYwaDlPUHVlN2xBaHl6R2tnL0J1bDF2K0RnUHY3djU5bFZoNzl3?=
+ =?utf-8?B?bzVTalFVVXhON1NYZkw3UzBCUjBRRHhtLzV5bERlc0V3VzdicHFXZEtGT1NQ?=
+ =?utf-8?B?aExJNzJEUEhxak9tSnE2Mk1oaDRLYjJmcGNFYkw1RWhYTHBHTWFjSkNRNmtT?=
+ =?utf-8?B?U0ZPLzRYTXpUNWVqRzl1WjRxQmhOMFpYWEM2NittazJRa1FZMzl4Y0g4WWFY?=
+ =?utf-8?B?dGNvTTg1ZDF3MWd5Sy93Y0ZKa2YyNnBSd2JKVEN2TWQyZHRmeUQ0b2hZWHdk?=
+ =?utf-8?B?Rnp6K3MrbHR2S1pNaGp1REl1MDIvN1V2U3htMHJMUitjSXlQdUpETkZzTENN?=
+ =?utf-8?B?Vi9hK0FPS3V5bjB5eEw5bVczc2pXdjFFeG9wS1ZGa3Q0ZUI0ekFhYTNGeUkz?=
+ =?utf-8?B?ZmVBL3ZWM2hTeXJrczM3eVhLWkRMMUFUYVVGZjh2R3hrSW1uT1dMUEk2aVVH?=
+ =?utf-8?B?YXBqSGk3c2ZEazh5RnZtc3RxWWxhak4vYUxQVDRXaXZDV0VOYnljaU53eTZC?=
+ =?utf-8?B?Q3JOWWJoV2xGZDFFUXQ5Ly94MnR2MUhKY05Zam9IQm1vUVZFMGNqNnkvYm1u?=
+ =?utf-8?B?WkRjZUMzRHZEbjUyNFVxQlVqWi9RcEhBWjVabXVTbDg2aXpDOERLVSswTFhn?=
+ =?utf-8?B?RVZxU2VTaGZxbTBPaWt3RjJyUk8vbStvQUg5NlZZYk5WYWc2VUYwNFhzUisv?=
+ =?utf-8?B?RjVVdE9WVDlOUHV1d054K1FlT2FDWTdMNHd3K0xubXZQYWNJUlgxTzJqQjZm?=
+ =?utf-8?B?U2lyQUp2REcvVTZodzJYeHNMTnNjNlJ5dUhvanNVRkZtWitWUU9TTnIrdlNl?=
+ =?utf-8?B?NjNSTFN0WTRETnlhU0wwUmt4Q3RxTUFkMUk5VW83YkptMk1MYlQ4elU3bDJS?=
+ =?utf-8?B?WTNPTlROeUdyQi96ZVlJU3dEMEJsQTNjY2FVMjdLTzBTemJaUkt3NDcreUdD?=
+ =?utf-8?B?aE9Gck5SN21aN1dBcGNwR1ZoK0UvZnB6WGRUUWlITStvZjVHS3hkQ2xubU9U?=
+ =?utf-8?B?SzkvemdXY2ZpZVNvTDhveHhkUjF0Yko2NUVHZEZsMDBxVGhzR1VkZGRjV3Ew?=
+ =?utf-8?B?Sjc0WmJhTWVramJKT2FHWEF5dFBTZEE3dnJJbFFyL1d5Q21lYU5yMzcwNFE0?=
+ =?utf-8?B?ZkZxWWxISXk5VXlya2pZZnJuRk1TcFd3RTdUQmpKS2R4dFByWWtsNElSYVdW?=
+ =?utf-8?B?RmhKNUVyM1lLcE9PYkZ1LzROVVB6ZVlPT1hPTFFaZ254Q2pzT1NtbWRQM2pE?=
+ =?utf-8?B?eFIxdWg5dzl4eUFheHRweHFEYm9QVmZGQml0bTN5TEtQYm1oUHNKNGZpVzln?=
+ =?utf-8?B?a1Q3NjFlWk00UGhKMlY4eXg4UE1LR3F3YkhUaDdtUjJlckdiMUxycEh2YUxa?=
+ =?utf-8?B?QmdBN2N6bHVVYzBoV0hsNG1BdndMMDRxVU9DZlFscVBBdEQ0dno5QmhyYWth?=
+ =?utf-8?B?K0dXY25Udys4YkRwQjRKUTU1VDhzVHZzN2ExbmdEUXVvcm9PWjdWZlVSVjVC?=
+ =?utf-8?B?R3ZyTHB4SEJOMy9yWlRhN0VNTnN1RWtpanhnYTU0RFNrVW5TVjR0TW9KZk9G?=
+ =?utf-8?B?VTdUMDllYzh6ZTBvWFZWdGZwMXlSM1ZmYTNHNk5xVEFxdEYzMnhlczZLcENB?=
+ =?utf-8?Q?s5jk=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:24:33.7896 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2676e41-6765-4708-ac98-08de28d766ae
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001CF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5811
+Received-SPF: permerror client-ip=2a01:111:f403:c005::5;
+ envelope-from=Luc.Michel@amd.com;
+ helo=CO1PR03CU002.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,39 +165,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/25 08:34, Thomas Huth wrote:
-> On 20/11/2025 11.46, David Hildenbrand (Red Hat) wrote:
->> Unfortunately, I don't have a lot of capacity lately to take good care of
->> s390 in QEMU like I used to; and it doesn't look like that situation
->> will change. So let me convert myself to a reviewer in the s390 areas I
->> co-maintain.
->>
->> Fortunately, we still have two other maintainers for "S390 floating
->> interrupt controller", so no action needed on that front.
->>
->> For the other sections we get two new maintainers: Hendrik will
->> maintain "S390 CPU models" and Ilya will co-maintain "S390 TCG CPUs".
->>
->> Thanks Hendrik and Ilya for stepping up!
->>
->> Cc: Richard Henderson <richard.henderson@linaro.org>
->> Cc: Thomas Huth <thuth@redhat.com>
->> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
->> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
->> Cc: Halil Pasic <pasic@linux.ibm.com>
->> Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
->> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> ---
->>    MAINTAINERS | 9 +++++----
->>    1 file changed, 5 insertions(+), 4 deletions(-)
+Hi Phil,
+
+On 18:20 Thu 20 Nov     , Philippe Mathieu-Daudé wrote:
+> On 7/11/25 11:23, Luc Michel wrote:
+> > Add the register_time_change_notifier method to the RISCVCPUTimeSrcIf
+> > interface. This method allows the time source user to register a
+> > notifier on tick counter asynchronous modification (i.e., a modification
+> > that is not due to the monotonic nature of the counter). This can happen
+> > if the time source counter is writable, which is the case of the `time'
+> > register of the ACLINT.
+> > 
+> > Use this mechanism in time_helper.c to recompute the sstc timers
+> > deadlines.
+> > 
+> > Signed-off-by: Luc Michel <luc.michel@amd.com>
+> > ---
+> >   target/riscv/cpu-qom.h     |  7 +++++++
+> >   target/riscv/cpu.h         |  1 +
+> >   target/riscv/time_helper.h | 11 +++++++++++
+> >   target/riscv/time_helper.c | 13 +++++++++++++
+> >   4 files changed, 32 insertions(+)
 > 
-> Thank you so much again for your past work, David!
+> 
+> > diff --git a/target/riscv/time_helper.h b/target/riscv/time_helper.h
+> > index b51fdd96570..074b516f4ad 100644
+> > --- a/target/riscv/time_helper.h
+> > +++ b/target/riscv/time_helper.h
+> > @@ -42,6 +42,17 @@ static inline uint32_t riscv_cpu_time_src_get_tick_freq(RISCVCPUTimeSrcIf *src)
+> > 
+> >       g_assert(rctsc->get_tick_freq != NULL);
+> >       return rctsc->get_tick_freq(src);
+> >   }
+> > 
+> > +static inline void
+> > +riscv_cpu_time_src_register_time_change_notifier(RISCVCPUTimeSrcIf *src,
+> > +                                                 Notifier *notifier)
+> > +{
+> > +    RISCVCPUTimeSrcIfClass *rctsc = RISCV_CPU_TIME_SRC_IF_GET_CLASS(src);
+> > +
+> > +    if (rctsc->register_time_change_notifier) {
+> > +        rctsc->register_time_change_notifier(src, notifier);
+> > +    }
+> 
+> What about some trace event to help developers? I.e.:
 
-Also thanks to your for your kind words (including the ones in the 
-offline discussion before this patch :) )!!
+I made this method optional in case the time source is read-only. In
+this case there is no need for a notifier as it cannot change
+asynchronously.
+
 -- 
-Cheers
+Luc
 
-David
+> 
+>    if (!rctsc->register_time_change_notifier) {
+>        trace_riscv_cpu_time_src_register_time_change_without_notifier();
+>        return;
+>    }
+>    rctsc->register_time_change_notifier(src, notifier);
+> 
+> > +}
+> 
+> Anyhow:
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+
+-- 
 
