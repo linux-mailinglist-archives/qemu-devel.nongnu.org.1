@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ADEC7C532
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB26C7CB46
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 10:20:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcon-0004dN-UL; Fri, 21 Nov 2025 20:53:43 -0500
+	id 1vMcye-0003oP-96; Fri, 21 Nov 2025 21:03:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMbZu-0001sD-M3
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:14 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcEj-0000hp-AE
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:16:25 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMbXs-0004ru-T4
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:11 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5957f617ff0so2879582e87.2
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:31:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcCg-0005Od-Pv
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:16:22 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-5957753e0efso2719032e87.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763771507; x=1764376307; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763774038; x=1764378838; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PeYBDSu6cMgQceRuy5tiVH2SP+8CoWLSP+CQiGR2J0w=;
- b=hEZjXeTYsBIYWX5wd51UrXeaoBrNb7Uasi1ITZbdd69+MRjId1Ht6EFwrYO4+f0fOR
- c5TW20+k/4EaaXgFL+SapMkRTWyBhF/4M2OP4Bks52u32cTDYSuflG5vxILmKNv5Fhip
- RYzhLzrTID1B+JF68kmgoqweox3YoloAfKI+9AGpH68xFLj8HZNq3S3b3eC7LjxfAwev
- E9jHo5essNDjt0TIZdbcQDSCitVL23xufn4g684b3lGMdMdZfhGdHTzx5EHng+SPNwS6
- bJOuj/w3VxmuEpLr+8HshE4UC6+HGcnB6hPG60Sjr2g476ITm/MfYypUmzLu1K3/rRLu
- hQWg==
+ bh=uhfSYXVJhQzgILc5n4xlE7EXEuT5rMWIJU0DyKOMRY4=;
+ b=NNVHAkhjeb0h/OkeoYwLM13Kids/cCBIwTY/9Cp4VNyEGXSBqNfV8QmJa4bS5LkV0T
+ PHEVCYk+q7whWTA4+ZLNkblmzidj+bGQnWxSeywK11utQHr39YVzX3GLtrfKpK+r1Jux
+ PQe5/eAj75pNbt88s43psvnvEAJpZ2R5nnX3t5Fk2jhGkGdbFZKvIzMJIXxZQcMtq9z4
+ 5ytm0Ox1zd9caoBMps0zjQSgV6VGbsvbMHR+kjFAUdKFQkNpmwoFZTgbS6+Yn3cGZyeT
+ KNqNIKiA8VKPzie2zzMSdG+2DRCaVBZb+wBlmzBAfk46ebr1zYEgFAtl8CmyRnvg5hua
+ X/nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763771507; x=1764376307;
+ d=1e100.net; s=20230601; t=1763774038; x=1764378838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=PeYBDSu6cMgQceRuy5tiVH2SP+8CoWLSP+CQiGR2J0w=;
- b=Tv7xLEYrMlWXas9i/1vNbcnugjGgKCoDjJ+qA3d5nNobbTzC03u5KVDYvrp8BUrAZM
- ZqMdKumeIuqAoh9tOz/PN5lJEtBtsq8Fgp38xv2bx0XECMoSHp9fD5W8y+5wZRwv6bU0
- HuCk4k4BjeREZV1y+Mx6slqdgGXY/qouNuA18qVWNexJIeoLZCAg5gIzetl+Ah+mDH8z
- 5Ygjr6+afQNrE8VCzgTthwV4ofI4Y+maQKKGZB5j/Aj0F93uC6GYi8SjVffUu5Mo5u2T
- 52ok9UB2f7mCpXtHF49YQfMobfpCxWg19+k+3O541uIwXrq13KSb+yfkQQJVlX8ey3VM
- n9hw==
-X-Gm-Message-State: AOJu0YwyY6Y2bqI3Z+HOXdRi9xrrIlerqy2KpCKHUaA7+VIN3E1Ayk0p
- EYq8+hf5oerciPPRZ4ioQbspta3iNKpymGqpuKj9RXCyizE3WlPnegQdP4JJJJj1fXJp49xFDK6
- 65H4YYsT0oA==
-X-Gm-Gg: ASbGnctidIR8FZTo3YVGVAndhaOm+i4oPxb3ZkFc3KjpgB/+9Hnuxhfch/JVb0ghkWN
- gzauo7LDz0Pbu0VEEMGHl4scvO4sRebosxHqxsg7V4BLleDcmhFFua35aZHC0Ts4tb+ob02v29H
- iE75iFAjnv/8aIcrhe1vq/JMD5pouJpYzl4CnWRz6sC8l3mKYEdsjXejMIAb04QouV5ypvjVOmH
- myLmXOKK8mthqKHUCrmy9LmQeDEkzvUUtp+hC2DKtst2bo/bAun4bO/RAdSl50GJptOmcIQWZHL
- /Pn86S6fKv9frYjIS5t583ehIoxDEZTwGe/ZiMyqwlAgaw3DM/ru/hJHrJ0+kRS0cCsnjSM184t
- 1+EEU5cioMgKWuRcZMiU91dOKvWn7lKIYLksFD9DcsnqgTMBOBe00LBWElswTR/ypaSTRh3Pyxk
- fevgx38mGR5YlhYn/2HDJzlNXHobhlqCaPd0nOiN9Li8zmYdzUxyWU+zQrVfDW
-X-Google-Smtp-Source: AGHT+IGOy7ijW3Saoq3tEPfafETXCLdd03s9R4J1y/0QOA7IKP9EnH8884b5OD/Z9Zvc/CZ5mAuqPw==
-X-Received: by 2002:a05:600c:3551:b0:471:131f:85b7 with SMTP id
- 5b1f17b1804b1-477c10e2bc2mr28653215e9.15.1763732758974; 
- Fri, 21 Nov 2025 05:45:58 -0800 (PST)
+ bh=uhfSYXVJhQzgILc5n4xlE7EXEuT5rMWIJU0DyKOMRY4=;
+ b=V4QbBhTg6p6q48nNjcJIpS1VBrPXYhiCLrJlY9sHHTojX1yxQCYJ4p89PU2SvOAI8e
+ 2RjTaU5cCI+R9UgvEsV0Gl09XbicsxP72241v9f4hEQaRWxmPdkWDLxeSlbCoXNEovRI
+ asJPCtKLtlQsE2hmrE0+fG+YGCvx0DfcEcqT4gG2Agj0h6AERhJt0W+E4Pvahooq9vJK
+ YPc+PImnUQP+gYmswQ/Mx9g0q0DHbg/+MCEn1FZcPkS83xeWnKmvPdoJNSxqp2+BEaYH
+ jkolZoE4e53OizWdaQZzt8lO02EYOAvqIqtnN8AHRFP/D8s65vKP5yh1PfpstAhCOO1R
+ U2gQ==
+X-Gm-Message-State: AOJu0Yyy0RAD6rhc8Di3MN6XEFSG9NQUCFcoRzdZkiOVqvyF4909eXdm
+ 8QrYD23352Z3xkYVAUgxQzIOpmjNwbUe8PRuYocwt7ZintSpxvOmNMcFiRYVPljm8OLm4dV4JoP
+ rcSzyNPlfWg==
+X-Gm-Gg: ASbGncsTCsdyKmBurNAurOF1aDczAYIgxVujBwNB4WRLvHSUBhk7tbzpIvR2Z1WB46x
+ GCFMCRQIKokMcFPI84c7e+BEbrq3zZuEHE5XInfuebb5Ga5/Ar8uDk3kMsGwdXHQW0b+/2ILnSQ
+ qrmmHzZKqvxz5kI4VdfsTTTq/STszUw0buLYtbtJBEKfJc7Q0+Dg2aBfPrKtftNilEkHAymIsLj
+ ze7OhC/MPCH2xMKzDlGD80t4j9bW/o52lH4IpBo6go0Bw1sIfq5yq+UV4VRcvVd049BrFxK2KDz
+ tAWuxhs+QzU9T5k2Xm187b516MyOGI3DS6gk1nJ5dTXKpgihAsrg3H6xA8V1MNmE+pTxf6IBeRI
+ RBRyCe3bfJrIaJlLJxTAMX5f0s6aFeRt/dVCKr+mpBD3vG1BMWFbwFnVpyJV1MLg8CqBrNkF3w1
+ YEIuvNhRWtipAsYmYo4k+GqV0Na/6vtCDOGekUYSdfhK4bMUGusMvsYonnVuDC
+X-Google-Smtp-Source: AGHT+IG/b8TxL9CJ2yGrfcKCr8xr6tIWI9/kBLmY8vXlUe3LRE9WTL5vE8m0zohVGp43fgT2y8tBkg==
+X-Received: by 2002:a05:6000:240b:b0:42b:396e:27fd with SMTP id
+ ffacd0b85a97d-42cc1d2d44emr2576757f8f.38.1763732765605; 
+ Fri, 21 Nov 2025 05:46:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477a9dea7fcsm87143845e9.8.2025.11.21.05.45.58
+ ffacd0b85a97d-42cb7f363b0sm11300121f8f.13.2025.11.21.05.46.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 05:45:58 -0800 (PST)
+ Fri, 21 Nov 2025 05:46:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [RFC-PATCH-for-11.0 v3 08/21] target/mips: Replace cpu_ld{uw,
- l}_code() by explicit endianness variants
-Date: Fri, 21 Nov 2025 14:44:50 +0100
-Message-ID: <20251121134503.30914-9-philmd@linaro.org>
+Subject: [RFC-PATCH-for-11.0 v3 09/21] accel/tcg: Remove non-explicit endian
+ cpu_ld*_code() helpers
+Date: Fri, 21 Nov 2025 14:44:51 +0100
+Message-ID: <20251121134503.30914-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251121134503.30914-1-philmd@linaro.org>
 References: <20251121134503.30914-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,63 +92,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+All uses were converted to the explicit cpu_ld*_{be,le}_code()
+helpers, no need for the non-explicit versions anymore.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/system/tlb_helper.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ include/accel/tcg/cpu-ldst.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index 566924b079e..415c214c5b4 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -997,18 +997,30 @@ static void set_hflags_for_handler(CPUMIPSState *env)
-     }
+diff --git a/include/accel/tcg/cpu-ldst.h b/include/accel/tcg/cpu-ldst.h
+index e4ec4e7d367..a3125fc9026 100644
+--- a/include/accel/tcg/cpu-ldst.h
++++ b/include/accel/tcg/cpu-ldst.h
+@@ -523,14 +523,4 @@ static inline uint64_t cpu_ldq_be_code(CPUArchState *env, abi_ptr addr)
+     return cpu_ldq_code_mmu(env, addr, oi, 0);
  }
  
-+static uint16_t lduw_code(CPUMIPSState *env, target_ulong addr)
-+{
-+    return mips_env_is_bigendian(env) ? cpu_lduw_be_code(env, addr)
-+                                      : cpu_lduw_le_code(env, addr);
-+}
-+
-+static uint32_t ldl_code(CPUMIPSState *env, target_ulong addr)
-+{
-+    return mips_env_is_bigendian(env) ? cpu_ldl_be_code(env, addr)
-+                                      : cpu_ldl_le_code(env, addr);
-+}
-+
- static inline void set_badinstr_registers(CPUMIPSState *env)
- {
-     if (env->insn_flags & ISA_NANOMIPS32) {
-         if (env->CP0_Config3 & (1 << CP0C3_BI)) {
--            uint32_t instr = (cpu_lduw_code(env, env->active_tc.PC)) << 16;
-+            uint32_t instr = (lduw_code(env, env->active_tc.PC)) << 16;
-             if ((instr & 0x10000000) == 0) {
--                instr |= cpu_lduw_code(env, env->active_tc.PC + 2);
-+                instr |= lduw_code(env, env->active_tc.PC + 2);
-             }
-             env->CP0_BadInstr = instr;
- 
-             if ((instr & 0xFC000000) == 0x60000000) {
--                instr = cpu_lduw_code(env, env->active_tc.PC + 4) << 16;
-+                instr = lduw_code(env, env->active_tc.PC + 4) << 16;
-                 env->CP0_BadInstrX = instr;
-             }
-         }
-@@ -1020,11 +1032,11 @@ static inline void set_badinstr_registers(CPUMIPSState *env)
-         return;
-     }
-     if (env->CP0_Config3 & (1 << CP0C3_BI)) {
--        env->CP0_BadInstr = cpu_ldl_code(env, env->active_tc.PC);
-+        env->CP0_BadInstr = ldl_code(env, env->active_tc.PC);
-     }
-     if ((env->CP0_Config3 & (1 << CP0C3_BP)) &&
-         (env->hflags & MIPS_HFLAG_BMASK)) {
--        env->CP0_BadInstrP = cpu_ldl_code(env, env->active_tc.PC - 4);
-+        env->CP0_BadInstrP = ldl_code(env, env->active_tc.PC - 4);
-     }
- }
- 
+-#if TARGET_BIG_ENDIAN
+-# define cpu_lduw_code        cpu_lduw_be_code
+-# define cpu_ldl_code         cpu_ldl_be_code
+-# define cpu_ldq_code         cpu_ldq_be_code
+-#else
+-# define cpu_lduw_code        cpu_lduw_le_code
+-# define cpu_ldl_code         cpu_ldl_le_code
+-# define cpu_ldq_code         cpu_ldq_le_code
+-#endif
+-
+ #endif /* ACCEL_TCG_CPU_LDST_H */
 -- 
 2.51.0
 
