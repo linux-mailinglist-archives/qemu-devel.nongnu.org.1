@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED4DC7C395
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AECDAC7C1DD
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:52:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd3Q-0001wA-Bx; Fri, 21 Nov 2025 21:08:49 -0500
+	id 1vMciz-00007u-6H; Fri, 21 Nov 2025 20:47:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vMcMR-0004dT-6L
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:24:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vMbRt-0005lV-UI
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:26:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vMcKO-0007cT-M3
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:24:19 -0500
+ id 1vMbRh-0003ES-GM
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:25:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763774521;
+ s=mimecast20190719; t=1763771128;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
- b=cgS1TStTzQaQiQLaxoVJT3b744lbvgo9CeGQrXVRRSSOJO/OIsJ8bQL1DiRhERe0NqKtzD
- DhG9AX3VEHf+LAdMXeioI4GEWt5rS+w0d6W3g6CgYb/r8qYG9/AYmQQXoI7/69j3oUtkPd
- Lo5Ig56HYtvfN53m23vKoRuiWZSbbVs=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
+ b=aIjRLfeNRtVkFeW6yhhNVLjSBI+ttYg6f45nWMWpOg00DiPkoCrteJqoPEycz3y0IRkbkq
+ ZqbWm+m32qjiCmIUqapk1BZrKyMbPPGhV25mAcHnFs+0DSaee1toJVLKRlsn0TZTotXzwr
+ LX7m5Uq5bjOPe25XNgMAJSq/oAMuUlQ=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-nHW_3suoOHqcYoF1NDmALw-1; Fri, 21 Nov 2025 08:03:59 -0500
-X-MC-Unique: nHW_3suoOHqcYoF1NDmALw-1
-X-Mimecast-MFC-AGG-ID: nHW_3suoOHqcYoF1NDmALw_1763730238
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-34378c914b4so7228629a91.1
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:03:58 -0800 (PST)
+ us-mta-252-ncrbj46KOaiwwNgNCoSKuQ-1; Fri, 21 Nov 2025 08:07:58 -0500
+X-MC-Unique: ncrbj46KOaiwwNgNCoSKuQ-1
+X-Mimecast-MFC-AGG-ID: ncrbj46KOaiwwNgNCoSKuQ_1763730478
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-2956a694b47so34967675ad.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:07:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763730238; x=1764335038; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763730477; x=1764335277; darn=nongnu.org;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
- b=pb8hFaY2FTWOUAVGN5Ew9Xmr9qzoHjMgd8JgWaD+AAhb6OUqxaI2+HmxbK5Ex7Uk58
- HKC+49y2U0Ou92oOwiTDJ3se+ANPX/RsmVgwIpt6amkmW5127W5GyUnyGsAPoW5eNwiD
- PlZEQIy7FnrWWmb5aMyayp5wUjBV0YC7EQitLQ/t0Sf1mcTWQBEkR0a2lTnlVwmXHaMX
- zTYlSJshQ7Bnc222nmh3nyuF6d9RxTFLi76Ealze28Ouf+vUmy5uVk/NmOleKgUhYg3c
- KJzGQD2WbVkb0gfrOEl660ppgMv/dFbrCJs+Wi3XytrNHQ1tEKG81cPBCaGuJrnJ8vTN
- VaBw==
+ bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
+ b=BCNBdAGxV0wtP9pjF5cPSUVA3VVQKO5qfULO/5jhfrf8aH/uTMuxqH99gKMcJj1Fb4
+ G7gFSO5r4d7jXhr1X/Im900PTc+32NVNPKKVfnouhHr1zdtq8Pd8VLzZwe0WhUzAZnEx
+ tv3ZCNJt27ezD5qXYt6RcPEvJ+ulL2xtiUvL9ITvMbvoai/V8Wo/R0ure0uIblYLRd9m
+ upBxIR+Xo1GD2I9N8OB8369feeEk0mS0YgK4aGOmavzTlhCf902m+omZkZgb/WW4oqoQ
+ 8uH8eV1EzInsrZovXu0E18cMl1iRjUFYa746FX6H7nuZq48uYCIE0QUwHV371l17Xdmu
+ E4pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763730238; x=1764335038;
+ d=1e100.net; s=20230601; t=1763730477; x=1764335277;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=cnIzSUUrS1swzzUC1Gql/juDpqUvSVV/2fr6WwHANWw=;
- b=uUoXN2qoWNXJTCOoQC2kyySKobcZiLRZX6FNLwkwysDbSq9W5v/Q43dDfAR9TR3uZZ
- wAa+ffyR5WlkF6iVTF7oW5+GILMC0RXHgM5sHAHmB/qiEJugG/bPrSQvKJjnGUqzYn+F
- /aHWPfqK+snlTj3P84GcCOvPur7kIWg3eNVDMdHxZ+EpFrsQ5EUfcfbQKCRFx2R/qMJy
- aD4O6BPFI/CEczJXUjEhGG+o+/BsVy2ghnAjSiQAPmnH1JLjev1xaYIijkpLSlwI6gp+
- Pfgb6XwsJwfB+0rBGvo83+IVuyQ29gR9Xi7jpMMEjvRnwGqtHgzz/E3f4XcTMfJ1VZrz
- I19A==
-X-Gm-Message-State: AOJu0YzFSOtx1IwnZ3/0kVQuBKXl0+c0wZr/GtI4vNxkXtXt5ycRA6iS
- jS7+1rPshMAuNcHQRCbmy/1jaHs5O2hujC0JP9LZB1rHq09mKNRPZH6sGuZUYUpKxiEt5QSmWoe
- vQ7GhSGM9oRmscfLTtoLXk+e09MMbEs6GCG731zQsu6yYrftl6bloGaiA
-X-Gm-Gg: ASbGncuU1fp6sJmqYwftynV+Us8KBGa0a+P2lja3cB/W8C4ZkhTyaMZIVV3uAfzuAmn
- pd93TBqmDAhnmmg5DebI5INgLl4PM37HEGK4OZ2i6o+vqhuRpjObKbXvKIQsZZH28OCQPcqLtM6
- PasfAuS4Q9LonUhMv/cDeewC8RM3ADaaD0I0HmEJCCn81zdGQjcHCn1TfYfq3xCAJ83U71YXejs
- LXc+Wst1EGzR1wKeVgW+AuDJg4Vj1LIOZQ4ReYEFsH1tXN6jNVVEwMNUjQWaiM1dVMaBmDPQhqj
- ZRjTSd2oaSFG5vumeJ6iawnV5WcpaY7fugDhN840OIev2kwh9vW39lTv4OxkLfwUhkAAApkCcru
- 2dM7qfIYxGZltaJRUBW6dPgdxsbUMPihKkCwUVXwsurQsp0IH3XdAqdEf
-X-Received: by 2002:a17:90b:5291:b0:32b:baaa:21b0 with SMTP id
- 98e67ed59e1d1-34733e2cf72mr2736500a91.6.1763730237875; 
- Fri, 21 Nov 2025 05:03:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG9z73w+xTeL8Oai95QwLGhoJSyZVulqhtwks2fXFfW287REBfLy+RqGo+iG4NY+2Niiqjnqg==
-X-Received: by 2002:a17:90b:5291:b0:32b:baaa:21b0 with SMTP id
- 98e67ed59e1d1-34733e2cf72mr2736458a91.6.1763730237396; 
- Fri, 21 Nov 2025 05:03:57 -0800 (PST)
+ bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
+ b=jT8+Na/mJvzC8ee68hox3dDabBME0XM5+OVBcyDzKznH96SdD8SqNlGeqdvmio0qac
+ /Yys518sxa4TvSUy/Ug1pWkXjYeiFUYLpie7w1ojw+YNK/qewujR0or9t611MKrTZpOH
+ 0TtqYaFn+pQhaAtU4grMPcRhLeLS+vI1fDVKB28oSxdWYUbqIXOib5P1j0yL2/4Vv0pR
+ 4knaMsmu/bN6XiRekYnhNg9A2OfbfblzGQva1HmhBgRZ65YN4IKEZPmq3FgRtCYLo+r2
+ P7tZdaydqjLj/4puKnSYdq3MuK25Ub4mr5LTAMJyMpxScjWxS1D1335ywLftzJgNh+56
+ f/aQ==
+X-Gm-Message-State: AOJu0YxqPbpHk7RX+dKZAdUNcRQ3S7iMXfVYqyp+BiVAG9EXvcAqyuT7
+ OBClyWILmH9d7JM+Mf0aWyiKKDAP3f/Tmks8TbW/Tukf4yzJ+bH+GqXdd4z7eyUdXX/+HbHCufw
+ HX6tHQnSeaeN3THGiXHsCPNXEZbKP3D4Dqxv6hRWs4s18kLAQ1FbAaywR
+X-Gm-Gg: ASbGncvt4JvWysNL7yuSmjqiaDurGyMNuAQBz8vGw5iiBrYBV/UYl8dQ6oH1YgoczvA
+ Qay98CP7Otb5DBItpcMWM2Siua80KUaANV66KKfJXy9MU61Wa+vLJ5ZQ3e207YJF0PvWDEcudhx
+ GdcgMzlErrv3+PLf82+/J455bCnmU8P9LqhNdGGt2tAT01q1B4u8HhNJJPsVsi15wdTCG7zP+Pp
+ 21QuiysM5zV0M7w4BdDQX2G+ByjG8o4zqlj3uuQPJ68W/HlEM1yhp2srpRrl3a9SbOjWv5mCUKj
+ fxLBA0bRNeKwSXcIejAUT/HBDswfSQUHLPGYyWCRJFz6lpQvmaPXaapm2b9vc2Tw4pIIEEj1XHw
+ T1dHIBl7mB6QwAejylVt4CMcR7ubOPN2Q0CJ/et0+GUhQEYh5n0y/ul4E
+X-Received: by 2002:a17:903:2450:b0:27d:69cc:9a6 with SMTP id
+ d9443c01a7336-29b6bf7f26cmr29578845ad.53.1763730477490; 
+ Fri, 21 Nov 2025 05:07:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUrdLgpZVnB+pqYJctbNVZLzgUbKIPWyNoVZITw+yxhokcZ5qqG6O/Psx+AKJ591Hk9ULgKQ==
+X-Received: by 2002:a17:903:2450:b0:27d:69cc:9a6 with SMTP id
+ d9443c01a7336-29b6bf7f26cmr29578475ad.53.1763730476969; 
+ Fri, 21 Nov 2025 05:07:56 -0800 (PST)
 Received: from smtpclient.apple ([106.212.87.16])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34726696cd4sm5701513a91.4.2025.11.21.05.03.54
+ 41be03b00d2f7-bd75b61c29dsm5589954a12.0.2025.11.21.05.07.53
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 21 Nov 2025 05:03:57 -0800 (PST)
+ Fri, 21 Nov 2025 05:07:56 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.7\))
-Subject: Re: [PATCH 2/4] igvm: move file load to complete callback
+Subject: Re: [PATCH 3/4] igvm: add trace point for igvm file loading and
+ processing
 From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20251118122133.1695767-3-kraxel@redhat.com>
-Date: Fri, 21 Nov 2025 18:33:42 +0530
+In-Reply-To: <20251118122133.1695767-4-kraxel@redhat.com>
+Date: Fri, 21 Nov 2025 18:37:41 +0530
 Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -97,12 +98,12 @@ Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
  Luigi Leonardi <leonardi@redhat.com>, Oliver Steffen <osteffen@redhat.com>,
  Michael Tsirkin <mst@redhat.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <17BD5E34-2195-4F84-A96F-83A8054EF62B@redhat.com>
+Message-Id: <3BCC9E21-2EB5-4D63-B2E3-923F5BB9BBE4@redhat.com>
 References: <20251118122133.1695767-1-kraxel@redhat.com>
- <20251118122133.1695767-3-kraxel@redhat.com>
+ <20251118122133.1695767-4-kraxel@redhat.com>
 To: Gerd Hoffmann <kraxel@redhat.com>
 X-Mailer: Apple Mail (2.3776.700.51.11.7)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,139 +124,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > On 18 Nov 2025, at 5:51=E2=80=AFPM, Gerd Hoffmann <kraxel@redhat.com> =
 wrote:
 >=20
-> Add UserCreatableClass->complete callback function for igvm-cfg =
-object.
->=20
-> Move file loading and parsing of the igvm file from the process =
-function
-> to the to the new complete callback function.  Keep the igvm file =
-loaded
-> instead of releasing it after processing, so we parse it only once.
->=20
+Please add some description to the patch =E2=80=A6
+
 > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+Modulo above ..
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+
 > ---
-> include/system/igvm-cfg.h |  3 +++
-> include/system/igvm.h     |  1 +
-> backends/igvm-cfg.c       | 10 ++++++++++
-> backends/igvm.c           |  9 ++++-----
-> 4 files changed, 18 insertions(+), 5 deletions(-)
+> backends/igvm.c       | 5 +++++
+> backends/trace-events | 2 ++
+> 2 files changed, 7 insertions(+)
 >=20
-> diff --git a/include/system/igvm-cfg.h b/include/system/igvm-cfg.h
-> index 312f77c092b0..7dc48677fd99 100644
-> --- a/include/system/igvm-cfg.h
-> +++ b/include/system/igvm-cfg.h
-> @@ -15,6 +15,8 @@
-> #include "qom/object.h"
-> #include "hw/resettable.h"
->=20
-> +#include <igvm/igvm.h>
-> +
-> typedef struct IgvmCfg {
->     ObjectClass parent_class;
->=20
-> @@ -24,6 +26,7 @@ typedef struct IgvmCfg {
->      *           format.
->      */
->     char *filename;
-> +    IgvmHandle file;
->     ResettableState reset_state;
-> } IgvmCfg;
->=20
-> diff --git a/include/system/igvm.h b/include/system/igvm.h
-> index 48ce20604259..ec2538daa0e1 100644
-> --- a/include/system/igvm.h
-> +++ b/include/system/igvm.h
-> @@ -16,6 +16,7 @@
-> #include "system/igvm-cfg.h"
-> #include "qapi/error.h"
->=20
-> +IgvmHandle qigvm_file_init(char *filename, Error **errp);
-> int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
->                       bool onlyVpContext, Error **errp);
->=20
-> diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
-> index 4e3ef88ffc27..08501a67e58e 100644
-> --- a/backends/igvm-cfg.c
-> +++ b/backends/igvm-cfg.c
-> @@ -52,6 +52,13 @@ static void igvm_reset_exit(Object *obj, ResetType =
-type)
->     trace_igvm_reset_exit(type);
-> }
->=20
-> +static void igvm_complete(UserCreatable *uc, Error **errp)
-> +{
-> +    IgvmCfg *igvm =3D IGVM_CFG(uc);
-> +
-> +    igvm->file =3D qigvm_file_init(igvm->filename, errp);
-> +}
-> +
-> OBJECT_DEFINE_TYPE_WITH_INTERFACES(IgvmCfg, igvm_cfg, IGVM_CFG, =
-OBJECT,
->                                    { TYPE_USER_CREATABLE },
->                                    { TYPE_RESETTABLE_INTERFACE },
-> @@ -61,6 +68,7 @@ static void igvm_cfg_class_init(ObjectClass *oc, =
-const void *data)
-> {
->     IgvmCfgClass *igvmc =3D IGVM_CFG_CLASS(oc);
->     ResettableClass *rc =3D RESETTABLE_CLASS(oc);
-> +    UserCreatableClass *uc =3D USER_CREATABLE_CLASS(oc);
->=20
->     object_class_property_add_str(oc, "file", get_igvm, set_igvm);
->     object_class_property_set_description(oc, "file",
-> @@ -72,6 +80,8 @@ static void igvm_cfg_class_init(ObjectClass *oc, =
-const void *data)
->     rc->phases.enter =3D igvm_reset_enter;
->     rc->phases.hold =3D igvm_reset_hold;
->     rc->phases.exit =3D igvm_reset_exit;
-> +
-> +    uc->complete =3D igvm_complete;
-> }
->=20
-> static void igvm_cfg_init(Object *obj)
 > diff --git a/backends/igvm.c b/backends/igvm.c
-> index 905bd8d98994..05d197fdfe85 100644
+> index 05d197fdfe85..a350c890cc95 100644
 > --- a/backends/igvm.c
 > +++ b/backends/igvm.c
-> @@ -867,7 +867,7 @@ static int qigvm_handle_policy(QIgvm *ctx, Error =
+> @@ -18,6 +18,8 @@
+> #include "system/address-spaces.h"
+> #include "hw/core/cpu.h"
+>=20
+> +#include "trace.h"
+> +
+> #include <igvm/igvm.h>
+> #include <igvm/igvm_defs.h>
+>=20
+> @@ -884,6 +886,8 @@ IgvmHandle qigvm_file_init(char *filename, Error =
 **errp)
->     return 0;
-> }
->=20
-> -static IgvmHandle qigvm_file_init(char *filename, Error **errp)
-> +IgvmHandle qigvm_file_init(char *filename, Error **errp)
-> {
->     IgvmHandle igvm;
->     g_autofree uint8_t *buf =3D NULL;
-> @@ -896,10 +896,11 @@ int qigvm_process_file(IgvmCfg *cfg, =
-ConfidentialGuestSupport *cgs,
->     QIgvm ctx;
->=20
->     memset(&ctx, 0, sizeof(ctx));
-> -    ctx.file =3D qigvm_file_init(cfg->filename, errp);
-> -    if (ctx.file < 0) {
-> +    if (!cfg->file) {
-
-This is not right I think. qigvm_file_init() returns -1 if =
-igvm_new_from_binary() fails and returns < 0. Looking at=20
-https://docs.rs/igvm/latest/igvm/c_api/fn.igvm_new_from_binary.html this =
-seems correct.
-
-> +        error_setg(errp, "No IGVM file loaded.");
+>         error_setg(errp, "Unable to parse IGVM file %s: %d", filename, =
+igvm);
 >         return -1;
 >     }
-> +    ctx.file =3D cfg->file;
+> +
+> +    trace_igvm_file_loaded(filename, igvm);
+>     return igvm;
+> }
+>=20
+> @@ -901,6 +905,7 @@ int qigvm_process_file(IgvmCfg *cfg, =
+ConfidentialGuestSupport *cgs,
+>         return -1;
+>     }
+>     ctx.file =3D cfg->file;
+> +    trace_igvm_process_file(cfg->file, onlyVpContext);
 >=20
 >     /*
 >      * The ConfidentialGuestSupport object is optional and allows a =
 confidential
-> @@ -990,7 +991,5 @@ cleanup_parameters:
->     g_free(ctx.id_auth);
->=20
-> cleanup:
-> -    igvm_free(ctx.file);
-> -
->     return retval;
-> }
+> diff --git a/backends/trace-events b/backends/trace-events
+> index 45ac46dc2454..7a00e9bf6c16 100644
+> --- a/backends/trace-events
+> +++ b/backends/trace-events
+> @@ -26,3 +26,5 @@ iommufd_backend_invalidate_cache(int iommufd, =
+uint32_t id, uint32_t data_type, u
+> igvm_reset_enter(int type) "type=3D%u"
+> igvm_reset_hold(int type) "type=3D%u"
+> igvm_reset_exit(int type) "type=3D%u"
+> +igvm_file_loaded(const char *fn, int32_t handle) "fn=3D%s, =
+handle=3D0x%x"
+> +igvm_process_file(int32_t handle, bool context_only) "handle=3D0x%x =
+context-only=3D%d"
 > --=20
 > 2.51.1
 >=20
