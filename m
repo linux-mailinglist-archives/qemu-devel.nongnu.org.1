@@ -2,104 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DF6C7C252
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AABC2C7C414
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:15:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMckQ-00015C-3e; Fri, 21 Nov 2025 20:49:12 -0500
+	id 1vMcuV-0000I0-IL; Fri, 21 Nov 2025 20:59:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vMbU2-0006yo-TF
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:28:12 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vMbTr-0003pa-GC
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:28:07 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A257E21A14;
- Fri, 21 Nov 2025 18:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763750301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BBav5TuA4Fqrr6eQjjhiog9gWxCNywki8J3VYY0+BFM=;
- b=ovGWBc++T8rBpcK0J4eJ/SULbDLcUssL9zfmsVLNuz5+Fb2Qx/6avzH/xRDWi2ZzJSUigY
- FBdx2t/WcHyhGZ4Fs1DSs0idXI7OwjryvTTpbZZAV/qB/CrXEyYLMlIyd+8uLSfAMcYEA8
- uCXgv+PQyP7G3W7BZQq34Io1bbv8CUU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763750301;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BBav5TuA4Fqrr6eQjjhiog9gWxCNywki8J3VYY0+BFM=;
- b=p0bpfwWzAnBYFSXdYOISRLC76jKzJhQLgn1Drvbeanrq/UDyCEPE8DNjllP2Zh7GsoAjhM
- OLjxPoNla3tnYCCQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ovGWBc++;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p0bpfwWz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1763750301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BBav5TuA4Fqrr6eQjjhiog9gWxCNywki8J3VYY0+BFM=;
- b=ovGWBc++T8rBpcK0J4eJ/SULbDLcUssL9zfmsVLNuz5+Fb2Qx/6avzH/xRDWi2ZzJSUigY
- FBdx2t/WcHyhGZ4Fs1DSs0idXI7OwjryvTTpbZZAV/qB/CrXEyYLMlIyd+8uLSfAMcYEA8
- uCXgv+PQyP7G3W7BZQq34Io1bbv8CUU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1763750301;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BBav5TuA4Fqrr6eQjjhiog9gWxCNywki8J3VYY0+BFM=;
- b=p0bpfwWzAnBYFSXdYOISRLC76jKzJhQLgn1Drvbeanrq/UDyCEPE8DNjllP2Zh7GsoAjhM
- OLjxPoNla3tnYCCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2218B3EA61;
- Fri, 21 Nov 2025 18:38:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id LsYDNZyxIGncBgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 21 Nov 2025 18:38:20 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH] qtest: Allow and ignore blank lines in input
-In-Reply-To: <20251106151959.1088095-1-peter.maydell@linaro.org>
-References: <20251106151959.1088095-1-peter.maydell@linaro.org>
-Date: Fri, 21 Nov 2025 15:38:17 -0300
-Message-ID: <87zf8fdyee.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMbrr-0004c7-Ow; Fri, 21 Nov 2025 19:52:47 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMbpq-0000O3-8C; Fri, 21 Nov 2025 19:52:44 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3641816CA3B;
+ Fri, 21 Nov 2025 21:44:18 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D9498321C77;
+ Fri, 21 Nov 2025 21:44:26 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 00/81] Patch Round-up for stable 10.0.7,
+ freeze on 2025-12-01
+Date: Fri, 21 Nov 2025 21:42:59 +0300
+Message-ID: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: A257E21A14
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.14 / 50.00]; BAYES_HAM(-2.63)[98.36%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; MISSING_XM_UA(0.00)[];
- FUZZY_RATELIMITED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim,linaro.org:email];
- URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim,linaro.org:email];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Spam-Score: -4.14
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,55 +50,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+The following patches are queued for QEMU stable v10.0.7:
 
-> Currently the code that reads the qtest protocol commands insists
-> that every input line has a command.  If it receives a line with
-> nothing but whitespace it will trip an assertion in
-> qtest_process_command().
->
-> This is a little awkward for the case where we are feeding qtest a
-> set of bug-reproduction commands via standard input or a file,
-> because it means you need to be careful not to leave a blank line at
-> the start or the end when cutting and pasting the command sequence
-> from a bug report.
->
-> Change the code to allow and ignore blank lines in the input.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  system/qtest.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/system/qtest.c b/system/qtest.c
-> index e4d1cd75daa..baef06d4d1b 100644
-> --- a/system/qtest.c
-> +++ b/system/qtest.c
-> @@ -69,6 +69,9 @@ static void *qtest_server_send_opaque;
->   * so clients should always handle many async messages before the response
->   * comes in.
->   *
-> + * Extra ASCII space characters in command inputs are permitted and ignored.
-> + * Lines containing only spaces are permitted and ignored.
-> + *
->   * Valid requests
->   * ^^^^^^^^^^^^^^
->   *
-> @@ -367,7 +370,11 @@ static void qtest_process_command(CharFrontend *chr, gchar **words)
->          fprintf(qtest_log_fp, "\n");
->      }
->  
-> -    g_assert(command);
-> +    if (!command) {
-> +        /* Input line was blank: ignore it */
-> +        return;
-> +    }
-> +
->      if (strcmp(words[0], "irq_intercept_out") == 0
->          || strcmp(words[0], "irq_intercept_in") == 0) {
->          DeviceState *dev;
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Patch freeze is 2025-12-01, and the release is planned for 2025-12-03:
 
-Queued
+  https://wiki.qemu.org/Planning/10.0
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 77dc9d662f80 Peter Maydell:
+   tests/tcg/multiarch/linux/linux-test: Don't try to test atime update
+02 0c6d6d79a5cb Dongwon Kim:
+   ui/gtk-gl-area: Remove extra draw call in refresh
+03 270b28681e36 Thomas Huth:
+   hw/ppc/e500: Check for compatible CPU type instead of aborting 
+   ungracefully
+04 3f462d79a080 Peter Maydell:
+   target/arm: Fix reads of CNTFRQ_EL0 in linux-user mode
+05 e41139eaad1d Zejun Zhao:
+   hw/riscv: Correct mmu-type property of sifive_u harts in device tree
+06 5e3e066e4ac8 Jialong Yang:
+   aplic: fix mask for smsiaddrcfgh
+07 86b8c3821496 Daniel Henrique Barboza:
+   target/riscv/kvm: add senvcfg CSR
+08 775ac57e0a54 Daniel Henrique Barboza:
+   target/riscv/kvm: read/write KVM regs via env size
+09 8ab99a05f34b Daniel Henrique Barboza:
+   target/riscv/kvm: add scounteren CSR
+10 2a21cbee47a1 Daniel Henrique Barboza:
+   target/riscv/kvm: fix env->priv setting in reset_regs_csr()
+11 06e01941ffca Daniel Henrique Barboza:
+   target/riscv: fix riscv_cpu_sirq_pending() mask
+12 2c147611cf56 Daniel P. Berrangé:
+   io: release active GSource in TLS channel finalizer
+13 322c3c4f3abe Daniel P. Berrangé:
+   io: move websock resource release to close method
+14 b7a1f2ca45c7 Daniel P. Berrangé:
+   io: fix use after free in websocket handshake code
+15 3995fc238e05 Daniel P. Berrangé:
+   crypto: stop requiring "key encipherment" usage in x509 certs
+16 6910f04aa646 Fiona Ebner:
+   hw/scsi: avoid deadlock upon TMF request cancelling with VirtIO
+17 1a8ffd6172f3 Peter Maydell:
+   target/hppa: Set FPCR exception flag bits for non-trapped exceptions
+18 575264e9083b Akihiko Odaki:
+   nw/nvram/ds1225y: Fix nvram MemoryRegion owner
+19 fb722e1dc2d8 Helge Deller:
+   hw/hppa: Fix interrupt of LASI parallel port
+20 36ec1a829a07 Mark Cave-Ayland:
+   esp.c: fix esp_cdb_ready() FIFO wraparound limit calculation
+21 e9d02b59316f Mark Cave-Ayland:
+   qtest/am53c974-test: add additional test for cmdfifo overflow
+22 7c7089321670 Bastian Blank:
+   linux-user: Use correct type for FIBMAP and FIGETBSZ emulation
+23 0db2de22fcbf Peter Maydell:
+   linux-user: permit sendto() with NULL buf and 0 len
+24 d5e1d2dea11b Paolo Bonzini:
+   target/i386: clear CPU_INTERRUPT_SIPI for all accelerators
+25 d1193481dee6 peng guo:
+   hw/i386/pc: Avoid overlap between CXL window and PCI 64bit BARs in QEMU 
+   10.0.x
+26 639a29422754 Xiaoyao Li:
+   i386/kvm/cpu: Init SMM cpu address space for hotplugged CPUs
+27 6eda39a87f4f Daniel P. Berrangé:
+   block: remove 'detached-header' option from opts after use
+28 c86488abaf01 Daniel P. Berrangé:
+   block: fix luks 'amend' when run in coroutine
+29 ad97769e9dcf Richard W.M. Jones:
+   block/curl.c: Fix CURLOPT_VERBOSE parameter type
+30 524fc77d2322 Sean Anderson:
+   gdbstub: Fix %s formatting
+31 a04c5ba543c1 Edgar E. Iglesias:
+   target/microblaze: Remove unused arg from check_divz()
+32 0e46b4d1f13b Edgar E. Iglesias:
+   target/microblaze: div: Break out raise_divzero()
+33 cfc1d54251d3 Edgar E. Iglesias:
+   target/microblaze: Handle signed division overflows
+34 df7e9243d540 Ilya Leoshkevich:
+   target/s390x: Fix missing interrupts for small CKC values
+35 dacfec5157fb Ilya Leoshkevich:
+   target/s390x: Fix missing clock-comparator interrupts after reset
+36 fc976a67ded4 Ilya Leoshkevich:
+   target/s390x: Use address generation for register branch targets
+37 0408c61e27ac Ilya Leoshkevich:
+   tests/tcg/s390x: Test SET CLOCK COMPARATOR
+38 75e2cb144191 Xiaoyao Li:
+   hostmem/shm: Allow shm memory backend serve as shared memory for coco-VMs
+39 4f503afc7eb5 Peter Maydell:
+   target/x86: Correctly handle invalid 0x0f 0xc7 0xxx insns
+40 fde5930cc371 Albert Esteve:
+   vhost-user: fix shared object lookup handler logic
+41 3e6ad83f209e Shameer Kolothum:
+   tests/qtest/bios-tables-test: Prepare for _DSM change in the DSDT table
+42 325aa2d86a20 Eric Auger:
+   hw/pci-host/gpex-acpi: Fix _DSM function 0 support return value
+43 ccf166d89dcf Shameer Kolothum:
+   tests/qtest/bios-tables-test: Update DSDT blobs after GPEX _DSM change
+44 f00bcc833790 Akihiko Odaki:
+   qemu-img: Fix amend option parse error handling
+45 909852ba6b4a Alberto Garcia:
+   qemu-img rebase: don't exceed IO_BUF_SIZE in one operation
+46 4c91719a6a78 Alberto Garcia:
+   tests/qemu-iotest: fix iotest 024 with qed images
+47 59506e59e0f0 Eric Blake:
+   qio: Add trace points to net_listener
+48 6e03d5cdc991 Eric Blake:
+   qio: Unwatch before notify in QIONetListener
+49 b5676493a08b Eric Blake:
+   qio: Remember context of qio_net_listener_set_client_func_full
+50 9d86181874ab Eric Blake:
+   qio: Protect NetListener callback with mutex
+51 6da0c9828194 Peter Maydell:
+   hw/net/e1000e_core: Don't advance desc_offset for NULL buffer RX 
+   descriptors
+52 9d946d56a2ac Peter Maydell:
+   hw/net/e1000e_core: Correct rx oversize packet checks
+53 bab496a18358 Peter Maydell:
+   hw/net/e1000e_core: Adjust e1000e_write_payload_frag_to_rx_buffers() 
+   assert
+54 a01344d9d780 Peter Maydell:
+   net: pad packets to minimum length in qemu_receive_packet()
+55 f52db7f34242 Peter Maydell:
+   hw/display/xlnx_dp.c: Don't abort on AUX FIFO overrun/underrun
+56 032333eba77b Peter Maydell:
+   hw/display/xlnx_dp: Don't abort for unsupported graphics formats
+57 5fc50b4ec841 Peter Maydell:
+   hw/misc/npcm_clk: Don't divide by zero when calculating frequency
+58 71365ee43312 Vincent Vanlaer:
+   block: get type of block allocation in commit_run
+59 23743ab282af Vincent Vanlaer:
+   block: move commit_run loop to separate function
+60 0648c76ad198 Vincent Vanlaer:
+   block: refactor error handling of commit_iteration
+61 6f3199f99600 Vincent Vanlaer:
+   block: allow commit to unmap zero blocks
+62 68aba2a93503 Vincent Vanlaer:
+   block: add test non-active commit with zeroed data
+63 863449cc8ec7 Alex Bennée:
+   tests: move test_xen assets to share.linaro.org
+64 dfaf3695b20d Alex Bennée:
+   tests: move test_virt assets to share.linaro.org
+65 5ff8d1fac98b Alex Bennée:
+   tests: move test_netdev_ethtool to share.linaro.org
+66 533b5ac2d6a8 Alex Bennée:
+   tests: move test_kvm_xen to share.linaro.org
+67 497d3e87ce2d Alex Bennée:
+   tests: move test_virt_gpu to share.linaro.org
+68 89d22536d1a1 Hanna Czenczek:
+   rbd: Run co BH CB in the coroutine’s AioContext
+69 deb35c129b85 Hanna Czenczek:
+   nfs: Run co BH CB in the coroutine’s AioContext
+70 53d5c7ffac7b Hanna Czenczek:
+   curl: Fix coroutine waking
+71 7a501bbd5194 Hanna Czenczek:
+   nvme: Kick and check completions in BDS context
+72 0f142cbd919f Hanna Czenczek:
+   nvme: Fix coroutine waking
+73 9b9ee60c07f5 Hanna Czenczek:
+   block/io: Take reqs_lock for tracked_requests
+74 124ab930ba38 Daniel P. Berrangé:
+   tests/functional: fix formatting of exception args
+75 335da23abec8 Daniel P. Berrangé:
+   tests/functional: handle URLError when fetching assets
+76 a344e22917f4 Yannick Voßen:
+   hw/dma/zynq-devcfg: Fix register memory
+77 9c3b76a0d406 Philippe Mathieu-Daudé:
+   hw/southbridge/lasi: Correct LasiState parent
+78 ebd9ea2947d8 Peter Maydell:
+   target/i386: Mark VPERMILPS as not valid with prefix 0
+79 ebb46ba6a4a2 Paolo Bonzini:
+   target/i386/tcg: validate segment registers
+80 9c3afb9d9b92 Paolo Bonzini:
+   target/i386: svm: fix sign extension of exit code
+81 106d766c9d5b Paolo Bonzini:
+   target/i386: fix stack size when delivering real mode interrupts
 
