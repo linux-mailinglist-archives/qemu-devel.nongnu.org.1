@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2DDC7C31D
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEEDC7C3A4
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:57:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdUE-0007pL-Bk; Fri, 21 Nov 2025 21:36:31 -0500
+	id 1vMd2b-0001VC-Mh; Fri, 21 Nov 2025 21:07:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcBv-0007c9-DU; Fri, 21 Nov 2025 20:13:31 -0500
+ id 1vMcJF-00034B-2c; Fri, 21 Nov 2025 20:21:05 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcBk-00057i-W4; Fri, 21 Nov 2025 20:13:28 -0500
+ id 1vMcHC-0006d7-IK; Fri, 21 Nov 2025 20:21:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A77CE16CA4E;
+ by isrv.corpit.ru (Postfix) with ESMTP id F01B216CA4F;
  Fri, 21 Nov 2025 21:44:22 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 597D4321C8A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 77E6A321C8B;
  Fri, 21 Nov 2025 21:44:31 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 19/81] hw/hppa: Fix interrupt of LASI parallel port
-Date: Fri, 21 Nov 2025 21:43:18 +0300
-Message-ID: <20251121184424.1137669-19-mjt@tls.msk.ru>
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 20/81] esp.c: fix esp_cdb_ready() FIFO wraparound
+ limit calculation
+Date: Fri, 21 Nov 2025 21:43:19 +0300
+Message-ID: <20251121184424.1137669-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -53,30 +53,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Fix wrong assignment where the LASI parallel port was using the IRQ line of the
-LASI LAN card.
+The original calculation in commit 3cc70889a3 ("esp.c: prevent cmdfifo overflow
+in esp_cdb_ready()") subtracted cmdfifo_cdb_offset from fifo8_num_used() to
+calculate the outstanding cmdfifo length, but this is incorrect because
+fifo8_num_used() can also include wraparound data.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Instead calculate the maximum offset used by scsi_cdb_length() which is just
+the first byte after cmdfifo_cdb_offset, and then peek the entire content
+of the cmdfifo. The fifo8_peek_bufptr() result will then return the maximum
+length of remaining data up to the end of the internal cmdfifo array, which
+can then be used for the overflow check.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: 3cc70889a3 ("esp.c: prevent cmdfifo overflow in esp_cdb_ready()")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3082
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit fb722e1dc2d84529ab9aa597315b7d5ca6e2a23e)
+Link: https://lore.kernel.org/r/20250925122846.527615-2-mark.cave-ayland@ilande.co.uk
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 36ec1a829a07cd9a926b2f0ddfa5079c8dc9dae5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c5f247633e..0fbf980e11 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -573,7 +573,7 @@ static void machine_HP_B160L_init(MachineState *machine)
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index ac841dc32e..59df9ee683 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -447,7 +447,9 @@ static void write_response(ESPState *s)
  
-     /* Parallel port */
-     parallel_mm_init(addr_space, translate(NULL, LASI_LPT_HPA + 0x800), 0,
--                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA),
-+                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LPT_HPA),
-                      parallel_hds[0]);
+ static bool esp_cdb_ready(ESPState *s)
+ {
+-    int len = fifo8_num_used(&s->cmdfifo) - s->cmdfifo_cdb_offset;
++    /* scsi_cdb_length() only reads the first byte */
++    int limit = s->cmdfifo_cdb_offset + 1;
++    int len = fifo8_num_used(&s->cmdfifo);
+     const uint8_t *pbuf;
+     uint32_t n;
+     int cdblen;
+@@ -457,7 +459,7 @@ static bool esp_cdb_ready(ESPState *s)
+     }
  
-     /* PS/2 Keyboard/Mouse */
+     pbuf = fifo8_peek_bufptr(&s->cmdfifo, len, &n);
+-    if (n < len) {
++    if (n < limit) {
+         /*
+          * In normal use the cmdfifo should never wrap, but include this check
+          * to prevent a malicious guest from reading past the end of the
 -- 
 2.47.3
 
