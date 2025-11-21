@@ -2,109 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECDAC7C1DD
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FD0C7C1F8
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMciz-00007u-6H; Fri, 21 Nov 2025 20:47:43 -0500
+	id 1vMcmb-00031G-ER; Fri, 21 Nov 2025 20:51:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vMbRt-0005lV-UI
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:26:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMbaU-0002EN-4N
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vMbRh-0003ES-GM
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:25:53 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMbaG-0005VA-Sj
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771128;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1763771661;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
- b=aIjRLfeNRtVkFeW6yhhNVLjSBI+ttYg6f45nWMWpOg00DiPkoCrteJqoPEycz3y0IRkbkq
- ZqbWm+m32qjiCmIUqapk1BZrKyMbPPGhV25mAcHnFs+0DSaee1toJVLKRlsn0TZTotXzwr
- LX7m5Uq5bjOPe25XNgMAJSq/oAMuUlQ=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TzFobMVJyhBRmur9FruIDbmEkqTBfCm6pgRHaFZ+3G0=;
+ b=IZbvA9n9nAUedAD3SDb3bKbqxe6rMrygUE08MwRPtwG7/JDCqgs3ZpCBrSxe7KhGv+CMl2
+ w7lxqkNx9U8uYUhlhGT0UYU24XVC5dXHyV/X8iGghSexbFJzVx18Gc8w2OypxFCxVm37Ky
+ nhi7encZ6w5nLuYon++D8yD6owvRito=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-ncrbj46KOaiwwNgNCoSKuQ-1; Fri, 21 Nov 2025 08:07:58 -0500
-X-MC-Unique: ncrbj46KOaiwwNgNCoSKuQ-1
-X-Mimecast-MFC-AGG-ID: ncrbj46KOaiwwNgNCoSKuQ_1763730478
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-2956a694b47so34967675ad.1
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:07:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763730477; x=1764335277; darn=nongnu.org;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
- b=BCNBdAGxV0wtP9pjF5cPSUVA3VVQKO5qfULO/5jhfrf8aH/uTMuxqH99gKMcJj1Fb4
- G7gFSO5r4d7jXhr1X/Im900PTc+32NVNPKKVfnouhHr1zdtq8Pd8VLzZwe0WhUzAZnEx
- tv3ZCNJt27ezD5qXYt6RcPEvJ+ulL2xtiUvL9ITvMbvoai/V8Wo/R0ure0uIblYLRd9m
- upBxIR+Xo1GD2I9N8OB8369feeEk0mS0YgK4aGOmavzTlhCf902m+omZkZgb/WW4oqoQ
- 8uH8eV1EzInsrZovXu0E18cMl1iRjUFYa746FX6H7nuZq48uYCIE0QUwHV371l17Xdmu
- E4pA==
+ us-mta-597--fQbIDecOtSdifQdcIAg_w-1; Fri, 21 Nov 2025 08:13:59 -0500
+X-MC-Unique: -fQbIDecOtSdifQdcIAg_w-1
+X-Mimecast-MFC-AGG-ID: -fQbIDecOtSdifQdcIAg_w_1763730838
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477a60a23adso13599775e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 05:13:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763730477; x=1764335277;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HvfEuZqsYtGOsOMoRJb/pPk3SZPKfOA52jDeyhimdME=;
- b=jT8+Na/mJvzC8ee68hox3dDabBME0XM5+OVBcyDzKznH96SdD8SqNlGeqdvmio0qac
- /Yys518sxa4TvSUy/Ug1pWkXjYeiFUYLpie7w1ojw+YNK/qewujR0or9t611MKrTZpOH
- 0TtqYaFn+pQhaAtU4grMPcRhLeLS+vI1fDVKB28oSxdWYUbqIXOib5P1j0yL2/4Vv0pR
- 4knaMsmu/bN6XiRekYnhNg9A2OfbfblzGQva1HmhBgRZ65YN4IKEZPmq3FgRtCYLo+r2
- P7tZdaydqjLj/4puKnSYdq3MuK25Ub4mr5LTAMJyMpxScjWxS1D1335ywLftzJgNh+56
- f/aQ==
-X-Gm-Message-State: AOJu0YxqPbpHk7RX+dKZAdUNcRQ3S7iMXfVYqyp+BiVAG9EXvcAqyuT7
- OBClyWILmH9d7JM+Mf0aWyiKKDAP3f/Tmks8TbW/Tukf4yzJ+bH+GqXdd4z7eyUdXX/+HbHCufw
- HX6tHQnSeaeN3THGiXHsCPNXEZbKP3D4Dqxv6hRWs4s18kLAQ1FbAaywR
-X-Gm-Gg: ASbGncvt4JvWysNL7yuSmjqiaDurGyMNuAQBz8vGw5iiBrYBV/UYl8dQ6oH1YgoczvA
- Qay98CP7Otb5DBItpcMWM2Siua80KUaANV66KKfJXy9MU61Wa+vLJ5ZQ3e207YJF0PvWDEcudhx
- GdcgMzlErrv3+PLf82+/J455bCnmU8P9LqhNdGGt2tAT01q1B4u8HhNJJPsVsi15wdTCG7zP+Pp
- 21QuiysM5zV0M7w4BdDQX2G+ByjG8o4zqlj3uuQPJ68W/HlEM1yhp2srpRrl3a9SbOjWv5mCUKj
- fxLBA0bRNeKwSXcIejAUT/HBDswfSQUHLPGYyWCRJFz6lpQvmaPXaapm2b9vc2Tw4pIIEEj1XHw
- T1dHIBl7mB6QwAejylVt4CMcR7ubOPN2Q0CJ/et0+GUhQEYh5n0y/ul4E
-X-Received: by 2002:a17:903:2450:b0:27d:69cc:9a6 with SMTP id
- d9443c01a7336-29b6bf7f26cmr29578845ad.53.1763730477490; 
- Fri, 21 Nov 2025 05:07:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGUrdLgpZVnB+pqYJctbNVZLzgUbKIPWyNoVZITw+yxhokcZ5qqG6O/Psx+AKJ591Hk9ULgKQ==
-X-Received: by 2002:a17:903:2450:b0:27d:69cc:9a6 with SMTP id
- d9443c01a7336-29b6bf7f26cmr29578475ad.53.1763730476969; 
- Fri, 21 Nov 2025 05:07:56 -0800 (PST)
-Received: from smtpclient.apple ([106.212.87.16])
+ d=1e100.net; s=20230601; t=1763730838; x=1764335638;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TzFobMVJyhBRmur9FruIDbmEkqTBfCm6pgRHaFZ+3G0=;
+ b=kKUsjgJdAKdeyq3G5LBgbDIX/9F+KQKYv50VHDtxFUpKRWolgtFgJ5slTNI9AkWZ4v
+ LF9OmjQkYisNSGyMNK1qj/lgeAGeCiBnl7j9NPF2nHNT6cH7QaEc6UJQx4lO6vKu2NTH
+ aB/S3Og23POvQ5kv18zakRPrYT6IB4eyPt5GQgv6e2GYEkdVz+b8JiaSB7lZ9ICP4gyI
+ o6NE1oocTWiGh3XMPpVnXAvpWmtQsgH1ShJJZ6BDEEoZ+O4gWihUJeudZlzVApmJe5PQ
+ mrUAH3V6aASQM9fHcqPQsk1QHPsDBiMz1oWgoIAF69czJgbM6p5Pg+g+IGG9zzDu3G3f
+ E7JA==
+X-Gm-Message-State: AOJu0Yy/cTTNL/kGqpsK45PzvjHuFqnfCqtR2pdus5uvcOG/YFDtaLWe
+ V7tX/YcGECTWDXJjjMXThGYgSU77paDH0GFcOqwiy19DmElkMXYoVHuZ82pTvF3fE7Ggh33+1mU
+ b4srj5EVj5VplIwWGsKwtSxW71ldkUNs7fuPOqad/A0bkkZoAcsqxDPJ/
+X-Gm-Gg: ASbGncuxrzykoEFU65Cg+GbhfzukLDWQ4SK9qPC0EFw6r5hg4p7iVplyNxEKZb1I0eB
+ ia6u/fiNEX3j/Xmip7u9mjReEJ9O3MsVhTV1myWevDmQs19hzA90o01KcmA7vp1DXS3QHwlPuS9
+ mt4+kSbcRwHszvK21B1rTwxnbaV9T1rkUYlourbLxq9XOkIyw3L5kcUyoJBL22YJjiRYED2KEiC
+ 8qDf6IoOVfglI99XPWcEzeFc35YcKFXPgRincl+lltQmZZ53fKm91hp80FmXRy8aBwBsRBYGulb
+ YRAAMehT98o9xB7B89nrBHxUpM5ryrDYsZCsHGZF3T9E21JldgstZ/iwRnIL1/fxZvkpFmLmGOU
+ Jd/f3LiVCD7eQuapR1mACwJCXQ3eeIxJG486zt2RAwCoqwFhBonYLLdS2gw==
+X-Received: by 2002:a05:600c:3553:b0:477:7a78:3016 with SMTP id
+ 5b1f17b1804b1-477c0170782mr21639465e9.8.1763730838132; 
+ Fri, 21 Nov 2025 05:13:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHR0aAO5to1fWMNaufn5kLIe/sQzUAYgZkQQBAhUpH8uGlxn0fHAFNU/j/19ByAepZdnHJiaA==
+X-Received: by 2002:a05:600c:3553:b0:477:7a78:3016 with SMTP id
+ 5b1f17b1804b1-477c0170782mr21639245e9.8.1763730837710; 
+ Fri, 21 Nov 2025 05:13:57 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-bd75b61c29dsm5589954a12.0.2025.11.21.05.07.53
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 21 Nov 2025 05:07:56 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.7\))
-Subject: Re: [PATCH 3/4] igvm: add trace point for igvm file loading and
- processing
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20251118122133.1695767-4-kraxel@redhat.com>
-Date: Fri, 21 Nov 2025 18:37:41 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Luigi Leonardi <leonardi@redhat.com>, Oliver Steffen <osteffen@redhat.com>,
- Michael Tsirkin <mst@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3BCC9E21-2EB5-4D63-B2E3-923F5BB9BBE4@redhat.com>
-References: <20251118122133.1695767-1-kraxel@redhat.com>
- <20251118122133.1695767-4-kraxel@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-X-Mailer: Apple Mail (2.3776.700.51.11.7)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ 5b1f17b1804b1-477c0d85360sm33313175e9.15.2025.11.21.05.13.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Nov 2025 05:13:57 -0800 (PST)
+Message-ID: <3097d58e-3793-4434-8beb-2e4f4c52f772@redhat.com>
+Date: Fri, 21 Nov 2025 14:13:55 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 06/21] hw/arm/smmuv3: Thread SEC_SID through helper APIs
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
+ <20251012150701.4127034-7-tangtao1634@phytium.com.cn>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251012150701.4127034-7-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,77 +106,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-> On 18 Nov 2025, at 5:51=E2=80=AFPM, Gerd Hoffmann <kraxel@redhat.com> =
-wrote:
->=20
-Please add some description to the patch =E2=80=A6
+On 10/12/25 5:06 PM, Tao Tang wrote:
+> Extend the register and queue helper routines to accept an explicit
+> SEC_SID argument instead of hard-coding the non-secure bank.
+>
+> All existing callers are updated to pass SMMU_SEC_SID_NS, so the
+> behavior remains identical. This prepares the code for handling
+> additional security state banks in the future. So Non-secure state
+> is the only state bank supported for now.
+>
+> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-
-Modulo above ..
-
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-
-
+Eric
 > ---
-> backends/igvm.c       | 5 +++++
-> backends/trace-events | 2 ++
-> 2 files changed, 7 insertions(+)
->=20
-> diff --git a/backends/igvm.c b/backends/igvm.c
-> index 05d197fdfe85..a350c890cc95 100644
-> --- a/backends/igvm.c
-> +++ b/backends/igvm.c
-> @@ -18,6 +18,8 @@
-> #include "system/address-spaces.h"
-> #include "hw/core/cpu.h"
->=20
-> +#include "trace.h"
-> +
-> #include <igvm/igvm.h>
-> #include <igvm/igvm_defs.h>
->=20
-> @@ -884,6 +886,8 @@ IgvmHandle qigvm_file_init(char *filename, Error =
-**errp)
->         error_setg(errp, "Unable to parse IGVM file %s: %d", filename, =
-igvm);
->         return -1;
->     }
-> +
-> +    trace_igvm_file_loaded(filename, igvm);
->     return igvm;
-> }
->=20
-> @@ -901,6 +905,7 @@ int qigvm_process_file(IgvmCfg *cfg, =
-ConfidentialGuestSupport *cgs,
->         return -1;
->     }
->     ctx.file =3D cfg->file;
-> +    trace_igvm_process_file(cfg->file, onlyVpContext);
->=20
->     /*
->      * The ConfidentialGuestSupport object is optional and allows a =
-confidential
-> diff --git a/backends/trace-events b/backends/trace-events
-> index 45ac46dc2454..7a00e9bf6c16 100644
-> --- a/backends/trace-events
-> +++ b/backends/trace-events
-> @@ -26,3 +26,5 @@ iommufd_backend_invalidate_cache(int iommufd, =
-uint32_t id, uint32_t data_type, u
-> igvm_reset_enter(int type) "type=3D%u"
-> igvm_reset_hold(int type) "type=3D%u"
-> igvm_reset_exit(int type) "type=3D%u"
-> +igvm_file_loaded(const char *fn, int32_t handle) "fn=3D%s, =
-handle=3D0x%x"
-> +igvm_process_file(int32_t handle, bool context_only) "handle=3D0x%x =
-context-only=3D%d"
-> --=20
-> 2.51.1
->=20
+>  hw/arm/smmuv3-internal.h | 21 +++++++++------------
+>  hw/arm/smmuv3.c          | 15 ++++++++-------
+>  2 files changed, 17 insertions(+), 19 deletions(-)
+>
+> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> index 858bc206a2..af0e0b32b3 100644
+> --- a/hw/arm/smmuv3-internal.h
+> +++ b/hw/arm/smmuv3-internal.h
+> @@ -246,9 +246,8 @@ REG64(S_EVENTQ_IRQ_CFG0,    0x80b0)
+>  REG32(S_EVENTQ_IRQ_CFG1,    0x80b8)
+>  REG32(S_EVENTQ_IRQ_CFG2,    0x80bc)
+>  
+> -static inline int smmu_enabled(SMMUv3State *s)
+> +static inline int smmu_enabled(SMMUv3State *s, SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      return FIELD_EX32(bank->cr[0], CR0, SMMUEN);
+>  }
+> @@ -276,16 +275,16 @@ static inline uint32_t smmuv3_idreg(int regoffset)
+>      return smmuv3_ids[regoffset / 4];
+>  }
+>  
+> -static inline bool smmuv3_eventq_irq_enabled(SMMUv3State *s)
+> +static inline bool smmuv3_eventq_irq_enabled(SMMUv3State *s,
+> +                                             SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      return FIELD_EX32(bank->irq_ctrl, IRQ_CTRL, EVENTQ_IRQEN);
+>  }
+>  
+> -static inline bool smmuv3_gerror_irq_enabled(SMMUv3State *s)
+> +static inline bool smmuv3_gerror_irq_enabled(SMMUv3State *s,
+> +                                             SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      return FIELD_EX32(bank->irq_ctrl, IRQ_CTRL, GERROR_IRQEN);
+>  }
+> @@ -330,23 +329,21 @@ static inline void queue_cons_incr(SMMUQueue *q)
+>      q->cons = deposit32(q->cons, 0, q->log2size + 1, q->cons + 1);
+>  }
+>  
+> -static inline bool smmuv3_cmdq_enabled(SMMUv3State *s)
+> +static inline bool smmuv3_cmdq_enabled(SMMUv3State *s, SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      return FIELD_EX32(bank->cr[0], CR0, CMDQEN);
+>  }
+>  
+> -static inline bool smmuv3_eventq_enabled(SMMUv3State *s)
+> +static inline bool smmuv3_eventq_enabled(SMMUv3State *s, SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      return FIELD_EX32(bank->cr[0], CR0, EVENTQEN);
+>  }
+>  
+> -static inline void smmu_write_cmdq_err(SMMUv3State *s, uint32_t err_type)
+> +static inline void smmu_write_cmdq_err(SMMUv3State *s, uint32_t err_type,
+> +                                       SMMUSecSID sec_sid)
+>  {
+> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>      SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>      bank->cmdq.cons = FIELD_DP32(bank->cmdq.cons, CMDQ_CONS, ERR, err_type);
+>  }
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 9c085ac678..6d05bb1310 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -57,7 +57,7 @@ static void smmuv3_trigger_irq(SMMUv3State *s, SMMUIrq irq,
+>  
+>      switch (irq) {
+>      case SMMU_IRQ_EVTQ:
+> -        pulse = smmuv3_eventq_irq_enabled(s);
+> +        pulse = smmuv3_eventq_irq_enabled(s, sec_sid);
+>          break;
+>      case SMMU_IRQ_PRIQ:
+>          qemu_log_mask(LOG_UNIMP, "PRI not yet supported\n");
+> @@ -77,7 +77,7 @@ static void smmuv3_trigger_irq(SMMUv3State *s, SMMUIrq irq,
+>          bank->gerror ^= new_gerrors;
+>          trace_smmuv3_write_gerror(new_gerrors, bank->gerror);
+>  
+> -        pulse = smmuv3_gerror_irq_enabled(s);
+> +        pulse = smmuv3_gerror_irq_enabled(s, sec_sid);
+>          break;
+>      }
+>      }
+> @@ -153,7 +153,7 @@ static MemTxResult smmuv3_write_eventq(SMMUv3State *s, Evt *evt)
+>      SMMUQueue *q = &bank->eventq;
+>      MemTxResult r;
+>  
+> -    if (!smmuv3_eventq_enabled(s)) {
+> +    if (!smmuv3_eventq_enabled(s, sec_sid)) {
+>          return MEMTX_ERROR;
+>      }
+>  
+> @@ -176,8 +176,9 @@ void smmuv3_record_event(SMMUv3State *s, SMMUEventInfo *info)
+>  {
+>      Evt evt = {};
+>      MemTxResult r;
+> +    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>  
+> -    if (!smmuv3_eventq_enabled(s)) {
+> +    if (!smmuv3_eventq_enabled(s, sec_sid)) {
+>          return;
+>      }
+>  
+> @@ -1070,7 +1071,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+>  
+>      qemu_mutex_lock(&s->mutex);
+>  
+> -    if (!smmu_enabled(s)) {
+> +    if (!smmu_enabled(s, sec_sid)) {
+>          if (FIELD_EX32(bank->gbpa, GBPA, ABORT)) {
+>              status = SMMU_TRANS_ABORT;
+>          } else {
+> @@ -1300,7 +1301,7 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+>      SMMUQueue *q = &bank->cmdq;
+>      SMMUCommandType type = 0;
+>  
+> -    if (!smmuv3_cmdq_enabled(s)) {
+> +    if (!smmuv3_cmdq_enabled(s, sec_sid)) {
+>          return 0;
+>      }
+>      /*
+> @@ -1513,7 +1514,7 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+>  
+>      if (cmd_error) {
+>          trace_smmuv3_cmdq_consume_error(smmu_cmd_string(type), cmd_error);
+> -        smmu_write_cmdq_err(s, cmd_error);
+> +        smmu_write_cmdq_err(s, cmd_error, sec_sid);
+>          smmuv3_trigger_irq(s, SMMU_IRQ_GERROR, R_GERROR_CMDQ_ERR_MASK);
+>      }
+>  
 
 
