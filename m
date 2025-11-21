@@ -2,174 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDFAC77BE9
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 08:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B5FC77C68
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 08:59:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMLrL-00049L-Pu; Fri, 21 Nov 2025 02:47:11 -0500
+	id 1vMM2S-0001SL-Hh; Fri, 21 Nov 2025 02:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vMLrI-00046I-Lf
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:47:08 -0500
-Received: from mail-southcentralusazlp170120001.outbound.protection.outlook.com
- ([2a01:111:f403:c10d::1] helo=SN4PR2101CU001.outbound.protection.outlook.com)
+ id 1vMM2Q-0001S6-KE
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:58:38 -0500
+Received: from mail-westus3azlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c107::3] helo=PH0PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vMLrG-0006Xf-3G
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:47:08 -0500
+ id 1vMM2O-0000Fe-2r
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 02:58:38 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pWmT/37OsfDZY0XtfVnCgOZkNeJxUkLAqcdB8uz6NZXceSf/Q16kTX2OOsgwe1o5089vZkbb2kuEbwnzUCPU29PRtWzEDlsjzAzHtB0fFWzwcMIcpoH8SoL3GK1oBqdma9eLqIS6sqpAeSICHvtf+HJe6oasbM+hOVH98uKmE/FKWbJ+/sktBsN5t6raff45NAxBJHKGjzbMbGvV2M8B/RgZgj6VqwidNPiCh5pb3iJ6GXB8RmriFHi1sLb40mgYtFkUtyr8hKj93DKeI3z1zRVMbQ6E62Jw2AK7Dt/vD/pVqEhQaZMwL83P8GWN7Kke/sjX/jFJ9MgrMhBW6+/OJQ==
+ b=gunHEb8mFa4sXbuXf4+YfjTTXIGX0hH/EJmfbHOovcHtiKuflkVo3npOapWbakk0Pxye5TLmR9yePE1Zovr1q47xn+iNZFM+VowAVoUlauKq4m4HiKeM4pQ1g32o2/sx/LWKPii1Kgp8lfaT5EaQs+C5C3sqtpduSjfnUu5nRBx1M4nHdhHhE9oYPBXO5cJnuLVD8a8XOB0LBLQS9B2S9yBOs5/wqD4uoma2i+AN/mremy/IjQqR26XWxoKE2uKhhIzuGJWPMRWOO8YRFGp4UYwZ29tlzvrdwnPUzcuQefeMgoeEJfUrjCi45tW3sqOVJBJtryEK3Fun+t/NomOJAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hsbNnKjTlHQr27WE72uu4bAY8Vq8xtyRB3oHjEyfZk4=;
- b=qHBkjpCP0Scx1+Ha97TApGpGNnfIA7dHANA7/d/9hCCIfys+b/pNSm7Wyj5hSep9WLBN+1/c8v+mCAtq07Qc4Y696uiS7cEtxvRmOh058qC/C3NMOgWUvXJm7tWi5KWwhWCSdGZZcSu/0qXnlIv0onpM/h5b1Hqv0Xa01u4vWvPDYqUM0Ip3kXm9OEapg+rXhILtH2APl3gydOObxrK3i+DX+TIr99abGHkRI5tX4lRYm0HDzcXXkdsaTW7Chhm3hWj5Tl6GonzRfMCkz1jRU5mOdfI9kX4DV3knQPwpKD+gube3PsaLR3z2z3X+Kj5QZEQs3EO3FXt9pCK7BwwdgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=INh5Fnc8e7lU2ULliVl5JS8utZa/zsfiC7gWfWK0D28=;
+ b=QEReRzJaIPKn92ZTH5EZfRlcNUq0rvz2lHcOSFUCERi2WjcDrXQMN9L+GxJbfphtflkwTyOZl4c/lQ3/RcmNSjtJ1+pCepn2PV+0Pngro1+ngQ+yXrNHWtG9jDEiCMrMDoSsNek/ljRA0SKJF9q6mLYhLTRS6DS0sr2BCDJM07cryuQJ2Pqd1z2k7giur5/fTje/ECWCO8Z8yhc4duY4o3Y+TMtkwPhsKJ7fe3dQSuLPdn0rJLph31DvLFavGW+OVf2QK7p9UaCdtDx7Msoonc5+eUyvHd04up3YGUNA0S3VihE4BJ185nnh0Dvz/J6YhBpi8HUAeGQFEKnZsT4ctA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hsbNnKjTlHQr27WE72uu4bAY8Vq8xtyRB3oHjEyfZk4=;
- b=xSTjTEZ9BzuF2JrIgJZyhkCTAXEg8kRIW1xC47pxJrDOrEF9KSPmZyirNgJvHKUHvz4vioPzX6OkfHfY3bakOZ1a+gevyF61mvHOtRklcPvAWTXp17wcC7x6Uybtk1IPtlHbgF2JWtjQfFCeP8X09sRwgPTb+cvIifnpAF5Y0AU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
- by PH8PR12MB7229.namprd12.prod.outlook.com (2603:10b6:510:227::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
- 2025 07:47:00 +0000
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::273a:80c9:35fc:6941]) by IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::273a:80c9:35fc:6941%3]) with mapi id 15.20.9275.015; Fri, 21 Nov 2025
- 07:47:00 +0000
-Message-ID: <35a8add7-da49-4833-9e69-d213f52c771a@amd.com>
-Date: Fri, 21 Nov 2025 15:46:53 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v2 1/3] virtio-gpu: Add support for
- VIRTIO_GPU_BLOB_FLAG_USE_USERPTR flag
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, Ray.Huang@amd.com, dmitry.osipenko@collabora.com,
- alex.bennee@linaro.org
-References: <20251121024705.1403042-1-honghuan@amd.com>
- <20251121024705.1403042-2-honghuan@amd.com>
- <b6f4cc26-7ebe-4b07-8e50-257b6f53d309@rsg.ci.i.u-tokyo.ac.jp>
- <db263884-6159-4d25-8c40-44dd78291714@amd.com>
- <ca2e398e-8158-4845-9798-6f444a73b103@rsg.ci.i.u-tokyo.ac.jp>
- <c33300b0-b4db-44b0-be07-4e4382a0c0fb@amd.com>
- <21b94d50-79c4-4942-84f7-f4c96f432dd8@rsg.ci.i.u-tokyo.ac.jp>
- <dd14c464-bd74-4d0d-9578-e28367319475@amd.com>
- <9b48903e-09eb-453a-aa8f-903fca99cb7d@rsg.ci.i.u-tokyo.ac.jp>
- <f95196fe-27c8-4eef-8b64-b1ede138425d@amd.com>
- <24853a9b-9f75-4e69-a9e8-5ff796d6cc9f@rsg.ci.i.u-tokyo.ac.jp>
-Content-Language: en-US
+ bh=INh5Fnc8e7lU2ULliVl5JS8utZa/zsfiC7gWfWK0D28=;
+ b=4IA9UTWdgsngQkFYbBwThN2qXTcJXUCK0lUpSHliSdQ0dLoYEA/MAAmGB6Lpyp9HcVYoJQe4ahp/j6Vbpezc0AeVZNZ7MnF02hm65fn/molHqxhus3OzvyCQIFQvmy6vFe4p1pSAwipFjWMDLS/+YBr19Ss3gOoaTvr+T7RF7ok=
+Received: from MN2PR01CA0039.prod.exchangelabs.com (2603:10b6:208:23f::8) by
+ BY5PR12MB4162.namprd12.prod.outlook.com (2603:10b6:a03:201::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.12; Fri, 21 Nov
+ 2025 07:58:25 +0000
+Received: from BL02EPF00021F6D.namprd02.prod.outlook.com
+ (2603:10b6:208:23f:cafe::33) by MN2PR01CA0039.outlook.office365.com
+ (2603:10b6:208:23f::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.11 via Frontend Transport; Fri,
+ 21 Nov 2025 07:55:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF00021F6D.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 07:58:25 +0000
+Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 20 Nov
+ 2025 23:58:20 -0800
 From: Honglei Huang <honghuan@amd.com>
-In-Reply-To: <24853a9b-9f75-4e69-a9e8-5ff796d6cc9f@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG3P274CA0014.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::26)
- To IA1PR12MB6435.namprd12.prod.outlook.com
- (2603:10b6:208:3ad::10)
+To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
+ <odaki@rsg.ci.i.u-tokyo.ac.jp>, <armbru@redhat.com>
+CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
+ <qemu-devel@nongnu.org>, <Ray.Huang@amd.com>, Honglei Huang
+ <honghuan@amd.com>
+Subject: [v4] virtio-gpu: use consistent error checking style for
+ virtio_gpu_create_mapping_iov
+Date: Fri, 21 Nov 2025 15:58:02 +0800
+Message-ID: <20251121075802.1637598-1-honghuan@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|PH8PR12MB7229:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0dced76-8c99-4dc0-6f82-08de28d2273b
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6D:EE_|BY5PR12MB4162:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0fb2fd3-71b5-48e2-f8b7-08de28d3bf9a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?VE91eWN5bXBPYzdMRmtGdzNKU0J4Q3g1eDMxbGMwSkdBQVppQzd0RHpZVTBY?=
- =?utf-8?B?MlVDYkkxemRtMnJQQVpna05FRmxWMDVqcTgvTThOSFhGLzM3Y3YvNWszZ3VP?=
- =?utf-8?B?MTAwOTRyd0ZwdHcvWWdiUlBscE1xL2J4UkVXUEx0OHgzN2R5ZGsyODRMZlFw?=
- =?utf-8?B?b0tZazRNK2FpV1JpcE9lMzdyTzQvaDVOR0w4aWtsZWp4VU9qZFFNdE9JNHBQ?=
- =?utf-8?B?YW9nVWtUb3loaitlVTlUcjNOVzFzbnYwNG1XVUlVYnQyL25rZVVLRmNCeS9z?=
- =?utf-8?B?S3VmeFh6VHRuWFlJaWwvTFFib2pjSFR2SFNSNW1ISTdCbDRHNUFKdkttSTVO?=
- =?utf-8?B?NzNjT280U20xSEd3Ny84QWt6ZXVabkFLL21KUGE4dXMyQklhWHBUYWJDc1Bh?=
- =?utf-8?B?OE81V0o2bWFPRlhLbWFhcjN1NTZ0V1p0SEJ6Vjg5dG5SOUxIQnZyYTZVOFBQ?=
- =?utf-8?B?czhhemJNYUU3ZUREeUtXWkpsdjd4eHIzRlpmNU9TQW14cnNtQUp3NUVCcmlm?=
- =?utf-8?B?S0RraVFjbGIyYjVPeG1Zc3Vlbm5sR0FlQjZEVW5MWTA0OHZ1UGt5S2tGdGZF?=
- =?utf-8?B?MEo2SXhiRUxyWTI2ZXN2TXY2WHZ4WUY3ZHJxb1N5cHNZLzZURTExby9GUnJ6?=
- =?utf-8?B?YVA4RkhzS2FSWnMzQ1dsdXo5ZThndmFjeW10aElRNys0cWo1KzJXNkpCeU92?=
- =?utf-8?B?UmNJSkd1LzN6bElUdVJiQjhySnloYWdEeDJxMjVmNnRIMUVxUm5uNG9WeCt4?=
- =?utf-8?B?M1BXbEtYSjVqTzBaZmpqZ2hBZzU4RnNOY2VpZG9qdk0wdFdlWFM3Q1BxVDl4?=
- =?utf-8?B?S0dmVC9RaDZlZXk1VlhGYTVkQkVST0RjYnAzZ0hXYmdISC9tRU9RcWxpZnhU?=
- =?utf-8?B?clkvOHVGbE1LRHVaNkszaUdMYVBSWG1uUmw2S2JxNVBRWmJxQk1RNTJXWnVY?=
- =?utf-8?B?TWtBM0ZENTdISVNVTFN1NDd6YnlWOW5yeFB4a0MySjJTeU5yYVBTZWpFV25O?=
- =?utf-8?B?VTlDWmxIQi9kK2s4Mkx6eEViVzhEeXphR3V2YUtuVlc3UUtvTVdIejhpYVN0?=
- =?utf-8?B?ZkwxKzQ1SDBiNGx3MjFkSWpYbzEwTkkyTm0xaUx3YjdNSWxvTEhhRjhPZVhl?=
- =?utf-8?B?bTBTVDR1Q1BGbVRHSzlmVUpVRXV4dFdKaUU3SE5iNUJVZm5XcEFra21lVDdi?=
- =?utf-8?B?bUVXV1RySm9ZWVFGRGl5MS9NdnBqYjkzcEFXaVdDSTF5ZUExRFI4cXk4ZVhI?=
- =?utf-8?B?eUU3aDROdWpPM0VoSjBiU3BwRmwvT3hCaXo0bkFtM1NoajJkZHhIWkxDcC9I?=
- =?utf-8?B?dmVTTUxYT0h4eEp1Z0t4eVBXa2V4R2J2ZlFmZFBRN1c4NEk4VXZua1kwTXNE?=
- =?utf-8?B?K0sxUW14N0VyaXpkVDZTTEVvOVczcGJkZElFMkhtUUpoNG9vNElMNmk0TUt1?=
- =?utf-8?B?MEg0S1JRRXhMTnNTZVd6TTRWS1dlTGVxUldPTS9QcEtnN2ZWV09ZaUxkcE94?=
- =?utf-8?B?RUtuMGcyUkpkY01Cbmh5UEU2MWpXbVNXeEFFTjJrZFRBbFlKaDB3bkppU3Ns?=
- =?utf-8?B?ekFxeVpERlF6cEE0cFBMaUcyWFhkbHIrbHFwYWJMZTVEbWhKTkdiVkE1WkV4?=
- =?utf-8?B?T1NGMTZlTXNIMDU1bWVMak1yVjMrb1FzMDRmVjNCT3VDcU4xY2txVDRjM3pv?=
- =?utf-8?B?VDJNL3pCZlhyd2NhRjJNU3BJOVVIaHB3OHUvVjJJK0UycTJVNWl3eW1BKzZh?=
- =?utf-8?B?M2pUVmhsZ3FtYXRUbENYcFQ5MjQyRnk3YU5TMmJPZlJmRjFvUndYZUQ2cTR0?=
- =?utf-8?B?N0U3aWRiK0ZLVEdMRlVaaTFsRmxxVmUwMnFhWHo4c0tEeUwwSms2c3ZlUEpT?=
- =?utf-8?B?WU5tQVJtclNkV1hIeVB3SDZnN3RHMmJCQUM5aVorQjNId3c9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR12MB6435.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NmxRSUpYbzBEdEs1Q1B5aStnWGNocmJqcSt1NjJ0Z3FYdWNWMW9ydmcxKzVU?=
- =?utf-8?B?L2hMSnBsMmhmbVpFV3hVd1hhTnFTRWlZaE1IdG9TMkh1Uk5tSHN2SHpadWV0?=
- =?utf-8?B?N1RTbElTWDhsdm9NWjNzcE5rTHpWd0ZVZHB1RVFkUWFvU3NoRjRub3dhZkow?=
- =?utf-8?B?b0NVWjZTVFBOTjNaVWd1NTZEY21tM1Z4Q2p1WWlEa0ZQS01SckZHcElDNCtv?=
- =?utf-8?B?K0pMdTRKRUFmNms3Y2x4dEF1ZWZFTVJ3NG1OQWZvQ2FpN0M3b1hxQjJ6SXJS?=
- =?utf-8?B?M3QrYS9IeWZHODFiYm0rMVY2RzlaQzVVSEZoeEk4dzlrM2ZtNlEraHFqU295?=
- =?utf-8?B?VkpFUjhBV1VEY1R0UFU5VThuallEMlpMVDMvcE9aWlAxaFhCbkxjZ1F5d2N3?=
- =?utf-8?B?SzNXVHdZa1RIZTVqWTNKK1VtMC8vVFEreGhuZjc2bE9QYlBRVSsybkNFWkVl?=
- =?utf-8?B?eHlpUXd4OG1xM0p3enJJL2w1cEkrUWg0YTErMEpTbnpkV0lteHhLVG5aMXY5?=
- =?utf-8?B?TjBHcHN3bGVlYzI0Rm5HUmZZNGRkWnZpT2QyclVxNERaRDNmWkZWSmpvaU9M?=
- =?utf-8?B?MkRtMWxRNXZVVk81TUdKWE9maW9xclk2NVJFZVBIZkJIQ1NJWnJRR3UvckZZ?=
- =?utf-8?B?N1RxbjRManp6dXFUcmhKUHM4NytSN04yc1liTzJabjB5OG5aUjg1RHYrd3M2?=
- =?utf-8?B?d0tHaVdHN2M5enZ1R0lhbHZRNUEybzR1bm5jc1oyNnNYSktyU3hpcS9UZWhq?=
- =?utf-8?B?UnFPOGxKWWI3Z05PT1pybkxlcll5SDl4ZFAzUk5GWWV1OWR4Y1Q1TEZrNUx5?=
- =?utf-8?B?Umh1c3dIWkZkR1V3bXJKZytPb3A3a0t6N0pnaXREVXU2bHh1Ym9sWEwyZmNL?=
- =?utf-8?B?MnJrMXlRYUo2TzNLY1FPdytENUpGT28yQllwb0V3VjRkNWp2YW1RbU9OazEz?=
- =?utf-8?B?b0ViaGN3aUtIOEpQWTkwQVhMRFBpNFhLbHByMSs0TktXcE14Zlg3QVNoMXJZ?=
- =?utf-8?B?VTlab2lvSHJuVEhVVU1YZXZXWERBcndCd0o2RWNiQlNueVY4R3ZlQ05nMzEw?=
- =?utf-8?B?NndVb0Y1L0swY1g3ZVphQVJEQXJyNGI1MmZESkszM1NJc2xWblZnUVpqMWd5?=
- =?utf-8?B?UVpaREo2SXZkT20wUmkrUEpSa0Q5Z213Q25waXdlempVa3VKcnZJRFBDYncr?=
- =?utf-8?B?QWh1U0wrVmFFRGNkdnF2R0d4Qk9lRklnc1ZDK3BCR1BUY2dEbGJ4b3BBcnFr?=
- =?utf-8?B?N0NmYUduMVBQaTlMRWRrcE9VSEVFd3hNcDJISGJkMzlCNHMxR3duazNTbUo1?=
- =?utf-8?B?UFFGWGtwd0szOUpWMFJJbFZUa1YzN1J6TXJqa0FYRTNKSzFjb1dPNFVacE1I?=
- =?utf-8?B?NVpPUDZvaEMzd1NsL2VPSUIydkJnUUVZVzR2RmZqNG1HMzJjMkxvSEd6Nkpt?=
- =?utf-8?B?eXJqTkRIUDhaN1RzM2NwOEs1cTVIOHZZWHpkbkI1a2ZqNDlaZTh3ak5nUkNt?=
- =?utf-8?B?U2QyOWQzb09kK0ZSU3p4Wm1qeGZDc09FK2o4UGM0WGEvdWxnZ0hoTkRPemc3?=
- =?utf-8?B?NlkzRk00MW8xL0lSTnhVTmZrUHhWeU9RTE43YlBjNDB2MEFGZjd4Q1prVVNz?=
- =?utf-8?B?bXk5SUNuZmJLS01zVWdheFNLRnZEcC9nVTZ4OE5rS0YxNVZuRDhydGg4RlhO?=
- =?utf-8?B?d3BKTzlQQ2t1K2NTcUlVcFAxRnFWYmhRRGxFcWFGZmNRak5mYlZXOUFNZG5y?=
- =?utf-8?B?QllRVzd0Z0JaY3VFUCtRR2lwZzRxaU1pdnhmcUdJcHBTZDArRThJZzR3Qjlz?=
- =?utf-8?B?NlRISWVxUXJLbFpzVHJOdExBMWJ0VzZ5QWhpU1JlRHpzRm56bVJiQXRaZEM0?=
- =?utf-8?B?ajBEajZpWk15ZjQ3MWZXYXJmNnFSVHlKcEVicVFoSGlVNC9CckdPK1ppbFJy?=
- =?utf-8?B?ZW9OZXI0RWwzYjRyaENJTzFyWEJEd3lEK0FwbFpDbzJQbzFkRld6UVh0NVU5?=
- =?utf-8?B?Z0wyU1hYMElHeURhSjRyZ2xjUmFSYzJ1YlBxUXhUY092UDR3RVA4WS95M3du?=
- =?utf-8?B?djNRSGhiVjByT3JCTTQ4UVhuYVFKUXN6bmlpUjM2MzZ2c3NQN29sVHBlVHlj?=
- =?utf-8?Q?kqLOFZaIExWpYPwEQ7ZI0agIA?=
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?HcX6FWW7reaQVFSklBx+PYkbmYG3FWg5jEiWgjXtExtzOuC9mtBBFUKiFp/a?=
+ =?us-ascii?Q?fS8NeKsevvNs/zXbaCYKJ7Xc4IlOuiLTrJd2osCL5Df6Gfi+u1cBT/K3TuqQ?=
+ =?us-ascii?Q?sr4HpQkGY9VMZOMFmpME7vlMj2Eulffu4TeG4+rcCSDNWBjWZoML5TPQDSo1?=
+ =?us-ascii?Q?2cCFb/EmGD5nbv0thiGYyY6Dc7/aHdaNVKoUVv8Eqq/dwCEGdZq5cZPoG1kn?=
+ =?us-ascii?Q?w/Yv9cizQ/TGDXgpfbl/aX9y0dZbkooGiVFXqwh02FCqleMOyFkPJpUJdFaR?=
+ =?us-ascii?Q?hjN6SSqvVy74tN2KWsT9T3rf4rtec5iqiNwTCX7h4MQislDg9CLHcUYC2PJf?=
+ =?us-ascii?Q?0mEmCZfYoYQaSqIKcCHFbbeu/jaoabGOJmatUqVpxo+kPvxhb3iXxrkbZH7m?=
+ =?us-ascii?Q?pzpWP/ahNVka9ye24/FvAl5xVUANIj59NBKSGF/FeAb7/LRixBdSkmM8KEy8?=
+ =?us-ascii?Q?bfsIy+UVQGxzx2bQ1dmMfFCJSiL+pRBW+SSZaBVwmhUINpjVQQ3aCxqse/+d?=
+ =?us-ascii?Q?dFileiwUPXTToBtf7UGvH+/xYdJuzFCmU98bKQAp7X0ohcn2eC4OCDoQnFAK?=
+ =?us-ascii?Q?/e23BC+gzwlvl6Q3lOCIo3aPXEzer0YjMj51hiWldqjolIXa66ORMS+OeLvk?=
+ =?us-ascii?Q?NTpJss8Skonw1Zq0rKw4LojyRVBbIQjY4R2so+mBYGkdJErf+wX+w0q2h9Pg?=
+ =?us-ascii?Q?20Y2KxxED5jt9S+e72cYPObHKaZTq4Fpg6qzYhF4+6oyIsBg1XMEqNMqZ1uL?=
+ =?us-ascii?Q?zdQREYthFIgLpn6hrGNHzq4POhcY3s2oYLrLeiGbYJYJTdwTJqkipTCxr3M/?=
+ =?us-ascii?Q?7CdAMQnJBCS7DzInwcrb58WQbHBDQppOP4MVxFuL69QQ7lCOFSzEjFoTGj5P?=
+ =?us-ascii?Q?Qhg518wTw08jE7NwFs3ZFAGBudkAa9ch2wwqrNMuJZvJUzBCM6I11sbMYfZ/?=
+ =?us-ascii?Q?aV9e8tiJWgCPB+HKlBgKE5rIXqEoKBTLGL3hLz7GJ2vO/651f2FnyqJNumGw?=
+ =?us-ascii?Q?+CXXosyOBYAfFkXPreuf05CDYlKHK/7T+mMcBAuarmwnXIPe+DY8wOnoITJh?=
+ =?us-ascii?Q?YaeUNn67agNEgovCABNJ1in8YsR5auSuMX33EzL4rECE2Y10XiI7mKS1ZLTF?=
+ =?us-ascii?Q?bcu6+38R3WtqF3RimPdnM73HfNIgftkjFcNjD9L+dYhpuH0GdNMtrBj3IZAK?=
+ =?us-ascii?Q?3BQPjwReMifGUtEskKrzEKa9xDmQK5DtXz/WAZpKwbCJUt3Xi0367QUOHDhO?=
+ =?us-ascii?Q?k9qPeMJt1YveffemnVomYa0dNVn2k+aVOWN1b3IbNCHGysR2tMcBKQOoqvEq?=
+ =?us-ascii?Q?DX7rx8FG9UlruEdjUIlQlMpB07l+Pg7QwhfWe42CwonkECGSh9SRfPnyjjEJ?=
+ =?us-ascii?Q?f3kXziT31XuL2FgsXAV/qgoO3hqXtaG/TiSL5hw7MxR9ixa/c8t8K87zDtm3?=
+ =?us-ascii?Q?KCLfhH7O2N3svmRGN6XEgcjp1j1dOFLVSSdI4VnYBo2fa3LOvx+kyukRMBR6?=
+ =?us-ascii?Q?Jss5Z5q1WypMcj0TBvY3suhR775oLDmSNBqR/PTMMK+CU7jfg4QyunjvL+aD?=
+ =?us-ascii?Q?c9MenEC3CA4u6Cshh1Y=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0dced76-8c99-4dc0-6f82-08de28d2273b
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 07:47:00.2701 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 07:58:25.0578 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0fb2fd3-71b5-48e2-f8b7-08de28d3bf9a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6DjLmgD/6azMgFmjI7QEtB+/YVeIy/D+ZBr+j+zGiGT3t357Q7H8o1mS8cPsW4JywAuxtJ1jUL5+6xGRGNZzQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7229
-Received-SPF: permerror client-ip=2a01:111:f403:c10d::1;
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F6D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4162
+Received-SPF: permerror client-ip=2a01:111:f403:c107::3;
  envelope-from=Honglei1.Huang@amd.com;
- helo=SN4PR2101CU001.outbound.protection.outlook.com
+ helo=PH0PR06CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -185,120 +148,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix error handling logic in virgl_cmd_resource_create_blob and improve
+consistency across the codebase.
 
+virtio_gpu_create_mapping_iov() returns 0 on success and negative values
+on error, but the original code was inconsistently checking for error
+conditions using different patterns.
 
-On 2025/11/21 15:36, Akihiko Odaki wrote:
-> On 2025/11/21 15:50, Honglei Huang wrote:
->>
->>
->> On 2025/11/21 14:12, Akihiko Odaki wrote:
->>>
->>>
->>> On 2025/11/21 14:43, Honglei Huang wrote:
->>>>
->>>>
->>>> On 2025/11/21 13:28, Akihiko Odaki wrote:
->>>>> On 2025/11/21 14:21, Honglei Huang wrote:
->>>>>>
->>>>>>
->>>>>> On 2025/11/21 11:39, Akihiko Odaki wrote:
->>>>>>> On 2025/11/21 12:14, Honglei Huang wrote:
->>>>>>>>
->>>>>>>>
->>>>>>>> On 2025/11/21 10:56, Akihiko Odaki wrote:
->>>>>>>>> On 2025/11/21 11:47, Honglei Huang wrote:
->>>>>>>>>> Add support for the USE_USERPTR blob flag in virtio-gpu to enable
->>>>>>>>>> user pointer mapping for blob resources. This allows guest 
->>>>>>>>>> applications
->>>>>>>>>> to use user-allocated memory for GPU resources more efficiently.
->>>>>>>>>>
->>>>>>>>>> Changes include:
->>>>>>>>>> - Add VIRTIO_GPU_BLOB_FLAG_USE_USERPTR flag definition
->>>>>>>>>> - Enhance blob resource creation to handle userptr flag properly
->>>>>>>>>> - Remove arbitrary nr_entries limit (16384) in mapping creation
->>>>>>>>>> - Add conditional handling for userptr vs regular blob mapping
->>>>>>>>>
->>>>>>>>> I don't see the added conditional handling.
->>>>>>>>
->>>>>>>> Sorry, the additional handing is replaced by the fixing of value 
->>>>>>>> check.
->>>>>>>> I will correct this commit message in the next version.
->>>>>>>
->>>>>>> Not just the commit message, but it also questions the utility of 
->>>>>>> VIRTIO_GPU_BLOB_FLAG_USE_USERPTR and 
->>>>>>> VIRTIO_GPU_F_RESOURCE_USERPTR. Neither of them adds a new 
->>>>>>> functionality. They should be dropped if they are also replaced 
->>>>>>> with the fix.
->>>>>>>
->>>>>>
->>>>>> Yes totally agreed, it is my mistaken, I shouldn't mix the code 
->>>>>> for fixing and the code for adding new features in one submission.
->>>>>>
->>>>>> Actually this patch set are for another components upstream test, 
->>>>>> for the sake of convenience, I have added both the fix and feature 
->>>>>> here,
->>>>>> that is a bad idea.
->>>>>>
->>>>>> Will split the fix part into previous thread.
->>>>>>
->>>>>> And for the check value fix thread, will send v4 as the final 
->>>>>> version.
->>>>>
->>>>> Splitting fixes and features is a good idea, but that's not what I 
->>>>> meant.
->>>>>
->>>>> What I pointed out is that, it seems that one of the "features" you 
->>>>> are adding, namely VIRTIO_GPU_F_RESOURCE_USERPTR does nothing at at 
->>>>> all. So I'm wondering if you forgot to add a real implementation or 
->>>>> the feature is just no longer necessary.
->>>>
->>>> Understood, actually the resource of flag 
->>>> VIRTIO_GPU_F_RESOURCE_USERPTR just reuses the feature of 
->>>> VIRTIO_GPU_BLOB_MEM_GUEST: using the virtio_gpu_create_mapping_iov 
->>>> function to map the iov from guest.
->>>>
->>>> In qemu, the handing of VIRTIO_GPU_F_RESOURCE_USERPTR and 
->>>> VIRTIO_GPU_BLOB_MEM_GUEST basically same.
->>>>
->>>> The VIRTIO_GPU_F_RESOURCE_USERPTR is from guest userspace, but the
->>>> VIRTIO_GPU_BLOB_MEM_GUEST comes from guest kernel.
->>>> So in VIRTIO kernel and virglrenderer they are different, see VIRTIO 
->>>> kerenl: [1], and virglrenderer: [2].
->>>>
->>>> May I need to change the organizational form of this patch set?
->>>>
->>>> [1]: https://lore.kernel.org/lkml/20251112074548.3718563-1- 
->>>> honglei1.huang@amd.com/
->>>> [2]: https://gitlab.freedesktop.org/virgl/virglrenderer/-/ 
->>>> merge_requests/1568/ 
->>>> diffs#14086999aaf57fc68a3d7d639ab280c3a2672430:~:text=if%20(args%2D%3Eblob_flags%20%26%20VIRGL_RENDERER_BLOB_FLAG_USE_USERPTR)%20%7B
->>> Why does virglrenderer need to distinguish userspace and kernel?
->>
->> It seems like the blob resource in virglrenderer doesn't support the 
->> guest resource/iov resource, virglrenderer doesn't let guest kernel 
->> resource go into get_blob callback.
->>
->> But some feature I am working on really want to let guest userptr 
->> resource get in get_blob callback.
->>
->> So I use this flag to extend the feature of virglrenderer blob callback.
->>
->> The different is:
->> guest kernel resource -> won't go to blob callback.
->> guest userptr resource -> go to blob callback.
-> 
-> Now I understand what you want to achieve. But there should be no reason 
-> to distinguish kernel and userspace; you just need to run some code to 
-> set up a resource for hsakmt using some memory.
-> 
-> In that case, you can simply add another callback that achieves the goal 
-> to virglrenderer. There is no need to change the guest-visible interface.
+Change all virtio_gpu_create_mapping_iov() error checks to use consistent
+'ret < 0' or 'ret >= 0' patterns, following the preferred QEMU coding
+convention for functions that return 0 on success and negative on error.
+This makes the return value convention immediately clear to code readers
+without needing to look up the function definition.
 
-Yes, totally agreed, I come to realized that maybe there is no 
-difference between guest blob and userptr resource in qemu/virglrenderer 
-when I replied to you. The handle paths can be unified.
+Updated locations:
+- hw/display/virtio-gpu-virgl.c: virgl_cmd_resource_create_blob()
+- hw/display/virtio-gpu-virgl.c: virgl_cmd_resource_attach_backing()
+- hw/display/virtio-gpu.c: virtio_gpu_resource_create_blob()
+- hw/display/virtio-gpu.c: virtio_gpu_resource_attach_backing()
+- hw/display/virtio-gpu-rutabaga.c: rutabaga_cmd_attach_backing()
+- hw/display/virtio-gpu-rutabaga.c: rutabaga_cmd_resource_create_blob()
 
-Let me think carefully and simplify it in the next version.
+Changes since v3:
+- Extended consistency improvements to virtio-gpu-rutabaga.c
+- Changed CHECK(!ret) to CHECK(ret >= 0) and CHECK(!result) to
+  CHECK(result >= 0) in rutabaga functions for consistency
+- Now covers all virtio-gpu files that use virtio_gpu_create_mapping_iov()
 
+Changes since v2:
+- Use 'if (ret < 0)' instead of 'if (ret != 0)' following maintainer's
+  feedback on preferred QEMU coding style for error checking functions
+  that return 0 on success and negative on error
+- Updated all similar usages across virtio-gpu files for consistency
+- Expanded scope from single function fix to codebase-wide style consistency
+
+Fixes: 7c092f17ccee ("virtio-gpu: Handle resource blob commands")
+Signed-off-by: Honglei Huang <honghuan@amd.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+---
+ hw/display/virtio-gpu-rutabaga.c | 4 ++--
+ hw/display/virtio-gpu-virgl.c    | 4 ++--
+ hw/display/virtio-gpu.c          | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
+index ed5ae52acb..ea2928b706 100644
+--- a/hw/display/virtio-gpu-rutabaga.c
++++ b/hw/display/virtio-gpu-rutabaga.c
+@@ -466,7 +466,7 @@ rutabaga_cmd_attach_backing(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+ 
+     ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries, sizeof(att_rb),
+                                         cmd, NULL, &res->iov, &res->iov_cnt);
+-    CHECK(!ret, cmd);
++    CHECK(ret >= 0, cmd);
+ 
+     vecs.iovecs = res->iov;
+     vecs.num_iovecs = res->iov_cnt;
+@@ -616,7 +616,7 @@ rutabaga_cmd_resource_create_blob(VirtIOGPU *g,
+         result = virtio_gpu_create_mapping_iov(g, cblob.nr_entries,
+                                                sizeof(cblob), cmd, &res->addrs,
+                                                &res->iov, &res->iov_cnt);
+-        CHECK(!result, cmd);
++        CHECK(result >= 0, cmd);
+     }
+ 
+     rc_blob.blob_id = cblob.blob_id;
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 94ddc01f91..6ebd9293e5 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -557,7 +557,7 @@ static void virgl_resource_attach_backing(VirtIOGPU *g,
+ 
+     ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries, sizeof(att_rb),
+                                         cmd, NULL, &res_iovs, &res_niov);
+-    if (ret != 0) {
++    if (ret < 0) {
+         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+         return;
+     }
+@@ -701,7 +701,7 @@ static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
+         ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
+                                             cmd, &res->base.addrs,
+                                             &res->base.iov, &res->base.iov_cnt);
+-        if (!ret) {
++        if (ret < 0) {
+             cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+             return;
+         }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 0a1a625b0e..1038c6a49f 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -352,7 +352,7 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU *g,
+     ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
+                                         cmd, &res->addrs, &res->iov,
+                                         &res->iov_cnt);
+-    if (ret != 0) {
++    if (ret < 0) {
+         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+         g_free(res);
+         return;
+@@ -931,7 +931,7 @@ virtio_gpu_resource_attach_backing(VirtIOGPU *g,
+ 
+     ret = virtio_gpu_create_mapping_iov(g, ab.nr_entries, sizeof(ab), cmd,
+                                         &res->addrs, &res->iov, &res->iov_cnt);
+-    if (ret != 0) {
++    if (ret < 0) {
+         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+         return;
+     }
+-- 
+2.34.1
 
 
