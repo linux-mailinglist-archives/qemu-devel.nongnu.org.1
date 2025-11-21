@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699F0C7C3F3
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431C9C7CD16
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 12:00:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcqu-0005Wz-AT; Fri, 21 Nov 2025 20:55:53 -0500
+	id 1vMcsM-00073o-25; Fri, 21 Nov 2025 20:57:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbn3-0001XF-CN; Fri, 21 Nov 2025 19:47:50 -0500
+ id 1vMbk6-0008BF-5j; Fri, 21 Nov 2025 19:44:46 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbmr-0008DF-UI; Fri, 21 Nov 2025 19:47:45 -0500
+ id 1vMbi3-0007B2-LJ; Fri, 21 Nov 2025 19:44:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3CFD716CA52;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E26916CA53;
  Fri, 21 Nov 2025 21:44:23 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id ED3A7321C8E;
- Fri, 21 Nov 2025 21:44:31 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0D323321C8F;
+ Fri, 21 Nov 2025 21:44:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [Stable-10.0.7 23/81] linux-user: permit sendto() with NULL buf and 0
- len
-Date: Fri, 21 Nov 2025 21:43:22 +0300
-Message-ID: <20251121184424.1137669-23-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 24/81] target/i386: clear CPU_INTERRUPT_SIPI for all
+ accelerators
+Date: Fri, 21 Nov 2025 21:43:23 +0300
+Message-ID: <20251121184424.1137669-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -54,71 +51,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-If you pass sendto() a NULL buffer, this is usually an error
-(causing an EFAULT return); however if you pass a 0 length then
-we should not try to validate the buffer provided. Instead we
-skip the copying of the user data and possible processing
-through fd_trans_target_to_host_data, and call the host syscall
-with NULL, 0.
+Similar to what commit df32e5c5 did for TCG; fixes boot with multiple
+processors on WHPX and probably more accelerators
 
-(unlock_user() permits a NULL buffer pointer for "do nothing"
-so we don't need to special case the unlock code.)
-
+Fixes: df32e5c568c ("i386/cpu: Prevent delivering SIPI during SMM in TCG mode", 2025-10-14)
+Fixes: 1e8a7c403a7 ("i386/cpu: Prevent delivering SIPI during SMM in TCG mode", in 10.0.x)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3178
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3102
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251028142001.3011630-1-peter.maydell@linaro.org>
-(cherry picked from commit 0db2de22fcbf90adafab9d9dd1fc8203c66bfa75)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit d5e1d2dea11b803ba9121fc12d3c1662b79ad941)
+(Mjt: context fix due to missing v10.1.0-119-g87511341c30d
+ "add cpu_test_interrupt()/cpu_set_interrupt() helpers and use them tree wide")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 3a25abfaca..dcca90cfee 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -3582,7 +3582,7 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
-                           abi_ulong target_addr, socklen_t addrlen)
- {
-     void *addr;
--    void *host_msg;
-+    void *host_msg = NULL;
-     void *copy_msg = NULL;
-     abi_long ret;
- 
-@@ -3590,16 +3590,19 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
-         return -TARGET_EINVAL;
+diff --git a/target/i386/hvf/x86hvf.c b/target/i386/hvf/x86hvf.c
+index 531a340b37..caebd64da1 100644
+--- a/target/i386/hvf/x86hvf.c
++++ b/target/i386/hvf/x86hvf.c
+@@ -447,6 +447,7 @@ int hvf_process_events(CPUState *cs)
+         cs->halted = 0;
+     }
+     if (cs->interrupt_request & CPU_INTERRUPT_SIPI) {
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_SIPI);
+         cpu_synchronize_state(cs);
+         do_cpu_sipi(cpu);
+     }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index f251286eb3..e77fb752c2 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5637,6 +5637,7 @@ int kvm_arch_process_async_events(CPUState *cs)
+         cs->halted = 0;
+     }
+     if (cs->interrupt_request & CPU_INTERRUPT_SIPI) {
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_SIPI);
+         kvm_cpu_synchronize_state(cs);
+         do_cpu_sipi(cpu);
+     }
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index 04e5f7e637..396c59661d 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -704,6 +704,7 @@ nvmm_vcpu_loop(CPUState *cpu)
+         cpu->halted = false;
+     }
+     if (cpu->interrupt_request & CPU_INTERRUPT_SIPI) {
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_SIPI);
+         nvmm_cpu_synchronize_state(cpu);
+         do_cpu_sipi(x86_cpu);
+     }
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 41fb8c5a4e..7a95198dc4 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -1624,6 +1624,7 @@ static void whpx_vcpu_process_async_events(CPUState *cpu)
      }
  
--    host_msg = lock_user(VERIFY_READ, msg, len, 1);
--    if (!host_msg)
--        return -TARGET_EFAULT;
--    if (fd_trans_target_to_host_data(fd)) {
--        copy_msg = host_msg;
--        host_msg = g_malloc(len);
--        memcpy(host_msg, copy_msg, len);
--        ret = fd_trans_target_to_host_data(fd)(host_msg, len);
--        if (ret < 0) {
--            goto fail;
-+    if (len != 0) {
-+        host_msg = lock_user(VERIFY_READ, msg, len, 1);
-+        if (!host_msg) {
-+            return -TARGET_EFAULT;
-+        }
-+        if (fd_trans_target_to_host_data(fd)) {
-+            copy_msg = host_msg;
-+            host_msg = g_malloc(len);
-+            memcpy(host_msg, copy_msg, len);
-+            ret = fd_trans_target_to_host_data(fd)(host_msg, len);
-+            if (ret < 0) {
-+                goto fail;
-+            }
-         }
+     if (cpu->interrupt_request & CPU_INTERRUPT_SIPI) {
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_SIPI);
+         whpx_cpu_synchronize_state(cpu);
+         do_cpu_sipi(x86_cpu);
      }
-     if (target_addr) {
 -- 
 2.47.3
 
