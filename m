@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0642C7C720
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 06:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F15C7C2E1
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:36:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdBs-0001Cf-T0; Fri, 21 Nov 2025 21:17:33 -0500
+	id 1vMdOB-0000gu-HJ; Fri, 21 Nov 2025 21:30:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd2r-0001iE-Qt; Fri, 21 Nov 2025 21:08:13 -0500
+ id 1vMdO5-0000cD-T2; Fri, 21 Nov 2025 21:30:09 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd25-0002ef-SA; Fri, 21 Nov 2025 21:08:10 -0500
+ id 1vMdNY-0007SQ-71; Fri, 21 Nov 2025 21:30:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3E53116C66F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5ADCE16C670;
  Fri, 21 Nov 2025 15:54:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8A1393218E8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9A18D3218E9;
  Fri, 21 Nov 2025 15:54:58 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 1/3] qga: use access(2) to check for command existance instead
- of questionable stat(2)
-Date: Fri, 21 Nov 2025 15:54:49 +0300
-Message-ID: <20251121125455.1108509-2-mjt@tls.msk.ru>
+Cc: Jack Wang <jinpu.wang@ionos.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 2/3] qmp: Fix a typo for a USO feature
+Date: Fri, 21 Nov 2025 15:54:50 +0300
+Message-ID: <20251121125455.1108509-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251121125455.1108509-1-mjt@tls.msk.ru>
 References: <20251121125455.1108509-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,76 +56,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code checks existance of a command (halt/poweroff/reboot) by using
-stat(2) and immediately checking for S_ISLNK() on the returned stat
-struct.  This check will never be true, because stat(2) always follows
-symbolic links and hence will either return ENOENT (in case of dangling
-symlink) or the properties for the final target file.  It is lstat(2)
-which might return information about the symlink itself.  However, even
-there, we want to check the final file properties, not the first symlink.
+From: Jack Wang <jinpu.wang@ionos.com>
 
-This check - S_ISLNK - is harmful but useless in this case.  However, it
-is confusing and it helps the wrong usage of stat(2) to spread, so it is
-better to remove it.
+There is a copy & paste error, USO6 should be there.
 
-Additionally, the code would better to check for the executable bits
-of the final file, not check if it's a regular file - it's sort of
-dubious to have anything but regular files in /sbin/.
-
-But a POSIX system provides another command which suits the purpose
-perfectly: it is access(2).  And it is so simple that it's not
-necessary to create a separate function when usin it.
-
-Replace stat(2) with access(X_OK) to check for file existance in
-qga/commands-posix.c
-
-Fixes: c5b4afd4d56e "qga: Support guest shutdown of BusyBox-based systems"
-Reviewed-by: Rodrigo Dias Correa <r@drigo.nl>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Fixes: 58f81689789f ("qmp: update virtio feature maps, vhost-user-gpio introspection")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qga/commands-posix.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ hw/virtio/virtio-qmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 66f3e6f673..837be51c40 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -216,12 +216,6 @@ out:
-     return retcode;
- }
- 
--static bool file_exists(const char *path)
--{
--    struct stat st;
--    return stat(path, &st) == 0 && (S_ISREG(st.st_mode) || S_ISLNK(st.st_mode));
--}
--
- #define POWEROFF_CMD_PATH "/sbin/poweroff"
- #define HALT_CMD_PATH "/sbin/halt"
- #define REBOOT_CMD_PATH "/sbin/reboot"
-@@ -248,17 +242,17 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
- 
-     slog("guest-shutdown called, mode: %s", mode);
-     if (!mode || strcmp(mode, "powerdown") == 0) {
--        if (file_exists(POWEROFF_CMD_PATH)) {
-+        if (access(POWEROFF_CMD_PATH, X_OK) == 0) {
-             shutdown_cmd = POWEROFF_CMD_PATH;
-         }
-         shutdown_flag = powerdown_flag;
-     } else if (strcmp(mode, "halt") == 0) {
--        if (file_exists(HALT_CMD_PATH)) {
-+        if (access(HALT_CMD_PATH, X_OK) == 0) {
-             shutdown_cmd = HALT_CMD_PATH;
-         }
-         shutdown_flag = halt_flag;
-     } else if (strcmp(mode, "reboot") == 0) {
--        if (file_exists(REBOOT_CMD_PATH)) {
-+        if (access(REBOOT_CMD_PATH, X_OK) == 0) {
-             shutdown_cmd = REBOOT_CMD_PATH;
-         }
-         shutdown_flag = reboot_flag;
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index b338344c6c..968299fda0 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -299,7 +299,7 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
+     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
+             "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
+     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
+-            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
++            "VIRTIO_NET_F_GUEST_USO6: Driver can receive USOv6"),
+     FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
+             "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
+     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
 -- 
 2.47.3
 
