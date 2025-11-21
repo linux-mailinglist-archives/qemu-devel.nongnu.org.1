@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E2DC7C59E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A96CCC7C6AA
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:44:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdEM-0003zZ-R1; Fri, 21 Nov 2025 21:20:07 -0500
+	id 1vMdgt-0002zj-9H; Fri, 21 Nov 2025 21:49:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdEH-0003xk-Gp; Fri, 21 Nov 2025 21:20:01 -0500
+ id 1vMdgn-0002pj-IY; Fri, 21 Nov 2025 21:49:29 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdDQ-0003rw-Qh; Fri, 21 Nov 2025 21:19:58 -0500
+ id 1vMdgQ-0005dv-Dh; Fri, 21 Nov 2025 21:49:25 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7A2C16C6DD;
- Fri, 21 Nov 2025 16:51:53 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0873B16C6DE;
+ Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4B610321954;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 60849321955;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Alex Williamson <alex@shazbot.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 05/76] vfio: only check region info cache for initial
- regions
-Date: Fri, 21 Nov 2025 16:50:43 +0300
-Message-ID: <20251121135201.1114964-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 06/76] target/arm: Fix reads of CNTFRQ_EL0 in
+ linux-user mode
+Date: Fri, 21 Nov 2025 16:50:44 +0300
+Message-ID: <20251121135201.1114964-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -59,72 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Levon <john.levon@nutanix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-It is semantically valid for a VFIO device to increase the number of
-regions after initialization. In this case, we'd attempt to check for
-cached region info past the size of the ->reginfo array. Check for the
-region index and skip the cache in these cases.
+In commit bd8e9ddf6f6 ("target/arm: Refactor default generic timer
+frequency handling") we changed how we initialized the generic timer
+frequency as reported in the CNTFRQ_EL0 register.  As part of that,
+we chanegd the linux-user version of the CNTFRQ_EL0 sysreg from
+having a constant value set at compile time through the .resetvalue
+field to having a reset value which we compute in a .resetfn.
 
-This also works around some VGPU use cases which appear to be a bug,
-where VFIO_DEVICE_QUERY_GFX_PLANE returns a region index beyond the
-reported ->num_regions.
+This accidentally broke the reading of CNTFRQ_EL0 in linux-user mode,
+because the cpreg is marked as ARM_CP_CONST, which means we translate
+it as a read of the compile-time constant value in the .resetvalue
+field.  This is now zero, so userspace sees a 0 frequency value.
 
-Fixes: 95cdb024 ("vfio: add region info cache")
-Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Alex Williamson <alex@shazbot.org>
-Link: https://lore.kernel.org/qemu-devel/20251014151227.2298892-3-john.levon@nutanix.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit ecbe424a63c9f860a901d6a4a75724b046abd796)
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Fix the bug by dropping the ARM_CP_CONST marking.  This will cause us
+to translate the read as a load of the value from the CPU state
+struct cp15.c14_cntfrq field, which is where the real frequency value
+now lives.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3159
+Fixes: bd8e9ddf6f6 ("target/arm: Refactor default generic timer frequency handling")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20251013161040.216819-1-peter.maydell@linaro.org
+(cherry picked from commit 3f462d79a080060e54e39d31ce10fdf1a20317ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 0b459c0f7c..7ebf41c95e 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -205,10 +205,19 @@ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
-     int fd = -1;
-     int ret;
- 
--    /* check cache */
--    if (vbasedev->reginfo[index] != NULL) {
--        *info = vbasedev->reginfo[index];
--        return 0;
-+    /*
-+     * We only set up the region info cache for the initial number of regions.
-+     *
-+     * Since a VFIO device may later increase the number of regions then use
-+     * such regions with an index past ->num_initial_regions, don't attempt to
-+     * use the info cache in those cases.
-+     */
-+    if (index < vbasedev->num_initial_regions) {
-+        /* check cache */
-+        if (vbasedev->reginfo[index] != NULL) {
-+            *info = vbasedev->reginfo[index];
-+            return 0;
-+        }
-     }
- 
-     *info = g_malloc0(argsz);
-@@ -236,10 +245,12 @@ retry:
-         goto retry;
-     }
- 
--    /* fill cache */
--    vbasedev->reginfo[index] = *info;
--    if (vbasedev->region_fds != NULL) {
--        vbasedev->region_fds[index] = fd;
-+    if (index < vbasedev->num_initial_regions) {
-+        /* fill cache */
-+        vbasedev->reginfo[index] = *info;
-+        if (vbasedev->region_fds != NULL) {
-+            vbasedev->region_fds[index] = fd;
-+        }
-     }
- 
-     return 0;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index e2ef4ea2cc..9e5eb50ff7 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2252,7 +2252,7 @@ static uint64_t gt_virt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+     { .name = "CNTFRQ_EL0", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 0,
+-      .type = ARM_CP_CONST, .access = PL0_R /* no PL1_RW in linux-user */,
++      .access = PL0_R /* no PL1_RW in linux-user */,
+       .fieldoffset = offsetof(CPUARMState, cp15.c14_cntfrq),
+       .resetfn = arm_gt_cntfrq_reset,
+     },
 -- 
 2.47.3
 
