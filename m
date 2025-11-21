@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A32C7C30E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A35C7C608
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:30:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd1F-0000pk-TX; Fri, 21 Nov 2025 21:06:34 -0500
+	id 1vMcz0-00040X-Er; Fri, 21 Nov 2025 21:04:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcVQ-0000yS-Kb; Fri, 21 Nov 2025 20:33:40 -0500
+ id 1vMc90-00063R-Es; Fri, 21 Nov 2025 20:10:30 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcTM-0001Nn-94; Fri, 21 Nov 2025 20:33:35 -0500
+ id 1vMc6x-0003ud-WA; Fri, 21 Nov 2025 20:10:26 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 199EA16CA6A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2B07416CA6B;
  Fri, 21 Nov 2025 21:44:26 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id CC95A321CA6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DD8BF321CA7;
  Fri, 21 Nov 2025 21:44:34 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 47/81] qio: Add trace points to net_listener
-Date: Fri, 21 Nov 2025 21:43:46 +0300
-Message-ID: <20251121184424.1137669-47-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 48/81] qio: Unwatch before notify in QIONetListener
+Date: Fri, 21 Nov 2025 21:43:47 +0300
+Message-ID: <20251121184424.1137669-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -54,102 +54,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Blake <eblake@redhat.com>
 
-Upcoming patches will adjust how net_listener watches for new client
-connections; adding trace points now makes it easier to debug that the
-changes work as intended.  For example, adding
---trace='qio_net_listener*' to the qemu-storage-daemon command line
-before --nbd-server will track when the server first starts listening
-for clients.
+When changing the callback registered with QIONetListener, the code
+was calling notify on the old opaque data prior to actually removing
+the old GSource objects still pointing to that data.  Similarly,
+during finalize, it called notify before tearing down the various
+GSource objects tied to the data.
 
+In practice, a grep of the QEMU code base found that every existing
+client of QIONetListener passes in a NULL notifier (the opaque data,
+if non-NULL, outlives the NetListener and so does not need cleanup
+when the NetListener is torn down), so this patch has no impact.  And
+even if a caller had passed in a reference-counted object with a
+notifier of object_unref but kept its own reference on the data, then
+the early notify would merely reduce a refcount from (say) 2 to 1, but
+not free the object.  However, it is a latent bug waiting to bite any
+future caller that passes in data where the notifier actually frees
+the object, because the GSource could then trigger a use-after-free if
+it loses the race on a last-minute client connection resulting in the
+data being passed to one final use of the async callback.
+
+Better is to delay the notify call until after all GSource that have
+been given a copy of the opaque data are torn down.
+
+CC: qemu-stable@nongnu.org
+Fixes: 530473924d "io: introduce a network socket listener API", v2.12.0
 Signed-off-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251113011625.878876-17-eblake@redhat.com>
-(cherry picked from commit 59506e59e0f0a773e892104b945d0f15623381a7)
+Message-ID: <20251113011625.878876-18-eblake@redhat.com>
+(cherry picked from commit 6e03d5cdc991f5db86969fc6aeaca96234426263)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/io/net-listener.c b/io/net-listener.c
-index 47405965a6..007acbd5b1 100644
+index 007acbd5b1..d71b65270e 100644
 --- a/io/net-listener.c
 +++ b/io/net-listener.c
-@@ -23,6 +23,7 @@
- #include "io/dns-resolver.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-+#include "trace.h"
+@@ -148,13 +148,6 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
  
- QIONetListener *qio_net_listener_new(void)
- {
-@@ -50,6 +51,7 @@ static gboolean qio_net_listener_channel_func(QIOChannel *ioc,
-         return TRUE;
-     }
- 
-+    trace_qio_net_listener_callback(listener, listener->io_func);
-     if (listener->io_func) {
-         listener->io_func(listener, sioc, listener->io_data);
-     }
-@@ -123,6 +125,7 @@ void qio_net_listener_add(QIONetListener *listener,
-     object_ref(OBJECT(sioc));
-     listener->connected = true;
- 
-+    trace_qio_net_listener_watch(listener, listener->io_func, "add");
-     if (listener->io_func != NULL) {
-         object_ref(OBJECT(listener));
-         listener->io_source[listener->nsioc] = qio_channel_add_watch_source(
-@@ -143,6 +146,8 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
- {
-     size_t i;
- 
-+    trace_qio_net_listener_unwatch(listener, listener->io_func,
-+                                   "set_client_func");
-     if (listener->io_notify) {
-         listener->io_notify(listener->io_data);
-     }
-@@ -158,6 +163,8 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
+     trace_qio_net_listener_unwatch(listener, listener->io_func,
+                                    "set_client_func");
+-    if (listener->io_notify) {
+-        listener->io_notify(listener->io_data);
+-    }
+-    listener->io_func = func;
+-    listener->io_data = data;
+-    listener->io_notify = notify;
+-
+     for (i = 0; i < listener->nsioc; i++) {
+         if (listener->io_source[i]) {
+             g_source_destroy(listener->io_source[i]);
+@@ -163,6 +156,13 @@ void qio_net_listener_set_client_func_full(QIONetListener *listener,
          }
      }
  
-+    trace_qio_net_listener_watch(listener, listener->io_func,
-+                                 "set_client_func");
++    if (listener->io_notify) {
++        listener->io_notify(listener->io_data);
++    }
++    listener->io_func = func;
++    listener->io_data = data;
++    listener->io_notify = notify;
++
+     trace_qio_net_listener_watch(listener, listener->io_func,
+                                  "set_client_func");
      if (listener->io_func != NULL) {
-         for (i = 0; i < listener->nsioc; i++) {
-             object_ref(OBJECT(listener));
-@@ -218,6 +225,7 @@ QIOChannelSocket *qio_net_listener_wait_client(QIONetListener *listener)
-     };
+@@ -300,10 +300,10 @@ static void qio_net_listener_finalize(Object *obj)
+     QIONetListener *listener = QIO_NET_LISTENER(obj);
      size_t i;
  
-+    trace_qio_net_listener_unwatch(listener, listener->io_func, "wait_client");
-     for (i = 0; i < listener->nsioc; i++) {
-         if (listener->io_source[i]) {
-             g_source_destroy(listener->io_source[i]);
-@@ -247,6 +255,7 @@ QIOChannelSocket *qio_net_listener_wait_client(QIONetListener *listener)
-     g_main_loop_unref(loop);
-     g_main_context_unref(ctxt);
- 
-+    trace_qio_net_listener_watch(listener, listener->io_func, "wait_client");
-     if (listener->io_func != NULL) {
-         for (i = 0; i < listener->nsioc; i++) {
-             object_ref(OBJECT(listener));
-@@ -268,6 +277,7 @@ void qio_net_listener_disconnect(QIONetListener *listener)
-         return;
++    qio_net_listener_disconnect(listener);
+     if (listener->io_notify) {
+         listener->io_notify(listener->io_data);
      }
+-    qio_net_listener_disconnect(listener);
  
-+    trace_qio_net_listener_unwatch(listener, listener->io_func, "disconnect");
      for (i = 0; i < listener->nsioc; i++) {
-         if (listener->io_source[i]) {
-             g_source_destroy(listener->io_source[i]);
-diff --git a/io/trace-events b/io/trace-events
-index dc3a63ba1f..10976eca5f 100644
---- a/io/trace-events
-+++ b/io/trace-events
-@@ -72,3 +72,8 @@ qio_channel_command_new_pid(void *ioc, int writefd, int readfd, int pid) "Comman
- qio_channel_command_new_spawn(void *ioc, const char *binary, int flags) "Command new spawn ioc=%p binary=%s flags=%d"
- qio_channel_command_abort(void *ioc, int pid) "Command abort ioc=%p pid=%d"
- qio_channel_command_wait(void *ioc, int pid, int ret, int status) "Command abort ioc=%p pid=%d ret=%d status=%d"
-+
-+# net-listener.c
-+qio_net_listener_watch(void *listener, void *func, const char *extra) "Net listener=%p watch enabled func=%p by %s"
-+qio_net_listener_unwatch(void *listener, void *func, const char *extra) "Net listener=%p watch disabled func=%p by %s"
-+qio_net_listener_callback(void *listener, void *func) "Net listener=%p callback forwarding to func=%p"
+         object_unref(OBJECT(listener->sioc[i]));
 -- 
 2.47.3
 
