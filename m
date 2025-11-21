@@ -2,56 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F4CC7C326
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31D3C7C559
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:54:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdO6-0000b8-1Q; Fri, 21 Nov 2025 21:30:11 -0500
+	id 1vMcqC-0005GH-CA; Fri, 21 Nov 2025 20:55:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vMdNz-0000W1-Ts
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:30:03 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vMblE-0000SD-4e
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:45:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vMdNI-0007Pd-EN
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:30:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=9OY0zMSyIAoYrTIJBCx72xA+MaQN/L7mV5TJtDEE3lA=; b=kfQAVsn0WPYMl07N3be3x38Oeo
- 3sqen3wDnNsD+V2tybZfbFXBP9reaDrA+GhL9TIfSj1nt9VZPUtSE5gkbARuJgmxPoVwKtdLko//7
- ahXJpihJDjdKdcO39nEA8RfeJ4rQD803BGAxP9wIJcVM1opt4t4PnmckHtVX1LlwlUa1B4wgP7ab8
- CPaX40loq4IRn9PgiIObdMe7IlgurZqV7LAOzPYNA16Uh94Lr5JuR2d6NRSwvgeXcnCQXBFoadWiG
- y5frb/dLLD/KorQaRAH79NUHI0TxDco9GN/svLq/KumvUjDux+yYc5u2GjeIzmPv/ec3VGx0JfK9v
- mWz/EK8kfwPz0fiF4PRaeCXxDgigHU1X+P9he+5iHsamjV9rSG0WDwSulbnCwg0ffhsjS1S7OgtwR
- 7Xhm27uRBAh+yi8uqLlT5/ecmNjNGm0vXbiVRwJ+jRdCfwgdU+J+7kuOLefdcmKZWOhK53ZXNWU0N
- 5KsW24a7TdarPiFg8GCNg7rBMQZMy2aORRR3nRkcHcjYkfP+joyK1BPG/rKO5UEx0ttjNRXQipb/T
- uCNyxxTD4EZdh+4CELE2Zuy+Q+Uzt9wJ/qmyWw7b9qGJx8tYMmK0gOcHfOas+re0VbcKZ8B+phSk4
- L/XRAn6O7GUxGk0tew15bCvuUjeWoTwTY4J0ta8F8=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Andrey Erokhin <language.lawyer@gmail.com>, Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH] hw/9pfs: Follow native symlinks when security-model=mapped
-Date: Fri, 21 Nov 2025 13:20:14 +0100
-Message-ID: <13890690.uLZWGnKmhe@weasel>
-In-Reply-To: <5e07267f-b990-47fc-ade7-934209ea942f@gmail.com>
-References: <5e07267f-b990-47fc-ade7-934209ea942f@gmail.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vMbl1-0007qV-3x
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:45:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763772327;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=KNwqADQ7c5gLNnWKtnYOhbPe87aYSAg5tefP1TKcDuI=;
+ b=Pqg44uFZ4u/F4j2vvVAmxgM7M3KdTqn9H86cv3vuPJdVbbtvRm22BIuDvoDhj3D9MzOd9N
+ 0RTTaIrHUdUbF6vrS/uZuzRxvofCLJQX+1xI7bcjjlS/QHYggDeUV5zukNZJV1HpBHb6tL
+ kenC4w0BBWkG/lduwznzebfIypIzEH0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-219-FE-jvumuPV6bWVeK-DKZZA-1; Fri, 21 Nov 2025 07:26:07 -0500
+X-MC-Unique: FE-jvumuPV6bWVeK-DKZZA-1
+X-Mimecast-MFC-AGG-ID: FE-jvumuPV6bWVeK-DKZZA_1763727966
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477a11d9e67so15126135e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 04:26:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1763727966; x=1764332766; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=KNwqADQ7c5gLNnWKtnYOhbPe87aYSAg5tefP1TKcDuI=;
+ b=TRW78mAXQ0nuXTW0o+q2c10rx5DXsc0Qs09TuAOXWYq3O68WBzt4uVpBB6A1bHqSWO
+ mESWSfmQmZCta7upYO81N8e9xwu4n3PSRj+wbpUzF4UZMZrKFKSHdcwn9kgznUEJTNoO
+ 9/9nNnyEqRAGb8oFxMoGCo1x7d5zX9tQ7e10CBwXvVgTWZeY1FVZxhLecpB9f5KQB6by
+ YKfvQMRH+z8Bf5I+3TN/BKpQtkfB+4qOaxYclTCP5GDo9y5VukELDZflBsUVkILT3zVh
+ K1WKdYJBiU7iWXNG0Fhc6rhk3N5VULffJ51IpdzUfr9AQePl2IMOioQTUD3ZNqJbdxoU
+ bcIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763727966; x=1764332766;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KNwqADQ7c5gLNnWKtnYOhbPe87aYSAg5tefP1TKcDuI=;
+ b=jQkISqFLviNz82tGr14pEr1FLY6wQuIzawZ4ZeLgpIZxH2oG1JCtKqwFTL2DR+Dqdh
+ JYRZzemonUBXZeHBKhoYmS0CE5+RKplKs6PhRqe+nG0+qNU8R/+PNThA8iqzJatynSr0
+ hYDKg/xRv5ucbLH0pJqIlMl2ptfvqzLE/lK+Op5D1feGr9zEvyHbPjEghkpNsiK2e/JF
+ WRRqlzL1esDkj/1ZmFQS1jzT1yRKIK2HZliC4rhfWuxaZcEo5iVxIK9lY+5yz8g1pzkL
+ R89FBQKza9CKScxOeZIg6utd+Lq0TE5dwkgFWvW9dg/y6KWhQuWD1FJCrxPKs+rTpEEl
+ abQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU1tWcSh6l1xgZCepkmGKw5kMzASni0nihAzy6IQyjjtvvps4btIK326nfR10hpYbdHZI9n80N39hM0@nongnu.org
+X-Gm-Message-State: AOJu0YxzjF2m9y89in7kqwabXoOUH/c6s6JIKbrGPmfuEoTzCso2REgu
+ 4SniG/NhbW1Jwr5MJgF+6HDRSe7KZOre3bYGww5KRdNhMTQKUK/lfybBI77DOvd6SnT5x28vvuC
+ 7zXMQq+WXADw3unZt+dbvUr/3wk6ZjsZsoslITQhu7/Z95el+0yZxlYCN
+X-Gm-Gg: ASbGncvxojh6z3dUTbR9P5PK+Ur8xiHsT+kRdNyO0cnHT+HMZPQJ1M+wZQ4HxTy9X+b
+ /CoHWMjhTNbwUapf1Ae5CFAoQNgQAqrjpuRaz2zxNWq92fQauXsSHAiD1NqNvKGW7t5FhhXpfam
+ tIsR3UdtTf7SD5Na82wAIRry8PxcURhyToPoFbc3bHbjet1z4Y/pcJZWQ6dKlD78V63Kjl+dQyJ
+ MU1ACHVc8oXDbCLrrQodiBbCqiYPuhQoJ9l4DhCck/18I1bmqYNrNs42BkTHzOskgVatKm9FRb+
+ IWT+wpLJaoxXm+1zJETK9MD3w5vQIFLldIqab4cHEpd+Vi9/V0ou9qrZ1d7ijnjhsJi4P4a34ic
+ /n8hAj0DKJJwht4HPtsBbpEAAWyXPiN3rvUU5QcMhO6wXEeIsObiMVnxpoEZjKr/CVxqgdElfI+
+ Nv3UoLU0Q26X7hEhA=
+X-Received: by 2002:a05:600c:529a:b0:477:8a2a:123e with SMTP id
+ 5b1f17b1804b1-477c1133932mr18801405e9.33.1763727965742; 
+ Fri, 21 Nov 2025 04:26:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXudQA0R76iO1p6ZzxDT7toQuEez/ZmZrVHsjGj8yN9lUHFQY+LzwTHyNKM/PIGXjxkkE8og==
+X-Received: by 2002:a05:600c:529a:b0:477:8a2a:123e with SMTP id
+ 5b1f17b1804b1-477c1133932mr18801175e9.33.1763727965367; 
+ Fri, 21 Nov 2025 04:26:05 -0800 (PST)
+Received: from [192.168.10.81] ([176.206.119.13])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-477bd1580cbsm25579085e9.2.2025.11.21.04.26.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Nov 2025 04:26:04 -0800 (PST)
+Message-ID: <3a9faadd-165f-4d18-af04-211f9edab518@redhat.com>
+Date: Fri, 21 Nov 2025 13:25:59 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
-X-Spam_action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] scripts: Changed potential O(n) file size calculation
+ to O(1)
+To: konrad.schwarz@gmail.com, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, Konrad Schwarz <konrad.schwarz@siemens.com>,
+ jan.kiszka@siemens.com
+References: <CA+kmUXafV4PPo2t+P23g9QRXHjaH_XBke3DjzbvciqBtw+i-OA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <CA+kmUXafV4PPo2t+P23g9QRXHjaH_XBke3DjzbvciqBtw+i-OA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,82 +152,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thursday, 20 November 2025 14:01:36 CET Andrey Erokhin wrote:
-> A directory mounted via virtfs with security-model=mapped[-xattr|-file] can
-> contain "native" symlinks
+On 11/19/25 18:28, konrad.schwarz@gmail.com wrote:
+> The mkemmc.sh script calculates file sizes via `wc -c'.  `wc'
+> normally works by reading the entire file, resulting in O(n) performance.
+
+Even something as mundane as 'wc' can surprise you!  Running "strace wc 
+-c < somefile.txt" shows this:
+
+fstat(0, {st_mode=S_IFREG|0644, st_size=6900, ...}) = 0
+lseek(0, 0, SEEK_CUR)                   = 0
+lseek(0, 6900, SEEK_CUR)                = 6900
+
+So wc notices you don't need word or line counts, and takes a shortcut.
+
+Paolo
+
+> Unix file systems obviously know a file's size and POSIX `ls' reports this
+> information unambiguously, so replacing `wc' with `ls' ensures O(1)
+> performance.  The files in question tend to be large making this change
+> worthwhile.
 > 
-> This can happen e.g. when booting from a rootfs directory tree (usually with
-> writable overlay set up on the host side)
+> Signed-off-by: Konrad Schwarz <konrad.schwarz@siemens.com>
+> ---
+>   scripts/mkemmc.sh | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> Currently, with security-model=mapped, QEMU expects that all host "symlinks"
-> are in "mapped" format, i.e. are files containing the linked path, so it
-> tries to open with O_NOFOLLOW and fails with ELOOP in case of a native
-> symlink
+> diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
+> index 45dc3f08fa..d2c4e84b16 100755
+> --- a/scripts/mkemmc.sh
+> +++ b/scripts/mkemmc.sh
+> @@ -37,13 +37,19 @@ usage() {
+>       exit "$1"
+>   }
 > 
-> This patch gives such cases a second chance: trying to open as a native
-> symlink, by reusing security-model=[none|passthrough] else if branch
-
-Hi Greg,
-
-I would like to ask you to look at this patch as well.
-
-As I already wrote on Gitlab, technically I think this patch is fine/harmless, 
-as the resolved native symlink would solely be passed to guest for its own 
-interpretation. AFAICS it would not be used by 9p server (host).
-
-Andrey, just some minor issues from my side below:
-
-Git commit log message should not exceed 76 characters per line.
-
-> QEMU issues:
-> https://gitlab.com/qemu-project/qemu/-/issues/173 (from
-> https://bugs.launchpad.net/qemu/+bug/1831354)
-> https://gitlab.com/qemu-project/qemu/-/issues/3088 (dup of the first one)
-
-This should be:
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/173
-
-The other links can be dropped. They are already linked by #173.
-
-> Signed-off-by: Andrey Erokhin <language.lawyer@gmail.com>
-> 
-> 
-> diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-> index 31e216227c..b4f8be2c81 100644
-> --- a/hw/9pfs/9p-local.c
-> +++ b/hw/9pfs/9p-local.c
-> @@ -468,12 +468,14 @@ static ssize_t local_readlink(FsContext *fs_ctx,
-> V9fsPath *fs_path,
-> 
->           fd = local_open_nofollow(fs_ctx, fs_path->data, O_RDONLY, 0);
->           if (fd == -1) {
-> +            if (errno == ELOOP) goto native_symlink;
->               return -1;
->           }
-
-scripts/checkpatch.pl complaints:
-
-ERROR: trailing statements should be on next line
-#33: FILE: hw/9pfs/9p-local.c:471:
-+            if (errno == ELOOP) goto native_symlink;
-
-ERROR: braces {} are necessary for all arms of this statement
-#33: FILE: hw/9pfs/9p-local.c:471:
-+            if (errno == ELOOP) goto native_symlink;
-[...]
-
->           tsize = RETRY_ON_EINTR(read(fd, (void *)buf, bufsz));
->           close_preserve_errno(fd);
->       } else if ((fs_ctx->export_flags & V9FS_SM_PASSTHROUGH) ||
->                  (fs_ctx->export_flags & V9FS_SM_NONE)) {
-> +native_symlink:;
-
-Semicolon is unnecessary here, isn't it?
-
->           char *dirpath = g_path_get_dirname(fs_path->data);
->           char *name = g_path_get_basename(fs_path->data);
->           int dirfd;
-
+> +file_size() {
+> +	ls_line=$(ls -Hdog "$1") || return
+> +	printf %s\\n "$ls_line" | cut -d\  -f3
+> +	unset ls_line
+> +}
+> +
+>   process_size() {
+>       name=$1
+>       image_file=$2
+>       alignment=$3
+>       image_arg=$4
+>       if [ "${image_arg#*:}" = "$image_arg"  ]; then
+> -        if ! size=$(wc -c < "$image_file" 2>/dev/null); then
+> +        if ! size=$(file_size "$image_file"); then
+>               echo "Missing $name image '$image_file'." >&2
+>               exit 1
+>           fi
+> @@ -105,7 +111,7 @@ check_truncation() {
+>       if [ "$image_file" = "/dev/zero" ]; then
+>           return
+>       fi
+> -    if ! actual_size=$(wc -c < "$image_file" 2>/dev/null); then
+> +    if ! actual_size=$(file_size "$image_file"); then
+>           echo "Missing image '$image_file'." >&2
+>           exit 1
+>       fi
 
 
