@@ -2,99 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6A1C7C2B7
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:20:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39790C7C47B
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:26:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcvK-00018G-GH; Fri, 21 Nov 2025 21:00:27 -0500
+	id 1vMdie-0004oy-Hi; Fri, 21 Nov 2025 21:51:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vMc54-0003es-V3
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMdiX-0004ez-7b; Fri, 21 Nov 2025 21:51:17 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vMc34-00030S-FC
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763773446;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6hmk1UkbUQrbHuF7+FWwHU8sMOi8c7TBNdFfJ6SDMH4=;
- b=Fi6DUh07AXmSTGkkVXLKBf+g9NUQ0xBPT9aQHEoNGF+qNO1gDPbPnkco9AWhxbX/DRqTje
- F6QARdgBDAd1SLnLrv4RgbqyqNuVSRTiM/UCfmaMAPFBnFSYrA9AkibuCxlh0Ttf6U2Qy9
- F2o2FsZx50WRvTOGFFjdIu7S6pzsLNI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-lR2TVJrCOXas9paioedUag-1; Fri, 21 Nov 2025 07:47:11 -0500
-X-MC-Unique: lR2TVJrCOXas9paioedUag-1
-X-Mimecast-MFC-AGG-ID: lR2TVJrCOXas9paioedUag_1763729230
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-429c7b0ae36so1247291f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 04:47:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763729230; x=1764334030;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6hmk1UkbUQrbHuF7+FWwHU8sMOi8c7TBNdFfJ6SDMH4=;
- b=GG1/8Fx8Mm79coHWPGBz7nPH0x2oJQ3ACRrEfC4Khp7gB7E2tUe79kDgvZCmoM6vzT
- Mq3V2QopubcaYqF0RuNO+MmSVzI2zRR1VCJR6AiNUleAr4si/uMurtGkgc3G4BQdXeFW
- o9Y1nuR2UrAw3fKXuGH+q/rlm0bqTd8J4sJwZFD1ymGvMVE7y4k+P++hypp7/sPtYnD7
- x2qnHmHWndmyof4O9J57VS4j590TpwY4CIwAQdnyillyVBttgOuZI4QjyAf/oVwVQcGq
- 9JcgDGNHARM5+zxMWUwffxOWO+lgepAL0nmS5ZJhjhfVnewY3wgzun/bVCoVgQPu9rc8
- A43Q==
-X-Gm-Message-State: AOJu0YypW1swGh6QspebIBZ8e4gBgwDUGHv0ZRuF+tjgB5C4hO35DYau
- QQiwEcSvvgCW69Rzp3arTg7ABqNxh6bfrciuisJX7rb18cqME8ZTikeK9VFO/5U6aJRS33rVoz/
- 4YR9xeUcLZMxnYK48kxnau57MV1AH9AqC4bkQ7qKWAEFXSZypp3aFoVyZ
-X-Gm-Gg: ASbGncuvxB4VlTCJIg8EbSFnLoOZCbp9Bx9o3Z5O1yHNJc2BWEX24aH5QIf5h/6N9qm
- p9NLiMQNZYdMdDKSoiwQMLXUC7M4ZPud5HGREIloEwRZFaQvkVAdP83PN71BIE88oUXhWiBtKgt
- gPXiCmVQAoy0b0z92zrS4UPXhabACxYK6LBlHJvLuLWVBNyncWuLXN+mmaXbwPVJD5gNcxi8zcE
- kaOQdOADB6KfQl/hhz8xFCuEelmRG2VYYAM6RAok9gTiJVxMeYJDIuxr+p652InLu2/6/qeKr5C
- l+BnEtrcvlk858MDYEh9Q3Q0lxV0JD7UgJ3T5FGr73XtBy10Ob9ABceOOUyzBCJg8tyxtqVaMQ4
- EqDX1q+3awreKl9AqATHDz0yQRo89Yr1HdfPqT2Epr0alwYY8ftjBqUkeTQ==
-X-Received: by 2002:a05:6000:200c:b0:3ea:6680:8fb9 with SMTP id
- ffacd0b85a97d-42cc12f1c7fmr2422741f8f.3.1763729230418; 
- Fri, 21 Nov 2025 04:47:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHe5muzpav+Z2O5vbUz4FuuXKebz4WmWQOptMN7DPk37aFFfqCGp4W1ncC8u2P9uq/55pEiqw==
-X-Received: by 2002:a05:6000:200c:b0:3ea:6680:8fb9 with SMTP id
- ffacd0b85a97d-42cc12f1c7fmr2422711f8f.3.1763729230033; 
- Fri, 21 Nov 2025 04:47:10 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fa35c2sm10084081f8f.25.2025.11.21.04.47.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Nov 2025 04:47:09 -0800 (PST)
-Message-ID: <759ec110-365f-488b-802d-c7bb1efe30bc@redhat.com>
-Date: Fri, 21 Nov 2025 13:47:08 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMdhv-00068h-Ib; Fri, 21 Nov 2025 21:51:12 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 09CEA16C660;
+ Fri, 21 Nov 2025 15:47:24 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 544DF3218AF;
+ Fri, 21 Nov 2025 15:47:32 +0300 (MSK)
+Message-ID: <6caac774-af69-4d7b-b6f7-ba6b79500828@tls.msk.ru>
+Date: Fri, 21 Nov 2025 15:47:32 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 03/21] hw/arm/smmuv3: Introduce secure registers
-Content-Language: en-US
-To: Tao Tang <tangtao1634@phytium.com.cn>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
- <20251012150701.4127034-4-tangtao1634@phytium.com.cn>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20251012150701.4127034-4-tangtao1634@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2] Fix the typo of vfio-pci device's enable-migration
+ option
+To: Yanghang Liu <yanghliu@redhat.com>, qemu-devel@nongnu.org
+Cc: clegoate@redhat.com, QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20251121094341.80038-1-yanghliu@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20251121094341.80038-1-yanghliu@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,120 +98,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tao,
-
-On 10/12/25 5:06 PM, Tao Tang wrote:
-> The Arm SMMUv3 architecture defines a set of registers for managing
-> secure transactions and context.
->
-> This patch introduces the definitions for these secure registers within
-> the SMMUv3 device model internal header.
->
-> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-
-Eric
+21.11.2025 12:43, Yanghang Liu wrote:
+> 
+> Signed-off-by: Yanghang Liu <yanghliu@redhat.com>
+> Reported-by: Mario Casquero <mcasquer@redhat.com>
 > ---
->  hw/arm/smmuv3-internal.h | 69 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 68 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-> index 8d631ecf27..e420c5dc72 100644
-> --- a/hw/arm/smmuv3-internal.h
-> +++ b/hw/arm/smmuv3-internal.h
-> @@ -38,7 +38,7 @@ typedef enum SMMUTranslationClass {
->      SMMU_CLASS_IN,
->  } SMMUTranslationClass;
->  
-> -/* MMIO Registers */
-> +/* MMIO Registers. Shared by Non-secure/Realm/Root states. */
->  
->  REG32(IDR0,                0x0)
->      FIELD(IDR0, S2P,         0 , 1)
-> @@ -121,6 +121,7 @@ REG32(CR0,                 0x20)
->      FIELD(CR0, CMDQEN,        3, 1)
->  
->  #define SMMU_CR0_RESERVED 0xFFFFFA20
-> +#define SMMU_S_CR0_RESERVED 0xFFFFFC12
->  
->  REG32(CR0ACK,              0x24)
->  REG32(CR1,                 0x28)
-> @@ -179,6 +180,72 @@ REG32(EVENTQ_IRQ_CFG2,     0xbc)
->  
->  #define A_IDREGS           0xfd0
->  
-> +#define SMMU_SECURE_REG_START 0x8000 /* Start of secure-only registers */
-> +
-> +REG32(S_IDR0,               0x8000)
-> +REG32(S_IDR1,               0x8004)
-> +    FIELD(S_IDR1, S_SIDSIZE,          0 , 6)
-> +    FIELD(S_IDR1, SEL2,               29, 1)
-> +    FIELD(S_IDR1, SECURE_IMPL,        31, 1)
-> +
-> +REG32(S_IDR2,               0x8008)
-> +REG32(S_IDR3,               0x800c)
-> +REG32(S_IDR4,               0x8010)
-> +
-> +REG32(S_CR0,                0x8020)
-> +    FIELD(S_CR0, SMMUEN,      0, 1)
-> +    FIELD(S_CR0, EVENTQEN,    2, 1)
-> +    FIELD(S_CR0, CMDQEN,      3, 1)
-> +
-> +REG32(S_CR0ACK,             0x8024)
-> +REG32(S_CR1,                0x8028)
-> +REG32(S_CR2,                0x802c)
-> +
-> +REG32(S_INIT,               0x803c)
-> +    FIELD(S_INIT, INV_ALL,    0, 1)
-> +
-> +REG32(S_GBPA,               0x8044)
-> +    FIELD(S_GBPA, ABORT,     20, 1)
-> +    FIELD(S_GBPA, UPDATE,    31, 1)
-> +
-> +REG32(S_IRQ_CTRL,           0x8050)
-> +    FIELD(S_IRQ_CTRL, GERROR_IRQEN,    0, 1)
-> +    FIELD(S_IRQ_CTRL, EVENTQ_IRQEN,    2, 1)
-> +
-> +REG32(S_IRQ_CTRLACK,        0x8054)
-> +
-> +REG32(S_GERROR,             0x8060)
-> +    FIELD(S_GERROR, CMDQ_ERR,          0, 1)
-> +
-> +#define SMMU_GERROR_IRQ_CFG0_RESERVED   0x00FFFFFFFFFFFFFC
-> +#define SMMU_GERROR_IRQ_CFG2_RESERVED   0x000000000000003F
-> +
-> +#define SMMU_STRTAB_BASE_RESERVED       0x40FFFFFFFFFFFFC0
-> +#define SMMU_QUEUE_BASE_RESERVED        0x40FFFFFFFFFFFFFF
-> +#define SMMU_EVENTQ_IRQ_CFG0_RESERVED   0x00FFFFFFFFFFFFFC
-> +
-> +REG32(S_GERRORN,            0x8064)
-> +REG64(S_GERROR_IRQ_CFG0,    0x8068)
-> +REG32(S_GERROR_IRQ_CFG1,    0x8070)
-> +REG32(S_GERROR_IRQ_CFG2,    0x8074)
-> +REG64(S_STRTAB_BASE,        0x8080)
-> +REG32(S_STRTAB_BASE_CFG,    0x8088)
-> +    FIELD(S_STRTAB_BASE_CFG, LOG2SIZE, 0, 6)
-> +    FIELD(S_STRTAB_BASE_CFG, SPLIT,    6, 5)
-> +    FIELD(S_STRTAB_BASE_CFG, FMT,     16, 2)
-> +
-> +REG64(S_CMDQ_BASE,          0x8090)
-> +REG32(S_CMDQ_PROD,          0x8098)
-> +REG32(S_CMDQ_CONS,          0x809c)
-> +    FIELD(S_CMDQ_CONS, ERR,           24, 7)
-> +
-> +REG64(S_EVENTQ_BASE,        0x80a0)
-> +REG32(S_EVENTQ_PROD,        0x80a8)
-> +REG32(S_EVENTQ_CONS,        0x80ac)
-> +REG64(S_EVENTQ_IRQ_CFG0,    0x80b0)
-> +REG32(S_EVENTQ_IRQ_CFG1,    0x80b8)
-> +REG32(S_EVENTQ_IRQ_CFG2,    0x80bc)
-> +
->  static inline int smmu_enabled(SMMUv3State *s)
->  {
->      return FIELD_EX32(s->cr[0], CR0, SMMUEN);
+>   hw/vfio/pci.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 8b8bc5a421..b46b1305a7 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3871,7 +3871,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
+>                                             "(DEBUG)");
+>       object_class_property_set_description(klass, /* 5.2, 8.0 non-experimetal */
+>                                             "enable-migration",
+> -                                          "Enale device migration. Also requires a host VFIO PCI "
+> +                                          "Enable device migration. Also requires a host VFIO PCI "
+>                                             "variant or mdev driver with migration support enabled");
+>       object_class_property_set_description(klass, /* 8.1 */
+>                                             "vf-token",
 
+Picked up to the trivial-patches tree.
+Thanks!
+
+/mjt
 
