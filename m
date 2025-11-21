@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2291C7C523
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E983C7C592
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:06:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdBe-0000wj-1L; Fri, 21 Nov 2025 21:17:19 -0500
+	id 1vMdBk-00018g-Fe; Fri, 21 Nov 2025 21:17:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd1f-00011x-US; Fri, 21 Nov 2025 21:06:59 -0500
+ id 1vMd1j-0000yn-5d; Fri, 21 Nov 2025 21:07:03 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd1C-0002JY-T7; Fri, 21 Nov 2025 21:06:56 -0500
+ id 1vMd00-0001q8-0K; Fri, 21 Nov 2025 21:05:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 39BB916C6E0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E07C16C6E1;
  Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 92F64321957;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A745E321958;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jialong Yang <z_bajeer@yeah.net>,
+Cc: qemu-stable@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 08/76] aplic: fix mask for smsiaddrcfgh
-Date: Fri, 21 Nov 2025 16:50:46 +0300
-Message-ID: <20251121135201.1114964-8-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 09/76] target/riscv/kvm: fix env->priv setting in
+ reset_regs_csr()
+Date: Fri, 21 Nov 2025 16:50:47 +0300
+Message-ID: <20251121135201.1114964-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -57,104 +59,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jialong Yang <z_bajeer@yeah.net>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
- 4.5.4. Supervisor MSI address configuration (smsiaddrcfg and
-   smsiaddrcfgh)
-smsiaddrcfgh:
-        bits 22:20 LHXS(WARL)
-        bits 11:0  High Base PPN(WARL)
+This patch was originally made by Gitlab user Bo Gan (@ganboing) 4
+months ago in the context of issue [1]. I asked the author to send a
+patch to the mailing list ~3 months ago and got no reply. I'm sending
+the patch myself because we already missed 10.1 without this fix.
 
-Signed-off-by: Jialong Yang <z_bajeer@yeah.net>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <44f3e0d1.161.199d0c338b0.Coremail.z_bajeer@yeah.net>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+I'll also just post verbatim Bo Gan comment in the commit msg:
+
+"In RISCV Linux with KVM enabled, gdbstub is broken. The
+get_physical_address isn't able to page-walk correctly and resolve the
+physical page. This is due to that the vcpu is being treated as starting
+in M mode even if KVM enabled. However, with KVM, the vcpu is actually
+started in S mode. The mmu_idx will give 3 (M), instead of 1 (S),
+resulting in Guest PA == VA (wrong)!"
+
+Set env->priv to PRV_S in kvm_riscv_reset_regs_csr() since the VCPU is
+always started in S-mode for KVM.
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/2991
+
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 5e3e066e4ac894aff3e8dd3a072bca9c1986b2ff)
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2991
+Originally-by: Bo Gan (@ganboing in Gitlab)
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251022111105.483992-1-dbarboza@ventanamicro.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 2a21cbee47a124edf43fc9ee156d7093e2f957fd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index a1d9fa5085..6dccca73af 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -96,7 +96,7 @@
-     (APLIC_xMSICFGADDR_PPN_HHX_MASK(__hhxw) << \
-      APLIC_xMSICFGADDR_PPN_HHX_SHIFT(__hhxs))
- 
--#define APLIC_xMSICFGADDRH_VALID_MASK   \
-+#define APLIC_MMSICFGADDRH_VALID_MASK   \
-     (APLIC_xMSICFGADDRH_L | \
-      (APLIC_xMSICFGADDRH_HHXS_MASK << APLIC_xMSICFGADDRH_HHXS_SHIFT) | \
-      (APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
-@@ -104,6 +104,10 @@
-      (APLIC_xMSICFGADDRH_LHXW_MASK << APLIC_xMSICFGADDRH_LHXW_SHIFT) | \
-      APLIC_xMSICFGADDRH_BAPPN_MASK)
- 
-+#define APLIC_SMSICFGADDRH_VALID_MASK   \
-+    ((APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
-+     APLIC_xMSICFGADDRH_BAPPN_MASK)
-+
- #define APLIC_SETIP_BASE               0x1c00
- #define APLIC_SETIPNUM                 0x1cdc
- 
-@@ -184,7 +188,7 @@ void riscv_aplic_set_kvm_msicfgaddr(RISCVAPLICState *aplic, hwaddr addr)
-         addr >>= APLIC_xMSICFGADDR_PPN_SHIFT;
-         aplic->kvm_msicfgaddr = extract64(addr, 0, 32);
-         aplic->kvm_msicfgaddrH = extract64(addr, 32, 32) &
--                                 APLIC_xMSICFGADDRH_VALID_MASK;
-+                                 APLIC_MMSICFGADDRH_VALID_MASK;
-     }
- #endif
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 5c19062c19..e06d2126ba 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -704,6 +704,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
+     env->satp = 0;
+     env->scounteren = 0;
+     env->senvcfg = 0;
++    env->priv = PRV_S;
  }
-@@ -409,13 +413,8 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
-         msicfgaddr = aplic->kvm_msicfgaddr;
-         msicfgaddrH = ((uint64_t)aplic->kvm_msicfgaddrH << 32);
-     } else {
--        if (aplic->mmode) {
--            msicfgaddr = aplic_m->mmsicfgaddr;
--            msicfgaddrH = aplic_m->mmsicfgaddrH;
--        } else {
--            msicfgaddr = aplic_m->smsicfgaddr;
--            msicfgaddrH = aplic_m->smsicfgaddrH;
--        }
-+        msicfgaddr = aplic_m->mmsicfgaddr;
-+        msicfgaddrH = aplic_m->mmsicfgaddrH;
-     }
  
-     lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
-@@ -427,6 +426,14 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
-     hhxw = (msicfgaddrH >> APLIC_xMSICFGADDRH_HHXW_SHIFT) &
-             APLIC_xMSICFGADDRH_HHXW_MASK;
- 
-+    if (!aplic->kvm_splitmode && !aplic->mmode) {
-+        msicfgaddrH = aplic_m->smsicfgaddrH;
-+        msicfgaddr = aplic_m->smsicfgaddr;
-+
-+        lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
-+            APLIC_xMSICFGADDRH_LHXS_MASK;
-+    }
-+
-     group_idx = hart_idx >> lhxw;
- 
-     addr = msicfgaddr;
-@@ -771,7 +778,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
-     } else if (aplic->mmode && aplic->msimode &&
-                (addr == APLIC_MMSICFGADDRH)) {
-         if (!(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
--            aplic->mmsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
-+            aplic->mmsicfgaddrH = value & APLIC_MMSICFGADDRH_VALID_MASK;
-         }
-     } else if (aplic->mmode && aplic->msimode &&
-                (addr == APLIC_SMSICFGADDR)) {
-@@ -792,7 +799,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
-                (addr == APLIC_SMSICFGADDRH)) {
-         if (aplic->num_children &&
-             !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
--            aplic->smsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
-+            aplic->smsicfgaddrH = value & APLIC_SMSICFGADDRH_VALID_MASK;
-         }
-     } else if ((APLIC_SETIP_BASE <= addr) &&
-             (addr < (APLIC_SETIP_BASE + aplic->bitfield_words * 4))) {
+ static int kvm_riscv_get_regs_fp(CPUState *cs)
 -- 
 2.47.3
 
