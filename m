@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E8FC7C49C
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2291C7C523
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:47:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdH5-0000Bk-AB; Fri, 21 Nov 2025 21:22:56 -0500
+	id 1vMdBe-0000wj-1L; Fri, 21 Nov 2025 21:17:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdGz-00005J-4f; Fri, 21 Nov 2025 21:22:49 -0500
+ id 1vMd1f-00011x-US; Fri, 21 Nov 2025 21:06:59 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdG7-0004dl-SM; Fri, 21 Nov 2025 21:22:44 -0500
+ id 1vMd1C-0002JY-T7; Fri, 21 Nov 2025 21:06:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 265BA16C6DF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 39BB916C6E0;
  Fri, 21 Nov 2025 16:51:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 74E49321956;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 92F64321957;
  Fri, 21 Nov 2025 16:52:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zejun Zhao <jelly.zhao.42@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Jialong Yang <z_bajeer@yeah.net>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 07/76] hw/riscv: Correct mmu-type property of sifive_u
- harts in device tree
-Date: Fri, 21 Nov 2025 16:50:45 +0300
-Message-ID: <20251121135201.1114964-7-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 08/76] aplic: fix mask for smsiaddrcfgh
+Date: Fri, 21 Nov 2025 16:50:46 +0300
+Message-ID: <20251121135201.1114964-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -59,32 +57,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zejun Zhao <jelly.zhao.42@gmail.com>
+From: Jialong Yang <z_bajeer@yeah.net>
 
-Correct mmu-type property of sifive_u harts from Sv48 to Sv39 in 64-bit
-mode since it's the only supported SATP mode.
+ 4.5.4. Supervisor MSI address configuration (smsiaddrcfg and
+   smsiaddrcfgh)
+smsiaddrcfgh:
+        bits 22:20 LHXS(WARL)
+        bits 11:0  High Base PPN(WARL)
 
-Signed-off-by: Zejun Zhao <jelly.zhao.42@gmail.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20251013133242.1945681-1-jelly.zhao.42@gmail.com>
+Signed-off-by: Jialong Yang <z_bajeer@yeah.net>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <44f3e0d1.161.199d0c338b0.Coremail.z_bajeer@yeah.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit e41139eaad1d6ea7c52b8ebb5def2dcb84ff57e1)
+(cherry picked from commit 5e3e066e4ac894aff3e8dd3a072bca9c1986b2ff)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index d69f942cfb..3e1ed209ca 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -176,7 +176,7 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-             if (is_32_bit) {
-                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv32");
-             } else {
--                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
-+                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv39");
-             }
-             riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
-         } else {
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index a1d9fa5085..6dccca73af 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -96,7 +96,7 @@
+     (APLIC_xMSICFGADDR_PPN_HHX_MASK(__hhxw) << \
+      APLIC_xMSICFGADDR_PPN_HHX_SHIFT(__hhxs))
+ 
+-#define APLIC_xMSICFGADDRH_VALID_MASK   \
++#define APLIC_MMSICFGADDRH_VALID_MASK   \
+     (APLIC_xMSICFGADDRH_L | \
+      (APLIC_xMSICFGADDRH_HHXS_MASK << APLIC_xMSICFGADDRH_HHXS_SHIFT) | \
+      (APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
+@@ -104,6 +104,10 @@
+      (APLIC_xMSICFGADDRH_LHXW_MASK << APLIC_xMSICFGADDRH_LHXW_SHIFT) | \
+      APLIC_xMSICFGADDRH_BAPPN_MASK)
+ 
++#define APLIC_SMSICFGADDRH_VALID_MASK   \
++    ((APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
++     APLIC_xMSICFGADDRH_BAPPN_MASK)
++
+ #define APLIC_SETIP_BASE               0x1c00
+ #define APLIC_SETIPNUM                 0x1cdc
+ 
+@@ -184,7 +188,7 @@ void riscv_aplic_set_kvm_msicfgaddr(RISCVAPLICState *aplic, hwaddr addr)
+         addr >>= APLIC_xMSICFGADDR_PPN_SHIFT;
+         aplic->kvm_msicfgaddr = extract64(addr, 0, 32);
+         aplic->kvm_msicfgaddrH = extract64(addr, 32, 32) &
+-                                 APLIC_xMSICFGADDRH_VALID_MASK;
++                                 APLIC_MMSICFGADDRH_VALID_MASK;
+     }
+ #endif
+ }
+@@ -409,13 +413,8 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
+         msicfgaddr = aplic->kvm_msicfgaddr;
+         msicfgaddrH = ((uint64_t)aplic->kvm_msicfgaddrH << 32);
+     } else {
+-        if (aplic->mmode) {
+-            msicfgaddr = aplic_m->mmsicfgaddr;
+-            msicfgaddrH = aplic_m->mmsicfgaddrH;
+-        } else {
+-            msicfgaddr = aplic_m->smsicfgaddr;
+-            msicfgaddrH = aplic_m->smsicfgaddrH;
+-        }
++        msicfgaddr = aplic_m->mmsicfgaddr;
++        msicfgaddrH = aplic_m->mmsicfgaddrH;
+     }
+ 
+     lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
+@@ -427,6 +426,14 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
+     hhxw = (msicfgaddrH >> APLIC_xMSICFGADDRH_HHXW_SHIFT) &
+             APLIC_xMSICFGADDRH_HHXW_MASK;
+ 
++    if (!aplic->kvm_splitmode && !aplic->mmode) {
++        msicfgaddrH = aplic_m->smsicfgaddrH;
++        msicfgaddr = aplic_m->smsicfgaddr;
++
++        lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
++            APLIC_xMSICFGADDRH_LHXS_MASK;
++    }
++
+     group_idx = hart_idx >> lhxw;
+ 
+     addr = msicfgaddr;
+@@ -771,7 +778,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
+     } else if (aplic->mmode && aplic->msimode &&
+                (addr == APLIC_MMSICFGADDRH)) {
+         if (!(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+-            aplic->mmsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
++            aplic->mmsicfgaddrH = value & APLIC_MMSICFGADDRH_VALID_MASK;
+         }
+     } else if (aplic->mmode && aplic->msimode &&
+                (addr == APLIC_SMSICFGADDR)) {
+@@ -792,7 +799,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
+                (addr == APLIC_SMSICFGADDRH)) {
+         if (aplic->num_children &&
+             !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+-            aplic->smsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
++            aplic->smsicfgaddrH = value & APLIC_SMSICFGADDRH_VALID_MASK;
+         }
+     } else if ((APLIC_SETIP_BASE <= addr) &&
+             (addr < (APLIC_SETIP_BASE + aplic->bitfield_words * 4))) {
 -- 
 2.47.3
 
