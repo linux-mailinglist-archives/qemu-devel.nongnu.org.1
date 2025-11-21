@@ -2,140 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAE2C78420
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 10:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A438CC77DEC
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 09:22:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMNtb-0008Q2-In; Fri, 21 Nov 2025 04:57:39 -0500
+	id 1vMMPC-0001KT-DR; Fri, 21 Nov 2025 03:22:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMeu-0005KR-4K
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:38:26 -0500
-Received: from mail-eastusazlp17011000f.outbound.protection.outlook.com
- ([2a01:111:f403:c100::f] helo=BL2PR02CU003.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vMMPA-0001K4-5k
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:22:08 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vMMes-0000Sb-BX
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:38:23 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S7uEReaKxx63FitKjU9U50Dus6ikMffz4cZkNRqhtcybzVqwHrbiEZ46afXJp+CYx6GY5Hwrnpo4c4uQYSa8AViibzmIxrUWUtk3PbxSWHCCsJ9xeyvBHMe+iDNxzt8pyH1DSE0IcdGKpqNJejFKCF39FGiADpORzhNhXFpKaZ1sb7Nx4b25vcBn5f+ZHYVqRZ1GfqZ0kfhxvcnP5oEsPhN1/UWIfyv6GtjoypkYDSVfO0wPxHIqUlVIVDA5S1DKxEI7NQVzDmZsZ6KMENmQrOFAeNxXxEKrekUTgu/aK/tPO0Ql5cdIL0sH83guTm/h1/ilHJ8lx2JQdVXHVSRB+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+boKxpjIoxJc+KhooMJtnUsReY9o0+wonKYSweLuoQY=;
- b=c4DmpPVUx3OU7v+Rz5/D/eZxNDZnLCUyny8gnDGPzuT2d1ePfTK4ZBIN13qWb7rNM3ud3cDZg6uCsp1rYp2FJ+3Aa4NnoSKL+UEzb8mRIazqE0j047I59cGnPlMgzVTVYGkKhXzSB9ZsAtcq8dnXrUgy/OYucaOywZ5NhWn8862s5WHMxAFzciDScSDxoCzzlsZzd6ug/0P0r/GYIFolyjOf2zDI0wj7+pSt9uADjJum4Ff4vT/3D0matx7CfIPkJmOOxnUZykZYStOjWAfnRTDyWjexRX7sSWWSDwuoypkkY6KQzX/bXjqe25k5mh0VKLNcpNr07sdqgmoAVlbd5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+boKxpjIoxJc+KhooMJtnUsReY9o0+wonKYSweLuoQY=;
- b=btDpi+w/CR2ZwksTiOQba0uIGa0IrhyD47Dxa36QmrtGy/EFDU9JjGoklYeGWmBBIbIES1sEmcv9x2Uz+jwhTR0J7tk/ABffYOvPTp1i3ctB7t8L/80HQQf2hTcs8haJ/Xcl1g82zrDlgsvEKAPkMLkFqqn0bBZd8aF3vERo5j0=
-Received: from BN9PR03CA0904.namprd03.prod.outlook.com (2603:10b6:408:107::9)
- by BN5PR12MB9510.namprd12.prod.outlook.com (2603:10b6:408:2ac::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 08:38:18 +0000
-Received: from BN2PEPF000044A9.namprd04.prod.outlook.com
- (2603:10b6:408:107:cafe::8b) by BN9PR03CA0904.outlook.office365.com
- (2603:10b6:408:107::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.12 via Frontend Transport; Fri,
- 21 Nov 2025 08:38:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044A9.mail.protection.outlook.com (10.167.243.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 08:38:18 +0000
-Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
- 2025 00:38:15 -0800
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>,
- <kvm@vger.kernel.org>
-CC: <qemu-devel@nongnu.org>, <seanjc@google.com>, <santosh.shukla@amd.com>,
- <nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <babu.moger@amd.com>,
- <shivansh.dhiman@amd.com>
-Subject: [PATCH 5/5] i386: Add Bus Lock Detect support for EPYC-Turin-v2 model
-Date: Fri, 21 Nov 2025 08:34:52 +0000
-Message-ID: <20251121083452.429261-6-shivansh.dhiman@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251121083452.429261-1-shivansh.dhiman@amd.com>
-References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vMMP8-00060q-Af
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 03:22:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763713327; x=1795249327;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Rrd9lPZxETwt8dsqNHVFn2mbZUq8Ng2lPaHkt76xy0o=;
+ b=RttAusHbX8iOIkqjhp7J5RIqxD00QzZBGUlKgxi26KyteR7us2p6YbvG
+ zNcXT150utfQWrImx/uNIxVihe/wLEGcFYfRlGUQts1gxocJWpM/N1GO9
+ roLrE0YEBMUNDR6fCMZ1itmA1iAL5RnozMu/LQ30pUkStu4BQBMHkY/Dq
+ XE3KpHe4h8VZTYRbw41SUeifKCMoJUlhqc7hR9c4M6PEp5hd7BuqHG+f8
+ 9hY9Ku8bdS153oHWiP14G3JstXAnFhe8RcbrcuK7dWRtaB/shDkU6iFbY
+ C0EqeutXNs+HgFsjoC7iuXlgEf66IMtcXMwVGK4I8UiKLTsC6kEgJCSji A==;
+X-CSE-ConnectionGUID: OcDZr1ecT3SXg+B/sJNr1A==
+X-CSE-MsgGUID: LmT+8Dt4SaWCi+eInKKHUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="68407960"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="68407960"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 00:22:04 -0800
+X-CSE-ConnectionGUID: UVNah6h/T/yhRknxH/3Kxg==
+X-CSE-MsgGUID: 5A3WrBdoQ8mMbEKwY83Qog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="191881411"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 21 Nov 2025 00:22:02 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org,
+ Markus Armbruster <armbru@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] docs/deprecated: Remove undeprecated SMP description
+Date: Fri, 21 Nov 2025 16:44:16 +0800
+Message-Id: <20251121084416.1031466-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A9:EE_|BN5PR12MB9510:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bd28d36-d5a2-4819-c28c-08de28d9522b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sbu+7SzW0BSgJCxW7c7IG/wPasYc5Wt//1wL0gAn9JCXpry2hI0NUV5Ld7tN?=
- =?us-ascii?Q?on1VO/eXe+jmMSLS44Ztq2L4lIOLDa0OYs/dfmnum+JIlfh6FEiQUiEQDp0W?=
- =?us-ascii?Q?KYVkTg1jKnHAa1b5z5QMdSS0Mn5S9UJCNkvASa9FvV3n0bgDpojQe/Rw+375?=
- =?us-ascii?Q?TI3jpMW2m/6D1ZSmmFHQY1MaJRcF6OqQcro0n2/0UsGExeWJ66ynUSiVwJqd?=
- =?us-ascii?Q?EIXFFUnrQqeHi1GE++MhjNnXE25yWtYuIN/eRH63Hdvr0uNjJecNxA3ub3sn?=
- =?us-ascii?Q?+hnmXuC2GdYO8A40DMtbfxgPiJs5g8yRaRVsykpXOLbL328hX3nFRxFu0NCE?=
- =?us-ascii?Q?/DAs8dq4ivyIK8F4HkRDlkV2uTszvp7H/ZePJe4yIYnxyK19KT0kcwKYUDhF?=
- =?us-ascii?Q?uBpNOqfw5/aDsD7B7b3HEGVdNFBHqGrNEkbl+ZziMbgfMpgYYwCMaL0+zBjZ?=
- =?us-ascii?Q?JeLS2asGYsVOxyk4M6m1N4/RSwSvGeKVak0NX98Yxs+3Vbt81Sy4FFpfb7/9?=
- =?us-ascii?Q?0yvkO/nf+kkJVbSgA5ZMPARCb1u/ZXlpqZXFL046HR1hUUmDSPYB9UaAoeVT?=
- =?us-ascii?Q?lqLbORK2Zozk2KBoG6/vCAuVIPDuA+pIADLZRPRLoEUp8rjoCxVj0/f6Q44v?=
- =?us-ascii?Q?+CzA5eGClsGY/Kz/d+hwnCGUgf40xM8/e1CPUSDCJj9gqIV3baglEjA/BMEN?=
- =?us-ascii?Q?owNpBfTSyMjmegzBhR4jX8aW8D4xaNtQG1DTUD9lV2gFEM65hb9a83FLLmZs?=
- =?us-ascii?Q?j0c5OkILsBkF+s3G9dXGzSv70oKMoHKvvnyyUVvpa7CDEj3A4JHt0Rh4d6Lu?=
- =?us-ascii?Q?+Nk3PsmGwfruUFJGhoKPzi6rgNTuWIeXAoWQQPSoIyi/sJCI7FnZ6qOoidUT?=
- =?us-ascii?Q?ekHw0TERVi9tbx+sA2EkBfFBZzssR4u6F+S9DzfaMxKbB2GlJhM0LRrKDAab?=
- =?us-ascii?Q?CO3cR7CBDpel4dDaG3nmxx0BiXPA9GxPNAYA0+Oc2Rrp4iiRLtll/GZr2/AP?=
- =?us-ascii?Q?1RXCp0qRMTBzZsbm2bk+IU8vFTETORF3FoE+cZ4Hpa/y/C8U7/rQMwYGDcYF?=
- =?us-ascii?Q?5I0qs0wjJCXQGDHyspEDIStareeT7ENbOaVCa+ZyeU9dRp/Qm4swS0OIJwQ5?=
- =?us-ascii?Q?akeqo1nNX0iZDqq/h7eQg7DZ4RhrD4JpCKf8nic3sFIErajbIhRAzQVbxhM6?=
- =?us-ascii?Q?s+4qf1lq6i85ctNo2qE0yJ1QKESlwtCA201eG6k3Hd8UYuZSTcTJBROr8IA/?=
- =?us-ascii?Q?hPaPfG/PKp1GxBnqa2ba9578vY2+hyeSjT8BdcrzDt1HNhomli+a9zMc3OdO?=
- =?us-ascii?Q?DYuU1z6IyKDPKVmKpgLkPbFSFnyAXAnJsamveP795IpHet+Fba8hPoalc5gQ?=
- =?us-ascii?Q?NJ1hQiUBrgC/prTxjd15NiYZWICJSNkx3mgXQnDQ/mvG/JEH+q2DmmbWPEwP?=
- =?us-ascii?Q?cpfyyoiQysvVDdmOAc41+rVWWIldwHuQJwK8MuuIZnL6Ina1RPmw0EMv+VXg?=
- =?us-ascii?Q?ncryY7nBiccZ3pT5iojmRDEjRgzBQOtoEE/591mxLW2kOc0UTdQnqdjPMK5F?=
- =?us-ascii?Q?8rhcKbs9SCSuha6MUEk=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:38:18.4383 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bd28d36-d5a2-4819-c28c-08de28d9522b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A9.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9510
-Received-SPF: permerror client-ip=2a01:111:f403:c100::f;
- envelope-from=Shivansh.Dhiman@amd.com;
- helo=BL2PR02CU003.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Nov 2025 04:57:38 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -150,33 +79,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable the Bus Lock Detect feature for the EPYC-Turin-v2 CPU model to
-match the hardware capabilities of AMD Turin processors. This feature
-allows detection of split locks and bus locks, which can cause
-performance degradation in multi-core systems.
+"Unsupported 'parameter=1' SMP configuration" was proposed to be
+deprecated in the commit 54c4ea8f3ae6 ("hw/core/machine-smp: Deprecate
+unsupported "parameter=1" SMP configurations").
 
-The bus-lock-detect feature is part of the architectural capabilities
-exposed through CPUID and should be enabled by default for Turin v2
-and later CPU models.
+But the related code was reverted later in the commit 9d7950edb0cd
+("hw/core: allow parameter=1 for SMP topology on any machine").
 
-Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Thus, this SMP behavior is still valid and is not actually deprecated.
+
+Remove outdated document descriptions.
+
+Reported-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/about/deprecated.rst | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 12500d6b7bed..660b9c2a98b6 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6748,6 +6748,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                 .version = 2,
-                 .props = (PropValue[]) {
-                     { "x-force-cpuid-0x80000026", "on" },
-+                    { "bus-lock-detect", "on" },
-                     { /* end of list */ }
-                 }
-             },
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 03e29915f0aa..bbfcce4a1ab3 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -54,20 +54,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+ However, short-form booleans are deprecated and full explicit ``arg_name=on``
+ form is preferred.
+ 
+-``-smp`` (Unsupported "parameter=1" SMP configurations) (since 9.0)
+-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-Specified CPU topology parameters must be supported by the machine.
+-
+-In the SMP configuration, users should provide the CPU topology parameters that
+-are supported by the target machine.
+-
+-However, historically it was allowed for users to specify the unsupported
+-topology parameter as "1", which is meaningless. So support for this kind of
+-configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+-marked deprecated since 9.0, users have to ensure that all the topology members
+-described with -smp are supported by the target machine.
+-
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
 -- 
-2.43.0
+2.34.1
 
 
