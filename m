@@ -2,57 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46C7C7C4E4
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4CDC7C4F6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:42:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMczl-0004Ei-4l; Fri, 21 Nov 2025 21:05:02 -0500
+	id 1vMcnW-0003fY-8i; Fri, 21 Nov 2025 20:52:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vMcAd-0006wz-Rd; Fri, 21 Nov 2025 20:12:13 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbcG-0003Wa-R9
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vMcAS-0004dw-Pt; Fri, 21 Nov 2025 20:12:08 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5ALC5PTd002022
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 21 Nov 2025 21:05:25 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=+5GNtLSFKyQzhBbZfhNfyO2/GtHz4fBldl1unhI9Xjk=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1763726725; v=1;
- b=HrL0XQTYBRNpwmKEEvNw+rk36Pgg+a+5ccfZxKvh6MMUZ0VBkoHzMT27L70nfY1M
- YuCyfoooSAQ0H1IV4ygZtI1W7jWQEEmRZa3fyDFaCTEDXr2b5PRqryUpgGsg+Bt9
- aUmcgEJF0EcfU+OdZSpo0+yHOscJZcNaQM+srxu/G4XaqyAql6EkXBm8jn67At6E
- bzIxs+b3dIkFv1FDs42eH3f5JwW4nOmdEoc2W62CJ/3qQzG9j0Y9OV6oCwAXvseb
- FSX0Lgt+ryLD8JyppJX++nT3hMhw3zgglACgI8iYfLtLFNSGvmFUFb97GtjwiCwz
- RcXVuV/AOOIMWkVhEr0BvA==
-Message-ID: <6ffd15c9-3928-4b66-a004-e9864432773e@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 21 Nov 2025 21:05:25 +0900
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbc7-0005vT-96
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763771775;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SakLJGJj0LkA1a6qNyCMYZNSthSDHMhyUkRA4qcArBA=;
+ b=gRmKWGIjdE/boM7ZJgqGpwRrosqopbvLZcUAKwdkL9cObKz88DVts1kTspJVGTVrtZs+Dj
+ yDIdtL4r/pcj7rwRj62hNVKZSQO4NrK+BFiNQ4k3WpuovqXD6wnpjnjQhfJvt7+lZkA7Ko
+ zuT3h4twth2d2yAxIQIpqxl8jNuG0+4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-362--3aJYg8QO7mowt-5VMm9DQ-1; Fri,
+ 21 Nov 2025 07:14:49 -0500
+X-MC-Unique: -3aJYg8QO7mowt-5VMm9DQ-1
+X-Mimecast-MFC-AGG-ID: -3aJYg8QO7mowt-5VMm9DQ_1763727284
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 384951956059; Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E1C871940E82; Fri, 21 Nov 2025 12:14:40 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7FBC221E6A27; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
+ stefanb@linux.vnet.ibm.com, kwolf@redhat.com, hreitz@redhat.com,
+ sw@weilnetz.de, qemu_oss@crudebyte.com, groug@kaod.org, mst@redhat.com,
+ imammedo@redhat.com, anisinha@redhat.com, kraxel@redhat.com,
+ shentey@gmail.com, npiggin@gmail.com, harshpb@linux.ibm.com,
+ sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com, jag.raman@oracle.com,
+ sgarzare@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ philmd@linaro.org, alex@shazbot.org, clg@redhat.com, peterx@redhat.com,
+ farosas@suse.de, lizhijian@fujitsu.com, dave@treblig.org,
+ jasowang@redhat.com, samuel.thibault@ens-lyon.org, michael.roth@amd.com,
+ kkostiuk@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ rathc@linux.ibm.com, palmer@dabbelt.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
+Subject: [PATCH v2 00/15] Error message improvements
+Date: Fri, 21 Nov 2025 13:14:23 +0100
+Message-ID: <20251121121438.1249498-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 17/28] hw: arm: virt: rework MSI-X configuration
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Xu <peterx@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-References: <20251121100240.89117-1-mohamed@unpredictable.fr>
- <20251121100240.89117-18-mohamed@unpredictable.fr>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251121100240.89117-18-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,232 +84,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/11/21 19:02, Mohamed Mediouni wrote:
-> Introduce a -M msi= argument to be able to control MSI-X support independently
-> from ITS, as part of supporting GICv3 + GICv2m platforms.
-> 
-> Remove vms->its as it's no longer needed after that change.
-> 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> ---
->   hw/arm/virt-acpi-build.c |   3 +-
->   hw/arm/virt.c            | 111 +++++++++++++++++++++++++++++++--------
->   include/hw/arm/virt.h    |   4 +-
->   3 files changed, 94 insertions(+), 24 deletions(-)
-> 
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index c8ac58b64e..15e6239e5f 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -962,8 +962,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->           }
->       }
->   
-> -    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms))
-> -     && !vms->no_gicv3_with_gicv2m) {
-> +    if (virt_is_gicv2m_enabled(vms)) {
->           const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
->   
->           /* 5.2.12.16 GIC MSI Frame Structure */
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index ddc6d4d3b1..7b776187f8 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -967,12 +967,12 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->   
->       fdt_add_gic_node(vms);
->   
-> -    if (vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms)) {
-> +    if (virt_is_its_enabled(vms)) {
->           create_its(vms);
-> -    } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
-> -        create_v2m(vms);
-> -    } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
-> +    } else if (virt_is_gicv2m_enabled(vms)) {
->           create_v2m(vms);
-> +    } else {
-> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
->       }
->   }
->   
-> @@ -2713,32 +2713,94 @@ static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
->   
->   bool virt_is_its_enabled(VirtMachineState *vms)
->   {
-> -    if (vms->its == ON_OFF_AUTO_OFF) {
-> -        return false;
-> +    switch (vms->msi_controller) {
-> +        case VIRT_MSI_CTRL_NONE:
-> +            return false;
-> +        case VIRT_MSI_CTRL_ITS:
-> +            return true;
-> +        case VIRT_MSI_CTRL_GICV2M:
-> +            return false;
-> +        case VIRT_MSI_CTRL_AUTO:
-> +            if (whpx_enabled() && whpx_irqchip_in_kernel()) {
-> +                return false;
-> +            }
-> +            if (vms->gic_version == VIRT_GIC_VERSION_2) {
-> +                return false;
-> +            }
-> +            return true;
-> +        default:
-> +            return false;
->       }
-> -    if (vms->its == ON_OFF_AUTO_AUTO) {
-> -        if (whpx_enabled()) {
-> +}
-> +
-> +bool virt_is_gicv2m_enabled(VirtMachineState *vms)
-> +{
-> +    switch (vms->msi_controller) {
-> +        case VIRT_MSI_CTRL_NONE:
->               return false;
-> -        }
-> +        default:
-> +            return !virt_is_its_enabled(vms);
->       }
-> -    return true;
->   }
->   
-> -static void virt_get_its(Object *obj, Visitor *v, const char *name,
-> -                          void *opaque, Error **errp)
-> +static char *virt_get_msi(Object *obj, Error **errp)
->   {
->       VirtMachineState *vms = VIRT_MACHINE(obj);
-> -    OnOffAuto its = vms->its;
-> +    const char *val;
->   
-> -    visit_type_OnOffAuto(v, name, &its, errp);
-> +    switch (vms->msi_controller) {
-> +    case VIRT_MSI_CTRL_NONE:
-> +        val = "off";
-> +        break;
-> +    case VIRT_MSI_CTRL_ITS:
-> +        val = "its";
-> +        break;
-> +    case VIRT_MSI_CTRL_GICV2M:
-> +        val = "gicv2m";
-> +        break;
-> +    default:
-> +        val = "auto";
-> +        break;
-> +    }
-> +    return g_strdup(val);
->   }
->   
-> -static void virt_set_its(Object *obj, Visitor *v, const char *name,
-> -                          void *opaque, Error **errp)
-> +static void virt_set_msi(Object *obj, const char *value, Error **errp)
->   {
->       VirtMachineState *vms = VIRT_MACHINE(obj);
->   
-> -    visit_type_OnOffAuto(v, name, &vms->its, errp);
-> +    if (!strcmp(value, "auto")) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_AUTO; /* Will be overriden later */
-> +    } else if (!strcmp(value, "its")) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_ITS;
-> +    } else if (!strcmp(value, "gicv2m")) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
-> +    } else if (!strcmp(value, "none")) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
-> +    } else {
-> +        error_setg(errp, "Invalid msi value");
-> +        error_append_hint(errp, "Valid values are auto, gicv2m, its, off\n");
+v2:
+* PATCH 02: New, replacing old PATCH 02 [Dave]
+* PATCH 03: New, replacing one of old PATCH 09's hunks
+* PATCH 12: Fix patch splitting mishap [Dave]
+* PATCH 13: Fix lost argument [Dave]
 
-This should have ERRP_GUARD().
+Markus Armbruster (15):
+  error: Strip trailing '\n' from error string arguments (again)
+  hw/usb: Convert to qemu_create() for a better error message
+  ui: Convert to qemu_create() for simplicity and consistency
+  tap-solaris: Use error_setg_file_open() for better error messages
+  qga: Use error_setg_file_open() for better error messages
+  hw/scsi: Use error_setg_file_open() for a better error message
+  hw/virtio: Use error_setg_file_open() for a better error message
+  net/tap: Use error_setg_file_open() for a better error message
+  blkdebug: Use error_setg_file_open() for a better error message
+  error: Use error_setg_file_open() for simplicity and consistency
+  net/slirp: Improve file open error message
+  error: Use error_setg_errno() to improve error messages
+  error: Use error_setg_errno() for simplicity and consistency
+  qga/commands-win32: Use error_setg_win32() for better error messages
+  block/file-win32: Improve an error message
 
-> +    }
-> +}
-> +
-> +static bool virt_get_its(Object *obj, Error **errp)
-> +{
-> +    VirtMachineState *vms = VIRT_MACHINE(obj);
-> +
-> +    return virt_is_its_enabled(vms);
-> +}
-> +
-> +static void virt_set_its(Object *obj, bool value, Error **errp)
-> +{
-> +    VirtMachineState *vms = VIRT_MACHINE(obj);
-> +
-> +    if (value) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_ITS;
-> +    } else if (vms->no_gicv3_with_gicv2m) {
-> +        vms->msi_controller = VIRT_MSI_CTRL_NONE;
-> +    } else {
-> +        vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
-> +    }
->   }
->   
->   static bool virt_get_dtb_randomness(Object *obj, Error **errp)
-> @@ -3065,6 +3127,8 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->               db_start = base_memmap[VIRT_GIC_V2M].base;
->               db_end = db_start + base_memmap[VIRT_GIC_V2M].size - 1;
->               break;
-> +        case VIRT_MSI_CTRL_AUTO:
-> +            g_assert_not_reached();
->           }
->           resv_prop_str = g_strdup_printf("0x%"PRIx64":0x%"PRIx64":%u",
->                                           db_start, db_end,
-> @@ -3455,13 +3519,18 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
->                                             "guest CPU which implements the ARM "
->                                             "Memory Tagging Extension");
->   
-> -    object_class_property_add(oc, "its", "OnOffAuto",
-> -        virt_get_its, virt_set_its,
-> -        NULL, NULL);
-> +    object_class_property_add_bool(oc, "its", virt_get_its,
-> +                                   virt_set_its);
->       object_class_property_set_description(oc, "its",
->                                             "Set on/off to enable/disable "
->                                             "ITS instantiation");
->   
-> +    object_class_property_add_str(oc, "msi", virt_get_msi,
-> +                                  virt_set_msi);
-> +    object_class_property_set_description(oc, "msi",
-> +                                          "Set MSI settings. "
-> +                                          "Valid values are auto/gicv2m/its/off");
-> +
->       object_class_property_add_bool(oc, "dtb-randomness",
->                                      virt_get_dtb_randomness,
->                                      virt_set_dtb_randomness);
-> @@ -3518,7 +3587,7 @@ static void virt_instance_init(Object *obj)
->       vms->highmem_redists = true;
->   
->       /* Default allows ITS instantiation if available */
-> -    vms->its = ON_OFF_AUTO_AUTO;
-> +    vms->msi_controller = VIRT_MSI_CTRL_AUTO;
->       /* Allow ITS emulation if the machine version supports it */
->       vms->tcg_its = !vmc->no_tcg_its;
->       vms->no_gicv3_with_gicv2m = false;
-> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-> index abacc366bf..8d6493ae7f 100644
-> --- a/include/hw/arm/virt.h
-> +++ b/include/hw/arm/virt.h
-> @@ -101,6 +101,8 @@ typedef enum VirtIOMMUType {
->   
->   typedef enum VirtMSIControllerType {
->       VIRT_MSI_CTRL_NONE,
-> +    /* This value is overriden at runtime.*/
-> +    VIRT_MSI_CTRL_AUTO,
->       VIRT_MSI_CTRL_GICV2M,
->       VIRT_MSI_CTRL_ITS,
->   } VirtMSIControllerType;
-> @@ -147,7 +149,6 @@ struct VirtMachineState {
->       bool highmem_ecam;
->       bool highmem_mmio;
->       bool highmem_redists;
-> -    OnOffAuto its;
->       bool tcg_its;
->       bool virt;
->       bool ras;
-> @@ -217,5 +218,6 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
->   }
->   
->   bool virt_is_its_enabled(VirtMachineState *vms);
-> +bool virt_is_gicv2m_enabled(VirtMachineState *vms);
->   
->   #endif /* QEMU_ARM_VIRT_H */
+ backends/cryptodev-lkcf.c   |  2 +-
+ backends/spdm-socket.c      |  4 ++--
+ backends/tpm/tpm_emulator.c | 13 +++++--------
+ block/blkdebug.c            |  2 +-
+ block/file-win32.c          |  2 +-
+ hw/9pfs/9p-local.c          |  2 +-
+ hw/9pfs/9p.c                |  3 +--
+ hw/acpi/core.c              |  5 ++---
+ hw/audio/es1370.c           |  2 +-
+ hw/core/loader.c            |  2 +-
+ hw/intc/openpic_kvm.c       |  3 +--
+ hw/intc/xics_kvm.c          |  5 +++--
+ hw/pci-host/xen_igd_pt.c    |  2 +-
+ hw/ppc/spapr.c              |  6 +++---
+ hw/remote/vfio-user-obj.c   | 18 +++++++++---------
+ hw/scsi/vhost-scsi.c        |  3 +--
+ hw/sensor/emc141x.c         |  4 ++--
+ hw/sensor/tmp421.c          |  4 ++--
+ hw/smbios/smbios.c          |  4 ++--
+ hw/usb/bus.c                |  5 ++---
+ hw/vfio/migration-multifd.c |  5 +++--
+ hw/virtio/vdpa-dev.c        |  4 ++--
+ hw/virtio/vhost-vsock.c     |  3 +--
+ migration/postcopy-ram.c    | 10 +++++-----
+ migration/rdma.c            |  3 +--
+ monitor/hmp-cmds-target.c   |  2 +-
+ net/dump.c                  |  2 +-
+ net/l2tpv3.c                |  6 ++----
+ net/slirp.c                 |  9 ++++++---
+ net/tap-bsd.c               |  6 +++---
+ net/tap-linux.c             |  2 +-
+ net/tap-solaris.c           |  6 +++---
+ net/tap.c                   |  3 +--
+ qga/commands-linux.c        | 11 ++++++-----
+ qga/commands-posix-ssh.c    | 23 +++++++++++++----------
+ qga/commands-win32.c        | 16 ++++++++--------
+ system/vl.c                 |  2 +-
+ target/i386/sev.c           |  6 ++----
+ target/ppc/kvm.c            |  5 ++---
+ target/riscv/kvm/kvm-cpu.c  | 11 ++++++-----
+ ui/gtk.c                    |  2 +-
+ ui/ui-qmp-cmds.c            |  4 +---
+ util/vfio-helpers.c         |  5 ++---
+ 43 files changed, 114 insertions(+), 123 deletions(-)
+
+-- 
+2.49.0
 
 
