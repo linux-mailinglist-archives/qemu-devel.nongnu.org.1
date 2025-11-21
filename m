@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57611C7C556
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C871C7C562
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:55:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMeIB-000309-Qe; Fri, 21 Nov 2025 22:28:08 -0500
+	id 1vMeJ6-0004F8-R1; Fri, 21 Nov 2025 22:29:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMeI4-0002yZ-GJ; Fri, 21 Nov 2025 22:28:00 -0500
+ id 1vMeJ1-0004Dr-4m; Fri, 21 Nov 2025 22:28:59 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMeHj-0002P6-0C; Fri, 21 Nov 2025 22:27:56 -0500
+ id 1vMeIR-0002dn-17; Fri, 21 Nov 2025 22:28:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 652AB16C701;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7B69A16C702;
  Fri, 21 Nov 2025 16:51:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BA3F532199E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D2A4F32199F;
  Fri, 21 Nov 2025 16:52:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eric Auger <eric.auger@redhat.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>,
- Zhangfei Gao <zhangfei.gao@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 41/76] hw/pci-host/gpex-acpi: Fix _DSM function 0
- support return value
-Date: Fri, 21 Nov 2025 16:51:19 +0300
-Message-ID: <20251121135201.1114964-41-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Shameer Kolothum <skolothumtho@nvidia.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 42/76] tests/qtest/bios-tables-test: Update DSDT blobs
+ after GPEX _DSM change
+Date: Fri, 21 Nov 2025 16:51:20 +0300
+Message-ID: <20251121135201.1114964-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -44,7 +43,7 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,53 +59,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Shameer Kolothum <skolothumtho@nvidia.com>
 
-Currently, only function 0 is supported. According to the ACPI
-Specification, Revision 6.6, Section 9.1.1 “_DSM (Device Specific
-Method)”, bit 0 should be 0 to indicate that no other functions
-are supported beyond function 0.
+Update the reference DSDT blobs after GPEX _DSM change. This affects the
+aarch64 'virt', riscv64 "virt", loongarch64 "virt" and the x86 'microvm'
+machines.
 
-The resulting AML change looks like this:
+DSDT diff is the same for all the machines/tests:
 
-Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
-{
-    If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d")
-    {
-        If ((Arg2 == Zero))
-        {
-            Return (Buffer (One)
-            {
--               0x01                                             // .
-+               0x00                                             // .
-            })
-        }
-    }
-}
+ /*
+  * Intel ACPI Component Architecture
+  * AML/ASL+ Disassembler version 20230628 (64-bit version)
+  * Copyright (c) 2000 - 2023 Intel Corporation
+  *
+  * Disassembling to symbolic ASL+ operators
+  *
+- * Disassembly of tests/data/acpi/aarch64/virt/DSDT, Fri Oct 10 11:18:21 2025
++ * Disassembly of /tmp/aml-E6V9D3, Fri Oct 10 11:18:21 2025
+  *
+  * Original Table Header:
+  *     Signature        "DSDT"
+  *     Length           0x000014D9 (5337)
+  *     Revision         0x02
+- *     Checksum         0xA4
++ *     Checksum         0xA5
+  *     OEM ID           "BOCHS "
+  *     OEM Table ID     "BXPC    "
+  *     OEM Revision     0x00000001 (1)
+  *     Compiler ID      "BXPC"
+  *     Compiler Version 0x00000001 (1)
+  */
+ DefinitionBlock ("", "DSDT", 2, "BOCHS ", "BXPC    ", 0x00000001)
+ {
+     Scope (\_SB)
+     {
+         Device (C000)
+         {
+             Name (_HID, "ACPI0007" /* Processor Device */)  // _HID: Hardware ID
+             Name (_UID, Zero)  // _UID: Unique ID
+         }
 
-Fixes: 5b85eabe68f9 ("acpi: add acpi_dsdt_add_gpex")
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
+@@ -1822,33 +1822,33 @@
+                 Else
+                 {
+                     CDW1 |= 0x04
+                 }
+
+                 Return (Arg3)
+             }
+
+             Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+             {
+                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
+                 {
+                     If ((Arg2 == Zero))
+                     {
+                         Return (Buffer (One)
+                         {
+-                             0x01                                             // .
++                             0x00                                             // .
+                         })
+                     }
+                 }
+
+                 Return (Buffer (One)
+                 {
+                      0x00                                             // .
+                 })
+             }
+
+             Device (RES0)
+             {
+                 Name (_HID, "PNP0C02" /* PNP Motherboard Resources */)  // _HID: Hardware ID
+                 Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+                 {
+                     QWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, NonCacheable, ReadWrite,
+
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251022080639.243965-3-skolothumtho@nvidia.com>
-(cherry picked from commit 325aa2d86a20786c308b0874d15a60d1b924bd0e)
+Message-Id: <20251022080639.243965-4-skolothumtho@nvidia.com>
+(cherry picked from commit ccf166d89dcf57c9d333f05173851f90e416097a)
+(Mjt: regenerate all actual tables)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 952a0ace19..4587baeb78 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -64,7 +64,7 @@ static Aml *build_pci_host_bridge_dsm_method(void)
-     UUID = aml_touuid("E5C937D0-3553-4D7A-9117-EA4D19C3434D");
-     ifctx = aml_if(aml_equal(aml_arg(0), UUID));
-     ifctx1 = aml_if(aml_equal(aml_arg(2), aml_int(0)));
--    uint8_t byte_list[1] = {1};
-+    uint8_t byte_list[1] = {0};
-     buf = aml_buffer(1, byte_list);
-     aml_append(ifctx1, aml_return(buf));
-     aml_append(ifctx, ifctx1);
+diff --git a/tests/data/acpi/aarch64/virt/DSDT b/tests/data/acpi/aarch64/virt/DSDT
+index 18d97e8f22..47d4b9d2ba 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT and b/tests/data/acpi/aarch64/virt/DSDT differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
+index 2cef095bcc..044a075401 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt and b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpipcihp b/tests/data/acpi/aarch64/virt/DSDT.acpipcihp
+index 8d55a877a4..87e05d2a28 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.acpipcihp and b/tests/data/acpi/aarch64/virt/DSDT.acpipcihp differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex b/tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex
+index 970d43f68b..fcae6ca910 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex and b/tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.memhp b/tests/data/acpi/aarch64/virt/DSDT.memhp
+index 372ca3d7fb..2f5039aff0 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.memhp and b/tests/data/acpi/aarch64/virt/DSDT.memhp differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.pxb b/tests/data/acpi/aarch64/virt/DSDT.pxb
+index c277988249..8a2d8a878f 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.pxb and b/tests/data/acpi/aarch64/virt/DSDT.pxb differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.topology b/tests/data/acpi/aarch64/virt/DSDT.topology
+index ebbeedc1ed..3400ea67c4 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.topology and b/tests/data/acpi/aarch64/virt/DSDT.topology differ
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.viot b/tests/data/acpi/aarch64/virt/DSDT.viot
+index b897d66797..7a50bed9cc 100644
+Binary files a/tests/data/acpi/aarch64/virt/DSDT.viot and b/tests/data/acpi/aarch64/virt/DSDT.viot differ
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+index b31841aec6..2fdb2a750f 100644
+Binary files a/tests/data/acpi/loongarch64/virt/DSDT and b/tests/data/acpi/loongarch64/virt/DSDT differ
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.memhp b/tests/data/acpi/loongarch64/virt/DSDT.memhp
+index e291200fc9..fbd1b9242d 100644
+Binary files a/tests/data/acpi/loongarch64/virt/DSDT.memhp and b/tests/data/acpi/loongarch64/virt/DSDT.memhp differ
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.numamem b/tests/data/acpi/loongarch64/virt/DSDT.numamem
+index 07923ac395..6509d71044 100644
+Binary files a/tests/data/acpi/loongarch64/virt/DSDT.numamem and b/tests/data/acpi/loongarch64/virt/DSDT.numamem differ
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.topology b/tests/data/acpi/loongarch64/virt/DSDT.topology
+index 6dfbb495f8..6a97c076a5 100644
+Binary files a/tests/data/acpi/loongarch64/virt/DSDT.topology and b/tests/data/acpi/loongarch64/virt/DSDT.topology differ
+diff --git a/tests/data/acpi/riscv64/virt/DSDT b/tests/data/acpi/riscv64/virt/DSDT
+index 527f239dab..968e1a15c8 100644
+Binary files a/tests/data/acpi/riscv64/virt/DSDT and b/tests/data/acpi/riscv64/virt/DSDT differ
+diff --git a/tests/data/acpi/x86/microvm/DSDT.pcie b/tests/data/acpi/x86/microvm/DSDT.pcie
+index ba258f454d..b646a05551 100644
+Binary files a/tests/data/acpi/x86/microvm/DSDT.pcie and b/tests/data/acpi/x86/microvm/DSDT.pcie differ
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index e2fce2e972..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,17 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/aarch64/virt/DSDT",
+-"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
+-"tests/data/acpi/aarch64/virt/DSDT.memhp",
+-"tests/data/acpi/aarch64/virt/DSDT.pxb",
+-"tests/data/acpi/aarch64/virt/DSDT.topology",
+-"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
+-"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
+-"tests/data/acpi/aarch64/virt/DSDT.viot",
+-"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
+-"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
+-"tests/data/acpi/riscv64/virt/DSDT",
+-"tests/data/acpi/loongarch64/virt/DSDT",
+-"tests/data/acpi/loongarch64/virt/DSDT.topology",
+-"tests/data/acpi/loongarch64/virt/DSDT.numamem",
+-"tests/data/acpi/loongarch64/virt/DSDT.memhp",
+-"tests/data/acpi/x86/microvm/DSDT.pcie",
 -- 
 2.47.3
 
