@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9CBC777BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:56:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5CBC777D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:59:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMK6x-0006cR-Nc; Fri, 21 Nov 2025 00:55:11 -0500
+	id 1vMKBF-0002jA-ND; Fri, 21 Nov 2025 00:59:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMK6r-0006VB-Ke; Fri, 21 Nov 2025 00:55:05 -0500
+ id 1vMKBD-0002h8-NP; Fri, 21 Nov 2025 00:59:35 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMK6p-0004Iv-OW; Fri, 21 Nov 2025 00:55:05 -0500
+ id 1vMKBC-0005TZ-3u; Fri, 21 Nov 2025 00:59:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2DECF16C38D;
- Fri, 21 Nov 2025 08:54:43 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id AF22616C392;
+ Fri, 21 Nov 2025 08:59:23 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 67F49321231;
- Fri, 21 Nov 2025 08:54:50 +0300 (MSK)
-Message-ID: <aa7dad60-77e9-4871-8768-f1baa8fb0f60@tls.msk.ru>
-Date: Fri, 21 Nov 2025 08:54:49 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6BDE1321236;
+ Fri, 21 Nov 2025 08:59:31 +0300 (MSK)
+Message-ID: <88504990-e7c8-4033-a287-165d7392811c@tls.msk.ru>
+Date: Fri, 21 Nov 2025 08:59:30 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] Make sure fetch_instruction exist before calling it
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: phind.uet@gmail.com, Cameron Esfahani <dirty@apple.com>,
  Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
  <phil@philjordan.eu>, Wei Liu <wei.liu@kernel.org>
 Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20251114082915.71884-2-phind.uet@gmail.com>
+ <aa7dad60-77e9-4871-8768-f1baa8fb0f60@tls.msk.ru>
 Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
  HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
@@ -78,9 +79,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20251114082915.71884-2-phind.uet@gmail.com>
+In-Reply-To: <aa7dad60-77e9-4871-8768-f1baa8fb0f60@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -18
@@ -104,41 +105,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/25 11:29, phind.uet@gmail.com wrote:
-> From: Nguyen Dinh Phi <phind.uet@gmail.com>
+On 11/21/25 08:54, Michael Tokarev wrote:
+> On 11/14/25 11:29, phind.uet@gmail.com wrote:
+>> From: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>
+>> Currently, this function is only available in MSHV. If a different 
+>> accelerator
+>> is used, and the code jumps to this section, a segfault will occur.
+>> (I ran into this with HVF)
 > 
-> Currently, this function is only available in MSHV. If a different accelerator
-> is used, and the code jumps to this section, a segfault will occur.
-> (I ran into this with HVF)
+> Is it a qemu-stable material?  It looks like it is.
+> Please let me know if it isn't.
 
-Is it a qemu-stable material?  It looks like it is.
-Please let me know if it isn't.
+Ah, n/m.  This one fixes a commit which were added after 10.1
+(so not in any stable release), --
 
-Thanks,
+1e25327b24 target/i386/emulate: Allow instruction decoding from stream
+
+Sorry for the noise.
 
 /mjt
-
-> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-> ---
->   target/i386/emulate/x86_decode.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-> index 97bd6f1a3b..d037ed1142 100644
-> --- a/target/i386/emulate/x86_decode.c
-> +++ b/target/i386/emulate/x86_decode.c
-> @@ -77,7 +77,11 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
->           memcpy(&val, decode->stream->bytes + decode->len, size);
->       } else {
->           target_ulong va = linear_rip(env_cpu(env), env->eip) + decode->len;
-> -        emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-> +        if (emul_ops->fetch_instruction) {
-> +            emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-> +        } else {
-> +            emul_ops->read_mem(env_cpu(env), &val, va, size);
-> +        }
->       }
->       decode->len += size;
->   
 
 
