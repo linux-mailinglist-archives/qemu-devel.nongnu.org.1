@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4CDC7C4F6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA81AC7C1F2
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:56:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcnW-0003fY-8i; Fri, 21 Nov 2025 20:52:23 -0500
+	id 1vMcnG-0003RB-B8; Fri, 21 Nov 2025 20:52:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbcG-0003Wa-R9
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:41 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbaJ-00027g-R4
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMbc7-0005vT-96
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:36:38 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vMba8-0005T4-QJ
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:34:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771775;
+ s=mimecast20190719; t=1763771653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=SakLJGJj0LkA1a6qNyCMYZNSthSDHMhyUkRA4qcArBA=;
- b=gRmKWGIjdE/boM7ZJgqGpwRrosqopbvLZcUAKwdkL9cObKz88DVts1kTspJVGTVrtZs+Dj
- yDIdtL4r/pcj7rwRj62hNVKZSQO4NrK+BFiNQ4k3WpuovqXD6wnpjnjQhfJvt7+lZkA7Ko
- zuT3h4twth2d2yAxIQIpqxl8jNuG0+4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fcIBzXudHPYvY6QmF4OmsaPzhsA+4LiQymdChLvcMTo=;
+ b=Pii47RRizrjwm9x8EmtpY2YOBBQ7RKNqyZFNxODwKrhkmIa9ab2IY/ZlbN0bcSMKGT/i3T
+ kEF9L/7Piqa+oJ+uKgcsEqNYqpZ5ULixa+zGfskjSOZ+So9cO3Q2IjirlCWZR8ykdvAkTV
+ qjfHGSfhRNuAxHmOuhgflzvlvneuvAY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-362--3aJYg8QO7mowt-5VMm9DQ-1; Fri,
- 21 Nov 2025 07:14:49 -0500
-X-MC-Unique: -3aJYg8QO7mowt-5VMm9DQ-1
-X-Mimecast-MFC-AGG-ID: -3aJYg8QO7mowt-5VMm9DQ_1763727284
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-Dq2pCknkP6KXf0MRWBD_yw-1; Fri,
+ 21 Nov 2025 07:14:48 -0500
+X-MC-Unique: Dq2pCknkP6KXf0MRWBD_yw-1
+X-Mimecast-MFC-AGG-ID: Dq2pCknkP6KXf0MRWBD_yw_1763727284
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 384951956059; Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4FD4B1800650; Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E1C871940E82; Fri, 21 Nov 2025 12:14:40 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 19398180049F; Fri, 21 Nov 2025 12:14:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7FBC221E6A27; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+ id 835E221E6935; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
@@ -62,12 +63,15 @@ Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  marcandre.lureau@redhat.com, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
-Subject: [PATCH v2 00/15] Error message improvements
-Date: Fri, 21 Nov 2025 13:14:23 +0100
-Message-ID: <20251121121438.1249498-1-armbru@redhat.com>
+Subject: [PATCH v2 01/15] error: Strip trailing '\n' from error string
+ arguments (again)
+Date: Fri, 21 Nov 2025 13:14:24 +0100
+Message-ID: <20251121121438.1249498-2-armbru@redhat.com>
+In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
+References: <20251121121438.1249498-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,74 +88,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-* PATCH 02: New, replacing old PATCH 02 [Dave]
-* PATCH 03: New, replacing one of old PATCH 09's hunks
-* PATCH 12: Fix patch splitting mishap [Dave]
-* PATCH 13: Fix lost argument [Dave]
+Tracked down with scripts/coccinelle/err-bad-newline.cocci.
 
-Markus Armbruster (15):
-  error: Strip trailing '\n' from error string arguments (again)
-  hw/usb: Convert to qemu_create() for a better error message
-  ui: Convert to qemu_create() for simplicity and consistency
-  tap-solaris: Use error_setg_file_open() for better error messages
-  qga: Use error_setg_file_open() for better error messages
-  hw/scsi: Use error_setg_file_open() for a better error message
-  hw/virtio: Use error_setg_file_open() for a better error message
-  net/tap: Use error_setg_file_open() for a better error message
-  blkdebug: Use error_setg_file_open() for a better error message
-  error: Use error_setg_file_open() for simplicity and consistency
-  net/slirp: Improve file open error message
-  error: Use error_setg_errno() to improve error messages
-  error: Use error_setg_errno() for simplicity and consistency
-  qga/commands-win32: Use error_setg_win32() for better error messages
-  block/file-win32: Improve an error message
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ hw/audio/es1370.c | 2 +-
+ ui/gtk.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- backends/cryptodev-lkcf.c   |  2 +-
- backends/spdm-socket.c      |  4 ++--
- backends/tpm/tpm_emulator.c | 13 +++++--------
- block/blkdebug.c            |  2 +-
- block/file-win32.c          |  2 +-
- hw/9pfs/9p-local.c          |  2 +-
- hw/9pfs/9p.c                |  3 +--
- hw/acpi/core.c              |  5 ++---
- hw/audio/es1370.c           |  2 +-
- hw/core/loader.c            |  2 +-
- hw/intc/openpic_kvm.c       |  3 +--
- hw/intc/xics_kvm.c          |  5 +++--
- hw/pci-host/xen_igd_pt.c    |  2 +-
- hw/ppc/spapr.c              |  6 +++---
- hw/remote/vfio-user-obj.c   | 18 +++++++++---------
- hw/scsi/vhost-scsi.c        |  3 +--
- hw/sensor/emc141x.c         |  4 ++--
- hw/sensor/tmp421.c          |  4 ++--
- hw/smbios/smbios.c          |  4 ++--
- hw/usb/bus.c                |  5 ++---
- hw/vfio/migration-multifd.c |  5 +++--
- hw/virtio/vdpa-dev.c        |  4 ++--
- hw/virtio/vhost-vsock.c     |  3 +--
- migration/postcopy-ram.c    | 10 +++++-----
- migration/rdma.c            |  3 +--
- monitor/hmp-cmds-target.c   |  2 +-
- net/dump.c                  |  2 +-
- net/l2tpv3.c                |  6 ++----
- net/slirp.c                 |  9 ++++++---
- net/tap-bsd.c               |  6 +++---
- net/tap-linux.c             |  2 +-
- net/tap-solaris.c           |  6 +++---
- net/tap.c                   |  3 +--
- qga/commands-linux.c        | 11 ++++++-----
- qga/commands-posix-ssh.c    | 23 +++++++++++++----------
- qga/commands-win32.c        | 16 ++++++++--------
- system/vl.c                 |  2 +-
- target/i386/sev.c           |  6 ++----
- target/ppc/kvm.c            |  5 ++---
- target/riscv/kvm/kvm-cpu.c  | 11 ++++++-----
- ui/gtk.c                    |  2 +-
- ui/ui-qmp-cmds.c            |  4 +---
- util/vfio-helpers.c         |  5 ++---
- 43 files changed, 114 insertions(+), 123 deletions(-)
-
+diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
+index 9873ffadab..566f93f1ea 100644
+--- a/hw/audio/es1370.c
++++ b/hw/audio/es1370.c
+@@ -228,7 +228,7 @@ static void print_sctl(uint32_t val)
+ #undef a
+         error_report("es1370: "
+                 "%s p2_end_inc %d, p2_st_inc %d,"
+-                " r1_fmt %s, p2_fmt %s, p1_fmt %s\n",
++                " r1_fmt %s, p2_fmt %s, p1_fmt %s",
+                 buf,
+                 (val & SCTRL_P2ENDINC) >> SCTRL_SH_P2ENDINC,
+                 (val & SCTRL_P2STINC) >> SCTRL_SH_P2STINC,
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 48571bedbf..e83a366625 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -1197,7 +1197,7 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
+         type = INPUT_MULTI_TOUCH_TYPE_END;
+         break;
+     default:
+-        warn_report("gtk: unexpected touch event type\n");
++        warn_report("gtk: unexpected touch event type");
+         return FALSE;
+     }
+ 
 -- 
 2.49.0
 
