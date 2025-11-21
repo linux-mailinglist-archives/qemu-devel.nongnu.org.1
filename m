@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39090C7C356
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F1FC7C48A
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:29:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcv0-0000OX-5x; Fri, 21 Nov 2025 21:00:07 -0500
+	id 1vMd1A-0000kE-Il; Fri, 21 Nov 2025 21:06:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbt0-0005Cc-7B; Fri, 21 Nov 2025 19:53:59 -0500
+ id 1vMcEM-0000Vf-4r; Fri, 21 Nov 2025 20:16:02 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbso-00010K-EJ; Fri, 21 Nov 2025 19:53:53 -0500
+ id 1vMcCI-0005Gy-WE; Fri, 21 Nov 2025 20:15:57 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6057416CA54;
+ by isrv.corpit.ru (Postfix) with ESMTP id A959816CA55;
  Fri, 21 Nov 2025 21:44:23 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1DCFA321C90;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 30C23321C91;
  Fri, 21 Nov 2025 21:44:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, peng guo <engguopeng@buaa.edu.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 25/81] hw/i386/pc: Avoid overlap between CXL window
- and PCI 64bit BARs in QEMU 10.0.x
-Date: Fri, 21 Nov 2025 21:43:24 +0300
-Message-ID: <20251121184424.1137669-25-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 26/81] i386/kvm/cpu: Init SMM cpu address space for
+ hotplugged CPUs
+Date: Fri, 21 Nov 2025 21:43:25 +0300
+Message-ID: <20251121184424.1137669-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -51,115 +52,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: peng guo <engguopeng@buaa.edu.cn>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-This is a backport of the fix from commit 8b1c560937467d0d9 to the QEMU
-10.0.x LTS series.
+The SMM cpu address space is initialized in a machine_init_done
+notifier. It only runs once when QEMU starts up, which leads to the
+issue that for any hotplugged CPU after the machine is ready, SMM
+cpu address space doesn't get initialized.
 
-When using a CXL Type 3 device together with a virtio 9p device in QEMU on a
-physical server, the 9p device fails to initialize properly. The kernel reports
-the following error:
+Fix the issue by initializing the SMM cpu address space in x86_cpu_plug()
+when the cpu is hotplugged.
 
-    virtio: device uses modern interface but does not have VIRTIO_F_VERSION_1
-    9pnet_virtio virtio0: probe with driver 9pnet_virtio failed with error -22
-
-Further investigation revealed that the 64-bit BAR space assigned to the 9pnet
-device was overlapped by the memory window allocated for the CXL devices. As a
-result, the kernel could not correctly access the BAR region, causing the
-virtio device to malfunction.
-
-An excerpt from /proc/iomem shows:
-
-    480010000-cffffffff : CXL Window 0
-      480010000-4bfffffff : PCI Bus 0000:00
-      4c0000000-4c01fffff : PCI Bus 0000:0c
-        4c0000000-4c01fffff : PCI Bus 0000:0d
-      4c0200000-cffffffff : PCI Bus 0000:00
-        4c0200000-4c0203fff : 0000:00:03.0
-          4c0200000-4c0203fff : virtio-pci-modern
-
-To address this issue, this patch adds the reserved memory end calculation
-for cxl devices to reserve sufficient address space and ensure that CXL memory
-windows are allocated beyond all PCI 64-bit BARs. This prevents overlap with
-64-bit BARs regions such as those used by virtio or other pcie devices,
-resolving the conflict.
-
-Tested on intel Granite Rapids(GNR) servers using QEMU 10.0 LTS,
-resolving the issue without causing regressions.
-
-QEMU Build Configuration:
-
-    ./configure --prefix=/home/work/qemu_master/build/ \
-                --target-list=x86_64-softmmu \
-                --enable-kvm \
-                --enable-virtfs
-
-QEMU Boot Command:
-
-    sudo /home/work/qemu_master/qemu/build/qemu-system-x86_64 \
-        -nographic -machine q35,cxl=on -enable-kvm -m 16G -smp 8 \
-        -hda /home/work/gp_qemu/rootfs.img \
-        -virtfs local,path=/home/work/gp_qemu/share,mount_tag=host0,security_model=passthrough,id=host0 \
-        -kernel /home/work/linux_output/arch/x86/boot/bzImage \
-        --append "console=ttyS0 crashkernel=256M root=/dev/sda rootfstype=ext4 rw loglevel=8" \
-        -device pci-testdev,membar=2G \
-        -object memory-backend-ram,id=vmem0,share=on,size=4096M \
-        -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-        -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-        -device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0,sn=0x123456789 \
-        -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G
-
-Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a machine parameter")
-Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
-Tested-by: peng guo <engguopeng@buaa.edu.cn>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250805142300.15226-1-engguopeng@buaa.edu.cn>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit d1193481dee63442fc41e47ca6ebc4cd34f1f69c)
-(backport for missing-in-10.0.x v10.0.0-1264-g8b1c56093746
- "hw/i386/pc: Remove PCMachineClass::broken_reserved_end field"
- by peng quo)
+Fixes: 591f817d819f ("target/i386: Define enum X86ASIdx for x86's address spaces")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Closes: https://lore.kernel.org/qemu-devel/CAFEAcA_3kkZ+a5rTZGmK8W5K6J7qpYD31HkvjBnxWr-fGT2h_A@mail.gmail.com/
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20251014094216.164306-2-xiaoyao.li@intel.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 639a29422754f62b4bfd26cff936b3c981758010)
+(Mjt: the original Fixes: line is wrong:
+ https://lore.kernel.org/qemu-devel/57d3c5b2-8b07-41ee-bf41-a9eac16eb6da@intel.com/T/#u )
+Fixes: 0516f4b70264 ("i386/cpu: Enable SMM cpu address space under KVM")
+Fixes: 232d5c627589 ("i386/cpu: Enable SMM cpu address space under KVM"), 10.1.5
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 01d0581f62..502cf8a47d 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -840,6 +840,7 @@ void pc_memory_init(PCMachineState *pcms,
-     hwaddr maxphysaddr, maxusedaddr;
-     hwaddr cxl_base, cxl_resv_end = 0;
-     X86CPU *cpu = X86_CPU(first_cpu);
-+    uint64_t res_mem_end;
- 
-     assert(machine->ram_size == x86ms->below_4g_mem_size +
-                                 x86ms->above_4g_mem_size);
-@@ -993,17 +994,19 @@ void pc_memory_init(PCMachineState *pcms,
- 
-     rom_set_fw(fw_cfg);
- 
--    if (machine->device_memory) {
--        uint64_t *val = g_malloc(sizeof(*val));
--        uint64_t res_mem_end = machine->device_memory->base;
--
-+    if (pcms->cxl_devices_state.is_enabled) {
-+        res_mem_end = cxl_resv_end;
-+    } else if (machine->device_memory) {
-+        res_mem_end = machine->device_memory->base;
-         if (!pcmc->broken_reserved_end) {
-             res_mem_end += memory_region_size(&machine->device_memory->mr);
-         }
-+    } else {
-+        res_mem_end = 0;
-+    }
- 
--        if (pcms->cxl_devices_state.is_enabled) {
--            res_mem_end = cxl_resv_end;
--        }
-+    if (res_mem_end) {
-+        uint64_t *val = g_malloc(sizeof(*val));
-         *val = cpu_to_le64(ROUND_UP(res_mem_end, 1 * GiB));
-         fw_cfg_add_file(fw_cfg, "etc/reserved-memory-end", val, sizeof(*val));
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index 1b0671c523..0ab27c053f 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -182,6 +182,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
+         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
      }
+ 
++    /*
++     * Non-hotplugged CPUs get their SMM cpu address space initialized in
++     * machine init done notifier: register_smram_listener().
++     *
++     * We need initialize the SMM cpu address space for the hotplugged CPU
++     * specifically.
++     */
++    if (kvm_enabled() && dev->hotplugged && x86_machine_is_smm_enabled(x86ms)) {
++        kvm_smm_cpu_address_space_init(cpu);
++    }
++
+     found_cpu = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, NULL);
+     found_cpu->cpu = CPU(dev);
+ out:
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index e77fb752c2..98e99374e7 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2722,6 +2722,12 @@ static void register_smram_listener(Notifier *n, void *unused)
+     }
+ }
+ 
++/* It should only be called in cpu's hotplug callback */
++void kvm_smm_cpu_address_space_init(X86CPU *cpu)
++{
++    cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root);
++}
++
+ static void *kvm_msr_energy_thread(void *data)
+ {
+     KVMState *s = data;
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index 88565e8dba..b5f274c27f 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -59,6 +59,7 @@ void kvm_update_msi_routes_all(void *private, bool global,
+ 
+ #endif /* CONFIG_KVM */
+ 
++void kvm_smm_cpu_address_space_init(X86CPU *cpu);
+ void kvm_pc_setup_irq_routing(bool pci_enabled);
+ 
+ #endif
 -- 
 2.47.3
 
