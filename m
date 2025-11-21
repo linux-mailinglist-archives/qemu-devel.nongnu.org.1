@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F0C7C493
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:30:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E15C7C5EA
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd7G-0004sZ-MU; Fri, 21 Nov 2025 21:12:47 -0500
+	id 1vMd6y-0004e2-7X; Fri, 21 Nov 2025 21:12:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd1a-0000yn-63; Fri, 21 Nov 2025 21:06:54 -0500
+ id 1vMcyY-0003oh-Pk; Fri, 21 Nov 2025 21:03:47 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd13-0002G4-MN; Fri, 21 Nov 2025 21:06:49 -0500
+ id 1vMcxP-00011a-H5; Fri, 21 Nov 2025 21:03:43 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 370E516C6FF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4CF1116C700;
  Fri, 21 Nov 2025 16:51:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8E58332199C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A3C9C32199D;
  Fri, 21 Nov 2025 16:52:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Albert Esteve <aesteve@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 39/76] vhost-user: fix shared object lookup handler
- logic
-Date: Fri, 21 Nov 2025 16:51:17 +0300
-Message-ID: <20251121135201.1114964-39-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Shameer Kolothum <skolothumtho@nvidia.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 40/76] tests/qtest/bios-tables-test: Prepare for _DSM
+ change in the DSDT table
+Date: Fri, 21 Nov 2025 16:51:18 +0300
+Message-ID: <20251121135201.1114964-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,146 +59,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Albert Esteve <aesteve@redhat.com>
+From: Shameer Kolothum <skolothumtho@nvidia.com>
 
-Refactor backend_read() function and add a reply_ack variable
-to have the option for handlers to force tweak whether they should
-send a reply or not without depending on VHOST_USER_NEED_REPLY_MASK
-flag.
+Subsequent patch will fix the GPEX _DSM method. Add the affected DSDT blobs
+to allowed-diff list for bios-table tests.
 
-This fixes an issue with
-vhost_user_backend_handle_shared_object_lookup() logic, as the
-error path was not closing the backend channel correctly. So,
-we can remove the reply call from within the handler, make
-sure it returns early on errors as other handlers do and
-set the reply_ack variable on backend_read() to true to ensure
-that it will send a response, thus keeping the original intent.
-
-Fixes: 1609476662 ("vhost-user: add shared_object msg")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251017072011.1874874-2-aesteve@redhat.com>
-(cherry picked from commit fde5930cc37175cfcd0f03a089e26f4458a52311)
-(Mjt: context fix)
+Message-Id: <20251022080639.243965-2-skolothumtho@nvidia.com>
+(cherry picked from commit 3e6ad83f209ea8cf497e5d160e44c1bc5e518f1a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 1e1d6b0d6e..199810a6bd 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1668,14 +1668,6 @@ static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
-     return !qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), errp);
- }
- 
--static bool
--vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
--                                  VhostUserPayload *payload, Error **errp)
--{
--    hdr->size = sizeof(payload->u64);
--    return vhost_user_send_resp(ioc, hdr, payload, errp);
--}
--
- int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
-                                  int *dmabuf_fd)
- {
-@@ -1716,19 +1708,15 @@ int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
- 
- static int
- vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
--                                               QIOChannel *ioc,
--                                               VhostUserHeader *hdr,
--                                               VhostUserPayload *payload)
-+                                               VhostUserShared *object)
- {
-     QemuUUID uuid;
-     CharBackend *chr = u->user->chr;
--    Error *local_err = NULL;
-     int dmabuf_fd = -1;
-     int fd_num = 0;
- 
--    memcpy(uuid.data, payload->object.uuid, sizeof(payload->object.uuid));
-+    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
- 
--    payload->u64 = 0;
-     switch (virtio_object_type(&uuid)) {
-     case TYPE_DMABUF:
-         dmabuf_fd = virtio_lookup_dmabuf(&uuid);
-@@ -1737,18 +1725,16 @@ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
-     {
-         struct vhost_dev *dev = virtio_lookup_vhost_device(&uuid);
-         if (dev == NULL) {
--            payload->u64 = -EINVAL;
--            break;
-+            return -EINVAL;
-         }
-         int ret = vhost_user_get_shared_object(dev, uuid.data, &dmabuf_fd);
-         if (ret < 0) {
--            payload->u64 = ret;
-+            return ret;
-         }
-         break;
-     }
-     case TYPE_INVALID:
--        payload->u64 = -EINVAL;
--        break;
-+        return -EINVAL;
-     }
- 
-     if (dmabuf_fd != -1) {
-@@ -1757,11 +1743,6 @@ vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
- 
-     if (qemu_chr_fe_set_msgfds(chr, &dmabuf_fd, fd_num) < 0) {
-         error_report("Failed to set msg fds.");
--        payload->u64 = -EINVAL;
--    }
--
--    if (!vhost_user_backend_send_dmabuf_fd(ioc, hdr, payload, &local_err)) {
--        error_report_err(local_err);
-         return -EINVAL;
-     }
- 
-@@ -1790,6 +1771,7 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
-     struct iovec iov;
-     g_autofree int *fd = NULL;
-     size_t fdsize = 0;
-+    bool reply_ack;
-     int i;
- 
-     /* Read header */
-@@ -1808,6 +1790,8 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
-         goto err;
-     }
- 
-+    reply_ack = hdr.flags & VHOST_USER_NEED_REPLY_MASK;
-+
-     /* Read payload */
-     if (qio_channel_read_all(ioc, (char *) &payload, hdr.size, &local_err)) {
-         error_report_err(local_err);
-@@ -1833,8 +1817,10 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
-                                                              &payload.object);
-         break;
-     case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
--        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
--                                                             &hdr, &payload);
-+        /* The backend always expects a response */
-+        reply_ack = true;
-+        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque,
-+                                                             &payload.object);
-         break;
-     default:
-         error_report("Received unexpected msg type: %d.", hdr.request);
-@@ -1845,7 +1831,7 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
-      * REPLY_ACK feature handling. Other reply types has to be managed
-      * directly in their request handlers.
-      */
--    if (hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
-+    if (reply_ack) {
-         payload.u64 = !!ret;
-         hdr.size = sizeof(payload.u64);
- 
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..e2fce2e972 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,17 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
++"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
++"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
++"tests/data/acpi/aarch64/virt/DSDT.viot",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
++"tests/data/acpi/riscv64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/DSDT.topology",
++"tests/data/acpi/loongarch64/virt/DSDT.numamem",
++"tests/data/acpi/loongarch64/virt/DSDT.memhp",
++"tests/data/acpi/x86/microvm/DSDT.pcie",
 -- 
 2.47.3
 
