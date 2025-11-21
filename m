@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F98FC7C283
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDB5C7C5EB
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcrY-00069V-Cy; Fri, 21 Nov 2025 20:56:33 -0500
+	id 1vMcwO-0001ne-Tb; Fri, 21 Nov 2025 21:01:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbpr-0003P8-R0; Fri, 21 Nov 2025 19:50:43 -0500
+ id 1vMbyl-0000Aw-MM; Fri, 21 Nov 2025 19:59:55 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbph-0000MF-D1; Fri, 21 Nov 2025 19:50:40 -0500
+ id 1vMbwj-0001il-5j; Fri, 21 Nov 2025 19:59:51 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3177F16CA81;
+ by isrv.corpit.ru (Postfix) with ESMTP id 77F5C16CA82;
  Fri, 21 Nov 2025 21:44:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E3986321CBD;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 01C2B321CBE;
  Fri, 21 Nov 2025 21:44:37 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 70/81] curl: Fix coroutine waking
-Date: Fri, 21 Nov 2025 21:44:09 +0300
-Message-ID: <20251121184424.1137669-70-mjt@tls.msk.ru>
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 71/81] nvme: Kick and check completions in BDS context
+Date: Fri, 21 Nov 2025 21:44:10 +0300
+Message-ID: <20251121184424.1137669-71-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -53,157 +54,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hanna Czenczek <hreitz@redhat.com>
 
-If we wake a coroutine from a different context, we must ensure that it
-will yield exactly once (now or later), awaiting that wake.
+nvme_process_completion() must run in the main BDS context, so schedule
+a BH for requests that aren’t there.
 
-curl’s current .ret == -EINPROGRESS loop may lead to the coroutine not
-yielding if the request finishes before the loop gets run.  To fix it,
-we must drop the loop and yield exactly once, if we need to yield.
+The context in which we kick does not matter, but let’s just keep kick
+and process_completion together for simplicity’s sake.
 
-Finding out that latter part ("if we need to yield") makes it a bit
-complicated: Requests may be served from a cache internal to the curl
-block driver, or fail before being submitted.  In these cases, we must
-not yield.  However, if we find a matching but still ongoing request in
-the cache, we will have to await that, i.e. still yield.
-
-To address this, move the yield inside of the respective functions:
-- Inside of curl_find_buf() when awaiting ongoing concurrent requests,
-- Inside of curl_setup_preadv() when having created a new request.
-
-Rename curl_setup_preadv() to curl_do_preadv() to reflect this.
-
-(Can be reproduced with multiqueue by adding a usleep(100000) before the
-`while (acb.ret == -EINPROGRESS)` loop.)
-
-Also, add a comment why aio_co_wake() is safe regardless of whether the
-coroutine and curl_multi_check_completion() run in the same context.
+(For what it’s worth, a quick fio bandwidth test indicates that on my
+test hardware, if anything, this may be a bit better than kicking
+immediately before scheduling a pure nvme_process_completion() BH.  But
+I wouldn’t take more from those results than that it doesn’t really seem
+to matter either way.)
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20251110154854.151484-6-hreitz@redhat.com>
+Message-ID: <20251110154854.151484-8-hreitz@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 53d5c7ffac7bd4e0d12174432ebb2b3e88614b15)
+(cherry picked from commit 7a501bbd51941fb1867d78e6b0d1dc69e396b9e2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/curl.c b/block/curl.c
-index cbfb847dc4..96498aac1d 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -258,8 +258,8 @@ read_end:
+diff --git a/block/nvme.c b/block/nvme.c
+index bbf7c23dcd..3366519e57 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -480,7 +480,7 @@ static void nvme_trace_command(const NvmeCmd *cmd)
+     }
  }
  
- /* Called with s->mutex held.  */
--static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
--                          CURLAIOCB *acb)
-+static bool coroutine_fn
-+curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len, CURLAIOCB *acb)
+-static void nvme_deferred_fn(void *opaque)
++static void nvme_kick_and_check_completions(void *opaque)
  {
-     int i;
-     uint64_t end = start + len;
-@@ -307,6 +307,10 @@ static bool curl_find_buf(BDRVCURLState *s, uint64_t start, uint64_t len,
-             for (j=0; j<CURL_NUM_ACB; j++) {
-                 if (!state->acb[j]) {
-                     state->acb[j] = acb;
-+                    /* Await ongoing request */
-+                    qemu_mutex_unlock(&s->mutex);
-+                    qemu_coroutine_yield();
-+                    qemu_mutex_lock(&s->mutex);
-                     return true;
-                 }
-             }
-@@ -378,6 +382,16 @@ static void curl_multi_check_completion(BDRVCURLState *s)
-                 acb->ret = error ? -EIO : 0;
-                 state->acb[i] = NULL;
-                 qemu_mutex_unlock(&s->mutex);
-+                /*
-+                 * Current AioContext is the BDS context, which may or may not
-+                 * be the request (coroutine) context.
-+                 * - If it is, the coroutine must have yielded or the FD handler
-+                 *   (curl_multi_do()/curl_multi_timeout_do()) could not have
-+                 *   been called and we would not be here
-+                 * - If it is not, it doesn't matter whether it has already
-+                 *   yielded or not; it will be scheduled once it does yield
-+                 * So aio_co_wake() is safe to call.
-+                 */
-                 aio_co_wake(acb->co);
-                 qemu_mutex_lock(&s->mutex);
-             }
-@@ -879,7 +893,7 @@ out_noclean:
-     return -EINVAL;
+     NVMeQueuePair *q = opaque;
+ 
+@@ -489,6 +489,18 @@ static void nvme_deferred_fn(void *opaque)
+     nvme_process_completion(q);
  }
  
--static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-+static void coroutine_fn curl_do_preadv(BlockDriverState *bs, CURLAIOCB *acb)
- {
-     CURLState *state;
-     int running;
-@@ -891,10 +905,13 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
- 
-     qemu_mutex_lock(&s->mutex);
- 
--    // In case we have the requested data already (e.g. read-ahead),
--    // we can just call the callback and be done.
-+    /*
-+     * In case we have the requested data already (e.g. read-ahead),
-+     * we can just call the callback and be done.  This may have to
-+     * await an ongoing request, in which case it itself will yield.
-+     */
-     if (curl_find_buf(s, start, acb->bytes, acb)) {
--        goto out;
-+        goto dont_yield;
-     }
- 
-     // No cache found, so let's start a new request
-@@ -909,7 +926,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-     if (curl_init_state(s, state) < 0) {
-         curl_clean_state(state);
-         acb->ret = -EIO;
--        goto out;
-+        goto dont_yield;
-     }
- 
-     acb->start = 0;
-@@ -924,7 +941,7 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-     if (state->buf_len && state->orig_buf == NULL) {
-         curl_clean_state(state);
-         acb->ret = -ENOMEM;
--        goto out;
-+        goto dont_yield;
-     }
-     state->acb[0] = acb;
- 
-@@ -936,13 +953,16 @@ static void coroutine_fn curl_setup_preadv(BlockDriverState *bs, CURLAIOCB *acb)
-         acb->ret = -EIO;
- 
-         curl_clean_state(state);
--        goto out;
-+        goto dont_yield;
-     }
- 
-     /* Tell curl it needs to kick things off */
-     curl_multi_socket_action(s->multi, CURL_SOCKET_TIMEOUT, 0, &running);
-+    qemu_mutex_unlock(&s->mutex);
-+    qemu_coroutine_yield();
-+    return;
- 
--out:
-+dont_yield:
-     qemu_mutex_unlock(&s->mutex);
- }
- 
-@@ -958,10 +978,7 @@ static int coroutine_fn curl_co_preadv(BlockDriverState *bs,
-         .bytes = bytes
-     };
- 
--    curl_setup_preadv(bs, &acb);
--    while (acb.ret == -EINPROGRESS) {
--        qemu_coroutine_yield();
--    }
-+    curl_do_preadv(bs, &acb);
-     return acb.ret;
- }
- 
++static void nvme_deferred_fn(void *opaque)
++{
++    NVMeQueuePair *q = opaque;
++
++    if (qemu_get_current_aio_context() == q->s->aio_context) {
++        nvme_kick_and_check_completions(q);
++    } else {
++        aio_bh_schedule_oneshot(q->s->aio_context,
++                                nvme_kick_and_check_completions, q);
++    }
++}
++
+ static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
+                                 NvmeCmd *cmd, BlockCompletionFunc cb,
+                                 void *opaque)
 -- 
 2.47.3
 
