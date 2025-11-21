@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F114C7C54D
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8A7C7C32F
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:44:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd7k-0005Vr-Ft; Fri, 21 Nov 2025 21:13:17 -0500
+	id 1vMd4j-0002uX-PV; Fri, 21 Nov 2025 21:10:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcr9-0005x0-6G; Fri, 21 Nov 2025 20:56:07 -0500
+ id 1vMcQS-0006s2-Sm; Fri, 21 Nov 2025 20:28:32 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcp7-0006mE-Lj; Fri, 21 Nov 2025 20:56:03 -0500
+ id 1vMcOQ-0000Cz-Bu; Fri, 21 Nov 2025 20:28:28 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C6D8E16CA7C;
+ by isrv.corpit.ru (Postfix) with ESMTP id D8F1E16CA7D;
  Fri, 21 Nov 2025 21:44:28 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 84663321CB8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9667D321CB9;
  Fri, 21 Nov 2025 21:44:37 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 65/81] tests: move test_netdev_ethtool to
- share.linaro.org
-Date: Fri, 21 Nov 2025 21:44:04 +0300
-Message-ID: <20251121184424.1137669-65-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 66/81] tests: move test_kvm_xen to share.linaro.org
+Date: Fri, 21 Nov 2025 21:44:05 +0300
+Message-ID: <20251121184424.1137669-66-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -60,36 +59,39 @@ another sharing site.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Message-ID: <20251117115523.3993105-9-alex.bennee@linaro.org>
+Message-ID: <20251117115523.3993105-10-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit 5ff8d1fac98ba35391412883a17feb16a5b464e9)
+(cherry picked from commit 533b5ac2d6a826619cf80b009bf23ae3246d7011)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_netdev_ethtool.py b/tests/functional/test_netdev_ethtool.py
-index ee1a397bd2..ac8a92512c 100755
---- a/tests/functional/test_netdev_ethtool.py
-+++ b/tests/functional/test_netdev_ethtool.py
-@@ -16,16 +16,10 @@ class NetDevEthtool(QemuSystemTest):
-     # Runs in about 17s under KVM, 19s under TCG, 25s under GCOV
-     timeout = 45
+diff --git a/tests/functional/test_x86_64_kvm_xen.py b/tests/functional/test_x86_64_kvm_xen.py
+index c6abf6bba3..0f1f5d8f0b 100755
+--- a/tests/functional/test_x86_64_kvm_xen.py
++++ b/tests/functional/test_x86_64_kvm_xen.py
+@@ -25,18 +25,11 @@ class KVMXenGuest(QemuSystemTest):
+     kernel_path = None
+     kernel_params = None
  
--    # Fetch assets from the netdev-ethtool subdir of my shared test
--    # images directory on fileserver.linaro.org.
--    ASSET_BASEURL = ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/'
--                     'download?path=%2Fnetdev-ethtool&files=')
--    ASSET_BZIMAGE = Asset(
--        ASSET_BASEURL + "bzImage",
--        "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
+-    # Fetch assets from the kvm-xen-guest subdir of my shared test
+-    # images directory on fileserver.linaro.org where you can find
+-    # build instructions for how they where assembled.
+-    ASSET_KERNEL = Asset(
+-        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
+-         'path=%2Fkvm-xen-guest&files=bzImage'),
+-        'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
+-
 -    ASSET_ROOTFS = Asset(
--        ASSET_BASEURL + "rootfs.squashfs",
--        "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
-+    ASSET_BZIMAGE = Asset("https://share.linaro.org/downloadFile?id=QD37GYYAJhGOgVe",
-+                          "ed62ee06ea620b1035747f3f66a5e9fc5d3096b29f75562ada888b04cd1c4baf")
-+    ASSET_ROOTFS = Asset("https://share.linaro.org/downloadFile?id=YAqnr0W8fruDh3f",
-+                         "8f0207e3c4d40832ae73c1a927e42ca30ccb1e71f047acb6ddb161ba422934e6")
+-        ('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/download?'
+-         'path=%2Fkvm-xen-guest&files=rootfs.ext4'),
+-        'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
++    ASSET_KERNEL = Asset('https://share.linaro.org/downloadFile?id=UG0V8dzzHrrHb9X',
++                         'ec0ad7bb8c33c5982baee0a75505fe7dbf29d3ff5d44258204d6307c6fe0132a')
++
++    ASSET_ROOTFS = Asset('https://share.linaro.org/downloadFile?id=VwLRKDXKFl6oKti',
++                         'b11045d649006c649c184e93339aaa41a8fe20a1a86620af70323252eb29e40b')
  
-     def common_test_code(self, netdev, extra_args=None):
-         self.set_machine('q35')
+     def common_vm_setup(self):
+         # We also catch lack of KVM_XEN support if we fail to launch
 -- 
 2.47.3
 
