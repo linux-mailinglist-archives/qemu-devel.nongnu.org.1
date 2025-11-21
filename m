@@ -2,91 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39790C7C47B
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7478C7C60B
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:31:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdie-0004oy-Hi; Fri, 21 Nov 2025 21:51:25 -0500
+	id 1vMcvc-0001Ji-Ic; Fri, 21 Nov 2025 21:00:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdiX-0004ez-7b; Fri, 21 Nov 2025 21:51:17 -0500
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMc5e-00041R-9S
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:07:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdhv-00068h-Ib; Fri, 21 Nov 2025 21:51:12 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 09CEA16C660;
- Fri, 21 Nov 2025 15:47:24 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 544DF3218AF;
- Fri, 21 Nov 2025 15:47:32 +0300 (MSK)
-Message-ID: <6caac774-af69-4d7b-b6f7-ba6b79500828@tls.msk.ru>
-Date: Fri, 21 Nov 2025 15:47:32 +0300
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMc5U-0003cK-St
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:07:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1763773596;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4AWTSwJIb2mTpTHKdKaZ8TKE/oZXnCaKopazIhFZeG0=;
+ b=NZ1jfHi2GEFXoPOz5xtWIw6X0Zlf/c00tN9ayOkvgGEL5J3PE7b0F+3fbGGpJm+jCrsQon
+ p66oI6n9Vx6lBJ0zZI0oGiAO87KrD2W2OMwZn4Va6t7QzZ8/PmZ7ccUIFrKpfQNcQZI2KM
+ BKmT4EfQLoX3OweX9KQeiw4oBOKK7V8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-331-4hXGanZ4Pwe667Ozxeah2Q-1; Fri, 21 Nov 2025 07:49:40 -0500
+X-MC-Unique: 4hXGanZ4Pwe667Ozxeah2Q-1
+X-Mimecast-MFC-AGG-ID: 4hXGanZ4Pwe667Ozxeah2Q_1763729379
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4779da35d27so25663345e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 04:49:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763729379; x=1764334179;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4AWTSwJIb2mTpTHKdKaZ8TKE/oZXnCaKopazIhFZeG0=;
+ b=C0/Zloch5E4mCmuDMqaT6disD0eI189kX/PjmoCn6A2l5lhLIkg4wZFzB4lPpex8Yf
+ Sw+jITdb3pfgzCl8LMG8RZZ13L9hiAgmQjY9QphnyAgI9jkNuXwz1AQ8aQxCPIghfl4v
+ mvil88eSd9VNFFw0bQsUem+HtaqkFdP8V9B3EpG+jkBAae4w8R+lr/qjiHdIVka2CuiH
+ R7zS/5sX3LMttWRJZUYhhH/xzcz8fCveCkVn5oUF3JhOUy2bS4YBNRURvwD2nj2Az9lK
+ t+EJAYpBkP2uB6gp9416IxZNbR140JrM9gQcsWYociFr8wIoXZl8keiS6gebEbQsOjSy
+ tE2w==
+X-Gm-Message-State: AOJu0YyQv4gV83MwS/RRCw3BX4UeY4VGaClIzOFmX1pwB8FDJ+ZCGNWt
+ dwKPCTAO53lAugQ2ceL4R14hv27AEV17sh7Ovo7XUf0u/rhcePMWo2LfkGhV4wbwp2CzKacckJE
+ rMZ0albyYFhPTFf7IA5WRKZoMmWtQ4s/4c5AX35Og3vfDMaf6WC+aR1nl
+X-Gm-Gg: ASbGncs/OqN4bFf0Fea0oEBmENo6+Lq+W9V+hrVipF4Yj/k5Y0NfPmiA2j1erWzADsD
+ /mBh8L+z1BYGg8xmJlsEBztug59HBRvyiscA+lPhCsuQiZpBGoQMzINCMsBmSIneckgRZzPlft5
+ nl/2xOqvLHrB2N8YRGbqZbDOBBAk6TTK/UiWOtZ4BGUIo+ZCAnHBolDbrlJ821wo6Y9wZWqCQJb
+ o8t9j8zlqSKJ+4opNXiuxmsNfcJdDDB/MYPSo4efbfDyL1kCfl6Dvwbo0jNPyIm5Px9kw2bUMLk
+ o3Z2SLRuzKlXK9RdC3AsrqT/Uj5dACWdYUPREcoTuvUMKDYczV95I071DxKVf/PG4ZJhTCLyS7i
+ zUlpHamsRGOaY3E9tTekI2QX9xR+2QP8SKidenwVIQeIq31HhfZQwW0MlcQ==
+X-Received: by 2002:a05:600c:1381:b0:477:7a95:b971 with SMTP id
+ 5b1f17b1804b1-477c01f55damr23714425e9.31.1763729378869; 
+ Fri, 21 Nov 2025 04:49:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHMqzEtQCUGNWn73XNChdroxtMemXBA2q9fHejmcW/RP3U25rDvaEhDoEU+SEV/hBgNiD0XiA==
+X-Received: by 2002:a05:600c:1381:b0:477:7a95:b971 with SMTP id
+ 5b1f17b1804b1-477c01f55damr23714175e9.31.1763729378354; 
+ Fri, 21 Nov 2025 04:49:38 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477a9df99d3sm83068815e9.12.2025.11.21.04.49.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Nov 2025 04:49:37 -0800 (PST)
+Message-ID: <5ba8afd2-676a-4aee-ac9c-b8d0fdf8d826@redhat.com>
+Date: Fri, 21 Nov 2025 13:49:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Fix the typo of vfio-pci device's enable-migration
- option
-To: Yanghang Liu <yanghliu@redhat.com>, qemu-devel@nongnu.org
-Cc: clegoate@redhat.com, QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20251121094341.80038-1-yanghliu@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20251121094341.80038-1-yanghliu@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [RFC v3 04/21] refactor: Move ARMSecuritySpace to a common header
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
+ <20251012150701.4127034-5-tangtao1634@phytium.com.cn>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251012150701.4127034-5-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,33 +106,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-21.11.2025 12:43, Yanghang Liu wrote:
-> 
-> Signed-off-by: Yanghang Liu <yanghliu@redhat.com>
-> Reported-by: Mario Casquero <mcasquer@redhat.com>
+
+
+On 10/12/25 5:06 PM, Tao Tang wrote:
+> The ARMSecuritySpace enum and its related helpers were defined in the
+> target-specific header target/arm/cpu.h. This prevented common,
+> target-agnostic code like the SMMU model from using these definitions
+> without triggering "cpu.h included from common code" errors.
+>
+> To resolve this, this commit introduces a new, lightweight header,
+> include/hw/arm/arm-security.h, which is safe for inclusion by common
+> code.
+>
+> The following change was made:
+>
+> - The ARMSecuritySpace enum and the arm_space_is_secure() and
+> arm_secure_to_space() helpers have been moved from target/arm/cpu.h
+> to the new hw/arm/arm-security.h header.
+>
+> This refactoring decouples the security state definitions from the core
+> CPU implementation, allowing common hardware models to correctly handle
+> security states without pulling in heavyweight, target-specific headers.
+>
+> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+nit: the commit msg prefix is unusual (refactor). I would rename into
+target/arm: Move ARMSecuritySpace to a common header
+
+Eric
+> Link: https://lists.nongnu.org/archive/html/qemu-arm/2025-09/msg01288.html
 > ---
->   hw/vfio/pci.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 8b8bc5a421..b46b1305a7 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3871,7 +3871,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
->                                             "(DEBUG)");
->       object_class_property_set_description(klass, /* 5.2, 8.0 non-experimetal */
->                                             "enable-migration",
-> -                                          "Enale device migration. Also requires a host VFIO PCI "
-> +                                          "Enable device migration. Also requires a host VFIO PCI "
->                                             "variant or mdev driver with migration support enabled");
->       object_class_property_set_description(klass, /* 8.1 */
->                                             "vf-token",
+>  include/hw/arm/arm-security.h | 54 +++++++++++++++++++++++++++++++++++
+>  target/arm/cpu.h              | 25 +---------------
+>  2 files changed, 55 insertions(+), 24 deletions(-)
+>  create mode 100644 include/hw/arm/arm-security.h
+>
+> diff --git a/include/hw/arm/arm-security.h b/include/hw/arm/arm-security.h
+> new file mode 100644
+> index 0000000000..9664c0f95e
+> --- /dev/null
+> +++ b/include/hw/arm/arm-security.h
+> @@ -0,0 +1,54 @@
+> +/*
+> + * ARM security space helpers
+> + *
+> + * Provide ARMSecuritySpace and helpers for code that is not tied to CPU.
+> + *
+> + *  Copyright (c) 2003 Fabrice Bellard
+> + *
+> + * This library is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public
+> + * License as published by the Free Software Foundation; either
+> + * version 2.1 of the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef HW_ARM_ARM_SECURITY_H
+> +#define HW_ARM_ARM_SECURITY_H
+> +
+> +#include <stdbool.h>
+> +
+> +/*
+> + * ARM v9 security states.
+> + * The ordering of the enumeration corresponds to the low 2 bits
+> + * of the GPI value, and (except for Root) the concat of NSE:NS.
+> + */
+> +
+> + typedef enum ARMSecuritySpace {
+> +    ARMSS_Secure     = 0,
+> +    ARMSS_NonSecure  = 1,
+> +    ARMSS_Root       = 2,
+> +    ARMSS_Realm      = 3,
+> +} ARMSecuritySpace;
+> +
+> +/* Return true if @space is secure, in the pre-v9 sense. */
+> +static inline bool arm_space_is_secure(ARMSecuritySpace space)
+> +{
+> +    return space == ARMSS_Secure || space == ARMSS_Root;
+> +}
+> +
+> +/* Return the ARMSecuritySpace for @secure, assuming !RME or EL[0-2]. */
+> +static inline ARMSecuritySpace arm_secure_to_space(bool secure)
+> +{
+> +    return secure ? ARMSS_Secure : ARMSS_NonSecure;
+> +}
+> +
+> +#endif /* HW_ARM_ARM_SECURITY_H */
+> +
+> +
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 1d4e13320c..3336d95c6a 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -31,6 +31,7 @@
+>  #include "exec/page-protection.h"
+>  #include "qapi/qapi-types-common.h"
+>  #include "target/arm/multiprocessing.h"
+> +#include "hw/arm/arm-security.h"
+>  #include "target/arm/gtimer.h"
+>  #include "target/arm/cpu-sysregs.h"
+>  #include "target/arm/mmuidx.h"
+> @@ -2098,30 +2099,6 @@ static inline int arm_feature(CPUARMState *env, int feature)
+>  
+>  void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp);
+>  
+> -/*
+> - * ARM v9 security states.
+> - * The ordering of the enumeration corresponds to the low 2 bits
+> - * of the GPI value, and (except for Root) the concat of NSE:NS.
+> - */
+> -
+> -typedef enum ARMSecuritySpace {
+> -    ARMSS_Secure     = 0,
+> -    ARMSS_NonSecure  = 1,
+> -    ARMSS_Root       = 2,
+> -    ARMSS_Realm      = 3,
+> -} ARMSecuritySpace;
+> -
+> -/* Return true if @space is secure, in the pre-v9 sense. */
+> -static inline bool arm_space_is_secure(ARMSecuritySpace space)
+> -{
+> -    return space == ARMSS_Secure || space == ARMSS_Root;
+> -}
+> -
+> -/* Return the ARMSecuritySpace for @secure, assuming !RME or EL[0-2]. */
+> -static inline ARMSecuritySpace arm_secure_to_space(bool secure)
+> -{
+> -    return secure ? ARMSS_Secure : ARMSS_NonSecure;
+> -}
+>  
+>  #if !defined(CONFIG_USER_ONLY)
+>  /**
 
-Picked up to the trivial-patches tree.
-Thanks!
-
-/mjt
 
