@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CCDC774FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5EDC7750A
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:05:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMJK7-0006Ei-TW; Fri, 21 Nov 2025 00:04:43 -0500
+	id 1vMJK8-0006FJ-IJ; Fri, 21 Nov 2025 00:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vMJJn-00065n-KL
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:28 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1vMJJq-000664-07
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:30 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vMJJl-0006lt-Pl
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:23 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-29844c68068so17659365ad.2
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 21:04:20 -0800 (PST)
+ id 1vMJJn-0006mN-N4
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:25 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-29845b06dd2so20354595ad.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 21:04:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1763701459; x=1764306259; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BTX9KwD2YwTQRbsWY7vHTSd5zYZGddNybkmBjyJO5EQ=;
- b=Df1kpNfBhGEOaq1A8Q4y6aKIGHCJTJCO9j9pFtDAzDxnE4Ov+oulaEBZemSaFlqAoV
- 0W/S8QzPaBvZ8Amw9DTJDDQIT5IY844t3bgecjeBLK/91rWAd6eGSXdOCA1xrD69FSkL
- AFVrLTJKy6Wx7kc7zgPbkNsHEvZxl9rwjF35982KM3YMesVGsnLcAkZialP452Z1c+v0
- G8a3Jy2qvrAqGRmfn2xqQyGG1YMYv/JFDx5E0TTUX0rxC47Eve/R2/X3ZBeCY+Hsa0XL
- JlK0vcuhh2YARU6X0eq9LyZrA0expUckJELNeRuG17Ad3hN28QmaBvha5hWA6SmLM/+7
- Z2bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763701459; x=1764306259;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=sifive.com; s=google; t=1763701461; x=1764306261; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BTX9KwD2YwTQRbsWY7vHTSd5zYZGddNybkmBjyJO5EQ=;
- b=LMg5VaQg1HebFwmh1yhEZEIB/OqWwVSR5hKKuaNHmZm6cPIhd+2mZySZdPwSR+hRYe
- QlVt975Fb66NBbYDo/DpPhdfcrBIaBx1lU+gg7gSNQ2x/0a9nDwLvcmOn2qhJOmusx2g
- MFCs7Q77CmqfDjowBiD6tS0Px1lEguzGrMPmniy6ev3gTUYE4AETXK7G9qjE/ejd3yIz
- Etpg9wNbqyGI6KUZSaDSs++FNEXrSxbdOFnQWqE7eQgqMENIsL6P/HapS8jOrWdfT5sI
- 4QtzS5PhJ3ITxITEH7lw7pWVwIKvbncznDM0ROL3bSSPFZXvJTcHo3HN7EoaC2mXE9du
- 2hsQ==
-X-Gm-Message-State: AOJu0YzP5xEQA+q6yoLfyG95uwPMcETpF9XXrkfwDKux0VfqIEC1nZdV
- 6/Z/XngVtvYqzqaJtucA2UISdD5LPWAav/pKJoS8FsUCM+VJXHSceKaveQTv9kSkliKhLx95pC+
- xm3tyvakXaFVvSd3aLWRtSWM+m3gAF2NNsdwRUu3QhU7nnnJd34PN+RxBxbYeqmI/jaHyUU6C8m
- Y36zGUDxXx0fuUaSF41bu7VzZdgO2PzbLdGAacPXssiIE=
-X-Gm-Gg: ASbGnctJBHWC3WR8UEraRckvMhsQ8/twrXcXIM46gqzXzgsF93DBsCNclau7e2iUz7o
- +zQaYplbgnrSABQap9IOKYCWg4P/IGgYQHGvdD9i4cRTY50idmdHJZtDtTMKqmUD5ft6FMLT7Ar
- AB6PXTlHaDqn13ZR7jhsh8pGQ2saTaYVXTLczKetvFxF//Cve+nuTVJzTOhAWG2iJWTHXAlo4RA
- juYJ1qhu1rjqQB6m2sjU0YnxxaBCcILLDF8XN0JMNSVMzXMB56guY2OGpBBqfZipI9p6WZDKAoB
- OonPTxwgxj6Yyd2C2N4WwawIkKKv58yAFlssIHYV4DZIMi6ZgksC8nCruKfC+8Z+YRYyvG1Nx8Z
- 2T4r81n7X/Z5Lbsw7TRACkvSmuUrAGiSfSnibE9YYxGgBQIXG1W+hurteXY04fASZ849sdsypz5
- qNVkoNC+76cPljpI+BxS799vdXKGbCKpQJirp3oQ==
-X-Google-Smtp-Source: AGHT+IEoRRo3pJqVKagvUXJ/NGdN7mzygWs30fVakmjHnjxX0HLZuTtcJ98wvYjDb7CT/s69D7kRBg==
-X-Received: by 2002:a17:903:903:b0:295:9db1:ff4b with SMTP id
- d9443c01a7336-29b6be8b66dmr15673355ad.4.1763701458625; 
- Thu, 20 Nov 2025 21:04:18 -0800 (PST)
+ bh=pFjzAt3V16vj8pMOvPT4tfpSGw4vX8nwSrhUGNpwdlI=;
+ b=Jfx78jdIoulaAcEqM76EmAp5xQLiGbyGQ8CXqBr1HYBjfdo0uw72uUyV8lgA68c6nS
+ XdkDDiXSrgJD1skOBgsA7NE4WAnai5T8KsBhbBEf2Fd8qFTVPfZdxLEXwlLtWaGERi98
+ 6LuC9qVCum36x5qMXNvNqSMUzrD685f6PJGuCtfjkXjIaBHZAnKkAa0c3XACtxFdeVHs
+ 87tHB+kZn3MyfzsUnCq8MCWbf/N37eDrWwjrJ3yNX2NYFqaE/efFqDIxO5BgJgj4izSW
+ 9Yi1xvBDVS4NtpZ2LjvEfC1o1CT1bK3zlkWhi4knEdWiN36CzCdsCRhHF2l6cXbdnkqK
+ dWlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763701461; x=1764306261;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=pFjzAt3V16vj8pMOvPT4tfpSGw4vX8nwSrhUGNpwdlI=;
+ b=N4GxG40rzKG55XLSV20ov0XeWjLoRe2YLsYPF4QR/ES0rsdgWdTaqwYBvt4CPUg0MY
+ AO4IXcgUKnsqPdwTQbeDnAErdZI2G+JrIr6zQiek9R9rS9DU7gRGiBHD6kSF4Oido+zx
+ CmmQWhLYZPwkKjMJOMQ4hECevrONcpqLmfQd6Z9O0+JXhZRS+7ea76LTvXfK0nOuXRPg
+ Mk3KvrbCYhwEMEiuoOcdgNcyFS4qPa7S0le8S6ERbZlHUOKZGD+MO3ErjAadd5IAI5rQ
+ CA5jM/gSNmZd8lCc2YcQ5Y21eelrXXjVAEx6YzZWfDyqNyz6eXJNyhez4i+tKoojjKAm
+ T/yA==
+X-Gm-Message-State: AOJu0YxWs0x6yhjaQoN/EAuLEiALfN3iiNk7Nz5+GQJ8kt8fGx2FYivm
+ h1oSiscxI347IVKKMLJFO1UuzBYQt1tgnjVXuQV++aAwHDpzosGJgyzfQrofInkmXx5UMug0Eq4
+ kOQ7lrAbShvITI2NniFLBsp6AhjRvo3e8l19f6oGohfA8SQA3U7kcSiY4cxSJUvTzdUOmd5Hhb/
+ liO7hSyc5npGeWQ0We5tTUZ7dWe3hTBIGefib7blXHrFw=
+X-Gm-Gg: ASbGncuW13am/ii+E3jk10fZ7Pn7H9bYbGdgCGvyYoKuZuElapan0xrCKesFyElMAdf
+ 34mxLWsGzvz0W8YLYaNPRD1ofhxJyxLxl96z6QM078sgCWmljQy37GfFfbGAnvOJMegvX3Q0qBs
+ qD9LR9Cle/9kz3k0L69x6eX/2RQChOHMYLlw2aVVMhLxsoQ2ZnPFz1Fodg7qefr8H9p7Mp7Orj4
+ ZLjVblHeVuZwTZeSv3cHioA0MqlYLCEYZ3CCuV8Rs1i/8gynDeKba+SSnHPcBkCe6rIX6UBFgyj
+ Gd7Q/NZ3AqCVQ63XTB4t+bTM2FCnKE0VpLzN1dL7I0RNPHUHRoPfVf6RnY1flnMX2QjxKYG9XWg
+ p8NpVZ1Jd555FvpKACekGK+KG3XyatgTLbOhXeZAfAisXYDGNkkIYiBMTjqp22JiZyZyoLWkjQN
+ WekNRTp3ho4rhX6k8WGiSV9YRBFd1XYwkyClBRgg==
+X-Google-Smtp-Source: AGHT+IEU64lQHCK3R/6lKyXLvSyJmQakO6mbjALNH6iha0QBrJ8WxMbexpFdzDDpEMo5EmXhKDO3BA==
+X-Received: by 2002:a17:903:2ec4:b0:27e:f018:d2fb with SMTP id
+ d9443c01a7336-29b6c3c766emr14437205ad.6.1763701460825; 
+ Thu, 20 Nov 2025 21:04:20 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29b5b26fed2sm43384525ad.69.2025.11.20.21.04.16
+ d9443c01a7336-29b5b26fed2sm43384525ad.69.2025.11.20.21.04.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Nov 2025 21:04:18 -0800 (PST)
+ Thu, 20 Nov 2025 21:04:20 -0800 (PST)
 From: frank.chang@sifive.com
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>,
@@ -72,22 +73,24 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
- Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v2 0/6] Fix Zjpm implementation
-Date: Fri, 21 Nov 2025 13:04:07 +0800
-Message-ID: <20251121050413.3718427-1-frank.chang@sifive.com>
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH v2 1/6] target/riscv: fix address masking
+Date: Fri, 21 Nov 2025 13:04:08 +0800
+Message-ID: <20251121050413.3718427-2-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251121050413.3718427-1-frank.chang@sifive.com>
+References: <20251121050413.3718427-1-frank.chang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=frank.chang@sifive.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=frank.chang@sifive.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,39 +106,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-The current Zjpm implementation has the following issues:
+The pmlen should get the corresponding value before shifting address.
 
-1. The address is shifted before obtaining the correct PMLEN value.
-2. riscv_pm_get_pmm() does not handle effective privilege mode correctly.
-3. mstatus.MPRV does not affect virtual-machine load/store instructions.
-4. Sign extension for virtual-machine load/store instructions (HLV.* and
-   HSV.*) must be performed when vsatp.MODE != Bare.
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/internals.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patchset fixes the above issues and also renames
-riscv_pm_get_virt_pmm() to riscv_pm_get_vm_ldst_pmm(), as the helper
-is only used when checking the PMM configuration for virtual-machine
-load/store instructions, rather than for VS/VU modes.
-
-Frank Chang (5):
-  target/riscv: Add a helper to return the current effective priv mode
-  target/riscv: Fix pointer masking PMM field selection logic
-  target/riscv: Fix pointer masking for virtual-machine load/store insns
-  target/riscv: Rename riscv_pm_get_virt_pmm() to
-    riscv_pm_get_vm_ldst_pmm()
-  target/riscv: Fix pointer masking translation mode check bug
-
-Yong-Xuan Wang (1):
-  target/riscv: fix address masking
-
- target/riscv/cpu.h         |   5 +-
- target/riscv/cpu_helper.c  | 164 +++++++++++++++++++++++++++++--------
- target/riscv/internals.h   |   8 +-
- target/riscv/tcg/tcg-cpu.c |   4 +-
- 4 files changed, 138 insertions(+), 43 deletions(-)
-
---
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index 172296f12e2..9b3f01144d2 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -203,8 +203,8 @@ static inline target_ulong adjust_addr_body(CPURISCVState *env,
+     if (!is_virt_addr) {
+         signext = riscv_cpu_virt_mem_enabled(env);
+     }
+-    addr = addr << pmlen;
+     pmlen = riscv_pm_get_pmlen(pmm);
++    addr = addr << pmlen;
+ 
+     /* sign/zero extend masked address by N-1 bit */
+     if (signext) {
+-- 
 2.43.0
 
 
