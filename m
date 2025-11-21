@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F32C7C305
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2ECC7C3E7
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:09:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd06-0004ab-6S; Fri, 21 Nov 2025 21:05:23 -0500
+	id 1vMd7D-0004oE-VM; Fri, 21 Nov 2025 21:12:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcBO-0007L2-9S; Fri, 21 Nov 2025 20:12:58 -0500
+ id 1vMcoj-0004dW-PJ; Fri, 21 Nov 2025 20:53:38 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMcBC-0004z3-9U; Fri, 21 Nov 2025 20:12:54 -0500
+ id 1vMcmh-00062d-3A; Fri, 21 Nov 2025 20:53:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A881B16CA46;
+ by isrv.corpit.ru (Postfix) with ESMTP id C401716CA47;
  Fri, 21 Nov 2025 21:44:21 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3248D321C82;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7873A321C83;
  Fri, 21 Nov 2025 21:44:30 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 11/81] target/riscv: fix riscv_cpu_sirq_pending() mask
-Date: Fri, 21 Nov 2025 21:43:10 +0300
-Message-ID: <20251121184424.1137669-11-mjt@tls.msk.ru>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 12/81] io: release active GSource in TLS channel
+ finalizer
+Date: Fri, 21 Nov 2025 21:43:11 +0300
+Message-ID: <20251121184424.1137669-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -52,42 +53,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-We're filtering out (MIP_VSSIP | MIP_VSTIP | MIP_VSEIP) from S-mode
-pending interrupts without apparent reason. There's no special treatment
-for these ints as far as the spec goes, and this filtering is causing
-read_stopi() to miss those VS interrupts [1].
+While code is supposed to call qio_channel_close() before releasing the
+last reference on an QIOChannel, this is not guaranteed. QIOChannelFile
+and QIOChannelSocket both cleanup resources in their finalizer if the
+close operation was missed.
 
-We shouldn't return delegated VS interrupts in S-mode though, so change
-the current mask with "~env->hideleg". Note that this is the same
-handling we're doing in riscv_cpu_mirq_pending() and env->mideleg.
+This ensures the TLS channel will do the same failsafe cleanup.
 
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2820
-
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2820
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251022124340.493358-1-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-stable@nongnu.org
-(cherry picked from commit 06e01941ffca3c246a9770f477e43118793fde59)
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 2c147611cf568eb1cd7dc8bf4479b272bad3b9d6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 3233b66e7e..25619c556c 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -539,8 +539,7 @@ int riscv_cpu_mirq_pending(CPURISCVState *env)
- 
- int riscv_cpu_sirq_pending(CPURISCVState *env)
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index caf8301a9e..f8b03aa63c 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -337,6 +337,16 @@ static void qio_channel_tls_finalize(Object *obj)
  {
--    uint64_t irqs = riscv_cpu_all_pending(env) & env->mideleg &
--                    ~(MIP_VSSIP | MIP_VSTIP | MIP_VSEIP);
-+    uint64_t irqs = riscv_cpu_all_pending(env) & env->mideleg & ~env->hideleg;
-     uint64_t irqs_f = env->mvip & env->mvien & ~env->mideleg & env->sie;
+     QIOChannelTLS *ioc = QIO_CHANNEL_TLS(obj);
  
-     return riscv_cpu_pending_to_irq(env, IRQ_S_EXT, IPRIO_DEFAULT_S,
++    if (ioc->hs_ioc_tag) {
++        trace_qio_channel_tls_handshake_cancel(ioc);
++        g_clear_handle_id(&ioc->hs_ioc_tag, g_source_remove);
++    }
++
++    if (ioc->bye_ioc_tag) {
++        trace_qio_channel_tls_bye_cancel(ioc);
++        g_clear_handle_id(&ioc->bye_ioc_tag, g_source_remove);
++    }
++
+     object_unref(OBJECT(ioc->master));
+     qcrypto_tls_session_free(ioc->session);
+ }
 -- 
 2.47.3
 
