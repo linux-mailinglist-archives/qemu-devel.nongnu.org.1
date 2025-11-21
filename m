@@ -2,147 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDEBC7A504
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 15:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1621CC7C91C
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 08:06:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMOUh-0003EQ-AM; Fri, 21 Nov 2025 05:36:00 -0500
+	id 1vMOWd-0003wD-Pp; Fri, 21 Nov 2025 05:38:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vMOKR-0008IE-AJ
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 05:25:25 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vMORE-0001d3-D0
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 05:32:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vMOKH-0001Ki-I4
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 05:25:21 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vMOR1-0001mf-SD
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 05:32:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763720697;
+ s=mimecast20190719; t=1763721115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=mP619Xf7apXUow5hCSU/SjZJPjChsAnhjp5c/9UFgus=;
- b=MbXVo00t/sNdYFlquMvnQSvg0tUB4hPvcBGwKUyhR2YKOs9hVteQiYuyICSW3MLUExUGFL
- Copap9G5DQd8hPulESkbHohIBA4xvZwXgVFS+5Umj+cSfT1p4Z89oLcw83k32gkUIRhPjH
- QvlBC5aIdq+3zRegvtrPYjXqpWtAGCs=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o+RHa4p0iHR1IOHvI5B21eRkLJXWRGVFYKk675qglgs=;
+ b=Kc1DZvTtFiA7EVTzQyFVH7MynNO0nf4qyfPBAz0u73LiboX0SCJGiXaA6yiZszJyahqFIa
+ L4loQdcsWXUP/dsQkdk+Jka/VM4z+wmjSc0jTmz1SShpDeQDiP2N6iharn6DdtYOxy6UXF
+ b8MzLJK5dE0V3EqkmkMfHpABhwYZS9M=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-_825Ho3DPbi00YAsWh9dTQ-1; Fri, 21 Nov 2025 05:24:55 -0500
-X-MC-Unique: _825Ho3DPbi00YAsWh9dTQ-1
-X-Mimecast-MFC-AGG-ID: _825Ho3DPbi00YAsWh9dTQ_1763720695
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-429c95fdba8so922718f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 02:24:55 -0800 (PST)
+ us-mta-39-QdUKXpgiMCOyrxDL6QDr2A-1; Fri, 21 Nov 2025 05:31:53 -0500
+X-MC-Unique: QdUKXpgiMCOyrxDL6QDr2A-1
+X-Mimecast-MFC-AGG-ID: QdUKXpgiMCOyrxDL6QDr2A_1763721112
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4779da35d27so24368555e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 02:31:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763720694; x=1764325494; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=mP619Xf7apXUow5hCSU/SjZJPjChsAnhjp5c/9UFgus=;
- b=CKTggLpMqgAG4YhFXAxRD7Vlk7h86OpKBi17dk5ykLVsa3zpiwkLA6Q9Ix7Dedl1p1
- dCrVIh+fM9BfKu+D8ZipJbCl+sgY829JW+dTg+eAjC+8o9Vx0TF96xwcfFTfk+gO0SKH
- M2LRzzie/d68eyrB484GX2zhS4DFkjtXAJOdi5loANTVu937taS3NOCrcIBnyML+lH/V
- vf/j1sqmAlR4SzUvnZPd4zmCGN3YOEHLxEmZkxjkAlnsnI4Ft7vt7Owk8Qoa3jPpvvFT
- kSkU9vpsNSTtyAxklIwcDKCVmmNcic3i1DyPNuC2kK5uTQnccvWij8anF04MGbQR8Nl6
- s9Zg==
+ d=redhat.com; s=google; t=1763721112; x=1764325912; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:cc:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o+RHa4p0iHR1IOHvI5B21eRkLJXWRGVFYKk675qglgs=;
+ b=hkIF0W8G/LxygTfzwi0uAi/pZmdI98Hf+rxPqZadaJKwC82RkF4WFUY2+Z915+6bW7
+ 69r/y1eZ78jTnGegKnQzi3ZmkbaBSPwSkelTI5JBbFsM6OvTUgICR1kwinH5m29BWn1+
+ mhrBAsiiPD7MrQ9UVwNEjnEw5Ga7OefPr+2LwPglozRwH05I2vj5G99sinndwI1to9kE
+ SKLaPTpq8TRRazhkIs4pEe/HzlnwbTcVYNFDzRDEN2xJwt5sHZY7t8yO6l2cQlDgihlw
+ P7vxBWcyFFUc3cba+ZQIYtOAUR8w1Wa62nCuV7xeN7r3QsRL/vDFGEZ0o3tPHFIcpPoF
+ oT1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763720694; x=1764325494;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mP619Xf7apXUow5hCSU/SjZJPjChsAnhjp5c/9UFgus=;
- b=OdeDDOwWO/SpauEFN5LeOz/9HVxaFi1W6CB7tk5yKbiaEDL0Ubl4vl9TA3bnx17KpG
- bXaUKn5z4NFiBHwZ+SsxEoZuI8w3no44QWvElAL6IUIMrJ0v0zBSgCpne/Fz3cVI/+9W
- wl8uDWiuscxxF5bmx2QcOEUpq2YIP/BR5Rcj8Dg3COPaYMExxiefpKMbdNay/ZrTRxJY
- QrRFjsshP+oRyvkHdMP2/OfAnl15Pj6A4Muc+ko/UbRw06mvvcoxLNZM2lA8Uvse2w6J
- BdszM5DpvVgu6D9kNuKew0bMbM0VztZ4V6AK0A948vzzHZJqewK89VPUZItLiYHqA4mG
- u/Gw==
+ d=1e100.net; s=20230601; t=1763721112; x=1764325912;
+ h=content-transfer-encoding:in-reply-to:autocrypt:cc:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o+RHa4p0iHR1IOHvI5B21eRkLJXWRGVFYKk675qglgs=;
+ b=cAR3AOz9oJi/aavmPKH1jwTa7MspeULc96f8VDQvbzQiLm1QeEJfqOaxM8VpfUoB/l
+ Gk5hIL2B128LSn58lf9mq+QzwNpO5//VEuLQSHdUrGv7VCU260KiPeQKIcHEF77pe4t0
+ gWm0dYZaGNULEvnV5ba8wXaJVuqOnale0rKl0AY3hrFP9mWB0Eot0Q7plLuzJg0NRUDw
+ 1LBmfe6YkYn6iJWEH3GXIuBtrr8MnB+5zv7aQfbN3/Q7Aa+0VQ17ANq6c2LTijcC7gs6
+ L48bhoMKoWX23f5j/XoaI6IDxQTb9QL8KW7S4XZvfQgm+cx2m1RAoaVbPhL5uA03xwCL
+ oJAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXirEKkfOfxo7HBWPr5uZzPVgXTAggD+6otXZg+bl+gb/zSabedeJwlvMiH9Ex1cKU4hLdOaVNVKKPl@nongnu.org
-X-Gm-Message-State: AOJu0YzcXzbBoJjSZvEcVjdXLzvIYv+Lfx3flzEbxakoevc2Jjnz276E
- i51xyiIucFvng5biUPVN7olhnGXrsC3UkkGIml28H6hPYvN30Iofs47jGgkJjr3kiX8KwX+7yDy
- U7HVhiHuK52ZtKtyX/DdbftdQ2TD0byFPsCd7I1TGljxgqBIbGNG0udQl
-X-Gm-Gg: ASbGncuclcO3oFrm7rBDoWprZQMjawWtQZzbZTRf5tS8srbKIhy/YGo77fvjQ2Od7wb
- KsLC/jKYcVNeDwoxG/o84mVPdN+HpqPE5mhEH8qPWnK87vjGWx/61OTORgpFFdhNduD6tIPHGG/
- SiOgDhfjxGokeCMFJAKSLrBJFYXurbtS7tI31DGdLbbnplRc9DOmHUOeSeNXURQOg9+VLnch8Z0
- NRw6xMNqBMIrt52Q72Eq2o5yEApMMb6t9Ynfuf8XE8hPLle9YIwr2TJGw4i2u07w+DJmXnWhqVG
- sCME5DKwaZs8nlclP5gMMph531HM7ark8WCKogcC8XyG6Be9SQOHtlvC2Iqf1NnKeK2raJUC2uO
- b4Dc3HNZ9WTWX6hgHxLbcOcNT6BKXr6JdY/yLLY5+CACLEAnoIx4gr8FgH5BsJtn2Tys288UWc4
- u3XhipCBDKfFXl5Jk=
-X-Received: by 2002:a5d:5c89:0:b0:42b:32f5:ad43 with SMTP id
- ffacd0b85a97d-42cc1ceead7mr1783045f8f.17.1763720694596; 
- Fri, 21 Nov 2025 02:24:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6iZXimUDPd4eFb7Kmiljiz4pjNYuGrlD2iMNepoUfevPehlVidzIIv58J0wTgrmr3aXhLZg==
-X-Received: by 2002:a5d:5c89:0:b0:42b:32f5:ad43 with SMTP id
- ffacd0b85a97d-42cc1ceead7mr1783020f8f.17.1763720694212; 
- Fri, 21 Nov 2025 02:24:54 -0800 (PST)
-Received: from [192.168.10.81] ([176.206.119.13])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fd8c47sm10735860f8f.38.2025.11.21.02.24.52
+ AJvYcCU6/AmJk78sv/7xKULPad+AcxQtT6rPdHX/scuGmyNSYUm0N7Vy1PrvTAoMLZNfmYyNKLMcuPcjh2B4@nongnu.org
+X-Gm-Message-State: AOJu0Ywjh3cm7YjwHyVZZtDyBkIg/yUAzujEMxrD3XaLEvsqe7Hi+gz2
+ Ong0VzqdSiXds3j2SFFGjn7De+jcyHiwg8RdaCgjLspOQMj/RDafWVGJaJPmeIOkob5CJeQgnKH
+ 34h/O4WIa0hchKVIS3LH2oEgezF6FXU3PK3zS9DWxFDTJeZdkAUrfsWzT
+X-Gm-Gg: ASbGncuuqirnjgmfPDA1doVv1AmPhV5PfZUr837Kuxa1zcX5PIagqkcSqu1DpsyKDGl
+ CmI2UdxzUFq4YPKfbWh4LcWQlx0t+8UTM2Mi00ztPpn/BiF916zBoitbdKf8yHlL1zraYm1K+dr
+ 3v4wAXE+kZqVplPk+wxie2xwox+u9gpBpdzjJHJwC70e552YhHUUVyg3YtPG2GtVThp76eyUp9q
+ dSeEMc73wIcvb4L66C6lNO2TZE0CYx849NyV///1q1grKfR7Ko5UwRaZaCJCAES07DZhf6oLRqf
+ ZTJLt+M4GMbVcIa9XY24RCSv3L8Af1ol6DntixQ52ZJ1QgUqqgYxPwN5u7xe4lIv7pA7YKJqOsH
+ 0dWXeLT+5GCx+3fBAffiL9kbWePf9sbiqbgZ5g1t5U9GEfIOD
+X-Received: by 2002:a05:600c:4591:b0:477:8b77:155e with SMTP id
+ 5b1f17b1804b1-477c018a016mr24491495e9.15.1763721111738; 
+ Fri, 21 Nov 2025 02:31:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGMlU/fnUimi22Q7bj7W0on1rYFZ2QWorAfdrtNFX1lHxh0F0QHEzy8OoH0wvr9gx+GYKD45g==
+X-Received: by 2002:a05:600c:4591:b0:477:8b77:155e with SMTP id
+ 5b1f17b1804b1-477c018a016mr24491075e9.15.1763721111312; 
+ Fri, 21 Nov 2025 02:31:51 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477bf3602d1sm37064255e9.5.2025.11.21.02.31.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Nov 2025 02:24:53 -0800 (PST)
-Message-ID: <df22536e-c813-4b9a-a9fa-75b9fdc0fb4a@redhat.com>
-Date: Fri, 21 Nov 2025 11:24:46 +0100
+ Fri, 21 Nov 2025 02:31:50 -0800 (PST)
+Message-ID: <684e5c25-5070-46c3-bb90-b1aede884d00@redhat.com>
+Date: Fri, 21 Nov 2025 11:31:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/22] mtest2make: cleanup mtest-suites variables
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-block@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Hanna Reitz <hreitz@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20251117185131.953681-1-jsnow@redhat.com>
- <20251117185131.953681-14-jsnow@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20251117185131.953681-14-jsnow@redhat.com>
+Subject: Re: [PATCH v2] Fix the typo of vfio-pci device's enable-migration
+ option
+To: Yanghang Liu <yanghliu@redhat.com>, qemu-devel@nongnu.org
+References: <20251121094341.80038-1-yanghliu@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Language: en-US, fr
+Cc: Mario Casquero <mcasquer@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20251121094341.80038-1-yanghliu@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -151,7 +150,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -167,23 +166,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/25 19:51, John Snow wrote:
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Remove the "--suite" argument from the .*.mtest-suites variables, and
-> add it only when actually computing the arguments to "meson test".
-> This makes it possible to look at the set of suites to set ninja-cmd-goals,
-> instead of doing it via many different .ninja-goals.* variables.
-> 
-> As a bonus, this removes code duplication between emit_suite_deps
-> and its caller emit_suite.  Since emit_suite_deps would now be one or
-> two lines of code, integrate it into emit_suite directly.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: John Snow <jsnow@redhat.com>
+Hello Yanghang,
 
-This and the other two patches are now in master.
+Please add a 'vfio-pci:' prefix to the subject. Something like :
 
-Paolo
+   vfio/pci: Fix documentation of the "enable-migration" property
+
+It is good practice to add a commit log, even (very) short :
+
+   The change that introduced documentation for the vfio-pci properties
+   contained a typo. Fix that.
+
+> Signed-off-by: Yanghang Liu <yanghliu@redhat.com>
+> Reported-by: Mario Casquero <mcasquer@redhat.com>
+
+Add
+
+Fixes: 4526687bf126 ("vfio: Add property documentation")
+
+Could please resend a v3 ?
+
+Run ./scripts/get_maintainer.pl to get all recipients.
+
+Thanks,
+
+C.
+
+
+
+
+> ---
+>   hw/vfio/pci.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 8b8bc5a421..b46b1305a7 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3871,7 +3871,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
+>                                             "(DEBUG)");
+>       object_class_property_set_description(klass, /* 5.2, 8.0 non-experimetal */
+>                                             "enable-migration",
+> -                                          "Enale device migration. Also requires a host VFIO PCI "
+> +                                          "Enable device migration. Also requires a host VFIO PCI "
+>                                             "variant or mdev driver with migration support enabled");
+>       object_class_property_set_description(klass, /* 8.1 */
+>                                             "vf-token",
 
 
