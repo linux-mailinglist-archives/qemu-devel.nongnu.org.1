@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CA1C7C3DB
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8A5C7C37A
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:53:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcwu-0002LK-93; Fri, 21 Nov 2025 21:02:05 -0500
+	id 1vMd6E-00046u-5g; Fri, 21 Nov 2025 21:11:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMc1P-0001eb-6j; Fri, 21 Nov 2025 20:02:39 -0500
+ id 1vMcsv-0007fj-Qe; Fri, 21 Nov 2025 20:57:57 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMbzL-0002GI-Dw; Fri, 21 Nov 2025 20:02:33 -0500
+ id 1vMcrX-0007RP-TZ; Fri, 21 Nov 2025 20:57:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EFC1E16CA77;
- Fri, 21 Nov 2025 21:44:27 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0DEB016CA78;
+ Fri, 21 Nov 2025 21:44:28 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AEFC4321CB3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BFFA5321CB4;
  Fri, 21 Nov 2025 21:44:36 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Vincent Vanlaer <libvirt-e6954efa@volkihar.be>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 60/81] block: refactor error handling of
- commit_iteration
-Date: Fri, 21 Nov 2025 21:43:59 +0300
-Message-ID: <20251121184424.1137669-60-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 61/81] block: allow commit to unmap zero blocks
+Date: Fri, 21 Nov 2025 21:44:00 +0300
+Message-ID: <20251121184424.1137669-61-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251121170317@cover.tls.msk.ru>
@@ -38,6 +37,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,104 +59,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
 
+Non-active block commits do not discard blocks only containing zeros,
+causing images to lose sparseness after the commit. This commit fixes
+that by writing zero blocks using blk_co_pwrite_zeroes rather than
+writing them out as any other arbitrary data.
+
 Signed-off-by: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
-Message-Id: <20241026163010.2865002-4-libvirt-e6954efa@volkihar.be>
-[vsementsov]: move action declaration to the top of the function
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-Id: <20241026163010.2865002-5-libvirt-e6954efa@volkihar.be>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-(cherry picked from commit 0648c76ad198e91515771fbbeaac3a3807669a4a)
+(cherry picked from commit 6f3199f99600fe75f32f78574e507f347de80854)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/block/commit.c b/block/commit.c
-index 3ee0ade7df..5c6596a52e 100644
+index 5c6596a52e..7cc8c0f0df 100644
 --- a/block/commit.c
 +++ b/block/commit.c
-@@ -129,51 +129,60 @@ static void commit_clean(Job *job)
- }
- 
- static int commit_iteration(CommitBlockJob *s, int64_t offset,
--                            int64_t *n, void *buf)
-+                            int64_t *requested_bytes, void *buf)
- {
-+    BlockErrorAction action;
-+    int64_t bytes = *requested_bytes;
-     int ret = 0;
--    bool copy;
-     bool error_in_source = true;
- 
-     /* Copy if allocated above the base */
-     WITH_GRAPH_RDLOCK_GUARD() {
-         ret = bdrv_co_common_block_status_above(blk_bs(s->top),
-             s->base_overlay, true, true, offset, COMMIT_BUFFER_SIZE,
--            n, NULL, NULL, NULL);
-+            &bytes, NULL, NULL, NULL);
+@@ -150,19 +150,39 @@ static int commit_iteration(CommitBlockJob *s, int64_t offset,
      }
  
--    copy = (ret >= 0 && ret & BDRV_BLOCK_ALLOCATED);
--    trace_commit_one_iteration(s, offset, *n, ret);
--    if (copy) {
--        assert(*n < SIZE_MAX);
-+    trace_commit_one_iteration(s, offset, bytes, ret);
+     if (ret & BDRV_BLOCK_ALLOCATED) {
+-        assert(bytes < SIZE_MAX);
++        if (ret & BDRV_BLOCK_ZERO) {
++            /*
++             * If the top (sub)clusters are smaller than the base
++             * (sub)clusters, this will not unmap unless the underlying device
++             * does some tracking of these requests. Ideally, we would find
++             * the maximal extent of the zero clusters.
++             */
++            ret = blk_co_pwrite_zeroes(s->base, offset, bytes,
++                                       BDRV_REQ_MAY_UNMAP);
++            if (ret < 0) {
++                error_in_source = false;
++                goto fail;
++            }
++        } else {
++            assert(bytes < SIZE_MAX);
  
--        ret = blk_co_pread(s->top, offset, *n, buf, 0);
--        if (ret >= 0) {
--            ret = blk_co_pwrite(s->base, offset, *n, buf, 0);
--            if (ret < 0) {
--                error_in_source = false;
--            }
+-        ret = blk_co_pread(s->top, offset, bytes, buf, 0);
+-        if (ret < 0) {
+-            goto fail;
 -        }
--    }
-     if (ret < 0) {
--        BlockErrorAction action = block_job_error_action(&s->common,
--                                                         s->on_error,
--                                                         error_in_source,
--                                                         -ret);
--        if (action == BLOCK_ERROR_ACTION_REPORT) {
--            return ret;
--        } else {
--            *n = 0;
--            return 0;
-+        goto fail;
-+    }
-+
-+    if (ret & BDRV_BLOCK_ALLOCATED) {
-+        assert(bytes < SIZE_MAX);
-+
-+        ret = blk_co_pread(s->top, offset, bytes, buf, 0);
-+        if (ret < 0) {
-+            goto fail;
++            ret = blk_co_pread(s->top, offset, bytes, buf, 0);
++            if (ret < 0) {
++                goto fail;
++            }
+ 
+-        ret = blk_co_pwrite(s->base, offset, bytes, buf, 0);
+-        if (ret < 0) {
+-            error_in_source = false;
+-            goto fail;
++            ret = blk_co_pwrite(s->base, offset, bytes, buf, 0);
++            if (ret < 0) {
++                error_in_source = false;
++                goto fail;
++            }
          }
-+
-+        ret = blk_co_pwrite(s->base, offset, bytes, buf, 0);
-+        if (ret < 0) {
-+            error_in_source = false;
-+            goto fail;
-+        }
-+
-+        block_job_ratelimit_processed_bytes(&s->common, bytes);
-     }
-+
-     /* Publish progress */
--    job_progress_update(&s->common.job, *n);
  
--    if (copy) {
--        block_job_ratelimit_processed_bytes(&s->common, *n);
-+    job_progress_update(&s->common.job, bytes);
-+
-+    *requested_bytes = bytes;
-+
-+    return 0;
-+
-+fail:
-+    action = block_job_error_action(&s->common, s->on_error,
-+                                    error_in_source, -ret);
-+    if (action == BLOCK_ERROR_ACTION_REPORT) {
-+        return ret;
++        /*
++         * Whether zeroes actually end up on disk depends on the details of
++         * the underlying driver. Therefore, this might rate limit more than
++         * is necessary.
++         */
+         block_job_ratelimit_processed_bytes(&s->common, bytes);
      }
- 
-+    *requested_bytes = 0;
-+
-     return 0;
- }
  
 -- 
 2.47.3
