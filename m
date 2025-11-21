@@ -2,63 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E22C7C323
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:41:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CD3C7CAD0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:35:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMd6b-0004Pu-IK; Fri, 21 Nov 2025 21:12:06 -0500
+	id 1vMchv-0007kl-JJ; Fri, 21 Nov 2025 20:46:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vMckc-0001D8-NX
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:49:25 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vMcib-000556-6z
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:49:19 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1763748063; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=SGdq7p4vxF1vCuwhfTM2lLRQShqNfpiE7rZYRgJs015bZPHIe6KE8YVF0T11lguQR488AT/4HDuDwJBnkpkMcbAQUVXUkF5p3sGTRz4shm0jI+Zo5hXjxU4OLhq+5oP6Xy6i85N2eNaDmicFsLGeIYyGFmSX4gZdn94jIzI8rAI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1763748063;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=wPeIlaJHuo4cYtPbPURSef3BMIAudGoPvkeIJ7+n8i4=; 
- b=iPTH/wN+e99xtA/JDDshqikOv5SA+SsMTHip1BN2Ui9o/xUTRfEqH03vXuzh8/4WQda6N818OHfWTn/gYkILY9HY6BZ3w9MBqErDjLej8n/ZRCt4sqdm09ijgVPkHjXNtnN9rDQUoZ9bA2t9WORDrgLjy5EfEdTPDzohYWoABE4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763748063; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=wPeIlaJHuo4cYtPbPURSef3BMIAudGoPvkeIJ7+n8i4=;
- b=c+V89hzxy9TAzZOHlhFrkfj+XQyr7GPSO67qEmDhuD6ZpB3bMUmc0f8vryEj1dJ2
- mnW4hqIRYUhhjO+YmzOd3gAE4UREehHT7X0ggcDMc5rb0v11EnbFxePoSQV9g1sKl42
- 4itNzJVS6BYhgYtYjn+zIcL91Tf7FRjugUXWd3fo=
-Received: by mx.zohomail.com with SMTPS id 1763748059907203.62618332581224;
- Fri, 21 Nov 2025 10:00:59 -0800 (PST)
-Message-ID: <b828a7e0-5422-415b-b4da-2442b0c924a1@collabora.com>
-Date: Fri, 21 Nov 2025 21:00:55 +0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vMbME-00025S-8T
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:20:07 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vMbK9-0000jQ-6d
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:20:00 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 836A65BCC5;
+ Fri, 21 Nov 2025 18:29:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1763749758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kr48nMMmCCJX4zkxm3LT8TVq2N12YC6aVBTL9uQHexA=;
+ b=dSgg85D0u9wzD8jZzmRu6vqhi7BBtmhdPdER/SO4xNryHcrWq5SpCcPEZ4AM7f3Zm4StVg
+ Igax4cXxIZFL4ofCwn5CDrtYF8GXhTE0RC3LseLsEu1iJlhfaxeuar4WPRBQF0GqsCxSv5
+ gmVDjWS/v5AUfuii/5OJ2dtGHtXQ554=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1763749758;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kr48nMMmCCJX4zkxm3LT8TVq2N12YC6aVBTL9uQHexA=;
+ b=esXc5VFgk4BLjgHrFIl5zVpWr6c8RDm/a7N1Z5rLF9S+8qdpTnCQbuWGh9qxUp1EOcOx/6
+ Tddmuc5civU4JqBQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dSgg85D0;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=esXc5VFg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1763749758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kr48nMMmCCJX4zkxm3LT8TVq2N12YC6aVBTL9uQHexA=;
+ b=dSgg85D0u9wzD8jZzmRu6vqhi7BBtmhdPdER/SO4xNryHcrWq5SpCcPEZ4AM7f3Zm4StVg
+ Igax4cXxIZFL4ofCwn5CDrtYF8GXhTE0RC3LseLsEu1iJlhfaxeuar4WPRBQF0GqsCxSv5
+ gmVDjWS/v5AUfuii/5OJ2dtGHtXQ554=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1763749758;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kr48nMMmCCJX4zkxm3LT8TVq2N12YC6aVBTL9uQHexA=;
+ b=esXc5VFgk4BLjgHrFIl5zVpWr6c8RDm/a7N1Z5rLF9S+8qdpTnCQbuWGh9qxUp1EOcOx/6
+ Tddmuc5civU4JqBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 01FD13EA61;
+ Fri, 21 Nov 2025 18:29:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0rRCLX2vIGn6fAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Nov 2025 18:29:17 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Yanan Wang <wangyanan55@huawei.com>, peterx@redhat.com, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH] machine: Provide a description for aux-ram-share property
+In-Reply-To: <20251105191120.3820787-1-peterx@redhat.com>
+References: <20251105191120.3820787-1-peterx@redhat.com>
+Date: Fri, 21 Nov 2025 15:29:15 -0300
+Message-ID: <874iqnfddw.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v4] virtio-gpu: use consistent error checking style for
- virtio_gpu_create_mapping_iov
-To: Honglei Huang <honghuan@amd.com>, alex.bennee@linaro.org,
- odaki@rsg.ci.i.u-tokyo.ac.jp, armbru@redhat.com
-Cc: mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, Ray.Huang@amd.com
-References: <20251121075802.1637598-1-honghuan@amd.com>
- <0ef0b85a-d45b-4efc-ac1e-b562b1d34786@amd.com>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <0ef0b85a-d45b-4efc-ac1e-b562b1d34786@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 836A65BCC5
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.67 / 50.00]; BAYES_HAM(-2.66)[98.48%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+];
+ FREEMAIL_CC(0.00)[habkost.net,intel.com,huawei.com,redhat.com,linaro.org,gmail.com];
+ ARC_NA(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ MISSING_XM_UA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_SEVEN(0.00)[9]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TAGGED_RCPT(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:mid,suse.de:dkim]
+X-Rspamd-Action: no action
+X-Spam-Score: -2.67
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,162 +118,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/25 11:14, Honglei Huang wrote:
-> 
-> 
-> On 2025/11/21 15:58, Honglei Huang wrote:
->> Fix error handling logic in virgl_cmd_resource_create_blob and improve
->> consistency across the codebase.
->>
->> virtio_gpu_create_mapping_iov() returns 0 on success and negative values
->> on error, but the original code was inconsistently checking for error
->> conditions using different patterns.
->>
->> Change all virtio_gpu_create_mapping_iov() error checks to use consistent
->> 'ret < 0' or 'ret >= 0' patterns, following the preferred QEMU coding
->> convention for functions that return 0 on success and negative on error.
->> This makes the return value convention immediately clear to code readers
->> without needing to look up the function definition.
->>
->> Updated locations:
->> - hw/display/virtio-gpu-virgl.c: virgl_cmd_resource_create_blob()
->> - hw/display/virtio-gpu-virgl.c: virgl_cmd_resource_attach_backing()
->> - hw/display/virtio-gpu.c: virtio_gpu_resource_create_blob()
->> - hw/display/virtio-gpu.c: virtio_gpu_resource_attach_backing()
->> - hw/display/virtio-gpu-rutabaga.c: rutabaga_cmd_attach_backing()
->> - hw/display/virtio-gpu-rutabaga.c: rutabaga_cmd_resource_create_blob()
->>
->> Changes since v3:
->> - Extended consistency improvements to virtio-gpu-rutabaga.c
->> - Changed CHECK(!ret) to CHECK(ret >= 0) and CHECK(!result) to
->>    CHECK(result >= 0) in rutabaga functions for consistency
->> - Now covers all virtio-gpu files that use
->> virtio_gpu_create_mapping_iov()
->>
->> Changes since v2:
->> - Use 'if (ret < 0)' instead of 'if (ret != 0)' following maintainer's
->>    feedback on preferred QEMU coding style for error checking functions
->>    that return 0 on success and negative on error
->> - Updated all similar usages across virtio-gpu files for consistency
->> - Expanded scope from single function fix to codebase-wide style
->> consistency
->>
->> Fixes: 7c092f17ccee ("virtio-gpu: Handle resource blob commands")
->> Signed-off-by: Honglei Huang <honghuan@amd.com>
->> Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->> Reviewed-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   hw/display/virtio-gpu-rutabaga.c | 4 ++--
->>   hw/display/virtio-gpu-virgl.c    | 4 ++--
->>   hw/display/virtio-gpu.c          | 4 ++--
->>   3 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-
->> rutabaga.c
->> index ed5ae52acb..ea2928b706 100644
->> --- a/hw/display/virtio-gpu-rutabaga.c
->> +++ b/hw/display/virtio-gpu-rutabaga.c
->> @@ -466,7 +466,7 @@ rutabaga_cmd_attach_backing(VirtIOGPU *g, struct
->> virtio_gpu_ctrl_command *cmd)
->>         ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries,
->> sizeof(att_rb),
->>                                           cmd, NULL, &res->iov, &res-
->> >iov_cnt);
->> -    CHECK(!ret, cmd);
->> +    CHECK(ret >= 0, cmd);
->>         vecs.iovecs = res->iov;
->>       vecs.num_iovecs = res->iov_cnt;
->> @@ -616,7 +616,7 @@ rutabaga_cmd_resource_create_blob(VirtIOGPU *g,
->>           result = virtio_gpu_create_mapping_iov(g, cblob.nr_entries,
->>                                                  sizeof(cblob), cmd,
->> &res->addrs,
->>                                                  &res->iov, &res-
->> >iov_cnt);
->> -        CHECK(!result, cmd);
->> +        CHECK(result >= 0, cmd);
->>       }
->>         rc_blob.blob_id = cblob.blob_id;
->> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-
->> virgl.c
->> index 94ddc01f91..6ebd9293e5 100644
->> --- a/hw/display/virtio-gpu-virgl.c
->> +++ b/hw/display/virtio-gpu-virgl.c
->> @@ -557,7 +557,7 @@ static void
->> virgl_resource_attach_backing(VirtIOGPU *g,
->>         ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries,
->> sizeof(att_rb),
->>                                           cmd, NULL, &res_iovs,
->> &res_niov);
->> -    if (ret != 0) {
->> +    if (ret < 0) {
->>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>           return;
->>       }
->> @@ -701,7 +701,7 @@ static void
->> virgl_cmd_resource_create_blob(VirtIOGPU *g,
->>           ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries,
->> sizeof(cblob),
->>                                               cmd, &res->base.addrs,
->>                                               &res->base.iov, &res-
->> >base.iov_cnt);
->> -        if (!ret) {
->> +        if (ret < 0) {
->>               cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>               return;
->>           }
->> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
->> index 0a1a625b0e..1038c6a49f 100644
->> --- a/hw/display/virtio-gpu.c
->> +++ b/hw/display/virtio-gpu.c
->> @@ -352,7 +352,7 @@ static void
->> virtio_gpu_resource_create_blob(VirtIOGPU *g,
->>       ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries,
->> sizeof(cblob),
->>                                           cmd, &res->addrs, &res->iov,
->>                                           &res->iov_cnt);
->> -    if (ret != 0) {
->> +    if (ret < 0) {
->>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>           g_free(res);
->>           return;
->> @@ -931,7 +931,7 @@ virtio_gpu_resource_attach_backing(VirtIOGPU *g,
->>         ret = virtio_gpu_create_mapping_iov(g, ab.nr_entries,
->> sizeof(ab), cmd,
->>                                           &res->addrs, &res->iov,
->> &res->iov_cnt);
->> -    if (ret != 0) {
->> +    if (ret < 0) {
->>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>           return;
->>       }
-> 
-> This v4 patch started as a bug fix for error handling in
-> `virgl_cmd_resource_create_blob()` but evolved through community
-> feedback to include comprehensive code style consistency improvements,
-> unifying error checking patterns (`ret < 0`) across all virtio-gpu files.
-> 
->  This version appears to have gained community consensus and may be
-> ready for acceptance.
-> 
-> Correct me if I am wrong.
+Peter Xu <peterx@redhat.com> writes:
 
-I was previously very puzzled by what bug is fixed and didn't notice it,
-seeing only the err < 0 changes. Now I see which code is fixed after you
-pointed it out explicitly.
+> It was forgotten when being introduced in commit 91792807d1 ("machine:
+> aux-ram-share option").
+>
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  hw/core/machine.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 0580550e12..8dd8ce4cac 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1200,6 +1200,8 @@ static void machine_class_init(ObjectClass *oc, const void *data)
+>      object_class_property_add_bool(oc, "aux-ram-share",
+>                                     machine_get_aux_ram_share,
+>                                     machine_set_aux_ram_share);
+> +    object_class_property_set_description(oc, "aux-ram-share",
+> +        "Use anonymous shared memory for auxilliary guest RAMs");
 
-The common practice is:
+s/auxilliary/auxiliary/
 
-1. Bug fix patches should contain only fixes
-2. All code improvements should be done in separate patches
-3. Bugfix patches should be first in the series, improvements follow
-them on top of the fixes
-
-So here should be two patches:
-
-1. The virgl_cmd_resource_create_blob() fix
-2. virtio_gpu_create_mapping_iov() err handling improvement
-
--- 
-Best regards,
-Dmitry
+>  #endif
+>  
+>      object_class_property_add_bool(oc, "usb",
 
