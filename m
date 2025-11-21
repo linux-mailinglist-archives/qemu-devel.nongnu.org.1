@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BE1C7C487
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFBDC7C5E1
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:22:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdTu-0007Nj-2i; Fri, 21 Nov 2025 21:36:11 -0500
+	id 1vMdET-0004I5-6i; Fri, 21 Nov 2025 21:20:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdTJ-0006pp-1S; Fri, 21 Nov 2025 21:35:46 -0500
+ id 1vMdEL-00040X-ME; Fri, 21 Nov 2025 21:20:05 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdSK-0000vR-Uo; Fri, 21 Nov 2025 21:35:28 -0500
+ id 1vMdDT-0003sW-Az; Fri, 21 Nov 2025 21:20:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D144916C6F0;
+ by isrv.corpit.ru (Postfix) with ESMTP id E854D16C6F1;
  Fri, 21 Nov 2025 16:51:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 34C6432198D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 49FCB32198E;
  Fri, 21 Nov 2025 16:52:04 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 24/76] i386/kvm/cpu: Init SMM cpu address space for
- hotplugged CPUs
-Date: Fri, 21 Nov 2025 16:51:02 +0300
-Message-ID: <20251121135201.1114964-24-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 25/76] block: remove 'detached-header' option from
+ opts after use
+Date: Fri, 21 Nov 2025 16:51:03 +0300
+Message-ID: <20251121135201.1114964-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,80 +60,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The SMM cpu address space is initialized in a machine_init_done
-notifier. It only runs once when QEMU starts up, which leads to the
-issue that for any hotplugged CPU after the machine is ready, SMM
-cpu address space doesn't get initialized.
+The code for creating LUKS devices references a 'detached-header'
+option in the QemuOpts  data, but does not consume (remove) the
+option.
 
-Fix the issue by initializing the SMM cpu address space in x86_cpu_plug()
-when the cpu is hotplugged.
+Thus when the code later tries to convert the remaining unused
+QemuOpts into a QCryptoBlockCreateOptions struct, an error is
+reported by the QAPI code that 'detached-header' is not a valid
+field.
 
-Fixes: 591f817d819f ("target/i386: Define enum X86ASIdx for x86's address spaces")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Closes: https://lore.kernel.org/qemu-devel/CAFEAcA_3kkZ+a5rTZGmK8W5K6J7qpYD31HkvjBnxWr-fGT2h_A@mail.gmail.com/
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20251014094216.164306-2-xiaoyao.li@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 639a29422754f62b4bfd26cff936b3c981758010)
-(Mjt: the original Fixes: line is wrong:
- https://lore.kernel.org/qemu-devel/57d3c5b2-8b07-41ee-bf41-a9eac16eb6da@intel.com/T/#u )
-Fixes: 0516f4b70264 ("i386/cpu: Enable SMM cpu address space under KVM")
-Fixes: 6130ab24d03e ("i386/cpu: Enable SMM cpu address space under KVM"), 10.1.1
+This fixes a regression caused by
+
+  commit e818c01ae6e7c54c7019baaf307be59d99ce80b9
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Mon Feb 19 15:12:59 2024 +0000
+
+    qapi: drop unused QCryptoBlockCreateOptionsLUKS.detached-header
+
+which identified that the QAPI field was unused, but failed to
+realize the QemuOpts -> QCryptoBlockCreateOptions conversion
+was seeing the left-over 'detached-header' option which had not
+been removed from QemuOpts.
+
+This problem was identified by the 'luks-detached-header' I/O
+test, but unfortunately I/O tests are not run regularly for the
+LUKS format.
+
+Fixes: e818c01ae6e7c54c7019baaf307be59d99ce80b9
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250919103810.1513109-1-berrange@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 6eda39a87f4fda78befa4085e3644e4440afc1dd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index b1b5f11e73..4b14be98c2 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -183,6 +183,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     }
- 
-+    /*
-+     * Non-hotplugged CPUs get their SMM cpu address space initialized in
-+     * machine init done notifier: register_smram_listener().
-+     *
-+     * We need initialize the SMM cpu address space for the hotplugged CPU
-+     * specifically.
-+     */
-+    if (kvm_enabled() && dev->hotplugged && x86_machine_is_smm_enabled(x86ms)) {
-+        kvm_smm_cpu_address_space_init(cpu);
-+    }
-+
-     found_cpu = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, NULL);
-     found_cpu->cpu = CPU(dev);
- out:
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 7a62eb728e..994b9712a8 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2748,6 +2748,12 @@ static void register_smram_listener(Notifier *n, void *unused)
-     }
- }
- 
-+/* It should only be called in cpu's hotplug callback */
-+void kvm_smm_cpu_address_space_init(X86CPU *cpu)
-+{
-+    cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root);
-+}
-+
- static void *kvm_msr_energy_thread(void *data)
- {
-     KVMState *s = data;
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 5f83e8850a..35017ba07a 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -74,6 +74,7 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
-                              uint32_t cpuid_i);
- #endif /* CONFIG_KVM */
- 
-+void kvm_smm_cpu_address_space_init(X86CPU *cpu);
- void kvm_pc_setup_irq_routing(bool pci_enabled);
- 
- #endif
+diff --git a/block/crypto.c b/block/crypto.c
+index d4226cc68a..17b4749a1e 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -792,7 +792,7 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
+     char *buf = NULL;
+     int64_t size;
+     bool detached_hdr =
+-        qemu_opt_get_bool(opts, "detached-header", false);
++        qemu_opt_get_bool_del(opts, "detached-header", false);
+     unsigned int cflags = 0;
+     int ret;
+     Error *local_err = NULL;
 -- 
 2.47.3
 
