@@ -2,64 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC32C7CB30
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 10:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6311C7C568
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:56:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcrX-00069T-DG; Fri, 21 Nov 2025 20:56:32 -0500
+	id 1vMctI-0007l7-P7; Fri, 21 Nov 2025 20:58:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fustini@kernel.org>)
- id 1vMbdx-0004XH-Pc; Fri, 21 Nov 2025 19:38:26 -0500
-Received: from sea.source.kernel.org ([172.234.252.31])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vMbpn-0003MX-Cy
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:50:40 -0500
+Received: from 10.mo552.mail-out.ovh.net ([87.98.187.244])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fustini@kernel.org>)
- id 1vMbdm-0006Fp-9d; Fri, 21 Nov 2025 19:38:21 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 9035B419AD;
- Fri, 21 Nov 2025 19:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AE4C4CEF1;
- Fri, 21 Nov 2025 19:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1763754652;
- bh=ocvIczLizuo1p7TQN3uTgxUV3nXqKPquig4s0T4MZA0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=JPutPbb2v5Nir2ApZigTa5LMg4wHA5HTzGZip80UIWUjlEE15ri/H7Vp5ZtkoRfeE
- Y2K5lcuTCfC8UuZnWTY36LgvMCXtGf2wIv1fmxkGvymhbsc2pS3lfstx2CksQCsncc
- wEm1en+84bEsw+iHwjzewl50K7Y2K/vhX6ZgUxjyx46HERAc+UVKAJUEkTi8dtRsYq
- KFY4M7JbEgs3BlKIXlr6mrzWJtpEHutDwu8dUWP00c3n1qUtd2RanNslFTOGABC3ue
- RybzMgl8r8r/eg/hngplmDaeQ6wShv8+5OjjEdHIaKijFLTuABsxB4osY0rWqJZs39
- yqjVsDguWkifQ==
-Date: Fri, 21 Nov 2025 11:50:50 -0800
-From: Drew Fustini <fustini@kernel.org>
-To: Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Nicolas Pitre <npitre@baylibre.com>,
- Kornel =?utf-8?Q?Dul=C4=99ba?= <mindal@semihalf.com>,
- Atish Kumar Patra <atishp@rivosinc.com>,
- Atish Patra <atish.patra@linux.dev>,
- Vasudevan Srinivasan <vasu@rivosinc.com>,
- yunhui cui <cuiyunhui@bytedance.com>,
- Chen Pei <cp0613@linux.alibaba.com>, guo.wenjia23@zte.com.cn,
- liu.qingtao2@zte.com.cn,
- qemu-riscv-bounces+qemu-riscv=archiver.kernel.org@nongnu.org
-Subject: Re: [PATCH 3/7] hw/riscv: implement CBQRI capacity controller
-Message-ID: <aSDCmrvONUgvzqbV@x1>
-References: <20251119-riscv-ssqosid-cbqri-v1-0-3392fc760e48@kernel.org>
- <20251119-riscv-ssqosid-cbqri-v1-3-3392fc760e48@kernel.org>
- <DEDROLF9I9YQ.2MQIEGB7I4BKH@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vMbpc-0000La-Dv
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:50:37 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.54.239])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4dCqRB4JKKz5vxd;
+ Fri, 21 Nov 2025 22:20:22 +0000 (UTC)
+Received: from kaod.org (37.59.142.109) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 21 Nov
+ 2025 23:20:21 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-109S00389b839f1-458e-4587-8985-f0c954f28545,
+ 20F18A3716404196E6FAACF2E4DECD64BC5092B7) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <f5f9eb8e-91f6-40e0-847e-19e3cdd3d402@kaod.org>
+Date: Fri, 21 Nov 2025 23:20:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DEDROLF9I9YQ.2MQIEGB7I4BKH@ventanamicro.com>
-Received-SPF: pass client-ip=172.234.252.31; envelope-from=fustini@kernel.org;
- helo=sea.source.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [SPAM] [PATCH v1 1/1] hw/pci-host/aspeed_pcie: Update ASPEED PCIe
+ Root Port capabilities and enable MSI to support hotplug
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <nabihestefan@google.com>
+References: <20251121050108.3407445-1-jamin_lin@aspeedtech.com>
+ <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20251121050108.3407445-2-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.109]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: be30a365-2093-4126-8de4-1b53c246e102
+X-Ovh-Tracer-Id: 16547632407702965170
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFKS8Q/iSUMUd6Y3I+pnQM7s4KBxMgvDTzYiWF8NW/vz/dhW5JFYTN1IrGWSKTlTR9G8H291j/OPGi9NzSIQ75YK/GZAq5xNyalnUivYmEUfbslz8R/yfLPYPnhLt117jC3oDz8AXVu299uFLAWZYQeb99X/cnKwwYrXdTC/zuta9t+nz+t8SvPviI/tvBUplnF3ase+pM62iQc3RSAJZ4UaQ2AgT39GfNWkJrzwq+uGFfl6wt313L0qUOt+t61RzmN7hnFstf0f++DrGgYNL9Vysk0SnL+MULqLxL1lZj/nLZcpQ/qxEB+FAe7GtdDA3h3tOSbLCvJU3HIQfs/V731UNEzHzZ5OWfgkn7hKLY3Cx4q4JVSzkCKXSbBclLop34MGfegNtFOz5e3agOB3LCPQU8eX+Mt0bFXH5D32H+C6LQKBtYsI/PHIQDe/4oq6ekigapRmc4fcNvNC/KZZKqPliznht00YVAQRDxZSeo9RQth2PU5YRSG/j46Bo9qhpi5kKeqLebUwZ7sdLEPfzhvFNcN9a4SyrenN9gcws/IhtZp7CVO1VMdJq+NQ8JsdTriTezbnONaojboOD79nLWbxANlUAkwH1b+/LVuClg0dUp4vatD9htuDhpL3PhA8i9THJkfg6otVWZ/65jxP4kzuKAzo6VMpyDD75gz68JBTA
+DKIM-Signature: a=rsa-sha256; bh=ZEKMy37ICzsTbWB2JeMjKZ7VV/JBa1KK/U94/yKsmO4=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1763763624; v=1;
+ b=lTY5E+t37nCT/WRxV/A55qLzFrEH36lRaNsFqLXn3cXT2NLyroyEkyb7sPuxY/GqnKy0G0ef
+ dqxIT8baK+/R+x989ZlmgLc6honew5ZcGDIDEol/vcWXz8pBMkXssJbyUGZ8NHNY0zzka4haWPm
+ 86js3BSjZ/Qq6y+bUCRCm4hnJ6k5Is7cEiju3qQ6EQVI0AYpdiWN2iebPoIw33dgdmnoQd9uSPH
+ +9bM9nUcHnyzyej9zHWkKABDbkdam5MhcTi77lw5dotewgJm9Fzy2+B060YtPWpTPwufTnplAjd
+ hfjRE2jb5U0UqZH6om8Xa+po9KkaFgQN6/Bnuos4zrYOw==
+Received-SPF: pass client-ip=87.98.187.244; envelope-from=clg@kaod.org;
+ helo=10.mo552.mail-out.ovh.net
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,179 +120,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 20, 2025 at 08:25:44PM +0100, Radim Krčmář wrote:
-> 2025-11-19T16:42:19-08:00, Drew Fustini <fustini@kernel.org>:
-> > From: Nicolas Pitre <npitre@baylibre.com>
-> >
-> > Implement a capacity controller according to the Capacity and Bandwidth
-> > QoS Register Interface (CBQRI) which supports these capabilities:
-> >
-> >   - Number of access types: 2 (code and data)
-> >   - Usage monitoring operations: CONFIG_EVENT, READ_COUNTER
-> >   - Event IDs supported: None, Occupancy
-> >   - Capacity allocation ops: CONFIG_LIMIT, READ_LIMIT, FLUSH_RCID
-> >
-> > Link: https://github.com/riscv-non-isa/riscv-cbqri/blob/main/riscv-cbqri.pdf
-> > Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
-> > [fustini: add fields introduced in the ratified spec: cunits, rpfx, p]
-> > Signed-off-by: Drew Fustini <fustini@kernel.org>
-> > ---
-> > diff --git a/hw/riscv/cbqri_capacity.c b/hw/riscv/cbqri_capacity.c
-> > [...]
-> > +static void riscv_cbqri_cc_write_alloc_ctl(RiscvCbqriCapacityState *cc,
-> > +                                           uint64_t value)
-> > +{
-> >[...]
-> > +    if (rcid >= cc->nb_rcids) {
-> > +        status = CC_ALLOC_STATUS_INVAL_RCID;
-> > +    } else if (atv && !is_valid_at(cc, at)) {
-> > +        status = CC_ALLOC_STATUS_INVAL_AT;
-> > +    } else if (op == CC_ALLOC_OP_CONFIG_LIMIT &&
-> > +               cc->supports_alloc_op_config_limit) {
-> > +        status = alloc_blockmask_config(cc, rcid, at, &busy);
-> > +    } else if (op == CC_ALLOC_OP_READ_LIMIT &&
-> > +               cc->supports_alloc_op_read_limit) {
-> > +        status = alloc_blockmask_read(cc, rcid, at, &busy);
-> > +    } else if (op == CC_ALLOC_OP_FLUSH_RCID &&
-> > +               cc->supports_alloc_op_flush_rcid) {
-> > +        status = alloc_blockmask_init(cc, rcid, at, false, &busy);
+On 11/21/25 06:01, Jamin Lin wrote:
+> This patch updates the ASPEED PCIe Root Port capability layout and interrupt
+> handling to match the hardware-defined capability structure as documented in
+> the PCI Express Controller (PCIE) chapter of the ASPEED SoC datasheet.
 > 
-> The spec says the following about flush:
+> The following capability offsets and fields are now aligned with the actual
+> hardware implementation (validated using EVB config-space dumps via
+> 'lspci -s <bdf> -vvv'):
 > 
->   "The configured capacity block allocation or the capacity unit limit
->    is not changed by this operation."
+> - Added MSI capability at offset 0x50 and enabled 1-vector MSI support
+> - Added PCI Express Capability structure at offset 0x80
+> - Added Secondary Subsystem Vendor ID (SSVID) at offset 0xC0
+> - Added AER capability at offset 0x100
+> - Implemented aer_vector() callback and MSI init/uninit hooks
+> - Updated Root Port SSID to 0x1150 to reflect the platform default
 > 
-> Limits are not implemented, so I think it's supposed to be a nop.
-
-Thanks, that makes sense. I'll change it for the next revision.
-
-> > [...]
-> > +static uint64_t riscv_cbqri_cc_read(void *opaque, hwaddr addr, unsigned size)
-> > +{
-> > +    RiscvCbqriCapacityState *cc = opaque;
-> > +    uint64_t value = 0;
-> > +
-> > +    assert((addr % 8) == 0);
-> > +    assert(size == 8);
+> Enabling MSI is required for proper PCIe Hotplug event signaling. This change
+> improves correctness and ensures QEMU Root Port behavior matches the behavior
+> of ASPEED hardware and downstream kernel expectations.
 > 
-> Is there a plan to extend support for 32 bit operations?
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   hw/pci-host/aspeed_pcie.c | 40 ++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 39 insertions(+), 1 deletion(-)
+
+
+It seems that we should queue this patch for QEMU 10.2. If so,
+could you provide a fixes tag please ?
+
+Thanks,
+
+C.
+
+
 > 
->   "The CBQRI registers are defined so that software can perform two
->    individual 4 byte accesses."
+> diff --git a/hw/pci-host/aspeed_pcie.c b/hw/pci-host/aspeed_pcie.c
+> index f7593444fc..1fc2c61772 100644
+> --- a/hw/pci-host/aspeed_pcie.c
+> +++ b/hw/pci-host/aspeed_pcie.c
+> @@ -68,6 +68,38 @@ static const TypeInfo aspeed_pcie_root_device_info = {
+>    * PCIe Root Port
+>    */
+>   
+> +#define ASPEED_PCIE_ROOT_PORT_MSI_OFFSET        0x50
+> +#define ASPEED_PCIE_ROOT_PORT_MSI_NR_VECTOR     1
+> +#define ASPEED_PCIE_ROOT_PORT_SSVID_OFFSET      0xC0
+> +#define ASPEED_PCIE_ROOT_PORT_EXP_OFFSET        0x80
+> +#define ASPEED_PCIE_ROOT_PORT_AER_OFFSET        0x100
+> +
+> +static uint8_t aspeed_pcie_root_port_aer_vector(const PCIDevice *d)
+> +{
+> +    return 0;
+> +}
+> +
+> +static int aspeed_pcie_root_port_interrupts_init(PCIDevice *d, Error **errp)
+> +{
+> +    int rc;
+> +
+> +    rc = msi_init(d, ASPEED_PCIE_ROOT_PORT_MSI_OFFSET,
+> +                  ASPEED_PCIE_ROOT_PORT_MSI_NR_VECTOR,
+> +                  PCI_MSI_FLAGS_MASKBIT & PCI_MSI_FLAGS_64BIT,
+> +                  PCI_MSI_FLAGS_MASKBIT & PCI_MSI_FLAGS_MASKBIT,
+> +                  errp);
+> +    if (rc < 0) {
+> +        assert(rc == -ENOTSUP);
+> +    }
+> +
+> +    return rc;
+> +}
+> +
+> +static void aspeed_pcie_root_port_interrupts_uninit(PCIDevice *d)
+> +{
+> +    msi_uninit(d);
+> +}
+> +
+>   static void aspeed_pcie_root_port_class_init(ObjectClass *klass,
+>                                                const void *data)
+>   {
+> @@ -80,7 +112,13 @@ static void aspeed_pcie_root_port_class_init(ObjectClass *klass,
+>       k->device_id = 0x1150;
+>       dc->user_creatable = true;
+>   
+> -    rpc->aer_offset = 0x100;
+> +    rpc->aer_vector = aspeed_pcie_root_port_aer_vector;
+> +    rpc->interrupts_init = aspeed_pcie_root_port_interrupts_init;
+> +    rpc->interrupts_uninit = aspeed_pcie_root_port_interrupts_uninit;
+> +    rpc->exp_offset = ASPEED_PCIE_ROOT_PORT_EXP_OFFSET;
+> +    rpc->aer_offset = ASPEED_PCIE_ROOT_PORT_AER_OFFSET;
+> +    rpc->ssvid_offset = ASPEED_PCIE_ROOT_PORT_SSVID_OFFSET;
+> +    rpc->ssid = 0x1150;
+>   }
+>   
+>   static const TypeInfo aspeed_pcie_root_port_info = {
 
-Good question. Daniel also commented about the asserts for size == 8
-while your MemoryRegionOps has .valid.min_access_size = 4. It does seem
-like from the spec that these CBQRI controllers do need to support 4
-byte accesses.
 
-However, I need to understand better how to accomplish that. I'm
-uncertain if I need to add code to the read and write hooks for that, or
-if something in MemoryRegionOps can handle it automatically.
 
-> > [...]
-> > +    case A_CC_BLOCK_MASK:
-> > +        if (cc->ncblks == 0) {
-> > +            break;
-> > +        }
-> > +        /* fallthrough */
-> > +    default:
-> > +        unsigned int blkmask_slot = (addr - A_CC_BLOCK_MASK) / 8;
-> > +        if (blkmask_slot >= (cc->ncblks + 63) / 64) {
-> > +            qemu_log_mask(LOG_GUEST_ERROR,
-> > +                          "%s: out of bounds (addr=0x%x)",
-> > +                          __func__, (uint32_t)addr);
-> > +            break;
-> > +        }
-> > +        value = cc->alloc_blockmasks[blkmask_slot];
-> 
-> There is supposed to be a cc_cunits registers after the cc_block_mask.
-
-Good point, I need to update the code to account for cc_units.
-
-> > [...]
-> > +static void riscv_cbqri_cc_realize(DeviceState *dev, Error **errp)
-> > +{
-> > +    RiscvCbqriCapacityState *cc = RISCV_CBQRI_CC(dev);
-> > +
-> > +    if (!cc->mmio_base) {
-> > +        error_setg(errp, "mmio_base property not set");
-> > +        return;
-> > +    }
-> > +
-> > +    assert(cc->mon_counters == NULL);
-> > +    cc->mon_counters = g_new0(MonitorCounter, cc->nb_mcids);
-> > +
-> > +    assert(cc->alloc_blockmasks == NULL);
-> > +    uint64_t *end = get_blockmask_location(cc, cc->nb_rcids, 0);
-> > +    unsigned int blockmasks_size = end - cc->alloc_blockmasks;
-> > +    cc->alloc_blockmasks = g_new0(uint64_t, blockmasks_size);
-> > +
-> > +    memory_region_init_io(&cc->mmio, OBJECT(dev), &riscv_cbqri_cc_ops,
-> > +                          cc, TYPE_RISCV_CBQRI_CC".mmio", 4 * 1024);
-> 
-> Shouldn't the region size take cc->ncblks into account?
-> (A bitmask for 2^16 ids is 8kB.)
-
-cc_block_mask field is BMW / 8. In the case of NCBLKS of 12 and NCBLKS
-of 16, both end up with a BMW of 64 which would be 8 bytes. I think the
-the only reason the allocation is 4KB is that is meant to be aligned to
-the page size. Otherwise, the capacity controller register layout is
-pretty small.
-
-> > +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &cc->mmio);
-> > +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, cc->mmio_base);
-> > +}
-> > +
-> > +static void riscv_cbqri_cc_reset(DeviceState *dev)
-> > +{
-> > +    RiscvCbqriCapacityState *cc = RISCV_CBQRI_CC(dev);
-> > +
-> > +    cc->cc_mon_ctl = 0;
-> > +    cc->cc_alloc_ctl = 0;
-> 
-> Only the busy field must be reset to 0.  I think the decision warrants a
-> comment that we're zeroing more to have simpler code.
-
-Okay, will do.
-
-> > +
-> > +    /* assign all capacity only to rcid0 */
-> > +    for (unsigned int rcid = 0; rcid < cc->nb_rcids; rcid++) {
-> 
-> rcid != 0 are unspecified on reset, so I would prefer not to touch them.
-
-Okay, that is a good point that the spec does state that. I'll fix this
-in the next rev.
-
-> > +        bool any_at = false;
-> > +
-> > +        if (cc->supports_at_data) {
-> > +            alloc_blockmask_init(cc, rcid, CC_AT_DATA,
-> > +                                 rcid == 0, NULL);
-> > +            any_at = true;
-> > +        }
-> > +        if (cc->supports_at_code) {
-> > +            alloc_blockmask_init(cc, rcid, CC_AT_CODE,
-> > +                                 rcid == 0, NULL);
-> > +            any_at = true;
-> > +        }
-> > +        if (!any_at) {
-> > +            alloc_blockmask_init(cc, rcid, 0,
-> > +                                 rcid == 0, NULL);
-> > +        }
-> > +    }
-> 
-> I think it looks a bit better if AT values were expressed as a bitfield
-> of size 8: (untested)
-> 
->     unsigned long at = find_next_bit(&cc->supported_at_mask, 8, 0);
-> 
->     do {
->         alloc_blockmask_init(cc, rcid, at < 8 ? at : 0, rcid == 0, NULL);
->         at = find_next_bit(&cc->supported_at_mask, 8, at + 1);
->     } while (at < 8);
-
-Thanks for the suggestion. I will give that a try.
-
-Drew
 
