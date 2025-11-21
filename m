@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ACBC7C54A
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:50:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F3C7C565
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:55:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdCe-0002Di-Ny; Fri, 21 Nov 2025 21:18:21 -0500
+	id 1vMdNX-0000AA-2z; Fri, 21 Nov 2025 21:29:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd6a-0004S2-NK; Fri, 21 Nov 2025 21:12:04 -0500
+ id 1vMdNQ-00008y-Px; Fri, 21 Nov 2025 21:29:28 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMd5w-0003z7-Ue; Fri, 21 Nov 2025 21:12:01 -0500
+ id 1vMdMU-000732-6b; Fri, 21 Nov 2025 21:29:25 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8E4F716C6F8;
+ by isrv.corpit.ru (Postfix) with ESMTP id A32D316C6F9;
  Fri, 21 Nov 2025 16:51:56 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E787C321995;
- Fri, 21 Nov 2025 16:52:04 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 078FD321996;
+ Fri, 21 Nov 2025 16:52:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 32/76] target/s390x: Fix missing interrupts for small
- CKC values
-Date: Fri, 21 Nov 2025 16:51:10 +0300
-Message-ID: <20251121135201.1114964-32-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 33/76] target/s390x: Fix missing clock-comparator
+ interrupts after reset
+Date: Fri, 21 Nov 2025 16:51:11 +0300
+Message-ID: <20251121135201.1114964-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -59,47 +59,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Suppose TOD clock value is 0x1111111111111111 and clock-comparator
-value is 0, in which case clock-comparator interruption should occur
-immediately.
+After reset, CKC value is set to 0, so if clock-comparator interrupts
+are enabled, one should occur very shortly thereafter.
 
-With the current code, tod2time(env->ckc - td->base.low) ends up being
-a very large number, so this interruption never happens.
+Currently the code that loads the respective control register does not
+set tod_timer, so this does not happen.
 
-Fix by firing the timer immediately if env->ckc < td->base.low.
+Fix by adding a tcg_s390_tod_updated() call to LCTL and LCTLG.
 
 Cc: qemu-stable@nongnu.org
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20251016175954.41153-2-iii@linux.ibm.com>
+Message-ID: <20251016175954.41153-3-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit df7e9243d540ee130f044f975af8de33c45f5299)
+(cherry picked from commit dacfec5157fb9e2249cf393a143bd545e80a6e31)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index f7101be574..e54338b784 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -199,11 +199,15 @@ static void update_ckc_timer(CPUS390XState *env)
-         return;
-     }
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index f1acb1618f..24675fc818 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -1959,6 +1959,10 @@ void HELPER(lctlg)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
+         if (env->cregs[i] != val && i >= 9 && i <= 11) {
+             PERchanged = true;
+         }
++        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val & CR0_CKC_SC)) {
++            BQL_LOCK_GUARD();
++            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
++        }
+         env->cregs[i] = val;
+         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%" PRIx64 "\n",
+                    i, src, val);
+@@ -1989,10 +1993,15 @@ void HELPER(lctl)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
  
--    /* difference between origins */
--    time = env->ckc - td->base.low;
-+    if (env->ckc < td->base.low) {
-+        time = 0;
-+    } else {
-+        /* difference between origins */
-+        time = env->ckc - td->base.low;
+     for (i = r1;; i = (i + 1) % 16) {
+         uint32_t val = cpu_ldl_data_ra(env, src, ra);
++        uint64_t val64 = deposit64(env->cregs[i], 0, 32, val);
+         if ((uint32_t)env->cregs[i] != val && i >= 9 && i <= 11) {
+             PERchanged = true;
+         }
+-        env->cregs[i] = deposit64(env->cregs[i], 0, 32, val);
++        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val64 & CR0_CKC_SC)) {
++            BQL_LOCK_GUARD();
++            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
++        }
++        env->cregs[i] = val64;
+         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%x\n", i, src, val);
+         src += sizeof(uint32_t);
  
--    /* nanoseconds */
--    time = tod2time(time);
-+        /* nanoseconds */
-+        time = tod2time(time);
-+    }
- 
-     timer_mod(env->tod_timer, time);
- }
 -- 
 2.47.3
 
