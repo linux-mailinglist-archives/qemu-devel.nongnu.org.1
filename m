@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9081C7C475
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1562BC7C665
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:40:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdfu-0001pj-5R; Fri, 21 Nov 2025 21:48:35 -0500
+	id 1vMdJP-0002zL-Be; Fri, 21 Nov 2025 21:25:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdfe-0001ND-L1; Fri, 21 Nov 2025 21:48:18 -0500
+ id 1vMdJI-0002xY-EP; Fri, 21 Nov 2025 21:25:12 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMdf0-0005BR-Um; Fri, 21 Nov 2025 21:48:15 -0500
+ id 1vMdIe-0005Za-9B; Fri, 21 Nov 2025 21:25:07 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0305616C6E8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 24AE116C6E9;
  Fri, 21 Nov 2025 16:51:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 52608321985;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7004C321986;
  Fri, 21 Nov 2025 16:52:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Helge Deller <deller@gmx.de>,
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 16/76] target/hppa: Set FPCR exception flag bits for
- non-trapped exceptions
-Date: Fri, 21 Nov 2025 16:50:54 +0300
-Message-ID: <20251121135201.1114964-16-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 17/76] hw/hppa: Fix interrupt of LASI parallel port
+Date: Fri, 21 Nov 2025 16:50:55 +0300
+Message-ID: <20251121135201.1114964-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251121155857@cover.tls.msk.ru>
@@ -60,60 +59,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Helge Deller <deller@gmx.de>
 
-In commit ebd394948de4e8 ("target/hppa: Fix FPE exceptions") when
-we added the code for setting up the registers correctly on trapping
-FP exceptions, we accidentally broke the handling of the flag bits
-for non-trapping exceptions.
+Fix wrong assignment where the LASI parallel port was using the IRQ line of the
+LASI LAN card.
 
-In update_fr0_op() we incorrectly zero out the flag bits and the C
-bit, so any fp operation would clear previously set flag bits. We
-also stopped setting the flag bits when the fp operation raises
-an exception and the trap is not enabled.
-
-Adjust the code so that we set the Flag bits for every exception that
-happened and where the trap is not enabled.  (This is the correct
-behaviour for the case where an instruction triggers two exceptions,
-one of which traps and one of which does not; that can only happen
-for inexact + underflow or inexact + overflow.)
-
-Cc: qemu-stable@nongnu.org
-Fixes: ebd394948de4e8 ("target/hppa: Fix FPE exceptions")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3158
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Tested-by: Helge Deller <deller@gmx.de>
-Message-ID: <20251017085350.895681-1-peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 1a8ffd6172f3d9ad8232189adb879a16ec416f89)
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit fb722e1dc2d84529ab9aa597315b7d5ca6e2a23e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/fpu_helper.c b/target/hppa/fpu_helper.c
-index 45353202fa..2d272730f6 100644
---- a/target/hppa/fpu_helper.c
-+++ b/target/hppa/fpu_helper.c
-@@ -94,7 +94,8 @@ static void update_fr0_op(CPUHPPAState *env, uintptr_t ra)
- {
-     uint32_t soft_exp = get_float_exception_flags(&env->fp_status);
-     uint32_t hard_exp = 0;
--    uint32_t shadow = env->fr0_shadow & 0x3ffffff;
-+    uint32_t shadow = env->fr0_shadow;
-+    uint32_t to_flag = 0;
-     uint32_t fr1 = 0;
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index dacedc5409..a647b34aa6 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -574,7 +574,7 @@ static void machine_HP_B160L_init(MachineState *machine)
  
-     if (likely(soft_exp == 0)) {
-@@ -122,6 +123,10 @@ static void update_fr0_op(CPUHPPAState *env, uintptr_t ra)
-             fr1 |= hard_exp << (R_FPSR_FLAGS_SHIFT - R_FPSR_ENABLES_SHIFT);
-         }
-     }
-+    /* Set the Flag bits for every exception that was not enabled */
-+    to_flag = hard_exp & ~shadow;
-+    shadow |= to_flag << (R_FPSR_FLAGS_SHIFT - R_FPSR_ENABLES_SHIFT);
-+
-     env->fr0_shadow = shadow;
-     env->fr[0] = (uint64_t)shadow << 32 | fr1;
+     /* Parallel port */
+     parallel_mm_init(addr_space, translate(NULL, LASI_LPT_HPA + 0x800), 0,
+-                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA),
++                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LPT_HPA),
+                      parallel_hds[0]);
  
+     /* PS/2 Keyboard/Mouse */
 -- 
 2.47.3
 
