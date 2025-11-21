@@ -2,98 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6658BC7C626
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6A1C7C2B7
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:20:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcy1-0002qq-Mp; Fri, 21 Nov 2025 21:03:15 -0500
+	id 1vMcvK-00018G-GH; Fri, 21 Nov 2025 21:00:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vMc5R-0003tD-Ty
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:52 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMc54-0003es-V3
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1vMc3P-000366-Nf
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:47 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vMc34-00030S-FC
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:06:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763773467;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1763773446;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=alLB5iRtMxU59kwYbO/hqVpYEcq7up5cqqrAWXwjS5M=;
- b=FT1j3ZD5VBbUlejFhlEBfAH8NinFAFt7FSiInDkXBP9g3WnVwr6ubdwIm0Cw495u1GnAfy
- Xn992SyDPvL8Q9MmDHzBW60+DIJk4grusPnqo3XCmS9MYrsSrLiJKLpVOy8npzEObHkQyK
- KzWim8DDsQSVed0mBYiOjulyG7bNclM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6hmk1UkbUQrbHuF7+FWwHU8sMOi8c7TBNdFfJ6SDMH4=;
+ b=Fi6DUh07AXmSTGkkVXLKBf+g9NUQ0xBPT9aQHEoNGF+qNO1gDPbPnkco9AWhxbX/DRqTje
+ F6QARdgBDAd1SLnLrv4RgbqyqNuVSRTiM/UCfmaMAPFBnFSYrA9AkibuCxlh0Ttf6U2Qy9
+ F2o2FsZx50WRvTOGFFjdIu7S6pzsLNI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-PssE0mPIOxautILZhG_mPA-1; Fri, 21 Nov 2025 07:46:37 -0500
-X-MC-Unique: PssE0mPIOxautILZhG_mPA-1
-X-Mimecast-MFC-AGG-ID: PssE0mPIOxautILZhG_mPA_1763729196
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4776b0ada3dso22133255e9.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 04:46:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763729195; x=1764333995; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=alLB5iRtMxU59kwYbO/hqVpYEcq7up5cqqrAWXwjS5M=;
- b=UeNpBS4AAJnIj1Rx8hPlQhVdpJevyYxBA0N1WsnujFGcG24BxzABnpzbshPVb4z4tW
- OK7lPRX2dJb4DtMggH394+UxcM9megkOOirUt/WA13sknDh34LUHDgcfHIz49YyPXive
- RoR3UQUUfonLg09z8p8DSseu20x86LadTB+ZcGXAeY4mGm6VKzXy/3NGDOc99CVUpveY
- C6owXeMMim1Ky1IJDox5TxQuhGaaJxQjbprFMW5+gLY4qheHiGPuA4DqUXk5wJtBnLOG
- 1BNJ4kYIcF+DDZAR9ro6laOWoQxXx6sBkwJEvPjuZVqVDYbL5EOroblYbkCdgBu4yBKS
- jI1g==
+ us-mta-534-lR2TVJrCOXas9paioedUag-1; Fri, 21 Nov 2025 07:47:11 -0500
+X-MC-Unique: lR2TVJrCOXas9paioedUag-1
+X-Mimecast-MFC-AGG-ID: lR2TVJrCOXas9paioedUag_1763729230
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-429c7b0ae36so1247291f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 04:47:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763729195; x=1764333995;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=alLB5iRtMxU59kwYbO/hqVpYEcq7up5cqqrAWXwjS5M=;
- b=w+bkS2BuXYcs4wo6Fa8OmpF2UWIPDCZh7pRSHqEDCXwyzoFLzbaPDR3RaXT6TuAjqK
- G95gzbGmsHkkPc6MT5vK3ZyoMU1wkC3ap0RzO+4CaoBa+zMoSRVzvUVhjMU9q1rlihfX
- 9veoHwsFA67exC8OsZQ0wcenSbrGIfHHDcInALdZqon0BEVeI+dDDX1cxmV4YXB0CcJw
- 4fAQ2CfwLPQBnX7xGIpSoNDI7CBhWRzWIfhifxrOSd3/INfE07sKH3bI+8LTpvK1f7d6
- p+qZRp8qXzg3/t9pMi39mXz8k+dUYUD0csX3qdG4+bf4QVD7dn5CI66nU6ERVfTvJ1Va
- 4FNw==
-X-Gm-Message-State: AOJu0Yzwphbl+b32eY9fSAEcdyJpIzkU0WPMLuFCSoJF2ZCBztFaFDbF
- hjyMvQgt95CT0o+j5KwId8FsjrTwoTo6sDtK/g7su1s1CO6gC9pM+HXP7kfOPkQWWWOWQixIa/t
- pVZmzWbjrqgThhOBIJVR8t0PATyP07JpYpxXL5O621ErG87X53WWSoi2hPxvDFGNGfz0=
-X-Gm-Gg: ASbGncs3ViCOqkDBSxqPbWMemA6D6x8cMVAA3C2Anmd6ljMBhzmla3VYbMzXwEoVXoR
- Qqbz47aLOQ/XrCi/ebA8OKWbaeBiFQrA7DVD9mZ9y6oAuVF2cq0b9ZzrVEOqSc5O6KfGDjQ9G5T
- MoSj+ISBQ4hDZjFDNdCgeBJ/kFTaGzYbdLiTM1kzIEm7vHPuQRQDCwfz6abXpfNclgL9T7nK33h
- 0EPn6Y2csOLL8pvxBlf/GFEDUl9NO++uFCEEuNeC9j63+Urq7v/4WQSt2X1LJsuuDMO+5s+20E7
- bw5ytHQIwVYGh1NGHOgl31sqgxvEiEMORnj6PvMY4Ye3aOETENg45foin9SDaOx7kGyDC3NhoSE
- =
-X-Received: by 2002:a05:600c:4746:b0:477:a289:d854 with SMTP id
- 5b1f17b1804b1-477c04cfa31mr23241125e9.5.1763729195507; 
- Fri, 21 Nov 2025 04:46:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHunRWJWkBMAc5joO3iiF9Tb3/dbNuJPxkGyHkni+j9F1nymyp/P1c+SI9jxfBdkshnhK/CYA==
-X-Received: by 2002:a05:600c:4746:b0:477:a289:d854 with SMTP id
- 5b1f17b1804b1-477c04cfa31mr23240905e9.5.1763729195084; 
- Fri, 21 Nov 2025 04:46:35 -0800 (PST)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477c0d85360sm32103495e9.15.2025.11.21.04.46.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 04:46:33 -0800 (PST)
-Date: Fri, 21 Nov 2025 13:46:31 +0100
-From: Juraj Marcin <jmarcin@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 2/4] tests/migration-test: Merge shmem_opts into
- memory_backend
-Message-ID: <bptgyz34rzqk5dkcd7kzp4aksdsqu4qm5vjlvvoacvypqqovqx@vzotefvcdkkq>
-References: <20251117223908.415965-1-peterx@redhat.com>
- <20251117223908.415965-3-peterx@redhat.com>
+ d=1e100.net; s=20230601; t=1763729230; x=1764334030;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6hmk1UkbUQrbHuF7+FWwHU8sMOi8c7TBNdFfJ6SDMH4=;
+ b=GG1/8Fx8Mm79coHWPGBz7nPH0x2oJQ3ACRrEfC4Khp7gB7E2tUe79kDgvZCmoM6vzT
+ Mq3V2QopubcaYqF0RuNO+MmSVzI2zRR1VCJR6AiNUleAr4si/uMurtGkgc3G4BQdXeFW
+ o9Y1nuR2UrAw3fKXuGH+q/rlm0bqTd8J4sJwZFD1ymGvMVE7y4k+P++hypp7/sPtYnD7
+ x2qnHmHWndmyof4O9J57VS4j590TpwY4CIwAQdnyillyVBttgOuZI4QjyAf/oVwVQcGq
+ 9JcgDGNHARM5+zxMWUwffxOWO+lgepAL0nmS5ZJhjhfVnewY3wgzun/bVCoVgQPu9rc8
+ A43Q==
+X-Gm-Message-State: AOJu0YypW1swGh6QspebIBZ8e4gBgwDUGHv0ZRuF+tjgB5C4hO35DYau
+ QQiwEcSvvgCW69Rzp3arTg7ABqNxh6bfrciuisJX7rb18cqME8ZTikeK9VFO/5U6aJRS33rVoz/
+ 4YR9xeUcLZMxnYK48kxnau57MV1AH9AqC4bkQ7qKWAEFXSZypp3aFoVyZ
+X-Gm-Gg: ASbGncuvxB4VlTCJIg8EbSFnLoOZCbp9Bx9o3Z5O1yHNJc2BWEX24aH5QIf5h/6N9qm
+ p9NLiMQNZYdMdDKSoiwQMLXUC7M4ZPud5HGREIloEwRZFaQvkVAdP83PN71BIE88oUXhWiBtKgt
+ gPXiCmVQAoy0b0z92zrS4UPXhabACxYK6LBlHJvLuLWVBNyncWuLXN+mmaXbwPVJD5gNcxi8zcE
+ kaOQdOADB6KfQl/hhz8xFCuEelmRG2VYYAM6RAok9gTiJVxMeYJDIuxr+p652InLu2/6/qeKr5C
+ l+BnEtrcvlk858MDYEh9Q3Q0lxV0JD7UgJ3T5FGr73XtBy10Ob9ABceOOUyzBCJg8tyxtqVaMQ4
+ EqDX1q+3awreKl9AqATHDz0yQRo89Yr1HdfPqT2Epr0alwYY8ftjBqUkeTQ==
+X-Received: by 2002:a05:6000:200c:b0:3ea:6680:8fb9 with SMTP id
+ ffacd0b85a97d-42cc12f1c7fmr2422741f8f.3.1763729230418; 
+ Fri, 21 Nov 2025 04:47:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHe5muzpav+Z2O5vbUz4FuuXKebz4WmWQOptMN7DPk37aFFfqCGp4W1ncC8u2P9uq/55pEiqw==
+X-Received: by 2002:a05:6000:200c:b0:3ea:6680:8fb9 with SMTP id
+ ffacd0b85a97d-42cc12f1c7fmr2422711f8f.3.1763729230033; 
+ Fri, 21 Nov 2025 04:47:10 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42cb7fa35c2sm10084081f8f.25.2025.11.21.04.47.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Nov 2025 04:47:09 -0800 (PST)
+Message-ID: <759ec110-365f-488b-802d-c7bb1efe30bc@redhat.com>
+Date: Fri, 21 Nov 2025 13:47:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251117223908.415965-3-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 03/21] hw/arm/smmuv3: Introduce secure registers
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
+ <20251012150701.4127034-4-tangtao1634@phytium.com.cn>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251012150701.4127034-4-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,147 +106,120 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+Hi Tao,
 
-you can add my R-b to the whole series, I just have a small nitpick
-below, but feel free to ignore it.
+On 10/12/25 5:06 PM, Tao Tang wrote:
+> The Arm SMMUv3 architecture defines a set of registers for managing
+> secure transactions and context.
+>
+> This patch introduces the definitions for these secure registers within
+> the SMMUv3 device model internal header.
+>
+> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
-
-On 2025-11-17 17:39, Peter Xu wrote:
-> The two parameters are more or less duplicated in migrate_args().  They all
-> describe the memory type.  When one is used, the other is not.
-> 
-> mem_type currently uses numa parameter to specify the memory backend, while
-> memory_backend (the two users of such uses "-machine memory-backend=ID").
-> 
-> This patch merges the use of the two variables so that we always generate a
-> memory object string and put it into "memory_backend" variable.  Now we can
-> drop shmem_opts parameter in the function.
-> 
-> Meanwhile we always use a memory-backend-* no matter which mem type is
-> used.  This brings mem_type to be aligned with memory_backend usage, then
-> we stick with this as this is flexible enough.
-> 
-> This paves way that we merge mem_type and memory_backend in MigrateStart.
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+Eric
 > ---
->  tests/qtest/migration/framework.c | 41 ++++++++++++++++++++-----------
->  1 file changed, 26 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-> index 8fa39999a1..6df0e56c2a 100644
-> --- a/tests/qtest/migration/framework.c
-> +++ b/tests/qtest/migration/framework.c
-> @@ -260,23 +260,36 @@ static char *test_shmem_path(void)
->      return g_strdup_printf("/dev/shm/qemu-%d", getpid());
->  }
+>  hw/arm/smmuv3-internal.h | 69 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 68 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> index 8d631ecf27..e420c5dc72 100644
+> --- a/hw/arm/smmuv3-internal.h
+> +++ b/hw/arm/smmuv3-internal.h
+> @@ -38,7 +38,7 @@ typedef enum SMMUTranslationClass {
+>      SMMU_CLASS_IN,
+>  } SMMUTranslationClass;
 >  
-> +#define  MIG_MEM_ID  "mig.mem"
+> -/* MMIO Registers */
+> +/* MMIO Registers. Shared by Non-secure/Realm/Root states. */
+>  
+>  REG32(IDR0,                0x0)
+>      FIELD(IDR0, S2P,         0 , 1)
+> @@ -121,6 +121,7 @@ REG32(CR0,                 0x20)
+>      FIELD(CR0, CMDQEN,        3, 1)
+>  
+>  #define SMMU_CR0_RESERVED 0xFFFFFA20
+> +#define SMMU_S_CR0_RESERVED 0xFFFFFC12
+>  
+>  REG32(CR0ACK,              0x24)
+>  REG32(CR1,                 0x28)
+> @@ -179,6 +180,72 @@ REG32(EVENTQ_IRQ_CFG2,     0xbc)
+>  
+>  #define A_IDREGS           0xfd0
+>  
+> +#define SMMU_SECURE_REG_START 0x8000 /* Start of secure-only registers */
 > +
->  /* NOTE: caller is responsbile to free the string if returned */
->  static char *migrate_mem_type_get_opts(MemType type, const char *memory_size)
+> +REG32(S_IDR0,               0x8000)
+> +REG32(S_IDR1,               0x8004)
+> +    FIELD(S_IDR1, S_SIDSIZE,          0 , 6)
+> +    FIELD(S_IDR1, SEL2,               29, 1)
+> +    FIELD(S_IDR1, SECURE_IMPL,        31, 1)
+> +
+> +REG32(S_IDR2,               0x8008)
+> +REG32(S_IDR3,               0x800c)
+> +REG32(S_IDR4,               0x8010)
+> +
+> +REG32(S_CR0,                0x8020)
+> +    FIELD(S_CR0, SMMUEN,      0, 1)
+> +    FIELD(S_CR0, EVENTQEN,    2, 1)
+> +    FIELD(S_CR0, CMDQEN,      3, 1)
+> +
+> +REG32(S_CR0ACK,             0x8024)
+> +REG32(S_CR1,                0x8028)
+> +REG32(S_CR2,                0x802c)
+> +
+> +REG32(S_INIT,               0x803c)
+> +    FIELD(S_INIT, INV_ALL,    0, 1)
+> +
+> +REG32(S_GBPA,               0x8044)
+> +    FIELD(S_GBPA, ABORT,     20, 1)
+> +    FIELD(S_GBPA, UPDATE,    31, 1)
+> +
+> +REG32(S_IRQ_CTRL,           0x8050)
+> +    FIELD(S_IRQ_CTRL, GERROR_IRQEN,    0, 1)
+> +    FIELD(S_IRQ_CTRL, EVENTQ_IRQEN,    2, 1)
+> +
+> +REG32(S_IRQ_CTRLACK,        0x8054)
+> +
+> +REG32(S_GERROR,             0x8060)
+> +    FIELD(S_GERROR, CMDQ_ERR,          0, 1)
+> +
+> +#define SMMU_GERROR_IRQ_CFG0_RESERVED   0x00FFFFFFFFFFFFFC
+> +#define SMMU_GERROR_IRQ_CFG2_RESERVED   0x000000000000003F
+> +
+> +#define SMMU_STRTAB_BASE_RESERVED       0x40FFFFFFFFFFFFC0
+> +#define SMMU_QUEUE_BASE_RESERVED        0x40FFFFFFFFFFFFFF
+> +#define SMMU_EVENTQ_IRQ_CFG0_RESERVED   0x00FFFFFFFFFFFFFC
+> +
+> +REG32(S_GERRORN,            0x8064)
+> +REG64(S_GERROR_IRQ_CFG0,    0x8068)
+> +REG32(S_GERROR_IRQ_CFG1,    0x8070)
+> +REG32(S_GERROR_IRQ_CFG2,    0x8074)
+> +REG64(S_STRTAB_BASE,        0x8080)
+> +REG32(S_STRTAB_BASE_CFG,    0x8088)
+> +    FIELD(S_STRTAB_BASE_CFG, LOG2SIZE, 0, 6)
+> +    FIELD(S_STRTAB_BASE_CFG, SPLIT,    6, 5)
+> +    FIELD(S_STRTAB_BASE_CFG, FMT,     16, 2)
+> +
+> +REG64(S_CMDQ_BASE,          0x8090)
+> +REG32(S_CMDQ_PROD,          0x8098)
+> +REG32(S_CMDQ_CONS,          0x809c)
+> +    FIELD(S_CMDQ_CONS, ERR,           24, 7)
+> +
+> +REG64(S_EVENTQ_BASE,        0x80a0)
+> +REG32(S_EVENTQ_PROD,        0x80a8)
+> +REG32(S_EVENTQ_CONS,        0x80ac)
+> +REG64(S_EVENTQ_IRQ_CFG0,    0x80b0)
+> +REG32(S_EVENTQ_IRQ_CFG1,    0x80b8)
+> +REG32(S_EVENTQ_IRQ_CFG2,    0x80bc)
+> +
+>  static inline int smmu_enabled(SMMUv3State *s)
 >  {
->      g_autofree char *shmem_path = NULL;
-> -    char *backend = NULL;
-> +    g_autofree char *backend = NULL;
-> +    bool share = true;
-> +    char *opts;
->  
->      switch (type) {
->      case MEM_TYPE_SHMEM:
->          shmem_path = test_shmem_path();
-> -        backend = g_strdup_printf(
-> -            "-object memory-backend-file,id=mem0,size=%s"
-> -            ",mem-path=%s,share=on -numa node,memdev=mem0",
-> -            memory_size, shmem_path);
-> -        return backend;
-> +        backend = g_strdup_printf("-object memory-backend-file,mem-path=%s",
-> +                                  shmem_path);
-> +        break;
-> +    case MEM_TYPE_ANON:
-> +        backend = g_strdup("-object memory-backend-ram");
-> +        share = false;
-> +        break;
-
-Wouldn't it be a bit nicer to add this case before SHMEM, so the order
-is the same as in the enum? The patch adding MEMFD follows is by adding
-it right after SHMEM (and before ANON).
-
->      default:
-> -        return NULL;
-> +        g_assert_not_reached();
-> +        break;
->      }
-> +
-> +    opts = g_strdup_printf("%s,id=%s,size=%s,share=%s",
-> +                           backend, MIG_MEM_ID, memory_size,
-> +                           share ? "on" : "off");
-> +
-> +    return opts;
->  }
->  
->  int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
-> @@ -286,7 +299,7 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
->      gchar *cmd_source = NULL;
->      gchar *cmd_target = NULL;
->      const gchar *ignore_stderr;
-> -    g_autofree char *shmem_opts = NULL;
-> +    g_autofree char *mem_object = NULL;
->      const char *kvm_opts = NULL;
->      const char *arch = qtest_get_arch();
->      const char *memory_size;
-> @@ -350,12 +363,12 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
->          ignore_stderr = "";
->      }
->  
-> -    shmem_opts = migrate_mem_type_get_opts(args->mem_type, memory_size);
-> -
->      if (args->memory_backend) {
->          memory_backend = g_strdup_printf(args->memory_backend, memory_size);
->      } else {
-> -        memory_backend = g_strdup_printf("-m %s ", memory_size);
-> +        mem_object = migrate_mem_type_get_opts(args->mem_type, memory_size);
-> +        memory_backend = g_strdup_printf("-machine memory-backend=%s %s",
-> +                                         MIG_MEM_ID, mem_object);
->      }
->  
->      if (args->use_dirty_ring) {
-> @@ -378,12 +391,11 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
->                                   "-name source,debug-threads=on "
->                                   "%s "
->                                   "-serial file:%s/src_serial "
-> -                                 "%s %s %s %s",
-> +                                 "%s %s %s",
->                                   kvm_opts ? kvm_opts : "",
->                                   machine, machine_opts,
->                                   memory_backend, tmpfs,
->                                   arch_opts ? arch_opts : "",
-> -                                 shmem_opts ? shmem_opts : "",
->                                   args->opts_source ? args->opts_source : "",
->                                   ignore_stderr);
->  
-> @@ -400,13 +412,12 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
->                                   "%s "
->                                   "-serial file:%s/dest_serial "
->                                   "-incoming %s "
-> -                                 "%s %s %s %s %s",
-> +                                 "%s %s %s %s",
->                                   kvm_opts ? kvm_opts : "",
->                                   machine, machine_opts,
->                                   memory_backend, tmpfs, uri,
->                                   events,
->                                   arch_opts ? arch_opts : "",
-> -                                 shmem_opts ? shmem_opts : "",
->                                   args->opts_target ? args->opts_target : "",
->                                   ignore_stderr);
->  
-> -- 
-> 2.50.1
-> 
+>      return FIELD_EX32(s->cr[0], CR0, SMMUEN);
 
 
