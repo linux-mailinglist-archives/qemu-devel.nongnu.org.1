@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEADC77504
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:05:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A42C7750D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Nov 2025 06:05:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMJK6-0006D6-3n; Fri, 21 Nov 2025 00:04:42 -0500
+	id 1vMJK7-0006EO-KX; Fri, 21 Nov 2025 00:04:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vMJJu-000679-Mk
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:32 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1vMJJx-00068C-9v
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:33 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1vMJJr-0006nf-Ql
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:29 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-29555415c5fso17811375ad.1
- for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 21:04:26 -0800 (PST)
+ id 1vMJJu-0006oM-EF
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 00:04:33 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-29555b384acso19792965ad.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Nov 2025 21:04:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1763701465; x=1764306265; darn=nongnu.org;
+ d=sifive.com; s=google; t=1763701467; x=1764306267; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DdrR0qRhyHxnG+TvMN35yCUkjNJYPzQ6aw7tzmaZAHw=;
- b=iK6k743lj6XsQChhKWyIhV0iNdhyQaCyisrmaFOMvq6yX9fCptk2lxDhTz5UpBakMs
- yg5uxB+mLBOoPALNCM0GSK1PF1utcZA6BVxqqvVeTc1UN4VBTc3lbDTMftV7Mt1khLGd
- 0sOf7ejdhPAL5XG1ujQSv/M/GFOc9wlfBrn866D+22JZdeCH83D+TBSZMLBYbnjbZIVs
- igd5GELvYwww6OQ94N5kvzQ74uzoVB87zbxhk2USxGt0u0dqguw8kwuUAkR3aOWG+crW
- uTFNBAt/0MRrPyDObmxrqATTVw1gLXcr8z1HdtIAqHkeEdihbz+IKaw7o1VhC3vWkeoJ
- T4kg==
+ bh=JY7v5PFUTvqG5xjU8tx4kJ2bLxHjuCr4rVrZ2t+pKeU=;
+ b=iQDVq+ils4rLp0h6PE8du57BQA9Z7NdW4bbQyBNpXaDDD5bdmSUmhw5YVp8bFLawJY
+ ZXC7Vg6UZ9EsvNWAwPjsW+oB2wschCdFM36S0KfiBVd3K4L+Kc+Z40f1RuK8r1n5WsTf
+ MVVUyiAPMzKLZ06r4vX2QLwxob6fV3KDScl7SrNTocHJ8oeDAikK2uCATHSyObkzFEk4
+ 8NLDg7Xut+01X6lqxdjdfunvfV+K2Z9pnZkfjFoqT2OXeTRwZFTISEutqThQGxUxvRAr
+ If82f1oSuF1YFUiIyF+PI/5kSmeFLLnrV2aNZMDjpNB15bFmKkVVnkXlkdVmr5CTQKD1
+ YlKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763701465; x=1764306265;
+ d=1e100.net; s=20230601; t=1763701467; x=1764306267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=DdrR0qRhyHxnG+TvMN35yCUkjNJYPzQ6aw7tzmaZAHw=;
- b=s5519Li01rtAF9McFF6AjU1CjE9D3bYPA/3MWojHIMu3ME1kEV1Q4QqxnYEjzfIkK2
- b0VonIZQP3+rrDqg7NkEAOVr8U4UdIEGdha3uICjPvieBkPEP4Vj8L1GgKLzdJRuZQze
- +rPN/bcu25WaaSuH+dcjazMgYMT4xQLjA/8oN1/KgLbOletxiyzIhGA9AZCvad+GfmYM
- PoC0J0wwXMPSrnjXJugQgWepHG+N/ENTdQ8R1RFTaBl6Z16lroiUMA8hfMk5FzAYRGc6
- 0R+ePfxae+IZAx5TKSn8qsizg+MzsFxNGyf4QqUeNCvw+XPSxG7aalJdKoq9VhDxy0mX
- IGcg==
-X-Gm-Message-State: AOJu0Yzd/KmrHB3Y+Aje7Mzg1m/U97wum9YeNldASqBlCudMec75qfJX
- cp+VbOB5hoEAdyDs0MEk4HLpKSc4mtJCSsY5ZkFD7SlDh852XrtPOuK4KOJtl7lQAUB2P94paRW
- PSIcb9FoJPLcwbik6f0+7QA+4ZCSmzDmjCJbr4FbpJ7Q98PYc7+bquw6E7NJlmZUmP8tWZR7ERc
- XBQyr243E4LUMmW3OsBgygxSU9D8C+FcViQ7ehlyc7+Ug=
-X-Gm-Gg: ASbGncu/H0m7B+ZTpv9Pni6cF+Vgomna3rGA/GvZB7uhgqTmxX9DIcw48uXRGNBKfNw
- gfapOnRoL01UsRToTGHOhlxpEGcrQJ65SnnFbJYbPLxnYbIbNbOyMCeLgewHGP1I8hFpGX56u6D
- lhlzE/tOaFzcw2pHlhZAsK8rwaRanhRPtKtfLb+PD8Lg5BEnHQ4+hZbKAhiugZnXq/Wo02rxjhW
- tTSrAaSMeZ1f4031VvQts3RypVy+tiGfUpAUJAEgkaIV9f5jQBxM3Fu+RkmikNoC/7yu30LbPj2
- kR+ExA/2vHTLrDrmRqaeu2TyJm6RRPUz/3ChCJvIG1rYADWgSFHlZW87B9gkizT48cqGTyyi+L7
- +/pAJhVdylVqYwk1XWTx+Ds19CJGJPI5GuVil593IGBAE2uYG5x+0WZe4PUCQXlVA4kg8xSwZHT
- fZ5b9uT4T9Q0VCRZvlCpYSl/kEqsd6yWvGnmf0vA==
-X-Google-Smtp-Source: AGHT+IF3eV/1EaFWrDprz8c/ZKZCFeRacK8vQDjPT4tZAhRHzDBbLKEmKnBh5kBvtfZ2mmNrnLjrJA==
-X-Received: by 2002:a17:902:eb8b:b0:26b:da03:60db with SMTP id
- d9443c01a7336-29b6c40263cmr14875085ad.13.1763701465027; 
- Thu, 20 Nov 2025 21:04:25 -0800 (PST)
+ bh=JY7v5PFUTvqG5xjU8tx4kJ2bLxHjuCr4rVrZ2t+pKeU=;
+ b=gDAgNg2QF/SD5thGxZeE5h8qtOgCkKT/iJPb/8W/y0AUUDqlm3FOl7vqMGT9felEaY
+ Bm6nCAX95mT//MT0xjiUPm6GiUBVk798VTk462pLDTbD/wxuvYjBvhFDCyYDVQTvn3Vj
+ JtWo3EybNrtWKOCH5PYsBRPP+AvYxDzBGDnIku5CMGBq+361cgc1Z1tHQIKxtK8XC0Np
+ lnokaZt1XgEylufl63K/SzgK9gwXYQAy+bUDeIof47mdmSA+YhE5imaeFPPtI4oG7JYj
+ l6JtSXunRPUjl49IqsvLqS4qwrUBFrlQ/nf64DIEC5c43yO6zj/q8o71/rxupq5cNbb+
+ PoSQ==
+X-Gm-Message-State: AOJu0YyU1z+/mI+NqLIWQye2KuDznDlAIsgXE6bxnFo1t9Yd8iUONF4W
+ MMUmHiPrFm41DI3Md66FnYSGOiX5ZL8sK8VnT+Rb37gO93UhrEirR2lyfnr+TqvHwDb77tdRqFV
+ vQN4ojivpWfsFa+ffAK/XuP0T05Wcy7XLp7td8VW6G2BilrtyK31Zq0TNJQWAqI1UuJW3HW6+EH
+ tQEMjDXpY9Vtg5XqZatU/xJ0qPq/xt0lh8neY+xmItMAg=
+X-Gm-Gg: ASbGncsSVo67aJ9nKPAS+J4/TSzNu3SnQTNgXxRMvZ0l7NGFZKbsWR4ttLFu7qwUC7+
+ cuCmupq8+vpofrlqEpPXlmZuB0voHw/cuzWArD4KN0V4kz/nhhQ3YEaiUJZ2iOwXJDY4ewfg7HX
+ JzJaFeZBOGnYHlYmsU0M8Be7GVCVVDonDVnvO5STNh6pgzpo+DFzOPK2ZR8m5NtQIAXwWAAefEb
+ RdIRBDMjvt2bksSyUuoq6aSk1aWb8oPWsFvHl6IPe/9j8gIWlSSeMbRhxsriHboLf4/MlbRL0JR
+ p84SKTSb3uQ21IjiJrAppGGxQ2EkDgA8EVDeiKUopQS/nqu+v1iXCzf1CusVCKmVsalJFhPAJ2L
+ SxJtS7dE8m1wWa+dL8dC2lRKbxCvx4xiZQgKp9Kzq+P6lwHJy9rWNy9tQWzCir+NIhiejhGPjrU
+ CkubqR4FS5+PWPMNIKDQ4kUR4LXWcnyNgKz4MUCg==
+X-Google-Smtp-Source: AGHT+IGDQsx3GUn9fEEQjlCOT+4TGxmxEVZX+br837s4osQ4OwsxBH3JauGV/XGQuAw43so8gGJwCQ==
+X-Received: by 2002:a17:902:ce88:b0:295:5132:1a99 with SMTP id
+ d9443c01a7336-29b6c68be3emr15581185ad.44.1763701467333; 
+ Thu, 20 Nov 2025 21:04:27 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29b5b26fed2sm43384525ad.69.2025.11.20.21.04.23
+ d9443c01a7336-29b5b26fed2sm43384525ad.69.2025.11.20.21.04.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Nov 2025 21:04:24 -0800 (PST)
+ Thu, 20 Nov 2025 21:04:26 -0800 (PST)
 From: frank.chang@sifive.com
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>,
@@ -74,17 +74,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
  Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v2 3/6] target/riscv: Fix pointer masking PMM field selection
- logic
-Date: Fri, 21 Nov 2025 13:04:10 +0800
-Message-ID: <20251121050413.3718427-4-frank.chang@sifive.com>
+Subject: [PATCH v2 4/6] target/riscv: Fix pointer masking for virtual-machine
+ load/store insns
+Date: Fri, 21 Nov 2025 13:04:11 +0800
+Message-ID: <20251121050413.3718427-5-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121050413.3718427-1-frank.chang@sifive.com>
 References: <20251121050413.3718427-1-frank.chang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=frank.chang@sifive.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=frank.chang@sifive.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,138 +109,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frank Chang <frank.chang@sifive.com>
 
-mstatus.MPV only records the previous virtualization state, and does not
-affect pointer masking according to the Zjpm specification.
-
-This patch rewrites riscv_pm_get_pmm() to follow the architectural
-definition of Smmpm, Smnpm, and Ssnpm.
-
-The resulting PMM selection logic for each mode is summarized below:
-
-  * mstatus.MXR = 1: pointer masking disabled
-
-  * Smmpm + Smnpm + Ssnpm:
-      M-mode:  mseccfg.PMM
-      S-mode:  menvcfg.PMM
-      U-mode:  senvcfg.PMM
-      VS-mode: henvcfg.PMM
-      VU-mode: senvcfg.PMM
-
-  * Smmpm + Smnpm (RVS implemented):
-      M-mode:  mseccfg.PMM
-      S-mode:  menvcfg.PMM
-      U/VS/VU: disabled (Ssnpm not present)
-
-  * Smmpm + Smnpm (RVS not implemented):
-      M-mode:  mseccfg.PMM
-      U-mode:  menvcfg.PMM
-      S/VS/VU: disabled (no S-mode)
-
-  * Smmpm only:
-      M-mode:  mseccfg.PMM
-      Other existing modes: pointer masking disabled
+The effective privilege of explicit memory accesses made by
+virtual-machine load/store instructions (HLV.* and HSV.*) is controlled
+by hstatus.SPVP. mstatus.MPRV does not affect these virtual-machine
+load/store instructions.
 
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu_helper.c | 61 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 51 insertions(+), 10 deletions(-)
+ target/riscv/cpu_helper.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index fbab8177092..acfc6c10607 100644
+index acfc6c10607..bf747834dcc 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -171,16 +171,49 @@ bool riscv_env_smode_dbltrp_enabled(CPURISCVState *env, bool virt)
- #endif
- }
- 
-+/*
-+ * Returns the effective PMM field.
-+ *
-+ * @env: CPURISCVState
-+ *
-+ * The PMM field selection logic for each effective privilege mode
-+ * is as follows:
-+ *
-+ * - mstatus.MXR = 1: disabled
-+ *
-+ * - Smmpm + Smnpm + Ssnpm:
-+ *     M-mode:  mseccfg.PMM
-+ *     S-mode:  menvcfg.PMM
-+ *     U-mode:  senvcfg.PMM
-+ *     VS-mode: henvcfg.PMM
-+ *     VU-mode: senvcfg.PMM
-+ *
-+ * - Smmpm + Smnpm (RVS implemented):
-+ *     M-mode:  mseccfg.PMM
-+ *     S-mode:  menvcfg.PMM
-+ *     U/VS/VU: disabled (Ssnpm not present)
-+ *
-+ * - Smmpm + Smnpm (RVS not implemented):
-+ *     M-mode:  mseccfg.PMM
-+ *     U-mode:  menvcfg.PMM
-+ *     S/VS/VU: disabled (no S-mode)
-+ *
-+ * - Smmpm only:
-+ *     M-mode:  mseccfg.PMM
-+ *     Other existing modes: disabled
-+ */
- RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
+@@ -261,16 +261,25 @@ RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
+ RISCVPmPmm riscv_pm_get_virt_pmm(CPURISCVState *env)
  {
  #ifndef CONFIG_USER_ONLY
 -    int priv_mode = cpu_address_mode(env);
 +    int priv_mode;
-+    bool virt;
  
--    if (get_field(env->mstatus, MSTATUS_MPRV) &&
--        get_field(env->mstatus, MSTATUS_MXR)) {
-+    if (get_field(env->mstatus, MSTATUS_MXR)) {
-         return PMM_FIELD_DISABLED;
-     }
- 
-+    riscv_cpu_eff_priv(env, &priv_mode, &virt);
-+
-     /* Get current PMM field */
-     switch (priv_mode) {
-     case PRV_M:
-@@ -189,22 +222,30 @@ RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
-         }
-         break;
-     case PRV_S:
--        if (riscv_cpu_cfg(env)->ext_smnpm) {
--            if (get_field(env->mstatus, MSTATUS_MPV)) {
--                return get_field(env->henvcfg, HENVCFG_PMM);
--            } else {
-+        if (!virt) {
-+            if (riscv_cpu_cfg(env)->ext_smnpm) {
-                 return get_field(env->menvcfg, MENVCFG_PMM);
-             }
-+        } else {
-+            if (riscv_cpu_cfg(env)->ext_ssnpm) {
-+                return get_field(env->henvcfg, HENVCFG_PMM);
-+            }
-         }
-         break;
-     case PRV_U:
--        if (riscv_has_ext(env, RVS)) {
-+        if (!virt) {
-             if (riscv_cpu_cfg(env)->ext_ssnpm) {
-                 return get_field(env->senvcfg, SENVCFG_PMM);
-             }
+-    if (priv_mode == PRV_U) {
+-        return get_field(env->hstatus, HSTATUS_HUPMM);
+-    } else {
+-        if (get_field(env->hstatus, HSTATUS_SPVP)) {
+-            return get_field(env->henvcfg, HENVCFG_PMM);
 -        } else {
+-            return get_field(env->senvcfg, SENVCFG_PMM);
+-        }
++    if (get_field(env->mstatus, MSTATUS_MXR) ||
++        !riscv_cpu_cfg(env)->ext_ssnpm) {
++        return PMM_FIELD_DISABLED;
++    }
 +
-             if (riscv_cpu_cfg(env)->ext_smnpm) {
--                return get_field(env->menvcfg, MENVCFG_PMM);
-+                if (!riscv_has_ext(env, RVS)) {
-+                    return get_field(env->menvcfg, MENVCFG_PMM);
-+                }
-+            }
-+        } else {
-+            if (riscv_cpu_cfg(env)->ext_ssnpm) {
-+                return get_field(env->senvcfg, SENVCFG_PMM);
-             }
-         }
-         break;
++    priv_mode = get_field(env->hstatus, HSTATUS_SPVP);
++
++    switch (priv_mode) {
++    case PRV_S:
++        /* Effective privilege mode: VS */
++        return get_field(env->henvcfg, HENVCFG_PMM);
++    case PRV_U:
++        /* Effective privilege mode: VU */
++        return (env->priv == PRV_U) ? get_field(env->hstatus, HSTATUS_HUPMM) :
++                                      get_field(env->senvcfg, SENVCFG_PMM);
++    default:
++        return PMM_FIELD_DISABLED;
+     }
+ #else
+     return PMM_FIELD_DISABLED;
 -- 
 2.43.0
 
