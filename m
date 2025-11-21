@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1498C7C6D1
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2262EC7C6B1
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 05:45:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMdUP-00082J-Ez; Fri, 21 Nov 2025 21:36:42 -0500
+	id 1vMdJ2-0002W0-O9; Fri, 21 Nov 2025 21:24:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcDv-0000Gk-7w
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:15:37 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMdIx-0002Ru-2o
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:24:51 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMcBu-0005Bk-51
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:15:32 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b735ce67d1dso412736566b.3
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 17:13:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vMdI3-0005Ny-Bh
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 21:24:47 -0500
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-5957e017378so2718486e87.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 18:23:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763773987; x=1764378787; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763778213; x=1764383013; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wiNGRX34bLVgr8we0q4WpsknHKY0sYA3cJv9gH8gG7k=;
- b=gWj0DasjPf3nYGpSViH7DO5PdYXwj8FJCjBwSqHnUafrv6MABlFlCtqz3UUowBd5QI
- Tn+XIEGvKbTTfdLa4hEZliqAZ56vqEjQsa/HrUC3j6K8tkluSdt6L2XecLfixDRqgPV0
- 8YwJolLZsgjNOvuhMDRaRtUmKKmFPomX04UquMJ/662qUA+ZzR6ulX3bV/2blofEA72x
- 5et8oYfqbR2FQQsgpQq+24I7jTqr/ASD8994cv9kKIE5cV3ewWfpn/Ne1Ru1nK7cLSbb
- Hrcu4rbx1fXIRyIrb/RuUh6RR8IUOBTpSt0XAFoRDkL10WlE0OnTZS2ULqEOs9gkyuqY
- XmCw==
+ bh=lJnvThjS80O1Eon7AqXWBK1cOL1m23OMM4urIwDftzk=;
+ b=EXfv9c8RAV69L2BEi3Mjdcab2MA4LBn2TJ3Uhd6sZF8a4mci/TSRTi5Lg3qBg9S5ia
+ 5SDvVnPcSZrmFetkM7n9sALnS5/0LC+cW3VNsojAkjHRTj2gWZM6/wWvDFO1YLd52JvR
+ 4VEAWPSZs33s4uHQQKCs35wMGr+bjrwWoIDwWUA2KYWe/7KpczjjCcrVoqvZxz+XpxAi
+ +up7vB9hXlb+xxg33zEh6u4ayAWwLA0DKpyNtMSnbxp+ezRPGTTFVZgt4gQke+Z1WRv8
+ VAu2F3iYlv0JVyj/048GJJedB4QmnrFQJvPc0ymoZvGMAaUO71s0PZS4+IEehWu/s7b6
+ 0wDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763773987; x=1764378787;
+ d=1e100.net; s=20230601; t=1763778213; x=1764383013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=wiNGRX34bLVgr8we0q4WpsknHKY0sYA3cJv9gH8gG7k=;
- b=dyIHNP6zZt00YuPYVni55gQM6r9zRXr5TLZimGVWqGdWIfT4pwaUdCxIUsy8JA9cbH
- b+cPsI9fKu0j7I0fSTN4s7ABISJXxVdBbH/8fJpzzebHbX4lcA7MHsQBG/zKRdA6I4rS
- JXPCuBjKaCXOnrd7eFtV1rKeYf/AMs05LCrf5yvxrb1g+yPqmV3RgaDY04URmMi43A7C
- 7TfAD4N5tlpAaweLAOBZlgCV8rA9OmgS7Y26ZL90rPE+jrlq1r/wmgJyMTw22cgo+Osp
- 2UVBiRKFz9fTjOHCXVSRNSwCJO1A46askh+msh3WIRABpGGshy5Jm19yj2SqJJOuDTYk
- CkyA==
-X-Gm-Message-State: AOJu0YwZb/WsrgDgRLoerecuS+CRPbZJ73rqC5AyPpS/1BHyR4vXrMjq
- UAfuDkKt/0Yf8uc6GU6QVh6Cj/uQ+w+GkcsP0ZlLo75/kU0ir/YRVYg7bWB8AMPNvH5mENIHfBF
- Jn89e2Xek+w==
-X-Gm-Gg: ASbGncuEr7bHlGzMwfD+ICVmxekVlIPNtmQ9W7b14UCCrssZ5a3JMCWYmOXZww9M7nH
- e76oidEMdsI1OP12er7D+GHUOMHoqKlvtz5NnKC1/u5W9spfY6hbYMLt3J+2RSWJR2RWIaHSr8W
- UsWSXAuP7B7265ASDqg+r92UFRTfHmbiKJQwPqVerDTuJhg77DAdnBl0uvj7hn5ljKIJ0SZ+NNm
- W6yba9GozkwMvpJopi6fd6FbeP7TnuhsMVgLEeTQXSm2J2xHnat+lAV/eH3pWw5OK4PCQ4ZFW3x
- 3L9fcrTJj/1+UmHdqk4MK1E4CFSkn5g+4n+FwN6vMWNPtzQvOwdh9Hse5VPOs+yibwRlWuwEOEd
- wlvLeh49C1IyXoT2ASviAlaqRrYUaaLJh+L4yoyyOhVdaftDD+Ca4PibRlrhlVpjMvdA/GoJz7y
- fh2u2FIruuUd+Du+rbpx3KqHu7yCpvzcWaneSvxFbMoHMHr8OHoJpWJAppDfI0
-X-Google-Smtp-Source: AGHT+IGCkg+uWGBlahBmkPgkgQoDmg3pMx2+5N7CNgh0GMGQreSiOwxIaOA51lhQPEmwFRlZ1n3jzA==
-X-Received: by 2002:a05:600c:470d:b0:477:89d5:fdac with SMTP id
- 5b1f17b1804b1-477c01f4f4emr29007215e9.31.1763732798704; 
- Fri, 21 Nov 2025 05:46:38 -0800 (PST)
+ bh=lJnvThjS80O1Eon7AqXWBK1cOL1m23OMM4urIwDftzk=;
+ b=RkV3lwVTmy02mZuMQwLz3GREwDIyelcrk1R2d+IP9Ny1O3v8qvAlVG4M32XQZgLHtZ
+ J6EHb3jDLC9M8SJMHfSw+3QG6fCq/htAe8vTrQu+2xPhlUa8NvsteXJ8h8/VO5sSqM0t
+ 6l4Vce2bQVge+UpfCQiZzf5TNuw0RT75I6eob5GniwTolf+a5IN5LlDhSLuhWQzidGhr
+ L829fFdz4w+GGpTHqkeWssYpaKrr1vecVaK7mNKQqaSInOS5/llC4jmx2/uTfcmBT6ji
+ 4qkfj21in2Q3mjh/QVIB7Umm98rw9ZIzhz+gWdpCLtrsYk1psVROZTgIAxAYsGyX9m61
+ sDFA==
+X-Gm-Message-State: AOJu0YyoRl+uFipUbwO7JNmTrY1Zsere3P/kSZfdtPNknsBCJeziDdXF
+ IK2v2Qtg/tWhMtllU7HC5CqAXZIdBaqLpj/ubWSxqd8WreoMuRIOSkDFDjvKyICGbr3qEzr7L3N
+ pifWfRjJfiA==
+X-Gm-Gg: ASbGncuggRTD1vrEpICP/9gjIrSb054MVmA+rt+0NQEJNyNd3zsjGEut3ZdedFKuSHz
+ F9QgaYhUXd4TIsru9vETUuy7AgjGlhayWu3mUliZx+kdXhAdGt1SAWpnD+JNGXsz/2PEiCEO9lc
+ R994jG8322c5n/z+h+wH+7VE7CLyWncnfi9pJSxxoRRhXPxUCNY8+lE08eWEAtTdemaO5nldQWw
+ LRj4VzeALoy25AB4kN4qRLxBhjHkjIWph+xqm+CKOj3WK+BxY4CO9FtFNmmtOdFHNiE6uKG4ML0
+ H+/Fmtps+V/sVnvyLO4urHfIPcDdYSvo1KAGkgZDS8L99YwU1GprwXyx7HitQGEUYLYanWPhmiJ
+ r3VAHlUubbT/a05Zl2Gskxl0tCDTzUEmjDBWbxUbfxn1bMJpr9jIH4yG1B5f1BAhXC8k1o07iQd
+ 7yvw/0aUz3LCfN0KZUOtnn56IZC5gMhlzwilk5VgkkjuL5ju1tDReZy8xD89BL
+X-Google-Smtp-Source: AGHT+IFqYpf7OzTRpcxxvO5Bao2UxERjKsBecu9gO/aVZFFnry2vwOoVXaYFKsCpYeCfbQtJbrWpIA==
+X-Received: by 2002:a05:6000:1447:b0:42b:3131:5434 with SMTP id
+ ffacd0b85a97d-42cc1d0cfefmr2555882f8f.38.1763732805378; 
+ Fri, 21 Nov 2025 05:46:45 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf3b4eb2sm44593575e9.12.2025.11.21.05.46.37
+ ffacd0b85a97d-42cb7fb9190sm11433070f8f.33.2025.11.21.05.46.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Nov 2025 05:46:38 -0800 (PST)
+ Fri, 21 Nov 2025 05:46:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [RFC-PATCH-for-11.0 v3 14/21] target/s390x: Use little-endian variant
+Subject: [RFC-PATCH-for-11.0 v3 15/21] target/sparc: Use little-endian variant
  of cpu_ld/st_data*()
-Date: Fri, 21 Nov 2025 14:44:56 +0100
-Message-ID: <20251121134503.30914-15-philmd@linaro.org>
+Date: Fri, 21 Nov 2025 14:44:57 +0100
+Message-ID: <20251121134503.30914-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251121134503.30914-1-philmd@linaro.org>
 References: <20251121134503.30914-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,13 +99,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the S390x target using little endianness order,
+We only build the SPARC targets using little endianness order,
 therefore the cpu_ld/st_data*() definitions expand to the little
 endian declarations. Use the explicit little-endian variants.
 
 Mechanical change running:
 
-  $ tgt=s390x; \
+  $ tgt=sparc; \
     end=be; \
     for op in data mmuidx_ra; do \
       for ac in uw sw l q; do \
@@ -113,237 +120,30 @@ Mechanical change running:
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/tcg/mem_helper.c | 48 +++++++++++++++++------------------
- target/s390x/tcg/vec_helper.c |  8 +++---
- 2 files changed, 28 insertions(+), 28 deletions(-)
+ target/sparc/ldst_helper.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 84d901c2008..cb990c0c983 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -101,7 +101,7 @@ static inline uint64_t cpu_ldusize_data_ra(CPUS390XState *env, uint64_t addr,
-     case 1:
-         return cpu_ldub_data_ra(env, addr, ra);
-     case 2:
--        return cpu_lduw_data_ra(env, addr, ra);
-+        return cpu_lduw_be_data_ra(env, addr, ra);
-     default:
-         abort();
-     }
-@@ -117,7 +117,7 @@ static inline void cpu_stsize_data_ra(CPUS390XState *env, uint64_t addr,
-         cpu_stb_data_ra(env, addr, value, ra);
-         break;
-     case 2:
--        cpu_stw_data_ra(env, addr, value, ra);
-+        cpu_stw_be_data_ra(env, addr, value, ra);
-         break;
-     default:
-         abort();
-@@ -865,7 +865,7 @@ void HELPER(srstu)(CPUS390XState *env, uint32_t r1, uint32_t r2)
-             env->cc_op = 2;
-             return;
-         }
--        v = cpu_lduw_data_ra(env, str + len, ra);
-+        v = cpu_lduw_be_data_ra(env, str + len, ra);
-         if (v == c) {
-             /* Character found.  Set R1 to the location; R2 is unmodified.  */
-             env->cc_op = 1;
-@@ -1022,7 +1022,7 @@ void HELPER(lam)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        env->aregs[i] = cpu_ldl_data_ra(env, a2, ra);
-+        env->aregs[i] = cpu_ldl_be_data_ra(env, a2, ra);
-         a2 += 4;
- 
-         if (i == r3) {
-@@ -1042,7 +1042,7 @@ void HELPER(stam)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        cpu_stl_data_ra(env, a2, env->aregs[i], ra);
-+        cpu_stl_be_data_ra(env, a2, env->aregs[i], ra);
-         a2 += 4;
- 
-         if (i == r3) {
-@@ -1363,7 +1363,7 @@ Int128 HELPER(cksm)(CPUS390XState *env, uint64_t r1,
- 
-     /* Process full words as available.  */
-     for (len = 0; len + 4 <= max_len; len += 4, src += 4) {
--        cksm += (uint32_t)cpu_ldl_data_ra(env, src, ra);
-+        cksm += (uint32_t)cpu_ldl_be_data_ra(env, src, ra);
-     }
- 
-     switch (max_len - len) {
-@@ -1372,11 +1372,11 @@ Int128 HELPER(cksm)(CPUS390XState *env, uint64_t r1,
-         len += 1;
-         break;
-     case 2:
--        cksm += cpu_lduw_data_ra(env, src, ra) << 16;
-+        cksm += cpu_lduw_be_data_ra(env, src, ra) << 16;
-         len += 2;
-         break;
-     case 3:
--        cksm += cpu_lduw_data_ra(env, src, ra) << 16;
-+        cksm += cpu_lduw_be_data_ra(env, src, ra) << 16;
-         cksm += cpu_ldub_data_ra(env, src + 2, ra) << 8;
-         len += 3;
-         break;
-@@ -1955,7 +1955,7 @@ void HELPER(lctlg)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        uint64_t val = cpu_ldq_data_ra(env, src, ra);
-+        uint64_t val = cpu_ldq_be_data_ra(env, src, ra);
-         if (env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-         }
-@@ -1992,7 +1992,7 @@ void HELPER(lctl)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        uint32_t val = cpu_ldl_data_ra(env, src, ra);
-+        uint32_t val = cpu_ldl_be_data_ra(env, src, ra);
-         uint64_t val64 = deposit64(env->cregs[i], 0, 32, val);
-         if ((uint32_t)env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-@@ -2028,7 +2028,7 @@ void HELPER(stctg)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        cpu_stq_data_ra(env, dest, env->cregs[i], ra);
-+        cpu_stq_be_data_ra(env, dest, env->cregs[i], ra);
-         dest += sizeof(uint64_t);
- 
-         if (i == r3) {
-@@ -2048,7 +2048,7 @@ void HELPER(stctl)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-     }
- 
-     for (i = r1;; i = (i + 1) % 16) {
--        cpu_stl_data_ra(env, dest, env->cregs[i], ra);
-+        cpu_stl_be_data_ra(env, dest, env->cregs[i], ra);
-         dest += sizeof(uint32_t);
- 
-         if (i == r3) {
-@@ -2065,7 +2065,7 @@ uint32_t HELPER(testblock)(CPUS390XState *env, uint64_t real_addr)
-     real_addr = wrap_address(env, real_addr) & TARGET_PAGE_MASK;
- 
-     for (i = 0; i < TARGET_PAGE_SIZE; i += 8) {
--        cpu_stq_mmuidx_ra(env, real_addr + i, 0, MMU_REAL_IDX, ra);
-+        cpu_stq_be_mmuidx_ra(env, real_addr + i, 0, MMU_REAL_IDX, ra);
-     }
- 
-     return 0;
-@@ -2324,11 +2324,11 @@ void HELPER(idte)(CPUS390XState *env, uint64_t r1, uint64_t r2, uint32_t m4)
-         for (i = 0; i < entries; i++) {
-             /* addresses are not wrapped in 24/31bit mode but table index is */
-             raddr = table + ((index + i) & 0x7ff) * sizeof(entry);
--            entry = cpu_ldq_mmuidx_ra(env, raddr, MMU_REAL_IDX, ra);
-+            entry = cpu_ldq_be_mmuidx_ra(env, raddr, MMU_REAL_IDX, ra);
-             if (!(entry & REGION_ENTRY_I)) {
-                 /* we are allowed to not store if already invalid */
-                 entry |= REGION_ENTRY_I;
--                cpu_stq_mmuidx_ra(env, raddr, entry, MMU_REAL_IDX, ra);
-+                cpu_stq_be_mmuidx_ra(env, raddr, entry, MMU_REAL_IDX, ra);
-             }
-         }
-     }
-@@ -2355,9 +2355,9 @@ void HELPER(ipte)(CPUS390XState *env, uint64_t pto, uint64_t vaddr,
-     pte_addr += VADDR_PAGE_TX(vaddr) * 8;
- 
-     /* Mark the page table entry as invalid */
--    pte = cpu_ldq_mmuidx_ra(env, pte_addr, MMU_REAL_IDX, ra);
-+    pte = cpu_ldq_be_mmuidx_ra(env, pte_addr, MMU_REAL_IDX, ra);
-     pte |= PAGE_ENTRY_I;
--    cpu_stq_mmuidx_ra(env, pte_addr, pte, MMU_REAL_IDX, ra);
-+    cpu_stq_be_mmuidx_ra(env, pte_addr, pte, MMU_REAL_IDX, ra);
- 
-     /* XXX we exploit the fact that Linux passes the exact virtual
-        address here - it's not obliged to! */
-@@ -2695,7 +2695,7 @@ static int decode_utf16(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-     if (ilen < 2) {
-         return 0;
-     }
--    s0 = cpu_lduw_data_ra(env, addr, ra);
-+    s0 = cpu_lduw_be_data_ra(env, addr, ra);
-     if ((s0 & 0xfc00) != 0xd800) {
-         /* one word character */
-         l = 2;
-@@ -2706,7 +2706,7 @@ static int decode_utf16(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-         if (ilen < 4) {
-             return 0;
-         }
--        s1 = cpu_lduw_data_ra(env, addr + 2, ra);
-+        s1 = cpu_lduw_be_data_ra(env, addr + 2, ra);
-         c = extract32(s0, 6, 4) + 1;
-         c = (c << 6) | (s0 & 0x3f);
-         c = (c << 10) | (s1 & 0x3ff);
-@@ -2730,7 +2730,7 @@ static int decode_utf32(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-     if (ilen < 4) {
-         return 0;
-     }
--    c = cpu_ldl_data_ra(env, addr, ra);
-+    c = cpu_ldl_be_data_ra(env, addr, ra);
-     if ((c >= 0xd800 && c <= 0xdbff) || c > 0x10ffff) {
-         /* invalid unicode character */
-         return 2;
-@@ -2792,7 +2792,7 @@ static int encode_utf16(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-         if (ilen < 2) {
-             return 1;
-         }
--        cpu_stw_data_ra(env, addr, c, ra);
-+        cpu_stw_be_data_ra(env, addr, c, ra);
-         *olen = 2;
-     } else {
-         /* two word character */
-@@ -2802,8 +2802,8 @@ static int encode_utf16(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-         d1 = 0xdc00 | extract32(c, 0, 10);
-         d0 = 0xd800 | extract32(c, 10, 6);
-         d0 = deposit32(d0, 6, 4, extract32(c, 16, 5) - 1);
--        cpu_stw_data_ra(env, addr + 0, d0, ra);
--        cpu_stw_data_ra(env, addr + 2, d1, ra);
-+        cpu_stw_be_data_ra(env, addr + 0, d0, ra);
-+        cpu_stw_be_data_ra(env, addr + 2, d1, ra);
-         *olen = 4;
-     }
- 
-@@ -2816,7 +2816,7 @@ static int encode_utf32(CPUS390XState *env, uint64_t addr, uint64_t ilen,
-     if (ilen < 4) {
-         return 1;
-     }
--    cpu_stl_data_ra(env, addr, c, ra);
-+    cpu_stl_be_data_ra(env, addr, c, ra);
-     *olen = 4;
-     return -1;
- }
-diff --git a/target/s390x/tcg/vec_helper.c b/target/s390x/tcg/vec_helper.c
-index 46ec4a947dd..304745c971b 100644
---- a/target/s390x/tcg/vec_helper.c
-+++ b/target/s390x/tcg/vec_helper.c
-@@ -45,9 +45,9 @@ void HELPER(vll)(CPUS390XState *env, void *v1, uint64_t addr, uint64_t bytes)
-     if (likely(bytes >= 16)) {
-         uint64_t t0, t1;
- 
--        t0 = cpu_ldq_data_ra(env, addr, GETPC());
-+        t0 = cpu_ldq_be_data_ra(env, addr, GETPC());
-         addr = wrap_address(env, addr + 8);
--        t1 = cpu_ldq_data_ra(env, addr, GETPC());
-+        t1 = cpu_ldq_be_data_ra(env, addr, GETPC());
-         s390_vec_write_element64(v1, 0, t0);
-         s390_vec_write_element64(v1, 1, t1);
-     } else {
-@@ -195,9 +195,9 @@ void HELPER(vstl)(CPUS390XState *env, const void *v1, uint64_t addr,
-     probe_write_access(env, addr, MIN(bytes, 16), GETPC());
- 
-     if (likely(bytes >= 16)) {
--        cpu_stq_data_ra(env, addr, s390_vec_read_element64(v1, 0), GETPC());
-+        cpu_stq_be_data_ra(env, addr, s390_vec_read_element64(v1, 0), GETPC());
-         addr = wrap_address(env, addr + 8);
--        cpu_stq_data_ra(env, addr, s390_vec_read_element64(v1, 1), GETPC());
-+        cpu_stq_be_data_ra(env, addr, s390_vec_read_element64(v1, 1), GETPC());
-     } else {
-         int i;
- 
+diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+index 2c63eb9e036..bd0257d313a 100644
+--- a/target/sparc/ldst_helper.c
++++ b/target/sparc/ldst_helper.c
+@@ -1228,13 +1228,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
+             ret = cpu_ldub_data(env, addr);
+             break;
+         case 2:
+-            ret = cpu_lduw_data(env, addr);
++            ret = cpu_lduw_be_data(env, addr);
+             break;
+         case 4:
+-            ret = cpu_ldl_data(env, addr);
++            ret = cpu_ldl_be_data(env, addr);
+             break;
+         case 8:
+-            ret = cpu_ldq_data(env, addr);
++            ret = cpu_ldq_be_data(env, addr);
+             break;
+         default:
+             g_assert_not_reached();
 -- 
 2.51.0
 
