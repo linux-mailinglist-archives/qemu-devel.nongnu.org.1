@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD38AC7D7C6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A272C7D7C0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:09:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMunp-0008Eo-4d; Sat, 22 Nov 2025 16:05:54 -0500
+	id 1vMuni-0008Bn-NX; Sat, 22 Nov 2025 16:05:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMunZ-0008BJ-Pl; Sat, 22 Nov 2025 16:05:37 -0500
+ id 1vMunZ-0008BI-Ix; Sat, 22 Nov 2025 16:05:37 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMunP-0006Jb-4G; Sat, 22 Nov 2025 16:05:34 -0500
+ id 1vMunP-0006Jp-H5; Sat, 22 Nov 2025 16:05:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 15DCA16D2FE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 30BDE16D2FF;
  Sun, 23 Nov 2025 00:03:34 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C2D0A3223D2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D45583223D3;
  Sun, 23 Nov 2025 00:03:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.22 04/25] async: access bottom half flags with
- qatomic_read
-Date: Sat, 22 Nov 2025 23:55:22 +0300
-Message-ID: <20251122210344.48374-4-mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 05/25] target/i386: user: do not set up a valid LDT on
+ reset
+Date: Sat, 22 Nov 2025 23:55:23 +0300
+Message-ID: <20251122210344.48374-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
@@ -60,56 +60,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Running test-aio-multithread under TSAN reveals data races on bh->flags.
-Because bottom halves may be scheduled or canceled asynchronously,
-without taking a lock, adjust aio_compute_bh_timeout() and aio_ctx_check()
-to use a relaxed read to access the flags.
+In user-mode emulation, QEMU uses the default setting of the LDT base
+and limit, which places it at the bottom 64K of virtual address space.
+However, by default there is no LDT at all in Linux processes, and
+therefore the limit should be 0.
 
-Use an acquire load to ensure that anything that was written prior to
-qemu_bh_schedule() is visible.
+This is visible as a NULL pointer dereference in LSL and LAR instructions
+when they try to read the LDT at an unmapped address.
 
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2749
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/851
+Resolves: #1376
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 5142397c79330aab9bef3230991c8ac0c251110f)
+(cherry picked from commit 58aa1d08bbc406ba3982f32ffb1bef0ff4f8f369)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/async.c b/util/async.c
-index 0cc3037e0c..01961898be 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -247,8 +247,9 @@ static int64_t aio_compute_bh_timeout(BHList *head, int timeout)
-     QEMUBH *bh;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 489ab9cd41..682d71be88 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5906,7 +5906,11 @@ static void x86_cpu_reset(DeviceState *dev)
  
-     QSLIST_FOREACH_RCU(bh, head, next) {
--        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
--            if (bh->flags & BH_IDLE) {
-+        int flags = qatomic_load_acquire(&bh->flags);
-+        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
-+            if (flags & BH_IDLE) {
-                 /* idle bottom halves will be polled at least
-                  * every 10ms */
-                 timeout = 10000000;
-@@ -326,14 +327,16 @@ aio_ctx_check(GSource *source)
-     aio_notify_accept(ctx);
- 
-     QSLIST_FOREACH_RCU(bh, &ctx->bh_list, next) {
--        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
-+        int flags = qatomic_load_acquire(&bh->flags);
-+        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
-             return true;
-         }
-     }
- 
-     QSIMPLEQ_FOREACH(s, &ctx->bh_slice_list, next) {
-         QSLIST_FOREACH_RCU(bh, &s->bh_list, next) {
--            if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
-+            int flags = qatomic_load_acquire(&bh->flags);
-+            if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
-                 return true;
-             }
-         }
+     env->idt.limit = 0xffff;
+     env->gdt.limit = 0xffff;
++#if defined(CONFIG_USER_ONLY)
++    env->ldt.limit = 0;
++#else
+     env->ldt.limit = 0xffff;
++#endif
+     env->ldt.flags = DESC_P_MASK | (2 << DESC_TYPE_SHIFT);
+     env->tr.limit = 0xffff;
+     env->tr.flags = DESC_P_MASK | (11 << DESC_TYPE_SHIFT);
 -- 
 2.47.3
 
