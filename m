@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47476C7D7BA
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8448BC7D7BD
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:09:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMun9-00087I-C2; Sat, 22 Nov 2025 16:05:12 -0500
+	id 1vMunF-00088k-2b; Sat, 22 Nov 2025 16:05:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMun1-00083M-6Y; Sat, 22 Nov 2025 16:05:03 -0500
+ id 1vMun1-00083P-Po; Sat, 22 Nov 2025 16:05:04 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMumr-0006E3-IX; Sat, 22 Nov 2025 16:04:59 -0500
+ id 1vMums-0006E9-6Z; Sat, 22 Nov 2025 16:05:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB9D116D2FC;
- Sun, 23 Nov 2025 00:03:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 021AE16D2FD;
+ Sun, 23 Nov 2025 00:03:34 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8FB633223D0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A62E13223D1;
  Sun, 23 Nov 2025 00:03:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- YiFei Zhu <zhuyifei@google.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.22 02/25] i386/cpu: Prevent delivering SIPI during SMM in
- TCG mode
-Date: Sat, 22 Nov 2025 23:55:20 +0300
-Message-ID: <20251122210344.48374-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, YiFei Zhu <zhuyifei@google.com>,
+ unvariant.winter@gmail.com, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 03/25] i386/tcg/smm_helper: Properly apply DR values
+ on SMM entry / exit
+Date: Sat, 22 Nov 2025 23:55:21 +0300
+Message-ID: <20251122210344.48374-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
@@ -58,79 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: YiFei Zhu <zhuyifei@google.com>
 
-[commit message by YiFei Zhu]
+do_smm_enter and helper_rsm sets the env->dr, but does not sync the
+values with cpu_x86_update_dr7. A malicious kernel may control the
+instruction pointer in SMM by setting a breakpoint on the SMI
+entry point, and after do_smm_enter cpu->breakpoints contains the
+stale breakpoint; and because IDT is not reloaded upon SMI entry,
+the debug exception handler controlled by the malicious kernel
+is invoked.
 
-A malicious kernel may control the instruction pointer in SMM in a
-multi-processor VM by sending a sequence of IPIs via APIC:
-
-CPU0			CPU1
-IPI(CPU1, MODE_INIT)
-			x86_cpu_exec_reset()
-			apic_init_reset()
-			s->wait_for_sipi = true
-IPI(CPU1, MODE_SMI)
-			do_smm_enter()
-			env->hflags |= HF_SMM_MASK;
-IPI(CPU1, MODE_STARTUP, vector)
-			do_cpu_sipi()
-			apic_sipi()
-			/* s->wait_for_sipi check passes */
-			cpu_x86_load_seg_cache_sipi(vector)
-
-A different sequence, SMI INIT SIPI, is also buggy in TCG because
-INIT is not blocked or latched during SMM. However, it is not
-vulnerable to an instruction pointer control in the same way because
-x86_cpu_exec_reset clears env->hflags, exiting SMM.
-
-Fixes: a9bad65d2c1f ("target-i386: wake up processors that receive an SMI")
-Analyzed-by: YiFei Zhu <zhuyifei@google.com>
+Fixes: 01df040b5247 ("x86: Debug register emulation (Jan Kiszka)")
+Reported-by: unvariant.winter@gmail.com
+Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+Link: https://lore.kernel.org/r/2bacb9b24e9d337dbe48791aa25d349eb9c52c3a.1758794468.git.zhuyifei@google.com
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit df32e5c568c9cf68c15a9bbd98d0c3aff19eab63)
+(cherry picked from commit cdba90ac1b0ac789b10c0b5f6ef7e9558237ec66)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index a7c2b301a8..315bef8f43 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -499,8 +499,6 @@ void apic_sipi(DeviceState *dev)
- {
-     APICCommonState *s = APIC(dev);
+diff --git a/target/i386/tcg/sysemu/smm_helper.c b/target/i386/tcg/sysemu/smm_helper.c
+index a45b5651c3..f3d0bbb8c3 100644
+--- a/target/i386/tcg/sysemu/smm_helper.c
++++ b/target/i386/tcg/sysemu/smm_helper.c
+@@ -168,7 +168,7 @@ void do_smm_enter(X86CPU *cpu)
+                        env->cr[0] & ~(CR0_PE_MASK | CR0_EM_MASK | CR0_TS_MASK |
+                                       CR0_PG_MASK));
+     cpu_x86_update_cr4(env, 0);
+-    env->dr[7] = 0x00000400;
++    helper_set_dr(env, 7, 0x00000400);
  
--    cpu_reset_interrupt(CPU(s->cpu), CPU_INTERRUPT_SIPI);
--
-     if (!s->wait_for_sipi)
-         return;
-     cpu_x86_load_seg_cache_sipi(s->cpu, s->sipi_vector);
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 290d9d309c..723f50279a 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -602,6 +602,10 @@ void do_cpu_init(X86CPU *cpu)
+     cpu_x86_load_seg_cache(env, R_CS, (env->smbase >> 4) & 0xffff, env->smbase,
+                            0xffffffff,
+@@ -233,8 +233,8 @@ void helper_rsm(CPUX86State *env)
+     env->eip = x86_ldq_phys(cs, sm_state + 0x7f78);
+     cpu_load_eflags(env, x86_ldl_phys(cs, sm_state + 0x7f70),
+                     ~(CC_O | CC_S | CC_Z | CC_A | CC_P | CC_C | DF_MASK));
+-    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7f68);
+-    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7f60);
++    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7f68));
++    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7f60));
  
- void do_cpu_sipi(X86CPU *cpu)
- {
-+    CPUX86State *env = &cpu->env;
-+    if (env->hflags & HF_SMM_MASK) {
-+        return;
-+    }
-     apic_sipi(cpu->apic_state);
- }
- #else
-diff --git a/target/i386/tcg/sysemu/seg_helper.c b/target/i386/tcg/sysemu/seg_helper.c
-index 2c9bd007ad..8294a668d6 100644
---- a/target/i386/tcg/sysemu/seg_helper.c
-+++ b/target/i386/tcg/sysemu/seg_helper.c
-@@ -146,6 +146,7 @@ bool x86_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
-         apic_poll_irq(cpu->apic_state);
-         break;
-     case CPU_INTERRUPT_SIPI:
-+        cpu_reset_interrupt(cs, CPU_INTERRUPT_SIPI);
-         do_cpu_sipi(cpu);
-         break;
-     case CPU_INTERRUPT_SMI:
+     cpu_x86_update_cr4(env, x86_ldl_phys(cs, sm_state + 0x7f48));
+     cpu_x86_update_cr3(env, x86_ldq_phys(cs, sm_state + 0x7f50));
+@@ -268,8 +268,8 @@ void helper_rsm(CPUX86State *env)
+     env->regs[R_EDX] = x86_ldl_phys(cs, sm_state + 0x7fd8);
+     env->regs[R_ECX] = x86_ldl_phys(cs, sm_state + 0x7fd4);
+     env->regs[R_EAX] = x86_ldl_phys(cs, sm_state + 0x7fd0);
+-    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7fcc);
+-    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7fc8);
++    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7fcc));
++    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7fc8));
+ 
+     env->tr.selector = x86_ldl_phys(cs, sm_state + 0x7fc4) & 0xffff;
+     env->tr.base = x86_ldl_phys(cs, sm_state + 0x7f64);
 -- 
 2.47.3
 
