@@ -2,97 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E26C7CA72
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BFBC7C1E6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:53:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcnE-0003Qp-Pe; Fri, 21 Nov 2025 20:52:06 -0500
+	id 1vMckW-0001AG-Hh; Fri, 21 Nov 2025 20:49:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbVG-0007e6-UT
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:29:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTQ-0006bv-SX
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTF-0003e0-FK
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:29:24 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTF-0003eZ-FX
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771225;
+ s=mimecast20190719; t=1763771226;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
- b=X1ElYhYOvCn5SKs4D0d6xa2tFYt7n8kb1UJ18NQEl/UlfSSWMx8lujXZvtjij4gJ8MDvUK
- 9FUeRXhfPDI7LPWUuhk9otleR82VJclnddU7pSDG7j3iUBVQ2Nck3okE9HuLv+UBaLtMIZ
- e341PONIumJoqDpwoACSVaH936sWcW8=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zP1UWP2hrKh6gHFJKbP+xwMm3Oogaln/YNFdJGManXk=;
+ b=Lp4iUbDG/+FwDeFC897sfsbpgvV5h7704A8IkYfhMxzB6/LwsE28nlpJCvKrbNXiqQlTQA
+ kQl0D9xOCUclRfzT7GOZXi4CDKxSDChp3ZOOl/vCntmAI8Lz+qS6lD4q2Tk//W0l2XxSCX
+ 7FpXCr2ePKSxOID3+aa7tRNbwjmIO/8=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-2f0ZQ3S1MR2VXIWDzXtGWA-1; Fri, 21 Nov 2025 19:27:03 -0500
-X-MC-Unique: 2f0ZQ3S1MR2VXIWDzXtGWA-1
-X-Mimecast-MFC-AGG-ID: 2f0ZQ3S1MR2VXIWDzXtGWA_1763771223
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-8b17194d321so339938785a.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:03 -0800 (PST)
+ us-mta-571-gPn_B8rCNPSftKvQ_gAVXw-1; Fri, 21 Nov 2025 19:27:05 -0500
+X-MC-Unique: gPn_B8rCNPSftKvQ_gAVXw-1
+X-Mimecast-MFC-AGG-ID: gPn_B8rCNPSftKvQ_gAVXw_1763771225
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8b2e2342803so761248885a.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763771223; x=1764376023; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763771224; x=1764376024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
- b=s8xU2/PxCB7tRO/2/HFnacGRqCYfXNaUChQWlhLhmDQXEAbLpq7xrW8w1B3HEf+WPx
- iTaPwW1uTACJQ/6R8O/LMpVUgCVGlf8Bq8oDDZX/DrJoy0AW/W+ZlB/GNufy1XVDLR2I
- pEIc2JOq2oQphWFfPb4wvxxVaN6xLzhKPXutk6ED6k3xING/6ey8WBzK2LvkRfi5JjeK
- 9ZZxyg6K6oTDMRUeIqXUHp+DTbb8dNHgXv6qU2uQPVFDEvpgkPQydexPxshdeHpZ8O57
- WNBNGaEt62ccJ2oxQmVCadvdGbhyMkD3wqnfvubVnTTS+QDCCPDgkL43ok4ywTqlp3qW
- RmkA==
+ bh=zP1UWP2hrKh6gHFJKbP+xwMm3Oogaln/YNFdJGManXk=;
+ b=IKnDhYvJJIA+//9ajgTO+5ctFntrtieJnGyl04UbhZWP98b9ShtuooExVq6pDtQEd3
+ 3ag8g7A8kzpUfU+1wCiidKtwEQCjSu1ShXWHRCPXdARNWcfqwdtOJGZcE3yjrebsOkeB
+ 6dR+OaZoWqpDr6meUUu5Px4nAWjrDyTUUbsQvFT6nbH0aBGJZIIjTR3k5jow5INbpgYP
+ KCH162dFAgd0IEeOPVZ1XYnazi2edWcv/9T+kZS4ApVxldv667PatyoU+e3h2tCTf+bc
+ 0XSP60Huu4CLAqOJcg/v1uvfgjINtB7OFhA4mkGovHGpFFUhRpWKw3MgFhK5MlNqnuDl
+ SIqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763771223; x=1764376023;
+ d=1e100.net; s=20230601; t=1763771224; x=1764376024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
- b=EpwBP0UOaS4+UfDYtdGNojNgGWUkHnwS0gskgy8Jne0gPAGK30T7NGi2KR4vOHOSZp
- KhgOsqJ5aUCF4uagvbpfZ3FQmnZW3j+4LpTsq/7ZZnlJWkcz1EOmQuqV8ZIHi83qKM0q
- jLIwW3RMMOs9vRZw457SNOY9GP6nMopxZ3hX8jXPZmFrbctI9elthWjsglRAW3qtHZsW
- b6bVrUZUnPnHEODKDMm9zqzV5G4GQWiMGqkgXkUDqT8DctqwAbltx58PuIKceQfBOolX
- wgLDSDYnv+YlI/tCxnsgJ0vgS3S+oWjjtW/mEl9pzTVSkh0ku3DEX3bC427KaDN1yxXY
- ro0g==
-X-Gm-Message-State: AOJu0Yz1WdizQ21iBL4s+apOz1dGZ5GaNnNDs8Zhz6Dq7oz4S4xNiep9
- MpztJKFM4YtthhoKrQ+B3qDi2kPu/AxB1siEPLHbSNQLwiOq1lfBPxquNPBoyJ8zj9Ss5/8bNtX
- 9bmdPYSr8CGW4ooOyZ0/pyMxQPo4XivTaKFhrkQwNJJs+jlzdUMsizYFBtBDnNdpaamVqTrdnqX
- sB7e0Lf6EnNpVxePnDizW39dmYeXId0tP6vJuPmw==
-X-Gm-Gg: ASbGncuaXVJpisbslqv+atHYrYn1ckngpgQ0xKk8hh8mm271GvxxLYMJuEyP9tqqb3G
- xWoHZxj8Uf1EHh8y7fWY7fYwQ1dNUwpquoch+HxsJVR0+6bWgHh2D63f8Z0OOzsNi/AJGMlBKZJ
- xInrwUeDZgjsiML9S03nWe5BEQPKB8a1IkxECvEcU9s6U7C4sAdYVmLX4pmEtZjNDD7g0AFjemh
- g0bSMi6GbFt24ybKLSvcIWAx7pZ7dw1wzP27FPziu0WhOJPc8U3lkvH2eSjIdxDhr30bT/wTyyV
- mY3DLII3h6B4m1daxJfF8wY7BXjesoSnq6WpIWLpEgaFuJpBI9ZvnRbEU0KUk+wSWPtAK12MGkb
- z
-X-Received: by 2002:a05:622a:d5:b0:4ee:15e7:d9c6 with SMTP id
- d75a77b69052e-4ee58911324mr70422021cf.53.1763771222802; 
- Fri, 21 Nov 2025 16:27:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHCfUP1AUWM8ZWKgbzEJLUfgTloUcvu2D55Fx3WDliRSBqUEbRl6tFl7L0k4IdntCouJSxeug==
-X-Received: by 2002:a05:622a:d5:b0:4ee:15e7:d9c6 with SMTP id
- d75a77b69052e-4ee58911324mr70421701cf.53.1763771222215; 
- Fri, 21 Nov 2025 16:27:02 -0800 (PST)
+ bh=zP1UWP2hrKh6gHFJKbP+xwMm3Oogaln/YNFdJGManXk=;
+ b=oyKAGFVEy8udyh+guQ1wBXt247qCqN7D6t4FfW6WEYxmtVJw0a0upJrL+6R2pdtAMM
+ tMhOlTaJ6PMHMBtTY8mFcA2ue0sgousna8VND2sr6XWGH1ehdWRZAGRT30AGc9MTjupS
+ Lx04MZHilV++0MB5Pom/Ulo0v0hGQ2rCZ72rSsKA4NWMkz422GhGwPqUJ6MgPIknQcpL
+ CH/QPnJ5DQtL0r2srA2e/FXzmdX0WZACNCETi56VD4PQPjqY/wl1XILS/k6Pd0Xt4Sh1
+ AsV5+PJY5/vPWQ2ZA92Vz034LA2UfPa1okNznPAnCg0M5vEbq/blPgDTFV7uvoxY20Bl
+ E9hQ==
+X-Gm-Message-State: AOJu0YwcXopeEBYAnfBRHryqyOtl+mDQ+7vr8MZDINct5wO5aRY6vg2Q
+ rEBcqtAsN2YyIAFiM6n0X0/RgmhyXR1dsh8Nz4orG/cIHnClwr4UoaEB59x1NiwrwrjdMGsbo3/
+ pEkcAI4WEUHdYHNxV78IOplxkBtlveu3Qp/RssiSk9fh8fiTp8s2AmPHQg0/aEVqA3HTWnkaV+g
+ 8fNaDm1f+yku95b84cN+DbaisAZet6LbT62mWQhA==
+X-Gm-Gg: ASbGncu3T6dWZ2B+1nreAXp+V4RJqUOkC7yrvvogcICNuEq/rIkpt619k0xJCXtCkkS
+ dQ+6MFi8ZDv1d/u3irkmvfR50N8eI79K+S2YNcGB0liUXR7e+ZrpahM5T/ZQRV20AXSuajs1v/e
+ vKCYWeSGuLZEta4Jo4yn72U9xLtplYFr7C3R31g6BIjOzTUIJKHbhYKCf8ntA5xQb2m6ytev6kA
+ wRk9ZLBZ+phbXomkmuKi/p0G2Sjm0InsW1RNflhwaIt+LUQKop+2Q61zUZB7ImSwTqqXuGRd3kQ
+ kNm/kS1k7hp552Fgcu6DWsC3ymLvFibxCVXTUUHrHXq+VG3cjS3Fsi3QELCWGPfvbaVqG7A80Wc
+ Y
+X-Received: by 2002:a05:622a:89:b0:4ee:1f5b:73c3 with SMTP id
+ d75a77b69052e-4ee588b5258mr63518061cf.60.1763771224335; 
+ Fri, 21 Nov 2025 16:27:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEsAHt94GT25KyIjV8tHCZ6e43lQ2/U0ANCQz+46OsfX/WiHUHGdENgtxvVqUtE+bY/FUKXjg==
+X-Received: by 2002:a05:622a:89:b0:4ee:1f5b:73c3 with SMTP id
+ d75a77b69052e-4ee588b5258mr63517621cf.60.1763771223722; 
+ Fri, 21 Nov 2025 16:27:03 -0800 (PST)
 Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.27.01
+ d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.27.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 16:27:01 -0800 (PST)
+ Fri, 21 Nov 2025 16:27:03 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 3/9] migration: Plug memory leaks after migrate_set_error()
-Date: Fri, 21 Nov 2025 19:26:49 -0500
-Message-ID: <20251122002656.687350-4-peterx@redhat.com>
+Subject: [PULL 4/9] migration: Use warn_reportf_err() where appropriate
+Date: Fri, 21 Nov 2025 19:26:50 -0500
+Message-ID: <20251122002656.687350-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251122002656.687350-1-peterx@redhat.com>
 References: <20251122002656.687350-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,61 +110,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-migrate_set_error(s, err) stores a copy of @err in @s.  The original
-@err is not freed.  Most callers free it immediately.  Some callers
-free it later, or pass it on.  And some leak it.  Fix those.
+Replace
 
-Perhaps migrate_set_error(s, err) should take ownership of @err.  The
-callers that free it immediately would become simpler, and avoid a
-copy and a deallocation.  The others would have to pass
-error_copy(err).
+    warn_report("...: %s", ..., error_get_pretty(err));
+
+by
+
+    warn_reportf_err(err, "...: ", ...);
+
+Prior art: commit 5217f1887a8 (error: Use error_reportf_err() where
+appropriate).
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20251115083500.2753895-2-armbru@redhat.com
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20251115083500.2753895-3-armbru@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/cpr-exec.c | 3 ++-
- migration/multifd.c  | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ migration/multifd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
-index d284f6e734..0b8344a86f 100644
---- a/migration/cpr-exec.c
-+++ b/migration/cpr-exec.c
-@@ -159,11 +159,12 @@ static void cpr_exec_cb(void *opaque)
-     error_report_err(error_copy(err));
-     migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-     migrate_set_error(s, err);
-+    error_free(err);
-+    err = NULL;
- 
-     /* Note, we can go from state COMPLETED to FAILED */
-     migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
- 
--    err = NULL;
-     if (!migration_block_activate(&err)) {
-         /* error was already reported */
-         error_free(err);
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 98873cee74..a529c399e4 100644
+index a529c399e4..6210454838 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -964,6 +964,7 @@ bool multifd_send_setup(void)
- 
-         if (!multifd_new_send_channel_create(p, &local_err)) {
-             migrate_set_error(s, local_err);
-+            error_free(local_err);
-             ret = -1;
+@@ -464,8 +464,8 @@ static void migration_ioc_shutdown_gracefully(QIOChannel *ioc)
+          */
+         migration_tls_channel_end(ioc, &local_err);
+         if (local_err) {
+-            warn_report("Failed to gracefully terminate TLS connection: %s",
+-                        error_get_pretty(local_err));
++            warn_reportf_err(local_err,
++                        "Failed to gracefully terminate TLS connection: ");
          }
      }
-@@ -988,6 +989,7 @@ bool multifd_send_setup(void)
-         ret = multifd_send_state->ops->send_setup(p, &local_err);
-         if (ret) {
-             migrate_set_error(s, local_err);
-+            error_free(local_err);
-             goto err;
-         }
-         assert(p->iov);
+ 
 -- 
 2.50.1
 
