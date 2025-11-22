@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5117CC7D7C9
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2570C7D7CF
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMuoH-0008Qz-1c; Sat, 22 Nov 2025 16:06:22 -0500
+	id 1vMuoj-0008Vp-Na; Sat, 22 Nov 2025 16:06:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMuo8-0008Nv-8h; Sat, 22 Nov 2025 16:06:14 -0500
+ id 1vMuoe-0008VH-9P; Sat, 22 Nov 2025 16:06:44 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMunx-0006bi-8z; Sat, 22 Nov 2025 16:06:07 -0500
+ id 1vMuoV-0006hD-Jz; Sat, 22 Nov 2025 16:06:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5B33E16D301;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6C40816D302;
  Sun, 23 Nov 2025 00:03:34 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 126183223D5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 24E9B3223D6;
  Sun, 23 Nov 2025 00:03:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [Stable-7.2.22 07/25] linux-user: permit sendto() with NULL buf and 0
- len
-Date: Sat, 22 Nov 2025 23:55:25 +0300
-Message-ID: <20251122210344.48374-7-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 08/25] io: add trace event when cancelling TLS
+ handshake
+Date: Sat, 22 Nov 2025 23:55:26 +0300
+Message-ID: <20251122210344.48374-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
@@ -61,71 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-If you pass sendto() a NULL buffer, this is usually an error
-(causing an EFAULT return); however if you pass a 0 length then
-we should not try to validate the buffer provided. Instead we
-skip the copying of the user data and possible processing
-through fd_trans_target_to_host_data, and call the host syscall
-with NULL, 0.
-
-(unlock_user() permits a NULL buffer pointer for "do nothing"
-so we don't need to special case the unlock code.)
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3102
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251028142001.3011630-1-peter.maydell@linaro.org>
-(cherry picked from commit 0db2de22fcbf90adafab9d9dd1fc8203c66bfa75)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 003f15369de4e290a4d2e58292d96c5a506e4ee6)
+(Mjt: pick this commit up so that the next changes applies (more) cleanly)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 737065c28c..93b66bd2d7 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -3529,7 +3529,7 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
-                           abi_ulong target_addr, socklen_t addrlen)
- {
-     void *addr;
--    void *host_msg;
-+    void *host_msg = NULL;
-     void *copy_msg = NULL;
-     abi_long ret;
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index a91efb57f3..686271acf7 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -380,6 +380,7 @@ static int qio_channel_tls_close(QIOChannel *ioc,
+     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
  
-@@ -3537,16 +3537,19 @@ static abi_long do_sendto(int fd, abi_ulong msg, size_t len, int flags,
-         return -TARGET_EINVAL;
+     if (tioc->hs_ioc_tag) {
++        trace_qio_channel_tls_handshake_cancel(ioc);
+         g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
      }
  
--    host_msg = lock_user(VERIFY_READ, msg, len, 1);
--    if (!host_msg)
--        return -TARGET_EFAULT;
--    if (fd_trans_target_to_host_data(fd)) {
--        copy_msg = host_msg;
--        host_msg = g_malloc(len);
--        memcpy(host_msg, copy_msg, len);
--        ret = fd_trans_target_to_host_data(fd)(host_msg, len);
--        if (ret < 0) {
--            goto fail;
-+    if (len != 0) {
-+        host_msg = lock_user(VERIFY_READ, msg, len, 1);
-+        if (!host_msg) {
-+            return -TARGET_EFAULT;
-+        }
-+        if (fd_trans_target_to_host_data(fd)) {
-+            copy_msg = host_msg;
-+            host_msg = g_malloc(len);
-+            memcpy(host_msg, copy_msg, len);
-+            ret = fd_trans_target_to_host_data(fd)(host_msg, len);
-+            if (ret < 0) {
-+                goto fail;
-+            }
-         }
-     }
-     if (target_addr) {
+diff --git a/io/trace-events b/io/trace-events
+index 3cc5cf1efd..d4c0f84a9a 100644
+--- a/io/trace-events
++++ b/io/trace-events
+@@ -43,6 +43,7 @@ qio_channel_tls_handshake_start(void *ioc) "TLS handshake start ioc=%p"
+ qio_channel_tls_handshake_pending(void *ioc, int status) "TLS handshake pending ioc=%p status=%d"
+ qio_channel_tls_handshake_fail(void *ioc) "TLS handshake fail ioc=%p"
+ qio_channel_tls_handshake_complete(void *ioc) "TLS handshake complete ioc=%p"
++qio_channel_tls_handshake_cancel(void *ioc) "TLS handshake cancel ioc=%p"
+ qio_channel_tls_credentials_allow(void *ioc) "TLS credentials allow ioc=%p"
+ qio_channel_tls_credentials_deny(void *ioc) "TLS credentials deny ioc=%p"
+ 
 -- 
 2.47.3
 
