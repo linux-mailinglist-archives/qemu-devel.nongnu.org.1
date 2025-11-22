@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765EDC7D806
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80C1C7D7E4
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:14:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMus4-0001dY-SY; Sat, 22 Nov 2025 16:10:18 -0500
+	id 1vMusX-0001lW-Gf; Sat, 22 Nov 2025 16:10:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMurw-0001cR-7v; Sat, 22 Nov 2025 16:10:08 -0500
+ id 1vMusR-0001kg-AC; Sat, 22 Nov 2025 16:10:39 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMurj-0007KH-Nh; Sat, 22 Nov 2025 16:10:03 -0500
+ id 1vMusF-0007PT-VF; Sat, 22 Nov 2025 16:10:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A05916D30F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9EA1216D310;
  Sun, 23 Nov 2025 00:03:35 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3FBD73223E3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 549B03223E4;
  Sun, 23 Nov 2025 00:03:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.22 21/25] hw/net/e1000e_core: Adjust
- e1000e_write_payload_frag_to_rx_buffers() assert
-Date: Sat, 22 Nov 2025 23:55:39 +0300
-Message-ID: <20251122210344.48374-21-mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 22/25] net: pad packets to minimum length in
+ qemu_receive_packet()
+Date: Sat, 22 Nov 2025 23:55:40 +0300
+Message-ID: <20251122210344.48374-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
@@ -61,61 +61,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-An assertion in e1000e_write_payload_frag_to_rx_buffers() attempts to
-guard against the calling code accidentally trying to write too much
-data to a single RX descriptor, such that the E1000EBAState::cur_idx
-indexes off the end of the EB1000BAState::written[] array.
+In commits like 969e50b61a28 ("net: Pad short frames to minimum size
+before sending from SLiRP/TAP") we switched away from requiring
+network devices to handle short frames to instead having the net core
+code do the padding of short frames out to the ETH_ZLEN minimum size.
+We then dropped the code for handling short frames from the network
+devices in a series of commits like 140eae9c8f7 ("hw/net: e1000:
+Remove the logic of padding short frames in the receive path").
 
-Unfortunately it is overzealous: it asserts that cur_idx is in
-range after it has been incremented. This will fire incorrectly
-for the case where the guest configures four buffers and exactly
-enough bytes are written to fill all four of them.
+This missed one route where the device's receive code can still see a
+short frame: if the device is in loopback mode and it transmits a
+short frame via the qemu_receive_packet() function, this will be fed
+back into its own receive code without being padded.
 
-The only places where we use cur_idx and index in to the written[]
-array are the functions e1000e_write_hdr_frag_to_rx_buffers() and
-e1000e_write_payload_frag_to_rx_buffers(), so we can rewrite this to
-assert before doing the array dereference, rather than asserting
-after updating cur_idx.
+Add the padding logic to qemu_receive_packet().
+
+This fixes a buffer overrun which can be triggered in the
+e1000_receive_iov() logic via the loopback code path.
+
+Other devices that use qemu_receive_packet() to implement loopback
+are cadence_gem, dp8393x, lan9118, msf2-emac, pcnet, rtl8139
+and sungem.
 
 Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3043
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit bab496a18358643b686f69e2b97d73fb98d37e79)
-(Mjt: in 7.2.x it is e1000e_write_to_rx_buffers, not
- e1000e_write_payload_frag_to_rx_buffers, due to missing in 7.2.x
- v8.1.0-693-g17ccd0164796 "igb: RX payload guest writting refactoring")
+(cherry picked from commit a01344d9d78089e9e585faaeb19afccff2050abf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index deb070d17e..14bf3ee948 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -1411,10 +1411,13 @@ e1000e_write_to_rx_buffers(E1000ECore *core,
-                            dma_addr_t data_len)
- {
-     while (data_len > 0) {
--        uint32_t cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
--        uint32_t cur_buf_bytes_left = cur_buf_len -
--                                      bastate->written[bastate->cur_idx];
--        uint32_t bytes_to_write = MIN(data_len, cur_buf_bytes_left);
-+        uint32_t cur_buf_len, cur_buf_bytes_left, bytes_to_write;
-+
-+        assert(bastate->cur_idx < MAX_PS_BUFFERS);
-+
-+        cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
-+        cur_buf_bytes_left = cur_buf_len - bastate->written[bastate->cur_idx];
-+        bytes_to_write = MIN(data_len, cur_buf_bytes_left);
+diff --git a/net/net.c b/net/net.c
+index c3391168f6..40db3b5dc0 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -728,10 +728,20 @@ ssize_t qemu_send_packet(NetClientState *nc, const uint8_t *buf, int size)
  
-         trace_e1000e_rx_desc_buff_write(bastate->cur_idx,
-                                         (*ba)[bastate->cur_idx],
-@@ -1433,8 +1436,6 @@ e1000e_write_to_rx_buffers(E1000ECore *core,
-         if (bastate->written[bastate->cur_idx] == cur_buf_len) {
-             bastate->cur_idx++;
-         }
--
--        assert(bastate->cur_idx < MAX_PS_BUFFERS);
+ ssize_t qemu_receive_packet(NetClientState *nc, const uint8_t *buf, int size)
+ {
++    uint8_t min_pkt[ETH_ZLEN];
++    size_t min_pktsz = sizeof(min_pkt);
++
+     if (!qemu_can_receive_packet(nc)) {
+         return 0;
      }
+ 
++    if (net_peer_needs_padding(nc)) {
++        if (eth_pad_short_frame(min_pkt, &min_pktsz, buf, size)) {
++            buf = min_pkt;
++            size = min_pktsz;
++        }
++    }
++
+     return qemu_net_queue_receive(nc->incoming_queue, buf, size);
  }
  
 -- 
