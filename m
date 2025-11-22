@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30C3C7C1F5
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 02:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E26C7CA72
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 09:14:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcjd-0000US-Gk; Fri, 21 Nov 2025 20:48:22 -0500
+	id 1vMcnE-0003Qp-Pe; Fri, 21 Nov 2025 20:52:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTQ-0006c9-CF
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbVG-0007e6-UT
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:29:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTG-0003du-1Q
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:30 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTF-0003e0-FK
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:29:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771224;
+ s=mimecast20190719; t=1763771225;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QQqUtJS6s4eQNmQ6rnbU7MPx5N969oxd9HmJpVpakkI=;
- b=NnUT6wxlxAzw2Tu7lmNrxna3SaeI9QI/dKQwYZEBx/tmZ0n0XC8S8jG25uz7HumuQbj/d2
- pq//d2wgWR65JhW+VhAQw/GWXpV92koIFGOFKp6wwzUSvvnKxuNvXhBGryol0GR8xJKcck
- tkECyJ/blHsPQSf3BRUuy0ezO2THaPU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
+ b=X1ElYhYOvCn5SKs4D0d6xa2tFYt7n8kb1UJ18NQEl/UlfSSWMx8lujXZvtjij4gJ8MDvUK
+ 9FUeRXhfPDI7LPWUuhk9otleR82VJclnddU7pSDG7j3iUBVQ2Nck3okE9HuLv+UBaLtMIZ
+ e341PONIumJoqDpwoACSVaH936sWcW8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-Hvuxbo81OHa3Jn8-xd5Ncw-1; Fri, 21 Nov 2025 19:27:02 -0500
-X-MC-Unique: Hvuxbo81OHa3Jn8-xd5Ncw-1
-X-Mimecast-MFC-AGG-ID: Hvuxbo81OHa3Jn8-xd5Ncw_1763771222
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4ee41b07099so28309491cf.2
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:02 -0800 (PST)
+ us-mta-274-2f0ZQ3S1MR2VXIWDzXtGWA-1; Fri, 21 Nov 2025 19:27:03 -0500
+X-MC-Unique: 2f0ZQ3S1MR2VXIWDzXtGWA-1
+X-Mimecast-MFC-AGG-ID: 2f0ZQ3S1MR2VXIWDzXtGWA_1763771223
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-8b17194d321so339938785a.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763771222; x=1764376022; darn=nongnu.org;
+ d=redhat.com; s=google; t=1763771223; x=1764376023; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QQqUtJS6s4eQNmQ6rnbU7MPx5N969oxd9HmJpVpakkI=;
- b=MzSTRVhXPpk+0e1eKNuZVi+M/hk5kt9hMCB90TF3cVHOGGY5kMDd1cOPqOK4Uuwl4/
- HGvH5+zBg4mRqArfPj0hxSEqF/AZ6cQE7bTjMzPJlbteRG2MgipHCQa/jl1VFBSGn9nj
- 5YRxTCGbdNOWs9pT3CVp1uvRDaia2vbSF7C6BBlxJh9lRnR/Ph+x87x2EwtcZhzq6rc+
- z0XQyXMRnpsqPmkJ2FzkPHH6X+lI+5WKEmDkeQM1FZ+tyzd+WMAlyJv9D8hBrSlLP/93
- DFd16947NHoea+8kTP2yYrYF3mJd3loICfMVR9yyI2vjcEh45s8bcSvSbcCI5lyI03un
- dm2g==
+ bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
+ b=s8xU2/PxCB7tRO/2/HFnacGRqCYfXNaUChQWlhLhmDQXEAbLpq7xrW8w1B3HEf+WPx
+ iTaPwW1uTACJQ/6R8O/LMpVUgCVGlf8Bq8oDDZX/DrJoy0AW/W+ZlB/GNufy1XVDLR2I
+ pEIc2JOq2oQphWFfPb4wvxxVaN6xLzhKPXutk6ED6k3xING/6ey8WBzK2LvkRfi5JjeK
+ 9ZZxyg6K6oTDMRUeIqXUHp+DTbb8dNHgXv6qU2uQPVFDEvpgkPQydexPxshdeHpZ8O57
+ WNBNGaEt62ccJ2oxQmVCadvdGbhyMkD3wqnfvubVnTTS+QDCCPDgkL43ok4ywTqlp3qW
+ RmkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763771222; x=1764376022;
+ d=1e100.net; s=20230601; t=1763771223; x=1764376023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=QQqUtJS6s4eQNmQ6rnbU7MPx5N969oxd9HmJpVpakkI=;
- b=mhhs1KsYNK+1F9KOEMz5Gwbg6D8/s9PXgd+dxNx/y69TqMBip+4cC2YIsENnRKr5IS
- Tb1/HUffyXDr4wJpXNHBGVgTueLEJqCzdRmV0Sb67ZJzt6n14BxpPU2yZhWSPQY8SQxU
- tkheWelntaPjlLdczKvAPaaWURR8NFVBmkOa2lNMNJNpkfSlrCRsAbyOZz0bUflZ+FFQ
- dGd6TIyeF3+9IRcH+dp++EIJrCjK7UFHUk/UxWbJkvYBZKNcvgt4rS14EGR6B9GYCZFi
- WvuxHxVKinOcuP93atpqZNDFYOXvXJilEZyFf2sUwIz1u+Gdv9RvSFPhuZWbcWmyezJ3
- rhhg==
-X-Gm-Message-State: AOJu0YyIa6mGWfiEHgaJqWG0GKTWWFkxiMBH2zt3kIKTHI/1mfeh7BRB
- GLH+laeIkFGv1d+TfAg/L3JDwJcu8caJBvTG6YVTbDtVt/Sq6+EspMRW/xJNWmm+Y161Onc5Npy
- ONYN8lefU0eppczeOaoc+zT42OM3zPVhghB/6slIMXfL93K1TaukSrnbpzFpDPLUUVh0nLBTX9J
- DS/cUcvLYgIQYjnvRuV3cDO4zCgmN+/lZG9pwx9Q==
-X-Gm-Gg: ASbGncssI9dPgmltj9ttFtN0uvxwVMt0VMoZu2etP72gqDBzpGkTjvdoy3ZlS6EbdW8
- 1Ypqq6lb5nI0WTn0DWW3oocnk+yzKJe3iLqEVDHnfAE17+gbcxagTrMEiRh6PSzFrdlmQLY0jbQ
- Eo/3SbTwRxzKockd9oarbfznU/yZBcSiKtIEAK2UI9sKEJ70glr6VJDni7sJ1hxCXy0OI062B4J
- fzJo54qIy0bcDbIkxLsqLgAozvV2YwOA+4Q3A20Pjnuj/5Ls4igH39syR/4qwCXMlDbKul4gQHF
- oKJK1qYaKczam2rAwLiO6m9B2ZpDVqeMdCpD3IoyNYT9oK3g+8iXHZ719UGbN1/QF6h/a5psM0h
- D
-X-Received: by 2002:ac8:5e0e:0:b0:4ed:b47d:8f68 with SMTP id
- d75a77b69052e-4ee58841a89mr50437661cf.15.1763771221821; 
- Fri, 21 Nov 2025 16:27:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE/UemtddXhN4vBrN899zt+bLX9Lwt5VAvY8p62EQ+z4AMiHCqhLYebivk3p5tj+9iLXOOezQ==
-X-Received: by 2002:ac8:5e0e:0:b0:4ed:b47d:8f68 with SMTP id
- d75a77b69052e-4ee58841a89mr50437381cf.15.1763771221302; 
- Fri, 21 Nov 2025 16:27:01 -0800 (PST)
+ bh=SudVAchgZ3enzSuaz6qNw29hKeE4PlULQA5kP/QnNrU=;
+ b=EpwBP0UOaS4+UfDYtdGNojNgGWUkHnwS0gskgy8Jne0gPAGK30T7NGi2KR4vOHOSZp
+ KhgOsqJ5aUCF4uagvbpfZ3FQmnZW3j+4LpTsq/7ZZnlJWkcz1EOmQuqV8ZIHi83qKM0q
+ jLIwW3RMMOs9vRZw457SNOY9GP6nMopxZ3hX8jXPZmFrbctI9elthWjsglRAW3qtHZsW
+ b6bVrUZUnPnHEODKDMm9zqzV5G4GQWiMGqkgXkUDqT8DctqwAbltx58PuIKceQfBOolX
+ wgLDSDYnv+YlI/tCxnsgJ0vgS3S+oWjjtW/mEl9pzTVSkh0ku3DEX3bC427KaDN1yxXY
+ ro0g==
+X-Gm-Message-State: AOJu0Yz1WdizQ21iBL4s+apOz1dGZ5GaNnNDs8Zhz6Dq7oz4S4xNiep9
+ MpztJKFM4YtthhoKrQ+B3qDi2kPu/AxB1siEPLHbSNQLwiOq1lfBPxquNPBoyJ8zj9Ss5/8bNtX
+ 9bmdPYSr8CGW4ooOyZ0/pyMxQPo4XivTaKFhrkQwNJJs+jlzdUMsizYFBtBDnNdpaamVqTrdnqX
+ sB7e0Lf6EnNpVxePnDizW39dmYeXId0tP6vJuPmw==
+X-Gm-Gg: ASbGncuaXVJpisbslqv+atHYrYn1ckngpgQ0xKk8hh8mm271GvxxLYMJuEyP9tqqb3G
+ xWoHZxj8Uf1EHh8y7fWY7fYwQ1dNUwpquoch+HxsJVR0+6bWgHh2D63f8Z0OOzsNi/AJGMlBKZJ
+ xInrwUeDZgjsiML9S03nWe5BEQPKB8a1IkxECvEcU9s6U7C4sAdYVmLX4pmEtZjNDD7g0AFjemh
+ g0bSMi6GbFt24ybKLSvcIWAx7pZ7dw1wzP27FPziu0WhOJPc8U3lkvH2eSjIdxDhr30bT/wTyyV
+ mY3DLII3h6B4m1daxJfF8wY7BXjesoSnq6WpIWLpEgaFuJpBI9ZvnRbEU0KUk+wSWPtAK12MGkb
+ z
+X-Received: by 2002:a05:622a:d5:b0:4ee:15e7:d9c6 with SMTP id
+ d75a77b69052e-4ee58911324mr70422021cf.53.1763771222802; 
+ Fri, 21 Nov 2025 16:27:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCfUP1AUWM8ZWKgbzEJLUfgTloUcvu2D55Fx3WDliRSBqUEbRl6tFl7L0k4IdntCouJSxeug==
+X-Received: by 2002:a05:622a:d5:b0:4ee:15e7:d9c6 with SMTP id
+ d75a77b69052e-4ee58911324mr70421701cf.53.1763771222215; 
+ Fri, 21 Nov 2025 16:27:02 -0800 (PST)
 Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.26.59
+ d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.27.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 16:27:00 -0800 (PST)
+ Fri, 21 Nov 2025 16:27:01 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 2/9] migration: set correct list pointer when removing notifier
-Date: Fri, 21 Nov 2025 19:26:48 -0500
-Message-ID: <20251122002656.687350-3-peterx@redhat.com>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 3/9] migration: Plug memory leaks after migrate_set_error()
+Date: Fri, 21 Nov 2025 19:26:49 -0500
+Message-ID: <20251122002656.687350-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251122002656.687350-1-peterx@redhat.com>
 References: <20251122002656.687350-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,36 +108,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matthew Rosato <mjrosato@linux.ibm.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-In migration_remove_notifier(), g_slist_remove() will search for and
-potentially remove an entry from the specified list.  The return value
-should be used to update the potentially-changed head pointer of the
-list that was just searched (migration_state_notifiers[mode]) instead
-of the migration blockers list.
+migrate_set_error(s, err) stores a copy of @err in @s.  The original
+@err is not freed.  Most callers free it immediately.  Some callers
+free it later, or pass it on.  And some leak it.  Fix those.
 
-Fixes: dc79c7d5e1 ("migration: multi-mode notifier")
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/20251113213545.513453-1-mjrosato@linux.ibm.com
+Perhaps migrate_set_error(s, err) should take ownership of @err.  The
+callers that free it immediately would become simpler, and avoid a
+copy and a deallocation.  The others would have to pass
+error_copy(err).
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Link: https://lore.kernel.org/r/20251115083500.2753895-2-armbru@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/cpr-exec.c | 3 ++-
+ migration/multifd.c  | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 1b2c02d7fa..b316ee01ab 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1693,7 +1693,7 @@ void migration_remove_notifier(NotifierWithReturn *notify)
- {
-     if (notify->notify) {
-         for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
--            migration_blockers[mode] =
-+            migration_state_notifiers[mode] =
-                 g_slist_remove(migration_state_notifiers[mode], notify);
+diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
+index d284f6e734..0b8344a86f 100644
+--- a/migration/cpr-exec.c
++++ b/migration/cpr-exec.c
+@@ -159,11 +159,12 @@ static void cpr_exec_cb(void *opaque)
+     error_report_err(error_copy(err));
+     migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+     migrate_set_error(s, err);
++    error_free(err);
++    err = NULL;
+ 
+     /* Note, we can go from state COMPLETED to FAILED */
+     migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
+ 
+-    err = NULL;
+     if (!migration_block_activate(&err)) {
+         /* error was already reported */
+         error_free(err);
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 98873cee74..a529c399e4 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -964,6 +964,7 @@ bool multifd_send_setup(void)
+ 
+         if (!multifd_new_send_channel_create(p, &local_err)) {
+             migrate_set_error(s, local_err);
++            error_free(local_err);
+             ret = -1;
          }
-         notify->notify = NULL;
+     }
+@@ -988,6 +989,7 @@ bool multifd_send_setup(void)
+         ret = multifd_send_state->ops->send_setup(p, &local_err);
+         if (ret) {
+             migrate_set_error(s, local_err);
++            error_free(local_err);
+             goto err;
+         }
+         assert(p->iov);
 -- 
 2.50.1
 
