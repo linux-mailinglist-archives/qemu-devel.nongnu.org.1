@@ -2,44 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40E4C7D800
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E0EC7D7E1
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:14:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMupt-0000TP-Qt; Sat, 22 Nov 2025 16:08:03 -0500
+	id 1vMuqc-0000ec-8J; Sat, 22 Nov 2025 16:08:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMupk-0000SX-OX; Sat, 22 Nov 2025 16:07:52 -0500
+ id 1vMuqH-0000bl-3z; Sat, 22 Nov 2025 16:08:30 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMupb-0006wb-4W; Sat, 22 Nov 2025 16:07:48 -0500
+ id 1vMuq7-00072c-74; Sat, 22 Nov 2025 16:08:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DAAD516D307;
- Sun, 23 Nov 2025 00:03:34 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0310216D308;
+ Sun, 23 Nov 2025 00:03:35 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8A6E53223DB;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A47903223DC;
  Sun, 23 Nov 2025 00:03:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, "Richard W.M. Jones" <rjones@redhat.com>,
- Chenxi Mao <maochenxi@bosc.ac.cn>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.22 13/25] block/curl.c: Use explicit long constants in
- curl_easy_setopt calls
-Date: Sat, 22 Nov 2025 23:55:31 +0300
-Message-ID: <20251122210344.48374-13-mjt@tls.msk.ru>
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 14/25] block/curl.c: Fix CURLOPT_VERBOSE parameter type
+Date: Sat, 22 Nov 2025 23:55:32 +0300
+Message-ID: <20251122210344.48374-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -66,72 +59,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Richard W.M. Jones" <rjones@redhat.com>
 
-curl_easy_setopt takes a variable argument that depends on what
-CURLOPT you are setting.  Some require a long constant.  Passing a
-plain int constant is potentially wrong on some platforms.
+In commit ed26056d90 ("block/curl.c: Use explicit long constants in
+curl_easy_setopt calls") we missed a further call that takes a long
+parameter.
 
-With warnings enabled, multiple warnings like this were printed:
-
-../block/curl.c: In function ‘curl_init_state’:
-../block/curl.c:474:13: warning: call to ‘_curl_easy_setopt_err_long’ declared with attribute warning: curl_easy_setopt expects a long argument [-Wattribute-warning]
-  474 |             curl_easy_setopt(state->curl, CURLOPT_AUTOREFERER, 1) ||
-      |             ^
-
+Reported-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-Signed-off-by: Chenxi Mao <maochenxi@bosc.ac.cn>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251009141026.4042021-2-rjones@redhat.com>
-(cherry picked from commit ed26056d90ddff21351f3efd2cb47fea4f0e1d45)
+Message-ID: <20251013124127.604401-1-rjones@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit ad97769e9dcf4dbdaae6d859176e5f37fd6a7c66)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/block/curl.c b/block/curl.c
-index f9c5a1c182..d2b094802e 100644
+index d2b094802e..3b6f18d02c 100644
 --- a/block/curl.c
 +++ b/block/curl.c
-@@ -478,11 +478,11 @@ static int curl_init_state(BDRVCURLState *s, CURLState *state)
-                              (void *)curl_read_cb) ||
-             curl_easy_setopt(state->curl, CURLOPT_WRITEDATA, (void *)state) ||
-             curl_easy_setopt(state->curl, CURLOPT_PRIVATE, (void *)state) ||
--            curl_easy_setopt(state->curl, CURLOPT_AUTOREFERER, 1) ||
--            curl_easy_setopt(state->curl, CURLOPT_FOLLOWLOCATION, 1) ||
--            curl_easy_setopt(state->curl, CURLOPT_NOSIGNAL, 1) ||
-+            curl_easy_setopt(state->curl, CURLOPT_AUTOREFERER, 1L) ||
-+            curl_easy_setopt(state->curl, CURLOPT_FOLLOWLOCATION, 1L) ||
-+            curl_easy_setopt(state->curl, CURLOPT_NOSIGNAL, 1L) ||
-             curl_easy_setopt(state->curl, CURLOPT_ERRORBUFFER, state->errmsg) ||
--            curl_easy_setopt(state->curl, CURLOPT_FAILONERROR, 1)) {
-+            curl_easy_setopt(state->curl, CURLOPT_FAILONERROR, 1L)) {
+@@ -531,7 +531,7 @@ static int curl_init_state(BDRVCURLState *s, CURLState *state)
+ #endif
+ 
+ #ifdef DEBUG_VERBOSE
+-        if (curl_easy_setopt(state->curl, CURLOPT_VERBOSE, 1)) {
++        if (curl_easy_setopt(state->curl, CURLOPT_VERBOSE, 1L)) {
              goto err;
          }
-         if (s->username) {
-@@ -805,7 +805,7 @@ static int curl_open(BlockDriverState *bs, QDict *options, int flags,
-     }
- 
-     s->accept_range = false;
--    if (curl_easy_setopt(state->curl, CURLOPT_NOBODY, 1) ||
-+    if (curl_easy_setopt(state->curl, CURLOPT_NOBODY, 1L) ||
-         curl_easy_setopt(state->curl, CURLOPT_HEADERFUNCTION, curl_header_cb) ||
-         curl_easy_setopt(state->curl, CURLOPT_HEADERDATA, s)) {
-         pstrcpy(state->errmsg, CURL_ERROR_SIZE,
-diff --git a/contrib/elf2dmp/download.c b/contrib/elf2dmp/download.c
-index bd7650a7a2..e0c1075446 100644
---- a/contrib/elf2dmp/download.c
-+++ b/contrib/elf2dmp/download.c
-@@ -28,8 +28,8 @@ int download_url(const char *name, const char *url)
-     if (curl_easy_setopt(curl, CURLOPT_URL, url) != CURLE_OK
-             || curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL) != CURLE_OK
-             || curl_easy_setopt(curl, CURLOPT_WRITEDATA, file) != CURLE_OK
--            || curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1) != CURLE_OK
--            || curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0) != CURLE_OK
-+            || curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L) != CURLE_OK
-+            || curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L) != CURLE_OK
-             || curl_easy_perform(curl) != CURLE_OK) {
-         unlink(name);
-         fclose(file);
+ #endif
 -- 
 2.47.3
 
