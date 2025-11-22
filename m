@@ -2,98 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39CAC7C270
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF9BC7C3CF
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:02:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcmY-0002up-07; Fri, 21 Nov 2025 20:51:24 -0500
+	id 1vMd4H-0002Vl-KX; Fri, 21 Nov 2025 21:09:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTY-0006hs-Ul
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vMclI-0001MX-Rh
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:50:04 -0500
+Received: from out28-66.mail.aliyun.com ([115.124.28.66])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTN-0003hB-IY
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771234;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V76MNTnyuhhXMHGtNeIBFZdzBP6SOZz/Nq+ucjRpHnY=;
- b=K+3yM9RdsYJTLAmqQaatW9gtXw8KujZlueZiaemfoLA1MxK7QbOsr84qH+O7pkLKN35Fyc
- EmLO6t+6UQmTDLNI791Px51xtWO8mtfF/3E+1GLP09fHRmTyYHVoHanz2gGRiYMK91xelL
- pUrzp7c63gNQKHPdeIyxijlusMpgF8w=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-BRyUGonfOL-gl0Co6SZBQg-1; Fri, 21 Nov 2025 19:27:13 -0500
-X-MC-Unique: BRyUGonfOL-gl0Co6SZBQg-1
-X-Mimecast-MFC-AGG-ID: BRyUGonfOL-gl0Co6SZBQg_1763771232
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-4edb35b1147so61896881cf.0
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763771232; x=1764376032; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V76MNTnyuhhXMHGtNeIBFZdzBP6SOZz/Nq+ucjRpHnY=;
- b=AbMAq/uymFt6GyXagiT/7PDtWEXsaeJfvNvQMCl8FiF4dAMmAGoqUKN/HEq+g4Oe7a
- v/Y5t7UWus2lW7GFo+MZPGWSnzIoTvRcW7PPXPC8FDATG0JAjjsk1d1WTYFHyB/KyoSo
- SISWnijk9vjDr1AOkctFAmPMkc0NNKJOdsE0wifpND22NN1fDDDWQUGqJMYwH0YRNT57
- 7D4A+IKjR+zZ7sfSjTkmTEx+SF6i66wBnChlUWDsJ6H0q3hp7/giT0/K4F1bjJ6NthIS
- /b6+US3CldL2YpXVtNDbUsQT+XmcG4eqrTLGRel0wMcPEVcXDIh3kaRqAp4+9lUIzy4u
- kLaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763771232; x=1764376032;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=V76MNTnyuhhXMHGtNeIBFZdzBP6SOZz/Nq+ucjRpHnY=;
- b=vbl3l+/Yg/UBD0g84IvpzdVeAuyJ5bOWsafvQ+9USXozjLC/mn5YUxjSPCqtP9+Yaw
- kWlsQCDKrBVQVZsNWdYk3OA1aBh/rWgMpKrC6CVA8QBxtqri8u2ZRRUtwgSt9iNr1iwX
- FC2KuSWWuT9C/w56Z+WhVtc1DM4qwZooT80g2L+w37CnsGbNabHdI3kdlb75VwJ6RkGV
- wGeTqB3Z8V9DN8+LCcbFZ+wp5Gtbabam2Jx3KNbowHeeP3J7FaUcT6gosttbkDuDv4p6
- bI7jqszYB/QLN27AjF6cZn28aPz440PkHlLElp7F4xYZkadW/2A/oiqCFbrnvHh+EQUn
- LogA==
-X-Gm-Message-State: AOJu0YxwLF1V1gajkhiTGPKOHfPt+dn60ynGmzcvQWTWZms+I4l4ESRr
- 1o+ycZYiWKQ8FxEd1gAU+58JS8rZVGGRy2FwwDLDGplNPDUBrAac6FBTbhJieDRUkJHBdSpxTom
- pTBVng2lwK9eVttCnypfaiazENTu2jm2HpSeuJPesOVuzVc3yo6mjT45ISKQdfwluyz4Gn/UBra
- Wt8D61m+DvT0uusQZ/ILOBpi1L8qbBkY/fcLQYbg==
-X-Gm-Gg: ASbGnctpqvQnYOORgCzAdMCo8NKPFMR8+lDJfb6NNkjLKsjQ4tfgfGaSteJWp+p5fdT
- j7rDu/pZyRBT1XNTIZjYtTl44b7CCNcZZIY77fhmjz80y6Y9TYK2dC/6665pInbz/mXao+lHEj4
- 2pb8Y7sSMIzCEcIn8GYZuCKt0W6ne4R1HvPs9v+sZJ5gPk6zIiwRRrleRzAtryBnU9LbWCHA8EM
- keMF17NmG3qZ+PeAdLPkyaOuyDrcZNhFLtLes9YjT7qHLZChODfdUvHZ8Eoui35eNV3+cEzGhZ/
- j6t0XIQRHP0wVH86TdbYdm/gHFmwQO+R2JEON6YzKj/CTeC0XJbK/Q4nUjjzypegS9f7/Z4QQpn
- 4
-X-Received: by 2002:ac8:7f14:0:b0:4ee:b2b:aa23 with SMTP id
- d75a77b69052e-4ee58801af5mr54219131cf.15.1763771232116; 
- Fri, 21 Nov 2025 16:27:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHOI/YTYGISscJwTlqQvpI+y94/nKvDemeAVm3XbDnRWVbMY+8mKndOHO3TN28aCWc6JFWtZg==
-X-Received: by 2002:ac8:7f14:0:b0:4ee:b2b:aa23 with SMTP id
- d75a77b69052e-4ee58801af5mr54218721cf.15.1763771231481; 
- Fri, 21 Nov 2025 16:27:11 -0800 (PST)
-Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.27.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 16:27:10 -0800 (PST)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 9/9] tests/migration-test: Use MEM_TYPE_MEMFD for memory_backend
-Date: Fri, 21 Nov 2025 19:26:55 -0500
-Message-ID: <20251122002656.687350-10-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251122002656.687350-1-peterx@redhat.com>
-References: <20251122002656.687350-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vMcjH-0005Ds-0I
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 20:50:01 -0500
+Received: from Sun.localdomain(mailfrom:mail@jiesong.me
+ fp:SMTPD_---.fT0U-1w_1763776042 cluster:ay29) by smtp.aliyun-inc.com;
+ Sat, 22 Nov 2025 09:47:27 +0800
+From: Jie Song <mail@jiesong.me>
+To: eblake@redhat.com, armbru@redhat.com, berrange@redhat.com,
+ qemu-devel@nongnu.org
+Cc: mail@jiesong.me,
+	songjie_yewu@cmss.chinamobile.com
+Subject: [PATCH v3] monitor/qmp: cleanup SocketChardev listener sources early
+ to avoid fd handling race
+Date: Sat, 22 Nov 2025 09:46:56 +0800
+Message-ID: <20251122014656.297693-1-mail@jiesong.me>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=115.124.28.66; envelope-from=mail@jiesong.me;
+ helo=out28-66.mail.aliyun.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,82 +47,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only two users of memory_backend as of now (cpr-exec, cpr-transfer)
-uses memfd as backend, now we fully support it.  We can move memory_backend
-usage to mem_type and drop it.
+From: Jie Song <songjie_yewu@cmss.chinamobile.com>
 
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20251117223908.415965-5-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
+When starting a dummy QEMU process with virsh version, monitor_init_qmp()
+enables IOThread monitoring of the QMP fd by default. However, a race
+condition exists during the initialization phase: the IOThread only removes
+the main thread's fd watch when it reaches qio_net_listener_set_client_func_full(),
+which may be delayed under high system load.
+
+This creates a window between monitor_qmp_setup_handlers_bh() and
+qio_net_listener_set_client_func_full() where both the main thread and
+IOThread are simultaneously monitoring the same fd and processing events.
+This race can cause either the main thread or the IOThread to hang and
+become unresponsive.
+
+Fix this by proactively cleaning up the listener's IO sources in
+monitor_init_qmp() before the IOThread initializes QMP monitoring,
+ensuring exclusive fd ownership and eliminating the race condition.
+
+Signed-off-by: Jie Song <songjie_yewu@cmss.chinamobile.com>
 ---
- tests/qtest/migration/framework.h |  5 -----
- tests/qtest/migration/cpr-tests.c |  6 ++----
- tests/qtest/migration/framework.c | 10 +++-------
- 3 files changed, 5 insertions(+), 16 deletions(-)
+Changes in v3:
+- Use a more general method to fix the problem.
+- Link to v2:
+  https://lore.kernel.org/qemu-devel/20251117150142.131694-1-mail@jiesong.me/
+- Link to v1:
+  https://lore.kernel.org/qemu-devel/20251111150144.76751-1-mail@jiesong.me/
+---
+ chardev/char-io.c         | 8 ++++++++
+ chardev/char-socket.c     | 9 +++++++++
+ include/chardev/char-io.h | 2 ++
+ include/chardev/char.h    | 2 ++
+ monitor/qmp.c             | 5 +++++
+ 5 files changed, 26 insertions(+)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 9dec21c344..ed85ed502d 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -134,11 +134,6 @@ typedef struct {
-     bool suspend_me;
-     /* enable OOB QMP capability */
-     bool oob;
--    /*
--     * Format string for the main memory backend, containing one %s where the
--     * size is plugged in.  If omitted, "-m %s" is used.
--     */
--    const char *memory_backend;
+diff --git a/chardev/char-io.c b/chardev/char-io.c
+index 3be17b51ca..998282e526 100644
+--- a/chardev/char-io.c
++++ b/chardev/char-io.c
+@@ -182,3 +182,11 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len)
+ {
+     return io_channel_send_full(ioc, buf, len, NULL, 0);
+ }
++
++void remove_listaner_fd_in_watch(Chardev *chr)
++{
++    ChardevClass *cc = CHARDEV_GET_CLASS(chr);
++    if (cc->chr_listener_cleanup) {
++        cc->chr_listener_cleanup(chr);
++    }
++}
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 26d2f11202..39b3a76638 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -1570,6 +1570,14 @@ char_socket_get_connected(Object *obj, Error **errp)
+     return s->state == TCP_CHARDEV_STATE_CONNECTED;
+ }
  
-     /* Do not connect to target monitor and qtest sockets in qtest_init */
-     bool defer_target_connect;
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 70f8e69633..2a186c6f35 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -89,8 +89,7 @@ static void test_mode_transfer_common(bool incoming_defer)
-         .start.opts_source = opts,
-         .start.opts_target = opts_target,
-         .start.defer_target_connect = true,
--        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
--                                " -machine memory-backend=pc.ram",
-+        .start.mem_type = MEM_TYPE_MEMFD,
-         .listen_uri = incoming_defer ? "defer" : uri,
-         .connect_channels = connect_channels,
-         .cpr_channel = cpr_channel,
-@@ -235,8 +234,7 @@ static void test_mode_exec(void)
-     MigrateCommon args = {
-         .start.only_source = true,
-         .start.opts_source = "-machine aux-ram-share=on -nodefaults",
--        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
--                                " -machine memory-backend=pc.ram",
-+        .start.mem_type = MEM_TYPE_MEMFD,
-         .connect_uri = uri,
-         .listen_uri = listen_uri,
-         .start_hook = test_mode_exec_start,
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 1c662f86a9..e35839c95f 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -366,13 +366,9 @@ int migrate_args(char **from, char **to, const char *uri, MigrateStart *args)
-         ignore_stderr = "";
-     }
++static void tcp_chr_listener_cleanup(Chardev *chr)
++{
++    SocketChardev *s = SOCKET_CHARDEV(chr);
++    if (s->listener)
++        qio_net_listener_set_client_func_full(s->listener, NULL, NULL,
++                                              NULL, chr->gcontext);
++}
++
+ static void char_socket_class_init(ObjectClass *oc, const void *data)
+ {
+     ChardevClass *cc = CHARDEV_CLASS(oc);
+@@ -1587,6 +1595,7 @@ static void char_socket_class_init(ObjectClass *oc, const void *data)
+     cc->chr_add_client = tcp_chr_add_client;
+     cc->chr_add_watch = tcp_chr_add_watch;
+     cc->chr_update_read_handler = tcp_chr_update_read_handler;
++    cc->chr_listener_cleanup = tcp_chr_listener_cleanup;
  
--    if (args->memory_backend) {
--        memory_backend = g_strdup_printf(args->memory_backend, memory_size);
--    } else {
--        mem_object = migrate_mem_type_get_opts(args->mem_type, memory_size);
--        memory_backend = g_strdup_printf("-machine memory-backend=%s %s",
--                                         MIG_MEM_ID, mem_object);
--    }
-+    mem_object = migrate_mem_type_get_opts(args->mem_type, memory_size);
-+    memory_backend = g_strdup_printf("-machine memory-backend=%s %s",
-+                                     MIG_MEM_ID, mem_object);
+     object_class_property_add(oc, "addr", "SocketAddress",
+                               char_socket_get_addr, NULL,
+diff --git a/include/chardev/char-io.h b/include/chardev/char-io.h
+index ac379ea70e..087a250c70 100644
+--- a/include/chardev/char-io.h
++++ b/include/chardev/char-io.h
+@@ -43,4 +43,6 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len);
+ int io_channel_send_full(QIOChannel *ioc, const void *buf, size_t len,
+                          int *fds, size_t nfds);
  
-     if (args->use_dirty_ring) {
-         kvm_opts = ",dirty-ring-size=4096";
++void remove_listaner_fd_in_watch(Chardev *chr);
++
+ #endif /* CHAR_IO_H */
+diff --git a/include/chardev/char.h b/include/chardev/char.h
+index b65e9981c1..192cad67d4 100644
+--- a/include/chardev/char.h
++++ b/include/chardev/char.h
+@@ -307,6 +307,8 @@ struct ChardevClass {
+ 
+     /* handle various events */
+     void (*chr_be_event)(Chardev *s, QEMUChrEvent event);
++
++    void (*chr_listener_cleanup)(Chardev *chr);
+ };
+ 
+ Chardev *qemu_chardev_new(const char *id, const char *typename,
+diff --git a/monitor/qmp.c b/monitor/qmp.c
+index cb99a12d94..e2b1c49ed6 100644
+--- a/monitor/qmp.c
++++ b/monitor/qmp.c
+@@ -537,6 +537,11 @@ void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
+          * e.g. the chardev is in client mode, with wait=on.
+          */
+         remove_fd_in_watch(chr);
++        /*
++         * Clean up listener IO sources early to prevent racy fd
++         * handling between the main thread and the I/O thread.
++         */
++        remove_listaner_fd_in_watch(chr);
+         /*
+          * We can't call qemu_chr_fe_set_handlers() directly here
+          * since chardev might be running in the monitor I/O
 -- 
-2.50.1
+2.43.0
 
 
