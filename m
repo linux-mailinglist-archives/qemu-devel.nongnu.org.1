@@ -2,58 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D599C7CF93
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 13:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CB2C7D22A
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 15:05:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMmew-0000PX-GD; Sat, 22 Nov 2025 07:24:11 -0500
+	id 1vMo9c-00055Q-GG; Sat, 22 Nov 2025 08:59:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vMmeh-0000KX-Vs
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 07:23:57 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vMo9T-000505-P5; Sat, 22 Nov 2025 08:59:47 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vMmeZ-0000lB-BW
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 07:23:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=0J9T8jKan2XZotNTCzEAbhOJeFlORFCDGA2GHoJYyEI=; b=b2SDN1vsEBnzXN3WYNKr29rfJs
- FlwpGx7IYvpiUzU6+oeLISTIUA/3ew79THhDzrAe3uNdDRnpL/HX0Or5Lfqv5vceJPaRI3tz+j4BY
- 1mVPX2Q9PqOhAKNXW3jSuPRPS6YU2Yhzwqk/5I4MZjGOPBwAGC+P6SpkctrRcSjDVtbUisrVOUHpO
- xZp3VXHhL0dfX20lh+oofdpgkKRvPhoPi9dnpULIozL+HVQhDBBnfTzpE8gjAzSWKvGTE8j88d1HF
- Rg8tcVQnaS+8q+IlppH7DAAn0/VtAGUhrucwExEStY1xfL7IpDZHI0PtLvv1tKZsn7gCED+yyUUIM
- xsVK6OqEX0EsCUVbk86DMjb1NSBxPmHJJtQ/1S0Yyofl7mxr8UabCIKCDd0Bdj++7SubG78yKV+Lr
- bCMzpzX0bMwMIq+z5EHOqNIvoLpEfUKB97B84doH+x0lrFj6wCgZ1BfjjMK5YoRVN/S2gdCqTlSxp
- qOKC/jQtJUxtwRm3MRHqSIwPNAFhmP4LhUlYBC3Bs6k8FLpYFKHlguM8sUd1EREbfnk6PdjNG/laU
- 0MczrnGnDhxe40183F/eUCmpZwgDtaOPvbOCxbMV9D0EFDko5/5RSaGweCxOcNmcDPuoytnua8WVc
- yCFaSymwOyCmiRLgaehseX4+INzyjNOonkRNewLw4=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Andrey Erokhin <language.lawyer@gmail.com>
-Subject: Re: [PATCH] hw/9pfs: Follow native symlinks when security-model=mapped
-Date: Sat, 22 Nov 2025 13:23:29 +0100
-Message-ID: <4694008.LvFx2qVVIh@weasel>
-In-Reply-To: <f5fee3f9-9075-4d73-96b2-5d026500e295@gmail.com>
-References: <5e07267f-b990-47fc-ade7-934209ea942f@gmail.com>
- <13890690.uLZWGnKmhe@weasel>
- <f5fee3f9-9075-4d73-96b2-5d026500e295@gmail.com>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vMo9F-00073K-MY; Sat, 22 Nov 2025 08:59:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=AEXZEuTJIE85z2nUo6vGRF6C9CDHEnZEtlKMj8CbeT4=; b=boN+E0WV5PWDs4yp
+ E5QiNikBwzcKxOr9y3ErKBosKi8VqQlyUK8FcpSwKZRZIklWGivPv0b8RSW0Md0mlLqwACbhBB1vJ
+ 2xtO1APz5QqCPj2IB1son8z6yI2JWKjc/YisVf8Akz0AYURhVUPEbxbNHOCoqog6ksbOEZ8nbt3AA
+ M8nUp+/I6opgxD3kBK/3L9z07BOWIsUllEtVyMmhMVILtJ3RsJeXEUUUC+EDFUwvaSRJ+Fe7/WWD/
+ ixd0MwL2lJiyApfAIlZlIVvw0uVu6nd+S9a1CmPOP6ZRlcoooeZB+4RWIRymF57ys85smCTeDjJKH
+ Z3Kd2MYnSTr6//8Edg==;
+Received: from dg by mx.treblig.org with local (Exim 4.98.2)
+ (envelope-from <dg@treblig.org>) id 1vMo83-00000005wUV-2FTG;
+ Sat, 22 Nov 2025 13:58:19 +0000
+Date: Sat, 22 Nov 2025 13:58:19 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ arei.gonglei@huawei.com, pizhenwei@bytedance.com,
+ alistair.francis@wdc.com, stefanb@linux.vnet.ibm.com,
+ kwolf@redhat.com, hreitz@redhat.com, sw@weilnetz.de,
+ qemu_oss@crudebyte.com, groug@kaod.org, mst@redhat.com,
+ imammedo@redhat.com, anisinha@redhat.com, kraxel@redhat.com,
+ shentey@gmail.com, npiggin@gmail.com, harshpb@linux.ibm.com,
+ sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
+ jag.raman@oracle.com, sgarzare@redhat.com, pbonzini@redhat.com,
+ fam@euphon.net, philmd@linaro.org, alex@shazbot.org, clg@redhat.com,
+ peterx@redhat.com, farosas@suse.de, lizhijian@fujitsu.com,
+ jasowang@redhat.com, samuel.thibault@ens-lyon.org,
+ michael.roth@amd.com, kkostiuk@redhat.com, zhao1.liu@intel.com,
+ mtosatti@redhat.com, rathc@linux.ibm.com, palmer@dabbelt.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, marcandre.lureau@redhat.com,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org
+Subject: Re: [PATCH 09/14] error: Use error_setg_file_open() for simplicity
+ and consistency
+Message-ID: <aSHBez6kYRagEL1K@gallifrey>
+References: <20251120191339.756429-1-armbru@redhat.com>
+ <20251120191339.756429-10-armbru@redhat.com>
+ <aR-q2YeegIEPmk2R@gallifrey> <87see8q6qm.fsf@pond.sub.org>
+ <aSClUIvI2W-PVv6B@gallifrey> <87ecpqtt6f.fsf@pond.sub.org>
+ <05ef43e5-cc42-8e1c-2619-eb1dea12b02b@eik.bme.hu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <05ef43e5-cc42-8e1c-2619-eb1dea12b02b@eik.bme.hu>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
+X-Uptime: 13:56:00 up 26 days, 13:32,  2 users,  load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.13 (2024-03-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,35 +89,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, 21 November 2025 19:32:14 CET Andrey Erokhin wrote:
-> On 21/11/2025 17:20, Christian Schoenebeck wrote:
-> > Andrey, just some minor issues from my side below:
+* BALATON Zoltan (balaton@eik.bme.hu) wrote:
+> On Sat, 22 Nov 2025, Markus Armbruster wrote:
+> > "Dr. David Alan Gilbert" <dave@treblig.org> writes:
 > > 
-> > Git commit log message should not exceed 76 characters per line.
+> > > * Markus Armbruster (armbru@redhat.com) wrote:
+> > > > "Dr. David Alan Gilbert" <dave@treblig.org> writes:
+> > > > 
+> > > > > * Markus Armbruster (armbru@redhat.com) wrote:
+> > > > > > Replace
+> > > > > > 
+> > > > > >     error_setg_errno(errp, errno, MSG, FNAME);
+> > > > > > 
+> > > > > > by
+> > > > > > 
+> > > > > >     error_setg_file_open(errp, errno, FNAME);
+> > > > > > 
+> > > > > > where MSG is "Could not open '%s'" or similar.
+> > > > > > 
+> > > > > > Also replace equivalent uses of error_setg().
+> > > > > > 
+> > > > > > A few messages lose prefixes ("net dump: ", "SEV: ", __func__ ": ").
+> > > > > > We could put them back with error_prepend().  Not worth the bother.
+> > > > > 
+> > > > > Yeh, I guess you could just do it with another macro using
+> > > > > the same internal function just with string concatenation.
+> > > > 
+> > > > I'm no fan of such prefixes.  A sign of developers not caring enough to
+> > > > craft a good error message for *users*.  *Especially* in the case of
+> > > > __func__.
+> > > > 
+> > > > The error messages changes in question are:
+> > > > 
+> > > >     net dump: can't open DUMP-FILE: REASON
+> > > >     Could not open 'DUMP-FILE': REASON
+> > > > 
+> > > >     SEV: Failed to open SEV-DEVICE: REASON
+> > > >     Could not open 'SEV-DEVICE': REASON
+> > > > 
+> > > >     sev_common_kvm_init: Failed to open SEV_DEVICE 'REASON'
+> > > >     Could not open 'SEV-DEVICE': REASON
+> > > > 
+> > > > I think these are all improvements, and the loss of the prefix is fine.
+> > > 
+> > > Yeh, although I find the error messages aren't just for users;
+> > > they're often for the first dev to see it to guess which other
+> > > dev to pass the problem to, so a hint about where it's coming
+> > > from can be useful.
+> > 
+> > I agree!  But I think an error message must be make sense to users
+> > *first* and help developers second, and once they make sense to users,
+> > they're often good enough for developers.
+> > 
+> > The common failures I see happen when developers remain caught in the
+> > developer's perspective, and write something that makes sense to *them*.
+> > Strawman form:
+> > 
+> >    prefix: failed op[: reason]
+> > 
+> > where "prefix" is a subsystem tag, or even __func__, and "reason" is
+> > strerror() or similar.
+> > 
+> > To users, this tends to read as
+> > 
+> >    gobbledygook: techbabble[: reason]
+> > 
+> > When we care to replace "failed op" (developer's perspective) by
+> > something that actually makes sense to users, "prefix" often becomes
+> > redundant.
+> > 
+> > The error messages shown above aren't bad to begin with.  "failed to
+> > open FILE", where FILE is something the user specified, should make
+> > sense to the user.  It should also be good enough for developers even
+> > without a prefix: connecting trouble with the DUMP-FILE to dump /
+> > trouble with the SEV-DEVICE to SEV should be straightforward.
+> > 
+> > [...]
 > 
-> TBH, I'm not used to sending patches by git, it was just an e-mail message,
-> not a commit message
-
-NP. You can use whatever you want (git send-email, any standard email client, 
-a script). However patches are automatically applied from this mailing list, 
-so the leading sentences of your email *is* the git commit log message.
-
-> >> QEMU issues:
-> >> https://gitlab.com/qemu-project/qemu/-/issues/173 (from
-> >> https://bugs.launchpad.net/qemu/+bug/1831354)
-> >> https://gitlab.com/qemu-project/qemu/-/issues/3088 (dup of the first one)
-> > 
-> > This should be:
-> > 
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/173
+> I think that
 > 
-> Fixed in the attached patch. Or should I start a new [PATCH v2] thread?
+> net dump: can't open random-filename: because of some error
+> 
+> shows better where to look for the problem than just
+> 
+> Could not open 'random-filename': because of some error
+> 
+> as the latter does not tell where the file name comes from or what is it. It
+> could be added by a management application or added by the users randomly
+> without really knowing what they are doing so repeating the option or part
+> in the message that the error comes from can help to find out where to
+> correct it. Otherwise it might be difficult to guess what random-filename is
+> related to if it's not named something you'd expect.
 
-Please resend with [PATCH v2] in the subject. Patches should always be inline 
-in the email, not as an attachment, and new versions should be top posted 
-(i.e. not In-Reply-To v1 email).
+Yeh agreed.  It very much depends if you think of a 'user' as the person
+who typed a qemu command line, or pressed a button on a GUI that triggered
+15 levels of abstraction that eventually ran a qemu.
 
-/Christian
+Or for the support person who has a customer saying 'help I've got this error',
+and now needs to route it to the network person rather than something else.
 
+Dave
 
+> Regards,
+> BALATON Zoltan
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
