@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A272C7D7C0
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F195C7D7D6
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:13:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMuni-0008Bn-NX; Sat, 22 Nov 2025 16:05:47 -0500
+	id 1vMuoD-0008Oi-RY; Sat, 22 Nov 2025 16:06:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMunZ-0008BI-Ix; Sat, 22 Nov 2025 16:05:37 -0500
+ id 1vMuo5-0008Kg-K9; Sat, 22 Nov 2025 16:06:09 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vMunP-0006Jp-H5; Sat, 22 Nov 2025 16:05:34 -0500
+ id 1vMunx-0006be-1f; Sat, 22 Nov 2025 16:06:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 30BDE16D2FF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4704816D300;
  Sun, 23 Nov 2025 00:03:34 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D45583223D3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EF5B53223D4;
  Sun, 23 Nov 2025 00:03:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.22 05/25] target/i386: user: do not set up a valid LDT on
- reset
-Date: Sat, 22 Nov 2025 23:55:23 +0300
-Message-ID: <20251122210344.48374-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bastian Blank <bblank@thinkmo.de>,
+ Bastian Blank <waldi@debian.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 06/25] linux-user: Use correct type for FIBMAP and
+ FIGETBSZ emulation
+Date: Sat, 22 Nov 2025 23:55:24 +0300
+Message-ID: <20251122210344.48374-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
 References: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
@@ -58,38 +59,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Bastian Blank <bblank@thinkmo.de>
 
-In user-mode emulation, QEMU uses the default setting of the LDT base
-and limit, which places it at the bottom 64K of virtual address space.
-However, by default there is no LDT at all in Linux processes, and
-therefore the limit should be 0.
+Both the FIBMAP and FIGETBSZ ioctl get "int *" (pointer to 32bit
+integer) as argument, not "long *" as specified in qemu.  Using the
+correct type makes the emulation work in cross endian context.
 
-This is visible as a NULL pointer dereference in LSL and LAR instructions
-when they try to read the LDT at an unmapped address.
+Both ioctl does not seem to be documented. However the kernel
+implementation has always used "int *".
 
-Resolves: #1376
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 58aa1d08bbc406ba3982f32ffb1bef0ff4f8f369)
+Signed-off-by: Bastian Blank <waldi@debian.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3185
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Reviwed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 7c7089321670fb51022a1c4493cbcc69aa288a0f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 489ab9cd41..682d71be88 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5906,7 +5906,11 @@ static void x86_cpu_reset(DeviceState *dev)
+diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
+index 071f7ca253..261cef1e75 100644
+--- a/linux-user/ioctls.h
++++ b/linux-user/ioctls.h
+@@ -129,13 +129,13 @@
+      IOCTL(FDTWADDLE, 0, TYPE_NULL)
+      IOCTL(FDEJECT, 0, TYPE_NULL)
  
-     env->idt.limit = 0xffff;
-     env->gdt.limit = 0xffff;
-+#if defined(CONFIG_USER_ONLY)
-+    env->ldt.limit = 0;
-+#else
-     env->ldt.limit = 0xffff;
-+#endif
-     env->ldt.flags = DESC_P_MASK | (2 << DESC_TYPE_SHIFT);
-     env->tr.limit = 0xffff;
-     env->tr.flags = DESC_P_MASK | (11 << DESC_TYPE_SHIFT);
+-     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_LONG))
++     IOCTL(FIBMAP, IOC_W | IOC_R, MK_PTR(TYPE_INT))
+ #ifdef FICLONE
+      IOCTL(FICLONE, IOC_W, TYPE_INT)
+      IOCTL(FICLONERANGE, IOC_W, MK_PTR(MK_STRUCT(STRUCT_file_clone_range)))
+ #endif
+ 
+-     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
++     IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_INT))
+ #ifdef CONFIG_FIEMAP
+      IOCTL_SPECIAL(FS_IOC_FIEMAP, IOC_W | IOC_R, do_ioctl_fs_ioc_fiemap,
+                    MK_PTR(MK_STRUCT(STRUCT_fiemap)))
 -- 
 2.47.3
 
