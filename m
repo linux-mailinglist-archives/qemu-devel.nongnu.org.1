@@ -2,88 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC54C7D717
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 21:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FC6C7D7B7
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 22:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMu5V-0006F1-KM; Sat, 22 Nov 2025 15:20:06 -0500
+	id 1vMumc-00080o-VJ; Sat, 22 Nov 2025 16:04:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
- id 1vMu59-00065n-CJ
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 15:19:44 -0500
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <language.lawyer@gmail.com>)
- id 1vMu4z-0005IV-QX
- for qemu-devel@nongnu.org; Sat, 22 Nov 2025 15:19:41 -0500
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-37b9d8122fdso24724841fa.3
- for <qemu-devel@nongnu.org>; Sat, 22 Nov 2025 12:19:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763842754; x=1764447554; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wC+7MZp7zBskO8XTQphUohwsHBK2MpO3LHeDEqzsQcM=;
- b=nSn+xVfk2LbUucIlYQ1+MNBL9+9x2QxxN1SKau0mGD7gRbn0IS6XhVfPRNzuCDx2fZ
- RqrUzeJsMjPYsm65GbiI4PPh95hKcI9k94ANa+eagenCBLXXUsNwi+cLtLfqHEaJytG7
- nNcDg8yxozpTo4WcLsIL95z5umKGByYBHsKqjpCTXYwH0BXF7MlgqNdYSFgc7DesMqGo
- ncjg0MTaq86IJD/TlyEUW/xGgWF5O8Zjwr+dTM9IGwiCJYMSZAHOc4XxJ/ztUNJcXLMO
- K+NZiw/+vx7vtxFDsmmC2t5qPV6JS4948ycufdmLm8vthQjO8FyNreIMpRbXTO+P+ql7
- YUIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763842754; x=1764447554;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wC+7MZp7zBskO8XTQphUohwsHBK2MpO3LHeDEqzsQcM=;
- b=IbTcDq4HghQ6V9bdI8z42h/wSphJGq7LIQN/8GTTZdtIBhXp0Xy7Y/SEySDxltCUGW
- 0AoXPdwtGV4tW3+tcsE1xc80fYSjGhZWu4vI6WaK9E/fTn1AIKY8YjfBk3HpzZMj2e1y
- aQJbdjSlb2Ev4JDaFxtzWPGSvZDr/nUqv2P+zDSmnYn5FYHFF0s21Sf1XEsmFtqNz40+
- xGBUjB3sCKBGMvEk5NuyWR7j/AIEGirWYZWDCWQGKLlyN+Szl6MicEwpuYU27qzwLQk3
- 40irIL9vAAb7OE3hknSjnQn7eA956c137Qip2UTJI396fTn7Mh9iToHID+hGBOWFC/76
- pYqQ==
-X-Gm-Message-State: AOJu0Yxvca4woxtNrHfUECTM7LUoTzGUrsAJCxqAdz9U9tmd2clRWESF
- TTqjVZpO+mu1FKSgJh9GDx9U9lI9FGu833SGvC51U1rr0zHgrENjK/ggh092oQ==
-X-Gm-Gg: ASbGncstRdrH3CXTZtvGj5lB/BUMPWO1aBgbEtp2mJ5ukMuHoj23dTmM11NX5ahoP39
- fncg5p5EOVfcMV/ngqJUJ9M1aWAainFdhPQWTHDYb1f8fvOSk7xm6PLgQsR4kC4GFsb1+OFYN8Z
- uFsO4F7Oqo6BmURt4evGo/WHmHTSRDyb1znlpozIE75FjCLwI8wS8aX3/RnsJOfkb7VP7Kg+fBE
- MNrwF22UdzixjY1/OpjQF2zui7B63klXRyC8wSMtpio0Ryo8xbblPmoIH9iW46h3ZZWSrrElZLz
- 8S3tIz22IAy8NcXlnX7FUInRnrTqUHD0UNGjTEWrxunogPJI9pbuRrp5IXsPrm8pUWSzAfcI7i7
- god6D6QZLlCHceS48ZDBxIxQPsXzwx3mrP038UlkczlUBFd0A1GvgO/kBhWVIPRCt64ES/LwYzV
- ZyKjuXMxbb2eOCkx8a50UrXA==
-X-Google-Smtp-Source: AGHT+IEUTGxwOGZl/1D0V6tYG3qlajDVyRrGY4zcqGnn8A3UPoM8coYWUD7v1zu5BLf5v+IdXzECWA==
-X-Received: by 2002:a2e:91c4:0:b0:37a:3963:cec5 with SMTP id
- 38308e7fff4ca-37cd92b2e33mr13504321fa.43.1763842753714; 
- Sat, 22 Nov 2025 12:19:13 -0800 (PST)
-Received: from [192.168.88.253] ([82.215.83.93])
- by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-37cc6bcb808sm17362651fa.44.2025.11.22.12.19.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Nov 2025 12:19:13 -0800 (PST)
-Message-ID: <3c35955d-a57e-4203-81c5-395146e23f83@gmail.com>
-Date: Sun, 23 Nov 2025 01:19:09 +0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMumV-0007zF-2K; Sat, 22 Nov 2025 16:04:31 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vMumL-00063z-7y; Sat, 22 Nov 2025 16:04:26 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id B232716D2FA;
+ Sun, 23 Nov 2025 00:03:33 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 69AAE3223CE;
+ Sun, 23 Nov 2025 00:03:44 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
-From: Andrey Erokhin <language.lawyer@gmail.com>
-Subject: [PATCH v2] 9pfs: local: read native symlinks when
- security-model=mapped
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.22 00/25] Patch Round-up for stable 7.2.22,
+ freeze on 2025-12-01
+Date: Sat, 22 Nov 2025 23:55:18 +0300
+Message-ID: <qemu-stable-7.2.22-20251122235450@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=language.lawyer@gmail.com; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,51 +57,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Directories attached using virtfs with security-model=mapped
-may contain native symlinks
+The following patches are queued for QEMU stable v7.2.22:
 
-This can happen e.g. when booting from a rootfs directory tree
-(usually with a writable overlay set up on the host side)
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Currently, when security-model=mapped[-xattr|-file],
-QEMU assumes that host-side "symlinks" are in the mapped format,
-i.e. are regular files storing the linked path,
-so it tries to open with O_NOFOLLOW
-and fails with ELOOP on native symlinks
+Patch freeze is 2025-12-01, and the release is planned for 2025-12-03:
 
-This patch introduces a fallback for such cases:
-reuse security-model=[none|passthrough] else if branch logic
-where readlink will be called for the path basename
+  https://wiki.qemu.org/Planning/7.2
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/173
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Signed-off-by: Andrey Erokhin <language.lawyer@gmail.com>
----
- hw/9pfs/9p-local.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index 6230466de1..ddf111b674 100644
---- a/hw/9pfs/9p-local.c
-+++ b/hw/9pfs/9p-local.c
-@@ -474,12 +474,16 @@ static ssize_t local_readlink(FsContext *fs_ctx, V9fsPath *fs_path,
- 
-         fd = local_open_nofollow(fs_ctx, fs_path->data, O_RDONLY, 0);
-         if (fd == -1) {
-+            if (errno == ELOOP) {
-+                goto native_symlink;
-+            }
-             return -1;
-         }
-         tsize = RETRY_ON_EINTR(read(fd, (void *)buf, bufsz));
-         close_preserve_errno(fd);
-     } else if ((fs_ctx->export_flags & V9FS_SM_PASSTHROUGH) ||
-                (fs_ctx->export_flags & V9FS_SM_NONE)) {
-+    native_symlink:;
-         char *dirpath = g_path_get_dirname(fs_path->data);
-         char *name = g_path_get_basename(fs_path->data);
-         int dirfd;
--- 
-2.34.1
+This most likely will be the last release in 7.2.x series.
 
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 df9a3372ddeb Mathias Krause:
+   target/i386: Fix CR2 handling for non-canonical addresses
+02 df32e5c568c9 Paolo Bonzini:
+   i386/cpu: Prevent delivering SIPI during SMM in TCG mode
+03 cdba90ac1b0a YiFei Zhu:
+   i386/tcg/smm_helper: Properly apply DR values on SMM entry / exit
+04 5142397c7933 Paolo Bonzini:
+   async: access bottom half flags with qatomic_read
+05 58aa1d08bbc4 Paolo Bonzini:
+   target/i386: user: do not set up a valid LDT on reset
+06 7c7089321670 Bastian Blank:
+   linux-user: Use correct type for FIBMAP and FIGETBSZ emulation
+07 0db2de22fcbf Peter Maydell:
+   linux-user: permit sendto() with NULL buf and 0 len
+08 003f15369de4 Daniel P. Berrangé:
+   io: add trace event when cancelling TLS handshake
+09 2c147611cf56 Daniel P. Berrangé:
+   io: release active GSource in TLS channel finalizer
+10 322c3c4f3abe Daniel P. Berrangé:
+   io: move websock resource release to close method
+11 b7a1f2ca45c7 Daniel P. Berrangé:
+   io: fix use after free in websocket handshake code
+12 3995fc238e05 Daniel P. Berrangé:
+   crypto: stop requiring "key encipherment" usage in x509 certs
+13 ed26056d90dd Richard W.M. Jones:
+   block/curl.c: Use explicit long constants in curl_easy_setopt calls
+14 ad97769e9dcf Richard W.M. Jones:
+   block/curl.c: Fix CURLOPT_VERBOSE parameter type
+15 59506e59e0f0 Eric Blake:
+   qio: Add trace points to net_listener
+16 6e03d5cdc991 Eric Blake:
+   qio: Unwatch before notify in QIONetListener
+17 b5676493a08b Eric Blake:
+   qio: Remember context of qio_net_listener_set_client_func_full
+18 9d86181874ab Eric Blake:
+   qio: Protect NetListener callback with mutex
+19 6da0c9828194 Peter Maydell:
+   hw/net/e1000e_core: Don't advance desc_offset for NULL buffer RX 
+   descriptors
+20 9d946d56a2ac Peter Maydell:
+   hw/net/e1000e_core: Correct rx oversize packet checks
+21 bab496a18358 Peter Maydell:
+   hw/net/e1000e_core: Adjust e1000e_write_payload_frag_to_rx_buffers() 
+   assert
+22 a01344d9d780 Peter Maydell:
+   net: pad packets to minimum length in qemu_receive_packet()
+23 f52db7f34242 Peter Maydell:
+   hw/display/xlnx_dp.c: Don't abort on AUX FIFO overrun/underrun
+24 032333eba77b Peter Maydell:
+   hw/display/xlnx_dp: Don't abort for unsupported graphics formats
+25 5fc50b4ec841 Peter Maydell:
+   hw/misc/npcm_clk: Don't divide by zero when calculating frequency
 
