@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5C3C7C511
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 04:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791F4C7C3AD
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Nov 2025 03:57:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vMcmC-0002Z8-Ke; Fri, 21 Nov 2025 20:51:03 -0500
+	id 1vMcm4-0002Y8-FW; Fri, 21 Nov 2025 20:50:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTM-0006Yf-HZ
- for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTL-0006Yd-FR
+ for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTB-0003d6-5k
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vMbTB-0003dG-5M
  for qemu-devel@nongnu.org; Fri, 21 Nov 2025 19:27:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763771221;
+ s=mimecast20190719; t=1763771222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=DqqM2pSJyFfJuxmHvczNQV0JEpfBm/7SbwknLSOriN4=;
- b=cLWVMKOQgBDD7eCrf7xLrZejB9cPgV9xm2j4hcHfjhwCLsRdh117S10hzmNff38kdZIOUu
- xLYkyRvh7S3j9fO5BjZbnqHCm9RBm1WTdCYwxew2b8S1Tlj88Tu0kfEhjeSdllF9a1ktHN
- BNnoPwTif0K6Wgs0heSrABWbwH01h4k=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zMyNYRaZIbZKePdD41f98ajmZ0H3U11uYcSXUx13bYo=;
+ b=fhY9UOersFqun0PKPj5+KKZqsM0fg4tZuQHx1vOgr8gjRE9bvfQDyN9E9O91arAeOQD8yU
+ Zdyxjb0VCogQ9mv/uTMkpLy+4Cu3nlqSa3fF9ogFzEy5/olgJfxFmOkDArUDPff6n+Ww0Z
+ ObfFS+stwbZwe25cuW9ZjXdcxTA/nBQ=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-yREBBwm_NCGjBrSASGP8Sg-1; Fri, 21 Nov 2025 19:26:59 -0500
-X-MC-Unique: yREBBwm_NCGjBrSASGP8Sg-1
-X-Mimecast-MFC-AGG-ID: yREBBwm_NCGjBrSASGP8Sg_1763771219
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4ee09693109so61359241cf.3
- for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:26:59 -0800 (PST)
+ us-mta-662-OQgdZ32lMySUMV4vliOu0w-1; Fri, 21 Nov 2025 19:27:01 -0500
+X-MC-Unique: OQgdZ32lMySUMV4vliOu0w-1
+X-Mimecast-MFC-AGG-ID: OQgdZ32lMySUMV4vliOu0w_1763771221
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4ed74e6c468so35395191cf.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Nov 2025 16:27:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1763771219; x=1764376019; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DqqM2pSJyFfJuxmHvczNQV0JEpfBm/7SbwknLSOriN4=;
- b=X0ZQ6MV0443uYLD4D2jNyrAWhlckOf8gBBZoFXglMcnbRrHWIYtH0rTquck7f1D6EG
- GtZO6QqohWeDqNBb2LeaqBnyuFG3HhdHj5VSQDh3OnUJc+sFqRrYgHsEYFWBskNVnffi
- n5wuDMonaJojbNAMMeDhL5QJTgY+zm0Rec+UEmDBFfu4qOBl9Z8A0tQ4Ea7z+gg5HVM6
- P9cYW/mIjEb4P7gu1sD+wQnfA0kBhwJvGkHvnXxc+iBCwUgag8ABzzQU9UimeadbIVfm
- jx9jqfTIMw2qkGdTeaGwcAhzZVmWuaTWR03rDGclWIDgqNw3ijw10Z61eoOoJB+jUlk6
- lxmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763771219; x=1764376019;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=redhat.com; s=google; t=1763771220; x=1764376020; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DqqM2pSJyFfJuxmHvczNQV0JEpfBm/7SbwknLSOriN4=;
- b=q5VWRqbcneuYEcv3oJ9uxnkMDLu/yv4VgP+vPl1zEijad1FCNBD5JERDXpvrupfrM0
- UAnG3zgRMAL2DGYOaH55rzjB+I00vAYKcQc8hpKCWsvhmYqhNEOG89pMghyNq6OmFfMu
- muYlOqZ4gtr9Fzr0ZKVNakcGFSF6rPmM/cBwQn20ifAZ++Eg8WzFm2XrN8d2qpLegfrw
- OAnSeBFxMhc5B6KojstEwLwxagSDSfoyKbre/ypIbT/XvR7eQnDEy7gNvt6eV1BtxY0G
- K/KW4iSmN/QN1JjJ+30ADWjMo9kvGJvT9Z6lT2NK33TgtuugQYok3zlw4XTSOazPM//6
- Y/fg==
-X-Gm-Message-State: AOJu0Yy50H9/cEWVu9atk+E00nTCx9nSQA/x9tXF45i0G2KMk19j5F03
- eqNM8l+OIxne1WtYsWPjXqJsRnayMd5wJwvEnlqeHM/MD0XOq+qAqwl6Wh4KqOtHb7J1wPkCf94
- kDK6u/QCPIOk18CQdqjeDN9Bh7DPeako9GPNIp/MjlZs/vkkdMLffzx8isX09AqsbdNcWHZedfR
- OJAQLDs54DT4+5MYuOJdkWo11BZGjniEU+iwHFvQ==
-X-Gm-Gg: ASbGncs9f1vhI9ykZC7ujdvagJXl9jL5KctKRJR62DBv23X3eA9LA0P66xLMCJkZZ7k
- o32WLd7bxG849v6x8492f9hmN7jVxqAMaMzhGWlA4o9G70Ac07dM1CwQnBPV4GAOweqZ+S6EIK0
- CE7ak7dSG57tWZQGeWvg5ZnMGZ4yImnEq3Djbj1x9Dsz2lty8UQsGYdxtKhckffHc7zUi4MwfQ7
- i2iwRWJjmzA2Q+OC+Q9jDbJk/fSWVbK9D0+wjMlfn6y7tYXGevswJdkQwc5xRBNoKqoDd97Rdct
- cXJ9GyzToy2xAzi0nTJxFyLuBn/IhdE6TE2R4oW0/71+s2SheftYIef9lP/rFkRTkFxO94Ixvbg
- C
-X-Received: by 2002:a05:622a:84:b0:4ee:1e63:a4e0 with SMTP id
- d75a77b69052e-4ee589136f7mr65638231cf.74.1763771218689; 
- Fri, 21 Nov 2025 16:26:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGBT8vCyoddv4Ps4SzNy/EpbL4++2ReuXB3UdS2ZsuTYWJpKhOnq2FR9sppsZDrSyxEKfivyg==
-X-Received: by 2002:a05:622a:84:b0:4ee:1e63:a4e0 with SMTP id
- d75a77b69052e-4ee589136f7mr65637901cf.74.1763771218118; 
- Fri, 21 Nov 2025 16:26:58 -0800 (PST)
+ bh=zMyNYRaZIbZKePdD41f98ajmZ0H3U11uYcSXUx13bYo=;
+ b=tDRwzz6iQoS78VOopH+N/yuaaKeKO/i1xJzu5eHm/wcfWoKNtowRhn0QW7QgsT5ZlP
+ vNM9COhAiGwHJnljPj5AGka7lLWbV8XHNasUUkLD9J1umwHc3hRUsg40i+k9PdpL1y4x
+ GMBIbteMZFlq5813h7vCdEEz6MOfBCcjSxYUNsjpZHIaGWPvMwAgDmMRjG0aMavv6mix
+ 8L4X0zpYK7GtEZNURnr1kjE+VtlZk50/U3iEsoRMLJ4OXRs79rNnYh+MZWvATpzX2AiS
+ GBiuMxQhb9Xjcu7KxsLvNz5ePBNQcWmyp+OSOlplQ6flkhS7nAVOhklbf7uLKc4UfM10
+ Okkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1763771220; x=1764376020;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=zMyNYRaZIbZKePdD41f98ajmZ0H3U11uYcSXUx13bYo=;
+ b=siaFctH8mjAKZpClbCn2v9lOR4YHms8FARSUHXVDh/Ojugy6nKeoBc/IAh5WeHRflP
+ cusATgH+qcV4yJ0Igyh14YQPjQoJzCTHl2BqzgRfQV1FX4X8Eu/7JYUQeB1w6nptlG+c
+ v9S+qqCKeoBZ7u0bOICT4jYSS8DUKmrMlUfYGRn9CV+h8/ynTOX8nLgLgQkRyjUiG1I5
+ nCIKy7zduMJTA8jd3ord5oGAHxvnOkPxxbnJLGjPOC9jdPYWqsxJlWXeZRSuDGEi0NRL
+ 9MbW3Zv7ECLGXhzWjOxt6syNl8UKCGYMgkSf1VCDBJhTaIOd41HLLlDyvewgP0bWVrsb
+ QZXg==
+X-Gm-Message-State: AOJu0YwNhkTaVwieNkFNmvOuvTKnktfyxmyBh5WSeE00c85ysBu3zZsx
+ 84d7BsbyCMglO37k1XNQKZ9wTsbwztsYd+ENLvQfrx55o1wV4MkLREcPHtArs4/CUscCVD4YMFz
+ qX5J5Cu2MBH0Su+CGwLUl3/deNjC+Qxb5bmEigGBbgSn5zicA4Lxq96g1oBr1lHn9sDDEDlLzuq
+ /Du57QCNUnMt6mwq98ACEC3Mt3bmZcvr4rFyUH/A==
+X-Gm-Gg: ASbGnctUUlVRbtzWiMshZ87ByNHQ7OE30AceFKpozrRXOO4B/l/FVaJS9dMYrMf9nIv
+ gIO96ScIwi/qNoVEKA/6D7ILZhBVkXiPB+C88eNgYS6hYxbclwzCbCfhQdPcGU8qqKbABuNtOKn
+ MFD5RO+Dlrkawsaa54+ZlhrAOlizlJaSJxQsRkQtknQwS6ekfPpHdxkp9d5IwpVPdT0uwAG6WzP
+ adjVdwv7VTEndRTN17Wkek/u8LjU80evUINyzrGwTAGffK+mxLYnOMRvcvQ8RyVLyS0irJy73/n
+ fgG/H9sQ5DVqrZRIFnSIEXcoYcSWem5EYSIE7z5hymfLf/fEWOtFKC736S2pjuB+HK7FzyJ6d8w
+ X
+X-Received: by 2002:ac8:5e0e:0:b0:4e5:6c5e:430a with SMTP id
+ d75a77b69052e-4ee58932460mr55183961cf.64.1763771220314; 
+ Fri, 21 Nov 2025 16:27:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFsAxxZ6lPhW7AKm6qQs9J/qNuICvvvyNfe+7ht35UB0QBm1LpAz08XIdOoie8r+fxf87hX9w==
+X-Received: by 2002:ac8:5e0e:0:b0:4e5:6c5e:430a with SMTP id
+ d75a77b69052e-4ee58932460mr55183611cf.64.1763771219702; 
+ Fri, 21 Nov 2025 16:26:59 -0800 (PST)
 Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.26.57
+ d75a77b69052e-4ee48e8df63sm43870291cf.30.2025.11.21.16.26.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Nov 2025 16:26:57 -0800 (PST)
+ Fri, 21 Nov 2025 16:26:59 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>,
-	peterx@redhat.com
-Subject: [PULL 0/9] Staging patches
-Date: Fri, 21 Nov 2025 19:26:46 -0500
-Message-ID: <20251122002656.687350-1-peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
+ Li Zhijian <lizhijian@fujitsu.com>, qemu-stable <qemu-stable@nongnu.org>,
+ Zhang Chen <zhangckid@gmail.com>
+Subject: [PULL 1/9] migration: Fix transition to COLO state from precopy
+Date: Fri, 21 Nov 2025 19:26:47 -0500
+Message-ID: <20251122002656.687350-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251122002656.687350-1-peterx@redhat.com>
+References: <20251122002656.687350-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,55 +109,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 5a5b06d2f6f71d7789719b97143fc5b543bec07a:
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-20 08:12:59 +0100)
+Commit 4881411136 ("migration: Always set DEVICE state") set a new DEVICE
+state before completed during migration, which broke the original transition
+to COLO. The migration flow for precopy has changed to:
+active -> pre-switchover -> device -> completed.
 
-are available in the Git repository at:
+This patch updates the transition state to ensure that the Pre-COLO
+state corresponds to DEVICE state correctly.
 
-  https://gitlab.com/peterx/qemu.git tags/staging-pull-request
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Fixes: 4881411136 ("migration: Always set DEVICE state")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Zhang Chen <zhangckid@gmail.com>
+Tested-by: Zhang Chen <zhangckid@gmail.com>
+Link: https://lore.kernel.org/r/20251104013606.1937764-1-lizhijian@fujitsu.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-for you to fetch changes up to 6aef825073a751215de1ed410a5c94efa675f5ca:
-
-  tests/migration-test: Use MEM_TYPE_MEMFD for memory_backend (2025-11-21 19:23:46 -0500)
-
-----------------------------------------------------------------
-Migration pull for rc2
-
-- Zhijian's COLO regression fix (since 10.0)
-- Matthew's fix to avoid crash on wrong list manipulations
-- Markus's error report leak fix and cleanups
-- Peter's qtest changes to merge memory_backend and use_shmem
-
-----------------------------------------------------------------
-
-Li Zhijian (1):
-  migration: Fix transition to COLO state from precopy
-
-Markus Armbruster (3):
-  migration: Plug memory leaks after migrate_set_error()
-  migration: Use warn_reportf_err() where appropriate
-  migration/postcopy-ram: Improve error reporting after loadvm failure
-
-Matthew Rosato (1):
-  migration: set correct list pointer when removing notifier
-
-Peter Xu (4):
-  tests/migration-test: Introduce MemType
-  tests/migration-test: Merge shmem_opts into memory_backend
-  tests/migration-test: Add MEM_TYPE_SHMEM
-  tests/migration-test: Use MEM_TYPE_MEMFD for memory_backend
-
- tests/qtest/migration/framework.h  |  26 +++++--
- migration/cpr-exec.c               |   3 +-
- migration/migration.c              |   6 +-
- migration/multifd.c                |   6 +-
- migration/postcopy-ram.c           |  17 ++---
- tests/qtest/migration/cpr-tests.c  |   8 +-
- tests/qtest/migration/framework.c  | 113 ++++++++++++++++++++---------
- tests/qtest/migration/misc-tests.c |   2 +-
- 8 files changed, 121 insertions(+), 60 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index c2daab6bdd..1b2c02d7fa 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3081,9 +3081,9 @@ static void migration_completion(MigrationState *s)
+         goto fail;
+     }
+ 
+-    if (migrate_colo() && s->state == MIGRATION_STATUS_ACTIVE) {
++    if (migrate_colo() && s->state == MIGRATION_STATUS_DEVICE) {
+         /* COLO does not support postcopy */
+-        migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
++        migrate_set_state(&s->state, MIGRATION_STATUS_DEVICE,
+                           MIGRATION_STATUS_COLO);
+     } else {
+         migration_completion_end(s);
 -- 
 2.50.1
 
