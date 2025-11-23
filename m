@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C94DC7E602
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Nov 2025 20:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 232DEC7E994
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 00:28:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNFIS-0001Nj-Jc; Sun, 23 Nov 2025 13:58:52 -0500
+	id 1vNJUO-0002Zh-6o; Sun, 23 Nov 2025 18:27:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNFIH-0001AU-Br
- for qemu-devel@nongnu.org; Sun, 23 Nov 2025 13:58:45 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vNJUM-0002Z3-60
+ for qemu-devel@nongnu.org; Sun, 23 Nov 2025 18:27:26 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNFIE-0003W5-3U
- for qemu-devel@nongnu.org; Sun, 23 Nov 2025 13:58:39 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-477ba2c1ca2so36785205e9.2
- for <qemu-devel@nongnu.org>; Sun, 23 Nov 2025 10:58:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vNJUK-0001N4-N4
+ for qemu-devel@nongnu.org; Sun, 23 Nov 2025 18:27:25 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-29806bd47b5so22107455ad.3
+ for <qemu-devel@nongnu.org>; Sun, 23 Nov 2025 15:27:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763924315; x=1764529115; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CZs7gYynycdv4EGKIYDGcUMCMGhmj2RagHDsP9q/nKQ=;
- b=sLxpUxJXMxMtgWTSrrmuBOKqjFoqdKy4wCsol2RbsA+um7ftW0P7vKvstP37RpAz1S
- PlWOB/p9kfhy3FeI9b2QAdwgtJu3m2EgAlftjE4P/B6BG9boZVsYy/SwRiQ0n9c6fLTD
- gFzUqriu6JYRLbtsJmeJg7lFdeFyrqjESyVbUNT08rt9TzVaGcm8S2L71Sw0jYEcRUTM
- KLkUy8i3MeaodGfxSTuSgVh7yEOhcaq0UiywSFPQLZczvtQsGWLxpjdnGQw/VlBXm0u/
- 6L4doDsHX2V+D9abUIOXq5xiO6Fg4C6OEC0HpFxUtzbJQjNCw52Sa2XcpjcY2oC3+cH8
- nznQ==
+ d=linaro.org; s=google; t=1763940443; x=1764545243; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=OIKs4SFbBMiKsgH9BmH9lXxKdwYWUPCDbsg2KAXJ+Bo=;
+ b=V3+6jUZPP+R0PrvJxS/Lk0qMwww9pqztYtu5FFMKwNTQPHkKIekrcs4/a0ifS7Zx1a
+ /PiGSx8J5vtm81hUF4V/lQBwlECGZPSTeAjNHScWbFRosgsvnmyiXA6IFr44zjNpMz4Q
+ ujI/dsv9ykXxV4ZuYP4O/4VCZtbBkFC+DQjNNsxR5Gb/hOss79qdEHWF+7avIuoa6Q7y
+ a89vRuTr8f+29n1Wm3XylsssfDkagjERzVC2mXKtX3J0ku1EOBKkhFY/6ttJoyQjYCSy
+ yFujd3HCoAEGX9tXoHMuxPp1apOr8fxnhq7ILINKdPYB9JAjs7rA5u4aa2Dg6dQf1yA0
+ 5unA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763924315; x=1764529115;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CZs7gYynycdv4EGKIYDGcUMCMGhmj2RagHDsP9q/nKQ=;
- b=CSEwDoCMCq7UgjD3hOBAAD0cbU0HLDwRqsRBfZnWhlmfdoTaboUZG75CSjtewCb90h
- 80eY2R2ZaPkJInWFR+xNvaJ0FLpPiUXEQeh6SS3stKrAkLtWU8kTBh0bmxVTQWzIkGPq
- e7XS/hsXH6V0s13qOpj7Q1GjZ6yCkvJVF+FmpBfWymEPrPM8q1geCfVJY91T+71m98II
- Vdz2mujpaHW6yTCH9z7erRSB5x4XAxUCbmEa7xHC7lE82mAx/FJDgGwYM9zcVIRC9Ytv
- PzYdr3qvF6MdjBYZUMs1PF4EtNZYKAB+1AXdgQN1UAH71sWD0uSSPQCDhjsLR8w/dNae
- vR9w==
-X-Gm-Message-State: AOJu0YzbN+opUzt8RhulxC7Gcd7FVBqNbHqNyFujRpAPLCmgGCroBCrj
- ivLDhyUJs90lmZrhh6htNzvFALgElf7SibrRq+Fud2vigZovneS9xcBZ0U4G18Ml8kUfc7/SMdw
- PzCi4Oy2FTg==
-X-Gm-Gg: ASbGnctORTh7fsMHULc5cMSFUZCdc3x34Ox1y+KoNvZ8GTEBXL6zd9/h/+M06Gu6SFF
- XbRM0Llzn8UYhXn2BZIYiw2sYskyVJiuqh1WF1BtZv/B7ZlEOhSNFh7sAZqufsXORxbD5IMuDhA
- PGCKVS0mnl8KVPgnvudzEl9n4vPQD50MHolsUgtkyp78+Q/ecfCYOfz9z6cIx/ZK56xfGAY4qCi
- SuPZyj3418mIhkEd4Nr64WLPHd13vToFvy7HIAcK1l3MsKv3KgexTWd0H+FS7cEZ1dMkYO1NUP2
- cSyDryVsltRfjoiMrOeSH7ZwVHcLhASCrZI7CCbH6ycg991tUauA9tunJQRlxZCS5fG2u0oq6ct
- uG85PLGEeQMmhst6SA8wRnzDlIR6A+NM34EaCWqd1TevULGfdUcoX0BiIbadLns0qWTpSCEqB7i
- Fkhobh2SYDDLDZMlkwgmpKGIeiw2qPExH0Br4JPfXqjqUE8UwOixgZVbZibg9oZl3LmEmRzV8=
-X-Google-Smtp-Source: AGHT+IHzO3TzKM0byiy0d9QAboT5h5wHvIrU67sA5M2DR4+xrurNsc+4Y6ORWQbdadWWIQty08DYhA==
-X-Received: by 2002:a05:600c:b93:b0:477:557b:6917 with SMTP id
- 5b1f17b1804b1-477c01be404mr91728135e9.18.1763924314742; 
- Sun, 23 Nov 2025 10:58:34 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf3b4eb2sm154328725e9.12.2025.11.23.10.58.33
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 23 Nov 2025 10:58:34 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>, Eduardo Habkost <eduardo@habkost.net>,
- xen-devel@lists.xenproject.org, Anthony PERARD <anthony@xenproject.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/i386/isapc: Remove dead Xen code
-Date: Sun, 23 Nov 2025 19:58:32 +0100
-Message-ID: <20251123185832.53802-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+ d=1e100.net; s=20230601; t=1763940443; x=1764545243;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OIKs4SFbBMiKsgH9BmH9lXxKdwYWUPCDbsg2KAXJ+Bo=;
+ b=AK44MVgnn1LhmAj4X16mQhr7M9WE5AfAO78L0fPD/rjubdFE6vbZTviUiLFJu7eETv
+ iwfjGFJiIwvSjj6hFrlHGZO9Q1IIklq1ru81SxX2XnQ0xqfwXgmQARJDVKsgb5WD1nTA
+ 2fvjsMhNbcYScWW/Sp1eqhW2QOaRcehYjLpfR051GPb8GkSF0hmN5uaZXmzStUtXi9Ho
+ Y7ZKAp1v73m2q8cEp89p0g41mR7Yw+C7M1ripmMrLEoe/s+g4P3SAzFdJeD/N6HzNJcp
+ rji/HRjQIr0rn+Q+FsRd6eFy4DgoMXzpWanDr8qAIewsO4GLbibXilmizEFubijnb96I
+ Pxqw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXH1QPv1bu6t+Y4DMi1CsZvQUlh0W7+uA76xYdvhTAA4lmM1HYX9sOXZwgd5JyxmJ+sOK2d6yRjXoGP@nongnu.org
+X-Gm-Message-State: AOJu0Yyb5iHC7XWwqtIPrJ6g1zda7p6Maz1JoX3pMiFdWXlYw2AndaYO
+ DFc4OLZANm4tal1HNEYMChgvD+rjmCPTC9u5wzRZFKXXsMJxy60zuAptJ3a2mD3BRT0=
+X-Gm-Gg: ASbGnctp9mVyj4B1sqllhlY8rgCHFPKovebRP0WBUQpMpHChoZz93Bp5/3aTGWWJQ4g
+ vIlgK8ricFwpyhxloOv/3gxBzmNPSJTAoeAVG/fTo6KRokRq4TBV9ZovBO9R1RHHTG5sDmcZvI4
+ o7LNXxlGImPyrXzSoWNs/RFxbism8nYf2lDDUWmIhWcyPJ5NEvhYgU69CUnE+KlTkJdpfa2CzzW
+ B69KMwfC+InaIKVeP7nS4TwtycdxyvLdoZH8GJPn9AYvGm0D/ZQIFzScoCT3h9Cfp/ZdL/e5T0T
+ fkYCA1i8WnZi9CGrhIjae6hChMlfJemDNBX9Jfz5T76tSBPXPxPH1ZNnv4nqCXPrS6cejGV9zus
+ M+BJf5DcfysoMtvUC5RoPO1ldawZByMYmPJ+MH/iLlkNDDSsWW4ZR83ky8MaOidd0ixyF03KSuh
+ poN9HXZEPBj99VVzm2dknQobAbvtjt3xk+S4It5/llzoypNvTGspE+vnXVewD9pEIxhA==
+X-Google-Smtp-Source: AGHT+IGNvsXnIoWTvH8DoD9bWlyfGdSdHSbMtlB7dJBqFYD3sDKP5zHmzIQQFE1Mo+rc3f7Pr7n0SA==
+X-Received: by 2002:a17:903:1b43:b0:297:db6a:a82d with SMTP id
+ d9443c01a7336-29b6c50ac1dmr105976265ad.26.1763940442765; 
+ Sun, 23 Nov 2025 15:27:22 -0800 (PST)
+Received: from [192.168.0.4] (174-21-128-133.tukw.qwest.net. [174.21.128.133])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29b5b111650sm112587725ad.8.2025.11.23.15.27.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 23 Nov 2025 15:27:22 -0800 (PST)
+Message-ID: <eb4b287b-58f3-4a99-9918-86936f5f458e@linaro.org>
+Date: Sun, 23 Nov 2025 15:27:20 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/10] Fixes for QEMU v10.2rc2
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20251121093812.280911-1-thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251121093812.280911-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,74 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't use Xen on the isapc machine: let's remove
-pointless code.
+On 11/21/25 01:38, Thomas Huth wrote:
+>   Hi Richard!
+> 
+> The following changes since commit 5a5b06d2f6f71d7789719b97143fc5b543bec07a:
+> 
+>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-11-20 08:12:59 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/thuth/qemu.git tags/pull-request-2025-11-21
+> 
+> for you to fetch changes up to 88175cff49dedd709b7a01e0e5e1bdcad69e0c8d:
+> 
+>    MAINTAINERS: s390 maintainer updates (2025-11-21 08:34:53 +0100)
+> 
+> ----------------------------------------------------------------
+> * Fix a crash that occurs when passing through virtio devices to nested guest
+> * Update s390x MAINTAINERS
+> * Fix various pylint warnings in functional tests
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/i386/isapc.c | 27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
-diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
-index 1ba9ae22cc3..1e13a30c505 100644
---- a/hw/i386/isapc.c
-+++ b/hw/i386/isapc.c
-@@ -17,8 +17,6 @@
- #include "hw/ide/ide-bus.h"
- #include "system/kvm.h"
- #include "hw/i386/kvm/clock.h"
--#include "hw/xen/xen-x86.h"
--#include "system/xen.h"
- #include "hw/rtc/mc146818rtc.h"
- #include "target/i386/cpu.h"
- 
-@@ -37,7 +35,6 @@ static void pc_init_isa(MachineState *machine)
-     ISABus *isa_bus;
-     uint32_t irq;
-     GSIState *gsi_state;
--    MemoryRegion *ram_memory;
-     DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
-     int i;
- 
-@@ -77,15 +74,9 @@ static void pc_init_isa(MachineState *machine)
-     /*
-      * There is no RAM split for the isapc machine
-      */
--    if (xen_enabled()) {
--        xen_hvm_init_pc(pcms, &ram_memory);
--    } else {
--        ram_memory = machine->ram;
--
--        pcms->max_ram_below_4g = 3.5 * GiB;
--        x86ms->above_4g_mem_size = 0;
--        x86ms->below_4g_mem_size = machine->ram_size;
--    }
-+    pcms->max_ram_below_4g = 3.5 * GiB;
-+    x86ms->above_4g_mem_size = 0;
-+    x86ms->below_4g_mem_size = machine->ram_size;
- 
-     x86_cpus_init(x86ms, pcmc->default_cpu_version);
- 
-@@ -94,17 +85,7 @@ static void pc_init_isa(MachineState *machine)
-     }
- 
-     /* allocate ram and load rom/bios */
--    if (!xen_enabled()) {
--        pc_memory_init(pcms, system_memory, system_memory, 0);
--    } else {
--        assert(machine->ram_size == x86ms->below_4g_mem_size +
--                                    x86ms->above_4g_mem_size);
--
--        if (machine->kernel_filename != NULL) {
--            /* For xen HVM direct kernel boot, load linux here */
--            xen_load_linux(pcms);
--        }
--    }
-+    pc_memory_init(pcms, system_memory, system_memory, 0);
- 
-     gsi_state = pc_gsi_create(&x86ms->gsi, false);
- 
--- 
-2.51.0
+r~
+
 
 
