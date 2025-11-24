@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEBDC7FC1D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB6AC7FBE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNTJ0-0006P5-Gp; Mon, 24 Nov 2025 04:56:25 -0500
+	id 1vNTHY-0005LL-1l; Mon, 24 Nov 2025 04:54:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTEj-0004UW-Jw
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:06 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTEq-0004W0-Cm
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:09 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTEg-0001bR-LM
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:51:56 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so34811145e9.3
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:51:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTEn-0001cJ-Or
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:02 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-477632b0621so27490665e9.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:52:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763977913; x=1764582713; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763977920; x=1764582720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8eh6MHRib1ellMghl3+SNmWwKGGVxvwx21luylnyRog=;
- b=mr5SxW4CPblrjpnydCuLRf1m8DKAHQ+PFdxsDHq3Zub1IBOmoccv/6Rn31enB8T28G
- pUAG3isjUj6dqlbSSmep075XuqOlbTzUoUIM1k0C/jtEXo38r6qY7bJnMFtvw6JdUmD6
- NniEcwuRN0YYz7r1PdrCU6t/VR1yDDArKM+ZqGDYw7JN4NwmGXZlIEWAidtyRwIwEZfL
- hbGpfVE7eEQDLav9ib75d+n8wCzdGVmVM0Ja8dM47qEDogQJPaktR0Lay0O2lMgucMm4
- nAAsMhAqESr+f2u1g0BjF85MQOD2jF/BUab9igvfM1/mHIwuIwckvjN5ita+P8RhQWgl
- P/cg==
+ bh=ap63lntzlR8GaDypuh4WetYAtZ4MTe+hzOe+jaSU4fc=;
+ b=WipLM/r6hA2+pbG5nb7XvZvyJvrYIAWHQMRc1rfUgIuwVMLYPg0Wb0FIoniDIMWd0P
+ zbTuoPF3YmDI3aJkgyxknGiYVFOo9vIhm5Br0rzbllsky8taGEe8zLJLPBch3F9K2dD4
+ mHYJOnP+yVsyapdbBANWyxSDqswTqMWJrsAOM3doHj3HQoh+T2z8hUoQoAJshBbUTHMD
+ EpBxWe9PtxvklAt3j/I2BUgFpSnoTHDpWQlxxuIJGOVppW7HdoHv1eboZlKNG0qdJWIN
+ Ruu9N5AuIS6qWlOcfdwynq0uu5F9s2LbcnsUNK7UWNTSkvLnCem8m7HCLmu8MO/OVbX2
+ uNfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763977913; x=1764582713;
+ d=1e100.net; s=20230601; t=1763977920; x=1764582720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=8eh6MHRib1ellMghl3+SNmWwKGGVxvwx21luylnyRog=;
- b=Z/Mej+09ptYIn960YAPCZvFWkhfbjWj2XrCj7clvbiAZbz1xDP7zLSre2mYD5UqQNz
- T2MBEmhY81Mk0RX8ThXVUyVTzadxwJ9yRqZLgxTQ3BCegLMSr2tMm+WuQmfhGBG0QUAj
- k2GGyA1QwYRusKkjFmiMOibm7GMvmX1NkdLBFhUo3bTGH2SyR5bf7ryeFZ3WtzVihLQ/
- BdNSbuiyTrk79B0KZq/iBIejTrm1NuwDc2O+RrgHT3gCyhRhz75kqtTryz8uBGCCEzwb
- 34AIn6c1BcEQP8uC1WFYcOn1po0qBRLdmX+ErT7GPUEN/1BOseJJk92mt9O+uh4hTANV
- vewA==
+ bh=ap63lntzlR8GaDypuh4WetYAtZ4MTe+hzOe+jaSU4fc=;
+ b=k8FdlSlr1MZrDdB8xx3HkrOnaGsFB5O9gScSK4ohJF7HRJWk8GeiAPjH9JII4QgsCt
+ x6t6GMGNfbilNrarfbCtylLVdAa9m5uwWqJos+moI1mHyzeKd/n3EhVF+x+wECptQeXj
+ KhIN/y/UwCUt0F281zqXGgsEAugBM4Qd7//X+fvYq+OAuKwwaeK69rVOg0+a0FTzSp65
+ NP2/ie7KZOfL/6O9XOz9Rh3xryrfitJfcsADV7husB4mc0M3kwmsBqqD6nyQ3Oxgm4Aq
+ DMlnHcX5Y1+eORedbdU7vxjasovrF7onW8f2g7VZgq5rUa6oFYGmydHwMKd4qiKoPLnA
+ GS1w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXeX64J3I4TwtxO+86t/WoxLrx3p6w0WpqIDt/8pLXrrnOjv7IuS80uMj6KrLrN8sr8piUOR0oOmwAH@nongnu.org
-X-Gm-Message-State: AOJu0YyDY58T0svISy33GuRpt0Y0DDb6H5ljsyRD+efrMivto0AjL36P
- J3F2ON6DSdIbsLaNOmE/Mh0qR6climKcs3/JkA+MsmElaNTTZmg8ogbXSFLfSXYb5To=
-X-Gm-Gg: ASbGnctpuX79+I+/qyAyOKhaZCBU77qTDC7ofbNP/MbHhXjAtnzgk+ynC3Z2S8A9tSl
- NReWm+QJuqEG82YutoVGfZalZjl/RV4IMe/ewuHLTybWMxXeFxPzRNgdwcCcTtkovWBfUrsv1Gu
- BAdY96KoDLcS4U8P5OotqYu2lbl3Sv0GGBGqz581yWrJhviINivyKlKJQv2z3KyoURsW7A2basv
- Fee8rPU3jIhNtSlyFODIhw4PTnZNQ6Mmq92lI3ug0ZGzwJz/8aUFhlGSWWUrA6r1b07xWVClbfb
- ULRSAHpiGLepeRkkYizHCpCZ+dqMuUy2NTw6NVlb7LdCT5ftIy5xap0Jv/L5WW34glsPxm6CcTW
- PwQGJMhxPOHo7tlzoBYRInXuuon8wR2iS+TnasDmUWN5+U8/9GRDmBxtdK/R9W06h7ifHgOJbSF
- xEcveaTbt1CG9l9oQwgoLlLJQpMSsgU/4zCsZh6pnjdupBGI/BwLyB6netJydh
-X-Google-Smtp-Source: AGHT+IFRUPXz9O97zT7tTvi8FfCO8H57dP7njZ+Jy9z/qALg7vYF3PusT8921QsTwHRlo/IuG9ZcXg==
-X-Received: by 2002:a05:600c:1c89:b0:477:8a29:582c with SMTP id
- 5b1f17b1804b1-477c01fc60amr119087025e9.34.1763977913012; 
- Mon, 24 Nov 2025 01:51:53 -0800 (PST)
+ AJvYcCWdDF0QJEL22eJohIRzSg82fz5SyoDku93Y4U/DdVQ/MkAt0PQgU+VVCCePh6qrUx10cQBaSXescLpw@nongnu.org
+X-Gm-Message-State: AOJu0Yy2WxC9fX3/87tjM4ST6rBQS32HZAK2SK5B0nt5tsbVnMjVVJx1
+ rkBXjwxcHOQii+VrKsQKKDEi+547yNeauxhMZ14QgqdSmCKzM30q80H8EY90uJ4HT+k=
+X-Gm-Gg: ASbGncs8eZAlaB40LOMFQ40zQMcaDhEH2cjuXFZ7pilF0jAhL4Gctf/3CbtnUpwdUtM
+ uWIocjw5elHkrymfANP3+/OyrbuBW4zIbgSB3pWzmJ7Nsuj18NQ58Oh/c3/VIh9dbnRxl9Gzv7f
+ iLUKQ9RDD9kMFGhvG6ViaWvxylGXetjsENxYVbMvRCBZ1g375cKiU1esGmK9ttRIV9j5YYpQ9nd
+ 9W0z8eSCG6U3MrAfbQLm8j1vb17AppueaDhht/SPNgglAo0S+xXyYWhVAb9N9tAlttV/N8ieewJ
+ lClrzWQOBbG7AvM6f8/b8WhpzND1tx4zUclQFK9suyd1U8/0volqGVszOxQ4iNSFaDrkFUQvNQ6
+ cDRM+te6AqPEEu5C6yQCACY03u+18yGv1uLEIteEMXSc3AYC6Iyc8Qr2y0ceJNsdZgLyzncZNtk
+ Q3gZtwKRmrXnl6K54D0oUFMnrEijZXswf1ao2j/TbHNp1/xEAnF8b6FHSV+OI5
+X-Google-Smtp-Source: AGHT+IGxtwIUpPvVaKECTkaaEjbbbMFw7g3vro7n1phVNH+26EhavxI1fREA2NPZczBvrzvyL1XfqA==
+X-Received: by 2002:a05:600c:8b35:b0:475:d8b3:a9d5 with SMTP id
+ 5b1f17b1804b1-477c10d6fdamr112297975e9.10.1763977919841; 
+ Mon, 24 Nov 2025 01:51:59 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fb919bsm27301138f8f.34.2025.11.24.01.51.52
+ 5b1f17b1804b1-477bf1df392sm189082925e9.1.2025.11.24.01.51.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Nov 2025 01:51:52 -0800 (PST)
+ Mon, 24 Nov 2025 01:51:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
  qemu-devel@nongnu.org
@@ -70,18 +70,18 @@ Cc: Rob Landley <rob@landley.net>, Thorsten Glaser <tg@debian.org>,
  Yoshinori Sato <yoshinori.sato@nifty.com>,
  Magnus Damm <magnus.damm@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-11.0 06/13] hw/sh4/r2d: Configure flash (CS#0) as 16-bit
- accessible
-Date: Mon, 24 Nov 2025 10:51:01 +0100
-Message-ID: <20251124095109.66091-7-philmd@linaro.org>
+Subject: [PATCH-for-11.0 07/13] hw/sh4/r2d: Introduce EXT_CS_BASE() macro and
+ use it for SDRAM
+Date: Mon, 24 Nov 2025 10:51:02 +0100
+Message-ID: <20251124095109.66091-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251124095109.66091-1-philmd@linaro.org>
 References: <20251124095109.66091-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,23 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The SH7751 memory controller can access 7 external banks.
+The 64MB of SDRAM is on bank #3. Introduce the EXT_CS_BASE()
+macro and use it for SDRAM.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sh4/r2d.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/sh4/r2d.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index 9de4944ecee..12232fabbdf 100644
+index 12232fabbdf..ecbc1ec2a98 100644
 --- a/hw/sh4/r2d.c
 +++ b/hw/sh4/r2d.c
-@@ -355,6 +355,7 @@ static void r2d_init(MachineState *machine)
-                           0, MEMTXATTRS_UNSPECIFIED, NULL);
-         address_space_stw(&address_space_memory, SH7750_BCR2,
-                           (0b11 << 2 * 3) | /* Area 3 Bus width is 32 bits */
-+                          (0b10 << 14) |    /* Area 0 Bus Width is 16 bits */
-                           0, MEMTXATTRS_UNSPECIFIED, NULL);
-         /* Start from P2 area */
-         reset_info->vector = (sdram_base + LINUX_LOAD_OFFSET) | 0xa0000000;
+@@ -45,10 +45,11 @@
+ #include "hw/block/flash.h"
+ #include "exec/tswap.h"
+ 
+-#define FLASH_BASE 0x00000000
++#define EXT_CS_SIZE (64 * MiB)
++#define EXT_CS_BASE(cs_index) ((cs_index) * EXT_CS_SIZE)
++
+ #define FLASH_SIZE (16 * MiB)
+ 
+-#define SDRAM_BASE 0x0c000000 /* Physical location of SDRAM: Area 3 */
+ #define SDRAM_SIZE 0x04000000
+ 
+ #define SM501_VRAM_SIZE 0x800000
+@@ -256,7 +257,7 @@ static void r2d_init(MachineState *machine)
+ 
+     switch (machine->ram_size) {
+     case 64 * MiB:
+-        sdram_base = SDRAM_BASE;
++        sdram_base = EXT_CS_BASE(3); /* 64M @CS3 */
+         break;
+     default:
+         error_report("This machine can only use 64M of memory");
 -- 
 2.51.0
 
