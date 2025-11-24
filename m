@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A90C7FC3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D50B0C7FC37
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNTJL-0007ec-Gu; Mon, 24 Nov 2025 04:56:43 -0500
+	id 1vNTJJ-0007NK-Dc; Mon, 24 Nov 2025 04:56:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vNTGW-0004nV-2D
+ id 1vNTGW-0004nZ-7W
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:53:53 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vNTGR-0001pq-VK
+ id 1vNTGT-0001q7-RB
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:53:47 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso31250305e9.0
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:53:43 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso21297265e9.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:53:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763978022; x=1764582822; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763978023; x=1764582823; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LlQBoQUGrpoDgJ1FkbU5HTXl/nKutbDif4xg1MCHo9s=;
- b=fezUxClpD+LOcyCcrVYTgLb+0tBL9M0DdeRIfid9TKtpvNFj+550VKZBqcvHsp1kzJ
- XsJTkq9JKJ31sYZhy8o1cRy6bE1qml3k0ljpkiJQvimJME6c9JiSNkU0T6WqIK1aV1fg
- LvFfPZaeMY0Q+0AvfxG2YZIyqK+ngv5Xme9YglWU0LXHzBpgu9+OSfs+/x+sCSK0gyEN
- Jb3P2ZZkHoQqeWHZnT+HEFZU461im6r7xYmVAAWBdmYewVacItXUZ2YkU7Sp5zBIcG1M
- LyFqOmESiFOZnkg6ZGBPlEaROLCfrx70y1sdqz8Tn32g/Y634dF3dXy1qkM3TQdYt25j
- PHsw==
+ bh=WdfPVNcsgxdSChKlyDoSG2k2BbOIKuM3AGHYELIYuS0=;
+ b=aIrfKzGs981KW+C0uEPOzBaFQ9JgdVUTtcL7v4W2KkY+kotOAd41XLG/7jfWbpo66U
+ 58O99JbCou7tBWOe8PL2zDWS/pMJXtBJVTmcD304b0huL8hRXiCZlNFs8HlHgUE5u+Q2
+ WdGXVuOLUg1wOIvwT45bbDJnQYWPsaU4ft4aaqSMXijK1XC1V+4fwqrcGmW4sH3gbNYx
+ xvSEUwp/JHClyxkWxgRmWdvwDZq9wvCI43D1qBymexcLN5KXWU7IUfYRGCkKQDOX09mp
+ tOSOxCxzc8vK/3j6h2qLh+UKfcGZGkkSczDmiIUsd10YWX7CGGvM0tIYi09wUFQAuRg0
+ LEHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763978022; x=1764582822;
+ d=1e100.net; s=20230601; t=1763978023; x=1764582823;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=LlQBoQUGrpoDgJ1FkbU5HTXl/nKutbDif4xg1MCHo9s=;
- b=SvHoGaapW3BEh+vhKhdgFWzZebo5hejz7RH5xxQbiKLQZnSXn1MoQQg52oywbIzWit
- QQpnIT/5UMrISM6ng5TfWfPOfYXM1wMPZ6hNmA8xfMIQ3jIJXLuLmYKK7FFvCsdJHNX6
- DsVO7QOUqhrFsXUCZhNEpK+bVXBP0LCmCwJG8VGDE39OmtMU2phkewrOuhkAXI2I2MQu
- qRqAQ3e8IGGI8LRVaprMYIRruFJvgQkpaUNncpm79UUYP9c11OiN7sT/uFgiqiv1/Qpj
- tZd9BGMeUXJ49o7TfWzbFvyOYFJcqiNfNfTiLlXfReDgadGlvjTwLW6BjkW3FpTDNm4t
- EIjQ==
-X-Gm-Message-State: AOJu0YwFMyxtXcIum9F/eHV4n1ojHh3c2UtT00nu8QUzDZJb/OHWnCoz
- mQlbKHNjWPN/OSj+49ODyxceU5KNh7ZT8J0QvAJ9z12YFDCpO0KS8m9jQrfCDO6H3U8=
-X-Gm-Gg: ASbGncvPzU1es+J5EFh3MztnhBFUOsYuR1dlfYJZxMTD785qXMgHUx/SOFWIGDYp7TP
- SUOqcTjH+yypeWuAqK6hQYpOX9r2qpZsvoI2p1ghpqg0PZI8LHNRnBqw4yWPz6kheWFtHBF5Zbo
- r38a7Tz5jORkosq4uViGEOt0LGjBsQhnBwdKaYNxrHcJcGXpJiaJlqkrDHSXn1RuUzwloHsBM//
- VMDKthOQHx8miRnh7fapD+WnBrqWZnrEehh7hg99bwjutOHPFb0spP92TeVY/UFev5FPXHDnU+j
- 5gX+DNCrUjryK4EUUxUm8jPX3bJXigX+6Lape1IrTLG66Qjs4dQZpmk5FymLwOFsse/kLbMtH4e
- MWSkJ/AbfUL1gjtJQUROYWY2gluO8G2erKQdCBYRVGPp8Qt2DOjR26c3PzL+D5nuUdfHwWugH3L
- 2WpLO2u4HWMjrSxp5KhZmthw==
-X-Google-Smtp-Source: AGHT+IGQGYcmArSDY18251zycuR8jBFSEls98XrwL6JfvMi9Q5/8jSwd7SXAtriuTodVx2vU4E99oQ==
-X-Received: by 2002:a05:600c:4f45:b0:45d:5c71:769d with SMTP id
- 5b1f17b1804b1-477c04db9a0mr118883475e9.8.1763978022179; 
- Mon, 24 Nov 2025 01:53:42 -0800 (PST)
+ bh=WdfPVNcsgxdSChKlyDoSG2k2BbOIKuM3AGHYELIYuS0=;
+ b=pY3zGCg1izy8cYW1nboswx1WxuOP/nKnAEM/+dcZ8bBmXdQUcoihVUbNKSuspdznwA
+ EKMHhRHWSWoXNjPbDgr3vZnXGpaZjRGTNyzz3k7mhBbfvgDQBQmu9fMrHcV64zbHB6Si
+ RRvxzYdOi1cl4gb1ghjumUay2sROpY54+1EaINM7vL35acmniqlV0w5LIduEhQojh3Dh
+ rtPm57FlqxS7QqmEZZXr3EmNqJ6bMOBUaakWhB5pAl8vxIBZyY2KXc6fGuLl3wCuiTOL
+ i4kvg+p4KUhrUrQAc0wP39hwOxJf8+7qVGOtpxyId4XOgvdByEeRbMqmRmdFlcYyf2hM
+ yNFQ==
+X-Gm-Message-State: AOJu0YyIDumLfxpo81zUPaThyCgXluCfAlxBAbPOArFbQOMvFtacm2Tv
+ jFXB0zq/84Utxs+SIiBJAZil9a8FT7oSvsos7o7XfcJaeIxZYyJOfBMcv7RBvaqXrLY=
+X-Gm-Gg: ASbGncuSRQQb9xys5qR159opuHxC3FZ+CBZDSl6GSN1GVJUqUBEPQksy34eXyukY5mK
+ Bd6snuQ0ha/zcK3Mm2HYmf8+y8k9GCAiQHUkFcjPkG7BhHGItf0829oA2J2xGu6JAwOJSh+7PRI
+ CZfF7VFoHDQtUDRBtRuMilu4B6B7EqewLnA4Lmz/RoHPwyY+KS8uUg1z7CmGhdP/sJ5RhqXAX3X
+ I8Q6FN52OxuP7tyl2COogTXUxARSeyVvVVymVuTCbA5tIK7DlA7aj+TV8GXeqE2vkV3nwrXr2gJ
+ 0upIE9WbtDfAITM/GnMomKZlnXqtPMwk73KBRc7+gueBlhe5qvd9D2Z6fjZGvZBQAirvfyE7C04
+ z1iNJe+MIWB6upHU7jRt9quBjx+7Y1RpJiZ08ntyyee3V1P2ebaYtdDy3OUKK+pxbOMJFJSHtph
+ POZbof/NZ3qSA=
+X-Google-Smtp-Source: AGHT+IGDiUllR6FHjmW6loypK9poFMHRpO1CPKAf83mskE6rAcitiMmioEq2jhisVfyFbi+mHpa8Gg==
+X-Received: by 2002:a05:600c:4f49:b0:45d:d8d6:7fcc with SMTP id
+ 5b1f17b1804b1-477c01dfe16mr121960425e9.27.1763978023324; 
+ Mon, 24 Nov 2025 01:53:43 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fa3a81sm27829192f8f.26.2025.11.24.01.53.38
+ 5b1f17b1804b1-477bf35f976sm191750455e9.4.2025.11.24.01.53.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Nov 2025 01:53:38 -0800 (PST)
+ Mon, 24 Nov 2025 01:53:42 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F24F760218;
- Mon, 24 Nov 2025 09:53:37 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 130066021C;
+ Mon, 24 Nov 2025 09:53:38 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Subject: [PULL 4/6] contrib/gitdm: add mapping for Eviden
-Date: Mon, 24 Nov 2025 09:53:35 +0000
-Message-ID: <20251124095337.537277-5-alex.bennee@linaro.org>
+ Jon Kohler <jon@nutanix.com>, John Levon <john.levon@nutanix.com>
+Subject: [PULL 5/6] contrib/gitdm: add mapping for Nutanix
+Date: Mon, 24 Nov 2025 09:53:36 +0000
+Message-ID: <20251124095337.537277-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251124095337.537277-1-alex.bennee@linaro.org>
 References: <20251124095337.537277-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,22 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-ID: <20251119113953.1432303-7-alex.bennee@linaro.org>
+We have a number of hackers from Nutanix, make sure they are grouped
+together.
+
+Reviewed-by: Jon Kohler <jon@nutanix.com>
+Reviewed-by: John Levon <john.levon@nutanix.com>
+Message-ID: <20251119113953.1432303-8-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 diff --git a/contrib/gitdm/domain-map b/contrib/gitdm/domain-map
-index bf1dce03fde..4e67c3e484d 100644
+index 4e67c3e484d..c07dffc51bd 100644
 --- a/contrib/gitdm/domain-map
 +++ b/contrib/gitdm/domain-map
-@@ -19,6 +19,7 @@ crudebyte.com   Crudebyte
- chinatelecom.cn China Telecom
- daynix.com      Daynix
- eldorado.org.br Instituto de Pesquisas Eldorado
-+eviden.com      Eviden
- fb.com          Facebook
- fujitsu.com     Fujitsu
- google.com      Google
+@@ -35,6 +35,7 @@ lwn.net         LWN
+ microsoft.com   Microsoft
+ mvista.com      MontaVista
+ nokia.com       Nokia
++nutanix.com     Nutanix
+ nuviainc.com    NUVIA
+ nvidia.com      NVIDIA
+ oracle.com      Oracle
 -- 
 2.47.3
 
