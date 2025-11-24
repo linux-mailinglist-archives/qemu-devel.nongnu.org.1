@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985FAC7FC2D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DBAC7FC30
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:57:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNTJB-0006Zi-CP; Mon, 24 Nov 2025 04:56:36 -0500
+	id 1vNTJR-0008Nt-00; Mon, 24 Nov 2025 04:56:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vNTGW-0004nW-2U
+ id 1vNTGU-0004nG-23
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:53:53 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vNTGR-0001pa-K3
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:53:46 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-42b3c965df5so2085287f8f.1
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:53:42 -0800 (PST)
+ id 1vNTGR-0001p8-JQ
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:53:45 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-42b38693c4dso1803634f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:53:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763978021; x=1764582821; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763978019; x=1764582819; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n1AdHiWKLNOb+I70h5V8aPENIr+UOI5rPE51IDiCYPk=;
- b=L5WIGFZyMdjT+vo00ZhjnHVGLLefHD33TO38Ra+pHTyKameiRNLbXZQIL3lTTPbZvB
- jvMuzcQ85c+2kz9QYAPdbfLSBJ7M2p9wZLYWWCi3HVm+N6SxiV5tfkwwm191xfPGbrZE
- Q94Iu4DA8dNzZsfmXlSHezLIJmU8D2bf5MiZmry1pl1k4fP0b/xcnV9yNoTWg0Jgv2VM
- FtzSRtmrm1GR8uqBhiatRR0RqvoAVaFxzWycWDpSqtKfFQmnPDvpVkODCUeiV35iDIyD
- 6Lf4wawiyCg4bYkj5PEscC23n7IVnRt6FoJm4azWtSrrwMeK0wfBccNAFUQ6S5kDyNrZ
- cQPg==
+ bh=eHuNPaQRBQVs0pEJUsFGuLTgH0d+VE0aZRSkud9qPBw=;
+ b=D+oCWQWXxxBy8CIUhDRk1pYZlY/SXCbg9QfTgxwG9PIf1B1gxkd8Nhx6xvL3f8oh29
+ qk2CV23c0Z9rVuunVUxgPQkBxxLIC1DUVewiTohQ6xtpo4UkSL+ez829L4HZCxoEx6H/
+ trBQyoGFaJ2Mfp46kHXfCVsfkYZAXlcllhLMqpxU3LXfizJ8Bsg7mfZNXB8bTid1662+
+ OVXB4z6CLIbB4+BaBAQ151BGzgmYtVm6nN6JFbCajrwHUQuPEB1Ud6tVYB0hp20Ur0qv
+ HJSKiJDPsL5YlBDLnTWc6AFudusP2mpJxDKZp+EnKS5t3s6yzeqq8j/gSgTm6/SdvBtM
+ LeUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763978021; x=1764582821;
+ d=1e100.net; s=20230601; t=1763978019; x=1764582819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=n1AdHiWKLNOb+I70h5V8aPENIr+UOI5rPE51IDiCYPk=;
- b=hTErx28t1VNoxcMbUCXgLrm04ZHsUNQ/NWXkYT8OnH9+XtwnENG6/50SB/Z0sMpTLH
- Lptq7PyG8cVajt8aIaK2LD02WvFM1R7f6HyHKyWA1TD4+4lmzJEcrOUGLRQS9AR9f65q
- siog/X+syDC7roTEykgrCqRMsON7rdEg7EwcVLlHwjAWIcb/1aWRps/wX9+fEGmPE5rg
- UK0tkoEAHZPw8v4z1AbwkVw5pj8t5PlAgDKLTL1LJf2m5934gimoTevBMLqeUkMYQKRR
- H+RLItGO54mv1K0SO3V2amnFfZAAxiD344+sr8Uv25sfwVt15QtAXeBHuOh8Uzcz/GHx
- B2Zw==
-X-Gm-Message-State: AOJu0YwLsSJofG1GZOvErloF1cwBgw8NyFl3Vz7N85LCtueuuIgKkQPf
- kEjkeAMGbkoJBmcj4bind/rW52peBr7yW+UlQnTtAGhWrcT07XlhBY74MVEXwLP7AQg=
-X-Gm-Gg: ASbGncvueVpDbTEcGvNsi5pp5RQEHRBQJT5jjHErWeVcg0NIHf/kYZHTIq0IBAxk6Zf
- FVje1kZzYmA3SZHP4fd2NQT3LRqYWGxYRp7nxoBoN+RWN/KdUw8thrXTQ5Wjd8QRO6QqV3w/PW2
- Y8WjjgQVSG06YlKFoNX1f+TYfSG7ZvJ+jhXWhP8IZcU98V4zqHYReNnHwEcVKvglivCayyuJFiT
- UDBjD/0nbDUqn3dDUC9YaYsyB5XIbVEMAF35Q6UAdEJeqvw7zZ9MvHGcnr97q7BZTJZ3MnrrKyN
- Jtk73IjTVbtzq60fzWhFztXas/mVespQkrN0MvgHEz6MNlaehA6fvmbcOU8R86hMAuD8NpYPY0c
- ZineOBHgQRUSEAum8d7s5+c2QS4dKMoJAuA7zFY2kWlVXzEXq9oi3UewUH7hUngKd9ZIXlMr0gu
- VYd3ED9Qgz80o=
-X-Google-Smtp-Source: AGHT+IENYQD+dsQB44XoexfLHNb/eFVa46Mw2GYbzOjbdkK08P9mMdkiQwgRLCUlr3PNa7yw9icI8Q==
-X-Received: by 2002:a05:6000:1789:b0:42b:40b5:e64c with SMTP id
- ffacd0b85a97d-42cc1d0c3bdmr11539054f8f.30.1763978021301; 
- Mon, 24 Nov 2025 01:53:41 -0800 (PST)
+ bh=eHuNPaQRBQVs0pEJUsFGuLTgH0d+VE0aZRSkud9qPBw=;
+ b=W7oHW957AEWaaxTsATpU0BfjKlUTqJJCt0zmNzwTtwk8v32vL7enqlFXrX7wtZ9GwK
+ 70PTJz8nlYIiAPm6q+c+Py3k2ayJq4CvcjHfA//NtckGoGOzraeiaU0A4oG7LE8bmkI8
+ 7WjCsiCeX6Urq1MU3ZtCET3g7ebQgyVQpXsFcsTpbg293U9tAMG/ESLRUjMr3GrxYhRe
+ HURAjQkY+zH0eFHD6xNVFH8xWJsp+agrjyociPNy4yH4Sg+wiaJYt0Xc0cc/SExyX2R1
+ cdjRrgoHH0c8RPseIGTqAHPBmXqKgT48IhiWVdvPcSbc5h6QFgloOwLJkOL+sbdUPEwK
+ zfZQ==
+X-Gm-Message-State: AOJu0YzNpNnUpfv/e32s9nxLiBkD9+8gGyJrLurC5McYTkhfor89/fjL
+ gbXBLkq5cu0iXGvf/oL9bpF3Xbg2z2O7z6bqBLnAx/nSIpjXhuCW5glnCG53FQCJNBtQaCYeRjT
+ DwvWd
+X-Gm-Gg: ASbGncsvxFKJ4nVySkEDNKwcr7mBzduYKFxEn+aFxry3AaDNNhxEt+h8/JfYpAHCHO1
+ 35Sbu2Ey31/zzm1UmykAzUzTJC+nrK+tnQyR2GBkp7ICY/N7TBmLupzxj7HugmylGI79CDShJox
+ rL6bVk5uqlgvjfewGVqaVcxt+pba9qQPnTovNueWqKE+gpgmqlJiXgny/KEmqmpYgIRemtxHead
+ L0tuWc8yMb9SHO3boRIBDxUsFgrtRwLqdIA7gTSeixCq6TwzLtwXZTofVPuQnz1Q7+swSqelLs5
+ QRGar/juT8EIlwKknMAQJCGIHSdQon2y3b/oiSCF9Enn0pcRSdGZaxd6pOBiUB9iI3beI2R1BL4
+ xk7JVwDRMIeal033EOcKpg94djlsFotEhmuEcJD7HKmlkTFlCVvOmyfO3q9TzHD+nsdh3h/Wyim
+ Zr+9GnlK0mKwY=
+X-Google-Smtp-Source: AGHT+IGmoLxV4rX+fY/lOxzdwy9s37gRBIIOlVzr62XptcWth6U9xB0hwPnbwEN44iXgv5tUqJlmGg==
+X-Received: by 2002:a05:6000:4383:b0:429:b751:7916 with SMTP id
+ ffacd0b85a97d-42cc1d18d22mr11328201f8f.45.1763978019410; 
+ Mon, 24 Nov 2025 01:53:39 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f3635bsm27680374f8f.17.2025.11.24.01.53.38
+ ffacd0b85a97d-42cc231dc6esm19160041f8f.7.2025.11.24.01.53.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 24 Nov 2025 01:53:38 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C753460216;
+ by draig.lan (Postfix) with ESMTP id DCBBD60217;
  Mon, 24 Nov 2025 09:53:37 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Magnus Kulke <magnuskulke@linux.microsoft.com>,
- Wei Liu <wei.liu@kernel.org>
-Subject: [PULL 2/6] contrib/gitdm: add group-map for Microsoft
-Date: Mon, 24 Nov 2025 09:53:33 +0000
-Message-ID: <20251124095337.537277-3-alex.bennee@linaro.org>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PULL 3/6] contrib/gitdm: add University of Tokyo to academic group
+Date: Mon, 24 Nov 2025 09:53:34 +0000
+Message-ID: <20251124095337.537277-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251124095337.537277-1-alex.bennee@linaro.org>
 References: <20251124095337.537277-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,41 +103,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we do see contributions from the top-level domain we want to
-catch the linux.microsoft subdomain and those contributors also post
-via other addresses.
+From Akihiko:
 
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20251119113953.1432303-4-alex.bennee@linaro.org>
+  I and my colleagues use QEMU for academic microarchitecture
+  researches so it is indeed to appropriate to have an entry here.
+
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Message-ID: <20251119113953.1432303-6-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/contrib/gitdm/group-map-microsoft b/contrib/gitdm/group-map-microsoft
-new file mode 100644
-index 00000000000..989a307b6db
---- /dev/null
-+++ b/contrib/gitdm/group-map-microsoft
-@@ -0,0 +1,8 @@
-+#
-+# Some Microsoft contributors post from other emails
-+#
+diff --git a/contrib/gitdm/group-map-academics b/contrib/gitdm/group-map-academics
+index 082458e1bde..40865b01cd7 100644
+--- a/contrib/gitdm/group-map-academics
++++ b/contrib/gitdm/group-map-academics
+@@ -25,3 +25,6 @@ iscas.ac.cn
+ 
+ # Université Grenoble Alpes
+ univ-grenoble-alpes.fr
 +
-+# Some posting don't use the main domain
-+linux.microsoft.com
-+
-+wei.liu@kernel.org
-diff --git a/gitdm.config b/gitdm.config
-index 05a2dad2291..8764bf2f9ff 100644
---- a/gitdm.config
-+++ b/gitdm.config
-@@ -39,6 +39,7 @@ GroupMap contrib/gitdm/group-map-facebook Facebook
- GroupMap contrib/gitdm/group-map-huawei Huawei
- GroupMap contrib/gitdm/group-map-ibm IBM
- GroupMap contrib/gitdm/group-map-janustech Janus Technologies
-+GroupMap contrib/gitdm/group-map-microsoft Microsoft
- GroupMap contrib/gitdm/group-map-netflix Netflix
- GroupMap contrib/gitdm/group-map-redhat Red Hat
- GroupMap contrib/gitdm/group-map-wavecomp Wave Computing
++# University of Tokyo
++u-tokyo.ac.jp
 -- 
 2.47.3
 
