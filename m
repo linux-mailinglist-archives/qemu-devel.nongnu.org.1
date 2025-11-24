@@ -2,100 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA17AC81C85
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 18:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E81C81CDD
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 18:08:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNZyE-0004fR-Fy; Mon, 24 Nov 2025 12:03:22 -0500
+	id 1vNa1x-0008HA-8B; Mon, 24 Nov 2025 12:07:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkrcmar@ventanamicro.com>)
- id 1vNZy7-0004bq-Da
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 12:03:16 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vNa12-0006OT-BT
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 12:06:17 -0500
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rkrcmar@ventanamicro.com>)
- id 1vNZy5-0003E3-0y
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 12:03:15 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-47798089d30so2352085e9.1
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 09:03:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vNa0z-00045K-KD
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 12:06:15 -0500
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-787ff3f462bso55890427b3.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 09:05:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1764003791; x=1764608591; darn=nongnu.org;
- h=in-reply-to:references:from:to:cc:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1764003958; x=1764608758; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UpMGIaOohBIWSN+juWH3bKlLeQUwDFZmhfK7rIQw8bw=;
- b=jFAryUydhmYQGhEJYQj3Q8cmAqqQAhTr4nIbbYuZsqXhUD/d3jFZuYdoAFH87cY3IK
- 4+YJJmXoeedGwRoJ21VoFKjKdEuNqyLhuDQP4O7U/ZkII/8JzS9XJEHX/n15vqny/K8x
- 7tGQbbceYHmA9O7S3GSzcrYjIXscvMIyPDG9agufGkEpqUcHi6APURt6Dc72DK+rQ6D+
- uRo00LDEEoxgj++ysjM3akAW7Wgda6mKXpYZH2ZWxqGVE4x0NKy7vcbqq5sHuoP/kgI6
- zZWBNamZNdzeUuxx+GU4VHrOTGckHxw28Iyr4ddpEESq/ZfQ2lLh8rt3Ot13iOdTix3P
- rJNA==
+ bh=AMcfu2h4bevoj0RykyRrAeEPkRNFg8Ac4Sz94eecfzo=;
+ b=SVrFK/Q++cUGqeMuGenQWmyLnfvYl/FcMMuPKcZWuJDm+mnFtprM6q9Fc5dj+G+Tey
+ StaNvRWJZJw5eg7WBDkkiBGU5oYknwefJq5xDsLN4Co7NW1DUzcNRn+R1yXEeLGpvsM9
+ Xm3TivUTjN9ixmFnSfZxZWPzIMiWG+5kYB8c41gSCWSEsSggmpXgY+qfPtWDCGnH9kiw
+ idPM7Ew2JWtwmAo5Q9u9N4S3zgp0C29RAin5SJ8ZivJoe10k8Dm/92ZVIqsCpZsIg0qI
+ OnIwTQrQKefffx/7P8XAbJHcJDeLP3xopyLMuUJXCH6rvmfOPOdcpqfQBAzrYEVILnXB
+ lA8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764003791; x=1764608591;
- h=in-reply-to:references:from:to:cc:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UpMGIaOohBIWSN+juWH3bKlLeQUwDFZmhfK7rIQw8bw=;
- b=V2shUG5UaVexCJrj0p92zD59H6bm7La8XmMrTcEVAsEnSoCJ+fUCW+q7tdzqlTlMGY
- S1boYXccvXXpG/g3vh2mDjvnMcgaACngHEw123lC5FL0DzfC4yx0jcUp7PBjzFustxh1
- f+UqD8ySr6xTjr0eiEwLFgyKvcb0YnhF9snD1p1pjwiZS6pD2cLmk125InnT9jNUQI7+
- SBCgeaTLe3ZAUvQPaXc9s47TlrplkTrii7R6o77ZO0ykWMRgKKtWkehtGSWgePgEKdNr
- dlOg1ANUFGvww+lyy7Psgxa2M00oKXG7ofaKqHz2zVY5QXT/LgN2HmXegyXey811CbNY
- aiEQ==
-X-Gm-Message-State: AOJu0YyAGEA9a9j7RQ1YNx53REH18SfigZZxh/xXU3cdAU3PsMAxqAqt
- s3AKb3W+WJTcMFzhyEmiEZ7/h6NVDQqTAQJQGfLI2SsrnI/umagTEMPmxTr+PrYVysY=
-X-Gm-Gg: ASbGncvC/aqU7Zl2NyRUYm3ss+5I+9121tcTgMutbvROX7qcmaReptce1/414tudjeU
- X0vfjeBUDBYUW7FJgX9YilN3Z2kEaN2BiPZ1Fs6yrKXe24q9VkD0E2AFFjo9sd0uttY1bXzZeZ+
- sqdf7K5dUT65BZSKzKlOpcRN/NbOpaUUCTvkSx6DVtm7ZcNs8uotwrgFBhWi9JhUioAAid32RQC
- Iq9JJABJFyiJu7hOmc08iHUym4o0WVYM4rUvaKraP0YMJ/IURWlyvwUdMbMubn+iTU79Xoa0jFD
- D21a/oj0y6BoknclN37hg0dALmW1jNLXOX7GINidsn71Uy85DVjTgnNjz4tcWUpLbHChOjpKTS4
- LKjLcJ7u1BY0Nd9cZdllQlrdatoi+2/9hG/WNRr+c7kE3bX4JJ9z5pf+C2y1OebNzO6qz4LNcOI
- g=
-X-Google-Smtp-Source: AGHT+IHsnUiEWgHnUYRxleh6IJNZN8H7wk9vZuXsrKZqmzqPCBAizP93nXsokIqRHwpMI+VgJlIF7Q==
-X-Received: by 2002:a05:600c:4693:b0:477:9d54:58ce with SMTP id
- 5b1f17b1804b1-477c311cdc6mr67530555e9.1.1764003791192; 
- Mon, 24 Nov 2025 09:03:11 -0800 (PST)
-Received: from localhost ([2a02:8308:a00c:e200::3052])
- by smtp.gmail.com with UTF8SMTPSA id
- ffacd0b85a97d-42cb7f34fd1sm30111795f8f.11.2025.11.24.09.03.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Nov 2025 09:03:10 -0800 (PST)
-Mime-Version: 1.0
+ d=1e100.net; s=20230601; t=1764003958; x=1764608758;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=AMcfu2h4bevoj0RykyRrAeEPkRNFg8Ac4Sz94eecfzo=;
+ b=VkHQ6Go766oCfDT7DbTarZrx7FsdZwE5CS1vb5SCdNRpVBy3AtsRs8zCxBZmqRNrnG
+ 6ZaXIRO4MfK3MxTnj+JGz+VztmeKSpinBT45HRuAObdFrt/tIHXJUl3AHFfBbKF4B3ET
+ PGEt8Hkl796oK5O4VbHrBVb+v95zGaTpWMv2oj5h5jib7uZUGQuxvSR2SrmYudhgD56S
+ S7veiWmdEZNHnEnpbSQAoxzeeJH2aHF6MyUqPAmfhCvW6lfmIY7Ow8gYCedgKwlfFIrv
+ EWqXDxLR8ess4hM0n2/IgSJ9k9teKqKwYim/+61Jm5piQuWkoIYvsz2gUIvM6pjgScS8
+ LfRg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUxjSgME2w1cWrdYMhAMl/t4furADW9TGcuTCdqoJqnpIToHzBiyp1JBXqigDOSeS+UwnuN0HHhxEeR@nongnu.org
+X-Gm-Message-State: AOJu0YzUhs5a3Wss39qADPND1aR5o2X0L2M+cU0EmpoTukpsHMldhHyU
+ 2OMxBl/uz3vBc44h/ToSAMQSXjFWU1vh5ZGT5KlZpstkluqh40HQv+SQIeeq0QGWNrCtH09AA1J
+ wPZs/bho209c8Wtx4dWtWKX7qG/unPLVm9Qn/lYQktw==
+X-Gm-Gg: ASbGnctjzSOzlgKTSJelC98TUQmgV+FlfzRc79aG2wzvS+3Vg4Fz0pWXUotymV7ySDG
+ yGB6z7UijJosirSs7wASCHCnflbkKcf4JLcuzwxzzXxIXLY/6gXgvGmBt8GxeegZeWjFJDNA6wF
+ 7+NdZPSW0ftftfikqcigWX9qv+yWzBCdavcf3aG3SrGB55qzhIOdbwOzbxOplndbhbb1QTIdSPF
+ zXqaNkNIs/tGln07YfO+cCkacWe6DzidZ6SxIhtfigrV5zO1zUATUUgVEaU1adXWjwI3GIx
+X-Google-Smtp-Source: AGHT+IGrNE0mNX8XVsAvxmQmsLaqA/mtdbfwCV2rh+VjNztxXWWD3xBgac4yGK2A7BNesdMUOKTfEJzYNSXnmeUPUuw=
+X-Received: by 2002:a53:d005:0:b0:63f:b6c0:23f8 with SMTP id
+ 956f58d0204a3-642f8e430c1mr16487535d50.33.1764003958498; Mon, 24 Nov 2025
+ 09:05:58 -0800 (PST)
+MIME-Version: 1.0
+References: <20251111102836.212535-1-corvin.koehne@gmail.com>
+ <20251111102836.212535-2-corvin.koehne@gmail.com>
+ <9bc047f0-1122-4381-ab5a-01878a10297e@linaro.org>
+In-Reply-To: <9bc047f0-1122-4381-ab5a-01878a10297e@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 24 Nov 2025 17:05:46 +0000
+X-Gm-Features: AWmQ_bnx4AQTpBZhl2nOLh-u7rfw-4-PkC72NCq7FkZ1J5z1JYlvd3GM705Aya8
+Message-ID: <CAFEAcA_UHmXA5HGmvYEucxXX8uiQbHK9-_t7R7EDrxvsxcMmyQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/15] hw/timer: Make frequency configurable
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>, 
+ qemu-devel@nongnu.org, =?UTF-8?Q?Yannick_Vo=C3=9Fen?= <y.vossen@beckhoff.com>, 
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>, 
+ Kevin Wolf <kwolf@redhat.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Nov 2025 18:02:37 +0100
-Message-Id: <DEH356RBYAIG.IS7SP4D5XLIQ@ventanamicro.com>
-Subject: Re: [PATCH 3/7] hw/riscv: implement CBQRI capacity controller
-Cc: <qemu-devel@nongnu.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Alistair Francis" <Alistair.Francis@wdc.com>, "Weiwei Li"
- <liwei1518@gmail.com>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, "Liu Zhiwei" <zhiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "Nicolas
- Pitre" <npitre@baylibre.com>, =?utf-8?q?Kornel_Dul=C4=99ba?=
- <mindal@semihalf.com>, "Atish Kumar Patra" <atishp@rivosinc.com>, "Atish
- Patra" <atish.patra@linux.dev>, "Vasudevan Srinivasan" <vasu@rivosinc.com>,
- "yunhui cui" <cuiyunhui@bytedance.com>, "Chen Pei"
- <cp0613@linux.alibaba.com>, <guo.wenjia23@zte.com.cn>,
- <liu.qingtao2@zte.com.cn>,
- <qemu-riscv-bounces+qemu-riscv=archiver.kernel.org@nongnu.org>
-To: "Drew Fustini" <fustini@kernel.org>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-References: <20251119-riscv-ssqosid-cbqri-v1-0-3392fc760e48@kernel.org>
- <20251119-riscv-ssqosid-cbqri-v1-3-3392fc760e48@kernel.org>
- <DEDROLF9I9YQ.2MQIEGB7I4BKH@ventanamicro.com> <aSDCmrvONUgvzqbV@x1>
-In-Reply-To: <aSDCmrvONUgvzqbV@x1>
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=rkrcmar@ventanamicro.com; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,43 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-2025-11-21T11:50:50-08:00, Drew Fustini <fustini@kernel.org>:
-> On Thu, Nov 20, 2025 at 08:25:44PM +0100, Radim Kr=C4=8Dm=C3=A1=C5=99 wro=
-te:
->> 2025-11-19T16:42:19-08:00, Drew Fustini <fustini@kernel.org>:
->> > +static void riscv_cbqri_cc_realize(DeviceState *dev, Error **errp)
->> > +{
->> > +    RiscvCbqriCapacityState *cc =3D RISCV_CBQRI_CC(dev);
->> > +
->> > +    if (!cc->mmio_base) {
->> > +        error_setg(errp, "mmio_base property not set");
->> > +        return;
->> > +    }
->> > +
->> > +    assert(cc->mon_counters =3D=3D NULL);
->> > +    cc->mon_counters =3D g_new0(MonitorCounter, cc->nb_mcids);
->> > +
->> > +    assert(cc->alloc_blockmasks =3D=3D NULL);
->> > +    uint64_t *end =3D get_blockmask_location(cc, cc->nb_rcids, 0);
->> > +    unsigned int blockmasks_size =3D end - cc->alloc_blockmasks;
->> > +    cc->alloc_blockmasks =3D g_new0(uint64_t, blockmasks_size);
->> > +
->> > +    memory_region_init_io(&cc->mmio, OBJECT(dev), &riscv_cbqri_cc_ops=
-,
->> > +                          cc, TYPE_RISCV_CBQRI_CC".mmio", 4 * 1024);
->>=20
->> Shouldn't the region size take cc->ncblks into account?
->> (A bitmask for 2^16 ids is 8kB.)
+On Wed, 12 Nov 2025 at 11:24, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> cc_block_mask field is BMW / 8. In the case of NCBLKS of 12 and NCBLKS
-> of 16, both end up with a BMW of 64 which would be 8 bytes. I think the
-> the only reason the allocation is 4KB is that is meant to be aligned to
-> the page size. Otherwise, the capacity controller register layout is
-> pretty small.
+> Hi Yannick, Corvin.
+>
+> On 11/11/25 11:28, Corvin K=C3=B6hne wrote:
+> > From: YannickV <Y.Vossen@beckhoff.com>
+> >
+> > The a9 global timer and arm mp timers rely on the PERIPHCLK as
+> > their clock source. The current implementation does not take
+> > that into account. That causes problems for applications assuming
+> > other frequencies than 1 GHz.
+>
+> This change makes sense, but IMHO we should model the source as a
+> Clock object (see docs/devel/clocks.rst).
 
-I understood NCBLKS as the amount of bits in the capacity bitmask, and
-NCBLKS in encoded in a 16 bit field, which means up to 65536 bits.
-Is there a lower limit?
+I agree that would be the modern and cleaner way to do this,
+but I said in review on an earlier version of this series
+that I wasn't going to insist on that:
 
-Thanks.
+https://lore.kernel.org/qemu-devel/CAFEAcA8opzjChTA7UONEPtrUnQ-xayoMgxH5gK9=
+Bi-_VnMXjUQ@mail.gmail.com/
+
+thanks
+-- PMM
 
