@@ -2,53 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AB8C7F257
+	by mail.lfdr.de (Postfix) with ESMTPS id A57D2C7F258
 	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 08:07:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNQeM-0001Yr-Cw; Mon, 24 Nov 2025 02:06:14 -0500
+	id 1vNQeD-0001UJ-5j; Mon, 24 Nov 2025 02:06:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQdz-0001Ss-C0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQdx-0001Si-IS
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQds-00033A-Sg
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:49 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQds-00033b-Q0
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763967934;
+ s=mimecast20190719; t=1763967939;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=gIUlSKS9XZiz3+fgOeSkoIgHFzFDNH0vEB6TzK4uR6U=;
- b=Cvo2Lefef8iSFSORvD7GSimQ7QSS5mLX2hwhI2LWuxD0KnKPbUvxPbGbTIqd4BbX8dg6EP
- AHUcwnAP9dZN1TLVgMzm+MmqloHL2SCnpCkNxkU48mBIa5UDbmUOGKCWHy7UdJEOBsiOID
- GqDupBXXeBV9wDZ3n4YFr6QzynIRemU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=anz/J+EOxbHoTXz39emt1em13qUNfNadpbQlyvdQ9oU=;
+ b=cXj18vXQQP/Am9Ojhbo/3dQzf3x4jo0lTvnqDogcVXgE+H0du4r1tWSxV+JRYAspBzF+wg
+ EX9lQLHC05SQX1y7QCletbi+hlXBiuDVpbo3DjFp22LBvJJLsODMuxwuwPxWeJpR6BnRdb
+ Now/KiZ8AKjooh1tlzhdxFn+mFa9o+4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-157-T2UWoswzPKCVXuouMjQ3kg-1; Mon,
- 24 Nov 2025 02:05:30 -0500
-X-MC-Unique: T2UWoswzPKCVXuouMjQ3kg-1
-X-Mimecast-MFC-AGG-ID: T2UWoswzPKCVXuouMjQ3kg_1763967930
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-b754hbh4MU-wizL6sFi2QQ-1; Mon,
+ 24 Nov 2025 02:05:33 -0500
+X-MC-Unique: b754hbh4MU-wizL6sFi2QQ-1
+X-Mimecast-MFC-AGG-ID: b754hbh4MU-wizL6sFi2QQ_1763967931
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C07091956096; Mon, 24 Nov 2025 07:05:29 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C67A4195606B; Mon, 24 Nov 2025 07:05:31 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.24])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 249E618004A3; Mon, 24 Nov 2025 07:05:27 +0000 (UTC)
+ id 405711800576; Mon, 24 Nov 2025 07:05:30 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 0/3] aspeed queue
-Date: Mon, 24 Nov 2025 08:05:21 +0100
-Message-ID: <20251124070524.240618-1-clg@redhat.com>
+Cc: Nabih Estefan <nabihestefan@google.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 1/3] hw/arm/ast27x0: Fix typo in LTPI address
+Date: Mon, 24 Nov 2025 08:05:22 +0100
+Message-ID: <20251124070524.240618-2-clg@redhat.com>
+In-Reply-To: <20251124070524.240618-1-clg@redhat.com>
+References: <20251124070524.240618-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -62,7 +66,7 @@ X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.161,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,37 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit fb241d0a1fd36a1b67ecced29d8b533316cf9e2d:
+From: Nabih Estefan <nabihestefan@google.com>
 
-  Merge tag 'staging-pull-request' of https://gitlab.com/peterx/qemu into staging (2025-11-23 11:46:53 -0800)
+The address for LTPI has one more 0 that it should, bug introduced in
+commit 91064bea6b2d747a981cb3bd2904e56f443e6c67.
 
-are available in the Git repository at:
+Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+Fixes: 91064bea6b2d ("aspeed: ast27x0: Map unimplemented devices in SoC memory")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20251104233742.2147367-1-nabihestefan@google.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/arm/aspeed_ast27x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20251124
-
-for you to fetch changes up to e9a8b04dbb98fba7942b23b3ac5c35f2f0b9c4a0:
-
-  hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root Port capabilities and enable MSI to support hotplug (2025-11-24 07:52:42 +0100)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* Fixed typo in the AST2700 LTPI device
-* Fixed missing wiring of the SPI IRQ in AST10x0, AST2600, AST2700 SoCs
-* Updated ASPEED PCIe Root Port capabilities and MSI support
-
-----------------------------------------------------------------
-Jamin Lin (2):
-      hw/arm/aspeed: Fix missing SPI IRQ connection causing DMA interrupt failure
-      hw/pci-host/aspeed_pcie: Update ASPEED PCIe Root Port capabilities and enable MSI to support hotplug
-
-Nabih Estefan (1):
-      hw/arm/ast27x0: Fix typo in LTPI address
-
- hw/arm/aspeed_ast10x0.c   |  2 ++
- hw/arm/aspeed_ast2600.c   |  2 ++
- hw/arm/aspeed_ast27x0.c   |  4 +++-
- hw/pci-host/aspeed_pcie.c | 40 +++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 46 insertions(+), 2 deletions(-)
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index c484bcd4e22f..1e6f4695382e 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -87,11 +87,11 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_UART11]    =  0x14C33A00,
+     [ASPEED_DEV_UART12]    =  0x14C33B00,
+     [ASPEED_DEV_WDT]       =  0x14C37000,
++    [ASPEED_DEV_LTPI]      =  0x30000000,
+     [ASPEED_DEV_PCIE_MMIO0] = 0x60000000,
+     [ASPEED_DEV_PCIE_MMIO1] = 0x80000000,
+     [ASPEED_DEV_PCIE_MMIO2] = 0xA0000000,
+     [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
+-    [ASPEED_DEV_LTPI]      =  0x300000000,
+     [ASPEED_DEV_SDRAM]     =  0x400000000,
+ };
+ 
+-- 
+2.51.1
 
 
