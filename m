@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57D2C7F258
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D43C7F25B
 	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 08:07:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNQeD-0001UJ-5j; Mon, 24 Nov 2025 02:06:05 -0500
+	id 1vNQeC-0001UZ-OI; Mon, 24 Nov 2025 02:06:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQdx-0001Si-IS
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQdz-0001Sw-EA
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQds-00033b-Q0
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vNQds-00033R-Qj
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 02:05:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1763967939;
+ s=mimecast20190719; t=1763967937;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=anz/J+EOxbHoTXz39emt1em13qUNfNadpbQlyvdQ9oU=;
- b=cXj18vXQQP/Am9Ojhbo/3dQzf3x4jo0lTvnqDogcVXgE+H0du4r1tWSxV+JRYAspBzF+wg
- EX9lQLHC05SQX1y7QCletbi+hlXBiuDVpbo3DjFp22LBvJJLsODMuxwuwPxWeJpR6BnRdb
- Now/KiZ8AKjooh1tlzhdxFn+mFa9o+4=
+ bh=0nrqo0l7a0+DHkslT0OJMQGKNoPf5pW2H3yUVrG9lxc=;
+ b=htALFhXuhmBM6cawAvyHay/BPuH1zVYOp49IXe3Z9BDZQT64JH7JR1eGPyXclXteDgIn55
+ 3da+lD467S9BthmXDPQ1SUFhqaC/r39T1kDF762vBFc7848tbWp5tB/UYNlZ2nUGXqMnIt
+ GxkR2K/gogGK0RvhpvqX4UiqgYyH9zU=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-b754hbh4MU-wizL6sFi2QQ-1; Mon,
- 24 Nov 2025 02:05:33 -0500
-X-MC-Unique: b754hbh4MU-wizL6sFi2QQ-1
-X-Mimecast-MFC-AGG-ID: b754hbh4MU-wizL6sFi2QQ_1763967931
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-PsYB1J3iNPug5uy6YYzXKA-1; Mon,
+ 24 Nov 2025 02:05:35 -0500
+X-MC-Unique: PsYB1J3iNPug5uy6YYzXKA-1
+X-Mimecast-MFC-AGG-ID: PsYB1J3iNPug5uy6YYzXKA_1763967934
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C67A4195606B; Mon, 24 Nov 2025 07:05:31 +0000 (UTC)
+ id 13FD51956067; Mon, 24 Nov 2025 07:05:34 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.24])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 405711800576; Mon, 24 Nov 2025 07:05:30 +0000 (UTC)
+ id 461611800576; Mon, 24 Nov 2025 07:05:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Nabih Estefan <nabihestefan@google.com>,
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 1/3] hw/arm/ast27x0: Fix typo in LTPI address
-Date: Mon, 24 Nov 2025 08:05:22 +0100
-Message-ID: <20251124070524.240618-2-clg@redhat.com>
+Subject: [PULL 2/3] hw/arm/aspeed: Fix missing SPI IRQ connection causing DMA
+ interrupt failure
+Date: Mon, 24 Nov 2025 08:05:23 +0100
+Message-ID: <20251124070524.240618-3-clg@redhat.com>
 In-Reply-To: <20251124070524.240618-1-clg@redhat.com>
 References: <20251124070524.240618-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,37 +83,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The address for LTPI has one more 0 that it should, bug introduced in
-commit 91064bea6b2d747a981cb3bd2904e56f443e6c67.
+It did not connect SPI IRQ to the Interrupt Controller, so even the SPI
+model raised the IRQ, the interrupt was not received. The CPU therefore
+did not trigger an interrupt via the controller, and the firmware never
+received the interrupt.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Fixes: 91064bea6b2d ("aspeed: ast27x0: Map unimplemented devices in SoC memory")
+Fixes: 356b230ed13889e09d087a96498887de695df17e ("aspeed/soc: Add AST1030 support")
+Fixes: f25c0ae1079dc0b9de02676eb3e3949a09df9f41 ("aspeed/soc: Add AST2600 support")
+Fixes: 5dd883ab0635c9f715c77cc32622e458a0724581 ("aspeed/soc: Add AST2700 support")
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104233742.2147367-1-nabihestefan@google.com
+Link: https://lore.kernel.org/qemu-devel/20251106084925.1253704-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/aspeed_ast10x0.c | 2 ++
+ hw/arm/aspeed_ast2600.c | 2 ++
+ hw/arm/aspeed_ast27x0.c | 2 ++
+ 3 files changed, 6 insertions(+)
 
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index 7f49c13391be..ca487774aeed 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -372,6 +372,8 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI1 + i]);
+         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast1030_get_irq(s, ASPEED_DEV_SPI1 + i));
+     }
+ 
+     /* Secure Boot Controller */
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 498d1ecc078b..4c5a42ea1742 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -557,6 +557,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI1 + i]);
+         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast2600_get_irq(s, ASPEED_DEV_SPI1 + i));
+     }
+ 
+     /* EHCI */
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index c484bcd4e22f..1e6f4695382e 100644
+index 1e6f4695382e..95f155fcf1ad 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -87,11 +87,11 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_UART11]    =  0x14C33A00,
-     [ASPEED_DEV_UART12]    =  0x14C33B00,
-     [ASPEED_DEV_WDT]       =  0x14C37000,
-+    [ASPEED_DEV_LTPI]      =  0x30000000,
-     [ASPEED_DEV_PCIE_MMIO0] = 0x60000000,
-     [ASPEED_DEV_PCIE_MMIO1] = 0x80000000,
-     [ASPEED_DEV_PCIE_MMIO2] = 0xA0000000,
-     [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
--    [ASPEED_DEV_LTPI]      =  0x300000000,
-     [ASPEED_DEV_SDRAM]     =  0x400000000,
- };
+@@ -831,6 +831,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI0 + i]);
+         aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SPI0 + i));
+     }
  
+     /* EHCI */
 -- 
 2.51.1
 
