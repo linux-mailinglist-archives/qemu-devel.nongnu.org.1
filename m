@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5743C7FBF1
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39950C7FC27
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 10:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNTHp-0005ie-5l; Mon, 24 Nov 2025 04:55:10 -0500
+	id 1vNTIZ-0006E7-L6; Mon, 24 Nov 2025 04:56:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTF9-0004YQ-VN
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTFH-0004Yn-L7
  for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:32 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTF8-0001ej-HG
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:23 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-42b427cda88so2728337f8f.0
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:52:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNTFG-0001fa-5Z
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 04:52:31 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-429c4c65485so3314010f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 01:52:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763977941; x=1764582741; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763977947; x=1764582747; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iHirYCS7o5fHFAEDDvU/4jz9vrUedalvStdmBVvHfE0=;
- b=N4ZSy7bxC5/KnhX1kgJXTBg5/ovm478squkQbWy+057wyzJVBWQdVOXSnr6OHazU/f
- L2Kua4JjNauAgOyZGCN12ek6KQkzLbKeAllxTnSRbG57oRwwqmB3yI1mq4b2LqvwECRk
- ao+SAYNhBeEOCwlaJpvlMXY7yctzjOy3iM3wMHepIioA3NplIAhVxHRwJCaJTWeCku6Z
- 7MWeh8+dW3oyc30Ss+OjI9yH40C26KHNMcH3LEMBwdmL/2wPerpJNupJrQ86my+AWJfZ
- 479ajly3F1etN17K21WcR52/jCaY5GchSX4QARg/gtUcYNyzE9V60AnZLx6ZMJ3/7eg5
- opDg==
+ bh=cfavX6TO9pU3VMuLQhftw12r96pog3aSJ1S/um/Jk24=;
+ b=BUR1zZiecFaPXNx2/nu/CMKHmESeX5V80arsokB0WqetNxNU4YtC6CHxcVFvacVrrs
+ mlz2K+lHewRJAGkrQAkrudg+QYoVS9Yk4OnYfJ2wQ+RYRwn9rUaguNp4FoNbplJIPeNf
+ yCEQmjFi9kECq1dWpRxsg8hhOw33u2Ws3dRhbas8Szcf1r2vRQFy5RgvONguhMG+U/m6
+ TM7DWkbuP4D71y0h4ePZY+IqNANEYSrW5G/5EinTqFWUFvrihUf9QXTNQI8DwRXdSIPv
+ r7rXhKin0SuynS8X6F4D3qvmgnKcVe9+G6/2k0DATASeLRsQC0h4zKp4TnQsPuWxDjo6
+ c4mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763977941; x=1764582741;
+ d=1e100.net; s=20230601; t=1763977947; x=1764582747;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=iHirYCS7o5fHFAEDDvU/4jz9vrUedalvStdmBVvHfE0=;
- b=VMZSLDxJ3Yd4A3c1X2VPpIMc3yU/23Lilsymugbi74mMn2/i1HeHWjdeMuz3IlnPiY
- Sg5w3oysGyj5zegNF3LKMcgCIfXv2EITYTUNKftVv4WA++dLZb1PlN5cLabolprdSaze
- kvhSA572gD+ROXHXCYlbhkb6PeArcgK6BPIirjWxW6Ik0byBNDXODJ4c/92m22/N97hq
- L+zZKwhD17QmvaSsLyFhnMZFX/AZwlmGi1PT5feFpZlOxZ20iophw5MV6gNnrL6qB5Hz
- Sr8JYcOa3xhkcbG6znM3Y0RRANkoTY/gMMNbQCBwcKbs0myP3qKszS4Nw7loxVkX1zr8
- mACA==
+ bh=cfavX6TO9pU3VMuLQhftw12r96pog3aSJ1S/um/Jk24=;
+ b=vEW08a2+8D0svomEB0joZlt4apsKGZge7MLZ+/PinizGpoTNJlvMmTMFYMt6Z8Px/F
+ Pif1e+qY6zVKDok0QflYcb5SFIW1K/q0Gg7BPEVTe4MO3yOnV2ZJlGmK957fkJ5h4oZt
+ i3zIv9wDzm9XkxRC087vntiuWuQ3dH0D/3HjqpvA8930lBicfCU472+GWQDmEnJPkATs
+ jy43SUCKJGLsTZoFDSr5P70EsGiqiRxdd2hXua+pOBkkKsXlqcesqw8z8n+gpscyfe3X
+ q926V6MVlUYYYFR8/0plbZkTN5mdEZX1aK7k9JltVrjmXr0y9EOHJDFLYmlCwLB9fgCt
+ Llug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU7XgQXusVryinqNmIHP4g7wodHr1RlO/1zIb16tt2ZI9/6GpGvXiKsWdPjCa7s3D0oNcDaAHXhsdVO@nongnu.org
-X-Gm-Message-State: AOJu0Yxmmsdv+AAqxt0eS87cTPlSfpqMTj2yh2uR8L+1jMjRcNSehlUS
- keynRnWDSQhVgVeITGQQGp7e2mw+VIPDX4fEIV/tvg0mt9+FMSM9Lyw81jfRxDgsIUY=
-X-Gm-Gg: ASbGncsfbT+eAhBp7snNcabwrEOgYJ6MM/N7C3GIdXUo7xAJ75xtN1TOJGfag1Wr9XN
- z4JUwkyNhkvQKuUIl6fn4IHdTqHbSYAY+pZPMLC04RLQWfQie+btIQvhmoW7aiEux9zTnK0czbD
- nlVW6aWK8qqzUz4+9U2Gbr2x5g+1p39OrKI8OUb6/v8l+BcwyGFVuidTeGypQQMj2lOEAUyd+eQ
- il7ziALVKzrQs6NCruyImnB8mZqM1jdk9ydEHKZRwZ4QDZ3aY2EEIRqfrJDSUqhV3OYN/ezsSQK
- Alk1/T/gKAqkbqj2RUkJCzvNSUhxazlp06ZAMgKtlc5iXh6Sad8chyPLFUl9G2t2ch+fb8wYbj8
- ZFvN4dE6j33lfTGSnJ9INxBWemDhUosNSoXnYQNk5yrGPFmDgydEwGr238pxHS8unS17UUBQexB
- RiJ0AFKS2swdQP7EsXtq8JwQKO7BjgiHoDOTkrq/dLqHr2AvoJ1MiBQWPJ1xPE
-X-Google-Smtp-Source: AGHT+IE8lAGpWs5r47u9tfQ09QCiQp+hvwbk1sFYcYvTR9hupnHVS7a+9ruBHkNWTl1whd+N3savNw==
-X-Received: by 2002:a05:6000:310f:b0:429:bce4:20bf with SMTP id
- ffacd0b85a97d-42cc1d194fdmr10445600f8f.55.1763977940737; 
- Mon, 24 Nov 2025 01:52:20 -0800 (PST)
+ AJvYcCV9DTBPMCmbtZmP93eLSfG1b3ZdP93RKFynqdi92d0hbRhAjIqueVKdiGIEFpgVenj8lX4LjENJOZhR@nongnu.org
+X-Gm-Message-State: AOJu0Yw0qTEdFW9rRUkU9wDq8WoUMRfN5QCL3I5sD63WcCDe0MDAqmJg
+ DCFpGZ8Q0Pqg5lI8ySXNiA0lJ3VEZ5UwM5EPQhKHywpWDeY2xaTXm5n1A2igjTAWMpI=
+X-Gm-Gg: ASbGnctxrDGWoJdGuJj4ZMYQ2yth09zf/GZpM4OIsoiCPyuMalcxBYV57CqwIlfawwT
+ 9CFMNi+IQewAAKw5hD0TKTQ0f6rOsxvEmMNBUgDLSgbpRXAC57VAmWgyNeqNigv2ub05PZacokt
+ 5oNM3wk0dO4Nw16GFOybmdCSKXmiGrJ/KqTX9ZJAOkqNGIKJFwgt1MfuzABEw2d889VgsLJMHF4
+ Pxx8lID5Q4Fe+A1/Imjf2sC1diMWVEpX7acC/103P5RA6A+rWJyIMU1I0ZRlEvr6Af8DVV6Mew1
+ lvatsFScvhuTN1HeNfozOoB+ZQWjQjdOopQ4fK6sTW9iQfCW4wnciGMFoEi/sUgDDMyYehBH9Qy
+ WHdqTfhM+qyKaUrD13KdFL24Tz1Km1upFhGX+hhAx/WKaGlqVefCfD65xhM6XgBPGu/hioPnwrx
+ dPxFnHiOEFsChZsLHv+4kYS/lXX5DoXRU4DKRVG7u77CwCa5rGnOoJRX5zVJy6X8GLjoWTmIA=
+X-Google-Smtp-Source: AGHT+IFCu5zlr4hfRhVhgV2uop5oXMZUZNpvhimMpzDACj1DHGdTUBWVYxyIxUqMyv21WJrwnLglcg==
+X-Received: by 2002:a05:6000:18a8:b0:42b:5521:31ad with SMTP id
+ ffacd0b85a97d-42cc1d51b1fmr10303636f8f.49.1763977947524; 
+ Mon, 24 Nov 2025 01:52:27 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f363c0sm27731794f8f.18.2025.11.24.01.52.19
+ ffacd0b85a97d-42cb7f2e432sm26877510f8f.9.2025.11.24.01.52.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Nov 2025 01:52:20 -0800 (PST)
+ Mon, 24 Nov 2025 01:52:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
  qemu-devel@nongnu.org
@@ -70,18 +70,18 @@ Cc: Rob Landley <rob@landley.net>, Thorsten Glaser <tg@debian.org>,
  Yoshinori Sato <yoshinori.sato@nifty.com>,
  Magnus Damm <magnus.damm@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-11.0 10/13] hw/sh4/r2d: Use EXT_CS_BASE() macro for
- display controller
-Date: Mon, 24 Nov 2025 10:51:05 +0100
-Message-ID: <20251124095109.66091-11-philmd@linaro.org>
+Subject: [PATCH-for-11.0 11/13] hw/sh4/r2d: Use EXT_CS_BASE() macro for pseudo
+ ISA bus
+Date: Mon, 24 Nov 2025 10:51:06 +0100
+Message-ID: <20251124095109.66091-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251124095109.66091-1-philmd@linaro.org>
 References: <20251124095109.66091-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,36 +106,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sh4/r2d.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/sh4/r2d.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index 2229cc6fe66..75878abe946 100644
+index 75878abe946..df62f7a48a9 100644
 --- a/hw/sh4/r2d.c
 +++ b/hw/sh4/r2d.c
-@@ -254,6 +254,7 @@ static void r2d_init(MachineState *machine)
-     r2d_fpga_t *fpga;
+@@ -255,6 +255,7 @@ static void r2d_init(MachineState *machine)
      const hwaddr flash_base = EXT_CS_BASE(0);
      const hwaddr fpga_base = EXT_CS_BASE(1);
-+    const hwaddr sm501_base = EXT_CS_BASE(4);
+     const hwaddr sm501_base = EXT_CS_BASE(4);
++    const hwaddr isa_base = EXT_CS_BASE(5);
      hwaddr sdram_base;
      uint64_t sdram_size = machine->ram_size;
  
-@@ -295,11 +296,11 @@ static void r2d_init(MachineState *machine)
-     dev = qdev_new("sysbus-sm501");
-     busdev = SYS_BUS_DEVICE(dev);
-     qdev_prop_set_uint32(dev, "vram-size", SM501_VRAM_SIZE);
--    qdev_prop_set_uint64(dev, "dma-offset", 0x10000000);
-+    qdev_prop_set_uint64(dev, "dma-offset", sm501_base);
-     qdev_prop_set_chr(dev, "chardev", serial_hd(2));
+@@ -310,8 +311,8 @@ static void r2d_init(MachineState *machine)
+     sysbus_connect_irq(busdev, 0, &fpga->irq[CF_IDE]);
+     qdev_prop_set_uint32(dev, "shift", 1);
      sysbus_realize_and_unref(busdev, &error_fatal);
--    sysbus_mmio_map(busdev, 0, 0x10000000);
--    sysbus_mmio_map(busdev, 1, 0x13e00000);
-+    sysbus_mmio_map(busdev, 0, sm501_base);
-+    sysbus_mmio_map(busdev, 1, sm501_base + 0x3e00000);
-     sysbus_connect_irq(busdev, 0, &fpga->irq[SM501]);
+-    sysbus_mmio_map(busdev, 0, 0x14001000);
+-    sysbus_mmio_map(busdev, 1, 0x1400080c);
++    sysbus_mmio_map(busdev, 0, isa_base + 0x1000);
++    sysbus_mmio_map(busdev, 1, isa_base + 0x080c);
+     mmio_ide_init_drives(dev, dinfo, NULL);
  
-     /* onboard CF (True IDE mode, Master only). */
+     /*
 -- 
 2.51.0
 
