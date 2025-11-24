@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC27C8072D
+	by mail.lfdr.de (Postfix) with ESMTPS id 17838C8072E
 	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 13:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNVbv-0003yy-H2; Mon, 24 Nov 2025 07:24:03 -0500
+	id 1vNVcA-0005FU-FJ; Mon, 24 Nov 2025 07:24:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNVbt-0003fX-Tz
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 07:24:01 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNVc0-0004wS-FW
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 07:24:09 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNVbs-0005Aa-De
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 07:24:01 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-42b3b29153fso2262733f8f.3
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 04:23:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNVby-0005BW-RX
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 07:24:07 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47775fb6cb4so27303865e9.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 04:24:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763987039; x=1764591839; darn=nongnu.org;
+ d=linaro.org; s=google; t=1763987045; x=1764591845; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zinTWrL8ZAAHhEEiZe9LYYVqgEUqufekn1GhfX31NXc=;
- b=hLVRZ4TGs6dTy31IKjbsrWHUvJbalYMJaSd1NL8/SrivN3qt3Pf8jpB6/a/ie6cw2J
- XRQdFjoqrDPSYJI9jj0ifi5gWKSPUrQN5yYm+NTYNsidv7jTciFSUHEkt9R2B2GFFKn+
- 7pW9xFxMAEX5li8tLP8IMLWPi32MGMMCvrzLF/Yb4kceMJZ33oOeZ0mo6IM6B0h+Tffw
- XvelTWorOF1L+JJb09RcwNqFKHEUqYpxomyg/ZybSeuIB6la7bHseScSZCl7VUeA2yXy
- ZI+HoyyDw3m+EjC8RX124j6PFCLCULBSnk30Ei5iqdddpz7mHX+0Lw3zStwCcnMWKYz3
- 5G4A==
+ bh=YFUqPyXoIDtGVeuH7VqsJ7MOoz2HmKT7WqlGbCd66cE=;
+ b=VCZB5+aDC/Nz8ddeT9/vzpyvc3VkftouA1A1GuvJQzH2wPVuPyA0ofcrKWJMl4Xt6r
+ QMhMIiQBYapagn5Z7RO9YSbWs1IgOd1+VT38cHgR3q98Gth1DhgPKJ27rY3yiUWvtmcD
+ g/dTZQgGyr23T+o8y250ypTwm3G7cJI0LNepsbp3MQrIeamPfwTUr/qWfx4d6MKyc2sG
+ TUjxQYc8qZHHcMvkBR143WSZkHUS168S1h4+c4RoBOaYLR0LjM1kzmq0Kus+CwpP+yMS
+ fakB1sT4fvlwdjndJ1VeAmkr09rJCU0DVAR1hl3AmciJAVIaIzv4Q2nlYcZnKpvL+gIR
+ 63aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763987039; x=1764591839;
+ d=1e100.net; s=20230601; t=1763987045; x=1764591845;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zinTWrL8ZAAHhEEiZe9LYYVqgEUqufekn1GhfX31NXc=;
- b=Pi6ZZtZcPajL3F1WCay5jTxu5m2Tj1cWs69dpW4l5jZOLHF4/YBQy69VJnzjsZesS1
- fyO1Av3ZUE4m+n64hZ6xF0WUXDYPWOOFEDmEIcfRqrfsBo37ZCMlIwEkgrI3b3vrT32s
- 6x0RvAaoELs3d7Iatr0sCZKSkyejD9akseVJPr4wCwYngNlxaMKxRUeuI14dQ1yEL7te
- dGjX3GsDN5IUmnJ2BQ8rqxFxUM9iHjBed0nwgwC66m74N2lbQisNtzVGwjLvpDp1v3OD
- WnjyUI2NsWCaRJTvmmst+jvcgktWY+/TgYgl9oZ76BE2yuMOeSKS6olAxRZEDYvIQv29
- x5dw==
+ bh=YFUqPyXoIDtGVeuH7VqsJ7MOoz2HmKT7WqlGbCd66cE=;
+ b=s7ESptqLiAOfHTP+A1JQqS3n2mIRzZzLcICpMAK42HsE4Be1dnotDfywkmUkhKBhkI
+ /7ZvjK5EPN+wkpAMZcb3r615usUyK0ZxooTpksXry/8tZvYZCBrsyJjpNtVAdUPwiWG9
+ qsdSn654lrtHee215u+jTnMaFIy9TQKQhGxQ0VL/+wM0QZ1abhH/Za3TD9Hr0GhnILRP
+ BhNDGQzyxy39xinq42aKWa0qGGa2vS0VF2bru2sN5k30fPS2g9Cy2vy4UblMry9HvXnz
+ VP/Xw7BZSEMWf44gtFYm8S72FaHOirUA3DNYlqj9Z5p+FVYDsD2cXVHkw2ecM2JYUeLT
+ +aeg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUd18s4VBG8jdm7C5gmF1FFTdmqAvEKa794fpqXzNyWjBBKt7aI9T7S/pg0Os6tqv2PTqbvvZ2tu7Ul@nongnu.org
-X-Gm-Message-State: AOJu0YyUVok8QOkk3QNirkH6eZxri2tVj7Q8DaCOQ1fhh4c4kdS2I2Sz
- p44xwVr0HLf0KQhIe3/gLjyyYF4TXO5+5IeWMZ9oSvS/h7FQgXMip9hfexO++iFcJEE=
-X-Gm-Gg: ASbGnctopEOtrceY3E1PopuHBPt6EnVqGd1/7AQoKaSHVqARlrhROp7FtgEpXJ8Zg8G
- 2ktWeu/8Dcdc5tFrSeSa/oDjebxwylynoZ7wSRE1lIPqqa/cTC+LzCWjhzzCMtXNSt/aJN1Mu3C
- Fz3OyQJEu9R4dEnEvTP4SIY+O2RnZIIwVhgg2tvwNg1CL7UT9HqQZCRFhGRucOkh50ztg2oFJtI
- OeRMlnuF0bbCT3jCSW2mcgxHV+3tEx/ZkDIW0z1x+MXJnV9vv6qCrOizQGHZS0HQaqeMja4lrn1
- 3Nj+tZWj9SnOiRj8XBR/fLONHnZ3s8AKpPrFnQQkuh8sVuY0Kg3HY40LtEV1DSQ+ZeDhdaKaJpj
- 3bpzVhkn85exv7DOWXNxn5K2/FMJ6hyaI/xOaq1/HX5ZeEvgGUR18PMSN+jd6jR5bf5bEf2Hi8V
- 6EjUvxjbfDn4CnleIwZPiBXAkuKLHGvGLCq3IlePi+hWccQAr29ogppA==
-X-Google-Smtp-Source: AGHT+IFP1Cj743zqo++MnarxA4ruIY6iw6bO3Ywlhf61Vgnrc0lsvAoxmlvpX4y7bRwndD9+Yydlrg==
-X-Received: by 2002:a05:6000:230d:b0:429:c774:dbfc with SMTP id
- ffacd0b85a97d-42cc1cd9b39mr12539466f8f.12.1763987038634; 
- Mon, 24 Nov 2025 04:23:58 -0800 (PST)
+ AJvYcCUF5P6nWR8e5F1hRYw1TY0Gh2DCsrpAa+KzujazkDhvwQjTDmcXgSQp7s5Dt2ToAf4pNxWQIDNaW0y7@nongnu.org
+X-Gm-Message-State: AOJu0YybBEPYxYV0xX0wQ8XivwZWqrY0miUtOdk4zaIatLg3caMQKH5v
+ VHWs1Azn0kzHEIDhAVlNnegBj2C961HPpV2RC+PWZjIVtwujeynlmsNGlSgwr4bVCpo=
+X-Gm-Gg: ASbGnctXOuhYSuERkewoXuCaQp40hI878ZQrd/pXzMTb97tmwHhdEs8HkuYubBVzJeM
+ CiWi1C1acqR5Si5cJzPxoxgTJhTajAYVVzC9yQtH0A5FghV1h8KOno323Vh8yyT3PKHZcxEqHSb
+ oMU8dOgITJIQ09x5/XLxM0pWzVZxHOo0B1ioHL2OQskeosR0DgCJSdH9K5bDqI80HNQKGEEMs6V
+ zshAfm0SZnkf/2ohqXLEM0hy0zHbnQSoA0/XxzfBVxO+zttBb3RIikLPgKT5kqxOpx4uJ0wfLR/
+ MikbX1Pd12DDUTeQ0KfhFfjj1gH6Y+1gzaNaJbyzHmBB8xnxyMHCS4LLG1nmu/Z8D/DmVMUI6wE
+ s84YsbqiTeGl2dHJeC+hWUCTNZ2QpLeqbeRWgHVQpoGaBpyP7ulZofAgYnisgEuMQ8YBWd9qurL
+ +xPTNSA1KJqar+QZmugd1uBx1ErUBojgwwziHPohMVtBXFX2nPDC8VnA==
+X-Google-Smtp-Source: AGHT+IF0xZUJpWScuToPTVMnXkp0BeFuganRQnYpKZaLr3KG2FLf02qV+StKz4/owrVpnt9lr4kMCw==
+X-Received: by 2002:a05:600c:1d1b:b0:477:9671:3a42 with SMTP id
+ 5b1f17b1804b1-477c1133e4bmr119196285e9.35.1763987045330; 
+ Mon, 24 Nov 2025 04:24:05 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cc231dc6esm19847409f8f.7.2025.11.24.04.23.57
+ ffacd0b85a97d-42cb7fb8a29sm28606915f8f.30.2025.11.24.04.24.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Nov 2025 04:23:58 -0800 (PST)
-Message-ID: <877d3bb4-5f76-4466-a3ac-3fe4c2460d7d@linaro.org>
-Date: Mon, 24 Nov 2025 13:23:57 +0100
+ Mon, 24 Nov 2025 04:24:04 -0800 (PST)
+Message-ID: <1649f7fa-281d-4876-9172-3cccddb77b39@linaro.org>
+Date: Mon, 24 Nov 2025 13:24:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] Rename LOAD_IMAGE_MAX_GUNZIP_BYTES to
- LOAD_IMAGE_MAX_DECOMPRESSED_BYTES
+Subject: Re: [PATCH v3 2/3] Use g_autofree in unpack_efi_zboot_image()
 Content-Language: en-US
 To: Daan De Meyer <daan.j.demeyer@gmail.com>, qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20251011081553.4065883-1-daan.j.demeyer@gmail.com>
- <20251011081553.4065883-2-daan.j.demeyer@gmail.com>
+ <20251011081553.4065883-3-daan.j.demeyer@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251011081553.4065883-2-daan.j.demeyer@gmail.com>
+In-Reply-To: <20251011081553.4065883-3-daan.j.demeyer@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,16 +104,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/10/25 10:15, Daan De Meyer wrote:
-> Preparation for adding support for zstd compressed efi zboot kernel
-> images.
-> 
 > Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
 > ---
->   hw/arm/boot.c       | 2 +-
->   hw/core/loader.c    | 8 ++++----
->   hw/nvram/fw_cfg.c   | 2 +-
->   include/hw/loader.h | 2 +-
->   4 files changed, 7 insertions(+), 7 deletions(-)
+>   hw/core/loader.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
