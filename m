@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E15FC818E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 17:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC68C81FDD
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 18:57:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNZQ4-0002BU-LG; Mon, 24 Nov 2025 11:28:04 -0500
+	id 1vNanK-00022C-Qj; Mon, 24 Nov 2025 12:56:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNZQ0-0002B5-Ln
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 11:28:00 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <pzmarzly0@gmail.com>)
+ id 1vNZgH-0005q2-Mr
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 11:44:49 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNZPx-0003yk-BS
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 11:28:00 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-477b5e0323bso28828615e9.0
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 08:27:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pzmarzly0@gmail.com>)
+ id 1vNZgF-00079o-2K
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 11:44:49 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-42b2e9ac45aso2680642f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 08:44:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764001675; x=1764606475; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=T2dwCYYa3ervrITpiwB3L7hO3YrvKF+imZwiyIl1FPE=;
- b=YqChycif/QXd00b8/B6Y6y46pfdNMqtS0bnHlQlO5qBzwIkt8t0Tn4bj5kvK2YBx9Q
- DNCNFkBy5BwS1asFm6KlnSnWfo+kY0XPo7lfwXvFcjLy7fL7mZmxKXBpXhjCY83Lhua0
- 8ZAxMqz2oedM0YJyesACw75YtW0JJWaZewIn3FntHh6RH5P/tnCqaX+5iy/zcD9o4v/M
- B7bSBaaTGkjiYy8Al5i0JYdXbe06yx2Uog/YjXCNfYqkXsa/6o0kIz5Naoo3l3lfzueT
- YG78EdWSqE+jbO2Ocn38ZBWuSemF/7CIGfR+T8pBmtXylhsLp3t43I7NT1lbIgNm4RyZ
- FsVw==
+ d=gmail.com; s=20230601; t=1764002681; x=1764607481; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Qdm6L8aPTUarri4dLQG06r4ueEE1UnAzh3pNSwoLyIA=;
+ b=OcRlXkUM916UlNZYRcv1W7fzjvQQPknIqXTtd5MLfnQR+WFBUM70HjZatIT6/VNycm
+ uWyYxIm8ebxaby4axl8KDGt3LHTk5oHQ272Ke1YN5jEz5dZ3cSoz75aE/3rBNShS6lFt
+ xGSDlA7YJlqhJ8Bxm9T8pepbAshqvUdxB5gXKduthsUaVY9K9z3wL4UgE/f3Xrs5Gjo2
+ EIjEmumtMDYaEaUAN8N7uLrvuymSgB0b3/PPhMcPAjwqMxgICGYG1R41JkLxGzvX3b8g
+ bZPKdusgUbYyBriIbm7It7WyDJBOGw8RtWOn2RYrI6b3pgct8fN60zQOACqUW2azKe8P
+ PLHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764001675; x=1764606475;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=T2dwCYYa3ervrITpiwB3L7hO3YrvKF+imZwiyIl1FPE=;
- b=LsC3bSo0Y2wzHCi9M8THagzcgBOfgsH1YY5zBSV28pRaG9Jz63tiM9RUjVqkqNzOPf
- QLmvTNL2CiBYrzMUh5WU0Ni6hF6sYsAQZi4b1tW7tQ591NC6s8G3xX/uv9glLlPL5rp0
- xzF+pY3zinBH0MBkEFdICTkQzkHY5gdDHNXahWdMFsx//9HsgVI9UF3ARgWdwAx8tjab
- ZAee0BtqwADnbKC8u15iwvIIvhMrT2oqJF1mZA2YfuL0V+19We7i5ZcJCtaNZBZzjIiR
- MYviUbyjAK7Pq/XQy+FAh08S8sRRK1EAEWYxxj5OFjKSqBOvXk1nGPM47TKuqC7f1rav
- lcPA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVsuIDi6dNrMT92JsTvyNRdDpQGmCwhoA4urfg+RBqKFC5Ud+AbMyRnKaeSBLxcYq/tmRYjnHVIq1GW@nongnu.org
-X-Gm-Message-State: AOJu0YxNcaxWfNErvqiftMoYKlp0MR+4+gwVFgk2JnYcPKMHs8fro2TM
- LC0cn4Q+uRCDDpXTBGAWpQElRzefOImp07nzQoKY5x13WfVh0FSyj89XjZADECx59EE=
-X-Gm-Gg: ASbGncvIj+4NQaBsMqiBDJZdqTN4wK642/zql70bbogGILjCxoIBuMHcjuAaxuBfoDz
- t6j0u+6FsourKiHfjqVMYJgWK7zQzsSW9wX1S3GNhlRoGtnfN868e3S27eMGn1vC8jBea8WyK3t
- bd+KELklyQKiOsdTWsv5PWMYKTn06gJ+RvFq8x44JSnC1sB2brRYNVJLhrtcGcDovZt0CRRRF3j
- 4o8SDALl7M0ZXTUsNRw82KDEEQdOGvJY3tN3cyRCQJ36CQpY5qvANsfJM+1QgMw7I+/tJElciou
- b5Y4bGMNRW+sc+DB//O+N9aH34zmzmvJ7U9JVCPUhltS56XftFSgaT8AW5HDxj5Hd84fDS5rpo3
- nBczH+KHRDwY130xtM9/Y3hH9Y1mlvSkJgxdnLO1WTWBixZ/DAYv60hR2iYaX+unSfr6dFtO5IL
- B26bGH6uYAJ+UjnCSf23gZD6Vd2UI2f6LctCwy4aBB6m8PSStkvyUA5Q==
-X-Google-Smtp-Source: AGHT+IEXCz2cVSU0+M6kSXnTBmxIikzPHTzSN1ZW6//OUB6uEoZqwrEr69CCMC0cN1nTljQJ44i4Iw==
-X-Received: by 2002:a05:600c:4f45:b0:45d:5c71:769d with SMTP id
- 5b1f17b1804b1-477c04db9a0mr133970575e9.8.1764001675374; 
- Mon, 24 Nov 2025 08:27:55 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf3558d5sm203524175e9.1.2025.11.24.08.27.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Nov 2025 08:27:54 -0800 (PST)
-Message-ID: <cd027328-a4d0-4052-acb6-56af1122535b@linaro.org>
-Date: Mon, 24 Nov 2025 17:27:53 +0100
+ d=1e100.net; s=20230601; t=1764002681; x=1764607481;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Qdm6L8aPTUarri4dLQG06r4ueEE1UnAzh3pNSwoLyIA=;
+ b=fthBvPsb7f8OtAadAvb0W7TwEHpT7IIDNZ3vw2eqJfC8BBnYHKDBT234N+Soo/sRS2
+ 0xgXfCQD2U0wf3eP5hKDrIGW3D+MnPfXA8ssVBdALA2nA2XReRN0vf+Ks85EyNp8lxLL
+ 8NNGUGh+dER+Kd1iTjBty4rU3kKThOQVWWHi61AmSgkMLcYruCzFmiw9wNEM56/ugV3C
+ ezWE9YPF4sz+pj015KL/U5tfPfGihEUB6xuIhgnDifWceWBw5s3Gh9XJCw0O210AUw6s
+ p6D8uvr5tsagIfNfAPoemQ24BdMDvJP/M4ER5grYujDH/NoxRqSth8TOlw01xcH3Yz1f
+ a2Sg==
+X-Gm-Message-State: AOJu0YygCwkqani0C3+I1+zZWXizVLY2VCI7kg7bLCk8B+5p6cSJRTkN
+ 2SoM8qKdHtQ1gcEYq0sVk525LXaugjhSNkdu1RXfBlvSyD8Vup+vvlEXEXB4GZozcfg=
+X-Gm-Gg: ASbGncsrkQXj3MNVH154I/syxg2Yr8bVmYq73SjKbUuLr9cCs5Vu8YUBL9+D6oBSC9M
+ L/JshMEfaTxtKss2DnMkNiqq1ybONzUKcdSHGCFQCIL1rI2JKJ9Ms0z3n95/v2FEowFhXIuxSWc
+ Up/jE29TAgDG9JfMTLnD9gpR4VmZWY5wUR2VKwIndENGxGY+YyNDrfjhfiDH2AdwNJayi7rGpGL
+ BoWaxBfwc2ZSBH783tF6mdf7+cwc0CJ3l4TlFpSiNDrjPvqw8EoWqJEEmKFqUmAfyPLR+uRZ5NU
+ 6BOzd06pPrhV0xrUzlU+04t2QqYqtxQ56zXgk+q9qJr8kgk+db+TlSsueaICz7Atmyl+fDTeCC8
+ ApMtbDVA8mukmPrGFV/QXJqCptQR1NIBFHkYPZlWly5YhhyUP0Wj9jBRUgKvLGIwMjN2bwg==
+X-Google-Smtp-Source: AGHT+IFcpY7jLwr6hMFMLlh08P2s/lyWcVaNWkJQHyMeUy3zu8nYQXhefijYR+1j5ZAuC32gQqVkBQ==
+X-Received: by 2002:a05:6000:1446:b0:429:c4bb:fbbb with SMTP id
+ ffacd0b85a97d-42cc1cbb561mr12141613f8f.13.1764002681144; 
+ Mon, 24 Nov 2025 08:44:41 -0800 (PST)
+Received: from localhost ([2620:10d:c092:500::4:fda1])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42cb7fba20esm29507601f8f.37.2025.11.24.08.44.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Nov 2025 08:44:40 -0800 (PST)
+From: Pawel Zmarzly <pzmarzly0@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com,
+	michel@michel-slm.name
+Subject: [PATCH RESEND] scripts/analyze-migration: Make it work in Python 3
+Date: Mon, 24 Nov 2025 16:44:39 +0000
+Message-ID: <20251124164439.67948-1-pzmarzly0@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.0 2/2] hw/pci: Rename PCIDeviceClass::exit() ->
- PCIDeviceClass::unrealize()
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>
-References: <20251124103244.78932-1-philmd@linaro.org>
- <20251124103244.78932-3-philmd@linaro.org>
- <9f13fc0a-c5d8-3e73-0ec9-a6d3498888ce@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <9f13fc0a-c5d8-3e73-0ec9-a6d3498888ce@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=pzmarzly0@gmail.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 24 Nov 2025 12:56:09 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,121 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/11/25 14:56, BALATON Zoltan wrote:
-> On Mon, 24 Nov 2025, Philippe Mathieu-Daudé wrote:
->> Commit 7ee6c1e182c ("pci: Permit incremental conversion of
->> device models to realize") renamed:
->>
->>  PCIDeviceClass::init() -> PCIDeviceClass::realize()
->>
->> Finish the conversion by renaming the counter part
->>
->>  PCIDeviceClass::exit() PCIDeviceClass::unrealize()
->>
->> This clarifies the handler is called during the DeviceUnrealize
->> path, not during Object destruction in instance_finalize().
->>
->> Manual change adapting style when needed.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> include/hw/pci/pci.h                |  1 -
->> include/hw/pci/pci_device.h         |  3 ++-
->> hw/audio/ac97.c                     |  8 ++++----
->> hw/audio/es1370.c                   |  8 ++++----
->> hw/audio/intel-hda.c                |  8 ++++----
->> hw/audio/via-ac97.c                 |  4 ++--
->> hw/char/diva-gsp.c                  |  6 +++---
->> hw/char/serial-pci-multi.c          |  8 ++++----
->> hw/char/serial-pci.c                |  4 ++--
->> hw/cxl/switch-mailbox-cci.c         |  4 ++--
->> hw/display/ati.c                    |  8 ++++----
->> hw/display/bochs-display.c          |  4 ++--
->> hw/display/vga-pci.c                |  4 ++--
->> hw/ide/cmd646.c                     |  4 ++--
->> hw/ide/ich.c                        |  4 ++--
->> hw/ide/piix.c                       |  6 +++---
->> hw/ide/via.c                        |  4 ++--
->> hw/mem/cxl_type3.c                  |  4 ++--
->> hw/misc/edu.c                       |  4 ++--
->> hw/misc/ivshmem-pci.c               |  4 ++--
->> hw/misc/pci-testdev.c               |  5 ++---
->> hw/net/can/can_kvaser_pci.c         |  4 ++--
->> hw/net/can/can_mioe3680_pci.c       |  4 ++--
->> hw/net/can/can_pcm3680_pci.c        |  4 ++--
->> hw/net/can/ctucan_pci.c             |  4 ++--
->> hw/net/e1000.c                      |  5 ++---
->> hw/net/e1000e.c                     |  4 ++--
->> hw/net/eepro100.c                   |  8 ++++----
->> hw/net/igb.c                        |  4 ++--
->> hw/net/igbvf.c                      |  4 ++--
->> hw/net/ne2000-pci.c                 |  4 ++--
->> hw/net/pcnet-pci.c                  |  4 ++--
->> hw/net/rocker/rocker.c              |  4 ++--
->> hw/net/rtl8139.c                    |  4 ++--
->> hw/net/sungem.c                     |  4 ++--
->> hw/net/tulip.c                      |  4 ++--
->> hw/net/vmxnet3.c                    |  4 ++--
->> hw/nvme/ctrl.c                      |  4 ++--
->> hw/pci-bridge/cxl_downstream.c      |  4 ++--
->> hw/pci-bridge/cxl_root_port.c       |  2 +-
->> hw/pci-bridge/cxl_upstream.c        |  4 ++--
->> hw/pci-bridge/gen_pcie_root_port.c  |  2 +-
->> hw/pci-bridge/pci_bridge_dev.c      |  4 ++--
->> hw/pci-bridge/pci_expander_bridge.c |  8 ++++----
->> hw/pci-bridge/pcie_pci_bridge.c     |  4 ++--
->> hw/pci-bridge/pcie_root_port.c      |  4 ++--
->> hw/pci-bridge/simba.c               |  2 +-
->> hw/pci-bridge/xio3130_downstream.c  |  4 ++--
->> hw/pci-bridge/xio3130_upstream.c    |  4 ++--
->> hw/pci-host/designware.c            |  2 +-
->> hw/pci-host/xilinx-pcie.c           |  2 +-
->> hw/pci/pci.c                        |  4 ++--
->> hw/remote/proxy.c                   |  4 ++--
->> hw/riscv/riscv-iommu-pci.c          |  4 ++--
->> hw/scsi/esp-pci.c                   |  4 ++--
->> hw/scsi/lsi53c895a.c                |  4 ++--
->> hw/scsi/megasas.c                   |  4 ++--
->> hw/scsi/mptsas.c                    |  4 ++--
->> hw/scsi/vmw_pvscsi.c                | 10 ++++------
->> hw/sd/sdhci-pci.c                   |  4 ++--
->> hw/ufs/ufs.c                        |  4 ++--
->> hw/usb/hcd-ehci-pci.c               |  4 ++--
->> hw/usb/hcd-ohci-pci.c               |  8 ++++----
->> hw/usb/hcd-uhci.c                   |  4 ++--
->> hw/usb/hcd-xhci-pci.c               |  4 ++--
->> hw/vfio/pci.c                       |  4 ++--
->> hw/virtio/virtio-pci.c              |  4 ++--
->> hw/watchdog/wdt_i6300esb.c          |  4 ++--
->> hw/xen/xen_pt.c                     |  4 ++--
->> 69 files changed, 151 insertions(+), 155 deletions(-)
->>
-> [...]
->> diff --git a/hw/display/ati.c b/hw/display/ati.c
->> index f7c0006a879..6b9f06b6b36 100644
->> --- a/hw/display/ati.c
->> +++ b/hw/display/ati.c
->> @@ -948,7 +948,7 @@ static const MemoryRegionOps ati_mm_ops = {
->>     .endianness = DEVICE_LITTLE_ENDIAN,
->> };
->>
->> -static void ati_vga_realize(PCIDevice *dev, Error **errp)
->> +static void ati_vga_pci_realize(PCIDevice *dev, Error **errp)
-> 
-> Why rename this?
-> 
->> {
->>     ATIVGAState *s = ATI_VGA(dev);
->>     VGACommonState *vga = &s->vga;
->> @@ -1032,7 +1032,7 @@ static void ati_vga_reset(DeviceState *dev)
->>     s->mode = VGA_MODE;
->> }
->>
->> -static void ati_vga_exit(PCIDevice *dev)
->> +static void ati_vga_pci_unrealize(PCIDevice *dev)
-> 
-> Can you just call it ati_vga_unrealize like in other devices?
+Currently crashing on Python 3 with:
 
-Sure, will do in v2.
+    $ scripts/analyze-migration.py -m -f vm.state
+    TypeError: ord() expected string of length 1, but int found
 
+Signed-off-by: Pawel Zmarzly <pzmarzly0@gmail.com>
+---
+ scripts/analyze-migration.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index 67631ac43e..3303c05358 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -56,7 +56,7 @@ def readvar(self, size = None):
+         if size is None:
+             size = self.read8()
+         if size == 0:
+-            return ""
++            return b""
+         value = self.file.read(size)
+         if len(value) != size:
+             raise Exception("Unexpected end of %s at 0x%x" % (self.filename, self.file.tell()))
+@@ -200,7 +200,7 @@ def read(self):
+                     self.files[self.name].seek(addr, os.SEEK_SET)
+                     self.files[self.name].write(data)
+                 if self.dump_memory:
+-                    hexdata = " ".join("{0:02x}".format(ord(c)) for c in data)
++                    hexdata = " ".join("{0:02x}".format(c) for c in data)
+                     self.memory['%s (0x%016x)' % (self.name, addr)] = hexdata
+ 
+                 flags &= ~self.RAM_SAVE_FLAG_PAGE
+-- 
+2.51.1
 
