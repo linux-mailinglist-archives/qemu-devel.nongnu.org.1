@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5694FC8107D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 15:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC944C8137C
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Nov 2025 16:02:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNXab-0007rs-02; Mon, 24 Nov 2025 09:30:49 -0500
+	id 1vNY44-0006jC-1t; Mon, 24 Nov 2025 10:01:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vNXaY-0007r2-HW
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 09:30:46 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vNY3y-0006iz-85
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 10:01:10 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vNXaW-00034K-Nr
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 09:30:46 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42b566859ecso3933291f8f.2
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 06:30:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vNY3w-0001Ce-FZ
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 10:01:09 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-477632d9326so26961205e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 07:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1763994643; x=1764599443; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8L4MDm0H12rm6yYjOjzi8dIkctKRo1jyzug5SgRPaRM=;
- b=POlMl8RX6jKIshmK0A1b9q5UKbq5QtWtY2VX0x32s2hX7jRrogb9iuqT2gGMkFrwpo
- Cz67pLWZ7MwIGhxX7MhaNSZ6ygmgf3MNfiFhRxc9xRmRmqvYzzHPMaVIFBzIIOtltoxu
- eCbHaW+Av8AkW3cDRv0TrnKwZW0gRMJrbmeGv/w8dUREQunfebDnBYQKPiDXw9fRs8C5
- oIOuOCTrwJQTrNV7a9PZUlTGIGCwEs+59QMqtZ4ehSR1vj1YUkLMGhfPjwamkxKKmbRT
- AbuAO4fwyXBK/cXo4wRAjwWpz+DlI4EQ6JXvRdh0PbJId8C6WfQI3Dc+Y12NCNHvBqFx
- sZKA==
+ d=linaro.org; s=google; t=1763996467; x=1764601267; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tEDDK6IXuw8hJEmM0iRHF5cbHpHneFq0dVKNU1MtQQI=;
+ b=nyeYYSWzmMvYIOmKw46TcJe7GeH7zRqNQeD/yYVSLmkbMOCaOrdN7Hf+0DqP9qUmpW
+ /0gGqE6Z+aQg8R8vCZvcPmc3rV5DQ8kGhutx4GdReph1rWrDH+hj7liQ4AqZdRJkRSsI
+ cZeDYKi37GeAIqqf+ej+gbdZxweSxVlTNtzS3Wj4CfcI+eNOGRgML03fWqhtHIm+1HMn
+ F2yvwtLv8QABC6ghWbiNw+7v8gGEndSsAYXChp7/MMyJngvpIg2JUW80jkNStWZb5f8k
+ lY1IibDp3e5My01+u4bz8IzNu2zaXE/yqookqOfUTLXZevUCj80KlVsmEbUm2wXgZlqB
+ 8c9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763994643; x=1764599443;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=8L4MDm0H12rm6yYjOjzi8dIkctKRo1jyzug5SgRPaRM=;
- b=HFjXDeCReSisrKaonwK+4s1LFKjSJ6MWeo15ZJjIXFbokDps5O4JFyDXIdE9OrfHB6
- OpZQ9yIuqIzzy2saiVpaar3uLqNAOk+xSal2ldhO2rcExOfaz8k5ddyaZ7sIGlEuG53g
- AM1EAV4jBFX34DtIRYoh6un7pXhvCvn+OIDIShQuBOj1jHECcVUKIhvfFlVOlq7EJmwY
- w6dPS7wEN/zicoB61qcAZ6YHLMdH63r+VAYUvUz8UuGj10oB407OSPQTtr8ZhiA6Dbwi
- AGNqX/e4cMY38w2AUWT4ShsArldpcvg1joTGPrd37GLqilYvUYUt79HjYw82u7qUQRbb
- Arog==
-X-Gm-Message-State: AOJu0YwUBH422FlFQ4jznRxIjvCxPn5m8mZDoG2JQ45pTeZSxSjziaIm
- LlKC8v121E/CSXUo5rd5bd9ObfyGbql/tUVzkM983MvdXm120PYA2/zmWi+ARYhcKnjtqGJtx+O
- VLtzj
-X-Gm-Gg: ASbGncukh2rJMPIJ80kNAkw3rn1Y13KpTtcRIOTpl8eVXulaAra4plrPOxUFl6y8pfg
- bmyxjQICerekA4NYbLSxbrehO9huOrl0zYS8zMddGo50yFVTHD38Nnd6d5zO3RR3rCg9ovQyM+m
- VWUUjt3oFSBTfGymb7r6ekTOf6MPikOT5T6lE26E1K7x1v7gW/gt4EIHGwC/Apl2WZgGA2MChJN
- rSZrX0JMdDLN8+CWQdEQKbicpBwT4G5JqQiho/g6UJ5O8tnDtK3QN3ZeIe8cTilZ5TpCSrBYjRY
- kx2v9fZYKP3I8TKQYGrT00VHb85Fq0T1C7nCzOW2bhXuyp9VCc3vjsO38UvhhgINrmVYhRIb868
- hRGE2ZgO7OGlirK8L32FNUGNWuiMHEq0hLIgypmGVazzOq49hhILafnkgPqQgN+AJOk0nldxG8l
- v8SeBaWKuUtw60Zklz
-X-Google-Smtp-Source: AGHT+IGsxnTfY6TRMnfHoBlCNKD+1NmF5oIkTScFmmayT2K7Won/WsSMbXPQbMDiRZ6xeeuoluiKpA==
-X-Received: by 2002:a05:6000:1448:b0:429:d3e9:65b with SMTP id
- ffacd0b85a97d-42cc1d23c3emr12260115f8f.59.1763994642364; 
- Mon, 24 Nov 2025 06:30:42 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f34ff3sm29408930f8f.16.2025.11.24.06.30.41
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1763996467; x=1764601267;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tEDDK6IXuw8hJEmM0iRHF5cbHpHneFq0dVKNU1MtQQI=;
+ b=QwuHyS7Suu9bZ0iJ/ZFk5paCR2Y1iJvFgGrua+W6yaMZQwA8A2699Akrcnx1CQovVj
+ jkKfV+EjaQp5WVHLcBmWtJqq8lixmqn1b5xlfJYnzjvSQ6JqGlKFnYv/Qszx6aZRg/fa
+ JaIxcs3yuOx2Xjtc3J+1rZWx5zyiD21+c1V3zcDD8XR4LCLQ05UbH9x5LkdFsDKjaphN
+ wSACYpb81a0YZFpbGixPBj9rsAZKjcq1LqUylMlBwQkWjxvnGB4Dj9jZ9+SnL7+hI6GE
+ 9d1qaDiVr6+ooxvzhlIhrVxw97Bl8s3oTb2pBam4fNGUknIJgfwepa1yAZEXV9PkOBzp
+ cusA==
+X-Gm-Message-State: AOJu0YzJsIFPGmb6TUcvQhFOEDqQ6YM7ZovIdeUMFYT7VZ+fg0ZXPwWh
+ ngHrjxA6XirCDD9Ak9I4yK0AxpB99+OGovmXX5luTcSQ5TKq9aZ+Gd0hQ+jvptEy7bv28kRcUti
+ ZlDnI
+X-Gm-Gg: ASbGncvc7+7L+EnbyZmMsztT+/tEOXUdPyTnKdmUgtVBn+qFmLGvrQuW6wXNmEzNy2r
+ rCH2YR1WRFCzHz578s4PwHzIOxMHKB+FZXQ8gmbGL0D9T9dRftY9vxXv4PQMnhF6IfMYz9bPT35
+ mkJ8z7CuzgU/jUhTOfzow6CqhaTWUTSUkcXTuJ0pArgV8UelbmcJmIvk4+aZLnLK7WyejYEF/47
+ 7dBmlSQwBLzLEdkfuysdvxHR/r5O+wVijYqbPoL9mYPN8Xn26D1uMIXmwnnAHrXKji/f9pKdC1W
+ GEQ9OS7JNWQ0A7/PjPgqddjI9N2hC3BmINZM9Z3HRhx679R7fiAJ1Qb/w7PZAL22x68zpYDNds5
+ BDuQn7QjyswH665PeKR5BRQP5oS5xj74YzDLT7ZI5mtaI1vCO12FqBwWo3FcxAnA665FefDOquz
+ KUply0GedVyrQ=
+X-Google-Smtp-Source: AGHT+IHMGxqCRMQ4qLE6l1mFcoyL2oYb+r2Wkpn7CewgjaLja7JZm+FogcjJZOdLZJ5DdBAQQLiDnQ==
+X-Received: by 2002:a05:600c:474b:b0:46e:35a0:3587 with SMTP id
+ 5b1f17b1804b1-477c01ee377mr119128345e9.27.1763996464920; 
+ Mon, 24 Nov 2025 07:01:04 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-477bf3af0ecsm202300355e9.9.2025.11.24.07.01.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Nov 2025 06:30:41 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 4/4] hw/display/exynos4210_fimd: Account for zero length in
- fimd_update_memory_section()
-Date: Mon, 24 Nov 2025 14:30:36 +0000
-Message-ID: <20251124143036.4113886-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251124143036.4113886-1-peter.maydell@linaro.org>
-References: <20251124143036.4113886-1-peter.maydell@linaro.org>
+ Mon, 24 Nov 2025 07:01:04 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5C04A5F83A;
+ Mon, 24 Nov 2025 15:01:03 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Jim MacArthur <jim.macarthur@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/3] tests: Add test for ASID2 and write/read of feature
+ bits
+In-Reply-To: <20251120125833.123813-4-jim.macarthur@linaro.org> (Jim
+ MacArthur's message of "Thu, 20 Nov 2025 12:54:16 +0000")
+References: <20251120125833.123813-1-jim.macarthur@linaro.org>
+ <20251120125833.123813-4-jim.macarthur@linaro.org>
+User-Agent: mu4e 1.12.14-pre3; emacs 30.1
+Date: Mon, 24 Nov 2025 15:01:03 +0000
+Message-ID: <87fra38ogg.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,50 +105,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fimd_update_memory_section() we attempt ot find and map part of
-the RAM MR which backs the framebuffer, based on guest-configurable
-size and start address.
+Jim MacArthur <jim.macarthur@linaro.org> writes:
 
-If the guest configures framebuffer settings which result in a
-zero-sized framebuffer, we hit an assertion(), because
-memory_region_find() will return a NULL mem_section.mr.
+> Tests ASID2 is present and FNG1, FNG0, and A2 are writable, and read
+> value shows the update.
+>
+> Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+> ---
+>  tests/tcg/aarch64/system/asid2.c | 53 ++++++++++++++++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+>  create mode 100644 tests/tcg/aarch64/system/asid2.c
+>
+> diff --git a/tests/tcg/aarch64/system/asid2.c b/tests/tcg/aarch64/system/=
+asid2.c
+> new file mode 100644
+> index 0000000000..cfe69db2ae
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/system/asid2.c
+> @@ -0,0 +1,53 @@
+> +/*
+> + * ASID2 Feature presence and enabled TCR2_EL1 bits test
+> + *
+> + * Copyright (c) 2025 Linaro Ltd
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <stdint.h>
+> +#include <minilib.h>
+> +
+> +#define ID_AA64MMFR4_EL1 "S3_0_C0_C7_4"
+> +#define TCR2_EL1 "S3_0_C2_C0_3"
+> +
+> +int main()
+> +{
+> +    /*
+> +     * Test for presence of ASID2 and three feature bits enabled by it:
+> +     * https://developer.arm.com/documentation/109697/2025_09/Feature-de=
+scriptions/The-Armv9-5-architecture-extension
+> +     * Bits added are FNG1, FNG0, and A2. These should be RES0 if A2 is
+> +     * not enabled and read as the written value if A2 is enabled.
+> +     */
+> +
+> +    uint64_t out;
+> +    uint64_t idreg;
+> +
+> +    /* Mask is FNG1, FNG0, and A2 */
+> +    const uint64_t feature_mask =3D (1ULL << 18 | 1ULL << 17 | 1ULL << 1=
+6);
+> +    const uint64_t in =3D feature_mask;
+> +
+> +    asm("mrs %[x1], " ID_AA64MMFR4_EL1 "\n\t"
+> +        : [x1] "=3Dr" (idreg));
+> +    if ((idreg & 0xF00) !=3D 0) {
+> +        /* ASID2 is enabled */
+> +    } else {
+> +        ml_printf("FAIL: ASID2 not present in ID_AA64MMFR4 (%lx)\n", idr=
+eg);
+> +        return 1;
+> +    }
 
-Explicitly check for the zero-size case and treat this as a
-guest error.
+If we instead use this to test for the presence of the feature and then...
 
-Because we now have a code path which can reach error_return without
-calling memory_region_find to set w->mem_section, we must NULL out
-w->mem_section.mr after the unref of the old MR, so that error_return
-does not incorrectly double-unref the old MR.
+> +
+> +    asm("msr " TCR2_EL1 ", %[x0]\n\t"
+> +        "mrs %[x1], " TCR2_EL1 "\n\t"
+> +        : [x1] "=3Dr" (out)
+> +        : [x0] "r" (in));
+> +
+> +    if ((out & feature_mask) =3D=3D in) {
+> +        ml_printf("OK\n");
+> +        return 0;
+> +    } else {
+> +        ml_printf("FAIL: read value %lx !=3D written value %lx\n",
+> +                  out & feature_mask, in);
+> +        return 1;
+> +    }
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1407
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251107143913.1341358-1-peter.maydell@linaro.org
----
- hw/display/exynos4210_fimd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+extend this part to check the bits are behaving as the feature dictates
+then we can add a second test like this (Makefile.softmmu-target):
 
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index 6b1eb43987c..49c180fec0c 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -1146,6 +1146,13 @@ static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
-     if (w->mem_section.mr) {
-         memory_region_set_log(w->mem_section.mr, false, DIRTY_MEMORY_VGA);
-         memory_region_unref(w->mem_section.mr);
-+        w->mem_section.mr = NULL;
-+    }
-+
-+    if (w->fb_len == 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "FIMD: Guest config means framebuffer is zero length\n");
-+        goto error_return;
-     }
- 
-     w->mem_section = memory_region_find(s->fbmem, fb_start_addr, w->fb_len);
--- 
-2.43.0
+  run-asid2-oldcpu: asid2
+          $(call run-test, $<, \
+            $(QEMU) -monitor none -display none \
+                    -chardev file$(COMMA)path=3D$<.out$(COMMA)id=3Doutput \
+                    $(QEMU_OPTS) $<)
 
+  run-asid2-oldcpu: QEMU_OPTS=3D-M virt -cpu cortex-a72 -display none $(QEM=
+U_BASE_ARGS) -kernel
+
+  EXTRA_RUNS +=3D run-asid2-oldcpu
+
+Although its a bit clunky - one day I'll get around to converting this
+lot to meson.
+
+> +}
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
