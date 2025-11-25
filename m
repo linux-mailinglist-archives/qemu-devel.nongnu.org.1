@@ -2,45 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127F5C85539
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7838C855E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:20:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNti8-0004zb-Ap; Tue, 25 Nov 2025 09:08:04 -0500
+	id 1vNtta-0004EC-0s; Tue, 25 Nov 2025 09:19:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vNthk-0004sw-4c
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:07:40 -0500
-Received: from out28-58.mail.aliyun.com ([115.124.28.58])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vNtrd-0003Tb-Gx
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:17:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vNthd-00082H-EI
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:07:39 -0500
-Received: from Sun.localdomain(mailfrom:mail@jiesong.me
- fp:SMTPD_---.fVd8gZL_1764079634 cluster:ay29) by smtp.aliyun-inc.com;
- Tue, 25 Nov 2025 22:07:21 +0800
-From: Jie Song <mail@jiesong.me>
-To: marcandre.lureau@gmail.com, eblake@redhat.com, armbru@redhat.com,
- berrange@redhat.com, qemu-devel@nongnu.org
-Cc: mail@jiesong.me, songjie_yewu@cmss.chinamobile.com,
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vNtrX-0001RE-It
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:17:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764080257;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=l/qgUWSnRlbL2QUhXfjS90ZVvYL4cI0gm0qxYaxDgLc=;
+ b=KjYPIjBAnqp/TmfDxOyqExItTSaILNIRkJQ2yUSwaWNpDomv9dFgXoveXFx/MiE7Zb1Itg
+ NC0mfy170Hhyew42PAcOZv1EYx9CO1exlwKGn+PK1gMIZ+bQgrjHkT7S5TQCcAJtxWMr2/
+ OQxkCRsgOqs/Vm9tQmqq8El4YsTbY2g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-_yZ2YTUpPgKfLmdY9njutw-1; Tue,
+ 25 Nov 2025 09:17:33 -0500
+X-MC-Unique: _yZ2YTUpPgKfLmdY9njutw-1
+X-Mimecast-MFC-AGG-ID: _yZ2YTUpPgKfLmdY9njutw_1764080252
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 818DF1954B11; Tue, 25 Nov 2025 14:17:32 +0000 (UTC)
+Received: from localhost (unknown [10.44.22.27])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 02820195608E; Tue, 25 Nov 2025 14:17:30 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v4] monitor/qmp: cleanup SocketChardev listener sources early
- to avoid fd handling race
-Date: Tue, 25 Nov 2025 22:07:06 +0800
-Message-ID: <20251125140706.114197-1-mail@jiesong.me>
-X-Mailer: git-send-email 2.43.0
+Subject: [PULL 0/4] ui/chardev patches
+Date: Tue, 25 Nov 2025 18:17:22 +0400
+Message-ID: <20251125141726.1755276-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.58; envelope-from=mail@jiesong.me;
- helo=out28-58.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,128 +81,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jie Song <songjie_yewu@cmss.chinamobile.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When starting a dummy QEMU process with virsh version, monitor_init_qmp()
-enables IOThread monitoring of the QMP fd by default. However, a race
-condition exists during the initialization phase: the IOThread only removes
-the main thread's fd watch when it reaches qio_net_listener_set_client_func_full(),
-which may be delayed under high system load.
+The following changes since commit de074358e99b8eb5076d3efa267e44c292c90e3e:
 
-This creates a window between monitor_qmp_setup_handlers_bh() and
-qio_net_listener_set_client_func_full() where both the main thread and
-IOThread are simultaneously monitoring the same fd and processing events.
-This race can cause either the main thread or the IOThread to hang and
-become unresponsive.
+  Merge tag 'pull-target-arm-20251124' of https://gitlab.com/pm215/qemu into staging (2025-11-24 09:03:12 -0800)
 
-Fix this by proactively cleaning up the listener's IO sources in
-monitor_init_qmp() before the IOThread initializes QMP monitoring,
-ensuring exclusive fd ownership and eliminating the race condition.
+are available in the Git repository at:
 
-Signed-off-by: Jie Song <songjie_yewu@cmss.chinamobile.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
-Changes in v4:
-- Correct typos and add braces, reviewed by Marc-André Lureau.
-- Link to v3:
-  https://lists.nongnu.org/archive/html/qemu-devel/2025-11/msg03504.html
-- Link to v2:
-  https://lists.nongnu.org/archive/html/qemu-devel/2025-11/msg02443.html
-- Link to v1:
-  https://lists.nongnu.org/archive/html/qemu-devel/2025-11/msg01621.html
----
- chardev/char-io.c         |  8 ++++++++
- chardev/char-socket.c     | 10 ++++++++++
- include/chardev/char-io.h |  2 ++
- include/chardev/char.h    |  2 ++
- monitor/qmp.c             |  5 +++++
- 5 files changed, 27 insertions(+)
+  https://gitlab.com/marcandre.lureau/qemu.git tags/fix-pull-request
 
-diff --git a/chardev/char-io.c b/chardev/char-io.c
-index 3be17b51ca..beac5cd245 100644
---- a/chardev/char-io.c
-+++ b/chardev/char-io.c
-@@ -182,3 +182,11 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len)
- {
-     return io_channel_send_full(ioc, buf, len, NULL, 0);
- }
-+
-+void remove_listener_fd_in_watch(Chardev *chr)
-+{
-+    ChardevClass *cc = CHARDEV_GET_CLASS(chr);
-+    if (cc->chr_listener_cleanup) {
-+        cc->chr_listener_cleanup(chr);
-+    }
-+}
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index 26d2f11202..3f45dd2ecd 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -1570,6 +1570,15 @@ char_socket_get_connected(Object *obj, Error **errp)
-     return s->state == TCP_CHARDEV_STATE_CONNECTED;
- }
- 
-+static void tcp_chr_listener_cleanup(Chardev *chr)
-+{
-+    SocketChardev *s = SOCKET_CHARDEV(chr);
-+    if (s->listener) {
-+        qio_net_listener_set_client_func_full(s->listener, NULL, NULL,
-+                                              NULL, chr->gcontext);
-+    }
-+}
-+
- static void char_socket_class_init(ObjectClass *oc, const void *data)
- {
-     ChardevClass *cc = CHARDEV_CLASS(oc);
-@@ -1587,6 +1596,7 @@ static void char_socket_class_init(ObjectClass *oc, const void *data)
-     cc->chr_add_client = tcp_chr_add_client;
-     cc->chr_add_watch = tcp_chr_add_watch;
-     cc->chr_update_read_handler = tcp_chr_update_read_handler;
-+    cc->chr_listener_cleanup = tcp_chr_listener_cleanup;
- 
-     object_class_property_add(oc, "addr", "SocketAddress",
-                               char_socket_get_addr, NULL,
-diff --git a/include/chardev/char-io.h b/include/chardev/char-io.h
-index ac379ea70e..540131346d 100644
---- a/include/chardev/char-io.h
-+++ b/include/chardev/char-io.h
-@@ -43,4 +43,6 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len);
- int io_channel_send_full(QIOChannel *ioc, const void *buf, size_t len,
-                          int *fds, size_t nfds);
- 
-+void remove_listener_fd_in_watch(Chardev *chr);
-+
- #endif /* CHAR_IO_H */
-diff --git a/include/chardev/char.h b/include/chardev/char.h
-index b65e9981c1..192cad67d4 100644
---- a/include/chardev/char.h
-+++ b/include/chardev/char.h
-@@ -307,6 +307,8 @@ struct ChardevClass {
- 
-     /* handle various events */
-     void (*chr_be_event)(Chardev *s, QEMUChrEvent event);
-+
-+    void (*chr_listener_cleanup)(Chardev *chr);
- };
- 
- Chardev *qemu_chardev_new(const char *id, const char *typename,
-diff --git a/monitor/qmp.c b/monitor/qmp.c
-index cb99a12d94..7ae070dc8d 100644
---- a/monitor/qmp.c
-+++ b/monitor/qmp.c
-@@ -537,6 +537,11 @@ void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
-          * e.g. the chardev is in client mode, with wait=on.
-          */
-         remove_fd_in_watch(chr);
-+        /*
-+         * Clean up listener IO sources early to prevent racy fd
-+         * handling between the main thread and the I/O thread.
-+         */
-+        remove_listener_fd_in_watch(chr);
-         /*
-          * We can't call qemu_chr_fe_set_handlers() directly here
-          * since chardev might be running in the monitor I/O
+for you to fetch changes up to 4c1646e23f761e3dc6d88c8995f13be8f668a012:
+
+  ui/vnc: Fix qemu abort when query vnc info (2025-11-25 18:03:13 +0400)
+
+----------------------------------------------------------------
+ui/chardev fixes for v10.2
+
+----------------------------------------------------------------
+
+AlanoSong@163.com (1):
+  ui/vnc: Fix qemu abort when query vnc info
+
+Marc-André Lureau (1):
+  ui/vdagent: fix windows agent regression
+
+Philippe Mathieu-Daudé (1):
+  chardev/char-pty: Do not ignore chr_write() failures
+
+Vladimir Sementsov-Ogievskiy (1):
+  chardev/char-file: fix failure path
+
+ chardev/char-file.c |  4 +++-
+ chardev/char-pty.c  |  2 +-
+ ui/vdagent.c        | 20 ++++++++++++++------
+ ui/vnc.c            |  9 ++++++---
+ 4 files changed, 24 insertions(+), 11 deletions(-)
+
 -- 
-2.43.0
+2.51.1
 
 
