@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F1BC8741D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A504EC87414
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0u2-0001h9-BS; Tue, 25 Nov 2025 16:48:50 -0500
+	id 1vO0u4-0001ko-FB; Tue, 25 Nov 2025 16:48:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tk-0001Yu-Fq
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:39 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tq-0001dB-9S
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:40 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0ti-0005F0-To
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:32 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-429c7869704so5045942f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0to-0005G3-TF
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:38 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-47774d3536dso1987045e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107308; x=1764712108; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764107315; x=1764712115; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PHzH+lCK4DEu5MLOOUlhaw7zhQlxhytN2R2hX7cMvgM=;
- b=M2NvBtVAmyesaUDCtfYpYWnFJnTB2cQXlC/GP1fxBzQRB60ZvPPGPITkxiIrYOcMB5
- 6GK05NXGz+tjGQKl/hNbwV9HnkKEoWDGtRrOexNMqQiF9sVjmUkbEK5ZLPmFim4ybL2x
- ftZ4L+KdkhAr2lQYWhYz3NHOHOxnKs0Bz0uHq9LBYRMMn7C/BJgSnDnFnQw3qw3UtIie
- Upr4VHrQ8u5DfkVuwn3o5hFCMOyPwT8lAP9Sar8IqSctn2yJaZ9cihGtbhxjZw7Jwu9/
- X4DgFeAqFYGOn8JH72qblxpcs1tmNXL2dV1QqOP7L0xj598qJv6H6vM941cr5H2Ih19I
- PWjg==
+ :reply-to; bh=2IIA1n/JeVNTSE3MnCSqO40c5B5NHTi2Pu8G8dVM3fg=;
+ b=DK9gyFtYGUptN5JIlTsiglym8aQelzQop5CrgGaODWG1JJ8WlDTSigICrKHxOvVdaE
+ fdc40mRjW21rsZ+YhzALSue36K5CD7wSxAZeH0IV/ru2Q/Azk5JAbdBfYfzMl1N2sqLe
+ 8a2cNB1uDHGahv7c3weDXvHxxmKGB8fuhWthvJdl2WKSAQHVIyKtOMgrRN6Gb6hZfOSF
+ 9Af8kqg927LIVtUcx1gxERzBdXSG7ZBvkyz/nSgDJUlftizknevLjxt6q6U5ijecIIOx
+ v+l1zct4Ngtopzk32VVwvcekGARMh5S0UUl1TZl57h0LkF51pm9X32SoaNoRRVXdtmlk
+ o/Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107308; x=1764712108;
+ d=1e100.net; s=20230601; t=1764107315; x=1764712115;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=PHzH+lCK4DEu5MLOOUlhaw7zhQlxhytN2R2hX7cMvgM=;
- b=S5kHOxXDBlDFmoQJfXY1mu06EwCT3XB8Lnpb8Srby5M9enrIJzvj06bJiRrk2rgOGH
- v+fEK4VFM6JqMime436vcujBKHBgcega3Fpxa6UBT0mWdHB15kfsbSMIOUjBTY2fgEp+
- qi0+W42EsYUGWhWiJb8YTbZpc3opbYtPcTTBTUH6uY+s/RDKMAelzFv+GZ81DlPxKJKL
- 3Zy/YM4tVftqcndDrCguJuZLkv1vtCKhk/Ngh3OfVUsxIB8L81GiSEXL/Oe94zCPc5r6
- kvS65tykpd/+lRcLZCZSIFhn+inaIT+JUE57+79pmx2CVK4hhxWCK6VZw+7fPxPTBFoi
- AauA==
-X-Gm-Message-State: AOJu0YwCP4cFBHT9+8EFJG0szHmu2TeXqcypNx4UmMJ/cNY7SAWCyG4Z
- LjCTGZWafawMunJPhWx1eAI3VC8ucKipezVp3kGmn3g+oBvoPwn8IqvotrTdwaByfJsk3Oktebe
- 86V32DlG/1g==
-X-Gm-Gg: ASbGncuPmcha1NW0oOnok9rKM9gLftYQoWj8yCW9KDPcOczGjJf4sEhJBKKVAoKpiBk
- G4uFiAFsBVa8S34IE+SqfpmX54Rk2AHcFSesXsjZ5nAcHOv+e6hakwjQwmUIEry6YHWDtVomTz5
- f1sI4ahtpeitGSoflqTx6qk4iDyhFyWCkl6SJsVEgQNyfbnvDnxR06Q+HxuKAALMIJH4FWVlf4R
- g3oWz0kTe2SJSrL2MY+l/f8K80gp4xwvy/MR2uVOffXOISSYugm9V2uQGsr8BiiMwqDGz7ehKon
- EfM1eLHSiycMqfzoVDjjnT82Zkph4CBQ2nqbbkLnsU7fjAxFxao1QKgsJrnqawi4lnncI0e0yRd
- nrCx6XXBKquyU1kGgbpaBLFjwciHA4/43wg0f6OD4wKBfvu01GB2k3T1J9XpPoNzlw3gypx70Zw
- fdK8/qUjKm/FSVVooVUK0ReTCyfjwfBdAOvAop56Oec037BEesSqxrWASTpk6H
-X-Google-Smtp-Source: AGHT+IHcNW54oX7DBvziDn5MwXe4pi3vz++Mui2Niob9Fw/7S7w4CPbdJNtdCOLt844wqK1/pX+vOQ==
-X-Received: by 2002:a05:6000:184a:b0:42b:38b1:e32e with SMTP id
- ffacd0b85a97d-42e0f34f998mr4581945f8f.46.1764107308462; 
- Tue, 25 Nov 2025 13:48:28 -0800 (PST)
+ bh=2IIA1n/JeVNTSE3MnCSqO40c5B5NHTi2Pu8G8dVM3fg=;
+ b=IQ4wdt/jsgdbAMu32Lf8XjrROF9t2LHSlSyjlLSaVgJEnLzMcmPNJOXslVAC71UE9o
+ muBJ/eMcpTOu+7R5RE1mWnWJxs00AOupJYSspQIdcoPZKdMtmaNZjBwDVVjzTYv+9qLA
+ Y0dpr7yOpFCXszRrEmjJhKBEYiGw6EM/2QZKqyq/LBzNCYzfLIsy95kxqmYJ2UdBm4AZ
+ elabZpwh/UqrVp6kIy8RYKMU1lrCWWWOHY0i+PlZGBPLokOuThtncYbKLCOW8caMqHbw
+ tYfdQ2oMNJjLJpVlxen/PXmrpvQs5joZzlj48EAqsFrJ+iqZEsF9vzaxrYVfSo6YZfnh
+ 9b8Q==
+X-Gm-Message-State: AOJu0YybXEetY0oZjr4cPscqqGx5JD+wp5CHHLe/SSwkCyRQmR6gCqwV
+ lrsUJ3ANkBdbUSyFMyttBoziNLaqAXlg/Bu/JCNDJ6PBOHef1mD1TKEMT/8ikzpbiYARybCRZam
+ r9fIfgc21KQ==
+X-Gm-Gg: ASbGncuzLdUjkVLOHA4TAe5X8vTbLW2zxfXpyXt9Tu7wd+nWOsgiMMHLHSdUQ7UCoNd
+ FZdeZYiFlti7K8txls6p+xCwPbhUtMGTyreNm8oW4sECcbMCVF+MHiG12SHSI9uXzgdVxOKgfFc
+ I6Cwg6xPniPGzR0mUuQJPgZcnk5BN7Pizoaz/hiXqQd3J1B9POwXoiNpuROKvtccLbYLJ0QmyxY
+ tt2Oa2CtRWXc00fKqJfx2VYJs/5kzYG9290ve96kz3TEYxyZBM39/jY3ioON3F7KA2D9KRpjSy3
+ XhuVY0PqiluZBuK9lRsNoOQU34jZvDT/dwobYFS7k1FYXPS3m+lXVIjvXJEx1UN/tBRv8Qlmv1U
+ Epk0I11lWAEt31MnDhDwrLldQ6961eyVzBOn/I8REWKFoYQIGcvuzlJPoSmn8VQoa8oHV1QjU6Q
+ Whcv8BWo0atT8m13+3/iXll3jqHj0qjNMwBoDxIhNo1I0IYsZv+WCcdfVHhPfu
+X-Google-Smtp-Source: AGHT+IEfVTUvQhtQTuSC2MmzPnYvCRU03lW+LIg6HIWrEAfrr1QSJC0shvbZkCh2K+RIDvxIGRGy6A==
+X-Received: by 2002:a05:600c:4eca:b0:46f:a2ba:581f with SMTP id
+ 5b1f17b1804b1-477c0540a68mr186355435e9.16.1764107315126; 
+ Tue, 25 Nov 2025 13:48:35 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fb91f4sm37231193f8f.31.2025.11.25.13.48.27
+ ffacd0b85a97d-42cb7f3635bsm37135940f8f.17.2025.11.25.13.48.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 13:48:27 -0800 (PST)
+ Tue, 25 Nov 2025 13:48:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 3/9] docs/deprecated: Remove undeprecated SMP description
-Date: Tue, 25 Nov 2025 22:47:55 +0100
-Message-ID: <20251125214802.1929-4-philmd@linaro.org>
+Subject: [PULL 4/9] hw/usb: Convert to qemu_create() for a better error message
+Date: Tue, 25 Nov 2025 22:47:56 +0100
+Message-ID: <20251125214802.1929-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125214802.1929-1-philmd@linaro.org>
 References: <20251125214802.1929-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,53 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-"Unsupported 'parameter=1' SMP configuration" was proposed to be
-deprecated in the commit 54c4ea8f3ae6 ("hw/core/machine-smp: Deprecate
-unsupported "parameter=1" SMP configurations").
+The error message changes from
 
-But the related code was reverted later in the commit 9d7950edb0cd
-("hw/core: allow parameter=1 for SMP topology on any machine").
+    open FILENAME failed
 
-Thus, this SMP behavior is still valid and is not actually deprecated.
+to
 
-Remove outdated document descriptions.
+    Could not create 'FILENAME': REASON
 
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20251121084416.1031466-1-zhao1.liu@intel.com>
+where REASON is the value of strerror(errno).
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251121121438.1249498-3-armbru@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst | 14 --------------
- 1 file changed, 14 deletions(-)
+ hw/usb/bus.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 30ab72b2a4c..9386cffba26 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -54,20 +54,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
- However, short-form booleans are deprecated and full explicit ``arg_name=on``
- form is preferred.
+diff --git a/hw/usb/bus.c b/hw/usb/bus.c
+index 8dd2ce415eb..714e33989f4 100644
+--- a/hw/usb/bus.c
++++ b/hw/usb/bus.c
+@@ -259,10 +259,9 @@ static void usb_qdev_realize(DeviceState *qdev, Error **errp)
+     }
  
--``-smp`` (Unsupported "parameter=1" SMP configurations) (since 9.0)
--'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--Specified CPU topology parameters must be supported by the machine.
--
--In the SMP configuration, users should provide the CPU topology parameters that
--are supported by the target machine.
--
--However, historically it was allowed for users to specify the unsupported
--topology parameter as "1", which is meaningless. So support for this kind of
--configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
--marked deprecated since 9.0, users have to ensure that all the topology members
--described with -smp are supported by the target machine.
--
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
- 
+     if (dev->pcap_filename) {
+-        int fd = qemu_open_old(dev->pcap_filename,
+-                               O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
++        int fd = qemu_create(dev->pcap_filename,
++                             O_WRONLY | O_TRUNC | O_BINARY, 0666, errp);
+         if (fd < 0) {
+-            error_setg(errp, "open %s failed", dev->pcap_filename);
+             usb_qdev_unrealize(qdev);
+             return;
+         }
 -- 
 2.51.0
 
