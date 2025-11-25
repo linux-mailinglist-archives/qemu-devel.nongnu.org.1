@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B00C84948
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 11:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E3AC84951
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 11:56:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNqhZ-0003xs-40; Tue, 25 Nov 2025 05:55:17 -0500
+	id 1vNqha-00042T-3t; Tue, 25 Nov 2025 05:55:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNqhN-0003j8-EO
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:55:09 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNqhS-0003mT-RM
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:55:12 -0500
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNqhK-0001Qj-0n
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:55:04 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-429c7869704so4457953f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 02:55:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNqhQ-0001cw-BC
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:55:10 -0500
+Received: by mail-wm1-x344.google.com with SMTP id
+ 5b1f17b1804b1-4779a637712so32655645e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 02:55:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764068099; x=1764672899; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764068106; x=1764672906; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NVumjk0F6Tq93V240FNbMOnFtVOEoBWTLGnL0WT9/nA=;
- b=IlTwdXmkY45ydg66iilqx+bOGLC0ywl2qnjjFJ/orAYpF5DEtpTEgoXRIr+nbeSJY/
- MaMG6WEmEEAzzT7xNEmzCPj7vs+WSEKYKRmBqM+MZHDhdNWr0U+Z1hi0oo+toB8i0gaC
- nNV3FYtNZ0Mucs1XaWXnGGIJdLWC82iHoOUU96fXo5XJPoIa04c4NY8Syqwbu3KpNO8S
- rdUqib+vp3N3LlMHPuFclFViPX1KTPm0iIr/ZufMGkhan2h7zhcWJ+0SKFe5iAnLJCjq
- qyHZoFubO3I5YICJLk+FYnQilgeSuPXPmzsU+93xcrRLMPNK9RS5s8FvgsKnEaksZC8Z
- TfOw==
+ bh=27Oww4qQxdixc+Id3IXgq5AJQ19OjMu/GDoS0nr9Vqw=;
+ b=AERx+yVH92H4qj75A6QQ0juHjQ1xLqZtI9Xx7wqmoo5KZAHnmPvVIXQ6TfV5Uqd6bl
+ sxCUfx4DyxZ/UIYuczLZmpIJwBDWFpHwPBuhV6o3+mUrbMzybEvxEnTIYbK6Bmv7JQKM
+ 0BQjXsiTZCG8ZTYMBwVB0pseSr2/HLAds2J0nZWsS5eaCcap1vPibXJ4LkQ2P9mvxje+
+ gqZvgZZKzhmHGfjAXfojFUkvSpxaIRUQj+IPKByz+wbsphZ0qN+ZHcJV9u/V+mfCOO+x
+ +lADQug97AFGByCfpoalW9RO5X2HfBB2uj00sIwQtDQQ9oRmnocoHZkNpF7E8yKy6/ww
+ ZKxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764068099; x=1764672899;
+ d=1e100.net; s=20230601; t=1764068106; x=1764672906;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NVumjk0F6Tq93V240FNbMOnFtVOEoBWTLGnL0WT9/nA=;
- b=Eeue2wQwax9YQQF3792pH2lB1glUTtKVVG7inqLlYCdWDqFbT3bRxowxATPYukNQH0
- m2qJ8Jc5pZv8NEPk7FhHqSkX2/5f6kh1SQHo052GQfZu5wK7FMjoTHtf2tW+vIqzaePP
- O0688rj9vRTSuwf7micc8W0FLB1pgpZZmLPsVjfnz/2L6tFAdfsOl6bIDK4nPMSAtQsT
- A46i3d3XPsxNvtRZrSElulLlYUVFy8FCBdifhI65YVoBVi+5xj19KhWK/12OGDirqJUs
- UWEyI3hZK5I65A6CAh78JMbv5JlLSqLbdTq4LGOFMfeMNJzXJW+7HWaxh79Xku6s13m4
- jkcQ==
-X-Gm-Message-State: AOJu0Yx3/Km5XyRIkWBrDuc6WOAL7+QZDG6Kj6IVNHA6xMYUFwEaQUYv
- IC4Xy+8nA0kj8oSdv3ICH2qLt6G35HAB3CMMrYyZUn+QuArYfZpzknREa9gnUs+zGYPAgUrswd0
- Y7hKCkt6nmw==
-X-Gm-Gg: ASbGncsB4vmYIJ3SQ+QV0Fy3kjCw3/dURhTaTmxSIAHTN22BFQU2SiqC4pbM8K+bPdW
- 1c7+U+jUBI4eaJ5veG3l5r2DLjh5l6SRrImrhBqPmGj6JWAkaZiSfMuufKK/rbBFgeHaIhJnk4B
- j3tfKUQ/eMEpqMiW39cV8KYUzJer5DereSVaEDkVoDhnvupiMF2F/xL/cS4mYgTSRZ1xu4ydwId
- 96iLHMrz8sc3MRNWhXoZVCXyWcGgBjsq5FcOeVMFyfWfcNRZ3NgVCiHmedxpg+y4tKTV7F0WGjh
- wCrbMtaKiNtqjF30tT93pzZ254iYBIBOyIwe4DI+XN6mzf7PkIOqARVstzJERHzN4xGAKDrp3Wy
- VX4vSHxSx+TZMH/9WO0WssF5UKTtMzQ+L2gf/4A9ReR3BZH4EcULhzgaErkg2Q+740MKzHZ+GSF
- mi5Ctf+mtU3B9aF/0oglPmPn0+wFTJivCIKCMyk+pUdd/nDuXiJiVIYPGBybC+d3Pf48qcogs=
-X-Google-Smtp-Source: AGHT+IEiVpF5o+SfyjWN7bCv64a0BsvPVLLknCQNWUQyyXwxLPUetlS8IgypNYrMqQE9+aneNqCs1Q==
-X-Received: by 2002:a05:6000:2210:b0:42b:4961:eb4c with SMTP id
- ffacd0b85a97d-42e0f1d57f9mr2509092f8f.1.1764068098723; 
- Tue, 25 Nov 2025 02:54:58 -0800 (PST)
+ bh=27Oww4qQxdixc+Id3IXgq5AJQ19OjMu/GDoS0nr9Vqw=;
+ b=diUsbE6OjpMkk0ia7SbxuRgmXbIiMYvcL3NSFlrn2tkNf0ou3fwPHlEKAMEnQrVZtj
+ emslMXFPp0r75TAN8xFODo6wcdMO6hrUTaAzlPogcsXKKSMRIhP1O5D+ZdK+yo5/35ip
+ auNqTtCFeKMPcUcl4q2fvrW9Tt+uz5jPaBgWpJ1853L6xH6ecGg75RI26sgUoz9+Fexc
+ dymU9+v0a+/8OMJ2QqN27fJJsP/YkwQC+9dYrmThoS2Cfp9K7NsidGjlWpcxMvXm49eW
+ aswoBm1sUqwk6uis5je3dWuxjyherAQAGztzswpkXoqHltRoBDscHf3IQ5iXsEmfvNrR
+ OkxA==
+X-Gm-Message-State: AOJu0YynJRoDNkEKwmMf15rXLIdvm+j45cv1TZARfZbsUHaTdAllXeSv
+ MCv/YdCRUBMMnOUIudHiquhsdvoxeXgtUyU9nKtVcMS1CHLwSDmYDPuJETl3BFkG2w1JyQmseLd
+ EY53oQsibY77L
+X-Gm-Gg: ASbGncsnSNLD2wbsutKvMObRrNXo91/zKtHBDUJCzyqnGC9FR77WwX6DcumvK6xw++j
+ iIi28NHtE0WNJPPPrg87FcF9C+1kFQGI0DFAnFAl0bc+RfbBxAr0YcUc+Vp1ksBYpv8qq3QOU6+
+ 6wzQDsiEdXfcXVsuMcEoaC9k5X+0MQCUTh61IocfWAyZ4nXG9WIABr/EzQFdCoqKmUOylaxjQRc
+ 2UtaRjtIZ92yEKeWURiuUZG4yOxU7oyHOieJGW8/MIVoITg2UrMtoiT2C+bZxTqJtlqd8l7cBr6
+ i2Zp2WEzNVZM6TOLw1n1mwts1hcHJXcpzJZuwdLS0aggagRt2Cx+4E+JWPKuE6IXzlsK2Vrq3w7
+ jWpwQlFRMlV2CZZr6vQx20ywSrVayjw3Y2A5ONoovxtF+OUF0t2eFHuv6vHF4XLD5oc60v0yqvV
+ q4TbSbFuy45GqUT0SvaBOEDZE/5XAUlrzZ6I2J08wxyJwSabE/KLWbJ5S12Gz1
+X-Google-Smtp-Source: AGHT+IG5wAax9M2wPLydKe/qH81pYYW/FEoJGxK+P8LAWQtVmIFngUJ+IUH7VGp9Anxqxxp5ubmJog==
+X-Received: by 2002:a05:600c:4f88:b0:477:af07:dd17 with SMTP id
+ 5b1f17b1804b1-477c01c3721mr191342375e9.24.1764068105830; 
+ Tue, 25 Nov 2025 02:55:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f363e4sm34060597f8f.12.2025.11.25.02.54.57
+ ffacd0b85a97d-42cb7fba20esm33716389f8f.37.2025.11.25.02.55.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 02:54:58 -0800 (PST)
+ Tue, 25 Nov 2025 02:55:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <yoshinori.sato@nifty.com>
-Subject: [PATCH-for-11.0 03/12] target/rx: Use little-endian variant of
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH-for-11.0 04/12] target/m68k: Use little-endian variant of
  cpu_ld/st_data*()
-Date: Tue, 25 Nov 2025 11:54:24 +0100
-Message-ID: <20251125105434.92355-4-philmd@linaro.org>
+Date: Tue, 25 Nov 2025 11:54:25 +0100
+Message-ID: <20251125105434.92355-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125105434.92355-1-philmd@linaro.org>
 References: <20251125105434.92355-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::344;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,14 +102,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the RX target using little endianness order,
+We only build the M68k target using little endianness order,
 therefore the cpu_ld/st_data*() definitions expand to the little
 endian declarations. Use the explicit little-endian variants.
 
 Mechanical change running:
 
-  $ tgt=rx; \
-    end=le; \
+  $ tgt=m68k; \
+    end=be; \
     for op in data mmuidx_ra; do \
       for ac in uw sw l q; do \
         sed -i -e "s/cpu_ld${ac}_${op}/cpu_ld${ac}_${end}_${op}/" \
@@ -123,75 +123,273 @@ Mechanical change running:
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/rx/helper.c    | 14 +++++++-------
- target/rx/op_helper.c |  6 +++---
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ target/m68k/fpu_helper.c | 12 +++---
+ target/m68k/op_helper.c  | 88 ++++++++++++++++++++--------------------
+ 2 files changed, 50 insertions(+), 50 deletions(-)
 
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index e9a7aaf610d..83cd491eb4a 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -68,10 +68,10 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
-     } else if (cpu_test_interrupt(cs, CPU_INTERRUPT_HARD)) {
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, save_psw);
-+        cpu_stl_le_data(env, env->isp, save_psw);
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, env->pc);
--        env->pc = cpu_ldl_data(env, env->intb + env->ack_irq * 4);
-+        cpu_stl_le_data(env, env->isp, env->pc);
-+        env->pc = cpu_ldl_le_data(env, env->intb + env->ack_irq * 4);
-         env->psw_ipl = env->ack_ipl;
-         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-         qemu_set_irq(env->ack, env->ack_irq);
-@@ -82,14 +82,14 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         const char *expname = "unknown exception";
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index 56012863c85..f49f841d489 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -510,8 +510,8 @@ static int cpu_ld_floatx80_ra(CPUM68KState *env, uint32_t addr, FPReg *fp,
+     uint32_t high;
+     uint64_t low;
  
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, save_psw);
-+        cpu_stl_le_data(env, env->isp, save_psw);
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, env->pc);
-+        cpu_stl_le_data(env, env->isp, env->pc);
+-    high = cpu_ldl_data_ra(env, addr, ra);
+-    low = cpu_ldq_data_ra(env, addr + 4, ra);
++    high = cpu_ldl_be_data_ra(env, addr, ra);
++    low = cpu_ldq_be_data_ra(env, addr + 4, ra);
  
-         if (vec < 0x100) {
--            env->pc = cpu_ldl_data(env, 0xffffff80 + vec * 4);
-+            env->pc = cpu_ldl_le_data(env, 0xffffff80 + vec * 4);
-         } else {
--            env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
-+            env->pc = cpu_ldl_le_data(env, env->intb + (vec & 0xff) * 4);
+     fp->l.upper = high >> 16;
+     fp->l.lower = low;
+@@ -522,8 +522,8 @@ static int cpu_ld_floatx80_ra(CPUM68KState *env, uint32_t addr, FPReg *fp,
+ static int cpu_st_floatx80_ra(CPUM68KState *env, uint32_t addr, FPReg *fp,
+                                uintptr_t ra)
+ {
+-    cpu_stl_data_ra(env, addr, fp->l.upper << 16, ra);
+-    cpu_stq_data_ra(env, addr + 4, fp->l.lower, ra);
++    cpu_stl_be_data_ra(env, addr, fp->l.upper << 16, ra);
++    cpu_stq_be_data_ra(env, addr + 4, fp->l.lower, ra);
+ 
+     return 12;
+ }
+@@ -533,7 +533,7 @@ static int cpu_ld_float64_ra(CPUM68KState *env, uint32_t addr, FPReg *fp,
+ {
+     uint64_t val;
+ 
+-    val = cpu_ldq_data_ra(env, addr, ra);
++    val = cpu_ldq_be_data_ra(env, addr, ra);
+     fp->d = float64_to_floatx80(*(float64 *)&val, &env->fp_status);
+ 
+     return 8;
+@@ -545,7 +545,7 @@ static int cpu_st_float64_ra(CPUM68KState *env, uint32_t addr, FPReg *fp,
+     float64 val;
+ 
+     val = floatx80_to_float64(fp->d, &env->fp_status);
+-    cpu_stq_data_ra(env, addr, *(uint64_t *)&val, ra);
++    cpu_stq_be_data_ra(env, addr, *(uint64_t *)&val, ra);
+ 
+     return 8;
+ }
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index e9c20a8e032..eac45669ce7 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -32,8 +32,8 @@ static void cf_rte(CPUM68KState *env)
+     uint32_t fmt;
+ 
+     sp = env->aregs[7];
+-    fmt = cpu_ldl_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+-    env->pc = cpu_ldl_mmuidx_ra(env, sp + 4, MMU_KERNEL_IDX, 0);
++    fmt = cpu_ldl_be_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
++    env->pc = cpu_ldl_be_mmuidx_ra(env, sp + 4, MMU_KERNEL_IDX, 0);
+     sp |= (fmt >> 28) & 3;
+     env->aregs[7] = sp + 8;
+ 
+@@ -48,13 +48,13 @@ static void m68k_rte(CPUM68KState *env)
+ 
+     sp = env->aregs[7];
+ throwaway:
+-    sr = cpu_lduw_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
++    sr = cpu_lduw_be_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+     sp += 2;
+-    env->pc = cpu_ldl_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
++    env->pc = cpu_ldl_be_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+     sp += 4;
+     if (m68k_feature(env, M68K_FEATURE_EXCEPTION_FORMAT_VEC)) {
+         /*  all except 68000 */
+-        fmt = cpu_lduw_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
++        fmt = cpu_lduw_be_mmuidx_ra(env, sp, MMU_KERNEL_IDX, 0);
+         sp += 2;
+         switch (fmt >> 12) {
+         case 0:
+@@ -250,12 +250,12 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+     /* ??? This could cause MMU faults.  */
+     sp &= ~3;
+     sp -= 4;
+-    cpu_stl_mmuidx_ra(env, sp, retaddr, MMU_KERNEL_IDX, 0);
++    cpu_stl_be_mmuidx_ra(env, sp, retaddr, MMU_KERNEL_IDX, 0);
+     sp -= 4;
+-    cpu_stl_mmuidx_ra(env, sp, fmt, MMU_KERNEL_IDX, 0);
++    cpu_stl_be_mmuidx_ra(env, sp, fmt, MMU_KERNEL_IDX, 0);
+     env->aregs[7] = sp;
+     /* Jump to vector.  */
+-    env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
++    env->pc = cpu_ldl_be_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
+ 
+     do_plugin_vcpu_interrupt_cb(cs, retaddr);
+ }
+@@ -270,24 +270,24 @@ static inline void do_stack_frame(CPUM68KState *env, uint32_t *sp,
+         switch (format) {
+         case 4:
+             *sp -= 4;
+-            cpu_stl_mmuidx_ra(env, *sp, env->pc, MMU_KERNEL_IDX, 0);
++            cpu_stl_be_mmuidx_ra(env, *sp, env->pc, MMU_KERNEL_IDX, 0);
+             *sp -= 4;
+-            cpu_stl_mmuidx_ra(env, *sp, addr, MMU_KERNEL_IDX, 0);
++            cpu_stl_be_mmuidx_ra(env, *sp, addr, MMU_KERNEL_IDX, 0);
+             break;
+         case 3:
+         case 2:
+             *sp -= 4;
+-            cpu_stl_mmuidx_ra(env, *sp, addr, MMU_KERNEL_IDX, 0);
++            cpu_stl_be_mmuidx_ra(env, *sp, addr, MMU_KERNEL_IDX, 0);
+             break;
          }
+         *sp -= 2;
+-        cpu_stw_mmuidx_ra(env, *sp, (format << 12) + (cs->exception_index << 2),
++        cpu_stw_be_mmuidx_ra(env, *sp, (format << 12) + (cs->exception_index << 2),
+                           MMU_KERNEL_IDX, 0);
+     }
+     *sp -= 4;
+-    cpu_stl_mmuidx_ra(env, *sp, retaddr, MMU_KERNEL_IDX, 0);
++    cpu_stl_be_mmuidx_ra(env, *sp, retaddr, MMU_KERNEL_IDX, 0);
+     *sp -= 2;
+-    cpu_stw_mmuidx_ra(env, *sp, sr, MMU_KERNEL_IDX, 0);
++    cpu_stw_be_mmuidx_ra(env, *sp, sr, MMU_KERNEL_IDX, 0);
+ }
  
-         if (vec == 30) {
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index 2b190a4b2cf..ca3e9e85fc7 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -217,20 +217,20 @@ void helper_scmpu(CPURXState *env)
- static uint32_t (* const cpu_ldufn[])(CPUArchState *env,
-                                      abi_ptr ptr,
-                                      uintptr_t retaddr) = {
--    cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
-+    cpu_ldub_data_ra, cpu_lduw_le_data_ra, cpu_ldl_le_data_ra,
- };
+ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
+@@ -346,49 +346,49 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
+         env->mmu.fault = true;
+         /* push data 3 */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* push data 2 */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* push data 1 */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 1 / push data 0 */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 1 address */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 2 data */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 2 address */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 3 data */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 3 address */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
+         /* fault address */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
+         /* write back 1 status */
+         sp -= 2;
+-        cpu_stw_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stw_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 2 status */
+         sp -= 2;
+-        cpu_stw_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stw_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* write back 3 status */
+         sp -= 2;
+-        cpu_stw_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
++        cpu_stw_be_mmuidx_ra(env, sp, 0, MMU_KERNEL_IDX, 0);
+         /* special status word */
+         sp -= 2;
+-        cpu_stw_mmuidx_ra(env, sp, env->mmu.ssw, MMU_KERNEL_IDX, 0);
++        cpu_stw_be_mmuidx_ra(env, sp, env->mmu.ssw, MMU_KERNEL_IDX, 0);
+         /* effective address */
+         sp -= 4;
+-        cpu_stl_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
++        cpu_stl_be_mmuidx_ra(env, sp, env->mmu.ar, MMU_KERNEL_IDX, 0);
  
- static uint32_t (* const cpu_ldfn[])(CPUArchState *env,
-                                      abi_ptr ptr,
-                                      uintptr_t retaddr) = {
--    cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
-+    cpu_ldub_data_ra, cpu_lduw_le_data_ra, cpu_ldl_le_data_ra,
- };
+         do_stack_frame(env, &sp, 7, oldsr, 0, env->pc);
+         env->mmu.fault = false;
+@@ -436,7 +436,7 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
  
- static void (* const cpu_stfn[])(CPUArchState *env,
-                                  abi_ptr ptr,
-                                  uint32_t val,
-                                  uintptr_t retaddr) = {
--    cpu_stb_data_ra, cpu_stw_data_ra, cpu_stl_data_ra,
-+    cpu_stb_data_ra, cpu_stw_le_data_ra, cpu_stl_le_data_ra,
- };
+     env->aregs[7] = sp;
+     /* Jump to vector.  */
+-    env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
++    env->pc = cpu_ldl_be_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
  
- void helper_sstr(CPURXState *env, uint32_t sz)
+     do_plugin_vcpu_interrupt_cb(cs, last_pc);
+ }
+@@ -784,11 +784,11 @@ void HELPER(cas2w)(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_t a2)
+     int16_t l1, l2;
+     uintptr_t ra = GETPC();
+ 
+-    l1 = cpu_lduw_data_ra(env, a1, ra);
+-    l2 = cpu_lduw_data_ra(env, a2, ra);
++    l1 = cpu_lduw_be_data_ra(env, a1, ra);
++    l2 = cpu_lduw_be_data_ra(env, a2, ra);
+     if (l1 == c1 && l2 == c2) {
+-        cpu_stw_data_ra(env, a1, u1, ra);
+-        cpu_stw_data_ra(env, a2, u2, ra);
++        cpu_stw_be_data_ra(env, a1, u1, ra);
++        cpu_stw_be_data_ra(env, a2, u2, ra);
+     }
+ 
+     if (c1 != l1) {
+@@ -845,11 +845,11 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_t a2,
+         }
+     } else {
+         /* We're executing in a serial context -- no need to be atomic.  */
+-        l1 = cpu_ldl_data_ra(env, a1, ra);
+-        l2 = cpu_ldl_data_ra(env, a2, ra);
++        l1 = cpu_ldl_be_data_ra(env, a1, ra);
++        l2 = cpu_ldl_be_data_ra(env, a2, ra);
+         if (l1 == c1 && l2 == c2) {
+-            cpu_stl_data_ra(env, a1, u1, ra);
+-            cpu_stl_data_ra(env, a2, u2, ra);
++            cpu_stl_be_data_ra(env, a1, u1, ra);
++            cpu_stl_be_data_ra(env, a2, u2, ra);
+         }
+     }
+ 
+@@ -951,12 +951,12 @@ static uint64_t bf_load(CPUM68KState *env, uint32_t addr, int blen,
+     case 0:
+         return cpu_ldub_data_ra(env, addr, ra);
+     case 1:
+-        return cpu_lduw_data_ra(env, addr, ra);
++        return cpu_lduw_be_data_ra(env, addr, ra);
+     case 2:
+     case 3:
+-        return cpu_ldl_data_ra(env, addr, ra);
++        return cpu_ldl_be_data_ra(env, addr, ra);
+     case 4:
+-        return cpu_ldq_data_ra(env, addr, ra);
++        return cpu_ldq_be_data_ra(env, addr, ra);
+     default:
+         g_assert_not_reached();
+     }
+@@ -970,14 +970,14 @@ static void bf_store(CPUM68KState *env, uint32_t addr, int blen,
+         cpu_stb_data_ra(env, addr, data, ra);
+         break;
+     case 1:
+-        cpu_stw_data_ra(env, addr, data, ra);
++        cpu_stw_be_data_ra(env, addr, data, ra);
+         break;
+     case 2:
+     case 3:
+-        cpu_stl_data_ra(env, addr, data, ra);
++        cpu_stl_be_data_ra(env, addr, data, ra);
+         break;
+     case 4:
+-        cpu_stq_data_ra(env, addr, data, ra);
++        cpu_stq_be_data_ra(env, addr, data, ra);
+         break;
+     default:
+         g_assert_not_reached();
 -- 
 2.51.0
 
