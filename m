@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF40C87289
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4EAC87286
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 21:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNzxC-0007l8-W8; Tue, 25 Nov 2025 15:48:03 -0500
+	id 1vNzxC-0007kI-DT; Tue, 25 Nov 2025 15:48:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwB-0007C1-Om
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwF-0007CI-LF
  for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:47:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwA-00030Q-7I
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:46:59 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwA-00030b-Bp
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:47:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764103616;
+ s=mimecast20190719; t=1764103617;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tpbzNPRtki18pB+Bwa2yNmzCzERPQhJos9MVBn/adac=;
- b=BuNvdNDLqzS6RlXNuHp8lORxBcBwAnA0NxzaOMlDtkc09nc6zZqNd0vl9TEBBaSk4iXF+f
- dwCnpb3LnNplhNihbGXNVAvcy1oj0OuMD70sedPQtHk4tpYOZIzKFgkmcKNam5pDL0eFwN
- Y5ZqRwXMbmO35LZPp2+6ueNre0v5CGs=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
+ b=KwY3tySa00ORA17G+OjCjzf83OqQTPwJXpqGkwaOKw16/hN/C2cxaS8L9nX76nrW9bUg82
+ D/VInVEgCSLrmaYwvmmYWxW08Tvky6+WfQSy0DdyDnpbvvJK5Fmb0f5synPsX92kZds+S6
+ chO3X8bUr+mJ75eNQ6S+Po0THpEzbq0=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-gVkgESvCOaWPrMBiq1GYCg-1; Tue, 25 Nov 2025 15:46:54 -0500
-X-MC-Unique: gVkgESvCOaWPrMBiq1GYCg-1
-X-Mimecast-MFC-AGG-ID: gVkgESvCOaWPrMBiq1GYCg_1764103614
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8b24b811fb1so50963485a.1
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 12:46:54 -0800 (PST)
+ us-mta-131-BgVtlVlDMhCn6FADG_OfeQ-1; Tue, 25 Nov 2025 15:46:56 -0500
+X-MC-Unique: BgVtlVlDMhCn6FADG_OfeQ-1
+X-Mimecast-MFC-AGG-ID: BgVtlVlDMhCn6FADG_OfeQ_1764103615
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8b17194d321so764969585a.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 12:46:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764103614; x=1764708414; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764103615; x=1764708415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tpbzNPRtki18pB+Bwa2yNmzCzERPQhJos9MVBn/adac=;
- b=fPtKPPixtZta2ScLe8yM284zxLF2+U1BNj9q1TfRTPEEYaJ3qW8GGOe3/KnwMI64eV
- 5UpaUhf3t5egCNctswprETLdJZ04pA0nUWrChrSQv9TbqZZ7pHFiTYA21QXf+C71Axlb
- XDZZcDbKYXCHerFHO8i2EjV8QUVzYrRu3azDDz2uapzVTYf3AGReGQwNm1Pdpg3nIFmz
- rubxeOaKyfsigEQxb0kKt1gGZYWBjJOzb2uQrrfPEQ6sahqexIB7b1aZTARRqlXxXptw
- afCr0PUy92PFJz4kOgixxdwFu87FkyhJzrTyf3HhiRyEysUYss8sE45DRdp0m4yUMGHa
- 9lTw==
+ bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
+ b=bMTXnQe1PJZ3vQp9umjAByOjZAHu5MXumqTuOeeBKv2B6pR3Ie05MGG8misiOi+wvE
+ n+cg2H/AQHsRDgorjjvbxsmQV9xfpCNv/7HXaN8tx48rmXLBsoOc1ywtUBjhjTxHenIy
+ PnqjAWmyGfzkBvCMrHL5g/cncUdvnW/UkZYH7mgrdypx5ilpG7Nd7zz0kVWMbBXYQZt7
+ Iax1nGyaMzd4Pp1MZQjBUwD5rcw/5K3X/qG71cIA+x1DAfQUoTxwEOHiegO8Deu1/Gat
+ dB8xeOWl/rDE5eGtTgboiH0PSn3tYqZ4jdnJDyWIzYwKNuvNYzwEXzonJ56ZzPBfdGqL
+ dD8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764103614; x=1764708414;
+ d=1e100.net; s=20230601; t=1764103615; x=1764708415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=tpbzNPRtki18pB+Bwa2yNmzCzERPQhJos9MVBn/adac=;
- b=f6pVUicYT9JQbmZ2Icag5/O/7ODuQgyCP83lEQem+cf5dv/o4aq5L2JajXtlwP1J8m
- OyQo6ngaDR+Puam89KpHuNpd5xGwB1CJpBogGMRG5+I9i+Zs1vpqiNwb3dxNJiiIXHIK
- E8o4bu/e48ou1XUxJhVUqkEC12uY25z2HD2OUlNvZcshz6kOV5QVKMu+IJdslQ8tttCi
- HLi9CaSqrS6E5I14yTEqDw4H7Sz+EHLwpG0gc2LO/bTrfBUQV4NfgxlRJf5We3OE/ost
- mE6Uphxr2lVau1iPZp4RBztH7GsSjk++0Tx5btRf4q8Y0DoQJ649KWi7a/yDNoFBau7W
- T4mA==
-X-Gm-Message-State: AOJu0YyRSNwL8FUrnSdNm5hlTIKO1sEHuB3IXxIuTSKrA2T/fbKLFiaM
- OowREpLPFzJomS1QDdxQ5NOCooSl8TBC+YaPLNvWpDfolPXGqRm3F/U3WbU8TruLyDeR4FaEPud
- N4O9USzvfX9Csvld1HOsmrKZjZPkJXdyTmhfv89glbhX2BYPEDs1InvMLT+DsXy2eiE4cGrzBJ4
- 0eANb4Q3whnWXcjgh7bd7nuFmRV9QfgOA/xX6poA==
-X-Gm-Gg: ASbGncsl0Ee+23QcNVup/K4vt6XzTIKOrJ6Ozj2dJZxSqDaMm8TI0v5/S0HjetCvUl8
- HpVhAgeLn1Pz1ExUWJqYyvcHa086RoAJiKIdePuPcRbbOUaZ3BiPtLAc0WYbV66oS9rWeX10jzi
- UdIVNbPFjbFXL6vQYbdgLeZaUmkD0JYaxDzxBmViYLSHsHVz8hiC7fTHHd0tIV60PckE/HRPAYS
- sDN7G49K+Lbq9nsC0PiQt3pa32GG1M4SEm3LyctuVkk0tQAxTfiLOmxPM9nEiGJTOXAttAFRwb4
- +MGB7tsdsgQ2KvAM/Z7e11YxK9KBUuaAMfGofh9/9YyhhhHz6WysWcZRlE4SGMFXWAmmG8Sycx8
- dXXI=
-X-Received: by 2002:a05:620a:28c8:b0:89f:5057:9753 with SMTP id
- af79cd13be357-8b32af32b8bmr2893348185a.41.1764103613934; 
- Tue, 25 Nov 2025 12:46:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFdQneGvER2Ml4PYWZVQ3wZLr3sN5URh2j4kQc8rAomIogjApTCRZyOucvK3i7hN3xci3GSCA==
-X-Received: by 2002:a05:620a:28c8:b0:89f:5057:9753 with SMTP id
- af79cd13be357-8b32af32b8bmr2893343785a.41.1764103613317; 
- Tue, 25 Nov 2025 12:46:53 -0800 (PST)
+ bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
+ b=Dvk+W3hbQVNpWSc6+zZ+Zk61/t+Nu56ebe3aHOqDydT5FdcA0vr3MzW8e7rYGbUOIc
+ LGzE5kQLNUhULvvx1v5gd0EDVfg7CP+U8FiUjobAZzIvxE76htyw7whBVc0XXTZ9srTj
+ F7gBX0i7PuIEhk+nAzsMsfFV7U3WT1790LmmWGmut38Lp+CBEb+gEcCAyqLMig/6DSNt
+ 2oSsy4kdTmZ33OO2BU9J/Tlw/bNDo34+bYoBJqm0y7yt/OE+8IGdPTzUP6CVasyHTcCV
+ 8AlR68M+VqrZcejJ0uuaYFw2IiNtWtEfGigAXZkpBWcJngPewnvLE7kjteVkFIY0GDSc
+ vqcQ==
+X-Gm-Message-State: AOJu0Yx+6h20+O5Zj4ZfQG8Fq/rWqEPI9YweZfrYVb5a7YWcvywOubOU
+ 5TgjAxjIhlW1bEu4ry3+ms79SFL7aQA7Eo/R8Q1KJHlEphxV4UvbLnmKLnbTDllMScYUQx2OxYn
+ k0kGHj1o5l4d3VwiD6FOz1Omk28Z6L761jLBU4AhhxM6BsSmK9GoglmO7wRkkl2YfbTCj+//bjt
+ ZpXKDENXYZs+E6XFBPt00kc34HnNYYnvelUbDlhg==
+X-Gm-Gg: ASbGncvp6A7+9NjjjP1B/k2vZHcvD3f/M6QR+/HwKurTWwF+WDJYDVBYa+QS9kk0Mos
+ AzBLOwGbQxeVRn46g1zDvBc/pMPEdFdE7OZLrD+u0aJe7Lo6RvuzoRADes7+gzLkhEEZIGkeU9V
+ k2P/hMkxYG1SfGOYFpzRc5+v7sz9Q52bK591kbsMbUYbBnsMswrSPhuVqo0L0Ed70nraM3uWlnV
+ WlgkvVpdYoUMb+KTuafk1iQPrMOYLrGBhwspCQWqHBCgVCvkw4o55ZOxc4wdhhHsUloAXLDy17D
+ ViBoS0dy2mGNH/Y4k5ctmTgn+c23Dm6ApV0AAqvhzNniaKaodseiO5iE311coYPDSFir0aNuOLm
+ nxbI=
+X-Received: by 2002:a05:620a:1aaa:b0:8b2:de6a:e3 with SMTP id
+ af79cd13be357-8b4ebdbd2c4mr539071685a.81.1764103615022; 
+ Tue, 25 Nov 2025 12:46:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHpg/hgzFrdvezmUoURAguTbZcH6DcyUkmldXa3Iq/0mu2EbofoizhaPSbcwV+yH8YXo2Gy+A==
+X-Received: by 2002:a05:620a:1aaa:b0:8b2:de6a:e3 with SMTP id
+ af79cd13be357-8b4ebdbd2c4mr539067085a.81.1764103614396; 
+ Tue, 25 Nov 2025 12:46:54 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b3295c2276sm1250794085a.30.2025.11.25.12.46.51
+ af79cd13be357-8b3295c2276sm1250794085a.30.2025.11.25.12.46.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Nov 2025 12:46:52 -0800 (PST)
+ Tue, 25 Nov 2025 12:46:53 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
@@ -87,27 +87,24 @@ Cc: Markus Armbruster <armbru@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-11.0 2/6] Revert "error: define g_autoptr() cleanup
- function for the Error type"
-Date: Tue, 25 Nov 2025 15:46:44 -0500
-Message-ID: <20251125204648.857018-3-peterx@redhat.com>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH for-11.0 3/6] migration: Make migration_connect_set_error()
+ own the error
+Date: Tue, 25 Nov 2025 15:46:45 -0500
+Message-ID: <20251125204648.857018-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251125204648.857018-1-peterx@redhat.com>
 References: <20251125204648.857018-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -125,31 +122,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 18eb55546a54e443d94a4c49286348176ad4b00a.  Discussion
-can be seen at:
+Make migration_connect_set_error() take ownership of the error always.
+Paving way for making migrate_set_error() to take ownership.
 
-https://lore.kernel.org/r/aSWSLMi6ZhTCS_p2@redhat.com
-
-Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/qapi/error.h | 2 --
- 1 file changed, 2 deletions(-)
+ migration/channel.c   | 1 -
+ migration/migration.c | 7 ++++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/qapi/error.h b/include/qapi/error.h
-index b16c6303f8..f3ce4a4a2d 100644
---- a/include/qapi/error.h
-+++ b/include/qapi/error.h
-@@ -437,8 +437,6 @@ Error *error_copy(const Error *err);
-  */
- void error_free(Error *err);
+diff --git a/migration/channel.c b/migration/channel.c
+index 462cc183e1..92435fa7f7 100644
+--- a/migration/channel.c
++++ b/migration/channel.c
+@@ -95,7 +95,6 @@ void migration_channel_connect(MigrationState *s,
+         }
+     }
+     migration_connect(s, error);
+-    error_free(error);
+ }
  
--G_DEFINE_AUTOPTR_CLEANUP_FUNC(Error, error_free)
--
- /*
-  * Convenience function to assert that *@errp is set, then silently free it.
-  */
+ 
+diff --git a/migration/migration.c b/migration/migration.c
+index b316ee01ab..4fe69cc2ef 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1575,7 +1575,7 @@ static void migrate_error_free(MigrationState *s)
+     }
+ }
+ 
+-static void migration_connect_set_error(MigrationState *s, const Error *error)
++static void migration_connect_set_error(MigrationState *s, Error *error)
+ {
+     MigrationStatus current = s->state;
+     MigrationStatus next;
+@@ -1602,6 +1602,7 @@ static void migration_connect_set_error(MigrationState *s, const Error *error)
+ 
+     migrate_set_state(&s->state, current, next);
+     migrate_set_error(s, error);
++    error_free(error);
+ }
+ 
+ void migration_cancel(void)
+@@ -2292,7 +2293,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+ 
+ out:
+     if (local_err) {
+-        migration_connect_set_error(s, local_err);
++        migration_connect_set_error(s, error_copy(local_err));
+         error_propagate(errp, local_err);
+     }
+ }
+@@ -2337,7 +2338,7 @@ static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
+         if (!resume_requested) {
+             yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+         }
+-        migration_connect_set_error(s, local_err);
++        migration_connect_set_error(s, error_copy(local_err));
+         error_propagate(errp, local_err);
+         return;
+     }
 -- 
 2.50.1
 
