@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4EAC87286
+	by mail.lfdr.de (Postfix) with ESMTPS id 372DEC87282
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 21:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNzxC-0007kI-DT; Tue, 25 Nov 2025 15:48:02 -0500
+	id 1vNzxG-0007pF-7x; Tue, 25 Nov 2025 15:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwF-0007CI-LF
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwG-0007CL-5o
  for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:47:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwA-00030b-Bp
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:47:00 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vNzwC-000316-8V
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 15:47:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764103617;
+ s=mimecast20190719; t=1764103619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
- b=KwY3tySa00ORA17G+OjCjzf83OqQTPwJXpqGkwaOKw16/hN/C2cxaS8L9nX76nrW9bUg82
- D/VInVEgCSLrmaYwvmmYWxW08Tvky6+WfQSy0DdyDnpbvvJK5Fmb0f5synPsX92kZds+S6
- chO3X8bUr+mJ75eNQ6S+Po0THpEzbq0=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h1pESVjBvJTZ/CKgbTrEvkbhJJvwnKZXdmxAANhR78Q=;
+ b=EH5A+PPIA6JgEhxwKDg466MXrQR2smk6t83ZKXAGtmlIyyR9/j2NtUkHFaFg57Z2W1FoMv
+ /SUGqeY8TLbg0NooEZ8BZxXz2ENyugWNrtrBiaet9YfvIWHRi080LWmpegEKL3xIJIHtuS
+ ouI89KCQztBGcL7v1nN/leaYEWw+BPg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-BgVtlVlDMhCn6FADG_OfeQ-1; Tue, 25 Nov 2025 15:46:56 -0500
-X-MC-Unique: BgVtlVlDMhCn6FADG_OfeQ-1
-X-Mimecast-MFC-AGG-ID: BgVtlVlDMhCn6FADG_OfeQ_1764103615
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-8b17194d321so764969585a.0
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 12:46:56 -0800 (PST)
+ us-mta-183-hQ1D67DOOTuxjN-swfJctw-1; Tue, 25 Nov 2025 15:46:57 -0500
+X-MC-Unique: hQ1D67DOOTuxjN-swfJctw-1
+X-Mimecast-MFC-AGG-ID: hQ1D67DOOTuxjN-swfJctw_1764103617
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-8b286006ffaso1437774885a.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 12:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764103615; x=1764708415; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764103616; x=1764708416; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
- b=bMTXnQe1PJZ3vQp9umjAByOjZAHu5MXumqTuOeeBKv2B6pR3Ie05MGG8misiOi+wvE
- n+cg2H/AQHsRDgorjjvbxsmQV9xfpCNv/7HXaN8tx48rmXLBsoOc1ywtUBjhjTxHenIy
- PnqjAWmyGfzkBvCMrHL5g/cncUdvnW/UkZYH7mgrdypx5ilpG7Nd7zz0kVWMbBXYQZt7
- Iax1nGyaMzd4Pp1MZQjBUwD5rcw/5K3X/qG71cIA+x1DAfQUoTxwEOHiegO8Deu1/Gat
- dB8xeOWl/rDE5eGtTgboiH0PSn3tYqZ4jdnJDyWIzYwKNuvNYzwEXzonJ56ZzPBfdGqL
- dD8g==
+ bh=h1pESVjBvJTZ/CKgbTrEvkbhJJvwnKZXdmxAANhR78Q=;
+ b=p/CwXOKX2+GQaX8mCqIAL6oSYw2hdShJyz4sr9fW6RMY+qPKhw3ECizzpzMOG0Rgh+
+ hEsnc3BiHdlvWuIsdsyupwpe2uFXaR1py6bhh9Ob3hYPD6Sy2rQvlEMrLvxNjWtd2iM+
+ ef0nHbmWGQ1j6pGhwQpY8/wOHEiJ/Ni9GSp5iNfCuC8dhs/kYiSfkR87JMWoYhNyePgt
+ GYuARZlICOjOEOY1argMpo+ShJd35hmFBt3dcrlzI7J7X60n/fGjwJtbEXEsftGpao08
+ FG4B3DcnHZpFRaAOnz2DQuyjHQolKTCD6x7boOVZ9s6DrrKvNJlJdfd0wjhxvZ83nh0E
+ HKtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764103615; x=1764708415;
+ d=1e100.net; s=20230601; t=1764103616; x=1764708416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TNOplzLLskodi+3D4AbE6U1qQ02Gi/Ef8JIPS+itajU=;
- b=Dvk+W3hbQVNpWSc6+zZ+Zk61/t+Nu56ebe3aHOqDydT5FdcA0vr3MzW8e7rYGbUOIc
- LGzE5kQLNUhULvvx1v5gd0EDVfg7CP+U8FiUjobAZzIvxE76htyw7whBVc0XXTZ9srTj
- F7gBX0i7PuIEhk+nAzsMsfFV7U3WT1790LmmWGmut38Lp+CBEb+gEcCAyqLMig/6DSNt
- 2oSsy4kdTmZ33OO2BU9J/Tlw/bNDo34+bYoBJqm0y7yt/OE+8IGdPTzUP6CVasyHTcCV
- 8AlR68M+VqrZcejJ0uuaYFw2IiNtWtEfGigAXZkpBWcJngPewnvLE7kjteVkFIY0GDSc
- vqcQ==
-X-Gm-Message-State: AOJu0Yx+6h20+O5Zj4ZfQG8Fq/rWqEPI9YweZfrYVb5a7YWcvywOubOU
- 5TgjAxjIhlW1bEu4ry3+ms79SFL7aQA7Eo/R8Q1KJHlEphxV4UvbLnmKLnbTDllMScYUQx2OxYn
- k0kGHj1o5l4d3VwiD6FOz1Omk28Z6L761jLBU4AhhxM6BsSmK9GoglmO7wRkkl2YfbTCj+//bjt
- ZpXKDENXYZs+E6XFBPt00kc34HnNYYnvelUbDlhg==
-X-Gm-Gg: ASbGncvp6A7+9NjjjP1B/k2vZHcvD3f/M6QR+/HwKurTWwF+WDJYDVBYa+QS9kk0Mos
- AzBLOwGbQxeVRn46g1zDvBc/pMPEdFdE7OZLrD+u0aJe7Lo6RvuzoRADes7+gzLkhEEZIGkeU9V
- k2P/hMkxYG1SfGOYFpzRc5+v7sz9Q52bK591kbsMbUYbBnsMswrSPhuVqo0L0Ed70nraM3uWlnV
- WlgkvVpdYoUMb+KTuafk1iQPrMOYLrGBhwspCQWqHBCgVCvkw4o55ZOxc4wdhhHsUloAXLDy17D
- ViBoS0dy2mGNH/Y4k5ctmTgn+c23Dm6ApV0AAqvhzNniaKaodseiO5iE311coYPDSFir0aNuOLm
- nxbI=
-X-Received: by 2002:a05:620a:1aaa:b0:8b2:de6a:e3 with SMTP id
- af79cd13be357-8b4ebdbd2c4mr539071685a.81.1764103615022; 
+ bh=h1pESVjBvJTZ/CKgbTrEvkbhJJvwnKZXdmxAANhR78Q=;
+ b=kmyESE4q/4Q+Clu8jkgVLZ8pRL3FO7M39iWVqNWbz/23Lt+MmkXydKRpxgU/7PtMpQ
+ gg7zFIM4Qf2sYs+jAJ97Z9pct+TjiAnT0MVa3ufjHL/pl5RtMl8LT7oGbE3bGZhHvIbF
+ zlNVEx0bTPb7J9LwX/2hVp2D3bU8EtTfDs16ulgg5BdO8pqv4O9wsZunEejIXkV+sd2R
+ SjXp/rIsDs+aBTPK9yRt7iHngS9YFXCEItq0mavyUAp351nmfNunOqOuFhjKQseh7px2
+ UGKU6+nmNCGcjnA8OLHEhwRN4rSzKvlPdhaNsOTjynjGS7m1/Jo5cmqc0C6fq5BXqmqb
+ pCpA==
+X-Gm-Message-State: AOJu0Yy8NFVxdDsXXGjms6egmof4ETZzRD/OzyqCbTO5/sPuVkJnSkvM
+ O291EGWWpWGqSgKXs3q92SJO/m1UEIuZD05eRJ/sXF1Ser+Kx0IgOkLdVshNPTMlTPPRtkvR6O2
+ 3mNK+1koLAZpKWNTsQCvmoQ6AR+QiXSCPoT5l3mHgVdNcBw0U2hJ1Mpj5/lEYLjVHGyGSKg1/kr
+ dYu6rOCXo4exFemnEyq61s8Roq/RwvQSeq+SI/xg==
+X-Gm-Gg: ASbGncs0+QzUOaWITVopSLu2iT0f7kKQqtyhVeY3pLmS2BYgyd3X2aEE3eSheAcmFXr
+ QbUdFtrk27YNzeu22QsSKhNOqOhv864PkKAdAEIN8+fJ4tg6K4+yUlaJXHin+VfwpCfEDOGYNHg
+ 5UgsIsbuGBKrPrUIplFtYRUhqnPMXxBlrNCaX67FgVsh0DnPcxU4XECN7kjlQoC8khmHtkealc7
+ l2nTfNLxO1qe8/o9m4j8rxvbwIPVOJ5utOnGRa0Z5xKbs4gTR1Z8toQSUW/7MB/s0CjubaazyxG
+ fwdoYKva+r0t2pyFXFu938WM9ldf5cO5+ue5F19BWAHv5bCLTK8HssfYw8e7kpB8wwArj3mmRoK
+ uojk=
+X-Received: by 2002:a05:620a:1714:b0:89f:5541:b5f5 with SMTP id
+ af79cd13be357-8b33d1b2657mr2289593785a.17.1764103616234; 
+ Tue, 25 Nov 2025 12:46:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFmGYxeLhGq5kkXinQxC/A+b0ffjCDohLyrrNxCIwhrkXmk828epRwgT0l/5UCL0duyL3ZJCw==
+X-Received: by 2002:a05:620a:1714:b0:89f:5541:b5f5 with SMTP id
+ af79cd13be357-8b33d1b2657mr2289589485a.17.1764103615539; 
  Tue, 25 Nov 2025 12:46:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHpg/hgzFrdvezmUoURAguTbZcH6DcyUkmldXa3Iq/0mu2EbofoizhaPSbcwV+yH8YXo2Gy+A==
-X-Received: by 2002:a05:620a:1aaa:b0:8b2:de6a:e3 with SMTP id
- af79cd13be357-8b4ebdbd2c4mr539067085a.81.1764103614396; 
- Tue, 25 Nov 2025 12:46:54 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b3295c2276sm1250794085a.30.2025.11.25.12.46.53
+ af79cd13be357-8b3295c2276sm1250794085a.30.2025.11.25.12.46.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Nov 2025 12:46:53 -0800 (PST)
+ Tue, 25 Nov 2025 12:46:55 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
@@ -88,10 +88,10 @@ Cc: Markus Armbruster <armbru@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH for-11.0 3/6] migration: Make migration_connect_set_error()
- own the error
-Date: Tue, 25 Nov 2025 15:46:45 -0500
-Message-ID: <20251125204648.857018-4-peterx@redhat.com>
+Subject: [PATCH for-11.0 4/6] migration: Make multifd_send_set_error() own the
+ error
+Date: Tue, 25 Nov 2025 15:46:46 -0500
+Message-ID: <20251125204648.857018-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251125204648.857018-1-peterx@redhat.com>
 References: <20251125204648.857018-1-peterx@redhat.com>
@@ -122,66 +122,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make migration_connect_set_error() take ownership of the error always.
-Paving way for making migrate_set_error() to take ownership.
+Make multifd_send_set_error() take ownership of the error always.  Paving
+way for making migrate_set_error() to take ownership.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/channel.c   | 1 -
- migration/migration.c | 7 ++++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ migration/multifd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/migration/channel.c b/migration/channel.c
-index 462cc183e1..92435fa7f7 100644
---- a/migration/channel.c
-+++ b/migration/channel.c
-@@ -95,7 +95,6 @@ void migration_channel_connect(MigrationState *s,
-         }
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 3203dc98e1..930eee9949 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -429,6 +429,7 @@ static void multifd_send_set_error(Error *err)
+     if (err) {
+         MigrationState *s = migrate_get_current();
+         migrate_set_error(s, err);
++        error_free(err);
+         if (s->state == MIGRATION_STATUS_SETUP ||
+             s->state == MIGRATION_STATUS_PRE_SWITCHOVER ||
+             s->state == MIGRATION_STATUS_DEVICE ||
+@@ -779,7 +780,6 @@ out:
+         trace_multifd_send_error(p->id);
+         multifd_send_set_error(local_err);
+         multifd_send_kick_main(p);
+-        error_free(local_err);
      }
-     migration_connect(s, error);
--    error_free(error);
+ 
+     rcu_unregister_thread();
+@@ -908,7 +908,6 @@ out:
+      * cleanup code doesn't even know its existence.
+      */
+     object_unref(OBJECT(ioc));
+-    error_free(local_err);
  }
  
- 
-diff --git a/migration/migration.c b/migration/migration.c
-index b316ee01ab..4fe69cc2ef 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1575,7 +1575,7 @@ static void migrate_error_free(MigrationState *s)
-     }
- }
- 
--static void migration_connect_set_error(MigrationState *s, const Error *error)
-+static void migration_connect_set_error(MigrationState *s, Error *error)
- {
-     MigrationStatus current = s->state;
-     MigrationStatus next;
-@@ -1602,6 +1602,7 @@ static void migration_connect_set_error(MigrationState *s, const Error *error)
- 
-     migrate_set_state(&s->state, current, next);
-     migrate_set_error(s, error);
-+    error_free(error);
- }
- 
- void migration_cancel(void)
-@@ -2292,7 +2293,7 @@ void qmp_migrate(const char *uri, bool has_channels,
- 
- out:
-     if (local_err) {
--        migration_connect_set_error(s, local_err);
-+        migration_connect_set_error(s, error_copy(local_err));
-         error_propagate(errp, local_err);
-     }
- }
-@@ -2337,7 +2338,7 @@ static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
-         if (!resume_requested) {
-             yank_unregister_instance(MIGRATION_YANK_INSTANCE);
-         }
--        migration_connect_set_error(s, local_err);
-+        migration_connect_set_error(s, error_copy(local_err));
-         error_propagate(errp, local_err);
-         return;
-     }
+ static bool multifd_new_send_channel_create(gpointer opaque, Error **errp)
 -- 
 2.50.1
 
