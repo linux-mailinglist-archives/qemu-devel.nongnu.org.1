@@ -2,90 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6D2C840D2
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A653C840D1
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 09:49:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNoiG-00089Z-3o; Tue, 25 Nov 2025 03:47:52 -0500
+	id 1vNoiJ-0008Bi-5u; Tue, 25 Nov 2025 03:47:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vNoiD-00087w-Vz; Tue, 25 Nov 2025 03:47:50 -0500
-Received: from fout-b5-smtp.messagingengine.com ([202.12.124.148])
+ id 1vNoiG-0008A4-NK; Tue, 25 Nov 2025 03:47:52 -0500
+Received: from fhigh-b5-smtp.messagingengine.com ([202.12.124.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1vNoiC-0008CM-JA; Tue, 25 Nov 2025 03:47:49 -0500
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
- by mailfout.stl.internal (Postfix) with ESMTP id 817B61D00221;
- Tue, 25 Nov 2025 03:47:47 -0500 (EST)
+ id 1vNoiF-0008Ct-5j; Tue, 25 Nov 2025 03:47:52 -0500
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id E73E97A00FE;
+ Tue, 25 Nov 2025 03:47:49 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-05.internal (MEProxy); Tue, 25 Nov 2025 03:47:47 -0500
+ by phl-compute-06.internal (MEProxy); Tue, 25 Nov 2025 03:47:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1764060467; x=
- 1764146867; bh=QyUo03bV+OULvhaQCtypRWEx7FCP+TKJrB3LovbCkkk=; b=f
- 4MJIz41f2kYgW/pcfH4UNEBOM9IxqFwWPGzj9iiy5jZ07XUNlyuAvnNCucLMDEgC
- BPuITj51AuSiwgjZ/qusbXXgwQWoxvar+6l0FHd0iIdZ0B/dSqD0ASikgGQCjckx
- BErQvUuyK4uasJ7GiiXDs+fNRlNYMFJnuY32Tv+xd8UMRN95sABfcIMQhcmD7SB4
- R3PR3N08cEzWDgBBuwmaQreDFER4v8rS9ckEOX0+7KDF/PA9gaXzioit1T2RVyAU
- Qc1wOiYduo/wSTvpUM94w0zA1l94CY1KuO/OqsYNC6O1Bq8Kvl0yM7nL5+DjqkhU
- LphRqB8yAo2g7E7w0fFPQ==
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:in-reply-to:message-id
+ :mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+ t=1764060469; x=1764146869; bh=7IS0y0KL6f9wIcEoT4675tOP1YM8wZ2g
+ L3bKB8rQKTI=; b=SyoFkkAyEIMfn0/TaTFITKdFI7+Epjci+wlkOyLMzH8E47EI
+ bPEuC2PVm9jAjQ8A8jka8Wt8U59zKysgg9lhKgN8ArJXmdcCRnxd5qnIWKcBh7Rl
+ +W8cWrzpEe4XnxopNJQnJrYdrXs/RN+A874mEUKRpZv40fqtyfZaAdZUThmD9Prv
+ MJk/BFde9rSVqguNL8nTfvpiVkBuPveFhb4TaT3lFygbaoIWUyCYKt5iVsENLJ/G
+ i2Pyr65aY16aU1RoQLHJnd3HobeqeoZjcwy+eRv14llek3tRofDjHxDMDLMid+d9
+ M4pv3tyCUT21czbrjvj78Q8aSP2vERV/5qfjfQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1764060467; x=1764146867; bh=Q
- yUo03bV+OULvhaQCtypRWEx7FCP+TKJrB3LovbCkkk=; b=0iZe5uolOEQ174nMY
- URp66bvH9iaI5MCs4uyHzJokZjP9W5qh7rMOGodGsBWvqTjh60aO9pqvxqHvtMZT
- YzGXPtk/igpmp4HntgrMzbBVUE7wo+0Zn9r7VnU1wQfP1RJ3LdlSB/kJi/mVkhYf
- YfbE4HKuu9aMRocvlSDzmwHb8QZbr7D/WB0oTNsBHR3MFjW4QzruPPG0Rqs5tYPT
- yB91v1j+3Q1qhS+0nC7WrBbvGN6Us8+K5ZL8AFsW4HAWtoNSXXJnBTztFyqUsC5P
- JZK+vdA4ZsH3Zvyik55JSjxamPOKoqFCoLiMxFOXvypsE/xyA1aPtrW1fGS1BRtg
- 24sWg==
-X-ME-Sender: <xms:Mm0laUTi1gYmkpVK4hOX6DUU0KeMnHSXNMtrI6NOUg6zp-0Ay3XepQ>
- <xme:Mm0laZLlf5ULADijFLhIMpcRVQtUvjCtcLSauM2oz9xiWxc19-Om2w5g06NL73v7A
- F9Wdf7Cxv17Pgfl-PXkkCSkoxoMzoSX_Z79s3KiIlnY9exifiFVaA>
-X-ME-Received: <xmr:Mm0laXbvG81K0FQHTy7IC_HqHasehN4PsphJptRGfLAkyPGacQOpIt1Ij6LhCMrPlSRnLnzBJszTpba6WxS24tJa>
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1764060469; x=
+ 1764146869; bh=7IS0y0KL6f9wIcEoT4675tOP1YM8wZ2gL3bKB8rQKTI=; b=a
+ QfusAA6ca15pCgxi214wetINa/CF3UObMdO4j6mBjNPW40KG+/607SwCjAd/AErQ
+ SlK0Yd+uXzx4l8zvGZIucMI6hXqkA9XYxEgzvwzZ8eCFfLkMKaA7tpYY7optskZN
+ THcXg7uqzwuYLbLl6KeDaz4L3fH1pO3U8k0AJXFQ7kwi1U9uppyO184Js0RCHDGy
+ EZe0lgMLMMGW3xbhp+oj1dl4t9pRK8VdMvpUFoRUA/ka3/5Tpf0kc0SYgXpm/20S
+ quagh6CgwA/BKsK7qCyw5iok3eyRb8s5pQkdT/0xjmI9wzRKYIqEz/Xy2R3SKUhE
+ kKpPFBnL2h+wk3ArzZzbw==
+X-ME-Sender: <xms:NW0laUtz7eM655LUrM6nXKpMIylS5_4GulyRRaTt3G3Bkhfd9mrrjQ>
+ <xme:NW0laXfw1Y3aBEj2o3dQLsERG0fwgmPTIXQIR-alNWqyblgAP_e7Ocy6PK5c6GaMS
+ hAJPsOgkyQBdo6I8pTDiQg5kmxda45maz_sK4hbaGdNlqIb2bBtQ1M>
+X-ME-Received: <xmr:NW0laam1lg2BUSy5Ote9usF6hqloLebG_NerN5iItFS-6LWQzuj-MEkcXacWJg7QIwCyqgolO8zqo0acWdipOIlF>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgedutdefucetufdoteggodetrf
  dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
  rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
- gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghushcu
- lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudejudeg
- necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
- esihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhht
- phhouhhtpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprh
- gtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphht
- thhopehksghushgthheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvg
- hnsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhht
- rdgukhdprhgtphhtthhopehfohhsshesuggvfhhmrggtrhhordhithdprhgtphhtthhope
- hqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:Mm0laT_VFG56AnV_Mr7223BbICxffvO4FBz4dlGuiU-qaQYCmvs-iA>
- <xmx:Mm0laQbUOF1-RuedxDzH4OUgplK2acvSohv4qX5iOvUB9ryZFLCK9g>
- <xmx:Mm0lafN-7LDmFtyu6wcR0EfJALVj-aMonm2tQOO-dblm4v7qkjI0wQ>
- <xmx:Mm0laUC_EeOgATXyQPyGSJb5M0yoHgHoCA9II2HOnLlcOiZ2m_GogA>
- <xmx:M20labgtsfcbiLZNOxV1omjnBsaJe-ahTg95lMUvOxn_9XV6HuUACeVR>
+ gurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeefvedtueetueduffevgffgtdeftdeuleffhfeigeffkeegfeejfeffteejiefh
+ vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
+ hssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphhtthhopeduuddpmhhouggvpehs
+ mhhtphhouhhtpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrgh
+ dprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgt
+ phhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpdhrtghpthhtohepkhdrjhgvnh
+ hsvghnsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepkhgsuhhstghhsehkvghrnhgv
+ lhdrohhrghdprhgtphhtthhopehithhssehirhhrvghlvghvrghnthdrughkpdhrtghpth
+ htohepfhhoshhsseguvghfmhgrtghrohdrihhtpdhrtghpthhtohepfhgrrhhoshgrshes
+ shhushgvrdguvgdprhgtphhtthhopehlvhhivhhivghrsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:NW0laaA_n_h3K-o6ms_x7PN4t9T6x58mkp5XythWoWQ4VARB2mgCfg>
+ <xmx:NW0laUOZ8t_xmPXpwQMoROym_MVk7mStsv4qz6odBAqZv8Yg7Ecf-w>
+ <xmx:NW0laZP5ORYP6DPDjwzGSJ51t6-_nA5WS-jVM6Su-0ioOES-ZAcfzQ>
+ <xmx:NW0laUmZuxFS4EpNj9bRU7qTjg-3FPtNaApkmTKY_E0uLlHNKvXfZQ>
+ <xmx:NW0laW4syO6f6rKOxLtWjfZcmH-zYgSASzFoVZVenzg92oEza8ggGyPZ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Nov 2025 03:47:45 -0500 (EST)
+ 25 Nov 2025 03:47:47 -0500 (EST)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org
-Subject: [PULL 2/3] hw/nvme: fix up extended protection information format
-Date: Tue, 25 Nov 2025 09:47:24 +0100
-Message-ID: <20251125084725.4632-3-its@irrelevant.dk>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Klaus Jensen <k.jensen@samsung.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org
+Subject: [PULL 3/3] hw/nvme: Validate PMR memory size
+Date: Tue, 25 Nov 2025 09:47:25 +0100
+Message-ID: <20251125084725.4632-4-its@irrelevant.dk>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125084725.4632-1-its@irrelevant.dk>
 References: <20251125084725.4632-1-its@irrelevant.dk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=202.12.124.148; envelope-from=its@irrelevant.dk;
- helo=fout-b5-smtp.messagingengine.com
+Received-SPF: pass client-ip=202.12.124.156; envelope-from=its@irrelevant.dk;
+ helo=fhigh-b5-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -109,77 +114,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Busch <kbusch@kernel.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Set the protection information format (pif) only in the formats that can
-support the larger guard types, and update the current in-use format
-information when the user changes it.
+Per the PCI spec 3.0, in section 6.2.5.1, "Address Maps":
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[k.jensen: fix missing braces and wrong indentation]
+  A 32-bit register can be implemented to support a single
+  memory size that is a power of 2 from 16 bytes to 2 GB.
+
+Add a check in nvme_init_pmr(), returning an error if the
+PMR region size is too small; and update the QTest.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ns.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ hw/nvme/ctrl.c          | 13 +++++++++++--
+ tests/qtest/nvme-test.c |  2 +-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
-index 253e7b406b4e..58800b3414a3 100644
---- a/hw/nvme/ns.c
-+++ b/hw/nvme/ns.c
-@@ -32,11 +32,13 @@ void nvme_ns_init_format(NvmeNamespace *ns)
-     NvmeIdNs *id_ns = &ns->id_ns;
-     NvmeIdNsNvm *id_ns_nvm = &ns->id_ns_nvm;
-     BlockDriverInfo bdi;
--    int npdg, ret;
-+    int npdg, ret, index;
-     int64_t nlbas;
- 
-+    index = NVME_ID_NS_FLBAS_INDEX(id_ns->flbas);
-     ns->lbaf = id_ns->lbaf[NVME_ID_NS_FLBAS_INDEX(id_ns->flbas)];
-     ns->lbasz = 1 << ns->lbaf.ds;
-+    ns->pif = NVME_ID_NS_NVM_ELBAF_PIF(ns->id_ns_nvm.elbaf[index]);
- 
-     nlbas = ns->size / (ns->lbasz + ns->lbaf.ms);
- 
-@@ -112,8 +114,6 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-         id_ns->dps |= NVME_ID_NS_DPS_FIRST_EIGHT;
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 901d4d863355..cc4593cd427a 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8814,10 +8814,15 @@ static void nvme_init_cmb(NvmeCtrl *n, PCIDevice *pci_dev)
      }
+ }
  
--    ns->pif = ns->params.pif;
--
-     static const NvmeLBAF defaults[16] = {
-         [0] = { .ds =  9           },
-         [1] = { .ds =  9, .ms =  8 },
-@@ -129,6 +129,12 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
+-static void nvme_init_pmr(NvmeCtrl *n, PCIDevice *pci_dev)
++static bool nvme_init_pmr(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+ {
+     uint32_t pmrcap = ldl_le_p(&n->bar.pmrcap);
  
-     memcpy(&id_ns->lbaf, &defaults, sizeof(defaults));
- 
-+    for (i = 0; i < ns->nlbaf; i++) {
-+        if (id_ns->lbaf[i].ms >= 16) {
-+            id_ns_nvm->elbaf[i] = (ns->params.pif & 0x3) << 7;
-+        }
++    if (memory_region_size(&n->pmr.dev->mr) < 16) {
++        error_setg(errp, "PMR device must have at least 16 bytes");
++        return false;
 +    }
 +
-     for (i = 0; i < ns->nlbaf; i++) {
-         NvmeLBAF *lbaf = &id_ns->lbaf[i];
-         if (lbaf->ds == ds) {
-@@ -142,13 +148,14 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-     /* add non-standard lba format */
-     id_ns->lbaf[ns->nlbaf].ds = ds;
-     id_ns->lbaf[ns->nlbaf].ms = ms;
-+    if (ms >= 16) {
-+        id_ns_nvm->elbaf[ns->nlbaf] = (ns->params.pif & 0x3) << 7;
-+    }
-     ns->nlbaf++;
+     NVME_PMRCAP_SET_RDS(pmrcap, 1);
+     NVME_PMRCAP_SET_WDS(pmrcap, 1);
+     NVME_PMRCAP_SET_BIR(pmrcap, NVME_PMR_BIR);
+@@ -8832,6 +8837,8 @@ static void nvme_init_pmr(NvmeCtrl *n, PCIDevice *pci_dev)
+                      PCI_BASE_ADDRESS_MEM_PREFETCH, &n->pmr.dev->mr);
  
-     id_ns->flbas |= i;
+     memory_region_set_enabled(&n->pmr.dev->mr, false);
++
++    return true;
+ }
  
--
- lbaf_found:
--    id_ns_nvm->elbaf[i] = (ns->pif & 0x3) << 7;
-     id_ns->nlbaf = ns->nlbaf - 1;
-     nvme_ns_init_format(ns);
+ static uint64_t nvme_mbar_size(unsigned total_queues, unsigned total_irqs,
+@@ -9050,7 +9057,9 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+     }
  
+     if (n->pmr.dev) {
+-        nvme_init_pmr(n, pci_dev);
++        if (!nvme_init_pmr(n, pci_dev, errp)) {
++            return false;
++        }
+     }
+ 
+     return true;
+diff --git a/tests/qtest/nvme-test.c b/tests/qtest/nvme-test.c
+index 5ad6821f7af9..4aec1651e6e2 100644
+--- a/tests/qtest/nvme-test.c
++++ b/tests/qtest/nvme-test.c
+@@ -149,7 +149,7 @@ static void nvme_register_nodes(void)
+         .before_cmd_line = "-drive id=drv0,if=none,file=null-co://,"
+                            "file.read-zeroes=on,format=raw "
+                            "-object memory-backend-ram,id=pmr0,"
+-                           "share=on,size=8",
++                           "share=on,size=16",
+     };
+ 
+     add_qpci_address(&opts, &(QPCIAddress) { .devfn = QPCI_DEVFN(4, 0) });
 -- 
 2.51.0
 
