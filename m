@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C4BC85EB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 17:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2707C85EC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 17:19:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNvjC-0006ui-PV; Tue, 25 Nov 2025 11:17:18 -0500
+	id 1vNvkc-0007UZ-NT; Tue, 25 Nov 2025 11:18:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vNvj5-0006iz-6L
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 11:17:13 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vNvj8-0006qE-Lj
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 11:17:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vNvj2-00056h-Lm
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 11:17:10 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vNvj6-00057Z-DD
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 11:17:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764087428;
+ s=mimecast20190719; t=1764087431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=08v7AzWh8ahJ/6I5lOs9Lhby5WymPW1UOUKrJIxyHcE=;
- b=SlTx+GNxrgNIomDlRW7ZFbtyi5xXVb1aMpmyHufUGiJbcELDuPUNuJh3qCmsZlx9CUf58P
- 2likeN3As/7S3igFsa+xpZBMavrrVvkc7mBWjr4bhTWS10cLhSGhF9O6/QxuWbZNXNM+R2
- l1KJnWYoqvelh8uq4GrtI25DNz0S0L0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=5mTXbugE+NHdNMCReF9WvlvDH492zviirZpTg38MZws=;
+ b=Hjk0q0rDymogWXZlFSqPM6huLl94eWZxiRcubC8zN2HRhD2w86czHllt3uyz1dC8o/8vtw
+ ZbdOyq5gHEt8gBcjZZvcjNMiiRCjGCM6juAwk8qrO3xHXZvepEF+KOQwbgnEm+boLy+WB5
+ pv1zeZ8OJ7j2wJCI5qQCvvEWyh1+djQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-scK4zRyvPnC38L3M5eDcXw-1; Tue,
- 25 Nov 2025 11:17:06 -0500
-X-MC-Unique: scK4zRyvPnC38L3M5eDcXw-1
-X-Mimecast-MFC-AGG-ID: scK4zRyvPnC38L3M5eDcXw_1764087425
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-KvQKVri-NuKMlvZCPn1uYQ-1; Tue,
+ 25 Nov 2025 11:17:07 -0500
+X-MC-Unique: KvQKVri-NuKMlvZCPn1uYQ-1
+X-Mimecast-MFC-AGG-ID: KvQKVri-NuKMlvZCPn1uYQ_1764087427
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28FF5180045C; Tue, 25 Nov 2025 16:17:05 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED3371956048; Tue, 25 Nov 2025 16:17:06 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.226.49])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C352F18004A3; Tue, 25 Nov 2025 16:17:03 +0000 (UTC)
+ id 939B618004A3; Tue, 25 Nov 2025 16:17:05 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 3/4] block: use pwrite_zeroes_alignment when writing first
- sector
-Date: Tue, 25 Nov 2025 17:16:47 +0100
-Message-ID: <20251125161648.259321-4-kwolf@redhat.com>
+Subject: [PULL 4/4] iotests: add Linux loop device image creation test
+Date: Tue, 25 Nov 2025 17:16:48 +0100
+Message-ID: <20251125161648.259321-5-kwolf@redhat.com>
 In-Reply-To: <20251125161648.259321-1-kwolf@redhat.com>
 References: <20251125161648.259321-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -84,90 +83,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Since commit 5634622bcb33 ("file-posix: allow BLKZEROOUT with -t
-writeback"), qemu-img create errors out on a Linux loop block device
-with a 4 KB sector size:
+This qemu-iotests test case is based on the reproducer that Jean-Louis
+Dupond <jean-louis@dupond.be> shared in
+https://gitlab.com/qemu-project/qemu/-/issues/3127.
 
-  # dd if=/dev/zero of=blockfile bs=1M count=1024
-  # losetup --sector-size 4096 /dev/loop0 blockfile
-  # qemu-img create -f raw /dev/loop0 1G
-  Formatting '/dev/loop0', fmt=raw size=1073741824
-  qemu-img: /dev/loop0: Failed to clear the new image's first sector: Invalid argument
-
-Use the pwrite_zeroes_alignment block limit to avoid misaligned
-fallocate(2) or ioctl(BLKZEROOUT) in the block/file-posix.c block
-driver.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 5634622bcb33 ("file-posix: allow BLKZEROOUT with -t writeback")
-Reported-by: Jean-Louis Dupond <jean-louis@dupond.be>
-Buglink: https://gitlab.com/qemu-project/qemu/-/issues/3127
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20251007141700.71891-3-stefanha@redhat.com>
+Message-ID: <20251007141700.71891-4-stefanha@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Tested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/system/block-backend-io.h |  1 +
- block.c                           |  3 ++-
- block/block-backend.c             | 11 +++++++++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ tests/qemu-iotests/tests/loop-create-file     | 59 +++++++++++++++++++
+ tests/qemu-iotests/tests/loop-create-file.out |  8 +++
+ 2 files changed, 67 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/loop-create-file
+ create mode 100644 tests/qemu-iotests/tests/loop-create-file.out
 
-diff --git a/include/system/block-backend-io.h b/include/system/block-backend-io.h
-index ba8dfcc7d0..6d5ac476fc 100644
---- a/include/system/block-backend-io.h
-+++ b/include/system/block-backend-io.h
-@@ -116,6 +116,7 @@ BlockAIOCB *blk_abort_aio_request(BlockBackend *blk,
-                                   void *opaque, int ret);
- 
- uint32_t blk_get_request_alignment(BlockBackend *blk);
-+uint32_t blk_get_pwrite_zeroes_alignment(BlockBackend *blk);
- uint32_t blk_get_max_transfer(BlockBackend *blk);
- uint64_t blk_get_max_hw_transfer(BlockBackend *blk);
- 
-diff --git a/block.c b/block.c
-index 4f1581cedf..48a17f393c 100644
---- a/block.c
-+++ b/block.c
-@@ -606,12 +606,13 @@ create_file_fallback_zero_first_sector(BlockBackend *blk,
-                                        int64_t current_size,
-                                        Error **errp)
- {
-+    uint32_t alignment = blk_get_pwrite_zeroes_alignment(blk);
-     int64_t bytes_to_clear;
-     int ret;
- 
-     GLOBAL_STATE_CODE();
- 
--    bytes_to_clear = MIN(current_size, BDRV_SECTOR_SIZE);
-+    bytes_to_clear = MIN(current_size, MAX(BDRV_SECTOR_SIZE, alignment));
-     if (bytes_to_clear) {
-         ret = blk_co_pwrite_zeroes(blk, 0, bytes_to_clear, BDRV_REQ_MAY_UNMAP);
-         if (ret < 0) {
-diff --git a/block/block-backend.c b/block/block-backend.c
-index d6df369188..98315d4470 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -2305,6 +2305,17 @@ uint32_t blk_get_request_alignment(BlockBackend *blk)
-     return bs ? bs->bl.request_alignment : BDRV_SECTOR_SIZE;
- }
- 
-+/* Returns the optimal write zeroes alignment, in bytes; guaranteed nonzero */
-+uint32_t blk_get_pwrite_zeroes_alignment(BlockBackend *blk)
-+{
-+    BlockDriverState *bs = blk_bs(blk);
-+    IO_CODE();
-+    if (!bs) {
-+        return BDRV_SECTOR_SIZE;
-+    }
-+    return bs->bl.pwrite_zeroes_alignment ?: bs->bl.request_alignment;
+diff --git a/tests/qemu-iotests/tests/loop-create-file b/tests/qemu-iotests/tests/loop-create-file
+new file mode 100755
+index 0000000000..5ec75b046b
+--- /dev/null
++++ b/tests/qemu-iotests/tests/loop-create-file
+@@ -0,0 +1,59 @@
++#!/usr/bin/env bash
++# group: quick
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Copyright Red Hat, Inc.
++#
++# Test Linux loop device image creation
++#
++# This test verifies #3127 "qemu-img create fails on loop device with sector size 4096"
++# https://gitlab.com/qemu-project/qemu/-/issues/3127
++
++seq="$(basename $0)"
++echo "QA output created by $seq"
++
++status=1	# failure is the default!
++
++_cleanup() {
++    if [ -n "$loopdev" ]; then
++        sudo losetup --detach "$loopdev"
++    fi
++
++    _cleanup_test_img
 +}
 +
- /* Returns the maximum hardware transfer length, in bytes; guaranteed nonzero */
- uint64_t blk_get_max_hw_transfer(BlockBackend *blk)
- {
++trap "_cleanup; exit \$status" 0 1 2 3 15
++
++# get standard environment, filters and checks
++cd ..
++. ./common.rc
++. ./common.filter
++
++_supported_fmt raw
++_supported_proto file
++_supported_os Linux
++
++if ! sudo -n losetup &>/dev/null; then
++    _notrun "sudo losetup not available"
++fi
++
++echo
++echo "=== Create image on a 4 KB sector size loop device ==="
++echo
++
++_make_test_img -f $IMGFMT 1M
++
++loopdev=$(sudo losetup --sector-size 4096 --find --show "$TEST_IMG")
++if [ -z "$loopdev" ]; then
++    _fail
++fi
++
++sudo $QEMU_IMG_PROG create -f raw "$loopdev" 1M | \
++    sed -e "s#/dev/loop[0-9]\\+#LOOPDEV#g"
++
++# success, all done
++echo
++echo '*** done'
++rm -f $seq.full
++status=0
+diff --git a/tests/qemu-iotests/tests/loop-create-file.out b/tests/qemu-iotests/tests/loop-create-file.out
+new file mode 100644
+index 0000000000..32d4155695
+--- /dev/null
++++ b/tests/qemu-iotests/tests/loop-create-file.out
+@@ -0,0 +1,8 @@
++QA output created by loop-create-file
++
++=== Create image on a 4 KB sector size loop device ===
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=1048576
++Formatting 'LOOPDEV', fmt=raw size=1048576
++
++*** done
 -- 
 2.51.1
 
