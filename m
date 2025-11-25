@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0ABC856FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A157BC85704
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:33:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNu5G-0006oS-Dd; Tue, 25 Nov 2025 09:31:58 -0500
+	id 1vNu5I-0006qe-5s; Tue, 25 Nov 2025 09:32:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vNu57-0006ix-8e
+ id 1vNu57-0006iy-O0
  for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:31:51 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vNu55-0004fB-JA
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:31:48 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-42b39d51dcfso3364909f8f.2
+ id 1vNu56-0004fK-4N
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:31:49 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-42b3c5defb2so3687832f8f.2
  for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 06:31:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764081106; x=1764685906; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764081107; x=1764685907; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lzGaz+mT8MwL6xqiiVWVptUVAp4I0FWW6NwifF8v9es=;
- b=XNA46vbfxlmpG6rOC0nMvoW92oEqqHwLQoPpL37tSqI7IdrwFybAUIagFQ+LPIuZjq
- IJrY2lm9YN27EoaX7omue64ujQoPUv9N8gANDEpMJf3CKJcCXlEdZbgiiOWqaOp8VA3I
- T3X6bmUBeKKmo1dPvuluACKvElpY+qvkhE0+k6MCJtIpZvV7z0dHqQuOE7JiMfHx0Z44
- f3NoI8MWDxaNx/iYdWsH9TMtNTrsSiaH3jFtN3RH/T56aSSk3ydhzHhE/idKJ9hLX3IZ
- hfZ8wb2BePh+VtLTeHRadw+3zoSW3/7/OyDQI2dPtDMxXoNFfjTzdUAUjPQ1ASNZyk7g
- 9WXg==
+ bh=OzOPFznIgpbTG4xZi/XjCVhfc7BxnDRa1QWSADv6GTo=;
+ b=Oeo0zjleF/qyiSmryIdbWnTIpDB47W4uMI/ZQF3yTkdfAeTpEYSMlcl5dBJMr7gV3D
+ /iixofViboWNZJ/8jkFd6n1Nic5DzQv56mH7Vg4ix5lBjb/CpjG6qcMI95Ygb2i41vPz
+ SSrwQQY/E5+dtBscuHDHn2YbXtBktXAMmw2z7olDGbm+Iw/wuLV9Z5GDYo9egbwS8kGt
+ RO/UoIaWwAcB3SIVHuuNW/gt7288ZODElRUKsbjb6zlLxWdrxOQW0uXW6SDdE1Guy+Zt
+ PM4BNlcvk+2SniDXA2SdVzi8joF5w3g47LMaz0ZiwLUoJaBNkzLsAyjEVFQBAfBxN7WN
+ LjBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764081106; x=1764685906;
+ d=1e100.net; s=20230601; t=1764081107; x=1764685907;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=lzGaz+mT8MwL6xqiiVWVptUVAp4I0FWW6NwifF8v9es=;
- b=l8AkXfFQk4MzRvVMVsRYGhfX5QzhmTaD1SbWS0+NyG3pPUqUNJpJiM2bQyaTZ1iZKw
- DTCriipOtH9XlShLWauTbzcHtOn57zU7OmcMaD8H1y1YSxwKPoNSFOT/nv98+4DAaamP
- SqTK6Pel20qbgt4KK1GcQcjDW/kR/IcdctA8KlsPHXMNVcCuSWcI74cVachxa9fvPPdZ
- o1XNvfAfduyAtL0nCYEmWVNFtk7rDMt/gc8WNP3zkjtnDoq5xt3k7e/P06zkTfPh6rNC
- x+iN2ZYtRfFfz2TI2WvuNxlVqqgnNSDFLnXOz92OTMhlIGV1+FUwY5kdoh2MMRMD9DlT
- hknA==
-X-Gm-Message-State: AOJu0YwhHhpQBcugMkkIaxYtnkoAhU+3CCw5xTx3DdfBqd5+EbFRntqy
- yTCWuRPmtvhtVhBvCNYxOgaKX6pXqgs6YnzRjHEVtr10VCatsofjMKE3MYM7EU9hMCwHTLlALhf
- GfIWn
-X-Gm-Gg: ASbGncsLxFbkJXet3bjJdamC+LxHIKhxHpID22fYuEtLoRxZHDPY2za54+Y+gEoY6VH
- QiVaAb5vNOuMtL58cz8LNKz1u2omW0LmYSLbAaTa0USgVv+X4Y5M2H8MMhhFRMNGH9ai/S9qMZy
- wycPDGaubzqFBVJtajKCEeT2RYWIedk/OgbJi6ZBuhE74sD2mvvx361Tm+Xa+tIL1OYJGGWPqp8
- 4i4bYzsRgae7eyf4S8eQtQ1mKuJXNUzWM5gi26XBGsWcnp8D2oCcFUAyBrtx86tiB1GRRs7nRI4
- BQpgo2eifNlBHnKkiYzqvR+1wCVWllkb/Z3F7j20aa0uYjZ7t40r/xfhDNMhn+tQYyxPfDpTD19
- OH9Kuf9cXCraFE8RQyLv+d0nm8LDiv2rJO9cNKDE5EioF6NXKzZN0rYRe0uUEFGjfuXU7luvNyv
- HiNg==
-X-Google-Smtp-Source: AGHT+IFJQ4l3D+PWQ1ipxYohx7BNVhYy888VbttWHpMd9NtNsie+COgIy00+sfvMChywHIxElQoQYw==
-X-Received: by 2002:a05:6000:2506:b0:42b:3e60:189d with SMTP id
- ffacd0b85a97d-42cc1cbe230mr17075912f8f.24.1764081105768; 
- Tue, 25 Nov 2025 06:31:45 -0800 (PST)
+ bh=OzOPFznIgpbTG4xZi/XjCVhfc7BxnDRa1QWSADv6GTo=;
+ b=QShT4zmuyhmqbBZSmEa4SQ1XuC/I0xx0rfBUdSd+cR6sVZa6R+1JgV4tHQAjQZrcax
+ 9H6PgPvBuoiKdHqLrN48cq/X0zNOtp2puk6SdSPdyF7PYYNKgf35/SJvV1bh8Rfo65AS
+ aveCGyPj9hTFRnXyiJrCLAS61SqtK4TApKXc214S4Ip+p6ODoCfOL8K+FjXKALWc8REl
+ RqJndSziEC+LAn6SbUcYqkOpMHgu7cxOSxcFDL4QnfxM6xDPN2DSy6VIe5tq0smJC+pS
+ hOl4a9x2BpUeTIG7LAsIN2BmPqEyG+wDZjAKYWK0Z93Dma8adn1OwR82GpUG+faleMDX
+ 0UhA==
+X-Gm-Message-State: AOJu0Ywhmm0wPUPJnyW0XMfStCOfz5GYcx/lj8BwZLG3CvjzRdQM/lTb
+ DrBYzdki9kaoIf/umekj+AxVZUg5MowOqWlwTMtDLbNq7bbX4n/UvdsmjVncEBqXSPnvdXJlKQ/
+ sAjCU
+X-Gm-Gg: ASbGncsHqT1PAlcGNcPhKAVoFjMGmgbMEC3k+QXrHQi1cOq41onkLwi0EqUo2oLrC5k
+ n4uftI8XbcB2Yx6Dys79DUG2g9r9OdHcSvF9iZw3sI4x1x+O8dZsvK7yJ0cOmHTPli1iKXAEXAC
+ NgId7DTvCeMOICqE9pdJXJDc9rhoNTjgf0pdI0SaPQ/kmwMxqKI7LLUf6k5US2iEUR88u3/AqBQ
+ b9QAnd9bl3r0c+ENgIpTr0bXw1gQnkUm4nzF+JtCeHrqC8lUvDEQbP3GNDymhDdtyLxLvy+dcRz
+ 9yB+y3IG/H7RY0pIjJ969AlOqBX28sEZRa7WsdiKY1og3MrYIfwC/c6ARzrEOv60q3gBX67xc9K
+ jIal3NgXPC2wKYpJ0mtw2IhR3ceQCVqgaeol7nyLISexWrkvX4H04ZNj3tQt56ka47R32U6eMRx
+ lHNFqtBXmwvC3Z
+X-Google-Smtp-Source: AGHT+IFOP/L/oyvSCRSDQejLlx4K6ylIaC8MzzUeFYRFKJEyIH/6YQN96ChdVoVAI0mo2lGdXu0MpQ==
+X-Received: by 2002:a05:6000:228a:b0:42b:3e60:18ba with SMTP id
+ ffacd0b85a97d-42cc1ac9ca3mr16735919f8f.8.1764081106642; 
+ Tue, 25 Nov 2025 06:31:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fb919bsm34485434f8f.34.2025.11.25.06.31.44
+ ffacd0b85a97d-42cb7fb919bsm34485434f8f.34.2025.11.25.06.31.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Nov 2025 06:31:45 -0800 (PST)
+ Tue, 25 Nov 2025 06:31:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair@alistair23.me>
-Subject: [PATCH 2/3] docs/system/generic-loader: Don't mention QemuOpts
- implementation detail
-Date: Tue, 25 Nov 2025 14:31:40 +0000
-Message-ID: <20251125143141.216056-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/3] docs/system/generic-loader: move TODO to source code
+Date: Tue, 25 Nov 2025 14:31:41 +0000
+Message-ID: <20251125143141.216056-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251125143141.216056-1-peter.maydell@linaro.org>
 References: <20251125143141.216056-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,90 +99,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently say "All values are parsed using the standard QemuOpts
-parsing".  This doesn't tell the user anything useful because we
-don't mention QemuOpts anywhere else in the docs.  What we're really
-trying to tell the user is what we mention afterwards: that the
-values are decimal, and you need an 0x prefix for hex.  How we
-achieve it is an implementation detail the user doesn't need to know.
-
-Drop the explicit mention of QemuOpts; this in passing removes a typo
-"QemuOps" that we made in one place. Put the informative note
-more closely associated with the <addr> suboption which is the
-one that users might most reasonably assume to default to hex.
+Currently we have a "Restrictions and ToDos" section at the bottom of
+the document which notes that there's no way to specify a CPU to load
+a file through that doesn't also set that CPU's PC.  This is written
+as a developer-facing note.  Move this to a TODO comment in the
+source code, and provide a shorter user-facing statement of the
+current restriction under the specific sub-option that it applies to.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/generic-loader.rst | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ docs/system/generic-loader.rst | 14 +++-----------
+ hw/core/generic-loader.c       | 18 ++++++++++++++++++
+ 2 files changed, 21 insertions(+), 11 deletions(-)
 
 diff --git a/docs/system/generic-loader.rst b/docs/system/generic-loader.rst
-index 3ac39cfbbe2..d5416711e93 100644
+index d5416711e93..0df9b66976a 100644
 --- a/docs/system/generic-loader.rst
 +++ b/docs/system/generic-loader.rst
-@@ -21,6 +21,10 @@ can be done by following the syntax below::
- ``<addr>``
-   The address to store the data in.
+@@ -99,6 +99,9 @@ shown below:
+   If this option is not specified, then the data will be loaded via
+   the address space of the first CPU, and no CPU will have its PC set.
  
-+  Note that as usual with QEMU numeric option values, the default is to
-+  treat the argument as decimal.  To specify a value in hex, prefix it
-+  with '0x'.
++  Note that there is currently no way to specify the address space to
++  load the data without also causing that CPU's PC to be set.
 +
- ``<data>``
-   The value to be written to the address. The maximum size of the data
-   is 8 bytes.
-@@ -37,10 +41,6 @@ can be done by following the syntax below::
-   The number of the CPU's address space where the data should be
-   loaded. If not specified the address space of the first CPU is used.
+   Since it sets the starting PC, this option should only be used for the boot
+   image.
  
--All values are parsed using the standard QemuOps parsing. This allows the user
--to specify any values in any format supported. By default the values
--will be parsed as decimal. To use hex values the user should prefix the number
--with a '0x'.
- 
- An example of loading value 0x8000000e to address 0xfd1a0104 is::
- 
-@@ -57,14 +57,13 @@ can be done by following the syntax below::
- ``<addr>``
-   The value to use as the CPU's PC.
- 
-+  Note that as usual with QEMU numeric option values, the default is to
-+  treat the argument as decimal.  To specify a value in hex, prefix it
-+  with '0x'.
-+
- ``<cpu-num>``
-   The number of the CPU whose PC should be set to the specified value.
- 
--All values are parsed using the standard QemuOpts parsing. This allows the user
--to specify any values in any format supported. By default the values
--will be parsed as decimal. To use hex values the user should prefix the number
--with a '0x'.
--
- An example of setting CPU 0's PC to 0x8000 is::
- 
-     -device loader,addr=0x8000,cpu-num=0
-@@ -85,6 +84,10 @@ shown below:
-   The memory address where the file should be loaded. This is required
-   for raw images and ignored for non-raw files.
- 
-+  Note that as usual with QEMU numeric option values, the default is to
-+  treat the argument as decimal.  To specify a value in hex, prefix it
-+  with '0x'.
-+
- ``<cpu-num>``
-   This specifies the CPU that should be used. This is an
-   optional argument with two effects:
-@@ -104,10 +107,6 @@ shown below:
-   This can be used to load supported executable formats as if they
-   were raw.
- 
--All values are parsed using the standard QemuOpts parsing. This allows the user
--to specify any values in any format supported. By default the values
--will be parsed as decimal. To use hex values the user should prefix the number
--with a '0x'.
- 
+@@ -111,14 +114,3 @@ shown below:
  An example of loading an ELF file which CPU0 will boot is shown below::
  
+     -device loader,file=./images/boot.elf,cpu-num=0
+-
+-Restrictions and ToDos
+-^^^^^^^^^^^^^^^^^^^^^^
+-
+-At the moment it is just assumed that if you specify a cpu-num then
+-you want to set the PC as well. This might not always be the case. In
+-future the internal state 'set_pc' (which exists in the generic loader
+-now) should be exposed to the user so that they can choose if the PC
+-is set or not.
+-
+-
+diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
+index 433efb73872..508c090872a 100644
+--- a/hw/core/generic-loader.c
++++ b/hw/core/generic-loader.c
+@@ -30,6 +30,24 @@
+  * separate backend.
+  */
+ 
++/*
++ * TODO: currently the "load a file" functionality provides no way
++ * for the user to specify which CPU address space to load the data
++ * into without also causing that CPU's PC to be set to the start
++ * address of the file.
++ *
++ * We could fix this by having a new suboption set-pc (default: true)
++ * so the user can say
++ *  -device loader,file=<file>,cpu-num=<cpu-num>
++ * for the current "use this address space and set the PC" behaviour
++ * or
++ *  -device loader,file=<file>,cpu-num=<cpu-num>,set-pc=off
++ * to just pick the address space and not set the PC.
++ *
++ * Using set-pc without file= should be handled as an error; otherwise
++ * it can feed through to what we set s->set_pc to.
++ */
++
+ #include "qemu/osdep.h"
+ #include "system/dma.h"
+ #include "system/reset.h"
 -- 
 2.43.0
 
