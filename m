@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C77C831A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 03:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E555C831B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 03:36:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNiur-0003BK-O7; Mon, 24 Nov 2025 21:36:29 -0500
+	id 1vNiuy-0003RB-9L; Mon, 24 Nov 2025 21:36:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vNiuq-00039I-7U
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:28 -0500
+ id 1vNiuw-0003LD-4N
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:34 -0500
 Received: from sender3-pp-f112.zoho.com ([136.143.184.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vNiuo-0001DL-Pj
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:27 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1764038174; cv=none; 
+ id 1vNiuu-0001Dv-Iu
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1764038180; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=RtjI8c5uON6c0Fam+dictYbZ/LtlAbWucAhsGIlVoNgShIdr01dWNNxuFwQrHVYyijAkS1HsrhcoWp5yy3565bwGNrEqTVO5NeM1RG/VR/PAvqyhCcQtlMitRkka6IvwMjQ6Bz7ottzR2ppLv7oTEa6ZOQ3y39JBCJppCozot5A=
+ b=fZv5H6vtwnQ++Gtj8HUG1KdQwwc1AWftOfhBXCIqR1F9vC+D7XEWEbhTe3OeNLtRp/xDfFg31A6vwEizUTo/zBCCkgwHzfki4sjLQSxNG+SZlpAZDTb8fnEC1kesApCMHN/e0/F0j/Rjl4aG2kKGpb5bpKsPjoSVqcF3H0Xjoxw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1764038174;
+ s=zohoarc; t=1764038180;
  h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=WpzIRgb3JywbC2cNpX4kON74/oST9ex6TcBqARUwepg=; 
- b=I+i3oB0RSJZPXIWF7q3RB12dM3aUCH7kQNXrcz1HToTre/soY9n/lpCRwyf+oU8hlepAFvS7pRTJDs0UI3ki/GktJDd+VYBv2wEHjDrBnUFvj8Bp/PMkDsm79qG7lW53gT8kqQVJ/g0hStsc5CHDBEA3abTfHETrODME5yEg+7g=
+ bh=Qdj+tk0Rsue/yqFxWL1SxJghCWVN4FohXqseYyvW6ug=; 
+ b=ZNMP3YlPU90j/6+yxBkfqBhfQkYssnaKhweYK+zTYoZeiSuxietXuXAeg3/2QA4eH5jZPO2RxB3DCvmjD2OXJwhyC4a99xY3ylS9EyuC380Bpz+MoQdOV0DpKQOc6LEiZoz/m4D4d0ALyiJEhXJ6x56BYaePyGubMQHAzufunjs=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764038174; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764038180; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
  h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=WpzIRgb3JywbC2cNpX4kON74/oST9ex6TcBqARUwepg=;
- b=BoZUAbLlENOkqAO0OWUFB7WqUgPNoJVsbvzNscmjisEDndXpumEc1Uh72YVBOHxr
- TOci8j44Rf/DMZlihWp3mKQUwHECG+zfHt75LzlV62R19bgOACYLJ3o4uc+3KZS/PkV
- LU5kueVq3Y1kOyM0RDXvR5L91dMYoC08ORXzpx0Q=
-Received: by mx.zohomail.com with SMTPS id 1764038173075839.3721336161425;
- Mon, 24 Nov 2025 18:36:13 -0800 (PST)
+ bh=Qdj+tk0Rsue/yqFxWL1SxJghCWVN4FohXqseYyvW6ug=;
+ b=Bb0aLQgn9lx6+/Ef4rMN2Jm6iUg9Pw1NcNXRTQpsMsWAfMSEMc6ynA8NBujqlTYZ
+ zlnbMOsPl6vz8O27yfHp6JVvNAj6T6FbGzhJLzfI+i7xP0ihLIAkBsHEfjeIuwTMqGK
+ UsSSsgxX35mzXfs+E+S05/LKb5PiNSnaERWTb47E=
+Received: by mx.zohomail.com with SMTPS id 1764038177942140.1936977372102;
+ Mon, 24 Nov 2025 18:36:17 -0800 (PST)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Huang Rui <ray.huang@amd.com>,
@@ -60,10 +60,10 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Robert Beckett <bob.beckett@collabora.com>
-Subject: [RFC PATCH v4 3/7] virtio-gpu: Improve virgl_cmd_resource_map_blob()
- error handling
-Date: Tue, 25 Nov 2025 05:35:13 +0300
-Message-ID: <20251125023517.177714-4-dmitry.osipenko@collabora.com>
+Subject: [RFC PATCH v4 4/7] virtio-gpu: Make
+ virtio_gpu_virgl_unmap_resource_blob() return -1 on error
+Date: Tue, 25 Nov 2025 05:35:14 +0300
+Message-ID: <20251125023517.177714-5-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251125023517.177714-1-dmitry.osipenko@collabora.com>
 References: <20251125023517.177714-1-dmitry.osipenko@collabora.com>
@@ -95,44 +95,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make virgl_cmd_resource_map_blob() return -1 for errors originated from
-external virglrenderer library and respond to guest with most appropriate
-error message.
+Make virtio_gpu_virgl_unmap_resource_blob() return -1 for more consistency
+of error propagation style in the code, adhering to QEMU's devel/style
+recommendations and preparing code for further code changes utilizing this
+function.
 
-Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> # guest err msg
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ hw/display/virtio-gpu-virgl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 2224f59cf5d7..edcdad0af232 100644
+index edcdad0af232..a7b14a312c83 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -138,7 +138,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
-     if (ret) {
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map virgl resource: %s\n",
-                       __func__, strerror(-ret));
--        return ret;
-+        return -1;
+@@ -199,7 +199,7 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "%s: failed to unmap virgl resource: %s\n",
+                           __func__, strerror(-ret));
+-            return ret;
++            return -1;
+         }
+     } else {
+         *cmd_suspended = true;
+@@ -333,7 +333,7 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
      }
  
-     vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
-@@ -789,7 +789,16 @@ static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
+ #if VIRGL_VERSION_MAJOR >= 1
+-    if (virtio_gpu_virgl_unmap_resource_blob(g, res, cmd_suspended)) {
++    if (virtio_gpu_virgl_unmap_resource_blob(g, res, cmd_suspended) < 0) {
+         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+         return;
+     }
+@@ -829,7 +829,7 @@ static void virgl_cmd_resource_unmap_blob(VirtIOGPU *g,
      }
  
-     ret = virtio_gpu_virgl_map_resource_blob(g, res, mblob.offset);
+     ret = virtio_gpu_virgl_unmap_resource_blob(g, res, cmd_suspended);
 -    if (ret) {
-+
-+    switch (ret) {
-+    case 0:
-+        break;
-+
-+    case -EINVAL:
-+        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+        return;
-+
-+    default:
++    if (ret < 0) {
          cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
          return;
      }
