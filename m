@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2F9C85629
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC43C8561E
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 15:22:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNtvz-0007RF-V7; Tue, 25 Nov 2025 09:22:23 -0500
+	id 1vNtw3-0007cu-4Y; Tue, 25 Nov 2025 09:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vNtuu-0007FH-AN
+ id 1vNtuu-0007FG-AN
  for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:21:29 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vNtun-0002Gq-LE
+ id 1vNtun-0002Gs-IN
  for qemu-devel@nongnu.org; Tue, 25 Nov 2025 09:21:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=yu8rxNLiMjUJ+cDvQqRD4uD4vrNkGyw0BtvapPeffJg=; b=Dr1j9ytgwWEq
- SwPbbLxn6QYxu4ZT9/+GyoR9IcmOsV56lPUUDjoe3+CLMJntJ76vCUWxqxnO5nE8NHIzduLXaq3Ez
- apiSw+eZftEIurna1c4vzI0RQKS7JZ8dOtj3Vx5AjL/vLfFsE64NVCW4ekCwdSg3l55kHEPXdEZpE
- UoGUqTYXzZ2xPPpQviMerjSBIqCdPoOZrFPv1L56IjFwMfYHP5rCE5mz2yCUk/k1lJ6qUN5b/g71o
- Txex9r9t7fhUYds5dmItEW2ZPK0ImfF0cb4SEZwv5KkxroZrii/0jK68jFJjWKZyUr9LbYJWszLxo
- YTZ1jKj9kyy2xg7UwrPyDA==;
+ Content-Type; bh=a+tUUiQC5dHHaCTNVUg/RgFFKDMzkIDuPzrqjC0AfeE=; b=kng0Pw/3P2sF
+ ceqrOthptDw7qn1y5fcgEUYZ151k7miN4llKRlh/yxTx3NjuWXk49XstTYtxtFmrW2ahmhOly6IKA
+ Z8r5DU1kj2zbD9Oi9fOPQ4ir1gj5FA+BHZLX+WR3oYvzUoJNAZPx7fCiQRI0WNLNyJhSvgKI5XTs4
+ O+TUkILcyzgq7GJ9uo2lrhUvvFFjDg8H5Rb1+H4cpN+4+Vljvp7ADCT9zlHNQtrqJI96bawfALuzH
+ 5BfjWQTR4HD4o/xQ88q6cdmQFMdeNC2wCD20wNwpkN257F+TPDrIYowZmEFPm3QNPpojbnoJv56KB
+ HGD/X0kGiEsOLpuPv1+Plw==;
 Received: from [130.117.225.5] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1vNtsz-003IJo-0I;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1vNtsz-003IJo-0V;
  Tue, 25 Nov 2025 15:20:56 +0100
 From: andrey.drobyshev@virtuozzo.com
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, peterx@redhat.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com
-Subject: [PATCH 2/4] scripts/qemugdb: timers: Fix KeyError in 'qemu timers'
- command
-Date: Tue, 25 Nov 2025 16:21:03 +0200
-Message-ID: <20251125142105.448289-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH 3/4] scripts/qemugdb: timers: Improve 'qemu timers' command
+ readability
+Date: Tue, 25 Nov 2025 16:21:04 +0200
+Message-ID: <20251125142105.448289-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251125142105.448289-1-andrey.drobyshev@virtuozzo.com>
 References: <20251125142105.448289-1-andrey.drobyshev@virtuozzo.com>
@@ -71,33 +71,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-Currently invoking 'qemu timers' command results into: "gdb.error: There
-is no member named last".  Let's remove the legacy 'last' field from
-QEMUClock, as it was removed in v4.2.0 by the commit 3c2d4c8aa6a
-("timer: last, remove last bits of last").
+* Add the 'attributes' field from QEMUTimer;
+* Stringify the field's value in accordance with macros from
+  include/qemu/timer.h;
+* Make timer expiration times human-readable by converting from nanoseconds
+  to appropriate units (ms/s/min/hrs/days) and showing the scale factor
+  (ns/us/ms/s).
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- scripts/qemugdb/timers.py | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/qemugdb/timers.py | 49 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 5 deletions(-)
 
 diff --git a/scripts/qemugdb/timers.py b/scripts/qemugdb/timers.py
-index 5714f92cc2..1219a96b32 100644
+index 1219a96b32..916c71b74a 100644
 --- a/scripts/qemugdb/timers.py
 +++ b/scripts/qemugdb/timers.py
-@@ -36,10 +36,9 @@ def dump_timers(self, timer):
+@@ -21,14 +21,53 @@ def __init__(self):
+         gdb.Command.__init__(self, 'qemu timers', gdb.COMMAND_DATA,
+                              gdb.COMPLETE_NONE)
  
-     def process_timerlist(self, tlist, ttype):
-         gdb.write("Processing %s timers\n" % (ttype))
--        gdb.write("  clock %s is enabled:%s, last:%s\n" % (
-+        gdb.write("  clock %s is enabled:%s\n" % (
-             tlist['clock']['type'],
--            tlist['clock']['enabled'],
--            tlist['clock']['last']))
-+            tlist['clock']['enabled']))
-         if int(tlist['active_timers']) > 0:
-             self.dump_timers(tlist['active_timers'])
++    def _format_expire_time(self, expire_time, scale):
++        "Return human-readable expiry time (ns) with scale info."
++        secs = expire_time / 1e9
++
++        # Select unit and compute value
++        if secs < 1:
++            val, unit = secs * 1000, "ms"
++        elif secs < 60:
++            val, unit = secs, "s"
++        elif secs < 3600:
++            val, unit = secs / 60, "min"
++        elif secs < 86400:
++            val, unit = secs / 3600, "hrs"
++        else:
++            val, unit = secs / 86400, "days"
++
++        scale_map = {1: "ns", 1000: "us", 1000000: "ms",
++                     1000000000: "s"}
++        scale_str = scale_map.get(scale, f"scale={scale}")
++        return f"{val:.2f} {unit} [{scale_str}]"
++
++    def _format_attribute(self, attr):
++        "Given QEMUTimer attributes value, return a human-readable string"
++
++        # From include/qemu/timer.h
++        if attr == 0:
++            value = 'NONE'
++        elif attr == 1 << 0:
++            value = 'ATTR_EXTERNAL'
++        elif attr == int(0xffffffff):
++            value = 'ATTR_ALL'
++        else:
++            value = 'UNKNOWN'
++        return f'{attr} <{value}>'
++
+     def dump_timers(self, timer):
+         "Follow a timer and recursively dump each one in the list."
+         # timer should be of type QemuTimer
+-        gdb.write("    timer %s/%s (cb:%s,opq:%s)\n" % (
+-            timer['expire_time'],
+-            timer['scale'],
+-            timer['cb'],
+-            timer['opaque']))
++        scale = int(timer['scale'])
++        expire_time = int(timer['expire_time'])
++        attributes = int(timer['attributes'])
++
++        time_str = self._format_expire_time(expire_time, scale)
++        attr_str = self._format_attribute(attributes)
++
++        gdb.write(f"    timer at {time_str} (attr:{attr_str}, "
++                  f"cb:{timer['cb']}, opq:{timer['opaque']})\n")
  
+         if int(timer['next']) > 0:
+             self.dump_timers(timer['next'])
 -- 
 2.43.5
 
