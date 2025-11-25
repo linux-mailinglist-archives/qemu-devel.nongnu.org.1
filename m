@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34CBC8741A
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEB6C87416
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0tP-0001M2-J6; Tue, 25 Nov 2025 16:48:20 -0500
+	id 1vO0tt-0001WU-83; Tue, 25 Nov 2025 16:48:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tM-0001GD-3D
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:08 -0500
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tV-0001QK-My
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:23 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tK-0005A8-D3
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:07 -0500
-Received: by mail-wm1-x341.google.com with SMTP id
- 5b1f17b1804b1-4779cb0a33fso58841685e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tU-0005CS-4E
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:17 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-429c48e05aeso128610f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107284; x=1764712084; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=CqYEWVMngMY9irhHqURQ6nqbt3uGEvO/BqZ7WT6Zj/0=;
- b=LPS3nKi+14UymlxgOlyrCaVrIdNFBX7GKdG/+9x360pjWg/xik9tsCnudawm/uP2wQ
- ZwAzzaZgD2mWLIuExjFBSXZfv8RTtNPLK8Av+lvSFF/9lyj6BQtkBgD/rNdWOr3ClTy+
- 6aRGR22YP3/Vw06K7kI+seLuR8tIEJizDNbte7LQBR7fvdCwIdte1EY6K/ADR8Q3q8Vg
- KfB3tmrBLljjkiJSHGvLNApNZCrBFlpv8c9WTPeOchC9eQ7OO9WybP9KOvRe5zadGkCP
- ozdtlqWKXNGL2pVu2O6S+3rhhK9Y3mFuLVEDi+r+XQl2Z9R4rBuq0VBIgYRlUAXZEp/Y
- +PcA==
+ d=linaro.org; s=google; t=1764107294; x=1764712094; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=0m+k2UyUztzmcb8I6pH4YXiVmZQfT+gR4LS5nZYwQho=;
+ b=vyR3oRPE0W4AE8SfMECR3A4Qx2pB+beXuJa2eW0idKPVkLt7FIvBwNki1K53cv3nCR
+ 90OE8nTn5E+cIhHgXE2di7NJlUVo1hNRC/yVonSMkNBfh2TRwiQv4tMqtjzsXMwIqMbd
+ 7eoxq+jG1YZcLqUZsZgzlFhKbf4OJ8dxae+EtXZw0Jt+fgF56+yzNjLsrRp1PBvzix+p
+ 3qSy6KgK0TdQvAztgSwBe5w7VWFdnh0JkhrRs+DbE0PGP513RVusWuucheeVBHZ1XDZo
+ N5Z0lfd1zVtEY5kovcDoGwMoEobe4kSNVN/k1qbap5DVe0rl8Dc2cli61sMn3J5dTBrc
+ 7D1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107284; x=1764712084;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CqYEWVMngMY9irhHqURQ6nqbt3uGEvO/BqZ7WT6Zj/0=;
- b=FN0YetgbnJLqiO6AH+ZrYny9MnkX85J7PecRX249DAA1xafMWb7ek13aFtxh+kOtMk
- SzryR3i+ASD51p1fWvffPffX/qXey0SpfuE6y2aBXD6v6i2ZmWK36yL7+8uJfdtapZh+
- ZQAltzxe2Jy/Q7KmGwtxj7CZ0sUqkO0edbYs0T//QiVk94wLRAfZY5SAk3ETtSy4bu3W
- aSaEQZ/fxL4V5J1aNaOSW465UoPKTHOeZnJ7imEIpye97slRJTvBODsDe1lChNKCKikG
- 2VM6IUYSuXuQAW6dI4hxT2cmWZNygy7hcrFm+tBdKhjmYa16oUi3k8TBmPFer6s5WusK
- lnAA==
-X-Gm-Message-State: AOJu0Ywpm+402a+K0PGjGSGnNu8G6JjISG9LIqSlBSMwBCJGja+Wb6+A
- 2RQkckOS1L2scqiq9xpmIlXj21hC9ELLj2bJKmfW+ErhLhDdiKjFaPaL1Upxi99KEG3zwgSeRpY
- AW6075RFybIQr
-X-Gm-Gg: ASbGncukJSxXkGPYuEjnXiF3ie9mfZdpGgnnxVvdW5q/9XqCG90LzSXaxk9v3FCIX4i
- WWzv8VGJMMDfenwu/sfy/L5lAphKi6WtGHYg8zeWa/VurjP0NbkgBjYP9ta6xZ7O0D+4SfJ8tDB
- e8VadrQAtRvH7XKiVHT35mahYB0sdpEVcTaPZthACLW2g5cO2X0R/m896ysfr4KdbkTzaXK3+Ra
- TY/0ZrDAxzGrgpXK/JQVT3tBYvB0+GiBO8JjnqUsdvoONf4z9w4/pN3j50YPePRCpMDZ1XvrgiP
- ztKhTl5C1xhom+giOkVjd/C5/EAjFt99FguUNB/DwObj/ZzCtRubLEGDOxWjw0FZWfbevOIRdM7
- wI+roggFiU4MMxnnt0j8P/ZVjCv77Df44WcsdLx6h8JdU5YgR63LL0M3mKT1+OME5Ueikrm/3fd
- 2kRoh3M8hsHYoIXmvkgOIfiODxWawNm1hTBRSc8QRIcqGymYaqcBEr+4bb4KBH
-X-Google-Smtp-Source: AGHT+IEoUA3zPkeCOkS0hLm68t/Qgynr0jkXYj6JQx0XXlOAt/wyOOJ+6Mxbeg2Zu378ferW2a25wg==
-X-Received: by 2002:a05:600c:314d:b0:477:b0b9:3129 with SMTP id
- 5b1f17b1804b1-477c0175164mr177413865e9.3.1764107283846; 
- Tue, 25 Nov 2025 13:48:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1764107294; x=1764712094;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=0m+k2UyUztzmcb8I6pH4YXiVmZQfT+gR4LS5nZYwQho=;
+ b=DBRZj2aba7v2BeTVWirV5+SgV0A3dnnyArhcn999s1lK+AURaaYH9nfakINRmc2cvT
+ 4RkT9O5SBdLL8PWunWizgvXrAo5N7+riSPmY74zVGX/e5uvyh5vfLDpNyHsaDqWCfkTt
+ pZeb8ul/jo4r2lgnxcKJ4c9VAStzZNX1Kaana9wy92FnhZhH3noNnYYAZZb3Snhdh5Yu
+ a8qxOCDgNxjtRVdQjCEfm7PDs5R5AO2pO/iAUO3NrLtqcPTX3rJ/xjLLOzoT+UF1QEjm
+ vf6OLXNSPl1vmx6zMnL3qb2ZQsUm9U9dguMSY0Bu4oiMRK1MyZ6Gr4azfPkve8ICSyXx
+ lRag==
+X-Gm-Message-State: AOJu0YzGUXC7siVI2kYE81inE3a/04WMnEzNq06y+ScO+3JPNpDkCTe1
+ Rn6iMaHoamaVznNuD0qJiJRaJe8LvlP48/0zoAgApHJUPo9I3nwft92VJE3yWXB7Jcqt7jeznM7
+ 7+OEvtAwIkQ==
+X-Gm-Gg: ASbGncu+98LvzcGJbQy/83HnfN6E2Lw9Rv9MG0qxiR5P3lVfRUFI+bkDN5qikF/pECi
+ n4KaG5abxvckrb1DkWYlVaWwk4XyCfmxoJqEqjuUbXJNIq2W9sWT1RzbcSvFNQ36irPdLX46xro
+ pOCMyWzKnoD2L/arcYiwDrnoi7oID7xPLl3kPjQ97JC/fiMsax1+L5+zJMF4ZktfCdLyzNoKOos
+ 0eEZI+FdfUwr12Nm+bu8zH+F0vI2lKyUgo0BE/oVkFPIQdDAnS8CReiHLCtvNuoFIKuo0p6TpmE
+ cmUE2ArrfOjr2RFTBj81PuDVXAW/gE82/CxOOSl3bXp3a1rvCwden+xEuxGkfZI7Xarv9k/vGEK
+ UQWw/7UvS57St7YCpA7AWkBeCjacsxsndjYXnld9BWEoX3Z2uLkQ6OAM7tWbPFD146v3t4l3ma0
+ lffpPyTmoSr/fg1GE8e8Wy/F5tPdcG1Mzi0GV+Rdm2I33PqFdVlcb5ExRBRdpg
+X-Google-Smtp-Source: AGHT+IEG7a34iYTcnYTKnB2EeWKdfViP10xcsFGjFIFNuYI9ddq01JQajN40YNIBZkoT7wCcjihTjQ==
+X-Received: by 2002:a05:6000:1a8a:b0:42b:47ef:1d59 with SMTP id
+ ffacd0b85a97d-42cba63b5b2mr24795015f8f.4.1764107293971; 
+ Tue, 25 Nov 2025 13:48:13 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4790add2c98sm9444145e9.5.2025.11.25.13.48.03
+ ffacd0b85a97d-42cb7fa3a76sm36678238f8f.24.2025.11.25.13.48.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 13:48:03 -0800 (PST)
+ Tue, 25 Nov 2025 13:48:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/9] Misc HW patches for 2025-11-25
-Date: Tue, 25 Nov 2025 22:47:52 +0100
-Message-ID: <20251125214802.1929-1-philmd@linaro.org>
+Subject: [PULL 1/9] qtest: Allow and ignore blank lines in input
+Date: Tue, 25 Nov 2025 22:47:53 +0100
+Message-ID: <20251125214802.1929-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251125214802.1929-1-philmd@linaro.org>
+References: <20251125214802.1929-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::341;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,57 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a8d023be622cab21e90bca8d9618068f0e49b74b:
+From: Peter Maydell <peter.maydell@linaro.org>
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-11-25 10:25:16 -0800)
+Currently the code that reads the qtest protocol commands insists
+that every input line has a command.  If it receives a line with
+nothing but whitespace it will trip an assertion in
+qtest_process_command().
 
-are available in the Git repository at:
+This is a little awkward for the case where we are feeding qtest a
+set of bug-reproduction commands via standard input or a file,
+because it means you need to be careful not to leave a blank line at
+the start or the end when cutting and pasting the command sequence
+from a bug report.
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20251125
+Change the code to allow and ignore blank lines in the input.
 
-for you to fetch changes up to 57756aa01fe52c50d655929c43d9a80f8214cf1a:
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20251106151959.1088095-1-peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ system/qtest.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-  hw/aspeed/{xdma, rtc, sdhci}: Fix endianness to DEVICE_LITTLE_ENDIAN (2025-11-25 22:45:30 +0100)
-
-----------------------------------------------------------------
-Misc HW patches
-
-Few fixes in hw/; also including qtest and replay fixes.
-----------------------------------------------------------------
-
-Cédric Le Goater (1):
-  hw/aspeed/{xdma, rtc, sdhci}: Fix endianness to DEVICE_LITTLE_ENDIAN
-
-Markus Armbruster (3):
-  hw/usb: Convert to qemu_create() for a better error message
-  hw/scsi: Use error_setg_file_open() for a better error message
-  hw/virtio: Use error_setg_file_open() for a better error message
-
-Peter Maydell (3):
-  qtest: Allow and ignore blank lines in input
-  hw/pci: Make msix_init take a uint32_t for nentries
-  replay: Improve assert in replay_char_read_all_load()
-
-Peter Xu (1):
-  hw/core/machine: Provide a description for aux-ram-share property
-
-Zhao Liu (1):
-  docs/deprecated: Remove undeprecated SMP description
-
- docs/about/deprecated.rst | 14 --------------
- include/hw/pci/msix.h     |  4 ++--
- hw/core/machine.c         |  2 ++
- hw/misc/aspeed_xdma.c     |  2 +-
- hw/pci/msix.c             | 10 ++++++++--
- hw/rtc/aspeed_rtc.c       |  2 +-
- hw/scsi/vhost-scsi.c      |  3 +--
- hw/sd/aspeed_sdhci.c      |  2 +-
- hw/usb/bus.c              |  5 ++---
- hw/virtio/vhost-vsock.c   |  3 +--
- replay/replay-char.c      |  2 +-
- system/qtest.c            |  9 ++++++++-
- 12 files changed, 28 insertions(+), 30 deletions(-)
-
+diff --git a/system/qtest.c b/system/qtest.c
+index cbeb7f37728..67e2385f4b0 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -69,6 +69,9 @@ static void *qtest_server_send_opaque;
+  * so clients should always handle many async messages before the response
+  * comes in.
+  *
++ * Extra ASCII space characters in command inputs are permitted and ignored.
++ * Lines containing only spaces are permitted and ignored.
++ *
+  * Valid requests
+  * ^^^^^^^^^^^^^^
+  *
+@@ -367,7 +370,11 @@ static void qtest_process_command(CharFrontend *chr, gchar **words)
+         fprintf(qtest_log_fp, "\n");
+     }
+ 
+-    g_assert(command);
++    if (!command) {
++        /* Input line was blank: ignore it */
++        return;
++    }
++
+     if (strcmp(words[0], "irq_intercept_out") == 0
+         || strcmp(words[0], "irq_intercept_in") == 0) {
+         DeviceState *dev;
 -- 
 2.51.0
 
