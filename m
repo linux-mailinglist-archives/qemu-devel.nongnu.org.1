@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D983C841FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 10:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 962A3C84218
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 10:04:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNovy-0003Vn-Oz; Tue, 25 Nov 2025 04:02:02 -0500
+	id 1vNoxy-0004eM-4z; Tue, 25 Nov 2025 04:04:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vNovw-0003Uv-NX
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 04:02:00 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vNoxt-0004d1-Qg
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 04:04:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vNovs-0001ZQ-LT
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 04:02:00 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vNoxp-0001gr-Qf
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 04:04:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764061313;
+ s=mimecast20190719; t=1764061436;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=gP8zW91eMMdParUS51W1dDdLU/a1x//SHEkUd9rpKx8=;
- b=LF5I/wknK357P6D/Jd05Cd2fzBVlucg6toi9g5tcBFuCIkDzdoOIRaA0xm9QzPm+YkCIxR
- PM6j0ev+4CrUwM1myYfhlY5YL9PrShVG/M6ERVfS/viBPucXNXlWJtFmKKMEiz0mm9NV+H
- Rjci/VAa4Rp58O2VlmR5c77+AXMpF4g=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RMafSR1cds8nCs0VUgDU3LN9z40ff6cPSpNdvknFmDY=;
+ b=AFomcdkKHFi4GiSMK+xwe1CWm1wwwokRTys3XSbt0Z3O+8ddsHAEe1A4klUwfdIGw3hK2Y
+ dDmIINU2rUN68jIb1xQapMCPQHghfNzukHUN7/wvMYkzadeXhLVAGObDNwUO/5xzE+V0L/
+ PXlHGNpdiJSWj678rWK0ePPUuLzu8cs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-SHih0t5eOj2vw_T57L6asg-1; Tue,
- 25 Nov 2025 04:01:50 -0500
-X-MC-Unique: SHih0t5eOj2vw_T57L6asg-1
-X-Mimecast-MFC-AGG-ID: SHih0t5eOj2vw_T57L6asg_1764061309
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-7SMxLY00PIG5JAUBdQIdjw-1; Tue,
+ 25 Nov 2025 04:03:53 -0500
+X-MC-Unique: 7SMxLY00PIG5JAUBdQIdjw-1
+X-Mimecast-MFC-AGG-ID: 7SMxLY00PIG5JAUBdQIdjw_1764061433
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 897AA1954B0B; Tue, 25 Nov 2025 09:01:49 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DCCF31956096; Tue, 25 Nov 2025 09:03:52 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4875F1800451; Tue, 25 Nov 2025 09:01:49 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 832FF3003761; Tue, 25 Nov 2025 09:03:52 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A78DE21E6A27; Tue, 25 Nov 2025 10:01:46 +0100 (CET)
+ id DFD3621E6A27; Tue, 25 Nov 2025 10:03:49 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	eesposit@redhat.com
-Subject: [PATCH] kvm: Don't assume accel_ioctl_end() preserves @errno
-Date: Tue, 25 Nov 2025 10:01:46 +0100
-Message-ID: <20251125090146.2370735-1-armbru@redhat.com>
+Cc: pbonzini@redhat.com,  kvm@vger.kernel.org,  eesposit@redhat.com
+Subject: Re: [PATCH] kvm: Don't assume accel_ioctl_end() preserves @errno
+In-Reply-To: <20251125090146.2370735-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Tue, 25 Nov 2025 10:01:46 +0100")
+References: <20251125090146.2370735-1-armbru@redhat.com>
+Date: Tue, 25 Nov 2025 10:03:49 +0100
+Message-ID: <875xay4h6y.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -80,44 +82,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Retrieve the @errno set by ioctl() before we call accel_ioctl_end()
-instead of afterwards, so it works whether accel_ioctl_end() preserves
-@errno or not.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- accel/kvm/kvm-all.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Retrieve the @errno set by ioctl() before we call accel_ioctl_end()
+> instead of afterwards, so it works whether accel_ioctl_end() preserves
+> @errno or not.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f9254ae654..28006d73c5 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3373,10 +3373,10 @@ int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
-     trace_kvm_vm_ioctl(type, arg);
-     accel_ioctl_begin();
-     ret = ioctl(s->vmfd, type, arg);
--    accel_ioctl_end();
-     if (ret == -1) {
-         ret = -errno;
-     }
-+    accel_ioctl_end();
-     return ret;
- }
- 
-@@ -3413,10 +3413,10 @@ int kvm_device_ioctl(int fd, unsigned long type, ...)
-     trace_kvm_device_ioctl(fd, type, arg);
-     accel_ioctl_begin();
-     ret = ioctl(fd, type, arg);
--    accel_ioctl_end();
-     if (ret == -1) {
-         ret = -errno;
-     }
-+    accel_ioctl_end();
-     return ret;
- }
- 
--- 
-2.49.0
+I did not check whether the assumption holds or not.  If it doesn't,
+then this needs
+
+  Fixes: a27dd2de68f3 (KVM: keep track of running ioctls)
 
 
