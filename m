@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DC9C84641
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 11:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56553C8460B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 11:10:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNpzb-0006FF-2v; Tue, 25 Nov 2025 05:09:51 -0500
+	id 1vNpzY-0006BQ-Rh; Tue, 25 Nov 2025 05:09:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vNpz7-00068n-2g
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:09:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vNpzF-0006AC-CH
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:09:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vNpz1-0002I6-UG
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:09:18 -0500
+ id 1vNpz6-0002Iw-Ri
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 05:09:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764065353;
+ s=mimecast20190719; t=1764065359;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZOgZV3KuzWo98ag5JknJ+Ifk9SzDqd5GXwGdj7py+aY=;
- b=anJu8Dwfun8xupvlDHytiBJhr6ZVgQC7Z54QqdN89mAiUSgEEcK49u+X+Q4BdS1Jf8vyeS
- hNUdxbaLGOVBHS+UXThMnuer3u/JOZjOKjizh/oYB/Ov7bGVCyNCQkQw+JZVEc7nxKOHuo
- m2Pj9kd/iSiJHoRkwBdZsqMtu4ZVkmw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5bywGPmkDfGV/DKfeUSYLZsanIrgHEk2/Wfv2PcSx2k=;
+ b=Bj/425tN0jcGv03ltIKagDa5p5RN5cHA+X21sTw/3hCOVWOGwV7n1AxaShJEFf8GeSns+o
+ +FX6nwDEGKV/NpRZglvqgM1DcT2OHQM/e2xe4ArR4dUs2Ep1sHXAH0OFTzdFihg3Nsz6F7
+ zBX7LVXWSluKIkSKu1V6GdS1rdiTjdo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-4n98Woa_Ngy19SfRlwCjGg-1; Tue,
- 25 Nov 2025 05:09:10 -0500
-X-MC-Unique: 4n98Woa_Ngy19SfRlwCjGg-1
-X-Mimecast-MFC-AGG-ID: 4n98Woa_Ngy19SfRlwCjGg_1764065349
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-A-GaWrDZNO6V13ZpoUdTZA-1; Tue,
+ 25 Nov 2025 05:09:15 -0500
+X-MC-Unique: A-GaWrDZNO6V13ZpoUdTZA-1
+X-Mimecast-MFC-AGG-ID: A-GaWrDZNO6V13ZpoUdTZA_1764065354
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AECD71956052; Tue, 25 Nov 2025 10:09:08 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DCC9D1800561; Tue, 25 Nov 2025 10:09:13 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.45.224.42])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 62B0C18004A3; Tue, 25 Nov 2025 10:09:03 +0000 (UTC)
+ id 3177D18004D8; Tue, 25 Nov 2025 10:09:08 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, cohuck@redhat.com,
  maz@kernel.org, oliver.upton@linux.dev, sebott@redhat.com,
  gshan@redhat.com, ddutile@redhat.com, peterx@redhat.com, philmd@linaro.org,
  pbonzini@redhat.com
-Subject: [PATCH v3 00/11] Mitigation of "failed to load
- cpu:cpreg_vmstate_array_len" migration failures
-Date: Tue, 25 Nov 2025 11:07:49 +0100
-Message-ID: <20251125100859.506228-1-eric.auger@redhat.com>
+Subject: [PATCH v3 01/11] hw/arm/virt: Rename arm_virtio_compat into
+ arm_virt_compat_defaults
+Date: Tue, 25 Nov 2025 11:07:50 +0100
+Message-ID: <20251125100859.506228-2-eric.auger@redhat.com>
+In-Reply-To: <20251125100859.506228-1-eric.auger@redhat.com>
+References: <20251125100859.506228-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.075,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -83,106 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When migrating ARM guests accross same machines with different host
-kernels we are likely to encounter failures such as:
+Renaming arm_virtio_compat into arm_virt_compat_defaults
+makes more obvious that those compats apply to all machine
+types by default, if not overriden for specific ones. This also
+matches the terminology used for pc-q35.
 
-"failed to load cpu:cpreg_vmstate_array_len"
-
-This is due to the fact KVM exposes a different number of registers
-to qemu on source and destination. When trying to migrate a bigger
-register set to a smaller one, qemu cannot save the CPU state.
-
-For example, recently we faced such kind of situations with:
-- unconditionnal exposure of KVM_REG_ARM_VENDOR_HYP_BMAP_2 FW pseudo
-  register from v6.16 onwards. Causes backward migration failure.
-- removal of unconditionnal exposure of TCR2_EL1, PIRE0_EL1, PIR_EL1
-  from v6.13 onwards. Causes forward migration failure.
-
-This situation is really problematic for distributions which want to
-guarantee forward and backward migration of a given machine type
-between different releases.
-
-While the series mainly targets KVM acceleration, this problem
-also exists with TCG. For instance some registers may be exposed
-while they shouldn't. Then it is tricky to fix that situation
-without breaking forward migration. An example was provided by
-Peter: 4f2b82f60 ("target/arm: Reinstate bogus AArch32 DBGDTRTX
-register for migration compat).
-
-This series introduces 2 CPU array properties that list
-- the CPU registers to hide from the exposes sysregs (aims
-  at removing registers from the destination)
-- The CPU registers that may not exist but which can be found
-  in the incoming migration stream (aims at ignoring extra
-  registers in the incoming state)
-
-An example is given to illustrate how those props
-could be used to apply compats for machine types supposed to "see" the
-same register set accross various host kernels.
-
-Mitigation of DBGDTRTX issue would be achived by setting
-x-mig-safe-missing-regs=0x40200000200e0298 which matches
-AArch32 DBGDTRTX register index.
-
-The first patch improves the tracing so that we can quickly detect
-which registers do not match between the incoming stream and the
-exposed sysregs
-
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
+ hw/arm/virt.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-History:
-
-v2 -> v3:
-- revert target/arm: Reinstate bogus AArch32 DBGDTRTX register for migration compat
-- fix some typos and rework target/arm/cpu.h hidden_regs comment (Connie)
-- Even for TCG we use KVM index
-
-v1 -> v2:
-- fixed typos (Connie)
-- Make it less KVM specific (tentative hidding of TCG regs, not
-  tested)
-- Tested DBGDTRTX TCG case reported by Peter
-- No change to the property format yet. Ran out of idea. However
-  I changed the name of the property with x-mig prefix
-- Changed the terminology, kept hidding but remove fake which was
-  confusing
-- Simplified the logic for regs missing in the incoming stream and
-  do not check anymore they are exposed on dest
-
-Available at:
-https://github.com/eauger/qemu/tree/mitig-v3
-
-
-Eric Auger (11):
-  hw/arm/virt: Rename arm_virtio_compat into arm_virt_compat_defaults
-  target/arm/machine: Improve traces on register mismatch during
-    migration
-  target/arm/cpu: Allow registers to be hidden
-  target/arm/machine: Allow extra regs in the incoming stream
-  target/arm/helper: Skip hidden registers
-  kvm-all: Add the capability to blacklist some KVM regs
-  target/arm/cpu: Implement hide_reg callback()
-  target/arm/cpu: Expose x-mig-hidden-regs and x-mig-safe-missing-regs
-    properties
-  hw/arm/virt: Declare AArch32 DBGDTRTX as safe to ignore in incoming
-    stream
-  Revert "target/arm: Reinstate bogus AArch32 DBGDTRTX register for
-    migration compat"
-  hw/arm/virt: [DO NOT UPSTREAM] Enforce compatibility with older
-    kernels
-
- include/hw/core/cpu.h     |  2 ++
- target/arm/cpu.h          | 48 +++++++++++++++++++++++++++
- accel/kvm/kvm-all.c       | 12 +++++++
- hw/arm/virt.c             | 41 +++++++++++++++++++----
- target/arm/cpu.c          | 11 ++++++
- target/arm/debug_helper.c | 29 ----------------
- target/arm/helper.c       | 12 ++++++-
- target/arm/kvm.c          | 35 +++++++++++++++++++-
- target/arm/machine.c      | 70 +++++++++++++++++++++++++++++++++++----
- target/arm/trace-events   | 10 ++++++
- 10 files changed, 227 insertions(+), 43 deletions(-)
-
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 25fb2bab56..ec0af8e6e7 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -94,20 +94,21 @@
+ #include "hw/cxl/cxl_host.h"
+ #include "qemu/guest-random.h"
+ 
+-static GlobalProperty arm_virt_compat[] = {
++static GlobalProperty arm_virt_compat_defaults[] = {
+     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "48" },
+ };
+-static const size_t arm_virt_compat_len = G_N_ELEMENTS(arm_virt_compat);
++static const size_t arm_virt_compat_defaults_len =
++    G_N_ELEMENTS(arm_virt_compat_defaults);
+ 
+ /*
+  * This cannot be called from the virt_machine_class_init() because
+  * TYPE_VIRT_MACHINE is abstract and mc->compat_props g_ptr_array_new()
+  * only is called on virt non abstract class init.
+  */
+-static void arm_virt_compat_set(MachineClass *mc)
++static void arm_virt_compat_default_set(MachineClass *mc)
+ {
+-    compat_props_add(mc->compat_props, arm_virt_compat,
+-                     arm_virt_compat_len);
++    compat_props_add(mc->compat_props, arm_virt_compat_defaults,
++                     arm_virt_compat_defaults_len);
+ }
+ 
+ #define DEFINE_VIRT_MACHINE_IMPL(latest, ...) \
+@@ -116,7 +117,7 @@ static void arm_virt_compat_set(MachineClass *mc)
+         const void *data) \
+     { \
+         MachineClass *mc = MACHINE_CLASS(oc); \
+-        arm_virt_compat_set(mc); \
++        arm_virt_compat_default_set(mc); \
+         MACHINE_VER_SYM(options, virt, __VA_ARGS__)(mc); \
+         mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " ARM Virtual Machine"; \
+         MACHINE_VER_DEPRECATION(__VA_ARGS__); \
 -- 
 2.52.0
 
