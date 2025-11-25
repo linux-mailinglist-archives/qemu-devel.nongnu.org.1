@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3CFC834B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 05:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACEBC834C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 05:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNkFx-0003sf-P4; Mon, 24 Nov 2025 23:02:21 -0500
+	id 1vNkGH-0004uv-EJ; Mon, 24 Nov 2025 23:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkEt-0003Gw-JI
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:19 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkF1-0003NO-D4
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkEs-0006Yl-8n
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:15 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkEw-0006ZY-Ur
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764043273;
+ s=mimecast20190719; t=1764043278;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SR+dS7JGdSA+BleLYWGptPIJjDuckEObPGKnk3rtHkA=;
- b=X/V7f8BdgM0nHpd7cMtDNOXlmTIVwpnpngietcDZNSPEDB7NUTMVhg4gzc4V2WikgqciUD
- d0nvZSmHGJXz4SP32HF8Y8WHrW6aCoF1zHA0EX7RpzqSNfmpwliAsz8rWng5eRv7UL91VR
- LyYYv1Let/XDLOjEEQjXSov6pC0HUP0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Vt+SZNzBJoFLFiWFQgyxLD52fDXDASFagoh3QZx4wxQ=;
+ b=c3Kx5bUft5KpaCCW00eYRIWKU3UdSPiCTCNDBk6mNqBb0zfz8744eapPlsVJB6Rz2sNwgX
+ 4HWOAcNwJ8fl+chBNU/EfbcZScmRShBhxgwgxoUl+FW5GEzCvGrik0PztXaLh8laz9KYUB
+ 5Oz4HPes/TXPOpm0jkPmBlWq8nY/qC4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-444-MNa2Dc_TPmiLEXX67gXpKQ-1; Mon,
- 24 Nov 2025 23:01:11 -0500
-X-MC-Unique: MNa2Dc_TPmiLEXX67gXpKQ-1
-X-Mimecast-MFC-AGG-ID: MNa2Dc_TPmiLEXX67gXpKQ_1764043270
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-6ohIUALeO1uFj6AuvGKA5Q-1; Mon,
+ 24 Nov 2025 23:01:13 -0500
+X-MC-Unique: 6ohIUALeO1uFj6AuvGKA5Q-1
+X-Mimecast-MFC-AGG-ID: 6ohIUALeO1uFj6AuvGKA5Q_1764043272
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A1541956058; Tue, 25 Nov 2025 04:01:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 577D61800357; Tue, 25 Nov 2025 04:01:12 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.114])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2F17C1800451; Tue, 25 Nov 2025 04:01:08 +0000 (UTC)
+ id 60CB91800451; Tue, 25 Nov 2025 04:01:10 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -54,10 +54,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 08/16] meson,
- mkvenv: make iotests depend on checktests group
-Date: Mon, 24 Nov 2025 23:00:36 -0500
-Message-ID: <20251125040045.461148-9-jsnow@redhat.com>
+Subject: [PATCH v2 09/16] meson,
+ mkvenv: make functional tests depend on functests group
+Date: Mon, 24 Nov 2025 23:00:37 -0500
+Message-ID: <20251125040045.461148-10-jsnow@redhat.com>
 In-Reply-To: <20251125040045.461148-1-jsnow@redhat.com>
 References: <20251125040045.461148-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -72,7 +72,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.075,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,24 +88,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Note that only the thorough group requires the extra testing
+dependencies; the quick group is guaranteed to run with our minimal
+testing dependency set.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- tests/qemu-iotests/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/meson.build | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-index d7bae71ced6..86a3541c0ae 100644
---- a/tests/qemu-iotests/meson.build
-+++ b/tests/qemu-iotests/meson.build
-@@ -57,7 +57,7 @@ foreach format, speed: qemu_iotests_formats
-       test('io-' + format + '-' + item,
-            python,
-            args: args,
--           depends: qemu_iotests_binaries,
-+           depends: qemu_iotests_binaries + pyvenv_checktests_group,
-            env: qemu_iotests_env,
-            protocol: 'tap',
-            timeout: 180,
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 725630d3082..b8424a10376 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -57,16 +57,20 @@ foreach speed : ['quick', 'thorough']
+       continue
+     endif
+ 
++    test_deps = [roms, keymap_targets]
++
+     if speed == 'quick'
+       suites = ['func-quick', 'func-' + target_base]
+       target_tests = get_variable('tests_' + target_base + '_' + sysmode + '_quick', []) \
+                      + get_variable('tests_generic_' + sysmode)
++      test_deps += [pyvenv_checktests_group]
+     else
+       suites = ['func-' + speed, 'func-' + target_base + '-' + speed, speed]
+       target_tests = get_variable('tests_' + target_base + '_' + sysmode + '_' + speed, [])
++      test_deps += [pyvenv_functests_group]
+     endif
+ 
+-    test_deps = [roms, keymap_targets]
++
+     test_env = environment()
+     if have_tools
+       test_env.set('QEMU_TEST_QEMU_IMG', meson.global_build_root() / 'qemu-img')
+@@ -99,6 +103,7 @@ foreach speed : ['quick', 'thorough']
+       precache = custom_target('func-precache-' + testname,
+                                output: teststamp,
+                                command: [python, testpath],
++                               depends: pyvenv_functests_group,
+                                depend_files: files(testpath),
+                                build_by_default: false,
+                                env: test_precache_env)
 -- 
 2.51.1
 
