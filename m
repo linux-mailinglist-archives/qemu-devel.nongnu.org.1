@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECC3C8742F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:50:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21490C87432
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:50:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0vI-0003l8-9z; Tue, 25 Nov 2025 16:50:08 -0500
+	id 1vO0vP-0004qT-7E; Tue, 25 Nov 2025 16:50:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0v7-0003K3-Ly
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:57 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0vM-0004c6-1g
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:50:12 -0500
 Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0v6-0005Mb-9j
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:57 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0vK-0005aF-AJ
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:50:11 -0500
 Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-42b2a0c18caso3737633f8f.1
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:49:55 -0800 (PST)
+ ffacd0b85a97d-42b3ac40ae4so3423415f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:50:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107395; x=1764712195; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764107409; x=1764712209; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NhmjSeNyk4wboyLg5d23KJZ5yGkTp1AX2XCgrnSkmF8=;
- b=Mzp3juzJpmRjRCsHr/0WIW5nIPVpoyH/8/Et9lhJhhkzMilZGVPK22oSdwLcjVZdlf
- imlx5ZRbvl4NUeqPLoUQ1Pu2FvE4Dlw3wckLTEbV0czgATEp3+ArvysQhr62yE54ETfd
- FfV6AE/An55Fi3ULVWBqyh4jvgBQn70uGvKHC1ryz6FZyvT9mzMouR2mw12evXqhkSCu
- H5RuQ3dyY6T3ollR5GUXrA4pWG6MK0aLHc/QgTeOyDT6Clq2TaJTCYeHtS2lKZyMBeLq
- ZWVO4QWG3LrQKmUQxg2NHwcBDrIPpaJwyMrg2oTHnM0DUnfnx7vxqzASv2Mgx5Lnae5D
- q5+g==
+ bh=FTSbfE2LLbK4RUlSnjZZdILYXJWSwi+rjtYHlTnF9Ws=;
+ b=FxsZWDkiKgnxd7uH//K3jmDgVSKvvpV3j4+fKaTqLbllryrkPD+1m57lXhhUfqNukt
+ YngI0pqjzUvDNFQYJkRzZx61wNM8a7AAaT+0dc+7+aPvo8Lwl407BCWh8/RmtokIZqBk
+ hes34x5OjkoEnBvvfUJtIuaXBfqPuF9HkdrnZ/m8sICcxT0tDIhZoJYZzZxw7c2DAcoe
+ czRn1DddCHutWuABpkqFB9D80gQZ5qWkH2AKSTdWMF7msp5xztPj7zv2e3sZQrEtMQe3
+ l6Aa3YXXsGTmXnqtP0llv6S0S/scbdLO1QgwPpjEzBXNpjHiDgKg4o1b38/TcQqQVM3i
+ FP6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107395; x=1764712195;
+ d=1e100.net; s=20230601; t=1764107409; x=1764712209;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NhmjSeNyk4wboyLg5d23KJZ5yGkTp1AX2XCgrnSkmF8=;
- b=A1aI/WdiChDZf0soiyTaM+o3M/lFDiYk/cjlPZr+iM02/l7XzXOGh04y95aaszPEET
- Cvr5HDrPcVXi6ynG3mZWdT7OsxqQBb6J0hUUnnMDAd2kEw7HUn82ei+PLHkgpdvvactc
- FT87HfbIPr9qekc3eFMlCyzYFUkAozp4JrnpWL/9Shiu6gl2sBwlsHJMJZiggFozGbR/
- Xi7WQUguOYXmSBpnujz2hVNmakIvuNvZsNPuAi+LMEg5xNO5AIRAdnwirzM5ZxwZHC7W
- wzikMJ7DArOwJ32wV9HhHnjz8wEXG0U2sg5BWGs2GpNol9SL6N+Tf00bKzZ6wMIzjWzl
- wnEg==
+ bh=FTSbfE2LLbK4RUlSnjZZdILYXJWSwi+rjtYHlTnF9Ws=;
+ b=FYYgaZ0BKoRZ95xNz1raY7agbmQACyOu21e8/rFRA8KSzpu080gjTjvlmZ0PcLAcEO
+ J1iQZ5ySl7aKroPlPzIv/Bpn6/JXXYOt6ryU8c+ju88RLhgvM2h4lsviJrcevnNVUNtu
+ zbB+GDZUXUr8vkh6hwLLBHYihERA2N5zfYOlJ/VuJVHEKtvXiTuzDHy7M+qBNoRzsFWF
+ 9YK3L1nOoOpwkjGMOUVu/Zw3b4SzUQuYzxcUNaotbmmxRsK7rnTqmiG6TotyZZr8PHS9
+ t5e5dGttJ/gGeIxcWOGWO9O+vSx5nwh/KViW6G0tvgAIJTtOTRqGYQfD1axL1UKiNLsW
+ 25TQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzJ24QVWnf3/D+OMvzHZ/0zm0Tran1momMbgypJ4+/tneR4OK1kPiP1E4wCgbUcjKx99wFeMLHoPCF@nongnu.org
-X-Gm-Message-State: AOJu0YzVJqDKvBef3EVM1grtMsmUm+Vk4m8SVl88C2wJ1WZd6csS1PYC
- VHYfwOvcjK/6OyqqNmrKmsbR8KLjgIdcqQFtRpuNs6Gu8wJveDXIz2btADSkhl+nPok=
-X-Gm-Gg: ASbGncsobzpKln11CZepF99B/6z9BOGlSzGNBptD0FQO9bIeJ1oWb02Pqh76T3HYFJ/
- NQOsTLOOYPIBlUtEMHjLrRbwkwzfqtib5GV/bWymgePbGdaBCNkY6qUj8cSbVEDF/GzegHu1Vfr
- ypTEDPdLrEvgK8kASGm8gUofQ2io88umsWyIbwGUKdeB3u+mgxqXgAmxGSUaUPq0z3ukrJKm+FP
- DvPlD+Vc5aoYY+GlG1+YJNUXk2/YljTTwJGG4MLL/8bA/YdcPbrMSho/lV/7km4WRVNmKS7dRMY
- db2WUiBzfTYVTcghgsyRSedmSrj7W13EDAmt+cgcEzGpf2YZcRDd6UnVndq8r0xsBy9upIvID69
- YThIhujWXcsUABBs6wTWpyKTKbzqlMTXVVIdnw5ALK2YxMv9UyzV7cXTMQwkNUX2YMhIsvxxMpK
- hxdb1pNAdE+O9MPMzopg8KPAYnlmBOYmDY/1ANeLMJSmj80PPits4fFg==
-X-Google-Smtp-Source: AGHT+IEuQt8h5wc42vNwpic8oq4dRT9cyjEX4BG2PFOc5qu4yhmFvIfw+2DI9ZV84z+PylSGLVzKGA==
-X-Received: by 2002:a05:6000:2892:b0:42b:3155:21db with SMTP id
- ffacd0b85a97d-42cc1ac9d0cmr17946463f8f.2.1764107394658; 
- Tue, 25 Nov 2025 13:49:54 -0800 (PST)
+ AJvYcCVn+CwqrRt43x/C6ZnAYYK/Gx47YvFUD4u15gwUqYCzOMewcqlAcCv0d+AAzsUIgs0wnW4qdHU14iFw@nongnu.org
+X-Gm-Message-State: AOJu0YzYRFa4ifKgfChVv1KBdNQIHTiuO+OxYVoBgD3ulDb2Tu5aazx7
+ t3Iv6QNLoFO7c0VRZi7md/pm/jDJSUTOyQLvE8e7ObyNENrJMgwwBeoQfw8DrZngQZk=
+X-Gm-Gg: ASbGncsh7clmRP0LRypVkz/kqXf8CkRZmfiPkddacq/FmmUh2jafeAf0/Bi/5xiX12w
+ 94TVMuj6Pr/gzPsenr39grF2tdtQAbN/480B04fKnUiFrvjBtfpyYNg9KWOsglQmsi9HFrTnlz+
+ 8AdOcn4QrVO0QKX8rG9o23TZphA8NsLts9gLdAh5SA8KTfsfwuxDBdP7gGoskwsPWmu6RwJKaH5
+ x9n+3bOhvxxaUiE9oC+tP033nhxP6PPAxkTKBXxhV1uWXhRddDX6K4hieT+uQBOGUi6fm2I8sPK
+ G2lslZ1Bc+Y6SikxR+Yj593omZxUR3OxPPmtCg1HLTNDZHPFkRkXoMpNm6KgZ6DqyJ5T8zNf4lF
+ xk6fZcehYJcgKpedS1IXUBMi9LupyItE6CUhERiZpdQTVITjbJeC3P2eOunLyfcUDopOykLuBpb
+ GcG5l0hkjtMtAyRCbl2xSUMGMfvJroE79CK74mkGxzHyQkaLC3eU6HwQ==
+X-Google-Smtp-Source: AGHT+IF3rZGAu+jXI5RpuCWvLQzo0HR0iiZAGWtBuhRQbOyBo3eN789TTWPgzmKV2tJHco2nW19u0A==
+X-Received: by 2002:a05:600c:840f:b0:477:632a:fd67 with SMTP id
+ 5b1f17b1804b1-477c10d6d13mr194666975e9.12.1764107408712; 
+ Tue, 25 Nov 2025 13:50:08 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fd8e54sm37477274f8f.40.2025.11.25.13.49.53
+ 5b1f17b1804b1-4790b0c3a28sm8378165e9.9.2025.11.25.13.50.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Nov 2025 13:49:53 -0800 (PST)
-Message-ID: <aadded8e-c8e0-4ed6-af57-708477eea09b@linaro.org>
-Date: Tue, 25 Nov 2025 22:49:52 +0100
+ Tue, 25 Nov 2025 13:50:08 -0800 (PST)
+Message-ID: <629271fb-325b-4c15-a036-03b3a3f97338@linaro.org>
+Date: Tue, 25 Nov 2025 22:50:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replay: Improve assert in replay_char_read_all_load()
+Subject: Re: [PATCH] machine: Provide a description for aux-ram-share property
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20251124173407.50124-1-peter.maydell@linaro.org>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Eduardo Habkost <eduardo@habkost.net>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20251124191408.783473-1-peterx@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251124173407.50124-1-peter.maydell@linaro.org>
+In-Reply-To: <20251124191408.783473-1-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
@@ -102,23 +104,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/11/25 18:34, Peter Maydell wrote:
-> In replay_char_read_all_load() we get a buffer and size from the
-> replay log.  We know the size has to fit an int because of how we
-> write the log.  However the way we assert this is wrong: we cast the
-> size_t from replay_get_array() to an int and then check that it is
-> non-negative.  This misses cases where an over-large size is
-> truncated into a positive value by the cast.
+On 24/11/25 20:14, Peter Xu wrote:
+> It was forgotten when being introduced in commit 91792807d1 ("machine:
+> aux-ram-share option").
 > 
-> Replace the assertion with checking that the size is in-range
-> before doing the cast.
-> 
-> Coverity complained about the possible overflow: CID 1643440.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 > ---
->   replay/replay-char.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> v2:
+> - Fix spelling, s/auxilliary/auxiliary/ [Fabiano]
+> ---
+>   hw/core/machine.c | 2 ++
+>   1 file changed, 2 insertions(+)
 
 Queued, thanks.
 
