@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A49C831AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 03:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D332C831C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 03:37:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNium-0002qb-Qb; Mon, 24 Nov 2025 21:36:24 -0500
+	id 1vNiuy-0003Ss-W9; Mon, 24 Nov 2025 21:36:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vNiui-0002in-83
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:20 -0500
+ id 1vNiuw-0003Md-Gt
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:34 -0500
 Received: from sender3-pp-f112.zoho.com ([136.143.184.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vNiug-0001CT-9m
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:20 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1764038160; cv=none; 
+ id 1vNiuv-0001E4-4q
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 21:36:34 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1764038164; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=NRqG3/bUvBJRfhIna1I/Jh5l5vVfvKQtGIsCyuDcZbcl2slbGKACSrRqGiWy5mJ7HHaRdyciqVv4/X1u30QLs8q4hCW4q+WBLRruFk+vKTy1OX4dJaKbQaTWNU1OlrZWH88IZn8zfZFe/rc0EV4F20MPjMQUuQGbs9Nx0TBCpEo=
+ b=G7ZtT9ZAuZFKKXHD/K436s+MkqAiaWifq0EVqXgzsmhREA5SGWKIkRfGyhtt4YG5vUojqoPhUrPRTGp3bjj+suCDoXCOYv58y+n70j9oh2/M2t0QPMqEdfltlDABOgZVFcDJpIdmFXpf4dSD7Fs6LiopgMtjo0dqprufu6V/6MQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1764038160;
- h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=TWjXptODUE9iE97vxg/t/WNsee0KyUNAHHQKvnF0Cz0=; 
- b=lWvHRdCvXfWlbW46KyC24c8Z+HXLVTDUVrdhWGr7JixpYkLMQSrVanuKbkq5aEcjifSTWp50kc0TsVdPtZnYUyhYDOj57ne6P+CO0uLWgvZVfMzuHflZXEJyGU4MZNdR7ZriJw37Y+bEZ+qhIYZdhouhfKsi9cGyD/ezkWxwYrs=
+ s=zohoarc; t=1764038164;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=M+QsIdkAhKvVwkgoOhL8/NGlqmlwulOUOE73wzYsFGo=; 
+ b=mpFsujJHWmv4Wev0gokwBysvaxz03Ww0eNYkhUhMPimhkJJhBaPu4h6IBvIadZdBK4/6Yp2tAYCJpxBHLG6JU9HgxKLHdzqE/Lh6K6X64pR06/GT9MULUycAU43heAXWo+kS687H3BUYwvw6UyRt2Wf+CRurGLza7VTI06nL8c4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764038160; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764038164; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=TWjXptODUE9iE97vxg/t/WNsee0KyUNAHHQKvnF0Cz0=;
- b=Y3efbHCuWQ8OT45eIhGj68zSg9RgdN/5Y4N6UMOysUI+RacHkdiZSTKL98DydWr2
- taif6Eo2v4Iqk9V+X0EKU94Nycldc0XfmTYHnEZfgBROPMJDZc+3ISbkFmkFwDCORqq
- dkigb5PexzLYd77NAnhHA7Yu8srdn/DvA7Y1dDM0=
-Received: by mx.zohomail.com with SMTPS id 1764038158157472.34627530265755;
- Mon, 24 Nov 2025 18:35:58 -0800 (PST)
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=M+QsIdkAhKvVwkgoOhL8/NGlqmlwulOUOE73wzYsFGo=;
+ b=EHfzBDoch4Yq5KHba6YCb32+byoRvVGOXp3Uglvs1i9NvLp867oMozvja6v90aVE
+ kE18zYJVN7a/tZEY5DYj7UBoEFgrj17wuSC5PC2oKhQ8HzV/XOJee1sNnKu6P5Bk2Ad
+ Z+EOYYooSTtpeg+8D/tug/RFN0g7faAGKwQAKw6A=
+Received: by mx.zohomail.com with SMTPS id 1764038163265791.727273863963;
+ Mon, 24 Nov 2025 18:36:03 -0800 (PST)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Huang Rui <ray.huang@amd.com>,
@@ -60,11 +60,13 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Robert Beckett <bob.beckett@collabora.com>
-Subject: [RFC PATCH v4 0/7] Support mapping virtio-gpu virgl hostmem blobs
- using MAP_FIXED API
-Date: Tue, 25 Nov 2025 05:35:10 +0300
-Message-ID: <20251125023517.177714-1-dmitry.osipenko@collabora.com>
+Subject: [RFC PATCH v4 1/7] virtio-gpu: Remove superfluous
+ memory_region_set_enabled()
+Date: Tue, 25 Nov 2025 05:35:11 +0300
+Message-ID: <20251125023517.177714-2-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251125023517.177714-1-dmitry.osipenko@collabora.com>
+References: <20251125023517.177714-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
@@ -93,63 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Virglrender got a new unstable API that allows mapping host blobs at a given
-memory address using MAP_FIXED mmap flag [1]. Usage of this new API brings
-major performance and stability improvement for venus and drm native contexts,
-see commit message of the RFC patch for details.
+There is no need to explicitly enable/disable memory region when it's
+added or deleted respectively. Remove superfluous set_enabled() calls
+for consistency.
 
-Sending early to collect review feeback and have patch prepared by the
-time new version of libvirglrenderer will be released with the stabilized
-API.
+Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+---
+ hw/display/virtio-gpu-virgl.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-[1] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1374
-
-Based-on: 20251116125641.2255794-1-dmitry.osipenko@collabora.com
-
-Changelog:
-
-v4: - Addressed v3 review comments from Akihiko Odaki.
-
-    - Dropped patch making resource_unmap() error reported as a host
-      failure instead of guest and added patch improving resource_map_blob()
-      error reporting.
-
-    - Re-added CONFIG_WIN32 checks.
-
-    - Added clarifying comment to virtio_gpu_virgl_reset() RE unsupported
-      context restoring.
-
-v3: - Addressed v2 review comments from Akihiko Odaki.
-
-    - Droped check for CONFIG_WIN32. My current understanding that
-      MAP_FIXED is supported by Cygwin.
-
-    - Added new patches resetting virgl resources, validating hostmem
-      offset and improving error-handlings.
-
-    - Added r-b from Akihiko Odaki to the frist patch and t-b from
-      Yiwei Zhang to the map_fixed patch.
-
-v2: - Addressed v1 review comments from Akihiko Odaki
-
-    - Added patch that removes unnecessary memory_region_set_enabled(),
-      suggested by Akihiko Odaki
-
-Dmitry Osipenko (7):
-  virtio-gpu: Remove superfluous memory_region_set_enabled()
-  virtio-gpu: Validate hostmem mapping offset
-  virtio-gpu: Improve virgl_cmd_resource_map_blob() error handling
-  virtio-gpu: Make virtio_gpu_virgl_unmap_resource_blob() return -1 on
-    error
-  virtio-gpu: Destroy virgl resources on virtio-gpu reset
-  virtio-gpu: Make virtio_gpu_virgl_init() return -1 on error
-  virtio-gpu: Support mapping hostmem blobs with map_fixed
-
- hw/display/virtio-gpu-gl.c     |  49 +++++++++-
- hw/display/virtio-gpu-virgl.c  | 172 +++++++++++++++++++++++++++------
- include/hw/virtio/virtio-gpu.h |   8 +-
- 3 files changed, 195 insertions(+), 34 deletions(-)
-
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 80f71c0b66aa..a6860f63b563 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -139,7 +139,6 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
+     mr = &vmr->mr;
+     memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
+     memory_region_add_subregion(&b->hostmem, offset, mr);
+-    memory_region_set_enabled(mr, true);
+ 
+     /*
+      * MR could outlive the resource if MR's reference is held outside of
+@@ -201,7 +200,6 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+         b->renderer_blocked++;
+ 
+         /* memory region owns self res->mr object and frees it by itself */
+-        memory_region_set_enabled(mr, false);
+         memory_region_del_subregion(&b->hostmem, mr);
+         object_unparent(OBJECT(mr));
+     }
 -- 
 2.51.1
 
