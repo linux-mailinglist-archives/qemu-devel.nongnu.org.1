@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C28AC834BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 05:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB812C834C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 05:03:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNkG4-00042c-Gj; Mon, 24 Nov 2025 23:02:28 -0500
+	id 1vNkGC-0004Du-Oz; Mon, 24 Nov 2025 23:02:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkF3-0003Ne-0G
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:26 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkF4-0003OW-O5
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkF1-0006a2-6L
- for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:24 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vNkF2-0006aY-Oe
+ for qemu-devel@nongnu.org; Mon, 24 Nov 2025 23:01:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764043282;
+ s=mimecast20190719; t=1764043284;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PsMqp42P0eWC8LwVRaEZc6EgL2uVQhr8jyxUpus9tc8=;
- b=SWFP4tLBE/AO3IV87bdzHBk7QdoIFDEZceNXgGUY/lKVTMRRHdAkxyu3pifJinpnjusbW6
- 3/3Tc/FD2N+M4bS5r+R5xRsXVmDCO+cxfIlGFDeFlKBFkVnMICdOs1GFZE0tbFRJ+KYF0O
- dEVnEgh5FlROYG3D+H+cP8FWSkHgS10=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=5aORpbOHQiUD7YIZYk9l72cbOqn2me+6oKpQYUYaXHk=;
+ b=YQW7LCjUg5000GklqW5IqF9JvpcE9TNVm43xsB1Jqp3lMRS+5LYN3XoggEnQGjt3h/owWM
+ VK94ylC7HnCz7xwOhVySdRUVdnN+1Ei90Ot1P0RyLtse9EegqScXcq2Mhs/m0T9OnR3BPj
+ 8p6TWkEHZn0HIqXuT/AlXjRt42hwxjI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-tGy_Ifj9MEy_yEBPROQYKA-1; Mon,
- 24 Nov 2025 23:01:17 -0500
-X-MC-Unique: tGy_Ifj9MEy_yEBPROQYKA-1
-X-Mimecast-MFC-AGG-ID: tGy_Ifj9MEy_yEBPROQYKA_1764043276
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-RaAQrgpUMTS2wpPALZPLVQ-1; Mon,
+ 24 Nov 2025 23:01:20 -0500
+X-MC-Unique: RaAQrgpUMTS2wpPALZPLVQ-1
+X-Mimecast-MFC-AGG-ID: RaAQrgpUMTS2wpPALZPLVQ_1764043279
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BFBB6180034A; Tue, 25 Nov 2025 04:01:16 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECD641954B21; Tue, 25 Nov 2025 04:01:18 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.114])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C0EF118004D8; Tue, 25 Nov 2025 04:01:14 +0000 (UTC)
+ id 00FE41800451; Tue, 25 Nov 2025 04:01:16 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -54,9 +54,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 11/16] tests: run 'make check-venv' for crash tests
-Date: Mon, 24 Nov 2025 23:00:39 -0500
-Message-ID: <20251125040045.461148-12-jsnow@redhat.com>
+Subject: [PATCH v2 12/16] python/mkvenv: add mechanism to install local
+ package(s)
+Date: Mon, 24 Nov 2025 23:00:40 -0500
+Message-ID: <20251125040045.461148-13-jsnow@redhat.com>
 In-Reply-To: <20251125040045.461148-1-jsnow@redhat.com>
 References: <20251125040045.461148-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -71,7 +72,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.075,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,40 +88,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The device crash tests aren't expressed in the meson dependency system,
-so we manually install the necessary test dependencies here.
+Currently, we "implicitly" install the local 'qemu' python package for
+'make check-venv' with some logic inside tests/Makefile.include. I would
+like to make this installation explicit in pythondeps.toml instead.
+
+The version constraint specification that Python specifies does not
+support relative paths, so it is difficult (or impossible?) to specify a
+path within the source tree, and we will need a workaround to do so.
+
+By specifying a package name that starts with $SRCROOT, you can now
+specify a file path to a local package for installation. This is done to
+allow us to install the python packages hosted inside of the tree while
+also processing dependencies; i.e. so that our "qemu" package can
+specify that it needs "qemu.qmp", which soon will not be included in
+qemu.git.
+
+This also has the benefit of being able to specify in a declarative
+configuration file that our pyvenv environment *will* have our local
+python packages installed and available without any PYTHONPATH hacks,
+which should simplify iotests, device-crash-test and functional tests
+without needing to manage local inclusion paths in environment
+variables.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ python/scripts/mkvenv.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 97bddbffb40..92ed0369302 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -99,9 +99,9 @@ crash-test-debian:
-       artifacts: true
-   variables:
-     IMAGE: debian
-+    SETUP_CHECK_VENV: 1
-   script:
-     - cd build
--    - make NINJA=":" check-venv
-     - pyvenv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
- 
- build-system-fedora:
-@@ -156,9 +156,9 @@ crash-test-fedora:
-       artifacts: true
-   variables:
-     IMAGE: fedora
-+    SETUP_CHECK_VENV: 1
-   script:
-     - cd build
--    - make NINJA=":" check-venv
-     - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-ppc
-     - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-riscv32
- 
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index a22e3ee3394..e38292b63a6 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -736,6 +736,10 @@ def _do_ensure(
+     present = []
+     canary = None
+     for name, info in group.items():
++        if name.startswith("$SRCROOT/"):
++            srcroot = Path(__file__).parents[2]
++            absent.append(name.replace("$SRCROOT/", f"file:///{srcroot}/"))
++            continue
+         constraint = _make_version_constraint(info, False)
+         matcher = Matcher(name + constraint)
+         print(f"mkvenv: checking for {matcher}", file=sys.stderr)
 -- 
 2.51.1
 
