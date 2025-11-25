@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A504EC87414
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E2EC87426
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:50:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0u4-0001ko-FB; Tue, 25 Nov 2025 16:48:52 -0500
+	id 1vO0u4-0001nC-MG; Tue, 25 Nov 2025 16:48:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tq-0001dB-9S
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:40 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tx-0001hE-5F
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:46 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0to-0005G3-TF
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:38 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso1987045e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tv-0005H9-Hl
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:44 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-42b3108f41fso3665224f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107315; x=1764712115; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764107322; x=1764712122; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2IIA1n/JeVNTSE3MnCSqO40c5B5NHTi2Pu8G8dVM3fg=;
- b=DK9gyFtYGUptN5JIlTsiglym8aQelzQop5CrgGaODWG1JJ8WlDTSigICrKHxOvVdaE
- fdc40mRjW21rsZ+YhzALSue36K5CD7wSxAZeH0IV/ru2Q/Azk5JAbdBfYfzMl1N2sqLe
- 8a2cNB1uDHGahv7c3weDXvHxxmKGB8fuhWthvJdl2WKSAQHVIyKtOMgrRN6Gb6hZfOSF
- 9Af8kqg927LIVtUcx1gxERzBdXSG7ZBvkyz/nSgDJUlftizknevLjxt6q6U5ijecIIOx
- v+l1zct4Ngtopzk32VVwvcekGARMh5S0UUl1TZl57h0LkF51pm9X32SoaNoRRVXdtmlk
- o/Cg==
+ :reply-to; bh=yYI88q2Amny+q3PiM3TiKWYQwpqS2W1DuHTcySN9NwY=;
+ b=SmSuNi4vh50TTNX+uoji/rkPQ9sAsDYfG0WCJEzNjMO+tWvBn4a3M6qhT+qWZlutRX
+ dxeiQaeUN8uWEIcNAHg0uAoiXV7x2CQ61qXbrhl7aj2/D4P9qNHlJeVbbFcfUmBDv/nf
+ dqpOVPpNrCebtfByJZY4AO+TdiM7HsuVN0lEFb2qoOBVIsnv/rxddMH1k5pmxhWFkQw4
+ QgM45TrpTFkUFMJ7TKEJDl44VyhwkxOP250TQ1h2GJD26ojAW6nUxKVEynG1VuiMiGI8
+ ar0i5XZjtcItJuJCYS3LEo5HKZTbuF2MV1simGbxcXAZGVqK++QmqbxbABnss6BMPXXF
+ 5rqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107315; x=1764712115;
+ d=1e100.net; s=20230601; t=1764107322; x=1764712122;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=2IIA1n/JeVNTSE3MnCSqO40c5B5NHTi2Pu8G8dVM3fg=;
- b=IQ4wdt/jsgdbAMu32Lf8XjrROF9t2LHSlSyjlLSaVgJEnLzMcmPNJOXslVAC71UE9o
- muBJ/eMcpTOu+7R5RE1mWnWJxs00AOupJYSspQIdcoPZKdMtmaNZjBwDVVjzTYv+9qLA
- Y0dpr7yOpFCXszRrEmjJhKBEYiGw6EM/2QZKqyq/LBzNCYzfLIsy95kxqmYJ2UdBm4AZ
- elabZpwh/UqrVp6kIy8RYKMU1lrCWWWOHY0i+PlZGBPLokOuThtncYbKLCOW8caMqHbw
- tYfdQ2oMNJjLJpVlxen/PXmrpvQs5joZzlj48EAqsFrJ+iqZEsF9vzaxrYVfSo6YZfnh
- 9b8Q==
-X-Gm-Message-State: AOJu0YybXEetY0oZjr4cPscqqGx5JD+wp5CHHLe/SSwkCyRQmR6gCqwV
- lrsUJ3ANkBdbUSyFMyttBoziNLaqAXlg/Bu/JCNDJ6PBOHef1mD1TKEMT/8ikzpbiYARybCRZam
- r9fIfgc21KQ==
-X-Gm-Gg: ASbGncuzLdUjkVLOHA4TAe5X8vTbLW2zxfXpyXt9Tu7wd+nWOsgiMMHLHSdUQ7UCoNd
- FZdeZYiFlti7K8txls6p+xCwPbhUtMGTyreNm8oW4sECcbMCVF+MHiG12SHSI9uXzgdVxOKgfFc
- I6Cwg6xPniPGzR0mUuQJPgZcnk5BN7Pizoaz/hiXqQd3J1B9POwXoiNpuROKvtccLbYLJ0QmyxY
- tt2Oa2CtRWXc00fKqJfx2VYJs/5kzYG9290ve96kz3TEYxyZBM39/jY3ioON3F7KA2D9KRpjSy3
- XhuVY0PqiluZBuK9lRsNoOQU34jZvDT/dwobYFS7k1FYXPS3m+lXVIjvXJEx1UN/tBRv8Qlmv1U
- Epk0I11lWAEt31MnDhDwrLldQ6961eyVzBOn/I8REWKFoYQIGcvuzlJPoSmn8VQoa8oHV1QjU6Q
- Whcv8BWo0atT8m13+3/iXll3jqHj0qjNMwBoDxIhNo1I0IYsZv+WCcdfVHhPfu
-X-Google-Smtp-Source: AGHT+IEfVTUvQhtQTuSC2MmzPnYvCRU03lW+LIg6HIWrEAfrr1QSJC0shvbZkCh2K+RIDvxIGRGy6A==
-X-Received: by 2002:a05:600c:4eca:b0:46f:a2ba:581f with SMTP id
- 5b1f17b1804b1-477c0540a68mr186355435e9.16.1764107315126; 
- Tue, 25 Nov 2025 13:48:35 -0800 (PST)
+ bh=yYI88q2Amny+q3PiM3TiKWYQwpqS2W1DuHTcySN9NwY=;
+ b=xSMipOLqmBXFy7Tz0JTDMvNlptp445UewT7cE2Jn2vfzteNBJ+v9FkRgphSWbdA4Ox
+ SpaOLUINArrlOQo47EeEp1SwtPlGe06UILRSwriest4kX9K6P9TZ0OFlDHxs43d8tYRv
+ UfxTpmXt2lib9/RNuwWqhgncvLQeMl3Tm35RmV3Qiye659jBoLlJhJrvXNc+i1g9wCKY
+ LZDQ4CIxmssBX+75LUVzIqa6dWninknXrtk0vGp08JbQ40NTzMKMjVeKU4eahpQacyhA
+ 7//lv6Vj1xt7rHRbcY0iUXZQQ9tCOXgtmblvg0XQPzqpLbzXJUZqclVJiu/Fz+G2wwqu
+ oyXg==
+X-Gm-Message-State: AOJu0Yy0OCRkqb3w27B31DNqmkxeHxm6jaqKPdWryrBEuPLvnmyurrbg
+ rgxnh2GuQ4jOy6DvXirmZPucw3y+b4Gwm2HFSmQIXyh4JYMjwrSngvJbOE6deyVxNGWZymdLkMh
+ d9hdE9K8tzQ==
+X-Gm-Gg: ASbGncv5X5zCCbLFT0hHITt9CG5s/0OT9lZxIwXSvWYZu+OjE7KXNSgeJoIKezuslhv
+ aR7YyivDC9d4pBFmTvL3lKS+RHci7LhJdsIVH/+Zd/ly9aj2aLiBXJ668zclglHPIObGGWwHEwm
+ ksFuGbVPraiTlY1l/XehCyxoMTn9D2zIMjjS0rb1w7I2ZGRe2CvMOAFeSFNBV9HnlV2ms65WCcx
+ s1Tb8/Vmo6QbS6JrtGLXtSjxmoSvE901425j0uRBDrpzcdQb+yb4YR+qnDKBJ05H/NNZWS2s8Fo
+ AZQCkRUx0g1WWD9VLHR7w6DQOLRMnAzHhkWWYFFGT3EMC+GwzV9z1G9F6eLDLpJ6ae/iBYh0Qn7
+ ztnEciZ7YAh4n07v5S9ypWdI63oOHsgP7d79LN1RiRpjgMhFhYE0O9cDrewRaKcGjsKB7bZDN9B
+ LqmFx/I2sMcS+88tHlfDQP//28AZ8pGGcJVW5KySruOsMdwamJwWzEx6c3XTO6
+X-Google-Smtp-Source: AGHT+IEVsi29xYCDE8Xh1aRgNa1WVxJgBHTr/5YXbcEjTsxY2kkQbjI2VGQBLzHmSKoyt1L/lyMmIg==
+X-Received: by 2002:a05:6000:2484:b0:42b:4061:23f3 with SMTP id
+ ffacd0b85a97d-42cc1d0cfb8mr17357542f8f.44.1764107321726; 
+ Tue, 25 Nov 2025 13:48:41 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f3635bsm37135940f8f.17.2025.11.25.13.48.34
+ ffacd0b85a97d-42cb7f34ff3sm37401920f8f.16.2025.11.25.13.48.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 13:48:34 -0800 (PST)
+ Tue, 25 Nov 2025 13:48:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/9] hw/usb: Convert to qemu_create() for a better error message
-Date: Tue, 25 Nov 2025 22:47:56 +0100
-Message-ID: <20251125214802.1929-5-philmd@linaro.org>
+Subject: [PULL 5/9] hw/scsi: Use error_setg_file_open() for a better error
+ message
+Date: Tue, 25 Nov 2025 22:47:57 +0100
+Message-ID: <20251125214802.1929-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125214802.1929-1-philmd@linaro.org>
 References: <20251125214802.1929-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,39 +102,41 @@ From: Markus Armbruster <armbru@redhat.com>
 
 The error message changes from
 
-    open FILENAME failed
+    vhost-scsi: open vhost char device failed: REASON
 
 to
 
-    Could not create 'FILENAME': REASON
+    Could not open '/dev/vhost-scsi': REASON
 
-where REASON is the value of strerror(errno).
+I think the exact file name is more useful to know than the file's
+purpose.
+
+We could put back the "vhost-scsi: " prefix with error_prepend().  Not
+worth the bother.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251121121438.1249498-3-armbru@redhat.com>
+Message-ID: <20251121121438.1249498-7-armbru@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/bus.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ hw/scsi/vhost-scsi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index 8dd2ce415eb..714e33989f4 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -259,10 +259,9 @@ static void usb_qdev_realize(DeviceState *qdev, Error **errp)
-     }
- 
-     if (dev->pcap_filename) {
--        int fd = qemu_open_old(dev->pcap_filename,
--                               O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
-+        int fd = qemu_create(dev->pcap_filename,
-+                             O_WRONLY | O_TRUNC | O_BINARY, 0666, errp);
-         if (fd < 0) {
--            error_setg(errp, "open %s failed", dev->pcap_filename);
-             usb_qdev_unrealize(qdev);
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f86..239138c9316 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -245,8 +245,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+     } else {
+         vhostfd = open("/dev/vhost-scsi", O_RDWR);
+         if (vhostfd < 0) {
+-            error_setg(errp, "vhost-scsi: open vhost char device failed: %s",
+-                       strerror(errno));
++            error_setg_file_open(errp, errno, "/dev/vhost-scsi");
              return;
          }
+     }
 -- 
 2.51.0
 
