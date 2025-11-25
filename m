@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46ED5C849DC
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B26C849DD
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 12:03:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNqoU-0006pz-Lx; Tue, 25 Nov 2025 06:02:26 -0500
+	id 1vNqoV-0006qV-KM; Tue, 25 Nov 2025 06:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <karolina.stolarek@oracle.com>)
- id 1vNqoR-0006p4-Jc
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 06:02:24 -0500
+ id 1vNqoT-0006pV-4u
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 06:02:25 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <karolina.stolarek@oracle.com>)
- id 1vNqoO-0002Xh-Da
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 06:02:23 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ id 1vNqoR-0002Y3-2c
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 06:02:24 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5AP9nBIB2432768; Tue, 25 Nov 2025 11:02:14 GMT
+ 5AP9d0Ij2343197; Tue, 25 Nov 2025 11:02:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=corp-2025-04-25; bh=lIU7bVAVh2zwKOqV/8tckugqCU2PX
- FlIxOGtPHimQSU=; b=OseoEs5YvNyavcL0YJoQYoCa5lJ6MMIQ9qeTYSSCZYv6i
- e43dYB7OPWDVbGeUWCTGVsNpdA5gZqCTQiBuprHdipc+TQE+Gr8y7f/WhiT6fRmc
- 0UQJOQxOEUOU7opbvo1IzUaklLa1UiFp6PBt30lY9iJHclAdUUMGajOH9W7Tve3Y
- rMJ4UU1UGvDPgjJpJiatvuhrXzRbSV44IODO2Ju09/w9yb94Hmk9tjadwv4rvhzb
- CH35vFXfOrSREFNaLvHNhows9LCf7duJTl1MISO9Iq3yHoe4cjEvCW3Q7eJkYbmd
- afJd6Iw/aNqqkV6qa0w5WnJvgdt/NLz8SxNyI+QeQ==
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=2IL7f
+ WSkuGVtB209eIsl+i65aA2L0+KHjioP8RXDI0c=; b=PUuilfqo6kiFMQA8YL9XD
+ Wl3OdxJGuhd7sT9PHxASU4pAZP16LRkgULc1ItMHcxrE9dYwjjyQh/0HWSZthPeV
+ hfr6VsPEgCMu9xF4zIzCbzGJx5dqQVZwihhdApb9/7SyQ14eELaoaqpiNw98179S
+ zuNVvPY0GIel5Df7XBsekimWibxGgUetOUWRheD7J/f4BzFD3EsXC9H0MwH3lUUB
+ FGeeWj+pB8zViCW4ZmZHMcCnI04MmIcD9mQPnGsbsOdJfTZ5lagZ14kE3263mQmg
+ SNs/fkxKPMqNV40SbXEUuCWUHfqd/8K54z97M9ziHUaUXAdNgyvFMLIAwdBb5cCS
+ w==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak7yccf29-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak8fkceew-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 25 Nov 2025 11:02:14 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5APACM8t022625; Tue, 25 Nov 2025 11:02:13 GMT
+ with ESMTP id 5APAYlmu022517; Tue, 25 Nov 2025 11:02:13 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4ak3mkbqhs-1
+ 4ak3mkbqhx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 25 Nov 2025 11:02:13 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5APB2C32034162;
- Tue, 25 Nov 2025 11:02:12 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5APB2C34034162;
+ Tue, 25 Nov 2025 11:02:13 GMT
 Received: from kstolare-e5-ol8.osdevelopmeniad.oraclevcn.com
  (kstolare-e5-ol8.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.20])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 4ak3mkbqd7-1; Tue, 25 Nov 2025 11:02:12 +0000
+ 4ak3mkbqd7-2; Tue, 25 Nov 2025 11:02:12 +0000
 From: Karolina Stolarek <karolina.stolarek@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  Mike Christie <michael.christie@oracle.com>
-Subject: [PATCH 0/2] virtio-scsi: Flexible max_target and max_lun params
-Date: Tue, 25 Nov 2025 11:01:49 +0000
-Message-ID: <cover.1763999544.git.karolina.stolarek@oracle.com>
+Subject: [PATCH 1/2] virtio-scsi: Make max_target value configurable
+Date: Tue, 25 Nov 2025 11:01:50 +0000
+Message-ID: <dcb4ca40497dd88f27b345c708402885abdad776.1763999544.git.karolina.stolarek@oracle.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1763999544.git.karolina.stolarek@oracle.com>
+References: <cover.1763999544.git.karolina.stolarek@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
@@ -73,20 +76,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 suspectscore=0 malwarescore=0 phishscore=0 mlxscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2510240000 definitions=main-2511250090
-X-Proofpoint-GUID: ryIjEZrPZvBHHnouHmxdR_zYESpEZVPO
-X-Proofpoint-ORIG-GUID: ryIjEZrPZvBHHnouHmxdR_zYESpEZVPO
-X-Authority-Analysis: v=2.4 cv=RofI7SmK c=1 sm=1 tr=0 ts=69258cb6 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=f4RFxeyM c=1 sm=1 tr=0 ts=69258cb6 b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117
  a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=l41FGJVa9rJyDwB8ZTwA:9 cc=ntf awl=host:13642
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA5MCBTYWx0ZWRfX6VAo+oa+m15B
- mCxNEgVR7Kn94dhII1Q7uas8LtRaseDVyCuTlPRyV2u8xkAW0NEm60ARTXQ5BhW4OTXdYXz/dp3
- Nx3ThfzDcItdbfFdE88xlkuQFuypzrjtH7j2AVI99NNGtsD7fPgnYEXlLzic8mcVJaYxEt2TgMp
- j0ww2ulh6jD+U7o8aJ2rakxe1nai/D7Wk+Kxemgn9x2RaNBqLxFGdSRtduLiyvdl6bbGc7XHazd
- 6YsSJOsKdXyTWjsHlyS9BHJ0SdJAIkTAsKPguu4NEKMkg4rpkyvde1Cja+sUhd+PlCxTlijdXpW
- YdHdeLAwiMQSEE19fyN1e53Ajayne/guY3Tk5ae4IV7R0JBvXqnUwJ1PhxeRIEXN5K9sJ889B/u
- g6PXYgyLOlgTuwhQcMjfkNF5rYvSeoDABV04spF376yl1eLA5QE=
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=SfbrKk1LSQ83uD6wbeEA:9 cc=ntf awl=host:13642
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA5MCBTYWx0ZWRfX5nB+ETjlOUvz
+ xlDE0xvs4Yj2rYawd3x8o0c0vtOy8kROjLc8WWIEpM5kRZbDQa+RCTxEbV8YuyWAPLUehrys4TI
+ fJv7e1jK+3guXLQhOucWWd9ozi/OakcTjORyNzOfP9MS6XNFMLuzQqz5VmhtnyBuPl1s5DQD0o9
+ iOgAIuLQ19+blwfS676+1kNhqWYmKDY4y18mLhR+n3SJo1g1+qISsRIzSkvVe3C3rGt+NrcCU7y
+ 5/+rkbIqhBUdAq9Pa/0n64mkqiYF4w7svAbZXtqGqoYn+VQkxZIJj5AC/N90CIf/lERKcbQ0Wk5
+ sOO2rGe86nORsq4K1fh2Ap/mmaj/y5jdEXk6m/vmKjsEJL7QUtBTKK11MzpfbT3hIGLZTXuO3j2
+ qSdQhA8TYV7Ut98I5Rrvo0zavZ7lL630G+zxzU+/22TqoJ1GRWg=
+X-Proofpoint-ORIG-GUID: GQ2F9XQmeRkOQveiHHsyLXVYijOZiOyY
+X-Proofpoint-GUID: GQ2F9XQmeRkOQveiHHsyLXVYijOZiOyY
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=karolina.stolarek@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -112,75 +115,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the maximum number of targets is set and dictated
-by virtio-scsi. On probe, the driver walks through all possible
-targets to discover which of them are available. In the process,
-it sends INQUIRY commands to request device information, also
-querying devices that don't exist. This can be observed in
-a guest with a single scsi-hd device and verbose SCSI logging
-enabled:
+In virtiscsi_probe(), virtio-scsi enumerates all possible
+targets, up to VIRTIO_SCSI_MAX_TARGET, to see which of them
+are available. This means that during that scan, the initiator
+queues up INQUIRY commands to the targets that do not exist.
+Such inquires fail, returning a BAD_TARGET response.
 
-scsi 0:0:0:0: scsi scan: REPORT LUN scan
-scsi 0:0:0:0: scsi scan: device exists on 0:0:0:0
-scsi 0:0:1:0: scsi scan: INQUIRY pass 1 length 36
-scsi 0:0:1:0: scsi scan: INQUIRY failed with code 0x40000
-(...)
-scsi 0:0:255:0: scsi scan: INQUIRY pass 1 length 36
-scsi 0:0:255:0: scsi scan: INQUIRY failed with code 0x40000
+Currently, there is no way to limit the number of possible
+targets or to finish the scan earlier. Add "max_target"
+option for virtio-scsi and vhost-scsi devices to provide
+a hint on the number of targets available for scanning.
 
-In the vhost-scsi backend, without the kernel patch [1], the issue
-is far more noticeable. Each command queued up for a non-existing
-target triggers vq_error(), registered by
-vhost_virtqueue_error_notifier(), resulting in a flood of
-"vhost vring error in virtqueue X" messages when booting up a VM.
-Even with the [1] patch in place, we are still sending commands
-to phantom targets with no way of limiting the scan. The first
-patch in the series addresses this issue by introducing "max_target"
-property for virtio-scsi and vhost-scsi devices. A user gets
-an option to specify how many targets are used by the guest,
-and to stop scanning before hitting VIRTIO_SCSI_MAX_TARGET.
+Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
+---
+ hw/scsi/vhost-scsi.c            |  2 ++
+ hw/scsi/virtio-scsi.c           | 42 +++++++++++++++++++--------------
+ include/hw/virtio/virtio-scsi.h |  1 +
+ 3 files changed, 27 insertions(+), 18 deletions(-)
 
-A similar issue can be seen with Logical Units in the existing
-devices. By default, the SCSI Host Adapter instance expects
-8 LUNs, and some drivers assume this to be the actual number
-of exposed LUNs. This results in executing SCSI commands that
-refer to non-existing Logical Units. This can be easily observed
-when using vhost-scsi backend, as such messages appear in
-the host's dmesg when booting up a guest:
-
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000001 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000002 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000003 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000004 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000005 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000006 from
-naa.5001405277e02c68
-TARGET_CORE[vhost]: Detected NON_EXISTENT_LUN Access for 0x00000007 from
-naa.5001405277e02c68
-
-The second patch provides a way to say how many LUNs are actually
-there by setting "max_lun" property in virtio-scsi and vhost-scsi
-devices. If neither property is defined, max_target and max_lun are
-set to the default values, making these definitions optional.
-
-----------------------------
-[1] -
-https://lore.kernel.org/virtualization/20250607171815.111030-1-michael.christie@oracle.com/T/#u
-
-Karolina Stolarek (2):
-  virtio-scsi: Make max_target value configurable
-  virtio-scsi: Make max_lun value configurable
-
- hw/scsi/vhost-scsi.c            |  4 +++
- hw/scsi/virtio-scsi.c           | 46 +++++++++++++++++++--------------
- include/hw/virtio/virtio-scsi.h |  2 ++
- 3 files changed, 33 insertions(+), 19 deletions(-)
-
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f8..1a4860a72f 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -353,6 +353,8 @@ static const Property vhost_scsi_properties[] = {
+                        128),
+     DEFINE_PROP_BOOL("seg_max_adjust", VirtIOSCSICommon, conf.seg_max_adjust,
+                       true),
++    DEFINE_PROP_UINT16("max_target", VirtIOSCSICommon, conf.max_target,
++                        VIRTIO_SCSI_MAX_TARGET),
+     DEFINE_PROP_UINT32("max_sectors", VirtIOSCSICommon, conf.max_sectors,
+                        0xFFFF),
+     DEFINE_PROP_UINT32("cmd_per_lun", VirtIOSCSICommon, conf.cmd_per_lun, 128),
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 93e87c459c..091f68090e 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -971,7 +971,7 @@ static void virtio_scsi_get_config(VirtIODevice *vdev,
+     virtio_stl_p(vdev, &scsiconf->sense_size, s->sense_size);
+     virtio_stl_p(vdev, &scsiconf->cdb_size, s->cdb_size);
+     virtio_stw_p(vdev, &scsiconf->max_channel, VIRTIO_SCSI_MAX_CHANNEL);
+-    virtio_stw_p(vdev, &scsiconf->max_target, VIRTIO_SCSI_MAX_TARGET);
++    virtio_stw_p(vdev, &scsiconf->max_target, s->conf.max_target);
+     virtio_stl_p(vdev, &scsiconf->max_lun, VIRTIO_SCSI_MAX_LUN);
+ }
+ 
+@@ -1260,23 +1260,26 @@ static void virtio_scsi_drained_end(SCSIBus *bus)
+     }
+ }
+ 
+-static struct SCSIBusInfo virtio_scsi_scsi_info = {
+-    .tcq = true,
+-    .max_channel = VIRTIO_SCSI_MAX_CHANNEL,
+-    .max_target = VIRTIO_SCSI_MAX_TARGET,
+-    .max_lun = VIRTIO_SCSI_MAX_LUN,
+-
+-    .complete = virtio_scsi_command_complete,
+-    .fail = virtio_scsi_command_failed,
+-    .cancel = virtio_scsi_request_cancelled,
+-    .change = virtio_scsi_change,
+-    .parse_cdb = virtio_scsi_parse_cdb,
+-    .get_sg_list = virtio_scsi_get_sg_list,
+-    .save_request = virtio_scsi_save_request,
+-    .load_request = virtio_scsi_load_request,
+-    .drained_begin = virtio_scsi_drained_begin,
+-    .drained_end = virtio_scsi_drained_end,
+-};
++static struct SCSIBusInfo virtio_scsi_scsi_info;
++
++static void virtio_scsi_init_scsi_info(struct VirtIOSCSIConf *conf)
++{
++    virtio_scsi_scsi_info.tcq = true;
++    virtio_scsi_scsi_info.max_channel = VIRTIO_SCSI_MAX_CHANNEL;
++    virtio_scsi_scsi_info.max_lun = VIRTIO_SCSI_MAX_LUN;
++    virtio_scsi_scsi_info.max_target = conf->max_target;
++
++    virtio_scsi_scsi_info.complete = virtio_scsi_command_complete;
++    virtio_scsi_scsi_info.fail = virtio_scsi_command_failed;
++    virtio_scsi_scsi_info.cancel = virtio_scsi_request_cancelled;
++    virtio_scsi_scsi_info.change = virtio_scsi_change;
++    virtio_scsi_scsi_info.parse_cdb = virtio_scsi_parse_cdb;
++    virtio_scsi_scsi_info.get_sg_list = virtio_scsi_get_sg_list;
++    virtio_scsi_scsi_info.save_request = virtio_scsi_save_request;
++    virtio_scsi_scsi_info.load_request = virtio_scsi_load_request;
++    virtio_scsi_scsi_info.drained_begin = virtio_scsi_drained_begin;
++    virtio_scsi_scsi_info.drained_end = virtio_scsi_drained_end;
++}
+ 
+ void virtio_scsi_common_realize(DeviceState *dev,
+                                 VirtIOHandleOutput ctrl,
+@@ -1289,6 +1292,7 @@ void virtio_scsi_common_realize(DeviceState *dev,
+     int i;
+ 
+     virtio_init(vdev, VIRTIO_ID_SCSI, sizeof(VirtIOSCSIConfig));
++    virtio_scsi_init_scsi_info(&s->conf);
+ 
+     if (s->conf.num_queues == VIRTIO_SCSI_AUTO_NUM_QUEUES) {
+         s->conf.num_queues = 1;
+@@ -1379,6 +1383,8 @@ static const Property virtio_scsi_properties[] = {
+                                          parent_obj.conf.virtqueue_size, 256),
+     DEFINE_PROP_BOOL("seg_max_adjust", VirtIOSCSI,
+                       parent_obj.conf.seg_max_adjust, true),
++    DEFINE_PROP_UINT16("max_target", VirtIOSCSICommon, conf.max_target,
++                        VIRTIO_SCSI_MAX_TARGET),
+     DEFINE_PROP_UINT32("max_sectors", VirtIOSCSI, parent_obj.conf.max_sectors,
+                                                   0xFFFF),
+     DEFINE_PROP_UINT32("cmd_per_lun", VirtIOSCSI, parent_obj.conf.cmd_per_lun,
+diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
+index b6028bb5cd..3998b241f6 100644
+--- a/include/hw/virtio/virtio-scsi.h
++++ b/include/hw/virtio/virtio-scsi.h
+@@ -54,6 +54,7 @@ struct VirtIOSCSIConf {
+     uint32_t virtqueue_size;
+     bool worker_per_virtqueue;
+     bool seg_max_adjust;
++    uint16_t max_target;
+     uint32_t max_sectors;
+     uint32_t cmd_per_lun;
+     char *vhostfd;
 -- 
 2.47.1
 
