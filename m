@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA170C83753
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 07:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2521AC83765
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 07:25:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vNmSh-0003QI-2z; Tue, 25 Nov 2025 01:23:39 -0500
+	id 1vNmTs-0004Tq-8D; Tue, 25 Nov 2025 01:24:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNmSe-0003Ot-Ch
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 01:23:36 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNmTU-0004Qh-Vh
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 01:24:29 -0500
 Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNmSb-0003PS-I1
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 01:23:35 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vNmTS-0003TE-HD
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 01:24:28 -0500
 Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-47778b23f64so26927745e9.0
- for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 22:23:33 -0800 (PST)
+ 5b1f17b1804b1-4779a4fc95aso38434015e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Nov 2025 22:24:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764051812; x=1764656612; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764051865; x=1764656665; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UOOQl3kZW1bVC+fk7t2YWU1R6hWEB46Dmnal7magMFw=;
- b=QmKlvv7Q+Zu8djKPc5aBr4sGJ36pXkr4GUGOLbCwK20Xr07aGaUSNpKejYxOsko7i8
- jwAdMQKWjP677IKMVyJTBQBBwLKuOvtEDf/aIpBvmUfr9t+gK1WE6BXsdU0tU8bn49Mo
- h3Ja4tLNUQ37/yHEV2AI6hthUo1nL5khlNwrBXNFo7q9HOyo5nYC8kkkyE++04o7+5qj
- +jCsxBZ/3h6rg50tSs1Y3uwRaBZ0o+21o58RikD7MQ36N1YyLHMwbYnxDqT0GB0oea3j
- 4Kw4oWV51hWGgfnp8hRPr7jLyPz+5cNKEStMD7u9ojOYZAjDfvto3j4z5wwXG87f/Q8g
- MUGA==
+ bh=Vq1z7uETBPWyiFMQkSi+G7SH23QCq9t1LMUTYPMDnpc=;
+ b=UY25TzbACojPkGnY6vTt4W1y22wz4Jsh3sx0XTC9k0gy2yK8B2n4efDZjByG8wwazW
+ 567LCm0Yzmioc8Z/Ed1OhmkrKZL2wV00yCI1vlvyz+Ijrlk/qNo8Pxxgc4U+rtULflFI
+ 1y+TwykxNTiBgxymbiohTrISdbPsZEdnWshpi0nU+yZ91uKPLNs8gcFOuaIW69ISNCV/
+ RLFtedqauSrIc2FzjOJMxIv8hzGRsohzTH7WFQKOfDbE+hFKbX1GRYDUOxw6MC+iGgjA
+ 9+0R4boJvODyMGUwGwawJmhUJNr00+5eJK9pY36hURk1sx1VWlAuwZ+2wjaqDyXjhDMa
+ hhog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764051812; x=1764656612;
+ d=1e100.net; s=20230601; t=1764051865; x=1764656665;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UOOQl3kZW1bVC+fk7t2YWU1R6hWEB46Dmnal7magMFw=;
- b=BsNe0H09loHyANHUOjNokOZ+uWbLqZ/ihcRge5TZivP78DqYgHnnLUxNmDKlsKwHof
- d5RlZ5kDJiJsjHmrDOLt1p8hC4mxlklE5oQlyb8xABcjnHkC5DGji/UAmrmvAPVZm85d
- IW266m+zHY4yFj/AM9dGS8qRPMxZb0cd6+zoNi6O/uTPXVPJIYN9kCyW5caDzS9B0TQ/
- l3j/RLZ43ICXp9DwwEDx/keEK1Wa3of8XklvrIx3cA3i2B11xfndOOzptCZWrLyPKP4o
- yIv/tH+uZYN3AUuoip7s3oZG46RPqVX0sQyfehvdbvZeNVnaEE9VKUsc7qkJGn/A5EQ3
- A+qQ==
+ bh=Vq1z7uETBPWyiFMQkSi+G7SH23QCq9t1LMUTYPMDnpc=;
+ b=RdegjgCNQnK25KT749ZdmBcppm+MIhM861dAGJIRHZ1BQFOySLhhSwYmTeFZrAz9MB
+ Eg1SecIOFJapSGpsfhRrqVLYOAQBqvt56nKHQT3IkmIjUslbk7Nf441Ionng9f9IsZ9J
+ g2QRI+OF6E5AYIhGgXoLcq2f9+CtvP14LgjdppSM4l9zh8CoxVF/Bm2Sg/wVsnF7HS7d
+ Bupl4GDimEHUVewBlgVBnpiOV0lG3vAX0wTl+7Q3619/iBdVz81ddKoS4W/sXA9tuwMF
+ jcgpuKeeUxk026Eg+ywi8HKgBettdNQEPQcHwfLS4PExjIlNNZtNjk+nBPWKjE9IpkvJ
+ 9Gfw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUys/wVxGJpSYL/BCbq0xKfkcXLQ8CM3QFgmLY07FoifzdHO9lrbFl3tDVGPIeyoQJtCsHkthZ+vNPK@nongnu.org
-X-Gm-Message-State: AOJu0YzjNIM2vTugKQi2abYGiayD4j9LiK0x8h2mUsaOL6ZKZkUIuCZD
- BL3FWThxWOteF/CgNLmcWXk6eHdl9JGgOfk8xz814URYh8xNbdm4Zj6fFs1aWmCwOSA=
-X-Gm-Gg: ASbGncuBBJ37E/EvabGZaO5bRq3VWbXfKhzlUW1krx2qR8GZ/8fbA8s1TfABObGYY9l
- obpJIQ8Xu4n0oDdQHqiD+VFrjPQ63kWcFSk/ibBTRKjXl1EHkw/r+NKvINq/h4Geb9eeZcapcbA
- XWt2/AeebAtvbxJMElc/um4dNP9KzQ75e6MhWUVIjPf8sLqlsNoZXzUE8JpnUDjV5IktYjknPCo
- 80cktHpVclN4TW4+RnP5ivvpHFKEAB4MjrKYzamAMXACgBa1EUlrbU/SF5ahDzyX7SwYEiRP+ps
- SS1sl3qH5vtnPpq6a/FQZLkNz/ChI5V0HHlC8TlWx99BP8zMXHjtpq5D1oWoPNpRHr6RG9nvCAI
- MVJtaQDE0tiDq7FzTFQesq6nKj/EKAhE10+go2tmHftgPgDZHYX9+O/kPach3vVp4ldbxN0WJyi
- jbcsq5G83gURyHk0Z8C2SGyLoMvV4VN3BQFR4KV5P7L/2nTSfpPMXXHZVWjQ5HAyIY
-X-Google-Smtp-Source: AGHT+IGLa5fRK9K5L3FkUn0xfaMF4zkOQClpsNtdNtMutakIaGVpTMJc0y08tQVlCwv9gBeMm+157Q==
-X-Received: by 2002:a05:600c:3543:b0:477:1ae1:fa5d with SMTP id
- 5b1f17b1804b1-477c1142268mr112956985e9.20.1764051811939; 
- Mon, 24 Nov 2025 22:23:31 -0800 (PST)
+ AJvYcCUuzjx5qMODz7Ju914sMnocWQdjh9NYPt/nDoDfn7SzWGohqIUfNlAD7keHf/5QYXmrfHbcp1kA97jJ@nongnu.org
+X-Gm-Message-State: AOJu0YwjBr/uu6XK6aM48l9W1I2vh5uhujxsZsY1wjQl5wlwO1TYXYKU
+ RSaCZpLWcMUO/N8BGTm4U+rwx7KeAXPXdC1asTC8I/YKwFztmblmgtWaQEK1ecm3URI=
+X-Gm-Gg: ASbGncsnBR3OmRGT+yobLUSph0uqaZIr1/q5u4oTAzQ/iMfN4u6XT3JDYQDg4GbniIR
+ UPO50lfCs+/GDI6HwkHlRf6HcBoMhk/qzmcY8l4OHQlIBkCBbgBhAP0Ww514z1o7IHEs+yeQxAu
+ 4T83e1wyNZRqoFmxkKDk2ZbdbhwJYNu90eFLXSPrRatXfz5i4p67DVsg+Vu5BPZZvHjkrQQyrem
+ 7l5fUN0dTOF8g7tl7Mx/EhCBQmRl72QoENw7/IX2GBuU2ffmuZAVn7EXyU4WItHyYZwVbDbYgbq
+ mNuNWGm0v9FVnMboqL+DPfTIZzuNolk8vgKiaQ1lAyFfZMZVPwaccGXzwHizaJ4JiyEOA5ELlTg
+ wKxT3YMpNMJ3Dx0kJ1kmk7YwmfKqKpF3kqusCc1EQqHXxx8ms5mIBFBaNY2JGGgvL5A+jAh1oo7
+ AmlPUS6ZDa8Bpt5JwcwlF8IbPL7BtAAc5nGKqntPrERcJs8scJslPpjhV+0gEZpPvS
+X-Google-Smtp-Source: AGHT+IEaf9VPAlvbB+DJWu+zfTWBlEbYA/AGQ5BPVvtwmDg4JvdCIECBmvF4Zcsn6awffVSNfsJ6Hw==
+X-Received: by 2002:a05:6000:228a:b0:429:cc39:99c0 with SMTP id
+ ffacd0b85a97d-42cc12f1bddmr17201116f8f.1.1764051865045; 
+ Mon, 24 Nov 2025 22:24:25 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-477bf226c2asm231059685e9.10.2025.11.24.22.23.29
+ ffacd0b85a97d-42cb7fd8d97sm31796036f8f.42.2025.11.24.22.24.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Nov 2025 22:23:31 -0800 (PST)
-Message-ID: <541f756c-0fde-488b-b386-814fb276ebae@linaro.org>
-Date: Tue, 25 Nov 2025 07:23:28 +0100
+ Mon, 24 Nov 2025 22:24:24 -0800 (PST)
+Message-ID: <f356b3c8-ed08-4ec9-93c8-dc9dc6accc59@linaro.org>
+Date: Tue, 25 Nov 2025 07:24:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/15] error: Use error_setg_errno() for simplicity and
- consistency
+Subject: Re: [PATCH v2 14/15] qga/commands-win32: Use error_setg_win32() for
+ better error messages
 Content-Language: en-US
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
@@ -89,9 +89,9 @@ Cc: arei.gonglei@huawei.com, zhenwei.pi@linux.dev, alistair.francis@wdc.com,
  qemu-block@nongnu.org, qemu-ppc@nongnu.org, xen-devel@lists.xenproject.org,
  kvm@vger.kernel.org, qemu-riscv@nongnu.org
 References: <20251121121438.1249498-1-armbru@redhat.com>
- <20251121121438.1249498-14-armbru@redhat.com>
+ <20251121121438.1249498-15-armbru@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251121121438.1249498-14-armbru@redhat.com>
+In-Reply-To: <20251121121438.1249498-15-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
@@ -119,31 +119,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 21/11/25 13:14, Markus Armbruster wrote:
-> Use error_setg_errno() instead of passing the value of strerror() or
-> g_strerror() to error_setg().
+> We include numeric GetLastError() codes in error messages in a few
+> places, like this:
 > 
-> The separator between the error message proper and the value of
-> strerror() changes from " : ", "", " - ", "- " to ": " in places.
+>      error_setg(errp, "GRIPE: %d", (int)GetLastError());
+> 
+> Show text instead, like this:
+> 
+>      error_setg_win32(errp, GetLastError(), "GRIPE");
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->   backends/spdm-socket.c      |  4 ++--
->   backends/tpm/tpm_emulator.c | 13 +++++--------
->   hw/9pfs/9p.c                |  3 +--
->   hw/acpi/core.c              |  3 +--
->   hw/intc/openpic_kvm.c       |  3 +--
->   hw/intc/xics_kvm.c          |  5 +++--
->   hw/remote/vfio-user-obj.c   | 18 +++++++++---------
->   hw/sensor/emc141x.c         |  4 ++--
->   hw/sensor/tmp421.c          |  4 ++--
->   hw/smbios/smbios.c          |  4 ++--
->   hw/virtio/vdpa-dev.c        |  4 ++--
->   migration/postcopy-ram.c    | 10 +++++-----
->   net/slirp.c                 |  5 +++--
->   qga/commands-posix-ssh.c    | 23 +++++++++++++----------
->   system/vl.c                 |  2 +-
->   target/ppc/kvm.c            |  5 ++---
->   16 files changed, 54 insertions(+), 56 deletions(-)
+>   qga/commands-win32.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
