@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D2DC87429
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F1BC8741D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0tu-0001YP-SH; Tue, 25 Nov 2025 16:48:42 -0500
+	id 1vO0u2-0001h9-BS; Tue, 25 Nov 2025 16:48:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0td-0001TL-9z
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:25 -0500
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tk-0001Yu-Fq
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:39 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0tb-0005Dd-JX
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:25 -0500
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-42b3c965cc4so125108f8f.0
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0ti-0005F0-To
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:48:32 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-429c7869704so5045942f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107302; x=1764712102; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764107308; x=1764712108; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=d6d95B2GWp5Ove4p4VnyCUqYCaY8kuW0FwTElFhEInU=;
- b=E6ZYRZ/5GG1Gz79fkSPOeKWa7SssNATbjIe7M8yobgEtS6BcUBTR+olV9s2lX11/C6
- VlE8KGNhYGuLQBj4tRPgh1GA9LcFfjv70pVkP/8Y9mLr09ADYJGoATUwUQR5x3Z4oEHI
- NfCUTOb3L/VKgQB/KV5PtqDpXwXrh04ffa+eHLuYbVJqPWqjJwqxNgVWlUJGl3wuz7lc
- d2rzCfnDjB6YuLsKpSO1x7N+jSfOJeW0oOsHi47DuX7jVAuuuEHlGoup0EG36o42EjRf
- G3BlD81AJVygT2wCcItEJ7PAW1rQ+SDSgUqlS6c1Ipy7ojWNSJ4eWdrINCXWIyYi89Vd
- XYYg==
+ :reply-to; bh=PHzH+lCK4DEu5MLOOUlhaw7zhQlxhytN2R2hX7cMvgM=;
+ b=M2NvBtVAmyesaUDCtfYpYWnFJnTB2cQXlC/GP1fxBzQRB60ZvPPGPITkxiIrYOcMB5
+ 6GK05NXGz+tjGQKl/hNbwV9HnkKEoWDGtRrOexNMqQiF9sVjmUkbEK5ZLPmFim4ybL2x
+ ftZ4L+KdkhAr2lQYWhYz3NHOHOxnKs0Bz0uHq9LBYRMMn7C/BJgSnDnFnQw3qw3UtIie
+ Upr4VHrQ8u5DfkVuwn3o5hFCMOyPwT8lAP9Sar8IqSctn2yJaZ9cihGtbhxjZw7Jwu9/
+ X4DgFeAqFYGOn8JH72qblxpcs1tmNXL2dV1QqOP7L0xj598qJv6H6vM941cr5H2Ih19I
+ PWjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107302; x=1764712102;
+ d=1e100.net; s=20230601; t=1764107308; x=1764712108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=d6d95B2GWp5Ove4p4VnyCUqYCaY8kuW0FwTElFhEInU=;
- b=jh9KXx9RxO0qQQ6UP0ELnW8DbF6G605LmOOszgu2Gr1xYZd5ZvdJiha443nvXFUG++
- dVnSKbTSRIAQBWx+Uv+tw40mFCVG1199tNj6wQA++QiG2nhAvmaHam2Z7UK5kW5H+sVL
- cS3RC9FdytBhyJH+ZtyGk2gJ1SJ4pR4qG4AH5ymR6PpN5CjOul3YnX46VNPzTH9zU2qh
- LpuYaaDh5GcJceZjCRQbOqBMEjwcl8klF58m8Aa9IC63meR1I9MPFX/GFWLB/BLzD/HP
- VVqb0NQ9wdgTRf5RUX0ERonDzVVqeMbe+yjwxaQWyD+UAsbM4MAfACdD4muYxrdjPqdA
- gDdA==
-X-Gm-Message-State: AOJu0Yx1HYXFODed7U0gnvPBGCSHYtzGbYCP26MNYmba0i/f5Cbw/Pxc
- /vcYtxJEUMq8MqO+qSdG4K8Hr/TIL6WZvKfG447icB5bgqedPive7ydEmzdGK6biz8MQH6aiGLN
- YWOeYBlEZ7/9d
-X-Gm-Gg: ASbGnct9xjRW0CaAp6uA7AUHJZ6wFYsi7c9oEUOJfOiPwgASF12+AmRp6FbKBMa+0sU
- PSP31aNWMjf3xXjwf52Lxuiq6/tF+tobCKkl7g6xgTXkAKQHuMgbZpeWOyvExTIQdugs58HHk0y
- E5FGJ8fdzTcT6pdL7ic2j1xq17r/SehgWw4cibMqdbHHg00cJjAQXwFHdPDtldrBFIwOGAuYAxY
- zZ5rPt1g0AVtw1GV86GpSpWtAgxhhMjtC5v71ZEfGb1jXtgcyprNFhtNLUIun8Fxy8i4VCxtmxe
- a/lbeqLLM8T3xVPfH0RVX+Z4/FdV9wsOrm/f93ECVuqNJurla/DvMj2cdwMMR27nfW8/iea2LuF
- hcm+hk0SJCPLvEzwJ1OI/zhd4zxgKhcS5yV0S6fx2ycAqj4OOq7trg88yqtG/l9QZn1bzC61mmv
- bmlXaedbtHfMkSIPjmgXYHolDrURGarHZSNNnT80BJ5+xbM5lRTG4N0aXcCIjR
-X-Google-Smtp-Source: AGHT+IFD7SkpHNFLe42ShT6gQ6VD9+0FhGQu0QeIhti0WWdCjJP2+E+5xlSML7Rhq2xclARrW40lRA==
-X-Received: by 2002:a05:6000:2911:b0:429:cfa3:5fde with SMTP id
- ffacd0b85a97d-42cba652baamr24556664f8f.11.1764107301685; 
- Tue, 25 Nov 2025 13:48:21 -0800 (PST)
+ bh=PHzH+lCK4DEu5MLOOUlhaw7zhQlxhytN2R2hX7cMvgM=;
+ b=S5kHOxXDBlDFmoQJfXY1mu06EwCT3XB8Lnpb8Srby5M9enrIJzvj06bJiRrk2rgOGH
+ v+fEK4VFM6JqMime436vcujBKHBgcega3Fpxa6UBT0mWdHB15kfsbSMIOUjBTY2fgEp+
+ qi0+W42EsYUGWhWiJb8YTbZpc3opbYtPcTTBTUH6uY+s/RDKMAelzFv+GZ81DlPxKJKL
+ 3Zy/YM4tVftqcndDrCguJuZLkv1vtCKhk/Ngh3OfVUsxIB8L81GiSEXL/Oe94zCPc5r6
+ kvS65tykpd/+lRcLZCZSIFhn+inaIT+JUE57+79pmx2CVK4hhxWCK6VZw+7fPxPTBFoi
+ AauA==
+X-Gm-Message-State: AOJu0YwCP4cFBHT9+8EFJG0szHmu2TeXqcypNx4UmMJ/cNY7SAWCyG4Z
+ LjCTGZWafawMunJPhWx1eAI3VC8ucKipezVp3kGmn3g+oBvoPwn8IqvotrTdwaByfJsk3Oktebe
+ 86V32DlG/1g==
+X-Gm-Gg: ASbGncuPmcha1NW0oOnok9rKM9gLftYQoWj8yCW9KDPcOczGjJf4sEhJBKKVAoKpiBk
+ G4uFiAFsBVa8S34IE+SqfpmX54Rk2AHcFSesXsjZ5nAcHOv+e6hakwjQwmUIEry6YHWDtVomTz5
+ f1sI4ahtpeitGSoflqTx6qk4iDyhFyWCkl6SJsVEgQNyfbnvDnxR06Q+HxuKAALMIJH4FWVlf4R
+ g3oWz0kTe2SJSrL2MY+l/f8K80gp4xwvy/MR2uVOffXOISSYugm9V2uQGsr8BiiMwqDGz7ehKon
+ EfM1eLHSiycMqfzoVDjjnT82Zkph4CBQ2nqbbkLnsU7fjAxFxao1QKgsJrnqawi4lnncI0e0yRd
+ nrCx6XXBKquyU1kGgbpaBLFjwciHA4/43wg0f6OD4wKBfvu01GB2k3T1J9XpPoNzlw3gypx70Zw
+ fdK8/qUjKm/FSVVooVUK0ReTCyfjwfBdAOvAop56Oec037BEesSqxrWASTpk6H
+X-Google-Smtp-Source: AGHT+IHcNW54oX7DBvziDn5MwXe4pi3vz++Mui2Niob9Fw/7S7w4CPbdJNtdCOLt844wqK1/pX+vOQ==
+X-Received: by 2002:a05:6000:184a:b0:42b:38b1:e32e with SMTP id
+ ffacd0b85a97d-42e0f34f998mr4581945f8f.46.1764107308462; 
+ Tue, 25 Nov 2025 13:48:28 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fd8baesm36862625f8f.39.2025.11.25.13.48.19
+ ffacd0b85a97d-42cb7fb91f4sm37231193f8f.31.2025.11.25.13.48.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 13:48:20 -0800 (PST)
+ Tue, 25 Nov 2025 13:48:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/9] hw/pci: Make msix_init take a uint32_t for nentries
-Date: Tue, 25 Nov 2025 22:47:54 +0100
-Message-ID: <20251125214802.1929-3-philmd@linaro.org>
+Subject: [PULL 3/9] docs/deprecated: Remove undeprecated SMP description
+Date: Tue, 25 Nov 2025 22:47:55 +0100
+Message-ID: <20251125214802.1929-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125214802.1929-1-philmd@linaro.org>
 References: <20251125214802.1929-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,110 +97,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-msix_init() and msix_init_exclusive_bar() take an "unsigned short"
-argument for the number of MSI-X vectors to try to use.  This is big
-enough for the maximum permitted number of vectors, which is 2048.
-Unfortunately, we have several devices (most notably virtio) which
-allow the user to specify the desired number of vectors, and which
-use uint32_t properties for this.  If the user sets the property to a
-value that is too big for a uint16_t, the value will be truncated
-when it is passed to msix_init(), and msix_init() may then return
-success if the truncated value is a valid one.
+"Unsupported 'parameter=1' SMP configuration" was proposed to be
+deprecated in the commit 54c4ea8f3ae6 ("hw/core/machine-smp: Deprecate
+unsupported "parameter=1" SMP configurations").
 
-The resulting mismatch between the number of vectors the msix code
-thinks the device has and the number of vectors the device itself
-thinks it has can cause assertions, such as the one in issue 2631,
-where "-device virtio-mouse-pci,vectors=19923041" is interpreted by
-msix as "97 vectors" and by the virtio-pci layer as "19923041
-vectors"; a guest attempt to access vector 97 thus passes the
-virtio-pci bounds checking and hits an essertion in
-msix_vector_use().
+But the related code was reverted later in the commit 9d7950edb0cd
+("hw/core: allow parameter=1 for SMP topology on any machine").
 
-Avoid this by making msix_init() and its wrapper function
-msix_init_exclusive_bar() take the number of vectors as a uint32_t.
-The erroneous command line will now produce the warning
+Thus, this SMP behavior is still valid and is not actually deprecated.
 
- qemu-system-i386: -device virtio-mouse-pci,vectors=19923041:
-   warning: unable to init msix vectors to 19923041
+Remove outdated document descriptions.
 
-and proceed without crashing.  (The virtio device warns and falls
-back to not using MSIX, rather than complaining that the option is
-not a valid value this is the same as the existing behaviour for
-values that are beyond the MSI-X maximum possible value but fit into
-a 16-bit integer, like 2049.)
-
-To ensure this doesn't result in potential overflows in calculation
-of the BAR size in msix_init_exclusive_bar(), we duplicate the
-nentries error-check from msix_init() at the top of
-msix_init_exclusive_bar(), so we know nentries is sane before we
-start using it.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2631
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251107131044.1321637-1-peter.maydell@linaro.org>
+Reported-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20251121084416.1031466-1-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci/msix.h |  4 ++--
- hw/pci/msix.c         | 10 ++++++++--
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ docs/about/deprecated.rst | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/include/hw/pci/msix.h b/include/hw/pci/msix.h
-index 11ef9454c13..551a2bcfe73 100644
---- a/include/hw/pci/msix.h
-+++ b/include/hw/pci/msix.h
-@@ -7,12 +7,12 @@
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 30ab72b2a4c..9386cffba26 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -54,20 +54,6 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+ However, short-form booleans are deprecated and full explicit ``arg_name=on``
+ form is preferred.
  
- void msix_set_message(PCIDevice *dev, int vector, MSIMessage msg);
- MSIMessage msix_get_message(PCIDevice *dev, unsigned int vector);
--int msix_init(PCIDevice *dev, unsigned short nentries,
-+int msix_init(PCIDevice *dev, uint32_t nentries,
-               MemoryRegion *table_bar, uint8_t table_bar_nr,
-               unsigned table_offset, MemoryRegion *pba_bar,
-               uint8_t pba_bar_nr, unsigned pba_offset, uint8_t cap_pos,
-               Error **errp);
--int msix_init_exclusive_bar(PCIDevice *dev, unsigned short nentries,
-+int msix_init_exclusive_bar(PCIDevice *dev, uint32_t nentries,
-                             uint8_t bar_nr, Error **errp);
+-``-smp`` (Unsupported "parameter=1" SMP configurations) (since 9.0)
+-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-Specified CPU topology parameters must be supported by the machine.
+-
+-In the SMP configuration, users should provide the CPU topology parameters that
+-are supported by the target machine.
+-
+-However, historically it was allowed for users to specify the unsupported
+-topology parameter as "1", which is meaningless. So support for this kind of
+-configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+-marked deprecated since 9.0, users have to ensure that all the topology members
+-described with -smp are supported by the target machine.
+-
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
  
- void msix_write_config(PCIDevice *dev, uint32_t address, uint32_t val, int len);
-diff --git a/hw/pci/msix.c b/hw/pci/msix.c
-index 8c7f6709e2a..b35476d0577 100644
---- a/hw/pci/msix.c
-+++ b/hw/pci/msix.c
-@@ -318,7 +318,7 @@ static void msix_mask_all(struct PCIDevice *dev, unsigned nentries)
-  * also means a programming error, except device assignment, which can check
-  * if a real HW is broken.
-  */
--int msix_init(struct PCIDevice *dev, unsigned short nentries,
-+int msix_init(struct PCIDevice *dev, uint32_t nentries,
-               MemoryRegion *table_bar, uint8_t table_bar_nr,
-               unsigned table_offset, MemoryRegion *pba_bar,
-               uint8_t pba_bar_nr, unsigned pba_offset, uint8_t cap_pos,
-@@ -392,7 +392,7 @@ int msix_init(struct PCIDevice *dev, unsigned short nentries,
-     return 0;
- }
- 
--int msix_init_exclusive_bar(PCIDevice *dev, unsigned short nentries,
-+int msix_init_exclusive_bar(PCIDevice *dev, uint32_t nentries,
-                             uint8_t bar_nr, Error **errp)
- {
-     int ret;
-@@ -401,6 +401,12 @@ int msix_init_exclusive_bar(PCIDevice *dev, unsigned short nentries,
-     uint32_t bar_pba_offset = bar_size / 2;
-     uint32_t bar_pba_size = QEMU_ALIGN_UP(nentries, 64) / 8;
- 
-+    /* Sanity-check nentries before we use it in BAR size calculations */
-+    if (nentries < 1 || nentries > PCI_MSIX_FLAGS_QSIZE + 1) {
-+        error_setg(errp, "The number of MSI-X vectors is invalid");
-+        return -EINVAL;
-+    }
-+
-     /*
-      * Migration compatibility dictates that this remains a 4k
-      * BAR with the vector table in the lower half and PBA in
 -- 
 2.51.0
 
