@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086BFC87420
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C80C8742C
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Nov 2025 22:50:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO0uH-0002UI-Le; Tue, 25 Nov 2025 16:49:05 -0500
+	id 1vO0vA-0003ED-67; Tue, 25 Nov 2025 16:50:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0uC-0002IT-DQ
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:00 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0uL-0002jc-II
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:14 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0uA-0005JY-TC
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:00 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42b38693c4dso2633008f8f.3
- for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:48:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vO0uJ-0005KJ-GA
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 16:49:09 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4777771ed1aso39811595e9.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Nov 2025 13:49:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764107337; x=1764712137; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764107345; x=1764712145; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0nHuBXitg7641bu6kmkOgxo7UOR8YoWwGXOBRRXCaPw=;
- b=lbOpWFXhF9Pd2+3Zp9vKnF+60xUqed9wxsVIVM5WXYDZq/NGqNMRSP/E/BJsXgNx3v
- WQXkD5GAZSiXtqzOhPJnCv8wugf8gZhxgyAi3OZ8PQ3K5hXf5Gx3p5gEhkuAEytEuccl
- Cdycts93Ah31dypy4y3lFQ+kyGwk/IzpuNw4+lOqceMnP7pZ5N+6ZKgY5dX1ggz0932i
- 9vAdiY+JrxjXBRi0olarJIT23CyPVYkDrhf2lrLhKaxLMA2AkVgk8bhPi9jU/irHYAii
- OjY8UXscRaSjO+V06N2yzOxDvDVg6w2aT4CI9PZdrTAdjzKjcs+AVg3nTKSbzuB+nxbU
- 0H6Q==
+ :reply-to; bh=Dl6LvASd0O/JG4z7ogldG5dWvUV97lajqPubCgwHmSU=;
+ b=iy6fYnVqTlQJXoMj6hQBDV48svu43bNL4AcHUi8Kiei/v+ggvZ00042sx1qFB1yfBB
+ LMoFaPamlyYJa2CO9qKPrHyqsU+r/Sz3FNQwWlUTObnRp3YAMTpqc3p4Zum6eB2f7FiI
+ r4MJsqVlY5rQtTmD55/mHGPXSDRQXTr3IIl+W/0Zrk7lSw4XA40DiSrlE8z4x4/cdtw2
+ 3UNkWXQPvYuYM4xPaQXNnBsiQMJm7K3bMmAORQ0gcdg46xzE9pJ/mltzNzSdsqzE6e7H
+ dj/2eeSwPC+CdNLR6m6YOKXlDeAghEt1MU95pEYimvQ2vi/NfD+TX4C2bF3pU09XzZJo
+ tW9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764107337; x=1764712137;
+ d=1e100.net; s=20230601; t=1764107345; x=1764712145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=0nHuBXitg7641bu6kmkOgxo7UOR8YoWwGXOBRRXCaPw=;
- b=i+NnLHXKtYDQQmEVCPrfUihdGgFumEyHFMIhOOFDPiS7faXzsn/S7OKKuuo+AYliup
- 9kcZ8EgCpEd/oqIFl+Dr4+0IkQxz2kNrgBPYQcuQwnEOkMQVxSGMmuJgbYevsfKanatS
- V236xqPd48KGS4b+qpdSCTx9S+pS4bbvJ4J+AzeYlhkGBjqKm6fnQVB9Rbxy2XWGH8gw
- GM98ZoAOQHXv4pmEPlP1+TRB2ZL4BLqw/8/5U1amHisDmhrQJqYK6HeOTbUAa4qQfPUi
- bHKwRD1TLe2Q0NH62l0gO2Ezq1yODwgrdAT5MGp0CsvpHiLN6x7+oR1KOUVr6LkSzeJs
- yriA==
-X-Gm-Message-State: AOJu0YwjsCUMme+PPAVH9ZVH+RmRFmrKjJMQqDKvEsEmmwWX4Gr7AsIi
- 6TENqpUH5YE1HFGdxLz6rRRZSMkETKCRoWEEh0jbX+6CsFMVjk2gLhGbUMszbR0XeHVV0hbaBvt
- yjMjYr4sIKA==
-X-Gm-Gg: ASbGncvxamjuQWzSIkSjUr68kDP9uekBUug+bskpVoBAp46srHhlm4hJACGqg8UnRrZ
- NKFGii9/mkFwHvVhBzbXVxl8sZdQTb2uiIkCgGhh98S+SkNimnquZDNy+3qh5CwsAooA9zqOot+
- 3EOSgjly9yENvuODPv8tM8SEwVGvFxmtviLNUOjve9f/pH4IIQqpys9Z7KRz8CjFRa+f+lnIZf9
- Cptw1/miZS1mkwcL2PvHtm8P2OCXDlsa1mwgocLsm7Q1BThh5wFv99W/XKIa9J36BFi4St6hh3A
- dPGgrJFos6a/uAZN/RFyW509OTlc/ZpkcO8DSR+Irn4cc54xzVbkqXJCZ0nR6v7fZMMi0UuaBq/
- CSHecyivI0Oo6IyyBDQ7jV+SRbkhH2Jpw/puKGEtUs9zAd/v4aGglRm4Hx8l8aNi8W0xMa+3Aij
- OLyJkmiLElk/ViKRSZiN9Mb0SdtKLt+hYdZIPIPEYMNVv6bVkwJvMMw3cZAnaK
-X-Google-Smtp-Source: AGHT+IGkFMSR/+r9pMiQOCMw8s+vpkVEMFGScr2R0o+iRFYr0z+dSv4KT0as3cRryENFKDhSxuELyg==
-X-Received: by 2002:a05:6000:430b:b0:42c:b8fd:21b4 with SMTP id
- ffacd0b85a97d-42e0f35c36bmr4981529f8f.57.1764107336745; 
- Tue, 25 Nov 2025 13:48:56 -0800 (PST)
+ bh=Dl6LvASd0O/JG4z7ogldG5dWvUV97lajqPubCgwHmSU=;
+ b=pu25msZCXVXbtgFhWxAz5eraKElv9Eszuq472FcxinzkzstaMQh3ZL+YF81kwiN/Cd
+ PghyUMcbS2GRIFJ4xZ0yMkMBuzK+YY/HJwyPMmtEJMXMRQc9YIoXtDt+hzfBCpW6zMOM
+ 2vpk3Vcv4zVkm8OZgnl+m91XQBl/ryzBebs7m0ZxiZeLeiIRfnWQ9J3MIawRWgp044K/
+ cNpSWUj87/helkqqjWPnKUmjNvut267Saz9ZDuh8SpFJhMVTYJvJ9Ey4rvZopegU1Hz6
+ n7JdzrftzEHjiRW7//64xciYifA0qxx8GjbE34DPGXLItPFJmiW0Fv5ZGLXdLCRN49Wc
+ bmSg==
+X-Gm-Message-State: AOJu0YxBrCVg+R9uQ3j7bzqDN8G5lZ3UQShsm6pzhZMziGvUEe1HZVc3
+ L6FD2yJ4OzQ0VNn0BBM/H3DBQ/QAPDf6SwQ/1ZjoPp98fB0rLYLI/JvRXApV2/1tQMlI+luG79q
+ bE8l6oxlAzQ==
+X-Gm-Gg: ASbGnctukc+hdqO5jgluWslfKaRzdG05u4axvPaEkK3/taW77UEYhuGIHJzDW3c2cbe
+ 298WOEVrbPOi4zjlecWT1jtF0d6gsGytAFlNQ4k9HbyiTTCqqYnkZus01jGRcVMN+riTc0lPaLi
+ exsHFHr9iTtEx6J4BnuJyKnb+fPMmSXeqRoBZprh4xJl7GCkCcKFZUfUwohVbDvHTPuIWJ5ouhV
+ JFkJRMLJnAa1TE+UHThLYMdmJrHMbRH3dMbV6rP3cqR48CCxFqu2aNyErRiJ4+YDXB5H23wcdnC
+ mkGM56jTW7I2X0xLWfhpX6dKUPbcJj9rRHT0t/FU9WFb1f73mPNQAihpG3ZfNxXu105lCtA7zFz
+ PSorhz8M0fDiNLYIE/ccJeMUN7tvlTRxAoIOgkewHWNI4D4L1DeNwKcWy3aZYb/0qn710mGUUgX
+ dQdAL7RCwyQwJ0rsWQeJNzXgg/omNfBd+J/ndg6xMAST9ISIw3i/beNx7L0RN/
+X-Google-Smtp-Source: AGHT+IHSxZ4NHwdixRTVfgseIeGCnr1FG+U7hfQc/zezWkEgnJxI0FVNoMJgbJIMEIhhmVoCmORvqw==
+X-Received: by 2002:a05:6000:400f:b0:42b:3c3e:5d53 with SMTP id
+ ffacd0b85a97d-42cc1cedbf7mr19533973f8f.16.1764107345087; 
+ Tue, 25 Nov 2025 13:49:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fd9061sm36737712f8f.41.2025.11.25.13.48.56
+ ffacd0b85a97d-42cb7fba201sm36636378f8f.32.2025.11.25.13.49.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Nov 2025 13:48:56 -0800 (PST)
+ Tue, 25 Nov 2025 13:49:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 7/9] replay: Improve assert in replay_char_read_all_load()
-Date: Tue, 25 Nov 2025 22:47:59 +0100
-Message-ID: <20251125214802.1929-8-philmd@linaro.org>
+Subject: [PULL 8/9] hw/core/machine: Provide a description for aux-ram-share
+ property
+Date: Tue, 25 Nov 2025 22:48:00 +0100
+Message-ID: <20251125214802.1929-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125214802.1929-1-philmd@linaro.org>
 References: <20251125214802.1929-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,42 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Peter Xu <peterx@redhat.com>
 
-In replay_char_read_all_load() we get a buffer and size from the
-replay log.  We know the size has to fit an int because of how we
-write the log.  However the way we assert this is wrong: we cast the
-size_t from replay_get_array() to an int and then check that it is
-non-negative.  This misses cases where an over-large size is
-truncated into a positive value by the cast.
+It was forgotten when being introduced in commit 91792807d1 ("machine:
+aux-ram-share option").
 
-Replace the assertion with checking that the size is in-range
-before doing the cast.
-
-Coverity complained about the possible overflow: CID 1643440.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251124173407.50124-1-peter.maydell@linaro.org>
+Cc: qemu-stable@nongnu.org
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20251124191408.783473-1-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- replay/replay-char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/core/machine.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/replay/replay-char.c b/replay/replay-char.c
-index 81dc416e988..4e58dd154af 100644
---- a/replay/replay-char.c
-+++ b/replay/replay-char.c
-@@ -126,8 +126,8 @@ int replay_char_read_all_load(uint8_t *buf)
-         int res;
-         replay_get_array(buf, &size);
-         replay_finish_event();
-+        assert(size <= INT_MAX);
-         res = (int)size;
--        assert(res >= 0);
-         return res;
-     } else if (replay_next_event_is(EVENT_CHAR_READ_ALL_ERROR)) {
-         int res = replay_get_dword();
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 06e0c9a179b..27372bb01ef 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1204,6 +1204,8 @@ static void machine_class_init(ObjectClass *oc, const void *data)
+     object_class_property_add_bool(oc, "aux-ram-share",
+                                    machine_get_aux_ram_share,
+                                    machine_set_aux_ram_share);
++    object_class_property_set_description(oc, "aux-ram-share",
++        "Use anonymous shared memory for auxiliary guest RAMs");
+ #endif
+ 
+     object_class_property_add_bool(oc, "usb",
 -- 
 2.51.0
 
