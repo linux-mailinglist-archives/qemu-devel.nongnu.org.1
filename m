@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F8BC8AA7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 338B7C8AA7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:32:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOHUH-0004pI-FY; Wed, 26 Nov 2025 10:31:21 -0500
+	id 1vOHUz-00060c-NL; Wed, 26 Nov 2025 10:32:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHU8-0004iZ-6y; Wed, 26 Nov 2025 10:31:14 -0500
+ id 1vOHU8-0004ia-7q; Wed, 26 Nov 2025 10:31:14 -0500
 Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHU3-0001lp-F0; Wed, 26 Nov 2025 10:31:11 -0500
+ id 1vOHU3-0001mb-Eb; Wed, 26 Nov 2025 10:31:11 -0500
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwDHtVwuHSdpQ5IEAQ--.4108S2;
- Wed, 26 Nov 2025 23:30:54 +0800 (CST)
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwCHdVwyHSdpUJIEAQ--.41170S2;
+ Wed, 26 Nov 2025 23:30:58 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwCX8e4lHSdpN6MHAA--.21552S5;
- Wed, 26 Nov 2025 23:30:53 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwCX8e4lHSdpN6MHAA--.21552S6;
+ Wed, 26 Nov 2025 23:30:56 +0800 (CST)
 From: Tao Tang <tangtao1634@phytium.com.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
@@ -35,23 +35,23 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Mostafa Saleh <smostafa@google.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC v4 2/4] hw/misc: introduce iommu-testdev for bare-metal IOMMU
+Subject: [RFC v4 2/4] hw/misc: Introduce iommu-testdev for bare-metal IOMMU
  testing
-Date: Wed, 26 Nov 2025 23:30:36 +0800
-Message-Id: <20251126153040.1280317-3-tangtao1634@phytium.com.cn>
+Date: Wed, 26 Nov 2025 23:30:37 +0800
+Message-Id: <20251126153040.1280317-4-tangtao1634@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
 References: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX8e4lHSdpN6MHAA--.21552S5
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HkAAAs5
+X-CM-TRANSID: AQAAfwCX8e4lHSdpN6MHAA--.21552S6
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HkgAAs7
 Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
  4@phytium.com.cn;
 X-Coremail-Antispam: 1Uk129KBjvAXoWfJr4Utr47ZF43tr43Kw4rXwb_yoW8CF1fAo
  WYvFWfuw1xGw1xur4v9as7GF45XFy0gFnxJa48WF4YgaykAFnxJr15Aa15Ga45Jrn5CF9r
- uFykt3y3tr9rWr93n29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
+ uFykt3y3tr9rWr93n29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
  J3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UU
  UUUUUUU==
 Received-SPF: pass client-ip=129.150.39.64;
