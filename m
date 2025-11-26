@@ -2,71 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F011C8A8FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1A2C8AB55
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:41:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOHDF-0000Tp-LL; Wed, 26 Nov 2025 10:13:45 -0500
+	id 1vOHch-0008AM-Vx; Wed, 26 Nov 2025 10:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vOHCZ-0000Ag-Dy
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 10:13:03 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vOHCV-0003d9-HL
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 10:13:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764169979; x=1795705979;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1RkIPUMbbgwD+fSkCBLsafOj+kpQf9/V3jdUzM1m5lU=;
- b=Ou4L5JgYobRDAK1u69k0qJ9YCn+BOQ6s3736ph0VIKzcAuY13Nn/+sqt
- 6MvSe9EfVHxvE3C0e5LhWtsGQ1zNT4DpnGB7zYeTPWRfAuX4CeZan2H8R
- uSZo5GaWxRdtBtJ7eO4ax9XXwpw+u/rG/NoN2fQVLTHW+Gi7rDn9xAPX6
- Uns8D2ilA6ZkUPSeK6pvgIz38DbXOHwFJ6xITvsa+HkFC+/Nw9sggY3sc
- LtEtHPcVifE5+UGFXpWtyVpTvB0lAgrMFtGJFO5jXbq5qgUHgkNCdfyVa
- DbBJNl8Ofz+tIV4K+nSoI4sTvygEFVEJ6TWrxVINUV5MBNBQBu5uhcocv w==;
-X-CSE-ConnectionGUID: Sbl6aHHDRO2lGog4KmlF/Q==
-X-CSE-MsgGUID: 3bsnuxOvRd2mewsDdfwV3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="88856601"
-X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; d="scan'208";a="88856601"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2025 07:12:54 -0800
-X-CSE-ConnectionGUID: HnX0kln7TgSYrYiXYXIskw==
-X-CSE-MsgGUID: v5wn4s+XREuro2+9hJc9Wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; d="scan'208";a="197292529"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 26 Nov 2025 07:12:53 -0800
-Date: Wed, 26 Nov 2025 23:37:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v5] hw/i386/pc: Remove PCMachineClass::legacy_cpu_hotplug
- field
-Message-ID: <aScevCMDynm1dtIo@intel.com>
-References: <20250508133550.81391-3-philmd@linaro.org>
- <20251031142825.179239-1-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vOHcY-0007uM-AK; Wed, 26 Nov 2025 10:39:54 -0500
+Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vOHcT-0003ya-1z; Wed, 26 Nov 2025 10:39:53 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAnCSY+Hydp+JgEAQ--.3404S2;
+ Wed, 26 Nov 2025 23:39:42 +0800 (CST)
+Received: from [192.168.31.184] (unknown [222.240.104.58])
+ by mail (Coremail) with SMTP id AQAAfwDHH+00HydpbqMHAA--.759S2;
+ Wed, 26 Nov 2025 23:39:39 +0800 (CST)
+Message-ID: <ea2f983b-d561-418d-91bc-0c2511b7b7fc@phytium.com.cn>
+Date: Wed, 26 Nov 2025 23:39:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251031142825.179239-1-imammedo@redhat.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v4 0/4] hw/misc: Introduce a generalized IOMMU test framework
+To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwDHH+00HydpbqMHAA--.759S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HnwAAs2
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxtryrZr4ktr4ktrykury8Zrb_yoW3JrykpF
+ Z3Ga9IkF48JF1fCwn3Aw10yFy5Xa1kJa1jvr13Kw1rW34akry8Ar13Kry8KF9rJrW8ZF13
+ Za18tF1DuF4YyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=129.150.39.64;
+ envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,92 +76,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
 
-I find after removing legacy cpu hotplug totally, it seems necessary to
-update docs/specs/acpi_cpu_hotplug.rst as well, since then QEMU doesn't
-have legacy cpu hotplug. Do you agree?
-
-I also attached my update for that doc. If this change is fine for you,
-I will squash that doc change into another patch that removes
-cpu_hotplug.[h|c] - I split your this patch into several parts
-(following you another previous suggestion [*] to make review easier).
-:)
-
-[*]: https://lore.kernel.org/qemu-devel/20250509171847.0b505c96@imammedo.users.ipa.redhat.com/
-
-Thanks,
-Zhao
----
-From ff3da76cf7de097c42bdaf64850dc4df65b4bf4a Mon Sep 17 00:00:00 2001
-From: Zhao Liu <zhao1.liu@intel.com>
-Date: Wed, 26 Nov 2025 23:06:09 +0800
-Subject: [PATCH] docs/specs/acpi_cpu_hotplug.rst: remove legacy cpu hotplug
- descriptions
-
-Legacy cpu hotplug has been removed totally and machines start with
-modern cpu hotplug interface directly.
-
-Therefore, update the documentation to describe current QEMU cpu hotplug
-logic.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- docs/specs/acpi_cpu_hotplug.rst | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
-
-diff --git a/docs/specs/acpi_cpu_hotplug.rst b/docs/specs/acpi_cpu_hotplug.rst
-index 351057c96761..f49678100044 100644
---- a/docs/specs/acpi_cpu_hotplug.rst
-+++ b/docs/specs/acpi_cpu_hotplug.rst
-@@ -8,22 +8,6 @@ ACPI BIOS GPE.2 handler is dedicated for notifying OS about CPU hot-add
- and hot-remove events.
+Very sorry! I made a mistake in sending this series (duplicated 
+patches). Please ignore this thread. I will send a v5 shortly.
 
 
--Legacy ACPI CPU hotplug interface registers
---------------------------------------------
--
--CPU present bitmap for:
--
--- ICH9-LPC (IO port 0x0cd8-0xcf7, 1-byte access)
--- PIIX-PM  (IO port 0xaf00-0xaf1f, 1-byte access)
--- One bit per CPU. Bit position reflects corresponding CPU APIC ID. Read-only.
--- The first DWORD in bitmap is used in write mode to switch from legacy
--  to modern CPU hotplug interface, write 0 into it to do switch.
--
--QEMU sets corresponding CPU bit on hot-add event and issues SCI
--with GPE.2 event set. CPU present map is read by ACPI BIOS GPE.2 handler
--to notify OS about CPU hot-add events. CPU hot-remove isn't supported.
--
--
- Modern ACPI CPU hotplug interface registers
- -------------------------------------------
-
-@@ -189,20 +173,14 @@ Typical usecases
- (x86) Detecting and enabling modern CPU hotplug interface
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--QEMU starts with legacy CPU hotplug interface enabled. Detecting and
--switching to modern interface is based on the 2 legacy CPU hotplug features:
--
--#. Writes into CPU bitmap are ignored.
--#. CPU bitmap always has bit #0 set, corresponding to boot CPU.
--
--Use following steps to detect and enable modern CPU hotplug interface:
-+QEMU starts with modern CPU hotplug interface enabled. Use following steps to
-+detect modern CPU hotplug interface:
-
--#. Store 0x0 to the 'CPU selector' register, attempting to switch to modern mode
- #. Store 0x0 to the 'CPU selector' register, to ensure valid selector value
- #. Store 0x0 to the 'Command field' register
- #. Read the 'Command data 2' register.
-    If read value is 0x0, the modern interface is enabled.
--   Otherwise legacy or no CPU hotplug interface available
-+   Otherwise no CPU hotplug interface available
-
- Get a cpu with pending event
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
---
-2.34.1
+On 2025/11/26 23:30, Tao Tang wrote:
+> This is v4 of the IOMMU test framework. This series builds upon v3 by adding a
+> shared smmuv3-common.h so the model and libqos consume the same STE/CD and
+> register definitions. V4 also removes redundant iommu-testdev registers,
+> introduces the DMA doorbell helper / “not armed” status, optimizes code style
+> and refreshes the libqos/qtest stack so it uses the shared header and the
+> simplified device API.
+>
+> Motivation
+> ----------
+>
+> Currently, thoroughly testing IOMMU emulation (e.g., ARM SMMUv3) requires
+> a significant software stack. We need to boot a full guest operating
+> system (like Linux) with the appropriate drivers (e.g., IOMMUFD) and rely
+> on firmware (e.g., ACPI with IORT tables or Hafnium) to correctly
+> configure the IOMMU and orchestrate DMA from a peripheral device.
+>
+> This dependency on a complex software stack presents several challenges:
+>
+> * High Barrier to Entry: Writing targeted tests for specific IOMMU
+>      features (like fault handling, specific translation regimes, etc.)
+>      becomes cumbersome.
+>
+> * Difficult to Debug: It's hard to distinguish whether a bug originates
+>      from the IOMMU emulation itself, the guest driver, the firmware
+>      tables, or the guest kernel's configuration.
+>
+> * Slow Iteration: The need to boot a full guest OS slows down the
+>      development and testing cycle.
+>
+> The primary goal of this work is to create a lightweight, self-contained
+> testing environment that allows us to exercise the IOMMU's core logic
+> directly at the qtest level, removing the need for any guest-side software.
+>
+> Our Approach: A Dedicated Test Framework
+> -----------------------------------------
+>
+> To achieve this, we introduce three main components:
+>
+> * A minimal hardware device: iommu-testdev
+> * A reusable IOMMU helper library: libqos/qos-smmuv3
+> * A comprehensive qtest suite: iommu-smmuv3-test
+>
+> The iommu-testdev is intentionally not a conformant, general-purpose PCIe
+> or platform device. It is a purpose-built, highly simplified "DMA engine"
+> designed to be analogous to a minimal PCIe Root Complex that bypasses the
+> full, realistic topology (Host Bridges, Switches, Endpoints) to provide a
+> direct, programmable path for a DMA request to reach the IOMMU. Its sole
+> purpose is to trigger a DMA transaction when its registers are written to,
+> making it perfectly suited for direct control from a test environment like
+> qtest.
+>
+> The Qtest Framework
+> -------------------
+>
+> The new qtest (iommu-smmuv3-test.c) serves as the "bare-metal driver"
+> for both the IOMMU and the iommu-testdev. It leverages the libqos helper
+> library to manually perform all the setup that would typically be handled
+> by the guest kernel and firmware, but in a completely controlled and
+> predictable manner:
+>
+> 1.  IOMMU Configuration: It directly initializes the SMMU's registers to a
+>      known state using helper functions from qos-smmuv3.
+>
+> 2.  Translation Structure Setup: It uses the libqos library to construct
+>      the necessary translation structures in memory, including Stream Table
+>      Entries (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
+>
+> 3.  DMA Trigger: It programs the iommu-testdev to initiate a DMA operation
+>      targeting a specific IOVA with configurable attributes.
+>
+> 4.  Verification: It waits for the transaction to complete and verifies
+>      that the memory was accessed correctly after address translation by
+>      the IOMMU.
+>
+> This framework provides a solid and extensible foundation for validating
+> the IOMMU's core translation paths. The current test suite covers:
+>
+> - Stage 1 only translation (VA -> PA via CD page tables)
+> - Stage 2 only translation (IPA -> PA via STE S2 tables)
+> - Nested translation (VA -> IPA -> PA, Stage 1 + Stage 2)
+>
+> The infrastructure is designed to be easily extended to support multiple
+> security spaces (Non-Secure, Secure, Root, Realm) and additional IOMMU
+> features.
+>
+>
+> Testing:
+> --------
+> QTEST_QEMU_BINARY=qemu-system-aarch64 tests/qtest/iommu-smmuv3-test --tap -k
+>
+>
+> Major Changes from v3 to v4:
+> -----------------------------
+>
+> 1. Added shared smmuv3-common.h so both the device and libqos consume the same
+>     STE/CD/register definitions as Alex suggested [1]
+> 2. Slimmed iommu-testdev down to a pure DMA trigger with a tighter MMIO
+>     contract (new doorbell helper, simplified attributes/errors).
+> 3. Updated `qos-smmuv3` and the qtest so they include the common header,
+>     honor per-test expected results, and rely solely on the streamlined device
+>     interface.
+> 4. Compacted changes of v2 to v3.
+>
+> [1] https://lore.kernel.org/qemu-devel/87zf8jk244.fsf@draig.linaro.org/
+>
+>
+> Major Changes from v2 to v3:
+> -----------------------------
+>
+> 1. Generalization/Renaming: rebranded `smmu-testdev` → `iommu-testdev` (code,
+>     headers, docs) to reflect the broadened scope.
+> 2. Separation of concerns: iommu-testdev is now a pure DMA trigger; all
+>     SMMUv3-specific setup (STE/CD/page tables, multi-mode support, space offsets)
+>     lives in `qos-smmuv3.{c,h}` and is consumed by the new qtest.
+> 3. Improved modularity & coverage: the stacked design (device + helper + qtest)
+>     made it straightforward to add S1/S2/Nested tests, a cleaner config system,
+>     and clearer validation logic.
+> 4. Code/documentation quality: added tracepoints, better error handling/naming,
+>     and refreshed `docs/specs/iommu-testdev.rst` with the new layout.
+>
+> Future Work
+> -----------
+>
+> The current implementation focuses on basic translation path validation
+> in the Non-Secure address space. Future extensions could include:
+>
+> * Multi-space testing (Secure, Root, Realm) for SMMUv3
+> * Support for other IOMMU types (Intel VT-d, AMD-Vi, RISC-V IOMMU)
+>
+> Tao Tang (4):
+>    hw/arm/smmuv3: Extract common definitions to smmuv3-common.h
+>    hw/misc: Introduce iommu-testdev for bare-metal IOMMU testing
+>    tests/qtest/libqos: Add SMMUv3 helper library
+>    tests/qtest: Add SMMUv3 bare-metal test using iommu-testdev
+>
+>   docs/specs/index.rst            |   1 +
+>   docs/specs/iommu-testdev.rst    | 109 +++++
+>   hw/arm/smmuv3-internal.h        | 255 +----------
+>   hw/misc/Kconfig                 |   5 +
+>   hw/misc/iommu-testdev.c         | 278 ++++++++++++
+>   hw/misc/meson.build             |   1 +
+>   hw/misc/trace-events            |  10 +
+>   include/hw/arm/smmuv3-common.h  | 461 ++++++++++++++++++++
+>   include/hw/misc/iommu-testdev.h |  70 +++
+>   tests/qtest/iommu-smmuv3-test.c | 114 +++++
+>   tests/qtest/libqos/meson.build  |   3 +
+>   tests/qtest/libqos/qos-smmuv3.c | 731 ++++++++++++++++++++++++++++++++
+>   tests/qtest/libqos/qos-smmuv3.h | 267 ++++++++++++
+>   tests/qtest/meson.build         |   1 +
+>   14 files changed, 2052 insertions(+), 254 deletions(-)
+>   create mode 100644 docs/specs/iommu-testdev.rst
+>   create mode 100644 hw/misc/iommu-testdev.c
+>   create mode 100644 include/hw/arm/smmuv3-common.h
+>   create mode 100644 include/hw/misc/iommu-testdev.h
+>   create mode 100644 tests/qtest/iommu-smmuv3-test.c
+>   create mode 100644 tests/qtest/libqos/qos-smmuv3.c
+>   create mode 100644 tests/qtest/libqos/qos-smmuv3.h
+>
 
 
