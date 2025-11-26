@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1786C8AA89
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:32:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB526C8AA71
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:32:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOHUy-0005mn-Jv; Wed, 26 Nov 2025 10:32:04 -0500
+	id 1vOHUr-00059F-PA; Wed, 26 Nov 2025 10:31:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHU8-0004id-TA; Wed, 26 Nov 2025 10:31:14 -0500
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ id 1vOHU7-0004iR-Ey; Wed, 26 Nov 2025 10:31:14 -0500
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHU3-0001my-Et; Wed, 26 Nov 2025 10:31:12 -0500
+ id 1vOHU3-0001nR-Gp; Wed, 26 Nov 2025 10:31:11 -0500
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAX1V0zHSdpVpIEAQ--.1497S2;
- Wed, 26 Nov 2025 23:30:59 +0800 (CST)
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBnVVw2HSdpY5IEAQ--.4713S2;
+ Wed, 26 Nov 2025 23:31:02 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwCX8e4lHSdpN6MHAA--.21552S7;
- Wed, 26 Nov 2025 23:30:58 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwCX8e4lHSdpN6MHAA--.21552S8;
+ Wed, 26 Nov 2025 23:31:01 +0800 (CST)
 From: Tao Tang <tangtao1634@phytium.com.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
@@ -35,31 +35,32 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Mostafa Saleh <smostafa@google.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC v4 3/4] tests/qtest/libqos: add SMMUv3 helper library
-Date: Wed, 26 Nov 2025 23:30:38 +0800
-Message-Id: <20251126153040.1280317-5-tangtao1634@phytium.com.cn>
+Subject: [RFC v4 3/4] tests/qtest/libqos: Add SMMUv3 helper library
+Date: Wed, 26 Nov 2025 23:30:39 +0800
+Message-Id: <20251126153040.1280317-6-tangtao1634@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
 References: <20251126153040.1280317-1-tangtao1634@phytium.com.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX8e4lHSdpN6MHAA--.21552S7
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HlAAAs9
+X-CM-TRANSID: AQAAfwCX8e4lHSdpN6MHAA--.21552S8
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HlgABs+
 Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
  4@phytium.com.cn;
 X-Coremail-Antispam: 1Uk129KBjvAXoWfZFyrZryrAw4xKryfKw1kuFg_yoW5tw15Co
  W3XFs8Z3WkWw17ur12kF1xtan7WFWv9FWxAr45Jw4q9an3GrWY9a4ftws8X3Wftr15Gry8
- Ar95JayxJFykJr95n29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
+ Ar95JayxJFykJr95n29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
  J3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UU
  UUUUUUU==
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=162.243.164.118;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
