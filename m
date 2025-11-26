@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D623BC8A4A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 15:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D01C8A4AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 15:22:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOGPI-0004J5-3c; Wed, 26 Nov 2025 09:22:09 -0500
+	id 1vOGOu-0004Cy-SU; Wed, 26 Nov 2025 09:21:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vOGOf-0004AL-3v
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 09:21:29 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vOGOh-0004Ar-8H
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 09:21:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vOGOd-0005G6-1N
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 09:21:28 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vOGOf-0005Gl-VP
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 09:21:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764166885;
+ s=mimecast20190719; t=1764166889;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9zo/Bq9TUjLyhpqSX/zXVyODLtm8ZhsvlCvCSPbQI48=;
- b=Zo20abIGYam6/86YevUAdMbAf9fjtQEaoEqQxLfQZRDhAhyEwt6tXuas58ZLWQRxejnFUP
- GJmTb6tEZRwjUAeslufIqMnBm1OSAJIOd6VmGKlkJNRnTzZyEsx3wY+nSModD4W2L8CD8N
- tbjT1X1VJxXINl7fWHavACV4BvoX7Og=
+ bh=YxaXDMAD6zUCmVhB7rZY0V4c7CIz7haBVW4MpnLM3ZU=;
+ b=PDoeDRute2PxZHYsLS297QkRxqWICErND1CnnbF9ysymGY4ULfDqVZ6JttSHu8RoFGeLnc
+ Ng1WHAHTVbpq2TplJihIE17TxUR9CMlsy0UEHn575zxsObYpwDR5ri+3cLCi7FtAcPlwWI
+ Yy4Z9HX5QFtKF5bkJXZmIkGEJIQPBDo=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-FO-sqF-RP5uMXOrrhvrSmA-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-567-4-j0hwB7PiKgq9vl22cH5w-1; Wed,
  26 Nov 2025 09:21:23 -0500
-X-MC-Unique: FO-sqF-RP5uMXOrrhvrSmA-1
-X-Mimecast-MFC-AGG-ID: FO-sqF-RP5uMXOrrhvrSmA_1764166882
+X-MC-Unique: 4-j0hwB7PiKgq9vl22cH5w-1
+X-Mimecast-MFC-AGG-ID: 4-j0hwB7PiKgq9vl22cH5w_1764166882
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 05C0819560B1; Wed, 26 Nov 2025 14:21:22 +0000 (UTC)
+ id 7C5EE1956089; Wed, 26 Nov 2025 14:21:22 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.33.126])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C41730044E9; Wed, 26 Nov 2025 14:21:21 +0000 (UTC)
+ id 0ECF230044ED; Wed, 26 Nov 2025 14:21:22 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8EB231800397; Wed, 26 Nov 2025 15:21:16 +0100 (CET)
+ id A03A118003A0; Wed, 26 Nov 2025 15:21:16 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/8] edk2: update build script
-Date: Wed, 26 Nov 2025 15:21:03 +0100
-Message-ID: <20251126142116.4077056-3-kraxel@redhat.com>
+Subject: [PATCH 3/8] edk2: update submodule to edk2-stable202511
+Date: Wed, 26 Nov 2025 15:21:04 +0100
+Message-ID: <20251126142116.4077056-4-kraxel@redhat.com>
 In-Reply-To: <20251126142116.4077056-1-kraxel@redhat.com>
 References: <20251126142116.4077056-1-kraxel@redhat.com>
 MIME-Version: 1.0
@@ -83,66 +83,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sync with https://gitlab.com/kraxel/edk2-build-config/
-
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- roms/edk2-build.py | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ roms/edk2         | 2 +-
+ roms/edk2-version | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/roms/edk2-build.py b/roms/edk2-build.py
-index e564765aaa71..c4bfbae4cffb 100755
---- a/roms/edk2-build.py
-+++ b/roms/edk2-build.py
-@@ -51,7 +51,17 @@ def get_toolchain(cfg, build):
-         return cfg[build]['tool']
-     if cfg.has_option('global', 'tool'):
-         return cfg['global']['tool']
--    return 'GCC5'
-+    return 'GCC'
-+
-+def get_hostarch():
-+    mach = os.uname().machine
-+    if mach == 'x86_64':
-+        return 'X64'
-+    if mach == 'aarch64':
-+        return 'AARCH64'
-+    if mach == 'riscv64':
-+        return 'RISCV64'
-+    return 'UNKNOWN'
- 
- def get_version(cfg, silent = False):
-     coredir = get_coredir(cfg)
-@@ -137,7 +147,7 @@ def build_run(cmdline, name, section, silent = False, nologs = False):
-             print(f'### exit code: {result.returncode}')
-         else:
-             secs = int(time.time() - start)
--            print(f'### OK ({int(secs/60)}:{secs%60:02d})')
-+            print(f'### OK ({int(secs)}sec)')
-     else:
-         print(cmdline, flush = True)
-         result = subprocess.run(cmdline, check = False)
-@@ -191,7 +201,10 @@ def build_one(cfg, build, jobs = None, silent = False, nologs = False):
-     if jobs:
-         cmdline += [ '-n', jobs ]
-     for arch in b['arch'].split():
--        cmdline += [ '-a', arch ]
-+        if arch == 'HOST':
-+            cmdline += [ '-a', get_hostarch() ]
-+        else:
-+            cmdline += [ '-a', arch ]
-     if 'opts' in b:
-         for name in b['opts'].split():
-             section = 'opts.' + name
-@@ -235,7 +248,7 @@ def build_one(cfg, build, jobs = None, silent = False, nologs = False):
- 
- def build_basetools(silent = False, nologs = False):
-     build_message('building: BaseTools', silent = silent)
--    basedir = os.environ['EDK_TOOLS_PATH']
-+    basedir = os.environ['EDK_TOOLS_PATH'] + '/Source/C'
-     cmdline = [ 'make', '-C', basedir ]
-     build_run(cmdline, 'BaseTools', 'build.basetools', silent, nologs)
- 
+diff --git a/roms/edk2 b/roms/edk2
+index 4dfdca63a934..46548b1adac8 160000
+--- a/roms/edk2
++++ b/roms/edk2
+@@ -1 +1 @@
+-Subproject commit 4dfdca63a93497203f197ec98ba20e2327e4afe4
++Subproject commit 46548b1adac82211d8d11da12dd914f41e7aa775
+diff --git a/roms/edk2-version b/roms/edk2-version
+index 069f19f8bf49..1c2e9c9819df 100644
+--- a/roms/edk2-version
++++ b/roms/edk2-version
+@@ -1,2 +1,2 @@
+-EDK2_STABLE = edk2-stable202408
+-EDK2_DATE = 08/13/2024
++EDK2_STABLE = edk2-stable202511
++EDK2_DATE = 11/19/2025
 -- 
 2.52.0
 
