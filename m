@@ -2,81 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95531C89CF7
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 13:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A862FC89D99
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 13:46:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOEqM-0002wW-5C; Wed, 26 Nov 2025 07:41:58 -0500
+	id 1vOEuo-0004ZC-1P; Wed, 26 Nov 2025 07:46:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vOEqI-0002bB-0n
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vOEqF-0003QT-50
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764160909;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wYqgSylkBCj0+dBZz5KYyTjBUHFJLZyjG6hsYfolYc8=;
- b=YoVGnJgIwTbVA4FxfKnSJiKWFg3GUCoNKJm+HwxjySiL3QoEXbQkF4NoMSyi5vVkYYM89E
- xuUO0pzSVU0mcVf7WU+yVak8ckHNBG/oziHweYAsJpPvrO00G4Rgu6eLJNzvGnKaWFeDrk
- IhmLXhDQ2i3TzKuXXqSMdWytXonCVFU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-qx4v7SB7NMunQhBXbtw2Ig-1; Wed,
- 26 Nov 2025 07:41:45 -0500
-X-MC-Unique: qx4v7SB7NMunQhBXbtw2Ig-1
-X-Mimecast-MFC-AGG-ID: qx4v7SB7NMunQhBXbtw2Ig_1764160905
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vOEu1-0003pM-Qt
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:45:51 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vOEty-0004Gx-Pw
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:45:45 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8ABE1954B0B; Wed, 26 Nov 2025 12:41:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3EB5C195608E; Wed, 26 Nov 2025 12:41:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B9DA821E6A27; Wed, 26 Nov 2025 13:41:41 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,  Peter Xu
- <peterx@redhat.com>,
- qemu-devel@nongnu.org,  farosas@suse.de,  peter.maydell@linaro.org
-Subject: Re: g_autoptr(Error)
-In-Reply-To: <aSbr--ZbqzKVNDuC@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 26 Nov 2025 12:00:59 +0000")
-References: <20251125070554.2256181-1-armbru@redhat.com>
- <871plmk1bc.fsf@pond.sub.org> <aSWSLMi6ZhTCS_p2@redhat.com>
- <87jyzexrly.fsf@pond.sub.org> <aSXWKcjoIBK4LW59@x1.local>
- <769f5a57-7006-4cef-a5cb-12d53b7c30a5@redhat.com>
- <c0aa79ad-d6f4-413f-ade6-43e7609e37ac@redhat.com>
- <87ecplc8yn.fsf@pond.sub.org> <aSbr--ZbqzKVNDuC@redhat.com>
-Date: Wed, 26 Nov 2025 13:41:41 +0100
-Message-ID: <87v7ixarui.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AB3465BE31;
+ Wed, 26 Nov 2025 12:45:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1764161138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WCughnpcAJRZqqspfZy7ji09PmMK25B8lrAcumHnTTU=;
+ b=O7e1WsNGWGZJiWujdrSCG4D02gyShoBrgSqlaiQ/OvYmXaPgiIEfIaR+WxLJgx73gkpCUU
+ tlcngrSYHJIu8qH7rejUwK/DoLKojT9G6rDOdj3cANEcm5+21AgNyhrrekRIDJH1/ncmz9
+ DSTyoCqfLkDP++F97466n+lOTzQGwZs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1764161138;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WCughnpcAJRZqqspfZy7ji09PmMK25B8lrAcumHnTTU=;
+ b=/XPNDuFA6L+HBRqiVa4EcneDu2cg84hbUo/+NW88E6orEcKmAUCarBgXshEBezAlLq2z6f
+ PqLv5qBryVSbCrCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1764161138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WCughnpcAJRZqqspfZy7ji09PmMK25B8lrAcumHnTTU=;
+ b=O7e1WsNGWGZJiWujdrSCG4D02gyShoBrgSqlaiQ/OvYmXaPgiIEfIaR+WxLJgx73gkpCUU
+ tlcngrSYHJIu8qH7rejUwK/DoLKojT9G6rDOdj3cANEcm5+21AgNyhrrekRIDJH1/ncmz9
+ DSTyoCqfLkDP++F97466n+lOTzQGwZs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1764161138;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WCughnpcAJRZqqspfZy7ji09PmMK25B8lrAcumHnTTU=;
+ b=/XPNDuFA6L+HBRqiVa4EcneDu2cg84hbUo/+NW88E6orEcKmAUCarBgXshEBezAlLq2z6f
+ PqLv5qBryVSbCrCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 266D13EA63;
+ Wed, 26 Nov 2025 12:45:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id rE/9NXH2Jml0WAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 26 Nov 2025 12:45:37 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Pawel Zmarzly <pzmarzly0@gmail.com>, qemu-devel@nongnu.org,
+ michel@michel-slm.name
+Subject: Re: [PATCH] migration: fix parsing snapshots with x-ignore-shared flag
+In-Reply-To: <aSYt4MUUESAcThrr@x1.local>
+References: <20251125174649.257457-1-pzmarzly0@gmail.com>
+ <aSYE_rdMhH36KBxf@x1.local> <87tsyheqpv.fsf@suse.de>
+ <aSYt4MUUESAcThrr@x1.local>
+Date: Wed, 26 Nov 2025 09:45:35 -0300
+Message-ID: <87o6opdksw.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[gmail.com,nongnu.org,michel-slm.name];
+ RCPT_COUNT_THREE(0.00)[4]; FROM_EQ_ENVFROM(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,32 +115,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Peter Xu <peterx@redhat.com> writes:
 
-> On Wed, Nov 26, 2025 at 12:46:40PM +0100, Markus Armbruster wrote:
-
-[...]
-
->> Don't worry about it!  From my point of view, the process worked okay.
->> A big series got reviewed by maintainers, except for one little patch
->> touching another subsystem, where that subsystem's maintainer (me)
->> remained silent.  The series was then merged without further delay.
->>=20
->> Would I have appreciate a timely nudge on that little patch?  Sure.  Is
->> not nudging me a failure of sorts?  Nope.
+> On Tue, Nov 25, 2025 at 06:40:12PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Tue, Nov 25, 2025 at 05:46:49PM +0000, Pawel Zmarzly wrote:
+>> >> Snapshots made with mapped-ram and x-ignore-shared flags are
+>> >> not parsed properly.
+>> >> 
+>> >> Signed-off-by: Pawel Zmarzly <pzmarzly0@gmail.com>
+>> >> ---
+>> >>  migration/ram.c | 5 +++++
+>> >>  1 file changed, 5 insertions(+)
+>> >> 
+>> >> diff --git a/migration/ram.c b/migration/ram.c
+>> >> index 29f016cb25..85fdc810ab 100644
+>> >> --- a/migration/ram.c
+>> >> +++ b/migration/ram.c
+>> >> @@ -4277,6 +4277,11 @@ static int parse_ramblocks(QEMUFile *f, ram_addr_t total_ram_bytes)
+>> >>          id[len] = 0;
+>> >>          length = qemu_get_be64(f);
+>> >>  
+>> >> +        if (migrate_ignore_shared()) {
+>> >> +            /* Read and discard the x-ignore-shared memory region address */
+>> >> +            qemu_get_be64(f);
+>> >> +        }
+>> >> +
+>> >>          block = qemu_ram_block_by_name(id);
+>> >>          if (block) {
+>> >>              ret = parse_ramblock(f, block, length);
+>> >> -- 
+>> >> 2.52.0
+>> >> 
+>> >
+>> > Thanks for the patch, though the u64 was parsed in parse_ramblock()
+>> > instead.  Would you consider refactoring that function instead?
+>> 
+>> There's actually not much going on in terms of "parsing" in
+>> parse_ramblock(). I think we could move the migrate_ignore_shared() from
+>> the end of the function to before the mapped-ram check().
 >
-> The other thing that plays in here is that we actively encourage use of
-> g_autoptr everywhere.
-
-We do, and for good reasons.
-
->                       It is very unusual for "Error" to be a type that
-> does NOT want g_autoptr, and thus the mistake is very much on the cards.
+> Yes, that's also what I meant if it wasn't clear.. it was parsed into a
+> hwaddr, and it was used to verify the addresses match.
 >
-> I've proposed it before myself & Markus caught it. I also caught one
-> other proposals to add it since my attempt. This third time it slipped
-> through review. I expect we'll see a 4th attempt to add it at some point.
+> If that check is needed for ignore-shared blocks, then these checks should
+> also apply when mapped-ram is enabled on top of whatever ramblock got
+> ignored during migration.
+>
 
-%-}
+Right, because ignore_shared implies putting the MR address in the
+stream, but there is still the matter of whether the pages will actually
+be read on the destination.
 
+Should ram_save_setup() use RAMBLOCK_FOREACH_NOT_IGNORED instead of
+RAMBLOCK_FOREACH_MIGRATABLE? I don't immediately see why not...
+
+> Since the discussion started, I am actually not sure if we do this all
+> right for two things..
+>
+> (1) When mapped-ram is enabled, do we actually need to setup those
+>     ramblocks in mapped_ram_setup_ramblock()?
+>
+>     That is, when a ramblock returns migrate_ram_is_ignored()==true, IIUC
+>     we don't need to allocate bitmap or page chunks for it?
+>
+>     We likely don't need to change this easily, because this will change
+>     file format.. I'm also not sure if this is a major issue, logically
+>     when ignore-shared is used we normally shouldn't need mapped-ram.. vice
+>     versa.  So I may need to better understand the use case first on
+>     enabling the two..
+>
+
+Thanks, Peter. A keen eye, as usual. I was searching for this reasoning
+when looking at the code, but it missed me.
+
+I looked back at the very first version of fixed-ram, which wasn't
+authored by me and there is indeed no mention or expectation of handling
+shared ram. So I think this is at this point unspecified.
+
+What is the current impact of having those pages in? We're "just"
+wasting cycles writing to the file, AFAICS. We'd better, at least,
+sanitise that part to avoid the extra work.
+
+> (2) Is the check proper on validating mr->addr didn't change?
+>
+>     This is a question on the check itself when ignore-shared enabled,
+>     with/without mapped-ram enabled.  That is, I question whether this
+>     check is useful or valid at all:
+>     
+>     if (migrate_ignore_shared()) {
+>         hwaddr addr = qemu_get_be64(f);
+>         if (migrate_ram_is_ignored(block) &&
+>             block->mr->addr != addr) {
+>             error_report("Mismatched GPAs for block %s "
+>                          "%" PRId64 "!= %" PRId64, block->idstr,
+>                          (uint64_t)addr, (uint64_t)block->mr->addr);
+>             return -EINVAL;
+>         }
+>     }
+>
+
+I agree with all you say below, but I think an earlier question would
+be: why put the address on the stream in the first place? Is this just
+hardening of some sort?
+
+The commit the introduces the feature has me wondering:
+
+fbd162e629 ("migration: Add an ability to ignore shared RAM blocks")
+
+  during save:
+  
+  +        if (migrate_ignore_shared()) {
+  +            qemu_put_be64(f, block->mr->addr);
+  +            qemu_put_byte(f, ramblock_is_ignored(block) ? 1 : 0);
+  +        }
+
+  during load:
+  +    if (ramblock_is_ignored(block)) {
+           error_report("block %s should not be migrated !", id);
+           return NULL;
+       }
+
+If we know it's ignored, why send anything at all? (also, "to ignore"
+has a meaning, we should stick to it)
+
+>     In the error, it said "GPA", but mr->addr isn't GPA.. it's the offset
+>     of the MR within the MR's parent container MR..  So if the parent is
+>     the root MR / system_memory, then it is the GPA, however I don't see it
+>     guaranteed..
+>
+
+Looking at the initial commit, I think this is all sanity check, maybe
+to ensure some sort of stream compatibility. Or to make sure the stream
+is stateful and we're not confusing an ignored block with an
+(incorrectly) ignored one.
+
+>     My gut feeling is we almost always rely on proper QEMU cmdlines anyway
+>     to make migration work.  I wonder if we should just remove this check
+>     (in case it might break when mr's parent isn't the root MR).
+>
+
+I believe it's ok to remove the check. I wish we had a compatible way to
+remove handling of ignored blocks altogether, but I guess this u64 is
+now on the stream forever?
+
+> This is irrelevant of this specific fix, so it doesn't need to block a
+> repost..
 
