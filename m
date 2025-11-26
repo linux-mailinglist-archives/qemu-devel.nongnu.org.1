@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5641C8BDAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82944C8BD5C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:25:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOM4I-0006hv-Fo; Wed, 26 Nov 2025 15:24:50 -0500
+	id 1vOM4G-0006ZF-W4; Wed, 26 Nov 2025 15:24:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM3o-0005vi-Ey
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:27 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM3w-00062H-El
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:33 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM3h-0002fS-LM
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:16 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-42b427cda88so151442f8f.0
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:24:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM3o-0002fz-U3
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:27 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47796a837c7so689085e9.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:24:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764188650; x=1764793450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764188657; x=1764793457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HKgkNfPfnIgBlkZd4fYEByDwbkJlxYJ/qiGhZVisjIE=;
- b=oVKieNOxFElnE27q30E0MguXjCwMR+gBXQRo1uaZW+Xna1pglx9jXQplElz+xa1kAm
- MbMddo4N7JJ7K5SNFC4Hu8i8p6CdchsyZUEYXkQcOqt1n3m66Qd9slmcyrUcuCSYQDfP
- uicUWL6atUs0JKrmS7elWojPl7FmUyInDTOBM/6yR4JVx0qJbAYNzEW9EcvZ4+TIf3qY
- iJt35uvUv3+3C62m8bYioH9PfS7B0K4/SSc6kNHl8RIft8XaN6FL9hl2zhfpbE1kQxJh
- 3bwRsiVBddAWIC0j9GS/Qa036Si1uDfA5fE5dFJZf1VhycuVWQXnS9TrvlH5bpf7ewJ+
- F71g==
+ bh=/DOfQD31qkMald+3OmhYsWbl0ISNPTLiwY4/obsMvFY=;
+ b=COgtRYBfv7z491r2NSqmvUKhT7cUkJVz6Y7R7F896tXjS83/AmGMHKGcScEiqfsrct
+ iKEy4C+FIh6bRJY+OVMMnLUNMMoDsrtIh0JQ7SL2YIBjfxO8ld+5VGfyCTO3h6oCjRYm
+ o0PSOCrYCc3/3Pvp6KQiJmldUIJi9oC79LNJ0T7DsVoKRaZ/Ka6Vk9lKQCCNVJCYgXFL
+ yk6uSAGCZyjZf7SJ4N/IfCrLkWmSagm/022krGpsEVsgn2DPZ9AQMUFSTkRUJgjFtdpd
+ EVWYGPgcf3q/GOnbt87MDSx3CRg262IMZVI39H9fw2AhgO7QYLKcDcZ/6A+hdADM7Ls5
+ E05w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764188650; x=1764793450;
+ d=1e100.net; s=20230601; t=1764188657; x=1764793457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HKgkNfPfnIgBlkZd4fYEByDwbkJlxYJ/qiGhZVisjIE=;
- b=IPyF/7WCIuWSEZRfwilbXCitijcpcOmKJhHRUFCujySnVq3hn27GN43OZ9vaPuyQ+y
- WBkLk44vDXojE7T9UOzlnegIn2R07/am5KF3LXbpa++tOvPx9bYqAK2y/xbCM2pEXjaG
- 7QwiXANkopj7wndaghaHw60M5obo/PXRgaACXrgO9hpwLr3XC4AmiawBhvWO+W76huSg
- /hSfnlZ6zRZ1ANAgKwk/7g/1R0RdnNJXbH9BXnhBOegRBqMi1OBre05uQA3nr38biSJP
- rcF/hBVSEAWlXWsN3PMaGIbHXZ5uG9USMMBsxGkKtpUXBV0pPU2xyi7IP3gNy9q6rWv9
- yqBg==
-X-Gm-Message-State: AOJu0Yy/+8+YdnRe2lpszZqN9lexAmiaVelchekQtCAWf7NmwHtkSVLy
- OtWa1wJFbxdwdWtxq4i7mlgHtdpMzEnAjLpJDmE6Wr0hWnO3wjmlJuTbSQEMrCJsjDPNp/xODrE
- /8kcAYkXTiVKV
-X-Gm-Gg: ASbGnctIiAuGt3GLKvWDJcjXi9lU1MTyjg5RkJX68dT2FVL1Pjrj87I5fdruc4vEFWH
- Eo0akDpDJBVhGYQ9hQ9FapbA8xll9XJAbaeOS/iia0ZliTtGpv9C26iYFClJjdt3S5mlJ5euC3J
- BJfCxz0aLPpk8BtT199K9kUwL4U706535YWP/2apay013KWfmRroLPK0cnQapg9an5huXOJNoIN
- 6NN1+yPMhiThS6PsgXVY2juAGSS+EYsPIoG45O9NSbxig7aBpp3gWKJkiJmympi2I2erbZvilk2
- KdhBzjD9lja7T9g2ieJSQ5LMYwIKcUvvwOQsy4VImtSw6zqk3kiQ/UEvSIbRZUDUJSNo7l4pldH
- ZaTyfkbs8WihVPmzvnytGy9D2TmXaqpqXr8UUlLUxKOJPAjVT1X76y8GA2Jg8ird/X5qnsmWe4E
- 3/9mEZdHThOnR3Qn7bElWUtd80uUvSvRqSeRlMyCqwcXV0mDlHeYQR7UynLJLU
-X-Google-Smtp-Source: AGHT+IHD4+btEnXpeTj9PVcy18RDYzbTxn/JwEHzJPz9hksD0WYvuaUDoCISG/4dWmKDLPNmmCYBIQ==
-X-Received: by 2002:a05:6000:4006:b0:42b:3131:5433 with SMTP id
- ffacd0b85a97d-42cc1cbcfe1mr21740153f8f.26.1764188650462; 
- Wed, 26 Nov 2025 12:24:10 -0800 (PST)
+ bh=/DOfQD31qkMald+3OmhYsWbl0ISNPTLiwY4/obsMvFY=;
+ b=Q6iQJqsU94ziGBUzv0gMAIw2O4makXuCVAx1EN+5IAdA8/Bh1KhPkR88eyd7FKfhFK
+ s6JhqlUIDjdb86zam9HpAO9/tpXyA+DW3UeGvH+GEPnd/OqaCXNL2hs2II7HXn74BiOQ
+ wYeKgN8GOJ5ELBNQr0y+RISQQ4cENJxh83NjBZeqR9kE/J3JZEZTiyDtEh1zSBOCP44O
+ t6Rk8hjjrgHt5EN7SovGc9K4hbCpYrcCNIFXg9B//wuRj2xE2aPr5Vee+8pvnP4wnvdc
+ /WtWXO28mRYYtBiaeKJaitdkeYugX5U72Auuy3eI75mP1mueK6G+gJMzz1QKQkhsl8cW
+ cjtg==
+X-Gm-Message-State: AOJu0YxE6DaVBltutM9UlwuUdn9VJ1FD0rCo+ndYLuwrc3gdR1bAsdUJ
+ 2NqadzRktEkxh7MkpuF81IpDzmwaNVpQplLCqGuhtEfIVeiF1xOYpGZoqCzZ81y+fXjh1nktWr4
+ t5MJDW+oMjzsa
+X-Gm-Gg: ASbGncvVmsD/FWZaUi+eIwIdzzdVCwbrKG5LAoKMI1lt7GiSdfNcGXt77mG/ifzZUxQ
+ ymOomaFKpCX9bQMoVWCsL0IS5k5xMkr5CFGHBHLTvd8zPFRpD+/74UkTfgA8GOkFGqI3PUfLhZZ
+ G9ZS2g0EVs+ewt+venZoC7PbedTnff+8N5py0QNbJ5PRCw2/xzKikIiWzwVonqL8plMQ2akaxle
+ DysL12ReMqeeBJnlD/0F7bHG+iWWOSMuLEhVhWNTSmlGcuJ1fwDA2y0WWolqXs+BDplWN9fZQGo
+ zmHF9NXI0xK9eWB3KDgtEGyCdQoLod9tv2DsL8Zd0n5MryRquIb8ujqbec7E4jTncXm7XtlPUc9
+ 0SmkH3YRcfaDqyB4juJN4xkFhnyJJPyxMH2OjQmsaJP08vAuWKsF4R+o+zGe6LavEcM9IW5ai3c
+ 8N/SzLchYXA/i3T2iBHBSQaNQu3ldNYPmDZ3y8Ev6ZwJdg6hSXp7rBLj2NwbRl
+X-Google-Smtp-Source: AGHT+IHZes14TtQn6B8LEcV8X5jAQgJZsgVodpzUWRU6wfgpyVEbBbl4AJUysv/dBoUEgynYfrkRRA==
+X-Received: by 2002:a05:600c:4f83:b0:46e:396b:f5ae with SMTP id
+ 5b1f17b1804b1-477c01b23b1mr238553875e9.16.1764188657440; 
+ Wed, 26 Nov 2025 12:24:17 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cc231dc6esm33017543f8f.7.2025.11.26.12.24.09
+ 5b1f17b1804b1-479040a9cf4sm53856835e9.1.2025.11.26.12.24.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 26 Nov 2025 12:24:09 -0800 (PST)
+ Wed, 26 Nov 2025 12:24:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH-for-11.0 v3 18/22] target/ppc: Inline cpu_ld/st_data_ra()
- calls in do_hash()
-Date: Wed, 26 Nov 2025 21:21:54 +0100
-Message-ID: <20251126202200.23100-19-philmd@linaro.org>
+Subject: [PATCH-for-11.0 v3 19/22] target/ppc: Inline cpu_ld/st_mmuidx_ra()
+ calls in memory helpers
+Date: Wed, 26 Nov 2025 21:21:55 +0100
+Message-ID: <20251126202200.23100-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126202200.23100-1-philmd@linaro.org>
 References: <20251126202200.23100-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,39 +102,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of removing the cpu_ld*_data_ra()
-and cpu_st*_data_ra() calls, inline them.
+In preparation of removing the cpu_ld*_mmuidx_ra() and
+cpu_st*_mmuidx_ra() calls, inline them.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/tcg-excp_helper.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ target/ppc/mem_helper.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
-index edecfb85725..244aeb23c16 100644
---- a/target/ppc/tcg-excp_helper.c
-+++ b/target/ppc/tcg-excp_helper.c
-@@ -160,14 +160,17 @@ static void do_hash(CPUPPCState *env, target_ulong ea, target_ulong ra,
-                     target_ulong rb, uint64_t key, bool store)
- {
-     uint64_t calculated_hash = hash_digest(ra, rb, key), loaded_hash;
-+    unsigned mmu_idx = cpu_mmu_index(env_cpu(env), false);
-+    MemOpIdx oi = make_memop_idx(MO_TE | MO_UQ | MO_UNALN, mmu_idx);
-+    uintptr_t retaddr = GETPC();
- 
-     if (store) {
--        cpu_stq_data_ra(env, ea, calculated_hash, GETPC());
-+        cpu_stq_mmu(env, ea, calculated_hash, oi, retaddr);
+diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
+index 6ab71a6fcb4..a43726d4223 100644
+--- a/target/ppc/mem_helper.c
++++ b/target/ppc/mem_helper.c
+@@ -97,8 +97,10 @@ void helper_lmw(CPUPPCState *env, target_ulong addr, uint32_t reg)
+         }
      } else {
--        loaded_hash = cpu_ldq_data_ra(env, ea, GETPC());
-+        loaded_hash = cpu_ldq_mmu(env, ea, oi, retaddr);
-         if (loaded_hash != calculated_hash) {
-             raise_exception_err_ra(env, POWERPC_EXCP_PROGRAM,
--                POWERPC_EXCP_TRAP, GETPC());
-+                                   POWERPC_EXCP_TRAP, retaddr);
+         /* Slow path -- at least some of the operation requires i/o.  */
++        MemOpIdx oi = make_memop_idx(MO_TE | MO_UL | MO_UNALN, mmu_idx);
++
+         for (; reg < 32; reg++) {
+-            env->gpr[reg] = cpu_ldl_mmuidx_ra(env, addr, mmu_idx, raddr);
++            env->gpr[reg] = cpu_ldl_mmu(env, addr, oi, raddr);
+             addr = addr_add(env, addr, 4);
          }
      }
+@@ -120,7 +122,9 @@ void helper_stmw(CPUPPCState *env, target_ulong addr, uint32_t reg)
+     } else {
+         /* Slow path -- at least some of the operation requires i/o.  */
+         for (; reg < 32; reg++) {
+-            cpu_stl_mmuidx_ra(env, addr, env->gpr[reg], mmu_idx, raddr);
++            MemOpIdx oi = make_memop_idx(MO_TE | MO_UL | MO_UNALN, mmu_idx);
++
++            cpu_stl_mmu(env, addr, env->gpr[reg], oi, raddr);
+             addr = addr_add(env, addr, 4);
+         }
+     }
+@@ -161,9 +165,11 @@ static void do_lsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
+             break;
+         }
+     } else {
++        MemOpIdx oi = make_memop_idx(MO_TE | MO_UL | MO_UNALN, mmu_idx);
++
+         /* Slow path -- at least some of the operation requires i/o.  */
+         for (; nb > 3; nb -= 4) {
+-            env->gpr[reg] = cpu_ldl_mmuidx_ra(env, addr, mmu_idx, raddr);
++            env->gpr[reg] = cpu_ldl_mmu(env, addr, oi, raddr);
+             reg = (reg + 1) % 32;
+             addr = addr_add(env, addr, 4);
+         }
+@@ -174,10 +180,12 @@ static void do_lsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
+             val = cpu_ldub_mmuidx_ra(env, addr, mmu_idx, raddr) << 24;
+             break;
+         case 2:
+-            val = cpu_lduw_mmuidx_ra(env, addr, mmu_idx, raddr) << 16;
++            oi = make_memop_idx(MO_TE | MO_UW | MO_UNALN, mmu_idx);
++            val = cpu_ldw_mmu(env, addr, oi, raddr) << 16;
+             break;
+         case 3:
+-            val = cpu_lduw_mmuidx_ra(env, addr, mmu_idx, raddr) << 16;
++            oi = make_memop_idx(MO_TE | MO_UW | MO_UNALN, mmu_idx);
++            val = cpu_ldw_mmu(env, addr, oi, raddr) << 16;
+             addr = addr_add(env, addr, 2);
+             val |= cpu_ldub_mmuidx_ra(env, addr, mmu_idx, raddr) << 8;
+             break;
+@@ -250,8 +258,11 @@ void helper_stsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
+             break;
+         }
+     } else {
++        MemOpIdx oi;
++
++        oi = make_memop_idx(MO_TE | MO_UL | MO_UNALN, mmu_idx);
+         for (; nb > 3; nb -= 4) {
+-            cpu_stl_mmuidx_ra(env, addr, env->gpr[reg], mmu_idx, raddr);
++            cpu_stl_mmu(env, addr, env->gpr[reg], oi, raddr);
+             reg = (reg + 1) % 32;
+             addr = addr_add(env, addr, 4);
+         }
+@@ -261,10 +272,12 @@ void helper_stsw(CPUPPCState *env, target_ulong addr, uint32_t nb,
+             cpu_stb_mmuidx_ra(env, addr, val >> 24, mmu_idx, raddr);
+             break;
+         case 2:
+-            cpu_stw_mmuidx_ra(env, addr, val >> 16, mmu_idx, raddr);
++            oi = make_memop_idx(MO_TE | MO_UW | MO_UNALN, mmu_idx);
++            cpu_stw_mmu(env, addr, val >> 16, oi, raddr);
+             break;
+         case 3:
+-            cpu_stw_mmuidx_ra(env, addr, val >> 16, mmu_idx, raddr);
++            oi = make_memop_idx(MO_TE | MO_UW | MO_UNALN, mmu_idx);
++            cpu_stw_mmu(env, addr, val >> 16, oi, raddr);
+             addr = addr_add(env, addr, 2);
+             cpu_stb_mmuidx_ra(env, addr, val >> 8, mmu_idx, raddr);
+             break;
+@@ -293,8 +306,10 @@ static void dcbz_common(CPUPPCState *env, target_ulong addr,
+     haddr = probe_write(env, addr, dcbz_size, mmu_idx, retaddr);
+     if (unlikely(!haddr)) {
+         /* Slow path */
++        MemOpIdx oi = make_memop_idx(MO_TE | MO_UQ | MO_UNALN, mmu_idx);
++
+         for (int i = 0; i < dcbz_size; i += 8) {
+-            cpu_stq_mmuidx_ra(env, addr + i, 0, mmu_idx, retaddr);
++            cpu_stq_mmu(env, addr + i, 0, oi, retaddr);
+         }
+         return;
+     }
+@@ -342,9 +357,10 @@ void helper_icbi(CPUPPCState *env, target_ulong addr)
+ void helper_icbiep(CPUPPCState *env, target_ulong addr)
+ {
+ #if !defined(CONFIG_USER_ONLY)
++    MemOpIdx oi = make_memop_idx(MO_UL | MO_UNALN, PPC_TLB_EPID_LOAD);
+     /* See comments above */
+     addr &= ~(env->dcache_line_size - 1);
+-    cpu_ldl_mmuidx_ra(env, addr, PPC_TLB_EPID_LOAD, GETPC());
++    cpu_ldl_mmu(env, addr, oi, GETPC());
+ #endif
  }
+ 
 -- 
 2.51.0
 
