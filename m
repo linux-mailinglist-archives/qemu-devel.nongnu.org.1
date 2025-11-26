@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7ECEC8B920
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 20:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95019C8BD11
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:23:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOLB8-0004kj-QM; Wed, 26 Nov 2025 14:27:50 -0500
+	id 1vOM20-0002E8-Cv; Wed, 26 Nov 2025 15:22:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vOLAk-0004hy-Ob
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 14:27:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vOLAj-000489-7S
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 14:27:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764185244;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mfdHw6osTT0BaUP9o9b9He3D/uTLUvXEroWP8+YkA/4=;
- b=Q2U+vDmtBlJnIUKCCQ2z8cQt2sJofyDM/n3LWCHH78k2SKT+mtBUMfzhN0gd+0dox4Go8/
- FAZSRy606dpswIM/SpAi+DjvUhbqXlrqwcoTSDgAiLFql9bsr+e1JvTufrJ/x0j3FOpU2L
- pMxXdi21WWn2/zth9zRcOFBSH1YGlL4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-kD_6EkmoM4Gr0JjMn-exQQ-1; Wed,
- 26 Nov 2025 14:27:20 -0500
-X-MC-Unique: kD_6EkmoM4Gr0JjMn-exQQ-1
-X-Mimecast-MFC-AGG-ID: kD_6EkmoM4Gr0JjMn-exQQ_1764185239
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 45F56195609E; Wed, 26 Nov 2025 19:27:19 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.32.22])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB2E3180035F; Wed, 26 Nov 2025 19:27:15 +0000 (UTC)
-Date: Wed, 26 Nov 2025 20:27:13 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: =?iso-8859-1?Q?Cl=E9ment?= Chigot <chigot@adacore.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: Re: [PATCH v2 1/5] vvfat: introduce partitioned option
-Message-ID: <aSdUfZsqipQ4gacW@redhat.com>
-References: <878qgenqum.fsf@pond.sub.org>
- <CAJ307Eg7x_rKb5qybgW3XxAKLP=1ds524gqgXettv2cZ8WTMww@mail.gmail.com>
- <757f66d0-625c-9d1b-5090-3d5210903173@eik.bme.hu>
- <87346mkos9.fsf@pond.sub.org> <aRH_2gcYOH31UB38@redhat.com>
- <87ecq5f201.fsf@pond.sub.org>
- <CAJ307EjFMrXOmQMF5YckQ6hMGdFGtdYdAH3fWShcvwEXAtBrrw@mail.gmail.com>
- <87c7d0d6-8f8f-b6f2-3c81-0b0572dbad2c@eik.bme.hu>
- <CAJ307Eg74VNkYvewc5bnhafD+ccXzALmvS400Gz++8Mx5gcKkQ@mail.gmail.com>
- <CAJ307EjdoHZjSYCt7TKSLo=hqDS7y_azUBYsQszh3cAKG3jU-A@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM1j-00026u-At
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:22:12 -0500
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM1c-00023X-7j
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:22:08 -0500
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-477a1c28778so1007765e9.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:22:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1764188522; x=1764793322; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vfni1IOQGN3g8RROC5YF75DC2PBdoHAs3xiWfJCop/k=;
+ b=rtHquGmdEXU9fBpPNIb1tKgbZIK8EMlGPWyl17ggDQZdgs+ak4qtsFt99LmE8NwXrL
+ MAOetcsddS2z7ZAiumYcw7A4IdiyebDBNokdKfwXsO5IhtYF2+hLIsSUlFxv/lFTNsCl
+ /rCIq0RC0EzRXRpuFmoe/FmiJKl9DfZTZ09m2xkyZaM04RKvBsB2pnWkPvQqc4uJO0my
+ eC+L3Kw2h+qZ4wjUKC4LzNvy6Vva8PjghKqBOtOhXo951vapKqEkkap0dfu5qr4X6blt
+ wQhHCwK7VnW/xqxWV0DwyPkTAYt6CGyrZwF/MmzW+PcvzjCO7R9gToKkc/fPGFaAXim/
+ iaOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764188522; x=1764793322;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Vfni1IOQGN3g8RROC5YF75DC2PBdoHAs3xiWfJCop/k=;
+ b=ZpMgXmz/qaOuo2t8Pdoo9of/HxmVl6Rlvpazt95y/RXCWgtteMEfGcn7LZQgbrV0o8
+ OXPwVjopLMvTB4PSv05JRUtChanZtTOD29RZHmpEKSjOas0dabCSOJ4T0u+B7/uX0HXm
+ hYyk3UhjnwJc9ufcwnhYW7n5kiKFRNs1jznVpF8f6zOLP7YTWHlvb4BUgZgi9HgBH06f
+ sWP10lf6EdsxXFR0EWfwBtEcg5DVX06nOGRwEjN2ToOr+IE0CRtGfLbL7C+GCBdP3CPb
+ 8hlW+eeI/swFnQJRx5FfSNR/Z368B1L1FhAqq8CbOc8UWkE2/4Fv6iX6k2QWURlSZm6a
+ SDlQ==
+X-Gm-Message-State: AOJu0YwTqowNZmILeolFHro9fweixyvwxQbnwDyY2Htcaxn07+dRgXr8
+ PIaDfD8gnJX4BajqnmdeEECs6zHjGZ2CNp3+hEyeCtuMqU4mgeUZC7uTG41Nlxp8NgiMutSa2mC
+ oLox4F4CKwO4z8TY=
+X-Gm-Gg: ASbGncvj8MVRdC4zkuibxdZpB4qSC03t+LBv0mU9hkGuJ0lxGU4jtomu8/AY5WkYTM4
+ FflTZuAihPX3Zm7m+mK7G+xRTxjuBBCmyFGLwj4QFvTG199Fp0lQNNRNP3+nUkW34tw8uqhd3Bm
+ i+OlM10oxwbeteZwGXEF8aQ60hxDHANJhZtyguZgXUX33pD2HjyJVlG1bOD146DCH1mkOli/7Md
+ pwnxrAraS7MR0mynd0zSB5reGqQJu9KGausTfy3T7Z1JoZcHHfMeL/EkQ99JjQQ2TevQx8qT91n
+ ZvfPvTIJy2KThzyvrTLQ94MeaRRoRpuh6mBWwuluKEwZLyCA3Znci0reKTZwHHsy6Bdm3xBru8R
+ KS7wI9DvNycBOPpIjRKiEt7P21RKH+PeF4SoEYGrICgwmpXeVMi5l/ERwH0iY7M6hKH6eXi4WsN
+ aAREaCUCRFw5GWe9WHfLsWGSWDzioM1zqVt1F1aUgfYJOKw6YCtcEi8+xGz6Mm
+X-Google-Smtp-Source: AGHT+IEP6tsuteUmqKX0XpNrTRGTxbTPt+mRAu1nTsuHCjcA5oSUt8XKRzS17rPSMjsNnUnpRFPsNg==
+X-Received: by 2002:a05:600c:3b1a:b0:477:55ce:f3bc with SMTP id
+ 5b1f17b1804b1-47904b12f1dmr74230945e9.19.1764188522322; 
+ Wed, 26 Nov 2025 12:22:02 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42cc231dc6esm33009191f8f.7.2025.11.26.12.22.01
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 26 Nov 2025 12:22:01 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-11.0 v3 00/22] accel/tcg: Remove most MO_TE uses in
+ cpu_ld/st_data()
+Date: Wed, 26 Nov 2025 21:21:36 +0100
+Message-ID: <20251126202200.23100-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ307EjdoHZjSYCt7TKSLo=hqDS7y_azUBYsQszh3cAKG3jU-A@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,49 +98,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 26.11.2025 um 10:59 hat Clément Chigot geschrieben:
-> On Fri, Nov 14, 2025 at 2:47 PM Clément Chigot <chigot@adacore.com> wrote:
-> > On Fri, Nov 14, 2025 at 2:25 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
-> > > On Fri, 14 Nov 2025, Clément Chigot wrote:
-> > > > 1. "mbr" vs "partitioned".
-> > > > I do think "partitioned" is clearer, a bit more casual friendly. "mbr"
-> > > > requires knowledge about FAT format, while what's a partition should
-> > > > be known by a wider audience.
-> > > > Side note, in V3, I'll remove the "unpartitioned" keyword to simply
-> > > > replace it by "partitoned=false" (I wasn't aware such an obvious
-> > > > possibility was working...). So we might even call it
-> > > > "partition/partitions=true|false".
+Since v2:
+- Reworked SH4
+- Completed PPC / MIPS.
+Since v1:
+- Fixed s/little/big/ typo (thuth)
 
-As I said, either one works for me.
+Still trying to remove MO_TE uses, here looking at cpu_ld/st_data()
+in fixed-endianness targets.
 
-> > > > 2. The default value. Should it be "false" for @floppy ?
-> > > > IMO, having a default value independent of other arguments is always
-> > > > better. Hence, I'll push for keeping "partitioned=true" as the
-> > > > default, and having users forcing "partitioned=false" for floppy (an
-> > > > error being raised otherwise). As we'll probably change the default
-> > > > behavior with floppy anyway (cf patch 2), I don't think it will hurt a
-> > > > lot to make users passing a new flag.
+Series split of bigger one [*] where Richard made a comment on
+*_code() patches. Since not related to *_data() uses, post separetely
+since almost ready (still few PPC/MIPS paths to update, but I'd rather
+check if this is heading in the correct direction before looking at
+them).
 
-I'm very much in favour of defaulting to partitioned for hard disks and
-unpartitioned for floppies. This is not only the option that stays most
-compatible with what we have in existing QEMU versions, but also the
-most intuitive setting.
+[*] https://lore.kernel.org/qemu-devel/20251121134503.30914-1-philmd@linaro.org/
 
-With the change to the default behaviour with floppy, we were forced to
-pick between options that all meant changing the default, so I proposed
-taking the most intuitive default there, too: I'm relatively sure that
-when you mention floppy, most people will think of 1.44 MB first.
+Philippe Mathieu-Daudé (22):
+  target/hexagon: Use little-endian variant of cpu_ld/st_data*()
+  target/i386: Use little-endian variant of cpu_ld/st_data*()
+  target/riscv: Use little-endian variant of cpu_ld/st_data*() for
+    vector
+  target/rx: Use little-endian variant of cpu_ld/st_data*()
+  target/tricore: Use little-endian variant of cpu_ld/st_data*()
+  target/hppa: Use big-endian variant of cpu_ld/st_data*()
+  target/m68k: Use big-endian variant of cpu_ld/st_data*()
+  target/s390x: Use big-endian variant of cpu_ld/st_data*()
+  target/sparc: Use big-endian variant of cpu_ld/st_data*()
+  target/sh4: Replace cpu_stl_data() call in OCBI helper
+  target/mips: Use big-endian variant of cpu_ld/st_data*() for MSA
+    opcode
+  target/mips: Introduce loadu8() & loads4() helpers
+  target/mips: Pass MemOpIdx to atomic load helpers
+  target/mips: Drop almask argument of HELPER_LD_ATOMIC() macro
+  target/mips: Inline cpu_ld*_mmuidx_ra() calls in atomic load helpers
+  target/mips: Expand HELPER_LD_ATOMIC()
+  target/mips: Inline cpu_ld/st_mmuidx_ra() calls in memory helpers
+  target/ppc: Inline cpu_ld/st_data_ra() calls in do_hash()
+  target/ppc: Inline cpu_ld/st_mmuidx_ra() calls in memory helpers
+  target/ppc: Inline cpu_ldl_data_ra() calls in ICBI helper
+  target/ppc: Simplify endianness handling in Altivec opcodes
+  accel/tcg: Remove non-explicit endian cpu_ld/st*_data*() helpers
 
-> > > 2. Having different defaults for floppy or disk would keep existing
-> > > command lines working. Otherwise why not make partitioned=false the
-> > > default and let users who need it set explicitly. That would also
-> > > work for most cases without having to type out this option.
+ include/accel/tcg/cpu-ldst.h         |  46 --------
+ target/hexagon/macros.h              |   6 +-
+ target/i386/ops_sse.h                |  12 +--
+ target/i386/tcg/seg_helper.h         |  12 +--
+ linux-user/vm86.c                    |   4 +-
+ target/hexagon/op_helper.c           |   6 +-
+ target/hppa/op_helper.c              |  44 ++++----
+ target/i386/tcg/mem_helper.c         |   8 +-
+ target/i386/tcg/mpx_helper.c         |  28 ++---
+ target/i386/tcg/seg_helper.c         |  16 +--
+ target/i386/tcg/system/excp_helper.c |   8 +-
+ target/i386/tcg/system/svm_helper.c  |  69 ++++++------
+ target/m68k/fpu_helper.c             |  12 +--
+ target/m68k/op_helper.c              |  91 ++++++++--------
+ target/mips/tcg/ldst_helper.c        | 108 ++++++++++++-------
+ target/mips/tcg/msa_helper.c         |  51 +++++----
+ target/mips/tcg/translate.c          |   9 +-
+ target/ppc/mem_helper.c              |  75 +++++++------
+ target/ppc/tcg-excp_helper.c         |   9 +-
+ target/riscv/vector_helper.c         |  12 +--
+ target/rx/helper.c                   |  14 +--
+ target/rx/op_helper.c                |   6 +-
+ target/s390x/tcg/mem_helper.c        |  48 ++++-----
+ target/s390x/tcg/vec_helper.c        |   8 +-
+ target/sh4/op_helper.c               |   5 +-
+ target/sparc/ldst_helper.c           |   6 +-
+ target/tricore/op_helper.c           | 152 +++++++++++++--------------
+ 27 files changed, 440 insertions(+), 425 deletions(-)
 
-Slightly better than an unconditional partitioned=true default and
-getting partitioned floppies, which is most definitely unexpected. But
-it's still not usually the thing the user will want with hard disks, so
-as I said above, I prefer the conditional default here.
-
-Kevin
+-- 
+2.51.0
 
 
