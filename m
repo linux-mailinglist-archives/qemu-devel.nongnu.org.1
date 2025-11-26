@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA95C8BD8A
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB800C8BD17
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOM2j-0003TX-Sr; Wed, 26 Nov 2025 15:23:13 -0500
+	id 1vOM2r-0003la-Lm; Wed, 26 Nov 2025 15:23:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM2h-0003Ik-57
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:23:11 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM2n-0003gJ-Qf
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:23:17 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM2e-0002Rf-Ms
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:23:10 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42b38de7940so94845f8f.3
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:23:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM2l-0002TA-OW
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:23:17 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso687545e9.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:23:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764188587; x=1764793387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764188594; x=1764793394; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pidw5T6Zpmn8AtM8Pz/FN7kD5XrD+2TAbGQhpUrAR/g=;
- b=veMmjgwIR1QuT+5YhFVPvvBuX08UJolMC2tjgZ3hXS/P4DP+fTOnmEkFb+FrbVTjAK
- M/iTF183Vtne8s8rbtdH27q2E9vWsEW6fFcHkxjWKh2t7jQhgjrTgOAIFhtTSSSMbhks
- qNSbGRe49gSkdqgqd7ilzq/xoiO3HtjBwFlzYvF4Ffj7HRPAMNyuwJO+kRZTwE9zcPh4
- dTS8RWU7TtNPk8tmXQDgtCfqLrym0iAxIi8mAwnJQzPlofLx1jFGraBJOwtk0sKCeaI4
- o3svQOGFBIHRIRGXSz3dcQJba0XmoEcXiYH8gVB/qLKEjQFSNyxJeELRBWyFgfyeIHnA
- Ieig==
+ bh=6h9P9iv/p2bvUhSVVmHLosiz6MFHN9Sri9gbONaHVNg=;
+ b=qV5q3Kd8nfI3qzjJdAqvprEQtO+PN3Oh6Lu5k8phYUHuoY38WgDueSW3obAKud8P2u
+ 8bciPQsEO5wfNGyKpxsJDVCok66emH4Il6t0uhTJd9ZA5K5Y9g/FCRCxx5bT4widMCt/
+ YcL9dp76p0inNCpBg/SfJtX3eLWLmP0UDSvgu02IeZuguXLY/uqhR0y4z3Y18SlVyiKk
+ mPUXYdZ8LqG0qQPEecRdgiS+0CpV6Csha8r08Ef5m7rfI8GHBBIEGykEs9+/5ft80lqL
+ ut07MndY53O0+Qk7V7fU7BXmKTAN7BNYYd4BVxACmwyQN5g/DEJV+zO24r+8qVgY9Qdi
+ +QUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764188587; x=1764793387;
+ d=1e100.net; s=20230601; t=1764188594; x=1764793394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Pidw5T6Zpmn8AtM8Pz/FN7kD5XrD+2TAbGQhpUrAR/g=;
- b=oLCm6ZhMhpJyJfab1aidBS+kxnlnUOXojLVWRME6jIEWvcXtPpLHobvDYOSQS2Fu13
- rW+LnCAjO4yJop+H0Dx2nu3tzuHYKgzjRyokH9cm4+0jgtBkYy8XpxOda1mLaU83Q1//
- syTN2nogEAD5VPp6XWtu6sjwhb8XT7AtmBG78wcrQWaLQ+EukK9nJY8Y/SowBmlUy6bO
- mADGmEf+xjj3+uDK8aCj2UGyPTF83V9Bz72hwKuzgBUKIgUB+2KYdIrcyo+1av4SAFJu
- 4EryTriASJZxedHgV46q2ubaYSgG+7lbhuRlY4GI0yuDhuMckNKsDDzPSEDVcI5bQU1b
- hNgw==
-X-Gm-Message-State: AOJu0YxphaimiT+gBlFKUanjy4QAPqcWkaKw7e9GR/HBLKLyRwJo9QMZ
- 5W40tDTSA6TdD8unJ4M2b3yrz4dyvpZjGy5lP2CnUJWOvCB5igAU66Yod1FBlGOr8CX9DPrD0+1
- w7Hm0yIBNjgD6
-X-Gm-Gg: ASbGncugPkNuj2tMB8/G2VO/BqQqS4C/9SFFPsw8OYJfaj5lulCiBx6Vg+pmIVrkxgm
- jyUQ6PcQoCc5TVPlgnTHZ4cr+5/GyOXC0J3jPwZLr3nc4uvo+cNSQk8Ii6M3sl+z6+rNwihz6ZR
- SaxH6WOgMdUNfPsL0G2LlA87ClVyasovfbsgHvJA4C4QQnEY++BjEF7Z/6QUBIw83TnQrdKBGOi
- Jph/EFqLzUWG1A7HLebQT7TYdZgcyg0ZKH/5r0AbOlIKdX6vNWPbhOOlJ+vuWxN7QRGvb5lQDdL
- fGQmdlvjmF2DZRpF/RSgT9PMqBPn9Mj4eOaAavGyUM+C32DTbJjPvvLTLKuHnT5ImRPhldIwVxD
- 0gGVhGhd4pntMCi3q/FCl/KbSV0fjuUO4r954+HwU6B8i5AW3CO4o1nMBb3n+RQWhesjCiVyXwm
- s52cEjrCvXEYhGODOgRo6vmrKcf7kBw5jfZdNeyc6xc8os44N0ZIx2At+FEUc7
-X-Google-Smtp-Source: AGHT+IGvJuPSNVRj/S/F737sI/9otdZJ93L9g24a+RFEOkkbYzfNltaLmzyBztbVGoPsAMxLcjq0xA==
-X-Received: by 2002:a05:6000:4310:b0:429:c54d:8bd3 with SMTP id
- ffacd0b85a97d-42cc1d192e7mr22800878f8f.53.1764188586920; 
- Wed, 26 Nov 2025 12:23:06 -0800 (PST)
+ bh=6h9P9iv/p2bvUhSVVmHLosiz6MFHN9Sri9gbONaHVNg=;
+ b=wiPf/zVJy1lth92kuo2x/RRBAeKU6Mnfu/Q9Fu7av2uSIQD/rpg/4qh4T4uB5AViGL
+ AKyT9bn27ggpbDjKNlh+OEWZzBySIfkDY9+5T4DiwBa8sojo05LLsUooYzMROIkXZFj1
+ ZzgbdzbjvBTmhMJhKfLMX0II6Yc86thZfA+nknVCF4FHHgeNCOCvyJ2qmgBanLld5ZUx
+ 6ycTThy9lHJ3z4x4GvECPsh+wvau3n/yd+3DYsMDOlpz/yY+clELajbWGt+RWOd8517f
+ RPdHQWfA6rMJPDOhFba1WHLvYqVic19EWGrm+VEX1JpHtVWTLQ8RRzUGs+E52K7r9rJZ
+ HTEQ==
+X-Gm-Message-State: AOJu0Yxq2pH0Bq1p2LPt6NT3HD+ngLeaHHhz9VrD+VIWnvqM1ywowUiZ
+ qu9khh6Gp15Mh/Wf7HqN3hxGqAVN/0j+sBCy7k8rkxKGtCNblBs524zZ7GbmZlitv2kLcj7/o35
+ K8kcpqrC1+6Bz
+X-Gm-Gg: ASbGncvjPRRvuaa60rznpsbmhtVBMk7h09tJgNchd56yLnIh8Sh7M831aYFc5O83D00
+ ty04qmBMJeUE2Zs00smk98mgvZovXUhhiccf+KlcLyAlGslyQeQ8hvBrEthFndXmWFNDzV0DTfT
+ 3se8r/mgttsV7FLdrFg3PyK0gkDDqqTkNHCJb1aCYD/vNDTDNY45wZbJp+UfCClCFdwl2wXOIii
+ wTzbDgZZcwwvpauvMj7NTEW6u6/ZjRpLsWSmFxGURefmOICdbkdG1WJY1jLArQKy/B9EBF46/NG
+ uk+Ebb2ZxngPcxFNg0M+SXx9afG6whFLDrQ9rU9Uc9WEuEibDLw7wBQMSM/xpBT/Xez6Lajs9pI
+ XEtO7n4On2SKt9eqX/riuqSioMMj57k98OzK8n1EY08yYTcOhbWYShr3bUvqrV3imYDJoAvUecI
+ ewtkhP1lyvgpfbZTCOmqMY39ojSfpGGHHSQPNjJcgP6pfwm6eArX4RwkkCcmEeSlUKcFpf3Dc=
+X-Google-Smtp-Source: AGHT+IGEB4a8fUsY9oL6v+VZHuR+VkxWKVybhu8Ftb1MCD36QEhJbY9XwPArVBaG4vIVkeWDxSuUrQ==
+X-Received: by 2002:a05:600c:3541:b0:477:7991:5d1e with SMTP id
+ 5b1f17b1804b1-47904b24871mr81746675e9.25.1764188593749; 
+ Wed, 26 Nov 2025 12:23:13 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7fa7affsm43170047f8f.23.2025.11.26.12.23.05
+ 5b1f17b1804b1-4790add2648sm65371565e9.4.2025.11.26.12.23.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 26 Nov 2025 12:23:06 -0800 (PST)
+ Wed, 26 Nov 2025 12:23:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH-for-11.0 v3 09/22] target/sparc: Use big-endian variant of
- cpu_ld/st_data*()
-Date: Wed, 26 Nov 2025 21:21:45 +0100
-Message-ID: <20251126202200.23100-10-philmd@linaro.org>
+ Yoshinori Sato <yoshinori.sato@nifty.com>
+Subject: [PATCH-for-11.0 v3 10/22] target/sh4: Replace cpu_stl_data() call in
+ OCBI helper
+Date: Wed, 26 Nov 2025 21:21:46 +0100
+Message-ID: <20251126202200.23100-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126202200.23100-1-philmd@linaro.org>
 References: <20251126202200.23100-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,52 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the SPARC targets using big endianness order,
-therefore the cpu_ld/st_data*() definitions expand to the big
-endian declarations. Use the explicit big-endian variants.
+In preparation of removing the cpu_stl_data() call,
+inline it. Set the return address argument.
 
-Mechanical change running:
-
-  $ tgt=sparc; \
-    end=be; \
-    for op in data mmuidx_ra; do \
-      for ac in uw sw l q; do \
-        sed -i -e "s/cpu_ld${ac}_${op}/cpu_ld${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
-      for ac in w l q; do \
-        sed -i -e "s/cpu_st${ac}_${op}/cpu_st${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
-    done
+See commit 852d481faf7 ("SH: Improve movca.l/ocbi
+emulation") for more context on this code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/ldst_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/sh4/op_helper.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 2c63eb9e036..bd0257d313a 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -1228,13 +1228,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-             ret = cpu_ldub_data(env, addr);
-             break;
-         case 2:
--            ret = cpu_lduw_data(env, addr);
-+            ret = cpu_lduw_be_data(env, addr);
-             break;
-         case 4:
--            ret = cpu_ldl_data(env, addr);
-+            ret = cpu_ldl_be_data(env, addr);
-             break;
-         case 8:
--            ret = cpu_ldq_data(env, addr);
-+            ret = cpu_ldq_be_data(env, addr);
-             break;
-         default:
-             g_assert_not_reached();
+diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
+index 557b1bf4972..669bc84cb64 100644
+--- a/target/sh4/op_helper.c
++++ b/target/sh4/op_helper.c
+@@ -136,6 +136,8 @@ void helper_discard_movcal_backup(CPUSH4State *env)
+ 
+ void helper_ocbi(CPUSH4State *env, uint32_t address)
+ {
++    unsigned mmu_idx = cpu_mmu_index(env_cpu(env), false);
++    MemOpIdx oi = make_memop_idx(MO_TE | MO_UL | MO_UNALN, mmu_idx);
+     memory_content **current = &(env->movcal_backup);
+     while (*current)
+     {
+@@ -143,7 +145,8 @@ void helper_ocbi(CPUSH4State *env, uint32_t address)
+         if ((a & ~0x1F) == (address & ~0x1F))
+         {
+             memory_content *next = (*current)->next;
+-            cpu_stl_data(env, a, (*current)->value);
++
++            cpu_stl_mmu(env, a, (*current)->value, oi, GETPC());
+ 
+             if (next == NULL)
+             {
 -- 
 2.51.0
 
