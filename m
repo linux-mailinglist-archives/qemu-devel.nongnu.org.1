@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28CAC89CEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 13:42:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD60EC89CE5
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 13:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOEqG-0001pu-Pm; Wed, 26 Nov 2025 07:41:53 -0500
+	id 1vOEqJ-0002Iz-Aj; Wed, 26 Nov 2025 07:41:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vOEpm-0001cp-L8
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:23 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1vOEpo-0001nA-FO
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:25 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vOEpk-0003Nm-QX
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:22 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-47798ded6fcso39526665e9.1
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 04:41:20 -0800 (PST)
+ id 1vOEpl-0003Nr-Rc
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 07:41:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4775e891b5eso28640005e9.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 04:41:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764160879; x=1764765679; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FCn/RFtesIvSy+oCDXPuPETQANWEumhqApq9lXNOCC4=;
- b=cl0+4NbjptX5F1HQuCpvbI4AAJbuVPmbfJH93Ja7Gw6l1irwQmN4mKTd2+CtRQtZwW
- vZeIIZ06T3AtiYqC42mvmX9YI+tas3NjxUmO8LTSs7G8o3S08su1x6I6V0+BCbG47/il
- xq7Mg+GNrgS2YskTM8qzw8fO3oweZbKHKops2BM+XHExjLn5ig0QVyv039BApWmZpXzl
- gYJSRNGgLHOTSp8ckELNPv6JDIOj7JvJ2hVStfj1vypf4E3bOAxvXGcllZfrg2KQp29p
- 9E0BvE08a+ZLGRddSgDLbp93u92HWOy3HxKWHHh2EupQbCVdCXK9TtTouLN3Lh6kFZiu
- xfTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764160879; x=1764765679;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1764160880; x=1764765680; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FCn/RFtesIvSy+oCDXPuPETQANWEumhqApq9lXNOCC4=;
- b=PmwxWeWfdsybiTWeegRL2WMkK+I58H5zIB9HPMZWmAzUvQDU6vJv4oqr7ureu/p3Mr
- Pl84ayLpqh9Z3HDye6flghOVQlnv4J48OKOREisEMED7cLoPmQJHN46JqNfQbqOCkY4H
- tVuZ7fRO5YRF9Mv/rZAlzNqwaili2jEHtYddJKaaqNlYmDt9UFDwbbnmjCHONa/SJoZk
- GMEBTiWwJBBRzXs/KvcEfSwFxRsiPQJy5ziApcyxZbM9irwxdKSOyvzs+nq9Q1L4ThCT
- UnXLvMlkXJ+d3/DICmKR/1w/EeJ2fkBy7daNpITZeBrVdTP8tuJKsXxbFFjaZqRlE5QL
- ZTSA==
-X-Gm-Message-State: AOJu0Ywo6lb27pFntqBqEGL9pU9Mnteh5Bi5j1/vAfWWbRms3RL3cWMa
- TMxk65xCcq+K3SfrFatlApv3uiQnnWerQbu/MufC601yUcyO2YegGCtCjvtr/Ia4fUa0W0yzSk/
- zB/hS
-X-Gm-Gg: ASbGncsxmldOODFXIy1Qi7GXOH+ZBhkx/xD9RIl7iKEjBJO2BnARkDrC3MgpzGIZ3+Q
- 8lZFQ3dYH7rC84rY2yVdW/906UDCRJ6lTgHBF2OKcWb5099J3Hh3GsoX1TjbLVMMGuxs1cttjTB
- CM/HHFZuJUv15Lv18vuG/kSaEEJWfSLevsXWda+3wQWuoO7nz+WVCsDo1ckeMrb5hcTaN5482Xr
- PnmFKiLx1Eq9jqvQJkkJh7GM9Cz/P/5jxULTiRmwYTZL+/7ywdWKWmpuEzmUbNMO/MnDhwE3XzZ
- z1MT1lPVN6xS3B7JW26Aw1oiUnDy8ks7MI6wkjev9uFiR2fSHuztGd1ehxZHiS2/x9zPN5F/2BZ
- WXEMuMAKzbZy6kZ9+JiVDHDwb5LgK7CHv0nseKUW4L1NoOW0r2hkTMA1GTHKVOy0KWUi/sZDH7l
- ypCsaRlr6jdL0=
-X-Google-Smtp-Source: AGHT+IHvwaXPOdYtD577PYNDgJTbzWzYrlpV/VH/40EK/opNl23cXH1tJWdq9HijSps1Sg+/rNZ34g==
-X-Received: by 2002:a05:600c:4f14:b0:477:7b16:5f77 with SMTP id
- 5b1f17b1804b1-477c10c802bmr203197165e9.3.1764160878818; 
- Wed, 26 Nov 2025 04:41:18 -0800 (PST)
+ bh=3pWIda8e2UrEXXWq+lxi04bS+9Uhurh/4yQC9gLnIYs=;
+ b=f6Y1Ew7uBNj0WGte654VcVSF5F6Es1XIO05AjIWSYl28kmeGixYigWlSfcRjHQYOLQ
+ w7XDEOXJRrcAxvTPEelQ38jUkbTIVIR/Rw+HtWOvC3WuxLOSwCBeS1mJQ2fVxTb88mWk
+ l/V4D75KQkH7L1YXjpm0rSv4Ra9c1KFth5EvTphxVJa1bsUAnOtKldX+wSvvdpxMf3er
+ +fXurBJuAoCUPWg/r7IJK1nHF6u/IWRS2kK5Ll/XlLgpExu6Yc7LpUb62Dr4xrnHYw66
+ 60Z385fI+WLLSyGQ400EVs4voKQPKJhidaSEYxV2Cw2Z/k+emvMosA7bckmXN73gdjz+
+ Ox9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764160880; x=1764765680;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3pWIda8e2UrEXXWq+lxi04bS+9Uhurh/4yQC9gLnIYs=;
+ b=TryDaC6EqY71FQGRGYaxYMa7LbOktWvU9dpsQ7wDfdw+XWHkHl4o3HYlJ0zvpnwPK/
+ 9pHC30+ckUMoygyXwiskuNK2Hah2FxSLncHrBCUxEYdAfEYhxNtfhlxoBGO+7Vqn+UMy
+ wBoBuHT2np0izS1klfOxDJJhE51ZV+p0Sb+HJy9wjesIyw7e3Gln0rm38eBIuzDalaFD
+ RoB+wi5LLakgh4T4FNkTNQUoa1B+6Eqen1oRDI/NNaFQwd/4PPNp15kZlajz44z0cbkH
+ xgcdHIk3LmJAis6rlkyiNBAWSo+0fWRZ4UOQwOpBNePNztBT3UwgB2pdH9CVISRLNQko
+ aNKQ==
+X-Gm-Message-State: AOJu0Yxg+Rcxm4+lPQaZ+NpQef660XwimXvFajImxaw7LbusRi9d68UG
+ NqK07PtAYFsyEpNIiyghOVMEhgftQUNZSrxOLkxOOw353MtLxfu/A4ggBabfBRM5VXP1lEijSPL
+ ppxAh
+X-Gm-Gg: ASbGncsvxmt+b0rWWzUTExdB4/J5od9ZJN5at1OwIY+ZcIStimwU+ZVM8aPJ2QgI8tn
+ K/STo3/j8e/uOPb51kGhem3fC/bn4vrw6QOpCqY+OqLxcjyP/4CqGpjX+b1/U8P7XRDtIuSmF5P
+ IUqw/cpvmk0mgeqqx0Ism5y3mMOFtd9teneZPveJ/Ohj7EwEyKgSxkG8m3+gOs7KxfSRcMkyS4B
+ C6xAwRo9QAR43DyJWoYPDBKOCB1r0SrxwwTnX0jzBX8QptuqeEj7ULmbyDrmXkqOfY39JcoqCf3
+ eJp4DdkfO/7MLwl5Tc5j/2xJuutbUIM140XHASUMC6SthzIYt+YT7RJ0okd8ef2NmW05y/JTq3G
+ jj4mgdE1wKsYJTVIPf1clSNNYrrs/VvyKeYHX7/JxqYRSfHm8rs3OkHRTifY/O/bxqwS094xDD1
+ 3QU5Vq9Atmd9RLuINfhB6ueQ==
+X-Google-Smtp-Source: AGHT+IGFeW24VR/G/m/izLHz2352nqwtAI5sx7N7liUTDUi2THJVUtmED8ts2jMXrG+2hILzndQbRQ==
+X-Received: by 2002:a05:600c:4fcc:b0:471:9da:5252 with SMTP id
+ 5b1f17b1804b1-477c01ebe2amr187502335e9.29.1764160879841; 
+ Wed, 26 Nov 2025 04:41:19 -0800 (PST)
 Received: from jimm-x1.. ([2a10:d582:31e:0:a692:d4e2:eaed:fc4e])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42cb7f2e556sm40044246f8f.5.2025.11.26.04.41.18
+ ffacd0b85a97d-42cb7f2e556sm40044246f8f.5.2025.11.26.04.41.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Nov 2025 04:41:18 -0800 (PST)
+ Wed, 26 Nov 2025 04:41:19 -0800 (PST)
 From: Jim MacArthur <jim.macarthur@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jim MacArthur <jim.macarthur@linaro.org>
-Subject: [PATCH V3 0/4] Basic ASID2 Support
-Date: Wed, 26 Nov 2025 12:36:46 +0000
-Message-ID: <20251126124116.351685-1-jim.macarthur@linaro.org>
+Subject: [PATCH V3 1/4] target/arm: Enable ID_AA64MMFR4_EL1 register.
+Date: Wed, 26 Nov 2025 12:36:47 +0000
+Message-ID: <20251126124116.351685-2-jim.macarthur@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251126124116.351685-1-jim.macarthur@linaro.org>
+References: <20251126124116.351685-1-jim.macarthur@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,39 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Addressed some more review comments - thank you Alex and Richard for the reviews.
+Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+---
+ target/arm/cpu-sysregs.h.inc | 1 +
+ target/arm/helper.c          | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Patch 2&3 (was 2):
-  - Split patch 2 into 2 parts, one enabling FNG1, FNG0, and A2, and another
-    enabling ASID2 for cpu_max. The patch enabling cpu_max can be dropped or
-    reverted later if not desired at this time.
-- Patch 4 (was 3):
-  - Check for presence of TCR2_EL1 in test, abort test if not present.
-  - Additionally test that new fields read as RES0 if ASID2 is not present.
-
-Changes in v2:
-- patch 2:
-  - Added FNG1, FNG0, A2 to mask for tcr2_el2_write
-- patch 3:
-  - Changed test for ASID from "=0x100" to "!= 0"
-
-*** BLURB HERE ***
-
-Jim MacArthur (4):
-  target/arm: Enable ID_AA64MMFR4_EL1 register.
-  target/arm: Allow writes to FNG1, FNG0, A2
-  target/arm/tcg/cpu64.c: Enable ASID2 for cpu_max
-  tests: Add test for ASID2 and write/read of feature bits
-
- target/arm/cpu-features.h        |  7 +++
- target/arm/cpu-sysregs.h.inc     |  1 +
- target/arm/helper.c              | 10 ++++-
- target/arm/tcg/cpu64.c           |  4 ++
- tests/tcg/aarch64/system/asid2.c | 75 ++++++++++++++++++++++++++++++++
- 5 files changed, 95 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/aarch64/system/asid2.c
-
+diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
+index 2bb2861c62..2ba49d8478 100644
+--- a/target/arm/cpu-sysregs.h.inc
++++ b/target/arm/cpu-sysregs.h.inc
+@@ -14,6 +14,7 @@ DEF(ID_AA64MMFR0_EL1, 3, 0, 0, 7, 0)
+ DEF(ID_AA64MMFR1_EL1, 3, 0, 0, 7, 1)
+ DEF(ID_AA64MMFR2_EL1, 3, 0, 0, 7, 2)
+ DEF(ID_AA64MMFR3_EL1, 3, 0, 0, 7, 3)
++DEF(ID_AA64MMFR4_EL1, 3, 0, 0, 7, 4)
+ DEF(ID_PFR0_EL1, 3, 0, 0, 1, 0)
+ DEF(ID_PFR1_EL1, 3, 0, 0, 1, 1)
+ DEF(ID_DFR0_EL1, 3, 0, 0, 1, 2)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 27ebc6f29b..c20334fa65 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6566,11 +6566,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+               .resetvalue = GET_IDREG(isar, ID_AA64MMFR3) },
+-            { .name = "ID_AA64MMFR4_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
++            { .name = "ID_AA64MMFR4_EL1", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 4,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+-              .resetvalue = 0 },
++              .resetvalue = GET_IDREG(isar, ID_AA64MMFR4) },
+             { .name = "ID_AA64MMFR5_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 5,
+               .access = PL1_R, .type = ARM_CP_CONST,
 -- 
 2.43.0
 
