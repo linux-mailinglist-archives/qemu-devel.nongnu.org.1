@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7549C8BD98
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F060C8BD77
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 21:26:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOM4I-0006vW-U9; Wed, 26 Nov 2025 15:24:50 -0500
+	id 1vOM4K-00074l-99; Wed, 26 Nov 2025 15:24:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM45-00066f-OZ
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:41 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM4D-0006L3-Js
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:47 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM3w-0002gp-6E
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:32 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-47796a837c7so689605e9.0
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:24:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOM45-0002hd-HR
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 15:24:42 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47790b080e4so377765e9.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 12:24:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764188664; x=1764793464; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764188671; x=1764793471; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o9tf+Vlyc7bstg/QED3bCb6f68dEloCwsPwa0oPQ8Fc=;
- b=imcAImgYuO6EJMZsWnvqdUuVQmQzIjAQhycDU2IEYMvje2tac91sACtDzMntfkuPMr
- TP2q/PHEkNOm2z0Rg9SwSJdeTOoFLNGsXR7vOArWPDdnVs9v8Yhm2+9F+KokYpWIbVJv
- iqNYhvs0aJwM8H6Xco1uVefgChIAW/OvF6lI7dEodnQivCP90DnzQ6sMhv0AuctH0UXB
- Oyk6ag6NhqvG0Vo6yg/g7BggMGSsnnqLbdy/P+orLDDnKYc5HPmPxnFGhjWzZW1O6usW
- tlf280ByOm4z08HAWS8zuLOilb2mmygVpUP51gsU/omh4+0XmuYo14N9s3w9hZZx9Jfq
- 33Tg==
+ bh=VnIOi7CrJFSwpeAe7LUTjMPzfQSZarulbCgikZO0egs=;
+ b=KJAifEMGHkgoV3CfYTdmyXLz7IeKJEmjGPldsUIOAEnxoQFonEvog5G3LdF9hU02Fg
+ 8czBlu7BY/tBLd7NArdN52t66Wx7kxrZ1K18i20Dt8Zk7ka13GiAk8YK6Z+syPnf8smX
+ CD0yGEWfbXSfCICSi6y0qgdK2JewkuMs2mWKpfTHLcW8Pb5eDOaKUavKMQu4ZIDwCu6j
+ C03rk8bTKkyXwM7B6kWOHdiLtyKW6cLfKkexdEqV+uvQmxBVJhSnJMTlS6GKjFv/+XIo
+ aochDWeYd0EP32EYMeQWZ8kVcDBg/ov8EZz8QI1SBD5Xw6M6SfOXd6diY081Gb3+m4dd
+ ftPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764188664; x=1764793464;
+ d=1e100.net; s=20230601; t=1764188671; x=1764793471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=o9tf+Vlyc7bstg/QED3bCb6f68dEloCwsPwa0oPQ8Fc=;
- b=lk2eN4JLldUMWd0KzfgkZKLEJh5SP5E13PsVOCO+jTuar8T/pRI7uM8cPNHnXcWCB4
- M7oa63UWmhp2Ujfe849eQImFl45EhUfPYi7AnxAd2t1B6QQ7sYD/hgVuRD2gfXLSswmO
- 3M+wO/HhbWtdXY3GStZL0YxrYRCn6PnB58TVT507Zf4V52Ca7LTA/mitvbj8EV4KNU3V
- OiItYyE0PR+pG/BABGzTakr1FtbUflRl47s9XFcLqs+agUbYUZkvxGRxL5GoiFI4jbnQ
- T6w1iSEJEp48la9LJOP6L73nl+K9Oj/RMBSIWeJ910LWrlMFip2xNmg8G4Zog1odjdt4
- BQCw==
-X-Gm-Message-State: AOJu0YxWNj03VesxAww4kjcEr3h38JIyjkX81xIoFE/McAllNEk5ofOk
- l7D7F2XzTTFX/6gZjtgncrcbJ5q0rj9SK9Wx+5aL0H/LXYL1YVohQLplTzz7UB2mzSZSKihEKj0
- +JSyfmMm8WWOB
-X-Gm-Gg: ASbGncthqybHRgIUDqYQGUFbg8GAkoRI4Mm1Xs5UyGnp8oeB8xhVhWGd/5ySzNVk84v
- IzlIPcBkzhgPYuQbxmtus8hRNYyDFMwfDw8QilWrBirjrLaHsBedm7UBjSZtEHBIAeYWf521ooW
- z/T9/UIVPvhJGOwDkGZP+zmjZacWZvZdZLYdsH8mqAaR9bCFB/QicjNhrhAe9geQLvzHBFqHxdJ
- /AgTPTjbVflea73LtQqldbeVeWabT5MPCQFEd+RJDXmn1Qo2GnZIKRFQElDARxrLLp+P5gBE08x
- JKKweUJ0Yf9ddesz6uBCn8y3hcrt7x92bYr2T1hIsDtNlrV7KGB3xA+mL9Hj/rk7gLzLEh5V8Ng
- jgPh+MJi0wy5ZUKdO1nHxr0vbb3ykalCaPCh7vLo70L36lEDgUFgsohUyezbWbPQGXdgRbAS/6m
- ArVLHVvYpDFo9vq3FspQKRE1XLA2nWMo99o7JLE13qIfen4h/tFuFqhKM66W5kQfsI+aSYwng=
-X-Google-Smtp-Source: AGHT+IGcGEr+fFOaGrNlpMv+KVvmV2UQM6L9RDhmcCglyZs7b1svBTL6r1bqCexrcnWCH1FYVcNeEA==
-X-Received: by 2002:a05:600c:4ed2:b0:477:55ce:f3c3 with SMTP id
- 5b1f17b1804b1-477c0162dd6mr193876695e9.5.1764188664292; 
- Wed, 26 Nov 2025 12:24:24 -0800 (PST)
+ bh=VnIOi7CrJFSwpeAe7LUTjMPzfQSZarulbCgikZO0egs=;
+ b=g1ZpL12PRSjRYjthoX+LSZ8p3zbyKmBJ7wL0oA42m80CFIwmPxuBWEsHlrUchUCQO7
+ 2WmdCVKir7IZBxPJEjvR1BOvw/SqAp7UNPDG2m7gLpSn4ZKZ8dazuwgRYnkGAweakl5Q
+ dlt5dVClLUTy0l7rhvZCa5GGNtwfGRAu/EY+1GUdrBvPNMfi8AukW6Ms7scQyoVFJTd+
+ AJGr5RSAEiykgGZABG87Nrqzz0o8bmMhgRFvLzgdY8efM1sKybK2djQln0AfZ7LZWm/c
+ yRgdFue00Xc/C1nQoi0A3WNkF9HjCXFfwWScxp6ySjdwpF3qgSWoEYopiLv2htx3weqA
+ vgtA==
+X-Gm-Message-State: AOJu0YxfcDAKzq2WwYEaoSPNY0q5UnttWX9m/SyI35vSI9L5I74+/oxh
+ 6cEX8FKh7HTeysh6mz+S5ohckRwssCo/Z46qIdvdzRjQynuiETSYn5pfkDqlzhpx/d7tLNLr1oP
+ BmC7gzE/oS7K5
+X-Gm-Gg: ASbGncv56oAg57/iO12UHwLpLc9k0gpFcqbY1a4aJ9jsoko09ziJHhmB4rN4a7RW6dK
+ D1yY0zi0LgSzhofKg/+pNHHmmdMyOJfsrlnCxaQClISYGPG17xnySdNPg2u/rVG/zHOQEZSGI39
+ KtjauEOJ/Rug2y9O+7785z706iZAhYsX7abIOdDranaYsQDv4fjPAaA1kN2mXQTRNtFsFl+0cPl
+ aIDoWb+wzFDwa6hFW3boK2JM1TmQGlDyveWO/ITGYqsZwiEPYhEBC0sKHUHjz6Zmzz9q39suR98
+ M8mc3fNzr8PaLnxfMlx3i3Ovii6QUElnaRLJFdGNFTeMDKq0kRlZ6ur5YWmm1owj8zzg1X7v1wa
+ f/WkvK0GtyMAv6yFyGmSROnpAMi3jYazr9mvYGieksNqvBAYmortZmxnhQZOUXY1gI4e42HrBSh
+ uRn3kA0rXoirlh9EHHewwhFz/xg0w/xd1EWSOOsHsCp9iItHJ7ee3ZtgRLfbBL
+X-Google-Smtp-Source: AGHT+IHS7wggQCdby10NfkSWlMTsSRtRVPteIIaqOZrvUp+QBjmDxVbagc2oqWtRApIfiigyz5Uyqw==
+X-Received: by 2002:a05:600c:4f82:b0:477:952d:fc11 with SMTP id
+ 5b1f17b1804b1-477c11175a9mr246767695e9.16.1764188671036; 
+ Wed, 26 Nov 2025 12:24:31 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4790adfd181sm61850825e9.14.2025.11.26.12.24.23
+ ffacd0b85a97d-42cb7fd8e54sm44005646f8f.40.2025.11.26.12.24.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 26 Nov 2025 12:24:23 -0800 (PST)
+ Wed, 26 Nov 2025 12:24:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH-for-11.0 v3 20/22] target/ppc: Inline cpu_ldl_data_ra() calls
- in ICBI helper
-Date: Wed, 26 Nov 2025 21:21:56 +0100
-Message-ID: <20251126202200.23100-21-philmd@linaro.org>
+Subject: [PATCH-for-11.0 v3 21/22] target/ppc: Simplify endianness handling in
+ Altivec opcodes
+Date: Wed, 26 Nov 2025 21:21:57 +0100
+Message-ID: <20251126202200.23100-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126202200.23100-1-philmd@linaro.org>
 References: <20251126202200.23100-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,40 +102,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inline the cpu_ldl_data_ra() call in preparation of
-removing it. Since the returned value is discarded,
-don't bother to set the access endianness.
+Access the memory in big-endian order, swap bytes
+when MSR.LE is set.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/mem_helper.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ target/ppc/mem_helper.c | 31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
 diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
-index a43726d4223..cff385b6020 100644
+index cff385b6020..cfc67a527c1 100644
 --- a/target/ppc/mem_helper.c
 +++ b/target/ppc/mem_helper.c
-@@ -344,14 +344,18 @@ void helper_dcbzl(CPUPPCState *env, target_ulong addr)
+@@ -31,15 +31,6 @@
  
- void helper_icbi(CPUPPCState *env, target_ulong addr)
- {
-+    unsigned mmu_idx = cpu_mmu_index(env_cpu(env), false);
-+    MemOpIdx oi = make_memop_idx(MO_UL | MO_UNALN, mmu_idx);
-+
-     addr &= ~(env->dcache_line_size - 1);
-     /*
-      * Invalidate one cache line :
-      * PowerPC specification says this is to be treated like a load
-      * (not a fetch) by the MMU. To be sure it will be so,
--     * do the load "by hand".
-+     * do the load "by hand". As the returned data is not consumed,
-+     * endianness is irrelevant.
-      */
--    cpu_ldl_data_ra(env, addr, GETPC());
-+    cpu_ldl_mmu(env, addr, oi, GETPC());
- }
+ /* #define DEBUG_OP */
  
- void helper_icbiep(CPUPPCState *env, target_ulong addr)
+-static inline bool needs_byteswap(const CPUPPCState *env)
+-{
+-#if TARGET_BIG_ENDIAN
+-  return FIELD_EX64(env->msr, MSR, LE);
+-#else
+-  return !FIELD_EX64(env->msr, MSR, LE);
+-#endif
+-}
+-
+ /*****************************************************************************/
+ /* Memory load and stores */
+ 
+@@ -421,11 +412,10 @@ target_ulong helper_lscbx(CPUPPCState *env, target_ulong addr, uint32_t reg,
+         int adjust = HI_IDX * (n_elems - 1);                    \
+         int sh = sizeof(r->element[0]) >> 1;                    \
+         int index = (addr & 0xf) >> sh;                         \
+-        if (FIELD_EX64(env->msr, MSR, LE)) {                    \
+-            index = n_elems - index - 1;                        \
+-        }                                                       \
++        bool byteswap = FIELD_EX64(env->msr, MSR, LE);          \
+                                                                 \
+-        if (needs_byteswap(env)) {                              \
++        if (byteswap) {                                         \
++            index = n_elems - index - 1;                        \
+             r->element[LO_IDX ? index : (adjust - index)] =     \
+                 swap(access(env, addr, GETPC()));               \
+         } else {                                                \
+@@ -435,8 +425,8 @@ target_ulong helper_lscbx(CPUPPCState *env, target_ulong addr, uint32_t reg,
+     }
+ #define I(x) (x)
+ LVE(LVEBX, cpu_ldub_data_ra, I, u8)
+-LVE(LVEHX, cpu_lduw_data_ra, bswap16, u16)
+-LVE(LVEWX, cpu_ldl_data_ra, bswap32, u32)
++LVE(LVEHX, cpu_lduw_be_data_ra, bswap16, u16)
++LVE(LVEWX, cpu_ldl_be_data_ra, bswap32, u32)
+ #undef I
+ #undef LVE
+ 
+@@ -448,11 +438,10 @@ LVE(LVEWX, cpu_ldl_data_ra, bswap32, u32)
+         int adjust = HI_IDX * (n_elems - 1);                            \
+         int sh = sizeof(r->element[0]) >> 1;                            \
+         int index = (addr & 0xf) >> sh;                                 \
+-        if (FIELD_EX64(env->msr, MSR, LE)) {                            \
+-            index = n_elems - index - 1;                                \
+-        }                                                               \
++        bool byteswap = FIELD_EX64(env->msr, MSR, LE);                  \
+                                                                         \
+-        if (needs_byteswap(env)) {                                      \
++        if (byteswap) {                                                 \
++            index = n_elems - index - 1;                                \
+             access(env, addr, swap(r->element[LO_IDX ? index :          \
+                                               (adjust - index)]),       \
+                         GETPC());                                       \
+@@ -463,8 +452,8 @@ LVE(LVEWX, cpu_ldl_data_ra, bswap32, u32)
+     }
+ #define I(x) (x)
+ STVE(STVEBX, cpu_stb_data_ra, I, u8)
+-STVE(STVEHX, cpu_stw_data_ra, bswap16, u16)
+-STVE(STVEWX, cpu_stl_data_ra, bswap32, u32)
++STVE(STVEHX, cpu_stw_be_data_ra, bswap16, u16)
++STVE(STVEWX, cpu_stl_be_data_ra, bswap32, u32)
+ #undef I
+ #undef LVE
+ 
 -- 
 2.51.0
 
