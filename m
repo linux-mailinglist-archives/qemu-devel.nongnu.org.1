@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A819FC8ABBA
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FF7C8ABB2
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 16:47:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOHih-0006xZ-Hf; Wed, 26 Nov 2025 10:46:15 -0500
+	id 1vOHim-00073N-Dq; Wed, 26 Nov 2025 10:46:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHid-0006s9-HW; Wed, 26 Nov 2025 10:46:11 -0500
+ id 1vOHie-0006uO-6L; Wed, 26 Nov 2025 10:46:12 -0500
 Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vOHiZ-0007ym-Qz; Wed, 26 Nov 2025 10:46:11 -0500
+ id 1vOHib-0007zS-3t; Wed, 26 Nov 2025 10:46:11 -0500
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwDHtVy6ICdpJp0EAQ--.4126S2;
- Wed, 26 Nov 2025 23:46:02 +0800 (CST)
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAXHCS8ICdpLZ0EAQ--.41444S2;
+ Wed, 26 Nov 2025 23:46:04 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwC3D+2yICdpkqMHAA--.780S4;
- Wed, 26 Nov 2025 23:45:59 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwC3D+2yICdpkqMHAA--.780S5;
+ Wed, 26 Nov 2025 23:46:03 +0800 (CST)
 From: Tao Tang <tangtao1634@phytium.com.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
@@ -35,22 +35,23 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Mostafa Saleh <smostafa@google.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC RESEND v5 1/4] hw/arm/smmuv3: Extract common definitions to
- smmuv3-common.h
-Date: Wed, 26 Nov 2025 23:45:44 +0800
-Message-Id: <20251126154547.1300748-2-tangtao1634@phytium.com.cn>
+Subject: [RFC RESEND v5 2/4] hw/misc: Introduce iommu-testdev for bare-metal
+ IOMMU testing
+Date: Wed, 26 Nov 2025 23:45:45 +0800
+Message-Id: <20251126154547.1300748-3-tangtao1634@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251126154547.1300748-1-tangtao1634@phytium.com.cn>
 References: <20251126154547.1300748-1-tangtao1634@phytium.com.cn>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwC3D+2yICdpkqMHAA--.780S4
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HpAAAsN
+X-CM-TRANSID: AQAAfwC3D+2yICdpkqMHAA--.780S5
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAGBWkmDa4HpgAAsP
 Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
  4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvAXoWfZw13ZF1xXFy8AFy3GF15urg_yoW5GrWrZo
- WUCF13K3s8XFWxAF4DW34xXr4vvFy0k3Z5ur1Fyw48ZFsFvF90kFyFk3y3Wr47JFZYgFy3
- Xa1Iy3Z5XrZ0vF45n29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
+X-Coremail-Antispam: 1Uk129KBjvAXoWfJr4Utr47ZF43tr43Kw4rXwb_yoW8CF1fAo
+ WYvFWfuw1xGw1xur4v9as7GF45XFy0gFnxJa48WF4YgaykAFnxJr15Aa15Ga45Jrn5CF9r
+ uFykt3y3tr9rWr93n29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
  J3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UU
  UUUUUUU==
 Received-SPF: pass client-ip=129.150.39.64;
@@ -77,787 +78,573 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move register definitions, command enums, and Stream Table Entry (STE) /
-Context Descriptor (CD) structure definitions from the internal header
-hw/arm/smmuv3-internal.h to a new common header
-include/hw/arm/smmuv3-common.h.
+Add a minimal PCI test device designed to exercise IOMMU translation
+(such as ARM SMMUv3) without requiring guest firmware or OS. The device
+provides MMIO registers to configure and trigger DMA operations with
+controllable attributes (security state, address space), enabling
+deterministic IOMMU testing.
 
-This allows other components, such as generic SMMUv3 tests or test devices,
-to utilize these definitions without including the specific SMMUv3 device
-internal state.
+Key features:
+- Bare-metal IOMMU testing via simple MMIO interface
+- Configurable DMA attributes for security states and address spaces
+- Write-then-read verification pattern with automatic result checking
 
-In addition, refactor the STE and CD field definitions to consistently use
-the 'hw/registerfields.h' API and introduce corresponding setter macros to
-facilitate structure manipulation.
+The device performs a deterministic DMA test pattern: write a known
+value (0x88888888) to a configured IOVA, read it back, and verify data
+integrity. Results are reported through a dedicated result register,
+eliminating the need for complex interrupt handling or driver
+infrastructure in tests.
+
+This is purely a test device and not intended for production use or
+machine realism. It complements existing test infrastructure like
+pci-testdev but focuses specifically on IOMMU translation path
+validation.
 
 Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
 ---
- hw/arm/smmuv3-internal.h       | 255 +-----------------
- include/hw/arm/smmuv3-common.h | 461 +++++++++++++++++++++++++++++++++
- 2 files changed, 462 insertions(+), 254 deletions(-)
- create mode 100644 include/hw/arm/smmuv3-common.h
+ docs/specs/index.rst            |   1 +
+ docs/specs/iommu-testdev.rst    | 109 +++++++++++++
+ hw/misc/Kconfig                 |   5 +
+ hw/misc/iommu-testdev.c         | 278 ++++++++++++++++++++++++++++++++
+ hw/misc/meson.build             |   1 +
+ hw/misc/trace-events            |  10 ++
+ include/hw/misc/iommu-testdev.h |  70 ++++++++
+ 7 files changed, 474 insertions(+)
+ create mode 100644 docs/specs/iommu-testdev.rst
+ create mode 100644 hw/misc/iommu-testdev.c
+ create mode 100644 include/hw/misc/iommu-testdev.h
 
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index b6b7399347..8679ab6d09 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -23,6 +23,7 @@
- 
- #include "hw/registerfields.h"
- #include "hw/arm/smmu-common.h"
-+#include "hw/arm/smmuv3-common.h"
- 
- typedef enum SMMUTranslationStatus {
-     SMMU_TRANS_DISABLE,
-@@ -38,147 +39,6 @@ typedef enum SMMUTranslationClass {
-     SMMU_CLASS_IN,
- } SMMUTranslationClass;
- 
--/* MMIO Registers */
--
--REG32(IDR0,                0x0)
--    FIELD(IDR0, S2P,         0 , 1)
--    FIELD(IDR0, S1P,         1 , 1)
--    FIELD(IDR0, TTF,         2 , 2)
--    FIELD(IDR0, COHACC,      4 , 1)
--    FIELD(IDR0, BTM,         5 , 1)
--    FIELD(IDR0, HTTU,        6 , 2)
--    FIELD(IDR0, DORMHINT,    8 , 1)
--    FIELD(IDR0, HYP,         9 , 1)
--    FIELD(IDR0, ATS,         10, 1)
--    FIELD(IDR0, NS1ATS,      11, 1)
--    FIELD(IDR0, ASID16,      12, 1)
--    FIELD(IDR0, MSI,         13, 1)
--    FIELD(IDR0, SEV,         14, 1)
--    FIELD(IDR0, ATOS,        15, 1)
--    FIELD(IDR0, PRI,         16, 1)
--    FIELD(IDR0, VMW,         17, 1)
--    FIELD(IDR0, VMID16,      18, 1)
--    FIELD(IDR0, CD2L,        19, 1)
--    FIELD(IDR0, VATOS,       20, 1)
--    FIELD(IDR0, TTENDIAN,    21, 2)
--    FIELD(IDR0, ATSRECERR,   23, 1)
--    FIELD(IDR0, STALL_MODEL, 24, 2)
--    FIELD(IDR0, TERM_MODEL,  26, 1)
--    FIELD(IDR0, STLEVEL,     27, 2)
--    FIELD(IDR0, RME_IMPL,    30, 1)
--
--REG32(IDR1,                0x4)
--    FIELD(IDR1, SIDSIZE,      0 , 6)
--    FIELD(IDR1, SSIDSIZE,     6 , 5)
--    FIELD(IDR1, PRIQS,        11, 5)
--    FIELD(IDR1, EVENTQS,      16, 5)
--    FIELD(IDR1, CMDQS,        21, 5)
--    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
--    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
--    FIELD(IDR1, REL,          28, 1)
--    FIELD(IDR1, QUEUES_PRESET, 29, 1)
--    FIELD(IDR1, TABLES_PRESET, 30, 1)
--    FIELD(IDR1, ECMDQ,        31, 1)
--
--#define SMMU_IDR1_SIDSIZE 16
--#define SMMU_CMDQS   19
--#define SMMU_EVENTQS 19
--
--REG32(IDR2,                0x8)
--     FIELD(IDR2, BA_VATOS, 0, 10)
--
--REG32(IDR3,                0xc)
--     FIELD(IDR3, HAD,         2, 1);
--     FIELD(IDR3, PBHA,        3, 1);
--     FIELD(IDR3, XNX,         4, 1);
--     FIELD(IDR3, PPS,         5, 1);
--     FIELD(IDR3, MPAM,        7, 1);
--     FIELD(IDR3, FWB,         8, 1);
--     FIELD(IDR3, STT,         9, 1);
--     FIELD(IDR3, RIL,        10, 1);
--     FIELD(IDR3, BBML,       11, 2);
--     FIELD(IDR3, E0PD,       13, 1);
--     FIELD(IDR3, PTWNNC,     14, 1);
--     FIELD(IDR3, DPT,        15, 1);
--
--REG32(IDR4,                0x10)
--
--REG32(IDR5,                0x14)
--     FIELD(IDR5, OAS,         0, 3);
--     FIELD(IDR5, GRAN4K,      4, 1);
--     FIELD(IDR5, GRAN16K,     5, 1);
--     FIELD(IDR5, GRAN64K,     6, 1);
--     FIELD(IDR5, VAX,        10, 2);
--     FIELD(IDR5, STALL_MAX,  16, 16);
--
--#define SMMU_IDR5_OAS 4
--
--REG32(IIDR,                0x18)
--REG32(AIDR,                0x1c)
--REG32(CR0,                 0x20)
--    FIELD(CR0, SMMU_ENABLE,   0, 1)
--    FIELD(CR0, EVENTQEN,      2, 1)
--    FIELD(CR0, CMDQEN,        3, 1)
--
--#define SMMU_CR0_RESERVED 0xFFFFFC20
--
--REG32(CR0ACK,              0x24)
--REG32(CR1,                 0x28)
--REG32(CR2,                 0x2c)
--REG32(STATUSR,             0x40)
--REG32(GBPA,                0x44)
--    FIELD(GBPA, ABORT,        20, 1)
--    FIELD(GBPA, UPDATE,       31, 1)
--
--/* Use incoming. */
--#define SMMU_GBPA_RESET_VAL 0x1000
--
--REG32(IRQ_CTRL,            0x50)
--    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
--    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
--    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
--
--REG32(IRQ_CTRL_ACK,        0x54)
--REG32(GERROR,              0x60)
--    FIELD(GERROR, CMDQ_ERR,           0, 1)
--    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
--    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
--    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
--    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
--    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
--    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
--    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
--
--REG32(GERRORN,             0x64)
--
--#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
--REG32(GERROR_IRQ_CFG1, 0x70)
--REG32(GERROR_IRQ_CFG2, 0x74)
--
--#define A_STRTAB_BASE      0x80 /* 64b */
--
--#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
--
--REG32(STRTAB_BASE_CFG,     0x88)
--    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
--    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
--    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
--
--#define A_CMDQ_BASE        0x90 /* 64b */
--REG32(CMDQ_PROD,           0x98)
--REG32(CMDQ_CONS,           0x9c)
--    FIELD(CMDQ_CONS, ERR, 24, 7)
--
--#define A_EVENTQ_BASE      0xa0 /* 64b */
--REG32(EVENTQ_PROD,         0xa8)
--REG32(EVENTQ_CONS,         0xac)
--
--#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
--REG32(EVENTQ_IRQ_CFG1,     0xb8)
--REG32(EVENTQ_IRQ_CFG2,     0xbc)
--
--#define A_IDREGS           0xfd0
--
- static inline int smmu_enabled(SMMUv3State *s)
- {
-     return FIELD_EX32(s->cr[0], CR0, SMMU_ENABLE);
-@@ -272,37 +132,6 @@ static inline void smmu_write_cmdq_err(SMMUv3State *s, uint32_t err_type)
-     s->cmdq.cons = FIELD_DP32(s->cmdq.cons, CMDQ_CONS, ERR, err_type);
- }
- 
--/* Commands */
--
--typedef enum SMMUCommandType {
--    SMMU_CMD_NONE            = 0x00,
--    SMMU_CMD_PREFETCH_CONFIG       ,
--    SMMU_CMD_PREFETCH_ADDR,
--    SMMU_CMD_CFGI_STE,
--    SMMU_CMD_CFGI_STE_RANGE,
--    SMMU_CMD_CFGI_CD,
--    SMMU_CMD_CFGI_CD_ALL,
--    SMMU_CMD_CFGI_ALL,
--    SMMU_CMD_TLBI_NH_ALL     = 0x10,
--    SMMU_CMD_TLBI_NH_ASID,
--    SMMU_CMD_TLBI_NH_VA,
--    SMMU_CMD_TLBI_NH_VAA,
--    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
--    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
--    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
--    SMMU_CMD_TLBI_EL2_ASID,
--    SMMU_CMD_TLBI_EL2_VA,
--    SMMU_CMD_TLBI_EL2_VAA,
--    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
--    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
--    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
--    SMMU_CMD_ATC_INV         = 0x40,
--    SMMU_CMD_PRI_RESP,
--    SMMU_CMD_RESUME          = 0x44,
--    SMMU_CMD_STALL_TERM,
--    SMMU_CMD_SYNC,
--} SMMUCommandType;
--
- static const char *cmd_stringify[] = {
-     [SMMU_CMD_PREFETCH_CONFIG] = "SMMU_CMD_PREFETCH_CONFIG",
-     [SMMU_CMD_PREFETCH_ADDR]   = "SMMU_CMD_PREFETCH_ADDR",
-@@ -525,64 +354,6 @@ typedef struct SMMUEventInfo {
- 
- void smmuv3_record_event(SMMUv3State *s, SMMUEventInfo *event);
- 
--/* Configuration Data */
--
--/* STE Level 1 Descriptor */
--typedef struct STEDesc {
--    uint32_t word[2];
--} STEDesc;
--
--/* CD Level 1 Descriptor */
--typedef struct CDDesc {
--    uint32_t word[2];
--} CDDesc;
--
--/* Stream Table Entry(STE) */
--typedef struct STE {
--    uint32_t word[16];
--} STE;
--
--/* Context Descriptor(CD) */
--typedef struct CD {
--    uint32_t word[16];
--} CD;
--
--/* STE fields */
--
--#define STE_VALID(x)   extract32((x)->word[0], 0, 1)
--
--#define STE_CONFIG(x)  extract32((x)->word[0], 1, 3)
--#define STE_CFG_S1_ENABLED(config) (config & 0x1)
--#define STE_CFG_S2_ENABLED(config) (config & 0x2)
--#define STE_CFG_ABORT(config)      (!(config & 0x4))
--#define STE_CFG_BYPASS(config)     (config == 0x4)
--
--#define STE_S1FMT(x)       extract32((x)->word[0], 4 , 2)
--#define STE_S1CDMAX(x)     extract32((x)->word[1], 27, 5)
--#define STE_S1STALLD(x)    extract32((x)->word[2], 27, 1)
--#define STE_EATS(x)        extract32((x)->word[2], 28, 2)
--#define STE_STRW(x)        extract32((x)->word[2], 30, 2)
--#define STE_S2VMID(x)      extract32((x)->word[4], 0 , 16)
--#define STE_S2T0SZ(x)      extract32((x)->word[5], 0 , 6)
--#define STE_S2SL0(x)       extract32((x)->word[5], 6 , 2)
--#define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
--#define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
--#define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
--#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
--#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
--#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
--#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
--#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
--#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
--
--#define STE_CTXPTR(x)                                   \
--    ((extract64((x)->word[1], 0, 16) << 32) |           \
--     ((x)->word[0] & 0xffffffc0))
--
--#define STE_S2TTB(x)                                    \
--    ((extract64((x)->word[7], 0, 16) << 32) |           \
--     ((x)->word[6] & 0xfffffff0))
--
- static inline int oas2bits(int oas_field)
- {
-     switch (oas_field) {
-@@ -603,30 +374,6 @@ static inline int oas2bits(int oas_field)
-     g_assert_not_reached();
- }
- 
--/* CD fields */
--
--#define CD_VALID(x)   extract32((x)->word[0], 31, 1)
--#define CD_ASID(x)    extract32((x)->word[1], 16, 16)
--#define CD_TTB(x, sel)                                          \
--    ((extract64((x)->word[(sel) * 2 + 3], 0, 19) << 32) |       \
--     ((x)->word[(sel) * 2 + 2] & ~0xfULL))
--
--#define CD_HAD(x, sel)   extract32((x)->word[(sel) * 2 + 2], 1, 1)
--
--#define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
--#define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
--#define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
--#define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
--#define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
--#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
--#define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
--#define CD_HD(x)         extract32((x)->word[1], 10 , 1)
--#define CD_HA(x)         extract32((x)->word[1], 11 , 1)
--#define CD_S(x)          extract32((x)->word[1], 12, 1)
--#define CD_R(x)          extract32((x)->word[1], 13, 1)
--#define CD_A(x)          extract32((x)->word[1], 14, 1)
--#define CD_AARCH64(x)    extract32((x)->word[1], 9 , 1)
--
- /**
-  * tg2granule - Decodes the CD translation granule size field according
-  * to the ttbr in use
-diff --git a/include/hw/arm/smmuv3-common.h b/include/hw/arm/smmuv3-common.h
+diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+index f19d73c9f6..1fc7fae6bb 100644
+--- a/docs/specs/index.rst
++++ b/docs/specs/index.rst
+@@ -39,3 +39,4 @@ guest hardware that is specific to QEMU.
+    riscv-iommu
+    riscv-aia
+    aspeed-intc
++   iommu-testdev
+\ No newline at end of file
+diff --git a/docs/specs/iommu-testdev.rst b/docs/specs/iommu-testdev.rst
 new file mode 100644
-index 0000000000..814ebbdec9
+index 0000000000..fdc7f2ee89
 --- /dev/null
-+++ b/include/hw/arm/smmuv3-common.h
-@@ -0,0 +1,461 @@
++++ b/docs/specs/iommu-testdev.rst
+@@ -0,0 +1,109 @@
++iommu-testdev — IOMMU test device for bare-metal testing
++=========================================================
++
++Overview
++--------
++``iommu-testdev`` is a minimal, test-only PCI device designed to exercise
++IOMMU translation (such as ARM SMMUv3) without requiring firmware or a guest
++OS. Tests can populate IOMMU translation tables with known values and trigger
++DMA operations that flow through the IOMMU translation path. It is **not** a
++faithful PCIe endpoint and must be considered a QEMU-internal test vehicle.
++
++Key Features
++------------
++* **Bare-metal IOMMU testing**: No guest kernel or firmware required
++* **Configurable DMA attributes**: Supports address space  configuration via
++  MMIO registers
++* **Deterministic verification**: Write-then-read DMA pattern with automatic
++  result checking
++
++Status
++------
++* Location: ``hw/misc/iommu-testdev.c``
++* Header: ``include/hw/misc/iommu-testdev.h``
++* Build guard: ``CONFIG_IOMMU_TESTDEV``
++
++Device Interface
++----------------
++The device exposes a single PCI BAR0 with MMIO registers:
++
++* ``ITD_REG_DMA_TRIGGERING`` (0x00): Reading triggers DMA execution
++* ``ITD_REG_DMA_GVA_LO`` (0x04): IOVA/GVA bits [31:0]
++* ``ITD_REG_DMA_GVA_HI`` (0x08): IOVA/GVA bits [63:32]
++* ``ITD_REG_DMA_LEN`` (0x0C): DMA transfer length
++* ``ITD_REG_DMA_RESULT`` (0x10): DMA operation result (0=success)
++* ``ITD_REG_DMA_DBELL`` (0x14): Write 1 to arm DMA
++* ``ITD_REG_DMA_ATTRS`` (0x18): DMA attributes
++
++  - bit[0]: secure (1=Secure, 0=Non-Secure)
++  - bits[2:1]: address space (0=Non-Secure, 1=Secure, 2=Root, 3=Realm)
++    Only these MemTxAttrs fields (``secure`` and ``space``) are consumed today;
++    other bits are reserved but can be wired up easily if future tests need
++    to pass extra attributes.
++
++Translation Setup Workflow
++--------------------------
++``iommu-testdev`` never builds SMMU/AMD-Vi/RISC-V IOMMU structures on its own.
++Architecture-specific construction lives entirely in qtest/libqos helpers.
++Those helpers populate guest memory with page tables/architecture-specific
++structures and program the emulated IOMMU registers directly. See the
++``qsmmu_setup_and_enable_translation()`` function in
++``tests/qtest/libqos/qos-smmuv3.c`` for an example of how SMMUv3 translation
++is set up for this device.
++
++DMA Operation Flow
++------------------
++1. Test programs IOMMU translation tables
++2. Test configures DMA address (GVA_LO/HI), length, and attributes
++3. Test writes 1 to DMA_DBELL to arm the operation
++4. Test reads DMA_TRIGGERING to execute DMA
++5. Test polls DMA_RESULT:
++
++   - 0x00000000: Success
++   - 0xFFFFFFFE: Busy (still in progress)
++   - 0xDEAD000X: Various error codes
++
++The device performs a write-then-read sequence using a known pattern
++(0x88888888) and verifies data integrity automatically.
++
++Running the qtest
++-----------------
++The SMMUv3 test suite uses this device and covers multiple translation modes::
++
++    cd build-debug
++    QTEST_QEMU_BINARY=./qemu-system-aarch64 \\
++        ./tests/qtest/iommu-smmuv3-test --tap -k
++
++This test suite exercises:
++
++* Stage 1 only translation
++* Stage 2 only translation
++* Nested (Stage 1 + Stage 2) translation
++* Multiple security spaces (Non-Secure, Secure, Root, Realm)
++
++Instantiation
++-------------
++The device is not wired into any board by default. Tests instantiate it
++via QEMU command line::
++
++    -device iommu-testdev
++
++For ARM platforms with SMMUv3::
++
++    -M virt,iommu=smmuv3 -device iommu-testdev
++
++The device will be placed behind the IOMMU automatically.
++
++Limitations
++-----------
++* No realistic PCIe enumeration, MSI/MSI-X, or interrupt handling
++* No ATS/PRI support
++* No actual device functionality beyond DMA test pattern
++* Test-only; not suitable for production or machine realism
++* Address space support (Secure/Root/Realm) is architecture-dependent
++
++See also
++--------
++* ``tests/qtest/iommu-smmuv3-test.c`` — SMMUv3 test suite
++* ``tests/qtest/libqos/qos-smmuv3.{c,h}`` — SMMUv3 test library
++* SMMUv3 emulation: ``hw/arm/smmu*``
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index fccd735c24..b5f6fdbd9c 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -25,6 +25,11 @@ config PCI_TESTDEV
+     default y if TEST_DEVICES
+     depends on PCI
+ 
++config IOMMU_TESTDEV
++    bool
++    default y if TEST_DEVICES
++    depends on PCI
++
+ config EDU
+     bool
+     default y if TEST_DEVICES
+diff --git a/hw/misc/iommu-testdev.c b/hw/misc/iommu-testdev.c
+new file mode 100644
+index 0000000000..3182ccea4d
+--- /dev/null
++++ b/hw/misc/iommu-testdev.c
+@@ -0,0 +1,278 @@
 +/*
-+ * ARM SMMUv3 support
++ * A test device for IOMMU
 + *
-+ * Copyright (C) 2014-2016 Broadcom Corporation
-+ * Copyright (c) 2017 Red Hat, Inc.
-+ * Written by Prem Mallappa, Eric Auger
++ * This test device is a minimal IOMMU-aware device used to test the IOMMU.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * Copyright (c) 2025 Phytium Technology
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Author:
++ *  Tao Tang <tangtao1634@phytium.com.cn>
 + *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef HW_ARM_SMMUV3_COMMON_H
-+#define HW_ARM_SMMUV3_COMMON_H
++#include "qemu/osdep.h"
++#include "system/address-spaces.h"
++#include "trace.h"
++#include "hw/pci/pci_device.h"
++#include "hw/qdev-properties.h"
++#include "qom/object.h"
++#include "hw/misc/iommu-testdev.h"
 +
-+#include "hw/registerfields.h"
++#define TYPE_IOMMU_TESTDEV "iommu-testdev"
++OBJECT_DECLARE_SIMPLE_TYPE(IOMMUTestDevState, IOMMU_TESTDEV)
 +
-+/* Configuration Data */
++struct IOMMUTestDevState {
++    PCIDevice parent_obj;
++    MemoryRegion bar0;
++    uint64_t dma_vaddr;
++    uint32_t dma_len;
++    uint32_t dma_result;
++    bool dma_pending;
 +
-+/* STE Level 1 Descriptor */
-+typedef struct STEDesc {
-+    uint32_t word[2];
-+} STEDesc;
++    AddressSpace *dma_as;   /* IOMMU-mediated DMA AS for this device */
++    uint32_t dma_attrs_cfg; /* bit0 secure, bits[2:1] space, bit3 unspecified */
++};
 +
-+/* CD Level 1 Descriptor */
-+typedef struct CDDesc {
-+    uint32_t word[2];
-+} CDDesc;
++static void iommu_testdev_maybe_run_dma(IOMMUTestDevState *s)
++{
++    uint32_t expected_val, actual_val;
++    g_autofree uint8_t *write_buf = NULL;
++    g_autofree uint8_t *read_buf = NULL;
++    MemTxResult write_res, read_res;
++    MemTxAttrs attrs;
++    AddressSpace *as;
 +
-+/* Stream Table Entry(STE) */
-+typedef struct STE {
-+    uint32_t word[16];
-+} STE;
++    if (!s->dma_pending) {
++        s->dma_result = ITD_DMA_ERR_NOT_ARMED;
++        trace_iommu_testdev_dma_result(s->dma_result);
++        return;
++    }
++    trace_iommu_testdev_dma_start();
 +
-+/* Context Descriptor(CD) */
-+typedef struct CD {
-+    uint32_t word[16];
-+} CD;
++    s->dma_pending = false;
 +
-+/* STE fileds */
-+REG32(STE_0, 0)
-+    FIELD(STE_0, VALID, 0, 1)
-+    FIELD(STE_0, CONFIG, 1, 3)
-+    FIELD(STE_0, S1FMT, 4, 2)
-+    FIELD(STE_0, CTXPTR, 6, 26)
-+REG32(STE_1, 4)
-+    FIELD(STE_1, CTXPTR_HI, 0, 16)
-+    FIELD(STE_1, S1CDMAX, 27, 5)
-+REG32(STE_2, 8)
-+    FIELD(STE_2, NSCFG, 14, 2)
-+    FIELD(STE_2, S1STALLD, 27, 1)
-+    FIELD(STE_2, EATS, 28, 2)
-+    FIELD(STE_2, STRW, 30, 2)
-+REG32(STE_4, 16)
-+    FIELD(STE_4, S2VMID, 0, 16)
-+REG32(STE_5, 20)
-+    FIELD(STE_5, S2T0SZ, 0, 6)
-+    FIELD(STE_5, S2SL0, 6, 2)
-+    FIELD(STE_5, S2TG, 14, 2)
-+    FIELD(STE_5, S2PS, 16, 3)
-+    FIELD(STE_5, S2AA64, 19, 1)
-+    FIELD(STE_5, S2ENDI, 20, 1)
-+    FIELD(STE_5, S2AFFD, 21, 1)
-+    FIELD(STE_5, S2HD, 23, 1)
-+    FIELD(STE_5, S2HA, 24, 1)
-+    FIELD(STE_5, S2S, 25, 1)
-+    FIELD(STE_5, S2R, 26, 1)
-+REG32(STE_6, 24)
-+    FIELD(STE_6, S2TTB_LO, 4, 28)
-+REG32(STE_7, 28)
-+    FIELD(STE_7, S2TTB_HI, 0, 16)
++    if (!s->dma_len) {
++        s->dma_result = ITD_DMA_ERR_BAD_LEN;
++        return;
++    }
 +
-+/* CD fields */
-+REG32(CD_0, 0)
-+    FIELD(CD_0, TSZ0, 0, 6)
-+    FIELD(CD_0, TG0, 6, 2)
-+    FIELD(CD_0, EPD0, 14, 1)
-+    FIELD(CD_0, ENDI, 15, 1)
-+    FIELD(CD_0, TSZ1, 16, 6)
-+    FIELD(CD_0, TG1, 22, 2)
-+    FIELD(CD_0, EPD1, 30, 1)
-+    FIELD(CD_0, VALID, 31, 1)
-+REG32(CD_1, 4)
-+    FIELD(CD_1, IPS, 0, 3)
-+    FIELD(CD_1, AFFD, 3, 1)
-+    FIELD(CD_1, TBI, 6, 2)
-+    FIELD(CD_1, AARCH64, 9, 1)
-+    FIELD(CD_1, HD, 10, 1)
-+    FIELD(CD_1, HA, 11, 1)
-+    FIELD(CD_1, S, 12, 1)
-+    FIELD(CD_1, R, 13, 1)
-+    FIELD(CD_1, A, 14, 1)
-+    FIELD(CD_1, ASID, 16, 16)
-+REG32(CD_2, 8)
-+    FIELD(CD_2, NSCFG0, 0, 1)
-+    FIELD(CD_2, HAD0, 1, 1)
-+    FIELD(CD_2, TTB0_LO, 4, 28)
-+REG32(CD_3, 12)
-+    FIELD(CD_3, TTB0_HI, 0, 19)
-+REG32(CD_4, 16)
-+    FIELD(CD_4, NSCFG1, 0, 1)
-+    FIELD(CD_4, HAD1, 1, 1)
-+    FIELD(CD_4, TTB1_LO, 4, 28)
-+REG32(CD_5, 20)
-+    FIELD(CD_5, TTB1_HI, 0, 19)
-+REG32(CD_6, 24)
-+REG32(CD_7, 28)
++    write_buf = g_malloc(s->dma_len);
++    read_buf = g_malloc(s->dma_len);
 +
-+/* Get STE fields */
-+#define STE_VALID(x)      FIELD_EX32((x)->word[0], STE_0, VALID)
-+#define STE_CONFIG(x)     FIELD_EX32((x)->word[0], STE_0, CONFIG)
-+#define STE_S1FMT(x)      FIELD_EX32((x)->word[0], STE_0, S1FMT)
-+#define STE_S1CDMAX(x)    FIELD_EX32((x)->word[1], STE_1, S1CDMAX)
-+#define STE_S1STALLD(x)   FIELD_EX32((x)->word[2], STE_2, S1STALLD)
-+#define STE_EATS(x)       FIELD_EX32((x)->word[2], STE_2, EATS)
-+#define STE_STRW(x)       FIELD_EX32((x)->word[2], STE_2, STRW)
-+#define STE_NSCFG(x)      FIELD_EX32((x)->word[2], STE_2, NSCFG)
-+#define STE_S2VMID(x)     FIELD_EX32((x)->word[4], STE_4, S2VMID)
-+#define STE_S2T0SZ(x)     FIELD_EX32((x)->word[5], STE_5, S2T0SZ)
-+#define STE_S2SL0(x)      FIELD_EX32((x)->word[5], STE_5, S2SL0)
-+#define STE_S2TG(x)       FIELD_EX32((x)->word[5], STE_5, S2TG)
-+#define STE_S2PS(x)       FIELD_EX32((x)->word[5], STE_5, S2PS)
-+#define STE_S2AA64(x)     FIELD_EX32((x)->word[5], STE_5, S2AA64)
-+#define STE_S2ENDI(x)     FIELD_EX32((x)->word[5], STE_5, S2ENDI)
-+#define STE_S2AFFD(x)     FIELD_EX32((x)->word[5], STE_5, S2AFFD)
-+#define STE_S2HD(x)       FIELD_EX32((x)->word[5], STE_5, S2HD)
-+#define STE_S2HA(x)       FIELD_EX32((x)->word[5], STE_5, S2HA)
-+#define STE_S2S(x)        FIELD_EX32((x)->word[5], STE_5, S2S)
-+#define STE_S2R(x)        FIELD_EX32((x)->word[5], STE_5, S2R)
-+#define STE_CTXPTR(x)                                            \
-+    (((uint64_t)FIELD_EX32((x)->word[1], STE_1, CTXPTR_HI) << 32) | \
-+     ((uint64_t)FIELD_EX32((x)->word[0], STE_0, CTXPTR) << 6))
-+#define STE_S2TTB(x)                                              \
-+    (((uint64_t)FIELD_EX32((x)->word[7], STE_7, S2TTB_HI) << 32) | \
-+     ((uint64_t)FIELD_EX32((x)->word[6], STE_6, S2TTB_LO) << 4))
-+#define STE_CFG_S1_ENABLED(config) ((config) & 0x1)
-+#define STE_CFG_S2_ENABLED(config) ((config) & 0x2)
-+#define STE_CFG_ABORT(config)      (!((config) & 0x4))
-+#define STE_CFG_BYPASS(config)     ((config) == 0x4)
++    /* Initialize MemTxAttrs from generic register */
++    attrs = MEMTXATTRS_UNSPECIFIED;
++    attrs.secure = ITD_ATTRS_GET_SECURE(s->dma_attrs_cfg);
 +
-+/* Update STE fields */
-+#define STE_SET_VALID(ste, v) \
-+    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, VALID, (v)))
-+#define STE_SET_CONFIG(ste, v) \
-+    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CONFIG, (v)))
-+#define STE_SET_S1FMT(ste, v) \
-+    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, S1FMT, (v)))
-+#define STE_SET_CTXPTR(ste, v) do { \
-+    (ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CTXPTR, (v) >> 6); \
-+    (ste)->word[1] = FIELD_DP32((ste)->word[1], STE_1, CTXPTR_HI, (v) >> 32); \
-+} while (0)
-+#define STE_SET_S1CDMAX(ste, v) \
-+    ((ste)->word[1] = FIELD_DP32((ste)->word[1], STE_1, S1CDMAX, (v)))
-+#define STE_SET_S1STALLD(ste, v) \
-+    ((ste)->word[2] = FIELD_DP32((ste)->word[2], STE_2, S1STALLD, (v)))
-+#define STE_SET_EATS(ste, v) \
-+    ((ste)->word[2] = FIELD_DP32((ste)->word[2], STE_2, EATS, (v)))
-+#define STE_SET_STRW(ste, v) \
-+    ((ste)->word[2] = FIELD_DP32((ste)->word[2], STE_2, STRW, (v)))
-+#define STE_SET_NSCFG(ste, v) \
-+    ((ste)->word[2] = FIELD_DP32((ste)->word[2], STE_2, NSCFG, (v)))
-+#define STE_SET_S2VMID(ste, v) \
-+    ((ste)->word[4] = FIELD_DP32((ste)->word[4], STE_4, S2VMID, (v)))
-+#define STE_SET_S2T0SZ(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2T0SZ, (v)))
-+#define STE_SET_S2SL0(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2SL0, (v)))
-+#define STE_SET_S2TG(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2TG, (v)))
-+#define STE_SET_S2PS(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2PS, (v)))
-+#define STE_SET_S2AA64(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AA64, (v)))
-+#define STE_SET_S2ENDI(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2ENDI, (v)))
-+#define STE_SET_S2AFFD(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AFFD, (v)))
-+#define STE_SET_S2HD(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2HD, (v)))
-+#define STE_SET_S2HA(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2HA, (v)))
-+#define STE_SET_S2S(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2S, (v)))
-+#define STE_SET_S2R(ste, v) \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2R, (v)))
-+#define STE_SET_S2TTB(ste, v) do { \
-+    (ste)->word[6] = FIELD_DP32((ste)->word[6], STE_6, S2TTB_LO, (v) >> 4); \
-+    (ste)->word[7] = FIELD_DP32((ste)->word[7], STE_7, S2TTB_HI, (v) >> 32); \
-+} while (0)
++    /*
++     * The 'space' field in MemTxAttrs is ARM-specific.
++     * On other architectures where this field doesn't exist.
++     */
++    attrs.space = ITD_ATTRS_GET_SPACE(s->dma_attrs_cfg);
 +
-+/* Get CD fields */
-+#define CD_VALID(x)      FIELD_EX32((x)->word[0], CD_0, VALID)
-+#define CD_ASID(x)       FIELD_EX32((x)->word[1], CD_1, ASID)
-+#define CD_TTB(x, sel)                                           \
-+    ((sel) ? (((uint64_t)FIELD_EX32((x)->word[5], CD_5, TTB1_HI) << 32) | \
-+              ((uint64_t)FIELD_EX32((x)->word[4], CD_4, TTB1_LO) << 4)) :    \
-+             (((uint64_t)FIELD_EX32((x)->word[3], CD_3, TTB0_HI) << 32) | \
-+              ((uint64_t)FIELD_EX32((x)->word[2], CD_2, TTB0_LO) << 4)))
-+#define CD_HAD(x, sel)   ((sel) ? \
-+    FIELD_EX32((x)->word[4], CD_4, HAD1) : \
-+    FIELD_EX32((x)->word[2], CD_2, HAD0))
-+#define CD_TSZ(x, sel)   ((sel) ? \
-+    FIELD_EX32((x)->word[0], CD_0, TSZ1) : \
-+    FIELD_EX32((x)->word[0], CD_0, TSZ0))
-+#define CD_TG(x, sel)    ((sel) ? \
-+    FIELD_EX32((x)->word[0], CD_0, TG1) : \
-+    FIELD_EX32((x)->word[0], CD_0, TG0))
-+#define CD_EPD(x, sel)   ((sel) ? \
-+    FIELD_EX32((x)->word[0], CD_0, EPD1) : \
-+    FIELD_EX32((x)->word[0], CD_0, EPD0))
-+#define CD_ENDI(x)       FIELD_EX32((x)->word[0], CD_0, ENDI)
-+#define CD_IPS(x)        FIELD_EX32((x)->word[1], CD_1, IPS)
-+#define CD_AFFD(x)       FIELD_EX32((x)->word[1], CD_1, AFFD)
-+#define CD_TBI(x)        FIELD_EX32((x)->word[1], CD_1, TBI)
-+#define CD_HD(x)         FIELD_EX32((x)->word[1], CD_1, HD)
-+#define CD_HA(x)         FIELD_EX32((x)->word[1], CD_1, HA)
-+#define CD_S(x)          FIELD_EX32((x)->word[1], CD_1, S)
-+#define CD_R(x)          FIELD_EX32((x)->word[1], CD_1, R)
-+#define CD_A(x)          FIELD_EX32((x)->word[1], CD_1, A)
-+#define CD_AARCH64(x)    FIELD_EX32((x)->word[1], CD_1, AARCH64)
-+#define CD_NSCFG(x, sel) ((sel) ? \
-+    FIELD_EX32((x)->word[4], CD_4, NSCFG1) : \
-+    FIELD_EX32((x)->word[2], CD_2, NSCFG0))
++    as = s->dma_as;
 +
-+/* Update CD fields */
-+#define CD_SET_VALID(cd, v) \
-+    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, VALID, (v)))
-+#define CD_SET_ASID(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, ASID, (v)))
-+#define CD_SET_TTB(cd, sel, v) do { \
-+    if (sel) { \
-+        (cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, TTB1_LO, (v) >> 4); \
-+        (cd)->word[5] = FIELD_DP32((cd)->word[5], CD_5, TTB1_HI, (v) >> 32); \
-+    } else { \
-+        (cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, TTB0_LO, (v) >> 4); \
-+        (cd)->word[3] = FIELD_DP32((cd)->word[3], CD_3, TTB0_HI, (v) >> 32); \
-+    } \
-+} while (0)
-+#define CD_SET_HAD(cd, sel, v) do { \
-+    if (sel) { \
-+        (cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, HAD1, (v)); \
-+    } else { \
-+        (cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, HAD0, (v)); \
-+    } \
-+} while (0)
-+#define CD_SET_TSZ(cd, sel, v) \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TSZ1, (v)) : \
-+                             FIELD_DP32((cd)->word[0], CD_0, TSZ0, (v)))
-+#define CD_SET_TG(cd, sel, v) \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TG1, (v)) : \
-+                             FIELD_DP32((cd)->word[0], CD_0, TG0, (v)))
-+#define CD_SET_EPD(cd, sel, v) \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, EPD1, (v)) : \
-+                             FIELD_DP32((cd)->word[0], CD_0, EPD0, (v)))
-+#define CD_SET_ENDI(cd, v) \
-+    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, ENDI, (v)))
-+#define CD_SET_IPS(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, IPS, (v)))
-+#define CD_SET_AFFD(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AFFD, (v)))
-+#define CD_SET_TBI(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, TBI, (v)))
-+#define CD_SET_HD(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HD, (v)))
-+#define CD_SET_HA(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HA, (v)))
-+#define CD_SET_S(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, S, (v)))
-+#define CD_SET_R(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, R, (v)))
-+#define CD_SET_A(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, A, (v)))
-+#define CD_SET_AARCH64(cd, v) \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AARCH64, (v)))
-+#define CD_SET_NSCFG(cd, sel, v) \
-+    ((sel) ? ((cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, NSCFG1, (v))) : \
-+             ((cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, NSCFG0, (v))))
-+#define CD_SET_MAIR0(cd, v) ((cd)->word[6] = (v))
-+#define CD_SET_MAIR1(cd, v) ((cd)->word[7] = (v))
++    /* Step 1: Write ITD_DMA_WRITE_VAL to DMA address */
++    trace_iommu_testdev_dma_write(s->dma_vaddr, s->dma_len);
 +
-+/* MMIO Registers */
++    for (int i = 0; i < s->dma_len; i++) {
++        /* Data is written in little-endian order */
++        write_buf[i] = (ITD_DMA_WRITE_VAL >> ((i % 4) * 8)) & 0xff;
++    }
++    write_res = dma_memory_write(as, s->dma_vaddr, write_buf, s->dma_len,
++                                 attrs);
 +
-+REG32(IDR0,                0x0)
-+    FIELD(IDR0, S2P,         0 , 1)
-+    FIELD(IDR0, S1P,         1 , 1)
-+    FIELD(IDR0, TTF,         2 , 2)
-+    FIELD(IDR0, COHACC,      4 , 1)
-+    FIELD(IDR0, BTM,         5 , 1)
-+    FIELD(IDR0, HTTU,        6 , 2)
-+    FIELD(IDR0, DORMHINT,    8 , 1)
-+    FIELD(IDR0, HYP,         9 , 1)
-+    FIELD(IDR0, ATS,         10, 1)
-+    FIELD(IDR0, NS1ATS,      11, 1)
-+    FIELD(IDR0, ASID16,      12, 1)
-+    FIELD(IDR0, MSI,         13, 1)
-+    FIELD(IDR0, SEV,         14, 1)
-+    FIELD(IDR0, ATOS,        15, 1)
-+    FIELD(IDR0, PRI,         16, 1)
-+    FIELD(IDR0, VMW,         17, 1)
-+    FIELD(IDR0, VMID16,      18, 1)
-+    FIELD(IDR0, CD2L,        19, 1)
-+    FIELD(IDR0, VATOS,       20, 1)
-+    FIELD(IDR0, TTENDIAN,    21, 2)
-+    FIELD(IDR0, ATSRECERR,   23, 1)
-+    FIELD(IDR0, STALL_MODEL, 24, 2)
-+    FIELD(IDR0, TERM_MODEL,  26, 1)
-+    FIELD(IDR0, STLEVEL,     27, 2)
-+    FIELD(IDR0, RME_IMPL,    30, 1)
++    if (write_res != MEMTX_OK) {
++        s->dma_result = ITD_DMA_ERR_TX_FAIL;
++        trace_iommu_testdev_dma_result(s->dma_result);
++        return;
++    }
 +
-+REG32(IDR1,                0x4)
-+    FIELD(IDR1, SIDSIZE,      0 , 6)
-+    FIELD(IDR1, SSIDSIZE,     6 , 5)
-+    FIELD(IDR1, PRIQS,        11, 5)
-+    FIELD(IDR1, EVENTQS,      16, 5)
-+    FIELD(IDR1, CMDQS,        21, 5)
-+    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
-+    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
-+    FIELD(IDR1, REL,          28, 1)
-+    FIELD(IDR1, QUEUES_PRESET, 29, 1)
-+    FIELD(IDR1, TABLES_PRESET, 30, 1)
-+    FIELD(IDR1, ECMDQ,        31, 1)
++    /* Step 2: Read back from the same DMA address */
++    trace_iommu_testdev_dma_read(s->dma_vaddr, s->dma_len);
 +
-+#define SMMU_IDR1_SIDSIZE 16
-+#define SMMU_CMDQS   19
-+#define SMMU_EVENTQS 19
++    read_res = dma_memory_read(as, s->dma_vaddr, read_buf, s->dma_len, attrs);
 +
-+REG32(IDR2,                0x8)
-+     FIELD(IDR2, BA_VATOS, 0, 10)
++    if (read_res != MEMTX_OK) {
++        s->dma_result = ITD_DMA_ERR_RD_FAIL;
++        trace_iommu_testdev_dma_result(s->dma_result);
++        return;
++    }
 +
-+REG32(IDR3,                0xc)
-+     FIELD(IDR3, HAD,         2, 1);
-+     FIELD(IDR3, PBHA,        3, 1);
-+     FIELD(IDR3, XNX,         4, 1);
-+     FIELD(IDR3, PPS,         5, 1);
-+     FIELD(IDR3, MPAM,        7, 1);
-+     FIELD(IDR3, FWB,         8, 1);
-+     FIELD(IDR3, STT,         9, 1);
-+     FIELD(IDR3, RIL,        10, 1);
-+     FIELD(IDR3, BBML,       11, 2);
-+     FIELD(IDR3, E0PD,       13, 1);
-+     FIELD(IDR3, PTWNNC,     14, 1);
-+     FIELD(IDR3, DPT,        15, 1);
++    /* Step 3: Verify the read data matches what we wrote */
++    for (int i = 0; i < s->dma_len; i += 4) {
++        int remaining_bytes = MIN(4, s->dma_len - i);
 +
-+REG32(IDR4,                0x10)
++        expected_val = 0;
++        actual_val = 0;
 +
-+REG32(IDR5,                0x14)
-+     FIELD(IDR5, OAS,         0, 3);
-+     FIELD(IDR5, GRAN4K,      4, 1);
-+     FIELD(IDR5, GRAN16K,     5, 1);
-+     FIELD(IDR5, GRAN64K,     6, 1);
-+     FIELD(IDR5, VAX,        10, 2);
-+     FIELD(IDR5, STALL_MAX,  16, 16);
++        for (int j = 0; j < remaining_bytes; j++) {
++            expected_val |= ((uint32_t)write_buf[i + j]) << (j * 8);
++            actual_val |= ((uint32_t)read_buf[i + j]) << (j * 8);
++        }
 +
-+#define SMMU_IDR5_OAS 4
++        trace_iommu_testdev_dma_verify(expected_val, actual_val);
 +
-+REG32(IIDR,                0x18)
-+REG32(AIDR,                0x1c)
-+REG32(CR0,                 0x20)
-+    FIELD(CR0, SMMU_ENABLE,   0, 1)
-+    FIELD(CR0, EVENTQEN,      2, 1)
-+    FIELD(CR0, CMDQEN,        3, 1)
++        if (expected_val != actual_val) {
++            s->dma_result = ITD_DMA_ERR_MISMATCH;
++            trace_iommu_testdev_dma_result(s->dma_result);
++            return;
++        }
++    }
 +
-+#define SMMU_CR0_RESERVED 0xFFFFFC20
++    /* All checks passed */
++    s->dma_result = 0;
++    trace_iommu_testdev_dma_result(s->dma_result);
++}
 +
-+REG32(CR0ACK,              0x24)
-+REG32(CR1,                 0x28)
-+REG32(CR2,                 0x2c)
-+REG32(STATUSR,             0x40)
-+REG32(GBPA,                0x44)
-+    FIELD(GBPA, ABORT,        20, 1)
-+    FIELD(GBPA, UPDATE,       31, 1)
++static uint64_t iommu_testdev_mmio_read(void *opaque, hwaddr addr,
++                                        unsigned size)
++{
++    IOMMUTestDevState *s = opaque;
++    uint64_t value = 0;
 +
-+/* Use incoming. */
-+#define SMMU_GBPA_RESET_VAL 0x1000
++    switch (addr) {
++    case ITD_REG_DMA_TRIGGERING:
++        /*
++         * This lets tests poll ITD_REG_DMA_RESULT to observe BUSY before
++         * consuming the DMA.
++         */
++        iommu_testdev_maybe_run_dma(s);
++        value = 0;
++        break;
++    case ITD_REG_DMA_GVA_LO:
++        value = (uint32_t)(s->dma_vaddr & 0xffffffffu);
++        break;
++    case ITD_REG_DMA_GVA_HI:
++        value = (uint32_t)(s->dma_vaddr >> 32);
++        break;
++    case ITD_REG_DMA_LEN:
++        value = s->dma_len;
++        break;
++    case ITD_REG_DMA_RESULT:
++        value = s->dma_result;
++        break;
++    case ITD_REG_DMA_ATTRS:
++        value = s->dma_attrs_cfg;
++        break;
++    default:
++        value = 0;
++        break;
++    }
 +
-+REG32(IRQ_CTRL,            0x50)
-+    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
-+    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
-+    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
++    trace_iommu_testdev_mmio_read(addr, value, size);
++    return value;
++}
 +
-+REG32(IRQ_CTRL_ACK,        0x54)
-+REG32(GERROR,              0x60)
-+    FIELD(GERROR, CMDQ_ERR,           0, 1)
-+    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
-+    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
-+    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
-+    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
-+    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
-+    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
-+    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
++static void iommu_testdev_mmio_write(void *opaque, hwaddr addr, uint64_t val,
++                                     unsigned size)
++{
++    IOMMUTestDevState *s = opaque;
++    uint32_t data = val;
 +
-+REG32(GERRORN,             0x64)
++    trace_iommu_testdev_mmio_write(addr, val, size);
 +
-+#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
-+REG32(GERROR_IRQ_CFG1, 0x70)
-+REG32(GERROR_IRQ_CFG2, 0x74)
++    switch (addr) {
++    case ITD_REG_DMA_GVA_LO:
++        s->dma_vaddr = (s->dma_vaddr & ~0xffffffffull) | data;
++        break;
++    case ITD_REG_DMA_GVA_HI:
++        s->dma_vaddr = (s->dma_vaddr & 0xffffffffull) |
++                       ((uint64_t)data << 32);
++        break;
++    case ITD_REG_DMA_LEN:
++        s->dma_len = data;
++        break;
++    case ITD_REG_DMA_RESULT:
++        s->dma_result = data;
++        break;
++    case ITD_REG_DMA_DBELL:
++        if (data & ITD_DMA_DBELL_ARM) {
++            /* Arm the DMA operation */
++            s->dma_pending = true;
++            s->dma_result = ITD_DMA_RESULT_BUSY;
++            trace_iommu_testdev_dma_pending(true);
++        } else {
++            /* Disarm the DMA operation */
++            s->dma_pending = false;
++            s->dma_result = ITD_DMA_RESULT_IDLE;
++            trace_iommu_testdev_dma_pending(false);
++        }
++        break;
++    case ITD_REG_DMA_ATTRS:
++        s->dma_attrs_cfg = data;
++        break;
++    default:
++        break;
++    }
++}
 +
-+#define A_STRTAB_BASE      0x80 /* 64b */
++static const MemoryRegionOps iommu_testdev_mmio_ops = {
++    .read = iommu_testdev_mmio_read,
++    .write = iommu_testdev_mmio_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
 +
-+#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
++static void iommu_testdev_realize(PCIDevice *pdev, Error **errp)
++{
++    IOMMUTestDevState *s = IOMMU_TESTDEV(pdev);
 +
-+REG32(STRTAB_BASE_CFG,     0x88)
-+    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
-+    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
-+    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
++    s->dma_vaddr = 0;
++    s->dma_len = 0;
++    s->dma_result = ITD_DMA_RESULT_IDLE;
++    s->dma_pending = false;
++    s->dma_attrs_cfg = 0;
++    s->dma_as = pci_device_iommu_address_space(pdev);
 +
-+#define A_CMDQ_BASE        0x90 /* 64b */
-+REG32(CMDQ_PROD,           0x98)
-+REG32(CMDQ_CONS,           0x9c)
-+    FIELD(CMDQ_CONS, ERR, 24, 7)
++    memory_region_init_io(&s->bar0, OBJECT(pdev), &iommu_testdev_mmio_ops, s,
++                          TYPE_IOMMU_TESTDEV ".bar0", BAR0_SIZE);
++    pci_register_bar(pdev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
++}
 +
-+#define A_EVENTQ_BASE      0xa0 /* 64b */
-+REG32(EVENTQ_PROD,         0xa8)
-+REG32(EVENTQ_CONS,         0xac)
++static void iommu_testdev_reset(DeviceState *dev)
++{
++    IOMMUTestDevState *s = IOMMU_TESTDEV(dev);
 +
-+#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
-+REG32(EVENTQ_IRQ_CFG1,     0xb8)
-+REG32(EVENTQ_IRQ_CFG2,     0xbc)
++    s->dma_vaddr = 0;
++    s->dma_len = 0;
++    s->dma_result = ITD_DMA_RESULT_IDLE;
++    s->dma_pending = false;
++    s->dma_attrs_cfg = 0;
++}
 +
-+#define A_IDREGS           0xfd0
++static void iommu_testdev_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
 +
-+/* Commands */
++    pc->realize = iommu_testdev_realize;
++    pc->vendor_id = IOMMU_TESTDEV_VENDOR_ID;
++    pc->device_id = IOMMU_TESTDEV_DEVICE_ID;
++    pc->revision = 0;
++    pc->class_id = PCI_CLASS_OTHERS;
++    dc->desc = "A test device for IOMMU";
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    device_class_set_legacy_reset(dc, iommu_testdev_reset);
++}
 +
-+typedef enum SMMUCommandType {
-+    SMMU_CMD_NONE            = 0x00,
-+    SMMU_CMD_PREFETCH_CONFIG       ,
-+    SMMU_CMD_PREFETCH_ADDR,
-+    SMMU_CMD_CFGI_STE,
-+    SMMU_CMD_CFGI_STE_RANGE,
-+    SMMU_CMD_CFGI_CD,
-+    SMMU_CMD_CFGI_CD_ALL,
-+    SMMU_CMD_CFGI_ALL,
-+    SMMU_CMD_TLBI_NH_ALL     = 0x10,
-+    SMMU_CMD_TLBI_NH_ASID,
-+    SMMU_CMD_TLBI_NH_VA,
-+    SMMU_CMD_TLBI_NH_VAA,
-+    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
-+    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
-+    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
-+    SMMU_CMD_TLBI_EL2_ASID,
-+    SMMU_CMD_TLBI_EL2_VA,
-+    SMMU_CMD_TLBI_EL2_VAA,
-+    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
-+    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
-+    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
-+    SMMU_CMD_ATC_INV         = 0x40,
-+    SMMU_CMD_PRI_RESP,
-+    SMMU_CMD_RESUME          = 0x44,
-+    SMMU_CMD_STALL_TERM,
-+    SMMU_CMD_SYNC,
-+} SMMUCommandType;
++static const TypeInfo iommu_testdev_info = {
++    .name          = TYPE_IOMMU_TESTDEV,
++    .parent        = TYPE_PCI_DEVICE,
++    .instance_size = sizeof(IOMMUTestDevState),
++    .class_init    = iommu_testdev_class_init,
++    .interfaces    = (const InterfaceInfo[]) {
++        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++        { }
++    },
++};
 +
-+#endif /* HW_ARM_SMMUV3_COMMON_H */
++static void iommu_testdev_register_types(void)
++{
++    type_register_static(&iommu_testdev_info);
++}
++
++type_init(iommu_testdev_register_types);
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index b1d8d8e5d2..6f9bb9bb0f 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -4,6 +4,7 @@ system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('vmcoreinfo.c'))
+ system_ss.add(when: 'CONFIG_ISA_DEBUG', if_true: files('debugexit.c'))
+ system_ss.add(when: 'CONFIG_ISA_TESTDEV', if_true: files('pc-testdev.c'))
+ system_ss.add(when: 'CONFIG_PCI_TESTDEV', if_true: files('pci-testdev.c'))
++system_ss.add(when: 'CONFIG_IOMMU_TESTDEV', if_true: files('iommu-testdev.c'))
+ system_ss.add(when: 'CONFIG_UNIMP', if_true: files('unimp.c'))
+ system_ss.add(when: 'CONFIG_EMPTY_SLOT', if_true: files('empty_slot.c'))
+ system_ss.add(when: 'CONFIG_LED', if_true: files('led.c'))
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index eeb9243898..84fd349fb8 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -409,3 +409,13 @@ ivshmem_flat_interrupt_peer(uint16_t peer_id, uint16_t vector_id) "Interrupting
+ i2c_echo_event(const char *id, const char *event) "%s: %s"
+ i2c_echo_recv(const char *id, uint8_t data) "%s: recv 0x%02" PRIx8
+ i2c_echo_send(const char *id, uint8_t data) "%s: send 0x%02" PRIx8
++
++# iommu-testdev.c
++iommu_testdev_mmio_read(uint64_t addr, uint64_t value, unsigned size) "addr=0x%" PRIx64 " value=0x%" PRIx64 " size=%u"
++iommu_testdev_mmio_write(uint64_t addr, uint64_t value, unsigned size) "addr=0x%" PRIx64 " value=0x%" PRIx64 " size=%u"
++iommu_testdev_dma_start(void) "DMA operation started"
++iommu_testdev_dma_write(uint64_t gva, uint32_t len) "gva=0x%" PRIx64 " len=%u"
++iommu_testdev_dma_read(uint64_t gva, uint32_t len) "gva=0x%" PRIx64 " len=%u"
++iommu_testdev_dma_verify(uint32_t expected, uint32_t actual) "expected=0x%x actual=0x%x"
++iommu_testdev_dma_result(uint32_t result) "DMA completed result=0x%x"
++iommu_testdev_dma_pending(bool pending) "pending=%d"
+diff --git a/include/hw/misc/iommu-testdev.h b/include/hw/misc/iommu-testdev.h
+new file mode 100644
+index 0000000000..06924e737c
+--- /dev/null
++++ b/include/hw/misc/iommu-testdev.h
+@@ -0,0 +1,70 @@
++/*
++ * A test device for IOMMU
++ *
++ * This test device is a minimal IOMMU-aware device used to test the IOMMU.
++ *
++ * Copyright (c) 2025 Phytium Technology
++ *
++ * Author:
++ *  Tao Tang <tangtao1634@phytium.com.cn>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_MISC_IOMMU_TESTDEV_H
++#define HW_MISC_IOMMU_TESTDEV_H
++
++#include "hw/pci/pci.h"
++
++#define IOMMU_TESTDEV_VENDOR_ID     PCI_VENDOR_ID_REDHAT
++#define IOMMU_TESTDEV_DEVICE_ID     PCI_DEVICE_ID_REDHAT_TEST
++
++/* DMA_ATTRS register bit definitions (architecture-agnostic) */
++#define ITD_ATTRS_SECURE_SHIFT      0
++#define ITD_ATTRS_SECURE_MASK       0x1
++#define ITD_ATTRS_SPACE_SHIFT       1
++#define ITD_ATTRS_SPACE_MASK        0x3
++
++/* Helper macros for setting fields */
++#define ITD_ATTRS_SET_SECURE(attrs, val)                              \
++    (((attrs) & ~(ITD_ATTRS_SECURE_MASK << ITD_ATTRS_SECURE_SHIFT)) | \
++     (((val) & ITD_ATTRS_SECURE_MASK) << ITD_ATTRS_SECURE_SHIFT))
++
++#define ITD_ATTRS_SET_SPACE(attrs, val)                               \
++    (((attrs) & ~(ITD_ATTRS_SPACE_MASK << ITD_ATTRS_SPACE_SHIFT)) |   \
++     (((val) & ITD_ATTRS_SPACE_MASK) << ITD_ATTRS_SPACE_SHIFT))
++
++/* Helper macros for getting fields */
++#define ITD_ATTRS_GET_SECURE(attrs)                                   \
++    (((attrs) >> ITD_ATTRS_SECURE_SHIFT) & ITD_ATTRS_SECURE_MASK)
++
++#define ITD_ATTRS_GET_SPACE(attrs)                                    \
++    (((attrs) >> ITD_ATTRS_SPACE_SHIFT) & ITD_ATTRS_SPACE_MASK)
++
++/* DMA result/status values shared with tests */
++#define ITD_DMA_RESULT_IDLE   0xffffffffu
++#define ITD_DMA_RESULT_BUSY   0xfffffffeu
++#define ITD_DMA_ERR_BAD_LEN   0xdead0001u
++#define ITD_DMA_ERR_TX_FAIL   0xdead0002u
++#define ITD_DMA_ERR_RD_FAIL   0xdead0003u
++#define ITD_DMA_ERR_MISMATCH  0xdead0004u
++#define ITD_DMA_ERR_NOT_ARMED 0xdead0005u
++
++#define ITD_DMA_WRITE_VAL     0x88888888u
++
++/* DMA doorbell bits */
++#define ITD_DMA_DBELL_ARM    0x1u
++
++/* BAR0 layout of iommu-testdev */
++enum {
++    ITD_REG_DMA_TRIGGERING  = 0x00,
++    ITD_REG_DMA_GVA_LO      = 0x04,
++    ITD_REG_DMA_GVA_HI      = 0x08,
++    ITD_REG_DMA_LEN         = 0x0c,
++    ITD_REG_DMA_RESULT      = 0x10,
++    ITD_REG_DMA_DBELL       = 0x14,
++    ITD_REG_DMA_ATTRS       = 0x18, /* [0] secure,[2:1] space,[3] unspecified */
++    BAR0_SIZE               = 0x1000,
++};
++
++#endif /* HW_MISC_IOMMU_TESTDEV_H */
 -- 
 2.34.1
 
