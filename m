@@ -2,70 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E10DC87FE4
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 04:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DB4C8A41B
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Nov 2025 15:16:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vO6YV-0003T7-KJ; Tue, 25 Nov 2025 22:50:59 -0500
+	id 1vOGIb-0000xG-0P; Wed, 26 Nov 2025 09:15:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1vO6YS-0003SV-Rz
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 22:50:56 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1vO6YP-0003Qv-NA
- for qemu-devel@nongnu.org; Tue, 25 Nov 2025 22:50:56 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Dx_78QeSZpwisoAA--.20917S3;
- Wed, 26 Nov 2025 11:50:40 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJBxTMEEeSZpyZ0_AQ--.49029S3;
- Wed, 26 Nov 2025 11:50:37 +0800 (CST)
-Subject: Re: [PATCH v2 0/7] Add LoongArch v1.1 instructions
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, git@xen0n.name,
- bibo mao <maobibo@loongson.cn>
-References: <20251119122822.1513788-1-c@jia.je>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <613a7dfa-c3f4-092b-3938-dc41f6fd3812@loongson.cn>
-Date: Wed, 26 Nov 2025 11:50:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <me@wesleyac.com>) id 1vO6pA-0005hA-KI
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 23:08:13 -0500
+Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <me@wesleyac.com>) id 1vO6p8-0007tU-1I
+ for qemu-devel@nongnu.org; Tue, 25 Nov 2025 23:08:12 -0500
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id C8E0914001ED;
+ Tue, 25 Nov 2025 23:08:03 -0500 (EST)
+Received: from phl-imap-16 ([10.202.2.88])
+ by phl-compute-05.internal (MEProxy); Tue, 25 Nov 2025 23:08:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wesleyac.com; h=
+ cc:content-transfer-encoding:content-type:content-type:date:date
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm1; t=1764130083; x=1764216483; bh=Xh+scfLymd
+ oCuWFu5/Tkle5QpWNn2GqqlN1vrgBZ9PQ=; b=O0W4JQnsV1D3b6O/Eh4t8jbfXl
+ xdi4bpJguzrwR7TnUTB1HGGtNDXc6607ol82Elr0Ynt7oKOwWFYtNS/PIs8LoasM
+ K9hr1lz1/K/AnVfVTMIihFBhJ7b4uHJoWWFM4M9Qdb9jCtEdIfGT77Fcsd9cFERi
+ 5O7Z37C5KnZazoLmohbeLbWINu7vWyR1zfh/otQsLJ3nYRO7gNWxVIdsHuuR5bWy
+ QOORLdU012G08ETBS0cuR/2Z3ypDQJpLzThvkC/m44zbtzw+TJMBqzcQ6i/dFQhG
+ VuXw656b4MOtBHIMWlAfttzLuy7PkwAXCdW6QTh2Q04U7eogkCckKcjA/QIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+ 1764130083; x=1764216483; bh=Xh+scfLymdoCuWFu5/Tkle5QpWNn2GqqlN1
+ vrgBZ9PQ=; b=W9kr41tHj59uoHQhGiQEMTdUsGI/U+OdZ8Kis/TzpWj2bE1bbks
+ rEjGBoFr92g2AbAHiHq+cQ40lRLGhnLTD8qEiMwnC0XXb3T360b4YyRYJs/ImrNV
+ eeuxQdmV26KuN7qTyN/Jq2lgniB5bSK84DR85/JcB2bXjUTw8QfCNfoUc09SX57n
+ l6XV7feTplCd2z6zsPtV7FxYFgzTHz5iJ0xXtdFkMcM1jcp1eACtk4BMrAT3UVe2
+ Xct7XZbedi54W1e0mobe34mLW4Fejuy/5NC2lIihBL7u9bFcAHo9Xv5Bo1O8By0i
+ wfsskQF+F0fKtE78jzkSLPxLkV1JPLXjXMQ==
+X-ME-Sender: <xms:I30maXo40jHoIsaAaTmRxEl_joBb2jlaOlD6qV87fgGa2CPNrSD-1A>
+ <xme:I30macd7Rs3hVHtgJq6-Qyx1ZeFVqYUt1F9c1dOpZcDLTOmug4B9hQC2BhJp002LS
+ DKoY3Dtwwalewe_XYADeGFalY35fLDKR57oUPZnaiPq0Py-bp4fQQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeeffeehucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+ rghilhhouhhtmecufedttdenucenucfjughrpefoggffhffvkffutgfgsehtjeertdertd
+ dtnecuhfhrohhmpedfhggvshhlvgihucetphhtvghkrghrqdevrghsshgvlhhsfdcuoehm
+ vgesfigvshhlvgihrggtrdgtohhmqeenucggtffrrghtthgvrhhnpeeivdefuefglefgke
+ ejfeehgeeluedvfeffkeevjeehgeetffelveettdejkeffveenucevlhhushhtvghrufhi
+ iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvgesfigvshhlvgihrggtrdgtoh
+ hmpdhnsggprhgtphhtthhopedupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehq
+ vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:I30madPYLNm8_uvDuVQJejq2lM4P3NiQH1XympSTVKM_I9ImWpLL_g>
+ <xmx:I30maW74CUaAJK5jZLZbV3GL72DuDCt2lRrkWM9JRJLW7POfqXypWg>
+ <xmx:I30maR4G_Kw8pzwC_pubgKxYLqPDBvK8tMyuLjwZIoFN6Zt_vNoKUA>
+ <xmx:I30mae0P6yR182ZV6Z43jdCs5jZXReTlqBWchZyy_rh8YZriOU495w>
+ <xmx:I30maZFQ1-wFi5yzlvlXpOPzUCtFSVEN0EfpHnllpJeYuiqqBGM8QsXr>
+Feedback-ID: i0c594533:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 7CAFA2CC0083; Tue, 25 Nov 2025 23:08:03 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-In-Reply-To: <20251119122822.1513788-1-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJBxTMEEeSZpyZ0_AQ--.49029S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAFWUKF1rGryDXFyDJryUXFc_yoWrtFyxpF
- ZIkrn8Ka18Ja93urs7Z3ZxJF1aqF1xGry8uF9xtasayw4aqFy8tFn7Za92qFykCw4qg342
- qFy0yw15XFyDZacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-e5UU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.052,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Date: Tue, 25 Nov 2025 23:07:43 -0500
+From: "Wesley Aptekar-Cassels" <me@wesleyac.com>
+To: qemu-devel@nongnu.org
+Message-Id: <4156bca7-ef99-4158-867d-c41893f7c8e3@app.fastmail.com>
+Subject: [PATCH] hw/usb/pcap: Prevent truncation of USB data in pacp files.
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=103.168.172.155; envelope-from=me@wesleyac.com;
+ helo=fhigh-a4-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 26 Nov 2025 09:14:44 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,150 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/11/19 下午8:24, Jiajie Chen 写道:
-> Latest revision of LoongArch ISA is out at
-> https://www.loongson.cn/uploads/images/2023102309132647981.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%84%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C%E5%8D%B7%E4%B8%80_r1p10.pdf
-> (Chinese only). The revision includes the following updates:
->
-> - estimated fp reciporcal instructions: frecip -> frecipe, frsqrt ->
->    frsqrte
-> - 128-bit width store-conditional instruction: sc.q
-> - ll.w/d with acquire semantic: llacq.w/d, sc.w/d with release semantic:
->    screl.w/d
-> - compare and swap instructions: amcas[_db].b/w/h/d
-> - byte and word-wide amswap/add instructions: am{swap/add}[_db].{b/h}
-> - new definition for dbar hints
-> - clarify 32-bit division instruction hebavior
-> - clarify load ordering when accessing the same address
-> - introduce message signaled interrupt
-> - introduce hardware page table walker
->
-> The new revision is implemented in the Loongson 3A6000 processor.
->
-> This patch series implements all the new instructions. The v1 version
-> can be found at
-> https://patchew.org/QEMU/20231023153029.269211-2-c@jia.je/.
->
-> A simple testcase to test the new fp and sc.q instructions:
->
-> #include <assert.h>
-> #include <stdint.h>
-> #include <stdio.h>
-> #include <stdlib.h>
->
-> void test_fp() {
->    float a = 3.0;
->    float b;
->
->    asm volatile("frecip.s %0, %1" : "=f"(b) : "f"(a));
->    printf("frecip: %f\n", b);
->    asm volatile("frecipe.s %0, %1" : "=f"(b) : "f"(a));
->    printf("frecipe: %f\n", b);
->
->    asm volatile("frsqrt.s %0, %1" : "=f"(b) : "f"(a));
->    printf("frsqrt: %f\n", b);
->    asm volatile("frsqrte.s %0, %1" : "=f"(b) : "f"(a));
->    printf("frsqrte: %f\n", b);
-> }
->
-> uint64_t rand64() { return ((uint64_t)rand() << 32) | rand(); }
->
-> void test_sc_q() {
->    __int128 val = rand64();
->    val = (val << 64) | rand64();
->    __int128 *ptr = &val;
->    uint64_t add_lo = rand64();
->    uint64_t add_hi = rand64();
->    __int128 add = add_hi;
->    add = (add << 64) | add_lo;
->    __int128 expect = val + add;
->    int res = 0;
->
->    asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\nadd.d $t1, $t1, %2\nadd.d "
->                 "$t2, $t2, %3\nsc.q $t1, $t2, %1\nmove %0, $t1"
->                 : "=r"(res), "+r"(ptr)
->                 : "r"(add_lo), "r"(add_hi)
->                 : "$t1", "$t2", "memory");
->    assert(res == 1);
->    assert(val == expect);
->
->    // change memory content to make sc fail
->    res = 1;
->    asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\naddi.d $t1, $t1, 1\nst.d "
->                 "$t1, %1, 0\nsc.q $t1, $t2, %1\nmove %0, $t1"
->                 : "=r"(res), "+r"(ptr)
->                 :
->                 : "$t1", "$t2", "memory");
->    assert(res == 0);
->
->    res = 1;
->    asm volatile("ll.d $t1, %1, 0\nld.d $t2, %1, 8\naddi.d $t2, $t2, 1\nst.d "
->                 "$t2, %1, 8\nsc.q $t1, $t2, %1\nmove %0, $t1"
->                 : "=r"(res), "+r"(ptr)
->                 :
->                 : "$t1", "$t2", "memory");
->    assert(res == 0);
->
->    printf("SC.Q passed\n");
-> }
->
-> int main(int argc, char *argv[]) {
->    test_fp();
->    test_sc_q();
->    return 0;
-> }
->
-> Compile and test by:
->
-> loongarch64-linux-gnu-gcc test.c -o test -static && ./qemu-loongarch64 -cpu max test
-Hi,
-I run this test with qemu on x86  and loongarch machine.
-but the results is not same.
-on x86
-gaosong@fedora:/home1/gaosong/work/clean/qemu$ ./build/qemu-loongarch64 
--cpu max test
-  frecip: 0.333333
-frecipe: 0.333333
-frsqrt: 0.577350
-frsqrte: 0.577350
-SC.Q passed
+Currently, packet data is truncated to 256 bytes in pcap files. The
+original length is recorded, but the actual data is discarded. This
+shows up in Wireshark as "bytes captured" being smaller than "bytes on
+wire".
 
-on Loongson-3C6000/D
-[root@localhost gs]# ./test
-frecip: 0.333333
-frecipe: 0.333332
-frsqrt: 0.577350
-frsqrte: 0.577345
-test: test.c:49: test_sc_q: Assertion `res == 0' failed.
-Aborted (core dumped)
+This is because DATA_LEN is used to limit the maximum pcap size.
 
-1. The results from frecipe/frsqrte differ from those on the physical machine. Is this due to precision issues?
-    Should we align with the physical precision? Or can we disregard this discrepancy?
-2. sc.q—I haven't identified the issue yet.
+I'm not sure why 256 was initially picked. There are several sources
+that report 1024 as the maximum size of a USB packet, so that seems like
+a reasonable thing to set it to.
 
+It also might be reasonable to allow the value to be configurable. I
+have opted not to do this, since it's more complex, and there does not
+seem to be a significant downside to increasing it to the maximum, other
+than the potential increase in size of the pcap files, which is a
+tradeoff that people capturing pcaps are likely to want to make.
 
-Thanks.
-Song Gao
-> Jiajie Chen (7):
->    target/loongarch: Require atomics to be aligned
->    target/loongarch: Add am{swap/add}[_db].{b/h}
->    target/loongarch: Add amcas[_db].{b/h/w/d}
->    target/loongarch: Add estimated reciprocal instructions
->    target/loongarch: Add llacq/screl instructions
->    target/loongarch: Add sc.q instructions
->    target/loongarch: Add LA v1.1 instructions to max cpu
->
->   target/loongarch/cpu.c                        |  11 +-
->   target/loongarch/cpu.h                        |   7 +
->   target/loongarch/disas.c                      |  33 ++++
->   target/loongarch/insns.decode                 |  34 ++++
->   .../tcg/insn_trans/trans_atomic.c.inc         | 145 ++++++++++++++++--
->   .../tcg/insn_trans/trans_farith.c.inc         |   4 +
->   .../tcg/insn_trans/trans_memory.c.inc         |  22 +++
->   .../loongarch/tcg/insn_trans/trans_vec.c.inc  |   8 +
->   target/loongarch/tcg/translate.c              |   6 +-
->   target/loongarch/translate.h                  |  30 ++--
->   10 files changed, 280 insertions(+), 20 deletions(-)
->
+Signed-off-by: Wesley Aptekar-Cassels <me@wesleyac.com>
+---
+ hw/usb/pcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/hw/usb/pcap.c b/hw/usb/pcap.c
+index dbff00be25..86eb603b5b 100644
+--- a/hw/usb/pcap.c
++++ b/hw/usb/pcap.c
+@@ -70,7 +70,7 @@ struct usbmon_packet {
+ /* ------------------------------------------------------------------------ */
+ 
+ #define CTRL_LEN                     4096
+-#define DATA_LEN                     256
++#define DATA_LEN                     1024
+ 
+ static int usbmon_status(USBPacket *p)
+ {
+-- 
+2.50.1
 
