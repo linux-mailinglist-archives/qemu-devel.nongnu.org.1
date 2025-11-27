@@ -2,86 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2B4C8C69E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 01:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF986C8C75F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 01:46:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOPdF-0002pb-JE; Wed, 26 Nov 2025 19:13:09 -0500
+	id 1vOQ8L-0000N1-Ph; Wed, 26 Nov 2025 19:45:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3j5cnaQcKCqwZMhUPQYSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--navidem.bounces.google.com>)
- id 1vOPdD-0002p7-K9
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:13:07 -0500
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3j5cnaQcKCqwZMhUPQYSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--navidem.bounces.google.com>)
- id 1vOPdC-000603-5j
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:13:07 -0500
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-295952a4dd6so15220695ad.1
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 16:13:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1764202384; x=1764807184; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=LnAzc27LiQK6IQy24x9xB/i64MPHYZS7/qEEHPh3edU=;
- b=L/zProrqlU19m4I8RnkBhqPEPHHRg37iI/A+Wz9BDv9NyqouvGG0lbAj0lN9Y7GhEd
- UurWry5PENrrqrzu5xOf2T11zoncMo2DVhjVJiCSIZnhWamA09NJRQEQdWoCsoNefJ5r
- 46eYKEmiddrhvYkNbL5Mgh+TDqnL37+1NCVr0LosxgFk3b7cMnVy4vYCrz9nWoQ9yk3F
- Y+H6jCKfMLVCBw69C31S7EfP6WPb46hjTJPGScWKu0WRziigqtwEuwf+j+V80CT4BvSh
- uzrIJDvLQuoKDDWFrB45cHOoptcACyJvxZe3KB+25vNLGTqo3FMduljhzSXCRw/t6A01
- uHXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764202384; x=1764807184;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LnAzc27LiQK6IQy24x9xB/i64MPHYZS7/qEEHPh3edU=;
- b=wiS57moinfG0EGBzA/DiNlBNi/eMcT0YKZH5NXFcAPXGFVMSYvfuyw7KxB1EWuTOBj
- /h1yIT65q+wNQQtxxbrAcDQwSo7iqhjB/LXLPSAFDaDmr93QWRU7atB5Ew1EgeWMS0Ua
- MOzOqbelIDFZX9CeFPYocaPrs5BMDE/YKDZbkoRWqS2eOXbvg66saI2mcRpLbGdswnmf
- 86GD90w0rMnSRajH+O4YgL0B0hct1GG/WM+IFvKe2Jw/hS9Sp0PJK/QZ7cswCoJPJ9R9
- RSpcTqxvmnPx1QJMtbbN6M9sFKuMmJA4JQ4rnxKOh6L2WJwqG1HGqa90gmr16diBpxZP
- BCXw==
-X-Gm-Message-State: AOJu0YwJZfhS7FzuBDHAM4rSG9gsjSTiKoJ/YsQSkttMkkvAkOJwTOZW
- ZR9J0ZPkQopSTsMROidfFUUJ8PUP15bezkBUTcECHHjHT9z4Rb5jvHpOoeZkMTp9SbI2MFjQtCe
- 8KwsHlTAGTtGNuk4HN1Ka1N35EX/+CNVCdKQwLXoAXjNlmadUdXlgNsdDgj6Br1jr0AuGo7ftbv
- CgTSvJed7JgGJJOr0sza6JHZf8SoB810/XhCo+tl47
-X-Google-Smtp-Source: AGHT+IFm+oWf3dffHZsfWphXzUQs2N2I4E5TDGLT2J5JnQVFZuawANcaOzo3brKAWVtpTTEceEwW2+bCMhGY
-X-Received: from pjnm17.prod.google.com ([2002:a17:90a:8591:b0:340:a5c6:acc3])
- (user=navidem job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:fc48:b0:297:e897:6f6d
- with SMTP id d9443c01a7336-29b5e2f794amr274934625ad.9.1764202383896; Wed, 26
- Nov 2025 16:13:03 -0800 (PST)
-Date: Thu, 27 Nov 2025 00:12:47 +0000
-In-Reply-To: <20251127001247.1672873-1-navidem@google.com>
-Mime-Version: 1.0
-References: <CAFEAcA-hyn0B-yWE1=g4+NN9=NBjWvk-P8qrAk9L4vpAZpUYvQ@mail.gmail.com>
- <20251127001247.1672873-1-navidem@google.com>
-X-Mailer: git-send-email 2.52.0.158.g65b55ccf14-goog
-Message-ID: <20251127001247.1672873-6-navidem@google.com>
-Subject: [PATCH v2 5/5] tests/qtest/fuzz: Add generic fuzzer for
- pcie-pci-bridge
-From: Navid Emamdoost <navidem@google.com>
-To: qemu-devel@nongnu.org, peter.maydell@linaro.org
-Cc: farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com, zsm@google.com, 
- alxndr@bu.edu, Navid Emamdoost <navidem@google.com>,
- Bandan Das <bsd@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Darren Kenny <darren.kenny@oracle.com>, 
- Qiuhao Li <Qiuhao.Li@outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3j5cnaQcKCqwZMhUPQYSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--navidem.bounces.google.com;
- helo=mail-pl1-x649.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vOQ8G-0000HE-5q
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:45:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vOQ8D-0006dl-4o
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:45:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764204306;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=u/fXoJToLdKEKij/eR5ApefqDGv8GlnzKMPFVuGT6kE=;
+ b=Emg3y1eaQYQkGXiwtzhbU9PpgHA276qylDUnQjs4zh6fZzP1LxndZzmAgcE4s807yD9GIK
+ /oMKEbjOuoJnd8/+YvE5ebvV5SK6cSA7xOcNzy3ebwj0XbFlPrMdHuDaxN/I5uS35FeWFP
+ UZDun+mDRCH26dJ6HX37Ea3Su2ousGg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-3wZVIi_HMdGscNG-mgXpIg-1; Wed,
+ 26 Nov 2025 19:45:02 -0500
+X-MC-Unique: 3wZVIi_HMdGscNG-mgXpIg-1
+X-Mimecast-MFC-AGG-ID: 3wZVIi_HMdGscNG-mgXpIg_1764204301
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C2A31954B14; Thu, 27 Nov 2025 00:45:00 +0000 (UTC)
+Received: from gshan-thinkpadx1nanogen2.rmtau.csb (unknown [10.64.136.67])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 754211800451; Thu, 27 Nov 2025 00:44:53 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, mchehab+huawei@kernel.org,
+ jonathan.cameron@huawei.com, armbru@redhat.com, mst@redhat.com,
+ imammedo@redhat.com, anisinha@redhat.com, gengdongjiu1@gmail.com,
+ peter.maydell@linaro.org, pbonzini@redhat.com, shan.gavin@gmail.com
+Subject: [PATCH 0/5] acpi/ghes: Error object handling improvement
+Date: Thu, 27 Nov 2025 10:44:30 +1000
+Message-ID: <20251127004435.2098335-1-gshan@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,63 +80,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new generic fuzz target for the 'pcie-pci-bridge' device. This
-target uses a Q35 machine with a multi-level PCI hierarchy to exercise
-the bridge's functionality.
-This is made possible by the preceding change to handle unimplemented
-BARs during fuzzing.
+This series is curved from that for memory error handling improvement
+[1] based on the received comments, to improve the error object handling
+in various aspects.
 
----
+[1] https://lists.nongnu.org/archive/html/qemu-arm/2025-11/msg00534.html
 
-This new target significantly improves code coverage for the pcie-pci-bridge
-implementation. The baseline coverage shown below was generated by
-running all existing fuzz targets with the oss-fuzz corpus.
+Gavin Shan (5):
+  acpi/ghes: Automate data block cleanup in acpi_ghes_memory_errors()
+  acpi/ghes: Abort in acpi_ghes_memory_errors() if necessary
+  target/arm/kvm: Exit on error from acpi_ghes_memory_errors()
+  acpi/ghes: Bail early on error from get_ghes_source_offsets()
+  acpi/ghes: Use error_fatal in acpi_ghes_memory_errors()
 
-=== Component: hw/pci  ===
--------------------------------------------------------------------------------
-File                           New Target           Baseline             Change
--------------------------------------------------------------------------------
-shpc.c                         359/511 (70.3%)      0/511 (0.0%)         +359
-pci_bridge.c                   255/304 (83.9%)      12/304 (3.9%)        +243
-pcie.c                         390/774 (50.4%)      160/774 (20.7%)      +230
-pcie_aer.c                     119/524 (22.7%)      38/524 (7.3%)        +81
-pci.c                          1154/2069 (55.8%)    1084/2069 (52.4%)    +70
-pcie_port.c                    58/119 (48.7%)       17/119 (14.3%)       +41
-pci.h                          86/132 (65.2%)       81/132 (61.4%)       +5
+ hw/acpi/ghes-stub.c    |  6 +++---
+ hw/acpi/ghes.c         | 45 ++++++++++++++++++------------------------
+ include/hw/acpi/ghes.h |  6 +++---
+ target/arm/kvm.c       | 10 +++-------
+ 4 files changed, 28 insertions(+), 39 deletions(-)
 
-=== Component: hw/pci-bridge  ===
--------------------------------------------------------------------------------
-File                           New Target           Baseline             Change
--------------------------------------------------------------------------------
-pcie_root_port.c               86/127 (67.7%)       13/127 (10.2%)       +73
-pcie_pci_bridge.c              62/94 (66.0%)        20/94 (21.3%)        +42
-gen_pcie_root_port.c           45/66 (68.2%)        19/66 (28.8%)        +26
-
-Signed-off-by: Navid Emamdoost <navidem@google.com>
----
- tests/qtest/fuzz/generic_fuzz_configs.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/tests/qtest/fuzz/generic_fuzz_configs.h b/tests/qtest/fuzz/generic_fuzz_configs.h
-index ef0ad95712..e025f57a3e 100644
---- a/tests/qtest/fuzz/generic_fuzz_configs.h
-+++ b/tests/qtest/fuzz/generic_fuzz_configs.h
-@@ -247,6 +247,14 @@ const generic_fuzz_config predefined_configs[] = {
-         .args = "-machine q35 -nodefaults "
-         "-parallel file:/dev/null",
-         .objects = "parallel*",
-+    },{
-+        .name = "pcie-pci-bridge",
-+        .args = "-machine q35 -nodefaults "
-+        "-device pcie-root-port,port=0x10,chassis=1,id=pci.1,bus=pcie.0,multifunction=true,addr=0x2 "
-+        "-device pcie-pci-bridge,id=pci.2,bus=pci.1,addr=0x0 "
-+        "-netdev user,id=net0 "
-+        "-device e1000,netdev=net0,id=nic0,bus=pci.2,addr=0x3",
-+        .objects = "pci* shpc*"
-     }
- };
- 
 -- 
-2.52.0.158.g65b55ccf14-goog
+2.51.1
 
 
