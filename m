@@ -2,112 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F13FC8E2E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 13:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE98C8E48A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 13:38:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOajY-0001LM-VV; Thu, 27 Nov 2025 07:04:25 -0500
+	id 1vObEo-0001Rh-2h; Thu, 27 Nov 2025 07:36:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1vOajU-0001Ka-QU; Thu, 27 Nov 2025 07:04:20 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vObEa-0001Qh-1U
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 07:36:29 -0500
+Received: from m16.mail.163.com ([220.197.31.3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1vOajT-0007Ln-6K; Thu, 27 Nov 2025 07:04:20 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR28EDd004883;
- Thu, 27 Nov 2025 12:03:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=92fOwJk7srCarpgC0
- m3RdISN4XCpWDKYrSP1HvpgqKk=; b=cjF1VmLaitV7zHPMQaQC1frQNvrrDNw2f
- UFbmpGyWDGP6jYa2U1z56aiCSvaULNafFMx0iYd5M4NmkBn24TIZdnyR2kuLH5qe
- 3WdAcj3QAg4Saa9CsXN5rcDAbVfvRScV9UjHK0hGB8GpDfM2mPHuuwYTRondOYAY
- 6FA6+R+i7aYHBHWmwcUVAZiSxSNXPyHcAW7IRe8fCoNRDYT8ILPPqIHE5kkYWXF/
- WEImx8o202c8pQ36+puZlxeO5eoZXR7aWR4FcqgQS+4MnvUiCkHTctE9K3CXo97K
- 0rALd8gAfHu/+/17HbbJKRNJ3p6wW4ErcUstA75/VS5x1o8lD8JYg==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4u283up-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Nov 2025 12:03:47 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ARC3knc023877;
- Thu, 27 Nov 2025 12:03:46 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4u283uf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Nov 2025 12:03:46 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5ARANmld016428;
- Thu, 27 Nov 2025 12:03:45 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aks0kfvwg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Nov 2025 12:03:45 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5ARC3ihb54133044
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Nov 2025 12:03:44 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 783365805B;
- Thu, 27 Nov 2025 12:03:44 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 737B158058;
- Thu, 27 Nov 2025 12:03:43 +0000 (GMT)
-Received: from gfwr526.rchland.ibm.com (unknown [9.10.239.119])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 27 Nov 2025 12:03:43 +0000 (GMT)
-From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
-To: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, npiggin@gmail.com,
- saif.abrar@linux.vnet.ibm.com, nikhilks@linux.ibm.com,
- stefanha@redhat.com, fam@euphon.net, philmd@linaro.org
-Subject: [PATCH v4 2/2] hw/nvme: Add property for user-specified IEEE-OUI ID
-Date: Thu, 27 Nov 2025 06:02:51 -0600
-Message-ID: <20251127120322.2997269-3-saif.abrar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127120322.2997269-1-saif.abrar@linux.vnet.ibm.com>
-References: <20251127120322.2997269-1-saif.abrar@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vObEU-0008Rl-C2
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 07:36:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=YM
+ QzfcmVAO/ZKbbAKahlxEw6B3E/ozn2+Lf9iFneBwg=; b=UUhgONcJOLgzpGirlo
+ 8BHunCrFtk1sOnFPmwWdTLH7pSTMiJG8awtRheAWR2VULECECG8LIHPuH/LeEwKk
+ 5AhrnU6IHUB4npTXIlLuFE3nCugVSmP20O0d40L/i++6YN48/s8lMGpkqgi5MjZe
+ ybVONjU6/UB6AI55Xyy8Flirs=
+Received: from DESKTOP-V2BFH29.localdomain (unknown [])
+ by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id
+ _____wD3Dn2zRShpZxBLCg--.1138S2; 
+ Thu, 27 Nov 2025 20:36:05 +0800 (CST)
+From: AlanoSong@163.com
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ Alano Song <AlanoSong@163.com>
+Subject: [PATCH] hw/acpi: Add aml_gpio_io() wrapper for GPIO IO Connection
+Date: Thu, 27 Nov 2025 20:36:02 +0800
+Message-ID: <20251127123602.24478-1-AlanoSong@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfX3nafrpTEc+Kx
- v07DyMF9pjdmqlHNjO/fFM6Q9sm/g0K6qm1rbfuyZyrAAJzCcHbIwWnfyNSpRBmtSQMQCBiFbVn
- wenj7Ojg+EFBV/HSmB/4WzxGslXUn8uhh0ahBscZkGlPvlc3QIUS653lXZjTkIf7RTC6y8Oh0Vg
- qJUt4uHlkTSU4kZYCt6RrjmwTvkcd7h37zs+G1w6dR2g+u4mN+5LOZGHohc0HUp7sGOdapfNK2y
- CcbmYBCIBE80y8GF85zaS4wC4P6VoUH7vwAErHpWJtJAZw2bgit1A2wfcrrAxcVsUhiSBDHK32P
- n5E8uK1x5Jsvj/VaJI5NgFdmuoIY9b1p6kBclvPl0cpmgnaf6s3m2c7zJ22gE/XzbEAUqO/QTVw
- E6E6DfERxVvAylL6VGvfjSn0yfGOFw==
-X-Authority-Analysis: v=2.4 cv=SuidKfO0 c=1 sm=1 tr=0 ts=69283e23 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=KVMyRY1XTioQRLGtwEgA:9
-X-Proofpoint-ORIG-GUID: NM5Mr2H0wd1U2lmaDfqmMZbsQtsbjzcl
-X-Proofpoint-GUID: Gxdu1jxVrRh9Jqoy0JFcAHItAK4csB5F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511220021
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=saif.abrar@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-CM-TRANSID: _____wD3Dn2zRShpZxBLCg--.1138S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr1xJryxGF4UKF1ktF4fXwb_yoW5XF4Upr
+ s2yanxtr1UJF17XrZ8Jr1DCFs3KF4vkw4ayFZFvrna9FW7Z34vvF1DtFn09a4agr1qyrWU
+ Wa9Yqw18WaykZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRDrcsUUUUU=
+X-Originating-IP: [59.174.57.70]
+X-CM-SenderInfo: xdod00pvrqwqqrwthudrp/xtbC1BXi9mkoRbXFwgAA3j
+Received-SPF: pass client-ip=220.197.31.3; envelope-from=alanosong@163.com;
+ helo=m16.mail.163.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,81 +68,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-User-specified IEEE-OUI ID (Identify Controller bytes 75:73)
-is to be specified in LE format.
-(e.g. ieee_oui=0xABCDEF => Byte[73]=0xEF, Byte[74]=0xCD, Byte[75]=0xAB)
+According to ACPI 5.0 section 19.5.54, I add aml_gpio_io()
+wrapper for GPIO IO Connection purpose.
 
-Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+Signed-off-by: Alano Song <AlanoSong@163.com>
 ---
-v3 -> v4: Resolve merge commits when moving to the latest repo.
+ hw/acpi/aml-build.c         | 19 +++++++++++++++++++
+ include/hw/acpi/aml-build.h | 17 +++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
- hw/nvme/ctrl.c | 24 ++++++++++++++++++++++++
- hw/nvme/nvme.h |  2 ++
- 2 files changed, 26 insertions(+)
-
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index d857be5496..c66524c78c 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -9131,6 +9131,10 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
-         id->ieee[0] = 0xb3;
-         id->ieee[1] = 0x02;
-         id->ieee[2] = 0x00;
-+     } else if (n->params.ieee_oui) {
-+        id->ieee[0] = extract32(n->params.ieee_oui, 0,  8);
-+        id->ieee[1] = extract32(n->params.ieee_oui, 8,  8);
-+        id->ieee[2] = extract32(n->params.ieee_oui, 16, 8);
-     } else {
-         id->ieee[0] = 0x00;
-         id->ieee[1] = 0x54;
-@@ -9384,6 +9388,24 @@ static void nvme_exit(PCIDevice *pci_dev)
-     memory_region_del_subregion(&n->bar0, &n->iomem);
+diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+index 2d5826a8f1..b4dd0bc665 100644
+--- a/hw/acpi/aml-build.c
++++ b/hw/acpi/aml-build.c
+@@ -962,6 +962,25 @@ Aml *aml_gpio_int(AmlConsumerAndProducer con_and_pro,
+                                vendor_data_len);
  }
  
-+static void nvme_prop_ieee_set(Object *obj, Visitor *v, const char *name,
-+        void *opaque, Error **errp)
++/*
++ * ACPI 5.0: 19.5.54
++ * GpioIo(GPIO Connection IO Resource Descriptor Macro)
++ */
++Aml *aml_gpio_io(AmlConsumerAndProducer con_and_pro,
++                 AmlIoRestriction io_restriction, AmlShared shared,
++                 AmlPinConfig pin_config, uint16_t debounce_timeout,
++                 const uint32_t pin_list[], uint32_t pin_count,
++                 const char *resource_source_name,
++                 const uint8_t *vendor_data, uint16_t vendor_data_len)
 +{
-+    Property *prop = opaque;
-+    uint32_t *val = object_field_prop_ptr(obj, prop);
-+    if (!visit_type_uint32(v, name, val, errp)) {
-+        return;
-+    }
++    uint8_t flags = io_restriction | shared << 3;
++
++    return aml_gpio_connection(AML_IO_CONNECTION, con_and_pro, flags,
++                               pin_config, 0, debounce_timeout, pin_list,
++                               pin_count, resource_source_name, vendor_data,
++                               vendor_data_len);
 +}
 +
-+static const PropertyInfo nvme_prop_ieee = {
-+    .type = "uint32",
-+    .description = "IEEE OUI: Identify Controller bytes 75:73\
-+ in LE format. (e.g. ieee_oui=0xABCDEF => Byte[73]=0xEF, Byte[74]=0xCD,\
-+ Byte[75]=0xAB)",
-+    .set = nvme_prop_ieee_set,
-+};
-+
- static const Property nvme_props[] = {
-     DEFINE_BLOCK_PROPERTIES(NvmeCtrl, namespace.blkconf),
-     DEFINE_PROP_LINK("pmrdev", NvmeCtrl, pmr.dev, TYPE_MEMORY_BACKEND,
-@@ -9431,6 +9453,8 @@ static const Property nvme_props[] = {
-     DEFINE_PROP_UINT16("id_subsys_vendor", NvmeCtrl,
-                                                     params.id_subsys_vendor, 0),
-     DEFINE_PROP_UINT16("id_subsys", NvmeCtrl, params.id_subsys, 0),
-+    DEFINE_PROP("ieee_oui", NvmeCtrl, params.ieee_oui, nvme_prop_ieee,
-+                uint32_t),
- };
+ /*
+  * ACPI 1.0b: 6.4.3.4 32-Bit Fixed Location Memory Range Descriptor
+  * (Type 1, Large Item Name 0x6)
+diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
+index f38e129719..f5c0c5886b 100644
+--- a/include/hw/acpi/aml-build.h
++++ b/include/hw/acpi/aml-build.h
+@@ -167,6 +167,17 @@ typedef enum {
+     AML_ACTIVE_LOW = 1,
+ } AmlActiveHighAndLow;
  
- static void nvme_get_smart_warning(Object *obj, Visitor *v, const char *name,
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 65fb168bc9..be49acaec6 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -576,6 +576,8 @@ typedef struct NvmeParams {
-     uint16_t id_device;
-     uint16_t id_subsys_vendor;
-     uint16_t id_subsys;
++/*
++ * ACPI 5.0: Table 5-133 Predefined ACPI Names
++ * _IOR field definition
++ */
++typedef enum {
++    AML_IO_RESTRICTION_NONE = 0,
++    AML_IO_RESTRICTION_INPUT_ONLY = 1,
++    AML_IO_RESTRICTION_OUTPUT_ONLY = 2,
++    AML_IO_RESTRICTION_NONE_AND_PRESERVE = 3,
++} AmlIoRestriction;
 +
-+    uint32_t ieee_oui;
- } NvmeParams;
- 
- typedef struct NvmeCtrl {
+ /*
+  * ACPI 5.0: Table 6-187 Extended Interrupt Descriptor Definition
+  * _SHR field definition
+@@ -331,6 +342,12 @@ Aml *aml_gpio_int(AmlConsumerAndProducer con_and_pro,
+                   const uint32_t pin_list[], uint32_t pin_count,
+                   const char *resource_source_name,
+                   const uint8_t *vendor_data, uint16_t vendor_data_len);
++Aml *aml_gpio_io(AmlConsumerAndProducer con_and_pro,
++                 AmlIoRestriction io_restriction, AmlShared shared,
++                 AmlPinConfig pin_config, uint16_t debounce_timeout,
++                 const uint32_t pin_list[], uint32_t pin_count,
++                 const char *resource_source_name,
++                 const uint8_t *vendor_data, uint16_t vendor_data_len);
+ Aml *aml_memory32_fixed(uint32_t addr, uint32_t size,
+                         AmlReadAndWrite read_and_write);
+ Aml *aml_interrupt(AmlConsumerAndProducer con_and_pro,
 -- 
-2.47.3
+2.43.0
 
 
