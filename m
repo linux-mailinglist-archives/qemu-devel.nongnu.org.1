@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B220CC8E6D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99915C8E6F5
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:21:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vObtH-0006RY-UJ; Thu, 27 Nov 2025 08:18:32 -0500
+	id 1vObwB-0006QA-Ch; Thu, 27 Nov 2025 08:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vObsG-0003vG-SW
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:17:34 -0500
-Received: from mail-yx1-xb131.google.com ([2607:f8b0:4864:20::b131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vObsE-0001UA-QN
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:17:28 -0500
-Received: by mail-yx1-xb131.google.com with SMTP id
- 956f58d0204a3-640d43060d2so667457d50.2
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:17:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vObvS-0005MP-Vm
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:20:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vObvQ-00023k-M7
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:20:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764249642;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=u17RIjjVp6LXVD3gf84zUaaFlYVW+8dZ+Pm0JVHMJA8=;
+ b=KBICXY5F1/LgK/ys0Dh14yMey41isa+70Wxrv1EroLhp0aeJD1Bt64hMG0fcAjSeZjXPES
+ bVHe9oL6HuCB6tiBzGYZoIrERi9Fuuzm4bTVu9x6RFsfrIRZ2HIIxeYPdgd7C6cXwwlqe3
+ iHQCfvPrC/lBCWfa9dwig9OOsADWCMw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-T529bIfVMQeUexJ5ynZCJQ-1; Thu, 27 Nov 2025 08:20:41 -0500
+X-MC-Unique: T529bIfVMQeUexJ5ynZCJQ-1
+X-Mimecast-MFC-AGG-ID: T529bIfVMQeUexJ5ynZCJQ_1764249640
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b7387d9bbb2so64018166b.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:20:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764249444; x=1764854244; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=G3pakz32wSZhdKVg8R5W/3vpSw7KoPYwSAUdcN+pi7w=;
- b=w7ICucs6jSjyPhRpehfmWthDKlzvdfBqV49cYGxOYJMyEsIMkLRU2XhXSKjxXucUyv
- Kjbe4Ufm5lFAC558EazxDi/BjnhqdzXihIsAcX0mBfMCu2hA3DYULrpo5lVIHnIJ1r9V
- f4LGBeJjD0aqnJTUJo0Xtd3cuqJPcNUq+OCMG4f3MIauZDqehn5z9FwGOV+aczpVSdLF
- MukoEOdWLKmme5z1d9p9nEStLjM3bJIbVRKKGhH+izFGu3heyeZ5+hGUOnfgCc/qVx+Q
- OWbBhaWBQbkMq6duawNoHLeQ9xMc4+4AAdRq6AnTvIhPW930r5sO5BhtlZrKoTqA9eD9
- bzNQ==
+ d=redhat.com; s=google; t=1764249638; x=1764854438; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u17RIjjVp6LXVD3gf84zUaaFlYVW+8dZ+Pm0JVHMJA8=;
+ b=lVzGdxcw0YLMYoWkms9H4eQzvLtKwJtUNYaHz8pHMBq478JQzdW6m3hGEKh/BICsvw
+ SkhXcFbgIInnk5Ua4g6jwmIj1ETZHN2OXW0fD3OSl29uae6yHLlmm0lsAgnuI4Oj+5lZ
+ jdXYEykkCPAKmAXZBVlWNyN4Zd6KfSPFyqdUD70JX3xw+/zmqt+dqOzqh7+y3h12xXmf
+ tLzv7dNWIeb/p+IuZ4dOeKNgPzVcsEotnu7/52HrA9+SXkq53rlxpD9Gzz5jArehG0wV
+ FiyG+wCRMbDvffOoyO35hw1JxSgVxOAkgJ8RTN0ZapXQLstfotbSurcmsdaPJY11se41
+ pmsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764249444; x=1764854244;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1764249638; x=1764854438;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G3pakz32wSZhdKVg8R5W/3vpSw7KoPYwSAUdcN+pi7w=;
- b=rQl5M+CiPgr0KcXeajumqzsrrYqmef4urQf2sou28Rjq+ls3FSxW6pf9YY912mdqHQ
- zZgXObOsTgRvgAFmq/Z1Vliudgf6Z0PMfYfyTIbfYTBGga/lGMnPIYUAUt2lB1pOQtat
- TsNR1gbVJPs2BStnN5iI8ujZocooNJ2iv2UsWP7w9JmWahjKYEbKok7b7SEQIt8+kRGh
- GZO6aT7pp4kbmA2OTHg7YEpYXM6000ENqtadPr7OSp5OQ2qUhnEjWP4OfpcbTFu85fhv
- L8ilkczB0xJDe22Ig4G2Zdei3Xxa2RgvB2nH/TiBAP95Hs7yF7p2P5L4E4yNEWGVqLi6
- wrNA==
-X-Gm-Message-State: AOJu0YycwcoWHYT2y08npZwKFz6gsZvErRdJfgn6XzufaNUYMBdYgQf2
- zl79lOnuE3R1ZTyYVIYtKoB/U9AJVILc1rnIjLQz9r5V9GtonWMnxpu+T+amBydJwHL6ryyzKSI
- ZMLuiCHR16nMLB+4wiZ4WzPjzMsMN32EhcYAT82lMDw==
-X-Gm-Gg: ASbGncvdjSJg+zXNaDo2roVUbUTHKHvwahRl7sU4MQhm+v18qfrSNYOuNuOzCzkYjmy
- URhAF4A6l1leX0/berTQkgJMHXKV0xyUSZdVsz2+qT9fgKlm7Wi5/tABv9RUpw/t6qKw7fjO6Cn
- SG1oPWAkvisp07JotzT/VB8wJPMuf2wYiimbMzkX3KS7F4edHEZiO1G6+gHb5CuWtW+aFHv4Hda
- 9wnqPRc34tVJshIqOsmnNRNWEODopfBTczYYME03LueoczOHjAaRih5B+KvPE1y/ZzU6M34
-X-Google-Smtp-Source: AGHT+IFyyo3TgHamVGTgvTmPuSu3DD0tYD5juVPmDD7qVfJaYS/W2QnLdpcFJ71tIWLvqaEBhn3ODRDZL0c9clnwY8k=
-X-Received: by 2002:a05:690e:128e:b0:641:f5bc:6972 with SMTP id
- 956f58d0204a3-64302afe798mr16108733d50.78.1764249444027; Thu, 27 Nov 2025
- 05:17:24 -0800 (PST)
+ bh=u17RIjjVp6LXVD3gf84zUaaFlYVW+8dZ+Pm0JVHMJA8=;
+ b=B8l+ULDs5UVQorFXRhi5oceoiqyDTh8MmRjhwxWRqVTGuPDArBmxieGkoTlkKheQIA
+ CWyA4j1LdA7YwhD+QCHqThMXgeTcbXB6uEguJ+FUkFuojC0EZgn3c7ft7tBHfrTNWJEv
+ 0JH0XW39WYHaLVJ6IeRQhNpNTid07S5X3e7/PiT5opQr75pt99SbSAeFHt6eKUWDGLUg
+ TUBc6XcShZYg3++yaF03rn290NZA3Y6KkjjK7j9y2NPxT1e3mjq2eUrB4KH6WFLVl3S1
+ e++MugpzQ+8xCNPXEIWq/Z9xcJ9XoiGJh0ZTPgPwTQXKoIXVKKpVN0+lmQc5UQIrlaED
+ PQbw==
+X-Gm-Message-State: AOJu0YybVJzjg1p9cPUfqROjMHhLaJmeGHtfnt0cf/GDl5gl1npvsI8n
+ RiLUBI/YGZcwCtt/UIBdmyg/8gVUXwa90PUVkmz7M1p9hKWpkq5mxmPj4igfCiAVa7Ulk9XAnty
+ zxoQfkVGzM+PdnHYR/hvzr/tPW/BApzRLN0MB3O/XYrhjn8grrZY4L/xHzw6FkkwTl8iMxUCt/k
+ 3y09aW2av5WMh7x/9MMZ38IcJW18c8U6dfCuJukrpB
+X-Gm-Gg: ASbGnctk6qYhvnCAKlIAZiI9fEt8R39aZLAWIpIJUQlaGZ6zEx+L1BldrHkfUAsMJe/
+ fYmn6+mnAJDGcsAClPB5qqc3+JoOytzXgnWBAvXOBhuomXbiVCdnCHvxeLOvylP4A0iBxH3c15B
+ 0ON+t4fOdavmz/6zTTnqG9bIZWdG3y+FI8QiaQRic98nIb8NOHabyLY6J1TLZP/7DzbDNH5csoP
+ Ukibq93J+ld6F6hVtEjjTr/y1CF6VjY0ODtp+C8kwdTe5Nh1Kaw5r5pkvJscy7Y0eutuovoJ4fq
+ pTFW2fLR6twCkvsPU0ns1YkrE11MDs13R2P1oGIWpBHelyprFPRycphMtU1QCUn1pNAdzuN02Rd
+ bJY9e/p4gxz9w8OiYa+LwjQxOVB6eUNsmZ/GOCg8gbfMur8oI8K9IG1GE7xL8q5FXWPzM5LYXLc
+ +p6ORk+UjCY1HP5A0=
+X-Received: by 2002:a05:6402:280a:b0:640:93b2:fd0a with SMTP id
+ 4fb4d7f45d1cf-645eb296885mr9769231a12.20.1764249638541; 
+ Thu, 27 Nov 2025 05:20:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiwxgu70lAYL36dx9Gs9DhP+ATOKfmsqnXj1moZFmWErzSFwQXcoYyKjz1Z4DYeF2xauzGYg==
+X-Received: by 2002:a05:6402:280a:b0:640:93b2:fd0a with SMTP id
+ 4fb4d7f45d1cf-645eb296885mr9769192a12.20.1764249638068; 
+ Thu, 27 Nov 2025 05:20:38 -0800 (PST)
+Received: from [192.168.10.48] ([176.206.119.13])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-64751061e60sm1603926a12.32.2025.11.27.05.20.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Nov 2025 05:20:37 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 0/9] rust: build system and other cleanups
+Date: Thu, 27 Nov 2025 14:20:27 +0100
+Message-ID: <20251127132036.84384-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-References: <CAFEAcA-hyn0B-yWE1=g4+NN9=NBjWvk-P8qrAk9L4vpAZpUYvQ@mail.gmail.com>
- <20251127001247.1672873-1-navidem@google.com>
- <20251127001247.1672873-2-navidem@google.com>
-In-Reply-To: <20251127001247.1672873-2-navidem@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Nov 2025 13:17:11 +0000
-X-Gm-Features: AWmQ_bkedzjeP08VzoKxLQnkFf-s_chi38dGoAR8VCgGR0R9yHsww8UIJB4HmaI
-Message-ID: <CAFEAcA97NhUDzVx8fePmW2HSKn5DhhaQEkc=FkmPzGf+vKFKzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] libqos: pci: Handle zero-sized BARs gracefully
-To: Navid Emamdoost <navidem@google.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, lvivier@redhat.com, 
- pbonzini@redhat.com, zsm@google.com, alxndr@bu.edu
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b131;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,77 +117,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 27 Nov 2025 at 00:12, Navid Emamdoost <navidem@google.com> wrote:
->
-> The qpci_iomap() function would previously fail with a fatal assertion
-> if it probed a PCI BAR that had a size of zero. This is, however,
-> expected behavior for some devices like the Q35 host bridge, and the
-> assertion blocked the creation of new fuzzing targets.
->
-> Instead of asserting at map time, modify the QPCIBar struct to store
-> the BAR's size. Defer the safety check to the accessor functions
-> (qpci_io_readb, qpci_memread, etc.), which now assert that any
-> access is within the BAR's bounds.
->
-> Signed-off-by: Navid Emamdoost navidem@google.com
-> ---
->  tests/qtest/libqos/pci.c | 25 ++++++++++++++++++++++++-
->  tests/qtest/libqos/pci.h |  1 +
->  2 files changed, 25 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
-> index a59197b992..70caf382cc 100644
-> --- a/tests/qtest/libqos/pci.c
-> +++ b/tests/qtest/libqos/pci.c
-> @@ -396,6 +396,7 @@ void qpci_config_writel(QPCIDevice *dev, uint8_t offset, uint32_t value)
->
->  uint8_t qpci_io_readb(QPCIDevice *dev, QPCIBar token, uint64_t off)
->  {
-> +       g_assert(off + 1 <= token.size);
->      QPCIBus *bus = dev->bus;
+A few small changes that I accumulated or received from others.
 
-The indent seems to be wrong for all your changes to these functions?
+Paolo
 
-Also, we need "make check" to pass for every commit in the
-patchset, not just after it has all been applied. So we need
-to make the fixes that you have in patches 2-4 before we
-can start enforcing the size limits with assertions.
+Marc-André Lureau (1):
+  rust: remove leftover bindings/
 
-> @@ -541,6 +550,19 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
->          addr &= PCI_BASE_ADDRESS_MEM_MASK;
->      }
->
-> +    if (!addr){
+Martin Kletzander (1):
+  rust: Do not link qemuutil into Rust rlibs
 
-Missing space before "{". (scripts/checkpatch.pl will
-probably catch this kind of style error.)
+Paolo Bonzini (7):
+  rust: remove unused --cfg arguments
+  rust: remove unnecessary repetitive options
+  rust/bql: make bindings public
+  rust: do not copy the SysBusDevice
+  rust: fix reference to MemoryRegion
+  rust: move strict lints handling to meson.build
+  rust: only link the Rust part of the code into devices
 
-> +        /*
-> +         * This is an unimplemented BAR. It is not a fatal error.
-> +         * We model it as a BAR with a size of zero. Any attempt to
-> +         * access it will be caught by assertions in the accessors.
-> +         */
-> +        if (sizeptr) {
-> +            *sizeptr = 0;
-> +        }
-> +        memset(&bar, 0, sizeof(bar));
-> +        return bar;
-> +    }
-> +
->      g_assert(addr); /* Must have *some* size bits */
+ meson.build                                   | 10 +--
+ rust/bindings/src/lib.rs                      | 64 -------------------
+ rust/bits/meson.build                         |  2 -
+ rust/bql/meson.build                          |  2 -
+ rust/bql/src/cell.rs                          |  2 +-
+ rust/bql/src/lib.rs                           |  2 +-
+ rust/chardev/meson.build                      |  4 +-
+ rust/common/meson.build                       |  2 -
+ rust/hw/char/pl011/meson.build                | 18 +++---
+ rust/hw/core/src/sysbus.rs                    |  2 +-
+ rust/hw/timer/hpet/meson.build                | 16 ++---
+ rust/migration/meson.build                    |  2 -
+ rust/qemu-macros/meson.build                  |  6 --
+ rust/qom/meson.build                          |  4 +-
+ rust/system/meson.build                       |  2 -
+ rust/tests/meson.build                        |  1 -
+ rust/trace/meson.build                        |  2 -
+ rust/util/meson.build                         |  6 +-
+ scripts/rust/rustc_args.py                    | 20 +-----
+ .../bilge-impl-0.2-rs/meson.build             |  3 -
+ .../proc-macro-error-1-rs/meson.build         |  1 -
+ .../proc-macro-error-attr-1-rs/meson.build    |  3 -
+ 22 files changed, 32 insertions(+), 142 deletions(-)
+ delete mode 100644 rust/bindings/src/lib.rs
 
-We can drop this assert now, because we just dealt with
-the addr == 0 case.
+-- 
+2.51.1
 
->      size = 1U << ctz32(addr);
-> @@ -572,6 +594,7 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
->      }
->
->      bar.addr = loc;
-> +    bar.size = size;
->      return bar;
->  }
-
-thanks
--- PMM
 
