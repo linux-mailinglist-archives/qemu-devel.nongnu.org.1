@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1BBC8FB67
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECB1C8FB6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:35:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOfsh-0004Tb-G0; Thu, 27 Nov 2025 12:34:11 -0500
+	id 1vOfsh-0004TY-Ev; Thu, 27 Nov 2025 12:34:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsb-0004Rl-TH
+ id 1vOfsb-0004Rn-Uv
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:05 -0500
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsW-0001GL-Po
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:04 -0500
+ id 1vOfsX-0001Gr-Mx
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:05 -0500
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7213680DF2;
- Thu, 27 Nov 2025 20:33:57 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 1348180DF3;
+ Thu, 27 Nov 2025 20:33:58 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:834::1:7])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id rXiJgL0F7Os0-QM1lMLMF; Thu, 27 Nov 2025 20:33:57 +0300
+ ESMTPSA id rXiJgL0F7Os0-K9ftgLa0; Thu, 27 Nov 2025 20:33:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1764264837;
- bh=6vx3WhUktEBcatqeazVbFbGZoG58FOOHtw8XzeX1II8=;
+ bh=ueby3IU3TcupzmFwaUbWLNrW2a/+cLbdDLEJHIRz1bE=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=ITvSI1GaRss+iwKWRSeTF0cgc/Ff62rOXTEzm04ExAGCGCdNwBVJinS5LSrP5McUX
- AymT//hriMWJ6/Y/GCmYRwg2UEY5luV1y2gIX4LjcM5t32YOcwS/ofSro31Nm9iadL
- 0tYkaAcDQpNWj/BLEI061IgFhW1iSvhxWcEvyL4Q=
+ b=FDOK4f6ARNBodCvNTfwYB26PYi6GOxeE2kCnhvYI8wHRxFiOlrmhVpQjWnfyK7BQ7
+ P3CFPVmuAqpDEHpxubjuDgfLm1XoYSbxNPNeuJaV9xlL90JmotWKW98U8+zyWAVpXs
+ 1rh6Tv47GH/C4f3EJSnYvVWFzhYTzF2Yu5X7mqJE=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,10 +41,9 @@ To: dave@treblig.org,
 	armbru@redhat.com
 Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru
-Subject: [PATCH 4/5] error: print error_report timestamp when QMP monitor is
- active
-Date: Thu, 27 Nov 2025 20:33:51 +0300
-Message-ID: <20251127173352.283731-5-vsementsov@yandex-team.ru>
+Subject: [PATCH 5/5] error-report: fix doc for vreport()
+Date: Thu, 27 Nov 2025 20:33:52 +0300
+Message-ID: <20251127173352.283731-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251127173352.283731-1-vsementsov@yandex-team.ru>
 References: <20251127173352.283731-1-vsementsov@yandex-team.ru>
@@ -74,90 +73,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We skip printing timestamp when _any_ monitor is active. But
-then, in production (where QMP is usually used) we lack timestamps
-in logs.
-
-Let's go a bit further, and use same logic to detect HMP monitor
-in the whole util/error-report.c like in error_vprintf().
+We actually don't print any errors to QMP monitor.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- stubs/monitor-core.c           |  5 +++++
- tests/unit/test-util-sockets.c |  1 +
- util/error-report.c            | 23 ++++++++++++++---------
- 3 files changed, 20 insertions(+), 9 deletions(-)
+ util/error-report.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
-index 1894cdfe1f..275cb0cbfa 100644
---- a/stubs/monitor-core.c
-+++ b/stubs/monitor-core.c
-@@ -7,6 +7,11 @@ Monitor *monitor_cur(void)
-     return NULL;
- }
- 
-+bool monitor_cur_is_hmp(void)
-+{
-+    return false;
-+}
-+
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
- {
-     return NULL;
-diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
-index ee66d727c3..4b7f408902 100644
---- a/tests/unit/test-util-sockets.c
-+++ b/tests/unit/test-util-sockets.c
-@@ -74,6 +74,7 @@ int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
- Monitor *monitor_cur(void) { return cur_mon; }
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon) { abort(); }
- int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap) { abort(); }
-+bool monitor_cur_is_hmp(void) { return false; }
- 
- #ifndef _WIN32
- static void test_socket_fd_pass_name_good(void)
 diff --git a/util/error-report.c b/util/error-report.c
-index 1b17c11de1..7ffbcf2123 100644
+index 7ffbcf2123..0f3b1c0354 100644
 --- a/util/error-report.c
 +++ b/util/error-report.c
-@@ -144,7 +144,7 @@ static void print_loc(void)
-     int i;
-     const char *const *argp;
+@@ -177,7 +177,7 @@ real_time_iso8601(void)
+ }
  
--    if (!monitor_cur() && g_get_prgname()) {
-+    if (!monitor_cur_is_hmp() && g_get_prgname()) {
-         error_printf("%s:", g_get_prgname());
-         sep = " ";
-     }
-@@ -188,15 +188,20 @@ static void vreport(report_type type, const char *fmt, va_list ap)
- {
-     gchar *timestr;
- 
--    if (message_with_timestamp && !monitor_cur()) {
--        timestr = real_time_iso8601();
--        error_printf("%s ", timestr);
--        g_free(timestr);
--    }
-+    if (!monitor_cur_is_hmp()) {
-+        if (message_with_timestamp) {
-+            timestr = real_time_iso8601();
-+            error_printf("%s ", timestr);
-+            g_free(timestr);
-+        }
- 
--    /* Only prepend guest name if -msg guest-name and -name guest=... are set */
--    if (error_with_guestname && error_guest_name && !monitor_cur()) {
--        error_printf("%s ", error_guest_name);
-+        /*
-+         * Only prepend guest name if -msg guest-name and -name guest=...
-+         * are set.
-+         */
-+        if (error_with_guestname && error_guest_name) {
-+            error_printf("%s ", error_guest_name);
-+        }
-     }
- 
-     print_loc();
+ /*
+- * Print a message to current monitor if we have one, else to stderr.
++ * Print a message to current HMP monitor if we have one, else to stderr.
+  * @report_type is the type of message: error, warning or informational.
+  * Format arguments like vsprintf().  The resulting message should be
+  * a single phrase, with no newline or trailing punctuation.
 -- 
 2.48.1
 
