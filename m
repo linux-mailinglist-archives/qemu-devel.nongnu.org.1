@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D72C8E6A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F5DC8E6BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vObsk-0004Ep-Rw; Thu, 27 Nov 2025 08:17:59 -0500
+	id 1vObsV-0003BS-Dp; Thu, 27 Nov 2025 08:17:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObr4-0002ju-KY
+ id 1vObr4-0002jw-Qs
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:16:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObqv-0001IK-7h
+ id 1vObqy-0001IO-PY
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:16:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764249361;
+ s=mimecast20190719; t=1764249363;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wpnrAdD3xbORyd8otri4oXizO/2tYcx3tnVtrMiGUzw=;
- b=Mr+Z37+V8bMLXRyEczvskYDqwEnrdqakmINHzJE96SJ1AAuS7uWdngKU/oCZcNzr9AhuVU
- PXBzsrGlFo6NTLWfhO7K8qDndoOjIyx0bngB6BLv7q3RyF4kwYmvXCN5uKTUnRNlXzVB8K
- +7gkFEb8vdYHDAg98f2hthBx6lBQPtI=
+ bh=xgDAhhijifto90Oxu+cfsrCTAQGrn52zMBiEFLdoonA=;
+ b=RiB3SYwfkVP/OqFg7G7hZeh6kPNYnkpjh96ODbuviD0Vn7hKC4kQVbapAjtvtzmeGAjJWH
+ IfmBi2aSM4k+KnyQe0nV273iR+tUL4J6JGE0hZYxaSDOexZECwt5Q+jJa3qaRc1WZZQgNo
+ X6ekeDpK+WZ5QPpjbczxfF6T/meX0tU=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-W96hsvx7MR2T009z7sh86g-1; Thu, 27 Nov 2025 08:15:59 -0500
-X-MC-Unique: W96hsvx7MR2T009z7sh86g-1
-X-Mimecast-MFC-AGG-ID: W96hsvx7MR2T009z7sh86g_1764249359
+ us-mta-263-78d88uXQO7yxPBGS0s2NyA-1; Thu, 27 Nov 2025 08:16:01 -0500
+X-MC-Unique: 78d88uXQO7yxPBGS0s2NyA-1
+X-Mimecast-MFC-AGG-ID: 78d88uXQO7yxPBGS0s2NyA_1764249361
 Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-6411e349b73so976421a12.2
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:15:59 -0800 (PST)
+ 4fb4d7f45d1cf-6411e349b73so976453a12.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:16:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764249357; x=1764854157; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764249360; x=1764854160; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wpnrAdD3xbORyd8otri4oXizO/2tYcx3tnVtrMiGUzw=;
- b=RwHfkrr1MEfStor6b/9vZjLlIPGb3hjTFy/YWiSEyUobW2uxUeBELj7HQJUUrMIQwl
- 6acyPpQHkOWwn8W3KH8VK+BmftWtFAXHwEgX9D9IE9tz8k1PYa8l+TSE8VmSH1qfyBwL
- zOCGcuapaASKGkF/u4MBiIhb5+fvcEEgtoMQPGGoBEhxzymD9f6KMEztbb7L19TNanho
- GdTRWBrCabP0pFpVFpxbZah9r23btEAci94mCLzFp3SH6cQ0+pgA5wyH7920OuMH1voP
- 4skds282GPgBfC/FB4X7SNJiqXEOQduA9YcSLrwooBMMw6EhMOatRGzvFc9VGo8H+jqR
- TbUw==
+ :reply-to; bh=xgDAhhijifto90Oxu+cfsrCTAQGrn52zMBiEFLdoonA=;
+ b=JI1g8vkiotvo5to1izkCJ/p5zRV5SNVzqHlMHFPlaHMMDMWGZnAi2fMIpjLNlzrKzk
+ sojqa5RYfVrmJ61tU/OADyg41foMHLRJ9YgNz+zSf01gfxW5yqgxhFuakdCExRucjVwO
+ EyUl+kfzs9TNOcCdltpyH1yLtpmeGAilszED8w7/ONrJiCFY8i5pkWBohZlJmXtzMY7F
+ oWy7wpGbh7S9FoYnee3wNMMHANJtvXLNP6gbBYHKyLzP63WFLYUX5IcZKv1TSN4VQ8p4
+ XVR43WPmICvnTvZdD1TE1GvOO92mVX3U+Sk4H+VTG2wI3enbAhEQRgH0QnvjGeyvPwwH
+ y95Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764249357; x=1764854157;
+ d=1e100.net; s=20230601; t=1764249360; x=1764854160;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=wpnrAdD3xbORyd8otri4oXizO/2tYcx3tnVtrMiGUzw=;
- b=AjyC7UOGk4LtHgrMMJZowmHDqaTODdcwzPeQFbn65HcWGbdn+VDHE076FXK9aDh43m
- vvX2XNUYfbMj8Br7d970UTi0D+wag5AzRZuTq9Y/cs9vKFu8LuX+YOm2p66cmJpwNyCb
- H2CyRr/Qt9PHJaqvWSXrlsaJdKGMOwmONHkv20j18PJs//f7kb7b15StLwGzwSNzaYJq
- I4eqEBK4odW4vjUu6SJKSWKh2EJ7iresbQhQH+At4wa9jDIq7i2BYvVagw1xbwRlWMbI
- x4VJ1dsfa3KE094X6s/j4FpoV6LgQ9KD5g6mw7pXErvlKLDY3vDoa6JxZ77BHdAsY3vQ
- 6i0A==
-X-Gm-Message-State: AOJu0Yzno+pxZorPiirYm0nxNVnu6QtBEJ+iuXZ4dXfpf4McFfGWUUl2
- +U5xUO1IgpXQHeHoOvsGpZOtfirj9VVihF2a0VbzlExvEOgMu1g0nlllePgdn52yGunhoHT+4kW
- Pz4Rpdy9HuPw8Fb3h3Je8j2+hss/YpL1GvXpuqS8Zj4ZvyXrJ+d25ZSTn2CsrQnzENTr4P/An7n
- jbUgMR0wrTj2KTJqakWRZUVQEJiu0JCLqOvFQSp9ml
-X-Gm-Gg: ASbGncuKTaIOe4S7UI+/+NaF9Vlogm0XX3E0ogl+r9DFaRbQ/ckG2jvRKlP6B/wT3mC
- 7UrVeLIwvOkvYqQVJbvQu+5bXTX5d81Ae432yHU2DocZW8rt7uCoo3unkPSCzrlvjnNIPBPmpA3
- vM1ATXhgvxtfn1J1egdal2FmQtDcu9ka/UPvT9G9wwqkTSFbc7KZKid2+K+zwGYgIkHKcoq/6M7
- SxROlnSZP8y5QMm/f35j185X1A5mofIcCZcTK4tQRfYzZ9wqa3WJDBOg5ohnefdswtSqxJxemLf
- aSSjLUXFLSFREP6B3nZ/DxtOQ5GWjzV6k82/oxKrI7dJp0YUa6yrTWTaOPibK4Ar0zOP3/nfncD
- L7VEgm90TrNjt4jMOeoFvCK4wMFD3vuuDYOxT9qsSssK1PDIUxfWlWvD+PeNUXI2Kl4H8V0RtCR
- Rc9fONXGc2BfB7GeQ=
-X-Received: by 2002:a05:6402:51d0:b0:643:804a:fb5e with SMTP id
- 4fb4d7f45d1cf-64555cd9f23mr18359581a12.21.1764249357460; 
- Thu, 27 Nov 2025 05:15:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHtvP/aKYmrnE6TE/oxiPG4Vb8tq/H1pvd+sXdTz6EFwiIesJxKWOeZbT0wF3iJDkVZQ4e31A==
-X-Received: by 2002:a05:6402:51d0:b0:643:804a:fb5e with SMTP id
- 4fb4d7f45d1cf-64555cd9f23mr18359550a12.21.1764249356918; 
- Thu, 27 Nov 2025 05:15:56 -0800 (PST)
+ bh=xgDAhhijifto90Oxu+cfsrCTAQGrn52zMBiEFLdoonA=;
+ b=rEXaT+VCYKWyYkyo66p13BB9obz4KYOxUBGdSObLPqrMYZxUy5f42Htu9/yM7hvebI
+ QmG0gsCkMEwjAisVCHKt2awieASTBUqvR9eyEJUVs49CfbKy2BEBANnV7v/aYlUYCpDT
+ ALr4pidDMGwNnfTA8cUXV+5+7BQ5hLlZW7o8x3xypUr82W3WR7x+SQg9atWZdLkTL9hc
+ EN/PslS0MSjtRqqhjMeoXdgTZVOsQLf0FT7MiN5JPnZauZXTCsyGuP8xBC3d6a0meAWB
+ HWXUUYAE52xUzm+VoX4QIdi7BTwNljEoWETWFVrj02ILFPPNbtk7XLyxQ7FKglwvjT1y
+ qgOw==
+X-Gm-Message-State: AOJu0YzE7rgU8tpY5LRbrhee5z5IRSB1KWId9TJDTHYZJ8wZVlt9ysId
+ U38V/reyLwcSyZprL5Mr+4xLjs9ZJ81Dk2cXIkFtH4SguSEDNLTIcRT8z2mUNaP6x0RYlbJagnn
+ 26rCwcqq6SM9UCoeVTXY2aDRQkhVm7ZytwVT7/G5wdP3t7mjkod0HzyOdADZ6zRpqusVS+E4zN6
+ 5TGB2MABgBgdl9MmrjwXUSrldvUqJUIGj5fjEI9u4U
+X-Gm-Gg: ASbGnct3ULUrhl03OmLzwRJjT0OSlsKnXy+C5xRJvazLmTUhts5Y5tMI3vA3IYX+W3+
+ YxOd2Wui4CC1ILPKBye9J7cqFMn8QxtwLZBVDtuWkKzsgMCCQYfS7nm4ojr04AGDMaVpaK9Jpfc
+ ZkhjArKUv+38lff3+n3iZvr9rZrNLbLkMvvFvx/+3AkHJsrwD9pz4wTri7QIUQAxOoh3WpS9BS9
+ Rs5BPp9m7foAuDkMyVu4f5Sa3MuDPLPNvCP0eGv80B6SLF1xw+2HOKd7N8MuzNFnTS4yV9t0szm
+ y9mu6nvNQGH0rS6Bgpna9+VqaCvvfV7K72UVrl8SA6M/XQmx2lw+Z4cG/66ZBpyMkPlQeo0t25F
+ zUH3DinqJGfofD4v2rIwtccY/PdJCdEXdlP/NEZNTURgRZ9bQ+1uQq6BiA51dmYybrPX/F9e7lr
+ qE+OAV0esBObKqUcQ=
+X-Received: by 2002:a05:6402:2714:b0:641:3a92:7e6f with SMTP id
+ 4fb4d7f45d1cf-645559fcb28mr20760812a12.0.1764249360131; 
+ Thu, 27 Nov 2025 05:16:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG2ytSeuDOZSRwcw0SAST/YJR+190SVxILIQmAC47bve/p6q1HfaAtZXs2xqCYREErud09jkA==
+X-Received: by 2002:a05:6402:2714:b0:641:3a92:7e6f with SMTP id
+ 4fb4d7f45d1cf-645559fcb28mr20760776a12.0.1764249359655; 
+ Thu, 27 Nov 2025 05:15:59 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-64751051313sm1529185a12.28.2025.11.27.05.15.55
+ 4fb4d7f45d1cf-64750a90d73sm1549460a12.13.2025.11.27.05.15.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Nov 2025 05:15:55 -0800 (PST)
+ Thu, 27 Nov 2025 05:15:57 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 23/28] include: move hw/resettable.h to hw/core/
-Date: Thu, 27 Nov 2025 14:15:10 +0100
-Message-ID: <20251127131516.80807-24-pbonzini@redhat.com>
+Subject: [PATCH 24/28] include: move hw/stream.h to hw/core/
+Date: Thu, 27 Nov 2025 14:15:11 +0100
+Message-ID: <20251127131516.80807-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251127131516.80807-1-pbonzini@redhat.com>
 References: <20251127131516.80807-1-pbonzini@redhat.com>
@@ -121,238 +121,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS                        | 2 +-
- docs/devel/reset.rst               | 2 +-
- include/hw/core/boards.h           | 2 +-
- include/hw/core/qdev.h             | 2 +-
- include/hw/{ => core}/resettable.h | 0
- include/hw/virtio/virtio-balloon.h | 2 +-
- include/hw/virtio/virtio-mem.h     | 2 +-
- include/system/reset.h             | 2 +-
- hw/core/reset.c                    | 2 +-
- hw/core/resetcontainer.c           | 2 +-
- hw/core/resettable.c               | 2 +-
- hw/misc/xlnx-versal-crl.c          | 2 +-
- hw/net/lan9118_phy.c               | 2 +-
- hw/pci-host/fsl_imx8m_phy.c        | 2 +-
- hw/rtc/rs5c372.c                   | 2 +-
- system/runstate.c                  | 2 +-
- target/s390x/cpu.c                 | 2 +-
- 17 files changed, 16 insertions(+), 16 deletions(-)
- rename include/hw/{ => core}/resettable.h (100%)
+ MAINTAINERS                         | 2 +-
+ include/hw/{ => core}/stream.h      | 0
+ include/hw/dma/xlnx_csu_dma.h       | 2 +-
+ include/hw/ssi/xilinx_spips.h       | 2 +-
+ hw/core/stream.c                    | 2 +-
+ hw/dma/xilinx_axidma.c              | 2 +-
+ hw/dma/xlnx_csu_dma.c               | 2 +-
+ hw/microblaze/petalogix_ml605_mmu.c | 2 +-
+ hw/net/xilinx_axienet.c             | 2 +-
+ 9 files changed, 8 insertions(+), 8 deletions(-)
+ rename include/hw/{ => core}/stream.h (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index b9cc00a5582..e34c3e6dac2 100644
+index e34c3e6dac2..72c70a46553 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3961,7 +3961,7 @@ F: docs/devel/clocks.rst
- Reset framework
- M: Peter Maydell <peter.maydell@linaro.org>
+@@ -3600,7 +3600,7 @@ Streams
+ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
  S: Maintained
--F: include/hw/resettable.h
-+F: include/hw/core/resettable.h
- F: include/hw/core/resetcontainer.h
- F: include/system/reset.h
- F: hw/core/reset.c
-diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-index c02fe0a405c..91e8c21189e 100644
---- a/docs/devel/reset.rst
-+++ b/docs/devel/reset.rst
-@@ -4,7 +4,7 @@ Reset in QEMU: the Resettable interface
- =======================================
+ F: hw/core/stream.c
+-F: include/hw/stream.h
++F: include/hw/core/stream.h
  
- The reset of qemu objects is handled using the resettable interface declared
--in ``include/hw/resettable.h``.
-+in ``include/hw/core/resettable.h``.
- 
- This interface allows objects to be grouped (on a tree basis); so that the
- whole group can be reset consistently. Each individual member object does not
-diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
-index a48ed4f86a3..815845207b0 100644
---- a/include/hw/core/boards.h
-+++ b/include/hw/core/boards.h
-@@ -10,7 +10,7 @@
- #include "qemu/module.h"
- #include "qom/object.h"
- #include "hw/core/cpu.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- 
- #define TYPE_MACHINE_SUFFIX "-machine"
- 
-diff --git a/include/hw/core/qdev.h b/include/hw/core/qdev.h
-index da93611d373..0b62580a0fb 100644
---- a/include/hw/core/qdev.h
-+++ b/include/hw/core/qdev.h
-@@ -9,7 +9,7 @@
- #include "qom/object.h"
- #include "hw/core/hotplug.h"
- #include "hw/core/irq.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- 
- /**
-  * DOC: The QEMU Device API
-diff --git a/include/hw/resettable.h b/include/hw/core/resettable.h
+ Stubs
+ M: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/include/hw/stream.h b/include/hw/core/stream.h
 similarity index 100%
-rename from include/hw/resettable.h
-rename to include/hw/core/resettable.h
-diff --git a/include/hw/virtio/virtio-balloon.h b/include/hw/virtio/virtio-balloon.h
-index 0456c211c6e..79ac194ccec 100644
---- a/include/hw/virtio/virtio-balloon.h
-+++ b/include/hw/virtio/virtio-balloon.h
-@@ -16,7 +16,7 @@
- #define QEMU_VIRTIO_BALLOON_H
- 
- #include "standard-headers/linux/virtio_balloon.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "hw/virtio/virtio.h"
- #include "system/iothread.h"
- #include "qom/object.h"
-diff --git a/include/hw/virtio/virtio-mem.h b/include/hw/virtio/virtio-mem.h
-index e0ab31b45a4..221cfd76bf9 100644
---- a/include/hw/virtio/virtio-mem.h
-+++ b/include/hw/virtio/virtio-mem.h
-@@ -14,7 +14,7 @@
- #define HW_VIRTIO_MEM_H
- 
- #include "standard-headers/linux/virtio_mem.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "hw/virtio/virtio.h"
- #include "qapi/qapi-types-misc.h"
- #include "system/hostmem.h"
-diff --git a/include/system/reset.h b/include/system/reset.h
-index 97131d94cfc..62e9977e3c2 100644
---- a/include/system/reset.h
-+++ b/include/system/reset.h
-@@ -27,7 +27,7 @@
- #ifndef QEMU_SYSTEM_RESET_H
- #define QEMU_SYSTEM_RESET_H
- 
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "qapi/qapi-events-run-state.h"
- 
- typedef void QEMUResetHandler(void *opaque);
-diff --git a/hw/core/reset.c b/hw/core/reset.c
-index 65f82fa43d9..e7230b49b70 100644
---- a/hw/core/reset.c
-+++ b/hw/core/reset.c
-@@ -25,7 +25,7 @@
- 
- #include "qemu/osdep.h"
- #include "system/reset.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "hw/core/resetcontainer.h"
- 
- /*
-diff --git a/hw/core/resetcontainer.c b/hw/core/resetcontainer.c
-index 5ff17002e75..ef84aa2374a 100644
---- a/hw/core/resetcontainer.c
-+++ b/hw/core/resetcontainer.c
-@@ -15,7 +15,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "hw/core/resetcontainer.h"
- 
- struct ResettableContainer {
-diff --git a/hw/core/resettable.c b/hw/core/resettable.c
-index 5cdb4a4f8d3..86e16c8c6e4 100644
---- a/hw/core/resettable.c
-+++ b/hw/core/resettable.c
-@@ -12,7 +12,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/module.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "trace.h"
- 
- /**
-diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index 072d6d98591..9bbf44def6b 100644
---- a/hw/misc/xlnx-versal-crl.c
-+++ b/hw/misc/xlnx-versal-crl.c
-@@ -13,7 +13,7 @@
+rename from include/hw/stream.h
+rename to include/hw/core/stream.h
+diff --git a/include/hw/dma/xlnx_csu_dma.h b/include/hw/dma/xlnx_csu_dma.h
+index 63af4586dd9..4d6d18fb9b5 100644
+--- a/include/hw/dma/xlnx_csu_dma.h
++++ b/include/hw/dma/xlnx_csu_dma.h
+@@ -24,7 +24,7 @@
  #include "hw/sysbus.h"
- #include "hw/core/irq.h"
  #include "hw/core/register.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
+ #include "hw/core/ptimer.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
  
- #include "target/arm/arm-powerctl.h"
- #include "target/arm/multiprocessing.h"
-diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
-index f0f6e55d807..2fc027d112c 100644
---- a/hw/net/lan9118_phy.c
-+++ b/hw/net/lan9118_phy.c
-@@ -16,7 +16,7 @@
- #include "hw/net/lan9118_phy.h"
- #include "hw/net/mii.h"
- #include "hw/core/irq.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "migration/vmstate.h"
- #include "qemu/log.h"
- #include "trace.h"
-diff --git a/hw/pci-host/fsl_imx8m_phy.c b/hw/pci-host/fsl_imx8m_phy.c
-index 04da3f99a07..0afa6167e0d 100644
---- a/hw/pci-host/fsl_imx8m_phy.c
-+++ b/hw/pci-host/fsl_imx8m_phy.c
-@@ -8,7 +8,7 @@
+ #define TYPE_XLNX_CSU_DMA "xlnx.csu_dma"
  
- #include "qemu/osdep.h"
- #include "hw/pci-host/fsl_imx8m_phy.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "migration/vmstate.h"
+diff --git a/include/hw/ssi/xilinx_spips.h b/include/hw/ssi/xilinx_spips.h
+index 7a754bf67a2..56cf69a37d2 100644
+--- a/include/hw/ssi/xilinx_spips.h
++++ b/include/hw/ssi/xilinx_spips.h
+@@ -27,7 +27,7 @@
  
- #define CMN_REG075 0x1d4
-diff --git a/hw/rtc/rs5c372.c b/hw/rtc/rs5c372.c
-index 58f12b836d3..20015dd6c1e 100644
---- a/hw/rtc/rs5c372.c
-+++ b/hw/rtc/rs5c372.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "hw/i2c/i2c.h"
- #include "hw/core/qdev-properties.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "migration/vmstate.h"
- #include "qemu/bcd.h"
+ #include "hw/ssi/ssi.h"
+ #include "qemu/fifo32.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ #include "hw/sysbus.h"
  #include "qom/object.h"
-diff --git a/system/runstate.c b/system/runstate.c
-index 89bbfe7fbf9..ed2db564806 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -32,7 +32,7 @@
- #include "exec/cpu-common.h"
- #include "gdbstub/syscalls.h"
- #include "hw/core/boards.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "migration/misc.h"
- #include "migration/postcopy-ram.h"
- #include "monitor/monitor.h"
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index da536fb30ed..6c4198eb1b1 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -32,7 +32,7 @@
- #include "system/hw_accel.h"
+ 
+diff --git a/hw/core/stream.c b/hw/core/stream.c
+index 19477d0f2df..bfcac938802 100644
+--- a/hw/core/stream.c
++++ b/hw/core/stream.c
+@@ -1,5 +1,5 @@
+ #include "qemu/osdep.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ #include "qemu/module.h"
+ 
+ size_t
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index 7cdd76330f3..90ba7bf0573 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -34,7 +34,7 @@
+ #include "qemu/module.h"
+ 
+ #include "system/dma.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ #include "qom/object.h"
+ #include "trace.h"
+ 
+diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
+index ffe258cf31a..b390d092699 100644
+--- a/hw/dma/xlnx_csu_dma.c
++++ b/hw/dma/xlnx_csu_dma.c
+@@ -27,7 +27,7 @@
+ #include "migration/vmstate.h"
+ #include "system/dma.h"
+ #include "hw/core/ptimer.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ #include "hw/core/register.h"
+ #include "hw/dma/xlnx_csu_dma.h"
+ 
+diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
+index 9c2b0ff0b37..51ee237d584 100644
+--- a/hw/microblaze/petalogix_ml605_mmu.c
++++ b/hw/microblaze/petalogix_ml605_mmu.c
+@@ -41,7 +41,7 @@
+ 
+ #include "boot.h"
+ 
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ 
+ #define LMB_BRAM_SIZE  (128 * KiB)
+ #define FLASH_SIZE     (32 * MiB)
+diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
+index 36047a51c00..451f8da2122 100644
+--- a/hw/net/xilinx_axienet.c
++++ b/hw/net/xilinx_axienet.c
+@@ -33,7 +33,7 @@
+ 
+ #include "hw/core/irq.h"
  #include "hw/core/qdev-properties.h"
- #include "hw/core/qdev-properties-system.h"
--#include "hw/resettable.h"
-+#include "hw/core/resettable.h"
- #include "fpu/softfloat-helpers.h"
- #include "disas/capstone.h"
- #include "system/tcg.h"
+-#include "hw/stream.h"
++#include "hw/core/stream.h"
+ #include "qom/object.h"
+ 
+ #define DPHY(x)
 -- 
 2.51.1
 
