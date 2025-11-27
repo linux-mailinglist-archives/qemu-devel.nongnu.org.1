@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DE4C8FB62
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58899C8FB73
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:35:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOfsg-0004TP-Nz; Thu, 27 Nov 2025 12:34:10 -0500
+	id 1vOfsg-0004TQ-Rf; Thu, 27 Nov 2025 12:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsb-0004Rp-UK
+ id 1vOfsb-0004Rm-Us
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:05 -0500
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsW-0001Fp-Vd
+ id 1vOfsX-0001Fs-Dx
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:04 -0500
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 04A1680C40;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id B182B80C4E;
  Thu, 27 Nov 2025 20:33:55 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:834::1:7])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id rXiJgL0F7Os0-9emaeKjH; Thu, 27 Nov 2025 20:33:54 +0300
+ ESMTPSA id rXiJgL0F7Os0-9L2QmjXC; Thu, 27 Nov 2025 20:33:55 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1764264834;
- bh=tFRKw0vBWvv++xCEOYc1TZr0psCfpx6qx1pEqp6qrIM=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=HLtrr9B7NtFnqM2zfMGqBDi8RbTfTU3xyMRomcudxubmfliiMOXyKv0IjRSsqcKtf
- xpNr79A2qxd07cl15Nt6hd1Dj/FdssuRocHOOL8lvkuGv0dGTPxRBf5AlFYGFGveJm
- 54P1guvgDYRd/Yez9l1ERi6cHaVeTDTbOXnUWk2s=
+ s=default; t=1764264835;
+ bh=Qrz6uqZ8id/hIeHHI1j4NbP6cH4LsPuTNTQJjCY5ro0=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=nxKYTMMec3gOgNU+9vpi5tzNSHhW3OF67BYo9APzFcWP2pbbaZ/ZITca0NLRUKceB
+ SrzN19oQug15ay44xx2kyyoT5+/JhW44fC3rUxowr78QEcmrAu3dcBCtmfyQeUD4ir
+ 01WGHT6AX3RNASGEcgvI5MENrtkMxGRVXfySDLTk=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,10 +41,12 @@ To: dave@treblig.org,
 	armbru@redhat.com
 Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru
-Subject: [PATCH for-11.0 0/5] some improvements around error reporting
-Date: Thu, 27 Nov 2025 20:33:47 +0300
-Message-ID: <20251127173352.283731-1-vsementsov@yandex-team.ru>
+Subject: [PATCH 1/5] ui/vnc: don't use of error_printf_unless_qmp()
+Date: Thu, 27 Nov 2025 20:33:48 +0300
+Message-ID: <20251127173352.283731-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251127173352.283731-1-vsementsov@yandex-team.ru>
+References: <20251127173352.283731-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.136;
@@ -71,28 +73,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all. The main thing I wanted to do is to enable timestamps
-for errer_report() and friends when QMP monitor is active.
-Analyzing logs without timestamps is painful.
+That's not a big deal to print these messages to log, if QMP
+monitor is active. And these two are the only users of this
+API. To simplify things, let's use more usual error_report() and
+info_report(), and drop error_printf_unless_qmp() in the following
+commit.
 
-And some enhancements here and there around.
+Drop \n from messages, as vreport() adds one.
 
-Vladimir Sementsov-Ogievskiy (5):
-  ui/vnc: don't use of error_printf_unless_qmp()
-  monitor: remove unused error_printf_unless_qmp() function
-  monitor: rework monitor_cur_is_qmp() into monitor_cur_is_hmp()
-  error: print error_report timestamp when QMP monitor is active
-  error-report: fix doc for vreport()
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ ui/vnc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
- include/monitor/monitor.h      |  5 +----
- monitor/monitor.c              | 30 +++---------------------------
- stubs/error-printf.c           |  5 -----
- stubs/monitor-core.c           |  5 +++++
- tests/unit/test-util-sockets.c |  1 +
- ui/vnc.c                       |  9 ++++-----
- util/error-report.c            | 25 +++++++++++++++----------
- 7 files changed, 29 insertions(+), 51 deletions(-)
-
+diff --git a/ui/vnc.c b/ui/vnc.c
+index e6bcf0e1cf..ffeed5788e 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3534,8 +3534,8 @@ int vnc_display_password(const char *id, const char *password)
+         return -EINVAL;
+     }
+     if (vd->auth == VNC_AUTH_NONE) {
+-        error_printf_unless_qmp("If you want use passwords please enable "
+-                                "password auth using '-vnc ${dpy},password'.\n");
++        error_report("If you want use passwords please enable "
++                     "password auth using '-vnc ${dpy},password'.");
+         return -EINVAL;
+     }
+ 
+@@ -3574,9 +3574,8 @@ static void vnc_display_print_local_addr(VncDisplay *vd)
+         qapi_free_SocketAddress(addr);
+         return;
+     }
+-    error_printf_unless_qmp("VNC server running on %s:%s\n",
+-                            addr->u.inet.host,
+-                            addr->u.inet.port);
++    info_report("VNC server running on %s:%s", addr->u.inet.host,
++                addr->u.inet.port);
+     qapi_free_SocketAddress(addr);
+ }
+ 
 -- 
 2.48.1
 
