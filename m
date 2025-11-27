@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D906BC8E70A
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915E9C8E70D
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vObwD-0006c4-2k; Thu, 27 Nov 2025 08:21:33 -0500
+	id 1vObwF-0006xP-0S; Thu, 27 Nov 2025 08:21:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObvj-0005dM-UU
+ id 1vObvj-0005dO-VQ
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:21:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObvg-000284-JC
+ id 1vObvh-00028K-Bv
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:21:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764249658;
+ s=mimecast20190719; t=1764249660;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
- b=T+uO4cp98xD1lWMC5n54Aha/DksMS1EP4PGSBGkAJwH0TCMGxISDjrEbS21C7MqZc+1zYp
- Th/CPALv6dcq5lABIV3TDwMg8PDvqG9b4RuW5vFIxf57n2gCpoMCo0B/JRc5zEeLy+WvJ/
- vrObl7s6wmOJDVHlAYXHILsu0rN0YiI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iUV5SEQ9mEN3G1RbSMj3A+PTdrIfEx77HI6Qj2cAojY=;
+ b=e2yt+0ketmHIlu6aPDMkjytxcczlW8JzmtI69T9R9aDz71bv2f3/aKJso8imLxH+S+EGDL
+ XQFoYtkfgtwnUkA2trXhB2kBc8GBbsbEB95NIxTJJSVxmrloUfy8s/1rQmNonvX7kLCh+w
+ gyyMmEoWv87w699TN6tvcJBVUm7Yfng=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-c-OhUnlWNxaBrz9DRHw4HQ-1; Thu, 27 Nov 2025 08:20:57 -0500
-X-MC-Unique: c-OhUnlWNxaBrz9DRHw4HQ-1
-X-Mimecast-MFC-AGG-ID: c-OhUnlWNxaBrz9DRHw4HQ_1764249656
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b70b1778687so66651466b.0
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:20:57 -0800 (PST)
+ us-mta-462-sYIWkrgsNG-JCAukD6j8Bg-1; Thu, 27 Nov 2025 08:20:59 -0500
+X-MC-Unique: sYIWkrgsNG-JCAukD6j8Bg-1
+X-Mimecast-MFC-AGG-ID: sYIWkrgsNG-JCAukD6j8Bg_1764249658
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b7270cab7eeso90179366b.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:20:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764249656; x=1764854456; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764249657; x=1764854457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
- b=AbUhf2c6BFCvURO3nxuIzJFb1EIp1Fk/WEYhEmYgJCHda9rgBYvxRiUoyrX0vJG4qy
- T7FE7Mxdzfk2ZTm5HRaLV4HEq5W7pe8gpb9l422t2xvCGWq2/9yONd0moLCyU0fqFyRL
- Iwampp12nxmD8ndZDR6DugAITrpUykGeNG8H812z8hf5aeSvcuPYNWZey/dIxZZaPxjH
- aMxcuB9j+Xa8gzVo6riM8vl7NdxrwyWN+WY/uOYS5L8sa0wKsL9oNXnmC8B1m0N36mJX
- nc4k73Mmim2QUHFpL0piui/r2Gkh83aa67gE6cH32GwdQDKQeTGt9HaVZxCUn7Na2dKZ
- 5Csg==
+ bh=iUV5SEQ9mEN3G1RbSMj3A+PTdrIfEx77HI6Qj2cAojY=;
+ b=ck+ZJSfG4CQnYAuP6Ietawv46VI68/FwS2mXsJKPsArtNDMXRw+oiLFVpq6w/ARaCQ
+ X/U5okk2bNoXzN4y2TeGN4hyPzbT4NZbKI0i8qM/oE2IPFkpfEcSpMUo2WBdj3w0LA1W
+ /FQRbgnTcRQAuAkNFlMTYtg1P3D3PfyncV9lf9zyhjLiy8RBkky63fhgnA/EjIfBCAzL
+ dJ5x3PpHv4aAkHQS0C0rS6JIgUCdKnzn00o8fVbZkhf8ZKHgW02ItH0GISZeIYO2S+tX
+ 7mAb63hI7elAWBpUhrgU+W/DaE4Sx2LeVzu3Ru2OUpjwXxHEI0X/UHKplBPqiSRW3AId
+ HvUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764249656; x=1764854456;
+ d=1e100.net; s=20230601; t=1764249657; x=1764854457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
- b=BdCyrHslDKRZAqM2zotX3q7dxEHtDQV25dEEd5fjdQhvv3gXefo9HKLd54kJyXcf7F
- hj+SP8W50pNqjMjYVGR6Cdx9zv0bR3p7crIr7rqE7wxeteUs+3E/GAgKKOnlkIAjnMgQ
- HGKbvjRjZ9Ddj0AheK9fkQgqWf6zHMWwvE9lWfXH6JjJa9V6hZ52WP1qrHWYriXGDrij
- aAUZDih/fDTskCxH2erHRNub8sII/rZFocnouxfXnlEwTxNRLI5qkWHNJEEUNz2S2ekF
- rSoADOwbI4BsgT6RMhOTyKwIjEjeOKyOToBgvPyGcYLWJW8th1pldi0duH3owBzNGsly
- 9Zmw==
-X-Gm-Message-State: AOJu0Yx1Q/ohg9Uj8okzwNvu9Yu40Pc2HQKE+QQClCNAcw1APRP+dAUa
- ykRsobz2RDMQC7Hqk+dgZcQ9Xni35TfWYg7sgRdB9Yx1kWOY82Z/khjMeR6/lNDPB1gixESgS2i
- FijwtLjtXP5NUZ06ZxdXqtH36t0yuRnVuL1Jpf3eU9Y1iaJ4A5VPrjQg2/8em/bR7g8bfpMazhT
- 2IQj5DwIumGv5lwCT4V7yJvjSh6OJVyVDjjiywodUU
-X-Gm-Gg: ASbGncvM03wPAdTgkHZ8TfYatRfK2MNSUxHgwchO7ZPYa+3KTCw4Sr90VN/YnsCf4kD
- OdjuxVO6QRn8315f/XeuD9XEzNd31Pi2CAHBz+9TohsW+W5KhNgEJk9ftVNy6Qy39QElU0IwiVC
- gE17C1u38XYl25NBIzLru7w5Dw9nVSI5X33p/Wuf7yvifvKQv/llUHMl7HeJeXHCgCoXscRfdhU
- yTrLCZblAwbYvmPFvWD19vmkW71COVAs2HeC0WSCI0N8Kh4/6Dbk+Q+O/gKlbGIPjgLxU7t2M8B
- Jq01BqYBxVz7R3XJDLS28hEDX26pYrVqwnUQ0cfk+UBCUpUtVf6KFse9BKQfeSlst0M4h+locm+
- 4D3YCB7p2QmFiEwwRlHRHyCPfIxf60qcciyG50Ln/LYT1ILYS5PutJW/5bcYAwxhUXEfwgv8sSX
- DymVBnjSKQztKCVjs=
-X-Received: by 2002:a17:907:2d11:b0:b73:853d:540e with SMTP id
- a640c23a62f3a-b767170c823mr2707245666b.30.1764249655063; 
- Thu, 27 Nov 2025 05:20:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLkSAX/ex76yeg+naPEWLopgu3EY8SdxOS3m/Q7KCanmYDR6Wnsq+TcIYxujg2u6gn2qQCRQ==
-X-Received: by 2002:a17:907:2d11:b0:b73:853d:540e with SMTP id
- a640c23a62f3a-b767170c823mr2707242666b.30.1764249654592; 
- Thu, 27 Nov 2025 05:20:54 -0800 (PST)
+ bh=iUV5SEQ9mEN3G1RbSMj3A+PTdrIfEx77HI6Qj2cAojY=;
+ b=MFPq/eurhKhPR0Mge6X5SCCDgZ2//HEnoyCNNT6KUlhOEAm4G3vCAOiJ8E0A9pzRzo
+ CB3tCv+tdf1rjU9LOTo1TKDz4PBuHXKmBXcUPLfkgM84UeE7XyI20t1LSh/O5zquaWDO
+ Di1qgwWMKtkhDN8uJ+lCJ6m7v1jBjI6oZ2wYe1prUela3F4CyexgTBkJH2Uodb/k8uFf
+ OEe6X0deGfHZhnjHY3vJgEDKQEt7lHGPDbhDvoCiQ63NRTJpIk7BHFwF4SE+bGPPi7wU
+ 5KEmKdP+RamH3Cj6NR+e6LnP/ObdarvhNzQNdel+J/ffru2GmQSvxBsjUTW6vyiicHtG
+ yFqg==
+X-Gm-Message-State: AOJu0YwML9ASFQ1fJXeto9Sr33iDem5EazsrT74gNhM6eFcNqIpqgTdA
+ rctOwrZxNHYdJUMme57hMW8tBH+kigKYRAioPWr5RFtCGnJPdAsNztjP/PbHkyGvYIeOdpMMo35
+ BUSntThk4T2TgZK0XiWBPBAflt0R9j/NatesfAoZxc0MOd9N0Po5PyeJPeYmyVmTEqtxFcNp2Pr
+ c3hzLiCqb1xVsreQvPipVMoWbVPvwRw/TxyFfjOfWr
+X-Gm-Gg: ASbGncvTshMgzYCwqN+fquCHPJhTW2duF7gKCqyQqfDbOvYbtzrbWujFqE/0F9Mb3p1
+ X2YA8aIhjTYF0BokAeBMluGCYt5iPJVaziT353E2AIn4mOGm48ZTKp+H8mWWLiUcMPCzbv/UHH+
+ mijMpKaACYTYz70nGyNEenk5HlP41Deq+cSK4M1oc3YMLBlqzSSa3JQHoxm+tIKMMCyHhwK4siL
+ 5HoB1Ne/2zZRCrr8f3Dt/AULMUJHsyp2RLzHqXVL6C9D6ndRhrv3puZ4VE+1bFJ2cHLxo5jehaY
+ UA0rlTk+8+oKPKqfQsl9i+ea7rllDmZ5oqZmUNOhH5VcXatLfr3lyHOJy7pNm5+PK5OqkRkZM+h
+ BlQiIIjyrfAcxGnwWTh5g3NM0fpPaJk1BIB7uWWX+x+77mQ40Rh27f2rfpqU2UU/pn5RcMnMyYZ
+ GMmPFzsDXkXl0lawk=
+X-Received: by 2002:a17:907:7ba1:b0:b73:870f:fa37 with SMTP id
+ a640c23a62f3a-b76c53c0113mr1186024066b.17.1764249656825; 
+ Thu, 27 Nov 2025 05:20:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHZRLMjVS3P31UKowE8cLVJSwT3V+bkmHCJ5N6QhidTUMTgSj+FjO2zyhhHDioI1+miZLEgDQ==
+X-Received: by 2002:a17:907:7ba1:b0:b73:870f:fa37 with SMTP id
+ a640c23a62f3a-b76c53c0113mr1186019866b.17.1764249656301; 
+ Thu, 27 Nov 2025 05:20:56 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b76f5162c5csm168898566b.6.2025.11.27.05.20.52
+ a640c23a62f3a-b76f519d828sm164664866b.18.2025.11.27.05.20.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Nov 2025 05:20:53 -0800 (PST)
+ Thu, 27 Nov 2025 05:20:55 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH 7/9] rust: move strict lints handling to meson.build
-Date: Thu, 27 Nov 2025 14:20:34 +0100
-Message-ID: <20251127132036.84384-8-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	Martin Kletzander <mkletzan@redhat.com>
+Subject: [PATCH 8/9] rust: Do not link qemuutil into Rust rlibs
+Date: Thu, 27 Nov 2025 14:20:35 +0100
+Message-ID: <20251127132036.84384-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251127132036.84384-1-pbonzini@redhat.com>
 References: <20251127132036.84384-1-pbonzini@redhat.com>
@@ -120,99 +121,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify rustc_args.py, and align its code with what Meson's own Cargo.toml
-translator does in v1.10.
+From: Martin Kletzander <mkletzan@redhat.com>
 
-Bump unknown_lints to "forbid", so that it will certainly override Cargo.toml's
-"allow" level.
+Commit de037ab8d83d removed qemuutil dependency from chardev and util
+rust crates.  However it stayed in the _util_rs static library.  The
+dependency is also defined as `link_with`, which is fine for C targets,
+where the resulting archive gets linked as another parameter on the
+command line when it is a static library.
 
+However, when a C library is linked into a Rust rlib, rustc remembers
+the dependency into the metadata and adds the library to the linker
+command line.
+
+Unfortunately, static libraries are sensitive to their
+position on the command line and rustc does not always get it right.
+Fortunately, simply removing it from dependencies of any rust libraries
+and instead adding them into the dependencies of executables and
+doctests fixes the behaviour.
+
+Without this patch the error I get is:
+
+  FAILED: [code=1] rust/tests/rust-integration
+  ...
+  = note: rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          rust-lld: error: unable to find library -l:libqemuutil.a
+          rust-lld: error: unable to find library -l:libvhost-user-glib.a
+          rust-lld: error: unable to find library -l:libvhost-user.a
+          collect2: error: ld returned 1 exit status
+
+Meson could work around it itself by never adding these static libraries
+to the rlibs (after all, Meson tracks the transitive dependencies already
+and knows how to add them to dependents of those rlibs); at least for now,
+do it in QEMU: never link C libraries into Rust rlibs, and add them to the
+final build products only.
+
+Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                |  7 +++----
- scripts/rust/rustc_args.py | 20 ++------------------
- 2 files changed, 5 insertions(+), 22 deletions(-)
+ rust/chardev/meson.build | 2 +-
+ rust/qom/meson.build     | 2 +-
+ rust/util/meson.build    | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 270181038bf..e6a11cefdb7 100644
---- a/meson.build
-+++ b/meson.build
-@@ -128,14 +128,13 @@ if have_rust
-   rustc_args = [find_program('scripts/rust/rustc_args.py'),
-     '--rustc-version', rustc.version(),
-     '--workspace', meson.project_source_root() / 'rust']
--  if get_option('strict_rust_lints')
--    rustc_args += ['--strict-lints']
--  endif
--
-   rustfmt = find_program('rustfmt', required: false)
+diff --git a/rust/chardev/meson.build b/rust/chardev/meson.build
+index 6b681c609ad..204977ca47c 100644
+--- a/rust/chardev/meson.build
++++ b/rust/chardev/meson.build
+@@ -37,4 +37,4 @@ _chardev_rs = static_library(
+   dependencies: [glib_sys_rs, common_rs, qemu_macros],
+ )
  
-   rustc_lint_args = run_command(rustc_args, '--lints',
-      capture: true, check: true).stdout().strip().splitlines()
-+  if get_option('strict_rust_lints')
-+    rustc_lint_args += ['-Dwarnings', '-Funknown_lints']
-+  endif
+-chardev_rs = declare_dependency(link_with: [_chardev_rs], dependencies: [chardev])
++chardev_rs = declare_dependency(link_with: [_chardev_rs], dependencies: [chardev, qemuutil])
+diff --git a/rust/qom/meson.build b/rust/qom/meson.build
+index 551c4f0bf5f..dda26c3f981 100644
+--- a/rust/qom/meson.build
++++ b/rust/qom/meson.build
+@@ -30,7 +30,7 @@ _qom_rs = static_library(
+   dependencies: [common_rs, glib_sys_rs, qemu_macros],
+ )
  
-   # Apart from procedural macros, our Rust executables will often link
-   # with C code, so include all the libraries that C code needs.  This
-diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
-index 63b0748e0d3..8fb77785350 100644
---- a/scripts/rust/rustc_args.py
-+++ b/scripts/rust/rustc_args.py
-@@ -35,8 +35,6 @@
- except ImportError:
-     import tomli as tomllib
+-qom_rs = declare_dependency(link_with: [_qom_rs], dependencies: [qemu_macros, qom])
++qom_rs = declare_dependency(link_with: [_qom_rs], dependencies: [qemu_macros, qom, qemuutil])
  
--STRICT_LINTS = {"unknown_lints", "warnings"}
--
+ # Doctests are essentially integration tests, so they need the same dependencies.
+ # Note that running them requires the object files for C code, so place them
+diff --git a/rust/util/meson.build b/rust/util/meson.build
+index 18d67a4b374..95aa211ef0b 100644
+--- a/rust/util/meson.build
++++ b/rust/util/meson.build
+@@ -38,10 +38,10 @@ _util_rs = static_library(
+     ],
+     {'.': _util_bindings_inc_rs}
+   ),
+-  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs, qom, qemuutil],
++  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs],
+ )
  
- class CargoTOML:
-     tomldata: Mapping[Any, Any]
-@@ -82,7 +80,7 @@ class LintFlag:
-     priority: int
+-util_rs = declare_dependency(link_with: [_util_rs])
++util_rs = declare_dependency(link_with: [_util_rs], dependencies: [qemuutil, qom])
  
- 
--def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[str]:
-+def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
-     """Converts Cargo.toml lints to rustc -A/-D/-F/-W flags."""
- 
-     toml_lints = cargo_toml.lints
-@@ -104,13 +102,6 @@ def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[s
-             else:
-                 raise Exception(f"invalid level {level} for {prefix}{lint}")
- 
--            if not (strict_lints and lint in STRICT_LINTS):
--                lint_list.append(LintFlag(flags=[flag, prefix + lint], priority=priority))
--
--    if strict_lints:
--        for lint in STRICT_LINTS:
--            lint_list.append(LintFlag(flags=["-D", lint], priority=1000000))
--
-     lint_list.sort(key=lambda x: x.priority)
-     for lint in lint_list:
-         yield from lint.flags
-@@ -187,13 +178,6 @@ def main() -> None:
-         required=False,
-         default="1.0.0",
-     )
--    parser.add_argument(
--        "--strict-lints",
--        action="store_true",
--        dest="strict_lints",
--        help="apply stricter checks (for nightly Rust)",
--        default=False,
--    )
-     args = parser.parse_args()
-     if args.verbose:
-         logging.basicConfig(level=logging.DEBUG)
-@@ -207,7 +191,7 @@ def main() -> None:
-         cargo_toml = CargoTOML(args.cargo_toml, None)
- 
-     if args.lints:
--        for tok in generate_lint_flags(cargo_toml, args.strict_lints):
-+        for tok in generate_lint_flags(cargo_toml):
-             print(tok)
- 
-     if rustc_version >= (1, 80):
+ rust.test('rust-util-tests', _util_rs,
+           dependencies: [qemuutil, qom],
 -- 
 2.51.1
 
