@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C4CC8E689
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EB7C8E671
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vObqZ-0002b9-Pd; Thu, 27 Nov 2025 08:15:43 -0500
+	id 1vObqa-0002bd-RP; Thu, 27 Nov 2025 08:15:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObqT-0002ZR-5F
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:15:37 -0500
+ id 1vObqU-0002Zf-Dt
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:15:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObqR-0001Cu-90
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:15:36 -0500
+ id 1vObqS-0001DD-JF
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:15:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764249334;
+ s=mimecast20190719; t=1764249335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AVhaavhb2GPoBraNf9DUEEmc85CVGAd40biEW+z/h1w=;
- b=ZpIAwOykf8qzi5WDCJCPPheN18VsgjZFGNCfAnSjYu4f5sn1u4RMR4yxgxWH0EuNxA73ee
- vSecThN+TLyNOmYA2ZPmuB2pX48P0276btQI6e5fW0US2frVnEsKJWcagI0Rpn7P73sOlA
- y7smDe6edpRqUI9RpaLuCtuR341WPc4=
+ bh=Bw7Au92vBEE7EHdF1CnAMWxiCpqWaUehH7lggjaeklw=;
+ b=buuEfT5a3X/XA2+hNBEqi2dKzDcqcR/Kt8envrd0OPpV4bEcLF5jdQbvCehpHYg6NX+BVL
+ wAXh/zGkpMqiiAdFfr+DGdOn5mjf0Y+dZ41D1mYhU/DkZzmMRzf8hlaNGmkhb+IjfO2Fzu
+ 2xapiLeT4ne+WW4gGcoyLwnVhB7yNTk=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-EilB7tNpNFCLtfxxjwedZA-1; Thu, 27 Nov 2025 08:15:32 -0500
-X-MC-Unique: EilB7tNpNFCLtfxxjwedZA-1
-X-Mimecast-MFC-AGG-ID: EilB7tNpNFCLtfxxjwedZA_1764249332
+ us-mta-509-IEBbESLJOGKnQEtV8zN7wg-1; Thu, 27 Nov 2025 08:15:34 -0500
+X-MC-Unique: IEBbESLJOGKnQEtV8zN7wg-1
+X-Mimecast-MFC-AGG-ID: IEBbESLJOGKnQEtV8zN7wg_1764249333
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-b7336ad128cso83585566b.1
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:15:32 -0800 (PST)
+ a640c23a62f3a-b763bab126aso78741866b.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:15:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764249331; x=1764854131; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764249332; x=1764854132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AVhaavhb2GPoBraNf9DUEEmc85CVGAd40biEW+z/h1w=;
- b=bPFnO/Dqo0lyJ+WTdztzH4GCeu2WPy5qRma+35Id3j7CvSczRnQWSXfIqaMcIeF9gS
- Cjt0bAG0sasJZeVXtiWk8OrqRzKDTdqiON+TNUDasCUKFeY6pgUNSwmjbHULN/DJYMmW
- oe+RhCLvqkguUNcKS+pi33NWL5fRHfVslgN99xBubu/wmiiWs5yIdaUk2ORb377YvoZP
- lxRcz3JIqPCzXDnIuhHEppcupJWfvTJOmWgrOz3vq0bAH2ZixithznZ9hc47Ey+mz8YO
- 463uBu+Pmxmat6H5sETPlFP8/p+wiCS0IFX/fSDlTFfbPZgG7R4E0yfQaiuNLmmUE7Wf
- ZlSg==
+ :reply-to; bh=Bw7Au92vBEE7EHdF1CnAMWxiCpqWaUehH7lggjaeklw=;
+ b=L9UoAX1aPGzu+VZO7YeLEMvnhMU5CtSDubeP2dGfuKJlmocu/7cMEVA9V6nCMRcFDC
+ Af+aMSUqYKXQNTmgb8k4KlKKRz4jVasOexBA/EISBnVlJ/o7uIUyU9EGpLEK05PpbJ9u
+ YIDRX4/DZMwBIsBKtSD4Xz1Y7jcNH1+9fw6/zqFGnv0iSSzlcIClBGCJetaGDyyeL6CP
+ vqgaFgJ/MXvCnk/vcyAWwUc3AfSgCoD74HzsFCdvBLbahdDzRfhTlAjx+WpZgmnPZsut
+ l1jFq4rCdyrWFA+KrEmco8awUHkE1yHJagrI76nLZLZGYL9ETf2GIZord4iH8clHlUld
+ I4cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764249331; x=1764854131;
+ d=1e100.net; s=20230601; t=1764249332; x=1764854132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=AVhaavhb2GPoBraNf9DUEEmc85CVGAd40biEW+z/h1w=;
- b=kHGWDvTuM0JUblQxb4yRGVzNxe9F9o2/svzGU0JmEEg7RMLcrf/6EeqXUB577xwMP9
- DDtV8JoOOk8iDKHhdqkToifTNwXI9iAbfQlLohdXQt9gHddyWeO/oEe0q9rcq1xJRvbG
- xexG4bKIH3szTOmteOSNoggJDTpKVIJ8vVnaI7okARgsrtlPgCDXnCC8egjGgUDYhuYT
- iuT49NqboWAZfcgtcyqYT5xpl52Oj8CkaJy89FHI7jm7svOFiuX7hIjzHs5je+xo7aJJ
- cZ4SWY7asT2rA0IIij4XtHQVkJvvbYm3KpTzyzC1kegSs8LaC+AH7l7/ffMoWn59OiEh
- h77Q==
-X-Gm-Message-State: AOJu0YwISNlOdDhodlEfdrKeNOUTX6v+LNoRlfEjRlbc84bo8T1C2JzN
- Llh0U8HUR9efRdnctkkhjBcOcXb5pM8GtuNIudc12f37URTJbQTK/UZ6XyPZP7K3K9hOpPrqqXR
- YZUYpdA9Y0xhhDp9XuS99/FFvNinHuGwDZKnV5b/6HYvMaelReAqhKJZztEHChUZ1Iy2B0KA1TN
- sdZsOUmWTHQRvPHMZzCgq/+UiP0j+yHLSAxMPaZfWm
-X-Gm-Gg: ASbGncu+d4/ofGp2FCczO0PDB01K3P7pLBVopjyFGGUl0FGq2r9FPurNfkZRVh6w3bz
- JDCJ5iyLODMXaxvO5Oi7gcsr5mD1P43j6W7qqKrHB1R6n/atA7cXHPpuQcrqcxIMYKuax+a7G31
- Ciojn8jLbfssxyU8d94crLwJRrglkpvNoduUU74aqpiIF37v8PK8AKnid4waSSs2RONLuaCicwX
- UpVwxG1h3JsgiSozfVRZR/3KvtAWnfv/GcCOuqOZGFwSRcWi/LiCUKVZnIkqJZNQCROGPzmQyc7
- lx/9v7SJg4oqx5Mi/uJ6ua9rOj2oHi2qwNNS3YS27nDcZSPvDWBCVqucl6vUSPlQJiDgBupXS7u
- dgKe6EPIKRfrxDfs1Wsujw6Vuq6cjCO5JVjPHbjW05pT8n6/cxfU0KOCTN2JmVaC8bKWqPlO6p/
- skIyip7TXviaNfKkI=
-X-Received: by 2002:a17:907:1b12:b0:b76:7e0e:4246 with SMTP id
- a640c23a62f3a-b76c546da56mr1165980266b.12.1764249330708; 
- Thu, 27 Nov 2025 05:15:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHb7zuvFVDfBZw913/shAVEqGxBXfvMcd4GyLcmQ1qqjnS3/+uV6HknX9zw/NBNxTVFYU4Xcg==
-X-Received: by 2002:a17:907:1b12:b0:b76:7e0e:4246 with SMTP id
- a640c23a62f3a-b76c546da56mr1165976566b.12.1764249330169; 
- Thu, 27 Nov 2025 05:15:30 -0800 (PST)
+ bh=Bw7Au92vBEE7EHdF1CnAMWxiCpqWaUehH7lggjaeklw=;
+ b=S3fUDuJHX4iPnogiNpDxUP9N/6nFsFlEH0T6BXsbPX6+We9ek/TnDMMg7OivVC9Gt6
+ fkFKhQ8ymiPueAdxaIagv8aMGO7oQprfxOKbEgmXcmypWtzowkYM0jIHfS46J9OdlZUS
+ 3aG1vHsQmdysw/35iIzMkMhdnolPJJyKeojthhVy/Dt8vM23wyYEb5OHAx8sEa0FdDS9
+ 7IkInnL9qpLXGVOiyee12eT7lGmfeObU8LL6Hw2z0/h1bkpnTlke6Z9KcZq4iUPva5kR
+ ea6/T5mmwUtR6SAgBxXTdhRRSZZHDNd3TiZR7QEOe41966LtnISRckH589zPFTADLB6u
+ 8zwg==
+X-Gm-Message-State: AOJu0YyvojPVYKDr0X1J7ylUIOiwkgJZZ9jBTp/lO0K4D6VGj0Jhvbgk
+ BWA8K3GoPfMdDX8XisaO34tntq8SeN9LM3xzIgrGEOnn3BsqVWv2BxOGd/v8NBVhVUya96laG6c
+ jdhsC9SlBm17MLLt8oSSYDXnaIjYrB7XCXN/w+t6U797JHA2L4TFJREAX104eZ/tasL3YZzlx6T
+ tdSwJhhm5IUPoNWSsiqGXQnh6nhJ2S4LkT9RU+2Vbl
+X-Gm-Gg: ASbGncuFy+SUeT6eVTOvIG9hf1GRqclPWPwPnqCFLTOnsh9rMMfp0R2ycmVQiDeiH/3
+ EQfCobEjkA494pJ4C+oJiHkzSrJlFD7bk4Ai0hJFA6GVFJdW2bX7QgmYwY1qv6JqhBAiOC1uvb+
+ MWe2yttDRV5eIzawDVGyNfggINAD/5fXWfYdi/qpVZrBxco8ifRDioqtOZmrAg4v9zMYm1XD8EP
+ 5LPd4NlmTtN6NYMb0vkt701xi+rDoa+pZ+25XHBmAcsgXIMF77XGQCA6OcvSeXVQ/vn+zlrRR6l
+ I7fPXK4D0sHw/u1l9tkGC1yR3jne/Ew1/2Wv24GzdDH8LEreHRie4aipaKE96dnWGnpuki7gdy4
+ MFDQpkiQwMiJ+rDLq1ihWQmDhkpl1qSPSNAHd1zUDuZTF8j7rVlzSgeeSAzyppN04K4ImzAgO2F
+ vWYDse2KqgX2Jhb9U=
+X-Received: by 2002:a17:907:1c28:b0:b73:3ced:2f59 with SMTP id
+ a640c23a62f3a-b76715dcc1bmr2659629366b.27.1764249331999; 
+ Thu, 27 Nov 2025 05:15:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHv5zx2oOuKZheCWtSTZ/9HMEYYJjUqgEyqdX8ovI/9vLVYQxRQzFHfn4cbBM5U04UT3GYe6w==
+X-Received: by 2002:a17:907:1c28:b0:b73:3ced:2f59 with SMTP id
+ a640c23a62f3a-b76715dcc1bmr2659623966b.27.1764249331464; 
+ Thu, 27 Nov 2025 05:15:31 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b76f59aed2esm159140266b.42.2025.11.27.05.15.29
+ a640c23a62f3a-b76f519e23esm165885666b.23.2025.11.27.05.15.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Nov 2025 05:15:29 -0800 (PST)
+ Thu, 27 Nov 2025 05:15:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 07/28] include: move hw/fw-path-provider.h to hw/core/
-Date: Thu, 27 Nov 2025 14:14:54 +0100
-Message-ID: <20251127131516.80807-8-pbonzini@redhat.com>
+Subject: [PATCH 08/28] include: move hw/hotplug.h to hw/core/
+Date: Thu, 27 Nov 2025 14:14:55 +0100
+Message-ID: <20251127131516.80807-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251127131516.80807-1-pbonzini@redhat.com>
 References: <20251127131516.80807-1-pbonzini@redhat.com>
@@ -121,168 +121,209 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/{ => core}/fw-path-provider.h | 0
- include/hw/virtio/vhost-scsi-common.h    | 2 +-
- hw/core/fw-path-provider.c               | 2 +-
- hw/core/qdev-fw.c                        | 2 +-
- hw/ppc/mac_newworld.c                    | 2 +-
- hw/ppc/mac_oldworld.c                    | 2 +-
- hw/ppc/pegasos.c                         | 2 +-
- hw/ppc/spapr.c                           | 2 +-
- hw/scsi/vhost-scsi-common.c              | 2 +-
- hw/scsi/vhost-scsi.c                     | 2 +-
- hw/scsi/vhost-user-scsi.c                | 2 +-
- hw/sparc64/sun4u.c                       | 2 +-
- 12 files changed, 11 insertions(+), 11 deletions(-)
- rename include/hw/{ => core}/fw-path-provider.h (100%)
+ include/hw/acpi/cpu.h           | 2 +-
+ include/hw/acpi/cpu_hotplug.h   | 2 +-
+ include/hw/acpi/pcihp.h         | 2 +-
+ include/hw/{ => core}/hotplug.h | 0
+ include/hw/i386/pc.h            | 2 +-
+ include/hw/pci/pcie.h           | 2 +-
+ include/hw/pci/shpc.h           | 2 +-
+ include/hw/qdev-core.h          | 2 +-
+ hw/acpi/acpi-nvdimm-stub.c      | 2 +-
+ hw/acpi/piix4.c                 | 2 +-
+ hw/core/hotplug.c               | 2 +-
+ hw/pci-bridge/pci_bridge_dev.c  | 2 +-
+ hw/pci/pci.c                    | 2 +-
+ hw/pci/pcie_port.c              | 2 +-
+ hw/s390x/css-bridge.c           | 2 +-
+ 15 files changed, 14 insertions(+), 14 deletions(-)
+ rename include/hw/{ => core}/hotplug.h (100%)
 
-diff --git a/include/hw/fw-path-provider.h b/include/hw/core/fw-path-provider.h
+diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+index 95dc58b5adb..a64d19445cc 100644
+--- a/include/hw/acpi/cpu.h
++++ b/include/hw/acpi/cpu.h
+@@ -17,7 +17,7 @@
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/aml-build.h"
+ #include "hw/core/boards.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ 
+ #define ACPI_CPU_HOTPLUG_REG_LEN 12
+ 
+diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
+index 3b932abbbbe..5b670b04eb6 100644
+--- a/include/hw/acpi/cpu_hotplug.h
++++ b/include/hw/acpi/cpu_hotplug.h
+@@ -16,7 +16,7 @@
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/pc-hotplug.h"
+ #include "hw/acpi/aml-build.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "hw/acpi/cpu.h"
+ 
+ typedef struct AcpiCpuHotplug {
+diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+index ca6a2588258..efce5fd2e10 100644
+--- a/include/hw/acpi/pcihp.h
++++ b/include/hw/acpi/pcihp.h
+@@ -29,7 +29,7 @@
+ 
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/aml-build.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ 
+ #define ACPI_PCIHP_IO_BASE_PROP "acpi-pcihp-io-base"
+ #define ACPI_PCIHP_IO_LEN_PROP "acpi-pcihp-io-len"
+diff --git a/include/hw/hotplug.h b/include/hw/core/hotplug.h
 similarity index 100%
-rename from include/hw/fw-path-provider.h
-rename to include/hw/core/fw-path-provider.h
-diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
-index d54d9c916f2..7f34c7cb4fe 100644
---- a/include/hw/virtio/vhost-scsi-common.h
-+++ b/include/hw/virtio/vhost-scsi-common.h
-@@ -16,7 +16,7 @@
+rename from include/hw/hotplug.h
+rename to include/hw/core/hotplug.h
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index ade2da92bad..b3a45ab71a8 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -9,7 +9,7 @@
+ #include "hw/block/flash.h"
+ #include "hw/i386/x86.h"
  
- #include "hw/virtio/virtio-scsi.h"
- #include "hw/virtio/vhost.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
  #include "qom/object.h"
+ #include "hw/i386/sgx-epc.h"
+ #include "hw/cxl/cxl.h"
+diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
+index 42cebcd0338..c880ae1e04b 100644
+--- a/include/hw/pci/pcie.h
++++ b/include/hw/pci/pcie.h
+@@ -25,7 +25,7 @@
+ #include "hw/pci/pcie_regs.h"
+ #include "hw/pci/pcie_aer.h"
+ #include "hw/pci/pcie_sriov.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
  
- #define TYPE_VHOST_SCSI_COMMON "vhost-scsi-common"
-diff --git a/hw/core/fw-path-provider.c b/hw/core/fw-path-provider.c
-index 4840faefd1a..2a9da1aa4a2 100644
---- a/hw/core/fw-path-provider.c
-+++ b/hw/core/fw-path-provider.c
-@@ -16,7 +16,7 @@
-  */
+ typedef struct PCIEPort PCIEPort;
+ typedef struct PCIESlot PCIESlot;
+diff --git a/include/hw/pci/shpc.h b/include/hw/pci/shpc.h
+index ad1089567a0..fce5bdd3bc7 100644
+--- a/include/hw/pci/shpc.h
++++ b/include/hw/pci/shpc.h
+@@ -2,7 +2,7 @@
+ #define SHPC_H
  
+ #include "system/memory.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "hw/pci/pci_device.h"
+ #include "migration/vmstate.h"
+ 
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 018c134011e..8170836d432 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -7,7 +7,7 @@
+ #include "qemu/rcu.h"
+ #include "qemu/rcu_queue.h"
+ #include "qom/object.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "hw/irq.h"
+ #include "hw/resettable.h"
+ 
+diff --git a/hw/acpi/acpi-nvdimm-stub.c b/hw/acpi/acpi-nvdimm-stub.c
+index 65f491d6535..22ba17f5118 100644
+--- a/hw/acpi/acpi-nvdimm-stub.c
++++ b/hw/acpi/acpi-nvdimm-stub.c
+@@ -1,6 +1,6 @@
  #include "qemu/osdep.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
+ #include "hw/mem/nvdimm.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ 
+ void nvdimm_acpi_plug_cb(HotplugHandler *hotplug_dev, DeviceState *dev)
+ {
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index 7a18f18dda2..9e0892a51f8 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -35,7 +35,7 @@
+ #include "qemu/range.h"
+ #include "hw/acpi/cpu_hotplug.h"
+ #include "hw/acpi/cpu.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+ #include "hw/acpi/memory_hotplug.h"
+diff --git a/hw/core/hotplug.c b/hw/core/hotplug.c
+index 17ac9866859..68aabad8ae0 100644
+--- a/hw/core/hotplug.c
++++ b/hw/core/hotplug.c
+@@ -10,7 +10,7 @@
+  * See the COPYING file in the top-level directory.
+  */
+ #include "qemu/osdep.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
  #include "qemu/module.h"
  
- char *fw_path_provider_get_dev_path(FWPathProvider *p, BusState *bus,
-diff --git a/hw/core/qdev-fw.c b/hw/core/qdev-fw.c
-index a31958355ff..a587d2ddf90 100644
---- a/hw/core/qdev-fw.c
-+++ b/hw/core/qdev-fw.c
-@@ -16,7 +16,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "hw/qdev-core.h"
- 
- const char *qdev_fw_name(DeviceState *dev)
-diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
-index bdc6c7ed7fe..3a6e47eb8b7 100644
---- a/hw/ppc/mac_newworld.c
-+++ b/hw/ppc/mac_newworld.c
-@@ -66,7 +66,7 @@
- #include "hw/misc/macio/macio.h"
- #include "hw/ppc/openpic.h"
- #include "hw/loader.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "elf.h"
- #include "qemu/error-report.h"
- #include "system/kvm.h"
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index 8d35080b9d1..8f9ce68b8b0 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -43,7 +43,7 @@
- #include "hw/char/escc.h"
- #include "hw/misc/macio/macio.h"
- #include "hw/loader.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "elf.h"
- #include "qemu/error-report.h"
- #include "system/kvm.h"
-diff --git a/hw/ppc/pegasos.c b/hw/ppc/pegasos.c
-index 3b48a54e7a0..e7396a729f3 100644
---- a/hw/ppc/pegasos.c
-+++ b/hw/ppc/pegasos.c
-@@ -26,7 +26,7 @@
- #include "system/qtest.h"
- #include "hw/core/boards.h"
- #include "hw/loader.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "elf.h"
- #include "qemu/log.h"
- #include "qemu/error-report.h"
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 6f2d10330d6..7c695ac4ecc 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -43,7 +43,7 @@
- #include "system/reset.h"
- #include "system/runstate.h"
- #include "qemu/log.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "elf.h"
- #include "net/net.h"
- #include "system/device_tree.h"
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index 43525ba46d3..0bb4305de61 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -24,7 +24,7 @@
- #include "hw/virtio/virtio-scsi.h"
- #include "hw/virtio/virtio-bus.h"
- #include "hw/virtio/virtio-access.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- 
- int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
- {
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index cdf405b0f86..b356bd9762e 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -26,7 +26,7 @@
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/virtio-scsi.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
+ void hotplug_handler_pre_plug(HotplugHandler *plug_handler,
+diff --git a/hw/pci-bridge/pci_bridge_dev.c b/hw/pci-bridge/pci_bridge_dev.c
+index b328e50ab31..cb4809f38b1 100644
+--- a/hw/pci-bridge/pci_bridge_dev.c
++++ b/hw/pci-bridge/pci_bridge_dev.c
+@@ -30,7 +30,7 @@
  #include "hw/qdev-properties.h"
- #include "qemu/cutils.h"
- #include "system/system.h"
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 25f2d894e7c..0d7bbb52aba 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -18,7 +18,7 @@
+ #include "system/memory.h"
+ #include "hw/pci/pci_bus.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_PCI_BRIDGE_DEV      "pci-bridge"
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e03953813c2..02a59f355b6 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -45,7 +45,7 @@
+ #include "trace.h"
+ #include "hw/pci/msi.h"
+ #include "hw/pci/msix.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ #include "hw/core/boards.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "qapi/error.h"
+diff --git a/hw/pci/pcie_port.c b/hw/pci/pcie_port.c
+index f3841a26568..20b5e4cfb51 100644
+--- a/hw/pci/pcie_port.c
++++ b/hw/pci/pcie_port.c
+@@ -22,7 +22,7 @@
+ #include "hw/pci/pcie_port.h"
+ #include "hw/qdev-properties.h"
+ #include "qemu/module.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
+ 
+ void pcie_port_init_reg(PCIDevice *d)
+ {
+diff --git a/hw/s390x/css-bridge.c b/hw/s390x/css-bridge.c
+index 0f87b8c5c44..f3b6ef56300 100644
+--- a/hw/s390x/css-bridge.c
++++ b/hw/s390x/css-bridge.c
+@@ -12,7 +12,7 @@
+ 
  #include "qemu/osdep.h"
  #include "qapi/error.h"
- #include "qemu/error-report.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "hw/qdev-core.h"
+-#include "hw/hotplug.h"
++#include "hw/core/hotplug.h"
  #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 961d599f48d..62ceb7eef4d 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -54,7 +54,7 @@
  #include "hw/sysbus.h"
- #include "hw/ide/pci.h"
- #include "hw/loader.h"
--#include "hw/fw-path-provider.h"
-+#include "hw/core/fw-path-provider.h"
- #include "elf.h"
- #include "trace.h"
- #include "qom/object.h"
+ #include "qemu/bitops.h"
 -- 
 2.51.1
 
