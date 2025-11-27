@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1658C8FB61
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1BBC8FB67
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 18:34:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOfsh-0004TU-Ch; Thu, 27 Nov 2025 12:34:11 -0500
+	id 1vOfsh-0004Tb-G0; Thu, 27 Nov 2025 12:34:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsb-0004Rt-V7
+ id 1vOfsb-0004Rl-TH
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:05 -0500
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vOfsX-0001GG-19
+ id 1vOfsW-0001GL-Po
  for qemu-devel@nongnu.org; Thu, 27 Nov 2025 12:34:04 -0500
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id D640080DF1;
- Thu, 27 Nov 2025 20:33:56 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7213680DF2;
+ Thu, 27 Nov 2025 20:33:57 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:834::1:7])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id rXiJgL0F7Os0-6LvukXpO; Thu, 27 Nov 2025 20:33:56 +0300
+ ESMTPSA id rXiJgL0F7Os0-QM1lMLMF; Thu, 27 Nov 2025 20:33:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1764264836;
- bh=JHAhwuo2n4HbMnqt206gdLWBdiRPW678482/oYIg4wM=;
+ s=default; t=1764264837;
+ bh=6vx3WhUktEBcatqeazVbFbGZoG58FOOHtw8XzeX1II8=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=oM+qDcYEa/PzVv3ijIB74FIStnKFhyKMSccO82PrNAJ+MIBjJSwoQ+g/vpOcJDnWk
- FFn86CJMpvWvxms/2he6EvNyEJIcrVFhgohMXEei+lbtpyXF44HVrVldU4AdkY7KNc
- /J36YMEd03bSMdLGRnYAvwzo3po4ESDljnKlRano=
+ b=ITvSI1GaRss+iwKWRSeTF0cgc/Ff62rOXTEzm04ExAGCGCdNwBVJinS5LSrP5McUX
+ AymT//hriMWJ6/Y/GCmYRwg2UEY5luV1y2gIX4LjcM5t32YOcwS/ofSro31Nm9iadL
+ 0tYkaAcDQpNWj/BLEI061IgFhW1iSvhxWcEvyL4Q=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,10 +41,10 @@ To: dave@treblig.org,
 	armbru@redhat.com
 Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru
-Subject: [PATCH 3/5] monitor: rework monitor_cur_is_qmp() into
- monitor_cur_is_hmp()
-Date: Thu, 27 Nov 2025 20:33:50 +0300
-Message-ID: <20251127173352.283731-4-vsementsov@yandex-team.ru>
+Subject: [PATCH 4/5] error: print error_report timestamp when QMP monitor is
+ active
+Date: Thu, 27 Nov 2025 20:33:51 +0300
+Message-ID: <20251127173352.283731-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251127173352.283731-1-vsementsov@yandex-team.ru>
 References: <20251127173352.283731-1-vsementsov@yandex-team.ru>
@@ -74,55 +74,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Condition in error_vprintf() becomes simpler. Also we are going
-to reuse monitor_cur_is_hmp() in the following commit.
+We skip printing timestamp when _any_ monitor is active. But
+then, in production (where QMP is usually used) we lack timestamps
+in logs.
+
+Let's go a bit further, and use same logic to detect HMP monitor
+in the whole util/error-report.c like in error_vprintf().
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/monitor/monitor.h | 2 +-
- monitor/monitor.c         | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ stubs/monitor-core.c           |  5 +++++
+ tests/unit/test-util-sockets.c |  1 +
+ util/error-report.c            | 23 ++++++++++++++---------
+ 3 files changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
-index 296690e1f1..b531108eeb 100644
---- a/include/monitor/monitor.h
-+++ b/include/monitor/monitor.h
-@@ -15,7 +15,7 @@ extern QemuOptsList qemu_mon_opts;
- 
- Monitor *monitor_cur(void);
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon);
--bool monitor_cur_is_qmp(void);
-+bool monitor_cur_is_hmp(void);
- 
- void monitor_init_globals(void);
- void monitor_init_globals_core(void);
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index b5007c1851..8ca17e9326 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -109,11 +109,11 @@ Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
- /**
-  * Is the current monitor, if any, a QMP monitor?
-  */
--bool monitor_cur_is_qmp(void)
-+bool monitor_cur_is_hmp(void)
- {
-     Monitor *cur_mon = monitor_cur();
- 
--    return cur_mon && monitor_is_qmp(cur_mon);
-+    return cur_mon && !monitor_is_qmp(cur_mon);
+diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
+index 1894cdfe1f..275cb0cbfa 100644
+--- a/stubs/monitor-core.c
++++ b/stubs/monitor-core.c
+@@ -7,6 +7,11 @@ Monitor *monitor_cur(void)
+     return NULL;
  }
  
- /**
-@@ -275,7 +275,7 @@ int error_vprintf(const char *fmt, va_list ap)
++bool monitor_cur_is_hmp(void)
++{
++    return false;
++}
++
+ Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
  {
-     Monitor *cur_mon = monitor_cur();
+     return NULL;
+diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
+index ee66d727c3..4b7f408902 100644
+--- a/tests/unit/test-util-sockets.c
++++ b/tests/unit/test-util-sockets.c
+@@ -74,6 +74,7 @@ int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
+ Monitor *monitor_cur(void) { return cur_mon; }
+ Monitor *monitor_set_cur(Coroutine *co, Monitor *mon) { abort(); }
+ int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap) { abort(); }
++bool monitor_cur_is_hmp(void) { return false; }
  
--    if (cur_mon && !monitor_cur_is_qmp()) {
-+    if (monitor_cur_is_hmp()) {
-         return monitor_vprintf(cur_mon, fmt, ap);
+ #ifndef _WIN32
+ static void test_socket_fd_pass_name_good(void)
+diff --git a/util/error-report.c b/util/error-report.c
+index 1b17c11de1..7ffbcf2123 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -144,7 +144,7 @@ static void print_loc(void)
+     int i;
+     const char *const *argp;
+ 
+-    if (!monitor_cur() && g_get_prgname()) {
++    if (!monitor_cur_is_hmp() && g_get_prgname()) {
+         error_printf("%s:", g_get_prgname());
+         sep = " ";
      }
-     return vfprintf(stderr, fmt, ap);
+@@ -188,15 +188,20 @@ static void vreport(report_type type, const char *fmt, va_list ap)
+ {
+     gchar *timestr;
+ 
+-    if (message_with_timestamp && !monitor_cur()) {
+-        timestr = real_time_iso8601();
+-        error_printf("%s ", timestr);
+-        g_free(timestr);
+-    }
++    if (!monitor_cur_is_hmp()) {
++        if (message_with_timestamp) {
++            timestr = real_time_iso8601();
++            error_printf("%s ", timestr);
++            g_free(timestr);
++        }
+ 
+-    /* Only prepend guest name if -msg guest-name and -name guest=... are set */
+-    if (error_with_guestname && error_guest_name && !monitor_cur()) {
+-        error_printf("%s ", error_guest_name);
++        /*
++         * Only prepend guest name if -msg guest-name and -name guest=...
++         * are set.
++         */
++        if (error_with_guestname && error_guest_name) {
++            error_printf("%s ", error_guest_name);
++        }
+     }
+ 
+     print_loc();
 -- 
 2.48.1
 
