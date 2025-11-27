@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9BFC8E704
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D906BC8E70A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:22:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vObwI-0007YD-EB; Thu, 27 Nov 2025 08:21:38 -0500
+	id 1vObwD-0006c4-2k; Thu, 27 Nov 2025 08:21:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObve-0005Yg-2c
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:21:04 -0500
+ id 1vObvj-0005dM-UU
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:21:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vObvc-000273-4c
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:20:57 -0500
+ id 1vObvg-000284-JC
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:21:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764249655;
+ s=mimecast20190719; t=1764249658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/Pepi6jeH9DfFFMv3XK3Bu8X8CyejOzTLvd3kGqRwko=;
- b=OpqzDL75wHrx/BHrbjmdu24LnElp/cSZiydpUnqos9a4aztvWzqhVQs2S59aDqrfYGodSP
- u1qIQsvoYKmr0o1qpwTMb9k9yXJh0whvqScmPxSH3bffeUtqvbkjJeLwDmow/EnI5Ohw1g
- 8dgvNlcGCKIgoNIqNzpD8zUwQvZuKxs=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
+ b=T+uO4cp98xD1lWMC5n54Aha/DksMS1EP4PGSBGkAJwH0TCMGxISDjrEbS21C7MqZc+1zYp
+ Th/CPALv6dcq5lABIV3TDwMg8PDvqG9b4RuW5vFIxf57n2gCpoMCo0B/JRc5zEeLy+WvJ/
+ vrObl7s6wmOJDVHlAYXHILsu0rN0YiI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-oWZv3z1GOBWJ2gyL7s3g4Q-1; Thu, 27 Nov 2025 08:20:54 -0500
-X-MC-Unique: oWZv3z1GOBWJ2gyL7s3g4Q-1
-X-Mimecast-MFC-AGG-ID: oWZv3z1GOBWJ2gyL7s3g4Q_1764249653
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-b76eaf310f6so217326966b.1
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:20:54 -0800 (PST)
+ us-mta-410-c-OhUnlWNxaBrz9DRHw4HQ-1; Thu, 27 Nov 2025 08:20:57 -0500
+X-MC-Unique: c-OhUnlWNxaBrz9DRHw4HQ-1
+X-Mimecast-MFC-AGG-ID: c-OhUnlWNxaBrz9DRHw4HQ_1764249656
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b70b1778687so66651466b.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:20:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764249652; x=1764854452; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764249656; x=1764854456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Pepi6jeH9DfFFMv3XK3Bu8X8CyejOzTLvd3kGqRwko=;
- b=s00Btp5t2/XMnJ2bkjbvZuopObWund7Kz3bl7qfu7ri8K4tXqOQYYd19/VjJ0ckhUc
- oDSdq1Y9rAyqiOQej2hc6I0TKh1hkw4tcVzyJsy9jjasyCIjPhe/IBoPY38bVkrfKvHc
- cozbxzoMDSEVbWDfJjIVPEKUsF0q6pIFM004+7EN4i3M/jwrwT/F5LbGkZE8P4we4Ren
- YwcOGVzT6ShR75k7HTIQKcqgFrpzg6FW53GHRXrndFihkrVUclTkmZ3+RY34h6Cvi6eD
- YWnUz6jdxuzb1DyksHIguNOrdTzWaGGH3zCGwiRa1ipjYvczDoOC/g4JvmiGsFvogk50
- OZ6g==
+ bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
+ b=AbUhf2c6BFCvURO3nxuIzJFb1EIp1Fk/WEYhEmYgJCHda9rgBYvxRiUoyrX0vJG4qy
+ T7FE7Mxdzfk2ZTm5HRaLV4HEq5W7pe8gpb9l422t2xvCGWq2/9yONd0moLCyU0fqFyRL
+ Iwampp12nxmD8ndZDR6DugAITrpUykGeNG8H812z8hf5aeSvcuPYNWZey/dIxZZaPxjH
+ aMxcuB9j+Xa8gzVo6riM8vl7NdxrwyWN+WY/uOYS5L8sa0wKsL9oNXnmC8B1m0N36mJX
+ nc4k73Mmim2QUHFpL0piui/r2Gkh83aa67gE6cH32GwdQDKQeTGt9HaVZxCUn7Na2dKZ
+ 5Csg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764249652; x=1764854452;
+ d=1e100.net; s=20230601; t=1764249656; x=1764854456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/Pepi6jeH9DfFFMv3XK3Bu8X8CyejOzTLvd3kGqRwko=;
- b=QGO7nf2W46w26VQAnYXEvEAGDd8ml+c5+f1yHnXGh/+9RKI2SCcnxjHLKIKssxQPx7
- OKMX8H4769EC+FuLaqr5ki6PytEK6QhnW7YK+yR33BEHw1B5zuckSwNUO/GKENeAr/T3
- tOoeF9KE77Ig4xdWzDlcXe19QJSZc5+7u1QOdz7PI1BFkQsmGyCwld/aUvr6iIB7IdjJ
- /kf2xd35nbX/Ub7aK96DJjIKzt8qBCif7zQR1sXmrYiNw5x85P9CzDfHSOguwI5g8AAt
- 3d9yTY68pG9YVTG6Y44uflNl1CKOF0TbAErH9ys+t9cNKDeRIwCAygj8xZ+a/pV8ChsC
- USag==
-X-Gm-Message-State: AOJu0Yx7wq+eTZnl6eIjXoS+am33XwOupmmW1DWFk14qZvset5Z3F9Ss
- lXuy1RJguXIHc8pOHHk0zYt471yftz2EpwWBmKPDK2ajDb29pDuW2znDqbx0AUTVm5pB1ANFkTS
- VH3QDURwOXhcEK4vC5kNGMyWma14OP5CqwUc1EmcbV7qrAZh+IBGaUurfODkLCfMRDajflK3cWx
- V7oMxE05up6F2meZ1x87kG1m/tGz1blHBTwvPoeudw
-X-Gm-Gg: ASbGncu3SVKbQekk9vB9LbGYCNDzMp2xfeYqbP54aTr5moRttT/0hvnZEfsTXW+j/vv
- BM0CgVEUYhy/GUmZ2KzyJhmd75SzDHQqfvWujK4B99SfpwUr/XfVPHNFVP3PcbWAazZnswynXFu
- I4BvE0mo1XhLs3/Go1ZmNLGIyCLaR7VEPcRnuoVvanI678onYZ2+kFSwQhB4o3DKikfaz8kswNE
- tjo6jjqTi9DqtjE+MznnmCnZB58WJxeo2O0Cp5Y4QJBet//Zoye98CjEU9pK4xnzwhvpGw7bftn
- PR8V0/pqxJx8vs97cmpFHnI+51IwIULSFSGZpD2HHERSwmYnZQ/yow1JIQz6nmxJJD1W2XQZsiZ
- KbTfjKtm/jU8WgytOLtxim1wYhd2LFWUkXJuRZr1TVMCFTYklTVUHRsbw8jR2BuljBKmq1Tn8B0
- a5SlhzNLLGWLxF/ME=
-X-Received: by 2002:a17:907:7f02:b0:b76:25fd:70e5 with SMTP id
- a640c23a62f3a-b7657172f39mr2965549366b.9.1764249652499; 
- Thu, 27 Nov 2025 05:20:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHrG1KsgGUtAnUytaISRdYHjVYWool3bGVjcqpuHMouu1tGFNLcWGETNobColG90nPIVwj/dw==
-X-Received: by 2002:a17:907:7f02:b0:b76:25fd:70e5 with SMTP id
- a640c23a62f3a-b7657172f39mr2965545266b.9.1764249652018; 
- Thu, 27 Nov 2025 05:20:52 -0800 (PST)
+ bh=35cW+AZMPXzQdRbMH+IdIxqC+JST8jSEuSl2qWTOWks=;
+ b=BdCyrHslDKRZAqM2zotX3q7dxEHtDQV25dEEd5fjdQhvv3gXefo9HKLd54kJyXcf7F
+ hj+SP8W50pNqjMjYVGR6Cdx9zv0bR3p7crIr7rqE7wxeteUs+3E/GAgKKOnlkIAjnMgQ
+ HGKbvjRjZ9Ddj0AheK9fkQgqWf6zHMWwvE9lWfXH6JjJa9V6hZ52WP1qrHWYriXGDrij
+ aAUZDih/fDTskCxH2erHRNub8sII/rZFocnouxfXnlEwTxNRLI5qkWHNJEEUNz2S2ekF
+ rSoADOwbI4BsgT6RMhOTyKwIjEjeOKyOToBgvPyGcYLWJW8th1pldi0duH3owBzNGsly
+ 9Zmw==
+X-Gm-Message-State: AOJu0Yx1Q/ohg9Uj8okzwNvu9Yu40Pc2HQKE+QQClCNAcw1APRP+dAUa
+ ykRsobz2RDMQC7Hqk+dgZcQ9Xni35TfWYg7sgRdB9Yx1kWOY82Z/khjMeR6/lNDPB1gixESgS2i
+ FijwtLjtXP5NUZ06ZxdXqtH36t0yuRnVuL1Jpf3eU9Y1iaJ4A5VPrjQg2/8em/bR7g8bfpMazhT
+ 2IQj5DwIumGv5lwCT4V7yJvjSh6OJVyVDjjiywodUU
+X-Gm-Gg: ASbGncvM03wPAdTgkHZ8TfYatRfK2MNSUxHgwchO7ZPYa+3KTCw4Sr90VN/YnsCf4kD
+ OdjuxVO6QRn8315f/XeuD9XEzNd31Pi2CAHBz+9TohsW+W5KhNgEJk9ftVNy6Qy39QElU0IwiVC
+ gE17C1u38XYl25NBIzLru7w5Dw9nVSI5X33p/Wuf7yvifvKQv/llUHMl7HeJeXHCgCoXscRfdhU
+ yTrLCZblAwbYvmPFvWD19vmkW71COVAs2HeC0WSCI0N8Kh4/6Dbk+Q+O/gKlbGIPjgLxU7t2M8B
+ Jq01BqYBxVz7R3XJDLS28hEDX26pYrVqwnUQ0cfk+UBCUpUtVf6KFse9BKQfeSlst0M4h+locm+
+ 4D3YCB7p2QmFiEwwRlHRHyCPfIxf60qcciyG50Ln/LYT1ILYS5PutJW/5bcYAwxhUXEfwgv8sSX
+ DymVBnjSKQztKCVjs=
+X-Received: by 2002:a17:907:2d11:b0:b73:853d:540e with SMTP id
+ a640c23a62f3a-b767170c823mr2707245666b.30.1764249655063; 
+ Thu, 27 Nov 2025 05:20:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLkSAX/ex76yeg+naPEWLopgu3EY8SdxOS3m/Q7KCanmYDR6Wnsq+TcIYxujg2u6gn2qQCRQ==
+X-Received: by 2002:a17:907:2d11:b0:b73:853d:540e with SMTP id
+ a640c23a62f3a-b767170c823mr2707242666b.30.1764249654592; 
+ Thu, 27 Nov 2025 05:20:54 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.119.13])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b76f519e2f0sm163084466b.21.2025.11.27.05.20.50
+ a640c23a62f3a-b76f5162c5csm168898566b.6.2025.11.27.05.20.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Nov 2025 05:20:50 -0800 (PST)
+ Thu, 27 Nov 2025 05:20:53 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 6/9] rust: fix reference to MemoryRegion
-Date: Thu, 27 Nov 2025 14:20:33 +0100
-Message-ID: <20251127132036.84384-7-pbonzini@redhat.com>
+Subject: [PATCH 7/9] rust: move strict lints handling to meson.build
+Date: Thu, 27 Nov 2025 14:20:34 +0100
+Message-ID: <20251127132036.84384-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251127132036.84384-1-pbonzini@redhat.com>
 References: <20251127132036.84384-1-pbonzini@redhat.com>
@@ -104,7 +104,7 @@ X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,26 +120,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the wrapper struct, not the C one.
+Simplify rustc_args.py, and align its code with what Meson's own Cargo.toml
+translator does in v1.10.
+
+Bump unknown_lints to "forbid", so that it will certainly override Cargo.toml's
+"allow" level.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/bql/src/cell.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build                |  7 +++----
+ scripts/rust/rustc_args.py | 20 ++------------------
+ 2 files changed, 5 insertions(+), 22 deletions(-)
 
-diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
-index 8ade7db629c..435d6663ac4 100644
---- a/rust/bql/src/cell.rs
-+++ b/rust/bql/src/cell.rs
-@@ -42,7 +42,7 @@
- //! references to an object and yet mutate it. In particular, QEMU objects
- //! usually have their pointer shared with the "outside world very early in
- //! their lifetime", for example when they create their
--//! [`MemoryRegion`s](crate::bindings::MemoryRegion).  Therefore, individual
-+//! [`MemoryRegion`s](system::MemoryRegion).  Therefore, individual
- //! parts of a  device must be made mutable in a controlled manner; this module
- //! provides the tools to do so.
- //!
+diff --git a/meson.build b/meson.build
+index 270181038bf..e6a11cefdb7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -128,14 +128,13 @@ if have_rust
+   rustc_args = [find_program('scripts/rust/rustc_args.py'),
+     '--rustc-version', rustc.version(),
+     '--workspace', meson.project_source_root() / 'rust']
+-  if get_option('strict_rust_lints')
+-    rustc_args += ['--strict-lints']
+-  endif
+-
+   rustfmt = find_program('rustfmt', required: false)
+ 
+   rustc_lint_args = run_command(rustc_args, '--lints',
+      capture: true, check: true).stdout().strip().splitlines()
++  if get_option('strict_rust_lints')
++    rustc_lint_args += ['-Dwarnings', '-Funknown_lints']
++  endif
+ 
+   # Apart from procedural macros, our Rust executables will often link
+   # with C code, so include all the libraries that C code needs.  This
+diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
+index 63b0748e0d3..8fb77785350 100644
+--- a/scripts/rust/rustc_args.py
++++ b/scripts/rust/rustc_args.py
+@@ -35,8 +35,6 @@
+ except ImportError:
+     import tomli as tomllib
+ 
+-STRICT_LINTS = {"unknown_lints", "warnings"}
+-
+ 
+ class CargoTOML:
+     tomldata: Mapping[Any, Any]
+@@ -82,7 +80,7 @@ class LintFlag:
+     priority: int
+ 
+ 
+-def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[str]:
++def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
+     """Converts Cargo.toml lints to rustc -A/-D/-F/-W flags."""
+ 
+     toml_lints = cargo_toml.lints
+@@ -104,13 +102,6 @@ def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[s
+             else:
+                 raise Exception(f"invalid level {level} for {prefix}{lint}")
+ 
+-            if not (strict_lints and lint in STRICT_LINTS):
+-                lint_list.append(LintFlag(flags=[flag, prefix + lint], priority=priority))
+-
+-    if strict_lints:
+-        for lint in STRICT_LINTS:
+-            lint_list.append(LintFlag(flags=["-D", lint], priority=1000000))
+-
+     lint_list.sort(key=lambda x: x.priority)
+     for lint in lint_list:
+         yield from lint.flags
+@@ -187,13 +178,6 @@ def main() -> None:
+         required=False,
+         default="1.0.0",
+     )
+-    parser.add_argument(
+-        "--strict-lints",
+-        action="store_true",
+-        dest="strict_lints",
+-        help="apply stricter checks (for nightly Rust)",
+-        default=False,
+-    )
+     args = parser.parse_args()
+     if args.verbose:
+         logging.basicConfig(level=logging.DEBUG)
+@@ -207,7 +191,7 @@ def main() -> None:
+         cargo_toml = CargoTOML(args.cargo_toml, None)
+ 
+     if args.lints:
+-        for tok in generate_lint_flags(cargo_toml, args.strict_lints):
++        for tok in generate_lint_flags(cargo_toml):
+             print(tok)
+ 
+     if rustc_version >= (1, 80):
 -- 
 2.51.1
 
