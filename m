@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007EBC8C699
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 01:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05245C8C69A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 01:13:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOPd4-0002jw-LR; Wed, 26 Nov 2025 19:12:58 -0500
+	id 1vOPd6-0002lA-E5; Wed, 26 Nov 2025 19:13:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3gpcnaQcKCp8M9UHCDLFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--navidem.bounces.google.com>)
- id 1vOPd1-0002gy-Sp
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:12:55 -0500
-Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
+ <3hZcnaQcKCqIPCXKFGOIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--navidem.bounces.google.com>)
+ id 1vOPd4-0002kV-Ff
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:12:58 -0500
+Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3gpcnaQcKCp8M9UHCDLFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--navidem.bounces.google.com>)
- id 1vOPd0-0005yY-7D
- for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:12:55 -0500
-Received: by mail-pf1-x449.google.com with SMTP id
- d2e1a72fcca58-7b8a12f0cb4so213889b3a.3
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 16:12:52 -0800 (PST)
+ <3hZcnaQcKCqIPCXKFGOIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--navidem.bounces.google.com>)
+ id 1vOPd2-0005yf-Mi
+ for qemu-devel@nongnu.org; Wed, 26 Nov 2025 19:12:58 -0500
+Received: by mail-pl1-x649.google.com with SMTP id
+ d9443c01a7336-2958a134514so3874975ad.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 16:12:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1764202371; x=1764807171; darn=nongnu.org;
+ d=google.com; s=20230601; t=1764202374; x=1764807174; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=uSoBoVL9DjBHsGRfYe8XYLj51gZGrhVymhTsNNjP0Es=;
- b=UGAP/f5hKXHhGmQRvJFovwh1ZdOKhVCt2MUhDq8GqyJLqvYJ20vk0Y8Y2Bzgw4EKYJ
- Y0osPKsygHXZ9blXHM8usA7hrzaq3GzI9yMAWEAmhd2g18D/+y+N2GiChqflsy2dN/u9
- kHb3FSxh/n/6+6DETiCpgekQorxYZVqU2T9l7tdqdjmEfifY6E9kvigjmnPuxwzp+hE4
- NjQEWtFIaaJQUMEnicJ4CBh4Tu6zOv5bk6wgDz3WREpHOlMRCOx7EsOtDfnNHgTHXh30
- 6Tg+uNL5YCUCExhaey6pi4i9Tl+emVbLWIxNotwrVeguRUOKOp4lHVXgjb24e9RCDVp4
- t0gw==
+ bh=LeSHcCma73ddYicqojpjXZ31wT8UUBvPT9dLg7HewLA=;
+ b=jmEFVLlD8MMrer1J3HUXticKTG6e4/hfav1M5ChJqlma15wFtuq8vBzn8FrCwra2AY
+ OXbbYD91+0+ULWwqbY62mdlcJ8ty/eQ9z5HFKK7+RhGMiR4dWS2QW21nu/PUSg9djZoW
+ twnYwXanir+vd/6OA56huRmHs6B20AA+kEPyjueri/iIXvJE57DCfF1SI7/21ulKJwd7
+ I2rugnyNxzrT5M6OMZa4yZ2/S7WcVZHDsWnP/6PZEcS2miglOxwkhCtU81U6l3jOmOQv
+ Qvb7CyGMwWDR38rJmN3pW1L2huPrLSsQV4F9xv/oB8080EvOYbUtm9IzUrJ6uupEHt8B
+ 07rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764202371; x=1764807171;
+ d=1e100.net; s=20230601; t=1764202374; x=1764807174;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uSoBoVL9DjBHsGRfYe8XYLj51gZGrhVymhTsNNjP0Es=;
- b=bEzG2wq0XnehFXH0MIbZmtNacFWRiklIiMPb0Pur1Js/UdNiiaoluQIcmP+0UFWKmt
- biYnMxdGwKHlgL/LVJGHmdx5+gSSJCtMzg8keW2WGKsNnJbjJJdejUaXvJ5jJbLY9ZS0
- cXKYOTOcpSmKCKLv36ztz42h+0nWISqByz8qaW3wBF8En9fBVkXQ9G5DJv9nU4GgOFqZ
- faePaHnEcogDaxSLI5qFr7rOZ2QxSk03RPcXiW9/VfQKE7OoBMqHfp3bhjOElYv65vlH
- UaFTaro5q2Jew96KHorRDbxelbrNhOjDZXZpkSrFrCekXwOUavFMgVkJUHYyQ1DRXvpR
- /tDg==
-X-Gm-Message-State: AOJu0YwtMo5ePgIlsU7GjSyiFYVrTeWLhymxLn6sovRgZ4JRT9oIWEL/
- RtkXqpfNpO8rzc7rNlfDLC9449NgPT4d+6bIcXG5wxwn0srcAotyTtyIbLwoGcF6h19LUypyHlP
- GFkhWe/1uAM3fM9dlMn+15cB3Rg+zleIp2J/rtGbXlMRW0gi3h3k7mySrJHIGuMKTn9HNItehBl
- 0fWgsSNcfdVLpsdAuAfcgCcUaoazcP7tV9vL4kXni1
-X-Google-Smtp-Source: AGHT+IEC4YBp8uF6bdbTNFhbtdJ2yCP/6X8FcBczQ40MwhRjxugIjCGomGqGPPltM2dZRabS6DH5mc5sAiTm
-X-Received: from pfmu8.prod.google.com ([2002:aa7:8388:0:b0:799:398b:a4a])
+ bh=LeSHcCma73ddYicqojpjXZ31wT8UUBvPT9dLg7HewLA=;
+ b=D06ZNwoCoCl5rv1FhmWA274DNxS4o6DByXSFSxJ6ue+cYoSrPXEnRy5Em0C+VXOtf6
+ OzDNSYGBNUcR2Glue7GNRnSfYY0bVo7Zi31Ij0mVwsiARW0G+wke1C9/yeygNEMyUVvQ
+ 6oMM1Pci5Qv0a7YB+PWQXxGgSHa/Kk+ttvqb1mS8AMu6Dsr3ugLQJ4GaSnY2XNI6t7eE
+ g/orN+zD/nSFBGDKJbp6fQhpirC7bGjZ4lLBClWr8IzUBhqyElllBoT5hsi7i7VM1pwH
+ lApADHrzdE3P1ShmcSgl44ntwuzfF0jx9QT8Ko9Z5fk9smHJtOLFbaAEb6mk/S8vxn8n
+ CwJA==
+X-Gm-Message-State: AOJu0YxAMuXCWqTIEVpkz+mT2Q7gDp3NsmC7mDYqkhiAdPRRMw6CwJCM
+ pyUoiNd7f+E8XX2Y04yMXvxB1wssLwzFjZbIn7+0O/v5wu558Y5giADUrJh97xsmCMocrWXnZHc
+ vyY7vGZReJ01xFsAatr/a9oczbkUgAyiiFutrO5wQ9FqH/yJJICok7gD1GbUwR7sBAsBj6b9Z9R
+ 4eGkYjpsJpLzYOadnPXMW7b1mJeQGips/wu/DwYK+D
+X-Google-Smtp-Source: AGHT+IEonIG05F5DKSlGvsdxry2o3lDIvp64kc0KQCKQP426xBVLSkzprliwVJhouRXPMmn82VZfFXFAFJyg
+X-Received: from plkh11.prod.google.com ([2002:a17:903:19eb:b0:298:465f:129])
  (user=navidem job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2191:b0:7a3:455e:3fa5
- with SMTP id d2e1a72fcca58-7ca8627223fmr8934127b3a.0.1764202370871; Wed, 26
- Nov 2025 16:12:50 -0800 (PST)
-Date: Thu, 27 Nov 2025 00:12:42 +0000
-In-Reply-To: <CAFEAcA-hyn0B-yWE1=g4+NN9=NBjWvk-P8qrAk9L4vpAZpUYvQ@mail.gmail.com>
+ 2002:a17:903:2341:b0:295:1a63:57b0
+ with SMTP id d9443c01a7336-29baafca153mr90234845ad.23.1764202373663; Wed, 26
+ Nov 2025 16:12:53 -0800 (PST)
+Date: Thu, 27 Nov 2025 00:12:43 +0000
+In-Reply-To: <20251127001247.1672873-1-navidem@google.com>
 Mime-Version: 1.0
 References: <CAFEAcA-hyn0B-yWE1=g4+NN9=NBjWvk-P8qrAk9L4vpAZpUYvQ@mail.gmail.com>
+ <20251127001247.1672873-1-navidem@google.com>
 X-Mailer: git-send-email 2.52.0.158.g65b55ccf14-goog
-Message-ID: <20251127001247.1672873-1-navidem@google.com>
-Subject: [PATCH v2 0/5] tests/qtest: Rework libqos PCI BAR handling to support
- fuzzing
+Message-ID: <20251127001247.1672873-2-navidem@google.com>
+Subject: [PATCH v2 1/5] libqos: pci: Handle zero-sized BARs gracefully
 From: Navid Emamdoost <navidem@google.com>
 To: qemu-devel@nongnu.org, peter.maydell@linaro.org
 Cc: farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com, zsm@google.com, 
  alxndr@bu.edu, Navid Emamdoost <navidem@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
- envelope-from=3gpcnaQcKCp8M9UHCDLFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--navidem.bounces.google.com;
- helo=mail-pf1-x449.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
+ envelope-from=3hZcnaQcKCqIPCXKFGOIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--navidem.bounces.google.com;
+ helo=mail-pl1-x649.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -93,52 +93,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+The qpci_iomap() function would previously fail with a fatal assertion
+if it probed a PCI BAR that had a size of zero. This is, however,
+expected behavior for some devices like the Q35 host bridge, and the
+assertion blocked the creation of new fuzzing targets.
 
-Thank you for the excellent feedback on the first version of this series.
-I have implemented your suggestions in this new version of the patch series.
+Instead of asserting at map time, modify the QPCIBar struct to store
+the BAR's size. Defer the safety check to the accessor functions
+(qpci_io_readb, qpci_memread, etc.), which now assert that any
+access is within the BAR's bounds.
 
-The original prerequisite patch (which used #ifdef CONFIG_FUZZ) has been
-expanded into a 4-patch series that makes the libqos PCI API safer and more
-robust for all use cases. This involved fixing several tests in the suite
-that were performing invalid memory accesses, which the new API now
-correctly catches.
-
-The final patch in the series, which adds the pcie-pci-bridge fuzzer,
-remains unchanged.
-
+Signed-off-by: Navid Emamdoost navidem@google.com
 ---
+ tests/qtest/libqos/pci.c | 25 ++++++++++++++++++++++++-
+ tests/qtest/libqos/pci.h |  1 +
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-Changes in v2:
-
-- Reworked the prerequisite from a single #ifdef-based patch into a
-4-patch series that improves the core libqos API.
-- (1/5) The core change now adds a size field to QPCIBar and moves
-bounds checking into the accessor functions.
-- (2/5) The qpci_legacy_iomap function is updated to require a size,
-and its callers (ide-test, tco-test) are fixed.
-- (3/5) ahci-test is fixed to check only implemented ports.
-- (4/5) nvme-test is reworked to be compatible with the new strict
-BAR checks.
-- (5/5) The fuzzer patch is unchanged.
-
-
-Navid Emamdoost (5):
-  libqos: pci: Handle zero-sized BARs gracefully
-  libqos: pci: Require size for legacy I/O port mapping
-  tests/qtest: ahci-test: Check only implemented ports in verify_state
-  tests/qtest: Rework nvmetest_oob_cmb_test for BAR check
-  tests/qtest/fuzz: Add generic fuzzer for pcie-pci-bridge
-
- tests/qtest/ahci-test.c                 |  8 +++++++
- tests/qtest/fuzz/generic_fuzz_configs.h |  8 +++++++
- tests/qtest/ide-test.c                  |  2 +-
- tests/qtest/libqos/pci.c                | 29 +++++++++++++++++++---
- tests/qtest/libqos/pci.h                |  3 ++-
- tests/qtest/nvme-test.c                 | 32 ++++++++++++++++++-------
- tests/qtest/tco-test.c                  |  2 +-
- 7 files changed, 69 insertions(+), 15 deletions(-)
-
+diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
+index a59197b992..70caf382cc 100644
+--- a/tests/qtest/libqos/pci.c
++++ b/tests/qtest/libqos/pci.c
+@@ -396,6 +396,7 @@ void qpci_config_writel(QPCIDevice *dev, uint8_t offset, uint32_t value)
+ 
+ uint8_t qpci_io_readb(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ {
++	g_assert(off + 1 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -410,6 +411,7 @@ uint8_t qpci_io_readb(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ 
+ uint16_t qpci_io_readw(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ {
++	g_assert(off + 2 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -424,6 +426,7 @@ uint16_t qpci_io_readw(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ 
+ uint32_t qpci_io_readl(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ {
++	g_assert(off + 4 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -438,6 +441,7 @@ uint32_t qpci_io_readl(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ 
+ uint64_t qpci_io_readq(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ {
++	g_assert(off + 8 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -453,6 +457,7 @@ uint64_t qpci_io_readq(QPCIDevice *dev, QPCIBar token, uint64_t off)
+ void qpci_io_writeb(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                     uint8_t value)
+ {
++	g_assert(off + 1 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -465,6 +470,7 @@ void qpci_io_writeb(QPCIDevice *dev, QPCIBar token, uint64_t off,
+ void qpci_io_writew(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                     uint16_t value)
+ {
++	g_assert(off + 2 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -478,6 +484,7 @@ void qpci_io_writew(QPCIDevice *dev, QPCIBar token, uint64_t off,
+ void qpci_io_writel(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                     uint32_t value)
+ {
++	g_assert(off + 4 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -491,6 +498,7 @@ void qpci_io_writel(QPCIDevice *dev, QPCIBar token, uint64_t off,
+ void qpci_io_writeq(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                     uint64_t value)
+ {
++	g_assert(off + 8 <= token.size);
+     QPCIBus *bus = dev->bus;
+ 
+     if (token.is_io) {
+@@ -500,10 +508,10 @@ void qpci_io_writeq(QPCIDevice *dev, QPCIBar token, uint64_t off,
+         bus->memwrite(bus, token.addr + off, &value, sizeof(value));
+     }
+ }
+-
+ void qpci_memread(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                   void *buf, size_t len)
+ {
++	g_assert(off + len <= token.size);
+     g_assert(!token.is_io);
+     dev->bus->memread(dev->bus, token.addr + off, buf, len);
+ }
+@@ -511,6 +519,7 @@ void qpci_memread(QPCIDevice *dev, QPCIBar token, uint64_t off,
+ void qpci_memwrite(QPCIDevice *dev, QPCIBar token, uint64_t off,
+                    const void *buf, size_t len)
+ {
++	g_assert(off + len <= token.size);
+     g_assert(!token.is_io);
+     dev->bus->memwrite(dev->bus, token.addr + off, buf, len);
+ }
+@@ -541,6 +550,19 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+         addr &= PCI_BASE_ADDRESS_MEM_MASK;
+     }
+ 
++    if (!addr){
++        /*
++         * This is an unimplemented BAR. It is not a fatal error.
++         * We model it as a BAR with a size of zero. Any attempt to
++         * access it will be caught by assertions in the accessors.
++         */
++        if (sizeptr) {
++            *sizeptr = 0;
++        }
++        memset(&bar, 0, sizeof(bar));
++        return bar;
++    }
++
+     g_assert(addr); /* Must have *some* size bits */
+ 
+     size = 1U << ctz32(addr);
+@@ -572,6 +594,7 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+     }
+ 
+     bar.addr = loc;
++    bar.size = size;
+     return bar;
+ }
+ 
+diff --git a/tests/qtest/libqos/pci.h b/tests/qtest/libqos/pci.h
+index 8389614523..e790e5293d 100644
+--- a/tests/qtest/libqos/pci.h
++++ b/tests/qtest/libqos/pci.h
+@@ -58,6 +58,7 @@ struct QPCIBus {
+ 
+ struct QPCIBar {
+     uint64_t addr;
++    uint64_t size;
+     bool is_io;
+ };
+ 
 -- 
 2.52.0.158.g65b55ccf14-goog
 
