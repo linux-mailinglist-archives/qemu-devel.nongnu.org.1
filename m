@@ -2,92 +2,171 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD50C8CE11
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 06:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 847DDC8D4E1
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 09:16:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOUs4-00088o-03; Thu, 27 Nov 2025 00:48:48 -0500
+	id 1vOXBG-0007V1-2V; Thu, 27 Nov 2025 03:16:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOUs1-00088Z-RJ
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 00:48:45 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOUrz-0006E0-Gn
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 00:48:44 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-477b1cc8fb4so2094265e9.1
- for <qemu-devel@nongnu.org>; Wed, 26 Nov 2025 21:48:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764222522; x=1764827322; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8rbm2u57QUbybfY9DnVctk8qjag5ZWsibrK5eSGyLPg=;
- b=kiKJjMnqTRC7MRZshyFYqukBxGgWHkCrXlaPj0MVGcodr+zmP9nZ5ZtvcbwvWLUi0W
- 8Qcfrdsc0oEQziAmRdZdJPA9Q47M7rEuSBxIhWhdjeTevI8LiyRdbIZ1AF4x0atuWn0f
- jIb01N5O7TBZ1gTl4gRNlafuTq/QOIWhGCdA55Ps4DSECxWgw8Sb9MGUbqCyW/Lj56yH
- DW3WnQKDgpxpuIENFguEWtJ79a5hId7N+bN6fEWnY3J6gCG7LEJQFSfDOxstAQIrUYFz
- QlOJOYSKiEFfAyihHWEaMQ59z5+37+7Dg1VR9Hx3aHH3fnqKa70QTloXjFc9LM7BIHNt
- tswQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764222522; x=1764827322;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8rbm2u57QUbybfY9DnVctk8qjag5ZWsibrK5eSGyLPg=;
- b=RR1Ghp8qnImMG2yDD1btZB7yEd6fboTwua7CCLkjPNPUWe5yikTPx75uqL8dlAZpSw
- DiY48r1bgYiuWsCb1WW0M5rbm2ohx7ZVaKZTz7FsYa2G0x7HJDJK2/oxv4RlWaDufcCW
- a4mb8duFEKXoLwwPjYrera+xRY376wXwwJFd+UlRDNe4Q9pCD+zpD3RB+SoWR3xEoKv8
- EVuvcsUFw5xrO4MmBbhheOusQbQoTeINBPKMZJT8bkxLoMtCY+yvThHroCZbLi+sNqej
- LJIP/jPk1+vE1gaSMAhqCb4kqFKArptnXrjQF4s4HEj/IHlmsYBQM6G1nSfSsE1C6I6i
- 2B2Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmcv1TzDU4n87wKLWXo3QJPpH92SzYmdmVCi1jyTBvFNDeyJq2d006JUS/bz1yFrfCcfZWrYkeqq+2@nongnu.org
-X-Gm-Message-State: AOJu0YzHXrSbvJ9Bpf5C/S3QY/ym7zO556NQUrPlXh4me7elIkZ5alY4
- tTuJR6vjMywUiGSs1GJ1dSVN65NqFIQT6d7oV4QIatRGJMciR/ue+EQphYjM5Dlh7vCv1awd7vq
- y8GUpE4zwHKB7
-X-Gm-Gg: ASbGncv3HThET0caJfWtTwjkIHoDNnJeUqBCGNALr8Ob7hYzUI0uaJdjawfy8u7CWWI
- UN1LqTCrinYQ6Ph8+syFUTkan6xuaM5ZIjDCUMAW4z6TTQSvKERy9W0Wf8nr7WC4DvjFeaD0UXz
- V0MUR8uQ7GfztFK9Nszj+F1+THvJasVpR2ocDtDckXy3qVrax+BrUXEDHvB3G/uPintVu+kfE65
- XYJ1bQkW4jWleEARyjJ1XrCMFwu+XlxSE33eB4nrah16NyMRsrJhw1TRscYTBGMNM4rQ+0pNUoR
- f4IMbuGjlNWoJIBRJBtU5IVAEApL9lHYhIEbbXh/sSX1Ug9VstcUNdvx8D6RrJp+B4C5hzIpcSr
- lkJvN+wVqxFeN+X4ku+sxoexWt067L1AoFFZYQrqx1FJKBlVUoNvp2lebcl6uAkp6yQWxxCxIKZ
- SajXKM8jaCAejZYbYUJIwly+ov9v16iL76k3Eurp5JMBFm1UuwUMBGnQ==
-X-Google-Smtp-Source: AGHT+IHYbWsR03P1fxyhY25ZlrDH9Eprgj9esam8PJkMRxEDwOuqAEO9CSlZnLL9Yn1m5hBTRj7kvw==
-X-Received: by 2002:a05:600c:c8c:b0:477:a9e:859a with SMTP id
- 5b1f17b1804b1-47904b1ad30mr79811685e9.22.1764222521689; 
- Wed, 26 Nov 2025 21:48:41 -0800 (PST)
-Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1c5d6277sm1530837f8f.17.2025.11.26.21.48.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Nov 2025 21:48:41 -0800 (PST)
-Message-ID: <084f637e-701a-4b46-a3b2-f4755ddb40fb@linaro.org>
-Date: Thu, 27 Nov 2025 06:48:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/uefi: add pcap support
+ (Exim 4.90_1) (envelope-from <Owen.Zhang2@amd.com>)
+ id 1vOVPM-0007e3-TW
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 01:23:12 -0500
+Received: from mail-northcentralusazon11012052.outbound.protection.outlook.com
+ ([40.107.200.52] helo=CH5PR02CU005.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Owen.Zhang2@amd.com>)
+ id 1vOVPK-0005Sr-Gg
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 01:23:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jXoG89brWScDDxU7vQMIgq9/9X3RjxXNEk0anVTd7PAM/DOeiKB0i/47pP9h+tFs6lFjzpWov4VaK91InHWUExghIKUmAEkH9rgukdTMoNAh7ZTKzBIapY9W+w7ErLHGDQ0O7yv57vdj5/KlrBtMNEADP/4nu9g+C6yfyeR76KmZy5+MOdD2sg7rvgLdhxPRo9LCzP5LVbRrQgQnGimYg05UqGEujZPRnu48fKFFSOZRMQ8nOng179U7M8Cmq5TgzDLKWh4BJd2aiNiegh34L1oAmN6IgAwzKQIUR0FDyjERQJVu/fAoJCK8jJzUQ4X7IkzBXuzX2REpIofwbcPB/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xHxpIKvYjMupCobD7Ev3bHUaAzl05RZ1Lr/6jzUxQj4=;
+ b=TvXZESM7qjpVnvQhy5CHRza68aTyGkLLCNzfai5YlL4c1fSWZTC74mbCGDCmyNzIDUCY75UzEVL9CPlPl0Wq2hfDlxSM9NQPOApO+Xxw9iJEK1biRPZZlP9m/oQZ0IxhKWzbFyzBnv7XrJU8gu1L1tQcFViR8tNFI31dbkfkv5grCs7dXnYW3g/Wm5DcUd5H2wRFfCLlc1UvUxpUpZ7uxusyqxGGzXv4inHPHcCWqmf+ozBBizSQXnllQMXg2AggF5DpXMFTt7xJ5MTGS+4msFGXK46RZO/PbYS6WmNiFzC1Z+enR3OgBsQfQuzc62lVxGgWhRTLPeMSSa8sU+/iZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xHxpIKvYjMupCobD7Ev3bHUaAzl05RZ1Lr/6jzUxQj4=;
+ b=H1BcllemlfwI2rvxAZvuac/WIAGCK/OIfZwUcLt8w97zLpLdfTcZIhejkuEOYotcYw48lJMC1Xas0cQ7u6Av6xYjkydrozw/pQyLhpriX84B4EK09dyhJEQDJNTf/mvfTlL7GUWnlBMjVJe0J5KONl/zrnalNnrCh8IT1kgtrS8=
+Received: from CY3PR12MB9678.namprd12.prod.outlook.com (2603:10b6:930:101::12)
+ by IA1PR12MB6236.namprd12.prod.outlook.com (2603:10b6:208:3e4::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.13; Thu, 27 Nov
+ 2025 06:18:04 +0000
+Received: from CY3PR12MB9678.namprd12.prod.outlook.com
+ ([fe80::adb7:c64c:4990:49c4]) by CY3PR12MB9678.namprd12.prod.outlook.com
+ ([fe80::adb7:c64c:4990:49c4%5]) with mapi id 15.20.9366.012; Thu, 27 Nov 2025
+ 06:18:03 +0000
+From: "Zhang, Owen(SRDC)" <Owen.Zhang2@amd.com>
+To: "Zhou, Peng Ju" <PengJu.Zhou@amd.com>, "mst@redhat.com" <mst@redhat.com>, 
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "eduardo@habkost.net" <eduardo@habkost.net>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "Chang, HaiJun" <HaiJun.Chang@amd.com>, "Ma, Qing (Mark)" <Qing.Ma@amd.com>
+Subject: RE: [PATCH] hw/i386/kvm: Prevent guest monotonic clock jump after
+ live migration
+Thread-Topic: [PATCH] hw/i386/kvm: Prevent guest monotonic clock jump after
+ live migration
+Thread-Index: AQHcWfouWB64eMRQxket8nQadjUeibUBY3cwgASzQmA=
+Date: Thu, 27 Nov 2025 06:18:03 +0000
+Message-ID: <CY3PR12MB96789D2D5B5999338A25CA02A8DFA@CY3PR12MB9678.namprd12.prod.outlook.com>
+References: <20251120084428.3320758-1-PengJu.Zhou@amd.com>
+ <SA1PR12MB8598FCFEBB257592A51C7D35F8D0A@SA1PR12MB8598.namprd12.prod.outlook.com>
+In-Reply-To: <SA1PR12MB8598FCFEBB257592A51C7D35F8D0A@SA1PR12MB8598.namprd12.prod.outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-References: <20251126142559.4081483-1-kraxel@redhat.com>
- <20251126142559.4081483-3-kraxel@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251126142559.4081483-3-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Mentions: mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net, qemu-devel@nongnu.org
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ActionId=d0cafed0-2458-4bf0-909b-ead8addd00e1;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ContentBits=0;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Enabled=true;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Method=Privileged;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Name=Third
+ Party_New;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SetDate=2025-11-24T06:32:05Z;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Tag=10, 0, 1, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY3PR12MB9678:EE_|IA1PR12MB6236:EE_
+x-ms-office365-filtering-correlation-id: cc4b675a-1990-4899-2527-08de2d7cb931
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?ohNh1WYJbySzsufsCeZatkdFpcr9W8hzHFGF7vsvdzCClAX0GDbJ2TEuX+Cd?=
+ =?us-ascii?Q?KCOyQTySi73Dx+KFDlSYgC5exfHeprU1JmPrSZx0hZ4OYcINGBiaTpknQSOa?=
+ =?us-ascii?Q?7rPftQhb4i9CTzNSdvsZgpEQumHb3ZjIlZa5t5y16nrRhcwtES2vyp4VRpXJ?=
+ =?us-ascii?Q?d94Nt1YLI6m7N8jE+hFTdwaUjFLFP6SAxQpKUbQahADYs8odClkZgl8IulfS?=
+ =?us-ascii?Q?PLIDvQD87WLPO+ja+p3BQCUNldY/k6es3uBKF22n8uoyRJS0kziWQ07TAH+x?=
+ =?us-ascii?Q?xT6TQt1c6qExsUH0vyJCb85Czb/TKiP3TIWJY1je48EcNzSA6eF9bOE7uwIm?=
+ =?us-ascii?Q?refbuf72JmsCi0cpHolPhnlG/gTJ2oph4Kh8Ap5XT9goz64J2b7umYPVgXs+?=
+ =?us-ascii?Q?g6VCBhhXeYtpWOaA1ih7n0aM5QsnBDyOsmGepzCxwUyTDtbKSKvtZlFq+VWn?=
+ =?us-ascii?Q?gEyI5hT59NyxxoSaQBUyRagl3q5TK0eNUbwFAYVrt2JGdj9bUwVpJzOY1HSG?=
+ =?us-ascii?Q?CJ0pCKrYj/mKQ4lgg+DqFe47o977N0efjk57nhiewDSy3v+FIi2Wd7SXVWIc?=
+ =?us-ascii?Q?Ew8xC9UxJIFQ0I2zDqRAk7RRsLCnhffYCHigxGkoINuJbc3fBK2oyefNZ+kR?=
+ =?us-ascii?Q?PQI6+rnh9pQ6WPxSdOVnqaKUbZ2d/GtQs5r3SR4rt+Jh4D+5kZq7QqjWv1s9?=
+ =?us-ascii?Q?2/wEXDfNrAaueGbG8Ef84htkgXMNsLJSwfF5R9gpGemnRRGIwOgDz8ha0bvp?=
+ =?us-ascii?Q?uQRSv0azhOWPwvrSW5fQLObS9HCswcbnwmLpj1C+9AOV8DvgRk8wnA7beXSl?=
+ =?us-ascii?Q?/CpkKM5r6HILOzM2sScn2UquAVVE4aZbsfTMsKXbWgBdQ9fpyprsiUvGAKaj?=
+ =?us-ascii?Q?Khpgwpn9oLLdHXEnRhnXPFlu83mSixr059Wj0X1Gfd14bRV07XchcrVQYmsG?=
+ =?us-ascii?Q?ViQxovpwu6DSSFIy/yTHZl6oNUiYq73kaKvSIJIW0JYS0V8GjHaGr1s7qIGF?=
+ =?us-ascii?Q?NHdLor3zTLeE6o7WJQdzQWJYa8aiJn7OnEO7V0H9lOOWxguyzSKRuY5Qo7it?=
+ =?us-ascii?Q?HpU67G42ahjtpdeGE5e/tZVmFPud0a9ju6SPoLUBM/JEcEcbw76TH12dlWtZ?=
+ =?us-ascii?Q?cYowUJESQqtzIknUAdojBGCQjUysoGCyEeZkIZ9fNLDg6N+pTR1hTLMdx/wi?=
+ =?us-ascii?Q?UVt8XqVLcrvyOWn/TLYAa7ohsS5mrouTll+8Rd3IFRzweeOo0AEmIuSY6R5W?=
+ =?us-ascii?Q?2QUsFAhYzbPARd8O48juZvFMmgjXho6Tzu9MkWKPezMs7CX0NFikj+Ggp2ju?=
+ =?us-ascii?Q?BdvLzEIv0LosXHPiPMbzeHn1ByEjsSPyenSDqfFQpQNSt8fIr4Pty2/pw9mM?=
+ =?us-ascii?Q?sfZSMaLTL7gn4fuXpbNPJPypSeY+SToSn0D7pgq1llTZAd/R6A8T+GVNY1g4?=
+ =?us-ascii?Q?fRkHBVk4IEJvo4XkoW7yLkXvFijt20LcK5gnlA4YmMRJn4AkF5JYGe+I3Hwc?=
+ =?us-ascii?Q?m3MKVxlLzuvMy8GtVlJFDKwFMrNF7Re280nu?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY3PR12MB9678.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?DpyrSZWy4uJMXHVz5VQUggPoGgHnpwWKCVsSIiXd8v5mfR0r7wx+eUiaeGuh?=
+ =?us-ascii?Q?LbY3UW5ybRMLkPqWXfR8eofCT/ZEsLvHf1OSUDTYCN2nHBdaFR/HH7VMR6WK?=
+ =?us-ascii?Q?52Fw8hyvS5i0A3nUGNRaWJQ8tbvA65/Tj9QQvX48ZICJxs2d+mupvnSUV/cv?=
+ =?us-ascii?Q?dsPUbdWRrnwr5sF094WNTCt1gTNHUFFxZ/lPS4t3oEjZ/XficAHw4aREl5Ho?=
+ =?us-ascii?Q?ryVBaQHeJPsOnS6+yFh1xdhwVmVx7cWWJGPzoxdpezjdpLFhPLVRaLeaM5Xg?=
+ =?us-ascii?Q?HBumozOQDJ3gj+LkJet6UHP3oUJ9RcnbKKvYPJw9N2PPABPcvN2+UR0pDaJo?=
+ =?us-ascii?Q?/IJd3wGotVODlFLp5KWcE7vpvVkWWiMCrMRBr/VxHoqFk4mJx6LyYeajD3iP?=
+ =?us-ascii?Q?xj7gV5TcRsixrMsdbuw841P52ELdWSXv7UvBfSeu+lQLBvyEioLASNJx8x3j?=
+ =?us-ascii?Q?gHY+5TvMoRD8MFNccpO/X47x3k5Pk6zmOxm8iIUE5pDftkavQB7SGWXQvdNT?=
+ =?us-ascii?Q?R531ozPjQ94YLNOFD1Q+lxZGxYv42EPDlgQaauzAD3Vo6EVWV11fvyWr1mSQ?=
+ =?us-ascii?Q?nGrgEeXpdUshSjjXru34DojkanhIBX6QaSLvj/vwt5+3ztiqLgam4sIrKMdu?=
+ =?us-ascii?Q?S83tGMcpUIiDq5FfftkG6cheEc55jXyEN7NsWOMlYAnGAP9B9bIpGkhZ9exn?=
+ =?us-ascii?Q?I2KT600bYiigFePrQvbvLa3UhPgG55NUXkTL6L616IGX2LX5Ik65NmUyMOee?=
+ =?us-ascii?Q?zbneGmqxXWnJbaxy8R06aNQZCeQQykgGKjVpoCu3x7GHhETOOV7Yqi0wvU/o?=
+ =?us-ascii?Q?sO09hqOwoPxEmORd9Q1rS51xT8V2JwYrMIefNjpvsifMHr70GreQXUXrKGQr?=
+ =?us-ascii?Q?JYyuCGKV4m5MU8MahreTnjAhQB4QRjXSiVkE+crtzHSeZ+ILeR8NxN2S5rmk?=
+ =?us-ascii?Q?CoFX7dEh9jQGJpKySZRqO3T1aTrA5TzPoVpKw2D/BJS5Q+NskgEuC6Xe4ohw?=
+ =?us-ascii?Q?W7qVpuYqm2+A2zdtH30ewhUneYanq2l5gTn9pjFUmVD4eHZqOzfmhf3pliJD?=
+ =?us-ascii?Q?8i8scUprThaIifFx45y+1//XBE9CXiYqa3KYZiwPg3dn88qMivqO8H38yA9F?=
+ =?us-ascii?Q?h3VB0loSzLV0wY/mDPdsRNB/iuAA46gb5jHQnyPZVbEJEOMHRuvokFsqFYW6?=
+ =?us-ascii?Q?2P1whpaDoo7cNaerYWNQqLwTAyccrej98gQaGzaLKaBI2l+PlCG6q3aQ426j?=
+ =?us-ascii?Q?IuSd2JTw+fz7ZJCTQVPuagTIZ2gNvOYAnXa0PQopWxwLbAHbsC7U+HXDL0PL?=
+ =?us-ascii?Q?HaIMYtvDuD7YA1SkX1nW8PqPzdR4/i2BQBydvB5mfQJY6MpEOdD9JJe9TCOV?=
+ =?us-ascii?Q?rviRZpVokx5/Pes/fRCofmpwwBb2kDOdTwMc+Cdb4wN3xhNYu+/mFC54rpTJ?=
+ =?us-ascii?Q?xxRP3M9VFeMcNswWEeyk6Q3QsU17aZc7oZqDDDwHjjcpySK14RyX9CsbZM4o?=
+ =?us-ascii?Q?6EjlKLbf9xQ/PKJgb7av45YCA1p2oA1yeTrhO78j3Of9BaA6sykXQ5vQvvTS?=
+ =?us-ascii?Q?xWbeeWR0FTWI8Wo+jNI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY3PR12MB9678.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc4b675a-1990-4899-2527-08de2d7cb931
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2025 06:18:03.9375 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lkeLkcvVOtSkgASRa/9irTcD8t9VyG63sYnjIXNHaf7JD25RR3/z/fD1LVMDWq3s
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6236
+Received-SPF: permerror client-ip=40.107.200.52;
+ envelope-from=Owen.Zhang2@amd.com;
+ helo=CH5PR02CU005.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 27 Nov 2025 03:16:14 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,96 +181,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/11/25 15:25, Gerd Hoffmann wrote:
-> Add pcapfile property to uevi-vars-* devices, allowing to write out a
-> capture of the communication traffic between uefi firmware and qemu.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Ping... @mst@redhat.com, @marcel.apfelbaum@gmail.com, @pbonzini@redhat.com,=
+ @richard.henderson@linaro.org, @eduardo@habkost.net, @qemu-devel@nongnu.or=
+g
+
+Team, kindly pls review and provide your expertise... Thanks for the suppor=
+t.=20
+
+Rgds/Owen
+
+-----Original Message-----
+From: Zhou, Peng Ju <PengJu.Zhou@amd.com>=20
+Sent: Monday, November 24, 2025 2:37 PM
+To: Zhou, Peng Ju <PengJu.Zhou@amd.com>; mst@redhat.com; marcel.apfelbaum@g=
+mail.com; pbonzini@redhat.com; richard.henderson@linaro.org; eduardo@habkos=
+t.net; qemu-devel@nongnu.org
+Cc: Chang, HaiJun <HaiJun.Chang@amd.com>; Ma, Qing (Mark) <Qing.Ma@amd.com>=
+; Zhang, Owen(SRDC) <Owen.Zhang2@amd.com>
+Subject: RE: [PATCH] hw/i386/kvm: Prevent guest monotonic clock jump after =
+live migration
+
+Hi QEMU team,
+
+Any update for this kvmclock issue?
+
+Thanks in advance.
+
+
+
+----------------------------------------------------------------------=20
+BW
+Pengju Zhou
+
+
+
+> -----Original Message-----
+> From: Peng Ju Zhou <PengJu.Zhou@amd.com>
+> Sent: Thursday, November 20, 2025 4:44 PM
+> To: mst@redhat.com; marcel.apfelbaum@gmail.com; pbonzini@redhat.com;
+> richard.henderson@linaro.org; eduardo@habkost.net
+> Cc: qemu-devel@nongnu.org; Chang, HaiJun <HaiJun.Chang@amd.com>; Ma,
+> Qing (Mark) <Qing.Ma@amd.com>; Zhou, Peng Ju <PengJu.Zhou@amd.com>
+> Subject: [PATCH] hw/i386/kvm: Prevent guest monotonic clock jump after li=
+ve
+> migration
+>=20
+> Problem
+> After live migration, the guest monotonic clock may jump forward on the t=
+arget.
+>=20
+> Cause
+> kvmclock (the guest's time base) is derived from host wall time and keeps=
+ advancing
+> while the VM is paused. During STOP_COPY, QEMU reads kvmclock twice:
+> 1) immediately after the VM is paused, and
+> 2) when final CPU state is collected.
+> Only the second (later) value is migrated. The gap between the two reads =
+is roughly
+> the downtime, so the target restores from a later time and the guest mono=
+tonic clock
+> jumps ahead.
+>=20
+> Fix
+> Migrate the kvmclock value captured at pause time (the first read) so the=
+ target
+> restores from the actual pause point.
+>=20
+> Signed-off-by: Peng Ju Zhou <PengJu.Zhou@amd.com>
 > ---
->   include/hw/uefi/var-service.h | 10 ++++
->   hw/uefi/var-service-core.c    |  7 +++
->   hw/uefi/var-service-pcap.c    | 94 +++++++++++++++++++++++++++++++++++
->   hw/uefi/var-service-sysbus.c  |  1 +
->   hw/uefi/meson.build           |  1 +
->   roms/edk2                     |  2 +-
->   6 files changed, 114 insertions(+), 1 deletion(-)
->   create mode 100644 hw/uefi/var-service-pcap.c
-
-
-> diff --git a/hw/uefi/var-service-pcap.c b/hw/uefi/var-service-pcap.c
-> new file mode 100644
-> index 000000000000..879eee4699a3
-> --- /dev/null
-> +++ b/hw/uefi/var-service-pcap.c
-> @@ -0,0 +1,94 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +#include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "qemu/pcap.h"
-> +#include "system/dma.h"
+>  hw/i386/kvm/clock.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c index 40aa9a32c3..=
+cd6f7e1315
+> 100644
+> --- a/hw/i386/kvm/clock.c
+> +++ b/hw/i386/kvm/clock.c
+> @@ -43,6 +43,7 @@ struct KVMClockState {
+>=20
+>      /* whether the 'clock' value was obtained in the 'paused' state */
+>      bool runstate_paused;
+> +    RunState state;
+>=20
+>      /* whether machine type supports reliable KVM_GET_CLOCK */
+>      bool mach_use_reliable_get_clock;
+> @@ -108,7 +109,10 @@ static void kvm_update_clock(KVMClockState *s)
+>          fprintf(stderr, "KVM_GET_CLOCK failed: %s\n", strerror(-ret));
+>                  abort();
+>      }
+> -    s->clock =3D data.clock;
 > +
-> +#include "hw/uefi/var-service.h"
-> +
-> +#define LINKTYPE_EDK2_MM  302
-> +
-> +#define SNAPLEN   (64 * 1024)
-> +#define TYPE_RESET       0x01
-> +#define TYPE_REQUEST     0x02
-> +#define TYPE_REPLY       0x03
-> +
-> +static void uefi_vars_pcap_header(FILE *fp)
-> +{
-
-static const
-
-> +    struct pcap_hdr header = {
-> +        .magic_number  = PCAP_MAGIC,
-> +        .version_major = PCAP_MAJOR,
-> +        .version_minor = PCAP_MINOR,
-> +        .snaplen       = SNAPLEN,
-> +        .network       = LINKTYPE_EDK2_MM,
-> +    };
-> +
-> +    fwrite(&header, sizeof(header), 1, fp);
-> +    fflush(fp);
-> +}
-
-
-> +void uefi_vars_pcap_init(uefi_vars_state *uv)
-> +{
-> +    int fd;
-> +
-> +    if (!uv->pcapfile) {
-> +        return;
+> +    if (s->state !=3D RUN_STATE_FINISH_MIGRATE) {
+> +        s->clock =3D data.clock;
 > +    }
+>=20
+>      /* If kvm_has_adjust_clock_stable() is false, KVM_GET_CLOCK returns
+>       * essentially CLOCK_MONOTONIC plus a guest-specific adjustment.  Th=
+is @@ -
+> 217,6 +221,8 @@ static void kvmclock_vm_state_change(void *opaque, bool
+> running,
+>           */
+>          s->clock_valid =3D true;
+>      }
 > +
-> +    fd = qemu_open_old(uv->pcapfile,
-> +                       O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
-
-Consider qemu_create() to help Markus' tree-wide cleanup.
-
-> +    if (fd < 0) {
-> +        warn_report("open %s: %s", uv->pcapfile, strerror(errno));
-> +        return;
-> +    }
-> +
-> +    uv->pcapfp = fdopen(fd, "wb");
-> +    uefi_vars_pcap_header(uv->pcapfp);
-> +}
-
-
-> diff --git a/roms/edk2 b/roms/edk2
-> index 4dfdca63a934..46548b1adac8 160000
-> --- a/roms/edk2
-> +++ b/roms/edk2
-> @@ -1 +1 @@
-> -Subproject commit 4dfdca63a93497203f197ec98ba20e2327e4afe4
-> +Subproject commit 46548b1adac82211d8d11da12dd914f41e7aa775
-
-Unrelated change I presume.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> +    s->state =3D state;
+>  }
+>=20
+>  static void kvmclock_realize(DeviceState *dev, Error **errp)
+> --
+> 2.33.1
 
 
