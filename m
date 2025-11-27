@@ -2,102 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B694C8E9D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 14:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C36C8EBE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 15:26:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOcQB-0005QP-2P; Thu, 27 Nov 2025 08:52:31 -0500
+	id 1vOcv6-0005bT-SH; Thu, 27 Nov 2025 09:24:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vOcQ8-0005QC-C0
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:52:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vOcQ6-00004q-AE
- for qemu-devel@nongnu.org; Thu, 27 Nov 2025 08:52:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764251542;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=p1NZI6SfAX7uTI+IbgGu5WcB86gxrOroGxpoqMt+WCo=;
- b=bdn2fZ3gFh8kZtXTEwUCpgBY2X9xYNG1zVMsy/6A7OiFrg27H7d8Q1PYHl42UC4PwIwEdI
- /lmqFF1TRP9T6srezRm5glBl59kn+klnNezSv1zaoBNKqZqcw+JOzY3z3hD1SSRENaTi/O
- JMMij0O7vu0I5ioGrfnjCgHUxi3YNZs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-hTRtIFp6PGOggO2hBbPrhA-1; Thu, 27 Nov 2025 08:52:21 -0500
-X-MC-Unique: hTRtIFp6PGOggO2hBbPrhA-1
-X-Mimecast-MFC-AGG-ID: hTRtIFp6PGOggO2hBbPrhA_1764251540
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b739b3d8997so63383666b.2
- for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 05:52:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vOcv4-0005ZJ-Rs
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 09:24:26 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1vOcv3-0006ly-D8
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 09:24:26 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4779a4fc95aso13784545e9.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Nov 2025 06:24:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764251540; x=1764856340; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=p1NZI6SfAX7uTI+IbgGu5WcB86gxrOroGxpoqMt+WCo=;
- b=aERKm2bDnYNE35xR3TudeYLN6aipRwV3tn8w1cdynqCLZhfMs4lZJZswz+5j1UbNi3
- wVjErWNvaWQtESF6+27AVpd5+UPsK2DxCOZDSGUpcrXu7TYrosdWQfUDN/UCi+Vnkas3
- 7/ocq1F3bQLC2wVdCnRlzCAd07g9FIsOY/4UqOC6n1ODUd0PnHjtS8Yx7MQyPJ0IZYWQ
- zsBV1a2exH22XcspW5udxlHqyLi7JtMnEz9Xn98yeyiPz5FPdhmN5mbyuTB1wIQAQkOJ
- yPhVkhGIm0IT+ICj/gQbflNyDAKzY2AZS6rFyieP0g4ULKLddBnX92Uq3DH9CTtu2GZ2
- Yc3Q==
+ d=adacore.com; s=google; t=1764253463; x=1764858263; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DvvytfEhudAV67aX0S4oDIYVrm/T0d5LajRcCPINimk=;
+ b=Ur+Y5L5nEMDXEq9FGXb11DB+i9NKzaOVowUoPJ3pawgDct3ggBhepB1L+3nRJo7niK
+ dp/ZamY5WejWohacGFYntHrzm8AvZhqqnoD88Xuo9JJNOBWYCrKod8TXxEQw8uZKhHXa
+ zP6c/wL+X0ZVsE6MGpdXqvJM4a6nrCh3VfUouHX4chYAtqAwOErk80qIXkXcFPX3c9Aa
+ LKtVPLT6Vh13chR37psguMH194Ra2hLw5tmdCHnl+9eY+/idmZQexjLbf00yAHftOiYG
+ iE0PH+1mIOffW0BUJytKL0r90bvX/UtIhW+E38ArJd+bB+qnuE87/lAlqTqAEzFTHiF/
+ 7uEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764251540; x=1764856340;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=p1NZI6SfAX7uTI+IbgGu5WcB86gxrOroGxpoqMt+WCo=;
- b=WlxfFExDoHuErUGR9UyLGRO6nXl3dSQfc5wQkwZSIQtFwZDfq4fF75CKjeCzPaoSkv
- 5W5QRj39IHJQG/HzErOURkSGOxhUB8REd+zg78bFKcVfdGk8gZ2H+KDcISUZCYSZLsqd
- ipt6zx568aUCZJEoOxOKBXWytGExG6EKlqZeTYAY3Axe7u8ef4jgRX+xOGi8lpo5zcii
- UXM1CLTymZsCORtwsaOa/LCIwumJdMiX8KKzIwoGQzd+VhgJOn7BYDkJjQWVJpR79KBP
- J1SRlcTUyL4abl8LUNY9jGPtFpIO+LjkDcZxh0h+g+t/RdR5ZeJm/OQ0kBQi6+MiWuRV
- fhMQ==
-X-Gm-Message-State: AOJu0Yzs6hWef3vVELiv2Z+GnW7qEVr3zjfZYP6lC90A4bWM5uTJE3nl
- zZUhdIFBljspFOOwXaJFujch0THBev4bIjxFwZEunJLtSFL8VWVPCW4q+9fHcHUiwRayjm/rORx
- +Bvw2znOgCLapop+OQN8SLFcs6TL999fSBz++b4VdkANp321bH2pvISIF
-X-Gm-Gg: ASbGncsEDLr02ATO/b/6AfCQD1tp0SNhJOebo8Sa94UO+IHnzL/Oge2jPWUHFb2+8EZ
- EkEmzIDf5R5Nrgvxn8KW7Qmq4+yPkmHu2WEvY2mvUz1D0VcvWXbxkkONADe15jmSzunbPIZ/aTv
- jjOS76PMXt9VhHmA4KUuqVYAcfQcE+QvbOlo4mhk+YcnG+E4hHA0Kcd0Z9p6SKz/x5iRWJq1E9V
- TAHr1Ic8Fg+tMTeO1rdKgjGfmKIx13dOIhi+GBY8SKKWGidmWev+IsSlkgqD7LJsnPx1am1UYcy
- JcrVYeBdxuP7dcRKGTbWJPjiUnI0AYNalfFhAN6p1Tsw7we8fjzkHjdNAJW8pT38AKpunsCPuAg
- =
-X-Received: by 2002:a17:907:6e8b:b0:b76:26bc:f95f with SMTP id
- a640c23a62f3a-b76c50c2061mr1134537866b.0.1764251540105; 
- Thu, 27 Nov 2025 05:52:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7StyLXP9pw718sD926ML0fmY84l7ccIMKtDXRIiQDYL7v8frjD9mMXYEbXV36uv98muXhqg==
-X-Received: by 2002:a17:907:6e8b:b0:b76:26bc:f95f with SMTP id
- a640c23a62f3a-b76c50c2061mr1134533566b.0.1764251539557; 
- Thu, 27 Nov 2025 05:52:19 -0800 (PST)
-Received: from redhat.com ([31.187.78.210]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b76f5a4b762sm168013966b.67.2025.11.27.05.52.18
+ d=1e100.net; s=20230601; t=1764253463; x=1764858263;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DvvytfEhudAV67aX0S4oDIYVrm/T0d5LajRcCPINimk=;
+ b=eXcsHv6pBeJDTyEFlNA2jsnSNDjK6eFWTumAAMMEgwQKDtpRFu9zTVN5TLsmbqXs8d
+ lCz+eCZPBb0t2VvJxaJMUrn94vH5TdB328Je1zm9sTo6Lbp1j9D7AZNoILTo2dFyWZ8Z
+ 4G8oJD7LUp1y1Z/mLi0/b+MyCh+N1T3xdXzDq4Mj3XgSG3iadyct7yIzHX4TYeW15a3l
+ izDwgVt3wJiX/2NZtn+ExWdoAsvVhUp/1oUTa9pI99EvEHij1WThrUlGq9TKOEqX2kFq
+ LEBmp7pqGQK8Bj+HSRZAXIrE8ZlBWlEV9jNMoG9wM4e386b7fj5w0sjTA3F0725rTG/G
+ Au1Q==
+X-Gm-Message-State: AOJu0Yyh15RM+u/gSp89Lq7kHolK8JkvW7n1wNDnIMyk/Mw0JTn8cbD6
+ Xb0FxSyHtxMoLr/CufPoiijImRsWigb8xiIwQ0TxaZ5rU3FeYwPdFMfrR7TpUmfxLg==
+X-Gm-Gg: ASbGncs6ShbCcIficEH/ncsPGtbTnnM5QveayJkXeuodUXy7SiSvWlsTSAuOREmvsk3
+ 28chOEWy630GLWOvYI/BcpO5dRZFHq1Kw0Ki9LqFkDXCP439JXS/MSDAoSrduEciWYq0lxaFszt
+ sdv11tHolAOYcZW98DjQrIOeGYWQN2dngNhRe11tnYZqFGv2GjyQxAuVMcWTwAjrQbI6/F6HmRO
+ y2vz+pKHkUOtpu+v8bvQh7mVlvLrXzbCpZcucVJpmAJGYM9PwzwJtzy6P3gPgl/J6FxYKJ/FaYG
+ s4MReV0W81wTJHt90phZwQ1UG1F8yIUQjUGF02/dr9/99jIiYSgB3dDvwMqE3jf55IuHf9KrTML
+ qbGTdUxzg6VLLuaZ3Q7cJKdbCpCiNojcEpkNkc0NJjkpExj+rozFsFUXbwpDN8QXvWfOjREVBXl
+ Ij7GkrJ0YYY+Kw
+X-Google-Smtp-Source: AGHT+IFRYkUoDPZOQl5n+wurWLNrfjtHdJaFIB+W/Iav6NVuvlkvMeb3qNfZrq0G6LROOflSE5mwMw==
+X-Received: by 2002:a05:6000:4210:b0:429:eb05:1c69 with SMTP id
+ ffacd0b85a97d-42cba63b646mr32897597f8f.2.1764253462971; 
+ Thu, 27 Nov 2025 06:24:22 -0800 (PST)
+Received: from chigot-Dell.. ([2a01:e0a:ca1:4970:e598:a2f0:7cc0:4392])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42e1ca1a2easm4148996f8f.23.2025.11.27.06.24.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Nov 2025 05:52:18 -0800 (PST)
-Date: Thu, 27 Nov 2025 08:52:16 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: AlanoSong@163.com
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, anisinha@redhat.com
-Subject: Re: [PATCH] hw/acpi: Add aml_gpio_io() wrapper for GPIO IO Connection
-Message-ID: <20251127083441-mutt-send-email-mst@kernel.org>
-References: <20251127123602.24478-1-AlanoSong@163.com>
+ Thu, 27 Nov 2025 06:24:22 -0800 (PST)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ eblake@redhat.com, armbru@redhat.com,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH v3 0/5] block/vvfat: introduce "fat-size" option
+Date: Thu, 27 Nov 2025 15:24:12 +0100
+Message-ID: <20251127142417.710094-1-chigot@adacore.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251127123602.24478-1-AlanoSong@163.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,114 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 27, 2025 at 08:36:02PM +0800, AlanoSong@163.com wrote:
-> According to ACPI 5.0 section 19.5.54, I add aml_gpio_io()
-> wrapper for GPIO IO Connection purpose.
-> 
-> Signed-off-by: Alano Song <AlanoSong@163.com>
-> ---
->  hw/acpi/aml-build.c         | 19 +++++++++++++++++++
->  include/hw/acpi/aml-build.h | 17 +++++++++++++++++
->  2 files changed, 36 insertions(+)
-> 
-> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-> index 2d5826a8f1..b4dd0bc665 100644
-> --- a/hw/acpi/aml-build.c
-> +++ b/hw/acpi/aml-build.c
-> @@ -962,6 +962,25 @@ Aml *aml_gpio_int(AmlConsumerAndProducer con_and_pro,
->                                 vendor_data_len);
->  }
->  
-> +/*
-> + * ACPI 5.0: 19.5.54
-> + * GpioIo(GPIO Connection IO Resource Descriptor Macro)
-> + */
-> +Aml *aml_gpio_io(AmlConsumerAndProducer con_and_pro,
-> +                 AmlIoRestriction io_restriction, AmlShared shared,
-> +                 AmlPinConfig pin_config, uint16_t debounce_timeout,
-> +                 const uint32_t pin_list[], uint32_t pin_count,
-> +                 const char *resource_source_name,
-> +                 const uint8_t *vendor_data, uint16_t vendor_data_len)
-> +{
-> +    uint8_t flags = io_restriction | shared << 3;
-> +
-> +    return aml_gpio_connection(AML_IO_CONNECTION, con_and_pro, flags,
-> +                               pin_config, 0, debounce_timeout, pin_list,
-> +                               pin_count, resource_source_name, vendor_data,
-> +                               vendor_data_len);
-> +}
-> +
->  /*
->   * ACPI 1.0b: 6.4.3.4 32-Bit Fixed Location Memory Range Descriptor
->   * (Type 1, Large Item Name 0x6)
-> diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
-> index f38e129719..f5c0c5886b 100644
-> --- a/include/hw/acpi/aml-build.h
-> +++ b/include/hw/acpi/aml-build.h
-> @@ -167,6 +167,17 @@ typedef enum {
->      AML_ACTIVE_LOW = 1,
->  } AmlActiveHighAndLow;
->  
-> +/*
-> + * ACPI 5.0: Table 5-133 Predefined ACPI Names
+The main goal of this series is to introduce a new option "fat-size"
+within the vvfat backend (patch 5).
 
-what does that have to do with anything?
+This series also includes minor patches:
+ - patch 1 introduces another option to create unpartitionned disks.
+ - patch 2-4 are minor improvements easing the introducing of
+   "fat-size" option
 
-> + * _IOR field definition
-> + */
-> +typedef enum {
-> +    AML_IO_RESTRICTION_NONE = 0,
-> +    AML_IO_RESTRICTION_INPUT_ONLY = 1,
-> +    AML_IO_RESTRICTION_OUTPUT_ONLY = 2,
-> +    AML_IO_RESTRICTION_NONE_AND_PRESERVE = 3,
+This was tested on with a aarch64-linux kernel taken from
+functional/aarch64/test-virt and on aarch64-qnx over raspi4b with a
+workaround, not included here (the SD bus must be associated to the EMMC2
+port instead of through GPIOs).
 
-these numbers are not from that table.
+Changes since v2:
+ - patch 1:
+   - change default: true for hard disk, false for false.
+   - remove "unpartitioned" keyword within filename
+ - patch 5
+   - rename option "fs-size"
 
-> +} AmlIoRestriction;
-> +
+Clément Chigot (5):
+  vvfat: introduce partitioned option
+  vvfat: move fat_type check prior to size setup
+  vvfat: add a define for VVFAT_SECTOR_BITS and VVFAT_SECTOR_SIZE
+  vvfat: move size parameters within driver structure
+  vvfat: add support for "fs-size" option
 
-the actual table is here:
+ block/vvfat.c        | 350 +++++++++++++++++++++++++++++++------------
+ qapi/block-core.json |  16 +-
+ 2 files changed, 270 insertions(+), 96 deletions(-)
 
-Table 6-189 GPIO Connection Descriptor Definition
-
-
-
-and there are no names there to not match this enum.
-
-So a better way to do it is different. Pass in u8,
-and at the calling site, you add text matching spec verbatim:
-	0x1 /* This pin or pins can only be used for Input, and the pin configuration must be preserved while not in use.  */
-
-only use an enum if same value used multiple times.
-in that cases, add this comment at the enum values.
-
-but it is important to use spec text verbatim so people can
-easily find the relevant spec part.
-
-
-
->  /*
->   * ACPI 5.0: Table 6-187 Extended Interrupt Descriptor Definition
->   * _SHR field definition
-> @@ -331,6 +342,12 @@ Aml *aml_gpio_int(AmlConsumerAndProducer con_and_pro,
->                    const uint32_t pin_list[], uint32_t pin_count,
->                    const char *resource_source_name,
->                    const uint8_t *vendor_data, uint16_t vendor_data_len);
-> +Aml *aml_gpio_io(AmlConsumerAndProducer con_and_pro,
-> +                 AmlIoRestriction io_restriction, AmlShared shared,
-> +                 AmlPinConfig pin_config, uint16_t debounce_timeout,
-> +                 const uint32_t pin_list[], uint32_t pin_count,
-> +                 const char *resource_source_name,
-> +                 const uint8_t *vendor_data, uint16_t vendor_data_len);
->  Aml *aml_memory32_fixed(uint32_t addr, uint32_t size,
->                          AmlReadAndWrite read_and_write);
->  Aml *aml_interrupt(AmlConsumerAndProducer con_and_pro,
-
-
-fyi I am not merging unused code. pls make this patch a part
-of a patchset using this.
-
-> -- 
-> 2.43.0
+-- 
+2.43.0
 
 
