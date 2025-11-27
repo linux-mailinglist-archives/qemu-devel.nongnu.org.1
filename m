@@ -2,93 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F09FC8EB72
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 15:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7888FC8ECCC
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 15:41:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOch6-00007j-Tl; Thu, 27 Nov 2025 09:10:00 -0500
+	id 1vOdB6-0007at-Lf; Thu, 27 Nov 2025 09:41:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vOch2-00005J-J6; Thu, 27 Nov 2025 09:09:56 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vOdB0-0007ZQ-0c; Thu, 27 Nov 2025 09:40:54 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vOcgz-00040M-Bx; Thu, 27 Nov 2025 09:09:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764252593; x=1795788593;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bQdYilWGa9Wi2rdUzt6QN0o4fezK94Yfgc3qXyRYmE0=;
- b=L9bVZuWXdzRN5jQIae+lIy1PcPXhm02Tf9q0fyRm5jfT4ctGb+aOQy2A
- R0hCOurfxe4f7vn5zKJc7NK695PV0rQTe6KFm8dn2anE1MgWzY6oO6sbB
- vDKZ/cyvWJBS2rUAwott8J8UX11zY4LJ2DZot9KzfAgKIMnuSghxT1EmO
- Y9zDFb7YvyVZn/NEGWgupoDT5Uu+Hw4MAQp+2J4bBqOJiJbm/rTw2K5up
- ZNkx7pdsTs01ethu1dX3fU1Bt7SgcJlMzBNeCZp0Lke2A7OtTy2F0Bnoh
- i9KE4hfRu1hYcyWs75rjTtT4D2fyGq7slrsjKG50EDhcSQ8qVUMdnrElB w==;
-X-CSE-ConnectionGUID: Gr+69KyaTJKrcitki+L2eQ==
-X-CSE-MsgGUID: 32DugJjOTBCkHilmXCP30g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77402711"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="77402711"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 06:09:49 -0800
-X-CSE-ConnectionGUID: H8ufkZXVQg67BZP6Ctky/g==
-X-CSE-MsgGUID: 2bH9/39aR9GF4XcDljhEyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="193042281"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 27 Nov 2025 06:09:42 -0800
-Date: Thu, 27 Nov 2025 22:34:22 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- qemu-arm@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- Jason Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v4 10/27] hw/i386/pc: Remove linuxboot.bin
-Message-ID: <aShhbuuW/CVsoLvP@intel.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-11-philmd@linaro.org>
- <20250509180411.10f6e683@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vOdAx-0002v0-Q1; Thu, 27 Nov 2025 09:40:53 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9707F5969FF;
+ Thu, 27 Nov 2025 15:40:46 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id Cx1-8gO6sXTP; Thu, 27 Nov 2025 15:40:44 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 904D25969FE; Thu, 27 Nov 2025 15:40:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8E3425969FC;
+ Thu, 27 Nov 2025 15:40:44 +0100 (CET)
+Date: Thu, 27 Nov 2025 15:40:44 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Cl=E9ment_Chigot?= <chigot@adacore.com>
+cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
+ hreitz@redhat.com, eblake@redhat.com, armbru@redhat.com
+Subject: Re: [PATCH v3 1/5] vvfat: introduce partitioned option
+In-Reply-To: <20251127142417.710094-2-chigot@adacore.com>
+Message-ID: <baddb955-8a71-3f36-c5ce-c54ff15fdf8f@eik.bme.hu>
+References: <20251127142417.710094-1-chigot@adacore.com>
+ <20251127142417.710094-2-chigot@adacore.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250509180411.10f6e683@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1972200619-1764254444=:65476"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,38 +64,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 09, 2025 at 06:04:11PM +0200, Igor Mammedov wrote:
-> Date: Fri, 9 May 2025 18:04:11 +0200
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v4 10/27] hw/i386/pc: Remove linuxboot.bin
-> X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
-> 
-> On Thu,  8 May 2025 15:35:33 +0200
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> 
-> > All PC machines now use the linuxboot_dma.bin binary,
-> > we can remove the non-DMA version (linuxboot.bin).
-> > 
-> > Suggested-by: Thomas Huth <thuth@redhat.com>
-> > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > ---
-> >  hw/i386/pc.c                  |   3 +-
- 
-(After a long interval, more of a note.)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> linuxboot.bin is referenced in a few more files:
-> 
-> hw/i386/x86-common.c:    option_rom[nb_option_roms].name = "linuxboot.bin";
+--3866299591-1972200619-1764254444=:65476
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-this case is removed in previous patch (which considerred x86 machines
-all have DMA enabled).
+On Thu, 27 Nov 2025, ClÃ©ment Chigot wrote:
+> This option tells whether the volume should be partitioned or not. Its
+> default varies: true for hard disks and false for floppy. Its prime
+> effect is to prevent a master boot record (MBR) to be initialized.
+>
+> This is useful as some operating system (QNX, Rtems) don't
+> recognized FAT mounted disks (especially SD cards) if a MBR is present.
+>
+> Signed-off-by: ClÃ©ment Chigot <chigot@adacore.com>
+> ---
+> block/vvfat.c        | 19 ++++++++++++++++---
+> qapi/block-core.json | 10 +++++++---
+> 2 files changed, 23 insertions(+), 6 deletions(-)
+>
+> diff --git a/block/vvfat.c b/block/vvfat.c
+> index 814796d918..dd0b3689c1 100644
+> --- a/block/vvfat.c
+> +++ b/block/vvfat.c
+> @@ -306,7 +306,8 @@ typedef struct BDRVVVFATState {
+>     array_t fat,directory,mapping;
+>     char volume_label[11];
+>
+> -    uint32_t offset_to_bootsector; /* 0 for floppy, 0x3f for disk */
+> +    /* 0x3f for partitioned disk, 0x0 otherwise */
+> +    uint32_t offset_to_bootsector;
+>
+>     unsigned int cluster_size;
+>     unsigned int sectors_per_cluster;
+> @@ -1082,6 +1083,11 @@ static QemuOptsList runtime_opts = {
+>             .type = QEMU_OPT_BOOL,
+>             .help = "Make the image writable",
+>         },
+> +        {
+> +            .name = "partitioned",
+> +            .type = QEMU_OPT_BOOL,
+> +            .help = "Do not add a Master Boot Record on this disk",
 
-> hw/nvram/fw_cfg.c:    { "genroms/linuxboot.bin", 60 },
+Maybe should say "Add MBR to disk" and not "Do not add" as that's what 
+true means now.
 
-this case is removed in commit 6160ce208419 ("hw/nvram/fw_cfg: Remove
-legacy FW_CFG_ORDER_OVERRIDE").
+> +        },
+>         { /* end of list */ }
+>     },
+> };
+> @@ -1138,7 +1144,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+> {
+>     BDRVVVFATState *s = bs->opaque;
+>     int cyls, heads, secs;
+> -    bool floppy;
+> +    bool floppy, partitioned;
+>     const char *dirname, *label;
+>     QemuOpts *opts;
+>     int ret;
+> @@ -1165,6 +1171,9 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+>     s->fat_type = qemu_opt_get_number(opts, "fat-type", 0);
+>     floppy = qemu_opt_get_bool(opts, "floppy", false);
+>
+> +    /* Hard disk are partitioned by default; floppy aren't.  */
+
+Singular plural mismatch. Either disks/floppies are/aren't or is/isn't 
+when singular.
+
+> +    partitioned = qemu_opt_get_bool(opts, "partitioned", floppy ? false : true);
+> +
+>     memset(s->volume_label, ' ', sizeof(s->volume_label));
+>     label = qemu_opt_get(opts, "label");
+>     if (label) {
+> @@ -1196,7 +1205,6 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+>         if (!s->fat_type) {
+>             s->fat_type = 16;
+>         }
+> -        s->offset_to_bootsector = 0x3f;
+>         cyls = s->fat_type == 12 ? 64 : 1024;
+>         heads = 16;
+>         secs = 63;
+> @@ -1215,6 +1223,10 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+>         goto fail;
+>     }
+>
+> +    /* Reserver space for MBR */
+> +    if (partitioned) {
+> +        s->offset_to_bootsector = 0x3f;
+> +    }
+>
+>     s->bs = bs;
+>
+> @@ -3246,6 +3258,7 @@ static const char *const vvfat_strong_runtime_opts[] = {
+>     "floppy",
+>     "label",
+>     "rw",
+> +    "partitioned",
+
+Does this also needs to be parsed in vvfat_parse_filename like other 
+options seem to be?
+
+>
+>     NULL
+> };
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index b82af74256..ca438fba51 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -3464,8 +3464,8 @@
+> #
+> # @fat-type: FAT type: 12, 16 or 32
+> #
+> -# @floppy: whether to export a floppy image (true) or partitioned hard
+> -#     disk (false; default)
+> +# @floppy: whether to export a floppy image (true) or hard disk
+> +#     (false; default)
+
+I was wondering what does this option do now. It seems to restrict size to 
+different values, maybe that could be explained here.
 
 Regards,
-Zhao
+BALATON Zoltan
 
+> #
+> # @label: set the volume label, limited to 11 bytes.  FAT16 and FAT32
+> #     traditionally have some restrictions on labels, which are
+> @@ -3474,11 +3474,15 @@
+> #
+> # @rw: whether to allow write operations (default: false)
+> #
+> +# @partitioned: whether the volume will be partitioned;
+> +#     (default: true for hard disk, false for floppy)
+> +#     (since 10.2)
+> +#
+> # Since: 2.9
+> ##
+> { 'struct': 'BlockdevOptionsVVFAT',
+>   'data': { 'dir': 'str', '*fat-type': 'int', '*floppy': 'bool',
+> -            '*label': 'str', '*rw': 'bool' } }
+> +            '*label': 'str', '*rw': 'bool', '*partitioned': 'bool' } }
+>
+> ##
+> # @BlockdevOptionsGenericFormat:
+>
+--3866299591-1972200619-1764254444=:65476--
 
