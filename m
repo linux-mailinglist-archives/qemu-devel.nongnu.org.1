@@ -2,108 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C95C90419
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 22:56:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E397CC904F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Nov 2025 23:57:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOjwp-0008Qw-SQ; Thu, 27 Nov 2025 16:54:45 -0500
+	id 1vOkuD-0001c2-QJ; Thu, 27 Nov 2025 17:56:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1vOjwc-0008PD-OL; Thu, 27 Nov 2025 16:54:30 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1vOku1-0001a4-Hy
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 17:55:53 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1vOjwa-0001PW-9a; Thu, 27 Nov 2025 16:54:30 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ARF7DMo007498;
- Thu, 27 Nov 2025 21:54:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=DcGOWM
- Rr+MDCjkiBDnxHJo6ZyiP+vJw4OrQ0e/IyLrU=; b=iSAztWTJEAYYlwVRHHrBpx
- HhwFXQhlOwzCmpmwdc7BmvE/3qaGHwZ8ubiz5Mm7v5Km7q7rhXNgUed1rqRm9MVM
- ZguQMag/DvaX4ACf4ChbEZlpBUJitnOhe2ELquKxMncg1n2ialJc7129IF33V4Uf
- s9Br0o3RQJDO+nSirSl1Sa0l17QsnSsAgL8UqUfOkoqan99OR9hTYnLTo2S8j8rI
- H49jK7CUge/w+DgLXzeTcXpBkxcTw8sgAM6K0WaXTcYM4f5v0jGqS8C8ZwgnjN1e
- 0hTwcEpxscrFCBiOec0V+M5jKTLtI8OXeKfgTJQqCoYCMJDoV31+qu2KOnut9I+g
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak2kqa8kq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Nov 2025 21:54:25 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5ARIjGKk025139;
- Thu, 27 Nov 2025 21:54:24 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4akt71sskc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Nov 2025 21:54:24 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5ARLsISQ26608038
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Nov 2025 21:54:18 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00C3520043;
- Thu, 27 Nov 2025 21:54:18 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A042E20040;
- Thu, 27 Nov 2025 21:54:17 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.111.1.154])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 27 Nov 2025 21:54:17 +0000 (GMT)
-Message-ID: <46efeae205376fca9b23944f6c453d19c27b540a.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 1/4] target/s390x: Fix missing interrupts for small
- CKC values
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Date: Thu, 27 Nov 2025 22:54:17 +0100
-In-Reply-To: <115d74c6536473d1a3ec8d9431f186b0d09c2aff.camel@linux.ibm.com>
-References: <20251016175954.41153-1-iii@linux.ibm.com>
- <20251016175954.41153-2-iii@linux.ibm.com>
- <a0accce9-6042-4a7b-a7c7-218212818891@redhat.com>
- <115d74c6536473d1a3ec8d9431f186b0d09c2aff.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1vOktu-0001NF-N1
+ for qemu-devel@nongnu.org; Thu, 27 Nov 2025 17:55:51 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dHWw22Nz6zHnGcV;
+ Fri, 28 Nov 2025 06:54:42 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+ by mail.maildlp.com (Postfix) with ESMTPS id A6FA51402E9;
+ Fri, 28 Nov 2025 06:55:31 +0800 (CST)
+Received: from a2303103017.china.huawei.com (10.47.72.83) by
+ dubpeml500005.china.huawei.com (7.214.145.207) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 27 Nov 2025 22:55:30 +0000
+To: <qemu-devel@nongnu.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>, <eblake@redhat.com>, 
+ <armbru@redhat.com>, <berrange@redhat.com>, <pbonzini@redhat.com>,
+ <mst@redhat.com>, <lizhijian@fujitsu.com>, <anisa.su@samsung.com>,
+ <linux-cxl@vger.kernel.org>
+Subject: [RFC QEMU PATCH 0/7] Application Specific Tagged Memory Support in
+ CXL Type 3 Devices
+Date: Thu, 27 Nov 2025 22:55:18 +0000
+Message-ID: <20251127225526.700-1-alireza.sanaee@huawei.com>
+X-Mailer: git-send-email 2.51.0.windows.2
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAwMCBTYWx0ZWRfX22HFGVY2zxk3
- E+ilKVdZB7S49rsKQFY4BFtayMPqsTybbH2L2oxhgZskhdzv2rJtOBLoDgL3QCMGxCLJoc2ssaZ
- 0tcugOeoKn4T/bpSOnFV/1eKfp/TLal189hjc+J+uJ62UrnoHKrC9o2LMNBfA0B38IMMCbDMfKV
- tl8uNJBCLEZxTxZ9XrGaMqhlLQNest4UUQdicwO9dCSXWf5fsyWuFqXt6MKsp8LDOMph7whd5F/
- jXM1s8p+pST79nmZnq/pGjrP+Fo3HgdvoA/4ld+kXd+7ECB7lgLI4AR3P6rQnYA4iXOjnEsVsCI
- c4Xuz/2fbIUtEqTsuhyqxFNYRTkOMuT/hklw8azvAI5Q6AgXQqQ5KfOhugGoS/LRiv4TWIaFb6r
- ex4ag6DJDLmW5RSlWfDBKFfTWHEzXw==
-X-Authority-Analysis: v=2.4 cv=fJM0HJae c=1 sm=1 tr=0 ts=6928c891 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=69wJf7TsAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=R2Hq113kbEfVEy8uZm8A:9
- a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-GUID: rVofZ8-mPLVdcCgekmSbuQT0DEaptl3V
-X-Proofpoint-ORIG-GUID: rVofZ8-mPLVdcCgekmSbuQT0DEaptl3V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511220000
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.47.72.83]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -119,99 +65,244 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2025-11-27 at 19:00 +0100, Ilya Leoshkevich wrote:
-> On Thu, 2025-11-27 at 17:43 +0100, Thomas Huth wrote:
-> > On 16/10/2025 19.58, Ilya Leoshkevich wrote:
-> > > Suppose TOD clock value is 0x1111111111111111 and clock-
-> > > comparator
-> > > value is 0, in which case clock-comparator interruption should
-> > > occur
-> > > immediately.
-> > >=20
-> > > With the current code, tod2time(env->ckc - td->base.low) ends up
-> > > being
-> > > a very large number, so this interruption never happens.
-> > >=20
-> > > Fix by firing the timer immediately if env->ckc < td->base.low.
-> > >=20
-> > > Cc: qemu-stable@nongnu.org
-> > > Reviewed-by: Thomas Huth <thuth@redhat.com>
-> > > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > > ---
-> >=20
-> > =C2=A0 Hi Ilya,
-> >=20
-> > this patch unfortunately broke reverse debugging on the s390x
-> > target.
-> > Something like this used to work before:
-> >=20
-> > =C2=A0 qemu-img create -f qcow2 /tmp/disk.qcow2 2G
-> > =C2=A0 ./qemu-system-s390x -nographic \
-> > =C2=A0=C2=A0=C2=A0 -icount shift=3D6,rr=3Drecord,rrfile=3Dreplay.bin,rr=
-snapshot=3Dinit \
-> > =C2=A0=C2=A0=C2=A0 -net none -drive file=3D/tmp/disk.qcow2,if=3Dnone
-> > =C2=A0 ./qemu-system-s390x -nographic \
-> > =C2=A0=C2=A0=C2=A0 -icount shift=3D6,rr=3Dreplay,rrfile=3Dreplay.bin,rr=
-snapshot=3Dinit \
-> > =C2=A0=C2=A0=C2=A0 -net none -drive file=3D/tmp/disk.qcow2,if=3Dnone
-> >=20
-> > With this commit and later, the replay hangs somewhere in an
-> > endless
-> > loop.
-> > Do you have any ideas what could go wrong here?
-> >=20
-> > =C2=A0 Thanks,
-> > =C2=A0=C2=A0 Thomas
->=20
-> [...]
->=20
-> Hi Thomas,
->=20
-> Thanks for letting me know, I will look at this ASAP.
->=20
-> Best regards,
-> Ilya
+Application may need memory for specific purposes. For example, a
+database application may want to allocate memory that is optimized for
+workloads involving large datasets and frequent read/write operations.
+Or there might be a large read only dataset that can be mapped to a CXL
+Type 3 device.
 
-Intermediate finding:
+There must be a way to feed this memory into the VMs. This series
+introduces a tagged memory backend object that allows tagging memory
+regions with application specific tags. The tagged memory regions can
+then be used as backing memory for CXL Type 3 devices.
 
-update_ckc_timer() is called only during replay, but not during normal
-runs or record. The call chain during replay is as follows:
+This series includes the following changes:
+ - A new tagged memory backend object is introduced that allows
+   allocating and managing memory regions with specific tags.
+ - The CXL Type 3 device implementation is modified to support using
+   tagged memory regions as backing memory.
+ - New QAPI commands and structures are added to facilitate the
+   management of tagged memory regions and their association with CXL
+   Type 3 devices.
+ - The CXL extent management code is updated to handle tagged memory
+   regions appropriately, including lazy loading and direct mapping
+   optimizations.
 
-main()
-  qemu_init()
-    qmp_x_exit_preconfig()
-      replay_vmstate_init()
-        load_snapshot()
-          qemu_loadvm_state()
-            qemu_loadvm_state_main()
-              qemu_loadvm_section_start_full()
-                vmstate_load()
-                  vmstate_load_state()
-                    cpu_post_load()
-                      tcg_s390_tod_updated()
-                        update_ckc_timer()
+# Assumptions:
 
-The end result is that during record CHECKPOINT_CLOCK_VIRTUAL is not
-written to replay.bin. But during replay it's expected here:
+1) Each extent must be mapped entirely to a single tagged memory
+backend.
+2) Punching holes in extents is not supported, and not allowed.
 
-        if (replay_mode !=3D REPLAY_MODE_NONE
-            && timer_list->clock->type =3D=3D QEMU_CLOCK_VIRTUAL
-            && !(ts->attributes & QEMU_TIMER_ATTR_EXTERNAL)
-            && !replay_checkpoint(CHECKPOINT_CLOCK_VIRTUAL)) {
-            qemu_mutex_unlock(&timer_list->active_timers_lock);
-            goto out;
-        }
+# Diagram that illustrates the design:
 
-The lack of it prevents the timer callback from running. So the timer
-associated with s390x_tod_timer() remains active forever and causes the
-rr_cpu_thread_fn() to loop.
+                  VM
+                  |
+                  | FMW.0
+                  v
+                +--------------------+
+                |   CXL Type-3 dev   |
+                |  +--------------+  |
+                |  | extent0 T0   |----> backend0 (tag T0)
+                |  | extent1 T1   |----> backend1 (tag T1)
+                |  | extent2 T2   |----> backend2 (tag T2)
+                |  +--------------+  |
+                +--------------------+
 
-IIUC these things really have to be symmetric between record and
-replay, so we probably need to add this call to some strategic location
-during record.
 
-I will continue tomorrow.
+# Tested scenario:
+
+Created two different tagged memory backends with different tags at
+runtime with QMP commands, and then added two different extents that
+cover the whole memory backends specified by tags.
+
+# Changes to the kernel:
+
+UUID/tags must be allowed in the DCD patchset available online from
+Ira which is series depends on [1].
+
+# Commands used:
+
+# First memory backend with tag 5be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{
+    "execute": "object-add",
+    "arguments": {
+        "qom-type": "memory-backend-tagged",
+        "id": "tm0",
+        "size": 1073741824,
+        "tag": "5be13bce-ae34-4a77-b6c3-16df975fcf1a"
+    }
+}
+
+## Second memory backend with tag 6be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{
+
+    "execute": "object-add",
+    "arguments": {
+        "qom-type": "memory-backend-tagged",
+        "id": "tm1",
+        "size": 1073741824,
+        "tag": "6be13bce-ae34-4a77-b6c3-16df975fcf1a"
+    }
+}
+
+## Add capacity extent with tag 5be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{
+    "execute": "cxl-add-dynamic-capacity",
+	"arguments": {
+		"path": "/machine/peripheral/cxl-vmem0",
+		"host-id": 0,
+		"selection-policy": "prescriptive",
+		"region": 0,
+		"tag": "5be13bce-ae34-4a77-b6c3-16df975fcf1a",
+		"extents": [
+			{
+				"offset": 0,
+				"len": 1073741824
+			}
+		]
+	}
+}
+
+## Add capacity extent with tag 6be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{
+    "execute": "cxl-add-dynamic-capacity",
+    "arguments": {
+        "path": "/machine/peripheral/cxl-vmem0",
+        "host-id": 0,
+        "selection-policy": "prescriptive",
+        "region": 0,
+        "tag": "6be13bce-ae34-4a77-b6c3-16df975fcf1a",
+        "extents": [
+            {
+                "offset": 1073741824,
+                "len": 1073741824
+            }
+        ]
+    }
+}
+
+## Release capacity extent with tag 5be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{ "execute": "cxl-release-dynamic-capacity",
+	"arguments": {
+		"path": "/machine/peripheral/cxl-vmem0",
+		"host-id": 0,
+		"removal-policy":"tag-based",
+        	"tag": "5be13bce-ae34-4a77-b6c3-16df975fcf1a",
+		"region": 0,
+		"extents": [
+		{
+			"offset": 0,
+			"len": 1073741824
+		}
+		]
+	}
+}
+
+## Release capacity extent with tag 6be13bce-ae34-4a77-b6c3-16df975fcf1a:
+
+{ "execute": "cxl-release-dynamic-capacity",
+	"arguments": {
+		"path": "/machine/peripheral/cxl-vmem0",
+		"host-id": 0,
+		"removal-policy":"tag-based",
+        	"tag": "6be13bce-ae34-4a77-b6c3-16df975fcf1a",
+		"region": 0,
+		"extents": [
+		{
+			"offset": 1073741824,
+			"len": 1073741824
+		}
+		]
+	}
+}
+
+## Checking if capacity extents are removed successfully:
+
+{
+  "execute": "cxl-release-dynamic-capacity-status",
+  "arguments": {
+	"path": "/machine/peripheral/cxl-vmem0",
+	"host-id": 0,
+        "tag": "6be13bce-ae34-4a77-b6c3-16df975fcf1a",
+	"region": 0
+  }
+}
+
+Response:
+{
+    "return": {
+        "status": "not-found"
+    }
+}
+
+# QEMU Command:
+
+$ qemu-system-x86_64 \
+  -cpu max \
+  -smp 8 \
+  -drive file=debian12.qcow2,format=qcow2,if=none,id=mydrive0,index=0 \
+  -device virtio-blk-pci,drive=mydrive0 \
+  -kernel bzImage \
+  -append "console=ttyS0,115200 TERM=linux root=/dev/vda1 nokaslr ignore_loglevel \
+           fsck.mode=skip cxl_acpi.dyndbg=+fplm cxl_pci.dyndbg=+fplm cxl" \
+  -nographic \
+  -serial mon:stdio \
+  -machine type=q35,accel=tcg \
+  -virtfs local,path=hostshare/,mount_tag=hostshare,security_model=passthrough,id=hostshare \
+  -qmp tcp:localhost:4444,server,wait=off \
+  -netdev user,id=network0,hostfwd=tcp::2025-:22 \
+  -device virtio-net,netdev=network0 \
+  -m 12G,maxmem=20G,slots=10 \
+  -object memory-backend-ram,id=vmem0,share=on,size=2G \
+  -device pxb-cxl,numa_node=0,bus_nr=23,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+  -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+  -M cxl=on,cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=6G \
+  -device cxl-type3,bus=root_port13,id=cxl-vmem0,num-dc-regions=1,dc-regions-total-size=4G
+
+BASE: 2a3af116a78e1adceb24521d76199b97f08c0f1d
+
+Depends-on:
+https://lore.kernel.org/linux-cxl/20251013160151.000039dd.alireza.sanaee@huawei.com/
+
+Depends-on:
+https://lore.kernel.org/all/20250413-dcd-type2-upstream-v9-0-1d4911a0b365@intel.com/
+
+[1] https://github.com/sarsanaee/linux/tree/allow_uuid_ira
+
+Alireza Sanaee (7):
+  hw/mem: Add tagged memory backend object
+  hw/cxl: Allow initializing type3 device with no backing device
+  hw/cxl: Change Extent add/remove APIs for lazy memory backend.
+  hw/cxl: Map lazy memory backend after host acceptance
+  hw/cxl: Add performant direct mapping for extents
+  hw/cxl: Add remove alias functionality for extent direct mapping
+  hw/cxl: Add tag-based removal functionality
+
+ hw/cxl/cxl-host.c           |   6 +
+ hw/cxl/cxl-mailbox-utils.c  | 190 +++++++++++++++++++--
+ hw/mem/cxl_type3.c          | 326 ++++++++++++++++++++++++++++++------
+ hw/mem/meson.build          |   1 +
+ hw/mem/tagged_mem.c         | 116 +++++++++++++
+ include/hw/cxl/cxl_device.h |  44 ++++-
+ include/hw/mem/tagged_mem.h |  31 ++++
+ qapi/cxl.json               |  46 +++++
+ qapi/qom.json               |  15 ++
+ 9 files changed, 707 insertions(+), 68 deletions(-)
+ create mode 100644 hw/mem/tagged_mem.c
+ create mode 100644 include/hw/mem/tagged_mem.h
+
+-- 
+2.43.0
+
 
