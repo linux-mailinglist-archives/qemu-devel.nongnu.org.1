@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FF9C9313A
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BA9C93140
 	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 21:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vP4j5-0002VP-CH; Fri, 28 Nov 2025 15:05:55 -0500
+	id 1vP4j6-0002WW-Aw; Fri, 28 Nov 2025 15:05:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vP4j1-0002UM-Iq
+ id 1vP4j1-0002UR-JR
  for qemu-devel@nongnu.org; Fri, 28 Nov 2025 15:05:51 -0500
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vP4ix-0000Rt-D2
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 15:05:49 -0500
+ id 1vP4ix-0000Ru-DS
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 15:05:51 -0500
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7791B81174;
- Fri, 28 Nov 2025 23:05:39 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 149B681172;
+ Fri, 28 Nov 2025 23:05:40 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:894::1:13])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id b5mcgZ0FDuQ0-84gYId7K; Fri, 28 Nov 2025 23:05:39 +0300
+ ESMTPSA id b5mcgZ0FDuQ0-XltlNhT2; Fri, 28 Nov 2025 23:05:39 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1764360339;
- bh=9prDWx4Tuh5NMXxULCIsUGRu46D0miCzYKR+fy/XRzY=;
+ bh=SeytG3v7nZ3UnEGfTy35SUMEpij0sc1khpDxV0rfvUM=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=wIoSgjM04UDPqUjcVmUHFmJXUhx1qwAfhzOe0Ub+oqcViNue/PQjUIlv9685ULEWM
- oHr8I+pzpAySMfo2RNv1k0H0WH0tHPMYVLMLiLo7fLXCLa8c+koIanIOymYlC0yHP2
- aiNhm35uw+5RzX7LWc0PRiajaltToMM1fUTtX3CU=
+ b=vSoZv8sXcfRYYXlzPhiefuxsDHjkaylT300KqB1pZ4pP23fnf3dYe7MyN1o0zel2m
+ PjyfsT91UggBZVI2Gms922V8YU4ERsVhct/orVWaBD2p5lvGymyo4VhTLxLk+gTHdX
+ Q5InP8JEBYIs750/slsg/5UVD/9z4qxXoySmnLns=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,22 +42,23 @@ To: marcandre.lureau@redhat.com
 Cc: pbonzini@redhat.com, armbru@redhat.com, eblake@redhat.com,
  berrange@redhat.com, vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, qemu-devel@nongnu.org
-Subject: [PATCH 2/3] error-report: move real_time_iso8601() to header
-Date: Fri, 28 Nov 2025 23:05:34 +0300
-Message-ID: <20251128200536.207344-3-vsementsov@yandex-team.ru>
+Subject: [PATCH 3/3] chardev: add logtimestamp option
+Date: Fri, 28 Nov 2025 23:05:35 +0300
+Message-ID: <20251128200536.207344-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251128200536.207344-1-vsementsov@yandex-team.ru>
 References: <20251128200536.207344-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,47 +73,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To be reused in the following commit.
+Add an option to inject timestamps into serial log file.
+That simplifies debugging a lot, when you can simply compare
+QEMU logs with guest console logs.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/qemu/error-report.h | 6 ++++++
- util/error-report.c         | 7 -------
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ chardev/char.c         | 63 ++++++++++++++++++++++++++++++++++++++----
+ include/chardev/char.h |  2 ++
+ qapi/char.json         |  6 +++-
+ 3 files changed, 65 insertions(+), 6 deletions(-)
 
-diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
-index 3ae2357fda..412b705898 100644
---- a/include/qemu/error-report.h
-+++ b/include/qemu/error-report.h
-@@ -74,4 +74,10 @@ extern bool message_with_timestamp;
- extern bool error_with_guestname;
- extern const char *error_guest_name;
+diff --git a/chardev/char.c b/chardev/char.c
+index 64006a3119..57c65544d0 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -82,12 +82,8 @@ void qemu_chr_be_event(Chardev *s, QEMUChrEvent event)
+     CHARDEV_GET_CLASS(s)->chr_be_event(s, event);
+ }
  
-+static inline char *real_time_iso8601(void)
-+{
-+    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
-+    return g_date_time_format_iso8601(dt);
-+}
-+
- #endif
-diff --git a/util/error-report.c b/util/error-report.c
-index 1b17c11de1..20618640e8 100644
---- a/util/error-report.c
-+++ b/util/error-report.c
-@@ -169,13 +169,6 @@ static void print_loc(void)
+-static void qemu_chr_write_log(Chardev *s, const uint8_t *buf, size_t len)
++static void do_write_log(Chardev *s, const uint8_t *buf, size_t len)
+ {
+-    if (s->logfd < 0) {
+-        return;
+-    }
+-
+     if (qemu_write_full(s->logfd, buf, len) < len) {
+         /*
+          * qemu_write_full() is defined with G_GNUC_WARN_UNUSED_RESULT,
+@@ -96,6 +92,55 @@ static void qemu_chr_write_log(Chardev *s, const uint8_t *buf, size_t len)
      }
  }
  
--static char *
--real_time_iso8601(void)
--{
--    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
--    return g_date_time_format_iso8601(dt);
--}
--
- /*
-  * Print a message to current monitor if we have one, else to stderr.
-  * @report_type is the type of message: error, warning or informational.
++static void do_write_log_timestamps(Chardev *s, const uint8_t *buf, size_t len)
++{
++    g_autofree char *timestr = NULL;
++
++    while (len) {
++        size_t i;
++
++        if (s->log_line_start) {
++            if (!timestr) {
++                timestr = real_time_iso8601();
++            }
++            do_write_log(s, (const uint8_t *)timestr, strlen(timestr));
++            do_write_log(s, (const uint8_t *)" ", 1);
++            s->log_line_start = false;
++        }
++
++        for (i = 0; i < len; i++) {
++            if (buf[i] == '\n') {
++                break;
++            }
++        }
++
++        if (i == len) {
++            /* not found \n */
++            do_write_log(s, buf, len);
++            return;
++        }
++
++        i += 1;
++        do_write_log(s, buf, i);
++        buf += i;
++        len -= i;
++        s->log_line_start = true;
++    }
++}
++
++static void qemu_chr_write_log(Chardev *s, const uint8_t *buf, size_t len)
++{
++    if (s->logfd < 0) {
++        return;
++    }
++
++    if (s->logtimestamp) {
++        do_write_log_timestamps(s, buf, len);
++    } else {
++        do_write_log(s, buf, len);
++    }
++}
++
+ static int qemu_chr_write_buffer(Chardev *s,
+                                  const uint8_t *buf, int len,
+                                  int *offset, bool write_all)
+@@ -249,6 +294,7 @@ static void qemu_char_open(Chardev *chr, ChardevBackend *backend,
+         } else {
+             flags |= O_TRUNC;
+         }
++        chr->logtimestamp = common->has_logtimestamp && common->logtimestamp;
+         chr->logfd = qemu_create(common->logfile, flags, 0666, errp);
+         if (chr->logfd < 0) {
+             return;
+@@ -266,6 +312,7 @@ static void char_init(Object *obj)
+ 
+     chr->handover_yank_instance = false;
+     chr->logfd = -1;
++    chr->log_line_start = true;
+     qemu_mutex_init(&chr->chr_write_lock);
+ 
+     /*
+@@ -505,6 +552,9 @@ void qemu_chr_parse_common(QemuOpts *opts, ChardevCommon *backend)
+     backend->logfile = g_strdup(logfile);
+     backend->has_logappend = true;
+     backend->logappend = qemu_opt_get_bool(opts, "logappend", false);
++
++    backend->has_logtimestamp = true;
++    backend->logtimestamp = qemu_opt_get_bool(opts, "logtimestamp", false);
+ }
+ 
+ static const ChardevClass *char_get_class(const char *driver, Error **errp)
+@@ -956,6 +1006,9 @@ QemuOptsList qemu_chardev_opts = {
+         },{
+             .name = "logappend",
+             .type = QEMU_OPT_BOOL,
++        },{
++            .name = "logtimestamp",
++            .type = QEMU_OPT_BOOL,
+         },{
+             .name = "mouse",
+             .type = QEMU_OPT_BOOL,
+diff --git a/include/chardev/char.h b/include/chardev/char.h
+index b65e9981c1..6a5318c918 100644
+--- a/include/chardev/char.h
++++ b/include/chardev/char.h
+@@ -64,6 +64,8 @@ struct Chardev {
+     char *label;
+     char *filename;
+     int logfd;
++    bool logtimestamp;
++    bool log_line_start;
+     int be_open;
+     /* used to coordinate the chardev-change special-case: */
+     bool handover_yank_instance;
+diff --git a/qapi/char.json b/qapi/char.json
+index 140614f82c..a4abafa680 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -197,11 +197,15 @@
+ # @logappend: true to append instead of truncate (default to false to
+ #     truncate)
+ #
++# @logtimestamp: true to insert timestamps into logfile
++#     (default false) (since 11.0)
++#
+ # Since: 2.6
+ ##
+ { 'struct': 'ChardevCommon',
+   'data': { '*logfile': 'str',
+-            '*logappend': 'bool' } }
++            '*logappend': 'bool',
++            '*logtimestamp': 'bool' } }
+ 
+ ##
+ # @ChardevFile:
 -- 
 2.48.1
 
