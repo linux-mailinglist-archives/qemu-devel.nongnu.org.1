@@ -2,57 +2,163 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69F8C919AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 11:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEC7C91AA3
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 11:35:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOvdo-0001J3-Nt; Fri, 28 Nov 2025 05:23:52 -0500
+	id 1vOvnf-0004zN-1Z; Fri, 28 Nov 2025 05:34:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vOvdl-0001II-9k
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 05:23:49 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <roger.pau@citrix.com>)
+ id 1vOvna-0004yo-Gw
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 05:33:58 -0500
+Received: from mail-southcentralusazon11011010.outbound.protection.outlook.com
+ ([40.93.194.10] helo=SN4PR0501CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1vOvdj-0005vR-CB
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 05:23:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=v4lmNbL/oRiZTCSX5ADZDmiidcTX1Nr8tjZ7lLH2PSo=; b=D8X+OznoG3vJr93OYQYWtBABL2
- AnG9A91YaKVdVqruLVqXqfr1/25G+/7cKUy4QnSpNlTv5QozJ6lmQfuY4itOjoW55MZvd8vXOex31
- Jst94IWIHn5JGleWl7M7LR0c1B5o856YOT4v8ruU4FTc0DFbfzhWxQwSRO07LjBq1gZPgCR4USnyc
- mBjIrM09C84d/BAWWsiGydYv/w6PV0CooiveUzBOzOK0H6UBhjjscRPSbU4xVWjDvqRcwMAykJmfe
- WrGlw3IQUynoLkXZ6lnMWmZSWa/3V65DJZeOz+YvdyxC20XqyQN5gMwGiHx8qp4JBic5GdxEq1mEA
- RD9UuR9YxiQ3Kn+rPGxH/WIoWKDn8diFkAxknsZ16Gq1dcogaYdL/nZPgWsROSBygB7cGi1JEfLxT
- fq858tmgjUg39Fcdal/+gSd0beJfWDmDpE53Sbh5+Fkp0kFmzRgRB0GsYk6jeGV1C5Wi7/5Z97weA
- yGgFvM9ymGFbEHwelHPoL8lyiwrlO+feqfyyucUGhc4xOJ+K6z3E24iPmFQZHTwnpdiutIeFeRfO9
- yxH9/3uyMaJL2EAbwcG4eSP4hBPO16doOz6Qqy1bLJm5Blerb/ya8npyq9+x3wndnPyxahFPQw9OJ
- tmosQiT6nSb0lbx+q8sM2t8ETZsaP6XITrVaX1xlE=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: Greg Kurz <groug@kaod.org>, Andrey Erokhin <language.lawyer@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] 9pfs: local: read native symlinks when
- security-model=mapped
-Date: Fri, 28 Nov 2025 11:23:42 +0100
-Message-ID: <2808056.mvXUDI8C0e@weasel>
-In-Reply-To: <3c35955d-a57e-4203-81c5-395146e23f83@gmail.com>
-References: <3c35955d-a57e-4203-81c5-395146e23f83@gmail.com>
+ (Exim 4.90_1) (envelope-from <roger.pau@citrix.com>)
+ id 1vOvnY-0007kZ-Ua
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 05:33:58 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dcMuz8TEyWiKHEON2mE80tyiPn8O8q2wJIXn+9eFo+JUZZJ/1ERQocgkp0jLOMAspDvxrDGz2VJ4Vsh7GjaVg05xLrZgJ7hlin71LlOllELIFn+NbPZVkTWBsjcF8O5uFgJVNRJSE33voUfYjH8xBlV/4FEJmIhor/c6HIXF9sorubx8a0eFIpEmbGa+4LWrkQiIMRlHkyc6zKGuzbqxMTJT2pcuoVT6Ho6aN5uIRfv/w9LAlO5/RjUyoKOA/jrlnYkfIrgswpAs1dDQEMngvPkVp7IjLZqeeImnrXWV1mh4xJRXdGigJd6utCutMA6jvtnSFGFsuRg7FwFJ5s8kBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UDNTtGJJgweGSSaG0VehTKsCqD5+n+ME1UT/gpgz1+8=;
+ b=YOIvKGNsR/vpY5RJpvkL3/+/E7vMPdYYWXattp673GqHelvxZT36xFeRi+YxR0Wq6E88wrcRuqZM3JCgqvE897I18m4P/MzJ8fgZVAseM+6PKsfRCNTO4qPPyl3xyUeQeDPluIYOk/ikUIRAdOkOLvEUnimewFofxkOC3lBbxJi7WFuHo7wXIwjBdmHvdJRfp2iORkM5K2BN6Gk/Eh/FpTgnGdo5wil4u7HzfG+oAsrEPq87ohqnrNjobW6pODGsFtbD+PPf8I9pocAW+0/whsYgRoPO+dj+M87AJG+UhdZ3IDeyMXpL4Vxf4uW5EhJdS+1KsAeu8MsiFNfIqjXWsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UDNTtGJJgweGSSaG0VehTKsCqD5+n+ME1UT/gpgz1+8=;
+ b=Xnm84Qd86ihSL5fnDJk1GlfvCZ/b7aYO4PP3np/nMNgkmYCavSDaO7zS0XpqTv4MtuoJppP9JdPofUBQu2NmDi/NAwXsAdVEHT//bE/2yT71KNDwuXeYn1rAdQopD6Spw+FCT0FgfPGu9+lmHdR3wGCWEoJfPYKzxbTMV3RTfGs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from CH7PR03MB7860.namprd03.prod.outlook.com (2603:10b6:610:24e::14)
+ by BY5PR03MB5218.namprd03.prod.outlook.com (2603:10b6:a03:223::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Fri, 28 Nov
+ 2025 10:28:51 +0000
+Received: from CH7PR03MB7860.namprd03.prod.outlook.com
+ ([fe80::f5ba:35df:1c9f:b343]) by CH7PR03MB7860.namprd03.prod.outlook.com
+ ([fe80::f5ba:35df:1c9f:b343%5]) with mapi id 15.20.9366.009; Fri, 28 Nov 2025
+ 10:28:51 +0000
+Date: Fri, 28 Nov 2025 11:28:47 +0100
+From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
+To: qemu-devel@nongnu.org
+Cc: Peter.Turner@cloud.com, ngoc-tu.dinh@vates.tech,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, xen-devel@lists.xenproject.org
+Subject: Default NVMe MDTS value causes Widnows Server 2025 hangs and BSODs
+ (during install at least)
+Message-ID: <aSl5X4dJHACpJHPU@Mac.lan>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-ClientProxiedBy: PA7P264CA0004.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:2d3::10) To CH7PR03MB7860.namprd03.prod.outlook.com
+ (2603:10b6:610:24e::14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH7PR03MB7860:EE_|BY5PR03MB5218:EE_
+X-MS-Office365-Filtering-Correlation-Id: 451623c2-d162-4b74-fbe9-08de2e68ec4e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NjRybkFvdWg2cTF0OEkwcER6QWlKc3liTHdXUjkxbGpnRVJaR0lpZGxJVmN1?=
+ =?utf-8?B?N2JZaldVTkp1b1krQVc2dVZXMWt5N1RVR0RjcmVnTENnUk4zbDE1cjhkTlNX?=
+ =?utf-8?B?ZU1TaHk5NmxoY2JjS1dPNk5TaE0rRG1Xbm5PRGpRbHdwQVNScUtrZkp4NlUw?=
+ =?utf-8?B?ak9lS3VkSVdJTDN6L2pFSWVGNys3eVQ2UksvZEJlM2JmN3lHeDYxVVJ4eTli?=
+ =?utf-8?B?ZUFibFUwYVpheVo2ZVFVaGlBMVVlOWZQNlBxZmRwMUIxeE9NNklZREdyUFNm?=
+ =?utf-8?B?T2R3RWJzbHphWU1LaHN3bEROVjlObGxpeGxvbURwMU1QaklBTkRwQXg0Q1lL?=
+ =?utf-8?B?VzBkbDN1OGdRM3dkNGJKMHZGWlZJaU9WZk52NklHa3pNV0wzUHZFSzJxbmk5?=
+ =?utf-8?B?akZ0aFdkNDc4K3ViR3pMT3JpRDU2SFEvMGhkRWVaTldjeDdEQmh3N2F3QURq?=
+ =?utf-8?B?Q0pXdGVQcXhDTlBxT0QraTV2QU84RjY5ckhGMDFzU29kdnhOSUxFaStQYVNl?=
+ =?utf-8?B?TzduLzZpR2V3Mjk0Y3B0b1RmRjlLOXhVbDJwb09BRFYwbjF4ZDNoS3NDSm9H?=
+ =?utf-8?B?RkdNM2lPMFI1MllHODNiQ1preWh2bmV3T0xacjUzRUpCYTFOMEU4L2ErSGRt?=
+ =?utf-8?B?NVoxckdJenV0WHBrM0FCb2F3WDd1T3gzbjdROFhFTWRJMCs0cHRIZVNYTGVI?=
+ =?utf-8?B?RkxkdTVFbXQreDUvVWRURG1icGFVOXJ3U1BZVm4wd0x3a2JkU0UrL2pZWHg0?=
+ =?utf-8?B?WWwxRnZyS20zRjQ0cE9LK3hwY0tlS21uSHdGVmJtVzV6R05KNDhzb3R4MlBK?=
+ =?utf-8?B?b2NLVE1QVm42c2Myb0laQi9XekJYRkZhR3JPdE1FTEpYOXNSbEFWeWY5WTFm?=
+ =?utf-8?B?di94ZFZrTEZ2UHpPMjVUTzd6RWJ3RERybkN3RUprUklaQisvYUgrMnVRRDJ6?=
+ =?utf-8?B?NWNJWmNhYlMzaVFNRUFTQWl1L1NMcW53U1RwU2J2ZWVhK1ROR3ZRdzZwN0x6?=
+ =?utf-8?B?eHlzOStmWVZSSkswSW9ma2cremx3bE5ZKzZKV2tRYitHWkV6RnlXdGNNcmgy?=
+ =?utf-8?B?L3pOcFNYdWR2ejZ5OHdQc0VycmFWTEQycHdvVCtEdmhvck9PUHJNalpGaTdG?=
+ =?utf-8?B?S05WVEt0M05nN3h6VGE4NVBsTW1PWmI2WjRLU1R1YnBrZFlZZlZ1SnJ6SFdM?=
+ =?utf-8?B?dHlhU2hLK1ZJanVOV3Rsa2RnclVyN3MwMlV0c0pFR2E3WWRDbjE2UXJEU2JP?=
+ =?utf-8?B?K3hleVAvSGpmR2FDVVNmaGRmbTBMRVRoV2MyMEZMcEVhbm84N3ZDNXlGZGJq?=
+ =?utf-8?B?TDNlSUxTKytXYkdpaklObldRSUpiZldZZHRtWHdJYWNlV3F4ajFqaFZXK2F0?=
+ =?utf-8?B?K3NMa3J1V2l6Wms5KzNxeW5icWtpWC9uTnVSSlQ0ZG93Z0NLdmlGcmU5a0lC?=
+ =?utf-8?B?cHA0UlVCSFBQbmdpUVVFOFk0RkRRYzZ5NlJ4UFZjMHp0ODBCTWNrRDMzSG5i?=
+ =?utf-8?B?d1VMeHk4Vk9Nd0cvUlRtZGpkeEdqMk9pWWorb3hBZ0RaOWtyN01ERTB5OTdS?=
+ =?utf-8?B?OEdMM1VGbW9oWk85RDJMOTJnN2ZxdmRPUDN2VEZmOVh6Sm00MVFxd2V5UnRM?=
+ =?utf-8?B?cHNIdFdiV1Q3aXZZa3lTYk9BZDFVYUtFMWRScExOR1Nid2dvcEhZUTVFMUhY?=
+ =?utf-8?B?QjIyRzREaE56Q2xxM21lTUExSi9mWVpRenBWZzQzSEdtVHJKTHRKbTUxZFpB?=
+ =?utf-8?B?SUdycVc0ZkU2Y3YxMUIycitoNGdkVlAyMFlxOVZ1aVJNeGpsYWp3S2pJbWto?=
+ =?utf-8?B?cHNjdXVUcjhtb0JMTFZKNzNLTW0wVUNyKzhEV3ZSLzdldFpKN0NuNUgxY014?=
+ =?utf-8?B?a2xZTi9DMU4wdVBJYjZRbDJsSXZGNTZ6UjVZZGp2c2V0UkZ1OFpqOUFuTHpH?=
+ =?utf-8?Q?4gLwTOSudtemZKRyAnECOkjweKDIckA+?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH7PR03MB7860.namprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MVk3MGlUTUxxMXh5NU8vY2dYa05SZHdCcnBpVEYwU2RsWWt6YVljN2hBWXpR?=
+ =?utf-8?B?QjhjZ3ZOSHdzU25PVmU3aThxdUovTzgvQjZmMzlkSjNuTENBSEVzcFJNOHF3?=
+ =?utf-8?B?blppRVZEVDc4dTBzblZWNE9lclFkV0EwYkRtaEtUbGVOSE5hV0pSa0JQNUFE?=
+ =?utf-8?B?Y3BwZVQzZUZ5Q01kWFdITmlzckpqUWMvSk5DaXY2TkQ0M3ovc0I3b2c0QTN1?=
+ =?utf-8?B?T01abW9YT3J1a3lHVTlQMENjMm41djZMTE5naUJVMkprSW5WS3NwWWIyaGhU?=
+ =?utf-8?B?RUhNazFKMFd0cUMwVTFuQjR1VTRKUStEclViOHlTWG1RUm1VZFpmbCtNVUcz?=
+ =?utf-8?B?aVVvNUNWQ0NnekdKOFBCei9MdDd4UEROaFcvTW1VNGZyQm8rL09qb2ZRRlR1?=
+ =?utf-8?B?VWVUVnNmMHFzTEJEN1dhRk1sRUdIT1dvb005YXU1NlkxZ2Zsb2JGanduVVla?=
+ =?utf-8?B?MVRRQXl6Q1U0R05sMkJIVjJjUjR5cS9iN1hPSEJOMmpiRTFPVjBabG9RVlQw?=
+ =?utf-8?B?dVJlWUs2MFZjT3pUK01LMFR3Z2xUb0QzODRYTkFndU9wUEU5R2MvSHdHTTFX?=
+ =?utf-8?B?TGtObjV1M2NpT3lsTm54aWRJUUxqL0t4MjhQWFhXUUZkVVFBd1U5QXByV3l4?=
+ =?utf-8?B?d0hzbStuSG9jU3ovN1dLS2lybXVjVlJGQTRZenNmb0FwMDZyYUZ4N3JjOXRP?=
+ =?utf-8?B?TEZ5dGRncEhkTW4zd0c0eC9WY01pMU5aeC8yU3BmZk1JYjRZcGN2TlJVV0wy?=
+ =?utf-8?B?Z1V0V1d1dWgzakpXdHFEd1pVQ2N3MzNEcTI1TXVPR2NDdDhhblovWVN1Wmth?=
+ =?utf-8?B?ak1aUjBCdmN0bDg0eHo1MVZST2hSOFRMa3Y1a2RZa0ZqOEtVaDFkZldaeC9K?=
+ =?utf-8?B?MUNRSXdZK1dUcDBGNS84aG9tN1N5SlByM3dpT2p5Vm55WC85cHZSRFkrS243?=
+ =?utf-8?B?a1VCVHFkVmlTSDBTMndtQi9wZ0F3d2ZmVUVyWGNsOVZ1d2M5TTBvTEttakp5?=
+ =?utf-8?B?Sks1NGVsV0ZRWnVGVmRjM3FjWFpUN0JNVjA5UjJOUUhZMTdITUZiU2VMTXNw?=
+ =?utf-8?B?eFlkVWVuSnJXc0psYlU3ZTJSVWdKY1ZBMU9GN05EL0lTblg4aG1oNEsvN0JC?=
+ =?utf-8?B?b3NVTGYxWUNzd3plb3FOekp3KzY3bnM5NDBGOWwzVCtQNndHZmNWMUdyRUUz?=
+ =?utf-8?B?N01UMlZPTGc2V1MzRUlabjYwUGMveGREN2lKMVlwbmEyQy9mUENsYWcxZCsx?=
+ =?utf-8?B?S3BiN1ZlZlNSTGZWekQ3K0FOeEUyL2IxZEZNNG9QN0dueEJCYzFDeEI5L0hD?=
+ =?utf-8?B?cU9hMFN6ckRkNmNyWm5OaS8xblVpSzBVUDNNY1ljT0Z2bVVmNldqTHM0NVBa?=
+ =?utf-8?B?Q21WdXJHUFQ2dE9jNSthLzBxY0wyMUJ6SEVLTkUzc1JwOGZOMjQwbEFhUkdL?=
+ =?utf-8?B?R1pyNHVJang5ajRwS25oc2x1TDBNWm9kSnJ0WEFJMkdYaVo5bnFKRStPNmNJ?=
+ =?utf-8?B?NkdzSnhnanVjUm9jUmZrcHlVNFpKL2UzOTEwK1JyMXJnaURLd2ZzSDJTMnlB?=
+ =?utf-8?B?RWpnTGRzdjdqTVM4aFJpS0NZUkRKeHRqT3lDZnVTSzFzMndIY3ZQOHk0bHdC?=
+ =?utf-8?B?bG02MTlvZlYySEFGU0o0cHRkNEE5V3poRkxIcWRKamYwS083bWJoQjl0REN0?=
+ =?utf-8?B?SXhWRTRHWVRBWklvV0pYb0R1cTJDeEo4djAvMFJKSld0Q3VyVzBDeWZKM2xU?=
+ =?utf-8?B?NTBEWXNKUE8zSS9tZjJ1NlJQZkN6M0djOEdmQVBVMDZVUi9ndVBoS0dXdEFy?=
+ =?utf-8?B?elk4MDZZY0JVeTZiRmpPRjJVR2lnY21BdzBFTEtRdjk2Q2dXb2IyK3BpTHZ1?=
+ =?utf-8?B?MVJKRFVtN2NHRGJ4UFVqVktJVThYL0Vjc05tSkZNQWZaVVRQS1V3WFRHdXd4?=
+ =?utf-8?B?eUhHcmdnM2FFeW4zVmRMakJOK1hQZU5WMTNONXVlK3pVMUpjejlsYjhzTFZp?=
+ =?utf-8?B?RFV6MVh4eHlpSFhJUVNzVkJIYmNvbnEyNzFLWXMvK1grTittL21lNEpqamd6?=
+ =?utf-8?B?YWhBMlVtenhGRDRMZm4yUVExSHdIbVpSWnIzeTRxV3dFWFVSZWdJazM3NGFY?=
+ =?utf-8?Q?f/+9Y22ld+7LABv8Le8i1baIK?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 451623c2-d162-4b74-fbe9-08de2e68ec4e
+X-MS-Exchange-CrossTenant-AuthSource: CH7PR03MB7860.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 10:28:51.1142 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UdcxrRIPlFXAqylpXWo43bRrOun115LMdXJsGVKr3KdQLAjW+/PgjxfjJNpLMyImE8BKHE044AY78/sA5jkmrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB5218
+Received-SPF: pass client-ip=40.93.194.10; envelope-from=roger.pau@citrix.com;
+ helo=SN4PR0501CU005.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.224,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,36 +174,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Saturday, 22 November 2025 21:19:09 CET Andrey Erokhin wrote:
-> Directories attached using virtfs with security-model=mapped
-> may contain native symlinks
-> 
-> This can happen e.g. when booting from a rootfs directory tree
-> (usually with a writable overlay set up on the host side)
-> 
-> Currently, when security-model=mapped[-xattr|-file],
-> QEMU assumes that host-side "symlinks" are in the mapped format,
-> i.e. are regular files storing the linked path,
-> so it tries to open with O_NOFOLLOW
-> and fails with ELOOP on native symlinks
-> 
-> This patch introduces a fallback for such cases:
-> reuse security-model=[none|passthrough] else if branch logic
-> where readlink will be called for the path basename
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/173
-> 
-> Signed-off-by: Andrey Erokhin <language.lawyer@gmail.com>
-> ---
->  hw/9pfs/9p-local.c | 4 ++++
->  1 file changed, 4 insertions(+)
+Hello,
 
-Queued on 9p.next:
-https://github.com/cschoenebeck/qemu/commits/9p.next
+As part of XenServer Windows Server 2025 testing using Xen plus QEMU
+we discovered an issue during install that would lead to either the
+Windows installer getting stuck without making progress (albeit the
+screen was still showing the spinning circle correctly) or a BSOD that
+doesn't seem to have a unique number, the most common one was 0x50
+(PAGE_FAULT_IN_NONPAGED_AREA).
 
-Thanks!
+After a fair amount of debugging and following incorrect leads we have
+narrowed down what triggers the issue to QEMU emulated NVMe reporting
+a MDTS value of 7 by default (so max request size of 512KiB).
+Switching to higher MDTS values seemed to solve the issue.
 
-/Christian
+The commit that made that change:
 
+e137d20e7dff hw/block/nvme: add check for mdts
 
+Didn't contain much justification for the change from unlimited to
+512KiB max request size.
+
+Windows is like a black box to me, but I believe there's some error in
+the Windows logic that splits requests, and hence when MDTS is set to
+a sufficiently low value, and Windows has to split NVMe requests, it
+causes Windows to hit an internal bug.  This will be raised with
+Microsoft to get the issue debugged and possibly fixed on their side.
+
+From limited experimentation setting mdts to 10 (so 4MiB max request
+size) or 9 (2MiB) workarounds the issue.
+
+Would it be acceptable for QEMU NVMe to consider increasing the
+default MDTS value to something higher than 7 to workaround the issue?
+I've tested both 9 and 10 and they prevent the issue, I would avoid 8
+as it's too close to the current one that causes issues.  I don't have
+many references of other emulated NVMe implementations, I just know
+about Bhyve emulated NVMe, which sets MDTS to 9.
+
+If bumping MDTS to a higher value is acceptable please let me know and
+I will prepare a patch.
+
+Regards, Roger.
 
