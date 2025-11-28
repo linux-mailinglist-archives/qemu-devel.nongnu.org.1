@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED65C9203E
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:44:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1D4C9203B
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:43:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOxoN-0002M9-ST; Fri, 28 Nov 2025 07:42:55 -0500
+	id 1vOxoO-0002MC-5b; Fri, 28 Nov 2025 07:42:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vOxo5-00027Y-8M
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:37 -0500
-Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
+ id 1vOxo7-0002AV-E6
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:40 -0500
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vOxo3-00039C-4A
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:36 -0500
-Received: by mail-vk1-xa29.google.com with SMTP id
- 71dfb90a1353d-5599b119b4aso455836e0c.0
- for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:42:34 -0800 (PST)
+ id 1vOxo5-00039f-H0
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:38 -0500
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-9372a52af7eso484596241.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:42:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764333754; x=1764938554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764333756; x=1764938556; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P6rMJ3udbgIpgAiy6d31R0Vx2kkWCqkcA13MTheL8sQ=;
- b=iSOV6Y5XrC7FZfRL0QtU7751OKv8dUjthFa3epUQJ/uQ6/o643RLX5REpuEFaEmc+f
- RqwW3X7kE3SCyhUDo0jLfXcZ4/Xv2rJcTBVXkhe08vQS0G8AN1ZkLl2jcD9V+NgC9qix
- 3N9WF8HczJDp/Wql7ZYh1d4inu8EdfySQagvZRvK5zaq1MH775ZIpT6H88X1BV98KfCZ
- IAwBnp8wMrZ1JcdGf76K8pFUusstVcXMOD7vMlLo2nsjKNCD8Kmd2OW6Be72QzO8LA6h
- e9C6S18l1VKnYflHCuNrX4OFocHcVGEoLrWlq6/OUyDPbFIn2Cvb7fg4MN6OBCHmUUOk
- HV+Q==
+ bh=zOnxGpqlMZmxE2gECJcZmS8f1X72UBHCp7cH7nU2V2c=;
+ b=hrA5wclT1FVDwtM4aFPLrT491rK9uw76HV3gqCVxRrzdGrAd4kXE+0a0ziXtzrW07D
+ mrfSlghsmxKJKaQSKG3JyxSpRNAZV3EuNDprLOrFG5MZJfq9XYgbdycty7A5WzrnV1Ry
+ r73GpvL+6aKtuyl6pnzShiHLM2x7PJod/ceXHp6T+nIo/28yyfavk5d0The3ZuDsQDgU
+ LBQ/5rxeMmfpLMc3Ovz7Pe8Rn8BXSc4YjOTMpi3kFxpWBz4+YC8KugiJyxYkYqOJg8mh
+ oEJaL8MVxAxoL/64g+EiwUdToSf9HS2xn+k1Qzess5DiDfjLQaNAsgWVwNUH1O/Zz7HX
+ CZow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764333754; x=1764938554;
+ d=1e100.net; s=20230601; t=1764333756; x=1764938556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=P6rMJ3udbgIpgAiy6d31R0Vx2kkWCqkcA13MTheL8sQ=;
- b=n0wc4J/xJa61eb5eqBo2oVEbRl8t8L3kT7lSu68Ucx8pU2r699lLPHRev33KKTQFnm
- siqxdukr2qe94NNpqSwMnSd+B/huNNIonmU1nrEDDtwPCIzMzhTDK/0DD8mzTdYYc9Iz
- XPmkkBHdMlZ0u/xxP1KR7dxZ+REfwbbNencRBTqCRDhHtTEDQfOPrXUeQGe391EqxNYe
- tdmI/89vz44Cejo4xX+M1H9C3+gxOXdNk0BJ3iBM5OTjtZ/DwK1XrA0tXV7LZ7fwSYlp
- SWZLa55A3pDp1iCUNPwcmLV1fqspo1xRNKoslZp7BDJ5i5dE5QxHKORQDk2zuJBd1m5B
- ka2w==
-X-Gm-Message-State: AOJu0YyCksmcoXaTDSIvIdQcYQK5EMMZGKFQgjGR6UVT1rI0mAxXF/wj
- IfYuo9/5xxNeZRhkgq5YSfHrXFlR7h6IjD/DyUGXtOd812/2z53PhiIxWrXmFEGTIciMjkZLHKH
- wn6V9
-X-Gm-Gg: ASbGncvx+1PUeZ2mTwn3FThoHfgY+Law0NkK9iPrKRzmCE82OwOcrqy9HlQ5e/LDJNi
- vlObZanOQaVBlO8x8IhQQIcRJSRvUKptT1qZaSc8ong435Fbt9yD2+4yF0Q50/kV408aTQ6oEzI
- KUou1BFG9wnfBMfLnnEsS3FWYBv/TZ+3DeH908mZVbXkbt8+WFf8ZZRWlhmOSknavlTnee4NRCZ
- 4qq0AkjQi/cROn9Y0drKzXPMEvjz4ikY7DI9Ylsu4gfgUS/ExgVBEXhUbQGeH20qQ+WVMJlCKhV
- QVHtZomxNTRNhXsD61n1WP2MpyPOPw2YdkSueLponKFo6FXheU5V0eZ/9gIvK+D0TTApQWjLXJ0
- i42BUD8bB3rnDoq+dxGpUgcs8O1xyaKa9avsZa0lNyoG29L3CBQPV/4p4lq1oLpsdszlfk3jFd8
- uD1sFBtbil7CSOl1E=
-X-Google-Smtp-Source: AGHT+IEsb/oawwXBRNjapEzXqc75pUgGhNNk26dnwbq0ojjBMQeG+AWSNtLm+Pm7/YeOvu/HZ3rTSA==
-X-Received: by 2002:a05:6122:7cc:b0:559:eef7:39f with SMTP id
- 71dfb90a1353d-55b8d75c040mr8547626e0c.12.1764333753723; 
- Fri, 28 Nov 2025 04:42:33 -0800 (PST)
+ bh=zOnxGpqlMZmxE2gECJcZmS8f1X72UBHCp7cH7nU2V2c=;
+ b=i3MrjkZSlKiQ2+tWCylUzfdeNT81BFkvBTuPDPicapAe0tSA96e3ylK8BwtJXZsVHK
+ Sk+lwct7o4ForYSI6ii4PsrqjsDyGdMeUyx4Pg3jI3KLN/3Wmve8okqRi4RrnSbplAwP
+ c3bzWF/fhCLzYa2WtMrrZ+cFyJJgwDGMwBa/iEyaPIALak1M43KGS33+Ct1InUrL9XM3
+ WdhdE01F/TWcExfeS7hIMMZAQWTxPKnbMTxkvdofPIpmNTlEuYMlu+AvveUHczCoP7mv
+ raHIc8AjZdJFQbkkXzHI7ecZtPc+BwdxLklBeifb96zrxhCuUXdftp5OKdZW5XfsPvTb
+ M28Q==
+X-Gm-Message-State: AOJu0YyEcISSgs5tyGsnWukGMmUrm0o22Cq1ZLsnjwPytk8uJsQFQsY2
+ jQxKZYUcIc/QUhQ9U6lxZNVS6FBVLuIxgrq0jrGwe+UXIqgcys91DtGM98UK35ZmFWoMMjnWTIp
+ eSerG
+X-Gm-Gg: ASbGnctsBVbdATp7axjPNONajZggVxliFmaJ2heNH6H/gmcuAew3iEyozavVEjxy2ov
+ Gv5uhm7+iI8tnSk73uxIRyfO3d5Oc7EM7LaQoWBRHb/JbXSW6WkDXGNDTdPRtViLcvxeLs9qQps
+ 5NmoQT0q3sUj69sECSQ/fA5pLbzpXxnhc/Sf6uLzsKgJ8CELAWrr2f+i6qgblHuUMp0VANsYq5Z
+ 5u7E5E6nHxZmwDJ9FbRCAtAg44F944+dLokaDwcDex5gcUV2umdzPvL0uO/lJLh7Ub684ZxKd0d
+ VSFdE77etBMFdqJYjSZChXpIN2V2Yqvj4be0Gp4BlaPrsPQ12vBh/+Zp79wVtzkCWbT7vuuQVtt
+ kKARHZIPC3D96dKzbnQSvNYHLCfme/oTbLiRgYurEdp8oT8anWCas06EzbpWLYiAJ2DHmHu82AA
+ 4etvLZ71EphQq7JQo=
+X-Google-Smtp-Source: AGHT+IE/GUTosPwJTPVKplxZbX7N85n6XkeIfrYjoX4owl4pUjdsju0IX+w6UxjHEunloqf77eKthA==
+X-Received: by 2002:a05:6122:4886:b0:55b:305b:4e48 with SMTP id
+ 71dfb90a1353d-55b8d7ca793mr9424172e0c.20.1764333756182; 
+ Fri, 28 Nov 2025 04:42:36 -0800 (PST)
 Received: from gromero0.. ([177.139.2.175]) by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-55cf4e1d56asm1776930e0c.4.2025.11.28.04.42.31
+ 71dfb90a1353d-55cf4e1d56asm1776930e0c.4.2025.11.28.04.42.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Nov 2025 04:42:33 -0800 (PST)
+ Fri, 28 Nov 2025 04:42:35 -0800 (PST)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, richard.henderson@linaro.org,
  alex.bennee@linaro.org, philmd@linaro.org
 Cc: peter.maydell@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v1 5/6] target/i386: Add a _MAX sentinel to X86ASIdx enum
-Date: Fri, 28 Nov 2025 12:41:09 +0000
-Message-Id: <20251128124110.1272336-6-gustavo.romero@linaro.org>
+Subject: [PATCH v1 6/6] target/i386: Use new CPU address space API
+Date: Fri, 28 Nov 2025 12:41:10 +0000
+Message-Id: <20251128124110.1272336-7-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251128124110.1272336-1-gustavo.romero@linaro.org>
 References: <20251128124110.1272336-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
- envelope-from=gustavo.romero@linaro.org; helo=mail-vk1-xa29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,26 +100,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a sentinel to the X86ASIdx enum so it can be used when the total
-number of address spaces is required.
+Use new cpu_addess_space_init() to initialize the ASes for CPU, instead
+of setting cpu->num_ases directly and use cpu_address_space_add() to
+add the required ASes dynamically.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- target/i386/cpu.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/kvm/kvm-cpu.c        | 4 ++--
+ target/i386/kvm/kvm.c            | 4 ++--
+ target/i386/tcg/system/tcg-cpu.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index cee1f692a1..783ad66d74 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2600,6 +2600,7 @@ void cpu_sync_avx_hflag(CPUX86State *env);
- typedef enum X86ASIdx {
-     X86ASIdx_MEM = 0,
-     X86ASIdx_SMM = 1,
-+    X86ASIdx_MAX
- } X86ASIdx;
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 9c25b55839..9b7364f1c6 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -98,8 +98,8 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      * Only initialize address space 0 here, the second one for SMM is
+      * initialized at register_smram_listener() after machine init done.
+      */
+-    cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
+-    cpu_address_space_init(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
++    cpu_address_space_init(cs, X86ASIdx_MAX);
++    cpu_address_space_add(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
  
- #ifndef CONFIG_USER_ONLY
+     return true;
+ }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 60c7981138..dcc7e5eeae 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2744,14 +2744,14 @@ static void register_smram_listener(Notifier *n, void *unused)
+                                  &smram_address_space, X86ASIdx_SMM, "kvm-smram");
+ 
+     CPU_FOREACH(cpu) {
+-        cpu_address_space_init(cpu, X86ASIdx_SMM, "cpu-smm", &smram_as_root);
++        cpu_address_space_add(cpu, X86ASIdx_SMM, "cpu-smm", &smram_as_root);
+     }
+ }
+ 
+ /* It should only be called in cpu's hotplug callback */
+ void kvm_smm_cpu_address_space_init(X86CPU *cpu)
+ {
+-    cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root);
++    cpu_address_space_add(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root);
+ }
+ 
+ static void *kvm_msr_energy_thread(void *data)
+diff --git a/target/i386/tcg/system/tcg-cpu.c b/target/i386/tcg/system/tcg-cpu.c
+index 7255862c24..ab72c5ff7b 100644
+--- a/target/i386/tcg/system/tcg-cpu.c
++++ b/target/i386/tcg/system/tcg-cpu.c
+@@ -73,9 +73,9 @@ bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+     memory_region_add_subregion_overlap(cpu->cpu_as_root, 0, cpu->cpu_as_mem, 0);
+     memory_region_set_enabled(cpu->cpu_as_mem, true);
+ 
+-    cs->num_ases = 2;
+-    cpu_address_space_init(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
+-    cpu_address_space_init(cs, X86ASIdx_SMM, "cpu-smm", cpu->cpu_as_root);
++    cpu_address_space_init(cs, X86ASIdx_MAX);
++    cpu_address_space_add(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
++    cpu_address_space_add(cs, X86ASIdx_SMM, "cpu-smm", cpu->cpu_as_root);
+ 
+     /* ... SMRAM with higher priority, linked from /machine/smram.  */
+     cpu->machine_done.notify = tcg_cpu_machine_done;
 -- 
 2.34.1
 
