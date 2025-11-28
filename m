@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CE7C9204A
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:44:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED65C9203E
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:44:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOxoN-0002EK-Ef; Fri, 28 Nov 2025 07:42:55 -0500
+	id 1vOxoN-0002M9-ST; Fri, 28 Nov 2025 07:42:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vOxo3-00026N-IQ
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:35 -0500
-Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
+ id 1vOxo5-00027Y-8M
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:37 -0500
+Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vOxo1-00038Z-5L
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:35 -0500
-Received: by mail-vk1-xa2a.google.com with SMTP id
- 71dfb90a1353d-55b2f2ae1cbso1223242e0c.1
- for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:42:31 -0800 (PST)
+ id 1vOxo3-00039C-4A
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:42:36 -0500
+Received: by mail-vk1-xa29.google.com with SMTP id
+ 71dfb90a1353d-5599b119b4aso455836e0c.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:42:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764333751; x=1764938551; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764333754; x=1764938554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8EnHLBHH/9x6RQh+DJhX2515VrjyRTLJawVS+ytU3po=;
- b=bhhLVW3lAzqtoLuPNy1OM+dJyGy6Saz3hC38fRL2FAfxZ8sGX6hXdSjqrlrN6mwkJd
- cPebKEVDL7fnboCp6GdzD+cWmYM9SSxH1s2PJxVI9rAFPgklbOTqLOmUW/eP9aqh5Rzf
- W0DmLOVLuKlL0HrO0y+t84lXEkbygAhyQSQSzVMfMs8y/4w0CM6507mYDIyyCPo1Zk9E
- OMrGZqOA/XKm6uJ9V20gKbGzMF/XJWp5SIlmg+WFOgCGuZMVyMz1Tc5V4/HxsiLBKD90
- yQHK1B+n0SLIwGoyNMcBlzB210DQ3ngZ7vzbjMJ9IBAZS5BTKtP7oRo3YZqSrNRao5fn
- 1apQ==
+ bh=P6rMJ3udbgIpgAiy6d31R0Vx2kkWCqkcA13MTheL8sQ=;
+ b=iSOV6Y5XrC7FZfRL0QtU7751OKv8dUjthFa3epUQJ/uQ6/o643RLX5REpuEFaEmc+f
+ RqwW3X7kE3SCyhUDo0jLfXcZ4/Xv2rJcTBVXkhe08vQS0G8AN1ZkLl2jcD9V+NgC9qix
+ 3N9WF8HczJDp/Wql7ZYh1d4inu8EdfySQagvZRvK5zaq1MH775ZIpT6H88X1BV98KfCZ
+ IAwBnp8wMrZ1JcdGf76K8pFUusstVcXMOD7vMlLo2nsjKNCD8Kmd2OW6Be72QzO8LA6h
+ e9C6S18l1VKnYflHCuNrX4OFocHcVGEoLrWlq6/OUyDPbFIn2Cvb7fg4MN6OBCHmUUOk
+ HV+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764333751; x=1764938551;
+ d=1e100.net; s=20230601; t=1764333754; x=1764938554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=8EnHLBHH/9x6RQh+DJhX2515VrjyRTLJawVS+ytU3po=;
- b=BNmB/uiQlX3WnEQDDH9rTL692546D4GQrjK0OBjMguZukXSDDuJjp5r35RasMd/cF3
- qv3Mj1darWzBhwGZpOzFd1U93GUTwJkFTsxWumvgQ4zGK7bbg5vQMcXZlj8XbtEAqkA3
- Op25xvb/UXAjgUmg8WBJX9yno+Qjtp3tZOH9wh+lJNvK/CKyVW6Vc/rIqHDqZ7Q3P+qF
- 4oY8y+anp/35k+YGTvWRGqG0VYK6XCWGX8UB0qzlLchDSZCvrv18FwWZeX2Km7SS4w9c
- oaJVzC5XdgKDLfxAioQwG6xu0bJbfdcDTgenU+lTmBQlyum6242SL4BXmeCluIz4lPUx
- X6Rg==
-X-Gm-Message-State: AOJu0YzKSsZh1LigtseHXCHPMuP3VPTx8GbA8Xv63QnCYG+VKcOyJPSD
- T0y8UacVSV3qFQJAR3O4dU6wgAYxGKezvmoKsSbggsyZhOxW9LHhJw7oAmwYY+4mNT3TOGFbPoE
- JlphB
-X-Gm-Gg: ASbGncsnfbAogfqaP93wv2S8LuqPj1bQXzc5gGtimAWkna8BkrzIbe+aQ98xXeKHuGo
- uA06OQfyJ2QV4VZ4WMgxn+T53o5H0xU5XWNxsUhFrjuQeoXFaStDJhe4PosYM5nBxf9TbFLb+LD
- XK9yNjIcQEvkbZBOg28LdRt4JvCjtGpFOOawL+BW5vsnpDbBwcMl4/3InpihBO6zsqzSRbC0Wpw
- dQ5DvAq0ZnARO8qnPxOZ7zbcjJb/1JsXOH5n9IAxXGA5XCISQ/GVdVw/iHEoiwjorxt1ATNo7l2
- VYCfoo1UyclkEa573nrfTqNoz9ImN5qqtg6BuaYg6Qd2jOkheoNG42HAs+qtIQeSORDradmD34j
- 02mY+NxSmFkQeiAsbVjTJsdpjs+IWIno8lrVYTSlLNac1bhptEZklZB4Pn03RrxyGKyouGeBGJh
- r+1O3hC3mACduIgR4=
-X-Google-Smtp-Source: AGHT+IE1XwJbhnwRfpKp/QmFEs/Vyr3ToUaWkjZtCzNVh3Ue+/R4Dd09aT4bwBukw92fekOy+d98rQ==
-X-Received: by 2002:a05:6122:2224:b0:559:7acd:1d3a with SMTP id
- 71dfb90a1353d-55cd755d6c6mr4455044e0c.2.1764333751255; 
- Fri, 28 Nov 2025 04:42:31 -0800 (PST)
+ bh=P6rMJ3udbgIpgAiy6d31R0Vx2kkWCqkcA13MTheL8sQ=;
+ b=n0wc4J/xJa61eb5eqBo2oVEbRl8t8L3kT7lSu68Ucx8pU2r699lLPHRev33KKTQFnm
+ siqxdukr2qe94NNpqSwMnSd+B/huNNIonmU1nrEDDtwPCIzMzhTDK/0DD8mzTdYYc9Iz
+ XPmkkBHdMlZ0u/xxP1KR7dxZ+REfwbbNencRBTqCRDhHtTEDQfOPrXUeQGe391EqxNYe
+ tdmI/89vz44Cejo4xX+M1H9C3+gxOXdNk0BJ3iBM5OTjtZ/DwK1XrA0tXV7LZ7fwSYlp
+ SWZLa55A3pDp1iCUNPwcmLV1fqspo1xRNKoslZp7BDJ5i5dE5QxHKORQDk2zuJBd1m5B
+ ka2w==
+X-Gm-Message-State: AOJu0YyCksmcoXaTDSIvIdQcYQK5EMMZGKFQgjGR6UVT1rI0mAxXF/wj
+ IfYuo9/5xxNeZRhkgq5YSfHrXFlR7h6IjD/DyUGXtOd812/2z53PhiIxWrXmFEGTIciMjkZLHKH
+ wn6V9
+X-Gm-Gg: ASbGncvx+1PUeZ2mTwn3FThoHfgY+Law0NkK9iPrKRzmCE82OwOcrqy9HlQ5e/LDJNi
+ vlObZanOQaVBlO8x8IhQQIcRJSRvUKptT1qZaSc8ong435Fbt9yD2+4yF0Q50/kV408aTQ6oEzI
+ KUou1BFG9wnfBMfLnnEsS3FWYBv/TZ+3DeH908mZVbXkbt8+WFf8ZZRWlhmOSknavlTnee4NRCZ
+ 4qq0AkjQi/cROn9Y0drKzXPMEvjz4ikY7DI9Ylsu4gfgUS/ExgVBEXhUbQGeH20qQ+WVMJlCKhV
+ QVHtZomxNTRNhXsD61n1WP2MpyPOPw2YdkSueLponKFo6FXheU5V0eZ/9gIvK+D0TTApQWjLXJ0
+ i42BUD8bB3rnDoq+dxGpUgcs8O1xyaKa9avsZa0lNyoG29L3CBQPV/4p4lq1oLpsdszlfk3jFd8
+ uD1sFBtbil7CSOl1E=
+X-Google-Smtp-Source: AGHT+IEsb/oawwXBRNjapEzXqc75pUgGhNNk26dnwbq0ojjBMQeG+AWSNtLm+Pm7/YeOvu/HZ3rTSA==
+X-Received: by 2002:a05:6122:7cc:b0:559:eef7:39f with SMTP id
+ 71dfb90a1353d-55b8d75c040mr8547626e0c.12.1764333753723; 
+ Fri, 28 Nov 2025 04:42:33 -0800 (PST)
 Received: from gromero0.. ([177.139.2.175]) by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-55cf4e1d56asm1776930e0c.4.2025.11.28.04.42.28
+ 71dfb90a1353d-55cf4e1d56asm1776930e0c.4.2025.11.28.04.42.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Nov 2025 04:42:30 -0800 (PST)
+ Fri, 28 Nov 2025 04:42:33 -0800 (PST)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, richard.henderson@linaro.org,
  alex.bennee@linaro.org, philmd@linaro.org
 Cc: peter.maydell@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v1 4/6] target/arm: Use new CPU address space API
-Date: Fri, 28 Nov 2025 12:41:08 +0000
-Message-Id: <20251128124110.1272336-5-gustavo.romero@linaro.org>
+Subject: [PATCH v1 5/6] target/i386: Add a _MAX sentinel to X86ASIdx enum
+Date: Fri, 28 Nov 2025 12:41:09 +0000
+Message-Id: <20251128124110.1272336-6-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251128124110.1272336-1-gustavo.romero@linaro.org>
 References: <20251128124110.1272336-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
- envelope-from=gustavo.romero@linaro.org; helo=mail-vk1-xa2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-vk1-xa29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,56 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use new cpu_addess_space_init() to initialize the ASes for CPU, instead
-of setting cpu->num_ases directly and use cpu_address_space_add() to
-add the required ASes dynamically.
+Add a sentinel to the X86ASIdx enum so it can be used when the total
+number of address spaces is required.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- target/arm/cpu.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ target/i386/cpu.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 1640b20b4d..c7151a2c1e 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2148,31 +2148,23 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-     unsigned int smp_cpus = ms->smp.cpus;
-     bool has_secure = cpu->has_el3 || arm_feature(env, ARM_FEATURE_M_SECURITY);
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index cee1f692a1..783ad66d74 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2600,6 +2600,7 @@ void cpu_sync_avx_hflag(CPUX86State *env);
+ typedef enum X86ASIdx {
+     X86ASIdx_MEM = 0,
+     X86ASIdx_SMM = 1,
++    X86ASIdx_MAX
+ } X86ASIdx;
  
--    /*
--     * We must set cs->num_ases to the final value before
--     * the first call to cpu_address_space_init.
--     */
--    if (cpu->tag_memory != NULL) {
--        cs->num_ases = 3 + has_secure;
--    } else {
--        cs->num_ases = 1 + has_secure;
--    }
-+    cpu_address_space_init(cs, ARMASIdx_MAX);
- 
--    cpu_address_space_init(cs, ARMASIdx_NS, "cpu-memory", cs->memory);
-+    cpu_address_space_add(cs, ARMASIdx_NS, "cpu-memory", cs->memory);
- 
-     if (has_secure) {
-         if (!cpu->secure_memory) {
-             cpu->secure_memory = cs->memory;
-         }
--        cpu_address_space_init(cs, ARMASIdx_S, "cpu-secure-memory",
-+        cpu_address_space_add(cs, ARMASIdx_S, "cpu-secure-memory",
-                                cpu->secure_memory);
-     }
- 
-     if (cpu->tag_memory != NULL) {
--        cpu_address_space_init(cs, ARMASIdx_TagNS, "cpu-tag-memory",
-+        cpu_address_space_add(cs, ARMASIdx_TagNS, "cpu-tag-memory",
-                                cpu->tag_memory);
-         if (has_secure) {
--            cpu_address_space_init(cs, ARMASIdx_TagS, "cpu-tag-memory",
-+            cpu_address_space_add(cs, ARMASIdx_TagS, "cpu-tag-memory",
-                                    cpu->secure_tag_memory);
-         }
-     }
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.34.1
 
