@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C99C92E69
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 19:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5309AC92E75
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 19:23:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vP36s-00031R-US; Fri, 28 Nov 2025 13:22:22 -0500
+	id 1vP36t-000322-Pb; Fri, 28 Nov 2025 13:22:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vP36j-0002yp-7R
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 13:22:13 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1vP36k-0002zU-Dc
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 13:22:15 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vP36h-0003A1-KU
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 13:22:12 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-477a2ab455fso21793365e9.3
- for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 10:22:03 -0800 (PST)
+ id 1vP36h-000372-JT
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 13:22:14 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42b32a3e78bso2028675f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 10:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764354122; x=1764958922; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VH0vJM7+U/YI9Ekj72lGuEmq3CIiJueJTkyD77UU3KY=;
- b=L38+/yIjora5GciiSYlIibxjlCEMRwuygoSc1FYoLqEQM9AAE0ag35JuPxp+9iD/z0
- 19GmWeSzYr9xPQEtynJ1EKgOb70zmvWKOgf+kf7m3rNqs3SYSgeDRenGdV9DI1AMz0RQ
- FmpIqoNxkO0SbZzYzp/5o2ABqV0zEFntyoemSiTHyPiOmovObSkjjYjNMLerfB3CDsnz
- DyekNRxK3lrwjP0zYLbn4GSeb2/KcHMafcQxDUN5BALkdp176HhOUML2Jq2NcOyEZv7t
- MUmkKXWzq63jSpJ3Itru6uyufUXKj5sZTenlrP/vxA/iIuGIWrNAqttK+BgR8ij3VUhq
- jTwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764354122; x=1764958922;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1764354120; x=1764958920; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VH0vJM7+U/YI9Ekj72lGuEmq3CIiJueJTkyD77UU3KY=;
- b=Gx4kKVb3bRmi5xAw218POuy+pPfC7ebiEZ21oZZovwOtrEyMw/nAWph49h6HJWft9G
- JxaTYnhtyHVZA0BhA/om33VTo6Gd1OS066D0yq4aLwQFUaaYAz7bB4QXED+riCVlBD2w
- of5cIF0jDiXm+0jJ0VjhLUG7sqzlpVUQMsX/DrmxpLaht4PAIJcJ6Zp56f+WPUdxkhl/
- MrWyYhmotKdm1X4iYwS2uZWmwsAISu+VTk9ROKbfFISvbqrcl5R+4AwJ3tAzaHU3vXUb
- Rs6GCb89SpifggPxANBkbulapRzXZKI6oZmvCDpsfBu8SjRi+1wuITDhKWuq6gwpfunX
- gK0w==
-X-Gm-Message-State: AOJu0Yxfx5xdPF1CaF21X80FskpTKWhf7n4QsBzOdWyKfUly6yo5tjKq
- FYUvmuUReaACYgSdEnR1zpiqchTN2/m1rdYpbug2M3WBX7RnnzYPPL8ujO7B0hUh2Mg=
-X-Gm-Gg: ASbGncvnBcqrMZjFvijEMmJDzuOw9o9PomZzqNgZwV9N20gff6Y9VgyA2VhsXTDaeHj
- 3oNAPmQm4rtE7yJB40HBf+OXrZoz2TQOaMmQ6hgrUpbobZFwMnDBQAsulyO6mHc5a32EKicvV3J
- ohKi14/6/T2C/uKafmd69HeKvzy5cVkaNeFJ8afWsxYH2WGWyN3XYr4f+X/Ej/Ek2WL4X2viRsE
- VEH9XoIgbJ8xuqMX+E98EG6IbhYnTYhBZt2PC5fNW1gTxtZhVb7w6AM+VFnloH3rWYz1/YbgmHv
- vk7R0E3mmThQ7iELdVcW4agIQS45RgFsuZqVn274jE14t5lqeaAVcULnD9uVYUkJIggVNir2qze
- qthTr1S1vFOsbdF0PuzsYkA5dWEHnlYWkZ98qLpowLLaDKnxV6NIqyOTnOZKkMsSJZVwi2jWXj1
- Vq6enIHdVu85w=
-X-Google-Smtp-Source: AGHT+IGwQJXIY5Tn0QHrayyPs33RbZQDd4nmKhgxwHyIO8N12MGjtkM3XaPNY2nbJ0wYXMZzIqtCxA==
-X-Received: by 2002:a05:600c:1ca4:b0:45d:f83b:96aa with SMTP id
- 5b1f17b1804b1-477c10c92d8mr349981965e9.7.1764354121967; 
- Fri, 28 Nov 2025 10:22:01 -0800 (PST)
+ bh=1DGGN972COszVw0XgwjUe95FT8j0aUdcqd6miQIJWy4=;
+ b=PjBfgI6MomUQ+0+iSSGbsMIVC7tWelwRuuZ9C/99vBBwpyyNwRAB3FdNviWFgDY+3j
+ 3RBw34W+UDzIa93g07TgOMpMqCZjP+UzujBGgJ3dqjUdiQpTvOqxQ790E69z9KYb4eBQ
+ 2T3vUBItcdeIb4Sa1ZN3thwpFVQXpBercoj5owwE4rT+jfDSoz3ae2Ks3j0psLVB4Vxl
+ n+zB/w45rmZxzMmxYH0/g0hzMFUnhl+NoSA7Nf004fBDBrp/8MHHFT43p8njBxUQ1jID
+ xMQMolxbZTJtTrhsNFM7ANrpaa1WbdDu+23J1RXklzQdSWOP4Ttfj1633X8bpL1af+Sv
+ OCHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764354120; x=1764958920;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=1DGGN972COszVw0XgwjUe95FT8j0aUdcqd6miQIJWy4=;
+ b=ugz/E6GMTwQGJognqgp+j8Wg6VduLkUa4lOtLURYmVlOAq0v6UiJWQrDb9KifgGjr6
+ +Qxp9gkyRhXR0KXnYDF4EHdctozwh7u0yuTRyxH9JvWJl1XnJmsuMc7EYz4bfpDcerle
+ DN183mrO3UJIwdJ3hIKSu3r/CqA+NUy6jbup+TRUopLDeuPusPpI55e2kffigf7Fc1UT
+ JNTbvhhK4xMU0siCElHJ5Rjm32zFpim7Qffchc9+InqjjLCDWvu9HQCu02dFCyd2z76S
+ KQ03Zm6YkJkfk6Eo9qLHhSnCmAGiIiN43jKyNbuSfXfIVRFy2lZ5tFtHOA7lLIqcwSph
+ ZLDA==
+X-Gm-Message-State: AOJu0Yx2/ZeYatGtWZjaN/P6zwU+/UW1Vy+if2T1ZWQuFs43mOsJuy/s
+ aEc+9M167+lwkW7p8gP5Or/mv4qE7gK68E37XUD5PgA8QcvdYUfRbca+lGPdrQuvwtA=
+X-Gm-Gg: ASbGnctWsCRFJzIs0PBrh2WzZDc0Tpl8wAEYfEv/RIJryvNp9PkrkSdu9CPTPyc1Jea
+ bvvdxJdinycmrJMTWcVAEPk0IFmByLv9QRLoFiCKkDPMjYBwokWkPEkVek/WIL4g72dr1UgjPvf
+ s3asTbYxrNsjzUXdqAFV+uOPfjL0Wq3Y7wpgXNl9Lgcw/0SNEtGkxlmd8xFDrNq4qWwyw+Nr4Zr
+ VUOJujRazkPQO+WNBAXPsR+4qCJGtQ5q00Tzf1ZbNjfd7lCg2t2IZIS6XFkD77JmryfxuR/Tdgi
+ w9SFnTijSC9KPJczKGpl19jDBqlWJeEjlmDNJq7HZbzgNYdnoxwMGqJ5VXZM/na7+r8N+nTzKmO
+ PiH7hKH0Cf2f6fQUmT4P0c1pdo80qtW2vtCZLqfl35LiXkniuwwwMM8pA4AVQHzbgRPa+hnMuep
+ CV5Thb0HQ0gNauQ/0tw9Tmiw==
+X-Google-Smtp-Source: AGHT+IEnIZBfOdH7h0Hh53uTrnI3vcLTh3LFkAu9RTvy0bbzoYigwm2w+yYI28QOXog9Rkc5lWneTg==
+X-Received: by 2002:a05:6000:22ca:b0:42b:30a6:9c10 with SMTP id
+ ffacd0b85a97d-42cc1d22e12mr32401337f8f.56.1764354119628; 
+ Fri, 28 Nov 2025 10:21:59 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1ca1a310sm11205270f8f.26.2025.11.28.10.21.58
+ ffacd0b85a97d-42e1caa86d0sm10876989f8f.39.2025.11.28.10.21.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 28 Nov 2025 10:21:58 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BF1A95F7F6;
+ by draig.lan (Postfix) with ESMTP id D6C6B5F8DA;
  Fri, 28 Nov 2025 18:21:57 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,15 +75,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/5] Final fixes for 10.2 (build, docs, dockerfiles, plugins)
-Date: Fri, 28 Nov 2025 18:21:52 +0000
-Message-ID: <20251128182157.4125745-1-alex.bennee@linaro.org>
+Subject: [PATCH 1/5] tests/tcg: honour the available QEMU binaries when
+ running check-tcg
+Date: Fri, 28 Nov 2025 18:21:53 +0000
+Message-ID: <20251128182157.4125745-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251128182157.4125745-1-alex.bennee@linaro.org>
+References: <20251128182157.4125745-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,28 +109,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm on the fence if these are needed for 10.2. There is at least one
-bug fix (plugins) but the build and documentation fixes can easily be
-punted to 11.0 if we are feeling nervous.
+Currently configure can identify all the targets that have
+cross-compilers available from the supplied target-list. By default
+this is the default_target_list which is all possible targets we can
+build.
 
-Alex.
+At the same time the target list passed to meson is filtered down
+depending on various factors including not building 64 bit targets on
+32 bit hosts. As a result make check-tcg will erroneously attempt to
+run tests for which we haven't built a QEMU.
 
-Alex Bennée (5):
-  tests/tcg: honour the available QEMU binaries when running check-tcg
-  tests/lcitool: add bzip2 to the minimal dependency list
-  tests/dockerfiles: transition debian-all-test-cross to lcitool
-  docs/devel: update build environment setup documentation
-  plugins/core: allow reading of registers during discon events
+Solve this by filtering the final list of TCG_TEST_TARGETS based on
+what actually was configured by meson. Rename the variable that
+configure spits out to TCG_TESTS_WITH_COMPILERS for clarity and to
+avoid larger churn in the Makefile.
 
- docs/devel/build-environment.rst              | 145 ++++++++++++------
- configure                                     |   6 +-
- plugins/core.c                                |   2 +
- tests/Makefile.include                        |   9 ++
- .../dockerfiles/debian-all-test-cross.docker  | 122 ++++++++-------
- tests/lcitool/projects/qemu-minimal.yml       |   1 +
- tests/lcitool/refresh                         |  43 ++++++
- 7 files changed, 222 insertions(+), 106 deletions(-)
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ configure              | 6 +++---
+ tests/Makefile.include | 9 +++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
+diff --git a/configure b/configure
+index a2f66f7ff9c..82cace1bc95 100755
+--- a/configure
++++ b/configure
+@@ -1801,7 +1801,7 @@ if test "$plugins" = "yes" ; then
+ fi
+ echo "PYTHON=$python" >> tests/tcg/$config_host_mak
+ 
+-tcg_tests_targets=
++tcg_tests_with_compilers=
+ for target in $target_list; do
+   arch=${target%%-*}
+ 
+@@ -1852,12 +1852,12 @@ for target in $target_list; do
+       fi
+ 
+       echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
+-      tcg_tests_targets="$tcg_tests_targets $target"
++      tcg_tests_with_compilers="$tcg_tests_with_compilers $target"
+   fi
+ done
+ 
+ if test "$tcg" = "enabled"; then
+-    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> $config_host_mak
++    echo "TCG_TESTS_WITH_COMPILERS=$tcg_tests_with_compilers" >> $config_host_mak
+ fi
+ 
+ if test "$skip_meson" = no; then
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index d4dfbf3716d..7728098981d 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -37,6 +37,15 @@ export SRC_PATH
+ 
+ SPEED = quick
+ 
++
++# TCG_TESTS_WITH_COMPILERS represents the test targets we have cross compiler
++# support for, CONFIGURED_TEST_TARGETS it what meson has finally
++# configured having rejected stuff we can't build.
++CONFIGURED_TCG_TARGETS=$(patsubst %-config-target.h, %, $(wildcard *-config-target.h))
++
++# This is the intersection of what tests we can build and is configured
++TCG_TESTS_TARGETS=$(filter $(CONFIGURED_TCG_TARGETS), $(TCG_TESTS_WITH_COMPILERS))
++
+ # Per guest TCG tests
+ BUILD_TCG_TARGET_RULES=$(patsubst %,build-tcg-tests-%, $(TCG_TESTS_TARGETS))
+ CLEAN_TCG_TARGET_RULES=$(patsubst %,clean-tcg-tests-%, $(TCG_TESTS_TARGETS))
 -- 
 2.47.3
 
