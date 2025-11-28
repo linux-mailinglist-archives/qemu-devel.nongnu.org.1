@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60543C920B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D52C920B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Nov 2025 13:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vOy46-0003OE-V0; Fri, 28 Nov 2025 07:59:11 -0500
+	id 1vOy4K-0003Uu-C4; Fri, 28 Nov 2025 07:59:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOy42-0003N1-JA
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:59:06 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOy4E-0003TK-Id
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:59:18 -0500
 Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOy40-0005Wr-8T
- for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:59:05 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vOy4D-0005YE-1x
+ for qemu-devel@nongnu.org; Fri, 28 Nov 2025 07:59:18 -0500
 Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-429ce7e79f8so1222823f8f.0
- for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:59:03 -0800 (PST)
+ ffacd0b85a97d-42b566859ecso1758234f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Nov 2025 04:59:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764334743; x=1764939543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764334756; x=1764939556; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MuTKezzHjxSk7oohEchM/aHVnU6HmHyLwzueORdHAeU=;
- b=c8NFklQplyUNMu8epmLSpQeUxLcqm5WB8FCBB0S5qjrPyZc6aCnfBhBY6CW67vl9t0
- dHKlkrLHq0Wp3YRgmzk8e6+isfOgw9sM+i/MqBQBP+vHvpN7gXivUIUp9MwaZRdMe/QU
- 4ZAvkD+JqthG69KzKPW9WhWX7GXmfe/MUKLRjQhLiMze692FmP8kl8IlC+t1CepAssyq
- 5mAvC8bjRr/Wao6KZQjchfDJ9af8FmJlIAbh9QLEi9CY7CKoCWQHxUeMsfU4F9cJ83iA
- +wBfh+KMbZAjcxiBcOm1icQwBxxzM/Rt3rprB93NwGPIWK2e/TSZfMk7g5Fbkwybz4JP
- h7xA==
+ bh=eRGmG/JIZzxTazHZFX3QLWrrAMjvshZkcY1BRk6VzKE=;
+ b=xuIBjmI1XSPeHUQpAOmp0Is8OUIEi4TXTELwRsKd7RsdU5l0x6hBk4BoI0Rvu67Qy3
+ lRHqFKBLXGWpTv53rlip5JEkb8WSlQFvWHQ0ACRwPotp9jju6tVDYrtp55TIIPLMnEV8
+ AR8t5btw6HbEJkfOnFglSs0pGMYjTVVt1VzFJIhZJC9WofvBgoTUaxfaHpbnzo7ayLHM
+ 5Qa8mUU/I7LVrYW+wh9UtGBkpDGGFBo9fbmFE8wGitVtGlKmJOEYUpdUy+eEo4CMxsDh
+ /pWmQpRSQe9fwIy9E6skopVin4i25ncXEmzXfKc0/dcH/XMWPO/6ljeETcppn0VdmR5A
+ zqkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764334743; x=1764939543;
+ d=1e100.net; s=20230601; t=1764334756; x=1764939556;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=MuTKezzHjxSk7oohEchM/aHVnU6HmHyLwzueORdHAeU=;
- b=oWRx2NSayO4it95MCftJLg/BQ9kM9fdaf/PqlcCzj68+FQUG0upvwEj1+wolJRprlZ
- KEfBUbdexFjFul1n9mAXcctNWBt1d445YbOfEMpp5LJsD3J41LeyDZAbO/gWmITd2DOf
- Zzfcm5fHAPou4KSBCiGTxO+BrvBAuH5Fdk2bwITYM9Fs+LiLaikvOP9Rh/GJl1abi+ab
- jyVN+C8VI8A5keM44q0+QXcqVFi0d/oxmSkQrxMQIIaP0Vn5TRuSDiPkLvAslrkTgQWG
- Cb1SCrTImNBdJryjeL1zwvMlAygiMD1fDzvfCLwLldReTt0TGDMnKirli88WDn7IASBc
- RnjQ==
+ bh=eRGmG/JIZzxTazHZFX3QLWrrAMjvshZkcY1BRk6VzKE=;
+ b=Fq1o8DcDHkWKBaLM1bGr/CKb/ca1+KPElpsvSbUJF6XpXExpEQq08lYX33vnNj1NxK
+ OJhXW6KHO8fcbpVvDenmFAWMGVHORmUMQudfdN1pGX/LYl/5YwtrKHeY0KfWJk3K8Mjg
+ PS5F1P7r5qfBeyN3/hhpbTlgu1iVfnEHdBiSFhQq3mtLkbSdPpc3ez3u/jOh2BC3EARy
+ +6akm833wXqe+AFTpzGxBHXrYt1YWiX3+zEdZNGAF7VqkaIxYVQh1oWOlM07TDhIbi3S
+ yOuByEh3gj7ZN7gmIMVp/cqYz2sW1A0zGCXXjOOCt/oyybTGCf8yOTHXCbjJ9v4nZ1Dp
+ jLaQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWsk3fh31X/2caNXTZCPF462kb0/9wuJhRRtip3E8kr6mYur79okUgHrSNUqHRuwvJgPBEi/hvVonWt@nongnu.org
-X-Gm-Message-State: AOJu0YzRUrKDdBDefLN6LYlroZOzaLMLJRORTfsBqz6Ilap+89NF/Bxf
- duVduFJLtUR/oCaR8rnc0CiY6pnyaNetjtzFylpFFBxoRDVhAtI0kwlyfxzVtPtUDPhL2CyV2XT
- ImJOViSGklg==
-X-Gm-Gg: ASbGncvKYxzl9FbdYZPGbTuU+gVXLT0+4bVSk6NpP9LRql3Lch8HzDMQgeQF9NsYnnR
- gGl1Dx+BAbR2wSrFQ2z/a2jh+GoVJZAKpSf7rzagUjY8EV06dQR+DnJ8EgajtZTQFVrDow6XI8h
- Lr0OH5YM0cTV0LahpOpukHPxDcm7EF+nfMjjIOcNBMJXpKl+dcIAoPk8mqvZnJob9U2M49F7JRt
- hBiHEbfKaytwLrWD2VFrXTkEItYxGx5S9sC8wuI4G3Fu7PcT+7uWnRw0/YPYFOmtcphpJPpd5aY
- mmMS2GNrttnDgfBivTyoI2s/iXTaGewKqhoageIaXG10RyP7gu1WjN9T8VHyF9G1U7dvTi13n0Y
- O7BRtyPW5N3vvLTk0MRYHVYTBi8NIfoMTEqBYCjjoaqisu4qTy7V//e7TZPEK6D90DV0Bf0PUKV
- lj1P2WC8BGQrON9MjRBwTcYr1/teV2nPT67JwVN+cgej5eiHp3RqfpNg==
-X-Google-Smtp-Source: AGHT+IEPInx34OZ8jBuX7Of8Wmk8bMqjxciu8Zxd18D1XH8COkQv0TBO0ssMNCgcZlRLvHLEntcmiA==
-X-Received: by 2002:a05:6000:1789:b0:42b:3ccc:91ec with SMTP id
- ffacd0b85a97d-42e0f2047b3mr15370113f8f.22.1764334742644; 
- Fri, 28 Nov 2025 04:59:02 -0800 (PST)
+ AJvYcCVPBUnC7YrFMPqG7u67+7fNUN07wyiyYaeDvLyunPJu+EB7tUqAJFZk+OIGkBo3qRjNzevPLyBuwsNf@nongnu.org
+X-Gm-Message-State: AOJu0YzN29S/mzYSdZD+Hi6aNH543w3fuqjXGYa3c92QPccPJJuqRfh5
+ RqclYQYIsDqW0UUPJ56EXLeFutk7L5OthHJNf0/IwGYMPHzN5J6efgICTax/aGRUL02SVwwgLNH
+ zWa3DhkfuiA==
+X-Gm-Gg: ASbGncuneKGH29+u3VCI2r6RuaXKgblIwGhwrxCIYH42GmiTbCFL5xQisCc/JzZbAIg
+ OUnB5gnYIJTCyfOohaAZXVe8VWN65wduEX7ZxWN0BmG7QQLwrnjfNHhPJKXc/80edE3rximlkUp
+ 83XxJayhXMfpVPuMkfiIjqSRNPAbgWD8gvbzbHNj8bVctI5S8XJRQpNC6zbby4NX60RVCndE3P1
+ KdKKd9JsDKqgRj3N1p3xTRjqDJndADQVuVoPjRXC5Dw4sgB5UO6EIK96374E+NAEcZY2lv8hR3C
+ 9yzcUnmMfbY4lkp9ALvj7Mh3Ir/m60Uqzq6Y+rCwuDRjhM0QaZYfHkC9BmqzogretPdkznqJyAm
+ Fid3voefRBEfbKTV/CBRHEX1MuJvV8u8feNW/KJTAk3FC1CFf3qVTLlyBJTz/eKMrs5YNKNnPw2
+ um4Vi/PqGJNwjwzRca3MXlU9oLImPnfGr0r5Uph/bBs7ZY+fqgWVEcioZxfJvB1n+4
+X-Google-Smtp-Source: AGHT+IHAUJHPPytvEMni3EUjnwYocshnEzNGD40+fs8qIxlm/ROPBlE9329W5vhhVz9GdkKcVvVaGQ==
+X-Received: by 2002:a05:6000:1889:b0:42b:3ab7:b8b9 with SMTP id
+ ffacd0b85a97d-42e0f21e8c6mr16364165f8f.20.1764334755623; 
+ Fri, 28 Nov 2025 04:59:15 -0800 (PST)
 Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1c5c3c8csm11918426f8f.2.2025.11.28.04.59.01
+ ffacd0b85a97d-42e1c5c3041sm9107791f8f.6.2025.11.28.04.59.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Nov 2025 04:59:01 -0800 (PST)
-Message-ID: <a2567dda-9484-44ea-94f5-7bc6d969ae57@linaro.org>
-Date: Fri, 28 Nov 2025 13:59:01 +0100
+ Fri, 28 Nov 2025 04:59:15 -0800 (PST)
+Message-ID: <1a41fa14-68ab-42fe-be41-8b9bc86975ab@linaro.org>
+Date: Fri, 28 Nov 2025 13:59:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] edk2: drop 32-bit build config (ia32 and arm),
- update aarch64 vars
+Subject: Re: [PATCH v2 3/9] edk2: update submodule to edk2-stable202511
 Content-Language: en-US
 To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
  <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
 References: <20251128084524.363989-1-kraxel@redhat.com>
- <20251128084524.363989-5-kraxel@redhat.com>
+ <20251128084524.363989-4-kraxel@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251128084524.363989-5-kraxel@redhat.com>
+In-Reply-To: <20251128084524.363989-4-kraxel@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::436;
@@ -106,26 +105,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/11/25 09:45, Gerd Hoffmann wrote:
-> Upstream edk2 has dropped support for 32-bit architectures.  Remove the
-> build config for these builds, update aarch64 (which used to share the
-> 'vars' image with arm).
-> 
-> Drop references to the 32-bit builds in a number of places.
-> 
 > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->   tests/qtest/bios-tables-test.c               | 28 ++++++-------
->   pc-bios/descriptors/50-edk2-i386-secure.json | 34 ---------------
->   pc-bios/descriptors/60-edk2-aarch64.json     |  2 +-
->   pc-bios/descriptors/60-edk2-arm.json         | 31 --------------
->   pc-bios/descriptors/60-edk2-i386.json        | 33 ---------------
->   pc-bios/descriptors/meson.build              |  3 --
->   pc-bios/meson.build                          |  6 +--
->   roms/edk2-build.config                       | 44 ++------------------
->   8 files changed, 19 insertions(+), 162 deletions(-)
->   delete mode 100644 pc-bios/descriptors/50-edk2-i386-secure.json
->   delete mode 100644 pc-bios/descriptors/60-edk2-arm.json
->   delete mode 100644 pc-bios/descriptors/60-edk2-i386.json
+>   roms/edk2         | 2 +-
+>   roms/edk2-version | 4 ++--
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
