@@ -2,91 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9893CC93F2A
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Nov 2025 15:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 041ADC93F9F
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Nov 2025 15:30:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vPLlT-0005be-Jq; Sat, 29 Nov 2025 09:17:31 -0500
+	id 1vPLxH-0002AZ-EY; Sat, 29 Nov 2025 09:29:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vPLlQ-0005b9-VU
- for qemu-devel@nongnu.org; Sat, 29 Nov 2025 09:17:28 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vPLwN-0001yv-VP
+ for qemu-devel@nongnu.org; Sat, 29 Nov 2025 09:28:48 -0500
+Received: from sg-1-17.ptr.blmpb.com ([118.26.132.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vPLlP-0006vW-Gs
- for qemu-devel@nongnu.org; Sat, 29 Nov 2025 09:17:28 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso21838145e9.0
- for <qemu-devel@nongnu.org>; Sat, 29 Nov 2025 06:17:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764425845; x=1765030645; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Jnhk6bB2EkTrcFrInfuDuaY7eciA+m/hwXFEtwcfF7Q=;
- b=vd+q0l0m7BxVV7sfUa12otr4zt5+AiD0NdCQtxvJ9kCC/mU0nGqGj1REepiuSXSfjD
- dBOYS80+8fmE7eTVvs3Ft4MaVkXrOi10CRg0EHZ3iWZlnkM4PgWb0A80CCe4uFvYU70+
- rmuuxy/p5tBtJiDoOr/MMAAI/2pimSVfUcyqTutVBc0JIi8fzserpRJtRmCEZbEOJs9r
- omimWypb0cpY9eIyfK94Oyy+H9GsZ3oZRaR3DMAs+4JFrLNn0ycnbp6quS6/ycc/ASwM
- 2t9ebg/zQC/uS1dwpgO/NlwKYXRcCj+eUWz/Zw1jsG7ey5vcDGNQRtKGDCeW+UWlrwpk
- KS0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764425845; x=1765030645;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Jnhk6bB2EkTrcFrInfuDuaY7eciA+m/hwXFEtwcfF7Q=;
- b=jGJPO7JKJERQSwMRnN9jr35mw7vMDhQxXnYywRwyM9MqSRiUEX2xvunW+LGoS1HE17
- escd5oLratb72luXuauNU1VAS+faK85ciUEJMUsw/nTahAf82JAnErDJs+ISMC1qG8ha
- x5Rn500gRrPrvRLgO/vA8gKq1U/6Dwhc9OVRK38Xv7M5x0AMcDWK6/+g50zeHX1/Qq0v
- 6JaK7YuWWCAV0NM8ZZzbuo5M2bCeeNDkiIJFc75CpqGSZ3W2w/pa4xYImt+HuC1itYvu
- Hvz/4vF3celIPCN4fFyaxGomzc7mY0lV8CeK8zYMt9V32jxnAUkhdReonJxOuLO7K4UY
- xk0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUFfqJcSA2g6SSlb6WtAe8+ZVkLDVOAzDClZpOSjGoKsmsAjq8X9c2NmvHhU6j34PTGFkiT7jDZW2ek@nongnu.org
-X-Gm-Message-State: AOJu0YwZK0uM5TiSiUxHaDq9U+NcK/OmtMcbe7rdgru9PjqcFCrafbv5
- /cTZCIOxuyukWNmLK004F8CBbQ0MArrCeXIGdFELMwr0r+W1EOCuFxu1/C8kWfseBOQ=
-X-Gm-Gg: ASbGncvzzetYUmpOlaiETCZkpRIbOqZN2/JMoBvHwvP8JmCSSKmXGKylkzJxdwrp/Ia
- LzN35wukVDzSrw4gOrJmkiFfEB15iqD7QwTEcTohFDd7uZActFlnOkcLh2ryq+9SHnzuKOSJlqY
- h35rZmB+fPw2bEndCb1LY7FQPeOFKQEpk9kz/3hc+7/rN1qg6e74bGB7heSerW+PRf3YRvbb1FR
- gro1Fn+rzzOLb72zLvT5iTqXFvqTBOg2R9xtlJ+7X1NYRCR8ORRmPh1UziuiOWlULVLjtjk875A
- c39CIjEX8wWfsNv1lDK8HqBRb3WIZVrFUm1eZ+r9GbQY9gEv69tb5xjcNQwfYvu3GXuruPP4SkB
- PZqMZIMVlnPUvuqPxCCqmnqHdbliWj5Pyefwsk6bx8iliQfTdAtS8abEqDKnKEZz6bXHHfUBFK6
- pmNw/SxalnDY0b4gAod5ChsRc1kF47//w=
-X-Google-Smtp-Source: AGHT+IEaufXXM5qRZ6u3bD5YrrwEjgho8E+s1w3UNY642rwVKbX0RrxYjA7ovPlllzhqu/Bv1oQc9w==
-X-Received: by 2002:a05:600c:3b01:b0:475:d9de:952e with SMTP id
- 5b1f17b1804b1-477c04c357dmr285218315e9.1.1764425845502; 
- Sat, 29 Nov 2025 06:17:25 -0800 (PST)
-Received: from [192.168.1.152] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4790ab8bb21sm207530665e9.0.2025.11.29.06.17.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 29 Nov 2025 06:17:24 -0800 (PST)
-Message-ID: <6546cd49-008a-492a-ac0a-5f63ac21e39e@linaro.org>
-Date: Sat, 29 Nov 2025 15:17:24 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] chardev/char: qemu_char_open(): add return value
-Content-Language: en-US
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- marcandre.lureau@redhat.com
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, d-tatianin@yandex-team.ru
-References: <20251129134350.487839-1-vsementsov@yandex-team.ru>
- <20251129134350.487839-9-vsementsov@yandex-team.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251129134350.487839-9-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <chenmiao@openatom.club>)
+ id 1vPLwJ-0000wg-9P
+ for qemu-devel@nongnu.org; Sat, 29 Nov 2025 09:28:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1764426506;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=2WiHlMuUSvjmJ0Vv67Hg/mnuUYeHDimKZMo7xovJsEM=;
+ b=2GD+wy7kXeIn8hzkZBAyJg0sXmv/EyvcD6Gpbe0rvJSMq522L/Sjhrr2OLd4oY1nUUYv/0
+ dL8cHK4jADspQpg9e4r/kTmmltNi5e+hylF/ORyzWamr2p874fMFqLuRAVAEtXv+NwGLXM
+ CjW/FveIZoaDlz7UEWLAt+8JNkMvGhnId4ieUxYTiRtwyAV3O5ztO5FVgYwEs2cvYpDyAc
+ sxqGtUPgZzhGrlY0osE1ff4a9Vzgh5Yq6FxlrxwMw+RA/LCsAvSGSFNc/uxT3e0Tg8VG8l
+ lNFEg8nmkJSc9geuOwR88yQVnAhzlkPhQUnuhSPNX5OsOx6vdJHY1JxzA37FIw==
+From: "Chen Miao" <chenmiao@openatom.club>
+X-Mailer: git-send-email 2.43.0
+Mime-Version: 1.0
+To: <zhao1.liu@intel.com>, <pbonzini@redhat.com>, 
+ <manos.pitsidianakis@linaro.org>, <richard.henderson@linaro.org>, 
+ <philmd@linaro.org>
+Subject: [RFC PATCH V3 0/4] rust/hw: Add the I2C and the first GPIO device
+X-Lms-Return-Path: <lba+2692b0308+adfaf0+nongnu.org+chenmiao@openatom.club>
+Received: from nyaos.localdomain ([114.249.49.233]) by smtp.feishu.cn with
+ ESMTPS; Sat, 29 Nov 2025 22:28:23 +0800
+Content-Transfer-Encoding: 7bit
+Cc: <chao.liu@openatom.club>, <dzm91@openatom.club>, <qemu-rust@nongnu.org>, 
+ <qemu-devel@nongnu.org>, <hust-os-kernel-patches@googlegroups.com>
+Message-Id: <cover.1764426204.git.chenmiao@openatom.club>
+X-Original-From: Chen Miao <chenmiao@openatom.club>
+Date: Sat, 29 Nov 2025 14:28:18 +0000
+Content-Type: text/plain; charset=UTF-8
+Received-SPF: pass client-ip=118.26.132.17;
+ envelope-from=chenmiao@openatom.club; helo=sg-1-17.ptr.blmpb.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,32 +69,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/11/25 14:43, Vladimir Sementsov-Ogievskiy wrote:
-> Accordingly with recommendations in include/qapi/error.h accompany
-> errp by boolean return value and get rid of error propagation.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->   chardev/char.c | 15 +++++++--------
->   1 file changed, 7 insertions(+), 8 deletions(-)
+We have implemented I2C and the first GPIO device in Rust for QEMU.
+Additionally, in the respective patches, we have shared our insights and
+experiences regarding the use of Rust for device modeling within QEMU.
 
+1. The first patch implements the BusState for the I2CBus infrastructure.
+2. The second patch implements the I2CBus and I2CSlave infrastructure, along
+   with a discussion of the challenges encountered during the implementation.
+3. The third patch provides a set of necessary helper functions for the PCF8574
+   GPIO device.
+4. The fourth patch implements the PCF8574 GPIO device, along with a discussion
+   of the issues and considerations addressed during the implementation.
 
-> -    if (cc->chr_open) {
-> -        cc->chr_open(chr, backend, errp);
-> +    if (cc->chr_open && !cc->chr_open(chr, backend, errp)) {
-> +        return false;
->       }
-> +
-> +    return true;
->   }
+Signed-off-by: Chen Miao <chenmiao@openatom.club>
+Signed-off-by: Chao Liu <chao.liu@openatom.club>
 
-Alternatively:
+chenmiao (4):
+  rust/hw/core: Add the BusState of rust version
+  rust/hw/core: Add rust bindings/funcs for i2c bus
+  rust/hw/core: Provide some interfaces for the GPIO device
+  rust/hw/gpio: Add the the first gpio device pcf8574
 
-     if (!cc->chr_open) {
-         return true;
-     }
-     return cc->chr_open(chr, backend, errp);
+ hw/gpio/Kconfig                  |   5 +
+ hw/gpio/meson.build              |   2 +-
+ rust/Cargo.lock                  |  18 +-
+ rust/Cargo.toml                  |   1 +
+ rust/hw/Kconfig                  |   1 +
+ rust/hw/core/meson.build         |   2 +
+ rust/hw/core/src/bus.rs          |  44 +++++
+ rust/hw/core/src/i2c.rs          | 303 +++++++++++++++++++++++++++++++
+ rust/hw/core/src/lib.rs          |   6 +
+ rust/hw/core/src/qdev.rs         |  17 +-
+ rust/hw/core/wrapper.h           |   1 +
+ rust/hw/gpio/Kconfig             |   2 +
+ rust/hw/gpio/meson.build         |   1 +
+ rust/hw/gpio/pcf8574/Cargo.toml  |  28 +++
+ rust/hw/gpio/pcf8574/meson.build |  37 ++++
+ rust/hw/gpio/pcf8574/src/lib.rs  | 178 ++++++++++++++++++
+ rust/hw/meson.build              |   1 +
+ 17 files changed, 642 insertions(+), 5 deletions(-)
+ create mode 100644 rust/hw/core/src/bus.rs
+ create mode 100644 rust/hw/core/src/i2c.rs
+ create mode 100644 rust/hw/gpio/Kconfig
+ create mode 100644 rust/hw/gpio/meson.build
+ create mode 100644 rust/hw/gpio/pcf8574/Cargo.toml
+ create mode 100644 rust/hw/gpio/pcf8574/meson.build
+ create mode 100644 rust/hw/gpio/pcf8574/src/lib.rs
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+-- 
+2.43.0
 
