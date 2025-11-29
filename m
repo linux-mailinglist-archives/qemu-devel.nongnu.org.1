@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECBBC94365
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C962C9435F
 	for <lists+qemu-devel@lfdr.de>; Sat, 29 Nov 2025 17:39:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vPNy7-0001QA-2m; Sat, 29 Nov 2025 11:38:43 -0500
+	id 1vPNy7-0001R1-Kw; Sat, 29 Nov 2025 11:38:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenmiao.ku@gmail.com>)
- id 1vPN6l-0001jR-Sj
- for qemu-devel@nongnu.org; Sat, 29 Nov 2025 10:43:35 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1vPN6q-0001kZ-KY
+ for qemu-devel@nongnu.org; Sat, 29 Nov 2025 10:43:40 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chenmiao.ku@gmail.com>)
- id 1vPN6k-0007bz-95
- for qemu-devel@nongnu.org; Sat, 29 Nov 2025 10:43:35 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-343774bd9b4so2248964a91.2
- for <qemu-devel@nongnu.org>; Sat, 29 Nov 2025 07:43:33 -0800 (PST)
+ id 1vPN6o-0007dZ-8l
+ for qemu-devel@nongnu.org; Sat, 29 Nov 2025 10:43:40 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2984dfae0acso44283645ad.0
+ for <qemu-devel@nongnu.org>; Sat, 29 Nov 2025 07:43:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1764431013; x=1765035813; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1764431017; x=1765035817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TYQYrBtyfKJUAHag5BzfJ2Xcf0l0PHjigYu6ruxK0gU=;
- b=SC4I3+lNyLz2h60iUqeAjDk0rDdn9P+UP/dsIxD2hj3dJbDHtLNBcFcSR+9vbwmQBg
- RXlixBy9SDmR0iXEL+hkqUrDGeR2n1llxvgRDnown0OW249YJUAhZViqSqJIoVjFH0Dj
- h+Pby3+86H+0NGHaGG3GCQTg7YW989I8EahOCuE/iJH4vI9aRNtkHBFb0mD5+rFBpA2C
- y3x9LuVP9FEUXUWDpPjK1B1bF/5zLBdil71VuU0n76GKKpBxk8StO0ncExo7fRCTfu+M
- luxE4tJhbpr+xk+GlaJioccYVhm3k7VNI9FhIMeg7o9kz9vakIDImPhiiHdSy9Rvr8wV
- CC6Q==
+ bh=bSwW4pf421IMnpAOpJLVJ0KcWmgP1/il42L6E6pTLTg=;
+ b=O1pGNb2Isa4DtQ0+VcqHrERPQQ1+08F6a1B8kcdno4cb+YikzHFEWVDRXbdhxtYrXY
+ Zl1KP1egf/wto4UG0hWU9I7JWzGuX5SgQuRsUxiOCJsefMKxnp5MIeea+0y5VTWtj/QV
+ iJVjmChNsrOKos87xth2fI3D2UCAdqbqEansOPXpIb/aSa7OWV2BbAAHkplcPgrI7rTv
+ 4KSDs2fgeWEyTFDLucuC0OeBOBy90r0ySWtTk8jQkAR4vl6Zz2yVS00B27byr9rv30bE
+ L+ay6iFdKkRyVxdfDHjC+0akZt0vmOSkIJXOkB7/Np48dQwuP7Vvs8EYdic4VeH3nMR2
+ SDrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764431013; x=1765035813;
+ d=1e100.net; s=20230601; t=1764431017; x=1765035817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TYQYrBtyfKJUAHag5BzfJ2Xcf0l0PHjigYu6ruxK0gU=;
- b=ZzXdJ2SivH2k1g1ksgDL6pwRQvOFHmXrn0yFIBl2vUmEDn4k2xzdYlsq6z2X9Cw7VA
- 8gmqlfWRXu1o3DvXwbw9eOhYRvo4k0HAyUKbPE07GQ4m4O+C192ZzbHp7qR+xsHQI76l
- 1/AXQ5luOtqqZWYejyZJ2TUt+HB4pf7r1Nbv1nBkBmO85dzOJuzwGHR6uGTd9x3M8ah+
- J10cOt+SjiOLeQgpfMrPL3ZnNUo9c+8jKYEBZVD6ncf7P7w2C9cUqMa4sfVm0fFsymwZ
- YCZtep9OG0/OfioGDzySQQIYljMLaXrEzstsIVk/rmtqcky4T6HfZL/VhA7YsUM6scJy
- 7NBA==
+ bh=bSwW4pf421IMnpAOpJLVJ0KcWmgP1/il42L6E6pTLTg=;
+ b=aVgQZWHTEF8bLiBzgVBxlqALDes2ghehNLcHZi3bnkBrXX19HYIl3JQDIwLpvbNT9M
+ /jR9ffYJKzuWX9+RRLTb01Gh+7c2yKXyY+IEjxwJkMJI6Z8ua5JWVxj79CDntT+aX3at
+ 4u3KpMrFruHypQ+G6BE+/kcWe868N1dyiAFe6KNQ+rZs/ZN4JuNUMqWhnV6KA/bRidl6
+ e/Ec1Kfr9Vg2c7Kin5lZ/Lfv+eqSA7jv7/Yw/WHfgTIl4FCw74elGxUuX+Au+MLLu6RE
+ ZwMURRBypYOF2Va9AVr9pyNvOZMreDOK/a8hQ582BlPUuJ1I9ho1/yiefSoTD8BEvwOR
+ VdIQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrTtPJQRfkye/r3AlDg+kXTjSuFcYaPLXLQDiDJv2mt9oZR3JDWYek1nx1C8RnLz3oo3rYJ1KGs+iK@nongnu.org
-X-Gm-Message-State: AOJu0YwebPVd2xafSsH/H1KTle3sMhvUUc/+RbULatJ0/XpKoewznxWY
- lYW5nw6HWQaj+pdgkSrd6LFdsSOhRTXyUJ7+HNimDzUo6CdBToO3Wl/1
-X-Gm-Gg: ASbGncvZYQ513fTZr/njARrrDCz183tyhwOvz4jMhjEmAjhVxHiqx3A1Jz0f15aPJyH
- bI+khXbJZLolitVrUKoZc/SYYEylcznAmazKL+C0kq8i3Dhic7E9p18uKAHe1oZuamGD9LfTGma
- ClA4vu7j2iud2ko1qhUTYd4VhyZukSwSitwNkMwfEvGIUQMZuSqXAEMyh9jMAaKVLSaBXufMRvw
- whriVPGCjhlWWiGzwkSfSSFQNprRRP7H4hj7z9X4WNBuRWFnfklV0mLryFFw8X9QGe/nph9kNpE
- Sfxo3hyowgplelvF1DjBxqCvJH3X5FapXkNFW69zeVm5bmns+pSlWsxA5hqqkI68N0xtaWOpJ2o
- 1aslfBDEjNlTLsRm0Q7uOp5Uu2DWTmfOiZsrYTI2PyYISiZ6AVO9863XWl/ILlOJ1L45sSrTcfM
- G8Se/P9MYOIgubttZXhcra6nc4yLWTg35V8qfqLyaXqDJhbA==
-X-Google-Smtp-Source: AGHT+IFGADgMZeoPFYsyuLQg/56m5CSR3OcjwtVJ7hQIqFyGj5vDKBOWCyFXt9ilhVm9MdUX1lx9Lg==
-X-Received: by 2002:a17:90b:3503:b0:340:be44:dd0b with SMTP id
- 98e67ed59e1d1-34733f5d2femr25991880a91.34.1764431012822; 
- Sat, 29 Nov 2025 07:43:32 -0800 (PST)
+ AJvYcCX6u3etNVdG5fh27ERBbbIISRbujbtg0SGqMGdB+JAnTFEyyC3+R5JNAunEKRv+/lPRIGjm/ESlb9qa@nongnu.org
+X-Gm-Message-State: AOJu0Yz4N6i1u4SVDgg1LDz+3aKSe1fN98inSq/SQkDX6UrL4zSUwxua
+ ZL/Hlmz+xKaa0LtTftliyftPAq3RgmklCOAyY739/W9DcDPtCp+yrEBB
+X-Gm-Gg: ASbGncvojUkzR2lZ7+/wq+kcx+skpDmTemVZwEEhXAjvaj++uoXkGengnthFyCapXOb
+ G8DMH+l8UAKzHnBIfvRFRDtre9K6Vgzon8i7CzK9lwjw5aFy/uhHaiPwaPLGBOIvIGZ/QnUBaXy
+ 9TwlKPCrc3VHEGXyRE6u6h1i6AgzIN8vSMbtSx2up7dNiftJ7hwpOHFp4KNYC7bs4xmPuHF2igE
+ ij9+m3D6BhALevvQdfR6RSo1kJgVimoOn0gpUbE/Z4G9Fd/G2XVvOlJ7v5I/8xApOOybyJ5jhwP
+ wuyNaSVSxbvALxs5XDqUCAIdpP+vPISjbmrodltTDBt6taegdAX9m7m7KfiFbh5NfZWZjQygYxI
+ kqIrDzwo3JhuX3frZP3Z3BMAT9MwvhAtO5G5DDfklxcfr4CSy3YufMS17t1VvNxjIiKQBM+aVD2
+ tDUZ7UVeIfAcYe2OBc2cZMZOZ6B//tnHNA30RghgxqEm3+AQ==
+X-Google-Smtp-Source: AGHT+IH2LMLBisx6iUJ48EIpnlRPSlIa+NXdS+diW+TA6vP9hX/OlzyJHPZRiMEvsmwuP2k8uCJRsw==
+X-Received: by 2002:a17:903:acf:b0:295:7806:1d7b with SMTP id
+ d9443c01a7336-29bab19c771mr223540445ad.45.1764431016696; 
+ Sat, 29 Nov 2025 07:43:36 -0800 (PST)
 Received: from nyaos.localdomain ([166.0.199.48])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3476a546ed0sm11799767a91.3.2025.11.29.07.43.29
+ 98e67ed59e1d1-3476a546ed0sm11799767a91.3.2025.11.29.07.43.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 29 Nov 2025 07:43:32 -0800 (PST)
+ Sat, 29 Nov 2025 07:43:36 -0800 (PST)
 From: ChenMiao <chenmiao.ku@gmail.com>
 To: zhao1.liu@intel.com, pbonzini@redhat.com, manos.pitsidianakis@linaro.org,
  richard.henderson@linaro.org, philmd@linaro.org
 Cc: chao.liu@openatom.club , dzm91@openatom.club , qemu-rust@nongnu.org,
  qemu-devel@nongnu.org, hust-os-kernel-patches@googlegroups.com,
  chenmiao <chenmiao@openatom.club>
-Subject: [RESEND RFC PATCH V3 1/4] rust/hw/core: Add the BusState of rust
- version
-Date: Sat, 29 Nov 2025 15:43:18 +0000
-Message-ID: <4e3b8548a26867260f137c719d3c26a24d7954bd.1764426204.git.chenmiao@openatom.club>
+Subject: [RESEND RFC PATCH V3 2/4] rust/hw/core: Add rust bindings/funcs for
+ i2c bus
+Date: Sat, 29 Nov 2025 15:43:19 +0000
+Message-ID: <48bfe2bd3b11f09bd501622370ca64bdb1f68afb.1764426204.git.chenmiao@openatom.club>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1764426204.git.chenmiao@openatom.club>
 References: <cover.1764426204.git.chenmiao@openatom.club>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=chenmiao.ku@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=chenmiao.ku@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,7 +91,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 29 Nov 2025 11:38:36 -0500
+X-Mailman-Approved-At: Sat, 29 Nov 2025 11:38:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,91 +108,374 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: chenmiao <chenmiao@openatom.club>
 
-A Rust version implementation has been designed for BusState,
-which will be used for the subsequent I2CBus implementation.
+We have implemented the I2CBus and I2CSlave infrastructure in Rust by referring
+to the SysBus device model.
 
-Signed-off-by: Chen Miao <chenmiao@openatom.club>
+Initially, we assumed that the I2CBus was at the same hierarchical level as the
+PL011 device. Therefore, we followed the implementation paradigm of the PL011
+device as a reference. However, in the end, we discovered that the I2CBus is
+actually at the same level as the SysBus. As a result, we adopted the binding
+implementation paradigm used for SysBus devices. With this adjustment, we
+successfully compiled the code locally.
+
+During the implementation process, we found that the current two paradigms in
+Rust — bindings and impl — are extremely complex and lack comprehensive
+documentation. There is no clear explanation as to why Bus and Device models
+need to be implemented using different approaches. Furthermore, the
+implementation of Bus and Device following these paradigms still has many
+limitations. At present, at least vmstate is not easily supported.
+
 Signed-off-by: Chao Liu <chao.liu@openatom.club>
+Signed-off-by: Chen Miao <chenmiao@openatom.club>
 ---
- rust/hw/core/meson.build |  1 +
- rust/hw/core/src/bus.rs  | 44 ++++++++++++++++++++++++++++++++++++++++
- rust/hw/core/src/lib.rs  |  3 +++
- 3 files changed, 48 insertions(+)
- create mode 100644 rust/hw/core/src/bus.rs
+ rust/hw/core/meson.build |   1 +
+ rust/hw/core/src/i2c.rs  | 303 +++++++++++++++++++++++++++++++++++++++
+ rust/hw/core/src/lib.rs  |   3 +
+ rust/hw/core/wrapper.h   |   1 +
+ 4 files changed, 308 insertions(+)
+ create mode 100644 rust/hw/core/src/i2c.rs
 
 diff --git a/rust/hw/core/meson.build b/rust/hw/core/meson.build
-index 1560dd20c6..efcda50fef 100644
+index efcda50fef..1a27c1cff7 100644
 --- a/rust/hw/core/meson.build
 +++ b/rust/hw/core/meson.build
-@@ -50,6 +50,7 @@ _hwcore_rs = static_library(
-     [
-       'src/lib.rs',
+@@ -52,6 +52,7 @@ _hwcore_rs = static_library(
        'src/bindings.rs',
-+      'src/bus.rs',
+       'src/bus.rs',
        'src/irq.rs',
++      'src/i2c.rs',
        'src/qdev.rs',
        'src/sysbus.rs',
-diff --git a/rust/hw/core/src/bus.rs b/rust/hw/core/src/bus.rs
+     ],
+diff --git a/rust/hw/core/src/i2c.rs b/rust/hw/core/src/i2c.rs
 new file mode 100644
-index 0000000000..d3fbf519d4
+index 0000000000..85ec34357a
 --- /dev/null
-+++ b/rust/hw/core/src/bus.rs
-@@ -0,0 +1,44 @@
++++ b/rust/hw/core/src/i2c.rs
+@@ -0,0 +1,303 @@
 +// Copyright 2025 HUST OpenAtom Open Source Club.
++// Author(s): Chao Liu <chao.liu@openatom.club>
 +// Author(s): Chen Miao <chenmiao@openatom.club>
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+use std::ffi::CStr;
++//! Bindings to access `i2c` functionality from Rust.
 +
-+pub use bindings::BusClass;
-+use common::Opaque;
-+use qom::{qom_isa, IsA, Object, ObjectDeref, ObjectType};
++use std::{ffi::CStr, ptr::NonNull};
 +
-+use crate::{bindings, DeviceImpl};
++pub use crate::bindings::I2CSlaveClass;
++use common::{self, Opaque};
++use migration::impl_vmstate_c_struct;
++use qom::{prelude::*, Owned};
 +
++use crate::{
++    bindings,
++    bus::{BusClass, BusState},
++    qdev::{DeviceImpl, DeviceState},
++};
++
++/// A safe wrapper around [`bindings::I2CBus`].
 +#[repr(transparent)]
 +#[derive(Debug, common::Wrapper)]
-+pub struct BusState(Opaque<bindings::BusState>);
++pub struct I2CBus(Opaque<bindings::I2CBus>);
 +
-+unsafe impl Send for BusState {}
-+unsafe impl Sync for BusState {}
++unsafe impl Send for I2CBus {}
++unsafe impl Sync for I2CBus {}
 +
-+unsafe impl ObjectType for BusState {
++unsafe impl ObjectType for I2CBus {
 +    type Class = BusClass;
-+    const TYPE_NAME: &'static std::ffi::CStr =
-+        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_BUS) };
++    const TYPE_NAME: &'static CStr =
++        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_I2C_BUS) };
 +}
 +
-+qom_isa!(BusState: Object);
++qom_isa!(I2CBus: BusState, Object);
 +
-+pub trait BusStateImpl: DeviceImpl + IsA<BusState> {}
++/// Trait for methods of [`I2CBus`] and its subclasses.
++pub trait I2CBusMethods: ObjectDeref
++where
++    Self::Target: IsA<I2CBus>,
++{
++    /// # Safety
++    ///
++    /// Initialize an I2C bus
++    fn init_bus(&self, parent: &DeviceState, name: &str) -> Owned<I2CBus> {
++        assert!(bql::is_locked());
++        unsafe {
++            let bus = bindings::i2c_init_bus(parent.as_mut_ptr(), name.as_ptr().cast());
++            let bus: &I2CBus = I2CBus::from_raw(bus);
++            Owned::from(bus)
++        }
++    }
 +
-+impl BusClass {
-+    pub fn class_init<T: BusStateImpl>(self: &mut BusClass) {
++    /// # Safety
++    ///
++    /// Start a transfer on an I2C bus
++    fn start_transfer(&self, address: u8, is_recv: bool) -> i32 {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_start_transfer(self.upcast().as_mut_ptr(), address, is_recv) }
++    }
++
++    /// # Safety
++    ///
++    /// Start a receive transfer on an I2C bus
++    fn start_recv(&self, address: u8) -> i32 {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_start_recv(self.upcast().as_mut_ptr(), address) }
++    }
++
++    /// # Safety
++    ///
++    /// Start a send transfer on an I2C bus
++    fn start_send(&self, address: u8) -> i32 {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_start_send(self.upcast().as_mut_ptr(), address) }
++    }
++
++    /// # Safety
++    ///
++    /// End a transfer on an I2C bus
++    fn end_transfer(&self) {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_end_transfer(self.upcast().as_mut_ptr()) }
++    }
++
++    /// # Safety
++    ///
++    /// Send NACK on an I2C bus
++    fn nack(&self) {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_nack(self.upcast().as_mut_ptr()) }
++    }
++
++    /// # Safety
++    ///
++    /// Send ACK on an I2C bus
++    fn ack(&self) {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_ack(self.upcast().as_mut_ptr()) }
++    }
++
++    /// # Safety
++    ///
++    /// Send data on an I2C bus
++    fn send(&self, data: u8) -> i32 {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_send(self.upcast().as_mut_ptr(), data) }
++    }
++
++    /// # Safety
++    ///
++    /// Receive data from an I2C bus
++    fn recv(&self) -> u8 {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_recv(self.upcast().as_mut_ptr()) }
++    }
++
++    /// # Safety
++    ///
++    /// Check if the I2C bus is busy.
++    ///
++    /// Returns `true` if the bus is busy, `false` otherwise.
++    fn is_busy(&self) -> bool {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_bus_busy(self.upcast().as_mut_ptr()) != 0 }
++    }
++
++    /// # Safety
++    ///
++    /// Schedule pending master on an I2C bus
++    fn schedule_pending_master(&self) {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_schedule_pending_master(self.upcast().as_mut_ptr()) }
++    }
++
++    /// Sets the I2C bus master.
++    ///
++    /// # Safety
++    ///
++    /// This function is unsafe because:
++    /// - `bh` must be a valid pointer to a `QEMUBH`.
++    /// - The caller must ensure that `self` is in a valid state.
++    /// - The caller must guarantee no data races occur during execution.
++    ///
++    /// TODO ("`i2c_bus_master` missing until QEMUBH is wrapped")
++    unsafe fn set_master(&self, bh: *mut bindings::QEMUBH) {
++        assert!(bql::is_locked());
++        unsafe { bindings::i2c_bus_master(self.upcast().as_mut_ptr(), bh) }
++    }
++}
++
++impl<R: ObjectDeref> I2CBusMethods for R where R::Target: IsA<I2CBus> {}
++
++/// A safe wrapper around [`bindings::I2CSlave`].
++#[repr(transparent)]
++#[derive(Debug, common::Wrapper)]
++pub struct I2CSlave(Opaque<bindings::I2CSlave>);
++
++unsafe impl Send for I2CSlave {}
++unsafe impl Sync for I2CSlave {}
++
++unsafe impl ObjectType for I2CSlave {
++    type Class = I2CSlaveClass;
++    const TYPE_NAME: &'static CStr =
++        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_I2C_SLAVE) };
++}
++
++qom_isa!(I2CSlave: DeviceState, Object);
++
++impl_vmstate_c_struct!(I2CSlave, bindings::vmstate_i2c_slave);
++
++#[derive(common::TryInto)]
++#[repr(u64)]
++#[allow(non_camel_case_types)]
++pub enum I2CResult {
++    ACK = 0,
++    NACK = 1,
++}
++
++// TODO: add virtual methods
++pub trait I2CSlaveImpl: DeviceImpl + IsA<I2CSlave> {
++    /// Master to slave. Returns non-zero for a NAK, 0 for success.
++    const SEND: Option<fn(&Self, data: u8) -> I2CResult> = None;
++
++    /// Slave to master. This cannot fail, the device should always return something here.
++    const RECV: Option<fn(&Self) -> u8> = None;
++
++    /// Notify the slave of a bus state change. For start event,
++    /// returns non-zero to NAK an operation. For other events the
++    /// return code is not used and should be zero.
++    const EVENT: Option<fn(&Self, event: I2CEvent) -> I2CEvent> = None;
++
++    /// Check if this device matches the address provided. Returns bool of
++    /// true if it matches (or broadcast), and updates the device list, false
++    /// otherwise.
++    ///
++    /// If broadcast is true, match should add the device and return true.
++    #[allow(clippy::type_complexity)]
++    const MATCH_AND_ADD: Option<
++        fn(&Self, address: u8, broadcast: bool, current_devs: *mut bindings::I2CNodeList) -> bool,
++    > = None;
++}
++
++/// # Safety
++///
++/// We expect the FFI user of this function to pass a valid pointer that
++/// can be downcasted to type `T`. We also expect the device is
++/// readable/writeable from one thread at any time.
++unsafe extern "C" fn rust_i2c_slave_send_fn<T: I2CSlaveImpl>(
++    obj: *mut bindings::I2CSlave,
++    data: u8,
++) -> std::os::raw::c_int {
++    let state = NonNull::new(obj).unwrap().cast::<T>();
++    T::SEND.unwrap()(unsafe { state.as_ref() }, data).into_bits() as std::os::raw::c_int
++}
++
++/// # Safety
++///
++/// We expect the FFI user of this function to pass a valid pointer that
++/// can be downcasted to type `T`. We also expect the device is
++/// readable/writeable from one thread at any time.
++unsafe extern "C" fn rust_i2c_slave_recv_fn<T: I2CSlaveImpl>(obj: *mut bindings::I2CSlave) -> u8 {
++    let state = NonNull::new(obj).unwrap().cast::<T>();
++    T::RECV.unwrap()(unsafe { state.as_ref() })
++}
++
++/// # Safety
++///
++/// We expect the FFI user of this function to pass a valid pointer that
++/// can be downcasted to type `T`. We also expect the device is
++/// readable/writeable from one thread at any time.
++unsafe extern "C" fn rust_i2c_slave_event_fn<T: I2CSlaveImpl>(
++    obj: *mut bindings::I2CSlave,
++    event: bindings::i2c_event,
++) -> std::os::raw::c_int {
++    let state = NonNull::new(obj).unwrap().cast::<T>();
++    T::EVENT.unwrap()(unsafe { state.as_ref() }, I2CEvent::from_bits(event)).into_bits()
++        as std::os::raw::c_int
++}
++
++/// # Safety
++///
++/// We expect the FFI user of this function to pass a valid pointer that
++/// can be downcasted to type `T`. We also expect the device is
++/// readable/writeable from one thread at any time.
++unsafe extern "C" fn rust_i2c_slave_match_and_add_fn<T: I2CSlaveImpl>(
++    obj: *mut bindings::I2CSlave,
++    address: u8,
++    broadcast: bool,
++    current_devs: *mut bindings::I2CNodeList,
++) -> bool {
++    let state = NonNull::new(obj).unwrap().cast::<T>();
++    T::MATCH_AND_ADD.unwrap()(unsafe { state.as_ref() }, address, broadcast, current_devs)
++}
++
++impl I2CSlaveClass {
++    /// Fill in the virtual methods of `I2CSlaveClass` based on the
++    /// definitions in the `I2CSlaveImpl` trait.
++    pub fn class_init<T: I2CSlaveImpl>(&mut self) {
++        if <T as I2CSlaveImpl>::SEND.is_some() {
++            self.send = Some(rust_i2c_slave_send_fn::<T>);
++        }
++        if <T as I2CSlaveImpl>::RECV.is_some() {
++            self.recv = Some(rust_i2c_slave_recv_fn::<T>);
++        }
++        if <T as I2CSlaveImpl>::EVENT.is_some() {
++            self.event = Some(rust_i2c_slave_event_fn::<T>);
++        }
++        if <T as I2CSlaveImpl>::MATCH_AND_ADD.is_some() {
++            self.match_and_add = Some(rust_i2c_slave_match_and_add_fn::<T>);
++        }
 +        self.parent_class.class_init::<T>();
 +    }
 +}
 +
-+pub trait BusMethods: ObjectDeref
++/// Trait for methods of [`I2CSlave`] and its subclasses.
++pub trait I2CSlaveMethods: ObjectDeref
 +where
-+    Self::Target: IsA<BusState>,
++    Self::Target: IsA<I2CSlave>,
 +{
-+    // TODO: Since the bus does not currently provide services to other
-+    // components, we have not implemented any functions yet.
++    /// Get the I2C bus address of a slave device
++    fn get_address(&self) -> u8 {
++        assert!(bql::is_locked());
++        // SAFETY: the BQL ensures that no one else writes to the I2CSlave structure,
++        // and the I2CSlave must be initialized to get an IsA<I2CSlave>.
++        let slave = unsafe { *self.upcast().as_ptr() };
++        slave.address
++    }
 +}
 +
-+impl<R: ObjectDeref> BusMethods for R where R::Target: IsA<BusState> {}
++impl<R: ObjectDeref> I2CSlaveMethods for R where R::Target: IsA<I2CSlave> {}
++
++/// Enum representing I2C events
++#[derive(common::TryInto)]
++#[repr(u32)]
++#[allow(non_camel_case_types)]
++pub enum I2CEvent {
++    START_RECV = bindings::I2C_START_RECV,
++    START_SEND = bindings::I2C_START_SEND,
++    START_SEND_ASYNC = bindings::I2C_START_SEND_ASYNC,
++    FINISH = bindings::I2C_FINISH,
++    NACK = bindings::I2C_NACK,
++}
 diff --git a/rust/hw/core/src/lib.rs b/rust/hw/core/src/lib.rs
-index b40801eb84..10cc516664 100644
+index 10cc516664..3f3aecb258 100644
 --- a/rust/hw/core/src/lib.rs
 +++ b/rust/hw/core/src/lib.rs
-@@ -13,3 +13,6 @@
+@@ -16,3 +16,6 @@
  
- mod sysbus;
- pub use sysbus::*;
+ mod bus;
+ pub use bus::*;
 +
-+mod bus;
-+pub use bus::*;
++mod i2c;
++pub use i2c::*;
+diff --git a/rust/hw/core/wrapper.h b/rust/hw/core/wrapper.h
+index 3bdbd1249e..399be594da 100644
+--- a/rust/hw/core/wrapper.h
++++ b/rust/hw/core/wrapper.h
+@@ -30,3 +30,4 @@ typedef enum memory_order {
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "hw/irq.h"
++#include "hw/i2c/i2c.h"
 -- 
 2.43.0
 
