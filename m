@@ -2,47 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E074AC94D07
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Nov 2025 10:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AE3C94D4E
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Nov 2025 10:45:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vPdci-0005mE-CR; Sun, 30 Nov 2025 04:21:40 -0500
+	id 1vPdy9-0005Kn-7u; Sun, 30 Nov 2025 04:43:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1vPdcf-0005l9-VT; Sun, 30 Nov 2025 04:21:37 -0500
-Received: from out28-62.mail.aliyun.com ([115.124.28.62])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1vPdcc-0006Cx-JX; Sun, 30 Nov 2025 04:21:37 -0500
-Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
- fp:SMTPD_---.fZX11VX_1764494479 cluster:ay29) by smtp.aliyun-inc.com;
- Sun, 30 Nov 2025 17:21:19 +0800
-From: Chao Liu <chao.liu@zevorn.cn>
-To: richard.henderson@linaro.org, paolo.savini@embecosm.com, npiggin@gmail.com,
- ebiggers@kernel.org, dbarboza@ventanamicro.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, chao.liu@openatom.club,
- hust-os-kernel-patches@googlegroups.com, Chao Liu <chao.liu@zevorn.cn>
-Subject: [PATCH v1 5/5] docs/system/riscv: add documentation for k230 machine
-Date: Sun, 30 Nov 2025 17:21:10 +0800
-Message-ID: <a303c6a1f48e7ba076bb62d78084d0008ae39526.1764493931.git.chao.liu@zevorn.cn>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1764493931.git.chao.liu@zevorn.cn>
-References: <cover.1764493931.git.chao.liu@zevorn.cn>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vPdxz-0005Jf-8o
+ for qemu-devel@nongnu.org; Sun, 30 Nov 2025 04:43:39 -0500
+Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vPdxx-0001Nj-3t
+ for qemu-devel@nongnu.org; Sun, 30 Nov 2025 04:43:38 -0500
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 546A560D21
+ for <qemu-devel@nongnu.org>; Sun, 30 Nov 2025 10:43:23 +0100 (CET)
+Received: (qmail 16593 invoked by uid 990); 30 Nov 2025 09:43:23 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Sun, 30 Nov 2025 10:43:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.62; envelope-from=chao.liu@zevorn.cn;
- helo=out28-62.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Date: Sun, 30 Nov 2025 09:43:22 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Julian Ganz" <neither@nut.email>
+Message-ID: <4a79aaed42d1800b36bab77ace699a946be24722@nut.email>
+TLS-Required: No
+Subject: Re: [PATCH 5/5] plugins/core: allow reading of registers during
+ discon events
+To: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Markus Armbruster"
+ <armbru@redhat.com>, "Mahmoud Mandour" <ma.mandourr@gmail.com>, "Pierrick
+ Bouvier" <pierrick.bouvier@linaro.org>, "Alexandre Iooss"
+ <erdnaxe@crans.org>, "=?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?="
+ <berrange@redhat.com>, "=?utf-8?B?QWxleCBCZW5uw6ll?="
+ <alex.bennee@linaro.org>, "Thomas Huth" <thuth@redhat.com>,
+ "=?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=" <philmd@linaro.org>
+In-Reply-To: <20251128182157.4125745-6-alex.bennee@linaro.org>
+References: <20251128182157.4125745-1-alex.bennee@linaro.org>
+ <20251128182157.4125745-6-alex.bennee@linaro.org>
+X-Rspamd-Bar: -
+X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-2.999999) MIME_GOOD(-0.1)
+X-Rspamd-Score: -1.599999
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=TOz/PB3x0kOVxJH2ioHu8aFrURW9JVscAHUW1tH0xF8=;
+ b=UJAV0FArwiYs2He845/dLrl2TseesaWOe8wTQgq13Zj13jw4wWJfR0n2xHGsn+EkuEWgb7BW6i
+ Mg0OV88cfq+/13ukTHamtrIkRDOGOCotjAQF0H/i4ML7lSFeKUep1sbawL/A/sFlPjPbgx/jVCSK
+ sPrxaPqJ4+Jt2/ijScVKTj6ss2dAdcuZ5eY/R23muJpjyz7M6oMFCSyx5V743iVe6yuK9v/l4MgB
+ 3Ehs7vrqS0uTfcOlbgxhHEkx4npWYEbS7Erz4P+gu4/VleX5UrxDYjrZrvlfwsznQ7/OXfEVwva4
+ ozSwaAt22NspytDHCVgkNV/mb8VR7f96nxfLQBJv3VRyXrKu10CzviDsCgWwWIS+nLtQYxGSbKqM
+ o7e4m7/xEHsM0lytlCuaEmAZPff4ypY7cFFEnKT7QmmLYDlygzJjOIUNEA6jDTWm1P9wpB0p8pPx
+ CdbMkPGR46ByFSFfhqsEr8maM8WtX39Wmw5RTnRoLaxXIcADUW9EdkLKcDw3qA83VTT9H72TrPBC
+ Q1zLOXPI3aB1szdlRikXSyefdjIk0ISd5PmyBWg+lzeiz9Mfc01mn84hUm+qo5kfXuXFVviMUvRF
+ Nyv7e8UVaxR013lw7X2uMG38aSpO5xyc4dehUqPOUBooFwaCZkeNdTXp0PNlGedKn8Vc9V2AUNie
+ k=
+Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
+ envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,69 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add documentation for k230 virt reference platform.
+Hi Alex,
 
-Signed-off-by: Chao Liu <chao.liu@zevorn.cn>
----
- docs/system/riscv/k230.rst | 48 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
- create mode 100644 docs/system/riscv/k230.rst
+November 28, 2025 at 7:21 PM, "Alex Benn=C3=A9e" wrote:
+> We have protections that prevent callbacks that didn't declare
+> themselves as wanting to access registers. However for discontinuities
+> the system state is fully rectified so they should always be able to
+> read the register values.
+>=20
+>=20a1688bc86ce (plugins: add hooks for new discontinuity related callbac=
+ks)
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Cc: Julian Ganz <neither@nut.email>
+> ---
+>  plugins/core.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+>=20diff --git a/plugins/core.c b/plugins/core.c
+> index 8f8bc7219c2..b4b783008f7 100644
+> --- a/plugins/core.c
+> +++ b/plugins/core.c
+> @@ -119,6 +119,7 @@ static void plugin_vcpu_cb__discon(CPUState *cpu,
+>  struct qemu_plugin_cb *cb, *next;
+>  uint64_t to =3D cpu->cc->get_pc(cpu);
+>=20=20
+>=20+ qemu_plugin_set_cb_flags(cpu, QEMU_PLUGIN_CB_RW_REGS);
+>  if (cpu->cpu_index < plugin.num_vcpus) {
+>  /* iterate safely; plugins might uninstall themselves at any time */
+>  QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+> @@ -127,6 +128,7 @@ static void plugin_vcpu_cb__discon(CPUState *cpu,
+>  func(cb->ctx->id, cpu->cpu_index, type, from, to);
+>  }
+>  }
+> + qemu_plugin_set_cb_flags(cpu, QEMU_PLUGIN_CB_NO_REGS);
+>  }
 
-diff --git a/docs/system/riscv/k230.rst b/docs/system/riscv/k230.rst
-new file mode 100644
-index 0000000000..3e6ca295df
---- /dev/null
-+++ b/docs/system/riscv/k230.rst
-@@ -0,0 +1,48 @@
-+Kendryte K230 virt reference platform (``k230``)
-+==========================================================================
-+The ``k230`` machine is compatible with with Kendryte K230 SDK.
-+
-+The K230 is a chip from the AIoT SoC series made by Kendryte ® — a part of
-+Canaan Inc. It uses a brand-new multi-heterogeneous unit accelerated computing
-+structure.
-+
-+This chip has 2 RISC-V computing cores and a new-generation KPU (Knowledge
-+Process Unit) smart computing unit.
-+
-+It has multi-precision AI computing ability, works with many common AI computing
-+frameworks, and for some typical networks, its usage rate is over 70%. Besides,
-+the K230 chip supports many peripheral connections and has several special
-+hardware acceleration units (like 2D and 2.5D accelerators). It can speed up
-+different tasks (such as image processing, video processing, audio processing
-+and AI computing). It also has many good features: low delay, high performance,
-+low power use and fast start-up.
-+
-+For more information, see <https://www.kendryte.com/en/proDetail/230>
-+
-+Supported devices
-+-----------------
-+The ``k230`` machine supports the following devices:
-+
-+* 1 c908 cores
-+* Core Local Interruptor (CLINT)
-+* Incoming MSI Controller (IMSIC)
-+* 2 K230 Watchdog Timer
-+* 4 UART
-+
-+Boot options
-+------------
-+The ``k230`` machine can start using the standard ``-bios``
-+functionality for loading the boot image. You need to compile and link
-+the firmware, kernel, and Device Tree (FDT) into a single binary file with
-+K230 SDK(k230_canmv_defconfig), such as ``uboot``.
-+
-+Running
-+-------
-+Below is an example command line for running the ``k230``
-+machine:
-+
-+.. code-block:: bash
-+
-+   $ qemu-system-riscv64 -machine k230 \
-+      -bios k230_sdk/output/k230_canmv_defconfig/little/uboot/u-boot \
-+      -nographic
--- 
-2.51.0
+Yes, we definitely want this.
 
+Reviewed-by: Julian Ganz <neither@nut.email>
+
+Regards,
+Julian
 
