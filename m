@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D0AC98315
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E3AC9831B
 	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 17:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ6TU-0003FV-VD; Mon, 01 Dec 2025 11:10:07 -0500
+	id 1vQ6Tv-0003Oe-EI; Mon, 01 Dec 2025 11:10:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vQ6TE-00039z-Nx
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 11:09:50 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1vQ6TI-0003CI-At
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 11:09:55 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vQ6TD-00084Z-5o
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 11:09:48 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4779a637712so26561605e9.1
- for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 08:09:46 -0800 (PST)
+ id 1vQ6TF-00084e-Pw
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 11:09:51 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-429ce7e79f8so2839653f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 08:09:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764605385; x=1765210185; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=OS7tRew+r9kUvp81iPWbbOvAXQRnsR6HNLxQwl57VfU=;
- b=Pumep1CZo/uwv3348lz/7J6D1o6GRXHmYBKDYJ+4knokrnbnIzoIh1H2qDrhRLpo4o
- WjKMWIcNAtZ1eLnr3R4Pf0HgCWa626triDCC6dlxWIvtwfaq/IWtZgYjfte3M5+2URUy
- lwep0hLzd3bZX9VtS37LjVIzETwXV1ynuth6NNAzmliiGoPzllDPxQuXqe6RwLAD1iu6
- J/+Ypy28SruZ37g7eBmtCgJ+C9g8tm+6bPE8gCu3alGBlRYOJrVxG5Ks+xTuCUqk3KBw
- A1PtmWK8PPbLk6GRl1Z04MokkSw8CQOVhxSeLRqHpLwbNNAOb8UPUVmEeJrONRgn4UQl
- +s9g==
+ d=linaro.org; s=google; t=1764605386; x=1765210186; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=/LOGL1isCmnOMpv3xXu016IY7Q0CQM8bBCYX/KB4fXM=;
+ b=jffLIJR3elvDqPJrHH5HjyOCD2R159KoR/4ABdyJWXTisMdU37NxXdonyLReH5a70Y
+ dUPzQvm2QRYZkamvbbTM485eKoRn7erSDEQGTHGcCTj1OuRhXCrXQ9d3vTchDPtgQ1v3
+ 3kDDpsjgzx9TlGVc92GZ6bHlvOoZuuWrKWtTxYVPy+1+QurQzMzoyqoFskELEosWsioR
+ C//OskvtT6lraWAmw8iJ/8rbNxQQ8v30VbxkE6VEpC1SAbouMH/gZhY6qdUER5NYiHAR
+ Lrwy0UzOy6U04FAkbageMuQhDcO0EzdKPH3R83IoEpNavrkw8JbccLkjlVVBNWjtwXpD
+ TT2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764605385; x=1765210185;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OS7tRew+r9kUvp81iPWbbOvAXQRnsR6HNLxQwl57VfU=;
- b=mx4nRr8QQFR4GTpba6Qv84w9/EZVUTvw/0VGV3+XwWxt5h9avwdqQ51ZmiIbdZDJay
- p+3MBz8yiJQxB7GC/zy4JiGNV/g1dJGjMSkKYqTcA2LbcqpVa9XvXCTzPmgaBl+E3L7t
- HelCeipYGqujUEqVs/sR4FDtDew0uebSHfeGwVaJjDIFVGH1WqdXgaWeYALjuHWzn8++
- yPhbNJrmsls0SJ/IpaaUGr6kzmPYK5qZ/BnqzPBFS65jVl1UOd9v6YyoZ/kJ5A19u7WG
- FywRtOPwAxW8o0vUaheF07kHVivqugzr0Zw0yESfolzImwAi8RuZTocVWV9uwKvwo6TT
- sjNg==
-X-Gm-Message-State: AOJu0YyquoLvD5ePOSOjO+yoF0andp5nsfYo9ukRNSpbAPkdOpmQHPwf
- YYm+MVUltdP41t5CWw3oQnLB1/zgGDpqOhPIhgcmbYVLtJYX1ZS0BN0KFkTQuqfOZzoRT0tQOJF
- FT9UQ
-X-Gm-Gg: ASbGnctPwSJTIJaUKVtdqcl0VbUh4JZ8n5K7Aad4Mguf2vwQLwUjvij+bH/UW+ajuqp
- RKjI2oWXwOesqNOkgpP1FWrRBFKtcpYmxXpk94LvLk7xJYYtmQn1Phumc/kHURmJSzGaxCHOr4U
- 6ELavjqI7nU0BDJiSei+xmUf224xFsBmWs6v5K46jl2x3YVF8Yy2beyRkZxBL4NmUbRe8hJ0vX+
- nxnu205mGHDTFUqeo3iUaK1cj/KILhuIGv/lEBDESX6d2h7DAuV6+d01KIE/7Pgm8kXgV8ilgWf
- EVSW3NiOU6UBb2bR6TD0vEKiicYj31xeH0DZLgujpNwq7sU+rQoV8yyZbUfx/H8/RefR6zozazZ
- DByoad/oUXNrFRpujsflyw4+VnPuzEhpfJUo2jPG1KDSB+0QcdZalG5MOyG7838OeLvLRpjs5qZ
- tDrYSj1FjHVMloV6ve
-X-Google-Smtp-Source: AGHT+IGU8lBlKSgQ8VxGXH94ZQf+CAoo1lyHeUyUZShV+0ZVMZ5eKULzviGqt4wrboYdrr1hIYufsg==
-X-Received: by 2002:a05:600c:314c:b0:477:333a:f71f with SMTP id
- 5b1f17b1804b1-477c01b4986mr392621225e9.17.1764605385380; 
- Mon, 01 Dec 2025 08:09:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1764605386; x=1765210186;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=/LOGL1isCmnOMpv3xXu016IY7Q0CQM8bBCYX/KB4fXM=;
+ b=hHg00pspOwmlXbEfUqcPatmU4Lny7+sdAmoU9VYh8OD6uxGhDgDRYNSJFfBPhf7EQA
+ YMf6BU3t9lpa760MRSIBgU3RIhrot5OKAN3AUkoR9crYienPNs4sX0WLqyN3npA0jmDD
+ DzToJ2ZLf/ojCgx1raSFZhB50ROeEcKQAMXT/xObentWv3BRJDG1+JZwdHt8d7fRxJRp
+ TM1GDpzCdSIVVNMXHSfU/3aMo0njdjG5anba+MFQ+HtnKN/6AS/iGAhH58Mhh28m+5JH
+ dIf0jQlQSmq0t6p5kf81wZ6DZk3J1F4X1xtSg8DFS2yom8cKruPGMziaQUbR7YEov4NF
+ lnSQ==
+X-Gm-Message-State: AOJu0YxNtJhJ1sx86qC3YIg4OaXzSmLuApdvYyKG6pIiyHY7F/PL4MFi
+ ibpxCPh/I1B+a5uJy7eAtMyG2mtGk14JlW3lgNJHqBEE7gzJecRoxmILI6yooEz3JBTWH9w1JAH
+ Xkw3W
+X-Gm-Gg: ASbGncsqAY7WJHj+jMBpZLcTjcMzd1ka7wQIVJ1R18102EO9aQfYHCM4M0EhxmnzTNz
+ JziIGVdRp3nsSBJD2814IcIeSCTRvgf0tYgIKCo814ctica1G25uZ5jnDnhvlt/fTtMtelxgx0j
+ BJwuup4tdsS3kIZd6278tZdu0+e/uSEOAqWihrSR216VLd3xzWwI46flHjkTYaCuFGwx93SMF8V
+ zEPCi0hVSlYlfokj1MripfPunw9/C0OMK/uCvW7FANkMBYDtjr7phAQgsKEZVH+AuyT+guD+taA
+ DZHaMk+HmKzh1M4G335MeShfwN8je9kX4TAaKv4TddCuc0SAzQ/2kOUUtfi1xT7SB0/AkliUJ5N
+ LgJmvxUO668fFMdXctQomHjDYwkPfFKBjOlj4cY/jNt5XSJVxLFJY4gd+HlLtYdzx22QAN5p074
+ 59Ypfg2JDlmrySKpvP
+X-Google-Smtp-Source: AGHT+IEsgbsdCpivhsstHp+cPw7KBJnmJnn41GfPmKXripxdnZ2Ga9G/aO7PfGqcPwtYtQBB/didFw==
+X-Received: by 2002:a05:6000:1886:b0:42b:3867:b3a7 with SMTP id
+ ffacd0b85a97d-42e0f1d59d1mr24993234f8f.8.1764605386451; 
+ Mon, 01 Dec 2025 08:09:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1c5d618csm26682796f8f.14.2025.12.01.08.09.44
+ ffacd0b85a97d-42e1c5d618csm26682796f8f.14.2025.12.01.08.09.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Dec 2025 08:09:44 -0800 (PST)
+ Mon, 01 Dec 2025 08:09:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/2] target-arm queue
-Date: Mon,  1 Dec 2025 16:09:41 +0000
-Message-ID: <20251201160943.1342099-1-peter.maydell@linaro.org>
+Subject: [PULL 1/2] target/arm: Fix assert on BRA.
+Date: Mon,  1 Dec 2025 16:09:42 +0000
+Message-ID: <20251201160943.1342099-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251201160943.1342099-1-peter.maydell@linaro.org>
+References: <20251201160943.1342099-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's an arm pullreq for whichever rc we're up to now :-)
-One easy bugfix for an assertion, and one docs-only change to
-update a URL.
+From: Harald van Dijk <hdijk@accesssoftek.com>
 
-thanks
--- PMM
+trans_BRA does
 
-The following changes since commit 9ef49528b5286f078061b52ac41e0ca19fa10e36:
+    gen_a64_set_pc(s, dst);
+    set_btype_for_br(s, a->rn);
 
-  Merge tag 'hw-misc-20251125' of https://github.com/philmd/qemu into staging (2025-11-25 14:22:39 -0800)
+gen_a64_set_pc does
 
-are available in the Git repository at:
+    s->pc_save = -1;
 
-  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20251201
+set_btype_for_br (if aa64_bti is enabled and the register is not x16 or
+x17) does
 
-for you to fetch changes up to ebb625262c7f9837d6c7b9d8a0c1349fe8a8f4ff:
+    gen_pc_plus_diff(s, pc, 0);
 
-  docs/devel: Update URL for make-pullreq script (2025-12-01 09:39:46 +0000)
+gen_pc_plus_diff does
 
-----------------------------------------------------------------
-target-arm queue:
- * fix assertion in translation of BRA
- * update soon-to-break URL in docs
+    assert(s->pc_save != -1);
 
-----------------------------------------------------------------
-Harald van Dijk (1):
-      target/arm: Fix assert on BRA.
+Hence, this assert is getting hit. We need to call set_btype_for_br
+before gen_a64_set_pc, and there is nothing in set_btype_for_br that
+depends on gen_a64_set_pc having already been called, so this commit
+simply swaps the calls.
 
-Peter Maydell (1):
-      docs/devel: Update URL for make-pullreq script
+(The commit message for 64678fc45d8f6 says that set_brtype_for_br()
+must be "moved after" get_a64_set_pc(), but this is a mistake in
+the commit message -- the actual changes in that commit move
+set_brtype_for_br() *before* get_a64_set_pc() and this is necessary
+to avoid the assert.)
 
- docs/devel/submitting-a-pull-request.rst | 2 +-
- target/arm/tcg/translate-a64.c           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Cc: qemu-stable@nongnu.org
+Fixes: 64678fc45d8f6 ("target/arm: Fix BTI versus CF_PCREL")
+Signed-off-by: Harald van Dijk <hdijk@accesssoftek.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: d2265ebb-84bc-41b7-a2d7-05dc9a5a2055@accesssoftek.com
+[PMM: added note about 64678fc45d8f6 to commit message]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/tcg/translate-a64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 08b21d7dbfa..cde22a5cca7 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1916,8 +1916,8 @@ static bool trans_BRA(DisasContext *s, arg_bra *a)
+         return false;
+     }
+     dst = auth_branch_target(s, cpu_reg(s,a->rn), cpu_reg_sp(s, a->rm), !a->m);
+-    gen_a64_set_pc(s, dst);
+     set_btype_for_br(s, a->rn);
++    gen_a64_set_pc(s, dst);
+     s->base.is_jmp = DISAS_JUMP;
+     return true;
+ }
+-- 
+2.43.0
+
 
