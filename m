@@ -2,47 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7141AC9776E
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 14:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AA4C97879
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 14:15:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ3aN-0004af-0A; Mon, 01 Dec 2025 08:04:59 -0500
+	id 1vQ3kB-0008Ri-2M; Mon, 01 Dec 2025 08:15:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vQ3Zu-0004QB-DH
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 08:04:31 -0500
-Received: from out28-88.mail.aliyun.com ([115.124.28.88])
+ (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
+ id 1vQ3k6-0008OC-7Y
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 08:15:02 -0500
+Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ ([63.178.132.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vQ3Zs-0005T7-4q
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 08:04:30 -0500
-Received: from Sun.localdomain(mailfrom:mail@jiesong.me
- fp:SMTPD_---.faV.YF7_1764594245 cluster:ay29) by smtp.aliyun-inc.com;
- Mon, 01 Dec 2025 21:04:09 +0800
-From: Jie Song <mail@jiesong.me>
-To: armbru@redhat.com
-Cc: berrange@redhat.com, eblake@redhat.com, mail@jiesong.me,
- marcandre.lureau@gmail.com, marcandre.lureau@redhat.com,
- qemu-devel@nongnu.org, songjie_yewu@cmss.chinamobile.com
-Subject: Re: [PATCH v4] monitor/qmp: cleanup SocketChardev listener sources
- early to avoid fd handling race
-Date: Mon,  1 Dec 2025 21:04:03 +0800
-Message-ID: <20251201130404.12083-1-mail@jiesong.me>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <87ms424u8p.fsf@pond.sub.org>
-References: <87ms424u8p.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
+ id 1vQ3k4-0006wd-AT
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 08:15:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.es; i=@amazon.es; q=dns/txt; s=amazoncorp2;
+ t=1764594900; x=1796130900;
+ h=message-id:date:mime-version:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:subject;
+ bh=+AIf40NNtHyvJ9r1L27kk0sQDl1WVhJi9nM8Ar0sOg0=;
+ b=jmM8EGehUPBQUQIFMPRbo5Jio8DzrhuNpw+GBQKvcrSyBy/z4w1n0A1Z
+ /NunuO7unYC/bnKgVLONFACmZ8N8dtdpVA4hzeXG9fWJ0xXWLaK/GQ7xa
+ co8/HWeAZ39t6VeuVk0VEVQ65AhyxTXDDytEL/ZnEgKD6Cus926E5Ve4M
+ /3O61MYlkh/aYdN2wSVb2setEtitIoJhAPmsnyrsRoxopv1prfHm3CvDu
+ dOGaFoUaZPId7AsH1NdIZOrgWOKkvkDOWm0EvPjMqGZC+P8EnrEcmculB
+ RZDtrkZcz8TJdMWaTFSCpNJwFUN25rJzYLRB8Idl6v1Q+xvM8/05++fgt w==;
+X-CSE-ConnectionGUID: rvClp81iSly/vZdFIB099A==
+X-CSE-MsgGUID: TmL5nczTSRiyIX8DWPtkwg==
+X-IronPort-AV: E=Sophos;i="6.20,240,1758585600"; d="scan'208,217";a="5950605"
+Subject: Re: [RFC PATCH 2/4] hw/acpi: add new fields in VMClock ABI
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO
+ smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+ by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 13:11:51 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:30436]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.247:2525]
+ with esmtp (Farcaster)
+ id b0a5c08e-298f-4ae7-8ee9-20cf36ade27d; Mon, 1 Dec 2025 13:11:51 +0000 (UTC)
+X-Farcaster-Flow-ID: b0a5c08e-298f-4ae7-8ee9-20cf36ade27d
+Received: from EX19D012EUA001.ant.amazon.com (10.252.50.122) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 1 Dec 2025 13:11:43 +0000
+Received: from [0.0.0.0] (10.13.181.70) by EX19D012EUA001.ant.amazon.com
+ (10.252.50.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Mon, 1 Dec 2025
+ 13:11:39 +0000
+Message-ID: <cb2e2892-3e11-4e1e-b0e4-7191a78cc497@amazon.es>
+Date: Mon, 1 Dec 2025 14:11:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.88; envelope-from=mail@jiesong.me;
- helo=out28-88.mail.aliyun.com
-X-Spam_score_int: 6
-X-Spam_score: 0.6
-X-Spam_bar: /
-X-Spam_report: (0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+To: Cornelia Huck <cohuck@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "imammedo@redhat.com" <imammedo@redhat.com>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "dwmw2@infradead.org"
+ <dwmw2@infradead.org>, "Graf (AWS), Alexander" <graf@amazon.de>,
+ "mzxreary@0pointer.de" <mzxreary@0pointer.de>, <bchalios@amazon.es>
+References: <20251201125023.18344-1-bchalios@amazon.es>
+ <20251201125023.18344-4-bchalios@amazon.es> <87qztenykd.fsf@redhat.com>
+Content-Language: en-US
+From: Babis Chalios <bchalios@amazon.es>
+In-Reply-To: <87qztenykd.fsf@redhat.com>
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.13.181.70]
+X-ClientProxiedBy: EX19D040UWA002.ant.amazon.com (10.13.139.113) To
+ EX19D012EUA001.ant.amazon.com (10.252.50.122)
+Received-SPF: pass client-ip=63.178.132.221;
+ envelope-from=prvs=423f6341f=bchalios@amazon.es;
+ helo=fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, MIME_HTML_ONLY=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,42 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
+<!DOCTYPE html>
+<html data-lt-installed="true">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body style="padding-bottom: 1px;">
+    <div class="moz-cite-prefix">On 12/1/25 14:04, Cornelia Huck wrote:<span
+      style="white-space: pre-wrap">
+</span></div>
+    <blockquote type="cite" cite="mid:87qztenykd.fsf@redhat.com">
+      <pre wrap="" class="moz-quote-pre">
+On Mon, Dec 01 2025, "Chalios, Babis" <a class="moz-txt-link-rfc2396E" href="mailto:bchalios@amazon.es">&lt;bchalios@amazon.es&gt;</a> wrote:
 
-> Jie Song, Marc-André, is this bug serious enough and the fix safe enough
-> to still go into 10.2?
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">VMClock now supports a vm_generation_counter field in the struct it
+exposes to userspace. The field signals a disruption that happened due
+to a guest loaded from a snapshot.
 
-First, regarding the seriousness of this bug, although the probability of encountering 
-it in a production environment is relatively low, it has existed for quite some time.
+Moreover, VMClock now optionally supports device notifications when the
+seq_count changes to a new even value.
 
-Secondly, with regard to the safety of this fix, it has been verified successfully
-in the test environment. However, it would be better if more people could help to
-review it to further ensure its robustness.
+Signed-off-by: Babis Chalios <a class="moz-txt-link-rfc2396E" href="mailto:bchalios@amazon.es">&lt;bchalios@amazon.es&gt;</a>
+---
+ include/standard-headers/linux/vmclock-abi.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Please either do a full linux-headers update against a specific Linux
+kernel version, or mark this as a placeholder patch if the code is not
+yet merged.
 
-> 
-> Jie Song <mail@jiesong.me> writes:
-> 
-> > From: Jie Song <songjie_yewu@cmss.chinamobile.com>
-> >
-> > When starting a dummy QEMU process with virsh version, monitor_init_qmp()
-> > enables IOThread monitoring of the QMP fd by default. However, a race
-> > condition exists during the initialization phase: the IOThread only removes
-> > the main thread's fd watch when it reaches qio_net_listener_set_client_func_full(),
-> > which may be delayed under high system load.
-> >
-> > This creates a window between monitor_qmp_setup_handlers_bh() and
-> > qio_net_listener_set_client_func_full() where both the main thread and
-> > IOThread are simultaneously monitoring the same fd and processing events.
-> > This race can cause either the main thread or the IOThread to hang and
-> > become unresponsive.
-> >
-> > Fix this by proactively cleaning up the listener's IO sources in
-> > monitor_init_qmp() before the IOThread initializes QMP monitoring,
-> > ensuring exclusive fd ownership and eliminating the race condition.
-> >
-> > Signed-off-by: Jie Song <songjie_yewu@cmss.chinamobile.com>
-> > Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-
-Regards,
-Jie Song
+</pre>
+    </blockquote>
+    <br>
+    Indeed, that's a placeholder. What's the process to mark this as a
+    placeholder?<br>
+    <br>
+    Cheers,<br>
+    Babis
+  </body>
+  <lt-container></lt-container>
+</html>
 
