@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA75C96E60
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4113C96E7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:26:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ22U-0005S2-D7; Mon, 01 Dec 2025 06:25:54 -0500
+	id 1vQ22Y-0005mV-8Z; Mon, 01 Dec 2025 06:25:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ22L-0004xf-FZ
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:25:46 -0500
+ id 1vQ22P-0005Hs-6r
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:25:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ22H-00072q-G0
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:25:44 -0500
+ id 1vQ22M-00074H-Vv
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:25:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764588340;
+ s=mimecast20190719; t=1764588345;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EskV75Y54e3E5/mGlU6jvEyk2qKozy/nvG/DNwjyCUI=;
- b=WDeSSHd+DiP+Yksqc2MfaRpBFyWZm8Y+U1P8wX1/CekX7d7JtwPkAoufb+Em1Y36dh5Vbh
- pq6IZJwwAfAIbXO9cxTwnjrpdIup21LIcsbrVy4Z4px4C72Kb6BQgprUavI20ZsnsK6jG5
- lR6PlPYdQ37F6oWA+/bQeqnPqEtKZOA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ZyvGm2cHLXm+YFmwtjHyM7NXD0+QEkLy407SaQIYwGQ=;
+ b=MKYaAnBPAp9q0t7y06oTj8GQsAzeW6xx/s0oT5cMwKAfQzOUMiQ2DIPjOlYhJbKF8I0BLt
+ ujCWIyr30bCDDU18fLnuiLMA5LpVezWYRR1Um5NQ5YdsLYLFQxasswTgHAV9Me0jr4AHEj
+ /br5g4ePSC5pV41Bh2TenPAFo85YoL0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-VGH5BHtgOvq3gKnbbXERaQ-1; Mon,
- 01 Dec 2025 06:25:37 -0500
-X-MC-Unique: VGH5BHtgOvq3gKnbbXERaQ-1
-X-Mimecast-MFC-AGG-ID: VGH5BHtgOvq3gKnbbXERaQ_1764588336
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-aUkngF9NPFKIjMNOOEs4Fg-1; Mon,
+ 01 Dec 2025 06:25:43 -0500
+X-MC-Unique: aUkngF9NPFKIjMNOOEs4Fg-1
+X-Mimecast-MFC-AGG-ID: aUkngF9NPFKIjMNOOEs4Fg_1764588342
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2765C195608F; Mon,  1 Dec 2025 11:25:36 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0FE591956053; Mon,  1 Dec 2025 11:25:42 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.40])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9831D180057F; Mon,  1 Dec 2025 11:25:34 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9304118004A3; Mon,  1 Dec 2025 11:25:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
@@ -54,15 +54,15 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC 21/24] audio-be: add common pre-conditions
-Date: Mon,  1 Dec 2025 15:23:02 +0400
-Message-ID: <20251201112309.4163921-22-marcandre.lureau@redhat.com>
+Subject: [RFC 22/24] audio-be: add some state trace
+Date: Mon,  1 Dec 2025 15:23:03 +0400
+Message-ID: <20251201112309.4163921-23-marcandre.lureau@redhat.com>
 In-Reply-To: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
 References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,191 +91,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-assert() on valid values, and handle acceptable NULL arguments
-gracefully.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio-be.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ audio/audio-be.c   | 9 +++++++--
+ audio/trace-events | 4 ++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/audio/audio-be.c b/audio/audio-be.c
-index 9af4dbe5e9..fde9c20e12 100644
+index fde9c20e12..7b141566bc 100644
 --- a/audio/audio-be.c
 +++ b/audio/audio-be.c
-@@ -29,6 +29,10 @@ SWVoiceIn *audio_be_open_in(
+@@ -1,9 +1,10 @@
+ /* SPDX-License-Identifier: MIT */
+ 
+ #include "qemu/osdep.h"
+-#include "qemu/audio.h"
+-#include "qemu/audio-capture.h"
+ #include "qapi/error.h"
++#include "qemu/audio-capture.h"
++#include "qemu/audio.h"
++#include "trace-audio.h"
+ 
+ bool audio_be_backend_check(AudioBackend **be, Error **errp)
+ {
+@@ -134,6 +135,8 @@ void audio_be_set_active_out(AudioBackend *be, SWVoiceOut *sw, bool on)
  {
      AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
  
-+    assert(name != NULL);
-+    assert(callback_fn != NULL);
-+    assert(as != NULL);
++    trace_audio_be_set_active_out(sw, on);
 +
-     return klass->open_in(be, sw, name, callback_opaque, callback_fn, as);
- }
- 
-@@ -42,6 +46,10 @@ SWVoiceOut *audio_be_open_out(
+     if (!sw) {
+         return;
+     }
+@@ -145,6 +148,8 @@ void audio_be_set_active_in(AudioBackend *be, SWVoiceIn *sw, bool on)
  {
      AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
  
-+    assert(name != NULL);
-+    assert(callback_fn != NULL);
-+    assert(as != NULL);
++    trace_audio_be_set_active_in(sw, on);
 +
-     return klass->open_out(be, sw, name, callback_opaque, callback_fn, as);
- }
+     if (!sw) {
+         return;
+     }
+diff --git a/audio/trace-events b/audio/trace-events
+index 7e3f1593c8..f7f639d960 100644
+--- a/audio/trace-events
++++ b/audio/trace-events
+@@ -26,6 +26,10 @@ pw_vol(const char *ret) "set volume: %s"
+ pw_period(uint64_t quantum, uint32_t rate) "period =%" PRIu64 "/%u"
+ pw_audio_init(void) "Initialize PipeWire context"
  
-@@ -49,6 +57,10 @@ void audio_be_close_out(AudioBackend *be, SWVoiceOut *sw)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
++# audio-be.c
++audio_be_set_active_in(void *sw, bool on) "sw=%p, on=%d"
++audio_be_set_active_out(void *sw, bool on) "sw=%p, on=%d"
 +
-     return klass->close_out(be, sw);
- }
- 
-@@ -56,6 +68,10 @@ void audio_be_close_in(AudioBackend *be, SWVoiceIn *sw)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
-+
-     return klass->close_in(be, sw);
- }
- 
-@@ -63,6 +79,10 @@ bool audio_be_is_active_out(AudioBackend *be, SWVoiceOut *sw)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return false;
-+    }
-+
-     return klass->is_active_out(be, sw);
- }
- 
-@@ -70,6 +90,10 @@ bool audio_be_is_active_in(AudioBackend *be, SWVoiceIn *sw)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return false;
-+    }
-+
-     return klass->is_active_in(be, sw);
- }
- 
-@@ -77,6 +101,10 @@ size_t audio_be_write(AudioBackend *be, SWVoiceOut *sw, void *buf, size_t size)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return 0;
-+    }
-+
-     return klass->write(be, sw, buf, size);
- }
- 
-@@ -84,6 +112,10 @@ size_t audio_be_read(AudioBackend *be, SWVoiceIn *sw, void *buf, size_t size)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return 0;
-+    }
-+
-     return klass->read(be, sw, buf, size);
- }
- 
-@@ -91,6 +123,10 @@ int audio_be_get_buffer_size_out(AudioBackend *be, SWVoiceOut *sw)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return 0;
-+    }
-+
-     return klass->get_buffer_size_out(be, sw);
- }
- 
-@@ -98,6 +134,10 @@ void audio_be_set_active_out(AudioBackend *be, SWVoiceOut *sw, bool on)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
-+
-     return klass->set_active_out(be, sw, on);
- }
- 
-@@ -105,6 +145,10 @@ void audio_be_set_active_in(AudioBackend *be, SWVoiceIn *sw, bool on)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
-+
-     return klass->set_active_in(be, sw, on);
- }
- 
-@@ -112,6 +156,10 @@ void audio_be_set_volume_out(AudioBackend *be, SWVoiceOut *sw, Volume *vol)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
-+
-     klass->set_volume_out(be, sw, vol);
- }
- 
-@@ -119,6 +167,10 @@ void audio_be_set_volume_in(AudioBackend *be, SWVoiceIn *sw, Volume *vol)
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!sw) {
-+        return;
-+    }
-+
-     klass->set_volume_in(be, sw, vol);
- }
- 
-@@ -130,6 +182,9 @@ CaptureVoiceOut *audio_be_add_capture(
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    assert(as != NULL);
-+    assert(ops != NULL);
-+
-     return klass->add_capture(be, as, ops, cb_opaque);
- }
- 
-@@ -137,6 +192,10 @@ void audio_be_del_capture(AudioBackend *be, CaptureVoiceOut *cap, void *cb_opaqu
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    if (!cap) {
-+        return;
-+    }
-+
-     klass->del_capture(be, cap, cb_opaque);
- }
- 
-@@ -155,6 +214,8 @@ bool audio_be_set_dbus_server(AudioBackend *be,
- {
-     AudioBackendClass *klass = AUDIO_BACKEND_GET_CLASS(be);
- 
-+    assert(server != NULL);
-+
-     if (!audio_be_can_set_dbus_server(be)) {
-         error_setg(errp, "Audiodev '%s' is not compatible with DBus",
-                    audio_be_get_id(be));
+ # audio.c
+ audio_timer_start(int interval) "interval %d ms"
+ audio_timer_stop(void) ""
 -- 
 2.51.1
 
