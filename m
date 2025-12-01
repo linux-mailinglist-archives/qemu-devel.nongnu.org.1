@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2183C96E3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767E2C96E48
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:25:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ21U-0002sq-Le; Mon, 01 Dec 2025 06:24:52 -0500
+	id 1vQ21g-00034F-Bo; Mon, 01 Dec 2025 06:25:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ21S-0002cT-9B
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:24:50 -0500
+ id 1vQ21X-00031f-Cy
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:24:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ21Q-0006dV-Ps
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:24:50 -0500
+ id 1vQ21V-0006dz-U8
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:24:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764588288;
+ s=mimecast20190719; t=1764588293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3g8JxiwbPFLnYrOLWm3YCZxCI3y+1VP+hhdBbtdOIKM=;
- b=XlP+4/Rd5ooKSJuVAIKh7zSKP7DuvzZFmnYtw1v5OonJKmdzCPvv6MKftIhGXPw/iPLAB4
- qCGptEIVcCwI05gN7uAyyft8sou7Qd02mOcr3KZvUoIztcIptncefSGWMx9G9U3v37qatc
- W0a7M9Qs8hTZQxjXllP2zZdltWkm0bQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=OqqV1rAyj9tFNJdjrOVW2/JSZTxqKWI42PQNdQQe5eI=;
+ b=FpvD4+/TnvNWDcz1xWJ72DCGzECw9lvz69PyBvpBrmbvp0ExGAj2SQBVsXE64tyJJAfkTb
+ kfCyPYOX/Pz8OIQkasRus8ljykr+k7Ca31WPkNVq7m2bD/nahUsXvL5jzqou3gtmxyiNpc
+ 6OP5EnGjUzXF3mQQaG+zhzKcvcL1Avs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-414-rXlObdUbPI63wvzysurcWQ-1; Mon,
- 01 Dec 2025 06:24:43 -0500
-X-MC-Unique: rXlObdUbPI63wvzysurcWQ-1
-X-Mimecast-MFC-AGG-ID: rXlObdUbPI63wvzysurcWQ_1764588282
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-bTz3ri5gPo-1cjdBBNi0ww-1; Mon,
+ 01 Dec 2025 06:24:50 -0500
+X-MC-Unique: bTz3ri5gPo-1cjdBBNi0ww-1
+X-Mimecast-MFC-AGG-ID: bTz3ri5gPo-1cjdBBNi0ww_1764588289
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48DC2180034A; Mon,  1 Dec 2025 11:24:42 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8789F1955DA0; Mon,  1 Dec 2025 11:24:48 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.40])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C3206180087D; Mon,  1 Dec 2025 11:24:40 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E6B6819560A7; Mon,  1 Dec 2025 11:24:46 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
@@ -54,15 +54,15 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC 13/24] audio: keep a strong reference on the backend
-Date: Mon,  1 Dec 2025 15:22:54 +0400
-Message-ID: <20251201112309.4163921-14-marcandre.lureau@redhat.com>
+Subject: [RFC 14/24] audio: make list type declaration private
+Date: Mon,  1 Dec 2025 15:22:55 +0400
+Message-ID: <20251201112309.4163921-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
 References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,70 +91,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Since we are going to convert audio_driver-based backends, we need to
-properly handle reference counting to allow for a different order of
-class finalization (for example, pulse class before base driver class).
+No need to share in a common header.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio_template.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ audio/audio_int.h | 7 -------
+ audio/audio.c     | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/audio/audio_template.h b/audio/audio_template.h
-index 925a878f6d..7d204d25bc 100644
---- a/audio/audio_template.h
-+++ b/audio/audio_template.h
-@@ -231,6 +231,7 @@ static void glue (audio_pcm_hw_gc_, TYPE) (HW **hwp)
-         glue(hw->pcm_ops->fini_, TYPE) (hw);
-         glue(s->nb_hw_voices_, TYPE) += 1;
-         glue(audio_pcm_hw_free_resources_ , TYPE) (hw);
-+        object_unref(hw->s);
-         g_free(hw);
-         *hwp = NULL;
-     }
-@@ -287,7 +288,7 @@ static HW *glue(audio_pcm_hw_add_new_, TYPE)(AudioDriver *s,
-      * is guaranteed to be != 0. See the audio_init_nb_voices_* functions.
-      */
-     hw = g_malloc0(glue(drv->voice_size_, TYPE));
--    hw->s = s;
-+    hw->s = AUDIO_DRIVER(object_ref(s));
-     hw->pcm_ops = drv->pcm_ops;
+diff --git a/audio/audio_int.h b/audio/audio_int.h
+index eaf7838bfe..3bf1cf6a99 100644
+--- a/audio/audio_int.h
++++ b/audio/audio_int.h
+@@ -313,13 +313,6 @@ static inline size_t audio_ring_posb(size_t pos, size_t dist, size_t len)
+ #define ldebug(fmt, ...) (void)0
+ #endif
  
-     QLIST_INIT (&hw->sw_head);
-@@ -335,6 +336,7 @@ static HW *glue(audio_pcm_hw_add_new_, TYPE)(AudioDriver *s,
-  err1:
-     glue (hw->pcm_ops->fini_, TYPE) (hw);
-  err0:
-+    object_unref(hw->s);
-     g_free (hw);
-     return NULL;
- }
-@@ -441,7 +443,7 @@ static SW *glue(audio_pcm_create_voice_pair_, TYPE)(
-     }
+-typedef struct AudiodevListEntry {
+-    Audiodev *dev;
+-    QSIMPLEQ_ENTRY(AudiodevListEntry) next;
+-} AudiodevListEntry;
+-
+-typedef QSIMPLEQ_HEAD(, AudiodevListEntry) AudiodevListHead;
+-
+ void audio_create_pdos(Audiodev *dev);
+ AudiodevPerDirectionOptions *audio_get_pdo_in(Audiodev *dev);
+ AudiodevPerDirectionOptions *audio_get_pdo_out(Audiodev *dev);
+diff --git a/audio/audio.c b/audio/audio.c
+index 8523f14daa..138d7b502a 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -67,6 +67,13 @@ const char *audio_prio_list[] = {
+     NULL
+ };
  
-     sw = g_new0(SW, 1);
--    sw->s = s;
-+    sw->s = AUDIO_DRIVER(object_ref(s));
- 
-     hw = glue(audio_pcm_hw_add_, TYPE)(s, &hw_as);
-     if (!hw) {
-@@ -461,6 +463,7 @@ err2:
-     glue (audio_pcm_hw_del_sw_, TYPE) (sw);
-     glue (audio_pcm_hw_gc_, TYPE) (&hw);
- err1:
-+    object_unref(sw->s);
-     g_free(sw);
-     return NULL;
- }
-@@ -470,6 +473,8 @@ static void glue (audio_close_, TYPE) (SW *sw)
-     glue (audio_pcm_sw_fini_, TYPE) (sw);
-     glue (audio_pcm_hw_del_sw_, TYPE) (sw);
-     glue (audio_pcm_hw_gc_, TYPE) (&sw->hw);
++typedef struct AudiodevListEntry {
++    Audiodev *dev;
++    QSIMPLEQ_ENTRY(AudiodevListEntry) next;
++} AudiodevListEntry;
 +
-+    object_unref(sw->s);
-     g_free (sw);
- }
- 
++typedef QSIMPLEQ_HEAD(, AudiodevListEntry) AudiodevListHead;
++
+ static AudiodevListHead audiodevs =
+     QSIMPLEQ_HEAD_INITIALIZER(audiodevs);
+ static AudiodevListHead default_audiodevs =
 -- 
 2.51.1
 
