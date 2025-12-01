@@ -2,103 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AFBC99435
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 22:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC1FC99999
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 00:37:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQBoP-0003xF-09; Mon, 01 Dec 2025 16:52:01 -0500
+	id 1vQDRa-0002QW-EV; Mon, 01 Dec 2025 18:36:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQBoH-0003wC-QZ
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 16:51:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vQDRY-0002PJ-Tj
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:32 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQBoG-0006c5-F2
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 16:51:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764625912;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=96ny2aMnbPzMtA2lfR12EhTGCBe96HgkMENghITKU3c=;
- b=cml8b0x8+UMrPDaxy2wIw/aKVaTebx5QrO4TN+82OqbieKIJmDlOcFSU7ypGqIzY924+5O
- XX28uCLcTp88KyEjGr4t35FpE2rH0s42fBoIIE3JFJqMFZdVxAlbHwY4C1Dty1l+d2fQeZ
- k/5u9n14aFi7FzsY0TS3iaAt0HwKQQ0=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-aNg3mJIlP8Gwj7j9HOZGSQ-1; Mon, 01 Dec 2025 16:51:50 -0500
-X-MC-Unique: aNg3mJIlP8Gwj7j9HOZGSQ-1
-X-Mimecast-MFC-AGG-ID: aNg3mJIlP8Gwj7j9HOZGSQ_1764625910
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4ee0c1d1b36so91564891cf.0
- for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 13:51:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764625910; x=1765230710; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=96ny2aMnbPzMtA2lfR12EhTGCBe96HgkMENghITKU3c=;
- b=cHmBQLEs13UHhjkdIBDs8Pc3X8I66DTq7O/3pBxhI0fnLn6RoTW6MnS/tzflDaR1Td
- jFAly+m+/qYk0MNr7EyZFM1cxDEmHl7auh+SIrPEwl6usAlqKOCZNP2sLVzhYWXtTXtC
- ylr1jgPs6N4bYXePFtUWAKhXBoQsbP2H8H29txPur6kj6jXiOnBjhwYS+2HwJXmxLcqv
- lm9C4kU7Gic9McrfZo0/rD+9qfXGQAG5Mqe2QdkJcI1BfJLddrrcH74raE5aQh6DElFs
- rvu0JtOIGs9fHO9jdtwr1+Lbxd+G4Ci+/9uwYxmPXGKQ+WG2n1x2swzminnlO241nqgN
- f+5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764625910; x=1765230710;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=96ny2aMnbPzMtA2lfR12EhTGCBe96HgkMENghITKU3c=;
- b=a1F3CwU34ULwpWbTGriU3uSjScbtikdl55JXbud//igXgaOKJHDby/l7MsYSgXKdQM
- 1OKnjye1W+fJ8wrerJsP1VC57uXr/DhSF+TOrxrDU642/dFvSye3Thm52Hn3MiMJEOoy
- M5Irurg2WZrQlUZ2tiwXn9JG/kAKr94WQLlfM+jmUa765mhM6rKDw8qm0aVhk0TqAJXq
- v4b5fiHsaD7aIifJa838AI6BW7prhYxYmZUN4AOyrLUvnvRPMG8RsLSTyFvUGmoizHcC
- wnF/2pY9jKIjHbWv+7si3z0MFacgcpNeUVqmIcunzzblquYmoE/y7c0QYjWViYjZxwV/
- l8/Q==
-X-Gm-Message-State: AOJu0Yz6w3XcStAYR6IFoJtU5XjGUldDxw3KjWwm5pe5ot5GtrteWPZb
- JEFF65atya3qpM9jpgSmkutmmBLPXWdyDw2nOeU0jT/hfC4e0BnP08llM5XNuRNOcNBzwickq2/
- KE9C8qjFFWpZPEdItLeFjBlS4jsNHEYSoCJ078bdjOXDJEEIiVfAB6+km
-X-Gm-Gg: ASbGncufgK0wL/u3QpxTyxpSVf1ZEKE6dSg+JzgHNRErnOrukMmrJUoGBRVlLGkeWBo
- gDgiQ/b2qgh3219ajgdpw2KXHIjb18vIEtz2Nndl9I8nZFHkUaZ5GFEYGCB+wTsQu61QsQ6Uw9F
- VlOcFvoRVyp+wiDqZgyI19g3TOT6K5KXL7jkReWY06wM8F8PfcjR6KJUuWLY/6LBrS/yr8kmH3W
- dq+adgwmo+1VxIzeQI575qVvgTfGitB6Q+6sS/ZxgOx5xnD69h0qqQ4wlZNST1Zzywdfdc0llDL
- v47zgGGjzMMci2XJrfaNHXcrIoF75cHrmAzz0NqxvscaWhsDuuiMFhjf9VHQis3ntf/PfH8jBdZ
- X1Es=
-X-Received: by 2002:ac8:5904:0:b0:4ee:ce3:6c9c with SMTP id
- d75a77b69052e-4f0088f0d6fmr2163941cf.2.1764625910183; 
- Mon, 01 Dec 2025 13:51:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHp8ObykFdecYmb4Ogt5pINYfVnlgsjLXpU1nrmvTQQbB8uoqLMx33a6S9rUENsx3HBsl+FUQ==
-X-Received: by 2002:ac8:5904:0:b0:4ee:ce3:6c9c with SMTP id
- d75a77b69052e-4f0088f0d6fmr2163491cf.2.1764625909590; 
- Mon, 01 Dec 2025 13:51:49 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4efd3443375sm80500441cf.29.2025.12.01.13.51.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Dec 2025 13:51:49 -0800 (PST)
-Date: Mon, 1 Dec 2025 16:51:48 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Pawel Zmarzly <pzmarzly0@gmail.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de
-Subject: Re: [PATCH v2] scripts/analyze-migration: Support mapped-ram
- snapshot format
-Message-ID: <aS4N9J_B4GbSvYTh@x1.local>
-References: <20251126155015.941129-1-pzmarzly0@gmail.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vQDRX-0004VP-96
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1764632169; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=hnxx2I8YttHxLRLnYTxYwiqMenX1HBQTQTSSMj64D68mknxwaYbVEhCw9pjIUaJV/6EELEpUfVQq/DpFk06tc+mThQjEkfYBUrQ+SBs1KdPWrlWzz3oye5OOE6QxV38hMg9PQaER85HIvOsemViKimFczYfjs0p9WKQOfUZLdm4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1764632169;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=5cQCC/wbXDU74/8ZHF2x0PKgelyq2ioz4+yBD+P/rJ4=; 
+ b=aP/GGhXDwYSMPJbyAfD1Rj1A9pIqvH4NvW3UwAI3/nt0HPLirIuzdfqxIFUg03XTP2ZPV7R9K39ipx8ZWr68o8VKG5why4HR7RnmadjaXbqTJtqXuK5O9mMO9L0aiOdrAjaRkGnIjHFjl5QEnEGVLPmpCmehCmk4pEl3HB8O9nY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764632169; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=5cQCC/wbXDU74/8ZHF2x0PKgelyq2ioz4+yBD+P/rJ4=;
+ b=Jw+BSzhXXR+LVJ0Pwa5QG9O3VCB7RZILQfbCDTIerfDR+ZG5z/ohXd8+8SYVa48E
+ zgHOXEvbyvr8eXy1A0MRnS63McFa9PzVW0lpUjUsrxHP9CetqupZawAkY8CnL+tCUjX
+ gC+Wj+k+WAxm8cONJrMRpIWkeZn/BZ/d6x8k98VM=
+Received: by mx.zohomail.com with SMTPS id 1764632167119550.1465898583117;
+ Mon, 1 Dec 2025 15:36:07 -0800 (PST)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
+ Sergio Lopez Pascual <slp@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Robert Beckett <bob.beckett@collabora.com>
+Subject: [RFC PATCH v6 0/4] Support mapping virtio-gpu virgl hostmem blobs
+ using MAP_FIXED API
+Date: Tue,  2 Dec 2025 02:34:43 +0300
+Message-ID: <20251201233447.2218728-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251126155015.941129-1-pzmarzly0@gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,21 +94,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 26, 2025 at 03:50:15PM +0000, Pawel Zmarzly wrote:
-> The script has not been updated to read mapped-ram snapshots and is currently
-> crashing when trying to read such a file.
-> 
-> With this commit, it can now read a snapshot created with:
-> 
->     (qemu) migrate_set_capability x-ignore-shared on
->     (qemu) migrate_set_capability mapped-ram on
->     (qemu) migrate -d file:vm.state
-> 
-> Signed-off-by: Pawel Zmarzly <pzmarzly0@gmail.com>
+Virglrender got a new API that allows mapping host blobs at a given
+memory address using MAP_FIXED mmap flag [1]. Usage of this new API brings
+major performance and stability improvement for venus and drm native contexts,
+see commit message of the RFC patch for details.
 
-queued, thanks.
+Sending early to collect review feeback and have patch prepared by the
+time new version of libvirglrenderer will be released with the stabilized
+API.
+
+[1] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1374
+
+Based-on: 20251116125641.2255794-1-dmitry.osipenko@collabora.com
+
+Changelog:
+
+v6: - Updated comment for virtio_gpu_virgl_reset(), removing part
+      telling that reset at "runtime" is unexpected and removing
+      excessive error message about a failed reset. Requested by
+      Akihiko Odaki.
+
+v5: - Switched to use error_setg_errno() for qemu_ram_mmap() error
+      handling, as was suggested Akihiko Odaki.
+
+    - Added r-b from Alex Bennée to the first patch.
+
+    - Moved hostmem mapping offset validation to upper function as
+      was suggested by Alex Bennée.
+
+    - Dropped all patches and changes that made funcs to return -1
+      since it was rejected by Alex Bennée. Refactoring can be done
+      later on in a separate patchset.
+
+    - Extended clarifying comment of virtio_gpu_virgl_reset().
+
+v4: - Addressed v3 review comments from Akihiko Odaki.
+
+    - Dropped patch making resource_unmap() error reported as a host
+      failure instead of guest and added patch improving resource_map_blob()
+      error reporting.
+
+    - Re-added CONFIG_WIN32 checks.
+
+    - Added clarifying comment to virtio_gpu_virgl_reset() RE unsupported
+      context restoring.
+
+v3: - Addressed v2 review comments from Akihiko Odaki.
+
+    - Droped check for CONFIG_WIN32. My current understanding that
+      MAP_FIXED is supported by Cygwin.
+
+    - Added new patches resetting virgl resources, validating hostmem
+      offset and improving error-handlings.
+
+    - Added r-b from Akihiko Odaki to the frist patch and t-b from
+      Yiwei Zhang to the map_fixed patch.
+
+v2: - Addressed v1 review comments from Akihiko Odaki
+
+    - Added patch that removes unnecessary memory_region_set_enabled(),
+      suggested by Akihiko Odaki
+
+Dmitry Osipenko (4):
+  virtio-gpu: Remove superfluous memory_region_set_enabled()
+  virtio-gpu: Validate hostmem mapping offset
+  virtio-gpu: Destroy virgl resources on virtio-gpu reset
+  virtio-gpu: Support mapping hostmem blobs with map_fixed
+
+ hw/display/virtio-gpu-gl.c     |  46 +++++++++-
+ hw/display/virtio-gpu-virgl.c  | 155 ++++++++++++++++++++++++++++-----
+ include/hw/virtio/virtio-gpu.h |   8 +-
+ 3 files changed, 182 insertions(+), 27 deletions(-)
 
 -- 
-Peter Xu
+2.51.1
 
 
