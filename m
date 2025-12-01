@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E170BC9761B
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 13:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE30C97635
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 13:53:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ3O7-0001hB-0b; Mon, 01 Dec 2025 07:52:19 -0500
+	id 1vQ3Ou-00047G-I3; Mon, 01 Dec 2025 07:53:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1vQ3Nr-0001Be-SE
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:52:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
+ id 1vQ3Or-000422-7o
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:53:05 -0500
+Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ ([18.158.153.154])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1vQ3Nq-0003o5-3O
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:52:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764593515;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Uy30EGZxUbbK0AXQ2bdscXYyRHo9fm1/HxaZfC06wJ0=;
- b=g6DChoZepBiEXrDOcJeNPG2HGElGx6PVqlz5oF+AFPL5UUQ8moZPDAJ5mfYZE+wW9epzJ8
- n5hiBeCbgyuUIMFQVVONYQNejPwvb3GAk/NCciuRdDtDSzVxqt+thHAAZvZcv8w4bCDRa0
- jKJCMdNoW4HE0FloiyiZeOU46eQPNb4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-LTPwpfe_NsWPF-ZwLRZtXQ-1; Mon,
- 01 Dec 2025 07:51:54 -0500
-X-MC-Unique: LTPwpfe_NsWPF-ZwLRZtXQ-1
-X-Mimecast-MFC-AGG-ID: LTPwpfe_NsWPF-ZwLRZtXQ_1764593513
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7BEC01800473
- for <qemu-devel@nongnu.org>; Mon,  1 Dec 2025 12:51:53 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.210])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DAE3F19560A7; Mon,  1 Dec 2025 12:51:50 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Lei Yang <leiyang@redhat.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH] vhost: accept indirect descriptors in shadow virtqueue
-Date: Mon,  1 Dec 2025 13:51:49 +0100
-Message-ID: <20251201125149.2151026-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
+ id 1vQ3Oo-0003qc-0f
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:53:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.es; i=@amazon.es; q=dns/txt; s=amazoncorp2;
+ t=1764593582; x=1796129582;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=8uekmCgfryNWdzsErgB2fO0NAb4G4PAane8olc/DdHw=;
+ b=egL7QlRN/gG/uKu0FunLerX2seW8SrM3A1MH5pReT4TIWJ1+4ofb7LuP
+ cBRpN+CYwbEf06MZ4J+/nWjNG1TdFQADWYsJm/b+sg7jUzrfigzE2dcjb
+ XFs43otNCeFqDkzt8UCSDKUDeo1tyA3mIChLTC8xNWCE8XoAqrLDOqN/n
+ JfrXeoukbBCGm9+H9BS22rEoKhbQ2TGuEx1yF2qklu74Itex8GwyAItdr
+ EIqb+XhycjhfYTXJt1d2F1puIBud/PrE7T4bq4JGW63hT+cvzyIPPxWYh
+ 25krNirdW7KePUZDOMvrUGBgZ0ibn83I7zyumUtWYDEUlBYgpZ1phjBC3 Q==;
+X-CSE-ConnectionGUID: Wn11RTKeS9aZMrdb6yaCYA==
+X-CSE-MsgGUID: fVqmtLQOS3KpeS4NmxkrsA==
+X-IronPort-AV: E=Sophos;i="6.20,240,1758585600"; d="scan'208,217";a="5937543"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO
+ smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+ by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 12:52:36 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:9489]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.247:2525]
+ with esmtp (Farcaster)
+ id e7955ce5-9753-4db1-a4d9-4312a06d54c7; Mon, 1 Dec 2025 12:52:36 +0000 (UTC)
+X-Farcaster-Flow-ID: e7955ce5-9753-4db1-a4d9-4312a06d54c7
+Received: from EX19D012EUA001.ant.amazon.com (10.252.50.122) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 1 Dec 2025 12:52:32 +0000
+Received: from [0.0.0.0] (10.13.181.70) by EX19D012EUA001.ant.amazon.com
+ (10.252.50.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Mon, 1 Dec 2025
+ 12:52:27 +0000
+Message-ID: <10e122b8-7dab-4483-9826-121924ae7bd2@amazon.es>
+Date: Mon, 1 Dec 2025 13:52:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/4] vmclock: add support for VM generation counter
+ and notifications
+To: "mst@redhat.com" <mst@redhat.com>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "cohuck@redhat.com" <cohuck@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "dwmw2@infradead.org"
+ <dwmw2@infradead.org>, "Graf (AWS), Alexander" <graf@amazon.de>,
+ "mzxreary@0pointer.de" <mzxreary@0pointer.de>, <bchalios@amazon.es>
+References: <20251201125023.18344-1-bchalios@amazon.es>
+ <20251201125023.18344-2-bchalios@amazon.es>
+Content-Language: en-US
+From: Babis Chalios <bchalios@amazon.es>
+In-Reply-To: <20251201125023.18344-2-bchalios@amazon.es>
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.13.181.70]
+X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
+ EX19D012EUA001.ant.amazon.com (10.252.50.122)
+Received-SPF: pass client-ip=18.158.153.154;
+ envelope-from=prvs=423f6341f=bchalios@amazon.es;
+ helo=fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, MIME_HTML_ONLY=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,37 +99,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The device is not able to generate indirect descriptors by itself, only
-the driver can do it.  And SVQ is already able to handle them by reusing
-VirtQueue struct.
+<!DOCTYPE html>
+<html data-lt-installed="true">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body style="padding-bottom: 1px;">
+    <br>
+    <br>
+    <div class="moz-cite-prefix">On 12/1/25 13:50, Chalios, Babis wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20251201125023.18344-2-bchalios@amazon.es">
+      <pre wrap="" class="moz-quote-pre">Latest specification of VMClock[1] adds support for VM generation counter
+and notifications. VM generation counter is similar to disruption_marker
+but it only changes when the guest has been loaded from a snapshot, not
+on live migration. Its purpose is to notify the guest about snapshot
+events and let it perform actions such as recreating UUIDs, resetting
+network connections, reseeding entropy, etc.
 
-Shadow VirtQueue just transform the indirect descriptors to chained
-buffers.  This way we don't need to map a new buffer for the indirect
-table and handle its exhaustion etc.  As they are only used in control
-plane and HW devices don't like indirect, we should not see significant
-downsides with these.
+Moreover, the spec now describes a notification that the device can send
+after updating the seq counter to a new even number.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
---
+I have already sent the Linux changes to the mailing list here:
+<a class="moz-txt-link-freetext" href="https://lore.kernel.org/lkml/20251127103159.19816-1-bchalios@amazon.es/T/#u">https://lore.kernel.org/lkml/20251127103159.19816-1-bchalios@amazon.es/T/#u</a>
 
-Tested functionally by forwarding the CVQ descriptors.
----
- hw/virtio/vhost-shadow-virtqueue.c | 1 +
- 1 file changed, 1 insertion(+)
+[1] <a class="moz-txt-link-freetext" href="https://david.woodhou.se/VMClock.pdf">https://david.woodhou.se/VMClock.pdf</a>
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 2481d49345..6242aeb69c 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -34,6 +34,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
-         switch (b) {
-         case VIRTIO_F_ANY_LAYOUT:
-         case VIRTIO_RING_F_EVENT_IDX:
-+        case VIRTIO_RING_F_INDIRECT_DESC:
-             continue;
- 
-         case VIRTIO_F_ACCESS_PLATFORM:
--- 
-2.52.0
+Babis Chalios (4):
+  acpi: fix acpi_send_gpe_event() to handle more events
+  hw/acpi: add new fields in VMClock ABI
+  hw/acpi: add VM generation counter field to VMClock
+  hw/acpi: add ACPI notification to VMClock device
 
+ hw/acpi/core.c                               |  8 +++++-
+ hw/acpi/vmclock.c                            | 28 +++++++++++++++++++-
+ include/hw/acpi/acpi_dev_interface.h         |  1 +
+ include/standard-headers/linux/vmclock-abi.h | 20 ++++++++++++++
+ 4 files changed, 55 insertions(+), 2 deletions(-)
+
+</pre>
+    </blockquote>
+    <br>
+    Apologies for sending this twice, malformed git send-email command
+    :(<br>
+    <br>
+    Cheers,<br>
+    Babis
+  </body>
+  <lt-container></lt-container>
+</html>
 
