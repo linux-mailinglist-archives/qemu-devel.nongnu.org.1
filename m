@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9A3C98E58
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 20:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B01DC98E46
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 20:46:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ9pv-0000mj-Ja; Mon, 01 Dec 2025 14:45:27 -0500
+	id 1vQ9pz-0000nw-2z; Mon, 01 Dec 2025 14:45:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9pu-0000mB-7T
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:26 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9pw-0000nD-VX
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9ps-0005Ht-B9
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:25 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9pv-0005IJ-13
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764618323;
+ s=mimecast20190719; t=1764618326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rin2rU4dC98DtaDQogrP6C7tNI/p40r0Mt6FMofBulA=;
- b=KltfA1ROv9giXExlEkMf6eOUDxhqUKrqy1fB2GjH3IKzemWS5wF5LThXNJ+J3iecbHRSrv
- xBcgTQrmTmIJppKB5l3Av0Ba3lJQ2ZHaJHEkNU3uJdnOMDg/Z6sw7C4+XmFKg+MGXgNAUA
- qE1IoRRlSqX5T8cNstJtCYYoEeDYJgw=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EQ1mPqJCFbzyT5uTHkDEJzo5K/xfvLuXsCDQhe1Tzzg=;
+ b=SM3j70fD/CLGY1ZdLGQxmOni9Ybspmbq2m9qJIKenf3dDL/+vbWlRQe4JO+kGozCvUrAe4
+ w4NDnSxzZPSDldIs9nXS7/x+F5754uoWs1krE3Y0XFLiaTgmPEJlvM4OIKZGyeYjo093Tt
+ pHy2expDKI1aiwJ68iNlZWecKtiBch8=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-oWWW4btUPiOS-YOsJviVCw-1; Mon, 01 Dec 2025 14:45:19 -0500
-X-MC-Unique: oWWW4btUPiOS-YOsJviVCw-1
-X-Mimecast-MFC-AGG-ID: oWWW4btUPiOS-YOsJviVCw_1764618318
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-880441e0f93so105734196d6.1
- for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 11:45:18 -0800 (PST)
+ us-mta-355-UBgrdvXZPsOK3xyEkIXxcQ-1; Mon, 01 Dec 2025 14:45:20 -0500
+X-MC-Unique: UBgrdvXZPsOK3xyEkIXxcQ-1
+X-Mimecast-MFC-AGG-ID: UBgrdvXZPsOK3xyEkIXxcQ_1764618319
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-880501dcc67so147473956d6.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 11:45:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764618318; x=1765223118; darn=nongnu.org;
+ d=redhat.com; s=google; t=1764618319; x=1765223119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rin2rU4dC98DtaDQogrP6C7tNI/p40r0Mt6FMofBulA=;
- b=KuKAf9LmZZYNrfNMmfAZxnzl5gHS2n6Rd4EWFQfIbEiuNNivU63ojyAOQ/IZL8xDZo
- FwhedCshxtzQ8Y39MY+v+Sbi4rr599QPoE9ktBrRrIPrpi1xeEEvuOe+Oozh4BfCBOPQ
- 8OjRhZQkG8nqlSQvszSTcsgNu6DIgFDHLYeI56OBo2LWKX9iwrHPozsWgU9ci98Ox1Fi
- KSZAGJaX0Hagu4gxz9kVe7N3LrL8egOIK81JYF6dCfTxxO7sXukhhNuSJCNTjVecTV8Z
- m3Qr89rNXSUvvB3vI+8coQPsKf1HK4bZgEHd1pFNpHdEjO+SBqh8sQz0vGrWwkBIOOUK
- /7XA==
+ bh=EQ1mPqJCFbzyT5uTHkDEJzo5K/xfvLuXsCDQhe1Tzzg=;
+ b=Vp2KndKLFQhmUBOhhTZOkOEZWv+oV/1uh1R0ddOkhVKql8cv6LCDy7LdruRFFb+Uij
+ eT4LyRyi0o6ke32TwcxotOTt8nTE2fg+gZvbub23+lPl6Puk6qLs75Z/iNTxx5dV73gx
+ /K2TMfEBwud8gEAFmTAfhhY9DPRBqGvTUtwMy8ndq+voKAZ5yKLqtPBnfewZTjBNrfnG
+ IVN/hKC4XnqbvogMd3ib3IOecfJbyAtdLCL/444/CQco90loRsv3ZI19RYvQWs3Vh6f6
+ Auo80bQciMwawGfuk0mlYJIrF8wfTN8WwqCCL2Y5K0+uB3zgzZjo0dGC3G3Oyiuf22DB
+ Uf6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764618318; x=1765223118;
+ d=1e100.net; s=20230601; t=1764618319; x=1765223119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=rin2rU4dC98DtaDQogrP6C7tNI/p40r0Mt6FMofBulA=;
- b=qVyxjHORt+EDNqs4m/JvXOZXGG6L7HujQgYo5HWBBd3Vp11vYAcFd7RreiY0kXm9L1
- e8MhudgPYqxKVEYNEkpHEZ7rsEdRoPDPiSqIedWmAuGZQvwP6rCrfOZyKKdzo7gl1Rn3
- vTEqbO19qngGhcC3TgvVFK3ClSGR6Ht6zWst3TGeuODgn/bBsaHdZpttuQqmMO19IdyJ
- U0Rh5XnpXBT1V9WdSWvL6h0Rhn1U+ZYOgaAT+jE3S7BE0ajBJiYL8pe2DbLBlBwuMAOn
- rPnBzKW/gKGZXIVUbpnNvheU7OSx4vlLV+yBFBgM6/985OnaFS1+YjWqC4BWrhMcN1Zw
- PeFA==
-X-Gm-Message-State: AOJu0Yzk6etssIg1BXyhR85+vu0YrAZJJMkHd5BPewXa1ParlxmViMCL
- i215fgaE6yNomJGLhV5nj5n8REFe0ySqTVE5jbHl3PbQgCWLZ+Z/7MzXj8g+pfOygnoQJHO2i67
- bRTma/FcCFZvgm5px6tlStSBfEyoR/RDa7cgvGiNG3uxdBbTMXzH34DfiyAjqehff+74izkgbAL
- DEg9cO4YLAhLlT4hcpt4rg+iy1hPF20LlM0yK3EQ==
-X-Gm-Gg: ASbGncsXW8yU4qpADPDaYBZ5QJB+YUYBppkBcdf/IACLJ7bh9w4+BsLTUnRVcBG/nFW
- sTdFxedUPBkU0PXwcxEBoxEjDd5kFhNJr+96Ge6VhDldfTQg8rF+hDy5ijfnN1ihEqp+glPH/3a
- Q1GSTCkhrJghIsahdjflqPeT2C0FuwWoxuO29WBB1z3BTDM1kRXbcGQtNRHBi4oUJ2kM19I6Ivd
- UI1iLVatq6Al5pjltdSidvFG4fsN1fSz8ZVkR5MCFYomTtjnCMaIXTHKimGJbkoNXnT7mc5MiL8
- NmopDyczxGesCiiEVfgNIiT+4rVpd/ekGMmvLkt7S/rwpz5otbXVXQWo+clcSrJAo7u+2sFkj4S
- y
-X-Received: by 2002:ad4:5bac:0:b0:884:70ed:5414 with SMTP id
- 6a1803df08f44-8847c4c4cddmr698510876d6.17.1764618317838; 
- Mon, 01 Dec 2025 11:45:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHDbAnBuXEt5XeXasvQ/SIHw2VShp5BR8MI3xjXFA79rZiyRHMn2fFil/FDumIl2LjcYfMxRw==
-X-Received: by 2002:ad4:5bac:0:b0:884:70ed:5414 with SMTP id
- 6a1803df08f44-8847c4c4cddmr698509626d6.17.1764618317190; 
- Mon, 01 Dec 2025 11:45:17 -0800 (PST)
+ bh=EQ1mPqJCFbzyT5uTHkDEJzo5K/xfvLuXsCDQhe1Tzzg=;
+ b=FboT2Vf13H72tRRwQF6eBwLNiSueZw2BXwCaUfNcQeDB0OwO+xHFSYnVA6lEAyaSPw
+ qKQOP31A9r1YQ0qd4FbVluRb1JJTAteQjO6m9/dPr8yIDjFsp4NBQtuixm1Mvm4y9/pI
+ xsGF4U2F2FZWNxwYFIcS+izKLnYHWurerEJ5/zGWaNQOmrGHmi7EPDeGyAsJxMAmy+me
+ /ppa53RBFBCv5T2ooXXOBQd7GKtCiA/4Yl7ulH7tniixcd2VVNiAfQANpQ0VkJiNk7gt
+ 4GqweeRmvdKwO0+foi58ZRu/it4p+u7eHUdiSzsT+kCQneLtWXldf33KgAzK5R06ionZ
+ Zyzw==
+X-Gm-Message-State: AOJu0Yzgvo9n+oSanDsfT2GeqRnNKf7jGAoL4Nio9omR0fqXT2jyPr7I
+ eMji/qDn7bsQaJEQ11G96omUF0UX3NEydlc5G3EheBwGRayUEDMSlZccDSTJiUIKY/5SsvOPfkv
+ 2Mc9Y2Rclff+GR/y7nFKysEBhpfCtm6sK1+nWc48GS6lVfDioyCMCiCNo6heS1q/Fb2sa9msg3b
+ BZAR/r279zeVonZbJqT5vGYwkVoB40lGk0TEyA8g==
+X-Gm-Gg: ASbGnctYrFQKrReT2mSDIjvduHPODpAxOz86dbEQBxKGzZzI2l5dLLRwUi7WsHqLMwt
+ baluOdqS1bkhJeUj+oACjNavp4XpeXqPJJVUHEgfrLCYdUE3P8muOVqd7TKBQykE5+jojKFfiQ6
+ lXTrgaRsTWJKPQFq2ywxnkaUT38J8nBovEK25My7LMm1UViTo2/C+LRnt8LGRJNf8PI1XFUTADC
+ XluT4nEyl8LthcOSiL53vJVP9uDFp7iKYrkpdfDCY0TBKMRiSz1QOIfgMp+iUwztSDslfd2XVBT
+ JCm0Z7LNw/ioCgWr65TnQ/AuawscT67h75wNpzqgEZToJ9L4LEGBnWcWoatW538405iIOItr8Hr
+ n
+X-Received: by 2002:a05:6214:448f:b0:87d:e32:81c5 with SMTP id
+ 6a1803df08f44-8847c498571mr548828836d6.20.1764618318783; 
+ Mon, 01 Dec 2025 11:45:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOtApF8DmjtEs/fysvXlnNsLRXOfJUkCIEWsHoTJbkLgiCCmsAuBgbU3vSS+MtJNU27gl2YQ==
+X-Received: by 2002:a05:6214:448f:b0:87d:e32:81c5 with SMTP id
+ 6a1803df08f44-8847c498571mr548828256d6.20.1764618318338; 
+ Mon, 01 Dec 2025 11:45:18 -0800 (PST)
 Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88652b91ba3sm88835156d6.53.2025.12.01.11.45.16
+ 6a1803df08f44-88652b91ba3sm88835156d6.53.2025.12.01.11.45.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Dec 2025 11:45:16 -0800 (PST)
+ Mon, 01 Dec 2025 11:45:17 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -88,12 +88,12 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: [PATCH for-11.0 v2 2/7] Revert "error: define g_autoptr() cleanup
- function for the Error type"
-Date: Mon,  1 Dec 2025 14:45:05 -0500
-Message-ID: <20251201194510.1121221-3-peterx@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH for-11.0 v2 3/7] error: Poison g_autoptr(Error) to prevent its
+ use
+Date: Mon,  1 Dec 2025 14:45:06 -0500
+Message-ID: <20251201194510.1121221-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251201194510.1121221-1-peterx@redhat.com>
 References: <20251201194510.1121221-1-peterx@redhat.com>
@@ -125,33 +125,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 18eb55546a54e443d94a4c49286348176ad4b00a.
+From: Markus Armbruster <armbru@redhat.com>
 
-Due to the nature of how Error should be used (normally ownership will be
-passed over to Error APIs, like error_report_err), auto-free functions may
-be error prone on its own.  The auto cleanup function was merged without
-proper review as pointed out by Dan and Markus:
+The previous commit reverted support for g_autoptr(Error).  This one
+should stop it from coming back.
 
-https://lore.kernel.org/r/aSWSLMi6ZhTCS_p2@redhat.com
-
-Cc: Cédric Le Goater <clg@redhat.com>
-Acked-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/qapi/error.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/qapi/error.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/include/qapi/error.h b/include/qapi/error.h
-index b16c6303f8..f3ce4a4a2d 100644
+index f3ce4a4a2d..2356b84bb3 100644
 --- a/include/qapi/error.h
 +++ b/include/qapi/error.h
-@@ -437,8 +437,6 @@ Error *error_copy(const Error *err);
+@@ -437,6 +437,26 @@ Error *error_copy(const Error *err);
   */
  void error_free(Error *err);
  
--G_DEFINE_AUTOPTR_CLEANUP_FUNC(Error, error_free)
--
++/*
++ * Poison g_autoptr(Error) to prevent its use.
++ *
++ * Functions that report or propagate an error take ownership of the
++ * Error object.  Explicit error_free() is needed when you handle an
++ * error in some other way.  This is rare.
++ *
++ * g_autoptr(Error) would call error_free() automatically on return.
++ * To avoid a double-free, we'd have to manually clear the pointer
++ * every time we propagate or report.
++ *
++ * Thus, g_autoptr(Error) would make the rare case easier to get right
++ * (less prone to leaks), and the common case easier to get wrong
++ * (more prone to double-free).
++ */
++extern void
++__attribute__((error("Do not use g_autoptr() to declare Error * variables")))
++error_free_poisoned(Error *err);
++G_DEFINE_AUTOPTR_CLEANUP_FUNC(Error, error_free_poisoned)
++
  /*
   * Convenience function to assert that *@errp is set, then silently free it.
   */
