@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC7EC98E49
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CE1C98E4A
 	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 20:46:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ9pZ-0000fa-Ep; Mon, 01 Dec 2025 14:45:05 -0500
+	id 1vQ9pt-0000lM-4u; Mon, 01 Dec 2025 14:45:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vQ9pV-0000f6-L3
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9pq-0000kq-K2
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vQ9pT-00054X-NY
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vQ9pp-0005HY-0q
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 14:45:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764618296;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=769chCCXjX1Rlh/91X7Jq6ZVZjPBGeAlHQo7YYerjxc=;
- b=cXNQXFbCdJYeAG6E2WIsWW1cK9kAA+eBuMgdGgw0WJnqXFkID1GtDGt0yWk/MDj7EEeexY
- L6y+RXL392B7qx4d5Js/YaBukdQvf/zf0gMyaZU7SFlM0aU0tI9H+KOLmLl0hd8Doki1H8
- iBzahHGMgzW9G8doKIUYjXajV2d7ZCU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-EyJfE-dONli8_e0q42qUFw-1; Mon,
- 01 Dec 2025 14:44:53 -0500
-X-MC-Unique: EyJfE-dONli8_e0q42qUFw-1
-X-Mimecast-MFC-AGG-ID: EyJfE-dONli8_e0q42qUFw_1764618291
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 15CBC180049F; Mon,  1 Dec 2025 19:44:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.139])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 89F9F180047F; Mon,  1 Dec 2025 19:44:45 +0000 (UTC)
-Date: Mon, 1 Dec 2025 19:44:42 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Thomas Huth <huth@tuxfamily.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Alexandre Ratchov <alex@caoua.org>, dirty.ice.hu@gmail.com,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>,
- geoff@hostfission.com
-Subject: Re: [RFC 00/24] audio: add GStreamer backend
-Message-ID: <aS3wKkxxrekvIWuc@redhat.com>
-References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
- <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
- <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
- <fdd7e1c4-a2a5-4039-59a9-9afda763feea@eik.bme.hu>
+ s=mimecast20190719; t=1764618320;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1O0BXRrIJPVwTg1/xeUXTIzekqe2LsP3gkp2KvlAvC8=;
+ b=ZGT5aPtKeBgGEQ/vPsEATwcoJ68bajOSy25A9Xpi0+OKJHXP6zVDl2uOPwinxr9S9IGqf9
+ xjVpzmG+CORIv4TotMpUUN8dTDlYlGakGM3lJm00AtBGP2fN/MZz1cD1FmWEEHSFGneCGu
+ WGe98rSJu2dbNzU/TB2GDQjtnNcO0XM=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-416-v8_ecJvNOwWpUH_5vjbFww-1; Mon, 01 Dec 2025 14:45:16 -0500
+X-MC-Unique: v8_ecJvNOwWpUH_5vjbFww-1
+X-Mimecast-MFC-AGG-ID: v8_ecJvNOwWpUH_5vjbFww_1764618315
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-88234e4a694so161503976d6.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Dec 2025 11:45:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1764618315; x=1765223115; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1O0BXRrIJPVwTg1/xeUXTIzekqe2LsP3gkp2KvlAvC8=;
+ b=JGRZ9ZzVNetSIeZJEfqQppjua+lyKnG7TuSoPbNTwm8jVOthEwfoDkE6XUEdC8XahI
+ 5XYbPw7bvaiRoao0+D8AQTJJJUmtk3eSmc1P67uGuZX0Ks3dINyZhWdFK/vtcV21tEch
+ dIw1W7OB5ebJN4TR9gqybTVkKBJZo9Mrc8/H5xMD/4HA+6KcrxTYFh7TTgl3EHFxreAf
+ tNsLtUD7S1UO8mQDkqNVeS5i7lhfapn57wTOvBP8zsikkYFIdcXRtO49Z4FOhp6ZRTwP
+ UVVmt53+CPhRiqP1VpKgKWhPQrccGyxU5VHZdsZThKT0ExYD4s2e4kH7cD3zcrl20EVD
+ uEdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764618315; x=1765223115;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1O0BXRrIJPVwTg1/xeUXTIzekqe2LsP3gkp2KvlAvC8=;
+ b=TW2JVkNQD972jyJkm8kt6OvJhNUNhUisKS2pe3R7x3VY9dF92www9KBZi5MDrMCC2w
+ SKKIZK+fVykk8YB+uvjldjuhj9e/HFfM/WzxA1ozwWu5ksSFveq9N37Jv0pQ5qADz5dy
+ fZyKMQxXGLtL4MVC8re9l9kCyYlIK7WdJCK6FhL70gH4KnyD2uv+e2ljvS8T/tgoH6Og
+ RxCw9vczbh5VMfj3zeCSWrY50luda2G3BWj7TqBdf4CpScqSaHgrnuL26cpHV7+rEsT+
+ dEX5h1g/LDv3weh8Ksje2sUDNyVx9u2NSc80RnKvmKZP80rjdckurVfUohnBZM0yguEW
+ qzVw==
+X-Gm-Message-State: AOJu0Ywxt2uRuHlsPol/H/RT8aO3QCLtYgh5/obnmZUpfSrIH1GZm72a
+ LUO2nFcohd0+sMB/tLwmhdb+khd3+eW706ACiAd/mkT8h9HIsNdXEQu6xxdtWPAmSOJoCiOAhYz
+ uaCpvy8blu7zaiZCx9autKa6Xz04cv8b/3KNG3lzyEFTf1uKlFPtCEN451+KLKtihfB856xNNc1
+ geOsbG6ihD7mGdfGULnI8/1bxBuSg+M6O/E5XnAg==
+X-Gm-Gg: ASbGncu7R7lv0dqC26PNEgtCXCRnQu+H8XwZJgbFsZjBybQT+bIdQ+iX9qwHN2abn43
+ 6UrY7Nw2QHp71sM76CcFQnmJlw9nIuwAp9YXZO6Zs4CxeCswblZOwPn2+k1uPeVEbLk1GexIvnG
+ 0qusPZodzyYXjzlePxjXSe63zUMQ7K9ZivaPqzlHX74+GHyEHrbP4K9+lVod9gTY5BcgbY8zjY1
+ RxqYRRMZ00d9y6DV+gGB6h2YoWQfKzFe0VdSItmi84Keq86IZ09MMdCRQKZGvU2HLB7pEZwqEmY
+ 8PYjYWqKnJ0P/f4VT8HrgaiCGnmY5tRulI1JxYfpFKyzvi8lA6axMWxMUecyKgSGYAcsL3u583c
+ t
+X-Received: by 2002:a05:6214:4485:b0:87c:2206:2e3d with SMTP id
+ 6a1803df08f44-8847c4cb177mr552595416d6.25.1764618314632; 
+ Mon, 01 Dec 2025 11:45:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3e5rct/6xPhTcH0xvtvABkLPIIrAlGsKTQOYaTwViBNg5TsjQHC3zy9RyzT3V7HOIIVaIng==
+X-Received: by 2002:a05:6214:4485:b0:87c:2206:2e3d with SMTP id
+ 6a1803df08f44-8847c4cb177mr552594626d6.25.1764618314088; 
+ Mon, 01 Dec 2025 11:45:14 -0800 (PST)
+Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-88652b91ba3sm88835156d6.53.2025.12.01.11.45.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Dec 2025 11:45:12 -0800 (PST)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>
+Subject: [PATCH for-11.0 v2 0/7] migration: Error reporting cleanups
+Date: Mon,  1 Dec 2025 14:45:03 -0500
+Message-ID: <20251201194510.1121221-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fdd7e1c4-a2a5-4039-59a9-9afda763feea@eik.bme.hu>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,74 +115,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 01, 2025 at 08:30:26PM +0100, BALATON Zoltan wrote:
-> On Mon, 1 Dec 2025, Marc-André Lureau wrote:
-> > On Mon, Dec 1, 2025 at 5:03 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
-> > > On Mon, 1 Dec 2025, marcandre.lureau@redhat.com wrote:
-> > > > From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > > > 
-> > > > Hi,
-> > > > 
-> > > > The following patch series provides a GStreamer-based audio backend,
-> > > which could
-> > > > ultimately allow QEMU to leverage the framework to support the various
-> > > audio
-> > > > subsystems and simplify the audio handling logic (timing, resampling,
-> > > mixing
-> > > > etc), as well as allow greater pipeline flexibility and customization.
-> > > 
-> > > While it's good to have a GStreamer backend to integrate well into systems
-> > > already using that, this should not replace existing audio backends in
-> > > QEMU. The reason is that GStreamer has extensive dependencies that I would
-> > > 
-> > 
-> > GStreamer itself is not so big and doesn't have that many dependencies that
-> > qemu doesn't already have.
-> 
-> Except that this proposal uses GStreamer from rust so would also pull in all
-> the rust dependencies too which is still not needed for QEMU. Saying that
-> it's optional but then you lose audio output is also not quite acceptable.
+Based-on: <20251125070554.2256181-1-armbru@redhat.com>
 
-In terms of replacing the existing audio backends, it would simply have to
-wait until we declare Rust to be a mandatory dependency of QEMU, before
-proposing any removal of existing backends.
+This series is based on Markus's recent fix:
 
-> > > as another audio backend but not as a replacement for QEMU's audio
-> > > handling logic and backends.
-> > 
-> > It would be great if people with very specific or constrained requirements
-> > on qemu audio could check if the GStreamer backend fits their need.
-> 
-> At least one of them already said it wouldn't. Also why somebody not running
-> a desktop environment that uses GStreamer would want to add that dependency
-> and use a GStreamer plugin to get the sound back to their native sound
-> service when it is probably already supported by QEMU directly? QEMU also
-> has to support Windows and macOS sound services so having a few more
-> Linux/Unix ones does not make it much more complex.
+[PATCH] migration: Fix double-free on error path
+https://lore.kernel.org/r/20251125070554.2256181-1-armbru@redhat.com
 
-GStreamer is not merely for desktop environments. It is a general purpose
-audio system, and in terms of QEMU, it is already used by the Spice server
-for video encoding purposes.  IMHO it is reasonable to consider whether
-QEMU could use GStreamer for all audio output regardless of whether it is
-running from a desktop session or not.
+v2:
+- Added R-bs
+- Patch 1:
+  - update commit message on s/accidentally merged/merged without proper
+    review/ [Markus]
+- Patch 2:
+  - Added a new follow up patch here from Markus to poison Error's autoptr
+- Patch 3:
+  - Rename migration_connect_set_error to migration_connect_error_propagate
+    [Markus]
+  - Add comments in commit log for both migrate_connect() and the rename
+    [Markus]
+- Patch 4:
+  - Rename multifd_send_set_error to multifd_send_error_propagate [Markus]
+- Patch 6:
+  - Make migrate_error_propagate() take MigrationState* as before [Markus]
+  - Remove the one use case of g_clear_pointer() [Markus]
+  - Touch up commit message for the change
 
-Personally my main concern with gstreamer is that when things go wrong
-it can be very difficult to understand why and thus hard to figure out
-how to fix it, unless you're pretty experienced with gstreamer.
+This series should address the issues discussed in this thread here:
 
-If we do consider rationalizing how many backends we have, IMHO, it
-would be desirable to retain at least one other QEMU audio backend
-that is considered simple & reliable (fool proof) to use & debug.
+https://lore.kernel.org/r/871plmk1bc.fsf@pond.sub.org
 
-With regards,
-Daniel
+The problem is Error is not a good candidate of g_autoptr, however the
+cleanup function was merged without enough review.  Luckily, we only have
+two users so far (after Markus's patch above lands).  This series removes
+the last two in migration code and reverts the auto cleanup function for
+Error.  Instead, poison the auto cleanup function.
+
+When at it, it'll also change migrate_set_error() to start taking ownership
+of errors, just like what most error APIs do.  When at it, it is renamed to
+migrate_error_propagate() to imply migration version of error_propagate().
+
+Comments welcomed, thanks.
+
+Markus Armbruster (1):
+  error: Poison g_autoptr(Error) to prevent its use
+
+Peter Xu (6):
+  migration: Use explicit error_free() instead of g_autoptr
+  Revert "error: define g_autoptr() cleanup function for the Error type"
+  migration: Make migration_connect_set_error() own the error
+  migration: Make multifd_send_set_error() own the error
+  migration: Make multifd_recv_terminate_threads() own the error
+  migration: Replace migrate_set_error() with migrate_error_propagate()
+
+ include/qapi/error.h             | 20 ++++++++++++-
+ migration/migration.h            |  2 +-
+ migration/channel.c              |  1 -
+ migration/cpr-exec.c             |  5 ++--
+ migration/migration.c            | 51 +++++++++++++++-----------------
+ migration/multifd-device-state.c |  6 ++--
+ migration/multifd.c              | 30 +++++++++----------
+ migration/postcopy-ram.c         |  5 ++--
+ migration/ram.c                  |  4 +--
+ migration/savevm.c               | 17 +++++------
+ 10 files changed, 73 insertions(+), 68 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.50.1
 
 
