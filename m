@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53A9C97D27
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 15:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2D9C97D9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 15:28:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ4kS-0008TO-0A; Mon, 01 Dec 2025 09:19:28 -0500
+	id 1vQ4ry-0003m4-Gn; Mon, 01 Dec 2025 09:27:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vQ4kF-0008QD-3y
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 09:19:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+cd717ce28a9accd739e3+8135+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1vQ4rv-0003lM-D4
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 09:27:11 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vQ4kC-0008Lb-G4
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 09:19:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764598751;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vdTV+74vIxizRlieA9uyr9rY8BeSNKGquMiPkVB06BQ=;
- b=Hz3V1LRRSoGV5QP+m6G83hR1M28cc3VaGPRdyAFLJqqjw9Jm5PqgoVaFL4ghDKd4yoDmgW
- aWlo3SM9LccaHmNJ0xsbwbq/yaDiuk7xQPZDL9u/yAbSmYq+3ni0zwE5mijZEEvie6Hu91
- fwn0XfwCQEOUmvLEtX5PaW6xK3cYWmo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-dTUAxy84PwCmE3ZKlr86zw-1; Mon,
- 01 Dec 2025 09:19:10 -0500
-X-MC-Unique: dTUAxy84PwCmE3ZKlr86zw-1
-X-Mimecast-MFC-AGG-ID: dTUAxy84PwCmE3ZKlr86zw_1764598747
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C59518002CD; Mon,  1 Dec 2025 14:19:07 +0000 (UTC)
-Received: from gshan-thinkpadx1nanogen2.rmtau.csb (unknown [10.64.136.76])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 74B59195608E; Mon,  1 Dec 2025 14:18:59 +0000 (UTC)
-From: Gavin Shan <gshan@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, mst@redhat.com, jonathan.cameron@huawei.com,
- mchehab+huawei@kernel.org, imammedo@redhat.com, armbru@redhat.com,
- anisinha@redhat.com, gengdongjiu1@gmail.com, peter.maydell@linaro.org,
- pbonzini@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v2 5/5] acpi/ghes: Use error_fatal in acpi_ghes_memory_errors()
-Date: Tue,  2 Dec 2025 00:18:03 +1000
-Message-ID: <20251201141803.2386129-6-gshan@redhat.com>
-In-Reply-To: <20251201141803.2386129-1-gshan@redhat.com>
-References: <20251201141803.2386129-1-gshan@redhat.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+cd717ce28a9accd739e3+8135+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1vQ4rr-0001QZ-J0
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 09:27:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=l4KZSIH8XyHR8x2G6CzvraJaHHQB+OqJSq+t93DZiwM=; b=RSxijtNkVtqaPQFkwKfFoRLgJj
+ PwvWTJJWrgWxCLBz4C5wZW68MtizaqR7JJRT5WajvUuYTdTVA0IqfLv/MJ/hF/JKLDSEAZNj9g9U9
+ x8KsWuabOAMtblsebKVpNJfYi9+TQKAjCX3TnczwHeIpsyZyXKUqYfRbj6UlIO5zE0lLkPRNgTSH4
+ pHcAyksr1qRzvz+MAMbRbtCsg6ScvltRb8NKLqtpKvQ9QaM/whO/Sfj041UrvG+YztAlTegfRtu2d
+ ft1U/VTVJoHT8Qw8ZVl2l5DSB5IPG7ZzSmPMPnbkWPrK1fP2WbBjUvCFQwBSoBIalphblsG5AxjlX
+ l78hQUbw==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+ by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+ id 1vQ40C-0000000G0Su-1gIH; Mon, 01 Dec 2025 13:31:40 +0000
+Message-ID: <8e8ab56ce4f8f2a0f0c084bd4e48958a441b40f1.camel@infradead.org>
+Subject: Re: [RFC PATCH 2/4] hw/acpi: add new fields in VMClock ABI
+From: David Woodhouse <dwmw2@infradead.org>
+To: Cornelia Huck <cohuck@redhat.com>, "Chalios, Babis"
+ <bchalios@amazon.es>,  "mst@redhat.com" <mst@redhat.com>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,  "pbonzini@redhat.com"
+ <pbonzini@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Graf (AWS), Alexander"
+ <graf@amazon.de>, "mzxreary@0pointer.de" <mzxreary@0pointer.de>
+Date: Mon, 01 Dec 2025 14:27:00 +0000
+In-Reply-To: <87ldjmnwyt.fsf@redhat.com>
+References: <20251201125023.18344-1-bchalios@amazon.es>
+ <20251201125023.18344-4-bchalios@amazon.es> <87qztenykd.fsf@redhat.com>
+ <196b8afa77ec3253006dcde712b07f4e9c70de30.camel@infradead.org>
+ <87ldjmnwyt.fsf@redhat.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-RQSwJ6P6u57FGIPijfem"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+cd717ce28a9accd739e3+8135+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,156 +80,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use error_fatal in acpi_ghes_memory_errors() so that the caller needn't
-explicitly call exit(). The return value of acpi_ghes_memory_errors()
-and ghes_record_cper_errors() is changed to 'bool' indicating an error
-has been raised, to be compatible with what's documented in error.h.
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/acpi/ghes-stub.c    |  4 ++--
- hw/acpi/ghes.c         | 26 ++++++++++----------------
- include/hw/acpi/ghes.h |  6 +++---
- target/arm/kvm.c       |  9 +++------
- 4 files changed, 18 insertions(+), 27 deletions(-)
+--=-RQSwJ6P6u57FGIPijfem
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-index b54f1b093c..5f9313cce9 100644
---- a/hw/acpi/ghes-stub.c
-+++ b/hw/acpi/ghes-stub.c
-@@ -11,8 +11,8 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/ghes.h"
- 
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t physical_address)
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                             uint64_t physical_address, Error **errp)
- {
-     g_assert_not_reached();
- }
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index c35883dfa9..3033e93d65 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -515,14 +515,14 @@ static bool get_ghes_source_offsets(uint16_t source_id,
- NotifierList acpi_generic_error_notifiers =
-     NOTIFIER_LIST_INITIALIZER(acpi_generic_error_notifiers);
- 
--void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-+bool ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp)
- {
-     uint64_t cper_addr = 0, read_ack_register_addr = 0, read_ack_register;
- 
-     if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
-         error_setg(errp, "GHES CPER record is too big: %zd", len);
--        return;
-+        return false;
-     }
- 
-     if (!ags->use_hest_addr) {
-@@ -531,7 +531,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     } else if (!get_ghes_source_offsets(source_id,
-                     le64_to_cpu(ags->hest_addr_le),
-                     &cper_addr, &read_ack_register_addr, errp)) {
--            return;
-+            return false;
-     }
- 
-     cpu_physical_memory_read(read_ack_register_addr,
-@@ -542,7 +542,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-         error_setg(errp,
-                    "OSPM does not acknowledge previous error,"
-                    " so can not record CPER for current error anymore");
--        return;
-+        return false;
-     }
- 
-     read_ack_register = cpu_to_le64(0);
-@@ -557,16 +557,17 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     cpu_physical_memory_write(cper_addr, cper, len);
- 
-     notifier_list_notify(&acpi_generic_error_notifiers, &source_id);
-+
-+    return true;
- }
- 
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t physical_address)
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                             uint64_t physical_address, Error **errp)
- {
-     /* Memory Error Section Type */
-     const uint8_t guid[] =
-           UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
-                   0xED, 0x7C, 0x83, 0xB1);
--    Error *errp = NULL;
-     int data_length;
-     g_autoptr(GArray) block = g_array_new(false, true /* clear */, 1);
- 
-@@ -583,15 +584,8 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-     /* Build the memory section CPER for above new generic error data entry */
-     acpi_ghes_build_append_mem_cper(block, physical_address);
- 
--    /* Report the error */
--    ghes_record_cper_errors(ags, block->data, block->len, source_id, &errp);
--
--    if (errp) {
--        error_report_err(errp);
--        return -1;
--    }
--
--    return 0;
-+    return ghes_record_cper_errors(ags, block->data, block->len,
-+                                   source_id, errp);
- }
- 
- AcpiGhesState *acpi_ghes_get_state(void)
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index df2ecbf6e4..5b29aae4dd 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -98,9 +98,9 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
-                      const char *oem_id, const char *oem_table_id);
- void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
-                           GArray *hardware_errors);
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t error_physical_addr);
--void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                            uint64_t error_physical_addr, Error **errp);
-+bool ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp);
- 
- /**
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index acda0b3fb4..76aa09810f 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2456,12 +2456,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
-              */
-             if (code == BUS_MCEERR_AR) {
-                 kvm_cpu_synchronize_state(c);
--                if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
--                                             paddr)) {
--                    kvm_inject_arm_sea(c);
--                } else {
--                    exit(1);
--                }
-+                acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
-+                                        paddr, &error_fatal);
-+                kvm_inject_arm_sea(c);
-             }
-             return;
-         }
--- 
-2.51.1
+On Mon, 2025-12-01 at 14:38 +0100, Cornelia Huck wrote:
+> On Mon, Dec 01 2025, David Woodhouse <dwmw2@infradead.org> wrote:
+>=20
+> > On Mon, 2025-12-01 at 14:04 +0100, Cornelia Huck wrote:
+> > > On Mon, Dec 01 2025, "Chalios, Babis" <bchalios@amazon.es> wrote:
+> > >=20
+> > > > VMClock now supports a vm_generation_counter field in the struct it
+> > > > exposes to userspace. The field signals a disruption that happened =
+due
+> > > > to a guest loaded from a snapshot.
+> > > >=20
+> > > > Moreover, VMClock now optionally supports device notifications when=
+ the
+> > > > seq_count changes to a new even value.
+> > > >=20
+> > > > Signed-off-by: Babis Chalios <bchalios@amazon.es>
+> > > > ---
+> > > > =C2=A0include/standard-headers/linux/vmclock-abi.h | 20 +++++++++++=
++++++++++
+> > > > =C2=A01 file changed, 20 insertions(+)
+> > >=20
+> > > Please either do a full linux-headers update against a specific Linux
+> > > kernel version, or mark this as a placeholder patch if the code is no=
+t
+> > > yet merged.
+> >=20
+> > The Linux patches are being posted simultaneously, so they'll be in
+> > Linux 6.20 (7.0?) at the earliest. We'll want to ingest the update
+> > before then.
+> >=20
+> > The intent is not for the Linux source to be the canonical definition
+> > of the data structure; we *are* working on publishing the spec, and
+> > Babis referenced the current draft. It isn't in the form of C source
+> > code though, so I suspect it makes sense to keep including the Linux
+> > header?
+>=20
+> Oh, including the Linux header sounds fine; but as long as the code has
+> not yet been merged there, this needs to be marked as not yet ready to
+> merge on the QEMU side. (And it needs to be updated by a full headers
+> update when merged.)
 
+That's exactly what we *don't* want, and why we say that the canonical
+definition of this structure is the actual specification. There's no
+need for QEMU to only ever follow Linux.
+
+In that case, probably best *not* to use the Linux header and instead
+to build our own specifically for QEMU based on the specification. It
+can be almost byte-for-byte identical, but just needs to live elsewhere
+rather than in <standard-headers/linux>
+
+
+
+--=-RQSwJ6P6u57FGIPijfem
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMTE0Mjcw
+MFowLwYJKoZIhvcNAQkEMSIEIGfWrpqrZvuf9HEka4CyTOTLV6CNaAzS55yfUvOvMbsXMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAQdl6NwZnh7LQ
+0Uvt9yf0kCUlRyWhbfXtxbiweURnXADxxZ6KYvOYw/HxMFm7I690zyIehnXeM53c7jF+YUEfMWKP
+iocn9YKUpKraTN8SczqpmG+Gnu7/90+Lvco8wG/dB4zicJ7X9dc/dudRcasb1Ulh8aKIdpOwPnSW
+k+xSoctSPRG9LHDvV0ot9GFoidz5dGjj+uarER6y7GRbf+hQtHaWHzN+exeMfTcoLtFnlsVRSOd0
+IDnhmDj9VhSaORtZBSCvIs/KuQEq+TtqUWc0AHlzF6g/BXca1jGmuVr6iy9BG5Ep7+la6RZm+/ta
+WefGmynaB4F/kCU3i3YJCAE3qVJIeqT908La1c6IY5NDqfGDNK0E3moMtdlTOda8fQyUji/mzkk0
+o44ZQKeG5Y6OPWUDapw7qxttukjRff+OR/JHtgegVn9rMyNCPWn8Svl8+/72tLQ9rNbNiEcTkO00
+4/2fJf5P6md3zMMOcCBhdNYgZJtkyEUEp3vdohqc7uQsaEm9bJmtmIDMv1ldDwxH4r9iAjhz/s2B
+XUAx6n3MNn4d2aDUNXc+kwdjKsdCKsVE1FcBXurCNpC7OsjMcFT6hTE6p5xlS/8oNr+GMNAYHSNn
+kRbm/HDB6qOdj+GxyXT+a7Hr05HnorI2pNDYWJ/dwUIq7ZTCHcE7poqFbZVn7lYAAAAAAAA=
+
+
+--=-RQSwJ6P6u57FGIPijfem--
 
