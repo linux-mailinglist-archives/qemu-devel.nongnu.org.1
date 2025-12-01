@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17F7C96E0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72348C96E12
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 12:24:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ20K-0008RJ-Ao; Mon, 01 Dec 2025 06:23:42 -0500
+	id 1vQ20b-0008U0-2U; Mon, 01 Dec 2025 06:24:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ208-0008Q4-Ko
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:23:29 -0500
+ id 1vQ20F-0008Qz-1a
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:23:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vQ204-0006Tl-Mb
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:23:28 -0500
+ id 1vQ20D-0006V6-51
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 06:23:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764588201;
+ s=mimecast20190719; t=1764588212;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=UfKD1dAneQMl9KPhBBJt92KInCx6QYgxj9Dan5ayojk=;
- b=cBsIx3cJ9ENOVTHQlGRwXN8WwWXZboDxTkKitBBktlHfbW6nvzSRr3XqCUJ+5sYxGQATpO
- DxXhST1p2s9/cDwnlb+o6mNwDaIIrUoQMwNVQFEGvEXFMMWUah42xpqfpvW3wd2hKvQryw
- 26XjfWbd/pKnwDuNDnywlzLn1lL1nCk=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cTK98tro9wmYGZ1MH4F+lDO9TW79M2ScIbCtTuhv8hA=;
+ b=YSZ5S90JC/+nr/50+jCrS6povzjEs4yqH51Vxt77Mx1l8H6ShcXkSQSHuLwUfP2bN8uo0t
+ L+GXXYcJt+1QQN551qDIwuaziN3O+tUjhH2z5Til87Acjht5oF+SsK+2Oh5Qs0tXZPxuYg
+ ilYEG+12S/Ei79RkBt3+Jn4bjz0Kbr0=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-b45AoULmP7ue0ILgypCmMQ-1; Mon,
- 01 Dec 2025 06:23:18 -0500
-X-MC-Unique: b45AoULmP7ue0ILgypCmMQ-1
-X-Mimecast-MFC-AGG-ID: b45AoULmP7ue0ILgypCmMQ_1764588197
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-8oC3YkLsPsyynibW5Mn4uA-1; Mon,
+ 01 Dec 2025 06:23:25 -0500
+X-MC-Unique: 8oC3YkLsPsyynibW5Mn4uA-1
+X-Mimecast-MFC-AGG-ID: 8oC3YkLsPsyynibW5Mn4uA_1764588203
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 464E6180035D; Mon,  1 Dec 2025 11:23:16 +0000 (UTC)
+ id 09D2518002C2; Mon,  1 Dec 2025 11:23:23 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.40])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B657419560B7; Mon,  1 Dec 2025 11:23:13 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id DA438180047F; Mon,  1 Dec 2025 11:23:20 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
@@ -53,13 +54,15 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC 00/24] audio: add GStreamer backend
-Date: Mon,  1 Dec 2025 15:22:41 +0400
-Message-ID: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
+Subject: [RFC 01/24] rust: patch thiserror to work with meson
+Date: Mon,  1 Dec 2025 15:22:42 +0400
+Message-ID: <20251201112309.4163921-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
+References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -88,134 +91,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+Some dependencies introduced in the following patches require thiserror.
+Since 2.0.17, it "Use differently named __private module per patch
+release", using build.rs time generated code. This is not handled by meson.
 
-The following patch series provides a GStreamer-based audio backend, which could
-ultimately allow QEMU to leverage the framework to support the various audio
-subsystems and simplify the audio handling logic (timing, resampling, mixing
-etc), as well as allow greater pipeline flexibility and customization.
-
-The preliminary patches consist of additional cleanups started in QEMU 10.2, in
-order to make the code more modular and use QOM.
-
-Finally, the last patch introduces the "audio" rust crate that implements the
-GStreamer backend. See the TODO list in the commit message for the remaining or
-related work items.
-
-Please review and test!
-
-Based-on: https://gitlab.com/bonzini/qemu.git rust-cargo
-Requires meson from https://github.com/bonzini/meson.git cargo-object-full
-
-Marc-André Lureau (24):
-  rust: patch thiserror to work with meson
-  audio: remove obsolete/obscure functions
-  audio/dbus: make "dbus" the default backend when using -display dbus
-  qemu-options.hx: clarify default audio backend selection
-  audio: introduce AudioDriver
-  audio: simplify audio_init()
-  audio: move object creation to audio_driver_init()
-  audio: add QOM module-objects for each backend
-  audio: remove set_dbus_server from audio_driver
-  audio: lookup "audio-" object types, and realize them
-  audio: switch to module-object, drop audio driver registration
-  module: remove audio module support
-  audio: keep a strong reference on the backend
-  audio: make list type declaration private
-  audio: make create_pdos() private
-  replay: remove dependency on audio/
-  audio: make all the backend-specific APIs take the be
-  audio: make AudioBackend truely abstract
-  audio: split AudioBackend
-  audio: AUD_ -> audio_be_
-  audio-be: add common pre-conditions
-  audio-be: add some state trace
-  audio: split AudioDriver code in audio-driver.c
-  WIP: rust/audio: add GStreamer backend
-
- qapi/audio.json                               |   29 +
- ...dio_template.h => audio-driver_template.h} |   76 +-
- audio/audio_int.h                             |   50 +-
- include/qemu/audio-capture.h                  |   24 +-
- include/qemu/audio.h                          |  129 +-
- include/qemu/module.h                         |    3 +-
- include/system/replay.h                       |    8 +-
- replay/replay-internal.h                      |    2 +
- rust/audio/wrapper.h                          |   27 +
- audio/alsaaudio.c                             |   42 +-
- audio/audio-be.c                              |  276 ++
- audio/audio-driver.c                          | 1988 +++++++++++++++
- audio/audio.c                                 | 2248 ++---------------
- audio/dbusaudio.c                             |   57 +-
- audio/dsoundaudio.c                           |   37 +-
- audio/jackaudio.c                             |   37 +-
- audio/noaudio.c                               |   37 +-
- audio/ossaudio.c                              |   41 +-
- audio/paaudio.c                               |   37 +-
- audio/pwaudio.c                               |   37 +-
- audio/sdlaudio.c                              |   37 +-
- audio/sndioaudio.c                            |   37 +-
- audio/spiceaudio.c                            |   37 +-
- audio/wavaudio.c                              |   37 +-
- audio/wavcapture.c                            |    7 +-
- hw/audio/ac97.c                               |   42 +-
- hw/audio/adlib.c                              |   29 +-
- hw/audio/asc.c                                |   20 +-
- hw/audio/cs4231a.c                            |   18 +-
- hw/audio/es1370.c                             |   26 +-
- hw/audio/gus.c                                |   11 +-
- hw/audio/hda-codec.c                          |   26 +-
- hw/audio/lm4549.c                             |   20 +-
- hw/audio/pcspk.c                              |    8 +-
- hw/audio/sb16.c                               |   22 +-
- hw/audio/via-ac97.c                           |   20 +-
- hw/audio/virtio-snd.c                         |   36 +-
- hw/audio/wm8750.c                             |   42 +-
- hw/display/xlnx_dp.c                          |   14 +-
- hw/usb/dev-audio.c                            |   18 +-
- replay/replay-audio.c                         |   51 +-
- replay/replay.c                               |    2 +-
- replay/stubs-system.c                         |    8 +-
- ui/dbus.c                                     |   16 +-
- ui/vnc.c                                      |    4 +-
- Cargo.lock                                    |  572 ++++-
- Cargo.toml                                    |    6 +
- audio/coreaudio.m                             |   37 +-
- audio/meson.build                             |    2 +
- audio/trace-events                            |    9 +
- qemu-options.hx                               |   20 +-
- rust/audio/Cargo.toml                         |   29 +
- rust/audio/build.rs                           |   49 +
- rust/audio/meson.build                        |   75 +
- rust/audio/src/audio.rs                       |  516 ++++
- rust/audio/src/bindings.rs                    |   32 +
- rust/audio/src/gstreamer.rs                   | 1070 ++++++++
- rust/audio/src/lib.rs                         |   99 +
- rust/meson.build                              |    6 +
- .../packagefiles/syn-2-rs/meson/meson.build   |    3 +
- .../thiserror-2.0.17-include.patch            |   14 +
- .../thiserror-impl-2.0.17-include.patch       |   13 +
- subprojects/syn-2-rs.wrap                     |   11 +-
- subprojects/thiserror-2-rs.wrap               |   10 +
- subprojects/thiserror-impl-2-rs.wrap          |   10 +
- 65 files changed, 5862 insertions(+), 2494 deletions(-)
- rename audio/{audio_template.h => audio-driver_template.h} (90%)
- create mode 100644 rust/audio/wrapper.h
- create mode 100644 audio/audio-be.c
- create mode 100644 audio/audio-driver.c
- create mode 100644 rust/audio/Cargo.toml
- create mode 100644 rust/audio/build.rs
- create mode 100644 rust/audio/meson.build
- create mode 100644 rust/audio/src/audio.rs
- create mode 100644 rust/audio/src/bindings.rs
- create mode 100644 rust/audio/src/gstreamer.rs
- create mode 100644 rust/audio/src/lib.rs
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ .../packagefiles/syn-2-rs/meson/meson.build        |  3 +++
+ .../packagefiles/thiserror-2.0.17-include.patch    | 14 ++++++++++++++
+ .../thiserror-impl-2.0.17-include.patch            | 13 +++++++++++++
+ subprojects/syn-2-rs.wrap                          | 11 ++++++-----
+ subprojects/thiserror-2-rs.wrap                    | 10 ++++++++++
+ subprojects/thiserror-impl-2-rs.wrap               | 10 ++++++++++
+ 6 files changed, 56 insertions(+), 5 deletions(-)
  create mode 100644 subprojects/packagefiles/syn-2-rs/meson/meson.build
  create mode 100644 subprojects/packagefiles/thiserror-2.0.17-include.patch
  create mode 100644 subprojects/packagefiles/thiserror-impl-2.0.17-include.patch
  create mode 100644 subprojects/thiserror-2-rs.wrap
  create mode 100644 subprojects/thiserror-impl-2-rs.wrap
 
+diff --git a/subprojects/packagefiles/syn-2-rs/meson/meson.build b/subprojects/packagefiles/syn-2-rs/meson/meson.build
+new file mode 100644
+index 0000000000..02439c2b58
+--- /dev/null
++++ b/subprojects/packagefiles/syn-2-rs/meson/meson.build
+@@ -0,0 +1,3 @@
++extra_args += [
++    '--cfg', 'feature="full"',
++]
+diff --git a/subprojects/packagefiles/thiserror-2.0.17-include.patch b/subprojects/packagefiles/thiserror-2.0.17-include.patch
+new file mode 100644
+index 0000000000..a061aeea57
+--- /dev/null
++++ b/subprojects/packagefiles/thiserror-2.0.17-include.patch
+@@ -0,0 +1,14 @@
++diff --git a/src/lib.rs b/src/lib.rs
++index 155272d..7683f4c 100644
++--- a/src/lib.rs
+++++ b/src/lib.rs
++@@ -288,4 +288,8 @@ pub use thiserror_impl::*;
++ 
++ mod private;
++ 
++-include!(concat!(env!("OUT_DIR"), "/private.rs"));
+++#[doc(hidden)]
+++pub mod __private_MESON {
+++    #[doc(hidden)]
+++    pub use crate::private::*;
+++}
+diff --git a/subprojects/packagefiles/thiserror-impl-2.0.17-include.patch b/subprojects/packagefiles/thiserror-impl-2.0.17-include.patch
+new file mode 100644
+index 0000000000..372862dffa
+--- /dev/null
++++ b/subprojects/packagefiles/thiserror-impl-2.0.17-include.patch
+@@ -0,0 +1,13 @@
++diff --git a/impl/src/lib.rs b/impl/src/lib.rs
++index 25890f2..1559a41 100644
++--- a/src/lib.rs
+++++ b/src/lib.rs
++@@ -48,7 +48,7 @@ struct private;
++ impl ToTokens for private {
++     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
++         tokens.append(Ident::new(
++-            concat!("__private", env!("CARGO_PKG_VERSION_PATCH")),
+++            concat!("__private", "_MESON"),
++             Span::call_site(),
++         ));
++     }
+diff --git a/subprojects/syn-2-rs.wrap b/subprojects/syn-2-rs.wrap
+index 8ec7fd0052..82675e8723 100644
+--- a/subprojects/syn-2-rs.wrap
++++ b/subprojects/syn-2-rs.wrap
+@@ -1,9 +1,10 @@
+ [wrap-file]
+-directory = syn-2.0.104
+-source_url = https://crates.io/api/v1/crates/syn/2.0.104/download
+-source_filename = syn-2.0.104.0.tar.gz
+-source_hash = 17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40
++directory = syn-2.0.110
++source_url = https://crates.io/api/v1/crates/syn/2.0.110/download
++source_filename = syn-2.0.110.tar.gz
++source_hash = a99801b5bd34ede4cf3fc688c5919368fea4e4814a4664359503e6015b280aea
+ method = cargo
++patch_directory = syn-2-rs
+ 
+ # bump this version number on every change to meson.build or the patches:
+-# v3
++# v4
+diff --git a/subprojects/thiserror-2-rs.wrap b/subprojects/thiserror-2-rs.wrap
+new file mode 100644
+index 0000000000..432d99d937
+--- /dev/null
++++ b/subprojects/thiserror-2-rs.wrap
+@@ -0,0 +1,10 @@
++[wrap-file]
++directory = thiserror-2.0.17
++source_url = https://crates.io/api/v1/crates/thiserror/2.0.17/download
++source_filename = thiserror-2.0.17.tar.gz
++source_hash = f63587ca0f12b72a0600bcba1d40081f830876000bb46dd2337a3051618f4fc8
++method = cargo
++diff_files = thiserror-2.0.17-include.patch
++
++# bump this version number on every change to meson.build or the patches:
++# v2
+diff --git a/subprojects/thiserror-impl-2-rs.wrap b/subprojects/thiserror-impl-2-rs.wrap
+new file mode 100644
+index 0000000000..f0eb263607
+--- /dev/null
++++ b/subprojects/thiserror-impl-2-rs.wrap
+@@ -0,0 +1,10 @@
++[wrap-file]
++directory = thiserror-impl-2.0.17
++source_url = https://crates.io/api/v1/crates/thiserror-impl/2.0.17/download
++source_filename = thiserror-impl-2.0.17.tar.gz
++source_hash = 3ff15c8ecd7de3849db632e14d18d2571fa09dfc5ed93479bc4485c7a517c913
++method = cargo
++diff_files = thiserror-impl-2.0.17-include.patch
++
++# bump this version number on every change to meson.build or the patches:
++# v2
 -- 
 2.51.1
 
