@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD5FC9999D
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 00:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6FEC999A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 00:37:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQDRc-0002RI-1B; Mon, 01 Dec 2025 18:36:36 -0500
+	id 1vQDRu-0002Xc-FJ; Mon, 01 Dec 2025 18:36:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vQDRa-0002QU-2S
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:34 -0500
+ id 1vQDRh-0002Uk-2w
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:43 -0500
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vQDRX-0004Vp-I2
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:33 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1764632174; cv=none; 
+ id 1vQDRf-0004Xm-K7
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 18:36:40 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1764632180; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=O4Htxw5p1KLBkPDGp+8w0Om6qlqRraoDQct0jA+GlWpJvoUeE405SpcC3n6CYxJJ3+9S6m+QjMASfaKZcr5/PZTSyOB53oo7tjZufpKJRctsT7R2kWaqYIZqe2hCaXJuoLkDawkkhdRnGcjzEIkt0dOxZGXtUX3O/lFbbU9Iwnw=
+ b=VljJdM/dckJFOq1tW1OHLb7h6gbMQUk+3L8qbQnLmC9pMaf9vUHxpDzd1uqPmlvDi8CR9H3VgyP5JVRGD+ZMOjx2Z8Smk9MPXtPCqYf8f2MAXWQ0FcGbtXucbbYgr0lqkWf1pEeonYMFe3/xwKLPlJtKhhmQERvtC1B7vvYLRPU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1764632174;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=om7Rtsvz/nXjwcDg8fMBjaHO65tXiOluX2ywa1SWQ7M=; 
- b=m+EaTies7hI6SSYVQcGdXuDsnR1e8ViBENS0ATFa8EhNNuRjTAbO5SIOKN9hkKqKA8vOcrvfw3hvEqfP2uoPFA1aGucCw5j55VtAadQxKeEuoynb4j7jZoBCRcqiqt/fsUP1fURCAyUoVSHuCyT0koMMR8LkjUZH6xeALzTAvOo=
+ s=zohoarc; t=1764632180;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=AYFRVDCKoVpb6ooIGe9Qz6mLyM80Vp+eLcGhnTdce88=; 
+ b=kmqPNpcB8vqF2XSY3e9ocFCIWgWJu+AT5oQg7eczofSdRFeIkGlPs5gw8Zr8jb+wDk7gykejJAoRN1pS5OX9xCf44U5ecN3Cr5NjjBttbPzuu8DATTslRJlyd+aXgmvUyA2BPp58W0W4N2BoB5FWJ5qdycREFtVlQ6ku0qG/1fQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764632174; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764632180; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=om7Rtsvz/nXjwcDg8fMBjaHO65tXiOluX2ywa1SWQ7M=;
- b=iy+MzqybDQeebwIECTRVHqCJsSCSbzqqSArbZp0GgtAG7YObSWB5VG05/DR+CGWW
- gwOaeA2odSalyeo0RQZ1p3IpBhDn/QzUM8uUP5GPFTyshJqEdrtFe43VafoYatYQxsd
- NbFTatjbrFZq/RQvsdqdQAlcCkKSLhu0Nt/pLXAM=
-Received: by mx.zohomail.com with SMTPS id 1764632172462365.265659193592;
- Mon, 1 Dec 2025 15:36:12 -0800 (PST)
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=AYFRVDCKoVpb6ooIGe9Qz6mLyM80Vp+eLcGhnTdce88=;
+ b=aZ4jI4LhxBHNnhtgiaoOcZ7ywictuwzutuxA1NT8qoCmRzk2Y9t7B+P3LJwvulwv
+ /wZyXYZ98h4eerGE283QnPahmVpqhExXpYa6pCiQI/y6Wo2Phsb/gasJONnFqrzu+/u
+ tXZ7v0jjRGMExmFWVSmGi1lXbutFfGOfIt8jdAZg=
+Received: by mx.zohomail.com with SMTPS id 1764632177390415.2729731986384;
+ Mon, 1 Dec 2025 15:36:17 -0800 (PST)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Huang Rui <ray.huang@amd.com>,
@@ -60,15 +60,13 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Robert Beckett <bob.beckett@collabora.com>
-Subject: [RFC PATCH v6 1/4] virtio-gpu: Remove superfluous
- memory_region_set_enabled()
-Date: Tue,  2 Dec 2025 02:34:44 +0300
-Message-ID: <20251201233447.2218728-2-dmitry.osipenko@collabora.com>
+Subject: [RFC PATCH v6 2/4] virtio-gpu: Validate hostmem mapping offset
+Date: Tue,  2 Dec 2025 02:34:45 +0300
+Message-ID: <20251201233447.2218728-3-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251201233447.2218728-1-dmitry.osipenko@collabora.com>
 References: <20251201233447.2218728-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 Received-SPF: pass client-ip=136.143.188.112;
@@ -96,38 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no need to explicitly enable/disable memory region when it's
-added or deleted respectively. Remove superfluous set_enabled() calls
-for consistency.
+Check hostmem mapping boundaries originated from guest.
 
 Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-virgl.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/display/virtio-gpu-virgl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 80f71c0b66aa..a6860f63b563 100644
+index a6860f63b563..6a2aac0b6e5c 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -139,7 +139,6 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
-     mr = &vmr->mr;
-     memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
-     memory_region_add_subregion(&b->hostmem, offset, mr);
--    memory_region_set_enabled(mr, true);
+@@ -767,6 +767,7 @@ static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
+     struct virtio_gpu_resource_map_blob mblob;
+     struct virtio_gpu_virgl_resource *res;
+     struct virtio_gpu_resp_map_info resp;
++    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
+     int ret;
  
-     /*
-      * MR could outlive the resource if MR's reference is held outside of
-@@ -201,7 +200,6 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-         b->renderer_blocked++;
- 
-         /* memory region owns self res->mr object and frees it by itself */
--        memory_region_set_enabled(mr, false);
-         memory_region_del_subregion(&b->hostmem, mr);
-         object_unparent(OBJECT(mr));
+     VIRTIO_GPU_FILL_CMD(mblob);
+@@ -780,6 +781,15 @@ static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
+         return;
      }
+ 
++    if (mblob.offset + res->base.blob_size > b->conf.hostmem ||
++        mblob.offset + res->base.blob_size < mblob.offset) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: failed to map virgl resource: invalid offset\n",
++                      __func__);
++        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
++        return;
++    }
++
+     ret = virtio_gpu_virgl_map_resource_blob(g, res, mblob.offset);
+     if (ret) {
+         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
 -- 
 2.51.1
 
