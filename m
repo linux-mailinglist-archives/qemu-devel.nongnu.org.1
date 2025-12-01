@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EAAC97602
-	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 13:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6AEC9761A
+	for <lists+qemu-devel@lfdr.de>; Mon, 01 Dec 2025 13:52:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQ3NN-00007o-FP; Mon, 01 Dec 2025 07:51:33 -0500
+	id 1vQ3O5-0001UR-SX; Mon, 01 Dec 2025 07:52:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
- id 1vQ3NL-0008TZ-DE
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:51:31 -0500
-Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com
- ([52.57.120.243])
+ id 1vQ3Ne-0000qY-AS
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:51:54 -0500
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ ([35.158.23.94])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=423f6341f=bchalios@amazon.es>)
- id 1vQ3NJ-0003mj-NG
- for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:51:31 -0500
+ id 1vQ3Nc-0003nJ-Gi
+ for qemu-devel@nongnu.org; Mon, 01 Dec 2025 07:51:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amazon.es; i=@amazon.es; q=dns/txt; s=amazoncorp2;
- t=1764593489; x=1796129489;
+ t=1764593508; x=1796129508;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=YiVSaceXokDxVjzqEE15bxJ9XS5trYPoQuYPiHb327Y=;
- b=GvogPZSwU08roz8hZ8dep2NjRboQJWfSoBL1GclkV6NG9qhluTAAhqSq
- ogstseLtoOdjica5yYNebTIpQP4vnNz0BxcVILipI7Y6YujV7FBVhMgGo
- 91+vvWizMnWVrDqtGz5rZc9QQFst0FoUQ/RpsC2Pgf7b+y7RbpBA/kRYC
- JQARoBsWTP4dyuO3tTjNTeB36y+ymdI6JjGQvw6qBj6OKLKPF/HFoJN4R
- cjntP9YlNogEVwhUhSp50lmk1vc7f+6sYvMs6913pp/mWfOy+Mi2l1VZs
- DPHVKdkbARbGmnzWe4lOiLm+VKGlpUwPdBQaIzEeVCN48PNfxYVJRqUrD w==;
-X-CSE-ConnectionGUID: TSrHaiA8R1aHhEPNuKGz6A==
-X-CSE-MsgGUID: Cuuq4Ue8T5qMFyslP0SUFw==
+ bh=Df5wsz2RSElfKfhsADXDWgX0ZlC5dNW9+WhnQcsb5BQ=;
+ b=GB86SNmR8RQqwDPOKU1ul9RVlDRkHMspNG9X840V3wpbK89l2AfPAI1p
+ NGEqqBPvU9inK/JdmcDJ2EQmttbDa9cq2/bI58Jq97jYjP1MHH94c5l6J
+ e72uHmdKhfNwS3B163otBWz5l6gJjNNCib9PIQFVGr+ZDgwAReSW/G8DX
+ XkJ0JLXqdG70OMdfEan4Iwk324uG58cXuniiDD0tNxz2PYlnlScqG145n
+ p/SYVkmiOogGhatDvpePVUm2/mOUkrjy0v0z3BipfUuUS6FQlyRcBH6VV
+ k0OGvcwwqH6UDCOiKMjb/Jz1vzlpF4rdjifqMX7ttlyERZum3aRQc2Lpc g==;
+X-CSE-ConnectionGUID: tpHgzo5KTFqzVkK9PSz/Cg==
+X-CSE-MsgGUID: X6iMoA3CTTaH8Uiuv1e6Ug==
 X-IronPort-AV: E=Sophos;i="6.20,240,1758585600"; 
-   d="scan'208";a="5958501"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO
- smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
- by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com
- with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 12:51:11 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:14458]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.46.211:2525]
+   d="scan'208";a="6056174"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO
+ smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+ by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 12:51:22 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:26348]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.21.117:2525]
  with esmtp (Farcaster)
- id 468c4a21-0ed0-4b65-9332-218af19a7de7; Mon, 1 Dec 2025 12:51:11 +0000 (UTC)
-X-Farcaster-Flow-ID: 468c4a21-0ed0-4b65-9332-218af19a7de7
-Received: from EX19D012EUA003.ant.amazon.com (10.252.50.98) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ id 85614544-48d7-4f29-9356-489bd89025a3; Mon, 1 Dec 2025 12:51:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 85614544-48d7-4f29-9356-489bd89025a3
+Received: from EX19D012EUA002.ant.amazon.com (10.252.50.32) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 1 Dec 2025 12:51:11 +0000
+ Mon, 1 Dec 2025 12:51:22 +0000
 Received: from EX19D012EUA001.ant.amazon.com (10.252.50.122) by
- EX19D012EUA003.ant.amazon.com (10.252.50.98) with Microsoft SMTP Server
+ EX19D012EUA002.ant.amazon.com (10.252.50.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 1 Dec 2025 12:51:10 +0000
+ Mon, 1 Dec 2025 12:51:22 +0000
 Received: from EX19D012EUA001.ant.amazon.com ([fe80::b7ea:84f7:2c4b:2719]) by
  EX19D012EUA001.ant.amazon.com ([fe80::b7ea:84f7:2c4b:2719%3]) with
- mapi id 15.02.2562.029; Mon, 1 Dec 2025 12:51:10 +0000
+ mapi id 15.02.2562.029; Mon, 1 Dec 2025 12:51:22 +0000
 From: "Chalios, Babis" <bchalios@amazon.es>
 To: "mst@redhat.com" <mst@redhat.com>, "imammedo@redhat.com"
  <imammedo@redhat.com>, "cohuck@redhat.com" <cohuck@redhat.com>,
@@ -62,12 +62,11 @@ To: "mst@redhat.com" <mst@redhat.com>, "imammedo@redhat.com"
 CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "dwmw2@infradead.org"
  <dwmw2@infradead.org>, "Chalios, Babis" <bchalios@amazon.es>, "Graf (AWS),
  Alexander" <graf@amazon.de>, "mzxreary@0pointer.de" <mzxreary@0pointer.de>
-Subject: [RFC PATCH 3/4] hw/acpi: add VM generation counter field to VMClock
-Thread-Topic: [RFC PATCH 3/4] hw/acpi: add VM generation counter field to
- VMClock
-Thread-Index: AQHcYsErx2HlZkNTNkCuXI6RHIRzQg==
-Date: Mon, 1 Dec 2025 12:51:10 +0000
-Message-ID: <20251201125023.18344-5-bchalios@amazon.es>
+Subject: [RFC PATCH 4/4] hw/acpi: add ACPI notification to VMClock device
+Thread-Topic: [RFC PATCH 4/4] hw/acpi: add ACPI notification to VMClock device
+Thread-Index: AQHcYsExYoIYzSGQdke7VH92GRB+vg==
+Date: Mon, 1 Dec 2025 12:51:22 +0000
+Message-ID: <20251201125023.18344-6-bchalios@amazon.es>
 References: <20251201125023.18344-1-bchalios@amazon.es>
 In-Reply-To: <20251201125023.18344-1-bchalios@amazon.es>
 Accept-Language: en-GB, en-US
@@ -78,9 +77,9 @@ x-originating-ip: [10.13.247.161]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Received-SPF: pass client-ip=52.57.120.243;
+Received-SPF: pass client-ip=35.158.23.94;
  envelope-from=prvs=423f6341f=bchalios@amazon.es;
- helo=fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com
+ helo=fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,73 +103,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The final published version of the VMClock specification adds support=0A=
-for an extra vm_generation_counter field which allows hypervisors to=0A=
-differentiate between live migration and snapshot loading events. During=0A=
-the latter, apart from adjusting clocks, guests might want to take=0A=
-further actions such as resetting network devices, updating UUIDs,=0A=
-reseeding entropy pools, etc.=0A=
-=0A=
-VM generation counter itself is stored in the guest memory region and=0A=
-exposed to guest userspace, so we don't need to serialize it within=0A=
-vmstate_vmclock as well.=0A=
+Extend VMClock device to send an ACPI notification every time the=0A=
+seqcount changes to a new even value. Use GPE E08 event, which now=0A=
+becomes part of the guest ABI.=0A=
 =0A=
 Signed-off-by: Babis Chalios <bchalios@amazon.es>=0A=
 ---=0A=
- hw/acpi/vmclock.c | 13 +++++++++++++=0A=
- 1 file changed, 13 insertions(+)=0A=
+ hw/acpi/vmclock.c                    | 17 +++++++++++++++--=0A=
+ include/hw/acpi/acpi_dev_interface.h |  1 +=0A=
+ 2 files changed, 16 insertions(+), 2 deletions(-)=0A=
 =0A=
 diff --git a/hw/acpi/vmclock.c b/hw/acpi/vmclock.c=0A=
-index c582c0c1f8..47cbba4496 100644=0A=
+index 47cbba4496..f6f242cb66 100644=0A=
 --- a/hw/acpi/vmclock.c=0A=
 +++ b/hw/acpi/vmclock.c=0A=
-@@ -20,6 +20,7 @@=0A=
- #include "hw/qdev-properties.h"=0A=
- #include "hw/qdev-properties-system.h"=0A=
- #include "migration/vmstate.h"=0A=
-+#include "migration/misc.h"=0A=
- #include "system/reset.h"=0A=
- =0A=
- #include "standard-headers/linux/vmclock-abi.h"=0A=
-@@ -64,6 +65,7 @@ void vmclock_build_acpi(VmclockState *vms, GArray *table_=
-data,=0A=
- static void vmclock_update_guest(VmclockState *vms)=0A=
+@@ -28,7 +28,7 @@=0A=
+ void vmclock_build_acpi(VmclockState *vms, GArray *table_data,=0A=
+                         BIOSLinker *linker, const char *oem_id)=0A=
  {=0A=
+-    Aml *ssdt, *dev, *scope, *crs;=0A=
++    Aml *ssdt, *dev, *scope, *crs, *method;=0A=
+     AcpiTable table =3D { .sig =3D "SSDT", .rev =3D 1,=0A=
+                         .oem_id =3D oem_id, .oem_table_id =3D "VMCLOCK" };=
+=0A=
+ =0A=
+@@ -57,6 +57,11 @@ void vmclock_build_acpi(VmclockState *vms, GArray *table=
+_data,=0A=
+     aml_append(scope, dev);=0A=
+     aml_append(ssdt, scope);=0A=
+ =0A=
++    /* Attach an ACPI notify */=0A=
++    method =3D aml_method("\\_GPE._E08", 0, AML_NOTSERIALIZED);=0A=
++    aml_append(method, aml_notify(aml_name("\\_SB.VCLK"), aml_int(0x80)));=
+=0A=
++    aml_append(ssdt, method);=0A=
++=0A=
+     g_array_append_vals(table_data, ssdt->buf->data, ssdt->buf->len);=0A=
+     acpi_table_end(linker, &table);=0A=
+     free_aml_allocator();=0A=
+@@ -67,6 +72,10 @@ static void vmclock_update_guest(VmclockState *vms)=0A=
      uint64_t disruption_marker;=0A=
-+    uint64_t vm_generation_counter;=0A=
+     uint64_t vm_generation_counter;=0A=
      uint32_t seq_count;=0A=
++    Object *obj =3D object_resolve_path_type("", TYPE_ACPI_DEVICE_IF, NULL=
+);=0A=
++    if (!obj) {=0A=
++        return;=0A=
++    }=0A=
  =0A=
      if (!vms->clk) {=0A=
-@@ -79,6 +81,16 @@ static void vmclock_update_guest(VmclockState *vms)=0A=
-     disruption_marker++;=0A=
-     vms->clk->disruption_marker =3D cpu_to_le64(disruption_marker);=0A=
- =0A=
-+    /*=0A=
-+     * We only increase the vm_generation_counter when loading from a snap=
-shot,=0A=
-+     * not during live migration=0A=
-+     */=0A=
-+    if (!migration_is_running()) {=0A=
-+        vm_generation_counter =3D le64_to_cpu(vms->clk->vm_generation_coun=
-ter);=0A=
-+        vm_generation_counter++;=0A=
-+        vms->clk->vm_generation_counter =3D cpu_to_le64(vm_generation_coun=
-ter);=0A=
-+    }=0A=
-+=0A=
+         return;=0A=
+@@ -94,6 +103,9 @@ static void vmclock_update_guest(VmclockState *vms)=0A=
      /* These barriers pair with read barriers in the guest */=0A=
      smp_wmb();=0A=
      vms->clk->seq_count =3D cpu_to_le32(seq_count + 1);=0A=
-@@ -144,6 +156,7 @@ static void vmclock_realize(DeviceState *dev, Error **e=
++=0A=
++    /* Send _GPE.E08 event */=0A=
++    acpi_send_event(DEVICE(obj), ACPI_VMCLOCK_CHANGE_STATUS);=0A=
+ }=0A=
+ =0A=
+ /*=0A=
+@@ -156,7 +168,8 @@ static void vmclock_realize(DeviceState *dev, Error **e=
 rrp)=0A=
      vms->clk->magic =3D cpu_to_le32(VMCLOCK_MAGIC);=0A=
      vms->clk->size =3D cpu_to_le16(VMCLOCK_SIZE);=0A=
      vms->clk->version =3D cpu_to_le16(1);=0A=
-+    vms->clk->flags =3D cpu_to_le64(VMCLOCK_FLAG_VM_GEN_COUNTER_PRESENT);=
+-    vms->clk->flags =3D cpu_to_le64(VMCLOCK_FLAG_VM_GEN_COUNTER_PRESENT);=
 =0A=
++    vms->clk->flags =3D cpu_to_le64(VMCLOCK_FLAG_VM_GEN_COUNTER_PRESENT |=
+=0A=
++                                  VMCLOCK_FLAG_NOTIFICATION_PRESENT);=0A=
  =0A=
      /* These are all zero and thus default, but be explicit */=0A=
      vms->clk->clock_status =3D VMCLOCK_STATUS_UNKNOWN;=0A=
+diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_de=
+v_interface.h=0A=
+index 8294f8f0cc..f51f6065f9 100644=0A=
+--- a/include/hw/acpi/acpi_dev_interface.h=0A=
++++ b/include/hw/acpi/acpi_dev_interface.h=0A=
+@@ -14,6 +14,7 @@ typedef enum {=0A=
+     ACPI_VMGENID_CHANGE_STATUS =3D 32,=0A=
+     ACPI_POWER_DOWN_STATUS =3D 64,=0A=
+     ACPI_GENERIC_ERROR =3D 128,=0A=
++    ACPI_VMCLOCK_CHANGE_STATUS =3D 256,=0A=
+ } AcpiEventStatusBits;=0A=
+ =0A=
+ #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"=0A=
 -- =0A=
 2.34.1=0A=
 =0A=
