@@ -2,80 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C34C9CA89
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 19:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2D7C9CAA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 19:39:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQVD9-0007wf-K6; Tue, 02 Dec 2025 13:34:51 -0500
+	id 1vQVGi-0000af-8Q; Tue, 02 Dec 2025 13:38:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQVD4-0007wN-Cx
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 13:34:47 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1vQVGd-0000aG-TW
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 13:38:28 -0500
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQVD2-0007pd-Jb
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 13:34:46 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-477a219db05so38097315e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 10:34:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1vQVGb-00008i-Hh
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 13:38:27 -0500
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-3e37ad3d95aso3910469fac.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 10:38:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764700482; x=1765305282; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jPSRQNJwBjBJCfJqtNQ1IZ2kMdEHT214puaSI5qicHw=;
- b=QshTnZSA0v8UbicpZPUU2mYmaQSeRyXHjnAzRkVJ/tD5hfuxHPuUYab463RNzyMNx3
- FgKDi4ZHi2Ej+KoAbLgtZncD0Me0ZP/t1BC2UFHHFO2TOnmhUn/toSZulaWW6/aHaWdR
- wAjX0SoBvJ7zEjHP1S6rvcv2r4jfbwJL0t2HW678yci1SgyIeWPEZx9WLobJF32J6CKF
- YcBhT7QEr1EY7b95015XW9LrN0y9L0ciev6AqCP+jSGms1TxBToZLQsDZvgfkhCNBn/w
- Y6KR+3RxWuJo9y4QfmqYRArLOgWyLWSvZgETd3n110AXwwJwNhkmmEN34UU1WdJY5aQA
- NXyg==
+ d=linaro.org; s=google; t=1764700703; x=1765305503; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=G1+eqSyexgI6kb1KPvc3ooBFGxniW7Bx2C7w0AtYulQ=;
+ b=VdGj06SG5eB/jRYC2W0wJVsyE3E/l/qbY8xyHBNCrqGQlXxR/d4m8x/JbyCqzfnI5N
+ TJGwFKpJRt0xOJm1Z1x/4r2LQx8zb0Vqi4MS6rRjBXfI1UZrpEzTsEQWyyyQjNq1secM
+ JGcvsxzIWOoGMaVyFoKQDNCGZipKRPkOzwfoU4+DsfMsLENM0wZ6gI7s6/FAZfHWkyYu
+ Fhc3X6D/iC3BPGTC0R/L+21lXRmnl4H//rV9vHcgofkhHMQPXZJuKhiLw2r5MdKdUyyc
+ ZxzN+YGAOVfbTamui/NFEJrL6LB5jTKdWib5yNrc5ucfw/ne/oeuWJtijO3LzpGVz8Ii
+ PMCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764700482; x=1765305282;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jPSRQNJwBjBJCfJqtNQ1IZ2kMdEHT214puaSI5qicHw=;
- b=K+k3KpQLwGJUPYJ3c/cYlykFhN/6t6LPSe8hQt8CZacZapkZESh6WYdzewXzYgOZ5H
- Qa48oaNqt4MY2Q0gOwGBONo3IzCYncSNMzkaLQpRs1dZX5G7ZjA++ctDOKni+MibtPZx
- x2ZyVEHyB6rhYESxcg5U5UpsJxv3NAPplnlbbpTplrYfN6r23nPTRAdFyul5WtJbxD0f
- Iw866mRGxy4A8EL7LYdrH25ggvhABg4EnaT78U9yB0D1/ntcOJzXqwTxo7wLBEYgHd1M
- s9ilah6HeSrIBB24WPBBPwE/bwjfGlbQ0m1A+1BNVAdQY1vagYTVROFO9Ibe8/n0BDy8
- j16g==
-X-Gm-Message-State: AOJu0YwLi6UZjPBgnevtJ7d9EmaeLkMNNwIXCSqoRR1rWf1P3woRbtNo
- 4L6g2aqhoqJkm1Oq4AfZG6NIoZNsO6AVVljbufxCZ0epja6d2q/bmkLOpWBGm9zzTxSOUQHbIT3
- duNYug1c=
-X-Gm-Gg: ASbGncsUavl+vAPrGRH2cRFkSX44gBSpqkhs7OPkgbL0DJu0ZMnSjMUBnJ83p5jTIMy
- kmrgxwTZRF+CMiHQZWG/HPJZ591d8Y5LfS1YLs56g0PFgNwYHxLtuN50B/+keNFI56CfYK6yirp
- i+9+auG+ThawY6LXvkhixz+Kjwy1kpKVJkN3VTasW0URPPc1CuVLO3STA/4vxKPpoarjMCKdzX/
- C3AZIbBGpXrCOKb6jr0Foz2xCDUCzRiAc9Tl7pf5WYef81Lvoet3LTnrKETyqkJ0AqsVahtACg8
- Mb8Pt/uQEqqF0+0gKJ2mqWkCL7imndHQPOdvdooXa9XWkt1mnwz+k8HSbrVDBUYPBdiPxdZw2/K
- U673g/PZuvofmxmipCDDhcbyn/2raMkPIre6Qy9U8TS4z5As2zOQsMRDHMaCyKd2Fwy+gbheTDY
- a/uire0ylmj193nzAzPVJ4GIfDKiEEs0I/6MX5DzXzig4/H8LtnoopMuynhlc/s1zpuVGZ1Ds=
-X-Google-Smtp-Source: AGHT+IEFMZH2pcohxFVeu1IN9vYvbRCXBoHm8cGkoB4J3f95wHZ/68jANAfOrXm8iIrCJpFr/tNlgA==
-X-Received: by 2002:a05:600c:3b22:b0:477:8b2e:aa7d with SMTP id
- 5b1f17b1804b1-4792a61e58amr5650985e9.30.1764700482165; 
- Tue, 02 Dec 2025 10:34:42 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4792a6602afsm2443555e9.5.2025.12.02.10.34.40
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Dec 2025 10:34:40 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-10.2?] qemu/atomic: Silence -Wuninitialized warnings
- on macOS AArch64
-Date: Tue,  2 Dec 2025 19:34:39 +0100
-Message-ID: <20251202183439.33259-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+ d=1e100.net; s=20230601; t=1764700703; x=1765305503;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=G1+eqSyexgI6kb1KPvc3ooBFGxniW7Bx2C7w0AtYulQ=;
+ b=FaFlw7d4BRy1Abh+3c140ohV9+rv9OoKBGib7aOxV29FkYKyJi3XdZcrzyunjlR8k4
+ TsBqeYWkq+zSq4lDMPHiNUGyH7t2wC6DNQdNVbQhR93AEn8sbkPGI/GCvAml1bJ9aOyu
+ 4kdK7LeILf3/bnraPXa3R27vMectW1d+Twy5GFTj29QNyNlOA5r+qSi5w3PmyY/P+UD+
+ hqiCi/tey1rkrg1j0TZM2rEMqA4Ti9vOUYuMJ+I0l5xwgr11d7TNUrId4iX15w7lVD8m
+ hfGUWyHwiSO7DFH/AQBzhysNMQjP42qkVCRFlb2HGwR/wIMNN99T4OOuYvX9llDyjel1
+ lhlg==
+X-Gm-Message-State: AOJu0Yz8ymoiz66aUJ6CQ3TfiBAshjwuqK/lR0H87E9qw7M0D/hCzKFJ
+ ZYy9bHRfQM/Aj07GmXmNFNE1wew3aBvr4WqHxk0bSb7SS6hcrmsCoxX7zU+XqJ6c19o1vnOnnmA
+ QTdd/5/1suCJB7q4NPIgz1mdCSc7WJ9hkuS4cI91Fqw==
+X-Gm-Gg: ASbGncvFH8cIYuljGwDoF5CvV2mMqaL+1N1Oqd2JX1pdSpRFmicclNyi6LyoBPoXbSN
+ WGuHeNr0SNQ6M6V1s7/gAV2S/rjFIUe6UIyD949CdQyYTWWGrSYXy+k7fH2PZyRDVo5BuwHm9Kt
+ OzmHsNOzv+emYwHBikPU9+EnN/6Ydb+ZheaIMH2nnyQLTQZGTrS6egqSNXY8frOhYsnEsL7XCgl
+ B7lzeC+n+AXMb8G+DKDflkE/47o48ZI6vYg0FaXfaryTEvvyeLrUmpw4qr00BR5GPqMgJ0=
+X-Google-Smtp-Source: AGHT+IEXvrjuYpGPC17ExohBO0sXYCIEO6FBsm+JRthkUjTmFhUzMErMG32twfyJfK9u7XJgU+izBIDyeD4Z4j1jrd4=
+X-Received: by 2002:a05:6808:4616:b0:453:f85:79e9 with SMTP id
+ 5614622812f47-4530f859857mr9661857b6e.18.1764700703122; Tue, 02 Dec 2025
+ 10:38:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+From: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Tue, 2 Dec 2025 19:38:12 +0100
+X-Gm-Features: AWmQ_blmBm81JO7J0GV86g6khYFyBf3KZE-fi1eOVU43sysaWBbXf2ZzHmrs8ic
+Message-ID: <CAPMQPEKqX2+EOen0fRL1sO=pBOL-rs3-zwz9tJh+e2857kCFWA@mail.gmail.com>
+Subject: Re: [PATCH v2 63/93] tcg/tci: Use ffi for calls
+To: Stefan Weil <sw@weilnetz.de>,
+ Jeremy Huddleston Sequoia <jeremyhu@apple.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,73 +90,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Silence warning when building on macOS AArch64:
+On 7/2/21 22:33, Stefan Weil wrote:
+> On 07.02.21 21:12, Richard Henderson wrote:
+>> On 2/7/21 11:52 AM, Peter Maydell wrote:
+>>> On Sun, 7 Feb 2021 at 17:41, Richard Henderson
+>>> <richard.henderson@linaro.org> wrote:
+>>>>
+>>>> On 2/7/21 8:25 AM, Stefan Weil wrote:
+>>>>>> +#include "qemu-common.h"
+>>>>>> +#include "tcg/tcg.h"           /* MAX_OPC_PARAM_IARGS */
+>>>>>> +#include "exec/cpu_ldst.h"
+>>>>>> +#include "tcg/tcg-op.h"
+>>>>>> +#include "qemu/compiler.h"
+>>>>>> +#include <ffi.h>
+>>>>>> +
+>>>>>
+>>>>>
+>>>>> ffi.h is not found on macOS with Homebrew.
+>>>>>
+>>>>> This can be fixed by using pkg-config to find the right compiler (and maybe
+>>>>> also linker) flags:
+>>>>>
+>>>>> % pkg-config --cflags libffi
+>>>>> -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ffi
+>>>>> % pkg-config --libs libffi
+>>>>> -lffi
+>>>>
+>>>>
+>>>> Which is exactly what I do in the previous patch:
+>>>>
+>>>>
+>>>>> +++ b/meson.build
+>>>>> @@ -1901,7 +1901,14 @@ specific_ss.add(when: 'CONFIG_TCG', if_true: files(
+>>>>>     'tcg/tcg-op.c',
+>>>>>     'tcg/tcg.c',
+>>>>>   ))
+>>>>> -specific_ss.add(when: 'CONFIG_TCG_INTERPRETER', if_true: files('tcg/tci.c'))
+>>>>> +
+>>>>> +if get_option('tcg_interpreter')
+>>>>> +  libffi = dependency('libffi', version: '>=3.0',
+>>>>> +                      static: enable_static, method: 'pkg-config',
+>>>>> +                      required: true)
+>>>>> +  specific_ss.add(libffi)
+>>>>> +  specific_ss.add(files('tcg/tci.c'))
+>>>>> +endif
+>>>>
+>>>> Did you need a PKG_CONFIG_LIBDIR set for homebrew?
+>>>
+>>> Is this the "meson doesn't actually add the cflags everywhere it should"
+>>> bug again ?
+>>
+>> I guess so.  I realized after sending this reply that PKG_CONFIG_LIBDIR can't
+>> be the answer, since the original configure should have failed if pkg-config
+>> didn't find ffi.
+>>
+>> Was there a resolution to said meson bug?
+>
+> Meanwhile I noticed an additional detail:
+>
+> There exist two different pkg-config configurations for libffi on Homebrew:
+>
+> % pkg-config --cflags libffi
+> -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ffi
+> % export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+> % pkg-config --cflags libffi
+> -I/opt/homebrew/Cellar/libffi/3.3_2/include
+>
+> By default it points to a system directory which does not exist at all
+> on my Mac, so that will never work.
+>
+> With the right PKG_CONFIG_PATH a correct include directory is set, and
+> the latest rebased tci-next branch now works for me with a compiler warning:
+>
+> /opt/homebrew/Cellar/libffi/3.3_2/include/ffi.h:441:5: warning:
+> 'FFI_GO_CLOSURES' is not defined, evaluates to 0 [-Wundef]
 
-  C compiler for the host machine: clang (clang 17.0.0 "Apple clang version 17.0.0 (clang-1700.4.4.1)")
-  Host machine cpu: aarch64
-  ...
-  In file included from ../../tcg/tcg.c:41:
-  In file included from include/tcg/tcg-op-common.h:12:
-  In file included from include/exec/helper-proto-common.h:10:
-  In file included from include/qemu/atomic128.h:62:
-  host/include/aarch64/host/atomic128-cas.h.inc:72:22: warning: variable 'tmpl' is uninitialized when used here [-Wuninitialized]
-     72 |           [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-        |                      ^~~~
-  host/include/aarch64/host/atomic128-cas.h.inc:61:30: note: initialize the variable 'tmpl' to silence this warning
-     61 |     uint64_t oldl, oldh, tmpl, tmph;
-        |                              ^
-        |                               = 0
-  host/include/aarch64/host/atomic128-cas.h.inc:72:40: warning: variable 'tmph' is uninitialized when used here [-Wuninitialized]
-     72 |           [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-        |                                        ^~~~
-  host/include/aarch64/host/atomic128-cas.h.inc:61:36: note: initialize the variable 'tmph' to silence this warning
-     61 |     uint64_t oldl, oldh, tmpl, tmph;
-        |                                    ^
-        |                                     = 0
-  host/include/aarch64/host/atomic128-cas.h.inc:92:22: warning: variable 'tmpl' is uninitialized when used here [-Wuninitialized]
-     92 |           [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-        |                      ^~~~
-  host/include/aarch64/host/atomic128-cas.h.inc:81:30: note: initialize the variable 'tmpl' to silence this warning
-     81 |     uint64_t oldl, oldh, tmpl, tmph;
-        |                              ^
-        |                               = 0
-  host/include/aarch64/host/atomic128-cas.h.inc:92:40: warning: variable 'tmph' is uninitialized when used here [-Wuninitialized]
-     92 |           [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-        |                                        ^~~~
-  host/include/aarch64/host/atomic128-cas.h.inc:81:36: note: initialize the variable 'tmph' to silence this warning
-     81 |     uint64_t oldl, oldh, tmpl, tmph;
-        |                                    ^
-        |                                     = 0
-  4 warnings generated.
+This got introduced in
+https://github.com/libffi/libffi/commit/e951d64c0852; should we report there?
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- host/include/aarch64/host/atomic128-cas.h.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cc'ing Jeremy who sent patches around FFI_GO_CLOSURES:
+https://github.com/libffi/libffi/pull/586/commits/8c25da7d2cdf8
 
-diff --git a/host/include/aarch64/host/atomic128-cas.h.inc b/host/include/aarch64/host/atomic128-cas.h.inc
-index aec27df1820..1334f467871 100644
---- a/host/include/aarch64/host/atomic128-cas.h.inc
-+++ b/host/include/aarch64/host/atomic128-cas.h.inc
-@@ -58,7 +58,7 @@ static inline Int128 atomic16_xchg(Int128 *ptr, Int128 new)
- static inline Int128 atomic16_fetch_and(Int128 *ptr, Int128 new)
- {
-     uint64_t newl = int128_getlo(new), newh = int128_gethi(new);
--    uint64_t oldl, oldh, tmpl, tmph;
-+    uint64_t oldl, oldh, tmpl = 0, tmph = 0;
-     uint32_t tmp;
- 
-     asm("0: ldaxp %[oldl], %[oldh], %[mem]\n\t"
-@@ -78,7 +78,7 @@ static inline Int128 atomic16_fetch_and(Int128 *ptr, Int128 new)
- static inline Int128 atomic16_fetch_or(Int128 *ptr, Int128 new)
- {
-     uint64_t newl = int128_getlo(new), newh = int128_gethi(new);
--    uint64_t oldl, oldh, tmpl, tmph;
-+    uint64_t oldl, oldh, tmpl = 0, tmph = 0;
-     uint32_t tmp;
- 
-     asm("0: ldaxp %[oldl], %[oldh], %[mem]\n\t"
--- 
-2.51.0
-
+Meanwhile, about 5 years have passed, I'll post a patch...
 
