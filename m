@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA67C9B964
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 14:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F96C9BA5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 14:44:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQQOO-0000Iq-V6; Tue, 02 Dec 2025 08:26:08 -0500
+	id 1vQQeT-000786-4t; Tue, 02 Dec 2025 08:42:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <geoff@hostfission.com>)
- id 1vQQOM-0000IR-GR
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 08:26:06 -0500
-Received: from mail1.hostfission.com ([51.161.137.76])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQQeM-00077L-4O
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 08:42:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <geoff@hostfission.com>)
- id 1vQQOI-0008I5-Qz
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 08:26:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostfission.com;
- s=mail; t=1764681958;
- bh=3HIYLaM/0RXoQnz/pFgINlaOIHriuOGso2fIZVAy1XY=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=DkVzOTmYIoTxylvwHG/IHIbvRGZdXVOe4ga5zLAWwN1s+lWjdW90QskCR+YYzRcXP
- EO7SpAD97JFP96t8s/eO9QmojUDXi5rbGzFNtkeO/tvfM2Ry6QpDyee/x17hlrvsWB
- cPwzCtdSEUU6GpLqUep2POITm4gX1Bid3jiCLfDQ=
-Received: from www1.hostfission.com (www1.hostfission.com [51.161.137.49])
- by mail1.hostfission.com (Postfix) with ESMTP id C63FF5402AE;
- Wed,  3 Dec 2025 00:25:58 +1100 (AEDT)
-Received: from mail.hostfission.com (www1.hostfission.com [127.0.0.1])
- by www1.hostfission.com (Postfix) with ESMTP id A3966602FA0;
- Wed,  3 Dec 2025 00:25:58 +1100 (AEDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQQeK-00063U-CL
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 08:42:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764682953;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LN3ZRhlR55DAhXGZZfrNPYhGZ9yXyiDQHCZwNpQSxaQ=;
+ b=ERf9CGUfE57H2NBngdn/38F7kZF6XToBCjXE2o0BMyFu7oX/BBlN48/gXDX4+LWmPE/knT
+ qk+ZQdTSUKAdHys/qtzh6kXs30FOeQ4hBEC3OoLWWg8qEXIJnUM+3HleCXqgYYU/RKFi2w
+ obENu0DYJskOLLGNpHPpILBwfmQf5cs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-V1al1FhNMyeFRg-VXnlFSw-1; Tue,
+ 02 Dec 2025 08:42:32 -0500
+X-MC-Unique: V1al1FhNMyeFRg-VXnlFSw-1
+X-Mimecast-MFC-AGG-ID: V1al1FhNMyeFRg-VXnlFSw_1764682951
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 828C71956080; Tue,  2 Dec 2025 13:42:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.7])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3732C180047F; Tue,  2 Dec 2025 13:42:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 89B4221E6A27; Tue, 02 Dec 2025 14:42:26 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  kvm@vger.kernel.org,
+ eesposit@redhat.com,  philmd@linaro.org,  qemu-stable
+ <qemu-stable@nongnu.org>
+Subject: Re: [PATCH v2] kvm: Fix kvm_vm_ioctl() and kvm_device_ioctl()
+ return value
+In-Reply-To: <db4b64b3-d40e-456f-b76a-bf8228e91946@tls.msk.ru> (Michael
+ Tokarev's message of "Tue, 2 Dec 2025 16:14:56 +0300")
+References: <20251128152050.3417834-1-armbru@redhat.com>
+ <db4b64b3-d40e-456f-b76a-bf8228e91946@tls.msk.ru>
+Date: Tue, 02 Dec 2025 14:42:26 +0100
+Message-ID: <871pldt2yl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Date: Wed, 03 Dec 2025 00:25:58 +1100
-From: Geoffrey McRae <geoff@hostfission.com>
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini
- <pbonzini@redhat.com>, Alexandre Ratchov <alex@caoua.org>,
- qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth
- <huth@tuxfamily.org>, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- dirty.ice.hu@gmail.com, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: Re: [RFC 00/24] audio: add GStreamer backend
-In-Reply-To: <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
-References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
- <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
- <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
- <aS4BZZnzQPUHzbaD@vm3.arverb.com>
- <3bb3606b-713c-456b-ab0f-31d14c6a6b99@redhat.com>
- <20e6b7a1-cc84-29ff-6570-94fed9520466@eik.bme.hu>
- <d63b9773727b546cea38b1f17e0babd0@hostfission.com>
- <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
-Message-ID: <12d3c2d298399c0935edee8caa3e52aa@hostfission.com>
-X-Sender: geoff@hostfission.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=51.161.137.76; envelope-from=geoff@hostfission.com;
- helo=mail1.hostfission.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,115 +88,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Michael Tokarev <mjt@tls.msk.ru> writes:
 
+> On 11/28/25 18:20, Markus Armbruster wrote:
+>> These functions wrap ioctl().  When ioctl() fails, it sets @errno.
+>> The wrappers then return that @errno negated.
+>>
+>> Except they call accel_ioctl_end() between calling ioctl() and reading
+>> @errno.  accel_ioctl_end() can clobber @errno, e.g. when a futex()
+>> system call fails.  Seems unlikely, but it's a bug all the same.
+>>
+>> Fix by retrieving @errno before calling accel_ioctl_end().
+>>
+>> Fixes: a27dd2de68f3 (KVM: keep track of running ioctls)
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> Isn't this a qemu-stable material?
 
-On 2025-12-02 23:44, Marc-André Lureau wrote:
-> Hi Geoffrey
-> 
-> On Tue, Dec 2, 2025 at 4:31 PM Geoffrey McRae
-> <geoff@hostfission.com> wrote:
-> 
->> The PipeWire and PulseAudio backends are used by a large number of
->> users
->> in the VFIO community. Removing these would be an enormous determent
->> to
->> QEMU.
-> 
-> They come with GStreamer pulse/pipe elements.
+I think it is.  I should've thought of adding Cc: qemu-stable.  My
+apologies!
 
-Yes, but through another layer of abstraction/complexity with no real 
-benefit.
-
-> 
->> Audio output from QEMU has always been problematic, but with the
->> PulseAudio and later, the PipeWire interface, it became much more
->> user
->> friendly for those that wanted to configure the VM to output native
->> audio into their sound plumbing.
-> 
-> Could you be more specific?
-
-There are clock sync/drift issues with the emulated hardware device's 
-audio clock and the real hardware audio clock. GStreamer won't solve 
-this, it requires a tuned PID loop that resamples the audio to 
-compensate for the continual drift between the emulated and hardware 
-clocks. Without this, over time, the audio can and does get wildly out 
-of sync eventually resulting in xruns.
-
-All you have to do is google for "QEMU Crackling Sound". JACK, PipeWire 
-and PulseAudio manage to mostly hide (not sovle) this issue from the 
-user, but it still occurs. It's worse for SPICE clients as the audio 
-gets buffered in the network stack rather then dropped and can lead to 
-many seconds of audio latency.
-
-As for applications, we have a large number of people using QEMU/KVM 
-with full GPU pass-through for gaming workloads, many of which route the 
-QEMU audio into PipeWire/JACK directly which enables the host's sound 
-server to perform DSP and mixing, etc.
-
-Others are streaming the guest via Looking Glass for the video feed, and 
-using PipeWire from QEMU to feed into OBS for live streaming setups.
-
-The flexibility that JACK & PipeWire bring to the table can not be 
-overstated. From a maintenance point of view, JACK and PipeWire are only 
-~800 lines of code each, fully self contained and very easy to debug.
-
-All the audio processing/mixing/resampling/routing (and any user 
-configured DSP) is fully offloaded to the host's audio server, where it 
-should be.
-
-> 
->> I do not agree that ALSA is as useful as you state it is, it's
->> dependent
->> on the host system's audio hardware support. If the sound device
->> doesn't
->> support hardware mixing (almost none do anymore), or the
->> bitrate/sample
->> rate QEMU wishes to use, your out of luck.
->> 
->> What I do think needs fixing here is the removal of the forced S16
->> audio
->> format, and the resampler which forces all output to 48KHz. This
->> though
->> would require changes to the SPICE protocol as currently it is fixed
->> at
->> two channel 48KHz S16 also IIRC.
-> 
-> Why is it a problem that Spice requires 48khz? Afaik, you can't have
-> both Spice & another backend (unlike VNC which does monitor to
-> capture)
-
-For clients like Looking Glass that take the audio via SPICE for 
-rendering locally via it's own audio devices where we do additional 
-things such as tracking client/host audio clocks and resample to keep 
-the audio latency consistent correcting for the clock drift as mentioned 
-prior.
-
-There are quite a lot of people also using virt-viewer with Intel GVT-g 
-these days too that are also limited to 48khz S16 again due to it using 
-SPICE by default.
-
-I digress though, this is a different topic entirely and I should not 
-have raised it here.
-
-> 
->> IMHO adding GStreamer is unnecessary, we have the modern PipeWire
->> interface which is compatible with everything. I see absolutely no
->> reason to add so much complexity to the project for little to no
->> gain.
-> 
-> Pipewire alone is not compatible with Windows or OSX, afaik.
-
-Yes, but there is the DirectSound audio driver for Windows, and 
-CoreAudio driver for OSX. While I appreciate that DirectSound is 
-deprecated, I really think that effort should be put into implementing a 
-WASAPI backend for QEMU.
-
-I really do not think that adding all the complexity of GStreamer to 
-QEMU is the right way forward. We should just hand off the audio 
-processing to the host system's sound server (as we do already), 
-whatever it might be, and let it do the heavy lifting.
-
-Regards,
-Geoffrey McRae (gnif)
 
