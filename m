@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60A6C9D466
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 00:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12ABC9D478
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 00:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQZT3-0005Ps-Oa; Tue, 02 Dec 2025 18:07:33 -0500
+	id 1vQZT4-0005Qw-4G; Tue, 02 Dec 2025 18:07:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSu-0005PC-S4
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:24 -0500
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSw-0005Pi-OT
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:26 -0500
 Received: from fanzine2.igalia.com ([213.97.179.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSs-0005Zt-Nj
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:23 -0500
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSu-0005a2-Iz
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -23,25 +23,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=UVSDrQj2EE2Xom2fSCqutr2x2fz+iiadtu9ED7/RGkM=; b=rfq9SuMUSdxQ4bVfme2QD96TpV
- mKOT5okhR7kww8QCkQ0CHqwkMpvuTxAINoYIt7mF2FBmYz9w7as8oqpuHE66iibxxiBZxvPa0LHeN
- LwAEeh730DeDWY5rrFeYQ+nvnYJlEprvGq5xfEwOyjza+HUxosjVCK/2urIHgo0PqvVerVZlz1j/O
- Ocy70BHRtDXmnyJfka0DOp2LFfCrXE+QbtDrLh+M/lffyBtSJSNhrAJezeHxVjSdqDMS60kqIbxrx
- 5FF6Gq+1AqUPMavkA8VV6NxM+1bxMfF9Z+EhvkJ2md3ZJpT4AVmKsdcTUiWW2Pv/ABG04FRrv0EEC
- EufRR+jg==;
+ bh=lqiYRejEYBLv6Tq9eu8J7y3F8sRHZgkSQrLLqz3fkRQ=; b=JdKCpWw9HW1pA34H/ayx1HwE0V
+ Psxf/PYJZ6/a6waHF1EwBLURnZJotLo6bWQr6hsakHUTfW3+m6ez11hhjjP8iFb1LhVlgvac+d1Oa
+ UC9hxdguQDR5X5Mi3bp5AB75ecfFPVYCwm0oV6BsOk0h7A+wMiTCisZ/qI/0yeqcpQpvRHjZ3OkqG
+ wMY/a1AktwCYD6MD0XN2WTTN2gVUeomIpAw6ORUsD32NWUKTMcwgFEZEqIQidWS9Pc3/eBQcJ5fbA
+ uGgECNXOFNg07Xlbi8YAbRayXaF0HiPYjdhEeRzFvJBdymWpA0/PCMQAS5pNCkDEZDt3j4Xv3gxqs
+ YEPS6tvw==;
 Received: from 82-69-92-151.dsl.in-addr.zen.co.uk ([82.69.92.151]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vQZSq-0082ga-Mr; Wed, 03 Dec 2025 00:07:20 +0100
+ id 1vQZSs-0082ga-55; Wed, 03 Dec 2025 00:07:22 +0100
 From: Alex Bradbury <asb@igalia.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Bradbury <asb@igalia.com>, alex.bennee@linaro.org, erdnaxe@crans.org,
- ma.mandourr@gmail.com, pierrick.bouvier@linaro.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v2 3/5] contrib/plugins/hotblocks: Print uint64_t with PRIu64
- rather than PRId64
-Date: Tue,  2 Dec 2025 23:05:56 +0000
-Message-ID: <46f83ac83c6cabace91b9be85da2547ff7b08204.1764716538.git.asb@igalia.com>
+ ma.mandourr@gmail.com, pierrick.bouvier@linaro.org
+Subject: [PATCH v2 4/5] docs/about/emulation: Add documentation for hotblocks
+ plugin arguments
+Date: Tue,  2 Dec 2025 23:05:57 +0000
+Message-ID: <60f1ad20663f7e5c6cb00dd83fe0f1f5aa6ca4de.1764716538.git.asb@igalia.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1764716538.git.asb@igalia.com>
 References: <cover.1764716538.git.asb@igalia.com>
@@ -71,29 +70,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_plugin_u64_sum returns a uint64_t, so PRIu64 is the correct format
-specifier.
+Currently just 'inline'.
 
 Signed-off-by: Alex Bradbury <asb@igalia.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/hotblocks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/about/emulation.rst | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index cf4d6b8c36..40d8dae1cd 100644
---- a/contrib/plugins/hotblocks.c
-+++ b/contrib/plugins/hotblocks.c
-@@ -87,7 +87,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-         for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
-             ExecCount *rec = (ExecCount *) it->data;
-             g_string_append_printf(
--                report, "0x%016"PRIx64", %d, %ld, %"PRId64"\n",
-+                report, "0x%016"PRIx64", %d, %ld, %"PRIu64"\n",
-                 rec->start_addr, rec->trans_count,
-                 rec->insns,
-                 qemu_plugin_u64_sum(
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index 4a7d1f4178..543efc4d7d 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -463,6 +463,16 @@ Example::
+   0x000000004002b0, 1, 4, 66087
+   ...
+ 
++Behaviour can be tweaked with the following arguments:
++
++.. list-table:: Hot Blocks plugin arguments
++  :widths: 20 80
++  :header-rows: 1
++
++  * - Option
++    - Description
++  * - inline=true|false
++    - Use faster inline addition of a single counter.
+ 
+ Hot Pages
+ .........
 -- 
 2.52.0
 
