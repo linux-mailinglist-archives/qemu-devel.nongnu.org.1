@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D423BC9C1EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:09:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11450C9C205
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:10:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSuq-0003s4-LF; Tue, 02 Dec 2025 11:07:49 -0500
+	id 1vQSvs-0004Ye-6S; Tue, 02 Dec 2025 11:08:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSui-0003KZ-69; Tue, 02 Dec 2025 11:07:40 -0500
+ id 1vQSut-00043E-55; Tue, 02 Dec 2025 11:07:52 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSuf-0008Cu-LA; Tue, 02 Dec 2025 11:07:39 -0500
+ id 1vQSur-0008HR-AT; Tue, 02 Dec 2025 11:07:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764691658; x=1796227658;
+ t=1764691670; x=1796227670;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xbQmgoe2IOU9HSvyb9lb+wg4Nep+wx7DJvs7Fx9TRRo=;
- b=kkmfjHIkpZXBkDLXeHCZ1/CXQI3nKXljtwT6iibB7F1UvBuFsQxcx281
- qvvHSMxT4xwYK2z7lZgB6/U0j4yQwFBisWHfm+32gg8ti1JY9xl7XwdSy
- 0G1gPL/cv8qnQwo12UMgfGd++Gj3d0THFwgLByKNPnubcJqmrtdBuq9Kx
- hguG1FMRI41Be63IXGFNU64s1qrMz4Y0pTtv3wNmX+W2k9Zw+UX+A6S1h
- fBshfRWMF4I1HJ3n5OxAKmLYlDG+THIaeSluBm6vfHL/aaeQupXwB4hXV
- mU/TvV+nhTo01mhRbeCieQqBzdZ9O1JpwgtlxXbOwKOwj4smM9P3HdDZ7 Q==;
-X-CSE-ConnectionGUID: jXU7DIaVRJ2ZPHu7NaEg9Q==
-X-CSE-MsgGUID: PpqVXOERRyGscs/UR/6dBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142974"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142974"
+ bh=x4x9GwtVyQN/1zu2eRKA2AyFq1QUrStlsY8oJcIM534=;
+ b=mxL7vknNDwxXMtGCnileshkronX4Sg7Zvgb2JKFK6HSCPAI9WSLBnQM/
+ FNy3VkGSvCYQeGcCYZOH22vFtxsrO69Yni6RAWf85aViq9Pc97bNIvPkt
+ N6xuCzTSUwgcC9Q2lBnYvp/RCGK5Xv4W2NoTCOWiTP3C9Vw3knsTRqLsI
+ qa9sYbX/48so7sHmppRyEnCDub0HlTQC9wA5wkPZRkBcPrrCF3pkQ0J/j
+ 6tlH6G8WKjl6eubr+RuL81JVcNcLBjG6hClL3Fx3qvGrXZYJpQLDqna/z
+ CzWR3avUrR0rDPBlVb5KlFJdzTg3Y1vESu10S/dVRtNMyAkxzVk1Imku9 w==;
+X-CSE-ConnectionGUID: Fw+aetmkQTancxbO2bOPEQ==
+X-CSE-MsgGUID: OAAGuX27TPChIqKmUD8KSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92143035"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92143035"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:07:36 -0800
-X-CSE-ConnectionGUID: K6boL9nXQgOc2bG5wpxHdg==
-X-CSE-MsgGUID: bP0+wkBRQX+2cM0IZVd8Aw==
+ 02 Dec 2025 08:07:46 -0800
+X-CSE-ConnectionGUID: Z/3e7+YlTk+4rCCHob2SYQ==
+X-CSE-MsgGUID: enPvPe20R5WSzqdBXTM8yA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537874"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537921"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:07:26 -0800
+ by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:07:36 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,10 +70,9 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 23/28] target/i386/cpu: Remove
- CPUX86State::full_cpuid_auto_level field
-Date: Wed,  3 Dec 2025 00:28:30 +0800
-Message-Id: <20251202162835.3227894-24-zhao1.liu@intel.com>
+Subject: [PATCH v5 24/28] hw/audio/pcspk: Remove PCSpkState::migrate field
+Date: Wed,  3 Dec 2025 00:28:31 +0800
+Message-Id: <20251202162835.3227894-25-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
@@ -107,174 +106,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The CPUX86State::full_cpuid_auto_level boolean was only
-disabled for the pc-q35-2.7 and pc-i440fx-2.7 machines,
-which got removed. Being now always %true, we can remove
-it and simplify x86_cpu_expand_features().
+The PCSpkState::migrate boolean was only set in the
+pc_compat_2_7[] array, via the 'migrate=off' property.
+We removed all machines using that array, lets remove
+that property, simplifying vmstate_spk[].
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Note, although libvirt still uses this property in its test cases, it
-was confirmed this property is not exposed to user directly [*].
+ hw/audio/pcspk.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-[*]: https://lore.kernel.org/qemu-devel/aDmphSY1MSxu7L9R@orkuz.int.mamuti.net/
----
- target/i386/cpu.c | 111 ++++++++++++++++++++++------------------------
- target/i386/cpu.h |   3 --
- 2 files changed, 54 insertions(+), 60 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 641777578637..72c69ba81c1b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -9019,69 +9019,67 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+diff --git a/hw/audio/pcspk.c b/hw/audio/pcspk.c
+index 916c56fa4c0a..0b01544941cb 100644
+--- a/hw/audio/pcspk.c
++++ b/hw/audio/pcspk.c
+@@ -57,7 +57,6 @@ struct PCSpkState {
+     unsigned int play_pos;
+     uint8_t data_on;
+     uint8_t dummy_refresh_clock;
+-    bool migrate;
+ };
  
-     /* CPUID[EAX=7,ECX=0].EBX always increased level automatically: */
-     x86_cpu_adjust_feat_level(cpu, FEAT_7_0_EBX);
--    if (cpu->full_cpuid_auto_level) {
--        x86_cpu_adjust_feat_level(cpu, FEAT_1_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_1_ECX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_6_EAX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_7_0_ECX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EAX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_7_1_ECX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_7_2_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_ECX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_8000_0007_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_8000_0008_EBX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_C000_0001_EDX);
--        x86_cpu_adjust_feat_level(cpu, FEAT_SVM);
--        x86_cpu_adjust_feat_level(cpu, FEAT_XSAVE);
--
--        /* Intel Processor Trace requires CPUID[0x14] */
--        if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT)) {
--            if (cpu->intel_pt_auto_level) {
--                x86_cpu_adjust_level(cpu, &cpu->env.cpuid_min_level, 0x14);
--            } else if (cpu->env.cpuid_min_level < 0x14) {
--                mark_unavailable_features(cpu, FEAT_7_0_EBX,
--                    CPUID_7_0_EBX_INTEL_PT,
--                    "Intel PT need CPUID leaf 0x14, please set by \"-cpu ...,intel-pt=on,min-level=0x14\"");
--            }
-+    x86_cpu_adjust_feat_level(cpu, FEAT_1_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_1_ECX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_6_EAX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_7_0_ECX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EAX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_7_1_ECX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_7_2_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_ECX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_8000_0007_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_8000_0008_EBX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_C000_0001_EDX);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_SVM);
-+    x86_cpu_adjust_feat_level(cpu, FEAT_XSAVE);
-+
-+    /* Intel Processor Trace requires CPUID[0x14] */
-+    if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT)) {
-+        if (cpu->intel_pt_auto_level) {
-+            x86_cpu_adjust_level(cpu, &cpu->env.cpuid_min_level, 0x14);
-+        } else if (cpu->env.cpuid_min_level < 0x14) {
-+            mark_unavailable_features(cpu, FEAT_7_0_EBX,
-+                CPUID_7_0_EBX_INTEL_PT,
-+                "Intel PT need CPUID leaf 0x14, please set by \"-cpu ...,intel-pt=on,min-level=0x14\"");
-         }
-+    }
- 
--        /*
--         * Intel CPU topology with multi-dies support requires CPUID[0x1F].
--         * For AMD Rome/Milan, cpuid level is 0x10, and guest OS should detect
--         * extended toplogy by leaf 0xB. Only adjust it for Intel CPU, unless
--         * cpu->vendor_cpuid_only has been unset for compatibility with older
--         * machine types.
--         */
--        if (x86_has_cpuid_0x1f(cpu) &&
--            (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1F);
--        }
-+    /*
-+     * Intel CPU topology with multi-dies support requires CPUID[0x1F].
-+     * For AMD Rome/Milan, cpuid level is 0x10, and guest OS should detect
-+     * extended toplogy by leaf 0xB. Only adjust it for Intel CPU, unless
-+     * cpu->vendor_cpuid_only has been unset for compatibility with older
-+     * machine types.
-+     */
-+    if (x86_has_cpuid_0x1f(cpu) &&
-+        (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1F);
-+    }
- 
--        /* Advanced Vector Extensions 10 (AVX10) requires CPUID[0x24] */
--        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x24);
--        }
-+    /* Advanced Vector Extensions 10 (AVX10) requires CPUID[0x24] */
-+    if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x24);
-+    }
- 
--        /* SVM requires CPUID[0x8000000A] */
--        if (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_SVM) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000000A);
--        }
-+    /* SVM requires CPUID[0x8000000A] */
-+    if (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_SVM) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000000A);
-+    }
- 
--        /* SEV requires CPUID[0x8000001F] */
--        if (sev_enabled()) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000001F);
--        }
-+    /* SEV requires CPUID[0x8000001F] */
-+    if (sev_enabled()) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000001F);
-+    }
- 
--        if (env->features[FEAT_8000_0021_EAX]) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x80000021);
--        }
-+    if (env->features[FEAT_8000_0021_EAX]) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x80000021);
-+    }
- 
--        /* SGX requires CPUID[0x12] for EPC enumeration */
--        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
--            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
--        }
-+    /* SGX requires CPUID[0x12] for EPC enumeration */
-+    if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
-+        x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
+ static const char *s_spk = "pcspk";
+@@ -202,18 +201,10 @@ static void pcspk_realizefn(DeviceState *dev, Error **errp)
      }
+ }
  
-     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
-@@ -10010,7 +10008,6 @@ static const Property x86_cpu_properties[] = {
-     DEFINE_PROP_UINT32("min-xlevel2", X86CPU, env.cpuid_min_xlevel2, 0),
-     DEFINE_PROP_UINT8("avx10-version", X86CPU, env.avx10_version, 0),
-     DEFINE_PROP_UINT64("ucode-rev", X86CPU, ucode_rev, 0),
--    DEFINE_PROP_BOOL("full-cpuid-auto-level", X86CPU, full_cpuid_auto_level, true),
-     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
-     DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
-     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index cee1f692a1c3..8c3eb86fa0c7 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2292,9 +2292,6 @@ struct ArchCPU {
-     /* Force to enable cpuid 0x1f */
-     bool force_cpuid_0x1f;
- 
--    /* Enable auto level-increase for all CPUID leaves */
--    bool full_cpuid_auto_level;
+-static bool migrate_needed(void *opaque)
+-{
+-    PCSpkState *s = opaque;
 -
-     /*
-      * Compatibility bits for old machine types (PC machine v6.0 and older).
-      * Only advertise CPUID leaves defined by the vendor.
+-    return s->migrate;
+-}
+-
+ static const VMStateDescription vmstate_spk = {
+     .name = "pcspk",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = migrate_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(data_on, PCSpkState),
+         VMSTATE_UINT8(dummy_refresh_clock, PCSpkState),
+@@ -224,7 +215,6 @@ static const VMStateDescription vmstate_spk = {
+ static const Property pcspk_properties[] = {
+     DEFINE_AUDIO_PROPERTIES(PCSpkState, audio_be),
+     DEFINE_PROP_UINT32("iobase", PCSpkState, iobase,  0x61),
+-    DEFINE_PROP_BOOL("migrate", PCSpkState, migrate,  true),
+     DEFINE_PROP_LINK("pit", PCSpkState, pit, TYPE_PIT_COMMON, PITCommonState *),
+ };
+ 
 -- 
 2.34.1
 
