@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F33C9C25A
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8EFC9C1AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:07:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSu1-0000Xx-LT; Tue, 02 Dec 2025 11:06:57 -0500
+	id 1vQSu5-0000xb-W4; Tue, 02 Dec 2025 11:07:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQStw-0008Jh-9j; Tue, 02 Dec 2025 11:06:52 -0500
+ id 1vQStz-0000LT-79; Tue, 02 Dec 2025 11:06:55 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQStn-0007th-Ds; Tue, 02 Dec 2025 11:06:51 -0500
+ id 1vQStx-0007xU-65; Tue, 02 Dec 2025 11:06:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764691604; x=1796227604;
+ t=1764691613; x=1796227613;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=z9VLCU2KIJ73gEsKU4uszkkYOzFWVjXDHPrGQQWvjSM=;
- b=ZshkKTsL3jpsSsHMFVUGbHfdRyfXaxCN2kZE/5sADo1SQ+Afb5cNfaCY
- /wcx0USVDPUjXNS8CQrLgJEqSbO6ffjoubHXX9JNUe4KGx8ZcvsB+IhLq
- 7j0KmwOcDLiU2oFzX93iS1c5YNb30vV36y+2mTPitNJj7EExgTWuTdtuN
- y1E49aj2tKbjIu4IWhl80kthV3ZrGTEtEmc1fj0RvDf63tLOzUMBUW1zj
- m1tKBfM4mNepP1taPxPR19wCabx5Ubvt6OSWi0QtsgmaOkqNqbWJNGd1H
- s5JNVf1A1iNH9blNvQylGsTdZ/aKcWFxsot/qZ2DUI5XchK5IinqB/tZ2 Q==;
-X-CSE-ConnectionGUID: vLRnIB46Szetf3sReNjCAA==
-X-CSE-MsgGUID: pqkqXud5TIudVHbq/NdrTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142785"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142785"
+ bh=/n0ftya4A99iHjWPZUr3WDol3H8mQTwBUoAVwDtk6y4=;
+ b=m0o2plEazctQtoiWzDDMbMtBjQGDpo6yYl2S9ozAxhC9KqwYeqGRvy8U
+ xcXyoBM5o5EzTNMNBGF6LrI4wIDLQmDxNdvZzwzBs8V51qqmXDXVmU/E9
+ XG9yqBGJiHV9c6fy1kFCNeVPljW58Lw4txIempqqc30PFIWqRD1DnsU9q
+ xiAGf+V40CxOIx3yZCiaj6yYijnADkU4CauV+QMjNFzI9djLuHaoE+MO4
+ Lci5EMmwMXSCbKZ4j7p40W7pBUdVEz3NiOjImb4yMhb+FQwnHqPV0CecP
+ K8H8M4635vNg2yv02HezMIRCUyTLQBUvjkm4KJ3zgvqNqDqWwIQ1IYaXf g==;
+X-CSE-ConnectionGUID: puSSr1yPQkyL9VdT3GcR+Q==
+X-CSE-MsgGUID: H+/si3JRRRyTbO17uI0HJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142798"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142798"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:06:42 -0800
-X-CSE-ConnectionGUID: 2j5JuVBZTAeRDCmPvwAmpA==
-X-CSE-MsgGUID: hNxNIjIcTkud57qFIj5A1Q==
+ 02 Dec 2025 08:06:50 -0800
+X-CSE-ConnectionGUID: H0vus8aaRLakTXdaogt3nQ==
+X-CSE-MsgGUID: TEFPBB7vSquCrbpUZ8eS+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537677"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537727"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:06:32 -0800
+ by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:06:41 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,9 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 17/28] hw/i386/pc: Remove pc_compat_2_6[] array
-Date: Wed,  3 Dec 2025 00:28:24 +0800
-Message-Id: <20251202162835.3227894-18-zhao1.liu@intel.com>
+Subject: [PATCH v5 18/28] hw/intc/apic: Remove
+ APICCommonState::legacy_instance_id field
+Date: Wed,  3 Dec 2025 00:28:25 +0800
+Message-Id: <20251202162835.3227894-19-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
@@ -106,52 +107,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The pc_compat_2_6[] array was only used by the pc-q35-2.6
-and pc-i440fx-2.6 machines, which got removed. Remove it.
+The APICCommonState::legacy_instance_id boolean was only set
+in the pc_compat_2_6[] array, via the 'legacy-instance-id=on'
+property. We removed all machines using that array, lets remove
+that property, simplifying apic_common_realize().
+
+Because instance_id is initialized as initial_apic_id, we can
+not register vmstate_apic_common directly via dc->vmsd.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/pc.c         | 8 --------
- include/hw/i386/pc.h | 3 ---
- 2 files changed, 11 deletions(-)
+ hw/intc/apic_common.c           | 5 -----
+ include/hw/i386/apic_internal.h | 1 -
+ 2 files changed, 6 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2e315414aeaf..85d12f8d0389 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -263,14 +263,6 @@ GlobalProperty pc_compat_2_7[] = {
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index ec9e978b0b40..69a7b1bd5d3e 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -276,9 +276,6 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+         info->enable_tpr_reporting(s, true);
+     }
+ 
+-    if (s->legacy_instance_id) {
+-        instance_id = VMSTATE_INSTANCE_ID_ANY;
+-    }
+     vmstate_register_with_alias_id(NULL, instance_id, &vmstate_apic_common,
+                                    s, -1, 0, NULL);
+ 
+@@ -395,8 +392,6 @@ static const Property apic_properties_common[] = {
+     DEFINE_PROP_UINT8("version", APICCommonState, version, 0x14),
+     DEFINE_PROP_BIT("vapic", APICCommonState, vapic_control, VAPIC_ENABLE_BIT,
+                     true),
+-    DEFINE_PROP_BOOL("legacy-instance-id", APICCommonState, legacy_instance_id,
+-                     false),
  };
- const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
  
--GlobalProperty pc_compat_2_6[] = {
--    { TYPE_X86_CPU, "cpuid-0xb", "off" },
--    { "vmxnet3", "romfile", "" },
--    { TYPE_X86_CPU, "fill-mtrr-mask", "off" },
--    { "apic-common", "legacy-instance-id", "on", }
--};
--const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
--
- /*
-  * @PC_FW_DATA:
-  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 698e3fb84af0..f8f317aee197 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -295,9 +295,6 @@ extern const size_t pc_compat_2_8_len;
- extern GlobalProperty pc_compat_2_7[];
- extern const size_t pc_compat_2_7_len;
+ static void apic_common_get_id(Object *obj, Visitor *v, const char *name,
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 4a62fdceb4ea..0cb06bbc76c9 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -187,7 +187,6 @@ struct APICCommonState {
+     uint32_t vapic_control;
+     DeviceState *vapic;
+     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
+-    bool legacy_instance_id;
+     uint32_t extended_log_dest;
+ };
  
--extern GlobalProperty pc_compat_2_6[];
--extern const size_t pc_compat_2_6_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
-                                                  const void *data) \
 -- 
 2.34.1
 
