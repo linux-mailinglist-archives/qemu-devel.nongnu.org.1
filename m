@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5192C9C371
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF89C9C377
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:32:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTIc-00048j-HF; Tue, 02 Dec 2025 11:32:22 -0500
+	id 1vQTIf-00049I-5u; Tue, 02 Dec 2025 11:32:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vQTIa-000483-NK
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:32:20 -0500
+ id 1vQTIc-00048s-Jw
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:32:22 -0500
 Received: from mail-northeuropeazlp170100001.outbound.protection.outlook.com
  ([2a01:111:f403:c200::1] helo=DB3PR0202CU003.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vQTIZ-0005yG-6W
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:32:20 -0500
+ id 1vQTIb-0005yG-1s
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:32:22 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ML6dnsW9JhDKe81bwBM+l4HLA9+LvkAoKS8FI8iSvT8yxaW/6f8IPnSwjoDgynglc/73uz/rQmJnshNI/VdrFBBZ/h9MiK8sw/Ma0/j9MJkJ/cEd40cBZ+0O9LuA0Hm/1uHX5mt9rRy79ByeNcCLicFeR9l9B0HVEdA6x9r4Qvc1lu8whIn9tOL+sOTSWmFucUByyLl9FGhM5DX1phwDs4hAFyHTYnU7xR31F5RrrS5DdIvwRt+j2RwCWk252bS1EMIT4dXtj/0B4iWDDOiBX0HtSDIKkuBHMay/Vsdz7GRS4bUPiQAmWF7S97J+6TdXo3tY6dGFI5XH5tdILMG7aA==
+ b=c3pYT+eznn74YC8yt3jgwTznRTf1+e7V0yeZY8wo75jRlfXpIlnTokg4IAu8Sw/Uj+zNRLEMdRrVtn36LiBhofKlJqQkK1Zk01ZmBfhqZ7jnY7BDHpbD2Ojl7+LX1mnpYqneL96raNDjRh20H9p8rNeqhbA2j/RKWKMVWoAER6P6pq/nL4cJg9k/bjODVL/aCW1V9mWNyGIEmzk5n0i03kUQ2Nha1uaqFIOe7y+mWks1Jn4XniD3Xt9B1u3TJGmJNlxgbBOVwI+qGdaluNRuOHVHCj2hPKiVDm72Kaptpoy149QYATlXkd1swUox/8c7WFJ+S7sihtz4D+Gi0FKg8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O4FwUbISpFx0edlczaa5j1jU5/j13QFpVh/CjI8nHfM=;
- b=B1rM7AUDnE9Q6gPM2tAm+E808XDDdg7yZGvgf5sDrDg6LSd5ouw2Y/3pc1UjoZtsxLy8ehhf17l4bouDVqFysoOwNVkGALJmwJlFoViXlJhuf04gzZisN3ivXXfz91WWZvd+qz1AYt1RI0BN9Asx8PxJpHoAxU1PhatzhRZ9geIjcdGxealCElvLHD6ZeHqAotZUqGolEtTqs0Ax+/5P23nEtVdZh04CZ/8S3nXYXicvyKCgdI2KCQGe5LmO8UB9U7HmRm4aygMffb8sKzi4p3j31y2wi79nAgwQu+YSEw3tZqGFR8owMbSfQB2SUapG4/K/SX2WsZxZ1Ss11eVwtg==
+ bh=FXbwsgq2K6eVm4heJD3wssEIynts8bL76glfWpTGwrs=;
+ b=uODvcx32LYw6Ey7yR/ENOEIldrOr6EATH7H4h0jc1wSndjad/F/h5aIAobzzju46Za8dWkPRQlZZJxKJH811rIuA7b1VBwYbEoAZq8MrsHgvtISZ40CjVs/FPP800PktEFQ3qkNF9xczSDtBA8EtDYe4RFYdU1ULK63KQF4zzR0qdZlNVN2EfacWog/wybRpYs3lDYHVpIAa1+Q52CcMTFQayd+VZYUNSUlJwSViV73IpGZbIZqTu8lqbeFpAMCLh7kGEizAZbz+fsuFuIoY4AHwetpxo5Y4okHsedk8ffp15d3sm8pF+Mpff0T5TvbIfYTaXG42Mb4v3fa2QXTbfw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O4FwUbISpFx0edlczaa5j1jU5/j13QFpVh/CjI8nHfM=;
- b=myJoWPxAviYmkFbt9VC4fMjBwfj6Nbq2IWwNNM/YL6watZCsbX4T4TFUTwUAlihFqJ3zwLP/8rkvinE57BiBOdLbVcyD5T5/t3GOVoSqkDuxoyJk1soAEi3krFWacotnsoyXLUGMfwHEchDba0CsjLOBDSBuUIm6TFSxYCbfh38kIjy6Y5Eyrak+qZK9rr8ROBeDHhb4PtUAIlc+ijo3NNFxFCaRmFuD3lSMcIosPYKH432gV2Dy++VsZIWFeRg1YvPe0Pt+5OjML4/tSV2z5tnQy1FwgMZNG1P7EIPkHx+3aDwOxb0ApsqDyOnKhC5Bl+PtmoSQO7izo7GrP8r0tA==
+ bh=FXbwsgq2K6eVm4heJD3wssEIynts8bL76glfWpTGwrs=;
+ b=HW3IFO11mk3EzqYzLXJ71nJYbG897Bpt8V+wSedYpjnD2Oy3L1JM1oCPq5KRax4VeJ3p2qj9Flcvzx07fVSZBbBM5JyuRVBDFhVm74uJgaWq7O+wopXtJQZrKg3Hapki5neumInaejaM7URbzFx55rdyeh9K7EX2NkqP8+sSxdmB72JESXepwEPiinsxk2iR0AVRtIyROfI6z1IYH3DO/Djy6bhitDlmodV9AM8l9MOoTjRWqPH9DBdDfXM1FQb6dOljq9FFCgnbODbk945ZX0PblOeMjCxLsBLZkPLrxUhnk8yrdYPPqKX6MoaHnWBySdEkVQZwvjfBcmSLOdXlZg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
  (2603:10a6:800:20a::12) by GV1PR08MB11051.eurprd08.prod.outlook.com
  (2603:10a6:150:1ef::20) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 16:31:42 +0000
+ 2025 16:31:44 +0000
 Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
  ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
  ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 16:31:42 +0000
+ 16:31:43 +0000
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, peterx@redhat.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com
-Subject: [PATCH v2 2/4] scripts/qemugdb: timers: Fix KeyError in 'qemu timers'
- command
-Date: Tue,  2 Dec 2025 18:31:17 +0200
-Message-ID: <20251202163119.363969-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 3/4] scripts/qemugdb: timers: Improve 'qemu timers' command
+ readability
+Date: Tue,  2 Dec 2025 18:31:18 +0200
+Message-ID: <20251202163119.363969-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251202163119.363969-1-andrey.drobyshev@virtuozzo.com>
 References: <20251202163119.363969-1-andrey.drobyshev@virtuozzo.com>
@@ -65,79 +65,79 @@ X-ClientProxiedBy: FR3P281CA0120.DEUP281.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|GV1PR08MB11051:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb69b59c-f553-439c-aea7-08de31c04654
+X-MS-Office365-Filtering-Correlation-Id: a3703955-4fba-4dcc-de9f-08de31c04780
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|1800799024|366016|376014|52116014|38350700014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ew2M01/doGIQbihPYZRnLaySQfB22859HDZ6cBY3NJtMFBRQq+BGFCNewWn8?=
- =?us-ascii?Q?WE1iEzs5achwVrtDvjV5yHPb/a+CG16jdHV85EL48O4t1EPB0Q2LQQ6WT2qw?=
- =?us-ascii?Q?HrJ16cllJGmNPpZerxIcIHo3VKlgu16ao3MuvJ1dRWoESVsFh42/pquewHdn?=
- =?us-ascii?Q?6c/9YwQ03DYzaq0KnWJtIjAiykCSl+h5vBWLAI9yqtDToqr0jwZgibu6Uyey?=
- =?us-ascii?Q?2lzHFw0O3YQWFs25tEvHOhzEpib+bymlrMbY9BW5C1W8YmD2Kc2xgoueR0A0?=
- =?us-ascii?Q?omx/zz54IHpaal480wkpS3Fvz58AuEoMerxeXlEobQ1qUspkloGAwzJ4zTsd?=
- =?us-ascii?Q?mUvg1OKI3eXmO1osynDECaeI3LoQXSvom8+7KyA/D+usmtpuJ+G3sLX4LN86?=
- =?us-ascii?Q?CyJgDC3MgcRLuoeASsbipsZGLxBjsnR5gfzlpPi5jPTBGOvnVIRb6pkbk+q9?=
- =?us-ascii?Q?INWqOe0rbJKSMNvYtgMjjzL2ax8+lmUDlq460O4G1qBlXZYNpRgfCPN4GnLK?=
- =?us-ascii?Q?IXnRhzgSh+EwTmBOaeudaGwd0vnF9k8bzQdedoruifFwNUvh9QxcP/vqX7il?=
- =?us-ascii?Q?p2Eifub4+CrgdBmAjSZSdL5xKJ1r/ZsjCJD3hE7KLVCyqCRNU8KOqvi64Inl?=
- =?us-ascii?Q?NLHhZsabsKH5QteRwlCl9DxnSEfsCQT8llR/wV1J1aPtkZZORqax6o6ETsTq?=
- =?us-ascii?Q?9LbfHyXMjmDPJ/5NQlyK/cfs4kTTTR3VF9X9LMUt8apSP/OpXu5+1NhyfZ08?=
- =?us-ascii?Q?H0XrepPluvEcaXyD9BIbGskCyBK9iA13ppi5PCUmqa40u5iRdYsF9Svuli/K?=
- =?us-ascii?Q?VFG5C+P0kmR4F0Fw2Lk+lVhXP/Xa9IxQcE/yaHC8RGY1sIBosiynNlpSbHxR?=
- =?us-ascii?Q?iWshLUdiuh5J5uMrTnCIhQQw82b+TgYFJG7WcagDBtU25X6yklqASlWIaWMS?=
- =?us-ascii?Q?bDi46EvzRos0SDzUD/tn3C7pqJlkaLahmpIsidqcTGA/qLKZpIEH8onyt0Yu?=
- =?us-ascii?Q?/XWT6bFPx0izU13BEWbxSSwPEX7SUJL0/O5RjgqP5bbcoK+8WbQ0yAQw7ame?=
- =?us-ascii?Q?myekEoGWziZCRgyfUGRONScKgPXnBVZkRrxXtqTlrCjIGWnqAES/VBedAeu6?=
- =?us-ascii?Q?uNcVM6AkXPUwM9tJZf571b4SKQXn6eV2f0hOFyuGisGKSDtB1sLixHop9RhF?=
- =?us-ascii?Q?Fzh+NSRU3m8A6TOD/uD7PXCjJwNUC37LchhhO5qAHtmJ5fXfqmt5Oyf1qqth?=
- =?us-ascii?Q?TiKt/XxR6AkwmYEpebXKCh2mRUNu+2o9HBDgHgonRWtGikhxWCz8/YvEDLCK?=
- =?us-ascii?Q?NhNK+s+fnafPsnb2V2IYzvrMDiLBAXt+E3nRz5tdKATY3hNmrU5mNlX3e9Ft?=
- =?us-ascii?Q?BNYTteNWjCuVKF5eP9J2C0SV4FXi97KzaIqCHIyl+U8pCIzxXWQlXPhd8mNT?=
- =?us-ascii?Q?BSE6Sfn5a2BCEhFwCqAxfHR5wq9nIWjKWu1NJLELoikIijiBmu790SJwInUL?=
- =?us-ascii?Q?DVtI1I2VKiYtpObjdZdxN432CWIXiC2elRls?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?tWB7C+uqiSw7FPPjEPIBIuQUXB/Mh9lhPofCZ7CH6DNid3Nb/S0Nf4yulhKM?=
+ =?us-ascii?Q?2DAQ3NRw6z5cxLe+2vjalqZpyf2cKPJZEgktsuxJdGV8FEWBuhq9uugxAXWE?=
+ =?us-ascii?Q?iAQf0MxMl2gq2rDTH8ZitRf9crvj8IekaKpvoMqJmLThmlLxuNFTgwjXkYgQ?=
+ =?us-ascii?Q?rrq6KQ4ApteTN08wc6uDTzb91ys89ok0PdbeCoY3qPleyrtaV6ZFi9EvZAEk?=
+ =?us-ascii?Q?9gvWbTF2Bi7Ik6sj22paGcMT9t3lUapCMYUtg/hzKENPShsMBIvnZSCKy5Ka?=
+ =?us-ascii?Q?gdiJleC5vU9IBYc6IesrhfMofNsNdQryn27RtS9a+jWTGCgCyMNEMsrl82/E?=
+ =?us-ascii?Q?eWQSG1a4e5iF8ZBUxv/z97YS2VDxmT2NPREbGDPT25FUdulVCbDfFxaewxNa?=
+ =?us-ascii?Q?Xe2tE4sga+ocRKqzr+QF9YUL7s+wUh6j2qHJ4/W1y/i7OQxXz/xhOxLCEhwj?=
+ =?us-ascii?Q?LYe6iw3lUjwtSF9rCkmphD1y4cHgQfriv+c1IExUIBf16G69E/8Yh+63qiju?=
+ =?us-ascii?Q?LTSl3MtDCoDyV5uEhB2ey06UcnYy/n6vLiNYciviUcd2XcYzvQh4YY/To1np?=
+ =?us-ascii?Q?cDdVEsT24kz9ZHlj7ikhjb6lzWUNMf+Ug3iFQxJlL1cauhFwDDBQRBanCxtF?=
+ =?us-ascii?Q?IwJhbWq8SMBcTZedSu9aSPyJegVEIKusGAdOq5S1zP7cX1sNBuftR7Pa5wiK?=
+ =?us-ascii?Q?GmXd/akWyNf6KH9O7gMqc/pkrLm7SC2hoGijMjjBOjGIjeIw+WEmfPb+fpdL?=
+ =?us-ascii?Q?pUfZ5/qbD+sjcmqbAp7lplFPP4toy1sXPp0gb5TpuFfQOi717C2GwMZyBpoZ?=
+ =?us-ascii?Q?rQ879ztTuLCARhpISq+c2szAwOp0sJp99qucXZ/b0E1GjlXWzIXXJyRL0Lve?=
+ =?us-ascii?Q?wC4po14pBANNZg+zNekXgtPVtI+X2gaVby++RT/q9ggI04RApdymL0BPyz0f?=
+ =?us-ascii?Q?TMFwO532ISPpKCTO1jYO/VxGN2Dy0bnABIxAJswOIkMbbtuDxijkPC7MFC2T?=
+ =?us-ascii?Q?fR4EKu7xGsAzZSzc1PGxPuR0+XoeogesbZcYVxM0iqpjrXP89rKemyiObk8J?=
+ =?us-ascii?Q?fbb0t25AICOpS/cF2HSeRYLibikbOh6umb56FSZhIVJSKkDK/SHaBpLHkpJF?=
+ =?us-ascii?Q?kBZx4GtgVx6reFMrQ3m8VOWYO9H3NojoU4tCk1jDxEH6ztEG+henkl08P/DX?=
+ =?us-ascii?Q?x/WAM91evfTjO8MuRfa/RoTVlTLenQe/gaBeuPnjdMfPeWFRhe3TMK+F5RqA?=
+ =?us-ascii?Q?lyxxOtRd/jCBqheCg6m4G8v7Urd0i5giD3+HTtwV2TJiVQZOgyeqL59tjRzj?=
+ =?us-ascii?Q?xeBJ0kAtzsfdQuwwoJJm3b0Y0lGfpCs/tj40KKxf6M5UqEoWIeF/LexCxqfw?=
+ =?us-ascii?Q?Xj3uoDgq+jzEmhgeOV1WDxy+z2uE4+IdB+yLSIR3eAiVYBbK/whchdtNwBHi?=
+ =?us-ascii?Q?mLvFdKUM22iUFPh4aiZ0NVpgq6y5x4NMBqn3osRJVuIo85JOXWNNxco7rH2n?=
+ =?us-ascii?Q?Y07N91rcTNsBUMCUMEXdqudUbvdtoScqXynj?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014); DIR:OUT;
  SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Uqrc4RnhFxkzPnfktQAXS7Nmb43Za2pRtmuM6ked2DQzbhe4aC3VLKqkvH0E?=
- =?us-ascii?Q?9eB5cOMVzPYSSFlgJJQ3VncXa3LytIt0YdI8Xcp+3mA/g8x0IfN4LsRbwvHI?=
- =?us-ascii?Q?/7AjJe+U7Zl9QE1xN0D5Uyvmx/UV7azzzjXuj7Pn3nPRxw/G4VItzzrBaC7/?=
- =?us-ascii?Q?GDaZ2TkEsHH0DdW+0VTtqTHX6p7fCUEzTXOTi9MYUMrVq/BdrtpjixdvahsE?=
- =?us-ascii?Q?hsmxKk+cJZrXHWt6gUMuBAN58RJNEq/t+ohICkwMGEiykGUsmC35CmWlHCCq?=
- =?us-ascii?Q?X06Yd9orG5RmJ0yKasNqZE7efPea6pqwlotU4JPXwcmBlrNVUzyAX+StMjyE?=
- =?us-ascii?Q?wfZy7fdQunUDqZKa9c/7fnEee+rJ8rIJTkT1gejFklDUJwuppbK8cedKuHSa?=
- =?us-ascii?Q?1VbEGx2MM0fW5WhXrNg3VK/cIXNXb4zBC24yxJIW1H6zzzs5tmbU7KdJbAQx?=
- =?us-ascii?Q?08v2cW7pgLznR7a3n+A6wxkPPQnsilcwuRYu1hdeNrC6lRa8O3AC62F+rGYE?=
- =?us-ascii?Q?1kKAeDfHQPYBy29Q2ZNzGor60W9/Q8bLuIwPkCfS5uOIOE/BEMkWWbBf2/6Q?=
- =?us-ascii?Q?jq4KSBS1/9YWm5fvWqeG9iK8TlDkPdj/jkPJuYLsHElK14hmI+J8fFVrgQoi?=
- =?us-ascii?Q?SA+qD1g/vr8+yWIK7m1/C0jHRNOJulGqN/EtxVnPKrx9MOZYe+2FJLWOB2ar?=
- =?us-ascii?Q?H79iMsahPIcZ+zAyPo/nZz/qIcqXNmZyMvHij/pw9iDlovBvUirehh1HVWvh?=
- =?us-ascii?Q?O+eWHxkReq26bTeeW4/BVUGONMqtWcjBtl52klNrN/8xSvkUPUsHf8Afn8YK?=
- =?us-ascii?Q?onFpphxMivAzuVDJIwNM14oxKyOB1dWpnvlbND+3uLB45OrGOGY0+GOLi4b/?=
- =?us-ascii?Q?bQlOzCE6zpXApiG0Tj7klyRfkq3CuWt/Nk8YjU2HkT+hpqqpSKpSvFuEDyI4?=
- =?us-ascii?Q?L5AQ8FKy7BKsjQYcqM67jwI25T08dawM1Vyzoe9szoxfRQ45q38QuSDAmvc/?=
- =?us-ascii?Q?81kWWjpiSz065RRGWNn6JjE6iSY5Dk0Lp7C5sAWX87/DJ8edyUlt5Ce2kr8L?=
- =?us-ascii?Q?JxepuTY3Qn3U/o1BSez2efkPtwaEbyCfO7s/EwvlF8ke+JFfQJIiQwg4uuCl?=
- =?us-ascii?Q?NunBdMQX8AcSuy+6e5sy+dvbQ07V5dxsHHXH5C24wqhWvgbhPk+X8TTQNWqD?=
- =?us-ascii?Q?gEBLHVYTu/ns37ReBauoLhS7l/tawLYuSAE42KK3oabPbZRgPSVq/rYBbR6d?=
- =?us-ascii?Q?6mCIWZB+NgOzggz/Ncwt3qr/Q6LXjCnP8i6nsDj2I0dp11nRipaNb9P8dN1g?=
- =?us-ascii?Q?LDodiCBA4AK4gaxKAHT0HfGKNFc2I+goPG1RTkYZgabKlwT8zhhPv+hI5scT?=
- =?us-ascii?Q?hP+WR+69TpREKRUKcHBpuPBFDFYIAG+rss56nSVo0V04tuBmKVL1kLJMuwJF?=
- =?us-ascii?Q?s6hgttN+J7bXswickuDOgdxiU8p5gpMQN1KnEkFaIZ6ZWjbBvyLH0dPbSe6y?=
- =?us-ascii?Q?u5nAonfUVA3YPHVs7VsEv4Ti4LTI/RBkqd58JBEl3p+lYAu2+iaM2GdKoj5A?=
- =?us-ascii?Q?5n7kWdBkKuTOGZSgWOi1G03v5gD60fecI/NcK9r7xI7JjCd1SGhGN3pRIbta?=
- =?us-ascii?Q?Sg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yesKUtoiK2akKcNwiHDM93PX1hMh/Yo6EVKT2mqzOs4ie3+WSl19UczRXtT1?=
+ =?us-ascii?Q?eFrFAAHJrFATEDDpbsmyIimPbpkry+vwXhFhv4pdsTnwzYxOKc3sVPWw2CaP?=
+ =?us-ascii?Q?gY30sUkbDfjX4juaV6HAFjo6wVdyMggcKKHU/udzv/goraEqJyLmfpZnI7Pg?=
+ =?us-ascii?Q?kmu5fIpB8iQ3zFA1oRcFlzFVIAXkNuULEfvu/8y2CI6T6OWJQBsWQPnvJrPJ?=
+ =?us-ascii?Q?Sv7vt9y93izOc/xDSaiLiOE1rN0GrawpMZ1ls31bq1pd4nCToXi65F67XFi0?=
+ =?us-ascii?Q?SlJaeN+qx/1ykqN5Fvbqx5FAM+xZihKZFg/RZG03tqU7QkktvrGK/qO4G1Oq?=
+ =?us-ascii?Q?6sU+AZSLZ96GqnCOek9iXaaTYdROosyKFPgYFQalrut6gOVk7hFi5eWs7otL?=
+ =?us-ascii?Q?kjhjS0LvaGuVxYQXVtXy0NF9+r0KyDmku8quZv03E4N9iKdPVZ1jhpKQR3ob?=
+ =?us-ascii?Q?N0dp2EdkmtrJH9oRNd9NlHHPiSnjza9RTB/2joX3hzFWr5VFJPwqA93At4KJ?=
+ =?us-ascii?Q?v1tr8VnII27SntKzMj8R/BugO2B1CnOg8e7XPGOgmrDPEo/Jk/EKg+w9fBJ1?=
+ =?us-ascii?Q?LHr9+VUGhFHF0WZRTeySf/vgR4CozOvJvdsCeEkJkbKX/toiOpSBPC5QO2+x?=
+ =?us-ascii?Q?f7RlC1+dDFs/PnWLlHDdIhrdj0T2AzRTaXgWkIJE6fFypfaUhdh/By4pU+o3?=
+ =?us-ascii?Q?D28hEo3lV8KUytgGQR8juxzSOZUbd9elxYIiEhmGgUuHrcxz2Fc1lAYtuI2q?=
+ =?us-ascii?Q?4BTDNCKP8uWyiHfhbY5G8qblflFp32o9sirLdEBe04eEiS15AVIy1wV1n4v2?=
+ =?us-ascii?Q?BmqvUl3ndpVDtT5v/CXDx3FTM7aE6yER3hfdjGDjnErmzyEZ4T0US8rCeUJ5?=
+ =?us-ascii?Q?v6Ax491TNxPyaoveOa9t1Lk3CqdoCsoMIf615hglGZ4N11NFT1oVNa2MITeG?=
+ =?us-ascii?Q?NkvZBivBNQQiOvH1x0ENkuvo2H7PPaRZnkYPqKx9h52J95ag0tRFJqqslvm8?=
+ =?us-ascii?Q?XioLb7lK+omXV5YdBgXHu7gEEGq1xcisrF6QMCC7kebM63c4ohUEo1G7yjcm?=
+ =?us-ascii?Q?W2jofW9mUWBiYaWxKgFw61ZREGLxrtm7pUZJanoHLbavJVbFFxQZdt0zllHV?=
+ =?us-ascii?Q?ynoV4UNyWkt75XQ3rB+kPXINMjlWA7Rzjhwsr8aDnLxG4kPX11Wrp0JQMDbT?=
+ =?us-ascii?Q?tu7/OEEeigQ4Pmudc9it4LPCUprsEcoDEAlUjd7CYsP7wufVk8Iar5hxBLr5?=
+ =?us-ascii?Q?nSsSQYqQ+vOdw0rNpLTKzF5X7Zw2CLzHBvihIHmnr2x9mBOodUING0DKzGP7?=
+ =?us-ascii?Q?5V89pza/eMGnbCgpZS+vmD3Ka2g0/Ld/pJu/Xrz7TsdY8EfI+WnLoqLOuEHC?=
+ =?us-ascii?Q?QzXejBkLytwY0151UZCm30f4GZ6U92ix2eJo3cW5q+0wukOFIIdFMtvS4ml1?=
+ =?us-ascii?Q?ESROowl4X/YfQzUk1X9/NRHwBy0Ie5HCkhzujgPWVYF4M5sAHU+tLl0ZDnQk?=
+ =?us-ascii?Q?SIbuzjLRlzIiFrnffftgNs+2p9ffA4pMFksNSQel6YSjLir5WQ2GBaNOakfl?=
+ =?us-ascii?Q?2escbE53Fl+xU5IIGumaTv7lPGcM0qyj8RUZDu+a5nLGK3cNac4RfbSK0kK9?=
+ =?us-ascii?Q?1Q=3D=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb69b59c-f553-439c-aea7-08de31c04654
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3703955-4fba-4dcc-de9f-08de31c04780
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 16:31:42.4209 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 16:31:43.8598 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bYAGMtd7xAVaOO915GSNtcc1oSSmSb258S8qRoxYVCptFHjfo3su3gxNkbFHl/rGcevmFVS9688JzDYZ62yTgCQBp6U5ouw8NILryKf8lnw=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 89+LmZAex99uVWIzRjMLy0mzUg1fmXwEFcCv+CBRYVzKTak52hqMbaA/Ajy0l226AxoI3oSpC5N7nYJ6zBoMT21E76poHkjScGAMhPE8WBk=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB11051
 Received-SPF: pass client-ip=2a01:111:f403:c200::1;
  envelope-from=andrey.drobyshev@virtuozzo.com;
@@ -163,34 +163,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently invoking 'qemu timers' command results into: "gdb.error: There
-is no member named last".  Let's remove the legacy 'last' field from
-QEMUClock, as it was removed in v4.2.0 by the commit 3c2d4c8aa6a
-("timer: last, remove last bits of last").
+* Add the 'attributes' field from QEMUTimer;
+* Stringify the field's value in accordance with macros from
+  include/qemu/timer.h;
+* Make timer expiration times human-readable by converting from nanoseconds
+  to appropriate units (ms/s/min/hrs/days) and showing the scale factor
+  (ns/us/ms/s).
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- scripts/qemugdb/timers.py | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/qemugdb/timers.py | 49 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 5 deletions(-)
 
 diff --git a/scripts/qemugdb/timers.py b/scripts/qemugdb/timers.py
-index 5714f92cc2..1219a96b32 100644
+index 1219a96b32..916c71b74a 100644
 --- a/scripts/qemugdb/timers.py
 +++ b/scripts/qemugdb/timers.py
-@@ -36,10 +36,9 @@ def dump_timers(self, timer):
+@@ -21,14 +21,53 @@ def __init__(self):
+         gdb.Command.__init__(self, 'qemu timers', gdb.COMMAND_DATA,
+                              gdb.COMPLETE_NONE)
  
-     def process_timerlist(self, tlist, ttype):
-         gdb.write("Processing %s timers\n" % (ttype))
--        gdb.write("  clock %s is enabled:%s, last:%s\n" % (
-+        gdb.write("  clock %s is enabled:%s\n" % (
-             tlist['clock']['type'],
--            tlist['clock']['enabled'],
--            tlist['clock']['last']))
-+            tlist['clock']['enabled']))
-         if int(tlist['active_timers']) > 0:
-             self.dump_timers(tlist['active_timers'])
++    def _format_expire_time(self, expire_time, scale):
++        "Return human-readable expiry time (ns) with scale info."
++        secs = expire_time / 1e9
++
++        # Select unit and compute value
++        if secs < 1:
++            val, unit = secs * 1000, "ms"
++        elif secs < 60:
++            val, unit = secs, "s"
++        elif secs < 3600:
++            val, unit = secs / 60, "min"
++        elif secs < 86400:
++            val, unit = secs / 3600, "hrs"
++        else:
++            val, unit = secs / 86400, "days"
++
++        scale_map = {1: "ns", 1000: "us", 1000000: "ms",
++                     1000000000: "s"}
++        scale_str = scale_map.get(scale, f"scale={scale}")
++        return f"{val:.2f} {unit} [{scale_str}]"
++
++    def _format_attribute(self, attr):
++        "Given QEMUTimer attributes value, return a human-readable string"
++
++        # From include/qemu/timer.h
++        if attr == 0:
++            value = 'NONE'
++        elif attr == 1 << 0:
++            value = 'ATTR_EXTERNAL'
++        elif attr == int(0xffffffff):
++            value = 'ATTR_ALL'
++        else:
++            value = 'UNKNOWN'
++        return f'{attr} <{value}>'
++
+     def dump_timers(self, timer):
+         "Follow a timer and recursively dump each one in the list."
+         # timer should be of type QemuTimer
+-        gdb.write("    timer %s/%s (cb:%s,opq:%s)\n" % (
+-            timer['expire_time'],
+-            timer['scale'],
+-            timer['cb'],
+-            timer['opaque']))
++        scale = int(timer['scale'])
++        expire_time = int(timer['expire_time'])
++        attributes = int(timer['attributes'])
++
++        time_str = self._format_expire_time(expire_time, scale)
++        attr_str = self._format_attribute(attributes)
++
++        gdb.write(f"    timer at {time_str} (attr:{attr_str}, "
++                  f"cb:{timer['cb']}, opq:{timer['opaque']})\n")
  
+         if int(timer['next']) > 0:
+             self.dump_timers(timer['next'])
 -- 
 2.43.5
 
