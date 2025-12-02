@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69F8C9C17B
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55821C9C15D
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:05:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSsD-0004y4-Fn; Tue, 02 Dec 2025 11:05:05 -0500
+	id 1vQSsF-0005Au-Uh; Tue, 02 Dec 2025 11:05:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSrg-0004mm-JQ; Tue, 02 Dec 2025 11:04:33 -0500
+ id 1vQSro-0004oZ-1H; Tue, 02 Dec 2025 11:04:40 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSrb-00066J-Dt; Tue, 02 Dec 2025 11:04:30 -0500
+ id 1vQSrl-00066J-UD; Tue, 02 Dec 2025 11:04:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764691468; x=1796227468;
+ t=1764691478; x=1796227478;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=e4mdg7MHTyp2siZ7qIaL0Pyfd9suhc4f/nJUY1HSAmA=;
- b=XvcKb9YlglIgDplzbtIgmgtKxXzRbiDw+cgmDqypnS4lP7NKEzoo9ota
- gKmySymw2f25qO1tS89HEjLUGH/K6QqyTwtXTQ1QQhOingnkbklTjN77g
- DqSPDxCDGoIC3ghUvWwFmRmYrzEzVJbu22lV7qHu9yzYNCu+4fvwJBzm3
- qCSAS08mr1bLqEGCbrGF5zZPPJgBdLJ6PvK7dkfkEiYA5HnHE232bmx7F
- V+SIuP6fJuxDdG5rNsvtWROk/51xea2oIBN2+6NVMy78Tr4ix5E8bGT4E
- Ka13tJASS/DfeCEOrsJl8eILougmMEZXesGr8xuKQOYZkLRl/WdAX/GQU Q==;
-X-CSE-ConnectionGUID: FFeQxNzASlWpEr0Cnjlx+Q==
-X-CSE-MsgGUID: 09w7WK/IQKWcI/g1zu66pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142263"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142263"
+ bh=cAs6bw0KmZSVoszi1tKDPUtU38bYlPExdFSpB/hNDPA=;
+ b=LniFwi9E+Ik9P2SiGJ/wWBeSE7lazQzsTXr8oMHjrgKjRDoll1D4tOVX
+ BwSBE9Ewnug0oMnYxNNu88C3MA81iGLee6B2cYEkt1oZ+LPMFle4FE+h6
+ g14Uo8SrGDLMvVkqJuDTEwTBWLEOwnUAJwGSq6GQnadHaZ0czh65I7ZGn
+ eYlXLdNaSq5jyHLGsSUjvWIQw4PYyo7xlEDdm/bb4Mv0tWgu3/o5Wj3Ms
+ NdK7QTDa0yMWJdiQxL0yQmEr/FvHL/BtWseRS59pYqCcwN+B+Pg9lrI87
+ 7UbjXJHR5ipy3TwphrvRH60jE7GStWzszy/eL6bExKklPrP8AQ/MVRJa+ A==;
+X-CSE-ConnectionGUID: 7d0ntzwuTcqrEY2JMnCT5g==
+X-CSE-MsgGUID: BeZ7L3U9R+uJk3N9F0oKLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142307"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142307"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:04:26 -0800
-X-CSE-ConnectionGUID: UuxHKMjhRFmkTkj/MwEgmQ==
-X-CSE-MsgGUID: Ws8UnzFvTwONA3cAGiGF4Q==
+ 02 Dec 2025 08:04:35 -0800
+X-CSE-ConnectionGUID: yVI0wB3VSS+Uwfk62bsVGw==
+X-CSE-MsgGUID: /Z51xDunQSKg1vLyWrR0Fw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199536935"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199536970"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:04:17 -0800
+ by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:04:26 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,9 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 02/28] tests/acpi: Allow DSDT table change for x86 machines
-Date: Wed,  3 Dec 2025 00:28:09 +0800
-Message-Id: <20251202162835.3227894-3-zhao1.liu@intel.com>
+Subject: [PATCH v5 03/28] pc: Start with modern CPU hotplug interface by
+ default
+Date: Wed,  3 Dec 2025 00:28:10 +0800
+Message-Id: <20251202162835.3227894-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
@@ -105,8 +106,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-Before dropping legacy CPU hotplug code, mark and allow the affected
-ACPI tables, to avoid breaking ACPI table testing.
+For compatibility reasons PC/Q35 will start with legacy CPU hotplug
+interface by default but with new CPU hotplug AML code since 2.7
+machine type (in commit 679dd1a957df ("pc: use new CPU hotplug interface
+since 2.7 machine type")). In that way, legacy firmware that doesn't use
+QEMU generated ACPI tables was able to continue using legacy CPU hotplug
+interface.
+
+While later machine types, with firmware supporting QEMU provided ACPI
+tables, generate new CPU hotplug AML, which will switch to new CPU
+hotplug interface when guest OS executes its _INI method on ACPI tables
+loading.
+
+Since 2.6 machine type is now gone, and consider that the legacy BIOS
+(based on QEMU ACPI prior to v2.7) should be no longer in use, previous
+compatibility requirements are no longer necessary. So initialize
+'modern' hotplug directly from the very beginning for PC/Q35 machines
+with cpu_hotplug_hw_init(), and drop _INIT method.
+
+Additionally, remove the checks and settings around cpu_hotplug_legacy
+in cpuhp VMState (for piix4 & ich9), to eliminate the risk of
+segmentation faults, as gpe_cpu no longer has the opportunity to be
+initialized. This is safe because all hotplug now start with the modern
+way, and it's impossible to switch to legacy way at runtime (even the
+"cpu-hotplug-legacy" properties does not allow it either).
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
@@ -116,57 +139,169 @@ Changes since v4:
 
 [*]: https://lore.kernel.org/qemu-devel/20251031142825.179239-1-imammedo@redhat.com/
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 42 +++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ hw/acpi/cpu.c                  | 10 ----------
+ hw/acpi/ich9.c                 | 22 +++-------------------
+ hw/acpi/piix4.c                | 21 +++------------------
+ hw/i386/acpi-build.c           |  2 +-
+ hw/loongarch/virt-acpi-build.c |  1 -
+ include/hw/acpi/cpu.h          |  1 -
+ 6 files changed, 7 insertions(+), 50 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..eed8ded69335 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,43 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/pc/DSDT",
-+"tests/data/acpi/x86/pc/DSDT.bridge",
-+"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-+"tests/data/acpi/x86/pc/DSDT.cphp",
-+"tests/data/acpi/x86/pc/DSDT.numamem",
-+"tests/data/acpi/x86/pc/DSDT.nohpet",
-+"tests/data/acpi/x86/pc/DSDT.memhp",
-+"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-+"tests/data/acpi/x86/pc/DSDT.acpihmat",
-+"tests/data/acpi/x86/pc/DSDT.acpierst",
-+"tests/data/acpi/x86/pc/DSDT.roothp",
-+"tests/data/acpi/x86/pc/DSDT.hpbridge",
-+"tests/data/acpi/x86/pc/DSDT.hpbrroot",
-+"tests/data/acpi/x86/q35/DSDT",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
-+"tests/data/acpi/x86/q35/DSDT.bridge",
-+"tests/data/acpi/x86/q35/DSDT.noacpihp",
-+"tests/data/acpi/x86/q35/DSDT.multi-bridge",
-+"tests/data/acpi/x86/q35/DSDT.ipmibt",
-+"tests/data/acpi/x86/q35/DSDT.cphp",
-+"tests/data/acpi/x86/q35/DSDT.numamem",
-+"tests/data/acpi/x86/q35/DSDT.nohpet",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x",
-+"tests/data/acpi/x86/q35/DSDT.memhp",
-+"tests/data/acpi/x86/q35/DSDT.dimmpxm",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat",
-+"tests/data/acpi/x86/q35/DSDT.mmio64",
-+"tests/data/acpi/x86/q35/DSDT.acpierst",
-+"tests/data/acpi/x86/q35/DSDT.applesmc",
-+"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
-+"tests/data/acpi/x86/q35/DSDT.ivrs",
-+"tests/data/acpi/x86/q35/DSDT.type4-count",
-+"tests/data/acpi/x86/q35/DSDT.core-count",
-+"tests/data/acpi/x86/q35/DSDT.core-count2",
-+"tests/data/acpi/x86/q35/DSDT.thread-count",
-+"tests/data/acpi/x86/q35/DSDT.thread-count2",
-+"tests/data/acpi/x86/q35/DSDT.viot",
-+"tests/data/acpi/x86/q35/DSDT.cxl",
-+"tests/data/acpi/x86/q35/DSDT.ipmismbus",
-+"tests/data/acpi/x86/q35/DSDT.xapic",
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index 6f1ae79edbf3..d63ca83c1bcd 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -408,16 +408,6 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         aml_append(field, aml_reserved_field(4 * 8));
+         aml_append(field, aml_named_field(CPU_DATA, 32));
+         aml_append(cpu_ctrl_dev, field);
+-
+-        if (opts.has_legacy_cphp) {
+-            method = aml_method("_INI", 0, AML_SERIALIZED);
+-            /* switch off legacy CPU hotplug HW and use new one,
+-             * on reboot system is in new mode and writing 0
+-             * in CPU_SELECTOR selects BSP, which is NOP at
+-             * the time _INI is called */
+-            aml_append(method, aml_store(zero, aml_name(CPU_SELECTOR)));
+-            aml_append(cpu_ctrl_dev, method);
+-        }
+     }
+     aml_append(sb_scope, cpu_ctrl_dev);
+ 
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 2b3b493c014b..54590129c695 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -183,26 +183,10 @@ static const VMStateDescription vmstate_tco_io_state = {
+     }
+ };
+ 
+-static bool vmstate_test_use_cpuhp(void *opaque)
+-{
+-    ICH9LPCPMRegs *s = opaque;
+-    return !s->cpu_hotplug_legacy;
+-}
+-
+-static int vmstate_cpuhp_pre_load(void *opaque)
+-{
+-    ICH9LPCPMRegs *s = opaque;
+-    Object *obj = OBJECT(s->gpe_cpu.device);
+-    object_property_set_bool(obj, "cpu-hotplug-legacy", false, &error_abort);
+-    return 0;
+-}
+-
+ static const VMStateDescription vmstate_cpuhp_state = {
+     .name = "ich9_pm/cpuhp",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = vmstate_test_use_cpuhp,
+-    .pre_load = vmstate_cpuhp_pre_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_CPU_HOTPLUG(cpuhp_state, ICH9LPCPMRegs),
+         VMSTATE_END_OF_LIST()
+@@ -338,8 +322,8 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+     pm->powerdown_notifier.notify = pm_powerdown_req;
+     qemu_register_powerdown_notifier(&pm->powerdown_notifier);
+ 
+-    legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
+-        OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
++    cpu_hotplug_hw_init(pci_address_space_io(lpc_pci),
++        OBJECT(lpc_pci), &pm->cpuhp_state, ICH9_CPU_HOTPLUG_IO_BASE);
+ 
+     acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
+                              &pm->acpi_memory_hotplug,
+@@ -419,7 +403,7 @@ void ich9_pm_add_properties(Object *obj, ICH9LPCPMRegs *pm)
+ {
+     static const uint32_t gpe0_len = ICH9_PMIO_GPE0_LEN;
+     pm->acpi_memory_hotplug.is_enabled = true;
+-    pm->cpu_hotplug_legacy = true;
++    pm->cpu_hotplug_legacy = false;
+     pm->disable_s3 = 0;
+     pm->disable_s4 = 0;
+     pm->s4_val = 2;
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index 7a18f18dda21..a7a29b0d09a9 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -195,25 +195,10 @@ static const VMStateDescription vmstate_memhp_state = {
+     }
+ };
+ 
+-static bool vmstate_test_use_cpuhp(void *opaque)
+-{
+-    PIIX4PMState *s = opaque;
+-    return !s->cpu_hotplug_legacy;
+-}
+-
+-static int vmstate_cpuhp_pre_load(void *opaque)
+-{
+-    Object *obj = OBJECT(opaque);
+-    object_property_set_bool(obj, "cpu-hotplug-legacy", false, &error_abort);
+-    return 0;
+-}
+-
+ static const VMStateDescription vmstate_cpuhp_state = {
+     .name = "piix4_pm/cpuhp",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = vmstate_test_use_cpuhp,
+-    .pre_load = vmstate_cpuhp_pre_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_CPU_HOTPLUG(cpuhp_state, PIIX4PMState),
+         VMSTATE_END_OF_LIST()
+@@ -573,12 +558,12 @@ static void piix4_acpi_system_hot_add_init(MemoryRegion *parent,
+         qbus_set_hotplug_handler(BUS(pci_get_bus(PCI_DEVICE(s))), OBJECT(s));
+     }
+ 
+-    s->cpu_hotplug_legacy = true;
++    s->cpu_hotplug_legacy = false;
+     object_property_add_bool(OBJECT(s), "cpu-hotplug-legacy",
+                              piix4_get_cpu_hotplug_legacy,
+                              piix4_set_cpu_hotplug_legacy);
+-    legacy_acpi_cpu_hotplug_init(parent, OBJECT(s), &s->gpe_cpu,
+-                                 PIIX4_CPU_HOTPLUG_IO_BASE);
++    cpu_hotplug_hw_init(parent, OBJECT(s), &s->cpuhp_state,
++                        PIIX4_CPU_HOTPLUG_IO_BASE);
+ 
+     if (s->acpi_memory_hotplug.is_enabled) {
+         acpi_memory_hotplug_init(parent, OBJECT(s), &s->acpi_memory_hotplug,
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 9446a9f862ca..23147ddc25e7 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -964,7 +964,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         build_legacy_cpu_hotplug_aml(dsdt, machine, pm->cpu_hp_io_base);
+     } else {
+         CPUHotplugFeatures opts = {
+-            .acpi_1_compatible = true, .has_legacy_cphp = true,
++            .acpi_1_compatible = true,
+             .smi_path = pm->smi_on_cpuhp ? "\\_SB.PCI0.SMI0.SMIC" : NULL,
+             .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
+         };
+diff --git a/hw/loongarch/virt-acpi-build.c b/hw/loongarch/virt-acpi-build.c
+index 3694c9827f04..8d01c8e3de87 100644
+--- a/hw/loongarch/virt-acpi-build.c
++++ b/hw/loongarch/virt-acpi-build.c
+@@ -369,7 +369,6 @@ build_la_ged_aml(Aml *dsdt, MachineState *machine)
+ 
+     if (event & ACPI_GED_CPU_HOTPLUG_EVT) {
+         opts.acpi_1_compatible = false;
+-        opts.has_legacy_cphp = false;
+         opts.fw_unplugs_cpu = false;
+         opts.smi_path = NULL;
+ 
+diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+index 32654dc274fd..2cb0ca4f3dce 100644
+--- a/include/hw/acpi/cpu.h
++++ b/include/hw/acpi/cpu.h
+@@ -54,7 +54,6 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+ 
+ typedef struct CPUHotplugFeatures {
+     bool acpi_1_compatible;
+-    bool has_legacy_cphp;
+     bool fw_unplugs_cpu;
+     const char *smi_path;
+ } CPUHotplugFeatures;
 -- 
 2.34.1
 
