@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67971C9C41B
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 443A0C9C431
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTR9-0001J4-JP; Tue, 02 Dec 2025 11:41:11 -0500
+	id 1vQTRA-0001Sd-Ue; Tue, 02 Dec 2025 11:41:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQw-00013c-47
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:59 -0500
+ id 1vQTR0-0001Ak-Ew
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:41:03 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQt-0002BI-IW
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:57 -0500
+ id 1vQTQy-0002FS-9d
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:41:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764693655; x=1796229655;
+ t=1764693660; x=1796229660;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yma8Elypab7lSdreYaeRchfYeGC+2elRnGnxOQ2FVyQ=;
- b=imvZ0kak9g3p4jEpRvoTa0NL1CUqBvPyHCi2GlBUxgypCKCTlDRFmyP2
- 2IaK72DbFhZx/2tTKBQ4nv2pN5vUypgbhbqQzL8LzsEGXEa8O6CjDMg35
- mxAEZzTyQ1dMsFBa111kTGA395tC1ELHziFMEnLtGue4sKkdltfzcGNx/
- qAv9ZX927kD3zOJ5q7LT1q8tIi88v/m4iLO/Tg4k0l4QcH38RFlr1f47Q
- 3fiuyRG0qF0/P2lNq2oZv9SHiY4RwP12Dh1UNUiRuewQZTmH/xIk51aRC
- CzgPlYcAnTME6jG+DvJK3S6SM/9NBsSNYfVEltlOI2wOQuSWO1gJEXzw1 A==;
-X-CSE-ConnectionGUID: zg62bnBVTauoSgw7PcAXew==
-X-CSE-MsgGUID: +KjFaSGiQhO3KRmJiKAwFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555381"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555381"
+ bh=UDxIzRjac8HAVpNVM7Gth/kx7qmxF7rXuv/fqinoc9M=;
+ b=kldSoRgMFkZAp9eRcpyliIG7Hn6H75TU+/W1dkfxF/l5gbqDfTvcI3Sg
+ Z3Nl5wGnMWhH7Uef/4wIbDw4ETg6Bo7JdJInDrevPCDbilfNoABM0yrIi
+ fcJei6b0fWsemuX2d4SG1p9RrMak9qcmvsB/ifHWNa6r8m4KKV+x3pdpw
+ tgxS7PjqRV/8VWRqdP2qHs8P0EVnQq8HiZCzKMMICB06Df+ex7BZ8X/dq
+ FqMyR9vjY1O2XZ7nL683b1Y9DfaMOsvmSPgGyAGZmSSQ9d5WlkO2487Rv
+ Jv5vDOR1dlRJ8iHFH24RdtxR8KzuDu+8mmySmMPyQqpIk37DEjt4F2yaJ w==;
+X-CSE-ConnectionGUID: Lqgpphw+RquYERFWzOrpNg==
+X-CSE-MsgGUID: sYwrfgPYTcWGThkqvdW8dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555403"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555403"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:40:54 -0800
-X-CSE-ConnectionGUID: oIiajSjiRLaglhAyNlQ1gw==
-X-CSE-MsgGUID: NjD/+LT5Qy+0D3kUmtd12w==
+ 02 Dec 2025 08:40:58 -0800
+X-CSE-ConnectionGUID: LB7quNABQlSgELC2e530Kg==
+X-CSE-MsgGUID: +8Z4E16GSoqlahrS++earA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751372"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751422"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:51 -0800
+ by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:55 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 08/10] target/i386: Deprecate fill-mtrr-mask property
-Date: Wed,  3 Dec 2025 01:05:00 +0800
-Message-Id: <20251202170502.3228625-9-zhao1.liu@intel.com>
+Subject: [RFC 09/10] target/i386: Deprecate cpuid-0xb property
+Date: Wed,  3 Dec 2025 01:05:01 +0800
+Message-Id: <20251202170502.3228625-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202170502.3228625-1-zhao1.liu@intel.com>
 References: <20251202170502.3228625-1-zhao1.liu@intel.com>
@@ -88,49 +88,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"fill-mtee-mask" was previously disabled only on PC-Q35-2.6 and
+"cpuid-0xb" was previously disabled only on PC-Q35-2.6 and
 PC-I440FX-2.6 machines, but PC v2.6 machines have been removed.
 
 Considerring it may have external use, so deprecate it before removal.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- docs/about/deprecated.rst | 8 ++++++++
- target/i386/cpu.c         | 2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ docs/about/deprecated.rst | 10 ++++++++++
+ target/i386/cpu.c         |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 9386cffba26d..c60924b4f313 100644
+index c60924b4f313..741c1a71728b 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -487,6 +487,14 @@ Backend ``memory`` (since 9.0)
- CPU device properties
- '''''''''''''''''''''
+@@ -495,6 +495,16 @@ The ``fill-mtrr-mask=true`` fill the bits between 51..number-of-physical-address
+ false only on PC-Q35-2.6 and PC-I440FX-2.6 machines, but PC v2.6 machines have
+ been removed. Deprecate this property to stop external use.
  
-+``fill-mtrr-mask`` on x86 (since 11.0)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++``cpuid-0xb`` on x86 (since 11.0)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
-+The ``fill-mtrr-mask=true`` fill the bits between 51..number-of-physical-address
-+-bits in the MTRR_PHYSMASKn variable range mtrr masks. It was previously set to
-+false only on PC-Q35-2.6 and PC-I440FX-2.6 machines, but PC v2.6 machines have
-+been removed. Deprecate this property to stop external use.
++The ``cpuid-0xb`` is used to control whether to encode CPUID 0xB leaf or not.
++Only legacy x86 CPUs didn't have 0xB leaf, and the ```level``` property can
++control whether CPUID exposes the 0xB leaf and emulate legacy CPUs. This
++property was previously set to false only on PC-Q35-2.6 and PC-I440FX-2.6
++machines, but PC v2.6 machines have been removed. Deprecate this property to
++stop external use.
 +
  ``pmu-num=n`` on RISC-V CPUs (since 8.2)
  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 72c69ba81c1b..1f0a8cb6cec1 100644
+index 1f0a8cb6cec1..ef1ffc4d3d4f 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -9997,7 +9997,7 @@ static const Property x86_cpu_properties[] = {
-     DEFINE_PROP_UINT32("guest-phys-bits", X86CPU, guest_phys_bits, -1),
-     DEFINE_PROP_BOOL("host-phys-bits", X86CPU, host_phys_bits, false),
-     DEFINE_PROP_UINT8("host-phys-bits-limit", X86CPU, host_phys_bits_limit, 0),
--    DEFINE_PROP_BOOL("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
-+    DEFINE_PROP_BOOL_DEPRECATED("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
-     DEFINE_PROP_UINT32("level-func7", X86CPU, env.cpuid_level_func7,
-                        UINT32_MAX),
-     DEFINE_PROP_UINT32("level", X86CPU, env.cpuid_level, UINT32_MAX),
+@@ -10009,7 +10009,7 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_UINT8("avx10-version", X86CPU, env.avx10_version, 0),
+     DEFINE_PROP_UINT64("ucode-rev", X86CPU, ucode_rev, 0),
+     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
+-    DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
++    DEFINE_PROP_BOOL_DEPRECATED("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
+     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
+     DEFINE_PROP_BOOL("x-vendor-cpuid-only-v2", X86CPU, vendor_cpuid_only_v2, true),
+     DEFINE_PROP_BOOL("x-amd-topoext-features-only", X86CPU, amd_topoext_features_only, true),
 -- 
 2.34.1
 
