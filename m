@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02472C9C443
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FECC9C428
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTQn-0000xJ-Do; Tue, 02 Dec 2025 11:40:53 -0500
+	id 1vQTQn-0000xU-EH; Tue, 02 Dec 2025 11:40:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQW-0000wM-Iq
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:32 -0500
+ id 1vQTQX-0000wq-RK
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:34 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQT-0001kv-3D
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:32 -0500
+ id 1vQTQW-0001lq-0b
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764693628; x=1796229628;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/C7u1XHqkgv5wmurxvpA9yZisW+DTSvc6nN/Z0y4L4g=;
- b=HE5sCjDK4J10hBGLRwgI4ms2JGDOMEdk3mvnK8Bsp436Wgs4PDb35Rbh
- vOt7zdDn8aeg+SbteLZtL3+Q3Rk/XtUembe4TtOlxX5qYtaMchtmq+ZVI
- iwf+V29E1RuBRHCqtun3HHHGaOcjzDJxhapio/ANn756n5aWRWO0Xdggx
- MRrEcyBExID4futmlIC4UYqD5M52DDTm9OfpeUajbnir6NkXG7+jEysHe
- taV4X+ehNhR7+TSQ3qyr3iB3SAnzJ+dC+XD5o6TQNixBTOVOnySfk6CwG
- Wt6laHkYpplh2N3OSEmRSb761YGzZ5MCN6JnCjdq1+laVbe1+Cc5N7D65 w==;
-X-CSE-ConnectionGUID: Ebya+j3YSwm5lTroyeXPsQ==
-X-CSE-MsgGUID: dAmsqptGT5KrZKr/ZlNAEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555284"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555284"
+ t=1764693631; x=1796229631;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ri+hE0aEh63QaQ4qr99LpLC5VPDanP5Ow2vhQA4wQY4=;
+ b=ZQEles1fx1bj9wKn7G3WH/FjpM3qGxjfCWDi1KeCrpp8u+wnp5WtSpwd
+ mFB7W054a8R4qpp5OXlOx9Qc51HdCoXA4xdEyFq8fAUyccP7j3EHWT83Z
+ oTaty8MrefP572eVMRYCNkoArZfnlMBL4fiJbiXug0fUOYZcSinF0CJIi
+ 8IRwaS8tQ4VxZuilS6ZGnUkbFhSSY6HvW3fFKeGhHr8n1PP/Q1ODtoVzy
+ YaVtOFqJhb85HfK5/iuhnuilM1yqkjHMUQ+4dZ+GjBf/VYZD81D0I9+/T
+ Nhf5boBPAmhLpXEWiVxI/ug4v0WqG7/WaGVQbfAmRlYToTlQTjNd660F1 g==;
+X-CSE-ConnectionGUID: g5yqNmrXSgSgTocTNlBW5g==
+X-CSE-MsgGUID: DAANyP1DQs+FDJq/cVOGgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555296"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555296"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:40:26 -0800
-X-CSE-ConnectionGUID: ZrL74tyoS+ymLDS+SWv9hg==
-X-CSE-MsgGUID: /5Om67y9SOWwkjO+rK0Y7w==
+ 02 Dec 2025 08:40:29 -0800
+X-CSE-ConnectionGUID: PWHPbr76TMmUfIXFdpdFPg==
+X-CSE-MsgGUID: 1maLxthjSC6dnbTfwtI+ZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751183"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751216"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:23 -0800
+ by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:26 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,10 +55,13 @@ Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 00/10] qom: Support marking object properties as deprecated
-Date: Wed,  3 Dec 2025 01:04:52 +0800
-Message-Id: <20251202170502.3228625-1-zhao1.liu@intel.com>
+Subject: [RFC 01/10] qom: Rename ObjectPropertyFlags to
+ ObjectPropertyAccessorFlags
+Date: Wed,  3 Dec 2025 01:04:53 +0800
+Message-Id: <20251202170502.3228625-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251202170502.3228625-1-zhao1.liu@intel.com>
+References: <20251202170502.3228625-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
@@ -86,128 +89,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+At present, ObjectPropertyFlags is used to select accessors and such
+flags won't be stored in ObjectProperty itself.
 
-This RFC is the follow-up work of v2.6 & v2.7 machines' removal [*], and
-tries to introduce a general way to provide deprecation hint for
-external user.
+So it's not proper to extend this ObjectPropertyFlags for "deprecated"
+or "internal" flags.
 
-Its core idea is to detect external property settings (as well as
-specific internal property settings, such as the compat property).
+Therefore, rename ObjectPropertyFlags to ObjectPropertyAccessorFlags,
+and then the original name ObjectPropertyFlags can be used for other
+cases.
 
-I think deprecated properties and internal-only properties are quite
-similar, as both require consideration of external property usage. But
-the former only triggers a warning, while the latter stops all external
-access attempts.
-
-For simplicity, this RFC series only considers deprecated properties.
-
-
-Brief Introduction
-==================
-
-Now the common (but a bit fragmented) way to mark a property deprecated
-is to add the warning in its accssors, or just document the deprecation
-in docs/about/deprecated.rst without any hint when someone touches that
-property.
-
-Ideally, it's better to provide some hints to external user when he
-tries to set the property via command line or HMP.
-
-But this is pretty inconvenient (even impossible) for such qdev
-properties, which are defined via DEFINE_PROP_* macros in the Property
-array. For qdev properties, their accessors are provided by pre-defined
-PropertyInfo, so that it's possible to modify PropertyInfo for a single
-"deprecated" property.
-
-Then it's necessary to introduce property flags to mark some properties
-as deprecated, and to check the property flags when set the property,
-thereby to print a deprecation warning.
-
-This not only benefits traditional qdev properties but also helps the
-deprecation of generic objects.
-
-Note, internal attempt (except the compat case) should not trigger the
-deprecation warning but external user should see the deprecation
-information.
-
-I think the most complex part is identifying the paths for property
-settings (both external command-line options and internal specific
-configurations). This series currently covers the following scenarios
-(which I consider to be particularly important):
-
-External cases:
-
- 1) External global properties:
-    * -global command line option.
-    * -cpu command line features.
-    * suger properties from object_compat_props[2]
-
- 2) External ("TYPE_USER_CREATABLE") object:
-    * -object command line used for external ("TYPE_USER_CREATABLE")
-      object.
-
- 3) External device:
-    * -device command line - parsed based on keyval or json.
-
- 4) External machine options:
-    * -machine command line - parsed based on keyval.
-
- 5) External accelerator options:
-    * -accel command line.
-
- 6) HMP command:
-    * "qom-set" command.
-
-
-Internal cases:
- 1) internal global properties:
-    * compat properties from object_compat_props[0,1].
-
- 2) Internal machine options:
-    * Builtin default machine options string:
-      MachineClass::default_machine_opts - parsed based on keyval, too.
-
-
-In fact, there are still some special device command lines that haven't
-been considered yet. But I believe the remaining cases can be gradually
-expanded?
-
-If this approach is feasible, it's possible to further introduce an
-"internal" flag to prevent external access to compat property.
-
-
-[*]: hw/i386/pc: Remove deprecated 2.6 and 2.7 PC machines
-     https://lore.kernel.org/qemu-devel/20251202162835.3227894-1-zhao1.liu@intel.com/
-
-Thanks and Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (10):
-  qom: Rename ObjectPropertyFlags to ObjectPropertyAccessorFlags
-  qom: Add basic object property deprecation hint support
-  qom: Check property deprecation flag for global property
-  qom: Check property deprecation flag for properities from qdict
-  system/vl: Check property deprecation flag for properities of
-    accelerator
-  qom/qom-hmp-cmd: Check property deprecation flag for "qom-set" command
-  hw/core/qdev-properties: Allow to mark qdev property as deprecated
-  target/i386: Deprecate fill-mtrr-mask property
-  target/i386: Deprecate cpuid-0xb property
-  hw/intc/ioapic: Deprecate version property
+ include/qom/object.h | 28 ++++++++++++++--------------
+ qom/object.c         | 16 ++++++++--------
+ 2 files changed, 22 insertions(+), 22 deletions(-)
 
- docs/about/deprecated.rst    |  31 +++++++++
- hw/core/qdev-properties.c    |  24 +++----
- hw/intc/ioapic.c             |   3 +-
- include/hw/qdev-properties.h |  18 ++++++
- include/qom/object.h         | 120 +++++++++++++++++++++++++++++++----
- qom/object.c                 | 101 ++++++++++++++++++++++-------
- qom/object_interfaces.c      |   2 +-
- qom/qom-hmp-cmds.c           |   2 +-
- system/vl.c                  |   2 +-
- target/i386/cpu.c            |   4 +-
- 10 files changed, 253 insertions(+), 54 deletions(-)
-
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 26df6137b911..3f807a03f5aa 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -1846,14 +1846,14 @@ typedef enum {
+     OBJ_PROP_FLAG_WRITE = 1 << 1,
+     /* Automatically add a getter and a setter to the property */
+     OBJ_PROP_FLAG_READWRITE = (OBJ_PROP_FLAG_READ | OBJ_PROP_FLAG_WRITE),
+-} ObjectPropertyFlags;
++} ObjectPropertyAccessorFlags;
+ 
+ /**
+  * object_property_add_uint8_ptr:
+  * @obj: the object to add a property to
+  * @name: the name of the property
+  * @v: pointer to value
+- * @flags: bitwise-or'd ObjectPropertyFlags
++ * @flags: bitwise-or'd ObjectPropertyAccessorFlags
+  *
+  * Add an integer property in memory.  This function will add a
+  * property of type 'uint8'.
+@@ -1861,20 +1861,20 @@ typedef enum {
+  * Returns: The newly added property on success, or %NULL on failure.
+  */
+ ObjectProperty *object_property_add_uint8_ptr(Object *obj, const char *name,
+-                                              const uint8_t *v,
+-                                              ObjectPropertyFlags flags);
++                                        const uint8_t *v,
++                                        ObjectPropertyAccessorFlags flags);
+ 
+ ObjectProperty *object_class_property_add_uint8_ptr(ObjectClass *klass,
+                                          const char *name,
+                                          const uint8_t *v,
+-                                         ObjectPropertyFlags flags);
++                                         ObjectPropertyAccessorFlags flags);
+ 
+ /**
+  * object_property_add_uint16_ptr:
+  * @obj: the object to add a property to
+  * @name: the name of the property
+  * @v: pointer to value
+- * @flags: bitwise-or'd ObjectPropertyFlags
++ * @flags: bitwise-or'd ObjectPropertyAccessorFlags
+  *
+  * Add an integer property in memory.  This function will add a
+  * property of type 'uint16'.
+@@ -1883,19 +1883,19 @@ ObjectProperty *object_class_property_add_uint8_ptr(ObjectClass *klass,
+  */
+ ObjectProperty *object_property_add_uint16_ptr(Object *obj, const char *name,
+                                     const uint16_t *v,
+-                                    ObjectPropertyFlags flags);
++                                    ObjectPropertyAccessorFlags flags);
+ 
+ ObjectProperty *object_class_property_add_uint16_ptr(ObjectClass *klass,
+                                           const char *name,
+                                           const uint16_t *v,
+-                                          ObjectPropertyFlags flags);
++                                          ObjectPropertyAccessorFlags flags);
+ 
+ /**
+  * object_property_add_uint32_ptr:
+  * @obj: the object to add a property to
+  * @name: the name of the property
+  * @v: pointer to value
+- * @flags: bitwise-or'd ObjectPropertyFlags
++ * @flags: bitwise-or'd ObjectPropertyAccessorFlags
+  *
+  * Add an integer property in memory.  This function will add a
+  * property of type 'uint32'.
+@@ -1904,19 +1904,19 @@ ObjectProperty *object_class_property_add_uint16_ptr(ObjectClass *klass,
+  */
+ ObjectProperty *object_property_add_uint32_ptr(Object *obj, const char *name,
+                                     const uint32_t *v,
+-                                    ObjectPropertyFlags flags);
++                                    ObjectPropertyAccessorFlags flags);
+ 
+ ObjectProperty *object_class_property_add_uint32_ptr(ObjectClass *klass,
+                                           const char *name,
+                                           const uint32_t *v,
+-                                          ObjectPropertyFlags flags);
++                                          ObjectPropertyAccessorFlags flags);
+ 
+ /**
+  * object_property_add_uint64_ptr:
+  * @obj: the object to add a property to
+  * @name: the name of the property
+  * @v: pointer to value
+- * @flags: bitwise-or'd ObjectPropertyFlags
++ * @flags: bitwise-or'd ObjectPropertyAccessorFlags
+  *
+  * Add an integer property in memory.  This function will add a
+  * property of type 'uint64'.
+@@ -1925,12 +1925,12 @@ ObjectProperty *object_class_property_add_uint32_ptr(ObjectClass *klass,
+  */
+ ObjectProperty *object_property_add_uint64_ptr(Object *obj, const char *name,
+                                     const uint64_t *v,
+-                                    ObjectPropertyFlags flags);
++                                    ObjectPropertyAccessorFlags flags);
+ 
+ ObjectProperty *object_class_property_add_uint64_ptr(ObjectClass *klass,
+                                           const char *name,
+                                           const uint64_t *v,
+-                                          ObjectPropertyFlags flags);
++                                          ObjectPropertyAccessorFlags flags);
+ 
+ /**
+  * object_property_add_alias:
+diff --git a/qom/object.c b/qom/object.c
+index 4f32c1aba7d7..85d31bb64b36 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -2636,7 +2636,7 @@ static void property_set_uint64_ptr(Object *obj, Visitor *v, const char *name,
+ ObjectProperty *
+ object_property_add_uint8_ptr(Object *obj, const char *name,
+                               const uint8_t *v,
+-                              ObjectPropertyFlags flags)
++                              ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2656,7 +2656,7 @@ object_property_add_uint8_ptr(Object *obj, const char *name,
+ ObjectProperty *
+ object_class_property_add_uint8_ptr(ObjectClass *klass, const char *name,
+                                     const uint8_t *v,
+-                                    ObjectPropertyFlags flags)
++                                    ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2676,7 +2676,7 @@ object_class_property_add_uint8_ptr(ObjectClass *klass, const char *name,
+ ObjectProperty *
+ object_property_add_uint16_ptr(Object *obj, const char *name,
+                                const uint16_t *v,
+-                               ObjectPropertyFlags flags)
++                               ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2696,7 +2696,7 @@ object_property_add_uint16_ptr(Object *obj, const char *name,
+ ObjectProperty *
+ object_class_property_add_uint16_ptr(ObjectClass *klass, const char *name,
+                                      const uint16_t *v,
+-                                     ObjectPropertyFlags flags)
++                                     ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2716,7 +2716,7 @@ object_class_property_add_uint16_ptr(ObjectClass *klass, const char *name,
+ ObjectProperty *
+ object_property_add_uint32_ptr(Object *obj, const char *name,
+                                const uint32_t *v,
+-                               ObjectPropertyFlags flags)
++                               ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2736,7 +2736,7 @@ object_property_add_uint32_ptr(Object *obj, const char *name,
+ ObjectProperty *
+ object_class_property_add_uint32_ptr(ObjectClass *klass, const char *name,
+                                      const uint32_t *v,
+-                                     ObjectPropertyFlags flags)
++                                     ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2756,7 +2756,7 @@ object_class_property_add_uint32_ptr(ObjectClass *klass, const char *name,
+ ObjectProperty *
+ object_property_add_uint64_ptr(Object *obj, const char *name,
+                                const uint64_t *v,
+-                               ObjectPropertyFlags flags)
++                               ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
+@@ -2776,7 +2776,7 @@ object_property_add_uint64_ptr(Object *obj, const char *name,
+ ObjectProperty *
+ object_class_property_add_uint64_ptr(ObjectClass *klass, const char *name,
+                                      const uint64_t *v,
+-                                     ObjectPropertyFlags flags)
++                                     ObjectPropertyAccessorFlags flags)
+ {
+     ObjectPropertyAccessor *getter = NULL;
+     ObjectPropertyAccessor *setter = NULL;
 -- 
 2.34.1
 
