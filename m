@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18FAC9BD34
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD32C9BD2D
 	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 15:41:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQRY9-0005GK-Sy; Tue, 02 Dec 2025 09:40:19 -0500
+	id 1vQRY4-0005CW-E1; Tue, 02 Dec 2025 09:40:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
- id 1vQRY2-00058B-2A; Tue, 02 Dec 2025 09:40:10 -0500
+ id 1vQRY2-00058C-3K; Tue, 02 Dec 2025 09:40:10 -0500
 Received: from mail.avm.de ([2001:bf0:244:244::120])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
- id 1vQRXz-0001OP-8y; Tue, 02 Dec 2025 09:40:09 -0500
+ id 1vQRXy-0001Bx-Pi; Tue, 02 Dec 2025 09:40:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
- t=1764686403; bh=jiNBsQqL3y3YuuTa2svOPt+IvT9nmWDVRYocIZVDxks=;
+ t=1764686399; bh=lTNxsXa8TYK2BjPGrbbEcsQCqGwe1ZFE2/2qSJiNLqE=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=gxsLNnNZlclGC61clgOQ+O/PgdjEOTBVTRwn7a0LOj3JcSevm3JZaYk9/LGJr94kx
- YUW8b504gSaAVtbQYl5lpb6JtO5F4/hiZO863AfvPUg3QZwiX0VUdoK0Yrq0B9KDrj
- 2b/1TY56C4O1g8SqSl6HQabiCcblhKnDg9oBjaVo=
+ b=g+VlaWzbegmXgjy6qv35AJuwLR/RpMFr5Y/O9d7qTiTgygq0EQ/LXt+k8xdVbP6uZ
+ 95QhH7PuyFjQKcpDukb2UiqnhndhZDv6+MLPhSiVGsL2M18SLojWEzG5FwOhoiIz3F
+ NIxMopWO+Gs8WArd7EvS6Sfmw7wyKewRuUhoNtSA=
 Received: from [172.16.0.1] (helo=mail.avm.de)
  by mail.avm.de with ESMTP (eXpurgate 4.53.4)
  (envelope-from <c.speich@avm.de>)
- id 692efa3f-a0ff-7f0000032729-7f000001964e-1
+ id 692efa3f-a0ff-7f0000032729-7f000001966e-1
  for <multiple-recipients>; Tue, 02 Dec 2025 15:39:59 +0100
 Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
  by mail.avm.de (Postfix) with ESMTP;
  Tue,  2 Dec 2025 15:39:59 +0100 (CET)
 Received: from [127.0.1.1] ([172.17.89.139])
  by mail-notes.avm.de (HCL Domino Release 14.0FP4)
- with ESMTP id 2025120215400011-18427 ;
+ with ESMTP id 2025120215400011-18428 ;
  Tue, 2 Dec 2025 15:40:00 +0100 
 From: Christian Speich <c.speich@avm.de>
-Date: Tue, 02 Dec 2025 15:39:32 +0100
-Subject: [PATCH v2 2/4] hw/sd/sdhci: Don't use bounce buffer for ADMA
+Date: Tue, 02 Dec 2025 15:39:33 +0100
+Subject: [PATCH v2 3/4] hw/sd/sdcard: Add erase-blocks-as-zero option.
 MIME-Version: 1.0
-Message-Id: <20251202-sdcard-performance-b4-v2-2-d42490b11322@avm.de>
+Message-Id: <20251202-sdcard-performance-b4-v2-3-d42490b11322@avm.de>
 References: <20251202-sdcard-performance-b4-v2-0-d42490b11322@avm.de>
 In-Reply-To: <20251202-sdcard-performance-b4-v2-0-d42490b11322@avm.de>
 To: qemu-devel@nongnu.org
@@ -53,9 +53,9 @@ X-MIMETrack: Itemize by SMTP Server on ANIS1/AVM(Release 14.0FP4|March 10,
 X-TNEFEvaluated: 1
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="utf-8"
-X-purgate-ID: 149429::1764686399-23E0FD7E-E06BB620/0/0
+X-purgate-ID: 149429::1764686399-36E21D7E-56A0AF24/0/0
 X-purgate-type: clean
-X-purgate-size: 6515
+X-purgate-size: 2781
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for
  further information)
@@ -83,155 +83,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, ADMA will temporarily store data into a local bounce buffer
-when transferring it. This will produce unneeded copies of the data and
-limit us to the bounce buffer size for each step.
+Currently, erased blocks are filled with 0xFF. However SCR Bit 55
+(DATA_STAT_AFTER_ERASE) indicates that an erase produces zeros. One of
+them is wrong.
 
-This patch now maps the requested DMA address and passes this buffer
-directly to sdbus_{read,write}_data. This allows to pass much larger
-buffers down to increase the performance. sdbus_{read,write}_data is
-already able to handle arbitrary length and alignments, so we do not
-need to ensure this.
+This patch does two things.
+
+First it fixes the reporting of DATA_STAT_AFTER_ERASE in SCR to
+correctly reflect the content of erased blocks. We also increase the
+Product Revision (REV in CID) to indicate to the guest that
+DATA_STAT_AFTER_ERASE is now reliable.
+
+Secondly, we introduce a erase-blocks-as-zero option, which allows the
+user to choose if erased blocks should contain 0xFF or 0x00. The default
+is still 0xFF to remain compatible with current users.
 
 Signed-off-by: Christian Speich <c.speich@avm.de>
 ---
- hw/sd/sdhci.c | 102 +++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 55 insertions(+), 47 deletions(-)
+ hw/sd/sd.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 3c897e54b721075a3ebd215e027fb73a65ff39b2..94ba23a8da990e69fd59c039e4fdd25b98929dfd 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -774,7 +774,7 @@ static void get_adma_description(SDHCIState *s, ADMADescr *dscr)
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 23764ed99f36cf39ee7abe02f08e51897c05e718..af7e40faf67c66995b2b615080265dc31da150a6 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -139,6 +139,7 @@ struct SDState {
+     /* Static properties */
  
- static void sdhci_do_adma(SDHCIState *s)
- {
--    unsigned int begin, length;
-+    unsigned int length;
-     const uint16_t block_size = s->blksize & BLOCK_SIZE_MASK;
-     const MemTxAttrs attrs = { .memory = true };
-     ADMADescr dscr = {};
-@@ -816,66 +816,74 @@ static void sdhci_do_adma(SDHCIState *s)
-             if (s->trnmod & SDHC_TRNS_READ) {
-                 s->prnsts |= SDHC_DOING_READ;
-                 while (length) {
--                    if (s->data_count == 0) {
--                        sdbus_read_data(&s->sdbus, s->fifo_buffer, block_size);
--                    }
--                    begin = s->data_count;
--                    if ((length + begin) < block_size) {
--                        s->data_count = length + begin;
--                        length = 0;
--                     } else {
--                        s->data_count = block_size;
--                        length -= block_size - begin;
--                    }
--                    res = dma_memory_write(s->dma_as, dscr.addr,
--                                           &s->fifo_buffer[begin],
--                                           s->data_count - begin,
--                                           attrs);
--                    if (res != MEMTX_OK) {
-+                    dma_addr_t dma_len = length;
+     uint8_t spec_version;
++    bool erase_blocks_as_zero;
+     uint64_t boot_part_size;
+     BlockBackend *blk;
+     uint8_t boot_config;
+@@ -409,6 +410,9 @@ static void sd_set_scr(SDState *sd)
+     sd->scr[0] |= 2;            /* Spec Version 2.00 or Version 3.0X */
+     sd->scr[1] = (2 << 4)       /* SDSC Card (Security Version 1.01) */
+                  | 0b0101;      /* 1-bit or 4-bit width bus modes */
++    if (!sd->erase_blocks_as_zero) {
++        sd->scr[1] |= (1 << 7); /* DATA_STAT_AFTER_ERASE: Erase produces 0xFF */
++    }
+     sd->scr[2] = 0x00;          /* Extended Security is not supported. */
+     if (sd->spec_version >= SD_PHY_SPECv3_01_VERS) {
+         sd->scr[2] |= 1 << 7;   /* Spec Version 3.0X */
+@@ -426,7 +430,7 @@ static void sd_set_scr(SDState *sd)
+ #define MID     0xaa
+ #define OID     "XY"
+ #define PNM     "QEMU!"
+-#define PRV     0x01
++#define PRV     0x02
+ #define MDT_YR  2006
+ #define MDT_MON 2
+ 
+@@ -1115,7 +1119,12 @@ static void sd_erase(SDState *sd)
+     sd->erase_end = INVALID_ADDRESS;
+     sd->csd[14] |= 0x40;
+ 
+-    memset(sd->data, 0xff, erase_len);
++    if (sd->erase_blocks_as_zero) {
++        memset(sd->data, 0x0, erase_len);
++    } else {
++        memset(sd->data, 0xFF, erase_len);
++    }
 +
-+                    void *buf = dma_memory_map(s->dma_as, dscr.addr, &dma_len,
-+                                               DMA_DIRECTION_FROM_DEVICE,
-+                                               attrs);
-+
-+                    if (buf == NULL) {
-+                        res = MEMTX_ERROR;
-                         break;
-+                    } else {
-+                        res = MEMTX_OK;
-                     }
--                    dscr.addr += s->data_count - begin;
--                    if (s->data_count == block_size) {
--                        s->data_count = 0;
--                        if (s->trnmod & SDHC_TRNS_BLK_CNT_EN) {
--                            s->blkcnt--;
--                            if (s->blkcnt == 0) {
--                                break;
--                            }
-+
-+                    sdbus_read_data(&s->sdbus, buf, dma_len);
-+                    length -= dma_len;
-+                    dscr.addr += dma_len;
-+
-+                    dma_memory_unmap(s->dma_as, buf, dma_len,
-+                                     DMA_DIRECTION_FROM_DEVICE, dma_len);
-+
-+                    if (s->trnmod & SDHC_TRNS_BLK_CNT_EN) {
-+                        size_t transfered = s->data_count + dma_len;
-+
-+                        s->blkcnt -= transfered / block_size;
-+                        s->data_count = transfered % block_size;
-+
-+                        if (s->blkcnt == 0) {
-+                            s->data_count = 0;
-+                            break;
-                         }
-                     }
-                 }
-             } else {
-                 s->prnsts |= SDHC_DOING_WRITE;
-                 while (length) {
--                    begin = s->data_count;
--                    if ((length + begin) < block_size) {
--                        s->data_count = length + begin;
--                        length = 0;
--                     } else {
--                        s->data_count = block_size;
--                        length -= block_size - begin;
--                    }
--                    res = dma_memory_read(s->dma_as, dscr.addr,
--                                          &s->fifo_buffer[begin],
--                                          s->data_count - begin,
--                                          attrs);
--                    if (res != MEMTX_OK) {
-+                    dma_addr_t dma_len = length;
-+
-+                    void *buf = dma_memory_map(s->dma_as, dscr.addr, &dma_len,
-+                                               DMA_DIRECTION_TO_DEVICE, attrs);
-+
-+                    if (buf == NULL) {
-+                        res = MEMTX_ERROR;
-                         break;
-+                    } else {
-+                        res = MEMTX_OK;
-                     }
--                    dscr.addr += s->data_count - begin;
--                    if (s->data_count == block_size) {
--                        sdbus_write_data(&s->sdbus, s->fifo_buffer, block_size);
--                        s->data_count = 0;
--                        if (s->trnmod & SDHC_TRNS_BLK_CNT_EN) {
--                            s->blkcnt--;
--                            if (s->blkcnt == 0) {
--                                break;
--                            }
-+
-+                    sdbus_write_data(&s->sdbus, buf, dma_len);
-+                    length -= dma_len;
-+                    dscr.addr += dma_len;
-+
-+                    dma_memory_unmap(s->dma_as, buf, dma_len,
-+                                     DMA_DIRECTION_TO_DEVICE, dma_len);
-+
-+                    if (s->trnmod & SDHC_TRNS_BLK_CNT_EN) {
-+                        size_t transfered = s->data_count + dma_len;
-+
-+                        s->blkcnt -= transfered / block_size;
-+                        s->data_count = transfered % block_size;
-+
-+                        if (s->blkcnt == 0) {
-+                            s->data_count = 0;
-+                            break;
-                         }
-                     }
-                 }
-             }
-+
-             if (res != MEMTX_OK) {
-                 s->data_count = 0;
-                 if (s->errintstsen & SDHC_EISEN_ADMAERR) {
+     for (erase_addr = erase_start; erase_addr <= erase_end;
+          erase_addr += erase_len) {
+         if (sdsc) {
+@@ -2971,6 +2980,8 @@ static void emmc_realize(DeviceState *dev, Error **errp)
+ 
+ static const Property sdmmc_common_properties[] = {
+     DEFINE_PROP_DRIVE("drive", SDState, blk),
++    DEFINE_PROP_BOOL("erase-blocks-as-zero", SDState, erase_blocks_as_zero,
++                     false),
+ };
+ 
+ static const Property sd_properties[] = {
 
 -- 
 2.43.0
