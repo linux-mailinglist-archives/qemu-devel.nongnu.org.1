@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61040C9BD2B
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 15:41:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E276C9BD46
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 15:44:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQRY4-0005AG-Cq; Tue, 02 Dec 2025 09:40:12 -0500
+	id 1vQRbq-0008Nk-IB; Tue, 02 Dec 2025 09:44:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
- id 1vQRY2-00058A-0s; Tue, 02 Dec 2025 09:40:10 -0500
-Received: from mail.avm.de ([2001:bf0:244:244::120])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
- id 1vQRXz-0001OI-7w; Tue, 02 Dec 2025 09:40:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
- t=1764686403; bh=W0C+B/HQ6E2rn8f69u0hr2rqispXBPZi8uNq7mykuhg=;
- h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=Y6+U46lHZ2GrR8CHuSI+ek7+oTstm2phLfLEAcnDdBTNALb5u17MysFpzcnTBcHCu
- KDUwVLEXtzSjZBo3Z0vstHnFZEHAKrQjRABgGy8SxZe2PliKpef2pbf71qtAhpMtpN
- Vxf2kkgnH+xKR/T3aGeD59a9HEcQfr3cTIs6n9sA=
-Received: from [172.16.0.1] (helo=mail.avm.de)
- by mail.avm.de with ESMTP (eXpurgate 4.53.4)
- (envelope-from <c.speich@avm.de>)
- id 692efa3f-a0ff-7f0000032729-7f000001967c-1
- for <multiple-recipients>; Tue, 02 Dec 2025 15:39:59 +0100
-Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
- by mail.avm.de (Postfix) with ESMTP;
- Tue,  2 Dec 2025 15:39:59 +0100 (CET)
-Received: from [127.0.1.1] ([172.17.89.139])
- by mail-notes.avm.de (HCL Domino Release 14.0FP4)
- with ESMTP id 2025120215400012-18429 ;
- Tue, 2 Dec 2025 15:40:00 +0100 
-From: Christian Speich <c.speich@avm.de>
-Date: Tue, 02 Dec 2025 15:39:34 +0100
-Subject: [PATCH v2 4/4] hw/sd/sdcard: Optimize erase blocks as zero.
+ (Exim 4.90_1) (envelope-from <geoff@hostfission.com>)
+ id 1vQRbo-0008NO-UO
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 09:44:04 -0500
+Received: from mail1.hostfission.com ([51.161.137.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <geoff@hostfission.com>)
+ id 1vQRbm-0005TL-RR
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 09:44:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostfission.com;
+ s=mail; t=1764686638;
+ bh=wBp/ocBpq9l9oNV247pkM8xFoIhdFdaloQkk8+ldNYQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=bNmsXxvM+zXRKd7QoAeENjg0jXr6vuZWsAe/2HKB+zLfKdUAfQO/NHpJix35Hwzxm
+ zoHLuAFcxmem6Nta7oOnbqIQhSJeTWxkwSS1Kx6WO0Q73lJKvzs4XdESkhvXdeMBVi
+ L6TAbSBEtnnf5UiQA72EogSBMqc9TpV19ksVTqlk=
+Received: from www1.hostfission.com (www1.hostfission.com [51.161.137.49])
+ by mail1.hostfission.com (Postfix) with ESMTP id A050D5401E3;
+ Wed,  3 Dec 2025 01:43:58 +1100 (AEDT)
+Received: from mail.hostfission.com (www1.hostfission.com [127.0.0.1])
+ by www1.hostfission.com (Postfix) with ESMTP id 83982602FA0;
+ Wed,  3 Dec 2025 01:43:58 +1100 (AEDT)
 MIME-Version: 1.0
-Message-Id: <20251202-sdcard-performance-b4-v2-4-d42490b11322@avm.de>
-References: <20251202-sdcard-performance-b4-v2-0-d42490b11322@avm.de>
-In-Reply-To: <20251202-sdcard-performance-b4-v2-0-d42490b11322@avm.de>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Bin Meng
- <bmeng.cn@gmail.com>, qemu-block@nongnu.org, Christian Speich
- <c.speich@avm.de>
-X-Mailer: b4 0.14.2
-X-MIMETrack: Itemize by SMTP Server on ANIS1/AVM(Release 14.0FP4|March 10,
- 2025) at 02.12.2025 15:40:00,
- Serialize by Router on ANIS1/AVM(Release 14.0FP4|March 10, 2025) at
- 02.12.2025 15:40:00, Serialize complete at 02.12.2025 15:40:00
-X-TNEFEvaluated: 1
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="utf-8"
-X-purgate-ID: 149429::1764686399-C5E23D7E-CF67ABBC/0/0
-X-purgate-type: clean
-X-purgate-size: 3451
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for
- further information)
-X-purgate: clean
-Received-SPF: pass client-ip=2001:bf0:244:244::120;
- envelope-from=c.speich@avm.de; helo=mail.avm.de
+Date: Wed, 03 Dec 2025 01:43:58 +1100
+From: Geoffrey McRae <geoff@hostfission.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini
+ <pbonzini@redhat.com>, Alexandre Ratchov <alex@caoua.org>,
+ qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth
+ <huth@tuxfamily.org>, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ dirty.ice.hu@gmail.com, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: Re: [RFC 00/24] audio: add GStreamer backend
+In-Reply-To: <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
+References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
+ <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
+ <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
+ <aS4BZZnzQPUHzbaD@vm3.arverb.com>
+ <3bb3606b-713c-456b-ab0f-31d14c6a6b99@redhat.com>
+ <20e6b7a1-cc84-29ff-6570-94fed9520466@eik.bme.hu>
+ <d63b9773727b546cea38b1f17e0babd0@hostfission.com>
+ <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
+ <12d3c2d298399c0935edee8caa3e52aa@hostfission.com>
+ <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
+Message-ID: <c32f11e604bbcd86d1c2c9d2b4b57d5a@hostfission.com>
+X-Sender: geoff@hostfission.com
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=51.161.137.76; envelope-from=geoff@hostfission.com;
+ helo=mail1.hostfission.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,101 +83,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When erasing blocks as zero, we can use optimized block functions to
-achieve this.
+Hi,
 
-These allow us to request a large rage to be zeroed, possible optimizing
-this operation and freeing disk space for sparsesly stored images.
+On 2025-12-03 01:14, Marc-André Lureau wrote:
+> Hi
+> 
+> On Tue, Dec 2, 2025 at 5:26 PM Geoffrey McRae <geoff@hostfission.com> 
+> wrote:
+>> 
+>> 
+>> 
+>> On 2025-12-02 23:44, Marc-André Lureau wrote:
+>> > Hi Geoffrey
+>> >
+>> > On Tue, Dec 2, 2025 at 4:31 PM Geoffrey McRae
+>> > <geoff@hostfission.com> wrote:
+>> >
+>> >> The PipeWire and PulseAudio backends are used by a large number of
+>> >> users
+>> >> in the VFIO community. Removing these would be an enormous determent
+>> >> to
+>> >> QEMU.
+>> >
+>> > They come with GStreamer pulse/pipe elements.
+>> 
+>> Yes, but through another layer of abstraction/complexity with no real
+>> benefit.
+> 
+> The benefit is that QEMU would not have to maintain 10 backends and
+> all the audio mixing/resampling. The QEMU code would be simpler and
+> more maintainable overall. GStreamer has a clear pipeline design,
+> better suited (optimized code etc) and you can easily modify the
+> pipeline settings.
 
-This only is possible when erase-blocks-as-zero=true is used and can
-provide a significant performance boost. The case where 0xFF is used
-during erase is as slow as before.
+Yes, I suppose I can see it from that point of view provided that the 
+advanced features of GStreamer, such as user defined audio graphs, are 
+never exposed to the user to configure. I can just imagine the false bug 
+report nightmare this would induce (buggy plugins, etc).
 
-Signed-off-by: Christian Speich <c.speich@avm.de>
----
- hw/sd/sd.c | 44 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 34 insertions(+), 10 deletions(-)
+> 
+>> 
+>> >
+>> >> Audio output from QEMU has always been problematic, but with the
+>> >> PulseAudio and later, the PipeWire interface, it became much more
+>> >> user
+>> >> friendly for those that wanted to configure the VM to output native
+>> >> audio into their sound plumbing.
+>> >
+>> > Could you be more specific?
+>> 
+>> There are clock sync/drift issues with the emulated hardware device's
+>> audio clock and the real hardware audio clock. GStreamer won't solve
+>> this, it requires a tuned PID loop that resamples the audio to
+>> compensate for the continual drift between the emulated and hardware
+>> clocks. Without this, over time, the audio can and does get wildly out
+>> of sync eventually resulting in xruns.
+> 
+> That's indeed a complicated subject and hard to test & measure. Adding
+> some testing to our audio infra should help identify this better. Not
+> sure when time permits though.
+> 
+> It seems to me that the current QEMU audio code is using the
+> virtual/system clock timer to pull the data at a regular pace, which
+> is not in sync with the actual audio sink clock. The GStreamer
+> pipeline, otoh, uses the audio sink clock. But there are other
+> emulated devices related issues (like hda not sending data when asked,
+> or later, it has to be pulled regularly etc). I need to study this in
+> more detail, this GStreamer implementation is a bit naive there.
+> 
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index af7e40faf67c66995b2b615080265dc31da150a6..7fa8e90d36b3b04666de9dfefad5830cb2252b1f 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -1083,6 +1083,17 @@ static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
-     sd_blk_write_direct(sd, sd->data, addr, len);
- }
- 
-+/* Requires sd->buf to be filled with 0xFF */
-+static void sd_erase_ff(SDState *sd, uint64_t addr, size_t len)
-+{
-+    int erase_len = 1 << HWBLOCK_SHIFT;
-+    uint64_t erase_addr;
-+
-+    for (erase_addr = addr; erase_addr < addr + len; erase_addr += erase_len) {
-+        sd_blk_write(sd, erase_addr, erase_len);
-+    }
-+}
-+
- static void sd_erase(SDState *sd)
- {
-     uint64_t erase_start = sd->erase_start;
-@@ -1090,7 +1101,6 @@ static void sd_erase(SDState *sd)
-     bool sdsc = true;
-     uint64_t wpnum;
-     uint64_t erase_addr;
--    int erase_len = 1 << HWBLOCK_SHIFT;
- 
-     trace_sdcard_erase(sd->erase_start, sd->erase_end);
-     if (sd->erase_start == INVALID_ADDRESS
-@@ -1119,24 +1129,38 @@ static void sd_erase(SDState *sd)
-     sd->erase_end = INVALID_ADDRESS;
-     sd->csd[14] |= 0x40;
- 
--    if (sd->erase_blocks_as_zero) {
--        memset(sd->data, 0x0, erase_len);
--    } else {
--        memset(sd->data, 0xFF, erase_len);
-+    if (!sd->erase_blocks_as_zero) {
-+        memset(sd->data, 0xFF, 1 << HWBLOCK_SHIFT);
-     }
- 
--    for (erase_addr = erase_start; erase_addr <= erase_end;
--         erase_addr += erase_len) {
--        if (sdsc) {
--            /* Only SDSC cards support write protect groups */
-+    /* Only SDSC cards support write protect groups */
-+    if (sdsc) {
-+        for (erase_addr = erase_start; erase_addr <= erase_end;
-+             erase_addr = ROUND_UP(erase_addr + 1, WPGROUP_SIZE)) {
-+            uint64_t wp_group_end = ROUND_UP(erase_addr + 1, WPGROUP_SIZE) - 1;
-+            size_t to_erase = MIN(erase_end, wp_group_end) - erase_addr;
-+
-             wpnum = sd_addr_to_wpnum(erase_addr);
-             assert(wpnum < sd->wp_group_bits);
-             if (test_bit(wpnum, sd->wp_group_bmap)) {
-                 sd->card_status |= WP_ERASE_SKIP;
-                 continue;
-             }
-+
-+            if (sd->erase_blocks_as_zero) {
-+                blk_pwrite_zeroes(sd->blk, erase_addr + sd_part_offset(sd),
-+                                  to_erase, 0);
-+            } else {
-+                sd_erase_ff(sd, erase_addr, to_erase);
-+            }
-+        }
-+    } else {
-+        if (sd->erase_blocks_as_zero) {
-+            blk_pwrite_zeroes(sd->blk, erase_start + sd_part_offset(sd),
-+                              erase_end - erase_start, 0);
-+        } else {
-+            sd_erase_ff(sd, erase_start, erase_end - erase_start);
-         }
--        sd_blk_write(sd, erase_addr, erase_len);
-     }
- }
- 
+Yes, this is the primary issue here. I believe that solving this is more 
+complicated then it appears however as headless systems that are using 
+SPICE for audio wont have an audio clock to sync to.
 
--- 
-2.43.0
+> 
+>> 
+>> All you have to do is google for "QEMU Crackling Sound". JACK, 
+>> PipeWire
+>> and PulseAudio manage to mostly hide (not sovle) this issue from the
+>> user, but it still occurs. It's worse for SPICE clients as the audio
+>> gets buffered in the network stack rather then dropped and can lead to
+>> many seconds of audio latency.
+> 
+> Yes, I think synchronization of audio/video playback for remoting is
+> another issue, if QEMU has the audio & video frames in sync which can
+> provide correct timestamps.
 
+Note that I am referring to a SPICE client that only subscribes to the 
+audio stream and not video, as is the case for Looking Glass as it uses 
+an out of band mechanism to obtain the passthrough GPUs output. This is 
+also occurs on the local host via a unix socket.
+
+I do not think this aspect can be solved in QEMU, but rather must be 
+solved in the SPICE client
+
+See here if you're interested how we did this:
+https://github.com/gnif/LookingGlass/blob/53bfb6547f2b7abd6c183192e13a57068c1677ea/client/src/audio.c
+
+> 
+>> 
+>> As for applications, we have a large number of people using QEMU/KVM
+>> with full GPU pass-through for gaming workloads, many of which route 
+>> the
+>> QEMU audio into PipeWire/JACK directly which enables the host's sound
+>> server to perform DSP and mixing, etc.
+>> 
+>> Others are streaming the guest via Looking Glass for the video feed, 
+>> and
+>> using PipeWire from QEMU to feed into OBS for live streaming setups.
+>> 
+>> The flexibility that JACK & PipeWire bring to the table can not be
+>> overstated. From a maintenance point of view, JACK and PipeWire are 
+>> only
+>> ~800 lines of code each, fully self contained and very easy to debug.
+>> 
+>> All the audio processing/mixing/resampling/routing (and any user
+>> configured DSP) is fully offloaded to the host's audio server, where 
+>> it
+>> should be.
+> 
+> (by default QEMU is still doing resampling & mixing, and adds extra 
+> buffering)
+> 
+> A GStreamer backend should not be incompatible with those use cases.
+> 
+
+In that case, i'd suggest that if possible the GStreamber back end 
+maintains the same port and node names it presents to Jack/PipeWire to 
+make the transition from the other audio backends to GStreamer as 
+painless as possible.
+
+> [..]
+>> deprecated, I really think that effort should be put into implementing 
+>> a
+>> WASAPI backend for QEMU.
+>> 
+>> I really do not think that adding all the complexity of GStreamer to
+>> QEMU is the right way forward. We should just hand off the audio
+>> processing to the host system's sound server (as we do already),
+>> whatever it might be, and let it do the heavy lifting.
+> 
+> I agree with the goal that we should leave most of the work to the
+> host, and not have to do audio mixing resampling ourself whenever
+> possible. Imho, GStreamer allows us to do that in less and cleaner
+> code.
+
+Great, as long as we don't let user's configure GStreamer's more 
+advanced features its should be ok then.
 
