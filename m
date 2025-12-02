@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12CFC9C41F
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF40C9C42C
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTQv-000106-Ke; Tue, 02 Dec 2025 11:40:57 -0500
+	id 1vQTR0-00013e-3A; Tue, 02 Dec 2025 11:41:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQe-0000xo-EV
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:43 -0500
+ id 1vQTQh-0000yg-NJ
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:45 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQc-0002An-MN
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:40 -0500
+ id 1vQTQg-0002BI-4k
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764693638; x=1796229638;
+ t=1764693642; x=1796229642;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BOun+Sp72zYjrToMaMpmKaY7e2ddR1tkuk9rWueIHxo=;
- b=DKqal6UtHl0dA4GvHTJlbJXhIAi5K52hXcIe2/X90euymA/Ul8+oWDbb
- FRAIxqoz1NlTqqydO9JLrHYNfKbfzNMTdfeGWeb9a4w6nNHMxryy0pJs+
- U1usLNgZKzIbF36v/4BP/al16PcRMxlqugDmiofpc2+ZRN2Lr1hw6Ucwv
- wTa58THGZxJHwQj42iFx2RqK40rOiw7cdVosYWDQLschaVlbnszjP7trn
- cI8oKa8oZdW+ku+j1EHr57AOdipHHi3lr5MgZrBQRTIBnnhIw86is71dC
- uv7FFs9ToPlw9qOb88oUWtFqsPq1PfdGTKouQXmCzr5qKVJHSxUY93sLE A==;
-X-CSE-ConnectionGUID: 0jknPbSdSkWsJzDSOmcpmQ==
-X-CSE-MsgGUID: 8LS7FJ44SXu0YSsuikBkbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555319"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555319"
+ bh=eK18Rb0gdGJlNH012rca504qCms7GSkuLIsrlDHKrYU=;
+ b=RGV/3sqqS6TZqcUnUF0G8lahcXqYma/xhejRBOGqy1bkIpcrOnMzxs8r
+ ZetQsQ0ck6b0p3POgRIECUTFdTgeyeCtCBPjlJP+yGChfl9BZdr7bvDzV
+ ZhHOw8yxeCcmHxWe6XL+pH+RAhdDmurDRnsUh7KTsabk6yzSTkFfc5ypk
+ EkF1xb67aWwIwClnw0DugQZ8ZIwKaf1lKWLozIyMT26VAC/AOWbh/mBUY
+ u/6nUqQ0mf+hQeTl8DdjMikvT5TPzeJ4UloD1bfy08I3XV4hFubWiXBie
+ vV+Rsgd/nj5oc5Zj3529QcMJePQZJBOFWPOP5vTyere/lehLDBYi0vaga Q==;
+X-CSE-ConnectionGUID: 8IB44/R0Sp6ug5WIP932ag==
+X-CSE-MsgGUID: hug7CH7kRee8UAizlkfaKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555328"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555328"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:40:37 -0800
-X-CSE-ConnectionGUID: USnf6YqQRWeHSGZ9FE1wAA==
-X-CSE-MsgGUID: Dd0ER/bfSUevOgoPYLuQ4Q==
+ 02 Dec 2025 08:40:40 -0800
+X-CSE-ConnectionGUID: mousTyneT6+4xI9PexJ6dQ==
+X-CSE-MsgGUID: eGnzuLPkRoGYYl3RJSgdVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751249"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751270"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:34 -0800
+ by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:37 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,10 @@ Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 03/10] qom: Check property deprecation flag for global property
-Date: Wed,  3 Dec 2025 01:04:55 +0800
-Message-Id: <20251202170502.3228625-4-zhao1.liu@intel.com>
+Subject: [RFC 04/10] qom: Check property deprecation flag for properities from
+ qdict
+Date: Wed,  3 Dec 2025 01:04:56 +0800
+Message-Id: <20251202170502.3228625-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202170502.3228625-1-zhao1.liu@intel.com>
 References: <20251202170502.3228625-1-zhao1.liu@intel.com>
@@ -88,91 +89,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Global properties can be set up in these cases:
- 1) external global properties:
-    * -global command line option.
-    * -cpu command line features.
-    * suger properties from object_compat_props[2]
+The sources of properities parsed into qdict include:
 
- 2) internal global properties:
-    * compat properties from object_compat_props[0,1].
+ 1) External ("TYPE_USER_CREATABLE") object:
+    * -object command line used for external ("TYPE_USER_CREATABLE")
+      object.
 
-In principle, when a compat property is marked as deprecated, it should
-not be added to any object_compat_props[] as a compat "fix". Therefore,
-internal compat "global" property use cases should also be considered.
+ 2) External device:
+    * -device command line - parsed based on keyval or json.
 
-All of these global cases are using object_property_parse() to parse and
-set propertyies, ao add a object_property_parse_with_check() to enable
-deprecation checks for global properties.
+ 3) External machine options:
+    * -machine command line - parsed based on keyval.
+
+ 4) Internal machine options:
+    * Builtin default machine options string:
+      MachineClass::default_machine_opts - parsed based on keyval, too.
+
+All of these cases are using object_set_properties_from_qdict() to set
+properties. It's necessary to detect and report deprecated properities
+for these cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/qom/object.h | 20 ++++++++++++++++++++
- qom/object.c         | 13 ++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ qom/object_interfaces.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 8f4c2f44d835..bdeba113f40f 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -1555,6 +1555,26 @@ bool object_property_set_full(Object *obj, const char *name,
- bool object_property_parse(Object *obj, const char *name,
-                            const char *string, Error **errp);
- 
-+/**
-+ * object_property_parse_with_check:
-+ *
-+ * Same as object_property_parse() with extra check over property flags
-+ * (ObjectPropertyFlags). This interface should be used to handle
-+ * property settings for external users or internal legacy or compatibility
-+ * cases.
-+ *
-+ * @obj: the object
-+ * @name: the name of the property
-+ * @string: the string that will be used to parse the property value.
-+ * @errp: returns an error if this function fails
-+ *
-+ * Parses a string and writes the result into a property of an object.
-+ *
-+ * Returns: %true on success, %false on failure.
-+ */
-+bool object_property_parse_with_check(Object *obj, const char *name,
-+                                      const char *string, Error **errp);
-+
- /**
-  * object_property_print:
-  * @obj: the object
-diff --git a/qom/object.c b/qom/object.c
-index 184afc6730dd..2973d8876555 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -460,7 +460,8 @@ bool object_apply_global_props(Object *obj, const GPtrArray *props,
-             continue;
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index 415cbee8c5cf..b58a24c27ce7 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -53,7 +53,7 @@ static void object_set_properties_from_qdict(Object *obj, const QDict *qdict,
+         return;
+     }
+     for (e = qdict_first(qdict); e; e = qdict_next(qdict, e)) {
+-        if (!object_property_set(obj, e->key, v, errp)) {
++        if (!object_property_set_full(obj, e->key, v, true, errp)) {
+             goto out;
          }
-         p->used = true;
--        if (!object_property_parse(obj, p->property, p->value, &err)) {
-+        if (!object_property_parse_with_check(obj, p->property,
-+                                              p->value, &err)) {
-             error_prepend(&err, "can't apply global %s.%s=%s: ",
-                           p->driver, p->property, p->value);
-             /*
-@@ -1745,6 +1746,16 @@ bool object_property_parse(Object *obj, const char *name,
-     return ok;
- }
- 
-+bool object_property_parse_with_check(Object *obj, const char *name,
-+                                      const char *string, Error **errp)
-+{
-+    Visitor *v = string_input_visitor_new(string);
-+    bool ok = object_property_set_full(obj, name, v, true, errp);
-+
-+    visit_free(v);
-+    return ok;
-+}
-+
- char *object_property_print(Object *obj, const char *name, bool human,
-                             Error **errp)
- {
+     }
 -- 
 2.34.1
 
