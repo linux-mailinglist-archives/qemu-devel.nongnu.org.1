@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8D5C9C1E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603BBC9C229
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:11:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSum-0003Ka-5k; Tue, 02 Dec 2025 11:07:44 -0500
+	id 1vQSum-0003Kz-BU; Tue, 02 Dec 2025 11:07:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSuP-0002O6-8f; Tue, 02 Dec 2025 11:07:24 -0500
+ id 1vQSuZ-0002U9-A8; Tue, 02 Dec 2025 11:07:31 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSuN-0008Bq-Hc; Tue, 02 Dec 2025 11:07:21 -0500
+ id 1vQSuW-0008Cu-9J; Tue, 02 Dec 2025 11:07:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764691640; x=1796227640;
+ t=1764691648; x=1796227648;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=k8INMRrzuyLQQp4oMJ+9rmpApu+HgUvEkADnGJpgMhs=;
- b=NS8nQ7XoZLM8JoBROO2ji9Q+0b0911HtKr7U+qlZBHhlc/cOZ8kqpeQr
- g/kj38etlcaPe9DBq2J+6lq6nus/ZGr4FCNT9VScFLuOHBDCG3WMWPHpr
- mymXrXx0JlHkrHfZwNXmykmIQ6xDXB2JNnbcjeEVpMCDrfopj6w546x4C
- 5PKH48iNksKzXxkXflEVEZy8egzBqlX8aQRWiHuYmVidDmm7Jphv7Fk5h
- WDVhMc8UPZxrFjLQHelP5FC2SRR0WHn6kzN09XVGFW6ou+XdbgLOmDn6+
- vpFpun6gvmYhjKVGG7yGZ306J4iHl2boPJx/hl2LhSmkueWbkPyeHt8J0 w==;
-X-CSE-ConnectionGUID: MIqh+dnMSXquD/48lkmdYg==
-X-CSE-MsgGUID: GhFCXOVmTyyUmd3r6cnUEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142895"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142895"
+ bh=9MQ564lwxpG6Oxxv/mdUg6vGcM3PGFMBsD8Z/3CykmQ=;
+ b=Sdnfag9+2FtZzOIvZCv05HBtLvJLAWHTUjmDEOZ4X74FqCvtFUPV8DZv
+ O/NetMTYBbrcQedbZbJOtyBL4QJJLlCGu/Rk1yrlAUrzXItIDRmCQlnN3
+ PIKmbwuP50WzBcYSSyKIQTeILy2Jl7eOTJLmsTjhYWxrpkBYFHtW99+Fb
+ 7JIKKrOWrTgzvU7StPsw7wrRX4iO+PjAN2WpqEBKzAPtN7NSlpy6F5epn
+ 9nKGuw7qUp6/6gThe0LVs5jLangBxhXw08FxnkBfYkblj/cZFegBP7OVK
+ Zv5IFA7GG71czxGjpmaMpLot0XQxOcM1hHmaucq6E3O4aAiM4Dsrddd1v g==;
+X-CSE-ConnectionGUID: WbSg2f2cQPeq6J1NPVyd0w==
+X-CSE-MsgGUID: UD1e4xMOSTe8uGXUZW/8FA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142926"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142926"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:07:17 -0800
-X-CSE-ConnectionGUID: PMSeMG/eQA2gc5j1hByEJQ==
-X-CSE-MsgGUID: CTkbDNKCTweaY3GljCvsug==
+ 02 Dec 2025 08:07:26 -0800
+X-CSE-ConnectionGUID: BZzKIC5GRUewhmRb2+GGNg==
+X-CSE-MsgGUID: +DrUXJVsTFOXx4l0ZMbwfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537825"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537860"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:07:08 -0800
+ by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:07:17 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,10 +70,9 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 21/28] hw/i386/pc: Remove deprecated pc-q35-2.7 and
- pc-i440fx-2.7 machines
-Date: Wed,  3 Dec 2025 00:28:28 +0800
-Message-Id: <20251202162835.3227894-22-zhao1.liu@intel.com>
+Subject: [PATCH v5 22/28] hw/i386/pc: Remove pc_compat_2_7[] array
+Date: Wed,  3 Dec 2025 00:28:29 +0800
+Message-Id: <20251202162835.3227894-23-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
@@ -107,84 +106,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-These machines has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") they can now be removed.  Remove the qtest
-in test-x86-cpuid-compat.c file.
+The pc_compat_2_7[] array was only used by the pc-q35-2.7
+and pc-i440fx-2.7 machines, which got removed. Remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/pc_piix.c                   |  9 ---------
- hw/i386/pc_q35.c                    | 10 ----------
- tests/qtest/test-x86-cpuid-compat.c | 11 -----------
- 3 files changed, 30 deletions(-)
+ hw/i386/pc.c         | 10 ----------
+ include/hw/i386/pc.h |  3 ---
+ 2 files changed, 13 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 4628d491d5b5..6b3bfb679a38 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -724,15 +724,6 @@ static void pc_i440fx_machine_2_8_options(MachineClass *m)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 85d12f8d0389..b88030bf50d0 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -253,16 +253,6 @@ GlobalProperty pc_compat_2_8[] = {
+ };
+ const size_t pc_compat_2_8_len = G_N_ELEMENTS(pc_compat_2_8);
  
- DEFINE_I440FX_MACHINE(2, 8);
+-GlobalProperty pc_compat_2_7[] = {
+-    { TYPE_X86_CPU, "l3-cache", "off" },
+-    { TYPE_X86_CPU, "full-cpuid-auto-level", "off" },
+-    { "Opteron_G3" "-" TYPE_X86_CPU, "family", "15" },
+-    { "Opteron_G3" "-" TYPE_X86_CPU, "model", "6" },
+-    { "Opteron_G3" "-" TYPE_X86_CPU, "stepping", "1" },
+-    { "isa-pcspk", "migrate", "off" },
+-};
+-const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
+-
+ /*
+  * @PC_FW_DATA:
+  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index f8f317aee197..accd08cb666b 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -292,9 +292,6 @@ extern const size_t pc_compat_2_9_len;
+ extern GlobalProperty pc_compat_2_8[];
+ extern const size_t pc_compat_2_8_len;
  
--static void pc_i440fx_machine_2_7_options(MachineClass *m)
--{
--    pc_i440fx_machine_2_8_options(m);
--    compat_props_add(m->compat_props, hw_compat_2_7, hw_compat_2_7_len);
--    compat_props_add(m->compat_props, pc_compat_2_7, pc_compat_2_7_len);
--}
+-extern GlobalProperty pc_compat_2_7[];
+-extern const size_t pc_compat_2_7_len;
 -
--DEFINE_I440FX_MACHINE(2, 7);
--
- #ifdef CONFIG_XEN
- static void xenfv_machine_4_2_options(MachineClass *m)
- {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 0ae19eb9f1e4..0de8305308a1 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -671,13 +671,3 @@ static void pc_q35_machine_2_8_options(MachineClass *m)
- }
- 
- DEFINE_Q35_MACHINE(2, 8);
--
--static void pc_q35_machine_2_7_options(MachineClass *m)
--{
--    pc_q35_machine_2_8_options(m);
--    m->max_cpus = 255;
--    compat_props_add(m->compat_props, hw_compat_2_7, hw_compat_2_7_len);
--    compat_props_add(m->compat_props, pc_compat_2_7, pc_compat_2_7_len);
--}
--
--DEFINE_Q35_MACHINE(2, 7);
-diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
-index 456e2af66572..5e0547e81b7b 100644
---- a/tests/qtest/test-x86-cpuid-compat.c
-+++ b/tests/qtest/test-x86-cpuid-compat.c
-@@ -345,17 +345,6 @@ int main(int argc, char **argv)
- 
-     /* Check compatibility of old machine-types that didn't
-      * auto-increase level/xlevel/xlevel2: */
--    if (qtest_has_machine("pc-i440fx-2.7")) {
--        add_cpuid_test("x86/cpuid/auto-level/pc-2.7",
--                       "486", "arat=on,avx512vbmi=on,xsaveopt=on",
--                       "pc-i440fx-2.7", "level", 1);
--        add_cpuid_test("x86/cpuid/auto-xlevel/pc-2.7",
--                       "486", "3dnow=on,sse4a=on,invtsc=on,npt=on,svm=on",
--                       "pc-i440fx-2.7", "xlevel", 0);
--        add_cpuid_test("x86/cpuid/auto-xlevel2/pc-2.7",
--                       "486", "xstore=on", "pc-i440fx-2.7",
--                       "xlevel2", 0);
--    }
-     if (qtest_has_machine("pc-i440fx-2.9")) {
-         add_cpuid_test("x86/cpuid/auto-level7/pc-i440fx-2.9/off",
-                        "Conroe", NULL, "pc-i440fx-2.9",
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
+                                                  const void *data) \
 -- 
 2.34.1
 
