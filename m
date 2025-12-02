@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD8FC9C21D
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8D5C9C1E7
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:09:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSug-0002kc-Ha; Tue, 02 Dec 2025 11:07:39 -0500
+	id 1vQSum-0003Ka-5k; Tue, 02 Dec 2025 11:07:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSuF-00029u-RI; Tue, 02 Dec 2025 11:07:13 -0500
+ id 1vQSuP-0002O6-8f; Tue, 02 Dec 2025 11:07:24 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQSuE-00088I-2Y; Tue, 02 Dec 2025 11:07:11 -0500
+ id 1vQSuN-0008Bq-Hc; Tue, 02 Dec 2025 11:07:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764691630; x=1796227630;
+ t=1764691640; x=1796227640;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=89F41mSOuYhugFJj7jF488k0MReP/Q9Ed85C0vFns40=;
- b=CwoEuQJ/lGWGvChr59hUvjSGDjwE9ocIhEtRZSyk75H+gIRto/01SIGf
- EwsUf5ZV3blPcJlWhWz5laL37woyR83jZTASep3QK1MM5mfTeUOlFjb8l
- IKjGl5ci8WEjtcC1b7YdkYleJNJQfSibP7lHarccKZXqneIaMt8KoXG3F
- lC2Ae8gw+lDawsr5p6sevBmeLDN/FJt6KerVYxdM0FzJIb5ZoxX49t6QU
- Fo9w8r02iM0dZaDlGXpivvPRz9Hu2JdgWooEZlDoA/o2COzZJaBA7lGRO
- 2Oug5xZeFEslRU2qzIV0agTNdPR82zMwHY7AejCxIo25ghIOcSS+cEg8y A==;
-X-CSE-ConnectionGUID: EUUoXNg1QaaX1EzKqxgN6w==
-X-CSE-MsgGUID: ca31zYg5RPaz/PqPnz6XDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142856"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142856"
+ bh=k8INMRrzuyLQQp4oMJ+9rmpApu+HgUvEkADnGJpgMhs=;
+ b=NS8nQ7XoZLM8JoBROO2ji9Q+0b0911HtKr7U+qlZBHhlc/cOZ8kqpeQr
+ g/kj38etlcaPe9DBq2J+6lq6nus/ZGr4FCNT9VScFLuOHBDCG3WMWPHpr
+ mymXrXx0JlHkrHfZwNXmykmIQ6xDXB2JNnbcjeEVpMCDrfopj6w546x4C
+ 5PKH48iNksKzXxkXflEVEZy8egzBqlX8aQRWiHuYmVidDmm7Jphv7Fk5h
+ WDVhMc8UPZxrFjLQHelP5FC2SRR0WHn6kzN09XVGFW6ou+XdbgLOmDn6+
+ vpFpun6gvmYhjKVGG7yGZ306J4iHl2boPJx/hl2LhSmkueWbkPyeHt8J0 w==;
+X-CSE-ConnectionGUID: MIqh+dnMSXquD/48lkmdYg==
+X-CSE-MsgGUID: GhFCXOVmTyyUmd3r6cnUEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142895"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="92142895"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:07:08 -0800
-X-CSE-ConnectionGUID: chFndAIkR6Gryt9wY9xekA==
-X-CSE-MsgGUID: cqcEw527TwmS1tzvB+S+yA==
+ 02 Dec 2025 08:07:17 -0800
+X-CSE-ConnectionGUID: PMSeMG/eQA2gc5j1hByEJQ==
+X-CSE-MsgGUID: CTkbDNKCTweaY3GljCvsug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537786"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="199537825"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:06:59 -0800
+ by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:07:08 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,10 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 20/28] hw/virtio/virtio-mmio: Remove
- VirtIOMMIOProxy::format_transport_address field
-Date: Wed,  3 Dec 2025 00:28:27 +0800
-Message-Id: <20251202162835.3227894-21-zhao1.liu@intel.com>
+Subject: [PATCH v5 21/28] hw/i386/pc: Remove deprecated pc-q35-2.7 and
+ pc-i440fx-2.7 machines
+Date: Wed,  3 Dec 2025 00:28:28 +0800
+Message-Id: <20251202162835.3227894-22-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
@@ -107,66 +107,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The VirtIOMMIOProxy::format_transport_address boolean was only set
-in the hw_compat_2_6[] array, via the 'format_transport_address=off'
-property. We removed all machines using that array, lets remove
-that property, simplifying virtio_mmio_bus_get_dev_path().
+These machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") they can now be removed.  Remove the qtest
+in test-x86-cpuid-compat.c file.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/virtio/virtio-mmio.c         | 15 ---------------
- include/hw/virtio/virtio-mmio.h |  1 -
- 2 files changed, 16 deletions(-)
+ hw/i386/pc_piix.c                   |  9 ---------
+ hw/i386/pc_q35.c                    | 10 ----------
+ tests/qtest/test-x86-cpuid-compat.c | 11 -----------
+ 3 files changed, 30 deletions(-)
 
-diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
-index c05c00bcd4a7..c779836201d5 100644
---- a/hw/virtio/virtio-mmio.c
-+++ b/hw/virtio/virtio-mmio.c
-@@ -764,8 +764,6 @@ static void virtio_mmio_pre_plugged(DeviceState *d, Error **errp)
- /* virtio-mmio device */
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 4628d491d5b5..6b3bfb679a38 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -724,15 +724,6 @@ static void pc_i440fx_machine_2_8_options(MachineClass *m)
  
- static const Property virtio_mmio_properties[] = {
--    DEFINE_PROP_BOOL("format_transport_address", VirtIOMMIOProxy,
--                     format_transport_address, true),
-     DEFINE_PROP_BOOL("force-legacy", VirtIOMMIOProxy, legacy, true),
-     DEFINE_PROP_BIT("ioeventfd", VirtIOMMIOProxy, flags,
-                     VIRTIO_IOMMIO_FLAG_USE_IOEVENTFD_BIT, true),
-@@ -827,19 +825,6 @@ static char *virtio_mmio_bus_get_dev_path(DeviceState *dev)
-     virtio_mmio_proxy = VIRTIO_MMIO(virtio_mmio_bus->parent);
-     proxy_path = qdev_get_dev_path(DEVICE(virtio_mmio_proxy));
+ DEFINE_I440FX_MACHINE(2, 8);
  
--    /*
--     * If @format_transport_address is false, then we just perform the same as
--     * virtio_bus_get_dev_path(): we delegate the address formatting for the
--     * device on the virtio-mmio bus to the bus that the virtio-mmio proxy
--     * (i.e., the device that implements the virtio-mmio bus) resides on. In
--     * this case the base address of the virtio-mmio transport will be
--     * invisible.
--     */
--    if (!virtio_mmio_proxy->format_transport_address) {
--        return proxy_path;
--    }
+-static void pc_i440fx_machine_2_7_options(MachineClass *m)
+-{
+-    pc_i440fx_machine_2_8_options(m);
+-    compat_props_add(m->compat_props, hw_compat_2_7, hw_compat_2_7_len);
+-    compat_props_add(m->compat_props, pc_compat_2_7, pc_compat_2_7_len);
+-}
 -
--    /* Otherwise, we append the base address of the transport. */
-     section = memory_region_find(&virtio_mmio_proxy->iomem, 0, 0x200);
-     assert(section.mr);
+-DEFINE_I440FX_MACHINE(2, 7);
+-
+ #ifdef CONFIG_XEN
+ static void xenfv_machine_4_2_options(MachineClass *m)
+ {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 0ae19eb9f1e4..0de8305308a1 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -671,13 +671,3 @@ static void pc_q35_machine_2_8_options(MachineClass *m)
+ }
  
-diff --git a/include/hw/virtio/virtio-mmio.h b/include/hw/virtio/virtio-mmio.h
-index aa492620228d..8b19ec2291ac 100644
---- a/include/hw/virtio/virtio-mmio.h
-+++ b/include/hw/virtio/virtio-mmio.h
-@@ -66,7 +66,6 @@ struct VirtIOMMIOProxy {
-     uint32_t guest_page_shift;
-     /* virtio-bus */
-     VirtioBusState bus;
--    bool format_transport_address;
-     /* Fields only used for non-legacy (v2) devices */
-     uint32_t guest_features[2];
-     VirtIOMMIOQueue vqs[VIRTIO_QUEUE_MAX];
+ DEFINE_Q35_MACHINE(2, 8);
+-
+-static void pc_q35_machine_2_7_options(MachineClass *m)
+-{
+-    pc_q35_machine_2_8_options(m);
+-    m->max_cpus = 255;
+-    compat_props_add(m->compat_props, hw_compat_2_7, hw_compat_2_7_len);
+-    compat_props_add(m->compat_props, pc_compat_2_7, pc_compat_2_7_len);
+-}
+-
+-DEFINE_Q35_MACHINE(2, 7);
+diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
+index 456e2af66572..5e0547e81b7b 100644
+--- a/tests/qtest/test-x86-cpuid-compat.c
++++ b/tests/qtest/test-x86-cpuid-compat.c
+@@ -345,17 +345,6 @@ int main(int argc, char **argv)
+ 
+     /* Check compatibility of old machine-types that didn't
+      * auto-increase level/xlevel/xlevel2: */
+-    if (qtest_has_machine("pc-i440fx-2.7")) {
+-        add_cpuid_test("x86/cpuid/auto-level/pc-2.7",
+-                       "486", "arat=on,avx512vbmi=on,xsaveopt=on",
+-                       "pc-i440fx-2.7", "level", 1);
+-        add_cpuid_test("x86/cpuid/auto-xlevel/pc-2.7",
+-                       "486", "3dnow=on,sse4a=on,invtsc=on,npt=on,svm=on",
+-                       "pc-i440fx-2.7", "xlevel", 0);
+-        add_cpuid_test("x86/cpuid/auto-xlevel2/pc-2.7",
+-                       "486", "xstore=on", "pc-i440fx-2.7",
+-                       "xlevel2", 0);
+-    }
+     if (qtest_has_machine("pc-i440fx-2.9")) {
+         add_cpuid_test("x86/cpuid/auto-level7/pc-i440fx-2.9/off",
+                        "Conroe", NULL, "pc-i440fx-2.9",
 -- 
 2.34.1
 
