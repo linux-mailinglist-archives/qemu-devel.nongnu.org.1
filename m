@@ -2,99 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C41C9C23B
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95664C9C335
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:28:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQSxK-0006Pn-6y; Tue, 02 Dec 2025 11:10:23 -0500
+	id 1vQTE0-0001Om-Ur; Tue, 02 Dec 2025 11:27:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vQSwM-0005LM-HN
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:09:24 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vQTDV-0001IY-1S
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:27:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vQSwK-0000AY-41
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:09:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vQTDR-0004j6-Nw
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:27:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764691758;
+ s=mimecast20190719; t=1764692819;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RjBwMR0+K3Tvu5OmTnXPIXjzgfcP0YSwNSFtSFwgndw=;
- b=P2wJZ6oN/ECcgSBvHr6CkmGj+rIuKGUkZoXmmG1tCtszH5BHbGeNDq8zU34mWOjxaEvzv9
- CfDkjWdMECIPdYl18pVrVGIrVwBVYIlhQboppIPoDGcQ7ygIK9geCjW7KKu5nHIC8ZhGEN
- k5PjN1LeSw5tjnDmgncaDaAY33xyOCM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-s57H2jK-NtiItQAuFQBhyQ-1; Tue, 02 Dec 2025 11:09:17 -0500
-X-MC-Unique: s57H2jK-NtiItQAuFQBhyQ-1
-X-Mimecast-MFC-AGG-ID: s57H2jK-NtiItQAuFQBhyQ_1764691755
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-42e2e2ee360so2054956f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 08:09:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764691755; x=1765296555; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=RjBwMR0+K3Tvu5OmTnXPIXjzgfcP0YSwNSFtSFwgndw=;
- b=XkMdxgH9Dk8L6sK/Kvki4+EzYWhNZSSnDA4f6+urHVPVZajtsUQGvJNslbyad/2oAC
- sG0o9bSkGGN3lE7KXSR4B1IQMZbXYJi+jNHd3qLwYj9tpkq2mhD+/qg4mQdJsOjxhUT4
- PypvIbK+g0d38WYHJm4/3A2nxo5LD9L2gHNo3xNd3QpF8ZiPNST1QMLP2fizQfM7FZNC
- tG1+zGBWa6dJ7Luj3qQ8gcZcxLxYkt4v7bDdUTSxmvEhOEeVnPaz1JvQMmvC/HG1OAOZ
- TNKD6DrVif1WAKG910B2A+/+oIx3xqxEk29CL1wrDJONT2sKQAKCrApeXi9HVCzHBYhw
- /t8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764691755; x=1765296555;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RjBwMR0+K3Tvu5OmTnXPIXjzgfcP0YSwNSFtSFwgndw=;
- b=WdJ6wBoBNzf30lcYuEJ5p8E5zT67tL8DREOARlS9WDgiMcfeMCesZwfopJstYvmfbf
- xB4lyktgreNgKk1AVtenqiBbrgHBJ+a0c1A73onLdP0a9cjPeu0NpqmAaTE1TsQyKRqI
- ab9fImoZqVnDZXCnLlMMvTql+rSibsRqviz0wjLInooQtaVAJ/IHl1H3PN/vQ5OQSCR6
- PeX3n2JxW0m67SGz0dUbfOvlQ8hhHh5HFb2zufbOXreDw1FF6RV4pXNym16Tw0As4cnL
- dNDMkZdvokxId8+9WJNQ3dC6eWcofkqRZVaSCVLdB7L7LY0nXtp4eoI9GoReRbHg3DKt
- Kv5w==
-X-Gm-Message-State: AOJu0Ywg9nJPeMiIFGWzyQhXMmWFCjwjEOokHk9rKDzsg5dlQGtEaGDB
- AZYPOJgcIE2gXIyAew5eTwzHAl5qWctAwMl0uePYwmFMWp0ctYL5vgaqdNMV/4gszC1ESBsPdZk
- O/rfOQDoSxJ8BsGY3YJPFORvMHXUQUzA5zzgmKIwsMXOa/lBxbKICnm/5SMW7LUH/kGnqVPmFUL
- WzWqGOjfqXBlMuRryVLrMq4x+zAcb66sMDcSbb3Vs=
-X-Gm-Gg: ASbGncvBEFIB0bRy6UnY8VjvxRKBORutn3YfL6UujvQ/pGmlGebzQJXmkapA3fL+Yko
- Tkeli6wvt4o88lsc2TavEjWJtkeJigaYYOO+j2Ld+2iJgRrCmXQNVsbmKscGklJT3H0NMJGy/AO
- wp5/2zn3mGx2IVl+kDVpe9HuJtII7BUkCZYRvz5X9VBqvmUvcv7ibJsPfLpJBTkMYVqk4s0dOuR
- ou800qHwiwA4fdhernLxwem4TMqzkyakLSBkAVi2vCR4Z91Zwm3x/xRWttoag0vNQq5YFw=
-X-Received: by 2002:a05:6000:240b:b0:42b:30f9:7998 with SMTP id
- ffacd0b85a97d-42cc1d2d443mr45556072f8f.27.1764691754610; 
- Tue, 02 Dec 2025 08:09:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHdOIQng7RzPiaZQ4MSfuiHHsJ7dbiOBLlKWNLin7yq5Rou7RFpz2b+H2UrIdUmytyFqePjzJYLGGVviWXd4yo=
-X-Received: by 2002:a05:6000:240b:b0:42b:30f9:7998 with SMTP id
- ffacd0b85a97d-42cc1d2d443mr45556036f8f.27.1764691754274; Tue, 02 Dec 2025
- 08:09:14 -0800 (PST)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qh1W3aoF36kAbxT8BtCU3jJMg8lG6NhprtDyEC42MzY=;
+ b=OL64v5AS9hsKjQXi/henIFQbcBy1/Y0aHuRUdE/jQAN+u8eoFBFYK++ouXTILC7aO4p14p
+ EEr+3t74kDlQaiXHg2hbW6q2sidfkFamSJzJekTujJ76uZiZ8+hBKcCtUAjTf3iT8IW5TP
+ RV56hCh16Qj2tq6p6PzclRzYMF54GBQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-9HaBNUl-MbuFPxNCJk1rdw-1; Tue,
+ 02 Dec 2025 11:26:55 -0500
+X-MC-Unique: 9HaBNUl-MbuFPxNCJk1rdw-1
+X-Mimecast-MFC-AGG-ID: 9HaBNUl-MbuFPxNCJk1rdw_1764692813
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E5AE01955F03; Tue,  2 Dec 2025 16:26:52 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.45.225.249])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 38F1E3001E83; Tue,  2 Dec 2025 16:26:50 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	richard.henderson@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PULL 0/1] Block layer patches
+Date: Tue,  2 Dec 2025 17:26:44 +0100
+Message-ID: <20251202162645.182909-1-kwolf@redhat.com>
 MIME-Version: 1.0
-References: <20251128101555.227630-1-pbonzini@redhat.com>
- <aS8N4_LDyW1DrF_x@redhat.com>
-In-Reply-To: <aS8N4_LDyW1DrF_x@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 2 Dec 2025 17:09:04 +0100
-X-Gm-Features: AWmQ_bmyP4mCQNs8E6rGs8Ccm9XwyqKufW_PSnVBamG0jVUq0-NI6wJuvrbFcGY
-Message-ID: <CABgObfYb6-7QGObFBWWdQBzMtLhmuFNkidq4JYe2wgmiS81zjw@mail.gmail.com>
-Subject: Re: [PATCH] block: split qemu/aio.h out of block/aio.h
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, 
- "open list:Block layer core" <qemu-block@nongnu.org>
-Content-Type: multipart/alternative; boundary="00000000000026e8f10644fa5195"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -112,53 +78,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000026e8f10644fa5195
-Content-Type: text/plain; charset="UTF-8"
+The following changes since commit 66ec38b6fa593afcc26a2dfb5d1f9871dd15f527:
 
-Il mar 2 dic 2025, 17:03 Kevin Wolf <kwolf@redhat.com> ha scritto:
+  Merge tag 'pull-target-arm-20251201' of https://gitlab.com/pm215/qemu into staging (2025-12-01 12:08:52 -0800)
 
-> Is it really worth keeping a separate tiny include file for BlockAIOCB?
-> Maybe let's have a patch to move it and its three functions to
-> block-common.h, and then just move this file unchanged into the place
-> where it should always have been.
->
+are available in the Git repository at:
 
-Ok, sure! I did it this way just because it avoided the full-tree change to
-rename the include file, but I will reorganize it as a content
-reorganization + rename instead.
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-Paolo
+for you to fetch changes up to d94ea1a10bdfb99c5822e64a5b6ee3e352719326:
 
+  file-posix: Handle suspended dm-multipath better for SG_IO (2025-12-02 16:51:47 +0100)
 
-> Kevin
->
->
+----------------------------------------------------------------
+Block layer patches
 
---00000000000026e8f10644fa5195
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+- SCSI passthrough: Fix errors on temporarily suspended dm-multipath
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mar 2 dic 2025, 17:03 Kevin W=
-olf &lt;<a href=3D"mailto:kwolf@redhat.com">kwolf@redhat.com</a>&gt; ha scr=
-itto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
-x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Is it real=
-ly worth keeping a separate tiny include file for BlockAIOCB?<br>
-Maybe let&#39;s have a patch to move it and its three functions to<br>
-block-common.h, and then just move this file unchanged into the place<br>
-where it should always have been.<br></blockquote></div></div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">Ok, sure! I did it this way just because i=
-t avoided the full-tree change to rename the include file, but I will reorg=
-anize it as a content reorganization + rename instead.</div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div =
-dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
-<br>
-Kevin<br>
-<br>
-</blockquote></div></div></div>
+----------------------------------------------------------------
+Kevin Wolf (1):
+      file-posix: Handle suspended dm-multipath better for SG_IO
 
---00000000000026e8f10644fa5195--
+ block/file-posix.c | 56 +++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 34 insertions(+), 22 deletions(-)
 
 
