@@ -2,107 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4F1C9C36B
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:32:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3505FC9C3AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:37:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTHk-0003mv-Ld; Tue, 02 Dec 2025 11:31:28 -0500
+	id 1vQTMw-00076s-Q7; Tue, 02 Dec 2025 11:36:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vQTHW-0003ln-OF
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:31:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vQTMu-00072d-QK
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:36:48 -0500
+Received: from mail-swedencentralazon11023122.outbound.protection.outlook.com
+ ([52.101.83.122] helo=GVXPR05CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vQTHR-0005by-TT
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:31:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764693067;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0WqbgmyKAqO4Ecmtfeeh1Jg/U0SN4TwLtnIn1tyGADM=;
- b=SR8SwjpKTGPVIjEosTzDYqBw+gw7s0NF8+O20gUSe3doeqNujhK+QowzwhVIRRz1Gp0K84
- bMN+ITYnm1JcYIIuyPfDR9NSXZm9aUGZ9zYS0DyNoy9tr0LZF7B9rN9dffWOIZc8A6fG1D
- ENrFYy5r/BjenroolOqiLmXCGCXYGfw=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-lZkIEJrmM9KUXrav5TFbHQ-1; Tue, 02 Dec 2025 11:31:06 -0500
-X-MC-Unique: lZkIEJrmM9KUXrav5TFbHQ-1
-X-Mimecast-MFC-AGG-ID: lZkIEJrmM9KUXrav5TFbHQ_1764693065
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-6574c2a5530so6468045eaf.1
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 08:31:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764693065; x=1765297865;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0WqbgmyKAqO4Ecmtfeeh1Jg/U0SN4TwLtnIn1tyGADM=;
- b=d+V4XtdiqYNEmevmlDIwQ1jEH49KxJMI/fkjPN9yBXefWQcXt1H8gXVaAPdH8DWDVo
- EZVx2N0lX7Lj2eRUvTviJ6TyL6tSc0L7CHhPFg/lfWP6z7c/HQZl1X+95nFmQWER8vjN
- WypCT5tKauuDkcEa8+2mNrVxHbX2EMNy6SZtyVh/1Cs8kl04rNpuKSqfcrKuzF4hJdfy
- fDq6Ii23NT5Wg08Q5nyOFjQAl2wrLrC7bmLrKdrKVOjSLMf4cDEzJLrVRekP62eNqGxf
- fKfNo+jMMIlgxNPqKXXhkqSLgPEWiDCzD6A3FWlFsObCwsUrf81OWbMHd9hS2j79qu6L
- X9ag==
-X-Gm-Message-State: AOJu0Yz/V3fsnRO8oSp1eIMmk1l+xCQruSZKsV7n3V61SsoddpFhsYmv
- Keg6StuWDfnnFbcO5QxE0mHX5csBHKXXHh4/zhScz0gUS95pYth6dxhK97i9DbBVZL5r+Y4d+/Z
- fuTxCNZW+P/XfAfU2bpOQ8Johcc6LwqkinDk65JOn581+E5kkgPEnqBnC
-X-Gm-Gg: ASbGnctepsqigMdZYKOG7viYONqHLQMSBzXS2wUANP6rL7Nooc4V+m8/+gdUA7MoEfE
- yQSYgiDg2aOyirL/yVn09x9lZs6U1OGBVEFn31hQ6LKlaxhi5Ii5+ZDheDy0nRHjxNX7fTqsKmt
- gDTWPdZbQ+JXnfKZXoiBkMvi+J3CcMzRD/szVEDYY0BgIed7LFjqgeepYw5B1zhWWkJ39x8tkLj
- b20bryfbipcSPBULZ8UQLh2o3vJ+XVwDqvChmEj19dCuWuwUV3Wntr0VadJMKsc8n+rUh4xTMuw
- 7IupXiwbtVFg6k3gWTt12YmSl4LLC6dzAK4CYF6ezju+d7CbVpzWELemxTPqZZ5beYrUqq90UVa
- LFXSPf3PHnE/aBCgzo12d7VK36JC+s+Ia+h6QijHU/kE8CmuQt0+QFvf49Q==
-X-Received: by 2002:a05:6808:1185:b0:450:760b:cc98 with SMTP id
- 5614622812f47-4514e5fa4a6mr13856250b6e.14.1764693064979; 
- Tue, 02 Dec 2025 08:31:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IENTDaoTeyXvjv5jKeohhe3LKS2pqB0FlY6cBBbHxxOoZNWqfB0CohnJS3glr0h5e8iq3KIsw==
-X-Received: by 2002:a05:6808:1185:b0:450:760b:cc98 with SMTP id
- 5614622812f47-4514e5fa4a6mr13856206b6e.14.1764693064440; 
- Tue, 02 Dec 2025 08:31:04 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:fa3:e4b0:95dc:ab11:92db:6f9e?
- ([2a01:e0a:fa3:e4b0:95dc:ab11:92db:6f9e])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8b5299a5d48sm1087630885a.12.2025.12.02.08.31.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Dec 2025 08:31:04 -0800 (PST)
-Message-ID: <b5e2e404-1067-4ea2-bede-deaf692b2973@redhat.com>
-Date: Tue, 2 Dec 2025 17:31:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 14/21] hw/arm/smmuv3: Add access checks for MMIO registers
-Content-Language: en-US
-To: Tao Tang <tangtao1634@phytium.com.cn>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
- <20251012151303.4129730-1-tangtao1634@phytium.com.cn>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20251012151303.4129730-1-tangtao1634@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vQTMt-0007YQ-0M
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:36:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PNXwpYyFnt3NIZiD/65HhH0PFGsgDtK+qw2lJwr6qRSxHNJpddaK3T98wofL6n6HFAruNMrZgRu7OdHbWW+Nn6sUTuYtKK7IZrzBhZyxuMVeSFRs1wCUd70cbKbTXnBnq/tc/KWpEw21IeI2AawRMVuD/Fa6br4YKi9qfEU52Beyr0wel2+b3frkNqtGFdGb95mMapZQl9UjD1DFdJlnoLR4N5bYWv9CYtD1ZllkvNeW50KME/a8EFRd80CkzB8PtTsU9uW9Y+jOsQau7yKVX5FnBmQeLP1xYz2d/9Xa0yP3bJdVQP2VN/K+DLytWl2fBPVoMUvkD5tLL+RoxyUnJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qhCzGpu5+SLQvt1+dCdb6lv5Mb0WJvcUIgjxfwwKtQ8=;
+ b=k5YnDYNlp+fWwqISwLO/nRQbnLBXgf4xvIpUbxXGISsnQ2yCT8TByqg3pIgyG5Wa1fqkGZJeNGWMbMRewgBO1lc3g7MT15Lbar2yQ+MmRSqrIqvRdBm0bpnK+Qo8YzAT75TpWcWs/In66fOneyqHeKJ07Yfd3yT2uXv6HsMONf3twexICmGbqPdQzLyUKLavwqmWVctMsHifXnOb9w3uv+VWASknKEFo0N5flfKEykQa0RsfbrdGc/uif9Q18+iCyfC7CludDtNvlHp1+/WAEn2djkZicDLZwswxWH5KTGmUV11LzUrufJ8Be4HZSq1ERHvPOYSQglTNzdx8aDSAGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qhCzGpu5+SLQvt1+dCdb6lv5Mb0WJvcUIgjxfwwKtQ8=;
+ b=Qjn5+byteMM6LE78clJ7kAO2mXBkIBDjWhl5xo0biOvbCDjKRqE/SwLrBTHLBU6vp5cDU93lJY0pIAPd7yzIKx0WweDt581zq6GzUUtFOANZyXe8kXVsVYoeNcHlFw3GajkAwWpDZp0MKuv5+mzVCebJ9VirzZLzNs+342dplFeOgtTaxjjEOx5X8FhKbJ07yPdcBPjl+WGPRvni1lmV94LTr1D+Ro8H+4PGt3fpjzf9oEjfLEEe4HEkZEgNYmzu+A0IpLMfD5tj8BQeK8tQvYHz+asXy/FMglu0vATbd/D3fzZV4aTgyz8jKwf75fpxKPbHNDMFuaRKvb/Vy8LHGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by GV1PR08MB11051.eurprd08.prod.outlook.com
+ (2603:10a6:150:1ef::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
+ 2025 16:31:36 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
+ 16:31:34 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, peterx@redhat.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, den@virtuozzo.com,
+ andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v2 0/4] Fixes and improvements for scripts/qemugdb commands
+Date: Tue,  2 Dec 2025 18:31:15 +0200
+Message-ID: <20251202163119.363969-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.43.5
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0120.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::18) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|GV1PR08MB11051:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9629d66f-0322-4857-7380-08de31c041f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|52116014|38350700014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?dejr8/YEknFffa6XmCTexxLgFcgzJyCRnaLFrUl9sZcb+K7QtmSUcNOkhjeu?=
+ =?us-ascii?Q?m83x6U1q0N6TsCGsQ5Ybq5yByyWAP8kCeDrKPKbAqpvldvs200g0NMuJRGCT?=
+ =?us-ascii?Q?IW6AQDiBU35RRzcQT2LdSFtUMQ8wtQEhvH0U2nexRY1a3nmtD3lRBm3SXolI?=
+ =?us-ascii?Q?CPHotkC2xLYEeRI3KzC3iRGqUsqMx1ON0/dGGdndA/tkWF4/TI2U7EV9QpsD?=
+ =?us-ascii?Q?mg5qKCljJzRcXoK0CmCet6i/7+67Fovy3h7rz4oYzdAbLn+hmVUGu29CXfc8?=
+ =?us-ascii?Q?YZIlbagYZYnVuT2Xw0drbNX+FHmocSt7xRkGEd/2occn3prx7nmcnW1thOwZ?=
+ =?us-ascii?Q?1RHvKZb2ExUWFtcZjXYCpe2dq0zlQR4h8Z1SvkCVFqvrIVxBjfZKPq2JCK+q?=
+ =?us-ascii?Q?rNspU9azkoNQBvXByY6SiLYYVDYlFtlW0Oia0ePRvWysaCVpuMeg1GZ361le?=
+ =?us-ascii?Q?6r7TWTt0KlgYpVHe/qg4qgEqba9KiDjseF5atZ4hlmBLnSzArvFVgQ82dyA5?=
+ =?us-ascii?Q?FMO0y8yxcnVzxxUZQThXLK3fw/ztIcZ/1U/x0yiOnbM04kgi5LSdsfeqVw6t?=
+ =?us-ascii?Q?CG9sjprXOTjQPsTyUlW7z2CqUqWCL0Dym/cgVOm4bCS0r5ObOw5QbMPyn1b1?=
+ =?us-ascii?Q?BSI/0rVE40S9lXI0SvBDidJqa3SV13iQleT6C12kIbBtK0NKGTd75prlIhhY?=
+ =?us-ascii?Q?EgYIu9MCJq2/E4aqrginS/cxWbjjtWzU/Z+xztWshk34Ba5u7JIarAtNS2UG?=
+ =?us-ascii?Q?HJYwQoxFoJJ+nzCYnXJzuXjsth2YRhrj/T75unFFGxgoHRSsbp0wmV4+oiW6?=
+ =?us-ascii?Q?XPuU0AmdGH//hY036qHlxyhNpZ2lClpqFqdetnzpEr9T3pALSa0LCf60/2/0?=
+ =?us-ascii?Q?tzDFILvgbzhH9O/FrWjihN32/5WFTorRckmv7snkTCmNYbzr5kfmKDGz5Opz?=
+ =?us-ascii?Q?w1o9dxoC0eZhKlUd81X2SLZ2ErdP95cIkl6xfY5gYlpjUXWzahGEHU3efNWh?=
+ =?us-ascii?Q?ZtX8CmfYj2jAwCrnv+iY19IteCSYJfhVLPP1YkGyT41pQCPYuHQhs7EBTMvc?=
+ =?us-ascii?Q?fhgTG+ZFj9BKrb4StL1WomJ0FtNSE6Q4ErUascNbE3Wtm2vOWwcrlJ8qwIj4?=
+ =?us-ascii?Q?doK1irBhFCF2c5zRZUjhCBGMzmjTNiXDWeLzKGVcFmSy13GQkXmoSARma/g8?=
+ =?us-ascii?Q?785jnu5Z86+3yFjv1tFE6QrGtzhphv8jhj100pjqVRtX0SKpvcZ943GMsEx5?=
+ =?us-ascii?Q?J2JZs1CldFkp0XrcqfmV1AaG/fBlGx4bkb24yvxjIvQEfprMtlHf5uAyCqOI?=
+ =?us-ascii?Q?C7eVVBAhs6ab+peX7fW4UyxT+sWBcLEYKO4d16kBXaog6yGkqVmybjhTdfDg?=
+ =?us-ascii?Q?u/0iVh6HzZb+reJ2oIRaTwFMtcEHg7WBryd0i3+nBzyBFfhcAMRYQV3QW9Rr?=
+ =?us-ascii?Q?2/BBnxaV+OAbk/bMz6nCi1PDG+fXYKQChu+m0rIr2HhbXyO5Es7NDumNO+Cp?=
+ =?us-ascii?Q?moDZiG6GP4b2c8u7fAAHjzNrML8aIt8DM8un?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3O6azXFk8tzVsMhv7HuXXCJk39tNYicQsqPRYLNoWjtzpY8jJ3pPHNFpCL+0?=
+ =?us-ascii?Q?6KH//U26Gso8t8G90EkGcvETM2A05QOv4iXrcI/8DZw3wXVAnAV9jsk35evK?=
+ =?us-ascii?Q?DQJGAz0eUkc/aXKmugUX9mndM/VwB4SJ6iTf+e1So0BHaVTzEOMrxBHccPJ3?=
+ =?us-ascii?Q?qjhdMjydtNM6yFaxQLN7U0TDqBnH/+zhI7WVGOTBUoKnezeXCYfDtkhOLEzY?=
+ =?us-ascii?Q?LSkBnIxK1AyBcz2qtlyT9JhTs+RV6fgLzPOe+PJanDJW8/ATC36CuoWd0uC8?=
+ =?us-ascii?Q?YUT3yUZ1B3rNzZ59Rn38tUCp4M5sm01tAuAj6PUSGFrqRzsgBxE/LpNjvl7M?=
+ =?us-ascii?Q?16Eh+9nmFZrMtyBagKVTBcMmD2bjuYFPrCknMhrSAFx9RdD1PsxtySj/A8MG?=
+ =?us-ascii?Q?5Ci8FfxkENk8HpStWRKBpuuA2cJ9/027kgbmmdO2/LOh1o9QSwts6qnstWPA?=
+ =?us-ascii?Q?coh6ySaWMvZizLWDWnAo8+RtVsx8qBQGXnSzgKVQUAkab8Oie7a8ILwgmGoE?=
+ =?us-ascii?Q?SJMbsHwAeYzL1PfsNc7aZRoriBuH3fBSC0XgYDP8BOcCg75qj5QFtAmI83pL?=
+ =?us-ascii?Q?DtniavUQK4PCfR0UdPjWD14S4KcBE/WM9FhqT9BYD6z5EMr6RgkxBQTGRPx1?=
+ =?us-ascii?Q?lxUUn4Q7+CvYI/EPRqhvdsuhHbIdp7QvSRLpnhXtGOsE507Hl+wZhI+S/lYn?=
+ =?us-ascii?Q?q1N4k8busUSdBlxg42XwGEaB9FNa4FcG64+1DGltAVQcgKns0PKQuc9mchTJ?=
+ =?us-ascii?Q?ejulY60M1zcOkC4hJBKdkcEJY51B6XiDa4LQD7hwFur61HEJ6uoCyxGDipN0?=
+ =?us-ascii?Q?bSVw0ocb9x40jz91gCBmVjjIcwFiTGDnoXNfRMQbnuBVrwsPfBSwBEXx1MLd?=
+ =?us-ascii?Q?S+9928T/zgLhspfUzMW3g540xM7/a9ZqNgfXhIdGB+uXoffzlZgnpu+KLVlL?=
+ =?us-ascii?Q?tq2UAy7KJF6Cg1xg7P3p4L9Y2y6734UmOulB68DbcSA36nFWUYCkyye8TnQW?=
+ =?us-ascii?Q?LwvAyNatm93frWCz6J08+mj90sC/g+/1T50Hhit6fsWMe4rwKfNTnT6metBG?=
+ =?us-ascii?Q?JMCHYF9zfislw3KU5aiAoEL3qtNCkM4Unbcu94oEAlRlbf7iNSYQ4q/INWyn?=
+ =?us-ascii?Q?ujw5hos8hYE95JnMYRXmTGgwj3jmOo6DpKQcB37yezZdK8QeHekDRQJyidfn?=
+ =?us-ascii?Q?gwkX7rQgKxZ1t6hqihlIBgH6ceRUb+qeaiCdcP7x2DcL4f+7/gC1Tm4S32Ua?=
+ =?us-ascii?Q?hUbBuLEVKBbCF8NIVx3ADeqkm041i7qCzfWvQZ8ilZo/D6rZxGhpKXDGRKUM?=
+ =?us-ascii?Q?nhWEWLfG9tEPs6aQgWRCSsQnGE1R3zTLtynUHtHBR8wYtWVMfdJjrOfb58Ok?=
+ =?us-ascii?Q?p4nraMiWcdIeJTf1Nf5Uh7Auf0vz9L7IyWJijD7dLsew5yWr7vf/wcDkB/tv?=
+ =?us-ascii?Q?eYt/KixvMuzsXt7SRRTAz/van9IKMv12c0uslTlhaRdoSNxH3ypJQTk+WkWD?=
+ =?us-ascii?Q?nmnNg62I2LDT1UMKQptPGcA+TtPGr+c4biVMeVB0Tz8asFgMDc4k9XMzArMQ?=
+ =?us-ascii?Q?fztRV86j2ApHPCOvr5ybAb4MUFoMXkKp+z73C1Nze+XHyEj2JjpcYIBrk8+W?=
+ =?us-ascii?Q?HQ=3D=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9629d66f-0322-4857-7380-08de31c041f9
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 16:31:34.7437 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MB5oyYL/aWQ96UmLSmvgEP7STvXSwgF76ahGU+cQM5myX6ZuVqy4oIn/NSST84MM5wsyZr82u/iAZkgLTaezokAml0hiYD6TYABThLrN504=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB11051
+Received-SPF: pass client-ip=52.101.83.122;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=GVXPR05CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,489 +159,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tao,
+v1 -> v2:
 
-On 10/12/25 5:13 PM, Tao Tang wrote:
-> The SMMUv3 model was missing checks for register accessibility under
-> certain conditions. This allowed guest software to write to registers
-> like STRTAB_BASE when they should be read-only, or read from
-> GERROR_IRQ_CFG registers when they should be RES0.
->
-> This patch fixes this by introducing helper functions, such as the
-> smmu_(reg_name)_writable pattern, to encapsulate the architectural
-> access rules. In addition, writes to registers like STRTAB_BASE,
-> queue bases, and IRQ configurations are now masked to correctly
-> handle reserved bits.
->
-> The MMIO handlers are updated to call these functions before accessing
-> registers. To purely fix the missing checks without introducing new
-> functionality, the security context in the MMIO handlers is explicitly
-> fixed to Non-secure. This ensures that the scope of this patch is
-> limited to fixing existing Non-secure logic.
->
-> If a register is not accessible, the access is now correctly handled
-> and a guest error is logged, bringing the model's behavior in line with
-> the specification.
->
-> Fixes: fae4be38b35d ("hw/arm/smmuv3: Implement MMIO write operations")
-> Fixes: 10a83cb9887e ("hw/arm/smmuv3: Skeleton")
-> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
-> ---
->  hw/arm/smmuv3.c | 304 +++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 298 insertions(+), 6 deletions(-)
->
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index f9395c3821..f161dd3eff 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -1321,6 +1321,127 @@ static void smmuv3_range_inval(SMMUState *s, Cmd *cmd, SMMUStage stage,
->      }
->  }
->  
-> +static inline int smmuv3_get_cr0ack_smmuen(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].cr0ack, CR0, SMMUEN);
-> +}
-> +
-> +static inline bool smmuv3_is_smmu_enabled(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    int cr0_smmuen = smmu_enabled(s, sec_sid);
-> +    int cr0ack_smmuen = smmuv3_get_cr0ack_smmuen(s, sec_sid);
-> +    return (cr0_smmuen == 0 && cr0ack_smmuen == 0);
-> +}
-> +
-> +/* Check if STRTAB_BASE register is writable */
-> +static bool smmu_strtab_base_writable(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    /* Check TABLES_PRESET - use NS bank as it's the global setting */
-> +    if (FIELD_EX32(s->bank[sec_sid].idr[1], IDR1, TABLES_PRESET)) {
-> +        return false;
-> +    }
-> +
-> +    /* Check SMMUEN conditions for the specific security domain */
-> +    return smmuv3_is_smmu_enabled(s, sec_sid);
-> +}
-> +
-> +static inline int smmuv3_get_cr0_cmdqen(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].cr[0], CR0, CMDQEN);
-> +}
-> +
-> +static inline int smmuv3_get_cr0ack_cmdqen(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].cr0ack, CR0, CMDQEN);
-> +}
-> +
-> +static inline int smmuv3_get_cr0_eventqen(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].cr[0], CR0, EVENTQEN);
-> +}
-> +
-> +static inline int smmuv3_get_cr0ack_eventqen(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].cr0ack, CR0, EVENTQEN);
-> +}
-> +
-> +/* Check if MSI is supported */
-> +static inline bool smmu_msi_supported(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].idr[0], IDR0, MSI);
-> +}
-> +
-> +/* Check if secure GERROR_IRQ_CFGx registers are writable */
-> +static inline bool smmu_gerror_irq_cfg_writable(SMMUv3State *s,
-> +                                                SMMUSecSID sec_sid)
-> +{
-> +    if (!smmu_msi_supported(s, sec_sid)) {
-> +        return false;
-> +    }
-> +
-> +    bool ctrl_en = FIELD_EX32(s->bank[sec_sid].irq_ctrl,
-> +                              IRQ_CTRL, GERROR_IRQEN);
-> +    return !ctrl_en;
-> +}
-> +
-> +/* Check if CMDQEN is disabled */
-> +static bool smmu_cmdqen_disabled(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    int cr0_cmdqen = smmuv3_get_cr0_cmdqen(s, sec_sid);
-> +    int cr0ack_cmdqen = smmuv3_get_cr0ack_cmdqen(s, sec_sid);
-> +    return (cr0_cmdqen == 0 && cr0ack_cmdqen == 0);
-> +}
-> +
-> +/* Check if CMDQ_BASE register is writable */
-> +static bool smmu_cmdq_base_writable(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    /* Check TABLES_PRESET - use NS bank as it's the global setting */
-> +    if (FIELD_EX32(s->bank[sec_sid].idr[1], IDR1, QUEUES_PRESET)) {
-> +        return false;
-> +    }
-> +
-> +    return smmu_cmdqen_disabled(s, sec_sid);
-> +}
-> +
-> +/* Check if EVENTQEN is disabled */
-> +static bool smmu_eventqen_disabled(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    int cr0_eventqen = smmuv3_get_cr0_eventqen(s, sec_sid);
-> +    int cr0ack_eventqen = smmuv3_get_cr0ack_eventqen(s, sec_sid);
-> +    return (cr0_eventqen == 0 && cr0ack_eventqen == 0);
-> +}
-> +
-> +static bool smmu_idr1_queue_preset(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].idr[1], IDR1, QUEUES_PRESET);
-> +}
-> +
-> +/* Check if EVENTQ_BASE register is writable */
-> +static bool smmu_eventq_base_writable(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    /* Check TABLES_PRESET - use NS bank as it's the global setting */
-> +    if (smmu_idr1_queue_preset(s, sec_sid)) {
-> +        return false;
-> +    }
-> +
-> +    return smmu_eventqen_disabled(s, sec_sid);
-> +}
-> +
-> +static bool smmu_irq_ctl_evtq_irqen_disabled(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    return FIELD_EX32(s->bank[sec_sid].irq_ctrl, IRQ_CTRL, EVENTQ_IRQEN);
-> +}
-> +
-> +/* Check if EVENTQ_IRQ_CFGx is writable */
-> +static bool smmu_eventq_irq_cfg_writable(SMMUv3State *s, SMMUSecSID sec_sid)
-> +{
-> +    if (smmu_msi_supported(s, sec_sid)) {
-> +        return false;
-> +    }
-> +
-> +    return smmu_irq_ctl_evtq_irqen_disabled(s, sec_sid);
-> +}
-> +
->  static int smmuv3_cmdq_consume(SMMUv3State *s)
->  {
->      SMMUState *bs = ARM_SMMU(s);
-> @@ -1561,27 +1682,59 @@ static MemTxResult smmu_writell(SMMUv3State *s, hwaddr offset,
->  
->      switch (offset) {
->      case A_GERROR_IRQ_CFG0:
-> -        bank->gerror_irq_cfg0 = data;
-> +        if (!smmu_gerror_irq_cfg_writable(s, reg_sec_sid)) {
-> +            /* SMMU_(*_)_IRQ_CTRL.GERROR_IRQEN == 1: IGNORED this write */
-> +            qemu_log_mask(LOG_GUEST_ERROR, "GERROR_IRQ_CFG0 write ignored: "
-> +                         "register is RO when IRQ enabled\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        bank->gerror_irq_cfg0 = data & SMMU_GERROR_IRQ_CFG0_RESERVED;
->          return MEMTX_OK;
->      case A_STRTAB_BASE:
-> -        bank->strtab_base = data;
-> +        if (!smmu_strtab_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "STRTAB_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        /* Clear reserved bits according to spec */
-> +        bank->strtab_base = data & SMMU_STRTAB_BASE_RESERVED;
->          return MEMTX_OK;
->      case A_CMDQ_BASE:
-> -        bank->cmdq.base = data;
-> +        if (!smmu_cmdq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "CMDQ_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        bank->cmdq.base = data & SMMU_QUEUE_BASE_RESERVED;
->          bank->cmdq.log2size = extract64(bank->cmdq.base, 0, 5);
->          if (bank->cmdq.log2size > SMMU_CMDQS) {
->              bank->cmdq.log2size = SMMU_CMDQS;
->          }
->          return MEMTX_OK;
->      case A_EVENTQ_BASE:
-> -        bank->eventq.base = data;
-> +        if (!smmu_eventq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        bank->eventq.base = data & SMMU_QUEUE_BASE_RESERVED;
->          bank->eventq.log2size = extract64(bank->eventq.base, 0, 5);
->          if (bank->eventq.log2size > SMMU_EVENTQS) {
->              bank->eventq.log2size = SMMU_EVENTQS;
->          }
->          return MEMTX_OK;
->      case A_EVENTQ_IRQ_CFG0:
-> -        bank->eventq_irq_cfg0 = data;
-> +        if (!smmu_eventq_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_IRQ_CFG0 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        bank->eventq_irq_cfg0 = data & SMMU_EVENTQ_IRQ_CFG0_RESERVED;
->          return MEMTX_OK;
->      default:
->          qemu_log_mask(LOG_UNIMP,
-> @@ -1608,7 +1761,15 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          bank->cr[1] = data;
->          return MEMTX_OK;
->      case A_CR2:
-> -        bank->cr[2] = data;
-> +        if (smmuv3_is_smmu_enabled(s, reg_sec_sid)) {
-> +            /* Allow write: SMMUEN is 0 in both CR0 and CR0ACK */
-> +            bank->cr[2] = data;
-> +        } else {
-> +            /* CONSTRAINED UNPREDICTABLE behavior: Ignore this write */
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "CR2 write ignored: register is read-only when "
-> +                          "CR0.SMMUEN or CR0ACK.SMMUEN is set\n");
-> +        }
->          return MEMTX_OK;
->      case A_IRQ_CTRL:
->          bank->irq_ctrl = data;
-> @@ -1622,12 +1783,31 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          smmuv3_cmdq_consume(s);
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG0: /* 64b */
-> +        if (!smmu_gerror_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "GERROR_IRQ_CFG0 write ignored: "
-> +                          "register is RO when IRQ enabled\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_GERROR_IRQ_CFG0_RESERVED;
->          bank->gerror_irq_cfg0 = deposit64(bank->gerror_irq_cfg0, 0, 32, data);
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG0 + 4:
-> +        if (!smmu_gerror_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "GERROR_IRQ_CFG0 + 4 write ignored: "
-> +                          "register is RO when IRQ enabled\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->gerror_irq_cfg0 = deposit64(bank->gerror_irq_cfg0, 32, 32, data);
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG1:
-> +        if (!smmu_gerror_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "GERROR_IRQ_CFG1 write ignored: "
-> +                          "register is RO when IRQ enabled\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->gerror_irq_cfg1 = data;
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG2:
-> @@ -1644,12 +1824,32 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          }
->          return MEMTX_OK;
->      case A_STRTAB_BASE: /* 64b */
-> +        if (!smmu_strtab_base_writable(s, reg_sec_sid)) {
-would you mind splitting this patch into 2, changes related to 
+  * Use pty module instead of script(1) for producing colored output;
+  * Patch coredump file in place instead of full copy;
+  * Save and restore original pt_regs values in a separate file;
+  * Wrap this logic in a separate class.
 
-smmu_gerror_irq_cfg_writable and changes related to smmu_strtab_base_writable if confirmed they are effectively independent on each others
+v1: https://lore.kernel.org/qemu-devel/20251125142105.448289-1-andrey.drobyshev@virtuozzo.com/
 
-Eric
+Andrey Drobyshev (4):
+  scripts/qemugdb: mtree: Fix OverflowError in mtree with 128-bit
+    addresses
+  scripts/qemugdb: timers: Fix KeyError in 'qemu timers' command
+  scripts/qemugdb: timers: Improve 'qemu timers' command readability
+  scripts/qemugdb: coroutine: Add option for obtaining detailed trace in
+    coredump
 
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "STRTAB_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_STRTAB_BASE_RESERVED;
->          bank->strtab_base = deposit64(bank->strtab_base, 0, 32, data);
->          return MEMTX_OK;
->      case A_STRTAB_BASE + 4:
-> +        if (!smmu_strtab_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "STRTAB_BASE + 4 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_STRTAB_BASE_RESERVED;
->          bank->strtab_base = deposit64(bank->strtab_base, 32, 32, data);
->          return MEMTX_OK;
->      case A_STRTAB_BASE_CFG:
-> +        if (!smmu_strtab_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "STRTAB_BASE_CFG write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->strtab_base_cfg = data;
->          if (FIELD_EX32(data, STRTAB_BASE_CFG, FMT) == 1) {
->              bank->sid_split = FIELD_EX32(data, STRTAB_BASE_CFG, SPLIT);
-> @@ -1657,6 +1857,13 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          }
->          return MEMTX_OK;
->      case A_CMDQ_BASE: /* 64b */
-> +        if (!smmu_cmdq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "CMDQ_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_QUEUE_BASE_RESERVED;
->          bank->cmdq.base = deposit64(bank->cmdq.base, 0, 32, data);
->          bank->cmdq.log2size = extract64(bank->cmdq.base, 0, 5);
->          if (bank->cmdq.log2size > SMMU_CMDQS) {
-> @@ -1664,6 +1871,13 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          }
->          return MEMTX_OK;
->      case A_CMDQ_BASE + 4: /* 64b */
-> +        if (!smmu_cmdq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "CMDQ_BASE + 4 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_QUEUE_BASE_RESERVED;
->          bank->cmdq.base = deposit64(bank->cmdq.base, 32, 32, data);
->          return MEMTX_OK;
->      case A_CMDQ_PROD:
-> @@ -1671,9 +1885,22 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          smmuv3_cmdq_consume(s);
->          return MEMTX_OK;
->      case A_CMDQ_CONS:
-> +        if (!smmu_cmdqen_disabled(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "CMDQ_CONS write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->cmdq.cons = data;
->          return MEMTX_OK;
->      case A_EVENTQ_BASE: /* 64b */
-> +        if (!smmu_eventq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_BASE write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_QUEUE_BASE_RESERVED;
->          bank->eventq.base = deposit64(bank->eventq.base, 0, 32, data);
->          bank->eventq.log2size = extract64(bank->eventq.base, 0, 5);
->          if (bank->eventq.log2size > SMMU_EVENTQS) {
-> @@ -1681,24 +1908,63 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->          }
->          return MEMTX_OK;
->      case A_EVENTQ_BASE + 4:
-> +        if (!smmu_eventq_base_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_BASE + 4 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_QUEUE_BASE_RESERVED;
->          bank->eventq.base = deposit64(bank->eventq.base, 32, 32, data);
->          return MEMTX_OK;
->      case A_EVENTQ_PROD:
-> +        if (!smmu_eventqen_disabled(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_PROD write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->eventq.prod = data;
->          return MEMTX_OK;
->      case A_EVENTQ_CONS:
->          bank->eventq.cons = data;
->          return MEMTX_OK;
->      case A_EVENTQ_IRQ_CFG0: /* 64b */
-> +        if (!smmu_eventq_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_IRQ_CFG0 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_EVENTQ_IRQ_CFG0_RESERVED;
->          bank->eventq_irq_cfg0 = deposit64(bank->eventq_irq_cfg0, 0, 32, data);
->          return MEMTX_OK;
->      case A_EVENTQ_IRQ_CFG0 + 4:
-> +        if (!smmu_eventq_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_IRQ_CFG0+4 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
-> +        data &= SMMU_EVENTQ_IRQ_CFG0_RESERVED;
->          bank->eventq_irq_cfg0 = deposit64(bank->eventq_irq_cfg0, 32, 32, data);
->          return MEMTX_OK;
->      case A_EVENTQ_IRQ_CFG1:
-> +        if (!smmu_eventq_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_IRQ_CFG1 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->eventq_irq_cfg1 = data;
->          return MEMTX_OK;
->      case A_EVENTQ_IRQ_CFG2:
-> +        if (!smmu_eventq_irq_cfg_writable(s, reg_sec_sid)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "EVENTQ_IRQ_CFG2 write ignored: register is RO\n");
-> +            return MEMTX_OK;
-> +        }
-> +
->          bank->eventq_irq_cfg2 = data;
->          return MEMTX_OK;
->      default:
-> @@ -1743,6 +2009,12 @@ static MemTxResult smmu_readll(SMMUv3State *s, hwaddr offset,
->  
->      switch (offset) {
->      case A_GERROR_IRQ_CFG0:
-> +        /* SMMU_(*_)GERROR_IRQ_CFG0 BOTH check SMMU_IDR0.MSI */
-> +        if (!smmu_msi_supported(s, reg_sec_sid)) {
-> +            *data = 0; /* RES0 */
-> +            return MEMTX_OK;
-> +        }
-> +
->          *data = bank->gerror_irq_cfg0;
->          return MEMTX_OK;
->      case A_STRTAB_BASE:
-> @@ -1811,15 +2083,35 @@ static MemTxResult smmu_readl(SMMUv3State *s, hwaddr offset,
->          *data = bank->gerrorn;
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG0: /* 64b */
-> +        if (!smmu_msi_supported(s, reg_sec_sid)) {
-> +            *data = 0; /* RES0 */
-> +            return MEMTX_OK;
-> +        }
-> +
->          *data = extract64(bank->gerror_irq_cfg0, 0, 32);
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG0 + 4:
-> +        if (!smmu_msi_supported(s, reg_sec_sid)) {
-> +            *data = 0; /* RES0 */
-> +            return MEMTX_OK;
-> +        }
-> +
->          *data = extract64(bank->gerror_irq_cfg0, 32, 32);
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG1:
-> +        if (!smmu_msi_supported(s, reg_sec_sid)) {
-> +            *data = 0; /* RES0 */
-> +            return MEMTX_OK;
-> +        }
-> +
->          *data = bank->gerror_irq_cfg1;
->          return MEMTX_OK;
->      case A_GERROR_IRQ_CFG2:
-> +        if (!smmu_msi_supported(s, reg_sec_sid)) {
-> +            *data = 0; /* RES0 */
-> +            return MEMTX_OK;
-> +        }
-> +
->          *data = bank->gerror_irq_cfg2;
->          return MEMTX_OK;
->      case A_STRTAB_BASE: /* 64b */
+ scripts/qemugdb/coroutine.py | 243 +++++++++++++++++++++++++++++++++--
+ scripts/qemugdb/mtree.py     |   2 +-
+ scripts/qemugdb/timers.py    |  54 ++++++--
+ 3 files changed, 280 insertions(+), 19 deletions(-)
+
+-- 
+2.43.5
 
 
