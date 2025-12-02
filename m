@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6B5C9C435
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C06BFC9C422
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 17:42:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQTR8-0001E4-Lb; Tue, 02 Dec 2025 11:41:10 -0500
+	id 1vQTR8-0001CN-2d; Tue, 02 Dec 2025 11:41:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQl-000103-7c
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:47 -0500
+ id 1vQTQq-00010Y-KI
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:53 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQTQj-0002BI-NL
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:46 -0500
+ id 1vQTQm-0002BI-48
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 11:40:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764693645; x=1796229645;
+ t=1764693648; x=1796229648;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EJDsM/gh9OJ5qk69Sy+KHH99/lnhQAd7uQZJey2ngdU=;
- b=Gf9DmGOY7SnBOqB1tSNMinwneEJewcQBmN2+AqbOSnEbhI8SpdlD+Tpn
- yBfrZer7zH4mrHmpF/mYlHqgy8YfXS5/RFKss9f4Fs458mNnDyICDLLKu
- tsDfQsIXFu1u0NC+QKJVWHlgZ6JoAI11vC9zcSc4+cPYZADbZuzasODfP
- ZuSUn9wefYLkMYbeqvx4uIcl6QjkL10QhXAOaIuBjL2PJqLaY9npMx5E/
- NA3iqYUocbPkYfpECggxSwUPHloTXjlZ5RqyyOzl44eZTMXhRUvXRWIER
- OKP++LuzVl8OG21BnCiY4KGrLd3Fj+tjeOiEGF5uA9ycFX4YgcGlqHWTp w==;
-X-CSE-ConnectionGUID: KvWxagzHSw+G4osywzIMJw==
-X-CSE-MsgGUID: acwgExhXScacYVneFgjvyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555338"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555338"
+ bh=0KCmiyIpAB52wYzC4kWIy02+TdGBgkInAHjQESaNq0s=;
+ b=Q/870l/lWrQlfqXq9OCepRCh/XwIO2W0cislkOwtUhuC9vtnyzA/xV62
+ s5Br4Ll6eEkCoknIFpkIXNejZyH+1xo8jz86EHrbv5Pg8N04Sit66P7jN
+ IDXs3sEwpRk5nFvqLZlkSrSFmNzjaG/tDVKIqQlLAY+SJV2BnHGmvI75f
+ wr/ymRvQkdX6BSZHzheGw0iDDRY6MH8Zxns5HxLr+Xnihxrx3PWymUOV4
+ TtbkkJn84Qz3djqQNjyyjUNOCsiHexlcLdL80OJAbHxCHjGm8mvHvgM1K
+ G+EjcJBM/U/1OLcuCNJ3mdIduP9aNISmLOAKrlctmrNrtqcUGAJiR3SUH A==;
+X-CSE-ConnectionGUID: EU8spNoAT8+2rCJLlCcBsA==
+X-CSE-MsgGUID: go45Yqy8SNSSKmze/UpxpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66555347"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66555347"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 08:40:43 -0800
-X-CSE-ConnectionGUID: +pE6H92VRJO5eRRxMlTI4A==
-X-CSE-MsgGUID: bgciHmu9QDCeH985Upn5Lw==
+ 02 Dec 2025 08:40:47 -0800
+X-CSE-ConnectionGUID: 6Zgi4yFGTZm3WZ1TGP1L8g==
+X-CSE-MsgGUID: j+3EFEyhTOSNAtDmMUVZfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751287"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="231751314"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:41 -0800
+ by orviesa001.jf.intel.com with ESMTP; 02 Dec 2025 08:40:44 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,10 +55,10 @@ Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 05/10] system/vl: Check property deprecation flag for
- properities of accelerator
-Date: Wed,  3 Dec 2025 01:04:57 +0800
-Message-Id: <20251202170502.3228625-6-zhao1.liu@intel.com>
+Subject: [RFC 06/10] qom/qom-hmp-cmd: Check property deprecation flag for
+ "qom-set" command
+Date: Wed,  3 Dec 2025 01:04:58 +0800
+Message-Id: <20251202170502.3228625-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251202170502.3228625-1-zhao1.liu@intel.com>
 References: <20251202170502.3228625-1-zhao1.liu@intel.com>
@@ -89,29 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now, object_parse_property_opt() is only used for -accel, which would
-also have the need to deprecate properties.
-
-So, use object_property_parse_with_check() for -accel.
+"qom-set" can be used to set object property by external users, so it's
+necessary to enable deprecation check for this case.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- system/vl.c | 2 +-
+ qom/qom-hmp-cmds.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 5091fe52d925..e1bcd4d713d7 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1709,7 +1709,7 @@ static int object_parse_property_opt(Object *obj,
-         return 0;
-     }
- 
--    if (!object_property_parse(obj, name, value, errp)) {
-+    if (!object_property_parse_with_check(obj, name, value, errp)) {
-         return -1;
-     }
- 
+diff --git a/qom/qom-hmp-cmds.c b/qom/qom-hmp-cmds.c
+index a00a564b1e22..1bfef0837e30 100644
+--- a/qom/qom-hmp-cmds.c
++++ b/qom/qom-hmp-cmds.c
+@@ -58,7 +58,7 @@ void hmp_qom_set(Monitor *mon, const QDict *qdict)
+             error_set(&err, ERROR_CLASS_DEVICE_NOT_FOUND,
+                       "Device '%s' not found", path);
+         } else {
+-            object_property_parse(obj, property, value, &err);
++            object_property_parse_with_check(obj, property, value, &err);
+         }
+     } else {
+         QObject *obj = qobject_from_json(value, &err);
 -- 
 2.34.1
 
