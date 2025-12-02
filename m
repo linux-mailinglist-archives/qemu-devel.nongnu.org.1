@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8088CC9AB23
-	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 09:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F089C9AB29
+	for <lists+qemu-devel@lfdr.de>; Tue, 02 Dec 2025 09:33:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQLo4-0000rb-Hh; Tue, 02 Dec 2025 03:32:20 -0500
+	id 1vQLoo-0001Qr-1j; Tue, 02 Dec 2025 03:33:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQLo1-0000qd-BD
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 03:32:17 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQLon-0001PE-58
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 03:33:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQLny-0007In-GT
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 03:32:17 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vQLol-0007PW-R7
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 03:33:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764664331;
+ s=mimecast20190719; t=1764664382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PlqrRvm9IwaVz0zr9mAiY+yA/lgInqpEN8yalyL4j4c=;
- b=ciw6uoEdptL4Pmmspep5ZLPxRETqAJZUyyBeV0H3nOJzjlQw2JIA0ixkgJ18ntNzyKWz3I
- CTyVug7bOiVWl7s2HKSmxTTtfF2meek1xpOpJz3rMAXfbBP/rfRfxL2tgnHC+h/8agVUr0
- kQMtFKwwCfPkC2MgvmEFVZVI1MQEneg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=I+nyeIgdjao7kmFECITLfLNQv0kuOpWPLNI5c0Bl9fQ=;
+ b=dzBkXyl1PK9sn+9Z6/CbNEXTIf+DKv9WNeD8uqe8MJtHLqFTeg39de9yvzfYiyaJ8JR+46
+ glcKLTL9f+cVjwVu3Okn49CdAd3lGA/CLWbPYGpkvB8L3woct80UkE5LSshwR2vkdmOnR1
+ FY9IrJf2JbXrw5FCrn7SnEEvQMdaCCg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-c5x7YLivPKGl1z6bV9bhcQ-1; Tue,
- 02 Dec 2025 03:32:10 -0500
-X-MC-Unique: c5x7YLivPKGl1z6bV9bhcQ-1
-X-Mimecast-MFC-AGG-ID: c5x7YLivPKGl1z6bV9bhcQ_1764664329
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-Fuj5WPnsNf69QYD5NAGJ2A-1; Tue,
+ 02 Dec 2025 03:33:00 -0500
+X-MC-Unique: Fuj5WPnsNf69QYD5NAGJ2A-1
+X-Mimecast-MFC-AGG-ID: Fuj5WPnsNf69QYD5NAGJ2A_1764664379
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB9CF1955E74; Tue,  2 Dec 2025 08:32:09 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 50E4A1800451; Tue,  2 Dec 2025 08:32:59 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.7])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4B3DD18002AC; Tue,  2 Dec 2025 08:32:09 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D50201800361; Tue,  2 Dec 2025 08:32:58 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C4CB221E6741; Tue, 02 Dec 2025 09:32:06 +0100 (CET)
+ id 8C4E421E6A27; Tue, 02 Dec 2025 09:32:56 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 2/2] kvm: Fix kvm_vm_ioctl() and kvm_device_ioctl() return value
-Date: Tue,  2 Dec 2025 09:32:06 +0100
-Message-ID: <20251202083206.4180561-3-armbru@redhat.com>
-In-Reply-To: <20251202083206.4180561-1-armbru@redhat.com>
-References: <20251202083206.4180561-1-armbru@redhat.com>
+Cc: pbonzini@redhat.com,  kvm@vger.kernel.org,  eesposit@redhat.com,
+ philmd@linaro.org
+Subject: Re: [PATCH v2] kvm: Fix kvm_vm_ioctl() and kvm_device_ioctl()
+ return value
+In-Reply-To: <20251128152050.3417834-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Fri, 28 Nov 2025 16:20:50 +0100")
+References: <20251128152050.3417834-1-armbru@redhat.com>
+Date: Tue, 02 Dec 2025 09:32:56 +0100
+Message-ID: <871pldxozr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,52 +86,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These functions wrap ioctl().  When ioctl() fails, it sets @errno.
-The wrappers then return that @errno negated.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Except they call accel_ioctl_end() between calling ioctl() and reading
-@errno.  accel_ioctl_end() can clobber @errno, e.g. when a futex()
-system call fails.  Seems unlikely, but it's a bug all the same.
+> These functions wrap ioctl().  When ioctl() fails, it sets @errno.
+> The wrappers then return that @errno negated.
+>
+> Except they call accel_ioctl_end() between calling ioctl() and reading
+> @errno.  accel_ioctl_end() can clobber @errno, e.g. when a futex()
+> system call fails.  Seems unlikely, but it's a bug all the same.
+>
+> Fix by retrieving @errno before calling accel_ioctl_end().
+>
+> Fixes: a27dd2de68f3 (KVM: keep track of running ioctls)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Fix by retrieving @errno before calling accel_ioctl_end().
-
-Fixes: a27dd2de68f3 (KVM: keep track of running ioctls)
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251128152050.3417834-1-armbru@redhat.com>
----
- accel/kvm/kvm-all.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f9254ae654..28006d73c5 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3373,10 +3373,10 @@ int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
-     trace_kvm_vm_ioctl(type, arg);
-     accel_ioctl_begin();
-     ret = ioctl(s->vmfd, type, arg);
--    accel_ioctl_end();
-     if (ret == -1) {
-         ret = -errno;
-     }
-+    accel_ioctl_end();
-     return ret;
- }
- 
-@@ -3413,10 +3413,10 @@ int kvm_device_ioctl(int fd, unsigned long type, ...)
-     trace_kvm_device_ioctl(fd, type, arg);
-     accel_ioctl_begin();
-     ret = ioctl(fd, type, arg);
--    accel_ioctl_end();
-     if (ret == -1) {
-         ret = -errno;
-     }
-+    accel_ioctl_end();
-     return ret;
- }
- 
--- 
-2.49.0
+Queued for 10.2.
 
 
