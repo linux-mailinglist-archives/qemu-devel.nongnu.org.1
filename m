@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC92FC9D469
+	by mail.lfdr.de (Postfix) with ESMTPS id C60A6C9D466
 	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 00:08:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQZSw-0005P5-DT; Tue, 02 Dec 2025 18:07:26 -0500
+	id 1vQZT3-0005Ps-Oa; Tue, 02 Dec 2025 18:07:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSs-0005Og-V5
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:22 -0500
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSu-0005PC-S4
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:24 -0500
 Received: from fanzine2.igalia.com ([213.97.179.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSq-0005Za-Bx
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:21 -0500
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1vQZSs-0005Zt-Nj
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 18:07:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -23,24 +23,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=CN+1UZVLa45qQRicW1aM6nWsTAgOWP7zCStmqGa6D9Q=; b=hv4qrqWmSWtlXmKLYS0JfS2YMz
- tHuScacbRIOVNrepM1wVOPCUoLoe2ML+t0iluqz+gGpxfoc/efQlE1PeraP/kTzvYBaouFO9kcKlE
- WF67W0cLiU60J/TqRcKfAzJCiAGCEJ3OPI8hKPLQw15/l3aHiXY4pFLm+9GlLNjVKv7S7cYCIGSbv
- 5Tsup9L7D/MDinC8QZGWe8pV/+7SQAHXPSKi6Vu0StfG+4ISUWi1PafLpivMytThSCAogrcIDvEzi
- Oc7Lbd1okdOAev+slnktnw5K8zzovX5/T7ErIWh8YAFgzUyYx2lfTLQdeRRazEMu7KWLLVHCktK2n
- I4L4EKIg==;
+ bh=UVSDrQj2EE2Xom2fSCqutr2x2fz+iiadtu9ED7/RGkM=; b=rfq9SuMUSdxQ4bVfme2QD96TpV
+ mKOT5okhR7kww8QCkQ0CHqwkMpvuTxAINoYIt7mF2FBmYz9w7as8oqpuHE66iibxxiBZxvPa0LHeN
+ LwAEeh730DeDWY5rrFeYQ+nvnYJlEprvGq5xfEwOyjza+HUxosjVCK/2urIHgo0PqvVerVZlz1j/O
+ Ocy70BHRtDXmnyJfka0DOp2LFfCrXE+QbtDrLh+M/lffyBtSJSNhrAJezeHxVjSdqDMS60kqIbxrx
+ 5FF6Gq+1AqUPMavkA8VV6NxM+1bxMfF9Z+EhvkJ2md3ZJpT4AVmKsdcTUiWW2Pv/ABG04FRrv0EEC
+ EufRR+jg==;
 Received: from 82-69-92-151.dsl.in-addr.zen.co.uk ([82.69.92.151]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vQZSo-0082ga-OY; Wed, 03 Dec 2025 00:07:18 +0100
+ id 1vQZSq-0082ga-Mr; Wed, 03 Dec 2025 00:07:20 +0100
 From: Alex Bradbury <asb@igalia.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Bradbury <asb@igalia.com>, alex.bennee@linaro.org, erdnaxe@crans.org,
- ma.mandourr@gmail.com, pierrick.bouvier@linaro.org
-Subject: [PATCH v2 2/5] contrib/plugins/hotblocks: Fix off by one error in
- iteration of sorted blocks
-Date: Tue,  2 Dec 2025 23:05:55 +0000
-Message-ID: <2e1c404fd21d064610391ebb2ffe24d0c536f8dd.1764716538.git.asb@igalia.com>
+ ma.mandourr@gmail.com, pierrick.bouvier@linaro.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH v2 3/5] contrib/plugins/hotblocks: Print uint64_t with PRIu64
+ rather than PRId64
+Date: Tue,  2 Dec 2025 23:05:56 +0000
+Message-ID: <46f83ac83c6cabace91b9be85da2547ff7b08204.1764716538.git.asb@igalia.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1764716538.git.asb@igalia.com>
 References: <cover.1764716538.git.asb@igalia.com>
@@ -70,34 +71,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The logic to iterate over the hottest blocks will never reach the last
-item in the list, as it checks `it->next != NULL` before entering the
-loop. It's hard to trigger this off-by-one error with the default
-limit=20, but it is a bug and is problematic if that default is changed
-to something larger.
+qemu_plugin_u64_sum returns a uint64_t, so PRIu64 is the correct format
+specifier.
 
 Signed-off-by: Alex Bradbury <asb@igalia.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/hotblocks.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ contrib/plugins/hotblocks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index d3dd23ed9f..cf4d6b8c36 100644
+index cf4d6b8c36..40d8dae1cd 100644
 --- a/contrib/plugins/hotblocks.c
 +++ b/contrib/plugins/hotblocks.c
-@@ -82,10 +82,9 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     sorted_counts = g_list_sort_with_data(counts, cmp_exec_count, NULL);
- 
-     if (sorted_counts) {
--        it = sorted_counts;
-         g_string_append_printf(report, "pc, tcount, icount, ecount\n");
- 
--        for (i = 0; i < limit && it->next; i++, it = it->next) {
-+        for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
+@@ -87,7 +87,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+         for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
              ExecCount *rec = (ExecCount *) it->data;
              g_string_append_printf(
-                 report, "0x%016"PRIx64", %d, %ld, %"PRId64"\n",
+-                report, "0x%016"PRIx64", %d, %ld, %"PRId64"\n",
++                report, "0x%016"PRIx64", %d, %ld, %"PRIu64"\n",
+                 rec->start_addr, rec->trans_count,
+                 rec->insns,
+                 qemu_plugin_u64_sum(
 -- 
 2.52.0
 
