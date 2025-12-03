@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4B2C9E7FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116B4C9E807
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHb-0000AV-KC; Wed, 03 Dec 2025 04:36:23 -0500
+	id 1vQjHe-0000DV-GM; Wed, 03 Dec 2025 04:36:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHZ-00009m-Py; Wed, 03 Dec 2025 04:36:21 -0500
+ id 1vQjHc-0000Ca-EB; Wed, 03 Dec 2025 04:36:24 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHY-00073V-5o; Wed, 03 Dec 2025 04:36:21 -0500
+ id 1vQjHa-00073z-Nn; Wed, 03 Dec 2025 04:36:24 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54D081708AE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6448C1708AF;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 376D432B5A5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 50E1232B5A6;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nabih Estefan <nabihestefan@google.com>,
+Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 79/96] hw/arm/ast27x0: Fix typo in LTPI address
-Date: Wed,  3 Dec 2025 12:35:12 +0300
-Message-ID: <20251203093612.2370716-3-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 80/96] hw/arm/aspeed: Fix missing SPI IRQ connection
+ causing DMA interrupt failure
+Date: Wed,  3 Dec 2025 12:35:13 +0300
+Message-ID: <20251203093612.2370716-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -59,34 +60,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The address for LTPI has one more 0 that it should, bug introduced in
-commit 91064bea6b2d747a981cb3bd2904e56f443e6c67.
+It did not connect SPI IRQ to the Interrupt Controller, so even the SPI
+model raised the IRQ, the interrupt was not received. The CPU therefore
+did not trigger an interrupt via the controller, and the firmware never
+received the interrupt.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Fixes: 91064bea6b2d ("aspeed: ast27x0: Map unimplemented devices in SoC memory")
+Fixes: 356b230ed13889e09d087a96498887de695df17e ("aspeed/soc: Add AST1030 support")
+Fixes: f25c0ae1079dc0b9de02676eb3e3949a09df9f41 ("aspeed/soc: Add AST2600 support")
+Fixes: 5dd883ab0635c9f715c77cc32622e458a0724581 ("aspeed/soc: Add AST2700 support")
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251104233742.2147367-1-nabihestefan@google.com
+Link: https://lore.kernel.org/qemu-devel/20251106084925.1253704-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit cacd8fb08d3f992ef9cdf4c26a2d28ced409cfd4)
-(Mjt: context fixup)
+(cherry picked from commit 510d5c61ad3eb1690b61c804d38c984527a5ea62)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index e6e1ee63c1..f3876ac0ac 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -357,6 +357,8 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI1 + i]);
+         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast1030_get_irq(s, ASPEED_DEV_SPI1 + i));
+     }
+ 
+     /* Secure Boot Controller */
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index d12707f0ab..a9defe0d83 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -467,6 +467,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI1 + i]);
+         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast2600_get_irq(s, ASPEED_DEV_SPI1 + i));
+     }
+ 
+     /* EHCI */
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 6aa3841b69..356e8c239b 100644
+index 356e8c239b..52bca195d3 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -81,8 +81,8 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_UART11]    =  0x14C33A00,
-     [ASPEED_DEV_UART12]    =  0x14C33B00,
-     [ASPEED_DEV_WDT]       =  0x14C37000,
-+    [ASPEED_DEV_LTPI]      =  0x30000000,
-     [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
--    [ASPEED_DEV_LTPI]      =  0x300000000,
-     [ASPEED_DEV_SDRAM]     =  0x400000000,
- };
+@@ -756,6 +756,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+                         sc->memmap[ASPEED_DEV_SPI0 + i]);
+         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
+                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SPI0 + i));
+     }
  
+     /* EHCI */
 -- 
 2.47.3
 
