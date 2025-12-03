@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82313C9E23F
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C9FC9E1DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:03:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhmD-0008GH-Qh; Wed, 03 Dec 2025 02:59:53 -0500
+	id 1vQhmE-0008Gu-VD; Wed, 03 Dec 2025 02:59:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQhmA-0008Eh-DD; Wed, 03 Dec 2025 02:59:50 -0500
+ id 1vQhmB-0008FG-DO; Wed, 03 Dec 2025 02:59:51 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQhm8-0006MO-9M; Wed, 03 Dec 2025 02:59:49 -0500
+ id 1vQhm9-0006PM-7C; Wed, 03 Dec 2025 02:59:50 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 07E09170760;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1791C170761;
  Wed, 03 Dec 2025 10:59:22 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C91CB32B487;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DA58032B488;
  Wed, 03 Dec 2025 10:59:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 083/116] gitlab-ci: Remove the avocado tests from the
- CI pipelines
-Date: Wed,  3 Dec 2025 10:59:03 +0300
-Message-ID: <20251203075939.2366131-2-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 084/116] tests/functional: Move the check for the
+ parameters from avocado to functional
+Date: Wed,  3 Dec 2025 10:59:04 +0300
+Message-ID: <20251203075939.2366131-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
@@ -62,163 +62,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We are going to move the remaining Avocado tests step by step
-into the functional test framework. Unfortunately, Avocado fails
-with an error if it cannot determine a test to run, so disable
-the tests here now to avoid failures in the Gitlab-CI during the
-next steps.
+test_x86_64_pc in tests/avocado/boot_linux_console.py only checks
+whether the kernel parameters have correctly been passed to the
+kernel in the guest by looking for them in the console output of the
+guest. Let's move that to the functional test framework now, but
+instead of doing it in a separate test, let's do it for all tuxrun
+tests instead, so it is done automatically for all targets that have
+a tuxrun test.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250414113031.151105-2-thuth@redhat.com>
+Message-ID: <20250414113031.151105-3-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 22baa5f340d4fe3e7f271d275367b806ef3da834)
+(cherry picked from commit bc65ae696104c15e52a5e26f225b689e2c2cdba6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 39da7698b0..13fa4f4a4f 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -95,7 +95,6 @@
-   cache:
-     key: "${CI_JOB_NAME}-cache"
-     paths:
--      - ${CI_PROJECT_DIR}/avocado-cache
-       - ${CI_PROJECT_DIR}/functional-cache
-     policy: pull-push
-   artifacts:
-@@ -109,16 +108,6 @@
-     reports:
-       junit: build/tests/results/latest/results.xml
-   before_script:
--    - mkdir -p ~/.config/avocado
--    - echo "[datadir.paths]" > ~/.config/avocado/avocado.conf
--    - echo "cache_dirs = ['${CI_PROJECT_DIR}/avocado-cache']"
--           >> ~/.config/avocado/avocado.conf
--    - echo -e '[job.output.testlogs]\nstatuses = ["FAIL", "INTERRUPT"]'
--           >> ~/.config/avocado/avocado.conf
--    - if [ -d ${CI_PROJECT_DIR}/avocado-cache ]; then
--        du -chs ${CI_PROJECT_DIR}/*-cache ;
--      fi
--    - export AVOCADO_ALLOW_UNTRUSTED_CODE=1
-     - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-     - export QEMU_TEST_CACHE_DIR=${CI_PROJECT_DIR}/functional-cache
-   after_script:
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e22d407dbf..01f7168162 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -29,8 +29,7 @@ functional-system-alpine:
-       artifacts: true
-   variables:
-     IMAGE: alpine
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
-+    MAKE_CHECK_ARGS: check-functional
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index c15f39ae1f..cbb1e2fb50 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -9,17 +9,9 @@
+ # later.  See the COPYING file in the top-level directory.
  
- build-system-ubuntu:
-   extends:
-@@ -60,8 +59,7 @@ functional-system-ubuntu:
-       artifacts: true
-   variables:
-     IMAGE: ubuntu2204
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:alpha arch:microblazeel arch:mips64el
-+    MAKE_CHECK_ARGS: check-functional
+ import os
+-import lzma
+-import gzip
+ import shutil
  
- build-system-debian:
-   extends:
-@@ -92,8 +90,7 @@ functional-system-debian:
-       artifacts: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
-+    MAKE_CHECK_ARGS: check-functional
+-from avocado import skip
+-from avocado import skipUnless
+-from avocado import skipUnless
+ from avocado_qemu import QemuSystemTest
+-from avocado_qemu import exec_command
+-from avocado_qemu import exec_command_and_wait_for_pattern
+-from avocado_qemu import interrupt_interactive_console_until_pattern
+ from avocado_qemu import wait_for_console_pattern
+ from avocado.utils import process
+ from avocado.utils import archive
+@@ -68,29 +60,3 @@ def extract_from_rpm(self, rpm, path):
+         process.run("rpm2cpio %s | cpio -id %s" % (rpm, path), shell=True)
+         os.chdir(cwd)
+         return os.path.normpath(os.path.join(self.workdir, path))
+-
+-class BootLinuxConsole(LinuxKernelTest):
+-    """
+-    Boots a Linux kernel and checks that the console is operational and the
+-    kernel command line is properly passed from QEMU to the kernel
+-    """
+-    timeout = 90
+-
+-    def test_x86_64_pc(self):
+-        """
+-        :avocado: tags=arch:x86_64
+-        :avocado: tags=machine:pc
+-        """
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+-                      '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
+-                      '/vmlinuz')
+-        kernel_hash = '23bebd2680757891cf7adedb033532163a792495'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-
+-        self.vm.set_console()
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-append', kernel_command_line)
+-        self.vm.launch()
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
+diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
+index ad74156f9c..c2bd5baaae 100644
+--- a/tests/functional/qemu_test/tuxruntest.py
++++ b/tests/functional/qemu_test/tuxruntest.py
+@@ -77,12 +77,12 @@ def prepare_run(self, kernel, disk, drive, dtb=None, console_index=0):
+         blockdev = "driver=raw,file.driver=file," \
+             + f"file.filename={disk},node-name=hd0"
  
- crash-test-debian:
-   extends: .native_test_job_template
-@@ -155,9 +152,7 @@ functional-system-fedora:
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
--      arch:riscv32 arch:ppc arch:sparc64
-+    MAKE_CHECK_ARGS: check-functional
+-        kcmd_line = self.KERNEL_COMMON_COMMAND_LINE
+-        kcmd_line += f" root=/dev/{self.root}"
+-        kcmd_line += f" console={self.console}"
++        self.kcmd_line = self.KERNEL_COMMON_COMMAND_LINE
++        self.kcmd_line += f" root=/dev/{self.root}"
++        self.kcmd_line += f" console={self.console}"
  
- crash-test-fedora:
-   extends: .native_test_job_template
-@@ -278,9 +273,7 @@ functional-system-centos:
-       artifacts: true
-   variables:
-     IMAGE: centos9
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
--      arch:sh4
-+    MAKE_CHECK_ARGS: check-functional
+         self.vm.add_args('-kernel', kernel,
+-                         '-append', kcmd_line,
++                         '-append', self.kcmd_line,
+                          '-blockdev', blockdev)
  
- build-system-opensuse:
-   extends:
-@@ -309,8 +302,7 @@ functional-system-opensuse:
-       artifacts: true
-   variables:
-     IMAGE: opensuse-leap
--    MAKE_CHECK_ARGS: check-avocado check-functional
--    AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
-+    MAKE_CHECK_ARGS: check-functional
- 
- #
- # Flaky tests. We don't run these by default and they are allow fail
-@@ -338,10 +330,9 @@ functional-system-flaky:
-   allow_failure: true
-   variables:
-     IMAGE: debian
--    MAKE_CHECK_ARGS: check-avocado check-functional
-+    MAKE_CHECK_ARGS: check-functional
-     QEMU_JOB_OPTIONAL: 1
-     QEMU_TEST_FLAKY_TESTS: 1
--    AVOCADO_TAGS: flaky
- 
- # This jobs explicitly disable TCG (--disable-tcg), KVM is detected by
- # the configure script. The container doesn't contain Xen headers so
-@@ -482,8 +473,8 @@ clang-user:
- # Since slirp callbacks are used in QEMU Timers, we cannot use libslirp with
- # CFI builds, and thus have to disable it here.
- #
--# Split in three sets of build/check/avocado to limit the execution time of each
--# job
-+# Split in three sets of build/check/functional to limit the execution time
-+# of each job
- build-cfi-aarch64:
-   extends:
-     - .native_build_job_template
-@@ -520,7 +511,7 @@ functional-cfi-aarch64:
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado check-functional
-+    MAKE_CHECK_ARGS: check-functional
- 
- build-cfi-ppc64-s390x:
-   extends:
-@@ -558,7 +549,7 @@ functional-cfi-ppc64-s390x:
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado check-functional
-+    MAKE_CHECK_ARGS: check-functional
- 
- build-cfi-x86_64:
-   extends:
-@@ -592,7 +583,7 @@ functional-cfi-x86_64:
-       artifacts: true
-   variables:
-     IMAGE: fedora
--    MAKE_CHECK_ARGS: check-avocado check-functional
-+    MAKE_CHECK_ARGS: check-functional
- 
- tsan-build:
-   extends: .native_build_job_template
+         # Sometimes we need extra devices attached
+@@ -103,6 +103,7 @@ def run_tuxtest_tests(self, haltmsg):
+         wait to exit cleanly.
+         """
+         ps1='root@tuxtest:~#'
++        self.wait_for_console_pattern(self.kcmd_line)
+         self.wait_for_console_pattern('tuxtest login:')
+         exec_command_and_wait_for_pattern(self, 'root', ps1)
+         exec_command_and_wait_for_pattern(self, 'cat /proc/interrupts', ps1)
 -- 
 2.47.3
 
