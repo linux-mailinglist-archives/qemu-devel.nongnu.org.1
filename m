@@ -2,35 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECD5C9E822
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3355C9E80D
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjIl-0002PK-JX; Wed, 03 Dec 2025 04:37:35 -0500
+	id 1vQjIm-0002UD-Bq; Wed, 03 Dec 2025 04:37:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjId-0001uE-UT; Wed, 03 Dec 2025 04:37:29 -0500
+ id 1vQjIf-0001wq-AN; Wed, 03 Dec 2025 04:37:30 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjIc-0007Ak-AP; Wed, 03 Dec 2025 04:37:27 -0500
+ id 1vQjId-0007B3-Kd; Wed, 03 Dec 2025 04:37:29 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 809DE1708BD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9A2D61708BE;
  Wed, 03 Dec 2025 12:35:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6BCE532B5B4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7C61332B5B5;
  Wed, 03 Dec 2025 12:36:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Harald van Dijk <hdijk@accesssoftek.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 94/96] target/arm: Fix assert on BRA.
-Date: Wed,  3 Dec 2025 12:35:27 +0300
-Message-ID: <20251203093612.2370716-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 95/96] docs/devel: Update URL for make-pullreq script
+Date: Wed,  3 Dec 2025 12:35:28 +0300
+Message-ID: <20251203093612.2370716-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -59,62 +57,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harald van Dijk <hdijk@accesssoftek.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-trans_BRA does
-
-    gen_a64_set_pc(s, dst);
-    set_btype_for_br(s, a->rn);
-
-gen_a64_set_pc does
-
-    s->pc_save = -1;
-
-set_btype_for_br (if aa64_bti is enabled and the register is not x16 or
-x17) does
-
-    gen_pc_plus_diff(s, pc, 0);
-
-gen_pc_plus_diff does
-
-    assert(s->pc_save != -1);
-
-Hence, this assert is getting hit. We need to call set_btype_for_br
-before gen_a64_set_pc, and there is nothing in set_btype_for_br that
-depends on gen_a64_set_pc having already been called, so this commit
-simply swaps the calls.
-
-(The commit message for 64678fc45d8f6 says that set_brtype_for_br()
-must be "moved after" get_a64_set_pc(), but this is a mistake in
-the commit message -- the actual changes in that commit move
-set_brtype_for_br() *before* get_a64_set_pc() and this is necessary
-to avoid the assert.)
+In the submitting-a-pull-request docs, we have a link to the
+make-pullreq script which might be useful for maintainers.  The
+canonical git repo for this script has moved; update the link.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 64678fc45d8f6 ("target/arm: Fix BTI versus CF_PCREL")
-Signed-off-by: Harald van Dijk <hdijk@accesssoftek.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: d2265ebb-84bc-41b7-a2d7-05dc9a5a2055@accesssoftek.com
-[PMM: added note about 64678fc45d8f6 to commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 7248dab3c9d73fcefe609f7a3414f9d048fefcc1)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-id: 20251125164511.255550-1-peter.maydell@linaro.org
+(cherry picked from commit ebb625262c7f9837d6c7b9d8a0c1349fe8a8f4ff)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index dbf47595db..9c439711fb 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1841,8 +1841,8 @@ static bool trans_BRA(DisasContext *s, arg_bra *a)
-         return false;
-     }
-     dst = auth_branch_target(s, cpu_reg(s,a->rn), cpu_reg_sp(s, a->rm), !a->m);
--    gen_a64_set_pc(s, dst);
-     set_btype_for_br(s, a->rn);
-+    gen_a64_set_pc(s, dst);
-     s->base.is_jmp = DISAS_JUMP;
-     return true;
- }
+diff --git a/docs/devel/submitting-a-pull-request.rst b/docs/devel/submitting-a-pull-request.rst
+index a4cd7ebbb6..e7d0080878 100644
+--- a/docs/devel/submitting-a-pull-request.rst
++++ b/docs/devel/submitting-a-pull-request.rst
+@@ -67,7 +67,7 @@ subject tag is "PULL SUBSYSTEM s390/block/whatever" rather than just
+ pull requests that should be applied to master.
+ 
+ You might be interested in the `make-pullreq
+-<https://git.linaro.org/people/peter.maydell/misc-scripts.git/tree/make-pullreq>`__
++<https://gitlab.com/pm215/misc-scripts/-/blob/master/make-pullreq>`__
+ script which automates some of this process for you and includes a few
+ sanity checks. Note that you must edit it to configure it suitably for
+ your local situation!
 -- 
 2.47.3
 
