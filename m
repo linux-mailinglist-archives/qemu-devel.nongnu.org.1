@@ -2,47 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6969C9DB74
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E73C9DB83
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQeAK-0002Gk-Jh; Tue, 02 Dec 2025 23:08:32 -0500
+	id 1vQeAR-0002Ja-0v; Tue, 02 Dec 2025 23:08:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.35jm618ccjcdvl1=wd6m3wilz0s8=b87kiyyvfflxev@em483429.getutm.app>)
- id 1vQeAH-0002FI-K3
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:30 -0500
+ <bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app>)
+ id 1vQeAM-0002Hq-Rn
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:35 -0500
 Received: from a4i956.smtp2go.com ([158.120.83.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.35jm618ccjcdvl1=wd6m3wilz0s8=b87kiyyvfflxev@em483429.getutm.app>)
- id 1vQeAG-0000Wc-6s
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:29 -0500
+ <bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app>)
+ id 1vQeAL-0000Tm-BL
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1764734895; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1764734904; h=from : subject :
  to : message-id : date;
- bh=RKFSYaD5mWEuabGiWe4mUZY3p0G6tvHa9VipptsJ6dE=;
- b=WznVN0YgBBfFHLUwPEP+LR6xu5u8qSkRHr82ogai3VbzcOyjTbO4kpph2OSnRit+LJsOI
- O4SZaeiPz1qwdf89qsKhEtuHuDzoCAeqZbJPgYh+En14/zqlSS1cyS0Iqv/RzPR7EZ0Iy3c
- 4pCPXQLIG43U1fPufXtN2o/z6WQHBhDTCiAaAdh60Mi0Gp4iNqyvPUhNeUu3UaTCrDf29d5
- 1UlZj4wwwltFuWLqTvfyuRRY2q5XOuqlndO3L20RSbrN5mdRwGW6eaUv2O+xWYOhAHDXGhi
- 6p5+vfTJGkr9fsRLy7n6M/40syjhS0zLTq7iL/Va+FZ/X5W6wBBNSQpiNpNA==
+ bh=y9kSlBF0XTESB4AkIAMB416dSilaCjGWrQ+4K3SRvfk=;
+ b=B1ogOoXkO8Dg4uwBHeNS9EUCo+8cdmPYhNCbBA1BC4li30/H0salP249aXRuNHTZ3oQHH
+ UlhPAf4Y/y5jwPJrsuz225JUCoMCHxvNKAHeX54+QgxeMFzfRN29MHg87YhFvANSzE8pDuJ
+ m0e8cFySlMpRsYJjcCvCfTIS8Hfx0HVwwo4f39UXlbT3+wYuJJ5XUamv//TPWhDGMouYZK2
+ TqusXcReY9nWB+q4GirA0jrzFuysJfuJgzq6Rfgsg6949clHvRAUDoBtAvcIPkGtly3IvFt
+ IfYyK6JSKN10yDHrdSP9RJ4qwjs7+hsGhkZaxlyMF8t8NrUuBbYnZ9zKtq5g==
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vQe9y-FnQW0hPv7oK-Wgtd; Wed, 03 Dec 2025 04:08:11 +0000
+ id 1vQeA2-FnQW0hPv7oK-UTTy; Wed, 03 Dec 2025 04:08:14 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
 Cc: Joelle van Dyne <j@getutm.app>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH RFC 4/7] virtio-gpu-virgl: update virglrenderer defines
-Date: Tue,  2 Dec 2025 20:07:51 -0800
-Message-ID: <20251203040754.94487-5-j@getutm.app>
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH RFC 5/7] virtio-gpu-virgl: support scanout of Metal textures
+Date: Tue,  2 Dec 2025 20:07:52 -0800
+Message-ID: <20251203040754.94487-6-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20251203040754.94487-1-j@getutm.app>
 References: <20251203040754.94487-1-j@getutm.app>
@@ -50,10 +54,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers,
  to <abuse-report@smtp2go.com>
-Feedback-ID: 483429m:483429abrvJvs:483429sXHaL01GIg
-X-smtpcorp-track: BB1kipmajpGZ.yIYh3lvklgbJ.4yKDEQpS5l-
+Feedback-ID: 483429m:483429abrvJvs:483429sRlcTQnisq
+X-smtpcorp-track: dv_CflWhdwOb.innxFtf1XVAI.O0bLQAj_GoV
 Received-SPF: pass client-ip=158.120.83.188;
- envelope-from=bounce.35jm618ccjcdvl1=wd6m3wilz0s8=b87kiyyvfflxev@em483429.getutm.app;
+ envelope-from=bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app;
  helo=a4i956.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -77,76 +81,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to support additional native texture types, we need to update the
-defines in virglrenderer. The changes are backwards compatible and so
-builds should work with either the new version or the old version.
+When supported, virglrenderer will return a MTLTexture handle that can be
+directly used for scanout.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- hw/display/virtio-gpu-virgl.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ meson.build                   |  4 ++++
+ include/ui/console.h          |  2 ++
+ hw/display/virtio-gpu-virgl.c | 12 +++++++++++-
+ hw/display/virtio-gpu.c       |  2 ++
+ 4 files changed, 19 insertions(+), 1 deletion(-)
 
+diff --git a/meson.build b/meson.build
+index d9293294d8..05bad66376 100644
+--- a/meson.build
++++ b/meson.build
+@@ -832,6 +832,7 @@ version_res = []
+ coref = []
+ iokit = []
+ pvg = not_found
++metal = not_found
+ emulator_link_args = []
+ midl = not_found
+ widl = not_found
+@@ -859,6 +860,7 @@ elif host_os == 'darwin'
+   host_dsosuf = '.dylib'
+   pvg = dependency('appleframeworks', modules: ['ParavirtualizedGraphics', 'Metal'],
+                    required: get_option('pvg'))
++  metal = dependency('appleframeworks', modules: 'Metal', required: false)
+ elif host_os == 'sunos'
+   socket = [cc.find_library('socket'),
+             cc.find_library('nsl'),
+@@ -2591,6 +2593,7 @@ if xen.found()
+     ('0' + xen_version[2]).substring(-2)
+   config_host_data.set('CONFIG_XEN_CTRL_INTERFACE_VERSION', xen_ctrl_version)
+ endif
++config_host_data.set('CONFIG_METAL', metal.found())
+ config_host_data.set('QEMU_VERSION', '"@0@"'.format(meson.project_version()))
+ config_host_data.set('QEMU_VERSION_MAJOR', meson.project_version().split('.')[0])
+ config_host_data.set('QEMU_VERSION_MINOR', meson.project_version().split('.')[1])
+@@ -4874,6 +4877,7 @@ summary(summary_info, bool_yn: true, section: 'Crypto')
+ summary_info = {}
+ if host_os == 'darwin'
+   summary_info += {'Cocoa support':           cocoa}
++  summary_info += {'Metal support':           metal}
+ endif
+ summary_info += {'D-Bus display':     dbus_display}
+ summary_info += {'SDL support':       sdl}
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 25e45295d4..a45b524c57 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -134,12 +134,14 @@ struct QemuConsoleClass {
+ typedef enum ScanoutTextureNativeType {
+     SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
+     SCANOUT_TEXTURE_NATIVE_TYPE_D3D,
++    SCANOUT_TEXTURE_NATIVE_TYPE_METAL,
+ } ScanoutTextureNativeType;
+ 
+ typedef struct ScanoutTextureNative {
+     ScanoutTextureNativeType type;
+     union {
+         void *d3d_tex2d;
++        void *metal_texture;
+     } u;
+ } ScanoutTextureNative;
+ 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index d0e6ad4b17..36c670f988 100644
+index 36c670f988..e091eb0c76 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -24,6 +24,8 @@
- 
- #include <virglrenderer.h>
- 
-+#define SUPPORTED_VIRGL_INFO_EXT_VERSION (1)
-+
- struct virtio_gpu_virgl_resource {
-     struct virtio_gpu_simple_resource base;
-     MemoryRegion *mr;
-@@ -441,12 +443,30 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
-         memset(&ext, 0, sizeof(ext));
-         ret = virgl_renderer_resource_get_info_ext(ss.resource_id, &ext);
-         info = ext.base;
-+        /* fallback to older version */
-         native = (ScanoutTextureNative){
-             .type = ext.d3d_tex2d ? SCANOUT_TEXTURE_NATIVE_TYPE_D3D :
-                                     SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
-             .u.d3d_tex2d = ext.d3d_tex2d,
-         };
--#else
-+#if VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION >= SUPPORTED_VIRGL_INFO_EXT_VERSION
-+        if (ext.version >= VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION) {
-+            switch (ext.native_type) {
-+            case VIRGL_NATIVE_HANDLE_NONE:
-+            case VIRGL_NATIVE_HANDLE_D3D_TEX2D: {
-+                /* already handled above */
+@@ -452,6 +452,13 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
+ #if VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION >= SUPPORTED_VIRGL_INFO_EXT_VERSION
+         if (ext.version >= VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION) {
+             switch (ext.native_type) {
++#ifdef CONFIG_METAL
++            case VIRGL_NATIVE_HANDLE_METAL_TEXTURE: {
++                native.type = SCANOUT_TEXTURE_NATIVE_TYPE_METAL;
++                native.u.metal_texture = ext.native_handle;
 +                break;
 +            }
-+            default: {
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                            "%s: unsupported native texture type %d\n",
-+                            __func__, ext.native_type);
-+                break;
-+            }
-+            }
-+        }
 +#endif
-+#else /* VIRGL_VERSION_MAJOR < 1 */
-         memset(&info, 0, sizeof(info));
-         ret = virgl_renderer_resource_get_info(ss.resource_id, &info);
- #endif
-@@ -1169,11 +1189,13 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         virtio_gpu_3d_cbs.get_egl_display = virgl_get_egl_display;
+             case VIRGL_NATIVE_HANDLE_NONE:
+             case VIRGL_NATIVE_HANDLE_D3D_TEX2D: {
+                 /* already handled above */
+@@ -1198,7 +1205,10 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
      }
- #endif
--#ifdef VIRGL_RENDERER_D3D11_SHARE_TEXTURE
-     if (qemu_egl_angle_native_device) {
-+#if defined(VIRGL_RENDERER_NATIVE_SHARE_TEXTURE)
-+        flags |= VIRGL_RENDERER_NATIVE_SHARE_TEXTURE;
-+#elif defined(VIRGL_RENDERER_D3D11_SHARE_TEXTURE) && defined(WIN32)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
--    }
- #endif
-+    }
  #if VIRGL_VERSION_MAJOR >= 1
      if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-         flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
+-        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
++        flags |= VIRGL_RENDERER_VENUS;
++#ifndef CONFIG_METAL /* Metal does not support render server */
++        flags |= VIRGL_RENDERER_RENDER_SERVER;
++#endif
+     }
+ #endif
+ 
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 43e88a4daf..9cf2c15a43 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1485,12 +1485,14 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+     VirtIOGPU *g = VIRTIO_GPU(qdev);
+ 
+     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
++#ifndef CONFIG_METAL
+         if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
+             !virtio_gpu_virgl_enabled(g->parent_obj.conf) &&
+             !virtio_gpu_have_udmabuf()) {
+             error_setg(errp, "need rutabaga or udmabuf for blob resources");
+             return;
+         }
++#endif
+ 
+ #ifdef VIRGL_VERSION_MAJOR
+     #if VIRGL_VERSION_MAJOR < 1
 -- 
 2.41.0
 
