@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35582C9DB7B
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6590C9DB89
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQeAI-0002Fd-TQ; Tue, 02 Dec 2025 23:08:30 -0500
+	id 1vQeAI-0002Eq-6s; Tue, 02 Dec 2025 23:08:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app>)
- id 1vQeAE-0002Em-Fx
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:28 -0500
+ <bounce.29vafx79xran0f5=p85mwoxbn3wq=m9n7svzbgw7c67@em483429.getutm.app>)
+ id 1vQeAB-0002EG-Q3
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:24 -0500
 Received: from a4i956.smtp2go.com ([158.120.83.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app>)
- id 1vQeAD-0000Tm-6O
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:26 -0500
+ <bounce.29vafx79xran0f5=p85mwoxbn3wq=m9n7svzbgw7c67@em483429.getutm.app>)
+ id 1vQeAA-0000Tm-EM
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1764734892; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1764734891; h=from : subject :
  to : message-id : date;
- bh=Q0rWBXh0v74nPYlqDvxdhFdl4JiMuFiyO+nCGeKih+Q=;
- b=mR/7m6ei9XkxMBciEDZTYaflaDH5JROIPnomMoC8lv7WPUQ4oCTBWAF1p5leBuRApbQAJ
- cSHvTXRFJ99NJW9iRKF6z7y20Sa0aQPJnP0YMwAQARwBQNOLSebMy55ghaA18T1NAa5+lT5
- kwZVdA2OWA6BSxP+l0I7QWR8n9OgRREYln7DkKzZQ/cxqEx6ZWJXQGc/0wteG5LmxMmxdqA
- HJqOraYC58cUWRIWls2aYqrcO+PTKye1ftZUTpQ8xE5e8gjJ0K6I1LRlGTaH0GuFXmyk79q
- OC4Yjits4UjSI4h2hNiF+M6KKl94uxYeE6qjTBAG5p4wxPewyVvh102PMxrg==
+ bh=rWlEgGNDGz8jZNA1IbIgK4EKjt9rl3oL/zBZZeAdEyo=;
+ b=V8AqVA8NvqW6yj9Dct3NU0lXdSDQr0m0Riw2+z5lLrLEUaXtBdRTfMmNfLstMcxM174Z8
+ xk8NZsDK0Jg/9054NplQQijL6jiEm0CClCjDomi04SU1MQezIVz0ee7ntTo5G5V5GYqFn5L
+ IAtJTfrALyLb5VVPV8i3B3DMcJbsm1mQmOddHKvjLMMnabfXtFSPo1Qb+wyAO1EcqVtMvtg
+ /4Vyk59FpovAxsLv5VBMZ8GmqkM28ahFqM2yqYztDOcb1g3GmVi+2dgVY7vipTTzm1c0VNj
+ USBWyAYMMYiqfLfZnV8XWzZozIJUxlVXSvSp3/9VeyQSOKsfQ83wustT+IdQ==
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vQe9r-FnQW0hPv7oK-Vbf4; Wed, 03 Dec 2025 04:08:03 +0000
+ id 1vQe9t-FnQW0hPv7oK-X2Ra; Wed, 03 Dec 2025 04:08:06 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, "Michael S. Tsirkin" <mst@redhat.com>,
+Cc: Joelle van Dyne <j@getutm.app>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH RFC 1/7] egl-helpers: store handle to native device
-Date: Tue,  2 Dec 2025 20:07:48 -0800
-Message-ID: <20251203040754.94487-2-j@getutm.app>
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH RFC 2/7] virtio-gpu-virgl: check page alignment of blob mapping
+Date: Tue,  2 Dec 2025 20:07:49 -0800
+Message-ID: <20251203040754.94487-3-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20251203040754.94487-1-j@getutm.app>
 References: <20251203040754.94487-1-j@getutm.app>
@@ -51,10 +51,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers,
  to <abuse-report@smtp2go.com>
-Feedback-ID: 483429m:483429abrvJvs:483429stcnh_z_wb
-X-smtpcorp-track: 68q7XsSCTGWE.y9JzzDj-leir.geuvvw6AcI_
+Feedback-ID: 483429m:483429abrvJvs:483429sxwTVGsyjK
+X-smtpcorp-track: bfYAnkvpnQLR.tR__meNI_Pt7.RevSPwiWvRs
 Received-SPF: pass client-ip=158.120.83.188;
- envelope-from=bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app;
+ envelope-from=bounce.29vafx79xran0f5=p85mwoxbn3wq=m9n7svzbgw7c67@em483429.getutm.app;
  helo=a4i956.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,64 +78,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make way for other platforms by making the variable more general. Also we
-will be using the device in the future so let's save the pointer in the
-global instead of just a boolean flag.
+Currently if a mapping is not page aligned, it will sliently fail and the
+guest, assuming it is mapped, will attempt to access the memory and fail.
+This is particularly an issue on macOS when the host page size is 16KiB and
+the guest page size is 4KiB.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- include/ui/egl-helpers.h      | 2 +-
- hw/display/virtio-gpu-virgl.c | 2 +-
- ui/egl-helpers.c              | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/display/virtio-gpu-virgl.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
-index acf993fcf5..c239d32317 100644
---- a/include/ui/egl-helpers.h
-+++ b/include/ui/egl-helpers.h
-@@ -12,7 +12,7 @@
- extern EGLDisplay *qemu_egl_display;
- extern EGLConfig qemu_egl_config;
- extern DisplayGLMode qemu_egl_mode;
--extern bool qemu_egl_angle_d3d;
-+extern void *qemu_egl_angle_native_device;
- 
- typedef struct egl_fb {
-     int width;
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 07f6355ad6..20c856c04e 100644
+index 20c856c04e..adf02ac22b 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -1152,7 +1152,7 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+@@ -116,6 +116,20 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
+         return ret;
      }
- #endif
- #ifdef VIRGL_RENDERER_D3D11_SHARE_TEXTURE
--    if (qemu_egl_angle_d3d) {
-+    if (qemu_egl_angle_native_device) {
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index e3f2872cc1..57bcf99498 100644
---- a/ui/egl-helpers.c
-+++ b/ui/egl-helpers.c
-@@ -28,7 +28,7 @@
- EGLDisplay *qemu_egl_display;
- EGLConfig qemu_egl_config;
- DisplayGLMode qemu_egl_mode;
--bool qemu_egl_angle_d3d;
-+void *qemu_egl_angle_native_device;
  
- /* ------------------------------------------------------------------ */
- 
-@@ -651,7 +651,7 @@ int qemu_egl_init_dpy_win32(EGLNativeDisplayType dpy, DisplayGLMode mode)
-         }
- 
-         trace_egl_init_d3d11_device(device);
--        qemu_egl_angle_d3d = device != NULL;
-+        qemu_egl_angle_native_device = d3d11_device;
-     }
- #endif
++    if (!QEMU_IS_ALIGNED((uintptr_t)data, qemu_real_host_page_size())) {
++        virgl_renderer_resource_unmap(res->base.resource_id);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: address %p is not aligned to page size\n",
++                      __func__, data);
++        return -ENOMEM;
++    }
++
++    if (!QEMU_IS_ALIGNED(size, qemu_real_host_page_size())) {
++        virgl_renderer_resource_unmap(res->base.resource_id);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: size 0x%llx is not aligned to page size\n",
++                      __func__, size);
++        return -ENOMEM;
++    }
++
+     vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
+     vmr->g = g;
  
 -- 
 2.41.0
