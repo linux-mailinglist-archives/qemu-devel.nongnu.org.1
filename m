@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE2ACA11FD
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB97CA1201
 	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:44:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQrpR-0001jQ-QJ; Wed, 03 Dec 2025 13:43:53 -0500
+	id 1vQrpT-0001lD-Ar; Wed, 03 Dec 2025 13:43:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrpK-0001hJ-GU
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:43:46 -0500
+ id 1vQrpL-0001hV-57
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:43:47 -0500
 Received: from mx0b-00190b01.pphosted.com ([2620:100:9005:57f::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrpH-0005hI-9X
+ id 1vQrpH-0005hC-8S
  for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:43:46 -0500
 Received: from pps.filterd (m0122331.ppops.net [127.0.0.1])
  by mx0b-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5B39qPfF4058597
+ 5B3I6NhR980940
  for <qemu-devel@nongnu.org>; Wed, 3 Dec 2025 18:43:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=
  content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=jan2016.eng;
- bh=sxAo1uqskNqifb7qfIk7I5/SJimHpVVq96+8uOmNsQM=; b=ltEA9PEO5/qt
- LCUIrDZcgM95xsmgRC9V5wwro3ObNpBWfVZMKKzJgMD53KMj+F47XNdsQRP6f+b8
- SXE2RNSOr77m0RfEJijeFvcw63kACayVtfNpTe+6REAFVuhJzjcZ5/VSIbyQznVZ
- RaUauRqRY6Rrith5lrkZBUNHbBwAQnMWN9eRzrGhK/KrYnvx6P/LSsnovPivOTWN
- Ymin09UNME4ybFePGzIJuO8MjLdyeObaqEZwp8PrS8B0P60yErve5SEK12PbjJOk
- 2kxh+AgzKfdpnP7mkMT+y7atkr5P5TTL414kV+iYYHUW2qHO3DxIAamuBVndhi9T
- gT7AFpes0w==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
- by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4aswun4u6d-1
+ bh=QoR6CzW42yFuzK4C/5cibENCPr6ROAzmTT9DkEW4Iy8=; b=cJTr6tVwlxcx
+ Ln1CwlcsZyAlbcvxku6XFhF5Utfp+uazm2hXPg+W8Sb414UV0ATns3J4K+TaQzUQ
+ Ho29UlSyDcnBcr70oiopYoXv14WoikpxreWH/paSE/5C1L72TVbSx+uESWMm9tDn
+ kE3MgbJuQqH+7xLymYYXWTqnICj10AjM9wp4D3Xl0nELIcfsniOejXLakJMIr0AY
+ AT4Ux8oXzrCcOHHp8sESF4iZE+vUO64vak/zfluGkp/G+hXfWOSdEcSnaQ9lj/iK
+ Crm4Jb97+xozzvef7RxaqdYaEalz2JEoEgkf2wEXiANp37vM6ajSArtWAoQ4Hsge
+ 4DpFu/V6JA==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
+ by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4aswun4u6c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
  for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 18:43:39 +0000 (GMT)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
- by prod-mail-ppoint5.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
- 5B3FaPLB031233
- for <qemu-devel@nongnu.org>; Wed, 3 Dec 2025 10:43:38 -0800
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+ by prod-mail-ppoint6.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
+ 5B3FId4q013420
+ for <qemu-devel@nongnu.org>; Wed, 3 Dec 2025 13:43:38 -0500
 Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
- by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 4aqypdkkhj-1
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 10:43:38 -0800
+ by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4aqw21kx8e-1
+ for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 13:43:38 -0500
 Received: from bos-lhvkhf.bos01.corp.akamai.com
  (bos-lhvkhf.bos01.corp.akamai.com [172.28.40.75])
- by prod-mail-relay02.akamai.com (Postfix) with ESMTP id 4912798
+ by prod-mail-relay02.akamai.com (Postfix) with ESMTP id 49EEC99
  for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:43:38 +0000 (UTC)
 From: Ben Chaney <bchaney@akamai.com>
-Date: Wed, 03 Dec 2025 13:43:27 -0500
-Subject: [PATCH v3 6/8] tap: cpr support
+Date: Wed, 03 Dec 2025 13:43:28 -0500
+Subject: [PATCH v3 7/8] tap: postload fix for cpr
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-cpr-tap-v3-6-3cc89e9b19e4@akamai.com>
+Message-Id: <20251203-cpr-tap-v3-7-3cc89e9b19e4@akamai.com>
 References: <20251203-cpr-tap-v3-0-3cc89e9b19e4@akamai.com>
 In-Reply-To: <20251203-cpr-tap-v3-0-3cc89e9b19e4@akamai.com>
 To: qemu-devel@nongnu.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787418; l=12397;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787418; l=3307;
  i=bchaney@akamai.com; s=20251203; h=from:subject:message-id;
- bh=3xg4N8thwWZW4UJ8SY9X2DDt88vnbdrhVb/PFvVwcXA=;
- b=mZtZY5WaC2FMieofVA+JPJIkWaKodIk6GRm0uofX//N6DTGHUS8espqPrb5tZU8gBLQsYaYaB
- Fdc23KYzyATCIo2HkZgxfKIsF3NpVxI7dFux8sytrg+osKhiH6NQ5L0
+ bh=trjqxlGTjzbMkDT7mRMw3NXMaJd7F2w+gOl7JrhHwFU=;
+ b=xiRtR9bMqe91YsEssJiS9eCrb6s34M3UIBl0tEopYQ5oqVqm8+6yBcXqIDKTyQDsdg+TKC/Ww
+ U+UqfvGaaElAv4/HnsnFtX5vOfAsF6kqICNI8gto8sbQ5piGA9sTyc8
 X-Developer-Key: i=bchaney@akamai.com; a=ed25519;
  pk=6+w9cse5QEeVdy3tjqFxs/4rAaRdQ2/fkTxVFq+lWy4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-03_02,2025-12-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=999
- adultscore=0 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2512030146
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0NyBTYWx0ZWRfX1VIUVH+lsKbe
- /4+pfMEi8c6YC0OXfyy0J4TbLI8lX45ZaHeWpPuFnW+zmSlfxRFWRBD5/Xk6NYMqa4HrhfL6i3d
- 4TaajrR26uDduFb9aFf418+rYG9QBtjDrutkR4Udi4aIlBaDmePxGM+FfLSYcy/7PkrdY2RhgKP
- d5PHo1zNmw2floq1pgA2d/s+ljOdoNS2q4koyTyQ04r+gA7kvULNk4nqW9T2taqqzci/8VRIgXu
- LLD7/HlDjITd0xFZJgx8qQlnX4IptIBvkZ7L/ijBG6Fmb4vQFlP9mIRLKT1l9UEImavoyppp5QA
- clbO5dYr5L3jsE96xxS9gsRGLadwMN36r50r+YGnx0SSxysjkNDScqdsrQuHmTwHi3eujgzVvv/
- +Ii2k6v5YrFXCJBO15HhCO1YVOFgqA==
-X-Proofpoint-ORIG-GUID: SDyxIOgquO1ZV6yKDxZ_vUGat8IyIVoj
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ mlxscore=0 phishscore=0
+ bulkscore=0 spamscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2512030146
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0NyBTYWx0ZWRfX0oeDVIOcog9K
+ yiCYVPxwqyAwZl1Q2pnfR+slo194iNA1ioa6T3xLfX+QhOBs0oWqJ1YY8h5oPR+8GF72a+ljBGV
+ LHN1Gj9DyVHEWHKXWIHeSn5LqsZka3/P10UNJA9JnIinZd9jgSMtwRMUUMvDWFNGs6qlAsOJNPF
+ XXRh0M/RIuAPJvXlLfIWARW4aNaGLuOpgLPvm623p9bvV4Hz3PAAPkBX1CM/wqCw31376QF2H7o
+ Q02QYkdlFkBh5TawMGwK9wIGzGV0h6xzcBYgk3dWW2HulKtYU5p7IAP8kvwjD+ogbfW9ZcjhZ+/
+ BZgINKQzHfh+YFyDSnEMw81STLzxXM4w2yfnlRZILmOt5EDfN4cYjUmBMrcJRdMHYemKYMjUjOE
+ OnNk2ZRIiO3PpTXDsOAzfGf1MVS7nA==
+X-Proofpoint-ORIG-GUID: XrZv3EPl5W0bwQHO6dOg25Tvm8yO-n85
 X-Authority-Analysis: v=2.4 cv=O+o0fR9W c=1 sm=1 tr=0 ts=693084db cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
+ a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=X7Ea-ya5AAAA:8 a=DrAZhfO-21Mt0ZXRAbIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: SDyxIOgquO1ZV6yKDxZ_vUGat8IyIVoj
+ a=yPCof4ZbAAAA:8 a=X7Ea-ya5AAAA:8 a=h1OFwVCXqnWUJWdIchYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: XrZv3EPl5W0bwQHO6dOg25Tvm8yO-n85
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-03_02,2025-12-03_01,2025-10-01_01
@@ -120,345 +120,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Provide the cpr=on option to preserve TAP and vhost descriptors during
-cpr-transfer, so the management layer does not need to create a new
-device for the target.
-
-Save all tap fd's in canonical order, leveraging the index argument of
-cpr_save_fd.  For the i'th queue, the tap device fd is saved at index 2*i,
-and the vhostfd (if any) at index 2*i+1.
-
-tap and vhost fd's are passed by name to the monitor when a NIC is hot
-plugged, but the name is not known to qemu after cpr.  Allow the manager
-to pass -1 for the fd "name" in the new qemu args to indicate that QEMU
-should search for a saved value.  Example:
-
-  -netdev tap,id=hostnet2,fds=-1:-1,vhostfds=-1:-1,cpr=on
+After cpr of a multi-queue NIC, if any queues are unused, then the
+corresponding tap is marked enabled in userland, but it is disabled in the
+kernel for the fd that was preserved.  One cannot call tap_disable() during
+postload, because that eventually calls IFF_DETACH_QUEUE, which fails
+because the queue is already detached.  Define tap_disable_postload to
+avoid IFF_DETACH_QUEUE.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Signed-off-by: Ben Chaney <bchaney@akamai.com>
 ---
- hw/vfio/device.c        |  2 +-
- include/migration/cpr.h |  2 +-
- migration/cpr.c         | 11 ++++----
- net/tap.c               | 73 +++++++++++++++++++++++++++++++++++++++----------
- qapi/net.json           |  5 +++-
- 5 files changed, 70 insertions(+), 23 deletions(-)
+ hw/net/virtio-net.c | 20 ++++++++++++++++++++
+ include/net/tap.h   |  1 +
+ net/tap-win32.c     |  5 +++++
+ net/tap.c           | 17 +++++++++++++++++
+ 4 files changed, 43 insertions(+)
 
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 76869828fc..73e622f7b5 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -362,7 +362,7 @@ void vfio_device_free_name(VFIODevice *vbasedev)
- 
- void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
- {
--    vbasedev->fd = cpr_get_fd_param(vbasedev->dev->id, str, 0, errp);
-+    vbasedev->fd = cpr_get_fd_param(vbasedev->dev->id, str, 0, true, errp);
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 3b85560f6f..38ec7ac109 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -765,6 +765,25 @@ static int peer_detach(VirtIONet *n, int index)
+     return tap_disable(nc->peer);
  }
  
- static VFIODeviceIOOps vfio_device_io_ops_ioctl;
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index d585fadc5b..68424b4b03 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -48,7 +48,7 @@ void cpr_state_close(void);
- struct QIOChannel *cpr_state_ioc(void);
- 
- bool cpr_incoming_needed(void *opaque);
--int cpr_get_fd_param(const char *name, const char *fdname, int index,
-+int cpr_get_fd_param(const char *name, const char *fdname, int index, bool cpr,
-                      Error **errp);
- 
- QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
-diff --git a/migration/cpr.c b/migration/cpr.c
-index c0bf93a7ba..19bd56339d 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -316,6 +316,7 @@ bool cpr_incoming_needed(void *opaque)
-  * @name: CPR name for the descriptor
-  * @fdname: An integer-valued string, or a name passed to a getfd command
-  * @index: CPR index of the descriptor
-+ * @cpr: use cpr
-  * @errp: returned error message
-  *
-  * If CPR is not being performed, then use @fdname to find the fd.
-@@ -325,22 +326,22 @@ bool cpr_incoming_needed(void *opaque)
-  * On success returns the fd value, else returns -1.
-  */
- int cpr_get_fd_param(const char *name, const char *fdname, int index,
--                     Error **errp)
-+                     bool cpr, Error **errp)
- {
-     ERRP_GUARD();
-     int fd;
- 
--    if (cpr_is_incoming()) {
-+    if (cpr && cpr_is_incoming()) {
-         fd = cpr_find_fd(name, index);
-         if (fd < 0) {
-             error_setg(errp, "cannot find saved value for fd %s", fdname);
-         }
-     } else {
-         fd = monitor_fd_param(monitor_cur(), fdname, errp);
--        if (fd >= 0) {
--            cpr_save_fd(name, index, fd);
--        } else {
-+        if (fd < 0) {
-             error_prepend(errp, "Could not parse object fd %s:", fdname);
-+        } else if (cpr) {
-+            cpr_save_fd(name, index, fd);
-         }
-     }
-     return fd;
-diff --git a/net/tap.c b/net/tap.c
-index 9d480574c3..79e29addd1 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -35,6 +35,7 @@
- #include "net/eth.h"
- #include "net/net.h"
- #include "clients.h"
-+#include "migration/cpr.h"
- #include "monitor/monitor.h"
- #include "system/system.h"
- #include "qapi/error.h"
-@@ -80,6 +81,7 @@ typedef struct TAPState {
-     bool has_uso;
-     bool has_tunnel;
-     bool enabled;
-+    bool cpr;
-     VHostNetState *vhost_net;
-     unsigned host_vnet_hdr_len;
-     Notifier exit;
-@@ -323,6 +325,9 @@ static void tap_cleanup(NetClientState *nc)
- {
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
- 
-+    if (s->cpr) {
-+        cpr_delete_fd_all(nc->name);
-+    }
-     if (s->vhost_net) {
-         vhost_net_cleanup(s->vhost_net);
-         g_free(s->vhost_net);
-@@ -690,18 +695,24 @@ static int net_tap_init(const NetdevTapOptions *tap, int *vnet_hdr,
-     return fd;
- }
- 
-+/* CPR fd's for each queue are saved at these indices */
-+#define TAP_FD_INDEX(queue)         (2 * (queue) + 0)
-+#define TAP_VHOSTFD_INDEX(queue)    (2 * (queue) + 1)
++/*
++ * Set the disabled flag on unused queue pairs after vmstate load, without
++ * calling IFF_DETACH_QUEUE, which fails because the queue is already detached.
++ */
++static void virtio_net_postload_queue_pairs(VirtIONet *n)
++{
++    int i;
++    MigMode mode = migrate_mode();
 +
- #define MAX_TAP_QUEUES 1024
- 
- static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                              const char *model, const char *name,
-                              const char *ifname, const char *script,
-                              const char *downscript, const char *vhostfdname,
--                             int vnet_hdr, int fd, Error **errp)
-+                             int vnet_hdr, int fd, int index, Error **errp)
- {
-     Error *err = NULL;
-     TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
-+    bool cpr = tap->has_cpr ? tap->cpr : false;
-     int vhostfd;
- 
-+    s->cpr = cpr;
-     tap_set_sndbuf(s->fd, tap, &err);
-     if (err) {
-         error_propagate(errp, err);
-@@ -736,7 +747,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         }
- 
-         if (vhostfdname) {
--            vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
-+            vhostfd = cpr_get_fd_param(name, vhostfdname, index, cpr, &err);
-             if (vhostfd == -1) {
-                 error_propagate(errp, err);
-                 goto failed;
-@@ -745,13 +756,22 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                 goto failed;
-             }
-         } else {
--            vhostfd = open("/dev/vhost-net", O_RDWR);
-+            vhostfd = cpr ? cpr_find_fd(name, index) : -1;
-+            if (vhostfd < 0) {
-+                vhostfd = open("/dev/vhost-net", O_RDWR);
-+                if (cpr && vhostfd >= 0) {
-+                    cpr_save_fd(name, index, vhostfd);
-+                }
-+            }
-             if (vhostfd < 0) {
-                 error_setg_errno(errp, errno,
-                                  "tap: open vhost char device failed");
-                 goto failed;
-             }
-             if (!qemu_set_blocking(vhostfd, false, errp)) {
-+                if (!cpr) {
-+                    close(vhostfd);
-+                }
-                 goto failed;
-             }
-         }
-@@ -777,6 +797,9 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-     return;
- 
- failed:
-+    if (cpr) {
-+        cpr_delete_fd_all(name);
-+    }
-     qemu_del_net_client(&s->nc);
- }
- 
-@@ -809,7 +832,8 @@ static int get_fds(char *str, char *fds[], int max)
- int net_init_tap(const Netdev *netdev, const char *name,
-                  NetClientState *peer, Error **errp)
- {
--    const NetdevTapOptions *tap;
-+    const NetdevTapOptions *tap = &netdev->u.tap;
-+    bool cpr = tap->has_cpr ? tap->cpr : false;
-     int fd, vnet_hdr = 0, i = 0, queues;
-     /* for the no-fd, no-helper case */
-     const char *script;
-@@ -845,7 +869,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             goto out;
-         }
- 
--        fd = monitor_fd_param(monitor_cur(), tap->fd, errp);
-+        fd = cpr_get_fd_param(name, tap->fd, TAP_FD_INDEX(0), cpr, errp);
-         if (fd == -1) {
-             ret = -1;
-             goto out;
-@@ -866,13 +890,14 @@ int net_init_tap(const Netdev *netdev, const char *name,
- 
-         net_init_tap_one(tap, peer, "tap", name, NULL,
-                          script, downscript,
--                         vhostfdname, vnet_hdr, fd, &err);
-+                         vhostfdname, vnet_hdr, fd, TAP_VHOSTFD_INDEX(0), &err);
-         if (err) {
-             error_propagate(errp, err);
-             close(fd);
-             ret = -1;
-             goto out;
-         }
-+
-     } else if (tap->fds) {
-         char **fds;
-         char **vhost_fds;
-@@ -903,7 +928,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-         }
- 
-         for (i = 0; i < nfds; i++) {
--            fd = monitor_fd_param(monitor_cur(), fds[i], errp);
-+            fd = cpr_get_fd_param(name, fds[i], TAP_FD_INDEX(i), cpr, errp);
-             if (fd == -1) {
-                 ret = -1;
-                 goto free_fail;
-@@ -930,7 +955,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             net_init_tap_one(tap, peer, "tap", name, ifname,
-                              script, downscript,
-                              tap->vhostfds ? vhost_fds[i] : NULL,
--                             vnet_hdr, fd, &err);
-+                             vnet_hdr, fd, TAP_VHOSTFD_INDEX(i), &err);
-             if (err) {
-                 error_propagate(errp, err);
-                 ret = -1;
-@@ -958,9 +983,15 @@ free_fail:
-             goto out;
-         }
- 
--        fd = net_bridge_run_helper(tap->helper,
--                                   tap->br ?: DEFAULT_BRIDGE_INTERFACE,
--                                   errp);
-+        fd = cpr ? cpr_find_fd(name, TAP_FD_INDEX(0)) : -1;
-+        if (fd < 0) {
-+            fd = net_bridge_run_helper(tap->helper,
-+                                    tap->br ?: DEFAULT_BRIDGE_INTERFACE,
-+                                    errp);
-+            if (cpr && fd >= 0) {
-+                cpr_save_fd(name, TAP_FD_INDEX(0), fd);
++    if (mode == MIG_MODE_CPR_TRANSFER) {
++        for (i = n->curr_queue_pairs; i < n->max_queue_pairs; i++) {
++            NetClientState *nc = qemu_get_subqueue(n->nic, i);
++            if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_TAP) {
++                tap_disable_postload(nc->peer);
 +            }
 +        }
-         if (fd == -1) {
-             ret = -1;
-             goto out;
-@@ -980,13 +1011,14 @@ free_fail:
- 
-         net_init_tap_one(tap, peer, "bridge", name, ifname,
-                          script, downscript, vhostfdname,
--                         vnet_hdr, fd, &err);
-+                         vnet_hdr, fd, TAP_VHOSTFD_INDEX(0), &err);
-         if (err) {
-             error_propagate(errp, err);
-             close(fd);
-             ret = -1;
-             goto out;
-         }
-+
-     } else {
-         g_autofree char *default_script = NULL;
-         g_autofree char *default_downscript = NULL;
-@@ -1011,8 +1043,14 @@ free_fail:
-         }
- 
-         for (i = 0; i < queues; i++) {
--            fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
--                              ifname, sizeof ifname, queues > 1, errp);
-+            fd = cpr ? cpr_find_fd(name, TAP_FD_INDEX(i)) : -1;
-+            if (fd < 0) {
-+                fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
-+                                ifname, sizeof ifname, queues > 1, errp);
-+                if (cpr && fd >= 0) {
-+                    cpr_save_fd(name, TAP_FD_INDEX(i), fd);
-+                }
-+            }
-             if (fd == -1) {
-                 ret = -1;
-                 goto out;
-@@ -1030,7 +1068,9 @@ free_fail:
-             net_init_tap_one(tap, peer, "tap", name, ifname,
-                              i >= 1 ? "no" : script,
-                              i >= 1 ? "no" : downscript,
--                             vhostfdname, vnet_hdr, fd, &err);
-+                             vhostfdname, vnet_hdr,
-+                             fd, TAP_VHOSTFD_INDEX(i),
-+                             &err);
-             if (err) {
-                 error_propagate(errp, err);
-                 close(fd);
-@@ -1041,6 +1081,9 @@ free_fail:
-     }
- 
- out:
-+    if (ret && cpr) {
-+        cpr_delete_fd_all(name);
 +    }
-     return ret;
++}
++
+ static void virtio_net_set_queue_pairs(VirtIONet *n)
+ {
+     int i;
+@@ -3212,6 +3231,7 @@ static int virtio_net_post_load_device(void *opaque, int version_id)
+      */
+     n->saved_guest_offloads = n->curr_guest_offloads;
+ 
++    virtio_net_postload_queue_pairs(n);
+     virtio_net_set_queue_pairs(n);
+ 
+     /* Find the first multicast entry in the saved MAC filter */
+diff --git a/include/net/tap.h b/include/net/tap.h
+index 6f34f13eae..934131f551 100644
+--- a/include/net/tap.h
++++ b/include/net/tap.h
+@@ -30,6 +30,7 @@
+ 
+ int tap_enable(NetClientState *nc);
+ int tap_disable(NetClientState *nc);
++void tap_disable_postload(NetClientState *nc);
+ 
+ int tap_get_fd(NetClientState *nc);
+ 
+diff --git a/net/tap-win32.c b/net/tap-win32.c
+index 38baf90e0b..efe81c54ee 100644
+--- a/net/tap-win32.c
++++ b/net/tap-win32.c
+@@ -766,3 +766,8 @@ int tap_disable(NetClientState *nc)
+ {
+     abort();
  }
- 
-diff --git a/qapi/net.json b/qapi/net.json
-index 118bd34965..264213b5d9 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -355,6 +355,8 @@
- # @poll-us: maximum number of microseconds that could be spent on busy
- #     polling for tap (since 2.7)
- #
-+# @cpr: preserve fds and vhostfds during cpr-transfer.
-+#
- # Since: 1.2
- ##
- { 'struct': 'NetdevTapOptions',
-@@ -373,7 +375,8 @@
-     '*vhostfds':   'str',
-     '*vhostforce': 'bool',
-     '*queues':     'uint32',
--    '*poll-us':    'uint32'} }
-+    '*poll-us':    'uint32',
-+    '*cpr':        'bool'} }
- 
- ##
- # @NetdevSocketOptions:
++
++void tap_disable_postload(NetClientState *nc)
++{
++    abort();
++}
+diff --git a/net/tap.c b/net/tap.c
+index 79e29addd1..5acda81146 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -1121,3 +1121,20 @@ int tap_disable(NetClientState *nc)
+         return ret;
+     }
+ }
++
++/*
++ * On cpr restart, the tap is marked enabled in userland, but it might be
++ * disabled in the kernel, and IFF_DETACH_QUEUE will fail because it is
++ * already detached.  This function disables without calling IFF_DETACH_QUEUE.
++ */
++void tap_disable_postload(NetClientState *nc)
++{
++    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++
++    if (!s->cpr || s->enabled == 0) {
++        return;
++    } else {
++        s->enabled = false;
++        tap_update_fd_handler(s);
++    }
++}
 
 -- 
 2.34.1
