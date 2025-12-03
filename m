@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B13C9E4D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B15C9E71A
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:21:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQiVl-00032I-Qa; Wed, 03 Dec 2025 03:46:57 -0500
+	id 1vQj26-0003Qf-AW; Wed, 03 Dec 2025 04:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQiVk-000322-Kg; Wed, 03 Dec 2025 03:46:56 -0500
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vQj22-0003QM-U9
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 04:20:18 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQiVi-00036I-74; Wed, 03 Dec 2025 03:46:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764751614; x=1796287614;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=m2dlnwPR4i+6BZNXc5bdZ4r+87vq12g+g/Q5R+qqEug=;
- b=QU2avJdeTFMMD9TUHq8DEHzQrvtRyf733JZh6t9wB5oxm8QeozbckO0q
- pBSWHliJ6olXIrgkJc2p2W1thJjfsidAyL9fb9t/Se33AYf2s2F63XBKq
- SEkSlbd+lT6bi+McVhgKP/ab7BbFZOBxBtqa5u/phaFfmwrKDCWviVUod
- aNnIX0mGlevNMrsb28JsfvHzID/VCiu8kUAihUyPB23LPDZz5UZZhB5Xm
- WQrvE611z5PNHlHQw/XqMorDwZo0YwA/5teYvRdm0BI+O6Fl73Em3ndC0
- ZsqFjYpZjMpwGGcKlGFaAU/zlNGd19wFZTXwBqHSozoukgmelXrwsqhZO A==;
-X-CSE-ConnectionGUID: LzR6hWcPQ0OVPmsSpKGGEw==
-X-CSE-MsgGUID: T86WQFk9QWua+dmXGlUjpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66902927"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="66902927"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2025 00:46:50 -0800
-X-CSE-ConnectionGUID: F3VNznsuQC6Sp/TFP84qmQ==
-X-CSE-MsgGUID: 4dmMU+tJTq6Xmiq7+4wZhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="193897647"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 03 Dec 2025 00:46:49 -0800
-Date: Wed, 3 Dec 2025 17:11:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 1/9] rust: remove leftover bindings/
-Message-ID: <aS/+xOkDOLD2+ywr@intel.com>
-References: <20251127132036.84384-1-pbonzini@redhat.com>
- <20251127132036.84384-2-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vQj1z-0002qO-Ui
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 04:20:18 -0500
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5B39JLo5013924
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 3 Dec 2025 18:19:28 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=OMQ0mCIEfbBZ7bjkomF6H7jybI1a8HXSQpLjYZz1hlE=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:From:Subject:To;
+ s=rs20250326; t=1764753568; v=1;
+ b=OoKYbBG8wiq/B/TgclDVInKGQvMq33GIUC21b68G0EzEgJ7NNqYv4NPwFaLGg9i3
+ Oqn4M9JSySTKilu3zY1fC8GzROJODhCgMdxhoL3rWguVvac0WG1zm274SWwZ7n2E
+ osPf97hPy31K11dwcJtRr+e4mSwLv1/gj2tIR3vi7+BEh8lC0JvxalYXruMll6qt
+ rxWURwr5L1MYrziVtqu8ORlNPd8YDu74F6RhTG0mDhTwbnj0chJT70BpUvaFGtR6
+ WtNe/wAVnwL1wmX2B950TwgMrq6sKcWgf3pN3e+n6CRMg3XEpK696sf8jaCNp31D
+ 6tPhRUjWp8iy6ywp5qJcYg==
+Message-ID: <41021c83-f284-4c6b-b0e2-ddd930d653e4@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 3 Dec 2025 18:19:20 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [RFC 00/24] audio: add GStreamer backend
+To: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: Geoffrey McRae <geoff@hostfission.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alexandre Ratchov <alex@caoua.org>, qemu-devel@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ dirty.ice.hu@gmail.com, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
+ <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
+ <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
+ <aS4BZZnzQPUHzbaD@vm3.arverb.com>
+ <3bb3606b-713c-456b-ab0f-31d14c6a6b99@redhat.com>
+ <20e6b7a1-cc84-29ff-6570-94fed9520466@eik.bme.hu>
+ <d63b9773727b546cea38b1f17e0babd0@hostfission.com>
+ <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
+ <12d3c2d298399c0935edee8caa3e52aa@hostfission.com>
+ <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
+ <87qztdrl66.fsf@pond.sub.org>
+Content-Language: en-US
+In-Reply-To: <87qztdrl66.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251127132036.84384-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,20 +88,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 27, 2025 at 02:20:28PM +0100, Paolo Bonzini wrote:
-> Date: Thu, 27 Nov 2025 14:20:28 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 1/9] rust: remove leftover bindings/
-> X-Mailer: git-send-email 2.51.1
+On 2025/12/02 23:52, Markus Armbruster wrote:
+> Marc-André Lureau <marcandre.lureau@gmail.com> writes:
 > 
-> From: Marc-Andr� Lureau <marcandre.lureau@redhat.com>
+>> Hi
+>>
+>> On Tue, Dec 2, 2025 at 5:26 PM Geoffrey McRae <geoff@hostfission.com> wrote:
+>>>
+>>>
+>>>
+>>> On 2025-12-02 23:44, Marc-André Lureau wrote:
+>>>> Hi Geoffrey
+>>>>
+>>>> On Tue, Dec 2, 2025 at 4:31 PM Geoffrey McRae
+>>>> <geoff@hostfission.com> wrote:
+>>>>
+>>>>> The PipeWire and PulseAudio backends are used by a large number of
+>>>>> users
+>>>>> in the VFIO community. Removing these would be an enormous determent
+>>>>> to
+>>>>> QEMU.
+>>>>
+>>>> They come with GStreamer pulse/pipe elements.
+>>>
+>>> Yes, but through another layer of abstraction/complexity with no real
+>>> benefit.
+>>
+>> The benefit is that QEMU would not have to maintain 10 backends and
 > 
-> Signed-off-by: Marc-Andr� Lureau <marcandre.lureau@redhat.com>
-> ---
->  rust/bindings/src/lib.rs | 64 ----------------------------------------
->  1 file changed, 64 deletions(-)
->  delete mode 100644 rust/bindings/src/lib.rs
+> Twelve according to the QAPI schema.
+> 
+>> all the audio mixing/resampling. The QEMU code would be simpler and
+>> more maintainable overall.
+> 
+> This matters.
+> 
+> The question can't be whether some QEMU feature is useful to somebody
+> (it basically always is).  It must be whether it is worth its keep.
+> 
+> Maintaining code is not free.  Easy to forget when somebody else does
+> the actual work quietly and well.
+> 
+> I'm not qualified to judge either utility or maintenance of audio
+> drivers.  However, I trust our long-serving maintainers there.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+If someone touches the Core Audio backend after GStreamer gets in, my 
+first question as a reviewer may be: why don't they use GStreamer instead?
 
+GStreamer has mixing/resampling and Core Audio code that is:
+- more optimized (e.g., SIMD resampling),
+- better maintained, and
+- has more features (GStreamer seems to support microphone/source while 
+QEMU's coreaudio backend doesn't).
+
+The reasons _not_ to use GStreamer I can come up with are:
+- You don't have GStreamer installed. However I guess it will be 
+automatically installed when doing "brew install qemu" once the 
+GStreamer backend gets in.
+- Bugs in GStreamer or the glue code between QEMU and GStreamer. But of 
+course the code that connects QEMU's mixing/resampling has another set 
+of bugs.
+
+I think there is a good chance that nobody notices if the coreaudio 
+backend breaks once GStreamer becomes the default.
+
+Regards,
+Akihiko Odaki
 
