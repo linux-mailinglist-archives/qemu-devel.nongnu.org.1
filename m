@@ -2,112 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EF4C9F385
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 15:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C0BC9F3A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 15:04:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQnOB-0007Ru-Ok; Wed, 03 Dec 2025 08:59:27 -0500
+	id 1vQnS3-0000vn-BN; Wed, 03 Dec 2025 09:03:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vQnO9-0007RE-SK
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 08:59:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vQnO7-00020B-Sr
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 08:59:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764770362;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=K1Ejb3mZxt9s6Hq8k2GbYOHpKhIqT0ccwHtr5SyWPSgJae0yqm0Paqr5dIsUQBSG0+8R6f
- feTXWHBTPndWYnu7ELG6eo2Jq12b4fcwjuqSr73VN5szP2wOYkivUiWitB7951rs6yFw55
- yzD+YYYG19irxi+97xJkilFtWeujuAk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-WCcsa7_tO-uQsUbmw3Zt3A-1; Wed, 03 Dec 2025 08:59:20 -0500
-X-MC-Unique: WCcsa7_tO-uQsUbmw3Zt3A-1
-X-Mimecast-MFC-AGG-ID: WCcsa7_tO-uQsUbmw3Zt3A_1764770359
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-477a11d9f89so30580355e9.3
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 05:59:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764770359; x=1765375159; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=dm+Hde9nZEUni9HpcVxSbk5BmlR9MyZaPAoNc+ZVDLPz8EyHFy7UOtNVvdQhFXKKcg
- imgF48wUl5pW3nYQQ6PLLC/pFbLjaDVWfPxeHPs++zKntCFtAcT4u7wu9UI39IXQ17fv
- tD0qFKovuMIySvm3zlK4OvTuZyMUzE2mcpQboK0le2EVJ/rF2mmzodv4v47z9eByfWv0
- nd+V4vmNXyd0e/4XQ4WIrbeBFUkiNpRfAtcg/HwsmwsIMJcoipjQOu+zTWCaVwyabPwy
- EXk7oP0nFilss8XzJcj0bTjk00MCBJmxGJA9BbYAgA+PGSnDJncrBJyj10htoFBxoaO/
- R5Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764770359; x=1765375159;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=ZEGnXp93QpoCI7HUN1Afm0mMMP4SjWtxeobNZoyU+AV5BA4xk3mlWKnJTsaI9pxXK8
- hK8NAzHYSc2FSzIgsIskVC5oBDntrMmk4jJQRnxIqmYhY5GXn+vIlKuCsrBAQHqw5XQW
- wWSvX/k6SvPtgga9o4CRFWu/7jqRIMgTVtfJQzlF3ES4/Tkf+FgRCGDW3QYjMckkqr7N
- QaJ0+A4DyKAATcEXreXPv2Ceqou8Zw+x/FyrXJ24GCaYaU4WHFwFq2nXuMcg9ZsrYpfY
- iQX6xIsQk4yO6dYTsUeX7+kU9Go9vpnCJ/SLibnEWdEmIJaoNfCZN6z5pfpR37JOv3Bv
- Mu0Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX5Ub0pYzep51Fh0WY51q75QikK2ge5QBQEpvGA2FXfw6sD4OVD0MVMCgDyWJ/eksv//rnw+u5ONwHy@nongnu.org
-X-Gm-Message-State: AOJu0Yyde7LKD3wIUy2RJy5enUwguFQeorcf51Jf+8NIfvwCmYbfEkW0
- yUO8i3LgrduOYJvzRBXIzte5r109epp60x8lgGVGo832CzUJ4fnWOhw5XPbBOGLFErSLkmtcq6i
- sEYi69qs3ceiC/PKU6zbGOfkGvuPUZTzjjItBdvSHMBYyrxMdwMuByNr6
-X-Gm-Gg: ASbGnctGWZOcicKnOcQYBuXqhpgzNs8RQUSrQdCPpLwqnUZmS51/fAGDuwPPPf9n7hw
- N//5xTCQeiZGlw7pnEVKXdvZRcdfbraoTfoNlh8DKAdjhYxAyDQJU7e7aLlFW0OjLfSL+X2GaJp
- RLenohwC4pEhnuFaMlG8Pz5kXBmBFLoKYMqBqh9MX9rt20XxMQhxcLmOJZEMAZGOlPozqBOSCwa
- +fYqM7y98vyC6sVqF9dYNF5N6eAQvoBk3RG012SUW6+0t3i1ahwxFh82Y96q9S2eZ2bEc/FN3nf
- 90UUwHtkHyizzE5lxjAv2k0C3LMux8fLDpUDw4Gp1jQAmLceRn3PaulvxEqir6+yw26hu/LqDNl
- 7aJwFX2nYOIn8lGCrAdiUOcGq/zCwl3qxLZg2q0i9B0JALksO3dHTcBq3YukyQdbzS/sKbL4sby
- zuANfpSohElXIm+B4=
-X-Received: by 2002:a05:600c:19d2:b0:477:df7:b020 with SMTP id
- 5b1f17b1804b1-4792af39a3dmr22829395e9.18.1764770358744; 
- Wed, 03 Dec 2025 05:59:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEN8S0BRaCMjBkEMw/RIvJ6eFhHrEBKgDTu1ron4RcftS85vDSCrWhBpt0nVE/VS61XkjVzzw==
-X-Received: by 2002:a05:600c:19d2:b0:477:df7:b020 with SMTP id
- 5b1f17b1804b1-4792af39a3dmr22829145e9.18.1764770358341; 
- Wed, 03 Dec 2025 05:59:18 -0800 (PST)
-Received: from [192.168.10.48] ([176.206.119.13])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4792a7a2148sm49708265e9.8.2025.12.03.05.59.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Dec 2025 05:59:17 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: dave@treblig.org
-Cc: qemu-trivial@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
- thuth@redhat.com, pbonzini@redhat.com, jak@jak-linux.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] qemu-options.hx: Document -M as -machine alias
-Date: Wed,  3 Dec 2025 14:59:14 +0100
-Message-ID: <20251203135915.1566082-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203131511.153460-1-dave@treblig.org>
-References: 
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vQnS0-0000us-Ap; Wed, 03 Dec 2025 09:03:24 -0500
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vQnRx-0002k1-Fz; Wed, 03 Dec 2025 09:03:23 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwD3_5sgQzBpM5r4Ag--.2141S2;
+ Wed, 03 Dec 2025 22:03:12 +0800 (CST)
+Received: from [192.168.31.152] (unknown [113.246.234.131])
+ by mail (Coremail) with SMTP id AQAAfwA3juseQzBp5lEJAA--.3622S2;
+ Wed, 03 Dec 2025 22:03:11 +0800 (CST)
+Message-ID: <e80c6fbc-47a4-490a-8615-be2ee122eb94@phytium.com.cn>
+Date: Wed, 3 Dec 2025 22:03:07 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 09/21] hw/arm/smmuv3: Plumb transaction attributes into
+ config helpers
+To: eric.auger@redhat.com, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
+ <20251012150701.4127034-10-tangtao1634@phytium.com.cn>
+ <096dabf7-3ae3-4739-86f5-d3c76a96432a@redhat.com>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <096dabf7-3ae3-4739-86f5-d3c76a96432a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-CM-TRANSID: AQAAfwA3juseQzBp5lEJAA--.3622S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQANBWkvSDQGnQABsp
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxKw1DJw15GrW7Kw1Uuw45Wrg_yoWxKF4xpr
+ Z7JFn8tw4rtFyI9FZIqw4qva4Sv39YgF1DGrW7KF95CFn0vrn7ZryUKw15C34Dury8JFs2
+ vF47WF43urn0yrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,8 +76,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+Hi Eric,
 
-Paolo
+On 2025/12/2 22:03, Eric Auger wrote:
+>
+> On 10/12/25 5:06 PM, Tao Tang wrote:
+>> As a preliminary step towards a multi-security-state configuration
+>> cache, introduce MemTxAttrs and AddressSpace * members to the
+>> SMMUTransCfg struct. The goal is to cache these attributes so that
+>> internal DMA calls (dma_memory_read/write) can use them directly.
+>>
+>> To facilitate this, hw/arm/arm-security.h is now included in
+>> smmu-common.h. This is a notable change, as it marks the first time
+>> these Arm CPU-specific security space definitions are used outside of
+>> cpu.h, making them more generally available for device models.
+>>
+>> The decode helpers (smmu_get_ste, smmu_get_cd, smmu_find_ste,
+>> smmuv3_get_config) are updated to use these new attributes for memory
+>> accesses. This ensures that reads of SMMU structures from memory, such
+>> as the Stream Table, use the correct security context.
+>>
+>> For now, the configuration cache lookup key remains unchanged and is
+>> still based solely on the SMMUDevice pointer. The new attributes are
+>> populated during a cache miss in smmuv3_get_config.
+>>
+>> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+>> ---
+>>   hw/arm/smmu-common.c         | 19 ++++++++++++++++++
+>>   hw/arm/smmuv3.c              | 38 ++++++++++++++++++++++--------------
+>>   include/hw/arm/smmu-common.h |  6 ++++++
+>>   3 files changed, 48 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+>> index 24db448683..82308f0e33 100644
+>> --- a/hw/arm/smmu-common.c
+>> +++ b/hw/arm/smmu-common.c
+>> @@ -30,6 +30,25 @@
+>>   #include "hw/arm/smmu-common.h"
+>>   #include "smmu-internal.h"
+>>   
+>> +ARMSecuritySpace smmu_get_security_space(SMMUSecSID sec_sid)
+>> +{
+>> +    switch (sec_sid) {
+>> +    case SMMU_SEC_SID_S:
+>> +        return ARMSS_Secure;
+>> +    case SMMU_SEC_SID_NS:
+>> +    default:
+>> +        return ARMSS_NonSecure;
+>> +    }
+>> +}
+>> +
+>> +MemTxAttrs smmu_get_txattrs(SMMUSecSID sec_sid)
+>> +{
+>> +    return (MemTxAttrs) {
+>> +        .secure = sec_sid > SMMU_SEC_SID_NS ? 1 : 0,
+>> +        .space = smmu_get_security_space(sec_sid),
+>> +    };
+>> +}
+>> +
+>>   /* Global state for secure address space availability */
+>>   bool arm_secure_as_available;
+>>   
+>> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+>> index a87ae36e8b..351bbf1ae9 100644
+>> --- a/hw/arm/smmuv3.c
+>> +++ b/hw/arm/smmuv3.c
+>> @@ -333,14 +333,13 @@ static void smmuv3_init_regs(SMMUv3State *s)
+>>   }
+>>   
+>>   static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
+>> -                        SMMUEventInfo *event)
+>> +                        SMMUEventInfo *event, SMMUTransCfg *cfg)
+>>   {
+>>       int ret, i;
+>>   
+>>       trace_smmuv3_get_ste(addr);
+>>       /* TODO: guarantee 64-bit single-copy atomicity */
+>> -    ret = dma_memory_read(&address_space_memory, addr, buf, sizeof(*buf),
+>> -                          MEMTXATTRS_UNSPECIFIED);
+>> +    ret = dma_memory_read(cfg->as, addr, buf, sizeof(*buf), cfg->txattrs);
+>>       if (ret != MEMTX_OK) {
+>>           qemu_log_mask(LOG_GUEST_ERROR,
+>>                         "Cannot fetch pte at address=0x%"PRIx64"\n", addr);
+>> @@ -385,8 +384,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, SMMUTransCfg *cfg,
+>>       }
+>>   
+>>       /* TODO: guarantee 64-bit single-copy atomicity */
+>> -    ret = dma_memory_read(&address_space_memory, addr, buf, sizeof(*buf),
+>> -                          MEMTXATTRS_UNSPECIFIED);
+>> +    ret = dma_memory_read(cfg->as, addr, buf, sizeof(*buf), cfg->txattrs);
+>>       if (ret != MEMTX_OK) {
+>>           qemu_log_mask(LOG_GUEST_ERROR,
+>>                         "Cannot fetch pte at address=0x%"PRIx64"\n", addr);
+>> @@ -639,18 +637,19 @@ bad_ste:
+>>    * @sid: stream ID
+>>    * @ste: returned stream table entry
+>>    * @event: handle to an event info
+>> + * @cfg: translation configuration cache
+>>    *
+>>    * Supports linear and 2-level stream table
+>>    * Return 0 on success, -EINVAL otherwise
+>>    */
+>>   static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+>> -                         SMMUEventInfo *event)
+>> +                         SMMUEventInfo *event, SMMUTransCfg *cfg)
+>>   {
+>>       dma_addr_t addr, strtab_base;
+>>       uint32_t log2size;
+>>       int strtab_size_shift;
+>>       int ret;
+>> -    SMMUSecSID sec_sid = SMMU_SEC_SID_NS;
+>> +    SMMUSecSID sec_sid = cfg->sec_sid;
+>>       SMMUv3RegBank *bank = smmuv3_bank(s, sec_sid);
+>>   
+>>       trace_smmuv3_find_ste(sid, bank->features, bank->sid_split);
+>> @@ -678,8 +677,8 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+>>           l2_ste_offset = sid & ((1 << bank->sid_split) - 1);
+>>           l1ptr = (dma_addr_t)(strtab_base + l1_ste_offset * sizeof(l1std));
+>>           /* TODO: guarantee 64-bit single-copy atomicity */
+>> -        ret = dma_memory_read(&address_space_memory, l1ptr, &l1std,
+>> -                              sizeof(l1std), MEMTXATTRS_UNSPECIFIED);
+>> +        ret = dma_memory_read(cfg->as, l1ptr, &l1std, sizeof(l1std),
+>> +                              cfg->txattrs);
+>>           if (ret != MEMTX_OK) {
+>>               qemu_log_mask(LOG_GUEST_ERROR,
+>>                             "Could not read L1PTR at 0X%"PRIx64"\n", l1ptr);
+>> @@ -721,7 +720,7 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+>>           addr = strtab_base + sid * sizeof(*ste);
+>>       }
+>>   
+>> -    if (smmu_get_ste(s, addr, ste, event)) {
+>> +    if (smmu_get_ste(s, addr, ste, event, cfg)) {
+>>           return -EINVAL;
+>>       }
+>>   
+>> @@ -850,7 +849,7 @@ static int smmuv3_decode_config(IOMMUMemoryRegion *mr, SMMUTransCfg *cfg,
+>>       /* ASID defaults to -1 (if s1 is not supported). */
+>>       cfg->asid = -1;
+>>   
+>> -    ret = smmu_find_ste(s, sid, &ste, event);
+>> +    ret = smmu_find_ste(s, sid, &ste, event, cfg);
+>>       if (ret) {
+>>           return ret;
+>>       }
+>> @@ -884,7 +883,8 @@ static int smmuv3_decode_config(IOMMUMemoryRegion *mr, SMMUTransCfg *cfg,
+>>    * decoding under the form of an SMMUTransCfg struct. The hash table is indexed
+>>    * by the SMMUDevice handle.
+>>    */
+>> -static SMMUTransCfg *smmuv3_get_config(SMMUDevice *sdev, SMMUEventInfo *event)
+>> +static SMMUTransCfg *smmuv3_get_config(SMMUDevice *sdev, SMMUEventInfo *event,
+>> +                                       SMMUSecSID sec_sid)
+>>   {
+>>       SMMUv3State *s = sdev->smmu;
+>>       SMMUState *bc = &s->smmu_state;
+>> @@ -904,7 +904,15 @@ static SMMUTransCfg *smmuv3_get_config(SMMUDevice *sdev, SMMUEventInfo *event)
+>>                               100 * sdev->cfg_cache_hits /
+>>                               (sdev->cfg_cache_hits + sdev->cfg_cache_misses));
+>>           cfg = g_new0(SMMUTransCfg, 1);
+>> -        cfg->sec_sid = SMMU_SEC_SID_NS;
+>> +        cfg->sec_sid = sec_sid;
+>> +        cfg->txattrs = smmu_get_txattrs(sec_sid);
+>> +        cfg->as = smmu_get_address_space(sec_sid);
+>> +        if (!cfg->as) {
+>> +            /* Can't get AddressSpace, free cfg and return. */
+>> +            g_free(cfg);
+>> +            cfg = NULL;
+>> +            return cfg;
+> don't you want to report an error in that case. Which type?
+
+Thanks for your review!
+
+Honestly I’m not actually sure there is an architecturally correct event 
+type for this case.
+
+Here smmu_get_address_space(sec_sid) returning NULL means the machine 
+didn’t provide an AddressSpace for SMMU-originated DMA in that security 
+context, which feels like a QEMU board/integration bug rather than 
+something the SMMU spec defines an event for (the existing events are 
+all driven by STE/CD and transaction attributes). Synthesizing something 
+like F_STREAM_DISABLED would therefore be misleading from the guest’s 
+point of view.
+
+Maybe we could use g_assert() hard failure here? But I also look forward 
+to different opinions.
+
+Yours,
+
+Tao
 
 
