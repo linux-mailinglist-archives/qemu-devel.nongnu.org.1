@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA12C9F652
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 16:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CFCC9F665
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 16:11:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQoQF-00029d-LC; Wed, 03 Dec 2025 10:05:39 -0500
+	id 1vQoV9-0004FC-UL; Wed, 03 Dec 2025 10:10:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vQoQC-00025T-5Z
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 10:05:36 -0500
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vQoQ8-0000iU-Vk
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 10:05:35 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1a8f:0:640:2fa2:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A81BDC02BE;
- Wed, 03 Dec 2025 18:05:26 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:856::1:37] (unknown
- [2a02:6bf:8080:856::1:37])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id P5mnpE0FluQ0-n9JRvXo3; Wed, 03 Dec 2025 18:05:25 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1764774325;
- bh=+ajjnOFTWZMm8bnmH9AfA8H3x8zcJGUYX9F9w6Tc9Yg=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Oo93TYjgvuTm3RgxwLfK5qmfnM/udDyez9zWC1ewOTcZvhjUdk1B0eJ+4HONsjSkb
- 4fLrj1HHhM18kaIU7wBwXG7Z1lds0h9ylgG6pJPUjJwqntIIshopPo5f/gziSt/0Fo
- xFCOtCuHppWyuTy9VdeE0rKCXTLw9VEVb2u+3uM8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <69a68b6b-0bd6-4295-930f-bd9486c732f4@yandex-team.ru>
-Date: Wed, 3 Dec 2025 18:05:25 +0300
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vQoV6-0004EP-S1; Wed, 03 Dec 2025 10:10:40 -0500
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vQoV4-0001vd-CC; Wed, 03 Dec 2025 10:10:40 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDX35vkUjBp7DH5Ag--.37S2;
+ Wed, 03 Dec 2025 23:10:28 +0800 (CST)
+Received: from [192.168.31.152] (unknown [113.246.234.131])
+ by mail (Coremail) with SMTP id AQAAfwAXce7XUjBp6lMJAA--.23924S2;
+ Wed, 03 Dec 2025 23:10:22 +0800 (CST)
+Message-ID: <4a0aab55-2805-47f9-a1be-91b8e7b6ceae@phytium.com.cn>
+Date: Wed, 3 Dec 2025 23:10:11 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] error-report: move real_time_iso8601() to header
-To: Markus Armbruster <armbru@redhat.com>
-Cc: marcandre.lureau@redhat.com, pbonzini@redhat.com, eblake@redhat.com,
- berrange@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru,
- qemu-devel@nongnu.org
-References: <20251128200536.207344-1-vsementsov@yandex-team.ru>
- <20251128200536.207344-3-vsementsov@yandex-team.ru>
- <87h5u7odkh.fsf@pond.sub.org>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87h5u7odkh.fsf@pond.sub.org>
+Subject: Re: [RFC v3 12/21] hw/arm/smmu-common: Implement secure state
+ handling in ptw
+To: eric.auger@redhat.com, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
+ <20251012151200.4129164-1-tangtao1634@phytium.com.cn>
+ <274e3061-c4ab-48f6-ba95-ed0eed0e2ce2@redhat.com>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <274e3061-c4ab-48f6-ba95-ed0eed0e2ce2@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwAXce7XUjBp6lMJAA--.23924S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQANBWkvSDQGnQADsr
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW3Jw4UKw4UWw47ur15uw48Zwb_yoW7Zr4DpF
+ Z3G3Zxtr4ftFyfZwn2qr4qv3W7A3yvqr4UGrZrG3sY9Fyqyr97tryqkryF9FykJry5J3Wj
+ va1UKrsxW3W5trJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -79,60 +76,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03.12.25 17:16, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> To be reused in the following commit.
+Hi Eric,
+
+On 2025/12/2 23:53, Eric Auger wrote:
+>
+> On 10/12/25 5:12 PM, Tao Tang wrote:
+>> Enhance the page table walker to correctly handle secure and non-secure
+>> memory accesses. This change introduces logic to select the appropriate
+>> address space and enforce architectural security policies during walks.
 >>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> The page table walker now correctly processes Secure Stage 1
+>> translations. Key changes include:
+>>
+>> - The get_pte function now uses the security context to fetch table
+>> entries from either the Secure or Non-secure address space.
+>>
+>> - The stage 1 walker tracks the security state, respecting the NSCFG
+>> and NSTable attributes. It correctly handles the hierarchical security
+>> model: if a table descriptor in a secure walk has NSTable=1, all
+>> subsequent lookups for that walk are forced into the Non-secure space.
+>> This is a one-way transition, as specified by the architecture.
+>>
+>> - A check is added to fault nested translations that produce a Secure
+>> IPA when Secure stage 2 is not supported (SMMU_S_IDR1.SEL2 == 0).
+>>
+>> - The final TLB entry is tagged with the correct output address space,
+>> ensuring proper memory isolation.
+>>
+>> Stage 2 translations are currently limited to Non-secure lookups. Full
+>> support for Secure Stage 2 translation will be added in a future series.
+>>
+>> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
 >> ---
->>   include/qemu/error-report.h | 6 ++++++
->>   util/error-report.c         | 7 -------
->>   2 files changed, 6 insertions(+), 7 deletions(-)
+>>   hw/arm/smmu-common.c | 64 +++++++++++++++++++++++++++++++++++++++-----
+>>   hw/arm/trace-events  |  2 +-
+>>   2 files changed, 59 insertions(+), 7 deletions(-)
 >>
->> diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
->> index 3ae2357fda..412b705898 100644
->> --- a/include/qemu/error-report.h
->> +++ b/include/qemu/error-report.h
->> @@ -74,4 +74,10 @@ extern bool message_with_timestamp;
->>   extern bool error_with_guestname;
->>   extern const char *error_guest_name;
->>   
->> +static inline char *real_time_iso8601(void)
->> +{
->> +    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
->> +    return g_date_time_format_iso8601(dt);
->> +}
->> +
->>   #endif
-> 
-> Reasons for inline?  Because the function is so small?
-
-Yes, seems, just this.
-
-> 
->> diff --git a/util/error-report.c b/util/error-report.c
->> index 1b17c11de1..20618640e8 100644
->> --- a/util/error-report.c
->> +++ b/util/error-report.c
->> @@ -169,13 +169,6 @@ static void print_loc(void)
->>       }
->>   }
->>   
->> -static char *
->> -real_time_iso8601(void)
->> -{
->> -    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
->> -    return g_date_time_format_iso8601(dt);
->> -}
+>> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+>> index 5fabe30c75..a092bb5a8d 100644
+>> --- a/hw/arm/smmu-common.c
+>> +++ b/hw/arm/smmu-common.c
+>> @@ -399,20 +399,26 @@ void smmu_iotlb_inv_vmid_s1(SMMUState *s, int vmid)
+>>    * @base_addr[@index]
+>>    */
+>>   static int get_pte(dma_addr_t baseaddr, uint32_t index, uint64_t *pte,
+>> -                   SMMUPTWEventInfo *info)
+>> +                   SMMUPTWEventInfo *info, SMMUSecSID sec_sid)
+>>   {
+>>       int ret;
+>>       dma_addr_t addr = baseaddr + index * sizeof(*pte);
 >> -
->>   /*
->>    * Print a message to current monitor if we have one, else to stderr.
->>    * @report_type is the type of message: error, warning or informational.
-> 
+>> +    MemTxAttrs attrs = smmu_get_txattrs(sec_sid);
+>> +    AddressSpace *as = smmu_get_address_space(sec_sid);
+>> +    if (!as) {
+>> +        info->type = SMMU_PTW_ERR_WALK_EABT;
+> is it WALK_EABT or PERMISSION in that case? I fail to find where it is
+> specified in the spec. Add a reference once?
 
 
--- 
-Best regards,
-Vladimir
+Maybe this is the same situation I described earlier in the previous 
+thread [1]?  I’m still not confident there is a clear architected 
+mapping for this condition to a specific PTW event type. Rather than 
+arbitrarily picking WALK_EABT or PERMISSION, I am leaning towards 
+treating it as a pure model bug:
+
+I’ll switch this to a g_assert(as) so we don’t report an architected 
+event for something that should never happen on a correctly wired 
+machine model.
+
+
+[1] 
+https://lore.kernel.org/qemu-devel/e80c6fbc-47a4-490a-8615-be2ee122eb94@phytium.com.cn/
+
+>> +        info->addr = addr;
+>> +        return -EINVAL;
+>> +    }
+>>       /* TODO: guarantee 64-bit single-copy atomicity */
+>> -    ret = ldq_le_dma(&address_space_memory, addr, pte, MEMTXATTRS_UNSPECIFIED);
+>> +    ret = ldq_le_dma(as, addr, pte, attrs);
+>>   
+>> ------------------------------<snip>------------------------------
+>>
+>>
+>>
+>> ------------------------------<snip>------------------------------
+>>           tlbe->entry.translated_addr = gpa;
+>>           tlbe->entry.iova = iova & ~mask;
+>>           tlbe->entry.addr_mask = mask;
+>> @@ -688,7 +726,8 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
+>>           dma_addr_t pte_addr = baseaddr + offset * sizeof(pte);
+>>           uint8_t s2ap;
+>>   
+>> -        if (get_pte(baseaddr, offset, &pte, info)) {
+>> +        /* Use NS as Secure Stage 2 is not implemented (SMMU_S_IDR1.SEL2 == 0)*/
+> I don't really get this as you passed the sel2 in the cfg?
+
+
+In the next revision I’ll simplify the story. SMMUTransCfg will no 
+longer carry a sel2 field, and this series will explicitly not support 
+Secure Stage 2. In that context, the Stage-2 PTW will be hard-coded to 
+use SMMU_SEC_SID_NS. If/when we add SEL2 support in a follow-up series, 
+we can then make this driven by configuration instead of hard-coded.
+
+
+>> +        if (get_pte(baseaddr, offset, &pte, info, SMMU_SEC_SID_NS)) {
+>>                   goto error;
+>>           }
+>>           trace_smmu_ptw_level(stage, level, ipa, subpage_size,
+>> @@ -741,6 +780,8 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
+>>               goto error_ipa;
+>>           }
+>>   
+>> +        tlbe->sec_sid = SMMU_SEC_SID_NS;
+>> +        tlbe->entry.target_as = &address_space_memory;
+>>           tlbe->entry.translated_addr = gpa;
+>>           tlbe->entry.iova = ipa & ~mask;
+>>           tlbe->entry.addr_mask = mask;
+>> @@ -825,6 +866,17 @@ int smmu_ptw(SMMUState *bs, SMMUTransCfg *cfg, dma_addr_t iova,
+>>           return ret;
+>>       }
+>>   
+>> +    if (!cfg->sel2 && tlbe->sec_sid > SMMU_SEC_SID_NS) {
+>> +        /*
+>> +         * Nested translation with Secure IPA output is not supported if
+>> +         * Secure Stage 2 is not implemented.
+>> +         */
+>> +        info->type = SMMU_PTW_ERR_TRANSLATION;
+> pointer to the spec for TRANSLATION error?
+>
+> Otherwise looks good
+>
+> Eric
+
+
+After re-reading the spec, I think we should move the check earlier, 
+when decoding the STE/CD, and use the combination of SMMU_S_IDR1.SEL2, 
+Config == 0b11x, and the Secure Stream table context to detect an 
+architecturally illegal nested configuration.
+
+
+In that case I’ll report a C_BAD_STE-style configuration error and bail 
+out before running any Secure Stage-1 page walk. That both matches the 
+spec more closely and avoids doing extra work in this unsupported 
+configuration. How do you think about this?
+
+
+Thanks again your review.
+
+Tao
+
 
