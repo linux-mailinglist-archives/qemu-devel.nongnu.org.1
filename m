@@ -2,87 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4771EC9FDC7
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 17:16:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF435C9FE70
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 17:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQpVs-0004I2-0C; Wed, 03 Dec 2025 11:15:32 -0500
+	id 1vQpap-0001Yt-Qz; Wed, 03 Dec 2025 11:20:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVp-0004Ha-HZ
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:29 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVo-0006b1-2N
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:29 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-3ec41466a30so961648fac.0
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 08:15:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764778527; x=1765383327; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YvyaXobpOlD4VPPpsmzEzKqRWugPD95os5lX5hk+NkE=;
- b=JRqychwrFCyXXkQGqBvOe9MrxuCnZX5Rnd1l5KDcLXXzs+3eem78D3zxm9luJra96T
- rlYaSB4+BEcm3dULkfIAjUJO1r36EDCeOhI1TeBypcgF9nZqrjzW7K1R/K020Txnohdg
- FD2Tp1qSgtkdRoOqjhoqeRkZ8wkAFtoo6B+QLYFYoGZX3mXPUBN3fkRVQEJzQZ4Bp6l2
- BM8GMLqYDsQtkShGdx5/y6l+WnI74sp7MmzE2uJtegYX+5haGR3jYU/rnuhZVaCOT8Mu
- zSmaUhEQ0TfApZWCYPlJUvEgfSz8CJgeHwIS8vaosi76nK4/YFMOHhkBLspwnj2y2RyG
- g4Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764778527; x=1765383327;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=YvyaXobpOlD4VPPpsmzEzKqRWugPD95os5lX5hk+NkE=;
- b=a/MuBXT9w/qf7K/6b4NfHfO9i44r6qqaOAC6opLmmq5ptU0KiO+PT9MQ3zkV9WIXzt
- X0ZWeYaLYKIE2DIHuYZeKgRNQMvBG1NdEXRUnoRbFDfgXJLJd/wohsZvvleWRxFNaGBA
- B3iOm3MJdi/MocHl+qJr4uT5PXmHjDm2+2w4CtEoY0TSkLrItkWsOizUU0nfMEc3r/5A
- +p4gA30Ykmzm04wyWxIYhV7q28NI0HEEG378JO1UdUhyK7AfX38AbWjf+IbVbzYPk7i9
- PPMasiAYlBtGbB7PeqlLPHEjp/HFOGEO29FMGY1E+5J3hA7vBrqTtrIeLsIlqS4G4FPc
- OE3A==
-X-Gm-Message-State: AOJu0YwZ8tq7AOvhkePsPdRmxSRyFo7GzSV1HXpuX3Q3p5UiU3gIVO92
- AFkzPn+t00FwLOAIbrXlksOAQOpH0rnsQXbYlKlQ/OcubU+Qq/0Bu0plHua83GYNMAn9Odxl8BT
- OOZisLDc=
-X-Gm-Gg: ASbGncsN4nYcUnEOd1XbF4rU7huyNegazD3cTi0RvUhEWtyt1WsvMfjexs8b7C+OsUD
- 480TyKk2ZaYvOIgnZT6KNynWqZocQS786CHNcEpU55ESrWQGNqu1fLKEmkaUOr6H8GHaRO7WJSM
- uY8et9Ft79QIJm3Lr8s15qFIBWxwqguzPUrnp84LR95lViWlAbUAj2BPjRolRk+E+WGY00HXEbf
- JgzPrQAjpiOmxgJ0NfP+HP7XlrePQuAUcwmayZ+BAc0j8Bok5uZ6cRUy27l02tCBM2Qqj6x0WPm
- cvpVR38BGfs+vhMFqFn1Mgq1HoAmZHmK1AK2gjpMcSJHhMe3CkeVhoWce89hXYFMZgkb1Flk0v3
- XyRIMRXslvvIIeGwJoiuexMSka3y0PrEBxgGUjnKHrEH2MXzZ/sr+LiW8DQJ84n4qhg0hr/eMlq
- i8kDDj/JmMbMqg764m8w==
-X-Google-Smtp-Source: AGHT+IFDrRm6yKEj+7k60YOBMefIUVNVnSXFcBfwOqLJu8OCdkSdcL91EHvuqD8SJNQDE2kHr7o2Xg==
-X-Received: by 2002:a05:687c:2e10:b0:3ec:2fc8:979a with SMTP id
- 586e51a60fabf-3f16830a631mr1343021fac.19.1764778507433; 
- Wed, 03 Dec 2025 08:15:07 -0800 (PST)
-Received: from stoup.. ([187.210.107.189]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3f0dca40d4dsm10141625fac.9.2025.12.03.08.15.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Dec 2025 08:15:07 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Subject: [PATCH v3 6/6] include/aarch64/host: Fix atomic16_fetch_{and,or}
-Date: Wed,  3 Dec 2025 08:14:59 -0800
-Message-ID: <20251203161500.501084-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251203161500.501084-1-richard.henderson@linaro.org>
-References: <20251203161500.501084-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vQpan-0001XH-Lp; Wed, 03 Dec 2025 11:20:37 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vQpal-0007iw-6n; Wed, 03 Dec 2025 11:20:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=dqgK+P4qYm+GSe2xDOScXplx9fT6JiXfJfDPb9zDfYY=; b=kV66gLuLR1hWYEFd
+ iGu7cfM3bDEeyxbSP8Oh8OyWeeTET/btC9ngZn2Z75UF7uTiblC/pw6CQteB2O0fAWRRMQhb50scP
+ Ye5b7+f4ksV7ukqHkcNI9PeNSHMIwbtt1+scyQhBpCQ9jEVY+n/c9yWcHgXhR1uHGufi5UnRkjlNI
+ r4mNlvz6Z3azAFeyoQVp/Ds71nxRP/WvxAFF022BD/nM6qqXZtua09hzgLZ0PCGAFQo/RUzJJIHr3
+ g80HiwqmJpoQoj0sCg+NU2Z/xKZOCf+vJR06WTmTITzajXH+lfnort330Bio/1/tghZPvmAEHFUWM
+ A6+7u+fehcXDz0P+Iw==;
+Received: from dg by mx.treblig.org with local (Exim 4.98.2)
+ (envelope-from <dg@treblig.org>) id 1vQpah-00000007rmV-2st3;
+ Wed, 03 Dec 2025 16:20:31 +0000
+Date: Wed, 3 Dec 2025 16:20:31 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-trivial@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
+ thuth@redhat.com, pbonzini@redhat.com, jak@jak-linux.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] qemu-options.hx: Document -M as -machine alias
+Message-ID: <aTBjTzbaX0befChO@gallifrey>
+References: <20251203131511.153460-1-dave@treblig.org>
+ <87a4zzu230.fsf@draig.linaro.org> <aTBCLbDbpXgkTLHr@gallifrey>
+ <CAFEAcA-Uy0UQwGEK+f95BJmDripg1-8vhzPF5qRSY40=duhRUQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+In-Reply-To: <CAFEAcA-Uy0UQwGEK+f95BJmDripg1-8vhzPF5qRSY40=duhRUQ@mail.gmail.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
+X-Uptime: 16:18:13 up 37 days, 15:54,  3 users,  load average: 0.01, 0.01, 0.00
+User-Agent: Mutt/2.2.13 (2024-03-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,47 +72,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tmp[lh] variables were defined as inputs to the
-asm rather than outputs, which meant that the compiler
-rightly diagnosed uninitialized inputs.
+* Peter Maydell (peter.maydell@linaro.org) wrote:
+> On Wed, 3 Dec 2025 at 14:00, Dr. David Alan Gilbert <dave@treblig.org> wrote:
+> >
+> > * Alex BennÈe (alex.bennee@linaro.org) wrote:
+> > > dave@treblig.org writes:
+> > >
+> > > > From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> > > >
+> > > > -M is used heavily in documentation and scripts, but isn't actually
+> > > > documented anywhere.
+> > > > Document it as equivalent to -machine.
+> > > >
+> > > > Reported-by: Julian Andres Klode <jak@jak-linux.org>
+> > > > Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+> > > > ---
+> > > >  qemu-options.hx | 12 +++++++-----
+> > > >  1 file changed, 7 insertions(+), 5 deletions(-)
+> > > >
+> > > > diff --git a/qemu-options.hx b/qemu-options.hx
+> > > > index fca2b7bc74..ec92723f10 100644
+> > > > --- a/qemu-options.hx
+> > > > +++ b/qemu-options.hx
+> > > > @@ -44,6 +44,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+> > > >  #endif
+> > > >      "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+> > > >      "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
+> > > > +    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n"
+> > > >      "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
+> > > >      QEMU_ARCH_ALL)
+> > > >  SRST
+> > > > @@ -179,6 +180,9 @@ SRST
+> > > >
+> > > >              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+> > > >
+> > > > +    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+> > > > +        Define an SGX EPC section.
+> > > > +
+> > >
+> > > This seems unrelated.
+> > >
+> > > >      ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+> > > >          Define cache properties for SMP system.
+> > > >
+> > > > @@ -208,12 +212,10 @@ SRST
+> > > >  ERST
+> > > >
+> > > >  DEF("M", HAS_ARG, QEMU_OPTION_M,
+> > > > -    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
+> > > > -    QEMU_ARCH_ALL)
+> > > > -
+> > > > +    "-M              as -machine\n", QEMU_ARCH_ALL)
+> > > >  SRST
+> > > > -``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+> > > > -    Define an SGX EPC section.
+> > > > +``-M``
+> > > > +    as -machine.
+> 
+> Surprisingly, this and -h/--help are our only two options where
+> we provide a short synonym. I note that this handling of -M
+> is not consistent with how we document -h/--help, where we
+> print both on a single line:
+> -h or -help     display this help and exit
+> 
+> But it would be trickier to fit that in for -machine and
+> perhaps confusing given the suboptions.
 
-Reported-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- host/include/aarch64/host/atomic128-cas.h.inc | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Right, that's one of the two reasons I kept it separate.
+The other reason, is that I couldn't figure out how '-help' and '-h'
+both got defined - why is the second DEF(...) not needed?
 
-diff --git a/host/include/aarch64/host/atomic128-cas.h.inc b/host/include/aarch64/host/atomic128-cas.h.inc
-index aec27df182..52e98a0bdd 100644
---- a/host/include/aarch64/host/atomic128-cas.h.inc
-+++ b/host/include/aarch64/host/atomic128-cas.h.inc
-@@ -67,9 +67,9 @@ static inline Int128 atomic16_fetch_and(Int128 *ptr, Int128 new)
-         "stlxp %w[tmp], %[tmpl], %[tmph], %[mem]\n\t"
-         "cbnz %w[tmp], 0b"
-         : [mem] "+m"(*ptr), [tmp] "=&r"(tmp),
--          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh)
--        : [newl] "r"(newl), [newh] "r"(newh),
--          [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-+          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh),
-+          [tmpl] "=&r"(tmpl), [tmph] "=&r"(tmph)
-+        : [newl] "r"(newl), [newh] "r"(newh)
-         : "memory");
- 
-     return int128_make128(oldl, oldh);
-@@ -87,9 +87,9 @@ static inline Int128 atomic16_fetch_or(Int128 *ptr, Int128 new)
-         "stlxp %w[tmp], %[tmpl], %[tmph], %[mem]\n\t"
-         "cbnz %w[tmp], 0b"
-         : [mem] "+m"(*ptr), [tmp] "=&r"(tmp),
--          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh)
--        : [newl] "r"(newl), [newh] "r"(newh),
--          [tmpl] "r"(tmpl), [tmph] "r"(tmph)
-+          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh),
-+          [tmpl] "=&r"(tmpl), [tmph] "=&r"(tmph)
-+        : [newl] "r"(newl), [newh] "r"(newh)
-         : "memory");
- 
-     return int128_make128(oldl, oldh);
+> > > Did we have a merge conflict at some point that messed things up?
+> >
+> > It's not clear - it was the only option hanging around in -M and it was
+> > already appearing wrong in the man output.
+> > I wondered if it was some requirement to have *something* in the -M
+> > definition so thought it best to move it at the same time.
+> 
+> It looks like this was incorrectly added under -M by
+> commit dfce81f1b9 ("vl: Add sgx compound properties to expose
+> SGX EPC sections to guest"), which should have put it under
+> -machine like all our other machine suboption documentation.
+> 
+> The result is that the sgx-epc documentation appears OK
+> in --help because the --help output just concatenates
+> everything so it gets tacked on after the -machine help,
+> but it is misrendered in the HTML docs:
+> https://qemu-project.gitlab.io/qemu/system/invocation.html
+> as it appears as if a top level option rather than one
+> indented to indicate that it's a machine sub-option.
+> So this change fixes that bug (and should ideally say so
+> in its commit message).
+> 
+> Before that it simply read
+> -HXCOMM Deprecated by -machine
+> -DEF("M", HAS_ARG, QEMU_OPTION_M, "", QEMU_ARCH_ALL)
+> 
+> (Commit dfce81f1b9 also silently dropped that "deprecated"
+> comment, which it shouldn't really have done.)
+
+Ah.
+
+Dave
+
+> thanks
+> -- PMM
 -- 
-2.43.0
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
