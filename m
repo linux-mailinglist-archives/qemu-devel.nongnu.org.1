@@ -2,87 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B8FC9EEE6
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 13:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70067C9EF53
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 13:18:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQla7-0002g6-7a; Wed, 03 Dec 2025 07:03:41 -0500
+	id 1vQlny-0000Pg-3R; Wed, 03 Dec 2025 07:17:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQlZp-0002eT-JS
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 07:03:21 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQlZn-0007HQ-M8
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 07:03:21 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so65204295e9.3
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 04:03:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764763397; x=1765368197; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rDxcJTIXeLoMko0NxMKG18lkuBIFq7ECWIOhE7BilRw=;
- b=AsPi7fYyptFE+DjOWND7bPnTNa48F09N2vITNOSOvgAIyq9j7XsdzXxpRYTo5nINap
- 9RUSIWeHSrgLC4kUhWtfS3Gf5M3a1M/3MATXLSy3MvwDfL2DUQEfgzwm+dp37Q0ThlhB
- BwLv4BEIzO+pIGb3gY00SubFRJz4QEADkYFpvhTDcrrV1TWAZYuSZ2S9asgbJ19FWbmv
- JbOd4FOYJsLWn/8OIdLtdwnU2i8gY54VzNdtY9cY7HB8UkZQ0RINLEPCzL+2pz/3bqhm
- zubkPvNyi1o8FHp3GBMyvYAp//CNp/DLeDj+OeWdh7qTS5lv0WI5ULRm64Dmx2eLo+OR
- wkEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764763397; x=1765368197;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rDxcJTIXeLoMko0NxMKG18lkuBIFq7ECWIOhE7BilRw=;
- b=aFY6eYJmyJqG61Q7oOpRv0uzozILiaf0yGL3vf/Dm113tBLd0CasssWS3Aky0WiMJM
- /SvRiJ7qHDZfb3/IUgTV2bafclSo1TrxS8TFP/sgZGZrr/aMZqtTsIGkV3CGLfKxK4of
- ddk1VnAhQKeVwx/fEfqmnPi5mmfexH4cgiQZlxDYTgJvgaGoB3NLr/DVxS4ZrMrMQXHz
- k1uD4hXbXlkFwZAhfKY55XSYnC32ZQAkCBllG3bZ1DIIcSTBG/Xfjyjxsi2M96JXWnPF
- pOcERqGrYbT3VZoHQ8C1Jk5SoXC2wjgVcoGp1loW7lI2boBP/NZGJ2lRksXG6KaHOmfS
- 1QqQ==
-X-Gm-Message-State: AOJu0Yw9+FIi/TVopzhI90zGKd/Z2A9YvESA0PZXYrh0JHgmFD6MOg2S
- qx+3nvrso0EUb87HiRe+fiuLB3cijMdlXfQsqLqCyWlRH2cpNr2L1Wd9P3a+Rkas9/QXjDhpWxp
- dJ3z72QY=
-X-Gm-Gg: ASbGncsPs/pjK9AM+0/yREnbJK7OASTVgda44hBEJwcA4dFS9LNOfOZQp98jfGfGmm1
- LDzZvKG3vRtcNdHyP5FsHN3f1qe7Ih2M45vJEcIqc/Nee/fgC1dHIHumMz9GbFcAcQx/0R5Jxrf
- EzvsIwYhW9BTz4uawd7eTs72/55s8puaycReQZCIF3EnYh7ZiwNqnvReZh0puQz3LbfsBYNPAl1
- 5smIKtuALBbPP8LCw1T2XFTm+24cKdyI3N/lbv2/KtI3GQjoyUG52KzD7VMUjqn2dmVGiacVTv/
- LrUp4V83wLKx+skyHIxMBi8Wui/q6nwEwdBXUj2hDK3HYnumhPYd30O+CLGWgHEhkxlrvCrSc8i
- Fnfkjv8fhQBodHvE3/h4jkc/Dll6QpJH/WP5oW68o3QX0QZeXzwa/LZVgQNzmlwePrQ+a4AQu3H
- DdQwaWvzUHUxMNtLIuCDSjTX3R6EEJRxefFeOLgiS+SPMjtl/+RXeerpyDyFQH
-X-Google-Smtp-Source: AGHT+IFpUkst2fNT9EQqzXZHv5xZN5u42HaSmHB3DNgt1wi7rBR6HoJGNQrPk1QSMMIF6KtJ+D5DLw==
-X-Received: by 2002:a05:600c:4f53:b0:477:a9e:859a with SMTP id
- 5b1f17b1804b1-4792af333edmr16649815e9.22.1764763397540; 
- Wed, 03 Dec 2025 04:03:17 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1c5c3022sm39533059f8f.4.2025.12.03.04.03.16
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 03 Dec 2025 04:03:16 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1vQlnv-0000PL-Sw; Wed, 03 Dec 2025 07:17:56 -0500
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1vQlj1-0005jT-Ma; Wed, 03 Dec 2025 07:12:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=hPbCRtEx0Aylbs0pmVY/6rcU6UU/WC/vPI9krT1PqQs=; b=wjjSYoXt3FU5rcKRJiMVF0JxVs
+ m8ETwFmfP/pHP3b7UGrtQwqJ0pU1EjMmR+J4ann9LCOfrdPZbOigOL1bvMOXpY+SEqYmve5dqk2FT
+ Y9zwIxRswwrlCEMoVdxN1c+FQjhZeEMQqo+y1Lrh+KGOKyiXtb6ObcnlsD/6ncYmqkdAsR0pJ/wPj
+ gkHZpaFwfs1X9/DLURSO3KYxeH0K9cu/y6C4T1eE1xjYY2AGCI5fFCEYPcwZfwSG8cd1tUoWJMQmY
+ xCbJlfQuJ3QUwLIJTG26mPpwj/qOWnqXL8jxMxalLKW+KN/cMmdjq/bLwn5DjL9KislR3HMSRcrYP
+ QHFGW/Fy0QkKhS3j8DlbfFtoUTDZ2A1xwncUnP4CYwBFAMUQgCCKQ0ygct11tv/hbIYb4mQTI1+Xi
+ 0uXp9KSLcKP+7KIKTLMXnbpNJomvoM7KtJl2jrpqfnarsdryaLxMPW9QyS3+Fvy9W2q0CJfzu1j76
+ zYNyJUCWil66NW0wjTasB1+dt8YWgOuVe3I5qK1H28yW68C+A0020j7QU6O+P6rPXUIwWKfW8mESj
+ j3i5gs/1CRlVVWgWJqzIiLDCM5oSvuuVwjDzZxcN0es9hLIye6lZTQi7kzulcJSi31GpmwTuSqkkf
+ bAqoV8HdG5lc0aYfzG6lswHrGVqh3txxqO5G+acy0=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH-for-10.2 v2] osdep: Undefine FSCALE definition to fix Solaris
- builds
-Date: Wed,  3 Dec 2025 13:03:15 +0100
-Message-ID: <20251203120315.62889-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+Cc: sstabellini@kernel.org, anthony@xenproject.org,
+ Alano Song <AlanoSong@163.com>, AlanoSong@163.com,
+ QEMU Trivial <qemu-trivial@nongnu.org>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 2/2] hw/9pfs: Correct typo
+Date: Wed, 03 Dec 2025 13:12:30 +0100
+Message-ID: <3383884.aeNJFYEL58@weasel>
+In-Reply-To: <20251202132132.17636-1-AlanoSong@163.com>
+References: <20251202132132.17636-1-AlanoSong@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,87 +67,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Solaris defines FSCALE in <sys/param.h>:
+On Tuesday, 2 December 2025 14:21:32 CET AlanoSong@163.com wrote:
+> Correct comment typo in xen_9pfs_bh()
+> 
+> Signed-off-by: Alano Song <AlanoSong@163.com>
 
-  301 /*
-  302  * Scale factor for scaled integers used to count
-  303  * %cpu time and load averages.
-  304  */
-  305 #define FSHIFT  8               /* bits to right of fixed binary point */
-  306 #define FSCALE  (1<<FSHIFT)
+Please send a set of associated patches with a cover letter next time. It 
+makes it easier for people when they are threaded together.
 
-When emulating the SVE FSCALE instruction, we defines the same name
-in decodetree format in target/arm/tcg/sve.decode:
+I assume this patch can also be pushed through qemu-trivial, so:
 
-  1129:FSCALE          01100101 .. 00 1001 100 ... ..... .....    @rdn_pg_rm
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 
-This leads to a definition clash:
+Otherwise let me know and I'll push it through my 9p queue.
 
-  In file included from ../target/arm/tcg/translate-sve.c:21:
-  ../target/arm/tcg/translate.h:875:17: error: pasting "trans_" and "(" does not give a valid preprocessing token
-    875 |     static bool trans_##NAME(DisasContext *s, arg_##NAME *a) \
-        |                 ^~~~~~
-  ../target/arm/tcg/translate-sve.c:4205:5: note: in expansion of macro 'TRANS_FEAT'
-   4205 |     TRANS_FEAT(NAME, FEAT, gen_gvec_fpst_arg_zpzz, name##_zpzz_fns[a->esz], a)
-        |     ^~~~~~~~~~
-  ../target/arm/tcg/translate-sve.c:4249:1: note: in expansion of macro 'DO_ZPZZ_FP'
-   4249 | DO_ZPZZ_FP(FSCALE, aa64_sve, sve_fscalbn)
-        | ^~~~~~~~~~
-  ../target/arm/tcg/translate-sve.c:4249:12: error: expected declaration specifiers or '...' before numeric constant
-   4249 | DO_ZPZZ_FP(FSCALE, aa64_sve, sve_fscalbn)
-        |            ^~~~~~
-  ../target/arm/tcg/translate.h:875:25: note: in definition of macro 'TRANS_FEAT'
-    875 |     static bool trans_##NAME(DisasContext *s, arg_##NAME *a) \
-        |                         ^~~~
-  ../target/arm/tcg/translate-sve.c:4249:1: note: in expansion of macro 'DO_ZPZZ_FP'
-   4249 | DO_ZPZZ_FP(FSCALE, aa64_sve, sve_fscalbn)
-        | ^~~~~~~~~~
-  ../target/arm/tcg/translate.h:875:47: error: pasting "arg_" and "(" does not give a valid preprocessing token
-    875 |     static bool trans_##NAME(DisasContext *s, arg_##NAME *a) \
-        |                                               ^~~~
-  ../target/arm/tcg/translate-sve.c:4205:5: note: in expansion of macro 'TRANS_FEAT'
-   4205 |     TRANS_FEAT(NAME, FEAT, gen_gvec_fpst_arg_zpzz, name##_zpzz_fns[a->esz], a)
-        |     ^~~~~~~~~~
-  ../target/arm/tcg/translate-sve.c:4249:1: note: in expansion of macro 'DO_ZPZZ_FP'
-   4249 | DO_ZPZZ_FP(FSCALE, aa64_sve, sve_fscalbn)
-        | ^~~~~~~~~~
-  In file included from ../target/arm/tcg/translate-sve.c:100:
-  libqemu-aarch64-softmmu.a.p/decode-sve.c.inc:1227:13: warning: 'trans_FSCALE' used but never defined
-   1227 | static bool trans_FSCALE(DisasContext *ctx, arg_FSCALE *a);
-        |             ^~~~~~~~~~~~
-  ../target/arm/tcg/translate-sve.c:4249:30: warning: 'sve_fscalbn_zpzz_fns' defined but not used [-Wunused-const-variable=]
-   4249 | DO_ZPZZ_FP(FSCALE, aa64_sve, sve_fscalbn)
-        |                              ^~~~~~~~~~~
-  ../target/arm/tcg/translate-sve.c:4201:42: note: in definition of macro 'DO_ZPZZ_FP'
-   4201 |     static gen_helper_gvec_4_ptr * const name##_zpzz_fns[4] = { \
-        |                                          ^~~~
+/Christian
 
-As a kludge, undefine it globally in <qemu/osdep.h>.
+> ---
+>  hw/9pfs/xen-9p-backend.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
+> index 79359d911a..ca0fff5fa9 100644
+> --- a/hw/9pfs/xen-9p-backend.c
+> +++ b/hw/9pfs/xen-9p-backend.c
+> @@ -310,7 +310,7 @@ static void xen_9pfs_bh(void *opaque)
+> 
+>  again:
+>      wait = ring->co != NULL && qemu_coroutine_entered(ring->co);
+> -    /* paired with the smb_wmb barriers in xen_9pfs_init_in_iov_from_pdu */
+> +    /* paired with the smp_wmb barriers in xen_9pfs_init_in_iov_from_pdu
+> */ smp_rmb();
+>      if (wait) {
+>          cpu_relax();
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/osdep.h | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index cf8d7cf7e61..3cb45a14678 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -141,6 +141,12 @@ QEMU_EXTERN_C int daemon(int, int);
- #undef ELF_DATA
- #undef ELF_ARCH
- 
-+/*
-+ * Avoid conflict with Solaris FSCALE definition from <sys/param.h> header,
-+ * but we might as well do this unconditionally.
-+ */
-+#undef FSCALE
-+
- #ifdef CONFIG_IOVEC
- #include <sys/uio.h>
- #endif
--- 
-2.51.0
 
 
