@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC95CC9DE42
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 07:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DFAC9DE57
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 07:11:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQg4e-0005cW-25; Wed, 03 Dec 2025 01:10:48 -0500
+	id 1vQg4g-0005kU-35; Wed, 03 Dec 2025 01:10:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg4W-0005Sh-UZ
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:10:43 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg4b-0005Yo-Qg
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:10:46 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg4T-00012v-7q
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:10:39 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4779a637712so39508275e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 22:10:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg4Z-00014M-1Z
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:10:45 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-42b38de7940so3094474f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 22:10:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764742234; x=1765347034; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764742241; x=1765347041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NmzdRNy+XVrnKgfA7Np3tADI6SbGw+r+ug99GdFxAXA=;
- b=h8mfNrtSzAGk+R50v6+ZsAAGFSEf53GVAX5lTIxjFQsZIgiSiZYdx3uVYpIabSXAgQ
- q2H96XyNsLshx+hhq/IFdvYHpFXjT4BeFr0f26PH6umYlLFRgYccQU1cTfZeCdbdUcVB
- Lmz4debdB08X2ehsokoeRhtNPo75XQDnnT/9Do3OkD9zhRbl95IilbBvUbjORzMW3iue
- SQXqVbDcuj1xEEYKrz/JUeYN4fSsTjaBlef8QxxGvEdSs7wCBnFAnIgrDPDp5+mXUg7a
- 8YcrIRgB++WQ93Xq1pVlVcVJMe0T87NCbzhJa7FCxDL8JinixpvuOirQ/yj7Ga5PSicL
- zKZg==
+ bh=cJ7ely9hzqgs7VmHKEXFRsGMqnx7PoNMDpzJyHt0paQ=;
+ b=HKzOMzNPnRa0XbZSYPGTKUZ1LPKYR8AMuIyLf/JZao2X3d44WsuNywz4VXzIBJGvGA
+ AOcrOqqsz0ANMl5msze7b+iD2ndVmfCXrqXT9Yoe+MQ7Q0fMIy+NEzUCkbHXf5xMNQOA
+ yXS9Ui672YzWYdwE9uEZwzQshb6SESOvAGkex11jkKPnLn1Wx6yeUAvS3f7M7iWLy5sd
+ lrQX5uiB5XXle4rv8L2UHS6Xd/Vy9ipWgqh9Mi38cSuT40e6/32JICTe/ykkRZu3YVHE
+ dP/iIy5B96kU654w3cWYtTTMwv1bbxWBYAxGZtE2JJH/0RkWGvjtf06rbeyFSDjp/gzh
+ PK7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764742234; x=1765347034;
+ d=1e100.net; s=20230601; t=1764742241; x=1765347041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NmzdRNy+XVrnKgfA7Np3tADI6SbGw+r+ug99GdFxAXA=;
- b=vWNtGzkAT6xGFo74nat1pcM0KX7knnpY0KW2+cKopg5hGigXuWSSJMk/fm1s+JRw8g
- E3atUX7P9jU0tcULXML1+noA+taSbxKRGJE2P2OL5L9M1eob6QOo68o1FP+nTYtMzZ2m
- FfrkC9pE8aBYQ6xUh/IlXe65Wgs8I2l6SUk9zYT4eXi4K0UrHOyZ5NxbHgcYmP4tgF/D
- Q4AtSoYOvWwveLiYFhCpVFSSNMLe7z4vi+UTyU/ZWQyYkLRXp0J9Rbj2SVGsu86z0CfH
- 4eqhNsno+DZsGT5TWCvtlNEgp/peog2oGu4hq7/pv1csCHBtwWniC1RIqi70+ccKb9DR
- 1lvA==
+ bh=cJ7ely9hzqgs7VmHKEXFRsGMqnx7PoNMDpzJyHt0paQ=;
+ b=sW8+KrzX97gz6TpT05G5TfuYoDr/iaeOPGIpp4MQ/sjPPtLj5Dbv/jvcUb+9JClDpM
+ dqhcoDFl5vrfBpQUsMsUEh5KhCdQM4JXwkQPehUKYt5zxrY6KhCCBhSl5Y+hyaUJB11U
+ PgqVQLBqL1JWTmzYGWHFqlVURmcZojMjZWyEYLaxYJYb//LztZOqjvnQ5A4vkiG7g3T+
+ b3arqWUrXtSJrBJRR221lFaHttXF1ihXh9DlgrDruzhRGXk5NtrplA+lXb+cTPhvF3ya
+ N5r3mwSaGRKUetCPi5Q25EPm1bUBhbbKGpPijXP51sWgOC3VJdu/k7pEL1YXpNVonf4h
+ 9Mmg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU52q1CBkw2FokLbCO7ErEBka+6LE5SC9Tm6gYIShSDuKG0GQvlEm5BXNx3vfUzhvY1WNoQAeebpVnY@nongnu.org
-X-Gm-Message-State: AOJu0YzUSsdTXV6LZLg1YM41vvMjGJJUpy0h2UkOIx23ao29T/unzr6I
- yE3DNrvD1TUmBXWlDDdDzpOeT4PcKX7Q48CeYjhl2RxnVwoFTVCTQhx1pPEES50WmEbKQ+zhgYE
- SfRB5VQc=
-X-Gm-Gg: ASbGncu41M+6PuKdYJVQ1kT61dXz+m3NCbqT8Zmte9HHDuum94QIYC4r0nTlCX4NaHJ
- 9NGZeVFBrxWGvcO4tgL/tstj2VjOfhdo3aUpzfmdWwJCup4EEaaE21yVp7RMeolReuKidnZOi48
- o5lNgaE2Wcs8FUtCCDf7L7JWx2aBUH69Bsnl7tgcqtcMlcMtPaplkTYdXJaPnPB/D8a5jcY8yHs
- sZ2rjwUqq+L0hy63a2p4D8qgGhOLht1Cmc3RCWPmufv5LsyULhn8EPIbNdcabCMzxWeV1k2yb4D
- bbCs9i8UINVMc2BSm8TmmiP+bXNSTuBhfgjE0ZJ06ah8f077PeHYfop+snPqGAayjFmNUT42OG2
- YwDmO15zpHhkPXw2HJHoroJd0J7Twi4D11L+lMATW24IvS08h/uY0+1D/hZqC+gW33cCwDv7uPC
- 5nzDRluw41Wo0wqJD9Jq3AptrZAyuEMVFbM8ywdfFhRoLdgfrRqeh0hrGiBIXW
-X-Google-Smtp-Source: AGHT+IEPApft5PGZWsFPz//8A8cqjaVIx5m13oFIf9W/WuBW9rwX9Y+20LttgbfbDUMnp9zRiB+bCw==
-X-Received: by 2002:a05:600c:1f0d:b0:477:952d:fc00 with SMTP id
- 5b1f17b1804b1-4792aef32d7mr9426015e9.12.1764742234286; 
- Tue, 02 Dec 2025 22:10:34 -0800 (PST)
+ AJvYcCVFzsz1SdQbUndUowrDwU7O6HaWpGfXL8R6lnwYgIWHYGIaviv4fktXDn9JfCnwOInFIrz/yTIG/XNZ@nongnu.org
+X-Gm-Message-State: AOJu0YxM8fOAUHGMeS56E3lFhFkZXMI7XogI/skv/Z971dpmPnuAcmdy
+ LQam7s691dHdWIYNE5KyzKLwi6Fve/3huf8s/JomjpGC0YILLxiM4Ced3ZwuP+Q8ZuY=
+X-Gm-Gg: ASbGncuR0PLytOtEkZT4xamn8f4LGJLmgXjT5EPZIQrSdjriKguCWWvPmHq4kJan/Su
+ mToA+GiP9KfSKp74GEeLdg3ZHmNjwWIvBgclcewhuxEq2qQWBFdlKMIwgsxNJyPCZkM3onNM4B3
+ D0T6OGb6HQ9S0nImbpjxo0oMnKVq5g8H4Jy0RByN9rbu1aif+lD32TSjqQWbM9AxPE1nmQISVOE
+ seEdqWk+E6lBQg78B+0QjxPANiqHegEHVcj1oqUZvmrpI+BZOR6c+eCVoQgLMMfR3DTmeFPsYZr
+ T6QmRUMROSYjGtwFFs0kw6pxOewMwWHfzLs4ARADRbbQ+gMK0LlJIZD3DmMhRSvuYV7ObHdJ7VB
+ krFbybRsyySk32OHTWjEurQXvffvCKgnMqLRdhgJAyFzeBXdZNEj6cUMBSsRr+EzQkt4OUi71Kg
+ 7yPIDS+bCPzfeM4bpm08tfv1KD59zGaj1/jnxLVuzI3a7qYwrH8WuP3ltqnsfF
+X-Google-Smtp-Source: AGHT+IFQb/Dad/BvwX+uiwS8U+3g2hp5gcX664TQgINFZ5o5vj0uy/SDcWEx8w4i5DBAvKfEJ4x4KQ==
+X-Received: by 2002:adf:fe4a:0:b0:42b:41d3:daf8 with SMTP id
+ ffacd0b85a97d-42f73196803mr592087f8f.18.1764742241187; 
+ Tue, 02 Dec 2025 22:10:41 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1c5d6277sm37152129f8f.17.2025.12.02.22.10.33
+ ffacd0b85a97d-42e1ca7880asm37423781f8f.31.2025.12.02.22.10.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Dec 2025 22:10:33 -0800 (PST)
+ Tue, 02 Dec 2025 22:10:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Zhao Liu <zhao1.liu@intel.com>,
 	qemu-devel@nongnu.org
@@ -72,19 +71,18 @@ Cc: qemu-ppc@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH-for-11.0 v6 07/13] hw/nvram/fw_cfg: Add fw_cfg_init_io_nodma()
- helper
-Date: Wed,  3 Dec 2025 07:09:35 +0100
-Message-ID: <20251203060942.57851-8-philmd@linaro.org>
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PATCH-for-11.0 v6 08/13] hw/sparc64/sun4u: Use fw_cfg_init_io_nodma()
+Date: Wed,  3 Dec 2025 07:09:36 +0100
+Message-ID: <20251203060942.57851-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251203060942.57851-1-philmd@linaro.org>
 References: <20251203060942.57851-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,43 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Calling fw_cfg_init_io_nodma(...) is more explicit
-than fw_cfg_init_io_dma(..., 0, NULL).
+Use fw_cfg_init_io_nodma() instead of open-coding it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/nvram/fw_cfg.h | 1 +
- hw/nvram/fw_cfg.c         | 5 +++++
- 2 files changed, 6 insertions(+)
+ hw/sparc64/sun4u.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index 7348cbfbc34..a2b8f7fa864 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -305,6 +305,7 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
-                                     Object *parent, const char *part,
-                                     const char *filename, Error **errp);
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 82c3e7c855b..6dc9f64b74d 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -683,14 +683,7 @@ static void sun4uv_init(MemoryRegion *address_space_mem,
+                            graphic_width, graphic_height, graphic_depth,
+                            (uint8_t *)&macaddr);
  
-+FWCfgState *fw_cfg_init_io_nodma(MemoryRegion *io, uint32_t iobase);
- FWCfgState *fw_cfg_init_io_dma(MemoryRegion *io, uint32_t iobase,
-                                uint32_t dma_iobase, AddressSpace *dma_as);
- FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index 2699e593860..079c28f9212 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1054,6 +1054,11 @@ static FWCfgState *fw_cfg_init_io_internal(MemoryRegion *iomem,
-     return s;
- }
- 
-+FWCfgState *fw_cfg_init_io_nodma(MemoryRegion *iomem, uint32_t iobase)
-+{
-+    return fw_cfg_init_io_internal(iomem, iobase, 0, NULL);
-+}
-+
- FWCfgState *fw_cfg_init_io_dma(MemoryRegion *iomem, uint32_t iobase,
-                                uint32_t dma_iobase, AddressSpace *dma_as)
- {
+-    dev = qdev_new(TYPE_FW_CFG_IO);
+-    qdev_prop_set_bit(dev, "dma_enabled", false);
+-    object_property_add_child(OBJECT(ebus), TYPE_FW_CFG, OBJECT(dev));
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    memory_region_add_subregion(pci_address_space_io(ebus), BIOS_CFG_IOPORT,
+-                                &FW_CFG_IO(dev)->comb_iomem);
+-
+-    fw_cfg = FW_CFG(dev);
++    fw_cfg = fw_cfg_init_io_nodma(pci_address_space_io(ebus), BIOS_CFG_IOPORT);
+     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)machine->smp.cpus);
+     fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, (uint16_t)machine->smp.max_cpus);
+     fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, (uint64_t)machine->ram_size);
 -- 
 2.51.0
 
