@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC14C9EAAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 11:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78286C9EBB1
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 11:35:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjqs-0001fW-6F; Wed, 03 Dec 2025 05:12:50 -0500
+	id 1vQkBk-00035t-T8; Wed, 03 Dec 2025 05:34:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQjqq-0001eT-L3; Wed, 03 Dec 2025 05:12:48 -0500
-Received: from mgamail.intel.com ([192.198.163.10])
+ id 1vQkBh-000349-Vx; Wed, 03 Dec 2025 05:34:22 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQjqo-0006t2-Re; Wed, 03 Dec 2025 05:12:48 -0500
+ id 1vQkBf-0001JP-FH; Wed, 03 Dec 2025 05:34:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764756766; x=1796292766;
+ t=1764758059; x=1796294059;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=FkEWYu/LFqLXmzn8xqFCuuGWPigZO4lD3Iq7Kru3ZV4=;
- b=GTyXbuEBjZYS+cAFyk+1tHXV03xyj9YHS8Rvd2rtIB30Ud1Qy0J/g5RB
- E0XeZMiT8oDF8ENaDdXCUckOoUDcjDm+kHCPC0doMq3ep0aEuSi/avzSC
- UZYXf9OfBeFGC2u3FN+M8L/ae5qIBkj9S9U3u28iejfuLwKvlXOFRByhx
- 30/xRwtJi0k9Yghhv7rJGauRWK8emne8++2Tc/xwuSTalW52A2d1CI0fR
- bG/DQtjtJjj/8MuxjwQfNFOQctSho4MiaSrpNC9moLPfs5iBn3Ci/+nRk
- mN0mRXItmP0rbsNqHKR0/kPALSV3kTmLHN4lCB4EV1Vn/p6RMLgumWcPa Q==;
-X-CSE-ConnectionGUID: b/jR1+EERrOcsoAuUxf4VQ==
-X-CSE-MsgGUID: LzYuDfZgQS2pILnahAg+/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="78093266"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="78093266"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2025 02:12:43 -0800
-X-CSE-ConnectionGUID: ZttNxyiyS6qwtfWciAW/JQ==
-X-CSE-MsgGUID: cf/i6aevTl2QppZVYXHW/A==
+ bh=inhhs329/9yVPKnXShSu3foIt2Ziv52EkedCdZUKx6E=;
+ b=MK2K28WjRPzDrJbWDPz24zJQzFlcxK68gYUUOz9cq7IhRr0EiX1d+Vx3
+ 1fMsqzECMpyUHuz1qHPAzo4bjC+NUbxqy91fWXsIl3h9fT2f6+TQdrjrz
+ dOhsSSmsySbn8y+QHIBij0LON2564rh93QAGzL+dJe/hOb6fnTtfWhfwz
+ XNsDCse3+gA9y8SloQQ/NDjfIVDBs4soSuCQ68E+F+djzu90o9n510b8Y
+ PjyNo301W64r8zsKlO8D9NdlanoYDs/UxyIZ4gW/l+/QpfV2oGci+ym+P
+ Tax4KXjRbWxChMJeKMZQxfeIIHixCCe/n1GhwumlTwxLXB0gy2UWZ6ywi A==;
+X-CSE-ConnectionGUID: buH7igE4SYGj6HqEbPH8Dg==
+X-CSE-MsgGUID: KAn7m56cS0mX8u6Um59Xyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="92226046"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="92226046"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2025 02:34:15 -0800
+X-CSE-ConnectionGUID: mfyNq3ngREG0Mh7JOEKAQQ==
+X-CSE-MsgGUID: 2OsZE3fbRIerAolCyU2XFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="194317330"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="199592629"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 03 Dec 2025 02:12:42 -0800
-Date: Wed, 3 Dec 2025 18:37:25 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 03 Dec 2025 02:34:14 -0800
+Date: Wed, 3 Dec 2025 18:58:56 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 3/9] rust: remove unnecessary repetitive options
-Message-ID: <aTAS5TgA3Xc9pCsu@intel.com>
+Subject: Re: [PATCH 4/9] rust/bql: make bindings public
+Message-ID: <aTAX8PJgUIv19+Yg@intel.com>
 References: <20251127132036.84384-1-pbonzini@redhat.com>
- <20251127132036.84384-4-pbonzini@redhat.com>
+ <20251127132036.84384-5-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251127132036.84384-4-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20251127132036.84384-5-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -79,28 +79,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 27, 2025 at 02:20:30PM +0100, Paolo Bonzini wrote:
-> Date: Thu, 27 Nov 2025 14:20:30 +0100
+On Thu, Nov 27, 2025 at 02:20:31PM +0100, Paolo Bonzini wrote:
+> Date: Thu, 27 Nov 2025 14:20:31 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 3/9] rust: remove unnecessary repetitive options
+> Subject: [PATCH 4/9] rust/bql: make bindings public
 > X-Mailer: git-send-email 2.51.1
+> 
+> For consistency with other crates.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  meson.build                  | 3 ++-
->  rust/bits/meson.build        | 2 --
->  rust/bql/meson.build         | 2 --
->  rust/chardev/meson.build     | 2 --
->  rust/common/meson.build      | 2 --
->  rust/migration/meson.build   | 2 --
->  rust/qemu-macros/meson.build | 1 -
->  rust/qom/meson.build         | 2 --
->  rust/system/meson.build      | 2 --
->  rust/tests/meson.build       | 1 -
->  rust/trace/meson.build       | 2 --
->  rust/util/meson.build        | 2 --
->  12 files changed, 2 insertions(+), 21 deletions(-)
+>  rust/bql/src/lib.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Other crates appear to require being public mods to ensure binding
+compilation succeeds or to use raw binding in somewhere, but currently
+bql's raw binding hasn't been used anywhere.
+
+I think maybe it's better to keep this mod as private until someone
+needs it. This helps justify whether raw binding is truly necessary.
+Direct binding uses should be minimized if possible.
+
+Thanks,
+Zhao
 
 
