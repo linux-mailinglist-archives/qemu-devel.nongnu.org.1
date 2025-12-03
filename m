@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875B7CA12BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A798ECA12AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:53:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQrwr-0007TM-KZ; Wed, 03 Dec 2025 13:51:33 -0500
+	id 1vQrwr-0007So-7M; Wed, 03 Dec 2025 13:51:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrwp-0007R3-Ja
+ id 1vQrwp-0007RK-Sg
  for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:51:31 -0500
-Received: from mx0b-00190b01.pphosted.com ([67.231.157.127])
+Received: from mx0a-00190b01.pphosted.com ([2620:100:9001:583::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrwn-0000zQ-Bg
+ id 1vQrwn-0000zX-LE
  for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:51:31 -0500
-Received: from pps.filterd (m0409411.ppops.net [127.0.0.1])
- by m0409411.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id
- 5B3HaD9k365124; Wed, 3 Dec 2025 18:51:27 GMT
+Received: from pps.filterd (m0050095.ppops.net [127.0.0.1])
+ by m0050095.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id
+ 5B3IgRqW274411; Wed, 3 Dec 2025 18:51:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=jan2016.eng;
- bh=t/8WC/8W9FdsPsEYza0XQgEda9PqZPLJMpsz9vEOBB8=; b=ZjbO1FblYWdt
- 9uwR0d9nrRpvLrlGXPdoWDn+uxKFoIINk+UhC49yBqxySNPf39DtUvpe/DknWhHx
- F88/f+hAMm/hV4viuWCJFnMmfNiqE+9w9mTfzcjcBnEJgut++qNfv38FbxOi8KCJ
- ZXp1sQi19V6GFmCF56G3yDDh8pzYxp5/RD+xbZihiu0ofezHqWzCvJRlceQ9Cu3E
- hjX74b8sjxfIoNeRgRGv2SHv+K3h3UztkSa+pz5+yMz367GR8l/zxasnS+vVKQ8j
- CdO2Y4WHGmwEsBHjAxI40RkmovVPU8Vd5pDrjypBE8uwqzwKF9R5V2gg/uFBvv15
- KZyobEHV5Q==
-Received: from prod-mail-ppoint2 (prod-mail-ppoint2.akamai.com [184.51.33.19])
- by m0409411.ppops.net-00190b01. (PPS) with ESMTPS id 4at31m8y0c-1
+ bh=ljRmB77NnqAdrgPEzQrr268ITHscsnHq1PoRVyI/Pzk=; b=PdQGilVoAKBs
+ uZelBYn2NQyhZ9E4p5Y197cGB6Xo51/7pLjJsVhFl2UvmqFhi8mMvcE4zwhNhe+j
+ kl+/wYe5Evg7lux92HjOC4c9Oz1FzJThjWAxehTeFtbWpA6/VZPzbO2Q8WAF2yGg
+ 6m7bYWzm8EDY7opnq2UkYZRqqy07kEwWix0VVYkS/s4MxED+PMQWoq9WZ1Xj/6m3
+ jfvb2zYviLhmKuIBwj8NW5OtcUtHS1diCJJX+3migRnsp3ceR4Pl1pfLpnykoD9U
+ qzkyB/Q2dljfK6pJ54zHuL6R8pwvfA6Zez3GbaBIonMg6auCUx6/S39C5NJ7yKrW
+ j8GdTu/VjA==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
+ by m0050095.ppops.net-00190b01. (PPS) with ESMTPS id 4atm5s6d01-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 03 Dec 2025 18:51:27 +0000 (GMT)
-Received: from pps.filterd (prod-mail-ppoint2.akamai.com [127.0.0.1])
- by prod-mail-ppoint2.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
- 5B3FFwRH029135; Wed, 3 Dec 2025 13:51:26 -0500
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+ by prod-mail-ppoint6.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
+ 5B3FZraq026859; Wed, 3 Dec 2025 13:51:26 -0500
 Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
- by prod-mail-ppoint2.akamai.com (PPS) with ESMTP id 4aqw21kuh7-1;
+ by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4aqw21kxw3-1;
  Wed, 03 Dec 2025 13:51:26 -0500
 Received: from bos-lhvkhf.bos01.corp.akamai.com
  (bos-lhvkhf.bos01.corp.akamai.com [172.28.40.75])
- by prod-mail-relay01.akamai.com (Postfix) with ESMTP id A1B5094;
+ by prod-mail-relay01.akamai.com (Postfix) with ESMTP id A91DF97;
  Wed,  3 Dec 2025 18:51:26 +0000 (UTC)
 From: Ben Chaney <bchaney@akamai.com>
-Date: Wed, 03 Dec 2025 13:51:19 -0500
-Subject: [PATCH v3 2/8] migration: cpr setup notifier
+Date: Wed, 03 Dec 2025 13:51:20 -0500
+Subject: [PATCH v3 3/8] vhost: reset vhost devices for cpr
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-cpr-tap-v3-2-3c12e0a61f8e@akamai.com>
+Message-Id: <20251203-cpr-tap-v3-3-3c12e0a61f8e@akamai.com>
 References: <20251203-cpr-tap-v3-0-3c12e0a61f8e@akamai.com>
 In-Reply-To: <20251203-cpr-tap-v3-0-3c12e0a61f8e@akamai.com>
 To: qemu-devel@nongnu.org
@@ -68,53 +68,51 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Max Tottenham <mtottenh@akamai.com>, Ben Chaney <bchaney@akamai.com>,
  Steve Sistare <steven.sistare@oracle.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787886; l=1432;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787886; l=5230;
  i=bchaney@akamai.com; s=20251203; h=from:subject:message-id;
- bh=ybfQKPvFeL2sBlrQktra1uae8irgJMED5+q0/d3iGMY=;
- b=rg7zTjfT3ixnbbFdX2jzPZ/ISY6BkmHvB+4CRKRmZwTQh2JA3SldPyqy8PGjcJKH6L+B+IzbQ
- YomMPLzKLJmBFvJQykbYnCYLXt1TBxPPdC8j6bdqa05gRbj20+MWiCD
+ bh=6kTSGt3ELi899SPi+eJ4MTXel5sLxi3unzD950w6j/M=;
+ b=2vhlu4zmfRGEftDje4PhskkfZjP3zx3oOQARS8sNrREatZVToDTYrrzWyXmx/RE4MbvmWxQjM
+ ZJrTmfATuGfBqoiBKL5EtDV3rWBnbm4+QGMCjJJ+spjwCYa15YekUHP
 X-Developer-Key: i=bchaney@akamai.com; a=ed25519;
  pk=6+w9cse5QEeVdy3tjqFxs/4rAaRdQ2/fkTxVFq+lWy4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-03_02,2025-12-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ mlxscore=0 phishscore=0
+ bulkscore=0 spamscore=0 suspectscore=0 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
  definitions=main-2512030148
-X-Proofpoint-GUID: rHBQMF77W4e5ezlpkbQaGCRR5cRxmGsc
-X-Authority-Analysis: v=2.4 cv=I6Nohdgg c=1 sm=1 tr=0 ts=693086af cx=c_pps
- a=BpD+HMUBsFIkYY1OQe22Yw==:117 a=BpD+HMUBsFIkYY1OQe22Yw==:17
+X-Proofpoint-GUID: RVkisURAx_c3pRunJDSZVbm65r6TfD-C
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0NyBTYWx0ZWRfX2sKSOrMead+G
+ d7JCGWZ9kh43d7SmEygI9fwOegwJ/jUBkNK+eor7ORIW88HwBQAojilIEICahZGAJEWKkztR6Fp
+ jLgl/iUNVTc5ZTaZJAt5f1QYEU/zA4Aw+WPQ+gUcPvCaxW83ErYAhy56nK3kyG+qkJmcQSxh2c5
+ ZwK2O7opZn5+VKyO+gukV/86PAVcjZd4PdtMTzO7SNN9YIj8VaDCutdd2kpF53yrhxNQYsG7l6f
+ 7s2bGvRY/KJyJmMSmiqrbpLlPK3I8l1Km/UnXlf7eQ5x9vV91pwtr94BkzQSNBRhePbJi6V8iYY
+ Mt7iIFLN9/v70fuiYc2q9KCaP+tl/xIcpj52wqAojJPCbxgQfMzkAyrFQipGIqqZOY2mKSnT/ym
+ yb0s/iKIONgSGEtcwpOCOOOWaWj+dg==
+X-Authority-Analysis: v=2.4 cv=VdH6/Vp9 c=1 sm=1 tr=0 ts=693086b0 cx=c_pps
+ a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=X7Ea-ya5AAAA:8 a=9e0HOU0VQPgVKZhTx6MA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: rHBQMF77W4e5ezlpkbQaGCRR5cRxmGsc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0NyBTYWx0ZWRfX6stM5Kuyw+v+
- sEfy4AwwAmNyi1icEJqliZZNLz4se99mlCrEr+KY9Oyz02++3wyFjAxLbBgQuZDUt3KWOgSaWMo
- 6FbAU8bRPaK74dmv6ticmg2jVhHjlzgiNebvzE4WtanxdDI/LD15MttMrZr7kCkoryCKCh9Hhyv
- /VSzVKPp/zz3bAt80fzUgY8Ba77ggUtUyd4cxiogYzA+RzvxKK9HFiu82PaOe5ZDwO7D95X3EQ+
- /q2HJGTSy9vIRIAw3uGVaDzmTDJGk9rPXg1PtfEzwC0jYIGvfhj0gZmSVVAYd4qCWXEwiygGcg/
- DQnDpukTwnPjpCPxhjldYPOhWsUUtcFDNHnU6DgS4iE1/NQLXsHCBILrl/lG8AxxUZdeVIjLCi6
- SrAykQQJiJcUvUA7y68O8wllPaXbmA==
+ a=yPCof4ZbAAAA:8 a=X7Ea-ya5AAAA:8 a=6lTwf2g7YyX0f-ifu7AA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: RVkisURAx_c3pRunJDSZVbm65r6TfD-C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-03_02,2025-12-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0
- clxscore=1011 spamscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512030147
-Received-SPF: pass client-ip=67.231.157.127; envelope-from=bchaney@akamai.com;
- helo=mx0b-00190b01.pphosted.com
-X-Spam_score_int: 5
-X-Spam_score: 0.5
-X-Spam_bar: /
-X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=2620:100:9001:583::1;
+ envelope-from=bchaney@akamai.com; helo=mx0a-00190b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,46 +130,139 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Call MIG_EVENT_PRECOPY_SETUP earlier, before CPR starts.  An early notifier
-is needed for resetting vhost devices, as explained in the next patch.
+When preserving a vhost fd using CPR, call VHOST_RESET_OWNER prior to CPR
+in old QEMU.  Otherwise, new QEMU will fail when it calls VHOST_SET_OWNER
+during vhost_dev_init.
 
+Signed-off-by: Mark Kanda <mark.kanda@oracle.com>
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Signed-off-by: Ben Chaney <bchaney@akamai.com>
 ---
- migration/migration.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ hw/virtio/vhost-backend.c         |  6 ++++++
+ hw/virtio/vhost.c                 | 32 ++++++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-backend.h |  1 +
+ include/hw/virtio/vhost.h         |  1 +
+ 4 files changed, 40 insertions(+)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 6d40697767..60850c232e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2310,7 +2310,14 @@ void qmp_migrate(const char *uri, bool has_channels,
-         stopped = true;
-     }
+diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
+index 4367db0d95..1447d12963 100644
+--- a/hw/virtio/vhost-backend.c
++++ b/hw/virtio/vhost-backend.c
+@@ -261,6 +261,11 @@ static int vhost_kernel_set_owner(struct vhost_dev *dev)
+     return vhost_kernel_call(dev, VHOST_SET_OWNER, NULL);
+ }
  
-+    /* Notify before starting migration thread, and before starting cpr */
-+    if (!resume_requested &&
-+        migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP, &local_err)) {
-+        goto out;
++static int vhost_kernel_reset_owner(struct vhost_dev *dev)
++{
++    return vhost_kernel_call(dev, VHOST_RESET_OWNER, NULL);
++}
++
+ static int vhost_kernel_get_vq_index(struct vhost_dev *dev, int idx)
+ {
+     assert(idx >= dev->vq_index && idx < dev->vq_index + dev->nvqs);
+@@ -385,6 +390,7 @@ const VhostOps kernel_ops = {
+         .vhost_get_features_ex = vhost_kernel_get_features,
+         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
+         .vhost_set_owner = vhost_kernel_set_owner,
++        .vhost_reset_owner = vhost_kernel_reset_owner,
+         .vhost_get_vq_index = vhost_kernel_get_vq_index,
+         .vhost_vsock_set_guest_cid = vhost_kernel_vsock_set_guest_cid,
+         .vhost_vsock_set_running = vhost_kernel_vsock_set_running,
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 266a11514a..011d73dae2 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -24,6 +24,7 @@
+ #include "standard-headers/linux/vhost_types.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/mem/memory-device.h"
++#include "migration/misc.h"
+ #include "migration/blocker.h"
+ #include "migration/qemu-file-types.h"
+ #include "system/dma.h"
+@@ -1540,6 +1541,32 @@ static int vhost_dev_get_features(struct vhost_dev *hdev,
+     return r;
+ }
+ 
++static int vhost_cpr_notifier(NotifierWithReturn *notifier,
++                              MigrationEvent *e, Error **errp)
++{
++    struct vhost_dev *dev;
++    int r;
++
++    dev = container_of(notifier, struct vhost_dev, cpr_transfer_notifier);
++
++    if (dev->vhost_ops->backend_type != VHOST_BACKEND_TYPE_KERNEL) {
++        return 0;
 +    }
 +
-     if (!cpr_state_save(cpr_channel, &local_err)) {
-+        migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
-         goto out;
-     }
++    if (e->type == MIG_EVENT_PRECOPY_SETUP) {
++        r = dev->vhost_ops->vhost_reset_owner(dev);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_reset_owner failed");
++        }
++    } else if (e->type == MIG_EVENT_PRECOPY_FAILED) {
++        r = dev->vhost_ops->vhost_set_owner(dev);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_set_owner failed");
++        }
++    }
++    return 0;
++}
++
+ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+                    VhostBackendType backend_type, uint32_t busyloop_timeout,
+                    Error **errp)
+@@ -1550,6 +1577,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
  
-@@ -4108,11 +4115,6 @@ void migration_connect(MigrationState *s, Error *error_in)
-     } else {
-         /* This is a fresh new migration */
-         rate_limit = migrate_max_bandwidth();
--
--        /* Notify before starting migration thread */
--        if (migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP, &local_err)) {
--            goto fail;
--        }
-     }
+     hdev->vdev = NULL;
+     hdev->migration_blocker = NULL;
++    hdev->cpr_transfer_notifier.notify = NULL;
  
-     migration_rate_set(rate_limit);
+     r = vhost_set_backend_type(hdev, backend_type);
+     assert(r >= 0);
+@@ -1650,6 +1678,9 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     hdev->log_enabled = false;
+     hdev->started = false;
+     memory_listener_register(&hdev->memory_listener, &address_space_memory);
++    migration_add_notifier_mode(&hdev->cpr_transfer_notifier,
++                                vhost_cpr_notifier,
++                                MIG_MODE_CPR_TRANSFER);
+     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
+ 
+     /*
+@@ -1702,6 +1733,7 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+         QLIST_REMOVE(hdev, entry);
+     }
+     migrate_del_blocker(&hdev->migration_blocker);
++    migration_remove_notifier(&hdev->cpr_transfer_notifier);
+     g_free(hdev->mem);
+     g_free(hdev->mem_sections);
+     if (hdev->vhost_ops) {
+diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+index ff94fa1734..18ce5ea9a0 100644
+--- a/include/hw/virtio/vhost-backend.h
++++ b/include/hw/virtio/vhost-backend.h
+@@ -196,6 +196,7 @@ typedef struct VhostOps {
+     vhost_get_features_op vhost_get_features;
+     vhost_set_backend_cap_op vhost_set_backend_cap;
+     vhost_set_owner_op vhost_set_owner;
++    vhost_set_owner_op vhost_reset_owner;
+     vhost_reset_device_op vhost_reset_device;
+     vhost_get_vq_index_op vhost_get_vq_index;
+     vhost_set_vring_enable_op vhost_set_vring_enable;
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 08bbb4dfe9..5d11a97e43 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -133,6 +133,7 @@ struct vhost_dev {
+     QLIST_ENTRY(vhost_dev) logdev_entry;
+     QLIST_HEAD(, vhost_iommu) iommu_list;
+     IOMMUNotifier n;
++    NotifierWithReturn cpr_transfer_notifier;
+     const VhostDevConfigOps *config_ops;
+ };
+ 
 
 -- 
 2.34.1
