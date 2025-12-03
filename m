@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A481EC9FDBB
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 17:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4771EC9FDC7
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 17:16:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQpVY-0004ES-BL; Wed, 03 Dec 2025 11:15:12 -0500
+	id 1vQpVs-0004I2-0C; Wed, 03 Dec 2025 11:15:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVV-0004Az-Mc
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:09 -0500
-Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ id 1vQpVp-0004Ha-HZ
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:29 -0500
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVU-0006Z4-3K
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:09 -0500
-Received: by mail-oo1-xc35.google.com with SMTP id
- 006d021491bc7-6592f1f55a8so1549445eaf.2
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 08:15:07 -0800 (PST)
+ id 1vQpVo-0006b1-2N
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:29 -0500
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-3ec41466a30so961648fac.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 08:15:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764778507; x=1765383307; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764778527; x=1765383327; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=umT5Z14AhC/R+eDB/nFLqwC+LDiOvYbjL0xjqvp99eo=;
- b=eJW5/pw/Lc0pCbK5PL7T9sivS+l99TfMdAWconEOT+xXNvR9Hm5haLYrKB1R+GYeaX
- BdyZYpxFKDNh/7EP3W9HDq6FR0s7C8S3LmqQASBrITNiGTjOz6JI5tGuijHcjoTiGPxd
- qBWNkR4z7jkPAlHix7yRsHmE/IyINNc8DvIHr7s+lKDobjoJ+q//lfz/rM4GhvkLKrDy
- k7U2OWY3Cu/xOEY8tQMJPZ25IY/L8zlWQ3pb3DYXWesjc+oVjS/oF63oQXVVkBgxFhXL
- w+2uy3gS5mjw8AeOfkXxfbwidBCWgQKeabRxJAKoraAt4bsK3zzfRTEkoUuyhRa8GBke
- sTJw==
+ bh=YvyaXobpOlD4VPPpsmzEzKqRWugPD95os5lX5hk+NkE=;
+ b=JRqychwrFCyXXkQGqBvOe9MrxuCnZX5Rnd1l5KDcLXXzs+3eem78D3zxm9luJra96T
+ rlYaSB4+BEcm3dULkfIAjUJO1r36EDCeOhI1TeBypcgF9nZqrjzW7K1R/K020Txnohdg
+ FD2Tp1qSgtkdRoOqjhoqeRkZ8wkAFtoo6B+QLYFYoGZX3mXPUBN3fkRVQEJzQZ4Bp6l2
+ BM8GMLqYDsQtkShGdx5/y6l+WnI74sp7MmzE2uJtegYX+5haGR3jYU/rnuhZVaCOT8Mu
+ zSmaUhEQ0TfApZWCYPlJUvEgfSz8CJgeHwIS8vaosi76nK4/YFMOHhkBLspwnj2y2RyG
+ g4Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764778507; x=1765383307;
+ d=1e100.net; s=20230601; t=1764778527; x=1765383327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=umT5Z14AhC/R+eDB/nFLqwC+LDiOvYbjL0xjqvp99eo=;
- b=lxGDJFYX/L2ARnaHlHqivChtV0oasLAcfc8xdSpb1/fOKi6LZujOJoAPL2lFOI11WR
- 4gZ7X+QgiETocQ+edS8xzxnHtHustGXhmnp15heEuQxdYYNlCHk7jzDqVGXXtFq6BMIe
- 8M+K9642sg4+z+4jkAtc4Yr3wIUThwT8mob7yrmM/9IgctbdDY3n51HbIjcuzat3XLHl
- UE/7x1mz/lVq46rYQrzEYvNoDzlvCh2Fm4VPtX/cr4QTRXrmwMsRwnMyyxw+7SZl/gbl
- VLUgRFLrV7xy5JNTMh5k+u43CFDGTW3R0kfC2IFAqBJGDkT7nL+/7L/j4TM9rFa49gnV
- /5QQ==
-X-Gm-Message-State: AOJu0YzvL16VnkUKA5bPC2SIw3cVskbb1LVuAL9w9/4oJcGSlrzNwdMi
- RKHJSoKD0nD2nJRkxlJ9i9b4kswKQlUepV4QbdNgKhW58ZVrV0FR+xoArSSvcs+TPlGGZlSprXF
- zaOgq9sM=
-X-Gm-Gg: ASbGncsuMUFq3IyPizt5qe45Y/e3i9UoI2W1V6+cyPOYV9GYTF3BENdWQA+gL4jkG4w
- m4hvgQZSq8ZPkfm5Gbz6Lwm33rgRvlcoua9RUppGncgFTW9fXYoN8hZ1hgAanrwuQgkURMOxCZH
- R6+fFavqfhRLIVAVDBrsjUI1VIiKUJl6e31lT0svGu0uyfgt45jYraf7L+dFMcWwLWU9olBJOFI
- Hs6rXFgKDUXLPX59qOxiuPlbMixZ76sZTL6zCQ0QUkl0GVn8aMb30/mTeFaRomWLl6KMFl/s+Aw
- NK+fX+WMbsRX5qM68izNxru2X6f5EposBYJbjpV4ciLbGQTst/tp54190bIDIVgd3CHSZxnievC
- Ew391OlUK48DNoDeDxTxX4Ht2WGUomN53iug8eaNAekdsyq6lV0ucIxMb589+DShcHNxHrc1m/A
- zmq5FvFIkMwDHAGy6Cmg==
-X-Google-Smtp-Source: AGHT+IH3a4q63OEu0NQL+DmhoqYlJ6AdSKiTKm5+J38YvoEwFDinabdhoRmw0eA1VUlfEJVGrMjj1g==
-X-Received: by 2002:a05:6808:3099:b0:442:e596:1189 with SMTP id
- 5614622812f47-4536e56ead8mr1342129b6e.45.1764778506732; 
- Wed, 03 Dec 2025 08:15:06 -0800 (PST)
+ bh=YvyaXobpOlD4VPPpsmzEzKqRWugPD95os5lX5hk+NkE=;
+ b=a/MuBXT9w/qf7K/6b4NfHfO9i44r6qqaOAC6opLmmq5ptU0KiO+PT9MQ3zkV9WIXzt
+ X0ZWeYaLYKIE2DIHuYZeKgRNQMvBG1NdEXRUnoRbFDfgXJLJd/wohsZvvleWRxFNaGBA
+ B3iOm3MJdi/MocHl+qJr4uT5PXmHjDm2+2w4CtEoY0TSkLrItkWsOizUU0nfMEc3r/5A
+ +p4gA30Ykmzm04wyWxIYhV7q28NI0HEEG378JO1UdUhyK7AfX38AbWjf+IbVbzYPk7i9
+ PPMasiAYlBtGbB7PeqlLPHEjp/HFOGEO29FMGY1E+5J3hA7vBrqTtrIeLsIlqS4G4FPc
+ OE3A==
+X-Gm-Message-State: AOJu0YwZ8tq7AOvhkePsPdRmxSRyFo7GzSV1HXpuX3Q3p5UiU3gIVO92
+ AFkzPn+t00FwLOAIbrXlksOAQOpH0rnsQXbYlKlQ/OcubU+Qq/0Bu0plHua83GYNMAn9Odxl8BT
+ OOZisLDc=
+X-Gm-Gg: ASbGncsN4nYcUnEOd1XbF4rU7huyNegazD3cTi0RvUhEWtyt1WsvMfjexs8b7C+OsUD
+ 480TyKk2ZaYvOIgnZT6KNynWqZocQS786CHNcEpU55ESrWQGNqu1fLKEmkaUOr6H8GHaRO7WJSM
+ uY8et9Ft79QIJm3Lr8s15qFIBWxwqguzPUrnp84LR95lViWlAbUAj2BPjRolRk+E+WGY00HXEbf
+ JgzPrQAjpiOmxgJ0NfP+HP7XlrePQuAUcwmayZ+BAc0j8Bok5uZ6cRUy27l02tCBM2Qqj6x0WPm
+ cvpVR38BGfs+vhMFqFn1Mgq1HoAmZHmK1AK2gjpMcSJHhMe3CkeVhoWce89hXYFMZgkb1Flk0v3
+ XyRIMRXslvvIIeGwJoiuexMSka3y0PrEBxgGUjnKHrEH2MXzZ/sr+LiW8DQJ84n4qhg0hr/eMlq
+ i8kDDj/JmMbMqg764m8w==
+X-Google-Smtp-Source: AGHT+IFDrRm6yKEj+7k60YOBMefIUVNVnSXFcBfwOqLJu8OCdkSdcL91EHvuqD8SJNQDE2kHr7o2Xg==
+X-Received: by 2002:a05:687c:2e10:b0:3ec:2fc8:979a with SMTP id
+ 586e51a60fabf-3f16830a631mr1343021fac.19.1764778507433; 
+ Wed, 03 Dec 2025 08:15:07 -0800 (PST)
 Received: from stoup.. ([187.210.107.189]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3f0dca40d4dsm10141625fac.9.2025.12.03.08.15.05
+ 586e51a60fabf-3f0dca40d4dsm10141625fac.9.2025.12.03.08.15.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Dec 2025 08:15:06 -0800 (PST)
+ Wed, 03 Dec 2025 08:15:07 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v3 5/6] include/generic/host: Fix atomic128-cas.h.inc for
- Int128 structure
-Date: Wed,  3 Dec 2025 08:14:58 -0800
-Message-ID: <20251203161500.501084-6-richard.henderson@linaro.org>
+Subject: [PATCH v3 6/6] include/aarch64/host: Fix atomic16_fetch_{and,or}
+Date: Wed,  3 Dec 2025 08:14:59 -0800
+Message-ID: <20251203161500.501084-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251203161500.501084-1-richard.henderson@linaro.org>
 References: <20251203161500.501084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,77 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the Int128Alias structure more when we need to convert
-between Int128 and __int128_t, when Int128 is a struct.
-
-Fixes the build on aarch64 host with TCI, which forces
-the use of the struct.
+The tmp[lh] variables were defined as inputs to the
+asm rather than outputs, which meant that the compiler
+rightly diagnosed uninitialized inputs.
 
 Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/generic/host/atomic128-cas.h.inc | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ host/include/aarch64/host/atomic128-cas.h.inc | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/host/include/generic/host/atomic128-cas.h.inc b/host/include/generic/host/atomic128-cas.h.inc
-index 990162c56f..8bf5f47768 100644
---- a/host/include/generic/host/atomic128-cas.h.inc
-+++ b/host/include/generic/host/atomic128-cas.h.inc
-@@ -34,39 +34,45 @@ static inline Int128 ATTRIBUTE_ATOMIC128_OPT
- atomic16_xchg(Int128 *ptr, Int128 new)
- {
-     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
--    Int128 old = *ptr_align;
-+    Int128Alias o, n;
+diff --git a/host/include/aarch64/host/atomic128-cas.h.inc b/host/include/aarch64/host/atomic128-cas.h.inc
+index aec27df182..52e98a0bdd 100644
+--- a/host/include/aarch64/host/atomic128-cas.h.inc
++++ b/host/include/aarch64/host/atomic128-cas.h.inc
+@@ -67,9 +67,9 @@ static inline Int128 atomic16_fetch_and(Int128 *ptr, Int128 new)
+         "stlxp %w[tmp], %[tmpl], %[tmph], %[mem]\n\t"
+         "cbnz %w[tmp], 0b"
+         : [mem] "+m"(*ptr), [tmp] "=&r"(tmp),
+-          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh)
+-        : [newl] "r"(newl), [newh] "r"(newh),
+-          [tmpl] "r"(tmpl), [tmph] "r"(tmph)
++          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh),
++          [tmpl] "=&r"(tmpl), [tmph] "=&r"(tmph)
++        : [newl] "r"(newl), [newh] "r"(newh)
+         : "memory");
  
--    while (!__atomic_compare_exchange_n(ptr_align, &old, new, true,
-+    n.s = new;
-+    o.i = *ptr_align;
-+    while (!__atomic_compare_exchange_n(ptr_align, &o.i, n.i, true,
-                                         __ATOMIC_SEQ_CST, 0)) {
-         continue;
-     }
--    return old;
-+    return o.s;
- }
+     return int128_make128(oldl, oldh);
+@@ -87,9 +87,9 @@ static inline Int128 atomic16_fetch_or(Int128 *ptr, Int128 new)
+         "stlxp %w[tmp], %[tmpl], %[tmph], %[mem]\n\t"
+         "cbnz %w[tmp], 0b"
+         : [mem] "+m"(*ptr), [tmp] "=&r"(tmp),
+-          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh)
+-        : [newl] "r"(newl), [newh] "r"(newh),
+-          [tmpl] "r"(tmpl), [tmph] "r"(tmph)
++          [oldl] "=&r"(oldl), [oldh] "=&r"(oldh),
++          [tmpl] "=&r"(tmpl), [tmph] "=&r"(tmph)
++        : [newl] "r"(newl), [newh] "r"(newh)
+         : "memory");
  
- static inline Int128 ATTRIBUTE_ATOMIC128_OPT
- atomic16_fetch_and(Int128 *ptr, Int128 val)
- {
-     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
--    Int128 old = *ptr_align;
-+    Int128Alias o, v;
- 
--    while (!__atomic_compare_exchange_n(ptr_align, &old, old & val, true,
-+    v.s = val;
-+    o.i = *ptr_align;
-+    while (!__atomic_compare_exchange_n(ptr_align, &o.i, o.i & v.i, true,
-                                         __ATOMIC_SEQ_CST, 0)) {
-         continue;
-     }
--    return old;
-+    return o.s;
- }
- 
- static inline Int128 ATTRIBUTE_ATOMIC128_OPT
- atomic16_fetch_or(Int128 *ptr, Int128 val)
- {
-     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
--    Int128 old = *ptr_align;
-+    Int128Alias o, v;
- 
--    while (!__atomic_compare_exchange_n(ptr_align, &old, old | val, true,
-+    v.s = val;
-+    o.i = *ptr_align;
-+    while (!__atomic_compare_exchange_n(ptr_align, &o.i, o.i | v.i, true,
-                                         __ATOMIC_SEQ_CST, 0)) {
-         continue;
-     }
--    return old;
-+    return o.s;
- }
- # define HAVE_CMPXCHG128 1
- #elif defined(CONFIG_CMPXCHG128)
+     return int128_make128(oldl, oldh);
 -- 
 2.43.0
 
