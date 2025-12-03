@@ -2,57 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E71C9DB0B
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B8EC9DB7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQe1N-0008EM-9S; Tue, 02 Dec 2025 22:59:17 -0500
+	id 1vQeA7-0002Ct-Fe; Tue, 02 Dec 2025 23:08:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.d0e4v9dbe8d7847=ei9y78n82hs8=kkrtpyhcwbj6lz@em483429.getutm.app>)
- id 1vQe1L-0008EB-N6
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 22:59:15 -0500
+ <bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app>)
+ id 1vQeA4-0002CU-IT
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:16 -0500
 Received: from a4i956.smtp2go.com ([158.120.83.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.d0e4v9dbe8d7847=ei9y78n82hs8=kkrtpyhcwbj6lz@em483429.getutm.app>)
- id 1vQe1J-000080-PE
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 22:59:15 -0500
+ <bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app>)
+ id 1vQeA2-0000Pz-RS
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1764734343; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1764734881; h=from : subject :
  to : message-id : date;
- bh=/u1E37d+3X51ePDYb6BmriMzonR1iBWObPUX/d1gKos=;
- b=egAtQscEEIJgRuwddjPdAmq4tABynjX+tgYuHgDQhCYWqkNZ0QR2jjFgxG0YHMdCNfVQG
- Pj7N0Y/sszLDXAgAo9k9f/4GA/kwgKdDPFbPqL8bgQfyKUUNVxR81d08ejunm5Zm3LV5ztX
- B8NXO6ZIrz/GgQBlrMErfdTEbEK2j2HLn1G8uuiry9aFmlDOI3z6RufZ67268/q24j8q3jT
- twkyrJuNBmvS52Xc3VOn1hGCPf662AapJIDHk2SDb7IGvS0aFiEEdjdqOl5TZ6TmL40j/24
- mpeB03RnOzak8I0Z5QV7pFiq6q8xCcHrDdgwXUkzGdp2cBoyxu0JoCHCzBxQ==
+ bh=w+PGv34ufTyfNwTz/5E0WbkIAR6l27kn+dhUuw3EabQ=;
+ b=J5i2xzjeorAmbaw+Dgx3zdoNq8XuKMSEhoZ+aeQ0D+rAdRtP7N9zJI06sdW+mny/AKOKz
+ c5KxI3LvtnfA+WNTwmGKwMnUYlQHzg1Nx9XH3KAHW1CEBcT0vkdDFHC4ZopmxJRiQRyHxVr
+ y6GHO5s+KbMzp5glfw8ibDhWdnvzH6g4LlkbcBDcZUSPtVXj5BVt1/CRf96clyx+JrfLIIJ
+ M1ze9ffjjp7CQb4jf3Qth+c5i4NSznBZd/tvmgdzRuXsUVNf+FAmvW+/xwOunyPMHHQHKH8
+ AQQL5QOM67yRn2SIhldHKouGOFVhdlk2ynsrDCw1QWW7NFVIW799YnmQFRFA==
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vQe13-FnQW0hPuz7X-XUJo; Wed, 03 Dec 2025 03:58:58 +0000
+ id 1vQe9l-FnQW0hPv7oK-WEm2 for qemu-devel@nongnu.org;
+ Wed, 03 Dec 2025 04:07:58 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH] hvf: warn when attempting to add unaligned page size
-Date: Tue,  2 Dec 2025 19:58:47 -0800
-Message-ID: <20251203035847.94102-2-j@getutm.app>
+Subject: [PATCH RFC 0/7] virtio-gpu-virgl: introduce Venus support for macOS
+Date: Tue,  2 Dec 2025 20:07:47 -0800
+Message-ID: <20251203040754.94487-1-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20251203035847.94102-1-j@getutm.app>
-References: <20251203035847.94102-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers,
  to <abuse-report@smtp2go.com>
-Feedback-ID: 483429m:483429abrvJvs:483429socTp5oMZ1
-X-smtpcorp-track: nTpqvOl5bKWd.XwnSChh5x7a6.HiMA1QJCakm
+Feedback-ID: 483429m:483429abrvJvs:483429sep1CPAI28
+X-smtpcorp-track: gfzeeXQIFiWy.dJ0mDHaKpjUC.uTmdQgIKWn5
 Received-SPF: pass client-ip=158.120.83.188;
- envelope-from=bounce.d0e4v9dbe8d7847=ei9y78n82hs8=kkrtpyhcwbj6lz@em483429.getutm.app;
+ envelope-from=bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app;
  helo=a4i956.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,33 +72,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of silently failing, we should print a warning so it is clear why
-a future guest access to that location might cause an exception.
+This brings Vulkan guest paravirtualization to macOS hosts. The bulk of the work
+is being submitted to the virglrenderer project so this is a RFC for now.
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- accel/hvf/hvf-all.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+In addition to Vulkan, we also introduce Metal texture scanout for GLES guests
+as well. We also added Metal texture rendering in the Cocoa backend but that
+builds upon the GLES work by Akihiko Odaki which is not currently upstream.
 
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 0a4b498e83..7823d8416c 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -112,6 +112,14 @@ static void hvf_set_phys_mem(MemoryRegionSection *section, bool add)
- 
-     if (!QEMU_IS_ALIGNED(int128_get64(section->size), page_size) ||
-         !QEMU_IS_ALIGNED(section->offset_within_address_space, page_size)) {
-+        if (add) {
-+            warn_report("Cannot add 0x%016llX:0x%016llX because it is not "
-+                        "aligned to page size (0x%X)",
-+                        section->offset_within_address_space,
-+                        section->offset_within_address_space +
-+                        int128_get64(section->size),
-+                        (uint32_t)page_size);
-+        }
-         /* Not page aligned, so we can not map as RAM */
-         add = false;
-     }
+Fork with all dependent changes:
+  https://github.com/utmapp/qemu/tree/submit/macos-venus
+Instructions for building and testing with all related projects:
+  https://gist.github.com/osy/a8f705050eed1c8421ad1a0855a8faa9
+
+Joelle van Dyne (7):
+  egl-helpers: store handle to native device
+  virtio-gpu-virgl: check page alignment of blob mapping
+  console: rename `d3d_tex2d` to `native`
+  virtio-gpu-virgl: update virglrenderer defines
+  virtio-gpu-virgl: support scanout of Metal textures
+  console: add cleanup callback for ScanoutTexture
+  virtio-gpu-virgl: add support for native blob scanout
+
+ meson.build                   |   9 +++
+ include/ui/console.h          |  31 ++++++++-
+ include/ui/egl-helpers.h      |   2 +-
+ include/ui/gtk.h              |   4 +-
+ include/ui/sdl2.h             |   2 +-
+ hw/display/virtio-gpu-virgl.c | 126 +++++++++++++++++++++++++++++++---
+ hw/display/virtio-gpu.c       |   2 +
+ ui/console.c                  |  60 +++++++++++++---
+ ui/dbus-console.c             |   2 +-
+ ui/dbus-listener.c            |   8 +--
+ ui/egl-headless.c             |   2 +-
+ ui/egl-helpers.c              |   4 +-
+ ui/gtk-egl.c                  |   2 +-
+ ui/gtk-gl-area.c              |   2 +-
+ ui/sdl2-gl.c                  |   2 +-
+ ui/spice-display.c            |   2 +-
+ 16 files changed, 225 insertions(+), 35 deletions(-)
+
 -- 
 2.41.0
 
