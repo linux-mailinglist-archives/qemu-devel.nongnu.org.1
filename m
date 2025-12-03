@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D572C9D7FD
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 02:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9230BC9D65E
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 01:36:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQbeo-0005SG-Dg; Tue, 02 Dec 2025 20:27:50 -0500
+	id 1vQapn-0004me-MH; Tue, 02 Dec 2025 19:35:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tphan@ventanamicro.com>)
- id 1vQae9-00010X-2V
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 19:23:05 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vQapk-0004mB-V8
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 19:35:06 -0500
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tphan@ventanamicro.com>)
- id 1vQae7-0000vT-Fd
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 19:23:04 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7b86e0d9615so7338706b3a.0
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 16:23:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vQapj-0007aq-6F
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 19:35:04 -0500
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-44fff8c46bbso1794114b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 16:35:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1764721381; x=1765326181; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Gd0KWvCcV63RFImWGjcCMBVmotIXPRGLHBDmbO1O2k4=;
- b=plup31dUxm1wqysiFLrS+u7XUX93CbF7/HIzh+Fae26tDHV7RQRQeD4gme6HVOVYvN
- 6rUub8Zi9lsdi6WQQdibAfgmw14ewh0o+9YlDMc8nzHhB/eCxYAkkgHPpucDPOVDH5Zo
- e58NxXPH/D5E6HQLpYYtZ8jxNZnMPEuZSlHEHKxVsXs3Cpwaj0tPI5FLApyf3o+asEl4
- onOGJHo7I2KhoHRkCvca2gQi/WwlDfcL/qi+C/Da44Sw6uww65ndT9pP5ic21tUlj9bW
- c3PplWXjVcjUECuFeActP8XdgT2edOYSTu6OTJe6k77yyl7SlIMaU3VEOx4KsQDzBcKR
- NFHQ==
+ d=linaro.org; s=google; t=1764722101; x=1765326901; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2DyuuXrUg8kV3lzgriRI7OZ7LfRAI/c5VOVeGP5B4gw=;
+ b=yHU0FR72PE2aquEQL16V6Ehj+uH62GAOi4sooJj7NYEOrvjsYlbHsjiE1Pu76tjmHY
+ 4mWx2v3YYEUbO41618Lz+GCmKCXAf8u4c5xmA6k4QxdvwGDJt9cFkEvQUr5IeLKL173o
+ 5O95IBKH4a/dPm2gk9KDjANNmHZHA6X+FuZ7Q6sIi0IsysR/Zi/hOv1m9L31wwnb9MfC
+ Dvre6R+aFbIsJKPFYjR7R6gbalZ/oTa1mf41PfCUfwwkbE8G57KgbVE6YQd2Lsu9GKVy
+ 2Dz4BAuDq56BTXH1z5dbrmWY2xFzwOvzE4L21WQ8dhoF10uX/z86dWsJ3UzSun+ia9Lw
+ T/7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764721381; x=1765326181;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Gd0KWvCcV63RFImWGjcCMBVmotIXPRGLHBDmbO1O2k4=;
- b=LT8GKhELzgq6HyBSbhy7xk9GKsN5YwOHQZ1pIUDmSrpZKiVDyfTJnv92xvO3qyXKys
- G4xXBigrfvEuEvXHeS5+eYUTUtMV7uds7JMVf5dREKK5f8CDEHKIBO9uqxm72AFfNF37
- 43FtS2S0KpYG6H2XJ24idfK+Dc1Hq4ATETgtSgRG4l7dx14ExAW58tF0U7TtJKh29qTp
- Z4ahxL8FRBBJrYyanKYzBtLwX9OiqOsmo86TMUXzVbuRMGRUB0MXz2rDivgj0Yll5+2O
- YHGwSUc1hpq2/uK1uO/JbAIy6abCmJdpnMnHBnzIoj4fyG8EAOmbtwDQQGoNlKK++WHO
- kAwA==
-X-Gm-Message-State: AOJu0YyaP8mlu5kwL/VGOhL+w4XfCfdxl+td0Mfci2KFqFFxSw/GEUcf
- cABiSqaMsXqJ8cTpqy0YrDWSnUkm5HHiVLYnjJR9Dy6wXuBwxl0g51eXYdlXH4a01B4lUJLs2A0
- FAC4k
-X-Gm-Gg: ASbGncvBhh6pAaMgcQNjfeqjzX0kPhwqp86g7N5agwkomsNam/5CZfvBYi44QhGCtSm
- gjcM+k/YLDaYmNFf67USo3tue8Pe38GceEK3+QiTSaaZlmVPmHo+IjKBR+bUD1guT/mLKMFoEpJ
- 8W0uqrKUEZsTzfM3nB0SNpsA7EefueXoVw025mCIbmFODtGMzFj5QHQIwNuiuTE7XYzk8h5aK3l
- peIBBd3vaJ56y1QTKADlH0fqC5UzbtyDYs8Ttjngep/2XM5DblWV75V7B+1TeBQdnF108BkJIcv
- t0pXBfrBhWIzWr+7eK/ysbSJGCSpH1NqfRxPWmzTXRUveZVb+g9qoamHmL+Ut70o0BXx2kjNm7y
- e2J8y791fzHHyjSnD/E/1vzeuaZaOJXn535b4wRV310eJCmp62zxgCMHAxzDbfenAP6z0aLwSbG
- 79+VWV7d9TIkGCjaj0HCM8f+fxMsJwiBWETZHmmnoQc5U8jBY36LD9f4sNYB/COlL7KHNgaKrHO
- bPSHBCsxQ2jsKRf8jC3UK9vJw==
-X-Google-Smtp-Source: AGHT+IGuVl4btVJJT3VuWptosWRBoYhFtS2dClw1b7SGaJQvw7xqV8dylkWzbsryVNXxqy6D3bkVsQ==
-X-Received: by 2002:a05:7022:1607:b0:11a:3734:3db3 with SMTP id
- a92af1059eb24-11df0cd7faemr310058c88.32.1764721381115; 
- Tue, 02 Dec 2025 16:23:01 -0800 (PST)
-Received: from DESKTOP-I1ETA6N.dc1.ventanamicro.com
- (c-73-223-207-212.hsd1.ca.comcast.net. [73.223.207.212])
+ d=1e100.net; s=20230601; t=1764722101; x=1765326901;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2DyuuXrUg8kV3lzgriRI7OZ7LfRAI/c5VOVeGP5B4gw=;
+ b=ZqvfB9LYqhsH2iHMIbGQFzoI7dhN/KpKM7922aQX8SX43Ucd3UzpyY8oedVH35D9XW
+ mc9QRF6oZOKahiG0eV6csLIrnbVQlHBlJYggjiHYerO3DS660/GZsTmc1XDvXabKDV6l
+ YAiweHdF7g9c1LVG2A+t7vSQQfcS2eP9i3BfkP2uC3cCWI+VQFtqkf6r97aUrsrMyFdv
+ COoeQ8T0SxXmdPuN3zv/Nfp5TIRHF6Mae2Sxgx4grhX4CgnHa8uVJtw78RDWIk+ZV9Yu
+ 7afHkZfKctt91KHp8kPdMWtLD8GI3aNryeBqgwqv7eAlfQdTnNhX29Ajm56+stqVcLgW
+ 6Nqw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVJZ4L2Pa7VUznvdefuKQ1wrmBnAC2YatPxT/btUK+QicsmKoS8FaK5y6r/L5aKG7bTnW0cihFKOctg@nongnu.org
+X-Gm-Message-State: AOJu0YwI4ymBSZAPNt991x0O5V4B3HqTlb6CjIlfnHzx4Z8i9E5Bh3dO
+ Kq1ARkigEUj4eVj0voSBZ9Xeg6veGVspnx0ffI5ROFNj1plla9fePo1WJ2Mvhghg5hU=
+X-Gm-Gg: ASbGnctblDzEx1H7Jxf6DS5FOW3S37yShUvAJ9JY0cda6DHoXoE5FsgXa92ikT+yOnL
+ sg6pYeo0yMtQWxQm1yM6RiPLKDZ3GCZmkNOqhZvHXPx17VugkNkHZlhdhCuNlNOtPRuUoovu2nO
+ Pfdwh5WquU4KXBXEmjHlOVC0utCAunE9ZKj651zNMhm4ZbWUPyuE7e5Gh7nb+ns7SHKVIVVpj9/
+ dXnN73wJdkh5XVKVJvAReTpcJyzEpDtLw/MuOKweK/H3geQRyxn6AHbE7q4kmhZ6IJpZxXQShW7
+ X4V3LbgdyTMPHP20AWC8jXZsMtrDkvV057ericqTYAumoygUaICcmKKsrD3pAzWtVuCZXN0QI/Z
+ bGMjINpjR+OyY8yRLoq0HOaLb8G+CqKVSBRNe5XQI942zIuSU+sGoDwS0+wEtBBzaQwVFQkFpUa
+ TVgZlpHub0fGZtaAAlKvUZrrXxfQ==
+X-Google-Smtp-Source: AGHT+IFxI7oCM6s7rj4ywOe8kclj9k2TB5h+YnyaNwVokjowIiV6XQHaUyTPjmwKVZ2RniASMv/JgA==
+X-Received: by 2002:a05:6808:1807:b0:450:b3a:539e with SMTP id
+ 5614622812f47-4536e43882cmr176178b6e.28.1764722101481; 
+ Tue, 02 Dec 2025 16:35:01 -0800 (PST)
+Received: from [10.27.3.244] ([187.210.107.189])
  by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-11dcb057cb0sm94148974c88.9.2025.12.02.16.23.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Dec 2025 16:23:00 -0800 (PST)
-From: Tuan Phan <tphan@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Sunil V L <sunilvl@ventanamicro.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Tuan Phan <tphan@ventanamicro.com>
-Subject: [PATCH] hw/riscv/virt-acpi-build.c: Add TPM2 device node and ACPI
- table support
-Date: Tue,  2 Dec 2025 16:22:59 -0800
-Message-Id: <20251203002259.2856-1-tphan@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
+ 5614622812f47-453170cefc2sm6472396b6e.18.2025.12.02.16.35.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Dec 2025 16:35:01 -0800 (PST)
+Message-ID: <87170e51-931b-415f-b79e-949fae0f3216@linaro.org>
+Date: Tue, 2 Dec 2025 16:34:58 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.2? 1/2] tcg/tci: Disable -Wundef FFI_GO_CLOSURES
+ warning
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20251202184653.33998-1-philmd@linaro.org>
+ <20251202184653.33998-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251202184653.33998-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=tphan@ventanamicro.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,7 +94,6 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 02 Dec 2025 20:27:47 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,116 +108,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch enables TPM2 support in the RISC-V virt machine ACPI builder.
+On 12/2/25 10:46, Philippe Mathieu-Daudé wrote:
+> Since we build TCI with FFI (commit 22f15579fa1 "tcg: Build ffi data
+> structures for helpers") we get on Darwin:
+> 
+>    In file included from ../../tcg/tci.c:22:
+>    In file included from include/tcg/helper-info.h:13:
+>    /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi/ffi.h:483:5: warning: 'FFI_GO_CLOSURES' is not defined, evaluates to 0 [-Wundef]
+>      483 | #if FFI_GO_CLOSURES
+>          |     ^
+>    1 warning generated.
+> 
+> Since this libffi change was committed more than 10 years ago (see
+> https://github.com/libffi/libffi/commit/e951d64c0852), just define
+> the missing definition on QEMU to silence the warning.
 
-Signed-off-by: Tuan Phan <tphan@ventanamicro.com>
----
- hw/riscv/virt-acpi-build.c | 56 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+See also c23e9a1c from 2023, which fixed that to use an ifdef.
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index f1406cb68339..b5bf812a9d36 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -32,6 +32,7 @@
- #include "hw/intc/riscv_aclint.h"
- #include "hw/nvram/fw_cfg_acpi.h"
- #include "hw/pci-host/gpex.h"
-+#include "hw/platform-bus.h"
- #include "hw/riscv/virt.h"
- #include "hw/riscv/numa.h"
- #include "hw/virtio/virtio-acpi.h"
-@@ -39,6 +40,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "system/reset.h"
-+#include "system/tpm.h"
- 
- #define ACPI_BUILD_TABLE_SIZE             0x20000
- #define ACPI_BUILD_INTC_ID(socket, index) ((socket << 24) | (index))
-@@ -224,6 +226,41 @@ static void acpi_dsdt_add_iommu_sys(Aml *scope, const MemMapEntry *iommu_memmap,
-     aml_append(scope, dev);
- }
- 
-+#ifdef CONFIG_TPM
-+static void acpi_dsdt_add_tpm(Aml *scope, RISCVVirtState *s)
-+{
-+    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(s->platform_bus_dev);
-+    hwaddr pbus_base = s->memmap[VIRT_PLATFORM_BUS].base;
-+    SysBusDevice *sbdev = SYS_BUS_DEVICE(tpm_find());
-+    MemoryRegion *sbdev_mr;
-+    hwaddr tpm_base;
-+
-+    if (!sbdev) {
-+        return;
-+    }
-+
-+    tpm_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
-+    assert(tpm_base != -1);
-+
-+    tpm_base += pbus_base;
-+
-+    sbdev_mr = sysbus_mmio_get_region(sbdev, 0);
-+
-+    Aml *dev = aml_device("TPM0");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
-+    aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    Aml *crs = aml_resource_template();
-+    aml_append(crs,
-+               aml_memory32_fixed(tpm_base,
-+                                  (uint32_t)memory_region_size(sbdev_mr),
-+                                  AML_READ_WRITE));
-+    aml_append(dev, aml_name_decl("_CRS", crs));
-+    aml_append(scope, dev);
-+}
-+#endif
-+
- /*
-  * Serial Port Console Redirection Table (SPCR)
-  * Rev: 1.10
-@@ -479,6 +516,10 @@ static void build_dsdt(GArray *table_data,
-         acpi_dsdt_add_iommu_sys(scope, &memmap[VIRT_IOMMU_SYS], IOMMU_SYS_IRQ);
-     }
- 
-+#ifdef CONFIG_TPM
-+    acpi_dsdt_add_tpm(scope, s);
-+#endif
-+
-     if (socket_count == 1) {
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-                              memmap[VIRT_VIRTIO].size,
-@@ -914,6 +955,16 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
-         }
-     }
- 
-+#ifdef CONFIG_TPM
-+    /* TPM info */
-+    if (tpm_get_version(tpm_find()) == TPM_VERSION_2_0) {
-+        acpi_add_table(table_offsets, tables_blob);
-+        build_tpm2(tables_blob, tables->linker,
-+                   tables->tcpalog, s->oem_id,
-+                   s->oem_table_id);
-+    }
-+#endif
-+
-     /* XSDT is pointed to by RSDP */
-     xsdt = tables_blob->len;
-     build_xsdt(tables_blob, tables->linker, table_offsets, s->oem_id,
-@@ -1025,6 +1076,11 @@ void virt_acpi_setup(RISCVVirtState *s)
-                                              build_state, tables.rsdp,
-                                              ACPI_BUILD_RSDP_FILE);
- 
-+#ifdef CONFIG_TPM
-+    fw_cfg_add_file(s->fw_cfg, ACPI_BUILD_TPMLOG_FILE, tables.tcpalog->data,
-+                    acpi_data_len(tables.tcpalog));
-+#endif
-+
-     qemu_register_reset(virt_acpi_build_reset, build_state);
-     virt_acpi_build_reset(build_state);
-     vmstate_register(NULL, 0, &vmstate_virt_acpi_build, build_state);
--- 
-2.34.1
+I suppose the inclusion or exclusion of the go interface is neither here nor there, so 
+long as it compiles.
 
+r~
 
