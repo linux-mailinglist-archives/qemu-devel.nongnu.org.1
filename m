@@ -2,53 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B8EC9DB7C
+	by mail.lfdr.de (Postfix) with ESMTPS id 35582C9DB7B
 	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQeA7-0002Ct-Fe; Tue, 02 Dec 2025 23:08:19 -0500
+	id 1vQeAI-0002Fd-TQ; Tue, 02 Dec 2025 23:08:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app>)
- id 1vQeA4-0002CU-IT
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:16 -0500
+ <bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app>)
+ id 1vQeAE-0002Em-Fx
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:28 -0500
 Received: from a4i956.smtp2go.com ([158.120.83.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app>)
- id 1vQeA2-0000Pz-RS
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:16 -0500
+ <bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app>)
+ id 1vQeAD-0000Tm-6O
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1764734881; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1764734892; h=from : subject :
  to : message-id : date;
- bh=w+PGv34ufTyfNwTz/5E0WbkIAR6l27kn+dhUuw3EabQ=;
- b=J5i2xzjeorAmbaw+Dgx3zdoNq8XuKMSEhoZ+aeQ0D+rAdRtP7N9zJI06sdW+mny/AKOKz
- c5KxI3LvtnfA+WNTwmGKwMnUYlQHzg1Nx9XH3KAHW1CEBcT0vkdDFHC4ZopmxJRiQRyHxVr
- y6GHO5s+KbMzp5glfw8ibDhWdnvzH6g4LlkbcBDcZUSPtVXj5BVt1/CRf96clyx+JrfLIIJ
- M1ze9ffjjp7CQb4jf3Qth+c5i4NSznBZd/tvmgdzRuXsUVNf+FAmvW+/xwOunyPMHHQHKH8
- AQQL5QOM67yRn2SIhldHKouGOFVhdlk2ynsrDCw1QWW7NFVIW799YnmQFRFA==
+ bh=Q0rWBXh0v74nPYlqDvxdhFdl4JiMuFiyO+nCGeKih+Q=;
+ b=mR/7m6ei9XkxMBciEDZTYaflaDH5JROIPnomMoC8lv7WPUQ4oCTBWAF1p5leBuRApbQAJ
+ cSHvTXRFJ99NJW9iRKF6z7y20Sa0aQPJnP0YMwAQARwBQNOLSebMy55ghaA18T1NAa5+lT5
+ kwZVdA2OWA6BSxP+l0I7QWR8n9OgRREYln7DkKzZQ/cxqEx6ZWJXQGc/0wteG5LmxMmxdqA
+ HJqOraYC58cUWRIWls2aYqrcO+PTKye1ftZUTpQ8xE5e8gjJ0K6I1LRlGTaH0GuFXmyk79q
+ OC4Yjits4UjSI4h2hNiF+M6KKl94uxYeE6qjTBAG5p4wxPewyVvh102PMxrg==
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vQe9l-FnQW0hPv7oK-WEm2 for qemu-devel@nongnu.org;
- Wed, 03 Dec 2025 04:07:58 +0000
+ id 1vQe9r-FnQW0hPv7oK-Vbf4; Wed, 03 Dec 2025 04:08:03 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Subject: [PATCH RFC 0/7] virtio-gpu-virgl: introduce Venus support for macOS
-Date: Tue,  2 Dec 2025 20:07:47 -0800
-Message-ID: <20251203040754.94487-1-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH RFC 1/7] egl-helpers: store handle to native device
+Date: Tue,  2 Dec 2025 20:07:48 -0800
+Message-ID: <20251203040754.94487-2-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20251203040754.94487-1-j@getutm.app>
+References: <20251203040754.94487-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers,
  to <abuse-report@smtp2go.com>
-Feedback-ID: 483429m:483429abrvJvs:483429sep1CPAI28
-X-smtpcorp-track: gfzeeXQIFiWy.dJ0mDHaKpjUC.uTmdQgIKWn5
+Feedback-ID: 483429m:483429abrvJvs:483429stcnh_z_wb
+X-smtpcorp-track: 68q7XsSCTGWE.y9JzzDj-leir.geuvvw6AcI_
 Received-SPF: pass client-ip=158.120.83.188;
- envelope-from=bounce.9ot15psxo03ay46=czmyygxm8oxv=0gczprgkdhs2gn@em483429.getutm.app;
+ envelope-from=bounce.yuaz7qs5vfhjsv0=kllqm2owx64x=ksegn939lhphuv@em483429.getutm.app;
  helo=a4i956.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -72,45 +78,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This brings Vulkan guest paravirtualization to macOS hosts. The bulk of the work
-is being submitted to the virglrenderer project so this is a RFC for now.
+Make way for other platforms by making the variable more general. Also we
+will be using the device in the future so let's save the pointer in the
+global instead of just a boolean flag.
 
-In addition to Vulkan, we also introduce Metal texture scanout for GLES guests
-as well. We also added Metal texture rendering in the Cocoa backend but that
-builds upon the GLES work by Akihiko Odaki which is not currently upstream.
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+---
+ include/ui/egl-helpers.h      | 2 +-
+ hw/display/virtio-gpu-virgl.c | 2 +-
+ ui/egl-helpers.c              | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-Fork with all dependent changes:
-  https://github.com/utmapp/qemu/tree/submit/macos-venus
-Instructions for building and testing with all related projects:
-  https://gist.github.com/osy/a8f705050eed1c8421ad1a0855a8faa9
-
-Joelle van Dyne (7):
-  egl-helpers: store handle to native device
-  virtio-gpu-virgl: check page alignment of blob mapping
-  console: rename `d3d_tex2d` to `native`
-  virtio-gpu-virgl: update virglrenderer defines
-  virtio-gpu-virgl: support scanout of Metal textures
-  console: add cleanup callback for ScanoutTexture
-  virtio-gpu-virgl: add support for native blob scanout
-
- meson.build                   |   9 +++
- include/ui/console.h          |  31 ++++++++-
- include/ui/egl-helpers.h      |   2 +-
- include/ui/gtk.h              |   4 +-
- include/ui/sdl2.h             |   2 +-
- hw/display/virtio-gpu-virgl.c | 126 +++++++++++++++++++++++++++++++---
- hw/display/virtio-gpu.c       |   2 +
- ui/console.c                  |  60 +++++++++++++---
- ui/dbus-console.c             |   2 +-
- ui/dbus-listener.c            |   8 +--
- ui/egl-headless.c             |   2 +-
- ui/egl-helpers.c              |   4 +-
- ui/gtk-egl.c                  |   2 +-
- ui/gtk-gl-area.c              |   2 +-
- ui/sdl2-gl.c                  |   2 +-
- ui/spice-display.c            |   2 +-
- 16 files changed, 225 insertions(+), 35 deletions(-)
-
+diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
+index acf993fcf5..c239d32317 100644
+--- a/include/ui/egl-helpers.h
++++ b/include/ui/egl-helpers.h
+@@ -12,7 +12,7 @@
+ extern EGLDisplay *qemu_egl_display;
+ extern EGLConfig qemu_egl_config;
+ extern DisplayGLMode qemu_egl_mode;
+-extern bool qemu_egl_angle_d3d;
++extern void *qemu_egl_angle_native_device;
+ 
+ typedef struct egl_fb {
+     int width;
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 07f6355ad6..20c856c04e 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -1152,7 +1152,7 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+     }
+ #endif
+ #ifdef VIRGL_RENDERER_D3D11_SHARE_TEXTURE
+-    if (qemu_egl_angle_d3d) {
++    if (qemu_egl_angle_native_device) {
+         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
+     }
+ #endif
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index e3f2872cc1..57bcf99498 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -28,7 +28,7 @@
+ EGLDisplay *qemu_egl_display;
+ EGLConfig qemu_egl_config;
+ DisplayGLMode qemu_egl_mode;
+-bool qemu_egl_angle_d3d;
++void *qemu_egl_angle_native_device;
+ 
+ /* ------------------------------------------------------------------ */
+ 
+@@ -651,7 +651,7 @@ int qemu_egl_init_dpy_win32(EGLNativeDisplayType dpy, DisplayGLMode mode)
+         }
+ 
+         trace_egl_init_d3d11_device(device);
+-        qemu_egl_angle_d3d = device != NULL;
++        qemu_egl_angle_native_device = d3d11_device;
+     }
+ #endif
+ 
 -- 
 2.41.0
 
