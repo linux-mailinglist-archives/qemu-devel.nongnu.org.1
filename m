@@ -2,67 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E05BC9E3A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8654C9E4DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:48:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQiGi-0007cM-6a; Wed, 03 Dec 2025 03:31:24 -0500
+	id 1vQiWd-0003GR-Ak; Wed, 03 Dec 2025 03:47:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangruikang@iscas.ac.cn>)
- id 1vQiGR-0007Wp-UH
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:31:15 -0500
-Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <wangruikang@iscas.ac.cn>)
- id 1vQiGK-0007YI-CF
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:31:06 -0500
-Received: from [192.168.0.111] (unknown [114.241.82.59])
- by APP-01 (Coremail) with SMTP id qwCowAD3i8s39S9pYsHxAg--.10970S2;
- Wed, 03 Dec 2025 16:30:47 +0800 (CST)
-Message-ID: <4deadc0f-db5c-4908-a2fb-6af96962ab0e@iscas.ac.cn>
-Date: Wed, 3 Dec 2025 16:30:47 +0800
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQiWb-0003G8-8A
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:47:49 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQiWZ-0003As-N5
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:47:49 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4779a637712so40470995e9.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 00:47:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1764751665; x=1765356465; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yyd626JdZ/YYY28SKVRVVIZGCfbD1/LEXubgu34Cic4=;
+ b=eszZ9DxIE6v/G6r6UuRRUqpxopHT/h1Q9Z2XXyNM+NQe4/Q2C5OytPEcc1zk6Br68B
+ 03UVHD1Nsj0rUrZ4nyNkqcUSwyfItFkOkekHS5VP/vhaIcsN7r5t2f38/tZg5eNjvwvd
+ jLoGvo6nJgy3S1h7WLOdmycEWbdEQcAaii/txqDFIJo1hmljaR6EJqJPo+pUq9d/UR6u
+ ln/MnMf/McPO9dH/cMyOcMarslMLd3U6RCfqZ4eArg9sFPlc9YaVDGQY/s0rYjoIompQ
+ uJks8G80GQ+/2Vy4Ryh+mKC2ee3CXgBpqOVqk313CvanSIKuqrONyvI8mcxk14Bs5rmU
+ p4mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764751665; x=1765356465;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yyd626JdZ/YYY28SKVRVVIZGCfbD1/LEXubgu34Cic4=;
+ b=JzPpv+588zMwbysuk4zKykLuWJrY2iWyrvk9M5RAipbpJlihS6ueec7iHtC55gYfjL
+ 1LLWUfJ4iGayjOYUZyt2Cg9N6RDw7jDCvK5JkPmf+w9zsRWddX90lyCxnqfu7kQLSjR0
+ Vd9de12r+fNJw2uli49h/zTXQGeNMxZ7uoajQRqo2yBhlwITfVgCNDC97rHJtRY8A2om
+ IPUSX6hb/bwJa91xd3vI8k+Xp0tsAg/lwotk2OKorYh9PQxqnUt03CPSzi5yZTB7/zyb
+ 7AZpV13caLpUANS1vDoG3GgvoIBsk9KFPmq8Zd3UrOSFYemOQUvCbeMVjOew52RscQ5i
+ SqEg==
+X-Gm-Message-State: AOJu0YwboucX+knDKbAl3gaRi7KzuulkcUJ1WtrPn898vB22ME/AWzeU
+ Um73drzeyMGKaJOqJnup40hviVbFQA3yaYOrSjUQh6BahZ46pVOY0fU8pPI/ObQNc0LIaFODJvA
+ a8CnhVII=
+X-Gm-Gg: ASbGncuzdLeZ967XdxmyuDE4TGBhzpL5Js6XWBxI6QYN+tHvL8hx5ElAnSaX8E634BP
+ GiQDF0wY2IOMuOR054YAu6R8snWhGZzqKgDrYLzUrBahEoVS4C0wEGwo7PRFuI48fdNyPGifOay
+ 48oL4scY62+4a6jP6MhCeiUZU9viAY888F6+EN2qoXSr44FuMJB9DlRWyjRZYKnK0RkoOHVTpoX
+ u5ZEAMfmVQYtr88cWAAKjy731UQmvRr0zF8BgkpTigpYkmNwnfM+rnJ+vjhF3Xzr8vI0JRuRk7j
+ 5eMVMc83H+UyBP0k9SLVwel6ZQKPa2y5KMX2k0oaevSuNlTOVbcGU2Qk5yIiHO7C9TqV0qHguSz
+ IZJWBWyNwbvJl/6USnWwW6yA/rorhACkhKF60sdZ772W3ukFIOR+/fiO47x8Kv+1aJ1SEetXBl8
+ L3MY9Nr9yjAESvs827Poqk3WkM5uaI6x3hJWpCKf1+lbeTDvlb7e1NsmzRhiqd
+X-Google-Smtp-Source: AGHT+IGMFZ4BEUUnJKkfd+74sc/ihLW+WIhc16QhWZk0mUlSnRa8M0GmMab5gsLF2Rp5aZk6ExzLig==
+X-Received: by 2002:a05:600c:a49:b0:475:da1a:53f9 with SMTP id
+ 5b1f17b1804b1-4792aef4202mr13097565e9.14.1764751665551; 
+ Wed, 03 Dec 2025 00:47:45 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42e1ca7880asm38226036f8f.31.2025.12.03.00.47.44
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 03 Dec 2025 00:47:45 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH-for-10.2?] tests/tcg: Skip syscall catchpoint test if
+ pipe2() syscall not available
+Date: Wed,  3 Dec 2025 09:47:43 +0100
+Message-ID: <20251203084743.60753-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: Add missing termios baud rates
-To: Andreas Schwab <schwab@linux-m68k.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Luca Bonissi <qemu@bonslack.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20251202-linux-user-higher-baud-rates-v1-1-14c49ed2474b@iscas.ac.cn>
- <87tsy9m77l.fsf@igel.home>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <87tsy9m77l.fsf@igel.home>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: qwCowAD3i8s39S9pYsHxAg--.10970S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar1rKFy7Zw45Xw4xuFy8Krg_yoW8AF1kpa
- nxXr9rCrWrKFyrAr1fWw1vy3WkJr13Ar4kCFy3uw18Ka4Dur13uwnFkrWa93srJ3s5AF40
- yr18J3Z8t34qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUkFb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
- A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
- jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
- 8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
- 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
- Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK
- 82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
- C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
- MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
- IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
- 87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07boDGrUUUUU=
-X-Originating-IP: [114.241.82.59]
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-Received-SPF: pass client-ip=159.226.251.21;
- envelope-from=wangruikang@iscas.ac.cn; helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,33 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Andreas,
+Avoid the following errors testing i386 and ppc64:
 
-On 12/2/25 19:52, Andreas Schwab wrote:
-> On Dez 02 2025, Vivian Wang wrote:
->
->> The test tst-termios-linux requires termios2, which is provided by [1].
->> After that the test failure reported in [2] should be resolved by this
->> patch.
-> I still get a lot of errors with the two patches:
->
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 75, expected 1200
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 75 ispeed 1200: kernel c_ispeed == 75, expected 1200
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 75 ispeed 1200: kernel CIBAUD = __B0 (000000), expected __B1200 (000011)
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 9600, expected 456789
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 9600 ispeed 456789: kernel c_ispeed == 9600, expected 456789
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 9600 ispeed 456789: kernel CIBAUD = __B0 (000000), expected __BOTHER (010000)
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 54321, expected 1234567890
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 54321 ispeed 1234567890: kernel c_ispeed == 54321, expected 1234567890
-> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 54321 ispeed 1234567890: kernel CIBAUD = __B0 (000000), expected __BOTHER (010000)
-> ...
-> error: 8343 test failures
->
-Thanks for catching this, and sorry for the mistake. I had apparently
-had a dirty version of the test files that missed these split speed tests.
+  $ make check-tcg
+  ...
+    TEST    hitting a syscall catchpoint on i386
+  warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.
+  Traceback (most recent call last):
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
+      main(run_test)
+    File "tests/guest-debug/test_gdbstub.py", line 53, in main
+      test()
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
+      gdb.execute("catch syscall pipe2 read")
+  gdb.error: Unknown syscall name 'pipe2'.
+  qemu-i386: QEMU: Terminated via GDBstub
+  ...
+    TEST    hitting a syscall catchpoint on ppc64
+  warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.
+  Traceback (most recent call last):
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
+      main(run_test)
+    File "tests/guest-debug/test_gdbstub.py", line 53, in main
+      test()
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
+      gdb.execute("catch syscall pipe2 read")
+  gdb.error: Unknown syscall name 'pipe2'.
+  qemu-ppc64: QEMU: Terminated via GDBstub
+  ...
+    TEST    hitting a syscall catchpoint on ppc64le
+  warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.
+  Traceback (most recent call last):
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
+      main(run_test)
+    File "tests/guest-debug/test_gdbstub.py", line 53, in main
+      test()
+    File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
+      gdb.execute("catch syscall pipe2 read")
+  gdb.error: Unknown syscall name 'pipe2'.
+  qemu-ppc64le: QEMU: Terminated via GDBstub
+  make: Target 'check-tcg' not remade because of errors.
 
-I will fix these in the next version.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/tcg/multiarch/gdbstub/catch-syscalls.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Vivian "dramforever" Wang
+diff --git a/tests/tcg/multiarch/gdbstub/catch-syscalls.py b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
+index ccce35902fb..5c654b63f56 100644
+--- a/tests/tcg/multiarch/gdbstub/catch-syscalls.py
++++ b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
+@@ -22,7 +22,8 @@ def run_test():
+         gdb.execute("catch syscall pipe2 read")
+     except gdb.error as exc:
+         exc_str = str(exc)
+-        if "not supported on this architecture" in exc_str:
++        if "not supported on this architecture" in exc_str \
++                or if "Unknown syscall name 'pipe2'" in exc_str:
+             print("SKIP: {}".format(exc_str))
+             return
+         raise
+-- 
+2.51.0
 
 
