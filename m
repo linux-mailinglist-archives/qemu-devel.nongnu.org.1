@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8160C9E105
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 08:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A61EC9E239
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:07:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhQ8-0004tK-Ro; Wed, 03 Dec 2025 02:37:04 -0500
+	id 1vQhsk-0004jo-7T; Wed, 03 Dec 2025 03:06:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQhQ7-0004sy-Eb
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 02:37:03 -0500
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <alex@caoua.org>) id 1vQhse-0004Rf-64
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:06:32 -0500
+Received: from vm3.arverb.com ([116.202.17.78])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQhQ5-0002Mn-O8
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 02:37:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764747422; x=1796283422;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=gam9OfGxugucsnHmzv6jS28VQx00K5Zo85K0AfjR5kM=;
- b=RAeXZFnH3aut7pJ4RL4pbLZv0QIAJBzGxC5UHTWt+2g9DNiI4pcHa4BQ
- gSJ6Sv1rfzE819u1qCPbW15+hjAdnivwFvLoUGPoHx1Gd0YlbIcKzGh5d
- NnDt0KZGbARZTuF1UtTYO8xjY+EHlgx3LGLWaEmoTq26eBMrfuZf2XIri
- OHQ2caMCxPpIgJYowRDQtCiJvyceWEOtPj9KSaJwgrkgnGhokGUPXZ/kp
- I/ZtWkY6/ksxSJQ9IqRyDshn4DYoCU6/L0d8YgGS9xHCuls8iPcX/bLa7
- c0z7ah25OQvVdtHJMibpuSecOJLEKz5K0LjAEb3/nPp98oqzppzRYxs8V g==;
-X-CSE-ConnectionGUID: Ya69IZXqQq6lENNDh3JV7A==
-X-CSE-MsgGUID: bLTrKPkcRFaRnuYKL3kIEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="70589660"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="70589660"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 23:36:59 -0800
-X-CSE-ConnectionGUID: bwdHCBTDQXGYqXfwRTZ5Kw==
-X-CSE-MsgGUID: IdPsXWdTSl6gGmFHnAy9fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="225277840"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 02 Dec 2025 23:36:54 -0800
-Date: Wed, 3 Dec 2025 16:01:37 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- Xin Li <xin@zytor.com>, John Allen <john.allen@amd.com>,
- Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v4 17/23] i386/cpu: Migrate MSR_IA32_PL0_SSP for FRED and
- CET-SHSTK
-Message-ID: <aS/uYR8n7j4OjK/p@intel.com>
-References: <20251118034231.704240-1-zhao1.liu@intel.com>
- <20251118034231.704240-18-zhao1.liu@intel.com>
- <3103289d-e86c-486d-a3c0-95d7615099c6@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex@caoua.org>) id 1vQhsb-0001ab-J9
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:06:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=grK5DIPoLFqs
+ +36O3braI7O93dr6WX2yNMzDDzsdunk=;
+ h=in-reply-to:references:subject:cc:
+ to:from:date; d=caoua.org; b=eaNksr7glGq75xTjVOs+gQJfhJXwY/MbQWeWTekJT
+ h7LUsZHMJ8PzVjRxQ5CiZ/noB3WL8WZXfCLu+zi23PYlYIhI/BIFM001L2IXnATizm/hny
+ BVi/vX3wrN1L9PfD2NY0Mufa4F2Vw/lqM0xN3My/UzEMo0rWIIzMzHqt6mm4=
+Received: from localhost (vm3.arverb.com [local])
+ by vm3.arverb.com (OpenSMTPD) with ESMTPA id 220155d7;
+ Wed, 3 Dec 2025 09:06:25 +0100 (CET)
+Date: Wed, 3 Dec 2025 09:06:25 +0100
+From: Alexandre Ratchov <alex@caoua.org>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: Geoffrey McRae <geoff@hostfission.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, dirty.ice.hu@gmail.com,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: Re: [RFC 00/24] audio: add GStreamer backend
+Message-ID: <aS_vgYyOzZAQ2y1A@vm3.arverb.com>
+References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
+ <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
+ <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
+ <aS4BZZnzQPUHzbaD@vm3.arverb.com>
+ <3bb3606b-713c-456b-ab0f-31d14c6a6b99@redhat.com>
+ <20e6b7a1-cc84-29ff-6570-94fed9520466@eik.bme.hu>
+ <d63b9773727b546cea38b1f17e0babd0@hostfission.com>
+ <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
+ <12d3c2d298399c0935edee8caa3e52aa@hostfission.com>
+ <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3103289d-e86c-486d-a3c0-95d7615099c6@redhat.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
+Received-SPF: pass client-ip=116.202.17.78; envelope-from=alex@caoua.org;
+ helo=vm3.arverb.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,61 +78,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 01, 2025 at 06:01:48PM +0100, Paolo Bonzini wrote:
-> Date: Mon, 1 Dec 2025 18:01:48 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH v4 17/23] i386/cpu: Migrate MSR_IA32_PL0_SSP for FRED
->  and CET-SHSTK
+On Tue, Dec 02, 2025 at 06:14:48PM +0400, Marc-André Lureau wrote:
+> Hi
 > 
-> On 11/18/25 04:42, Zhao Liu wrote:
-> > From: "Xin Li (Intel)" <xin@zytor.com>
-> > 
-> > Both FRED and CET-SHSTK need MSR_IA32_PL0_SSP, so add the vmstate for
-> > this MSR.
-> > 
-> > When CET-SHSTK is not supported, MSR_IA32_PL0_SSP keeps accessible, but
-> > its value doesn't take effect. Therefore, treat this vmstate as a
-> > subsection rather than a fix for the previous FRED vmstate.
-> > 
-> > Tested-by: Farrah Chen <farrah.chen@intel.com>
-> > Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> > Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> > Changes Since v3:
-> >   - New commit.
-> > ---
-> >   target/i386/machine.c | 26 ++++++++++++++++++++++++++
-> >   1 file changed, 26 insertions(+)
-> > 
-> > diff --git a/target/i386/machine.c b/target/i386/machine.c
-> > index 45b7cea80aa7..0a756573b6cd 100644
-> > --- a/target/i386/machine.c
-> > +++ b/target/i386/machine.c
-> > @@ -1668,6 +1668,31 @@ static const VMStateDescription vmstate_triple_fault = {
-> >       }
-> >   };
-> > +static bool pl0_ssp_needed(void *opaque)
-> > +{
-> > +    X86CPU *cpu = opaque;
-> > +    CPUX86State *env = &cpu->env;
-> > +
-> > +#ifdef TARGET_X86_64
-> > +    if (env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
-> > +        return true;
-> > +    }
-> > +#endif
-> > +
-> > +    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
+> On Tue, Dec 2, 2025 at 5:26 PM Geoffrey McRae <geoff@hostfission.com> wrote:
+> >
+> >
+> >
+> > On 2025-12-02 23:44, Marc-André Lureau wrote:
+> > > Hi Geoffrey
+> > >
+> > > On Tue, Dec 2, 2025 at 4:31 PM Geoffrey McRae
+> > > <geoff@hostfission.com> wrote:
+> > >
+> > >> The PipeWire and PulseAudio backends are used by a large number of
+> > >> users
+> > >> in the VFIO community. Removing these would be an enormous determent
+> > >> to
+> > >> QEMU.
+> > >
+> > > They come with GStreamer pulse/pipe elements.
+> >
+> > Yes, but through another layer of abstraction/complexity with no real
+> > benefit.
 > 
-> Can you just make it return "!!(env->pl0_ssp)"?  If all of these bits are
-> zero the MSR will not be settable, and this way you can migrate VMs as long
-> as they don't use PL0_SSP.
+> The benefit is that QEMU would not have to maintain 10 backends and
+> all the audio mixing/resampling.
 
-Yes, it's a good idea.
+Well, for open-source projects it depends on the maintainers: if they
+all shift their interrest/efforts toward a single GStreamer backend it
+will be a win (many devs maintaining a single backend). If they don't,
+we'd end-up with one backend maintained by one person.
 
-Thanks,
-Zhao
+> The QEMU code would be simpler and
+> more maintainable overall. GStreamer has a clear pipeline design,
+> better suited (optimized code etc) and you can easily modify the
+> pipeline settings.
+> 
 
+I don't know if it would be more maintainable.  The idea is appealing,
+but to my experience, fixing audio glitches, timing issues, unexpected
+latency, subtle differences between OSes and alike have been painful
+compared to fixing similar code that uses the native APIs.
 
+My 2 cents.
 
