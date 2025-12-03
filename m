@@ -2,108 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A27CA11FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EEECA12A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:53:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQrpQ-0001j8-0p; Wed, 03 Dec 2025 13:43:52 -0500
+	id 1vQrwt-0007Uu-Ev; Wed, 03 Dec 2025 13:51:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrpJ-0001gX-TW
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:43:45 -0500
+ id 1vQrwq-0007Sx-Vw
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:51:33 -0500
 Received: from mx0b-00190b01.pphosted.com ([2620:100:9005:57f::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bchaney@akamai.com>)
- id 1vQrpH-0005hG-9U
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:43:45 -0500
-Received: from pps.filterd (m0050102.ppops.net [127.0.0.1])
- by m0050102.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id
- 5B38t2Gb3356703
- for <qemu-devel@nongnu.org>; Wed, 3 Dec 2025 18:43:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=jan2016.eng;
- bh=2tqwxUShjbp6xB29PdE2LrVae4u2i8bzJmQKHr4yHxs=; b=aXE+96i1w2SG
- /SFo9fIZwJ63hYM0Tt8g8Fx9zpyZxRogi/N92sObt/TVAiL4uZeH8D9hWZkMFnr9
- osHyMDViSXtw/eLmLUYFdrORxtVpMhtMdel/mdcqzx9wOD2J7T00NvVbNmnsvVDd
- zhf65QKB+duPRyZPN5Nz3gMEFFjTIPqYv3KZLrQ2F/dCSL1SG9wB4LbqYg+ZtnOm
- WrGsdnMyMk7rEOzkvOWNwDnVBd4LqJUy226BXJJBue9ojEiY9SZyFkd/KqQSogdi
- WAzYOXDNW+uYaTaQ1b6GsgiWtY8KEpk5C7nGasSPI7sh+8x3VMzAI3SyKaDE7VbD
- qNk/Op39SQ==
-Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
- by m0050102.ppops.net-00190b01. (PPS) with ESMTPS id 4at1wwjahr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 18:43:39 +0000 (GMT)
-Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
- by prod-mail-ppoint6.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
- 5B3F5lqu013415
- for <qemu-devel@nongnu.org>; Wed, 3 Dec 2025 13:43:38 -0500
-Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
- by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4aqw21kx8f-1
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 13:43:38 -0500
+ id 1vQrwo-0000zn-97
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:51:32 -0500
+Received: from pps.filterd (m0122330.ppops.net [127.0.0.1])
+ by mx0b-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 5B37jXLM3680851; Wed, 3 Dec 2025 18:51:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=jan2016.eng; bh=P/6EV1veq+S1ZP/OBaTW
+ 715pumkOOn7ntQjtPk0bRMk=; b=PwrmUX+GHlQVBZCxRGuSWNsrSKpzrygsGXq2
+ ZgWkdTG2iibGdJPDNnMcbvNI+HNADuJF5qHk2uGmnpCG2E0xnuE1cKahq+d0a/2V
+ W1VwKy1gYiuj1aExkP6RuMTsN4SGukWZCS/WFYl8fPC5go6cHybnHYa5gkuZc7AH
+ gK9DfLTz3U3grLqjYL2lMhZX5n9SmL/6qFB0WqxrdNepT9pc1OCpJ3sn12wUhpc3
+ QARi0p025i7wH73vgy0OasFEldcF757dC4ecbRtq95Lqp/x9Vg50FUEmy1KZZa+M
+ Gta6/yYoTmZgd+6r9bePKeDbL44NORpK5xdpt5OLBdKQrIfCug==
+Received: from prod-mail-ppoint2 (prod-mail-ppoint2.akamai.com [184.51.33.19])
+ by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4aspcaafqx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Dec 2025 18:51:27 +0000 (GMT)
+Received: from pps.filterd (prod-mail-ppoint2.akamai.com [127.0.0.1])
+ by prod-mail-ppoint2.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id
+ 5B3FlNNb025617; Wed, 3 Dec 2025 13:51:26 -0500
+Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
+ by prod-mail-ppoint2.akamai.com (PPS) with ESMTP id 4aqw21kuh5-1;
+ Wed, 03 Dec 2025 13:51:26 -0500
 Received: from bos-lhvkhf.bos01.corp.akamai.com
  (bos-lhvkhf.bos01.corp.akamai.com [172.28.40.75])
- by prod-mail-relay02.akamai.com (Postfix) with ESMTP id 4AB7F9A
- for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:43:38 +0000 (UTC)
+ by prod-mail-relay01.akamai.com (Postfix) with ESMTP id 9708880;
+ Wed,  3 Dec 2025 18:51:26 +0000 (UTC)
 From: Ben Chaney <bchaney@akamai.com>
-Date: Wed, 03 Dec 2025 13:43:29 -0500
-Subject: [PATCH v3 8/8] tap: cpr fixes
+Subject: [PATCH v3 0/8] Live update: tap and vhost
+Date: Wed, 03 Dec 2025 13:51:17 -0500
+Message-Id: <20251203-cpr-tap-v3-0-3c12e0a61f8e@akamai.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-cpr-tap-v3-8-3cc89e9b19e4@akamai.com>
-References: <20251203-cpr-tap-v3-0-3cc89e9b19e4@akamai.com>
-In-Reply-To: <20251203-cpr-tap-v3-0-3cc89e9b19e4@akamai.com>
+X-B4-Tracking: v=1; b=H4sIAKWGMGkC/2XMywrCMBCF4Vcps3YklwqNK99DuhjTqR2kTUlKU
+ Ere3dity/9w+HZIHIUTXJsdImdJEpYa9tSAn2h5MspQG4wyF22URb9G3GhF1Y5DpzV5Vhbqe40
+ 8yvuQ7n3tSdIW4ueAs/2t/0a2qNB63zl2D+24vdGLZpKzDzP0pZQvA1sie58AAAA=
+X-Change-ID: 20251203-cpr-tap-04fd811ace03
 To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Alex Williamson <alex@shazbot.org>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Hamza Khan <hamza.khan@nutanix.com>,
+ Mark Kanda <mark.kanda@oracle.com>, Joshua Hunt <johunt@akamai.com>,
+ Max Tottenham <mtottenh@akamai.com>, Ben Chaney <bchaney@akamai.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787418; l=3243;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764787886; l=2009;
  i=bchaney@akamai.com; s=20251203; h=from:subject:message-id;
- bh=zPYWBDaP+GisG/WA7Z9aDp07+oXAyy1rWdyxkJgQ9vw=;
- b=YLbhfEKTPKOw1E5Wu2f4OfUxksPTaCMFq3bL2uNAsqcaOM9thMj/RYamouWALJHxBhlQ6mY28
- fjxynlxkc6IC+J2J6ly8X/zeLPhV+jDny0Nh26RWdCC7m+gY32PFg2s
+ bh=5q1cQf932k8LKhz/1ErXhKVhvIGOXcagIbzzlLQDNcU=;
+ b=tHD3IqPk1ZZYHzVZBH9H6k1ucf8TtUPPI52xLJKwKH3QFforS7UC8MLSoxW2vKbSgjB28AZKL
+ U8IYSMQEcrWAgLPIeUoVl7g+UEVJtZVO4rhJE8EgZrQzc7wdDhwfo8s
 X-Developer-Key: i=bchaney@akamai.com; a=ed25519;
  pk=6+w9cse5QEeVdy3tjqFxs/4rAaRdQ2/fkTxVFq+lWy4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-03_02,2025-12-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- mlxscore=0 phishscore=0
- bulkscore=0 spamscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ definitions=2025-12-03_02,2025-12-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=643 phishscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512030146
-X-Proofpoint-ORIG-GUID: xjoHhUPw4zGn1QW5jvq_oVp7ie5k0eJb
-X-Authority-Analysis: v=2.4 cv=EffFgfmC c=1 sm=1 tr=0 ts=693084db cx=c_pps
- a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
+ definitions=main-2512030148
+X-Proofpoint-GUID: CQsYVtjdd9cENLS0gw5g7syK-fiUqZk8
+X-Authority-Analysis: v=2.4 cv=c5umgB9l c=1 sm=1 tr=0 ts=693086af cx=c_pps
+ a=BpD+HMUBsFIkYY1OQe22Yw==:117 a=BpD+HMUBsFIkYY1OQe22Yw==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=X7Ea-ya5AAAA:8 a=6R7veym_AAAA:8 a=MOkVEwTOFFmkGxDkLR0A:9
- a=QEXdDO2ut3YA:10 a=ILCOIF4F_8SzUMnO7jNM:22
-X-Proofpoint-GUID: xjoHhUPw4zGn1QW5jvq_oVp7ie5k0eJb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0NyBTYWx0ZWRfX/iQeGB1ymNbM
- SdeT7yTvIXMvTHbgGIBdVcjH+I8bqVud1Qzxr+zLlQuGYPQT7FIZNI/Su0X0h903hwsFVJa2qPm
- O1g+5ZU8KsfNrt+if6EIhkrYK8r7dDbm8QYeJCQiqECGCJhZ4b9+Ge2rBgfarYmqSctIo6frq6d
- m0DNKKu00MxZuAcf2oUpJOZnHAYYHmD1yhc5Svqa0RFoKbkHxquLazmg5IM1B5ke2OHZVNQIUW6
- IVttY217rJ9CrUEwF2k/jha3VSBWq/rPah+Xubq4Njv/rqln1mpcTm6W3lKkH1OJ6hFC1hoDLLm
- f2ykq5iKYKNVtFn4GqQbLlIB7adERcXtcHSxukMJgCK/D60PPQFpsfyyA7ZtRMWYxsC7SzJh4cr
- Xo+5pqjQ2D7Sxp0S83gWQUzlp/sdJw==
+ a=X7Ea-ya5AAAA:8 a=SJiDcYIvfsGvQCbKpNoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: CQsYVtjdd9cENLS0gw5g7syK-fiUqZk8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDE0OCBTYWx0ZWRfXxzIduKy1Eudg
+ EYQ9/QIaoLq3JMJFm4X2PuAGSIyFI4LScteRUBartVdeFrAZkKEXjGVXQJhtheEu6B+0A7lfMql
+ 7pH50WmF3SaWL51xFeoutv01gbpZ0aW31kVtiJNCJ0XYjqQ4J7HxdGBePT6VRQoKuXUXRR7D++9
+ wu1jrWhSArB0jO+faVdoXcG5TbtcWHYEosVVf8BUjAIa7eqHVDxdBYPBITnKgaa/ely0FexAECf
+ 0obOET6ys9Rox/pDWN4D8OyKEEnqHYPAyvrf4WeU/GmzPR99PZbfgFGhpQ1X5YLiJcGtN1BVgvm
+ Bdq9BNFAc8OcWnfONaIEjh7THDfQ/ulu2C94ytEJydeG+35VfJikWtFYnTAPiLkOBdxD9y+lCAn
+ kPhXz4eK1Fc74MbWPADiwmH6Va7qhA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-03_02,2025-12-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
- bulkscore=0 spamscore=0 phishscore=0 adultscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0
+ spamscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ phishscore=0
+ clxscore=1011 priorityscore=1501 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512030147
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512030148
 Received-SPF: pass client-ip=2620:100:9005:57f::1;
  envelope-from=bchaney@akamai.com; helo=mx0b-00190b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,111 +131,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+Changes since v2
+- I have taken over this patch set since Steve retired
+- Added comments to explain the order of events
+- Remove redundant reversion to cleanup git history
+- Inclusion of virtio and stub fixes
 
-Fix "virtio_net_set_queue_pairs: Assertion `!r' failed."
-Fix "virtio-net: saved image requires vnet_hdr=on"
-Do not change blocking mode of incoming cpr fd's.
+Tap and vhost devices can be preserved during cpr-transfer using
+traditional live migration methods, wherein the management layer
+creates new interfaces for the target and fiddles with 'ip link'
+to deactivate the old interface and activate the new.
 
-Reported-by: Ben Chaney <bchaney@akamai.com>
-Reported-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+However, CPR can simply send the file descriptors to new QEMU,
+with no special management actions required.  The user enables
+this behavior by specifing '-netdev tap,cpr=on'.  The default
+is cpr=off.
+
 Signed-off-by: Ben Chaney <bchaney@akamai.com>
 ---
- hw/net/virtio-net.c | 6 ++++++
- io/channel-socket.c | 4 +++-
- net/tap.c           | 2 ++
- stubs/cpr.c         | 8 ++++++++
- stubs/meson.build   | 1 +
- 5 files changed, 20 insertions(+), 1 deletion(-)
+Steve Sistare (8):
+      migration: stop vm earlier for cpr
+      migration: cpr setup notifier
+      vhost: reset vhost devices for cpr
+      cpr: delete all fds
+      tap: common return label
+      tap: cpr support
+      tap: postload fix for cpr
+      tap: cpr fixes
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 38ec7ac109..fd6b30b296 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -37,6 +37,7 @@
- #include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-events-migration.h"
- #include "hw/virtio/virtio-access.h"
-+#include "migration/cpr.h"
- #include "migration/misc.h"
- #include "standard-headers/linux/ethtool.h"
- #include "system/system.h"
-@@ -789,6 +790,11 @@ static void virtio_net_set_queue_pairs(VirtIONet *n)
-     int i;
-     int r;
- 
-+    if (cpr_is_incoming()) {
-+        /* peers are already attached, do nothing */
-+        return;
-+    }
-+
-     if (n->nic->peer_deleted) {
-         return;
-     }
-diff --git a/io/channel-socket.c b/io/channel-socket.c
-index 3053b35ad8..443ca8cb7c 100644
---- a/io/channel-socket.c
-+++ b/io/channel-socket.c
-@@ -24,6 +24,7 @@
- #include "io/channel-socket.h"
- #include "io/channel-util.h"
- #include "io/channel-watch.h"
-+#include "migration/cpr.h"
- #include "trace.h"
- #include "qapi/clone-visitor.h"
- #ifdef CONFIG_LINUX
-@@ -521,7 +522,8 @@ static bool qio_channel_handle_fds(int *fds, size_t nfds,
- 
-         if (!preserve_blocking) {
-             /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
--            if (!qemu_set_blocking(*fd, true, errp)) {
-+              if (!cpr_is_incoming() &&
-+                  qemu_set_blocking(*fd, true, errp)) {
-                 return false;
-             }
-         }
-diff --git a/net/tap.c b/net/tap.c
-index 5acda81146..5e04099c87 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -1050,6 +1050,8 @@ free_fail:
-                 if (cpr && fd >= 0) {
-                     cpr_save_fd(name, TAP_FD_INDEX(i), fd);
-                 }
-+            } else {
-+                vnet_hdr = tap->has_vnet_hdr ? tap->vnet_hdr : 1;
-             }
-             if (fd == -1) {
-                 ret = -1;
-diff --git a/stubs/cpr.c b/stubs/cpr.c
-new file mode 100644
-index 0000000000..1a4dbbb2d7
---- /dev/null
-+++ b/stubs/cpr.c
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#include "qemu/osdep.h"
-+#include "migration/cpr.h"
-+
-+bool cpr_is_incoming(void)
-+{
-+    return false;
-+}
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 0b2778c568..87af733528 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -10,6 +10,7 @@ stub_ss.add(files('is-daemonized.c'))
- stub_ss.add(files('monitor-core.c'))
- stub_ss.add(files('replay-mode.c'))
- stub_ss.add(files('trace-control.c'))
-+stub_ss.add(files('cpr.c'))
- 
- if have_block
-   stub_ss.add(files('bdrv-next-monitor-owned.c'))
+ hw/net/virtio-net.c               |  26 +++++++
+ hw/vfio/device.c                  |   2 +-
+ hw/virtio/vhost-backend.c         |   6 ++
+ hw/virtio/vhost.c                 |  32 +++++++++
+ include/hw/virtio/vhost-backend.h |   1 +
+ include/hw/virtio/vhost.h         |   1 +
+ include/migration/cpr.h           |   3 +-
+ include/net/tap.h                 |   1 +
+ io/channel-socket.c               |   4 +-
+ migration/cpr.c                   |  24 +++++--
+ migration/migration.c             |  69 ++++++++++++++----
+ net/tap-win32.c                   |   5 ++
+ net/tap.c                         | 147 +++++++++++++++++++++++++++++---------
+ qapi/net.json                     |   5 +-
+ stubs/cpr.c                       |   8 +++
+ stubs/meson.build                 |   1 +
+ 16 files changed, 279 insertions(+), 56 deletions(-)
+---
+base-commit: 9febfa94b69b7146582c48a868bd2330ac45037f
+change-id: 20251203-cpr-tap-04fd811ace03
 
+Best regards,
 -- 
-2.34.1
+Ben Chaney <bchaney@akamai.com>
 
 
