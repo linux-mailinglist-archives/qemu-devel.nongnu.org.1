@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C241C9E1F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:04:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05B6C9E1DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:03:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhmO-0008Mb-Sa; Wed, 03 Dec 2025 03:00:05 -0500
+	id 1vQhn4-000072-QW; Wed, 03 Dec 2025 03:00:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQhmK-0008Kx-Ps; Wed, 03 Dec 2025 03:00:00 -0500
+ id 1vQhmM-0008Mq-D5; Wed, 03 Dec 2025 03:00:02 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQhmI-0006g0-Rv; Wed, 03 Dec 2025 03:00:00 -0500
+ id 1vQhmK-0006hK-F1; Wed, 03 Dec 2025 03:00:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6D159170766;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7DE31170767;
  Wed, 03 Dec 2025 10:59:22 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3C35332B48D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4BEA632B48E;
  Wed, 03 Dec 2025 10:59:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 089/116] tests/functional: Convert the 32-bit little
+Subject: [Stable-10.0.7 090/116] tests/functional: Convert the 64-bit little
  endian Wheezy mips test
-Date: Wed,  3 Dec 2025 10:59:09 +0300
-Message-ID: <20251203075939.2366131-8-mjt@tls.msk.ru>
+Date: Wed,  3 Dec 2025 10:59:10 +0300
+Message-ID: <20251203075939.2366131-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
@@ -62,67 +62,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Reuse the test function from the big endian test to easily
-convert the 32-bit little endian Wheezy mips test.
+Reuse the test function from the 32-bit big endian test to easily
+convert the 64-bit little endian Wheezy mips test.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250414113031.151105-8-thuth@redhat.com>
+Message-ID: <20250414113031.151105-9-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 689a8b56a6f3d16458004006b604950295da87df)
+(cherry picked from commit 8e3461c3a6fc0b1bce4571e46e861db0b2bcf621)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/tests/avocado/linux_ssh_mips_malta.py b/tests/avocado/linux_ssh_mips_malta.py
-index 73d294ad5c..c1300aec96 100644
+index c1300aec96..2fa5cf9a6c 100644
 --- a/tests/avocado/linux_ssh_mips_malta.py
 +++ b/tests/avocado/linux_ssh_mips_malta.py
-@@ -172,14 +172,6 @@ def check_mips_malta(self, uname_m, endianess):
-         # Wait for VM to shut down gracefully
-         self.vm.wait()
- 
--    def test_mips_malta32el_kernel3_2_0(self):
+@@ -179,11 +179,3 @@ def test_mips_malta64eb_kernel3_2_0(self):
+         :avocado: tags=device:pcnet32
+         """
+         self.check_mips_malta('mips64', 'be')
+-
+-    def test_mips_malta64el_kernel3_2_0(self):
 -        """
--        :avocado: tags=arch:mipsel
+-        :avocado: tags=arch:mips64el
 -        :avocado: tags=endian:little
 -        :avocado: tags=device:pcnet32
 -        """
--        self.check_mips_malta('mips', 'le')
--
-     def test_mips_malta64eb_kernel3_2_0(self):
-         """
-         :avocado: tags=arch:mips64
+-        self.check_mips_malta('mips64', 'le')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 4dedfc7b9f..cba0abf292 100644
+index cba0abf292..a4a317115b 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -40,6 +40,7 @@ test_timeouts = {
-   'arm_sx1' : 360,
-   'intel_iommu': 300,
+@@ -42,6 +42,7 @@ test_timeouts = {
    'mips_malta' : 480,
-+  'mipsel_malta' : 420,
+   'mipsel_malta' : 420,
    'mipsel_replay' : 480,
++  'mips64el_malta' : 420,
    'mips64el_replay' : 180,
    'netdev_ethtool' : 180,
-diff --git a/tests/functional/test_mipsel_malta.py b/tests/functional/test_mipsel_malta.py
-index fe9c3a172e..9ee2884da8 100755
---- a/tests/functional/test_mipsel_malta.py
-+++ b/tests/functional/test_mipsel_malta.py
-@@ -13,6 +13,8 @@
- from qemu_test import interrupt_interactive_console_until_pattern
- from qemu_test import wait_for_console_pattern
+   'ppc_40p' : 240,
+diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
+index a8da15a26b..dd37212f9d 100755
+--- a/tests/functional/test_mips64el_malta.py
++++ b/tests/functional/test_mips64el_malta.py
+@@ -16,6 +16,8 @@
+ from qemu_test import exec_command_and_wait_for_pattern
+ from qemu_test import skipIfMissingImports, skipFlakyTest, skipUntrustedTest
  
 +from test_mips_malta import mips_check_wheezy
 +
  
  class MaltaMachineConsole(LinuxKernelTest):
  
-@@ -57,6 +59,26 @@ def test_mips_malta32el_nanomips_16k_up(self):
-     def test_mips_malta32el_nanomips_64k_dbg(self):
-         self.do_test_mips_malta32el_nanomips(self.ASSET_KERNEL_64K)
+@@ -90,6 +92,26 @@ def test_mips64el_malta_5KEc_cpio(self):
+         # Wait for VM to shut down gracefully
+         self.vm.wait()
  
 +    ASSET_WHEEZY_KERNEL = Asset(
 +        ('https://people.debian.org/~aurel32/qemu/mipsel/'
-+         'vmlinux-3.2.0-4-4kc-malta'),
-+        'dc8a3648305b0201ca7a5cd135fe2890067a65d93c38728022bb0e656ad2bf9a')
++         'vmlinux-3.2.0-4-5kc-malta'),
++        '5e8b725244c59745bb8b64f5d8f49f25fecfa549f3395fb6d19a3b9e5065b85b')
 +
 +    ASSET_WHEEZY_DISK = Asset(
 +        ('https://people.debian.org/~aurel32/qemu/mipsel/'
@@ -135,13 +132,13 @@ index fe9c3a172e..9ee2884da8 100755
 +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
 +                               + 'console=ttyS0 root=/dev/sda1')
 +        mips_check_wheezy(self,
-+            kernel_path, image_path, kernel_command_line,
-+            dl_file='/boot/initrd.img-3.2.0-4-4kc-malta',
-+            hsum='9fc9f250ed56a74e35e704ddfd5a1c5a5625adefc5c9da91f649288d3ca000f0')
++            kernel_path, image_path, kernel_command_line, cpuinfo='MIPS 20Kc',
++            dl_file='/boot/initrd.img-3.2.0-4-5kc-malta',
++            hsum='7579f8b56c1187c7c04d0dc3c0c56c7a6314c5ddd3a9bf8803ecc7cf8a3be9f8')
 +
  
- class MaltaMachineYAMON(QemuSystemTest):
- 
+ @skipIfMissingImports('numpy', 'cv2')
+ class MaltaMachineFramebuffer(LinuxKernelTest):
 -- 
 2.47.3
 
