@@ -2,65 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC36C9F2FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 14:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AF4C9F37F
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 15:00:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQnFc-0003Jv-3e; Wed, 03 Dec 2025 08:50:36 -0500
+	id 1vQnO7-0007Qd-KK; Wed, 03 Dec 2025 08:59:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vQnFX-0003Ik-Id; Wed, 03 Dec 2025 08:50:31 -0500
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vQnFV-0000Si-Bu; Wed, 03 Dec 2025 08:50:31 -0500
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwDn7SUXQDBpvZwrAQ--.12510S2;
- Wed, 03 Dec 2025 21:50:15 +0800 (CST)
-Received: from [192.168.31.152] (unknown [113.246.234.131])
- by mail (Coremail) with SMTP id AQAAfwAnge4VQDBpl1EJAA--.24071S2;
- Wed, 03 Dec 2025 21:50:14 +0800 (CST)
-Message-ID: <11a16f71-6849-4601-9a62-61d37eaa8265@phytium.com.cn>
-Date: Wed, 3 Dec 2025 21:50:13 +0800
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vQnNz-0007Pd-Nh; Wed, 03 Dec 2025 08:59:17 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vQnNx-0001z0-Ou; Wed, 03 Dec 2025 08:59:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=cYaQAF68DgxyikWt+xj9R3RPLh65hX0qP7Cq2HXAxjI=; b=YSzn0x0n8YXuhYHN
+ 96ymWEUo7ZfIUg/PzUHMj1IY0DWsCeFRw/fHYS6FJJpSM1905imUYgGRHMsItamohbeH6UufWZGkz
+ mMVen947rVYaRkx5rPH2uBDOWJ+JWmmIbE80sMJBk8OBz8x3mP2tC7BxLk9z2wv5STSMbUZeU3ZhA
+ w/HDzlkiEGfKwxxW8LNRtLcvUjPZyS2RvL/wwrelHJHXjmTVEMLt1loeBD5gi07+kEcziz2N0Q8eD
+ O5s1jUfL3e84Pk0pxZxVRtC04XoJoBRM9+CH4gr6UIrd2DzmAXm8VkbquFzsnXe2iV5cJq0R7mXbu
+ LswEnuNEsbZSp5kgog==;
+Received: from dg by mx.treblig.org with local (Exim 4.98.2)
+ (envelope-from <dg@treblig.org>) id 1vQnNt-00000007qcG-1NFf;
+ Wed, 03 Dec 2025 13:59:09 +0000
+Date: Wed, 3 Dec 2025 13:59:09 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-trivial@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
+ thuth@redhat.com, pbonzini@redhat.com, jak@jak-linux.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] qemu-options.hx: Document -M as -machine alias
+Message-ID: <aTBCLbDbpXgkTLHr@gallifrey>
+References: <20251203131511.153460-1-dave@treblig.org>
+ <87a4zzu230.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 08/21] hw/arm/smmuv3: Add separate address space for
- secure SMMU accesses
-To: eric.auger@redhat.com, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
- <20251012150701.4127034-9-tangtao1634@phytium.com.cn>
- <ac4ba17f-47ac-4c67-b2e6-c8d835ee0e6f@redhat.com>
-From: Tao Tang <tangtao1634@phytium.com.cn>
-In-Reply-To: <ac4ba17f-47ac-4c67-b2e6-c8d835ee0e6f@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwAnge4VQDBpl1EJAA--.24071S2
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQANBWkvSDQGnQAAso
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCw4Dur1UGFyxWw17Jr1UJrb_yoW5tr45pF
- Z5AFZ0y3yDK3W7ZFs3Xr1UuFy8u395WF4UGrs7Krn5CF1a9r1ayr1qkw1YkFykJr18J3W2
- vF1UZr4fXF1YqrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=tangtao1634@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+In-Reply-To: <87a4zzu230.fsf@draig.linaro.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
+X-Uptime: 13:30:44 up 37 days, 13:07,  3 users,  load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.13 (2024-03-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,98 +70,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+* Alex Bennée (alex.bennee@linaro.org) wrote:
+> dave@treblig.org writes:
+> 
+> > From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> >
+> > -M is used heavily in documentation and scripts, but isn't actually
+> > documented anywhere.
+> > Document it as equivalent to -machine.
+> >
+> > Reported-by: Julian Andres Klode <jak@jak-linux.org>
+> > Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+> > ---
+> >  qemu-options.hx | 12 +++++++-----
+> >  1 file changed, 7 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index fca2b7bc74..ec92723f10 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -44,6 +44,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+> >  #endif
+> >      "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+> >      "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
+> > +    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n"
+> >      "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
+> >      QEMU_ARCH_ALL)
+> >  SRST
+> > @@ -179,6 +180,9 @@ SRST
+> >  
+> >              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+> >  
+> > +    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+> > +        Define an SGX EPC section.
+> > +
+> 
+> This seems unrelated.
+> 
+> >      ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+> >          Define cache properties for SMP system.
+> >  
+> > @@ -208,12 +212,10 @@ SRST
+> >  ERST
+> >  
+> >  DEF("M", HAS_ARG, QEMU_OPTION_M,
+> > -    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
+> > -    QEMU_ARCH_ALL)
+> > -
+> > +    "-M              as -machine\n", QEMU_ARCH_ALL)
+> >  SRST
+> > -``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+> > -    Define an SGX EPC section.
+> > +``-M``
+> > +    as -machine.
+> 
+> Did we have a merge conflict at some point that messed things up?
 
-On 2025/12/2 21:53, Eric Auger wrote:
-> Hi Tao,
->
-> On 10/12/25 5:06 PM, Tao Tang wrote:
->> According to the Arm architecture, SMMU-originated memory accesses,
->> such as fetching commands or writing events for a secure stream, must
->> target the Secure Physical Address (PA) space. The existing model sends
->> all DMA to the global non-secure address_space_memory.
->>
->> This patch introduces the infrastructure to differentiate between secure
->> and non-secure memory accesses. Firstly, SMMU_SEC_SID_S is added in
->> SMMUSecSID enum to represent the secure context. Then a weak global
->> symbol, arm_secure_address_space, is added, which can be provided by the
->> machine model to represent the Secure PA space.
->>
->> A new helper, smmu_get_address_space(), selects the target address
->> space based on SEC_SID. All internal DMA calls
->> (dma_memory_read/write) will be updated to use this helper in follow-up
->> patches.
->>
->> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
->> ---
->>   hw/arm/smmu-common.c         |  8 ++++++++
->>   hw/arm/virt.c                |  5 +++++
->>   include/hw/arm/smmu-common.h | 27 +++++++++++++++++++++++++++
->>   3 files changed, 40 insertions(+)
->>
->> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
->> index 62a7612184..24db448683 100644
->> --- a/hw/arm/smmu-common.c
->> +++ b/hw/arm/smmu-common.c
->> @@ -30,6 +30,14 @@
->>   #include "hw/arm/smmu-common.h"
->>   #include "smmu-internal.h"
->>   
->> +/* Global state for secure address space availability */
->> +bool arm_secure_as_available;
-> don't you need to initialize it?
->
-> why is it local to the SMMU. To me the secure address space sounds
-> global like address_space_memory usable by other IPs than the SMMU and
-> the CPUs.
->> +
->> +void smmu_enable_secure_address_space(void)
->> +{
->> +    arm_secure_as_available = true;
->> +}
->> +
->>   /* IOTLB Management */
->>   
->>   static guint smmu_iotlb_key_hash(gconstpointer v)
->> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
->> index 175023897a..83dc62a095 100644
->> --- a/hw/arm/virt.c
->> +++ b/hw/arm/virt.c
->> @@ -92,6 +92,8 @@
->>   #include "hw/cxl/cxl_host.h"
->>   #include "qemu/guest-random.h"
->>   
->> +AddressSpace arm_secure_address_space;
->> +
->>   static GlobalProperty arm_virt_compat[] = {
->>       { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "48" },
->>   };
->> @@ -2257,6 +2259,9 @@ static void machvirt_init(MachineState *machine)
->>           memory_region_init(secure_sysmem, OBJECT(machine), "secure-memory",
->>                              UINT64_MAX);
->>           memory_region_add_subregion_overlap(secure_sysmem, 0, sysmem, -1);
->> +        address_space_init(&arm_secure_address_space, secure_sysmem,
->> +                           "secure-memory-space");
-> besides using dynamic allocation like in cpu_address_space_init() would
-> allow to get rid ofÂ arm_secure_as_available
+It's not clear - it was the only option hanging around in -M and it was
+already appearing wrong in the man output.
+I wondered if it was some requirement to have *something* in the -M
+definition so thought it best to move it at the same time.
 
+Dave
 
-Thanks for the feedback.
-
-I also think the extra arm_secure_as_available flag is unnecessary after 
-read the cpu_address_space_init code.
-
-For the next version I plan to:
-
-- Drop the arm_secure_as_available concept entirely.
-
-- Make the secure address space dynamically allocated in the machine 
-code : secure_address_space = g_new0(AddressSpace, 1);
-
-- Have smmu_get_address_space() simply check whether the secure 
-AddressSpace * is non-NULL, instead of relying on a separate 
-availability flag.
-
-Thanks again for the review and suggestions. Best regards, Tao
-
+> >  ERST
+> >  
+> >  DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
+> 
+> -- 
+> Alex Bennée
+> Virtualisation Tech Lead @ Linaro
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
