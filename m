@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3259C9E7F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E86C9E831
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHk-0000J0-C8; Wed, 03 Dec 2025 04:36:32 -0500
+	id 1vQjHl-0000Mb-W2; Wed, 03 Dec 2025 04:36:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHi-0000IW-UX; Wed, 03 Dec 2025 04:36:30 -0500
+ id 1vQjHj-0000J1-Oy; Wed, 03 Dec 2025 04:36:31 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHh-00075Y-8j; Wed, 03 Dec 2025 04:36:30 -0500
+ id 1vQjHi-00075l-2f; Wed, 03 Dec 2025 04:36:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AFAA41708B3;
+ by isrv.corpit.ru (Postfix) with ESMTP id C096A1708B4;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 911B932B5AA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id ABEFB32B5AB;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, "AlanoSong@163.com" <AlanoSong@163.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 84/96] chardev/char-pty: Do not ignore chr_write()
- failures
-Date: Wed,  3 Dec 2025 12:35:17 +0300
-Message-ID: <20251203093612.2370716-8-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 85/96] ui/vnc: Fix qemu abort when query vnc info
+Date: Wed,  3 Dec 2025 12:35:18 +0300
+Message-ID: <20251203093612.2370716-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -61,28 +59,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: "AlanoSong@163.com" <AlanoSong@163.com>
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20251022150743.78183-6-philmd@linaro.org>
-(cherry picked from commit 303f6049358e2ef35f2b107d6bd1a5be07ec35e9)
+When there is no display device on qemu machine,
+and user only access qemu by remote vnc.
+At the same time user input `info vnc` by QMP,
+the qemu will abort.
+
+To avoid the abort above, I add display device check,
+when query vnc info in qmp_query_vnc_servers().
+
+Reviewed-by: Marc-AndréLureau <marcandre.lureau@redhat.com>
+Signed-off-by: Alano Song <AlanoSong@163.com>
+[ Marc-André - removed useless Error *err ]
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20251125131955.7024-1-AlanoSong@163.com>
+(cherry picked from commit 4c1646e23f761e3dc6d88c8995f13be8f668a012)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index 674e9b3f14..6474763391 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -125,7 +125,7 @@ static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
-     rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
-     g_assert(rc >= 0);
-     if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
--        io_channel_send(s->ioc, buf, len);
-+        return io_channel_send(s->ioc, buf, len);
-     }
- 
-     return len;
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 9054fc8125..88e55ca797 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -555,9 +555,12 @@ VncInfo2List *qmp_query_vnc_servers(Error **errp)
+         qmp_query_auth(vd->auth, vd->subauth, &info->auth,
+                        &info->vencrypt, &info->has_vencrypt);
+         if (vd->dcl.con) {
+-            dev = DEVICE(object_property_get_link(OBJECT(vd->dcl.con),
+-                                                  "device", &error_abort));
+-            info->display = g_strdup(dev->id);
++            Object *obj = object_property_get_link(OBJECT(vd->dcl.con),
++                                                   "device", NULL);
++            if (obj) {
++                dev = DEVICE(obj);
++                info->display = g_strdup(dev->id);
++            }
+         }
+         for (i = 0; vd->listener != NULL && i < vd->listener->nsioc; i++) {
+             info->server = qmp_query_server_entry(
 -- 
 2.47.3
 
