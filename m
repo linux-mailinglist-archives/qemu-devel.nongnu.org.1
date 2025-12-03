@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E796C9E828
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05F2C9E81C
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHh-0000Fk-1O; Wed, 03 Dec 2025 04:36:29 -0500
+	id 1vQjHh-0000HG-HT; Wed, 03 Dec 2025 04:36:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHd-0000Cs-51; Wed, 03 Dec 2025 04:36:25 -0500
+ id 1vQjHf-0000FO-MH; Wed, 03 Dec 2025 04:36:27 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHb-000748-9H; Wed, 03 Dec 2025 04:36:24 -0500
+ id 1vQjHd-00074X-Vh; Wed, 03 Dec 2025 04:36:27 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 733CB1708B0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 82BC91708B1;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 605A332B5A7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6F0BD32B5A8;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 81/96] hw/arm/armv7m: Disable reentrancy guard for
- v7m_sysreg_ns_ops MRs
-Date: Wed,  3 Dec 2025 12:35:14 +0300
-Message-ID: <20251203093612.2370716-5-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 82/96] hw/display/exynos4210_fimd: Account for zero
+ length in fimd_update_memory_section()
+Date: Wed,  3 Dec 2025 12:35:15 +0300
+Message-ID: <20251203093612.2370716-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -62,78 +62,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-For M-profile cores which support TrustZone, there are some memory
-areas which are "NS aliases" -- a Secure access to these addresses
-really performs an NS access to a different part of the device.  We
-implement these using MemoryRegionOps read and write functions which
-pass the access on with adjusted attributes using
-memory_region_dispatch_read() and memory_region_dispatch_write().
+In fimd_update_memory_section() we attempt ot find and map part of
+the RAM MR which backs the framebuffer, based on guest-configurable
+size and start address.
 
-Since the MR we are dispatching to is owned by the same device that
-owns the NS-alias MR (the TYPE_ARMV7M container object), this trips
-the reentrancy-guard that is applied by access_with_adjusted_size().
+If the guest configures framebuffer settings which result in a
+zero-sized framebuffer, we hit an assertion(), because
+memory_region_find() will return a NULL mem_section.mr.
 
-Mark the NS alias MemoryRegions as disable_reentrancy_guard; this is
-safe because v7m_sysreg_ns_read() and v7m_sysreg_ns_write() do not
-touch any of the device's state.  (Any further reentrancy attempts by
-the underlying MR will still be caught.)
+Explicitly check for the zero-size case and treat this as a
+guest error.
 
-Without this fix, an attempt to read from an address like 0xe002e010,
-which is a register in the NS systick alias, will fail and provoke
-
- qemu-system-arm: warning: Blocked re-entrant IO on MemoryRegion: v7m_systick at addr: 0x0
-
-We didn't notice this earlier because almost all code accesses
-the registers and systick via the non-alias addresses; the NS
-aliases are only need for the rarer case of Secure code that needs
-to manage the NS timer or system state on behalf of NS code.
-
-Note that although the v7m_systick_ops read and write functions
-also call memory_region_dispatch_{read,write}, this MR does not
-need to have the reentrancy-guard disabled because the underlying
-MR that it forwards to is owned by a different device (the
-TYPE_SYSTICK timer device).
-
-Reported via a stackoverflow question:
-https://stackoverflow.com/questions/79808107/what-this-error-is-even-about-qemu-system-arm-warning-blocked-re-entrant-io
+Because we now have a code path which can reach error_return without
+calling memory_region_find to set w->mem_section, we must NULL out
+w->mem_section.mr after the unref of the old MR, so that error_return
+does not incorrectly double-unref the old MR.
 
 Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1407
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251114155304.2662414-1-peter.maydell@linaro.org
-(cherry picked from commit 4a934d284dfac9fa19b0f47874f12d9b3519c21c)
+Message-id: 20251107143913.1341358-1-peter.maydell@linaro.org
+(cherry picked from commit 579be921f509fb9d2deccc4233496e36b221abb3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-index cea3eb49ee..d16fb20d3e 100644
---- a/hw/arm/armv7m.c
-+++ b/hw/arm/armv7m.c
-@@ -442,6 +442,12 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
-                               &v7m_sysreg_ns_ops,
-                               sysbus_mmio_get_region(sbd, 0),
-                               "nvic_sysregs_ns", 0x1000);
-+        /*
-+         * This MR calls memory_region_dispatch_read/write to access the
-+         * real region for the NVIC sysregs (which is also owned by this
-+         * device), so reentrancy through here is expected and safe.
-+         */
-+        s->sysreg_ns_mem.disable_reentrancy_guard = true;
-         memory_region_add_subregion(&s->container, 0xe002e000,
-                                     &s->sysreg_ns_mem);
+diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
+index c61e0280a7..eec874d0b1 100644
+--- a/hw/display/exynos4210_fimd.c
++++ b/hw/display/exynos4210_fimd.c
+@@ -1147,6 +1147,13 @@ static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
+     if (w->mem_section.mr) {
+         memory_region_set_log(w->mem_section.mr, false, DIRTY_MEMORY_VGA);
+         memory_region_unref(w->mem_section.mr);
++        w->mem_section.mr = NULL;
++    }
++
++    if (w->fb_len == 0) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "FIMD: Guest config means framebuffer is zero length\n");
++        goto error_return;
      }
-@@ -499,6 +505,12 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
-         memory_region_init_io(&s->systick_ns_mem, OBJECT(s),
-                               &v7m_sysreg_ns_ops, &s->systickmem,
-                               "v7m_systick_ns", 0xe0);
-+        /*
-+         * This MR calls memory_region_dispatch_read/write to access the
-+         * real region for the systick regs (which is also owned by this
-+         * device), so reentrancy through here is expected and safe.
-+         */
-+        s->systick_ns_mem.disable_reentrancy_guard = true;
-         memory_region_add_subregion_overlap(&s->container, 0xe002e010,
-                                             &s->systick_ns_mem, 1);
-     }
+ 
+     w->mem_section = memory_region_find(s->fbmem, fb_start_addr, w->fb_len);
 -- 
 2.47.3
 
