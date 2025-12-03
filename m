@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A61EC9E239
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E05BC9E3A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:32:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhsk-0004jo-7T; Wed, 03 Dec 2025 03:06:39 -0500
+	id 1vQiGi-0007cM-6a; Wed, 03 Dec 2025 03:31:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex@caoua.org>) id 1vQhse-0004Rf-64
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:06:32 -0500
-Received: from vm3.arverb.com ([116.202.17.78])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex@caoua.org>) id 1vQhsb-0001ab-J9
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:06:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=grK5DIPoLFqs
- +36O3braI7O93dr6WX2yNMzDDzsdunk=;
- h=in-reply-to:references:subject:cc:
- to:from:date; d=caoua.org; b=eaNksr7glGq75xTjVOs+gQJfhJXwY/MbQWeWTekJT
- h7LUsZHMJ8PzVjRxQ5CiZ/noB3WL8WZXfCLu+zi23PYlYIhI/BIFM001L2IXnATizm/hny
- BVi/vX3wrN1L9PfD2NY0Mufa4F2Vw/lqM0xN3My/UzEMo0rWIIzMzHqt6mm4=
-Received: from localhost (vm3.arverb.com [local])
- by vm3.arverb.com (OpenSMTPD) with ESMTPA id 220155d7;
- Wed, 3 Dec 2025 09:06:25 +0100 (CET)
-Date: Wed, 3 Dec 2025 09:06:25 +0100
-From: Alexandre Ratchov <alex@caoua.org>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Geoffrey McRae <geoff@hostfission.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, dirty.ice.hu@gmail.com,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: Re: [RFC 00/24] audio: add GStreamer backend
-Message-ID: <aS_vgYyOzZAQ2y1A@vm3.arverb.com>
-References: <20251201112309.4163921-1-marcandre.lureau@redhat.com>
- <e6ada475-da8a-4643-4986-2ffc1d5b9c66@eik.bme.hu>
- <CAMxuvayr-qyjzsexWL1wt72mJA_-Dew9JAofjELhSVYC_w8SvA@mail.gmail.com>
- <aS4BZZnzQPUHzbaD@vm3.arverb.com>
- <3bb3606b-713c-456b-ab0f-31d14c6a6b99@redhat.com>
- <20e6b7a1-cc84-29ff-6570-94fed9520466@eik.bme.hu>
- <d63b9773727b546cea38b1f17e0babd0@hostfission.com>
- <CAMxuvayp1WiqWe40Ox69DQ+R0X3VrJ_ai001Z04KbEouFGwCjg@mail.gmail.com>
- <12d3c2d298399c0935edee8caa3e52aa@hostfission.com>
- <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <wangruikang@iscas.ac.cn>)
+ id 1vQiGR-0007Wp-UH
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:31:15 -0500
+Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <wangruikang@iscas.ac.cn>)
+ id 1vQiGK-0007YI-CF
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 03:31:06 -0500
+Received: from [192.168.0.111] (unknown [114.241.82.59])
+ by APP-01 (Coremail) with SMTP id qwCowAD3i8s39S9pYsHxAg--.10970S2;
+ Wed, 03 Dec 2025 16:30:47 +0800 (CST)
+Message-ID: <4deadc0f-db5c-4908-a2fb-6af96962ab0e@iscas.ac.cn>
+Date: Wed, 3 Dec 2025 16:30:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1C+9eD_Qp7hGMjVHEbttbOxGpCZ4T8tVS+woAk7odWukHA@mail.gmail.com>
-Received-SPF: pass client-ip=116.202.17.78; envelope-from=alex@caoua.org;
- helo=vm3.arverb.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] linux-user: Add missing termios baud rates
+To: Andreas Schwab <schwab@linux-m68k.org>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ Luca Bonissi <qemu@bonslack.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20251202-linux-user-higher-baud-rates-v1-1-14c49ed2474b@iscas.ac.cn>
+ <87tsy9m77l.fsf@igel.home>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <87tsy9m77l.fsf@igel.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qwCowAD3i8s39S9pYsHxAg--.10970S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar1rKFy7Zw45Xw4xuFy8Krg_yoW8AF1kpa
+ nxXr9rCrWrKFyrAr1fWw1vy3WkJr13Ar4kCFy3uw18Ka4Dur13uwnFkrWa93srJ3s5AF40
+ yr18J3Z8t34qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkFb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+ 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+ A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+ jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+ 8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+ 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+ Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK
+ 82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+ C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+ MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+ IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+ 87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07boDGrUUUUU=
+X-Originating-IP: [114.241.82.59]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Received-SPF: pass client-ip=159.226.251.21;
+ envelope-from=wangruikang@iscas.ac.cn; helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,48 +78,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 02, 2025 at 06:14:48PM +0400, Marc-André Lureau wrote:
-> Hi
-> 
-> On Tue, Dec 2, 2025 at 5:26 PM Geoffrey McRae <geoff@hostfission.com> wrote:
-> >
-> >
-> >
-> > On 2025-12-02 23:44, Marc-André Lureau wrote:
-> > > Hi Geoffrey
-> > >
-> > > On Tue, Dec 2, 2025 at 4:31 PM Geoffrey McRae
-> > > <geoff@hostfission.com> wrote:
-> > >
-> > >> The PipeWire and PulseAudio backends are used by a large number of
-> > >> users
-> > >> in the VFIO community. Removing these would be an enormous determent
-> > >> to
-> > >> QEMU.
-> > >
-> > > They come with GStreamer pulse/pipe elements.
-> >
-> > Yes, but through another layer of abstraction/complexity with no real
-> > benefit.
-> 
-> The benefit is that QEMU would not have to maintain 10 backends and
-> all the audio mixing/resampling.
+Hi Andreas,
 
-Well, for open-source projects it depends on the maintainers: if they
-all shift their interrest/efforts toward a single GStreamer backend it
-will be a win (many devs maintaining a single backend). If they don't,
-we'd end-up with one backend maintained by one person.
+On 12/2/25 19:52, Andreas Schwab wrote:
+> On Dez 02 2025, Vivian Wang wrote:
+>
+>> The test tst-termios-linux requires termios2, which is provided by [1].
+>> After that the test failure reported in [2] should be resolved by this
+>> patch.
+> I still get a lot of errors with the two patches:
+>
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 75, expected 1200
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 75 ispeed 1200: kernel c_ispeed == 75, expected 1200
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 75 ispeed 1200: kernel CIBAUD = __B0 (000000), expected __B1200 (000011)
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 9600, expected 456789
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 9600 ispeed 456789: kernel c_ispeed == 9600, expected 456789
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 9600 ispeed 456789: kernel CIBAUD = __B0 (000000), expected __BOTHER (010000)
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:196: c_ispeed = 54321, expected 1234567890
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:269: ospeed 54321 ispeed 1234567890: kernel c_ispeed == 54321, expected 1234567890
+> error: ../sysdeps/unix/sysv/linux/tst-termios-linux.c:274: ospeed 54321 ispeed 1234567890: kernel CIBAUD = __B0 (000000), expected __BOTHER (010000)
+> ...
+> error: 8343 test failures
+>
+Thanks for catching this, and sorry for the mistake. I had apparently
+had a dirty version of the test files that missed these split speed tests.
 
-> The QEMU code would be simpler and
-> more maintainable overall. GStreamer has a clear pipeline design,
-> better suited (optimized code etc) and you can easily modify the
-> pipeline settings.
-> 
+I will fix these in the next version.
 
-I don't know if it would be more maintainable.  The idea is appealing,
-but to my experience, fixing audio glitches, timing issues, unexpected
-latency, subtle differences between OSes and alike have been painful
-compared to fixing similar code that uses the native APIs.
+Vivian "dramforever" Wang
 
-My 2 cents.
 
