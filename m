@@ -2,78 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22034C9ECFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 12:07:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3C0C9EE89
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 12:55:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQkgg-0007Wn-Ls; Wed, 03 Dec 2025 06:06:22 -0500
+	id 1vQlQl-000834-TR; Wed, 03 Dec 2025 06:53:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQkgd-0007W5-27
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 06:06:19 -0500
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vQkgX-00089J-Lx
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 06:06:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764759974; x=1796295974;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=S3zEWqt2WDEkieWuJEpVZ1iQbEtIUwDQynod8PDBc3g=;
- b=DSsoQ7sA9W3/kYUddWKgm4FEdTiEshd4L3hvaNBrouwWHo+cwN2JVmPV
- yv4lYFtpHpU4vc5H8sAchAordMz3lmS2cIuvTzTANaXtme3Wmu/Lk+oUr
- 2ktVZjbH/uSNnGhD1GsVYgfxeRw5XbwfVT1LUhBPKpY5nSGODAMw2+oXP
- UG/wbLjfGiSG5rBQRmdYbT72nemEzW+5CK9f2EIM2LU1ilvjDrTk2WuHq
- 8AjV0XkGLIhVLADFeJ2ibHZyAyAQb7iotp1jSxuZpACB6VT9kN7gviYJe
- M0bRlL2l6mVCbxGnmfbtoRX2PwHPRqTjImY9/sdfmJrfg4WNBLf8D7/TM w==;
-X-CSE-ConnectionGUID: yHtlGBrMTcCXBU3oDNwwYA==
-X-CSE-MsgGUID: 08ba8TO/SNedgziex0IzFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66689642"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="66689642"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2025 03:06:09 -0800
-X-CSE-ConnectionGUID: wASkKCcpQsqcOhweGoPbNA==
-X-CSE-MsgGUID: KEkZEq7HQUaxDAuMoZMxDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; d="scan'208";a="195065351"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 03 Dec 2025 03:06:05 -0800
-Date: Wed, 3 Dec 2025 19:30:48 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
- Xin Li <xin@zytor.com>, John Allen <john.allen@amd.com>,
- Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v4 06/23] i386/kvm: Initialize x86_ext_save_areas[] based
- on KVM support
-Message-ID: <aTAfaIPST8skLrUs@intel.com>
-References: <20251118034231.704240-1-zhao1.liu@intel.com>
- <20251118034231.704240-7-zhao1.liu@intel.com>
- <5675fe47-f8ca-468a-abb6-449c88030a5f@redhat.com>
- <aS/uGsU39/ZbXDij@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQlQj-000821-VC
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 06:53:57 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQlQi-0004Ll-Ft
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 06:53:57 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-42e2cf93f7dso2707508f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 03:53:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1764762835; x=1765367635; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hQHNPRh9myThNQh0yjqSvFuq9dLmY4oCQUZxr4Wllec=;
+ b=bg0PFGNLXDcuUxyE+wr8+FYdBDRr3IdgKaSPbXNHgzu8agqgiquK5pqdM74ZpPs4Vd
+ B3B1wsoOzCfeuXDXA5JyaLgLL6uop2cIvjeJaX6+zhLtw5PkE0FVF+Z45Onb3wAfpWcN
+ FLpdEWsrrL42sDmGKb3e0Xstd/DOKODtT31eSynn8Pyyn+kdWphaQaFNT2CLt78LadYh
+ zYkrM8oE+D32pRjBtoVp+TJnrlUayA5lJd76z3DlKoc1yLnMVQrRl6t/BxmgIyZd5qic
+ X94/Efd7Y06bT17Tq29idWqclR6qa8NHf0pqRJ4+nPUPYs/UKYK0czlUGEKlXMw0hnZO
+ f6Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764762835; x=1765367635;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hQHNPRh9myThNQh0yjqSvFuq9dLmY4oCQUZxr4Wllec=;
+ b=bZRdn+Wiy7wcPWUMwPyOS6VeZ3c9H00Jswgx1v7wCTEG2ywxOyzXyUdeUNct3LPRcY
+ 657K9oRTLSmkfo3usewLBqzaDplgf4zIMr3NtIK2Q3qUE8JYFCLLHEDlh1d8SOa3d/6y
+ Gat5EtGkIPLyR5xSHfBmT9KmeMuZhtIOPW/GpRnnWFFGrzSgVPZrFN5DDw7/6jyuw/ic
+ VR8UiCcw+NDHp9fIihtVroA2feaKjSM7pFQPG3AUjneTDQCNtS/JCrBiC/Tmz4MAe32s
+ yhS0TZou0j4rJX5kybMJssqPUp/hLqi/VBZxpoCtffxP7C4nTkP+ucxsnMb2/vqGNNv6
+ G9fg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW/rvqH2P9jengt5xLfdYzV71CS5+l/JFZJObrxG3/kDiQ8+UeshtHSpwxWeBhUL9xYLcIVl84Z7s7l@nongnu.org
+X-Gm-Message-State: AOJu0YyQuHGXxi7c5McYDJjDhJR8Gctp2gnjcJameGLFLHsA9zQzqHY/
+ aaad16hRxyVgHKrZBg3szQLCIKPdJTv9Oj7XKe9rQ7YOsndkQWVMWZ28iqy6ywxkFcU=
+X-Gm-Gg: ASbGncsNipgXuolBYJ4d+rKMufjfotmjuw3KUkwxHiQKQeqS9eE48qQKA/QdkVsYAa1
+ lEJ5V1lohsi94LIRDQpJaGQPEZmpA+9FrxS5MUJCoW86mdDqFBxdxr7DhG00YE9f1mNBlLDNQi+
+ 1/eNUw1kibexjHX/OUkUsZ43D3kwlISefK30JitQHWXO0J4J3Nc8UAq8Lx26j6xOlEXsWTrTYpm
+ z9hlSEkKalGCxFRiDhyoCwomXwdRQr8VHhrnWLL7MYYQFkMice+xjvSkKUBC+JzAnmCd7Dq7JBu
+ Nr6mZqSjExbmBSlLoV3R0DopxzreezWckpsfH+z+FPXwzrA+wQ3WoqJA0dbsgCG8fULTHTDPIlk
+ EThS8XHnPRXNLyVTKMfEv3+lpxFi3kvhHJy/xZHXzGmyjhDWYUL7X+nqof02tNO4wQo5VQ5hwYc
+ N3rGnknYJIdF43WUTfNvys5DKbmZGgGmtfDWN+OytQ9eUMB5pdjVj5Sm1VYSwMpuP9
+X-Google-Smtp-Source: AGHT+IEwA2D5a4lovf9Rt05xknad08uDjkTCx4OKuk9wmgyasA8JWgbNQmrpqKo0EKMjDHOA0Hx87g==
+X-Received: by 2002:a05:6000:220e:b0:42b:2e65:655f with SMTP id
+ ffacd0b85a97d-42f7317da33mr1827313f8f.19.1764762834764; 
+ Wed, 03 Dec 2025 03:53:54 -0800 (PST)
+Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42e1c5c3022sm39480969f8f.4.2025.12.03.03.53.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Dec 2025 03:53:54 -0800 (PST)
+Message-ID: <88c37ed0-2e1f-4a6d-8032-f153309eeaac@linaro.org>
+Date: Wed, 3 Dec 2025 12:53:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aS/uGsU39/ZbXDij@intel.com>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 00/14] riscv: Add support for MIPS P8700 CPU
+Content-Language: en-US
+To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "cfu@mips.com" <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>,
+ "alistair23@gmail.com" <alistair23@gmail.com>,
+ "thuth@redhat.com" <thuth@redhat.com>
+References: <20251118085758.3996513-1-djordje.todorovic@htecgroup.com>
+ <d11d7f92-d992-4d4d-8456-707cf42f93b6@htecgroup.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <d11d7f92-d992-4d4d-8456-707cf42f93b6@htecgroup.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,28 +108,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Can you move the call to kvm_cpu_xsave_init() after
-> > x86_cpu_enable_xsave_components()?  Is it used anywhere before the CPU is
-> > running?
-> 
-> Yes, this is an "ugly" palce. I did not fully defer the initialization
-> of the xstate array earlier also because I observed that both HVF and
-> TCG have similar xsave initialization interfaces within their accelerator's
-> cpu_instance_init() function.
-> 
-> I think it might be better to do the same thing for HVF & TCG as well
-> (i.e., defer xstate initialization). Otherwise, if we only modify QEMU
-> KVM logic, it looks a bit fragmented... What do you think?
+Hi,
 
-Ah, kvm_arch_get_supported_cpuid() currently caches the obtained CPUID.
-Delaying xstate initialization would require refreshing the previously
-cached old CPUID... This makes the cost of delaying xstate
-initialization higher, and I think this way becames not appropriate.
+On 3/12/25 12:24, Djordje Todorovic wrote:
+> Hi all,
+> 
+> What is the status for this? :)
 
-Either keep the current different ways, or back to use host_cpuid for
-everything :( . Which do you think is better?
+Series looks OK for being queued by Alistair (RISC-V tree).
+QEMU tree is now freezed until the next release (v10.2.0).
+We now all wait the tree to re-open for development...
 
 Regards,
-Zhao
 
+Phil.
+
+> 
+> Best regards,
+> 
+> Djordje
 
