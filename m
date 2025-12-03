@@ -2,33 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB876C9E7F5
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748FDC9E7F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHY-00006c-4U; Wed, 03 Dec 2025 04:36:20 -0500
+	id 1vQjHb-0000A1-2E; Wed, 03 Dec 2025 04:36:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHW-0008Vx-36; Wed, 03 Dec 2025 04:36:18 -0500
+ id 1vQjHZ-00009R-7Y; Wed, 03 Dec 2025 04:36:21 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHT-00072O-Qz; Wed, 03 Dec 2025 04:36:17 -0500
+ id 1vQjHX-00073M-IV; Wed, 03 Dec 2025 04:36:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 27FC01708AC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3B21B1708AD;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0B1C932B5A3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2450A32B5A4;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jack Wang <jinpu.wang@ionos.com>,
+Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
+ Zhang Chen <zhangckid@gmail.com>, Peter Xu <peterx@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 77/96] qmp: Fix a typo for a USO feature
-Date: Wed,  3 Dec 2025 12:35:10 +0300
-Message-ID: <20251203093612.2370716-1-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 78/96] migration: Fix transition to COLO state from
+ precopy
+Date: Wed,  3 Dec 2025 12:35:11 +0300
+Message-ID: <20251203093612.2370716-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -57,30 +59,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-There is a copy & paste error, USO6 should be there.
+Commit 4881411136 ("migration: Always set DEVICE state") set a new DEVICE
+state before completed during migration, which broke the original transition
+to COLO. The migration flow for precopy has changed to:
+active -> pre-switchover -> device -> completed.
 
-Fixes: 58f81689789f ("qmp: update virtio feature maps, vhost-user-gpio introspection")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+This patch updates the transition state to ensure that the Pre-COLO
+state corresponds to DEVICE state correctly.
+
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Fixes: 4881411136 ("migration: Always set DEVICE state")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Zhang Chen <zhangckid@gmail.com>
+Tested-by: Zhang Chen <zhangckid@gmail.com>
+Link: https://lore.kernel.org/r/20251104013606.1937764-1-lizhijian@fujitsu.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 0b5bf4ea76205a93386c5e02fbb519871a62e677)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 5fbcbf76a19a0d3500a4103fc8876c6cace2afcf)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 3b6377cf0d..f2c7a327d0 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -299,7 +299,7 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-             "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
-     FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
--            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
-+            "VIRTIO_NET_F_GUEST_USO6: Driver can receive USOv6"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-             "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
+diff --git a/migration/migration.c b/migration/migration.c
+index 32b8ce5613..e806481456 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3047,9 +3047,9 @@ static void migration_completion(MigrationState *s)
+         goto fail;
+     }
+ 
+-    if (migrate_colo() && s->state == MIGRATION_STATUS_ACTIVE) {
++    if (migrate_colo() && s->state == MIGRATION_STATUS_DEVICE) {
+         /* COLO does not support postcopy */
+-        migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
++        migrate_set_state(&s->state, MIGRATION_STATUS_DEVICE,
+                           MIGRATION_STATUS_COLO);
+     } else {
+         migration_completion_end(s);
 -- 
 2.47.3
 
