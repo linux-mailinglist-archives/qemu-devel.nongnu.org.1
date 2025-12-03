@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116B4C9E807
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E796C9E828
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHe-0000DV-GM; Wed, 03 Dec 2025 04:36:26 -0500
+	id 1vQjHh-0000Fk-1O; Wed, 03 Dec 2025 04:36:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHc-0000Ca-EB; Wed, 03 Dec 2025 04:36:24 -0500
+ id 1vQjHd-0000Cs-51; Wed, 03 Dec 2025 04:36:25 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHa-00073z-Nn; Wed, 03 Dec 2025 04:36:24 -0500
+ id 1vQjHb-000748-9H; Wed, 03 Dec 2025 04:36:24 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6448C1708AF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 733CB1708B0;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 50E1232B5A6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 605A332B5A7;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 80/96] hw/arm/aspeed: Fix missing SPI IRQ connection
- causing DMA interrupt failure
-Date: Wed,  3 Dec 2025 12:35:13 +0300
-Message-ID: <20251203093612.2370716-4-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 81/96] hw/arm/armv7m: Disable reentrancy guard for
+ v7m_sysreg_ns_ops MRs
+Date: Wed,  3 Dec 2025 12:35:14 +0300
+Message-ID: <20251203093612.2370716-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -60,62 +60,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-It did not connect SPI IRQ to the Interrupt Controller, so even the SPI
-model raised the IRQ, the interrupt was not received. The CPU therefore
-did not trigger an interrupt via the controller, and the firmware never
-received the interrupt.
+For M-profile cores which support TrustZone, there are some memory
+areas which are "NS aliases" -- a Secure access to these addresses
+really performs an NS access to a different part of the device.  We
+implement these using MemoryRegionOps read and write functions which
+pass the access on with adjusted attributes using
+memory_region_dispatch_read() and memory_region_dispatch_write().
 
-Fixes: 356b230ed13889e09d087a96498887de695df17e ("aspeed/soc: Add AST1030 support")
-Fixes: f25c0ae1079dc0b9de02676eb3e3949a09df9f41 ("aspeed/soc: Add AST2600 support")
-Fixes: 5dd883ab0635c9f715c77cc32622e458a0724581 ("aspeed/soc: Add AST2700 support")
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251106084925.1253704-2-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 510d5c61ad3eb1690b61c804d38c984527a5ea62)
+Since the MR we are dispatching to is owned by the same device that
+owns the NS-alias MR (the TYPE_ARMV7M container object), this trips
+the reentrancy-guard that is applied by access_with_adjusted_size().
+
+Mark the NS alias MemoryRegions as disable_reentrancy_guard; this is
+safe because v7m_sysreg_ns_read() and v7m_sysreg_ns_write() do not
+touch any of the device's state.  (Any further reentrancy attempts by
+the underlying MR will still be caught.)
+
+Without this fix, an attempt to read from an address like 0xe002e010,
+which is a register in the NS systick alias, will fail and provoke
+
+ qemu-system-arm: warning: Blocked re-entrant IO on MemoryRegion: v7m_systick at addr: 0x0
+
+We didn't notice this earlier because almost all code accesses
+the registers and systick via the non-alias addresses; the NS
+aliases are only need for the rarer case of Secure code that needs
+to manage the NS timer or system state on behalf of NS code.
+
+Note that although the v7m_systick_ops read and write functions
+also call memory_region_dispatch_{read,write}, this MR does not
+need to have the reentrancy-guard disabled because the underlying
+MR that it forwards to is owned by a different device (the
+TYPE_SYSTICK timer device).
+
+Reported via a stackoverflow question:
+https://stackoverflow.com/questions/79808107/what-this-error-is-even-about-qemu-system-arm-warning-blocked-re-entrant-io
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251114155304.2662414-1-peter.maydell@linaro.org
+(cherry picked from commit 4a934d284dfac9fa19b0f47874f12d9b3519c21c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index e6e1ee63c1..f3876ac0ac 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -357,6 +357,8 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI1 + i]);
-         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast1030_get_irq(s, ASPEED_DEV_SPI1 + i));
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index cea3eb49ee..d16fb20d3e 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -442,6 +442,12 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+                               &v7m_sysreg_ns_ops,
+                               sysbus_mmio_get_region(sbd, 0),
+                               "nvic_sysregs_ns", 0x1000);
++        /*
++         * This MR calls memory_region_dispatch_read/write to access the
++         * real region for the NVIC sysregs (which is also owned by this
++         * device), so reentrancy through here is expected and safe.
++         */
++        s->sysreg_ns_mem.disable_reentrancy_guard = true;
+         memory_region_add_subregion(&s->container, 0xe002e000,
+                                     &s->sysreg_ns_mem);
      }
- 
-     /* Secure Boot Controller */
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index d12707f0ab..a9defe0d83 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -467,6 +467,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI1 + i]);
-         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast2600_get_irq(s, ASPEED_DEV_SPI1 + i));
+@@ -499,6 +505,12 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+         memory_region_init_io(&s->systick_ns_mem, OBJECT(s),
+                               &v7m_sysreg_ns_ops, &s->systickmem,
+                               "v7m_systick_ns", 0xe0);
++        /*
++         * This MR calls memory_region_dispatch_read/write to access the
++         * real region for the systick regs (which is also owned by this
++         * device), so reentrancy through here is expected and safe.
++         */
++        s->systick_ns_mem.disable_reentrancy_guard = true;
+         memory_region_add_subregion_overlap(&s->container, 0xe002e010,
+                                             &s->systick_ns_mem, 1);
      }
- 
-     /* EHCI */
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 356e8c239b..52bca195d3 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -756,6 +756,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-                         sc->memmap[ASPEED_DEV_SPI0 + i]);
-         aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->spi[i]), 1,
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
-+                           aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SPI0 + i));
-     }
- 
-     /* EHCI */
 -- 
 2.47.3
 
