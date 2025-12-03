@@ -2,82 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A95C9F1E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 14:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 802DAC9F190
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 14:16:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQmrT-00016i-DR; Wed, 03 Dec 2025 08:25:40 -0500
+	id 1vQmhb-0005zi-Dm; Wed, 03 Dec 2025 08:15:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vQmrP-00016D-Nk
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 08:25:35 -0500
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>)
+ id 1vQmhZ-0005w8-G1; Wed, 03 Dec 2025 08:15:25 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vQmrM-0003kS-S2
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 08:25:35 -0500
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id DF5D541FFE
- for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 13:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1764768330;
- bh=7K0Qj6ITYQgQqkaHMi/RorD0f1CJLhMK13BPXiXeH/8=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=r8Dsl5Ooh3NDXrWoQ/gQ8x0/E7G5WsEQdOX+ncp66MvaAnUqIawhrd41U/fV1t5nK
- F2Ko9YOqNkcR8gxzQhcmk3J9FKKLsiWwVEbezZDW//AiKeN5kGRgMB1c2gZqmtgRZl
- +tKrB2Df/nRvVKVg2i+c83lI0Wh9NnyBYTOBtG3uctLJPCAu+yGqBCd6yi7ZqnsYYn
- oRHaB79dt3GP2bh1pYW4K2BYzYh4rG37JRlKC7v4VN92Ks9FiShcPGTFol5rb9Trkw
- iF+Tbi/IsEuGMZ/Yvs+Oo1hpcSE+2vX8x8jdRhFENB6GAVuKc0wKkFEg1l4i2PIL+f
- lbSosnOb9/zXA==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id BF2407F1BF
- for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 13:25:30 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>)
+ id 1vQmhX-0001MK-LX; Wed, 03 Dec 2025 08:15:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+ :Subject; bh=pBE9nwi6TppjSeUttbju5Apd99/M9N3r+cNvcFRlW5k=; b=U4pETs9AkiJVVa7Q
+ IQv7+PDpN3be4tM4AtZ9Xg2gpqL7X7PSxt/fqogVmAU/TJILQC/XVZ8PKAHQCkDhQtCXwAXS6LFJ5
+ 1j2KA3ZteRkaoZ/HNU/VmmyJ7Ny7YYSGkgugIkHDN95X3GFkB8h6LHUPo/9s7pgCpk3yWD7hgPeY2
+ L2mmlYKc5DnYQWKmeK1FJrpmAy3Nhw4WoOTpsrkAk8WQP6+Y1Y1KSfkVJ+v+/97p9eHSyTgtGd7u4
+ MRRUGUtD/ACo6miEgzj+1C2YkRKc7DNv+ZLY68IlP9T52pQKK/iuGh+QOrk7hVsm/n0Fwvvr46N5a
+ 9gCwVKlr8pmlKoHSyw==;
+Received: from localhost ([127.0.0.1] helo=dalek)
+ by mx.treblig.org with esmtp (Exim 4.98.2)
+ (envelope-from <dave@treblig.org>) id 1vQmhS-00000007qGj-0KZf;
+ Wed, 03 Dec 2025 13:15:18 +0000
+From: dave@treblig.org
+To: qemu-trivial@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
+ thuth@redhat.com, pbonzini@redhat.com
+Cc: jak@jak-linux.org, qemu-devel@nongnu.org,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH] qemu-options.hx: Document -M as -machine alias
+Date: Wed,  3 Dec 2025 13:15:11 +0000
+Message-ID: <20251203131511.153460-1-dave@treblig.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Dec 2025 13:13:21 -0000
-From: Heinrich Schuchardt <2133188@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=Confirmed; importance=Medium;
- assignee=heinrich.schuchardt@canonical.com; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: janitor qianqiu-2020 xypron
-X-Launchpad-Bug-Reporter: qianqiu (qianqiu-2020)
-X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
-References: <176429928488.3164788.8613118615925713152.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <176476760180.3405822.6036068048475863810.malone@juju-98d295-prod-launchpad-3>
-Subject: [Bug 2133188] Re: Illegal instruction in memset under qemu-user for
- riscv64
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: c590798e646cb5c53eb098013a328964b1b0287c
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,196 +60,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2133188 <2133188@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the resolute container I get the following output
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-./check_tcgets_2504 /dev/pts/0
-/dev/pts/0 is a terminal (tty) using TCGETS.
-/dev/pts/0 is NOT a terminal (tty) using TCGETS2.
+-M is used heavily in documentation and scripts, but isn't actually
+documented anywhere.
+Document it as equivalent to -machine.
 
-with this program
+Reported-by: Julian Andres Klode <jak@jak-linux.org>
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+---
+ qemu-options.hx | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/tty.h>                 // For TCGETS2
-#include <asm-generic/termbits.h>      // For struct termios2
-
-int main(int argc, char *argv[]) {
-    // Check for the correct number of command-line arguments
-    if (argc !=3D 2) {
-        fprintf(stderr, "Usage: %s <device>\n", argv[0]);
-        return 1;
-    }
-
-    // Open the specified device
-    int fd =3D open(argv[1], O_RDONLY);
-    if (fd < 0) {
-        perror("Failed to open device");
-        return 1;
-    }
-
-    // Check using TCGETS
-    struct termios tty;
-    if (ioctl(fd, TCGETS, &tty) =3D=3D 0) {
-        printf("%s is a terminal (tty) using TCGETS.\n", argv[1]);
-    } else {
-        printf("%s is NOT a terminal (tty) using TCGETS.\n", argv[1]);
-    }
-
-    // Check using TCGETS2 with struct termios2
-    struct termios2 tty2;
-    if (ioctl(fd, TCGETS2, &tty2) =3D=3D 0) {
-        printf("%s is a terminal (tty) using TCGETS2.\n", argv[1]);
-    } else {
-        printf("%s is NOT a terminal (tty) using TCGETS2.\n", argv[1]);
-    }
-
-    // Close the device
-    close(fd);
-    return 0;
-}
-
-Something might be wrong in the translation of TCGETS2 in QEMU.
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2133188
-
-Title:
-  Illegal instruction in memset under qemu-user for riscv64
-
-Status in QEMU:
-  New
-Status in qemu package in Ubuntu:
-  Confirmed
-
-Bug description:
-  # Title
-  qemu-user (qemu-riscv64-static): intermittent Illegal instruction in mems=
-et (vse64.v) when running cmake in riscv64 container (Ubuntu 26.04)
-
-  ## Summary
-  While running cmake (and other build steps) inside a linux/riscv64 Ubuntu=
- 26.04 container on an x86_64 host using qemu-user (qemu-riscv64-static) re=
-gistered via binfmt_misc, cmake sometimes crashes with "Illegal instruction=
- (core dumped)" or "died with signal 4". The illegal instruction is observe=
-d inside glibc's memset implementation at an instruction that uses RISC-V v=
-ector extension (vse64.v). The failure is intermittent (~50% reproducer rat=
-e). Using a scalar-only memset (libnovecmem.so via LD_PRELOAD) or running u=
-nder gdb / enabling QEMU_STRACE significantly reduces or eliminates the fai=
-lure, which strongly suggests a qemu-user/emulation bug (vector handling / =
-code generation / state corruption), not a cmake bug.
-
-  ## Affects
-  - qemu-user qemu-riscv64-static (as packaged in Ubuntu qemu 10.1.0+ds-5ub=
-untu3)
-  - Running in Docker container for riscv64 on x86_64 host via binfmt_misc =
-qemu-user static interpreter
-
-  ## Environment / Context
-  - Host CPU: x86_64 (Docker multiarch running qemu-user for riscv64)
-  - Host OS=EF=BC=9Amultiple Ubuntu releases (22.04, 24.04, 25.10)=20
-  - Container image: ubuntu:26.04 for riscv64
-  - qemu package used:
-    - downloaded .deb from Launchpad: qemu-user_10.1.0+ds-5ubuntu3_amd64.de=
-b and on several Debian qemu-user packages (qemu-user_10.2.0~rc1+ds-1, qemu=
--user_10.0.6+ds-0+deb13u2).=20
-    - copied qemu-riscv64 binary into /usr/bin/qemu-riscv64-static inside h=
-ost and registered via /proc/sys/fs/binfmt_misc/register
-  - CMake version used inside container (bootstrap/build may use system-pro=
-vided cmake binary): cmake 3.x (bootstrapping cmake while building also tri=
-ggers crash)
-  - Reproduction frequency: intermittent, ~50% (can get large variance: sev=
-eral consecutive successes or failures)
-  - Observed behavior changes when: LD_PRELOAD libnovecmem.so (scalar memse=
-t) =E2=80=94 almost completely avoids crash; running under gdb or enabling =
-QEMU_STRACE also makes it much harder to reproduce.
-   =20
-
-  ## Full reproduction steps
-  1. On x86_64 host, fetch qemu-user .deb and extract the riscv static bina=
-ry:
-     wget https://launchpad.net/ubuntu/+source/qemu/1:10.1.0+ds-5ubuntu3/+b=
-uild/31393935/+files/qemu-user_10.1.0+ds-5ubuntu3_amd64.deb
-     dpkg-deb -x qemu-user_10.1.0+ds-5ubuntu3_amd64.deb qemu-user_10.1.0+ds=
--5ubuntu3_amd64
-     sudo cp qemu-user_10.1.0+ds-5ubuntu3_amd64/usr/bin/qemu-riscv64 /usr/b=
-in/qemu-riscv64-static
-
-  2. Register qemu-riscv64 with binfmt_misc:
-     echo -1 > /proc/sys/fs/binfmt_misc/qemu-riscv64
-     echo ':qemu-riscv64:M:0:\x7f\x45\x4c\x46\x02\x01\x01\x00\x00\x00\x00\x=
-00\x00\x00\x00\x00\x02\x00\xf3\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff=
-\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-riscv64-static:POCF'=
- >/proc/sys/fs/binfmt_misc/register
-
-  3. Start riscv64 ubuntu container:
-     docker run --platform=3Dlinux/riscv64 --name ubuntu26 -itd ubuntu:26.0=
-4 bash
-     docker exec -it ubuntu26 bash -i
-
-  4. Inside container:
-     apt update
-     apt install -y build-essential cmake
-
-  5. Reproducer 1:
-     cmake --system-information
-     -> Often fails with:
-        bash: [15: 1 (255)] tcsetattr: Inappropriate ioctl for device
-        Illegal instruction (core dumped)
-
-  6. Reproducer 2 (minimal C project):
-     Create test_cmake/CMakeLists.txt:
-     cmake_minimum_required(VERSION 3.10)
-     project(HelloCMake C)
-     add_executable(hello main.c)
-
-     Create test_cmake/main.c:
-     #include <stdio.h>
-     int main() {
-         printf("Hello, CMake!\n");
-         return 0;
-     }
-
-     cd test_cmake
-     cmake .
-     -> Crash with:
-        -- Detecting C compiler ABI info
-        bash: line 1:  8489 Illegal instruction        (core dumped) cmake .
-
-  7. Reproducer 3 (rebuild cmake from source inside container):
-     apt source cmake
-     cd cmake
-     apt-get build-dep .
-     dpkg-buildpackage -us -uc -b
-     -> Bootstrapping error:
-        Illegal instruction (core dumped)
-        Error when bootstrapping CMake:
-        Problem while running initial CMake
-
-  8. Observed crash location (from gdb/QEMU_STRACE when available):
-     - Illegal instruction is in memset@@GLIBC_2.27+0x52
-     - Faulting instruction: vse64.v v1,(a5)    (RISC-V vector store of 64-=
-bit elements)
-
-
-  ## Workarounds
-  - LD_PRELOAD a scalar-only memset library (libnovecmem.so) to avoid glibc=
- using vectorized memset.
-  - Run the failing process under gdb (slower) or enable QEMU_STRACE=3D1 =
-=E2=80=94 both make the failure much less likely.
-
-  Note: The same workload does not reproduce the crash when run under
-  qemu-system (full-system emulation). The issue appears specific to
-  qemu-user
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2133188/+subscriptions
+diff --git a/qemu-options.hx b/qemu-options.hx
+index fca2b7bc74..ec92723f10 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -44,6 +44,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+ #endif
+     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
++    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n"
+     "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
+     QEMU_ARCH_ALL)
+ SRST
+@@ -179,6 +180,9 @@ SRST
+ 
+             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+ 
++    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
++        Define an SGX EPC section.
++
+     ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+         Define cache properties for SMP system.
+ 
+@@ -208,12 +212,10 @@ SRST
+ ERST
+ 
+ DEF("M", HAS_ARG, QEMU_OPTION_M,
+-    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
+-    QEMU_ARCH_ALL)
+-
++    "-M              as -machine\n", QEMU_ARCH_ALL)
+ SRST
+-``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+-    Define an SGX EPC section.
++``-M``
++    as -machine.
+ ERST
+ 
+ DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
+-- 
+2.52.0
 
 
