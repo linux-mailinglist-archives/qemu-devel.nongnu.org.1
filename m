@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359DDC9E233
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E36C9E236
 	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:06:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhoC-0003Lh-Qv; Wed, 03 Dec 2025 03:01:56 -0500
+	id 1vQhoV-0004r0-Eo; Wed, 03 Dec 2025 03:02:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQho8-0002zC-Pz; Wed, 03 Dec 2025 03:01:52 -0500
+ id 1vQhoT-0004nK-7w; Wed, 03 Dec 2025 03:02:13 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQho5-00076T-Bg; Wed, 03 Dec 2025 03:01:52 -0500
+ id 1vQhoR-00076g-BH; Wed, 03 Dec 2025 03:02:12 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E6EB5170779;
- Wed, 03 Dec 2025 10:59:23 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0826217077A;
+ Wed, 03 Dec 2025 10:59:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B420032B4A0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C67F532B4A1;
  Wed, 03 Dec 2025 10:59:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "AlanoSong@163.com" <AlanoSong@163.com>,
- =?UTF-8?q?Marc-Andr=C3=A9Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.7 108/116] ui/vnc: Fix qemu abort when query vnc info
-Date: Wed,  3 Dec 2025 10:59:28 +0300
-Message-ID: <20251203075939.2366131-27-mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 109/116] block-backend: Fix race when resuming queued
+ requests
+Date: Wed,  3 Dec 2025 10:59:29 +0300
+Message-ID: <20251203075939.2366131-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
 References: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,44 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "AlanoSong@163.com" <AlanoSong@163.com>
+From: Kevin Wolf <kwolf@redhat.com>
 
-When there is no display device on qemu machine,
-and user only access qemu by remote vnc.
-At the same time user input `info vnc` by QMP,
-the qemu will abort.
+When new requests arrive at a BlockBackend that is currently drained,
+these requests are queued until the drain section ends.
 
-To avoid the abort above, I add display device check,
-when query vnc info in qmp_query_vnc_servers().
+There is a race window between blk_root_drained_end() waking up a queued
+request in an iothread from the main thread and blk_wait_while_drained()
+actually being woken up in the iothread and calling blk_inc_in_flight().
+If the BlockBackend is drained again during this window, drain won't
+wait for this request and it will sneak in when the BlockBackend is
+already supposed to be quiesced. This causes assertion failures in
+bdrv_drain_all_begin() and can have other unintended consequences.
 
-Reviewed-by: Marc-AndréLureau <marcandre.lureau@redhat.com>
-Signed-off-by: Alano Song <AlanoSong@163.com>
-[ Marc-André - removed useless Error *err ]
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20251125131955.7024-1-AlanoSong@163.com>
-(cherry picked from commit 4c1646e23f761e3dc6d88c8995f13be8f668a012)
+Fix this by increasing the in_flight counter immediately when scheduling
+the request to be resumed so that the next drain will wait for it to
+complete.
+
+Cc: qemu-stable@nongnu.org
+Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20251119172720.135424-1-kwolf@redhat.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Tested-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 8eeaa706ba73251063cb80d87ae838d2d5b08e9a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 6a26f05daa..ff683ba196 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -562,9 +562,12 @@ VncInfo2List *qmp_query_vnc_servers(Error **errp)
-         qmp_query_auth(vd->auth, vd->subauth, &info->auth,
-                        &info->vencrypt, &info->has_vencrypt);
-         if (vd->dcl.con) {
--            dev = DEVICE(object_property_get_link(OBJECT(vd->dcl.con),
--                                                  "device", &error_abort));
--            info->display = g_strdup(dev->id);
-+            Object *obj = object_property_get_link(OBJECT(vd->dcl.con),
-+                                                   "device", NULL);
-+            if (obj) {
-+                dev = DEVICE(obj);
-+                info->display = g_strdup(dev->id);
-+            }
+diff --git a/block/block-backend.c b/block/block-backend.c
+index a402db13f2..50ccf3663f 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -1318,9 +1318,9 @@ static void coroutine_fn blk_wait_while_drained(BlockBackend *blk)
+          * section.
+          */
+         qemu_mutex_lock(&blk->queued_requests_lock);
++        /* blk_root_drained_end() has the corresponding blk_inc_in_flight() */
+         blk_dec_in_flight(blk);
+         qemu_co_queue_wait(&blk->queued_requests, &blk->queued_requests_lock);
+-        blk_inc_in_flight(blk);
+         qemu_mutex_unlock(&blk->queued_requests_lock);
+     }
+ }
+@@ -2767,9 +2767,11 @@ static void blk_root_drained_end(BdrvChild *child)
+             blk->dev_ops->drained_end(blk->dev_opaque);
          }
-         for (i = 0; vd->listener != NULL && i < vd->listener->nsioc; i++) {
-             info->server = qmp_query_server_entry(
+         qemu_mutex_lock(&blk->queued_requests_lock);
+-        while (qemu_co_enter_next(&blk->queued_requests,
+-                                  &blk->queued_requests_lock)) {
++        while (!qemu_co_queue_empty(&blk->queued_requests)) {
+             /* Resume all queued requests */
++            blk_inc_in_flight(blk);
++            qemu_co_enter_next(&blk->queued_requests,
++                               &blk->queued_requests_lock);
+         }
+         qemu_mutex_unlock(&blk->queued_requests_lock);
+     }
 -- 
 2.47.3
 
