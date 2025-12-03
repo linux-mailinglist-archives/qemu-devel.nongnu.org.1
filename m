@@ -2,113 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C2CC9DE66
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 07:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0515CC9F40A
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 15:16:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQg5q-0008AR-Nu; Wed, 03 Dec 2025 01:12:02 -0500
+	id 1vQnd3-0005xa-Sb; Wed, 03 Dec 2025 09:14:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg5Z-0007ZD-Fo
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:11:47 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vQg5X-0001Dh-4q
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:11:45 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47789cd2083so37524105e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Dec 2025 22:11:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764742299; x=1765347099; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dlyYuqrBIco0T5Nx+vrsokniVf0Y0mIPJ5rNnrQW6jE=;
- b=Kl1nOj93hprFj63rSc84NgUwjljsddCn8UqBoxVWd78j92Imr4TrvGkHZsrEGfvUvn
- +Nbpja5SSc9Hd4ePlDIBOSqpo4EnDh84+D6EeBZLaMqffmK74YXJwr89D4VVxmlaAkLQ
- qIiNwke7qTJSuhODEidgl/JGsaOjXa96BpKSq4+G/0d9djLKOElW6Z13qIi1/1j+xCBj
- I/lZirc/Rm1c3T7al0NWjOAZ1nX8hXOoB6I0E0SMKT+ZOoyD1Ed7p7yMEk/HsVjwmrvW
- fL0kdg2DbFcAs0m8ycN6cB1j8L74sv7Jzutc2oznsZIqFMeP6ZkHCULy05fRFFK+uJOI
- PxyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764742299; x=1765347099;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dlyYuqrBIco0T5Nx+vrsokniVf0Y0mIPJ5rNnrQW6jE=;
- b=vw0UY4yFuJ4K1sVP6rWk9I9/WJzETz3dbWrl4B5TeBKFn+oFiOF+9SyRnUDWqsCHNL
- h3pyoN1559MCm7eFUYH/nt6muKuUKXrjmNzj8gh3nZ2F7+ZBfeZn6R5yJCDBQFHpiMl4
- /zY5uPa2jeaRQr1PIvTO6An+rncLHLcGxk4UzU6JF8BZdBZ/HzBXvxwCg8BaE834eEyy
- xvxzAo8NghF0Ae/iwd3pS5HSLTJCqzFnjl+UeH9c7HwiNZ9971WatGahgP9pTp+t26Ce
- mkXVDWGuFzHYP0WpGFc1Vh+DJqzPwQQEs3qMBTkK3Z7Y4BG1rIVLfE4MykLItdHdmMSO
- /E1w==
-X-Gm-Message-State: AOJu0YxqWgmMhFYcHEg59z4pLAIC/illqtLHHdDc4cO6gP3v7WYbxf9N
- Ih/JhAvzRXGM5BhHWuijA09HAwCMF8Z/bGVC+6c/Sr7pK8miRwWkclRq97J35XpRj2A=
-X-Gm-Gg: ASbGncsfjRcRxNinz10Z+fDOkKfeWMeJzNoVmGHEasabJck6RHm7UKDu9oH5tptTN5J
- ZQRJ02K1ap4UMRuJuvEE0FjSG8hWWYPfgU0bCvefCvAjhR+lIk5cFWcF141VYISIIdWfp/dyoLt
- pJxcqGVKL4buhgRlDuPu7Mdon8hb2jaC39w3ZW+2HYit5Tp+YKUz1PUlvKy8ptrqprHeisa+TMb
- u/HW7jKuM8XiwtwkAegobBCLibl3M73vcWMKhbPf25RqLGt9JXKbfbyjDgeSyRB0AZaoW3H1ej0
- n1RcNVgk2Iwb8APTg5RgmJFOFDrK65PpA6ek87V+AcEJgVYGHScy2BLHqEA6lSKAlOv4kl0LCWy
- O1yS5E2qmxfOFJsOl1rG0Wu0xY2ri1MvqWfKsDftnWUTgBaCd90zwF+Qvzkknkl7vOH4mhU/jiJ
- SHWPM3Y5MYNpaV6QGb/2AIh2o08jFBgu2UACMvZSMsxAqvfWk4dicbx9Ug9n93oSlx
-X-Google-Smtp-Source: AGHT+IHvIQmfDwnTD8drf7tdAaJELXEvl7wBw+FoUcPNb0LeOYFoiFRBKneLkS5TxZ8trSwEw5E/YQ==
-X-Received: by 2002:a05:6000:1ac9:b0:42b:2fc8:186 with SMTP id
- ffacd0b85a97d-42f731bc03amr722215f8f.46.1764742299461; 
- Tue, 02 Dec 2025 22:11:39 -0800 (PST)
-Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42e1caa86d0sm35622115f8f.39.2025.12.02.22.11.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Dec 2025 22:11:38 -0800 (PST)
-Message-ID: <3991ece0-b49a-4c09-9309-ed0c50ce2a24@linaro.org>
-Date: Wed, 3 Dec 2025 07:11:36 +0100
+ (Exim 4.90_1) (envelope-from <mhjacobson@me.com>) id 1vQgdV-0004p7-Lo
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:46:51 -0500
+Received: from ci-2002k-snip4-2.eps.apple.com ([57.103.88.233]
+ helo=outbound.ci.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mhjacobson@me.com>) id 1vQgdT-0000YG-EX
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 01:46:49 -0500
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-10-percent-0 (Postfix) with ESMTPS id
+ 1E98B1800116; Wed,  3 Dec 2025 06:46:41 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+ bh=2oSTwT6BrLzVT/Xa63N9kAZ3pdM3XV2BWBbUU5+Rwjk=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
+ b=PW8m+aBkywxVKogN33vewhNiNM0Vls/wsfMTSlJBngwQLXO2pODXKFWKnzpaicoQ7gUzt8Ximn2Y3MKr9p76At54GolYZ/S16fOC39s1TP42SQWty8ZIL8NRcHkXiNN/IVjmmygHHi1sNF33iSf4axinCZOs29RO28uAkrJEPiF4qE9C0XayfLpi6DLT7iV5rcpPs62MadivQX0NmcKHRy2c7MvAg8Ig2ohR22fwnix+gu36Dyld983j45l/jGjQk9xoG0moI/8vzSODBwpDbq2+GMwuCplwvOaK+MKZYktG8fZ6zLQymTEhZ2Ghric0mGcJX+zCdRtfseegv0DqZA==
+Received: from localhost.localdomain (unknown [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-10-percent-0 (Postfix) with ESMTPSA id
+ 0CDC7180009B; Wed,  3 Dec 2025 06:46:41 +0000 (UTC)
+From: Matt Jacobson <mhjacobson@me.com>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Matt Jacobson <mhjacobson@me.com>
+Subject: [PATCH 0/1] hw/m68k: add working floppy controller for q800
+Date: Wed,  3 Dec 2025 01:43:35 -0500
+Message-Id: <20251203064336.79847-1-mhjacobson@me.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/28] hw/i386: Assume fw_cfg DMA is always enabled
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
- qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
- <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yi Liu <yi.l.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
- Amit Shah <amit@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
- Jiri Denemark <jdenemar@redhat.com>
-References: <20251202162835.3227894-1-zhao1.liu@intel.com>
- <20251202162835.3227894-16-zhao1.liu@intel.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251202162835.3227894-16-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Proofpoint-GUID: bvPk_XUMzBBHFvkeIvqe6ViiFJXQq5MG
+X-Authority-Info: v=2.4 cv=SLBPlevH c=1 sm=1 tr=0 ts=692fdcd2 cx=c_apl:c_pps
+ a=2G65uMN5HjSv0sBfM2Yj2w==:117 a=2G65uMN5HjSv0sBfM2Yj2w==:17
+ a=wP3pNCr1ah4A:10 a=x7bEGLp0ZPQA:10 a=Z7GCepxVSdIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=a4NEJbfMAAAA:8 a=jTNvsa8-qGaS9nKWCzkA:9
+X-Proofpoint-ORIG-GUID: bvPk_XUMzBBHFvkeIvqe6ViiFJXQq5MG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDA1MiBTYWx0ZWRfXzFsfIIgS25uu
+ p2FwYde3PXfFSoPXYnQaO/6OIFkTkaL8hy/ErlPDAMMMWKkiq4rCHlleSegjwBE+3Fne7ZQMWQP
+ 0XHHPYsOlay/HHuSfjsPZekHzPIGo1Qo3LM+30Y6uqvsWUUTwZ8wBB2M2M78LojOrnQiESeWU77
+ c73oRVnFFQSK3F/H/31HCxahoWPmZFcJHuELxXTXXtN7+WsUrVLq2gr8/PtFfKZ/XO27rzchVIR
+ qjHk1uDLyS7b2N88TzEo8vl0Rx5FXFtBjZfUFR46I3IH/4Cng8SjWMf57Rm+sIgm0ulU0AfWVxd
+ lknMlz3nSMPpAhh32MZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-01_01,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ mlxlogscore=527 malwarescore=0 clxscore=1011 bulkscore=0 adultscore=0
+ spamscore=0 suspectscore=0 phishscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512030052
+X-JNJ: AAAAAAAB9aLkSCAszqTa7zhmIZdckYxsuZOQeIgqQeNMcl2Lks4phVgCmsbf9MDwZkjCdrZ7uEEtyFY/9p+p5waR7wSsYVajZkAiS8KklUe53sSRfTabeb+0YvmvsOmbfE7UGjAzaWpc7DNkZgPEbc0xaxdtE00A7WFw7qk+Wn2VqxrLRELRSULBCmaC0i9e/CBvk0dKxaASq9HI8/i9B8DrogLCzaTrA8RsS9bdEfml4BtevDE8BrmIge6ltKvP5htp+mD6ItVP791KS3Sy6Qr8zYztwXh5mpiSCplxbdVYPueXYA2tjFcQbfOpkEFcIeB6jx2zl4q2uLl/wG07aqSNCllj6LNXuGFeGB65Xv0U+o0eVy4d1UYRIH0CisdIvbTDRW6tKYpFNGKMVI0KvN8FetgK3dPDYpzJk3WaJA2mGUHb8VpxAHezCqFVASuiVJ6VsnsoCh5yNn7GUiKXFArxbabWtd4kEJzCQzLjfGl3/0wlFrLd1mM/DsJuBkNv+YYhvrncL1t7/xfhCWQlGc5izgdDRcWDxFDzxslJAB1ZByrkay0g2KQZVWVLAmMLnqRMpErUz5YSd5f5/uDtg01T/d6m3Gyh/0wLwMOwk5SUUSFvGWyJJSf8JTKY6kUsDIfha+3e1Pf3OE4Pahaw0veb3b4Z+17mOsYq736/aQw/uNT4pBRmcD0gJZAhIw==
+Received-SPF: pass client-ip=57.103.88.233; envelope-from=mhjacobson@me.com;
+ helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 03 Dec 2025 09:14:31 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,42 +83,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/12/25 17:28, Zhao Liu wrote:
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Now all calls of x86 machines to fw_cfg_init_io_dma() pass DMA
-> arguments, so the FWCfgState (FWCfgIoState) created by x86 machines
-> enables DMA by default.
-> 
-> Although other callers of fw_cfg_init_io_dma() besides x86 also pass
-> DMA arguments to create DMA-enabled FwCfgIoState, the "dma_enabled"
-> property of FwCfgIoState cannot yet be removed, because Sun4u and Sun4v
-> still create DMA-disabled FwCfgIoState (bypass fw_cfg_init_io_dma()) in
-> sun4uv_init() (hw/sparc64/sun4u.c).
-> 
-> Maybe reusing fw_cfg_init_io_dma() for them would be a better choice, or
-> adding fw_cfg_init_io_nodma(). However, before that, first simplify the
-> handling of FwCfgState in x86.
+[Please notify me of any process errors -- this is my first contribution to
+QEMU.  Thanks.]
 
-I answered these concerns here:
-https://lore.kernel.org/qemu-devel/20251203060942.57851-1-philmd@linaro.org/
+Implement the SWIM2 floppy controller for the q800 machine.
+(For details, see: <https://archive.org/details/SWIMDesignDocs/SWIM2%20ERS/>.)
 
-> Considering that FwCfgIoState in x86 enables DMA by default, remove the
-> handling for DMA-disabled cases and replace DMA checks with assertions
-> to ensure that the default DMA-enabled setting is not broken.
-> 
-> Then 'linuxboot.bin' isn't used anymore, and it will be removed in the
-> next commit.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
-> Changes since v4:
->   * Keep "dma_enabled" property in fw_cfg_io_properties[].
->   * Replace DMA checks with assertions for x86 machines.
-> ---
->   hw/i386/fw_cfg.c     | 16 ++++++++--------
->   hw/i386/x86-common.c |  6 ++----
->   2 files changed, 10 insertions(+), 12 deletions(-)
+Reading and writing work, and booting from a system disk works.
+Tested with the Quadra 800 ROM and System 7.
+
+Future areas of work here could include:
+
+* Allowing for disk formatting/duplication to work
+* Fleshing out the SWIM1 and hooking it up to the emulated drive
+* Implementing the IWM for earlier machines (this could share code with SWIM1)
+
+Matt Jacobson (1):
+  hw/m68k: add working floppy controller for q800
+
+ hw/block/meson.build               |   2 +-
+ hw/block/sony_superdrive.c         | 940 +++++++++++++++++++++++++++++
+ hw/block/swim2.c                   | 657 ++++++++++++++++++++
+ hw/block/trace-events              |  17 +
+ hw/m68k/q800.c                     |   4 +-
+ include/hw/block/sony_superdrive.h |  55 ++
+ include/hw/block/swim2.h           |  66 ++
+ include/hw/m68k/q800.h             |   4 +-
+ 8 files changed, 1740 insertions(+), 5 deletions(-)
+ create mode 100644 hw/block/sony_superdrive.c
+ create mode 100644 hw/block/swim2.c
+ create mode 100644 include/hw/block/sony_superdrive.h
+ create mode 100644 include/hw/block/swim2.h
+
+-- 
+2.37.1 (Apple Git-137.1)
 
 
