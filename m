@@ -2,51 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E73C9DB83
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A35EC9DB7A
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 05:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQeAR-0002Ja-0v; Tue, 02 Dec 2025 23:08:39 -0500
+	id 1vQeAP-0002IW-3N; Tue, 02 Dec 2025 23:08:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app>)
- id 1vQeAM-0002Hq-Rn
- for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:35 -0500
+ <bounce.kdc83qoplvz4bg6=ssvilxbcuwhy=l7jdvdlr8nd3t7@em483429.getutm.app>)
+ id 1vQeAM-0002Hp-LN
+ for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:34 -0500
 Received: from a4i956.smtp2go.com ([158.120.83.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app>)
- id 1vQeAL-0000Tm-BL
+ <bounce.kdc83qoplvz4bg6=ssvilxbcuwhy=l7jdvdlr8nd3t7@em483429.getutm.app>)
+ id 1vQeAL-0000X4-07
  for qemu-devel@nongnu.org; Tue, 02 Dec 2025 23:08:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1764734904; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1764734901; h=from : subject :
  to : message-id : date;
- bh=y9kSlBF0XTESB4AkIAMB416dSilaCjGWrQ+4K3SRvfk=;
- b=B1ogOoXkO8Dg4uwBHeNS9EUCo+8cdmPYhNCbBA1BC4li30/H0salP249aXRuNHTZ3oQHH
- UlhPAf4Y/y5jwPJrsuz225JUCoMCHxvNKAHeX54+QgxeMFzfRN29MHg87YhFvANSzE8pDuJ
- m0e8cFySlMpRsYJjcCvCfTIS8Hfx0HVwwo4f39UXlbT3+wYuJJ5XUamv//TPWhDGMouYZK2
- TqusXcReY9nWB+q4GirA0jrzFuysJfuJgzq6Rfgsg6949clHvRAUDoBtAvcIPkGtly3IvFt
- IfYyK6JSKN10yDHrdSP9RJ4qwjs7+hsGhkZaxlyMF8t8NrUuBbYnZ9zKtq5g==
+ bh=XYbku66ggetTXXScTxzERv3tWMvWPJzx0u8sArlejVU=;
+ b=frj/DBPeRIkTBpYxPlTg65JYGc4x2RlGcVnNwGRM3wqCewFb87jLPA7/zX21XX//l0m++
+ eqYaxGTmoR/vN+gLdbuz+qilHc3fFw801ti4bjC+5W5y30bwjYDL9TwQ+bKI48RAzCQ6v2n
+ qV2atDaT1y0sN6AF5RdLb6gQGF1CETyrJ18bcFeOdCiBCy1OZ5LY3nb5Rf9TDHQu5/5pmyt
+ UDntg+8d/C1a62gGeZCi9eJ/KdDPIrtPmbowISAF8Bgc2PWXR+2yBcxA8YnK6WdgeA1hk3y
+ jRyrRJvVRvdLVJWHLL4a/87QK92zGKG7vSRevUQ/j0OW46bcw6QOS8APIOnQ==
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vQeA2-FnQW0hPv7oK-UTTy; Wed, 03 Dec 2025 04:08:14 +0000
+ id 1vQeA4-FnQW0hPv7oK-Vio3; Wed, 03 Dec 2025 04:08:16 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
 Cc: Joelle van Dyne <j@getutm.app>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RFC 5/7] virtio-gpu-virgl: support scanout of Metal textures
-Date: Tue,  2 Dec 2025 20:07:52 -0800
-Message-ID: <20251203040754.94487-6-j@getutm.app>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH RFC 6/7] console: add cleanup callback for ScanoutTexture
+Date: Tue,  2 Dec 2025 20:07:53 -0800
+Message-ID: <20251203040754.94487-7-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20251203040754.94487-1-j@getutm.app>
 References: <20251203040754.94487-1-j@getutm.app>
@@ -54,10 +51,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers,
  to <abuse-report@smtp2go.com>
-Feedback-ID: 483429m:483429abrvJvs:483429sRlcTQnisq
-X-smtpcorp-track: dv_CflWhdwOb.innxFtf1XVAI.O0bLQAj_GoV
+Feedback-ID: 483429m:483429abrvJvs:483429sV8GMzK9wO
+X-smtpcorp-track: isIJ-mkK3n_R.fTP_atPLNlyE.W9qylQLHPyK
 Received-SPF: pass client-ip=158.120.83.188;
- envelope-from=bounce.k4ef0d26m0hjpq5=lta69ff2eskf=qk5ki1l7zbdzhh@em483429.getutm.app;
+ envelope-from=bounce.kdc83qoplvz4bg6=ssvilxbcuwhy=l7jdvdlr8nd3t7@em483429.getutm.app;
  helo=a4i956.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,121 +78,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When supported, virglrenderer will return a MTLTexture handle that can be
-directly used for scanout.
+Before we introduce changes that allow for QemuConsole to take ownership
+of a texture handle, we need scaffolding that will allow us to callback
+into a cleanup function any time the ScanoutTexture becomes invalid, which
+is whenever the `scanout.kind` or `scanout.texture` gets updated.
+
+The ordering is important: we need to first update the DisplayScanout,
+then we need to notify all the listeners, and once all the listeners have
+had the chance to finish using the previous native texture, we are safe to
+call the cleanup function. This means we need to hold on to the previous
+scanout native handle locally until all listeners are notified.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- meson.build                   |  4 ++++
- include/ui/console.h          |  2 ++
- hw/display/virtio-gpu-virgl.c | 12 +++++++++++-
- hw/display/virtio-gpu.c       |  2 ++
- 4 files changed, 19 insertions(+), 1 deletion(-)
+ include/ui/console.h          |  9 +++++-
+ hw/display/virtio-gpu-virgl.c |  2 +-
+ ui/console.c                  | 56 +++++++++++++++++++++++++++++++----
+ 3 files changed, 59 insertions(+), 8 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index d9293294d8..05bad66376 100644
---- a/meson.build
-+++ b/meson.build
-@@ -832,6 +832,7 @@ version_res = []
- coref = []
- iokit = []
- pvg = not_found
-+metal = not_found
- emulator_link_args = []
- midl = not_found
- widl = not_found
-@@ -859,6 +860,7 @@ elif host_os == 'darwin'
-   host_dsosuf = '.dylib'
-   pvg = dependency('appleframeworks', modules: ['ParavirtualizedGraphics', 'Metal'],
-                    required: get_option('pvg'))
-+  metal = dependency('appleframeworks', modules: 'Metal', required: false)
- elif host_os == 'sunos'
-   socket = [cc.find_library('socket'),
-             cc.find_library('nsl'),
-@@ -2591,6 +2593,7 @@ if xen.found()
-     ('0' + xen_version[2]).substring(-2)
-   config_host_data.set('CONFIG_XEN_CTRL_INTERFACE_VERSION', xen_ctrl_version)
- endif
-+config_host_data.set('CONFIG_METAL', metal.found())
- config_host_data.set('QEMU_VERSION', '"@0@"'.format(meson.project_version()))
- config_host_data.set('QEMU_VERSION_MAJOR', meson.project_version().split('.')[0])
- config_host_data.set('QEMU_VERSION_MINOR', meson.project_version().split('.')[1])
-@@ -4874,6 +4877,7 @@ summary(summary_info, bool_yn: true, section: 'Crypto')
- summary_info = {}
- if host_os == 'darwin'
-   summary_info += {'Cocoa support':           cocoa}
-+  summary_info += {'Metal support':           metal}
- endif
- summary_info += {'D-Bus display':     dbus_display}
- summary_info += {'SDL support':       sdl}
 diff --git a/include/ui/console.h b/include/ui/console.h
-index 25e45295d4..a45b524c57 100644
+index a45b524c57..df9c083a16 100644
 --- a/include/ui/console.h
 +++ b/include/ui/console.h
-@@ -134,12 +134,14 @@ struct QemuConsoleClass {
- typedef enum ScanoutTextureNativeType {
-     SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
-     SCANOUT_TEXTURE_NATIVE_TYPE_D3D,
-+    SCANOUT_TEXTURE_NATIVE_TYPE_METAL,
- } ScanoutTextureNativeType;
+@@ -149,6 +149,11 @@ typedef struct ScanoutTextureNative {
+     .type = SCANOUT_TEXTURE_NATIVE_TYPE_NONE \
+ })
  
- typedef struct ScanoutTextureNative {
-     ScanoutTextureNativeType type;
-     union {
-         void *d3d_tex2d;
-+        void *metal_texture;
-     } u;
- } ScanoutTextureNative;
++/**
++ * Cleanup callback function when ScanoutTexture is about to be destroyed
++ */
++typedef void (*dpy_cleanup_texture)(ScanoutTextureNative *native);
++
+ typedef struct ScanoutTexture {
+     uint32_t backing_id;
+     bool backing_y_0_top;
+@@ -159,6 +164,7 @@ typedef struct ScanoutTexture {
+     uint32_t width;
+     uint32_t height;
+     ScanoutTextureNative native;
++    dpy_cleanup_texture cb_cleanup;
+ } ScanoutTexture;
  
+ typedef struct QemuUIInfo {
+@@ -347,7 +353,8 @@ void dpy_gl_scanout_texture(QemuConsole *con,
+                             uint32_t backing_id, bool backing_y_0_top,
+                             uint32_t backing_width, uint32_t backing_height,
+                             uint32_t x, uint32_t y, uint32_t w, uint32_t h,
+-                            ScanoutTextureNative native);
++                            ScanoutTextureNative native,
++                            dpy_cleanup_texture cb_cleanup);
+ void dpy_gl_scanout_dmabuf(QemuConsole *con,
+                            QemuDmaBuf *dmabuf);
+ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 36c670f988..e091eb0c76 100644
+index e091eb0c76..b7bc095676 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -452,6 +452,13 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
- #if VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION >= SUPPORTED_VIRGL_INFO_EXT_VERSION
-         if (ext.version >= VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION) {
-             switch (ext.native_type) {
-+#ifdef CONFIG_METAL
-+            case VIRGL_NATIVE_HANDLE_METAL_TEXTURE: {
-+                native.type = SCANOUT_TEXTURE_NATIVE_TYPE_METAL;
-+                native.u.metal_texture = ext.native_handle;
-+                break;
-+            }
-+#endif
-             case VIRGL_NATIVE_HANDLE_NONE:
-             case VIRGL_NATIVE_HANDLE_D3D_TEX2D: {
-                 /* already handled above */
-@@ -1198,7 +1205,10 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-     }
- #if VIRGL_VERSION_MAJOR >= 1
-     if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
--        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+        flags |= VIRGL_RENDERER_VENUS;
-+#ifndef CONFIG_METAL /* Metal does not support render server */
-+        flags |= VIRGL_RENDERER_RENDER_SERVER;
-+#endif
-     }
- #endif
+@@ -492,7 +492,7 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
+             info.flags & VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP,
+             info.width, info.height,
+             ss.r.x, ss.r.y, ss.r.width, ss.r.height,
+-            native);
++            native, NULL);
+     } else {
+         dpy_gfx_replace_surface(
+             g->parent_obj.scanout[ss.scanout_id].con, NULL);
+diff --git a/ui/console.c b/ui/console.c
+index 9378afd53d..8271c36586 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -808,6 +808,41 @@ void dpy_gfx_update_full(QemuConsole *con)
+     dpy_gfx_update(con, 0, 0, w, h);
+ }
  
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 43e88a4daf..9cf2c15a43 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1485,12 +1485,14 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-     VirtIOGPU *g = VIRTIO_GPU(qdev);
++struct scanout_change {
++    ScanoutTextureNative native;
++    dpy_cleanup_texture cb_cleanup;
++};
++
++#define SCANOUT_CHANGE_NONE ((struct scanout_change){ NO_NATIVE_TEXTURE })
++
++static struct scanout_change dpy_change_scanout_kind(DisplayScanout *scanout,
++                                                     enum display_scanout kind)
++{
++    struct scanout_change change = SCANOUT_CHANGE_NONE;
++
++    /**
++     * We cannot cleanup until the resource is no longer in use, so we record it
++     * You MUST call dpy_complete_scanout_change after all listeners are updated
++     */
++    if (scanout->kind == SCANOUT_TEXTURE && scanout->texture.cb_cleanup) {
++        change.native = scanout->texture.native;
++        change.cb_cleanup = scanout->texture.cb_cleanup;
++    }
++    scanout->kind = kind;
++
++    return change;
++}
++
++static void dpy_complete_scanout_change(struct scanout_change *change)
++{
++    /**
++     * If we previously have a texture and cleanup is required, we call it now
++     */
++    if (change->native.type != SCANOUT_TEXTURE_NATIVE_TYPE_NONE && change->cb_cleanup) {
++        change->cb_cleanup(&change->native);
++    }
++}
++
+ void dpy_gfx_replace_surface(QemuConsole *con,
+                              DisplaySurface *surface)
+ {
+@@ -818,6 +853,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,
+     DisplayChangeListener *dcl;
+     int width;
+     int height;
++    struct scanout_change change = SCANOUT_CHANGE_NONE;
  
-     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
-+#ifndef CONFIG_METAL
-         if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
-             !virtio_gpu_virgl_enabled(g->parent_obj.conf) &&
-             !virtio_gpu_have_udmabuf()) {
-             error_setg(errp, "need rutabaga or udmabuf for blob resources");
-             return;
+     if (!surface) {
+         if (old_surface) {
+@@ -833,7 +869,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,
+ 
+     assert(old_surface != new_surface);
+ 
+-    con->scanout.kind = SCANOUT_SURFACE;
++    change = dpy_change_scanout_kind(&con->scanout, SCANOUT_SURFACE);
+     con->surface = new_surface;
+     dpy_gfx_create_texture(con, new_surface);
+     QLIST_FOREACH(dcl, &s->listeners, next) {
+@@ -844,6 +880,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,
+     }
+     dpy_gfx_destroy_texture(con, old_surface);
+     qemu_free_displaysurface(old_surface);
++    dpy_complete_scanout_change(&change);
+ }
+ 
+ bool dpy_gfx_check_format(QemuConsole *con,
+@@ -1002,9 +1039,10 @@ void dpy_gl_scanout_disable(QemuConsole *con)
+ {
+     DisplayState *s = con->ds;
+     DisplayChangeListener *dcl;
++    struct scanout_change change = SCANOUT_CHANGE_NONE;
+ 
+     if (con->scanout.kind != SCANOUT_SURFACE) {
+-        con->scanout.kind = SCANOUT_NONE;
++        change = dpy_change_scanout_kind(&con->scanout, SCANOUT_NONE);
+     }
+     QLIST_FOREACH(dcl, &s->listeners, next) {
+         if (con != dcl->con) {
+@@ -1014,6 +1052,7 @@ void dpy_gl_scanout_disable(QemuConsole *con)
+             dcl->ops->dpy_gl_scanout_disable(dcl);
          }
-+#endif
+     }
++    dpy_complete_scanout_change(&change);
+ }
  
- #ifdef VIRGL_VERSION_MAJOR
-     #if VIRGL_VERSION_MAJOR < 1
+ void dpy_gl_scanout_texture(QemuConsole *con,
+@@ -1023,15 +1062,17 @@ void dpy_gl_scanout_texture(QemuConsole *con,
+                             uint32_t backing_height,
+                             uint32_t x, uint32_t y,
+                             uint32_t width, uint32_t height,
+-                            ScanoutTextureNative native)
++                            ScanoutTextureNative native,
++                            dpy_cleanup_texture cb_cleanup)
+ {
+     DisplayState *s = con->ds;
+     DisplayChangeListener *dcl;
++    struct scanout_change change = SCANOUT_CHANGE_NONE;
+ 
+-    con->scanout.kind = SCANOUT_TEXTURE;
++    change = dpy_change_scanout_kind(&con->scanout, SCANOUT_TEXTURE);
+     con->scanout.texture = (ScanoutTexture) {
+         backing_id, backing_y_0_top, backing_width, backing_height,
+-        x, y, width, height, native,
++        x, y, width, height, native, cb_cleanup
+     };
+     QLIST_FOREACH(dcl, &s->listeners, next) {
+         if (con != dcl->con) {
+@@ -1045,6 +1086,7 @@ void dpy_gl_scanout_texture(QemuConsole *con,
+                                              native);
+         }
+     }
++    dpy_complete_scanout_change(&change);
+ }
+ 
+ void dpy_gl_scanout_dmabuf(QemuConsole *con,
+@@ -1052,8 +1094,9 @@ void dpy_gl_scanout_dmabuf(QemuConsole *con,
+ {
+     DisplayState *s = con->ds;
+     DisplayChangeListener *dcl;
++    struct scanout_change change = SCANOUT_CHANGE_NONE;
+ 
+-    con->scanout.kind = SCANOUT_DMABUF;
++    change = dpy_change_scanout_kind(&con->scanout, SCANOUT_DMABUF);
+     con->scanout.dmabuf = dmabuf;
+     QLIST_FOREACH(dcl, &s->listeners, next) {
+         if (con != dcl->con) {
+@@ -1063,6 +1106,7 @@ void dpy_gl_scanout_dmabuf(QemuConsole *con,
+             dcl->ops->dpy_gl_scanout_dmabuf(dcl, dmabuf);
+         }
+     }
++    dpy_complete_scanout_change(&change);
+ }
+ 
+ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
 -- 
 2.41.0
 
