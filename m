@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591CEC9E82E
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B85C9E810
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:37:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjII-0000uc-IB; Wed, 03 Dec 2025 04:37:08 -0500
+	id 1vQjIT-0001CV-Nf; Wed, 03 Dec 2025 04:37:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjI8-0000oC-GR; Wed, 03 Dec 2025 04:36:57 -0500
+ id 1vQjIA-0000r1-Ax; Wed, 03 Dec 2025 04:37:00 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjI5-00076D-QV; Wed, 03 Dec 2025 04:36:56 -0500
+ id 1vQjI8-00076j-DZ; Wed, 03 Dec 2025 04:36:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E989F1708B6;
- Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0C4B51708B7;
+ Wed, 03 Dec 2025 12:35:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D251632B5AD;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E699132B5AE;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Jean-Louis Dupond <jean-louis@dupond.be>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Fiona Ebner <f.ebner@proxmox.com>, Kevin Wolf <kwolf@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 87/96] file-posix: populate pwrite_zeroes_alignment
-Date: Wed,  3 Dec 2025 12:35:20 +0300
-Message-ID: <20251203093612.2370716-11-mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 88/96] block: use pwrite_zeroes_alignment when writing
+ first sector
+Date: Wed,  3 Dec 2025 12:35:21 +0300
+Message-ID: <20251203093612.2370716-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -61,52 +63,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Linux block devices require write zeroes alignment whereas files do not.
+Since commit 5634622bcb33 ("file-posix: allow BLKZEROOUT with -t
+writeback"), qemu-img create errors out on a Linux loop block device
+with a 4 KB sector size:
 
-It may come as a surprise that block devices opened in buffered I/O mode
-require the alignment for write zeroes requests although normal
-read/write requests do not.
+  # dd if=/dev/zero of=blockfile bs=1M count=1024
+  # losetup --sector-size 4096 /dev/loop0 blockfile
+  # qemu-img create -f raw /dev/loop0 1G
+  Formatting '/dev/loop0', fmt=raw size=1073741824
+  qemu-img: /dev/loop0: Failed to clear the new image's first sector: Invalid argument
 
-Therefore it is necessary to populate the pwrite_zeroes_alignment field.
+Use the pwrite_zeroes_alignment block limit to avoid misaligned
+fallocate(2) or ioctl(BLKZEROOUT) in the block/file-posix.c block
+driver.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20251007141700.71891-2-stefanha@redhat.com>
+Fixes: 5634622bcb33 ("file-posix: allow BLKZEROOUT with -t writeback")
+Reported-by: Jean-Louis Dupond <jean-louis@dupond.be>
+Buglink: https://gitlab.com/qemu-project/qemu/-/issues/3127
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20251007141700.71891-3-stefanha@redhat.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 98e788b91ad037193b1fb375561ef7e0fef3c2fd)
+(cherry picked from commit d704a13d2c025779bc91d04e127427347ddcf3b3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 8c738674ce..827ffa77a5 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1602,6 +1602,22 @@ static void raw_refresh_limits(BlockDriverState *bs, Error **errp)
+diff --git a/block.c b/block.c
+index 8848e9a7ed..be77e03904 100644
+--- a/block.c
++++ b/block.c
+@@ -606,12 +606,13 @@ create_file_fallback_zero_first_sector(BlockBackend *blk,
+                                        int64_t current_size,
+                                        Error **errp)
+ {
++    uint32_t alignment = blk_get_pwrite_zeroes_alignment(blk);
+     int64_t bytes_to_clear;
+     int ret;
  
-             bs->bl.pdiscard_alignment = dalign;
-         }
+     GLOBAL_STATE_CODE();
+ 
+-    bytes_to_clear = MIN(current_size, BDRV_SECTOR_SIZE);
++    bytes_to_clear = MIN(current_size, MAX(BDRV_SECTOR_SIZE, alignment));
+     if (bytes_to_clear) {
+         ret = blk_co_pwrite_zeroes(blk, 0, bytes_to_clear, BDRV_REQ_MAY_UNMAP);
+         if (ret < 0) {
+diff --git a/block/block-backend.c b/block/block-backend.c
+index d6df369188..98315d4470 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2305,6 +2305,17 @@ uint32_t blk_get_request_alignment(BlockBackend *blk)
+     return bs ? bs->bl.request_alignment : BDRV_SECTOR_SIZE;
+ }
+ 
++/* Returns the optimal write zeroes alignment, in bytes; guaranteed nonzero */
++uint32_t blk_get_pwrite_zeroes_alignment(BlockBackend *blk)
++{
++    BlockDriverState *bs = blk_bs(blk);
++    IO_CODE();
++    if (!bs) {
++        return BDRV_SECTOR_SIZE;
++    }
++    return bs->bl.pwrite_zeroes_alignment ?: bs->bl.request_alignment;
++}
 +
-+#ifdef __linux__
-+        /*
-+         * Linux requires logical block size alignment for write zeroes even
-+         * when normal reads/writes do not require alignment.
-+         */
-+        if (!s->needs_alignment) {
-+            ret = probe_logical_blocksize(s->fd,
-+                                          &bs->bl.pwrite_zeroes_alignment);
-+            if (ret < 0) {
-+                error_setg_errno(errp, -ret,
-+                                 "Failed to probe logical block size");
-+                return;
-+            }
-+        }
-+#endif /* __linux__ */
-     }
+ /* Returns the maximum hardware transfer length, in bytes; guaranteed nonzero */
+ uint64_t blk_get_max_hw_transfer(BlockBackend *blk)
+ {
+diff --git a/include/system/block-backend-io.h b/include/system/block-backend-io.h
+index ba8dfcc7d0..6d5ac476fc 100644
+--- a/include/system/block-backend-io.h
++++ b/include/system/block-backend-io.h
+@@ -116,6 +116,7 @@ BlockAIOCB *blk_abort_aio_request(BlockBackend *blk,
+                                   void *opaque, int ret);
  
-     raw_refresh_zoned_limits(bs, &st, errp);
+ uint32_t blk_get_request_alignment(BlockBackend *blk);
++uint32_t blk_get_pwrite_zeroes_alignment(BlockBackend *blk);
+ uint32_t blk_get_max_transfer(BlockBackend *blk);
+ uint64_t blk_get_max_hw_transfer(BlockBackend *blk);
+ 
 -- 
 2.47.3
 
