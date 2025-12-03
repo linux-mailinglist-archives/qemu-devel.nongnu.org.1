@@ -2,117 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FF5C9E12C
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 08:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841B8C9E1BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 09:01:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQhVz-0000wL-MD; Wed, 03 Dec 2025 02:43:07 -0500
+	id 1vQhmD-0008FW-5u; Wed, 03 Dec 2025 02:59:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vQhVx-0000vo-KH
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 02:43:05 -0500
-Received: from 5.mo548.mail-out.ovh.net ([188.165.49.213])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vQhm7-0008Cv-Lt; Wed, 03 Dec 2025 02:59:47 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vQhVt-0003CN-B4
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 02:43:05 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.109.254.190])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4dLqP42BdFz5xx4;
- Wed,  3 Dec 2025 07:42:48 +0000 (UTC)
-Received: from kaod.org (37.59.142.114) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Wed, 3 Dec
- 2025 08:42:47 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-114S008e0e6ef19-46c0-4b61-b9a0-b4f8f1365fd2,
- 7CF4215FC0CD5ED8F770F0F10A27EC8E0B7CCE65) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <8f8fb825-891a-4c06-9676-4aa232cd4642@kaod.org>
-Date: Wed, 3 Dec 2025 08:42:46 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vQhm3-0006C6-MF; Wed, 03 Dec 2025 02:59:47 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CFAF617075E;
+ Wed, 03 Dec 2025 10:59:21 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9DF2532B485;
+ Wed, 03 Dec 2025 10:59:39 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.7 v2 000/116] Patch Round-up for stable 10.0.7,
+ freeze on 2025-12-01 (actually on 2025-12-03, frozen)
+Date: Wed,  3 Dec 2025 10:59:01 +0300
+Message-ID: <qemu-stable-10.0.7-20251203105830@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] aspeed: Deprecate the fby35 machine
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
- <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
- <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Peter Delevoryas <peter@pjd.dev>
-References: <20251126102424.927527-1-clg@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20251126102424.927527-1-clg@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.114]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: e1a66fb2-730e-45e6-ad10-f371b3a4d3d7
-X-Ovh-Tracer-Id: 16859225205124598773
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEiJDI6xp1wtHoBhKHxt/a/gaqAsJk/T0a2Peml+dGXwjObAnmGKErGk8E2bNxh2P2FLe3rrqXWYs+HV/vMtUoF7Rck57mNFxio5krBKkZZFhBfxmtvSf/Y0zMbS/R1N/fSRo3dgJO4jk0+h8J52i2nzGjPG2vDnaQ78Bma4Mdx439VhoXauCFpVCicCij2SvzjM0aTBFhUnJBFupeUiAMlCRpTt8YXC+fIJ7d/6iTKNRjBHWAcxccsXO6wQWsQqhiBqeoelMpMeQgXFLZlgH1HodiVc6/qwKDzjbjdAAROljmnQg5s6mk0s8ceHAlV+G+V3FRSD6T4qiGQ3kEBpO5JhS6qqEaTIG/T8g9soeWbXM+2BfIuOG5sFJ707PcXTEwZuRfsP26thBsDk6YMHmg3v5CXnTMkZyjnZObiBydOO/ux/D4vBLdIUs6shR2rlUZOx1EBzLDMjS+Xq8vg36KbHLod2lY+STLvjlRo5euXS9uAweK4fGgcKY31qjpz5eTAFn1qkfrDf1xTc5VvvIDiXBqTj4m696bmmcjJTZazog+YZct2e4vP60kDXDI1FAcB4R3wz1VImnCcYJICeW+L33MFVQn96yUeLpaNmwS6KNStezmU+zjFINhruyFeagsHHpIV8yTIM3xZr/q3+oToxRKVTmquN3XGHfkng/Q9ng
-DKIM-Signature: a=rsa-sha256; bh=cNxu5mVapLPyJ9OxitqpO+7QXJHIloBBgxoSaRf1kLg=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1764747771; v=1;
- b=daFlUXc0/zYX3WpxoQH+Bb6oanQfQBgmpJL2pBLf6K/a3TJriLixvqGTybAyK7ixo0NF3l1f
- B0uQa/PiC6OuNOhu7Yq8QvMQUQ7FgPstKLJs/H1LdzOgqzVWrib3icinWhcbPVeuZNQeGfzM8i4
- rARaInm/McFk2PrPfkSk1I+bXRvexeLv7eTVkK0r5Yzrw/jtH0NqLA8AoaGIGlSHhCAfbBXd642
- EWWXtuXQW1Xqa+roWKqtvFjZhV2XaorwuNgB+nIISWAnrRb3OGhY2caOq/Ha53Yrry2t8mfHUD1
- PjiWU+pXZyS/dM/7Hv87zeI7lEVkj4ujfbk/bqeCsOyHg==
-Received-SPF: pass client-ip=188.165.49.213; envelope-from=clg@kaod.org;
- helo=5.mo548.mail-out.ovh.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,28 +57,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The following patches are queued for QEMU stable v10.0.7:
 
-On 11/26/25 11:24, Cédric Le Goater wrote:
-> There are no functional tests for the 'fby35' machine which makes
-> harder to determine when something becomes deprecated or unused.
-> 
-> The 'fby35' machine was originally added as an example of a multi-SoC
-> system, with the expectation the models would evolve over time in an
-> heterogeneous system. This hasn't happened and no public firmware is
-> available to boot it. It can be replaced by the 'ast2700fc', another
-> multi-SoC machine based on the newer AST2700 SoCs which are excepted
-> to receive better support in the future.
-> 
-> Cc: Peter Delevoryas <peter@pjd.dev>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
+Patch freeze was 2025-12-01, and the release was planned for 2025-12-03;
+however, both dates were moved by 2 days:
 
-No objections ? If not, I will queue the deprecation for QEMU 10.2.
-Since deprecation is tolerated in the -rc phase.
+  https://wiki.qemu.org/Planning/10.0
 
-Thanks,
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-C.
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
+Thanks!
+
+/mjt
+
+--------------------------------------
+01* 77dc9d662f80 Peter Maydell:
+   tests/tcg/multiarch/linux/linux-test: Don't try to test atime update
+02* 0c6d6d79a5cb Dongwon Kim:
+   ui/gtk-gl-area: Remove extra draw call in refresh
+03* 270b28681e36 Thomas Huth:
+   hw/ppc/e500: Check for compatible CPU type instead of aborting ungracefully
+04* 3f462d79a080 Peter Maydell:
+   target/arm: Fix reads of CNTFRQ_EL0 in linux-user mode
+05* e41139eaad1d Zejun Zhao:
+   hw/riscv: Correct mmu-type property of sifive_u harts in device tree
+06* 5e3e066e4ac8 Jialong Yang:
+   aplic: fix mask for smsiaddrcfgh
+07* 86b8c3821496 Daniel Henrique Barboza:
+   target/riscv/kvm: add senvcfg CSR
+08* 775ac57e0a54 Daniel Henrique Barboza:
+   target/riscv/kvm: read/write KVM regs via env size
+09* 8ab99a05f34b Daniel Henrique Barboza:
+   target/riscv/kvm: add scounteren CSR
+10* 2a21cbee47a1 Daniel Henrique Barboza:
+   target/riscv/kvm: fix env->priv setting in reset_regs_csr()
+11* 06e01941ffca Daniel Henrique Barboza:
+   target/riscv: fix riscv_cpu_sirq_pending() mask
+12* 2c147611cf56 Daniel P. Berrangé:
+   io: release active GSource in TLS channel finalizer
+13* 322c3c4f3abe Daniel P. Berrangé:
+   io: move websock resource release to close method
+14* b7a1f2ca45c7 Daniel P. Berrangé:
+   io: fix use after free in websocket handshake code
+15* 3995fc238e05 Daniel P. Berrangé:
+   crypto: stop requiring "key encipherment" usage in x509 certs
+16* 6910f04aa646 Fiona Ebner:
+   hw/scsi: avoid deadlock upon TMF request cancelling with VirtIO
+17* 1a8ffd6172f3 Peter Maydell:
+   target/hppa: Set FPCR exception flag bits for non-trapped exceptions
+18* 575264e9083b Akihiko Odaki:
+   nw/nvram/ds1225y: Fix nvram MemoryRegion owner
+19* fb722e1dc2d8 Helge Deller:
+   hw/hppa: Fix interrupt of LASI parallel port
+20* 36ec1a829a07 Mark Cave-Ayland:
+   esp.c: fix esp_cdb_ready() FIFO wraparound limit calculation
+21* e9d02b59316f Mark Cave-Ayland:
+   qtest/am53c974-test: add additional test for cmdfifo overflow
+22* 7c7089321670 Bastian Blank:
+   linux-user: Use correct type for FIBMAP and FIGETBSZ emulation
+23* 0db2de22fcbf Peter Maydell:
+   linux-user: permit sendto() with NULL buf and 0 len
+24* d5e1d2dea11b Paolo Bonzini:
+   target/i386: clear CPU_INTERRUPT_SIPI for all accelerators
+25* d1193481dee6 peng guo:
+   hw/i386/pc: Avoid overlap between CXL window and PCI 64bit BARs in QEMU 
+   10.0.x
+26* 639a29422754 Xiaoyao Li:
+   i386/kvm/cpu: Init SMM cpu address space for hotplugged CPUs
+27* 6eda39a87f4f Daniel P. Berrangé:
+   block: remove 'detached-header' option from opts after use
+28* c86488abaf01 Daniel P. Berrangé:
+   block: fix luks 'amend' when run in coroutine
+29* ad97769e9dcf Richard W.M. Jones:
+   block/curl.c: Fix CURLOPT_VERBOSE parameter type
+30* 524fc77d2322 Sean Anderson:
+   gdbstub: Fix %s formatting
+31* a04c5ba543c1 Edgar E. Iglesias:
+   target/microblaze: Remove unused arg from check_divz()
+32* 0e46b4d1f13b Edgar E. Iglesias:
+   target/microblaze: div: Break out raise_divzero()
+33* cfc1d54251d3 Edgar E. Iglesias:
+   target/microblaze: Handle signed division overflows
+34* df7e9243d540 Ilya Leoshkevich:
+   target/s390x: Fix missing interrupts for small CKC values
+35* dacfec5157fb Ilya Leoshkevich:
+   target/s390x: Fix missing clock-comparator interrupts after reset
+36* fc976a67ded4 Ilya Leoshkevich:
+   target/s390x: Use address generation for register branch targets
+37* 0408c61e27ac Ilya Leoshkevich:
+   tests/tcg/s390x: Test SET CLOCK COMPARATOR
+38* 75e2cb144191 Xiaoyao Li:
+   hostmem/shm: Allow shm memory backend serve as shared memory for coco-VMs
+39* 4f503afc7eb5 Peter Maydell:
+   target/x86: Correctly handle invalid 0x0f 0xc7 0xxx insns
+40* fde5930cc371 Albert Esteve:
+   vhost-user: fix shared object lookup handler logic
+41* 3e6ad83f209e Shameer Kolothum:
+   tests/qtest/bios-tables-test: Prepare for _DSM change in the DSDT table
+42* 325aa2d86a20 Eric Auger:
+   hw/pci-host/gpex-acpi: Fix _DSM function 0 support return value
+43* ccf166d89dcf Shameer Kolothum:
+   tests/qtest/bios-tables-test: Update DSDT blobs after GPEX _DSM change
+44* f00bcc833790 Akihiko Odaki:
+   qemu-img: Fix amend option parse error handling
+45* 909852ba6b4a Alberto Garcia:
+   qemu-img rebase: don't exceed IO_BUF_SIZE in one operation
+46* 4c91719a6a78 Alberto Garcia:
+   tests/qemu-iotest: fix iotest 024 with qed images
+47* 59506e59e0f0 Eric Blake:
+   qio: Add trace points to net_listener
+48* 6e03d5cdc991 Eric Blake:
+   qio: Unwatch before notify in QIONetListener
+49* b5676493a08b Eric Blake:
+   qio: Remember context of qio_net_listener_set_client_func_full
+50* 9d86181874ab Eric Blake:
+   qio: Protect NetListener callback with mutex
+51* 6da0c9828194 Peter Maydell:
+   hw/net/e1000e_core: Don't advance desc_offset for NULL buffer RX 
+   descriptors
+52* 9d946d56a2ac Peter Maydell:
+   hw/net/e1000e_core: Correct rx oversize packet checks
+53* bab496a18358 Peter Maydell:
+   hw/net/e1000e_core: Adjust e1000e_write_payload_frag_to_rx_buffers() 
+   assert
+54* a01344d9d780 Peter Maydell:
+   net: pad packets to minimum length in qemu_receive_packet()
+55* f52db7f34242 Peter Maydell:
+   hw/display/xlnx_dp.c: Don't abort on AUX FIFO overrun/underrun
+56* 032333eba77b Peter Maydell:
+   hw/display/xlnx_dp: Don't abort for unsupported graphics formats
+57* 5fc50b4ec841 Peter Maydell:
+   hw/misc/npcm_clk: Don't divide by zero when calculating frequency
+58* 71365ee43312 Vincent Vanlaer:
+   block: get type of block allocation in commit_run
+59* 23743ab282af Vincent Vanlaer:
+   block: move commit_run loop to separate function
+60* 0648c76ad198 Vincent Vanlaer:
+   block: refactor error handling of commit_iteration
+61* 6f3199f99600 Vincent Vanlaer:
+   block: allow commit to unmap zero blocks
+62* 68aba2a93503 Vincent Vanlaer:
+   block: add test non-active commit with zeroed data
+63* 863449cc8ec7 Alex Bennée:
+   tests: move test_xen assets to share.linaro.org
+64* dfaf3695b20d Alex Bennée:
+   tests: move test_virt assets to share.linaro.org
+65* 5ff8d1fac98b Alex Bennée:
+   tests: move test_netdev_ethtool to share.linaro.org
+66* 533b5ac2d6a8 Alex Bennée:
+   tests: move test_kvm_xen to share.linaro.org
+67* 497d3e87ce2d Alex Bennée:
+   tests: move test_virt_gpu to share.linaro.org
+68* 89d22536d1a1 Hanna Czenczek:
+   rbd: Run co BH CB in the coroutine’s AioContext
+69* deb35c129b85 Hanna Czenczek:
+   nfs: Run co BH CB in the coroutine’s AioContext
+70* 53d5c7ffac7b Hanna Czenczek:
+   curl: Fix coroutine waking
+71* 7a501bbd5194 Hanna Czenczek:
+   nvme: Kick and check completions in BDS context
+72* 0f142cbd919f Hanna Czenczek:
+   nvme: Fix coroutine waking
+73* 9b9ee60c07f5 Hanna Czenczek:
+   block/io: Take reqs_lock for tracked_requests
+74* 124ab930ba38 Daniel P. Berrangé:
+   tests/functional: fix formatting of exception args
+75* 335da23abec8 Daniel P. Berrangé:
+   tests/functional: handle URLError when fetching assets
+76* a344e22917f4 Yannick Voßen:
+   hw/dma/zynq-devcfg: Fix register memory
+77* 9c3b76a0d406 Philippe Mathieu-Daudé:
+   hw/southbridge/lasi: Correct LasiState parent
+78* ebd9ea2947d8 Peter Maydell:
+   target/i386: Mark VPERMILPS as not valid with prefix 0
+79* ebb46ba6a4a2 Paolo Bonzini:
+   target/i386/tcg: validate segment registers
+80* 9c3afb9d9b92 Paolo Bonzini:
+   target/i386: svm: fix sign extension of exit code
+81* 106d766c9d5b Paolo Bonzini:
+   target/i386: fix stack size when delivering real mode interrupts
+82 4e3823c68cc5 Cornelia Huck:
+   tests/functional/test_vnc: skip test if no crypto backend available
+83 22baa5f340d4 Thomas Huth:
+   gitlab-ci: Remove the avocado tests from the CI pipelines
+84 bc65ae696104 Thomas Huth:
+   tests/functional: Move the check for the parameters from avocado to 
+   functional
+85 951ededf12a8 Thomas Huth:
+   tests/functional: Convert reverse_debugging tests to the functional 
+   framework
+86 0e756f404d73 Thomas Huth:
+   tests/functional: Convert the i386 replay avocado test
+87 574f71bc1f22 Thomas Huth:
+   tests/avocado: Remove the LinuxKernelTest class
+88 42a87f0ce7aa Thomas Huth:
+   tests/functional: Convert the 32-bit big endian Wheezy mips test
+89 689a8b56a6f3 Thomas Huth:
+   tests/functional: Convert the 32-bit little endian Wheezy mips test
+90 8e3461c3a6fc Thomas Huth:
+   tests/functional: Convert the 64-bit little endian Wheezy mips test
+91 f79592f427d7 Thomas Huth:
+   tests/functional: Convert the 64-bit big endian Wheezy mips test
+92 e83aee9c6a0f Thomas Huth:
+   tests/avocado: Remove the boot_linux.py tests
+93 7fecdb0acd99 Thomas Huth:
+   tests/functional: Use the tuxrun kernel for the x86 replay test
+94 a820caf8444c Thomas Huth:
+   tests/functional: Use the tuxrun kernel for the aarch64 replay test
+95 5c2bae2155b1 Thomas Huth:
+   tests/functional: Convert the SMMU test to the functional framework
+96 f8c548441759 Thomas Huth:
+   gitlab-ci: Update QEMU_JOB_AVOCADO and QEMU_CI_AVOCADO_TESTING
+97 5748e4641509 Thomas Huth:
+   docs/devel/testing: Dissolve the ci-definitions.rst.inc file
+98 52e9ed6d3ac4 Thomas Huth:
+   Remove the remainders of the Avocado tests
+99 858640eaee9f Thomas Huth:
+   tests/functional: Remove semicolons at the end of lines
+100 99fb9256b761 Thomas Huth:
+   tests/functional: Remove unnecessary import statements
+101 12c6b6153063 Thomas Huth:
+   MAINTAINERS: Add functional tests that are not covered yet
+102 5fbcbf76a19a Jack Wang:
+   qmp: Fix a typo for a USO feature
+103 0b5bf4ea7620 Li Zhijian:
+   migration: Fix transition to COLO state from precopy
+104 510d5c61ad3e Jamin Lin:
+   hw/arm/aspeed: Fix missing SPI IRQ connection causing DMA interrupt 
+   failure
+105 4a934d284dfa Peter Maydell:
+   hw/arm/armv7m: Disable reentrancy guard for v7m_sysreg_ns_ops MRs
+106 579be921f509 Peter Maydell:
+   hw/display/exynos4210_fimd: Account for zero length in 
+   fimd_update_memory_section()
+107 303f6049358e Philippe Mathieu-Daudé:
+   chardev/char-pty: Do not ignore chr_write() failures
+108 4c1646e23f76 AlanoSong@163.com:
+   ui/vnc: Fix qemu abort when query vnc info
+109 8eeaa706ba73 Kevin Wolf:
+   block-backend: Fix race when resuming queued requests
+110 eb3e5de450 Fiona Ebner:
+   block/io_uring: avoid potentially getting stuck after resubmit at the end 
+   of ioq_submit()
+111 ef44cc0a7624 Peter Maydell:
+   hw/pci: Make msix_init take a uint32_t for nentries
+112 98ee8aa92e93 Peter Xu:
+   hw/core/machine: Provide a description for aux-ram-share property
+113 57756aa01fe5 Cédric Le Goater:
+   hw/aspeed/{xdma, rtc, sdhci}: Fix endianness to DEVICE_LITTLE_ENDIAN
+114 7248dab3c9d7 Harald van Dijk:
+   target/arm: Fix assert on BRA.
+115 ebb625262c7f Peter Maydell:
+   docs/devel: Update URL for make-pullreq script
+116 88be119fb19b Markus Armbruster:
+   kvm: Fix kvm_vm_ioctl() and kvm_device_ioctl() return value
+
+(commit(s) marked with * were in previous series and are not resent)
 
