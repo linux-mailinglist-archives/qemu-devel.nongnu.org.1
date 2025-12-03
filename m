@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F716CA0BBC
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:01:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2581CA0CF8
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 19:11:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQr9j-0006Ga-Vj; Wed, 03 Dec 2025 13:00:48 -0500
+	id 1vQrJA-0000oc-5Z; Wed, 03 Dec 2025 13:10:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vQr9d-0006G8-NT
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:00:41 -0500
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ id 1vQrJ7-0000o1-DO
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:10:29 -0500
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vQr9b-0005Yr-5F
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:00:41 -0500
+ id 1vQrJ5-0001sc-0b
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 13:10:29 -0500
 Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 005C347BD7
- for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:00:35 +0000 (UTC)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id CAB444CA43
+ for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1764784836;
- bh=OHlye2ZAQqxCz3/KUtTkkvzumV4gCbwR8YOIOlxvga8=;
+ s=20210803; t=1764785424;
+ bh=NpsZVEACQT0iz40flFTD0RazS5NlxLI0jy8SYbsuX9Y=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=Aib6degYRsqX3GhkKkDzD/8SrnQI0+rl307jN2j4SdpGhq1OWiYke0WTB6sGunSHQ
- U1SUV8OchYPHBTDq3kjX/iG0cp5sGEBCEKYj53gTbPIpxBa/Ezm+e1WjcmRccI51mc
- ryfYlpuWMMj3MXqmZUnx7whqjTRk09/mrw6xBw8Y9HHcA8Ju/5+JIW2i8AjEd3zdz7
- AIJhBK0RVIuxEXeRIR5FjmaAeHvhtLF4tUOshQcWidQYV9QCsaZ5vO3AeqC34yrwoR
- tkpaxSJdP9s200L1ydgbIj1cikvti0HHNMd0ps16+KIjvH/9oPVCIVRXXRopi7THeT
- 7q2dzgrC9b8bg==
+ b=GCvk+MBn9atKakHNLO6ZFBByWhYhkGFo8yPfXIiNj4DptU5+M24MRzijIHL+57+id
+ 4o2xZyUFzAGVOP4ZmpwQHqZ9cAaOa/hWDlbWsGYGW/HBjelRY3Dl529AwlOetSdi9r
+ mmswpRBr3WhKeFQ0vQ8rDvxFIUuxJL1RZTRhQpyc9mUqKAgW0aQTnNNw8wAL9pUW/b
+ x/xrH7WML9gf1e5q2yZjDU7KoY2pEaBVEvUWxiHbkSfbrs7jQAmg7EidKlF03MteKk
+ j9yy5+F5MHPXWI2IM6qpOpk38evYZ304EwIbalYEw9nte21mK15aOqtfKQh52DIw76
+ J/MoNbDCiJSRg==
 Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id DD4447F1C0
- for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:00:35 +0000 (UTC)
+ by scripts.lp.internal (Postfix) with ESMTP id B4D0C7EA93
+ for <qemu-devel@nongnu.org>; Wed,  3 Dec 2025 18:10:24 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Dec 2025 17:53:17 -0000
-From: qianqiu <2133188@bugs.launchpad.net>
+Date: Wed, 03 Dec 2025 18:01:56 -0000
+From: Heinrich Schuchardt <2133188@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
 X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
@@ -54,9 +54,9 @@ X-Launchpad-Bug-Private: no
 X-Launchpad-Bug-Security-Vulnerability: no
 X-Launchpad-Bug-Commenters: janitor qianqiu-2020 xypron
 X-Launchpad-Bug-Reporter: qianqiu (qianqiu-2020)
-X-Launchpad-Bug-Modifier: qianqiu (qianqiu-2020)
+X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
 References: <176429928488.3164788.8613118615925713152.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <176478439800.3432632.8043110854492333492.malone@juju-98d295-prod-launchpad-2>
+Message-Id: <176478491609.3945780.7736196911036547793.malone@juju-98d295-prod-launchpad-3>
 Subject: [Bug 2133188] Re: Illegal instruction in memset under qemu-user for
  riscv64
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
@@ -65,9 +65,9 @@ Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
  Instance="launchpad-scripts"
-X-Launchpad-Hash: e5db04de1dd06c2636722bc0fbc045530f42df60
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Launchpad-Hash: 67c91081155666388f6327e35d42a082eaef6877
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -90,11 +90,12 @@ Reply-To: Bug 2133188 <2133188@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The root cause of the invalid instructions is that qemu-user does not corre=
-ctly handle saving and restoring the vector context when switching signal s=
-tack frames. Although community patches addressing this issue exist, they r=
-emain unmerged. Details can be found here:
-https://lists.nongnu.org/archive/html/qemu-riscv/2025-09/msg00096.html
+@qianqiu wrote in a mail:
+
+Inside the RISC-V container:
+QEMU_GDB=3D10000 cmake --system-information
+This launches your program with QEMU=E2=80=99s built-in GDB server listenin=
+g on port 10000.
 
 --=20
 You received this bug notification because you are a member of qemu-
