@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83E7C9FDBF
+	by mail.lfdr.de (Postfix) with ESMTPS id A481EC9FDBB
 	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 17:16:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQpVW-0004BP-PZ; Wed, 03 Dec 2025 11:15:10 -0500
+	id 1vQpVY-0004ES-BL; Wed, 03 Dec 2025 11:15:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVU-0004A5-EO
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:08 -0500
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1vQpVV-0004Az-Mc
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:09 -0500
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vQpVS-0006Yd-QC
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:08 -0500
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-3e3dac349easo5217884fac.2
- for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 08:15:06 -0800 (PST)
+ id 1vQpVU-0006Z4-3K
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 11:15:09 -0500
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-6592f1f55a8so1549445eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Dec 2025 08:15:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764778505; x=1765383305; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764778507; x=1765383307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ByvILIj3hIVKvB3nld8A94yUCZSu7vP7Hj6QwoTLuOM=;
- b=Ot2Y8h/lMZ3dwffRPF9DUo/8WrfJ2ruFuyWHGMLHz60M4HK7Crb4Hh4C5svcupvrTn
- tWz89h6fcTnt319KPXm3i3DjkzBIp0mZB+e7YTh7Dl3gS7EfEUJNw4yq+TNiVVYrXPcR
- cnhib9XFmL1EkCs3zSCx2desd+JpPVzIhIT1cvEzJpC+tOq8EYRxK6zgnW+Qpt8dLhwU
- HI1O01tw9kiYovemiAZzBv3dtAr3qmY5ww/XNIS2AQ3u6vaFemP5h+pL4wFwah/rmyVK
- ZuHWBtKGVnyaVVDK1djSomrOiYxkSGyY/r+6QqELyj9jRwJZDBVH3WTcceVXd9TncTxp
- mKyQ==
+ bh=umT5Z14AhC/R+eDB/nFLqwC+LDiOvYbjL0xjqvp99eo=;
+ b=eJW5/pw/Lc0pCbK5PL7T9sivS+l99TfMdAWconEOT+xXNvR9Hm5haLYrKB1R+GYeaX
+ BdyZYpxFKDNh/7EP3W9HDq6FR0s7C8S3LmqQASBrITNiGTjOz6JI5tGuijHcjoTiGPxd
+ qBWNkR4z7jkPAlHix7yRsHmE/IyINNc8DvIHr7s+lKDobjoJ+q//lfz/rM4GhvkLKrDy
+ k7U2OWY3Cu/xOEY8tQMJPZ25IY/L8zlWQ3pb3DYXWesjc+oVjS/oF63oQXVVkBgxFhXL
+ w+2uy3gS5mjw8AeOfkXxfbwidBCWgQKeabRxJAKoraAt4bsK3zzfRTEkoUuyhRa8GBke
+ sTJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764778505; x=1765383305;
+ d=1e100.net; s=20230601; t=1764778507; x=1765383307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ByvILIj3hIVKvB3nld8A94yUCZSu7vP7Hj6QwoTLuOM=;
- b=bxAHEYuPGGspdFgU+INi/PZctUWmcW9s3IDpVB7JVqcT/a6uYSleZhD3kM+661zNzx
- Mpi3OaSyqAhDhg3jIfY97j5AxUnBnobs+8AZ5samt/MfQZZaLD6pKA38KgAOKvy/qUtA
- ALA93omma3q7myt7HaxBTI8vLytSuff5c7PxqaeV8Wmau5Pqt9F+VuijTaL8bt+71nwF
- ocROC+b9/0rPbB17L+TJF0lMw6cSkU4Kbscs7tCIxMW/tJKRzOQocpmt8W0wfLmIueKT
- HraoQve3dEfNapFSRv9ed6ia0S+XrLvQ4wArAp2lf9aidJ1MGpFgxgIxMZZ1yCtNUAX9
- go6w==
-X-Gm-Message-State: AOJu0YxtOeMgWN4ZXdgTIEtDOn3HlogGLEpvg1PyEV/+2C/FSgRozZ5r
- urmzc+LfRx1uHWcRpvY7vzTHFyegX7+nuVqitMcI0A46vEXw1ieFJmfVhyyfAwKZvRWr/rPmCUS
- +3/yKhzE=
-X-Gm-Gg: ASbGncsYBv1gYGtdb2v0VgZWVj6cJTkWAJlR8JBPzCot3NayWQHebbib2SfOUV8SRCo
- HMRc0enmDw84wfNQvHizxvZ/rgY3n6UTMQTAG4+Blgq+JfW324ONU8Zkt52asnzhFjOXqNobeJh
- 6DAg3q7OYrEGcQ6CP25pDOuyT4QXGk/B6X/n5NB1pAU76J4VpEOK7Dhu0zQfUl2IzPwOybPn4t6
- S1EU66rg67I8006OfjycRAzphpDxjeyL1D9VFIQKLdlAT611IbWhjUGjSkCBzNNNoVhqq4nlI5S
- UK5IcN8/ss0XKzgh4QU6PVcgTPFJwa/BDOTfLmVJPS90p2eSNOqDA5pQy1meMo1zPPxUdnZEYtI
- aoTD/7OvFpPeKmqIZZ7XWvgIHnQqxUpcA2iKN4stygKKaaCLljB8OhI+7mL+4fud/rc47Ndo6zH
- hwU83VRkH/32NO/T2qCQBTAV0uMFCH
-X-Google-Smtp-Source: AGHT+IG0pl+gxlwdgno9rQgnnNl6tDykdBTtV+SsdxuTRECY3i9JFG+XmLE6cA9MDwiDWeefkndUUg==
-X-Received: by 2002:a05:6871:a913:b0:3dc:b701:c9b3 with SMTP id
- 586e51a60fabf-3f169473cfdmr1683937fac.45.1764778505480; 
- Wed, 03 Dec 2025 08:15:05 -0800 (PST)
+ bh=umT5Z14AhC/R+eDB/nFLqwC+LDiOvYbjL0xjqvp99eo=;
+ b=lxGDJFYX/L2ARnaHlHqivChtV0oasLAcfc8xdSpb1/fOKi6LZujOJoAPL2lFOI11WR
+ 4gZ7X+QgiETocQ+edS8xzxnHtHustGXhmnp15heEuQxdYYNlCHk7jzDqVGXXtFq6BMIe
+ 8M+K9642sg4+z+4jkAtc4Yr3wIUThwT8mob7yrmM/9IgctbdDY3n51HbIjcuzat3XLHl
+ UE/7x1mz/lVq46rYQrzEYvNoDzlvCh2Fm4VPtX/cr4QTRXrmwMsRwnMyyxw+7SZl/gbl
+ VLUgRFLrV7xy5JNTMh5k+u43CFDGTW3R0kfC2IFAqBJGDkT7nL+/7L/j4TM9rFa49gnV
+ /5QQ==
+X-Gm-Message-State: AOJu0YzvL16VnkUKA5bPC2SIw3cVskbb1LVuAL9w9/4oJcGSlrzNwdMi
+ RKHJSoKD0nD2nJRkxlJ9i9b4kswKQlUepV4QbdNgKhW58ZVrV0FR+xoArSSvcs+TPlGGZlSprXF
+ zaOgq9sM=
+X-Gm-Gg: ASbGncsuMUFq3IyPizt5qe45Y/e3i9UoI2W1V6+cyPOYV9GYTF3BENdWQA+gL4jkG4w
+ m4hvgQZSq8ZPkfm5Gbz6Lwm33rgRvlcoua9RUppGncgFTW9fXYoN8hZ1hgAanrwuQgkURMOxCZH
+ R6+fFavqfhRLIVAVDBrsjUI1VIiKUJl6e31lT0svGu0uyfgt45jYraf7L+dFMcWwLWU9olBJOFI
+ Hs6rXFgKDUXLPX59qOxiuPlbMixZ76sZTL6zCQ0QUkl0GVn8aMb30/mTeFaRomWLl6KMFl/s+Aw
+ NK+fX+WMbsRX5qM68izNxru2X6f5EposBYJbjpV4ciLbGQTst/tp54190bIDIVgd3CHSZxnievC
+ Ew391OlUK48DNoDeDxTxX4Ht2WGUomN53iug8eaNAekdsyq6lV0ucIxMb589+DShcHNxHrc1m/A
+ zmq5FvFIkMwDHAGy6Cmg==
+X-Google-Smtp-Source: AGHT+IH3a4q63OEu0NQL+DmhoqYlJ6AdSKiTKm5+J38YvoEwFDinabdhoRmw0eA1VUlfEJVGrMjj1g==
+X-Received: by 2002:a05:6808:3099:b0:442:e596:1189 with SMTP id
+ 5614622812f47-4536e56ead8mr1342129b6e.45.1764778506732; 
+ Wed, 03 Dec 2025 08:15:06 -0800 (PST)
 Received: from stoup.. ([187.210.107.189]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3f0dca40d4dsm10141625fac.9.2025.12.03.08.15.04
+ 586e51a60fabf-3f0dca40d4dsm10141625fac.9.2025.12.03.08.15.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Dec 2025 08:15:05 -0800 (PST)
+ Wed, 03 Dec 2025 08:15:06 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v3 4/6] tcg/tci: Disable -Wundef FFI_GO_CLOSURES warning
-Date: Wed,  3 Dec 2025 08:14:57 -0800
-Message-ID: <20251203161500.501084-5-richard.henderson@linaro.org>
+Subject: [PATCH v3 5/6] include/generic/host: Fix atomic128-cas.h.inc for
+ Int128 structure
+Date: Wed,  3 Dec 2025 08:14:58 -0800
+Message-ID: <20251203161500.501084-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251203161500.501084-1-richard.henderson@linaro.org>
 References: <20251203161500.501084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,49 +100,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we build TCI with FFI (commit 22f15579fa1 "tcg: Build ffi data
-structures for helpers") we get on Darwin:
+Use the Int128Alias structure more when we need to convert
+between Int128 and __int128_t, when Int128 is a struct.
 
-  In file included from ../../tcg/tci.c:22:
-  In file included from include/tcg/helper-info.h:13:
-  /Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/ffi/ffi.h:483:5: warning: 'FFI_GO_CLOSURES' is not defined, evaluates to 0 [-Wundef]
-    483 | #if FFI_GO_CLOSURES
-        |     ^
-  1 warning generated.
-
-This was fixed in upstream libffi in 2023, but not backported to MacOSX.
-Simply disable the warning locally.
+Fixes the build on aarch64 host with TCI, which forces
+the use of the struct.
 
 Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/helper-info.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ host/include/generic/host/atomic128-cas.h.inc | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/include/tcg/helper-info.h b/include/tcg/helper-info.h
-index 909fe73afa..49a27e4eae 100644
---- a/include/tcg/helper-info.h
-+++ b/include/tcg/helper-info.h
-@@ -10,7 +10,19 @@
- #define TCG_HELPER_INFO_H
+diff --git a/host/include/generic/host/atomic128-cas.h.inc b/host/include/generic/host/atomic128-cas.h.inc
+index 990162c56f..8bf5f47768 100644
+--- a/host/include/generic/host/atomic128-cas.h.inc
++++ b/host/include/generic/host/atomic128-cas.h.inc
+@@ -34,39 +34,45 @@ static inline Int128 ATTRIBUTE_ATOMIC128_OPT
+ atomic16_xchg(Int128 *ptr, Int128 new)
+ {
+     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+-    Int128 old = *ptr_align;
++    Int128Alias o, n;
  
- #ifdef CONFIG_TCG_INTERPRETER
-+/*
-+ * MacOSX 15 uses an old version of libffi which contains
-+ *   #if FFI_GO_CLOSURES
-+ * but does not define that in <ffitarget.h>, included from <ffi.h>.
-+ * This was fixed upstream with
-+ *   https://github.com/libffi/libffi/commit/c23e9a1c
-+ * We don't care about go closures one way or the other;
-+ * just suppress the warning.
-+ */
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wundef"
- #include <ffi.h>
-+#pragma GCC diagnostic pop
- #endif
- #include "tcg-target-reg-bits.h"
+-    while (!__atomic_compare_exchange_n(ptr_align, &old, new, true,
++    n.s = new;
++    o.i = *ptr_align;
++    while (!__atomic_compare_exchange_n(ptr_align, &o.i, n.i, true,
+                                         __ATOMIC_SEQ_CST, 0)) {
+         continue;
+     }
+-    return old;
++    return o.s;
+ }
  
+ static inline Int128 ATTRIBUTE_ATOMIC128_OPT
+ atomic16_fetch_and(Int128 *ptr, Int128 val)
+ {
+     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+-    Int128 old = *ptr_align;
++    Int128Alias o, v;
+ 
+-    while (!__atomic_compare_exchange_n(ptr_align, &old, old & val, true,
++    v.s = val;
++    o.i = *ptr_align;
++    while (!__atomic_compare_exchange_n(ptr_align, &o.i, o.i & v.i, true,
+                                         __ATOMIC_SEQ_CST, 0)) {
+         continue;
+     }
+-    return old;
++    return o.s;
+ }
+ 
+ static inline Int128 ATTRIBUTE_ATOMIC128_OPT
+ atomic16_fetch_or(Int128 *ptr, Int128 val)
+ {
+     __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+-    Int128 old = *ptr_align;
++    Int128Alias o, v;
+ 
+-    while (!__atomic_compare_exchange_n(ptr_align, &old, old | val, true,
++    v.s = val;
++    o.i = *ptr_align;
++    while (!__atomic_compare_exchange_n(ptr_align, &o.i, o.i | v.i, true,
+                                         __ATOMIC_SEQ_CST, 0)) {
+         continue;
+     }
+-    return old;
++    return o.s;
+ }
+ # define HAVE_CMPXCHG128 1
+ #elif defined(CONFIG_CMPXCHG128)
 -- 
 2.43.0
 
