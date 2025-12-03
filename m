@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05F2C9E81C
-	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9DDC9E825
+	for <lists+qemu-devel@lfdr.de>; Wed, 03 Dec 2025 10:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQjHh-0000HG-HT; Wed, 03 Dec 2025 04:36:29 -0500
+	id 1vQjHi-0000Hz-Fa; Wed, 03 Dec 2025 04:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHf-0000FO-MH; Wed, 03 Dec 2025 04:36:27 -0500
+ id 1vQjHg-0000GP-GP; Wed, 03 Dec 2025 04:36:28 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vQjHd-00074X-Vh; Wed, 03 Dec 2025 04:36:27 -0500
+ id 1vQjHe-00074s-K6; Wed, 03 Dec 2025 04:36:28 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 82BC91708B1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 94A7D1708B2;
  Wed, 03 Dec 2025 12:35:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6F0BD32B5A8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7F0EF32B5A9;
  Wed, 03 Dec 2025 12:36:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.3 82/96] hw/display/exynos4210_fimd: Account for zero
- length in fimd_update_memory_section()
-Date: Wed,  3 Dec 2025 12:35:15 +0300
-Message-ID: <20251203093612.2370716-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Lucas Kornicki <lucas.kornicki@nutanix.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.3 83/96] ui/vdagent: fix windows agent regression
+Date: Wed,  3 Dec 2025 12:35:16 +0300
+Message-ID: <20251203093612.2370716-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
 References: <qemu-stable-10.1.3-20251203111246@cover.tls.msk.ru>
@@ -60,50 +60,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-In fimd_update_memory_section() we attempt ot find and map part of
-the RAM MR which backs the framebuffer, based on guest-configurable
-size and start address.
+Since commit f626116f ("ui/vdagent: factor out clipboard peer
+registration"), the QEMU clipboard serial is reset whenever the vdagent
+chardev receives the guest caps. This triggers a CHR_EVENT_CLOSED which
+is handled by virtio_serial_close() to notify the guest.
 
-If the guest configures framebuffer settings which result in a
-zero-sized framebuffer, we hit an assertion(), because
-memory_region_find() will return a NULL mem_section.mr.
+The "reconnection logic" is there to reset the agent when a
+client (dbus, spice etc) reconnects, or the agent is restarted.
+It is required to sync the clipboard serials and to prevent races or
+loops due to clipboard managers on both ends (but this is not
+implemented by windows vdagent).
 
-Explicitly check for the zero-size case and treat this as a
-guest error.
+The Unix agent has been reconnecting without resending caps, thus
+working with this approach.
 
-Because we now have a code path which can reach error_return without
-calling memory_region_find to set w->mem_section, we must NULL out
-w->mem_section.mr after the unref of the old MR, so that error_return
-does not incorrectly double-unref the old MR.
+However, the Windows agent does not seem to have a way to handle
+VIRTIO_CONSOLE_PORT_OPEN=0 event and do not receive further data...
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1407
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251107143913.1341358-1-peter.maydell@linaro.org
-(cherry picked from commit 579be921f509fb9d2deccc4233496e36b221abb3)
+Let's not trigger this disconnection/reset logic if the agent does not
+support VD_AGENT_CAP_CLIPBOARD_GRAB_SERIAL.
+
+Fixes: f626116f ("ui/vdagent: factor out clipboard peer registration")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reported-by: Lucas Kornicki <lucas.kornicki@nutanix.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Tested-by: Lucas Kornicki <lucas.kornicki@nutanix.com>
+(cherry picked from commit 4be62d311791bf9d318f5139439d170ad5112279)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index c61e0280a7..eec874d0b1 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -1147,6 +1147,13 @@ static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
-     if (w->mem_section.mr) {
-         memory_region_set_log(w->mem_section.mr, false, DIRTY_MEMORY_VGA);
-         memory_region_unref(w->mem_section.mr);
-+        w->mem_section.mr = NULL;
-+    }
+diff --git a/ui/vdagent.c b/ui/vdagent.c
+index c0746fe5b1..a7c959e8ab 100644
+--- a/ui/vdagent.c
++++ b/ui/vdagent.c
+@@ -316,6 +316,15 @@ static bool have_selection(VDAgentChardev *vd)
+     return vd->caps & (1 << VD_AGENT_CAP_CLIPBOARD_SELECTION);
+ }
+ 
++static bool have_clipboard_serial(VDAgentChardev *vd)
++{
++#if CHECK_SPICE_PROTOCOL_VERSION(0, 14, 1)
++    return vd->caps & (1 << VD_AGENT_CAP_CLIPBOARD_GRAB_SERIAL);
++#else
++    return false;
++#endif
++}
 +
-+    if (w->fb_len == 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "FIMD: Guest config means framebuffer is zero length\n");
-+        goto error_return;
+ static uint32_t type_qemu_to_vdagent(enum QemuClipboardType type)
+ {
+     switch (type) {
+@@ -345,8 +354,7 @@ static void vdagent_send_clipboard_grab(VDAgentChardev *vd,
+         return;
      }
  
-     w->mem_section = memory_region_find(s->fbmem, fb_start_addr, w->fb_len);
+-#if CHECK_SPICE_PROTOCOL_VERSION(0, 14, 1)
+-    if (vd->caps & (1 << VD_AGENT_CAP_CLIPBOARD_GRAB_SERIAL)) {
++    if (have_clipboard_serial(vd)) {
+         if (!info->has_serial) {
+             /* client should win */
+             info->serial = vd->last_serial[info->selection]++;
+@@ -356,7 +364,6 @@ static void vdagent_send_clipboard_grab(VDAgentChardev *vd,
+         data++;
+         msg->size += sizeof(uint32_t);
+     }
+-#endif
+ 
+     for (q = 0; q < QEMU_CLIPBOARD_TYPE__COUNT; q++) {
+         type = type_qemu_to_vdagent(q);
+@@ -464,6 +471,9 @@ static void vdagent_clipboard_reset_serial(VDAgentChardev *vd)
+ {
+     Chardev *chr = CHARDEV(vd);
+ 
++    if (!have_clipboard_serial(vd)) {
++        return;
++    }
+     /* reopen the agent connection to reset the serial state */
+     qemu_chr_be_event(chr, CHR_EVENT_CLOSED);
+     /* OPENED again after the guest disconnected, see set_fe_open */
+@@ -518,8 +528,7 @@ static void vdagent_clipboard_recv_grab(VDAgentChardev *vd, uint8_t s, uint32_t
+ 
+     trace_vdagent_cb_grab_selection(GET_NAME(sel_name, s));
+     info = qemu_clipboard_info_new(&vd->cbpeer, s);
+-#if CHECK_SPICE_PROTOCOL_VERSION(0, 14, 1)
+-    if (vd->caps & (1 << VD_AGENT_CAP_CLIPBOARD_GRAB_SERIAL)) {
++    if (have_clipboard_serial(vd)) {
+         if (size < sizeof(uint32_t)) {
+             /* this shouldn't happen! */
+             return;
+@@ -537,7 +546,6 @@ static void vdagent_clipboard_recv_grab(VDAgentChardev *vd, uint8_t s, uint32_t
+         data += sizeof(uint32_t);
+         size -= sizeof(uint32_t);
+     }
+-#endif
+     if (size > sizeof(uint32_t) * 10) {
+         /*
+          * spice has 6 types as of 2021. Limiting to 10 entries
 -- 
 2.47.3
 
