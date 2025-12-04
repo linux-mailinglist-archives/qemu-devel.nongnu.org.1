@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F6BCA306D
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB7DCA30A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:39:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR5kd-0001aF-Mf; Thu, 04 Dec 2025 04:35:51 -0500
+	id 1vR5ke-0001ff-Me; Thu, 04 Dec 2025 04:35:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5k3-00019Y-30
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:15 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1vR5k3-00019d-6w
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:16 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5jz-0003O3-LQ
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:13 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-63c489f1e6cso1178666a12.1
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:09 -0800 (PST)
+ id 1vR5k0-0003OW-LO
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:14 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-640d0ec9651so1234317a12.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1764840908; x=1765445708; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1764840909; x=1765445709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7b25Fv33Xq/PZxsyLv+FhSwrtyaBUSUZvYVfFNhl+n0=;
- b=hP41a3BCOtLWdNUUIAksi8xnHw3KR4KvKCBsxwqHxbrdFl1PQUK2YE8qtkQi0Toieo
- B/UpivEQoXwDSYhQVfOGEZK6gdwRCxwkxe6XiRdjYtIpv8iGijqzhANe2VSgVKu94Zg2
- +nUsIkYmBjrTC65Aw5P6ynnp8yu39IC2uHJCWO3z+z37QAgmAiEmCFCgMDHrmt+kkT7T
- 68JnjMTOgJtbcS9TwHP6jl/F7KoQ50TeYr6pI0DKom9gXy52aKfC9yqoZlKmeGxmApHO
- JWUpOjL/zIeSmy+ekWiFipWJ3Z6GREjEhIG+EOorVZtu1x+lgDTAu3gvmdtagNU1Nz6Z
- +5vg==
+ bh=GYKOAMZxGQEu+IKZWOj4QK/Xu0CKwD6MX43mJOeXe6Q=;
+ b=h+b5+rxxZAK4N/oAANxPfbezh9Bjcv+EwWJYryW+GCWSWDxcjctEpGPTfSH/b44LKP
+ vOJQI0n4NEOIymBa7QDMXTmmsLo1xq/6PwSDBtMj6znjrrgSLP1MdAPAQK4bwE6cVdB/
+ TR7ThkGlwCHEk1SKIz3AJ5zwQ1PVBwr/jYBEpNoT+49Sk5+P1oh1Z3DoT2XNaUnY2a/F
+ vwX8/PWyMvG4f0gLG2XjtzdDmJ0NvXHvY6zwgRm4oadbhRO4hMa6yp8B5sjbzl6hrn4v
+ bk6DA1ftNg6xg6/2i6RpwItypfq6U6vTFLtMMHFtaMjDke9x6eMgHTOC9/d4XinEh27I
+ 6h6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764840908; x=1765445708;
+ d=1e100.net; s=20230601; t=1764840909; x=1765445709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7b25Fv33Xq/PZxsyLv+FhSwrtyaBUSUZvYVfFNhl+n0=;
- b=WdPk4iKZvCqjVJPeuuYNMwg4CAgnvPV4bEVvPjaa+H4x3/6SeJI679n4f5ayQHnzzW
- c5JFqJIGPJ/J+02AeyuRktMROVfg/SzGx0ljpaDAc78pU6TaAVsFpjr7wwTSXN/hoaap
- D9B3ddhVXGd2VLMjNSQoOoYuow6xKJWeYpl+5wLYSY2NEelIqtGiIYYYxNGG5RvYFzQ5
- KIydv75OuDgqbmGFxGRQfGUKnmPLG0JyIYzh7ju/GZBL4eilzGNGfEA40XGRShpyn+VT
- XZzFmWrgASy7UhcxLEP8i0TS3nLS2/A4O5SFxCTnlZKbOqgU95FVoTJNxMOTRSczmB9B
- h5aw==
-X-Gm-Message-State: AOJu0Yyj/1H9aXFMhcetc5U68n07wjN78BFwwODy176WatabEcSvjkd+
- Uq5KblldwigTtzztqi60QTiuaSHwsL6bv5TtGh08Vvb9/kN+wXr15LdVb0mz7vLr
-X-Gm-Gg: ASbGncu+LS47UJ7zz+p0kyLgOe7WPDYLNO0IpYW4uBlSHQ7LaAs8b7KZgz24CPwWEXH
- coLn9YhZlZmgzO5sFXf85yHp3gUYsCuJp5fiwBPDmjNfsFXgYfaBYiULNQLuCLf0qXaKRcmqey4
- 6Qxiwj4RbUiAEFx4gqUIjhpq+osz1izr4GM3FdvE0/FB+sIfpahEpAnVK30djEC95VUMq9wnHh8
- 3jjE+mtWybhm7XabUEkq0dswO0E3hhLhf6veKRWFIpyacT8l65SX/cnold8PaNjup78Hi25/c8j
- sJhWoUt01zFshDJGpDxtUPkLJtMHgFXoJENexN/YR1SEXZiXh8/Sgsn7p/D0AcGF1TMbaVgpaN9
- 2dZY7UVG8Bk/OpXUid3adyVrCjcf2YsFL2ULQYXGQ4gbDLYyy4BlHJrSSYiUmIMeP7sU+5JMU9y
- Gtp+kGc4h1eatquoXtmtDyG/nq3SMroN8kkaNUKsJS1Q==
-X-Google-Smtp-Source: AGHT+IGD3i0LrPdz5e0vL2bVXHvaVwO3UwaQb643ryzJqh4NN+/Ny4XDYuq6HOVcEOUUcRWhewotkw==
-X-Received: by 2002:a05:6402:35c2:b0:641:1cbe:a5bf with SMTP id
- 4fb4d7f45d1cf-647a6a418a3mr2209665a12.9.1764840908018; 
- Thu, 04 Dec 2025 01:35:08 -0800 (PST)
+ bh=GYKOAMZxGQEu+IKZWOj4QK/Xu0CKwD6MX43mJOeXe6Q=;
+ b=cuBxmTg5MTsAFtDbJIKh26TyDyISZiZKwyI6VlNcg5ANVzbTqbIT7Rp2Bwb5BzkHKi
+ V0v/Jak8wBsNQVkp+nbuXGm3HcNIOKdOYtpQbWayOaITM8JOUSKJEu5CzeyUBT5d/4F+
+ QYRycdtBlBfYxhS0Q7XKCQn3HId+/qo7lcRtYaCr0wa0Two6Ey1z+VvCUdoeYRHXCrBo
+ Jtox1AiJkQccpNPMdBPqbzl1ZTY76uI9p3RV7mu0uFIaI97G3diE1ayENTBW7x58Gm5g
+ WYEeaPQy36tKi/86SfDCE8TvkasCgn7jH6xlw3NzncCWs+QwPc405rAhZu86BaCPVTku
+ SCGA==
+X-Gm-Message-State: AOJu0YxWzJ9Uy1Q4lMQJGy1UJ4wZ29mJcPnI9MCaOZ/714Gp3WA6idaq
+ Y0E7IHcYa7e1Y6n7XtmdrK+dds0NbBuWilUMGzYo6Z9uohJzKG7DHzct5Q2Fv3ax
+X-Gm-Gg: ASbGncs41qMn3yB6QUOi79rimeSRHYeL8vOt1loek65WAMbJSQxCPi1ultrQ/gh47R/
+ Np4rgu3QZznPpbxgHWpoQewe4Z1p41Irl7bAmvy/E/RdS7tcWLuV5o0VZk3xdAmYE9nfaqbFaLd
+ nzTAGOyUetXEa6Bjvbpb3GZ8J5iejm3eChEaT9GyWVw11cGyjeKGcW/0ExbFWhd+6MONQDEY54k
+ 4yVyNEmT8JJ6KdP9wzofzOBQSx5LLPF1pBmxGfAzp9/VDVk22Jyra0huf8cAjq0Fli41ru02+jM
+ AJtyct4/FGNjPFeFfMpIXw1OdS28sJGdlulRpSxhvIyrAhZzSSxZ+1LFitdUU2RWcTSMiOGovEO
+ ee4FDS8AZM4PdJnL1JPSl8+v0UqQ83qjoHvy+eCCBhTg2lXq0U+/aCnUm/rmlGPqQDkZ9GM+fA9
+ OZEtcHGUjhGSy7cZxuGa9csoiE2FyxTZE=
+X-Google-Smtp-Source: AGHT+IHRWE58FcvoPJ8ZSmwaHY03rwwe2vOUSoLt2uGh886mo3Qht6opR13pKJXbn8T91+cGXeqOsw==
+X-Received: by 2002:a05:6402:51c9:b0:641:8644:f87f with SMTP id
+ 4fb4d7f45d1cf-6479c4f7003mr4697998a12.17.1764840909049; 
+ Thu, 04 Dec 2025 01:35:09 -0800 (PST)
 Received: from PC-DA2D10.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.07
+ 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Dec 2025 01:35:07 -0800 (PST)
+ Thu, 04 Dec 2025 01:35:08 -0800 (PST)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -75,17 +75,17 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  YannickV <Y.Vossen@beckhoff.com>,
  "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-Subject: [PATCH v5 04/15] hw/arm/zynq-devcfg: Prevent unintended unlock during
- initialization
-Date: Thu,  4 Dec 2025 10:34:51 +0100
-Message-ID: <20251204093502.50582-5-corvin.koehne@gmail.com>
+Subject: [PATCH v5 05/15] hw/dma/zynq: Ensure PCFG_DONE bit remains set to
+ indicate PL is in user mode
+Date: Thu,  4 Dec 2025 10:34:52 +0100
+Message-ID: <20251204093502.50582-6-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251204093502.50582-1-corvin.koehne@gmail.com>
 References: <20251204093502.50582-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,33 +110,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-During the emulation startup, all registers are reset, which triggers the
-`r_unlock_post_write` function with a value of 0. This led to an
-unintended memory access disable, making the devcfg unusable.
-
-During startup, the memory space no longer gets locked.
+All register bits are clear on write by writing 1s to those bits, however
+the register bits will only be cleared if the condition that sets the
+interrupt flag is no longer true. Since we can assume that programming
+is always done, the `PCFG_DONE` flag is always set to 1, so it will not
+never be cleared.
 
 Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/dma/xlnx-zynq-devcfg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/dma/xlnx-zynq-devcfg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index 2430d70bf7..0c06daa6b9 100644
+index 0c06daa6b9..72f7b1f170 100644
 --- a/hw/dma/xlnx-zynq-devcfg.c
 +++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -221,7 +221,9 @@ static void r_unlock_post_write(RegisterInfo *reg, uint64_t val)
+@@ -188,6 +188,8 @@ static void r_ixr_post_write(RegisterInfo *reg, uint64_t val)
  {
      XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(reg->opaque);
-     const char *device_prefix = object_get_typename(OBJECT(s));
--
-+    if (device_is_in_reset(DEVICE(s))) {
-+        return;
-+    }
-     if (val == R_UNLOCK_MAGIC) {
-         DB_PRINT("successful unlock\n");
-         s->regs[R_CTRL] |= R_CTRL_PCAP_PR_MASK;
+ 
++    s->regs[R_INT_STS] |= R_INT_STS_PCFG_DONE_MASK;
++
+     xlnx_zynq_devcfg_update_ixr(s);
+ }
+ 
 -- 
 2.47.3
 
