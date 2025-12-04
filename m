@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AB2CA2965
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 08:00:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4110CA2953
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 07:59:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR3Iy-0002k7-Eq; Thu, 04 Dec 2025 01:59:08 -0500
+	id 1vR3Id-0002b9-DO; Thu, 04 Dec 2025 01:58:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1vR3Ig-0002cI-Re; Thu, 04 Dec 2025 01:58:51 -0500
-Received: from out28-43.mail.aliyun.com ([115.124.28.43])
+ id 1vR3Ic-0002an-6z; Thu, 04 Dec 2025 01:58:46 -0500
+Received: from out28-56.mail.aliyun.com ([115.124.28.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1vR3Ia-0005dN-1C; Thu, 04 Dec 2025 01:58:50 -0500
+ id 1vR3IZ-0005dW-Sn; Thu, 04 Dec 2025 01:58:45 -0500
 Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
- fp:SMTPD_---.fcgSBFk_1764831511 cluster:ay29) by smtp.aliyun-inc.com;
+ fp:SMTPD_---.fcgSBGb_1764831512 cluster:ay29) by smtp.aliyun-inc.com;
  Thu, 04 Dec 2025 14:58:32 +0800
 From: Chao Liu <chao.liu@zevorn.cn>
 To: pbonzini@redhat.com, dbarboza@ventanamicro.com, palmer@dabbelt.com,
  alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
 Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- hust-os-kernel-patches@googlegroups.com, Chao Liu <chao.liu@zevorn.cn>,
- Mig Yang <temashking@foxmail.com>
-Subject: [PATCH v2 4/5] tests/qtest: add test for K230 watchdog
-Date: Thu,  4 Dec 2025 14:58:25 +0800
-Message-ID: <4463d10d2fe3b51a2e396699276f618ca4caa1bd.1764830405.git.chao.liu@zevorn.cn>
+ hust-os-kernel-patches@googlegroups.com, Chao Liu <chao.liu@zevorn.cn>
+Subject: [PATCH v2 5/5] docs/system/riscv: add documentation for k230 machine
+Date: Thu,  4 Dec 2025 14:58:26 +0800
+Message-ID: <dbb2ed998f8ee739f99d841a5e17c854050828fb.1764830405.git.chao.liu@zevorn.cn>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1764830405.git.chao.liu@zevorn.cn>
 References: <cover.1764830405.git.chao.liu@zevorn.cn>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.43; envelope-from=chao.liu@zevorn.cn;
- helo=out28-43.mail.aliyun.com
+Received-SPF: pass client-ip=115.124.28.56; envelope-from=chao.liu@zevorn.cn;
+ helo=out28-56.mail.aliyun.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -57,251 +57,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Testing the Basic Functions of K230 WDT:
-1. Reset Function
-2. Timeout Check
-3. Interrupt Function
+Add documentation for k230 virt reference platform.
 
-Signed-off-by: Mig Yang <temashking@foxmail.com>
+Signed-off-by: Chao Liu <chao.liu@zevorn.cn>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- MAINTAINERS                 |   1 +
- tests/qtest/k230-wdt-test.c | 199 ++++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build     |   3 +-
- 3 files changed, 202 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/k230-wdt-test.c
+ MAINTAINERS                  |  1 +
+ docs/system/riscv/k230.rst   | 48 ++++++++++++++++++++++++++++++++++++
+ docs/system/target-riscv.rst |  1 +
+ 3 files changed, 50 insertions(+)
+ create mode 100644 docs/system/riscv/k230.rst
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 758cae99fc..8bdab8fb8a 100644
+index 8bdab8fb8a..bfa63f832e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1717,6 +1717,7 @@ F: hw/riscv/k230.c
+@@ -1713,6 +1713,7 @@ F: include/hw/riscv/xiangshan_kmh.h
+ K230 Machines
+ M: Chao Liu <chao.liu@zevorn.cn>
+ S: Maintained
++F: docs/system/riscv/k230.rst
+ F: hw/riscv/k230.c
  F: hw/watchdog/k230_wdt.c
  F: include/hw/riscv/k230.h
- F: include/hw/watchdog/k230_wdt.h
-+F: tests/qtest/k230-wdt-test.c
- 
- RX Machines
- -----------
-diff --git a/tests/qtest/k230-wdt-test.c b/tests/qtest/k230-wdt-test.c
+diff --git a/docs/system/riscv/k230.rst b/docs/system/riscv/k230.rst
 new file mode 100644
-index 0000000000..2550cebd10
+index 0000000000..3e6ca295df
 --- /dev/null
-+++ b/tests/qtest/k230-wdt-test.c
-@@ -0,0 +1,199 @@
-+/*
-+ * QTest testcase for K230 Watchdog
-+ *
-+ * Copyright (c) 2025 Mig Yang <temashking@foxmail.com>
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Provides a board compatible with the kendryte K230 SDK
-+ *
-+ * Documentation: K230_Technical_Reference_Manual_V0.3.1_20241118.pdf
-+ *
-+ * For more information, see <https://www.kendryte.com/en/proDetail/230>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
++++ b/docs/system/riscv/k230.rst
+@@ -0,0 +1,48 @@
++Kendryte K230 virt reference platform (``k230``)
++==========================================================================
++The ``k230`` machine is compatible with with Kendryte K230 SDK.
 +
-+#include "qemu/osdep.h"
-+#include "qemu/timer.h"
-+#include "qemu/bitops.h"
-+#include "libqtest.h"
-+#include "hw/watchdog/k230_wdt.h"
++The K230 is a chip from the AIoT SoC series made by Kendryte ® — a part of
++Canaan Inc. It uses a brand-new multi-heterogeneous unit accelerated computing
++structure.
 +
-+/* K230 WDT0 base address */
-+#define K230_WDT0_BASE 0x91106000
-+#define K230_WDT1_BASE 0x91106800
++This chip has 2 RISC-V computing cores and a new-generation KPU (Knowledge
++Process Unit) smart computing unit.
 +
-+/* Test WDT0 by default */
-+#define WDT_BASE K230_WDT0_BASE
++It has multi-precision AI computing ability, works with many common AI computing
++frameworks, and for some typical networks, its usage rate is over 70%. Besides,
++the K230 chip supports many peripheral connections and has several special
++hardware acceleration units (like 2D and 2.5D accelerators). It can speed up
++different tasks (such as image processing, video processing, audio processing
++and AI computing). It also has many good features: low delay, high performance,
++low power use and fast start-up.
 +
-+static void test_register_read_write(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230");
++For more information, see <https://www.kendryte.com/en/proDetail/230>
 +
-+    /* Test Control Register (CR) read/write */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR, 0xFFFFFFFF);
-+    g_assert_cmphex(qtest_readl(qts, WDT_BASE + K230_WDT_CR), ==,
-+                    (K230_WDT_CR_RPL_MASK << K230_WDT_CR_RPL_SHIFT) |
-+                    K230_WDT_CR_RMOD | K230_WDT_CR_WDT_EN);
++Supported devices
++-----------------
++The ``k230`` machine supports the following devices:
 +
-+    /* Test Timeout Range Register (TORR) read/write */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_TORR, 0xFFFFFFFF);
-+    g_assert_cmphex(qtest_readl(qts, WDT_BASE + K230_WDT_TORR), ==,
-+                    K230_WDT_TORR_TOP_MASK);
++* 1 c908 cores
++* Core Local Interruptor (CLINT)
++* Incoming MSI Controller (IMSIC)
++* 2 K230 Watchdog Timer
++* 4 UART
 +
-+    /* Test Protection Level Register read/write */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_PROT_LEVEL, 0xFFFFFFFF);
-+    g_assert_cmphex(qtest_readl(qts, WDT_BASE + K230_WDT_PROT_LEVEL), ==, 0x7);
++Boot options
++------------
++The ``k230`` machine can start using the standard ``-bios``
++functionality for loading the boot image. You need to compile and link
++the firmware, kernel, and Device Tree (FDT) into a single binary file with
++K230 SDK(k230_canmv_defconfig), such as ``uboot``.
 +
-+    qtest_quit(qts);
-+}
++Running
++-------
++Below is an example command line for running the ``k230``
++machine:
 +
-+static void test_counter_restart(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230");
++.. code-block:: bash
 +
-+    /* Enable watchdog and set timeout */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR, K230_WDT_CR_WDT_EN);
-+    qtest_writel(qts, WDT_BASE + K230_WDT_TORR, 0x5); /* TOP = 5 */
-+
-+    /* Read current counter value */
-+    uint32_t initial_count = qtest_readl(qts, WDT_BASE + K230_WDT_CCVR);
-+    g_assert_cmpuint(initial_count, >, 0);
-+
-+    /* Restart counter with magic value */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CRR, K230_WDT_CRR_RESTART);
-+
-+    /* Wait for time */
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 2);
-+
-+    /* Counter should be reset to timeout value */
-+    uint32_t new_count = qtest_readl(qts, WDT_BASE + K230_WDT_CCVR);
-+    g_assert_cmpuint(new_count, >, 0);
-+    g_assert_cmpuint(new_count, !=, initial_count);
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_interrupt_mode(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230 --trace k230_*,file=k230.log");
-+
-+    /* Set interrupt mode and enable watchdog */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR,
-+                 K230_WDT_CR_RMOD | K230_WDT_CR_WDT_EN);
-+    qtest_writel(qts, WDT_BASE + K230_WDT_TORR, 0x1); /* Short timeout */
-+
-+    /* Wait for timeout to trigger interrupt */
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 10);
-+
-+    /* Check interrupt status */
-+    uint32_t stat = qtest_readl(qts, WDT_BASE + K230_WDT_STAT);
-+    g_assert_cmphex(stat & K230_WDT_STAT_INT, ==, K230_WDT_STAT_INT);
-+
-+    /* Clear interrupt */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_EOI, 0x1);
-+    stat = qtest_readl(qts, WDT_BASE + K230_WDT_STAT);
-+    g_assert_cmphex(stat & K230_WDT_STAT_INT, ==, 0);
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_reset_mode(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230 -no-reboot");
-+
-+    /* Set reset mode and enable watchdog */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR, K230_WDT_CR_WDT_EN);
-+    qtest_writel(qts, WDT_BASE + K230_WDT_TORR, 0x1); /* Short timeout */
-+
-+    /* Wait for timeout to trigger reset */
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 2);
-+
-+    /* In reset mode, the system should reset */
-+    /* This test verifies that reset mode is properly configured */
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_timeout_calculation(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230");
-+
-+    /* Test different timeout values */
-+    for (uint32_t top = 0; top <= 15; top++) {
-+        qtest_writel(qts, WDT_BASE + K230_WDT_TORR, top);
-+        qtest_writel(qts, WDT_BASE + K230_WDT_CR, K230_WDT_CR_WDT_EN);
-+
-+        /* Read current counter value */
-+        uint32_t count = qtest_readl(qts, WDT_BASE + K230_WDT_CCVR);
-+        g_assert_cmpuint(count, >, 0);
-+
-+        /* Disable watchdog for next iteration */
-+        qtest_writel(qts, WDT_BASE + K230_WDT_CR, 0);
-+    }
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_wdt1_registers(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230");
-+
-+    /* Test WDT1 registers (second watchdog) */
-+    qtest_writel(qts, K230_WDT1_BASE + K230_WDT_CR, 0xFFFFFFFF);
-+    g_assert_cmphex(qtest_readl(qts, K230_WDT1_BASE + K230_WDT_CR), ==,
-+                    (K230_WDT_CR_RPL_MASK << K230_WDT_CR_RPL_SHIFT) |
-+                    K230_WDT_CR_RMOD | K230_WDT_CR_WDT_EN);
-+
-+    qtest_writel(qts, K230_WDT1_BASE + K230_WDT_TORR, 0xFFFFFFFF);
-+    g_assert_cmphex(qtest_readl(qts, K230_WDT1_BASE + K230_WDT_TORR), ==,
-+                    K230_WDT_TORR_TOP_MASK);
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_enable_disable(void)
-+{
-+    QTestState *qts = qtest_init("-machine k230");
-+
-+    /* Initially disabled */
-+    uint32_t cr = qtest_readl(qts, WDT_BASE + K230_WDT_CR);
-+    g_assert_cmphex(cr & K230_WDT_CR_WDT_EN, ==, 0);
-+
-+    /* Enable watchdog */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR, K230_WDT_CR_WDT_EN);
-+    cr = qtest_readl(qts, WDT_BASE + K230_WDT_CR);
-+    g_assert_cmphex(cr & K230_WDT_CR_WDT_EN, ==, K230_WDT_CR_WDT_EN);
-+
-+    /* Disable watchdog */
-+    qtest_writel(qts, WDT_BASE + K230_WDT_CR, 0);
-+    cr = qtest_readl(qts, WDT_BASE + K230_WDT_CR);
-+    g_assert_cmphex(cr & K230_WDT_CR_WDT_EN, ==, 0);
-+
-+    qtest_quit(qts);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/k230-wdt/register_read_write", test_register_read_write);
-+    qtest_add_func("/k230-wdt/counter_restart", test_counter_restart);
-+    qtest_add_func("/k230-wdt/interrupt_mode", test_interrupt_mode);
-+    qtest_add_func("/k230-wdt/reset_mode", test_reset_mode);
-+    qtest_add_func("/k230-wdt/timeout_calculation", test_timeout_calculation);
-+    qtest_add_func("/k230-wdt/wdt1_registers", test_wdt1_registers);
-+    qtest_add_func("/k230-wdt/enable_disable", test_enable_disable);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 669d07c06b..0d9339e938 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -282,7 +282,8 @@ qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
++   $ qemu-system-riscv64 -machine k230 \
++      -bios k230_sdk/output/k230_canmv_defconfig/little/uboot/u-boot \
++      -nographic
+diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
+index 89b2cb732c..2103ff6173 100644
+--- a/docs/system/target-riscv.rst
++++ b/docs/system/target-riscv.rst
+@@ -66,6 +66,7 @@ undocumented; you can get a complete list by running
+ .. toctree::
+    :maxdepth: 1
  
- qtests_riscv64 = ['riscv-csr-test'] + \
--  (unpack_edk2_blobs ? ['bios-tables-test'] : [])
-+  (unpack_edk2_blobs ? ['bios-tables-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_K230') ? ['k230-wdt-test'] : [])
- 
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
++   riscv/k230
+    riscv/microblaze-v-generic
+    riscv/microchip-icicle-kit
+    riscv/shakti-c
 -- 
 2.51.0
 
