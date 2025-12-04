@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB7DCA30A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F00CA3076
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:38:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR5ke-0001ff-Me; Thu, 04 Dec 2025 04:35:52 -0500
+	id 1vR5kY-0001U1-JI; Thu, 04 Dec 2025 04:35:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5k3-00019d-6w
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:16 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1vR5k5-0001Ad-TX
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:19 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5k0-0003OW-LO
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:14 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-640d0ec9651so1234317a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:10 -0800 (PST)
+ id 1vR5k1-0003P3-F7
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:15 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-64149f78c0dso998724a12.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1764840909; x=1765445709; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1764840910; x=1765445710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GYKOAMZxGQEu+IKZWOj4QK/Xu0CKwD6MX43mJOeXe6Q=;
- b=h+b5+rxxZAK4N/oAANxPfbezh9Bjcv+EwWJYryW+GCWSWDxcjctEpGPTfSH/b44LKP
- vOJQI0n4NEOIymBa7QDMXTmmsLo1xq/6PwSDBtMj6znjrrgSLP1MdAPAQK4bwE6cVdB/
- TR7ThkGlwCHEk1SKIz3AJ5zwQ1PVBwr/jYBEpNoT+49Sk5+P1oh1Z3DoT2XNaUnY2a/F
- vwX8/PWyMvG4f0gLG2XjtzdDmJ0NvXHvY6zwgRm4oadbhRO4hMa6yp8B5sjbzl6hrn4v
- bk6DA1ftNg6xg6/2i6RpwItypfq6U6vTFLtMMHFtaMjDke9x6eMgHTOC9/d4XinEh27I
- 6h6g==
+ bh=/rkLVpmvYPi7YnLbLN1p5rsM99VpTuNA1PPyZs5DkRU=;
+ b=UN6Dm/wZRDPKUrD1zahI5XqekPFj//tKKCJxVq3J/XLSJjomgF2rOv/bZiQG+w+IuX
+ D/HlxBYJ/9e9IG6/SXfiZFfcTPOOFC0Q9WfWMJtsKr+nj7oZO5gfbJb6VjJELqg0mz2W
+ gVHbhUUnkarfidd5rNX0OPZfpUcBQ0hoGN5k5+8veJ2k2aKheq/SXKtIHCo6D11puyQ5
+ y+jqwq3p1MtmsKDhDniORaU9sQCK+AnnHeLR9O6ZPce5A41jpiFjslj6M1LUzQKbLwne
+ qVlhiUrA/69h0aE/TyPqg5qY8PZlvYUCaqhFnQk+VYi4NzFReZdd0UY48iCmqw+G51Zp
+ udgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764840909; x=1765445709;
+ d=1e100.net; s=20230601; t=1764840910; x=1765445710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=GYKOAMZxGQEu+IKZWOj4QK/Xu0CKwD6MX43mJOeXe6Q=;
- b=cuBxmTg5MTsAFtDbJIKh26TyDyISZiZKwyI6VlNcg5ANVzbTqbIT7Rp2Bwb5BzkHKi
- V0v/Jak8wBsNQVkp+nbuXGm3HcNIOKdOYtpQbWayOaITM8JOUSKJEu5CzeyUBT5d/4F+
- QYRycdtBlBfYxhS0Q7XKCQn3HId+/qo7lcRtYaCr0wa0Two6Ey1z+VvCUdoeYRHXCrBo
- Jtox1AiJkQccpNPMdBPqbzl1ZTY76uI9p3RV7mu0uFIaI97G3diE1ayENTBW7x58Gm5g
- WYEeaPQy36tKi/86SfDCE8TvkasCgn7jH6xlw3NzncCWs+QwPc405rAhZu86BaCPVTku
- SCGA==
-X-Gm-Message-State: AOJu0YxWzJ9Uy1Q4lMQJGy1UJ4wZ29mJcPnI9MCaOZ/714Gp3WA6idaq
- Y0E7IHcYa7e1Y6n7XtmdrK+dds0NbBuWilUMGzYo6Z9uohJzKG7DHzct5Q2Fv3ax
-X-Gm-Gg: ASbGncs41qMn3yB6QUOi79rimeSRHYeL8vOt1loek65WAMbJSQxCPi1ultrQ/gh47R/
- Np4rgu3QZznPpbxgHWpoQewe4Z1p41Irl7bAmvy/E/RdS7tcWLuV5o0VZk3xdAmYE9nfaqbFaLd
- nzTAGOyUetXEa6Bjvbpb3GZ8J5iejm3eChEaT9GyWVw11cGyjeKGcW/0ExbFWhd+6MONQDEY54k
- 4yVyNEmT8JJ6KdP9wzofzOBQSx5LLPF1pBmxGfAzp9/VDVk22Jyra0huf8cAjq0Fli41ru02+jM
- AJtyct4/FGNjPFeFfMpIXw1OdS28sJGdlulRpSxhvIyrAhZzSSxZ+1LFitdUU2RWcTSMiOGovEO
- ee4FDS8AZM4PdJnL1JPSl8+v0UqQ83qjoHvy+eCCBhTg2lXq0U+/aCnUm/rmlGPqQDkZ9GM+fA9
- OZEtcHGUjhGSy7cZxuGa9csoiE2FyxTZE=
-X-Google-Smtp-Source: AGHT+IHRWE58FcvoPJ8ZSmwaHY03rwwe2vOUSoLt2uGh886mo3Qht6opR13pKJXbn8T91+cGXeqOsw==
-X-Received: by 2002:a05:6402:51c9:b0:641:8644:f87f with SMTP id
- 4fb4d7f45d1cf-6479c4f7003mr4697998a12.17.1764840909049; 
- Thu, 04 Dec 2025 01:35:09 -0800 (PST)
+ bh=/rkLVpmvYPi7YnLbLN1p5rsM99VpTuNA1PPyZs5DkRU=;
+ b=JspGQmY+xn/tqgygaoJt6G/Ka/fqP3Nw355rgAz0GXdjrs9/MKgXgCjTE8KRp8rGME
+ LCinFERHEd6TKQ0nZC1/ThgLg4STQZS/fpr/YppiTc2u3AnAJySgCwg1OvLACH/ghBmw
+ K5TDQk6x02eI5cU94yvX1nnGkGojEYHgH/z9k4OinJQM3RFEz5XuBUn1hiH7KIdsW61w
+ v1XeHcVqo8GBinfC7dbOSVdcX+4NNJD+p4hz+n1UnC0YtgiqlKmvYMVsFwDs4Ccwty7f
+ L2Tm2l8UlidAcbYd6TUWM6SGuV03fT1VJyi0H4cvNacBz4eNvDuYdSLfsEqxXf/TvWnA
+ 3/LA==
+X-Gm-Message-State: AOJu0YzuGsnPQt5Se7jtYkuJ3NGztLZXcaua9N1QF6VuhD4PC6rsZMXa
+ HnIDmm8wBliQGIQPtUKNxrU8ELM1rd6CtJbiEKR2BeC8n7kh8cJgvYW3oGXKocyn
+X-Gm-Gg: ASbGncvetIGcg5L5A8JqqSrNdIyZnbZlKVtBRGNz9YVWTJ0gFa/sYau0k7u99ySoXbr
+ PZ43wXGHT4w2BKtxDXIMZuv6gudzQAmpI5CKCq+0zry1QeJEeBDCtL37ugf076Pz9rSMWMgpo3d
+ rcS5mj6et94uuMuSNRvzAejlXjf9w4f2GNayWt+RZw72hwPeAiTwjuTV3zw5IEWYj/fyJU3pCxd
+ 77h3+QhZShXQ30ArcOV/aFaYNMl5QyPwel1zpIm5CZ/n7qn3JC38DEDPa6X44o6pcFTxQbu43Re
+ 6nEr/5mk3NxV04w87drUE4xmSTBCCU7AtbNk1ooUbyhuNE2pO1h8f51wzlzC+/XrJ+0Lamy/l6m
+ /VoPRZQE4JeGLtTbS9biJqNhUxmAZyXI8XMUTwPmEJvLkapxtdiPZ9sFDEpaCjXXga+gt88SMfW
+ w5zOgD6Idy567n1hK7HvorJUtQg/HFTdE=
+X-Google-Smtp-Source: AGHT+IEE/Dy9/q68MhBnUXI6cgvGWwaGEuHePLY892vj5mY8uUnlEdVaoLq+lNffPoqtZa1yM8JiKw==
+X-Received: by 2002:a05:6402:4310:b0:640:f8a7:aa25 with SMTP id
+ 4fb4d7f45d1cf-6479c4b220cmr5051039a12.30.1764840910139; 
+ Thu, 04 Dec 2025 01:35:10 -0800 (PST)
 Received: from PC-DA2D10.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.08
+ 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Dec 2025 01:35:08 -0800 (PST)
+ Thu, 04 Dec 2025 01:35:09 -0800 (PST)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -75,24 +75,23 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  YannickV <Y.Vossen@beckhoff.com>,
  "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-Subject: [PATCH v5 05/15] hw/dma/zynq: Ensure PCFG_DONE bit remains set to
- indicate PL is in user mode
-Date: Thu,  4 Dec 2025 10:34:52 +0100
-Message-ID: <20251204093502.50582-6-corvin.koehne@gmail.com>
+Subject: [PATCH v5 06/15] hw/dma/zynq-devcfg: Simulate dummy PL reset
+Date: Thu,  4 Dec 2025 10:34:53 +0100
+Message-ID: <20251204093502.50582-7-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251204093502.50582-1-corvin.koehne@gmail.com>
 References: <20251204093502.50582-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,29 +109,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-All register bits are clear on write by writing 1s to those bits, however
-the register bits will only be cleared if the condition that sets the
-interrupt flag is no longer true. Since we can assume that programming
-is always done, the `PCFG_DONE` flag is always set to 1, so it will not
-never be cleared.
+Setting PCFG_PROG_B should reset the PL. After a reset PCFG_INIT
+should indicate that the reset is finished successfully.
+
+In order to add a MMIO-Device as part of the PL in the Zynq, the
+reset logic must succeed. The PCFG_INIT flag is now set when the
+PL reset is triggered by PCFG_PROG_B. Indicating the reset was
+successful.
 
 Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/dma/xlnx-zynq-devcfg.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/dma/xlnx-zynq-devcfg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index 0c06daa6b9..72f7b1f170 100644
+index 72f7b1f170..722d68a568 100644
 --- a/hw/dma/xlnx-zynq-devcfg.c
 +++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -188,6 +188,8 @@ static void r_ixr_post_write(RegisterInfo *reg, uint64_t val)
- {
-     XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(reg->opaque);
+@@ -49,6 +49,7 @@
  
-+    s->regs[R_INT_STS] |= R_INT_STS_PCFG_DONE_MASK;
+ REG32(CTRL, 0x00)
+     FIELD(CTRL,     FORCE_RST,          31,  1) /* Not supported, wr ignored */
++    FIELD(CTRL,     PCFG_PROG_B,        30,  1)
+     FIELD(CTRL,     PCAP_PR,            27,  1) /* Forced to 0 on bad unlock */
+     FIELD(CTRL,     PCAP_MODE,          26,  1)
+     FIELD(CTRL,     MULTIBOOT_EN,       24,  1)
+@@ -116,6 +117,7 @@ REG32(STATUS, 0x14)
+     FIELD(STATUS,   PSS_GTS_USR_B,      11,  1)
+     FIELD(STATUS,   PSS_FST_CFG_B,      10,  1)
+     FIELD(STATUS,   PSS_CFG_RESET_B,     5,  1)
++    FIELD(STATUS,   PCFG_INIT,           4,  1)
+ 
+ REG32(DMA_SRC_ADDR, 0x18)
+ REG32(DMA_DST_ADDR, 0x1C)
+@@ -204,6 +206,13 @@ static uint64_t r_ctrl_pre_write(RegisterInfo *reg, uint64_t val)
+             val |= lock_ctrl_map[i] & s->regs[R_CTRL];
+         }
+     }
 +
-     xlnx_zynq_devcfg_update_ixr(s);
++    if (FIELD_EX32(val, CTRL, PCFG_PROG_B)) {
++        s->regs[R_STATUS] |= R_STATUS_PCFG_INIT_MASK;
++    } else {
++        s->regs[R_STATUS] &= ~R_STATUS_PCFG_INIT_MASK;
++    }
++
+     return val;
  }
  
 -- 
