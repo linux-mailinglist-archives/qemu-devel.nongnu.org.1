@@ -2,152 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A92CA34E9
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF631CA34D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:50:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR6vp-0002i6-2Z; Thu, 04 Dec 2025 05:51:29 -0500
+	id 1vR6uo-0002Br-Sz; Thu, 04 Dec 2025 05:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vR6va-0002UJ-6V
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:51:14 -0500
-Received: from mail-norwayeastazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c20f::7] helo=OSPPR02CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vR6um-0002BG-Pb
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:50:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1vR6vY-0002Jp-Dp
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:51:13 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n7VH8ngWoGPQQ6zNTqirA0hLG0EkYepgZ0KdOQvi6Dl/h2LpI2vfbPYP3kEgDGMwm4BzpaHGC9fSNuRN9ttnx2WFn6gUoYKS24P1h5O2rj5R3Q+MVmtiekdfb8P7x+C0ZJCtgbStiiRhLQ7Ak7VEb8qgp6QMqHGDB8YOS1Bd/THOxAnlZfAdjYVMgWVhXJ+7YUxtqEanNCVu1x/SgtFObJm3aB4FdOomu4SBpniOgBtoB6ZUBh5YFZPgtqJAW8RzGeML19RhYUKWvgmEslOytK8pOvu86yUeEpWAB+vDe+K3GoA159slAvl3W13MmVDMGV0Ve8mLB/XsSuoFzqRC7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nkdLg61EAjLiGyTPzAAR9Y5JdjmyslZNraIikIB4ltw=;
- b=fhmQ0Ruh+T0p9DfJJjmLl4jGX+lgHstesV2VHUE6S9Ql3ctGeDtyQD4qvXKP5VLHXvT5ZPdgca1BREByBMfyklf+wcK9Zlv82wOMDXYw5UTX3/248rSaHkjR99wuKd2x0UQVlUdPh9TdN49FE3rCskFpjw+bcH5qOgU5PrdCWJeBmVJtUVEWE6uxbmsgR9rLNHMxqXUP/0nahuexnRgwfaonpJf5v8wuR4/1yKRCD9GY4kc8/hFaZfzSBGy/kPDpSPJogepQjEKAmBMafy7kNBOUxFSzopJg3gBSK/MP2ghH6sZ+8CcOuY0jApWPvGveYc+EpuWYHofAoMHIZJtBiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nkdLg61EAjLiGyTPzAAR9Y5JdjmyslZNraIikIB4ltw=;
- b=ge9Wx2L0qGCTmPUKMNhSxBrWO1Gg2YKY6xmUPQh9G5hpU905I/PULDbaY1bTa6dqvxUgVw8kMnJsAfo/ZKb92LuixE8vxhCDg4Xq2dQEWn/m6barH6tbBUqMTTFYqlf1kfNF99IfOQ5lWl7ZXDJIb46pAUW9CNXyd9KzDdtsntYyGzaq+Wl/DQegA4wPICqRDBzC2kU1tdcbIcuukldRL6cB/38pZxKlc8C3yE4NdiplX5O2+uvdV94HIfOKZHPY1No0Wni2t9IIo9hJFto6fxnhHwLqrsEktNJXahKSnWE272EZXIQUvk8LPnWHC2qWOvEtLsmfJX+8RL7BGFMcPg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AS8PR08MB7718.eurprd08.prod.outlook.com
- (2603:10a6:20b:50a::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Thu, 4 Dec
- 2025 10:50:33 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9366.012; Thu, 4 Dec 2025
- 10:50:33 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vR6ul-0002Cr-9Q
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:50:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764845422;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=i2L2bDIgJyo5amVCwiaT61QyiIDHFyCTXAFJ7ANy4bs=;
+ b=MReWF0KvJiO1UB96zfeqBpsp8wSKq0iwrTACAlQ12wzwB/AEXw/E7yAC6TFfx4uk8Qo4X4
+ uymGN4dBNypyg3SVaH0plIEW8s1l8iwCSBuFXauIvC9KUKQRW1NQNm5y8DBW9Y4dBM4IqB
+ i1eGwBEoG1QDw1YJk1OyTxpzUmO085g=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-315-7-XLTtvoMC2MRf5Rpl5oDw-1; Thu, 04 Dec 2025 05:50:21 -0500
+X-MC-Unique: 7-XLTtvoMC2MRf5Rpl5oDw-1
+X-Mimecast-MFC-AGG-ID: 7-XLTtvoMC2MRf5Rpl5oDw_1764845420
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-42b2fb13b79so405918f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 02:50:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1764845420; x=1765450220; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=i2L2bDIgJyo5amVCwiaT61QyiIDHFyCTXAFJ7ANy4bs=;
+ b=RJ/38Q/t7yhs/OpWydDPIub5GnSwPn6/nakpcir+A/0PmaltJ5y+oCN/3j4odM3epp
+ duGp20CNdaviu5UMYNZhnlNUCDfLMACXMR07ZT9kJhYTz49kS0fDDFj7XKBV5UqIEKUP
+ NzVvQeMWK34nl9pJ0MpVD+OaTxvORHH8dfReh+V3CQgMkajzhOJ8As+DjS32KDTqRCgm
+ SaM9YydGnUB12sqk+v0CqksDJVlgNa86a/eabSzTJZYM4ma7Zl9AkIy4jk2y/FVcny21
+ 6F+ioRkPew5K72TuMNiaFrGPt7QCQglAyN6BVIteVLLw2Pwe/tU4/JMwRCo+HGA7UT6w
+ wFhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764845420; x=1765450220;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i2L2bDIgJyo5amVCwiaT61QyiIDHFyCTXAFJ7ANy4bs=;
+ b=lBGbslEo7tLxbBGapoen5C3mte30j+bWfkearLl9H69n7k6WdO09X44eKL1nUtn0e6
+ Bm3mTOVyKHj1nP3RAX01QSA/kdFf+duMLKliSh2hmHeYbrLJT2az8woKj0ccvAnK5dIH
+ 7Y6IzxQ601nRCxfiH9VkQ1taTiyBuE29pPQlpNuYL0aDaZpI451T86ehfcfJZ67g20ud
+ gvAPlAEIbIPaW/rD4JZIKvoDJJ6/hjwh4pP5MBGXsYnB6DEyyehXokluxLfXzmm4EOxf
+ WVTkvaKtH5AJHZTbaDur5ex2BbD9QeYlFYpsgspK3HZa2aG73J8MZ+AJ4uPavpJpjH0U
+ fnxw==
+X-Gm-Message-State: AOJu0YxYHYiRSO/7q3IHjdqhrzNu/sLE7nAFhiCnbS0w0gObUKR3gRBm
+ CgAijrXBYmg1lU3IEbbdhhdMho7S63pgnX8RPpk8DRy4/sPY36B7ElqZyEsZoFpWmaiVgp157IL
+ RXnEENih4FQJXOyxNLGp1NcBugDI94NK9XRcYa9KIT14YIFLcZn4tTugmFS3fqALaoK9RESb5Mj
+ yrthNBX0hxFVzNPSXYbYdHUYsTO5K2Hd85h00i+CBn
+X-Gm-Gg: ASbGncvSyRX9etfCOrhQK56MFz65VK4oKWpzhbGlYvwnzXww9rsbv8yZeKXmIo/zOi0
+ uJFQKHcjXMjBZ1tNOSZsy5TMOGGONh/oij/t494HMHIYNM+KLKGzOIfnW3rxpzFQAudqx56emP8
+ ffVUCD5AEMQEWMspPeaXDYbAo/f0sfgAUnfFBkhnIf6Hx/zKAGB4hxy6MPtzVfKg6QaDKpH6x4Z
+ UeGNEBrxhOr8Wby6c/99ZxbvRPSiDulTaWpgxvhm3NAZY0MSg2TACduwRLFdu5/klx4p0o3SQTy
+ /Wg6VIioPfGkeAK9STtoFr3XoFwWAibSKWlbXSDGCeeV2iOXW2tKfWob6V6H9PhEAnK5I76BYhi
+ mfIkCqa/fBgQ2riTDMhcUkg+mU9H5sUQLn/5hNS65LTVaJmiaSWY4KGN6Pl3e8GSrn1VNQpIIbN
+ pKBaK4lju0wZ/hDRE=
+X-Received: by 2002:a05:6000:c0b:b0:42b:3eb2:1b97 with SMTP id
+ ffacd0b85a97d-42f731905a9mr4635237f8f.9.1764845419335; 
+ Thu, 04 Dec 2025 02:50:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGDKn6k/gpAIcrJEUW+zOk2+lqPffW0oRy2X2l0v6uJLA8SVYJGfQjNXnX1w+WnrsPN5Wj8Eg==
+X-Received: by 2002:a05:6000:c0b:b0:42b:3eb2:1b97 with SMTP id
+ ffacd0b85a97d-42f731905a9mr4635216f8f.9.1764845418878; 
+ Thu, 04 Dec 2025 02:50:18 -0800 (PST)
+Received: from [192.168.10.48] ([176.206.119.13])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42f7d331aeasm2455317f8f.37.2025.12.04.02.50.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Dec 2025 02:50:18 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com, peterx@redhat.com, stefanha@redhat.com,
- vsementsov@yandex-team.ru, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com
-Subject: [PATCH v3 1/4] scripts/qemugdb: mtree: Fix OverflowError in mtree
- with 128-bit addresses
-Date: Thu,  4 Dec 2025 12:50:16 +0200
-Message-ID: <20251204105019.455060-2-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251204105019.455060-1-andrey.drobyshev@virtuozzo.com>
-References: <20251204105019.455060-1-andrey.drobyshev@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR3P281CA0158.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a2::8) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH] rust: hide panicking default associated constants from rustdoc
+Date: Thu,  4 Dec 2025 11:50:17 +0100
+Message-ID: <20251204105017.2564277-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB7718:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bd8a6f1-e4e1-4d26-d54e-08de3322f26b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|52116014|1800799024|38350700014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WT0BdfOwaPmBz9RUV9hYqM8n8Im/dUpiwT+sjEo7QIqJz3J6Oh3In7pkGEko?=
- =?us-ascii?Q?jil+yuS/5QHwiQ3ik2cq+Q99B1NiBq6JxMMfrXR58z71T9pYEVhnJAEW2eV0?=
- =?us-ascii?Q?PfUHZE6+EF5z0gMwOWbCPoN5vwZypnbd4kyaYEiCbMGbVdbkkRTdz/mfpzpO?=
- =?us-ascii?Q?vXJkmrZ0zhrYcZXgTbAFl6OjHuEMXeWGNkjnfJqW/ZIyacxYeUzV8G7GudO0?=
- =?us-ascii?Q?7FYjKuAw9/hUMMSJAyeBSumixIZjQSd0VPvlF8zjUyIVoQ+HUAuJh85fwq0o?=
- =?us-ascii?Q?Pwyh1J14NUgGSlZgAkxI4WlACzh6o6eZuLn3oSIXfUsZoIqQ+k0grL4SjopK?=
- =?us-ascii?Q?NDHx+tCWPNJfRnYIvyN0qIu/e+/DhfLXnPFdODW4ae0wF/V2oes3aalQxMwW?=
- =?us-ascii?Q?PPiRnewiLlvSzQ1Qah13F1gdHSUMcoh1yZu6M3AjdvbNEDYOWv78EKqyRlzY?=
- =?us-ascii?Q?+qPkYVFYdc2roMVL+cBJT8K2ehosU+kFe4r7RTt/bsgr/kno891truTQtamT?=
- =?us-ascii?Q?WYXcdZtIus2k2XXbiwHaiy0/UyEZZgbMMtyeJ79RdabPRQK9RSVwLW1K7TDh?=
- =?us-ascii?Q?5XpCxCRicBYng7LMjfTXy6M8qlmfnIdLVl/lBg7I9n9WxoCpZiSc8EMmsD9e?=
- =?us-ascii?Q?D6cSAgPQpJ5hpZkLIcU/2O+r4RVgS684AhRIlR/CA+k7XC5WavoHAa5MmGQm?=
- =?us-ascii?Q?Ur2Lh2d1wJU/7SM9RAEgI6j21X47H49+QBEHdc5VZFD3HEqqcmwE4uWjY1MJ?=
- =?us-ascii?Q?8BfC/AC7U//9u4+YifvuFtdfx/yWh6c4OFK8gbpBbnACUekrMyQdLiuUBFq2?=
- =?us-ascii?Q?y8gsiWa65+iMa1wf4ckbVClyrO9nKQN2Vr0Zd9S2+FzzCaTXNbsuxV7NbuFy?=
- =?us-ascii?Q?+nwBtkb17hPhoGZPTwhcP6SUeSCn3ZXPoJ4stOJ1TIMqkRthNsHJ9bn79kzh?=
- =?us-ascii?Q?UBOp4wI8PfYjrZ1RGusjxemUY7K6zMnbgKg0QMKY3R41cZxSBisJRkfUckKf?=
- =?us-ascii?Q?NYqnLtx3ZWFiwfWlxqJy6oa4rurqmd1En7EaSNa2dVHz+6menJLC5gkVxEK/?=
- =?us-ascii?Q?KMZ0utQCF5ywwSvfPCdU5IlFTqqi3eI21bK7fOAyinAuWrEiCJ0sUPsOLBof?=
- =?us-ascii?Q?YUoHvOVky6Wj2/mE+jkv8Rl/pzPgjCeTHy8HU+Be+HjrX1dlf+5E/ETUrknS?=
- =?us-ascii?Q?QaNQPShAsCttNeYRkbcgOxlGft+PY0p3JaMprKYtEGGvF/kNxEy9u+4Jl9SW?=
- =?us-ascii?Q?S9hrWiuqSEFjPngM+s5yMcA+0U/vmKdhsmgL3W08OeXnMut8i2QDZwaHlnsk?=
- =?us-ascii?Q?/pHM2MMWlBvNgyUKlj/JBNoi0YuZqmrjj9NNKtGV5FHmF1nZbpxwIavn/AI6?=
- =?us-ascii?Q?LN1dT59Vvg08DcJVoA1wh/239uODBDfwN5mbofdQ2VYXeYTxVJFL7ANugHkC?=
- =?us-ascii?Q?qWwpO5Z6ZgQB22CLnryyR6KYiw859rjPh1HjE71c31l9479eoR60EMud4IGQ?=
- =?us-ascii?Q?X9EkXMBL1wU9OIDyeI0IAagzFTuPWPj22sOH?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014); DIR:OUT;
- SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tykS/NtHMLboyaaasXVsgJCh8HNncIKXs/5mlr5fEB3LzynWV+4m4OylfWX8?=
- =?us-ascii?Q?ZfPOeiQmVphRD/PVeaR8XQwFkfzs8ipIjoItruSjQBNY/f1vjiNxMsnNInSH?=
- =?us-ascii?Q?Q2JWnz2DjzzqBiB4hcVwQHL4+rry0D3PzRag3QSi52UOQpQKBU/Pi9SDaOTn?=
- =?us-ascii?Q?vo24FLzTVXzwgiIc4/Q+DkFmR6EkbTyJtn83XkHhcX8ireMHXtMHqm6QH4Xv?=
- =?us-ascii?Q?oZecbyoBEkjkg5Y363LjghAv+3Vod2qni1A9dC1jL5MvG1fMPp1EScADY5Yh?=
- =?us-ascii?Q?kl7dNJ5hPBZhICQwlQ6DuAnX2y0JzBJKdS2We5IYeZAbstKt8z6SbW8d4MUt?=
- =?us-ascii?Q?QLgSdXYzVw8KrRNDNkbt/L8b90aJ2lVqdr2a0KaR2uCl6uI0wIuneyO173uu?=
- =?us-ascii?Q?nFnmShLbnJ/b354sutvwo5kv+uFA55eYp/mwj5I1bg/Cq+xcSF7VxNx61Vnv?=
- =?us-ascii?Q?BzkErM/xK50X8A9LTEjTwcxUU+RO7Kec1W3/uPOJUcgZzQm3VRAnIB85y67C?=
- =?us-ascii?Q?dB3P7aJuwMKzIhvI55rQodLND/pneV3yC6P4u7AnmTmHsusSl5GkuIAWNb92?=
- =?us-ascii?Q?H71NnI/wLD8bMKwEGsDaBBDcgef0y/YC8AjQclN5o5agqTWm84tRfyQVE0mL?=
- =?us-ascii?Q?8MvpVZKLNlDmYyGmPims5BQzciVBSMynRwUL3gD07HwTCvCjUhSZhS/tmX9+?=
- =?us-ascii?Q?GDqYkHGBcVqtGUjclbYufwFXEE4u974x/Tp4zf74xf6UIUIubnqx/XQfJ286?=
- =?us-ascii?Q?PoQ3RK0MnYzrRNyjq1HtQX7OCfoskvVM1lFDFxAgWfyAB+NmwTf3h4TtOm2L?=
- =?us-ascii?Q?WtI8DchV5n6BgiqWiLz2zjdWhXiPq80HWAnRXbN461jrS7NVYG54zx5aMK5B?=
- =?us-ascii?Q?QSpOEbyxgCqbmFYJMDCaEOcGhuIamNCONAAqEv+uNxw7/1IjaCD3UDmE/Aam?=
- =?us-ascii?Q?/71nl2/c7HHt4fveALf/6OJyxfdZYSvId3ohXUalKDzVpppyHM6v8Ox5hDeW?=
- =?us-ascii?Q?MuHUFncI0iH/s5uehc7USsyi5oLMp5X8HMuzfcGlIpd8OZTmAq2BHq2quPU2?=
- =?us-ascii?Q?BSndhXb6bRxI28c+c/mq470RRTtmYSen/cflbdye//sG61PKdqOp8NprrWc8?=
- =?us-ascii?Q?Y2awmbE1LWo4dN3RoNl67C7e9c/YwlKJSE60IxRAJu8hGg26fCOHmVQ1oVFf?=
- =?us-ascii?Q?aURZaXjaf7p6MiRGPlJ124CNiIlJ5Zm463QdspYwKy5L41TmzJIteWrdJJ5Y?=
- =?us-ascii?Q?kDljWR5BcWJM6ziPJNq5V3pwO/re86Tn7J0/S67600clrWziitZAkweQ+Ohh?=
- =?us-ascii?Q?Fse3TUMR+YkKG+LFibnTL5ygg63tgJIrkP17kn0ufNSw1UmJdo7AnM6HI2sj?=
- =?us-ascii?Q?lDjjkFBXlusF+byzQe1JSpnPqCHm5Be0WibZLCTDN7jHWAr7MhgG2ZviLvec?=
- =?us-ascii?Q?uaAXgEodzZinkTyby9Db7RnUYFiqgsYn08KtuurWf8GWAiMwVv8JcwmnpEVK?=
- =?us-ascii?Q?H4CqUVSKbw1figiyeu4pi3Qdwb+RzxvYTQff177dgz6RmBXgZrMdGwcqbP6k?=
- =?us-ascii?Q?XBQBVnxc1G3HZhl7rVoYmv5XGvRm6pt2eyY9IAaCuoJBCfy3w5rpm/liXBQX?=
- =?us-ascii?Q?gQ=3D=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bd8a6f1-e4e1-4d26-d54e-08de3322f26b
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 10:50:32.4693 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f68gWMm2PNo8fbqf/g/zIxmpqx1YZl4/O500aIF/jKhpAqJ22/2vSJ833y4ed7UYG9zPgzv/QiCVhiASv8F0BFuv0lDTHHI8Fa352WvUjIQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB7718
-Received-SPF: pass client-ip=2a01:111:f403:c20f::7;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=OSPPR02CU001.outbound.protection.outlook.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,33 +116,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'qemu mtree' command fails with "OverflowError: int too big to
-convert" when memory regions have 128-bit addresses.
+Work around rustdoc issue that panics while trying to evaluate
+the constants.
 
-Fix by changing conversion base from 16 to 0 (automatic detection based
-on string prefix).  This works more reliably in GDB's embedded
-Python.
-
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/qemugdb/mtree.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/hw/core/src/qdev.rs      | 1 +
+ rust/migration/src/vmstate.rs | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/scripts/qemugdb/mtree.py b/scripts/qemugdb/mtree.py
-index 8fe42c3c12..77603c04b1 100644
---- a/scripts/qemugdb/mtree.py
-+++ b/scripts/qemugdb/mtree.py
-@@ -25,7 +25,7 @@ def int128(p):
-     if p.type.code == gdb.TYPE_CODE_STRUCT:
-         return int(p['lo']) + (int(p['hi']) << 64)
-     else:
--        return int(("%s" % p), 16)
-+        return int(("%s" % p), 0)
- 
- class MtreeCommand(gdb.Command):
-     '''Display the memory tree hierarchy'''
+diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
+index 4e983da28b7..c2ca17f6ce0 100644
+--- a/rust/hw/core/src/qdev.rs
++++ b/rust/hw/core/src/qdev.rs
+@@ -132,6 +132,7 @@ pub trait ResettablePhasesImpl {
+ /// [`bindings::PropertyInfo`] pointer for the trait implementation to be safe.
+ pub unsafe trait QDevProp {
+     const BASE_INFO: *const bindings::PropertyInfo;
++    #[doc(hidden)] // https://github.com/rust-lang/rust/issues/149635
+     const BIT_INFO: *const bindings::PropertyInfo = {
+         panic!("invalid type for bit property");
+     };
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 267f9c8e053..f9d9f335b98 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -101,6 +101,7 @@ pub unsafe trait VMState {
+     /// type for the length (i.e. if it is not `u8`, `u16`, `u32`), using it
+     /// in a call to [`vmstate_of!`](crate::vmstate_of) will cause a
+     /// compile-time error.
++    #[doc(hidden)] // https://github.com/rust-lang/rust/issues/149635
+     const VARRAY_FLAG: VMStateFlags = {
+         panic!("invalid type for variable-sized array");
+     };
 -- 
-2.43.5
+2.52.0
 
 
