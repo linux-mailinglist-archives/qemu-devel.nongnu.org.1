@@ -2,92 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CFECA296B
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 08:00:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79ADBCA295E
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 08:00:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR3Kd-0005VT-Ij; Thu, 04 Dec 2025 02:00:51 -0500
+	id 1vR3Ie-0002bK-1z; Thu, 04 Dec 2025 01:58:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vR3KW-0005OQ-Qt
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 02:00:46 -0500
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1vR3Ic-0002ao-6m; Thu, 04 Dec 2025 01:58:46 -0500
+Received: from out28-79.mail.aliyun.com ([115.124.28.79])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vR3KU-0006qW-HV
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 02:00:44 -0500
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 3A8F4420D5
- for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 07:00:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1764831640;
- bh=lAtIMecCPC/wiLJDQ2/ZintJ28g1w9B7yiJFdnhH95Y=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=Jeqtnax97p+pJAj/62F5t8w09qL8HUlmAFLCjRsS5RizMs3C+UqDKGYzsM33nUulM
- CnO3lNmlSxFAVLu4unfnFDW1jJa8dS8gftRjcagNLHsyDS+WWrDFYj0FJ+Hor87VBC
- 4Z+h6kZWbzLwIvgUz6zYSBALGAEIXVjkbxntAxvcifZrbwVI5vRQHdVgPXrJhqvH45
- YjtWncUf50JuZIXtJ24LQzR4Wze3MbVmeZ3swWiD5zXX78yoXgqe6dlVB6fiX8wz3S
- 5fnOxq7Xs3W+LA5IMRWjw9twuCS//AVow2t/owV7sBE3XZWbvj4g3KnBL6Rh27T9wl
- BU28YoKEWKi/g==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 26EFE7F813
- for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 07:00:40 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1vR3IZ-0005dG-VI; Thu, 04 Dec 2025 01:58:45 -0500
+Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
+ fp:SMTPD_---.fcgSBC3_1764831508 cluster:ay29) by smtp.aliyun-inc.com;
+ Thu, 04 Dec 2025 14:58:30 +0800
+From: Chao Liu <chao.liu@zevorn.cn>
+To: pbonzini@redhat.com, dbarboza@ventanamicro.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ hust-os-kernel-patches@googlegroups.com, Chao Liu <chao.liu@zevorn.cn>
+Subject: [PATCH v2 0/5] Add K230 board and thead-c908 CPU support
+Date: Thu,  4 Dec 2025 14:58:21 +0800
+Message-ID: <cover.1764830405.git.chao.liu@zevorn.cn>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Dec 2025 06:51:30 -0000
-From: Christian Ehrhardt <2133804@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Unknown; importance=Unknown;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- milestone=ubuntu-26.04; status=Confirmed; importance=High; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=jammy; sourcepackage=qemu;
- component=main; status=Confirmed; importance=Low; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
- component=main; status=Confirmed; importance=High; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
- component=main; status=Confirmed; importance=Medium; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
- component=main; status=Confirmed; importance=Medium; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=resolute; sourcepackage=qemu;
- component=main; milestone=ubuntu-26.04; status=Confirmed; importance=High;
- assignee=None; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: paelzer xypron
-X-Launchpad-Bug-Reporter: Heinrich Schuchardt (xypron)
-X-Launchpad-Bug-Modifier: Christian Ehrhardt (paelzer)
-References: <176477927666.3767208.4954653462090539439.malonedeb@juju-98d295-prod-launchpad-3>
-Message-Id: <176483109068.1060137.12863328826273380570.malone@juju-98d295-prod-launchpad-3>
-Subject: [Bug 2133804] Re: QEMU does not emulate IOCTL TCGETS2
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 510ac863c9364fa7ad27a08ce8fd7b4a92c3b727
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.28.79; envelope-from=chao.liu@zevorn.cn;
+ helo=out28-79.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -96,146 +51,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2133804 <2133804@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for the report,
-we need to add that indeed the moment we have something reliable by upstream
-I've added the upstream bug tracker https://gitlab.com/qemu-project/qemu/-/=
-issues/3065
+Hi,
 
-Implementation looks like being worked on since
-https://mail.gnu.org/archive/html/qemu-devel/2025-08/msg04984.html
+Thanks for Daniel and Conor's reviews. In PATCH v2, I have fixed the issues
+they mentioned:
 
-With iterations on feedback and fixes like
-https://mail.gnu.org/archive/html/qemu-devel/2025-10/msg08521.html
-https://mail.gnu.org/archive/html/qemu-devel/2025-11/msg00043.html
+- Patch 1: Add Svpbmt extension support for the T-Head C908 CPU
+- Patch 2: Move the k230.rst definition from MAINTAINERS to Patch 5
+- Patch 5: Apply Daniel's bugfix to build the k230 documentation successfully
 
-Recently got some more attention by us and Fedora picking up and seeing the=
- same
-https://mail.gnu.org/archive/html/qemu-devel/2025-12/msg00468.html
+PATCH v1 changelog:
+- Patch1: Add T-Head C908 and C908v CPU support
+- Patch2: Add K230 board initial support(big core is not supported yet)
+- Patch3: Add Programmable Watchdog Timer (WDT) peripheral support
+- Patch4: Add QEMU test for K230 watchdog
+- Patch5: Add documentation for K230 machine
+https://lore.kernel.org/qemu-devel/cover.1764493931.git.chao.liu@zevorn.cn/T/#t
 
-@Heinrich
-do you think we need to rush glossing over it by using the incomplete versi=
-ons in resolute until the final one is out. No risc there yet, but this isn=
-'t exclusive to risc - that is just more common to run emulated.
-Or can we wait until they have it finalized (either way before resolute rel=
-ease we should have it in R but also in SRU that we expect to run resolute =
-binaries.
 
-** Bug watch added: gitlab.com/qemu-project/qemu/-/issues #3065
-   https://gitlab.com/qemu-project/qemu/-/issues/3065
+Thanks,
+Chao
 
-** Also affects: qemu via
-   https://gitlab.com/qemu-project/qemu/-/issues/3065
-   Importance: Unknown
-       Status: Unknown
+Chao Liu (5):
+  target/riscv: add thead-c908 cpu support
+  hw/riscv: add k230 board initial support
+  hw/watchdog: add k230 watchdog initial support
+  tests/qtest: add test for K230 watchdog
+  docs/system/riscv: add documentation for k230 machine
 
-** Also affects: qemu (Ubuntu Noble)
-   Importance: Undecided
-       Status: New
+ MAINTAINERS                    |  10 +
+ docs/system/riscv/k230.rst     |  48 ++++
+ docs/system/target-riscv.rst   |   1 +
+ hw/riscv/Kconfig               |  11 +
+ hw/riscv/k230.c                | 501 +++++++++++++++++++++++++++++++++
+ hw/riscv/meson.build           |   2 +-
+ hw/watchdog/Kconfig            |   4 +
+ hw/watchdog/k230_wdt.c         | 307 ++++++++++++++++++++
+ hw/watchdog/meson.build        |   1 +
+ hw/watchdog/trace-events       |   9 +
+ include/hw/riscv/k230.h        | 153 ++++++++++
+ include/hw/watchdog/k230_wdt.h | 130 +++++++++
+ target/riscv/cpu-qom.h         |   2 +
+ target/riscv/cpu.c             |  44 +++
+ target/riscv/th_csr.c          | 380 ++++++++++++++++++++++++-
+ tests/qtest/k230-wdt-test.c    | 199 +++++++++++++
+ tests/qtest/meson.build        |   3 +-
+ 17 files changed, 1802 insertions(+), 3 deletions(-)
+ create mode 100644 docs/system/riscv/k230.rst
+ create mode 100644 hw/riscv/k230.c
+ create mode 100644 hw/watchdog/k230_wdt.c
+ create mode 100644 include/hw/riscv/k230.h
+ create mode 100644 include/hw/watchdog/k230_wdt.h
+ create mode 100644 tests/qtest/k230-wdt-test.c
 
-** Also affects: qemu (Ubuntu Resolute)
-   Importance: High
-       Status: Confirmed
-
-** Also affects: qemu (Ubuntu Jammy)
-   Importance: Undecided
-       Status: New
-
-** Also affects: qemu (Ubuntu Plucky)
-   Importance: Undecided
-       Status: New
-
-** Also affects: qemu (Ubuntu Questing)
-   Importance: Undecided
-       Status: New
-
-** Changed in: qemu (Ubuntu Questing)
-       Status: New =3D> Confirmed
-
-** Changed in: qemu (Ubuntu Plucky)
-       Status: New =3D> Confirmed
-
-** Changed in: qemu (Ubuntu Noble)
-       Status: New =3D> Confirmed
-
-** Changed in: qemu (Ubuntu Jammy)
-       Status: New =3D> Confirmed
-
-** Changed in: qemu (Ubuntu Questing)
-   Importance: Undecided =3D> Medium
-
-** Changed in: qemu (Ubuntu Plucky)
-   Importance: Undecided =3D> Medium
-
-** Changed in: qemu (Ubuntu Noble)
-   Importance: Undecided =3D> High
-
-** Changed in: qemu (Ubuntu Jammy)
-   Importance: Undecided =3D> Low
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2133804
-
-Title:
-  QEMU does not emulate IOCTL TCGETS2
-
-Status in QEMU:
-  Unknown
-Status in qemu package in Ubuntu:
-  Confirmed
-Status in qemu source package in Jammy:
-  Confirmed
-Status in qemu source package in Noble:
-  Confirmed
-Status in qemu source package in Plucky:
-  Confirmed
-Status in qemu source package in Questing:
-  Confirmed
-Status in qemu source package in Resolute:
-  Confirmed
-
-Bug description:
-  In Ubuntu 25.10 we moved to glibc 2.42. Here glibc has changed the
-  implementation of isatty(). It now uses IOCTL TCGETS2 instead of
-  TCGETS. TCGETS2 is not emulated by static QEMU (qemu-riscv64, qemu-
-  arm64, ...).
-
-  This leads to failures in containers for foreign architectures. E.g. no c=
-onsole prompt is displayed.=20
-  A detailed analysis is contained in LP #2133188.
-
-  A proper implementation of the missing IOCTLs will include:
-
-  Functions:
-
-  in linux-user/syscall.c:
-  host_to_target_termios2()
-  target_to_host_termios2()
-  print_termios2()
-
-  Definitions:
-
-  in linux-user/syscall.c
-  #define termios2 host_termios2
-
-  in linux-user/syscall_types.h
-  STRUCT_SPECIAL(termios2)
-
-  in linux-user/ioctls.h:
-  IOCTL(TCGETS2, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios2)))
-  IOCTL(TCSETS2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
-  IOCTL(TCSETSF2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
-  IOCTL(TCSETSW2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
-
-  in linux-user/user-internals.h:
-  void print_termios2(void *arg);
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2133804/+subscriptions
+-- 
+2.51.0
 
 
