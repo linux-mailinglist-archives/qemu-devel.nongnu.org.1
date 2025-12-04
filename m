@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F00CA3076
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDB9CA309D
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:38:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR5kY-0001U1-JI; Thu, 04 Dec 2025 04:35:47 -0500
+	id 1vR5kg-0001iC-7k; Thu, 04 Dec 2025 04:35:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5k5-0001Ad-TX
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:19 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1vR5k7-0001BV-4E
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:20 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1vR5k1-0003P3-F7
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:15 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-64149f78c0dso998724a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:11 -0800 (PST)
+ id 1vR5k2-0003Pm-Tq
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:17 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-6408f9cb1dcso1037600a12.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1764840910; x=1765445710; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1764840911; x=1765445711; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/rkLVpmvYPi7YnLbLN1p5rsM99VpTuNA1PPyZs5DkRU=;
- b=UN6Dm/wZRDPKUrD1zahI5XqekPFj//tKKCJxVq3J/XLSJjomgF2rOv/bZiQG+w+IuX
- D/HlxBYJ/9e9IG6/SXfiZFfcTPOOFC0Q9WfWMJtsKr+nj7oZO5gfbJb6VjJELqg0mz2W
- gVHbhUUnkarfidd5rNX0OPZfpUcBQ0hoGN5k5+8veJ2k2aKheq/SXKtIHCo6D11puyQ5
- y+jqwq3p1MtmsKDhDniORaU9sQCK+AnnHeLR9O6ZPce5A41jpiFjslj6M1LUzQKbLwne
- qVlhiUrA/69h0aE/TyPqg5qY8PZlvYUCaqhFnQk+VYi4NzFReZdd0UY48iCmqw+G51Zp
- udgg==
+ bh=Pfg+3r5e3fkTMweJDY05x2D0nfBscf4bb3i1khlEcLs=;
+ b=IiIPr18pO97Co4agTe3ETohSwv4ifgFVfLPGhmwp7tPSaCmCm10k6OlNbmF3vf8c9F
+ wPmQ47qbkgYXzUkqoR5I9vu8l2kAU8wBMo1Y2KJ7eEstisoRyZr2sfDjIvXFP3UvcCFj
+ KXS3byBbWgqp0x3NjgBCDczcphvgjeiSRKS0lljXc4IpYB5Uv9lAQu4eqqfhr5APqTVv
+ hROqK/GjnFZQdoRGqlfdE7ElBnMnzIHC2yIB/6IvOQwcoZ06MUOx/lvSuDAPY1Hgiyty
+ rM5y5z8YVzCkPLI8HWef2YFuOD9fiCwxX1BG00T/XiAzooUT7iGVZdk3xiK795UyzH4D
+ yvNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764840910; x=1765445710;
+ d=1e100.net; s=20230601; t=1764840911; x=1765445711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/rkLVpmvYPi7YnLbLN1p5rsM99VpTuNA1PPyZs5DkRU=;
- b=JspGQmY+xn/tqgygaoJt6G/Ka/fqP3Nw355rgAz0GXdjrs9/MKgXgCjTE8KRp8rGME
- LCinFERHEd6TKQ0nZC1/ThgLg4STQZS/fpr/YppiTc2u3AnAJySgCwg1OvLACH/ghBmw
- K5TDQk6x02eI5cU94yvX1nnGkGojEYHgH/z9k4OinJQM3RFEz5XuBUn1hiH7KIdsW61w
- v1XeHcVqo8GBinfC7dbOSVdcX+4NNJD+p4hz+n1UnC0YtgiqlKmvYMVsFwDs4Ccwty7f
- L2Tm2l8UlidAcbYd6TUWM6SGuV03fT1VJyi0H4cvNacBz4eNvDuYdSLfsEqxXf/TvWnA
- 3/LA==
-X-Gm-Message-State: AOJu0YzuGsnPQt5Se7jtYkuJ3NGztLZXcaua9N1QF6VuhD4PC6rsZMXa
- HnIDmm8wBliQGIQPtUKNxrU8ELM1rd6CtJbiEKR2BeC8n7kh8cJgvYW3oGXKocyn
-X-Gm-Gg: ASbGncvetIGcg5L5A8JqqSrNdIyZnbZlKVtBRGNz9YVWTJ0gFa/sYau0k7u99ySoXbr
- PZ43wXGHT4w2BKtxDXIMZuv6gudzQAmpI5CKCq+0zry1QeJEeBDCtL37ugf076Pz9rSMWMgpo3d
- rcS5mj6et94uuMuSNRvzAejlXjf9w4f2GNayWt+RZw72hwPeAiTwjuTV3zw5IEWYj/fyJU3pCxd
- 77h3+QhZShXQ30ArcOV/aFaYNMl5QyPwel1zpIm5CZ/n7qn3JC38DEDPa6X44o6pcFTxQbu43Re
- 6nEr/5mk3NxV04w87drUE4xmSTBCCU7AtbNk1ooUbyhuNE2pO1h8f51wzlzC+/XrJ+0Lamy/l6m
- /VoPRZQE4JeGLtTbS9biJqNhUxmAZyXI8XMUTwPmEJvLkapxtdiPZ9sFDEpaCjXXga+gt88SMfW
- w5zOgD6Idy567n1hK7HvorJUtQg/HFTdE=
-X-Google-Smtp-Source: AGHT+IEE/Dy9/q68MhBnUXI6cgvGWwaGEuHePLY892vj5mY8uUnlEdVaoLq+lNffPoqtZa1yM8JiKw==
-X-Received: by 2002:a05:6402:4310:b0:640:f8a7:aa25 with SMTP id
- 4fb4d7f45d1cf-6479c4b220cmr5051039a12.30.1764840910139; 
- Thu, 04 Dec 2025 01:35:10 -0800 (PST)
+ bh=Pfg+3r5e3fkTMweJDY05x2D0nfBscf4bb3i1khlEcLs=;
+ b=sBz2GbH8pIF9uwQjP4fkLhHaRjHu0lgcWd28yIiq0dOkYRYOiB0mCfUvcpiQyypeqV
+ VFO9YRw5oa6yO6ZDXeGig/175UMsprqsyDun31SD7HkhgrI0OqcWzb2326yyeE8jJXfU
+ 26VmuA/434/+BHbRJkipcJQAnok/lw/HT448hKaYCKp2W7YGCFXfuFJ8DswnHQpwEq82
+ Svap0yF5lqNwa+hGWHc1p1Lwe7yTO0MQuANcVs1FDZPYOBWuJc5vXV4C6xi/vBpPAapW
+ kj1eSST3lUo9+roXivvSlVYPU3B6IgVRNtWSoQt/BNQ10aPD/apq9VoIVb/mWU0cuqyv
+ mQFg==
+X-Gm-Message-State: AOJu0YwP+/KfFiMOFQm3QC9gjWYQuwNbpNUa3IbRCL9zE1aQjgZ9zOiV
+ 4HlzYhD1FU84Fv2k3d5G1l2yFDx3ZiQhY/JDDGA4NVV1S+/65BZwMDxfLyk8IOfa
+X-Gm-Gg: ASbGncvrtFogpIkhdVFeLzbBD/Dq37sVfVoejYpAKQPe7CdiYL77aCk7wEbxrBZYMbW
+ ZdrznyJ+Fk20F20RX26goAhh6vbGB/fwjVF5luOn7ug/pqEb/qXBmAHfmTBWe31AAilWEHJhsDB
+ Pb8rlgLbRPS7IQ8tNYz1VoSnfKrf0SBYlcqX1RwyH0FzUZ4SVUc71a8YrRP1oNpMx5DBkdDzqw3
+ g894ZNyBl0rZi2jaeXpoymDd4/cDsNZ2oUyPeSwRoOkyr6oxuV5AJWAQf0G3KMk+ZhYPB4zclrf
+ 0+fXwiue1bFYJmY0I1wu9McDubcazVPVYIUiIxSbxZYowfLbh6uorlQOrBqQr4kHWE78M7iapZa
+ 2s4bobLR6wL32o5cMvpjBnhXtiswNrbGLN12FBebLTE60QAH8YtI5iiBn3kVqLboOZ6ubx6r45/
+ dPROLj2g87aXIvUmG+EOqncuwuuE/8O8w=
+X-Google-Smtp-Source: AGHT+IFRf3LHkGMTeKzqM0EWxnZp7Zf/lsrWcTpTYLwWOhltIN/yp45v4fnUPpsbHleX7Oc15Kf4CQ==
+X-Received: by 2002:a05:6402:26cc:b0:641:1f22:fc68 with SMTP id
+ 4fb4d7f45d1cf-647abddcb97mr1856056a12.24.1764840911099; 
+ Thu, 04 Dec 2025 01:35:11 -0800 (PST)
 Received: from PC-DA2D10.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.09
+ 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Dec 2025 01:35:09 -0800 (PST)
+ Thu, 04 Dec 2025 01:35:10 -0800 (PST)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -75,16 +75,16 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  YannickV <Y.Vossen@beckhoff.com>,
  "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-Subject: [PATCH v5 06/15] hw/dma/zynq-devcfg: Simulate dummy PL reset
-Date: Thu,  4 Dec 2025 10:34:53 +0100
-Message-ID: <20251204093502.50582-7-corvin.koehne@gmail.com>
+Subject: [PATCH v5 07/15] hw/dma/zynq-devcfg: Indicate power-up status of PL
+Date: Thu,  4 Dec 2025 10:34:54 +0100
+Message-ID: <20251204093502.50582-8-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251204093502.50582-1-corvin.koehne@gmail.com>
 References: <20251204093502.50582-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,54 +109,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-Setting PCFG_PROG_B should reset the PL. After a reset PCFG_INIT
-should indicate that the reset is finished successfully.
-
-In order to add a MMIO-Device as part of the PL in the Zynq, the
-reset logic must succeed. The PCFG_INIT flag is now set when the
-PL reset is triggered by PCFG_PROG_B. Indicating the reset was
-successful.
+It is assumed, that the programmable logic (PL) is always powered
+during emulation. Therefor the PCFG_POR_B bit in the MCTRL register
+is set.
 
 Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/dma/xlnx-zynq-devcfg.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/dma/xlnx-zynq-devcfg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index 72f7b1f170..722d68a568 100644
+index 722d68a568..bd8057caa9 100644
 --- a/hw/dma/xlnx-zynq-devcfg.c
 +++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -49,6 +49,7 @@
- 
- REG32(CTRL, 0x00)
-     FIELD(CTRL,     FORCE_RST,          31,  1) /* Not supported, wr ignored */
-+    FIELD(CTRL,     PCFG_PROG_B,        30,  1)
-     FIELD(CTRL,     PCAP_PR,            27,  1) /* Forced to 0 on bad unlock */
-     FIELD(CTRL,     PCAP_MODE,          26,  1)
-     FIELD(CTRL,     MULTIBOOT_EN,       24,  1)
-@@ -116,6 +117,7 @@ REG32(STATUS, 0x14)
-     FIELD(STATUS,   PSS_GTS_USR_B,      11,  1)
-     FIELD(STATUS,   PSS_FST_CFG_B,      10,  1)
-     FIELD(STATUS,   PSS_CFG_RESET_B,     5,  1)
-+    FIELD(STATUS,   PCFG_INIT,           4,  1)
- 
- REG32(DMA_SRC_ADDR, 0x18)
- REG32(DMA_DST_ADDR, 0x1C)
-@@ -204,6 +206,13 @@ static uint64_t r_ctrl_pre_write(RegisterInfo *reg, uint64_t val)
-             val |= lock_ctrl_map[i] & s->regs[R_CTRL];
-         }
-     }
-+
-+    if (FIELD_EX32(val, CTRL, PCFG_PROG_B)) {
-+        s->regs[R_STATUS] |= R_STATUS_PCFG_INIT_MASK;
-+    } else {
-+        s->regs[R_STATUS] &= ~R_STATUS_PCFG_INIT_MASK;
-+    }
-+
-     return val;
- }
- 
+@@ -333,7 +333,8 @@ static const RegisterAccessInfo xlnx_zynq_devcfg_regs_info[] = {
+        /* Silicon 3.0 for version field, the mysterious reserved bit 23
+         * and QEMU platform identifier.
+         */
+-       .reset = 0x2 << R_MCTRL_PS_VERSION_SHIFT | 1 << 23 | R_MCTRL_QEMU_MASK,
++       .reset = 0x2 << R_MCTRL_PS_VERSION_SHIFT | 1 << 23 |
++                R_MCTRL_PCFG_POR_B_MASK | R_MCTRL_QEMU_MASK,
+        .ro = ~R_MCTRL_INT_PCAP_LPBK_MASK,
+        .rsvd = 0x00f00303,
+     },
 -- 
 2.47.3
 
