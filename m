@@ -2,64 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D3DCA237E
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 03:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A8ECA238B
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 04:01:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vQzWT-0004so-Nd; Wed, 03 Dec 2025 21:56:49 -0500
+	id 1vQzaz-0007TK-4J; Wed, 03 Dec 2025 22:01:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vQzWQ-0004rw-Nh
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 21:56:46 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vQzWO-0004Zk-0P
- for qemu-devel@nongnu.org; Wed, 03 Dec 2025 21:56:46 -0500
-Received: from [192.168.10.110] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5B42tbB2054742
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 4 Dec 2025 11:56:30 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=9NMoV4F9PIC2apKmQEtJdMlXWak7T2T7ZMLSFrml6Oc=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1764816990; v=1;
- b=KY/Cm6+zFUf5rtuyZJeMs9xvo3F0lRWpgrzhJ6+oECcmhgf6HvaWpTQPx1IMxcpp
- XH6jNcTvlY2tMRV1XMQIzPO8MNvL8qoinDZ083fc8lIZeSVIHYcC7UHguLZ/Ek+K
- nqYb00sghRDEV5chzaW9bkLatp5KvbW/6LknBk2QHaAjZk3GzbwyhX49q1V2NAp+
- rSEgwoogzNsAwXOKawx1YWZcb7yHVqY2QHOarzBDGFsHO2fM1KeVjwgUKglOqxcb
- cLGqWPl4uYtNOous2o+aelhCebuR4KlvUhVjyR/W3h/s/O+QSLbxXas355TrJAAN
- p7tQudVeDYTG3FiXz3IU3g==
-Message-ID: <b5e61b9f-3afb-42c4-a185-eaf659a4c11c@rsg.ci.i.u-tokyo.ac.jp>
-Date: Thu, 4 Dec 2025 11:55:37 +0900
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1vQzaw-0007SM-5d
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 22:01:26 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1vQzat-0006Db-Ag
+ for qemu-devel@nongnu.org; Wed, 03 Dec 2025 22:01:25 -0500
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxRNBx+TBp5O4qAA--.26177S3;
+ Thu, 04 Dec 2025 11:01:05 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJDxbMFu+TBpPUBFAQ--.62790S3;
+ Thu, 04 Dec 2025 11:01:04 +0800 (CST)
+Subject: Re: [PATCH 3/3] target/loongarch: Add host CPU model in kvm mode
+To: lixianglai <lixianglai@loongson.cn>, Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+References: <20251106084043.2453749-1-maobibo@loongson.cn>
+ <20251106084043.2453749-4-maobibo@loongson.cn>
+ <5dc53523-af38-d9da-a089-d341b098fdeb@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <edadf032-db5c-e844-8313-f970bbc35b9f@loongson.cn>
+Date: Thu, 4 Dec 2025 10:58:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/7] virtio-gpu-virgl: check page alignment of blob
- mapping
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20251203040754.94487-1-j@getutm.app>
- <20251203040754.94487-3-j@getutm.app>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251203040754.94487-3-j@getutm.app>
+In-Reply-To: <5dc53523-af38-d9da-a089-d341b098fdeb@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJDxbMFu+TBpPUBFAQ--.62790S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWryDuF4fJFW3Wr43JFyruFX_yoWrAryDpr
+ 1kArW5GrWUGrn3Jw15try5XF98Zr18Gw1qqF1IqF1UAFsrAr1jgF4UWrZFgr1UJw48JF17
+ Ar1UXrsxuFsrJ3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.398,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,50 +81,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/12/03 13:07, Joelle van Dyne wrote:
-> Currently if a mapping is not page aligned, it will sliently fail and the
-> guest, assuming it is mapped, will attempt to access the memory and fail.
-> This is particularly an issue on macOS when the host page size is 16KiB and
-> the guest page size is 4KiB.
 
-It should work. If I understand correctly, tcg doesn't care the host 
-page size. hvf will not call hv_vm_map() for misaligned regions and that 
-causes Data Abort, but it is handled by QEMU to perform memory access. I 
-think it needs more debugging.
 
-Regards,
-Akihiko Odaki
-
+On 2025/12/4 上午9:57, lixianglai wrote:
+> Hi Bibo Mao:
+>> Host CPU model is basically the same with max CPU model, except Product
+>> ID and CPU model name. With host CPU model, Product ID comes from
+>> cpucfg0 and CPU model comes from /proc/cpuinfo.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   target/loongarch/cpu.c | 94 ++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 94 insertions(+)
+>>
+>> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+>> index 8b8723a343..c7f52adeb9 100644
+>> --- a/target/loongarch/cpu.c
+>> +++ b/target/loongarch/cpu.c
+>> @@ -429,6 +429,97 @@ static void loongarch_max_initfn(Object *obj)
+>>       }
+>>   }
+>> +#if defined(CONFIG_KVM)
+>> +static int read_cpuinfo(const char *field, char *value, int len)
+>> +{
+>> +    FILE *f;
+>> +    int ret = -1;
+>> +    int field_len = strlen(field);
+>> +    char line[512];
+>> +
+>> +    f = fopen("/proc/cpuinfo", "r");
+>> +    if (!f) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    do {
+>> +        if (!fgets(line, sizeof(line), f)) {
+>> +            break;
+>> +        }
+>> +        if (!strncmp(line, field, field_len)) {
+>> +            strncpy(value, line, len);
+>> +            ret = 0;
+>> +            break;
+>> +        }
+>> +    } while (*line);
+>> +
+>> +    fclose(f);
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +static uint64_t get_host_cpu_model(void)
+>> +{
+>> +    char line[512];
+>> +    char *ns;
+>> +    static uint64_t cpuid;
+>> +
+>> +    if (cpuid) {
+>> +        return cpuid;
+>> +    }
+>> +
+>> +    if (read_cpuinfo("Model Name", line, sizeof(line))) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    ns = strchr(line, ':');
+>> +    if (!ns) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    ns = strstr(ns, "Loongson-");
+>> +    if (!ns) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    ns += strlen("Loongson-");
+>> +    memccpy((void *)&cpuid, ns, 0, 8);
+>> +    return cpuid;
+>> +}
+>> +
+>> +static uint32_t get_host_cpucfg(int number)
+>> +{
+>> +    unsigned int data = 0;
+>> +
+>> +#ifdef __loongarch__
+>> +    asm volatile("cpucfg %[val], %[reg]"
+>> +                 : [val] "=r" (data)
+>> +                 : [reg] "r" (number)
+>> +                 : "memory");
+>> +#endif
+>> +
+>> +    return data;
+>> +}
+>> +
+>> +static void loongarch_host_initfn(Object *obj)
+>> +{
+>> +    uint32_t data;
+>> +    uint64_t cpuid;
+>> +    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+>> +
+>> +    loongarch_max_initfn(obj);
+>> +    data = get_host_cpucfg(0);
+>> +    if (data) {
+>> +        cpu->env.cpucfg[0] = data;
+>> +    }
+>> +
 > 
-> Signed-off-by: Joelle van Dyne <j@getutm.app>
-> ---
->   hw/display/virtio-gpu-virgl.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
+> Does the feature bit on cpucfg[2] also need to be consistent with the 
+> host feature bit?
+> Otherwise, some features might be lost.
+well, will check the detailed bits with CPUCFG2 in next version.
+
+   bit10 LVZ will be disabled since nested KVM is not supported
+   bit18-20/bit24 deeps on whether it is supported on KVM host and QEMU
+   bit25-30 atomic instruction should be the same with host, it is 
+irrelative with KVM.
+
+Regards
+Bibo Mao
 > 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 20c856c04e..adf02ac22b 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -116,6 +116,20 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->           return ret;
->       }
->   
-> +    if (!QEMU_IS_ALIGNED((uintptr_t)data, qemu_real_host_page_size())) {
-> +        virgl_renderer_resource_unmap(res->base.resource_id);
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: address %p is not aligned to page size\n",
-> +                      __func__, data);
-> +        return -ENOMEM;
-> +    }
-> +
-> +    if (!QEMU_IS_ALIGNED(size, qemu_real_host_page_size())) {
-> +        virgl_renderer_resource_unmap(res->base.resource_id);
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: size 0x%llx is not aligned to page size\n",
-> +                      __func__, size);
-> +        return -ENOMEM;
-> +    }
-> +
->       vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
->       vmr->g = g;
->   
+> Thanks!
+> Xianglai.
+> 
+> 
+>> +    cpuid = get_host_cpu_model();
+>> +    if (cpuid) {
+>> +        cpu->env.cpu_id = cpuid;
+>> +    }
+>> +}
+>> +#endif
+>> +
+>>   static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
+>>   {
+>>       uint8_t tlb_ps;
+>> @@ -780,6 +871,9 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+>>       DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+>>       DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
+>>       DEFINE_LOONGARCH_CPU_TYPE(64, "max", loongarch_max_initfn),
+>> +#if defined(CONFIG_KVM)
+>> +    DEFINE_LOONGARCH_CPU_TYPE(64, "host", loongarch_host_initfn),
+>> +#endif
+>>   };
+>>   DEFINE_TYPES(loongarch_cpu_type_infos)
 
 
