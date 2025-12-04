@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980E1CA350C
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1422FCA3554
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR6xw-0004lB-R8; Thu, 04 Dec 2025 05:53:40 -0500
+	id 1vR71g-0006hr-AY; Thu, 04 Dec 2025 05:57:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vR6xu-0004l0-IL
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:53:38 -0500
-Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ id 1vR71e-0006hS-IK
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:57:30 -0500
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vR6xq-00032e-5U
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:53:37 -0500
-Received: by mail-qk1-x72b.google.com with SMTP id
- af79cd13be357-8b2ea5a44a9so73102185a.0
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 02:53:30 -0800 (PST)
+ id 1vR71d-0004Jn-5Q
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:57:30 -0500
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-4edf1be4434so4852811cf.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 02:57:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1764845610; x=1765450410; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1764845848; x=1765450648; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pa/hsHLqThxvRCmNRYFutdsDhF6IyoTCBEGwmpVrYh8=;
- b=aaaPrXRY/eq0lY9hr8m0CZwVf0yLF3/FV2ZdNsZ99kF6SBUGhGBTeK4uwLftbxXe5P
- odBB1WiNfcO6wIRKzf8wgcntNhLYqEab1T+ay4aCKreMynaHS1CR6yrXGguVY6T9Sg4i
- EaM4CJ6qXs0wOYA+24/0AyOIgguT3S1C28PWRyrUk+oeCyIZ43HAVvzs8r8IS8GD0Ozx
- kZPfJLJUo/JMyvHvjDXlm9+9j7WmfV1UUY6pu6Y3wRaIf/5hkizuBJIwwyouDifnIcj4
- U/tJPWSaPqvpfBslQjhfzpJBwdhHdaHTKbHceXa9bnIAZ6NykpExFs+A//0Jeo1wIVVE
- FxhA==
+ bh=QlnJL4mYoiccPVr/o4GtEVHBTKrNKtnlyy3mxKjrrvU=;
+ b=Ig8eesccVayIcSd7ZefbK9Q+7rO3F1bZYiieulCp6xvL6ec8GLT61/8Aqlv7XZhLQh
+ M0/K1yWiYeElaJj8LXWfTrllGcoo5qCHNekjrc2YlFddd5zl12yTIpXTC8/eTw9mhjgL
+ oAUOA/5ekWmoqJaTJomNi2cC5T7du/mnLofYNiIiI3qVSa1F7zRV7ILPLZ4JX0Pjxpt8
+ qFnB5yaGokBfQXDkBq98v4v3XGJIsaGRZTV/hHdhyiBTeGXaWGs1/pZARdtdDccz/UNq
+ PURZQ/rNCtSpLK5H0FA0/WZh9rVsG3nPTGlot/dBeJ8IRpIB8KFYOFNEzvZ9Wz2crGIv
+ czFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764845610; x=1765450410;
+ d=1e100.net; s=20230601; t=1764845848; x=1765450648;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=pa/hsHLqThxvRCmNRYFutdsDhF6IyoTCBEGwmpVrYh8=;
- b=UYyIBvnHO5EoPUjr4pebDgvJZnX2h7ntfVyxilfG9tM0kPp72tQf7RGC06VtUj4XYu
- I5Q23UysBHc/FXz8OII4HtzY8zfZDZJSn1kmaIWPdgc4NSFN2HPp0uSl7PLy8b/+b5d1
- K422Fv/Fk4+/iNTbEKTWNS24dsRiy19+b0CSd73DHvHcLXc4rCOfv5tA1H/doi+LkHC/
- r74dLxAkSl2DsSAW2IRQq/ktCw6L2Vm/SdpcJDQWtNnQDDrtNpSF5K8U+ukenpYJ1lfP
- 5Ya4MBjEOqXfX4c6syegvXHmApfxRkbWBp40PIEf4HdOKJ/NwOILt7pQNmbd2rOL2M5K
- 7Z9A==
-X-Gm-Message-State: AOJu0Yy60U/+60Pv8DfXpYFohJU5BHdy22cxp/3L80xJbMeb59V51OIo
- QP8ORuPL0SXSrbb4MKdHLPnyAMXRkW7yobMLGBaYgUdsW7wTRTPLayVhlIezHfTMm5Fik+UdA9X
- zBDy99e3zQmpvHS1k8f2MiUz+YTS12Ts=
-X-Gm-Gg: ASbGnculZwM/wjLJiV43lJXdrN5VtT7rgYh8cJbz+Pa81z//jtuygg8Ki3A1nmtozug
- PO51N/eQfow1aXiQdKk4fOqorJB8eqLAzi83SaMCcpxYSlHtXHCnJaJQTnn3hgr4qp4s2uVlpjw
- M8vSQgxtDhDpBCllau55NE3UdszvHKQ3dYjF78vQKImDzPaycdrSlUDt+SSvhAxNcugFYEenu+X
- 1FUMyo1aimonCLwTCLJwRr8Si+ZORh8qJuTTAfZyuXazZVlOJspsVOWsiqf5Eqjchn32eTHnFo3
- Fw==
-X-Google-Smtp-Source: AGHT+IGzelsD7Znc5gtL+Ft8WTQXkbgxtSAk/z+v+syHgK/pvFaffXg3kUhy5ZkfSViVqWRZew7sXwLezMvhQXKD7AE=
-X-Received: by 2002:a05:620a:4445:b0:8b5:8ba0:b312 with SMTP id
- af79cd13be357-8b6181bd570mr342416385a.48.1764845609659; Thu, 04 Dec 2025
- 02:53:29 -0800 (PST)
+ bh=QlnJL4mYoiccPVr/o4GtEVHBTKrNKtnlyy3mxKjrrvU=;
+ b=NHipoC4OI9Wori7Tl3DIR3XYv8cuwvYhn5MKzWmI+AM6YFQ669cpHr4eX9WfdAGlXK
+ DEEaCHJUb+AQCpJZ5yOdwLzHovtdxWVbfPZsRh9SOu1h4jBOdBte3jlBe9NN+HRzxLvl
+ LSuoZChcS9WnHCNzPFb7N8+sa/WdlG3fjX0n3CSDQTSDKtYD2SDgLDmFgS8GeN2iJro3
+ BWTU17VjhNvB+194zvriPKk7Upb3qF7AXrq5nhGunmiPrOT8Vo7e1QbDdMv3r3IcZEM6
+ Hr/g+LL8h27gIpNEns/h7D/l8eNKpqw3c88BzMP3kuNncm+yiBjCxTCnV3X/OXFu+1mf
+ NLIw==
+X-Gm-Message-State: AOJu0YwvB+OlXhl5i7rK49UtOC6YRDXRyw+vyqKwew19HkjPXM+vxBse
+ DOHnRlcIKIR56YqtDpws+kccsQJpk4NwHXawT0oJ12Gb+hzRS/frDQDD6/qQ3Kn8MauoDCtp2OB
+ A5LdYknRgloPy9z/3z6PVjCdtCv3Uldg=
+X-Gm-Gg: ASbGnctZgsWKi/L8WEbPokHPSClRdTIWjb5EEKpLyECOdn51FByeaF3ool0F515GwVu
+ 54Tcp94xB4m0131qSIJ+fY+rM4LPZNILjr1ZLqIRV+Rd772yPx2jhu57cN0Bt8GZzKMFTgLiTEP
+ DJ6+oY1nY6lKod98VKn06/v+q8gz4Aa0hTBoYlWdY6kB0pqLxsAuPewTPNBg8C/apXjzQCoAS0U
+ B6KvjgvNrszCAV97/un/b4F5DADptmcWDRbsy7kFM6sGVmFSfsJkWkbbiGlE/kD75YlR87qP3za
+ hw==
+X-Google-Smtp-Source: AGHT+IHWOIcJYTbZ6u0z6YVwOLbXIA19xyFs6kMndVv1+Gl01hNDEfVAzhrR0Ub311PJ+agd4NUvA4dEbDq/CEq63ac=
+X-Received: by 2002:a05:622a:19a1:b0:4f0:131f:66fe with SMTP id
+ d75a77b69052e-4f023ae1718mr33221301cf.59.1764845848182; Thu, 04 Dec 2025
+ 02:57:28 -0800 (PST)
 MIME-Version: 1.0
 References: <20251203040754.94487-1-j@getutm.app>
- <20251203040754.94487-4-j@getutm.app>
-In-Reply-To: <20251203040754.94487-4-j@getutm.app>
+ <20251203040754.94487-5-j@getutm.app>
+In-Reply-To: <20251203040754.94487-5-j@getutm.app>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 4 Dec 2025 14:53:17 +0400
-X-Gm-Features: AWmQ_bkV6-FAaStRnR97DvgRZTKlLZYOj-K-SYlVP_I6dUdtpJ3v_wXgSOlVY5k
-Message-ID: <CAJ+F1CK9cnFjMyQZD2s5g__wX38QkPraESWihM4KDUgxShN+RA@mail.gmail.com>
-Subject: Re: [PATCH RFC 3/7] console: rename `d3d_tex2d` to `native`
+Date: Thu, 4 Dec 2025 14:57:17 +0400
+X-Gm-Features: AWmQ_bmSH12G8CSc5Kl2iA8RYr5nqWQqYzYlfBQq2Gj8WqNC7gTOkQdS5F8Glas
+Message-ID: <CAJ+F1C+Z1LdF06RoT6toEFvp0PXvT9OmY85MY7DXeVVjEV1Hpg@mail.gmail.com>
+Subject: Re: [PATCH RFC 4/7] virtio-gpu-virgl: update virglrenderer defines
 To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org,
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
  =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,346 +99,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi
 
-On Wed, Dec 3, 2025 at 8:09=E2=80=AFAM Joelle van Dyne <j@getutm.app> wrote=
+On Wed, Dec 3, 2025 at 8:10=E2=80=AFAM Joelle van Dyne <j@getutm.app> wrote=
 :
 >
-> In order to support native texture scanout beyond D3D, we make this more
-> generic allowing for multiple native texture handle types.
+> In order to support additional native texture types, we need to update th=
+e
+> defines in virglrenderer. The changes are backwards compatible and so
+> builds should work with either the new version or the old version.
 >
 > Signed-off-by: Joelle van Dyne <j@getutm.app>
 
-../ui/egl-headless.c:100:40: error: incompatible type for argument 10
-of =E2=80=98egl_scanout_texture=E2=80=99
-../ui/gtk-gl-area.c:377:53: error: incompatible type for argument 10
-of =E2=80=98gd_gl_area_scanout_texture=E2=80=99
-../ui/gtk-egl.c:293:49: error: incompatible type for argument 10 of
-=E2=80=98gd_egl_scanout_texture=E2=80=99
-
-all like:
- note: expected =E2=80=98ScanoutTextureNative=E2=80=99 but argument is of t=
-ype =E2=80=98void *=E2=80=99
-
+Please add a link to the pending MR.
 
 > ---
->  include/ui/console.h          | 22 +++++++++++++++++++---
->  include/ui/gtk.h              |  4 ++--
->  include/ui/sdl2.h             |  2 +-
->  hw/display/virtio-gpu-virgl.c | 10 +++++++---
->  ui/console.c                  |  8 ++++----
->  ui/dbus-console.c             |  2 +-
->  ui/dbus-listener.c            |  8 ++++----
->  ui/egl-headless.c             |  2 +-
->  ui/gtk-egl.c                  |  2 +-
->  ui/gtk-gl-area.c              |  2 +-
->  ui/sdl2-gl.c                  |  2 +-
->  ui/spice-display.c            |  2 +-
->  12 files changed, 43 insertions(+), 23 deletions(-)
->
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index 98feaa58bd..25e45295d4 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -131,6 +131,22 @@ struct QemuConsoleClass {
->      ObjectClass parent_class;
->  };
->
-> +typedef enum ScanoutTextureNativeType {
-> +    SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
-> +    SCANOUT_TEXTURE_NATIVE_TYPE_D3D,
-> +} ScanoutTextureNativeType;
-> +
-> +typedef struct ScanoutTextureNative {
-> +    ScanoutTextureNativeType type;
-> +    union {
-> +        void *d3d_tex2d;
-> +    } u;
-> +} ScanoutTextureNative;
-> +
-> +#define NO_NATIVE_TEXTURE ((ScanoutTextureNative){ \
-> +    .type =3D SCANOUT_TEXTURE_NATIVE_TYPE_NONE \
-> +})
-> +
->  typedef struct ScanoutTexture {
->      uint32_t backing_id;
->      bool backing_y_0_top;
-> @@ -140,7 +156,7 @@ typedef struct ScanoutTexture {
->      uint32_t y;
->      uint32_t width;
->      uint32_t height;
-> -    void *d3d_tex2d;
-> +    ScanoutTextureNative native;
->  } ScanoutTexture;
->
->  typedef struct QemuUIInfo {
-> @@ -245,7 +261,7 @@ typedef struct DisplayChangeListenerOps {
->                                     uint32_t backing_height,
->                                     uint32_t x, uint32_t y,
->                                     uint32_t w, uint32_t h,
-> -                                   void *d3d_tex2d);
-> +                                   ScanoutTextureNative native);
->      /* optional (default to true if has dpy_gl_scanout_dmabuf) */
->      bool (*dpy_has_dmabuf)(DisplayChangeListener *dcl);
->      /* optional */
-> @@ -329,7 +345,7 @@ void dpy_gl_scanout_texture(QemuConsole *con,
->                              uint32_t backing_id, bool backing_y_0_top,
->                              uint32_t backing_width, uint32_t backing_hei=
-ght,
->                              uint32_t x, uint32_t y, uint32_t w, uint32_t=
- h,
-> -                            void *d3d_tex2d);
-> +                            ScanoutTextureNative native);
->  void dpy_gl_scanout_dmabuf(QemuConsole *con,
->                             QemuDmaBuf *dmabuf);
->  void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
-> diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-> index 3e6ce3cb48..f88e2b281d 100644
-> --- a/include/ui/gtk.h
-> +++ b/include/ui/gtk.h
-> @@ -178,7 +178,7 @@ void gd_egl_scanout_texture(DisplayChangeListener *dc=
-l,
->                              uint32_t backing_height,
->                              uint32_t x, uint32_t y,
->                              uint32_t w, uint32_t h,
-> -                            void *d3d_tex2d);
-> +                            ScanoutTextureNative native);
->  void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
->                             QemuDmaBuf *dmabuf);
->  void gd_egl_cursor_dmabuf(DisplayChangeListener *dcl,
-> @@ -215,7 +215,7 @@ void gd_gl_area_scanout_texture(DisplayChangeListener=
- *dcl,
->                                  uint32_t backing_height,
->                                  uint32_t x, uint32_t y,
->                                  uint32_t w, uint32_t h,
-> -                                void *d3d_tex2d);
-> +                                ScanoutTextureNative native);
->  void gd_gl_area_scanout_disable(DisplayChangeListener *dcl);
->  void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
->                                uint32_t x, uint32_t y, uint32_t w, uint32=
-_t h);
-> diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
-> index dbe6e3d973..fdefb88229 100644
-> --- a/include/ui/sdl2.h
-> +++ b/include/ui/sdl2.h
-> @@ -93,7 +93,7 @@ void sdl2_gl_scanout_texture(DisplayChangeListener *dcl=
-,
->                               uint32_t backing_height,
->                               uint32_t x, uint32_t y,
->                               uint32_t w, uint32_t h,
-> -                             void *d3d_tex2d);
-> +                             ScanoutTextureNative native);
->  void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
->                             uint32_t x, uint32_t y, uint32_t w, uint32_t =
-h);
+>  hw/display/virtio-gpu-virgl.c | 28 +++++++++++++++++++++++++---
+>  1 file changed, 25 insertions(+), 3 deletions(-)
 >
 > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
 c
-> index adf02ac22b..d0e6ad4b17 100644
+> index d0e6ad4b17..36c670f988 100644
 > --- a/hw/display/virtio-gpu-virgl.c
 > +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -434,14 +434,18 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
+> @@ -24,6 +24,8 @@
 >
->      if (ss.resource_id && ss.r.width && ss.r.height) {
->          struct virgl_renderer_resource_info info;
-> -        void *d3d_tex2d =3D NULL;
-> +        ScanoutTextureNative native =3D { .type =3D SCANOUT_TEXTURE_NATI=
-VE_TYPE_NONE };
+>  #include <virglrenderer.h>
 >
->  #if VIRGL_VERSION_MAJOR >=3D 1
->          struct virgl_renderer_resource_info_ext ext;
+> +#define SUPPORTED_VIRGL_INFO_EXT_VERSION (1)
+> +
+>  struct virtio_gpu_virgl_resource {
+>      struct virtio_gpu_simple_resource base;
+>      MemoryRegion *mr;
+> @@ -441,12 +443,30 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
 >          memset(&ext, 0, sizeof(ext));
 >          ret =3D virgl_renderer_resource_get_info_ext(ss.resource_id, &ex=
 t);
 >          info =3D ext.base;
-> -        d3d_tex2d =3D ext.d3d_tex2d;
-> +        native =3D (ScanoutTextureNative){
-> +            .type =3D ext.d3d_tex2d ? SCANOUT_TEXTURE_NATIVE_TYPE_D3D :
-> +                                    SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
-> +            .u.d3d_tex2d =3D ext.d3d_tex2d,
-> +        };
->  #else
+> +        /* fallback to older version */
+>          native =3D (ScanoutTextureNative){
+>              .type =3D ext.d3d_tex2d ? SCANOUT_TEXTURE_NATIVE_TYPE_D3D :
+>                                      SCANOUT_TEXTURE_NATIVE_TYPE_NONE,
+>              .u.d3d_tex2d =3D ext.d3d_tex2d,
+>          };
+> -#else
+> +#if VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION >=3D SUPPORTED_VIRGL_INFO_E=
+XT_VERSION
+> +        if (ext.version >=3D VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION) {
+> +            switch (ext.native_type) {
+> +            case VIRGL_NATIVE_HANDLE_NONE:
+> +            case VIRGL_NATIVE_HANDLE_D3D_TEX2D: {
+> +                /* already handled above */
+> +                break;
+> +            }
+> +            default: {
+> +                qemu_log_mask(LOG_GUEST_ERROR,
+> +                            "%s: unsupported native texture type %d\n",
+> +                            __func__, ext.native_type);
+> +                break;
+> +            }
+> +            }
+> +        }
+> +#endif
+> +#else /* VIRGL_VERSION_MAJOR < 1 */
 >          memset(&info, 0, sizeof(info));
 >          ret =3D virgl_renderer_resource_get_info(ss.resource_id, &info);
-> @@ -461,7 +465,7 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
->              info.flags & VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP,
->              info.width, info.height,
->              ss.r.x, ss.r.y, ss.r.width, ss.r.height,
-> -            d3d_tex2d);
-> +            native);
->      } else {
->          dpy_gfx_replace_surface(
->              g->parent_obj.scanout[ss.scanout_id].con, NULL);
-> diff --git a/ui/console.c b/ui/console.c
-> index 2d00828c53..9378afd53d 100644
-> --- a/ui/console.c
-> +++ b/ui/console.c
-> @@ -295,7 +295,7 @@ static void displaychangelistener_display_console(Dis=
-playChangeListener *dcl,
->                                           con->scanout.texture.y,
->                                           con->scanout.texture.width,
->                                           con->scanout.texture.height,
-> -                                         con->scanout.texture.d3d_tex2d)=
-;
-> +                                         con->scanout.texture.native);
->      }
->  }
->
-> @@ -1023,7 +1023,7 @@ void dpy_gl_scanout_texture(QemuConsole *con,
->                              uint32_t backing_height,
->                              uint32_t x, uint32_t y,
->                              uint32_t width, uint32_t height,
-> -                            void *d3d_tex2d)
-> +                            ScanoutTextureNative native)
->  {
->      DisplayState *s =3D con->ds;
->      DisplayChangeListener *dcl;
-> @@ -1031,7 +1031,7 @@ void dpy_gl_scanout_texture(QemuConsole *con,
->      con->scanout.kind =3D SCANOUT_TEXTURE;
->      con->scanout.texture =3D (ScanoutTexture) {
->          backing_id, backing_y_0_top, backing_width, backing_height,
-> -        x, y, width, height, d3d_tex2d,
-> +        x, y, width, height, native,
->      };
->      QLIST_FOREACH(dcl, &s->listeners, next) {
->          if (con !=3D dcl->con) {
-> @@ -1042,7 +1042,7 @@ void dpy_gl_scanout_texture(QemuConsole *con,
->                                               backing_y_0_top,
->                                               backing_width, backing_heig=
-ht,
->                                               x, y, width, height,
-> -                                             d3d_tex2d);
-> +                                             native);
->          }
->      }
->  }
-> diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-> index 85e215ef23..651f0daeaf 100644
-> --- a/ui/dbus-console.c
-> +++ b/ui/dbus-console.c
-> @@ -99,7 +99,7 @@ dbus_gl_scanout_texture(DisplayChangeListener *dcl,
->                          uint32_t backing_height,
->                          uint32_t x, uint32_t y,
->                          uint32_t w, uint32_t h,
-> -                        void *d3d_tex2d)
-> +                        ScanoutTextureNative native)
->  {
->      DBusDisplayConsole *ddc =3D container_of(dcl, DBusDisplayConsole, dc=
-l);
->
-> diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-> index 52e041edb0..a737752996 100644
-> --- a/ui/dbus-listener.c
-> +++ b/ui/dbus-listener.c
-> @@ -587,7 +587,7 @@ static void dbus_scanout_texture(DisplayChangeListene=
-r *dcl,
->                                   uint32_t backing_height,
->                                   uint32_t x, uint32_t y,
->                                   uint32_t w, uint32_t h,
-> -                                 void *d3d_tex2d)
-> +                                 ScanoutTextureNative native)
->  {
->      trace_dbus_scanout_texture(tex_id, backing_y_0_top,
->                                 backing_width, backing_height, x, y, w, h=
-);
-> @@ -618,8 +618,8 @@ static void dbus_scanout_texture(DisplayChangeListene=
-r *dcl,
->      assert(surface_width(ddl->ds) =3D=3D w);
->      assert(surface_height(ddl->ds) =3D=3D h);
->
-> -    if (d3d_tex2d) {
-> -        dbus_scanout_share_d3d_texture(ddl, d3d_tex2d, backing_y_0_top,
-> +    if (native.type =3D=3D SCANOUT_TEXTURE_NATIVE_TYPE_D3d) {
-> +        dbus_scanout_share_d3d_texture(ddl, native.u.d3d_tex2d, backing_=
-y_0_top,
->                                         backing_width, backing_height, x,=
- y, w, h);
->      } else {
->          dbus_scanout_map(ddl);
-> @@ -868,7 +868,7 @@ static void dbus_gl_gfx_switch(DisplayChangeListener =
-*dcl,
->
->          /* TODO: lazy send dmabuf (there are unnecessary sent otherwise)=
- */
->          dbus_scanout_texture(&ddl->dcl, ddl->ds->texture, false,
-> -                             width, height, 0, 0, width, height, NULL);
-> +                             width, height, 0, 0, width, height, NO_NATI=
-VE_TEXTURE);
->      }
->  }
 >  #endif
-> diff --git a/ui/egl-headless.c b/ui/egl-headless.c
-> index 1f6b845500..e36778bd48 100644
-> --- a/ui/egl-headless.c
-> +++ b/ui/egl-headless.c
-> @@ -62,7 +62,7 @@ static void egl_scanout_texture(DisplayChangeListener *=
-dcl,
->                                  uint32_t backing_height,
->                                  uint32_t x, uint32_t y,
->                                  uint32_t w, uint32_t h,
-> -                                void *d3d_tex2d)
-> +                                ScanoutTextureNative native)
->  {
->      egl_dpy *edpy =3D container_of(dcl, egl_dpy, dcl);
->
-> diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-> index ae9239999c..7933237d45 100644
-> --- a/ui/gtk-egl.c
-> +++ b/ui/gtk-egl.c
-> @@ -239,7 +239,7 @@ void gd_egl_scanout_texture(DisplayChangeListener *dc=
-l,
->                              uint32_t backing_width, uint32_t backing_hei=
-ght,
->                              uint32_t x, uint32_t y,
->                              uint32_t w, uint32_t h,
-> -                            void *d3d_tex2d)
-> +                            ScanoutTextureNative native)
->  {
->      VirtualConsole *vc =3D container_of(dcl, VirtualConsole, gfx.dcl);
->
-> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-> index cd86022d26..f2ed543d6a 100644
-> --- a/ui/gtk-gl-area.c
-> +++ b/ui/gtk-gl-area.c
-> @@ -306,7 +306,7 @@ void gd_gl_area_scanout_texture(DisplayChangeListener=
- *dcl,
->                                  uint32_t backing_height,
->                                  uint32_t x, uint32_t y,
->                                  uint32_t w, uint32_t h,
-> -                                void *d3d_tex2d)
-> +                                ScanoutTextureNative native)
->  {
->      VirtualConsole *vc =3D container_of(dcl, VirtualConsole, gfx.dcl);
->
-> diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-> index 3be17d1079..b15db86f24 100644
-> --- a/ui/sdl2-gl.c
-> +++ b/ui/sdl2-gl.c
-> @@ -206,7 +206,7 @@ void sdl2_gl_scanout_texture(DisplayChangeListener *d=
-cl,
->                               uint32_t backing_height,
->                               uint32_t x, uint32_t y,
->                               uint32_t w, uint32_t h,
-> -                             void *d3d_tex2d)
-> +                             ScanoutTextureNative native)
->  {
->      struct sdl2_console *scon =3D container_of(dcl, struct sdl2_console,=
- dcl);
->
-> diff --git a/ui/spice-display.c b/ui/spice-display.c
-> index db71e866f8..2a2285cb1f 100644
-> --- a/ui/spice-display.c
-> +++ b/ui/spice-display.c
-> @@ -1084,7 +1084,7 @@ static void qemu_spice_gl_scanout_texture(DisplayCh=
-angeListener *dcl,
->                                            uint32_t backing_height,
->                                            uint32_t x, uint32_t y,
->                                            uint32_t w, uint32_t h,
-> -                                          void *d3d_tex2d)
-> +                                          ScanoutTextureNative native)
->  {
->      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
-l);
->      EGLint offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc =
-=3D 0;
+> @@ -1169,11 +1189,13 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+>          virtio_gpu_3d_cbs.get_egl_display =3D virgl_get_egl_display;
+>      }
+>  #endif
+> -#ifdef VIRGL_RENDERER_D3D11_SHARE_TEXTURE
+>      if (qemu_egl_angle_native_device) {
+> +#if defined(VIRGL_RENDERER_NATIVE_SHARE_TEXTURE)
+> +        flags |=3D VIRGL_RENDERER_NATIVE_SHARE_TEXTURE;
+> +#elif defined(VIRGL_RENDERER_D3D11_SHARE_TEXTURE) && defined(WIN32)
+>          flags |=3D VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
+> -    }
+>  #endif
+> +    }
+>  #if VIRGL_VERSION_MAJOR >=3D 1
+>      if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
+>          flags |=3D VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
 > --
 > 2.41.0
 >
