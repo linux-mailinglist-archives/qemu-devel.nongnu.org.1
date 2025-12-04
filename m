@@ -2,63 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D82CA4503
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 16:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFC4CA4518
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 16:44:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRBU9-0006YB-5c; Thu, 04 Dec 2025 10:43:13 -0500
+	id 1vRBVT-0007Tp-5F; Thu, 04 Dec 2025 10:44:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vRBTq-0006Sj-KH
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:42:55 -0500
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vRBUs-0007EX-Ht
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:44:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vRBTn-0007Fd-CE
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:42:54 -0500
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 23A67808F1;
- Thu, 04 Dec 2025 18:42:49 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:83c::1:2e])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id agnhnW0F9Gk0-OvAP4G0n; Thu, 04 Dec 2025 18:42:48 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1764862968;
- bh=UqYZB+gcAm7m4lFoOx1hkX6Uvxqb1CZng0virje0KxM=;
- h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=ArjBfe8sykeJ9RylzLcyB3F0C5pqTtMKEJpl4RASkoN8VMllTufwLdoSMgzPzGSI2
- 3SBWBpp5CZfTWr/o0u5ISgOJDxTVVL/Tz+r/a31/icX1qXpkgrebKxB4g8JpaUWSc+
- 61YGWrFg2fvFWjBMXyCN/8DwvMM0DpU146C5hOxU=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: marcandre.lureau@redhat.com
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, vsementsov@yandex-team.ru,
- d-tatianin@yandex-team.ru,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 10/10] chardev/char: qemu_char_open(): add return value
-Date: Thu,  4 Dec 2025 18:42:34 +0300
-Message-ID: <20251204154235.149575-11-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251204154235.149575-1-vsementsov@yandex-team.ru>
-References: <20251204154235.149575-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vRBUq-0007T8-3a
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:43:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764863027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
+ b=IY+D5kEy23QrVDkodpuwJ65ehJsh9V/MsGq7glSgtcYqMgZdcDTAcbPJCOzrRXmlgjmYQV
+ 6LhOYQkTIq4wFdTGAjfkfLiVR9N/i/pKFFscsPOR16xacsmDGUaBPPr/wAoPCCQ8Yl7iZU
+ nNgtxYaDTK8dP6BZb+sPOo1C8dTlsoA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-159-ctLJwcbHPxKyZASnuAIDnw-1; Thu, 04 Dec 2025 10:43:42 -0500
+X-MC-Unique: ctLJwcbHPxKyZASnuAIDnw-1
+X-Mimecast-MFC-AGG-ID: ctLJwcbHPxKyZASnuAIDnw_1764863020
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4775d110fabso13200425e9.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 07:43:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1764863020; x=1765467820; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
+ b=Qx9QPo1/mb8Sk69VSeYqvwxwTlsHnrHM0Pz9NRLfdJafgJEHPVgj2UZbdblKHrEHfX
+ 0hi86AjREHT6MPRz5HX47OG1nn6pvWETrAQHvIOj3eBqwgdqlQmHhaOymondO1EYhTi9
+ 2X9Bf2iYekUnFp7zSjBAh5q7hH+GSQiKZceWxiOVboktO+YE0o0oM+v5dromuHTpH7oQ
+ kmQovCir38gNKDO2mF52T5rcxAiJRePmW5Q/5zvaOPr4ny7JOmYPTL2+fd9NhwTBGml+
+ q/A/mASgkch7UI4m8mIs+hup6uZI5xNlQWBcQaoj9ph3x2TidlnYkpEXWQezYaPsT9HV
+ 4EBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764863020; x=1765467820;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
+ b=cG9uKYmCq7UfIRvaD1jOjLQy2WpMN/mtQqm6nyBswQWctAarIaeyylbkwTqkIBtKPM
+ wDwihXLYAoVDj/wGb4fEuaOgXFifB75toWQggPdIQGOsAuZZYOaOK7OQi1N7qx6gB/7a
+ Eln7BRF5CCT9iC7FBoezhSekfJeWUtGOdMWng/vuG+wtialilzBx5ag53oiKMJxF3vkC
+ DosgLyWjJ/0dET+LkdfSKMXB/9Cp0rEdRJ3m+RpE8oKRS+Wn0jDiR04RP91eESVWYhxM
+ jb0gc8SzEzT5D9JTa1sHoVhQV0kCj6QO58tWxjUnkF8tjdhE+/Biy3ObmjG9Fcotjqg1
+ vjQQ==
+X-Gm-Message-State: AOJu0Yxbl+FJl+4dCcq4sVGEPf8jjSGOPuLidyHnQGiAnEOj7HEi7IFh
+ hb1XKc4t08Tnt7Rfv3aIuijrXvQFAf7eLb0axao5AsmCT/ELN2qdNryjpcdf/615tTEUY6rjUW0
+ Ra7cgffcxB1+B3H4QhW/1WHREi2VEqrnOoXrkx5tCgOLUFtKnh19TiEI1
+X-Gm-Gg: ASbGnctbGxqqPZd2gc3JxiNQokJMy4bHM/TwieJSz1zL70pyeLBvZ4fev195oE20fQ0
+ dFvUzd1NL2mVadzEOE3/NAgoGqFVHdtC4yGCM1jyhxEpht0E1dGEP5WIaPpz0u9RV2mc6VjFrfT
+ VcmE6hmAfxldW064ih8XNuFNF4Tkna7OcFy61sr+AyZ/eCSLhTEjHCdpVqEvmJHWJYZgyTDr1kj
+ gNsGMhK3t5iWAn1PAwVS0R/qYL08C/vOyKiQb+BBqu4BXhdvVoBvzVtRcmHs+9gp5PL9pCm1qIg
+ 9OhTXMlft8/M1hlynMGpA/owRMSjiJGYsQm7ZZ2mj0OVpFkG5HkspslifiCRYxrLBKCEWKjowBP
+ JkIjaJ59EUoz4Hxdg4sxH/FMUZ5vyl1+ZXg==
+X-Received: by 2002:a05:600c:c494:b0:477:7f4a:44b0 with SMTP id
+ 5b1f17b1804b1-4792f3984femr28492075e9.33.1764863019745; 
+ Thu, 04 Dec 2025 07:43:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXrLQXniIgcX0PcE+4SfO55HFW0PTcLP1Wg3bQnn6bSYe310bch3T3la+9cLz3dZGT6zcGLg==
+X-Received: by 2002:a05:600c:c494:b0:477:7f4a:44b0 with SMTP id
+ 5b1f17b1804b1-4792f3984femr28491705e9.33.1764863019150; 
+ Thu, 04 Dec 2025 07:43:39 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-38-228.inter.net.il. [80.230.38.228])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-479311ed466sm33715175e9.13.2025.12.04.07.43.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Dec 2025 07:43:38 -0800 (PST)
+Date: Thu, 4 Dec 2025 10:43:35 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Dorinda Bassey <dbassey@redhat.com>
+Cc: qemu-devel@nongnu.org, sgarzare@redhat.com, aesteve@redhat.com,
+ marcandre.lureau@redhat.com
+Subject: Re: [PATCH v2] virtio-dmabuf: Ensure UUID persistence for hash table
+ insertion
+Message-ID: <20251204104313-mutt-send-email-mst@kernel.org>
+References: <20251204152607.259387-1-dbassey@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+In-Reply-To: <20251204152607.259387-1-dbassey@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,67 +119,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Accordingly with recommendations in include/qapi/error.h accompany
-errp by boolean return value and get rid of error propagation.
+On Thu, Dec 04, 2025 at 04:26:07PM +0100, Dorinda Bassey wrote:
+> In `virtio_add_resource` function, the UUID used as a key for
+> `g_hash_table_insert` was temporary, which could lead to
+> invalid lookups when accessed later. This patch ensures that
+> the UUID remains valid by duplicating it into a newly allocated
+> memory space. The value is then inserted into the hash table
+> with this persistent UUID key to ensure that the key stored in
+> the hash table remains valid as long as the hash table entry
+> exists.
+> 
+> Fixes: faefdba847 ("hw/display: introduce virtio-dmabuf")
+> 
+> Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+> 
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> Reviewed-by: Albert Esteve <aesteve@redhat.com>
+> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
----
- chardev/char.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/chardev/char.c b/chardev/char.c
-index bdd907f015..e2ec4e15cc 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -246,7 +246,7 @@ int qemu_chr_add_client(Chardev *s, int fd)
-         CHARDEV_GET_CLASS(s)->chr_add_client(s, fd) : -1;
- }
- 
--static void qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
-+static bool qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
- {
-     ChardevClass *cc = CHARDEV_GET_CLASS(chr);
-     /* Any ChardevCommon member would work */
-@@ -262,13 +262,15 @@ static void qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
-         }
-         chr->logfd = qemu_create(common->logfile, flags, 0666, errp);
-         if (chr->logfd < 0) {
--            return;
-+            return false;
-         }
-     }
- 
--    if (cc->chr_open) {
--        cc->chr_open(chr, backend, errp);
-+    if (!cc->chr_open) {
-+        return true;
-     }
-+
-+    return cc->chr_open(chr, backend, errp);
- }
- 
- static void char_init(Object *obj)
-@@ -1007,7 +1009,6 @@ static Chardev *chardev_new(const char *id, const char *typename,
- {
-     Object *obj;
-     Chardev *chr = NULL;
--    Error *local_err = NULL;
- 
-     assert(g_str_has_prefix(typename, "chardev-"));
-     assert(id);
-@@ -1018,9 +1019,7 @@ static Chardev *chardev_new(const char *id, const char *typename,
-     chr->label = g_strdup(id);
-     chr->gcontext = gcontext;
- 
--    qemu_char_open(chr, backend, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!qemu_char_open(chr, backend, errp)) {
-         object_unref(obj);
-         return NULL;
-     }
--- 
-2.48.1
+all the trailers should be adjacent with no empty lines
+in between. thanks!
+
+> ---
+>  hw/display/virtio-dmabuf.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+> index 3dba4577ca..5e0395be77 100644
+> --- a/hw/display/virtio-dmabuf.c
+> +++ b/hw/display/virtio-dmabuf.c
+> @@ -35,11 +35,13 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
+>      if (resource_uuids == NULL) {
+>          resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
+>                                                 uuid_equal_func,
+> -                                               NULL,
+> +                                               g_free,
+>                                                 g_free);
+>      }
+>      if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
+> -        g_hash_table_insert(resource_uuids, uuid, value);
+> +        g_hash_table_insert(resource_uuids,
+> +                            g_memdup2(uuid, sizeof(*uuid)),
+> +                            value);
+>      } else {
+>          result = false;
+>      }
+> -- 
+> 2.51.0
 
 
