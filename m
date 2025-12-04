@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118DCCA320B
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE387CA3473
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:46:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR68i-0003Ki-QU; Thu, 04 Dec 2025 05:00:44 -0500
+	id 1vR6qF-0000XV-KQ; Thu, 04 Dec 2025 05:45:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vR68e-0003JG-DJ
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:00:40 -0500
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ id 1vR6qD-0000XJ-RB
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:45:41 -0500
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vR68c-00040X-58
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:00:40 -0500
+ id 1vR6qB-0001Pm-L4
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:45:41 -0500
 Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 78F194274B
- for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 10:00:35 +0000 (UTC)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 32A14480EE
+ for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 10:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1764842435;
- bh=oYoI2lRHBfLrpcxHQZCSVEKfLzlyT6clUI1OIn9ap0A=;
+ s=20210803; t=1764845137;
+ bh=ybf0IIx++So5mCWwmCWtLLRDSkpzKIFULiuJDQD7y70=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=sX00xu4W7FHK5stgM8/qq7KEbPxkSx7R2tfsQZ3xkyWrky05Ae433sArmsbzYa5xt
- LVOQ2xsJHin7lH1yNxInO/XmrWk5dJjinh6FU03XizXf0lyQjIY6Oi+gGGU+194cyp
- bfEDQoQ9xctN9dMu5SrqKHY2XbJuWNqb6JMQHstL1AdXhXUnkSbuagHRasfwJoXMT9
- 2HeGkuR7jDh+TOythsgtPVDoqB6/e56Vk4ABmAZnqdmFNiPMxUHRv33nF4IHHAovoR
- jCnOz2KtDHMmq6PJZTJYdyZOLD0JxMs716MYNarDYM2Bh2RFhoyfs4WZZYSIJBM0YL
- 8ro3YUsuREmng==
+ b=ObPDw7EKsJWhdeja63LGQTBdFxfpy3keYcRoiugQHcPSbYPXCW9RnvTmtEVg+ZH87
+ C2u49RaQo5O/0VCgYJf3G/SQmksXbBRCsL/9vaqITDTep8nfkpjouge5HoIaBLkzBL
+ lk9dBFiE926vmh1dGAv0uHji0SjfVOEnGKnNVNmijzbDh/zpDpddQPVeddFzGRH2pm
+ 3Za9p1N+weSaT8xGo9rhiCZL3pQ3gL2d5F+bWS2XAEwGdE16CO8fAsCrpi3DSNYuBq
+ 8AWVqrjRrZxbu4mic7HEUZwEXdmaJDKc7z90p+3QM1BKWlj7COV3+vWetx73UDPxTT
+ 6FHFIt3kL4ltA==
 Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 70E8F7F813
- for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 10:00:35 +0000 (UTC)
+ by scripts.lp.internal (Postfix) with ESMTP id 22FD97F818
+ for <qemu-devel@nongnu.org>; Thu,  4 Dec 2025 10:45:37 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Dec 2025 09:54:25 -0000
-From: Bug Watch Updater <2133804@bugs.launchpad.net>
+Date: Thu, 04 Dec 2025 10:40:10 -0000
+From: Heinrich Schuchardt <2133804@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
 X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
@@ -64,9 +64,9 @@ X-Launchpad-Bug-Private: no
 X-Launchpad-Bug-Security-Vulnerability: no
 X-Launchpad-Bug-Commenters: paelzer xypron
 X-Launchpad-Bug-Reporter: Heinrich Schuchardt (xypron)
-X-Launchpad-Bug-Modifier: Bug Watch Updater (bug-watch-updater)
+X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
 References: <176477927666.3767208.4954653462090539439.malonedeb@juju-98d295-prod-launchpad-3>
-Message-Id: <176484206689.478112.1059454106413587083.launchpad@scripts.lp.internal>
+Message-Id: <176484481053.977458.12485799150389267963.malone@juju-98d295-prod-launchpad-2>
 Subject: [Bug 2133804] Re: QEMU does not emulate IOCTL TCGETS2
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
 X-Launchpad-Message-For: qemu-devel-ml
@@ -74,9 +74,9 @@ Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
  Instance="launchpad-scripts"
-X-Launchpad-Hash: b3d2ebeea37eeda5b3998a2b0865496281d696a9
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
+X-Launchpad-Hash: aa71efb0d48352a89eef8feb23619d17e55e6c33
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -99,8 +99,13 @@ Reply-To: Bug 2133804 <2133804@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-** Changed in: qemu
-       Status: Unknown =3D> New
+There are two patches with the same title "[PATCH 1/7] Add termios2
+support to linux-user"
+
+https://lore.kernel.org/qemu-
+devel/745f18b6-ee62-4903-9a56-dcb903b610cf@bonslack.org/ contains an
+updated version. It adds copying c_ispeed, c_ospeed. These are the
+fields that struct termios2 has on top of what is in struct termios.
 
 --=20
 You received this bug notification because you are a member of qemu-
