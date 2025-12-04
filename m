@@ -2,88 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406BCCA4DA2
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 19:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA62CA4DFC
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 19:12:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRDis-0006Az-BX; Thu, 04 Dec 2025 13:06:34 -0500
+	id 1vRDnY-0001RP-Ph; Thu, 04 Dec 2025 13:11:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vRDil-00068a-NB
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 13:06:28 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vRDih-0005Y6-Fk
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 13:06:26 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-477a219db05so9197895e9.2
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 10:06:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vRDnW-0001RH-PB
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 13:11:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vRDnU-0007lL-Vc
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 13:11:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764871879;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vkue+VHn2ePw24UhItsn434TwU+DFHbw15254AP7N/E=;
+ b=i1YHyZY+8gZNTb34R0o3dx+OgaOwsg7ew1rV/HaPnb5mJ0tDMplATZXrNaz0aVMDd+h1SC
+ Zjf3r89W+F0omx5V/ucRLRsM+tuZ7GUPbNOAEeS+eBm/PUuBU87c/duANTMGsG7noJY2wh
+ V3yvECUuTzvh7kT1tt1KBIVP1702T7g=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-lkQ8_pxUO5aw22_BYZg7Qg-1; Thu, 04 Dec 2025 13:11:16 -0500
+X-MC-Unique: lkQ8_pxUO5aw22_BYZg7Qg-1
+X-Mimecast-MFC-AGG-ID: lkQ8_pxUO5aw22_BYZg7Qg_1764871875
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477a1e2b372so9622995e9.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 10:11:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764871582; x=1765476382; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5zzJrLyR2vlRWkV9LLSEUDWhWY0B157Kg5d1h9ui2A0=;
- b=x3fO17cud0n7L9WPBILA4/9FSztm/kszP+uYuy3cOezhsX3Dv+gH813jZg1+ABBYkg
- HrkIqkvlzZgb21jJJjRboIYeKpvzRJVhF+WDExmNanyJ1Gk3Bl7PRVlkVEKs6O41XjZY
- j4vHIPttbSXEoABtuWvdYC+3XjnGBXN0MBRhVINGatIVoPYj17dGmoL+8oiSNwRX9pbg
- RtIaUr72HWXuCPgd3kVpeAvFCYalEQk6yb55NEmXxdk0W/I0ChuPBld2WCeEyoiGOJS3
- 2Y6ViAItj2fI4l0J8DSHQI/SktMb7vxsCU73hoxJ90SJGSTyOfDnlDVCEJxr5jcuK3OW
- ut/g==
+ d=redhat.com; s=google; t=1764871875; x=1765476675; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vkue+VHn2ePw24UhItsn434TwU+DFHbw15254AP7N/E=;
+ b=DhU9tVsPp0O5Lqiojdhdt/l3knSDEnC2CebKKYw72E8iA9slPz0GKEO6U9hc6JMZKb
+ 7ZUO0sXgU9ONpi+wQsdioUDPTH43yEewlFOzpGiwGm4soJiThBpkc5IEn0qutEjLbv2Z
+ X/kc0CfVuPpl7YG5GE+lwaqUNO2wN0OXJdZ2e1EYu9NHHTAlOLVq7orItRE4Qm12vd96
+ 8hCNeMALsWI7a7uKEMgFrmWdC6gtFhrmVcqP0rI+gZvGDZjDk1YEl4PhZ2Oa5JwvwnS9
+ WorvjGIoQPwZrdpeQoEPGWVdOU/vlbbC6iQ/l57Uno/tYJO+Xq3m9zRgMnfxI5ukCRPo
+ j9zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764871582; x=1765476382;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=5zzJrLyR2vlRWkV9LLSEUDWhWY0B157Kg5d1h9ui2A0=;
- b=IJI6YDNT9kZ80zapPDBlv3m+0gMMeFClRbb8n3/VRnchzmMAeZD89kcVL2tBMFwzBY
- FfpSf84qg67ICVgzzrBOR80b3OKMe2itGS2KB3erJNoJ+mQ0q4v0z38+v0JLQDyMwukI
- RssaIDaU7vC1/KI60O8ADri0l8SGARldfaM3ApaSs1YGqGn9wtNbkvLYTDTfxjgLWQzD
- 0oSQYQ+C3Tenf2MnHVtHUQhzJFDfu3vVxCJeryEXvOGfSc/jYL/AIhV0iDWirsAqRjK7
- 3LYUl05ukEjaTkn5PEs1bUgbo4DyQrzPDoIZmmYqi+WEdrom2cWAi4w8b583eHaEY/Xt
- w8nw==
-X-Gm-Message-State: AOJu0YzYBJmuTP/avn0BPPX3ffuuo+cRCbIXBict6PHSyElOULq7YirY
- v/d/EOsR29QGn4nPZuGvQCVIdCfNZpNFLg6+Oa4fG67Ta7GNXYYZrWng17M6f04InizoUdQxVxF
- wKZdz
-X-Gm-Gg: ASbGncv1IZ1EwYDQokc8ZIvZSPFAD5Uhn0aUskhgmRuYUQWuNK3hgFhBTew3mKD3cPi
- ZUm4lG/RI2kfIiw3JJWa4GXqU4fl9WpAvlL/U46w+iC+dwbzIXMdBXFLGWfBQZW8VVXAfbAwY1M
- ABEgxhVbCM+NLjsYJJIbC0s8fP+eb79IJ0R+j5S1QA/TGWPFkLF17cd/C8H8GhPgYLq3WslViQP
- rb4GSS2SCSd5X3A6Yt0boB1ydqPDDL/8PpvWaFZqpmGx1LSFVfxn1dDKduwZQKHBGwJ/DGXnZ4L
- r8S+phJiUlLtRlXsZfcRhkTgeWAP1Kp6E4dKoJUIxDYLmx5njwzhOTx3b+/sDjkCplLXgWGhSoJ
- p7JgZQNidHm97xHp5T1vN9Uf8T4e75CpHH9fHp1UI+PSXmoYcUjdATygXp78dwKzV41i1oXVj7n
- QBsf9EY2dmRq1A
-X-Google-Smtp-Source: AGHT+IH5jtyoA0c0XrjC51fQWXyeNpZNhv7ZVgXoI6bjK/JJuem5B6tIRpVWRKgtsFlQtwbnn6wMgg==
-X-Received: by 2002:a05:6000:2484:b0:42b:3298:4690 with SMTP id
- ffacd0b85a97d-42f731a523emr7770016f8f.33.1764871581928; 
- Thu, 04 Dec 2025 10:06:21 -0800 (PST)
-Received: from jimm-x1.. ([2a10:d582:31e:0:d817:b2ba:2766:5b2a])
+ d=1e100.net; s=20230601; t=1764871875; x=1765476675;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vkue+VHn2ePw24UhItsn434TwU+DFHbw15254AP7N/E=;
+ b=JqH2cobYib8lGHF/PLBn5PN6Mv6tToGjwLI7H1hOBNBs0H1OZZk+u/rUQKNdwlUeav
+ In8XjEneutj7+4k8NcTRXbhCfWmcSOklRwHhDhLMQn4EAMfuKnU9YZamMg8r7XtZAzaq
+ HTFh+FD5/Kz8DCkAtWqqeadBxy95ifaxy36f4/RGVLLSvCTaRD91hdhd39Bahmbj9dEk
+ ZPp7NtOnnm+qslyoUCBZaALU5VBxP4tm5g5GLOQux6N8ser5liISw36z+Wcri9iMG27f
+ c4RvY3EbqukI2FmjtyyoDgNAURVUMjJsl3RWgFzRzm1LtoeW7RD1exGa4i/gw4Hb2CNZ
+ Pz4g==
+X-Gm-Message-State: AOJu0YwEZ1kq9J7gtJDSfyKuDf0jFxtMV0V4cxnJYJ0XsKEmnREbmNY4
+ uiwPkCzpHyk5Re6JrjoV5ZQXaCOFuHIgZTeMp0LnTUE40NbPfkSgeNhhWCAzGw/5+7l6r4CaE3q
+ 4ky6dSHVgCoAznosxdLpDxWt8IsY2ztyDZ4Ulach9nu3H0dgeVRqJ2WLl4KD8xtGsSrRJd4rLr0
+ t5tOdo/7jW2uzfTlK39QsEiRx+nUHnOJlMvfpvjoA/
+X-Gm-Gg: ASbGnctimVNfgSwtaFcerygKCGArEScZlNk2hl8dmM7NutSlTGvq/b6P6+6qnSuzoCe
+ m56xl0CUsWzFGlF6h3cY2BBLRMJI71/z/IwldcWk8KZI7toTG1fYtjjigaM0XuT27vnjqVOPW/b
+ wimvKCpt6Tv8BGVEHWEWoanAudKnzy0J849Nl6GSqmkZj81vEqHr4qt4MoxYT9hLe8TbPltp8Xk
+ IaGoLugtkXirPtHTQSeGeIOLqHIOFmHMP56tv3qoU5fb1Ru9elXjq7iHdUXxwPioVb1RtpZj0nR
+ 0YkeC16ZgDaX+OiGGfb0wgtXL6KSG9k7i1bRU98450K2eP7W8Sz3tasDqDyk0lI7Xx7Qcqr9r5d
+ qaMLAYJ/EGfLBzk8rpy5fKIXBmiJIk3pZXJ0gt3637WSscO++AG+iGxhZEtR0JJ1mj8MTJytDcj
+ Ur41LzFOn6h+0=
+X-Received: by 2002:a05:600c:3ba8:b0:477:755b:5587 with SMTP id
+ 5b1f17b1804b1-4792aeeb522mr72362215e9.8.1764871875026; 
+ Thu, 04 Dec 2025 10:11:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPqFM+bbGKTlqj81CNm8bBQsYTTXaWMqhWl3bKqYf/p4eCUAXJbtI1Jvg9e5xu5erZbiEBIg==
+X-Received: by 2002:a05:600c:3ba8:b0:477:755b:5587 with SMTP id
+ 5b1f17b1804b1-4792aeeb522mr72361835e9.8.1764871874389; 
+ Thu, 04 Dec 2025 10:11:14 -0800 (PST)
+Received: from [192.168.1.84] ([93.56.161.42])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d331e29sm4589641f8f.32.2025.12.04.10.06.21
+ 5b1f17b1804b1-4792b02e84dsm43000865e9.4.2025.12.04.10.11.13
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Dec 2025 10:06:21 -0800 (PST)
-From: Jim MacArthur <jim.macarthur@linaro.org>
+ Thu, 04 Dec 2025 10:11:13 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Jim MacArthur <jim.macarthur@linaro.org>
-Subject: [PATCH 4/4] tests: Add test for ASID2 and write/read of feature bits
-Date: Thu,  4 Dec 2025 18:04:14 +0000
-Message-ID: <20251204180617.1190660-5-jim.macarthur@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251204180617.1190660-1-jim.macarthur@linaro.org>
-References: <20251204180617.1190660-1-jim.macarthur@linaro.org>
+Subject: [PATCH] build: do not include @block.syms/@qemu.sys with modules
+ disabled
+Date: Thu,  4 Dec 2025 19:11:13 +0100
+Message-ID: <20251204181113.36862-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,99 +117,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test for presence of ASID2; if it is, check FNG1, FNG0, and A2 are
-writable, and read value shows the update. If not present, check these
-read as RES0.
+Including specific symbols used by modules is not necessary for
+monolithic executables.  This avoids a failure where emcc does not
+support @file syntax inside a response file---which in turn breaks
+the WebAssembly build if the command line is long enough that meson
+decides to use a response file.
 
-Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tcg/aarch64/system/asid2.c | 76 ++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
- create mode 100644 tests/tcg/aarch64/system/asid2.c
+ meson.build | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tests/tcg/aarch64/system/asid2.c b/tests/tcg/aarch64/system/asid2.c
-new file mode 100644
-index 0000000000..7d5466af34
---- /dev/null
-+++ b/tests/tcg/aarch64/system/asid2.c
-@@ -0,0 +1,76 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *
-+ * ASID2 Feature presence and enabled TCR2_EL1 bits test
-+ *
-+ * Copyright (c) 2025 Linaro Ltd
-+ *
-+ */
-+
-+#include <stdint.h>
-+#include <minilib.h>
-+
-+#define ID_AA64MMFR3_EL1 "S3_0_C0_C7_3"
-+#define ID_AA64MMFR4_EL1 "S3_0_C0_C7_4"
-+#define TCR2_EL1 "S3_0_C2_C0_3"
-+
-+int main()
-+{
-+    /*
-+     * Test for presence of ASID2 and three feature bits enabled by it:
-+     * https://developer.arm.com/documentation/109697/2025_09/Feature-descriptions/The-Armv9-5-architecture-extension
-+     * Bits added are FNG1, FNG0, and A2. These should be RES0 if A2 is
-+     * not enabled and read as the written value if A2 is enabled.
-+     */
-+
-+    uint64_t out;
-+    uint64_t idreg3;
-+    uint64_t idreg4;
-+    int tcr2_present;
-+    int asid2_present;
-+
-+    /* Mask is FNG1, FNG0, and A2 */
-+    const uint64_t feature_mask = (1ULL << 18 | 1ULL << 17 | 1ULL << 16);
-+    const uint64_t in = feature_mask;
-+
-+    asm("mrs %[idreg3], " ID_AA64MMFR3_EL1 "\n\t"
-+        : [idreg3] "=r" (idreg3));
-+
-+    tcr2_present = ((idreg3 & 0xF) != 0);
-+
-+    if (!tcr2_present) {
-+        ml_printf("TCR2 is not present, cannot perform test");
-+        return 0;
-+    }
-+
-+    asm("mrs %[idreg4], " ID_AA64MMFR4_EL1 "\n\t"
-+        : [idreg4] "=r" (idreg4));
-+
-+    asid2_present = ((idreg4 & 0xF00) != 0);
-+
-+    asm("msr " TCR2_EL1 ", %[x0]\n\t"
-+        "mrs %[x1], " TCR2_EL1 "\n\t"
-+        : [x1] "=r" (out)
-+        : [x0] "r" (in));
-+
-+    if (asid2_present) {
-+        if ((out & feature_mask) == in) {
-+            ml_printf("OK\n");
-+            return 0;
-+        } else {
-+            ml_printf("FAIL: ASID2 present, but read value %lx != "
-+                      "written value %lx\n",
-+                      out & feature_mask, in);
-+            return 1;
-+        }
-+    } else {
-+        if (out == 0) {
-+            ml_printf("TCR2_EL1 reads as RES0 as expected\n");
-+            return 0;
-+        } else {
-+            ml_printf("FAIL: ASID2, missing but read value %lx != 0\n",
-+                      out & feature_mask, in);
-+            return 1;
-+        }
-+    }
-+}
+diff --git a/meson.build b/meson.build
+index e6a11cefdb7..df1067b4067 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4270,7 +4270,7 @@ foreach target : target_dirs
+ 
+     c_args += ['-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
+     arch_srcs += config_devices_h[target]
+-    link_args += ['@block.syms', '@qemu.syms']
++    link_args += enable_modules ? ['@block.syms', '@qemu.syms'] : []
+   else
+     abi = config_target['TARGET_ABI_DIR']
+     target_type='user'
+@@ -4499,14 +4499,15 @@ if xkbcommon.found()
+ endif
+ 
+ if have_tools
++  link_args += enable_modules ? ['@block.syms'] : []
+   qemu_img = executable('qemu-img', [files('qemu-img.c'), hxdep],
+-             link_args: '@block.syms', link_depends: block_syms,
++             link_args: link_args, link_depends: block_syms,
+              dependencies: [authz, block, crypto, io, qom, qemuutil], install: true)
+   qemu_io = executable('qemu-io', files('qemu-io.c'),
+-             link_args: '@block.syms', link_depends: block_syms,
++             link_args: link_args, link_depends: block_syms,
+              dependencies: [block, qemuutil], install: true)
+   qemu_nbd = executable('qemu-nbd', files('qemu-nbd.c'),
+-               link_args: '@block.syms', link_depends: block_syms,
++               link_args: link_args, link_depends: block_syms,
+                dependencies: [blockdev, qemuutil, selinux],
+                install: true)
+ 
 -- 
-2.43.0
+2.52.0
 
 
