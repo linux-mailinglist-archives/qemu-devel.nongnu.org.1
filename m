@@ -2,108 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFC4CA4518
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 16:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB99CA45D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 16:56:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRBVT-0007Tp-5F; Thu, 04 Dec 2025 10:44:36 -0500
+	id 1vRBfZ-00069Z-Ht; Thu, 04 Dec 2025 10:55:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vRBUs-0007EX-Ht
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:44:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vRBUq-0007T8-3a
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:43:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764863027;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
- b=IY+D5kEy23QrVDkodpuwJ65ehJsh9V/MsGq7glSgtcYqMgZdcDTAcbPJCOzrRXmlgjmYQV
- 6LhOYQkTIq4wFdTGAjfkfLiVR9N/i/pKFFscsPOR16xacsmDGUaBPPr/wAoPCCQ8Yl7iZU
- nNgtxYaDTK8dP6BZb+sPOo1C8dTlsoA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-ctLJwcbHPxKyZASnuAIDnw-1; Thu, 04 Dec 2025 10:43:42 -0500
-X-MC-Unique: ctLJwcbHPxKyZASnuAIDnw-1
-X-Mimecast-MFC-AGG-ID: ctLJwcbHPxKyZASnuAIDnw_1764863020
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4775d110fabso13200425e9.1
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 07:43:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vRBfM-00065A-JR
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:54:49 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vRBfE-0001wl-EU
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 10:54:43 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47789cd2083so7220495e9.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 07:54:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764863020; x=1765467820; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
- b=Qx9QPo1/mb8Sk69VSeYqvwxwTlsHnrHM0Pz9NRLfdJafgJEHPVgj2UZbdblKHrEHfX
- 0hi86AjREHT6MPRz5HX47OG1nn6pvWETrAQHvIOj3eBqwgdqlQmHhaOymondO1EYhTi9
- 2X9Bf2iYekUnFp7zSjBAh5q7hH+GSQiKZceWxiOVboktO+YE0o0oM+v5dromuHTpH7oQ
- kmQovCir38gNKDO2mF52T5rcxAiJRePmW5Q/5zvaOPr4ny7JOmYPTL2+fd9NhwTBGml+
- q/A/mASgkch7UI4m8mIs+hup6uZI5xNlQWBcQaoj9ph3x2TidlnYkpEXWQezYaPsT9HV
- 4EBg==
+ d=linaro.org; s=google; t=1764863675; x=1765468475; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cJP/5foxyTYgjxPkj3TGmAIyUfsDbEhAMuw2VksSets=;
+ b=YnFwUe19RmbqFVtt0xiMj6E8Bhk8cAtO7nIQEHa1TY8ESC8utBFA0SAMVCqcxFieXL
+ 2qq7gtrdi+PGkJtBFOwOn3uk5bj3loI4B5tOW5B+luZdCGS1RNubTvKgXnNTcCypV6bX
+ 5iHkZC60mnm6cnqnOCdj4QY7ihXn8qmuFj1Pgg/9z1oeajn2pIt53fJd7C0JxLw6zTMz
+ Aa1ZAHV/Z9ZXMdZsQM5rkHiBeGPerHhzCmVFQq77/yo/Sr2CO8E5vhcZWY1IFdyhKvDH
+ i/5o6iSMPpgwvQLjI1SEXArM/SnUcBHmc0zV70yjlIwAApXmtbDdiw+J5ZOIx4bkB8bv
+ W15A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764863020; x=1765467820;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sg1r3xRBx5oTR6kdZwIpYMZxKh65OWms7QuFUHc3998=;
- b=cG9uKYmCq7UfIRvaD1jOjLQy2WpMN/mtQqm6nyBswQWctAarIaeyylbkwTqkIBtKPM
- wDwihXLYAoVDj/wGb4fEuaOgXFifB75toWQggPdIQGOsAuZZYOaOK7OQi1N7qx6gB/7a
- Eln7BRF5CCT9iC7FBoezhSekfJeWUtGOdMWng/vuG+wtialilzBx5ag53oiKMJxF3vkC
- DosgLyWjJ/0dET+LkdfSKMXB/9Cp0rEdRJ3m+RpE8oKRS+Wn0jDiR04RP91eESVWYhxM
- jb0gc8SzEzT5D9JTa1sHoVhQV0kCj6QO58tWxjUnkF8tjdhE+/Biy3ObmjG9Fcotjqg1
- vjQQ==
-X-Gm-Message-State: AOJu0Yxbl+FJl+4dCcq4sVGEPf8jjSGOPuLidyHnQGiAnEOj7HEi7IFh
- hb1XKc4t08Tnt7Rfv3aIuijrXvQFAf7eLb0axao5AsmCT/ELN2qdNryjpcdf/615tTEUY6rjUW0
- Ra7cgffcxB1+B3H4QhW/1WHREi2VEqrnOoXrkx5tCgOLUFtKnh19TiEI1
-X-Gm-Gg: ASbGnctbGxqqPZd2gc3JxiNQokJMy4bHM/TwieJSz1zL70pyeLBvZ4fev195oE20fQ0
- dFvUzd1NL2mVadzEOE3/NAgoGqFVHdtC4yGCM1jyhxEpht0E1dGEP5WIaPpz0u9RV2mc6VjFrfT
- VcmE6hmAfxldW064ih8XNuFNF4Tkna7OcFy61sr+AyZ/eCSLhTEjHCdpVqEvmJHWJYZgyTDr1kj
- gNsGMhK3t5iWAn1PAwVS0R/qYL08C/vOyKiQb+BBqu4BXhdvVoBvzVtRcmHs+9gp5PL9pCm1qIg
- 9OhTXMlft8/M1hlynMGpA/owRMSjiJGYsQm7ZZ2mj0OVpFkG5HkspslifiCRYxrLBKCEWKjowBP
- JkIjaJ59EUoz4Hxdg4sxH/FMUZ5vyl1+ZXg==
-X-Received: by 2002:a05:600c:c494:b0:477:7f4a:44b0 with SMTP id
- 5b1f17b1804b1-4792f3984femr28492075e9.33.1764863019745; 
- Thu, 04 Dec 2025 07:43:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGXrLQXniIgcX0PcE+4SfO55HFW0PTcLP1Wg3bQnn6bSYe310bch3T3la+9cLz3dZGT6zcGLg==
-X-Received: by 2002:a05:600c:c494:b0:477:7f4a:44b0 with SMTP id
- 5b1f17b1804b1-4792f3984femr28491705e9.33.1764863019150; 
- Thu, 04 Dec 2025 07:43:39 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-38-228.inter.net.il. [80.230.38.228])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-479311ed466sm33715175e9.13.2025.12.04.07.43.37
+ d=1e100.net; s=20230601; t=1764863675; x=1765468475;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cJP/5foxyTYgjxPkj3TGmAIyUfsDbEhAMuw2VksSets=;
+ b=pNpGxOtb+FAyxd6H5I8ixVzBfImItMUXZ5G5084U8Z0jNQc92j0fTyH7JtPm6qkd1r
+ R7JohkehsAziHlL+lI7FTZlP1wjH9jAlIU4t6l8TYtOvpKhUPhdVD0hVWCqy5ViOvm0q
+ HZDYhvvqxWWnNRxfCgQ84vCUOLd1wGL0ng1B4M1h0TYcxas65ANS7TpNyn6CKYvKp+4u
+ dqCMHUHJK5Z7flQrA8aKJI+nKPszCMETZpo3V4xLhgTU5c7fHLqoc0hdrhjj+g4dvWhJ
+ j1KT43NcOY2r6kdPoSWlQQAQCgy7vjNFmo83O7cCTTUlPZ2nC/+edhZIWKiY1ZVbN/ks
+ yelA==
+X-Gm-Message-State: AOJu0YxnpGdyBx9tfm1GH6PbHk5P+FdJ4gKnel96adYHBs7mt0Sozb9L
+ oaDxq8Rjiq0dF8PO6kx1Dod9t2nKhBV3DibdMz9lrKGzzmX1bOHBLh44aR6iLmpvvdNlNpxo9Tx
+ nreZW
+X-Gm-Gg: ASbGncux76hvkhpcIIaHnHjAQIzpcmc63EH4ZfZDMEru1VEPA3mdmlmDXiB9tYMqB9F
+ zGTieatWBPpIDLQAcHmReJzEFfVxHdWdEyN3DtKC++jvD+ocuygpwTx5eq9T8LTi+xp8GHnbGuP
+ 3FTcqLY1Wl/+THV7dRgcJcHm5ENQUMG/v6yJ2NMIW2QflMD+ushHmwXe0wtHMAQTDQhPQ6S/09Z
+ IdaR9ctD2p6Pn0grIisJxcTTFV+swk3TohyCJSUpO2FJDOBNSuD+4IvzvyD8ziFFOLG5eXSxZEu
+ xUHXQ5K9onuPyyrfoOF+zSAAeO0LWNLAmmfMIFc4SHYXLnLnwWQPK6H3wova2VQAXXv9IM6/JlN
+ P/pEogjEJXm45ZesBCMWIt4WKh+Dtew7npmcqBE3yJMfZjCRppmJhefvbiSkXJCDqRFv/JqBMAU
+ XU7ZCivsDbBV8=
+X-Google-Smtp-Source: AGHT+IEg6u/Qmj4XtQjlnRCGGufSD+oUPi/n0z1Jg2BDqsLy+JZseyRwE8Af1X06k5Yz0E8oulg3pg==
+X-Received: by 2002:a05:6000:1845:b0:42b:3455:e490 with SMTP id
+ ffacd0b85a97d-42f73178df8mr6857740f8f.14.1764863674645; 
+ Thu, 04 Dec 2025 07:54:34 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42f7cbe90fdsm3687286f8f.3.2025.12.04.07.54.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Dec 2025 07:43:38 -0800 (PST)
-Date: Thu, 4 Dec 2025 10:43:35 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dorinda Bassey <dbassey@redhat.com>
-Cc: qemu-devel@nongnu.org, sgarzare@redhat.com, aesteve@redhat.com,
- marcandre.lureau@redhat.com
-Subject: Re: [PATCH v2] virtio-dmabuf: Ensure UUID persistence for hash table
- insertion
-Message-ID: <20251204104313-mutt-send-email-mst@kernel.org>
-References: <20251204152607.259387-1-dbassey@redhat.com>
+ Thu, 04 Dec 2025 07:54:33 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 22AE75F811;
+ Thu, 04 Dec 2025 15:54:33 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs)
+Subject: [RFC PATCH] target/arm: handle unaligned PC during tlb probe
+Date: Thu,  4 Dec 2025 15:54:27 +0000
+Message-ID: <20251204155427.801085-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251204152607.259387-1-dbassey@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,53 +101,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 04, 2025 at 04:26:07PM +0100, Dorinda Bassey wrote:
-> In `virtio_add_resource` function, the UUID used as a key for
-> `g_hash_table_insert` was temporary, which could lead to
-> invalid lookups when accessed later. This patch ensures that
-> the UUID remains valid by duplicating it into a newly allocated
-> memory space. The value is then inserted into the hash table
-> with this persistent UUID key to ensure that the key stored in
-> the hash table remains valid as long as the hash table entry
-> exists.
-> 
-> Fixes: faefdba847 ("hw/display: introduce virtio-dmabuf")
-> 
-> Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
-> 
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> Reviewed-by: Albert Esteve <aesteve@redhat.com>
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+PC alignment faults have priority over instruction aborts and we have
+code to deal with this in the translation front-ends. However during
+tb_lookup we can see a potentially faulting probe which doesn't get a
+MemOp set. If the page isn't available this results in
+EC_INSNABORT (0x20) instead of EC_PCALIGNMENT (0x22).
 
+As there is no easy way to set the appropriate MemOp in the
+instruction fetch probe path lets just detect it in
+arm_cpu_tlb_fill_align() and set memop appropriately.
 
-all the trailers should be adjacent with no empty lines
-in between. thanks!
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3233
+Signed-off-by: Alex BennÃ©e <alex.bennee@linaro.org>
+---
+ target/arm/tcg/tlb_helper.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-> ---
->  hw/display/virtio-dmabuf.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
-> index 3dba4577ca..5e0395be77 100644
-> --- a/hw/display/virtio-dmabuf.c
-> +++ b/hw/display/virtio-dmabuf.c
-> @@ -35,11 +35,13 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
->      if (resource_uuids == NULL) {
->          resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
->                                                 uuid_equal_func,
-> -                                               NULL,
-> +                                               g_free,
->                                                 g_free);
->      }
->      if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
-> -        g_hash_table_insert(resource_uuids, uuid, value);
-> +        g_hash_table_insert(resource_uuids,
-> +                            g_memdup2(uuid, sizeof(*uuid)),
-> +                            value);
->      } else {
->          result = false;
->      }
-> -- 
-> 2.51.0
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index f1983a5732e..78c85cb3306 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -345,6 +345,17 @@ bool arm_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
+         fi = memset(&local_fi, 0, sizeof(local_fi));
+     }
+ 
++    /*
++     * PC alignment faults should be dealt with at translation time
++     * but we also need to make sure other faults don't preempt them
++     * while being probed.
++     */
++    if (access_type == MMU_INST_FETCH && !cpu->env.thumb) {
++        /* probe sets memop to 0 */
++        g_assert(!memop);
++        memop |= MO_ALIGN_4;
++    }
++
+     /*
+      * Per R_XCHFJ, alignment fault not due to memory type has
+      * highest precedence.  Otherwise, walk the page table and
+-- 
+2.47.3
 
 
