@@ -2,159 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24ACFCA34B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9DCCA3533
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 11:56:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR6sd-0001Fq-P2; Thu, 04 Dec 2025 05:48:11 -0500
+	id 1vR6zs-0005nG-Oh; Thu, 04 Dec 2025 05:55:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vR6sb-0001FU-FA
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:48:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vR6zq-0005mD-Ik
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:55:38 -0500
+Received: from mail-norwayeastazon11023115.outbound.protection.outlook.com
+ ([40.107.159.115] helo=OSPPR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vR6sX-0001hF-TK
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:48:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764845285;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6tyOEvsFspYZUcwzU3OxMzTAdn6bK0XXoV7A7MYDuhA=;
- b=DDFT9kBqSDwntYUDsD4EC/SvgfvQEmoylFVYDBwwG3tthN1Vh/O6UyKUEEkABHXTzUbPea
- L3qG6U7sysb4Ml6xMt6WDUrh1evhpIKif+5arKX3//iYYS1kMCTDfVlAUWXgpU8UUZla9k
- rmpJ85qND/Sxy2gokw2hUDtSTo/ZmKs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-J7pJXE5RPIOO2WOlqQ6DOg-1; Thu, 04 Dec 2025 05:48:02 -0500
-X-MC-Unique: J7pJXE5RPIOO2WOlqQ6DOg-1
-X-Mimecast-MFC-AGG-ID: J7pJXE5RPIOO2WOlqQ6DOg_1764845282
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-42e2973a812so493637f8f.0
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 02:48:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764845281; x=1765450081; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=6tyOEvsFspYZUcwzU3OxMzTAdn6bK0XXoV7A7MYDuhA=;
- b=jZHUCEsoSI7xonWv5S/0haI8LH4TWgM1ot88B2O7y5GgGvLJX6IZHOsddTEeKgg6ok
- C1vYwDKWPYkymH9bGJElNvoxeaSBJ1hH9vglIyO4ZxzCJNq0m5Q09sI4y1SVI26huMWY
- jEI0JOI4dRDj3C/usVY+q6/qc5GyBpuhH5NHd9E3RFGSyfFCI3MVK1Pqp/a4hRCoglsn
- y8Au1yOKApMTVhVhr9dVcIPM74QGyxFQLSTwpJJndesuGzsSNTsRyARhh5I7k8L8TnHH
- vCqjIa2GCsR4BVff0qVYRIK0VlqL+jfFqTUBBiKEJ7p6854EHvUi72RQQQtCqHkN/4QW
- 523A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764845281; x=1765450081;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6tyOEvsFspYZUcwzU3OxMzTAdn6bK0XXoV7A7MYDuhA=;
- b=xKtYvB8Do2Jb2ZipDoV0L6YzF8QiKGjoqE97udyRZ5Sy2YaOCBjxAm5aFjM9swOZIw
- Z4zMvReGQsDae0mvcp3HyCEift2nsXsylPmLXXRJbn/FSVT9FbYoLGkXin6xJ0gqI+if
- RMfKR0ZrsAzkbpM8ogSJjyi/cP5wLdnOUVihvGOotaaiM6tqK3kKu7xrMvn9/7DgxJAg
- XPqh6I3o4g/IgiSjNXmz0somXHhAZEZO9n8gpZk97hdOYFTf6ToMVqx48Ver9qMEtWme
- A6jBDrVY5pcFkrO6pdM2EQQCW8r3Sa0ucnsZ1EXFDGIw0l9tzPwTo0XaNl6WLKroqITl
- TUiQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUcwxGP4SPsb/Cgy3RjHMbJ3H/CWZz5mAhlmQ6g4Y9c84MXgFP7muB9YNSmsUy2rerMrBGkz9oSRAaW@nongnu.org
-X-Gm-Message-State: AOJu0YzXGYKnaghrNebCd2haOBUW5fxYcBIMTT1QThCtGY1TKbOkXyB7
- UMZMF+9l47plx8t05yp06pU5K73sUGCieR2bLOqkbX1ezdTocfWdOGh85jMtwbWVIytYx1yFZcb
- +Yoiyt/QqzFlhATHkIf5PdBh7WfG1ZdWfzthvv8N07RLcPvqZ1Q3HO7v5
-X-Gm-Gg: ASbGnctgUNIn71iqlTCFVhtV/+znlSc+I3VfG+BijU3WgK8RtQT5gAx1a96rVlW9pnS
- mbbzxpWX5mjuPXTfgjdu20GFRKqYUs2abOpVvSkkr0piC76c39HZF8cFA2oWpXRFDVZ3J7wYKdf
- e1rYVJumhv2ZprxOvsvdAStaFbHQImebs3Z4jb1/2ouuz4WFW2kM7dJ1eVibBd/bGpnNPKuBPmu
- /Nfx3WkcHSOizrEXUybvapOo/344QlpWVgiiIS4a7zver+SDIHLFb2lVJoBGIOAG2Dz4yuJFXnj
- JO+rRWyPgO2msq3RWi5nUyOjQMzCz52lTowNAAsUGje4Z7b6K9So24CjtpknXyh5uIrTgEO3YUz
- 5RXs//Jo=
-X-Received: by 2002:a5d:6e44:0:b0:429:cf03:8b2e with SMTP id
- ffacd0b85a97d-42f78772783mr2273553f8f.13.1764845281569; 
- Thu, 04 Dec 2025 02:48:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFBlracykKAM3aejXY4qvHj47MAxRdbLufgi1l/+BWPYhzvD4ixzbIrL5MxQ3iUYqFQ6UUvmQ==
-X-Received: by 2002:a5d:6e44:0:b0:429:cf03:8b2e with SMTP id
- ffacd0b85a97d-42f78772783mr2273527f8f.13.1764845281137; 
- Thu, 04 Dec 2025 02:48:01 -0800 (PST)
-Received: from [192.168.0.5] ([47.64.112.197])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d222478sm2487603f8f.20.2025.12.04.02.48.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Dec 2025 02:48:00 -0800 (PST)
-Message-ID: <abb5a2c3-3c42-4f7b-95e8-2e0b29fe5685@redhat.com>
-Date: Thu, 4 Dec 2025 11:47:58 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/15] hw/arm: add Beckhoff CX7200 board
-To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>,
- qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, =?UTF-8?Q?Corvin_K=C3=B6hne?=
- <c.koehne@beckhoff.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Yannick_Vo=C3=9Fen?= <y.vossen@beckhoff.com>
-References: <20251204093502.50582-1-corvin.koehne@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251204093502.50582-1-corvin.koehne@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1vR6zp-0003c1-48
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 05:55:38 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qYlb0TWzQpH5jOEqp6Dx8RkIGry1XkihxDqOxhNXLedsdLmmYRFmqS3Z/hx5Gu7ulRVFYGBgZitlsAeKRtNr7Wwao/KijABC04IVdM/husoOzaOTXaIjBm21LXPkZwJYYjnVpflyRKF3VTpiUKJNej3ukimwnJDmcTy9uPgUF2JvwLk6RFWPRD/CFTILfKH+J8eUbFt5/tVrsm9Sd90yCo3oj3gPEmemARJYjOtcncIgbc5SVyPU0TtLhFKSaVDWK+90Da63m0qFws8rHQpNXo7aQa3os/+LhyInaLVyd4JrlDqYiwX8jhyhFu9IsvDG3X1Qhe6LvGxF4IQfO6ZFJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zyLALDM8eDLQ6p9a+AKE6Crw8RDBjX1X8MYqiKhvJl4=;
+ b=eZ9tAbDwRoU5ddx6JK6OTVh6VQZpL2uyRLT8Zr0hyRZ9qk4O8yQ9I5oBk5C9NGoP8qM/DvlrFPQejoR98AHtZi/L2WMhqv/m9VyfYSdUKD8BYuyzCBPl14oeo+J2OzKT+C9sovrroRgKhfrjmBvqBSsGGpY9OtzCXkBHsYmVbiCFeHT/gEJDnzpk052Hb5eyL+WClQwDdx0MdLYAGzx+EB6xjDCdLjyvDIL2ed3X6T6IQDBN7Jy2yTSZCohtvmRQ82KT2E7+4rdkzI8EBXaH7IFX08gkny5w9qIi/R61pJ+3i48bPQdOqyaXw7jautkP3/uF5xkwnT8zsF1aPFbjXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zyLALDM8eDLQ6p9a+AKE6Crw8RDBjX1X8MYqiKhvJl4=;
+ b=nSWHakBUvsx7xZJObTiR48BwKpoAi+Wn79SBfMMUaGLVFiCd74nFcMXdSNXdyqcNRA7JW98A6SpnuuiBcfc2EGjLBHyrIhVEDmGU/vrqI17RmBftdnLHe+gFcyKZvR1QDTMLushlBGJYzBYieYYNkW+vZZ9b8i2reJdo2YlRNVpTtVY0K8M0QmjAHgV+xC9lL7K2CEl4fz8KyLs3ZX6m3wYJsPwGakp37Tp2ogkPb+3XMVpKafyPCMVAQQnfR4yDKZqTJ89DrwKUZEhPOtIg1GnaIf46a/lWGgy1JzaS3cSF4Cg3JHapqYt3TCURCVppnKC2R+xW/u4KAb1HGJEfhQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AS8PR08MB7718.eurprd08.prod.outlook.com
+ (2603:10a6:20b:50a::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Thu, 4 Dec
+ 2025 10:50:32 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%3]) with mapi id 15.20.9366.012; Thu, 4 Dec 2025
+ 10:50:31 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, peterx@redhat.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, den@virtuozzo.com,
+ andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v3 0/4] Fixes and improvements for scripts/qemugdb commands
+Date: Thu,  4 Dec 2025 12:50:15 +0200
+Message-ID: <20251204105019.455060-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.43.5
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0158.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::8) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB7718:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19907860-c88c-416e-4a72-08de3322f20e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|376014|52116014|1800799024|38350700014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pVJ1/fhMtsJaX75kHDFYVX0xltb3Pp6dfRkAytMtZDLlHnx1Wt7I0ppca8aF?=
+ =?us-ascii?Q?tLRINCHqJ2nFTh64GWOX/Obpj0Cf0S9Y4ay9oQHORgcjoyioAPOB2ZyEv3HA?=
+ =?us-ascii?Q?HCzt79fY8uT1fobT5bZj9ISM2fqwLGpqlNJ88Sx7JHHFqKIduWZagrU8G3XT?=
+ =?us-ascii?Q?lwbHCbOpZRou2nEfkgoHAU6tCMr0zE6VczvZNsDZ23JJMDXrOAz0TKUoREJ2?=
+ =?us-ascii?Q?FMYb9wm2zCNkfBRiHiujIn/V8arcI7dO1wiAaUkY7/R9H1uGZKZokO3dwhyJ?=
+ =?us-ascii?Q?QKu/D7Gx07xDP5eqKpzk6DFAJNvHCaDN99LOc4WRwiYSS3HYRaPsYmXcRteo?=
+ =?us-ascii?Q?bIW2qzWjJl+bZt7x4OBi21Xqv28XqIfAb5H2iNNIIJYxbEaYIktwDrVXcuYr?=
+ =?us-ascii?Q?j9FdhuHTYgA5VhZVc3tbg6vOSpt92+QEnsdULrVU44MADwsVa3TY4swXZXmr?=
+ =?us-ascii?Q?PgJHiIlnn5uS09A/0Q/7VLZHgFo8VXKp48CJBG7ov3qaPLSRkRtcYfvagD3T?=
+ =?us-ascii?Q?s+WtsH+TXo1OIGskPFaDhWvB4BtmrnuvnnDHjXrmJDquDJNhUyl1KsISFBGf?=
+ =?us-ascii?Q?ircPfLxXleaHr7NDY5CNB3+3OycmPGY3g/WFksWzrD9zGJs1IOAit5VcriwT?=
+ =?us-ascii?Q?SLUBhZFd6A8JdRFm9YB7Whvq2FDIpD+1hM4r0jyKsvWHYS9cxxOx2ICJAeFC?=
+ =?us-ascii?Q?aPxLs/OQ+6IIxHQZUdQ6q5yD9dHHrMKylPkcPR0eq9ID5QpFu+sbM7Zc+8jC?=
+ =?us-ascii?Q?WXDrPpeBlw0fK593KkgSIZeXTbb25e7hzEsqwiQ+9caIOhc1KW2pjw9a+InW?=
+ =?us-ascii?Q?9rWnR54PDthyP7AQ+drcUmR7Z1RjDl6FALPbF6EJ0zFF8p1VpYk+FiX7tMJe?=
+ =?us-ascii?Q?w8UefNZPhHGxOo9uL8UtKBYPPZ4aRkRdYuf/EtL661Uim7ViFes7LqM2DymG?=
+ =?us-ascii?Q?4m26UwlytK64fBVp+pQBpd6rY5mUxLqB2L7gVM21V7k1xSLDxky5tvEpHiqA?=
+ =?us-ascii?Q?YhuQxpFxUyYC76K3wlJTz8PL+4yjBtFvU0eeWb3wwm1eLmEvcMVou+a+wZER?=
+ =?us-ascii?Q?UDxCTcc5VtICZNXC9y/debjDqpUKhuipB3lGRjrels593CxRUfOLDsHzAru0?=
+ =?us-ascii?Q?oOqTUtWebhCY8eR+jPXd+PNOJp8W+rtxE7caVafDJf9k5v6PmWloYJWAJdp0?=
+ =?us-ascii?Q?/2hHqCS0vQ6pDy/LIT7znJO7KvXwJ5w+LyKBR9l4kZmoDNsuCw9J8urplvjP?=
+ =?us-ascii?Q?5XbyR/rjdDCP/SYScQ0kZZVGyEQUtYduBcqypTYIFiikWSQZeqKyxHTPq+1B?=
+ =?us-ascii?Q?JncNo7xXVrGQWvUElmgszLZuv7ojMjiBTF5J1MhrrWckGZ8bnYa3KXybqSo8?=
+ =?us-ascii?Q?ceHmm73j8ZW24yW2/O3L/GJcm5GT0PH8p4NcPDlpnj3HxiTw4ynIWglSrx4H?=
+ =?us-ascii?Q?ha3ezZkYpK08GPbiFlht/pEgP4Oq4t/8goGVM0lZkghI2kvW27aq4fSb1SaX?=
+ =?us-ascii?Q?kTAurWOldWetEItQVakDppUNeFhZufj/1IqX4b5JwM0Pvn0raoEIGJjWfw?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?BYa+1s09NVzEWEp5YadmCO6oTmIqnIvs4CFULFMpdr27pZ+QJo4XGa2WW5u1?=
+ =?us-ascii?Q?Ixps0ydeL7d3W9RfFcC+itFvNjmMKDGV1u7j5tM9GE4j3YYKRHKtRAmIB8u0?=
+ =?us-ascii?Q?4Xz/bLZiNyfWM2MVmqwxJ0iju25gt3gzo2g0MoFyOkW0Ek+k1qKlce7CRBp5?=
+ =?us-ascii?Q?5RC7dNlpElYlV75IXrmp5xIptG3P+E5vgVtI5hosIG+BeYpsOTJYw1caae76?=
+ =?us-ascii?Q?2amwlG9Rfhkv1rEw4Us0OAwcE6Rqr++YIdsjWP7N69ibmAd/Us5+zSG/UYvV?=
+ =?us-ascii?Q?1S8OHMeT4u6HwibVaGslvIe9G4I3pXWldrfXgBMmeKLPMyp3KcsOHv9FmmQ7?=
+ =?us-ascii?Q?nwU1H8AliQ6w8tzhBBY5BYdUCpWh1lbMeBybCJeDJzqVyAnrnhNEpIpT6+PA?=
+ =?us-ascii?Q?lWP3ta5hScD+/8vZOvLMhFRDf4CP4rMfOzarVc/jlGICVcF4d4cYuBEnizZA?=
+ =?us-ascii?Q?Xyejn7QmM3BSciTdHua2aCaTrBeXJhObYMM8zMkzmx08BbVzM/KR5RcPz0oQ?=
+ =?us-ascii?Q?Ej8EwE/T7YSTv1spbbtlHwlBLnSaUUqMKYKlGFppZpI2OChlwCY/l/7aaaAX?=
+ =?us-ascii?Q?5s5Chod9oT17fqQX3MjR+bJQDryCMdHOy4+gzQYDi3yE2NPqKIqfivczMuD6?=
+ =?us-ascii?Q?NOtjVv6Ug9FQVROVHGkmNlllzNKOj0EeCl/Q6h/9E/BCKz95KWGViXFEnOHx?=
+ =?us-ascii?Q?AtuH6wZoS2UotDRndutdhs/f8XN2Y9S1DDo0gvEmTCSBBdbwWEB+NttT/+OF?=
+ =?us-ascii?Q?87a6kSGJVlRDE/dr1NVzzGqv7PPdueWnJ6haD0HMIoLt4Ig9UPGc54eOU+OW?=
+ =?us-ascii?Q?iePhrSnpsWgfCb3YgjGM+nm6NVtYZNJMQ/JymlQgnYMEVeGAGYUAAPRS6bGG?=
+ =?us-ascii?Q?Dhm9OXDaa76pmbCC0P3ZAzBVqSioWXIkR4TQlC/uCqMO6qcaJl0VoI1Jgr7X?=
+ =?us-ascii?Q?2Me9zS/vItguXVwLdhBDUgPQvpZsW4m3odRofsmSwMpplQFMPFAjuA12Phqs?=
+ =?us-ascii?Q?M+XvGVSw8/OZlxhtVfixmXrIB83hNv4RV5X0gncvzMTTaitpdPkLXUOVx/pI?=
+ =?us-ascii?Q?VtmZKrk8l6OvvHCSsb+AKX5hbYgAO0oY+lLNQrY/2I0gki0qIXARkSL6WXmY?=
+ =?us-ascii?Q?SPAnpYjcmLLkowjaeVjJ3V49eM6/OHw9mC3pU84xaD3nVeiuXdFYIFjtso69?=
+ =?us-ascii?Q?3YG/80mGZYXgtDc+bsGLD3UHoVn8+Z3xachISGKCkGnAbfzlWK7BV5SNP0MU?=
+ =?us-ascii?Q?pzkZX6xGzTRTLJkTxQK9QyMzCVS2grZso6KB5okUTL0PI07/MnHX8ZAHd2El?=
+ =?us-ascii?Q?iYxugnBjvLtQpd3hU8m4MC3CbrhcKqc7p3QEfpSm3ByTFeSFfWBBTZX1lN1v?=
+ =?us-ascii?Q?XOCRPb5X3WwEbvAlN1R6+7jGUJkGK3K9Grqrp0kcAKOILyXdK+Knlt2s+lWs?=
+ =?us-ascii?Q?a8Nni8ZO80afBDqoC1cvoixIOXLlbscvnd2YCo3SfnnwfvabIciC6tXlNcl6?=
+ =?us-ascii?Q?9Jx4gWw3CGG174paSLv5n2amHp1u9DE8LqhMKAXTsRS6K1PycRdjdPQ8djtt?=
+ =?us-ascii?Q?t6SzuA+3kCWlWbXj0YD7m86XiG+F/ivXkUpaO2KbaJM+g4VyIJ8E3zbKATr+?=
+ =?us-ascii?Q?OA=3D=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19907860-c88c-416e-4a72-08de3322f20e
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 10:50:31.8538 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LKplyHjMXGktT+8oaalo8uqvHO3ajSKWbwi4vA05l3ZMwke1toGsLyODnHcr5Q7KDJa2T/KMkBLXcOt2L5RIrx+gI50pH7kGAJZzhTb1+Wc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB7718
+Received-SPF: pass client-ip=40.107.159.115;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=OSPPR02CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -170,75 +163,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/12/2025 10.34, Corvin Köhne wrote:
-> From: Corvin Köhne <c.koehne@beckhoff.com>
-> 
-> Hi,
-> 
-> Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
-> platform. This commit series adds the Beckhoff CX7200 as new board variant to
-> QEMU.
-> 
-> The emulation is able to successfully boot an CX7200 image. The image includes
-> some self tests executed on every boot. Only the cache self test fails due to
-> QEMU emulating the cache as always being coherent. The self tests include f.e.:
-> 
-> * Network
-> * Flash
-> * CCAT DMA + EEPROM [1]
-> * TwinCAT (Beckhoff's automation control software [2])
-> 
-> [1] https://github.com/beckhoff/ccat
-> [2] https://www.beckhoff.com/en-us/products/automation/
-> 
-> YannickV (15):
->    hw/timer: Make frequency configurable
->    hw/timer: Make PERIPHCLK divider configurable
->    hw/dma/zynq-devcfg: Handle bitstream loading via DMA to 0xffffffff
->    hw/arm/zynq-devcfg: Prevent unintended unlock during initialization
->    hw/dma/zynq: Ensure PCFG_DONE bit remains set to indicate PL is in
->      user mode
->    hw/dma/zynq-devcfg: Simulate dummy PL reset
->    hw/dma/zynq-devcfg: Indicate power-up status of PL
->    hw/misc: Add dummy ZYNQ DDR controller
->    hw/misc/zynq_slcr: Add logic for DCI configuration
->    hw/misc: Add Beckhoff CCAT device
->    hw/block/m25p80: Add HAS_SR_TB flag for is25lp016d
->    hw/arm/xilinx_zynq: Split xilinx_zynq into header and implementation
->      files
->    hw/arm/xilinx_zynq: Add flash-type property
->    hw/arm: Add new machine based on xilinx-zynq-a9 for Beckhoff CX7200
->    docs/system/arm: Add support for Beckhoff CX7200
-> 
->   docs/system/arm/beckhoff-cx7200.rst |  57 ++++
->   docs/system/target-arm.rst          |   1 +
->   hw/arm/Kconfig                      |   7 +
->   hw/arm/beckhoff_CX7200.c            | 104 +++++++
->   hw/arm/meson.build                  |   1 +
->   hw/arm/xilinx_zynq.c                |  54 ++--
->   hw/block/m25p80.c                   |   3 +-
->   hw/dma/xlnx-zynq-devcfg.c           |  27 +-
->   hw/misc/Kconfig                     |   6 +
->   hw/misc/beckhoff_ccat.c             | 339 +++++++++++++++++++++++
->   hw/misc/meson.build                 |   2 +
->   hw/misc/xlnx-zynq-ddrc.c            | 413 ++++++++++++++++++++++++++++
->   hw/misc/zynq_slcr.c                 |  31 +++
->   hw/timer/a9gtimer.c                 |  26 +-
->   hw/timer/arm_mptimer.c              |  32 ++-
->   include/hw/arm/xilinx_zynq.h        |  37 +++
->   include/hw/misc/xlnx-zynq-ddrc.h    | 148 ++++++++++
->   include/hw/timer/a9gtimer.h         |   2 +
->   include/hw/timer/arm_mptimer.h      |   4 +
+v2 -> v3:
 
-  Hi!
+  * Use atexit.register() instead of gdb.events.exited.connect() for
+    registering a cleanup callback.  That way it's called upon both
+    normal and abnormal exit;
+  * Wrap code in invoke() methods in try-finally block, so that
+    restore_regs() is called unconditionally even we caught an exception;
+  * Restore registers in cleanup;
+  * Set dirty flag early on in patch_regs() to make sure registers get
+    restored if we failed while patching.
 
-Looking at the list of changed files, I think this series misses an update 
-to MAINTAINERS to add the new board there. Could you please add such a patch?
+v1 -> v2:
 
-Also, are there any binaries for this board publically available somewhere 
-on the internet? If so, please also add a functional test for this board to 
-tests/functional/ - thanks!
+  * Use pty module instead of script(1) for producing colored output;
+  * Patch coredump file in place instead of full copy;
+  * Save and restore original pt_regs values in a separate file;
+  * Wrap this logic in a separate class.
 
-  Thomas
+v2: https://lore.kernel.org/qemu-devel/20251202163119.363969-1-andrey.drobyshev@virtuozzo.com/
+v1: https://lore.kernel.org/qemu-devel/20251125142105.448289-1-andrey.drobyshev@virtuozzo.com/
+
+Andrey Drobyshev (4):
+  scripts/qemugdb: mtree: Fix OverflowError in mtree with 128-bit
+    addresses
+  scripts/qemugdb: timers: Fix KeyError in 'qemu timers' command
+  scripts/qemugdb: timers: Improve 'qemu timers' command readability
+  scripts/qemugdb: coroutine: Add option for obtaining detailed trace in
+    coredump
+
+ scripts/qemugdb/coroutine.py | 257 +++++++++++++++++++++++++++++++++--
+ scripts/qemugdb/mtree.py     |   2 +-
+ scripts/qemugdb/timers.py    |  54 ++++++--
+ 3 files changed, 289 insertions(+), 24 deletions(-)
+
+-- 
+2.43.5
 
 
