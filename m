@@ -2,153 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FB0CA2F82
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF21CA2F95
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:26:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR5Zi-0003RY-5a; Thu, 04 Dec 2025 04:24:34 -0500
+	id 1vR5bC-0005wH-UO; Thu, 04 Dec 2025 04:26:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vR5Zf-0003Ly-7d; Thu, 04 Dec 2025 04:24:31 -0500
-Received: from mail-northcentralusazlp170120005.outbound.protection.outlook.com
- ([2a01:111:f403:c105::5] helo=CH5PR02CU005.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vR5bA-0005vs-3Z
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:26:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vR5Zd-0004nT-ME; Thu, 04 Dec 2025 04:24:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RQO6EPmIjIpWRGW5HsdQsjf5zjsnZfmOaDNVHUnl+v4nllOiUuoWv5CppVUieLrreeHmHXZjhsF7Pv94Fx1QaRsnCnmlX0ip+0/lToQImoMQs7i9IMfZga5eFCnJNVtGkheLEx12iyJ/V+yF5xBqMLY0h/KmlplNXAWuvPDsTEpliK6GFPKTlyN69RWT9jEg8HNaaZbSd9HDIbteA+juK2kRQdieo3KkcTsr12kIUXU2G6bhfv1Q2I3U8SF9n5bzMNcRqKh3zdAfdSMJ0xcyBjrJT3Nms2WmEvUzyATE98TtKNwrf2MZRSXFfwDgCMlKZoGl4mB89xcM+6WN7W+r2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ljj0d0sopaR6Htyn+HeyUbLui8ABzfQ1CvNS1L4LGeE=;
- b=ux7bECDDOZGM0trgwmea1JRxAQHz9gZV1FmqQn/Sh4aMoe5DYkcXbClE129bFa/2+3rtGTC/RL3b/zYDpdNT37j/N7Wv0z3vbSgwZ4Cfnnc+TjfaeyTuP5AtitGYFicNbeESfcdUKUkzNhIo7UxHYO6TFghGYOGcKWIcykd2MUbY8QKK0IBZuxg0u1K2k+MuPVTqxARVrQwB3At+FQPkTT6wlYf3S4kMd9W4EAzzyRVm88dlDNLLxWN3pH03rf+17rzZVX0fwk1nksUMaKkbkGk/MoONi5rJ8yPjse2XR7Kmca9gG7tE1jzVNCJkej48ZH8tVDk4gvZptuk+AMADFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ljj0d0sopaR6Htyn+HeyUbLui8ABzfQ1CvNS1L4LGeE=;
- b=RvsVfsCfibiHbWyiY9d2VCsIGmoLQz6v3xRs2xhz35lWeVSp7e/BKeZ2DBLK/8aM7igtXxYUzRwmDvL4w5+PTtu5DmtyKh/pMniTVd9bFJeLsp1Tgrugz6uwco66dS6YMh0MOVPjzTP3rUJzLWSPrP3lm90/zenaVsiYeVbu2MTO5XSq3r7smqHimjJLYkK1DljbCQDYFJyuPiS1yLBhfSsPZgjnAWbGn9ln+SUiot2Kum+/dRzlY+/xnHowweJBbEpdqT5tR9TETghp1lEVWQIB8uq3oIXa2+t2tMkj2AdOnTF/z6H4dZ0Cxp75sHPfvi/rkkHpKSBWP0Rnw+Sd3A==
-Received: from BN9PR03CA0540.namprd03.prod.outlook.com (2603:10b6:408:131::35)
- by MW3PR12MB4427.namprd12.prod.outlook.com (2603:10b6:303:52::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.11; Thu, 4 Dec
- 2025 09:24:23 +0000
-Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
- (2603:10b6:408:131:cafe::f9) by BN9PR03CA0540.outlook.office365.com
- (2603:10b6:408:131::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Thu,
- 4 Dec 2025 09:24:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Thu, 4 Dec 2025 09:24:22 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Dec
- 2025 01:23:36 -0800
-Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Dec
- 2025 01:23:32 -0800
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
- <nicolinc@nvidia.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <jgg@nvidia.com>, <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <kjaju@nvidia.com>
-Subject: [PATCH v2 4/4] hw/arm/smmuv3-accel: Read and propagate host vIOMMU
- events
-Date: Thu, 4 Dec 2025 09:22:41 +0000
-Message-ID: <20251204092245.5157-5-skolothumtho@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251204092245.5157-1-skolothumtho@nvidia.com>
-References: <20251204092245.5157-1-skolothumtho@nvidia.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vR5b8-0006mG-Ge
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:26:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764840361;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
+ b=XSjGRsGasiljga7M+rU6oe+MolfPoub3eZivviNdbKXM12pxHmvpMgP3ZIselyh+yK63Fc
+ H8xFGAjeGZCm4c1tBxzcjfwpQZHuFZYw+JmZZRw3GpW0XkPdrpF/u6N0wNne7G+GqdM9LL
+ wHulaLTmVaLgVil7bHW4vMwJqNt5vV4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-0O5Bg8nlMra84CyV0PMM3Q-1; Thu, 04 Dec 2025 04:25:49 -0500
+X-MC-Unique: 0O5Bg8nlMra84CyV0PMM3Q-1
+X-Mimecast-MFC-AGG-ID: 0O5Bg8nlMra84CyV0PMM3Q_1764840348
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-42b478551a6so355025f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:25:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1764840348; x=1765445148; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
+ b=I4HFL1Yp1rXvash8CuicKnQTadVyd7LBKrC86/McGr8sSqv84EJx5OEupU/LhuFHZQ
+ NdE9KeslmP8NHIenOnLp8V+I1BLaeR2Fc/WjesDqaZmy+XcmjumBgbTXO5aTaOCBdmA3
+ xnsYZ7rP4HVHsyokRajAjwaxol8FHSgUlXS9rZJq01++57JSSCt24DkgUeCsx8mYvlYe
+ 4LiTOZ7Mog1xmkTbvMqdw/6Ir+1JlPNXpBphcJ7TZOQo56DowS1G8FtxPRDigxm4WHnc
+ 85TbLBX4FhKdV76BLRZmdM73GUeneR6tdYUVkG8GED8/jSjARgkL7frs/q8NaYXPLBxr
+ cXBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764840348; x=1765445148;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
+ b=RzvIEqrK/JZGs5folC6F5shhUGTyHFBm7UqyQwuhgsfpyEkKAvfvPrSsujhOlFMrky
+ VTwV/BOsCWmitY4IiQTzt9Bua5vm6GIdXmaGVQ+U5I1lBYfvg9bagVv8vuaexWy+YwVZ
+ sKVD0hyhTEqtb8/IEsYs/PTjaaxqGuEUqSAAyc6sdAv/bSZo936cxVzaZVGw2UJ4CFlk
+ 90NF2fDFRElyHlhrEdKyPpLJZyoC8P+66y60tYD68lEt+MPXjq0edULQBpwotfK8zRhS
+ r06ThR3mp1G3/sitoS7kfMqGwiBLc+HM5urvfJjxXTticrnY5bxIR5gtfmdl3dPYE7sV
+ 8Bgw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUET83DE/7jZROhSIe/kAvoOO9BVV//RzMJo3wQBI89NB/UKZXx3bB0pyMmlOcn+mzkWAKTh4ivqd8m@nongnu.org
+X-Gm-Message-State: AOJu0YyojLZR6vaI3sDmviAYjpEGes9RJQIBFFr8nxTiRU+65rWG/6aE
+ D8eIuKFuzVwPxuoPG6gsU1SctXUyhQ54boXU/dZsl3urJnDs9uBtcezW9HX4WePK8Wd2iA4Sqxf
+ 2yFzJ5JpvU6MNv0AkpM4kksTwL63+cr2GH/OWJSB9HoJFdDm/9zIf4hOR
+X-Gm-Gg: ASbGncu20dgHkgGKvU57Szc4uEjdw3v8E2hOZZILuJf6zBg1UTSBOaXjox/elzLmzcZ
+ D4wul87RRdI4eaR+uDaBPx9q7nTdgqtToKHn7fogUByYWHcgLr7CBV45UoqF5DmEdUt7Shsyf2s
+ tXBGPvpzDUIooxjvuN7zyDIiKhBnaeScjH3wxLOFIsdYfGvQpyubNF2ljMgwpnondrRp+a4bLRm
+ Pw1+HYUW1gK14unJtqD0NsES5YMdGipeSVRMOMlWFPR0EOyFehSHONTD51O33mNwnBPZwL/8J+M
+ D9czoUtI57GC6xDza6Six1wTMX2y9D8cXVO2kcrtXaHtNrj+nXXsC/Wgyjax73TtvDxlr2PAVtp
+ H/UFXD0ugchk65O4B+6d6sqH/kRPXiiaNaozQ3dr//IgMP9HieNpUrXwdH1CE8YZf2siy5C+3Y5
+ wWGVn+9ykzKN+wHrw=
+X-Received: by 2002:a05:6000:2484:b0:42b:3e20:f1b3 with SMTP id
+ ffacd0b85a97d-42f73173f46mr6063499f8f.9.1764840347812; 
+ Thu, 04 Dec 2025 01:25:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG7qdi3Qqo0V0aByWFEl71ReUj4psU4+prKoECGOsqS2HFZnHJ6Bzo3ZIlQv+rUUMkbEyxuGw==
+X-Received: by 2002:a05:6000:2484:b0:42b:3e20:f1b3 with SMTP id
+ ffacd0b85a97d-42f73173f46mr6063472f8f.9.1764840347427; 
+ Thu, 04 Dec 2025 01:25:47 -0800 (PST)
+Received: from [192.168.10.81] ([176.206.119.13])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-42f7d222506sm2450700f8f.28.2025.12.04.01.25.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Dec 2025 01:25:46 -0800 (PST)
+Message-ID: <19f01d31-01f5-458e-873b-4859e2f8b3d9@redhat.com>
+Date: Thu, 4 Dec 2025 10:25:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] block: reduce files included by block/aio.h
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, kwolf@redhat.omc
+References: <20251203185133.2458207-1-pbonzini@redhat.com>
+ <20251203185133.2458207-4-pbonzini@redhat.com>
+ <bbbf42c5-98c6-4f24-929b-7bbb2853f5c9@linaro.org>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <bbbf42c5-98c6-4f24-929b-7bbb2853f5c9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.126.230.35]
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|MW3PR12MB4427:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84795330-10a8-4359-d9e8-08de3316e96b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TkszOTAwcjl5MjJDREoyemdzc3VJaFNXRnlWTjlaRHlyclhhOEtaazhtN1or?=
- =?utf-8?B?L29zR2Vaa203YXFTd2RjVUlSNS94eGlQekhQWTNOcXB6WmVqMCtCRXU4RUl2?=
- =?utf-8?B?cDBuTmpLQ0pGRHhvdmV2RDZ6SENKWm00SDJwRmxScTd3WVYyVE9qYzNFeDhW?=
- =?utf-8?B?cmhqdXlyMGRyVVBheXg2NldHR1F3OVJQOWRjUlREQ0YzcHFnaXRJUkFxOHZR?=
- =?utf-8?B?OXcxSHEvRUFRc0cxQlZiODg2MkQ2S1hoOVE3LzF1bFlMejlVSjBCdkZYUzZs?=
- =?utf-8?B?dzh6aWNIVzFSTUwwTHlDOWt0ZlU1Zlo5NU51dnFNQTFVN1JNY1pmT0dOOUpv?=
- =?utf-8?B?aXV0OXVEQitCYnhSUmxtVlZpOGxqMU9xR2VsOUdHK1E0RmZEcmdpc2FYRTlp?=
- =?utf-8?B?SEpITnNpc1I0S2hZMkNCZHNDeGVUS29vVytzV2w3cjBiQTlSTEVCRE8zWVA2?=
- =?utf-8?B?ZjBOaXc3VFBrckl3eUdwNzFPTndYWWdybVZVT0c0U3VyUVBadk9oNHQzcFBI?=
- =?utf-8?B?WUlDK2IwT1hzN0ZuYW03V2JLeFdGejRlODJsMUtidUQzVkM4aTVrVlkySEhK?=
- =?utf-8?B?eVozdW05dW5POXdDNEQwZ0VlUENETTJOa2Nvb2pLK1RhU1JzWlNGN2N6WXJF?=
- =?utf-8?B?b21LQnRmdno4OWxWdURaYTFySXk4SXZBS21LYVhCREpvSkh1SlhIRnFHRnFr?=
- =?utf-8?B?TFNCWVFUVWpQeU1RbnhnejFZM1k3VWJId3pKaTdYT1RDVHV6VVFuczBNQTBR?=
- =?utf-8?B?OEpOdDFGc0N3TVkvdWtKVWYwdTZ2TzNHRThVTXBHZlpHMmpvQUQzbGx2dFF4?=
- =?utf-8?B?ZzdxbndHQ2F4bEF5dndob1h3aHlqUk5VQkN2b1JYcmVKaHNQS3ZRbTVtb0NC?=
- =?utf-8?B?T1VsaWhJTCtMUDJnYU1wbEkxV3pJSEZ4bFBwL1JZMUcvVkJSL2ljMlRXOTdl?=
- =?utf-8?B?SEx5cFd3Z1IwYjZ0WFg4eWRaenBlQkdudWh6VEVVbXhIN3VlcTJwTUhTTWxj?=
- =?utf-8?B?Ylh3UHNCZTdPSnN3QWVzWVlpR3JPWnVEM1F3ODkxQkg4ejJCRC9UaEVNeUs2?=
- =?utf-8?B?bmpJRTNJeDhMNHNDVXNGVTJvNTl2QWJXQW5FVkhDU3BUYW9NVnZCb0VUZFF3?=
- =?utf-8?B?WmNWeDMrMGVCREJIRHRNY1NKamUzRUptVU94bWZSNmF2TGJ3bUtreVoyQXFv?=
- =?utf-8?B?aGV6WHZTWnNnOUltWkpsWWx2Q0RJUUZWOWRDQXY2Y1hHVjN4SmNDRWNwd08w?=
- =?utf-8?B?UTZSVHdGbUZ0OGJpUFRZdVRIU3dmSHpvYkdEYVRwdkZTRjM1R1QyNS9jVjFK?=
- =?utf-8?B?ZkYxeGpEcGFwdVZtR3o3UXBENFM2N1dSOSs5a2lDV1JBZDNoZ3RSREtEU0Z1?=
- =?utf-8?B?Wms4QjJCejltZHozSTBTOFdvcloyallHbStTNHlISE5MUzJud1lneHJuNnJ0?=
- =?utf-8?B?bE9Ga1k3ZFFyc29xSmlOdXBreEZjSTdFZ2tPbXJqZ0oxZ0FWZlVYM2ViamY3?=
- =?utf-8?B?Smx1QitqWVUwRlNpTGZoU3Q3Q1lWQ1BSbUYxWDVwbVhtZlBuaHBpOHBEbmR1?=
- =?utf-8?B?RHFFbVZRQmZvWExBSm5Gd0gxSXVtMSs5eDdleHlRbGZzVDhCRlZYcytFbnVQ?=
- =?utf-8?B?b0NPS2hVQzhiMTNGYUE3N1J4OTk3bVI2aFFmYkRhSHhhanhObWhhWitJL3lw?=
- =?utf-8?B?OFhKTTFXMXBaL0FoWG9PQTk0SEM1Z0hXbUladVBIMS9iYkN5UXBIaGE0Rm0r?=
- =?utf-8?B?bG1qdGxXQ3IyVEJXNWNEdU9xN3EyY1VvNFZpU0NEbk1lcVNWM3FoTm1Ba0dm?=
- =?utf-8?B?R1AzN0ZMSXlTWUxFYXlEMnpHclZSNXhxaC9PeXk5aXNwQUJEbnFUZWtBaDVh?=
- =?utf-8?B?a2hBcmo0b2pnTzkycnJxZDdRV0JkS29zeUMrNFhyNUovdWZLa04yUDA2S2hM?=
- =?utf-8?B?bzlETGsyVnNZWWUwbzhrSERhQWxEMmtIN25HTTIyRmVINFo2cldaelY3NUUv?=
- =?utf-8?B?bDc5MVVFeEtOZnRneC82dmRLMkIvSFZ6R3JkZmJ2TGxpMENaOXZlc295M2la?=
- =?utf-8?B?eWNlUzNBbFRQNXdmeUNlaUNRZlkxVm16RVl6c1FEZlIvcVB5L3ozenVYN2Z5?=
- =?utf-8?Q?vK4Q=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 09:24:22.8540 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84795330-10a8-4359-d9e8-08de3316e96b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF0000467F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4427
-Received-SPF: permerror client-ip=2a01:111:f403:c105::5;
- envelope-from=skolothumtho@nvidia.com;
- helo=CH5PR02CU005.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,115 +162,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Install an event handler on the vEVENTQ fd to read and propagate host
-generated vIOMMU events to the guest.
+On 12/4/25 09:35, Philippe Mathieu-Daudé wrote:
+> On 3/12/25 19:51, Paolo Bonzini wrote:
+>> Avoid including all of qdev everywhere (the hw/core/qdev.h header in fact
+>> brings in a lot more headers too), instead declare a couple structs for
+>> which only a pointer type is needed.
+>>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>>   include/block/aio.h                |  7 +++----
+>>   include/block/block-copy.h         |  1 +
+>>   include/block/block-global-state.h |  1 +
+>>   include/block/block-io.h           |  1 +
+>>   include/block/dirty-bitmap.h       |  1 +
+>>   include/hw/core/qdev.h             |  6 +-----
+>>   include/qemu/job.h                 |  1 +
+>>   include/qemu/main-loop.h           |  2 +-
+>>   include/qemu/mem-reentrancy.h      | 10 ++++++++++
+>>   net/net.c                          |  1 +
+>>   util/async.c                       |  1 +
+>>   11 files changed, 22 insertions(+), 10 deletions(-)
+>>   create mode 100644 include/qemu/mem-reentrancy.h
+>>
+>> diff --git a/include/block/aio.h b/include/block/aio.h
+>> index 59c56d695ee..8cca2360d1a 100644
+>> --- a/include/block/aio.h
+>> +++ b/include/block/aio.h
+>> @@ -23,9 +23,8 @@
+>>   #include "qemu/lockcnt.h"
+>>   #include "qemu/thread.h"
+>>   #include "qemu/timer.h"
+>> -#include "block/graph-lock.h"
+>> -#include "hw/core/qdev.h"
+>> +struct MemReentrancyGuard;
+>>   typedef struct AioHandler AioHandler;
+>>   typedef QLIST_HEAD(, AioHandler) AioHandlerList;
+>> @@ -211,7 +210,7 @@ struct AioContext {
+>>        * of nodes and edges from block graph while some
+>>        * other thread is traversing it.
+>>        */
+>> -    BdrvGraphRWlock *bdrv_graph;
+>> +    struct BdrvGraphRWlock *bdrv_graph;
+>>       /* The list of registered AIO handlers.  Protected by ctx- 
+>> >list_lock. */
+>>       AioHandlerList aio_handlers;
+>> @@ -393,7 +392,7 @@ void aio_bh_schedule_oneshot_full(AioContext *ctx, 
+>> QEMUBHFunc *cb, void *opaque,
+>>    * device-reentrancy issues
+>>    */
+>>   QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+>> -                        const char *name, MemReentrancyGuard 
+>> *reentrancy_guard);
+>> +                        const char *name, struct MemReentrancyGuard 
+>> *reentrancy_guard);
+> 
+> I suppose these changes were before you move the declarations to their
+> own "qemu/mem-reentrancy.h" header?
 
-The handler runs in QEMU’s main loop, using a non-blocking fd registered
-via qemu_set_fd_handler().
+Yes, but also qemu/mem-reentrancy.h is not included here.
 
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
----
- hw/arm/smmuv3-accel.c | 58 +++++++++++++++++++++++++++++++++++++++++++
- hw/arm/smmuv3-accel.h |  2 ++
- 2 files changed, 60 insertions(+)
-
-diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-index 74f0be3731..d320c62b04 100644
---- a/hw/arm/smmuv3-accel.c
-+++ b/hw/arm/smmuv3-accel.c
-@@ -378,6 +378,58 @@ bool smmuv3_accel_issue_inv_cmd(SMMUv3State *bs, void *cmd, SMMUDevice *sdev,
-                    sizeof(Cmd), &entry_num, cmd, errp);
- }
- 
-+static void smmuv3_accel_event_read(void *opaque)
-+{
-+    SMMUv3State *s = opaque;
-+    SMMUv3AccelState *accel = s->s_accel;
-+    struct {
-+        struct iommufd_vevent_header hdr;
-+        struct iommu_vevent_arm_smmuv3 vevent;
-+    } buf;
-+    ssize_t readsz = sizeof(buf);
-+    uint32_t last_seq = accel->last_event_seq;
-+    ssize_t bytes;
-+
-+    bytes = read(accel->veventq->veventq_fd, &buf, readsz);
-+    if (bytes <= 0) {
-+        if (errno == EAGAIN || errno == EINTR) {
-+            return;
-+        }
-+        error_report("vEVENTQ: read failed (%s)", strerror(errno));
-+        return;
-+    }
-+
-+    if (bytes < readsz) {
-+        error_report("vEVENTQ: incomplete read (%zd/%zd bytes)", bytes, readsz);
-+        return;
-+    }
-+
-+    if (buf.hdr.flags & IOMMU_VEVENTQ_FLAG_LOST_EVENTS) {
-+        error_report("vEVENTQ has lost events");
-+        return;
-+    }
-+
-+    /* Check sequence in hdr for lost events if any */
-+    if (accel->event_start) {
-+        uint32_t expected = (last_seq == INT_MAX) ? 0 : last_seq + 1;
-+
-+        if (buf.hdr.sequence != expected) {
-+            uint32_t delta;
-+
-+            if (buf.hdr.sequence >= last_seq) {
-+                delta = buf.hdr.sequence - last_seq;
-+            } else {
-+                /* Handle wraparound from INT_MAX */
-+                delta = (INT_MAX - last_seq) + buf.hdr.sequence + 1;
-+            }
-+            error_report("vEVENTQ: detected lost %u event(s)", delta - 1);
-+        }
-+    }
-+    accel->last_event_seq = buf.hdr.sequence;
-+    accel->event_start = true;
-+    smmuv3_propagate_event(s, (Evt *)&buf.vevent);
-+}
-+
- static void smmuv3_accel_free_veventq(SMMUv3AccelState *accel)
- {
-     IOMMUFDVeventq *veventq = accel->veventq;
-@@ -385,6 +437,8 @@ static void smmuv3_accel_free_veventq(SMMUv3AccelState *accel)
-     if (!veventq) {
-         return;
-     }
-+    qemu_set_fd_handler(veventq->veventq_fd, NULL, NULL, NULL);
-+    close(veventq->veventq_fd);
-     iommufd_backend_free_id(accel->viommu.iommufd, veventq->veventq_id);
-     g_free(veventq);
-     accel->veventq = NULL;
-@@ -427,6 +481,10 @@ bool smmuv3_accel_alloc_veventq(SMMUv3State *s, Error **errp)
-     veventq->veventq_fd = veventq_fd;
-     veventq->viommu = &accel->viommu;
-     accel->veventq = veventq;
-+
-+    /* Set up event handler for veventq fd */
-+    fcntl(veventq_fd, F_SETFL, O_NONBLOCK);
-+    qemu_set_fd_handler(veventq_fd, smmuv3_accel_event_read, NULL, s);
-     return true;
- }
- 
-diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
-index 7b0f585769..2c7c30d6a0 100644
---- a/hw/arm/smmuv3-accel.h
-+++ b/hw/arm/smmuv3-accel.h
-@@ -21,6 +21,8 @@
- typedef struct SMMUv3AccelState {
-     IOMMUFDViommu viommu;
-     IOMMUFDVeventq *veventq;
-+    uint32_t last_event_seq;
-+    bool event_start;
-     uint32_t bypass_hwpt_id;
-     uint32_t abort_hwpt_id;
-     QLIST_HEAD(, SMMUv3AccelDevice) device_list;
--- 
-2.43.0
+Paolo
 
 
