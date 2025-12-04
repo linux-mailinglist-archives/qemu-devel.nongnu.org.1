@@ -2,151 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF21CA2F95
-	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A00CA3094
+	for <lists+qemu-devel@lfdr.de>; Thu, 04 Dec 2025 10:38:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vR5bC-0005wH-UO; Thu, 04 Dec 2025 04:26:06 -0500
+	id 1vR5kP-0001Ks-S2; Thu, 04 Dec 2025 04:35:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vR5bA-0005vs-3Z
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:26:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vR5b8-0006mG-Ge
- for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:26:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764840361;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
- b=XSjGRsGasiljga7M+rU6oe+MolfPoub3eZivviNdbKXM12pxHmvpMgP3ZIselyh+yK63Fc
- H8xFGAjeGZCm4c1tBxzcjfwpQZHuFZYw+JmZZRw3GpW0XkPdrpF/u6N0wNne7G+GqdM9LL
- wHulaLTmVaLgVil7bHW4vMwJqNt5vV4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-258-0O5Bg8nlMra84CyV0PMM3Q-1; Thu, 04 Dec 2025 04:25:49 -0500
-X-MC-Unique: 0O5Bg8nlMra84CyV0PMM3Q-1
-X-Mimecast-MFC-AGG-ID: 0O5Bg8nlMra84CyV0PMM3Q_1764840348
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-42b478551a6so355025f8f.1
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:25:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1vR5jz-000187-Tt
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:13 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1vR5jv-0003Mm-JK
+ for qemu-devel@nongnu.org; Thu, 04 Dec 2025 04:35:10 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-640a0812658so1211833a12.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 01:35:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764840348; x=1765445148; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
- b=I4HFL1Yp1rXvash8CuicKnQTadVyd7LBKrC86/McGr8sSqv84EJx5OEupU/LhuFHZQ
- NdE9KeslmP8NHIenOnLp8V+I1BLaeR2Fc/WjesDqaZmy+XcmjumBgbTXO5aTaOCBdmA3
- xnsYZ7rP4HVHsyokRajAjwaxol8FHSgUlXS9rZJq01++57JSSCt24DkgUeCsx8mYvlYe
- 4LiTOZ7Mog1xmkTbvMqdw/6Ir+1JlPNXpBphcJ7TZOQo56DowS1G8FtxPRDigxm4WHnc
- 85TbLBX4FhKdV76BLRZmdM73GUeneR6tdYUVkG8GED8/jSjARgkL7frs/q8NaYXPLBxr
- cXBg==
+ d=gmail.com; s=20230601; t=1764840904; x=1765445704; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EqXB20e2lB1n4B/l+2XeP0j/2vhshqy0w7MeGRh9Fl8=;
+ b=TyIi2G8VJxOPSCjGGxyI5K4EoGOWy1KMevji/IfSWCVA5t+EnnrMQlkQW3lp+60NVA
+ XdynBm17U/YIY0MKb96UKcdHyoXrW+DXmFUx/9ABYBIewEKvb1p0mfXTp0pwqYRPLoPt
+ b/cbn6wt4DK2a+OX6Q7lT+Dzt+W/Unt5hG2afqgjoYCT8A06YVu3e7xEbVSfCzsGRUTf
+ GkD+3JeGn516BQW2u4ndkyl1GQRriNWX+CWk8qySGvC0YvvL5zdrICp+mAVo1DmjVo9d
+ 6c3S8R9FCgluaRVi5n+C0e/RR6YpOQrH7rXMXx8oOK+BMJuLEKK5AkqmvnmS1bSHPeC9
+ VEhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764840348; x=1765445148;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1764840904; x=1765445704;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jCZ6WboA9UsLy0y9O5DsJPro6lbWYhRRzq8S4B7GDGQ=;
- b=RzvIEqrK/JZGs5folC6F5shhUGTyHFBm7UqyQwuhgsfpyEkKAvfvPrSsujhOlFMrky
- VTwV/BOsCWmitY4IiQTzt9Bua5vm6GIdXmaGVQ+U5I1lBYfvg9bagVv8vuaexWy+YwVZ
- sKVD0hyhTEqtb8/IEsYs/PTjaaxqGuEUqSAAyc6sdAv/bSZo936cxVzaZVGw2UJ4CFlk
- 90NF2fDFRElyHlhrEdKyPpLJZyoC8P+66y60tYD68lEt+MPXjq0edULQBpwotfK8zRhS
- r06ThR3mp1G3/sitoS7kfMqGwiBLc+HM5urvfJjxXTticrnY5bxIR5gtfmdl3dPYE7sV
- 8Bgw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUET83DE/7jZROhSIe/kAvoOO9BVV//RzMJo3wQBI89NB/UKZXx3bB0pyMmlOcn+mzkWAKTh4ivqd8m@nongnu.org
-X-Gm-Message-State: AOJu0YyojLZR6vaI3sDmviAYjpEGes9RJQIBFFr8nxTiRU+65rWG/6aE
- D8eIuKFuzVwPxuoPG6gsU1SctXUyhQ54boXU/dZsl3urJnDs9uBtcezW9HX4WePK8Wd2iA4Sqxf
- 2yFzJ5JpvU6MNv0AkpM4kksTwL63+cr2GH/OWJSB9HoJFdDm/9zIf4hOR
-X-Gm-Gg: ASbGncu20dgHkgGKvU57Szc4uEjdw3v8E2hOZZILuJf6zBg1UTSBOaXjox/elzLmzcZ
- D4wul87RRdI4eaR+uDaBPx9q7nTdgqtToKHn7fogUByYWHcgLr7CBV45UoqF5DmEdUt7Shsyf2s
- tXBGPvpzDUIooxjvuN7zyDIiKhBnaeScjH3wxLOFIsdYfGvQpyubNF2ljMgwpnondrRp+a4bLRm
- Pw1+HYUW1gK14unJtqD0NsES5YMdGipeSVRMOMlWFPR0EOyFehSHONTD51O33mNwnBPZwL/8J+M
- D9czoUtI57GC6xDza6Six1wTMX2y9D8cXVO2kcrtXaHtNrj+nXXsC/Wgyjax73TtvDxlr2PAVtp
- H/UFXD0ugchk65O4B+6d6sqH/kRPXiiaNaozQ3dr//IgMP9HieNpUrXwdH1CE8YZf2siy5C+3Y5
- wWGVn+9ykzKN+wHrw=
-X-Received: by 2002:a05:6000:2484:b0:42b:3e20:f1b3 with SMTP id
- ffacd0b85a97d-42f73173f46mr6063499f8f.9.1764840347812; 
- Thu, 04 Dec 2025 01:25:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7qdi3Qqo0V0aByWFEl71ReUj4psU4+prKoECGOsqS2HFZnHJ6Bzo3ZIlQv+rUUMkbEyxuGw==
-X-Received: by 2002:a05:6000:2484:b0:42b:3e20:f1b3 with SMTP id
- ffacd0b85a97d-42f73173f46mr6063472f8f.9.1764840347427; 
- Thu, 04 Dec 2025 01:25:47 -0800 (PST)
-Received: from [192.168.10.81] ([176.206.119.13])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-42f7d222506sm2450700f8f.28.2025.12.04.01.25.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Dec 2025 01:25:46 -0800 (PST)
-Message-ID: <19f01d31-01f5-458e-873b-4859e2f8b3d9@redhat.com>
-Date: Thu, 4 Dec 2025 10:25:44 +0100
+ bh=EqXB20e2lB1n4B/l+2XeP0j/2vhshqy0w7MeGRh9Fl8=;
+ b=LUh1JJJ+kdyznHqvLPwFDvaNJ5jqmW4yvNegVfnU36935/axNAxwTafRYexxuC3z3q
+ IsxyNCIJU/3rPMXOvcvOXxrho/KSuvFzYb+ow4gRZQ7a/ApKRDCojgqsiv0s6LIU3ShP
+ Y4CFYT2KvN/L8a5yMXoRZey1F+fSnxr7eaLAIXEwUjdC8Jl4Jk0L65GTgQhX8OBWE6Nh
+ +KeMRK/qrRTHTe4J3NgfZ3UDEW5DvMQtAepWylsQT+hJRJBjb88+l/MoUrJS8ha4odhc
+ 5guCpBoVX+v+nYaDJvwZ8+iVX7QuAMzvEPZMAL3PusbKlMt0tSZ56NkCGkL9OhUb8sW2
+ /KMg==
+X-Gm-Message-State: AOJu0YypnOS+E9Imj8L9tIO+F9wKvPZ0YfuS6Ud7mjj1kRrgrEC3XHgn
+ BQvtEcsLaKSTAMrXWyi/oGP80OYov/GXSwBpbPz4kK5rxGYA5M1mSpeOOp0k4Gay
+X-Gm-Gg: ASbGncuUBkqwNgnclkL4DAdwypbY9rtE2pytIvV6dijBRjDu3c2wzQvSu99cuFmZ6iV
+ IHqmUseMTJ76mvie44VZUlw0Qv/8fNWQCoz6VAOFIwSuWz4K6piCh0lZlzpD1p0GoF3vZRmL1Ez
+ sE6mGzvAOtHJ+EGcVTs6F9gOUWek0ap3Yix7OexPKLSBIPgCoBge6l0geclmDBEb2i4d8u3flh+
+ d2aqpPKD0SrO2/jtt7AAYrQuF75SZhHO/YP/x6QAGNuNtpNc5eIlBF2ohNxBIrwdEZueTgFmL/W
+ lmrVr5V5EOqDYmHPrQwutMIyt5KzWtQx9JULm1YSrDmyd39IVDgWxuF45Xz/Aadv3/q4fOXAEpT
+ 8ZFGjq8d8W2/oEFNh5NRpraUNMCjFK7OoevJXae56fwLyFIQObKQJ1rDBSaSDiHLrt6kNejYRmv
+ 57tlZt/O174JQKY/A7CycuFqEYSBsoTbw=
+X-Google-Smtp-Source: AGHT+IFXJPAsiSg1t3VMpgzmtqC9Z6hzPe6Xl1uRYNo6+QzxfVHcLvJKMImj2WZNoeWpUgq1SATHXQ==
+X-Received: by 2002:a05:6402:2790:b0:647:6ec9:8d8b with SMTP id
+ 4fb4d7f45d1cf-647abe05e9fmr2019788a12.34.1764840903658; 
+ Thu, 04 Dec 2025 01:35:03 -0800 (PST)
+Received: from PC-DA2D10.beckhoff.com ([195.226.174.194])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-647b2edf72asm856573a12.11.2025.12.04.01.35.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Dec 2025 01:35:03 -0800 (PST)
+From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>
+Subject: [PATCH v5 00/15] hw/arm: add Beckhoff CX7200 board
+Date: Thu,  4 Dec 2025 10:34:47 +0100
+Message-ID: <20251204093502.50582-1-corvin.koehne@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] block: reduce files included by block/aio.h
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, kwolf@redhat.omc
-References: <20251203185133.2458207-1-pbonzini@redhat.com>
- <20251203185133.2458207-4-pbonzini@redhat.com>
- <bbbf42c5-98c6-4f24-929b-7bbb2853f5c9@linaro.org>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <bbbf42c5-98c6-4f24-929b-7bbb2853f5c9@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -162,65 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/4/25 09:35, Philippe Mathieu-Daudé wrote:
-> On 3/12/25 19:51, Paolo Bonzini wrote:
->> Avoid including all of qdev everywhere (the hw/core/qdev.h header in fact
->> brings in a lot more headers too), instead declare a couple structs for
->> which only a pointer type is needed.
->>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->>   include/block/aio.h                |  7 +++----
->>   include/block/block-copy.h         |  1 +
->>   include/block/block-global-state.h |  1 +
->>   include/block/block-io.h           |  1 +
->>   include/block/dirty-bitmap.h       |  1 +
->>   include/hw/core/qdev.h             |  6 +-----
->>   include/qemu/job.h                 |  1 +
->>   include/qemu/main-loop.h           |  2 +-
->>   include/qemu/mem-reentrancy.h      | 10 ++++++++++
->>   net/net.c                          |  1 +
->>   util/async.c                       |  1 +
->>   11 files changed, 22 insertions(+), 10 deletions(-)
->>   create mode 100644 include/qemu/mem-reentrancy.h
->>
->> diff --git a/include/block/aio.h b/include/block/aio.h
->> index 59c56d695ee..8cca2360d1a 100644
->> --- a/include/block/aio.h
->> +++ b/include/block/aio.h
->> @@ -23,9 +23,8 @@
->>   #include "qemu/lockcnt.h"
->>   #include "qemu/thread.h"
->>   #include "qemu/timer.h"
->> -#include "block/graph-lock.h"
->> -#include "hw/core/qdev.h"
->> +struct MemReentrancyGuard;
->>   typedef struct AioHandler AioHandler;
->>   typedef QLIST_HEAD(, AioHandler) AioHandlerList;
->> @@ -211,7 +210,7 @@ struct AioContext {
->>        * of nodes and edges from block graph while some
->>        * other thread is traversing it.
->>        */
->> -    BdrvGraphRWlock *bdrv_graph;
->> +    struct BdrvGraphRWlock *bdrv_graph;
->>       /* The list of registered AIO handlers.  Protected by ctx- 
->> >list_lock. */
->>       AioHandlerList aio_handlers;
->> @@ -393,7 +392,7 @@ void aio_bh_schedule_oneshot_full(AioContext *ctx, 
->> QEMUBHFunc *cb, void *opaque,
->>    * device-reentrancy issues
->>    */
->>   QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
->> -                        const char *name, MemReentrancyGuard 
->> *reentrancy_guard);
->> +                        const char *name, struct MemReentrancyGuard 
->> *reentrancy_guard);
-> 
-> I suppose these changes were before you move the declarations to their
-> own "qemu/mem-reentrancy.h" header?
+From: Corvin Köhne <c.koehne@beckhoff.com>
 
-Yes, but also qemu/mem-reentrancy.h is not included here.
+Hi,
 
-Paolo
+Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
+platform. This commit series adds the Beckhoff CX7200 as new board variant to
+QEMU.
+
+The emulation is able to successfully boot an CX7200 image. The image includes
+some self tests executed on every boot. Only the cache self test fails due to
+QEMU emulating the cache as always being coherent. The self tests include f.e.:
+
+* Network
+* Flash
+* CCAT DMA + EEPROM [1]
+* TwinCAT (Beckhoff's automation control software [2])
+
+[1] https://github.com/beckhoff/ccat
+[2] https://www.beckhoff.com/en-us/products/automation/
+
+YannickV (15):
+  hw/timer: Make frequency configurable
+  hw/timer: Make PERIPHCLK divider configurable
+  hw/dma/zynq-devcfg: Handle bitstream loading via DMA to 0xffffffff
+  hw/arm/zynq-devcfg: Prevent unintended unlock during initialization
+  hw/dma/zynq: Ensure PCFG_DONE bit remains set to indicate PL is in
+    user mode
+  hw/dma/zynq-devcfg: Simulate dummy PL reset
+  hw/dma/zynq-devcfg: Indicate power-up status of PL
+  hw/misc: Add dummy ZYNQ DDR controller
+  hw/misc/zynq_slcr: Add logic for DCI configuration
+  hw/misc: Add Beckhoff CCAT device
+  hw/block/m25p80: Add HAS_SR_TB flag for is25lp016d
+  hw/arm/xilinx_zynq: Split xilinx_zynq into header and implementation
+    files
+  hw/arm/xilinx_zynq: Add flash-type property
+  hw/arm: Add new machine based on xilinx-zynq-a9 for Beckhoff CX7200
+  docs/system/arm: Add support for Beckhoff CX7200
+
+ docs/system/arm/beckhoff-cx7200.rst |  57 ++++
+ docs/system/target-arm.rst          |   1 +
+ hw/arm/Kconfig                      |   7 +
+ hw/arm/beckhoff_CX7200.c            | 104 +++++++
+ hw/arm/meson.build                  |   1 +
+ hw/arm/xilinx_zynq.c                |  54 ++--
+ hw/block/m25p80.c                   |   3 +-
+ hw/dma/xlnx-zynq-devcfg.c           |  27 +-
+ hw/misc/Kconfig                     |   6 +
+ hw/misc/beckhoff_ccat.c             | 339 +++++++++++++++++++++++
+ hw/misc/meson.build                 |   2 +
+ hw/misc/xlnx-zynq-ddrc.c            | 413 ++++++++++++++++++++++++++++
+ hw/misc/zynq_slcr.c                 |  31 +++
+ hw/timer/a9gtimer.c                 |  26 +-
+ hw/timer/arm_mptimer.c              |  32 ++-
+ include/hw/arm/xilinx_zynq.h        |  37 +++
+ include/hw/misc/xlnx-zynq-ddrc.h    | 148 ++++++++++
+ include/hw/timer/a9gtimer.h         |   2 +
+ include/hw/timer/arm_mptimer.h      |   4 +
+ 19 files changed, 1263 insertions(+), 31 deletions(-)
+ create mode 100644 docs/system/arm/beckhoff-cx7200.rst
+ create mode 100644 hw/arm/beckhoff_CX7200.c
+ create mode 100644 hw/misc/beckhoff_ccat.c
+ create mode 100644 hw/misc/xlnx-zynq-ddrc.c
+ create mode 100644 include/hw/arm/xilinx_zynq.h
+ create mode 100644 include/hw/misc/xlnx-zynq-ddrc.h
+
+-- 
+2.47.3
 
 
