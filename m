@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9C7CA86AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CECA86BE
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:43:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRYsK-0005ZE-F1; Fri, 05 Dec 2025 11:41:44 -0500
+	id 1vRYsd-0005aw-0c; Fri, 05 Dec 2025 11:42:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsF-0005Xl-2Z
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:39 -0500
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ id 1vRYsC-0005Vu-KI
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:36 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsC-0005la-I3
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:38 -0500
-Received: by mail-wm1-x343.google.com with SMTP id
- 5b1f17b1804b1-47775fb6c56so21021325e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:36 -0800 (PST)
+ id 1vRYsA-0005kv-TG
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:36 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-477b5e0323bso19698495e9.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1764952893; x=1765557693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rQp/ZbbemXyzSCDNAGT1OI68GJIBYJpHR1vWpyZoxIs=;
- b=fj0KqW+nQlwq1jgrOPygyIYdl7RdacGWdDLKs8IL8sydPMC3c+7UR7pmEEZxZTsE/2
- VY7G4CO1jt4LEP+4es3VqJ8Vnxs8Ej4VShz+SSTgpceNG/gD/pM0GtXSGEPolpZlgKz4
- 2arAPnT1lGj+GDkhhIKtdFxlInVgUbwn/WthVaW5Rn4FK7RiMONaqpebP/tDg20hSNa+
- bbsOsD23BE5b8JXgW2JibcvPpqmoB5Xk9IGTSUYzLjlT5newh9B9w3rcANalHRZxl1I1
- 2IDC4EHyy6O8WcYrncBlCp49YTqRauBFREWZG/NBfmioQOf6e+36GnG/EXl7wqiue789
- BGow==
+ bh=sObp8UBrI/xfgGGLKvYX8yVXYXP1HQDePXzaB7T+dOo=;
+ b=z3Dv0nZA2M8Rjq+FzKRdOpK0m+pyRPzGC2myen4RslNUCEwjrl3FoJLxILFJ5QGnmU
+ xjgsGvvwfychwLwEuXY2AB7p9o5UxrjyY+ajW2jI40RVquz+qLpSEfoH/E8hHQRGTrYi
+ GceiDOJO962YqpIhhWZ5asRC+PDeQBupvqbkccsufiPR9DbaMRL5jfrnG+9t8LKL8uzy
+ AqOnoinp8+LA4rCshrh0VEeLrkqGQGey6cS8OIZvrbR7Tf/HWO+v8hLek46z+d1tvIOi
+ 5E76/3kp28gerDjKk3cU+fWqucgPU3eoNiKAx3/ISWhMyNeIuNJFUlM7JiGQ8m3fXu+k
+ v+GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1764952893; x=1765557693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=rQp/ZbbemXyzSCDNAGT1OI68GJIBYJpHR1vWpyZoxIs=;
- b=wFVv9GKmwCgwirBalrvHevJD/urxS/A517HFzaTi0LgjZNxdK3mV35cLm192NJgUla
- 2kUlBVLHAXK2OK2va5650n9qDQob/uqWhEFuFvRB1yMlFA+2XLyazVbZCucX0ywyznMc
- ngxfabTcuXGYT6rCdtGXVHTYgrjAyPkwOFgjaCb94hnHgf60GdcXKiTwQmawUJiW1uRs
- wIhq/NF4411tNO6skmfvdohQFbBIPCWYyD1lQbC67KChGFQNPrulWuuHxWyhz1EBe6Lu
- KEXj1ef2wLv1xu9r8xjmW6tIWPvIPNTB4+6cWrbvSgyDNEH2s74zvd2vUP+Jqd7k5B5Q
- MZbw==
-X-Gm-Message-State: AOJu0Yw7djqZdRMkLWhex0em9J4HCwH4T8FQQscds/edJ60kFVynrTt3
- AbRND3Q1TIUEGjnKjvGMBggoLzR+60vfbpaJBer0uPYD78cR7mfGqcqzXtzxv9HVo+U=
-X-Gm-Gg: ASbGncsJjKG4QTlYfigALj4HgXR77qyksVSih5aI7b8QjBf6aFGVmjgyLNUqhRvtChH
- DqP/ES1pp3qdNgkwFGmHi1Ex1A/roAbmmVTfjbeY2c1r0Y4qYFMB5QIqHi3VF2p0QXDRHuh7Rz/
- pFH7joODUZ6VXg4Zd4nNpgnl5oI79LK+KLKvaCxkMe7R9hdzigVBiSXp76Dzb7msW19rM4fDwcS
- D8OeacK18Z2rQjQueOPKYssRz+YiXqLafDipopNJz6bL9BxTTaWwY3VC78iKaXdkNwczRdn4A2G
- 5AeWJNloRYulpYqZXCSx3Txo6/mMfXJFBNj3ZT/eE5onlJYm2P9cz/zdMBjCg6fKO1OlQpJrNWh
- 1Hf1KQNpfV0Gi34JfkCkTGNpmjpVo+SGjqv650yNF7fcFWhQ08iJjUdGR17zF5oFYQCYHzVHi8m
- ED9/yqXR+dEPQ=
-X-Google-Smtp-Source: AGHT+IHNaVvi+ROQJO9pfHeDXlqBLpgV3gyQsyYRSvWC/mkPnKjqnIhD/Rn1xs4u/2d5LAy5a/NVTg==
-X-Received: by 2002:a05:600c:1d0e:b0:477:fcb:2256 with SMTP id
- 5b1f17b1804b1-4792f386c42mr73337855e9.17.1764952893436; 
- Fri, 05 Dec 2025 08:41:33 -0800 (PST)
+ bh=sObp8UBrI/xfgGGLKvYX8yVXYXP1HQDePXzaB7T+dOo=;
+ b=RaDoNB7h7vnyxwqRawJkN4FihWZfVzkefqDWGHnTP2EO92Tgj5EOGrcnEvVx1x8i3+
+ uX6eLbTEVZvJomDD4G2cVxV2UgTQggSl5w3pJFsEynTlifZr03RyIkphKbXeVPeOSl9H
+ ow0u1jjd7t4LSpeymz2r2OSO4FZtMQjRrbBExU8VyU1hofFgHtq6x90jddg2Qy7dPy8U
+ NRcxPri0IgAyLP5ZRirITD3pG3d7Q46PuF5T7kNJLQvEh0RectFo9ew/g3A7ubtrYyru
+ FWxku5DEgeVwgW/FwE57myC4m7FCYrCyGUMgLDHaSBa6lNVHjTUxWqWmuRHk+Upfenwq
+ MM8w==
+X-Gm-Message-State: AOJu0YwF8ZublO/oXUd63GLo0Ky1ltaAiYcHVC711t57iN2rXpSpkvyB
+ e9oqCAgX9/ghkySSJx4yqpFW/oM/Tm27Drlncp+vLY/2OsdC9S81pmIj/m6e/B8kvDkN6YI74KQ
+ sgQQr
+X-Gm-Gg: ASbGnct+9dC17+STgVsuP79V+0PmoL/dfTqW9jJZkUViRY3vDb8Umd2FkGJLq+hy/Nf
+ iK2KqUXekCkU3wvMZonUBKbNLUwRpTekkfwSrn7C0ihrLf3YlEJcuhhjha9DGEK8X1DFHv135FZ
+ gDhI/1dq1YXQfe6i79aB/Q+m46TnbapTqLy3CuCHrdANWRGBHEUiXWuWszZsJb1zktXhGJPO33L
+ 4g8hZPfpUa3qVF0gF9E9ClLf0B5hm5Rypu5mItXPmIZOzKMmWjYDQtnB8ZZcvBl7pxNTVeOv/B9
+ 5UaGjYNbXOeXSXu7QehQtuNXRgIHj9NmyONGYJRI2HUlW6AO85T7cff1S3XROCLR07teTUDX+bn
+ G8HrfoZFILj3r+cMharPnC5k4yYeq50rpKAKXZlAnEVIFcQ49cg6JeS6a5FdrOJL9LFZQl0snsG
+ bzj4Uw6S8Z5S4=
+X-Google-Smtp-Source: AGHT+IHtwhlq0bKrqskxc85ZA7g4TVrIWY2d6mw1vXwIpNss7AXqpn0XaNkfXahrrBF9dnguQhUyTg==
+X-Received: by 2002:a05:600c:3151:b0:479:255f:8805 with SMTP id
+ 5b1f17b1804b1-4792eb10e97mr79887495e9.4.1764952892827; 
+ Fri, 05 Dec 2025 08:41:32 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4793093ac44sm96982385e9.8.2025.12.05.08.41.29
+ 5b1f17b1804b1-4793091c740sm87256255e9.3.2025.12.05.08.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Dec 2025 08:41:29 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D17855F90A;
+ by draig.lan (Postfix) with ESMTP id E90BA5F90B;
  Fri, 05 Dec 2025 16:41:26 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/14] docs/devel: update build environment setup documentation
-Date: Fri,  5 Dec 2025 16:41:20 +0000
-Message-ID: <20251205164125.2122504-10-alex.bennee@linaro.org>
+Cc: Alano Song <AlanoSong@163.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 10/14] docs/devel: Correct typo
+Date: Fri,  5 Dec 2025 16:41:21 +0000
+Message-ID: <20251205164125.2122504-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205164125.2122504-1-alex.bennee@linaro.org>
 References: <20251205164125.2122504-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::343;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x343.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,185 +105,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bring `libvirt-ci` front and centre when discussing dependencies for
-QEMU. While we are at it:
+From: Alano Song <AlanoSong@163.com>
 
-  - drop links to additional instructions (libvirt is more upto date)
-  - compress pkg installs into a table
-  - call out distro/upstream dep difference in a proper note
+Correct typo in atomics.rst
 
-Message-ID: <20251204194902.1340008-9-alex.bennee@linaro.org>
+Signed-off-by: Alano Song <AlanoSong@163.com>
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+[AJB: fixed author entry]
+Message-ID: <20251204194902.1340008-10-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/docs/devel/build-environment.rst b/docs/devel/build-environment.rst
-index 661f6ea8504..61b2dc0d1bc 100644
---- a/docs/devel/build-environment.rst
-+++ b/docs/devel/build-environment.rst
-@@ -4,55 +4,103 @@
- Setup build environment
- =======================
- 
--QEMU uses a lot of dependencies on the host system. glib2 is used everywhere in
--the code base, and most of the other dependencies are optional.
--
--We present here simple instructions to enable native builds on most popular
--systems.
--
--You can find additional instructions on `QEMU wiki <https://wiki.qemu.org/>`_:
--
--- `Linux <https://wiki.qemu.org/Hosts/Linux>`_
--- `MacOS <https://wiki.qemu.org/Hosts/Mac>`_
--- `Windows <https://wiki.qemu.org/Hosts/W32>`_
--- `BSD <https://wiki.qemu.org/Hosts/BSD>`_
--
--Note: Installing dependencies using your package manager build dependencies may
--miss out on deps that have been newly introduced in qemu.git. In more, it misses
--deps the distribution has decided to exclude.
--
--Linux
-------
--
--Fedora
--++++++
--
--::
--
--    sudo dnf update && sudo dnf builddep qemu
--
--Debian/Ubuntu
--+++++++++++++
--
--You first need to enable `Sources List <https://wiki.debian.org/SourcesList>`_.
--Then, use apt to install dependencies:
--
--::
--
--    sudo apt update && sudo apt build-dep qemu
--
--MacOS
-------
--
--You first need to install `Homebrew <https://brew.sh/>`_. Then, use it to
--install dependencies:
--
--::
--
--    brew update && brew install $(brew deps --include-build qemu)
-+QEMU uses a lot of dependencies on the host system a large number of
-+which are optional. At a minimum we expect to have a system C library
-+(usually glibc but others can work), the glib2 library (used heavily
-+in the code base) and a few other core libraries for interfacing with
-+code modules and system build descriptions.
-+
-+We use the ``libvirt-ci`` project to handle the mapping of
-+dependencies to a wide variety output formats including system install
-+scripts. For example:
-+
-+.. code-block:: bash
-+
-+  # THIS FILE WAS AUTO-GENERATED
-+  #
-+  #  $ lcitool buildenvscript debian-13 ./tests/lcitool/projects/qemu-minimal.yml
-+  #
-+  # https://gitlab.com/libvirt/libvirt-ci
-+
-+  function install_buildenv() {
-+      export DEBIAN_FRONTEND=noninteractive
-+      apt-get update
-+      apt-get dist-upgrade -y
-+      apt-get install --no-install-recommends -y \
-+              bash \
-+              bc \
-+              bison \
-+              bzip2 \
-+              ca-certificates \
-+              ccache \
-+              findutils \
-+              flex \
-+              gcc \
-+              git \
-+              libc6-dev \
-+              libfdt-dev \
-+              libffi-dev \
-+              libglib2.0-dev \
-+              libpixman-1-dev \
-+              locales \
-+              make \
-+              meson \
-+              ninja-build \
-+              pkgconf \
-+              python3 \
-+              python3-venv \
-+              sed \
-+              tar
-+      sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen
-+      dpkg-reconfigure locales
-+      rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
-+      dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
-+      mkdir -p /usr/libexec/ccache-wrappers
-+      ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc
-+      ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
-+  }
-+
-+  export CCACHE_WRAPPERSDIR="/usr/libexec/ccache-wrappers"
-+  export LANG="en_US.UTF-8"
-+  export MAKE="/usr/bin/make"
-+  export NINJA="/usr/bin/ninja"
-+  export PYTHON="/usr/bin/python3"
-+
-+If you instead select the ``qemu.yml`` project file you will get all
-+the dependencies that the project can use.
-+
-+Using you system package manager
-+--------------------------------
-+
-+.. note::
-+
-+   Installing dependencies using your package manager build dependencies may
-+   miss out on deps that have been newly introduced in qemu.git. It
-+   also misses deps the distribution has decided to exclude.
-+
-+Systems with Package Managers
-++++++++++++++++++++++++++++++
-+
-+.. list-table:: Package Manager Commands
-+  :widths: 10 50 40
-+  :header-rows: 1
-+
-+  * - System
-+    - Command
-+    - Notes
-+  * - Fedora
-+    - ``sudo dnf update && sudo dnf builddep qemu``
-+    -
-+  * - Debian/Ubuntu
-+    - ``sudo apt update && sudo apt build-dep qemu``
-+    - Must enable `Sources List
-+      <https://wiki.debian.org/SourcesList>`_ first
-+  * - MacOS
-+    - ``brew update && brew install $(brew deps --include-build qemu)``
-+    - Using `Homebrew <https://brew.sh/>`_.
- 
- Windows
---------
-++++++++
- 
- You first need to install `MSYS2 <https://www.msys2.org/>`_.
- MSYS2 offers `different environments <https://www.msys2.org/docs/environments/>`_.
-@@ -104,7 +152,7 @@ build QEMU in MSYS2 itself.
-     makepkg --syncdeps --nobuild PKGBUILD || true
- 
- Build on windows-aarch64
--++++++++++++++++++++++++
-+~~~~~~~~~~~~~~~~~~~~~~~~
- 
- When trying to cross compile meson for x86_64 using UCRT64 or MINGW64 env,
- configure will run into an error because the cpu detected is not correct.
-@@ -115,4 +163,3 @@ and force a cross compilation (with empty prefix).
- ::
- 
-     ./configure --cpu=x86_64 --cross-prefix=
--
+diff --git a/docs/devel/atomics.rst b/docs/devel/atomics.rst
+index 95c7b77c01e..ea4ede4b8c4 100644
+--- a/docs/devel/atomics.rst
++++ b/docs/devel/atomics.rst
+@@ -266,7 +266,7 @@ Splitting a loop can also be useful to reduce the number of barriers:
+     |   n = 0;                                 |     smp_mb_release();            |
+     |   for (i = 0; i < 10; i++) {             |     for (i = 0; i < 10; i++)     |
+     |     qatomic_store_release(&a[i], false); |       qatomic_set(&a[i], false); |
+-    |     smp_mb();                            |     smb_mb();                    |
++    |     smp_mb();                            |     smp_mb();                    |
+     |     n += qatomic_read(&b[i]);            |     n = 0;                       |
+     |   }                                      |     for (i = 0; i < 10; i++)     |
+     |                                          |       n += qatomic_read(&b[i]);  |
+@@ -283,7 +283,7 @@ as well) ``smp_wmb()``:
+     |                                          |     smp_mb_release();            |
+     |   for (i = 0; i < 10; i++) {             |     for (i = 0; i < 10; i++)     |
+     |     qatomic_store_release(&a[i], false); |       qatomic_set(&a[i], false); |
+-    |     qatomic_store_release(&b[i], false); |     smb_wmb();                   |
++    |     qatomic_store_release(&b[i], false); |     smp_wmb();                   |
+     |   }                                      |     for (i = 0; i < 10; i++)     |
+     |                                          |       qatomic_set(&b[i], false); |
+     +------------------------------------------+----------------------------------+
 -- 
 2.47.3
 
